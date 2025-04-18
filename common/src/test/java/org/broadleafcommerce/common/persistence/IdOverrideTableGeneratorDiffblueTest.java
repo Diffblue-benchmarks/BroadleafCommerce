@@ -18,17 +18,14 @@
 package org.broadleafcommerce.common.persistence;
 
 import static org.junit.Assert.assertEquals;
-import java.util.Properties;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThrows;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.util.BLCFieldUtils;
-import org.hibernate.MappingException;
-import org.hibernate.boot.registry.internal.BootstrapServiceRegistryImpl;
-import org.hibernate.engine.spi.SessionDelegatorBaseImpl;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
-import org.hibernate.service.ServiceRegistry;
-import org.hibernate.type.BigDecimalType;
-import org.hibernate.type.Type;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -41,61 +38,40 @@ public class IdOverrideTableGeneratorDiffblueTest {
   private IdOverrideTableGenerator idOverrideTableGenerator;
 
   /**
-   * Test
-   * {@link IdOverrideTableGenerator#generate(SharedSessionContractImplementor, Object)}.
+   * Test {@link IdOverrideTableGenerator#generate(SharedSessionContractImplementor, Object)}.
+   * <ul>
+   *   <li>When {@code Cannot specify IdOverrideTableGenerator for an entity (}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link IdOverrideTableGenerator#generate(SharedSessionContractImplementor, Object)}
+   * Method under test: {@link IdOverrideTableGenerator#generate(SharedSessionContractImplementor, Object)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGenerate() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.IllegalArgumentException: Unable to create a SessionDelegatorBaseImpl from a null delegate object
-    //       at org.hibernate.engine.spi.SessionDelegatorBaseImpl.<init>(SessionDelegatorBaseImpl.java:94)
-    //       at org.hibernate.engine.spi.SessionDelegatorBaseImpl.<init>(SessionDelegatorBaseImpl.java:107)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    SessionDelegatorBaseImpl delegate = new SessionDelegatorBaseImpl(null);
-
-    // Act
-    idOverrideTableGenerator.generate(new SessionDelegatorBaseImpl(delegate, new SessionDelegatorBaseImpl(null)),
-        BLCFieldUtils.NULL_FIELD);
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "java.io.Serializable IdOverrideTableGenerator.generate(SharedSessionContractImplementor, Object)"})
+  public void testGenerate_whenCannotSpecifyIdOverrideTableGeneratorForAnEntity() {
+    // Arrange, Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> idOverrideTableGenerator.generate(null, "Cannot specify IdOverrideTableGenerator for an entity ("));
   }
 
   /**
-   * Test
-   * {@link IdOverrideTableGenerator#configure(Type, Properties, ServiceRegistry)}.
+   * Test {@link IdOverrideTableGenerator#generate(SharedSessionContractImplementor, Object)}.
    * <ul>
-   *   <li>When {@link BigDecimalType} (default constructor).</li>
+   *   <li>When {@link BLCFieldUtils#NULL_FIELD}.</li>
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link IdOverrideTableGenerator#configure(Type, Properties, ServiceRegistry)}
+   * Method under test: {@link IdOverrideTableGenerator#generate(SharedSessionContractImplementor, Object)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testConfigure_whenBigDecimalType() throws MappingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.hibernate.id.enhanced.TableGenerator.configure(TableGenerator.java:362)
-    //       at org.broadleafcommerce.common.persistence.IdOverrideTableGenerator.configure(IdOverrideTableGenerator.java:117)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    IdOverrideTableGenerator idOverrideTableGenerator = new IdOverrideTableGenerator();
-    BigDecimalType type = new BigDecimalType();
-    Properties params = new Properties();
-
-    // Act
-    idOverrideTableGenerator.configure(type, params, new BootstrapServiceRegistryImpl());
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "java.io.Serializable IdOverrideTableGenerator.generate(SharedSessionContractImplementor, Object)"})
+  public void testGenerate_whenNull_field_thenThrowIllegalArgumentException() {
+    // Arrange, Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> idOverrideTableGenerator.generate(null, BLCFieldUtils.NULL_FIELD));
   }
 
   /**
@@ -109,13 +85,21 @@ public class IdOverrideTableGeneratorDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void IdOverrideTableGenerator.<init>()", "String IdOverrideTableGenerator.getEntityName()",
+      "void IdOverrideTableGenerator.setEntityName(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     IdOverrideTableGenerator actualIdOverrideTableGenerator = new IdOverrideTableGenerator();
     actualIdOverrideTableGenerator.setEntityName("Entity Name");
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Entity Name", actualIdOverrideTableGenerator.getEntityName());
+    assertNull(actualIdOverrideTableGenerator.getSegmentColumnName());
+    assertNull(actualIdOverrideTableGenerator.getSegmentValue());
+    assertNull(actualIdOverrideTableGenerator.getValueColumnName());
+    assertNull(actualIdOverrideTableGenerator.getOptimizer());
+    assertNull(actualIdOverrideTableGenerator.getIdentifierType());
     assertEquals(0, actualIdOverrideTableGenerator.getIncrementSize());
     assertEquals(0, actualIdOverrideTableGenerator.getInitialValue());
     assertEquals(0, actualIdOverrideTableGenerator.getSegmentValueLength());

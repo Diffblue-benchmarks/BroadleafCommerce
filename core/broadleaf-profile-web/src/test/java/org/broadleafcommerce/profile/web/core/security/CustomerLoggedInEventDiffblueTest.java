@@ -1,51 +1,43 @@
+/*-
+ * #%L
+ * BroadleafCommerce Profile Web
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.profile.web.core.security;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.mockito.Mockito.mock;
-import org.broadleafcommerce.profile.core.domain.ChallengeQuestion;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 class CustomerLoggedInEventDiffblueTest {
   /**
    * Test {@link CustomerLoggedInEvent#CustomerLoggedInEvent(Customer, Object)}.
-   * <ul>
-   *   <li>Given {@link ChallengeQuestion}.</li>
-   * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomerLoggedInEvent#CustomerLoggedInEvent(Customer, Object)}
+   * Method under test: {@link CustomerLoggedInEvent#CustomerLoggedInEvent(Customer, Object)}
    */
   @Test
-  @DisplayName("Test new CustomerLoggedInEvent(Customer, Object); given ChallengeQuestion")
-  void testNewCustomerLoggedInEvent_givenChallengeQuestion() {
-    // Arrange
-    CustomerImpl customer = new CustomerImpl();
-    customer.setChallengeQuestion(mock(ChallengeQuestion.class));
-
-    // Act
-    CustomerLoggedInEvent actualCustomerLoggedInEvent = new CustomerLoggedInEvent(customer, "Source");
-
-    // Assert
-    assertEquals("Source", actualCustomerLoggedInEvent.getSource());
-    assertSame(customer, actualCustomerLoggedInEvent.getCustomer());
-  }
-
-  /**
-   * Test {@link CustomerLoggedInEvent#CustomerLoggedInEvent(Customer, Object)}.
-   * <ul>
-   *   <li>When {@link CustomerImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link CustomerLoggedInEvent#CustomerLoggedInEvent(Customer, Object)}
-   */
-  @Test
-  @DisplayName("Test new CustomerLoggedInEvent(Customer, Object); when CustomerImpl (default constructor)")
-  void testNewCustomerLoggedInEvent_whenCustomerImpl() {
+  @DisplayName("Test new CustomerLoggedInEvent(Customer, Object)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void CustomerLoggedInEvent.<init>(Customer, Object)"})
+  void testNewCustomerLoggedInEvent() {
     // Arrange
     CustomerImpl customer = new CustomerImpl();
 
@@ -53,8 +45,10 @@ class CustomerLoggedInEventDiffblueTest {
     CustomerLoggedInEvent actualCustomerLoggedInEvent = new CustomerLoggedInEvent(customer, "Source");
 
     // Assert
+    Customer customer2 = actualCustomerLoggedInEvent.getCustomer();
+    assertTrue(customer2 instanceof CustomerImpl);
     assertEquals("Source", actualCustomerLoggedInEvent.getSource());
-    assertSame(customer, actualCustomerLoggedInEvent.getCustomer());
+    assertSame(customer, customer2);
   }
 
   /**
@@ -68,6 +62,9 @@ class CustomerLoggedInEventDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Customer CustomerLoggedInEvent.getCustomer()",
+      "void CustomerLoggedInEvent.setCustomer(Customer)"})
   void testGettersAndSetters() {
     // Arrange
     CustomerLoggedInEvent customerLoggedInEvent = new CustomerLoggedInEvent(new CustomerImpl(), "Source");
@@ -76,7 +73,7 @@ class CustomerLoggedInEventDiffblueTest {
     // Act
     customerLoggedInEvent.setCustomer(customer);
 
-    // Assert that nothing has changed
+    // Assert
     assertSame(customer, customerLoggedInEvent.getCustomer());
   }
 }

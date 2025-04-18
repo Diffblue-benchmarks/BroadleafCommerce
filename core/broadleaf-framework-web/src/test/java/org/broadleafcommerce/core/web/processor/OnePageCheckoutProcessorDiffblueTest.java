@@ -1,34 +1,87 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework Web
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.web.processor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.mockito.Mockito.mock;
-import java.util.HashMap;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.List;
-import java.util.Map;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
+import org.broadleafcommerce.core.order.service.FulfillmentGroupService;
+import org.broadleafcommerce.core.order.service.FulfillmentOptionService;
+import org.broadleafcommerce.core.payment.service.OrderToPaymentRequestDTOService;
+import org.broadleafcommerce.core.pricing.service.FulfillmentPricingService;
 import org.broadleafcommerce.core.web.checkout.model.BillingInfoForm;
 import org.broadleafcommerce.core.web.checkout.model.OrderInfoForm;
 import org.broadleafcommerce.core.web.checkout.model.ShippingInfoForm;
-import org.broadleafcommerce.presentation.model.BroadleafTemplateContext;
+import org.broadleafcommerce.core.web.checkout.service.CheckoutFormService;
+import org.broadleafcommerce.core.web.order.service.CartStateService;
 import org.broadleafcommerce.profile.core.domain.AddressImpl;
 import org.broadleafcommerce.profile.core.domain.CustomerPaymentImpl;
-import org.junit.jupiter.api.Disabled;
+import org.broadleafcommerce.profile.core.service.CountryService;
+import org.broadleafcommerce.profile.core.service.CustomerAddressService;
+import org.broadleafcommerce.profile.core.service.StateService;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml",
-    "/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 class OnePageCheckoutProcessorDiffblueTest {
-  @Autowired
+  @Mock
+  private CartStateService cartStateService;
+
+  @Mock
+  private CheckoutFormService checkoutFormService;
+
+  @Mock
+  private CountryService countryService;
+
+  @Mock
+  private CustomerAddressService customerAddressService;
+
+  @Mock
+  private FulfillmentGroupService fulfillmentGroupService;
+
+  @Mock
+  private FulfillmentOptionService fulfillmentOptionService;
+
+  @Mock
+  private FulfillmentPricingService fulfillmentPricingService;
+
+  @InjectMocks
   private OnePageCheckoutProcessor onePageCheckoutProcessor;
+
+  @Mock
+  private OrderToPaymentRequestDTOService orderToPaymentRequestDTOService;
+
+  @Mock
+  private StateService stateService;
 
   /**
    * Test {@link OnePageCheckoutProcessor#getName()}.
@@ -37,6 +90,8 @@ class OnePageCheckoutProcessorDiffblueTest {
    */
   @Test
   @DisplayName("Test getName()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String OnePageCheckoutProcessor.getName()"})
   void testGetName() {
     // Arrange, Act and Assert
     assertEquals("one_page_checkout", (new OnePageCheckoutProcessor()).getName());
@@ -49,41 +104,11 @@ class OnePageCheckoutProcessorDiffblueTest {
    */
   @Test
   @DisplayName("Test getPrecedence()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"int OnePageCheckoutProcessor.getPrecedence()"})
   void testGetPrecedence() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals(100, (new OnePageCheckoutProcessor()).getPrecedence());
-  }
-
-  /**
-   * Test {@link OnePageCheckoutProcessor#getPrecedence()}.
-   * <p>
-   * Method under test: {@link OnePageCheckoutProcessor#getPrecedence()}
-   */
-  @Test
-  @DisplayName("Test getPrecedence()")
-  @Disabled("TODO: Complete this test")
-  void testGetPrecedence2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass10870 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.OnePageCheckoutProcessor onePageCheckoutProcessor;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OnePageCheckoutProcessor()).getPrecedence();
+    assertEquals(100, onePageCheckoutProcessor.getPrecedence());
   }
 
   /**
@@ -93,112 +118,46 @@ class OnePageCheckoutProcessorDiffblueTest {
    */
   @Test
   @DisplayName("Test useGlobalScope()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean OnePageCheckoutProcessor.useGlobalScope()"})
   void testUseGlobalScope() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertFalse((new OnePageCheckoutProcessor()).useGlobalScope());
+    assertFalse(onePageCheckoutProcessor.useGlobalScope());
   }
 
   /**
-   * Test {@link OnePageCheckoutProcessor#useGlobalScope()}.
+   * Test {@link OnePageCheckoutProcessor#prepopulateCheckoutForms(Order, OrderInfoForm, ShippingInfoForm, BillingInfoForm)}.
    * <p>
-   * Method under test: {@link OnePageCheckoutProcessor#useGlobalScope()}
-   */
-  @Test
-  @DisplayName("Test useGlobalScope()")
-  @Disabled("TODO: Complete this test")
-  void testUseGlobalScope2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass11261 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.OnePageCheckoutProcessor onePageCheckoutProcessor;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OnePageCheckoutProcessor()).useGlobalScope();
-  }
-
-  /**
-   * Test
-   * {@link OnePageCheckoutProcessor#populateModelVariables(String, Map, BroadleafTemplateContext)}.
-   * <p>
-   * Method under test:
-   * {@link OnePageCheckoutProcessor#populateModelVariables(String, Map, BroadleafTemplateContext)}
-   */
-  @Test
-  @DisplayName("Test populateModelVariables(String, Map, BroadleafTemplateContext)")
-  @Disabled("TODO: Complete this test")
-  void testPopulateModelVariables() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass10917 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.OnePageCheckoutProcessor onePageCheckoutProcessor;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    OnePageCheckoutProcessor onePageCheckoutProcessor2 = new OnePageCheckoutProcessor();
-
-    // Act
-    onePageCheckoutProcessor2.populateModelVariables("Tag Name", new HashMap<>(), mock(BroadleafTemplateContext.class));
-  }
-
-  /**
-   * Test
-   * {@link OnePageCheckoutProcessor#prepopulateCheckoutForms(Order, OrderInfoForm, ShippingInfoForm, BillingInfoForm)}.
-   * <p>
-   * Method under test:
-   * {@link OnePageCheckoutProcessor#prepopulateCheckoutForms(Order, OrderInfoForm, ShippingInfoForm, BillingInfoForm)}
+   * Method under test: {@link OnePageCheckoutProcessor#prepopulateCheckoutForms(Order, OrderInfoForm, ShippingInfoForm, BillingInfoForm)}
    */
   @Test
   @DisplayName("Test prepopulateCheckoutForms(Order, OrderInfoForm, ShippingInfoForm, BillingInfoForm)")
-  @Disabled("TODO: Complete this test")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "void OnePageCheckoutProcessor.prepopulateCheckoutForms(Order, OrderInfoForm, ShippingInfoForm, BillingInfoForm)"})
   void testPrepopulateCheckoutForms() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass10954 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.OnePageCheckoutProcessor onePageCheckoutProcessor;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    OnePageCheckoutProcessor onePageCheckoutProcessor2 = new OnePageCheckoutProcessor();
-    NullOrderImpl cart = new NullOrderImpl();
+    BillingInfoForm billingInfoForm = new BillingInfoForm();
+    billingInfoForm.setAddress(new AddressImpl());
+    billingInfoForm.setCustomerPayment(new CustomerPaymentImpl());
+    billingInfoForm.setCustomerPaymentId(1L);
+    billingInfoForm.setPaymentName("Payment Name");
+    billingInfoForm.setSaveNewPayment(true);
+    billingInfoForm.setUseCustomerPayment(true);
+    billingInfoForm.setUseShippingAddress(true);
 
     OrderInfoForm orderInfoForm = new OrderInfoForm();
     orderInfoForm.setEmailAddress("42 Main St");
+    when(checkoutFormService.prePopulateBillingInfoForm(Mockito.<BillingInfoForm>any(), Mockito.<ShippingInfoForm>any(),
+        Mockito.<Order>any())).thenReturn(billingInfoForm);
+    when(checkoutFormService.prePopulateOrderInfoForm(Mockito.<OrderInfoForm>any(), Mockito.<Order>any()))
+        .thenReturn(orderInfoForm);
+    when(checkoutFormService.prePopulateShippingInfoForm(Mockito.<ShippingInfoForm>any(), Mockito.<Order>any()))
+        .thenReturn(new ShippingInfoForm());
+    NullOrderImpl cart = new NullOrderImpl();
+
+    OrderInfoForm orderInfoForm2 = new OrderInfoForm();
+    orderInfoForm2.setEmailAddress("42 Main St");
     ShippingInfoForm shippingForm = new ShippingInfoForm();
 
     BillingInfoForm billingForm = new BillingInfoForm();
@@ -211,259 +170,197 @@ class OnePageCheckoutProcessorDiffblueTest {
     billingForm.setUseShippingAddress(true);
 
     // Act
-    onePageCheckoutProcessor2.prepopulateCheckoutForms(cart, orderInfoForm, shippingForm, billingForm);
+    onePageCheckoutProcessor.prepopulateCheckoutForms(cart, orderInfoForm2, shippingForm, billingForm);
+
+    // Assert
+    verify(checkoutFormService).prePopulateBillingInfoForm(isA(BillingInfoForm.class), isA(ShippingInfoForm.class),
+        isA(Order.class));
+    verify(checkoutFormService).prePopulateOrderInfoForm(isA(OrderInfoForm.class), isA(Order.class));
+    verify(checkoutFormService).prePopulateShippingInfoForm(isA(ShippingInfoForm.class), isA(Order.class));
   }
 
   /**
-   * Test
-   * {@link OnePageCheckoutProcessor#calculateNumShippableFulfillmentGroups()}.
+   * Test {@link OnePageCheckoutProcessor#calculateNumShippableFulfillmentGroups()}.
    * <p>
-   * Method under test:
-   * {@link OnePageCheckoutProcessor#calculateNumShippableFulfillmentGroups()}
+   * Method under test: {@link OnePageCheckoutProcessor#calculateNumShippableFulfillmentGroups()}
    */
   @Test
   @DisplayName("Test calculateNumShippableFulfillmentGroups()")
-  @Disabled("TODO: Complete this test")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"int OnePageCheckoutProcessor.calculateNumShippableFulfillmentGroups()"})
   void testCalculateNumShippableFulfillmentGroups() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass10869 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.OnePageCheckoutProcessor onePageCheckoutProcessor;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OnePageCheckoutProcessor()).calculateNumShippableFulfillmentGroups();
-  }
-
-  /**
-   * Test {@link OnePageCheckoutProcessor#populateProcessingError(Map)}.
-   * <p>
-   * Method under test:
-   * {@link OnePageCheckoutProcessor#populateProcessingError(Map)}
-   */
-  @Test
-  @DisplayName("Test populateProcessingError(Map)")
-  @Disabled("TODO: Complete this test")
-  void testPopulateProcessingError() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass10938 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.OnePageCheckoutProcessor onePageCheckoutProcessor;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    OnePageCheckoutProcessor onePageCheckoutProcessor2 = new OnePageCheckoutProcessor();
+    when(fulfillmentGroupService.calculateNumShippableFulfillmentGroups(Mockito.<Order>any())).thenReturn(10);
 
     // Act
-    onePageCheckoutProcessor2.populateProcessingError(new HashMap<>());
-  }
+    int actualCalculateNumShippableFulfillmentGroupsResult = onePageCheckoutProcessor
+        .calculateNumShippableFulfillmentGroups();
 
-  /**
-   * Test {@link OnePageCheckoutProcessor#populateSectionViewStates(Map)}.
-   * <p>
-   * Method under test:
-   * {@link OnePageCheckoutProcessor#populateSectionViewStates(Map)}
-   */
-  @Test
-  @DisplayName("Test populateSectionViewStates(Map)")
-  @Disabled("TODO: Complete this test")
-  void testPopulateSectionViewStates() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass10946 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.OnePageCheckoutProcessor onePageCheckoutProcessor;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    OnePageCheckoutProcessor onePageCheckoutProcessor2 = new OnePageCheckoutProcessor();
-
-    // Act
-    onePageCheckoutProcessor2.populateSectionViewStates(new HashMap<>());
-  }
-
-  /**
-   * Test
-   * {@link OnePageCheckoutProcessor#populateFulfillmentOptionsAndEstimationOnModel(Map)}.
-   * <p>
-   * Method under test:
-   * {@link OnePageCheckoutProcessor#populateFulfillmentOptionsAndEstimationOnModel(Map)}
-   */
-  @Test
-  @DisplayName("Test populateFulfillmentOptionsAndEstimationOnModel(Map)")
-  @Disabled("TODO: Complete this test")
-  void testPopulateFulfillmentOptionsAndEstimationOnModel() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass10909 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.OnePageCheckoutProcessor onePageCheckoutProcessor;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    OnePageCheckoutProcessor onePageCheckoutProcessor2 = new OnePageCheckoutProcessor();
-
-    // Act
-    onePageCheckoutProcessor2.populateFulfillmentOptionsAndEstimationOnModel(new HashMap<>());
+    // Assert
+    verify(fulfillmentGroupService).calculateNumShippableFulfillmentGroups(isNull());
+    assertEquals(10, actualCalculateNumShippableFulfillmentGroupsResult);
   }
 
   /**
    * Test {@link OnePageCheckoutProcessor#hasPopulatedOrderInfo(Order)}.
+   * <ul>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link OnePageCheckoutProcessor#hasPopulatedOrderInfo(Order)}
+   * Method under test: {@link OnePageCheckoutProcessor#hasPopulatedOrderInfo(Order)}
    */
   @Test
-  @DisplayName("Test hasPopulatedOrderInfo(Order)")
-  @Disabled("TODO: Complete this test")
-  void testHasPopulatedOrderInfo() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass10883 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.OnePageCheckoutProcessor onePageCheckoutProcessor;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @DisplayName("Test hasPopulatedOrderInfo(Order); then return 'false'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean OnePageCheckoutProcessor.hasPopulatedOrderInfo(Order)"})
+  void testHasPopulatedOrderInfo_thenReturnFalse() {
     // Arrange
-    OnePageCheckoutProcessor onePageCheckoutProcessor2 = new OnePageCheckoutProcessor();
+    when(cartStateService.cartHasPopulatedOrderInfo()).thenReturn(false);
 
     // Act
-    onePageCheckoutProcessor2.hasPopulatedOrderInfo(new NullOrderImpl());
+    boolean actualHasPopulatedOrderInfoResult = onePageCheckoutProcessor.hasPopulatedOrderInfo(new NullOrderImpl());
+
+    // Assert
+    verify(cartStateService).cartHasPopulatedOrderInfo();
+    assertFalse(actualHasPopulatedOrderInfoResult);
+  }
+
+  /**
+   * Test {@link OnePageCheckoutProcessor#hasPopulatedOrderInfo(Order)}.
+   * <ul>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OnePageCheckoutProcessor#hasPopulatedOrderInfo(Order)}
+   */
+  @Test
+  @DisplayName("Test hasPopulatedOrderInfo(Order); then return 'true'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean OnePageCheckoutProcessor.hasPopulatedOrderInfo(Order)"})
+  void testHasPopulatedOrderInfo_thenReturnTrue() {
+    // Arrange
+    when(cartStateService.cartHasPopulatedOrderInfo()).thenReturn(true);
+
+    // Act
+    boolean actualHasPopulatedOrderInfoResult = onePageCheckoutProcessor.hasPopulatedOrderInfo(new NullOrderImpl());
+
+    // Assert
+    verify(cartStateService).cartHasPopulatedOrderInfo();
+    assertTrue(actualHasPopulatedOrderInfoResult);
   }
 
   /**
    * Test {@link OnePageCheckoutProcessor#hasPopulatedBillingAddress(Order)}.
+   * <ul>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link OnePageCheckoutProcessor#hasPopulatedBillingAddress(Order)}
+   * Method under test: {@link OnePageCheckoutProcessor#hasPopulatedBillingAddress(Order)}
    */
   @Test
-  @DisplayName("Test hasPopulatedBillingAddress(Order)")
-  @Disabled("TODO: Complete this test")
-  void testHasPopulatedBillingAddress() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass10871 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.OnePageCheckoutProcessor onePageCheckoutProcessor;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @DisplayName("Test hasPopulatedBillingAddress(Order); then return 'false'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean OnePageCheckoutProcessor.hasPopulatedBillingAddress(Order)"})
+  void testHasPopulatedBillingAddress_thenReturnFalse() {
     // Arrange
-    OnePageCheckoutProcessor onePageCheckoutProcessor2 = new OnePageCheckoutProcessor();
+    when(cartStateService.cartHasPopulatedBillingAddress()).thenReturn(false);
 
     // Act
-    onePageCheckoutProcessor2.hasPopulatedBillingAddress(new NullOrderImpl());
+    boolean actualHasPopulatedBillingAddressResult = onePageCheckoutProcessor
+        .hasPopulatedBillingAddress(new NullOrderImpl());
+
+    // Assert
+    verify(cartStateService).cartHasPopulatedBillingAddress();
+    assertFalse(actualHasPopulatedBillingAddressResult);
+  }
+
+  /**
+   * Test {@link OnePageCheckoutProcessor#hasPopulatedBillingAddress(Order)}.
+   * <ul>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OnePageCheckoutProcessor#hasPopulatedBillingAddress(Order)}
+   */
+  @Test
+  @DisplayName("Test hasPopulatedBillingAddress(Order); then return 'true'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean OnePageCheckoutProcessor.hasPopulatedBillingAddress(Order)"})
+  void testHasPopulatedBillingAddress_thenReturnTrue() {
+    // Arrange
+    when(cartStateService.cartHasPopulatedBillingAddress()).thenReturn(true);
+
+    // Act
+    boolean actualHasPopulatedBillingAddressResult = onePageCheckoutProcessor
+        .hasPopulatedBillingAddress(new NullOrderImpl());
+
+    // Assert
+    verify(cartStateService).cartHasPopulatedBillingAddress();
+    assertTrue(actualHasPopulatedBillingAddressResult);
   }
 
   /**
    * Test {@link OnePageCheckoutProcessor#hasPopulatedShippingAddress(Order)}.
+   * <ul>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link OnePageCheckoutProcessor#hasPopulatedShippingAddress(Order)}
+   * Method under test: {@link OnePageCheckoutProcessor#hasPopulatedShippingAddress(Order)}
    */
   @Test
-  @DisplayName("Test hasPopulatedShippingAddress(Order)")
-  @Disabled("TODO: Complete this test")
-  void testHasPopulatedShippingAddress() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass10895 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.OnePageCheckoutProcessor onePageCheckoutProcessor;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @DisplayName("Test hasPopulatedShippingAddress(Order); then return 'false'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean OnePageCheckoutProcessor.hasPopulatedShippingAddress(Order)"})
+  void testHasPopulatedShippingAddress_thenReturnFalse() {
     // Arrange
-    OnePageCheckoutProcessor onePageCheckoutProcessor2 = new OnePageCheckoutProcessor();
+    when(cartStateService.cartHasPopulatedShippingAddress()).thenReturn(false);
 
     // Act
-    onePageCheckoutProcessor2.hasPopulatedShippingAddress(new NullOrderImpl());
+    boolean actualHasPopulatedShippingAddressResult = onePageCheckoutProcessor
+        .hasPopulatedShippingAddress(new NullOrderImpl());
+
+    // Assert
+    verify(cartStateService).cartHasPopulatedShippingAddress();
+    assertFalse(actualHasPopulatedShippingAddressResult);
+  }
+
+  /**
+   * Test {@link OnePageCheckoutProcessor#hasPopulatedShippingAddress(Order)}.
+   * <ul>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OnePageCheckoutProcessor#hasPopulatedShippingAddress(Order)}
+   */
+  @Test
+  @DisplayName("Test hasPopulatedShippingAddress(Order); then return 'true'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean OnePageCheckoutProcessor.hasPopulatedShippingAddress(Order)"})
+  void testHasPopulatedShippingAddress_thenReturnTrue() {
+    // Arrange
+    when(cartStateService.cartHasPopulatedShippingAddress()).thenReturn(true);
+
+    // Act
+    boolean actualHasPopulatedShippingAddressResult = onePageCheckoutProcessor
+        .hasPopulatedShippingAddress(new NullOrderImpl());
+
+    // Assert
+    verify(cartStateService).cartHasPopulatedShippingAddress();
+    assertTrue(actualHasPopulatedShippingAddressResult);
   }
 
   /**
    * Test {@link OnePageCheckoutProcessor#populateExpirationMonths()}.
    * <p>
-   * Method under test:
-   * {@link OnePageCheckoutProcessor#populateExpirationMonths()}
+   * Method under test: {@link OnePageCheckoutProcessor#populateExpirationMonths()}
    */
   @Test
   @DisplayName("Test populateExpirationMonths()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"List OnePageCheckoutProcessor.populateExpirationMonths()"})
   void testPopulateExpirationMonths() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange and Act
-    List<String> actualPopulateExpirationMonthsResult = (new OnePageCheckoutProcessor()).populateExpirationMonths();
+    List<String> actualPopulateExpirationMonthsResult = onePageCheckoutProcessor.populateExpirationMonths();
 
     // Assert
     assertEquals(12, actualPopulateExpirationMonthsResult.size());
@@ -482,77 +379,16 @@ class OnePageCheckoutProcessorDiffblueTest {
   }
 
   /**
-   * Test {@link OnePageCheckoutProcessor#populateExpirationMonths()}.
-   * <p>
-   * Method under test:
-   * {@link OnePageCheckoutProcessor#populateExpirationMonths()}
-   */
-  @Test
-  @DisplayName("Test populateExpirationMonths()")
-  @Disabled("TODO: Complete this test")
-  void testPopulateExpirationMonths2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass10907 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.OnePageCheckoutProcessor onePageCheckoutProcessor;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OnePageCheckoutProcessor()).populateExpirationMonths();
-  }
-
-  /**
    * Test {@link OnePageCheckoutProcessor#populateExpirationYears()}.
    * <p>
    * Method under test: {@link OnePageCheckoutProcessor#populateExpirationYears()}
    */
   @Test
   @DisplayName("Test populateExpirationYears()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"List OnePageCheckoutProcessor.populateExpirationYears()"})
   void testPopulateExpirationYears() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals(10, (new OnePageCheckoutProcessor()).populateExpirationYears().size());
-  }
-
-  /**
-   * Test {@link OnePageCheckoutProcessor#populateExpirationYears()}.
-   * <p>
-   * Method under test: {@link OnePageCheckoutProcessor#populateExpirationYears()}
-   */
-  @Test
-  @DisplayName("Test populateExpirationYears()")
-  @Disabled("TODO: Complete this test")
-  void testPopulateExpirationYears2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass10908 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.OnePageCheckoutProcessor onePageCheckoutProcessor;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OnePageCheckoutProcessor()).populateExpirationYears();
+    assertEquals(10, onePageCheckoutProcessor.populateExpirationYears().size());
   }
 }

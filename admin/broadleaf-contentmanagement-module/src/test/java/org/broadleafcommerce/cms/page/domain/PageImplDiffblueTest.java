@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce CMS Module
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.cms.page.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -10,6 +27,8 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.Date;
@@ -21,127 +40,24 @@ import org.broadleafcommerce.common.copy.CreateResponse;
 import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
 import org.broadleafcommerce.common.service.GenericEntityService;
-import org.broadleafcommerce.common.service.GenericEntityServiceImpl;
 import org.broadleafcommerce.common.site.domain.CatalogImpl;
 import org.broadleafcommerce.common.site.domain.SiteImpl;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@ContextConfiguration(locations = {"/bl-cms-applicationContext-entity.xml",
-    "/applicationContext-servlet-cms-contentClient.xml", "/applicationContext-servlet-cms-contentCreator.xml",
-    "/bl-cms-contentClient-applicationContext.xml", "/bl-cms-contentCreator-applicationContext.xml",
-    "/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-cms-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-cms-applicationContext-servlet.xml",
-    "/blc-config/site/framework/bl-cms-applicationContext.xml"})
+@ContextConfiguration(locations = {"/bl-cms-applicationContext-entity.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class PageImplDiffblueTest {
   @Autowired
   private PageImpl pageImpl;
-
-  /**
-   * Test {@link PageImpl#getOfflineFlag()}.
-   * <p>
-   * Method under test: {@link PageImpl#getOfflineFlag()}
-   */
-  @Test
-  public void testGetOfflineFlag() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PageImpl pageImpl = new PageImpl();
-    pageImpl.setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    pageImpl.setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    pageImpl.setAdditionalAttributes(new HashMap<>());
-    pageImpl.setDescription("The characteristics of someone or something");
-    pageImpl.setExcludeFromSiteMap(true);
-    pageImpl.setFullUrl("https://example.org/example");
-    pageImpl.setId(PageItemCriteriaImpl.serialVersionUID);
-    pageImpl.setMetaDescription("Meta Description");
-    pageImpl.setMetaTitle("Dr");
-    pageImpl.setPageFields(new HashMap<>());
-    pageImpl.setPageMatchRules(new HashMap<>());
-    pageImpl.setPageTemplate(new PageTemplateImpl());
-    pageImpl.setPriority(1);
-    pageImpl.setQualifyingItemCriteria(new HashSet<>());
-    pageImpl.setOfflineFlag(true);
-
-    // Act and Assert
-    assertTrue(pageImpl.getOfflineFlag());
-  }
-
-  /**
-   * Test {@link PageImpl#getOfflineFlag()}.
-   * <p>
-   * Method under test: {@link PageImpl#getOfflineFlag()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetOfflineFlag2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.page.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-cms-applicationContext-entity.xml","/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass126 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.domain.PageImpl pageImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new PageImpl()).getOfflineFlag();
-  }
-
-  /**
-   * Test {@link PageImpl#getOfflineFlag()}.
-   * <ul>
-   *   <li>Given {@link PageImpl} (default constructor) ActiveEndDate is
-   * {@link java.sql.Date}.</li>
-   *   <li>Then return {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PageImpl#getOfflineFlag()}
-   */
-  @Test
-  public void testGetOfflineFlag_givenPageImplActiveEndDateIsDate_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PageImpl pageImpl = new PageImpl();
-    pageImpl.setActiveEndDate(mock(java.sql.Date.class));
-    pageImpl.setActiveStartDate(
-        java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    pageImpl.setAdditionalAttributes(new HashMap<>());
-    pageImpl.setDescription("The characteristics of someone or something");
-    pageImpl.setExcludeFromSiteMap(true);
-    pageImpl.setFullUrl("https://example.org/example");
-    pageImpl.setId(PageItemCriteriaImpl.serialVersionUID);
-    pageImpl.setMetaDescription("Meta Description");
-    pageImpl.setMetaTitle("Dr");
-    pageImpl.setPageFields(new HashMap<>());
-    pageImpl.setPageMatchRules(new HashMap<>());
-    pageImpl.setPageTemplate(new PageTemplateImpl());
-    pageImpl.setPriority(1);
-    pageImpl.setQualifyingItemCriteria(new HashSet<>());
-    pageImpl.setOfflineFlag(true);
-
-    // Act and Assert
-    assertTrue(pageImpl.getOfflineFlag());
-  }
 
   /**
    * Test {@link PageImpl#getOfflineFlag()}.
@@ -153,116 +69,45 @@ public class PageImplDiffblueTest {
    * Method under test: {@link PageImpl#getOfflineFlag()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean PageImpl.getOfflineFlag()"})
   public void testGetOfflineFlag_givenPageImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertFalse((new PageImpl()).getOfflineFlag());
   }
 
   /**
-   * Test {@link PageImpl#setOfflineFlag(Boolean)}.
-   * <p>
-   * Method under test: {@link PageImpl#setOfflineFlag(Boolean)}
-   */
-  @Test
-  public void testSetOfflineFlag() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PageImpl pageImpl = new PageImpl();
-    pageImpl.setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    pageImpl.setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    pageImpl.setAdditionalAttributes(new HashMap<>());
-    pageImpl.setDescription("The characteristics of someone or something");
-    pageImpl.setExcludeFromSiteMap(true);
-    pageImpl.setFullUrl("https://example.org/example");
-    pageImpl.setId(PageItemCriteriaImpl.serialVersionUID);
-    pageImpl.setMetaDescription("Meta Description");
-    pageImpl.setMetaTitle("Dr");
-    pageImpl.setOfflineFlag(true);
-    pageImpl.setPageFields(new HashMap<>());
-    pageImpl.setPageMatchRules(new HashMap<>());
-    pageImpl.setPageTemplate(new PageTemplateImpl());
-    pageImpl.setPriority(1);
-    pageImpl.setQualifyingItemCriteria(new HashSet<>());
-
-    // Act
-    pageImpl.setOfflineFlag(null);
-
-    // Assert
-    assertFalse(pageImpl.getOfflineFlag());
-    assertFalse(pageImpl.offlineFlag);
-  }
-
-  /**
-   * Test {@link PageImpl#setOfflineFlag(Boolean)}.
-   * <p>
-   * Method under test: {@link PageImpl#setOfflineFlag(Boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetOfflineFlag2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.page.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-cms-applicationContext-entity.xml","/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass177 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.domain.PageImpl pageImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new PageImpl()).setOfflineFlag(true);
-  }
-
-  /**
-   * Test {@link PageImpl#setOfflineFlag(Boolean)}.
+   * Test {@link PageImpl#getOfflineFlag()}.
    * <ul>
-   *   <li>Given {@link PageImpl} (default constructor) ActiveEndDate is
-   * {@link java.sql.Date}.</li>
-   *   <li>Then not {@link PageImpl} (default constructor) OfflineFlag.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test: {@link PageImpl#setOfflineFlag(Boolean)}
+   * Method under test: {@link PageImpl#getOfflineFlag()}
    */
   @Test
-  public void testSetOfflineFlag_givenPageImplActiveEndDateIsDate_thenNotPageImplOfflineFlag() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean PageImpl.getOfflineFlag()"})
+  public void testGetOfflineFlag_thenReturnTrue() {
     // Arrange
-    PageImpl pageImpl = new PageImpl();
-    pageImpl.setActiveEndDate(mock(java.sql.Date.class));
-    pageImpl.setActiveStartDate(
-        java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    pageImpl.setAdditionalAttributes(new HashMap<>());
-    pageImpl.setDescription("The characteristics of someone or something");
-    pageImpl.setExcludeFromSiteMap(true);
-    pageImpl.setFullUrl("https://example.org/example");
-    pageImpl.setId(PageItemCriteriaImpl.serialVersionUID);
-    pageImpl.setMetaDescription("Meta Description");
-    pageImpl.setMetaTitle("Dr");
-    pageImpl.setOfflineFlag(true);
-    pageImpl.setPageFields(new HashMap<>());
-    pageImpl.setPageMatchRules(new HashMap<>());
-    pageImpl.setPageTemplate(new PageTemplateImpl());
-    pageImpl.setPriority(1);
-    pageImpl.setQualifyingItemCriteria(new HashSet<>());
+    PageImpl pageImpl2 = new PageImpl();
+    pageImpl2.setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    pageImpl2.setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    pageImpl2.setAdditionalAttributes(new HashMap<>());
+    pageImpl2.setDescription("The characteristics of someone or something");
+    pageImpl2.setExcludeFromSiteMap(true);
+    pageImpl2.setFullUrl("https://example.org/example");
+    pageImpl2.setId(PageItemCriteriaImpl.serialVersionUID);
+    pageImpl2.setMetaDescription("Meta Description");
+    pageImpl2.setMetaTitle("Dr");
+    pageImpl2.setPageFields(new HashMap<>());
+    pageImpl2.setPageMatchRules(new HashMap<>());
+    pageImpl2.setPageTemplate(new PageTemplateImpl());
+    pageImpl2.setPriority(1);
+    pageImpl2.setQualifyingItemCriteria(new HashSet<>());
+    pageImpl2.setOfflineFlag(true);
 
-    // Act
-    pageImpl.setOfflineFlag(null);
-
-    // Assert
-    assertFalse(pageImpl.getOfflineFlag());
-    assertFalse(pageImpl.offlineFlag);
+    // Act and Assert
+    assertTrue(pageImpl2.getOfflineFlag());
   }
 
   /**
@@ -276,115 +121,56 @@ public class PageImplDiffblueTest {
    * Method under test: {@link PageImpl#setOfflineFlag(Boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PageImpl.setOfflineFlag(Boolean)"})
   public void testSetOfflineFlag_givenPageImpl_whenTrue_thenPageImplOfflineFlag() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    PageImpl pageImpl = new PageImpl();
+    PageImpl pageImpl2 = new PageImpl();
 
     // Act
-    pageImpl.setOfflineFlag(true);
+    pageImpl2.setOfflineFlag(true);
 
     // Assert
-    assertTrue(pageImpl.getOfflineFlag());
-    assertTrue(pageImpl.offlineFlag);
+    assertTrue(pageImpl2.getOfflineFlag());
+    assertTrue(pageImpl2.offlineFlag);
   }
 
   /**
-   * Test {@link PageImpl#getPriority()}.
-   * <p>
-   * Method under test: {@link PageImpl#getPriority()}
-   */
-  @Test
-  public void testGetPriority() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PageImpl pageImpl = new PageImpl();
-    pageImpl.setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    pageImpl.setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    pageImpl.setAdditionalAttributes(new HashMap<>());
-    pageImpl.setDescription("The characteristics of someone or something");
-    pageImpl.setExcludeFromSiteMap(true);
-    pageImpl.setFullUrl("https://example.org/example");
-    pageImpl.setId(PageItemCriteriaImpl.serialVersionUID);
-    pageImpl.setMetaDescription("Meta Description");
-    pageImpl.setMetaTitle("Dr");
-    pageImpl.setOfflineFlag(true);
-    pageImpl.setPageFields(new HashMap<>());
-    pageImpl.setPageMatchRules(new HashMap<>());
-    pageImpl.setPageTemplate(new PageTemplateImpl());
-    pageImpl.setQualifyingItemCriteria(new HashSet<>());
-    pageImpl.setPriority(1);
-
-    // Act and Assert
-    assertEquals(1, pageImpl.getPriority().intValue());
-  }
-
-  /**
-   * Test {@link PageImpl#getPriority()}.
-   * <p>
-   * Method under test: {@link PageImpl#getPriority()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetPriority2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.page.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-cms-applicationContext-entity.xml","/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass143 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.domain.PageImpl pageImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new PageImpl()).getPriority();
-  }
-
-  /**
-   * Test {@link PageImpl#getPriority()}.
+   * Test {@link PageImpl#setOfflineFlag(Boolean)}.
    * <ul>
-   *   <li>Given {@link PageImpl} (default constructor) ActiveEndDate is
-   * {@link java.sql.Date}.</li>
-   *   <li>Then return intValue is one.</li>
+   *   <li>Then not {@link PageImpl} (default constructor) OfflineFlag.</li>
    * </ul>
    * <p>
-   * Method under test: {@link PageImpl#getPriority()}
+   * Method under test: {@link PageImpl#setOfflineFlag(Boolean)}
    */
   @Test
-  public void testGetPriority_givenPageImplActiveEndDateIsDate_thenReturnIntValueIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PageImpl.setOfflineFlag(Boolean)"})
+  public void testSetOfflineFlag_thenNotPageImplOfflineFlag() {
     // Arrange
-    PageImpl pageImpl = new PageImpl();
-    pageImpl.setActiveEndDate(mock(java.sql.Date.class));
-    pageImpl.setActiveStartDate(
-        java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    pageImpl.setAdditionalAttributes(new HashMap<>());
-    pageImpl.setDescription("The characteristics of someone or something");
-    pageImpl.setExcludeFromSiteMap(true);
-    pageImpl.setFullUrl("https://example.org/example");
-    pageImpl.setId(PageItemCriteriaImpl.serialVersionUID);
-    pageImpl.setMetaDescription("Meta Description");
-    pageImpl.setMetaTitle("Dr");
-    pageImpl.setOfflineFlag(true);
-    pageImpl.setPageFields(new HashMap<>());
-    pageImpl.setPageMatchRules(new HashMap<>());
-    pageImpl.setPageTemplate(new PageTemplateImpl());
-    pageImpl.setQualifyingItemCriteria(new HashSet<>());
-    pageImpl.setPriority(1);
+    PageImpl pageImpl2 = new PageImpl();
+    pageImpl2.setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    pageImpl2.setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    pageImpl2.setAdditionalAttributes(new HashMap<>());
+    pageImpl2.setDescription("The characteristics of someone or something");
+    pageImpl2.setExcludeFromSiteMap(true);
+    pageImpl2.setFullUrl("https://example.org/example");
+    pageImpl2.setId(PageItemCriteriaImpl.serialVersionUID);
+    pageImpl2.setMetaDescription("Meta Description");
+    pageImpl2.setMetaTitle("Dr");
+    pageImpl2.setOfflineFlag(true);
+    pageImpl2.setPageFields(new HashMap<>());
+    pageImpl2.setPageMatchRules(new HashMap<>());
+    pageImpl2.setPageTemplate(new PageTemplateImpl());
+    pageImpl2.setPriority(1);
+    pageImpl2.setQualifyingItemCriteria(new HashSet<>());
 
-    // Act and Assert
-    assertEquals(1, pageImpl.getPriority().intValue());
+    // Act
+    pageImpl2.setOfflineFlag(null);
+
+    // Assert
+    assertFalse(pageImpl2.getOfflineFlag());
+    assertFalse(pageImpl2.offlineFlag);
   }
 
   /**
@@ -397,108 +183,45 @@ public class PageImplDiffblueTest {
    * Method under test: {@link PageImpl#getPriority()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Integer PageImpl.getPriority()"})
   public void testGetPriority_givenPageImpl_thenReturnIntValueIsZero() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertEquals(0, (new PageImpl()).getPriority().intValue());
   }
 
   /**
-   * Test {@link PageImpl#getExcludeFromSiteMap()}.
-   * <p>
-   * Method under test: {@link PageImpl#getExcludeFromSiteMap()}
-   */
-  @Test
-  public void testGetExcludeFromSiteMap() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PageImpl pageImpl = new PageImpl();
-    pageImpl.setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    pageImpl.setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    pageImpl.setAdditionalAttributes(new HashMap<>());
-    pageImpl.setDescription("The characteristics of someone or something");
-    pageImpl.setFullUrl("https://example.org/example");
-    pageImpl.setId(PageItemCriteriaImpl.serialVersionUID);
-    pageImpl.setMetaDescription("Meta Description");
-    pageImpl.setMetaTitle("Dr");
-    pageImpl.setOfflineFlag(true);
-    pageImpl.setPageFields(new HashMap<>());
-    pageImpl.setPageMatchRules(new HashMap<>());
-    pageImpl.setPageTemplate(new PageTemplateImpl());
-    pageImpl.setPriority(1);
-    pageImpl.setQualifyingItemCriteria(new HashSet<>());
-    pageImpl.setExcludeFromSiteMap(true);
-
-    // Act and Assert
-    assertTrue(pageImpl.getExcludeFromSiteMap());
-  }
-
-  /**
-   * Test {@link PageImpl#getExcludeFromSiteMap()}.
-   * <p>
-   * Method under test: {@link PageImpl#getExcludeFromSiteMap()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetExcludeFromSiteMap2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.page.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-cms-applicationContext-entity.xml","/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass75 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.domain.PageImpl pageImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new PageImpl()).getExcludeFromSiteMap();
-  }
-
-  /**
-   * Test {@link PageImpl#getExcludeFromSiteMap()}.
+   * Test {@link PageImpl#getPriority()}.
    * <ul>
-   *   <li>Given {@link PageImpl} (default constructor) ActiveEndDate is
-   * {@link java.sql.Date}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Then return intValue is one.</li>
    * </ul>
    * <p>
-   * Method under test: {@link PageImpl#getExcludeFromSiteMap()}
+   * Method under test: {@link PageImpl#getPriority()}
    */
   @Test
-  public void testGetExcludeFromSiteMap_givenPageImplActiveEndDateIsDate_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Integer PageImpl.getPriority()"})
+  public void testGetPriority_thenReturnIntValueIsOne() {
     // Arrange
-    PageImpl pageImpl = new PageImpl();
-    pageImpl.setActiveEndDate(mock(java.sql.Date.class));
-    pageImpl.setActiveStartDate(
-        java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    pageImpl.setAdditionalAttributes(new HashMap<>());
-    pageImpl.setDescription("The characteristics of someone or something");
-    pageImpl.setFullUrl("https://example.org/example");
-    pageImpl.setId(PageItemCriteriaImpl.serialVersionUID);
-    pageImpl.setMetaDescription("Meta Description");
-    pageImpl.setMetaTitle("Dr");
-    pageImpl.setOfflineFlag(true);
-    pageImpl.setPageFields(new HashMap<>());
-    pageImpl.setPageMatchRules(new HashMap<>());
-    pageImpl.setPageTemplate(new PageTemplateImpl());
-    pageImpl.setPriority(1);
-    pageImpl.setQualifyingItemCriteria(new HashSet<>());
-    pageImpl.setExcludeFromSiteMap(true);
+    PageImpl pageImpl2 = new PageImpl();
+    pageImpl2.setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    pageImpl2.setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    pageImpl2.setAdditionalAttributes(new HashMap<>());
+    pageImpl2.setDescription("The characteristics of someone or something");
+    pageImpl2.setExcludeFromSiteMap(true);
+    pageImpl2.setFullUrl("https://example.org/example");
+    pageImpl2.setId(PageItemCriteriaImpl.serialVersionUID);
+    pageImpl2.setMetaDescription("Meta Description");
+    pageImpl2.setMetaTitle("Dr");
+    pageImpl2.setOfflineFlag(true);
+    pageImpl2.setPageFields(new HashMap<>());
+    pageImpl2.setPageMatchRules(new HashMap<>());
+    pageImpl2.setPageTemplate(new PageTemplateImpl());
+    pageImpl2.setQualifyingItemCriteria(new HashSet<>());
+    pageImpl2.setPriority(1);
 
     // Act and Assert
-    assertTrue(pageImpl.getExcludeFromSiteMap());
+    assertEquals(1, pageImpl2.getPriority().intValue());
   }
 
   /**
@@ -511,109 +234,85 @@ public class PageImplDiffblueTest {
    * Method under test: {@link PageImpl#getExcludeFromSiteMap()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PageImpl.getExcludeFromSiteMap()"})
   public void testGetExcludeFromSiteMap_givenPageImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertFalse((new PageImpl()).getExcludeFromSiteMap());
   }
 
   /**
+   * Test {@link PageImpl#getExcludeFromSiteMap()}.
+   * <ul>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PageImpl#getExcludeFromSiteMap()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PageImpl.getExcludeFromSiteMap()"})
+  public void testGetExcludeFromSiteMap_thenReturnTrue() {
+    // Arrange
+    PageImpl pageImpl2 = new PageImpl();
+    pageImpl2.setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    pageImpl2.setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    pageImpl2.setAdditionalAttributes(new HashMap<>());
+    pageImpl2.setDescription("The characteristics of someone or something");
+    pageImpl2.setFullUrl("https://example.org/example");
+    pageImpl2.setId(PageItemCriteriaImpl.serialVersionUID);
+    pageImpl2.setMetaDescription("Meta Description");
+    pageImpl2.setMetaTitle("Dr");
+    pageImpl2.setOfflineFlag(true);
+    pageImpl2.setPageFields(new HashMap<>());
+    pageImpl2.setPageMatchRules(new HashMap<>());
+    pageImpl2.setPageTemplate(new PageTemplateImpl());
+    pageImpl2.setPriority(1);
+    pageImpl2.setQualifyingItemCriteria(new HashSet<>());
+    pageImpl2.setExcludeFromSiteMap(true);
+
+    // Act and Assert
+    assertTrue(pageImpl2.getExcludeFromSiteMap());
+  }
+
+  /**
    * Test {@link PageImpl#setExcludeFromSiteMap(boolean)}.
    * <p>
    * Method under test: {@link PageImpl#setExcludeFromSiteMap(boolean)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PageImpl.setExcludeFromSiteMap(boolean)"})
   public void testSetExcludeFromSiteMap() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.page.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-cms-applicationContext-entity.xml","/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass160 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.domain.PageImpl pageImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new PageImpl()).setExcludeFromSiteMap(true);
-  }
-
-  /**
-   * Test {@link PageImpl#setExcludeFromSiteMap(boolean)}.
-   * <ul>
-   *   <li>Given {@link PageImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PageImpl#setExcludeFromSiteMap(boolean)}
-   */
-  @Test
-  public void testSetExcludeFromSiteMap_givenPageImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    PageImpl pageImpl = new PageImpl();
+    PageImpl pageImpl2 = new PageImpl();
 
     // Act
-    pageImpl.setExcludeFromSiteMap(true);
+    pageImpl2.setExcludeFromSiteMap(true);
 
     // Assert
-    assertTrue(pageImpl.getExcludeFromSiteMap());
-    assertTrue(pageImpl.excludeFromSiteMap);
-  }
-
-  /**
-   * Test {@link PageImpl#setExcludeFromSiteMap(boolean)}.
-   * <ul>
-   *   <li>Given {@link PageImpl} (default constructor) PageTemplate is
-   * {@link PageTemplateImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PageImpl#setExcludeFromSiteMap(boolean)}
-   */
-  @Test
-  public void testSetExcludeFromSiteMap_givenPageImplPageTemplateIsPageTemplateImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PageImpl pageImpl = new PageImpl();
-    pageImpl.setPageTemplate(mock(PageTemplateImpl.class));
-
-    // Act
-    pageImpl.setExcludeFromSiteMap(true);
-
-    // Assert
-    assertTrue(pageImpl.getExcludeFromSiteMap());
-    assertTrue(pageImpl.excludeFromSiteMap);
+    assertTrue(pageImpl2.getExcludeFromSiteMap());
+    assertTrue(pageImpl2.excludeFromSiteMap);
   }
 
   /**
    * Test {@link PageImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <p>
-   * Method under test:
-   * {@link PageImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link PageImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse PageImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    PageImpl pageImpl = new PageImpl();
+    PageImpl pageImpl2 = new PageImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
     CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
 
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<Page> actualCreateOrRetrieveCopyInstanceResult = pageImpl.createOrRetrieveCopyInstance(context);
+    CreateResponse<Page> actualCreateOrRetrieveCopyInstanceResult = pageImpl2.createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
@@ -622,60 +321,20 @@ public class PageImplDiffblueTest {
 
   /**
    * Test {@link PageImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <p>
-   * Method under test:
-   * {@link PageImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.page.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-cms-applicationContext-entity.xml","/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass0 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.domain.PageImpl pageImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    PageImpl pageImpl2 = new PageImpl();
-    CatalogImpl fromCatalog = new CatalogImpl();
-    CatalogImpl toCatalog = new CatalogImpl();
-    SiteImpl fromSite = new SiteImpl();
-    SiteImpl toSite = new SiteImpl();
-    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
-
-    // Act
-    pageImpl2.createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
-        genericEntityService, new MultiTenantCopierExtensionManager()));
-  }
-
-  /**
-   * Test {@link PageImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <ul>
-   *   <li>Given {@code java.lang.Object}.</li>
+   *   <li>Given {@code Object}.</li>
    *   <li>Then Clone return {@link PageImpl}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PageImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link PageImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse PageImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance_givenJavaLangObject_thenCloneReturnPageImpl()
       throws CloneNotSupportedException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    PageImpl pageImpl = new PageImpl();
+    PageImpl pageImpl2 = new PageImpl();
     GenericEntityService genericEntityService = mock(GenericEntityService.class);
     when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
     Class<Object> forNameResult = Object.class;
@@ -686,36 +345,15 @@ public class PageImplDiffblueTest {
     SiteImpl toSite = new SiteImpl();
 
     // Act
-    CreateResponse<Page> actualCreateOrRetrieveCopyInstanceResult = pageImpl
+    CreateResponse<Page> actualCreateOrRetrieveCopyInstanceResult = pageImpl2
         .createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
             genericEntityService, new MultiTenantCopierExtensionManager()));
 
     // Assert
     verify(genericEntityService).getCeilingImplClass(eq("org.broadleafcommerce.cms.page.domain.PageImpl"));
     verify(genericEntityService).getIdentifier(isA(Object.class));
-    Page clone = actualCreateOrRetrieveCopyInstanceResult.getClone();
-    assertTrue(clone instanceof PageImpl);
-    assertNull(((PageImpl) clone).priority);
-    assertNull(clone.getId());
-    assertNull(clone.getDescription());
-    assertNull(clone.getFullUrl());
-    assertNull(clone.getMetaDescription());
-    assertNull(clone.getMetaTitle());
-    assertNull(((PageImpl) clone).getLocation());
-    assertNull(((PageImpl) clone).getMainEntityName());
-    assertNull(clone.getActiveEndDate());
-    assertNull(clone.getActiveStartDate());
-    assertNull(clone.getPageTemplate());
-    assertEquals(0, clone.getPriority().intValue());
-    assertFalse(clone.getExcludeFromSiteMap());
-    assertFalse(clone.getOfflineFlag());
+    assertTrue(actualCreateOrRetrieveCopyInstanceResult.getClone() instanceof PageImpl);
     assertFalse(actualCreateOrRetrieveCopyInstanceResult.isAlreadyPopulated());
-    assertFalse(((PageImpl) clone).excludeFromSiteMap);
-    assertFalse(((PageImpl) clone).offlineFlag);
-    assertTrue(clone.getAdditionalAttributes().isEmpty());
-    assertTrue(clone.getPageFields().isEmpty());
-    assertTrue(clone.getPageMatchRules().isEmpty());
-    assertTrue(clone.getQualifyingItemCriteria().isEmpty());
   }
 
   /**
@@ -724,130 +362,24 @@ public class PageImplDiffblueTest {
    * Method under test: {@link PageImpl#getMainEntityName()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String PageImpl.getMainEntityName()"})
   public void testGetMainEntityName() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.page.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-cms-applicationContext-entity.xml","/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass109 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.domain.PageImpl pageImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new PageImpl()).getMainEntityName();
-  }
-
-  /**
-   * Test {@link PageImpl#getMainEntityName()}.
-   * <ul>
-   *   <li>Given {@link PageImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PageImpl#getMainEntityName()}
-   */
-  @Test
-  public void testGetMainEntityName_givenPageImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new PageImpl()).getMainEntityName());
   }
 
   /**
-   * Test {@link PageImpl#getMainEntityName()}.
-   * <ul>
-   *   <li>Given {@link PageImpl} (default constructor) PageTemplate is
-   * {@link PageTemplateImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PageImpl#getMainEntityName()}
-   */
-  @Test
-  public void testGetMainEntityName_givenPageImplPageTemplateIsPageTemplateImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PageImpl pageImpl = new PageImpl();
-    pageImpl.setPageTemplate(mock(PageTemplateImpl.class));
-
-    // Act and Assert
-    assertNull(pageImpl.getMainEntityName());
-  }
-
-  /**
    * Test {@link PageImpl#getLocation()}.
    * <p>
    * Method under test: {@link PageImpl#getLocation()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String PageImpl.getLocation()"})
   public void testGetLocation() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.page.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-cms-applicationContext-entity.xml","/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass92 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.domain.PageImpl pageImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new PageImpl()).getLocation();
-  }
-
-  /**
-   * Test {@link PageImpl#getLocation()}.
-   * <ul>
-   *   <li>Given {@link PageImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PageImpl#getLocation()}
-   */
-  @Test
-  public void testGetLocation_givenPageImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new PageImpl()).getLocation());
-  }
-
-  /**
-   * Test {@link PageImpl#getLocation()}.
-   * <ul>
-   *   <li>Given {@link PageImpl} (default constructor) PageTemplate is
-   * {@link PageTemplateImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PageImpl#getLocation()}
-   */
-  @Test
-  public void testGetLocation_givenPageImplPageTemplateIsPageTemplateImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PageImpl pageImpl = new PageImpl();
-    pageImpl.setPageTemplate(mock(PageTemplateImpl.class));
-
-    // Act and Assert
-    assertNull(pageImpl.getLocation());
   }
 
   /**
@@ -884,6 +416,18 @@ public class PageImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PageImpl.<init>()", "Date PageImpl.getActiveEndDate()", "Date PageImpl.getActiveStartDate()",
+      "Map PageImpl.getAdditionalAttributes()", "String PageImpl.getDescription()", "String PageImpl.getFullUrl()",
+      "Long PageImpl.getId()", "String PageImpl.getMetaDescription()", "String PageImpl.getMetaTitle()",
+      "Map PageImpl.getPageFields()", "Map PageImpl.getPageMatchRules()", "PageTemplate PageImpl.getPageTemplate()",
+      "Set PageImpl.getQualifyingItemCriteria()", "void PageImpl.setActiveEndDate(Date)",
+      "void PageImpl.setActiveStartDate(Date)", "void PageImpl.setAdditionalAttributes(Map)",
+      "void PageImpl.setDescription(String)", "void PageImpl.setFullUrl(String)", "void PageImpl.setId(Long)",
+      "void PageImpl.setMetaDescription(String)", "void PageImpl.setMetaTitle(String)",
+      "void PageImpl.setPageFields(Map)", "void PageImpl.setPageMatchRules(Map)",
+      "void PageImpl.setPageTemplate(PageTemplate)", "void PageImpl.setPriority(Integer)",
+      "void PageImpl.setQualifyingItemCriteria(Set)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     PageImpl actualPageImpl = new PageImpl();
@@ -920,7 +464,7 @@ public class PageImplDiffblueTest {
     PageTemplate actualPageTemplate = actualPageImpl.getPageTemplate();
     Set<PageItemCriteria> actualQualifyingItemCriteria = actualPageImpl.getQualifyingItemCriteria();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Dr", actualMetaTitle);
     assertEquals("Meta Description", actualMetaDescription);
     assertEquals("The characteristics of someone or something", actualDescription);

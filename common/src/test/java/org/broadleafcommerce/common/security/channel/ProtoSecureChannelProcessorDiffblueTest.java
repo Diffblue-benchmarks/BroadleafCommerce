@@ -19,73 +19,21 @@ package org.broadleafcommerce.common.security.channel;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import javax.servlet.ServletException;
-import org.junit.Ignore;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.springframework.security.web.FilterInvocation;
+import org.junit.experimental.categories.Category;
 import org.springframework.security.web.access.channel.RetryWithHttpsEntryPoint;
 
 public class ProtoSecureChannelProcessorDiffblueTest {
   /**
-   * Test
-   * {@link ProtoSecureChannelProcessor#decide(FilterInvocation, Collection)}.
-   * <ul>
-   *   <li>Given {@link ProtoSecureChannelProcessor} (default constructor).</li>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link ProtoSecureChannelProcessor#decide(FilterInvocation, Collection)}
-   */
-  @Test
-  public void testDecide_givenProtoSecureChannelProcessor_whenArrayList() throws IOException, ServletException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange
-    ProtoSecureChannelProcessor protoSecureChannelProcessor = new ProtoSecureChannelProcessor();
-    FilterInvocation invocation = new FilterInvocation("Servlet Path", "Method");
-
-    // Act
-    protoSecureChannelProcessor.decide(invocation, new ArrayList<>());
-  }
-
-  /**
-   * Test
-   * {@link ProtoSecureChannelProcessor#decide(FilterInvocation, Collection)}.
-   * <ul>
-   *   <li>Given {@link ProtoSecureChannelProcessor} (default constructor).</li>
-   *   <li>When {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link ProtoSecureChannelProcessor#decide(FilterInvocation, Collection)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testDecide_givenProtoSecureChannelProcessor_whenNull() throws IOException, ServletException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.IllegalArgumentException: Nulls cannot be provided
-    //       at org.broadleafcommerce.common.security.channel.ProtoSecureChannelProcessor.decide(ProtoSecureChannelProcessor.java:52)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange and Act
-    (new ProtoSecureChannelProcessor()).decide(null, null);
-  }
-
-  /**
    * Test new {@link ProtoSecureChannelProcessor} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link ProtoSecureChannelProcessor}
+   * Method under test: default or parameterless constructor of {@link ProtoSecureChannelProcessor}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProtoSecureChannelProcessor.<init>()"})
   public void testNewProtoSecureChannelProcessor() {
     // Arrange and Act
     ProtoSecureChannelProcessor actualProtoSecureChannelProcessor = new ProtoSecureChannelProcessor();

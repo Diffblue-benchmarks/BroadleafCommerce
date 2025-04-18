@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.pricing.service.workflow;
 
 import static org.junit.Assert.assertEquals;
@@ -9,6 +26,8 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -31,58 +50,21 @@ import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.domain.OrderImpl;
 import org.broadleafcommerce.core.order.domain.OrderItem;
 import org.broadleafcommerce.core.order.service.type.OrderStatus;
-import org.broadleafcommerce.core.workflow.DefaultProcessContextImpl;
 import org.broadleafcommerce.core.workflow.ProcessContext;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@ContextConfiguration(classes = {FulfillmentItemPricingActivity.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class FulfillmentItemPricingActivityDiffblueTest {
   @Autowired
   private FulfillmentItemPricingActivity fulfillmentItemPricingActivity;
-
-  /**
-   * Test {@link FulfillmentItemPricingActivity#getCurrency(FulfillmentGroup)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#getCurrency(FulfillmentGroup)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetCurrency() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.pricing.service.workflow;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass608 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.pricing.service.workflow.FulfillmentItemPricingActivity fulfillmentItemPricingActivity;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity2 = new FulfillmentItemPricingActivity();
-
-    // Act
-    fulfillmentItemPricingActivity2.getCurrency(new FulfillmentGroupImpl());
-  }
 
   /**
    * Test {@link FulfillmentItemPricingActivity#getCurrency(FulfillmentGroup)}.
@@ -91,15 +73,13 @@ public class FulfillmentItemPricingActivityDiffblueTest {
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#getCurrency(FulfillmentGroup)}
+   * Method under test: {@link FulfillmentItemPricingActivity#getCurrency(FulfillmentGroup)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BroadleafCurrency FulfillmentItemPricingActivity.getCurrency(FulfillmentGroup)"})
   public void testGetCurrency_givenNullOrderImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
     FulfillmentGroupImpl fg = mock(FulfillmentGroupImpl.class);
     when(fg.getOrder()).thenReturn(new NullOrderImpl());
 
@@ -112,55 +92,18 @@ public class FulfillmentItemPricingActivityDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#getOrderSavingsToDistribute(Order)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#getOrderSavingsToDistribute(Order)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetOrderSavingsToDistribute() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.pricing.service.workflow;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass638 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.pricing.service.workflow.FulfillmentItemPricingActivity fulfillmentItemPricingActivity;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity2 = new FulfillmentItemPricingActivity();
-
-    // Act
-    fulfillmentItemPricingActivity2.getOrderSavingsToDistribute(new NullOrderImpl());
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#getOrderSavingsToDistribute(Order)}.
+   * Test {@link FulfillmentItemPricingActivity#getOrderSavingsToDistribute(Order)}.
    * <ul>
    *   <li>Then calls {@link Order#getCurrency()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#getOrderSavingsToDistribute(Order)}
+   * Method under test: {@link FulfillmentItemPricingActivity#getOrderSavingsToDistribute(Order)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money FulfillmentItemPricingActivity.getOrderSavingsToDistribute(Order)"})
   public void testGetOrderSavingsToDistribute_thenCallsGetCurrency() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
     Order order = mock(Order.class);
     when(order.getCurrency()).thenReturn(null);
     when(order.getOrderAdjustmentsValue()).thenReturn(null);
@@ -175,54 +118,19 @@ public class FulfillmentItemPricingActivityDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#getOrderSavingsToDistribute(Order)}.
-   * <ul>
-   *   <li>Then calls {@link Order#getSubTotal()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#getOrderSavingsToDistribute(Order)}
-   */
-  @Test
-  public void testGetOrderSavingsToDistribute_thenCallsGetSubTotal() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
-    Order order = mock(Order.class);
-    when(order.getSubTotal()).thenReturn(new Money());
-    Money money = new Money();
-    when(order.getOrderAdjustmentsValue()).thenReturn(money);
-
-    // Act
-    Money actualOrderSavingsToDistribute = fulfillmentItemPricingActivity.getOrderSavingsToDistribute(order);
-
-    // Assert
-    verify(order, atLeast(1)).getOrderAdjustmentsValue();
-    verify(order).getSubTotal();
-    assertSame(money, actualOrderSavingsToDistribute);
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#getOrderSavingsToDistribute(Order)}.
+   * Test {@link FulfillmentItemPricingActivity#getOrderSavingsToDistribute(Order)}.
    * <ul>
    *   <li>When {@link NullOrderImpl} (default constructor).</li>
    *   <li>Then return {@link Money#ZERO}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#getOrderSavingsToDistribute(Order)}
+   * Method under test: {@link FulfillmentItemPricingActivity#getOrderSavingsToDistribute(Order)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money FulfillmentItemPricingActivity.getOrderSavingsToDistribute(Order)"})
   public void testGetOrderSavingsToDistribute_whenNullOrderImpl_thenReturnZero() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
-
-    // Act
+    // Arrange and Act
     Money actualOrderSavingsToDistribute = fulfillmentItemPricingActivity
         .getOrderSavingsToDistribute(new NullOrderImpl());
 
@@ -231,24 +139,19 @@ public class FulfillmentItemPricingActivityDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#getOrderSavingsToDistribute(Order)}.
+   * Test {@link FulfillmentItemPricingActivity#getOrderSavingsToDistribute(Order)}.
    * <ul>
-   *   <li>When {@link OrderImpl} (default constructor) Currency is
-   * {@code null}.</li>
+   *   <li>When {@link OrderImpl} (default constructor) Currency is {@code null}.</li>
    *   <li>Then return {@link Money#Money()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#getOrderSavingsToDistribute(Order)}
+   * Method under test: {@link FulfillmentItemPricingActivity#getOrderSavingsToDistribute(Order)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money FulfillmentItemPricingActivity.getOrderSavingsToDistribute(Order)"})
   public void testGetOrderSavingsToDistribute_whenOrderImplCurrencyIsNull_thenReturnMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
-
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
     auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
@@ -277,7 +180,6 @@ public class FulfillmentItemPricingActivityDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setCurrency(null);
 
@@ -286,24 +188,19 @@ public class FulfillmentItemPricingActivityDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#getOrderSavingsToDistribute(Order)}.
+   * Test {@link FulfillmentItemPricingActivity#getOrderSavingsToDistribute(Order)}.
    * <ul>
    *   <li>When {@link OrderImpl} (default constructor).</li>
    *   <li>Then return {@link Money#ZERO}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#getOrderSavingsToDistribute(Order)}
+   * Method under test: {@link FulfillmentItemPricingActivity#getOrderSavingsToDistribute(Order)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money FulfillmentItemPricingActivity.getOrderSavingsToDistribute(Order)"})
   public void testGetOrderSavingsToDistribute_whenOrderImpl_thenReturnZero() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
-
-    // Act
+    // Arrange and Act
     Money actualOrderSavingsToDistribute = fulfillmentItemPricingActivity.getOrderSavingsToDistribute(new OrderImpl());
 
     // Assert
@@ -312,54 +209,56 @@ public class FulfillmentItemPricingActivityDiffblueTest {
 
   /**
    * Test {@link FulfillmentItemPricingActivity#execute(ProcessContext)}.
+   * <ul>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link FulfillmentGroupImpl} (default constructor).</li>
+   *   <li>Then return {@link ProcessContext}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#execute(ProcessContext)}
+   * Method under test: {@link FulfillmentItemPricingActivity#execute(ProcessContext)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testExecute() throws Exception {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.pricing.service.workflow;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass541 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.pricing.service.workflow.FulfillmentItemPricingActivity fulfillmentItemPricingActivity;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ProcessContext FulfillmentItemPricingActivity.execute(ProcessContext)"})
+  public void testExecute_givenArrayListAddFulfillmentGroupImpl_thenReturnProcessContext() throws Exception {
     // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity2 = new FulfillmentItemPricingActivity();
+    ArrayList<FulfillmentGroup> fulfillmentGroupList = new ArrayList<>();
+    fulfillmentGroupList.add(new FulfillmentGroupImpl());
+    NullOrderImpl nullOrderImpl = mock(NullOrderImpl.class);
+    when(nullOrderImpl.getHasOrderAdjustments()).thenReturn(true);
+    when(nullOrderImpl.getFulfillmentGroups()).thenReturn(fulfillmentGroupList);
+    when(nullOrderImpl.getCurrency()).thenReturn(null);
+    when(nullOrderImpl.getOrderAdjustmentsValue()).thenReturn(new Money());
+    ProcessContext<Order> context = mock(ProcessContext.class);
+    doNothing().when(context).setSeedData(Mockito.<Order>any());
+    when(context.getSeedData()).thenReturn(nullOrderImpl);
 
     // Act
-    fulfillmentItemPricingActivity2.execute((ProcessContext<Order>) new DefaultProcessContextImpl<>());
+    ProcessContext<Order> actualExecuteResult = fulfillmentItemPricingActivity.execute(context);
+
+    // Assert
+    verify(nullOrderImpl, atLeast(1)).getCurrency();
+    verify(nullOrderImpl, atLeast(1)).getFulfillmentGroups();
+    verify(nullOrderImpl).getHasOrderAdjustments();
+    verify(nullOrderImpl, atLeast(1)).getOrderAdjustmentsValue();
+    verify(context).getSeedData();
+    verify(context).setSeedData(isA(Order.class));
+    assertSame(context, actualExecuteResult);
   }
 
   /**
    * Test {@link FulfillmentItemPricingActivity#execute(ProcessContext)}.
    * <ul>
-   *   <li>Given {@link Money} {@link Money#subtract(Money)} return
-   * {@link Money#Money()}.</li>
+   *   <li>Given {@link Money} {@link Money#subtract(Money)} return {@link Money#Money()}.</li>
    *   <li>Then calls {@link Money#getAmount()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#execute(ProcessContext)}
+   * Method under test: {@link FulfillmentItemPricingActivity#execute(ProcessContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ProcessContext FulfillmentItemPricingActivity.execute(ProcessContext)"})
   public void testExecute_givenMoneySubtractReturnMoney_thenCallsGetAmount() throws Exception {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
     Money money = mock(Money.class);
     when(money.getAmount()).thenReturn(new BigDecimal("2.3"));
     when(money.subtract(Mockito.<Money>any())).thenReturn(new Money());
@@ -390,19 +289,16 @@ public class FulfillmentItemPricingActivityDiffblueTest {
   /**
    * Test {@link FulfillmentItemPricingActivity#execute(ProcessContext)}.
    * <ul>
-   *   <li>Given {@link NullOrderImpl}
-   * {@link NullOrderImpl#getHasOrderAdjustments()} return {@code false}.</li>
+   *   <li>Given {@link NullOrderImpl} {@link NullOrderImpl#getHasOrderAdjustments()} return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#execute(ProcessContext)}
+   * Method under test: {@link FulfillmentItemPricingActivity#execute(ProcessContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ProcessContext FulfillmentItemPricingActivity.execute(ProcessContext)"})
   public void testExecute_givenNullOrderImplGetHasOrderAdjustmentsReturnFalse() throws Exception {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
     NullOrderImpl nullOrderImpl = mock(NullOrderImpl.class);
     when(nullOrderImpl.getHasOrderAdjustments()).thenReturn(false);
     when(nullOrderImpl.getFulfillmentGroups()).thenReturn(new ArrayList<>());
@@ -428,20 +324,16 @@ public class FulfillmentItemPricingActivityDiffblueTest {
   /**
    * Test {@link FulfillmentItemPricingActivity#execute(ProcessContext)}.
    * <ul>
-   *   <li>Given {@link NullOrderImpl}
-   * {@link NullOrderImpl#getOrderAdjustmentsValue()} return
-   * {@link Money#Money()}.</li>
+   *   <li>Given {@link NullOrderImpl} {@link NullOrderImpl#getOrderAdjustmentsValue()} return {@link Money#Money()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#execute(ProcessContext)}
+   * Method under test: {@link FulfillmentItemPricingActivity#execute(ProcessContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ProcessContext FulfillmentItemPricingActivity.execute(ProcessContext)"})
   public void testExecute_givenNullOrderImplGetOrderAdjustmentsValueReturnMoney() throws Exception {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
     NullOrderImpl nullOrderImpl = mock(NullOrderImpl.class);
     when(nullOrderImpl.getHasOrderAdjustments()).thenReturn(true);
     when(nullOrderImpl.getFulfillmentGroups()).thenReturn(new ArrayList<>());
@@ -467,62 +359,16 @@ public class FulfillmentItemPricingActivityDiffblueTest {
   /**
    * Test {@link FulfillmentItemPricingActivity#execute(ProcessContext)}.
    * <ul>
-   *   <li>Given {@link NullOrderImpl}
-   * {@link NullOrderImpl#getOrderAdjustmentsValue()} return
-   * {@link Money#Money()}.</li>
+   *   <li>Given {@link NullOrderImpl} {@link NullOrderImpl#getOrderAdjustmentsValue()} return {@link Money#Money(double)} with amount is ten.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#execute(ProcessContext)}
+   * Method under test: {@link FulfillmentItemPricingActivity#execute(ProcessContext)}
    */
   @Test
-  public void testExecute_givenNullOrderImplGetOrderAdjustmentsValueReturnMoney2() throws Exception {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
-
-    ArrayList<FulfillmentGroup> fulfillmentGroupList = new ArrayList<>();
-    fulfillmentGroupList.add(new FulfillmentGroupImpl());
-    NullOrderImpl nullOrderImpl = mock(NullOrderImpl.class);
-    when(nullOrderImpl.getHasOrderAdjustments()).thenReturn(true);
-    when(nullOrderImpl.getFulfillmentGroups()).thenReturn(fulfillmentGroupList);
-    when(nullOrderImpl.getCurrency()).thenReturn(null);
-    when(nullOrderImpl.getOrderAdjustmentsValue()).thenReturn(new Money());
-    ProcessContext<Order> context = mock(ProcessContext.class);
-    doNothing().when(context).setSeedData(Mockito.<Order>any());
-    when(context.getSeedData()).thenReturn(nullOrderImpl);
-
-    // Act
-    ProcessContext<Order> actualExecuteResult = fulfillmentItemPricingActivity.execute(context);
-
-    // Assert
-    verify(nullOrderImpl, atLeast(1)).getCurrency();
-    verify(nullOrderImpl, atLeast(1)).getFulfillmentGroups();
-    verify(nullOrderImpl).getHasOrderAdjustments();
-    verify(nullOrderImpl, atLeast(1)).getOrderAdjustmentsValue();
-    verify(context).getSeedData();
-    verify(context).setSeedData(isA(Order.class));
-    assertSame(context, actualExecuteResult);
-  }
-
-  /**
-   * Test {@link FulfillmentItemPricingActivity#execute(ProcessContext)}.
-   * <ul>
-   *   <li>Given {@link NullOrderImpl}
-   * {@link NullOrderImpl#getOrderAdjustmentsValue()} return
-   * {@link Money#Money(double)} with amount is ten.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#execute(ProcessContext)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ProcessContext FulfillmentItemPricingActivity.execute(ProcessContext)"})
   public void testExecute_givenNullOrderImplGetOrderAdjustmentsValueReturnMoneyWithAmountIsTen() throws Exception {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
     NullOrderImpl nullOrderImpl = mock(NullOrderImpl.class);
     when(nullOrderImpl.getHasOrderAdjustments()).thenReturn(true);
     when(nullOrderImpl.getFulfillmentGroups()).thenReturn(new ArrayList<>());
@@ -546,109 +392,15 @@ public class FulfillmentItemPricingActivityDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#populateItemTotalAmount(Order, Map)}.
+   * Test {@link FulfillmentItemPricingActivity#fixItemTotalRoundingIssues(Order, Map)}.
    * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#populateItemTotalAmount(Order, Map)}
+   * Method under test: {@link FulfillmentItemPricingActivity#fixItemTotalRoundingIssues(Order, Map)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testPopulateItemTotalAmount() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.pricing.service.workflow;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass672 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.pricing.service.workflow.FulfillmentItemPricingActivity fulfillmentItemPricingActivity;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity2 = new FulfillmentItemPricingActivity();
-    NullOrderImpl order = new NullOrderImpl();
-
-    // Act
-    fulfillmentItemPricingActivity2.populateItemTotalAmount(order, new HashMap<>());
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#populateItemTotalAmount(Order, Map)}.
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then calls {@link NullOrderImpl#getFulfillmentGroups()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#populateItemTotalAmount(Order, Map)}
-   */
-  @Test
-  public void testPopulateItemTotalAmount_givenArrayList_thenCallsGetFulfillmentGroups() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
-    NullOrderImpl order = mock(NullOrderImpl.class);
-    when(order.getFulfillmentGroups()).thenReturn(new ArrayList<>());
-
-    // Act
-    fulfillmentItemPricingActivity.populateItemTotalAmount(order, new HashMap<>());
-
-    // Assert
-    verify(order).getFulfillmentGroups();
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#populateItemTotalAmount(Order, Map)}.
-   * <ul>
-   *   <li>Then calls {@link NullOrderImpl#getFulfillmentGroups()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#populateItemTotalAmount(Order, Map)}
-   */
-  @Test
-  public void testPopulateItemTotalAmount_thenCallsGetFulfillmentGroups() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
-
-    ArrayList<FulfillmentGroup> fulfillmentGroupList = new ArrayList<>();
-    fulfillmentGroupList.add(new FulfillmentGroupImpl());
-    NullOrderImpl order = mock(NullOrderImpl.class);
-    when(order.getFulfillmentGroups()).thenReturn(fulfillmentGroupList);
-
-    // Act
-    fulfillmentItemPricingActivity.populateItemTotalAmount(order, new HashMap<>());
-
-    // Assert
-    verify(order).getFulfillmentGroups();
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#fixItemTotalRoundingIssues(Order, Map)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#fixItemTotalRoundingIssues(Order, Map)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentItemPricingActivity.fixItemTotalRoundingIssues(Order, Map)"})
   public void testFixItemTotalRoundingIssues() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
     Order order = mock(Order.class);
     when(order.getCurrency()).thenReturn(null);
     BundleOrderItemImpl bundleOrderItemImpl = mock(BundleOrderItemImpl.class);
@@ -666,18 +418,15 @@ public class FulfillmentItemPricingActivityDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#fixItemTotalRoundingIssues(Order, Map)}.
+   * Test {@link FulfillmentItemPricingActivity#fixItemTotalRoundingIssues(Order, Map)}.
    * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#fixItemTotalRoundingIssues(Order, Map)}
+   * Method under test: {@link FulfillmentItemPricingActivity#fixItemTotalRoundingIssues(Order, Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentItemPricingActivity.fixItemTotalRoundingIssues(Order, Map)"})
   public void testFixItemTotalRoundingIssues2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
     Order order = mock(Order.class);
     when(order.getCurrency()).thenReturn(null);
     BundleOrderItemImpl bundleOrderItemImpl = mock(BundleOrderItemImpl.class);
@@ -695,58 +444,18 @@ public class FulfillmentItemPricingActivityDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#fixItemTotalRoundingIssues(Order, Map)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#fixItemTotalRoundingIssues(Order, Map)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFixItemTotalRoundingIssues3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.pricing.service.workflow;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass555 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.pricing.service.workflow.FulfillmentItemPricingActivity fulfillmentItemPricingActivity;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity2 = new FulfillmentItemPricingActivity();
-    NullOrderImpl order = new NullOrderImpl();
-
-    // Act
-    fulfillmentItemPricingActivity2.fixItemTotalRoundingIssues(order, new HashMap<>());
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#fixItemTotalRoundingIssues(Order, Map)}.
+   * Test {@link FulfillmentItemPricingActivity#fixItemTotalRoundingIssues(Order, Map)}.
    * <ul>
-   *   <li>Given {@link BundleOrderItemImpl}
-   * {@link BundleOrderItemImpl#getTotalPrice()} return
-   * {@link Money#Money()}.</li>
+   *   <li>Given {@link BundleOrderItemImpl} {@link BundleOrderItemImpl#getTotalPrice()} return {@link Money#Money()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#fixItemTotalRoundingIssues(Order, Map)}
+   * Method under test: {@link FulfillmentItemPricingActivity#fixItemTotalRoundingIssues(Order, Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentItemPricingActivity.fixItemTotalRoundingIssues(Order, Map)"})
   public void testFixItemTotalRoundingIssues_givenBundleOrderItemImplGetTotalPriceReturnMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
     NullOrderImpl order = new NullOrderImpl();
     BundleOrderItemImpl bundleOrderItemImpl = mock(BundleOrderItemImpl.class);
     when(bundleOrderItemImpl.getTotalPrice()).thenReturn(new Money());
@@ -762,23 +471,19 @@ public class FulfillmentItemPricingActivityDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#fixItemTotalRoundingIssues(Order, Map)}.
+   * Test {@link FulfillmentItemPricingActivity#fixItemTotalRoundingIssues(Order, Map)}.
    * <ul>
-   *   <li>Given {@link Money} {@link Money#subtract(Money)} return
-   * {@link Money#Money()}.</li>
+   *   <li>Given {@link Money} {@link Money#subtract(Money)} return {@link Money#Money()}.</li>
    *   <li>Then calls {@link Money#subtract(Money)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#fixItemTotalRoundingIssues(Order, Map)}
+   * Method under test: {@link FulfillmentItemPricingActivity#fixItemTotalRoundingIssues(Order, Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentItemPricingActivity.fixItemTotalRoundingIssues(Order, Map)"})
   public void testFixItemTotalRoundingIssues_givenMoneySubtractReturnMoney_thenCallsSubtract() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
     Order order = mock(Order.class);
     when(order.getCurrency()).thenReturn(null);
     Money money = mock(Money.class);
@@ -799,56 +504,18 @@ public class FulfillmentItemPricingActivityDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#calculateTotalPriceForAllFulfillmentItems(Order)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#calculateTotalPriceForAllFulfillmentItems(Order)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCalculateTotalPriceForAllFulfillmentItems() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.pricing.service.workflow;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass220 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.pricing.service.workflow.FulfillmentItemPricingActivity fulfillmentItemPricingActivity;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity2 = new FulfillmentItemPricingActivity();
-
-    // Act
-    fulfillmentItemPricingActivity2.calculateTotalPriceForAllFulfillmentItems(new NullOrderImpl());
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#calculateTotalPriceForAllFulfillmentItems(Order)}.
+   * Test {@link FulfillmentItemPricingActivity#calculateTotalPriceForAllFulfillmentItems(Order)}.
    * <ul>
    *   <li>Then calls {@link Order#getCurrency()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#calculateTotalPriceForAllFulfillmentItems(Order)}
+   * Method under test: {@link FulfillmentItemPricingActivity#calculateTotalPriceForAllFulfillmentItems(Order)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money FulfillmentItemPricingActivity.calculateTotalPriceForAllFulfillmentItems(Order)"})
   public void testCalculateTotalPriceForAllFulfillmentItems_thenCallsGetCurrency() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
-
     ArrayList<FulfillmentGroup> fulfillmentGroupList = new ArrayList<>();
     fulfillmentGroupList.add(new FulfillmentGroupImpl());
     Order order = mock(Order.class);
@@ -867,24 +534,19 @@ public class FulfillmentItemPricingActivityDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#calculateTotalPriceForAllFulfillmentItems(Order)}.
+   * Test {@link FulfillmentItemPricingActivity#calculateTotalPriceForAllFulfillmentItems(Order)}.
    * <ul>
    *   <li>When {@link OrderImpl} (default constructor).</li>
    *   <li>Then return {@link Money#ZERO}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#calculateTotalPriceForAllFulfillmentItems(Order)}
+   * Method under test: {@link FulfillmentItemPricingActivity#calculateTotalPriceForAllFulfillmentItems(Order)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money FulfillmentItemPricingActivity.calculateTotalPriceForAllFulfillmentItems(Order)"})
   public void testCalculateTotalPriceForAllFulfillmentItems_whenOrderImpl_thenReturnZero() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
-
-    // Act
+    // Arrange and Act
     Money actualCalculateTotalPriceForAllFulfillmentItemsResult = fulfillmentItemPricingActivity
         .calculateTotalPriceForAllFulfillmentItems(new OrderImpl());
 
@@ -894,57 +556,19 @@ public class FulfillmentItemPricingActivityDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#distributeOrderSavingsToItems(Order, BigDecimal)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#distributeOrderSavingsToItems(Order, BigDecimal)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testDistributeOrderSavingsToItems() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.pricing.service.workflow;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass254 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.pricing.service.workflow.FulfillmentItemPricingActivity fulfillmentItemPricingActivity;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity2 = new FulfillmentItemPricingActivity();
-    NullOrderImpl order = new NullOrderImpl();
-
-    // Act
-    fulfillmentItemPricingActivity2.distributeOrderSavingsToItems(order, new BigDecimal("2.3"));
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#distributeOrderSavingsToItems(Order, BigDecimal)}.
+   * Test {@link FulfillmentItemPricingActivity#distributeOrderSavingsToItems(Order, BigDecimal)}.
    * <ul>
    *   <li>Given {@link ArrayList#ArrayList()}.</li>
    *   <li>Then calls {@link Money#getAmount()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#distributeOrderSavingsToItems(Order, BigDecimal)}
+   * Method under test: {@link FulfillmentItemPricingActivity#distributeOrderSavingsToItems(Order, BigDecimal)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money FulfillmentItemPricingActivity.distributeOrderSavingsToItems(Order, BigDecimal)"})
   public void testDistributeOrderSavingsToItems_givenArrayList_thenCallsGetAmount() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
     Money money = mock(Money.class);
     when(money.getAmount()).thenReturn(new BigDecimal("2.3"));
     Order order = mock(Order.class);
@@ -965,21 +589,18 @@ public class FulfillmentItemPricingActivityDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#distributeOrderSavingsToItems(Order, BigDecimal)}.
+   * Test {@link FulfillmentItemPricingActivity#distributeOrderSavingsToItems(Order, BigDecimal)}.
    * <ul>
    *   <li>Then calls {@link Money#getAmount()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#distributeOrderSavingsToItems(Order, BigDecimal)}
+   * Method under test: {@link FulfillmentItemPricingActivity#distributeOrderSavingsToItems(Order, BigDecimal)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money FulfillmentItemPricingActivity.distributeOrderSavingsToItems(Order, BigDecimal)"})
   public void testDistributeOrderSavingsToItems_thenCallsGetAmount() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
     Money money = mock(Money.class);
     when(money.getAmount()).thenReturn(new BigDecimal("2.3"));
 
@@ -1003,22 +624,19 @@ public class FulfillmentItemPricingActivityDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#distributeOrderSavingsToItems(Order, BigDecimal)}.
+   * Test {@link FulfillmentItemPricingActivity#distributeOrderSavingsToItems(Order, BigDecimal)}.
    * <ul>
    *   <li>When {@link OrderImpl} (default constructor).</li>
    *   <li>Then return {@link Money#ZERO}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#distributeOrderSavingsToItems(Order, BigDecimal)}
+   * Method under test: {@link FulfillmentItemPricingActivity#distributeOrderSavingsToItems(Order, BigDecimal)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money FulfillmentItemPricingActivity.distributeOrderSavingsToItems(Order, BigDecimal)"})
   public void testDistributeOrderSavingsToItems_whenOrderImpl_thenReturnZero() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
     OrderImpl order = new OrderImpl();
 
     // Act
@@ -1030,18 +648,15 @@ public class FulfillmentItemPricingActivityDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#fixOrderSavingsRoundingIssues(Order, Money)}.
+   * Test {@link FulfillmentItemPricingActivity#fixOrderSavingsRoundingIssues(Order, Money)}.
    * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#fixOrderSavingsRoundingIssues(Order, Money)}
+   * Method under test: {@link FulfillmentItemPricingActivity#fixOrderSavingsRoundingIssues(Order, Money)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentItemPricingActivity.fixOrderSavingsRoundingIssues(Order, Money)"})
   public void testFixOrderSavingsRoundingIssues() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
     NullOrderImpl order = mock(NullOrderImpl.class);
     when(order.getOrderAdjustmentsValue()).thenReturn(new Money());
     when(order.getHasOrderAdjustments()).thenReturn(true);
@@ -1055,58 +670,18 @@ public class FulfillmentItemPricingActivityDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#fixOrderSavingsRoundingIssues(Order, Money)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#fixOrderSavingsRoundingIssues(Order, Money)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFixOrderSavingsRoundingIssues2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.pricing.service.workflow;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass582 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.pricing.service.workflow.FulfillmentItemPricingActivity fulfillmentItemPricingActivity;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity2 = new FulfillmentItemPricingActivity();
-    NullOrderImpl order = new NullOrderImpl();
-
-    // Act
-    fulfillmentItemPricingActivity2.fixOrderSavingsRoundingIssues(order, new Money());
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#fixOrderSavingsRoundingIssues(Order, Money)}.
+   * Test {@link FulfillmentItemPricingActivity#fixOrderSavingsRoundingIssues(Order, Money)}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link FulfillmentGroupImpl}
-   * (default constructor).</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link FulfillmentGroupImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#fixOrderSavingsRoundingIssues(Order, Money)}
+   * Method under test: {@link FulfillmentItemPricingActivity#fixOrderSavingsRoundingIssues(Order, Money)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentItemPricingActivity.fixOrderSavingsRoundingIssues(Order, Money)"})
   public void testFixOrderSavingsRoundingIssues_givenArrayListAddFulfillmentGroupImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
-
     ArrayList<FulfillmentGroup> fulfillmentGroupList = new ArrayList<>();
     fulfillmentGroupList.add(new FulfillmentGroupImpl());
     NullOrderImpl order = mock(NullOrderImpl.class);
@@ -1124,21 +699,18 @@ public class FulfillmentItemPricingActivityDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#fixOrderSavingsRoundingIssues(Order, Money)}.
+   * Test {@link FulfillmentItemPricingActivity#fixOrderSavingsRoundingIssues(Order, Money)}.
    * <ul>
    *   <li>Given {@link Money#Money(double)} with amount is {@code -0.5}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#fixOrderSavingsRoundingIssues(Order, Money)}
+   * Method under test: {@link FulfillmentItemPricingActivity#fixOrderSavingsRoundingIssues(Order, Money)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentItemPricingActivity.fixOrderSavingsRoundingIssues(Order, Money)"})
   public void testFixOrderSavingsRoundingIssues_givenMoneyWithAmountIs05() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
     NullOrderImpl order = mock(NullOrderImpl.class);
     when(order.getFulfillmentGroups()).thenReturn(new ArrayList<>());
     when(order.getOrderAdjustmentsValue()).thenReturn(new Money(-0.5d));
@@ -1154,21 +726,18 @@ public class FulfillmentItemPricingActivityDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#fixOrderSavingsRoundingIssues(Order, Money)}.
+   * Test {@link FulfillmentItemPricingActivity#fixOrderSavingsRoundingIssues(Order, Money)}.
    * <ul>
    *   <li>Given {@link Money#Money(double)} with amount is ten.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#fixOrderSavingsRoundingIssues(Order, Money)}
+   * Method under test: {@link FulfillmentItemPricingActivity#fixOrderSavingsRoundingIssues(Order, Money)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentItemPricingActivity.fixOrderSavingsRoundingIssues(Order, Money)"})
   public void testFixOrderSavingsRoundingIssues_givenMoneyWithAmountIsTen() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
     NullOrderImpl order = mock(NullOrderImpl.class);
     when(order.getFulfillmentGroups()).thenReturn(new ArrayList<>());
     when(order.getOrderAdjustmentsValue()).thenReturn(new Money(10.0d));
@@ -1184,21 +753,18 @@ public class FulfillmentItemPricingActivityDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#fixOrderSavingsRoundingIssues(Order, Money)}.
+   * Test {@link FulfillmentItemPricingActivity#fixOrderSavingsRoundingIssues(Order, Money)}.
    * <ul>
    *   <li>Then calls {@link Money#subtract(Money)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#fixOrderSavingsRoundingIssues(Order, Money)}
+   * Method under test: {@link FulfillmentItemPricingActivity#fixOrderSavingsRoundingIssues(Order, Money)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentItemPricingActivity.fixOrderSavingsRoundingIssues(Order, Money)"})
   public void testFixOrderSavingsRoundingIssues_thenCallsSubtract() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
     Money money = mock(Money.class);
     when(money.subtract(Mockito.<Money>any())).thenReturn(new Money());
     NullOrderImpl order = mock(NullOrderImpl.class);
@@ -1215,18 +781,15 @@ public class FulfillmentItemPricingActivityDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#updateTaxableAmountsOnItems(Order)}.
+   * Test {@link FulfillmentItemPricingActivity#updateTaxableAmountsOnItems(Order)}.
    * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#updateTaxableAmountsOnItems(Order)}
+   * Method under test: {@link FulfillmentItemPricingActivity#updateTaxableAmountsOnItems(Order)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentItemPricingActivity.updateTaxableAmountsOnItems(Order)"})
   public void testUpdateTaxableAmountsOnItems() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
     FulfillmentGroupItemImpl fulfillmentGroupItem = mock(FulfillmentGroupItemImpl.class);
     when(fulfillmentGroupItem.getProratedOrderAdjustmentAmount()).thenReturn(new Money());
     when(fulfillmentGroupItem.getTotalItemAmount()).thenReturn(new Money());
@@ -1255,18 +818,15 @@ public class FulfillmentItemPricingActivityDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#updateTaxableAmountsOnItems(Order)}.
+   * Test {@link FulfillmentItemPricingActivity#updateTaxableAmountsOnItems(Order)}.
    * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#updateTaxableAmountsOnItems(Order)}
+   * Method under test: {@link FulfillmentItemPricingActivity#updateTaxableAmountsOnItems(Order)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentItemPricingActivity.updateTaxableAmountsOnItems(Order)"})
   public void testUpdateTaxableAmountsOnItems2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
     FulfillmentGroupItemImpl fulfillmentGroupItem = mock(FulfillmentGroupItemImpl.class);
     when(fulfillmentGroupItem.getProratedOrderAdjustmentAmount()).thenReturn(null);
     when(fulfillmentGroupItem.getTotalItemAmount()).thenReturn(new Money());
@@ -1295,57 +855,19 @@ public class FulfillmentItemPricingActivityDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#updateTaxableAmountsOnItems(Order)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#updateTaxableAmountsOnItems(Order)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testUpdateTaxableAmountsOnItems3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.pricing.service.workflow;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass747 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.pricing.service.workflow.FulfillmentItemPricingActivity fulfillmentItemPricingActivity;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity2 = new FulfillmentItemPricingActivity();
-
-    // Act
-    fulfillmentItemPricingActivity2.updateTaxableAmountsOnItems(new NullOrderImpl());
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#updateTaxableAmountsOnItems(Order)}.
+   * Test {@link FulfillmentItemPricingActivity#updateTaxableAmountsOnItems(Order)}.
    * <ul>
-   *   <li>Given {@link Money} {@link Money#subtract(Money)} return
-   * {@link Money#Money()}.</li>
+   *   <li>Given {@link Money} {@link Money#subtract(Money)} return {@link Money#Money()}.</li>
    *   <li>Then calls {@link Money#subtract(Money)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#updateTaxableAmountsOnItems(Order)}
+   * Method under test: {@link FulfillmentItemPricingActivity#updateTaxableAmountsOnItems(Order)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentItemPricingActivity.updateTaxableAmountsOnItems(Order)"})
   public void testUpdateTaxableAmountsOnItems_givenMoneySubtractReturnMoney_thenCallsSubtract() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
     Money money = mock(Money.class);
     when(money.subtract(Mockito.<Money>any())).thenReturn(new Money());
     FulfillmentGroupItemImpl fulfillmentGroupItem = mock(FulfillmentGroupItemImpl.class);
@@ -1377,22 +899,18 @@ public class FulfillmentItemPricingActivityDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#updateTaxableAmountsOnItems(Order)}.
+   * Test {@link FulfillmentItemPricingActivity#updateTaxableAmountsOnItems(Order)}.
    * <ul>
    *   <li>Then calls {@link Order#getCurrency()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#updateTaxableAmountsOnItems(Order)}
+   * Method under test: {@link FulfillmentItemPricingActivity#updateTaxableAmountsOnItems(Order)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentItemPricingActivity.updateTaxableAmountsOnItems(Order)"})
   public void testUpdateTaxableAmountsOnItems_thenCallsGetCurrency() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
-
     ArrayList<FulfillmentGroup> fulfillmentGroupList = new ArrayList<>();
     fulfillmentGroupList.add(new FulfillmentGroupImpl());
     Order order = mock(Order.class);
@@ -1408,21 +926,18 @@ public class FulfillmentItemPricingActivityDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#updateTaxableAmountsOnItems(Order)}.
+   * Test {@link FulfillmentItemPricingActivity#updateTaxableAmountsOnItems(Order)}.
    * <ul>
    *   <li>Then calls {@link BundleOrderItemImpl#isTaxable()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#updateTaxableAmountsOnItems(Order)}
+   * Method under test: {@link FulfillmentItemPricingActivity#updateTaxableAmountsOnItems(Order)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentItemPricingActivity.updateTaxableAmountsOnItems(Order)"})
   public void testUpdateTaxableAmountsOnItems_thenCallsIsTaxable() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
     BundleOrderItemImpl bundleOrderItemImpl = mock(BundleOrderItemImpl.class);
     when(bundleOrderItemImpl.isTaxable()).thenReturn(false);
     FulfillmentGroupItemImpl fulfillmentGroupItem = mock(FulfillmentGroupItemImpl.class);
@@ -1451,54 +966,18 @@ public class FulfillmentItemPricingActivityDiffblueTest {
 
   /**
    * Test {@link FulfillmentItemPricingActivity#sumItemAmount(List, Order)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#sumItemAmount(List, Order)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSumItemAmount() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.pricing.service.workflow;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass699 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.pricing.service.workflow.FulfillmentItemPricingActivity fulfillmentItemPricingActivity;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity2 = new FulfillmentItemPricingActivity();
-    ArrayList<FulfillmentGroupItem> items = new ArrayList<>();
-
-    // Act
-    fulfillmentItemPricingActivity2.sumItemAmount(items, new NullOrderImpl());
-  }
-
-  /**
-   * Test {@link FulfillmentItemPricingActivity#sumItemAmount(List, Order)}.
    * <ul>
    *   <li>When {@link ArrayList#ArrayList()}.</li>
    *   <li>Then return {@link Money#ZERO}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#sumItemAmount(List, Order)}
+   * Method under test: {@link FulfillmentItemPricingActivity#sumItemAmount(List, Order)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money FulfillmentItemPricingActivity.sumItemAmount(List, Order)"})
   public void testSumItemAmount_whenArrayList_thenReturnZero() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
     ArrayList<FulfillmentGroupItem> items = new ArrayList<>();
 
     // Act
@@ -1510,54 +989,18 @@ public class FulfillmentItemPricingActivityDiffblueTest {
 
   /**
    * Test {@link FulfillmentItemPricingActivity#sumTaxAmount(List, Order)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#sumTaxAmount(List, Order)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSumTaxAmount() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.pricing.service.workflow;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass723 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.pricing.service.workflow.FulfillmentItemPricingActivity fulfillmentItemPricingActivity;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity2 = new FulfillmentItemPricingActivity();
-    ArrayList<FulfillmentGroupItem> items = new ArrayList<>();
-
-    // Act
-    fulfillmentItemPricingActivity2.sumTaxAmount(items, new NullOrderImpl());
-  }
-
-  /**
-   * Test {@link FulfillmentItemPricingActivity#sumTaxAmount(List, Order)}.
    * <ul>
    *   <li>When {@link ArrayList#ArrayList()}.</li>
    *   <li>Then return {@link Money#ZERO}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#sumTaxAmount(List, Order)}
+   * Method under test: {@link FulfillmentItemPricingActivity#sumTaxAmount(List, Order)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money FulfillmentItemPricingActivity.sumTaxAmount(List, Order)"})
   public void testSumTaxAmount_whenArrayList_thenReturnZero() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
     ArrayList<FulfillmentGroupItem> items = new ArrayList<>();
 
     // Act
@@ -1569,110 +1012,35 @@ public class FulfillmentItemPricingActivityDiffblueTest {
 
   /**
    * Test {@link FulfillmentItemPricingActivity#countNumberOfUnits(Money)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#countNumberOfUnits(Money)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCountNumberOfUnits() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.pricing.service.workflow;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass240 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.pricing.service.workflow.FulfillmentItemPricingActivity fulfillmentItemPricingActivity;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity2 = new FulfillmentItemPricingActivity();
-
-    // Act
-    fulfillmentItemPricingActivity2.countNumberOfUnits(new Money());
-  }
-
-  /**
-   * Test {@link FulfillmentItemPricingActivity#countNumberOfUnits(Money)}.
    * <ul>
    *   <li>When {@link Money#Money()}.</li>
    *   <li>Then return zero.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#countNumberOfUnits(Money)}
+   * Method under test: {@link FulfillmentItemPricingActivity#countNumberOfUnits(Money)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"long FulfillmentItemPricingActivity.countNumberOfUnits(Money)"})
   public void testCountNumberOfUnits_whenMoney_thenReturnZero() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertEquals(0L, fulfillmentItemPricingActivity.countNumberOfUnits(new Money()));
-  }
-
-  /**
-   * Test {@link FulfillmentItemPricingActivity#getUnitAmount(Money)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#getUnitAmount(Money)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetUnitAmount() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.pricing.service.workflow;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass658 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.pricing.service.workflow.FulfillmentItemPricingActivity fulfillmentItemPricingActivity;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity2 = new FulfillmentItemPricingActivity();
-
-    // Act
-    fulfillmentItemPricingActivity2.getUnitAmount(new Money());
   }
 
   /**
    * Test {@link FulfillmentItemPricingActivity#getUnitAmount(Money)}.
    * <ul>
    *   <li>When {@link Money#Money(double)} with amount is {@code -0.5}.</li>
-   *   <li>Then return Amount is {@link BigDecimal#BigDecimal(String)} with
-   * {@code -0.01}.</li>
+   *   <li>Then return Amount is {@link BigDecimal#BigDecimal(String)} with {@code -0.01}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#getUnitAmount(Money)}
+   * Method under test: {@link FulfillmentItemPricingActivity#getUnitAmount(Money)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money FulfillmentItemPricingActivity.getUnitAmount(Money)"})
   public void testGetUnitAmount_whenMoneyWithAmountIs05_thenReturnAmountIsBigDecimalWith001() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
-
-    // Act
+    // Arrange and Act
     Money actualUnitAmount = fulfillmentItemPricingActivity.getUnitAmount(new Money(-0.5d));
 
     // Assert
@@ -1682,28 +1050,24 @@ public class FulfillmentItemPricingActivityDiffblueTest {
     Money absResult = actualUnitAmount.abs();
     assertEquals(expectedAmount2, absResult.getAmount());
     assertEquals(absResult.abs(), absResult.abs());
-    Money money = actualUnitAmount.ZERO;
-    assertEquals(money, absResult.zero());
-    assertEquals(money, actualUnitAmount.zero());
+    Money expectedZeroResult = actualUnitAmount.ZERO;
+    assertEquals(expectedZeroResult, actualUnitAmount.zero());
   }
 
   /**
    * Test {@link FulfillmentItemPricingActivity#getUnitAmount(Money)}.
    * <ul>
    *   <li>When {@link Money#Money()}.</li>
-   *   <li>Then return Amount is {@link BigDecimal#BigDecimal(String)} with
-   * {@code 0.01}.</li>
+   *   <li>Then return Amount is {@link BigDecimal#BigDecimal(String)} with {@code 0.01}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#getUnitAmount(Money)}
+   * Method under test: {@link FulfillmentItemPricingActivity#getUnitAmount(Money)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money FulfillmentItemPricingActivity.getUnitAmount(Money)"})
   public void testGetUnitAmount_whenMoney_thenReturnAmountIsBigDecimalWith001() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
     Money difference = new Money();
 
     // Act
@@ -1717,29 +1081,29 @@ public class FulfillmentItemPricingActivityDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#applyDifferenceToAmount(FulfillmentGroupItem, long, Money)}.
+   * Test {@link FulfillmentItemPricingActivity#applyDifferenceToAmount(FulfillmentGroupItem, long, Money)}.
    * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#applyDifferenceToAmount(FulfillmentGroupItem, long, Money)}
+   * Method under test: {@link FulfillmentItemPricingActivity#applyDifferenceToAmount(FulfillmentGroupItem, long, Money)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"long FulfillmentItemPricingActivity.applyDifferenceToAmount(FulfillmentGroupItem, long, Money)"})
   public void testApplyDifferenceToAmount() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
     FulfillmentGroupItemImpl fgItem = mock(FulfillmentGroupItemImpl.class);
     when(fgItem.getQuantity()).thenReturn(1);
     when(fgItem.getTotalItemAmount()).thenReturn(new Money());
     doNothing().when(fgItem).setTotalItemAmount(Mockito.<Money>any());
-    fgItem.setTotalItemAmount(mock(Money.class));
+    fgItem.setTotalItemAmount(null);
+    Money unitAmount = mock(Money.class);
+    when(unitAmount.multiply(Mockito.<BigDecimal>any())).thenReturn(new Money());
 
     // Act
     long actualApplyDifferenceToAmountResult = fulfillmentItemPricingActivity.applyDifferenceToAmount(fgItem, 1L,
-        new Money());
+        unitAmount);
 
     // Assert
+    verify(unitAmount).multiply(isA(BigDecimal.class));
     verify(fgItem).getQuantity();
     verify(fgItem).getTotalItemAmount();
     verify(fgItem, atLeast(1)).setTotalItemAmount(Mockito.<Money>any());
@@ -1747,103 +1111,26 @@ public class FulfillmentItemPricingActivityDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#applyDifferenceToAmount(FulfillmentGroupItem, long, Money)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#applyDifferenceToAmount(FulfillmentGroupItem, long, Money)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testApplyDifferenceToAmount2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.pricing.service.workflow;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass121 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.pricing.service.workflow.FulfillmentItemPricingActivity fulfillmentItemPricingActivity;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity2 = new FulfillmentItemPricingActivity();
-    FulfillmentGroupItemImpl fgItem = new FulfillmentGroupItemImpl();
-
-    // Act
-    fulfillmentItemPricingActivity2.applyDifferenceToAmount(fgItem, 1L, new Money());
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#applyDifferenceToAmount(FulfillmentGroupItem, long, Money)}.
+   * Test {@link FulfillmentItemPricingActivity#applyDifferenceToAmount(FulfillmentGroupItem, long, Money)}.
    * <ul>
-   *   <li>Given {@link Money} {@link Money#add(Money)} return
-   * {@link Money#Money()}.</li>
+   *   <li>Given {@link Money} {@link Money#add(Money)} return {@link Money#Money()}.</li>
    *   <li>Then calls {@link Money#add(Money)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#applyDifferenceToAmount(FulfillmentGroupItem, long, Money)}
+   * Method under test: {@link FulfillmentItemPricingActivity#applyDifferenceToAmount(FulfillmentGroupItem, long, Money)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"long FulfillmentItemPricingActivity.applyDifferenceToAmount(FulfillmentGroupItem, long, Money)"})
   public void testApplyDifferenceToAmount_givenMoneyAddReturnMoney_thenCallsAdd() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
     Money money = mock(Money.class);
     when(money.add(Mockito.<Money>any())).thenReturn(new Money());
     FulfillmentGroupItemImpl fgItem = mock(FulfillmentGroupItemImpl.class);
     when(fgItem.getQuantity()).thenReturn(1);
     when(fgItem.getTotalItemAmount()).thenReturn(money);
     doNothing().when(fgItem).setTotalItemAmount(Mockito.<Money>any());
-    fgItem.setTotalItemAmount(mock(Money.class));
-
-    // Act
-    long actualApplyDifferenceToAmountResult = fulfillmentItemPricingActivity.applyDifferenceToAmount(fgItem, 1L,
-        new Money());
-
-    // Assert
-    verify(money).add(isA(Money.class));
-    verify(fgItem).getQuantity();
-    verify(fgItem).getTotalItemAmount();
-    verify(fgItem, atLeast(1)).setTotalItemAmount(Mockito.<Money>any());
-    assertEquals(1L, actualApplyDifferenceToAmountResult);
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#applyDifferenceToAmount(FulfillmentGroupItem, long, Money)}.
-   * <ul>
-   *   <li>When {@link Money} {@link Money#multiply(BigDecimal)} return
-   * {@link Money#Money()}.</li>
-   *   <li>Then calls {@link Money#multiply(BigDecimal)}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#applyDifferenceToAmount(FulfillmentGroupItem, long, Money)}
-   */
-  @Test
-  public void testApplyDifferenceToAmount_whenMoneyMultiplyReturnMoney_thenCallsMultiply() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
-    Money money = mock(Money.class);
-    when(money.add(Mockito.<Money>any())).thenReturn(new Money());
-    FulfillmentGroupItemImpl fgItem = mock(FulfillmentGroupItemImpl.class);
-    when(fgItem.getQuantity()).thenReturn(1);
-    when(fgItem.getTotalItemAmount()).thenReturn(money);
-    doNothing().when(fgItem).setTotalItemAmount(Mockito.<Money>any());
-    fgItem.setTotalItemAmount(mock(Money.class));
+    fgItem.setTotalItemAmount(null);
     Money unitAmount = mock(Money.class);
     when(unitAmount.multiply(Mockito.<BigDecimal>any())).thenReturn(new Money());
 
@@ -1861,29 +1148,30 @@ public class FulfillmentItemPricingActivityDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#applyDifferenceToProratedAdj(FulfillmentGroupItem, long, Money)}.
+   * Test {@link FulfillmentItemPricingActivity#applyDifferenceToProratedAdj(FulfillmentGroupItem, long, Money)}.
    * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#applyDifferenceToProratedAdj(FulfillmentGroupItem, long, Money)}
+   * Method under test: {@link FulfillmentItemPricingActivity#applyDifferenceToProratedAdj(FulfillmentGroupItem, long, Money)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "long FulfillmentItemPricingActivity.applyDifferenceToProratedAdj(FulfillmentGroupItem, long, Money)"})
   public void testApplyDifferenceToProratedAdj() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
     FulfillmentGroupItemImpl fgItem = mock(FulfillmentGroupItemImpl.class);
     when(fgItem.getQuantity()).thenReturn(1);
     when(fgItem.getProratedOrderAdjustmentAmount()).thenReturn(new Money());
     doNothing().when(fgItem).setProratedOrderAdjustmentAmount(Mockito.<Money>any());
-    fgItem.setProratedOrderAdjustmentAmount(mock(Money.class));
+    fgItem.setProratedOrderAdjustmentAmount(null);
+    Money unitAmount = mock(Money.class);
+    when(unitAmount.multiply(Mockito.<BigDecimal>any())).thenReturn(new Money());
 
     // Act
     long actualApplyDifferenceToProratedAdjResult = fulfillmentItemPricingActivity.applyDifferenceToProratedAdj(fgItem,
-        1L, new Money());
+        1L, unitAmount);
 
     // Assert
+    verify(unitAmount).multiply(isA(BigDecimal.class));
     verify(fgItem).getProratedOrderAdjustmentAmount();
     verify(fgItem).getQuantity();
     verify(fgItem, atLeast(1)).setProratedOrderAdjustmentAmount(Mockito.<Money>any());
@@ -1891,103 +1179,27 @@ public class FulfillmentItemPricingActivityDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#applyDifferenceToProratedAdj(FulfillmentGroupItem, long, Money)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#applyDifferenceToProratedAdj(FulfillmentGroupItem, long, Money)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testApplyDifferenceToProratedAdj2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.pricing.service.workflow;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass154 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.pricing.service.workflow.FulfillmentItemPricingActivity fulfillmentItemPricingActivity;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity2 = new FulfillmentItemPricingActivity();
-    FulfillmentGroupItemImpl fgItem = new FulfillmentGroupItemImpl();
-
-    // Act
-    fulfillmentItemPricingActivity2.applyDifferenceToProratedAdj(fgItem, 1L, new Money());
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#applyDifferenceToProratedAdj(FulfillmentGroupItem, long, Money)}.
+   * Test {@link FulfillmentItemPricingActivity#applyDifferenceToProratedAdj(FulfillmentGroupItem, long, Money)}.
    * <ul>
-   *   <li>Given {@link Money} {@link Money#add(Money)} return
-   * {@link Money#Money()}.</li>
+   *   <li>Given {@link Money} {@link Money#add(Money)} return {@link Money#Money()}.</li>
    *   <li>Then calls {@link Money#add(Money)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#applyDifferenceToProratedAdj(FulfillmentGroupItem, long, Money)}
+   * Method under test: {@link FulfillmentItemPricingActivity#applyDifferenceToProratedAdj(FulfillmentGroupItem, long, Money)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "long FulfillmentItemPricingActivity.applyDifferenceToProratedAdj(FulfillmentGroupItem, long, Money)"})
   public void testApplyDifferenceToProratedAdj_givenMoneyAddReturnMoney_thenCallsAdd() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
     Money money = mock(Money.class);
     when(money.add(Mockito.<Money>any())).thenReturn(new Money());
     FulfillmentGroupItemImpl fgItem = mock(FulfillmentGroupItemImpl.class);
     when(fgItem.getQuantity()).thenReturn(1);
     when(fgItem.getProratedOrderAdjustmentAmount()).thenReturn(money);
     doNothing().when(fgItem).setProratedOrderAdjustmentAmount(Mockito.<Money>any());
-    fgItem.setProratedOrderAdjustmentAmount(mock(Money.class));
-
-    // Act
-    long actualApplyDifferenceToProratedAdjResult = fulfillmentItemPricingActivity.applyDifferenceToProratedAdj(fgItem,
-        1L, new Money());
-
-    // Assert
-    verify(money).add(isA(Money.class));
-    verify(fgItem).getProratedOrderAdjustmentAmount();
-    verify(fgItem).getQuantity();
-    verify(fgItem, atLeast(1)).setProratedOrderAdjustmentAmount(Mockito.<Money>any());
-    assertEquals(1L, actualApplyDifferenceToProratedAdjResult);
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#applyDifferenceToProratedAdj(FulfillmentGroupItem, long, Money)}.
-   * <ul>
-   *   <li>When {@link Money} {@link Money#multiply(BigDecimal)} return
-   * {@link Money#Money()}.</li>
-   *   <li>Then calls {@link Money#multiply(BigDecimal)}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#applyDifferenceToProratedAdj(FulfillmentGroupItem, long, Money)}
-   */
-  @Test
-  public void testApplyDifferenceToProratedAdj_whenMoneyMultiplyReturnMoney_thenCallsMultiply() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
-    Money money = mock(Money.class);
-    when(money.add(Mockito.<Money>any())).thenReturn(new Money());
-    FulfillmentGroupItemImpl fgItem = mock(FulfillmentGroupItemImpl.class);
-    when(fgItem.getQuantity()).thenReturn(1);
-    when(fgItem.getProratedOrderAdjustmentAmount()).thenReturn(money);
-    doNothing().when(fgItem).setProratedOrderAdjustmentAmount(Mockito.<Money>any());
-    fgItem.setProratedOrderAdjustmentAmount(mock(Money.class));
+    fgItem.setProratedOrderAdjustmentAmount(null);
     Money unitAmount = mock(Money.class);
     when(unitAmount.multiply(Mockito.<BigDecimal>any())).thenReturn(new Money());
 
@@ -2005,28 +1217,28 @@ public class FulfillmentItemPricingActivityDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#applyTaxDifference(FulfillmentGroupItem, long, Money)}.
+   * Test {@link FulfillmentItemPricingActivity#applyTaxDifference(FulfillmentGroupItem, long, Money)}.
    * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#applyTaxDifference(FulfillmentGroupItem, long, Money)}
+   * Method under test: {@link FulfillmentItemPricingActivity#applyTaxDifference(FulfillmentGroupItem, long, Money)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"long FulfillmentItemPricingActivity.applyTaxDifference(FulfillmentGroupItem, long, Money)"})
   public void testApplyTaxDifference() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
     FulfillmentGroupItemImpl fgItem = mock(FulfillmentGroupItemImpl.class);
     when(fgItem.getQuantity()).thenReturn(1);
     when(fgItem.getTotalItemTaxableAmount()).thenReturn(new Money());
     doNothing().when(fgItem).setTotalItemTaxableAmount(Mockito.<Money>any());
-    fgItem.setTotalItemTaxableAmount(mock(Money.class));
+    fgItem.setTotalItemTaxableAmount(null);
+    Money unitAmount = mock(Money.class);
+    when(unitAmount.multiply(Mockito.<BigDecimal>any())).thenReturn(new Money());
 
     // Act
-    long actualApplyTaxDifferenceResult = fulfillmentItemPricingActivity.applyTaxDifference(fgItem, 1L, new Money());
+    long actualApplyTaxDifferenceResult = fulfillmentItemPricingActivity.applyTaxDifference(fgItem, 1L, unitAmount);
 
     // Assert
+    verify(unitAmount).multiply(isA(BigDecimal.class));
     verify(fgItem).getQuantity();
     verify(fgItem).getTotalItemTaxableAmount();
     verify(fgItem, atLeast(1)).setTotalItemTaxableAmount(Mockito.<Money>any());
@@ -2034,102 +1246,26 @@ public class FulfillmentItemPricingActivityDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#applyTaxDifference(FulfillmentGroupItem, long, Money)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#applyTaxDifference(FulfillmentGroupItem, long, Money)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testApplyTaxDifference2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.pricing.service.workflow;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass187 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.pricing.service.workflow.FulfillmentItemPricingActivity fulfillmentItemPricingActivity;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity2 = new FulfillmentItemPricingActivity();
-    FulfillmentGroupItemImpl fgItem = new FulfillmentGroupItemImpl();
-
-    // Act
-    fulfillmentItemPricingActivity2.applyTaxDifference(fgItem, 1L, new Money());
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#applyTaxDifference(FulfillmentGroupItem, long, Money)}.
+   * Test {@link FulfillmentItemPricingActivity#applyTaxDifference(FulfillmentGroupItem, long, Money)}.
    * <ul>
-   *   <li>Given {@link Money} {@link Money#add(Money)} return
-   * {@link Money#Money()}.</li>
+   *   <li>Given {@link Money} {@link Money#add(Money)} return {@link Money#Money()}.</li>
    *   <li>Then calls {@link Money#add(Money)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#applyTaxDifference(FulfillmentGroupItem, long, Money)}
+   * Method under test: {@link FulfillmentItemPricingActivity#applyTaxDifference(FulfillmentGroupItem, long, Money)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"long FulfillmentItemPricingActivity.applyTaxDifference(FulfillmentGroupItem, long, Money)"})
   public void testApplyTaxDifference_givenMoneyAddReturnMoney_thenCallsAdd() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
     Money money = mock(Money.class);
     when(money.add(Mockito.<Money>any())).thenReturn(new Money());
     FulfillmentGroupItemImpl fgItem = mock(FulfillmentGroupItemImpl.class);
     when(fgItem.getQuantity()).thenReturn(1);
     when(fgItem.getTotalItemTaxableAmount()).thenReturn(money);
     doNothing().when(fgItem).setTotalItemTaxableAmount(Mockito.<Money>any());
-    fgItem.setTotalItemTaxableAmount(mock(Money.class));
-
-    // Act
-    long actualApplyTaxDifferenceResult = fulfillmentItemPricingActivity.applyTaxDifference(fgItem, 1L, new Money());
-
-    // Assert
-    verify(money).add(isA(Money.class));
-    verify(fgItem).getQuantity();
-    verify(fgItem).getTotalItemTaxableAmount();
-    verify(fgItem, atLeast(1)).setTotalItemTaxableAmount(Mockito.<Money>any());
-    assertEquals(1L, actualApplyTaxDifferenceResult);
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentItemPricingActivity#applyTaxDifference(FulfillmentGroupItem, long, Money)}.
-   * <ul>
-   *   <li>When {@link Money} {@link Money#multiply(BigDecimal)} return
-   * {@link Money#Money()}.</li>
-   *   <li>Then calls {@link Money#multiply(BigDecimal)}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link FulfillmentItemPricingActivity#applyTaxDifference(FulfillmentGroupItem, long, Money)}
-   */
-  @Test
-  public void testApplyTaxDifference_whenMoneyMultiplyReturnMoney_thenCallsMultiply() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
-    Money money = mock(Money.class);
-    when(money.add(Mockito.<Money>any())).thenReturn(new Money());
-    FulfillmentGroupItemImpl fgItem = mock(FulfillmentGroupItemImpl.class);
-    when(fgItem.getQuantity()).thenReturn(1);
-    when(fgItem.getTotalItemTaxableAmount()).thenReturn(money);
-    doNothing().when(fgItem).setTotalItemTaxableAmount(Mockito.<Money>any());
-    fgItem.setTotalItemTaxableAmount(mock(Money.class));
+    fgItem.setTotalItemTaxableAmount(null);
     Money unitAmount = mock(Money.class);
     when(unitAmount.multiply(Mockito.<BigDecimal>any())).thenReturn(new Money());
 

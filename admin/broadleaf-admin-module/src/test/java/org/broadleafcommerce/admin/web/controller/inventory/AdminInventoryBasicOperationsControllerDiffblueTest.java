@@ -23,28 +23,73 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
+import org.broadleafcommerce.common.security.service.ExploitProtectionService;
+import org.broadleafcommerce.core.catalog.service.CatalogService;
 import org.broadleafcommerce.openadmin.dto.FilterAndSortCriteria;
 import org.broadleafcommerce.openadmin.dto.SectionCrumb;
+import org.broadleafcommerce.openadmin.security.ClassNameRequestParamValidationService;
 import org.broadleafcommerce.openadmin.server.domain.PersistencePackageRequest;
+import org.broadleafcommerce.openadmin.server.security.remote.SecurityVerifier;
+import org.broadleafcommerce.openadmin.server.security.service.navigation.AdminNavigationService;
+import org.broadleafcommerce.openadmin.server.service.AdminEntityService;
+import org.broadleafcommerce.openadmin.server.service.AdminSectionCustomCriteriaService;
+import org.broadleafcommerce.openadmin.web.service.FormBuilderService;
+import org.broadleafcommerce.openadmin.web.service.SearchFieldResolver;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class AdminInventoryBasicOperationsControllerDiffblueTest {
+  @Mock
+  private AdminEntityService adminEntityService;
+
+  @InjectMocks
+  private AdminInventoryBasicOperationsController adminInventoryBasicOperationsController;
+
+  @Mock
+  private AdminNavigationService adminNavigationService;
+
+  @Mock
+  private AdminSectionCustomCriteriaService adminSectionCustomCriteriaService;
+
+  @Mock
+  private CatalogService catalogService;
+
+  @Mock
+  private ClassNameRequestParamValidationService classNameRequestParamValidationService;
+
+  @Mock
+  private ExploitProtectionService exploitProtectionService;
+
+  @Mock
+  private FormBuilderService formBuilderService;
+
+  @Mock
+  private SearchFieldResolver searchFieldResolver;
+
+  @Mock
+  private SecurityVerifier securityVerifier;
+
   /**
-   * Test
-   * {@link AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)}.
+   * Test {@link AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)}.
    * <p>
-   * Method under test:
-   * {@link AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)}
+   * Method under test: {@link AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void AdminInventoryBasicOperationsController.modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)"})
   public void testModifyFetchPersistencePackageRequest() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminInventoryBasicOperationsController adminInventoryBasicOperationsController = new AdminInventoryBasicOperationsController();
     PersistencePackageRequest ppr = mock(PersistencePackageRequest.class);
     when(ppr.getFilterAndSortCriteria()).thenReturn(new FilterAndSortCriteria[]{new FilterAndSortCriteria("42")});
 
@@ -56,18 +101,16 @@ public class AdminInventoryBasicOperationsControllerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)}.
+   * Test {@link AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)}.
    * <p>
-   * Method under test:
-   * {@link AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)}
+   * Method under test: {@link AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void AdminInventoryBasicOperationsController.modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)"})
   public void testModifyFetchPersistencePackageRequest2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminInventoryBasicOperationsController adminInventoryBasicOperationsController = new AdminInventoryBasicOperationsController();
     PersistencePackageRequest ppr = mock(PersistencePackageRequest.class);
     when(ppr.getFilterAndSortCriteria())
         .thenReturn(new FilterAndSortCriteria[]{new FilterAndSortCriteria("fulfillmentType")});
@@ -80,19 +123,16 @@ public class AdminInventoryBasicOperationsControllerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)}.
+   * Test {@link AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)}.
    * <p>
-   * Method under test:
-   * {@link AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)}
+   * Method under test: {@link AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void AdminInventoryBasicOperationsController.modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)"})
   public void testModifyFetchPersistencePackageRequest3() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminInventoryBasicOperationsController adminInventoryBasicOperationsController = new AdminInventoryBasicOperationsController();
-
     SectionCrumb sectionCrumb = new SectionCrumb();
     sectionCrumb.setOriginalSectionIdentifier("42");
     sectionCrumb.setSectionId("42");
@@ -111,18 +151,16 @@ public class AdminInventoryBasicOperationsControllerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)}.
+   * Test {@link AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)}.
    * <p>
-   * Method under test:
-   * {@link AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)}
+   * Method under test: {@link AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void AdminInventoryBasicOperationsController.modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)"})
   public void testModifyFetchPersistencePackageRequest4() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminInventoryBasicOperationsController adminInventoryBasicOperationsController = new AdminInventoryBasicOperationsController();
     PersistencePackageRequest ppr = mock(PersistencePackageRequest.class);
     FilterAndSortCriteria filterAndSortCriteria = new FilterAndSortCriteria("42");
     when(ppr.getFilterAndSortCriteria())
@@ -146,21 +184,19 @@ public class AdminInventoryBasicOperationsControllerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)}.
+   * Test {@link AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)}.
    * <ul>
    *   <li>Given empty array of {@link SectionCrumb}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)}
+   * Method under test: {@link AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void AdminInventoryBasicOperationsController.modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)"})
   public void testModifyFetchPersistencePackageRequest_givenEmptyArrayOfSectionCrumb() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminInventoryBasicOperationsController adminInventoryBasicOperationsController = new AdminInventoryBasicOperationsController();
     PersistencePackageRequest ppr = mock(PersistencePackageRequest.class);
     when(ppr.getSectionCrumbs()).thenReturn(new SectionCrumb[]{});
     when(ppr.getFilterAndSortCriteria())
@@ -175,21 +211,19 @@ public class AdminInventoryBasicOperationsControllerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)}.
+   * Test {@link AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)}.
    * <ul>
    *   <li>Then calls {@link FilterAndSortCriteria#getPropertyId()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)}
+   * Method under test: {@link AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void AdminInventoryBasicOperationsController.modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)"})
   public void testModifyFetchPersistencePackageRequest_thenCallsGetPropertyId() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminInventoryBasicOperationsController adminInventoryBasicOperationsController = new AdminInventoryBasicOperationsController();
     FilterAndSortCriteria filterAndSortCriteria = mock(FilterAndSortCriteria.class);
     when(filterAndSortCriteria.getPropertyId()).thenReturn("42");
     PersistencePackageRequest ppr = mock(PersistencePackageRequest.class);

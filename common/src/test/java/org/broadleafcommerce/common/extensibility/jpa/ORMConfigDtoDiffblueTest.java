@@ -20,18 +20,22 @@ package org.broadleafcommerce.common.extensibility.jpa;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {ORMConfigDto.class, String.class})
 @RunWith(SpringJUnit4ClassRunner.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class ORMConfigDtoDiffblueTest {
   @Autowired
   private ORMConfigDto oRMConfigDto;
@@ -50,6 +54,10 @@ public class ORMConfigDtoDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ORMConfigDto.<init>(String)", "List ORMConfigDto.getClassNames()",
+      "List ORMConfigDto.getMappingFiles()", "String ORMConfigDto.getPuName()",
+      "ORMConfigDto ORMConfigDto.setClassNames(List)", "ORMConfigDto ORMConfigDto.setMappingFiles(List)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     ORMConfigDto actualOrmConfigDto = new ORMConfigDto("Pu Name");
@@ -76,6 +84,8 @@ public class ORMConfigDtoDiffblueTest {
    * Method under test: {@link ORMConfigDto#addClassName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ORMConfigDto ORMConfigDto.addClassName(String)"})
   public void testAddClassName() {
     // Arrange, Act and Assert
     assertSame(oRMConfigDto, oRMConfigDto.addClassName("Class Name"));
@@ -87,6 +97,8 @@ public class ORMConfigDtoDiffblueTest {
    * Method under test: {@link ORMConfigDto#addMappingFile(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ORMConfigDto ORMConfigDto.addMappingFile(String)"})
   public void testAddMappingFile() {
     // Arrange, Act and Assert
     assertSame(oRMConfigDto, oRMConfigDto.addMappingFile("Mapping File"));

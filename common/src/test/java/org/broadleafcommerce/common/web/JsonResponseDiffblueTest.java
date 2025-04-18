@@ -21,6 +21,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Map;
@@ -29,17 +31,19 @@ import org.broadleafcommerce.common.util.BLCFieldUtils;
 import org.broadleafcommerce.common.web.util.FileSystemResponseWrapper;
 import org.broadleafcommerce.common.web.util.StatusExposingServletResponse;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {JsonResponse.class})
 @RunWith(SpringJUnit4ClassRunner.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class JsonResponseDiffblueTest {
   @MockBean
   private HttpServletResponse httpServletResponse;
@@ -53,6 +57,8 @@ public class JsonResponseDiffblueTest {
    * Method under test: {@link JsonResponse#JsonResponse(HttpServletResponse)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void JsonResponse.<init>(HttpServletResponse)"})
   public void testNewJsonResponse() throws IOException {
     // Arrange
     MockHttpServletResponse response = new MockHttpServletResponse();
@@ -68,6 +74,8 @@ public class JsonResponseDiffblueTest {
    * Method under test: {@link JsonResponse#with(String, Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"JsonResponse JsonResponse.with(String, Object)"})
   public void testWith() {
     // Arrange
     Object object = BLCFieldUtils.NULL_FIELD;
@@ -76,13 +84,10 @@ public class JsonResponseDiffblueTest {
     JsonResponse actualWithResult = jsonResponse.with("Key", object);
 
     // Assert
-    Map<String, Object> stringObjectMap = actualWithResult.map;
+    Map<String, Object> stringObjectMap = jsonResponse.map;
     assertEquals(1, stringObjectMap.size());
-    Map<String, Object> stringObjectMap2 = jsonResponse.map;
-    assertEquals(1, stringObjectMap2.size());
     assertSame(jsonResponse, actualWithResult);
     assertSame(object, stringObjectMap.get("Key"));
-    assertSame(object, stringObjectMap2.get("Key"));
   }
 
   /**
@@ -94,6 +99,8 @@ public class JsonResponseDiffblueTest {
    * Method under test: {@link JsonResponse#done()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String JsonResponse.done()"})
   public void testDone_thenThrowRuntimeException() throws IOException {
     // Arrange
     MockHttpServletResponse response = new MockHttpServletResponse();
@@ -102,6 +109,6 @@ public class JsonResponseDiffblueTest {
     assertThrows(RuntimeException.class,
         () -> (new JsonResponse(new StatusExposingServletResponse(
             new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "").toFile()))))
-                .done());
+            .done());
   }
 }

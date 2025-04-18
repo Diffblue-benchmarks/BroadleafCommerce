@@ -1,59 +1,57 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.web.rulebuilder.enums;
 
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.cache.CacheManager;
+import org.broadleafcommerce.common.cache.StatisticsService;
 import org.broadleafcommerce.common.resource.GeneratedResource;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.core.io.Resource;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
-    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
-    "/bl-open-admin-contentCreator-applicationContext.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class RuleBuilderEnumOptionsResourceHandlerDiffblueTest {
-  @Autowired
+  @Mock
+  private CacheManager cacheManager;
+
+  @Mock
+  private RuleBuilderEnumOptionsExtensionManager ruleBuilderEnumOptionsExtensionManager;
+
+  @InjectMocks
   private RuleBuilderEnumOptionsResourceHandler ruleBuilderEnumOptionsResourceHandler;
 
-  /**
-   * Test {@link RuleBuilderEnumOptionsResourceHandler#canHandle(String)}.
-   * <p>
-   * Method under test:
-   * {@link RuleBuilderEnumOptionsResourceHandler#canHandle(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCanHandle() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.web.rulebuilder.enums;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.rulebuilder.enums.RuleBuilderEnumOptionsResourceHandler ruleBuilderEnumOptionsResourceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new RuleBuilderEnumOptionsResourceHandler()).canHandle("Path");
-  }
+  @Mock
+  private StatisticsService statisticsService;
 
   /**
    * Test {@link RuleBuilderEnumOptionsResourceHandler#canHandle(String)}.
@@ -62,15 +60,14 @@ public class RuleBuilderEnumOptionsResourceHandlerDiffblueTest {
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link RuleBuilderEnumOptionsResourceHandler#canHandle(String)}
+   * Method under test: {@link RuleBuilderEnumOptionsResourceHandler#canHandle(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean RuleBuilderEnumOptionsResourceHandler.canHandle(String)"})
   public void testCanHandle_whenAdminComponentsRuleBuilderOptionsJs_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertTrue((new RuleBuilderEnumOptionsResourceHandler()).canHandle("admin/components/ruleBuilder-options.js"));
+    assertTrue(ruleBuilderEnumOptionsResourceHandler.canHandle("admin/components/ruleBuilder-options.js"));
   }
 
   /**
@@ -80,177 +77,180 @@ public class RuleBuilderEnumOptionsResourceHandlerDiffblueTest {
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link RuleBuilderEnumOptionsResourceHandler#canHandle(String)}
+   * Method under test: {@link RuleBuilderEnumOptionsResourceHandler#canHandle(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean RuleBuilderEnumOptionsResourceHandler.canHandle(String)"})
   public void testCanHandle_whenPath_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertFalse((new RuleBuilderEnumOptionsResourceHandler()).canHandle("Path"));
+    assertFalse(ruleBuilderEnumOptionsResourceHandler.canHandle("Path"));
   }
 
   /**
-   * Test
-   * {@link RuleBuilderEnumOptionsResourceHandler#getFileContents(String, List)}.
-   * <p>
-   * Method under test:
-   * {@link RuleBuilderEnumOptionsResourceHandler#getFileContents(String, List)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetFileContents() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.web.rulebuilder.enums;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass42 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.rulebuilder.enums.RuleBuilderEnumOptionsResourceHandler ruleBuilderEnumOptionsResourceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    RuleBuilderEnumOptionsResourceHandler ruleBuilderEnumOptionsResourceHandler2 = new RuleBuilderEnumOptionsResourceHandler();
-
-    // Act
-    ruleBuilderEnumOptionsResourceHandler2.getFileContents("Path", new ArrayList<>());
-  }
-
-  /**
-   * Test
-   * {@link RuleBuilderEnumOptionsResourceHandler#isCachedResourceExpired(GeneratedResource, String, List)}.
-   * <p>
-   * Method under test:
-   * {@link RuleBuilderEnumOptionsResourceHandler#isCachedResourceExpired(GeneratedResource, String, List)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsCachedResourceExpired() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.web.rulebuilder.enums;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass50 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.rulebuilder.enums.RuleBuilderEnumOptionsResourceHandler ruleBuilderEnumOptionsResourceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    RuleBuilderEnumOptionsResourceHandler ruleBuilderEnumOptionsResourceHandler2 = new RuleBuilderEnumOptionsResourceHandler();
-    GeneratedResource cachedResource = new GeneratedResource();
-
-    // Act
-    ruleBuilderEnumOptionsResourceHandler2.isCachedResourceExpired(cachedResource, "Path", new ArrayList<>());
-  }
-
-  /**
-   * Test
-   * {@link RuleBuilderEnumOptionsResourceHandler#isCachedResourceExpired(GeneratedResource, String, List)}.
+   * Test {@link RuleBuilderEnumOptionsResourceHandler#getFileContents(String, List)}.
    * <ul>
    *   <li>Given {@link GeneratedResource#GeneratedResource()}.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link GeneratedResource#GeneratedResource()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link RuleBuilderEnumOptionsResourceHandler#isCachedResourceExpired(GeneratedResource, String, List)}
+   * Method under test: {@link RuleBuilderEnumOptionsResourceHandler#getFileContents(String, List)}
    */
   @Test
-  public void testIsCachedResourceExpired_givenGeneratedResource() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Resource RuleBuilderEnumOptionsResourceHandler.getFileContents(String, List)"})
+  public void testGetFileContents_givenGeneratedResource_whenArrayListAddGeneratedResource() throws IOException {
     // Arrange
-    RuleBuilderEnumOptionsResourceHandler ruleBuilderEnumOptionsResourceHandler = new RuleBuilderEnumOptionsResourceHandler();
-    GeneratedResource cachedResource = new GeneratedResource();
+    when(ruleBuilderEnumOptionsExtensionManager.getOptionValues()).thenReturn("42");
 
     ArrayList<Resource> locations = new ArrayList<>();
     locations.add(new GeneratedResource());
 
-    // Act and Assert
-    assertFalse(ruleBuilderEnumOptionsResourceHandler.isCachedResourceExpired(cachedResource, "Path", locations));
+    // Act
+    Resource actualFileContents = ruleBuilderEnumOptionsResourceHandler.getFileContents("Path", locations);
+
+    // Assert
+    verify(ruleBuilderEnumOptionsExtensionManager).getOptionValues();
+    assertTrue(actualFileContents instanceof GeneratedResource);
+    assertEquals("Path", actualFileContents.getDescription());
+    assertEquals("Path", actualFileContents.getFilename());
+    byte[] byteArray = new byte[2];
+    assertEquals(2, actualFileContents.getInputStream().read(byteArray));
+    assertFalse(actualFileContents.isFile());
+    assertFalse(actualFileContents.isOpen());
+    assertArrayEquals(new byte[]{'4', '2'}, ((GeneratedResource) actualFileContents).getBytes());
+    assertArrayEquals(new byte[]{'4', '2'}, byteArray);
   }
 
   /**
-   * Test
-   * {@link RuleBuilderEnumOptionsResourceHandler#isCachedResourceExpired(GeneratedResource, String, List)}.
+   * Test {@link RuleBuilderEnumOptionsResourceHandler#getFileContents(String, List)}.
    * <ul>
    *   <li>Given {@link GeneratedResource#GeneratedResource()}.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link GeneratedResource#GeneratedResource()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link RuleBuilderEnumOptionsResourceHandler#isCachedResourceExpired(GeneratedResource, String, List)}
+   * Method under test: {@link RuleBuilderEnumOptionsResourceHandler#getFileContents(String, List)}
    */
   @Test
-  public void testIsCachedResourceExpired_givenGeneratedResource2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Resource RuleBuilderEnumOptionsResourceHandler.getFileContents(String, List)"})
+  public void testGetFileContents_givenGeneratedResource_whenArrayListAddGeneratedResource2() throws IOException {
     // Arrange
-    RuleBuilderEnumOptionsResourceHandler ruleBuilderEnumOptionsResourceHandler = new RuleBuilderEnumOptionsResourceHandler();
-    GeneratedResource cachedResource = new GeneratedResource();
+    when(ruleBuilderEnumOptionsExtensionManager.getOptionValues()).thenReturn("42");
 
     ArrayList<Resource> locations = new ArrayList<>();
     locations.add(new GeneratedResource());
     locations.add(new GeneratedResource());
 
-    // Act and Assert
-    assertFalse(ruleBuilderEnumOptionsResourceHandler.isCachedResourceExpired(cachedResource, "Path", locations));
+    // Act
+    Resource actualFileContents = ruleBuilderEnumOptionsResourceHandler.getFileContents("Path", locations);
+
+    // Assert
+    verify(ruleBuilderEnumOptionsExtensionManager).getOptionValues();
+    assertTrue(actualFileContents instanceof GeneratedResource);
+    assertEquals("Path", actualFileContents.getDescription());
+    assertEquals("Path", actualFileContents.getFilename());
+    byte[] byteArray = new byte[2];
+    assertEquals(2, actualFileContents.getInputStream().read(byteArray));
+    assertFalse(actualFileContents.isFile());
+    assertFalse(actualFileContents.isOpen());
+    assertArrayEquals(new byte[]{'4', '2'}, ((GeneratedResource) actualFileContents).getBytes());
+    assertArrayEquals(new byte[]{'4', '2'}, byteArray);
   }
 
   /**
-   * Test
-   * {@link RuleBuilderEnumOptionsResourceHandler#isCachedResourceExpired(GeneratedResource, String, List)}.
+   * Test {@link RuleBuilderEnumOptionsResourceHandler#getFileContents(String, List)}.
    * <ul>
    *   <li>When {@link ArrayList#ArrayList()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link RuleBuilderEnumOptionsResourceHandler#isCachedResourceExpired(GeneratedResource, String, List)}
+   * Method under test: {@link RuleBuilderEnumOptionsResourceHandler#getFileContents(String, List)}
    */
   @Test
-  public void testIsCachedResourceExpired_whenArrayList() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Resource RuleBuilderEnumOptionsResourceHandler.getFileContents(String, List)"})
+  public void testGetFileContents_whenArrayList() throws IOException {
     // Arrange
-    RuleBuilderEnumOptionsResourceHandler ruleBuilderEnumOptionsResourceHandler = new RuleBuilderEnumOptionsResourceHandler();
-    GeneratedResource cachedResource = new GeneratedResource();
+    when(ruleBuilderEnumOptionsExtensionManager.getOptionValues()).thenReturn("42");
 
-    // Act and Assert
-    assertFalse(
-        ruleBuilderEnumOptionsResourceHandler.isCachedResourceExpired(cachedResource, "Path", new ArrayList<>()));
+    // Act
+    Resource actualFileContents = ruleBuilderEnumOptionsResourceHandler.getFileContents("Path", new ArrayList<>());
+
+    // Assert
+    verify(ruleBuilderEnumOptionsExtensionManager).getOptionValues();
+    assertTrue(actualFileContents instanceof GeneratedResource);
+    assertEquals("Path", actualFileContents.getDescription());
+    assertEquals("Path", actualFileContents.getFilename());
+    byte[] byteArray = new byte[2];
+    assertEquals(2, actualFileContents.getInputStream().read(byteArray));
+    assertFalse(actualFileContents.isFile());
+    assertFalse(actualFileContents.isOpen());
+    assertArrayEquals(new byte[]{'4', '2'}, ((GeneratedResource) actualFileContents).getBytes());
+    assertArrayEquals(new byte[]{'4', '2'}, byteArray);
   }
 
   /**
-   * Test
-   * {@link RuleBuilderEnumOptionsResourceHandler#isCachedResourceExpired(GeneratedResource, String, List)}.
+   * Test {@link RuleBuilderEnumOptionsResourceHandler#isCachedResourceExpired(GeneratedResource, String, List)}.
    * <ul>
-   *   <li>When {@link GeneratedResource}.</li>
+   *   <li>Given {@link GeneratedResource#GeneratedResource()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link RuleBuilderEnumOptionsResourceHandler#isCachedResourceExpired(GeneratedResource, String, List)}
+   * Method under test: {@link RuleBuilderEnumOptionsResourceHandler#isCachedResourceExpired(GeneratedResource, String, List)}
    */
   @Test
-  public void testIsCachedResourceExpired_whenGeneratedResource() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "boolean RuleBuilderEnumOptionsResourceHandler.isCachedResourceExpired(GeneratedResource, String, List)"})
+  public void testIsCachedResourceExpired_givenGeneratedResource() {
     // Arrange
-    RuleBuilderEnumOptionsResourceHandler ruleBuilderEnumOptionsResourceHandler = new RuleBuilderEnumOptionsResourceHandler();
-    GeneratedResource cachedResource = mock(GeneratedResource.class);
+    GeneratedResource cachedResource = new GeneratedResource();
+
+    ArrayList<Resource> locations = new ArrayList<>();
+    locations.add(new GeneratedResource());
+
+    // Act and Assert
+    assertFalse(ruleBuilderEnumOptionsResourceHandler.isCachedResourceExpired(cachedResource, "Path", locations));
+  }
+
+  /**
+   * Test {@link RuleBuilderEnumOptionsResourceHandler#isCachedResourceExpired(GeneratedResource, String, List)}.
+   * <ul>
+   *   <li>Given {@link GeneratedResource#GeneratedResource()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link RuleBuilderEnumOptionsResourceHandler#isCachedResourceExpired(GeneratedResource, String, List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "boolean RuleBuilderEnumOptionsResourceHandler.isCachedResourceExpired(GeneratedResource, String, List)"})
+  public void testIsCachedResourceExpired_givenGeneratedResource2() {
+    // Arrange
+    GeneratedResource cachedResource = new GeneratedResource();
+
+    ArrayList<Resource> locations = new ArrayList<>();
+    locations.add(new GeneratedResource());
+    locations.add(new GeneratedResource());
+
+    // Act and Assert
+    assertFalse(ruleBuilderEnumOptionsResourceHandler.isCachedResourceExpired(cachedResource, "Path", locations));
+  }
+
+  /**
+   * Test {@link RuleBuilderEnumOptionsResourceHandler#isCachedResourceExpired(GeneratedResource, String, List)}.
+   * <ul>
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link RuleBuilderEnumOptionsResourceHandler#isCachedResourceExpired(GeneratedResource, String, List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "boolean RuleBuilderEnumOptionsResourceHandler.isCachedResourceExpired(GeneratedResource, String, List)"})
+  public void testIsCachedResourceExpired_whenArrayList() {
+    // Arrange
+    GeneratedResource cachedResource = new GeneratedResource();
 
     // Act and Assert
     assertFalse(

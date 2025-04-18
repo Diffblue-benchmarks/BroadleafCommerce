@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework Web
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.web.processor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -5,25 +22,26 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
 import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.presentation.model.BroadleafTemplateContext;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml",
-    "/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 class PriceTextDisplayProcessorDiffblueTest {
-  @Autowired
+  @Mock
+  private Map<String, String> map;
+
+  @InjectMocks
   private PriceTextDisplayProcessor priceTextDisplayProcessor;
 
   /**
@@ -33,6 +51,8 @@ class PriceTextDisplayProcessorDiffblueTest {
    */
   @Test
   @DisplayName("Test getName()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String PriceTextDisplayProcessor.getName()"})
   void testGetName() {
     // Arrange, Act and Assert
     assertEquals("price", (new PriceTextDisplayProcessor()).getName());
@@ -45,97 +65,29 @@ class PriceTextDisplayProcessorDiffblueTest {
    */
   @Test
   @DisplayName("Test getPrecedence()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"int PriceTextDisplayProcessor.getPrecedence()"})
   void testGetPrecedence() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals(1500, (new PriceTextDisplayProcessor()).getPrecedence());
+    assertEquals(1500, priceTextDisplayProcessor.getPrecedence());
   }
 
   /**
-   * Test {@link PriceTextDisplayProcessor#getPrecedence()}.
-   * <p>
-   * Method under test: {@link PriceTextDisplayProcessor#getPrecedence()}
-   */
-  @Test
-  @DisplayName("Test getPrecedence()")
-  @Disabled("TODO: Complete this test")
-  void testGetPrecedence2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass11319 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.PriceTextDisplayProcessor priceTextDisplayProcessor;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new PriceTextDisplayProcessor()).getPrecedence();
-  }
-
-  /**
-   * Test
-   * {@link PriceTextDisplayProcessor#getTagText(String, Map, String, String, BroadleafTemplateContext)}.
-   * <p>
-   * Method under test:
-   * {@link PriceTextDisplayProcessor#getTagText(String, Map, String, String, BroadleafTemplateContext)}
-   */
-  @Test
-  @DisplayName("Test getTagText(String, Map, String, String, BroadleafTemplateContext)")
-  @Disabled("TODO: Complete this test")
-  void testGetTagText() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass11320 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.PriceTextDisplayProcessor priceTextDisplayProcessor;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    PriceTextDisplayProcessor priceTextDisplayProcessor2 = new PriceTextDisplayProcessor();
-
-    // Act
-    priceTextDisplayProcessor2.getTagText("Tag Name", new HashMap<>(), "Attribute Name", "42",
-        mock(BroadleafTemplateContext.class));
-  }
-
-  /**
-   * Test
-   * {@link PriceTextDisplayProcessor#getTagText(String, Map, String, String, BroadleafTemplateContext)}.
+   * Test {@link PriceTextDisplayProcessor#getTagText(String, Map, String, String, BroadleafTemplateContext)}.
    * <ul>
    *   <li>Given {@code A}.</li>
    *   <li>Then return {@code £65.00}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PriceTextDisplayProcessor#getTagText(String, Map, String, String, BroadleafTemplateContext)}
+   * Method under test: {@link PriceTextDisplayProcessor#getTagText(String, Map, String, String, BroadleafTemplateContext)}
    */
   @Test
   @DisplayName("Test getTagText(String, Map, String, String, BroadleafTemplateContext); given 'A'; then return '£65.00'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "String PriceTextDisplayProcessor.getTagText(String, Map, String, String, BroadleafTemplateContext)"})
   void testGetTagText_givenA_thenReturn6500() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    PriceTextDisplayProcessor priceTextDisplayProcessor = new PriceTextDisplayProcessor();
     HashMap<String, String> tagAttributes = new HashMap<>();
     BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
     when(context.parseExpression(Mockito.<String>any())).thenReturn((byte) 'A');
@@ -150,23 +102,21 @@ class PriceTextDisplayProcessorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link PriceTextDisplayProcessor#getTagText(String, Map, String, String, BroadleafTemplateContext)}.
+   * Test {@link PriceTextDisplayProcessor#getTagText(String, Map, String, String, BroadleafTemplateContext)}.
    * <ul>
    *   <li>Given {@link Money#Money()}.</li>
    *   <li>Then return {@code £0.00}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PriceTextDisplayProcessor#getTagText(String, Map, String, String, BroadleafTemplateContext)}
+   * Method under test: {@link PriceTextDisplayProcessor#getTagText(String, Map, String, String, BroadleafTemplateContext)}
    */
   @Test
   @DisplayName("Test getTagText(String, Map, String, String, BroadleafTemplateContext); given Money(); then return '£0.00'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "String PriceTextDisplayProcessor.getTagText(String, Map, String, String, BroadleafTemplateContext)"})
   void testGetTagText_givenMoney_thenReturn000() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    PriceTextDisplayProcessor priceTextDisplayProcessor = new PriceTextDisplayProcessor();
     HashMap<String, String> tagAttributes = new HashMap<>();
     BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
     when(context.parseExpression(Mockito.<String>any())).thenReturn(new Money());
@@ -181,54 +131,21 @@ class PriceTextDisplayProcessorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link PriceTextDisplayProcessor#getTagText(String, Map, String, String, BroadleafTemplateContext)}.
-   * <ul>
-   *   <li>Given one.</li>
-   *   <li>Then return {@code £1.00}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link PriceTextDisplayProcessor#getTagText(String, Map, String, String, BroadleafTemplateContext)}
-   */
-  @Test
-  @DisplayName("Test getTagText(String, Map, String, String, BroadleafTemplateContext); given one; then return '£1.00'")
-  void testGetTagText_givenOne_thenReturn100() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PriceTextDisplayProcessor priceTextDisplayProcessor = new PriceTextDisplayProcessor();
-    HashMap<String, String> tagAttributes = new HashMap<>();
-    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
-    when(context.parseExpression(Mockito.<String>any())).thenReturn(1);
-
-    // Act
-    String actualTagText = priceTextDisplayProcessor.getTagText("Tag Name", tagAttributes, "Attribute Name", "42",
-        context);
-
-    // Assert
-    verify(context).parseExpression(eq("42"));
-    assertEquals("£1.00", actualTagText);
-  }
-
-  /**
-   * Test
-   * {@link PriceTextDisplayProcessor#getTagText(String, Map, String, String, BroadleafTemplateContext)}.
+   * Test {@link PriceTextDisplayProcessor#getTagText(String, Map, String, String, BroadleafTemplateContext)}.
    * <ul>
    *   <li>Given {@code Parse Expression}.</li>
    *   <li>Then return {@code Not Available}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PriceTextDisplayProcessor#getTagText(String, Map, String, String, BroadleafTemplateContext)}
+   * Method under test: {@link PriceTextDisplayProcessor#getTagText(String, Map, String, String, BroadleafTemplateContext)}
    */
   @Test
   @DisplayName("Test getTagText(String, Map, String, String, BroadleafTemplateContext); given 'Parse Expression'; then return 'Not Available'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "String PriceTextDisplayProcessor.getTagText(String, Map, String, String, BroadleafTemplateContext)"})
   void testGetTagText_givenParseExpression_thenReturnNotAvailable() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    PriceTextDisplayProcessor priceTextDisplayProcessor = new PriceTextDisplayProcessor();
     HashMap<String, String> tagAttributes = new HashMap<>();
     BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
     when(context.parseExpression(Mockito.<String>any())).thenReturn("Parse Expression");

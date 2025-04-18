@@ -1,7 +1,27 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.search.dao;
 
 import static org.junit.Assert.assertEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class ParentCategoryByCategoryDiffblueTest {
   /**
@@ -9,8 +29,7 @@ public class ParentCategoryByCategoryDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>
-   * {@link ParentCategoryByCategory#ParentCategoryByCategory(Long, Long, Long)}
+   *   <li>{@link ParentCategoryByCategory#ParentCategoryByCategory(Long, Long, Long)}
    *   <li>{@link ParentCategoryByCategory#setChild(Long)}
    *   <li>{@link ParentCategoryByCategory#setDefaultParent(Long)}
    *   <li>{@link ParentCategoryByCategory#setParent(Long)}
@@ -20,6 +39,11 @@ public class ParentCategoryByCategoryDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ParentCategoryByCategory.<init>(Long, Long, Long)",
+      "Long ParentCategoryByCategory.getChild()", "Long ParentCategoryByCategory.getDefaultParent()",
+      "Long ParentCategoryByCategory.getParent()", "void ParentCategoryByCategory.setChild(Long)",
+      "void ParentCategoryByCategory.setDefaultParent(Long)", "void ParentCategoryByCategory.setParent(Long)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     ParentCategoryByCategory actualParentCategoryByCategory = new ParentCategoryByCategory(1L, 1L, 1L);
@@ -30,7 +54,7 @@ public class ParentCategoryByCategoryDiffblueTest {
     Long actualDefaultParent = actualParentCategoryByCategory.getDefaultParent();
     Long actualParent = actualParentCategoryByCategory.getParent();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals(1L, actualChild.longValue());
     assertEquals(1L, actualDefaultParent.longValue());
     assertEquals(1L, actualParent.longValue());

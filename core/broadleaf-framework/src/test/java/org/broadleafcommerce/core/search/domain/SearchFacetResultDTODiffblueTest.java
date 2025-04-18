@@ -1,23 +1,44 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.search.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class SearchFacetResultDTODiffblueTest {
   /**
    * Test {@link SearchFacetResultDTO#getValueKey()}.
    * <ul>
-   *   <li>Given {@link SearchFacetResultDTO} (default constructor) Active is
-   * {@code true}.</li>
+   *   <li>Given {@link SearchFacetResultDTO} (default constructor) Active is {@code true}.</li>
    *   <li>Then return {@code foo}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SearchFacetResultDTO#getValueKey()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SearchFacetResultDTO.getValueKey()"})
   public void testGetValueKey_givenSearchFacetResultDTOActiveIsTrue_thenReturnFoo() {
     // Arrange
     SearchFacetResultDTO searchFacetResultDTO = new SearchFacetResultDTO();
@@ -42,6 +63,8 @@ public class SearchFacetResultDTODiffblueTest {
    * Method under test: {@link SearchFacetResultDTO#getValueKey()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SearchFacetResultDTO.getValueKey()"})
   public void testGetValueKey_givenSearchFacetResultDTO_thenReturnRange5Bnull3Anull5d() {
     // Arrange, Act and Assert
     assertEquals("range%5Bnull%3Anull%5D", (new SearchFacetResultDTO()).getValueKey());
@@ -50,14 +73,15 @@ public class SearchFacetResultDTODiffblueTest {
   /**
    * Test {@link SearchFacetResultDTO#getUnencodedValueKey()}.
    * <ul>
-   *   <li>Given {@link SearchFacetResultDTO} (default constructor) Active is
-   * {@code true}.</li>
+   *   <li>Given {@link SearchFacetResultDTO} (default constructor) Active is {@code true}.</li>
    *   <li>Then return {@code foo}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SearchFacetResultDTO#getUnencodedValueKey()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SearchFacetResultDTO.getUnencodedValueKey()"})
   public void testGetUnencodedValueKey_givenSearchFacetResultDTOActiveIsTrue_thenReturnFoo() {
     // Arrange
     SearchFacetResultDTO searchFacetResultDTO = new SearchFacetResultDTO();
@@ -82,6 +106,8 @@ public class SearchFacetResultDTODiffblueTest {
    * Method under test: {@link SearchFacetResultDTO#getUnencodedValueKey()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SearchFacetResultDTO.getUnencodedValueKey()"})
   public void testGetUnencodedValueKey_givenSearchFacetResultDTO_thenReturnRangeNullNull() {
     // Arrange, Act and Assert
     assertEquals("range[null:null]", (new SearchFacetResultDTO()).getUnencodedValueKey());
@@ -108,6 +134,14 @@ public class SearchFacetResultDTODiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SearchFacetResultDTO.<init>()", "SearchFacet SearchFacetResultDTO.getFacet()",
+      "BigDecimal SearchFacetResultDTO.getMaxValue()", "BigDecimal SearchFacetResultDTO.getMinValue()",
+      "Integer SearchFacetResultDTO.getQuantity()", "String SearchFacetResultDTO.getValue()",
+      "boolean SearchFacetResultDTO.isActive()", "void SearchFacetResultDTO.setActive(boolean)",
+      "void SearchFacetResultDTO.setFacet(SearchFacet)", "void SearchFacetResultDTO.setMaxValue(BigDecimal)",
+      "void SearchFacetResultDTO.setMinValue(BigDecimal)", "void SearchFacetResultDTO.setQuantity(Integer)",
+      "void SearchFacetResultDTO.setValue(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     SearchFacetResultDTO actualSearchFacetResultDTO = new SearchFacetResultDTO();
@@ -127,7 +161,7 @@ public class SearchFacetResultDTODiffblueTest {
     String actualValue = actualSearchFacetResultDTO.getValue();
     boolean actualIsActiveResult = actualSearchFacetResultDTO.isActive();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("42", actualValue);
     assertEquals(1, actualQuantity.intValue());
     assertTrue(actualIsActiveResult);

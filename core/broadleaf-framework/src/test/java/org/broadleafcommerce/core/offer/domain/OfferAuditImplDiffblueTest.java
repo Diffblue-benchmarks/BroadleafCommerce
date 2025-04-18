@@ -1,17 +1,36 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.offer.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.Date;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class OfferAuditImplDiffblueTest {
   /**
-   * Test {@link OfferAuditImpl#equals(Object)}, and
-   * {@link OfferAuditImpl#hashCode()}.
+   * Test {@link OfferAuditImpl#equals(Object)}, and {@link OfferAuditImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -24,6 +43,8 @@ public class OfferAuditImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferAuditImpl.equals(Object)", "int OfferAuditImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     OfferAuditImpl offerAuditImpl = new OfferAuditImpl();
@@ -53,8 +74,7 @@ public class OfferAuditImplDiffblueTest {
   }
 
   /**
-   * Test {@link OfferAuditImpl#equals(Object)}, and
-   * {@link OfferAuditImpl#hashCode()}.
+   * Test {@link OfferAuditImpl#equals(Object)}, and {@link OfferAuditImpl#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -67,6 +87,8 @@ public class OfferAuditImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferAuditImpl.equals(Object)", "int OfferAuditImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     OfferAuditImpl offerAuditImpl = new OfferAuditImpl();
@@ -95,6 +117,8 @@ public class OfferAuditImplDiffblueTest {
    * Method under test: {@link OfferAuditImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferAuditImpl.equals(Object)", "int OfferAuditImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     OfferAuditImpl offerAuditImpl = new OfferAuditImpl();
@@ -131,6 +155,8 @@ public class OfferAuditImplDiffblueTest {
    * Method under test: {@link OfferAuditImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferAuditImpl.equals(Object)", "int OfferAuditImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     OfferAuditImpl offerAuditImpl = new OfferAuditImpl();
@@ -157,6 +183,8 @@ public class OfferAuditImplDiffblueTest {
    * Method under test: {@link OfferAuditImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferAuditImpl.equals(Object)", "int OfferAuditImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     OfferAuditImpl offerAuditImpl = new OfferAuditImpl();
@@ -196,6 +224,14 @@ public class OfferAuditImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OfferAuditImpl.<init>()", "Long OfferAuditImpl.getAccountId()",
+      "Long OfferAuditImpl.getCustomerId()", "Long OfferAuditImpl.getId()", "Long OfferAuditImpl.getOfferCodeId()",
+      "Long OfferAuditImpl.getOfferId()", "Long OfferAuditImpl.getOrderId()", "Date OfferAuditImpl.getRedeemedDate()",
+      "void OfferAuditImpl.setAccountId(Long)", "void OfferAuditImpl.setCustomerId(Long)",
+      "void OfferAuditImpl.setId(Long)", "void OfferAuditImpl.setOfferCodeId(Long)",
+      "void OfferAuditImpl.setOfferId(Long)", "void OfferAuditImpl.setOrderId(Long)",
+      "void OfferAuditImpl.setRedeemedDate(Date)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     OfferAuditImpl actualOfferAuditImpl = new OfferAuditImpl();
@@ -215,7 +251,7 @@ public class OfferAuditImplDiffblueTest {
     Long actualOrderId = actualOfferAuditImpl.getOrderId();
     Date actualRedeemedDate = actualOfferAuditImpl.getRedeemedDate();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals(OfferAuditImpl.serialVersionUID, actualAccountId.longValue());
     assertEquals(OfferAuditImpl.serialVersionUID, actualCustomerId.longValue());
     assertEquals(OfferAuditImpl.serialVersionUID, actualId.longValue());

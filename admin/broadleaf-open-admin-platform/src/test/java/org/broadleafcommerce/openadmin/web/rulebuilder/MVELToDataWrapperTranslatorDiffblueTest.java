@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.web.rulebuilder;
 
 import static org.junit.Assert.assertEquals;
@@ -5,13 +22,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.anyBoolean;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
@@ -23,10 +38,9 @@ import org.broadleafcommerce.openadmin.web.rulebuilder.dto.ExpressionDTO;
 import org.broadleafcommerce.openadmin.web.rulebuilder.grouping.Group;
 import org.broadleafcommerce.openadmin.web.rulebuilder.service.RuleBuilderFieldService;
 import org.broadleafcommerce.openadmin.web.rulebuilder.statement.Expression;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -38,15 +52,14 @@ public class MVELToDataWrapperTranslatorDiffblueTest {
   private MVELToDataWrapperTranslator mVELToDataWrapperTranslator;
 
   /**
-   * Test
-   * {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, String, RuleBuilderFieldService)}
-   * with {@code entities}, {@code mvelProperty}, {@code quantityProperty},
-   * {@code idProperty}, {@code containedProperty}, {@code fieldService}.
+   * Test {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, String, RuleBuilderFieldService)} with {@code entities}, {@code mvelProperty}, {@code quantityProperty}, {@code idProperty}, {@code containedProperty}, {@code fieldService}.
    * <p>
-   * Method under test:
-   * {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, String, RuleBuilderFieldService)}
+   * Method under test: {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, String, RuleBuilderFieldService)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DataWrapper MVELToDataWrapperTranslator.createRuleData(Entity[], String, String, String, String, RuleBuilderFieldService)"})
   public void testCreateRuleDataWithEntitiesMvelPropertyQuantityPropertyIdPropertyContainedPropertyFieldService() {
     // Arrange
     Entity entity = mock(Entity.class);
@@ -64,15 +77,14 @@ public class MVELToDataWrapperTranslatorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, String, RuleBuilderFieldService)}
-   * with {@code entities}, {@code mvelProperty}, {@code quantityProperty},
-   * {@code idProperty}, {@code containedProperty}, {@code fieldService}.
+   * Test {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, String, RuleBuilderFieldService)} with {@code entities}, {@code mvelProperty}, {@code quantityProperty}, {@code idProperty}, {@code containedProperty}, {@code fieldService}.
    * <p>
-   * Method under test:
-   * {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, String, RuleBuilderFieldService)}
+   * Method under test: {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, String, RuleBuilderFieldService)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DataWrapper MVELToDataWrapperTranslator.createRuleData(Entity[], String, String, String, String, RuleBuilderFieldService)"})
   public void testCreateRuleDataWithEntitiesMvelPropertyQuantityPropertyIdPropertyContainedPropertyFieldService2() {
     // Arrange, Act and Assert
     assertNull(mVELToDataWrapperTranslator.createRuleData(null, "Mvel Property", "Quantity Property", "Id Property",
@@ -80,15 +92,14 @@ public class MVELToDataWrapperTranslatorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, String, RuleBuilderFieldService)}
-   * with {@code entities}, {@code mvelProperty}, {@code quantityProperty},
-   * {@code idProperty}, {@code containedProperty}, {@code fieldService}.
+   * Test {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, String, RuleBuilderFieldService)} with {@code entities}, {@code mvelProperty}, {@code quantityProperty}, {@code idProperty}, {@code containedProperty}, {@code fieldService}.
    * <p>
-   * Method under test:
-   * {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, String, RuleBuilderFieldService)}
+   * Method under test: {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, String, RuleBuilderFieldService)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DataWrapper MVELToDataWrapperTranslator.createRuleData(Entity[], String, String, String, String, RuleBuilderFieldService)"})
   public void testCreateRuleDataWithEntitiesMvelPropertyQuantityPropertyIdPropertyContainedPropertyFieldService3() {
     // Arrange, Act and Assert
     assertNull(mVELToDataWrapperTranslator.createRuleData(new Entity[]{}, "Mvel Property", "Quantity Property",
@@ -96,15 +107,14 @@ public class MVELToDataWrapperTranslatorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, String, RuleBuilderFieldService)}
-   * with {@code entities}, {@code mvelProperty}, {@code quantityProperty},
-   * {@code idProperty}, {@code containedProperty}, {@code fieldService}.
+   * Test {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, String, RuleBuilderFieldService)} with {@code entities}, {@code mvelProperty}, {@code quantityProperty}, {@code idProperty}, {@code containedProperty}, {@code fieldService}.
    * <p>
-   * Method under test:
-   * {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, String, RuleBuilderFieldService)}
+   * Method under test: {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, String, RuleBuilderFieldService)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DataWrapper MVELToDataWrapperTranslator.createRuleData(Entity[], String, String, String, String, RuleBuilderFieldService)"})
   public void testCreateRuleDataWithEntitiesMvelPropertyQuantityPropertyIdPropertyContainedPropertyFieldService4() {
     // Arrange, Act and Assert
     assertNull(mVELToDataWrapperTranslator.createRuleData(new Entity[]{mock(Entity.class)}, null, "Quantity Property",
@@ -112,15 +122,14 @@ public class MVELToDataWrapperTranslatorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, String, RuleBuilderFieldService)}
-   * with {@code entities}, {@code mvelProperty}, {@code quantityProperty},
-   * {@code idProperty}, {@code containedProperty}, {@code fieldService}.
+   * Test {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, String, RuleBuilderFieldService)} with {@code entities}, {@code mvelProperty}, {@code quantityProperty}, {@code idProperty}, {@code containedProperty}, {@code fieldService}.
    * <p>
-   * Method under test:
-   * {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, String, RuleBuilderFieldService)}
+   * Method under test: {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, String, RuleBuilderFieldService)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DataWrapper MVELToDataWrapperTranslator.createRuleData(Entity[], String, String, String, String, RuleBuilderFieldService)"})
   public void testCreateRuleDataWithEntitiesMvelPropertyQuantityPropertyIdPropertyContainedPropertyFieldService5() {
     // Arrange
     Entity entity = mock(Entity.class);
@@ -138,15 +147,14 @@ public class MVELToDataWrapperTranslatorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, String, RuleBuilderFieldService)}
-   * with {@code entities}, {@code mvelProperty}, {@code quantityProperty},
-   * {@code idProperty}, {@code containedProperty}, {@code fieldService}.
+   * Test {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, String, RuleBuilderFieldService)} with {@code entities}, {@code mvelProperty}, {@code quantityProperty}, {@code idProperty}, {@code containedProperty}, {@code fieldService}.
    * <p>
-   * Method under test:
-   * {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, String, RuleBuilderFieldService)}
+   * Method under test: {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, String, RuleBuilderFieldService)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DataWrapper MVELToDataWrapperTranslator.createRuleData(Entity[], String, String, String, String, RuleBuilderFieldService)"})
   public void testCreateRuleDataWithEntitiesMvelPropertyQuantityPropertyIdPropertyContainedPropertyFieldService6() {
     // Arrange
     Entity entity = mock(Entity.class);
@@ -164,15 +172,14 @@ public class MVELToDataWrapperTranslatorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, String, RuleBuilderFieldService)}
-   * with {@code entities}, {@code mvelProperty}, {@code quantityProperty},
-   * {@code idProperty}, {@code containedProperty}, {@code fieldService}.
+   * Test {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, String, RuleBuilderFieldService)} with {@code entities}, {@code mvelProperty}, {@code quantityProperty}, {@code idProperty}, {@code containedProperty}, {@code fieldService}.
    * <p>
-   * Method under test:
-   * {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, String, RuleBuilderFieldService)}
+   * Method under test: {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, String, RuleBuilderFieldService)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DataWrapper MVELToDataWrapperTranslator.createRuleData(Entity[], String, String, String, String, RuleBuilderFieldService)"})
   public void testCreateRuleDataWithEntitiesMvelPropertyQuantityPropertyIdPropertyContainedPropertyFieldService7() {
     // Arrange
     Entity entity = mock(Entity.class);
@@ -190,15 +197,14 @@ public class MVELToDataWrapperTranslatorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, RuleBuilderFieldService)}
-   * with {@code entities}, {@code mvelProperty}, {@code quantityProperty},
-   * {@code idProperty}, {@code fieldService}.
+   * Test {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, RuleBuilderFieldService)} with {@code entities}, {@code mvelProperty}, {@code quantityProperty}, {@code idProperty}, {@code fieldService}.
    * <p>
-   * Method under test:
-   * {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, RuleBuilderFieldService)}
+   * Method under test: {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, RuleBuilderFieldService)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DataWrapper MVELToDataWrapperTranslator.createRuleData(Entity[], String, String, String, RuleBuilderFieldService)"})
   public void testCreateRuleDataWithEntitiesMvelPropertyQuantityPropertyIdPropertyFieldService() {
     // Arrange
     Entity entity = mock(Entity.class);
@@ -216,15 +222,14 @@ public class MVELToDataWrapperTranslatorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, RuleBuilderFieldService)}
-   * with {@code entities}, {@code mvelProperty}, {@code quantityProperty},
-   * {@code idProperty}, {@code fieldService}.
+   * Test {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, RuleBuilderFieldService)} with {@code entities}, {@code mvelProperty}, {@code quantityProperty}, {@code idProperty}, {@code fieldService}.
    * <p>
-   * Method under test:
-   * {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, RuleBuilderFieldService)}
+   * Method under test: {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, RuleBuilderFieldService)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DataWrapper MVELToDataWrapperTranslator.createRuleData(Entity[], String, String, String, RuleBuilderFieldService)"})
   public void testCreateRuleDataWithEntitiesMvelPropertyQuantityPropertyIdPropertyFieldService2() {
     // Arrange, Act and Assert
     assertNull(mVELToDataWrapperTranslator.createRuleData(null, "Mvel Property", "Quantity Property", "Id Property",
@@ -232,15 +237,14 @@ public class MVELToDataWrapperTranslatorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, RuleBuilderFieldService)}
-   * with {@code entities}, {@code mvelProperty}, {@code quantityProperty},
-   * {@code idProperty}, {@code fieldService}.
+   * Test {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, RuleBuilderFieldService)} with {@code entities}, {@code mvelProperty}, {@code quantityProperty}, {@code idProperty}, {@code fieldService}.
    * <p>
-   * Method under test:
-   * {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, RuleBuilderFieldService)}
+   * Method under test: {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, RuleBuilderFieldService)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DataWrapper MVELToDataWrapperTranslator.createRuleData(Entity[], String, String, String, RuleBuilderFieldService)"})
   public void testCreateRuleDataWithEntitiesMvelPropertyQuantityPropertyIdPropertyFieldService3() {
     // Arrange, Act and Assert
     assertNull(mVELToDataWrapperTranslator.createRuleData(new Entity[]{}, "Mvel Property", "Quantity Property",
@@ -248,15 +252,14 @@ public class MVELToDataWrapperTranslatorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, RuleBuilderFieldService)}
-   * with {@code entities}, {@code mvelProperty}, {@code quantityProperty},
-   * {@code idProperty}, {@code fieldService}.
+   * Test {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, RuleBuilderFieldService)} with {@code entities}, {@code mvelProperty}, {@code quantityProperty}, {@code idProperty}, {@code fieldService}.
    * <p>
-   * Method under test:
-   * {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, RuleBuilderFieldService)}
+   * Method under test: {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, RuleBuilderFieldService)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DataWrapper MVELToDataWrapperTranslator.createRuleData(Entity[], String, String, String, RuleBuilderFieldService)"})
   public void testCreateRuleDataWithEntitiesMvelPropertyQuantityPropertyIdPropertyFieldService4() {
     // Arrange, Act and Assert
     assertNull(mVELToDataWrapperTranslator.createRuleData(new Entity[]{mock(Entity.class)}, null, "Quantity Property",
@@ -264,15 +267,14 @@ public class MVELToDataWrapperTranslatorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, RuleBuilderFieldService)}
-   * with {@code entities}, {@code mvelProperty}, {@code quantityProperty},
-   * {@code idProperty}, {@code fieldService}.
+   * Test {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, RuleBuilderFieldService)} with {@code entities}, {@code mvelProperty}, {@code quantityProperty}, {@code idProperty}, {@code fieldService}.
    * <p>
-   * Method under test:
-   * {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, RuleBuilderFieldService)}
+   * Method under test: {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, RuleBuilderFieldService)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DataWrapper MVELToDataWrapperTranslator.createRuleData(Entity[], String, String, String, RuleBuilderFieldService)"})
   public void testCreateRuleDataWithEntitiesMvelPropertyQuantityPropertyIdPropertyFieldService5() {
     // Arrange
     Entity entity = mock(Entity.class);
@@ -290,15 +292,14 @@ public class MVELToDataWrapperTranslatorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, RuleBuilderFieldService)}
-   * with {@code entities}, {@code mvelProperty}, {@code quantityProperty},
-   * {@code idProperty}, {@code fieldService}.
+   * Test {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, RuleBuilderFieldService)} with {@code entities}, {@code mvelProperty}, {@code quantityProperty}, {@code idProperty}, {@code fieldService}.
    * <p>
-   * Method under test:
-   * {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, RuleBuilderFieldService)}
+   * Method under test: {@link MVELToDataWrapperTranslator#createRuleData(Entity[], String, String, String, RuleBuilderFieldService)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DataWrapper MVELToDataWrapperTranslator.createRuleData(Entity[], String, String, String, RuleBuilderFieldService)"})
   public void testCreateRuleDataWithEntitiesMvelPropertyQuantityPropertyIdPropertyFieldService6() {
     // Arrange
     Entity entity = mock(Entity.class);
@@ -318,11 +319,66 @@ public class MVELToDataWrapperTranslatorDiffblueTest {
   /**
    * Test {@link MVELToDataWrapperTranslator#checkForInvalidSubGroup(DataDTO)}.
    * <p>
-   * Method under test:
-   * {@link MVELToDataWrapperTranslator#checkForInvalidSubGroup(DataDTO)}
+   * Method under test: {@link MVELToDataWrapperTranslator#checkForInvalidSubGroup(DataDTO)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean MVELToDataWrapperTranslator.checkForInvalidSubGroup(DataDTO)"})
   public void testCheckForInvalidSubGroup() {
+    // Arrange
+    MVELToDataWrapperTranslator mvelToDataWrapperTranslator = new MVELToDataWrapperTranslator();
+
+    DataDTO dataDTO = new DataDTO();
+    dataDTO.setCondition("Condition");
+    dataDTO.setContainedPk(1L);
+    dataDTO.setCreatedFromSubGroup(true);
+    dataDTO.setPk(1L);
+    dataDTO.setPreviousContainedPk(1L);
+    dataDTO.setPreviousPk(1L);
+    dataDTO.setQuantity(1);
+    dataDTO.setRules(new ArrayList<>());
+
+    DataDTO dataDTO2 = new DataDTO();
+    dataDTO2.setCondition("org.broadleafcommerce.openadmin.web.rulebuilder.dto.DataDTO");
+    dataDTO2.setContainedPk(3L);
+    dataDTO2.setCreatedFromSubGroup(false);
+    dataDTO2.setPk(3L);
+    dataDTO2.setPreviousContainedPk(3L);
+    dataDTO2.setPreviousPk(3L);
+    dataDTO2.setQuantity(3);
+    dataDTO2.setRules(new ArrayList<>());
+
+    ArrayList<DataDTO> rules = new ArrayList<>();
+    rules.add(dataDTO2);
+    rules.add(dataDTO);
+
+    DataDTO dataDTO3 = new DataDTO();
+    dataDTO3.setCondition("Condition");
+    dataDTO3.setContainedPk(1L);
+    dataDTO3.setCreatedFromSubGroup(true);
+    dataDTO3.setPk(1L);
+    dataDTO3.setPreviousContainedPk(1L);
+    dataDTO3.setPreviousPk(1L);
+    dataDTO3.setQuantity(1);
+    dataDTO3.setRules(rules);
+
+    // Act and Assert
+    assertTrue(mvelToDataWrapperTranslator.checkForInvalidSubGroup(dataDTO3));
+  }
+
+  /**
+   * Test {@link MVELToDataWrapperTranslator#checkForInvalidSubGroup(DataDTO)}.
+   * <ul>
+   *   <li>Given {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MVELToDataWrapperTranslator#checkForInvalidSubGroup(DataDTO)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean MVELToDataWrapperTranslator.checkForInvalidSubGroup(DataDTO)"})
+  public void testCheckForInvalidSubGroup_givenArrayList_thenReturnFalse() {
     // Arrange
     MVELToDataWrapperTranslator mvelToDataWrapperTranslator = new MVELToDataWrapperTranslator();
 
@@ -341,13 +397,156 @@ public class MVELToDataWrapperTranslatorDiffblueTest {
   }
 
   /**
-   * Test {@link MVELToDataWrapperTranslator#isExpressionDTO(DataDTO)}.
+   * Test {@link MVELToDataWrapperTranslator#checkForInvalidSubGroup(DataDTO)}.
+   * <ul>
+   *   <li>Given {@link DataDTO} (default constructor) Condition is {@code Condition}.</li>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link MVELToDataWrapperTranslator#isExpressionDTO(DataDTO)}
+   * Method under test: {@link MVELToDataWrapperTranslator#checkForInvalidSubGroup(DataDTO)}
    */
   @Test
-  public void testIsExpressionDTO() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean MVELToDataWrapperTranslator.checkForInvalidSubGroup(DataDTO)"})
+  public void testCheckForInvalidSubGroup_givenDataDTOConditionIsCondition_thenReturnTrue() {
+    // Arrange
+    MVELToDataWrapperTranslator mvelToDataWrapperTranslator = new MVELToDataWrapperTranslator();
+
+    DataDTO dataDTO = new DataDTO();
+    dataDTO.setCondition("Condition");
+    dataDTO.setContainedPk(1L);
+    dataDTO.setCreatedFromSubGroup(true);
+    dataDTO.setPk(1L);
+    dataDTO.setPreviousContainedPk(1L);
+    dataDTO.setPreviousPk(1L);
+    dataDTO.setQuantity(1);
+    dataDTO.setRules(new ArrayList<>());
+
+    ArrayList<DataDTO> rules = new ArrayList<>();
+    rules.add(dataDTO);
+
+    DataDTO dataDTO2 = new DataDTO();
+    dataDTO2.setCondition("Condition");
+    dataDTO2.setContainedPk(1L);
+    dataDTO2.setCreatedFromSubGroup(true);
+    dataDTO2.setPk(1L);
+    dataDTO2.setPreviousContainedPk(1L);
+    dataDTO2.setPreviousPk(1L);
+    dataDTO2.setQuantity(1);
+    dataDTO2.setRules(rules);
+
+    // Act and Assert
+    assertTrue(mvelToDataWrapperTranslator.checkForInvalidSubGroup(dataDTO2));
+  }
+
+  /**
+   * Test {@link MVELToDataWrapperTranslator#checkForInvalidSubGroup(DataDTO)}.
+   * <ul>
+   *   <li>Given {@link ExpressionDTO} (default constructor) Condition is {@code Condition}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MVELToDataWrapperTranslator#checkForInvalidSubGroup(DataDTO)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean MVELToDataWrapperTranslator.checkForInvalidSubGroup(DataDTO)"})
+  public void testCheckForInvalidSubGroup_givenExpressionDTOConditionIsCondition() {
+    // Arrange
+    MVELToDataWrapperTranslator mvelToDataWrapperTranslator = new MVELToDataWrapperTranslator();
+
+    ExpressionDTO expressionDTO = new ExpressionDTO();
+    expressionDTO.setCondition("Condition");
+    expressionDTO.setContainedPk(1L);
+    expressionDTO.setCreatedFromSubGroup(true);
+    expressionDTO.setId("42");
+    expressionDTO.setOperator("Operator");
+    expressionDTO.setPk(1L);
+    expressionDTO.setPreviousContainedPk(1L);
+    expressionDTO.setPreviousPk(1L);
+    expressionDTO.setQuantity(1);
+    expressionDTO.setRules(new ArrayList<>());
+    expressionDTO.setValue("42");
+    expressionDTO.setCondition("Condition");
+    expressionDTO.setContainedPk(1L);
+    expressionDTO.setCreatedFromSubGroup(true);
+    expressionDTO.setPk(1L);
+    expressionDTO.setPreviousContainedPk(1L);
+    expressionDTO.setPreviousPk(1L);
+    expressionDTO.setQuantity(1);
+    expressionDTO.setRules(new ArrayList<>());
+
+    ArrayList<DataDTO> rules = new ArrayList<>();
+    rules.add(expressionDTO);
+
+    DataDTO dataDTO = new DataDTO();
+    dataDTO.setCondition("Condition");
+    dataDTO.setContainedPk(1L);
+    dataDTO.setCreatedFromSubGroup(true);
+    dataDTO.setPk(1L);
+    dataDTO.setPreviousContainedPk(1L);
+    dataDTO.setPreviousPk(1L);
+    dataDTO.setQuantity(1);
+    dataDTO.setRules(rules);
+
+    // Act and Assert
+    assertTrue(mvelToDataWrapperTranslator.checkForInvalidSubGroup(dataDTO));
+  }
+
+  /**
+   * Test {@link MVELToDataWrapperTranslator#isExpressionDTO(DataDTO)}.
+   * <ul>
+   *   <li>Given {@code 42}.</li>
+   *   <li>When {@link ExpressionDTO} (default constructor) Condition is {@code Condition}.</li>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MVELToDataWrapperTranslator#isExpressionDTO(DataDTO)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean MVELToDataWrapperTranslator.isExpressionDTO(DataDTO)"})
+  public void testIsExpressionDTO_given42_whenExpressionDTOConditionIsCondition_thenReturnTrue() {
+    // Arrange
+    MVELToDataWrapperTranslator mvelToDataWrapperTranslator = new MVELToDataWrapperTranslator();
+
+    ExpressionDTO rules = new ExpressionDTO();
+    rules.setCondition("Condition");
+    rules.setContainedPk(1L);
+    rules.setCreatedFromSubGroup(true);
+    rules.setId("42");
+    rules.setOperator("Operator");
+    rules.setPk(1L);
+    rules.setPreviousContainedPk(1L);
+    rules.setPreviousPk(1L);
+    rules.setQuantity(1);
+    rules.setRules(new ArrayList<>());
+    rules.setValue("42");
+    rules.setCondition("Condition");
+    rules.setContainedPk(1L);
+    rules.setCreatedFromSubGroup(true);
+    rules.setPk(1L);
+    rules.setPreviousContainedPk(1L);
+    rules.setPreviousPk(1L);
+    rules.setQuantity(1);
+    rules.setRules(new ArrayList<>());
+
+    // Act and Assert
+    assertTrue(mvelToDataWrapperTranslator.isExpressionDTO(rules));
+  }
+
+  /**
+   * Test {@link MVELToDataWrapperTranslator#isExpressionDTO(DataDTO)}.
+   * <ul>
+   *   <li>When {@link DataDTO} (default constructor) Condition is {@code Condition}.</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MVELToDataWrapperTranslator#isExpressionDTO(DataDTO)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean MVELToDataWrapperTranslator.isExpressionDTO(DataDTO)"})
+  public void testIsExpressionDTO_whenDataDTOConditionIsCondition_thenReturnFalse() {
     // Arrange
     MVELToDataWrapperTranslator mvelToDataWrapperTranslator = new MVELToDataWrapperTranslator();
 
@@ -366,18 +565,17 @@ public class MVELToDataWrapperTranslatorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MVELToDataWrapperTranslator#createRuleDataDTO(DataDTO, Group, RuleBuilderFieldService)}.
+   * Test {@link MVELToDataWrapperTranslator#createRuleDataDTO(DataDTO, Group, RuleBuilderFieldService)}.
    * <ul>
    *   <li>Given {@code EQUALS}.</li>
-   *   <li>Then {@link Group} (default constructor) OperatorType is
-   * {@code EQUALS}.</li>
+   *   <li>Then {@link Group} (default constructor) OperatorType is {@code EQUALS}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MVELToDataWrapperTranslator#createRuleDataDTO(DataDTO, Group, RuleBuilderFieldService)}
+   * Method under test: {@link MVELToDataWrapperTranslator#createRuleDataDTO(DataDTO, Group, RuleBuilderFieldService)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"DataDTO MVELToDataWrapperTranslator.createRuleDataDTO(DataDTO, Group, RuleBuilderFieldService)"})
   public void testCreateRuleDataDTO_givenEquals_thenGroupOperatorTypeIsEquals() throws MVELTranslationException {
     // Arrange
     MVELToDataWrapperTranslator mvelToDataWrapperTranslator = new MVELToDataWrapperTranslator();
@@ -402,18 +600,17 @@ public class MVELToDataWrapperTranslatorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MVELToDataWrapperTranslator#createRuleDataDTO(DataDTO, Group, RuleBuilderFieldService)}.
+   * Test {@link MVELToDataWrapperTranslator#createRuleDataDTO(DataDTO, Group, RuleBuilderFieldService)}.
    * <ul>
    *   <li>Given {@code null}.</li>
-   *   <li>Then {@link Group} (default constructor) OperatorType is
-   * {@code AND}.</li>
+   *   <li>Then {@link Group} (default constructor) OperatorType is {@code AND}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MVELToDataWrapperTranslator#createRuleDataDTO(DataDTO, Group, RuleBuilderFieldService)}
+   * Method under test: {@link MVELToDataWrapperTranslator#createRuleDataDTO(DataDTO, Group, RuleBuilderFieldService)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"DataDTO MVELToDataWrapperTranslator.createRuleDataDTO(DataDTO, Group, RuleBuilderFieldService)"})
   public void testCreateRuleDataDTO_givenNull_thenGroupOperatorTypeIsAnd() throws MVELTranslationException {
     // Arrange
     MVELToDataWrapperTranslator mvelToDataWrapperTranslator = new MVELToDataWrapperTranslator();
@@ -438,52 +635,13 @@ public class MVELToDataWrapperTranslatorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MVELToDataWrapperTranslator#appendExpression(String, RuleBuilderFieldService, DataDTO, List)}.
-   * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link MVELToDataWrapperTranslator#appendExpression(String, RuleBuilderFieldService, DataDTO, List)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAppendExpression_whenArrayList() throws MVELTranslationException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   org.broadleafcommerce.openadmin.web.rulebuilder.MVELTranslationException: Could not parse the MVEL expression to a compatible form for the rules builder (Phrase)
-    //       at org.broadleafcommerce.openadmin.web.rulebuilder.statement.PhraseTranslator.extractComponents(PhraseTranslator.java:254)
-    //       at org.broadleafcommerce.openadmin.web.rulebuilder.statement.PhraseTranslator.createExpression(PhraseTranslator.java:61)
-    //       at org.broadleafcommerce.openadmin.web.rulebuilder.MVELToDataWrapperTranslator.appendExpression(MVELToDataWrapperTranslator.java:203)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    RuleBuilderFieldService fieldService = mock(RuleBuilderFieldService.class);
-
-    DataDTO parentDTO = new DataDTO();
-    parentDTO.setCondition("Condition");
-    parentDTO.setContainedPk(1L);
-    parentDTO.setCreatedFromSubGroup(true);
-    parentDTO.setPk(1L);
-    parentDTO.setPreviousContainedPk(1L);
-    parentDTO.setPreviousPk(1L);
-    parentDTO.setQuantity(1);
-    parentDTO.setRules(new ArrayList<>());
-
-    // Act
-    mVELToDataWrapperTranslator.appendExpression("Phrase", fieldService, parentDTO, new ArrayList<>());
-  }
-
-  /**
    * Test {@link MVELToDataWrapperTranslator#createExpressionDTO(Expression)}.
    * <p>
-   * Method under test:
-   * {@link MVELToDataWrapperTranslator#createExpressionDTO(Expression)}
+   * Method under test: {@link MVELToDataWrapperTranslator#createExpressionDTO(Expression)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ExpressionDTO MVELToDataWrapperTranslator.createExpressionDTO(Expression)"})
   public void testCreateExpressionDTO() {
     // Arrange
     MVELToDataWrapperTranslator mvelToDataWrapperTranslator = new MVELToDataWrapperTranslator();
@@ -513,38 +671,175 @@ public class MVELToDataWrapperTranslatorDiffblueTest {
 
   /**
    * Test {@link MVELToDataWrapperTranslator#isProjection(Object)}.
+   * <ul>
+   *   <li>When {@code [}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link MVELToDataWrapperTranslator#isProjection(Object)}
    */
   @Test
-  public void testIsProjection() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MVELToDataWrapperTranslator.isProjection(Object)"})
+  public void testIsProjection_whenLeftSquareBracket() {
+    // Arrange, Act and Assert
+    assertFalse((new MVELToDataWrapperTranslator()).isProjection("["));
+  }
+
+  /**
+   * Test {@link MVELToDataWrapperTranslator#isProjection(Object)}.
+   * <ul>
+   *   <li>When {@code Value}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MVELToDataWrapperTranslator#isProjection(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MVELToDataWrapperTranslator.isProjection(Object)"})
+  public void testIsProjection_whenValue() {
     // Arrange, Act and Assert
     assertFalse((new MVELToDataWrapperTranslator()).isProjection("Value"));
   }
 
   /**
-   * Test
-   * {@link MVELToDataWrapperTranslator#postProcessCriteria(DataDTO, List, ExpressionDTO, SupportedFieldType)}.
+   * Test {@link MVELToDataWrapperTranslator#postProcessCriteria(DataDTO, List, ExpressionDTO, SupportedFieldType)}.
    * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} second is {@link ExpressionDTO}
-   * (default constructor).</li>
+   *   <li>Given {@link ExpressionDTO} (default constructor) Id is {@code [}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MVELToDataWrapperTranslator#postProcessCriteria(DataDTO, List, ExpressionDTO, SupportedFieldType)}
+   * Method under test: {@link MVELToDataWrapperTranslator#postProcessCriteria(DataDTO, List, ExpressionDTO, SupportedFieldType)}
    */
   @Test
-  public void testPostProcessCriteria_thenArrayListSecondIsExpressionDTO() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MVELToDataWrapperTranslator.postProcessCriteria(DataDTO, List, ExpressionDTO, SupportedFieldType)"})
+  public void testPostProcessCriteria_givenExpressionDTOIdIsLeftSquareBracket() {
     // Arrange
-    DataDTO parentDTO = mock(DataDTO.class);
-    doNothing().when(parentDTO).setCondition(Mockito.<String>any());
-    doNothing().when(parentDTO).setContainedPk(Mockito.<Long>any());
-    doNothing().when(parentDTO).setCreatedFromSubGroup(anyBoolean());
-    doNothing().when(parentDTO).setPk(Mockito.<Long>any());
-    doNothing().when(parentDTO).setPreviousContainedPk(Mockito.<Long>any());
-    doNothing().when(parentDTO).setPreviousPk(Mockito.<Long>any());
-    doNothing().when(parentDTO).setQuantity(Mockito.<Integer>any());
-    doNothing().when(parentDTO).setRules(Mockito.<ArrayList<DataDTO>>any());
+    DataDTO parentDTO = new DataDTO();
+    parentDTO.setCondition("Condition");
+    parentDTO.setContainedPk(1L);
+    parentDTO.setCreatedFromSubGroup(true);
+    parentDTO.setPk(1L);
+    parentDTO.setPreviousContainedPk(1L);
+    parentDTO.setPreviousPk(1L);
+    parentDTO.setQuantity(1);
+    parentDTO.setRules(new ArrayList<>());
+
+    ExpressionDTO expressionDTO = new ExpressionDTO();
+    expressionDTO.setCondition("[");
+    expressionDTO.setContainedPk(1L);
+    expressionDTO.setCreatedFromSubGroup(true);
+    expressionDTO.setId("[");
+    expressionDTO.setOperator("[");
+    expressionDTO.setPk(1L);
+    expressionDTO.setPreviousContainedPk(1L);
+    expressionDTO.setPreviousPk(1L);
+    expressionDTO.setQuantity(1);
+    expressionDTO.setRules(new ArrayList<>());
+    expressionDTO.setValue("42");
+
+    ArrayList<ExpressionDTO> myCriteriaList = new ArrayList<>();
+    myCriteriaList.add(expressionDTO);
+
+    ExpressionDTO temp = new ExpressionDTO();
+    temp.setCondition("Condition");
+    temp.setContainedPk(1L);
+    temp.setCreatedFromSubGroup(true);
+    temp.setId("42");
+    temp.setOperator("Operator");
+    temp.setPk(1L);
+    temp.setPreviousContainedPk(1L);
+    temp.setPreviousPk(1L);
+    temp.setQuantity(1);
+    temp.setRules(new ArrayList<>());
+    temp.setValue("42");
+
+    // Act
+    mVELToDataWrapperTranslator.postProcessCriteria(parentDTO, myCriteriaList, temp, SupportedFieldType.UNKNOWN);
+
+    // Assert
+    assertEquals(2, myCriteriaList.size());
+    assertSame(expressionDTO, myCriteriaList.get(0));
+    assertSame(temp, myCriteriaList.get(1));
+  }
+
+  /**
+   * Test {@link MVELToDataWrapperTranslator#postProcessCriteria(DataDTO, List, ExpressionDTO, SupportedFieldType)}.
+   * <ul>
+   *   <li>Given {@link ExpressionDTO} (default constructor) Operator is {@code GREATER_OR_EQUAL}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MVELToDataWrapperTranslator#postProcessCriteria(DataDTO, List, ExpressionDTO, SupportedFieldType)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MVELToDataWrapperTranslator.postProcessCriteria(DataDTO, List, ExpressionDTO, SupportedFieldType)"})
+  public void testPostProcessCriteria_givenExpressionDTOOperatorIsGreaterOrEqual() {
+    // Arrange
+    DataDTO parentDTO = new DataDTO();
+    parentDTO.setCondition("Condition");
+    parentDTO.setContainedPk(1L);
+    parentDTO.setCreatedFromSubGroup(true);
+    parentDTO.setPk(1L);
+    parentDTO.setPreviousContainedPk(1L);
+    parentDTO.setPreviousPk(1L);
+    parentDTO.setQuantity(1);
+    parentDTO.setRules(new ArrayList<>());
+
+    ExpressionDTO expressionDTO = new ExpressionDTO();
+    expressionDTO.setCondition("[");
+    expressionDTO.setContainedPk(1L);
+    expressionDTO.setCreatedFromSubGroup(true);
+    expressionDTO.setId("42");
+    expressionDTO.setOperator("GREATER_OR_EQUAL");
+    expressionDTO.setPk(1L);
+    expressionDTO.setPreviousContainedPk(1L);
+    expressionDTO.setPreviousPk(1L);
+    expressionDTO.setQuantity(1);
+    expressionDTO.setRules(new ArrayList<>());
+    expressionDTO.setValue("42");
+
+    ArrayList<ExpressionDTO> myCriteriaList = new ArrayList<>();
+    myCriteriaList.add(expressionDTO);
+
+    ExpressionDTO temp = new ExpressionDTO();
+    temp.setCondition("Condition");
+    temp.setContainedPk(1L);
+    temp.setCreatedFromSubGroup(true);
+    temp.setId("42");
+    temp.setOperator("Operator");
+    temp.setPk(1L);
+    temp.setPreviousContainedPk(1L);
+    temp.setPreviousPk(1L);
+    temp.setQuantity(1);
+    temp.setRules(new ArrayList<>());
+    temp.setValue("42");
+
+    // Act
+    mVELToDataWrapperTranslator.postProcessCriteria(parentDTO, myCriteriaList, temp, SupportedFieldType.UNKNOWN);
+
+    // Assert
+    assertEquals(2, myCriteriaList.size());
+    assertSame(expressionDTO, myCriteriaList.get(0));
+    assertSame(temp, myCriteriaList.get(1));
+  }
+
+  /**
+   * Test {@link MVELToDataWrapperTranslator#postProcessCriteria(DataDTO, List, ExpressionDTO, SupportedFieldType)}.
+   * <ul>
+   *   <li>Given {@link ExpressionDTO} (default constructor) Operator is {@code [}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MVELToDataWrapperTranslator#postProcessCriteria(DataDTO, List, ExpressionDTO, SupportedFieldType)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MVELToDataWrapperTranslator.postProcessCriteria(DataDTO, List, ExpressionDTO, SupportedFieldType)"})
+  public void testPostProcessCriteria_givenExpressionDTOOperatorIsLeftSquareBracket() {
+    // Arrange
+    DataDTO parentDTO = new DataDTO();
     parentDTO.setCondition("Condition");
     parentDTO.setContainedPk(1L);
     parentDTO.setCreatedFromSubGroup(true);
@@ -587,40 +882,26 @@ public class MVELToDataWrapperTranslatorDiffblueTest {
     mVELToDataWrapperTranslator.postProcessCriteria(parentDTO, myCriteriaList, temp, SupportedFieldType.UNKNOWN);
 
     // Assert
-    verify(parentDTO).setCondition(eq("Condition"));
-    verify(parentDTO).setContainedPk(eq(1L));
-    verify(parentDTO).setCreatedFromSubGroup(eq(true));
-    verify(parentDTO).setPk(eq(1L));
-    verify(parentDTO).setPreviousContainedPk(eq(1L));
-    verify(parentDTO).setPreviousPk(eq(1L));
-    verify(parentDTO).setQuantity(eq(1));
-    verify(parentDTO).setRules(isA(ArrayList.class));
     assertEquals(2, myCriteriaList.size());
+    assertSame(expressionDTO, myCriteriaList.get(0));
     assertSame(temp, myCriteriaList.get(1));
   }
 
   /**
-   * Test
-   * {@link MVELToDataWrapperTranslator#postProcessCriteria(DataDTO, List, ExpressionDTO, SupportedFieldType)}.
+   * Test {@link MVELToDataWrapperTranslator#postProcessCriteria(DataDTO, List, ExpressionDTO, SupportedFieldType)}.
    * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} second is {@link ExpressionDTO}.</li>
+   *   <li>Given {@link ExpressionDTO} (default constructor) Operator is {@code LESS_OR_EQUAL}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MVELToDataWrapperTranslator#postProcessCriteria(DataDTO, List, ExpressionDTO, SupportedFieldType)}
+   * Method under test: {@link MVELToDataWrapperTranslator#postProcessCriteria(DataDTO, List, ExpressionDTO, SupportedFieldType)}
    */
   @Test
-  public void testPostProcessCriteria_thenArrayListSecondIsExpressionDTO2() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MVELToDataWrapperTranslator.postProcessCriteria(DataDTO, List, ExpressionDTO, SupportedFieldType)"})
+  public void testPostProcessCriteria_givenExpressionDTOOperatorIsLessOrEqual() {
     // Arrange
-    DataDTO parentDTO = mock(DataDTO.class);
-    doNothing().when(parentDTO).setCondition(Mockito.<String>any());
-    doNothing().when(parentDTO).setContainedPk(Mockito.<Long>any());
-    doNothing().when(parentDTO).setCreatedFromSubGroup(anyBoolean());
-    doNothing().when(parentDTO).setPk(Mockito.<Long>any());
-    doNothing().when(parentDTO).setPreviousContainedPk(Mockito.<Long>any());
-    doNothing().when(parentDTO).setPreviousPk(Mockito.<Long>any());
-    doNothing().when(parentDTO).setQuantity(Mockito.<Integer>any());
-    doNothing().when(parentDTO).setRules(Mockito.<ArrayList<DataDTO>>any());
+    DataDTO parentDTO = new DataDTO();
     parentDTO.setCondition("Condition");
     parentDTO.setContainedPk(1L);
     parentDTO.setCreatedFromSubGroup(true);
@@ -631,233 +912,20 @@ public class MVELToDataWrapperTranslatorDiffblueTest {
     parentDTO.setRules(new ArrayList<>());
 
     ExpressionDTO expressionDTO = new ExpressionDTO();
-    expressionDTO.setCondition("42");
-    expressionDTO.setContainedPk(Long.MAX_VALUE);
+    expressionDTO.setCondition("[");
+    expressionDTO.setContainedPk(1L);
     expressionDTO.setCreatedFromSubGroup(true);
-    expressionDTO.setId("org.broadleafcommerce.openadmin.web.rulebuilder.dto.ExpressionDTO");
-    expressionDTO.setOperator("42");
-    expressionDTO.setPk(Long.MAX_VALUE);
-    expressionDTO.setPreviousContainedPk(Long.MAX_VALUE);
-    expressionDTO.setPreviousPk(Long.MAX_VALUE);
-    expressionDTO.setQuantity(Integer.MIN_VALUE);
+    expressionDTO.setId("42");
+    expressionDTO.setOperator("LESS_OR_EQUAL");
+    expressionDTO.setPk(1L);
+    expressionDTO.setPreviousContainedPk(1L);
+    expressionDTO.setPreviousPk(1L);
+    expressionDTO.setQuantity(1);
     expressionDTO.setRules(new ArrayList<>());
-    expressionDTO.setValue("org.broadleafcommerce.openadmin.web.rulebuilder.dto.ExpressionDTO");
+    expressionDTO.setValue("42");
 
     ArrayList<ExpressionDTO> myCriteriaList = new ArrayList<>();
     myCriteriaList.add(expressionDTO);
-    ExpressionDTO temp = mock(ExpressionDTO.class);
-    when(temp.getId()).thenReturn("42");
-    when(temp.getValue()).thenReturn("42");
-    doNothing().when(temp).setCondition(Mockito.<String>any());
-    doNothing().when(temp).setContainedPk(Mockito.<Long>any());
-    doNothing().when(temp).setCreatedFromSubGroup(anyBoolean());
-    doNothing().when(temp).setPk(Mockito.<Long>any());
-    doNothing().when(temp).setPreviousContainedPk(Mockito.<Long>any());
-    doNothing().when(temp).setPreviousPk(Mockito.<Long>any());
-    doNothing().when(temp).setQuantity(Mockito.<Integer>any());
-    doNothing().when(temp).setRules(Mockito.<ArrayList<DataDTO>>any());
-    doNothing().when(temp).setId(Mockito.<String>any());
-    doNothing().when(temp).setOperator(Mockito.<String>any());
-    doNothing().when(temp).setValue(Mockito.<String>any());
-    temp.setCondition("Condition");
-    temp.setContainedPk(1L);
-    temp.setCreatedFromSubGroup(true);
-    temp.setId("42");
-    temp.setOperator("Operator");
-    temp.setPk(1L);
-    temp.setPreviousContainedPk(1L);
-    temp.setPreviousPk(1L);
-    temp.setQuantity(1);
-    temp.setRules(new ArrayList<>());
-    temp.setValue("42");
-
-    // Act
-    mVELToDataWrapperTranslator.postProcessCriteria(parentDTO, myCriteriaList, temp, SupportedFieldType.UNKNOWN);
-
-    // Assert
-    verify(parentDTO).setCondition(eq("Condition"));
-    verify(temp).setCondition(eq("Condition"));
-    verify(parentDTO).setContainedPk(eq(1L));
-    verify(temp).setContainedPk(eq(1L));
-    verify(parentDTO).setCreatedFromSubGroup(eq(true));
-    verify(temp).setCreatedFromSubGroup(eq(true));
-    verify(parentDTO).setPk(eq(1L));
-    verify(temp).setPk(eq(1L));
-    verify(parentDTO).setPreviousContainedPk(eq(1L));
-    verify(temp).setPreviousContainedPk(eq(1L));
-    verify(parentDTO).setPreviousPk(eq(1L));
-    verify(temp).setPreviousPk(eq(1L));
-    verify(parentDTO).setQuantity(eq(1));
-    verify(temp).setQuantity(eq(1));
-    verify(parentDTO).setRules(isA(ArrayList.class));
-    verify(temp).setRules(isA(ArrayList.class));
-    verify(temp).getId();
-    verify(temp).getValue();
-    verify(temp).setId(eq("42"));
-    verify(temp).setOperator(eq("Operator"));
-    verify(temp).setValue(eq("42"));
-    assertEquals(2, myCriteriaList.size());
-    assertSame(expressionDTO, myCriteriaList.get(0));
-    assertSame(temp, myCriteriaList.get(1));
-  }
-
-  /**
-   * Test
-   * {@link MVELToDataWrapperTranslator#postProcessCriteria(DataDTO, List, ExpressionDTO, SupportedFieldType)}.
-   * <ul>
-   *   <li>Then calls {@link ExpressionDTO#getOperator()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link MVELToDataWrapperTranslator#postProcessCriteria(DataDTO, List, ExpressionDTO, SupportedFieldType)}
-   */
-  @Test
-  public void testPostProcessCriteria_thenCallsGetOperator() {
-    // Arrange
-    DataDTO parentDTO = mock(DataDTO.class);
-    doNothing().when(parentDTO).setCondition(Mockito.<String>any());
-    doNothing().when(parentDTO).setContainedPk(Mockito.<Long>any());
-    doNothing().when(parentDTO).setCreatedFromSubGroup(anyBoolean());
-    doNothing().when(parentDTO).setPk(Mockito.<Long>any());
-    doNothing().when(parentDTO).setPreviousContainedPk(Mockito.<Long>any());
-    doNothing().when(parentDTO).setPreviousPk(Mockito.<Long>any());
-    doNothing().when(parentDTO).setQuantity(Mockito.<Integer>any());
-    doNothing().when(parentDTO).setRules(Mockito.<ArrayList<DataDTO>>any());
-    parentDTO.setCondition("Condition");
-    parentDTO.setContainedPk(1L);
-    parentDTO.setCreatedFromSubGroup(true);
-    parentDTO.setPk(1L);
-    parentDTO.setPreviousContainedPk(1L);
-    parentDTO.setPreviousPk(1L);
-    parentDTO.setQuantity(1);
-    parentDTO.setRules(new ArrayList<>());
-    ExpressionDTO expressionDTO = mock(ExpressionDTO.class);
-    when(expressionDTO.getOperator()).thenReturn("Operator");
-    when(expressionDTO.getId()).thenReturn("42");
-    doNothing().when(expressionDTO).setCondition(Mockito.<String>any());
-    doNothing().when(expressionDTO).setContainedPk(Mockito.<Long>any());
-    doNothing().when(expressionDTO).setCreatedFromSubGroup(anyBoolean());
-    doNothing().when(expressionDTO).setPk(Mockito.<Long>any());
-    doNothing().when(expressionDTO).setPreviousContainedPk(Mockito.<Long>any());
-    doNothing().when(expressionDTO).setPreviousPk(Mockito.<Long>any());
-    doNothing().when(expressionDTO).setQuantity(Mockito.<Integer>any());
-    doNothing().when(expressionDTO).setRules(Mockito.<ArrayList<DataDTO>>any());
-    doNothing().when(expressionDTO).setId(Mockito.<String>any());
-    doNothing().when(expressionDTO).setOperator(Mockito.<String>any());
-    doNothing().when(expressionDTO).setValue(Mockito.<String>any());
-    expressionDTO.setCondition("42");
-    expressionDTO.setContainedPk(Long.MAX_VALUE);
-    expressionDTO.setCreatedFromSubGroup(true);
-    expressionDTO.setId("org.broadleafcommerce.openadmin.web.rulebuilder.dto.ExpressionDTO");
-    expressionDTO.setOperator("42");
-    expressionDTO.setPk(Long.MAX_VALUE);
-    expressionDTO.setPreviousContainedPk(Long.MAX_VALUE);
-    expressionDTO.setPreviousPk(Long.MAX_VALUE);
-    expressionDTO.setQuantity(Integer.MIN_VALUE);
-    expressionDTO.setRules(new ArrayList<>());
-    expressionDTO.setValue("org.broadleafcommerce.openadmin.web.rulebuilder.dto.ExpressionDTO");
-
-    ArrayList<ExpressionDTO> myCriteriaList = new ArrayList<>();
-    myCriteriaList.add(expressionDTO);
-    ExpressionDTO temp = mock(ExpressionDTO.class);
-    when(temp.getOperator()).thenThrow(new NumberFormatException("42"));
-    when(temp.getId()).thenReturn("42");
-    doNothing().when(temp).setCondition(Mockito.<String>any());
-    doNothing().when(temp).setContainedPk(Mockito.<Long>any());
-    doNothing().when(temp).setCreatedFromSubGroup(anyBoolean());
-    doNothing().when(temp).setPk(Mockito.<Long>any());
-    doNothing().when(temp).setPreviousContainedPk(Mockito.<Long>any());
-    doNothing().when(temp).setPreviousPk(Mockito.<Long>any());
-    doNothing().when(temp).setQuantity(Mockito.<Integer>any());
-    doNothing().when(temp).setRules(Mockito.<ArrayList<DataDTO>>any());
-    doNothing().when(temp).setId(Mockito.<String>any());
-    doNothing().when(temp).setOperator(Mockito.<String>any());
-    doNothing().when(temp).setValue(Mockito.<String>any());
-    temp.setCondition("Condition");
-    temp.setContainedPk(1L);
-    temp.setCreatedFromSubGroup(true);
-    temp.setId("42");
-    temp.setOperator("Operator");
-    temp.setPk(1L);
-    temp.setPreviousContainedPk(1L);
-    temp.setPreviousPk(1L);
-    temp.setQuantity(1);
-    temp.setRules(new ArrayList<>());
-    temp.setValue("42");
-
-    // Act
-    mVELToDataWrapperTranslator.postProcessCriteria(parentDTO, myCriteriaList, temp, SupportedFieldType.UNKNOWN);
-
-    // Assert
-    verify(expressionDTO).setCondition(eq("42"));
-    verify(parentDTO).setCondition(eq("Condition"));
-    verify(temp).setCondition(eq("Condition"));
-    verify(parentDTO).setContainedPk(eq(1L));
-    verify(temp).setContainedPk(eq(1L));
-    verify(expressionDTO).setContainedPk(eq(9223372036854775807L));
-    verify(parentDTO).setCreatedFromSubGroup(eq(true));
-    verify(expressionDTO).setCreatedFromSubGroup(eq(true));
-    verify(temp).setCreatedFromSubGroup(eq(true));
-    verify(parentDTO).setPk(eq(1L));
-    verify(temp).setPk(eq(1L));
-    verify(expressionDTO).setPk(eq(9223372036854775807L));
-    verify(parentDTO).setPreviousContainedPk(eq(1L));
-    verify(temp).setPreviousContainedPk(eq(1L));
-    verify(expressionDTO).setPreviousContainedPk(eq(9223372036854775807L));
-    verify(parentDTO).setPreviousPk(eq(1L));
-    verify(temp).setPreviousPk(eq(1L));
-    verify(expressionDTO).setPreviousPk(eq(9223372036854775807L));
-    verify(expressionDTO).setQuantity(eq(-2147483648));
-    verify(parentDTO).setQuantity(eq(1));
-    verify(temp).setQuantity(eq(1));
-    verify(parentDTO).setRules(isA(ArrayList.class));
-    verify(expressionDTO).setRules(isA(ArrayList.class));
-    verify(temp).setRules(isA(ArrayList.class));
-    verify(expressionDTO).getId();
-    verify(temp).getId();
-    verify(expressionDTO).getOperator();
-    verify(temp).getOperator();
-    verify(temp).setId(eq("42"));
-    verify(expressionDTO).setId(eq("org.broadleafcommerce.openadmin.web.rulebuilder.dto.ExpressionDTO"));
-    verify(expressionDTO).setOperator(eq("42"));
-    verify(temp).setOperator(eq("Operator"));
-    verify(temp).setValue(eq("42"));
-    verify(expressionDTO).setValue(eq("org.broadleafcommerce.openadmin.web.rulebuilder.dto.ExpressionDTO"));
-    assertEquals(1, myCriteriaList.size());
-  }
-
-  /**
-   * Test
-   * {@link MVELToDataWrapperTranslator#postProcessCriteria(DataDTO, List, ExpressionDTO, SupportedFieldType)}.
-   * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then {@link ArrayList#ArrayList()} size is one.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link MVELToDataWrapperTranslator#postProcessCriteria(DataDTO, List, ExpressionDTO, SupportedFieldType)}
-   */
-  @Test
-  public void testPostProcessCriteria_whenArrayList_thenArrayListSizeIsOne() {
-    // Arrange
-    DataDTO parentDTO = mock(DataDTO.class);
-    doNothing().when(parentDTO).setCondition(Mockito.<String>any());
-    doNothing().when(parentDTO).setContainedPk(Mockito.<Long>any());
-    doNothing().when(parentDTO).setCreatedFromSubGroup(anyBoolean());
-    doNothing().when(parentDTO).setPk(Mockito.<Long>any());
-    doNothing().when(parentDTO).setPreviousContainedPk(Mockito.<Long>any());
-    doNothing().when(parentDTO).setPreviousPk(Mockito.<Long>any());
-    doNothing().when(parentDTO).setQuantity(Mockito.<Integer>any());
-    doNothing().when(parentDTO).setRules(Mockito.<ArrayList<DataDTO>>any());
-    parentDTO.setCondition("Condition");
-    parentDTO.setContainedPk(1L);
-    parentDTO.setCreatedFromSubGroup(true);
-    parentDTO.setPk(1L);
-    parentDTO.setPreviousContainedPk(1L);
-    parentDTO.setPreviousPk(1L);
-    parentDTO.setQuantity(1);
-    parentDTO.setRules(new ArrayList<>());
-    ArrayList<ExpressionDTO> myCriteriaList = new ArrayList<>();
 
     ExpressionDTO temp = new ExpressionDTO();
     temp.setCondition("Condition");
@@ -876,32 +944,87 @@ public class MVELToDataWrapperTranslatorDiffblueTest {
     mVELToDataWrapperTranslator.postProcessCriteria(parentDTO, myCriteriaList, temp, SupportedFieldType.UNKNOWN);
 
     // Assert
-    verify(parentDTO).setCondition(eq("Condition"));
-    verify(parentDTO).setContainedPk(eq(1L));
-    verify(parentDTO).setCreatedFromSubGroup(eq(true));
-    verify(parentDTO).setPk(eq(1L));
-    verify(parentDTO).setPreviousContainedPk(eq(1L));
-    verify(parentDTO).setPreviousPk(eq(1L));
-    verify(parentDTO).setQuantity(eq(1));
-    verify(parentDTO).setRules(isA(ArrayList.class));
-    assertEquals(1, myCriteriaList.size());
-    assertSame(temp, myCriteriaList.get(0));
+    assertEquals(2, myCriteriaList.size());
+    assertSame(expressionDTO, myCriteriaList.get(0));
+    assertSame(temp, myCriteriaList.get(1));
   }
 
   /**
-   * Test
-   * {@link MVELToDataWrapperTranslator#postProcessCriteria(DataDTO, List, ExpressionDTO, SupportedFieldType)}.
+   * Test {@link MVELToDataWrapperTranslator#postProcessCriteria(DataDTO, List, ExpressionDTO, SupportedFieldType)}.
    * <ul>
-   *   <li>When {@link DataDTO} (default constructor) Condition is
-   * {@code Condition}.</li>
+   *   <li>Given {@link ExpressionDTO} (default constructor) Value is {@code [}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MVELToDataWrapperTranslator#postProcessCriteria(DataDTO, List, ExpressionDTO, SupportedFieldType)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MVELToDataWrapperTranslator.postProcessCriteria(DataDTO, List, ExpressionDTO, SupportedFieldType)"})
+  public void testPostProcessCriteria_givenExpressionDTOValueIsLeftSquareBracket() {
+    // Arrange
+    DataDTO parentDTO = new DataDTO();
+    parentDTO.setCondition("Condition");
+    parentDTO.setContainedPk(1L);
+    parentDTO.setCreatedFromSubGroup(true);
+    parentDTO.setPk(1L);
+    parentDTO.setPreviousContainedPk(1L);
+    parentDTO.setPreviousPk(1L);
+    parentDTO.setQuantity(1);
+    parentDTO.setRules(new ArrayList<>());
+
+    ExpressionDTO expressionDTO = new ExpressionDTO();
+    expressionDTO.setCondition("[");
+    expressionDTO.setContainedPk(1L);
+    expressionDTO.setCreatedFromSubGroup(true);
+    expressionDTO.setId("42");
+    expressionDTO.setOperator("[");
+    expressionDTO.setPk(1L);
+    expressionDTO.setPreviousContainedPk(1L);
+    expressionDTO.setPreviousPk(1L);
+    expressionDTO.setQuantity(1);
+    expressionDTO.setRules(new ArrayList<>());
+    expressionDTO.setValue("[");
+
+    ArrayList<ExpressionDTO> myCriteriaList = new ArrayList<>();
+    myCriteriaList.add(expressionDTO);
+
+    ExpressionDTO temp = new ExpressionDTO();
+    temp.setCondition("Condition");
+    temp.setContainedPk(1L);
+    temp.setCreatedFromSubGroup(true);
+    temp.setId("42");
+    temp.setOperator("Operator");
+    temp.setPk(1L);
+    temp.setPreviousContainedPk(1L);
+    temp.setPreviousPk(1L);
+    temp.setQuantity(1);
+    temp.setRules(new ArrayList<>());
+    temp.setValue("42");
+
+    // Act
+    mVELToDataWrapperTranslator.postProcessCriteria(parentDTO, myCriteriaList, temp, SupportedFieldType.UNKNOWN);
+
+    // Assert
+    assertEquals(2, myCriteriaList.size());
+    assertSame(expressionDTO, myCriteriaList.get(0));
+    assertSame(temp, myCriteriaList.get(1));
+  }
+
+  /**
+   * Test {@link MVELToDataWrapperTranslator#postProcessCriteria(DataDTO, List, ExpressionDTO, SupportedFieldType)}.
+   * <ul>
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
    *   <li>Then {@link ArrayList#ArrayList()} size is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MVELToDataWrapperTranslator#postProcessCriteria(DataDTO, List, ExpressionDTO, SupportedFieldType)}
+   * Method under test: {@link MVELToDataWrapperTranslator#postProcessCriteria(DataDTO, List, ExpressionDTO, SupportedFieldType)}
    */
   @Test
-  public void testPostProcessCriteria_whenDataDTOConditionIsCondition_thenArrayListSizeIsOne() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MVELToDataWrapperTranslator.postProcessCriteria(DataDTO, List, ExpressionDTO, SupportedFieldType)"})
+  public void testPostProcessCriteria_whenArrayList_thenArrayListSizeIsOne() {
     // Arrange
     DataDTO parentDTO = new DataDTO();
     parentDTO.setCondition("Condition");
@@ -936,14 +1059,201 @@ public class MVELToDataWrapperTranslatorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MVELToDataWrapperTranslator#isBetweenOperator(ExpressionDTO, ExpressionDTO)}.
+   * Test {@link MVELToDataWrapperTranslator#isBetweenOperator(ExpressionDTO, ExpressionDTO)}.
+   * <ul>
+   *   <li>Given {@code 4242}.</li>
+   *   <li>When {@link ExpressionDTO} (default constructor) Value is {@code 4242}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link MVELToDataWrapperTranslator#isBetweenOperator(ExpressionDTO, ExpressionDTO)}
+   * Method under test: {@link MVELToDataWrapperTranslator#isBetweenOperator(ExpressionDTO, ExpressionDTO)}
    */
   @Test
-  public void testIsBetweenOperator() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MVELToDataWrapperTranslator.isBetweenOperator(ExpressionDTO, ExpressionDTO)"})
+  public void testIsBetweenOperator_given4242_whenExpressionDTOValueIs4242() {
+    // Arrange
+    MVELToDataWrapperTranslator mvelToDataWrapperTranslator = new MVELToDataWrapperTranslator();
+
+    ExpressionDTO prev = new ExpressionDTO();
+    prev.setCondition("Condition");
+    prev.setContainedPk(1L);
+    prev.setCreatedFromSubGroup(true);
+    prev.setId("42");
+    prev.setOperator("Operator");
+    prev.setPk(1L);
+    prev.setPreviousContainedPk(1L);
+    prev.setPreviousPk(1L);
+    prev.setQuantity(1);
+    prev.setRules(new ArrayList<>());
+    prev.setValue("4242");
+
+    ExpressionDTO temp = new ExpressionDTO();
+    temp.setCondition("Condition");
+    temp.setContainedPk(1L);
+    temp.setCreatedFromSubGroup(true);
+    temp.setId("42");
+    temp.setOperator("Operator");
+    temp.setPk(1L);
+    temp.setPreviousContainedPk(1L);
+    temp.setPreviousPk(1L);
+    temp.setQuantity(1);
+    temp.setRules(new ArrayList<>());
+    temp.setValue("42");
+
+    // Act and Assert
+    assertFalse(mvelToDataWrapperTranslator.isBetweenOperator(prev, temp));
+  }
+
+  /**
+   * Test {@link MVELToDataWrapperTranslator#isBetweenOperator(ExpressionDTO, ExpressionDTO)}.
+   * <ul>
+   *   <li>Given {@code LESS_THAN}.</li>
+   *   <li>When {@link ExpressionDTO} (default constructor) Operator is {@code LESS_THAN}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MVELToDataWrapperTranslator#isBetweenOperator(ExpressionDTO, ExpressionDTO)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MVELToDataWrapperTranslator.isBetweenOperator(ExpressionDTO, ExpressionDTO)"})
+  public void testIsBetweenOperator_givenLessThan_whenExpressionDTOOperatorIsLessThan() {
+    // Arrange
+    MVELToDataWrapperTranslator mvelToDataWrapperTranslator = new MVELToDataWrapperTranslator();
+
+    ExpressionDTO prev = new ExpressionDTO();
+    prev.setCondition("Condition");
+    prev.setContainedPk(1L);
+    prev.setCreatedFromSubGroup(true);
+    prev.setId("42");
+    prev.setOperator("LESS_THAN");
+    prev.setPk(1L);
+    prev.setPreviousContainedPk(1L);
+    prev.setPreviousPk(1L);
+    prev.setQuantity(1);
+    prev.setRules(new ArrayList<>());
+    prev.setValue("4242");
+
+    ExpressionDTO temp = new ExpressionDTO();
+    temp.setCondition("Condition");
+    temp.setContainedPk(1L);
+    temp.setCreatedFromSubGroup(true);
+    temp.setId("42");
+    temp.setOperator("Operator");
+    temp.setPk(1L);
+    temp.setPreviousContainedPk(1L);
+    temp.setPreviousPk(1L);
+    temp.setQuantity(1);
+    temp.setRules(new ArrayList<>());
+    temp.setValue("42");
+
+    // Act and Assert
+    assertFalse(mvelToDataWrapperTranslator.isBetweenOperator(prev, temp));
+  }
+
+  /**
+   * Test {@link MVELToDataWrapperTranslator#isBetweenOperator(ExpressionDTO, ExpressionDTO)}.
+   * <ul>
+   *   <li>Given {@code Value}.</li>
+   *   <li>When {@link ExpressionDTO} (default constructor) Value is {@code Value}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MVELToDataWrapperTranslator#isBetweenOperator(ExpressionDTO, ExpressionDTO)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MVELToDataWrapperTranslator.isBetweenOperator(ExpressionDTO, ExpressionDTO)"})
+  public void testIsBetweenOperator_givenValue_whenExpressionDTOValueIsValue() {
+    // Arrange
+    MVELToDataWrapperTranslator mvelToDataWrapperTranslator = new MVELToDataWrapperTranslator();
+
+    ExpressionDTO prev = new ExpressionDTO();
+    prev.setCondition("Condition");
+    prev.setContainedPk(1L);
+    prev.setCreatedFromSubGroup(true);
+    prev.setId("42");
+    prev.setOperator("Operator");
+    prev.setPk(1L);
+    prev.setPreviousContainedPk(1L);
+    prev.setPreviousPk(1L);
+    prev.setQuantity(1);
+    prev.setRules(new ArrayList<>());
+    prev.setValue("Value");
+
+    ExpressionDTO temp = new ExpressionDTO();
+    temp.setCondition("Condition");
+    temp.setContainedPk(1L);
+    temp.setCreatedFromSubGroup(true);
+    temp.setId("42");
+    temp.setOperator("Operator");
+    temp.setPk(1L);
+    temp.setPreviousContainedPk(1L);
+    temp.setPreviousPk(1L);
+    temp.setQuantity(1);
+    temp.setRules(new ArrayList<>());
+    temp.setValue("42");
+
+    // Act and Assert
+    assertFalse(mvelToDataWrapperTranslator.isBetweenOperator(prev, temp));
+  }
+
+  /**
+   * Test {@link MVELToDataWrapperTranslator#isBetweenOperator(ExpressionDTO, ExpressionDTO)}.
+   * <ul>
+   *   <li>Given {@code Value}.</li>
+   *   <li>When {@link ExpressionDTO} (default constructor) Value is {@code Value}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MVELToDataWrapperTranslator#isBetweenOperator(ExpressionDTO, ExpressionDTO)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MVELToDataWrapperTranslator.isBetweenOperator(ExpressionDTO, ExpressionDTO)"})
+  public void testIsBetweenOperator_givenValue_whenExpressionDTOValueIsValue2() {
+    // Arrange
+    MVELToDataWrapperTranslator mvelToDataWrapperTranslator = new MVELToDataWrapperTranslator();
+
+    ExpressionDTO prev = new ExpressionDTO();
+    prev.setCondition("Condition");
+    prev.setContainedPk(1L);
+    prev.setCreatedFromSubGroup(true);
+    prev.setId("42");
+    prev.setOperator("Operator");
+    prev.setPk(1L);
+    prev.setPreviousContainedPk(1L);
+    prev.setPreviousPk(1L);
+    prev.setQuantity(1);
+    prev.setRules(new ArrayList<>());
+    prev.setValue("42");
+
+    ExpressionDTO temp = new ExpressionDTO();
+    temp.setCondition("Condition");
+    temp.setContainedPk(1L);
+    temp.setCreatedFromSubGroup(true);
+    temp.setId("42");
+    temp.setOperator("Operator");
+    temp.setPk(1L);
+    temp.setPreviousContainedPk(1L);
+    temp.setPreviousPk(1L);
+    temp.setQuantity(1);
+    temp.setRules(new ArrayList<>());
+    temp.setValue("Value");
+
+    // Act and Assert
+    assertFalse(mvelToDataWrapperTranslator.isBetweenOperator(prev, temp));
+  }
+
+  /**
+   * Test {@link MVELToDataWrapperTranslator#isBetweenOperator(ExpressionDTO, ExpressionDTO)}.
+   * <ul>
+   *   <li>When {@link ExpressionDTO} (default constructor) Rules is {@link ArrayList#ArrayList()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MVELToDataWrapperTranslator#isBetweenOperator(ExpressionDTO, ExpressionDTO)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MVELToDataWrapperTranslator.isBetweenOperator(ExpressionDTO, ExpressionDTO)"})
+  public void testIsBetweenOperator_whenExpressionDTORulesIsArrayList() {
     // Arrange
     MVELToDataWrapperTranslator mvelToDataWrapperTranslator = new MVELToDataWrapperTranslator();
 
@@ -978,14 +1288,200 @@ public class MVELToDataWrapperTranslatorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MVELToDataWrapperTranslator#isBetweenInclusiveOperator(ExpressionDTO, ExpressionDTO)}.
+   * Test {@link MVELToDataWrapperTranslator#isBetweenInclusiveOperator(ExpressionDTO, ExpressionDTO)}.
+   * <ul>
+   *   <li>Given {@code GREATER_OR_EQUAL}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link MVELToDataWrapperTranslator#isBetweenInclusiveOperator(ExpressionDTO, ExpressionDTO)}
+   * Method under test: {@link MVELToDataWrapperTranslator#isBetweenInclusiveOperator(ExpressionDTO, ExpressionDTO)}
    */
   @Test
-  public void testIsBetweenInclusiveOperator() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MVELToDataWrapperTranslator.isBetweenInclusiveOperator(ExpressionDTO, ExpressionDTO)"})
+  public void testIsBetweenInclusiveOperator_givenGreaterOrEqual() {
+    // Arrange
+    MVELToDataWrapperTranslator mvelToDataWrapperTranslator = new MVELToDataWrapperTranslator();
+
+    ExpressionDTO prev = new ExpressionDTO();
+    prev.setCondition("Condition");
+    prev.setContainedPk(1L);
+    prev.setCreatedFromSubGroup(true);
+    prev.setId("42");
+    prev.setOperator("GREATER_OR_EQUAL");
+    prev.setPk(1L);
+    prev.setPreviousContainedPk(1L);
+    prev.setPreviousPk(1L);
+    prev.setQuantity(1);
+    prev.setRules(new ArrayList<>());
+    prev.setValue("42");
+
+    ExpressionDTO temp = new ExpressionDTO();
+    temp.setCondition("Condition");
+    temp.setContainedPk(1L);
+    temp.setCreatedFromSubGroup(true);
+    temp.setId("42");
+    temp.setOperator("Operator");
+    temp.setPk(1L);
+    temp.setPreviousContainedPk(1L);
+    temp.setPreviousPk(1L);
+    temp.setQuantity(1);
+    temp.setRules(new ArrayList<>());
+    temp.setValue("42");
+
+    // Act and Assert
+    assertFalse(mvelToDataWrapperTranslator.isBetweenInclusiveOperator(prev, temp));
+  }
+
+  /**
+   * Test {@link MVELToDataWrapperTranslator#isBetweenInclusiveOperator(ExpressionDTO, ExpressionDTO)}.
+   * <ul>
+   *   <li>Given {@code GREATER_OR_EQUAL}.</li>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MVELToDataWrapperTranslator#isBetweenInclusiveOperator(ExpressionDTO, ExpressionDTO)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MVELToDataWrapperTranslator.isBetweenInclusiveOperator(ExpressionDTO, ExpressionDTO)"})
+  public void testIsBetweenInclusiveOperator_givenGreaterOrEqual_thenReturnTrue() {
+    // Arrange
+    MVELToDataWrapperTranslator mvelToDataWrapperTranslator = new MVELToDataWrapperTranslator();
+
+    ExpressionDTO prev = new ExpressionDTO();
+    prev.setCondition("Condition");
+    prev.setContainedPk(1L);
+    prev.setCreatedFromSubGroup(true);
+    prev.setId("42");
+    prev.setOperator("GREATER_OR_EQUAL");
+    prev.setPk(1L);
+    prev.setPreviousContainedPk(1L);
+    prev.setPreviousPk(1L);
+    prev.setQuantity(1);
+    prev.setRules(new ArrayList<>());
+    prev.setValue("42");
+
+    ExpressionDTO temp = new ExpressionDTO();
+    temp.setCondition("Condition");
+    temp.setContainedPk(1L);
+    temp.setCreatedFromSubGroup(true);
+    temp.setId("42");
+    temp.setOperator("LESS_OR_EQUAL");
+    temp.setPk(1L);
+    temp.setPreviousContainedPk(1L);
+    temp.setPreviousPk(1L);
+    temp.setQuantity(1);
+    temp.setRules(new ArrayList<>());
+    temp.setValue("42");
+
+    // Act and Assert
+    assertTrue(mvelToDataWrapperTranslator.isBetweenInclusiveOperator(prev, temp));
+  }
+
+  /**
+   * Test {@link MVELToDataWrapperTranslator#isBetweenInclusiveOperator(ExpressionDTO, ExpressionDTO)}.
+   * <ul>
+   *   <li>Given {@code LESS_OR_EQUAL}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MVELToDataWrapperTranslator#isBetweenInclusiveOperator(ExpressionDTO, ExpressionDTO)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MVELToDataWrapperTranslator.isBetweenInclusiveOperator(ExpressionDTO, ExpressionDTO)"})
+  public void testIsBetweenInclusiveOperator_givenLessOrEqual() {
+    // Arrange
+    MVELToDataWrapperTranslator mvelToDataWrapperTranslator = new MVELToDataWrapperTranslator();
+
+    ExpressionDTO prev = new ExpressionDTO();
+    prev.setCondition("Condition");
+    prev.setContainedPk(1L);
+    prev.setCreatedFromSubGroup(true);
+    prev.setId("42");
+    prev.setOperator("LESS_OR_EQUAL");
+    prev.setPk(1L);
+    prev.setPreviousContainedPk(1L);
+    prev.setPreviousPk(1L);
+    prev.setQuantity(1);
+    prev.setRules(new ArrayList<>());
+    prev.setValue("42");
+
+    ExpressionDTO temp = new ExpressionDTO();
+    temp.setCondition("Condition");
+    temp.setContainedPk(1L);
+    temp.setCreatedFromSubGroup(true);
+    temp.setId("42");
+    temp.setOperator("Operator");
+    temp.setPk(1L);
+    temp.setPreviousContainedPk(1L);
+    temp.setPreviousPk(1L);
+    temp.setQuantity(1);
+    temp.setRules(new ArrayList<>());
+    temp.setValue("42");
+
+    // Act and Assert
+    assertFalse(mvelToDataWrapperTranslator.isBetweenInclusiveOperator(prev, temp));
+  }
+
+  /**
+   * Test {@link MVELToDataWrapperTranslator#isBetweenInclusiveOperator(ExpressionDTO, ExpressionDTO)}.
+   * <ul>
+   *   <li>Given {@code LESS_OR_EQUAL}.</li>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MVELToDataWrapperTranslator#isBetweenInclusiveOperator(ExpressionDTO, ExpressionDTO)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MVELToDataWrapperTranslator.isBetweenInclusiveOperator(ExpressionDTO, ExpressionDTO)"})
+  public void testIsBetweenInclusiveOperator_givenLessOrEqual_thenReturnTrue() {
+    // Arrange
+    MVELToDataWrapperTranslator mvelToDataWrapperTranslator = new MVELToDataWrapperTranslator();
+
+    ExpressionDTO prev = new ExpressionDTO();
+    prev.setCondition("Condition");
+    prev.setContainedPk(1L);
+    prev.setCreatedFromSubGroup(true);
+    prev.setId("42");
+    prev.setOperator("LESS_OR_EQUAL");
+    prev.setPk(1L);
+    prev.setPreviousContainedPk(1L);
+    prev.setPreviousPk(1L);
+    prev.setQuantity(1);
+    prev.setRules(new ArrayList<>());
+    prev.setValue("42");
+
+    ExpressionDTO temp = new ExpressionDTO();
+    temp.setCondition("Condition");
+    temp.setContainedPk(1L);
+    temp.setCreatedFromSubGroup(true);
+    temp.setId("42");
+    temp.setOperator("GREATER_OR_EQUAL");
+    temp.setPk(1L);
+    temp.setPreviousContainedPk(1L);
+    temp.setPreviousPk(1L);
+    temp.setQuantity(1);
+    temp.setRules(new ArrayList<>());
+    temp.setValue("42");
+
+    // Act and Assert
+    assertTrue(mvelToDataWrapperTranslator.isBetweenInclusiveOperator(prev, temp));
+  }
+
+  /**
+   * Test {@link MVELToDataWrapperTranslator#isBetweenInclusiveOperator(ExpressionDTO, ExpressionDTO)}.
+   * <ul>
+   *   <li>Given {@code Operator}.</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MVELToDataWrapperTranslator#isBetweenInclusiveOperator(ExpressionDTO, ExpressionDTO)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MVELToDataWrapperTranslator.isBetweenInclusiveOperator(ExpressionDTO, ExpressionDTO)"})
+  public void testIsBetweenInclusiveOperator_givenOperator_thenReturnFalse() {
     // Arrange
     MVELToDataWrapperTranslator mvelToDataWrapperTranslator = new MVELToDataWrapperTranslator();
 
@@ -1020,17 +1516,94 @@ public class MVELToDataWrapperTranslatorDiffblueTest {
   }
 
   /**
-   * Test new {@link MVELToDataWrapperTranslator} (default constructor).
+   * Test {@link MVELToDataWrapperTranslator#isBetweenInclusiveOperator(ExpressionDTO, ExpressionDTO)}.
+   * <ul>
+   *   <li>When {@link ExpressionDTO} (default constructor) Value is {@code Operator}.</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link MVELToDataWrapperTranslator}
+   * Method under test: {@link MVELToDataWrapperTranslator#isBetweenInclusiveOperator(ExpressionDTO, ExpressionDTO)}
    */
   @Test
-  public void testNewMVELToDataWrapperTranslator() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MVELToDataWrapperTranslator.isBetweenInclusiveOperator(ExpressionDTO, ExpressionDTO)"})
+  public void testIsBetweenInclusiveOperator_whenExpressionDTOValueIsOperator_thenReturnFalse() {
+    // Arrange
+    MVELToDataWrapperTranslator mvelToDataWrapperTranslator = new MVELToDataWrapperTranslator();
 
-    // Arrange and Act
-    new MVELToDataWrapperTranslator();
+    ExpressionDTO prev = new ExpressionDTO();
+    prev.setCondition("Condition");
+    prev.setContainedPk(1L);
+    prev.setCreatedFromSubGroup(true);
+    prev.setId("42");
+    prev.setOperator("Operator");
+    prev.setPk(1L);
+    prev.setPreviousContainedPk(1L);
+    prev.setPreviousPk(1L);
+    prev.setQuantity(1);
+    prev.setRules(new ArrayList<>());
+    prev.setValue("Operator");
+
+    ExpressionDTO temp = new ExpressionDTO();
+    temp.setCondition("Condition");
+    temp.setContainedPk(1L);
+    temp.setCreatedFromSubGroup(true);
+    temp.setId("42");
+    temp.setOperator("Operator");
+    temp.setPk(1L);
+    temp.setPreviousContainedPk(1L);
+    temp.setPreviousPk(1L);
+    temp.setQuantity(1);
+    temp.setRules(new ArrayList<>());
+    temp.setValue("42");
+
+    // Act and Assert
+    assertFalse(mvelToDataWrapperTranslator.isBetweenInclusiveOperator(prev, temp));
+  }
+
+  /**
+   * Test {@link MVELToDataWrapperTranslator#isBetweenInclusiveOperator(ExpressionDTO, ExpressionDTO)}.
+   * <ul>
+   *   <li>When {@link ExpressionDTO} (default constructor) Value is {@code Operator}.</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MVELToDataWrapperTranslator#isBetweenInclusiveOperator(ExpressionDTO, ExpressionDTO)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MVELToDataWrapperTranslator.isBetweenInclusiveOperator(ExpressionDTO, ExpressionDTO)"})
+  public void testIsBetweenInclusiveOperator_whenExpressionDTOValueIsOperator_thenReturnFalse2() {
+    // Arrange
+    MVELToDataWrapperTranslator mvelToDataWrapperTranslator = new MVELToDataWrapperTranslator();
+
+    ExpressionDTO prev = new ExpressionDTO();
+    prev.setCondition("Condition");
+    prev.setContainedPk(1L);
+    prev.setCreatedFromSubGroup(true);
+    prev.setId("42");
+    prev.setOperator("Operator");
+    prev.setPk(1L);
+    prev.setPreviousContainedPk(1L);
+    prev.setPreviousPk(1L);
+    prev.setQuantity(1);
+    prev.setRules(new ArrayList<>());
+    prev.setValue("42");
+
+    ExpressionDTO temp = new ExpressionDTO();
+    temp.setCondition("Condition");
+    temp.setContainedPk(1L);
+    temp.setCreatedFromSubGroup(true);
+    temp.setId("42");
+    temp.setOperator("Operator");
+    temp.setPk(1L);
+    temp.setPreviousContainedPk(1L);
+    temp.setPreviousPk(1L);
+    temp.setQuantity(1);
+    temp.setRules(new ArrayList<>());
+    temp.setValue("Operator");
+
+    // Act and Assert
+    assertFalse(mvelToDataWrapperTranslator.isBetweenInclusiveOperator(prev, temp));
   }
 }

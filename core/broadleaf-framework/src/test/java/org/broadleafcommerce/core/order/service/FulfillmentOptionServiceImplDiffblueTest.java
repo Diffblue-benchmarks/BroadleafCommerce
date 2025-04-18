@@ -1,145 +1,135 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.order.service;
 
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.util.ArrayList;
+import java.util.List;
+import org.broadleafcommerce.core.order.dao.FulfillmentOptionDao;
 import org.broadleafcommerce.core.order.domain.FulfillmentOption;
 import org.broadleafcommerce.core.order.domain.FulfillmentOptionImpl;
 import org.broadleafcommerce.core.order.service.type.FulfillmentType;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class FulfillmentOptionServiceImplDiffblueTest {
-  @Autowired
+  @Mock
+  private FulfillmentOptionDao fulfillmentOptionDao;
+
+  @InjectMocks
   private FulfillmentOptionServiceImpl fulfillmentOptionServiceImpl;
 
   /**
    * Test {@link FulfillmentOptionServiceImpl#readFulfillmentOptionById(Long)}.
    * <p>
-   * Method under test:
-   * {@link FulfillmentOptionServiceImpl#readFulfillmentOptionById(Long)}
+   * Method under test: {@link FulfillmentOptionServiceImpl#readFulfillmentOptionById(Long)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FulfillmentOption FulfillmentOptionServiceImpl.readFulfillmentOptionById(Long)"})
   public void testReadFulfillmentOptionById() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2318 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.FulfillmentOptionServiceImpl fulfillmentOptionServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    FulfillmentOptionImpl fulfillmentOptionImpl = new FulfillmentOptionImpl();
+    when(fulfillmentOptionDao.readFulfillmentOptionById(Mockito.<Long>any())).thenReturn(fulfillmentOptionImpl);
 
-    // Arrange and Act
-    (new FulfillmentOptionServiceImpl()).readFulfillmentOptionById(1L);
+    // Act
+    FulfillmentOption actualReadFulfillmentOptionByIdResult = fulfillmentOptionServiceImpl
+        .readFulfillmentOptionById(1L);
+
+    // Assert
+    verify(fulfillmentOptionDao).readFulfillmentOptionById(eq(1L));
+    assertSame(fulfillmentOptionImpl, actualReadFulfillmentOptionByIdResult);
   }
 
   /**
    * Test {@link FulfillmentOptionServiceImpl#save(FulfillmentOption)}.
    * <p>
-   * Method under test:
-   * {@link FulfillmentOptionServiceImpl#save(FulfillmentOption)}
+   * Method under test: {@link FulfillmentOptionServiceImpl#save(FulfillmentOption)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FulfillmentOption FulfillmentOptionServiceImpl.save(FulfillmentOption)"})
   public void testSave() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2333 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.FulfillmentOptionServiceImpl fulfillmentOptionServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    FulfillmentOptionServiceImpl fulfillmentOptionServiceImpl2 = new FulfillmentOptionServiceImpl();
+    FulfillmentOptionImpl fulfillmentOptionImpl = new FulfillmentOptionImpl();
+    when(fulfillmentOptionDao.save(Mockito.<FulfillmentOption>any())).thenReturn(fulfillmentOptionImpl);
 
     // Act
-    fulfillmentOptionServiceImpl2.save(new FulfillmentOptionImpl());
+    FulfillmentOption actualSaveResult = fulfillmentOptionServiceImpl.save(new FulfillmentOptionImpl());
+
+    // Assert
+    verify(fulfillmentOptionDao).save(isA(FulfillmentOption.class));
+    assertSame(fulfillmentOptionImpl, actualSaveResult);
   }
 
   /**
    * Test {@link FulfillmentOptionServiceImpl#readAllFulfillmentOptions()}.
    * <p>
-   * Method under test:
-   * {@link FulfillmentOptionServiceImpl#readAllFulfillmentOptions()}
+   * Method under test: {@link FulfillmentOptionServiceImpl#readAllFulfillmentOptions()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List FulfillmentOptionServiceImpl.readAllFulfillmentOptions()"})
   public void testReadAllFulfillmentOptions() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2308 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.FulfillmentOptionServiceImpl fulfillmentOptionServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    when(fulfillmentOptionDao.readAllFulfillmentOptions()).thenReturn(new ArrayList<>());
 
-    // Arrange and Act
-    (new FulfillmentOptionServiceImpl()).readAllFulfillmentOptions();
+    // Act
+    List<FulfillmentOption> actualReadAllFulfillmentOptionsResult = fulfillmentOptionServiceImpl
+        .readAllFulfillmentOptions();
+
+    // Assert
+    verify(fulfillmentOptionDao).readAllFulfillmentOptions();
+    assertTrue(actualReadAllFulfillmentOptionsResult.isEmpty());
   }
 
   /**
-   * Test
-   * {@link FulfillmentOptionServiceImpl#readAllFulfillmentOptionsByFulfillmentType(FulfillmentType)}.
+   * Test {@link FulfillmentOptionServiceImpl#readAllFulfillmentOptionsByFulfillmentType(FulfillmentType)}.
    * <p>
-   * Method under test:
-   * {@link FulfillmentOptionServiceImpl#readAllFulfillmentOptionsByFulfillmentType(FulfillmentType)}
+   * Method under test: {@link FulfillmentOptionServiceImpl#readAllFulfillmentOptionsByFulfillmentType(FulfillmentType)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List FulfillmentOptionServiceImpl.readAllFulfillmentOptionsByFulfillmentType(FulfillmentType)"})
   public void testReadAllFulfillmentOptionsByFulfillmentType() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2309 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.FulfillmentOptionServiceImpl fulfillmentOptionServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    when(fulfillmentOptionDao.readAllFulfillmentOptionsByFulfillmentType(Mockito.<FulfillmentType>any()))
+        .thenReturn(new ArrayList<>());
 
-    // Arrange and Act
-    (new FulfillmentOptionServiceImpl()).readAllFulfillmentOptionsByFulfillmentType(FulfillmentType.DIGITAL);
+    // Act
+    List<FulfillmentOption> actualReadAllFulfillmentOptionsByFulfillmentTypeResult = fulfillmentOptionServiceImpl
+        .readAllFulfillmentOptionsByFulfillmentType(FulfillmentType.DIGITAL);
+
+    // Assert
+    verify(fulfillmentOptionDao).readAllFulfillmentOptionsByFulfillmentType(isA(FulfillmentType.class));
+    assertTrue(actualReadAllFulfillmentOptionsByFulfillmentTypeResult.isEmpty());
   }
 }

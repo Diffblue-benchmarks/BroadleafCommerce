@@ -20,7 +20,10 @@ package org.broadleafcommerce.common.web.device;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -44,6 +47,9 @@ public class WebRequestDeviceTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void WebRequestDeviceType.<init>()", "String WebRequestDeviceType.getFriendlyType()",
+      "String WebRequestDeviceType.getType()", "String WebRequestDeviceType.toString()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     WebRequestDeviceType actualWebRequestDeviceType = new WebRequestDeviceType();
@@ -63,10 +69,11 @@ public class WebRequestDeviceTypeDiffblueTest {
    *   <li>Then return Type is {@code Normal}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link WebRequestDeviceType#WebRequestDeviceType(String, String)}
+   * Method under test: {@link WebRequestDeviceType#WebRequestDeviceType(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void WebRequestDeviceType.<init>(String, String)"})
   public void testNewWebRequestDeviceType_whenNormal_thenReturnTypeIsNormal() {
     // Arrange and Act
     WebRequestDeviceType actualWebRequestDeviceType = new WebRequestDeviceType("Normal", "Friendly Type");
@@ -83,10 +90,11 @@ public class WebRequestDeviceTypeDiffblueTest {
    *   <li>Then return {@code Type}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link WebRequestDeviceType#WebRequestDeviceType(String, String)}
+   * Method under test: {@link WebRequestDeviceType#WebRequestDeviceType(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void WebRequestDeviceType.<init>(String, String)"})
   public void testNewWebRequestDeviceType_whenType_thenReturnType() {
     // Arrange and Act
     WebRequestDeviceType actualWebRequestDeviceType = new WebRequestDeviceType("Type", "Friendly Type");
@@ -102,6 +110,8 @@ public class WebRequestDeviceTypeDiffblueTest {
    * Method under test: {@link WebRequestDeviceType#getInstance(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"WebRequestDeviceType WebRequestDeviceType.getInstance(String)"})
   public void testGetInstance() {
     // Arrange and Act
     WebRequestDeviceType actualInstance = WebRequestDeviceType.getInstance("Type");
@@ -112,8 +122,7 @@ public class WebRequestDeviceTypeDiffblueTest {
   }
 
   /**
-   * Test {@link WebRequestDeviceType#equals(Object)}, and
-   * {@link WebRequestDeviceType#hashCode()}.
+   * Test {@link WebRequestDeviceType#equals(Object)}, and {@link WebRequestDeviceType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -126,6 +135,8 @@ public class WebRequestDeviceTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean WebRequestDeviceType.equals(Object)", "int WebRequestDeviceType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     WebRequestDeviceType webRequestDeviceType = WebRequestDeviceType.MOBILE;
@@ -138,8 +149,7 @@ public class WebRequestDeviceTypeDiffblueTest {
   }
 
   /**
-   * Test {@link WebRequestDeviceType#equals(Object)}, and
-   * {@link WebRequestDeviceType#hashCode()}.
+   * Test {@link WebRequestDeviceType#equals(Object)}, and {@link WebRequestDeviceType#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -152,6 +162,8 @@ public class WebRequestDeviceTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean WebRequestDeviceType.equals(Object)", "int WebRequestDeviceType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     WebRequestDeviceType webRequestDeviceType = WebRequestDeviceType.MOBILE;
@@ -172,6 +184,8 @@ public class WebRequestDeviceTypeDiffblueTest {
    * Method under test: {@link WebRequestDeviceType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean WebRequestDeviceType.equals(Object)", "int WebRequestDeviceType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(WebRequestDeviceType.NORMAL, WebRequestDeviceType.MOBILE);
@@ -187,6 +201,8 @@ public class WebRequestDeviceTypeDiffblueTest {
    * Method under test: {@link WebRequestDeviceType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean WebRequestDeviceType.equals(Object)", "int WebRequestDeviceType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(WebRequestDeviceType.MOBILE, null);
@@ -202,6 +218,8 @@ public class WebRequestDeviceTypeDiffblueTest {
    * Method under test: {@link WebRequestDeviceType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean WebRequestDeviceType.equals(Object)", "int WebRequestDeviceType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(WebRequestDeviceType.MOBILE, "Different type to WebRequestDeviceType");

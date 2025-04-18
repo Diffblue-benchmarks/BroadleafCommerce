@@ -19,7 +19,10 @@ package org.broadleafcommerce.common.notification.service.type;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class NotificationEventTypeDiffblueTest {
   /**
@@ -28,13 +31,15 @@ public class NotificationEventTypeDiffblueTest {
    * Method under test: {@link NotificationEventType#getInstance(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"NotificationEventType NotificationEventType.getInstance(String)"})
   public void testGetInstance() {
     // Arrange and Act
     NotificationEventType actualInstance = NotificationEventType.getInstance("Type");
 
     // Assert
+    assertEquals("Friendly Type", actualInstance.getFriendlyType());
     assertEquals("Type", actualInstance.getType());
-    assertEquals("Unable to find an EmailInfo that matched a notification of type ", actualInstance.getFriendlyType());
   }
 
   /**
@@ -47,6 +52,8 @@ public class NotificationEventTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String NotificationEventType.getFriendlyType()", "String NotificationEventType.getType()"})
   public void testGettersAndSetters() {
     // Arrange
     NotificationEventType notificationEventType = new NotificationEventType("Type", "Friendly Type");
@@ -60,8 +67,7 @@ public class NotificationEventTypeDiffblueTest {
   }
 
   /**
-   * Test {@link NotificationEventType#equals(Object)}, and
-   * {@link NotificationEventType#hashCode()}.
+   * Test {@link NotificationEventType#equals(Object)}, and {@link NotificationEventType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -74,6 +80,8 @@ public class NotificationEventTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean NotificationEventType.equals(Object)", "int NotificationEventType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     NotificationEventType notificationEventType = NotificationEventType.ADMIN_FORGOT_PASSWORD;
@@ -86,8 +94,7 @@ public class NotificationEventTypeDiffblueTest {
   }
 
   /**
-   * Test {@link NotificationEventType#equals(Object)}, and
-   * {@link NotificationEventType#hashCode()}.
+   * Test {@link NotificationEventType#equals(Object)}, and {@link NotificationEventType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -100,6 +107,8 @@ public class NotificationEventTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean NotificationEventType.equals(Object)", "int NotificationEventType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     NotificationEventType notificationEventType = new NotificationEventType();
@@ -112,8 +121,7 @@ public class NotificationEventTypeDiffblueTest {
   }
 
   /**
-   * Test {@link NotificationEventType#equals(Object)}, and
-   * {@link NotificationEventType#hashCode()}.
+   * Test {@link NotificationEventType#equals(Object)}, and {@link NotificationEventType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -126,6 +134,8 @@ public class NotificationEventTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean NotificationEventType.equals(Object)", "int NotificationEventType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     NotificationEventType notificationEventType = new NotificationEventType("ADMIN_FORGOT_PASSWORD", "Friendly Type");
@@ -138,8 +148,7 @@ public class NotificationEventTypeDiffblueTest {
   }
 
   /**
-   * Test {@link NotificationEventType#equals(Object)}, and
-   * {@link NotificationEventType#hashCode()}.
+   * Test {@link NotificationEventType#equals(Object)}, and {@link NotificationEventType#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -152,6 +161,8 @@ public class NotificationEventTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean NotificationEventType.equals(Object)", "int NotificationEventType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     NotificationEventType notificationEventType = NotificationEventType.ADMIN_FORGOT_PASSWORD;
@@ -172,9 +183,27 @@ public class NotificationEventTypeDiffblueTest {
    * Method under test: {@link NotificationEventType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean NotificationEventType.equals(Object)", "int NotificationEventType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(NotificationEventType.ADMIN_FORGOT_USERNAME, NotificationEventType.ADMIN_FORGOT_PASSWORD);
+  }
+
+  /**
+   * Test {@link NotificationEventType#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link NotificationEventType#equals(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean NotificationEventType.equals(Object)", "int NotificationEventType.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange, Act and Assert
     assertNotEquals(new NotificationEventType(), NotificationEventType.ADMIN_FORGOT_PASSWORD);
   }
 
@@ -188,6 +217,8 @@ public class NotificationEventTypeDiffblueTest {
    * Method under test: {@link NotificationEventType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean NotificationEventType.equals(Object)", "int NotificationEventType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(NotificationEventType.ADMIN_FORGOT_PASSWORD, null);
@@ -203,6 +234,8 @@ public class NotificationEventTypeDiffblueTest {
    * Method under test: {@link NotificationEventType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean NotificationEventType.equals(Object)", "int NotificationEventType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(NotificationEventType.ADMIN_FORGOT_PASSWORD, "Different type to NotificationEventType");

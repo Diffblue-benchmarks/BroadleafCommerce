@@ -1,459 +1,810 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.server.service;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.util.ArrayList;
+import java.util.Set;
+import org.apache.xerces.dom.DocumentFragmentImpl;
 import org.broadleafcommerce.common.exception.ServiceException;
+import org.broadleafcommerce.common.persistence.TargetModeType;
+import org.broadleafcommerce.common.persistence.transaction.LifecycleAwareJpaTransactionManager;
+import org.broadleafcommerce.common.security.service.CleanStringException;
+import org.broadleafcommerce.common.security.service.ExploitProtectionService;
+import org.broadleafcommerce.common.service.PersistenceService;
+import org.broadleafcommerce.common.util.StreamCapableTransactionalOperation;
+import org.broadleafcommerce.common.util.StreamingTransactionCapableUtil;
 import org.broadleafcommerce.openadmin.dto.CriteriaTransferObject;
 import org.broadleafcommerce.openadmin.dto.Entity;
 import org.broadleafcommerce.openadmin.dto.PersistencePackage;
 import org.broadleafcommerce.openadmin.dto.Property;
-import org.junit.Ignore;
+import org.broadleafcommerce.openadmin.server.service.persistence.Persistable;
+import org.broadleafcommerce.openadmin.server.service.persistence.PersistenceResponse;
+import org.broadleafcommerce.openadmin.server.service.persistence.PersistenceThreadManager;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.owasp.validator.html.CleanResults;
+import org.springframework.transaction.PlatformTransactionManager;
 
-@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
-    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
-    "/bl-open-admin-contentCreator-applicationContext.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class DynamicEntityRemoteServiceDiffblueTest {
-  @Autowired
+  @InjectMocks
   private DynamicEntityRemoteService dynamicEntityRemoteService;
 
-  /**
-   * Test
-   * {@link DynamicEntityRemoteService#recreateSpecificServiceException(ServiceException, String, Throwable)}.
-   * <p>
-   * Method under test:
-   * {@link DynamicEntityRemoteService#recreateSpecificServiceException(ServiceException, String, Throwable)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testRecreateSpecificServiceException() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass367 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.DynamicEntityRemoteService dynamicEntityRemoteService;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Mock
+  private ExploitProtectionService exploitProtectionService;
 
-    // Arrange
-    DynamicEntityRemoteService dynamicEntityRemoteService2 = new DynamicEntityRemoteService();
-    ServiceException e = new ServiceException("An error occurred");
+  @Mock
+  private PersistenceService persistenceService;
 
-    // Act
-    dynamicEntityRemoteService2.recreateSpecificServiceException(e, "An error occurred", new Throwable());
-  }
+  @Mock
+  private PersistenceThreadManager persistenceThreadManager;
+
+  @Mock
+  private Set<String> set;
+
+  @Mock
+  private StreamingTransactionCapableUtil streamingTransactionCapableUtil;
 
   /**
-   * Test {@link DynamicEntityRemoteService#inspect(PersistencePackage)}.
-   * <p>
-   * Method under test:
-   * {@link DynamicEntityRemoteService#inspect(PersistencePackage)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testInspect() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass205 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.DynamicEntityRemoteService dynamicEntityRemoteService;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DynamicEntityRemoteService dynamicEntityRemoteService2 = new DynamicEntityRemoteService();
-
-    // Act
-    dynamicEntityRemoteService2.inspect(new PersistencePackage());
-  }
-
-  /**
-   * Test
-   * {@link DynamicEntityRemoteService#nonTransactionalInspect(PersistencePackage)}.
-   * <p>
-   * Method under test:
-   * {@link DynamicEntityRemoteService#nonTransactionalInspect(PersistencePackage)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testNonTransactionalInspect() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass295 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.DynamicEntityRemoteService dynamicEntityRemoteService;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DynamicEntityRemoteService dynamicEntityRemoteService2 = new DynamicEntityRemoteService();
-
-    // Act
-    dynamicEntityRemoteService2.nonTransactionalInspect(new PersistencePackage());
-  }
-
-  /**
-   * Test
-   * {@link DynamicEntityRemoteService#fetch(PersistencePackage, CriteriaTransferObject)}.
-   * <p>
-   * Method under test:
-   * {@link DynamicEntityRemoteService#fetch(PersistencePackage, CriteriaTransferObject)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFetch() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass141 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.DynamicEntityRemoteService dynamicEntityRemoteService;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DynamicEntityRemoteService dynamicEntityRemoteService2 = new DynamicEntityRemoteService();
-    PersistencePackage persistencePackage = new PersistencePackage();
-
-    // Act
-    dynamicEntityRemoteService2.fetch(persistencePackage, new CriteriaTransferObject());
-  }
-
-  /**
-   * Test
-   * {@link DynamicEntityRemoteService#nonTransactionalFetch(PersistencePackage, CriteriaTransferObject)}.
-   * <p>
-   * Method under test:
-   * {@link DynamicEntityRemoteService#nonTransactionalFetch(PersistencePackage, CriteriaTransferObject)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testNonTransactionalFetch() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass255 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.DynamicEntityRemoteService dynamicEntityRemoteService;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DynamicEntityRemoteService dynamicEntityRemoteService2 = new DynamicEntityRemoteService();
-    PersistencePackage persistencePackage = new PersistencePackage();
-
-    // Act
-    dynamicEntityRemoteService2.nonTransactionalFetch(persistencePackage, new CriteriaTransferObject());
-  }
-
-  /**
-   * Test {@link DynamicEntityRemoteService#cleanEntity(Entity)}.
-   * <p>
-   * Method under test: {@link DynamicEntityRemoteService#cleanEntity(Entity)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCleanEntity() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass120 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.DynamicEntityRemoteService dynamicEntityRemoteService;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DynamicEntityRemoteService dynamicEntityRemoteService2 = new DynamicEntityRemoteService();
-
-    // Act
-    dynamicEntityRemoteService2.cleanEntity(new Entity());
-  }
-
-  /**
-   * Test {@link DynamicEntityRemoteService#cleanEntity(Entity)}.
+   * Test {@link DynamicEntityRemoteService#recreateSpecificServiceException(ServiceException, String, Throwable)}.
    * <ul>
-   *   <li>Given empty array of {@link Property}.</li>
-   *   <li>Then calls {@link Entity#getProperties()}.</li>
+   *   <li>Then return Cause is {@link Throwable#Throwable()}.</li>
    * </ul>
    * <p>
+   * Method under test: {@link DynamicEntityRemoteService#recreateSpecificServiceException(ServiceException, String, Throwable)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "ServiceException DynamicEntityRemoteService.recreateSpecificServiceException(ServiceException, String, Throwable)"})
+  public void testRecreateSpecificServiceException_thenReturnCauseIsThrowable() {
+    // Arrange
+    ServiceException e = new ServiceException("An error occurred");
+    Throwable cause = new Throwable();
+
+    // Act and Assert
+    assertSame(cause,
+        dynamicEntityRemoteService.recreateSpecificServiceException(e, "An error occurred", cause).getCause());
+  }
+
+  /**
+   * Test {@link DynamicEntityRemoteService#recreateSpecificServiceException(ServiceException, String, Throwable)}.
+   * <ul>
+   *   <li>Then return LocalizedMessage is {@code An error occurred}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#recreateSpecificServiceException(ServiceException, String, Throwable)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "ServiceException DynamicEntityRemoteService.recreateSpecificServiceException(ServiceException, String, Throwable)"})
+  public void testRecreateSpecificServiceException_thenReturnLocalizedMessageIsAnErrorOccurred() {
+    // Arrange and Act
+    ServiceException actualRecreateSpecificServiceExceptionResult = dynamicEntityRemoteService
+        .recreateSpecificServiceException(new ServiceException("An error occurred"), "An error occurred", null);
+
+    // Assert
+    assertEquals("An error occurred", actualRecreateSpecificServiceExceptionResult.getLocalizedMessage());
+    assertEquals("An error occurred", actualRecreateSpecificServiceExceptionResult.getMessage());
+    assertNull(actualRecreateSpecificServiceExceptionResult.getCause());
+    assertEquals(0, actualRecreateSpecificServiceExceptionResult.getSuppressed().length);
+  }
+
+  /**
+   * Test {@link DynamicEntityRemoteService#recreateSpecificServiceException(ServiceException, String, Throwable)}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#recreateSpecificServiceException(ServiceException, String, Throwable)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "ServiceException DynamicEntityRemoteService.recreateSpecificServiceException(ServiceException, String, Throwable)"})
+  public void testRecreateSpecificServiceException_thenThrowRuntimeException() {
+    // Arrange
+    ValidationException e = new ValidationException(new Entity());
+
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> dynamicEntityRemoteService.recreateSpecificServiceException(e, "An error occurred", new Throwable()));
+  }
+
+  /**
+   * Test {@link DynamicEntityRemoteService#recreateSpecificServiceException(ServiceException, String, Throwable)}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#recreateSpecificServiceException(ServiceException, String, Throwable)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "ServiceException DynamicEntityRemoteService.recreateSpecificServiceException(ServiceException, String, Throwable)"})
+  public void testRecreateSpecificServiceException_thenThrowRuntimeException2() {
+    // Arrange, Act and Assert
+    assertThrows(RuntimeException.class, () -> dynamicEntityRemoteService
+        .recreateSpecificServiceException(new ValidationException(new Entity()), "An error occurred", null));
+  }
+
+  /**
+   * Test {@link DynamicEntityRemoteService#nonTransactionalInspect(PersistencePackage)}.
+   * <ul>
+   *   <li>Then return {@link PersistenceResponse} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#nonTransactionalInspect(PersistencePackage)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistenceResponse DynamicEntityRemoteService.nonTransactionalInspect(PersistencePackage)"})
+  public void testNonTransactionalInspect_thenReturnPersistenceResponse() throws Throwable {
+    // Arrange
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    when(persistenceThreadManager.operation(Mockito.<TargetModeType>any(), Mockito.<PersistencePackage>any(),
+        Mockito.<Persistable<PersistenceResponse, ServiceException>>any())).thenReturn(persistenceResponse);
+
+    // Act
+    PersistenceResponse actualNonTransactionalInspectResult = dynamicEntityRemoteService
+        .nonTransactionalInspect(new PersistencePackage());
+
+    // Assert
+    verify(persistenceThreadManager).operation(isA(TargetModeType.class), isA(PersistencePackage.class),
+        isA(Persistable.class));
+    assertSame(persistenceResponse, actualNonTransactionalInspectResult);
+  }
+
+  /**
+   * Test {@link DynamicEntityRemoteService#nonTransactionalInspect(PersistencePackage)}.
+   * <ul>
+   *   <li>Then throw {@link ServiceException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#nonTransactionalInspect(PersistencePackage)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistenceResponse DynamicEntityRemoteService.nonTransactionalInspect(PersistencePackage)"})
+  public void testNonTransactionalInspect_thenThrowServiceException() throws Throwable {
+    // Arrange
+    when(persistenceThreadManager.operation(Mockito.<TargetModeType>any(), Mockito.<PersistencePackage>any(),
+        Mockito.<Persistable<PersistenceResponse, ServiceException>>any()))
+        .thenThrow(new ServiceException("An error occurred"));
+
+    // Act and Assert
+    assertThrows(ServiceException.class,
+        () -> dynamicEntityRemoteService.nonTransactionalInspect(new PersistencePackage()));
+    verify(persistenceThreadManager).operation(isA(TargetModeType.class), isA(PersistencePackage.class),
+        isA(Persistable.class));
+  }
+
+  /**
+   * Test {@link DynamicEntityRemoteService#nonTransactionalFetch(PersistencePackage, CriteriaTransferObject)}.
+   * <ul>
+   *   <li>Then return {@link PersistenceResponse} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#nonTransactionalFetch(PersistencePackage, CriteriaTransferObject)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "PersistenceResponse DynamicEntityRemoteService.nonTransactionalFetch(PersistencePackage, CriteriaTransferObject)"})
+  public void testNonTransactionalFetch_thenReturnPersistenceResponse() throws Throwable {
+    // Arrange
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    when(persistenceThreadManager.operation(Mockito.<TargetModeType>any(), Mockito.<PersistencePackage>any(),
+        Mockito.<Persistable<PersistenceResponse, ServiceException>>any())).thenReturn(persistenceResponse);
+    PersistencePackage persistencePackage = new PersistencePackage();
+
+    // Act
+    PersistenceResponse actualNonTransactionalFetchResult = dynamicEntityRemoteService
+        .nonTransactionalFetch(persistencePackage, new CriteriaTransferObject());
+
+    // Assert
+    verify(persistenceThreadManager).operation(isA(TargetModeType.class), isA(PersistencePackage.class),
+        isA(Persistable.class));
+    assertSame(persistenceResponse, actualNonTransactionalFetchResult);
+  }
+
+  /**
+   * Test {@link DynamicEntityRemoteService#nonTransactionalFetch(PersistencePackage, CriteriaTransferObject)}.
+   * <ul>
+   *   <li>Then throw {@link ServiceException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#nonTransactionalFetch(PersistencePackage, CriteriaTransferObject)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "PersistenceResponse DynamicEntityRemoteService.nonTransactionalFetch(PersistencePackage, CriteriaTransferObject)"})
+  public void testNonTransactionalFetch_thenThrowServiceException() throws Throwable {
+    // Arrange
+    when(persistenceThreadManager.operation(Mockito.<TargetModeType>any(), Mockito.<PersistencePackage>any(),
+        Mockito.<Persistable<PersistenceResponse, ServiceException>>any()))
+        .thenThrow(new ServiceException("An error occurred"));
+    PersistencePackage persistencePackage = new PersistencePackage();
+
+    // Act and Assert
+    assertThrows(ServiceException.class,
+        () -> dynamicEntityRemoteService.nonTransactionalFetch(persistencePackage, new CriteriaTransferObject()));
+    verify(persistenceThreadManager).operation(isA(TargetModeType.class), isA(PersistencePackage.class),
+        isA(Persistable.class));
+  }
+
+  /**
+   * Test {@link DynamicEntityRemoteService#cleanEntity(Entity)}.
+   * <p>
    * Method under test: {@link DynamicEntityRemoteService#cleanEntity(Entity)}
    */
   @Test
-  public void testCleanEntity_givenEmptyArrayOfProperty_thenCallsGetProperties() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DynamicEntityRemoteService.cleanEntity(Entity)"})
+  public void testCleanEntity() throws ServiceException {
     // Arrange
-    DynamicEntityRemoteService dynamicEntityRemoteService = new DynamicEntityRemoteService();
+    when(exploitProtectionService.cleanStringWithResults(Mockito.<String>any()))
+        .thenReturn("Clean String With Results");
     Entity entity = mock(Entity.class);
-    when(entity.getProperties()).thenReturn(new Property[]{});
+    when(entity.getProperties()).thenReturn(new Property[]{new Property()});
 
     // Act
     dynamicEntityRemoteService.cleanEntity(entity);
 
     // Assert
+    verify(exploitProtectionService).cleanStringWithResults(isNull());
+    verify(entity).getProperties();
+  }
+
+  /**
+   * Test {@link DynamicEntityRemoteService#cleanEntity(Entity)}.
+   * <ul>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@code foo}.</li>
+   *   <li>Then calls {@link Entity#addValidationError(String, String)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#cleanEntity(Entity)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DynamicEntityRemoteService.cleanEntity(Entity)"})
+  public void testCleanEntity_givenArrayListAddFoo_thenCallsAddValidationError() throws ServiceException {
+    // Arrange
+    ArrayList<String> errorMessages = new ArrayList<>();
+    errorMessages.add("foo");
+    when(exploitProtectionService.cleanStringWithResults(Mockito.<String>any()))
+        .thenThrow(new CleanStringException(new CleanResults(1L,
+            "\nNote - Antisamy policy in effect. Set a new policy file to modify validation behavior/strictness.",
+            new DocumentFragmentImpl(), errorMessages)));
+    Entity entity = mock(Entity.class);
+    doNothing().when(entity).addValidationError(Mockito.<String>any(), Mockito.<String>any());
+    when(entity.getProperties()).thenReturn(new Property[]{new Property()});
+
+    // Act
+    dynamicEntityRemoteService.cleanEntity(entity);
+
+    // Assert
+    verify(exploitProtectionService).cleanStringWithResults(isNull());
+    verify(entity).addValidationError(isNull(), eq(
+        "\n1) foo\n\nNote - Antisamy policy in effect. Set a new policy file to modify validation behavior/strictness."));
+    verify(entity).getProperties();
+  }
+
+  /**
+   * Test {@link DynamicEntityRemoteService#cleanEntity(Entity)}.
+   * <ul>
+   *   <li>Then calls {@link Entity#addValidationError(String, String)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#cleanEntity(Entity)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DynamicEntityRemoteService.cleanEntity(Entity)"})
+  public void testCleanEntity_thenCallsAddValidationError() throws ServiceException {
+    // Arrange
+    when(exploitProtectionService.cleanStringWithResults(Mockito.<String>any()))
+        .thenThrow(new CleanStringException(new CleanResults()));
+    Entity entity = mock(Entity.class);
+    doNothing().when(entity).addValidationError(Mockito.<String>any(), Mockito.<String>any());
+    when(entity.getProperties()).thenReturn(new Property[]{new Property()});
+
+    // Act
+    dynamicEntityRemoteService.cleanEntity(entity);
+
+    // Assert
+    verify(exploitProtectionService).cleanStringWithResults(isNull());
+    verify(entity).addValidationError(isNull(),
+        eq("\nNote - Antisamy policy in effect. Set a new policy file to modify validation behavior/strictness."));
+    verify(entity).getProperties();
+  }
+
+  /**
+   * Test {@link DynamicEntityRemoteService#cleanEntity(Entity)}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#cleanEntity(Entity)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DynamicEntityRemoteService.cleanEntity(Entity)"})
+  public void testCleanEntity_thenThrowRuntimeException() throws ServiceException {
+    // Arrange
+    when(exploitProtectionService.cleanStringWithResults(Mockito.<String>any()))
+        .thenThrow(new CleanStringException(new CleanResults()));
+    Entity entity = mock(Entity.class);
+    doThrow(new RuntimeException(
+        "\nNote - Antisamy policy in effect. Set a new policy file to modify validation behavior/strictness."))
+        .when(entity)
+        .addValidationError(Mockito.<String>any(), Mockito.<String>any());
+    when(entity.getProperties()).thenReturn(new Property[]{new Property()});
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> dynamicEntityRemoteService.cleanEntity(entity));
+    verify(exploitProtectionService).cleanStringWithResults(isNull());
+    verify(entity).addValidationError(isNull(),
+        eq("\nNote - Antisamy policy in effect. Set a new policy file to modify validation behavior/strictness."));
+    verify(entity).getProperties();
+  }
+
+  /**
+   * Test {@link DynamicEntityRemoteService#cleanEntity(Entity)}.
+   * <ul>
+   *   <li>Then throw {@link ServiceException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#cleanEntity(Entity)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DynamicEntityRemoteService.cleanEntity(Entity)"})
+  public void testCleanEntity_thenThrowServiceException() throws ServiceException {
+    // Arrange
+    when(exploitProtectionService.cleanStringWithResults(Mockito.<String>any()))
+        .thenThrow(new ServiceException("An error occurred"));
+    Entity entity = mock(Entity.class);
+    when(entity.getProperties()).thenReturn(new Property[]{new Property()});
+
+    // Act and Assert
+    assertThrows(ServiceException.class, () -> dynamicEntityRemoteService.cleanEntity(entity));
+    verify(exploitProtectionService).cleanStringWithResults(isNull());
     verify(entity).getProperties();
   }
 
   /**
    * Test {@link DynamicEntityRemoteService#add(PersistencePackage)}.
+   * <ul>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link DynamicEntityRemoteService#add(PersistencePackage)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testAdd() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass96 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.DynamicEntityRemoteService dynamicEntityRemoteService;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistenceResponse DynamicEntityRemoteService.add(PersistencePackage)"})
+  public void testAdd_thenReturnNull() throws Throwable {
     // Arrange
-    DynamicEntityRemoteService dynamicEntityRemoteService2 = new DynamicEntityRemoteService();
+    when(persistenceService.identifyTransactionManager(Mockito.<String>any(), Mockito.<TargetModeType>any()))
+        .thenReturn(new LifecycleAwareJpaTransactionManager());
+    doNothing().when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
+            Mockito.<Class<RuntimeException>>any(), Mockito.<PlatformTransactionManager>any());
 
     // Act
-    dynamicEntityRemoteService2.add(new PersistencePackage());
+    PersistenceResponse actualAddResult = dynamicEntityRemoteService.add(new PersistencePackage());
+
+    // Assert
+    verify(persistenceService).identifyTransactionManager(isNull(), isA(TargetModeType.class));
+    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
+        isA(Class.class), isA(PlatformTransactionManager.class));
+    assertNull(actualAddResult);
+  }
+
+  /**
+   * Test {@link DynamicEntityRemoteService#add(PersistencePackage)}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#add(PersistencePackage)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistenceResponse DynamicEntityRemoteService.add(PersistencePackage)"})
+  public void testAdd_thenThrowRuntimeException() throws Throwable {
+    // Arrange
+    when(persistenceService.identifyTransactionManager(Mockito.<String>any(), Mockito.<TargetModeType>any()))
+        .thenReturn(new LifecycleAwareJpaTransactionManager());
+    doThrow(new RuntimeException("foo")).when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
+            Mockito.<Class<RuntimeException>>any(), Mockito.<PlatformTransactionManager>any());
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> dynamicEntityRemoteService.add(new PersistencePackage()));
+    verify(persistenceService).identifyTransactionManager(isNull(), isA(TargetModeType.class));
+    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
+        isA(Class.class), isA(PlatformTransactionManager.class));
+  }
+
+  /**
+   * Test {@link DynamicEntityRemoteService#add(PersistencePackage)}.
+   * <ul>
+   *   <li>Then throw {@link ServiceException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#add(PersistencePackage)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistenceResponse DynamicEntityRemoteService.add(PersistencePackage)"})
+  public void testAdd_thenThrowServiceException() throws Throwable {
+    // Arrange
+    when(persistenceService.identifyTransactionManager(Mockito.<String>any(), Mockito.<TargetModeType>any()))
+        .thenReturn(new LifecycleAwareJpaTransactionManager());
+    doThrow(new ServiceException("An error occurred")).when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
+            Mockito.<Class<RuntimeException>>any(), Mockito.<PlatformTransactionManager>any());
+
+    // Act and Assert
+    assertThrows(ServiceException.class, () -> dynamicEntityRemoteService.add(new PersistencePackage()));
+    verify(persistenceService).identifyTransactionManager(isNull(), isA(TargetModeType.class));
+    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
+        isA(Class.class), isA(PlatformTransactionManager.class));
   }
 
   /**
    * Test {@link DynamicEntityRemoteService#update(PersistencePackage)}.
+   * <ul>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityRemoteService#update(PersistencePackage)}
+   * Method under test: {@link DynamicEntityRemoteService#update(PersistencePackage)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testUpdate() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass542 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.DynamicEntityRemoteService dynamicEntityRemoteService;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistenceResponse DynamicEntityRemoteService.update(PersistencePackage)"})
+  public void testUpdate_thenReturnNull() throws Throwable {
     // Arrange
-    DynamicEntityRemoteService dynamicEntityRemoteService2 = new DynamicEntityRemoteService();
+    when(persistenceService.identifyTransactionManager(Mockito.<String>any(), Mockito.<TargetModeType>any()))
+        .thenReturn(new LifecycleAwareJpaTransactionManager());
+    doNothing().when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
+            Mockito.<Class<RuntimeException>>any(), Mockito.<PlatformTransactionManager>any());
 
     // Act
-    dynamicEntityRemoteService2.update(new PersistencePackage());
+    PersistenceResponse actualUpdateResult = dynamicEntityRemoteService.update(new PersistencePackage());
+
+    // Assert
+    verify(persistenceService).identifyTransactionManager(isNull(), isA(TargetModeType.class));
+    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
+        isA(Class.class), isA(PlatformTransactionManager.class));
+    assertNull(actualUpdateResult);
+  }
+
+  /**
+   * Test {@link DynamicEntityRemoteService#update(PersistencePackage)}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#update(PersistencePackage)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistenceResponse DynamicEntityRemoteService.update(PersistencePackage)"})
+  public void testUpdate_thenThrowRuntimeException() throws Throwable {
+    // Arrange
+    when(persistenceService.identifyTransactionManager(Mockito.<String>any(), Mockito.<TargetModeType>any()))
+        .thenReturn(new LifecycleAwareJpaTransactionManager());
+    doThrow(new RuntimeException("foo")).when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
+            Mockito.<Class<RuntimeException>>any(), Mockito.<PlatformTransactionManager>any());
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> dynamicEntityRemoteService.update(new PersistencePackage()));
+    verify(persistenceService).identifyTransactionManager(isNull(), isA(TargetModeType.class));
+    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
+        isA(Class.class), isA(PlatformTransactionManager.class));
+  }
+
+  /**
+   * Test {@link DynamicEntityRemoteService#update(PersistencePackage)}.
+   * <ul>
+   *   <li>Then throw {@link ServiceException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#update(PersistencePackage)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistenceResponse DynamicEntityRemoteService.update(PersistencePackage)"})
+  public void testUpdate_thenThrowServiceException() throws Throwable {
+    // Arrange
+    when(persistenceService.identifyTransactionManager(Mockito.<String>any(), Mockito.<TargetModeType>any()))
+        .thenReturn(new LifecycleAwareJpaTransactionManager());
+    doThrow(new ServiceException("An error occurred")).when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
+            Mockito.<Class<RuntimeException>>any(), Mockito.<PlatformTransactionManager>any());
+
+    // Act and Assert
+    assertThrows(ServiceException.class, () -> dynamicEntityRemoteService.update(new PersistencePackage()));
+    verify(persistenceService).identifyTransactionManager(isNull(), isA(TargetModeType.class));
+    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
+        isA(Class.class), isA(PlatformTransactionManager.class));
   }
 
   /**
    * Test {@link DynamicEntityRemoteService#remove(PersistencePackage)}.
+   * <ul>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityRemoteService#remove(PersistencePackage)}
+   * Method under test: {@link DynamicEntityRemoteService#remove(PersistencePackage)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testRemove() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass518 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.DynamicEntityRemoteService dynamicEntityRemoteService;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistenceResponse DynamicEntityRemoteService.remove(PersistencePackage)"})
+  public void testRemove_thenReturnNull() throws Throwable {
     // Arrange
-    DynamicEntityRemoteService dynamicEntityRemoteService2 = new DynamicEntityRemoteService();
+    when(persistenceService.identifyTransactionManager(Mockito.<String>any(), Mockito.<TargetModeType>any()))
+        .thenReturn(new LifecycleAwareJpaTransactionManager());
+    doNothing().when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
+            Mockito.<Class<RuntimeException>>any(), Mockito.<PlatformTransactionManager>any());
 
     // Act
-    dynamicEntityRemoteService2.remove(new PersistencePackage());
+    PersistenceResponse actualRemoveResult = dynamicEntityRemoteService.remove(new PersistencePackage());
+
+    // Assert
+    verify(persistenceService).identifyTransactionManager(isNull(), isA(TargetModeType.class));
+    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
+        isA(Class.class), isA(PlatformTransactionManager.class));
+    assertNull(actualRemoveResult);
   }
 
   /**
-   * Test
-   * {@link DynamicEntityRemoteService#nonTransactionalAdd(PersistencePackage)}.
+   * Test {@link DynamicEntityRemoteService#remove(PersistencePackage)}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityRemoteService#nonTransactionalAdd(PersistencePackage)}
+   * Method under test: {@link DynamicEntityRemoteService#remove(PersistencePackage)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testNonTransactionalAdd() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass231 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.DynamicEntityRemoteService dynamicEntityRemoteService;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistenceResponse DynamicEntityRemoteService.remove(PersistencePackage)"})
+  public void testRemove_thenThrowRuntimeException() throws Throwable {
     // Arrange
-    DynamicEntityRemoteService dynamicEntityRemoteService2 = new DynamicEntityRemoteService();
+    when(persistenceService.identifyTransactionManager(Mockito.<String>any(), Mockito.<TargetModeType>any()))
+        .thenReturn(new LifecycleAwareJpaTransactionManager());
+    doThrow(new RuntimeException("foo")).when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
+            Mockito.<Class<RuntimeException>>any(), Mockito.<PlatformTransactionManager>any());
 
-    // Act
-    dynamicEntityRemoteService2.nonTransactionalAdd(new PersistencePackage());
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> dynamicEntityRemoteService.remove(new PersistencePackage()));
+    verify(persistenceService).identifyTransactionManager(isNull(), isA(TargetModeType.class));
+    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
+        isA(Class.class), isA(PlatformTransactionManager.class));
   }
 
   /**
-   * Test
-   * {@link DynamicEntityRemoteService#nonTransactionalUpdate(PersistencePackage)}.
+   * Test {@link DynamicEntityRemoteService#remove(PersistencePackage)}.
+   * <ul>
+   *   <li>Then throw {@link ServiceException}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityRemoteService#nonTransactionalUpdate(PersistencePackage)}
+   * Method under test: {@link DynamicEntityRemoteService#remove(PersistencePackage)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testNonTransactionalUpdate() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass343 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.DynamicEntityRemoteService dynamicEntityRemoteService;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistenceResponse DynamicEntityRemoteService.remove(PersistencePackage)"})
+  public void testRemove_thenThrowServiceException() throws Throwable {
     // Arrange
-    DynamicEntityRemoteService dynamicEntityRemoteService2 = new DynamicEntityRemoteService();
+    when(persistenceService.identifyTransactionManager(Mockito.<String>any(), Mockito.<TargetModeType>any()))
+        .thenReturn(new LifecycleAwareJpaTransactionManager());
+    doThrow(new ServiceException("An error occurred")).when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
+            Mockito.<Class<RuntimeException>>any(), Mockito.<PlatformTransactionManager>any());
 
-    // Act
-    dynamicEntityRemoteService2.nonTransactionalUpdate(new PersistencePackage());
+    // Act and Assert
+    assertThrows(ServiceException.class, () -> dynamicEntityRemoteService.remove(new PersistencePackage()));
+    verify(persistenceService).identifyTransactionManager(isNull(), isA(TargetModeType.class));
+    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
+        isA(Class.class), isA(PlatformTransactionManager.class));
   }
 
   /**
-   * Test
-   * {@link DynamicEntityRemoteService#nonTransactionalRemove(PersistencePackage)}.
+   * Test {@link DynamicEntityRemoteService#nonTransactionalAdd(PersistencePackage)}.
+   * <ul>
+   *   <li>Then return {@link PersistenceResponse} (default constructor).</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityRemoteService#nonTransactionalRemove(PersistencePackage)}
+   * Method under test: {@link DynamicEntityRemoteService#nonTransactionalAdd(PersistencePackage)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testNonTransactionalRemove() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass319 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.DynamicEntityRemoteService dynamicEntityRemoteService;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistenceResponse DynamicEntityRemoteService.nonTransactionalAdd(PersistencePackage)"})
+  public void testNonTransactionalAdd_thenReturnPersistenceResponse() throws Throwable {
     // Arrange
-    DynamicEntityRemoteService dynamicEntityRemoteService2 = new DynamicEntityRemoteService();
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    when(persistenceThreadManager.operation(Mockito.<TargetModeType>any(), Mockito.<PersistencePackage>any(),
+        Mockito.<Persistable<PersistenceResponse, ServiceException>>any())).thenReturn(persistenceResponse);
 
     // Act
-    dynamicEntityRemoteService2.nonTransactionalRemove(new PersistencePackage());
+    PersistenceResponse actualNonTransactionalAddResult = dynamicEntityRemoteService
+        .nonTransactionalAdd(new PersistencePackage());
+
+    // Assert
+    verify(persistenceThreadManager).operation(isA(TargetModeType.class), isA(PersistencePackage.class),
+        isA(Persistable.class));
+    assertSame(persistenceResponse, actualNonTransactionalAddResult);
+  }
+
+  /**
+   * Test {@link DynamicEntityRemoteService#nonTransactionalAdd(PersistencePackage)}.
+   * <ul>
+   *   <li>Then throw {@link ServiceException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#nonTransactionalAdd(PersistencePackage)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistenceResponse DynamicEntityRemoteService.nonTransactionalAdd(PersistencePackage)"})
+  public void testNonTransactionalAdd_thenThrowServiceException() throws Throwable {
+    // Arrange
+    when(persistenceThreadManager.operation(Mockito.<TargetModeType>any(), Mockito.<PersistencePackage>any(),
+        Mockito.<Persistable<PersistenceResponse, ServiceException>>any()))
+        .thenThrow(new ServiceException("An error occurred"));
+
+    // Act and Assert
+    assertThrows(ServiceException.class,
+        () -> dynamicEntityRemoteService.nonTransactionalAdd(new PersistencePackage()));
+    verify(persistenceThreadManager).operation(isA(TargetModeType.class), isA(PersistencePackage.class),
+        isA(Persistable.class));
+  }
+
+  /**
+   * Test {@link DynamicEntityRemoteService#nonTransactionalUpdate(PersistencePackage)}.
+   * <ul>
+   *   <li>Then return {@link PersistenceResponse} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#nonTransactionalUpdate(PersistencePackage)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistenceResponse DynamicEntityRemoteService.nonTransactionalUpdate(PersistencePackage)"})
+  public void testNonTransactionalUpdate_thenReturnPersistenceResponse() throws Throwable {
+    // Arrange
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    when(persistenceThreadManager.operation(Mockito.<TargetModeType>any(), Mockito.<PersistencePackage>any(),
+        Mockito.<Persistable<PersistenceResponse, ServiceException>>any())).thenReturn(persistenceResponse);
+
+    // Act
+    PersistenceResponse actualNonTransactionalUpdateResult = dynamicEntityRemoteService
+        .nonTransactionalUpdate(new PersistencePackage());
+
+    // Assert
+    verify(persistenceThreadManager).operation(isA(TargetModeType.class), isA(PersistencePackage.class),
+        isA(Persistable.class));
+    assertSame(persistenceResponse, actualNonTransactionalUpdateResult);
+  }
+
+  /**
+   * Test {@link DynamicEntityRemoteService#nonTransactionalUpdate(PersistencePackage)}.
+   * <ul>
+   *   <li>Then throw {@link ServiceException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#nonTransactionalUpdate(PersistencePackage)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistenceResponse DynamicEntityRemoteService.nonTransactionalUpdate(PersistencePackage)"})
+  public void testNonTransactionalUpdate_thenThrowServiceException() throws Throwable {
+    // Arrange
+    when(persistenceThreadManager.operation(Mockito.<TargetModeType>any(), Mockito.<PersistencePackage>any(),
+        Mockito.<Persistable<PersistenceResponse, ServiceException>>any()))
+        .thenThrow(new ServiceException("An error occurred"));
+
+    // Act and Assert
+    assertThrows(ServiceException.class,
+        () -> dynamicEntityRemoteService.nonTransactionalUpdate(new PersistencePackage()));
+    verify(persistenceThreadManager).operation(isA(TargetModeType.class), isA(PersistencePackage.class),
+        isA(Persistable.class));
+  }
+
+  /**
+   * Test {@link DynamicEntityRemoteService#nonTransactionalRemove(PersistencePackage)}.
+   * <ul>
+   *   <li>Then return {@link PersistenceResponse} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#nonTransactionalRemove(PersistencePackage)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistenceResponse DynamicEntityRemoteService.nonTransactionalRemove(PersistencePackage)"})
+  public void testNonTransactionalRemove_thenReturnPersistenceResponse() throws Throwable {
+    // Arrange
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    when(persistenceThreadManager.operation(Mockito.<TargetModeType>any(), Mockito.<PersistencePackage>any(),
+        Mockito.<Persistable<PersistenceResponse, ServiceException>>any())).thenReturn(persistenceResponse);
+
+    // Act
+    PersistenceResponse actualNonTransactionalRemoveResult = dynamicEntityRemoteService
+        .nonTransactionalRemove(new PersistencePackage());
+
+    // Assert
+    verify(persistenceThreadManager).operation(isA(TargetModeType.class), isA(PersistencePackage.class),
+        isA(Persistable.class));
+    assertSame(persistenceResponse, actualNonTransactionalRemoveResult);
+  }
+
+  /**
+   * Test {@link DynamicEntityRemoteService#nonTransactionalRemove(PersistencePackage)}.
+   * <ul>
+   *   <li>Then throw {@link ServiceException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#nonTransactionalRemove(PersistencePackage)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistenceResponse DynamicEntityRemoteService.nonTransactionalRemove(PersistencePackage)"})
+  public void testNonTransactionalRemove_thenThrowServiceException() throws Throwable {
+    // Arrange
+    when(persistenceThreadManager.operation(Mockito.<TargetModeType>any(), Mockito.<PersistencePackage>any(),
+        Mockito.<Persistable<PersistenceResponse, ServiceException>>any()))
+        .thenThrow(new ServiceException("An error occurred"));
+
+    // Act and Assert
+    assertThrows(ServiceException.class,
+        () -> dynamicEntityRemoteService.nonTransactionalRemove(new PersistencePackage()));
+    verify(persistenceThreadManager).operation(isA(TargetModeType.class), isA(PersistencePackage.class),
+        isA(Persistable.class));
   }
 
   /**
@@ -462,73 +813,60 @@ public class DynamicEntityRemoteServiceDiffblueTest {
    * Method under test: {@link DynamicEntityRemoteService#isShouldClean()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean DynamicEntityRemoteService.isShouldClean()"})
   public void testIsShouldClean() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertTrue((new DynamicEntityRemoteService()).isShouldClean());
+    assertTrue(dynamicEntityRemoteService.isShouldClean());
   }
 
   /**
-   * Test {@link DynamicEntityRemoteService#isShouldClean()}.
+   * Test {@link DynamicEntityRemoteService#identifyTransactionManager(PersistencePackage)}.
+   * <ul>
+   *   <li>Then return {@link LifecycleAwareJpaTransactionManager} (default constructor).</li>
+   * </ul>
    * <p>
-   * Method under test: {@link DynamicEntityRemoteService#isShouldClean()}
+   * Method under test: {@link DynamicEntityRemoteService#identifyTransactionManager(PersistencePackage)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsShouldClean2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass229 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.DynamicEntityRemoteService dynamicEntityRemoteService;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new DynamicEntityRemoteService()).isShouldClean();
-  }
-
-  /**
-   * Test
-   * {@link DynamicEntityRemoteService#identifyTransactionManager(PersistencePackage)}.
-   * <p>
-   * Method under test:
-   * {@link DynamicEntityRemoteService#identifyTransactionManager(PersistencePackage)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testIdentifyTransactionManager() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass181 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.DynamicEntityRemoteService dynamicEntityRemoteService;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "PlatformTransactionManager DynamicEntityRemoteService.identifyTransactionManager(PersistencePackage)"})
+  public void testIdentifyTransactionManager_thenReturnLifecycleAwareJpaTransactionManager() throws ServiceException {
     // Arrange
-    DynamicEntityRemoteService dynamicEntityRemoteService2 = new DynamicEntityRemoteService();
+    LifecycleAwareJpaTransactionManager lifecycleAwareJpaTransactionManager = new LifecycleAwareJpaTransactionManager();
+    when(persistenceService.identifyTransactionManager(Mockito.<String>any(), Mockito.<TargetModeType>any()))
+        .thenReturn(lifecycleAwareJpaTransactionManager);
 
     // Act
-    dynamicEntityRemoteService2.identifyTransactionManager(new PersistencePackage());
+    PlatformTransactionManager actualIdentifyTransactionManagerResult = dynamicEntityRemoteService
+        .identifyTransactionManager(new PersistencePackage());
+
+    // Assert
+    verify(persistenceService).identifyTransactionManager(isNull(), isA(TargetModeType.class));
+    assertSame(lifecycleAwareJpaTransactionManager, actualIdentifyTransactionManagerResult);
+  }
+
+  /**
+   * Test {@link DynamicEntityRemoteService#identifyTransactionManager(PersistencePackage)}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#identifyTransactionManager(PersistencePackage)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "PlatformTransactionManager DynamicEntityRemoteService.identifyTransactionManager(PersistencePackage)"})
+  public void testIdentifyTransactionManager_thenThrowRuntimeException() throws ServiceException {
+    // Arrange
+    when(persistenceService.identifyTransactionManager(Mockito.<String>any(), Mockito.<TargetModeType>any()))
+        .thenThrow(new RuntimeException("foo"));
+
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> dynamicEntityRemoteService.identifyTransactionManager(new PersistencePackage()));
+    verify(persistenceService).identifyTransactionManager(isNull(), isA(TargetModeType.class));
   }
 }

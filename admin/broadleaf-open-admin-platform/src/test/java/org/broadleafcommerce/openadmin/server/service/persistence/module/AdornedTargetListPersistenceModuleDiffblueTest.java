@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.server.service.persistence.module;
 
 import static org.junit.Assert.assertEquals;
@@ -14,13 +31,15 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import java.lang.reflect.InvocationTargetException;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.broadleafcommerce.common.exception.SecurityServiceException;
 import org.broadleafcommerce.common.exception.ServiceException;
+import org.broadleafcommerce.common.locale.service.LocaleService;
 import org.broadleafcommerce.common.presentation.client.OperationType;
 import org.broadleafcommerce.common.presentation.client.PersistencePerspectiveItemType;
 import org.broadleafcommerce.openadmin.dto.AdornedTargetCollectionMetadata;
@@ -39,53 +58,70 @@ import org.broadleafcommerce.openadmin.dto.Property;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl;
 import org.broadleafcommerce.openadmin.server.service.persistence.PersistenceManager;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule.AdornedTargetRetrieval;
+import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.CriteriaTranslator;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.FilterMapping;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.RestrictionFactory;
-import org.junit.Ignore;
+import org.broadleafcommerce.openadmin.server.service.persistence.module.provider.FieldPersistenceProvider;
+import org.broadleafcommerce.openadmin.server.service.persistence.validation.EntityValidatorService;
+import org.broadleafcommerce.openadmin.server.service.persistence.validation.PopulateValueRequestValidator;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
-    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
-    "/bl-open-admin-contentCreator-applicationContext.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"}, classes = {
-        AdornedTargetListPersistenceModule.class})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class AdornedTargetListPersistenceModuleDiffblueTest {
-  @Autowired
-  private AdornedTargetListPersistenceModule.AdornedTargetRetrieval adornedTargetRetrieval;
-
-  @Autowired
+  @InjectMocks
   private AdornedTargetListPersistenceModule adornedTargetListPersistenceModule;
+
+  @Mock
+  private CriteriaTranslator criteriaTranslator;
+
+  @Mock
+  private EntityValidatorService entityValidatorService;
+
+  @Mock
+  private FetchWrapper fetchWrapper;
+
+  @Mock
+  private FieldPersistenceProvider fieldPersistenceProvider;
+
+  @Mock
+  private List<FieldPersistenceProvider> list;
+
+  @Mock
+  private List<PopulateValueRequestValidator> list2;
+
+  @Mock
+  private LocaleService localeService;
+
+  @Mock
+  private RestrictionFactory restrictionFactory;
 
   /**
    * Test AdornedTargetRetrieval getters and setters.
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>
-   * {@link AdornedTargetListPersistenceModule.AdornedTargetRetrieval#getFilterMappings()}
-   *   <li>
-   * {@link AdornedTargetListPersistenceModule.AdornedTargetRetrieval#getIndex()}
-   *   <li>
-   * {@link AdornedTargetListPersistenceModule.AdornedTargetRetrieval#getMergedProperties()}
-   *   <li>
-   * {@link AdornedTargetListPersistenceModule.AdornedTargetRetrieval#getRecords()}
+   *   <li>{@link AdornedTargetRetrieval#getFilterMappings()}
+   *   <li>{@link AdornedTargetRetrieval#getIndex()}
+   *   <li>{@link AdornedTargetRetrieval#getMergedProperties()}
+   *   <li>{@link AdornedTargetRetrieval#getRecords()}
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List AdornedTargetRetrieval.getFilterMappings()", "int AdornedTargetRetrieval.getIndex()",
+      "Map AdornedTargetRetrieval.getMergedProperties()", "List AdornedTargetRetrieval.getRecords()"})
   public void testAdornedTargetRetrievalGettersAndSetters() {
     // Arrange
     AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = new AdornedTargetListPersistenceModule();
     PersistencePackage persistencePackage = new PersistencePackage();
     AdornedTargetList adornedTargetList = new AdornedTargetList();
-    AdornedTargetListPersistenceModule.AdornedTargetRetrieval adornedTargetRetrieval = adornedTargetListPersistenceModule.new AdornedTargetRetrieval(
+    AdornedTargetRetrieval adornedTargetRetrieval = adornedTargetListPersistenceModule.new AdornedTargetRetrieval(
         persistencePackage, adornedTargetList, new CriteriaTransferObject());
 
     // Act
@@ -101,278 +137,25 @@ public class AdornedTargetListPersistenceModuleDiffblueTest {
   }
 
   /**
-   * Test AdornedTargetRetrieval {@link AdornedTargetRetrieval#invokeForFetch()}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetListPersistenceModule.AdornedTargetRetrieval#invokeForFetch()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAdornedTargetRetrievalInvokeForFetch() throws ClassNotFoundException, IllegalAccessException,
-      NoSuchFieldException, NoSuchMethodException, InvocationTargetException, FieldNotAvailableException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule$AdornedTargetRetrieval.invokeInternal(AdornedTargetListPersistenceModule.java:553)
-    //       at org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule$AdornedTargetRetrieval.invokeForFetch(AdornedTargetListPersistenceModule.java:523)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = new AdornedTargetListPersistenceModule();
-    PersistencePackage persistencePackage = new PersistencePackage();
-    AdornedTargetList adornedTargetList = new AdornedTargetList();
-
-    // Act
-    (adornedTargetListPersistenceModule.new AdornedTargetRetrieval(persistencePackage, adornedTargetList,
-        new CriteriaTransferObject())).invokeForFetch();
-  }
-
-  /**
-   * Test AdornedTargetRetrieval {@link AdornedTargetRetrieval#invokeForUpdate()}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetListPersistenceModule.AdornedTargetRetrieval#invokeForUpdate()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAdornedTargetRetrievalInvokeForUpdate() throws ClassNotFoundException, IllegalAccessException,
-      NoSuchFieldException, NoSuchMethodException, InvocationTargetException, FieldNotAvailableException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule$AdornedTargetRetrieval.invokeForUpdate(AdornedTargetListPersistenceModule.java:529)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = new AdornedTargetListPersistenceModule();
-    PersistencePackage persistencePackage = new PersistencePackage();
-    AdornedTargetList adornedTargetList = new AdornedTargetList();
-
-    // Act
-    (adornedTargetListPersistenceModule.new AdornedTargetRetrieval(persistencePackage, adornedTargetList,
-        new CriteriaTransferObject())).invokeForUpdate();
-  }
-
-  /**
-   * Test AdornedTargetRetrieval
-   * {@link AdornedTargetRetrieval#AdornedTargetRetrieval(AdornedTargetListPersistenceModule, PersistencePackage, AdornedTargetList, CriteriaTransferObject)}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetListPersistenceModule.AdornedTargetRetrieval#AdornedTargetRetrieval(AdornedTargetListPersistenceModule, PersistencePackage, AdornedTargetList, CriteriaTransferObject)}
-   */
-  @Test
-  public void testAdornedTargetRetrievalNewAdornedTargetRetrieval() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = mock(
-        AdornedTargetListPersistenceModule.class);
-    PersistencePackage persistencePackage = new PersistencePackage();
-    AdornedTargetList adornedTargetList = new AdornedTargetList();
-
-    // Act
-    AdornedTargetListPersistenceModule.AdornedTargetRetrieval actualAdornedTargetRetrieval = adornedTargetListPersistenceModule.new AdornedTargetRetrieval(
-        persistencePackage, adornedTargetList, new CriteriaTransferObject());
-
-    // Assert
-    assertNull(actualAdornedTargetRetrieval.getRecords());
-    assertNull(actualAdornedTargetRetrieval.getFilterMappings());
-    assertNull(actualAdornedTargetRetrieval.getMergedProperties());
-    assertEquals(0, actualAdornedTargetRetrieval.getIndex());
-  }
-
-  /**
-   * Test AdornedTargetRetrieval
-   * {@link AdornedTargetRetrieval#AdornedTargetRetrieval(AdornedTargetListPersistenceModule, PersistencePackage, AdornedTargetList, CriteriaTransferObject)}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetListPersistenceModule.AdornedTargetRetrieval#AdornedTargetRetrieval(AdornedTargetListPersistenceModule, PersistencePackage, AdornedTargetList, CriteriaTransferObject)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAdornedTargetRetrievalNewAdornedTargetRetrieval2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.LibraryLinkageException: java.lang.reflect.GenericSignatureFormatError: Signature Parse error: expected '<' or ';' but got .
-    //   	Remaining input: .AdornedTargetRetrieval;
-    //       at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:195)
-    //       at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1655)
-    //       at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:484)
-    //       at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:474)
-    //       at java.base/java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:913)
-    //       at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
-    //       at java.base/java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:578)
-    //   java.lang.reflect.GenericSignatureFormatError: Signature Parse error: expected '<' or ';' but got .
-    //   	Remaining input: .AdornedTargetRetrieval;
-    //       at org.springframework.boot.test.mock.mockito.DefinitionsParser.getOrDeduceTypes(DefinitionsParser.java:121)
-    //       at org.springframework.boot.test.mock.mockito.DefinitionsParser.parseMockBeanAnnotation(DefinitionsParser.java:79)
-    //       at org.springframework.boot.test.mock.mockito.DefinitionsParser.lambda$parseElement$1(DefinitionsParser.java:72)
-    //       at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:183)
-    //       at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:195)
-    //       at org.springframework.core.annotation.TypeMappedAnnotations$AggregatesSpliterator.tryAdvance(TypeMappedAnnotations.java:602)
-    //       at org.springframework.core.annotation.TypeMappedAnnotations$AggregatesSpliterator.tryAdvance(TypeMappedAnnotations.java:569)
-    //       at java.base/java.util.Spliterator.forEachRemaining(Spliterator.java:326)
-    //       at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:484)
-    //       at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:474)
-    //       at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:150)
-    //       at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:173)
-    //       at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
-    //       at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:497)
-    //       at org.springframework.boot.test.mock.mockito.DefinitionsParser.parseElement(DefinitionsParser.java:72)
-    //       at org.springframework.boot.test.mock.mockito.DefinitionsParser.lambda$parse$0(DefinitionsParser.java:65)
-    //       at org.springframework.util.ReflectionUtils.doWithFields(ReflectionUtils.java:706)
-    //       at org.springframework.util.ReflectionUtils.doWithFields(ReflectionUtils.java:685)
-    //       at org.springframework.boot.test.mock.mockito.DefinitionsParser.parse(DefinitionsParser.java:65)
-    //       at org.springframework.boot.test.mock.mockito.MockitoContextCustomizerFactory.parseDefinitions(MockitoContextCustomizerFactory.java:44)
-    //       at org.springframework.boot.test.mock.mockito.MockitoContextCustomizerFactory.createContextCustomizer(MockitoContextCustomizerFactory.java:39)
-    //       at org.springframework.test.context.support.AbstractTestContextBootstrapper.getContextCustomizers(AbstractTestContextBootstrapper.java:402)
-    //       at org.springframework.test.context.support.AbstractTestContextBootstrapper.buildMergedContextConfiguration(AbstractTestContextBootstrapper.java:374)
-    //       at org.springframework.test.context.support.AbstractTestContextBootstrapper.buildMergedContextConfiguration(AbstractTestContextBootstrapper.java:291)
-    //       at org.springframework.test.context.support.AbstractTestContextBootstrapper.buildTestContext(AbstractTestContextBootstrapper.java:107)
-    //       at org.springframework.test.context.TestContextManager.<init>(TestContextManager.java:137)
-    //       at org.springframework.test.context.TestContextManager.<init>(TestContextManager.java:122)
-    //       at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:195)
-    //       at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1655)
-    //       at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:484)
-    //       at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:474)
-    //       at java.base/java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:913)
-    //       at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
-    //       at java.base/java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:578)
-    //   See https://diff.blue/R026 to resolve this issue.
-
-    // Arrange
-    PersistencePackage persistencePackage = new PersistencePackage();
-    AdornedTargetList adornedTargetList = new AdornedTargetList();
-
-    // Act
-    adornedTargetListPersistenceModule.new AdornedTargetRetrieval(persistencePackage, adornedTargetList,
-        new CriteriaTransferObject());
-
-  }
-
-  /**
-   * Test AdornedTargetRetrieval
-   * {@link AdornedTargetRetrieval#AdornedTargetRetrieval(AdornedTargetListPersistenceModule, PersistencePackage, Entity, AdornedTargetList)}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetListPersistenceModule.AdornedTargetRetrieval#AdornedTargetRetrieval(AdornedTargetListPersistenceModule, PersistencePackage, Entity, AdornedTargetList)}
-   */
-  @Test
-  public void testAdornedTargetRetrievalNewAdornedTargetRetrieval3() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = mock(
-        AdornedTargetListPersistenceModule.class);
-    PersistencePackage persistencePackage = new PersistencePackage();
-    Entity entity = new Entity();
-
-    // Act
-    AdornedTargetListPersistenceModule.AdornedTargetRetrieval actualAdornedTargetRetrieval = adornedTargetListPersistenceModule.new AdornedTargetRetrieval(
-        persistencePackage, entity, new AdornedTargetList());
-
-    // Assert
-    assertNull(actualAdornedTargetRetrieval.getRecords());
-    assertNull(actualAdornedTargetRetrieval.getFilterMappings());
-    assertNull(actualAdornedTargetRetrieval.getMergedProperties());
-    assertEquals(0, actualAdornedTargetRetrieval.getIndex());
-  }
-
-  /**
-   * Test AdornedTargetRetrieval
-   * {@link AdornedTargetRetrieval#AdornedTargetRetrieval(AdornedTargetListPersistenceModule, PersistencePackage, Entity, AdornedTargetList)}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetListPersistenceModule.AdornedTargetRetrieval#AdornedTargetRetrieval(AdornedTargetListPersistenceModule, PersistencePackage, Entity, AdornedTargetList)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAdornedTargetRetrievalNewAdornedTargetRetrieval4() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.LibraryLinkageException: java.lang.reflect.GenericSignatureFormatError: Signature Parse error: expected '<' or ';' but got .
-    //   	Remaining input: .AdornedTargetRetrieval;
-    //       at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:195)
-    //       at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1655)
-    //       at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:484)
-    //       at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:474)
-    //       at java.base/java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:913)
-    //       at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
-    //       at java.base/java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:578)
-    //   java.lang.reflect.GenericSignatureFormatError: Signature Parse error: expected '<' or ';' but got .
-    //   	Remaining input: .AdornedTargetRetrieval;
-    //       at org.springframework.boot.test.mock.mockito.DefinitionsParser.getOrDeduceTypes(DefinitionsParser.java:121)
-    //       at org.springframework.boot.test.mock.mockito.DefinitionsParser.parseMockBeanAnnotation(DefinitionsParser.java:79)
-    //       at org.springframework.boot.test.mock.mockito.DefinitionsParser.lambda$parseElement$1(DefinitionsParser.java:72)
-    //       at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:183)
-    //       at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:195)
-    //       at org.springframework.core.annotation.TypeMappedAnnotations$AggregatesSpliterator.tryAdvance(TypeMappedAnnotations.java:602)
-    //       at org.springframework.core.annotation.TypeMappedAnnotations$AggregatesSpliterator.tryAdvance(TypeMappedAnnotations.java:569)
-    //       at java.base/java.util.Spliterator.forEachRemaining(Spliterator.java:326)
-    //       at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:484)
-    //       at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:474)
-    //       at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:150)
-    //       at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:173)
-    //       at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
-    //       at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:497)
-    //       at org.springframework.boot.test.mock.mockito.DefinitionsParser.parseElement(DefinitionsParser.java:72)
-    //       at org.springframework.boot.test.mock.mockito.DefinitionsParser.lambda$parse$0(DefinitionsParser.java:65)
-    //       at org.springframework.util.ReflectionUtils.doWithFields(ReflectionUtils.java:706)
-    //       at org.springframework.util.ReflectionUtils.doWithFields(ReflectionUtils.java:685)
-    //       at org.springframework.boot.test.mock.mockito.DefinitionsParser.parse(DefinitionsParser.java:65)
-    //       at org.springframework.boot.test.mock.mockito.MockitoContextCustomizerFactory.parseDefinitions(MockitoContextCustomizerFactory.java:44)
-    //       at org.springframework.boot.test.mock.mockito.MockitoContextCustomizerFactory.createContextCustomizer(MockitoContextCustomizerFactory.java:39)
-    //       at org.springframework.test.context.support.AbstractTestContextBootstrapper.getContextCustomizers(AbstractTestContextBootstrapper.java:402)
-    //       at org.springframework.test.context.support.AbstractTestContextBootstrapper.buildMergedContextConfiguration(AbstractTestContextBootstrapper.java:374)
-    //       at org.springframework.test.context.support.AbstractTestContextBootstrapper.buildMergedContextConfiguration(AbstractTestContextBootstrapper.java:291)
-    //       at org.springframework.test.context.support.AbstractTestContextBootstrapper.buildTestContext(AbstractTestContextBootstrapper.java:107)
-    //       at org.springframework.test.context.TestContextManager.<init>(TestContextManager.java:137)
-    //       at org.springframework.test.context.TestContextManager.<init>(TestContextManager.java:122)
-    //       at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:195)
-    //       at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1655)
-    //       at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:484)
-    //       at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:474)
-    //       at java.base/java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:913)
-    //       at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
-    //       at java.base/java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:578)
-    //   See https://diff.blue/R026 to resolve this issue.
-
-    // Arrange
-    PersistencePackage persistencePackage = new PersistencePackage();
-    Entity entity = new Entity();
-
-    // Act
-    adornedTargetListPersistenceModule.new AdornedTargetRetrieval(persistencePackage, entity, new AdornedTargetList());
-
-  }
-
-  /**
-   * Test AdornedTargetRetrieval
-   * {@link AdornedTargetRetrieval#AdornedTargetRetrieval(AdornedTargetListPersistenceModule, PersistencePackage, AdornedTargetList, CriteriaTransferObject)}.
+   * Test AdornedTargetRetrieval {@link AdornedTargetRetrieval#AdornedTargetRetrieval(AdornedTargetListPersistenceModule, PersistencePackage, AdornedTargetList, CriteriaTransferObject)}.
    * <ul>
    *   <li>Then return Records is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdornedTargetListPersistenceModule.AdornedTargetRetrieval#AdornedTargetRetrieval(AdornedTargetListPersistenceModule, PersistencePackage, AdornedTargetList, CriteriaTransferObject)}
+   * Method under test: {@link AdornedTargetRetrieval#AdornedTargetRetrieval(AdornedTargetListPersistenceModule, PersistencePackage, AdornedTargetList, CriteriaTransferObject)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void AdornedTargetRetrieval.<init>(AdornedTargetListPersistenceModule, PersistencePackage, AdornedTargetList, CriteriaTransferObject)"})
   public void testAdornedTargetRetrievalNewAdornedTargetRetrieval_thenReturnRecordsIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = new AdornedTargetListPersistenceModule();
     PersistencePackage persistencePackage = new PersistencePackage();
     AdornedTargetList adornedTargetList = new AdornedTargetList();
 
     // Act
-    AdornedTargetListPersistenceModule.AdornedTargetRetrieval actualAdornedTargetRetrieval = adornedTargetListPersistenceModule.new AdornedTargetRetrieval(
+    AdornedTargetRetrieval actualAdornedTargetRetrieval = adornedTargetListPersistenceModule.new AdornedTargetRetrieval(
         persistencePackage, adornedTargetList, new CriteriaTransferObject());
 
     // Assert
@@ -383,26 +166,25 @@ public class AdornedTargetListPersistenceModuleDiffblueTest {
   }
 
   /**
-   * Test AdornedTargetRetrieval
-   * {@link AdornedTargetRetrieval#AdornedTargetRetrieval(AdornedTargetListPersistenceModule, PersistencePackage, Entity, AdornedTargetList)}.
+   * Test AdornedTargetRetrieval {@link AdornedTargetRetrieval#AdornedTargetRetrieval(AdornedTargetListPersistenceModule, PersistencePackage, Entity, AdornedTargetList)}.
    * <ul>
    *   <li>Then return Records is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdornedTargetListPersistenceModule.AdornedTargetRetrieval#AdornedTargetRetrieval(AdornedTargetListPersistenceModule, PersistencePackage, Entity, AdornedTargetList)}
+   * Method under test: {@link AdornedTargetRetrieval#AdornedTargetRetrieval(AdornedTargetListPersistenceModule, PersistencePackage, Entity, AdornedTargetList)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void AdornedTargetRetrieval.<init>(AdornedTargetListPersistenceModule, PersistencePackage, Entity, AdornedTargetList)"})
   public void testAdornedTargetRetrievalNewAdornedTargetRetrieval_thenReturnRecordsIsNull2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = new AdornedTargetListPersistenceModule();
     PersistencePackage persistencePackage = new PersistencePackage();
     Entity entity = new Entity();
 
     // Act
-    AdornedTargetListPersistenceModule.AdornedTargetRetrieval actualAdornedTargetRetrieval = adornedTargetListPersistenceModule.new AdornedTargetRetrieval(
+    AdornedTargetRetrieval actualAdornedTargetRetrieval = adornedTargetListPersistenceModule.new AdornedTargetRetrieval(
         persistencePackage, entity, new AdornedTargetList());
 
     // Assert
@@ -410,73 +192,6 @@ public class AdornedTargetListPersistenceModuleDiffblueTest {
     assertNull(actualAdornedTargetRetrieval.getFilterMappings());
     assertNull(actualAdornedTargetRetrieval.getMergedProperties());
     assertEquals(0, actualAdornedTargetRetrieval.getIndex());
-  }
-
-  /**
-   * Test {@link AdornedTargetListPersistenceModule#isCompatible(OperationType)}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetListPersistenceModule#isCompatible(OperationType)}
-   */
-  @Test
-  public void testIsCompatible() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = new AdornedTargetListPersistenceModule();
-    adornedTargetListPersistenceModule.setRestrictionFactory(mock(RestrictionFactory.class));
-
-    // Act and Assert
-    assertFalse(adornedTargetListPersistenceModule.isCompatible(OperationType.NONDESTRUCTIVEREMOVE));
-  }
-
-  /**
-   * Test {@link AdornedTargetListPersistenceModule#isCompatible(OperationType)}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetListPersistenceModule#isCompatible(OperationType)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsCompatible2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1497 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule adornedTargetListPersistenceModule;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new AdornedTargetListPersistenceModule()).isCompatible(OperationType.NONDESTRUCTIVEREMOVE);
-  }
-
-  /**
-   * Test {@link AdornedTargetListPersistenceModule#isCompatible(OperationType)}.
-   * <ul>
-   *   <li>Given {@link AdornedTargetListPersistenceModule} (default
-   * constructor).</li>
-   *   <li>Then return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetListPersistenceModule#isCompatible(OperationType)}
-   */
-  @Test
-  public void testIsCompatible_givenAdornedTargetListPersistenceModule_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertFalse((new AdornedTargetListPersistenceModule()).isCompatible(OperationType.NONDESTRUCTIVEREMOVE));
   }
 
   /**
@@ -486,33 +201,51 @@ public class AdornedTargetListPersistenceModuleDiffblueTest {
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdornedTargetListPersistenceModule#isCompatible(OperationType)}
+   * Method under test: {@link AdornedTargetListPersistenceModule#isCompatible(OperationType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetListPersistenceModule.isCompatible(OperationType)"})
   public void testIsCompatible_whenAdornedtargetlist_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertTrue((new AdornedTargetListPersistenceModule()).isCompatible(OperationType.ADORNEDTARGETLIST));
+    assertTrue(adornedTargetListPersistenceModule.isCompatible(OperationType.ADORNEDTARGETLIST));
   }
 
   /**
-   * Test
-   * {@link AdornedTargetListPersistenceModule#extractProperties(Class[], Map, List)}.
+   * Test {@link AdornedTargetListPersistenceModule#isCompatible(OperationType)}.
+   * <ul>
+   *   <li>When {@code NONDESTRUCTIVEREMOVE}.</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link AdornedTargetListPersistenceModule#extractProperties(Class[], Map, List)}
+   * Method under test: {@link AdornedTargetListPersistenceModule#isCompatible(OperationType)}
    */
   @Test
-  public void testExtractProperties() throws NumberFormatException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetListPersistenceModule.isCompatible(OperationType)"})
+  public void testIsCompatible_whenNondestructiveremove_thenReturnFalse() {
+    // Arrange, Act and Assert
+    assertFalse(adornedTargetListPersistenceModule.isCompatible(OperationType.NONDESTRUCTIVEREMOVE));
+  }
 
+  /**
+   * Test {@link AdornedTargetListPersistenceModule#extractProperties(Class[], Map, List)}.
+   * <ul>
+   *   <li>Given {@link HashMap#HashMap()}.</li>
+   *   <li>Then {@link ArrayList#ArrayList()} Empty.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdornedTargetListPersistenceModule#extractProperties(Class[], Map, List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdornedTargetListPersistenceModule.extractProperties(Class[], Map, List)"})
+  public void testExtractProperties_givenHashMap_thenArrayListEmpty() throws NumberFormatException {
     // Arrange
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = new AdornedTargetListPersistenceModule();
-    adornedTargetListPersistenceModule.setRestrictionFactory(mock(RestrictionFactory.class));
     Class<Object> forNameResult = Object.class;
+
     HashMap<MergedPropertyType, Map<String, FieldMetadata>> mergedProperties = new HashMap<>();
+    mergedProperties.put(MergedPropertyType.ADORNEDTARGETLIST, new HashMap<>());
     ArrayList<Property> properties = new ArrayList<>();
 
     // Act
@@ -523,89 +256,20 @@ public class AdornedTargetListPersistenceModuleDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdornedTargetListPersistenceModule#extractProperties(Class[], Map, List)}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetListPersistenceModule#extractProperties(Class[], Map, List)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testExtractProperties2() throws NumberFormatException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass931 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule adornedTargetListPersistenceModule;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule2 = new AdornedTargetListPersistenceModule();
-    Class<Object> forNameResult = Object.class;
-    HashMap<MergedPropertyType, Map<String, FieldMetadata>> mergedProperties = new HashMap<>();
-
-    // Act
-    adornedTargetListPersistenceModule2.extractProperties(new Class[]{forNameResult}, mergedProperties,
-        new ArrayList<>());
-  }
-
-  /**
-   * Test
-   * {@link AdornedTargetListPersistenceModule#extractProperties(Class[], Map, List)}.
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()}.</li>
-   *   <li>Then {@link ArrayList#ArrayList()} Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetListPersistenceModule#extractProperties(Class[], Map, List)}
-   */
-  @Test
-  public void testExtractProperties_givenHashMap_thenArrayListEmpty() throws NumberFormatException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = new AdornedTargetListPersistenceModule();
-    Class<Object> forNameResult = Object.class;
-
-    HashMap<MergedPropertyType, Map<String, FieldMetadata>> mergedProperties = new HashMap<>();
-    mergedProperties.put(MergedPropertyType.ADORNEDTARGETLIST, new HashMap<>());
-    ArrayList<Property> properties = new ArrayList<>();
-
-    // Act
-    adornedTargetListPersistenceModule.extractProperties(new Class[]{forNameResult}, mergedProperties, properties);
-
-    // Assert
-    assertTrue(properties.isEmpty());
-  }
-
-  /**
-   * Test
-   * {@link AdornedTargetListPersistenceModule#extractProperties(Class[], Map, List)}.
+   * Test {@link AdornedTargetListPersistenceModule#extractProperties(Class[], Map, List)}.
    * <ul>
    *   <li>Given {@link Property#Property()}.</li>
+   *   <li>When {@link HashMap#HashMap()}.</li>
    *   <li>Then {@link ArrayList#ArrayList()} size is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdornedTargetListPersistenceModule#extractProperties(Class[], Map, List)}
+   * Method under test: {@link AdornedTargetListPersistenceModule#extractProperties(Class[], Map, List)}
    */
   @Test
-  public void testExtractProperties_givenProperty_thenArrayListSizeIsOne() throws NumberFormatException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdornedTargetListPersistenceModule.extractProperties(Class[], Map, List)"})
+  public void testExtractProperties_givenProperty_whenHashMap_thenArrayListSizeIsOne() throws NumberFormatException {
     // Arrange
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = new AdornedTargetListPersistenceModule();
     Class<Object> forNameResult = Object.class;
     HashMap<MergedPropertyType, Map<String, FieldMetadata>> mergedProperties = new HashMap<>();
 
@@ -617,30 +281,24 @@ public class AdornedTargetListPersistenceModuleDiffblueTest {
 
     // Assert that nothing has changed
     assertEquals(1, properties.size());
-    Property getResult = properties.get(0);
-    assertTrue(getResult.getMetadata() instanceof BasicFieldMetadata);
-    assertFalse(getResult.getIsDirty());
-    assertFalse(getResult.isAdvancedCollection());
-    assertTrue(getResult.getEnabled());
+    assertTrue(properties.get(0).getMetadata() instanceof BasicFieldMetadata);
   }
 
   /**
-   * Test
-   * {@link AdornedTargetListPersistenceModule#extractProperties(Class[], Map, List)}.
+   * Test {@link AdornedTargetListPersistenceModule#extractProperties(Class[], Map, List)}.
    * <ul>
    *   <li>Given {@link Property#Property()}.</li>
+   *   <li>When {@link HashMap#HashMap()}.</li>
    *   <li>Then {@link ArrayList#ArrayList()} size is two.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdornedTargetListPersistenceModule#extractProperties(Class[], Map, List)}
+   * Method under test: {@link AdornedTargetListPersistenceModule#extractProperties(Class[], Map, List)}
    */
   @Test
-  public void testExtractProperties_givenProperty_thenArrayListSizeIsTwo() throws NumberFormatException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdornedTargetListPersistenceModule.extractProperties(Class[], Map, List)"})
+  public void testExtractProperties_givenProperty_whenHashMap_thenArrayListSizeIsTwo() throws NumberFormatException {
     // Arrange
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = new AdornedTargetListPersistenceModule();
     Class<Object> forNameResult = Object.class;
     HashMap<MergedPropertyType, Map<String, FieldMetadata>> mergedProperties = new HashMap<>();
 
@@ -653,29 +311,22 @@ public class AdornedTargetListPersistenceModuleDiffblueTest {
 
     // Assert that nothing has changed
     assertEquals(2, properties.size());
-    Property getResult = properties.get(0);
-    assertTrue(getResult.getMetadata() instanceof BasicFieldMetadata);
-    assertFalse(getResult.getIsDirty());
-    assertFalse(getResult.isAdvancedCollection());
-    assertTrue(getResult.getEnabled());
+    assertTrue(properties.get(0).getMetadata() instanceof BasicFieldMetadata);
   }
 
   /**
-   * Test
-   * {@link AdornedTargetListPersistenceModule#extractProperties(Class[], Map, List)}.
+   * Test {@link AdornedTargetListPersistenceModule#extractProperties(Class[], Map, List)}.
    * <ul>
    *   <li>Then {@link ArrayList#ArrayList()} first Name is {@code 42}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdornedTargetListPersistenceModule#extractProperties(Class[], Map, List)}
+   * Method under test: {@link AdornedTargetListPersistenceModule#extractProperties(Class[], Map, List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdornedTargetListPersistenceModule.extractProperties(Class[], Map, List)"})
   public void testExtractProperties_thenArrayListFirstNameIs42() throws NumberFormatException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = new AdornedTargetListPersistenceModule();
     Class<Object> forNameResult = Object.class;
 
     HashMap<String, FieldMetadata> stringFieldMetadataMap = new HashMap<>();
@@ -709,25 +360,23 @@ public class AdornedTargetListPersistenceModuleDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdornedTargetListPersistenceModule#extractProperties(Class[], Map, List)}.
+   * Test {@link AdornedTargetListPersistenceModule#extractProperties(Class[], Map, List)}.
    * <ul>
    *   <li>Then {@link ArrayList#ArrayList()} first Name is {@code foo}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdornedTargetListPersistenceModule#extractProperties(Class[], Map, List)}
+   * Method under test: {@link AdornedTargetListPersistenceModule#extractProperties(Class[], Map, List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdornedTargetListPersistenceModule.extractProperties(Class[], Map, List)"})
   public void testExtractProperties_thenArrayListFirstNameIsFoo() throws NumberFormatException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = new AdornedTargetListPersistenceModule();
     Class<Object> forNameResult = Object.class;
 
     HashMap<String, FieldMetadata> stringFieldMetadataMap = new HashMap<>();
-    stringFieldMetadataMap.put("foo", new AdornedTargetCollectionMetadata());
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
+    stringFieldMetadataMap.put("foo", adornedTargetCollectionMetadata);
 
     HashMap<MergedPropertyType, Map<String, FieldMetadata>> mergedProperties = new HashMap<>();
     mergedProperties.put(MergedPropertyType.ADORNEDTARGETLIST, stringFieldMetadataMap);
@@ -738,26 +387,35 @@ public class AdornedTargetListPersistenceModuleDiffblueTest {
 
     // Assert
     assertEquals(1, properties.size());
-    assertEquals("foo", properties.get(0).getName());
+    Property getResult = properties.get(0);
+    assertEquals("foo", getResult.getName());
+    assertNull(getResult.getDisplayValue());
+    assertNull(getResult.getOriginalDisplayValue());
+    assertNull(getResult.getOriginalValue());
+    assertNull(getResult.getRawValue());
+    assertNull(getResult.getUnHtmlEncodedValue());
+    assertNull(getResult.getValue());
+    assertNull(getResult.getDeployDate());
+    assertFalse(getResult.getIsDirty());
+    assertFalse(getResult.isAdvancedCollection());
+    assertTrue(getResult.getEnabled());
+    assertSame(adornedTargetCollectionMetadata, getResult.getMetadata());
   }
 
   /**
-   * Test
-   * {@link AdornedTargetListPersistenceModule#extractProperties(Class[], Map, List)}.
+   * Test {@link AdornedTargetListPersistenceModule#extractProperties(Class[], Map, List)}.
    * <ul>
    *   <li>When {@link HashMap#HashMap()}.</li>
    *   <li>Then {@link ArrayList#ArrayList()} Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdornedTargetListPersistenceModule#extractProperties(Class[], Map, List)}
+   * Method under test: {@link AdornedTargetListPersistenceModule#extractProperties(Class[], Map, List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdornedTargetListPersistenceModule.extractProperties(Class[], Map, List)"})
   public void testExtractProperties_whenHashMap_thenArrayListEmpty() throws NumberFormatException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = new AdornedTargetListPersistenceModule();
     Class<Object> forNameResult = Object.class;
     HashMap<MergedPropertyType, Map<String, FieldMetadata>> mergedProperties = new HashMap<>();
     ArrayList<Property> properties = new ArrayList<>();
@@ -770,59 +428,20 @@ public class AdornedTargetListPersistenceModuleDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdornedTargetListPersistenceModule#getBasicFilterMappings(PersistencePerspective, CriteriaTransferObject, Map, String)}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetListPersistenceModule#getBasicFilterMappings(PersistencePerspective, CriteriaTransferObject, Map, String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetBasicFilterMappings() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1436 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule adornedTargetListPersistenceModule;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule2 = new AdornedTargetListPersistenceModule();
-    PersistencePerspective persistencePerspective = new PersistencePerspective();
-    CriteriaTransferObject cto = new CriteriaTransferObject();
-
-    // Act
-    adornedTargetListPersistenceModule2.getBasicFilterMappings(persistencePerspective, cto, new HashMap<>(),
-        "java.lang.Class");
-  }
-
-  /**
-   * Test
-   * {@link AdornedTargetListPersistenceModule#getBasicFilterMappings(PersistencePerspective, CriteriaTransferObject, Map, String)}.
+   * Test {@link AdornedTargetListPersistenceModule#getBasicFilterMappings(PersistencePerspective, CriteriaTransferObject, Map, String)}.
    * <ul>
    *   <li>Given {@link HashMap#HashMap()}.</li>
    *   <li>Then calls {@link CriteriaTransferObject#getCriteriaMap()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdornedTargetListPersistenceModule#getBasicFilterMappings(PersistencePerspective, CriteriaTransferObject, Map, String)}
+   * Method under test: {@link AdornedTargetListPersistenceModule#getBasicFilterMappings(PersistencePerspective, CriteriaTransferObject, Map, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "List AdornedTargetListPersistenceModule.getBasicFilterMappings(PersistencePerspective, CriteriaTransferObject, Map, String)"})
   public void testGetBasicFilterMappings_givenHashMap_thenCallsGetCriteriaMap() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = new AdornedTargetListPersistenceModule();
     PersistencePerspective persistencePerspective = new PersistencePerspective();
     CriteriaTransferObject cto = mock(CriteriaTransferObject.class);
     when(cto.getCriteriaMap()).thenReturn(new HashMap<>());
@@ -837,22 +456,20 @@ public class AdornedTargetListPersistenceModuleDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdornedTargetListPersistenceModule#getBasicFilterMappings(PersistencePerspective, CriteriaTransferObject, Map, String)}.
+   * Test {@link AdornedTargetListPersistenceModule#getBasicFilterMappings(PersistencePerspective, CriteriaTransferObject, Map, String)}.
    * <ul>
    *   <li>When {@link CriteriaTransferObject} (default constructor).</li>
    *   <li>Then return Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdornedTargetListPersistenceModule#getBasicFilterMappings(PersistencePerspective, CriteriaTransferObject, Map, String)}
+   * Method under test: {@link AdornedTargetListPersistenceModule#getBasicFilterMappings(PersistencePerspective, CriteriaTransferObject, Map, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "List AdornedTargetListPersistenceModule.getBasicFilterMappings(PersistencePerspective, CriteriaTransferObject, Map, String)"})
   public void testGetBasicFilterMappings_whenCriteriaTransferObject_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = new AdornedTargetListPersistenceModule();
     PersistencePerspective persistencePerspective = new PersistencePerspective();
     CriteriaTransferObject cto = new CriteriaTransferObject();
 
@@ -863,44 +480,16 @@ public class AdornedTargetListPersistenceModuleDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdornedTargetListPersistenceModule#getBasicFilterMappings(PersistencePerspective, CriteriaTransferObject, Map, String)}.
-   * <ul>
-   *   <li>When {@link PersistencePerspective}.</li>
-   *   <li>Then return Empty.</li>
-   * </ul>
+   * Test {@link AdornedTargetListPersistenceModule#getAdornedTargetFilterMappings(PersistencePerspective, CriteriaTransferObject, Map, AdornedTargetList)}.
    * <p>
-   * Method under test:
-   * {@link AdornedTargetListPersistenceModule#getBasicFilterMappings(PersistencePerspective, CriteriaTransferObject, Map, String)}
+   * Method under test: {@link AdornedTargetListPersistenceModule#getAdornedTargetFilterMappings(PersistencePerspective, CriteriaTransferObject, Map, AdornedTargetList)}
    */
   @Test
-  public void testGetBasicFilterMappings_whenPersistencePerspective_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = new AdornedTargetListPersistenceModule();
-    PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
-    CriteriaTransferObject cto = new CriteriaTransferObject();
-
-    // Act and Assert
-    assertTrue(adornedTargetListPersistenceModule
-        .getBasicFilterMappings(persistencePerspective, cto, new HashMap<>(), "java.lang.Class")
-        .isEmpty());
-  }
-
-  /**
-   * Test
-   * {@link AdornedTargetListPersistenceModule#getAdornedTargetFilterMappings(PersistencePerspective, CriteriaTransferObject, Map, AdornedTargetList)}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetListPersistenceModule#getAdornedTargetFilterMappings(PersistencePerspective, CriteriaTransferObject, Map, AdornedTargetList)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "List AdornedTargetListPersistenceModule.getAdornedTargetFilterMappings(PersistencePerspective, CriteriaTransferObject, Map, AdornedTargetList)"})
   public void testGetAdornedTargetFilterMappings() throws ClassNotFoundException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = new AdornedTargetListPersistenceModule();
     PersistencePerspective persistencePerspective = new PersistencePerspective();
     CriteriaTransferObject cto = new CriteriaTransferObject();
     HashMap<String, FieldMetadata> mergedProperties = new HashMap<>();
@@ -934,93 +523,19 @@ public class AdornedTargetListPersistenceModuleDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdornedTargetListPersistenceModule#getAdornedTargetFilterMappings(PersistencePerspective, CriteriaTransferObject, Map, AdornedTargetList)}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetListPersistenceModule#getAdornedTargetFilterMappings(PersistencePerspective, CriteriaTransferObject, Map, AdornedTargetList)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetAdornedTargetFilterMappings2() throws ClassNotFoundException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1372 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule adornedTargetListPersistenceModule;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule2 = new AdornedTargetListPersistenceModule();
-    PersistencePerspective persistencePerspective = new PersistencePerspective();
-    CriteriaTransferObject cto = new CriteriaTransferObject();
-    HashMap<String, FieldMetadata> mergedProperties = new HashMap<>();
-
-    // Act
-    adornedTargetListPersistenceModule2.getAdornedTargetFilterMappings(persistencePerspective, cto, mergedProperties,
-        new AdornedTargetList());
-  }
-
-  /**
-   * Test
-   * {@link AdornedTargetListPersistenceModule#getAdornedTargetFilterMappings(PersistencePerspective, CriteriaTransferObject, Map, AdornedTargetList)}.
-   * <ul>
-   *   <li>Then return first FilterValues Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetListPersistenceModule#getAdornedTargetFilterMappings(PersistencePerspective, CriteriaTransferObject, Map, AdornedTargetList)}
-   */
-  @Test
-  public void testGetAdornedTargetFilterMappings_thenReturnFirstFilterValuesEmpty() throws ClassNotFoundException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = new AdornedTargetListPersistenceModule();
-    PersistencePerspective persistencePerspective = new PersistencePerspective();
-    CriteriaTransferObject cto = mock(CriteriaTransferObject.class);
-    when(cto.getCriteriaMap()).thenReturn(new HashMap<>());
-    when(cto.get(Mockito.<String>any())).thenReturn(new FilterAndSortCriteria("42"));
-    HashMap<String, FieldMetadata> mergedProperties = new HashMap<>();
-
-    // Act
-    List<FilterMapping> actualAdornedTargetFilterMappings = adornedTargetListPersistenceModule
-        .getAdornedTargetFilterMappings(persistencePerspective, cto, mergedProperties, new AdornedTargetList());
-
-    // Assert
-    verify(cto, atLeast(1)).get(Mockito.<String>any());
-    verify(cto).getCriteriaMap();
-    assertEquals(2, actualAdornedTargetFilterMappings.size());
-    assertTrue(actualAdornedTargetFilterMappings.get(0).getFilterValues().isEmpty());
-    assertTrue(actualAdornedTargetFilterMappings.get(1).getFilterValues().isEmpty());
-  }
-
-  /**
-   * Test
-   * {@link AdornedTargetListPersistenceModule#getAdornedTargetFilterMappings(PersistencePerspective, CriteriaTransferObject, Map, AdornedTargetList)}.
+   * Test {@link AdornedTargetListPersistenceModule#getAdornedTargetFilterMappings(PersistencePerspective, CriteriaTransferObject, Map, AdornedTargetList)}.
    * <ul>
    *   <li>Then return first FilterValues size is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdornedTargetListPersistenceModule#getAdornedTargetFilterMappings(PersistencePerspective, CriteriaTransferObject, Map, AdornedTargetList)}
+   * Method under test: {@link AdornedTargetListPersistenceModule#getAdornedTargetFilterMappings(PersistencePerspective, CriteriaTransferObject, Map, AdornedTargetList)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "List AdornedTargetListPersistenceModule.getAdornedTargetFilterMappings(PersistencePerspective, CriteriaTransferObject, Map, AdornedTargetList)"})
   public void testGetAdornedTargetFilterMappings_thenReturnFirstFilterValuesSizeIsOne() throws ClassNotFoundException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = new AdornedTargetListPersistenceModule();
     PersistencePerspective persistencePerspective = new PersistencePerspective();
     CriteriaTransferObject cto = mock(CriteriaTransferObject.class);
     when(cto.getCriteriaMap()).thenReturn(new HashMap<>());
@@ -1041,22 +556,66 @@ public class AdornedTargetListPersistenceModuleDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdornedTargetListPersistenceModule#getAdornedTargetFilterMappings(PersistencePerspective, CriteriaTransferObject, Map, AdornedTargetList)}.
+   * Test {@link AdornedTargetListPersistenceModule#getAdornedTargetFilterMappings(PersistencePerspective, CriteriaTransferObject, Map, AdornedTargetList)}.
+   * <ul>
+   *   <li>Then return first InheritedFromClass is {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdornedTargetListPersistenceModule#getAdornedTargetFilterMappings(PersistencePerspective, CriteriaTransferObject, Map, AdornedTargetList)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "List AdornedTargetListPersistenceModule.getAdornedTargetFilterMappings(PersistencePerspective, CriteriaTransferObject, Map, AdornedTargetList)"})
+  public void testGetAdornedTargetFilterMappings_thenReturnFirstInheritedFromClassIsNull()
+      throws ClassNotFoundException {
+    // Arrange
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    CriteriaTransferObject cto = mock(CriteriaTransferObject.class);
+    when(cto.getCriteriaMap()).thenReturn(new HashMap<>());
+    when(cto.get(Mockito.<String>any())).thenReturn(new FilterAndSortCriteria("42"));
+    HashMap<String, FieldMetadata> mergedProperties = new HashMap<>();
+
+    // Act
+    List<FilterMapping> actualAdornedTargetFilterMappings = adornedTargetListPersistenceModule
+        .getAdornedTargetFilterMappings(persistencePerspective, cto, mergedProperties, new AdornedTargetList());
+
+    // Assert
+    verify(cto, atLeast(1)).get(Mockito.<String>any());
+    verify(cto).getCriteriaMap();
+    assertEquals(2, actualAdornedTargetFilterMappings.size());
+    FilterMapping getResult = actualAdornedTargetFilterMappings.get(0);
+    assertNull(getResult.getInheritedFromClass());
+    FilterMapping getResult2 = actualAdornedTargetFilterMappings.get(1);
+    assertNull(getResult2.getInheritedFromClass());
+    assertNull(getResult.getOrder());
+    assertNull(getResult2.getOrder());
+    assertNull(getResult.getFullPropertyName());
+    assertNull(getResult2.getFullPropertyName());
+    assertNull(getResult.getSortDirection());
+    assertNull(getResult2.getSortDirection());
+    assertTrue(getResult.getDirectFilterValues().isEmpty());
+    assertTrue(getResult.getFilterValues().isEmpty());
+    assertTrue(getResult2.getFilterValues().isEmpty());
+    assertTrue(getResult.getNullsLast());
+    assertTrue(getResult2.getNullsLast());
+  }
+
+  /**
+   * Test {@link AdornedTargetListPersistenceModule#getAdornedTargetFilterMappings(PersistencePerspective, CriteriaTransferObject, Map, AdornedTargetList)}.
    * <ul>
    *   <li>Then return second DirectFilterValues Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdornedTargetListPersistenceModule#getAdornedTargetFilterMappings(PersistencePerspective, CriteriaTransferObject, Map, AdornedTargetList)}
+   * Method under test: {@link AdornedTargetListPersistenceModule#getAdornedTargetFilterMappings(PersistencePerspective, CriteriaTransferObject, Map, AdornedTargetList)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "List AdornedTargetListPersistenceModule.getAdornedTargetFilterMappings(PersistencePerspective, CriteriaTransferObject, Map, AdornedTargetList)"})
   public void testGetAdornedTargetFilterMappings_thenReturnSecondDirectFilterValuesEmpty()
       throws ClassNotFoundException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = new AdornedTargetListPersistenceModule();
     PersistencePerspective persistencePerspective = new PersistencePerspective();
     FilterAndSortCriteria filterAndSortCriteria = mock(FilterAndSortCriteria.class);
     ArrayList<String> stringList = new ArrayList<>();
@@ -1080,201 +639,51 @@ public class AdornedTargetListPersistenceModuleDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdornedTargetListPersistenceModule#getAdornedTargetFilterMappings(PersistencePerspective, CriteriaTransferObject, Map, AdornedTargetList)}.
+   * Test {@link AdornedTargetListPersistenceModule#updateMergedProperties(PersistencePackage, Map)}.
    * <ul>
-   *   <li>When {@link PersistencePerspective}.</li>
+   *   <li>Then throw {@link ServiceException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdornedTargetListPersistenceModule#getAdornedTargetFilterMappings(PersistencePerspective, CriteriaTransferObject, Map, AdornedTargetList)}
+   * Method under test: {@link AdornedTargetListPersistenceModule#updateMergedProperties(PersistencePackage, Map)}
    */
   @Test
-  public void testGetAdornedTargetFilterMappings_whenPersistencePerspective() throws ClassNotFoundException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdornedTargetListPersistenceModule.updateMergedProperties(PersistencePackage, Map)"})
+  public void testUpdateMergedProperties_thenThrowServiceException() throws ServiceException {
     // Arrange
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = new AdornedTargetListPersistenceModule();
-    PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
-    CriteriaTransferObject cto = new CriteriaTransferObject();
-    HashMap<String, FieldMetadata> mergedProperties = new HashMap<>();
+    AdornedTargetList adornedTargetList = mock(AdornedTargetList.class);
+    when(adornedTargetList.getAdornedTargetEntityClassname()).thenThrow(new NumberFormatException("foo"));
 
-    // Act
-    List<FilterMapping> actualAdornedTargetFilterMappings = adornedTargetListPersistenceModule
-        .getAdornedTargetFilterMappings(persistencePerspective, cto, mergedProperties, new AdornedTargetList());
+    HashMap<PersistencePerspectiveItemType, PersistencePerspectiveItem> persistencePerspectiveItems = new HashMap<>();
+    persistencePerspectiveItems.put(PersistencePerspectiveItemType.ADORNEDTARGETLIST, adornedTargetList);
 
-    // Assert
-    Map<String, FilterAndSortCriteria> criteriaMap = cto.getCriteriaMap();
-    assertEquals(2, criteriaMap.size());
-    FilterAndSortCriteria getResult = criteriaMap.get("nullTarget");
-    assertEquals("nullTarget", getResult.getPropertyId());
-    assertNull(getResult.getSortAscending());
-    FilterAndSortCriteria getResult2 = criteriaMap.get(null);
-    assertNull(getResult2.getSortAscending());
-    assertNull(getResult.getOrder());
-    assertNull(getResult2.getOrder());
-    assertNull(getResult2.getPropertyId());
-    assertNull(getResult.getSortDirection());
-    assertNull(getResult2.getSortDirection());
-    assertNull(getResult.getRestrictionType());
-    assertNull(getResult2.getRestrictionType());
-    assertEquals(2, actualAdornedTargetFilterMappings.size());
-    assertTrue(getResult.getFilterValues().isEmpty());
-    assertTrue(getResult2.getFilterValues().isEmpty());
-    assertTrue(getResult.getSpecialFilterValues().isEmpty());
-    assertTrue(getResult2.getSpecialFilterValues().isEmpty());
-    assertTrue(getResult.isNullsLast());
-    assertTrue(getResult2.isNullsLast());
-  }
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    persistencePerspective.setPersistencePerspectiveItems(persistencePerspectiveItems);
 
-  /**
-   * Test
-   * {@link AdornedTargetListPersistenceModule#createPopulatedAdornedTargetInstance(AdornedTargetList, Entity)}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetListPersistenceModule#createPopulatedAdornedTargetInstance(AdornedTargetList, Entity)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreatePopulatedAdornedTargetInstance()
-      throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException,
-      NumberFormatException, InvocationTargetException, FieldNotAvailableException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass885 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule adornedTargetListPersistenceModule;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule2 = new AdornedTargetListPersistenceModule();
-    AdornedTargetList adornedTargetList = new AdornedTargetList();
-
-    // Act
-    adornedTargetListPersistenceModule2.createPopulatedAdornedTargetInstance(adornedTargetList, new Entity());
-  }
-
-  /**
-   * Test
-   * {@link AdornedTargetListPersistenceModule#updateMergedProperties(PersistencePackage, Map)}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetListPersistenceModule#updateMergedProperties(PersistencePackage, Map)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testUpdateMergedProperties() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1574 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule adornedTargetListPersistenceModule;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule2 = new AdornedTargetListPersistenceModule();
     PersistencePackage persistencePackage = new PersistencePackage();
+    persistencePackage.setPersistencePerspective(persistencePerspective);
 
-    // Act
-    adornedTargetListPersistenceModule2.updateMergedProperties(persistencePackage, new HashMap<>());
+    // Act and Assert
+    assertThrows(ServiceException.class,
+        () -> adornedTargetListPersistenceModule.updateMergedProperties(persistencePackage, new HashMap<>()));
+    verify(adornedTargetList).getAdornedTargetEntityClassname();
   }
 
   /**
-   * Test
-   * {@link AdornedTargetListPersistenceModule#updateMergedProperties(PersistencePackage, Map)}.
-   * <ul>
-   *   <li>Then calls
-   * {@link PersistencePackage#getCeilingEntityFullyQualifiedClassname()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetListPersistenceModule#updateMergedProperties(PersistencePackage, Map)}
-   */
-  @Test
-  public void testUpdateMergedProperties_thenCallsGetCeilingEntityFullyQualifiedClassname() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = new AdornedTargetListPersistenceModule();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
-
-    // Act
-    adornedTargetListPersistenceModule.updateMergedProperties(persistencePackage, new HashMap<>());
-
-    // Assert
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getPersistencePerspective();
-  }
-
-  /**
-   * Test {@link AdornedTargetListPersistenceModule#add(PersistencePackage)} with
-   * {@code persistencePackage}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetListPersistenceModule#add(PersistencePackage)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddWithPersistencePackage() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass853 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule adornedTargetListPersistenceModule;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule2 = new AdornedTargetListPersistenceModule();
-
-    // Act
-    adornedTargetListPersistenceModule2.add(new PersistencePackage());
-  }
-
-  /**
-   * Test {@link AdornedTargetListPersistenceModule#add(PersistencePackage)} with
-   * {@code persistencePackage}.
+   * Test {@link AdornedTargetListPersistenceModule#add(PersistencePackage)} with {@code persistencePackage}.
    * <ul>
    *   <li>Then throw {@link SecurityServiceException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdornedTargetListPersistenceModule#add(PersistencePackage)}
+   * Method under test: {@link AdornedTargetListPersistenceModule#add(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Entity AdornedTargetListPersistenceModule.add(PersistencePackage)"})
   public void testAddWithPersistencePackage_thenThrowSecurityServiceException() throws ServiceException {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = new AdornedTargetListPersistenceModule();
@@ -1300,251 +709,140 @@ public class AdornedTargetListPersistenceModuleDiffblueTest {
   }
 
   /**
-   * Test {@link AdornedTargetListPersistenceModule#update(PersistencePackage)}
-   * with {@code persistencePackage}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetListPersistenceModule#update(PersistencePackage)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testUpdateWithPersistencePackage() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1542 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule adornedTargetListPersistenceModule;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule2 = new AdornedTargetListPersistenceModule();
-
-    // Act
-    adornedTargetListPersistenceModule2.update(new PersistencePackage());
-  }
-
-  /**
-   * Test {@link AdornedTargetListPersistenceModule#update(PersistencePackage)}
-   * with {@code persistencePackage}.
+   * Test {@link AdornedTargetListPersistenceModule#update(PersistencePackage)} with {@code persistencePackage}.
    * <ul>
    *   <li>Then throw {@link SecurityServiceException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdornedTargetListPersistenceModule#update(PersistencePackage)}
+   * Method under test: {@link AdornedTargetListPersistenceModule#update(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Entity AdornedTargetListPersistenceModule.update(PersistencePackage)"})
   public void testUpdateWithPersistencePackage_thenThrowSecurityServiceException() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = new AdornedTargetListPersistenceModule();
-    AdornedTargetList adornedTargetList = mock(AdornedTargetList.class);
-    when(adornedTargetList.getMutable()).thenReturn(false);
+    AdornedTargetList item = mock(AdornedTargetList.class);
+    when(item.getMutable()).thenReturn(false);
 
-    HashMap<PersistencePerspectiveItemType, PersistencePerspectiveItem> persistencePerspectiveItemTypePersistencePerspectiveItemMap = new HashMap<>();
-    persistencePerspectiveItemTypePersistencePerspectiveItemMap.put(PersistencePerspectiveItemType.ADORNEDTARGETLIST,
-        adornedTargetList);
-    PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
-    when(persistencePerspective.getPersistencePerspectiveItems())
-        .thenReturn(persistencePerspectiveItemTypePersistencePerspectiveItemMap);
-    Entity entity = mock(Entity.class);
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    persistencePerspective.addPersistencePerspectiveItem(PersistencePerspectiveItemType.ADORNEDTARGETLIST, item);
+    persistencePerspective.addPersistencePerspectiveItem(PersistencePerspectiveItemType.FOREIGNKEY,
+        new AdornedTargetList());
 
-    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
-        new String[]{"Custom Criteria"}, "ABC123");
+    PersistencePackage persistencePackage = new PersistencePackage();
     persistencePackage.setPersistencePerspective(persistencePerspective);
 
     // Act and Assert
     assertThrows(SecurityServiceException.class, () -> adornedTargetListPersistenceModule.update(persistencePackage));
-    verify(adornedTargetList).getMutable();
-    verify(persistencePerspective).getPersistencePerspectiveItems();
+    verify(item).getMutable();
   }
 
   /**
-   * Test {@link AdornedTargetListPersistenceModule#update(PersistencePackage)}
-   * with {@code persistencePackage}.
+   * Test {@link AdornedTargetListPersistenceModule#update(PersistencePackage)} with {@code persistencePackage}.
    * <ul>
    *   <li>Then throw {@link ServiceException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdornedTargetListPersistenceModule#update(PersistencePackage)}
+   * Method under test: {@link AdornedTargetListPersistenceModule#update(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Entity AdornedTargetListPersistenceModule.update(PersistencePackage)"})
   public void testUpdateWithPersistencePackage_thenThrowServiceException() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = new AdornedTargetListPersistenceModule();
-    AdornedTargetList adornedTargetList = mock(AdornedTargetList.class);
-    when(adornedTargetList.getSortAscending()).thenThrow(new NumberFormatException(
-        "custom persistence handlers and custom criteria not supported for update types other than BASIC"));
-    when(adornedTargetList.getCollectionFieldName()).thenReturn("Collection Field Name");
-    when(adornedTargetList.getLinkedIdProperty()).thenReturn("Linked Id Property");
-    when(adornedTargetList.getLinkedObjectPath()).thenReturn("Linked Object Path");
-    when(adornedTargetList.getSortField()).thenReturn("Sort Field");
-    when(adornedTargetList.getMutable()).thenReturn(true);
+    AdornedTargetList item = mock(AdornedTargetList.class);
+    when(item.getCollectionFieldName()).thenThrow(new NumberFormatException("foo"));
+    when(item.getMutable()).thenReturn(true);
 
-    HashMap<PersistencePerspectiveItemType, PersistencePerspectiveItem> persistencePerspectiveItemTypePersistencePerspectiveItemMap = new HashMap<>();
-    persistencePerspectiveItemTypePersistencePerspectiveItemMap.put(PersistencePerspectiveItemType.ADORNEDTARGETLIST,
-        adornedTargetList);
-    PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
-    when(persistencePerspective.getPersistencePerspectiveItems())
-        .thenReturn(persistencePerspectiveItemTypePersistencePerspectiveItemMap);
-    Property property = mock(Property.class);
-    when(property.getValue()).thenReturn("42");
-    Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    persistencePerspective.addPersistencePerspectiveItem(PersistencePerspectiveItemType.ADORNEDTARGETLIST, item);
+    persistencePerspective.addPersistencePerspectiveItem(PersistencePerspectiveItemType.FOREIGNKEY,
+        new AdornedTargetList());
 
-    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
-        new String[]{"Custom Criteria"}, "ABC123");
+    PersistencePackage persistencePackage = new PersistencePackage();
     persistencePackage.setPersistencePerspective(persistencePerspective);
 
     // Act and Assert
     assertThrows(ServiceException.class, () -> adornedTargetListPersistenceModule.update(persistencePackage));
-    verify(adornedTargetList).getCollectionFieldName();
-    verify(adornedTargetList).getLinkedIdProperty();
-    verify(adornedTargetList).getLinkedObjectPath();
-    verify(adornedTargetList).getMutable();
-    verify(adornedTargetList).getSortAscending();
-    verify(adornedTargetList, atLeast(1)).getSortField();
-    verify(entity).findProperty(eq("Linked Object Path.Linked Id Property"));
-    verify(persistencePerspective).getPersistencePerspectiveItems();
-    verify(property).getValue();
-  }
-
-  /**
-   * Test {@link AdornedTargetListPersistenceModule#remove(PersistencePackage)}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetListPersistenceModule#remove(PersistencePackage)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testRemove() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1510 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule adornedTargetListPersistenceModule;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule2 = new AdornedTargetListPersistenceModule();
-
-    // Act
-    adornedTargetListPersistenceModule2.remove(new PersistencePackage());
+    verify(item).getCollectionFieldName();
+    verify(item).getMutable();
   }
 
   /**
    * Test {@link AdornedTargetListPersistenceModule#remove(PersistencePackage)}.
    * <ul>
-   *   <li>Given {@link AdornedTargetList} {@link AdornedTargetList#getMutable()}
-   * return {@code false}.</li>
+   *   <li>Given {@link AdornedTargetList} {@link AdornedTargetList#getMutable()} return {@code false}.</li>
    *   <li>Then throw {@link ServiceException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdornedTargetListPersistenceModule#remove(PersistencePackage)}
+   * Method under test: {@link AdornedTargetListPersistenceModule#remove(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdornedTargetListPersistenceModule.remove(PersistencePackage)"})
   public void testRemove_givenAdornedTargetListGetMutableReturnFalse_thenThrowServiceException()
       throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = new AdornedTargetListPersistenceModule();
-    AdornedTargetList adornedTargetList = mock(AdornedTargetList.class);
-    when(adornedTargetList.getMutable()).thenReturn(false);
+    AdornedTargetList item = mock(AdornedTargetList.class);
+    when(item.getMutable()).thenReturn(false);
 
-    HashMap<PersistencePerspectiveItemType, PersistencePerspectiveItem> persistencePerspectiveItemTypePersistencePerspectiveItemMap = new HashMap<>();
-    persistencePerspectiveItemTypePersistencePerspectiveItemMap.put(PersistencePerspectiveItemType.ADORNEDTARGETLIST,
-        adornedTargetList);
-    PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
-    when(persistencePerspective.getPersistencePerspectiveItems())
-        .thenReturn(persistencePerspectiveItemTypePersistencePerspectiveItemMap);
-    Entity entity = new Entity();
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    persistencePerspective.addPersistencePerspectiveItem(PersistencePerspectiveItemType.ADORNEDTARGETLIST, item);
+    persistencePerspective.addPersistencePerspectiveItem(PersistencePerspectiveItemType.FOREIGNKEY,
+        new AdornedTargetList());
 
-    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
-        new String[]{"Problem removing entity : "}, "ABC123");
+    PersistencePackage persistencePackage = new PersistencePackage();
     persistencePackage.setPersistencePerspective(persistencePerspective);
 
     // Act and Assert
     assertThrows(ServiceException.class, () -> adornedTargetListPersistenceModule.remove(persistencePackage));
-    verify(adornedTargetList).getMutable();
-    verify(persistencePerspective).getPersistencePerspectiveItems();
+    verify(item).getMutable();
   }
 
   /**
    * Test {@link AdornedTargetListPersistenceModule#remove(PersistencePackage)}.
    * <ul>
-   *   <li>Then calls
-   * {@link AdornedTargetList#getAdornedTargetEntityClassname()}.</li>
+   *   <li>Then calls {@link AdornedTargetList#getAdornedTargetEntityClassname()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdornedTargetListPersistenceModule#remove(PersistencePackage)}
+   * Method under test: {@link AdornedTargetListPersistenceModule#remove(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdornedTargetListPersistenceModule.remove(PersistencePackage)"})
   public void testRemove_thenCallsGetAdornedTargetEntityClassname() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = new AdornedTargetListPersistenceModule();
-    AdornedTargetList adornedTargetList = mock(AdornedTargetList.class);
-    when(adornedTargetList.getAdornedTargetEntityClassname()).thenThrow(new NumberFormatException("foo"));
-    when(adornedTargetList.getMutable()).thenReturn(true);
+    AdornedTargetList item = mock(AdornedTargetList.class);
+    when(item.getAdornedTargetEntityClassname()).thenThrow(new NumberFormatException("foo"));
+    when(item.getMutable()).thenReturn(true);
 
-    HashMap<PersistencePerspectiveItemType, PersistencePerspectiveItem> persistencePerspectiveItemTypePersistencePerspectiveItemMap = new HashMap<>();
-    persistencePerspectiveItemTypePersistencePerspectiveItemMap.put(PersistencePerspectiveItemType.ADORNEDTARGETLIST,
-        adornedTargetList);
-    PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
-    when(persistencePerspective.getPersistencePerspectiveItems())
-        .thenReturn(persistencePerspectiveItemTypePersistencePerspectiveItemMap);
-    Entity entity = new Entity();
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    persistencePerspective.addPersistencePerspectiveItem(PersistencePerspectiveItemType.ADORNEDTARGETLIST, item);
+    persistencePerspective.addPersistencePerspectiveItem(PersistencePerspectiveItemType.FOREIGNKEY,
+        new AdornedTargetList());
 
-    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
-        new String[]{"Problem removing entity : "}, "ABC123");
+    PersistencePackage persistencePackage = new PersistencePackage();
     persistencePackage.setPersistencePerspective(persistencePerspective);
 
     // Act and Assert
     assertThrows(ServiceException.class, () -> adornedTargetListPersistenceModule.remove(persistencePackage));
-    verify(adornedTargetList).getAdornedTargetEntityClassname();
-    verify(adornedTargetList).getMutable();
-    verify(persistencePerspective).getPersistencePerspectiveItems();
+    verify(item).getAdornedTargetEntityClassname();
+    verify(item).getMutable();
   }
 
   /**
-   * Test
-   * {@link AdornedTargetListPersistenceModule#fetch(PersistencePackage, AdornedTargetList, CriteriaTransferObject)}
-   * with {@code persistencePackage}, {@code adornedTargetList}, {@code cto}.
+   * Test {@link AdornedTargetListPersistenceModule#fetch(PersistencePackage, AdornedTargetList, CriteriaTransferObject)} with {@code persistencePackage}, {@code adornedTargetList}, {@code cto}.
    * <p>
-   * Method under test:
-   * {@link AdornedTargetListPersistenceModule#fetch(PersistencePackage, AdornedTargetList, CriteriaTransferObject)}
+   * Method under test: {@link AdornedTargetListPersistenceModule#fetch(PersistencePackage, AdornedTargetList, CriteriaTransferObject)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "List AdornedTargetListPersistenceModule.fetch(PersistencePackage, AdornedTargetList, CriteriaTransferObject)"})
   public void testFetchWithPersistencePackageAdornedTargetListCto() throws ClassNotFoundException {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     DynamicEntityDaoImpl dynamicEntityDaoImpl = mock(DynamicEntityDaoImpl.class);
@@ -1554,13 +852,16 @@ public class AdornedTargetListPersistenceModuleDiffblueTest {
         Mockito.<String>any(), Mockito.<String>any())).thenReturn(new HashMap<>());
     PersistenceManager persistenceManager = mock(PersistenceManager.class);
     Class<Object> forNameResult = Object.class;
-    when(persistenceManager.getPolymorphicEntities(Mockito.<String>any())).thenReturn(new Class[]{forNameResult});
+    Mockito.<Class<?>[]>when(persistenceManager.getPolymorphicEntities(Mockito.<String>any()))
+        .thenReturn(new Class[]{forNameResult});
     when(persistenceManager.getDynamicEntityDao()).thenReturn(dynamicEntityDaoImpl);
 
     AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = new AdornedTargetListPersistenceModule();
     adornedTargetListPersistenceModule.setPersistenceManager(persistenceManager);
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
+    Entity entity = new Entity();
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"Custom Criteria"}, "ABC123");
+
     AdornedTargetList adornedTargetList = mock(AdornedTargetList.class);
     when(adornedTargetList.getCollectionFieldName()).thenReturn("Collection Field Name");
     when(adornedTargetList.getLinkedIdProperty()).thenReturn("Linked Id Property");
@@ -1588,84 +889,10 @@ public class AdornedTargetListPersistenceModuleDiffblueTest {
     verify(cto).getCriteriaMap();
     verify(filterAndSortCriteria).getFilterValues();
     verify(filterAndSortCriteria).setSortAscending(eq(true));
-    verify(persistencePackage).getPersistencePerspective();
     verify(dynamicEntityDaoImpl).getMergedProperties(eq("Adorned Target Entity Classname"), isA(Class[].class),
         isNull(), isA(String[].class), isA(ForeignKey[].class), eq(MergedPropertyType.ADORNEDTARGETLIST), eq(false),
         isA(String[].class), isA(String[].class), isNull(), eq(""));
     verify(persistenceManager).getDynamicEntityDao();
     verify(persistenceManager).getPolymorphicEntities(eq("Adorned Target Entity Classname"));
-  }
-
-  /**
-   * Test
-   * {@link AdornedTargetListPersistenceModule#fetch(PersistencePackage, AdornedTargetList, CriteriaTransferObject)}
-   * with {@code persistencePackage}, {@code adornedTargetList}, {@code cto}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetListPersistenceModule#fetch(PersistencePackage, AdornedTargetList, CriteriaTransferObject)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFetchWithPersistencePackageAdornedTargetListCto2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1259 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule adornedTargetListPersistenceModule;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule2 = new AdornedTargetListPersistenceModule();
-    PersistencePackage persistencePackage = new PersistencePackage();
-    AdornedTargetList adornedTargetList = new AdornedTargetList();
-
-    // Act
-    adornedTargetListPersistenceModule2.fetch(persistencePackage, adornedTargetList, new CriteriaTransferObject());
-  }
-
-  /**
-   * Test
-   * {@link AdornedTargetListPersistenceModule#fetch(PersistencePackage, CriteriaTransferObject)}
-   * with {@code persistencePackage}, {@code cto}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetListPersistenceModule#fetch(PersistencePackage, CriteriaTransferObject)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFetchWithPersistencePackageCto() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1324 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule adornedTargetListPersistenceModule;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule2 = new AdornedTargetListPersistenceModule();
-    PersistencePackage persistencePackage = new PersistencePackage();
-
-    // Act
-    adornedTargetListPersistenceModule2.fetch(persistencePackage, new CriteriaTransferObject());
   }
 }

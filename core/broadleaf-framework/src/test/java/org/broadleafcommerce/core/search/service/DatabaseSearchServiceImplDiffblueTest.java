@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.search.service;
 
 import static org.junit.Assert.assertEquals;
@@ -15,14 +32,20 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import java.math.BigDecimal;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.cache.Cache;
+import javax.cache.CacheManager;
 import org.broadleafcommerce.common.exception.ServiceException;
-import org.broadleafcommerce.core.catalog.domain.Category;
 import org.broadleafcommerce.core.catalog.domain.CategoryImpl;
+import org.broadleafcommerce.core.catalog.service.CatalogService;
+import org.broadleafcommerce.core.search.dao.FieldDao;
+import org.broadleafcommerce.core.search.dao.SearchFacetDao;
+import org.broadleafcommerce.core.search.domain.Field;
 import org.broadleafcommerce.core.search.domain.FieldImpl;
 import org.broadleafcommerce.core.search.domain.IndexFieldTypeImpl;
 import org.broadleafcommerce.core.search.domain.SearchCriteria;
@@ -32,37 +55,45 @@ import org.broadleafcommerce.core.search.domain.SearchFacetImpl;
 import org.broadleafcommerce.core.search.domain.SearchFacetRange;
 import org.broadleafcommerce.core.search.domain.SearchFacetRangeImpl;
 import org.broadleafcommerce.core.search.domain.SearchFacetResultDTO;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mvel2.util.InternalNumber;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class DatabaseSearchServiceImplDiffblueTest {
-  @Autowired
+  @Mock
+  private CacheManager cacheManager;
+
+  @Mock
+  private CatalogService catalogService;
+
+  @InjectMocks
   private DatabaseSearchServiceImpl databaseSearchServiceImpl;
 
+  @Mock
+  private FieldDao fieldDao;
+
+  @Mock
+  private SearchFacetDao searchFacetDao;
+
   /**
-   * Test
-   * {@link DatabaseSearchServiceImpl#findExplicitSearchResultsByCategory(Category, SearchCriteria)}.
+   * Test {@link DatabaseSearchServiceImpl#findExplicitSearchResultsByCategory(Category, SearchCriteria)}.
    * <p>
-   * Method under test:
-   * {@link DatabaseSearchServiceImpl#findExplicitSearchResultsByCategory(Category, SearchCriteria)}
+   * Method under test: {@link DatabaseSearchServiceImpl#findExplicitSearchResultsByCategory(org.broadleafcommerce.core.catalog.domain.Category, SearchCriteria)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.core.search.domain.SearchResult DatabaseSearchServiceImpl.findExplicitSearchResultsByCategory(org.broadleafcommerce.core.catalog.domain.Category, SearchCriteria)"})
   public void testFindExplicitSearchResultsByCategory() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DatabaseSearchServiceImpl databaseSearchServiceImpl = new DatabaseSearchServiceImpl();
     CategoryImpl category = new CategoryImpl();
 
     // Act and Assert
@@ -71,53 +102,16 @@ public class DatabaseSearchServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DatabaseSearchServiceImpl#findExplicitSearchResultsByCategory(Category, SearchCriteria)}.
+   * Test {@link DatabaseSearchServiceImpl#findSearchResultsByCategoryAndQuery(Category, String, SearchCriteria)}.
    * <p>
-   * Method under test:
-   * {@link DatabaseSearchServiceImpl#findExplicitSearchResultsByCategory(Category, SearchCriteria)}
+   * Method under test: {@link DatabaseSearchServiceImpl#findSearchResultsByCategoryAndQuery(org.broadleafcommerce.core.catalog.domain.Category, String, SearchCriteria)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindExplicitSearchResultsByCategory2() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.search.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1905 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.DatabaseSearchServiceImpl databaseSearchServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DatabaseSearchServiceImpl databaseSearchServiceImpl2 = new DatabaseSearchServiceImpl();
-    CategoryImpl category = new CategoryImpl();
-
-    // Act
-    databaseSearchServiceImpl2.findExplicitSearchResultsByCategory(category, new SearchCriteria());
-  }
-
-  /**
-   * Test
-   * {@link DatabaseSearchServiceImpl#findSearchResultsByCategoryAndQuery(Category, String, SearchCriteria)}.
-   * <p>
-   * Method under test:
-   * {@link DatabaseSearchServiceImpl#findSearchResultsByCategoryAndQuery(Category, String, SearchCriteria)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.core.search.domain.SearchResult DatabaseSearchServiceImpl.findSearchResultsByCategoryAndQuery(org.broadleafcommerce.core.catalog.domain.Category, String, SearchCriteria)"})
   public void testFindSearchResultsByCategoryAndQuery() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DatabaseSearchServiceImpl databaseSearchServiceImpl = new DatabaseSearchServiceImpl();
     CategoryImpl category = new CategoryImpl();
 
     // Act and Assert
@@ -126,97 +120,117 @@ public class DatabaseSearchServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DatabaseSearchServiceImpl#findSearchResultsByCategoryAndQuery(Category, String, SearchCriteria)}.
+   * Test {@link DatabaseSearchServiceImpl#findSearchResultsByCategory(Category, SearchCriteria)}.
    * <p>
-   * Method under test:
-   * {@link DatabaseSearchServiceImpl#findSearchResultsByCategoryAndQuery(Category, String, SearchCriteria)}
+   * Method under test: {@link DatabaseSearchServiceImpl#findSearchResultsByCategory(org.broadleafcommerce.core.catalog.domain.Category, SearchCriteria)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindSearchResultsByCategoryAndQuery2() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.search.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1979 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.DatabaseSearchServiceImpl databaseSearchServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DatabaseSearchServiceImpl databaseSearchServiceImpl2 = new DatabaseSearchServiceImpl();
-    CategoryImpl category = new CategoryImpl();
-
-    // Act
-    databaseSearchServiceImpl2.findSearchResultsByCategoryAndQuery(category, "Query", new SearchCriteria());
-  }
-
-  /**
-   * Test
-   * {@link DatabaseSearchServiceImpl#findSearchResultsByCategory(Category, SearchCriteria)}.
-   * <p>
-   * Method under test:
-   * {@link DatabaseSearchServiceImpl#findSearchResultsByCategory(Category, SearchCriteria)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.core.search.domain.SearchResult DatabaseSearchServiceImpl.findSearchResultsByCategory(org.broadleafcommerce.core.catalog.domain.Category, SearchCriteria)"})
   public void testFindSearchResultsByCategory() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.search.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1949 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.DatabaseSearchServiceImpl databaseSearchServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    DatabaseSearchServiceImpl databaseSearchServiceImpl2 = new DatabaseSearchServiceImpl();
+    when(fieldDao.readFieldByAbbreviation(Mockito.<String>any())).thenThrow(new UnsupportedOperationException(","));
     CategoryImpl category = new CategoryImpl();
+    SearchCriteria searchCriteria = mock(SearchCriteria.class);
+    when(searchCriteria.getSortQuery()).thenReturn("Sort Query");
+    when(searchCriteria.getFilterCriteria()).thenReturn(new HashMap<>());
+    doNothing().when(searchCriteria).setFilterCriteria(Mockito.<Map<String, String[]>>any());
 
-    // Act
-    databaseSearchServiceImpl2.findSearchResultsByCategory(category, new SearchCriteria());
+    // Act and Assert
+    assertThrows(UnsupportedOperationException.class,
+        () -> databaseSearchServiceImpl.findSearchResultsByCategory(category, searchCriteria));
+    verify(fieldDao).readFieldByAbbreviation(eq("Sort"));
+    verify(searchCriteria).getFilterCriteria();
+    verify(searchCriteria, atLeast(1)).getSortQuery();
+    verify(searchCriteria).setFilterCriteria(isA(Map.class));
   }
 
   /**
-   * Test
-   * {@link DatabaseSearchServiceImpl#findSearchResultsByCategory(Category, SearchCriteria)}.
-   * <ul>
-   *   <li>Given {@code foo}.</li>
-   *   <li>When {@link SearchCriteria} {@link SearchCriteria#getSortQuery()} return
-   * {@code foo}.</li>
-   * </ul>
+   * Test {@link DatabaseSearchServiceImpl#findSearchResultsByCategory(Category, SearchCriteria)}.
    * <p>
-   * Method under test:
-   * {@link DatabaseSearchServiceImpl#findSearchResultsByCategory(Category, SearchCriteria)}
+   * Method under test: {@link DatabaseSearchServiceImpl#findSearchResultsByCategory(org.broadleafcommerce.core.catalog.domain.Category, SearchCriteria)}
    */
   @Test
-  public void testFindSearchResultsByCategory_givenFoo_whenSearchCriteriaGetSortQueryReturnFoo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.core.search.domain.SearchResult DatabaseSearchServiceImpl.findSearchResultsByCategory(org.broadleafcommerce.core.catalog.domain.Category, SearchCriteria)"})
+  public void testFindSearchResultsByCategory2() {
     // Arrange
-    DatabaseSearchServiceImpl databaseSearchServiceImpl = new DatabaseSearchServiceImpl();
+    Field field = mock(Field.class);
+    when(field.getQualifiedFieldName()).thenReturn("productAttributes");
+    when(fieldDao.readFieldByAbbreviation(Mockito.<String>any())).thenReturn(field);
     CategoryImpl category = new CategoryImpl();
     SearchCriteria searchCriteria = mock(SearchCriteria.class);
     doThrow(new UnsupportedOperationException(",")).when(searchCriteria).setSortQuery(Mockito.<String>any());
-    when(searchCriteria.getSortQuery()).thenReturn("foo");
+    when(searchCriteria.getSortQuery()).thenReturn("Sort Query");
+    when(searchCriteria.getFilterCriteria()).thenReturn(new HashMap<>());
+    doNothing().when(searchCriteria).setFilterCriteria(Mockito.<Map<String, String[]>>any());
+
+    // Act and Assert
+    assertThrows(UnsupportedOperationException.class,
+        () -> databaseSearchServiceImpl.findSearchResultsByCategory(category, searchCriteria));
+    verify(fieldDao).readFieldByAbbreviation(eq("Sort"));
+    verify(field).getQualifiedFieldName();
+    verify(searchCriteria).getFilterCriteria();
+    verify(searchCriteria, atLeast(1)).getSortQuery();
+    verify(searchCriteria).setFilterCriteria(isA(Map.class));
+    verify(searchCriteria).setSortQuery(eq("productAttributes Query"));
+  }
+
+  /**
+   * Test {@link DatabaseSearchServiceImpl#findSearchResultsByCategory(Category, SearchCriteria)}.
+   * <ul>
+   *   <li>Given {@link Field} {@link Field#getQualifiedFieldName()} return {@code defaultSku}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DatabaseSearchServiceImpl#findSearchResultsByCategory(org.broadleafcommerce.core.catalog.domain.Category, SearchCriteria)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.core.search.domain.SearchResult DatabaseSearchServiceImpl.findSearchResultsByCategory(org.broadleafcommerce.core.catalog.domain.Category, SearchCriteria)"})
+  public void testFindSearchResultsByCategory_givenFieldGetQualifiedFieldNameReturnDefaultSku() {
+    // Arrange
+    Field field = mock(Field.class);
+    when(field.getQualifiedFieldName()).thenReturn("defaultSku");
+    when(fieldDao.readFieldByAbbreviation(Mockito.<String>any())).thenReturn(field);
+    CategoryImpl category = new CategoryImpl();
+    SearchCriteria searchCriteria = mock(SearchCriteria.class);
+    doThrow(new UnsupportedOperationException(",")).when(searchCriteria).setSortQuery(Mockito.<String>any());
+    when(searchCriteria.getSortQuery()).thenReturn("Sort Query");
+    when(searchCriteria.getFilterCriteria()).thenReturn(new HashMap<>());
+    doNothing().when(searchCriteria).setFilterCriteria(Mockito.<Map<String, String[]>>any());
+
+    // Act and Assert
+    assertThrows(UnsupportedOperationException.class,
+        () -> databaseSearchServiceImpl.findSearchResultsByCategory(category, searchCriteria));
+    verify(fieldDao).readFieldByAbbreviation(eq("Sort"));
+    verify(field).getQualifiedFieldName();
+    verify(searchCriteria).getFilterCriteria();
+    verify(searchCriteria, atLeast(1)).getSortQuery();
+    verify(searchCriteria).setFilterCriteria(isA(Map.class));
+    verify(searchCriteria).setSortQuery(eq("defaultSku Query"));
+  }
+
+  /**
+   * Test {@link DatabaseSearchServiceImpl#findSearchResultsByCategory(Category, SearchCriteria)}.
+   * <ul>
+   *   <li>Given {@code productAttributes}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DatabaseSearchServiceImpl#findSearchResultsByCategory(org.broadleafcommerce.core.catalog.domain.Category, SearchCriteria)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.core.search.domain.SearchResult DatabaseSearchServiceImpl.findSearchResultsByCategory(org.broadleafcommerce.core.catalog.domain.Category, SearchCriteria)"})
+  public void testFindSearchResultsByCategory_givenProductAttributes() {
+    // Arrange
+    CategoryImpl category = new CategoryImpl();
+    SearchCriteria searchCriteria = mock(SearchCriteria.class);
+    doThrow(new UnsupportedOperationException(",")).when(searchCriteria).setSortQuery(Mockito.<String>any());
+    when(searchCriteria.getSortQuery()).thenReturn("productAttributes");
     when(searchCriteria.getFilterCriteria()).thenReturn(new HashMap<>());
     doNothing().when(searchCriteria).setFilterCriteria(Mockito.<Map<String, String[]>>any());
 
@@ -230,91 +244,209 @@ public class DatabaseSearchServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DatabaseSearchServiceImpl#findSearchResultsByCategory(Category, SearchCriteria)}.
+   * Test {@link DatabaseSearchServiceImpl#findSearchResultsByCategory(Category, SearchCriteria)}.
    * <ul>
-   *   <li>Then throw {@link UnsupportedOperationException}.</li>
+   *   <li>Then calls {@link CatalogService#findFilteredActiveProductsByCategory(Category, SearchCriteria)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DatabaseSearchServiceImpl#findSearchResultsByCategory(Category, SearchCriteria)}
+   * Method under test: {@link DatabaseSearchServiceImpl#findSearchResultsByCategory(org.broadleafcommerce.core.catalog.domain.Category, SearchCriteria)}
    */
   @Test
-  public void testFindSearchResultsByCategory_thenThrowUnsupportedOperationException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.core.search.domain.SearchResult DatabaseSearchServiceImpl.findSearchResultsByCategory(org.broadleafcommerce.core.catalog.domain.Category, SearchCriteria)"})
+  public void testFindSearchResultsByCategory_thenCallsFindFilteredActiveProductsByCategory() {
     // Arrange
-    DatabaseSearchServiceImpl databaseSearchServiceImpl = new DatabaseSearchServiceImpl();
+    when(catalogService.findFilteredActiveProductsByCategory(
+        Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any(), Mockito.<SearchCriteria>any()))
+        .thenThrow(new UnsupportedOperationException("category:"));
+    CategoryImpl category = new CategoryImpl();
+
+    // Act and Assert
+    assertThrows(UnsupportedOperationException.class,
+        () -> databaseSearchServiceImpl.findSearchResultsByCategory(category, new SearchCriteria()));
+    verify(catalogService).findFilteredActiveProductsByCategory(
+        isA(org.broadleafcommerce.core.catalog.domain.Category.class), isA(SearchCriteria.class));
+  }
+
+  /**
+   * Test {@link DatabaseSearchServiceImpl#findSearchResultsByCategory(Category, SearchCriteria)}.
+   * <ul>
+   *   <li>Then calls {@link Field#getQualifiedFieldName()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DatabaseSearchServiceImpl#findSearchResultsByCategory(org.broadleafcommerce.core.catalog.domain.Category, SearchCriteria)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.core.search.domain.SearchResult DatabaseSearchServiceImpl.findSearchResultsByCategory(org.broadleafcommerce.core.catalog.domain.Category, SearchCriteria)"})
+  public void testFindSearchResultsByCategory_thenCallsGetQualifiedFieldName() {
+    // Arrange
+    Field field = mock(Field.class);
+    when(field.getQualifiedFieldName()).thenReturn("Qualified Field Name");
+    when(fieldDao.readFieldByAbbreviation(Mockito.<String>any())).thenReturn(field);
     CategoryImpl category = new CategoryImpl();
     SearchCriteria searchCriteria = mock(SearchCriteria.class);
     doThrow(new UnsupportedOperationException(",")).when(searchCriteria).setSortQuery(Mockito.<String>any());
-    when(searchCriteria.getSortQuery()).thenReturn(",");
+    when(searchCriteria.getSortQuery()).thenReturn("Sort Query");
     when(searchCriteria.getFilterCriteria()).thenReturn(new HashMap<>());
     doNothing().when(searchCriteria).setFilterCriteria(Mockito.<Map<String, String[]>>any());
 
     // Act and Assert
     assertThrows(UnsupportedOperationException.class,
         () -> databaseSearchServiceImpl.findSearchResultsByCategory(category, searchCriteria));
+    verify(fieldDao).readFieldByAbbreviation(eq("Sort"));
+    verify(field).getQualifiedFieldName();
     verify(searchCriteria).getFilterCriteria();
     verify(searchCriteria, atLeast(1)).getSortQuery();
     verify(searchCriteria).setFilterCriteria(isA(Map.class));
-    verify(searchCriteria).setSortQuery(eq(""));
+    verify(searchCriteria).setSortQuery(eq("Qualified Field Name Query"));
   }
 
   /**
-   * Test
-   * {@link DatabaseSearchServiceImpl#findSearchResultsByQuery(String, SearchCriteria)}.
+   * Test {@link DatabaseSearchServiceImpl#findSearchResultsByQuery(String, SearchCriteria)}.
    * <p>
-   * Method under test:
-   * {@link DatabaseSearchServiceImpl#findSearchResultsByQuery(String, SearchCriteria)}
+   * Method under test: {@link DatabaseSearchServiceImpl#findSearchResultsByQuery(String, SearchCriteria)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.core.search.domain.SearchResult DatabaseSearchServiceImpl.findSearchResultsByQuery(String, SearchCriteria)"})
   public void testFindSearchResultsByQuery() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.search.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2009 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.DatabaseSearchServiceImpl databaseSearchServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    DatabaseSearchServiceImpl databaseSearchServiceImpl2 = new DatabaseSearchServiceImpl();
+    when(fieldDao.readFieldByAbbreviation(Mockito.<String>any())).thenThrow(new UnsupportedOperationException(","));
+    SearchCriteria searchCriteria = mock(SearchCriteria.class);
+    when(searchCriteria.getSortQuery()).thenReturn("Sort Query");
+    when(searchCriteria.getFilterCriteria()).thenReturn(new HashMap<>());
+    doNothing().when(searchCriteria).setFilterCriteria(Mockito.<Map<String, String[]>>any());
 
-    // Act
-    databaseSearchServiceImpl2.findSearchResultsByQuery("Query", new SearchCriteria());
+    // Act and Assert
+    assertThrows(UnsupportedOperationException.class,
+        () -> databaseSearchServiceImpl.findSearchResultsByQuery("Query", searchCriteria));
+    verify(fieldDao).readFieldByAbbreviation(eq("Sort"));
+    verify(searchCriteria).getFilterCriteria();
+    verify(searchCriteria, atLeast(1)).getSortQuery();
+    verify(searchCriteria).setFilterCriteria(isA(Map.class));
   }
 
   /**
-   * Test
-   * {@link DatabaseSearchServiceImpl#findSearchResultsByQuery(String, SearchCriteria)}.
-   * <ul>
-   *   <li>Given {@code ,}.</li>
-   *   <li>Then throw {@link UnsupportedOperationException}.</li>
-   * </ul>
+   * Test {@link DatabaseSearchServiceImpl#findSearchResultsByQuery(String, SearchCriteria)}.
    * <p>
-   * Method under test:
-   * {@link DatabaseSearchServiceImpl#findSearchResultsByQuery(String, SearchCriteria)}
+   * Method under test: {@link DatabaseSearchServiceImpl#findSearchResultsByQuery(String, SearchCriteria)}
    */
   @Test
-  public void testFindSearchResultsByQuery_givenComma_thenThrowUnsupportedOperationException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.core.search.domain.SearchResult DatabaseSearchServiceImpl.findSearchResultsByQuery(String, SearchCriteria)"})
+  public void testFindSearchResultsByQuery2() {
     // Arrange
-    DatabaseSearchServiceImpl databaseSearchServiceImpl = new DatabaseSearchServiceImpl();
+    Field field = mock(Field.class);
+    when(field.getQualifiedFieldName()).thenReturn("productAttributes");
+    when(fieldDao.readFieldByAbbreviation(Mockito.<String>any())).thenReturn(field);
     SearchCriteria searchCriteria = mock(SearchCriteria.class);
     doThrow(new UnsupportedOperationException(",")).when(searchCriteria).setSortQuery(Mockito.<String>any());
-    when(searchCriteria.getSortQuery()).thenReturn(",");
+    when(searchCriteria.getSortQuery()).thenReturn("Sort Query");
+    when(searchCriteria.getFilterCriteria()).thenReturn(new HashMap<>());
+    doNothing().when(searchCriteria).setFilterCriteria(Mockito.<Map<String, String[]>>any());
+
+    // Act and Assert
+    assertThrows(UnsupportedOperationException.class,
+        () -> databaseSearchServiceImpl.findSearchResultsByQuery("Query", searchCriteria));
+    verify(fieldDao).readFieldByAbbreviation(eq("Sort"));
+    verify(field).getQualifiedFieldName();
+    verify(searchCriteria).getFilterCriteria();
+    verify(searchCriteria, atLeast(1)).getSortQuery();
+    verify(searchCriteria).setFilterCriteria(isA(Map.class));
+    verify(searchCriteria).setSortQuery(eq("productAttributes Query"));
+  }
+
+  /**
+   * Test {@link DatabaseSearchServiceImpl#findSearchResultsByQuery(String, SearchCriteria)}.
+   * <ul>
+   *   <li>Given {@link CatalogService}.</li>
+   *   <li>Then calls {@link Field#getQualifiedFieldName()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DatabaseSearchServiceImpl#findSearchResultsByQuery(String, SearchCriteria)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.core.search.domain.SearchResult DatabaseSearchServiceImpl.findSearchResultsByQuery(String, SearchCriteria)"})
+  public void testFindSearchResultsByQuery_givenCatalogService_thenCallsGetQualifiedFieldName() {
+    // Arrange
+    Field field = mock(Field.class);
+    when(field.getQualifiedFieldName()).thenReturn("Qualified Field Name");
+    when(fieldDao.readFieldByAbbreviation(Mockito.<String>any())).thenReturn(field);
+    SearchCriteria searchCriteria = mock(SearchCriteria.class);
+    doThrow(new UnsupportedOperationException(",")).when(searchCriteria).setSortQuery(Mockito.<String>any());
+    when(searchCriteria.getSortQuery()).thenReturn("Sort Query");
+    when(searchCriteria.getFilterCriteria()).thenReturn(new HashMap<>());
+    doNothing().when(searchCriteria).setFilterCriteria(Mockito.<Map<String, String[]>>any());
+
+    // Act and Assert
+    assertThrows(UnsupportedOperationException.class,
+        () -> databaseSearchServiceImpl.findSearchResultsByQuery("Query", searchCriteria));
+    verify(fieldDao).readFieldByAbbreviation(eq("Sort"));
+    verify(field).getQualifiedFieldName();
+    verify(searchCriteria).getFilterCriteria();
+    verify(searchCriteria, atLeast(1)).getSortQuery();
+    verify(searchCriteria).setFilterCriteria(isA(Map.class));
+    verify(searchCriteria).setSortQuery(eq("Qualified Field Name Query"));
+  }
+
+  /**
+   * Test {@link DatabaseSearchServiceImpl#findSearchResultsByQuery(String, SearchCriteria)}.
+   * <ul>
+   *   <li>Given {@link Field} {@link Field#getQualifiedFieldName()} return {@code defaultSku}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DatabaseSearchServiceImpl#findSearchResultsByQuery(String, SearchCriteria)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.core.search.domain.SearchResult DatabaseSearchServiceImpl.findSearchResultsByQuery(String, SearchCriteria)"})
+  public void testFindSearchResultsByQuery_givenFieldGetQualifiedFieldNameReturnDefaultSku() {
+    // Arrange
+    Field field = mock(Field.class);
+    when(field.getQualifiedFieldName()).thenReturn("defaultSku");
+    when(fieldDao.readFieldByAbbreviation(Mockito.<String>any())).thenReturn(field);
+    SearchCriteria searchCriteria = mock(SearchCriteria.class);
+    doThrow(new UnsupportedOperationException(",")).when(searchCriteria).setSortQuery(Mockito.<String>any());
+    when(searchCriteria.getSortQuery()).thenReturn("Sort Query");
+    when(searchCriteria.getFilterCriteria()).thenReturn(new HashMap<>());
+    doNothing().when(searchCriteria).setFilterCriteria(Mockito.<Map<String, String[]>>any());
+
+    // Act and Assert
+    assertThrows(UnsupportedOperationException.class,
+        () -> databaseSearchServiceImpl.findSearchResultsByQuery("Query", searchCriteria));
+    verify(fieldDao).readFieldByAbbreviation(eq("Sort"));
+    verify(field).getQualifiedFieldName();
+    verify(searchCriteria).getFilterCriteria();
+    verify(searchCriteria, atLeast(1)).getSortQuery();
+    verify(searchCriteria).setFilterCriteria(isA(Map.class));
+    verify(searchCriteria).setSortQuery(eq("defaultSku Query"));
+  }
+
+  /**
+   * Test {@link DatabaseSearchServiceImpl#findSearchResultsByQuery(String, SearchCriteria)}.
+   * <ul>
+   *   <li>Given {@code productAttributes}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DatabaseSearchServiceImpl#findSearchResultsByQuery(String, SearchCriteria)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.core.search.domain.SearchResult DatabaseSearchServiceImpl.findSearchResultsByQuery(String, SearchCriteria)"})
+  public void testFindSearchResultsByQuery_givenProductAttributes() {
+    // Arrange
+    SearchCriteria searchCriteria = mock(SearchCriteria.class);
+    doThrow(new UnsupportedOperationException(",")).when(searchCriteria).setSortQuery(Mockito.<String>any());
+    when(searchCriteria.getSortQuery()).thenReturn("productAttributes");
     when(searchCriteria.getFilterCriteria()).thenReturn(new HashMap<>());
     doNothing().when(searchCriteria).setFilterCriteria(Mockito.<Map<String, String[]>>any());
 
@@ -328,419 +460,462 @@ public class DatabaseSearchServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DatabaseSearchServiceImpl#findSearchResultsByQuery(String, SearchCriteria)}.
+   * Test {@link DatabaseSearchServiceImpl#findSearchResultsByQuery(String, SearchCriteria)}.
    * <ul>
-   *   <li>Given {@code foo}.</li>
-   *   <li>When {@link SearchCriteria} {@link SearchCriteria#getSortQuery()} return
-   * {@code foo}.</li>
+   *   <li>Then calls {@link CatalogService#findFilteredActiveProductsByQuery(String, SearchCriteria)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DatabaseSearchServiceImpl#findSearchResultsByQuery(String, SearchCriteria)}
+   * Method under test: {@link DatabaseSearchServiceImpl#findSearchResultsByQuery(String, SearchCriteria)}
    */
   @Test
-  public void testFindSearchResultsByQuery_givenFoo_whenSearchCriteriaGetSortQueryReturnFoo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.core.search.domain.SearchResult DatabaseSearchServiceImpl.findSearchResultsByQuery(String, SearchCriteria)"})
+  public void testFindSearchResultsByQuery_thenCallsFindFilteredActiveProductsByQuery() {
     // Arrange
-    DatabaseSearchServiceImpl databaseSearchServiceImpl = new DatabaseSearchServiceImpl();
-    SearchCriteria searchCriteria = mock(SearchCriteria.class);
-    doThrow(new UnsupportedOperationException(",")).when(searchCriteria).setSortQuery(Mockito.<String>any());
-    when(searchCriteria.getSortQuery()).thenReturn("foo");
-    when(searchCriteria.getFilterCriteria()).thenReturn(new HashMap<>());
-    doNothing().when(searchCriteria).setFilterCriteria(Mockito.<Map<String, String[]>>any());
+    when(catalogService.findFilteredActiveProductsByQuery(Mockito.<String>any(), Mockito.<SearchCriteria>any()))
+        .thenThrow(new UnsupportedOperationException("blc-search"));
 
     // Act and Assert
     assertThrows(UnsupportedOperationException.class,
-        () -> databaseSearchServiceImpl.findSearchResultsByQuery("Query", searchCriteria));
-    verify(searchCriteria).getFilterCriteria();
-    verify(searchCriteria, atLeast(1)).getSortQuery();
-    verify(searchCriteria).setFilterCriteria(isA(Map.class));
-    verify(searchCriteria).setSortQuery(eq(""));
+        () -> databaseSearchServiceImpl.findSearchResultsByQuery("Query", new SearchCriteria()));
+    verify(catalogService).findFilteredActiveProductsByQuery(eq("Query"), isA(SearchCriteria.class));
   }
 
   /**
    * Test {@link DatabaseSearchServiceImpl#findSearchResults(SearchCriteria)}.
    * <p>
-   * Method under test:
-   * {@link DatabaseSearchServiceImpl#findSearchResults(SearchCriteria)}
+   * Method under test: {@link DatabaseSearchServiceImpl#findSearchResults(SearchCriteria)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.core.search.domain.SearchResult DatabaseSearchServiceImpl.findSearchResults(SearchCriteria)"})
   public void testFindSearchResults() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.search.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1935 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.DatabaseSearchServiceImpl databaseSearchServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    DatabaseSearchServiceImpl databaseSearchServiceImpl2 = new DatabaseSearchServiceImpl();
+    when(fieldDao.readFieldByAbbreviation(Mockito.<String>any())).thenThrow(new UnsupportedOperationException(","));
+    SearchCriteria searchCriteria = mock(SearchCriteria.class);
+    when(searchCriteria.getQuery()).thenReturn("Query");
+    when(searchCriteria.getSortQuery()).thenReturn("Sort Query");
+    when(searchCriteria.getFilterCriteria()).thenReturn(new HashMap<>());
+    doNothing().when(searchCriteria).setFilterCriteria(Mockito.<Map<String, String[]>>any());
 
-    // Act
-    databaseSearchServiceImpl2.findSearchResults(new SearchCriteria());
+    // Act and Assert
+    assertThrows(UnsupportedOperationException.class,
+        () -> databaseSearchServiceImpl.findSearchResults(searchCriteria));
+    verify(fieldDao).readFieldByAbbreviation(eq("Sort"));
+    verify(searchCriteria).getFilterCriteria();
+    verify(searchCriteria).getQuery();
+    verify(searchCriteria, atLeast(1)).getSortQuery();
+    verify(searchCriteria).setFilterCriteria(isA(Map.class));
   }
 
   /**
    * Test {@link DatabaseSearchServiceImpl#findSearchResults(SearchCriteria)}.
    * <ul>
-   *   <li>Given {@code ,}.</li>
+   *   <li>Given {@link CatalogService}.</li>
+   *   <li>Then calls {@link Field#getQualifiedFieldName()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DatabaseSearchServiceImpl#findSearchResults(SearchCriteria)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.core.search.domain.SearchResult DatabaseSearchServiceImpl.findSearchResults(SearchCriteria)"})
+  public void testFindSearchResults_givenCatalogService_thenCallsGetQualifiedFieldName() throws ServiceException {
+    // Arrange
+    Field field = mock(Field.class);
+    when(field.getQualifiedFieldName()).thenReturn("Qualified Field Name");
+    when(fieldDao.readFieldByAbbreviation(Mockito.<String>any())).thenReturn(field);
+    SearchCriteria searchCriteria = mock(SearchCriteria.class);
+    doThrow(new UnsupportedOperationException(",")).when(searchCriteria).setSortQuery(Mockito.<String>any());
+    when(searchCriteria.getQuery()).thenReturn("Query");
+    when(searchCriteria.getSortQuery()).thenReturn("Sort Query");
+    when(searchCriteria.getFilterCriteria()).thenReturn(new HashMap<>());
+    doNothing().when(searchCriteria).setFilterCriteria(Mockito.<Map<String, String[]>>any());
+
+    // Act and Assert
+    assertThrows(UnsupportedOperationException.class,
+        () -> databaseSearchServiceImpl.findSearchResults(searchCriteria));
+    verify(fieldDao).readFieldByAbbreviation(eq("Sort"));
+    verify(field).getQualifiedFieldName();
+    verify(searchCriteria).getFilterCriteria();
+    verify(searchCriteria).getQuery();
+    verify(searchCriteria, atLeast(1)).getSortQuery();
+    verify(searchCriteria).setFilterCriteria(isA(Map.class));
+    verify(searchCriteria).setSortQuery(eq("Qualified Field Name Query"));
+  }
+
+  /**
+   * Test {@link DatabaseSearchServiceImpl#findSearchResults(SearchCriteria)}.
+   * <ul>
+   *   <li>Given {@link Field} {@link Field#getQualifiedFieldName()} return {@code defaultSku}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DatabaseSearchServiceImpl#findSearchResults(SearchCriteria)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.core.search.domain.SearchResult DatabaseSearchServiceImpl.findSearchResults(SearchCriteria)"})
+  public void testFindSearchResults_givenFieldGetQualifiedFieldNameReturnDefaultSku() throws ServiceException {
+    // Arrange
+    Field field = mock(Field.class);
+    when(field.getQualifiedFieldName()).thenReturn("defaultSku");
+    when(fieldDao.readFieldByAbbreviation(Mockito.<String>any())).thenReturn(field);
+    SearchCriteria searchCriteria = mock(SearchCriteria.class);
+    doThrow(new UnsupportedOperationException(",")).when(searchCriteria).setSortQuery(Mockito.<String>any());
+    when(searchCriteria.getQuery()).thenReturn("Query");
+    when(searchCriteria.getSortQuery()).thenReturn("Sort Query");
+    when(searchCriteria.getFilterCriteria()).thenReturn(new HashMap<>());
+    doNothing().when(searchCriteria).setFilterCriteria(Mockito.<Map<String, String[]>>any());
+
+    // Act and Assert
+    assertThrows(UnsupportedOperationException.class,
+        () -> databaseSearchServiceImpl.findSearchResults(searchCriteria));
+    verify(fieldDao).readFieldByAbbreviation(eq("Sort"));
+    verify(field).getQualifiedFieldName();
+    verify(searchCriteria).getFilterCriteria();
+    verify(searchCriteria).getQuery();
+    verify(searchCriteria, atLeast(1)).getSortQuery();
+    verify(searchCriteria).setFilterCriteria(isA(Map.class));
+    verify(searchCriteria).setSortQuery(eq("defaultSku Query"));
+  }
+
+  /**
+   * Test {@link DatabaseSearchServiceImpl#findSearchResults(SearchCriteria)}.
+   * <ul>
+   *   <li>Given {@link Field} {@link Field#getQualifiedFieldName()} return {@code productAttributes}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DatabaseSearchServiceImpl#findSearchResults(SearchCriteria)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.core.search.domain.SearchResult DatabaseSearchServiceImpl.findSearchResults(SearchCriteria)"})
+  public void testFindSearchResults_givenFieldGetQualifiedFieldNameReturnProductAttributes() throws ServiceException {
+    // Arrange
+    Field field = mock(Field.class);
+    when(field.getQualifiedFieldName()).thenReturn("productAttributes");
+    when(fieldDao.readFieldByAbbreviation(Mockito.<String>any())).thenReturn(field);
+    SearchCriteria searchCriteria = mock(SearchCriteria.class);
+    doThrow(new UnsupportedOperationException(",")).when(searchCriteria).setSortQuery(Mockito.<String>any());
+    when(searchCriteria.getQuery()).thenReturn("Query");
+    when(searchCriteria.getSortQuery()).thenReturn("Sort Query");
+    when(searchCriteria.getFilterCriteria()).thenReturn(new HashMap<>());
+    doNothing().when(searchCriteria).setFilterCriteria(Mockito.<Map<String, String[]>>any());
+
+    // Act and Assert
+    assertThrows(UnsupportedOperationException.class,
+        () -> databaseSearchServiceImpl.findSearchResults(searchCriteria));
+    verify(fieldDao).readFieldByAbbreviation(eq("Sort"));
+    verify(field).getQualifiedFieldName();
+    verify(searchCriteria).getFilterCriteria();
+    verify(searchCriteria).getQuery();
+    verify(searchCriteria, atLeast(1)).getSortQuery();
+    verify(searchCriteria).setFilterCriteria(isA(Map.class));
+    verify(searchCriteria).setSortQuery(eq("productAttributes Query"));
+  }
+
+  /**
+   * Test {@link DatabaseSearchServiceImpl#findSearchResults(SearchCriteria)}.
+   * <ul>
+   *   <li>Given {@code productAttributes}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DatabaseSearchServiceImpl#findSearchResults(SearchCriteria)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.core.search.domain.SearchResult DatabaseSearchServiceImpl.findSearchResults(SearchCriteria)"})
+  public void testFindSearchResults_givenProductAttributes() throws ServiceException {
+    // Arrange
+    SearchCriteria searchCriteria = mock(SearchCriteria.class);
+    doThrow(new UnsupportedOperationException(",")).when(searchCriteria).setSortQuery(Mockito.<String>any());
+    when(searchCriteria.getQuery()).thenReturn("Query");
+    when(searchCriteria.getSortQuery()).thenReturn("productAttributes");
+    when(searchCriteria.getFilterCriteria()).thenReturn(new HashMap<>());
+    doNothing().when(searchCriteria).setFilterCriteria(Mockito.<Map<String, String[]>>any());
+
+    // Act and Assert
+    assertThrows(UnsupportedOperationException.class,
+        () -> databaseSearchServiceImpl.findSearchResults(searchCriteria));
+    verify(searchCriteria).getFilterCriteria();
+    verify(searchCriteria).getQuery();
+    verify(searchCriteria, atLeast(1)).getSortQuery();
+    verify(searchCriteria).setFilterCriteria(isA(Map.class));
+    verify(searchCriteria).setSortQuery(eq(""));
+  }
+
+  /**
+   * Test {@link DatabaseSearchServiceImpl#findSearchResults(SearchCriteria)}.
+   * <ul>
+   *   <li>Then calls {@link CatalogService#findFilteredActiveProductsByQuery(String, SearchCriteria)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DatabaseSearchServiceImpl#findSearchResults(SearchCriteria)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.core.search.domain.SearchResult DatabaseSearchServiceImpl.findSearchResults(SearchCriteria)"})
+  public void testFindSearchResults_thenCallsFindFilteredActiveProductsByQuery() throws ServiceException {
+    // Arrange
+    when(catalogService.findFilteredActiveProductsByQuery(Mockito.<String>any(), Mockito.<SearchCriteria>any()))
+        .thenThrow(new UnsupportedOperationException("blc-search"));
+
+    // Act and Assert
+    assertThrows(UnsupportedOperationException.class,
+        () -> databaseSearchServiceImpl.findSearchResults(new SearchCriteria()));
+    verify(catalogService).findFilteredActiveProductsByQuery(isNull(), isA(SearchCriteria.class));
+  }
+
+  /**
+   * Test {@link DatabaseSearchServiceImpl#getSearchFacets(Category)} with {@code Category}.
+   * <ul>
    *   <li>Then throw {@link UnsupportedOperationException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DatabaseSearchServiceImpl#findSearchResults(SearchCriteria)}
+   * Method under test: {@link DatabaseSearchServiceImpl#getSearchFacets(org.broadleafcommerce.core.catalog.domain.Category)}
    */
   @Test
-  public void testFindSearchResults_givenComma_thenThrowUnsupportedOperationException() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "List DatabaseSearchServiceImpl.getSearchFacets(org.broadleafcommerce.core.catalog.domain.Category)"})
+  public void testGetSearchFacetsWithCategory_thenThrowUnsupportedOperationException() {
     // Arrange
-    DatabaseSearchServiceImpl databaseSearchServiceImpl = new DatabaseSearchServiceImpl();
-    SearchCriteria searchCriteria = mock(SearchCriteria.class);
-    doThrow(new UnsupportedOperationException(",")).when(searchCriteria).setSortQuery(Mockito.<String>any());
-    when(searchCriteria.getQuery()).thenReturn("Query");
-    when(searchCriteria.getSortQuery()).thenReturn(",");
-    when(searchCriteria.getFilterCriteria()).thenReturn(new HashMap<>());
-    doNothing().when(searchCriteria).setFilterCriteria(Mockito.<Map<String, String[]>>any());
+    when(cacheManager.getCache(Mockito.<String>any())).thenThrow(new UnsupportedOperationException("blc-search"));
 
     // Act and Assert
     assertThrows(UnsupportedOperationException.class,
-        () -> databaseSearchServiceImpl.findSearchResults(searchCriteria));
-    verify(searchCriteria).getFilterCriteria();
-    verify(searchCriteria).getQuery();
-    verify(searchCriteria, atLeast(1)).getSortQuery();
-    verify(searchCriteria).setFilterCriteria(isA(Map.class));
-    verify(searchCriteria).setSortQuery(eq(""));
-  }
-
-  /**
-   * Test {@link DatabaseSearchServiceImpl#findSearchResults(SearchCriteria)}.
-   * <ul>
-   *   <li>Given {@code foo}.</li>
-   *   <li>When {@link SearchCriteria} {@link SearchCriteria#getSortQuery()} return
-   * {@code foo}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link DatabaseSearchServiceImpl#findSearchResults(SearchCriteria)}
-   */
-  @Test
-  public void testFindSearchResults_givenFoo_whenSearchCriteriaGetSortQueryReturnFoo() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    DatabaseSearchServiceImpl databaseSearchServiceImpl = new DatabaseSearchServiceImpl();
-    SearchCriteria searchCriteria = mock(SearchCriteria.class);
-    doThrow(new UnsupportedOperationException(",")).when(searchCriteria).setSortQuery(Mockito.<String>any());
-    when(searchCriteria.getQuery()).thenReturn("Query");
-    when(searchCriteria.getSortQuery()).thenReturn("foo");
-    when(searchCriteria.getFilterCriteria()).thenReturn(new HashMap<>());
-    doNothing().when(searchCriteria).setFilterCriteria(Mockito.<Map<String, String[]>>any());
-
-    // Act and Assert
-    assertThrows(UnsupportedOperationException.class,
-        () -> databaseSearchServiceImpl.findSearchResults(searchCriteria));
-    verify(searchCriteria).getFilterCriteria();
-    verify(searchCriteria).getQuery();
-    verify(searchCriteria, atLeast(1)).getSortQuery();
-    verify(searchCriteria).setFilterCriteria(isA(Map.class));
-    verify(searchCriteria).setSortQuery(eq(""));
+        () -> databaseSearchServiceImpl.getSearchFacets(new CategoryImpl()));
+    verify(cacheManager).getCache(eq("blStandardElements"));
   }
 
   /**
    * Test {@link DatabaseSearchServiceImpl#getSearchFacets()}.
+   * <ul>
+   *   <li>Then throw {@link UnsupportedOperationException}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link DatabaseSearchServiceImpl#getSearchFacets()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetSearchFacets() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.search.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2147 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.DatabaseSearchServiceImpl databaseSearchServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new DatabaseSearchServiceImpl()).getSearchFacets();
-  }
-
-  /**
-   * Test {@link DatabaseSearchServiceImpl#getSearchFacets(Category)} with
-   * {@code Category}.
-   * <p>
-   * Method under test:
-   * {@link DatabaseSearchServiceImpl#getSearchFacets(Category)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetSearchFacetsWithCategory() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.search.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2148 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.DatabaseSearchServiceImpl databaseSearchServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List DatabaseSearchServiceImpl.getSearchFacets()"})
+  public void testGetSearchFacets_thenThrowUnsupportedOperationException() {
     // Arrange
-    DatabaseSearchServiceImpl databaseSearchServiceImpl2 = new DatabaseSearchServiceImpl();
+    when(cacheManager.getCache(Mockito.<String>any())).thenThrow(new UnsupportedOperationException("blc-search"));
 
-    // Act
-    databaseSearchServiceImpl2.getSearchFacets(new CategoryImpl());
+    // Act and Assert
+    assertThrows(UnsupportedOperationException.class, () -> databaseSearchServiceImpl.getSearchFacets());
+    verify(cacheManager).getCache(eq("blStandardElements"));
   }
 
   /**
    * Test {@link DatabaseSearchServiceImpl#getCategoryFacets(Category)}.
-   * <p>
-   * Method under test:
-   * {@link DatabaseSearchServiceImpl#getCategoryFacets(Category)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetCategoryFacets() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.search.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2036 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.DatabaseSearchServiceImpl databaseSearchServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DatabaseSearchServiceImpl databaseSearchServiceImpl2 = new DatabaseSearchServiceImpl();
-
-    // Act
-    databaseSearchServiceImpl2.getCategoryFacets(new CategoryImpl());
-  }
-
-  /**
-   * Test {@link DatabaseSearchServiceImpl#setQualifiedKeys(SearchCriteria)}.
-   * <p>
-   * Method under test:
-   * {@link DatabaseSearchServiceImpl#setQualifiedKeys(SearchCriteria)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetQualifiedKeys() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.search.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2196 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.DatabaseSearchServiceImpl databaseSearchServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DatabaseSearchServiceImpl databaseSearchServiceImpl2 = new DatabaseSearchServiceImpl();
-
-    // Act
-    databaseSearchServiceImpl2.setQualifiedKeys(new SearchCriteria());
-  }
-
-  /**
-   * Test {@link DatabaseSearchServiceImpl#setQualifiedKeys(SearchCriteria)}.
    * <ul>
-   *   <li>Given {@code ,}.</li>
-   *   <li>When {@link SearchCriteria} {@link SearchCriteria#setSortQuery(String)}
-   * does nothing.</li>
+   *   <li>Then throw {@link UnsupportedOperationException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DatabaseSearchServiceImpl#setQualifiedKeys(SearchCriteria)}
+   * Method under test: {@link DatabaseSearchServiceImpl#getCategoryFacets(org.broadleafcommerce.core.catalog.domain.Category)}
    */
   @Test
-  public void testSetQualifiedKeys_givenComma_whenSearchCriteriaSetSortQueryDoesNothing() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "List DatabaseSearchServiceImpl.getCategoryFacets(org.broadleafcommerce.core.catalog.domain.Category)"})
+  public void testGetCategoryFacets_thenThrowUnsupportedOperationException() {
     // Arrange
-    DatabaseSearchServiceImpl databaseSearchServiceImpl = new DatabaseSearchServiceImpl();
-    SearchCriteria criteria = mock(SearchCriteria.class);
-    doNothing().when(criteria).setSortQuery(Mockito.<String>any());
-    when(criteria.getSortQuery()).thenReturn(",");
-    when(criteria.getFilterCriteria()).thenReturn(new HashMap<>());
-    doNothing().when(criteria).setFilterCriteria(Mockito.<Map<String, String[]>>any());
+    when(cacheManager.getCache(Mockito.<String>any())).thenThrow(new UnsupportedOperationException("category:"));
 
-    // Act
-    databaseSearchServiceImpl.setQualifiedKeys(criteria);
-
-    // Assert
-    verify(criteria).getFilterCriteria();
-    verify(criteria, atLeast(1)).getSortQuery();
-    verify(criteria).setFilterCriteria(isA(Map.class));
-    verify(criteria).setSortQuery(eq(""));
+    // Act and Assert
+    assertThrows(UnsupportedOperationException.class,
+        () -> databaseSearchServiceImpl.getCategoryFacets(new CategoryImpl()));
+    verify(cacheManager).getCache(eq("blStandardElements"));
   }
 
   /**
    * Test {@link DatabaseSearchServiceImpl#setQualifiedKeys(SearchCriteria)}.
    * <ul>
    *   <li>Given empty string.</li>
+   *   <li>When {@link SearchCriteria} (default constructor) SortQuery is empty string.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DatabaseSearchServiceImpl#setQualifiedKeys(SearchCriteria)}
+   * Method under test: {@link DatabaseSearchServiceImpl#setQualifiedKeys(SearchCriteria)}
    */
   @Test
-  public void testSetQualifiedKeys_givenEmptyString() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DatabaseSearchServiceImpl.setQualifiedKeys(SearchCriteria)"})
+  public void testSetQualifiedKeys_givenEmptyString_whenSearchCriteriaSortQueryIsEmptyString() {
     // Arrange
-    DatabaseSearchServiceImpl databaseSearchServiceImpl = new DatabaseSearchServiceImpl();
-    SearchCriteria criteria = mock(SearchCriteria.class);
-    when(criteria.getSortQuery()).thenReturn("");
-    when(criteria.getFilterCriteria()).thenReturn(new HashMap<>());
-    doNothing().when(criteria).setFilterCriteria(Mockito.<Map<String, String[]>>any());
+    SearchCriteria criteria = new SearchCriteria();
+    criteria.setSortQuery("");
 
     // Act
     databaseSearchServiceImpl.setQualifiedKeys(criteria);
 
-    // Assert
-    verify(criteria).getFilterCriteria();
-    verify(criteria).getSortQuery();
-    verify(criteria).setFilterCriteria(isA(Map.class));
+    // Assert that nothing has changed
+    assertEquals("", criteria.getSortQuery());
   }
 
   /**
    * Test {@link DatabaseSearchServiceImpl#setQualifiedKeys(SearchCriteria)}.
    * <ul>
-   *   <li>Given {@code foo}.</li>
-   *   <li>When {@link SearchCriteria} {@link SearchCriteria#getSortQuery()} return
-   * {@code foo}.</li>
+   *   <li>Given {@code productAttributes}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DatabaseSearchServiceImpl#setQualifiedKeys(SearchCriteria)}
+   * Method under test: {@link DatabaseSearchServiceImpl#setQualifiedKeys(SearchCriteria)}
    */
   @Test
-  public void testSetQualifiedKeys_givenFoo_whenSearchCriteriaGetSortQueryReturnFoo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DatabaseSearchServiceImpl.setQualifiedKeys(SearchCriteria)"})
+  public void testSetQualifiedKeys_givenProductAttributes() {
     // Arrange
-    DatabaseSearchServiceImpl databaseSearchServiceImpl = new DatabaseSearchServiceImpl();
-    SearchCriteria criteria = mock(SearchCriteria.class);
-    doNothing().when(criteria).setSortQuery(Mockito.<String>any());
-    when(criteria.getSortQuery()).thenReturn("foo");
-    when(criteria.getFilterCriteria()).thenReturn(new HashMap<>());
-    doNothing().when(criteria).setFilterCriteria(Mockito.<Map<String, String[]>>any());
+    SearchCriteria criteria = new SearchCriteria();
+    criteria.setSortQuery("productAttributes");
 
     // Act
     databaseSearchServiceImpl.setQualifiedKeys(criteria);
 
     // Assert
-    verify(criteria).getFilterCriteria();
-    verify(criteria, atLeast(1)).getSortQuery();
-    verify(criteria).setFilterCriteria(isA(Map.class));
-    verify(criteria).setSortQuery(eq(""));
+    assertEquals("", criteria.getSortQuery());
   }
 
   /**
    * Test {@link DatabaseSearchServiceImpl#setQualifiedKeys(SearchCriteria)}.
    * <ul>
-   *   <li>Then throw {@link UnsupportedOperationException}.</li>
+   *   <li>Given space.</li>
+   *   <li>Then {@link SearchCriteria} (default constructor) SortQuery is space.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DatabaseSearchServiceImpl#setQualifiedKeys(SearchCriteria)}
+   * Method under test: {@link DatabaseSearchServiceImpl#setQualifiedKeys(SearchCriteria)}
    */
   @Test
-  public void testSetQualifiedKeys_thenThrowUnsupportedOperationException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DatabaseSearchServiceImpl.setQualifiedKeys(SearchCriteria)"})
+  public void testSetQualifiedKeys_givenSpace_thenSearchCriteriaSortQueryIsSpace() {
     // Arrange
-    DatabaseSearchServiceImpl databaseSearchServiceImpl = new DatabaseSearchServiceImpl();
-    SearchCriteria criteria = mock(SearchCriteria.class);
-    doThrow(new UnsupportedOperationException(",")).when(criteria).setSortQuery(Mockito.<String>any());
-    when(criteria.getSortQuery()).thenReturn(",");
-    when(criteria.getFilterCriteria()).thenReturn(new HashMap<>());
-    doNothing().when(criteria).setFilterCriteria(Mockito.<Map<String, String[]>>any());
+    SearchCriteria criteria = new SearchCriteria();
+    criteria.setSortQuery(" ");
 
-    // Act and Assert
-    assertThrows(UnsupportedOperationException.class, () -> databaseSearchServiceImpl.setQualifiedKeys(criteria));
-    verify(criteria).getFilterCriteria();
-    verify(criteria, atLeast(1)).getSortQuery();
-    verify(criteria).setFilterCriteria(isA(Map.class));
-    verify(criteria).setSortQuery(eq(""));
+    // Act
+    databaseSearchServiceImpl.setQualifiedKeys(criteria);
+
+    // Assert that nothing has changed
+    assertEquals(" ", criteria.getSortQuery());
   }
 
   /**
-   * Test {@link DatabaseSearchServiceImpl#getDatabaseQualifiedFieldName(String)}.
+   * Test {@link DatabaseSearchServiceImpl#setQualifiedKeys(SearchCriteria)}.
+   * <ul>
+   *   <li>Then {@link SearchCriteria} (default constructor) SortQuery is {@code defaultSku blank}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link DatabaseSearchServiceImpl#getDatabaseQualifiedFieldName(String)}
+   * Method under test: {@link DatabaseSearchServiceImpl#setQualifiedKeys(SearchCriteria)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetDatabaseQualifiedFieldName() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.search.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2066 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.DatabaseSearchServiceImpl databaseSearchServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DatabaseSearchServiceImpl.setQualifiedKeys(SearchCriteria)"})
+  public void testSetQualifiedKeys_thenSearchCriteriaSortQueryIsDefaultSkuBlank() {
+    // Arrange
+    Field field = mock(Field.class);
+    when(field.getQualifiedFieldName()).thenReturn("defaultSku");
+    when(fieldDao.readFieldByAbbreviation(Mockito.<String>any())).thenReturn(field);
 
-    // Arrange and Act
-    (new DatabaseSearchServiceImpl()).getDatabaseQualifiedFieldName("Qualified Field Name");
+    SearchCriteria criteria = new SearchCriteria();
+    criteria.setSortQuery("not blank");
+
+    // Act
+    databaseSearchServiceImpl.setQualifiedKeys(criteria);
+
+    // Assert
+    verify(fieldDao).readFieldByAbbreviation(eq("not"));
+    verify(field).getQualifiedFieldName();
+    assertEquals("defaultSku blank", criteria.getSortQuery());
+  }
+
+  /**
+   * Test {@link DatabaseSearchServiceImpl#setQualifiedKeys(SearchCriteria)}.
+   * <ul>
+   *   <li>Then {@link SearchCriteria} (default constructor) SortQuery is {@code productAttributes blank}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DatabaseSearchServiceImpl#setQualifiedKeys(SearchCriteria)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DatabaseSearchServiceImpl.setQualifiedKeys(SearchCriteria)"})
+  public void testSetQualifiedKeys_thenSearchCriteriaSortQueryIsProductAttributesBlank() {
+    // Arrange
+    Field field = mock(Field.class);
+    when(field.getQualifiedFieldName()).thenReturn("productAttributes");
+    when(fieldDao.readFieldByAbbreviation(Mockito.<String>any())).thenReturn(field);
+
+    SearchCriteria criteria = new SearchCriteria();
+    criteria.setSortQuery("not blank");
+
+    // Act
+    databaseSearchServiceImpl.setQualifiedKeys(criteria);
+
+    // Assert
+    verify(fieldDao).readFieldByAbbreviation(eq("not"));
+    verify(field).getQualifiedFieldName();
+    assertEquals("productAttributes blank", criteria.getSortQuery());
+  }
+
+  /**
+   * Test {@link DatabaseSearchServiceImpl#setQualifiedKeys(SearchCriteria)}.
+   * <ul>
+   *   <li>Then {@link SearchCriteria} (default constructor) SortQuery is {@code Qualified Field Name blank}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DatabaseSearchServiceImpl#setQualifiedKeys(SearchCriteria)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DatabaseSearchServiceImpl.setQualifiedKeys(SearchCriteria)"})
+  public void testSetQualifiedKeys_thenSearchCriteriaSortQueryIsQualifiedFieldNameBlank() {
+    // Arrange
+    Field field = mock(Field.class);
+    when(field.getQualifiedFieldName()).thenReturn("Qualified Field Name");
+    when(fieldDao.readFieldByAbbreviation(Mockito.<String>any())).thenReturn(field);
+
+    SearchCriteria criteria = new SearchCriteria();
+    criteria.setSortQuery("not blank");
+
+    // Act
+    databaseSearchServiceImpl.setQualifiedKeys(criteria);
+
+    // Assert
+    verify(fieldDao).readFieldByAbbreviation(eq("not"));
+    verify(field).getQualifiedFieldName();
+    assertEquals("Qualified Field Name blank", criteria.getSortQuery());
+  }
+
+  /**
+   * Test {@link DatabaseSearchServiceImpl#setQualifiedKeys(SearchCriteria)}.
+   * <ul>
+   *   <li>When {@link SearchCriteria} (default constructor).</li>
+   *   <li>Then {@link SearchCriteria} (default constructor) SortQuery is {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DatabaseSearchServiceImpl#setQualifiedKeys(SearchCriteria)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DatabaseSearchServiceImpl.setQualifiedKeys(SearchCriteria)"})
+  public void testSetQualifiedKeys_whenSearchCriteria_thenSearchCriteriaSortQueryIsNull() {
+    // Arrange
+    SearchCriteria criteria = new SearchCriteria();
+
+    // Act
+    databaseSearchServiceImpl.setQualifiedKeys(criteria);
+
+    // Assert that nothing has changed
+    assertNull(criteria.getSortQuery());
   }
 
   /**
@@ -749,16 +924,14 @@ public class DatabaseSearchServiceImplDiffblueTest {
    *   <li>Then return {@code productAttributes}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DatabaseSearchServiceImpl#getDatabaseQualifiedFieldName(String)}
+   * Method under test: {@link DatabaseSearchServiceImpl#getDatabaseQualifiedFieldName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String DatabaseSearchServiceImpl.getDatabaseQualifiedFieldName(String)"})
   public void testGetDatabaseQualifiedFieldName_thenReturnProductAttributes() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("productAttributes",
-        (new DatabaseSearchServiceImpl()).getDatabaseQualifiedFieldName("productAttributes"));
+    assertEquals("productAttributes", databaseSearchServiceImpl.getDatabaseQualifiedFieldName("productAttributes"));
   }
 
   /**
@@ -767,16 +940,15 @@ public class DatabaseSearchServiceImplDiffblueTest {
    *   <li>Then return {@code Qualified Field Name}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DatabaseSearchServiceImpl#getDatabaseQualifiedFieldName(String)}
+   * Method under test: {@link DatabaseSearchServiceImpl#getDatabaseQualifiedFieldName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String DatabaseSearchServiceImpl.getDatabaseQualifiedFieldName(String)"})
   public void testGetDatabaseQualifiedFieldName_thenReturnQualifiedFieldName() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertEquals("Qualified Field Name",
-        (new DatabaseSearchServiceImpl()).getDatabaseQualifiedFieldName("Qualified Field Name"));
+        databaseSearchServiceImpl.getDatabaseQualifiedFieldName("Qualified Field Name"));
   }
 
   /**
@@ -786,67 +958,29 @@ public class DatabaseSearchServiceImplDiffblueTest {
    *   <li>Then return {@code defaultSku}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DatabaseSearchServiceImpl#getDatabaseQualifiedFieldName(String)}
+   * Method under test: {@link DatabaseSearchServiceImpl#getDatabaseQualifiedFieldName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String DatabaseSearchServiceImpl.getDatabaseQualifiedFieldName(String)"})
   public void testGetDatabaseQualifiedFieldName_whenDefaultSku_thenReturnDefaultSku() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("defaultSku", (new DatabaseSearchServiceImpl()).getDatabaseQualifiedFieldName("defaultSku"));
-  }
-
-  /**
-   * Test {@link DatabaseSearchServiceImpl#setActiveFacets(List, SearchCriteria)}.
-   * <p>
-   * Method under test:
-   * {@link DatabaseSearchServiceImpl#setActiveFacets(List, SearchCriteria)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetActiveFacets() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.search.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2178 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.DatabaseSearchServiceImpl databaseSearchServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DatabaseSearchServiceImpl databaseSearchServiceImpl2 = new DatabaseSearchServiceImpl();
-    ArrayList<SearchFacetDTO> facets = new ArrayList<>();
-
-    // Act
-    databaseSearchServiceImpl2.setActiveFacets(facets, new SearchCriteria());
+    assertEquals("defaultSku", databaseSearchServiceImpl.getDatabaseQualifiedFieldName("defaultSku"));
   }
 
   /**
    * Test {@link DatabaseSearchServiceImpl#setActiveFacets(List, SearchCriteria)}.
    * <ul>
-   *   <li>Given {@link FieldImpl} {@link FieldImpl#getQualifiedFieldName()} return
-   * {@code defaultSku}.</li>
+   *   <li>Given {@link FieldImpl} {@link FieldImpl#getQualifiedFieldName()} return {@code defaultSku}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DatabaseSearchServiceImpl#setActiveFacets(List, SearchCriteria)}
+   * Method under test: {@link DatabaseSearchServiceImpl#setActiveFacets(List, SearchCriteria)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DatabaseSearchServiceImpl.setActiveFacets(List, SearchCriteria)"})
   public void testSetActiveFacets_givenFieldImplGetQualifiedFieldNameReturnDefaultSku() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DatabaseSearchServiceImpl databaseSearchServiceImpl = new DatabaseSearchServiceImpl();
     FieldImpl fieldImpl = mock(FieldImpl.class);
     when(fieldImpl.getQualifiedFieldName()).thenReturn("defaultSku");
     SearchFacet facet = mock(SearchFacet.class);
@@ -873,19 +1007,16 @@ public class DatabaseSearchServiceImplDiffblueTest {
   /**
    * Test {@link DatabaseSearchServiceImpl#setActiveFacets(List, SearchCriteria)}.
    * <ul>
-   *   <li>Given {@link FieldImpl} {@link FieldImpl#getQualifiedFieldName()} return
-   * {@code productAttributes}.</li>
+   *   <li>Given {@link FieldImpl} {@link FieldImpl#getQualifiedFieldName()} return {@code productAttributes}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DatabaseSearchServiceImpl#setActiveFacets(List, SearchCriteria)}
+   * Method under test: {@link DatabaseSearchServiceImpl#setActiveFacets(List, SearchCriteria)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DatabaseSearchServiceImpl.setActiveFacets(List, SearchCriteria)"})
   public void testSetActiveFacets_givenFieldImplGetQualifiedFieldNameReturnProductAttributes() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DatabaseSearchServiceImpl databaseSearchServiceImpl = new DatabaseSearchServiceImpl();
     FieldImpl fieldImpl = mock(FieldImpl.class);
     when(fieldImpl.getQualifiedFieldName()).thenReturn("productAttributes");
     SearchFacet facet = mock(SearchFacet.class);
@@ -912,19 +1043,16 @@ public class DatabaseSearchServiceImplDiffblueTest {
   /**
    * Test {@link DatabaseSearchServiceImpl#setActiveFacets(List, SearchCriteria)}.
    * <ul>
-   *   <li>Given {@link FieldImpl} {@link FieldImpl#getQualifiedFieldName()} return
-   * {@code Qualified Field Name}.</li>
+   *   <li>Given {@link FieldImpl} {@link FieldImpl#getQualifiedFieldName()} return {@code Qualified Field Name}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DatabaseSearchServiceImpl#setActiveFacets(List, SearchCriteria)}
+   * Method under test: {@link DatabaseSearchServiceImpl#setActiveFacets(List, SearchCriteria)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DatabaseSearchServiceImpl.setActiveFacets(List, SearchCriteria)"})
   public void testSetActiveFacets_givenFieldImplGetQualifiedFieldNameReturnQualifiedFieldName() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DatabaseSearchServiceImpl databaseSearchServiceImpl = new DatabaseSearchServiceImpl();
     FieldImpl fieldImpl = mock(FieldImpl.class);
     when(fieldImpl.getQualifiedFieldName()).thenReturn("Qualified Field Name");
     SearchFacet facet = mock(SearchFacet.class);
@@ -951,52 +1079,154 @@ public class DatabaseSearchServiceImplDiffblueTest {
   /**
    * Test {@link DatabaseSearchServiceImpl#buildSearchFacetDtos(List)}.
    * <p>
-   * Method under test:
-   * {@link DatabaseSearchServiceImpl#buildSearchFacetDtos(List)}
+   * Method under test: {@link DatabaseSearchServiceImpl#buildSearchFacetDtos(List)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List DatabaseSearchServiceImpl.buildSearchFacetDtos(List)"})
   public void testBuildSearchFacetDtos() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.search.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1900 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.DatabaseSearchServiceImpl databaseSearchServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    DatabaseSearchServiceImpl databaseSearchServiceImpl2 = new DatabaseSearchServiceImpl();
+    when(searchFacetDao.readDistinctValuesForField(Mockito.<String>any(), Mockito.<Class<String>>any()))
+        .thenReturn(new ArrayList<>());
+    FieldImpl fieldImpl = mock(FieldImpl.class);
+    when(fieldImpl.getQualifiedFieldName()).thenReturn("productAttributes");
+    SearchFacetImpl searchFacetImpl = mock(SearchFacetImpl.class);
+    when(searchFacetImpl.getSearchFacetRanges()).thenReturn(new ArrayList<>());
+    when(searchFacetImpl.getField()).thenReturn(fieldImpl);
+
+    ArrayList<SearchFacet> categoryFacets = new ArrayList<>();
+    categoryFacets.add(searchFacetImpl);
 
     // Act
-    databaseSearchServiceImpl2.buildSearchFacetDtos(new ArrayList<>());
+    List<SearchFacetDTO> actualBuildSearchFacetDtosResult = databaseSearchServiceImpl
+        .buildSearchFacetDtos(categoryFacets);
+
+    // Assert
+    verify(searchFacetDao).readDistinctValuesForField(eq("productAttributes"), isA(Class.class));
+    verify(fieldImpl).getQualifiedFieldName();
+    verify(searchFacetImpl).getField();
+    verify(searchFacetImpl).getSearchFacetRanges();
+    assertEquals(1, actualBuildSearchFacetDtosResult.size());
+    SearchFacetDTO getResult = actualBuildSearchFacetDtosResult.get(0);
+    assertNull(getResult.getAbbreviation());
+    assertFalse(getResult.isActive());
+    assertFalse(getResult.isShowQuantity());
+    assertTrue(getResult.getFacetValues().isEmpty());
   }
 
   /**
    * Test {@link DatabaseSearchServiceImpl#buildSearchFacetDtos(List)}.
    * <ul>
-   *   <li>Then return size is one.</li>
+   *   <li>Given {@link FieldImpl} {@link FieldImpl#getQualifiedFieldName()} return {@code defaultSku}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DatabaseSearchServiceImpl#buildSearchFacetDtos(List)}
+   * Method under test: {@link DatabaseSearchServiceImpl#buildSearchFacetDtos(List)}
    */
   @Test
-  public void testBuildSearchFacetDtos_thenReturnSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List DatabaseSearchServiceImpl.buildSearchFacetDtos(List)"})
+  public void testBuildSearchFacetDtos_givenFieldImplGetQualifiedFieldNameReturnDefaultSku() {
     // Arrange
-    DatabaseSearchServiceImpl databaseSearchServiceImpl = new DatabaseSearchServiceImpl();
+    when(searchFacetDao.readDistinctValuesForField(Mockito.<String>any(), Mockito.<Class<String>>any()))
+        .thenReturn(new ArrayList<>());
+    FieldImpl fieldImpl = mock(FieldImpl.class);
+    when(fieldImpl.getQualifiedFieldName()).thenReturn("defaultSku");
+    SearchFacetImpl searchFacetImpl = mock(SearchFacetImpl.class);
+    when(searchFacetImpl.getSearchFacetRanges()).thenReturn(new ArrayList<>());
+    when(searchFacetImpl.getField()).thenReturn(fieldImpl);
 
+    ArrayList<SearchFacet> categoryFacets = new ArrayList<>();
+    categoryFacets.add(searchFacetImpl);
+
+    // Act
+    List<SearchFacetDTO> actualBuildSearchFacetDtosResult = databaseSearchServiceImpl
+        .buildSearchFacetDtos(categoryFacets);
+
+    // Assert
+    verify(searchFacetDao).readDistinctValuesForField(eq("defaultSku"), isA(Class.class));
+    verify(fieldImpl).getQualifiedFieldName();
+    verify(searchFacetImpl).getField();
+    verify(searchFacetImpl).getSearchFacetRanges();
+    assertEquals(1, actualBuildSearchFacetDtosResult.size());
+    SearchFacetDTO getResult = actualBuildSearchFacetDtosResult.get(0);
+    assertNull(getResult.getAbbreviation());
+    assertFalse(getResult.isActive());
+    assertFalse(getResult.isShowQuantity());
+    assertTrue(getResult.getFacetValues().isEmpty());
+  }
+
+  /**
+   * Test {@link DatabaseSearchServiceImpl#buildSearchFacetDtos(List)}.
+   * <ul>
+   *   <li>Given {@link SearchFacetDao}.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then return Empty.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DatabaseSearchServiceImpl#buildSearchFacetDtos(List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List DatabaseSearchServiceImpl.buildSearchFacetDtos(List)"})
+  public void testBuildSearchFacetDtos_givenSearchFacetDao_whenArrayList_thenReturnEmpty() {
+    // Arrange, Act and Assert
+    assertTrue(databaseSearchServiceImpl.buildSearchFacetDtos(new ArrayList<>()).isEmpty());
+  }
+
+  /**
+   * Test {@link DatabaseSearchServiceImpl#buildSearchFacetDtos(List)}.
+   * <ul>
+   *   <li>Then return first Abbreviation is {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DatabaseSearchServiceImpl#buildSearchFacetDtos(List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List DatabaseSearchServiceImpl.buildSearchFacetDtos(List)"})
+  public void testBuildSearchFacetDtos_thenReturnFirstAbbreviationIsNull() {
+    // Arrange
+    when(searchFacetDao.readDistinctValuesForField(Mockito.<String>any(), Mockito.<Class<String>>any()))
+        .thenReturn(new ArrayList<>());
+    FieldImpl fieldImpl = mock(FieldImpl.class);
+    when(fieldImpl.getQualifiedFieldName()).thenReturn("Qualified Field Name");
+    SearchFacetImpl searchFacetImpl = mock(SearchFacetImpl.class);
+    when(searchFacetImpl.getSearchFacetRanges()).thenReturn(new ArrayList<>());
+    when(searchFacetImpl.getField()).thenReturn(fieldImpl);
+
+    ArrayList<SearchFacet> categoryFacets = new ArrayList<>();
+    categoryFacets.add(searchFacetImpl);
+
+    // Act
+    List<SearchFacetDTO> actualBuildSearchFacetDtosResult = databaseSearchServiceImpl
+        .buildSearchFacetDtos(categoryFacets);
+
+    // Assert
+    verify(searchFacetDao).readDistinctValuesForField(eq("Qualified Field Name"), isA(Class.class));
+    verify(fieldImpl).getQualifiedFieldName();
+    verify(searchFacetImpl).getField();
+    verify(searchFacetImpl).getSearchFacetRanges();
+    assertEquals(1, actualBuildSearchFacetDtosResult.size());
+    SearchFacetDTO getResult = actualBuildSearchFacetDtosResult.get(0);
+    assertNull(getResult.getAbbreviation());
+    assertFalse(getResult.isActive());
+    assertFalse(getResult.isShowQuantity());
+    assertTrue(getResult.getFacetValues().isEmpty());
+  }
+
+  /**
+   * Test {@link DatabaseSearchServiceImpl#buildSearchFacetDtos(List)}.
+   * <ul>
+   *   <li>Then return first Facet is {@link SearchFacetImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DatabaseSearchServiceImpl#buildSearchFacetDtos(List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List DatabaseSearchServiceImpl.buildSearchFacetDtos(List)"})
+  public void testBuildSearchFacetDtos_thenReturnFirstFacetIsSearchFacetImpl() {
+    // Arrange
     ArrayList<SearchFacetRange> searchFacetRanges = new ArrayList<>();
     searchFacetRanges.add(new SearchFacetRangeImpl());
 
@@ -1022,94 +1252,168 @@ public class DatabaseSearchServiceImplDiffblueTest {
 
     // Assert
     assertEquals(1, actualBuildSearchFacetDtosResult.size());
-    SearchFacetDTO getResult = actualBuildSearchFacetDtosResult.get(0);
-    List<SearchFacetResultDTO> facetValues = getResult.getFacetValues();
-    assertEquals(1, facetValues.size());
-    SearchFacetResultDTO getResult2 = facetValues.get(0);
-    assertEquals("range%5Bnull%3Anull%5D", getResult2.getValueKey());
-    assertEquals("range[null:null]", getResult2.getUnencodedValueKey());
-    assertNull(getResult2.getQuantity());
-    assertNull(getResult2.getValue());
-    assertNull(getResult2.getMaxValue());
-    assertNull(getResult2.getMinValue());
-    assertFalse(getResult.isActive());
-    assertFalse(getResult.isShowQuantity());
-    assertFalse(getResult2.isActive());
-    assertSame(searchFacetImpl, getResult.getFacet());
-    assertSame(searchFacetImpl, getResult2.getFacet());
+    assertSame(searchFacetImpl, actualBuildSearchFacetDtosResult.get(0).getFacet());
   }
 
   /**
    * Test {@link DatabaseSearchServiceImpl#buildSearchFacetDtos(List)}.
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>Then return first FacetValues size is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DatabaseSearchServiceImpl#buildSearchFacetDtos(List)}
+   * Method under test: {@link DatabaseSearchServiceImpl#buildSearchFacetDtos(List)}
    */
   @Test
-  public void testBuildSearchFacetDtos_whenArrayList_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List DatabaseSearchServiceImpl.buildSearchFacetDtos(List)"})
+  public void testBuildSearchFacetDtos_thenReturnFirstFacetValuesSizeIsOne() {
     // Arrange
-    DatabaseSearchServiceImpl databaseSearchServiceImpl = new DatabaseSearchServiceImpl();
+    ArrayList<String> stringList = new ArrayList<>();
+    stringList.add("productAttributes");
+    when(searchFacetDao.readDistinctValuesForField(Mockito.<String>any(), Mockito.<Class<String>>any()))
+        .thenReturn(stringList);
+    FieldImpl fieldImpl = mock(FieldImpl.class);
+    when(fieldImpl.getQualifiedFieldName()).thenReturn("Qualified Field Name");
+    SearchFacetImpl searchFacetImpl = mock(SearchFacetImpl.class);
+    when(searchFacetImpl.getSearchFacetRanges()).thenReturn(new ArrayList<>());
+    when(searchFacetImpl.getField()).thenReturn(fieldImpl);
+
+    ArrayList<SearchFacet> categoryFacets = new ArrayList<>();
+    categoryFacets.add(searchFacetImpl);
+
+    // Act
+    List<SearchFacetDTO> actualBuildSearchFacetDtosResult = databaseSearchServiceImpl
+        .buildSearchFacetDtos(categoryFacets);
+
+    // Assert
+    verify(searchFacetDao).readDistinctValuesForField(eq("Qualified Field Name"), isA(Class.class));
+    verify(fieldImpl).getQualifiedFieldName();
+    verify(searchFacetImpl).getField();
+    verify(searchFacetImpl).getSearchFacetRanges();
+    assertEquals(1, actualBuildSearchFacetDtosResult.size());
+    List<SearchFacetResultDTO> facetValues = actualBuildSearchFacetDtosResult.get(0).getFacetValues();
+    assertEquals(1, facetValues.size());
+    SearchFacetResultDTO getResult = facetValues.get(0);
+    assertEquals("productAttributes", getResult.getUnencodedValueKey());
+    assertEquals("productAttributes", getResult.getValue());
+    assertEquals("productAttributes", getResult.getValueKey());
+    assertNull(getResult.getQuantity());
+    assertNull(getResult.getMaxValue());
+    assertNull(getResult.getMinValue());
+    assertFalse(getResult.isActive());
+  }
+
+  /**
+   * Test {@link DatabaseSearchServiceImpl#buildSearchFacetDtos(List)}.
+   * <ul>
+   *   <li>Then throw {@link UnsupportedOperationException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DatabaseSearchServiceImpl#buildSearchFacetDtos(List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List DatabaseSearchServiceImpl.buildSearchFacetDtos(List)"})
+  public void testBuildSearchFacetDtos_thenThrowUnsupportedOperationException() {
+    // Arrange
+    when(searchFacetDao.readDistinctValuesForField(Mockito.<String>any(), Mockito.<Class<String>>any()))
+        .thenThrow(new UnsupportedOperationException("productAttributes"));
+    FieldImpl fieldImpl = mock(FieldImpl.class);
+    when(fieldImpl.getQualifiedFieldName()).thenReturn("Qualified Field Name");
+    SearchFacetImpl searchFacetImpl = mock(SearchFacetImpl.class);
+    when(searchFacetImpl.getSearchFacetRanges()).thenReturn(new ArrayList<>());
+    when(searchFacetImpl.getField()).thenReturn(fieldImpl);
+
+    ArrayList<SearchFacet> categoryFacets = new ArrayList<>();
+    categoryFacets.add(searchFacetImpl);
 
     // Act and Assert
-    assertTrue(databaseSearchServiceImpl.buildSearchFacetDtos(new ArrayList<>()).isEmpty());
+    assertThrows(UnsupportedOperationException.class,
+        () -> databaseSearchServiceImpl.buildSearchFacetDtos(categoryFacets));
+    verify(searchFacetDao).readDistinctValuesForField(eq("Qualified Field Name"), isA(Class.class));
+    verify(fieldImpl).getQualifiedFieldName();
+    verify(searchFacetImpl).getField();
+    verify(searchFacetImpl).getSearchFacetRanges();
   }
 
   /**
    * Test {@link DatabaseSearchServiceImpl#getFacetValues(SearchFacet)}.
+   * <ul>
+   *   <li>Given {@link FieldImpl} {@link FieldImpl#getQualifiedFieldName()} return {@code defaultSku}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link DatabaseSearchServiceImpl#getFacetValues(SearchFacet)}
+   * Method under test: {@link DatabaseSearchServiceImpl#getFacetValues(SearchFacet)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetFacetValues() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.search.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2096 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.DatabaseSearchServiceImpl databaseSearchServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List DatabaseSearchServiceImpl.getFacetValues(SearchFacet)"})
+  public void testGetFacetValues_givenFieldImplGetQualifiedFieldNameReturnDefaultSku() {
     // Arrange
-    DatabaseSearchServiceImpl databaseSearchServiceImpl2 = new DatabaseSearchServiceImpl();
+    when(searchFacetDao.readDistinctValuesForField(Mockito.<String>any(), Mockito.<Class<String>>any()))
+        .thenReturn(new ArrayList<>());
+    FieldImpl fieldImpl = mock(FieldImpl.class);
+    when(fieldImpl.getQualifiedFieldName()).thenReturn("defaultSku");
+    SearchFacetImpl facet = mock(SearchFacetImpl.class);
+    when(facet.getSearchFacetRanges()).thenReturn(new ArrayList<>());
+    when(facet.getField()).thenReturn(fieldImpl);
 
     // Act
-    databaseSearchServiceImpl2.getFacetValues(new SearchFacetImpl());
+    List<SearchFacetResultDTO> actualFacetValues = databaseSearchServiceImpl.getFacetValues(facet);
+
+    // Assert
+    verify(searchFacetDao).readDistinctValuesForField(eq("defaultSku"), isA(Class.class));
+    verify(fieldImpl).getQualifiedFieldName();
+    verify(facet).getField();
+    verify(facet).getSearchFacetRanges();
+    assertTrue(actualFacetValues.isEmpty());
+  }
+
+  /**
+   * Test {@link DatabaseSearchServiceImpl#getFacetValues(SearchFacet)}.
+   * <ul>
+   *   <li>Given {@link FieldImpl} {@link FieldImpl#getQualifiedFieldName()} return {@code productAttributes}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DatabaseSearchServiceImpl#getFacetValues(SearchFacet)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List DatabaseSearchServiceImpl.getFacetValues(SearchFacet)"})
+  public void testGetFacetValues_givenFieldImplGetQualifiedFieldNameReturnProductAttributes() {
+    // Arrange
+    when(searchFacetDao.readDistinctValuesForField(Mockito.<String>any(), Mockito.<Class<String>>any()))
+        .thenReturn(new ArrayList<>());
+    FieldImpl fieldImpl = mock(FieldImpl.class);
+    when(fieldImpl.getQualifiedFieldName()).thenReturn("productAttributes");
+    SearchFacetImpl facet = mock(SearchFacetImpl.class);
+    when(facet.getSearchFacetRanges()).thenReturn(new ArrayList<>());
+    when(facet.getField()).thenReturn(fieldImpl);
+
+    // Act
+    List<SearchFacetResultDTO> actualFacetValues = databaseSearchServiceImpl.getFacetValues(facet);
+
+    // Assert
+    verify(searchFacetDao).readDistinctValuesForField(eq("productAttributes"), isA(Class.class));
+    verify(fieldImpl).getQualifiedFieldName();
+    verify(facet).getField();
+    verify(facet).getSearchFacetRanges();
+    assertTrue(actualFacetValues.isEmpty());
   }
 
   /**
    * Test {@link DatabaseSearchServiceImpl#getFacetValues(SearchFacet)}.
    * <ul>
    *   <li>Given {@code true}.</li>
-   *   <li>Then return size is one.</li>
+   *   <li>Then return first ValueKey is {@code range%5Bnull%3Anull%5D}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DatabaseSearchServiceImpl#getFacetValues(SearchFacet)}
+   * Method under test: {@link DatabaseSearchServiceImpl#getFacetValues(SearchFacet)}
    */
   @Test
-  public void testGetFacetValues_givenTrue_thenReturnSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List DatabaseSearchServiceImpl.getFacetValues(SearchFacet)"})
+  public void testGetFacetValues_givenTrue_thenReturnFirstValueKeyIsRange5Bnull3Anull5d() {
     // Arrange
-    DatabaseSearchServiceImpl databaseSearchServiceImpl = new DatabaseSearchServiceImpl();
-
     ArrayList<SearchFacetRange> searchFacetRanges = new ArrayList<>();
     searchFacetRanges.add(new SearchFacetRangeImpl());
 
@@ -1134,91 +1438,123 @@ public class DatabaseSearchServiceImplDiffblueTest {
     SearchFacetResultDTO getResult = actualFacetValues.get(0);
     assertEquals("range%5Bnull%3Anull%5D", getResult.getValueKey());
     assertEquals("range[null:null]", getResult.getUnencodedValueKey());
-    assertNull(getResult.getQuantity());
     assertNull(getResult.getValue());
-    assertNull(getResult.getMaxValue());
-    assertNull(getResult.getMinValue());
-    assertFalse(getResult.isActive());
     assertSame(facet, getResult.getFacet());
   }
 
   /**
-   * Test {@link DatabaseSearchServiceImpl#getRangeFacetValues(SearchFacet)}.
-   * <p>
-   * Method under test:
-   * {@link DatabaseSearchServiceImpl#getRangeFacetValues(SearchFacet)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetRangeFacetValues() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.search.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2130 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.DatabaseSearchServiceImpl databaseSearchServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DatabaseSearchServiceImpl databaseSearchServiceImpl2 = new DatabaseSearchServiceImpl();
-
-    // Act
-    databaseSearchServiceImpl2.getRangeFacetValues(new SearchFacetImpl());
-  }
-
-  /**
-   * Test {@link DatabaseSearchServiceImpl#getRangeFacetValues(SearchFacet)}.
+   * Test {@link DatabaseSearchServiceImpl#getFacetValues(SearchFacet)}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()}.</li>
    *   <li>Then return Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DatabaseSearchServiceImpl#getRangeFacetValues(SearchFacet)}
+   * Method under test: {@link DatabaseSearchServiceImpl#getFacetValues(SearchFacet)}
    */
   @Test
-  public void testGetRangeFacetValues_givenArrayList_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List DatabaseSearchServiceImpl.getFacetValues(SearchFacet)"})
+  public void testGetFacetValues_thenReturnEmpty() {
     // Arrange
-    DatabaseSearchServiceImpl databaseSearchServiceImpl = new DatabaseSearchServiceImpl();
+    when(searchFacetDao.readDistinctValuesForField(Mockito.<String>any(), Mockito.<Class<String>>any()))
+        .thenReturn(new ArrayList<>());
+    FieldImpl fieldImpl = mock(FieldImpl.class);
+    when(fieldImpl.getQualifiedFieldName()).thenReturn("Qualified Field Name");
     SearchFacetImpl facet = mock(SearchFacetImpl.class);
     when(facet.getSearchFacetRanges()).thenReturn(new ArrayList<>());
+    when(facet.getField()).thenReturn(fieldImpl);
 
     // Act
-    List<SearchFacetResultDTO> actualRangeFacetValues = databaseSearchServiceImpl.getRangeFacetValues(facet);
+    List<SearchFacetResultDTO> actualFacetValues = databaseSearchServiceImpl.getFacetValues(facet);
 
     // Assert
+    verify(searchFacetDao).readDistinctValuesForField(eq("Qualified Field Name"), isA(Class.class));
+    verify(fieldImpl).getQualifiedFieldName();
+    verify(facet).getField();
     verify(facet).getSearchFacetRanges();
-    assertTrue(actualRangeFacetValues.isEmpty());
+    assertTrue(actualFacetValues.isEmpty());
+  }
+
+  /**
+   * Test {@link DatabaseSearchServiceImpl#getFacetValues(SearchFacet)}.
+   * <ul>
+   *   <li>Then return first UnencodedValueKey is {@code productAttributes}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DatabaseSearchServiceImpl#getFacetValues(SearchFacet)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List DatabaseSearchServiceImpl.getFacetValues(SearchFacet)"})
+  public void testGetFacetValues_thenReturnFirstUnencodedValueKeyIsProductAttributes() {
+    // Arrange
+    ArrayList<String> stringList = new ArrayList<>();
+    stringList.add("productAttributes");
+    when(searchFacetDao.readDistinctValuesForField(Mockito.<String>any(), Mockito.<Class<String>>any()))
+        .thenReturn(stringList);
+    FieldImpl fieldImpl = mock(FieldImpl.class);
+    when(fieldImpl.getQualifiedFieldName()).thenReturn("Qualified Field Name");
+    SearchFacetImpl facet = mock(SearchFacetImpl.class);
+    when(facet.getSearchFacetRanges()).thenReturn(new ArrayList<>());
+    when(facet.getField()).thenReturn(fieldImpl);
+
+    // Act
+    List<SearchFacetResultDTO> actualFacetValues = databaseSearchServiceImpl.getFacetValues(facet);
+
+    // Assert
+    verify(searchFacetDao).readDistinctValuesForField(eq("Qualified Field Name"), isA(Class.class));
+    verify(fieldImpl).getQualifiedFieldName();
+    verify(facet).getField();
+    verify(facet).getSearchFacetRanges();
+    assertEquals(1, actualFacetValues.size());
+    SearchFacetResultDTO getResult = actualFacetValues.get(0);
+    assertEquals("productAttributes", getResult.getUnencodedValueKey());
+    assertEquals("productAttributes", getResult.getValue());
+    assertEquals("productAttributes", getResult.getValueKey());
+    assertSame(facet, getResult.getFacet());
+  }
+
+  /**
+   * Test {@link DatabaseSearchServiceImpl#getFacetValues(SearchFacet)}.
+   * <ul>
+   *   <li>Then throw {@link UnsupportedOperationException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DatabaseSearchServiceImpl#getFacetValues(SearchFacet)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List DatabaseSearchServiceImpl.getFacetValues(SearchFacet)"})
+  public void testGetFacetValues_thenThrowUnsupportedOperationException() {
+    // Arrange
+    when(searchFacetDao.readDistinctValuesForField(Mockito.<String>any(), Mockito.<Class<String>>any()))
+        .thenThrow(new UnsupportedOperationException("productAttributes"));
+    FieldImpl fieldImpl = mock(FieldImpl.class);
+    when(fieldImpl.getQualifiedFieldName()).thenReturn("Qualified Field Name");
+    SearchFacetImpl facet = mock(SearchFacetImpl.class);
+    when(facet.getSearchFacetRanges()).thenReturn(new ArrayList<>());
+    when(facet.getField()).thenReturn(fieldImpl);
+
+    // Act and Assert
+    assertThrows(UnsupportedOperationException.class, () -> databaseSearchServiceImpl.getFacetValues(facet));
+    verify(searchFacetDao).readDistinctValuesForField(eq("Qualified Field Name"), isA(Class.class));
+    verify(fieldImpl).getQualifiedFieldName();
+    verify(facet).getField();
+    verify(facet).getSearchFacetRanges();
   }
 
   /**
    * Test {@link DatabaseSearchServiceImpl#getRangeFacetValues(SearchFacet)}.
    * <ul>
-   *   <li>Given {@code true}.</li>
    *   <li>Then return size is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DatabaseSearchServiceImpl#getRangeFacetValues(SearchFacet)}
+   * Method under test: {@link DatabaseSearchServiceImpl#getRangeFacetValues(SearchFacet)}
    */
   @Test
-  public void testGetRangeFacetValues_givenTrue_thenReturnSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List DatabaseSearchServiceImpl.getRangeFacetValues(SearchFacet)"})
+  public void testGetRangeFacetValues_thenReturnSizeIsOne() {
     // Arrange
-    DatabaseSearchServiceImpl databaseSearchServiceImpl = new DatabaseSearchServiceImpl();
-
     ArrayList<SearchFacetRange> searchFacetRanges = new ArrayList<>();
     searchFacetRanges.add(new SearchFacetRangeImpl());
 
@@ -1240,50 +1576,17 @@ public class DatabaseSearchServiceImplDiffblueTest {
 
     // Assert
     assertEquals(1, actualRangeFacetValues.size());
-    assertSame(facet, actualRangeFacetValues.get(0).getFacet());
-  }
-
-  /**
-   * Test {@link DatabaseSearchServiceImpl#getRangeFacetValues(SearchFacet)}.
-   * <ul>
-   *   <li>Then return size is two.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link DatabaseSearchServiceImpl#getRangeFacetValues(SearchFacet)}
-   */
-  @Test
-  public void testGetRangeFacetValues_thenReturnSizeIsTwo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    DatabaseSearchServiceImpl databaseSearchServiceImpl = new DatabaseSearchServiceImpl();
-    InternalNumber minValue = mock(InternalNumber.class);
-    when(minValue.compareTo(Mockito.<BigDecimal>any())).thenReturn(1);
-
-    SearchFacetRangeImpl searchFacetRangeImpl = new SearchFacetRangeImpl();
-    searchFacetRangeImpl.setMinValue(minValue);
-
-    ArrayList<SearchFacetRange> searchFacetRangeList = new ArrayList<>();
-    searchFacetRangeList.add(new SearchFacetRangeImpl());
-    searchFacetRangeList.add(searchFacetRangeImpl);
-    SearchFacetImpl facet = mock(SearchFacetImpl.class);
-    when(facet.getSearchFacetRanges()).thenReturn(searchFacetRangeList);
-
-    // Act
-    List<SearchFacetResultDTO> actualRangeFacetValues = databaseSearchServiceImpl.getRangeFacetValues(facet);
-
-    // Assert
-    verify(minValue).compareTo(isNull());
-    verify(facet).getSearchFacetRanges();
-    assertEquals(2, actualRangeFacetValues.size());
-    SearchFacetResultDTO getResult = actualRangeFacetValues.get(1);
+    SearchFacetResultDTO getResult = actualRangeFacetValues.get(0);
+    SearchFacet facet2 = getResult.getFacet();
+    assertTrue(facet2 instanceof SearchFacetImpl);
+    assertEquals("range%5Bnull%3Anull%5D", getResult.getValueKey());
+    assertEquals("range[null:null]", getResult.getUnencodedValueKey());
     assertNull(getResult.getQuantity());
     assertNull(getResult.getValue());
     assertNull(getResult.getMaxValue());
+    assertNull(getResult.getMinValue());
     assertFalse(getResult.isActive());
-    assertSame(facet, actualRangeFacetValues.get(0).getFacet());
-    assertSame(facet, getResult.getFacet());
+    assertSame(facet, facet2);
   }
 
   /**
@@ -1293,51 +1596,170 @@ public class DatabaseSearchServiceImplDiffblueTest {
    *   <li>Then return Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DatabaseSearchServiceImpl#getRangeFacetValues(SearchFacet)}
+   * Method under test: {@link DatabaseSearchServiceImpl#getRangeFacetValues(SearchFacet)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List DatabaseSearchServiceImpl.getRangeFacetValues(SearchFacet)"})
   public void testGetRangeFacetValues_whenSearchFacetImpl_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    DatabaseSearchServiceImpl databaseSearchServiceImpl = new DatabaseSearchServiceImpl();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertTrue(databaseSearchServiceImpl.getRangeFacetValues(new SearchFacetImpl()).isEmpty());
   }
 
   /**
    * Test {@link DatabaseSearchServiceImpl#getMatchFacetValues(SearchFacet)}.
    * <p>
-   * Method under test:
-   * {@link DatabaseSearchServiceImpl#getMatchFacetValues(SearchFacet)}
+   * Method under test: {@link DatabaseSearchServiceImpl#getMatchFacetValues(SearchFacet)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List DatabaseSearchServiceImpl.getMatchFacetValues(SearchFacet)"})
   public void testGetMatchFacetValues() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.search.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2113 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.DatabaseSearchServiceImpl databaseSearchServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    DatabaseSearchServiceImpl databaseSearchServiceImpl2 = new DatabaseSearchServiceImpl();
+    when(searchFacetDao.readDistinctValuesForField(Mockito.<String>any(), Mockito.<Class<String>>any()))
+        .thenReturn(new ArrayList<>());
+    FieldImpl fieldImpl = mock(FieldImpl.class);
+    when(fieldImpl.getQualifiedFieldName()).thenReturn("productAttributes");
+    SearchFacetImpl facet = mock(SearchFacetImpl.class);
+    when(facet.getField()).thenReturn(fieldImpl);
 
     // Act
-    databaseSearchServiceImpl2.getMatchFacetValues(new SearchFacetImpl());
+    List<SearchFacetResultDTO> actualMatchFacetValues = databaseSearchServiceImpl.getMatchFacetValues(facet);
+
+    // Assert
+    verify(searchFacetDao).readDistinctValuesForField(eq("productAttributes"), isA(Class.class));
+    verify(fieldImpl).getQualifiedFieldName();
+    verify(facet).getField();
+    assertTrue(actualMatchFacetValues.isEmpty());
+  }
+
+  /**
+   * Test {@link DatabaseSearchServiceImpl#getMatchFacetValues(SearchFacet)}.
+   * <ul>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@code productAttributes}.</li>
+   *   <li>Then return size is one.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DatabaseSearchServiceImpl#getMatchFacetValues(SearchFacet)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List DatabaseSearchServiceImpl.getMatchFacetValues(SearchFacet)"})
+  public void testGetMatchFacetValues_givenArrayListAddProductAttributes_thenReturnSizeIsOne() {
+    // Arrange
+    ArrayList<String> stringList = new ArrayList<>();
+    stringList.add("productAttributes");
+    when(searchFacetDao.readDistinctValuesForField(Mockito.<String>any(), Mockito.<Class<String>>any()))
+        .thenReturn(stringList);
+    FieldImpl fieldImpl = mock(FieldImpl.class);
+    when(fieldImpl.getQualifiedFieldName()).thenReturn("Qualified Field Name");
+    SearchFacetImpl facet = mock(SearchFacetImpl.class);
+    when(facet.getField()).thenReturn(fieldImpl);
+
+    // Act
+    List<SearchFacetResultDTO> actualMatchFacetValues = databaseSearchServiceImpl.getMatchFacetValues(facet);
+
+    // Assert
+    verify(searchFacetDao).readDistinctValuesForField(eq("Qualified Field Name"), isA(Class.class));
+    verify(fieldImpl).getQualifiedFieldName();
+    verify(facet).getField();
+    assertEquals(1, actualMatchFacetValues.size());
+    SearchFacetResultDTO getResult = actualMatchFacetValues.get(0);
+    assertEquals("productAttributes", getResult.getUnencodedValueKey());
+    assertEquals("productAttributes", getResult.getValue());
+    assertEquals("productAttributes", getResult.getValueKey());
+    assertNull(getResult.getQuantity());
+    assertNull(getResult.getMaxValue());
+    assertNull(getResult.getMinValue());
+    assertFalse(getResult.isActive());
+    assertSame(facet, getResult.getFacet());
+  }
+
+  /**
+   * Test {@link DatabaseSearchServiceImpl#getMatchFacetValues(SearchFacet)}.
+   * <ul>
+   *   <li>Given {@link FieldImpl} {@link FieldImpl#getQualifiedFieldName()} return {@code defaultSku}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DatabaseSearchServiceImpl#getMatchFacetValues(SearchFacet)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List DatabaseSearchServiceImpl.getMatchFacetValues(SearchFacet)"})
+  public void testGetMatchFacetValues_givenFieldImplGetQualifiedFieldNameReturnDefaultSku() {
+    // Arrange
+    when(searchFacetDao.readDistinctValuesForField(Mockito.<String>any(), Mockito.<Class<String>>any()))
+        .thenReturn(new ArrayList<>());
+    FieldImpl fieldImpl = mock(FieldImpl.class);
+    when(fieldImpl.getQualifiedFieldName()).thenReturn("defaultSku");
+    SearchFacetImpl facet = mock(SearchFacetImpl.class);
+    when(facet.getField()).thenReturn(fieldImpl);
+
+    // Act
+    List<SearchFacetResultDTO> actualMatchFacetValues = databaseSearchServiceImpl.getMatchFacetValues(facet);
+
+    // Assert
+    verify(searchFacetDao).readDistinctValuesForField(eq("defaultSku"), isA(Class.class));
+    verify(fieldImpl).getQualifiedFieldName();
+    verify(facet).getField();
+    assertTrue(actualMatchFacetValues.isEmpty());
+  }
+
+  /**
+   * Test {@link DatabaseSearchServiceImpl#getMatchFacetValues(SearchFacet)}.
+   * <ul>
+   *   <li>Then return Empty.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DatabaseSearchServiceImpl#getMatchFacetValues(SearchFacet)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List DatabaseSearchServiceImpl.getMatchFacetValues(SearchFacet)"})
+  public void testGetMatchFacetValues_thenReturnEmpty() {
+    // Arrange
+    when(searchFacetDao.readDistinctValuesForField(Mockito.<String>any(), Mockito.<Class<String>>any()))
+        .thenReturn(new ArrayList<>());
+    FieldImpl fieldImpl = mock(FieldImpl.class);
+    when(fieldImpl.getQualifiedFieldName()).thenReturn("Qualified Field Name");
+    SearchFacetImpl facet = mock(SearchFacetImpl.class);
+    when(facet.getField()).thenReturn(fieldImpl);
+
+    // Act
+    List<SearchFacetResultDTO> actualMatchFacetValues = databaseSearchServiceImpl.getMatchFacetValues(facet);
+
+    // Assert
+    verify(searchFacetDao).readDistinctValuesForField(eq("Qualified Field Name"), isA(Class.class));
+    verify(fieldImpl).getQualifiedFieldName();
+    verify(facet).getField();
+    assertTrue(actualMatchFacetValues.isEmpty());
+  }
+
+  /**
+   * Test {@link DatabaseSearchServiceImpl#getMatchFacetValues(SearchFacet)}.
+   * <ul>
+   *   <li>Then throw {@link UnsupportedOperationException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DatabaseSearchServiceImpl#getMatchFacetValues(SearchFacet)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List DatabaseSearchServiceImpl.getMatchFacetValues(SearchFacet)"})
+  public void testGetMatchFacetValues_thenThrowUnsupportedOperationException() {
+    // Arrange
+    when(searchFacetDao.readDistinctValuesForField(Mockito.<String>any(), Mockito.<Class<String>>any()))
+        .thenThrow(new UnsupportedOperationException("productAttributes"));
+    FieldImpl fieldImpl = mock(FieldImpl.class);
+    when(fieldImpl.getQualifiedFieldName()).thenReturn("Qualified Field Name");
+    SearchFacetImpl facet = mock(SearchFacetImpl.class);
+    when(facet.getField()).thenReturn(fieldImpl);
+
+    // Act and Assert
+    assertThrows(UnsupportedOperationException.class, () -> databaseSearchServiceImpl.getMatchFacetValues(facet));
+    verify(searchFacetDao).readDistinctValuesForField(eq("Qualified Field Name"), isA(Class.class));
+    verify(fieldImpl).getQualifiedFieldName();
+    verify(facet).getField();
   }
 
   /**
@@ -1346,6 +1768,8 @@ public class DatabaseSearchServiceImplDiffblueTest {
    * Method under test: {@link DatabaseSearchServiceImpl#isActive()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean DatabaseSearchServiceImpl.isActive()"})
   public void testIsActive() {
     // Arrange, Act and Assert
     assertTrue((new DatabaseSearchServiceImpl()).isActive());
@@ -1353,30 +1777,45 @@ public class DatabaseSearchServiceImplDiffblueTest {
 
   /**
    * Test {@link DatabaseSearchServiceImpl#getCache()}.
+   * <ul>
+   *   <li>Given {@link CacheManager} {@link CacheManager#getCache(String)} return {@code null}.</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link DatabaseSearchServiceImpl#getCache()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetCache() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.search.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2035 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.DatabaseSearchServiceImpl databaseSearchServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Cache DatabaseSearchServiceImpl.getCache()"})
+  public void testGetCache_givenCacheManagerGetCacheReturnNull_thenReturnNull() {
+    // Arrange
+    when(cacheManager.getCache(Mockito.<String>any())).thenReturn(null);
 
-    // Arrange and Act
-    (new DatabaseSearchServiceImpl()).getCache();
+    // Act
+    Cache<String, List<SearchFacetDTO>> actualCache = databaseSearchServiceImpl.getCache();
+
+    // Assert
+    verify(cacheManager).getCache(eq("blStandardElements"));
+    assertNull(actualCache);
+  }
+
+  /**
+   * Test {@link DatabaseSearchServiceImpl#getCache()}.
+   * <ul>
+   *   <li>Then throw {@link UnsupportedOperationException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DatabaseSearchServiceImpl#getCache()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Cache DatabaseSearchServiceImpl.getCache()"})
+  public void testGetCache_thenThrowUnsupportedOperationException() {
+    // Arrange
+    when(cacheManager.getCache(Mockito.<String>any())).thenThrow(new UnsupportedOperationException("foo"));
+
+    // Act and Assert
+    assertThrows(UnsupportedOperationException.class, () -> databaseSearchServiceImpl.getCache());
+    verify(cacheManager).getCache(eq("blStandardElements"));
   }
 }

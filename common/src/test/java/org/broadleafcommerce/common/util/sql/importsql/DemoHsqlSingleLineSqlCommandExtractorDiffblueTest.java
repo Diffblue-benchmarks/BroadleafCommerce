@@ -18,19 +18,23 @@
 package org.broadleafcommerce.common.util.sql.importsql;
 
 import static org.junit.Assert.assertArrayEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class DemoHsqlSingleLineSqlCommandExtractorDiffblueTest {
   /**
    * Test {@link DemoHsqlSingleLineSqlCommandExtractor#extractCommands(Reader)}.
    * <p>
-   * Method under test:
-   * {@link DemoHsqlSingleLineSqlCommandExtractor#extractCommands(Reader)}
+   * Method under test: {@link DemoHsqlSingleLineSqlCommandExtractor#extractCommands(Reader)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String[] DemoHsqlSingleLineSqlCommandExtractor.extractCommands(Reader)"})
   public void testExtractCommands() {
     // Arrange
     DemoHsqlSingleLineSqlCommandExtractor demoHsqlSingleLineSqlCommandExtractor = new DemoHsqlSingleLineSqlCommandExtractor();
@@ -43,10 +47,11 @@ public class DemoHsqlSingleLineSqlCommandExtractorDiffblueTest {
   /**
    * Test {@link DemoHsqlSingleLineSqlCommandExtractor#extractCommands(Reader)}.
    * <p>
-   * Method under test:
-   * {@link DemoHsqlSingleLineSqlCommandExtractor#extractCommands(Reader)}
+   * Method under test: {@link DemoHsqlSingleLineSqlCommandExtractor#extractCommands(Reader)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String[] DemoHsqlSingleLineSqlCommandExtractor.extractCommands(Reader)"})
   public void testExtractCommands2() throws IOException {
     // Arrange
     DemoHsqlSingleLineSqlCommandExtractor demoHsqlSingleLineSqlCommandExtractor = new DemoHsqlSingleLineSqlCommandExtractor();
@@ -64,10 +69,11 @@ public class DemoHsqlSingleLineSqlCommandExtractorDiffblueTest {
    *   <li>Then return array of {@link String} with {@code \}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DemoHsqlSingleLineSqlCommandExtractor#extractCommands(Reader)}
+   * Method under test: {@link DemoHsqlSingleLineSqlCommandExtractor#extractCommands(Reader)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String[] DemoHsqlSingleLineSqlCommandExtractor.extractCommands(Reader)"})
   public void testExtractCommands_thenReturnArrayOfStringWithBackslash() {
     // Arrange
     DemoHsqlSingleLineSqlCommandExtractor demoHsqlSingleLineSqlCommandExtractor = new DemoHsqlSingleLineSqlCommandExtractor();
@@ -80,14 +86,14 @@ public class DemoHsqlSingleLineSqlCommandExtractorDiffblueTest {
   /**
    * Test {@link DemoHsqlSingleLineSqlCommandExtractor#extractCommands(Reader)}.
    * <ul>
-   *   <li>Then return array of {@link String} with
-   * {@code ' || CHAR(13) || CHAR(10) || '}.</li>
+   *   <li>Then return array of {@link String} with {@code ' || CHAR(13) || CHAR(10) || '}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DemoHsqlSingleLineSqlCommandExtractor#extractCommands(Reader)}
+   * Method under test: {@link DemoHsqlSingleLineSqlCommandExtractor#extractCommands(Reader)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String[] DemoHsqlSingleLineSqlCommandExtractor.extractCommands(Reader)"})
   public void testExtractCommands_thenReturnArrayOfStringWithChar13Char10() {
     // Arrange
     DemoHsqlSingleLineSqlCommandExtractor demoHsqlSingleLineSqlCommandExtractor = new DemoHsqlSingleLineSqlCommandExtractor();
@@ -103,10 +109,11 @@ public class DemoHsqlSingleLineSqlCommandExtractorDiffblueTest {
    *   <li>Then return array of {@link String} with {@code \r\n}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DemoHsqlSingleLineSqlCommandExtractor#extractCommands(Reader)}
+   * Method under test: {@link DemoHsqlSingleLineSqlCommandExtractor#extractCommands(Reader)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String[] DemoHsqlSingleLineSqlCommandExtractor.extractCommands(Reader)"})
   public void testExtractCommands_thenReturnArrayOfStringWithRN() {
     // Arrange
     DemoHsqlSingleLineSqlCommandExtractor demoHsqlSingleLineSqlCommandExtractor = new DemoHsqlSingleLineSqlCommandExtractor();
@@ -122,10 +129,11 @@ public class DemoHsqlSingleLineSqlCommandExtractorDiffblueTest {
    *   <li>Then return array of {@link String} with {@code \r\n}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DemoHsqlSingleLineSqlCommandExtractor#extractCommands(Reader)}
+   * Method under test: {@link DemoHsqlSingleLineSqlCommandExtractor#extractCommands(Reader)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String[] DemoHsqlSingleLineSqlCommandExtractor.extractCommands(Reader)"})
   public void testExtractCommands_thenReturnArrayOfStringWithRN2() throws IOException {
     // Arrange
     DemoHsqlSingleLineSqlCommandExtractor demoHsqlSingleLineSqlCommandExtractor = new DemoHsqlSingleLineSqlCommandExtractor();
@@ -143,10 +151,11 @@ public class DemoHsqlSingleLineSqlCommandExtractorDiffblueTest {
    *   <li>When {@link StringReader#StringReader(String)} with {@code \\"}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DemoHsqlSingleLineSqlCommandExtractor#extractCommands(Reader)}
+   * Method under test: {@link DemoHsqlSingleLineSqlCommandExtractor#extractCommands(Reader)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String[] DemoHsqlSingleLineSqlCommandExtractor.extractCommands(Reader)"})
   public void testExtractCommands_whenStringReaderWithBackslashBackslashQuotationMark() {
     // Arrange
     DemoHsqlSingleLineSqlCommandExtractor demoHsqlSingleLineSqlCommandExtractor = new DemoHsqlSingleLineSqlCommandExtractor();
@@ -162,10 +171,11 @@ public class DemoHsqlSingleLineSqlCommandExtractorDiffblueTest {
    *   <li>When {@link StringReader#StringReader(String)} with {@code \"}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DemoHsqlSingleLineSqlCommandExtractor#extractCommands(Reader)}
+   * Method under test: {@link DemoHsqlSingleLineSqlCommandExtractor#extractCommands(Reader)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String[] DemoHsqlSingleLineSqlCommandExtractor.extractCommands(Reader)"})
   public void testExtractCommands_whenStringReaderWithBackslashQuotationMark() {
     // Arrange
     DemoHsqlSingleLineSqlCommandExtractor demoHsqlSingleLineSqlCommandExtractor = new DemoHsqlSingleLineSqlCommandExtractor();
@@ -182,10 +192,11 @@ public class DemoHsqlSingleLineSqlCommandExtractorDiffblueTest {
    *   <li>Then return array of {@link String} with {@code foo}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DemoHsqlSingleLineSqlCommandExtractor#extractCommands(Reader)}
+   * Method under test: {@link DemoHsqlSingleLineSqlCommandExtractor#extractCommands(Reader)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String[] DemoHsqlSingleLineSqlCommandExtractor.extractCommands(Reader)"})
   public void testExtractCommands_whenStringReaderWithFoo_thenReturnArrayOfStringWithFoo() {
     // Arrange
     DemoHsqlSingleLineSqlCommandExtractor demoHsqlSingleLineSqlCommandExtractor = new DemoHsqlSingleLineSqlCommandExtractor();
@@ -193,22 +204,5 @@ public class DemoHsqlSingleLineSqlCommandExtractorDiffblueTest {
     // Act and Assert
     assertArrayEquals(new String[]{"foo"},
         demoHsqlSingleLineSqlCommandExtractor.extractCommands(new StringReader("foo")));
-  }
-
-  /**
-   * Test new {@link DemoHsqlSingleLineSqlCommandExtractor} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link DemoHsqlSingleLineSqlCommandExtractor}
-   */
-  @Test
-  public void testNewDemoHsqlSingleLineSqlCommandExtractor() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing observers.
-    //   Diffblue Cover was unable to create an assertion.
-    //   There are no fields that could be asserted on.
-
-    // Arrange and Act
-    new DemoHsqlSingleLineSqlCommandExtractor();
   }
 }

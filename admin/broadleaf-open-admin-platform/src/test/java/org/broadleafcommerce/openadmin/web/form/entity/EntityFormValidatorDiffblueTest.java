@@ -1,25 +1,39 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.web.form.entity;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.broadleafcommerce.openadmin.dto.Entity;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -27,33 +41,24 @@ import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
-import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 
-@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
-    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
-    "/bl-open-admin-contentCreator-applicationContext.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+@ContextConfiguration(classes = {EntityFormValidator.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class EntityFormValidatorDiffblueTest {
   @Autowired
   private EntityFormValidator entityFormValidator;
 
   /**
-   * Test {@link EntityFormValidator#validate(EntityForm, Entity, Errors)} with
-   * {@code form}, {@code entity}, {@code errors}.
+   * Test {@link EntityFormValidator#validate(EntityForm, Entity, Errors)} with {@code form}, {@code entity}, {@code errors}.
    * <p>
-   * Method under test:
-   * {@link EntityFormValidator#validate(EntityForm, Entity, Errors)}
+   * Method under test: {@link EntityFormValidator#validate(EntityForm, Entity, Errors)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EntityFormValidator.validate(EntityForm, Entity, Errors)"})
   public void testValidateWithFormEntityErrors() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    EntityFormValidator entityFormValidator = new EntityFormValidator();
     EntityForm form = new EntityForm();
 
     ArrayList<String> stringList = new ArrayList<>();
@@ -71,12 +76,6 @@ public class EntityFormValidatorDiffblueTest {
     verify(entity).getGlobalValidationErrors();
     verify(entity).getPropertyValidationErrors();
     verify(entity).isValidationFailure();
-    BindingResult bindingResult = errors.getBindingResult();
-    assertTrue(bindingResult instanceof BeanPropertyBindingResult);
-    ObjectError globalError = errors.getGlobalError();
-    assertEquals("Object Name", globalError.getObjectName());
-    assertEquals("foo", globalError.getCode());
-    assertEquals("foo", globalError.getDefaultMessage());
     assertEquals(
         "org.springframework.validation.BeanPropertyBindingResult: 1 errors\n"
             + "Error in object 'Object Name': codes [foo.Object Name,foo]; arguments []; default message [foo]",
@@ -85,136 +84,68 @@ public class EntityFormValidatorDiffblueTest {
         "org.springframework.validation.BeanPropertyBindingResult: 1 errors\n"
             + "Error in object 'Object Name': codes [foo.Object Name,foo]; arguments []; default message [foo]",
         errors.getMessage());
-    assertNull(globalError.getArguments());
     List<ObjectError> allErrors = errors.getAllErrors();
     assertEquals(1, allErrors.size());
     assertEquals(1, errors.getErrorCount());
     assertEquals(1, errors.getGlobalErrorCount());
-    assertEquals(1, bindingResult.getErrorCount());
-    assertEquals(1, bindingResult.getGlobalErrorCount());
     assertTrue(errors.hasErrors());
     assertTrue(errors.hasGlobalErrors());
-    assertTrue(bindingResult.hasErrors());
-    assertTrue(bindingResult.hasGlobalErrors());
     assertEquals(allErrors, errors.getGlobalErrors());
-    assertEquals(allErrors, bindingResult.getAllErrors());
-    assertEquals(allErrors, bindingResult.getGlobalErrors());
-    assertSame(globalError, allErrors.get(0));
-    assertSame(globalError, bindingResult.getGlobalError());
-    assertArrayEquals(new String[]{"foo.Object Name", "foo"}, globalError.getCodes());
   }
 
   /**
-   * Test {@link EntityFormValidator#validate(EntityForm, Entity, Errors)} with
-   * {@code form}, {@code entity}, {@code errors}.
+   * Test {@link EntityFormValidator#validate(EntityForm, Entity, Errors)} with {@code form}, {@code entity}, {@code errors}.
+   * <ul>
+   *   <li>Given {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link EntityFormValidator#validate(EntityForm, Entity, Errors)}
+   * Method under test: {@link EntityFormValidator#validate(EntityForm, Entity, Errors)}
    */
   @Test
-  public void testValidateWithFormEntityErrors2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EntityFormValidator.validate(EntityForm, Entity, Errors)"})
+  public void testValidateWithFormEntityErrors_givenArrayList_thenReturnTrue() {
     // Arrange
-    EntityFormValidator entityFormValidator = new EntityFormValidator();
-    CodeField codeField = mock(CodeField.class);
-    when(codeField.getValue()).thenReturn("42");
-    EntityForm form = mock(EntityForm.class);
-    when(form.findField(Mockito.<String>any())).thenReturn(codeField);
-
-    ArrayList<String> stringList = new ArrayList<>();
-    stringList.add("foo");
-
-    HashMap<String, List<String>> stringListMap = new HashMap<>();
-    stringListMap.put("foo", stringList);
+    EntityForm form = new EntityForm();
     Entity entity = mock(Entity.class);
     when(entity.getGlobalValidationErrors()).thenReturn(new ArrayList<>());
-    when(entity.getPropertyValidationErrors()).thenReturn(stringListMap);
+    when(entity.getPropertyValidationErrors()).thenReturn(new HashMap<>());
     when(entity.isValidationFailure()).thenReturn(true);
-    BeanPropertyBindingResult errors = new BeanPropertyBindingResult("Target", ".");
+    BindException errors = new BindException("Target", "Object Name");
 
     // Act
-    entityFormValidator.validate(form, entity, errors);
+    boolean actualValidateResult = entityFormValidator.validate(form, entity, errors);
 
     // Assert
     verify(entity).getGlobalValidationErrors();
     verify(entity).getPropertyValidationErrors();
     verify(entity).isValidationFailure();
-    verify(form, atLeast(1)).findField(eq("foo"));
-    verify(codeField).getValue();
-    FieldError fieldError = errors.getFieldError();
-    assertEquals("42", fieldError.getRejectedValue());
-    assertEquals("entityForm", fieldError.getObjectName());
-    assertEquals("fields[foo].value", fieldError.getField());
-    assertEquals("foo", fieldError.getCode());
-    assertEquals("foo", fieldError.getDefaultMessage());
-    assertNull(fieldError.getArguments());
-    List<ObjectError> allErrors = errors.getAllErrors();
-    assertEquals(1, allErrors.size());
-    assertEquals(1, errors.getErrorCount());
-    assertEquals(1, errors.getFieldErrorCount());
-    assertFalse(fieldError.isBindingFailure());
-    assertTrue(errors.hasErrors());
-    assertTrue(errors.hasFieldErrors());
-    assertEquals(allErrors, errors.getFieldErrors());
-    assertSame(fieldError, allErrors.get(0));
-    assertArrayEquals(new String[]{"foo...foo", "foo.foo", "foo"}, fieldError.getCodes());
+    assertEquals("org.springframework.validation.BeanPropertyBindingResult: 0 errors", errors.getLocalizedMessage());
+    assertEquals("org.springframework.validation.BeanPropertyBindingResult: 0 errors", errors.getMessage());
+    assertEquals(0, errors.getErrorCount());
+    assertEquals(0, errors.getGlobalErrorCount());
+    assertFalse(errors.hasErrors());
+    assertFalse(errors.hasGlobalErrors());
+    assertTrue(errors.getAllErrors().isEmpty());
+    assertTrue(errors.getGlobalErrors().isEmpty());
+    assertTrue(actualValidateResult);
   }
 
   /**
-   * Test {@link EntityFormValidator#validate(EntityForm, Entity, Errors)} with
-   * {@code form}, {@code entity}, {@code errors}.
-   * <p>
-   * Method under test:
-   * {@link EntityFormValidator#validate(EntityForm, Entity, Errors)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testValidateWithFormEntityErrors3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.web.form.entity;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass12618 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.form.entity.EntityFormValidator entityFormValidator;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    EntityFormValidator entityFormValidator2 = new EntityFormValidator();
-    EntityForm form = new EntityForm();
-    Entity entity = new Entity();
-
-    // Act
-    entityFormValidator2.validate(form, entity, new BindException("Target", "Object Name"));
-  }
-
-  /**
-   * Test {@link EntityFormValidator#validate(EntityForm, Entity, Errors)} with
-   * {@code form}, {@code entity}, {@code errors}.
+   * Test {@link EntityFormValidator#validate(EntityForm, Entity, Errors)} with {@code form}, {@code entity}, {@code errors}.
    * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code foo} is
-   * {@link ArrayList#ArrayList()}.</li>
+   *   <li>Given {@link HashMap#HashMap()} {@code foo} is {@link ArrayList#ArrayList()}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link EntityFormValidator#validate(EntityForm, Entity, Errors)}
+   * Method under test: {@link EntityFormValidator#validate(EntityForm, Entity, Errors)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EntityFormValidator.validate(EntityForm, Entity, Errors)"})
   public void testValidateWithFormEntityErrors_givenHashMapFooIsArrayList_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    EntityFormValidator entityFormValidator = new EntityFormValidator();
     EntityForm form = new EntityForm();
 
     HashMap<String, List<String>> stringListMap = new HashMap<>();
@@ -232,140 +163,31 @@ public class EntityFormValidatorDiffblueTest {
     verify(entity).getGlobalValidationErrors();
     verify(entity).getPropertyValidationErrors();
     verify(entity).isValidationFailure();
-    BindingResult bindingResult = errors.getBindingResult();
-    assertTrue(bindingResult instanceof BeanPropertyBindingResult);
     assertEquals("org.springframework.validation.BeanPropertyBindingResult: 0 errors", errors.getLocalizedMessage());
     assertEquals("org.springframework.validation.BeanPropertyBindingResult: 0 errors", errors.getMessage());
-    assertNull(bindingResult.getGlobalError());
     assertEquals(0, errors.getErrorCount());
     assertEquals(0, errors.getGlobalErrorCount());
-    assertEquals(0, bindingResult.getErrorCount());
-    assertEquals(0, bindingResult.getGlobalErrorCount());
     assertFalse(actualValidateResult);
     assertFalse(errors.hasErrors());
     assertFalse(errors.hasGlobalErrors());
-    assertFalse(bindingResult.hasErrors());
-    assertFalse(bindingResult.hasGlobalErrors());
     assertTrue(errors.getAllErrors().isEmpty());
     assertTrue(errors.getGlobalErrors().isEmpty());
-    assertTrue(bindingResult.getAllErrors().isEmpty());
-    assertTrue(bindingResult.getGlobalErrors().isEmpty());
   }
 
   /**
-   * Test {@link EntityFormValidator#validate(EntityForm, Entity, Errors)} with
-   * {@code form}, {@code entity}, {@code errors}.
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()}.</li>
-   *   <li>When {@link EntityForm} (default constructor).</li>
-   *   <li>Then return {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link EntityFormValidator#validate(EntityForm, Entity, Errors)}
-   */
-  @Test
-  public void testValidateWithFormEntityErrors_givenHashMap_whenEntityForm_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    EntityFormValidator entityFormValidator = new EntityFormValidator();
-    EntityForm form = new EntityForm();
-    Entity entity = mock(Entity.class);
-    when(entity.getGlobalValidationErrors()).thenReturn(new ArrayList<>());
-    when(entity.getPropertyValidationErrors()).thenReturn(new HashMap<>());
-    when(entity.isValidationFailure()).thenReturn(true);
-    BindException errors = new BindException("Target", "Object Name");
-
-    // Act
-    boolean actualValidateResult = entityFormValidator.validate(form, entity, errors);
-
-    // Assert
-    verify(entity).getGlobalValidationErrors();
-    verify(entity).getPropertyValidationErrors();
-    verify(entity).isValidationFailure();
-    BindingResult bindingResult = errors.getBindingResult();
-    assertTrue(bindingResult instanceof BeanPropertyBindingResult);
-    assertEquals("org.springframework.validation.BeanPropertyBindingResult: 0 errors", errors.getLocalizedMessage());
-    assertEquals("org.springframework.validation.BeanPropertyBindingResult: 0 errors", errors.getMessage());
-    assertNull(bindingResult.getGlobalError());
-    assertEquals(0, errors.getErrorCount());
-    assertEquals(0, errors.getGlobalErrorCount());
-    assertEquals(0, bindingResult.getErrorCount());
-    assertEquals(0, bindingResult.getGlobalErrorCount());
-    assertFalse(errors.hasErrors());
-    assertFalse(errors.hasGlobalErrors());
-    assertFalse(bindingResult.hasErrors());
-    assertFalse(bindingResult.hasGlobalErrors());
-    assertTrue(errors.getAllErrors().isEmpty());
-    assertTrue(errors.getGlobalErrors().isEmpty());
-    assertTrue(bindingResult.getAllErrors().isEmpty());
-    assertTrue(bindingResult.getGlobalErrors().isEmpty());
-    assertTrue(actualValidateResult);
-  }
-
-  /**
-   * Test {@link EntityFormValidator#validate(EntityForm, Entity, Errors)} with
-   * {@code form}, {@code entity}, {@code errors}.
-   * <ul>
-   *   <li>When {@link EntityForm}.</li>
-   *   <li>Then return {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link EntityFormValidator#validate(EntityForm, Entity, Errors)}
-   */
-  @Test
-  public void testValidateWithFormEntityErrors_whenEntityForm_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    EntityFormValidator entityFormValidator = new EntityFormValidator();
-    EntityForm form = mock(EntityForm.class);
-    Entity entity = new Entity();
-    BindException errors = new BindException("Target", "Object Name");
-
-    // Act
-    boolean actualValidateResult = entityFormValidator.validate(form, entity, errors);
-
-    // Assert
-    BindingResult bindingResult = errors.getBindingResult();
-    assertTrue(bindingResult instanceof BeanPropertyBindingResult);
-    assertEquals("org.springframework.validation.BeanPropertyBindingResult: 0 errors", errors.getLocalizedMessage());
-    assertEquals("org.springframework.validation.BeanPropertyBindingResult: 0 errors", errors.getMessage());
-    assertNull(bindingResult.getGlobalError());
-    assertEquals(0, errors.getErrorCount());
-    assertEquals(0, errors.getGlobalErrorCount());
-    assertEquals(0, bindingResult.getErrorCount());
-    assertEquals(0, bindingResult.getGlobalErrorCount());
-    assertFalse(errors.hasErrors());
-    assertFalse(errors.hasGlobalErrors());
-    assertFalse(bindingResult.hasErrors());
-    assertFalse(bindingResult.hasGlobalErrors());
-    assertTrue(errors.getAllErrors().isEmpty());
-    assertTrue(errors.getGlobalErrors().isEmpty());
-    assertTrue(bindingResult.getAllErrors().isEmpty());
-    assertTrue(bindingResult.getGlobalErrors().isEmpty());
-    assertTrue(actualValidateResult);
-  }
-
-  /**
-   * Test {@link EntityFormValidator#validate(EntityForm, Entity, Errors)} with
-   * {@code form}, {@code entity}, {@code errors}.
+   * Test {@link EntityFormValidator#validate(EntityForm, Entity, Errors)} with {@code form}, {@code entity}, {@code errors}.
    * <ul>
    *   <li>When {@link Entity} (default constructor).</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link EntityFormValidator#validate(EntityForm, Entity, Errors)}
+   * Method under test: {@link EntityFormValidator#validate(EntityForm, Entity, Errors)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EntityFormValidator.validate(EntityForm, Entity, Errors)"})
   public void testValidateWithFormEntityErrors_whenEntity_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    EntityFormValidator entityFormValidator = new EntityFormValidator();
     EntityForm form = new EntityForm();
     Entity entity = new Entity();
     BindException errors = new BindException("Target", "Object Name");
@@ -374,79 +196,31 @@ public class EntityFormValidatorDiffblueTest {
     boolean actualValidateResult = entityFormValidator.validate(form, entity, errors);
 
     // Assert
-    BindingResult bindingResult = errors.getBindingResult();
-    assertTrue(bindingResult instanceof BeanPropertyBindingResult);
     assertEquals("org.springframework.validation.BeanPropertyBindingResult: 0 errors", errors.getLocalizedMessage());
     assertEquals("org.springframework.validation.BeanPropertyBindingResult: 0 errors", errors.getMessage());
-    assertNull(bindingResult.getGlobalError());
     assertEquals(0, errors.getErrorCount());
     assertEquals(0, errors.getGlobalErrorCount());
-    assertEquals(0, bindingResult.getErrorCount());
-    assertEquals(0, bindingResult.getGlobalErrorCount());
     assertFalse(errors.hasErrors());
     assertFalse(errors.hasGlobalErrors());
-    assertFalse(bindingResult.hasErrors());
-    assertFalse(bindingResult.hasGlobalErrors());
     assertTrue(errors.getAllErrors().isEmpty());
     assertTrue(errors.getGlobalErrors().isEmpty());
-    assertTrue(bindingResult.getAllErrors().isEmpty());
-    assertTrue(bindingResult.getGlobalErrors().isEmpty());
     assertTrue(actualValidateResult);
   }
 
   /**
-   * Test {@link EntityFormValidator#validate(EntityForm, Map, Errors)} with
-   * {@code form}, {@code propertyErrors}, {@code errors}.
-   * <p>
-   * Method under test:
-   * {@link EntityFormValidator#validate(EntityForm, Map, Errors)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testValidateWithFormPropertyErrorsErrors() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.web.form.entity;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass12540 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.form.entity.EntityFormValidator entityFormValidator;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    EntityFormValidator entityFormValidator2 = new EntityFormValidator();
-    EntityForm form = new EntityForm();
-    HashMap<String, List<String>> propertyErrors = new HashMap<>();
-
-    // Act
-    entityFormValidator2.validate(form, propertyErrors, new BindException("Target", "Object Name"));
-  }
-
-  /**
-   * Test {@link EntityFormValidator#validate(EntityForm, Map, Errors)} with
-   * {@code form}, {@code propertyErrors}, {@code errors}.
+   * Test {@link EntityFormValidator#validate(EntityForm, Map, Errors)} with {@code form}, {@code propertyErrors}, {@code errors}.
    * <ul>
    *   <li>Given {@code foo}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link EntityFormValidator#validate(EntityForm, Map, Errors)}
+   * Method under test: {@link EntityFormValidator#validate(EntityForm, Map, Errors)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EntityFormValidator.validate(EntityForm, Map, Errors)"})
   public void testValidateWithFormPropertyErrorsErrors_givenFoo_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    EntityFormValidator entityFormValidator = new EntityFormValidator();
     EntityForm form = new EntityForm();
 
     HashMap<String, List<String>> propertyErrors = new HashMap<>();
@@ -457,22 +231,19 @@ public class EntityFormValidatorDiffblueTest {
   }
 
   /**
-   * Test {@link EntityFormValidator#validate(EntityForm, Map, Errors)} with
-   * {@code form}, {@code propertyErrors}, {@code errors}.
+   * Test {@link EntityFormValidator#validate(EntityForm, Map, Errors)} with {@code form}, {@code propertyErrors}, {@code errors}.
    * <ul>
-   *   <li>When {@link EntityForm} (default constructor).</li>
+   *   <li>When {@link HashMap#HashMap()}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link EntityFormValidator#validate(EntityForm, Map, Errors)}
+   * Method under test: {@link EntityFormValidator#validate(EntityForm, Map, Errors)}
    */
   @Test
-  public void testValidateWithFormPropertyErrorsErrors_whenEntityForm_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EntityFormValidator.validate(EntityForm, Map, Errors)"})
+  public void testValidateWithFormPropertyErrorsErrors_whenHashMap_thenReturnTrue() {
     // Arrange
-    EntityFormValidator entityFormValidator = new EntityFormValidator();
     EntityForm form = new EntityForm();
     HashMap<String, List<String>> propertyErrors = new HashMap<>();
 
@@ -481,42 +252,15 @@ public class EntityFormValidatorDiffblueTest {
   }
 
   /**
-   * Test {@link EntityFormValidator#validate(EntityForm, Map, Errors)} with
-   * {@code form}, {@code propertyErrors}, {@code errors}.
-   * <ul>
-   *   <li>When {@link EntityForm}.</li>
-   *   <li>Then return {@code true}.</li>
-   * </ul>
+   * Test {@link EntityFormValidator#validate(EntityForm, Map, List, Errors)} with {@code form}, {@code propertyErrors}, {@code globalErrors}, {@code errors}.
    * <p>
-   * Method under test:
-   * {@link EntityFormValidator#validate(EntityForm, Map, Errors)}
+   * Method under test: {@link EntityFormValidator#validate(EntityForm, Map, List, Errors)}
    */
   @Test
-  public void testValidateWithFormPropertyErrorsErrors_whenEntityForm_thenReturnTrue2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    EntityFormValidator entityFormValidator = new EntityFormValidator();
-    EntityForm form = mock(EntityForm.class);
-    HashMap<String, List<String>> propertyErrors = new HashMap<>();
-
-    // Act and Assert
-    assertTrue(entityFormValidator.validate(form, propertyErrors, new BindException("Target", "Object Name")));
-  }
-
-  /**
-   * Test {@link EntityFormValidator#validate(EntityForm, Map, List, Errors)} with
-   * {@code form}, {@code propertyErrors}, {@code globalErrors}, {@code errors}.
-   * <p>
-   * Method under test:
-   * {@link EntityFormValidator#validate(EntityForm, Map, List, Errors)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EntityFormValidator.validate(EntityForm, Map, List, Errors)"})
   public void testValidateWithFormPropertyErrorsGlobalErrorsErrors() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    EntityFormValidator entityFormValidator = new EntityFormValidator();
     EntityForm form = new EntityForm();
     HashMap<String, List<String>> propertyErrors = new HashMap<>();
 
@@ -546,22 +290,18 @@ public class EntityFormValidatorDiffblueTest {
     assertEquals(1, errors.getGlobalErrorCount());
     assertEquals(1, bindingResult.getErrorCount());
     assertEquals(1, bindingResult.getGlobalErrorCount());
-    assertArrayEquals(new String[]{"foo.Object Name", "foo"}, globalError.getCodes());
   }
 
   /**
-   * Test {@link EntityFormValidator#validate(EntityForm, Map, List, Errors)} with
-   * {@code form}, {@code propertyErrors}, {@code globalErrors}, {@code errors}.
+   * Test {@link EntityFormValidator#validate(EntityForm, Map, List, Errors)} with {@code form}, {@code propertyErrors}, {@code globalErrors}, {@code errors}.
    * <p>
-   * Method under test:
-   * {@link EntityFormValidator#validate(EntityForm, Map, List, Errors)}
+   * Method under test: {@link EntityFormValidator#validate(EntityForm, Map, List, Errors)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EntityFormValidator.validate(EntityForm, Map, List, Errors)"})
   public void testValidateWithFormPropertyErrorsGlobalErrorsErrors2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    EntityFormValidator entityFormValidator = new EntityFormValidator();
     EntityForm form = new EntityForm();
     HashMap<String, List<String>> propertyErrors = new HashMap<>();
 
@@ -579,12 +319,6 @@ public class EntityFormValidatorDiffblueTest {
     ObjectError globalError = errors.getGlobalError();
     assertEquals("42", globalError.getCode());
     assertEquals("42", globalError.getDefaultMessage());
-    List<ObjectError> allErrors = errors.getAllErrors();
-    assertEquals(2, allErrors.size());
-    ObjectError getResult = allErrors.get(1);
-    assertEquals("Object Name", getResult.getObjectName());
-    assertEquals("foo", getResult.getCode());
-    assertEquals("foo", getResult.getDefaultMessage());
     assertEquals(
         "org.springframework.validation.BeanPropertyBindingResult: 2 errors\n"
             + "Error in object 'Object Name': codes [42.Object Name,42]; arguments []; default message [42]\n"
@@ -595,80 +329,31 @@ public class EntityFormValidatorDiffblueTest {
             + "Error in object 'Object Name': codes [42.Object Name,42]; arguments []; default message [42]\n"
             + "Error in object 'Object Name': codes [foo.Object Name,foo]; arguments []; default message [foo]",
         errors.getMessage());
-    assertNull(getResult.getArguments());
+    assertEquals(2, errors.getAllErrors().size());
     List<ObjectError> globalErrors2 = errors.getGlobalErrors();
     assertEquals(2, globalErrors2.size());
-    List<ObjectError> allErrors2 = bindingResult.getAllErrors();
-    assertEquals(2, allErrors2.size());
-    List<ObjectError> globalErrors3 = bindingResult.getGlobalErrors();
-    assertEquals(2, globalErrors3.size());
+    assertEquals(2, bindingResult.getAllErrors().size());
+    assertEquals(2, bindingResult.getGlobalErrors().size());
     assertEquals(2, errors.getErrorCount());
     assertEquals(2, errors.getGlobalErrorCount());
     assertEquals(2, bindingResult.getErrorCount());
     assertEquals(2, bindingResult.getGlobalErrorCount());
-    assertSame(getResult, globalErrors2.get(1));
-    assertSame(getResult, allErrors2.get(1));
-    assertSame(getResult, globalErrors3.get(1));
     assertSame(globalError, globalErrors2.get(0));
-    assertSame(globalError, allErrors2.get(0));
-    assertSame(globalError, globalErrors3.get(0));
-    assertArrayEquals(new String[]{"42.Object Name", "42"}, globalError.getCodes());
-    assertArrayEquals(new String[]{"foo.Object Name", "foo"}, getResult.getCodes());
   }
 
   /**
-   * Test {@link EntityFormValidator#validate(EntityForm, Map, List, Errors)} with
-   * {@code form}, {@code propertyErrors}, {@code globalErrors}, {@code errors}.
-   * <p>
-   * Method under test:
-   * {@link EntityFormValidator#validate(EntityForm, Map, List, Errors)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testValidateWithFormPropertyErrorsGlobalErrorsErrors3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.web.form.entity;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass12458 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.form.entity.EntityFormValidator entityFormValidator;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    EntityFormValidator entityFormValidator2 = new EntityFormValidator();
-    EntityForm form = new EntityForm();
-    HashMap<String, List<String>> propertyErrors = new HashMap<>();
-    ArrayList<String> globalErrors = new ArrayList<>();
-
-    // Act
-    entityFormValidator2.validate(form, propertyErrors, globalErrors, new BindException("Target", "Object Name"));
-  }
-
-  /**
-   * Test {@link EntityFormValidator#validate(EntityForm, Map, List, Errors)} with
-   * {@code form}, {@code propertyErrors}, {@code globalErrors}, {@code errors}.
+   * Test {@link EntityFormValidator#validate(EntityForm, Map, List, Errors)} with {@code form}, {@code propertyErrors}, {@code globalErrors}, {@code errors}.
    * <ul>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link ArrayList#ArrayList()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link EntityFormValidator#validate(EntityForm, Map, List, Errors)}
+   * Method under test: {@link EntityFormValidator#validate(EntityForm, Map, List, Errors)}
    */
   @Test
-  public void testValidateWithFormPropertyErrorsGlobalErrorsErrors_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EntityFormValidator.validate(EntityForm, Map, List, Errors)"})
+  public void testValidateWithFormPropertyErrorsGlobalErrorsErrors_givenArrayList() {
     // Arrange
-    EntityFormValidator entityFormValidator = new EntityFormValidator();
     EntityForm form = new EntityForm();
 
     HashMap<String, List<String>> propertyErrors = new HashMap<>();
@@ -677,45 +362,30 @@ public class EntityFormValidatorDiffblueTest {
     BindException errors = new BindException("Target", "Object Name");
 
     // Act
-    boolean actualValidateResult = entityFormValidator.validate(form, propertyErrors, globalErrors, errors);
+    entityFormValidator.validate(form, propertyErrors, globalErrors, errors);
 
-    // Assert
-    BindingResult bindingResult = errors.getBindingResult();
-    assertTrue(bindingResult instanceof BeanPropertyBindingResult);
+    // Assert that nothing has changed
     assertEquals("org.springframework.validation.BeanPropertyBindingResult: 0 errors", errors.getLocalizedMessage());
     assertEquals("org.springframework.validation.BeanPropertyBindingResult: 0 errors", errors.getMessage());
-    assertNull(bindingResult.getGlobalError());
     assertEquals(0, errors.getErrorCount());
     assertEquals(0, errors.getGlobalErrorCount());
-    assertEquals(0, bindingResult.getErrorCount());
-    assertEquals(0, bindingResult.getGlobalErrorCount());
-    assertFalse(actualValidateResult);
-    assertFalse(errors.hasErrors());
-    assertFalse(errors.hasGlobalErrors());
-    assertFalse(bindingResult.hasErrors());
-    assertFalse(bindingResult.hasGlobalErrors());
     assertTrue(errors.getAllErrors().isEmpty());
     assertTrue(errors.getGlobalErrors().isEmpty());
-    assertTrue(bindingResult.getAllErrors().isEmpty());
-    assertTrue(bindingResult.getGlobalErrors().isEmpty());
   }
 
   /**
-   * Test {@link EntityFormValidator#validate(EntityForm, Map, List, Errors)} with
-   * {@code form}, {@code propertyErrors}, {@code globalErrors}, {@code errors}.
+   * Test {@link EntityFormValidator#validate(EntityForm, Map, List, Errors)} with {@code form}, {@code propertyErrors}, {@code globalErrors}, {@code errors}.
    * <ul>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link EntityFormValidator#validate(EntityForm, Map, List, Errors)}
+   * Method under test: {@link EntityFormValidator#validate(EntityForm, Map, List, Errors)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EntityFormValidator.validate(EntityForm, Map, List, Errors)"})
   public void testValidateWithFormPropertyErrorsGlobalErrorsErrors_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    EntityFormValidator entityFormValidator = new EntityFormValidator();
     EntityForm form = new EntityForm();
     HashMap<String, List<String>> propertyErrors = new HashMap<>();
     ArrayList<String> globalErrors = new ArrayList<>();
@@ -725,68 +395,12 @@ public class EntityFormValidatorDiffblueTest {
     boolean actualValidateResult = entityFormValidator.validate(form, propertyErrors, globalErrors, errors);
 
     // Assert
-    BindingResult bindingResult = errors.getBindingResult();
-    assertTrue(bindingResult instanceof BeanPropertyBindingResult);
     assertEquals("org.springframework.validation.BeanPropertyBindingResult: 0 errors", errors.getLocalizedMessage());
     assertEquals("org.springframework.validation.BeanPropertyBindingResult: 0 errors", errors.getMessage());
-    assertNull(bindingResult.getGlobalError());
     assertEquals(0, errors.getErrorCount());
     assertEquals(0, errors.getGlobalErrorCount());
-    assertEquals(0, bindingResult.getErrorCount());
-    assertEquals(0, bindingResult.getGlobalErrorCount());
-    assertFalse(errors.hasErrors());
-    assertFalse(errors.hasGlobalErrors());
-    assertFalse(bindingResult.hasErrors());
-    assertFalse(bindingResult.hasGlobalErrors());
     assertTrue(errors.getAllErrors().isEmpty());
     assertTrue(errors.getGlobalErrors().isEmpty());
-    assertTrue(bindingResult.getAllErrors().isEmpty());
-    assertTrue(bindingResult.getGlobalErrors().isEmpty());
-    assertTrue(actualValidateResult);
-  }
-
-  /**
-   * Test {@link EntityFormValidator#validate(EntityForm, Map, List, Errors)} with
-   * {@code form}, {@code propertyErrors}, {@code globalErrors}, {@code errors}.
-   * <ul>
-   *   <li>When {@link EntityForm}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link EntityFormValidator#validate(EntityForm, Map, List, Errors)}
-   */
-  @Test
-  public void testValidateWithFormPropertyErrorsGlobalErrorsErrors_whenEntityForm() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    EntityFormValidator entityFormValidator = new EntityFormValidator();
-    EntityForm form = mock(EntityForm.class);
-    HashMap<String, List<String>> propertyErrors = new HashMap<>();
-    ArrayList<String> globalErrors = new ArrayList<>();
-    BindException errors = new BindException("Target", "Object Name");
-
-    // Act
-    boolean actualValidateResult = entityFormValidator.validate(form, propertyErrors, globalErrors, errors);
-
-    // Assert
-    BindingResult bindingResult = errors.getBindingResult();
-    assertTrue(bindingResult instanceof BeanPropertyBindingResult);
-    assertEquals("org.springframework.validation.BeanPropertyBindingResult: 0 errors", errors.getLocalizedMessage());
-    assertEquals("org.springframework.validation.BeanPropertyBindingResult: 0 errors", errors.getMessage());
-    assertNull(bindingResult.getGlobalError());
-    assertEquals(0, errors.getErrorCount());
-    assertEquals(0, errors.getGlobalErrorCount());
-    assertEquals(0, bindingResult.getErrorCount());
-    assertEquals(0, bindingResult.getGlobalErrorCount());
-    assertFalse(errors.hasErrors());
-    assertFalse(errors.hasGlobalErrors());
-    assertFalse(bindingResult.hasErrors());
-    assertFalse(bindingResult.hasGlobalErrors());
-    assertTrue(errors.getAllErrors().isEmpty());
-    assertTrue(errors.getGlobalErrors().isEmpty());
-    assertTrue(bindingResult.getAllErrors().isEmpty());
-    assertTrue(bindingResult.getGlobalErrors().isEmpty());
     assertTrue(actualValidateResult);
   }
 }

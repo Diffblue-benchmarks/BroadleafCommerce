@@ -1,218 +1,517 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.server.security.service.user;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
+import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
 import org.broadleafcommerce.common.security.BroadleafExternalAuthenticationUserDetails;
+import org.broadleafcommerce.openadmin.server.security.domain.AdminPermission;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminRole;
+import org.broadleafcommerce.openadmin.server.security.domain.AdminRoleImpl;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminUser;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminUserImpl;
-import org.junit.Ignore;
+import org.broadleafcommerce.openadmin.server.security.external.AdminExternalLoginExtensionHandler;
+import org.broadleafcommerce.openadmin.server.security.external.AdminExternalLoginUserExtensionManager;
+import org.broadleafcommerce.openadmin.server.security.service.AdminSecurityHelper;
+import org.broadleafcommerce.openadmin.server.security.service.AdminSecurityService;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
-    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
-    "/bl-open-admin-contentCreator-applicationContext.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class AdminUserProvisioningServiceImplDiffblueTest {
-  @Autowired
+  @Mock
+  private AdminExternalLoginUserExtensionManager adminExternalLoginUserExtensionManager;
+
+  @Mock
+  private AdminSecurityHelper adminSecurityHelper;
+
+  @Mock
+  private AdminSecurityService adminSecurityService;
+
+  @InjectMocks
   private AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl;
 
   /**
-   * Test
-   * {@link AdminUserProvisioningServiceImpl#provisionAdminUser(BroadleafExternalAuthenticationUserDetails)}.
+   * Test {@link AdminUserProvisioningServiceImpl#provisionAdminUser(BroadleafExternalAuthenticationUserDetails)}.
    * <p>
-   * Method under test:
-   * {@link AdminUserProvisioningServiceImpl#provisionAdminUser(BroadleafExternalAuthenticationUserDetails)}
+   * Method under test: {@link AdminUserProvisioningServiceImpl#provisionAdminUser(BroadleafExternalAuthenticationUserDetails)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "AdminUserDetails AdminUserProvisioningServiceImpl.provisionAdminUser(BroadleafExternalAuthenticationUserDetails)"})
   public void testProvisionAdminUser() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service.user;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1559 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.user.AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl2 = new AdminUserProvisioningServiceImpl();
+    AdminExternalLoginExtensionHandler adminExternalLoginExtensionHandler = mock(
+        AdminExternalLoginExtensionHandler.class);
+    when(adminExternalLoginExtensionHandler.performAdditionalAuthenticationTasks(Mockito.<AdminUser>any(),
+        Mockito.<BroadleafExternalAuthenticationUserDetails>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(adminExternalLoginUserExtensionManager.getProxy()).thenReturn(adminExternalLoginExtensionHandler);
+    when(adminSecurityService.readAllAdminRoles()).thenReturn(new ArrayList<>());
+    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any())).thenReturn(new AdminUserImpl());
+    when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any())).thenReturn(new AdminUserImpl());
+    BroadleafExternalAuthenticationUserDetails details = new BroadleafExternalAuthenticationUserDetails("janedoe",
+        "iloveyou", new ArrayList<>());
 
     // Act
-    adminUserProvisioningServiceImpl2
-        .provisionAdminUser(new BroadleafExternalAuthenticationUserDetails("janedoe", "iloveyou", new ArrayList<>()));
+    AdminUserDetails actualProvisionAdminUserResult = adminUserProvisioningServiceImpl.provisionAdminUser(details);
+
+    // Assert
+    verify(adminExternalLoginUserExtensionManager).getProxy();
+    verify(adminExternalLoginExtensionHandler).performAdditionalAuthenticationTasks(isA(AdminUser.class),
+        isA(BroadleafExternalAuthenticationUserDetails.class));
+    verify(adminSecurityService).readAdminUserByUserName(eq("janedoe"));
+    verify(adminSecurityService).readAllAdminRoles();
+    verify(adminSecurityService).saveAdminUser(isA(AdminUser.class));
+    assertEquals(details, actualProvisionAdminUserResult);
   }
 
   /**
-   * Test
-   * {@link AdminUserProvisioningServiceImpl#parseAdminRoles(BroadleafExternalAuthenticationUserDetails)}.
+   * Test {@link AdminUserProvisioningServiceImpl#provisionAdminUser(BroadleafExternalAuthenticationUserDetails)}.
    * <p>
-   * Method under test:
-   * {@link AdminUserProvisioningServiceImpl#parseAdminRoles(BroadleafExternalAuthenticationUserDetails)}
+   * Method under test: {@link AdminUserProvisioningServiceImpl#provisionAdminUser(BroadleafExternalAuthenticationUserDetails)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testParseAdminRoles() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service.user;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1519 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.user.AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "AdminUserDetails AdminUserProvisioningServiceImpl.provisionAdminUser(BroadleafExternalAuthenticationUserDetails)"})
+  public void testProvisionAdminUser2() {
     // Arrange
-    AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl2 = new AdminUserProvisioningServiceImpl();
+    AdminExternalLoginExtensionHandler adminExternalLoginExtensionHandler = mock(
+        AdminExternalLoginExtensionHandler.class);
+    when(adminExternalLoginExtensionHandler.performAdditionalAuthenticationTasks(Mockito.<AdminUser>any(),
+        Mockito.<BroadleafExternalAuthenticationUserDetails>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(adminExternalLoginUserExtensionManager.getProxy()).thenReturn(adminExternalLoginExtensionHandler);
+    when(adminSecurityService.readAllAdminRoles()).thenReturn(new ArrayList<>());
+    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any())).thenReturn(null);
+    when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any())).thenReturn(new AdminUserImpl());
+    BroadleafExternalAuthenticationUserDetails details = new BroadleafExternalAuthenticationUserDetails("janedoe",
+        "iloveyou", new ArrayList<>());
 
     // Act
-    adminUserProvisioningServiceImpl2
-        .parseAdminRoles(new BroadleafExternalAuthenticationUserDetails("janedoe", "iloveyou", new ArrayList<>()));
+    AdminUserDetails actualProvisionAdminUserResult = adminUserProvisioningServiceImpl.provisionAdminUser(details);
+
+    // Assert
+    verify(adminExternalLoginUserExtensionManager).getProxy();
+    verify(adminExternalLoginExtensionHandler).performAdditionalAuthenticationTasks(isA(AdminUser.class),
+        isA(BroadleafExternalAuthenticationUserDetails.class));
+    verify(adminSecurityService).readAdminUserByUserName(eq("janedoe"));
+    verify(adminSecurityService).readAllAdminRoles();
+    verify(adminSecurityService).saveAdminUser(isA(AdminUser.class));
+    assertEquals(details, actualProvisionAdminUserResult);
   }
 
   /**
-   * Test
-   * {@link AdminUserProvisioningServiceImpl#extractAdminUserAuthorities(HashSet)}.
-   * <p>
-   * Method under test:
-   * {@link AdminUserProvisioningServiceImpl#extractAdminUserAuthorities(HashSet)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testExtractAdminUserAuthorities() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service.user;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1492 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.user.AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl2 = new AdminUserProvisioningServiceImpl();
-
-    // Act
-    adminUserProvisioningServiceImpl2.extractAdminUserAuthorities(new HashSet<>());
-  }
-
-  /**
-   * Test
-   * {@link AdminUserProvisioningServiceImpl#extractAdminUserAuthorities(HashSet)}.
+   * Test {@link AdminUserProvisioningServiceImpl#provisionAdminUser(BroadleafExternalAuthenticationUserDetails)}.
    * <ul>
-   *   <li>When {@link HashSet#HashSet()}.</li>
-   *   <li>Then return size is six.</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link AdminRoleImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminUserProvisioningServiceImpl#extractAdminUserAuthorities(HashSet)}
+   * Method under test: {@link AdminUserProvisioningServiceImpl#provisionAdminUser(BroadleafExternalAuthenticationUserDetails)}
    */
   @Test
-  public void testExtractAdminUserAuthorities_whenHashSet_thenReturnSizeIsSix() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "AdminUserDetails AdminUserProvisioningServiceImpl.provisionAdminUser(BroadleafExternalAuthenticationUserDetails)"})
+  public void testProvisionAdminUser_givenArrayListAddAdminRoleImpl() {
     // Arrange
-    AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl = new AdminUserProvisioningServiceImpl();
+    AdminExternalLoginExtensionHandler adminExternalLoginExtensionHandler = mock(
+        AdminExternalLoginExtensionHandler.class);
+    when(adminExternalLoginExtensionHandler.performAdditionalAuthenticationTasks(Mockito.<AdminUser>any(),
+        Mockito.<BroadleafExternalAuthenticationUserDetails>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(adminExternalLoginUserExtensionManager.getProxy()).thenReturn(adminExternalLoginExtensionHandler);
 
-    // Act and Assert
+    ArrayList<AdminRole> adminRoleList = new ArrayList<>();
+    adminRoleList.add(new AdminRoleImpl());
+    when(adminSecurityService.readAllAdminRoles()).thenReturn(adminRoleList);
+    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any())).thenReturn(new AdminUserImpl());
+    when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any())).thenReturn(new AdminUserImpl());
+    BroadleafExternalAuthenticationUserDetails details = new BroadleafExternalAuthenticationUserDetails("janedoe",
+        "iloveyou", new ArrayList<>());
+
+    // Act
+    AdminUserDetails actualProvisionAdminUserResult = adminUserProvisioningServiceImpl.provisionAdminUser(details);
+
+    // Assert
+    verify(adminExternalLoginUserExtensionManager).getProxy();
+    verify(adminExternalLoginExtensionHandler).performAdditionalAuthenticationTasks(isA(AdminUser.class),
+        isA(BroadleafExternalAuthenticationUserDetails.class));
+    verify(adminSecurityService).readAdminUserByUserName(eq("janedoe"));
+    verify(adminSecurityService).readAllAdminRoles();
+    verify(adminSecurityService).saveAdminUser(isA(AdminUser.class));
+    assertEquals(details, actualProvisionAdminUserResult);
+  }
+
+  /**
+   * Test {@link AdminUserProvisioningServiceImpl#provisionAdminUser(BroadleafExternalAuthenticationUserDetails)}.
+   * <ul>
+   *   <li>Given {@code jane.doe@example.org}.</li>
+   *   <li>Then return Authorities size is six.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#provisionAdminUser(BroadleafExternalAuthenticationUserDetails)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "AdminUserDetails AdminUserProvisioningServiceImpl.provisionAdminUser(BroadleafExternalAuthenticationUserDetails)"})
+  public void testProvisionAdminUser_givenJaneDoeExampleOrg_thenReturnAuthoritiesSizeIsSix() {
+    // Arrange
+    AdminExternalLoginExtensionHandler adminExternalLoginExtensionHandler = mock(
+        AdminExternalLoginExtensionHandler.class);
+    when(adminExternalLoginExtensionHandler.performAdditionalAuthenticationTasks(Mockito.<AdminUser>any(),
+        Mockito.<BroadleafExternalAuthenticationUserDetails>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(adminExternalLoginUserExtensionManager.getProxy()).thenReturn(adminExternalLoginExtensionHandler);
+    when(adminSecurityService.readAllAdminRoles()).thenReturn(new ArrayList<>());
+    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any())).thenReturn(new AdminUserImpl());
+    when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any())).thenReturn(new AdminUserImpl());
+    BroadleafExternalAuthenticationUserDetails details = mock(BroadleafExternalAuthenticationUserDetails.class);
+    when(details.getEmail()).thenReturn("jane.doe@example.org");
+    when(details.getFirstName()).thenReturn("Jane");
+    when(details.getLastName()).thenReturn("Doe");
+    when(details.getUsername()).thenReturn("janedoe");
+    when(details.getAuthorities()).thenReturn(new ArrayList<>());
+
+    // Act
+    AdminUserDetails actualProvisionAdminUserResult = adminUserProvisioningServiceImpl.provisionAdminUser(details);
+
+    // Assert
+    verify(adminExternalLoginUserExtensionManager).getProxy();
+    verify(details, atLeast(1)).getEmail();
+    verify(details, atLeast(1)).getFirstName();
+    verify(details, atLeast(1)).getLastName();
+    verify(adminExternalLoginExtensionHandler).performAdditionalAuthenticationTasks(isA(AdminUser.class),
+        isA(BroadleafExternalAuthenticationUserDetails.class));
+    verify(adminSecurityService).readAdminUserByUserName(eq("janedoe"));
+    verify(adminSecurityService).readAllAdminRoles();
+    verify(adminSecurityService).saveAdminUser(isA(AdminUser.class));
+    verify(details).getAuthorities();
+    verify(details, atLeast(1)).getUsername();
+    Collection<GrantedAuthority> authorities = actualProvisionAdminUserResult.getAuthorities();
+    assertEquals(6, authorities.size());
+    assertTrue(authorities instanceof Set);
+    assertEquals("", actualProvisionAdminUserResult.getPassword());
+    assertEquals("janedoe", actualProvisionAdminUserResult.getUsername());
+    assertNull(actualProvisionAdminUserResult.getId());
+    assertTrue(actualProvisionAdminUserResult.isAccountNonExpired());
+    assertTrue(actualProvisionAdminUserResult.isAccountNonLocked());
+    assertTrue(actualProvisionAdminUserResult.isCredentialsNonExpired());
+    assertTrue(actualProvisionAdminUserResult.isEnabled());
+  }
+
+  /**
+   * Test {@link AdminUserProvisioningServiceImpl#provisionAdminUser(BroadleafExternalAuthenticationUserDetails)}.
+   * <ul>
+   *   <li>Given {@link SimpleGrantedAuthority#SimpleGrantedAuthority(String)} with role is {@link AdminUserDetailsServiceImpl#LEGACY_ROLE_PREFIX}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#provisionAdminUser(BroadleafExternalAuthenticationUserDetails)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "AdminUserDetails AdminUserProvisioningServiceImpl.provisionAdminUser(BroadleafExternalAuthenticationUserDetails)"})
+  public void testProvisionAdminUser_givenSimpleGrantedAuthorityWithRoleIsLegacy_role_prefix() {
+    // Arrange
+    AdminExternalLoginExtensionHandler adminExternalLoginExtensionHandler = mock(
+        AdminExternalLoginExtensionHandler.class);
+    when(adminExternalLoginExtensionHandler.performAdditionalAuthenticationTasks(Mockito.<AdminUser>any(),
+        Mockito.<BroadleafExternalAuthenticationUserDetails>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(adminExternalLoginUserExtensionManager.getProxy()).thenReturn(adminExternalLoginExtensionHandler);
+    when(adminSecurityService.readAllAdminRoles()).thenReturn(new ArrayList<>());
+    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any())).thenReturn(new AdminUserImpl());
+    when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any())).thenReturn(new AdminUserImpl());
+
+    ArrayList<GrantedAuthority> authorities = new ArrayList<>();
+    authorities.add(new SimpleGrantedAuthority(AdminUserDetailsServiceImpl.LEGACY_ROLE_PREFIX));
+    BroadleafExternalAuthenticationUserDetails details = new BroadleafExternalAuthenticationUserDetails("janedoe",
+        "iloveyou", authorities);
+
+    // Act
+    AdminUserDetails actualProvisionAdminUserResult = adminUserProvisioningServiceImpl.provisionAdminUser(details);
+
+    // Assert
+    verify(adminExternalLoginUserExtensionManager).getProxy();
+    verify(adminExternalLoginExtensionHandler).performAdditionalAuthenticationTasks(isA(AdminUser.class),
+        isA(BroadleafExternalAuthenticationUserDetails.class));
+    verify(adminSecurityService).readAdminUserByUserName(eq("janedoe"));
+    verify(adminSecurityService).readAllAdminRoles();
+    verify(adminSecurityService).saveAdminUser(isA(AdminUser.class));
+    assertEquals(details, actualProvisionAdminUserResult);
+  }
+
+  /**
+   * Test {@link AdminUserProvisioningServiceImpl#provisionAdminUser(BroadleafExternalAuthenticationUserDetails)}.
+   * <ul>
+   *   <li>Given space.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#provisionAdminUser(BroadleafExternalAuthenticationUserDetails)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "AdminUserDetails AdminUserProvisioningServiceImpl.provisionAdminUser(BroadleafExternalAuthenticationUserDetails)"})
+  public void testProvisionAdminUser_givenSpace() {
+    // Arrange
+    AdminExternalLoginExtensionHandler adminExternalLoginExtensionHandler = mock(
+        AdminExternalLoginExtensionHandler.class);
+    when(adminExternalLoginExtensionHandler.performAdditionalAuthenticationTasks(Mockito.<AdminUser>any(),
+        Mockito.<BroadleafExternalAuthenticationUserDetails>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(adminExternalLoginUserExtensionManager.getProxy()).thenReturn(adminExternalLoginExtensionHandler);
+    when(adminSecurityService.readAllAdminRoles()).thenReturn(new ArrayList<>());
+    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any())).thenReturn(new AdminUserImpl());
+    when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any())).thenReturn(new AdminUserImpl());
+    BroadleafExternalAuthenticationUserDetails details = mock(BroadleafExternalAuthenticationUserDetails.class);
+    when(details.getEmail()).thenReturn(" ");
+    when(details.getFirstName()).thenReturn("Jane");
+    when(details.getLastName()).thenReturn("Doe");
+    when(details.getUsername()).thenReturn("janedoe");
+    when(details.getAuthorities()).thenReturn(new ArrayList<>());
+
+    // Act
+    AdminUserDetails actualProvisionAdminUserResult = adminUserProvisioningServiceImpl.provisionAdminUser(details);
+
+    // Assert
+    verify(adminExternalLoginUserExtensionManager).getProxy();
+    verify(details).getEmail();
+    verify(details, atLeast(1)).getFirstName();
+    verify(details, atLeast(1)).getLastName();
+    verify(adminExternalLoginExtensionHandler).performAdditionalAuthenticationTasks(isA(AdminUser.class),
+        isA(BroadleafExternalAuthenticationUserDetails.class));
+    verify(adminSecurityService).readAdminUserByUserName(eq("janedoe"));
+    verify(adminSecurityService).readAllAdminRoles();
+    verify(adminSecurityService).saveAdminUser(isA(AdminUser.class));
+    verify(details).getAuthorities();
+    verify(details, atLeast(1)).getUsername();
+    Collection<GrantedAuthority> authorities = actualProvisionAdminUserResult.getAuthorities();
+    assertEquals(6, authorities.size());
+    assertTrue(authorities instanceof Set);
+    assertEquals("", actualProvisionAdminUserResult.getPassword());
+    assertEquals("janedoe", actualProvisionAdminUserResult.getUsername());
+    assertNull(actualProvisionAdminUserResult.getId());
+    assertTrue(actualProvisionAdminUserResult.isAccountNonExpired());
+    assertTrue(actualProvisionAdminUserResult.isAccountNonLocked());
+    assertTrue(actualProvisionAdminUserResult.isCredentialsNonExpired());
+    assertTrue(actualProvisionAdminUserResult.isEnabled());
+  }
+
+  /**
+   * Test {@link AdminUserProvisioningServiceImpl#parseAdminRoles(BroadleafExternalAuthenticationUserDetails)}.
+   * <ul>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link AdminRoleImpl} (default constructor).</li>
+   *   <li>Then return Empty.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#parseAdminRoles(BroadleafExternalAuthenticationUserDetails)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "HashSet AdminUserProvisioningServiceImpl.parseAdminRoles(BroadleafExternalAuthenticationUserDetails)"})
+  public void testParseAdminRoles_givenArrayListAddAdminRoleImpl_thenReturnEmpty() {
+    // Arrange
+    ArrayList<AdminRole> adminRoleList = new ArrayList<>();
+    adminRoleList.add(new AdminRoleImpl());
+    when(adminSecurityService.readAllAdminRoles()).thenReturn(adminRoleList);
+
+    // Act
+    HashSet<AdminRole> actualParseAdminRolesResult = adminUserProvisioningServiceImpl
+        .parseAdminRoles(new BroadleafExternalAuthenticationUserDetails("janedoe", "iloveyou", new ArrayList<>()));
+
+    // Assert
+    verify(adminSecurityService).readAllAdminRoles();
+    assertTrue(actualParseAdminRolesResult.isEmpty());
+  }
+
+  /**
+   * Test {@link AdminUserProvisioningServiceImpl#parseAdminRoles(BroadleafExternalAuthenticationUserDetails)}.
+   * <ul>
+   *   <li>Given {@link SimpleGrantedAuthority#SimpleGrantedAuthority(String)} with {@code Role}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#parseAdminRoles(BroadleafExternalAuthenticationUserDetails)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "HashSet AdminUserProvisioningServiceImpl.parseAdminRoles(BroadleafExternalAuthenticationUserDetails)"})
+  public void testParseAdminRoles_givenSimpleGrantedAuthorityWithRole() {
+    // Arrange
+    when(adminSecurityService.readAllAdminRoles()).thenReturn(new ArrayList<>());
+
+    ArrayList<GrantedAuthority> authorities = new ArrayList<>();
+    authorities.add(new SimpleGrantedAuthority("Role"));
+
+    // Act
+    HashSet<AdminRole> actualParseAdminRolesResult = adminUserProvisioningServiceImpl
+        .parseAdminRoles(new BroadleafExternalAuthenticationUserDetails("janedoe", "iloveyou", authorities));
+
+    // Assert
+    verify(adminSecurityService).readAllAdminRoles();
+    assertTrue(actualParseAdminRolesResult.isEmpty());
+  }
+
+  /**
+   * Test {@link AdminUserProvisioningServiceImpl#parseAdminRoles(BroadleafExternalAuthenticationUserDetails)}.
+   * <ul>
+   *   <li>Then return Empty.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#parseAdminRoles(BroadleafExternalAuthenticationUserDetails)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "HashSet AdminUserProvisioningServiceImpl.parseAdminRoles(BroadleafExternalAuthenticationUserDetails)"})
+  public void testParseAdminRoles_thenReturnEmpty() {
+    // Arrange
+    when(adminSecurityService.readAllAdminRoles()).thenReturn(new ArrayList<>());
+
+    // Act
+    HashSet<AdminRole> actualParseAdminRolesResult = adminUserProvisioningServiceImpl
+        .parseAdminRoles(new BroadleafExternalAuthenticationUserDetails("janedoe", "iloveyou", new ArrayList<>()));
+
+    // Assert
+    verify(adminSecurityService).readAllAdminRoles();
+    assertTrue(actualParseAdminRolesResult.isEmpty());
+  }
+
+  /**
+   * Test {@link AdminUserProvisioningServiceImpl#extractAdminUserAuthorities(HashSet)}.
+   * <ul>
+   *   <li>Given {@link AdminSecurityHelper}.</li>
+   *   <li>When {@link HashSet#HashSet()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#extractAdminUserAuthorities(HashSet)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Set AdminUserProvisioningServiceImpl.extractAdminUserAuthorities(HashSet)"})
+  public void testExtractAdminUserAuthorities_givenAdminSecurityHelper_whenHashSet() {
+    // Arrange, Act and Assert
     assertEquals(6, adminUserProvisioningServiceImpl.extractAdminUserAuthorities(new HashSet<>()).size());
   }
 
   /**
-   * Test {@link AdminUserProvisioningServiceImpl#addPermissions(HashSet, List)}.
+   * Test {@link AdminUserProvisioningServiceImpl#extractAdminUserAuthorities(HashSet)}.
+   * <ul>
+   *   <li>When {@link HashSet#HashSet()} add {@link AdminRoleImpl} (default constructor).</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminUserProvisioningServiceImpl#addPermissions(HashSet, List)}
+   * Method under test: {@link AdminUserProvisioningServiceImpl#extractAdminUserAuthorities(HashSet)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddPermissions() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service.user;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1438 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.user.AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Set AdminUserProvisioningServiceImpl.extractAdminUserAuthorities(HashSet)"})
+  public void testExtractAdminUserAuthorities_whenHashSetAddAdminRoleImpl() {
     // Arrange
-    AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl2 = new AdminUserProvisioningServiceImpl();
+    doNothing().when(adminSecurityHelper)
+        .addAllPermissionsToAuthorities(Mockito.<List<SimpleGrantedAuthority>>any(),
+            Mockito.<Collection<AdminPermission>>any());
+
     HashSet<AdminRole> parsedRoles = new HashSet<>();
+    parsedRoles.add(new AdminRoleImpl());
+    parsedRoles.add(new AdminRoleImpl());
 
     // Act
-    adminUserProvisioningServiceImpl2.addPermissions(parsedRoles, new ArrayList<>());
+    Set<SimpleGrantedAuthority> actualExtractAdminUserAuthoritiesResult = adminUserProvisioningServiceImpl
+        .extractAdminUserAuthorities(parsedRoles);
+
+    // Assert
+    verify(adminSecurityHelper, atLeast(1)).addAllPermissionsToAuthorities(isA(List.class), isA(Collection.class));
+    assertEquals(6, actualExtractAdminUserAuthoritiesResult.size());
+  }
+
+  /**
+   * Test {@link AdminUserProvisioningServiceImpl#extractAdminUserAuthorities(HashSet)}.
+   * <ul>
+   *   <li>When {@link LinkedHashSet#LinkedHashSet()} add {@link AdminRoleImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#extractAdminUserAuthorities(HashSet)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Set AdminUserProvisioningServiceImpl.extractAdminUserAuthorities(HashSet)"})
+  public void testExtractAdminUserAuthorities_whenLinkedHashSetAddAdminRoleImpl() {
+    // Arrange
+    doNothing().when(adminSecurityHelper)
+        .addAllPermissionsToAuthorities(Mockito.<List<SimpleGrantedAuthority>>any(),
+            Mockito.<Collection<AdminPermission>>any());
+
+    LinkedHashSet<AdminRole> parsedRoles = new LinkedHashSet<>();
+    parsedRoles.add(new AdminRoleImpl());
+
+    // Act
+    Set<SimpleGrantedAuthority> actualExtractAdminUserAuthoritiesResult = adminUserProvisioningServiceImpl
+        .extractAdminUserAuthorities(parsedRoles);
+
+    // Assert
+    verify(adminSecurityHelper).addAllPermissionsToAuthorities(isA(List.class), isA(Collection.class));
+    assertEquals(6, actualExtractAdminUserAuthoritiesResult.size());
   }
 
   /**
    * Test {@link AdminUserProvisioningServiceImpl#addPermissions(HashSet, List)}.
    * <ul>
+   *   <li>Given {@link AdminSecurityHelper}.</li>
    *   <li>When {@link HashSet#HashSet()}.</li>
    *   <li>Then {@link ArrayList#ArrayList()} size is two.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminUserProvisioningServiceImpl#addPermissions(HashSet, List)}
+   * Method under test: {@link AdminUserProvisioningServiceImpl#addPermissions(HashSet, List)}
    */
   @Test
-  public void testAddPermissions_whenHashSet_thenArrayListSizeIsTwo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminUserProvisioningServiceImpl.addPermissions(HashSet, List)"})
+  public void testAddPermissions_givenAdminSecurityHelper_whenHashSet_thenArrayListSizeIsTwo() {
     // Arrange
-    AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl = new AdminUserProvisioningServiceImpl();
     HashSet<AdminRole> parsedRoles = new HashSet<>();
     ArrayList<SimpleGrantedAuthority> adminUserAuthorities = new ArrayList<>();
 
@@ -230,19 +529,86 @@ public class AdminUserProvisioningServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}.
+   * Test {@link AdminUserProvisioningServiceImpl#addPermissions(HashSet, List)}.
+   * <ul>
+   *   <li>When {@link HashSet#HashSet()} add {@link AdminRoleImpl} (default constructor).</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}
+   * Method under test: {@link AdminUserProvisioningServiceImpl#addPermissions(HashSet, List)}
    */
   @Test
-  public void testConvertPermissionPrefixToRole() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminUserProvisioningServiceImpl.addPermissions(HashSet, List)"})
+  public void testAddPermissions_whenHashSetAddAdminRoleImpl() {
     // Arrange
-    AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl = new AdminUserProvisioningServiceImpl();
+    doNothing().when(adminSecurityHelper)
+        .addAllPermissionsToAuthorities(Mockito.<List<SimpleGrantedAuthority>>any(),
+            Mockito.<Collection<AdminPermission>>any());
 
+    HashSet<AdminRole> parsedRoles = new HashSet<>();
+    parsedRoles.add(new AdminRoleImpl());
+    parsedRoles.add(new AdminRoleImpl());
+    ArrayList<SimpleGrantedAuthority> adminUserAuthorities = new ArrayList<>();
+
+    // Act
+    adminUserProvisioningServiceImpl.addPermissions(parsedRoles, adminUserAuthorities);
+
+    // Assert
+    verify(adminSecurityHelper, atLeast(1)).addAllPermissionsToAuthorities(isA(List.class), isA(Collection.class));
+    assertEquals(2, adminUserAuthorities.size());
+    SimpleGrantedAuthority getResult = adminUserAuthorities.get(1);
+    assertEquals("PERMISSION_ALL_USER_SANDBOX", getResult.getAuthority());
+    assertEquals("PERMISSION_ALL_USER_SANDBOX", getResult.toString());
+    SimpleGrantedAuthority getResult2 = adminUserAuthorities.get(0);
+    assertEquals("PERMISSION_OTHER_DEFAULT", getResult2.getAuthority());
+    assertEquals("PERMISSION_OTHER_DEFAULT", getResult2.toString());
+  }
+
+  /**
+   * Test {@link AdminUserProvisioningServiceImpl#addPermissions(HashSet, List)}.
+   * <ul>
+   *   <li>When {@link LinkedHashSet#LinkedHashSet()} add {@link AdminRoleImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#addPermissions(HashSet, List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminUserProvisioningServiceImpl.addPermissions(HashSet, List)"})
+  public void testAddPermissions_whenLinkedHashSetAddAdminRoleImpl() {
+    // Arrange
+    doNothing().when(adminSecurityHelper)
+        .addAllPermissionsToAuthorities(Mockito.<List<SimpleGrantedAuthority>>any(),
+            Mockito.<Collection<AdminPermission>>any());
+
+    LinkedHashSet<AdminRole> parsedRoles = new LinkedHashSet<>();
+    parsedRoles.add(new AdminRoleImpl());
+    ArrayList<SimpleGrantedAuthority> adminUserAuthorities = new ArrayList<>();
+
+    // Act
+    adminUserProvisioningServiceImpl.addPermissions(parsedRoles, adminUserAuthorities);
+
+    // Assert
+    verify(adminSecurityHelper).addAllPermissionsToAuthorities(isA(List.class), isA(Collection.class));
+    assertEquals(2, adminUserAuthorities.size());
+    SimpleGrantedAuthority getResult = adminUserAuthorities.get(1);
+    assertEquals("PERMISSION_ALL_USER_SANDBOX", getResult.getAuthority());
+    assertEquals("PERMISSION_ALL_USER_SANDBOX", getResult.toString());
+    SimpleGrantedAuthority getResult2 = adminUserAuthorities.get(0);
+    assertEquals("PERMISSION_OTHER_DEFAULT", getResult2.getAuthority());
+    assertEquals("PERMISSION_OTHER_DEFAULT", getResult2.toString());
+  }
+
+  /**
+   * Test {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}.
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminUserProvisioningServiceImpl.convertPermissionPrefixToRole(List)"})
+  public void testConvertPermissionPrefixToRole() {
+    // Arrange
     ArrayList<SimpleGrantedAuthority> adminUserAuthorities = new ArrayList<>();
     adminUserAuthorities.add(new SimpleGrantedAuthority("PERMISSION_PERMISSION_"));
 
@@ -260,19 +626,15 @@ public class AdminUserProvisioningServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}.
+   * Test {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}.
    * <p>
-   * Method under test:
-   * {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}
+   * Method under test: {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminUserProvisioningServiceImpl.convertPermissionPrefixToRole(List)"})
   public void testConvertPermissionPrefixToRole2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl = new AdminUserProvisioningServiceImpl();
-
     ArrayList<SimpleGrantedAuthority> adminUserAuthorities = new ArrayList<>();
     adminUserAuthorities.add(new SimpleGrantedAuthority("PERMISSION_Role"));
 
@@ -290,19 +652,15 @@ public class AdminUserProvisioningServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}.
+   * Test {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}.
    * <p>
-   * Method under test:
-   * {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}
+   * Method under test: {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminUserProvisioningServiceImpl.convertPermissionPrefixToRole(List)"})
   public void testConvertPermissionPrefixToRole3() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl = new AdminUserProvisioningServiceImpl();
-
     ArrayList<SimpleGrantedAuthority> adminUserAuthorities = new ArrayList<>();
     adminUserAuthorities.add(new SimpleGrantedAuthority("PERMISSION_ROLE_"));
     SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority("Role");
@@ -316,64 +674,22 @@ public class AdminUserProvisioningServiceImplDiffblueTest {
     SimpleGrantedAuthority getResult = adminUserAuthorities.get(1);
     assertEquals("ROLE_PERMISSION_ROLE_", getResult.getAuthority());
     assertEquals("ROLE_PERMISSION_ROLE_", getResult.toString());
-    SimpleGrantedAuthority getResult2 = adminUserAuthorities.get(2);
-    assertEquals("ROLE_ROLE_", getResult2.getAuthority());
-    assertEquals("ROLE_ROLE_", getResult2.toString());
     assertSame(simpleGrantedAuthority, adminUserAuthorities.get(3));
   }
 
   /**
-   * Test
-   * {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}.
-   * <p>
-   * Method under test:
-   * {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testConvertPermissionPrefixToRole4() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service.user;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1447 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.user.AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl2 = new AdminUserProvisioningServiceImpl();
-
-    // Act
-    adminUserProvisioningServiceImpl2.convertPermissionPrefixToRole(new ArrayList<>());
-  }
-
-  /**
-   * Test
-   * {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}.
+   * Test {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}.
    * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} second Authority is
-   * {@code ROLE_PERMISSION_}.</li>
+   *   <li>Then {@link ArrayList#ArrayList()} second Authority is {@code ROLE_PERMISSION_}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}
+   * Method under test: {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminUserProvisioningServiceImpl.convertPermissionPrefixToRole(List)"})
   public void testConvertPermissionPrefixToRole_thenArrayListSecondAuthorityIsRolePermission() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl = new AdminUserProvisioningServiceImpl();
-
     ArrayList<SimpleGrantedAuthority> adminUserAuthorities = new ArrayList<>();
     adminUserAuthorities.add(new SimpleGrantedAuthority(AdminUserDetailsServiceImpl.LEGACY_ROLE_PREFIX));
     adminUserAuthorities.add(new SimpleGrantedAuthority("Role"));
@@ -392,22 +708,18 @@ public class AdminUserProvisioningServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}.
+   * Test {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}.
    * <ul>
    *   <li>Then {@link ArrayList#ArrayList()} size is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}
+   * Method under test: {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminUserProvisioningServiceImpl.convertPermissionPrefixToRole(List)"})
   public void testConvertPermissionPrefixToRole_thenArrayListSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl = new AdminUserProvisioningServiceImpl();
-
     ArrayList<SimpleGrantedAuthority> adminUserAuthorities = new ArrayList<>();
     adminUserAuthorities.add(new SimpleGrantedAuthority("Role"));
 
@@ -419,22 +731,18 @@ public class AdminUserProvisioningServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}.
+   * Test {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}.
    * <ul>
    *   <li>Then {@link ArrayList#ArrayList()} size is two.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}
+   * Method under test: {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminUserProvisioningServiceImpl.convertPermissionPrefixToRole(List)"})
   public void testConvertPermissionPrefixToRole_thenArrayListSizeIsTwo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl = new AdminUserProvisioningServiceImpl();
-
     ArrayList<SimpleGrantedAuthority> adminUserAuthorities = new ArrayList<>();
     adminUserAuthorities
         .add(new SimpleGrantedAuthority(AdminUserDetailsServiceImpl.DEFAULT_SPRING_SECURITY_ROLE_PREFIX));
@@ -451,23 +759,18 @@ public class AdminUserProvisioningServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}.
+   * Test {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}.
    * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} third Authority is
-   * {@code ROLE_42}.</li>
+   *   <li>Then {@link ArrayList#ArrayList()} third Authority is {@code ROLE_42}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}
+   * Method under test: {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminUserProvisioningServiceImpl.convertPermissionPrefixToRole(List)"})
   public void testConvertPermissionPrefixToRole_thenArrayListThirdAuthorityIsRole42() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl = new AdminUserProvisioningServiceImpl();
-
     ArrayList<SimpleGrantedAuthority> adminUserAuthorities = new ArrayList<>();
     adminUserAuthorities.add(new SimpleGrantedAuthority("PERMISSION_42"));
 
@@ -485,22 +788,19 @@ public class AdminUserProvisioningServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}.
+   * Test {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}.
    * <ul>
    *   <li>When {@link ArrayList#ArrayList()}.</li>
    *   <li>Then {@link ArrayList#ArrayList()} Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}
+   * Method under test: {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminUserProvisioningServiceImpl.convertPermissionPrefixToRole(List)"})
   public void testConvertPermissionPrefixToRole_whenArrayList_thenArrayListEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl = new AdminUserProvisioningServiceImpl();
     ArrayList<SimpleGrantedAuthority> adminUserAuthorities = new ArrayList<>();
 
     // Act
@@ -511,124 +811,296 @@ public class AdminUserProvisioningServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminUserProvisioningServiceImpl#getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)}.
+   * Test {@link AdminUserProvisioningServiceImpl#getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)}.
    * <p>
-   * Method under test:
-   * {@link AdminUserProvisioningServiceImpl#getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)}
+   * Method under test: {@link AdminUserProvisioningServiceImpl#getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "AdminUser AdminUserProvisioningServiceImpl.getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)"})
   public void testGetAdminUser() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service.user;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1497 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.user.AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl2 = new AdminUserProvisioningServiceImpl();
+    AdminExternalLoginExtensionHandler adminExternalLoginExtensionHandler = mock(
+        AdminExternalLoginExtensionHandler.class);
+    when(adminExternalLoginExtensionHandler.performAdditionalAuthenticationTasks(Mockito.<AdminUser>any(),
+        Mockito.<BroadleafExternalAuthenticationUserDetails>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(adminExternalLoginUserExtensionManager.getProxy()).thenReturn(adminExternalLoginExtensionHandler);
+    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any())).thenReturn(new AdminUserImpl());
+    AdminUserImpl adminUserImpl = new AdminUserImpl();
+    when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any())).thenReturn(adminUserImpl);
     BroadleafExternalAuthenticationUserDetails details = new BroadleafExternalAuthenticationUserDetails("janedoe",
         "iloveyou", new ArrayList<>());
 
     // Act
-    adminUserProvisioningServiceImpl2.getAdminUser(details, new HashSet<>());
-  }
-
-  /**
-   * Test
-   * {@link AdminUserProvisioningServiceImpl#createDetails(AdminUser, BroadleafExternalAuthenticationUserDetails, Set)}.
-   * <p>
-   * Method under test:
-   * {@link AdminUserProvisioningServiceImpl#createDetails(AdminUser, BroadleafExternalAuthenticationUserDetails, Set)}
-   */
-  @Test
-  public void testCreateDetails() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl = new AdminUserProvisioningServiceImpl();
-    AdminUserImpl adminUser = mock(AdminUserImpl.class);
-    when(adminUser.getId()).thenReturn(1L);
-    BroadleafExternalAuthenticationUserDetails details = new BroadleafExternalAuthenticationUserDetails("janedoe",
-        "iloveyou", new ArrayList<>());
-
-    // Act
-    AdminUserDetails actualCreateDetailsResult = adminUserProvisioningServiceImpl.createDetails(adminUser, details,
-        new HashSet<>());
+    AdminUser actualAdminUser = adminUserProvisioningServiceImpl.getAdminUser(details, new HashSet<>());
 
     // Assert
-    verify(adminUser).getId();
-    assertEquals(details, actualCreateDetailsResult);
+    verify(adminExternalLoginUserExtensionManager).getProxy();
+    verify(adminExternalLoginExtensionHandler).performAdditionalAuthenticationTasks(isA(AdminUser.class),
+        isA(BroadleafExternalAuthenticationUserDetails.class));
+    verify(adminSecurityService).readAdminUserByUserName(eq("janedoe"));
+    verify(adminSecurityService).saveAdminUser(isA(AdminUser.class));
+    assertSame(adminUserImpl, actualAdminUser);
   }
 
   /**
-   * Test
-   * {@link AdminUserProvisioningServiceImpl#createDetails(AdminUser, BroadleafExternalAuthenticationUserDetails, Set)}.
+   * Test {@link AdminUserProvisioningServiceImpl#getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)}.
+   * <ul>
+   *   <li>Given {@link AdminRoleImpl} (default constructor).</li>
+   *   <li>When {@link HashSet#HashSet()} add {@link AdminRoleImpl} (default constructor).</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminUserProvisioningServiceImpl#createDetails(AdminUser, BroadleafExternalAuthenticationUserDetails, Set)}
+   * Method under test: {@link AdminUserProvisioningServiceImpl#getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateDetails2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service.user;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1454 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.user.AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "AdminUser AdminUserProvisioningServiceImpl.getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)"})
+  public void testGetAdminUser_givenAdminRoleImpl_whenHashSetAddAdminRoleImpl() {
     // Arrange
-    AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl2 = new AdminUserProvisioningServiceImpl();
+    AdminExternalLoginExtensionHandler adminExternalLoginExtensionHandler = mock(
+        AdminExternalLoginExtensionHandler.class);
+    when(adminExternalLoginExtensionHandler.performAdditionalAuthenticationTasks(Mockito.<AdminUser>any(),
+        Mockito.<BroadleafExternalAuthenticationUserDetails>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(adminExternalLoginUserExtensionManager.getProxy()).thenReturn(adminExternalLoginExtensionHandler);
+    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any())).thenReturn(new AdminUserImpl());
+    AdminUserImpl adminUserImpl = new AdminUserImpl();
+    when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any())).thenReturn(adminUserImpl);
+    BroadleafExternalAuthenticationUserDetails details = mock(BroadleafExternalAuthenticationUserDetails.class);
+    when(details.getEmail()).thenReturn("jane.doe@example.org");
+    when(details.getFirstName()).thenReturn("Jane");
+    when(details.getLastName()).thenReturn("Doe");
+    when(details.getUsername()).thenReturn("janedoe");
+
+    HashSet<AdminRole> parsedRoles = new HashSet<>();
+    parsedRoles.add(new AdminRoleImpl());
+
+    // Act
+    AdminUser actualAdminUser = adminUserProvisioningServiceImpl.getAdminUser(details, parsedRoles);
+
+    // Assert
+    verify(adminExternalLoginUserExtensionManager).getProxy();
+    verify(details, atLeast(1)).getEmail();
+    verify(details, atLeast(1)).getFirstName();
+    verify(details, atLeast(1)).getLastName();
+    verify(adminExternalLoginExtensionHandler).performAdditionalAuthenticationTasks(isA(AdminUser.class),
+        isA(BroadleafExternalAuthenticationUserDetails.class));
+    verify(adminSecurityService).readAdminUserByUserName(eq("janedoe"));
+    verify(adminSecurityService).saveAdminUser(isA(AdminUser.class));
+    verify(details).getUsername();
+    assertSame(adminUserImpl, actualAdminUser);
+  }
+
+  /**
+   * Test {@link AdminUserProvisioningServiceImpl#getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)}.
+   * <ul>
+   *   <li>Given {@link AdminRoleImpl} (default constructor).</li>
+   *   <li>When {@link HashSet#HashSet()} add {@link AdminRoleImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "AdminUser AdminUserProvisioningServiceImpl.getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)"})
+  public void testGetAdminUser_givenAdminRoleImpl_whenHashSetAddAdminRoleImpl2() {
+    // Arrange
+    AdminExternalLoginExtensionHandler adminExternalLoginExtensionHandler = mock(
+        AdminExternalLoginExtensionHandler.class);
+    when(adminExternalLoginExtensionHandler.performAdditionalAuthenticationTasks(Mockito.<AdminUser>any(),
+        Mockito.<BroadleafExternalAuthenticationUserDetails>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(adminExternalLoginUserExtensionManager.getProxy()).thenReturn(adminExternalLoginExtensionHandler);
+    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any())).thenReturn(new AdminUserImpl());
+    AdminUserImpl adminUserImpl = new AdminUserImpl();
+    when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any())).thenReturn(adminUserImpl);
+    BroadleafExternalAuthenticationUserDetails details = mock(BroadleafExternalAuthenticationUserDetails.class);
+    when(details.getEmail()).thenReturn("jane.doe@example.org");
+    when(details.getFirstName()).thenReturn("Jane");
+    when(details.getLastName()).thenReturn("Doe");
+    when(details.getUsername()).thenReturn("janedoe");
+
+    HashSet<AdminRole> parsedRoles = new HashSet<>();
+    parsedRoles.add(new AdminRoleImpl());
+    parsedRoles.add(new AdminRoleImpl());
+
+    // Act
+    AdminUser actualAdminUser = adminUserProvisioningServiceImpl.getAdminUser(details, parsedRoles);
+
+    // Assert
+    verify(adminExternalLoginUserExtensionManager).getProxy();
+    verify(details, atLeast(1)).getEmail();
+    verify(details, atLeast(1)).getFirstName();
+    verify(details, atLeast(1)).getLastName();
+    verify(adminExternalLoginExtensionHandler).performAdditionalAuthenticationTasks(isA(AdminUser.class),
+        isA(BroadleafExternalAuthenticationUserDetails.class));
+    verify(adminSecurityService).readAdminUserByUserName(eq("janedoe"));
+    verify(adminSecurityService).saveAdminUser(isA(AdminUser.class));
+    verify(details).getUsername();
+    assertSame(adminUserImpl, actualAdminUser);
+  }
+
+  /**
+   * Test {@link AdminUserProvisioningServiceImpl#getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)}.
+   * <ul>
+   *   <li>Given {@link AdminSecurityService} {@link AdminSecurityService#readAdminUserByUserName(String)} return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "AdminUser AdminUserProvisioningServiceImpl.getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)"})
+  public void testGetAdminUser_givenAdminSecurityServiceReadAdminUserByUserNameReturnNull() {
+    // Arrange
+    AdminExternalLoginExtensionHandler adminExternalLoginExtensionHandler = mock(
+        AdminExternalLoginExtensionHandler.class);
+    when(adminExternalLoginExtensionHandler.performAdditionalAuthenticationTasks(Mockito.<AdminUser>any(),
+        Mockito.<BroadleafExternalAuthenticationUserDetails>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(adminExternalLoginUserExtensionManager.getProxy()).thenReturn(adminExternalLoginExtensionHandler);
+    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any())).thenReturn(null);
+    AdminUserImpl adminUserImpl = new AdminUserImpl();
+    when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any())).thenReturn(adminUserImpl);
+    BroadleafExternalAuthenticationUserDetails details = new BroadleafExternalAuthenticationUserDetails("janedoe",
+        "iloveyou", new ArrayList<>());
+
+    // Act
+    AdminUser actualAdminUser = adminUserProvisioningServiceImpl.getAdminUser(details, new HashSet<>());
+
+    // Assert
+    verify(adminExternalLoginUserExtensionManager).getProxy();
+    verify(adminExternalLoginExtensionHandler).performAdditionalAuthenticationTasks(isA(AdminUser.class),
+        isA(BroadleafExternalAuthenticationUserDetails.class));
+    verify(adminSecurityService).readAdminUserByUserName(eq("janedoe"));
+    verify(adminSecurityService).saveAdminUser(isA(AdminUser.class));
+    assertSame(adminUserImpl, actualAdminUser);
+  }
+
+  /**
+   * Test {@link AdminUserProvisioningServiceImpl#getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)}.
+   * <ul>
+   *   <li>Given {@code jane.doe@example.org}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "AdminUser AdminUserProvisioningServiceImpl.getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)"})
+  public void testGetAdminUser_givenJaneDoeExampleOrg() {
+    // Arrange
+    AdminExternalLoginExtensionHandler adminExternalLoginExtensionHandler = mock(
+        AdminExternalLoginExtensionHandler.class);
+    when(adminExternalLoginExtensionHandler.performAdditionalAuthenticationTasks(Mockito.<AdminUser>any(),
+        Mockito.<BroadleafExternalAuthenticationUserDetails>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(adminExternalLoginUserExtensionManager.getProxy()).thenReturn(adminExternalLoginExtensionHandler);
+    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any())).thenReturn(new AdminUserImpl());
+    AdminUserImpl adminUserImpl = new AdminUserImpl();
+    when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any())).thenReturn(adminUserImpl);
+    BroadleafExternalAuthenticationUserDetails details = mock(BroadleafExternalAuthenticationUserDetails.class);
+    when(details.getEmail()).thenReturn("jane.doe@example.org");
+    when(details.getFirstName()).thenReturn("Jane");
+    when(details.getLastName()).thenReturn("Doe");
+    when(details.getUsername()).thenReturn("janedoe");
+
+    // Act
+    AdminUser actualAdminUser = adminUserProvisioningServiceImpl.getAdminUser(details, new HashSet<>());
+
+    // Assert
+    verify(adminExternalLoginUserExtensionManager).getProxy();
+    verify(details, atLeast(1)).getEmail();
+    verify(details, atLeast(1)).getFirstName();
+    verify(details, atLeast(1)).getLastName();
+    verify(adminExternalLoginExtensionHandler).performAdditionalAuthenticationTasks(isA(AdminUser.class),
+        isA(BroadleafExternalAuthenticationUserDetails.class));
+    verify(adminSecurityService).readAdminUserByUserName(eq("janedoe"));
+    verify(adminSecurityService).saveAdminUser(isA(AdminUser.class));
+    verify(details).getUsername();
+    assertSame(adminUserImpl, actualAdminUser);
+  }
+
+  /**
+   * Test {@link AdminUserProvisioningServiceImpl#getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)}.
+   * <ul>
+   *   <li>Given space.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "AdminUser AdminUserProvisioningServiceImpl.getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)"})
+  public void testGetAdminUser_givenSpace() {
+    // Arrange
+    AdminExternalLoginExtensionHandler adminExternalLoginExtensionHandler = mock(
+        AdminExternalLoginExtensionHandler.class);
+    when(adminExternalLoginExtensionHandler.performAdditionalAuthenticationTasks(Mockito.<AdminUser>any(),
+        Mockito.<BroadleafExternalAuthenticationUserDetails>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(adminExternalLoginUserExtensionManager.getProxy()).thenReturn(adminExternalLoginExtensionHandler);
+    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any())).thenReturn(new AdminUserImpl());
+    AdminUserImpl adminUserImpl = new AdminUserImpl();
+    when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any())).thenReturn(adminUserImpl);
+    BroadleafExternalAuthenticationUserDetails details = mock(BroadleafExternalAuthenticationUserDetails.class);
+    when(details.getEmail()).thenReturn(" ");
+    when(details.getFirstName()).thenReturn("Jane");
+    when(details.getLastName()).thenReturn("Doe");
+    when(details.getUsername()).thenReturn("janedoe");
+
+    // Act
+    AdminUser actualAdminUser = adminUserProvisioningServiceImpl.getAdminUser(details, new HashSet<>());
+
+    // Assert
+    verify(adminExternalLoginUserExtensionManager).getProxy();
+    verify(details).getEmail();
+    verify(details, atLeast(1)).getFirstName();
+    verify(details, atLeast(1)).getLastName();
+    verify(adminExternalLoginExtensionHandler).performAdditionalAuthenticationTasks(isA(AdminUser.class),
+        isA(BroadleafExternalAuthenticationUserDetails.class));
+    verify(adminSecurityService).readAdminUserByUserName(eq("janedoe"));
+    verify(adminSecurityService).saveAdminUser(isA(AdminUser.class));
+    verify(details).getUsername();
+    assertSame(adminUserImpl, actualAdminUser);
+  }
+
+  /**
+   * Test {@link AdminUserProvisioningServiceImpl#createDetails(AdminUser, BroadleafExternalAuthenticationUserDetails, Set)}.
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#createDetails(AdminUser, BroadleafExternalAuthenticationUserDetails, Set)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "AdminUserDetails AdminUserProvisioningServiceImpl.createDetails(AdminUser, BroadleafExternalAuthenticationUserDetails, Set)"})
+  public void testCreateDetails() {
+    // Arrange
     AdminUserImpl adminUser = new AdminUserImpl();
     BroadleafExternalAuthenticationUserDetails details = new BroadleafExternalAuthenticationUserDetails("janedoe",
         "iloveyou", new ArrayList<>());
 
-    // Act
-    adminUserProvisioningServiceImpl2.createDetails(adminUser, details, new HashSet<>());
+    // Act and Assert
+    assertEquals(details, adminUserProvisioningServiceImpl.createDetails(adminUser, details, new HashSet<>()));
   }
 
   /**
-   * Test
-   * {@link AdminUserProvisioningServiceImpl#createDetails(AdminUser, BroadleafExternalAuthenticationUserDetails, Set)}.
+   * Test {@link AdminUserProvisioningServiceImpl#createDetails(AdminUser, BroadleafExternalAuthenticationUserDetails, Set)}.
    * <ul>
    *   <li>Given {@code janedoe}.</li>
    *   <li>Then return Authorities size is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminUserProvisioningServiceImpl#createDetails(AdminUser, BroadleafExternalAuthenticationUserDetails, Set)}
+   * Method under test: {@link AdminUserProvisioningServiceImpl#createDetails(AdminUser, BroadleafExternalAuthenticationUserDetails, Set)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "AdminUserDetails AdminUserProvisioningServiceImpl.createDetails(AdminUser, BroadleafExternalAuthenticationUserDetails, Set)"})
   public void testCreateDetails_givenJanedoe_thenReturnAuthoritiesSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl = new AdminUserProvisioningServiceImpl();
-    AdminUserImpl adminUser = mock(AdminUserImpl.class);
-    when(adminUser.getId()).thenReturn(1L);
+    AdminUserImpl adminUser = new AdminUserImpl();
     BroadleafExternalAuthenticationUserDetails details = mock(BroadleafExternalAuthenticationUserDetails.class);
     when(details.getUsername()).thenReturn("janedoe");
 
@@ -640,14 +1112,13 @@ public class AdminUserProvisioningServiceImplDiffblueTest {
         adminUserAuthorities);
 
     // Assert
-    verify(adminUser).getId();
     verify(details).getUsername();
     Collection<GrantedAuthority> authorities = actualCreateDetailsResult.getAuthorities();
     assertEquals(1, authorities.size());
     assertTrue(authorities instanceof Set);
     assertEquals("", actualCreateDetailsResult.getPassword());
     assertEquals("janedoe", actualCreateDetailsResult.getUsername());
-    assertEquals(1L, actualCreateDetailsResult.getId().longValue());
+    assertNull(actualCreateDetailsResult.getId());
     assertTrue(actualCreateDetailsResult.isAccountNonExpired());
     assertTrue(actualCreateDetailsResult.isAccountNonLocked());
     assertTrue(actualCreateDetailsResult.isCredentialsNonExpired());
@@ -655,42 +1126,46 @@ public class AdminUserProvisioningServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminUserProvisioningServiceImpl#createDetails(AdminUser, BroadleafExternalAuthenticationUserDetails, Set)}.
+   * Test {@link AdminUserProvisioningServiceImpl#parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)}.
    * <ul>
-   *   <li>When {@link AdminUserImpl} (default constructor).</li>
+   *   <li>Given {@link AdminSecurityHelper}.</li>
+   *   <li>Then return Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminUserProvisioningServiceImpl#createDetails(AdminUser, BroadleafExternalAuthenticationUserDetails, Set)}
+   * Method under test: {@link AdminUserProvisioningServiceImpl#parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)}
    */
   @Test
-  public void testCreateDetails_whenAdminUserImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl = new AdminUserProvisioningServiceImpl();
-    AdminUserImpl adminUser = new AdminUserImpl();
-    BroadleafExternalAuthenticationUserDetails details = new BroadleafExternalAuthenticationUserDetails("janedoe",
-        "iloveyou", new ArrayList<>());
-
-    // Act and Assert
-    assertEquals(details, adminUserProvisioningServiceImpl.createDetails(adminUser, details, new HashSet<>()));
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "HashSet AdminUserProvisioningServiceImpl.parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)"})
+  public void testParseRolesFromUserDetails_givenAdminSecurityHelper_thenReturnEmpty() {
+    // Arrange, Act and Assert
+    assertTrue(
+        adminUserProvisioningServiceImpl
+            .parseRolesFromUserDetails(
+                new BroadleafExternalAuthenticationUserDetails("janedoe", "iloveyou", new ArrayList<>()))
+            .isEmpty());
   }
 
   /**
-   * Test
-   * {@link AdminUserProvisioningServiceImpl#parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)}.
+   * Test {@link AdminUserProvisioningServiceImpl#parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)}.
+   * <ul>
+   *   <li>Given {@link HashMap#HashMap()} {@code foo} is array of {@link String} with {@code foo}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminUserProvisioningServiceImpl#parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)}
+   * Method under test: {@link AdminUserProvisioningServiceImpl#parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)}
    */
   @Test
-  public void testParseRolesFromUserDetails() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "HashSet AdminUserProvisioningServiceImpl.parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)"})
+  public void testParseRolesFromUserDetails_givenHashMapFooIsArrayOfStringWithFoo() {
     // Arrange
+    HashMap<String, String[]> roleNameSubstitutions = new HashMap<>();
+    roleNameSubstitutions.put("foo", new String[]{"foo"});
+
     AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl = new AdminUserProvisioningServiceImpl();
+    adminUserProvisioningServiceImpl.setRoleNameSubstitutions(roleNameSubstitutions);
 
     // Act and Assert
     assertTrue(
@@ -701,188 +1176,44 @@ public class AdminUserProvisioningServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminUserProvisioningServiceImpl#parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)}.
-   * <p>
-   * Method under test:
-   * {@link AdminUserProvisioningServiceImpl#parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testParseRolesFromUserDetails2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service.user;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1539 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.user.AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl2 = new AdminUserProvisioningServiceImpl();
-
-    // Act
-    adminUserProvisioningServiceImpl2.parseRolesFromUserDetails(
-        new BroadleafExternalAuthenticationUserDetails("janedoe", "iloveyou", new ArrayList<>()));
-  }
-
-  /**
-   * Test
-   * {@link AdminUserProvisioningServiceImpl#parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)}.
+   * Test {@link AdminUserProvisioningServiceImpl#parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add
-   * {@link SimpleGrantedAuthority#SimpleGrantedAuthority(String)} with
-   * {@code Role}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link AdminUserProvisioningServiceImpl#parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)}
-   */
-  @Test
-  public void testParseRolesFromUserDetails_givenArrayListAddSimpleGrantedAuthorityWithRole() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    HashMap<String, String[]> roleNameSubstitutions = new HashMap<>();
-    roleNameSubstitutions.put("foo", new String[]{"foo"});
-
-    AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl = new AdminUserProvisioningServiceImpl();
-    adminUserProvisioningServiceImpl.setRoleNameSubstitutions(roleNameSubstitutions);
-
-    ArrayList<GrantedAuthority> grantedAuthorityList = new ArrayList<>();
-    grantedAuthorityList.add(new SimpleGrantedAuthority("Role"));
-    BroadleafExternalAuthenticationUserDetails details = mock(BroadleafExternalAuthenticationUserDetails.class);
-    when(details.getAuthorities()).thenReturn(grantedAuthorityList);
-
-    // Act
-    HashSet<String> actualParseRolesFromUserDetailsResult = adminUserProvisioningServiceImpl
-        .parseRolesFromUserDetails(details);
-
-    // Assert
-    verify(details).getAuthorities();
-    assertEquals(1, actualParseRolesFromUserDetailsResult.size());
-    assertTrue(actualParseRolesFromUserDetailsResult.contains("Role"));
-  }
-
-  /**
-   * Test
-   * {@link AdminUserProvisioningServiceImpl#parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)}.
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()}.</li>
    *   <li>Then return Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminUserProvisioningServiceImpl#parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)}
+   * Method under test: {@link AdminUserProvisioningServiceImpl#parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)}
    */
   @Test
-  public void testParseRolesFromUserDetails_givenArrayList_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl = new AdminUserProvisioningServiceImpl();
-    BroadleafExternalAuthenticationUserDetails details = mock(BroadleafExternalAuthenticationUserDetails.class);
-    when(details.getAuthorities()).thenReturn(new ArrayList<>());
-
-    // Act
-    HashSet<String> actualParseRolesFromUserDetailsResult = adminUserProvisioningServiceImpl
-        .parseRolesFromUserDetails(details);
-
-    // Assert
-    verify(details).getAuthorities();
-    assertTrue(actualParseRolesFromUserDetailsResult.isEmpty());
-  }
-
-  /**
-   * Test
-   * {@link AdminUserProvisioningServiceImpl#parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)}.
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link AdminUserProvisioningServiceImpl#parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)}
-   */
-  @Test
-  public void testParseRolesFromUserDetails_givenArrayList_thenReturnEmpty2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "HashSet AdminUserProvisioningServiceImpl.parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)"})
+  public void testParseRolesFromUserDetails_thenReturnEmpty() {
     // Arrange
     AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl = new AdminUserProvisioningServiceImpl();
     adminUserProvisioningServiceImpl.setRoleNameSubstitutions(new HashMap<>());
-    BroadleafExternalAuthenticationUserDetails details = mock(BroadleafExternalAuthenticationUserDetails.class);
-    when(details.getAuthorities()).thenReturn(new ArrayList<>());
 
-    // Act
-    HashSet<String> actualParseRolesFromUserDetailsResult = adminUserProvisioningServiceImpl
-        .parseRolesFromUserDetails(details);
-
-    // Assert
-    verify(details).getAuthorities();
-    assertTrue(actualParseRolesFromUserDetailsResult.isEmpty());
+    // Act and Assert
+    assertTrue(
+        adminUserProvisioningServiceImpl
+            .parseRolesFromUserDetails(
+                new BroadleafExternalAuthenticationUserDetails("janedoe", "iloveyou", new ArrayList<>()))
+            .isEmpty());
   }
 
   /**
-   * Test
-   * {@link AdminUserProvisioningServiceImpl#parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)}.
+   * Test {@link AdminUserProvisioningServiceImpl#parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)}.
    * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code foo} is array of {@link String}
-   * with {@code foo}.</li>
+   *   <li>Then return size is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminUserProvisioningServiceImpl#parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)}
+   * Method under test: {@link AdminUserProvisioningServiceImpl#parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)}
    */
   @Test
-  public void testParseRolesFromUserDetails_givenHashMapFooIsArrayOfStringWithFoo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "HashSet AdminUserProvisioningServiceImpl.parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)"})
+  public void testParseRolesFromUserDetails_thenReturnSizeIsOne() {
     // Arrange
-    HashMap<String, String[]> roleNameSubstitutions = new HashMap<>();
-    roleNameSubstitutions.put("foo", new String[]{"foo"});
-
-    AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl = new AdminUserProvisioningServiceImpl();
-    adminUserProvisioningServiceImpl.setRoleNameSubstitutions(roleNameSubstitutions);
-    BroadleafExternalAuthenticationUserDetails details = mock(BroadleafExternalAuthenticationUserDetails.class);
-    when(details.getAuthorities()).thenReturn(new ArrayList<>());
-
-    // Act
-    HashSet<String> actualParseRolesFromUserDetailsResult = adminUserProvisioningServiceImpl
-        .parseRolesFromUserDetails(details);
-
-    // Assert
-    verify(details).getAuthorities();
-    assertTrue(actualParseRolesFromUserDetailsResult.isEmpty());
-  }
-
-  /**
-   * Test
-   * {@link AdminUserProvisioningServiceImpl#parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)}.
-   * <ul>
-   *   <li>Given {@link SimpleGrantedAuthority#SimpleGrantedAuthority(String)} with
-   * {@code Role}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link AdminUserProvisioningServiceImpl#parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)}
-   */
-  @Test
-  public void testParseRolesFromUserDetails_givenSimpleGrantedAuthorityWithRole() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl = new AdminUserProvisioningServiceImpl();
-
     ArrayList<GrantedAuthority> authorities = new ArrayList<>();
     authorities.add(new SimpleGrantedAuthority("Role"));
 
@@ -896,26 +1227,34 @@ public class AdminUserProvisioningServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link AdminUserProvisioningServiceImpl#setRoleNameSubstitutions(Map)}.
+   * Test {@link AdminUserProvisioningServiceImpl#parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)}.
+   * <ul>
+   *   <li>Then return size is one.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminUserProvisioningServiceImpl#setRoleNameSubstitutions(Map)}
+   * Method under test: {@link AdminUserProvisioningServiceImpl#parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)}
    */
   @Test
-  public void testSetRoleNameSubstitutions() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing observers.
-    //   Diffblue Cover was unable to create an assertion.
-    //   Add getters for the following fields or make them package-private:
-    //     AdminUserProvisioningServiceImpl.adminExternalLoginExtensionManager
-    //     AdminUserProvisioningServiceImpl.adminSecurityHelper
-    //     AdminUserProvisioningServiceImpl.roleNameSubstitutions
-    //     AdminUserProvisioningServiceImpl.securityService
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "HashSet AdminUserProvisioningServiceImpl.parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)"})
+  public void testParseRolesFromUserDetails_thenReturnSizeIsOne2() {
     // Arrange
+    HashMap<String, String[]> roleNameSubstitutions = new HashMap<>();
+    roleNameSubstitutions.put("foo", new String[]{"foo"});
+
     AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl = new AdminUserProvisioningServiceImpl();
+    adminUserProvisioningServiceImpl.setRoleNameSubstitutions(roleNameSubstitutions);
+
+    ArrayList<GrantedAuthority> authorities = new ArrayList<>();
+    authorities.add(new SimpleGrantedAuthority("Role"));
 
     // Act
-    adminUserProvisioningServiceImpl.setRoleNameSubstitutions(new HashMap<>());
+    HashSet<String> actualParseRolesFromUserDetailsResult = adminUserProvisioningServiceImpl
+        .parseRolesFromUserDetails(new BroadleafExternalAuthenticationUserDetails("janedoe", "iloveyou", authorities));
+
+    // Assert
+    assertEquals(1, actualParseRolesFromUserDetailsResult.size());
+    assertTrue(actualParseRolesFromUserDetailsResult.contains("Role"));
   }
 }

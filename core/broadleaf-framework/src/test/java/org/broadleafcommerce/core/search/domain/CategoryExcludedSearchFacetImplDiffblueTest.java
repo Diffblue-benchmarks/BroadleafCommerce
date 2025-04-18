@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.search.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -10,36 +27,32 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import org.broadleafcommerce.common.copy.CreateResponse;
 import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
 import org.broadleafcommerce.common.service.GenericEntityService;
-import org.broadleafcommerce.common.service.GenericEntityServiceImpl;
 import org.broadleafcommerce.common.site.domain.CatalogImpl;
 import org.broadleafcommerce.common.site.domain.SiteImpl;
-import org.broadleafcommerce.core.catalog.domain.Category;
 import org.broadleafcommerce.core.catalog.domain.CategoryImpl;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class CategoryExcludedSearchFacetImplDiffblueTest {
   @Autowired
   private CategoryExcludedSearchFacetImpl categoryExcludedSearchFacetImpl;
 
   /**
-   * Test {@link CategoryExcludedSearchFacetImpl#equals(Object)}, and
-   * {@link CategoryExcludedSearchFacetImpl#hashCode()}.
+   * Test {@link CategoryExcludedSearchFacetImpl#equals(Object)}, and {@link CategoryExcludedSearchFacetImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -52,6 +65,9 @@ public class CategoryExcludedSearchFacetImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryExcludedSearchFacetImpl.equals(Object)",
+      "int CategoryExcludedSearchFacetImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     CategoryExcludedSearchFacetImpl categoryExcludedSearchFacetImpl = new CategoryExcludedSearchFacetImpl();
@@ -73,8 +89,7 @@ public class CategoryExcludedSearchFacetImplDiffblueTest {
   }
 
   /**
-   * Test {@link CategoryExcludedSearchFacetImpl#equals(Object)}, and
-   * {@link CategoryExcludedSearchFacetImpl#hashCode()}.
+   * Test {@link CategoryExcludedSearchFacetImpl#equals(Object)}, and {@link CategoryExcludedSearchFacetImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -87,6 +102,9 @@ public class CategoryExcludedSearchFacetImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryExcludedSearchFacetImpl.equals(Object)",
+      "int CategoryExcludedSearchFacetImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     CategoryExcludedSearchFacetImpl categoryExcludedSearchFacetImpl = new CategoryExcludedSearchFacetImpl();
@@ -108,8 +126,7 @@ public class CategoryExcludedSearchFacetImplDiffblueTest {
   }
 
   /**
-   * Test {@link CategoryExcludedSearchFacetImpl#equals(Object)}, and
-   * {@link CategoryExcludedSearchFacetImpl#hashCode()}.
+   * Test {@link CategoryExcludedSearchFacetImpl#equals(Object)}, and {@link CategoryExcludedSearchFacetImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -122,6 +139,9 @@ public class CategoryExcludedSearchFacetImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryExcludedSearchFacetImpl.equals(Object)",
+      "int CategoryExcludedSearchFacetImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     CategoryExcludedSearchFacetImpl categoryExcludedSearchFacetImpl = new CategoryExcludedSearchFacetImpl();
@@ -143,8 +163,7 @@ public class CategoryExcludedSearchFacetImplDiffblueTest {
   }
 
   /**
-   * Test {@link CategoryExcludedSearchFacetImpl#equals(Object)}, and
-   * {@link CategoryExcludedSearchFacetImpl#hashCode()}.
+   * Test {@link CategoryExcludedSearchFacetImpl#equals(Object)}, and {@link CategoryExcludedSearchFacetImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -157,6 +176,9 @@ public class CategoryExcludedSearchFacetImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryExcludedSearchFacetImpl.equals(Object)",
+      "int CategoryExcludedSearchFacetImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
     // Arrange
     CategoryExcludedSearchFacetImpl categoryExcludedSearchFacetImpl = new CategoryExcludedSearchFacetImpl();
@@ -178,8 +200,7 @@ public class CategoryExcludedSearchFacetImplDiffblueTest {
   }
 
   /**
-   * Test {@link CategoryExcludedSearchFacetImpl#equals(Object)}, and
-   * {@link CategoryExcludedSearchFacetImpl#hashCode()}.
+   * Test {@link CategoryExcludedSearchFacetImpl#equals(Object)}, and {@link CategoryExcludedSearchFacetImpl#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -192,6 +213,9 @@ public class CategoryExcludedSearchFacetImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryExcludedSearchFacetImpl.equals(Object)",
+      "int CategoryExcludedSearchFacetImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     CategoryExcludedSearchFacetImpl categoryExcludedSearchFacetImpl = new CategoryExcludedSearchFacetImpl();
@@ -216,6 +240,9 @@ public class CategoryExcludedSearchFacetImplDiffblueTest {
    * Method under test: {@link CategoryExcludedSearchFacetImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryExcludedSearchFacetImpl.equals(Object)",
+      "int CategoryExcludedSearchFacetImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     CategoryExcludedSearchFacetImpl categoryExcludedSearchFacetImpl = new CategoryExcludedSearchFacetImpl();
@@ -244,6 +271,9 @@ public class CategoryExcludedSearchFacetImplDiffblueTest {
    * Method under test: {@link CategoryExcludedSearchFacetImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryExcludedSearchFacetImpl.equals(Object)",
+      "int CategoryExcludedSearchFacetImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     CategoryExcludedSearchFacetImpl categoryExcludedSearchFacetImpl = new CategoryExcludedSearchFacetImpl();
@@ -272,6 +302,9 @@ public class CategoryExcludedSearchFacetImplDiffblueTest {
    * Method under test: {@link CategoryExcludedSearchFacetImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryExcludedSearchFacetImpl.equals(Object)",
+      "int CategoryExcludedSearchFacetImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     SearchFacetImpl searchFacet = new SearchFacetImpl();
@@ -303,6 +336,9 @@ public class CategoryExcludedSearchFacetImplDiffblueTest {
    * Method under test: {@link CategoryExcludedSearchFacetImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryExcludedSearchFacetImpl.equals(Object)",
+      "int CategoryExcludedSearchFacetImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     CategoryExcludedSearchFacetImpl categoryExcludedSearchFacetImpl = new CategoryExcludedSearchFacetImpl();
@@ -331,6 +367,9 @@ public class CategoryExcludedSearchFacetImplDiffblueTest {
    * Method under test: {@link CategoryExcludedSearchFacetImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryExcludedSearchFacetImpl.equals(Object)",
+      "int CategoryExcludedSearchFacetImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
     CategoryExcludedSearchFacetImpl categoryExcludedSearchFacetImpl = new CategoryExcludedSearchFacetImpl();
@@ -359,6 +398,9 @@ public class CategoryExcludedSearchFacetImplDiffblueTest {
    * Method under test: {@link CategoryExcludedSearchFacetImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryExcludedSearchFacetImpl.equals(Object)",
+      "int CategoryExcludedSearchFacetImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
     CategoryExcludedSearchFacetImpl categoryExcludedSearchFacetImpl = new CategoryExcludedSearchFacetImpl();
@@ -387,6 +429,9 @@ public class CategoryExcludedSearchFacetImplDiffblueTest {
    * Method under test: {@link CategoryExcludedSearchFacetImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryExcludedSearchFacetImpl.equals(Object)",
+      "int CategoryExcludedSearchFacetImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     CategoryExcludedSearchFacetImpl categoryExcludedSearchFacetImpl = new CategoryExcludedSearchFacetImpl();
@@ -409,6 +454,9 @@ public class CategoryExcludedSearchFacetImplDiffblueTest {
    * Method under test: {@link CategoryExcludedSearchFacetImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryExcludedSearchFacetImpl.equals(Object)",
+      "int CategoryExcludedSearchFacetImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     CategoryExcludedSearchFacetImpl categoryExcludedSearchFacetImpl = new CategoryExcludedSearchFacetImpl();
@@ -422,25 +470,24 @@ public class CategoryExcludedSearchFacetImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CategoryExcludedSearchFacetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * Test {@link CategoryExcludedSearchFacetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <p>
-   * Method under test:
-   * {@link CategoryExcludedSearchFacetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link CategoryExcludedSearchFacetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "CreateResponse CategoryExcludedSearchFacetImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryExcludedSearchFacetImpl categoryExcludedSearchFacetImpl = new CategoryExcludedSearchFacetImpl();
+    CategoryExcludedSearchFacetImpl categoryExcludedSearchFacetImpl2 = new CategoryExcludedSearchFacetImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
     CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
 
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<CategoryExcludedSearchFacet> actualCreateOrRetrieveCopyInstanceResult = categoryExcludedSearchFacetImpl
+    CreateResponse<CategoryExcludedSearchFacet> actualCreateOrRetrieveCopyInstanceResult = categoryExcludedSearchFacetImpl2
         .createOrRetrieveCopyInstance(context);
 
     // Assert
@@ -449,62 +496,21 @@ public class CategoryExcludedSearchFacetImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CategoryExcludedSearchFacetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <p>
-   * Method under test:
-   * {@link CategoryExcludedSearchFacetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.search.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5915 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.domain.CategoryExcludedSearchFacetImpl categoryExcludedSearchFacetImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CategoryExcludedSearchFacetImpl categoryExcludedSearchFacetImpl2 = new CategoryExcludedSearchFacetImpl();
-    CatalogImpl fromCatalog = new CatalogImpl();
-    CatalogImpl toCatalog = new CatalogImpl();
-    SiteImpl fromSite = new SiteImpl();
-    SiteImpl toSite = new SiteImpl();
-    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
-
-    // Act
-    categoryExcludedSearchFacetImpl2.createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog,
-        fromSite, toSite, genericEntityService, new MultiTenantCopierExtensionManager()));
-  }
-
-  /**
-   * Test
-   * {@link CategoryExcludedSearchFacetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * Test {@link CategoryExcludedSearchFacetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <ul>
    *   <li>Then Clone return {@link CategoryExcludedSearchFacetImpl}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CategoryExcludedSearchFacetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link CategoryExcludedSearchFacetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "CreateResponse CategoryExcludedSearchFacetImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance_thenCloneReturnCategoryExcludedSearchFacetImpl()
       throws CloneNotSupportedException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryExcludedSearchFacetImpl categoryExcludedSearchFacetImpl = new CategoryExcludedSearchFacetImpl();
+    CategoryExcludedSearchFacetImpl categoryExcludedSearchFacetImpl2 = new CategoryExcludedSearchFacetImpl();
     GenericEntityService genericEntityService = mock(GenericEntityService.class);
     when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
     Class<Object> forNameResult = Object.class;
@@ -515,7 +521,7 @@ public class CategoryExcludedSearchFacetImplDiffblueTest {
     SiteImpl toSite = new SiteImpl();
 
     // Act
-    CreateResponse<CategoryExcludedSearchFacet> actualCreateOrRetrieveCopyInstanceResult = categoryExcludedSearchFacetImpl
+    CreateResponse<CategoryExcludedSearchFacet> actualCreateOrRetrieveCopyInstanceResult = categoryExcludedSearchFacetImpl2
         .createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
             genericEntityService, new MultiTenantCopierExtensionManager()));
 
@@ -526,7 +532,7 @@ public class CategoryExcludedSearchFacetImplDiffblueTest {
     CategoryExcludedSearchFacet clone = actualCreateOrRetrieveCopyInstanceResult.getClone();
     assertTrue(clone instanceof CategoryExcludedSearchFacetImpl);
     assertFalse(actualCreateOrRetrieveCopyInstanceResult.isAlreadyPopulated());
-    assertEquals(categoryExcludedSearchFacetImpl, clone);
+    assertEquals(categoryExcludedSearchFacetImpl2, clone);
   }
 
   /**
@@ -534,9 +540,8 @@ public class CategoryExcludedSearchFacetImplDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>default or parameterless constructor of
-   * {@link CategoryExcludedSearchFacetImpl}
-   *   <li>{@link CategoryExcludedSearchFacetImpl#setCategory(Category)}
+   *   <li>default or parameterless constructor of {@link CategoryExcludedSearchFacetImpl}
+   *   <li>{@link CategoryExcludedSearchFacetImpl#setCategory(org.broadleafcommerce.core.catalog.domain.Category)}
    *   <li>{@link CategoryExcludedSearchFacetImpl#setId(Long)}
    *   <li>{@link CategoryExcludedSearchFacetImpl#setSearchFacet(SearchFacet)}
    *   <li>{@link CategoryExcludedSearchFacetImpl#setSequence(BigDecimal)}
@@ -547,6 +552,15 @@ public class CategoryExcludedSearchFacetImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryExcludedSearchFacetImpl.<init>()",
+      "org.broadleafcommerce.core.catalog.domain.Category CategoryExcludedSearchFacetImpl.getCategory()",
+      "Long CategoryExcludedSearchFacetImpl.getId()", "SearchFacet CategoryExcludedSearchFacetImpl.getSearchFacet()",
+      "BigDecimal CategoryExcludedSearchFacetImpl.getSequence()",
+      "void CategoryExcludedSearchFacetImpl.setCategory(org.broadleafcommerce.core.catalog.domain.Category)",
+      "void CategoryExcludedSearchFacetImpl.setId(Long)",
+      "void CategoryExcludedSearchFacetImpl.setSearchFacet(SearchFacet)",
+      "void CategoryExcludedSearchFacetImpl.setSequence(BigDecimal)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     CategoryExcludedSearchFacetImpl actualCategoryExcludedSearchFacetImpl = new CategoryExcludedSearchFacetImpl();
@@ -557,12 +571,13 @@ public class CategoryExcludedSearchFacetImplDiffblueTest {
     actualCategoryExcludedSearchFacetImpl.setSearchFacet(searchFacet);
     BigDecimal sequence = new BigDecimal("2.3");
     actualCategoryExcludedSearchFacetImpl.setSequence(sequence);
-    Category actualCategory = actualCategoryExcludedSearchFacetImpl.getCategory();
+    org.broadleafcommerce.core.catalog.domain.Category actualCategory = actualCategoryExcludedSearchFacetImpl
+        .getCategory();
     Long actualId = actualCategoryExcludedSearchFacetImpl.getId();
     SearchFacet actualSearchFacet = actualCategoryExcludedSearchFacetImpl.getSearchFacet();
     BigDecimal actualSequence = actualCategoryExcludedSearchFacetImpl.getSequence();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals(1L, actualId.longValue());
     assertEquals(new BigDecimal("2.3"), actualSequence);
     assertSame(sequence, actualSequence);

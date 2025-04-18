@@ -18,23 +18,26 @@
 package org.broadleafcommerce.common.util.sql.importsql;
 
 import static org.junit.Assert.assertArrayEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class DemoPostgresSingleLineSqlCommandExtractorDiffblueTest {
   /**
-   * Test
-   * {@link DemoPostgresSingleLineSqlCommandExtractor#extractCommands(Reader)}.
+   * Test {@link DemoPostgresSingleLineSqlCommandExtractor#extractCommands(Reader)}.
    * <ul>
    *   <li>Then return array of {@link String} with {@code ''}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DemoPostgresSingleLineSqlCommandExtractor#extractCommands(Reader)}
+   * Method under test: {@link DemoPostgresSingleLineSqlCommandExtractor#extractCommands(Reader)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String[] DemoPostgresSingleLineSqlCommandExtractor.extractCommands(Reader)"})
   public void testExtractCommands_thenReturnArrayOfStringWithApostropheApostrophe() {
     // Arrange
     DemoPostgresSingleLineSqlCommandExtractor demoPostgresSingleLineSqlCommandExtractor = new DemoPostgresSingleLineSqlCommandExtractor();
@@ -45,17 +48,16 @@ public class DemoPostgresSingleLineSqlCommandExtractorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DemoPostgresSingleLineSqlCommandExtractor#extractCommands(Reader)}.
+   * Test {@link DemoPostgresSingleLineSqlCommandExtractor#extractCommands(Reader)}.
    * <ul>
-   *   <li>Then return array of {@link String} with
-   * {@code date_trunc('second', CURRENT_TIMESTAMP)}.</li>
+   *   <li>Then return array of {@link String} with {@code date_trunc('second', CURRENT_TIMESTAMP)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DemoPostgresSingleLineSqlCommandExtractor#extractCommands(Reader)}
+   * Method under test: {@link DemoPostgresSingleLineSqlCommandExtractor#extractCommands(Reader)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String[] DemoPostgresSingleLineSqlCommandExtractor.extractCommands(Reader)"})
   public void testExtractCommands_thenReturnArrayOfStringWithDateTruncSecondCurrentTimestamp() {
     // Arrange
     DemoPostgresSingleLineSqlCommandExtractor demoPostgresSingleLineSqlCommandExtractor = new DemoPostgresSingleLineSqlCommandExtractor();
@@ -66,16 +68,16 @@ public class DemoPostgresSingleLineSqlCommandExtractorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DemoPostgresSingleLineSqlCommandExtractor#extractCommands(Reader)}.
+   * Test {@link DemoPostgresSingleLineSqlCommandExtractor#extractCommands(Reader)}.
    * <ul>
    *   <li>Then return array of {@link String} with {@code (E'.*?')}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DemoPostgresSingleLineSqlCommandExtractor#extractCommands(Reader)}
+   * Method under test: {@link DemoPostgresSingleLineSqlCommandExtractor#extractCommands(Reader)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String[] DemoPostgresSingleLineSqlCommandExtractor.extractCommands(Reader)"})
   public void testExtractCommands_thenReturnArrayOfStringWithE() {
     // Arrange
     DemoPostgresSingleLineSqlCommandExtractor demoPostgresSingleLineSqlCommandExtractor = new DemoPostgresSingleLineSqlCommandExtractor();
@@ -86,16 +88,16 @@ public class DemoPostgresSingleLineSqlCommandExtractorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DemoPostgresSingleLineSqlCommandExtractor#extractCommands(Reader)}.
+   * Test {@link DemoPostgresSingleLineSqlCommandExtractor#extractCommands(Reader)}.
    * <ul>
    *   <li>Then return array of {@link String} with {@code E'.*?')}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DemoPostgresSingleLineSqlCommandExtractor#extractCommands(Reader)}
+   * Method under test: {@link DemoPostgresSingleLineSqlCommandExtractor#extractCommands(Reader)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String[] DemoPostgresSingleLineSqlCommandExtractor.extractCommands(Reader)"})
   public void testExtractCommands_thenReturnArrayOfStringWithE2() throws IOException {
     // Arrange
     DemoPostgresSingleLineSqlCommandExtractor demoPostgresSingleLineSqlCommandExtractor = new DemoPostgresSingleLineSqlCommandExtractor();
@@ -108,17 +110,16 @@ public class DemoPostgresSingleLineSqlCommandExtractorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DemoPostgresSingleLineSqlCommandExtractor#extractCommands(Reader)}.
+   * Test {@link DemoPostgresSingleLineSqlCommandExtractor#extractCommands(Reader)}.
    * <ul>
-   *   <li>Then return array of {@link String} with
-   * {@code E' || CHR(13) || CHR(10) || '}.</li>
+   *   <li>Then return array of {@link String} with {@code E' || CHR(13) || CHR(10) || '}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DemoPostgresSingleLineSqlCommandExtractor#extractCommands(Reader)}
+   * Method under test: {@link DemoPostgresSingleLineSqlCommandExtractor#extractCommands(Reader)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String[] DemoPostgresSingleLineSqlCommandExtractor.extractCommands(Reader)"})
   public void testExtractCommands_thenReturnArrayOfStringWithEChr13Chr10() {
     // Arrange
     DemoPostgresSingleLineSqlCommandExtractor demoPostgresSingleLineSqlCommandExtractor = new DemoPostgresSingleLineSqlCommandExtractor();
@@ -129,17 +130,17 @@ public class DemoPostgresSingleLineSqlCommandExtractorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DemoPostgresSingleLineSqlCommandExtractor#extractCommands(Reader)}.
+   * Test {@link DemoPostgresSingleLineSqlCommandExtractor#extractCommands(Reader)}.
    * <ul>
    *   <li>When {@link StringReader#StringReader(String)} with {@code CHAR(9)}.</li>
    *   <li>Then return array of {@link String} with {@code CHR(9)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DemoPostgresSingleLineSqlCommandExtractor#extractCommands(Reader)}
+   * Method under test: {@link DemoPostgresSingleLineSqlCommandExtractor#extractCommands(Reader)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String[] DemoPostgresSingleLineSqlCommandExtractor.extractCommands(Reader)"})
   public void testExtractCommands_whenStringReaderWithChar9_thenReturnArrayOfStringWithChr9() {
     // Arrange
     DemoPostgresSingleLineSqlCommandExtractor demoPostgresSingleLineSqlCommandExtractor = new DemoPostgresSingleLineSqlCommandExtractor();
@@ -150,17 +151,17 @@ public class DemoPostgresSingleLineSqlCommandExtractorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DemoPostgresSingleLineSqlCommandExtractor#extractCommands(Reader)}.
+   * Test {@link DemoPostgresSingleLineSqlCommandExtractor#extractCommands(Reader)}.
    * <ul>
    *   <li>When {@link StringReader#StringReader(String)} with {@code foo}.</li>
    *   <li>Then return array of {@link String} with {@code foo}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DemoPostgresSingleLineSqlCommandExtractor#extractCommands(Reader)}
+   * Method under test: {@link DemoPostgresSingleLineSqlCommandExtractor#extractCommands(Reader)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String[] DemoPostgresSingleLineSqlCommandExtractor.extractCommands(Reader)"})
   public void testExtractCommands_whenStringReaderWithFoo_thenReturnArrayOfStringWithFoo() {
     // Arrange
     DemoPostgresSingleLineSqlCommandExtractor demoPostgresSingleLineSqlCommandExtractor = new DemoPostgresSingleLineSqlCommandExtractor();
@@ -171,18 +172,17 @@ public class DemoPostgresSingleLineSqlCommandExtractorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DemoPostgresSingleLineSqlCommandExtractor#extractCommands(Reader)}.
+   * Test {@link DemoPostgresSingleLineSqlCommandExtractor#extractCommands(Reader)}.
    * <ul>
    *   <li>When {@link StringReader#StringReader(String)} with {@code \r\n}.</li>
-   *   <li>Then return array of {@link String} with
-   * {@code ' || CHR(13) || CHR(10) || '}.</li>
+   *   <li>Then return array of {@link String} with {@code ' || CHR(13) || CHR(10) || '}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DemoPostgresSingleLineSqlCommandExtractor#extractCommands(Reader)}
+   * Method under test: {@link DemoPostgresSingleLineSqlCommandExtractor#extractCommands(Reader)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String[] DemoPostgresSingleLineSqlCommandExtractor.extractCommands(Reader)"})
   public void testExtractCommands_whenStringReaderWithRN_thenReturnArrayOfStringWithChr13Chr10() {
     // Arrange
     DemoPostgresSingleLineSqlCommandExtractor demoPostgresSingleLineSqlCommandExtractor = new DemoPostgresSingleLineSqlCommandExtractor();
@@ -193,17 +193,17 @@ public class DemoPostgresSingleLineSqlCommandExtractorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DemoPostgresSingleLineSqlCommandExtractor#extractCommands(Reader)}.
+   * Test {@link DemoPostgresSingleLineSqlCommandExtractor#extractCommands(Reader)}.
    * <ul>
    *   <li>When {@link StringReader#StringReader(String)} with {@code 'UU'}.</li>
    *   <li>Then return array of {@link String} with {@code E'UU'}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DemoPostgresSingleLineSqlCommandExtractor#extractCommands(Reader)}
+   * Method under test: {@link DemoPostgresSingleLineSqlCommandExtractor#extractCommands(Reader)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String[] DemoPostgresSingleLineSqlCommandExtractor.extractCommands(Reader)"})
   public void testExtractCommands_whenStringReaderWithUu_thenReturnArrayOfStringWithEUu() {
     // Arrange
     DemoPostgresSingleLineSqlCommandExtractor demoPostgresSingleLineSqlCommandExtractor = new DemoPostgresSingleLineSqlCommandExtractor();
@@ -211,23 +211,5 @@ public class DemoPostgresSingleLineSqlCommandExtractorDiffblueTest {
     // Act and Assert
     assertArrayEquals(new String[]{"E'UU'"},
         demoPostgresSingleLineSqlCommandExtractor.extractCommands(new StringReader("'UU'")));
-  }
-
-  /**
-   * Test new {@link DemoPostgresSingleLineSqlCommandExtractor} (default
-   * constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link DemoPostgresSingleLineSqlCommandExtractor}
-   */
-  @Test
-  public void testNewDemoPostgresSingleLineSqlCommandExtractor() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing observers.
-    //   Diffblue Cover was unable to create an assertion.
-    //   There are no fields that could be asserted on.
-
-    // Arrange and Act
-    new DemoPostgresSingleLineSqlCommandExtractor();
   }
 }

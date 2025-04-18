@@ -18,20 +18,24 @@
 package org.broadleafcommerce.common.breadcrumbs.dto;
 
 import static org.junit.Assert.assertEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class BreadcrumbDTODiffblueTest {
   /**
    * Test {@link BreadcrumbDTO#getType()}.
    * <ul>
-   *   <li>Given {@link BreadcrumbDTO} (default constructor) Link is
-   * {@code Link}.</li>
+   *   <li>Given {@link BreadcrumbDTO} (default constructor) Link is {@code Link}.</li>
    *   <li>Then return {@code CATEGORY}.</li>
    * </ul>
    * <p>
    * Method under test: {@link BreadcrumbDTO#getType()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BreadcrumbDTO.getType()"})
   public void testGetType_givenBreadcrumbDTOLinkIsLink_thenReturnCategory() {
     // Arrange
     BreadcrumbDTO breadcrumbDTO = new BreadcrumbDTO();
@@ -53,6 +57,8 @@ public class BreadcrumbDTODiffblueTest {
    * Method under test: {@link BreadcrumbDTO#getType()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BreadcrumbDTO.getType()"})
   public void testGetType_givenBreadcrumbDTO_thenReturnEmptyString() {
     // Arrange, Act and Assert
     assertEquals("", (new BreadcrumbDTO()).getType());
@@ -72,6 +78,10 @@ public class BreadcrumbDTODiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BreadcrumbDTO.<init>()", "String BreadcrumbDTO.getLink()", "String BreadcrumbDTO.getText()",
+      "void BreadcrumbDTO.setLink(String)", "void BreadcrumbDTO.setText(String)",
+      "void BreadcrumbDTO.setType(BreadcrumbDTOType)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     BreadcrumbDTO actualBreadcrumbDTO = new BreadcrumbDTO();
@@ -80,7 +90,7 @@ public class BreadcrumbDTODiffblueTest {
     actualBreadcrumbDTO.setType(BreadcrumbDTOType.CATEGORY);
     String actualLink = actualBreadcrumbDTO.getLink();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Link", actualLink);
     assertEquals("Text", actualBreadcrumbDTO.getText());
   }

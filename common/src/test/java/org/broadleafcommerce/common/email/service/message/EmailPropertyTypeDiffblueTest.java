@@ -20,7 +20,10 @@ package org.broadleafcommerce.common.email.service.message;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -38,6 +41,8 @@ public class EmailPropertyTypeDiffblueTest {
    * Method under test: {@link EmailPropertyType#getInstance(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"EmailPropertyType EmailPropertyType.getInstance(String)"})
   public void testGetInstance() {
     // Arrange and Act
     EmailPropertyType actualInstance = EmailPropertyType.getInstance("Type");
@@ -58,6 +63,9 @@ public class EmailPropertyTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void EmailPropertyType.<init>()", "String EmailPropertyType.getFriendlyType()",
+      "String EmailPropertyType.getType()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     EmailPropertyType actualEmailPropertyType = new EmailPropertyType();
@@ -71,10 +79,11 @@ public class EmailPropertyTypeDiffblueTest {
   /**
    * Test {@link EmailPropertyType#EmailPropertyType(String, String)}.
    * <p>
-   * Method under test:
-   * {@link EmailPropertyType#EmailPropertyType(String, String)}
+   * Method under test: {@link EmailPropertyType#EmailPropertyType(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void EmailPropertyType.<init>(String, String)"})
   public void testNewEmailPropertyType() {
     // Arrange and Act
     EmailPropertyType actualEmailPropertyType = new EmailPropertyType("Type", "Friendly Type");
@@ -85,8 +94,7 @@ public class EmailPropertyTypeDiffblueTest {
   }
 
   /**
-   * Test {@link EmailPropertyType#equals(Object)}, and
-   * {@link EmailPropertyType#hashCode()}.
+   * Test {@link EmailPropertyType#equals(Object)}, and {@link EmailPropertyType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -99,6 +107,8 @@ public class EmailPropertyTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EmailPropertyType.equals(Object)", "int EmailPropertyType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     EmailPropertyType emailPropertyType = EmailPropertyType.INFO;
@@ -111,8 +121,7 @@ public class EmailPropertyTypeDiffblueTest {
   }
 
   /**
-   * Test {@link EmailPropertyType#equals(Object)}, and
-   * {@link EmailPropertyType#hashCode()}.
+   * Test {@link EmailPropertyType#equals(Object)}, and {@link EmailPropertyType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -125,6 +134,8 @@ public class EmailPropertyTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EmailPropertyType.equals(Object)", "int EmailPropertyType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     EmailPropertyType emailPropertyType = new EmailPropertyType();
@@ -137,8 +148,7 @@ public class EmailPropertyTypeDiffblueTest {
   }
 
   /**
-   * Test {@link EmailPropertyType#equals(Object)}, and
-   * {@link EmailPropertyType#hashCode()}.
+   * Test {@link EmailPropertyType#equals(Object)}, and {@link EmailPropertyType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -151,6 +161,8 @@ public class EmailPropertyTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EmailPropertyType.equals(Object)", "int EmailPropertyType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     EmailPropertyType emailPropertyType = new EmailPropertyType("info", "Friendly Type");
@@ -163,8 +175,7 @@ public class EmailPropertyTypeDiffblueTest {
   }
 
   /**
-   * Test {@link EmailPropertyType#equals(Object)}, and
-   * {@link EmailPropertyType#hashCode()}.
+   * Test {@link EmailPropertyType#equals(Object)}, and {@link EmailPropertyType#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -177,6 +188,8 @@ public class EmailPropertyTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EmailPropertyType.equals(Object)", "int EmailPropertyType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     EmailPropertyType emailPropertyType = EmailPropertyType.INFO;
@@ -197,9 +210,27 @@ public class EmailPropertyTypeDiffblueTest {
    * Method under test: {@link EmailPropertyType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EmailPropertyType.equals(Object)", "int EmailPropertyType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(EmailPropertyType.SERVERINFO, EmailPropertyType.INFO);
+  }
+
+  /**
+   * Test {@link EmailPropertyType#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link EmailPropertyType#equals(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EmailPropertyType.equals(Object)", "int EmailPropertyType.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange, Act and Assert
     assertNotEquals(new EmailPropertyType(), EmailPropertyType.INFO);
   }
 
@@ -213,6 +244,8 @@ public class EmailPropertyTypeDiffblueTest {
    * Method under test: {@link EmailPropertyType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EmailPropertyType.equals(Object)", "int EmailPropertyType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(EmailPropertyType.INFO, null);
@@ -228,6 +261,8 @@ public class EmailPropertyTypeDiffblueTest {
    * Method under test: {@link EmailPropertyType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EmailPropertyType.equals(Object)", "int EmailPropertyType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(EmailPropertyType.INFO, "Different type to EmailPropertyType");

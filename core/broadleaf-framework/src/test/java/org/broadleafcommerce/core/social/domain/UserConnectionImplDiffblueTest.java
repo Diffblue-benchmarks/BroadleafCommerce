@@ -1,12 +1,30 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.social.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertThrows;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.core.social.domain.UserConnectionImpl.UserConnectionPK;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class UserConnectionImplDiffblueTest {
   /**
@@ -23,8 +41,7 @@ public class UserConnectionImplDiffblueTest {
    *   <li>{@link UserConnectionImpl#setRank(Integer)}
    *   <li>{@link UserConnectionImpl#setRefreshToken(String)}
    *   <li>{@link UserConnectionImpl#setSecret(String)}
-   *   <li>
-   * {@link UserConnectionImpl#setUserConnectionPK(UserConnectionImpl.UserConnectionPK)}
+   *   <li>{@link UserConnectionImpl#setUserConnectionPK(UserConnectionPK)}
    *   <li>{@link UserConnectionImpl#getAccessToken()}
    *   <li>{@link UserConnectionImpl#getDisplayName()}
    *   <li>{@link UserConnectionImpl#getExpireTime()}
@@ -37,6 +54,17 @@ public class UserConnectionImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void UserConnectionImpl.<init>()", "String UserConnectionImpl.getAccessToken()",
+      "String UserConnectionImpl.getDisplayName()", "Long UserConnectionImpl.getExpireTime()",
+      "String UserConnectionImpl.getImageUrl()", "String UserConnectionImpl.getProfileUrl()",
+      "Integer UserConnectionImpl.getRank()", "String UserConnectionImpl.getRefreshToken()",
+      "String UserConnectionImpl.getSecret()", "UserConnectionPK UserConnectionImpl.getUserConnectionPK()",
+      "void UserConnectionImpl.setAccessToken(String)", "void UserConnectionImpl.setDisplayName(String)",
+      "void UserConnectionImpl.setExpireTime(Long)", "void UserConnectionImpl.setImageUrl(String)",
+      "void UserConnectionImpl.setProfileUrl(String)", "void UserConnectionImpl.setRank(Integer)",
+      "void UserConnectionImpl.setRefreshToken(String)", "void UserConnectionImpl.setSecret(String)",
+      "void UserConnectionImpl.setUserConnectionPK(UserConnectionPK)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     UserConnectionImpl actualUserConnectionImpl = new UserConnectionImpl();
@@ -48,7 +76,7 @@ public class UserConnectionImplDiffblueTest {
     actualUserConnectionImpl.setRank(1);
     actualUserConnectionImpl.setRefreshToken("ABC123");
     actualUserConnectionImpl.setSecret("Secret");
-    UserConnectionImpl.UserConnectionPK userConnectionPK = new UserConnectionImpl.UserConnectionPK();
+    UserConnectionPK userConnectionPK = new UserConnectionPK();
     userConnectionPK.setProviderId("42");
     userConnectionPK.setProviderUserId("42");
     userConnectionPK.setUserId("42");
@@ -61,9 +89,9 @@ public class UserConnectionImplDiffblueTest {
     Integer actualRank = actualUserConnectionImpl.getRank();
     String actualRefreshToken = actualUserConnectionImpl.getRefreshToken();
     String actualSecret = actualUserConnectionImpl.getSecret();
-    UserConnectionImpl.UserConnectionPK actualUserConnectionPK = actualUserConnectionImpl.getUserConnectionPK();
+    UserConnectionPK actualUserConnectionPK = actualUserConnectionImpl.getUserConnectionPK();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("ABC123", actualAccessToken);
     assertEquals("ABC123", actualRefreshToken);
     assertEquals("Display Name", actualDisplayName);
@@ -76,8 +104,7 @@ public class UserConnectionImplDiffblueTest {
   }
 
   /**
-   * Test UserConnectionPK {@link UserConnectionPK#equals(Object)}, and
-   * {@link UserConnectionPK#hashCode()}.
+   * Test UserConnectionPK {@link UserConnectionPK#equals(Object)}, and {@link UserConnectionPK#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -85,19 +112,21 @@ public class UserConnectionImplDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>{@link UserConnectionImpl.UserConnectionPK#equals(Object)}
-   *   <li>{@link UserConnectionImpl.UserConnectionPK#hashCode()}
+   *   <li>{@link UserConnectionPK#equals(Object)}
+   *   <li>{@link UserConnectionPK#hashCode()}
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean UserConnectionPK.equals(Object)", "int UserConnectionPK.hashCode()"})
   public void testUserConnectionPKEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
-    UserConnectionImpl.UserConnectionPK userConnectionPK = new UserConnectionImpl.UserConnectionPK();
+    UserConnectionPK userConnectionPK = new UserConnectionPK();
     userConnectionPK.setProviderId("42");
     userConnectionPK.setProviderUserId("42");
     userConnectionPK.setUserId("42");
 
-    UserConnectionImpl.UserConnectionPK userConnectionPK2 = new UserConnectionImpl.UserConnectionPK();
+    UserConnectionPK userConnectionPK2 = new UserConnectionPK();
     userConnectionPK2.setProviderId("42");
     userConnectionPK2.setProviderUserId("42");
     userConnectionPK2.setUserId("42");
@@ -109,8 +138,7 @@ public class UserConnectionImplDiffblueTest {
   }
 
   /**
-   * Test UserConnectionPK {@link UserConnectionPK#equals(Object)}, and
-   * {@link UserConnectionPK#hashCode()}.
+   * Test UserConnectionPK {@link UserConnectionPK#equals(Object)}, and {@link UserConnectionPK#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -118,14 +146,16 @@ public class UserConnectionImplDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>{@link UserConnectionImpl.UserConnectionPK#equals(Object)}
-   *   <li>{@link UserConnectionImpl.UserConnectionPK#hashCode()}
+   *   <li>{@link UserConnectionPK#equals(Object)}
+   *   <li>{@link UserConnectionPK#hashCode()}
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean UserConnectionPK.equals(Object)", "int UserConnectionPK.hashCode()"})
   public void testUserConnectionPKEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
-    UserConnectionImpl.UserConnectionPK userConnectionPK = new UserConnectionImpl.UserConnectionPK();
+    UserConnectionPK userConnectionPK = new UserConnectionPK();
     userConnectionPK.setProviderId("42");
     userConnectionPK.setProviderUserId("42");
     userConnectionPK.setUserId("42");
@@ -143,17 +173,19 @@ public class UserConnectionImplDiffblueTest {
    *   <li>Then return not equal.</li>
    * </ul>
    * <p>
-   * Method under test: {@link UserConnectionImpl.UserConnectionPK#equals(Object)}
+   * Method under test: {@link UserConnectionPK#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean UserConnectionPK.equals(Object)", "int UserConnectionPK.hashCode()"})
   public void testUserConnectionPKEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
-    UserConnectionImpl.UserConnectionPK userConnectionPK = new UserConnectionImpl.UserConnectionPK();
+    UserConnectionPK userConnectionPK = new UserConnectionPK();
     userConnectionPK.setProviderId("Provider Id");
     userConnectionPK.setProviderUserId("42");
     userConnectionPK.setUserId("42");
 
-    UserConnectionImpl.UserConnectionPK userConnectionPK2 = new UserConnectionImpl.UserConnectionPK();
+    UserConnectionPK userConnectionPK2 = new UserConnectionPK();
     userConnectionPK2.setProviderId("42");
     userConnectionPK2.setProviderUserId("42");
     userConnectionPK2.setUserId("42");
@@ -169,17 +201,19 @@ public class UserConnectionImplDiffblueTest {
    *   <li>Then return not equal.</li>
    * </ul>
    * <p>
-   * Method under test: {@link UserConnectionImpl.UserConnectionPK#equals(Object)}
+   * Method under test: {@link UserConnectionPK#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean UserConnectionPK.equals(Object)", "int UserConnectionPK.hashCode()"})
   public void testUserConnectionPKEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
-    UserConnectionImpl.UserConnectionPK userConnectionPK = new UserConnectionImpl.UserConnectionPK();
+    UserConnectionPK userConnectionPK = new UserConnectionPK();
     userConnectionPK.setProviderId("42");
     userConnectionPK.setProviderUserId("Provider User Id");
     userConnectionPK.setUserId("42");
 
-    UserConnectionImpl.UserConnectionPK userConnectionPK2 = new UserConnectionImpl.UserConnectionPK();
+    UserConnectionPK userConnectionPK2 = new UserConnectionPK();
     userConnectionPK2.setProviderId("42");
     userConnectionPK2.setProviderUserId("42");
     userConnectionPK2.setUserId("42");
@@ -195,128 +229,25 @@ public class UserConnectionImplDiffblueTest {
    *   <li>Then return not equal.</li>
    * </ul>
    * <p>
-   * Method under test: {@link UserConnectionImpl.UserConnectionPK#equals(Object)}
+   * Method under test: {@link UserConnectionPK#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean UserConnectionPK.equals(Object)", "int UserConnectionPK.hashCode()"})
   public void testUserConnectionPKEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
-    UserConnectionImpl.UserConnectionPK userConnectionPK = new UserConnectionImpl.UserConnectionPK();
+    UserConnectionPK userConnectionPK = new UserConnectionPK();
     userConnectionPK.setProviderId("42");
     userConnectionPK.setProviderUserId("42");
     userConnectionPK.setUserId("User Id");
 
-    UserConnectionImpl.UserConnectionPK userConnectionPK2 = new UserConnectionImpl.UserConnectionPK();
+    UserConnectionPK userConnectionPK2 = new UserConnectionPK();
     userConnectionPK2.setProviderId("42");
     userConnectionPK2.setProviderUserId("42");
     userConnectionPK2.setUserId("42");
 
     // Act and Assert
     assertNotEquals(userConnectionPK, userConnectionPK2);
-  }
-
-  /**
-   * Test UserConnectionPK {@link UserConnectionPK#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then throw exception.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link UserConnectionImpl.UserConnectionPK#equals(Object)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testUserConnectionPKEquals_whenOtherIsDifferent_thenThrowException() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.broadleafcommerce.core.social.domain.UserConnectionImpl$UserConnectionPK.equals(UserConnectionImpl.java:224)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    UserConnectionImpl.UserConnectionPK userConnectionPK = new UserConnectionImpl.UserConnectionPK();
-    userConnectionPK.setProviderId(null);
-    userConnectionPK.setProviderUserId("42");
-    userConnectionPK.setUserId("42");
-
-    UserConnectionImpl.UserConnectionPK userConnectionPK2 = new UserConnectionImpl.UserConnectionPK();
-    userConnectionPK2.setProviderId("42");
-    userConnectionPK2.setProviderUserId("42");
-    userConnectionPK2.setUserId("42");
-
-    // Act and Assert
-    assertThrows(NullPointerException.class, () -> userConnectionPK.equals(userConnectionPK2));
-  }
-
-  /**
-   * Test UserConnectionPK {@link UserConnectionPK#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then throw exception.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link UserConnectionImpl.UserConnectionPK#equals(Object)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testUserConnectionPKEquals_whenOtherIsDifferent_thenThrowException2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.broadleafcommerce.core.social.domain.UserConnectionImpl$UserConnectionPK.equals(UserConnectionImpl.java:225)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    UserConnectionImpl.UserConnectionPK userConnectionPK = new UserConnectionImpl.UserConnectionPK();
-    userConnectionPK.setProviderId("42");
-    userConnectionPK.setProviderUserId(null);
-    userConnectionPK.setUserId("42");
-
-    UserConnectionImpl.UserConnectionPK userConnectionPK2 = new UserConnectionImpl.UserConnectionPK();
-    userConnectionPK2.setProviderId("42");
-    userConnectionPK2.setProviderUserId("42");
-    userConnectionPK2.setUserId("42");
-
-    // Act and Assert
-    assertThrows(NullPointerException.class, () -> userConnectionPK.equals(userConnectionPK2));
-  }
-
-  /**
-   * Test UserConnectionPK {@link UserConnectionPK#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then throw exception.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link UserConnectionImpl.UserConnectionPK#equals(Object)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testUserConnectionPKEquals_whenOtherIsDifferent_thenThrowException3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.broadleafcommerce.core.social.domain.UserConnectionImpl$UserConnectionPK.equals(UserConnectionImpl.java:223)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    UserConnectionImpl.UserConnectionPK userConnectionPK = new UserConnectionImpl.UserConnectionPK();
-    userConnectionPK.setProviderId("42");
-    userConnectionPK.setProviderUserId("42");
-    userConnectionPK.setUserId(null);
-
-    UserConnectionImpl.UserConnectionPK userConnectionPK2 = new UserConnectionImpl.UserConnectionPK();
-    userConnectionPK2.setProviderId("42");
-    userConnectionPK2.setProviderUserId("42");
-    userConnectionPK2.setUserId("42");
-
-    // Act and Assert
-    assertThrows(NullPointerException.class, () -> userConnectionPK.equals(userConnectionPK2));
   }
 
   /**
@@ -326,12 +257,14 @@ public class UserConnectionImplDiffblueTest {
    *   <li>Then return not equal.</li>
    * </ul>
    * <p>
-   * Method under test: {@link UserConnectionImpl.UserConnectionPK#equals(Object)}
+   * Method under test: {@link UserConnectionPK#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean UserConnectionPK.equals(Object)", "int UserConnectionPK.hashCode()"})
   public void testUserConnectionPKEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
-    UserConnectionImpl.UserConnectionPK userConnectionPK = new UserConnectionImpl.UserConnectionPK();
+    UserConnectionPK userConnectionPK = new UserConnectionPK();
     userConnectionPK.setProviderId("42");
     userConnectionPK.setProviderUserId("42");
     userConnectionPK.setUserId("42");
@@ -347,12 +280,14 @@ public class UserConnectionImplDiffblueTest {
    *   <li>Then return not equal.</li>
    * </ul>
    * <p>
-   * Method under test: {@link UserConnectionImpl.UserConnectionPK#equals(Object)}
+   * Method under test: {@link UserConnectionPK#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean UserConnectionPK.equals(Object)", "int UserConnectionPK.hashCode()"})
   public void testUserConnectionPKEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
-    UserConnectionImpl.UserConnectionPK userConnectionPK = new UserConnectionImpl.UserConnectionPK();
+    UserConnectionPK userConnectionPK = new UserConnectionPK();
     userConnectionPK.setProviderId("42");
     userConnectionPK.setProviderUserId("42");
     userConnectionPK.setUserId("42");
@@ -366,27 +301,31 @@ public class UserConnectionImplDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>default or parameterless constructor of
-   * {@link UserConnectionImpl.UserConnectionPK}
-   *   <li>{@link UserConnectionImpl.UserConnectionPK#setProviderId(String)}
-   *   <li>{@link UserConnectionImpl.UserConnectionPK#setProviderUserId(String)}
-   *   <li>{@link UserConnectionImpl.UserConnectionPK#setUserId(String)}
-   *   <li>{@link UserConnectionImpl.UserConnectionPK#getProviderId()}
-   *   <li>{@link UserConnectionImpl.UserConnectionPK#getProviderUserId()}
-   *   <li>{@link UserConnectionImpl.UserConnectionPK#getUserId()}
+   *   <li>default or parameterless constructor of {@link UserConnectionPK}
+   *   <li>{@link UserConnectionPK#setProviderId(String)}
+   *   <li>{@link UserConnectionPK#setProviderUserId(String)}
+   *   <li>{@link UserConnectionPK#setUserId(String)}
+   *   <li>{@link UserConnectionPK#getProviderId()}
+   *   <li>{@link UserConnectionPK#getProviderUserId()}
+   *   <li>{@link UserConnectionPK#getUserId()}
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void UserConnectionPK.<init>()", "String UserConnectionPK.getProviderId()",
+      "String UserConnectionPK.getProviderUserId()", "String UserConnectionPK.getUserId()",
+      "void UserConnectionPK.setProviderId(String)", "void UserConnectionPK.setProviderUserId(String)",
+      "void UserConnectionPK.setUserId(String)"})
   public void testUserConnectionPKGettersAndSetters() {
     // Arrange and Act
-    UserConnectionImpl.UserConnectionPK actualUserConnectionPK = new UserConnectionImpl.UserConnectionPK();
+    UserConnectionPK actualUserConnectionPK = new UserConnectionPK();
     actualUserConnectionPK.setProviderId("42");
     actualUserConnectionPK.setProviderUserId("42");
     actualUserConnectionPK.setUserId("42");
     String actualProviderId = actualUserConnectionPK.getProviderId();
     String actualProviderUserId = actualUserConnectionPK.getProviderUserId();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("42", actualProviderId);
     assertEquals("42", actualProviderUserId);
     assertEquals("42", actualUserConnectionPK.getUserId());

@@ -18,360 +18,62 @@
 package org.broadleafcommerce.common.util;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.ArgumentMatchers.isNull;
-import static org.mockito.Mockito.anyBoolean;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import java.sql.Connection;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.sql.SQLException;
-import javax.sql.DataSource;
 import org.broadleafcommerce.common.persistence.transaction.LifecycleAwareJpaTransactionManager;
 import org.hibernate.exception.LockAcquisitionException;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionException;
+import org.springframework.transaction.TransactionExecution;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionStatus;
 import org.springframework.transaction.support.SimpleTransactionStatus;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@ContextConfiguration(locations = {"/bl-common-applicationContext-entity.xml",
-    "/bl-common-applicationContext-mbeans.xml", "/bl-common-applicationContext-persistence.xml",
-    "/bl-common-applicationContext-servlet.xml", "/bl-common-applicationContext-wrapper.xml",
-    "/bl-common-applicationContext.xml", "/bl-fake-applicationContext-ant.xml",
-    "/blc-config/admin/framework/bl-common-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-common-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-common-applicationContext-servlet.xml",
-    "/blc-config/site/framework/bl-common-applicationContext.xml",
-    "/override-contexts/admin-root-autoconfiguration-overrides.xml",
-    "/override-contexts/admin-servlet-autoconfiguration-overrides.xml",
-    "/override-contexts/autoconfiguration-overrides.xml", "/override-contexts/autoconfiguration-servlet-overrides.xml",
-    "/override-contexts/site-root-autoconfiguration-overrides.xml",
-    "/override-contexts/site-servlet-autoconfiguration-overrides.xml",
-    "/blc-config/admin/bl-admin-test-applicationContext.xml", "/blc-config/bl-test-applicationContext.xml",
-    "/blc-config/site/bl-site-test-applicationContext.xml", "/context/config/client-override.xml",
-    "/context/config/xml-import-override.xml", "/context/crossmodule/early-applicationContext.xml",
-    "/context/crossmodule/early-xml-applicationContext.xml", "/context/crossmodule/late-applicationContext.xml",
-    "/context/entityconfig/import-framework.xml", "/context/entityconfig/import-local.xml",
-    "/context/importer/applicationContext.xml", "/context/importer/merge/applicationContext-servlet.xml",
-    "/context/importer/merge/applicationContext.xml", "/context/merge/bl-framework.xml", "/context/merge/bl-module.xml",
-    "/context/merge/local.xml", "/context/reader/bean-override-early-test-applicationContext.xml",
-    "/context/reader/bean-override-framework-test-applicationContext.xml",
-    "/context/reader/bean-override-local-test-applicationContext.xml", "/context/reader/merge/testbeans.xml",
-    "/context/reader/merge/testbeans2.xml", "/context/reader/merge/testbeans3.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class StreamingTransactionCapableUtilDiffblueTest {
-  @Autowired
+  @Mock
+  private PlatformTransactionManager platformTransactionManager;
+
+  @InjectMocks
   private StreamingTransactionCapableUtil streamingTransactionCapableUtil;
 
   /**
-   * Test {@link StreamingTransactionCapableUtil#init()}.
+   * Test {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class)} with {@code operation}, {@code exceptionType}.
    * <p>
-   * Method under test: {@link StreamingTransactionCapableUtil#init()}
+   * Method under test: {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testInit() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.BeanInstantiationException: Could not instantiate bean: messageSource defined in bl-common-applicationContext.xml
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageSource' defined in class path resource [bl-common-applicationContext.xml]: Initialization of bean failed; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:628)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:600)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.propertyeditors.CustomBooleanEditor.setAsText(CustomBooleanEditor.java:154)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
-    //       at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:590)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   See https://diff.blue/R026 to resolve this issue.
-
-    // Arrange and Act
-    (new StreamingTransactionCapableUtil()).init();
-  }
-
-  /**
-   * Test
-   * {@link StreamingTransactionCapableUtil#runStreamingTransactionalOperation(StreamCapableTransactionalOperation, Class)}
-   * with {@code streamOperation}, {@code exceptionType}.
-   * <p>
-   * Method under test:
-   * {@link StreamingTransactionCapableUtil#runStreamingTransactionalOperation(StreamCapableTransactionalOperation, Class)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testRunStreamingTransactionalOperationWithStreamOperationExceptionType() throws Throwable {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.BeanInstantiationException: Could not instantiate bean: messageSource defined in bl-common-applicationContext.xml
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageSource' defined in class path resource [bl-common-applicationContext.xml]: Initialization of bean failed; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:628)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:600)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.propertyeditors.CustomBooleanEditor.setAsText(CustomBooleanEditor.java:154)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
-    //       at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:590)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   See https://diff.blue/R026 to resolve this issue.
-
-    // Arrange
-    StreamingTransactionCapableUtil streamingTransactionCapableUtil2 = new StreamingTransactionCapableUtil();
-    StreamCapableTransactionalOperation streamOperation = mock(StreamCapableTransactionalOperation.class);
-    Class<Throwable> exceptionType = Throwable.class;
-
-    // Act
-    streamingTransactionCapableUtil2.runStreamingTransactionalOperation(streamOperation, exceptionType);
-  }
-
-  /**
-   * Test
-   * {@link StreamingTransactionCapableUtil#runStreamingTransactionalOperation(StreamCapableTransactionalOperation, Class, int, int)}
-   * with {@code streamOperation}, {@code exceptionType},
-   * {@code transactionBehavior}, {@code isolationLevel}.
-   * <p>
-   * Method under test:
-   * {@link StreamingTransactionCapableUtil#runStreamingTransactionalOperation(StreamCapableTransactionalOperation, Class, int, int)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testRunStreamingTransactionalOperationWithStreamOperationExceptionTypeTransactionBehaviorIsolationLevel()
-      throws Throwable {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.BeanInstantiationException: Could not instantiate bean: messageSource defined in bl-common-applicationContext.xml
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageSource' defined in class path resource [bl-common-applicationContext.xml]: Initialization of bean failed; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:628)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:600)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.propertyeditors.CustomBooleanEditor.setAsText(CustomBooleanEditor.java:154)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
-    //       at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:590)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   See https://diff.blue/R026 to resolve this issue.
-
-    // Arrange
-    StreamingTransactionCapableUtil streamingTransactionCapableUtil2 = new StreamingTransactionCapableUtil();
-    StreamCapableTransactionalOperation streamOperation = mock(StreamCapableTransactionalOperation.class);
-    Class<Throwable> exceptionType = Throwable.class;
-
-    // Act
-    streamingTransactionCapableUtil2.runStreamingTransactionalOperation(streamOperation, exceptionType, 1, 1);
-  }
-
-  /**
-   * Test
-   * {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class)}
-   * with {@code operation}, {@code exceptionType}.
-   * <p>
-   * Method under test:
-   * {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void StreamingTransactionCapableUtil.runTransactionalOperation(StreamCapableTransactionalOperation, Class)"})
   public void testRunTransactionalOperationWithOperationExceptionType() throws Throwable {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    StreamingTransactionCapableUtil streamingTransactionCapableUtil = new StreamingTransactionCapableUtil();
     StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
     when(operation.retryMaxCountOverrideForLockAcquisitionFailure())
-        .thenThrow(new LockAcquisitionException("Could not start transaction", new SQLException()));
+        .thenThrow(new LockAcquisitionException("String", new SQLException()));
     Class<Throwable> exceptionType = Throwable.class;
 
     // Act and Assert
@@ -381,117 +83,78 @@ public class StreamingTransactionCapableUtilDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class)}
-   * with {@code operation}, {@code exceptionType}.
+   * Test {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class)} with {@code operation}, {@code exceptionType}.
    * <p>
-   * Method under test:
-   * {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class)}
+   * Method under test: {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void StreamingTransactionCapableUtil.runTransactionalOperation(StreamCapableTransactionalOperation, Class)"})
   public void testRunTransactionalOperationWithOperationExceptionType2() throws Throwable {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.BeanInstantiationException: Could not instantiate bean: messageSource defined in bl-common-applicationContext.xml
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageSource' defined in class path resource [bl-common-applicationContext.xml]: Initialization of bean failed; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:628)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:600)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.propertyeditors.CustomBooleanEditor.setAsText(CustomBooleanEditor.java:154)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
-    //       at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:590)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   See https://diff.blue/R026 to resolve this issue.
-
     // Arrange
-    StreamingTransactionCapableUtil streamingTransactionCapableUtil2 = new StreamingTransactionCapableUtil();
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(null);
+    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
     StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
+    when(operation.retryMaxCountOverrideForLockAcquisitionFailure()).thenReturn(1);
+    doNothing().when(operation).execute();
     Class<Throwable> exceptionType = Throwable.class;
 
     // Act
-    streamingTransactionCapableUtil2.runTransactionalOperation(operation, exceptionType);
+    streamingTransactionCapableUtil.runTransactionalOperation(operation, exceptionType);
+
+    // Assert
+    verify(operation).retryMaxCountOverrideForLockAcquisitionFailure();
+    verify(operation).execute();
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
+    verify(platformTransactionManager).rollback(isNull());
   }
 
   /**
-   * Test
-   * {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class, int, int)}
-   * with {@code operation}, {@code exceptionType}, {@code transactionBehavior},
-   * {@code isolationLevel}.
+   * Test {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class, int, int)} with {@code operation}, {@code exceptionType}, {@code transactionBehavior}, {@code isolationLevel}.
    * <p>
-   * Method under test:
-   * {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class, int, int)}
+   * Method under test: {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class, int, int)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void StreamingTransactionCapableUtil.runTransactionalOperation(StreamCapableTransactionalOperation, Class, int, int)"})
   public void testRunTransactionalOperationWithOperationExceptionTypeTransactionBehaviorIsolationLevel()
       throws Throwable {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    StreamingTransactionCapableUtil streamingTransactionCapableUtil = new StreamingTransactionCapableUtil();
+    doNothing().when(platformTransactionManager).commit(Mockito.<TransactionStatus>any());
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any()))
+        .thenReturn(new SimpleTransactionStatus(true));
+    StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
+    when(operation.retryMaxCountOverrideForLockAcquisitionFailure()).thenReturn(1);
+    doNothing().when(operation).execute();
+    Class<Throwable> exceptionType = Throwable.class;
+
+    // Act
+    streamingTransactionCapableUtil.runTransactionalOperation(operation, exceptionType, 1, 1);
+
+    // Assert
+    verify(operation).retryMaxCountOverrideForLockAcquisitionFailure();
+    verify(operation).execute();
+    verify(platformTransactionManager).commit(isA(TransactionStatus.class));
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
+  }
+
+  /**
+   * Test {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class, int, int)} with {@code operation}, {@code exceptionType}, {@code transactionBehavior}, {@code isolationLevel}.
+   * <p>
+   * Method under test: {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class, int, int)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void StreamingTransactionCapableUtil.runTransactionalOperation(StreamCapableTransactionalOperation, Class, int, int)"})
+  public void testRunTransactionalOperationWithOperationExceptionTypeTransactionBehaviorIsolationLevel2()
+      throws Throwable {
+    // Arrange
     StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
     when(operation.retryMaxCountOverrideForLockAcquisitionFailure())
-        .thenThrow(new LockAcquisitionException("Could not start transaction", new SQLException()));
+        .thenThrow(new LockAcquisitionException("String", new SQLException()));
     Class<Throwable> exceptionType = Throwable.class;
 
     // Act and Assert
@@ -501,358 +164,361 @@ public class StreamingTransactionCapableUtilDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class, int, int)}
-   * with {@code operation}, {@code exceptionType}, {@code transactionBehavior},
-   * {@code isolationLevel}.
+   * Test {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class, int, int)} with {@code operation}, {@code exceptionType}, {@code transactionBehavior}, {@code isolationLevel}.
    * <p>
-   * Method under test:
-   * {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class, int, int)}
+   * Method under test: {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class, int, int)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testRunTransactionalOperationWithOperationExceptionTypeTransactionBehaviorIsolationLevel2()
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void StreamingTransactionCapableUtil.runTransactionalOperation(StreamCapableTransactionalOperation, Class, int, int)"})
+  public void testRunTransactionalOperationWithOperationExceptionTypeTransactionBehaviorIsolationLevel3()
       throws Throwable {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.BeanInstantiationException: Could not instantiate bean: messageSource defined in bl-common-applicationContext.xml
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageSource' defined in class path resource [bl-common-applicationContext.xml]: Initialization of bean failed; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:628)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:600)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.propertyeditors.CustomBooleanEditor.setAsText(CustomBooleanEditor.java:154)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
-    //       at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:590)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   See https://diff.blue/R026 to resolve this issue.
-
     // Arrange
-    StreamingTransactionCapableUtil streamingTransactionCapableUtil2 = new StreamingTransactionCapableUtil();
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(null);
+    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
     StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
-    Class<Throwable> exceptionType = Throwable.class;
-
-    // Act
-    streamingTransactionCapableUtil2.runTransactionalOperation(operation, exceptionType, 1, 1);
-  }
-
-  /**
-   * Test
-   * {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class, PlatformTransactionManager)}
-   * with {@code operation}, {@code exceptionType}, {@code transactionManager}.
-   * <p>
-   * Method under test:
-   * {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class, PlatformTransactionManager)}
-   */
-  @Test
-  public void testRunTransactionalOperationWithOperationExceptionTypeTransactionManager() throws Throwable {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    StreamingTransactionCapableUtil streamingTransactionCapableUtil = new StreamingTransactionCapableUtil();
-    StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
-    doNothing().when(operation).execute();
     when(operation.retryMaxCountOverrideForLockAcquisitionFailure()).thenReturn(1);
-    Class<Throwable> exceptionType = Throwable.class;
-    Connection connection = mock(Connection.class);
-    doNothing().when(connection).setAutoCommit(anyBoolean());
-    when(connection.getAutoCommit()).thenReturn(true);
-    doNothing().when(connection).close();
-    doNothing().when(connection).commit();
-    DataSource dataSource = mock(DataSource.class);
-    when(dataSource.getConnection()).thenReturn(connection);
-
-    // Act
-    streamingTransactionCapableUtil.runTransactionalOperation(operation, exceptionType,
-        new DataSourceTransactionManager(dataSource));
-
-    // Assert
-    verify(connection).close();
-    verify(connection).commit();
-    verify(connection).getAutoCommit();
-    verify(connection, atLeast(1)).setAutoCommit(anyBoolean());
-    verify(dataSource).getConnection();
-    verify(operation).retryMaxCountOverrideForLockAcquisitionFailure();
-    verify(operation).execute();
-  }
-
-  /**
-   * Test
-   * {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class, PlatformTransactionManager)}
-   * with {@code operation}, {@code exceptionType}, {@code transactionManager}.
-   * <p>
-   * Method under test:
-   * {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class, PlatformTransactionManager)}
-   */
-  @Test
-  public void testRunTransactionalOperationWithOperationExceptionTypeTransactionManager2() throws Throwable {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    StreamingTransactionCapableUtil streamingTransactionCapableUtil = new StreamingTransactionCapableUtil();
-    StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
     doNothing().when(operation).execute();
-    when(operation.retryMaxCountOverrideForLockAcquisitionFailure()).thenReturn(3);
     Class<Throwable> exceptionType = Throwable.class;
-    Connection connection = mock(Connection.class);
-    doNothing().when(connection).setAutoCommit(anyBoolean());
-    when(connection.getAutoCommit()).thenReturn(true);
-    doNothing().when(connection).close();
-    doNothing().when(connection).commit();
-    DataSource dataSource = mock(DataSource.class);
-    when(dataSource.getConnection()).thenReturn(connection);
 
     // Act
-    streamingTransactionCapableUtil.runTransactionalOperation(operation, exceptionType,
-        new DataSourceTransactionManager(dataSource));
-
-    // Assert
-    verify(connection).close();
-    verify(connection).commit();
-    verify(connection).getAutoCommit();
-    verify(connection, atLeast(1)).setAutoCommit(anyBoolean());
-    verify(dataSource).getConnection();
-    verify(operation).retryMaxCountOverrideForLockAcquisitionFailure();
-    verify(operation).execute();
-  }
-
-  /**
-   * Test
-   * {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class, PlatformTransactionManager)}
-   * with {@code operation}, {@code exceptionType}, {@code transactionManager}.
-   * <p>
-   * Method under test:
-   * {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class, PlatformTransactionManager)}
-   */
-  @Test
-  public void testRunTransactionalOperationWithOperationExceptionTypeTransactionManager3() throws Throwable {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    StreamingTransactionCapableUtil streamingTransactionCapableUtil = new StreamingTransactionCapableUtil();
-    StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
-    doNothing().when(operation).execute();
-    when(operation.retryMaxCountOverrideForLockAcquisitionFailure()).thenReturn(1);
-    Class<Throwable> exceptionType = Throwable.class;
-    PlatformTransactionManager transactionManager = mock(PlatformTransactionManager.class);
-    when(transactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(null);
-    doNothing().when(transactionManager).rollback(Mockito.<TransactionStatus>any());
-
-    // Act
-    streamingTransactionCapableUtil.runTransactionalOperation(operation, exceptionType, transactionManager);
+    streamingTransactionCapableUtil.runTransactionalOperation(operation, exceptionType, 1, 1);
 
     // Assert
     verify(operation).retryMaxCountOverrideForLockAcquisitionFailure();
     verify(operation).execute();
-    verify(transactionManager).getTransaction(isA(TransactionDefinition.class));
-    verify(transactionManager).rollback(isNull());
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
+    verify(platformTransactionManager).rollback(isNull());
   }
 
   /**
-   * Test
-   * {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class, PlatformTransactionManager)}
-   * with {@code operation}, {@code exceptionType}, {@code transactionManager}.
+   * Test {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class, int, int)} with {@code operation}, {@code exceptionType}, {@code transactionBehavior}, {@code isolationLevel}.
    * <p>
-   * Method under test:
-   * {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class, PlatformTransactionManager)}
+   * Method under test: {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class, int, int)}
    */
   @Test
-  public void testRunTransactionalOperationWithOperationExceptionTypeTransactionManager4() throws Throwable {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void StreamingTransactionCapableUtil.runTransactionalOperation(StreamCapableTransactionalOperation, Class, int, int)"})
+  public void testRunTransactionalOperationWithOperationExceptionTypeTransactionBehaviorIsolationLevel4()
+      throws Throwable {
     // Arrange
-    StreamingTransactionCapableUtil streamingTransactionCapableUtil = new StreamingTransactionCapableUtil();
-    StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
-    doNothing().when(operation).execute();
-    when(operation.retryMaxCountOverrideForLockAcquisitionFailure()).thenReturn(1);
-    Class<Throwable> exceptionType = Throwable.class;
     TransactionStatus transactionStatus = mock(TransactionStatus.class);
     when(transactionStatus.isRollbackOnly()).thenReturn(true);
-    PlatformTransactionManager transactionManager = mock(PlatformTransactionManager.class);
-    when(transactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(transactionStatus);
-    doNothing().when(transactionManager).rollback(Mockito.<TransactionStatus>any());
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(transactionStatus);
+    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
+    StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
+    when(operation.retryMaxCountOverrideForLockAcquisitionFailure()).thenReturn(1);
+    doNothing().when(operation).execute();
+    Class<Throwable> exceptionType = Throwable.class;
 
     // Act
-    streamingTransactionCapableUtil.runTransactionalOperation(operation, exceptionType, transactionManager);
+    streamingTransactionCapableUtil.runTransactionalOperation(operation, exceptionType, 1, 1);
 
     // Assert
     verify(operation).retryMaxCountOverrideForLockAcquisitionFailure();
     verify(operation).execute();
-    verify(transactionManager).getTransaction(isA(TransactionDefinition.class));
-    verify(transactionManager).rollback(isA(TransactionStatus.class));
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
+    verify(platformTransactionManager).rollback(isA(TransactionStatus.class));
     verify(transactionStatus).isRollbackOnly();
   }
 
   /**
-   * Test
-   * {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class, PlatformTransactionManager)}
-   * with {@code operation}, {@code exceptionType}, {@code transactionManager}.
+   * Test {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class, int, int)} with {@code operation}, {@code exceptionType}, {@code transactionBehavior}, {@code isolationLevel}.
    * <p>
-   * Method under test:
-   * {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class, PlatformTransactionManager)}
+   * Method under test: {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class, int, int)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testRunTransactionalOperationWithOperationExceptionTypeTransactionManager5() throws Throwable {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.BeanInstantiationException: Could not instantiate bean: messageSource defined in bl-common-applicationContext.xml
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageSource' defined in class path resource [bl-common-applicationContext.xml]: Initialization of bean failed; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:628)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:600)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.propertyeditors.CustomBooleanEditor.setAsText(CustomBooleanEditor.java:154)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
-    //       at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:590)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   See https://diff.blue/R026 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void StreamingTransactionCapableUtil.runTransactionalOperation(StreamCapableTransactionalOperation, Class, int, int)"})
+  public void testRunTransactionalOperationWithOperationExceptionTypeTransactionBehaviorIsolationLevel5()
+      throws Throwable {
     // Arrange
-    StreamingTransactionCapableUtil streamingTransactionCapableUtil2 = new StreamingTransactionCapableUtil();
+    TransactionStatus transactionStatus = mock(TransactionStatus.class);
+    when(transactionStatus.isRollbackOnly()).thenReturn(true);
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(transactionStatus);
+    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
     StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
+    when(operation.retryMaxCountOverrideForLockAcquisitionFailure()).thenReturn(3);
+    doNothing().when(operation).execute();
     Class<Throwable> exceptionType = Throwable.class;
 
     // Act
-    streamingTransactionCapableUtil2.runTransactionalOperation(operation, exceptionType,
-        new LifecycleAwareJpaTransactionManager());
+    streamingTransactionCapableUtil.runTransactionalOperation(operation, exceptionType, 1, 1);
+
+    // Assert
+    verify(operation).retryMaxCountOverrideForLockAcquisitionFailure();
+    verify(operation).execute();
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
+    verify(platformTransactionManager).rollback(isA(TransactionStatus.class));
+    verify(transactionStatus).isRollbackOnly();
   }
 
   /**
-   * Test
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)}
-   * with {@code operation}, {@code exceptionType}, {@code useTransaction}.
+   * Test {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class, int, int)} with {@code operation}, {@code exceptionType}, {@code transactionBehavior}, {@code isolationLevel}.
    * <p>
-   * Method under test:
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)}
+   * Method under test: {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class, int, int)}
    */
   @Test
-  public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransaction() throws Throwable {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void StreamingTransactionCapableUtil.runTransactionalOperation(StreamCapableTransactionalOperation, Class, int, int)"})
+  public void testRunTransactionalOperationWithOperationExceptionTypeTransactionBehaviorIsolationLevel6()
+      throws Throwable {
     // Arrange
-    StreamingTransactionCapableUtil streamingTransactionCapableUtil = new StreamingTransactionCapableUtil();
+    TransactionStatus transactionStatus = mock(TransactionStatus.class);
+    when(transactionStatus.isRollbackOnly()).thenReturn(true);
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(transactionStatus);
+    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
+    StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
+    when(operation.retryMaxCountOverrideForLockAcquisitionFailure()).thenReturn(-1);
+    doNothing().when(operation).execute();
+    Class<Throwable> exceptionType = Throwable.class;
+
+    // Act
+    streamingTransactionCapableUtil.runTransactionalOperation(operation, exceptionType, 1, 1);
+
+    // Assert
+    verify(operation).retryMaxCountOverrideForLockAcquisitionFailure();
+    verify(operation).execute();
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
+    verify(platformTransactionManager).rollback(isA(TransactionStatus.class));
+    verify(transactionStatus).isRollbackOnly();
+  }
+
+  /**
+   * Test {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class, int, int)} with {@code operation}, {@code exceptionType}, {@code transactionBehavior}, {@code isolationLevel}.
+   * <p>
+   * Method under test: {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class, int, int)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void StreamingTransactionCapableUtil.runTransactionalOperation(StreamCapableTransactionalOperation, Class, int, int)"})
+  public void testRunTransactionalOperationWithOperationExceptionTypeTransactionBehaviorIsolationLevel7()
+      throws Throwable {
+    // Arrange
+    StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
+    when(operation.shouldRetryOnTransactionLockAcquisitionFailure())
+        .thenThrow(new RuntimeException("Could not start transaction"));
+    when(operation.retryMaxCountOverrideForLockAcquisitionFailure()).thenReturn(1);
+    Class<Throwable> exceptionType = Throwable.class;
+
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> streamingTransactionCapableUtil.runTransactionalOperation(operation, exceptionType, -1, 1));
+    verify(operation).retryMaxCountOverrideForLockAcquisitionFailure();
+    verify(operation).shouldRetryOnTransactionLockAcquisitionFailure();
+  }
+
+  /**
+   * Test {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class, PlatformTransactionManager)} with {@code operation}, {@code exceptionType}, {@code transactionManager}.
+   * <p>
+   * Method under test: {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class, PlatformTransactionManager)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void StreamingTransactionCapableUtil.runTransactionalOperation(StreamCapableTransactionalOperation, Class, PlatformTransactionManager)"})
+  public void testRunTransactionalOperationWithOperationExceptionTypeTransactionManager() throws Throwable {
+    // Arrange
+    doNothing().when(platformTransactionManager).commit(Mockito.<TransactionStatus>any());
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any()))
+        .thenReturn(new SimpleTransactionStatus(true));
+    StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
+    when(operation.retryMaxCountOverrideForLockAcquisitionFailure()).thenReturn(1);
+    doNothing().when(operation).execute();
+    Class<Throwable> exceptionType = Throwable.class;
+
+    // Act
+    streamingTransactionCapableUtil.runTransactionalOperation(operation, exceptionType, platformTransactionManager);
+
+    // Assert
+    verify(operation).retryMaxCountOverrideForLockAcquisitionFailure();
+    verify(operation).execute();
+    verify(platformTransactionManager).commit(isA(TransactionStatus.class));
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
+  }
+
+  /**
+   * Test {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class)} with {@code operation}, {@code exceptionType}.
+   * <ul>
+   *   <li>Given minus one.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void StreamingTransactionCapableUtil.runTransactionalOperation(StreamCapableTransactionalOperation, Class)"})
+  public void testRunTransactionalOperationWithOperationExceptionType_givenMinusOne() throws Throwable {
+    // Arrange
+    TransactionStatus transactionStatus = mock(TransactionStatus.class);
+    when(transactionStatus.isRollbackOnly()).thenReturn(true);
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(transactionStatus);
+    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
+    StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
+    when(operation.retryMaxCountOverrideForLockAcquisitionFailure()).thenReturn(-1);
+    doNothing().when(operation).execute();
+    Class<Throwable> exceptionType = Throwable.class;
+
+    // Act
+    streamingTransactionCapableUtil.runTransactionalOperation(operation, exceptionType);
+
+    // Assert
+    verify(operation).retryMaxCountOverrideForLockAcquisitionFailure();
+    verify(operation).execute();
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
+    verify(platformTransactionManager).rollback(isA(TransactionStatus.class));
+    verify(transactionStatus).isRollbackOnly();
+  }
+
+  /**
+   * Test {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class)} with {@code operation}, {@code exceptionType}.
+   * <ul>
+   *   <li>Given three.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void StreamingTransactionCapableUtil.runTransactionalOperation(StreamCapableTransactionalOperation, Class)"})
+  public void testRunTransactionalOperationWithOperationExceptionType_givenThree() throws Throwable {
+    // Arrange
+    TransactionStatus transactionStatus = mock(TransactionStatus.class);
+    when(transactionStatus.isRollbackOnly()).thenReturn(true);
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(transactionStatus);
+    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
+    StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
+    when(operation.retryMaxCountOverrideForLockAcquisitionFailure()).thenReturn(3);
+    doNothing().when(operation).execute();
+    Class<Throwable> exceptionType = Throwable.class;
+
+    // Act
+    streamingTransactionCapableUtil.runTransactionalOperation(operation, exceptionType);
+
+    // Assert
+    verify(operation).retryMaxCountOverrideForLockAcquisitionFailure();
+    verify(operation).execute();
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
+    verify(platformTransactionManager).rollback(isA(TransactionStatus.class));
+    verify(transactionStatus).isRollbackOnly();
+  }
+
+  /**
+   * Test {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class)} with {@code operation}, {@code exceptionType}.
+   * <ul>
+   *   <li>Then calls {@link PlatformTransactionManager#commit(TransactionStatus)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void StreamingTransactionCapableUtil.runTransactionalOperation(StreamCapableTransactionalOperation, Class)"})
+  public void testRunTransactionalOperationWithOperationExceptionType_thenCallsCommit() throws Throwable {
+    // Arrange
+    doNothing().when(platformTransactionManager).commit(Mockito.<TransactionStatus>any());
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any()))
+        .thenReturn(new SimpleTransactionStatus(true));
+    StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
+    when(operation.retryMaxCountOverrideForLockAcquisitionFailure()).thenReturn(1);
+    doNothing().when(operation).execute();
+    Class<Throwable> exceptionType = Throwable.class;
+
+    // Act
+    streamingTransactionCapableUtil.runTransactionalOperation(operation, exceptionType);
+
+    // Assert
+    verify(operation).retryMaxCountOverrideForLockAcquisitionFailure();
+    verify(operation).execute();
+    verify(platformTransactionManager).commit(isA(TransactionStatus.class));
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
+  }
+
+  /**
+   * Test {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class)} with {@code operation}, {@code exceptionType}.
+   * <ul>
+   *   <li>Then calls {@link TransactionExecution#isRollbackOnly()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void StreamingTransactionCapableUtil.runTransactionalOperation(StreamCapableTransactionalOperation, Class)"})
+  public void testRunTransactionalOperationWithOperationExceptionType_thenCallsIsRollbackOnly() throws Throwable {
+    // Arrange
+    TransactionStatus transactionStatus = mock(TransactionStatus.class);
+    when(transactionStatus.isRollbackOnly()).thenReturn(true);
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(transactionStatus);
+    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
+    StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
+    when(operation.retryMaxCountOverrideForLockAcquisitionFailure()).thenReturn(1);
+    doNothing().when(operation).execute();
+    Class<Throwable> exceptionType = Throwable.class;
+
+    // Act
+    streamingTransactionCapableUtil.runTransactionalOperation(operation, exceptionType);
+
+    // Assert
+    verify(operation).retryMaxCountOverrideForLockAcquisitionFailure();
+    verify(operation).execute();
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
+    verify(platformTransactionManager).rollback(isA(TransactionStatus.class));
+    verify(transactionStatus).isRollbackOnly();
+  }
+
+  /**
+   * Test {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)} with {@code operation}, {@code exceptionType}, {@code useTransaction}.
+   * <p>
+   * Method under test: {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void StreamingTransactionCapableUtil.runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)"})
+  public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransaction() throws Throwable {
+    // Arrange
+    doNothing().when(platformTransactionManager).commit(Mockito.<TransactionStatus>any());
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any()))
+        .thenReturn(new SimpleTransactionStatus(true));
+    StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
+    when(operation.retryMaxCountOverrideForLockAcquisitionFailure()).thenReturn(1);
+    doNothing().when(operation).execute();
+    Class<Throwable> exceptionType = Throwable.class;
+
+    // Act
+    streamingTransactionCapableUtil.runOptionalTransactionalOperation(operation, exceptionType, true);
+
+    // Assert
+    verify(operation).retryMaxCountOverrideForLockAcquisitionFailure();
+    verify(operation).execute();
+    verify(platformTransactionManager).commit(isA(TransactionStatus.class));
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
+  }
+
+  /**
+   * Test {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)} with {@code operation}, {@code exceptionType}, {@code useTransaction}.
+   * <p>
+   * Method under test: {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void StreamingTransactionCapableUtil.runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)"})
+  public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransaction2() throws Throwable {
+    // Arrange
     StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
     when(operation.retryMaxCountOverrideForLockAcquisitionFailure())
-        .thenThrow(new LockAcquisitionException("Could not start transaction", new SQLException()));
+        .thenThrow(new LockAcquisitionException("String", new SQLException()));
     Class<Throwable> exceptionType = Throwable.class;
 
     // Act and Assert
@@ -862,20 +528,137 @@ public class StreamingTransactionCapableUtilDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)}
-   * with {@code operation}, {@code exceptionType}, {@code useTransaction}.
+   * Test {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)} with {@code operation}, {@code exceptionType}, {@code useTransaction}.
    * <p>
-   * Method under test:
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)}
+   * Method under test: {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)}
    */
   @Test
-  public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransaction2() throws Throwable {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void StreamingTransactionCapableUtil.runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)"})
+  public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransaction3() throws Throwable {
     // Arrange
-    StreamingTransactionCapableUtil streamingTransactionCapableUtil = new StreamingTransactionCapableUtil();
-    streamingTransactionCapableUtil.setRetryMax(1);
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(null);
+    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
+    StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
+    when(operation.retryMaxCountOverrideForLockAcquisitionFailure()).thenReturn(1);
+    doNothing().when(operation).execute();
+    Class<Throwable> exceptionType = Throwable.class;
+
+    // Act
+    streamingTransactionCapableUtil.runOptionalTransactionalOperation(operation, exceptionType, true);
+
+    // Assert
+    verify(operation).retryMaxCountOverrideForLockAcquisitionFailure();
+    verify(operation).execute();
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
+    verify(platformTransactionManager).rollback(isNull());
+  }
+
+  /**
+   * Test {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)} with {@code operation}, {@code exceptionType}, {@code useTransaction}.
+   * <p>
+   * Method under test: {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void StreamingTransactionCapableUtil.runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)"})
+  public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransaction4() throws Throwable {
+    // Arrange
+    TransactionStatus transactionStatus = mock(TransactionStatus.class);
+    when(transactionStatus.isRollbackOnly()).thenReturn(true);
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(transactionStatus);
+    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
+    StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
+    when(operation.retryMaxCountOverrideForLockAcquisitionFailure()).thenReturn(1);
+    doNothing().when(operation).execute();
+    Class<Throwable> exceptionType = Throwable.class;
+
+    // Act
+    streamingTransactionCapableUtil.runOptionalTransactionalOperation(operation, exceptionType, true);
+
+    // Assert
+    verify(operation).retryMaxCountOverrideForLockAcquisitionFailure();
+    verify(operation).execute();
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
+    verify(platformTransactionManager).rollback(isA(TransactionStatus.class));
+    verify(transactionStatus).isRollbackOnly();
+  }
+
+  /**
+   * Test {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)} with {@code operation}, {@code exceptionType}, {@code useTransaction}.
+   * <p>
+   * Method under test: {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void StreamingTransactionCapableUtil.runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)"})
+  public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransaction5() throws Throwable {
+    // Arrange
+    TransactionStatus transactionStatus = mock(TransactionStatus.class);
+    when(transactionStatus.isRollbackOnly()).thenReturn(true);
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(transactionStatus);
+    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
+    StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
+    when(operation.retryMaxCountOverrideForLockAcquisitionFailure()).thenReturn(3);
+    doNothing().when(operation).execute();
+    Class<Throwable> exceptionType = Throwable.class;
+
+    // Act
+    streamingTransactionCapableUtil.runOptionalTransactionalOperation(operation, exceptionType, true);
+
+    // Assert
+    verify(operation).retryMaxCountOverrideForLockAcquisitionFailure();
+    verify(operation).execute();
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
+    verify(platformTransactionManager).rollback(isA(TransactionStatus.class));
+    verify(transactionStatus).isRollbackOnly();
+  }
+
+  /**
+   * Test {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)} with {@code operation}, {@code exceptionType}, {@code useTransaction}.
+   * <p>
+   * Method under test: {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void StreamingTransactionCapableUtil.runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)"})
+  public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransaction6() throws Throwable {
+    // Arrange
+    TransactionStatus transactionStatus = mock(TransactionStatus.class);
+    when(transactionStatus.isRollbackOnly()).thenReturn(true);
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(transactionStatus);
+    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
+    StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
+    when(operation.retryMaxCountOverrideForLockAcquisitionFailure()).thenReturn(-1);
+    doNothing().when(operation).execute();
+    Class<Throwable> exceptionType = Throwable.class;
+
+    // Act
+    streamingTransactionCapableUtil.runOptionalTransactionalOperation(operation, exceptionType, true);
+
+    // Assert
+    verify(operation).retryMaxCountOverrideForLockAcquisitionFailure();
+    verify(operation).execute();
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
+    verify(platformTransactionManager).rollback(isA(TransactionStatus.class));
+    verify(transactionStatus).isRollbackOnly();
+  }
+
+  /**
+   * Test {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)} with {@code operation}, {@code exceptionType}, {@code useTransaction}.
+   * <p>
+   * Method under test: {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void StreamingTransactionCapableUtil.runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)"})
+  public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransaction7() throws Throwable {
+    // Arrange
     StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
     when(operation.retryMaxCountOverrideForLockAcquisitionFailure()).thenReturn(1);
     doNothing().when(operation).execute();
@@ -884,79 +667,21 @@ public class StreamingTransactionCapableUtilDiffblueTest {
     // Act
     streamingTransactionCapableUtil.runOptionalTransactionalOperation(operation, exceptionType, false);
 
-    // Assert that nothing has changed
+    // Assert
     verify(operation).retryMaxCountOverrideForLockAcquisitionFailure();
     verify(operation).execute();
   }
 
   /**
-   * Test
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)}
-   * with {@code operation}, {@code exceptionType}, {@code useTransaction}.
+   * Test {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)} with {@code operation}, {@code exceptionType}, {@code useTransaction}.
    * <p>
-   * Method under test:
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)}
+   * Method under test: {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)}
    */
   @Test
-  public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransaction3() throws Throwable {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    StreamingTransactionCapableUtil streamingTransactionCapableUtil = new StreamingTransactionCapableUtil();
-    streamingTransactionCapableUtil.setRetryMax(1);
-    StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
-    when(operation.retryMaxCountOverrideForLockAcquisitionFailure()).thenReturn(3);
-    doNothing().when(operation).execute();
-    Class<Throwable> exceptionType = Throwable.class;
-
-    // Act
-    streamingTransactionCapableUtil.runOptionalTransactionalOperation(operation, exceptionType, false);
-
-    // Assert that nothing has changed
-    verify(operation).retryMaxCountOverrideForLockAcquisitionFailure();
-    verify(operation).execute();
-  }
-
-  /**
-   * Test
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)}
-   * with {@code operation}, {@code exceptionType}, {@code useTransaction}.
-   * <p>
-   * Method under test:
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)}
-   */
-  @Test
-  public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransaction4() throws Throwable {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    StreamingTransactionCapableUtil streamingTransactionCapableUtil = new StreamingTransactionCapableUtil();
-    streamingTransactionCapableUtil.setRetryMax(1);
-    StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
-    when(operation.retryMaxCountOverrideForLockAcquisitionFailure()).thenReturn(-1);
-    doNothing().when(operation).execute();
-    Class<Throwable> exceptionType = Throwable.class;
-
-    // Act
-    streamingTransactionCapableUtil.runOptionalTransactionalOperation(operation, exceptionType, false);
-
-    // Assert that nothing has changed
-    verify(operation).retryMaxCountOverrideForLockAcquisitionFailure();
-    verify(operation).execute();
-  }
-
-  /**
-   * Test
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)}
-   * with {@code operation}, {@code exceptionType}, {@code useTransaction}.
-   * <p>
-   * Method under test:
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)}
-   */
-  @Test
-  public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransaction5() throws Throwable {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void StreamingTransactionCapableUtil.runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)"})
+  public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransaction8() throws Throwable {
     // Arrange
     StreamingTransactionCapableUtil streamingTransactionCapableUtil = new StreamingTransactionCapableUtil();
     streamingTransactionCapableUtil.setRetryMax(1);
@@ -974,53 +699,15 @@ public class StreamingTransactionCapableUtilDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)}
-   * with {@code operation}, {@code exceptionType}, {@code useTransaction}.
+   * Test {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)} with {@code operation}, {@code exceptionType}, {@code useTransaction}.
    * <p>
-   * Method under test:
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)}
+   * Method under test: {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)}
    */
   @Test
-  public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransaction6() throws Throwable {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PlatformTransactionManager transactionManager = mock(PlatformTransactionManager.class);
-    doNothing().when(transactionManager).commit(Mockito.<TransactionStatus>any());
-    when(transactionManager.getTransaction(Mockito.<TransactionDefinition>any()))
-        .thenReturn(new SimpleTransactionStatus(true));
-
-    StreamingTransactionCapableUtil streamingTransactionCapableUtil = new StreamingTransactionCapableUtil();
-    streamingTransactionCapableUtil.setTransactionManager(transactionManager);
-    streamingTransactionCapableUtil.setRetryMax(1);
-    StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
-    when(operation.retryMaxCountOverrideForLockAcquisitionFailure()).thenReturn(1);
-    doNothing().when(operation).execute();
-    Class<Throwable> exceptionType = Throwable.class;
-
-    // Act
-    streamingTransactionCapableUtil.runOptionalTransactionalOperation(operation, exceptionType, true);
-
-    // Assert
-    verify(operation).retryMaxCountOverrideForLockAcquisitionFailure();
-    verify(operation).execute();
-    verify(transactionManager).commit(isA(TransactionStatus.class));
-    verify(transactionManager).getTransaction(isA(TransactionDefinition.class));
-  }
-
-  /**
-   * Test
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)}
-   * with {@code operation}, {@code exceptionType}, {@code useTransaction}.
-   * <p>
-   * Method under test:
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)}
-   */
-  @Test
-  public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransaction7() throws Throwable {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void StreamingTransactionCapableUtil.runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)"})
+  public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransaction9() throws Throwable {
     // Arrange
     PlatformTransactionManager transactionManager = mock(PlatformTransactionManager.class);
     doThrow(new RuntimeException("foo")).when(transactionManager).commit(Mockito.<TransactionStatus>any());
@@ -1048,190 +735,50 @@ public class StreamingTransactionCapableUtilDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)}
-   * with {@code operation}, {@code exceptionType}, {@code useTransaction}.
+   * Test {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)} with {@code operation}, {@code exceptionType}, {@code useTransaction}, {@code transactionBehavior}, {@code isolationLevel}.
    * <p>
-   * Method under test:
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)}
+   * Method under test: {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)}
    */
   @Test
-  public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransaction8() throws Throwable {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PlatformTransactionManager transactionManager = mock(PlatformTransactionManager.class);
-    when(transactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(null);
-    doNothing().when(transactionManager).rollback(Mockito.<TransactionStatus>any());
-
-    StreamingTransactionCapableUtil streamingTransactionCapableUtil = new StreamingTransactionCapableUtil();
-    streamingTransactionCapableUtil.setTransactionManager(transactionManager);
-    streamingTransactionCapableUtil.setRetryMax(1);
-    StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
-    when(operation.retryMaxCountOverrideForLockAcquisitionFailure()).thenReturn(1);
-    doNothing().when(operation).execute();
-    Class<Throwable> exceptionType = Throwable.class;
-
-    // Act
-    streamingTransactionCapableUtil.runOptionalTransactionalOperation(operation, exceptionType, true);
-
-    // Assert
-    verify(operation).retryMaxCountOverrideForLockAcquisitionFailure();
-    verify(operation).execute();
-    verify(transactionManager).getTransaction(isA(TransactionDefinition.class));
-    verify(transactionManager).rollback(isNull());
-  }
-
-  /**
-   * Test
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)}
-   * with {@code operation}, {@code exceptionType}, {@code useTransaction}.
-   * <p>
-   * Method under test:
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)}
-   */
-  @Test
-  public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransaction9() throws Throwable {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    TransactionStatus transactionStatus = mock(TransactionStatus.class);
-    when(transactionStatus.isRollbackOnly()).thenReturn(true);
-    PlatformTransactionManager transactionManager = mock(PlatformTransactionManager.class);
-    when(transactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(transactionStatus);
-    doNothing().when(transactionManager).rollback(Mockito.<TransactionStatus>any());
-
-    StreamingTransactionCapableUtil streamingTransactionCapableUtil = new StreamingTransactionCapableUtil();
-    streamingTransactionCapableUtil.setTransactionManager(transactionManager);
-    streamingTransactionCapableUtil.setRetryMax(1);
-    StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
-    when(operation.retryMaxCountOverrideForLockAcquisitionFailure()).thenReturn(1);
-    doNothing().when(operation).execute();
-    Class<Throwable> exceptionType = Throwable.class;
-
-    // Act
-    streamingTransactionCapableUtil.runOptionalTransactionalOperation(operation, exceptionType, true);
-
-    // Assert
-    verify(operation).retryMaxCountOverrideForLockAcquisitionFailure();
-    verify(operation).execute();
-    verify(transactionManager).getTransaction(isA(TransactionDefinition.class));
-    verify(transactionManager).rollback(isA(TransactionStatus.class));
-    verify(transactionStatus).isRollbackOnly();
-  }
-
-  /**
-   * Test
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)}
-   * with {@code operation}, {@code exceptionType}, {@code useTransaction}.
-   * <p>
-   * Method under test:
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransaction10() throws Throwable {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.BeanInstantiationException: Could not instantiate bean: messageSource defined in bl-common-applicationContext.xml
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageSource' defined in class path resource [bl-common-applicationContext.xml]: Initialization of bean failed; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:628)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:600)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.propertyeditors.CustomBooleanEditor.setAsText(CustomBooleanEditor.java:154)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
-    //       at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:590)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   See https://diff.blue/R026 to resolve this issue.
-
-    // Arrange
-    StreamingTransactionCapableUtil streamingTransactionCapableUtil2 = new StreamingTransactionCapableUtil();
-    StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
-    Class<Throwable> exceptionType = Throwable.class;
-
-    // Act
-    streamingTransactionCapableUtil2.runOptionalTransactionalOperation(operation, exceptionType, true);
-  }
-
-  /**
-   * Test
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)}
-   * with {@code operation}, {@code exceptionType}, {@code useTransaction},
-   * {@code transactionBehavior}, {@code isolationLevel}.
-   * <p>
-   * Method under test:
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void StreamingTransactionCapableUtil.runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)"})
   public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransactionTransactionBehaviorIsolationLevel()
       throws Throwable {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    StreamingTransactionCapableUtil streamingTransactionCapableUtil = new StreamingTransactionCapableUtil();
+    doNothing().when(platformTransactionManager).commit(Mockito.<TransactionStatus>any());
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any()))
+        .thenReturn(new SimpleTransactionStatus(true));
+    StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
+    when(operation.retryMaxCountOverrideForLockAcquisitionFailure()).thenReturn(1);
+    doNothing().when(operation).execute();
+    Class<Throwable> exceptionType = Throwable.class;
+
+    // Act
+    streamingTransactionCapableUtil.runOptionalTransactionalOperation(operation, exceptionType, true, 1, 1);
+
+    // Assert
+    verify(operation).retryMaxCountOverrideForLockAcquisitionFailure();
+    verify(operation).execute();
+    verify(platformTransactionManager).commit(isA(TransactionStatus.class));
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
+  }
+
+  /**
+   * Test {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)} with {@code operation}, {@code exceptionType}, {@code useTransaction}, {@code transactionBehavior}, {@code isolationLevel}.
+   * <p>
+   * Method under test: {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void StreamingTransactionCapableUtil.runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)"})
+  public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransactionTransactionBehaviorIsolationLevel2()
+      throws Throwable {
+    // Arrange
     StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
     when(operation.retryMaxCountOverrideForLockAcquisitionFailure())
-        .thenThrow(new LockAcquisitionException("Could not start transaction", new SQLException()));
+        .thenThrow(new LockAcquisitionException("String", new SQLException()));
     Class<Throwable> exceptionType = Throwable.class;
 
     // Act and Assert
@@ -1241,445 +788,279 @@ public class StreamingTransactionCapableUtilDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)}
-   * with {@code operation}, {@code exceptionType}, {@code useTransaction},
-   * {@code transactionBehavior}, {@code isolationLevel}.
+   * Test {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)} with {@code operation}, {@code exceptionType}, {@code useTransaction}, {@code transactionBehavior}, {@code isolationLevel}.
    * <p>
-   * Method under test:
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)}
+   * Method under test: {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)}
    */
   @Test
-  public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransactionTransactionBehaviorIsolationLevel2()
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void StreamingTransactionCapableUtil.runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)"})
+  public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransactionTransactionBehaviorIsolationLevel3()
       throws Throwable {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    StreamingTransactionCapableUtil streamingTransactionCapableUtil = new StreamingTransactionCapableUtil();
-    streamingTransactionCapableUtil.setRetryMax(1);
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(null);
+    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
     StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
     when(operation.retryMaxCountOverrideForLockAcquisitionFailure()).thenReturn(1);
     doNothing().when(operation).execute();
     Class<Throwable> exceptionType = Throwable.class;
 
     // Act
-    streamingTransactionCapableUtil.runOptionalTransactionalOperation(operation, exceptionType, false, 1, 1);
+    streamingTransactionCapableUtil.runOptionalTransactionalOperation(operation, exceptionType, true, 1, 1);
 
-    // Assert that nothing has changed
+    // Assert
     verify(operation).retryMaxCountOverrideForLockAcquisitionFailure();
     verify(operation).execute();
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
+    verify(platformTransactionManager).rollback(isNull());
   }
 
   /**
-   * Test
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)}
-   * with {@code operation}, {@code exceptionType}, {@code useTransaction},
-   * {@code transactionBehavior}, {@code isolationLevel}.
+   * Test {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)} with {@code operation}, {@code exceptionType}, {@code useTransaction}, {@code transactionBehavior}, {@code isolationLevel}.
    * <p>
-   * Method under test:
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)}
+   * Method under test: {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)}
    */
   @Test
-  public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransactionTransactionBehaviorIsolationLevel3()
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void StreamingTransactionCapableUtil.runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)"})
+  public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransactionTransactionBehaviorIsolationLevel4()
       throws Throwable {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    StreamingTransactionCapableUtil streamingTransactionCapableUtil = new StreamingTransactionCapableUtil();
-    streamingTransactionCapableUtil.setRetryMax(1);
+    TransactionStatus transactionStatus = mock(TransactionStatus.class);
+    when(transactionStatus.isRollbackOnly()).thenReturn(true);
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(transactionStatus);
+    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
+    StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
+    when(operation.retryMaxCountOverrideForLockAcquisitionFailure()).thenReturn(1);
+    doNothing().when(operation).execute();
+    Class<Throwable> exceptionType = Throwable.class;
+
+    // Act
+    streamingTransactionCapableUtil.runOptionalTransactionalOperation(operation, exceptionType, true, 1, 1);
+
+    // Assert
+    verify(operation).retryMaxCountOverrideForLockAcquisitionFailure();
+    verify(operation).execute();
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
+    verify(platformTransactionManager).rollback(isA(TransactionStatus.class));
+    verify(transactionStatus).isRollbackOnly();
+  }
+
+  /**
+   * Test {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)} with {@code operation}, {@code exceptionType}, {@code useTransaction}, {@code transactionBehavior}, {@code isolationLevel}.
+   * <p>
+   * Method under test: {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void StreamingTransactionCapableUtil.runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)"})
+  public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransactionTransactionBehaviorIsolationLevel5()
+      throws Throwable {
+    // Arrange
+    TransactionStatus transactionStatus = mock(TransactionStatus.class);
+    when(transactionStatus.isRollbackOnly()).thenReturn(true);
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(transactionStatus);
+    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
     StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
     when(operation.retryMaxCountOverrideForLockAcquisitionFailure()).thenReturn(3);
     doNothing().when(operation).execute();
     Class<Throwable> exceptionType = Throwable.class;
 
     // Act
-    streamingTransactionCapableUtil.runOptionalTransactionalOperation(operation, exceptionType, false, 1, 1);
+    streamingTransactionCapableUtil.runOptionalTransactionalOperation(operation, exceptionType, true, 1, 1);
 
-    // Assert that nothing has changed
+    // Assert
     verify(operation).retryMaxCountOverrideForLockAcquisitionFailure();
     verify(operation).execute();
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
+    verify(platformTransactionManager).rollback(isA(TransactionStatus.class));
+    verify(transactionStatus).isRollbackOnly();
   }
 
   /**
-   * Test
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)}
-   * with {@code operation}, {@code exceptionType}, {@code useTransaction},
-   * {@code transactionBehavior}, {@code isolationLevel}.
+   * Test {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)} with {@code operation}, {@code exceptionType}, {@code useTransaction}, {@code transactionBehavior}, {@code isolationLevel}.
    * <p>
-   * Method under test:
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)}
+   * Method under test: {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)}
    */
   @Test
-  public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransactionTransactionBehaviorIsolationLevel4()
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void StreamingTransactionCapableUtil.runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)"})
+  public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransactionTransactionBehaviorIsolationLevel6()
       throws Throwable {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    StreamingTransactionCapableUtil streamingTransactionCapableUtil = new StreamingTransactionCapableUtil();
-    streamingTransactionCapableUtil.setRetryMax(1);
+    TransactionStatus transactionStatus = mock(TransactionStatus.class);
+    when(transactionStatus.isRollbackOnly()).thenReturn(true);
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(transactionStatus);
+    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
     StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
     when(operation.retryMaxCountOverrideForLockAcquisitionFailure()).thenReturn(-1);
     doNothing().when(operation).execute();
     Class<Throwable> exceptionType = Throwable.class;
 
     // Act
-    streamingTransactionCapableUtil.runOptionalTransactionalOperation(operation, exceptionType, false, 1, 1);
-
-    // Assert that nothing has changed
-    verify(operation).retryMaxCountOverrideForLockAcquisitionFailure();
-    verify(operation).execute();
-  }
-
-  /**
-   * Test
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)}
-   * with {@code operation}, {@code exceptionType}, {@code useTransaction},
-   * {@code transactionBehavior}, {@code isolationLevel}.
-   * <p>
-   * Method under test:
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)}
-   */
-  @Test
-  public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransactionTransactionBehaviorIsolationLevel5()
-      throws Throwable {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    StreamingTransactionCapableUtil streamingTransactionCapableUtil = new StreamingTransactionCapableUtil();
-    streamingTransactionCapableUtil.setRetryMax(1);
-    StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
-    when(operation.shouldRetryOnTransactionLockAcquisitionFailure())
-        .thenThrow(new RuntimeException("Could not start transaction"));
-    when(operation.retryMaxCountOverrideForLockAcquisitionFailure()).thenReturn(1);
-    Class<Throwable> exceptionType = Throwable.class;
-
-    // Act and Assert
-    assertThrows(RuntimeException.class,
-        () -> streamingTransactionCapableUtil.runOptionalTransactionalOperation(operation, exceptionType, true, 1, 1));
-    verify(operation).retryMaxCountOverrideForLockAcquisitionFailure();
-    verify(operation).shouldRetryOnTransactionLockAcquisitionFailure();
-  }
-
-  /**
-   * Test
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)}
-   * with {@code operation}, {@code exceptionType}, {@code useTransaction},
-   * {@code transactionBehavior}, {@code isolationLevel}.
-   * <p>
-   * Method under test:
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)}
-   */
-  @Test
-  public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransactionTransactionBehaviorIsolationLevel6()
-      throws Throwable {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    StreamingTransactionCapableUtil streamingTransactionCapableUtil = new StreamingTransactionCapableUtil();
-    streamingTransactionCapableUtil.setTransactionManager(new DataSourceTransactionManager(mock(DataSource.class)));
-    streamingTransactionCapableUtil.setRetryMax(1);
-    StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
-    when(operation.retryMaxCountOverrideForLockAcquisitionFailure()).thenReturn(1);
-    doNothing().when(operation).execute();
-    Class<Throwable> exceptionType = Throwable.class;
-
-    // Act
     streamingTransactionCapableUtil.runOptionalTransactionalOperation(operation, exceptionType, true, 1, 1);
 
     // Assert
     verify(operation).retryMaxCountOverrideForLockAcquisitionFailure();
     verify(operation).execute();
-  }
-
-  /**
-   * Test
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)}
-   * with {@code operation}, {@code exceptionType}, {@code useTransaction},
-   * {@code transactionBehavior}, {@code isolationLevel}.
-   * <p>
-   * Method under test:
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)}
-   */
-  @Test
-  public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransactionTransactionBehaviorIsolationLevel7()
-      throws Throwable {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PlatformTransactionManager transactionManager = mock(PlatformTransactionManager.class);
-    doThrow(new RuntimeException("foo")).when(transactionManager).commit(Mockito.<TransactionStatus>any());
-    when(transactionManager.getTransaction(Mockito.<TransactionDefinition>any()))
-        .thenReturn(new SimpleTransactionStatus(true));
-
-    StreamingTransactionCapableUtil streamingTransactionCapableUtil = new StreamingTransactionCapableUtil();
-    streamingTransactionCapableUtil.setTransactionManager(transactionManager);
-    streamingTransactionCapableUtil.setRetryMax(1);
-    StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
-    when(operation.shouldRetryOnTransactionLockAcquisitionFailure())
-        .thenThrow(new RuntimeException("Could not start transaction"));
-    when(operation.retryMaxCountOverrideForLockAcquisitionFailure()).thenReturn(1);
-    doNothing().when(operation).execute();
-    Class<Throwable> exceptionType = Throwable.class;
-
-    // Act and Assert
-    assertThrows(RuntimeException.class,
-        () -> streamingTransactionCapableUtil.runOptionalTransactionalOperation(operation, exceptionType, true, 1, 1));
-    verify(operation).retryMaxCountOverrideForLockAcquisitionFailure();
-    verify(operation).shouldRetryOnTransactionLockAcquisitionFailure();
-    verify(operation).execute();
-    verify(transactionManager).commit(isA(TransactionStatus.class));
-    verify(transactionManager).getTransaction(isA(TransactionDefinition.class));
-  }
-
-  /**
-   * Test
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)}
-   * with {@code operation}, {@code exceptionType}, {@code useTransaction},
-   * {@code transactionBehavior}, {@code isolationLevel}.
-   * <p>
-   * Method under test:
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)}
-   */
-  @Test
-  public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransactionTransactionBehaviorIsolationLevel8()
-      throws Throwable {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PlatformTransactionManager transactionManager = mock(PlatformTransactionManager.class);
-    when(transactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(null);
-    doNothing().when(transactionManager).rollback(Mockito.<TransactionStatus>any());
-
-    StreamingTransactionCapableUtil streamingTransactionCapableUtil = new StreamingTransactionCapableUtil();
-    streamingTransactionCapableUtil.setTransactionManager(transactionManager);
-    streamingTransactionCapableUtil.setRetryMax(1);
-    StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
-    when(operation.retryMaxCountOverrideForLockAcquisitionFailure()).thenReturn(1);
-    doNothing().when(operation).execute();
-    Class<Throwable> exceptionType = Throwable.class;
-
-    // Act
-    streamingTransactionCapableUtil.runOptionalTransactionalOperation(operation, exceptionType, true, 1, 1);
-
-    // Assert
-    verify(operation).retryMaxCountOverrideForLockAcquisitionFailure();
-    verify(operation).execute();
-    verify(transactionManager).getTransaction(isA(TransactionDefinition.class));
-    verify(transactionManager).rollback(isNull());
-  }
-
-  /**
-   * Test
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)}
-   * with {@code operation}, {@code exceptionType}, {@code useTransaction},
-   * {@code transactionBehavior}, {@code isolationLevel}.
-   * <p>
-   * Method under test:
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)}
-   */
-  @Test
-  public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransactionTransactionBehaviorIsolationLevel9()
-      throws Throwable {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    TransactionStatus transactionStatus = mock(TransactionStatus.class);
-    when(transactionStatus.isRollbackOnly()).thenReturn(true);
-    PlatformTransactionManager transactionManager = mock(PlatformTransactionManager.class);
-    when(transactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(transactionStatus);
-    doNothing().when(transactionManager).rollback(Mockito.<TransactionStatus>any());
-
-    StreamingTransactionCapableUtil streamingTransactionCapableUtil = new StreamingTransactionCapableUtil();
-    streamingTransactionCapableUtil.setTransactionManager(transactionManager);
-    streamingTransactionCapableUtil.setRetryMax(1);
-    StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
-    when(operation.retryMaxCountOverrideForLockAcquisitionFailure()).thenReturn(1);
-    doNothing().when(operation).execute();
-    Class<Throwable> exceptionType = Throwable.class;
-
-    // Act
-    streamingTransactionCapableUtil.runOptionalTransactionalOperation(operation, exceptionType, true, 1, 1);
-
-    // Assert
-    verify(operation).retryMaxCountOverrideForLockAcquisitionFailure();
-    verify(operation).execute();
-    verify(transactionManager).getTransaction(isA(TransactionDefinition.class));
-    verify(transactionManager).rollback(isA(TransactionStatus.class));
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
+    verify(platformTransactionManager).rollback(isA(TransactionStatus.class));
     verify(transactionStatus).isRollbackOnly();
   }
 
   /**
-   * Test
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)}
-   * with {@code operation}, {@code exceptionType}, {@code useTransaction},
-   * {@code transactionBehavior}, {@code isolationLevel}.
+   * Test {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)} with {@code operation}, {@code exceptionType}, {@code useTransaction}, {@code transactionBehavior}, {@code isolationLevel}.
    * <p>
-   * Method under test:
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)}
+   * Method under test: {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransactionTransactionBehaviorIsolationLevel10()
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void StreamingTransactionCapableUtil.runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)"})
+  public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransactionTransactionBehaviorIsolationLevel7()
       throws Throwable {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.BeanInstantiationException: Could not instantiate bean: messageSource defined in bl-common-applicationContext.xml
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageSource' defined in class path resource [bl-common-applicationContext.xml]: Initialization of bean failed; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:628)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:600)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.propertyeditors.CustomBooleanEditor.setAsText(CustomBooleanEditor.java:154)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
-    //       at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:590)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   See https://diff.blue/R026 to resolve this issue.
-
     // Arrange
-    StreamingTransactionCapableUtil streamingTransactionCapableUtil2 = new StreamingTransactionCapableUtil();
     StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
+    when(operation.retryMaxCountOverrideForLockAcquisitionFailure()).thenReturn(1);
+    doNothing().when(operation).execute();
     Class<Throwable> exceptionType = Throwable.class;
 
     // Act
-    streamingTransactionCapableUtil2.runOptionalTransactionalOperation(operation, exceptionType, true, 1, 1);
+    streamingTransactionCapableUtil.runOptionalTransactionalOperation(operation, exceptionType, false, 1, 1);
+
+    // Assert
+    verify(operation).retryMaxCountOverrideForLockAcquisitionFailure();
+    verify(operation).execute();
   }
 
   /**
-   * Test
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int, boolean, PlatformTransactionManager)}
-   * with {@code operation}, {@code exceptionType}, {@code useTransaction},
-   * {@code transactionBehavior}, {@code isolationLevel}, {@code readOnly},
-   * {@code transactionManager}.
+   * Test {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)} with {@code operation}, {@code exceptionType}, {@code useTransaction}, {@code transactionBehavior}, {@code isolationLevel}.
    * <p>
-   * Method under test:
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int, boolean, PlatformTransactionManager)}
+   * Method under test: {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)}
    */
   @Test
-  public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransactionTransactionBehaviorIsolationLevelReadOnlyTransactionManager()
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void StreamingTransactionCapableUtil.runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)"})
+  public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransactionTransactionBehaviorIsolationLevel8()
       throws Throwable {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    StreamingTransactionCapableUtil streamingTransactionCapableUtil = new StreamingTransactionCapableUtil();
     StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
-    doNothing().when(operation).execute();
+    when(operation.shouldRetryOnTransactionLockAcquisitionFailure())
+        .thenThrow(new RuntimeException("Could not start transaction"));
     when(operation.retryMaxCountOverrideForLockAcquisitionFailure()).thenReturn(1);
     Class<Throwable> exceptionType = Throwable.class;
 
-    // Act
-    streamingTransactionCapableUtil.runOptionalTransactionalOperation(operation, exceptionType, false, 1, 1, true,
-        new LifecycleAwareJpaTransactionManager());
-
-    // Assert that nothing has changed
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> streamingTransactionCapableUtil.runOptionalTransactionalOperation(operation, exceptionType, true, -1, 1));
     verify(operation).retryMaxCountOverrideForLockAcquisitionFailure();
-    verify(operation).execute();
+    verify(operation).shouldRetryOnTransactionLockAcquisitionFailure();
   }
 
   /**
-   * Test
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int, boolean, PlatformTransactionManager)}
-   * with {@code operation}, {@code exceptionType}, {@code useTransaction},
-   * {@code transactionBehavior}, {@code isolationLevel}, {@code readOnly},
-   * {@code transactionManager}.
+   * Test {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)} with {@code operation}, {@code exceptionType}, {@code useTransaction}, {@code transactionBehavior}, {@code isolationLevel}.
    * <p>
-   * Method under test:
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int, boolean, PlatformTransactionManager)}
+   * Method under test: {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)}
    */
   @Test
-  public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransactionTransactionBehaviorIsolationLevelReadOnlyTransactionManager2()
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void StreamingTransactionCapableUtil.runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int)"})
+  public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransactionTransactionBehaviorIsolationLevel9()
       throws Throwable {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     StreamingTransactionCapableUtil streamingTransactionCapableUtil = new StreamingTransactionCapableUtil();
+    streamingTransactionCapableUtil.setRetryMax(1);
     StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
+    when(operation.shouldRetryOnTransactionLockAcquisitionFailure())
+        .thenThrow(new RuntimeException("Could not start transaction"));
+    when(operation.retryMaxCountOverrideForLockAcquisitionFailure()).thenReturn(1);
+    Class<Throwable> exceptionType = Throwable.class;
+
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> streamingTransactionCapableUtil.runOptionalTransactionalOperation(operation, exceptionType, true, 1, 1));
+    verify(operation).retryMaxCountOverrideForLockAcquisitionFailure();
+    verify(operation).shouldRetryOnTransactionLockAcquisitionFailure();
+  }
+
+  /**
+   * Test {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int, boolean, PlatformTransactionManager)} with {@code operation}, {@code exceptionType}, {@code useTransaction}, {@code transactionBehavior}, {@code isolationLevel}, {@code readOnly}, {@code transactionManager}.
+   * <p>
+   * Method under test: {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int, boolean, PlatformTransactionManager)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void StreamingTransactionCapableUtil.runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int, boolean, PlatformTransactionManager)"})
+  public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransactionTransactionBehaviorIsolationLevelReadOnlyTransactionManager()
+      throws Throwable {
+    // Arrange
+    doNothing().when(platformTransactionManager).commit(Mockito.<TransactionStatus>any());
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any()))
+        .thenReturn(new SimpleTransactionStatus(true));
+    StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
+    when(operation.retryMaxCountOverrideForLockAcquisitionFailure()).thenReturn(1);
     doNothing().when(operation).execute();
-    when(operation.retryMaxCountOverrideForLockAcquisitionFailure()).thenReturn(3);
     Class<Throwable> exceptionType = Throwable.class;
 
     // Act
-    streamingTransactionCapableUtil.runOptionalTransactionalOperation(operation, exceptionType, false, 1, 1, true,
-        new LifecycleAwareJpaTransactionManager());
+    streamingTransactionCapableUtil.runOptionalTransactionalOperation(operation, exceptionType, true, 1, 1, true,
+        platformTransactionManager);
 
-    // Assert that nothing has changed
+    // Assert
     verify(operation).retryMaxCountOverrideForLockAcquisitionFailure();
     verify(operation).execute();
+    verify(platformTransactionManager).commit(isA(TransactionStatus.class));
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
   }
 
   /**
-   * Test
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int, boolean, PlatformTransactionManager)}
-   * with {@code operation}, {@code exceptionType}, {@code useTransaction},
-   * {@code transactionBehavior}, {@code isolationLevel}, {@code readOnly},
-   * {@code transactionManager}.
+   * Test {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int, boolean, PlatformTransactionManager)} with {@code operation}, {@code exceptionType}, {@code useTransaction}, {@code transactionBehavior}, {@code isolationLevel}, {@code readOnly}, {@code transactionManager}.
    * <p>
-   * Method under test:
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int, boolean, PlatformTransactionManager)}
+   * Method under test: {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int, boolean, PlatformTransactionManager)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void StreamingTransactionCapableUtil.runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int, boolean, PlatformTransactionManager)"})
+  public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransactionTransactionBehaviorIsolationLevelReadOnlyTransactionManager2()
+      throws Throwable {
+    // Arrange
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any()))
+        .thenReturn(mock(TransactionStatus.class));
+    StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
+    when(operation.shouldRetryOnTransactionLockAcquisitionFailure())
+        .thenThrow(new RuntimeException("Could not start transaction"));
+    when(operation.retryMaxCountOverrideForLockAcquisitionFailure()).thenReturn(1);
+    Class<Throwable> exceptionType = Throwable.class;
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any()))
+        .thenThrow(new RuntimeException("foo"));
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> streamingTransactionCapableUtil
+        .runOptionalTransactionalOperation(operation, exceptionType, true, 1, 1, true, platformTransactionManager));
+    verify(operation).retryMaxCountOverrideForLockAcquisitionFailure();
+    verify(operation).shouldRetryOnTransactionLockAcquisitionFailure();
+    verify(platformTransactionManager, atLeast(1)).getTransaction(isA(TransactionDefinition.class));
+  }
+
+  /**
+   * Test {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int, boolean, PlatformTransactionManager)} with {@code operation}, {@code exceptionType}, {@code useTransaction}, {@code transactionBehavior}, {@code isolationLevel}, {@code readOnly}, {@code transactionManager}.
+   * <p>
+   * Method under test: {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int, boolean, PlatformTransactionManager)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void StreamingTransactionCapableUtil.runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int, boolean, PlatformTransactionManager)"})
   public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransactionTransactionBehaviorIsolationLevelReadOnlyTransactionManager3()
       throws Throwable {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     StreamingTransactionCapableUtil streamingTransactionCapableUtil = new StreamingTransactionCapableUtil();
     StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
@@ -1695,20 +1076,16 @@ public class StreamingTransactionCapableUtilDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int, boolean, PlatformTransactionManager)}
-   * with {@code operation}, {@code exceptionType}, {@code useTransaction},
-   * {@code transactionBehavior}, {@code isolationLevel}, {@code readOnly},
-   * {@code transactionManager}.
+   * Test {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int, boolean, PlatformTransactionManager)} with {@code operation}, {@code exceptionType}, {@code useTransaction}, {@code transactionBehavior}, {@code isolationLevel}, {@code readOnly}, {@code transactionManager}.
    * <p>
-   * Method under test:
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int, boolean, PlatformTransactionManager)}
+   * Method under test: {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int, boolean, PlatformTransactionManager)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void StreamingTransactionCapableUtil.runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int, boolean, PlatformTransactionManager)"})
   public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransactionTransactionBehaviorIsolationLevelReadOnlyTransactionManager4()
       throws Throwable {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     StreamingTransactionCapableUtil streamingTransactionCapableUtil = new StreamingTransactionCapableUtil();
     StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
@@ -1727,20 +1104,16 @@ public class StreamingTransactionCapableUtilDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int, boolean, PlatformTransactionManager)}
-   * with {@code operation}, {@code exceptionType}, {@code useTransaction},
-   * {@code transactionBehavior}, {@code isolationLevel}, {@code readOnly},
-   * {@code transactionManager}.
+   * Test {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int, boolean, PlatformTransactionManager)} with {@code operation}, {@code exceptionType}, {@code useTransaction}, {@code transactionBehavior}, {@code isolationLevel}, {@code readOnly}, {@code transactionManager}.
    * <p>
-   * Method under test:
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int, boolean, PlatformTransactionManager)}
+   * Method under test: {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int, boolean, PlatformTransactionManager)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void StreamingTransactionCapableUtil.runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int, boolean, PlatformTransactionManager)"})
   public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransactionTransactionBehaviorIsolationLevelReadOnlyTransactionManager5()
       throws Throwable {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     StreamingTransactionCapableUtil streamingTransactionCapableUtil = new StreamingTransactionCapableUtil();
     StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
@@ -1759,190 +1132,6 @@ public class StreamingTransactionCapableUtilDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int, boolean, PlatformTransactionManager)}
-   * with {@code operation}, {@code exceptionType}, {@code useTransaction},
-   * {@code transactionBehavior}, {@code isolationLevel}, {@code readOnly},
-   * {@code transactionManager}.
-   * <p>
-   * Method under test:
-   * {@link StreamingTransactionCapableUtil#runOptionalTransactionalOperation(StreamCapableTransactionalOperation, Class, boolean, int, int, boolean, PlatformTransactionManager)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testRunOptionalTransactionalOperationWithOperationExceptionTypeUseTransactionTransactionBehaviorIsolationLevelReadOnlyTransactionManager6()
-      throws Throwable {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.BeanInstantiationException: Could not instantiate bean: messageSource defined in bl-common-applicationContext.xml
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageSource' defined in class path resource [bl-common-applicationContext.xml]: Initialization of bean failed; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:628)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:600)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.propertyeditors.CustomBooleanEditor.setAsText(CustomBooleanEditor.java:154)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
-    //       at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:590)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   See https://diff.blue/R026 to resolve this issue.
-
-    // Arrange
-    StreamingTransactionCapableUtil streamingTransactionCapableUtil2 = new StreamingTransactionCapableUtil();
-    StreamCapableTransactionalOperation operation = mock(StreamCapableTransactionalOperation.class);
-    Class<Throwable> exceptionType = Throwable.class;
-
-    // Act
-    streamingTransactionCapableUtil2.runOptionalTransactionalOperation(operation, exceptionType, true, 1, 1, true,
-        new LifecycleAwareJpaTransactionManager());
-  }
-
-  /**
-   * Test
-   * {@link StreamingTransactionCapableUtil#runOptionalEntityManagerInViewOperation(Runnable)}.
-   * <p>
-   * Method under test:
-   * {@link StreamingTransactionCapableUtil#runOptionalEntityManagerInViewOperation(Runnable)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testRunOptionalEntityManagerInViewOperation() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.BeanInstantiationException: Could not instantiate bean: messageSource defined in bl-common-applicationContext.xml
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageSource' defined in class path resource [bl-common-applicationContext.xml]: Initialization of bean failed; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:628)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:600)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.propertyeditors.CustomBooleanEditor.setAsText(CustomBooleanEditor.java:154)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
-    //       at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:590)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   See https://diff.blue/R026 to resolve this issue.
-
-    // Arrange and Act
-    (new StreamingTransactionCapableUtil()).runOptionalEntityManagerInViewOperation(mock(Runnable.class));
-  }
-
-  /**
    * Test getters and setters.
    * <p>
    * Methods under test:
@@ -1955,6 +1144,11 @@ public class StreamingTransactionCapableUtilDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int StreamingTransactionCapableUtil.getPageSize()",
+      "int StreamingTransactionCapableUtil.getRetryMax()",
+      "PlatformTransactionManager StreamingTransactionCapableUtil.getTransactionManager()",
+      "void StreamingTransactionCapableUtil.setPageSize(int)", "void StreamingTransactionCapableUtil.setRetryMax(int)"})
   public void testGettersAndSetters() {
     // Arrange
     StreamingTransactionCapableUtil streamingTransactionCapableUtil = new StreamingTransactionCapableUtil();
@@ -1964,24 +1158,22 @@ public class StreamingTransactionCapableUtilDiffblueTest {
     streamingTransactionCapableUtil.setRetryMax(1);
     int actualPageSize = streamingTransactionCapableUtil.getPageSize();
     int actualRetryMax = streamingTransactionCapableUtil.getRetryMax();
-    streamingTransactionCapableUtil.getTransactionManager();
 
-    // Assert that nothing has changed
+    // Assert
+    assertNull(streamingTransactionCapableUtil.getTransactionManager());
     assertEquals(1, actualRetryMax);
     assertEquals(3, actualPageSize);
   }
 
   /**
-   * Test
-   * {@link StreamingTransactionCapableUtil#setTransactionManager(PlatformTransactionManager)}.
+   * Test {@link StreamingTransactionCapableUtil#setTransactionManager(PlatformTransactionManager)}.
    * <p>
-   * Method under test:
-   * {@link StreamingTransactionCapableUtil#setTransactionManager(PlatformTransactionManager)}
+   * Method under test: {@link StreamingTransactionCapableUtil#setTransactionManager(PlatformTransactionManager)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StreamingTransactionCapableUtil.setTransactionManager(PlatformTransactionManager)"})
   public void testSetTransactionManager() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     StreamingTransactionCapableUtil streamingTransactionCapableUtil = new StreamingTransactionCapableUtil();
     LifecycleAwareJpaTransactionManager transactionManager = new LifecycleAwareJpaTransactionManager();
@@ -1994,333 +1186,180 @@ public class StreamingTransactionCapableUtilDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link StreamingTransactionCapableUtil#setTransactionManager(PlatformTransactionManager)}.
+   * Test {@link StreamingTransactionCapableUtil#setTransactionManager(PlatformTransactionManager)}.
    * <p>
-   * Method under test:
-   * {@link StreamingTransactionCapableUtil#setTransactionManager(PlatformTransactionManager)}
+   * Method under test: {@link StreamingTransactionCapableUtil#setTransactionManager(PlatformTransactionManager)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StreamingTransactionCapableUtil.setTransactionManager(PlatformTransactionManager)"})
   public void testSetTransactionManager2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     StreamingTransactionCapableUtil streamingTransactionCapableUtil = new StreamingTransactionCapableUtil();
 
     // Act
     streamingTransactionCapableUtil.setTransactionManager(null);
 
-    // Assert
+    // Assert that nothing has changed
     assertNull(streamingTransactionCapableUtil.getTransactionManager());
   }
 
   /**
-   * Test
-   * {@link StreamingTransactionCapableUtil#setTransactionManager(PlatformTransactionManager)}.
+   * Test {@link StreamingTransactionCapableUtil#endTransaction(TransactionStatus, boolean, Class, PlatformTransactionManager)}.
+   * <ul>
+   *   <li>Given {@code true}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link StreamingTransactionCapableUtil#setTransactionManager(PlatformTransactionManager)}
+   * Method under test: {@link StreamingTransactionCapableUtil#endTransaction(TransactionStatus, boolean, Class, PlatformTransactionManager)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetTransactionManager3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.BeanInstantiationException: Could not instantiate bean: messageSource defined in bl-common-applicationContext.xml
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageSource' defined in class path resource [bl-common-applicationContext.xml]: Initialization of bean failed; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:628)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:600)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.propertyeditors.CustomBooleanEditor.setAsText(CustomBooleanEditor.java:154)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
-    //       at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:590)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   See https://diff.blue/R026 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void StreamingTransactionCapableUtil.endTransaction(TransactionStatus, boolean, Class, PlatformTransactionManager)"})
+  public void testEndTransaction_givenTrue() throws Throwable {
     // Arrange
-    StreamingTransactionCapableUtil streamingTransactionCapableUtil2 = new StreamingTransactionCapableUtil();
+    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
+    DefaultTransactionStatus status = mock(DefaultTransactionStatus.class);
+    when(status.isRollbackOnly()).thenReturn(true);
+    Class<Throwable> exceptionType = Throwable.class;
 
     // Act
-    streamingTransactionCapableUtil2.setTransactionManager(new LifecycleAwareJpaTransactionManager());
+    streamingTransactionCapableUtil.endTransaction(status, true, exceptionType, platformTransactionManager);
+
+    // Assert
+    verify(platformTransactionManager).rollback(isA(TransactionStatus.class));
+    verify(status).isRollbackOnly();
   }
 
   /**
-   * Test
-   * {@link StreamingTransactionCapableUtil#endTransaction(TransactionStatus, boolean, Class, PlatformTransactionManager)}.
+   * Test {@link StreamingTransactionCapableUtil#endTransaction(TransactionStatus, boolean, Class, PlatformTransactionManager)}.
+   * <ul>
+   *   <li>Given {@code true}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link StreamingTransactionCapableUtil#endTransaction(TransactionStatus, boolean, Class, PlatformTransactionManager)}
+   * Method under test: {@link StreamingTransactionCapableUtil#endTransaction(TransactionStatus, boolean, Class, PlatformTransactionManager)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testEndTransaction() throws Throwable {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.BeanInstantiationException: Could not instantiate bean: messageSource defined in bl-common-applicationContext.xml
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageSource' defined in class path resource [bl-common-applicationContext.xml]: Initialization of bean failed; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:628)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:600)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.propertyeditors.CustomBooleanEditor.setAsText(CustomBooleanEditor.java:154)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
-    //       at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:590)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   See https://diff.blue/R026 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void StreamingTransactionCapableUtil.endTransaction(TransactionStatus, boolean, Class, PlatformTransactionManager)"})
+  public void testEndTransaction_givenTrue2() throws Throwable {
     // Arrange
-    StreamingTransactionCapableUtil streamingTransactionCapableUtil2 = new StreamingTransactionCapableUtil();
+    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
+    DefaultTransactionStatus status = mock(DefaultTransactionStatus.class);
+    when(status.isRollbackOnly()).thenReturn(true);
+    Class<Throwable> exceptionType = Throwable.class;
+
+    // Act
+    streamingTransactionCapableUtil.endTransaction(status, false, exceptionType, platformTransactionManager);
+
+    // Assert
+    verify(platformTransactionManager).rollback(isA(TransactionStatus.class));
+    verify(status).isRollbackOnly();
+  }
+
+  /**
+   * Test {@link StreamingTransactionCapableUtil#endTransaction(TransactionStatus, boolean, Class, PlatformTransactionManager)}.
+   * <ul>
+   *   <li>Then calls {@link PlatformTransactionManager#commit(TransactionStatus)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StreamingTransactionCapableUtil#endTransaction(TransactionStatus, boolean, Class, PlatformTransactionManager)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void StreamingTransactionCapableUtil.endTransaction(TransactionStatus, boolean, Class, PlatformTransactionManager)"})
+  public void testEndTransaction_thenCallsCommit() throws Throwable {
+    // Arrange
+    doNothing().when(platformTransactionManager).commit(Mockito.<TransactionStatus>any());
+    DefaultTransactionStatus status = mock(DefaultTransactionStatus.class);
+    when(status.isRollbackOnly()).thenReturn(false);
+    Class<Throwable> exceptionType = Throwable.class;
+
+    // Act
+    streamingTransactionCapableUtil.endTransaction(status, false, exceptionType, platformTransactionManager);
+
+    // Assert
+    verify(platformTransactionManager).commit(isA(TransactionStatus.class));
+    verify(status).isRollbackOnly();
+  }
+
+  /**
+   * Test {@link StreamingTransactionCapableUtil#endTransaction(TransactionStatus, boolean, Class, PlatformTransactionManager)}.
+   * <ul>
+   *   <li>When {@code null}.</li>
+   *   <li>Then calls {@link PlatformTransactionManager#rollback(TransactionStatus)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StreamingTransactionCapableUtil#endTransaction(TransactionStatus, boolean, Class, PlatformTransactionManager)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void StreamingTransactionCapableUtil.endTransaction(TransactionStatus, boolean, Class, PlatformTransactionManager)"})
+  public void testEndTransaction_whenNull_thenCallsRollback() throws Throwable {
+    // Arrange
+    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
+    Class<Throwable> exceptionType = Throwable.class;
+
+    // Act
+    streamingTransactionCapableUtil.endTransaction(null, true, exceptionType, platformTransactionManager);
+
+    // Assert
+    verify(platformTransactionManager).rollback(isNull());
+  }
+
+  /**
+   * Test {@link StreamingTransactionCapableUtil#endTransaction(TransactionStatus, boolean, Class, PlatformTransactionManager)}.
+   * <ul>
+   *   <li>When {@link SimpleTransactionStatus#SimpleTransactionStatus(boolean)} with newTransaction is {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StreamingTransactionCapableUtil#endTransaction(TransactionStatus, boolean, Class, PlatformTransactionManager)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void StreamingTransactionCapableUtil.endTransaction(TransactionStatus, boolean, Class, PlatformTransactionManager)"})
+  public void testEndTransaction_whenSimpleTransactionStatusWithNewTransactionIsTrue() throws Throwable {
+    // Arrange
+    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
     SimpleTransactionStatus status = new SimpleTransactionStatus(true);
     Class<Throwable> exceptionType = Throwable.class;
 
     // Act
-    streamingTransactionCapableUtil2.endTransaction(status, true, exceptionType,
-        new LifecycleAwareJpaTransactionManager());
+    streamingTransactionCapableUtil.endTransaction(status, true, exceptionType, platformTransactionManager);
+
+    // Assert
+    verify(platformTransactionManager).rollback(isA(TransactionStatus.class));
   }
 
   /**
-   * Test
-   * {@link StreamingTransactionCapableUtil#startTransaction(int, int, boolean, PlatformTransactionManager)}.
-   * <p>
-   * Method under test:
-   * {@link StreamingTransactionCapableUtil#startTransaction(int, int, boolean, PlatformTransactionManager)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testStartTransaction() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.BeanInstantiationException: Could not instantiate bean: messageSource defined in bl-common-applicationContext.xml
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageSource' defined in class path resource [bl-common-applicationContext.xml]: Initialization of bean failed; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:628)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:600)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.propertyeditors.CustomBooleanEditor.setAsText(CustomBooleanEditor.java:154)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
-    //       at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:590)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   See https://diff.blue/R026 to resolve this issue.
-
-    // Arrange
-    StreamingTransactionCapableUtil streamingTransactionCapableUtil2 = new StreamingTransactionCapableUtil();
-
-    // Act
-    streamingTransactionCapableUtil2.startTransaction(1, 1, true, new LifecycleAwareJpaTransactionManager());
-  }
-
-  /**
-   * Test
-   * {@link StreamingTransactionCapableUtil#startTransaction(int, int, boolean, PlatformTransactionManager)}.
+   * Test {@link StreamingTransactionCapableUtil#startTransaction(int, int, boolean, PlatformTransactionManager)}.
    * <ul>
-   *   <li>Then return {@link DefaultTransactionStatus}.</li>
+   *   <li>Then return {@link SimpleTransactionStatus#SimpleTransactionStatus(boolean)} with newTransaction is {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link StreamingTransactionCapableUtil#startTransaction(int, int, boolean, PlatformTransactionManager)}
+   * Method under test: {@link StreamingTransactionCapableUtil#startTransaction(int, int, boolean, PlatformTransactionManager)}
    */
   @Test
-  public void testStartTransaction_thenReturnDefaultTransactionStatus() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "TransactionStatus StreamingTransactionCapableUtil.startTransaction(int, int, boolean, PlatformTransactionManager)"})
+  public void testStartTransaction_thenReturnSimpleTransactionStatusWithNewTransactionIsTrue()
+      throws TransactionException {
     // Arrange
-    StreamingTransactionCapableUtil streamingTransactionCapableUtil = new StreamingTransactionCapableUtil();
+    SimpleTransactionStatus simpleTransactionStatus = new SimpleTransactionStatus(true);
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any()))
+        .thenReturn(simpleTransactionStatus);
 
     // Act
     TransactionStatus actualStartTransactionResult = streamingTransactionCapableUtil.startTransaction(1, 1, true,
-        new DataSourceTransactionManager(mock(DataSource.class)));
+        platformTransactionManager);
 
     // Assert
-    assertTrue(actualStartTransactionResult instanceof DefaultTransactionStatus);
-    assertNull(((DefaultTransactionStatus) actualStartTransactionResult).getSuspendedResources());
-    assertFalse(actualStartTransactionResult.isCompleted());
-    assertFalse(actualStartTransactionResult.isNewTransaction());
-    assertFalse(actualStartTransactionResult.isRollbackOnly());
-    assertFalse(actualStartTransactionResult.hasSavepoint());
-    assertFalse(((DefaultTransactionStatus) actualStartTransactionResult).isLocalRollbackOnly());
-    assertFalse(((DefaultTransactionStatus) actualStartTransactionResult).hasTransaction());
-    assertFalse(((DefaultTransactionStatus) actualStartTransactionResult).isDebug());
-    assertFalse(((DefaultTransactionStatus) actualStartTransactionResult).isGlobalRollbackOnly());
-    assertFalse(((DefaultTransactionStatus) actualStartTransactionResult).isTransactionSavepointManager());
-    assertTrue(((DefaultTransactionStatus) actualStartTransactionResult).isNewSynchronization());
-    assertTrue(((DefaultTransactionStatus) actualStartTransactionResult).isReadOnly());
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
+    assertSame(simpleTransactionStatus, actualStartTransactionResult);
   }
 }

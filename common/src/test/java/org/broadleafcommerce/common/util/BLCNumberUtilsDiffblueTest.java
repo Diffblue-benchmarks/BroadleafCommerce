@@ -18,7 +18,10 @@
 package org.broadleafcommerce.common.util;
 
 import static org.junit.Assert.assertEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class BLCNumberUtilsDiffblueTest {
   /**
@@ -27,9 +30,23 @@ public class BLCNumberUtilsDiffblueTest {
    * Method under test: {@link BLCNumberUtils#toLong(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Long BLCNumberUtils.toLong(Object)"})
   public void testToLong() {
     // Arrange, Act and Assert
     assertEquals(1L, BLCNumberUtils.toLong(1).longValue());
+  }
+
+  /**
+   * Test {@link BLCNumberUtils#toLong(Object)}.
+   * <p>
+   * Method under test: {@link BLCNumberUtils#toLong(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Long BLCNumberUtils.toLong(Object)"})
+  public void testToLong2() {
+    // Arrange, Act and Assert
     assertEquals(1L, BLCNumberUtils.toLong(1L).longValue());
   }
 }

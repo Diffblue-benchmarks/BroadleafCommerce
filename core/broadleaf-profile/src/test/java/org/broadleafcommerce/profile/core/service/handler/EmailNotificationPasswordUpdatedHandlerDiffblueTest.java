@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Profile
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.profile.core.service.handler;
 
 import static org.junit.Assert.assertEquals;
@@ -5,89 +22,29 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.Set;
-import org.broadleafcommerce.common.security.util.PasswordReset;
-import org.broadleafcommerce.profile.core.domain.ChallengeQuestion;
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class EmailNotificationPasswordUpdatedHandlerDiffblueTest {
   /**
-   * Test
-   * {@link EmailNotificationPasswordUpdatedHandler#passwordChanged(PasswordReset, Customer, String)}.
-   * <ul>
-   *   <li>When {@link CustomerImpl} (default constructor).</li>
-   * </ul>
+   * Test {@link EmailNotificationPasswordUpdatedHandler#constructPasswordChangeEmailTemplateVariables(Customer, String)}.
    * <p>
-   * Method under test:
-   * {@link EmailNotificationPasswordUpdatedHandler#passwordChanged(PasswordReset, Customer, String)}
+   * Method under test: {@link EmailNotificationPasswordUpdatedHandler#constructPasswordChangeEmailTemplateVariables(Customer, String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testPasswordChanged_whenCustomerImpl() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.broadleafcommerce.profile.core.service.handler.EmailNotificationPasswordUpdatedHandler.passwordChanged(EmailNotificationPasswordUpdatedHandler.java:84)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    EmailNotificationPasswordUpdatedHandler emailNotificationPasswordUpdatedHandler = new EmailNotificationPasswordUpdatedHandler();
-    PasswordReset passwordReset = new PasswordReset("janedoe");
-
-    // Act
-    emailNotificationPasswordUpdatedHandler.passwordChanged(passwordReset, new CustomerImpl(), "iloveyou");
-  }
-
-  /**
-   * Test
-   * {@link EmailNotificationPasswordUpdatedHandler#constructPasswordChangeEmailTemplateVariables(Customer, String)}.
-   * <ul>
-   *   <li>Given {@link ChallengeQuestion}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link EmailNotificationPasswordUpdatedHandler#constructPasswordChangeEmailTemplateVariables(Customer, String)}
-   */
-  @Test
-  public void testConstructPasswordChangeEmailTemplateVariables_givenChallengeQuestion() {
-    // Arrange
-    EmailNotificationPasswordUpdatedHandler emailNotificationPasswordUpdatedHandler = new EmailNotificationPasswordUpdatedHandler();
-
-    CustomerImpl customer = new CustomerImpl();
-    customer.setChallengeQuestion(mock(ChallengeQuestion.class));
-
-    // Act
-    HashMap actualConstructPasswordChangeEmailTemplateVariablesResult = emailNotificationPasswordUpdatedHandler
-        .constructPasswordChangeEmailTemplateVariables(customer, "iloveyou");
-
-    // Assert
-    assertEquals(1, actualConstructPasswordChangeEmailTemplateVariablesResult.size());
-    assertEquals("iloveyou", actualConstructPasswordChangeEmailTemplateVariablesResult
-        .get(EmailNotificationPasswordUpdatedHandler.CUSTOMER_PASSWORD_TEMPLATE_VARIABLE));
-  }
-
-  /**
-   * Test
-   * {@link EmailNotificationPasswordUpdatedHandler#constructPasswordChangeEmailTemplateVariables(Customer, String)}.
-   * <ul>
-   *   <li>When {@link CustomerImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link EmailNotificationPasswordUpdatedHandler#constructPasswordChangeEmailTemplateVariables(Customer, String)}
-   */
-  @Test
-  public void testConstructPasswordChangeEmailTemplateVariables_whenCustomerImpl() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "HashMap EmailNotificationPasswordUpdatedHandler.constructPasswordChangeEmailTemplateVariables(Customer, String)"})
+  public void testConstructPasswordChangeEmailTemplateVariables() {
     // Arrange
     EmailNotificationPasswordUpdatedHandler emailNotificationPasswordUpdatedHandler = new EmailNotificationPasswordUpdatedHandler();
 
@@ -106,25 +63,26 @@ public class EmailNotificationPasswordUpdatedHandlerDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>
-   * {@link EmailNotificationPasswordUpdatedHandler#setPasswordResetEmailDefaultLocale(Locale)}
-   *   <li>
-   * {@link EmailNotificationPasswordUpdatedHandler#setPasswordResetEmailFromAddress(String)}
-   *   <li>
-   * {@link EmailNotificationPasswordUpdatedHandler#setPasswordResetEmailSubject(Map)}
-   *   <li>
-   * {@link EmailNotificationPasswordUpdatedHandler#setPasswordResetEmailTemplate(Map)}
-   *   <li>
-   * {@link EmailNotificationPasswordUpdatedHandler#getPasswordResetEmailDefaultLocale()}
-   *   <li>
-   * {@link EmailNotificationPasswordUpdatedHandler#getPasswordResetEmailFromAddress()}
-   *   <li>
-   * {@link EmailNotificationPasswordUpdatedHandler#getPasswordResetEmailSubject()}
-   *   <li>
-   * {@link EmailNotificationPasswordUpdatedHandler#getPasswordResetEmailTemplate()}
+   *   <li>{@link EmailNotificationPasswordUpdatedHandler#setPasswordResetEmailDefaultLocale(Locale)}
+   *   <li>{@link EmailNotificationPasswordUpdatedHandler#setPasswordResetEmailFromAddress(String)}
+   *   <li>{@link EmailNotificationPasswordUpdatedHandler#setPasswordResetEmailSubject(Map)}
+   *   <li>{@link EmailNotificationPasswordUpdatedHandler#setPasswordResetEmailTemplate(Map)}
+   *   <li>{@link EmailNotificationPasswordUpdatedHandler#getPasswordResetEmailDefaultLocale()}
+   *   <li>{@link EmailNotificationPasswordUpdatedHandler#getPasswordResetEmailFromAddress()}
+   *   <li>{@link EmailNotificationPasswordUpdatedHandler#getPasswordResetEmailSubject()}
+   *   <li>{@link EmailNotificationPasswordUpdatedHandler#getPasswordResetEmailTemplate()}
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Locale EmailNotificationPasswordUpdatedHandler.getPasswordResetEmailDefaultLocale()",
+      "String EmailNotificationPasswordUpdatedHandler.getPasswordResetEmailFromAddress()",
+      "Map EmailNotificationPasswordUpdatedHandler.getPasswordResetEmailSubject()",
+      "Map EmailNotificationPasswordUpdatedHandler.getPasswordResetEmailTemplate()",
+      "void EmailNotificationPasswordUpdatedHandler.setPasswordResetEmailDefaultLocale(Locale)",
+      "void EmailNotificationPasswordUpdatedHandler.setPasswordResetEmailFromAddress(String)",
+      "void EmailNotificationPasswordUpdatedHandler.setPasswordResetEmailSubject(Map)",
+      "void EmailNotificationPasswordUpdatedHandler.setPasswordResetEmailTemplate(Map)"})
   public void testGettersAndSetters() {
     // Arrange
     EmailNotificationPasswordUpdatedHandler emailNotificationPasswordUpdatedHandler = new EmailNotificationPasswordUpdatedHandler();
@@ -145,7 +103,7 @@ public class EmailNotificationPasswordUpdatedHandlerDiffblueTest {
     Map<Locale, String> actualPasswordResetEmailTemplate = emailNotificationPasswordUpdatedHandler
         .getPasswordResetEmailTemplate();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("42 Main St", actualPasswordResetEmailFromAddress);
     assertTrue(actualPasswordResetEmailSubject.isEmpty());
     assertTrue(actualPasswordResetEmailTemplate.isEmpty());
@@ -155,13 +113,13 @@ public class EmailNotificationPasswordUpdatedHandlerDiffblueTest {
   }
 
   /**
-   * Test new {@link EmailNotificationPasswordUpdatedHandler} (default
-   * constructor).
+   * Test new {@link EmailNotificationPasswordUpdatedHandler} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link EmailNotificationPasswordUpdatedHandler}
+   * Method under test: default or parameterless constructor of {@link EmailNotificationPasswordUpdatedHandler}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void EmailNotificationPasswordUpdatedHandler.<init>()"})
   public void testNewEmailNotificationPasswordUpdatedHandler() throws MissingResourceException {
     // Arrange and Act
     EmailNotificationPasswordUpdatedHandler actualEmailNotificationPasswordUpdatedHandler = new EmailNotificationPasswordUpdatedHandler();

@@ -20,14 +20,13 @@ package org.broadleafcommerce.common.sitemap.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import org.broadleafcommerce.common.file.domain.FileWorkArea;
 import org.broadleafcommerce.common.sitemap.domain.CustomUrlSiteMapGeneratorConfigurationImpl;
 import org.broadleafcommerce.common.sitemap.domain.SiteMapConfigurationImpl;
@@ -38,231 +37,33 @@ import org.broadleafcommerce.common.sitemap.domain.SiteMapUrlEntryImpl;
 import org.broadleafcommerce.common.sitemap.service.type.SiteMapChangeFreqType;
 import org.broadleafcommerce.common.sitemap.service.type.SiteMapGeneratorType;
 import org.broadleafcommerce.common.sitemap.service.type.SiteMapPriorityType;
-import org.junit.Ignore;
+import org.broadleafcommerce.common.sitemap.wrapper.SiteMapURLWrapper;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-common-applicationContext-entity.xml",
-    "/bl-common-applicationContext-mbeans.xml", "/bl-common-applicationContext-persistence.xml",
-    "/bl-common-applicationContext-servlet.xml", "/bl-common-applicationContext-wrapper.xml",
-    "/bl-common-applicationContext.xml", "/bl-fake-applicationContext-ant.xml",
-    "/blc-config/admin/framework/bl-common-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-common-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-common-applicationContext-servlet.xml",
-    "/blc-config/site/framework/bl-common-applicationContext.xml",
-    "/override-contexts/admin-root-autoconfiguration-overrides.xml",
-    "/override-contexts/admin-servlet-autoconfiguration-overrides.xml",
-    "/override-contexts/autoconfiguration-overrides.xml", "/override-contexts/autoconfiguration-servlet-overrides.xml",
-    "/override-contexts/site-root-autoconfiguration-overrides.xml",
-    "/override-contexts/site-servlet-autoconfiguration-overrides.xml",
-    "/blc-config/admin/bl-admin-test-applicationContext.xml", "/blc-config/bl-test-applicationContext.xml",
-    "/blc-config/site/bl-site-test-applicationContext.xml", "/context/config/client-override.xml",
-    "/context/config/xml-import-override.xml", "/context/crossmodule/early-applicationContext.xml",
-    "/context/crossmodule/early-xml-applicationContext.xml", "/context/crossmodule/late-applicationContext.xml",
-    "/context/entityconfig/import-framework.xml", "/context/entityconfig/import-local.xml",
-    "/context/importer/applicationContext.xml", "/context/importer/merge/applicationContext-servlet.xml",
-    "/context/importer/merge/applicationContext.xml", "/context/merge/bl-framework.xml", "/context/merge/bl-module.xml",
-    "/context/merge/local.xml", "/context/reader/bean-override-early-test-applicationContext.xml",
-    "/context/reader/bean-override-framework-test-applicationContext.xml",
-    "/context/reader/bean-override-local-test-applicationContext.xml", "/context/reader/merge/testbeans.xml",
-    "/context/reader/merge/testbeans2.xml", "/context/reader/merge/testbeans3.xml"})
+@ContextConfiguration(classes = {CustomUrlSiteMapGenerator.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class CustomUrlSiteMapGeneratorDiffblueTest {
   @Autowired
   private CustomUrlSiteMapGenerator customUrlSiteMapGenerator;
 
   /**
-   * Test
-   * {@link CustomUrlSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}.
-   * <p>
-   * Method under test:
-   * {@link CustomUrlSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}
-   */
-  @Test
-  public void testCanHandleSiteMapConfiguration() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CustomUrlSiteMapGenerator customUrlSiteMapGenerator = new CustomUrlSiteMapGenerator();
-    CustomUrlSiteMapGeneratorConfigurationImpl siteMapGeneratorConfiguration = mock(
-        CustomUrlSiteMapGeneratorConfigurationImpl.class);
-    when(siteMapGeneratorConfiguration.getSiteMapGeneratorType()).thenReturn(SiteMapGeneratorType.CATEGORY);
-
-    // Act
-    boolean actualCanHandleSiteMapConfigurationResult = customUrlSiteMapGenerator
-        .canHandleSiteMapConfiguration(siteMapGeneratorConfiguration);
-
-    // Assert
-    verify(siteMapGeneratorConfiguration).getSiteMapGeneratorType();
-    assertFalse(actualCanHandleSiteMapConfigurationResult);
-  }
-
-  /**
-   * Test
-   * {@link CustomUrlSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}.
-   * <p>
-   * Method under test:
-   * {@link CustomUrlSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}
-   */
-  @Test
-  public void testCanHandleSiteMapConfiguration2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CustomUrlSiteMapGenerator customUrlSiteMapGenerator = new CustomUrlSiteMapGenerator();
-    CustomUrlSiteMapGeneratorConfigurationImpl siteMapGeneratorConfiguration = mock(
-        CustomUrlSiteMapGeneratorConfigurationImpl.class);
-    when(siteMapGeneratorConfiguration.getSiteMapGeneratorType())
-        .thenReturn(new SiteMapGeneratorType("CUSTOM", "CUSTOM"));
-
-    // Act
-    boolean actualCanHandleSiteMapConfigurationResult = customUrlSiteMapGenerator
-        .canHandleSiteMapConfiguration(siteMapGeneratorConfiguration);
-
-    // Assert
-    verify(siteMapGeneratorConfiguration).getSiteMapGeneratorType();
-    assertTrue(actualCanHandleSiteMapConfigurationResult);
-  }
-
-  /**
-   * Test
-   * {@link CustomUrlSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}.
-   * <p>
-   * Method under test:
-   * {@link CustomUrlSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCanHandleSiteMapConfiguration3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.BeanInstantiationException: Could not instantiate bean: messageSource defined in bl-common-applicationContext.xml
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageSource' defined in class path resource [bl-common-applicationContext.xml]: Initialization of bean failed; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:628)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:600)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.propertyeditors.CustomBooleanEditor.setAsText(CustomBooleanEditor.java:154)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
-    //       at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:590)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   See https://diff.blue/R026 to resolve this issue.
-
-    // Arrange
-    CustomUrlSiteMapGenerator customUrlSiteMapGenerator2 = new CustomUrlSiteMapGenerator();
-
-    // Act
-    customUrlSiteMapGenerator2.canHandleSiteMapConfiguration(new CustomUrlSiteMapGeneratorConfigurationImpl());
-  }
-
-  /**
-   * Test
-   * {@link CustomUrlSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}.
+   * Test {@link CustomUrlSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}.
    * <ul>
-   *   <li>Given {@link SiteMapGeneratorType#CUSTOM}.</li>
+   *   <li>Given {@link SiteMapGeneratorType#CATEGORY}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomUrlSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}
+   * Method under test: {@link CustomUrlSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}
    */
   @Test
-  public void testCanHandleSiteMapConfiguration_givenCustom() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomUrlSiteMapGenerator.canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)"})
+  public void testCanHandleSiteMapConfiguration_givenCategory() {
     // Arrange
-    CustomUrlSiteMapGenerator customUrlSiteMapGenerator = new CustomUrlSiteMapGenerator();
-    CustomUrlSiteMapGeneratorConfigurationImpl siteMapGeneratorConfiguration = mock(
-        CustomUrlSiteMapGeneratorConfigurationImpl.class);
-    when(siteMapGeneratorConfiguration.getSiteMapGeneratorType()).thenReturn(SiteMapGeneratorType.CUSTOM);
-
-    // Act
-    boolean actualCanHandleSiteMapConfigurationResult = customUrlSiteMapGenerator
-        .canHandleSiteMapConfiguration(siteMapGeneratorConfiguration);
-
-    // Assert
-    verify(siteMapGeneratorConfiguration).getSiteMapGeneratorType();
-    assertTrue(actualCanHandleSiteMapConfigurationResult);
-  }
-
-  /**
-   * Test
-   * {@link CustomUrlSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}.
-   * <ul>
-   *   <li>Given {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link CustomUrlSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}
-   */
-  @Test
-  public void testCanHandleSiteMapConfiguration_givenTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CustomUrlSiteMapGenerator customUrlSiteMapGenerator = new CustomUrlSiteMapGenerator();
-
     SiteMapGeneratorConfigurationImpl siteMapGeneratorConfiguration = new SiteMapGeneratorConfigurationImpl();
     siteMapGeneratorConfiguration.setDisabled(true);
     siteMapGeneratorConfiguration.setId(1L);
@@ -276,239 +77,58 @@ public class CustomUrlSiteMapGeneratorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomUrlSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}.
+   * Test {@link CustomUrlSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}.
    * <ul>
-   *   <li>When {@link CustomUrlSiteMapGeneratorConfigurationImpl} (default
-   * constructor).</li>
+   *   <li>Given {@link SiteMapGeneratorType#CUSTOM}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomUrlSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}
+   * Method under test: {@link CustomUrlSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}
    */
   @Test
-  public void testCanHandleSiteMapConfiguration_whenCustomUrlSiteMapGeneratorConfigurationImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomUrlSiteMapGenerator.canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)"})
+  public void testCanHandleSiteMapConfiguration_givenCustom_thenReturnTrue() {
     // Arrange
-    CustomUrlSiteMapGenerator customUrlSiteMapGenerator = new CustomUrlSiteMapGenerator();
+    SiteMapGeneratorConfigurationImpl siteMapGeneratorConfiguration = new SiteMapGeneratorConfigurationImpl();
+    siteMapGeneratorConfiguration.setDisabled(true);
+    siteMapGeneratorConfiguration.setId(1L);
+    siteMapGeneratorConfiguration.setSiteMapChangeFreq(SiteMapChangeFreqType.ALWAYS);
+    siteMapGeneratorConfiguration.setSiteMapConfiguration(new SiteMapConfigurationImpl());
+    siteMapGeneratorConfiguration.setSiteMapGeneratorType(SiteMapGeneratorType.CUSTOM);
+    siteMapGeneratorConfiguration.setSiteMapPriority(SiteMapPriorityType.ONE);
 
     // Act and Assert
+    assertTrue(customUrlSiteMapGenerator.canHandleSiteMapConfiguration(siteMapGeneratorConfiguration));
+  }
+
+  /**
+   * Test {@link CustomUrlSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}.
+   * <ul>
+   *   <li>When {@link CustomUrlSiteMapGeneratorConfigurationImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CustomUrlSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomUrlSiteMapGenerator.canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)"})
+  public void testCanHandleSiteMapConfiguration_whenCustomUrlSiteMapGeneratorConfigurationImpl() {
+    // Arrange, Act and Assert
     assertFalse(
         customUrlSiteMapGenerator.canHandleSiteMapConfiguration(new CustomUrlSiteMapGeneratorConfigurationImpl()));
   }
 
   /**
-   * Test
-   * {@link CustomUrlSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}.
+   * Test {@link CustomUrlSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}.
    * <p>
-   * Method under test:
-   * {@link CustomUrlSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
+   * Method under test: {@link CustomUrlSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CustomUrlSiteMapGenerator.addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)"})
   public void testAddSiteMapEntries() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.BeanInstantiationException: Could not instantiate bean: messageSource defined in bl-common-applicationContext.xml
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageSource' defined in class path resource [bl-common-applicationContext.xml]: Initialization of bean failed; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:628)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:600)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.propertyeditors.CustomBooleanEditor.setAsText(CustomBooleanEditor.java:154)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
-    //       at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:590)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   See https://diff.blue/R026 to resolve this issue.
-
     // Arrange
-    CustomUrlSiteMapGenerator customUrlSiteMapGenerator2 = new CustomUrlSiteMapGenerator();
-    CustomUrlSiteMapGeneratorConfigurationImpl smgc = new CustomUrlSiteMapGeneratorConfigurationImpl();
-    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
-
-    // Act
-    customUrlSiteMapGenerator2.addSiteMapEntries(smgc,
-        new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "https://example.org/example", true));
-  }
-
-  /**
-   * Test
-   * {@link CustomUrlSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}.
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link CustomUrlSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
-   */
-  @Test
-  public void testAddSiteMapEntries_givenArrayList() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CustomUrlSiteMapGenerator customUrlSiteMapGenerator = new CustomUrlSiteMapGenerator();
-    CustomUrlSiteMapGeneratorConfigurationImpl smgc = mock(CustomUrlSiteMapGeneratorConfigurationImpl.class);
-    when(smgc.getCustomURLEntries()).thenReturn(new ArrayList<>());
-    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
-    SiteMapBuilder siteMapBuilder = new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "https://example.org/example",
-        true);
-
-    // Act
-    customUrlSiteMapGenerator.addSiteMapEntries(smgc, siteMapBuilder);
-
-    // Assert
-    verify(smgc).getCustomURLEntries();
-    assertTrue(siteMapBuilder.currentURLSetWrapper.getSiteMapUrlWrappers().isEmpty());
-  }
-
-  /**
-   * Test
-   * {@link CustomUrlSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}.
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link SiteMapUrlEntryImpl}
-   * (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link CustomUrlSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
-   */
-  @Test
-  public void testAddSiteMapEntries_givenArrayListAddSiteMapUrlEntryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CustomUrlSiteMapGenerator customUrlSiteMapGenerator = new CustomUrlSiteMapGenerator();
-
-    ArrayList<SiteMapUrlEntry> siteMapUrlEntryList = new ArrayList<>();
-    siteMapUrlEntryList.add(new SiteMapUrlEntryImpl());
-    CustomUrlSiteMapGeneratorConfigurationImpl smgc = mock(CustomUrlSiteMapGeneratorConfigurationImpl.class);
-    when(smgc.getCustomURLEntries()).thenReturn(siteMapUrlEntryList);
-    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
-    SiteMapBuilder siteMapBuilder = new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "https://example.org/example",
-        true);
-
-    // Act
-    customUrlSiteMapGenerator.addSiteMapEntries(smgc, siteMapBuilder);
-
-    // Assert
-    verify(smgc).getCustomURLEntries();
-    assertTrue(siteMapBuilder.currentURLSetWrapper.getSiteMapUrlWrappers().isEmpty());
-  }
-
-  /**
-   * Test
-   * {@link CustomUrlSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}.
-   * <ul>
-   *   <li>Given {@link SiteMapUrlEntryImpl}
-   * {@link SiteMapUrlEntryImpl#getLocation()} return empty string.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link CustomUrlSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
-   */
-  @Test
-  public void testAddSiteMapEntries_givenSiteMapUrlEntryImplGetLocationReturnEmptyString() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CustomUrlSiteMapGenerator customUrlSiteMapGenerator = new CustomUrlSiteMapGenerator();
-    SiteMapUrlEntryImpl siteMapUrlEntryImpl = mock(SiteMapUrlEntryImpl.class);
-    when(siteMapUrlEntryImpl.getLocation()).thenReturn("");
-
-    ArrayList<SiteMapUrlEntry> siteMapUrlEntryList = new ArrayList<>();
-    siteMapUrlEntryList.add(siteMapUrlEntryImpl);
-    CustomUrlSiteMapGeneratorConfigurationImpl smgc = mock(CustomUrlSiteMapGeneratorConfigurationImpl.class);
-    when(smgc.getCustomURLEntries()).thenReturn(siteMapUrlEntryList);
-    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
-    SiteMapBuilder siteMapBuilder = new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "https://example.org/example",
-        true);
-
-    // Act
-    customUrlSiteMapGenerator.addSiteMapEntries(smgc, siteMapBuilder);
-
-    // Assert
-    verify(smgc).getCustomURLEntries();
-    verify(siteMapUrlEntryImpl).getLocation();
-    assertTrue(siteMapBuilder.currentURLSetWrapper.getSiteMapUrlWrappers().isEmpty());
-  }
-
-  /**
-   * Test
-   * {@link CustomUrlSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}.
-   * <ul>
-   *   <li>When {@link CustomUrlSiteMapGeneratorConfigurationImpl} (default
-   * constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link CustomUrlSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
-   */
-  @Test
-  public void testAddSiteMapEntries_whenCustomUrlSiteMapGeneratorConfigurationImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CustomUrlSiteMapGenerator customUrlSiteMapGenerator = new CustomUrlSiteMapGenerator();
     CustomUrlSiteMapGeneratorConfigurationImpl smgc = new CustomUrlSiteMapGeneratorConfigurationImpl();
     SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
     SiteMapBuilder siteMapBuilder = new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "https://example.org/example",
@@ -522,301 +142,338 @@ public class CustomUrlSiteMapGeneratorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomUrlSiteMapGenerator#generateUri(SiteMapBuilder, SiteMapUrlEntry)}.
+   * Test {@link CustomUrlSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}.
    * <p>
-   * Method under test:
-   * {@link CustomUrlSiteMapGenerator#generateUri(SiteMapBuilder, SiteMapUrlEntry)}
+   * Method under test: {@link CustomUrlSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGenerateUri() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.BeanInstantiationException: Could not instantiate bean: messageSource defined in bl-common-applicationContext.xml
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageSource' defined in class path resource [bl-common-applicationContext.xml]: Initialization of bean failed; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:628)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:600)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.propertyeditors.CustomBooleanEditor.setAsText(CustomBooleanEditor.java:154)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
-    //       at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:590)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   See https://diff.blue/R026 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CustomUrlSiteMapGenerator.addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)"})
+  public void testAddSiteMapEntries2() {
     // Arrange
-    CustomUrlSiteMapGenerator customUrlSiteMapGenerator2 = new CustomUrlSiteMapGenerator();
+    SiteMapUrlEntryImpl siteMapUrlEntryImpl = new SiteMapUrlEntryImpl();
+    siteMapUrlEntryImpl.setCustomUrlSiteMapGeneratorConfiguration(new CustomUrlSiteMapGeneratorConfigurationImpl());
+    siteMapUrlEntryImpl.setId(1L);
+    siteMapUrlEntryImpl.setSiteMapChangeFreq(SiteMapChangeFreqType.ALWAYS);
+    siteMapUrlEntryImpl.setSiteMapPriority(SiteMapPriorityType.ONE);
+    siteMapUrlEntryImpl.setLocation("/");
+    siteMapUrlEntryImpl.setLastMod(null);
+
+    ArrayList<SiteMapUrlEntry> customURLEntries = new ArrayList<>();
+    customURLEntries.add(siteMapUrlEntryImpl);
+
+    CustomUrlSiteMapGeneratorConfigurationImpl smgc = new CustomUrlSiteMapGeneratorConfigurationImpl();
+    smgc.setDisabled(true);
+    smgc.setId(1L);
+    smgc.setSiteMapChangeFreq(SiteMapChangeFreqType.ALWAYS);
+    smgc.setSiteMapConfiguration(new SiteMapConfigurationImpl());
+    smgc.setSiteMapGeneratorType(SiteMapGeneratorType.CATEGORY);
+    smgc.setSiteMapPriority(SiteMapPriorityType.ONE);
+    smgc.setCustomURLEntries(customURLEntries);
+    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
+    SiteMapBuilder siteMapBuilder = new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "/", true);
+
+    // Act
+    customUrlSiteMapGenerator.addSiteMapEntries(smgc, siteMapBuilder);
+
+    // Assert
+    List<SiteMapURLWrapper> siteMapUrlWrappers = siteMapBuilder.currentURLSetWrapper.getSiteMapUrlWrappers();
+    assertEquals(1, siteMapUrlWrappers.size());
+    SiteMapURLWrapper getResult = siteMapUrlWrappers.get(0);
+    assertEquals("/", getResult.getLoc());
+    assertEquals("1.0", getResult.getPriority());
+    assertEquals("always", getResult.getChangefreq());
+    assertTrue(getResult.getSiteMapImageWrappers().isEmpty());
+  }
+
+  /**
+   * Test {@link CustomUrlSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}.
+   * <p>
+   * Method under test: {@link CustomUrlSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CustomUrlSiteMapGenerator.addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)"})
+  public void testAddSiteMapEntries3() {
+    // Arrange
+    SiteMapUrlEntryImpl siteMapUrlEntryImpl = new SiteMapUrlEntryImpl();
+    siteMapUrlEntryImpl.setCustomUrlSiteMapGeneratorConfiguration(new CustomUrlSiteMapGeneratorConfigurationImpl());
+    siteMapUrlEntryImpl.setId(1L);
+    siteMapUrlEntryImpl.setSiteMapChangeFreq(SiteMapChangeFreqType.ALWAYS);
+    siteMapUrlEntryImpl.setSiteMapPriority(SiteMapPriorityType.ONE);
+    siteMapUrlEntryImpl.setLocation("/");
+    siteMapUrlEntryImpl
+        .setLastMod(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+
+    ArrayList<SiteMapUrlEntry> customURLEntries = new ArrayList<>();
+    customURLEntries.add(siteMapUrlEntryImpl);
+
+    CustomUrlSiteMapGeneratorConfigurationImpl smgc = new CustomUrlSiteMapGeneratorConfigurationImpl();
+    smgc.setDisabled(true);
+    smgc.setId(1L);
+    smgc.setSiteMapChangeFreq(SiteMapChangeFreqType.ALWAYS);
+    smgc.setSiteMapConfiguration(new SiteMapConfigurationImpl());
+    smgc.setSiteMapGeneratorType(SiteMapGeneratorType.CATEGORY);
+    smgc.setSiteMapPriority(SiteMapPriorityType.ONE);
+    smgc.setCustomURLEntries(customURLEntries);
+    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
+    SiteMapBuilder siteMapBuilder = new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "/", true);
+
+    // Act
+    customUrlSiteMapGenerator.addSiteMapEntries(smgc, siteMapBuilder);
+
+    // Assert
+    List<SiteMapURLWrapper> siteMapUrlWrappers = siteMapBuilder.currentURLSetWrapper.getSiteMapUrlWrappers();
+    assertEquals(1, siteMapUrlWrappers.size());
+    SiteMapURLWrapper getResult = siteMapUrlWrappers.get(0);
+    assertEquals("/", getResult.getLoc());
+    assertEquals("1.0", getResult.getPriority());
+    assertEquals("always", getResult.getChangefreq());
+    assertTrue(getResult.getSiteMapImageWrappers().isEmpty());
+  }
+
+  /**
+   * Test {@link CustomUrlSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}.
+   * <p>
+   * Method under test: {@link CustomUrlSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CustomUrlSiteMapGenerator.addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)"})
+  public void testAddSiteMapEntries4() {
+    // Arrange
+    SiteMapUrlEntryImpl siteMapUrlEntryImpl = new SiteMapUrlEntryImpl();
+    siteMapUrlEntryImpl.setCustomUrlSiteMapGeneratorConfiguration(new CustomUrlSiteMapGeneratorConfigurationImpl());
+    siteMapUrlEntryImpl.setId(1L);
+    siteMapUrlEntryImpl.setSiteMapChangeFreq(SiteMapChangeFreqType.ALWAYS);
+    siteMapUrlEntryImpl.setSiteMapPriority(SiteMapPriorityType.ONE);
+    siteMapUrlEntryImpl.setLocation("://");
+    siteMapUrlEntryImpl.setLastMod(null);
+
+    ArrayList<SiteMapUrlEntry> customURLEntries = new ArrayList<>();
+    customURLEntries.add(siteMapUrlEntryImpl);
+
+    CustomUrlSiteMapGeneratorConfigurationImpl smgc = new CustomUrlSiteMapGeneratorConfigurationImpl();
+    smgc.setDisabled(true);
+    smgc.setId(1L);
+    smgc.setSiteMapChangeFreq(SiteMapChangeFreqType.ALWAYS);
+    smgc.setSiteMapConfiguration(new SiteMapConfigurationImpl());
+    smgc.setSiteMapGeneratorType(SiteMapGeneratorType.CATEGORY);
+    smgc.setSiteMapPriority(SiteMapPriorityType.ONE);
+    smgc.setCustomURLEntries(customURLEntries);
+    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
+    SiteMapBuilder siteMapBuilder = new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "/", true);
+
+    // Act
+    customUrlSiteMapGenerator.addSiteMapEntries(smgc, siteMapBuilder);
+
+    // Assert
+    List<SiteMapURLWrapper> siteMapUrlWrappers = siteMapBuilder.currentURLSetWrapper.getSiteMapUrlWrappers();
+    assertEquals(1, siteMapUrlWrappers.size());
+    SiteMapURLWrapper getResult = siteMapUrlWrappers.get(0);
+    assertEquals("1.0", getResult.getPriority());
+    assertEquals("://", getResult.getLoc());
+    assertEquals("always", getResult.getChangefreq());
+    assertTrue(getResult.getSiteMapImageWrappers().isEmpty());
+  }
+
+  /**
+   * Test {@link CustomUrlSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}.
+   * <ul>
+   *   <li>Given {@link SiteMapUrlEntryImpl} (default constructor) Location is empty string.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CustomUrlSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CustomUrlSiteMapGenerator.addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)"})
+  public void testAddSiteMapEntries_givenSiteMapUrlEntryImplLocationIsEmptyString() {
+    // Arrange
+    SiteMapUrlEntryImpl siteMapUrlEntryImpl = new SiteMapUrlEntryImpl();
+    siteMapUrlEntryImpl.setCustomUrlSiteMapGeneratorConfiguration(new CustomUrlSiteMapGeneratorConfigurationImpl());
+    siteMapUrlEntryImpl.setId(1L);
+    siteMapUrlEntryImpl.setSiteMapChangeFreq(SiteMapChangeFreqType.ALWAYS);
+    siteMapUrlEntryImpl.setSiteMapPriority(SiteMapPriorityType.ONE);
+    siteMapUrlEntryImpl.setLocation("");
+    siteMapUrlEntryImpl.setLastMod(null);
+
+    ArrayList<SiteMapUrlEntry> customURLEntries = new ArrayList<>();
+    customURLEntries.add(siteMapUrlEntryImpl);
+
+    CustomUrlSiteMapGeneratorConfigurationImpl smgc = new CustomUrlSiteMapGeneratorConfigurationImpl();
+    smgc.setDisabled(true);
+    smgc.setId(1L);
+    smgc.setSiteMapChangeFreq(SiteMapChangeFreqType.ALWAYS);
+    smgc.setSiteMapConfiguration(new SiteMapConfigurationImpl());
+    smgc.setSiteMapGeneratorType(SiteMapGeneratorType.CATEGORY);
+    smgc.setSiteMapPriority(SiteMapPriorityType.ONE);
+    smgc.setCustomURLEntries(customURLEntries);
+    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
+    SiteMapBuilder siteMapBuilder = new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "/", true);
+
+    // Act
+    customUrlSiteMapGenerator.addSiteMapEntries(smgc, siteMapBuilder);
+
+    // Assert that nothing has changed
+    assertTrue(siteMapBuilder.currentURLSetWrapper.getSiteMapUrlWrappers().isEmpty());
+  }
+
+  /**
+   * Test {@link CustomUrlSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}.
+   * <ul>
+   *   <li>Given {@link SiteMapUrlEntryImpl} (default constructor) Location is {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CustomUrlSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CustomUrlSiteMapGenerator.addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)"})
+  public void testAddSiteMapEntries_givenSiteMapUrlEntryImplLocationIsNull() {
+    // Arrange
+    SiteMapUrlEntryImpl siteMapUrlEntryImpl = new SiteMapUrlEntryImpl();
+    siteMapUrlEntryImpl.setCustomUrlSiteMapGeneratorConfiguration(new CustomUrlSiteMapGeneratorConfigurationImpl());
+    siteMapUrlEntryImpl.setId(1L);
+    siteMapUrlEntryImpl.setSiteMapChangeFreq(SiteMapChangeFreqType.ALWAYS);
+    siteMapUrlEntryImpl.setSiteMapPriority(SiteMapPriorityType.ONE);
+    siteMapUrlEntryImpl.setLocation(null);
+    siteMapUrlEntryImpl.setLastMod(null);
+
+    ArrayList<SiteMapUrlEntry> customURLEntries = new ArrayList<>();
+    customURLEntries.add(siteMapUrlEntryImpl);
+
+    CustomUrlSiteMapGeneratorConfigurationImpl smgc = new CustomUrlSiteMapGeneratorConfigurationImpl();
+    smgc.setDisabled(true);
+    smgc.setId(1L);
+    smgc.setSiteMapChangeFreq(SiteMapChangeFreqType.ALWAYS);
+    smgc.setSiteMapConfiguration(new SiteMapConfigurationImpl());
+    smgc.setSiteMapGeneratorType(SiteMapGeneratorType.CATEGORY);
+    smgc.setSiteMapPriority(SiteMapPriorityType.ONE);
+    smgc.setCustomURLEntries(customURLEntries);
+    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
+    SiteMapBuilder siteMapBuilder = new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "/", true);
+
+    // Act
+    customUrlSiteMapGenerator.addSiteMapEntries(smgc, siteMapBuilder);
+
+    // Assert that nothing has changed
+    assertTrue(siteMapBuilder.currentURLSetWrapper.getSiteMapUrlWrappers().isEmpty());
+  }
+
+  /**
+   * Test {@link CustomUrlSiteMapGenerator#generateUri(SiteMapBuilder, SiteMapUrlEntry)}.
+   * <ul>
+   *   <li>Given {@code ://}.</li>
+   *   <li>Then return {@code ://}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CustomUrlSiteMapGenerator#generateUri(SiteMapBuilder, SiteMapUrlEntry)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.String CustomUrlSiteMapGenerator.generateUri(SiteMapBuilder, SiteMapUrlEntry)"})
+  public void testGenerateUri_givenColonSlashSlash_thenReturnColonSlashSlash() {
+    // Arrange
+    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
+    SiteMapBuilder smb = new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "/", true);
+
+    SiteMapUrlEntryImpl urlEntry = new SiteMapUrlEntryImpl();
+    urlEntry.setCustomUrlSiteMapGeneratorConfiguration(new CustomUrlSiteMapGeneratorConfigurationImpl());
+    urlEntry.setId(1L);
+    urlEntry.setLastMod(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    urlEntry.setSiteMapChangeFreq(SiteMapChangeFreqType.ALWAYS);
+    urlEntry.setSiteMapPriority(SiteMapPriorityType.ONE);
+    urlEntry.setLocation("://");
+
+    // Act and Assert
+    assertEquals("://", customUrlSiteMapGenerator.generateUri(smb, urlEntry));
+  }
+
+  /**
+   * Test {@link CustomUrlSiteMapGenerator#generateUri(SiteMapBuilder, SiteMapUrlEntry)}.
+   * <ul>
+   *   <li>Given {@code Location}.</li>
+   *   <li>Then return {@code https://example.org/example/Location}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CustomUrlSiteMapGenerator#generateUri(SiteMapBuilder, SiteMapUrlEntry)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.String CustomUrlSiteMapGenerator.generateUri(SiteMapBuilder, SiteMapUrlEntry)"})
+  public void testGenerateUri_givenLocation_thenReturnHttpsExampleOrgExampleLocation() {
+    // Arrange
     SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
     SiteMapBuilder smb = new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "https://example.org/example", true);
 
-    // Act
-    customUrlSiteMapGenerator2.generateUri(smb, new SiteMapUrlEntryImpl());
+    SiteMapUrlEntryImpl urlEntry = new SiteMapUrlEntryImpl();
+    urlEntry.setCustomUrlSiteMapGeneratorConfiguration(new CustomUrlSiteMapGeneratorConfigurationImpl());
+    urlEntry.setId(1L);
+    urlEntry.setLastMod(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    urlEntry.setSiteMapChangeFreq(SiteMapChangeFreqType.ALWAYS);
+    urlEntry.setSiteMapPriority(SiteMapPriorityType.ONE);
+    urlEntry.setLocation("Location");
+
+    // Act and Assert
+    assertEquals("https://example.org/example/Location", customUrlSiteMapGenerator.generateUri(smb, urlEntry));
   }
 
   /**
-   * Test
-   * {@link CustomUrlSiteMapGenerator#generateUri(SiteMapBuilder, SiteMapUrlEntry)}.
+   * Test {@link CustomUrlSiteMapGenerator#generateUri(SiteMapBuilder, SiteMapUrlEntry)}.
    * <ul>
-   *   <li>Given {@code foo}.</li>
-   *   <li>Then return {@code https://example.org/example/foo}.</li>
+   *   <li>Given {@code Location}.</li>
+   *   <li>Then return {@code /Location}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomUrlSiteMapGenerator#generateUri(SiteMapBuilder, SiteMapUrlEntry)}
+   * Method under test: {@link CustomUrlSiteMapGenerator#generateUri(SiteMapBuilder, SiteMapUrlEntry)}
    */
   @Test
-  public void testGenerateUri_givenFoo_thenReturnHttpsExampleOrgExampleFoo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.String CustomUrlSiteMapGenerator.generateUri(SiteMapBuilder, SiteMapUrlEntry)"})
+  public void testGenerateUri_givenLocation_thenReturnLocation() {
     // Arrange
-    CustomUrlSiteMapGenerator customUrlSiteMapGenerator = new CustomUrlSiteMapGenerator();
     SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
-    SiteMapBuilder smb = new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "https://example.org/example", true);
+    SiteMapBuilder smb = new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "/", true);
 
-    SiteMapUrlEntryImpl urlEntry = mock(SiteMapUrlEntryImpl.class);
-    when(urlEntry.getLocation()).thenReturn("foo");
+    SiteMapUrlEntryImpl urlEntry = new SiteMapUrlEntryImpl();
+    urlEntry.setCustomUrlSiteMapGeneratorConfiguration(new CustomUrlSiteMapGeneratorConfigurationImpl());
+    urlEntry.setId(1L);
+    urlEntry.setLastMod(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    urlEntry.setSiteMapChangeFreq(SiteMapChangeFreqType.ALWAYS);
+    urlEntry.setSiteMapPriority(SiteMapPriorityType.ONE);
+    urlEntry.setLocation("Location");
 
-    // Act
-    String actualGenerateUriResult = customUrlSiteMapGenerator.generateUri(smb, urlEntry);
-
-    // Assert
-    verify(urlEntry).getLocation();
-    assertEquals("https://example.org/example/foo", actualGenerateUriResult);
+    // Act and Assert
+    assertEquals("/Location", customUrlSiteMapGenerator.generateUri(smb, urlEntry));
   }
 
   /**
-   * Test
-   * {@link CustomUrlSiteMapGenerator#generateUri(SiteMapBuilder, SiteMapUrlEntry)}.
+   * Test {@link CustomUrlSiteMapGenerator#generateUri(SiteMapBuilder, SiteMapUrlEntry)}.
    * <ul>
-   *   <li>Given {@code https://example.org/example}.</li>
-   *   <li>Then return {@code https://example.org/example}.</li>
+   *   <li>Given {@code /}.</li>
+   *   <li>Then return {@code /}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomUrlSiteMapGenerator#generateUri(SiteMapBuilder, SiteMapUrlEntry)}
+   * Method under test: {@link CustomUrlSiteMapGenerator#generateUri(SiteMapBuilder, SiteMapUrlEntry)}
    */
   @Test
-  public void testGenerateUri_givenHttpsExampleOrgExample_thenReturnHttpsExampleOrgExample() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.String CustomUrlSiteMapGenerator.generateUri(SiteMapBuilder, SiteMapUrlEntry)"})
+  public void testGenerateUri_givenSlash_thenReturnSlash() {
     // Arrange
-    CustomUrlSiteMapGenerator customUrlSiteMapGenerator = new CustomUrlSiteMapGenerator();
     SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
-    SiteMapBuilder smb = new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "https://example.org/example", true);
+    SiteMapBuilder smb = new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "/", true);
 
-    SiteMapUrlEntryImpl urlEntry = mock(SiteMapUrlEntryImpl.class);
-    when(urlEntry.getLocation()).thenReturn("https://example.org/example");
+    SiteMapUrlEntryImpl urlEntry = new SiteMapUrlEntryImpl();
+    urlEntry.setCustomUrlSiteMapGeneratorConfiguration(new CustomUrlSiteMapGeneratorConfigurationImpl());
+    urlEntry.setId(1L);
+    urlEntry.setLastMod(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    urlEntry.setSiteMapChangeFreq(SiteMapChangeFreqType.ALWAYS);
+    urlEntry.setSiteMapPriority(SiteMapPriorityType.ONE);
+    urlEntry.setLocation("/");
 
-    // Act
-    String actualGenerateUriResult = customUrlSiteMapGenerator.generateUri(smb, urlEntry);
-
-    // Assert
-    verify(urlEntry).getLocation();
-    assertEquals("https://example.org/example", actualGenerateUriResult);
-  }
-
-  /**
-   * Test
-   * {@link CustomUrlSiteMapGenerator#generateUri(SiteMapBuilder, SiteMapUrlEntry)}.
-   * <ul>
-   *   <li>Then return {@code ://foo}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link CustomUrlSiteMapGenerator#generateUri(SiteMapBuilder, SiteMapUrlEntry)}
-   */
-  @Test
-  public void testGenerateUri_thenReturnFoo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CustomUrlSiteMapGenerator customUrlSiteMapGenerator = new CustomUrlSiteMapGenerator();
-    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
-    SiteMapBuilder smb = new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "://", true);
-
-    SiteMapUrlEntryImpl urlEntry = mock(SiteMapUrlEntryImpl.class);
-    when(urlEntry.getLocation()).thenReturn("foo");
-
-    // Act
-    String actualGenerateUriResult = customUrlSiteMapGenerator.generateUri(smb, urlEntry);
-
-    // Assert
-    verify(urlEntry).getLocation();
-    assertEquals("://foo", actualGenerateUriResult);
-  }
-
-  /**
-   * Test {@link CustomUrlSiteMapGenerator#generateDate(SiteMapUrlEntry)}.
-   * <p>
-   * Method under test:
-   * {@link CustomUrlSiteMapGenerator#generateDate(SiteMapUrlEntry)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGenerateDate() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.BeanInstantiationException: Could not instantiate bean: messageSource defined in bl-common-applicationContext.xml
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageSource' defined in class path resource [bl-common-applicationContext.xml]: Initialization of bean failed; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:628)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:600)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.propertyeditors.CustomBooleanEditor.setAsText(CustomBooleanEditor.java:154)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
-    //       at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:590)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   See https://diff.blue/R026 to resolve this issue.
-
-    // Arrange
-    CustomUrlSiteMapGenerator customUrlSiteMapGenerator2 = new CustomUrlSiteMapGenerator();
-
-    // Act
-    customUrlSiteMapGenerator2.generateDate(new SiteMapUrlEntryImpl());
-  }
-
-  /**
-   * Test {@link CustomUrlSiteMapGenerator#generateDate(SiteMapUrlEntry)}.
-   * <ul>
-   *   <li>Then calls {@link SiteMapUrlEntryImpl#getLastMod()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link CustomUrlSiteMapGenerator#generateDate(SiteMapUrlEntry)}
-   */
-  @Test
-  public void testGenerateDate_thenCallsGetLastMod() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CustomUrlSiteMapGenerator customUrlSiteMapGenerator = new CustomUrlSiteMapGenerator();
-    SiteMapUrlEntryImpl urlEntry = mock(SiteMapUrlEntryImpl.class);
-    when(urlEntry.getLastMod())
-        .thenReturn(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-
-    // Act
-    customUrlSiteMapGenerator.generateDate(urlEntry);
-
-    // Assert
-    verify(urlEntry, atLeast(1)).getLastMod();
+    // Act and Assert
+    assertEquals("/", customUrlSiteMapGenerator.generateUri(smb, urlEntry));
   }
 }

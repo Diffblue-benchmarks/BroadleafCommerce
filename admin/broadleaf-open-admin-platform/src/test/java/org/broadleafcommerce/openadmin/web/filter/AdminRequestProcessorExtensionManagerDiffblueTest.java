@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.web.filter;
 
 import static org.junit.Assert.assertEquals;
@@ -6,8 +23,11 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashSet;
 import java.util.Set;
+import javax.servlet.http.HttpServletRequestWrapper;
 import org.broadleafcommerce.common.extension.ExtensionResultHolder;
 import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
 import org.broadleafcommerce.common.site.domain.Catalog;
@@ -15,40 +35,36 @@ import org.broadleafcommerce.common.site.domain.CatalogImpl;
 import org.broadleafcommerce.common.site.domain.Site;
 import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.broadleafcommerce.openadmin.web.compatibility.JSCompatibilityRequestWrapper;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
 
-@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
-    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
-    "/bl-open-admin-contentCreator-applicationContext.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+@ContextConfiguration(classes = {AdminRequestProcessorExtensionManager.class})
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class AdminRequestProcessorExtensionManagerDiffblueTest {
   @Autowired
   private AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager;
 
   /**
-   * Test
-   * {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site, ExtensionResultHolder)}.
+   * Test {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site, ExtensionResultHolder)}.
    * <p>
-   * Method under test:
-   * {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site, ExtensionResultHolder)}
+   * Method under test: {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site, ExtensionResultHolder)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AdminRequestProcessorExtensionManager.retrieveProfiles(Site, ExtensionResultHolder)"})
   public void testRetrieveProfiles() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager = new AdminRequestProcessorExtensionManager();
     adminRequestProcessorExtensionManager.registerHandler(new AdminRequestProcessorExtensionManager());
@@ -64,16 +80,15 @@ public class AdminRequestProcessorExtensionManagerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site, ExtensionResultHolder)}.
+   * Test {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site, ExtensionResultHolder)}.
    * <p>
-   * Method under test:
-   * {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site, ExtensionResultHolder)}
+   * Method under test: {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site, ExtensionResultHolder)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AdminRequestProcessorExtensionManager.retrieveProfiles(Site, ExtensionResultHolder)"})
   public void testRetrieveProfiles2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     AdminRequestProcessorExtensionHandler adminRequestProcessorExtensionHandler = mock(
         AdminRequestProcessorExtensionHandler.class);
@@ -100,16 +115,15 @@ public class AdminRequestProcessorExtensionManagerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site, ExtensionResultHolder)}.
+   * Test {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site, ExtensionResultHolder)}.
    * <p>
-   * Method under test:
-   * {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site, ExtensionResultHolder)}
+   * Method under test: {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site, ExtensionResultHolder)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AdminRequestProcessorExtensionManager.retrieveProfiles(Site, ExtensionResultHolder)"})
   public void testRetrieveProfiles3() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     AdminRequestProcessorExtensionHandler adminRequestProcessorExtensionHandler = mock(
         AdminRequestProcessorExtensionHandler.class);
@@ -136,16 +150,15 @@ public class AdminRequestProcessorExtensionManagerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site, ExtensionResultHolder)}.
+   * Test {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site, ExtensionResultHolder)}.
    * <p>
-   * Method under test:
-   * {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site, ExtensionResultHolder)}
+   * Method under test: {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site, ExtensionResultHolder)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AdminRequestProcessorExtensionManager.retrieveProfiles(Site, ExtensionResultHolder)"})
   public void testRetrieveProfiles4() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     AdminRequestProcessorExtensionHandler adminRequestProcessorExtensionHandler = mock(
         AdminRequestProcessorExtensionHandler.class);
@@ -169,61 +182,19 @@ public class AdminRequestProcessorExtensionManagerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site, ExtensionResultHolder)}.
-   * <p>
-   * Method under test:
-   * {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site, ExtensionResultHolder)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testRetrieveProfiles5() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.web.filter;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1777 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.filter.AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager2 = new AdminRequestProcessorExtensionManager();
-    SiteImpl currentSite = new SiteImpl();
-
-    ExtensionResultHolder<Set<Site>> result = new ExtensionResultHolder<>();
-    result.setResult(new HashSet<>());
-    result.setThrowable(new Throwable());
-
-    // Act
-    adminRequestProcessorExtensionManager2.retrieveProfiles(currentSite, result);
-  }
-
-  /**
-   * Test
-   * {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site, ExtensionResultHolder)}.
+   * Test {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site, ExtensionResultHolder)}.
    * <ul>
-   *   <li>Given {@link AdminRequestProcessorExtensionManager} (default
-   * constructor).</li>
+   *   <li>Given {@link AdminRequestProcessorExtensionManager}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site, ExtensionResultHolder)}
+   * Method under test: {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site, ExtensionResultHolder)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AdminRequestProcessorExtensionManager.retrieveProfiles(Site, ExtensionResultHolder)"})
   public void testRetrieveProfiles_givenAdminRequestProcessorExtensionManager() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager = new AdminRequestProcessorExtensionManager();
     SiteImpl currentSite = new SiteImpl();
 
     ExtensionResultHolder<Set<Site>> result = new ExtensionResultHolder<>();
@@ -236,45 +207,39 @@ public class AdminRequestProcessorExtensionManagerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site, ExtensionResultHolder)}.
+   * Test {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site, ExtensionResultHolder)}.
    * <ul>
-   *   <li>Given {@link AdminRequestProcessorExtensionManager} (default
-   * constructor).</li>
-   *   <li>When {@link SiteImpl}.</li>
+   *   <li>Given {@link AdminRequestProcessorExtensionManager}.</li>
+   *   <li>When {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site, ExtensionResultHolder)}
+   * Method under test: {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site, ExtensionResultHolder)}
    */
   @Test
-  public void testRetrieveProfiles_givenAdminRequestProcessorExtensionManager_whenSiteImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AdminRequestProcessorExtensionManager.retrieveProfiles(Site, ExtensionResultHolder)"})
+  public void testRetrieveProfiles_givenAdminRequestProcessorExtensionManager_whenNull() {
     // Arrange
-    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager = new AdminRequestProcessorExtensionManager();
-    SiteImpl currentSite = mock(SiteImpl.class);
-
     ExtensionResultHolder<Set<Site>> result = new ExtensionResultHolder<>();
     result.setResult(new HashSet<>());
     result.setThrowable(new Throwable());
 
     // Act and Assert
     assertEquals(ExtensionResultStatusType.NOT_HANDLED,
-        adminRequestProcessorExtensionManager.retrieveProfiles(currentSite, result));
+        adminRequestProcessorExtensionManager.retrieveProfiles(null, result));
   }
 
   /**
-   * Test
-   * {@link AdminRequestProcessorExtensionManager#retrieveCatalogs(Site, ExtensionResultHolder)}.
+   * Test {@link AdminRequestProcessorExtensionManager#retrieveCatalogs(Site, ExtensionResultHolder)}.
    * <p>
-   * Method under test:
-   * {@link AdminRequestProcessorExtensionManager#retrieveCatalogs(Site, ExtensionResultHolder)}
+   * Method under test: {@link AdminRequestProcessorExtensionManager#retrieveCatalogs(Site, ExtensionResultHolder)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AdminRequestProcessorExtensionManager.retrieveCatalogs(Site, ExtensionResultHolder)"})
   public void testRetrieveCatalogs() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager = new AdminRequestProcessorExtensionManager();
     adminRequestProcessorExtensionManager.registerHandler(new AdminRequestProcessorExtensionManager());
@@ -290,16 +255,15 @@ public class AdminRequestProcessorExtensionManagerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminRequestProcessorExtensionManager#retrieveCatalogs(Site, ExtensionResultHolder)}.
+   * Test {@link AdminRequestProcessorExtensionManager#retrieveCatalogs(Site, ExtensionResultHolder)}.
    * <p>
-   * Method under test:
-   * {@link AdminRequestProcessorExtensionManager#retrieveCatalogs(Site, ExtensionResultHolder)}
+   * Method under test: {@link AdminRequestProcessorExtensionManager#retrieveCatalogs(Site, ExtensionResultHolder)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AdminRequestProcessorExtensionManager.retrieveCatalogs(Site, ExtensionResultHolder)"})
   public void testRetrieveCatalogs2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     AdminRequestProcessorExtensionHandler adminRequestProcessorExtensionHandler = mock(
         AdminRequestProcessorExtensionHandler.class);
@@ -326,16 +290,15 @@ public class AdminRequestProcessorExtensionManagerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminRequestProcessorExtensionManager#retrieveCatalogs(Site, ExtensionResultHolder)}.
+   * Test {@link AdminRequestProcessorExtensionManager#retrieveCatalogs(Site, ExtensionResultHolder)}.
    * <p>
-   * Method under test:
-   * {@link AdminRequestProcessorExtensionManager#retrieveCatalogs(Site, ExtensionResultHolder)}
+   * Method under test: {@link AdminRequestProcessorExtensionManager#retrieveCatalogs(Site, ExtensionResultHolder)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AdminRequestProcessorExtensionManager.retrieveCatalogs(Site, ExtensionResultHolder)"})
   public void testRetrieveCatalogs3() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     AdminRequestProcessorExtensionHandler adminRequestProcessorExtensionHandler = mock(
         AdminRequestProcessorExtensionHandler.class);
@@ -362,16 +325,15 @@ public class AdminRequestProcessorExtensionManagerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminRequestProcessorExtensionManager#retrieveCatalogs(Site, ExtensionResultHolder)}.
+   * Test {@link AdminRequestProcessorExtensionManager#retrieveCatalogs(Site, ExtensionResultHolder)}.
    * <p>
-   * Method under test:
-   * {@link AdminRequestProcessorExtensionManager#retrieveCatalogs(Site, ExtensionResultHolder)}
+   * Method under test: {@link AdminRequestProcessorExtensionManager#retrieveCatalogs(Site, ExtensionResultHolder)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AdminRequestProcessorExtensionManager.retrieveCatalogs(Site, ExtensionResultHolder)"})
   public void testRetrieveCatalogs4() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     AdminRequestProcessorExtensionHandler adminRequestProcessorExtensionHandler = mock(
         AdminRequestProcessorExtensionHandler.class);
@@ -395,61 +357,19 @@ public class AdminRequestProcessorExtensionManagerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminRequestProcessorExtensionManager#retrieveCatalogs(Site, ExtensionResultHolder)}.
-   * <p>
-   * Method under test:
-   * {@link AdminRequestProcessorExtensionManager#retrieveCatalogs(Site, ExtensionResultHolder)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testRetrieveCatalogs5() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.web.filter;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1718 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.filter.AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager2 = new AdminRequestProcessorExtensionManager();
-    SiteImpl currentSite = new SiteImpl();
-
-    ExtensionResultHolder<Set<Catalog>> result = new ExtensionResultHolder<>();
-    result.setResult(new HashSet<>());
-    result.setThrowable(new Throwable());
-
-    // Act
-    adminRequestProcessorExtensionManager2.retrieveCatalogs(currentSite, result);
-  }
-
-  /**
-   * Test
-   * {@link AdminRequestProcessorExtensionManager#retrieveCatalogs(Site, ExtensionResultHolder)}.
+   * Test {@link AdminRequestProcessorExtensionManager#retrieveCatalogs(Site, ExtensionResultHolder)}.
    * <ul>
-   *   <li>Given {@link AdminRequestProcessorExtensionManager} (default
-   * constructor).</li>
+   *   <li>Given {@link AdminRequestProcessorExtensionManager}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminRequestProcessorExtensionManager#retrieveCatalogs(Site, ExtensionResultHolder)}
+   * Method under test: {@link AdminRequestProcessorExtensionManager#retrieveCatalogs(Site, ExtensionResultHolder)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AdminRequestProcessorExtensionManager.retrieveCatalogs(Site, ExtensionResultHolder)"})
   public void testRetrieveCatalogs_givenAdminRequestProcessorExtensionManager() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager = new AdminRequestProcessorExtensionManager();
     SiteImpl currentSite = new SiteImpl();
 
     ExtensionResultHolder<Set<Catalog>> result = new ExtensionResultHolder<>();
@@ -462,49 +382,42 @@ public class AdminRequestProcessorExtensionManagerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminRequestProcessorExtensionManager#retrieveCatalogs(Site, ExtensionResultHolder)}.
+   * Test {@link AdminRequestProcessorExtensionManager#retrieveCatalogs(Site, ExtensionResultHolder)}.
    * <ul>
-   *   <li>Given {@link AdminRequestProcessorExtensionManager} (default
-   * constructor).</li>
-   *   <li>When {@link SiteImpl}.</li>
+   *   <li>Given {@link AdminRequestProcessorExtensionManager}.</li>
+   *   <li>When {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminRequestProcessorExtensionManager#retrieveCatalogs(Site, ExtensionResultHolder)}
+   * Method under test: {@link AdminRequestProcessorExtensionManager#retrieveCatalogs(Site, ExtensionResultHolder)}
    */
   @Test
-  public void testRetrieveCatalogs_givenAdminRequestProcessorExtensionManager_whenSiteImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AdminRequestProcessorExtensionManager.retrieveCatalogs(Site, ExtensionResultHolder)"})
+  public void testRetrieveCatalogs_givenAdminRequestProcessorExtensionManager_whenNull() {
     // Arrange
-    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager = new AdminRequestProcessorExtensionManager();
-    SiteImpl currentSite = mock(SiteImpl.class);
-
     ExtensionResultHolder<Set<Catalog>> result = new ExtensionResultHolder<>();
     result.setResult(new HashSet<>());
     result.setThrowable(new Throwable());
 
     // Act and Assert
     assertEquals(ExtensionResultStatusType.NOT_HANDLED,
-        adminRequestProcessorExtensionManager.retrieveCatalogs(currentSite, result));
+        adminRequestProcessorExtensionManager.retrieveCatalogs(null, result));
   }
 
   /**
-   * Test
-   * {@link AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)}.
+   * Test {@link AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)}.
    * <p>
-   * Method under test:
-   * {@link AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)}
+   * Method under test: {@link AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AdminRequestProcessorExtensionManager.overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)"})
   public void testOverrideCurrentCatalog() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager = new AdminRequestProcessorExtensionManager();
-    ServletWebRequest request = new ServletWebRequest(
-        new JSCompatibilityRequestWrapper(mock(DefaultMultipartHttpServletRequest.class)));
+    ServletWebRequest request = new ServletWebRequest(new JSCompatibilityRequestWrapper(
+        new HttpServletRequestWrapper(new JSCompatibilityRequestWrapper(new MockHttpServletRequest()))));
     SiteImpl currentSite = new SiteImpl();
 
     ExtensionResultHolder<Catalog> result = new ExtensionResultHolder<>();
@@ -517,16 +430,15 @@ public class AdminRequestProcessorExtensionManagerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)}.
+   * Test {@link AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)}.
    * <p>
-   * Method under test:
-   * {@link AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)}
+   * Method under test: {@link AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AdminRequestProcessorExtensionManager.overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)"})
   public void testOverrideCurrentCatalog2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager = new AdminRequestProcessorExtensionManager();
     adminRequestProcessorExtensionManager.registerHandler(new AdminRequestProcessorExtensionManager());
@@ -543,16 +455,15 @@ public class AdminRequestProcessorExtensionManagerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)}.
+   * Test {@link AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)}.
    * <p>
-   * Method under test:
-   * {@link AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)}
+   * Method under test: {@link AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AdminRequestProcessorExtensionManager.overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)"})
   public void testOverrideCurrentCatalog3() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     AdminRequestProcessorExtensionHandler adminRequestProcessorExtensionHandler = mock(
         AdminRequestProcessorExtensionHandler.class);
@@ -581,16 +492,15 @@ public class AdminRequestProcessorExtensionManagerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)}.
+   * Test {@link AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)}.
    * <p>
-   * Method under test:
-   * {@link AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)}
+   * Method under test: {@link AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AdminRequestProcessorExtensionManager.overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)"})
   public void testOverrideCurrentCatalog4() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     AdminRequestProcessorExtensionHandler adminRequestProcessorExtensionHandler = mock(
         AdminRequestProcessorExtensionHandler.class);
@@ -619,16 +529,15 @@ public class AdminRequestProcessorExtensionManagerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)}.
+   * Test {@link AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)}.
    * <p>
-   * Method under test:
-   * {@link AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)}
+   * Method under test: {@link AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AdminRequestProcessorExtensionManager.overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)"})
   public void testOverrideCurrentCatalog5() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     AdminRequestProcessorExtensionHandler adminRequestProcessorExtensionHandler = mock(
         AdminRequestProcessorExtensionHandler.class);
@@ -653,62 +562,19 @@ public class AdminRequestProcessorExtensionManagerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)}.
-   * <p>
-   * Method under test:
-   * {@link AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testOverrideCurrentCatalog6() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.web.filter;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1352 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.filter.AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager2 = new AdminRequestProcessorExtensionManager();
-    ServletWebRequest request = new ServletWebRequest(new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
-    SiteImpl currentSite = new SiteImpl();
-
-    ExtensionResultHolder<Catalog> result = new ExtensionResultHolder<>();
-    result.setResult(new CatalogImpl());
-    result.setThrowable(new Throwable());
-
-    // Act
-    adminRequestProcessorExtensionManager2.overrideCurrentCatalog(request, currentSite, result);
-  }
-
-  /**
-   * Test
-   * {@link AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)}.
+   * Test {@link AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)}.
    * <ul>
-   *   <li>Given {@link AdminRequestProcessorExtensionManager} (default
-   * constructor).</li>
+   *   <li>Given {@link AdminRequestProcessorExtensionManager}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)}
+   * Method under test: {@link AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AdminRequestProcessorExtensionManager.overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)"})
   public void testOverrideCurrentCatalog_givenAdminRequestProcessorExtensionManager() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager = new AdminRequestProcessorExtensionManager();
     ServletWebRequest request = new ServletWebRequest(new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
     SiteImpl currentSite = new SiteImpl();
 
@@ -722,20 +588,18 @@ public class AdminRequestProcessorExtensionManagerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminRequestProcessorExtensionManager#overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)}.
+   * Test {@link AdminRequestProcessorExtensionManager#overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)}.
    * <p>
-   * Method under test:
-   * {@link AdminRequestProcessorExtensionManager#overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)}
+   * Method under test: {@link AdminRequestProcessorExtensionManager#overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AdminRequestProcessorExtensionManager.overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)"})
   public void testOverrideCurrentProfile() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager = new AdminRequestProcessorExtensionManager();
-    ServletWebRequest request = new ServletWebRequest(
-        new JSCompatibilityRequestWrapper(mock(DefaultMultipartHttpServletRequest.class)));
+    ServletWebRequest request = new ServletWebRequest(new JSCompatibilityRequestWrapper(
+        new HttpServletRequestWrapper(new JSCompatibilityRequestWrapper(new MockHttpServletRequest()))));
     SiteImpl currentSite = new SiteImpl();
 
     ExtensionResultHolder<Site> result = new ExtensionResultHolder<>();
@@ -748,16 +612,15 @@ public class AdminRequestProcessorExtensionManagerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminRequestProcessorExtensionManager#overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)}.
+   * Test {@link AdminRequestProcessorExtensionManager#overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)}.
    * <p>
-   * Method under test:
-   * {@link AdminRequestProcessorExtensionManager#overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)}
+   * Method under test: {@link AdminRequestProcessorExtensionManager#overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AdminRequestProcessorExtensionManager.overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)"})
   public void testOverrideCurrentProfile2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager = new AdminRequestProcessorExtensionManager();
     adminRequestProcessorExtensionManager.registerHandler(new AdminRequestProcessorExtensionManager());
@@ -774,16 +637,15 @@ public class AdminRequestProcessorExtensionManagerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminRequestProcessorExtensionManager#overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)}.
+   * Test {@link AdminRequestProcessorExtensionManager#overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)}.
    * <p>
-   * Method under test:
-   * {@link AdminRequestProcessorExtensionManager#overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)}
+   * Method under test: {@link AdminRequestProcessorExtensionManager#overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AdminRequestProcessorExtensionManager.overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)"})
   public void testOverrideCurrentProfile3() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     AdminRequestProcessorExtensionHandler adminRequestProcessorExtensionHandler = mock(
         AdminRequestProcessorExtensionHandler.class);
@@ -812,16 +674,15 @@ public class AdminRequestProcessorExtensionManagerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminRequestProcessorExtensionManager#overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)}.
+   * Test {@link AdminRequestProcessorExtensionManager#overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)}.
    * <p>
-   * Method under test:
-   * {@link AdminRequestProcessorExtensionManager#overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)}
+   * Method under test: {@link AdminRequestProcessorExtensionManager#overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AdminRequestProcessorExtensionManager.overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)"})
   public void testOverrideCurrentProfile4() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     AdminRequestProcessorExtensionHandler adminRequestProcessorExtensionHandler = mock(
         AdminRequestProcessorExtensionHandler.class);
@@ -850,16 +711,15 @@ public class AdminRequestProcessorExtensionManagerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminRequestProcessorExtensionManager#overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)}.
+   * Test {@link AdminRequestProcessorExtensionManager#overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)}.
    * <p>
-   * Method under test:
-   * {@link AdminRequestProcessorExtensionManager#overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)}
+   * Method under test: {@link AdminRequestProcessorExtensionManager#overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AdminRequestProcessorExtensionManager.overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)"})
   public void testOverrideCurrentProfile5() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     AdminRequestProcessorExtensionHandler adminRequestProcessorExtensionHandler = mock(
         AdminRequestProcessorExtensionHandler.class);
@@ -884,62 +744,19 @@ public class AdminRequestProcessorExtensionManagerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminRequestProcessorExtensionManager#overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)}.
-   * <p>
-   * Method under test:
-   * {@link AdminRequestProcessorExtensionManager#overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testOverrideCurrentProfile6() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.web.filter;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1533 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.filter.AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager2 = new AdminRequestProcessorExtensionManager();
-    ServletWebRequest request = new ServletWebRequest(new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
-    SiteImpl currentSite = new SiteImpl();
-
-    ExtensionResultHolder<Site> result = new ExtensionResultHolder<>();
-    result.setResult(new SiteImpl());
-    result.setThrowable(new Throwable());
-
-    // Act
-    adminRequestProcessorExtensionManager2.overrideCurrentProfile(request, currentSite, result);
-  }
-
-  /**
-   * Test
-   * {@link AdminRequestProcessorExtensionManager#overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)}.
+   * Test {@link AdminRequestProcessorExtensionManager#overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)}.
    * <ul>
-   *   <li>Given {@link AdminRequestProcessorExtensionManager} (default
-   * constructor).</li>
+   *   <li>Given {@link AdminRequestProcessorExtensionManager}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminRequestProcessorExtensionManager#overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)}
+   * Method under test: {@link AdminRequestProcessorExtensionManager#overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AdminRequestProcessorExtensionManager.overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)"})
   public void testOverrideCurrentProfile_givenAdminRequestProcessorExtensionManager() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager = new AdminRequestProcessorExtensionManager();
     ServletWebRequest request = new ServletWebRequest(new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
     SiteImpl currentSite = new SiteImpl();
 
@@ -958,6 +775,8 @@ public class AdminRequestProcessorExtensionManagerDiffblueTest {
    * Method under test: {@link AdminRequestProcessorExtensionManager#isEnabled()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdminRequestProcessorExtensionManager.isEnabled()"})
   public void testIsEnabled() {
     // Arrange, Act and Assert
     assertTrue((new AdminRequestProcessorExtensionManager()).isEnabled());

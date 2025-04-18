@@ -18,12 +18,16 @@
 package org.broadleafcommerce.common.cache.engine;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class HydrationDescriptorDiffblueTest {
   /**
@@ -41,6 +45,11 @@ public class HydrationDescriptorDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void HydrationDescriptor.<init>()", "String HydrationDescriptor.getCacheRegion()",
+      "Map HydrationDescriptor.getHydratedMutators()", "Method[] HydrationDescriptor.getIdMutators()",
+      "void HydrationDescriptor.setCacheRegion(String)", "void HydrationDescriptor.setHydratedMutators(Map)",
+      "void HydrationDescriptor.setIdMutators(Method[])"})
   public void testGettersAndSetters() {
     // Arrange and Act
     HydrationDescriptor actualHydrationDescriptor = new HydrationDescriptor();
@@ -53,8 +62,9 @@ public class HydrationDescriptorDiffblueTest {
     Map<String, HydrationItemDescriptor> actualHydratedMutators = actualHydrationDescriptor.getHydratedMutators();
     Method[] actualIdMutators = actualHydrationDescriptor.getIdMutators();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("us-east-2", actualCacheRegion);
+    assertNull(actualIdMutators[0]);
     assertEquals(1, actualIdMutators.length);
     assertTrue(actualHydratedMutators.isEmpty());
     assertSame(hydratedMutators, actualHydratedMutators);

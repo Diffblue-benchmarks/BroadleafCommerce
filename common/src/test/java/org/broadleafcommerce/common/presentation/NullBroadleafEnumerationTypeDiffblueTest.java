@@ -18,7 +18,10 @@
 package org.broadleafcommerce.common.presentation;
 
 import static org.junit.Assert.assertNull;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class NullBroadleafEnumerationTypeDiffblueTest {
   /**
@@ -26,12 +29,14 @@ public class NullBroadleafEnumerationTypeDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>default or parameterless constructor of
-   * {@link NullBroadleafEnumerationType}
+   *   <li>default or parameterless constructor of {@link NullBroadleafEnumerationType}
    *   <li>{@link NullBroadleafEnumerationType#getType()}
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void NullBroadleafEnumerationType.<init>()",
+      "java.lang.String NullBroadleafEnumerationType.getType()"})
   public void testGettersAndSetters() {
     // Arrange, Act and Assert
     assertNull((new NullBroadleafEnumerationType()).getType());

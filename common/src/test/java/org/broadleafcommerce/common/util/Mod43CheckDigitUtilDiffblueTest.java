@@ -19,7 +19,10 @@ package org.broadleafcommerce.common.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class Mod43CheckDigitUtilDiffblueTest {
   /**
@@ -31,6 +34,8 @@ public class Mod43CheckDigitUtilDiffblueTest {
    * Method under test: {@link Mod43CheckDigitUtil#isValidCheckedValue(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Mod43CheckDigitUtil.isValidCheckedValue(String)"})
   public void testIsValidCheckedValue_when42() {
     // Arrange, Act and Assert
     assertFalse(Mod43CheckDigitUtil.isValidCheckedValue("42"));
@@ -45,6 +50,8 @@ public class Mod43CheckDigitUtilDiffblueTest {
    * Method under test: {@link Mod43CheckDigitUtil#isValidCheckedValue(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Mod43CheckDigitUtil.isValidCheckedValue(String)"})
   public void testIsValidCheckedValue_whenEmptyString() {
     // Arrange, Act and Assert
     assertFalse(Mod43CheckDigitUtil.isValidCheckedValue(""));
@@ -59,6 +66,8 @@ public class Mod43CheckDigitUtilDiffblueTest {
    * Method under test: {@link Mod43CheckDigitUtil#isValidCheckedValue(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Mod43CheckDigitUtil.isValidCheckedValue(String)"})
   public void testIsValidCheckedValue_whenNull() {
     // Arrange, Act and Assert
     assertFalse(Mod43CheckDigitUtil.isValidCheckedValue(null));
@@ -70,6 +79,8 @@ public class Mod43CheckDigitUtilDiffblueTest {
    * Method under test: {@link Mod43CheckDigitUtil#generateCheckDigit(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"char Mod43CheckDigitUtil.generateCheckDigit(String)"})
   public void testGenerateCheckDigit() {
     // Arrange, Act and Assert
     assertEquals('A', Mod43CheckDigitUtil.generateCheckDigit("Data"));

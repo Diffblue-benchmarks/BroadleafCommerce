@@ -21,52 +21,49 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.anyBoolean;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.broadleafcommerce.common.resource.service.ResourceBundlingService;
+import org.broadleafcommerce.common.web.filter.SessionlessHttpServletRequestWrapper;
 import org.broadleafcommerce.common.web.processor.attributes.ResourceTagAttributes;
+import org.broadleafcommerce.common.web.request.ResourcesRequest;
+import org.broadleafcommerce.common.web.request.ResourcesRequestBundle;
 import org.broadleafcommerce.presentation.model.BroadleafTemplateContext;
 import org.broadleafcommerce.presentation.model.BroadleafTemplateElement;
-import org.junit.Ignore;
+import org.broadleafcommerce.presentation.model.BroadleafTemplateModel;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.core.env.Environment;
+import org.springframework.mock.web.MockHttpServletRequest;
 
-@ContextConfiguration(locations = {"/bl-common-applicationContext-entity.xml",
-    "/bl-common-applicationContext-mbeans.xml", "/bl-common-applicationContext-persistence.xml",
-    "/bl-common-applicationContext-servlet.xml", "/bl-common-applicationContext-wrapper.xml",
-    "/bl-common-applicationContext.xml", "/bl-fake-applicationContext-ant.xml",
-    "/blc-config/admin/framework/bl-common-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-common-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-common-applicationContext-servlet.xml",
-    "/blc-config/site/framework/bl-common-applicationContext.xml",
-    "/override-contexts/admin-root-autoconfiguration-overrides.xml",
-    "/override-contexts/admin-servlet-autoconfiguration-overrides.xml",
-    "/override-contexts/autoconfiguration-overrides.xml", "/override-contexts/autoconfiguration-servlet-overrides.xml",
-    "/override-contexts/site-root-autoconfiguration-overrides.xml",
-    "/override-contexts/site-servlet-autoconfiguration-overrides.xml",
-    "/blc-config/admin/bl-admin-test-applicationContext.xml", "/blc-config/bl-test-applicationContext.xml",
-    "/blc-config/site/bl-site-test-applicationContext.xml", "/context/config/client-override.xml",
-    "/context/config/xml-import-override.xml", "/context/crossmodule/early-applicationContext.xml",
-    "/context/crossmodule/early-xml-applicationContext.xml", "/context/crossmodule/late-applicationContext.xml",
-    "/context/entityconfig/import-framework.xml", "/context/entityconfig/import-local.xml",
-    "/context/importer/applicationContext.xml", "/context/importer/merge/applicationContext-servlet.xml",
-    "/context/importer/merge/applicationContext.xml", "/context/merge/bl-framework.xml", "/context/merge/bl-module.xml",
-    "/context/merge/local.xml", "/context/reader/bean-override-early-test-applicationContext.xml",
-    "/context/reader/bean-override-framework-test-applicationContext.xml",
-    "/context/reader/bean-override-local-test-applicationContext.xml", "/context/reader/merge/testbeans.xml",
-    "/context/reader/merge/testbeans2.xml", "/context/reader/merge/testbeans3.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class ResourcePreloadProcessorDiffblueTest {
-  @Autowired
+  @Mock
+  private Environment environment;
+
+  @Mock
+  private ResourceBundlingService resourceBundlingService;
+
+  @InjectMocks
   private ResourcePreloadProcessor resourcePreloadProcessor;
+
+  @Mock
+  private ResourcesRequest resourcesRequest;
 
   /**
    * Test {@link ResourcePreloadProcessor#getName()}.
@@ -74,6 +71,8 @@ public class ResourcePreloadProcessorDiffblueTest {
    * Method under test: {@link ResourcePreloadProcessor#getName()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String ResourcePreloadProcessor.getName()"})
   public void testGetName() {
     // Arrange, Act and Assert
     assertEquals("bundlepreload", (new ResourcePreloadProcessor()).getName());
@@ -85,387 +84,448 @@ public class ResourcePreloadProcessorDiffblueTest {
    * Method under test: {@link ResourcePreloadProcessor#getPrecedence()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int ResourcePreloadProcessor.getPrecedence()"})
   public void testGetPrecedence() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals(10000, (new ResourcePreloadProcessor()).getPrecedence());
+    assertEquals(10000, resourcePreloadProcessor.getPrecedence());
   }
 
   /**
-   * Test {@link ResourcePreloadProcessor#getPrecedence()}.
+   * Test {@link ResourcePreloadProcessor#buildModelBundled(List, ResourceTagAttributes, BroadleafTemplateContext)}.
    * <p>
-   * Method under test: {@link ResourcePreloadProcessor#getPrecedence()}
+   * Method under test: {@link ResourcePreloadProcessor#buildModelBundled(List, ResourceTagAttributes, BroadleafTemplateContext)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetPrecedence2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.BeanInstantiationException: Could not instantiate bean: messageSource defined in bl-common-applicationContext.xml
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageSource' defined in class path resource [bl-common-applicationContext.xml]: Initialization of bean failed; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:628)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:600)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.propertyeditors.CustomBooleanEditor.setAsText(CustomBooleanEditor.java:154)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
-    //       at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:590)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   See https://diff.blue/R026 to resolve this issue.
-
-    // Arrange and Act
-    (new ResourcePreloadProcessor()).getPrecedence();
-  }
-
-  /**
-   * Test
-   * {@link ResourcePreloadProcessor#buildModelBundled(List, ResourceTagAttributes, BroadleafTemplateContext)}.
-   * <p>
-   * Method under test:
-   * {@link ResourcePreloadProcessor#buildModelBundled(List, ResourceTagAttributes, BroadleafTemplateContext)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "BroadleafTemplateModel ResourcePreloadProcessor.buildModelBundled(List, ResourceTagAttributes, BroadleafTemplateContext)"})
   public void testBuildModelBundled() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.BeanInstantiationException: Could not instantiate bean: messageSource defined in bl-common-applicationContext.xml
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageSource' defined in class path resource [bl-common-applicationContext.xml]: Initialization of bean failed; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:628)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:600)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.propertyeditors.CustomBooleanEditor.setAsText(CustomBooleanEditor.java:154)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
-    //       at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:590)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   See https://diff.blue/R026 to resolve this issue.
-
     // Arrange
-    ResourcePreloadProcessor resourcePreloadProcessor2 = new ResourcePreloadProcessor();
+    when(resourcesRequest.getBundle(Mockito.<String>any(), Mockito.<String>any(), Mockito.<List<String>>any()))
+        .thenReturn(new ResourcesRequestBundle("Bundle Name", "Mapping Prefix", new ArrayList<>(), "Bundle Path"));
     ArrayList<String> attributeFiles = new ArrayList<>();
+    ResourceTagAttributes resourceTagAttributes = new ResourceTagAttributes();
+    BroadleafTemplateModel broadleafTemplateModel = mock(BroadleafTemplateModel.class);
+    doNothing().when(broadleafTemplateModel).addElement(Mockito.<BroadleafTemplateElement>any());
+    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
+    when(context.getRequest()).thenReturn(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
+    when(context.createStandaloneElement(Mockito.<String>any(), Mockito.<Map<String, String>>any(), anyBoolean()))
+        .thenReturn(mock(BroadleafTemplateElement.class));
+    when(context.createModel()).thenReturn(broadleafTemplateModel);
 
     // Act
-    resourcePreloadProcessor2.buildModelBundled(attributeFiles, new ResourceTagAttributes(),
-        mock(BroadleafTemplateContext.class));
+    resourcePreloadProcessor.buildModelBundled(attributeFiles, resourceTagAttributes, context);
+
+    // Assert
+    verify(resourcesRequest).getBundle(isNull(), isNull(), isA(List.class));
+    verify(context).createModel();
+    verify(context).createStandaloneElement(eq("link"), isA(Map.class), eq(true));
+    verify(context).getRequest();
+    verify(broadleafTemplateModel).addElement(isA(BroadleafTemplateElement.class));
   }
 
   /**
-   * Test
-   * {@link ResourcePreloadProcessor#buildModelUnbundled(List, ResourceTagAttributes, BroadleafTemplateContext)}.
+   * Test {@link ResourcePreloadProcessor#buildModelBundled(List, ResourceTagAttributes, BroadleafTemplateContext)}.
    * <p>
-   * Method under test:
-   * {@link ResourcePreloadProcessor#buildModelUnbundled(List, ResourceTagAttributes, BroadleafTemplateContext)}
+   * Method under test: {@link ResourcePreloadProcessor#buildModelBundled(List, ResourceTagAttributes, BroadleafTemplateContext)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testBuildModelUnbundled() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.BeanInstantiationException: Could not instantiate bean: messageSource defined in bl-common-applicationContext.xml
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageSource' defined in class path resource [bl-common-applicationContext.xml]: Initialization of bean failed; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:628)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:600)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.propertyeditors.CustomBooleanEditor.setAsText(CustomBooleanEditor.java:154)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
-    //       at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:590)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   See https://diff.blue/R026 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "BroadleafTemplateModel ResourcePreloadProcessor.buildModelBundled(List, ResourceTagAttributes, BroadleafTemplateContext)"})
+  public void testBuildModelBundled2() {
     // Arrange
-    ResourcePreloadProcessor resourcePreloadProcessor2 = new ResourcePreloadProcessor();
+    when(resourcesRequest.getBundle(Mockito.<String>any(), Mockito.<String>any(), Mockito.<List<String>>any()))
+        .thenReturn(new ResourcesRequestBundle("Bundle Name", "Mapping Prefix", new ArrayList<>(), ".js"));
     ArrayList<String> attributeFiles = new ArrayList<>();
+    ResourceTagAttributes resourceTagAttributes = new ResourceTagAttributes();
+    BroadleafTemplateModel broadleafTemplateModel = mock(BroadleafTemplateModel.class);
+    doNothing().when(broadleafTemplateModel).addElement(Mockito.<BroadleafTemplateElement>any());
+    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
+    when(context.getRequest()).thenReturn(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
+    when(context.createStandaloneElement(Mockito.<String>any(), Mockito.<Map<String, String>>any(), anyBoolean()))
+        .thenReturn(mock(BroadleafTemplateElement.class));
+    when(context.createModel()).thenReturn(broadleafTemplateModel);
 
     // Act
-    resourcePreloadProcessor2.buildModelUnbundled(attributeFiles, new ResourceTagAttributes(),
-        mock(BroadleafTemplateContext.class));
+    resourcePreloadProcessor.buildModelBundled(attributeFiles, resourceTagAttributes, context);
+
+    // Assert
+    verify(resourcesRequest).getBundle(isNull(), isNull(), isA(List.class));
+    verify(context).createModel();
+    verify(context).createStandaloneElement(eq("link"), isA(Map.class), eq(true));
+    verify(context).getRequest();
+    verify(broadleafTemplateModel).addElement(isA(BroadleafTemplateElement.class));
   }
 
   /**
-   * Test
-   * {@link ResourcePreloadProcessor#buildPreloadElement(String, BroadleafTemplateContext)}.
+   * Test {@link ResourcePreloadProcessor#buildModelBundled(List, ResourceTagAttributes, BroadleafTemplateContext)}.
    * <p>
-   * Method under test:
-   * {@link ResourcePreloadProcessor#buildPreloadElement(String, BroadleafTemplateContext)}
+   * Method under test: {@link ResourcePreloadProcessor#buildModelBundled(List, ResourceTagAttributes, BroadleafTemplateContext)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testBuildPreloadElement() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.BeanInstantiationException: Could not instantiate bean: messageSource defined in bl-common-applicationContext.xml
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageSource' defined in class path resource [bl-common-applicationContext.xml]: Initialization of bean failed; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:628)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:600)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.propertyeditors.CustomBooleanEditor.setAsText(CustomBooleanEditor.java:154)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
-    //       at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:590)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   See https://diff.blue/R026 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "BroadleafTemplateModel ResourcePreloadProcessor.buildModelBundled(List, ResourceTagAttributes, BroadleafTemplateContext)"})
+  public void testBuildModelBundled3() {
+    // Arrange
+    when(resourcesRequest.getBundle(Mockito.<String>any(), Mockito.<String>any(), Mockito.<List<String>>any()))
+        .thenReturn(new ResourcesRequestBundle("Bundle Name", "Mapping Prefix", new ArrayList<>(), ".css"));
+    ArrayList<String> attributeFiles = new ArrayList<>();
+    ResourceTagAttributes resourceTagAttributes = new ResourceTagAttributes();
+    BroadleafTemplateModel broadleafTemplateModel = mock(BroadleafTemplateModel.class);
+    doNothing().when(broadleafTemplateModel).addElement(Mockito.<BroadleafTemplateElement>any());
+    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
+    when(context.getRequest()).thenReturn(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
+    when(context.createStandaloneElement(Mockito.<String>any(), Mockito.<Map<String, String>>any(), anyBoolean()))
+        .thenReturn(mock(BroadleafTemplateElement.class));
+    when(context.createModel()).thenReturn(broadleafTemplateModel);
 
-    // Arrange and Act
-    (new ResourcePreloadProcessor()).buildPreloadElement("Href", mock(BroadleafTemplateContext.class));
+    // Act
+    resourcePreloadProcessor.buildModelBundled(attributeFiles, resourceTagAttributes, context);
+
+    // Assert
+    verify(resourcesRequest).getBundle(isNull(), isNull(), isA(List.class));
+    verify(context).createModel();
+    verify(context).createStandaloneElement(eq("link"), isA(Map.class), eq(true));
+    verify(context).getRequest();
+    verify(broadleafTemplateModel).addElement(isA(BroadleafTemplateElement.class));
   }
 
   /**
-   * Test
-   * {@link ResourcePreloadProcessor#buildPreloadElement(String, BroadleafTemplateContext)}.
+   * Test {@link ResourcePreloadProcessor#buildModelBundled(List, ResourceTagAttributes, BroadleafTemplateContext)}.
    * <ul>
-   *   <li>When {@code .css}.</li>
-   *   <li>Then calls
-   * {@link BroadleafTemplateContext#createStandaloneElement(String, Map, boolean)}.</li>
+   *   <li>Given {@code /}.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@code /}.</li>
+   *   <li>Then calls {@link ResourcesRequest#getBundle(String, String, List)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ResourcePreloadProcessor#buildPreloadElement(String, BroadleafTemplateContext)}
+   * Method under test: {@link ResourcePreloadProcessor#buildModelBundled(List, ResourceTagAttributes, BroadleafTemplateContext)}
    */
   @Test
-  public void testBuildPreloadElement_whenCss_thenCallsCreateStandaloneElement() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "BroadleafTemplateModel ResourcePreloadProcessor.buildModelBundled(List, ResourceTagAttributes, BroadleafTemplateContext)"})
+  public void testBuildModelBundled_givenSlash_whenArrayListAddSlash_thenCallsGetBundle() {
     // Arrange
-    ResourcePreloadProcessor resourcePreloadProcessor = new ResourcePreloadProcessor();
+    when(resourcesRequest.getBundle(Mockito.<String>any(), Mockito.<String>any(), Mockito.<List<String>>any()))
+        .thenReturn(new ResourcesRequestBundle("Bundle Name", "Mapping Prefix", new ArrayList<>(), "Bundle Path"));
+
+    ArrayList<String> attributeFiles = new ArrayList<>();
+    attributeFiles.add("/");
+    ResourceTagAttributes resourceTagAttributes = new ResourceTagAttributes();
+    BroadleafTemplateModel broadleafTemplateModel = mock(BroadleafTemplateModel.class);
+    doNothing().when(broadleafTemplateModel).addElement(Mockito.<BroadleafTemplateElement>any());
+    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
+    when(context.getRequest()).thenReturn(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
+    when(context.createStandaloneElement(Mockito.<String>any(), Mockito.<Map<String, String>>any(), anyBoolean()))
+        .thenReturn(mock(BroadleafTemplateElement.class));
+    when(context.createModel()).thenReturn(broadleafTemplateModel);
+
+    // Act
+    resourcePreloadProcessor.buildModelBundled(attributeFiles, resourceTagAttributes, context);
+
+    // Assert
+    verify(resourcesRequest).getBundle(isNull(), isNull(), isA(List.class));
+    verify(context).createModel();
+    verify(context).createStandaloneElement(eq("link"), isA(Map.class), eq(true));
+    verify(context).getRequest();
+    verify(broadleafTemplateModel).addElement(isA(BroadleafTemplateElement.class));
+  }
+
+  /**
+   * Test {@link ResourcePreloadProcessor#buildModelBundled(List, ResourceTagAttributes, BroadleafTemplateContext)}.
+   * <ul>
+   *   <li>Given {@code ThreadLocalManager.notify.orphans}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePreloadProcessor#buildModelBundled(List, ResourceTagAttributes, BroadleafTemplateContext)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "BroadleafTemplateModel ResourcePreloadProcessor.buildModelBundled(List, ResourceTagAttributes, BroadleafTemplateContext)"})
+  public void testBuildModelBundled_givenThreadLocalManagerNotifyOrphans() {
+    // Arrange
+    when(resourcesRequest.getBundle(Mockito.<String>any(), Mockito.<String>any(), Mockito.<List<String>>any()))
+        .thenReturn(new ResourcesRequestBundle("Bundle Name", "Mapping Prefix", new ArrayList<>(), "Bundle Path"));
+
+    ArrayList<String> attributeFiles = new ArrayList<>();
+    attributeFiles.add("ThreadLocalManager.notify.orphans");
+    attributeFiles.add("/");
+    ResourceTagAttributes resourceTagAttributes = new ResourceTagAttributes();
+    BroadleafTemplateModel broadleafTemplateModel = mock(BroadleafTemplateModel.class);
+    doNothing().when(broadleafTemplateModel).addElement(Mockito.<BroadleafTemplateElement>any());
+    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
+    when(context.getRequest()).thenReturn(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
+    when(context.createStandaloneElement(Mockito.<String>any(), Mockito.<Map<String, String>>any(), anyBoolean()))
+        .thenReturn(mock(BroadleafTemplateElement.class));
+    when(context.createModel()).thenReturn(broadleafTemplateModel);
+
+    // Act
+    resourcePreloadProcessor.buildModelBundled(attributeFiles, resourceTagAttributes, context);
+
+    // Assert
+    verify(resourcesRequest).getBundle(isNull(), isNull(), isA(List.class));
+    verify(context).createModel();
+    verify(context).createStandaloneElement(eq("link"), isA(Map.class), eq(true));
+    verify(context).getRequest();
+    verify(broadleafTemplateModel).addElement(isA(BroadleafTemplateElement.class));
+  }
+
+  /**
+   * Test {@link ResourcePreloadProcessor#buildModelUnbundled(List, ResourceTagAttributes, BroadleafTemplateContext)}.
+   * <p>
+   * Method under test: {@link ResourcePreloadProcessor#buildModelUnbundled(List, ResourceTagAttributes, BroadleafTemplateContext)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "BroadleafTemplateModel ResourcePreloadProcessor.buildModelUnbundled(List, ResourceTagAttributes, BroadleafTemplateContext)"})
+  public void testBuildModelUnbundled() {
+    // Arrange
+    ArrayList<String> files = new ArrayList<>();
+    when(resourcesRequest.getBundle(Mockito.<String>any(), Mockito.<String>any(), Mockito.<List<String>>any()))
+        .thenReturn(new ResourcesRequestBundle("Bundle Name", "Mapping Prefix", files, new ArrayList<>()));
+
+    ArrayList<String> attributeFiles = new ArrayList<>();
+    attributeFiles.add("foo");
+    ResourceTagAttributes resourceTagAttributes = new ResourceTagAttributes();
+    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
+    when(context.createModel()).thenReturn(mock(BroadleafTemplateModel.class));
+
+    // Act
+    resourcePreloadProcessor.buildModelUnbundled(attributeFiles, resourceTagAttributes, context);
+
+    // Assert
+    verify(resourcesRequest).getBundle(isNull(), isNull(), isA(List.class));
+    verify(context).createModel();
+  }
+
+  /**
+   * Test {@link ResourcePreloadProcessor#buildModelUnbundled(List, ResourceTagAttributes, BroadleafTemplateContext)}.
+   * <ul>
+   *   <li>Given {@link BroadleafTemplateModel}.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePreloadProcessor#buildModelUnbundled(List, ResourceTagAttributes, BroadleafTemplateContext)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "BroadleafTemplateModel ResourcePreloadProcessor.buildModelUnbundled(List, ResourceTagAttributes, BroadleafTemplateContext)"})
+  public void testBuildModelUnbundled_givenBroadleafTemplateModel_whenArrayList() {
+    // Arrange
+    when(resourcesRequest.getBundle(Mockito.<String>any(), Mockito.<String>any(), Mockito.<List<String>>any()))
+        .thenReturn(new ResourcesRequestBundle("Bundle Name", "Mapping Prefix", new ArrayList<>(), "Bundle Path"));
+    doNothing().when(resourcesRequest)
+        .saveBundle(Mockito.<String>any(), Mockito.<String>any(), Mockito.<List<String>>any(),
+            Mockito.<List<String>>any());
+    ArrayList<String> attributeFiles = new ArrayList<>();
+    ResourceTagAttributes resourceTagAttributes = new ResourceTagAttributes();
+    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
+    when(context.createModel()).thenReturn(mock(BroadleafTemplateModel.class));
+
+    // Act
+    resourcePreloadProcessor.buildModelUnbundled(attributeFiles, resourceTagAttributes, context);
+
+    // Assert
+    verify(resourcesRequest).getBundle(isNull(), isNull(), isA(List.class));
+    verify(resourcesRequest).saveBundle((String) isNull(), (String) isNull(), isA(List.class), isA(List.class));
+    verify(context).createModel();
+  }
+
+  /**
+   * Test {@link ResourcePreloadProcessor#buildModelUnbundled(List, ResourceTagAttributes, BroadleafTemplateContext)}.
+   * <ul>
+   *   <li>Given {@code @{'}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePreloadProcessor#buildModelUnbundled(List, ResourceTagAttributes, BroadleafTemplateContext)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "BroadleafTemplateModel ResourcePreloadProcessor.buildModelUnbundled(List, ResourceTagAttributes, BroadleafTemplateContext)"})
+  public void testBuildModelUnbundled_givenCommercialAtLeftCurlyBracketApostrophe() {
+    // Arrange
+    when(resourcesRequest.getBundle(Mockito.<String>any(), Mockito.<String>any(), Mockito.<List<String>>any()))
+        .thenReturn(new ResourcesRequestBundle("Bundle Name", "Mapping Prefix", new ArrayList<>(), "Bundle Path"));
+    doNothing().when(resourcesRequest)
+        .saveBundle(Mockito.<String>any(), Mockito.<String>any(), Mockito.<List<String>>any(),
+            Mockito.<List<String>>any());
+
+    ArrayList<String> attributeFiles = new ArrayList<>();
+    attributeFiles.add("foo");
+    ResourceTagAttributes resourceTagAttributes = new ResourceTagAttributes();
+    BroadleafTemplateModel broadleafTemplateModel = mock(BroadleafTemplateModel.class);
+    doNothing().when(broadleafTemplateModel).addElement(Mockito.<BroadleafTemplateElement>any());
+    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
+    when(context.createStandaloneElement(Mockito.<String>any(), Mockito.<Map<String, String>>any(), anyBoolean()))
+        .thenReturn(mock(BroadleafTemplateElement.class));
+    when(context.parseExpression(Mockito.<String>any())).thenReturn("@{'");
+    when(context.createModel()).thenReturn(broadleafTemplateModel);
+
+    // Act
+    resourcePreloadProcessor.buildModelUnbundled(attributeFiles, resourceTagAttributes, context);
+
+    // Assert
+    verify(resourcesRequest).getBundle(isNull(), isNull(), isA(List.class));
+    verify(resourcesRequest).saveBundle((String) isNull(), (String) isNull(), isA(List.class), isA(List.class));
+    verify(context).createModel();
+    verify(context).createStandaloneElement(eq("link"), isA(Map.class), eq(true));
+    verify(context).parseExpression(eq("@{'nullfoo'}"));
+    verify(broadleafTemplateModel).addElement(isA(BroadleafTemplateElement.class));
+  }
+
+  /**
+   * Test {@link ResourcePreloadProcessor#buildModelUnbundled(List, ResourceTagAttributes, BroadleafTemplateContext)}.
+   * <ul>
+   *   <li>Given {@code .css}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePreloadProcessor#buildModelUnbundled(List, ResourceTagAttributes, BroadleafTemplateContext)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "BroadleafTemplateModel ResourcePreloadProcessor.buildModelUnbundled(List, ResourceTagAttributes, BroadleafTemplateContext)"})
+  public void testBuildModelUnbundled_givenCss() {
+    // Arrange
+    when(resourcesRequest.getBundle(Mockito.<String>any(), Mockito.<String>any(), Mockito.<List<String>>any()))
+        .thenReturn(new ResourcesRequestBundle("Bundle Name", "Mapping Prefix", new ArrayList<>(), "Bundle Path"));
+    doNothing().when(resourcesRequest)
+        .saveBundle(Mockito.<String>any(), Mockito.<String>any(), Mockito.<List<String>>any(),
+            Mockito.<List<String>>any());
+
+    ArrayList<String> attributeFiles = new ArrayList<>();
+    attributeFiles.add("foo");
+    ResourceTagAttributes resourceTagAttributes = new ResourceTagAttributes();
+    BroadleafTemplateModel broadleafTemplateModel = mock(BroadleafTemplateModel.class);
+    doNothing().when(broadleafTemplateModel).addElement(Mockito.<BroadleafTemplateElement>any());
+    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
+    when(context.createStandaloneElement(Mockito.<String>any(), Mockito.<Map<String, String>>any(), anyBoolean()))
+        .thenReturn(mock(BroadleafTemplateElement.class));
+    when(context.parseExpression(Mockito.<String>any())).thenReturn(".css");
+    when(context.createModel()).thenReturn(broadleafTemplateModel);
+
+    // Act
+    resourcePreloadProcessor.buildModelUnbundled(attributeFiles, resourceTagAttributes, context);
+
+    // Assert
+    verify(resourcesRequest).getBundle(isNull(), isNull(), isA(List.class));
+    verify(resourcesRequest).saveBundle((String) isNull(), (String) isNull(), isA(List.class), isA(List.class));
+    verify(context).createModel();
+    verify(context).createStandaloneElement(eq("link"), isA(Map.class), eq(true));
+    verify(context).parseExpression(eq("@{'nullfoo'}"));
+    verify(broadleafTemplateModel).addElement(isA(BroadleafTemplateElement.class));
+  }
+
+  /**
+   * Test {@link ResourcePreloadProcessor#buildModelUnbundled(List, ResourceTagAttributes, BroadleafTemplateContext)}.
+   * <ul>
+   *   <li>Given {@code .js}.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@code .js}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePreloadProcessor#buildModelUnbundled(List, ResourceTagAttributes, BroadleafTemplateContext)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "BroadleafTemplateModel ResourcePreloadProcessor.buildModelUnbundled(List, ResourceTagAttributes, BroadleafTemplateContext)"})
+  public void testBuildModelUnbundled_givenJs_whenArrayListAddJs() {
+    // Arrange
+    when(resourcesRequest.getBundle(Mockito.<String>any(), Mockito.<String>any(), Mockito.<List<String>>any()))
+        .thenReturn(new ResourcesRequestBundle("Bundle Name", "Mapping Prefix", new ArrayList<>(), "Bundle Path"));
+    doNothing().when(resourcesRequest)
+        .saveBundle(Mockito.<String>any(), Mockito.<String>any(), Mockito.<List<String>>any(),
+            Mockito.<List<String>>any());
+
+    ArrayList<String> attributeFiles = new ArrayList<>();
+    attributeFiles.add(".js");
+    attributeFiles.add("foo");
+    ResourceTagAttributes resourceTagAttributes = new ResourceTagAttributes();
+    BroadleafTemplateModel broadleafTemplateModel = mock(BroadleafTemplateModel.class);
+    doNothing().when(broadleafTemplateModel).addElement(Mockito.<BroadleafTemplateElement>any());
+    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
+    when(context.createStandaloneElement(Mockito.<String>any(), Mockito.<Map<String, String>>any(), anyBoolean()))
+        .thenReturn(mock(BroadleafTemplateElement.class));
+    when(context.parseExpression(Mockito.<String>any())).thenReturn("@{'");
+    when(context.createModel()).thenReturn(broadleafTemplateModel);
+
+    // Act
+    resourcePreloadProcessor.buildModelUnbundled(attributeFiles, resourceTagAttributes, context);
+
+    // Assert
+    verify(resourcesRequest).getBundle(isNull(), isNull(), isA(List.class));
+    verify(resourcesRequest).saveBundle((String) isNull(), (String) isNull(), isA(List.class), isA(List.class));
+    verify(context).createModel();
+    verify(context, atLeast(1)).createStandaloneElement(eq("link"), isA(Map.class), eq(true));
+    verify(context, atLeast(1)).parseExpression(Mockito.<String>any());
+    verify(broadleafTemplateModel, atLeast(1)).addElement(isA(BroadleafTemplateElement.class));
+  }
+
+  /**
+   * Test {@link ResourcePreloadProcessor#buildModelUnbundled(List, ResourceTagAttributes, BroadleafTemplateContext)}.
+   * <ul>
+   *   <li>When {@link BroadleafTemplateContext} {@link BroadleafTemplateContext#parseExpression(String)} return {@code .js}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePreloadProcessor#buildModelUnbundled(List, ResourceTagAttributes, BroadleafTemplateContext)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "BroadleafTemplateModel ResourcePreloadProcessor.buildModelUnbundled(List, ResourceTagAttributes, BroadleafTemplateContext)"})
+  public void testBuildModelUnbundled_whenBroadleafTemplateContextParseExpressionReturnJs() {
+    // Arrange
+    when(resourcesRequest.getBundle(Mockito.<String>any(), Mockito.<String>any(), Mockito.<List<String>>any()))
+        .thenReturn(new ResourcesRequestBundle("Bundle Name", "Mapping Prefix", new ArrayList<>(), "Bundle Path"));
+    doNothing().when(resourcesRequest)
+        .saveBundle(Mockito.<String>any(), Mockito.<String>any(), Mockito.<List<String>>any(),
+            Mockito.<List<String>>any());
+
+    ArrayList<String> attributeFiles = new ArrayList<>();
+    attributeFiles.add("foo");
+    ResourceTagAttributes resourceTagAttributes = new ResourceTagAttributes();
+    BroadleafTemplateModel broadleafTemplateModel = mock(BroadleafTemplateModel.class);
+    doNothing().when(broadleafTemplateModel).addElement(Mockito.<BroadleafTemplateElement>any());
+    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
+    when(context.createStandaloneElement(Mockito.<String>any(), Mockito.<Map<String, String>>any(), anyBoolean()))
+        .thenReturn(mock(BroadleafTemplateElement.class));
+    when(context.parseExpression(Mockito.<String>any())).thenReturn(".js");
+    when(context.createModel()).thenReturn(broadleafTemplateModel);
+
+    // Act
+    resourcePreloadProcessor.buildModelUnbundled(attributeFiles, resourceTagAttributes, context);
+
+    // Assert
+    verify(resourcesRequest).getBundle(isNull(), isNull(), isA(List.class));
+    verify(resourcesRequest).saveBundle((String) isNull(), (String) isNull(), isA(List.class), isA(List.class));
+    verify(context).createModel();
+    verify(context).createStandaloneElement(eq("link"), isA(Map.class), eq(true));
+    verify(context).parseExpression(eq("@{'nullfoo'}"));
+    verify(broadleafTemplateModel).addElement(isA(BroadleafTemplateElement.class));
+  }
+
+  /**
+   * Test {@link ResourcePreloadProcessor#buildPreloadElement(String, BroadleafTemplateContext)}.
+   * <ul>
+   *   <li>When {@code .css}.</li>
+   *   <li>Then calls {@link BroadleafTemplateContext#createStandaloneElement(String, Map, boolean)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePreloadProcessor#buildPreloadElement(String, BroadleafTemplateContext)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "BroadleafTemplateElement ResourcePreloadProcessor.buildPreloadElement(String, BroadleafTemplateContext)"})
+  public void testBuildPreloadElement_whenCss_thenCallsCreateStandaloneElement() {
+    // Arrange
     BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
     when(context.createStandaloneElement(Mockito.<String>any(), Mockito.<Map<String, String>>any(), anyBoolean()))
         .thenReturn(mock(BroadleafTemplateElement.class));
@@ -478,23 +538,20 @@ public class ResourcePreloadProcessorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ResourcePreloadProcessor#buildPreloadElement(String, BroadleafTemplateContext)}.
+   * Test {@link ResourcePreloadProcessor#buildPreloadElement(String, BroadleafTemplateContext)}.
    * <ul>
    *   <li>When {@code Href}.</li>
-   *   <li>Then calls
-   * {@link BroadleafTemplateContext#createStandaloneElement(String, Map, boolean)}.</li>
+   *   <li>Then calls {@link BroadleafTemplateContext#createStandaloneElement(String, Map, boolean)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ResourcePreloadProcessor#buildPreloadElement(String, BroadleafTemplateContext)}
+   * Method under test: {@link ResourcePreloadProcessor#buildPreloadElement(String, BroadleafTemplateContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "BroadleafTemplateElement ResourcePreloadProcessor.buildPreloadElement(String, BroadleafTemplateContext)"})
   public void testBuildPreloadElement_whenHref_thenCallsCreateStandaloneElement() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ResourcePreloadProcessor resourcePreloadProcessor = new ResourcePreloadProcessor();
     BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
     when(context.createStandaloneElement(Mockito.<String>any(), Mockito.<Map<String, String>>any(), anyBoolean()))
         .thenReturn(mock(BroadleafTemplateElement.class));
@@ -507,23 +564,20 @@ public class ResourcePreloadProcessorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ResourcePreloadProcessor#buildPreloadElement(String, BroadleafTemplateContext)}.
+   * Test {@link ResourcePreloadProcessor#buildPreloadElement(String, BroadleafTemplateContext)}.
    * <ul>
    *   <li>When {@code .js}.</li>
-   *   <li>Then calls
-   * {@link BroadleafTemplateContext#createStandaloneElement(String, Map, boolean)}.</li>
+   *   <li>Then calls {@link BroadleafTemplateContext#createStandaloneElement(String, Map, boolean)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ResourcePreloadProcessor#buildPreloadElement(String, BroadleafTemplateContext)}
+   * Method under test: {@link ResourcePreloadProcessor#buildPreloadElement(String, BroadleafTemplateContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "BroadleafTemplateElement ResourcePreloadProcessor.buildPreloadElement(String, BroadleafTemplateContext)"})
   public void testBuildPreloadElement_whenJs_thenCallsCreateStandaloneElement() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ResourcePreloadProcessor resourcePreloadProcessor = new ResourcePreloadProcessor();
     BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
     when(context.createStandaloneElement(Mockito.<String>any(), Mockito.<Map<String, String>>any(), anyBoolean()))
         .thenReturn(mock(BroadleafTemplateElement.class));
@@ -537,106 +591,19 @@ public class ResourcePreloadProcessorDiffblueTest {
 
   /**
    * Test {@link ResourcePreloadProcessor#getPreloadAttributes(String, String)}.
-   * <p>
-   * Method under test:
-   * {@link ResourcePreloadProcessor#getPreloadAttributes(String, String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetPreloadAttributes() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.BeanInstantiationException: Could not instantiate bean: messageSource defined in bl-common-applicationContext.xml
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageSource' defined in class path resource [bl-common-applicationContext.xml]: Initialization of bean failed; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:628)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:600)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.propertyeditors.CustomBooleanEditor.setAsText(CustomBooleanEditor.java:154)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
-    //       at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:590)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   See https://diff.blue/R026 to resolve this issue.
-
-    // Arrange and Act
-    (new ResourcePreloadProcessor()).getPreloadAttributes("Href", "As");
-  }
-
-  /**
-   * Test {@link ResourcePreloadProcessor#getPreloadAttributes(String, String)}.
    * <ul>
    *   <li>When {@code As}.</li>
    *   <li>Then return size is three.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ResourcePreloadProcessor#getPreloadAttributes(String, String)}
+   * Method under test: {@link ResourcePreloadProcessor#getPreloadAttributes(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map ResourcePreloadProcessor.getPreloadAttributes(String, String)"})
   public void testGetPreloadAttributes_whenAs_thenReturnSizeIsThree() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange and Act
-    Map<String, String> actualPreloadAttributes = (new ResourcePreloadProcessor()).getPreloadAttributes("Href", "As");
+    Map<String, String> actualPreloadAttributes = resourcePreloadProcessor.getPreloadAttributes("Href", "As");
 
     // Assert
     assertEquals(3, actualPreloadAttributes.size());
@@ -652,105 +619,19 @@ public class ResourcePreloadProcessorDiffblueTest {
    *   <li>Then return size is two.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ResourcePreloadProcessor#getPreloadAttributes(String, String)}
+   * Method under test: {@link ResourcePreloadProcessor#getPreloadAttributes(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map ResourcePreloadProcessor.getPreloadAttributes(String, String)"})
   public void testGetPreloadAttributes_whenNull_thenReturnSizeIsTwo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange and Act
-    Map<String, String> actualPreloadAttributes = (new ResourcePreloadProcessor()).getPreloadAttributes("Href", null);
+    Map<String, String> actualPreloadAttributes = resourcePreloadProcessor.getPreloadAttributes("Href", null);
 
     // Assert
     assertEquals(2, actualPreloadAttributes.size());
     assertEquals("Href", actualPreloadAttributes.get("href"));
     assertEquals("preload", actualPreloadAttributes.get("rel"));
-  }
-
-  /**
-   * Test {@link ResourcePreloadProcessor#getAs(String)}.
-   * <p>
-   * Method under test: {@link ResourcePreloadProcessor#getAs(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetAs() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.BeanInstantiationException: Could not instantiate bean: messageSource defined in bl-common-applicationContext.xml
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageSource' defined in class path resource [bl-common-applicationContext.xml]: Initialization of bean failed; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:628)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:600)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.propertyeditors.CustomBooleanEditor.setAsText(CustomBooleanEditor.java:154)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
-    //       at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:590)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   See https://diff.blue/R026 to resolve this issue.
-
-    // Arrange and Act
-    (new ResourcePreloadProcessor()).getAs("File");
   }
 
   /**
@@ -763,11 +644,11 @@ public class ResourcePreloadProcessorDiffblueTest {
    * Method under test: {@link ResourcePreloadProcessor#getAs(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String ResourcePreloadProcessor.getAs(String)"})
   public void testGetAs_whenCss_thenReturnStyle() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("style", (new ResourcePreloadProcessor()).getAs(".css"));
+    assertEquals("style", resourcePreloadProcessor.getAs(".css"));
   }
 
   /**
@@ -780,11 +661,11 @@ public class ResourcePreloadProcessorDiffblueTest {
    * Method under test: {@link ResourcePreloadProcessor#getAs(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String ResourcePreloadProcessor.getAs(String)"})
   public void testGetAs_whenFile_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertNull((new ResourcePreloadProcessor()).getAs("File"));
+    assertNull(resourcePreloadProcessor.getAs("File"));
   }
 
   /**
@@ -797,10 +678,10 @@ public class ResourcePreloadProcessorDiffblueTest {
    * Method under test: {@link ResourcePreloadProcessor#getAs(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String ResourcePreloadProcessor.getAs(String)"})
   public void testGetAs_whenJs_thenReturnScript() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("script", (new ResourcePreloadProcessor()).getAs(".js"));
+    assertEquals("script", resourcePreloadProcessor.getAs(".js"));
   }
 }

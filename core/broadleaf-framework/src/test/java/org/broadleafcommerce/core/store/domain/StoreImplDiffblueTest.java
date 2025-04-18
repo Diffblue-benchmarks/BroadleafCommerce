@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.store.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -5,9 +22,12 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.profile.core.domain.Address;
 import org.broadleafcommerce.profile.core.domain.AddressImpl;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class StoreImplDiffblueTest {
   /**
@@ -34,6 +54,13 @@ public class StoreImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Address StoreImpl.getAddress()", "Long StoreImpl.getId()", "Double StoreImpl.getLatitude()",
+      "Double StoreImpl.getLongitude()", "String StoreImpl.getName()", "Boolean StoreImpl.getOpen()",
+      "String StoreImpl.getStoreHours()", "String StoreImpl.getStoreNumber()", "void StoreImpl.setAddress(Address)",
+      "void StoreImpl.setId(Long)", "void StoreImpl.setLatitude(Double)", "void StoreImpl.setLongitude(Double)",
+      "void StoreImpl.setName(String)", "void StoreImpl.setOpen(Boolean)", "void StoreImpl.setStoreHours(String)",
+      "void StoreImpl.setStoreNumber(String)"})
   public void testGettersAndSetters() {
     // Arrange
     StoreImpl storeImpl = new StoreImpl();
@@ -56,7 +83,7 @@ public class StoreImplDiffblueTest {
     Boolean actualOpen = storeImpl.getOpen();
     String actualStoreHours = storeImpl.getStoreHours();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("42", storeImpl.getStoreNumber());
     assertEquals("Name", actualName);
     assertEquals("Store Hours", actualStoreHours);
@@ -73,6 +100,8 @@ public class StoreImplDiffblueTest {
    * Method under test: {@link StoreImpl#getArchived()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Character StoreImpl.getArchived()"})
   public void testGetArchived() {
     // Arrange, Act and Assert
     assertEquals('N', (new StoreImpl()).getArchived().charValue());
@@ -84,6 +113,8 @@ public class StoreImplDiffblueTest {
    * Method under test: {@link StoreImpl#setArchived(Character)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StoreImpl.setArchived(Character)"})
   public void testSetArchived() {
     // Arrange
     StoreImpl storeImpl = new StoreImpl();
@@ -106,6 +137,8 @@ public class StoreImplDiffblueTest {
    * Method under test: {@link StoreImpl#isActive()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StoreImpl.isActive()"})
   public void testIsActive_givenStoreImplArchivedIsY_thenReturnFalse() {
     // Arrange
     StoreImpl storeImpl = new StoreImpl();
@@ -125,6 +158,8 @@ public class StoreImplDiffblueTest {
    * Method under test: {@link StoreImpl#isActive()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StoreImpl.isActive()"})
   public void testIsActive_givenStoreImpl_thenReturnTrue() {
     // Arrange, Act and Assert
     assertTrue((new StoreImpl()).isActive());
@@ -136,6 +171,8 @@ public class StoreImplDiffblueTest {
    * Method under test: default or parameterless constructor of {@link StoreImpl}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StoreImpl.<init>()"})
   public void testNewStoreImpl() {
     // Arrange and Act
     StoreImpl actualStoreImpl = new StoreImpl();

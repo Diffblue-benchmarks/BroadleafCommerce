@@ -18,19 +18,23 @@
 package org.broadleafcommerce.common.payment.service;
 
 import static org.junit.Assert.assertThrows;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.payment.dto.PaymentRequestDTO;
 import org.broadleafcommerce.common.vendor.service.exception.PaymentException;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class AbstractPaymentGatewayHostedServiceDiffblueTest {
   /**
-   * Test
-   * {@link AbstractPaymentGatewayHostedService#requestHostedEndpoint(PaymentRequestDTO)}.
+   * Test {@link AbstractPaymentGatewayHostedService#requestHostedEndpoint(PaymentRequestDTO)}.
    * <p>
-   * Method under test:
-   * {@link AbstractPaymentGatewayHostedService#requestHostedEndpoint(PaymentRequestDTO)}
+   * Method under test: {@link AbstractPaymentGatewayHostedService#requestHostedEndpoint(PaymentRequestDTO)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.common.payment.dto.PaymentResponseDTO AbstractPaymentGatewayHostedService.requestHostedEndpoint(PaymentRequestDTO)"})
   public void testRequestHostedEndpoint() throws PaymentException {
     // Arrange
     AbstractPaymentGatewayHostedService abstractPaymentGatewayHostedService = new AbstractPaymentGatewayHostedService();
@@ -38,22 +42,5 @@ public class AbstractPaymentGatewayHostedServiceDiffblueTest {
     // Act and Assert
     assertThrows(UnsupportedOperationException.class,
         () -> abstractPaymentGatewayHostedService.requestHostedEndpoint(new PaymentRequestDTO()));
-  }
-
-  /**
-   * Test new {@link AbstractPaymentGatewayHostedService} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link AbstractPaymentGatewayHostedService}
-   */
-  @Test
-  public void testNewAbstractPaymentGatewayHostedService() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing observers.
-    //   Diffblue Cover was unable to create an assertion.
-    //   There are no fields that could be asserted on.
-
-    // Arrange and Act
-    new AbstractPaymentGatewayHostedService();
   }
 }

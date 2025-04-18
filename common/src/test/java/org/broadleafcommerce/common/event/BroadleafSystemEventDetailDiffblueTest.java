@@ -19,9 +19,12 @@ package org.broadleafcommerce.common.event;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class BroadleafSystemEventDetailDiffblueTest {
   /**
@@ -42,6 +45,13 @@ public class BroadleafSystemEventDetailDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BroadleafSystemEventDetail.<init>(Serializable)",
+      "void BroadleafSystemEventDetail.<init>(String)", "void BroadleafSystemEventDetail.<init>(String, Serializable)",
+      "void BroadleafSystemEventDetail.<init>(String, String)", "Serializable BroadleafSystemEventDetail.getBlob()",
+      "String BroadleafSystemEventDetail.getFriendlyName()", "String BroadleafSystemEventDetail.getValue()",
+      "void BroadleafSystemEventDetail.setBlob(Serializable)",
+      "void BroadleafSystemEventDetail.setFriendlyName(String)", "void BroadleafSystemEventDetail.setValue(String)"})
   public void testGettersAndSetters_when42() {
     // Arrange and Act
     BroadleafSystemEventDetail actualBroadleafSystemEventDetail = new BroadleafSystemEventDetail("42");
@@ -52,7 +62,7 @@ public class BroadleafSystemEventDetailDiffblueTest {
     Serializable actualBlob = actualBroadleafSystemEventDetail.getBlob();
     String actualFriendlyName = actualBroadleafSystemEventDetail.getFriendlyName();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("42", actualBroadleafSystemEventDetail.getValue());
     assertEquals("Friendly Name", actualFriendlyName);
     assertSame(blob, actualBlob);
@@ -66,8 +76,7 @@ public class BroadleafSystemEventDetailDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>
-   * {@link BroadleafSystemEventDetail#BroadleafSystemEventDetail(String, Serializable)}
+   *   <li>{@link BroadleafSystemEventDetail#BroadleafSystemEventDetail(String, Serializable)}
    *   <li>{@link BroadleafSystemEventDetail#setBlob(Serializable)}
    *   <li>{@link BroadleafSystemEventDetail#setFriendlyName(String)}
    *   <li>{@link BroadleafSystemEventDetail#setValue(String)}
@@ -77,6 +86,13 @@ public class BroadleafSystemEventDetailDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BroadleafSystemEventDetail.<init>(Serializable)",
+      "void BroadleafSystemEventDetail.<init>(String)", "void BroadleafSystemEventDetail.<init>(String, Serializable)",
+      "void BroadleafSystemEventDetail.<init>(String, String)", "Serializable BroadleafSystemEventDetail.getBlob()",
+      "String BroadleafSystemEventDetail.getFriendlyName()", "String BroadleafSystemEventDetail.getValue()",
+      "void BroadleafSystemEventDetail.setBlob(Serializable)",
+      "void BroadleafSystemEventDetail.setFriendlyName(String)", "void BroadleafSystemEventDetail.setValue(String)"})
   public void testGettersAndSetters_whenFriendlyName() {
     // Arrange and Act
     BroadleafSystemEventDetail actualBroadleafSystemEventDetail = new BroadleafSystemEventDetail("Friendly Name",
@@ -88,7 +104,7 @@ public class BroadleafSystemEventDetailDiffblueTest {
     Serializable actualBlob = actualBroadleafSystemEventDetail.getBlob();
     String actualFriendlyName = actualBroadleafSystemEventDetail.getFriendlyName();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("42", actualBroadleafSystemEventDetail.getValue());
     assertEquals("Friendly Name", actualFriendlyName);
     assertSame(blob, actualBlob);
@@ -102,8 +118,7 @@ public class BroadleafSystemEventDetailDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>
-   * {@link BroadleafSystemEventDetail#BroadleafSystemEventDetail(String, String)}
+   *   <li>{@link BroadleafSystemEventDetail#BroadleafSystemEventDetail(String, String)}
    *   <li>{@link BroadleafSystemEventDetail#setBlob(Serializable)}
    *   <li>{@link BroadleafSystemEventDetail#setFriendlyName(String)}
    *   <li>{@link BroadleafSystemEventDetail#setValue(String)}
@@ -113,6 +128,13 @@ public class BroadleafSystemEventDetailDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BroadleafSystemEventDetail.<init>(Serializable)",
+      "void BroadleafSystemEventDetail.<init>(String)", "void BroadleafSystemEventDetail.<init>(String, Serializable)",
+      "void BroadleafSystemEventDetail.<init>(String, String)", "Serializable BroadleafSystemEventDetail.getBlob()",
+      "String BroadleafSystemEventDetail.getFriendlyName()", "String BroadleafSystemEventDetail.getValue()",
+      "void BroadleafSystemEventDetail.setBlob(Serializable)",
+      "void BroadleafSystemEventDetail.setFriendlyName(String)", "void BroadleafSystemEventDetail.setValue(String)"})
   public void testGettersAndSetters_whenFriendlyName2() {
     // Arrange and Act
     BroadleafSystemEventDetail actualBroadleafSystemEventDetail = new BroadleafSystemEventDetail("Friendly Name", "42");
@@ -123,7 +145,7 @@ public class BroadleafSystemEventDetailDiffblueTest {
     Serializable actualBlob = actualBroadleafSystemEventDetail.getBlob();
     String actualFriendlyName = actualBroadleafSystemEventDetail.getFriendlyName();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("42", actualBroadleafSystemEventDetail.getValue());
     assertEquals("Friendly Name", actualFriendlyName);
     assertSame(blob, actualBlob);
@@ -132,14 +154,12 @@ public class BroadleafSystemEventDetailDiffblueTest {
   /**
    * Test getters and setters.
    * <ul>
-   *   <li>When {@link SimpleDateFormat#SimpleDateFormat(String)} with
-   * {@code yyyy/mm/dd}.</li>
+   *   <li>When {@link SimpleDateFormat#SimpleDateFormat(String)} with {@code yyyy/mm/dd}.</li>
    * </ul>
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>
-   * {@link BroadleafSystemEventDetail#BroadleafSystemEventDetail(Serializable)}
+   *   <li>{@link BroadleafSystemEventDetail#BroadleafSystemEventDetail(Serializable)}
    *   <li>{@link BroadleafSystemEventDetail#setBlob(Serializable)}
    *   <li>{@link BroadleafSystemEventDetail#setFriendlyName(String)}
    *   <li>{@link BroadleafSystemEventDetail#setValue(String)}
@@ -149,6 +169,13 @@ public class BroadleafSystemEventDetailDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BroadleafSystemEventDetail.<init>(Serializable)",
+      "void BroadleafSystemEventDetail.<init>(String)", "void BroadleafSystemEventDetail.<init>(String, Serializable)",
+      "void BroadleafSystemEventDetail.<init>(String, String)", "Serializable BroadleafSystemEventDetail.getBlob()",
+      "String BroadleafSystemEventDetail.getFriendlyName()", "String BroadleafSystemEventDetail.getValue()",
+      "void BroadleafSystemEventDetail.setBlob(Serializable)",
+      "void BroadleafSystemEventDetail.setFriendlyName(String)", "void BroadleafSystemEventDetail.setValue(String)"})
   public void testGettersAndSetters_whenSimpleDateFormatWithYyyyMmDd() {
     // Arrange and Act
     BroadleafSystemEventDetail actualBroadleafSystemEventDetail = new BroadleafSystemEventDetail(
@@ -160,7 +187,7 @@ public class BroadleafSystemEventDetailDiffblueTest {
     Serializable actualBlob = actualBroadleafSystemEventDetail.getBlob();
     String actualFriendlyName = actualBroadleafSystemEventDetail.getFriendlyName();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("42", actualBroadleafSystemEventDetail.getValue());
     assertEquals("Friendly Name", actualFriendlyName);
     assertSame(blob, actualBlob);

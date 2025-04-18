@@ -22,18 +22,22 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Map;
 import org.broadleafcommerce.common.util.BLCFieldUtils;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {CreditCardDTO.class})
 @RunWith(SpringJUnit4ClassRunner.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class CreditCardDTODiffblueTest {
   @Autowired
   private CreditCardDTO<Object> creditCardDTO;
@@ -64,6 +68,17 @@ public class CreditCardDTODiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CreditCardDTO.<init>()", "void CreditCardDTO.<init>(Object)",
+      "CreditCardDTO CreditCardDTO.creditCardCvv(String)", "CreditCardDTO CreditCardDTO.creditCardExpDate(String)",
+      "CreditCardDTO CreditCardDTO.creditCardExpMonth(String)", "CreditCardDTO CreditCardDTO.creditCardExpYear(String)",
+      "CreditCardDTO CreditCardDTO.creditCardHolderName(String)",
+      "CreditCardDTO CreditCardDTO.creditCardLastFour(String)", "CreditCardDTO CreditCardDTO.creditCardNum(String)",
+      "CreditCardDTO CreditCardDTO.creditCardType(String)", "Map CreditCardDTO.getAdditionalFields()",
+      "String CreditCardDTO.getCreditCardCvv()", "String CreditCardDTO.getCreditCardExpDate()",
+      "String CreditCardDTO.getCreditCardExpMonth()", "String CreditCardDTO.getCreditCardExpYear()",
+      "String CreditCardDTO.getCreditCardHolderName()", "String CreditCardDTO.getCreditCardLastFour()",
+      "String CreditCardDTO.getCreditCardNum()", "String CreditCardDTO.getCreditCardType()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     CreditCardDTO<Object> actualCreditCardDTO = new CreditCardDTO<>();
@@ -136,6 +151,17 @@ public class CreditCardDTODiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CreditCardDTO.<init>()", "void CreditCardDTO.<init>(Object)",
+      "CreditCardDTO CreditCardDTO.creditCardCvv(String)", "CreditCardDTO CreditCardDTO.creditCardExpDate(String)",
+      "CreditCardDTO CreditCardDTO.creditCardExpMonth(String)", "CreditCardDTO CreditCardDTO.creditCardExpYear(String)",
+      "CreditCardDTO CreditCardDTO.creditCardHolderName(String)",
+      "CreditCardDTO CreditCardDTO.creditCardLastFour(String)", "CreditCardDTO CreditCardDTO.creditCardNum(String)",
+      "CreditCardDTO CreditCardDTO.creditCardType(String)", "Map CreditCardDTO.getAdditionalFields()",
+      "String CreditCardDTO.getCreditCardCvv()", "String CreditCardDTO.getCreditCardExpDate()",
+      "String CreditCardDTO.getCreditCardExpMonth()", "String CreditCardDTO.getCreditCardExpYear()",
+      "String CreditCardDTO.getCreditCardHolderName()", "String CreditCardDTO.getCreditCardLastFour()",
+      "String CreditCardDTO.getCreditCardNum()", "String CreditCardDTO.getCreditCardType()"})
   public void testGettersAndSetters_whenNull_field() {
     // Arrange and Act
     CreditCardDTO<Object> actualCreditCardDTO = new CreditCardDTO<>(BLCFieldUtils.NULL_FIELD);
@@ -185,6 +211,8 @@ public class CreditCardDTODiffblueTest {
    * Method under test: {@link CreditCardDTO#done()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object CreditCardDTO.done()"})
   public void testDone() {
     // Arrange
     CreditCardDTO<Object> creditCardDTO = new CreditCardDTO<>();
@@ -199,6 +227,8 @@ public class CreditCardDTODiffblueTest {
    * Method under test: {@link CreditCardDTO#additionalFields(String, Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreditCardDTO CreditCardDTO.additionalFields(String, Object)"})
   public void testAdditionalFields() {
     // Arrange, Act and Assert
     assertSame(creditCardDTO, creditCardDTO.additionalFields("Key", BLCFieldUtils.NULL_FIELD));
@@ -210,6 +240,8 @@ public class CreditCardDTODiffblueTest {
    * Method under test: {@link CreditCardDTO#creditCardPopulated()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CreditCardDTO.creditCardPopulated()"})
   public void testCreditCardPopulated() {
     // Arrange
     CreditCardDTO<Object> creditCardDTO = new CreditCardDTO<>();
@@ -222,13 +254,14 @@ public class CreditCardDTODiffblueTest {
   /**
    * Test {@link CreditCardDTO#creditCardPopulated()}.
    * <ul>
-   *   <li>Given {@link CreditCardDTO#CreditCardDTO()} additionalFields {@code Key}
-   * and {@link BLCFieldUtils#NULL_FIELD}.</li>
+   *   <li>Given {@link CreditCardDTO#CreditCardDTO()} additionalFields {@code Key} and {@link BLCFieldUtils#NULL_FIELD}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CreditCardDTO#creditCardPopulated()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CreditCardDTO.creditCardPopulated()"})
   public void testCreditCardPopulated_givenCreditCardDTOAdditionalFieldsKeyAndNull_field() {
     // Arrange
     CreditCardDTO<Object> creditCardDTO = new CreditCardDTO<>();
@@ -241,13 +274,14 @@ public class CreditCardDTODiffblueTest {
   /**
    * Test {@link CreditCardDTO#creditCardPopulated()}.
    * <ul>
-   *   <li>Given {@link CreditCardDTO#CreditCardDTO()} creditCardCvv
-   * {@code Credit Card Cvv}.</li>
+   *   <li>Given {@link CreditCardDTO#CreditCardDTO()} creditCardCvv {@code Credit Card Cvv}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CreditCardDTO#creditCardPopulated()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CreditCardDTO.creditCardPopulated()"})
   public void testCreditCardPopulated_givenCreditCardDTOCreditCardCvvCreditCardCvv() {
     // Arrange
     CreditCardDTO<Object> creditCardDTO = new CreditCardDTO<>();
@@ -260,13 +294,14 @@ public class CreditCardDTODiffblueTest {
   /**
    * Test {@link CreditCardDTO#creditCardPopulated()}.
    * <ul>
-   *   <li>Given {@link CreditCardDTO#CreditCardDTO()} creditCardExpDate
-   * {@code 2020-03-01}.</li>
+   *   <li>Given {@link CreditCardDTO#CreditCardDTO()} creditCardExpDate {@code 2020-03-01}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CreditCardDTO#creditCardPopulated()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CreditCardDTO.creditCardPopulated()"})
   public void testCreditCardPopulated_givenCreditCardDTOCreditCardExpDate20200301() {
     // Arrange
     CreditCardDTO<Object> creditCardDTO = new CreditCardDTO<>();
@@ -279,13 +314,14 @@ public class CreditCardDTODiffblueTest {
   /**
    * Test {@link CreditCardDTO#creditCardPopulated()}.
    * <ul>
-   *   <li>Given {@link CreditCardDTO#CreditCardDTO()} creditCardExpMonth
-   * {@code Credit Card Exp Month}.</li>
+   *   <li>Given {@link CreditCardDTO#CreditCardDTO()} creditCardExpMonth {@code Credit Card Exp Month}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CreditCardDTO#creditCardPopulated()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CreditCardDTO.creditCardPopulated()"})
   public void testCreditCardPopulated_givenCreditCardDTOCreditCardExpMonthCreditCardExpMonth() {
     // Arrange
     CreditCardDTO<Object> creditCardDTO = new CreditCardDTO<>();
@@ -298,13 +334,14 @@ public class CreditCardDTODiffblueTest {
   /**
    * Test {@link CreditCardDTO#creditCardPopulated()}.
    * <ul>
-   *   <li>Given {@link CreditCardDTO#CreditCardDTO()} creditCardExpYear
-   * {@code Credit Card Exp Year}.</li>
+   *   <li>Given {@link CreditCardDTO#CreditCardDTO()} creditCardExpYear {@code Credit Card Exp Year}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CreditCardDTO#creditCardPopulated()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CreditCardDTO.creditCardPopulated()"})
   public void testCreditCardPopulated_givenCreditCardDTOCreditCardExpYearCreditCardExpYear() {
     // Arrange
     CreditCardDTO<Object> creditCardDTO = new CreditCardDTO<>();
@@ -317,13 +354,14 @@ public class CreditCardDTODiffblueTest {
   /**
    * Test {@link CreditCardDTO#creditCardPopulated()}.
    * <ul>
-   *   <li>Given {@link CreditCardDTO#CreditCardDTO()} creditCardLastFour
-   * {@code Credit Card Last Four}.</li>
+   *   <li>Given {@link CreditCardDTO#CreditCardDTO()} creditCardLastFour {@code Credit Card Last Four}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CreditCardDTO#creditCardPopulated()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CreditCardDTO.creditCardPopulated()"})
   public void testCreditCardPopulated_givenCreditCardDTOCreditCardLastFourCreditCardLastFour() {
     // Arrange
     CreditCardDTO<Object> creditCardDTO = new CreditCardDTO<>();
@@ -336,13 +374,14 @@ public class CreditCardDTODiffblueTest {
   /**
    * Test {@link CreditCardDTO#creditCardPopulated()}.
    * <ul>
-   *   <li>Given {@link CreditCardDTO#CreditCardDTO()} creditCardNum
-   * {@code Credit Card Num}.</li>
+   *   <li>Given {@link CreditCardDTO#CreditCardDTO()} creditCardNum {@code Credit Card Num}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CreditCardDTO#creditCardPopulated()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CreditCardDTO.creditCardPopulated()"})
   public void testCreditCardPopulated_givenCreditCardDTOCreditCardNumCreditCardNum() {
     // Arrange
     CreditCardDTO<Object> creditCardDTO = new CreditCardDTO<>();
@@ -355,13 +394,14 @@ public class CreditCardDTODiffblueTest {
   /**
    * Test {@link CreditCardDTO#creditCardPopulated()}.
    * <ul>
-   *   <li>Given {@link CreditCardDTO#CreditCardDTO()} creditCardType
-   * {@code Credit Card Type}.</li>
+   *   <li>Given {@link CreditCardDTO#CreditCardDTO()} creditCardType {@code Credit Card Type}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CreditCardDTO#creditCardPopulated()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CreditCardDTO.creditCardPopulated()"})
   public void testCreditCardPopulated_givenCreditCardDTOCreditCardTypeCreditCardType() {
     // Arrange
     CreditCardDTO<Object> creditCardDTO = new CreditCardDTO<>();
@@ -381,6 +421,8 @@ public class CreditCardDTODiffblueTest {
    * Method under test: {@link CreditCardDTO#creditCardPopulated()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CreditCardDTO.creditCardPopulated()"})
   public void testCreditCardPopulated_givenCreditCardDTO_thenReturnFalse() {
     // Arrange
     CreditCardDTO<Object> creditCardDTO = new CreditCardDTO<>();

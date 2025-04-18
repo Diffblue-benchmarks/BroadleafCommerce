@@ -1,11 +1,31 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.server.security.remote;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class AdminUserDiffblueTest {
   /**
@@ -33,6 +53,13 @@ public class AdminUserDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminUser.<init>()", "String AdminUser.getCurrentSandBoxId()", "String AdminUser.getEmail()",
+      "Long AdminUser.getId()", "String AdminUser.getName()", "List AdminUser.getPermissions()",
+      "String AdminUser.getPhoneNumber()", "List AdminUser.getRoles()", "String AdminUser.getUserName()",
+      "void AdminUser.setCurrentSandBoxId(String)", "void AdminUser.setEmail(String)", "void AdminUser.setId(Long)",
+      "void AdminUser.setName(String)", "void AdminUser.setPermissions(List)", "void AdminUser.setPhoneNumber(String)",
+      "void AdminUser.setRoles(List)", "void AdminUser.setUserName(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     AdminUser actualAdminUser = new AdminUser();
@@ -54,7 +81,7 @@ public class AdminUserDiffblueTest {
     String actualPhoneNumber = actualAdminUser.getPhoneNumber();
     List<String> actualRoles = actualAdminUser.getRoles();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("42", actualCurrentSandBoxId);
     assertEquals("6625550144", actualPhoneNumber);
     assertEquals("Name", actualName);

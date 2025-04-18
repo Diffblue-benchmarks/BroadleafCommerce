@@ -23,19 +23,16 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiFunction;
-import javax.persistence.EntityManager;
 import org.broadleafcommerce.common.exception.ProxyDetectionException;
-import org.hibernate.engine.spi.SessionDelegatorBaseImpl;
-import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.proxy.HibernateProxy;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -48,16 +45,16 @@ public class DynamicDaoHelperImplDiffblueTest {
   private DynamicDaoHelperImpl dynamicDaoHelperImpl;
 
   /**
-   * Test
-   * {@link DynamicDaoHelperImpl#getNonProxyImplementationClassIfNecessary(Class)}.
+   * Test {@link DynamicDaoHelperImpl#getNonProxyImplementationClassIfNecessary(Class)}.
    * <ul>
    *   <li>Then return {@link Object}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicDaoHelperImpl#getNonProxyImplementationClassIfNecessary(Class)}
+   * Method under test: {@link DynamicDaoHelperImpl#getNonProxyImplementationClassIfNecessary(Class)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class DynamicDaoHelperImpl.getNonProxyImplementationClassIfNecessary(Class)"})
   public void testGetNonProxyImplementationClassIfNecessary_thenReturnObject() {
     // Arrange
     Class<Object> candidate = Object.class;
@@ -72,16 +69,16 @@ public class DynamicDaoHelperImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DynamicDaoHelperImpl#getNonProxyImplementationClassIfNecessary(Class)}.
+   * Test {@link DynamicDaoHelperImpl#getNonProxyImplementationClassIfNecessary(Class)}.
    * <ul>
    *   <li>Then throw {@link ProxyDetectionException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicDaoHelperImpl#getNonProxyImplementationClassIfNecessary(Class)}
+   * Method under test: {@link DynamicDaoHelperImpl#getNonProxyImplementationClassIfNecessary(Class)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class DynamicDaoHelperImpl.getNonProxyImplementationClassIfNecessary(Class)"})
   public void testGetNonProxyImplementationClassIfNecessary_thenThrowProxyDetectionException() {
     // Arrange
     Class<HibernateProxy> candidate = HibernateProxy.class;
@@ -92,36 +89,16 @@ public class DynamicDaoHelperImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DynamicDaoHelperImpl#getAllPolymorphicEntitiesFromCeiling(Class, boolean, boolean)}.
-   * <ul>
-   *   <li>Then return array length is zero.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link DynamicDaoHelperImpl#getAllPolymorphicEntitiesFromCeiling(Class, boolean, boolean)}
-   */
-  @Test
-  public void testGetAllPolymorphicEntitiesFromCeiling_thenReturnArrayLengthIsZero() {
-    // Arrange
-    DynamicDaoHelperImpl dynamicDaoHelperImpl = new DynamicDaoHelperImpl();
-    Class<Object> ceilingClass = Object.class;
-
-    // Act and Assert
-    assertEquals(0, dynamicDaoHelperImpl.getAllPolymorphicEntitiesFromCeiling(ceilingClass, true, true).length);
-  }
-
-  /**
-   * Test
-   * {@link DynamicDaoHelperImpl#getAllPolymorphicEntitiesFromCeiling(Class, boolean, boolean)}.
+   * Test {@link DynamicDaoHelperImpl#getAllPolymorphicEntitiesFromCeiling(Class, boolean, boolean)}.
    * <ul>
    *   <li>Then throw {@link ProxyDetectionException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicDaoHelperImpl#getAllPolymorphicEntitiesFromCeiling(Class, boolean, boolean)}
+   * Method under test: {@link DynamicDaoHelperImpl#getAllPolymorphicEntitiesFromCeiling(Class, boolean, boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class[] DynamicDaoHelperImpl.getAllPolymorphicEntitiesFromCeiling(Class, boolean, boolean)"})
   public void testGetAllPolymorphicEntitiesFromCeiling_thenThrowProxyDetectionException() {
     // Arrange
     DynamicDaoHelperImpl dynamicDaoHelperImpl = new DynamicDaoHelperImpl();
@@ -133,110 +110,16 @@ public class DynamicDaoHelperImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DynamicDaoHelperImpl#getAllPolymorphicEntitiesFromCeiling(Class, boolean, boolean)}.
-   * <ul>
-   *   <li>When {@code false}.</li>
-   *   <li>Then return array length is zero.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link DynamicDaoHelperImpl#getAllPolymorphicEntitiesFromCeiling(Class, boolean, boolean)}
-   */
-  @Test
-  public void testGetAllPolymorphicEntitiesFromCeiling_whenFalse_thenReturnArrayLengthIsZero() {
-    // Arrange
-    DynamicDaoHelperImpl dynamicDaoHelperImpl = new DynamicDaoHelperImpl();
-    Class<Object> ceilingClass = Object.class;
-
-    // Act and Assert
-    assertEquals(0, dynamicDaoHelperImpl.getAllPolymorphicEntitiesFromCeiling(ceilingClass, false, true).length);
-  }
-
-  /**
-   * Test
-   * {@link DynamicDaoHelperImpl#getAllPolymorphicEntitiesFromCeiling(Class, boolean, boolean)}.
-   * <ul>
-   *   <li>When {@code false}.</li>
-   *   <li>Then return array length is zero.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link DynamicDaoHelperImpl#getAllPolymorphicEntitiesFromCeiling(Class, boolean, boolean)}
-   */
-  @Test
-  public void testGetAllPolymorphicEntitiesFromCeiling_whenFalse_thenReturnArrayLengthIsZero2() {
-    // Arrange
-    DynamicDaoHelperImpl dynamicDaoHelperImpl = new DynamicDaoHelperImpl();
-    Class<Object> ceilingClass = Object.class;
-
-    // Act and Assert
-    assertEquals(0, dynamicDaoHelperImpl.getAllPolymorphicEntitiesFromCeiling(ceilingClass, true, false).length);
-  }
-
-  /**
-   * Test
-   * {@link DynamicDaoHelperImpl#getAllPolymorphicEntitiesFromCeiling(Class, boolean, boolean)}.
-   * <ul>
-   *   <li>When {@code false}.</li>
-   *   <li>Then return array length is zero.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link DynamicDaoHelperImpl#getAllPolymorphicEntitiesFromCeiling(Class, boolean, boolean)}
-   */
-  @Test
-  public void testGetAllPolymorphicEntitiesFromCeiling_whenFalse_thenReturnArrayLengthIsZero3() {
-    // Arrange
-    DynamicDaoHelperImpl dynamicDaoHelperImpl = new DynamicDaoHelperImpl();
-    Class<Object> ceilingClass = Object.class;
-
-    // Act and Assert
-    assertEquals(0, dynamicDaoHelperImpl.getAllPolymorphicEntitiesFromCeiling(ceilingClass, false, false).length);
-  }
-
-  /**
-   * Test {@link DynamicDaoHelperImpl#getCachedPolymorphicEntityList(Map, Class)}.
-   * <ul>
-   *   <li>Given {@link BiFunction}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link DynamicDaoHelperImpl#getCachedPolymorphicEntityList(Map, Class)}
-   */
-  @Test
-  public void testGetCachedPolymorphicEntityList_givenBiFunction() {
-    // Arrange
-    DynamicDaoHelperImpl dynamicDaoHelperImpl = new DynamicDaoHelperImpl();
-
-    HashMap<Class<?>, Class<?>[]> polymorphicEntityCache = new HashMap<>();
-    Class<Object> forNameResult = Object.class;
-    polymorphicEntityCache.computeIfPresent(forNameResult, mock(BiFunction.class));
-    Class<Object> forNameResult2 = Object.class;
-    Class<Object> forNameResult3 = Object.class;
-    polymorphicEntityCache.put(forNameResult2, new Class[]{forNameResult3});
-    Class<Object> ceilingClass = Object.class;
-
-    // Act
-    Class<?>[] actualCachedPolymorphicEntityList = dynamicDaoHelperImpl
-        .getCachedPolymorphicEntityList(polymorphicEntityCache, ceilingClass);
-
-    // Assert
-    assertEquals(1, actualCachedPolymorphicEntityList.length);
-    Class<Object> expectedResultClass = Object.class;
-    assertEquals(expectedResultClass, actualCachedPolymorphicEntityList[0]);
-  }
-
-  /**
    * Test {@link DynamicDaoHelperImpl#getCachedPolymorphicEntityList(Map, Class)}.
    * <ul>
    *   <li>Then return array length is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicDaoHelperImpl#getCachedPolymorphicEntityList(Map, Class)}
+   * Method under test: {@link DynamicDaoHelperImpl#getCachedPolymorphicEntityList(Map, Class)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class[] DynamicDaoHelperImpl.getCachedPolymorphicEntityList(Map, Class)"})
   public void testGetCachedPolymorphicEntityList_thenReturnArrayLengthIsOne() {
     // Arrange
     DynamicDaoHelperImpl dynamicDaoHelperImpl = new DynamicDaoHelperImpl();
@@ -264,10 +147,11 @@ public class DynamicDaoHelperImplDiffblueTest {
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicDaoHelperImpl#getCachedPolymorphicEntityList(Map, Class)}
+   * Method under test: {@link DynamicDaoHelperImpl#getCachedPolymorphicEntityList(Map, Class)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class[] DynamicDaoHelperImpl.getCachedPolymorphicEntityList(Map, Class)"})
   public void testGetCachedPolymorphicEntityList_whenHashMap_thenReturnNull() {
     // Arrange
     DynamicDaoHelperImpl dynamicDaoHelperImpl = new DynamicDaoHelperImpl();
@@ -279,16 +163,16 @@ public class DynamicDaoHelperImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DynamicDaoHelperImpl#getUpDownInheritance(Class, boolean, boolean)}.
+   * Test {@link DynamicDaoHelperImpl#getUpDownInheritance(Class, boolean, boolean)}.
    * <ul>
    *   <li>Then throw {@link ProxyDetectionException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicDaoHelperImpl#getUpDownInheritance(Class, boolean, boolean)}
+   * Method under test: {@link DynamicDaoHelperImpl#getUpDownInheritance(Class, boolean, boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class[] DynamicDaoHelperImpl.getUpDownInheritance(Class, boolean, boolean)"})
   public void testGetUpDownInheritance_thenThrowProxyDetectionException() {
     // Arrange
     DynamicDaoHelperImpl dynamicDaoHelperImpl = new DynamicDaoHelperImpl();
@@ -299,80 +183,17 @@ public class DynamicDaoHelperImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DynamicDaoHelperImpl#getUpDownInheritance(Class, boolean, boolean)}.
+   * Test {@link DynamicDaoHelperImpl#getUpDownInheritance(Class, boolean, boolean)}.
    * <ul>
-   *   <li>When {@code false}.</li>
+   *   <li>When {@code Class}.</li>
    *   <li>Then return array length is zero.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicDaoHelperImpl#getUpDownInheritance(Class, boolean, boolean)}
+   * Method under test: {@link DynamicDaoHelperImpl#getUpDownInheritance(Class, boolean, boolean)}
    */
   @Test
-  public void testGetUpDownInheritance_whenFalse_thenReturnArrayLengthIsZero() {
-    // Arrange
-    DynamicDaoHelperImpl dynamicDaoHelperImpl = new DynamicDaoHelperImpl();
-    Class<Object> testClass = Object.class;
-
-    // Act and Assert
-    assertEquals(0, dynamicDaoHelperImpl.getUpDownInheritance(testClass, false, true).length);
-  }
-
-  /**
-   * Test
-   * {@link DynamicDaoHelperImpl#getUpDownInheritance(Class, boolean, boolean)}.
-   * <ul>
-   *   <li>When {@code false}.</li>
-   *   <li>Then return array length is zero.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link DynamicDaoHelperImpl#getUpDownInheritance(Class, boolean, boolean)}
-   */
-  @Test
-  public void testGetUpDownInheritance_whenFalse_thenReturnArrayLengthIsZero2() {
-    // Arrange
-    DynamicDaoHelperImpl dynamicDaoHelperImpl = new DynamicDaoHelperImpl();
-    Class<Object> testClass = Object.class;
-
-    // Act and Assert
-    assertEquals(0, dynamicDaoHelperImpl.getUpDownInheritance(testClass, true, false).length);
-  }
-
-  /**
-   * Test
-   * {@link DynamicDaoHelperImpl#getUpDownInheritance(Class, boolean, boolean)}.
-   * <ul>
-   *   <li>When {@code false}.</li>
-   *   <li>Then return array length is zero.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link DynamicDaoHelperImpl#getUpDownInheritance(Class, boolean, boolean)}
-   */
-  @Test
-  public void testGetUpDownInheritance_whenFalse_thenReturnArrayLengthIsZero3() {
-    // Arrange
-    DynamicDaoHelperImpl dynamicDaoHelperImpl = new DynamicDaoHelperImpl();
-    Class<Object> testClass = Object.class;
-
-    // Act and Assert
-    assertEquals(0, dynamicDaoHelperImpl.getUpDownInheritance(testClass, false, false).length);
-  }
-
-  /**
-   * Test
-   * {@link DynamicDaoHelperImpl#getUpDownInheritance(Class, boolean, boolean)}.
-   * <ul>
-   *   <li>When {@code java.lang.Class}.</li>
-   *   <li>Then return array length is zero.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link DynamicDaoHelperImpl#getUpDownInheritance(Class, boolean, boolean)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class[] DynamicDaoHelperImpl.getUpDownInheritance(Class, boolean, boolean)"})
   public void testGetUpDownInheritance_whenJavaLangClass_thenReturnArrayLengthIsZero() {
     // Arrange
     DynamicDaoHelperImpl dynamicDaoHelperImpl = new DynamicDaoHelperImpl();
@@ -383,36 +204,17 @@ public class DynamicDaoHelperImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DynamicDaoHelperImpl#getUpDownInheritance(Class, boolean, boolean)}.
-   * <ul>
-   *   <li>When {@code java.lang.Object}.</li>
-   *   <li>Then return array length is zero.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link DynamicDaoHelperImpl#getUpDownInheritance(Class, boolean, boolean)}
-   */
-  @Test
-  public void testGetUpDownInheritance_whenJavaLangObject_thenReturnArrayLengthIsZero() {
-    // Arrange
-    DynamicDaoHelperImpl dynamicDaoHelperImpl = new DynamicDaoHelperImpl();
-    Class<Object> testClass = Object.class;
-
-    // Act and Assert
-    assertEquals(0, dynamicDaoHelperImpl.getUpDownInheritance(testClass, true, true).length);
-  }
-
-  /**
    * Test {@link DynamicDaoHelperImpl#sortEntities(Class, List)}.
    * <ul>
-   *   <li>Given {@code java.lang.Class}.</li>
+   *   <li>Given {@code Class}.</li>
    *   <li>Then return first element is {@link Class}.</li>
    * </ul>
    * <p>
    * Method under test: {@link DynamicDaoHelperImpl#sortEntities(Class, List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class[] DynamicDaoHelperImpl.sortEntities(Class, List)"})
   public void testSortEntities_givenJavaLangClass_thenReturnFirstElementIsClass() {
     // Arrange
     Class<Object> ceilingClass = Object.class;
@@ -438,13 +240,15 @@ public class DynamicDaoHelperImplDiffblueTest {
   /**
    * Test {@link DynamicDaoHelperImpl#sortEntities(Class, List)}.
    * <ul>
-   *   <li>Given {@code java.lang.Class}.</li>
+   *   <li>Given {@code Class}.</li>
    *   <li>Then return first element is {@link Class}.</li>
    * </ul>
    * <p>
    * Method under test: {@link DynamicDaoHelperImpl#sortEntities(Class, List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class[] DynamicDaoHelperImpl.sortEntities(Class, List)"})
   public void testSortEntities_givenJavaLangClass_thenReturnFirstElementIsClass2() {
     // Arrange
     Class<Object> ceilingClass = Object.class;
@@ -470,13 +274,15 @@ public class DynamicDaoHelperImplDiffblueTest {
   /**
    * Test {@link DynamicDaoHelperImpl#sortEntities(Class, List)}.
    * <ul>
-   *   <li>Given {@code java.lang.Class}.</li>
+   *   <li>Given {@code Class}.</li>
    *   <li>Then throw {@link IllegalArgumentException}.</li>
    * </ul>
    * <p>
    * Method under test: {@link DynamicDaoHelperImpl#sortEntities(Class, List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class[] DynamicDaoHelperImpl.sortEntities(Class, List)"})
   public void testSortEntities_givenJavaLangClass_thenThrowIllegalArgumentException() {
     // Arrange
     Class<Object> ceilingClass = Object.class;
@@ -492,13 +298,15 @@ public class DynamicDaoHelperImplDiffblueTest {
   /**
    * Test {@link DynamicDaoHelperImpl#sortEntities(Class, List)}.
    * <ul>
-   *   <li>Given {@code java.lang.Object}.</li>
+   *   <li>Given {@code Object}.</li>
    *   <li>Then return array length is one.</li>
    * </ul>
    * <p>
    * Method under test: {@link DynamicDaoHelperImpl#sortEntities(Class, List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class[] DynamicDaoHelperImpl.sortEntities(Class, List)"})
   public void testSortEntities_givenJavaLangObject_thenReturnArrayLengthIsOne() {
     // Arrange
     Class<Object> ceilingClass = Object.class;
@@ -520,13 +328,15 @@ public class DynamicDaoHelperImplDiffblueTest {
   /**
    * Test {@link DynamicDaoHelperImpl#sortEntities(Class, List)}.
    * <ul>
-   *   <li>Given {@code java.lang.Object}.</li>
+   *   <li>Given {@code Object}.</li>
    *   <li>Then return first element is {@link Object}.</li>
    * </ul>
    * <p>
    * Method under test: {@link DynamicDaoHelperImpl#sortEntities(Class, List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class[] DynamicDaoHelperImpl.sortEntities(Class, List)"})
   public void testSortEntities_givenJavaLangObject_thenReturnFirstElementIsObject() {
     // Arrange
     Class<Object> ceilingClass = Object.class;
@@ -557,6 +367,8 @@ public class DynamicDaoHelperImplDiffblueTest {
    * Method under test: {@link DynamicDaoHelperImpl#sortEntities(Class, List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class[] DynamicDaoHelperImpl.sortEntities(Class, List)"})
   public void testSortEntities_whenArrayList_thenReturnArrayLengthIsZero() {
     // Arrange
     Class<Object> ceilingClass = Object.class;
@@ -573,10 +385,11 @@ public class DynamicDaoHelperImplDiffblueTest {
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicDaoHelperImpl#isExcludeClassFromPolymorphism(Class)}
+   * Method under test: {@link DynamicDaoHelperImpl#isExcludeClassFromPolymorphism(Class)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean DynamicDaoHelperImpl.isExcludeClassFromPolymorphism(Class)"})
   public void testIsExcludeClassFromPolymorphism_thenReturnTrue() {
     // Arrange
     DynamicDaoHelperImpl dynamicDaoHelperImpl = new DynamicDaoHelperImpl();
@@ -589,14 +402,15 @@ public class DynamicDaoHelperImplDiffblueTest {
   /**
    * Test {@link DynamicDaoHelperImpl#isExcludeClassFromPolymorphism(Class)}.
    * <ul>
-   *   <li>When {@code java.lang.Object}.</li>
+   *   <li>When {@code Object}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicDaoHelperImpl#isExcludeClassFromPolymorphism(Class)}
+   * Method under test: {@link DynamicDaoHelperImpl#isExcludeClassFromPolymorphism(Class)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean DynamicDaoHelperImpl.isExcludeClassFromPolymorphism(Class)"})
   public void testIsExcludeClassFromPolymorphism_whenJavaLangObject_thenReturnFalse() {
     // Arrange
     DynamicDaoHelperImpl dynamicDaoHelperImpl = new DynamicDaoHelperImpl();
@@ -604,38 +418,6 @@ public class DynamicDaoHelperImplDiffblueTest {
 
     // Act and Assert
     assertFalse(dynamicDaoHelperImpl.isExcludeClassFromPolymorphism(clazz));
-  }
-
-  /**
-   * Test {@link DynamicDaoHelperImpl#getIdMetadata(Class, EntityManager)}.
-   * <ul>
-   *   <li>When
-   * {@link SessionDelegatorBaseImpl#SessionDelegatorBaseImpl(SessionImplementor)}
-   * with delegate is {@link SessionImplementor}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link DynamicDaoHelperImpl#getIdMetadata(Class, EntityManager)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetIdMetadata_whenSessionDelegatorBaseImplWithDelegateIsSessionImplementor() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.IllegalArgumentException: Unable to create a SessionDelegatorBaseImpl from different Session/SessionImplementor references
-    //       at org.hibernate.engine.spi.SessionDelegatorBaseImpl.<init>(SessionDelegatorBaseImpl.java:100)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    DynamicDaoHelperImpl dynamicDaoHelperImpl = new DynamicDaoHelperImpl();
-    Class<Object> entityClass = Object.class;
-    SessionDelegatorBaseImpl delegate = new SessionDelegatorBaseImpl(mock(SessionImplementor.class));
-
-    // Act
-    dynamicDaoHelperImpl.getIdMetadata(entityClass,
-        new SessionDelegatorBaseImpl(delegate, new SessionDelegatorBaseImpl(mock(SessionImplementor.class))));
   }
 
   /**
@@ -647,6 +429,8 @@ public class DynamicDaoHelperImplDiffblueTest {
    * Method under test: {@link DynamicDaoHelperImpl#getPropertyNames(Class)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List DynamicDaoHelperImpl.getPropertyNames(Class)"})
   public void testGetPropertyNames_thenThrowProxyDetectionException() {
     // Arrange
     DynamicDaoHelperImpl dynamicDaoHelperImpl = new DynamicDaoHelperImpl();
@@ -659,13 +443,15 @@ public class DynamicDaoHelperImplDiffblueTest {
   /**
    * Test {@link DynamicDaoHelperImpl#getPropertyNames(Class)}.
    * <ul>
-   *   <li>When {@code java.lang.Object}.</li>
+   *   <li>When {@code Object}.</li>
    *   <li>Then return Empty.</li>
    * </ul>
    * <p>
    * Method under test: {@link DynamicDaoHelperImpl#getPropertyNames(Class)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List DynamicDaoHelperImpl.getPropertyNames(Class)"})
   public void testGetPropertyNames_whenJavaLangObject_thenReturnEmpty() {
     // Arrange
     DynamicDaoHelperImpl dynamicDaoHelperImpl = new DynamicDaoHelperImpl();
@@ -684,6 +470,8 @@ public class DynamicDaoHelperImplDiffblueTest {
    * Method under test: {@link DynamicDaoHelperImpl#getPropertyTypes(Class)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List DynamicDaoHelperImpl.getPropertyTypes(Class)"})
   public void testGetPropertyTypes_thenThrowProxyDetectionException() {
     // Arrange
     DynamicDaoHelperImpl dynamicDaoHelperImpl = new DynamicDaoHelperImpl();
@@ -696,13 +484,15 @@ public class DynamicDaoHelperImplDiffblueTest {
   /**
    * Test {@link DynamicDaoHelperImpl#getPropertyTypes(Class)}.
    * <ul>
-   *   <li>When {@code java.lang.Object}.</li>
+   *   <li>When {@code Object}.</li>
    *   <li>Then return Empty.</li>
    * </ul>
    * <p>
    * Method under test: {@link DynamicDaoHelperImpl#getPropertyTypes(Class)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List DynamicDaoHelperImpl.getPropertyTypes(Class)"})
   public void testGetPropertyTypes_whenJavaLangObject_thenReturnEmpty() {
     // Arrange
     DynamicDaoHelperImpl dynamicDaoHelperImpl = new DynamicDaoHelperImpl();
@@ -722,6 +512,8 @@ public class DynamicDaoHelperImplDiffblueTest {
    * Method under test: {@link DynamicDaoHelperImpl#getIdentifier(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.io.Serializable DynamicDaoHelperImpl.getIdentifier(Object)"})
   public void testGetIdentifier_whenLock_object_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull(dynamicDaoHelperImpl.getIdentifier(DynamicDaoHelperImpl.LOCK_OBJECT));
@@ -736,6 +528,8 @@ public class DynamicDaoHelperImplDiffblueTest {
    * Method under test: {@link DynamicDaoHelperImpl#getIdField(Class)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.reflect.Field DynamicDaoHelperImpl.getIdField(Class)"})
   public void testGetIdField_thenThrowProxyDetectionException() {
     // Arrange
     DynamicDaoHelperImpl dynamicDaoHelperImpl = new DynamicDaoHelperImpl();
@@ -743,22 +537,5 @@ public class DynamicDaoHelperImplDiffblueTest {
 
     // Act and Assert
     assertThrows(ProxyDetectionException.class, () -> dynamicDaoHelperImpl.getIdField(clazz));
-  }
-
-  /**
-   * Test new {@link DynamicDaoHelperImpl} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link DynamicDaoHelperImpl}
-   */
-  @Test
-  public void testNewDynamicDaoHelperImpl() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing observers.
-    //   Diffblue Cover was unable to create an assertion.
-    //   There are no fields that could be asserted on.
-
-    // Arrange and Act
-    new DynamicDaoHelperImpl();
   }
 }

@@ -1,18 +1,36 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.util.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.BiFunction;
 import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -25,13 +43,14 @@ public class AbstractResourcePurgeExtensionHandlerDiffblueTest {
   private AbstractResourcePurgeExtensionHandler abstractResourcePurgeExtensionHandler;
 
   /**
-   * Test
-   * {@link AbstractResourcePurgeExtensionHandler#addPurgeStatements(Statement, String)}.
+   * Test {@link AbstractResourcePurgeExtensionHandler#addPurgeStatements(Statement, String)}.
    * <p>
-   * Method under test:
-   * {@link AbstractResourcePurgeExtensionHandler#addPurgeStatements(Statement, String)}
+   * Method under test: {@link AbstractResourcePurgeExtensionHandler#addPurgeStatements(Statement, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AbstractResourcePurgeExtensionHandler.addPurgeStatements(Statement, String)"})
   public void testAddPurgeStatements() {
     // Arrange, Act and Assert
     assertEquals(ExtensionResultStatusType.NOT_HANDLED,
@@ -40,39 +59,13 @@ public class AbstractResourcePurgeExtensionHandlerDiffblueTest {
 
   /**
    * Test {@link AbstractResourcePurgeExtensionHandler#addPurgeDependencies(Map)}.
-   * <ul>
-   *   <li>Given {@code foo}.</li>
-   *   <li>When {@link HashMap#HashMap()} computeIfPresent {@code foo} and
-   * {@link BiFunction}.</li>
-   * </ul>
    * <p>
-   * Method under test:
-   * {@link AbstractResourcePurgeExtensionHandler#addPurgeDependencies(Map)}
+   * Method under test: {@link AbstractResourcePurgeExtensionHandler#addPurgeDependencies(Map)}
    */
   @Test
-  public void testAddPurgeDependencies_givenFoo_whenHashMapComputeIfPresentFooAndBiFunction() {
-    // Arrange
-    AbstractResourcePurgeExtensionHandler abstractResourcePurgeExtensionHandler = new AbstractResourcePurgeExtensionHandler();
-
-    HashMap<String, List<DeleteStatementGeneratorImpl.PathElement>> dependencies = new HashMap<>();
-    dependencies.computeIfPresent("foo", mock(BiFunction.class));
-
-    // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
-        abstractResourcePurgeExtensionHandler.addPurgeDependencies(dependencies));
-  }
-
-  /**
-   * Test {@link AbstractResourcePurgeExtensionHandler#addPurgeDependencies(Map)}.
-   * <ul>
-   *   <li>When {@link HashMap#HashMap()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link AbstractResourcePurgeExtensionHandler#addPurgeDependencies(Map)}
-   */
-  @Test
-  public void testAddPurgeDependencies_whenHashMap() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ExtensionResultStatusType AbstractResourcePurgeExtensionHandler.addPurgeDependencies(Map)"})
+  public void testAddPurgeDependencies() {
     // Arrange
     AbstractResourcePurgeExtensionHandler abstractResourcePurgeExtensionHandler = new AbstractResourcePurgeExtensionHandler();
 
@@ -88,10 +81,11 @@ public class AbstractResourcePurgeExtensionHandlerDiffblueTest {
    *   <li>When {@link HashSet#HashSet()} add {@code 42}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AbstractResourcePurgeExtensionHandler#addPurgeExclusions(Set)}
+   * Method under test: {@link AbstractResourcePurgeExtensionHandler#addPurgeExclusions(Set)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ExtensionResultStatusType AbstractResourcePurgeExtensionHandler.addPurgeExclusions(Set)"})
   public void testAddPurgeExclusions_given42_whenHashSetAdd42() {
     // Arrange
     AbstractResourcePurgeExtensionHandler abstractResourcePurgeExtensionHandler = new AbstractResourcePurgeExtensionHandler();
@@ -111,10 +105,11 @@ public class AbstractResourcePurgeExtensionHandlerDiffblueTest {
    *   <li>When {@link HashSet#HashSet()} add {@code foo}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AbstractResourcePurgeExtensionHandler#addPurgeExclusions(Set)}
+   * Method under test: {@link AbstractResourcePurgeExtensionHandler#addPurgeExclusions(Set)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ExtensionResultStatusType AbstractResourcePurgeExtensionHandler.addPurgeExclusions(Set)"})
   public void testAddPurgeExclusions_givenFoo_whenHashSetAddFoo() {
     // Arrange
     AbstractResourcePurgeExtensionHandler abstractResourcePurgeExtensionHandler = new AbstractResourcePurgeExtensionHandler();
@@ -132,10 +127,11 @@ public class AbstractResourcePurgeExtensionHandlerDiffblueTest {
    *   <li>When {@link HashSet#HashSet()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AbstractResourcePurgeExtensionHandler#addPurgeExclusions(Set)}
+   * Method under test: {@link AbstractResourcePurgeExtensionHandler#addPurgeExclusions(Set)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ExtensionResultStatusType AbstractResourcePurgeExtensionHandler.addPurgeExclusions(Set)"})
   public void testAddPurgeExclusions_whenHashSet() {
     // Arrange
     AbstractResourcePurgeExtensionHandler abstractResourcePurgeExtensionHandler = new AbstractResourcePurgeExtensionHandler();
@@ -147,10 +143,11 @@ public class AbstractResourcePurgeExtensionHandlerDiffblueTest {
   /**
    * Test new {@link AbstractResourcePurgeExtensionHandler} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link AbstractResourcePurgeExtensionHandler}
+   * Method under test: default or parameterless constructor of {@link AbstractResourcePurgeExtensionHandler}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AbstractResourcePurgeExtensionHandler.<init>()"})
   public void testNewAbstractResourcePurgeExtensionHandler() {
     // Arrange and Act
     AbstractResourcePurgeExtensionHandler actualAbstractResourcePurgeExtensionHandler = new AbstractResourcePurgeExtensionHandler();

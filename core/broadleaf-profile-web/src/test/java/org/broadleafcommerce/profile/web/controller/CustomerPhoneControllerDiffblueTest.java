@@ -1,169 +1,117 @@
+/*-
+ * #%L
+ * BroadleafCommerce Profile Web
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.profile.web.controller;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import javax.servlet.http.HttpServletRequest;
 import org.broadleafcommerce.common.persistence.EntityConfiguration;
 import org.broadleafcommerce.profile.core.domain.Phone;
 import org.broadleafcommerce.profile.core.domain.PhoneImpl;
 import org.broadleafcommerce.profile.core.service.CustomerPhoneService;
-import org.broadleafcommerce.profile.core.service.CustomerPhoneServiceImpl;
-import org.broadleafcommerce.profile.web.controller.validator.CustomerPhoneValidator;
 import org.broadleafcommerce.profile.web.controller.validator.PhoneValidator;
-import org.broadleafcommerce.profile.web.core.CustomerState;
 import org.broadleafcommerce.profile.web.core.model.PhoneNameForm;
 import org.broadleafcommerce.profile.web.core.util.PhoneFormatter;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.ConcurrentModel;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
-import org.springframework.validation.ObjectError;
 
-@ContextConfiguration(classes = {CustomerPhoneController.class})
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 class CustomerPhoneControllerDiffblueTest {
-  @Autowired
+  @InjectMocks
   private CustomerPhoneController customerPhoneController;
 
-  @MockBean
+  @Mock
   private CustomerPhoneService customerPhoneService;
 
-  @MockBean(name = "blCustomerPhoneValidator")
-  private CustomerPhoneValidator customerPhoneValidator;
-
-  @MockBean(name = "blCustomerState")
-  private CustomerState customerState;
-
-  @MockBean(name = "blEntityConfiguration")
+  @Mock
   private EntityConfiguration entityConfiguration;
 
-  @MockBean
+  @Mock
   private PhoneFormatter phoneFormatter;
 
-  @MockBean(name = "blPhoneValidator")
+  @Mock
   private PhoneValidator phoneValidator;
 
   /**
    * Test {@link CustomerPhoneController#deletePhone(Long, HttpServletRequest)}.
    * <p>
-   * Method under test:
-   * {@link CustomerPhoneController#deletePhone(Long, HttpServletRequest)}
+   * Method under test: {@link CustomerPhoneController#deletePhone(Long, HttpServletRequest)}
    */
   @Test
   @DisplayName("Test deletePhone(Long, HttpServletRequest)")
-  @Disabled("TODO: Complete this test")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String CustomerPhoneController.deletePhone(Long, HttpServletRequest)"})
   void testDeletePhone() throws Exception {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.web.controller;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.profile.web.controller.CustomerPhoneController.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass0 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.web.controller.CustomerPhoneController customerPhoneController;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerPhoneService customerPhoneService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blCustomerPhoneValidator") org.broadleafcommerce.profile.web.controller.validator.CustomerPhoneValidator customerPhoneValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blCustomerState") org.broadleafcommerce.profile.web.core.CustomerState customerState;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityConfiguration") org.broadleafcommerce.common.persistence.EntityConfiguration entityConfiguration;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.web.core.util.PhoneFormatter phoneFormatter;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blPhoneValidator") org.broadleafcommerce.profile.web.controller.validator.PhoneValidator phoneValidator;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
+    doNothing().when(customerPhoneService).deleteCustomerPhoneById(Mockito.<Long>any());
+
+    PhoneImpl phoneImpl = new PhoneImpl();
+    phoneImpl.setActive(true);
+    phoneImpl.setCountryCode("GB");
+    phoneImpl.setDefault(true);
+    phoneImpl.setExtension("?");
+    phoneImpl.setId(1L);
+    phoneImpl.setPhoneNumber("6625550144");
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any())).thenReturn(phoneImpl);
     MockHttpServletRequestBuilder getResult = MockMvcRequestBuilders.get("/myaccount/phone/deletePhone");
     MockHttpServletRequestBuilder requestBuilder = getResult.param("customerPhoneId", String.valueOf(1L));
 
-    // Act
-    MockMvcBuilders.standaloneSetup(customerPhoneController).build().perform(requestBuilder);
+    // Act and Assert
+    MockMvcBuilders.standaloneSetup(customerPhoneController)
+        .build()
+        .perform(requestBuilder)
+        .andExpect(MockMvcResultMatchers.status().isFound())
+        .andExpect(MockMvcResultMatchers.model().size(1))
+        .andExpect(MockMvcResultMatchers.model().attributeExists("phoneNameForm"))
+        .andExpect(MockMvcResultMatchers.view().name("redirect:/myaccount/phone/viewPhone.htm1"))
+        .andExpect(MockMvcResultMatchers.redirectedUrl("/myaccount/phone/viewPhone.htm1"));
   }
 
   /**
-   * Test
-   * {@link CustomerPhoneController#initPhoneNameForm(HttpServletRequest, Model)}.
+   * Test {@link CustomerPhoneController#initPhoneNameForm(HttpServletRequest, Model)}.
    * <p>
-   * Method under test:
-   * {@link CustomerPhoneController#initPhoneNameForm(HttpServletRequest, Model)}
+   * Method under test: {@link CustomerPhoneController#initPhoneNameForm(HttpServletRequest, Model)}
    */
   @Test
   @DisplayName("Test initPhoneNameForm(HttpServletRequest, Model)")
-  @Disabled("TODO: Complete this test")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"PhoneNameForm CustomerPhoneController.initPhoneNameForm(HttpServletRequest, Model)"})
   void testInitPhoneNameForm() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.web.controller;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.profile.web.controller.CustomerPhoneController.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.web.controller.CustomerPhoneController customerPhoneController;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerPhoneService customerPhoneService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blCustomerPhoneValidator") org.broadleafcommerce.profile.web.controller.validator.CustomerPhoneValidator customerPhoneValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blCustomerState") org.broadleafcommerce.profile.web.core.CustomerState customerState;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityConfiguration") org.broadleafcommerce.common.persistence.EntityConfiguration entityConfiguration;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.web.core.util.PhoneFormatter phoneFormatter;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blPhoneValidator") org.broadleafcommerce.profile.web.controller.validator.PhoneValidator phoneValidator;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    MockHttpServletRequest request = new MockHttpServletRequest();
-
-    // Act
-    customerPhoneController.initPhoneNameForm(request, new ConcurrentModel());
-  }
-
-  /**
-   * Test
-   * {@link CustomerPhoneController#initPhoneNameForm(HttpServletRequest, Model)}.
-   * <ul>
-   *   <li>Given {@link PhoneImpl} (default constructor) Active is
-   * {@code true}.</li>
-   *   <li>Then return PhoneName is {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link CustomerPhoneController#initPhoneNameForm(HttpServletRequest, Model)}
-   */
-  @Test
-  @DisplayName("Test initPhoneNameForm(HttpServletRequest, Model); given PhoneImpl (default constructor) Active is 'true'; then return PhoneName is 'null'")
-  void testInitPhoneNameForm_givenPhoneImplActiveIsTrue_thenReturnPhoneNameIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     PhoneImpl phoneImpl = new PhoneImpl();
     phoneImpl.setActive(true);
@@ -172,11 +120,7 @@ class CustomerPhoneControllerDiffblueTest {
     phoneImpl.setExtension("org.broadleafcommerce.profile.core.domain.Phone");
     phoneImpl.setId(1L);
     phoneImpl.setPhoneNumber("6625550144");
-    EntityConfiguration entityConfiguration = mock(EntityConfiguration.class);
     when(entityConfiguration.createEntityInstance(Mockito.<String>any())).thenReturn(phoneImpl);
-
-    CustomerPhoneController customerPhoneController = new CustomerPhoneController();
-    customerPhoneController.setEntityConfiguration(entityConfiguration);
     MockHttpServletRequest request = new MockHttpServletRequest();
 
     // Act
@@ -190,345 +134,112 @@ class CustomerPhoneControllerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomerPhoneController#makePhoneDefault(Long, HttpServletRequest)}.
+   * Test {@link CustomerPhoneController#savePhone(PhoneNameForm, BindingResult, HttpServletRequest, Long, Long)}.
+   * <ul>
+   *   <li>When {@link MockMvcRequestBuilders#get(String, Object[])} {@code /myaccount/phone/savePhone}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomerPhoneController#makePhoneDefault(Long, HttpServletRequest)}
+   * Method under test: {@link CustomerPhoneController#savePhone(PhoneNameForm, BindingResult, HttpServletRequest, Long, Long)}
    */
   @Test
-  @DisplayName("Test makePhoneDefault(Long, HttpServletRequest)")
-  @Disabled("TODO: Complete this test")
-  void testMakePhoneDefault() throws Exception {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.web.controller;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.profile.web.controller.CustomerPhoneController.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.web.controller.CustomerPhoneController customerPhoneController;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerPhoneService customerPhoneService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blCustomerPhoneValidator") org.broadleafcommerce.profile.web.controller.validator.CustomerPhoneValidator customerPhoneValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blCustomerState") org.broadleafcommerce.profile.web.core.CustomerState customerState;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityConfiguration") org.broadleafcommerce.common.persistence.EntityConfiguration entityConfiguration;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.web.core.util.PhoneFormatter phoneFormatter;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blPhoneValidator") org.broadleafcommerce.profile.web.controller.validator.PhoneValidator phoneValidator;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @DisplayName("Test savePhone(PhoneNameForm, BindingResult, HttpServletRequest, Long, Long); when get(String, Object[]) '/myaccount/phone/savePhone'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "String CustomerPhoneController.savePhone(PhoneNameForm, BindingResult, HttpServletRequest, Long, Long)"})
+  void testSavePhone_whenGetMyaccountPhoneSavePhone() throws Exception {
     // Arrange
-    MockHttpServletRequestBuilder getResult = MockMvcRequestBuilders.get("/myaccount/phone/makePhoneDefault");
-    MockHttpServletRequestBuilder requestBuilder = getResult.param("customerPhoneId", String.valueOf(1L));
-
-    // Act
-    MockMvcBuilders.standaloneSetup(customerPhoneController).build().perform(requestBuilder);
-  }
-
-  /**
-   * Test
-   * {@link CustomerPhoneController#savePhone(PhoneNameForm, BindingResult, HttpServletRequest, Long, Long)}.
-   * <p>
-   * Method under test:
-   * {@link CustomerPhoneController#savePhone(PhoneNameForm, BindingResult, HttpServletRequest, Long, Long)}
-   */
-  @Test
-  @DisplayName("Test savePhone(PhoneNameForm, BindingResult, HttpServletRequest, Long, Long)")
-  @Disabled("TODO: Complete this test")
-  void testSavePhone() throws Exception {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.web.controller;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.profile.web.controller.CustomerPhoneController.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.web.controller.CustomerPhoneController customerPhoneController;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerPhoneService customerPhoneService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blCustomerPhoneValidator") org.broadleafcommerce.profile.web.controller.validator.CustomerPhoneValidator customerPhoneValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blCustomerState") org.broadleafcommerce.profile.web.core.CustomerState customerState;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityConfiguration") org.broadleafcommerce.common.persistence.EntityConfiguration entityConfiguration;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.web.core.util.PhoneFormatter phoneFormatter;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blPhoneValidator") org.broadleafcommerce.profile.web.controller.validator.PhoneValidator phoneValidator;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
+    PhoneImpl phoneImpl = new PhoneImpl();
+    phoneImpl.setActive(true);
+    phoneImpl.setCountryCode("GB");
+    phoneImpl.setDefault(true);
+    phoneImpl.setExtension("?");
+    phoneImpl.setId(1L);
+    phoneImpl.setPhoneNumber("6625550144");
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any())).thenReturn(phoneImpl);
+    doNothing().when(phoneFormatter).formatPhoneNumber(Mockito.<Phone>any());
+    doNothing().when(phoneValidator).validate(Mockito.<Object>any(), Mockito.<Errors>any());
     MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/myaccount/phone/savePhone");
 
-    // Act
-    MockMvcBuilders.standaloneSetup(customerPhoneController).build().perform(requestBuilder);
+    // Act and Assert
+    MockMvcBuilders.standaloneSetup(customerPhoneController)
+        .build()
+        .perform(requestBuilder)
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.model().size(1))
+        .andExpect(MockMvcResultMatchers.model().attributeExists("phoneNameForm"))
+        .andExpect(MockMvcResultMatchers.view().name("myAccount/phone/customerPhones"))
+        .andExpect(MockMvcResultMatchers.forwardedUrl("myAccount/phone/customerPhones"));
   }
 
   /**
-   * Test
-   * {@link CustomerPhoneController#savePhone(PhoneNameForm, BindingResult, HttpServletRequest, Long, Long)}.
+   * Test {@link CustomerPhoneController#savePhone(PhoneNameForm, BindingResult, HttpServletRequest, Long, Long)}.
    * <ul>
-   *   <li>Given {@link PhoneImpl} {@link PhoneImpl#setId(Long)} does nothing.</li>
-   *   <li>Then calls {@link PhoneImpl#setId(Long)}.</li>
+   *   <li>When valueOf one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomerPhoneController#savePhone(PhoneNameForm, BindingResult, HttpServletRequest, Long, Long)}
+   * Method under test: {@link CustomerPhoneController#savePhone(PhoneNameForm, BindingResult, HttpServletRequest, Long, Long)}
    */
   @Test
-  @DisplayName("Test savePhone(PhoneNameForm, BindingResult, HttpServletRequest, Long, Long); given PhoneImpl setId(Long) does nothing; then calls setId(Long)")
-  void testSavePhone_givenPhoneImplSetIdDoesNothing_thenCallsSetId() throws IllegalStateException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @DisplayName("Test savePhone(PhoneNameForm, BindingResult, HttpServletRequest, Long, Long); when valueOf one")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "String CustomerPhoneController.savePhone(PhoneNameForm, BindingResult, HttpServletRequest, Long, Long)"})
+  void testSavePhone_whenValueOfOne() throws Exception {
     // Arrange
-    PhoneFormatter phoneFormatter = mock(PhoneFormatter.class);
+    PhoneImpl phoneImpl = new PhoneImpl();
+    phoneImpl.setActive(true);
+    phoneImpl.setCountryCode("GB");
+    phoneImpl.setDefault(true);
+    phoneImpl.setExtension("?");
+    phoneImpl.setId(1L);
+    phoneImpl.setPhoneNumber("6625550144");
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any())).thenReturn(phoneImpl);
     doNothing().when(phoneFormatter).formatPhoneNumber(Mockito.<Phone>any());
-    PhoneValidator phoneValidator = mock(PhoneValidator.class);
     doNothing().when(phoneValidator).validate(Mockito.<Object>any(), Mockito.<Errors>any());
+    MockHttpServletRequestBuilder getResult = MockMvcRequestBuilders.get("/myaccount/phone/savePhone");
+    MockHttpServletRequestBuilder requestBuilder = getResult.param("phoneId", String.valueOf(1L));
 
-    CustomerPhoneController customerPhoneController = new CustomerPhoneController();
-    customerPhoneController.setEntityConfiguration(mock(EntityConfiguration.class));
-    customerPhoneController.setPhoneValidator(phoneValidator);
-    customerPhoneController.setPhoneFormatter(phoneFormatter);
-    PhoneImpl phoneImpl = mock(PhoneImpl.class);
-    doNothing().when(phoneImpl).setId(Mockito.<Long>any());
-    PhoneNameForm phoneNameForm = mock(PhoneNameForm.class);
-    when(phoneNameForm.getPhone()).thenReturn(phoneImpl);
-    when(phoneNameForm.getPhoneName()).thenReturn("");
-    doNothing().when(phoneNameForm).setPhone(Mockito.<Phone>any());
-    doNothing().when(phoneNameForm).setPhoneName(Mockito.<String>any());
-    phoneNameForm.setPhone(new PhoneImpl());
-    phoneNameForm.setPhoneName("6625550144");
-    BindingResult errors = mock(BindingResult.class);
-    when(errors.getFieldValue(Mockito.<String>any())).thenReturn("Field Value");
-    when(errors.hasErrors()).thenReturn(true);
-    doNothing().when(errors).popNestedPath();
-    doNothing().when(errors).pushNestedPath(Mockito.<String>any());
-
-    // Act
-    String actualSavePhoneResult = customerPhoneController.savePhone(phoneNameForm, errors,
-        new MockHttpServletRequest(), 1L, 1L);
-
-    // Assert
-    verify(phoneImpl).setId(eq(1L));
-    verify(phoneValidator).validate(isA(Object.class), isA(Errors.class));
-    verify(phoneNameForm, atLeast(1)).getPhone();
-    verify(phoneNameForm).getPhoneName();
-    verify(phoneNameForm).setPhone(isA(Phone.class));
-    verify(phoneNameForm).setPhoneName(eq("6625550144"));
-    verify(phoneFormatter).formatPhoneNumber(isA(Phone.class));
-    verify(errors).getFieldValue(eq("phoneName"));
-    verify(errors).hasErrors();
-    verify(errors).popNestedPath();
-    verify(errors).pushNestedPath(eq("phone"));
-    assertEquals("myAccount/phone/customerPhones", actualSavePhoneResult);
+    // Act and Assert
+    MockMvcBuilders.standaloneSetup(customerPhoneController)
+        .build()
+        .perform(requestBuilder)
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.model().size(1))
+        .andExpect(MockMvcResultMatchers.model().attributeExists("phoneNameForm"))
+        .andExpect(MockMvcResultMatchers.view().name("myAccount/phone/customerPhones"))
+        .andExpect(MockMvcResultMatchers.forwardedUrl("myAccount/phone/customerPhones"));
   }
 
   /**
-   * Test
-   * {@link CustomerPhoneController#savePhone(PhoneNameForm, BindingResult, HttpServletRequest, Long, Long)}.
-   * <ul>
-   *   <li>Then return {@code myAccount/phone/customerPhones}.</li>
-   * </ul>
+   * Test {@link CustomerPhoneController#viewPhone(Long, HttpServletRequest, PhoneNameForm, BindingResult)}.
    * <p>
-   * Method under test:
-   * {@link CustomerPhoneController#savePhone(PhoneNameForm, BindingResult, HttpServletRequest, Long, Long)}
-   */
-  @Test
-  @DisplayName("Test savePhone(PhoneNameForm, BindingResult, HttpServletRequest, Long, Long); then return 'myAccount/phone/customerPhones'")
-  void testSavePhone_thenReturnMyAccountPhoneCustomerPhones() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PhoneFormatter phoneFormatter = mock(PhoneFormatter.class);
-    doNothing().when(phoneFormatter).formatPhoneNumber(Mockito.<Phone>any());
-    PhoneValidator phoneValidator = mock(PhoneValidator.class);
-    doNothing().when(phoneValidator).validate(Mockito.<Object>any(), Mockito.<Errors>any());
-
-    CustomerPhoneController customerPhoneController = new CustomerPhoneController();
-    customerPhoneController.setPhoneValidator(phoneValidator);
-    customerPhoneController.setPhoneFormatter(phoneFormatter);
-    PhoneNameForm phoneNameForm = mock(PhoneNameForm.class);
-    when(phoneNameForm.getPhone()).thenReturn(new PhoneImpl());
-    when(phoneNameForm.getPhoneName()).thenReturn("6625550144");
-    doNothing().when(phoneNameForm).setPhone(Mockito.<Phone>any());
-    doNothing().when(phoneNameForm).setPhoneName(Mockito.<String>any());
-    phoneNameForm.setPhone(new PhoneImpl());
-    phoneNameForm.setPhoneName("6625550144");
-
-    BindException errors = new BindException("Target", "Object Name");
-    errors.addError(new ObjectError("phone", "phone"));
-
-    // Act
-    String actualSavePhoneResult = customerPhoneController.savePhone(phoneNameForm, errors,
-        new MockHttpServletRequest(), 1L, 1L);
-
-    // Assert
-    verify(phoneValidator).validate(isA(Object.class), isA(Errors.class));
-    verify(phoneNameForm, atLeast(1)).getPhone();
-    verify(phoneNameForm).getPhoneName();
-    verify(phoneNameForm).setPhone(isA(Phone.class));
-    verify(phoneNameForm).setPhoneName(eq("6625550144"));
-    verify(phoneFormatter).formatPhoneNumber(isA(Phone.class));
-    assertEquals("myAccount/phone/customerPhones", actualSavePhoneResult);
-  }
-
-  /**
-   * Test
-   * {@link CustomerPhoneController#savePhone(PhoneNameForm, BindingResult, HttpServletRequest, Long, Long)}.
-   * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return {@code myAccount/phone/customerPhones}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link CustomerPhoneController#savePhone(PhoneNameForm, BindingResult, HttpServletRequest, Long, Long)}
-   */
-  @Test
-  @DisplayName("Test savePhone(PhoneNameForm, BindingResult, HttpServletRequest, Long, Long); when 'null'; then return 'myAccount/phone/customerPhones'")
-  void testSavePhone_whenNull_thenReturnMyAccountPhoneCustomerPhones() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PhoneFormatter phoneFormatter = mock(PhoneFormatter.class);
-    doNothing().when(phoneFormatter).formatPhoneNumber(Mockito.<Phone>any());
-    PhoneValidator phoneValidator = mock(PhoneValidator.class);
-    doNothing().when(phoneValidator).validate(Mockito.<Object>any(), Mockito.<Errors>any());
-
-    CustomerPhoneController customerPhoneController = new CustomerPhoneController();
-    customerPhoneController.setPhoneValidator(phoneValidator);
-    customerPhoneController.setPhoneFormatter(phoneFormatter);
-    PhoneNameForm phoneNameForm = mock(PhoneNameForm.class);
-    when(phoneNameForm.getPhone()).thenReturn(new PhoneImpl());
-    when(phoneNameForm.getPhoneName()).thenReturn("6625550144");
-    doNothing().when(phoneNameForm).setPhone(Mockito.<Phone>any());
-    doNothing().when(phoneNameForm).setPhoneName(Mockito.<String>any());
-    phoneNameForm.setPhone(new PhoneImpl());
-    phoneNameForm.setPhoneName("6625550144");
-
-    BindException errors = new BindException("Target", "Object Name");
-    errors.addError(new ObjectError("phone", "phone"));
-
-    // Act
-    String actualSavePhoneResult = customerPhoneController.savePhone(phoneNameForm, errors,
-        new MockHttpServletRequest(), 1L, null);
-
-    // Assert
-    verify(phoneValidator).validate(isA(Object.class), isA(Errors.class));
-    verify(phoneNameForm, atLeast(1)).getPhone();
-    verify(phoneNameForm).getPhoneName();
-    verify(phoneNameForm).setPhone(isA(Phone.class));
-    verify(phoneNameForm).setPhoneName(eq("6625550144"));
-    verify(phoneFormatter).formatPhoneNumber(isA(Phone.class));
-    assertEquals("myAccount/phone/customerPhones", actualSavePhoneResult);
-  }
-
-  /**
-   * Test getters and setters.
-   * <p>
-   * Methods under test:
-   * <ul>
-   *   <li>
-   * {@link CustomerPhoneController#setCustomerPhoneService(CustomerPhoneService)}
-   *   <li>
-   * {@link CustomerPhoneController#setCustomerPhoneValidator(CustomerPhoneValidator)}
-   *   <li>{@link CustomerPhoneController#setCustomerState(CustomerState)}
-   *   <li>
-   * {@link CustomerPhoneController#setEntityConfiguration(EntityConfiguration)}
-   *   <li>{@link CustomerPhoneController#setPhoneFormatter(PhoneFormatter)}
-   *   <li>{@link CustomerPhoneController#setPhoneValidator(PhoneValidator)}
-   *   <li>{@link CustomerPhoneController#setdeletePhoneSuccessView(String)}
-   *   <li>{@link CustomerPhoneController#setmakePhoneDefaultSuccessView(String)}
-   *   <li>{@link CustomerPhoneController#setsavePhoneErrorView(String)}
-   *   <li>{@link CustomerPhoneController#setsavePhoneSuccessView(String)}
-   *   <li>{@link CustomerPhoneController#setviewPhoneErrorView(String)}
-   *   <li>{@link CustomerPhoneController#setviewPhoneSuccessView(String)}
-   * </ul>
-   */
-  @Test
-  @DisplayName("Test getters and setters")
-  void testGettersAndSetters() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing observers.
-    //   Diffblue Cover was unable to create an assertion.
-    //   Add getters for the following fields or make them package-private:
-    //     CustomerPhoneController.customerPhoneService
-    //     CustomerPhoneController.customerPhoneValidator
-    //     CustomerPhoneController.customerState
-    //     CustomerPhoneController.deletePhoneSuccessView
-    //     CustomerPhoneController.entityConfiguration
-    //     CustomerPhoneController.makePhoneDefaultSuccessView
-    //     CustomerPhoneController.phoneFormatter
-    //     CustomerPhoneController.phoneValidator
-    //     CustomerPhoneController.savePhoneErrorView
-    //     CustomerPhoneController.savePhoneSuccessView
-    //     CustomerPhoneController.viewPhoneErrorView
-    //     CustomerPhoneController.viewPhoneSuccessView
-
-    // Arrange
-    CustomerPhoneController customerPhoneController = new CustomerPhoneController();
-
-    // Act
-    customerPhoneController.setCustomerPhoneService(new CustomerPhoneServiceImpl());
-    customerPhoneController.setCustomerPhoneValidator(new CustomerPhoneValidator());
-    customerPhoneController.setCustomerState(new CustomerState());
-    customerPhoneController.setEntityConfiguration(new EntityConfiguration());
-    customerPhoneController.setPhoneFormatter(mock(PhoneFormatter.class));
-    customerPhoneController.setPhoneValidator(new PhoneValidator());
-    customerPhoneController.setdeletePhoneSuccessView("6625550144");
-    customerPhoneController.setmakePhoneDefaultSuccessView("6625550144");
-    customerPhoneController.setsavePhoneErrorView("6625550144");
-    customerPhoneController.setsavePhoneSuccessView("6625550144");
-    customerPhoneController.setviewPhoneErrorView("6625550144");
-    customerPhoneController.setviewPhoneSuccessView("6625550144");
-  }
-
-  /**
-   * Test
-   * {@link CustomerPhoneController#viewPhone(Long, HttpServletRequest, PhoneNameForm, BindingResult)}.
-   * <p>
-   * Method under test:
-   * {@link CustomerPhoneController#viewPhone(Long, HttpServletRequest, PhoneNameForm, BindingResult)}
+   * Method under test: {@link CustomerPhoneController#viewPhone(Long, HttpServletRequest, PhoneNameForm, BindingResult)}
    */
   @Test
   @DisplayName("Test viewPhone(Long, HttpServletRequest, PhoneNameForm, BindingResult)")
-  @Disabled("TODO: Complete this test")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "String CustomerPhoneController.viewPhone(Long, HttpServletRequest, PhoneNameForm, BindingResult)"})
   void testViewPhone() throws Exception {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.web.controller;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.profile.web.controller.CustomerPhoneController.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.web.controller.CustomerPhoneController customerPhoneController;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerPhoneService customerPhoneService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blCustomerPhoneValidator") org.broadleafcommerce.profile.web.controller.validator.CustomerPhoneValidator customerPhoneValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blCustomerState") org.broadleafcommerce.profile.web.core.CustomerState customerState;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityConfiguration") org.broadleafcommerce.common.persistence.EntityConfiguration entityConfiguration;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.web.core.util.PhoneFormatter phoneFormatter;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blPhoneValidator") org.broadleafcommerce.profile.web.controller.validator.PhoneValidator phoneValidator;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
+    PhoneImpl phoneImpl = new PhoneImpl();
+    phoneImpl.setActive(true);
+    phoneImpl.setCountryCode("GB");
+    phoneImpl.setDefault(true);
+    phoneImpl.setExtension("?");
+    phoneImpl.setId(1L);
+    phoneImpl.setPhoneNumber("6625550144");
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any())).thenReturn(phoneImpl);
     MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/myaccount/phone/viewPhone");
 
-    // Act
-    MockMvcBuilders.standaloneSetup(customerPhoneController).build().perform(requestBuilder);
+    // Act and Assert
+    MockMvcBuilders.standaloneSetup(customerPhoneController)
+        .build()
+        .perform(requestBuilder)
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.model().size(1))
+        .andExpect(MockMvcResultMatchers.model().attributeExists("phoneNameForm"))
+        .andExpect(MockMvcResultMatchers.view().name("myAccount/phone/customerPhones"))
+        .andExpect(MockMvcResultMatchers.forwardedUrl("myAccount/phone/customerPhones"));
   }
 }

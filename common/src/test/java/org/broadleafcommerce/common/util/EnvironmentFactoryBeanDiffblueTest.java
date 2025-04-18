@@ -19,7 +19,10 @@ package org.broadleafcommerce.common.util;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class EnvironmentFactoryBeanDiffblueTest {
   /**
@@ -32,6 +35,8 @@ public class EnvironmentFactoryBeanDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void EnvironmentFactoryBean.<init>(String)", "boolean EnvironmentFactoryBean.isSingleton()"})
   public void testGettersAndSetters() {
     // Arrange, Act and Assert
     assertFalse((new EnvironmentFactoryBean("Class Name")).isSingleton());
@@ -43,6 +48,8 @@ public class EnvironmentFactoryBeanDiffblueTest {
    * Method under test: {@link EnvironmentFactoryBean#getObjectType()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Class EnvironmentFactoryBean.getObjectType()"})
   public void testGetObjectType() {
     // Arrange, Act and Assert
     assertThrows(RuntimeException.class, () -> (new EnvironmentFactoryBean("Class Name")).getObjectType());

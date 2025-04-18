@@ -1,10 +1,29 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework Web
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.web.checkout.model;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 class CustomerCreditInfoFormDiffblueTest {
@@ -20,6 +39,9 @@ class CustomerCreditInfoFormDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void CustomerCreditInfoForm.<init>()", "List CustomerCreditInfoForm.getAccountNumbers()",
+      "void CustomerCreditInfoForm.setAccountNumbers(List)"})
   void testGettersAndSetters() {
     // Arrange and Act
     CustomerCreditInfoForm actualCustomerCreditInfoForm = new CustomerCreditInfoForm();
@@ -27,7 +49,7 @@ class CustomerCreditInfoFormDiffblueTest {
     actualCustomerCreditInfoForm.setAccountNumbers(accountNumbers);
     List<String> actualAccountNumbers = actualCustomerCreditInfoForm.getAccountNumbers();
 
-    // Assert that nothing has changed
+    // Assert
     assertTrue(actualAccountNumbers.isEmpty());
     assertSame(accountNumbers, actualAccountNumbers);
   }

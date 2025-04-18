@@ -26,6 +26,8 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Set;
 import javax.cache.configuration.CacheEntryListenerConfiguration;
 import javax.cache.configuration.Configuration;
@@ -33,31 +35,32 @@ import javax.cache.configuration.MutableConfiguration;
 import org.ehcache.event.CacheEvent;
 import org.ehcache.event.EventType;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class BigMemoryHydratedCacheEventListenerDiffblueTest {
   /**
    * Test {@link BigMemoryHydratedCacheEventListener#onEvent(CacheEvent)}.
    * <ul>
    *   <li>Given {@code CREATED}.</li>
-   *   <li>When {@link CacheEvent} {@link CacheEvent#getType()} return
-   * {@code CREATED}.</li>
+   *   <li>When {@link CacheEvent} {@link CacheEvent#getType()} return {@code CREATED}.</li>
    *   <li>Then calls {@link CacheEvent#getType()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BigMemoryHydratedCacheEventListener#onEvent(CacheEvent)}
+   * Method under test: {@link BigMemoryHydratedCacheEventListener#onEvent(CacheEvent)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BigMemoryHydratedCacheEventListener.onEvent(CacheEvent)"})
   public void testOnEvent_givenCreated_whenCacheEventGetTypeReturnCreated_thenCallsGetType() {
     // Arrange
     BigMemoryHydratedCacheEventListener bigMemoryHydratedCacheEventListener = new BigMemoryHydratedCacheEventListener();
-    CacheEvent cacheEvent = mock(CacheEvent.class);
+    CacheEvent<Object, Object> cacheEvent = mock(CacheEvent.class);
     when(cacheEvent.getType()).thenReturn(EventType.CREATED);
 
     // Act
     bigMemoryHydratedCacheEventListener.onEvent(cacheEvent);
 
-    // Assert that nothing has changed
+    // Assert
     verify(cacheEvent, atLeast(1)).getType();
   }
 
@@ -65,19 +68,19 @@ public class BigMemoryHydratedCacheEventListenerDiffblueTest {
    * Test {@link BigMemoryHydratedCacheEventListener#onEvent(CacheEvent)}.
    * <ul>
    *   <li>Given {@code EVICTED}.</li>
-   *   <li>When {@link CacheEvent} {@link CacheEvent#getType()} return
-   * {@code EVICTED}.</li>
+   *   <li>When {@link CacheEvent} {@link CacheEvent#getType()} return {@code EVICTED}.</li>
    *   <li>Then calls {@link CacheEvent#getKey()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BigMemoryHydratedCacheEventListener#onEvent(CacheEvent)}
+   * Method under test: {@link BigMemoryHydratedCacheEventListener#onEvent(CacheEvent)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BigMemoryHydratedCacheEventListener.onEvent(CacheEvent)"})
   public void testOnEvent_givenEvicted_whenCacheEventGetTypeReturnEvicted_thenCallsGetKey() {
     // Arrange
     BigMemoryHydratedCacheEventListener bigMemoryHydratedCacheEventListener = new BigMemoryHydratedCacheEventListener();
-    CacheEvent cacheEvent = mock(CacheEvent.class);
+    CacheEvent<Object, Object> cacheEvent = mock(CacheEvent.class);
     when(cacheEvent.getKey()).thenReturn(1);
     when(cacheEvent.getType()).thenReturn(EventType.EVICTED);
 
@@ -93,19 +96,19 @@ public class BigMemoryHydratedCacheEventListenerDiffblueTest {
    * Test {@link BigMemoryHydratedCacheEventListener#onEvent(CacheEvent)}.
    * <ul>
    *   <li>Given {@code EXPIRED}.</li>
-   *   <li>When {@link CacheEvent} {@link CacheEvent#getType()} return
-   * {@code EXPIRED}.</li>
+   *   <li>When {@link CacheEvent} {@link CacheEvent#getType()} return {@code EXPIRED}.</li>
    *   <li>Then calls {@link CacheEvent#getKey()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BigMemoryHydratedCacheEventListener#onEvent(CacheEvent)}
+   * Method under test: {@link BigMemoryHydratedCacheEventListener#onEvent(CacheEvent)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BigMemoryHydratedCacheEventListener.onEvent(CacheEvent)"})
   public void testOnEvent_givenExpired_whenCacheEventGetTypeReturnExpired_thenCallsGetKey() {
     // Arrange
     BigMemoryHydratedCacheEventListener bigMemoryHydratedCacheEventListener = new BigMemoryHydratedCacheEventListener();
-    CacheEvent cacheEvent = mock(CacheEvent.class);
+    CacheEvent<Object, Object> cacheEvent = mock(CacheEvent.class);
     when(cacheEvent.getKey()).thenReturn(1);
     when(cacheEvent.getType()).thenReturn(EventType.EXPIRED);
 
@@ -121,19 +124,19 @@ public class BigMemoryHydratedCacheEventListenerDiffblueTest {
    * Test {@link BigMemoryHydratedCacheEventListener#onEvent(CacheEvent)}.
    * <ul>
    *   <li>Given {@code REMOVED}.</li>
-   *   <li>When {@link CacheEvent} {@link CacheEvent#getType()} return
-   * {@code REMOVED}.</li>
+   *   <li>When {@link CacheEvent} {@link CacheEvent#getType()} return {@code REMOVED}.</li>
    *   <li>Then calls {@link CacheEvent#getKey()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BigMemoryHydratedCacheEventListener#onEvent(CacheEvent)}
+   * Method under test: {@link BigMemoryHydratedCacheEventListener#onEvent(CacheEvent)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BigMemoryHydratedCacheEventListener.onEvent(CacheEvent)"})
   public void testOnEvent_givenRemoved_whenCacheEventGetTypeReturnRemoved_thenCallsGetKey() {
     // Arrange
     BigMemoryHydratedCacheEventListener bigMemoryHydratedCacheEventListener = new BigMemoryHydratedCacheEventListener();
-    CacheEvent cacheEvent = mock(CacheEvent.class);
+    CacheEvent<Object, Object> cacheEvent = mock(CacheEvent.class);
     when(cacheEvent.getKey()).thenReturn(1);
     when(cacheEvent.getType()).thenReturn(EventType.REMOVED);
 
@@ -149,19 +152,19 @@ public class BigMemoryHydratedCacheEventListenerDiffblueTest {
    * Test {@link BigMemoryHydratedCacheEventListener#onEvent(CacheEvent)}.
    * <ul>
    *   <li>Given {@code UPDATED}.</li>
-   *   <li>When {@link CacheEvent} {@link CacheEvent#getType()} return
-   * {@code UPDATED}.</li>
+   *   <li>When {@link CacheEvent} {@link CacheEvent#getType()} return {@code UPDATED}.</li>
    *   <li>Then calls {@link CacheEvent#getKey()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BigMemoryHydratedCacheEventListener#onEvent(CacheEvent)}
+   * Method under test: {@link BigMemoryHydratedCacheEventListener#onEvent(CacheEvent)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BigMemoryHydratedCacheEventListener.onEvent(CacheEvent)"})
   public void testOnEvent_givenUpdated_whenCacheEventGetTypeReturnUpdated_thenCallsGetKey() {
     // Arrange
     BigMemoryHydratedCacheEventListener bigMemoryHydratedCacheEventListener = new BigMemoryHydratedCacheEventListener();
-    CacheEvent cacheEvent = mock(CacheEvent.class);
+    CacheEvent<Object, Object> cacheEvent = mock(CacheEvent.class);
     when(cacheEvent.getKey()).thenReturn(1);
     when(cacheEvent.getType()).thenReturn(EventType.UPDATED);
 
@@ -176,10 +179,11 @@ public class BigMemoryHydratedCacheEventListenerDiffblueTest {
   /**
    * Test {@link BigMemoryHydratedCacheEventListener#useCacheRegionInKey()}.
    * <p>
-   * Method under test:
-   * {@link BigMemoryHydratedCacheEventListener#useCacheRegionInKey()}
+   * Method under test: {@link BigMemoryHydratedCacheEventListener#useCacheRegionInKey()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BigMemoryHydratedCacheEventListener.useCacheRegionInKey()"})
   public void testUseCacheRegionInKey() {
     // Arrange, Act and Assert
     assertFalse((new BigMemoryHydratedCacheEventListener()).useCacheRegionInKey());
@@ -188,10 +192,11 @@ public class BigMemoryHydratedCacheEventListenerDiffblueTest {
   /**
    * Test new {@link BigMemoryHydratedCacheEventListener} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link BigMemoryHydratedCacheEventListener}
+   * Method under test: default or parameterless constructor of {@link BigMemoryHydratedCacheEventListener}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BigMemoryHydratedCacheEventListener.<init>()"})
   public void testNewBigMemoryHydratedCacheEventListener() {
     // Arrange and Act
     BigMemoryHydratedCacheEventListener actualBigMemoryHydratedCacheEventListener = new BigMemoryHydratedCacheEventListener();

@@ -18,18 +18,22 @@
 package org.broadleafcommerce.common.payment.service;
 
 import static org.junit.Assert.assertThrows;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.payment.dto.PaymentRequestDTO;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class AbstractPaymentGatewayClientTokenServiceDiffblueTest {
   /**
-   * Test
-   * {@link AbstractPaymentGatewayClientTokenService#generateClientToken(PaymentRequestDTO)}.
+   * Test {@link AbstractPaymentGatewayClientTokenService#generateClientToken(PaymentRequestDTO)}.
    * <p>
-   * Method under test:
-   * {@link AbstractPaymentGatewayClientTokenService#generateClientToken(PaymentRequestDTO)}
+   * Method under test: {@link AbstractPaymentGatewayClientTokenService#generateClientToken(PaymentRequestDTO)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.common.payment.dto.PaymentResponseDTO AbstractPaymentGatewayClientTokenService.generateClientToken(PaymentRequestDTO)"})
   public void testGenerateClientToken() {
     // Arrange
     AbstractPaymentGatewayClientTokenService abstractPaymentGatewayClientTokenService = new AbstractPaymentGatewayClientTokenService();
@@ -37,23 +41,5 @@ public class AbstractPaymentGatewayClientTokenServiceDiffblueTest {
     // Act and Assert
     assertThrows(UnsupportedOperationException.class,
         () -> abstractPaymentGatewayClientTokenService.generateClientToken(new PaymentRequestDTO()));
-  }
-
-  /**
-   * Test new {@link AbstractPaymentGatewayClientTokenService} (default
-   * constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link AbstractPaymentGatewayClientTokenService}
-   */
-  @Test
-  public void testNewAbstractPaymentGatewayClientTokenService() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing observers.
-    //   Diffblue Cover was unable to create an assertion.
-    //   There are no fields that could be asserted on.
-
-    // Arrange and Act
-    new AbstractPaymentGatewayClientTokenService();
   }
 }

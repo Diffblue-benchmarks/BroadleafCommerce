@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.rating.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -6,23 +23,23 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import org.broadleafcommerce.core.rating.service.type.RatingType;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class RatingSummaryImplDiffblueTest {
   @Autowired
   private RatingSummaryImpl ratingSummaryImpl;
@@ -42,6 +59,11 @@ public class RatingSummaryImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Double RatingSummaryImpl.getAverageRating()", "Long RatingSummaryImpl.getId()",
+      "String RatingSummaryImpl.getItemId()", "void RatingSummaryImpl.setId(Long)",
+      "void RatingSummaryImpl.setItemId(String)", "void RatingSummaryImpl.setRatings(List)",
+      "void RatingSummaryImpl.setReviews(List)"})
   public void testGettersAndSetters() {
     // Arrange
     RatingSummaryImpl ratingSummaryImpl = new RatingSummaryImpl();
@@ -54,7 +76,7 @@ public class RatingSummaryImplDiffblueTest {
     Double actualAverageRating = ratingSummaryImpl.getAverageRating();
     Long actualId = ratingSummaryImpl.getId();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("42", ratingSummaryImpl.getItemId());
     assertEquals(0.0d, actualAverageRating.doubleValue(), 0.0);
     assertEquals(1L, actualId.longValue());
@@ -62,35 +84,6 @@ public class RatingSummaryImplDiffblueTest {
 
   /**
    * Test {@link RatingSummaryImpl#resetAverageRating()}.
-   * <p>
-   * Method under test: {@link RatingSummaryImpl#resetAverageRating()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testResetAverageRating() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.rating.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3936 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.rating.domain.RatingSummaryImpl ratingSummaryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new RatingSummaryImpl()).resetAverageRating();
-  }
-
-  /**
-   * Test {@link RatingSummaryImpl#resetAverageRating()}.
    * <ul>
    *   <li>Given {@link RatingSummaryImpl} (default constructor).</li>
    * </ul>
@@ -98,93 +91,58 @@ public class RatingSummaryImplDiffblueTest {
    * Method under test: {@link RatingSummaryImpl#resetAverageRating()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void RatingSummaryImpl.resetAverageRating()"})
   public void testResetAverageRating_givenRatingSummaryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    RatingSummaryImpl ratingSummaryImpl = new RatingSummaryImpl();
+    RatingSummaryImpl ratingSummaryImpl2 = new RatingSummaryImpl();
 
     // Act
-    ratingSummaryImpl.resetAverageRating();
+    ratingSummaryImpl2.resetAverageRating();
 
-    // Assert
-    assertEquals(0.0d, ratingSummaryImpl.getAverageRating().doubleValue(), 0.0);
+    // Assert that nothing has changed
+    assertEquals(0.0d, ratingSummaryImpl2.getAverageRating().doubleValue(), 0.0);
   }
 
   /**
    * Test {@link RatingSummaryImpl#resetAverageRating()}.
    * <ul>
-   *   <li>Given {@link RatingSummaryImpl} (default constructor) Ratings is
-   * {@code null}.</li>
+   *   <li>Given {@link RatingSummaryImpl} (default constructor) Ratings is {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link RatingSummaryImpl#resetAverageRating()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void RatingSummaryImpl.resetAverageRating()"})
   public void testResetAverageRating_givenRatingSummaryImplRatingsIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    RatingSummaryImpl ratingSummaryImpl = new RatingSummaryImpl();
-    ratingSummaryImpl.setId(1L);
-    ratingSummaryImpl.setItemId("42");
-    ratingSummaryImpl.setRatingType(RatingType.PRODUCT);
-    ratingSummaryImpl.setReviews(new ArrayList<>());
-    ratingSummaryImpl.setRatings(null);
+    RatingSummaryImpl ratingSummaryImpl2 = new RatingSummaryImpl();
+    ratingSummaryImpl2.setId(1L);
+    ratingSummaryImpl2.setItemId("42");
+    ratingSummaryImpl2.setRatingType(RatingType.PRODUCT);
+    ratingSummaryImpl2.setReviews(new ArrayList<>());
+    ratingSummaryImpl2.setRatings(null);
 
     // Act
-    ratingSummaryImpl.resetAverageRating();
+    ratingSummaryImpl2.resetAverageRating();
 
-    // Assert
-    assertEquals(0.0d, ratingSummaryImpl.getAverageRating().doubleValue(), 0.0);
+    // Assert that nothing has changed
+    assertEquals(0.0d, ratingSummaryImpl2.getAverageRating().doubleValue(), 0.0);
   }
 
   /**
    * Test {@link RatingSummaryImpl#resetAverageRating()}.
    * <ul>
-   *   <li>Given {@link RatingType} {@link RatingType#getType()} return
-   * {@code Type}.</li>
-   *   <li>Then calls {@link RatingType#getType()}.</li>
+   *   <li>Then {@link RatingSummaryImpl} (default constructor) AverageRating doubleValue is ten.</li>
    * </ul>
    * <p>
    * Method under test: {@link RatingSummaryImpl#resetAverageRating()}
    */
   @Test
-  public void testResetAverageRating_givenRatingTypeGetTypeReturnType_thenCallsGetType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    RatingType type = mock(RatingType.class);
-    when(type.getType()).thenReturn("Type");
-
-    RatingSummaryImpl ratingSummaryImpl = new RatingSummaryImpl();
-    ratingSummaryImpl.setId(1L);
-    ratingSummaryImpl.setItemId("42");
-    ratingSummaryImpl.setRatingType(type);
-    ratingSummaryImpl.setReviews(new ArrayList<>());
-    ratingSummaryImpl.setRatings(null);
-
-    // Act
-    ratingSummaryImpl.resetAverageRating();
-
-    // Assert
-    verify(type).getType();
-    assertEquals(0.0d, ratingSummaryImpl.getAverageRating().doubleValue(), 0.0);
-  }
-
-  /**
-   * Test {@link RatingSummaryImpl#resetAverageRating()}.
-   * <ul>
-   *   <li>Then {@link RatingSummaryImpl} (default constructor) AverageRating
-   * doubleValue is ten.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link RatingSummaryImpl#resetAverageRating()}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void RatingSummaryImpl.resetAverageRating()"})
   public void testResetAverageRating_thenRatingSummaryImplAverageRatingDoubleValueIsTen() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     RatingDetailImpl ratingDetailImpl = mock(RatingDetailImpl.class);
     when(ratingDetailImpl.getRating()).thenReturn(10.0d);
@@ -192,48 +150,19 @@ public class RatingSummaryImplDiffblueTest {
     ArrayList<RatingDetail> ratings = new ArrayList<>();
     ratings.add(ratingDetailImpl);
 
-    RatingSummaryImpl ratingSummaryImpl = new RatingSummaryImpl();
-    ratingSummaryImpl.setId(1L);
-    ratingSummaryImpl.setItemId("42");
-    ratingSummaryImpl.setRatingType(RatingType.PRODUCT);
-    ratingSummaryImpl.setReviews(new ArrayList<>());
-    ratingSummaryImpl.setRatings(ratings);
+    RatingSummaryImpl ratingSummaryImpl2 = new RatingSummaryImpl();
+    ratingSummaryImpl2.setId(1L);
+    ratingSummaryImpl2.setItemId("42");
+    ratingSummaryImpl2.setRatingType(RatingType.PRODUCT);
+    ratingSummaryImpl2.setReviews(new ArrayList<>());
+    ratingSummaryImpl2.setRatings(ratings);
 
     // Act
-    ratingSummaryImpl.resetAverageRating();
+    ratingSummaryImpl2.resetAverageRating();
 
     // Assert
     verify(ratingDetailImpl).getRating();
-    assertEquals(10.0d, ratingSummaryImpl.getAverageRating().doubleValue(), 0.0);
-  }
-
-  /**
-   * Test {@link RatingSummaryImpl#getNumberOfRatings()}.
-   * <p>
-   * Method under test: {@link RatingSummaryImpl#getNumberOfRatings()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetNumberOfRatings() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.rating.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3901 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.rating.domain.RatingSummaryImpl ratingSummaryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new RatingSummaryImpl()).getNumberOfRatings();
+    assertEquals(10.0d, ratingSummaryImpl2.getAverageRating().doubleValue(), 0.0);
   }
 
   /**
@@ -245,9 +174,9 @@ public class RatingSummaryImplDiffblueTest {
    * Method under test: {@link RatingSummaryImpl#getNumberOfRatings()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Integer RatingSummaryImpl.getNumberOfRatings()"})
   public void testGetNumberOfRatings_givenRatingSummaryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertEquals(0, (new RatingSummaryImpl()).getNumberOfRatings().intValue());
   }
@@ -255,88 +184,25 @@ public class RatingSummaryImplDiffblueTest {
   /**
    * Test {@link RatingSummaryImpl#getNumberOfRatings()}.
    * <ul>
-   *   <li>Given {@link RatingSummaryImpl} (default constructor) RatingType is
-   * {@link RatingType#PRODUCT}.</li>
+   *   <li>Given {@link RatingSummaryImpl} (default constructor) Id is one.</li>
    * </ul>
    * <p>
    * Method under test: {@link RatingSummaryImpl#getNumberOfRatings()}
    */
   @Test
-  public void testGetNumberOfRatings_givenRatingSummaryImplRatingTypeIsProduct() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Integer RatingSummaryImpl.getNumberOfRatings()"})
+  public void testGetNumberOfRatings_givenRatingSummaryImplIdIsOne() {
     // Arrange
-    RatingSummaryImpl ratingSummaryImpl = new RatingSummaryImpl();
-    ratingSummaryImpl.setId(1L);
-    ratingSummaryImpl.setItemId("42");
-    ratingSummaryImpl.setRatingType(RatingType.PRODUCT);
-    ratingSummaryImpl.setReviews(new ArrayList<>());
-    ratingSummaryImpl.setRatings(null);
+    RatingSummaryImpl ratingSummaryImpl2 = new RatingSummaryImpl();
+    ratingSummaryImpl2.setId(1L);
+    ratingSummaryImpl2.setItemId("42");
+    ratingSummaryImpl2.setRatingType(RatingType.PRODUCT);
+    ratingSummaryImpl2.setReviews(new ArrayList<>());
+    ratingSummaryImpl2.setRatings(null);
 
     // Act and Assert
-    assertEquals(0, ratingSummaryImpl.getNumberOfRatings().intValue());
-  }
-
-  /**
-   * Test {@link RatingSummaryImpl#getNumberOfRatings()}.
-   * <ul>
-   *   <li>Given {@link RatingType} {@link RatingType#getType()} return
-   * {@code Type}.</li>
-   *   <li>Then calls {@link RatingType#getType()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link RatingSummaryImpl#getNumberOfRatings()}
-   */
-  @Test
-  public void testGetNumberOfRatings_givenRatingTypeGetTypeReturnType_thenCallsGetType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    RatingType type = mock(RatingType.class);
-    when(type.getType()).thenReturn("Type");
-
-    RatingSummaryImpl ratingSummaryImpl = new RatingSummaryImpl();
-    ratingSummaryImpl.setId(1L);
-    ratingSummaryImpl.setItemId("42");
-    ratingSummaryImpl.setRatingType(type);
-    ratingSummaryImpl.setReviews(new ArrayList<>());
-    ratingSummaryImpl.setRatings(null);
-
-    // Act
-    Integer actualNumberOfRatings = ratingSummaryImpl.getNumberOfRatings();
-
-    // Assert
-    verify(type).getType();
-    assertEquals(0, actualNumberOfRatings.intValue());
-  }
-
-  /**
-   * Test {@link RatingSummaryImpl#getNumberOfReviews()}.
-   * <p>
-   * Method under test: {@link RatingSummaryImpl#getNumberOfReviews()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetNumberOfReviews() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.rating.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3908 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.rating.domain.RatingSummaryImpl ratingSummaryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new RatingSummaryImpl()).getNumberOfReviews();
+    assertEquals(0, ratingSummaryImpl2.getNumberOfRatings().intValue());
   }
 
   /**
@@ -348,9 +214,9 @@ public class RatingSummaryImplDiffblueTest {
    * Method under test: {@link RatingSummaryImpl#getNumberOfReviews()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Integer RatingSummaryImpl.getNumberOfReviews()"})
   public void testGetNumberOfReviews_givenRatingSummaryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertEquals(0, (new RatingSummaryImpl()).getNumberOfReviews().intValue());
   }
@@ -358,59 +224,25 @@ public class RatingSummaryImplDiffblueTest {
   /**
    * Test {@link RatingSummaryImpl#getNumberOfReviews()}.
    * <ul>
-   *   <li>Given {@link RatingSummaryImpl} (default constructor) RatingType is
-   * {@link RatingType#PRODUCT}.</li>
+   *   <li>Given {@link RatingSummaryImpl} (default constructor) Id is one.</li>
    * </ul>
    * <p>
    * Method under test: {@link RatingSummaryImpl#getNumberOfReviews()}
    */
   @Test
-  public void testGetNumberOfReviews_givenRatingSummaryImplRatingTypeIsProduct() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Integer RatingSummaryImpl.getNumberOfReviews()"})
+  public void testGetNumberOfReviews_givenRatingSummaryImplIdIsOne() {
     // Arrange
-    RatingSummaryImpl ratingSummaryImpl = new RatingSummaryImpl();
-    ratingSummaryImpl.setId(1L);
-    ratingSummaryImpl.setItemId("42");
-    ratingSummaryImpl.setRatingType(RatingType.PRODUCT);
-    ratingSummaryImpl.setRatings(new ArrayList<>());
-    ratingSummaryImpl.setReviews(null);
+    RatingSummaryImpl ratingSummaryImpl2 = new RatingSummaryImpl();
+    ratingSummaryImpl2.setId(1L);
+    ratingSummaryImpl2.setItemId("42");
+    ratingSummaryImpl2.setRatingType(RatingType.PRODUCT);
+    ratingSummaryImpl2.setRatings(new ArrayList<>());
+    ratingSummaryImpl2.setReviews(null);
 
     // Act and Assert
-    assertEquals(0, ratingSummaryImpl.getNumberOfReviews().intValue());
-  }
-
-  /**
-   * Test {@link RatingSummaryImpl#getNumberOfReviews()}.
-   * <ul>
-   *   <li>Given {@link RatingType} {@link RatingType#getType()} return
-   * {@code Type}.</li>
-   *   <li>Then calls {@link RatingType#getType()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link RatingSummaryImpl#getNumberOfReviews()}
-   */
-  @Test
-  public void testGetNumberOfReviews_givenRatingTypeGetTypeReturnType_thenCallsGetType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    RatingType type = mock(RatingType.class);
-    when(type.getType()).thenReturn("Type");
-
-    RatingSummaryImpl ratingSummaryImpl = new RatingSummaryImpl();
-    ratingSummaryImpl.setId(1L);
-    ratingSummaryImpl.setItemId("42");
-    ratingSummaryImpl.setRatingType(type);
-    ratingSummaryImpl.setRatings(new ArrayList<>());
-    ratingSummaryImpl.setReviews(null);
-
-    // Act
-    Integer actualNumberOfReviews = ratingSummaryImpl.getNumberOfReviews();
-
-    // Assert
-    verify(type).getType();
-    assertEquals(0, actualNumberOfReviews.intValue());
+    assertEquals(0, ratingSummaryImpl2.getNumberOfReviews().intValue());
   }
 
   /**
@@ -419,42 +251,9 @@ public class RatingSummaryImplDiffblueTest {
    * Method under test: {@link RatingSummaryImpl#getRatingType()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"RatingType RatingSummaryImpl.getRatingType()"})
   public void testGetRatingType() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.rating.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3915 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.rating.domain.RatingSummaryImpl ratingSummaryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new RatingSummaryImpl()).getRatingType();
-  }
-
-  /**
-   * Test {@link RatingSummaryImpl#getRatingType()}.
-   * <ul>
-   *   <li>Given {@link RatingSummaryImpl} (default constructor).</li>
-   *   <li>Then return FriendlyType is {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link RatingSummaryImpl#getRatingType()}
-   */
-  @Test
-  public void testGetRatingType_givenRatingSummaryImpl_thenReturnFriendlyTypeIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange and Act
     RatingType actualRatingType = (new RatingSummaryImpl()).getRatingType();
 
@@ -464,209 +263,88 @@ public class RatingSummaryImplDiffblueTest {
   }
 
   /**
-   * Test {@link RatingSummaryImpl#getRatingType()}.
-   * <ul>
-   *   <li>Given {@link RatingType} {@link RatingType#getType()} return
-   * {@code foo}.</li>
-   *   <li>Then return FriendlyType is {@code foo}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link RatingSummaryImpl#getRatingType()}
-   */
-  @Test
-  public void testGetRatingType_givenRatingTypeGetTypeReturnFoo_thenReturnFriendlyTypeIsFoo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    RatingType type = mock(RatingType.class);
-    when(type.getType()).thenReturn("foo");
-
-    RatingSummaryImpl ratingSummaryImpl = new RatingSummaryImpl();
-    ratingSummaryImpl.setRatingType(type);
-
-    // Act
-    RatingType actualRatingType = ratingSummaryImpl.getRatingType();
-
-    // Assert
-    verify(type).getType();
-    assertEquals("foo", actualRatingType.getFriendlyType());
-    assertEquals("foo", actualRatingType.getType());
-  }
-
-  /**
-   * Test {@link RatingSummaryImpl#getRatingType()}.
-   * <ul>
-   *   <li>Given {@link RatingType} {@link RatingType#getType()} return
-   * {@code Type}.</li>
-   *   <li>Then return FriendlyType is {@code Type}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link RatingSummaryImpl#getRatingType()}
-   */
-  @Test
-  public void testGetRatingType_givenRatingTypeGetTypeReturnType_thenReturnFriendlyTypeIsType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    RatingType type = mock(RatingType.class);
-    when(type.getType()).thenReturn("Type");
-
-    RatingSummaryImpl ratingSummaryImpl = new RatingSummaryImpl();
-    ratingSummaryImpl.setRatingType(type);
-
-    // Act
-    RatingType actualRatingType = ratingSummaryImpl.getRatingType();
-
-    // Assert
-    verify(type).getType();
-    assertEquals("Type", actualRatingType.getFriendlyType());
-    assertEquals("Type", actualRatingType.getType());
-  }
-
-  /**
-   * Test {@link RatingSummaryImpl#setRatingType(RatingType)}.
-   * <p>
-   * Method under test: {@link RatingSummaryImpl#setRatingType(RatingType)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetRatingType() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.rating.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3943 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.rating.domain.RatingSummaryImpl ratingSummaryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new RatingSummaryImpl()).setRatingType(RatingType.PRODUCT);
-  }
-
-  /**
    * Test {@link RatingSummaryImpl#setRatingType(RatingType)}.
    * <ul>
    *   <li>Given {@code Type}.</li>
-   *   <li>Then {@link RatingSummaryImpl} (default constructor) RatingType
-   * FriendlyType is {@code Type}.</li>
+   *   <li>Then {@link RatingSummaryImpl} (default constructor) RatingType FriendlyType is {@code Type}.</li>
    * </ul>
    * <p>
    * Method under test: {@link RatingSummaryImpl#setRatingType(RatingType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void RatingSummaryImpl.setRatingType(RatingType)"})
   public void testSetRatingType_givenType_thenRatingSummaryImplRatingTypeFriendlyTypeIsType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    RatingSummaryImpl ratingSummaryImpl = new RatingSummaryImpl();
+    RatingSummaryImpl ratingSummaryImpl2 = new RatingSummaryImpl();
     RatingType type = mock(RatingType.class);
     when(type.getType()).thenReturn("Type");
 
     // Act
-    ratingSummaryImpl.setRatingType(type);
+    ratingSummaryImpl2.setRatingType(type);
 
     // Assert
     verify(type).getType();
-    RatingType ratingType = ratingSummaryImpl.getRatingType();
+    RatingType ratingType = ratingSummaryImpl2.getRatingType();
     assertEquals("Type", ratingType.getFriendlyType());
     assertEquals("Type", ratingType.getType());
-    assertEquals("Type", ratingSummaryImpl.ratingTypeStr);
+    assertEquals("Type", ratingSummaryImpl2.ratingTypeStr);
   }
 
   /**
    * Test {@link RatingSummaryImpl#setRatingType(RatingType)}.
    * <ul>
-   *   <li>Then {@link RatingSummaryImpl} (default constructor) RatingType
-   * FriendlyType is {@code null}.</li>
+   *   <li>Then {@link RatingSummaryImpl} (default constructor) RatingType FriendlyType is {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link RatingSummaryImpl#setRatingType(RatingType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void RatingSummaryImpl.setRatingType(RatingType)"})
   public void testSetRatingType_thenRatingSummaryImplRatingTypeFriendlyTypeIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    RatingSummaryImpl ratingSummaryImpl = new RatingSummaryImpl();
-    ratingSummaryImpl.setId(1L);
-    ratingSummaryImpl.setItemId("42");
-    ratingSummaryImpl.setRatingType(RatingType.PRODUCT);
-    ratingSummaryImpl.setRatings(new ArrayList<>());
-    ratingSummaryImpl.setReviews(new ArrayList<>());
+    RatingSummaryImpl ratingSummaryImpl2 = new RatingSummaryImpl();
+    ratingSummaryImpl2.setId(1L);
+    ratingSummaryImpl2.setItemId("42");
+    ratingSummaryImpl2.setRatingType(RatingType.PRODUCT);
+    ratingSummaryImpl2.setRatings(new ArrayList<>());
+    ratingSummaryImpl2.setReviews(new ArrayList<>());
 
     // Act
-    ratingSummaryImpl.setRatingType(null);
+    ratingSummaryImpl2.setRatingType(null);
 
     // Assert
-    RatingType ratingType = ratingSummaryImpl.getRatingType();
+    RatingType ratingType = ratingSummaryImpl2.getRatingType();
     assertNull(ratingType.getFriendlyType());
     assertNull(ratingType.getType());
-    assertNull(ratingSummaryImpl.ratingTypeStr);
+    assertNull(ratingSummaryImpl2.ratingTypeStr);
   }
 
   /**
    * Test {@link RatingSummaryImpl#setRatingType(RatingType)}.
    * <ul>
    *   <li>When {@link RatingType#PRODUCT}.</li>
-   *   <li>Then {@link RatingSummaryImpl} (default constructor)
-   * {@link RatingSummaryImpl#ratingTypeStr} is {@code PRODUCT}.</li>
+   *   <li>Then {@link RatingSummaryImpl} (default constructor) {@link RatingSummaryImpl#ratingTypeStr} is {@code PRODUCT}.</li>
    * </ul>
    * <p>
    * Method under test: {@link RatingSummaryImpl#setRatingType(RatingType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void RatingSummaryImpl.setRatingType(RatingType)"})
   public void testSetRatingType_whenProduct_thenRatingSummaryImplRatingTypeStrIsProduct() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    RatingSummaryImpl ratingSummaryImpl = new RatingSummaryImpl();
+    RatingSummaryImpl ratingSummaryImpl2 = new RatingSummaryImpl();
     RatingType type = RatingType.PRODUCT;
 
     // Act
-    ratingSummaryImpl.setRatingType(type);
+    ratingSummaryImpl2.setRatingType(type);
 
     // Assert
-    assertEquals("PRODUCT", ratingSummaryImpl.ratingTypeStr);
+    assertEquals("PRODUCT", ratingSummaryImpl2.ratingTypeStr);
     RatingType expectedRatingType = type.PRODUCT;
-    assertEquals(expectedRatingType, ratingSummaryImpl.getRatingType());
-  }
-
-  /**
-   * Test {@link RatingSummaryImpl#getRatings()}.
-   * <p>
-   * Method under test: {@link RatingSummaryImpl#getRatings()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetRatings() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.rating.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3922 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.rating.domain.RatingSummaryImpl ratingSummaryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new RatingSummaryImpl()).getRatings();
+    assertEquals(expectedRatingType, ratingSummaryImpl2.getRatingType());
   }
 
   /**
@@ -678,9 +356,9 @@ public class RatingSummaryImplDiffblueTest {
    * Method under test: {@link RatingSummaryImpl#getRatings()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List RatingSummaryImpl.getRatings()"})
   public void testGetRatings_givenRatingSummaryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertTrue((new RatingSummaryImpl()).getRatings().isEmpty());
   }
@@ -688,88 +366,25 @@ public class RatingSummaryImplDiffblueTest {
   /**
    * Test {@link RatingSummaryImpl#getRatings()}.
    * <ul>
-   *   <li>Given {@link RatingSummaryImpl} (default constructor) RatingType is
-   * {@link RatingType#PRODUCT}.</li>
+   *   <li>Given {@link RatingSummaryImpl} (default constructor) Id is one.</li>
    * </ul>
    * <p>
    * Method under test: {@link RatingSummaryImpl#getRatings()}
    */
   @Test
-  public void testGetRatings_givenRatingSummaryImplRatingTypeIsProduct() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List RatingSummaryImpl.getRatings()"})
+  public void testGetRatings_givenRatingSummaryImplIdIsOne() {
     // Arrange
-    RatingSummaryImpl ratingSummaryImpl = new RatingSummaryImpl();
-    ratingSummaryImpl.setId(1L);
-    ratingSummaryImpl.setItemId("42");
-    ratingSummaryImpl.setRatingType(RatingType.PRODUCT);
-    ratingSummaryImpl.setReviews(new ArrayList<>());
-    ratingSummaryImpl.setRatings(null);
+    RatingSummaryImpl ratingSummaryImpl2 = new RatingSummaryImpl();
+    ratingSummaryImpl2.setId(1L);
+    ratingSummaryImpl2.setItemId("42");
+    ratingSummaryImpl2.setRatingType(RatingType.PRODUCT);
+    ratingSummaryImpl2.setReviews(new ArrayList<>());
+    ratingSummaryImpl2.setRatings(null);
 
     // Act and Assert
-    assertTrue(ratingSummaryImpl.getRatings().isEmpty());
-  }
-
-  /**
-   * Test {@link RatingSummaryImpl#getRatings()}.
-   * <ul>
-   *   <li>Given {@link RatingType} {@link RatingType#getType()} return
-   * {@code Type}.</li>
-   *   <li>Then calls {@link RatingType#getType()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link RatingSummaryImpl#getRatings()}
-   */
-  @Test
-  public void testGetRatings_givenRatingTypeGetTypeReturnType_thenCallsGetType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    RatingType type = mock(RatingType.class);
-    when(type.getType()).thenReturn("Type");
-
-    RatingSummaryImpl ratingSummaryImpl = new RatingSummaryImpl();
-    ratingSummaryImpl.setId(1L);
-    ratingSummaryImpl.setItemId("42");
-    ratingSummaryImpl.setRatingType(type);
-    ratingSummaryImpl.setReviews(new ArrayList<>());
-    ratingSummaryImpl.setRatings(null);
-
-    // Act
-    List<RatingDetail> actualRatings = ratingSummaryImpl.getRatings();
-
-    // Assert
-    verify(type).getType();
-    assertTrue(actualRatings.isEmpty());
-  }
-
-  /**
-   * Test {@link RatingSummaryImpl#getReviews()}.
-   * <p>
-   * Method under test: {@link RatingSummaryImpl#getReviews()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetReviews() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.rating.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3929 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.rating.domain.RatingSummaryImpl ratingSummaryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new RatingSummaryImpl()).getReviews();
+    assertTrue(ratingSummaryImpl2.getRatings().isEmpty());
   }
 
   /**
@@ -781,9 +396,9 @@ public class RatingSummaryImplDiffblueTest {
    * Method under test: {@link RatingSummaryImpl#getReviews()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List RatingSummaryImpl.getReviews()"})
   public void testGetReviews_givenRatingSummaryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertTrue((new RatingSummaryImpl()).getReviews().isEmpty());
   }
@@ -791,71 +406,36 @@ public class RatingSummaryImplDiffblueTest {
   /**
    * Test {@link RatingSummaryImpl#getReviews()}.
    * <ul>
-   *   <li>Given {@link RatingSummaryImpl} (default constructor) RatingType is
-   * {@link RatingType#PRODUCT}.</li>
+   *   <li>Given {@link RatingSummaryImpl} (default constructor) Id is one.</li>
    * </ul>
    * <p>
    * Method under test: {@link RatingSummaryImpl#getReviews()}
    */
   @Test
-  public void testGetReviews_givenRatingSummaryImplRatingTypeIsProduct() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List RatingSummaryImpl.getReviews()"})
+  public void testGetReviews_givenRatingSummaryImplIdIsOne() {
     // Arrange
-    RatingSummaryImpl ratingSummaryImpl = new RatingSummaryImpl();
-    ratingSummaryImpl.setId(1L);
-    ratingSummaryImpl.setItemId("42");
-    ratingSummaryImpl.setRatingType(RatingType.PRODUCT);
-    ratingSummaryImpl.setRatings(new ArrayList<>());
-    ratingSummaryImpl.setReviews(null);
+    RatingSummaryImpl ratingSummaryImpl2 = new RatingSummaryImpl();
+    ratingSummaryImpl2.setId(1L);
+    ratingSummaryImpl2.setItemId("42");
+    ratingSummaryImpl2.setRatingType(RatingType.PRODUCT);
+    ratingSummaryImpl2.setRatings(new ArrayList<>());
+    ratingSummaryImpl2.setReviews(null);
 
     // Act and Assert
-    assertTrue(ratingSummaryImpl.getReviews().isEmpty());
-  }
-
-  /**
-   * Test {@link RatingSummaryImpl#getReviews()}.
-   * <ul>
-   *   <li>Given {@link RatingType} {@link RatingType#getType()} return
-   * {@code Type}.</li>
-   *   <li>Then calls {@link RatingType#getType()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link RatingSummaryImpl#getReviews()}
-   */
-  @Test
-  public void testGetReviews_givenRatingTypeGetTypeReturnType_thenCallsGetType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    RatingType type = mock(RatingType.class);
-    when(type.getType()).thenReturn("Type");
-
-    RatingSummaryImpl ratingSummaryImpl = new RatingSummaryImpl();
-    ratingSummaryImpl.setId(1L);
-    ratingSummaryImpl.setItemId("42");
-    ratingSummaryImpl.setRatingType(type);
-    ratingSummaryImpl.setRatings(new ArrayList<>());
-    ratingSummaryImpl.setReviews(null);
-
-    // Act
-    List<ReviewDetail> actualReviews = ratingSummaryImpl.getReviews();
-
-    // Assert
-    verify(type).getType();
-    assertTrue(actualReviews.isEmpty());
+    assertTrue(ratingSummaryImpl2.getReviews().isEmpty());
   }
 
   /**
    * Test new {@link RatingSummaryImpl} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link RatingSummaryImpl}
+   * Method under test: default or parameterless constructor of {@link RatingSummaryImpl}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void RatingSummaryImpl.<init>()"})
   public void testNewRatingSummaryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange and Act
     RatingSummaryImpl actualRatingSummaryImpl = new RatingSummaryImpl();
 
@@ -873,35 +453,5 @@ public class RatingSummaryImplDiffblueTest {
     assertTrue(actualRatingSummaryImpl.getReviews().isEmpty());
     assertTrue(actualRatingSummaryImpl.ratings.isEmpty());
     assertTrue(actualRatingSummaryImpl.reviews.isEmpty());
-  }
-
-  /**
-   * Test new {@link RatingSummaryImpl} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link RatingSummaryImpl}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testNewRatingSummaryImpl2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.rating.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3900 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.rating.domain.RatingSummaryImpl ratingSummaryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    new RatingSummaryImpl();
   }
 }

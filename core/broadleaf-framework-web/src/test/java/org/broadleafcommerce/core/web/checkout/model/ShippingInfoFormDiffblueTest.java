@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework Web
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.web.checkout.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -5,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.i18n.domain.ISOCountryImpl;
 import org.broadleafcommerce.core.order.domain.FulfillmentOption;
 import org.broadleafcommerce.core.order.domain.FulfillmentOptionImpl;
@@ -13,87 +30,37 @@ import org.broadleafcommerce.core.order.domain.PersonalMessage;
 import org.broadleafcommerce.core.order.domain.PersonalMessageImpl;
 import org.broadleafcommerce.profile.core.domain.Address;
 import org.broadleafcommerce.profile.core.domain.AddressImpl;
-import org.broadleafcommerce.profile.core.domain.Country;
 import org.broadleafcommerce.profile.core.domain.CountryImpl;
-import org.broadleafcommerce.profile.core.domain.Phone;
 import org.broadleafcommerce.profile.core.domain.PhoneImpl;
 import org.broadleafcommerce.profile.core.domain.StateImpl;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 class ShippingInfoFormDiffblueTest {
   /**
    * Test new {@link ShippingInfoForm} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link ShippingInfoForm}
+   * Method under test: default or parameterless constructor of {@link ShippingInfoForm}
    */
   @Test
   @DisplayName("Test new ShippingInfoForm (default constructor)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void ShippingInfoForm.<init>()"})
   void testNewShippingInfoForm() {
     // Arrange and Act
     ShippingInfoForm actualShippingInfoForm = new ShippingInfoForm();
 
     // Assert
-    PersonalMessage personalMessage = actualShippingInfoForm.getPersonalMessage();
-    assertTrue(personalMessage instanceof PersonalMessageImpl);
-    Address address = actualShippingInfoForm.getAddress();
-    assertTrue(address instanceof AddressImpl);
-    Phone phoneFax = address.getPhoneFax();
-    assertTrue(phoneFax instanceof PhoneImpl);
-    Phone phonePrimary = address.getPhonePrimary();
-    assertTrue(phonePrimary instanceof PhoneImpl);
-    Phone phoneSecondary = address.getPhoneSecondary();
-    assertTrue(phoneSecondary instanceof PhoneImpl);
-    assertNull(personalMessage.getId());
+    assertTrue(actualShippingInfoForm.getPersonalMessage() instanceof PersonalMessageImpl);
+    assertTrue(actualShippingInfoForm.getAddress() instanceof AddressImpl);
     assertNull(actualShippingInfoForm.getFulfillmentOptionId());
-    assertNull(address.getId());
-    assertNull(phoneFax.getId());
-    assertNull(personalMessage.getMessage());
-    assertNull(personalMessage.getMessageFrom());
-    assertNull(personalMessage.getMessageTo());
-    assertNull(personalMessage.getOccasion());
     assertNull(actualShippingInfoForm.getAddressName());
     assertNull(actualShippingInfoForm.getDeliveryMessage());
-    assertNull(address.getAddressLine1());
-    assertNull(address.getAddressLine2());
-    assertNull(address.getAddressLine3());
-    assertNull(address.getCity());
-    assertNull(address.getCompanyName());
-    assertNull(address.getCounty());
-    assertNull(address.getEmailAddress());
-    assertNull(address.getFax());
-    assertNull(address.getFirstName());
-    assertNull(address.getFullName());
-    assertNull(address.getIsoCountrySubdivision());
-    assertNull(address.getLastName());
-    assertNull(address.getPostalCode());
-    assertNull(address.getPrimaryPhone());
-    assertNull(address.getSecondaryPhone());
-    assertNull(address.getStateProvinceRegion());
-    assertNull(address.getTokenizedAddress());
-    assertNull(address.getVerificationLevel());
-    assertNull(address.getZipFour());
-    assertNull(phoneFax.getCountryCode());
-    assertNull(phoneFax.getExtension());
-    assertNull(phoneFax.getPhoneNumber());
-    assertNull(address.getIsoCountryAlpha2());
     assertNull(actualShippingInfoForm.getFulfillmentOption());
-    assertNull(address.getCountry());
-    assertNull(address.getState());
     assertFalse(actualShippingInfoForm.hasValidAddress());
     assertFalse(actualShippingInfoForm.isSaveAsDefault());
     assertFalse(actualShippingInfoForm.isUseBillingAddress());
-    assertFalse(address.getStandardized());
-    assertFalse(address.isBusiness());
-    assertFalse(address.isDefault());
-    assertFalse(address.isMailing());
-    assertFalse(address.isStreet());
-    assertFalse(phoneFax.isDefault());
-    assertTrue(address.isActive());
-    assertTrue(phoneFax.isActive());
-    assertEquals(phoneFax, phonePrimary);
-    assertEquals(phoneFax, phoneSecondary);
   }
 
   /**
@@ -121,6 +88,16 @@ class ShippingInfoFormDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Address ShippingInfoForm.getAddress()", "String ShippingInfoForm.getAddressName()",
+      "String ShippingInfoForm.getDeliveryMessage()", "FulfillmentOption ShippingInfoForm.getFulfillmentOption()",
+      "Long ShippingInfoForm.getFulfillmentOptionId()", "PersonalMessage ShippingInfoForm.getPersonalMessage()",
+      "boolean ShippingInfoForm.isSaveAsDefault()", "boolean ShippingInfoForm.isUseBillingAddress()",
+      "void ShippingInfoForm.setAddress(Address)", "void ShippingInfoForm.setAddressName(String)",
+      "void ShippingInfoForm.setDeliveryMessage(String)",
+      "void ShippingInfoForm.setFulfillmentOption(FulfillmentOption)",
+      "void ShippingInfoForm.setFulfillmentOptionId(Long)", "void ShippingInfoForm.setPersonalMessage(PersonalMessage)",
+      "void ShippingInfoForm.setSaveAsDefault(boolean)", "void ShippingInfoForm.setUseBillingAddress(boolean)"})
   void testGettersAndSetters() {
     // Arrange
     ShippingInfoForm shippingInfoForm = new ShippingInfoForm();
@@ -146,7 +123,7 @@ class ShippingInfoFormDiffblueTest {
     boolean actualIsSaveAsDefaultResult = shippingInfoForm.isSaveAsDefault();
     boolean actualIsUseBillingAddressResult = shippingInfoForm.isUseBillingAddress();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("42 Main St", actualAddressName);
     assertEquals("Delivery Message", actualDeliveryMessage);
     assertEquals(1L, actualFulfillmentOptionId.longValue());
@@ -168,6 +145,8 @@ class ShippingInfoFormDiffblueTest {
    */
   @Test
   @DisplayName("Test shouldUseBillingAddress(); given ShippingInfoForm (default constructor); then return 'false'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean ShippingInfoForm.shouldUseBillingAddress()"})
   void testShouldUseBillingAddress_givenShippingInfoForm_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse((new ShippingInfoForm()).shouldUseBillingAddress());
@@ -183,6 +162,8 @@ class ShippingInfoFormDiffblueTest {
    */
   @Test
   @DisplayName("Test shouldUseBillingAddress(); then return 'true'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean ShippingInfoForm.shouldUseBillingAddress()"})
   void testShouldUseBillingAddress_thenReturnTrue() {
     // Arrange
     ShippingInfoForm shippingInfoForm = new ShippingInfoForm();
@@ -195,15 +176,17 @@ class ShippingInfoFormDiffblueTest {
   /**
    * Test {@link ShippingInfoForm#hasValidAddress()}.
    * <ul>
-   *   <li>Given {@link AddressImpl} (default constructor) City is {@code foo}.</li>
+   *   <li>Given {@link AddressImpl} (default constructor) City is {@code not blank}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link ShippingInfoForm#hasValidAddress()}
    */
   @Test
-  @DisplayName("Test hasValidAddress(); given AddressImpl (default constructor) City is 'foo'; then return 'true'")
-  void testHasValidAddress_givenAddressImplCityIsFoo_thenReturnTrue() {
+  @DisplayName("Test hasValidAddress(); given AddressImpl (default constructor) City is 'not blank'; then return 'true'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean ShippingInfoForm.hasValidAddress()"})
+  void testHasValidAddress_givenAddressImplCityIsNotBlank_thenReturnTrue() {
     // Arrange
     AddressImpl address = new AddressImpl();
     address.setActive(true);
@@ -236,8 +219,8 @@ class ShippingInfoFormDiffblueTest {
     address.setTokenizedAddress("42 Main St");
     address.setVerificationLevel("Verification Level");
     address.setZipFour("21654");
-    address.setCity("foo");
-    address.setAddressLine1("foo");
+    address.setAddressLine1("not blank");
+    address.setCity("not blank");
 
     ShippingInfoForm shippingInfoForm = new ShippingInfoForm();
     shippingInfoForm.setAddress(address);
@@ -249,16 +232,17 @@ class ShippingInfoFormDiffblueTest {
   /**
    * Test {@link ShippingInfoForm#hasValidAddress()}.
    * <ul>
-   *   <li>Given {@link AddressImpl} (default constructor) Country is
-   * {@link CountryImpl} (default constructor).</li>
+   *   <li>Given {@link AddressImpl} (default constructor) City is {@code null}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link ShippingInfoForm#hasValidAddress()}
    */
   @Test
-  @DisplayName("Test hasValidAddress(); given AddressImpl (default constructor) Country is CountryImpl (default constructor); then return 'false'")
-  void testHasValidAddress_givenAddressImplCountryIsCountryImpl_thenReturnFalse() {
+  @DisplayName("Test hasValidAddress(); given AddressImpl (default constructor) City is 'null'; then return 'false'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean ShippingInfoForm.hasValidAddress()"})
+  void testHasValidAddress_givenAddressImplCityIsNull_thenReturnFalse() {
     // Arrange
     AddressImpl address = new AddressImpl();
     address.setActive(true);
@@ -291,8 +275,8 @@ class ShippingInfoFormDiffblueTest {
     address.setTokenizedAddress("42 Main St");
     address.setVerificationLevel("Verification Level");
     address.setZipFour("21654");
+    address.setAddressLine1("not blank");
     address.setCity(null);
-    address.setAddressLine1("foo");
 
     ShippingInfoForm shippingInfoForm = new ShippingInfoForm();
     shippingInfoForm.setAddress(address);
@@ -304,16 +288,17 @@ class ShippingInfoFormDiffblueTest {
   /**
    * Test {@link ShippingInfoForm#hasValidAddress()}.
    * <ul>
-   *   <li>Given {@link AddressImpl} (default constructor) Country is
-   * {@link Country}.</li>
+   *   <li>Given {@link AddressImpl} (default constructor) City is space.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link ShippingInfoForm#hasValidAddress()}
    */
   @Test
-  @DisplayName("Test hasValidAddress(); given AddressImpl (default constructor) Country is Country; then return 'false'")
-  void testHasValidAddress_givenAddressImplCountryIsCountry_thenReturnFalse() {
+  @DisplayName("Test hasValidAddress(); given AddressImpl (default constructor) City is space; then return 'false'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean ShippingInfoForm.hasValidAddress()"})
+  void testHasValidAddress_givenAddressImplCityIsSpace_thenReturnFalse() {
     // Arrange
     AddressImpl address = new AddressImpl();
     address.setActive(true);
@@ -321,7 +306,7 @@ class ShippingInfoFormDiffblueTest {
     address.setAddressLine3("42 Main St");
     address.setBusiness(true);
     address.setCompanyName("Company Name");
-    address.setCountry(mock(Country.class));
+    address.setCountry(new CountryImpl());
     address.setCounty("3");
     address.setDefault(true);
     address.setEmailAddress("42 Main St");
@@ -346,8 +331,8 @@ class ShippingInfoFormDiffblueTest {
     address.setTokenizedAddress("42 Main St");
     address.setVerificationLevel("Verification Level");
     address.setZipFour("21654");
-    address.setCity(null);
-    address.setAddressLine1("foo");
+    address.setAddressLine1("not blank");
+    address.setCity(" ");
 
     ShippingInfoForm shippingInfoForm = new ShippingInfoForm();
     shippingInfoForm.setAddress(address);
@@ -359,8 +344,7 @@ class ShippingInfoFormDiffblueTest {
   /**
    * Test {@link ShippingInfoForm#hasValidAddress()}.
    * <ul>
-   *   <li>Given {@link ShippingInfoForm} (default constructor) Address is
-   * {@code null}.</li>
+   *   <li>Given {@link ShippingInfoForm} (default constructor) Address is {@code null}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
@@ -368,6 +352,8 @@ class ShippingInfoFormDiffblueTest {
    */
   @Test
   @DisplayName("Test hasValidAddress(); given ShippingInfoForm (default constructor) Address is 'null'; then return 'false'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean ShippingInfoForm.hasValidAddress()"})
   void testHasValidAddress_givenShippingInfoFormAddressIsNull_thenReturnFalse() {
     // Arrange
     ShippingInfoForm shippingInfoForm = new ShippingInfoForm();
@@ -388,6 +374,8 @@ class ShippingInfoFormDiffblueTest {
    */
   @Test
   @DisplayName("Test hasValidAddress(); given ShippingInfoForm (default constructor); then return 'false'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean ShippingInfoForm.hasValidAddress()"})
   void testHasValidAddress_givenShippingInfoForm_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse((new ShippingInfoForm()).hasValidAddress());

@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.dto;
 
 import static org.junit.Assert.assertEquals;
@@ -5,15 +22,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import org.broadleafcommerce.openadmin.dto.visitor.PersistencePerspectiveItemVisitor;
-import org.broadleafcommerce.openadmin.dto.visitor.PersistencePerspectiveItemVisitorAdapter;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -30,6 +43,8 @@ public class AdornedTargetListDiffblueTest {
    * Method under test: {@link AdornedTargetList#AdornedTargetList()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdornedTargetList.<init>()"})
   public void testNewAdornedTargetList() {
     // Arrange and Act
     AdornedTargetList actualAdornedTargetList = new AdornedTargetList();
@@ -51,13 +66,13 @@ public class AdornedTargetListDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdornedTargetList#AdornedTargetList(String, String, String, String, String, String)}.
+   * Test {@link AdornedTargetList#AdornedTargetList(String, String, String, String, String, String)}.
    * <p>
-   * Method under test:
-   * {@link AdornedTargetList#AdornedTargetList(String, String, String, String, String, String)}
+   * Method under test: {@link AdornedTargetList#AdornedTargetList(String, String, String, String, String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdornedTargetList.<init>(String, String, String, String, String, String)"})
   public void testNewAdornedTargetList2() {
     // Arrange and Act
     AdornedTargetList actualAdornedTargetList = new AdornedTargetList("Collection Field Name", "Linked Object Path",
@@ -80,13 +95,13 @@ public class AdornedTargetListDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdornedTargetList#AdornedTargetList(String, String, String, String, String, String, String)}.
+   * Test {@link AdornedTargetList#AdornedTargetList(String, String, String, String, String, String, String)}.
    * <p>
-   * Method under test:
-   * {@link AdornedTargetList#AdornedTargetList(String, String, String, String, String, String, String)}
+   * Method under test: {@link AdornedTargetList#AdornedTargetList(String, String, String, String, String, String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdornedTargetList.<init>(String, String, String, String, String, String, String)"})
   public void testNewAdornedTargetList3() {
     // Arrange and Act
     AdornedTargetList actualAdornedTargetList = new AdornedTargetList("Collection Field Name", "Linked Object Path",
@@ -111,13 +126,13 @@ public class AdornedTargetListDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdornedTargetList#AdornedTargetList(String, String, String, String, String, String, String, Boolean)}.
+   * Test {@link AdornedTargetList#AdornedTargetList(String, String, String, String, String, String, String, Boolean)}.
    * <p>
-   * Method under test:
-   * {@link AdornedTargetList#AdornedTargetList(String, String, String, String, String, String, String, Boolean)}
+   * Method under test: {@link AdornedTargetList#AdornedTargetList(String, String, String, String, String, String, String, Boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdornedTargetList.<init>(String, String, String, String, String, String, String, Boolean)"})
   public void testNewAdornedTargetList4() {
     // Arrange and Act
     AdornedTargetList actualAdornedTargetList = new AdornedTargetList("Collection Field Name", "Linked Object Path",
@@ -141,13 +156,14 @@ public class AdornedTargetListDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdornedTargetList#AdornedTargetList(String, String, String, String, String, String, String, String, Boolean)}.
+   * Test {@link AdornedTargetList#AdornedTargetList(String, String, String, String, String, String, String, String, Boolean)}.
    * <p>
-   * Method under test:
-   * {@link AdornedTargetList#AdornedTargetList(String, String, String, String, String, String, String, String, Boolean)}
+   * Method under test: {@link AdornedTargetList#AdornedTargetList(String, String, String, String, String, String, String, String, Boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void AdornedTargetList.<init>(String, String, String, String, String, String, String, String, Boolean)"})
   public void testNewAdornedTargetList5() {
     // Arrange and Act
     AdornedTargetList actualAdornedTargetList = new AdornedTargetList("Collection Field Name", "Linked Object Path",
@@ -206,6 +222,23 @@ public class AdornedTargetListDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String AdornedTargetList.getAdornedTargetEntityClassname()",
+      "String AdornedTargetList.getAdornedTargetEntityPolymorphicType()",
+      "String AdornedTargetList.getCollectionFieldName()", "String AdornedTargetList.getIdProperty()",
+      "Boolean AdornedTargetList.getInverse()", "String AdornedTargetList.getJoinEntityClass()",
+      "String AdornedTargetList.getLinkedIdProperty()", "String AdornedTargetList.getLinkedObjectPath()",
+      "Boolean AdornedTargetList.getMutable()", "Boolean AdornedTargetList.getSortAscending()",
+      "String AdornedTargetList.getSortField()", "String AdornedTargetList.getTargetIdProperty()",
+      "String AdornedTargetList.getTargetObjectPath()",
+      "void AdornedTargetList.setAdornedTargetEntityClassname(String)",
+      "void AdornedTargetList.setAdornedTargetEntityPolymorphicType(String)",
+      "void AdornedTargetList.setCollectionFieldName(String)", "void AdornedTargetList.setIdProperty(String)",
+      "void AdornedTargetList.setInverse(Boolean)", "void AdornedTargetList.setJoinEntityClass(String)",
+      "void AdornedTargetList.setLinkedIdProperty(String)", "void AdornedTargetList.setLinkedObjectPath(String)",
+      "void AdornedTargetList.setMutable(Boolean)", "void AdornedTargetList.setSortAscending(Boolean)",
+      "void AdornedTargetList.setSortField(String)", "void AdornedTargetList.setTargetIdProperty(String)",
+      "void AdornedTargetList.setTargetObjectPath(String)", "String AdornedTargetList.toString()"})
   public void testGettersAndSetters() {
     // Arrange
     AdornedTargetList adornedTargetList = new AdornedTargetList();
@@ -238,7 +271,7 @@ public class AdornedTargetListDiffblueTest {
     String actualSortField = adornedTargetList.getSortField();
     String actualTargetIdProperty = adornedTargetList.getTargetIdProperty();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Adorned Target Entity Classname", actualAdornedTargetEntityClassname);
     assertEquals("Adorned Target Entity Polymorphic Type", actualAdornedTargetEntityPolymorphicType);
     assertEquals(
@@ -262,36 +295,13 @@ public class AdornedTargetListDiffblueTest {
   }
 
   /**
-   * Test {@link AdornedTargetList#accept(PersistencePerspectiveItemVisitor)}.
-   * <ul>
-   *   <li>Then calls
-   * {@link PersistencePerspectiveItemVisitorAdapter#visit(AdornedTargetList)}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetList#accept(PersistencePerspectiveItemVisitor)}
-   */
-  @Test
-  public void testAccept_thenCallsVisit() {
-    // Arrange
-    AdornedTargetList adornedTargetList = new AdornedTargetList();
-    PersistencePerspectiveItemVisitorAdapter visitor = mock(PersistencePerspectiveItemVisitorAdapter.class);
-    doNothing().when(visitor).visit(Mockito.<AdornedTargetList>any());
-
-    // Act
-    adornedTargetList.accept(visitor);
-
-    // Assert
-    verify(visitor).visit(isA(AdornedTargetList.class));
-  }
-
-  /**
    * Test {@link AdornedTargetList#clonePersistencePerspectiveItem()}.
    * <p>
-   * Method under test:
-   * {@link AdornedTargetList#clonePersistencePerspectiveItem()}
+   * Method under test: {@link AdornedTargetList#clonePersistencePerspectiveItem()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePerspectiveItem AdornedTargetList.clonePersistencePerspectiveItem()"})
   public void testClonePersistencePerspectiveItem() {
     // Arrange
     AdornedTargetList adornedTargetList = new AdornedTargetList();
@@ -306,8 +316,7 @@ public class AdornedTargetListDiffblueTest {
   }
 
   /**
-   * Test {@link AdornedTargetList#equals(Object)}, and
-   * {@link AdornedTargetList#hashCode()}.
+   * Test {@link AdornedTargetList#equals(Object)}, and {@link AdornedTargetList#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -320,6 +329,8 @@ public class AdornedTargetListDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetList.equals(Object)", "int AdornedTargetList.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     AdornedTargetList adornedTargetList = new AdornedTargetList();
@@ -332,8 +343,7 @@ public class AdornedTargetListDiffblueTest {
   }
 
   /**
-   * Test {@link AdornedTargetList#equals(Object)}, and
-   * {@link AdornedTargetList#hashCode()}.
+   * Test {@link AdornedTargetList#equals(Object)}, and {@link AdornedTargetList#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -346,6 +356,8 @@ public class AdornedTargetListDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetList.equals(Object)", "int AdornedTargetList.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     AdornedTargetList adornedTargetList = new AdornedTargetList("Collection Field Name", "Linked Object Path",
@@ -360,8 +372,7 @@ public class AdornedTargetListDiffblueTest {
   }
 
   /**
-   * Test {@link AdornedTargetList#equals(Object)}, and
-   * {@link AdornedTargetList#hashCode()}.
+   * Test {@link AdornedTargetList#equals(Object)}, and {@link AdornedTargetList#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -374,6 +385,8 @@ public class AdornedTargetListDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetList.equals(Object)", "int AdornedTargetList.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     AdornedTargetList adornedTargetList = new AdornedTargetList();
@@ -389,8 +402,7 @@ public class AdornedTargetListDiffblueTest {
   }
 
   /**
-   * Test {@link AdornedTargetList#equals(Object)}, and
-   * {@link AdornedTargetList#hashCode()}.
+   * Test {@link AdornedTargetList#equals(Object)}, and {@link AdornedTargetList#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -403,6 +415,8 @@ public class AdornedTargetListDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetList.equals(Object)", "int AdornedTargetList.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
     // Arrange
     AdornedTargetList adornedTargetList = new AdornedTargetList();
@@ -418,8 +432,7 @@ public class AdornedTargetListDiffblueTest {
   }
 
   /**
-   * Test {@link AdornedTargetList#equals(Object)}, and
-   * {@link AdornedTargetList#hashCode()}.
+   * Test {@link AdornedTargetList#equals(Object)}, and {@link AdornedTargetList#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -432,6 +445,8 @@ public class AdornedTargetListDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetList.equals(Object)", "int AdornedTargetList.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual5() {
     // Arrange
     AdornedTargetList adornedTargetList = new AdornedTargetList();
@@ -447,8 +462,7 @@ public class AdornedTargetListDiffblueTest {
   }
 
   /**
-   * Test {@link AdornedTargetList#equals(Object)}, and
-   * {@link AdornedTargetList#hashCode()}.
+   * Test {@link AdornedTargetList#equals(Object)}, and {@link AdornedTargetList#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -461,6 +475,8 @@ public class AdornedTargetListDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetList.equals(Object)", "int AdornedTargetList.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual6() {
     // Arrange
     AdornedTargetList adornedTargetList = new AdornedTargetList();
@@ -476,8 +492,7 @@ public class AdornedTargetListDiffblueTest {
   }
 
   /**
-   * Test {@link AdornedTargetList#equals(Object)}, and
-   * {@link AdornedTargetList#hashCode()}.
+   * Test {@link AdornedTargetList#equals(Object)}, and {@link AdornedTargetList#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -490,6 +505,8 @@ public class AdornedTargetListDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetList.equals(Object)", "int AdornedTargetList.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual7() {
     // Arrange
     AdornedTargetList adornedTargetList = new AdornedTargetList();
@@ -505,8 +522,7 @@ public class AdornedTargetListDiffblueTest {
   }
 
   /**
-   * Test {@link AdornedTargetList#equals(Object)}, and
-   * {@link AdornedTargetList#hashCode()}.
+   * Test {@link AdornedTargetList#equals(Object)}, and {@link AdornedTargetList#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -519,6 +535,8 @@ public class AdornedTargetListDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetList.equals(Object)", "int AdornedTargetList.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     AdornedTargetList adornedTargetList = new AdornedTargetList();
@@ -539,6 +557,8 @@ public class AdornedTargetListDiffblueTest {
    * Method under test: {@link AdornedTargetList#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetList.equals(Object)", "int AdornedTargetList.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     AdornedTargetList adornedTargetList = new AdornedTargetList("Collection Field Name", "Linked Object Path",
@@ -558,6 +578,8 @@ public class AdornedTargetListDiffblueTest {
    * Method under test: {@link AdornedTargetList#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetList.equals(Object)", "int AdornedTargetList.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     AdornedTargetList adornedTargetList = new AdornedTargetList();
@@ -577,6 +599,8 @@ public class AdornedTargetListDiffblueTest {
    * Method under test: {@link AdornedTargetList#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetList.equals(Object)", "int AdornedTargetList.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     AdornedTargetList adornedTargetList = new AdornedTargetList();
@@ -596,6 +620,8 @@ public class AdornedTargetListDiffblueTest {
    * Method under test: {@link AdornedTargetList#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetList.equals(Object)", "int AdornedTargetList.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     AdornedTargetList adornedTargetList = new AdornedTargetList();
@@ -615,6 +641,8 @@ public class AdornedTargetListDiffblueTest {
    * Method under test: {@link AdornedTargetList#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetList.equals(Object)", "int AdornedTargetList.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
     AdornedTargetList adornedTargetList = new AdornedTargetList();
@@ -634,6 +662,8 @@ public class AdornedTargetListDiffblueTest {
    * Method under test: {@link AdornedTargetList#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetList.equals(Object)", "int AdornedTargetList.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
     AdornedTargetList adornedTargetList = new AdornedTargetList();
@@ -653,6 +683,8 @@ public class AdornedTargetListDiffblueTest {
    * Method under test: {@link AdornedTargetList#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetList.equals(Object)", "int AdornedTargetList.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
     // Arrange
     AdornedTargetList adornedTargetList = new AdornedTargetList();
@@ -672,6 +704,8 @@ public class AdornedTargetListDiffblueTest {
    * Method under test: {@link AdornedTargetList#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetList.equals(Object)", "int AdornedTargetList.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual8() {
     // Arrange
     AdornedTargetList adornedTargetList = new AdornedTargetList();
@@ -691,6 +725,8 @@ public class AdornedTargetListDiffblueTest {
    * Method under test: {@link AdornedTargetList#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetList.equals(Object)", "int AdornedTargetList.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual9() {
     // Arrange
     AdornedTargetList adornedTargetList = new AdornedTargetList();
@@ -710,6 +746,8 @@ public class AdornedTargetListDiffblueTest {
    * Method under test: {@link AdornedTargetList#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetList.equals(Object)", "int AdornedTargetList.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual10() {
     // Arrange
     AdornedTargetList adornedTargetList = new AdornedTargetList();
@@ -729,6 +767,8 @@ public class AdornedTargetListDiffblueTest {
    * Method under test: {@link AdornedTargetList#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetList.equals(Object)", "int AdornedTargetList.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual11() {
     // Arrange
     AdornedTargetList adornedTargetList = new AdornedTargetList();
@@ -748,6 +788,8 @@ public class AdornedTargetListDiffblueTest {
    * Method under test: {@link AdornedTargetList#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetList.equals(Object)", "int AdornedTargetList.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual12() {
     // Arrange
     AdornedTargetList adornedTargetList = new AdornedTargetList();
@@ -767,6 +809,8 @@ public class AdornedTargetListDiffblueTest {
    * Method under test: {@link AdornedTargetList#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetList.equals(Object)", "int AdornedTargetList.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual13() {
     // Arrange
     AdornedTargetList adornedTargetList = new AdornedTargetList();
@@ -786,6 +830,8 @@ public class AdornedTargetListDiffblueTest {
    * Method under test: {@link AdornedTargetList#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetList.equals(Object)", "int AdornedTargetList.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual14() {
     // Arrange
     AdornedTargetList adornedTargetList = new AdornedTargetList("Collection Field Name", "Linked Object Path",
@@ -808,6 +854,8 @@ public class AdornedTargetListDiffblueTest {
    * Method under test: {@link AdornedTargetList#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetList.equals(Object)", "int AdornedTargetList.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual15() {
     // Arrange
     AdornedTargetList adornedTargetList = new AdornedTargetList("Collection Field Name", "Linked Object Path",
@@ -829,6 +877,8 @@ public class AdornedTargetListDiffblueTest {
    * Method under test: {@link AdornedTargetList#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetList.equals(Object)", "int AdornedTargetList.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual16() {
     // Arrange
     AdornedTargetList adornedTargetList = new AdornedTargetList();
@@ -850,6 +900,8 @@ public class AdornedTargetListDiffblueTest {
    * Method under test: {@link AdornedTargetList#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetList.equals(Object)", "int AdornedTargetList.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual17() {
     // Arrange
     AdornedTargetList adornedTargetList = new AdornedTargetList();
@@ -871,6 +923,8 @@ public class AdornedTargetListDiffblueTest {
    * Method under test: {@link AdornedTargetList#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetList.equals(Object)", "int AdornedTargetList.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual18() {
     // Arrange
     AdornedTargetList adornedTargetList = new AdornedTargetList();
@@ -892,6 +946,8 @@ public class AdornedTargetListDiffblueTest {
    * Method under test: {@link AdornedTargetList#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetList.equals(Object)", "int AdornedTargetList.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual19() {
     // Arrange
     AdornedTargetList adornedTargetList = new AdornedTargetList();
@@ -913,6 +969,8 @@ public class AdornedTargetListDiffblueTest {
    * Method under test: {@link AdornedTargetList#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetList.equals(Object)", "int AdornedTargetList.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual20() {
     // Arrange
     AdornedTargetList adornedTargetList = new AdornedTargetList();
@@ -934,6 +992,8 @@ public class AdornedTargetListDiffblueTest {
    * Method under test: {@link AdornedTargetList#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetList.equals(Object)", "int AdornedTargetList.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual21() {
     // Arrange
     AdornedTargetList adornedTargetList = new AdornedTargetList();
@@ -955,6 +1015,8 @@ public class AdornedTargetListDiffblueTest {
    * Method under test: {@link AdornedTargetList#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetList.equals(Object)", "int AdornedTargetList.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual22() {
     // Arrange
     AdornedTargetList adornedTargetList = new AdornedTargetList();
@@ -976,6 +1038,8 @@ public class AdornedTargetListDiffblueTest {
    * Method under test: {@link AdornedTargetList#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetList.equals(Object)", "int AdornedTargetList.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual23() {
     // Arrange
     AdornedTargetList adornedTargetList = new AdornedTargetList();
@@ -997,6 +1061,8 @@ public class AdornedTargetListDiffblueTest {
    * Method under test: {@link AdornedTargetList#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetList.equals(Object)", "int AdornedTargetList.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual24() {
     // Arrange
     AdornedTargetList adornedTargetList = new AdornedTargetList();
@@ -1018,6 +1084,8 @@ public class AdornedTargetListDiffblueTest {
    * Method under test: {@link AdornedTargetList#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetList.equals(Object)", "int AdornedTargetList.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual25() {
     // Arrange
     AdornedTargetList adornedTargetList = new AdornedTargetList();
@@ -1037,6 +1105,8 @@ public class AdornedTargetListDiffblueTest {
    * Method under test: {@link AdornedTargetList#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetList.equals(Object)", "int AdornedTargetList.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new AdornedTargetList(), null);
@@ -1052,6 +1122,8 @@ public class AdornedTargetListDiffblueTest {
    * Method under test: {@link AdornedTargetList#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetList.equals(Object)", "int AdornedTargetList.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new AdornedTargetList(), "Different type to AdornedTargetList");

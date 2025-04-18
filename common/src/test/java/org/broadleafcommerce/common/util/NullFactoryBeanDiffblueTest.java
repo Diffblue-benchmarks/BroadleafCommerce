@@ -19,7 +19,10 @@ package org.broadleafcommerce.common.util;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class NullFactoryBeanDiffblueTest {
   /**
@@ -28,6 +31,8 @@ public class NullFactoryBeanDiffblueTest {
    * Method under test: {@link NullFactoryBean#getObject()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Void NullFactoryBean.getObject()"})
   public void testGetObject() throws Exception {
     // Arrange, Act and Assert
     assertNull((new NullFactoryBean()).getObject());
@@ -44,6 +49,9 @@ public class NullFactoryBeanDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void NullFactoryBean.<init>()", "Class NullFactoryBean.getObjectType()",
+      "boolean NullFactoryBean.isSingleton()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     NullFactoryBean actualNullFactoryBean = new NullFactoryBean();

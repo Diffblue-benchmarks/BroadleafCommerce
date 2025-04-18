@@ -1,36 +1,31 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.server.security.service.type;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThrows;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.junit.experimental.categories.Category;
 
-@ContextConfiguration(classes = {PermissionType.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class PermissionTypeDiffblueTest {
-  @Autowired
-  private PermissionType permissionType;
-
-  /**
-   * Test {@link PermissionType#getInstance(String)}.
-   * <p>
-   * Method under test: {@link PermissionType#getInstance(String)}
-   */
-  @Test
-  public void testGetInstance() {
-    // Arrange and Act
-    PermissionType actualInstance = PermissionType.getInstance("Type");
-
-    // Assert
-    assertEquals("Friendly Type", actualInstance.getFriendlyType());
-    assertEquals("Type", actualInstance.getType());
-  }
-
   /**
    * Test getters and setters.
    * <p>
@@ -42,6 +37,9 @@ public class PermissionTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PermissionType.<init>()", "String PermissionType.getFriendlyType()",
+      "String PermissionType.getType()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     PermissionType actualPermissionType = new PermissionType();
@@ -53,38 +51,7 @@ public class PermissionTypeDiffblueTest {
   }
 
   /**
-   * Test {@link PermissionType#PermissionType(String, String)}.
-   * <ul>
-   *   <li>When {@code Cannot add the type: (}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PermissionType#PermissionType(String, String)}
-   */
-  @Test
-  public void testNewPermissionType_whenCannotAddTheType() {
-    // Arrange, Act and Assert
-    assertThrows(RuntimeException.class, () -> new PermissionType("Cannot add the type: (", "Friendly Type"));
-
-  }
-
-  /**
-   * Test {@link PermissionType#PermissionType(String, String)}.
-   * <ul>
-   *   <li>When {@code Type}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PermissionType#PermissionType(String, String)}
-   */
-  @Test
-  public void testNewPermissionType_whenType() {
-    // Arrange, Act and Assert
-    assertThrows(RuntimeException.class, () -> new PermissionType("Type", "Friendly Type"));
-
-  }
-
-  /**
-   * Test {@link PermissionType#equals(Object)}, and
-   * {@link PermissionType#hashCode()}.
+   * Test {@link PermissionType#equals(Object)}, and {@link PermissionType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -97,6 +64,8 @@ public class PermissionTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PermissionType.equals(Object)", "int PermissionType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     PermissionType permissionType = PermissionType.ALL;
@@ -109,8 +78,7 @@ public class PermissionTypeDiffblueTest {
   }
 
   /**
-   * Test {@link PermissionType#equals(Object)}, and
-   * {@link PermissionType#hashCode()}.
+   * Test {@link PermissionType#equals(Object)}, and {@link PermissionType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -123,6 +91,8 @@ public class PermissionTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PermissionType.equals(Object)", "int PermissionType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     PermissionType permissionType = new PermissionType();
@@ -135,8 +105,7 @@ public class PermissionTypeDiffblueTest {
   }
 
   /**
-   * Test {@link PermissionType#equals(Object)}, and
-   * {@link PermissionType#hashCode()}.
+   * Test {@link PermissionType#equals(Object)}, and {@link PermissionType#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -149,6 +118,8 @@ public class PermissionTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PermissionType.equals(Object)", "int PermissionType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     PermissionType permissionType = PermissionType.ALL;
@@ -169,9 +140,27 @@ public class PermissionTypeDiffblueTest {
    * Method under test: {@link PermissionType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PermissionType.equals(Object)", "int PermissionType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(PermissionType.CREATE, PermissionType.ALL);
+  }
+
+  /**
+   * Test {@link PermissionType#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PermissionType#equals(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PermissionType.equals(Object)", "int PermissionType.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange, Act and Assert
     assertNotEquals(new PermissionType(), PermissionType.ALL);
   }
 
@@ -185,6 +174,8 @@ public class PermissionTypeDiffblueTest {
    * Method under test: {@link PermissionType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PermissionType.equals(Object)", "int PermissionType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(PermissionType.ALL, null);
@@ -200,6 +191,8 @@ public class PermissionTypeDiffblueTest {
    * Method under test: {@link PermissionType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PermissionType.equals(Object)", "int PermissionType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(PermissionType.ALL, "Different type to PermissionType");

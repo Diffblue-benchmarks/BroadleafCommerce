@@ -1,25 +1,55 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.catalog.service;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
+import org.broadleafcommerce.core.catalog.dao.SkuMediaDao;
 import org.broadleafcommerce.core.catalog.domain.SkuMediaXref;
 import org.broadleafcommerce.core.catalog.domain.SkuMediaXrefImpl;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.PropertyResolver;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class SkuMediaServiceImplDiffblueTest {
-  @Autowired
+  @Mock
+  private Environment environment;
+
+  @Mock
+  private SkuMediaDao skuMediaDao;
+
+  @InjectMocks
   private SkuMediaServiceImpl skuMediaServiceImpl;
 
   /**
@@ -28,91 +58,71 @@ public class SkuMediaServiceImplDiffblueTest {
    * Method under test: {@link SkuMediaServiceImpl#save(SkuMediaXref)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"SkuMediaXref SkuMediaServiceImpl.save(SkuMediaXref)"})
   public void testSave() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6352 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.SkuMediaServiceImpl skuMediaServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    SkuMediaServiceImpl skuMediaServiceImpl2 = new SkuMediaServiceImpl();
+    SkuMediaXrefImpl skuMediaXrefImpl = new SkuMediaXrefImpl();
+    when(skuMediaDao.save(Mockito.<SkuMediaXref>any())).thenReturn(skuMediaXrefImpl);
 
     // Act
-    skuMediaServiceImpl2.save(new SkuMediaXrefImpl());
+    SkuMediaXref actualSaveResult = skuMediaServiceImpl.save(new SkuMediaXrefImpl());
+
+    // Assert
+    verify(skuMediaDao).save(isA(SkuMediaXref.class));
+    assertSame(skuMediaXrefImpl, actualSaveResult);
   }
 
   /**
    * Test {@link SkuMediaServiceImpl#findSkuMediaBySkuId(Long)}.
+   * <ul>
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class, Object)} return {@code false}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link SkuMediaServiceImpl#findSkuMediaBySkuId(Long)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindSkuMediaBySkuId() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6336 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.SkuMediaServiceImpl skuMediaServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List SkuMediaServiceImpl.findSkuMediaBySkuId(Long)"})
+  public void testFindSkuMediaBySkuId_givenEnvironmentGetPropertyReturnFalse() {
+    // Arrange
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+        .thenReturn(false);
+    when(skuMediaDao.readSkuMediaBySkuId(Mockito.<Long>any())).thenReturn(new ArrayList<>());
 
-    // Arrange and Act
-    (new SkuMediaServiceImpl()).findSkuMediaBySkuId(1L);
+    // Act
+    List<SkuMediaXref> actualFindSkuMediaBySkuIdResult = skuMediaServiceImpl.findSkuMediaBySkuId(1L);
+
+    // Assert
+    verify(skuMediaDao).readSkuMediaBySkuId(eq(1L));
+    verify(environment).getProperty(eq("sku.media.display-order.enabled"), isA(Class.class), isA(Object.class));
+    assertTrue(actualFindSkuMediaBySkuIdResult.isEmpty());
   }
 
   /**
-   * Test {@link SkuMediaServiceImpl#sort(List)}.
+   * Test {@link SkuMediaServiceImpl#findSkuMediaBySkuId(Long)}.
+   * <ul>
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class, Object)} return {@code true}.</li>
+   * </ul>
    * <p>
-   * Method under test: {@link SkuMediaServiceImpl#sort(List)}
+   * Method under test: {@link SkuMediaServiceImpl#findSkuMediaBySkuId(Long)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testSort() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6365 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.SkuMediaServiceImpl skuMediaServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List SkuMediaServiceImpl.findSkuMediaBySkuId(Long)"})
+  public void testFindSkuMediaBySkuId_givenEnvironmentGetPropertyReturnTrue() {
     // Arrange
-    SkuMediaServiceImpl skuMediaServiceImpl2 = new SkuMediaServiceImpl();
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+        .thenReturn(true);
+    when(skuMediaDao.readSkuMediaBySkuId(Mockito.<Long>any())).thenReturn(new ArrayList<>());
 
     // Act
-    skuMediaServiceImpl2.sort(new ArrayList<>());
+    List<SkuMediaXref> actualFindSkuMediaBySkuIdResult = skuMediaServiceImpl.findSkuMediaBySkuId(1L);
+
+    // Assert
+    verify(skuMediaDao).readSkuMediaBySkuId(eq(1L));
+    verify(environment).getProperty(eq("sku.media.display-order.enabled"), isA(Class.class), isA(Object.class));
+    assertTrue(actualFindSkuMediaBySkuIdResult.isEmpty());
   }
 
   /**
@@ -125,12 +135,10 @@ public class SkuMediaServiceImplDiffblueTest {
    * Method under test: {@link SkuMediaServiceImpl#sort(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List SkuMediaServiceImpl.sort(List)"})
   public void testSort_givenSkuMediaXrefImpl_thenReturnArrayList() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuMediaServiceImpl skuMediaServiceImpl = new SkuMediaServiceImpl();
-
     ArrayList<SkuMediaXref> skuMediaXrefs = new ArrayList<>();
     skuMediaXrefs.add(new SkuMediaXrefImpl());
 
@@ -148,42 +156,58 @@ public class SkuMediaServiceImplDiffblueTest {
    * Method under test: {@link SkuMediaServiceImpl#sort(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List SkuMediaServiceImpl.sort(List)"})
   public void testSort_whenArrayList_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuMediaServiceImpl skuMediaServiceImpl = new SkuMediaServiceImpl();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertTrue(skuMediaServiceImpl.sort(new ArrayList<>()).isEmpty());
   }
 
   /**
    * Test {@link SkuMediaServiceImpl#isOrderedSkuMediaEnabled()}.
+   * <ul>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link SkuMediaServiceImpl#isOrderedSkuMediaEnabled()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsOrderedSkuMediaEnabled() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6351 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.SkuMediaServiceImpl skuMediaServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuMediaServiceImpl.isOrderedSkuMediaEnabled()"})
+  public void testIsOrderedSkuMediaEnabled_thenReturnFalse() {
+    // Arrange
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+        .thenReturn(false);
 
-    // Arrange and Act
-    (new SkuMediaServiceImpl()).isOrderedSkuMediaEnabled();
+    // Act
+    boolean actualIsOrderedSkuMediaEnabledResult = skuMediaServiceImpl.isOrderedSkuMediaEnabled();
+
+    // Assert
+    verify(environment).getProperty(eq("sku.media.display-order.enabled"), isA(Class.class), isA(Object.class));
+    assertFalse(actualIsOrderedSkuMediaEnabledResult);
+  }
+
+  /**
+   * Test {@link SkuMediaServiceImpl#isOrderedSkuMediaEnabled()}.
+   * <ul>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuMediaServiceImpl#isOrderedSkuMediaEnabled()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuMediaServiceImpl.isOrderedSkuMediaEnabled()"})
+  public void testIsOrderedSkuMediaEnabled_thenReturnTrue() {
+    // Arrange
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+        .thenReturn(true);
+
+    // Act
+    boolean actualIsOrderedSkuMediaEnabledResult = skuMediaServiceImpl.isOrderedSkuMediaEnabled();
+
+    // Assert
+    verify(environment).getProperty(eq("sku.media.display-order.enabled"), isA(Class.class), isA(Object.class));
+    assertTrue(actualIsOrderedSkuMediaEnabledResult);
   }
 }

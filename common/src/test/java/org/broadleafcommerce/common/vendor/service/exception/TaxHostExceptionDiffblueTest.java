@@ -20,7 +20,10 @@ package org.broadleafcommerce.common.vendor.service.exception;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class TaxHostExceptionDiffblueTest {
   /**
@@ -32,6 +35,9 @@ public class TaxHostExceptionDiffblueTest {
    * Method under test: {@link TaxHostException#TaxHostException()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TaxHostException.<init>()", "void TaxHostException.<init>(String)",
+      "void TaxHostException.<init>(String, Throwable)", "void TaxHostException.<init>(Throwable)"})
   public void testNewTaxHostException_thenReturnMessageIsNull() {
     // Arrange and Act
     TaxHostException actualTaxHostException = new TaxHostException();
@@ -53,6 +59,9 @@ public class TaxHostExceptionDiffblueTest {
    * Method under test: {@link TaxHostException#TaxHostException(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TaxHostException.<init>()", "void TaxHostException.<init>(String)",
+      "void TaxHostException.<init>(String, Throwable)", "void TaxHostException.<init>(Throwable)"})
   public void testNewTaxHostException_whenAnErrorOccurred_thenReturnMessageIsAnErrorOccurred() {
     // Arrange and Act
     TaxHostException actualTaxHostException = new TaxHostException("An error occurred");
@@ -71,10 +80,12 @@ public class TaxHostExceptionDiffblueTest {
    *   <li>Then return Message is {@code An error occurred}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link TaxHostException#TaxHostException(String, Throwable)}
+   * Method under test: {@link TaxHostException#TaxHostException(String, Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TaxHostException.<init>()", "void TaxHostException.<init>(String)",
+      "void TaxHostException.<init>(String, Throwable)", "void TaxHostException.<init>(Throwable)"})
   public void testNewTaxHostException_whenAnErrorOccurred_thenReturnMessageIsAnErrorOccurred2() {
     // Arrange
     Throwable cause = new Throwable();
@@ -93,12 +104,15 @@ public class TaxHostExceptionDiffblueTest {
    * Test {@link TaxHostException#TaxHostException(Throwable)}.
    * <ul>
    *   <li>When {@link Throwable#Throwable()}.</li>
-   *   <li>Then return Message is {@code java.lang.Throwable}.</li>
+   *   <li>Then return Message is {@code Throwable}.</li>
    * </ul>
    * <p>
    * Method under test: {@link TaxHostException#TaxHostException(Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TaxHostException.<init>()", "void TaxHostException.<init>(String)",
+      "void TaxHostException.<init>(String, Throwable)", "void TaxHostException.<init>(Throwable)"})
   public void testNewTaxHostException_whenThrowable_thenReturnMessageIsJavaLangThrowable() {
     // Arrange
     Throwable cause = new Throwable();

@@ -1,45 +1,58 @@
+/*-
+ * #%L
+ * BroadleafCommerce CMS Module
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.cms.structure.message.jms;
 
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import javax.jms.Destination;
 import org.broadleafcommerce.cms.structure.domain.StructuredContent;
 import org.broadleafcommerce.cms.structure.domain.StructuredContentImpl;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.experimental.categories.Category;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.JmsException;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@ContextConfiguration(classes = {JMSArchivedStructuredContentPublisher.class})
-@RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class JMSArchivedStructuredContentPublisherDiffblueTest {
-  @Autowired
-  private JMSArchivedStructuredContentPublisher jMSArchivedStructuredContentPublisher;
-
   /**
-   * Test
-   * {@link JMSArchivedStructuredContentPublisher#processStructuredContentArchive(StructuredContent, String, String)}.
+   * Test {@link JMSArchivedStructuredContentPublisher#processStructuredContentArchive(StructuredContent, String, String)}.
    * <ul>
    *   <li>Then calls {@link JmsTemplate#send(Destination, MessageCreator)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link JMSArchivedStructuredContentPublisher#processStructuredContentArchive(StructuredContent, String, String)}
+   * Method under test: {@link JMSArchivedStructuredContentPublisher#processStructuredContentArchive(StructuredContent, String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void JMSArchivedStructuredContentPublisher.processStructuredContentArchive(StructuredContent, String, String)"})
   public void testProcessStructuredContentArchive_thenCallsSend() throws JmsException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     JmsTemplate archiveStructuredContentTemplate = mock(JmsTemplate.class);
     doNothing().when(archiveStructuredContentTemplate).send(Mockito.<Destination>any(), Mockito.<MessageCreator>any());
@@ -56,58 +69,35 @@ public class JMSArchivedStructuredContentPublisherDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link JMSArchivedStructuredContentPublisher#processStructuredContentArchive(StructuredContent, String, String)}.
-   * <ul>
-   *   <li>When {@link StructuredContentImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link JMSArchivedStructuredContentPublisher#processStructuredContentArchive(StructuredContent, String, String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testProcessStructuredContentArchive_whenStructuredContentImpl() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.broadleafcommerce.cms.structure.message.jms.JMSArchivedStructuredContentPublisher.processStructuredContentArchive(JMSArchivedStructuredContentPublisher.java:51)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange and Act
-    jMSArchivedStructuredContentPublisher.processStructuredContentArchive(new StructuredContentImpl(), "Base Name Key",
-        "Base Type Key");
-  }
-
-  /**
    * Test getters and setters.
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>default or parameterless constructor of
-   * {@link JMSArchivedStructuredContentPublisher}
-   *   <li>
-   * {@link JMSArchivedStructuredContentPublisher#setArchiveStructuredContentDestination(Destination)}
-   *   <li>
-   * {@link JMSArchivedStructuredContentPublisher#setArchiveStructuredContentTemplate(JmsTemplate)}
-   *   <li>
-   * {@link JMSArchivedStructuredContentPublisher#getArchiveStructuredContentDestination()}
-   *   <li>
-   * {@link JMSArchivedStructuredContentPublisher#getArchiveStructuredContentTemplate()}
+   *   <li>default or parameterless constructor of {@link JMSArchivedStructuredContentPublisher}
+   *   <li>{@link JMSArchivedStructuredContentPublisher#setArchiveStructuredContentDestination(Destination)}
+   *   <li>{@link JMSArchivedStructuredContentPublisher#setArchiveStructuredContentTemplate(JmsTemplate)}
+   *   <li>{@link JMSArchivedStructuredContentPublisher#getArchiveStructuredContentDestination()}
+   *   <li>{@link JMSArchivedStructuredContentPublisher#getArchiveStructuredContentTemplate()}
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void JMSArchivedStructuredContentPublisher.<init>()",
+      "Destination JMSArchivedStructuredContentPublisher.getArchiveStructuredContentDestination()",
+      "JmsTemplate JMSArchivedStructuredContentPublisher.getArchiveStructuredContentTemplate()",
+      "void JMSArchivedStructuredContentPublisher.setArchiveStructuredContentDestination(Destination)",
+      "void JMSArchivedStructuredContentPublisher.setArchiveStructuredContentTemplate(JmsTemplate)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     JMSArchivedStructuredContentPublisher actualJmsArchivedStructuredContentPublisher = new JMSArchivedStructuredContentPublisher();
     actualJmsArchivedStructuredContentPublisher.setArchiveStructuredContentDestination(null);
     JmsTemplate archiveStructuredContentTemplate = new JmsTemplate();
     actualJmsArchivedStructuredContentPublisher.setArchiveStructuredContentTemplate(archiveStructuredContentTemplate);
-    actualJmsArchivedStructuredContentPublisher.getArchiveStructuredContentDestination();
+    Destination actualArchiveStructuredContentDestination = actualJmsArchivedStructuredContentPublisher
+        .getArchiveStructuredContentDestination();
 
-    // Assert that nothing has changed
+    // Assert
+    assertNull(actualArchiveStructuredContentDestination);
     assertSame(archiveStructuredContentTemplate,
         actualJmsArchivedStructuredContentPublisher.getArchiveStructuredContentTemplate());
   }

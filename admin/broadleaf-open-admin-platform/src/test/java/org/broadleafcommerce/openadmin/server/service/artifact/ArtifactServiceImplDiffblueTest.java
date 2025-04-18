@@ -1,5 +1,27 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.server.service.artifact;
 
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -7,19 +29,14 @@ import java.util.HashMap;
 import java.util.Map;
 import org.broadleafcommerce.openadmin.server.service.artifact.image.Operation;
 import org.broadleafcommerce.openadmin.server.service.artifact.image.effects.chain.UnmarshalledParameter;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
-    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
-    "/bl-open-admin-contentCreator-applicationContext.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+@ContextConfiguration(locations = {"/bl-open-admin-contentClient-applicationContext.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ArtifactServiceImplDiffblueTest {
   @Autowired
@@ -28,80 +45,49 @@ public class ArtifactServiceImplDiffblueTest {
   /**
    * Test {@link ArtifactServiceImpl#convert(InputStream, Operation[], String)}.
    * <p>
-   * Method under test:
-   * {@link ArtifactServiceImpl#convert(InputStream, Operation[], String)}
+   * Method under test: {@link ArtifactServiceImpl#convert(InputStream, Operation[], String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"InputStream ArtifactServiceImpl.convert(InputStream, Operation[], String)"})
   public void testConvert() throws Exception {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.artifact;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1122 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.artifact.ArtifactServiceImpl artifactServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    ArtifactServiceImpl artifactServiceImpl2 = new ArtifactServiceImpl();
     ByteArrayInputStream artifactStream = new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"));
+
+    Operation operation = new Operation();
+    operation.setFactor(10.0d);
+    operation.setName("Name");
 
     UnmarshalledParameter unmarshalledParameter = new UnmarshalledParameter();
     unmarshalledParameter.setApplyFactor(true);
     unmarshalledParameter.setName("Name");
     unmarshalledParameter.setType("Type");
     unmarshalledParameter.setValue("42");
-
-    Operation operation = new Operation();
-    operation.setFactor(10.0d);
-    operation.setName("Name");
     operation.setParameters(new UnmarshalledParameter[]{unmarshalledParameter});
 
-    // Act
-    artifactServiceImpl2.convert(artifactStream, new Operation[]{operation}, "Mime Type");
+    // Act and Assert
+    byte[] byteArray = new byte[8];
+    int actualReadResult = artifactServiceImpl.convert(artifactStream, new Operation[]{operation}, "Mime Type")
+        .read(byteArray);
+    assertEquals(-1, artifactStream.read(new byte[]{}));
+    assertEquals(8, actualReadResult);
+    assertArrayEquals("AXAXAXAX".getBytes("UTF-8"), byteArray);
   }
 
   /**
    * Test {@link ArtifactServiceImpl#buildOperations(Map, InputStream, String)}.
    * <p>
-   * Method under test:
-   * {@link ArtifactServiceImpl#buildOperations(Map, InputStream, String)}
+   * Method under test: {@link ArtifactServiceImpl#buildOperations(Map, InputStream, String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Operation[] ArtifactServiceImpl.buildOperations(Map, InputStream, String)"})
   public void testBuildOperations() throws UnsupportedEncodingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.artifact;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1042 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.artifact.ArtifactServiceImpl artifactServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    ArtifactServiceImpl artifactServiceImpl2 = new ArtifactServiceImpl();
     HashMap<String, String> parameterMap = new HashMap<>();
 
-    // Act
-    artifactServiceImpl2.buildOperations(parameterMap, new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")),
-        "Mime Type");
+    // Act and Assert
+    assertNull(artifactServiceImpl.buildOperations(parameterMap, new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")),
+        "Mime Type"));
   }
 }

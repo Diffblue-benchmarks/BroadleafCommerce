@@ -20,20 +20,26 @@ package org.broadleafcommerce.common.exception;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class ProxyDetectionExceptionDiffblueTest {
   /**
-   * Test
-   * {@link ProxyDetectionException#ProxyDetectionException(String, Throwable)}.
+   * Test {@link ProxyDetectionException#ProxyDetectionException(String, Throwable)}.
    * <ul>
    *   <li>Then return Message is {@code An error occurred}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProxyDetectionException#ProxyDetectionException(String, Throwable)}
+   * Method under test: {@link ProxyDetectionException#ProxyDetectionException(String, Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProxyDetectionException.<init>()", "void ProxyDetectionException.<init>(String)",
+      "void ProxyDetectionException.<init>(String, Throwable)",
+      "void ProxyDetectionException.<init>(String, Throwable, boolean, boolean)",
+      "void ProxyDetectionException.<init>(Throwable)"})
   public void testNewProxyDetectionException_thenReturnMessageIsAnErrorOccurred() {
     // Arrange
     Throwable cause = new Throwable();
@@ -50,13 +56,17 @@ public class ProxyDetectionExceptionDiffblueTest {
   /**
    * Test {@link ProxyDetectionException#ProxyDetectionException(Throwable)}.
    * <ul>
-   *   <li>Then return Message is {@code java.lang.Throwable}.</li>
+   *   <li>Then return Message is {@code Throwable}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProxyDetectionException#ProxyDetectionException(Throwable)}
+   * Method under test: {@link ProxyDetectionException#ProxyDetectionException(Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProxyDetectionException.<init>()", "void ProxyDetectionException.<init>(String)",
+      "void ProxyDetectionException.<init>(String, Throwable)",
+      "void ProxyDetectionException.<init>(String, Throwable, boolean, boolean)",
+      "void ProxyDetectionException.<init>(Throwable)"})
   public void testNewProxyDetectionException_thenReturnMessageIsJavaLangThrowable() {
     // Arrange
     Throwable cause = new Throwable();
@@ -79,6 +89,11 @@ public class ProxyDetectionExceptionDiffblueTest {
    * Method under test: {@link ProxyDetectionException#ProxyDetectionException()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProxyDetectionException.<init>()", "void ProxyDetectionException.<init>(String)",
+      "void ProxyDetectionException.<init>(String, Throwable)",
+      "void ProxyDetectionException.<init>(String, Throwable, boolean, boolean)",
+      "void ProxyDetectionException.<init>(Throwable)"})
   public void testNewProxyDetectionException_thenReturnMessageIsNull() {
     // Arrange and Act
     ProxyDetectionException actualProxyDetectionException = new ProxyDetectionException();
@@ -96,10 +111,14 @@ public class ProxyDetectionExceptionDiffblueTest {
    *   <li>Then return Cause is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProxyDetectionException#ProxyDetectionException(String)}
+   * Method under test: {@link ProxyDetectionException#ProxyDetectionException(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProxyDetectionException.<init>()", "void ProxyDetectionException.<init>(String)",
+      "void ProxyDetectionException.<init>(String, Throwable)",
+      "void ProxyDetectionException.<init>(String, Throwable, boolean, boolean)",
+      "void ProxyDetectionException.<init>(Throwable)"})
   public void testNewProxyDetectionException_whenAnErrorOccurred_thenReturnCauseIsNull() {
     // Arrange and Act
     ProxyDetectionException actualProxyDetectionException = new ProxyDetectionException("An error occurred");
@@ -111,17 +130,20 @@ public class ProxyDetectionExceptionDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ProxyDetectionException#ProxyDetectionException(String, Throwable, boolean, boolean)}.
+   * Test {@link ProxyDetectionException#ProxyDetectionException(String, Throwable, boolean, boolean)}.
    * <ul>
    *   <li>When {@code true}.</li>
    *   <li>Then return Message is {@code An error occurred}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProxyDetectionException#ProxyDetectionException(String, Throwable, boolean, boolean)}
+   * Method under test: {@link ProxyDetectionException#ProxyDetectionException(String, Throwable, boolean, boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProxyDetectionException.<init>()", "void ProxyDetectionException.<init>(String)",
+      "void ProxyDetectionException.<init>(String, Throwable)",
+      "void ProxyDetectionException.<init>(String, Throwable, boolean, boolean)",
+      "void ProxyDetectionException.<init>(Throwable)"})
   public void testNewProxyDetectionException_whenTrue_thenReturnMessageIsAnErrorOccurred() {
     // Arrange
     Throwable cause = new Throwable();

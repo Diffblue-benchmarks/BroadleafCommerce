@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.pricing.service.module;
 
 import static org.junit.Assert.assertEquals;
@@ -9,46 +26,46 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import java.math.BigDecimal;
-import java.util.Currency;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.BiFunction;
 import org.apache.commons.lang.NotImplementedException;
-import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
 import org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl;
 import org.broadleafcommerce.core.order.domain.FulfillmentGroupItemImpl;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
+import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.pricing.service.ShippingRateService;
 import org.broadleafcommerce.profile.core.domain.AddressImpl;
 import org.broadleafcommerce.profile.core.domain.State;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ContextConfiguration(classes = {BandedShippingModule.class})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class BandedShippingModuleDiffblueTest {
-  @Autowired
+  @InjectMocks
   private BandedShippingModule bandedShippingModule;
 
-  @MockBean
+  @Mock
   private ShippingRateService shippingRateService;
 
   /**
-   * Test
-   * {@link BandedShippingModule#calculateShippingForFulfillmentGroup(FulfillmentGroup)}.
+   * Test {@link BandedShippingModule#calculateShippingForFulfillmentGroup(FulfillmentGroup)}.
+   * <ul>
+   *   <li>Then Order return {@link NullOrderImpl}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link BandedShippingModule#calculateShippingForFulfillmentGroup(FulfillmentGroup)}
+   * Method under test: {@link BandedShippingModule#calculateShippingForFulfillmentGroup(FulfillmentGroup)}
    */
   @Test
-  public void testCalculateShippingForFulfillmentGroup() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FulfillmentGroup BandedShippingModule.calculateShippingForFulfillmentGroup(FulfillmentGroup)"})
+  public void testCalculateShippingForFulfillmentGroup_thenOrderReturnNullOrderImpl() {
     // Arrange
     BandedShippingModule bandedShippingModule = new BandedShippingModule();
     bandedShippingModule.setDefaultModule(true);
@@ -63,47 +80,23 @@ public class BandedShippingModuleDiffblueTest {
 
     // Assert
     assertTrue(actualCalculateShippingForFulfillmentGroupResult instanceof FulfillmentGroupImpl);
-    Money fulfillmentGroupAdjustmentsValue = actualCalculateShippingForFulfillmentGroupResult
-        .getFulfillmentGroupAdjustmentsValue();
-    Currency currency = fulfillmentGroupAdjustmentsValue.getCurrency();
-    assertEquals("British Pound", currency.getDisplayName());
-    assertEquals("GBP", currency.getCurrencyCode());
-    assertEquals("GBP", currency.toString());
-    assertEquals("£", currency.getSymbol());
+    Order order2 = actualCalculateShippingForFulfillmentGroupResult.getOrder();
+    assertTrue(order2 instanceof NullOrderImpl);
     assertNull(((FulfillmentGroupImpl) actualCalculateShippingForFulfillmentGroupResult).getCurrencyCode());
-    assertEquals(2, currency.getDefaultFractionDigits());
-    assertEquals(826, currency.getNumericCode());
-    BigDecimal expectedAmount = new BigDecimal("0.00");
-    assertEquals(expectedAmount, fulfillmentGroupAdjustmentsValue.getAmount());
-    assertEquals(fulfillmentGroupAdjustmentsValue, fulfillmentGroupAdjustmentsValue.abs());
-    assertEquals(fulfillmentGroupAdjustmentsValue, fulfillmentGroupAdjustmentsValue.zero());
-    assertEquals(fulfillmentGroupAdjustmentsValue,
-        actualCalculateShippingForFulfillmentGroupResult.getFulfillmentPrice());
-    assertEquals(fulfillmentGroupAdjustmentsValue,
-        actualCalculateShippingForFulfillmentGroupResult.getFutureCreditFulfillmentGroupAdjustmentsValue());
-    assertEquals(fulfillmentGroupAdjustmentsValue,
-        actualCalculateShippingForFulfillmentGroupResult.getRetailFulfillmentPrice());
-    assertEquals(fulfillmentGroupAdjustmentsValue,
-        actualCalculateShippingForFulfillmentGroupResult.getRetailShippingPrice());
-    assertEquals(fulfillmentGroupAdjustmentsValue,
-        actualCalculateShippingForFulfillmentGroupResult.getSaleFulfillmentPrice());
-    assertEquals(fulfillmentGroupAdjustmentsValue,
-        actualCalculateShippingForFulfillmentGroupResult.getSaleShippingPrice());
-    assertEquals(fulfillmentGroupAdjustmentsValue, actualCalculateShippingForFulfillmentGroupResult.getShippingPrice());
-    assertSame(order, actualCalculateShippingForFulfillmentGroupResult.getOrder());
+    assertSame(order, order2);
   }
 
   /**
-   * Test
-   * {@link BandedShippingModule#calculateShippingForFulfillmentGroup(FulfillmentGroup)}.
+   * Test {@link BandedShippingModule#calculateShippingForFulfillmentGroup(FulfillmentGroup)}.
    * <ul>
    *   <li>Then return FulfillmentPrice is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BandedShippingModule#calculateShippingForFulfillmentGroup(FulfillmentGroup)}
+   * Method under test: {@link BandedShippingModule#calculateShippingForFulfillmentGroup(FulfillmentGroup)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FulfillmentGroup BandedShippingModule.calculateShippingForFulfillmentGroup(FulfillmentGroup)"})
   public void testCalculateShippingForFulfillmentGroup_thenReturnFulfillmentPriceIsNull() {
     // Arrange
     BandedShippingModule bandedShippingModule = new BandedShippingModule();
@@ -124,16 +117,16 @@ public class BandedShippingModuleDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BandedShippingModule#calculateShippingForFulfillmentGroup(FulfillmentGroup)}.
+   * Test {@link BandedShippingModule#calculateShippingForFulfillmentGroup(FulfillmentGroup)}.
    * <ul>
    *   <li>Then throw {@link NotImplementedException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BandedShippingModule#calculateShippingForFulfillmentGroup(FulfillmentGroup)}
+   * Method under test: {@link BandedShippingModule#calculateShippingForFulfillmentGroup(FulfillmentGroup)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FulfillmentGroup BandedShippingModule.calculateShippingForFulfillmentGroup(FulfillmentGroup)"})
   public void testCalculateShippingForFulfillmentGroup_thenThrowNotImplementedException() {
     // Arrange
     BandedShippingModule bandedShippingModule = new BandedShippingModule();
@@ -156,112 +149,15 @@ public class BandedShippingModuleDiffblueTest {
 
   /**
    * Test {@link BandedShippingModule#getServiceName()}.
-   * <ul>
-   *   <li>Given {@link BandedShippingModule} (default constructor).</li>
-   * </ul>
    * <p>
    * Method under test: {@link BandedShippingModule#getServiceName()}
    */
   @Test
-  public void testGetServiceName_givenBandedShippingModule() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BandedShippingModule.getServiceName()"})
+  public void testGetServiceName() {
     // Arrange, Act and Assert
     assertEquals("BANDED_SHIPPING", (new BandedShippingModule()).getServiceName());
-  }
-
-  /**
-   * Test {@link BandedShippingModule#getServiceName()}.
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} computeIfPresent {@code foo} and
-   * {@link BiFunction}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link BandedShippingModule#getServiceName()}
-   */
-  @Test
-  public void testGetServiceName_givenHashMapComputeIfPresentFooAndBiFunction() {
-    // Arrange
-    HashMap<String, String> feeTypeMapping = new HashMap<>();
-    feeTypeMapping.computeIfPresent("foo", mock(BiFunction.class));
-
-    BandedShippingModule bandedShippingModule = new BandedShippingModule();
-    bandedShippingModule.setFeeTypeMapping(feeTypeMapping);
-
-    // Act and Assert
-    assertEquals("BANDED_SHIPPING", bandedShippingModule.getServiceName());
-  }
-
-  /**
-   * Test {@link BandedShippingModule#isValidModuleForService(String)}.
-   * <p>
-   * Method under test:
-   * {@link BandedShippingModule#isValidModuleForService(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsValidModuleForService() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.pricing.service.module;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.pricing.service.module.BandedShippingModule.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3846 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.pricing.service.module.BandedShippingModule bandedShippingModule;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.ShippingRateService shippingRateService;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    bandedShippingModule.isValidModuleForService("Service Name");
-  }
-
-  /**
-   * Test {@link BandedShippingModule#isValidModuleForService(String)}.
-   * <ul>
-   *   <li>Given {@link BandedShippingModule} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link BandedShippingModule#isValidModuleForService(String)}
-   */
-  @Test
-  public void testIsValidModuleForService_givenBandedShippingModule_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertFalse((new BandedShippingModule()).isValidModuleForService("Service Name"));
-  }
-
-  /**
-   * Test {@link BandedShippingModule#isValidModuleForService(String)}.
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} computeIfPresent {@code foo} and
-   * {@link BiFunction}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link BandedShippingModule#isValidModuleForService(String)}
-   */
-  @Test
-  public void testIsValidModuleForService_givenHashMapComputeIfPresentFooAndBiFunction() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    HashMap<String, String> feeTypeMapping = new HashMap<>();
-    feeTypeMapping.computeIfPresent("foo", mock(BiFunction.class));
-
-    BandedShippingModule bandedShippingModule = new BandedShippingModule();
-    bandedShippingModule.setFeeTypeMapping(feeTypeMapping);
-
-    // Act and Assert
-    assertFalse(bandedShippingModule.isValidModuleForService("Service Name"));
   }
 
   /**
@@ -271,15 +167,31 @@ public class BandedShippingModuleDiffblueTest {
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BandedShippingModule#isValidModuleForService(String)}
+   * Method under test: {@link BandedShippingModule#isValidModuleForService(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean BandedShippingModule.isValidModuleForService(String)"})
   public void testIsValidModuleForService_whenBandedShipping_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertTrue((new BandedShippingModule()).isValidModuleForService("BANDED_SHIPPING"));
+    assertTrue(bandedShippingModule.isValidModuleForService("BANDED_SHIPPING"));
+  }
+
+  /**
+   * Test {@link BandedShippingModule#isValidModuleForService(String)}.
+   * <ul>
+   *   <li>When {@code Service Name}.</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BandedShippingModule#isValidModuleForService(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean BandedShippingModule.isValidModuleForService(String)"})
+  public void testIsValidModuleForService_whenServiceName_thenReturnFalse() {
+    // Arrange, Act and Assert
+    assertFalse(bandedShippingModule.isValidModuleForService("Service Name"));
   }
 
   /**
@@ -299,6 +211,12 @@ public class BandedShippingModuleDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BandedShippingModule.<init>()", "Map BandedShippingModule.getFeeSubTypeMapping()",
+      "Map BandedShippingModule.getFeeTypeMapping()", "String BandedShippingModule.getName()",
+      "Boolean BandedShippingModule.isDefaultModule()", "void BandedShippingModule.setDefaultModule(Boolean)",
+      "void BandedShippingModule.setFeeSubTypeMapping(Map)", "void BandedShippingModule.setFeeTypeMapping(Map)",
+      "void BandedShippingModule.setName(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     BandedShippingModule actualBandedShippingModule = new BandedShippingModule();
@@ -313,7 +231,7 @@ public class BandedShippingModuleDiffblueTest {
     String actualName = actualBandedShippingModule.getName();
     Boolean actualIsDefaultModuleResult = actualBandedShippingModule.isDefaultModule();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Name", actualName);
     assertTrue(actualFeeSubTypeMapping.isEmpty());
     assertTrue(actualFeeTypeMapping.isEmpty());

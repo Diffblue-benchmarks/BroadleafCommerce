@@ -20,7 +20,10 @@ package org.broadleafcommerce.common.weave;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class ConditionalFieldAnnotationCopyTransformMemberDTODiffblueTest {
   /**
@@ -28,19 +31,20 @@ public class ConditionalFieldAnnotationCopyTransformMemberDTODiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>default or parameterless constructor of
-   * {@link ConditionalFieldAnnotationCopyTransformMemberDTO}
-   *   <li>
-   * {@link ConditionalFieldAnnotationCopyTransformMemberDTO#setConditionalProperty(String)}
-   *   <li>
-   * {@link ConditionalFieldAnnotationCopyTransformMemberDTO#setTemplateNames(String[])}
-   *   <li>
-   * {@link ConditionalFieldAnnotationCopyTransformMemberDTO#getConditionalProperty()}
-   *   <li>
-   * {@link ConditionalFieldAnnotationCopyTransformMemberDTO#getTemplateNames()}
+   *   <li>default or parameterless constructor of {@link ConditionalFieldAnnotationCopyTransformMemberDTO}
+   *   <li>{@link ConditionalFieldAnnotationCopyTransformMemberDTO#setConditionalProperty(String)}
+   *   <li>{@link ConditionalFieldAnnotationCopyTransformMemberDTO#setTemplateNames(String[])}
+   *   <li>{@link ConditionalFieldAnnotationCopyTransformMemberDTO#getConditionalProperty()}
+   *   <li>{@link ConditionalFieldAnnotationCopyTransformMemberDTO#getTemplateNames()}
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ConditionalFieldAnnotationCopyTransformMemberDTO.<init>()",
+      "String ConditionalFieldAnnotationCopyTransformMemberDTO.getConditionalProperty()",
+      "String[] ConditionalFieldAnnotationCopyTransformMemberDTO.getTemplateNames()",
+      "void ConditionalFieldAnnotationCopyTransformMemberDTO.setConditionalProperty(String)",
+      "void ConditionalFieldAnnotationCopyTransformMemberDTO.setTemplateNames(String[])"})
   public void testGettersAndSetters() {
     // Arrange and Act
     ConditionalFieldAnnotationCopyTransformMemberDTO actualConditionalFieldAnnotationCopyTransformMemberDTO = new ConditionalFieldAnnotationCopyTransformMemberDTO();
@@ -50,7 +54,7 @@ public class ConditionalFieldAnnotationCopyTransformMemberDTODiffblueTest {
     String actualConditionalProperty = actualConditionalFieldAnnotationCopyTransformMemberDTO.getConditionalProperty();
     String[] actualTemplateNames = actualConditionalFieldAnnotationCopyTransformMemberDTO.getTemplateNames();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Property Name", actualConditionalProperty);
     assertSame(templateNames, actualTemplateNames);
     assertArrayEquals(new String[]{"Template Names"}, actualTemplateNames);

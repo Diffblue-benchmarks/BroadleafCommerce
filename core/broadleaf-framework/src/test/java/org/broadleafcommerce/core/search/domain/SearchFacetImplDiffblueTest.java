@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.search.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -10,60 +27,29 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import org.broadleafcommerce.common.copy.CreateResponse;
-import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
-import org.broadleafcommerce.common.service.GenericEntityServiceImpl;
-import org.broadleafcommerce.common.site.domain.CatalogImpl;
-import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.broadleafcommerce.core.search.domain.solr.FieldType;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class SearchFacetImplDiffblueTest {
   @Autowired
   private SearchFacetImpl searchFacetImpl;
-
-  /**
-   * Test {@link SearchFacetImpl#getField()}.
-   * <p>
-   * Method under test: {@link SearchFacetImpl#getField()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetField() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.search.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1146 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.domain.SearchFacetImpl searchFacetImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SearchFacetImpl()).getField();
-  }
 
   /**
    * Test {@link SearchFacetImpl#getField()}.
@@ -74,28 +60,28 @@ public class SearchFacetImplDiffblueTest {
    * Method under test: {@link SearchFacetImpl#getField()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Field SearchFacetImpl.getField()"})
   public void testGetField_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     IndexFieldTypeImpl fieldType = mock(IndexFieldTypeImpl.class);
     when(fieldType.getIndexField()).thenReturn(new IndexFieldImpl());
 
-    SearchFacetImpl searchFacetImpl = new SearchFacetImpl();
-    searchFacetImpl.setCanMultiselect(true);
-    searchFacetImpl.setFieldType(fieldType);
-    searchFacetImpl.setId(1L);
-    searchFacetImpl.setLabel("Label");
-    searchFacetImpl.setName("Name");
-    searchFacetImpl.setRequiredFacets(new ArrayList<>());
-    searchFacetImpl.setRequiresAllDependentFacets(true);
-    searchFacetImpl.setSearchDisplayPriority(1);
-    searchFacetImpl.setSearchFacetRanges(new ArrayList<>());
-    searchFacetImpl.setShowOnSearch(true);
-    searchFacetImpl.setUseFacetRanges(true);
+    SearchFacetImpl searchFacetImpl2 = new SearchFacetImpl();
+    searchFacetImpl2.setCanMultiselect(true);
+    searchFacetImpl2.setFieldType(fieldType);
+    searchFacetImpl2.setId(1L);
+    searchFacetImpl2.setLabel("Label");
+    searchFacetImpl2.setName("Name");
+    searchFacetImpl2.setRequiredFacets(new ArrayList<>());
+    searchFacetImpl2.setRequiresAllDependentFacets(true);
+    searchFacetImpl2.setSearchDisplayPriority(1);
+    searchFacetImpl2.setSearchFacetRanges(new ArrayList<>());
+    searchFacetImpl2.setShowOnSearch(true);
+    searchFacetImpl2.setUseFacetRanges(true);
 
     // Act
-    Field actualField = searchFacetImpl.getField();
+    Field actualField = searchFacetImpl2.getField();
 
     // Assert
     verify(fieldType).getIndexField();
@@ -104,66 +90,36 @@ public class SearchFacetImplDiffblueTest {
 
   /**
    * Test {@link SearchFacetImpl#getFacetFieldType()}.
-   * <p>
-   * Method under test: {@link SearchFacetImpl#getFacetFieldType()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetFacetFieldType() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.search.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1133 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.domain.SearchFacetImpl searchFacetImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SearchFacetImpl()).getFacetFieldType();
-  }
-
-  /**
-   * Test {@link SearchFacetImpl#getFacetFieldType()}.
    * <ul>
-   *   <li>Given {@link IndexFieldType} {@link IndexFieldType#getFieldType()} return
-   * {@link FieldType#BOOLEAN}.</li>
+   *   <li>Given {@link IndexFieldType} {@link IndexFieldType#getFieldType()} return {@link FieldType#BOOLEAN}.</li>
    *   <li>Then return {@code b}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SearchFacetImpl#getFacetFieldType()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SearchFacetImpl.getFacetFieldType()"})
   public void testGetFacetFieldType_givenIndexFieldTypeGetFieldTypeReturnBoolean_thenReturnB() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     IndexFieldType fieldType = mock(IndexFieldType.class);
     when(fieldType.getFieldType()).thenReturn(FieldType.BOOLEAN);
 
-    SearchFacetImpl searchFacetImpl = new SearchFacetImpl();
-    searchFacetImpl.setCanMultiselect(true);
-    searchFacetImpl.setFieldType(fieldType);
-    searchFacetImpl.setId(1L);
-    searchFacetImpl.setLabel("Label");
-    searchFacetImpl.setName("Name");
-    searchFacetImpl.setRequiredFacets(new ArrayList<>());
-    searchFacetImpl.setRequiresAllDependentFacets(true);
-    searchFacetImpl.setSearchDisplayPriority(1);
-    searchFacetImpl.setSearchFacetRanges(new ArrayList<>());
-    searchFacetImpl.setShowOnSearch(true);
-    searchFacetImpl.setUseFacetRanges(true);
+    SearchFacetImpl searchFacetImpl2 = new SearchFacetImpl();
+    searchFacetImpl2.setCanMultiselect(true);
+    searchFacetImpl2.setFieldType(fieldType);
+    searchFacetImpl2.setId(1L);
+    searchFacetImpl2.setLabel("Label");
+    searchFacetImpl2.setName("Name");
+    searchFacetImpl2.setRequiredFacets(new ArrayList<>());
+    searchFacetImpl2.setRequiresAllDependentFacets(true);
+    searchFacetImpl2.setSearchDisplayPriority(1);
+    searchFacetImpl2.setSearchFacetRanges(new ArrayList<>());
+    searchFacetImpl2.setShowOnSearch(true);
+    searchFacetImpl2.setUseFacetRanges(true);
 
     // Act
-    String actualFacetFieldType = searchFacetImpl.getFacetFieldType();
+    String actualFacetFieldType = searchFacetImpl2.getFacetFieldType();
 
     // Assert
     verify(fieldType).getFieldType();
@@ -176,157 +132,42 @@ public class SearchFacetImplDiffblueTest {
    * Method under test: {@link SearchFacetImpl#getName()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SearchFacetImpl.getName()"})
   public void testGetName() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.search.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1185 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.domain.SearchFacetImpl searchFacetImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SearchFacetImpl()).getName();
-  }
-
-  /**
-   * Test {@link SearchFacetImpl#getName()}.
-   * <ul>
-   *   <li>Given {@link SearchFacetImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SearchFacetImpl#getName()}
-   */
-  @Test
-  public void testGetName_givenSearchFacetImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new SearchFacetImpl()).getName());
   }
 
   /**
-   * Test {@link SearchFacetImpl#getName()}.
-   * <ul>
-   *   <li>Given {@link SearchFacetImpl} (default constructor) FieldType is
-   * {@link IndexFieldTypeImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SearchFacetImpl#getName()}
-   */
-  @Test
-  public void testGetName_givenSearchFacetImplFieldTypeIsIndexFieldTypeImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SearchFacetImpl searchFacetImpl = new SearchFacetImpl();
-    searchFacetImpl.setFieldType(mock(IndexFieldTypeImpl.class));
-
-    // Act and Assert
-    assertNull(searchFacetImpl.getName());
-  }
-
-  /**
-   * Test {@link SearchFacetImpl#getLabel()}.
-   * <p>
-   * Method under test: {@link SearchFacetImpl#getLabel()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetLabel() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.search.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1159 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.domain.SearchFacetImpl searchFacetImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SearchFacetImpl()).getLabel();
-  }
-
-  /**
    * Test {@link SearchFacetImpl#getLabel()}.
    * <ul>
-   *   <li>Given {@link SearchFacetImpl} (default constructor) FieldType is
-   * {@link IndexFieldTypeImpl} (default constructor).</li>
+   *   <li>Given {@link SearchFacetImpl} (default constructor) CanMultiselect is {@code true}.</li>
    *   <li>Then return {@code foo}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SearchFacetImpl#getLabel()}
    */
   @Test
-  public void testGetLabel_givenSearchFacetImplFieldTypeIsIndexFieldTypeImpl_thenReturnFoo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SearchFacetImpl.getLabel()"})
+  public void testGetLabel_givenSearchFacetImplCanMultiselectIsTrue_thenReturnFoo() {
     // Arrange
-    SearchFacetImpl searchFacetImpl = new SearchFacetImpl();
-    searchFacetImpl.setCanMultiselect(true);
-    searchFacetImpl.setFieldType(new IndexFieldTypeImpl());
-    searchFacetImpl.setId(1L);
-    searchFacetImpl.setName("Name");
-    searchFacetImpl.setRequiredFacets(new ArrayList<>());
-    searchFacetImpl.setRequiresAllDependentFacets(true);
-    searchFacetImpl.setSearchDisplayPriority(1);
-    searchFacetImpl.setSearchFacetRanges(new ArrayList<>());
-    searchFacetImpl.setShowOnSearch(true);
-    searchFacetImpl.setUseFacetRanges(true);
-    searchFacetImpl.setLabel("foo");
+    SearchFacetImpl searchFacetImpl2 = new SearchFacetImpl();
+    searchFacetImpl2.setCanMultiselect(true);
+    searchFacetImpl2.setFieldType(new IndexFieldTypeImpl());
+    searchFacetImpl2.setId(1L);
+    searchFacetImpl2.setName("Name");
+    searchFacetImpl2.setRequiredFacets(new ArrayList<>());
+    searchFacetImpl2.setRequiresAllDependentFacets(true);
+    searchFacetImpl2.setSearchDisplayPriority(1);
+    searchFacetImpl2.setSearchFacetRanges(new ArrayList<>());
+    searchFacetImpl2.setShowOnSearch(true);
+    searchFacetImpl2.setUseFacetRanges(true);
+    searchFacetImpl2.setLabel("foo");
 
     // Act and Assert
-    assertEquals("foo", searchFacetImpl.getLabel());
-  }
-
-  /**
-   * Test {@link SearchFacetImpl#getLabel()}.
-   * <ul>
-   *   <li>Given {@link SearchFacetImpl} (default constructor) FieldType is
-   * {@link IndexFieldType}.</li>
-   *   <li>Then return {@code foo}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SearchFacetImpl#getLabel()}
-   */
-  @Test
-  public void testGetLabel_givenSearchFacetImplFieldTypeIsIndexFieldType_thenReturnFoo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SearchFacetImpl searchFacetImpl = new SearchFacetImpl();
-    searchFacetImpl.setCanMultiselect(true);
-    searchFacetImpl.setFieldType(mock(IndexFieldType.class));
-    searchFacetImpl.setId(1L);
-    searchFacetImpl.setName("Name");
-    searchFacetImpl.setRequiredFacets(new ArrayList<>());
-    searchFacetImpl.setRequiresAllDependentFacets(true);
-    searchFacetImpl.setSearchDisplayPriority(1);
-    searchFacetImpl.setSearchFacetRanges(new ArrayList<>());
-    searchFacetImpl.setShowOnSearch(true);
-    searchFacetImpl.setUseFacetRanges(true);
-    searchFacetImpl.setLabel("foo");
-
-    // Act and Assert
-    assertEquals("foo", searchFacetImpl.getLabel());
+    assertEquals("foo", searchFacetImpl2.getLabel());
   }
 
   /**
@@ -339,9 +180,9 @@ public class SearchFacetImplDiffblueTest {
    * Method under test: {@link SearchFacetImpl#getLabel()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SearchFacetImpl.getLabel()"})
   public void testGetLabel_givenSearchFacetImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new SearchFacetImpl()).getLabel());
   }
@@ -352,81 +193,25 @@ public class SearchFacetImplDiffblueTest {
    * Method under test: {@link SearchFacetImpl#getRequiresAllDependentFacets()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SearchFacetImpl.getRequiresAllDependentFacets()"})
   public void testGetRequiresAllDependentFacets() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SearchFacetImpl searchFacetImpl = new SearchFacetImpl();
-    searchFacetImpl.setCanMultiselect(true);
-    searchFacetImpl.setFieldType(new IndexFieldTypeImpl());
-    searchFacetImpl.setId(1L);
-    searchFacetImpl.setLabel("Label");
-    searchFacetImpl.setName("Name");
-    searchFacetImpl.setRequiredFacets(new ArrayList<>());
-    searchFacetImpl.setSearchDisplayPriority(1);
-    searchFacetImpl.setSearchFacetRanges(new ArrayList<>());
-    searchFacetImpl.setShowOnSearch(true);
-    searchFacetImpl.setUseFacetRanges(true);
-    searchFacetImpl.setRequiresAllDependentFacets(null);
+    SearchFacetImpl searchFacetImpl2 = new SearchFacetImpl();
+    searchFacetImpl2.setCanMultiselect(true);
+    searchFacetImpl2.setFieldType(new IndexFieldTypeImpl());
+    searchFacetImpl2.setId(1L);
+    searchFacetImpl2.setLabel("Label");
+    searchFacetImpl2.setName("Name");
+    searchFacetImpl2.setRequiredFacets(new ArrayList<>());
+    searchFacetImpl2.setSearchDisplayPriority(1);
+    searchFacetImpl2.setSearchFacetRanges(new ArrayList<>());
+    searchFacetImpl2.setShowOnSearch(true);
+    searchFacetImpl2.setUseFacetRanges(true);
+    searchFacetImpl2.setRequiresAllDependentFacets(null);
 
     // Act and Assert
-    assertFalse(searchFacetImpl.getRequiresAllDependentFacets());
-  }
-
-  /**
-   * Test {@link SearchFacetImpl#getRequiresAllDependentFacets()}.
-   * <p>
-   * Method under test: {@link SearchFacetImpl#getRequiresAllDependentFacets()}
-   */
-  @Test
-  public void testGetRequiresAllDependentFacets2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SearchFacetImpl searchFacetImpl = new SearchFacetImpl();
-    searchFacetImpl.setCanMultiselect(true);
-    searchFacetImpl.setFieldType(mock(IndexFieldTypeImpl.class));
-    searchFacetImpl.setId(1L);
-    searchFacetImpl.setLabel("Label");
-    searchFacetImpl.setName("Name");
-    searchFacetImpl.setRequiredFacets(new ArrayList<>());
-    searchFacetImpl.setSearchDisplayPriority(1);
-    searchFacetImpl.setSearchFacetRanges(new ArrayList<>());
-    searchFacetImpl.setShowOnSearch(true);
-    searchFacetImpl.setUseFacetRanges(true);
-    searchFacetImpl.setRequiresAllDependentFacets(null);
-
-    // Act and Assert
-    assertFalse(searchFacetImpl.getRequiresAllDependentFacets());
-  }
-
-  /**
-   * Test {@link SearchFacetImpl#getRequiresAllDependentFacets()}.
-   * <p>
-   * Method under test: {@link SearchFacetImpl#getRequiresAllDependentFacets()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetRequiresAllDependentFacets3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.search.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1198 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.domain.SearchFacetImpl searchFacetImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SearchFacetImpl()).getRequiresAllDependentFacets();
+    assertFalse(searchFacetImpl2.getRequiresAllDependentFacets());
   }
 
   /**
@@ -439,9 +224,9 @@ public class SearchFacetImplDiffblueTest {
    * Method under test: {@link SearchFacetImpl#getRequiresAllDependentFacets()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SearchFacetImpl.getRequiresAllDependentFacets()"})
   public void testGetRequiresAllDependentFacets_givenSearchFacetImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertFalse((new SearchFacetImpl()).getRequiresAllDependentFacets());
   }
@@ -455,47 +240,45 @@ public class SearchFacetImplDiffblueTest {
    * Method under test: {@link SearchFacetImpl#getRequiresAllDependentFacets()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SearchFacetImpl.getRequiresAllDependentFacets()"})
   public void testGetRequiresAllDependentFacets_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SearchFacetImpl searchFacetImpl = new SearchFacetImpl();
-    searchFacetImpl.setCanMultiselect(true);
-    searchFacetImpl.setFieldType(new IndexFieldTypeImpl());
-    searchFacetImpl.setId(1L);
-    searchFacetImpl.setLabel("Label");
-    searchFacetImpl.setName("Name");
-    searchFacetImpl.setRequiredFacets(new ArrayList<>());
-    searchFacetImpl.setSearchDisplayPriority(1);
-    searchFacetImpl.setSearchFacetRanges(new ArrayList<>());
-    searchFacetImpl.setShowOnSearch(true);
-    searchFacetImpl.setUseFacetRanges(true);
-    searchFacetImpl.setRequiresAllDependentFacets(true);
+    SearchFacetImpl searchFacetImpl2 = new SearchFacetImpl();
+    searchFacetImpl2.setCanMultiselect(true);
+    searchFacetImpl2.setFieldType(new IndexFieldTypeImpl());
+    searchFacetImpl2.setId(1L);
+    searchFacetImpl2.setLabel("Label");
+    searchFacetImpl2.setName("Name");
+    searchFacetImpl2.setRequiredFacets(new ArrayList<>());
+    searchFacetImpl2.setSearchDisplayPriority(1);
+    searchFacetImpl2.setSearchFacetRanges(new ArrayList<>());
+    searchFacetImpl2.setShowOnSearch(true);
+    searchFacetImpl2.setUseFacetRanges(true);
+    searchFacetImpl2.setRequiresAllDependentFacets(true);
 
     // Act and Assert
-    assertTrue(searchFacetImpl.getRequiresAllDependentFacets());
+    assertTrue(searchFacetImpl2.getRequiresAllDependentFacets());
   }
 
   /**
-   * Test
-   * {@link SearchFacetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * Test {@link SearchFacetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <p>
-   * Method under test:
-   * {@link SearchFacetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link SearchFacetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse SearchFacetImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SearchFacetImpl searchFacetImpl = new SearchFacetImpl();
+    SearchFacetImpl searchFacetImpl2 = new SearchFacetImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
     CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
 
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<SearchFacet> actualCreateOrRetrieveCopyInstanceResult = searchFacetImpl
+    CreateResponse<SearchFacet> actualCreateOrRetrieveCopyInstanceResult = searchFacetImpl2
         .createOrRetrieveCopyInstance(context);
 
     // Assert
@@ -504,48 +287,7 @@ public class SearchFacetImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link SearchFacetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <p>
-   * Method under test:
-   * {@link SearchFacetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.search.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1103 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.domain.SearchFacetImpl searchFacetImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    SearchFacetImpl searchFacetImpl2 = new SearchFacetImpl();
-    CatalogImpl fromCatalog = new CatalogImpl();
-    CatalogImpl toCatalog = new CatalogImpl();
-    SiteImpl fromSite = new SiteImpl();
-    SiteImpl toSite = new SiteImpl();
-    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
-
-    // Act
-    searchFacetImpl2.createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
-        genericEntityService, new MultiTenantCopierExtensionManager()));
-  }
-
-  /**
-   * Test {@link SearchFacetImpl#equals(Object)}, and
-   * {@link SearchFacetImpl#hashCode()}.
+   * Test {@link SearchFacetImpl#equals(Object)}, and {@link SearchFacetImpl#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -558,6 +300,8 @@ public class SearchFacetImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SearchFacetImpl.equals(Object)", "int SearchFacetImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     SearchFacetImpl searchFacetImpl = new SearchFacetImpl();
@@ -589,53 +333,13 @@ public class SearchFacetImplDiffblueTest {
    * Method under test: {@link SearchFacetImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SearchFacetImpl.equals(Object)", "int SearchFacetImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     SearchFacetImpl searchFacetImpl = new SearchFacetImpl();
     searchFacetImpl.setCanMultiselect(true);
     searchFacetImpl.setFieldType(new IndexFieldTypeImpl());
-    searchFacetImpl.setId(1L);
-    searchFacetImpl.setLabel("Label");
-    searchFacetImpl.setName("Name");
-    searchFacetImpl.setRequiredFacets(new ArrayList<>());
-    searchFacetImpl.setRequiresAllDependentFacets(true);
-    searchFacetImpl.setSearchDisplayPriority(1);
-    searchFacetImpl.setSearchFacetRanges(new ArrayList<>());
-    searchFacetImpl.setShowOnSearch(true);
-    searchFacetImpl.setUseFacetRanges(true);
-
-    SearchFacetImpl searchFacetImpl2 = new SearchFacetImpl();
-    searchFacetImpl2.setCanMultiselect(true);
-    searchFacetImpl2.setFieldType(new IndexFieldTypeImpl());
-    searchFacetImpl2.setId(1L);
-    searchFacetImpl2.setLabel("Label");
-    searchFacetImpl2.setName("Name");
-    searchFacetImpl2.setRequiredFacets(new ArrayList<>());
-    searchFacetImpl2.setRequiresAllDependentFacets(true);
-    searchFacetImpl2.setSearchDisplayPriority(1);
-    searchFacetImpl2.setSearchFacetRanges(new ArrayList<>());
-    searchFacetImpl2.setShowOnSearch(true);
-    searchFacetImpl2.setUseFacetRanges(true);
-
-    // Act and Assert
-    assertNotEquals(searchFacetImpl, searchFacetImpl2);
-  }
-
-  /**
-   * Test {@link SearchFacetImpl#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SearchFacetImpl#equals(Object)}
-   */
-  @Test
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
-    // Arrange
-    SearchFacetImpl searchFacetImpl = new SearchFacetImpl();
-    searchFacetImpl.setCanMultiselect(true);
-    searchFacetImpl.setFieldType(mock(IndexFieldType.class));
     searchFacetImpl.setId(1L);
     searchFacetImpl.setLabel("Label");
     searchFacetImpl.setName("Name");
@@ -673,6 +377,8 @@ public class SearchFacetImplDiffblueTest {
    * Method under test: {@link SearchFacetImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SearchFacetImpl.equals(Object)", "int SearchFacetImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     SearchFacetImpl searchFacetImpl = new SearchFacetImpl();
@@ -702,6 +408,8 @@ public class SearchFacetImplDiffblueTest {
    * Method under test: {@link SearchFacetImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SearchFacetImpl.equals(Object)", "int SearchFacetImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     SearchFacetImpl searchFacetImpl = new SearchFacetImpl();
@@ -723,93 +431,33 @@ public class SearchFacetImplDiffblueTest {
 
   /**
    * Test {@link SearchFacetImpl#getMainEntityName()}.
-   * <p>
-   * Method under test: {@link SearchFacetImpl#getMainEntityName()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetMainEntityName() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.search.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1172 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.domain.SearchFacetImpl searchFacetImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SearchFacetImpl()).getMainEntityName();
-  }
-
-  /**
-   * Test {@link SearchFacetImpl#getMainEntityName()}.
    * <ul>
-   *   <li>Given {@link SearchFacetImpl} (default constructor) FieldType is
-   * {@link IndexFieldType}.</li>
+   *   <li>Given {@link SearchFacetImpl} (default constructor) CanMultiselect is {@code true}.</li>
+   *   <li>Then return {@code foo}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SearchFacetImpl#getMainEntityName()}
    */
   @Test
-  public void testGetMainEntityName_givenSearchFacetImplFieldTypeIsIndexFieldType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SearchFacetImpl.getMainEntityName()"})
+  public void testGetMainEntityName_givenSearchFacetImplCanMultiselectIsTrue_thenReturnFoo() {
     // Arrange
-    SearchFacetImpl searchFacetImpl = new SearchFacetImpl();
-    searchFacetImpl.setCanMultiselect(true);
-    searchFacetImpl.setFieldType(mock(IndexFieldType.class));
-    searchFacetImpl.setId(1L);
-    searchFacetImpl.setName("Name");
-    searchFacetImpl.setRequiredFacets(new ArrayList<>());
-    searchFacetImpl.setRequiresAllDependentFacets(true);
-    searchFacetImpl.setSearchDisplayPriority(1);
-    searchFacetImpl.setSearchFacetRanges(new ArrayList<>());
-    searchFacetImpl.setShowOnSearch(true);
-    searchFacetImpl.setUseFacetRanges(true);
-    searchFacetImpl.setLabel("foo");
+    SearchFacetImpl searchFacetImpl2 = new SearchFacetImpl();
+    searchFacetImpl2.setCanMultiselect(true);
+    searchFacetImpl2.setFieldType(new IndexFieldTypeImpl());
+    searchFacetImpl2.setId(1L);
+    searchFacetImpl2.setName("Name");
+    searchFacetImpl2.setRequiredFacets(new ArrayList<>());
+    searchFacetImpl2.setRequiresAllDependentFacets(true);
+    searchFacetImpl2.setSearchDisplayPriority(1);
+    searchFacetImpl2.setSearchFacetRanges(new ArrayList<>());
+    searchFacetImpl2.setShowOnSearch(true);
+    searchFacetImpl2.setUseFacetRanges(true);
+    searchFacetImpl2.setLabel("foo");
 
     // Act and Assert
-    assertEquals("foo", searchFacetImpl.getMainEntityName());
-  }
-
-  /**
-   * Test {@link SearchFacetImpl#getMainEntityName()}.
-   * <ul>
-   *   <li>Given {@link SearchFacetImpl} (default constructor) FieldType is
-   * {@link IndexFieldTypeImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SearchFacetImpl#getMainEntityName()}
-   */
-  @Test
-  public void testGetMainEntityName_givenSearchFacetImplFieldTypeIsIndexFieldTypeImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SearchFacetImpl searchFacetImpl = new SearchFacetImpl();
-    searchFacetImpl.setCanMultiselect(true);
-    searchFacetImpl.setFieldType(new IndexFieldTypeImpl());
-    searchFacetImpl.setId(1L);
-    searchFacetImpl.setName("Name");
-    searchFacetImpl.setRequiredFacets(new ArrayList<>());
-    searchFacetImpl.setRequiresAllDependentFacets(true);
-    searchFacetImpl.setSearchDisplayPriority(1);
-    searchFacetImpl.setSearchFacetRanges(new ArrayList<>());
-    searchFacetImpl.setShowOnSearch(true);
-    searchFacetImpl.setUseFacetRanges(true);
-    searchFacetImpl.setLabel("foo");
-
-    // Act and Assert
-    assertEquals("foo", searchFacetImpl.getMainEntityName());
+    assertEquals("foo", searchFacetImpl2.getMainEntityName());
   }
 
   /**
@@ -822,9 +470,9 @@ public class SearchFacetImplDiffblueTest {
    * Method under test: {@link SearchFacetImpl#getMainEntityName()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SearchFacetImpl.getMainEntityName()"})
   public void testGetMainEntityName_givenSearchFacetImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new SearchFacetImpl()).getMainEntityName());
   }
@@ -857,6 +505,17 @@ public class SearchFacetImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SearchFacetImpl.<init>()", "Boolean SearchFacetImpl.getCanMultiselect()",
+      "IndexFieldType SearchFacetImpl.getFieldType()", "Long SearchFacetImpl.getId()",
+      "List SearchFacetImpl.getRequiredFacets()", "Integer SearchFacetImpl.getSearchDisplayPriority()",
+      "List SearchFacetImpl.getSearchFacetRanges()", "Boolean SearchFacetImpl.getShowOnSearch()",
+      "Boolean SearchFacetImpl.getUseFacetRanges()", "void SearchFacetImpl.setCanMultiselect(Boolean)",
+      "void SearchFacetImpl.setFieldType(IndexFieldType)", "void SearchFacetImpl.setId(Long)",
+      "void SearchFacetImpl.setLabel(String)", "void SearchFacetImpl.setName(String)",
+      "void SearchFacetImpl.setRequiredFacets(List)", "void SearchFacetImpl.setRequiresAllDependentFacets(Boolean)",
+      "void SearchFacetImpl.setSearchDisplayPriority(Integer)", "void SearchFacetImpl.setSearchFacetRanges(List)",
+      "void SearchFacetImpl.setShowOnSearch(Boolean)", "void SearchFacetImpl.setUseFacetRanges(Boolean)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     SearchFacetImpl actualSearchFacetImpl = new SearchFacetImpl();
@@ -883,7 +542,7 @@ public class SearchFacetImplDiffblueTest {
     Boolean actualShowOnSearch = actualSearchFacetImpl.getShowOnSearch();
     Boolean actualUseFacetRanges = actualSearchFacetImpl.getUseFacetRanges();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals(1, actualSearchDisplayPriority.intValue());
     assertEquals(1L, actualId.longValue());
     assertTrue(actualRequiredFacets.isEmpty());

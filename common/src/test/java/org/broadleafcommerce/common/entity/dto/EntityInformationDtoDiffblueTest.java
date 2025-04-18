@@ -20,20 +20,24 @@ package org.broadleafcommerce.common.entity.dto;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class EntityInformationDtoDiffblueTest {
   /**
    * Test {@link EntityInformationDto#isProfileEntity()}.
    * <ul>
-   *   <li>Given {@link EntityInformationDto} (default constructor) CatalogId is
-   * one.</li>
+   *   <li>Given {@link EntityInformationDto} (default constructor) CatalogId is one.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link EntityInformationDto#isProfileEntity()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EntityInformationDto.isProfileEntity()"})
   public void testIsProfileEntity_givenEntityInformationDtoCatalogIdIsOne_thenReturnTrue() {
     // Arrange
     EntityInformationDto entityInformationDto = new EntityInformationDto();
@@ -57,6 +61,8 @@ public class EntityInformationDtoDiffblueTest {
    * Method under test: {@link EntityInformationDto#isProfileEntity()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EntityInformationDto.isProfileEntity()"})
   public void testIsProfileEntity_givenEntityInformationDto_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse((new EntityInformationDto()).isProfileEntity());
@@ -65,14 +71,15 @@ public class EntityInformationDtoDiffblueTest {
   /**
    * Test {@link EntityInformationDto#isCatalogEntity()}.
    * <ul>
-   *   <li>Given {@link EntityInformationDto} (default constructor) CatalogOwner is
-   * one.</li>
+   *   <li>Given {@link EntityInformationDto} (default constructor) CatalogOwner is one.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link EntityInformationDto#isCatalogEntity()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EntityInformationDto.isCatalogEntity()"})
   public void testIsCatalogEntity_givenEntityInformationDtoCatalogOwnerIsOne_thenReturnTrue() {
     // Arrange
     EntityInformationDto entityInformationDto = new EntityInformationDto();
@@ -96,6 +103,8 @@ public class EntityInformationDtoDiffblueTest {
    * Method under test: {@link EntityInformationDto#isCatalogEntity()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EntityInformationDto.isCatalogEntity()"})
   public void testIsCatalogEntity_givenEntityInformationDto_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse((new EntityInformationDto()).isCatalogEntity());
@@ -120,6 +129,14 @@ public class EntityInformationDtoDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void EntityInformationDto.<init>()", "Long EntityInformationDto.getCatalogId()",
+      "Long EntityInformationDto.getCatalogOwner()",
+      "Boolean EntityInformationDto.getOwnerToCatalogRelationshipActive()",
+      "Long EntityInformationDto.getOwningSiteId()", "Long EntityInformationDto.getProfileId()",
+      "void EntityInformationDto.setCatalogId(Long)", "void EntityInformationDto.setCatalogOwner(Long)",
+      "void EntityInformationDto.setOwnerToCatalogRelationshipActive(Boolean)",
+      "void EntityInformationDto.setOwningSiteId(Long)", "void EntityInformationDto.setProfileId(Long)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     EntityInformationDto actualEntityInformationDto = new EntityInformationDto();
@@ -134,7 +151,7 @@ public class EntityInformationDtoDiffblueTest {
     Long actualOwningSiteId = actualEntityInformationDto.getOwningSiteId();
     Long actualProfileId = actualEntityInformationDto.getProfileId();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals(1L, actualCatalogId.longValue());
     assertEquals(1L, actualCatalogOwner.longValue());
     assertEquals(1L, actualOwningSiteId.longValue());

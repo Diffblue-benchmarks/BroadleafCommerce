@@ -20,20 +20,27 @@ package org.broadleafcommerce.common.exception;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class OptimisticLockInvalidStateExceptionDiffblueTest {
   /**
-   * Test
-   * {@link OptimisticLockInvalidStateException#OptimisticLockInvalidStateException(String)}.
+   * Test {@link OptimisticLockInvalidStateException#OptimisticLockInvalidStateException(String)}.
    * <ul>
    *   <li>Then return Cause is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OptimisticLockInvalidStateException#OptimisticLockInvalidStateException(String)}
+   * Method under test: {@link OptimisticLockInvalidStateException#OptimisticLockInvalidStateException(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OptimisticLockInvalidStateException.<init>()",
+      "void OptimisticLockInvalidStateException.<init>(String)",
+      "void OptimisticLockInvalidStateException.<init>(String, Throwable)",
+      "void OptimisticLockInvalidStateException.<init>(String, Throwable, boolean, boolean)",
+      "void OptimisticLockInvalidStateException.<init>(Throwable)"})
   public void testNewOptimisticLockInvalidStateException_thenReturnCauseIsNull() {
     // Arrange and Act
     OptimisticLockInvalidStateException actualOptimisticLockInvalidStateException = new OptimisticLockInvalidStateException(
@@ -46,16 +53,20 @@ public class OptimisticLockInvalidStateExceptionDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link OptimisticLockInvalidStateException#OptimisticLockInvalidStateException(String, Throwable)}.
+   * Test {@link OptimisticLockInvalidStateException#OptimisticLockInvalidStateException(String, Throwable)}.
    * <ul>
    *   <li>Then return Message is {@code An error occurred}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OptimisticLockInvalidStateException#OptimisticLockInvalidStateException(String, Throwable)}
+   * Method under test: {@link OptimisticLockInvalidStateException#OptimisticLockInvalidStateException(String, Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OptimisticLockInvalidStateException.<init>()",
+      "void OptimisticLockInvalidStateException.<init>(String)",
+      "void OptimisticLockInvalidStateException.<init>(String, Throwable)",
+      "void OptimisticLockInvalidStateException.<init>(String, Throwable, boolean, boolean)",
+      "void OptimisticLockInvalidStateException.<init>(Throwable)"})
   public void testNewOptimisticLockInvalidStateException_thenReturnMessageIsAnErrorOccurred() {
     // Arrange
     Throwable cause = new Throwable();
@@ -71,16 +82,20 @@ public class OptimisticLockInvalidStateExceptionDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link OptimisticLockInvalidStateException#OptimisticLockInvalidStateException(Throwable)}.
+   * Test {@link OptimisticLockInvalidStateException#OptimisticLockInvalidStateException(Throwable)}.
    * <ul>
-   *   <li>Then return Message is {@code java.lang.Throwable}.</li>
+   *   <li>Then return Message is {@code Throwable}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OptimisticLockInvalidStateException#OptimisticLockInvalidStateException(Throwable)}
+   * Method under test: {@link OptimisticLockInvalidStateException#OptimisticLockInvalidStateException(Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OptimisticLockInvalidStateException.<init>()",
+      "void OptimisticLockInvalidStateException.<init>(String)",
+      "void OptimisticLockInvalidStateException.<init>(String, Throwable)",
+      "void OptimisticLockInvalidStateException.<init>(String, Throwable, boolean, boolean)",
+      "void OptimisticLockInvalidStateException.<init>(Throwable)"})
   public void testNewOptimisticLockInvalidStateException_thenReturnMessageIsJavaLangThrowable() {
     // Arrange
     Throwable cause = new Throwable();
@@ -96,16 +111,20 @@ public class OptimisticLockInvalidStateExceptionDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link OptimisticLockInvalidStateException#OptimisticLockInvalidStateException()}.
+   * Test {@link OptimisticLockInvalidStateException#OptimisticLockInvalidStateException()}.
    * <ul>
    *   <li>Then return Message is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OptimisticLockInvalidStateException#OptimisticLockInvalidStateException()}
+   * Method under test: {@link OptimisticLockInvalidStateException#OptimisticLockInvalidStateException()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OptimisticLockInvalidStateException.<init>()",
+      "void OptimisticLockInvalidStateException.<init>(String)",
+      "void OptimisticLockInvalidStateException.<init>(String, Throwable)",
+      "void OptimisticLockInvalidStateException.<init>(String, Throwable, boolean, boolean)",
+      "void OptimisticLockInvalidStateException.<init>(Throwable)"})
   public void testNewOptimisticLockInvalidStateException_thenReturnMessageIsNull() {
     // Arrange and Act
     OptimisticLockInvalidStateException actualOptimisticLockInvalidStateException = new OptimisticLockInvalidStateException();
@@ -117,16 +136,20 @@ public class OptimisticLockInvalidStateExceptionDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link OptimisticLockInvalidStateException#OptimisticLockInvalidStateException(String, Throwable, boolean, boolean)}.
+   * Test {@link OptimisticLockInvalidStateException#OptimisticLockInvalidStateException(String, Throwable, boolean, boolean)}.
    * <ul>
    *   <li>When {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OptimisticLockInvalidStateException#OptimisticLockInvalidStateException(String, Throwable, boolean, boolean)}
+   * Method under test: {@link OptimisticLockInvalidStateException#OptimisticLockInvalidStateException(String, Throwable, boolean, boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OptimisticLockInvalidStateException.<init>()",
+      "void OptimisticLockInvalidStateException.<init>(String)",
+      "void OptimisticLockInvalidStateException.<init>(String, Throwable)",
+      "void OptimisticLockInvalidStateException.<init>(String, Throwable, boolean, boolean)",
+      "void OptimisticLockInvalidStateException.<init>(Throwable)"})
   public void testNewOptimisticLockInvalidStateException_whenTrue() {
     // Arrange
     Throwable cause = new Throwable();

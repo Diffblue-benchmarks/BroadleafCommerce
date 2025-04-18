@@ -1,236 +1,379 @@
+/*-
+ * #%L
+ * BroadleafCommerce Profile
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.profile.core.service;
 
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.anyBoolean;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.util.ArrayList;
+import java.util.List;
+import org.broadleafcommerce.profile.core.dao.CustomerPhoneDao;
+import org.broadleafcommerce.profile.core.domain.CustomerImpl;
 import org.broadleafcommerce.profile.core.domain.CustomerPhone;
 import org.broadleafcommerce.profile.core.domain.CustomerPhoneImpl;
-import org.junit.Ignore;
+import org.broadleafcommerce.profile.core.domain.PhoneImpl;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml",
-    "/bl-profile-applicationContext-persistence.xml", "/bl-profile-applicationContext.xml",
-    "/blc-config/admin/framework/bl-profile-applicationContext.xml",
-    "/blc-config/site/framework/bl-profile-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class CustomerPhoneServiceImplDiffblueTest {
-  @Autowired
+  @Mock
+  private CustomerPhoneDao customerPhoneDao;
+
+  @InjectMocks
   private CustomerPhoneServiceImpl customerPhoneServiceImpl;
 
   /**
    * Test {@link CustomerPhoneServiceImpl#saveCustomerPhone(CustomerPhone)}.
+   * <ul>
+   *   <li>Given {@link CustomerPhoneImpl} {@link CustomerPhoneImpl#getId()} return one.</li>
+   *   <li>Then calls {@link CustomerPhoneImpl#getId()}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomerPhoneServiceImpl#saveCustomerPhone(CustomerPhone)}
+   * Method under test: {@link CustomerPhoneServiceImpl#saveCustomerPhone(CustomerPhone)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testSaveCustomerPhone() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1468 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.service.CustomerPhoneServiceImpl customerPhoneServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CustomerPhone CustomerPhoneServiceImpl.saveCustomerPhone(CustomerPhone)"})
+  public void testSaveCustomerPhone_givenCustomerPhoneImplGetIdReturnOne_thenCallsGetId() {
     // Arrange
-    CustomerPhoneServiceImpl customerPhoneServiceImpl2 = new CustomerPhoneServiceImpl();
+    CustomerPhoneImpl customerPhoneImpl = mock(CustomerPhoneImpl.class);
+    when(customerPhoneImpl.getId()).thenReturn(1L);
+
+    ArrayList<CustomerPhone> customerPhoneList = new ArrayList<>();
+    customerPhoneList.add(customerPhoneImpl);
+    CustomerPhoneImpl customerPhoneImpl2 = new CustomerPhoneImpl();
+    when(customerPhoneDao.save(Mockito.<CustomerPhone>any())).thenReturn(customerPhoneImpl2);
+    when(customerPhoneDao.readActiveCustomerPhonesByCustomerId(Mockito.<Long>any())).thenReturn(customerPhoneList);
+    PhoneImpl phoneImpl = mock(PhoneImpl.class);
+    when(phoneImpl.isDefault()).thenReturn(true);
+    CustomerPhoneImpl customerPhone = mock(CustomerPhoneImpl.class);
+    when(customerPhone.getId()).thenReturn(1L);
+    when(customerPhone.getPhone()).thenReturn(phoneImpl);
+    when(customerPhone.getCustomer()).thenReturn(new CustomerImpl());
 
     // Act
-    customerPhoneServiceImpl2.saveCustomerPhone(new CustomerPhoneImpl());
+    CustomerPhone actualSaveCustomerPhoneResult = customerPhoneServiceImpl.saveCustomerPhone(customerPhone);
+
+    // Assert
+    verify(customerPhoneDao).readActiveCustomerPhonesByCustomerId(isNull());
+    verify(customerPhoneDao).save(isA(CustomerPhone.class));
+    verify(customerPhone).getCustomer();
+    verify(customerPhoneImpl).getId();
+    verify(customerPhone).getId();
+    verify(customerPhone).getPhone();
+    verify(phoneImpl).isDefault();
+    assertSame(customerPhoneImpl2, actualSaveCustomerPhoneResult);
   }
 
   /**
-   * Test
-   * {@link CustomerPhoneServiceImpl#readActiveCustomerPhonesByCustomerId(Long)}.
+   * Test {@link CustomerPhoneServiceImpl#saveCustomerPhone(CustomerPhone)}.
+   * <ul>
+   *   <li>Given {@link CustomerPhoneImpl} {@link CustomerPhoneImpl#getPhone()} return {@link PhoneImpl} (default constructor).</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomerPhoneServiceImpl#readActiveCustomerPhonesByCustomerId(Long)}
+   * Method under test: {@link CustomerPhoneServiceImpl#saveCustomerPhone(CustomerPhone)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testReadActiveCustomerPhonesByCustomerId() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1423 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.service.CustomerPhoneServiceImpl customerPhoneServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CustomerPhone CustomerPhoneServiceImpl.saveCustomerPhone(CustomerPhone)"})
+  public void testSaveCustomerPhone_givenCustomerPhoneImplGetPhoneReturnPhoneImpl() {
+    // Arrange
+    CustomerPhoneImpl customerPhoneImpl = mock(CustomerPhoneImpl.class);
+    when(customerPhoneImpl.getId()).thenReturn(14L);
+    when(customerPhoneImpl.getPhone()).thenReturn(new PhoneImpl());
 
-    // Arrange and Act
-    (new CustomerPhoneServiceImpl()).readActiveCustomerPhonesByCustomerId(1L);
+    ArrayList<CustomerPhone> customerPhoneList = new ArrayList<>();
+    customerPhoneList.add(customerPhoneImpl);
+    CustomerPhoneImpl customerPhoneImpl2 = new CustomerPhoneImpl();
+    when(customerPhoneDao.save(Mockito.<CustomerPhone>any())).thenReturn(customerPhoneImpl2);
+    when(customerPhoneDao.readActiveCustomerPhonesByCustomerId(Mockito.<Long>any())).thenReturn(customerPhoneList);
+    PhoneImpl phoneImpl = mock(PhoneImpl.class);
+    when(phoneImpl.isDefault()).thenReturn(true);
+    CustomerPhoneImpl customerPhone = mock(CustomerPhoneImpl.class);
+    when(customerPhone.getId()).thenReturn(1L);
+    when(customerPhone.getPhone()).thenReturn(phoneImpl);
+    when(customerPhone.getCustomer()).thenReturn(new CustomerImpl());
+
+    // Act
+    CustomerPhone actualSaveCustomerPhoneResult = customerPhoneServiceImpl.saveCustomerPhone(customerPhone);
+
+    // Assert
+    verify(customerPhoneDao).readActiveCustomerPhonesByCustomerId(isNull());
+    verify(customerPhoneDao).save(isA(CustomerPhone.class));
+    verify(customerPhone).getCustomer();
+    verify(customerPhoneImpl).getId();
+    verify(customerPhone).getId();
+    verify(customerPhoneImpl).getPhone();
+    verify(customerPhone).getPhone();
+    verify(phoneImpl).isDefault();
+    assertSame(customerPhoneImpl2, actualSaveCustomerPhoneResult);
+  }
+
+  /**
+   * Test {@link CustomerPhoneServiceImpl#saveCustomerPhone(CustomerPhone)}.
+   * <ul>
+   *   <li>Given {@link PhoneImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CustomerPhoneServiceImpl#saveCustomerPhone(CustomerPhone)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CustomerPhone CustomerPhoneServiceImpl.saveCustomerPhone(CustomerPhone)"})
+  public void testSaveCustomerPhone_givenPhoneImpl() {
+    // Arrange
+    CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
+    when(customerPhoneDao.save(Mockito.<CustomerPhone>any())).thenReturn(customerPhoneImpl);
+    when(customerPhoneDao.readActiveCustomerPhonesByCustomerId(Mockito.<Long>any())).thenReturn(new ArrayList<>());
+    CustomerPhoneImpl customerPhone = mock(CustomerPhoneImpl.class);
+    when(customerPhone.getPhone()).thenReturn(new PhoneImpl());
+    when(customerPhone.getCustomer()).thenReturn(new CustomerImpl());
+
+    // Act
+    CustomerPhone actualSaveCustomerPhoneResult = customerPhoneServiceImpl.saveCustomerPhone(customerPhone);
+
+    // Assert
+    verify(customerPhoneDao).readActiveCustomerPhonesByCustomerId(isNull());
+    verify(customerPhoneDao).save(isA(CustomerPhone.class));
+    verify(customerPhone).getCustomer();
+    verify(customerPhone).getPhone();
+    assertSame(customerPhoneImpl, actualSaveCustomerPhoneResult);
+  }
+
+  /**
+   * Test {@link CustomerPhoneServiceImpl#saveCustomerPhone(CustomerPhone)}.
+   * <ul>
+   *   <li>Given {@link PhoneImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CustomerPhoneServiceImpl#saveCustomerPhone(CustomerPhone)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CustomerPhone CustomerPhoneServiceImpl.saveCustomerPhone(CustomerPhone)"})
+  public void testSaveCustomerPhone_givenPhoneImpl2() {
+    // Arrange
+    ArrayList<CustomerPhone> customerPhoneList = new ArrayList<>();
+    customerPhoneList.add(new CustomerPhoneImpl());
+    CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
+    when(customerPhoneDao.save(Mockito.<CustomerPhone>any())).thenReturn(customerPhoneImpl);
+    when(customerPhoneDao.readActiveCustomerPhonesByCustomerId(Mockito.<Long>any())).thenReturn(customerPhoneList);
+    CustomerPhoneImpl customerPhone = mock(CustomerPhoneImpl.class);
+    when(customerPhone.getPhone()).thenReturn(new PhoneImpl());
+    when(customerPhone.getCustomer()).thenReturn(new CustomerImpl());
+
+    // Act
+    CustomerPhone actualSaveCustomerPhoneResult = customerPhoneServiceImpl.saveCustomerPhone(customerPhone);
+
+    // Assert
+    verify(customerPhoneDao).readActiveCustomerPhonesByCustomerId(isNull());
+    verify(customerPhoneDao).save(isA(CustomerPhone.class));
+    verify(customerPhone).getCustomer();
+    verify(customerPhone).getPhone();
+    assertSame(customerPhoneImpl, actualSaveCustomerPhoneResult);
+  }
+
+  /**
+   * Test {@link CustomerPhoneServiceImpl#saveCustomerPhone(CustomerPhone)}.
+   * <ul>
+   *   <li>Given {@link PhoneImpl} {@link PhoneImpl#setDefault(boolean)} does nothing.</li>
+   *   <li>Then calls {@link PhoneImpl#setDefault(boolean)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CustomerPhoneServiceImpl#saveCustomerPhone(CustomerPhone)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CustomerPhone CustomerPhoneServiceImpl.saveCustomerPhone(CustomerPhone)"})
+  public void testSaveCustomerPhone_givenPhoneImplSetDefaultDoesNothing_thenCallsSetDefault() {
+    // Arrange
+    PhoneImpl phoneImpl = mock(PhoneImpl.class);
+    doNothing().when(phoneImpl).setDefault(anyBoolean());
+    when(phoneImpl.isDefault()).thenReturn(true);
+    CustomerPhoneImpl customerPhoneImpl = mock(CustomerPhoneImpl.class);
+    when(customerPhoneImpl.getId()).thenReturn(14L);
+    when(customerPhoneImpl.getPhone()).thenReturn(phoneImpl);
+
+    ArrayList<CustomerPhone> customerPhoneList = new ArrayList<>();
+    customerPhoneList.add(customerPhoneImpl);
+    CustomerPhoneImpl customerPhoneImpl2 = new CustomerPhoneImpl();
+    when(customerPhoneDao.save(Mockito.<CustomerPhone>any())).thenReturn(customerPhoneImpl2);
+    when(customerPhoneDao.readActiveCustomerPhonesByCustomerId(Mockito.<Long>any())).thenReturn(customerPhoneList);
+    PhoneImpl phoneImpl2 = mock(PhoneImpl.class);
+    when(phoneImpl2.isDefault()).thenReturn(true);
+    CustomerPhoneImpl customerPhone = mock(CustomerPhoneImpl.class);
+    when(customerPhone.getId()).thenReturn(1L);
+    when(customerPhone.getPhone()).thenReturn(phoneImpl2);
+    when(customerPhone.getCustomer()).thenReturn(new CustomerImpl());
+
+    // Act
+    CustomerPhone actualSaveCustomerPhoneResult = customerPhoneServiceImpl.saveCustomerPhone(customerPhone);
+
+    // Assert
+    verify(customerPhoneDao).readActiveCustomerPhonesByCustomerId(isNull());
+    verify(customerPhoneDao, atLeast(1)).save(Mockito.<CustomerPhone>any());
+    verify(customerPhone).getCustomer();
+    verify(customerPhoneImpl).getId();
+    verify(customerPhone).getId();
+    verify(customerPhone).getPhone();
+    verify(customerPhoneImpl, atLeast(1)).getPhone();
+    verify(phoneImpl).isDefault();
+    verify(phoneImpl2).isDefault();
+    verify(phoneImpl).setDefault(eq(false));
+    assertSame(customerPhoneImpl2, actualSaveCustomerPhoneResult);
+  }
+
+  /**
+   * Test {@link CustomerPhoneServiceImpl#readActiveCustomerPhonesByCustomerId(Long)}.
+   * <p>
+   * Method under test: {@link CustomerPhoneServiceImpl#readActiveCustomerPhonesByCustomerId(Long)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CustomerPhoneServiceImpl.readActiveCustomerPhonesByCustomerId(Long)"})
+  public void testReadActiveCustomerPhonesByCustomerId() {
+    // Arrange
+    when(customerPhoneDao.readActiveCustomerPhonesByCustomerId(Mockito.<Long>any())).thenReturn(new ArrayList<>());
+
+    // Act
+    List<CustomerPhone> actualReadActiveCustomerPhonesByCustomerIdResult = customerPhoneServiceImpl
+        .readActiveCustomerPhonesByCustomerId(1L);
+
+    // Assert
+    verify(customerPhoneDao).readActiveCustomerPhonesByCustomerId(eq(1L));
+    assertTrue(actualReadActiveCustomerPhonesByCustomerIdResult.isEmpty());
   }
 
   /**
    * Test {@link CustomerPhoneServiceImpl#readCustomerPhoneById(Long)}.
    * <p>
-   * Method under test:
-   * {@link CustomerPhoneServiceImpl#readCustomerPhoneById(Long)}
+   * Method under test: {@link CustomerPhoneServiceImpl#readCustomerPhoneById(Long)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CustomerPhone CustomerPhoneServiceImpl.readCustomerPhoneById(Long)"})
   public void testReadCustomerPhoneById() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1453 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.service.CustomerPhoneServiceImpl customerPhoneServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
+    when(customerPhoneDao.readCustomerPhoneById(Mockito.<Long>any())).thenReturn(customerPhoneImpl);
 
-    // Arrange and Act
-    (new CustomerPhoneServiceImpl()).readCustomerPhoneById(1L);
+    // Act
+    CustomerPhone actualReadCustomerPhoneByIdResult = customerPhoneServiceImpl.readCustomerPhoneById(1L);
+
+    // Assert
+    verify(customerPhoneDao).readCustomerPhoneById(eq(1L));
+    assertSame(customerPhoneImpl, actualReadCustomerPhoneByIdResult);
   }
 
   /**
    * Test {@link CustomerPhoneServiceImpl#makeCustomerPhoneDefault(Long, Long)}.
    * <p>
-   * Method under test:
-   * {@link CustomerPhoneServiceImpl#makeCustomerPhoneDefault(Long, Long)}
+   * Method under test: {@link CustomerPhoneServiceImpl#makeCustomerPhoneDefault(Long, Long)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CustomerPhoneServiceImpl.makeCustomerPhoneDefault(Long, Long)"})
   public void testMakeCustomerPhoneDefault() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1394 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.service.CustomerPhoneServiceImpl customerPhoneServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    doNothing().when(customerPhoneDao).makeCustomerPhoneDefault(Mockito.<Long>any(), Mockito.<Long>any());
 
-    // Arrange and Act
-    (new CustomerPhoneServiceImpl()).makeCustomerPhoneDefault(1L, 1L);
+    // Act
+    customerPhoneServiceImpl.makeCustomerPhoneDefault(1L, 1L);
+
+    // Assert
+    verify(customerPhoneDao).makeCustomerPhoneDefault(eq(1L), eq(1L));
   }
 
   /**
    * Test {@link CustomerPhoneServiceImpl#deleteCustomerPhoneById(Long)}.
    * <p>
-   * Method under test:
-   * {@link CustomerPhoneServiceImpl#deleteCustomerPhoneById(Long)}
+   * Method under test: {@link CustomerPhoneServiceImpl#deleteCustomerPhoneById(Long)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CustomerPhoneServiceImpl.deleteCustomerPhoneById(Long)"})
   public void testDeleteCustomerPhoneById() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1364 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.service.CustomerPhoneServiceImpl customerPhoneServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    doNothing().when(customerPhoneDao).deleteCustomerPhoneById(Mockito.<Long>any());
 
-    // Arrange and Act
-    (new CustomerPhoneServiceImpl()).deleteCustomerPhoneById(1L);
+    // Act
+    customerPhoneServiceImpl.deleteCustomerPhoneById(1L);
+
+    // Assert
+    verify(customerPhoneDao).deleteCustomerPhoneById(eq(1L));
   }
 
   /**
    * Test {@link CustomerPhoneServiceImpl#findDefaultCustomerPhone(Long)}.
    * <p>
-   * Method under test:
-   * {@link CustomerPhoneServiceImpl#findDefaultCustomerPhone(Long)}
+   * Method under test: {@link CustomerPhoneServiceImpl#findDefaultCustomerPhone(Long)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CustomerPhone CustomerPhoneServiceImpl.findDefaultCustomerPhone(Long)"})
   public void testFindDefaultCustomerPhone() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1379 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.service.CustomerPhoneServiceImpl customerPhoneServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
+    when(customerPhoneDao.findDefaultCustomerPhone(Mockito.<Long>any())).thenReturn(customerPhoneImpl);
 
-    // Arrange and Act
-    (new CustomerPhoneServiceImpl()).findDefaultCustomerPhone(1L);
+    // Act
+    CustomerPhone actualFindDefaultCustomerPhoneResult = customerPhoneServiceImpl.findDefaultCustomerPhone(1L);
+
+    // Assert
+    verify(customerPhoneDao).findDefaultCustomerPhone(eq(1L));
+    assertSame(customerPhoneImpl, actualFindDefaultCustomerPhoneResult);
   }
 
   /**
-   * Test
-   * {@link CustomerPhoneServiceImpl#readAllCustomerPhonesByCustomerId(Long)}.
+   * Test {@link CustomerPhoneServiceImpl#readAllCustomerPhonesByCustomerId(Long)}.
    * <p>
-   * Method under test:
-   * {@link CustomerPhoneServiceImpl#readAllCustomerPhonesByCustomerId(Long)}
+   * Method under test: {@link CustomerPhoneServiceImpl#readAllCustomerPhonesByCustomerId(Long)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CustomerPhoneServiceImpl.readAllCustomerPhonesByCustomerId(Long)"})
   public void testReadAllCustomerPhonesByCustomerId() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1438 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.service.CustomerPhoneServiceImpl customerPhoneServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    when(customerPhoneDao.readAllCustomerPhonesByCustomerId(Mockito.<Long>any())).thenReturn(new ArrayList<>());
 
-    // Arrange and Act
-    (new CustomerPhoneServiceImpl()).readAllCustomerPhonesByCustomerId(1L);
+    // Act
+    List<CustomerPhone> actualReadAllCustomerPhonesByCustomerIdResult = customerPhoneServiceImpl
+        .readAllCustomerPhonesByCustomerId(1L);
+
+    // Assert
+    verify(customerPhoneDao).readAllCustomerPhonesByCustomerId(eq(1L));
+    assertTrue(actualReadAllCustomerPhonesByCustomerIdResult.isEmpty());
   }
 
   /**
@@ -239,26 +382,18 @@ public class CustomerPhoneServiceImplDiffblueTest {
    * Method under test: {@link CustomerPhoneServiceImpl#create()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CustomerPhone CustomerPhoneServiceImpl.create()"})
   public void testCreate() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1363 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.service.CustomerPhoneServiceImpl customerPhoneServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
+    when(customerPhoneDao.create()).thenReturn(customerPhoneImpl);
 
-    // Arrange and Act
-    (new CustomerPhoneServiceImpl()).create();
+    // Act
+    CustomerPhone actualCreateResult = customerPhoneServiceImpl.create();
+
+    // Assert
+    verify(customerPhoneDao).create();
+    assertSame(customerPhoneImpl, actualCreateResult);
   }
 }

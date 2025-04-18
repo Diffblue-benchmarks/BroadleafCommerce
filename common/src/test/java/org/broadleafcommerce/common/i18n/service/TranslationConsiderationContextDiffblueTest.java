@@ -19,17 +19,21 @@ package org.broadleafcommerce.common.i18n.service;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class TranslationConsiderationContextDiffblueTest {
   /**
-   * Test
-   * {@link TranslationConsiderationContext#getTranslationConsiderationContext()}.
+   * Test {@link TranslationConsiderationContext#getTranslationConsiderationContext()}.
    * <p>
-   * Method under test:
-   * {@link TranslationConsiderationContext#getTranslationConsiderationContext()}
+   * Method under test: {@link TranslationConsiderationContext#getTranslationConsiderationContext()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "TranslationConsiderationContext TranslationConsiderationContext.getTranslationConsiderationContext()"})
   public void testGetTranslationConsiderationContext() {
     // Arrange and Act
     TranslationConsiderationContext actualTranslationConsiderationContext = TranslationConsiderationContext
@@ -46,91 +50,48 @@ public class TranslationConsiderationContextDiffblueTest {
    * Method under test: {@link TranslationConsiderationContext#hasTranslation()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean TranslationConsiderationContext.hasTranslation()"})
   public void testHasTranslation() {
     // Arrange, Act and Assert
     assertFalse(TranslationConsiderationContext.hasTranslation());
   }
 
   /**
-   * Test
-   * {@link TranslationConsiderationContext#isTranslationConsiderationContextEnabled()}.
+   * Test {@link TranslationConsiderationContext#isTranslationConsiderationContextEnabled()}.
    * <p>
-   * Method under test:
-   * {@link TranslationConsiderationContext#isTranslationConsiderationContextEnabled()}
+   * Method under test: {@link TranslationConsiderationContext#isTranslationConsiderationContextEnabled()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean TranslationConsiderationContext.isTranslationConsiderationContextEnabled()"})
   public void testIsTranslationConsiderationContextEnabled() {
     // Arrange, Act and Assert
     assertFalse(TranslationConsiderationContext.isTranslationConsiderationContextEnabled());
   }
 
   /**
-   * Test
-   * {@link TranslationConsiderationContext#setTranslationConsiderationContext(Boolean)}.
-   * <p>
-   * Method under test:
-   * {@link TranslationConsiderationContext#setTranslationConsiderationContext(Boolean)}
-   */
-  @Test
-  public void testSetTranslationConsiderationContext() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange and Act
-    TranslationConsiderationContext.setTranslationConsiderationContext(true);
-  }
-
-  /**
    * Test {@link TranslationConsiderationContext#getTranslationService()}.
    * <p>
-   * Method under test:
-   * {@link TranslationConsiderationContext#getTranslationService()}
+   * Method under test: {@link TranslationConsiderationContext#getTranslationService()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.common.i18n.service.TranslationService TranslationConsiderationContext.getTranslationService()"})
   public void testGetTranslationService() {
     // Arrange, Act and Assert
     assertNull(TranslationConsiderationContext.getTranslationService());
   }
 
   /**
-   * Test
-   * {@link TranslationConsiderationContext#setTranslationService(TranslationService)}.
-   * <p>
-   * Method under test:
-   * {@link TranslationConsiderationContext#setTranslationService(TranslationService)}
-   */
-  @Test
-  public void testSetTranslationService() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange and Act
-    TranslationConsiderationContext.setTranslationService(new TranslationServiceImpl());
-  }
-
-  /**
-   * Test
-   * {@link TranslationConsiderationContext#removeTranslationConsiderationContext()}.
-   * <p>
-   * Method under test:
-   * {@link TranslationConsiderationContext#removeTranslationConsiderationContext()}
-   */
-  @Test
-  public void testRemoveTranslationConsiderationContext() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange and Act
-    TranslationConsiderationContext.removeTranslationConsiderationContext();
-  }
-
-  /**
    * Test new {@link TranslationConsiderationContext} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link TranslationConsiderationContext}
+   * Method under test: default or parameterless constructor of {@link TranslationConsiderationContext}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TranslationConsiderationContext.<init>()"})
   public void testNewTranslationConsiderationContext() {
     // Arrange and Act
     TranslationConsiderationContext actualTranslationConsiderationContext = new TranslationConsiderationContext();

@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.promotionMessage.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -11,6 +28,8 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.Date;
@@ -20,117 +39,26 @@ import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
 import org.broadleafcommerce.common.locale.domain.Locale;
 import org.broadleafcommerce.common.locale.domain.LocaleImpl;
 import org.broadleafcommerce.common.media.domain.Media;
-import org.broadleafcommerce.common.media.domain.MediaImpl;
 import org.broadleafcommerce.common.service.GenericEntityService;
-import org.broadleafcommerce.common.service.GenericEntityServiceImpl;
 import org.broadleafcommerce.common.site.domain.CatalogImpl;
 import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.broadleafcommerce.core.catalog.domain.CategoryMediaXrefImpl;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class PromotionMessageImplDiffblueTest {
   @Autowired
   private PromotionMessageImpl promotionMessageImpl;
-
-  /**
-   * Test {@link PromotionMessageImpl#getPriority()}.
-   * <p>
-   * Method under test: {@link PromotionMessageImpl#getPriority()}
-   */
-  @Test
-  public void testGetPriority() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
-    promotionMessageImpl
-        .setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    promotionMessageImpl.setId(PromotionMessageImpl.serialVersionUID);
-    promotionMessageImpl.setLocale(new LocaleImpl());
-    promotionMessageImpl.setMedia(new CategoryMediaXrefImpl());
-    promotionMessageImpl.setMessage("Promotion Message");
-    promotionMessageImpl.setMessagePlacement("Message Location");
-    promotionMessageImpl.setName("Name");
-    promotionMessageImpl
-        .setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    promotionMessageImpl.setPriority(1);
-
-    // Act and Assert
-    assertEquals(1, promotionMessageImpl.getPriority());
-  }
-
-  /**
-   * Test {@link PromotionMessageImpl#getPriority()}.
-   * <p>
-   * Method under test: {@link PromotionMessageImpl#getPriority()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetPriority2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.promotionMessage.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1314 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.promotionMessage.domain.PromotionMessageImpl promotionMessageImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new PromotionMessageImpl()).getPriority();
-  }
-
-  /**
-   * Test {@link PromotionMessageImpl#getPriority()}.
-   * <ul>
-   *   <li>Given {@link PromotionMessageImpl} (default constructor) EndDate is
-   * {@link java.sql.Date}.</li>
-   *   <li>Then return one.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PromotionMessageImpl#getPriority()}
-   */
-  @Test
-  public void testGetPriority_givenPromotionMessageImplEndDateIsDate_thenReturnOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
-    promotionMessageImpl.setEndDate(mock(java.sql.Date.class));
-    promotionMessageImpl.setId(PromotionMessageImpl.serialVersionUID);
-    promotionMessageImpl.setLocale(new LocaleImpl());
-    promotionMessageImpl.setMedia(new CategoryMediaXrefImpl());
-    promotionMessageImpl.setMessage("Promotion Message");
-    promotionMessageImpl.setMessagePlacement("Message Location");
-    promotionMessageImpl.setName("Name");
-    promotionMessageImpl
-        .setStartDate(java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    promotionMessageImpl.setPriority(1);
-
-    // Act and Assert
-    assertEquals(1, promotionMessageImpl.getPriority());
-  }
 
   /**
    * Test {@link PromotionMessageImpl#getPriority()}.
@@ -142,62 +70,62 @@ public class PromotionMessageImplDiffblueTest {
    * Method under test: {@link PromotionMessageImpl#getPriority()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int PromotionMessageImpl.getPriority()"})
   public void testGetPriority_givenPromotionMessageImpl_thenReturnMax_valueLessOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertEquals(2147483646, (new PromotionMessageImpl()).getPriority());
   }
 
   /**
-   * Test {@link PromotionMessageImpl#getStartDate()}.
+   * Test {@link PromotionMessageImpl#getPriority()}.
+   * <ul>
+   *   <li>Then return one.</li>
+   * </ul>
    * <p>
-   * Method under test: {@link PromotionMessageImpl#getStartDate()}
+   * Method under test: {@link PromotionMessageImpl#getPriority()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetStartDate() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.promotionMessage.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1326 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.promotionMessage.domain.PromotionMessageImpl promotionMessageImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int PromotionMessageImpl.getPriority()"})
+  public void testGetPriority_thenReturnOne() {
+    // Arrange
+    PromotionMessageImpl promotionMessageImpl2 = new PromotionMessageImpl();
+    promotionMessageImpl2
+        .setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    promotionMessageImpl2.setId(PromotionMessageImpl.serialVersionUID);
+    promotionMessageImpl2.setLocale(new LocaleImpl());
+    promotionMessageImpl2.setMedia(new CategoryMediaXrefImpl());
+    promotionMessageImpl2.setMessage("Promotion Message");
+    promotionMessageImpl2.setMessagePlacement("Message Location");
+    promotionMessageImpl2.setName("Name");
+    promotionMessageImpl2
+        .setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    promotionMessageImpl2.setPriority(1);
 
-    // Arrange and Act
-    (new PromotionMessageImpl()).getStartDate();
+    // Act and Assert
+    assertEquals(1, promotionMessageImpl2.getPriority());
   }
 
   /**
    * Test {@link PromotionMessageImpl#getStartDate()}.
    * <ul>
-   *   <li>Given {@link PromotionMessageImpl} (default constructor) Archived is
-   * {@code Y}.</li>
+   *   <li>Given {@link PromotionMessageImpl} (default constructor) Archived is {@code Y}.</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link PromotionMessageImpl#getStartDate()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Date PromotionMessageImpl.getStartDate()"})
   public void testGetStartDate_givenPromotionMessageImplArchivedIsY_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
-    promotionMessageImpl.setArchived('Y');
+    PromotionMessageImpl promotionMessageImpl2 = new PromotionMessageImpl();
+    promotionMessageImpl2.setArchived('Y');
 
     // Act and Assert
-    assertNull(promotionMessageImpl.getStartDate());
+    assertNull(promotionMessageImpl2.getStartDate());
   }
 
   /**
@@ -210,9 +138,9 @@ public class PromotionMessageImplDiffblueTest {
    * Method under test: {@link PromotionMessageImpl#getStartDate()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Date PromotionMessageImpl.getStartDate()"})
   public void testGetStartDate_givenPromotionMessageImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new PromotionMessageImpl()).getStartDate());
   }
@@ -241,6 +169,15 @@ public class PromotionMessageImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Date PromotionMessageImpl.getEndDate()", "Long PromotionMessageImpl.getId()",
+      "Locale PromotionMessageImpl.getLocale()", "Media PromotionMessageImpl.getMedia()",
+      "String PromotionMessageImpl.getMessage()", "String PromotionMessageImpl.getMessagePlacement()",
+      "String PromotionMessageImpl.getName()", "void PromotionMessageImpl.setEndDate(Date)",
+      "void PromotionMessageImpl.setId(Long)", "void PromotionMessageImpl.setLocale(Locale)",
+      "void PromotionMessageImpl.setMedia(Media)", "void PromotionMessageImpl.setMessage(String)",
+      "void PromotionMessageImpl.setMessagePlacement(String)", "void PromotionMessageImpl.setName(String)",
+      "void PromotionMessageImpl.setPriority(Integer)", "void PromotionMessageImpl.setStartDate(Date)"})
   public void testGettersAndSetters() {
     // Arrange
     PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
@@ -266,7 +203,7 @@ public class PromotionMessageImplDiffblueTest {
     String actualMessage = promotionMessageImpl.getMessage();
     String actualMessagePlacement = promotionMessageImpl.getMessagePlacement();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Message Location", actualMessagePlacement);
     assertEquals("Name", promotionMessageImpl.getName());
     assertEquals("Promotion Message", actualMessage);
@@ -282,141 +219,31 @@ public class PromotionMessageImplDiffblueTest {
    * Method under test: {@link PromotionMessageImpl#getArchived()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Character PromotionMessageImpl.getArchived()"})
   public void testGetArchived() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.promotionMessage.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1290 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.promotionMessage.domain.PromotionMessageImpl promotionMessageImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new PromotionMessageImpl()).getArchived();
-  }
-
-  /**
-   * Test {@link PromotionMessageImpl#getArchived()}.
-   * <ul>
-   *   <li>Given {@link PromotionMessageImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PromotionMessageImpl#getArchived()}
-   */
-  @Test
-  public void testGetArchived_givenPromotionMessageImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertEquals('N', (new PromotionMessageImpl()).getArchived().charValue());
   }
 
   /**
-   * Test {@link PromotionMessageImpl#getArchived()}.
-   * <ul>
-   *   <li>Given {@link PromotionMessageImpl} (default constructor) Media is
-   * {@link MediaImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PromotionMessageImpl#getArchived()}
-   */
-  @Test
-  public void testGetArchived_givenPromotionMessageImplMediaIsMediaImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
-    promotionMessageImpl.setMedia(mock(MediaImpl.class));
-
-    // Act and Assert
-    assertEquals('N', promotionMessageImpl.getArchived().charValue());
-  }
-
-  /**
    * Test {@link PromotionMessageImpl#setArchived(Character)}.
    * <p>
    * Method under test: {@link PromotionMessageImpl#setArchived(Character)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PromotionMessageImpl.setArchived(Character)"})
   public void testSetArchived() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.promotionMessage.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1350 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.promotionMessage.domain.PromotionMessageImpl promotionMessageImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new PromotionMessageImpl()).setArchived('A');
-  }
-
-  /**
-   * Test {@link PromotionMessageImpl#setArchived(Character)}.
-   * <ul>
-   *   <li>Given {@link PromotionMessageImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PromotionMessageImpl#setArchived(Character)}
-   */
-  @Test
-  public void testSetArchived_givenPromotionMessageImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
+    PromotionMessageImpl promotionMessageImpl2 = new PromotionMessageImpl();
 
     // Act
-    promotionMessageImpl.setArchived('A');
+    promotionMessageImpl2.setArchived('A');
 
     // Assert
-    assertEquals('A', promotionMessageImpl.archiveStatus.getArchived().charValue());
-    assertEquals('A', promotionMessageImpl.getArchived().charValue());
-  }
-
-  /**
-   * Test {@link PromotionMessageImpl#setArchived(Character)}.
-   * <ul>
-   *   <li>Given {@link PromotionMessageImpl} (default constructor) Media is
-   * {@link MediaImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PromotionMessageImpl#setArchived(Character)}
-   */
-  @Test
-  public void testSetArchived_givenPromotionMessageImplMediaIsMediaImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
-    promotionMessageImpl.setMedia(mock(MediaImpl.class));
-
-    // Act
-    promotionMessageImpl.setArchived('A');
-
-    // Assert
-    assertEquals('A', promotionMessageImpl.archiveStatus.getArchived().charValue());
-    assertEquals('A', promotionMessageImpl.getArchived().charValue());
+    assertEquals('A', promotionMessageImpl2.archiveStatus.getArchived().charValue());
+    assertEquals('A', promotionMessageImpl2.getArchived().charValue());
   }
 
   /**
@@ -425,87 +252,57 @@ public class PromotionMessageImplDiffblueTest {
    * Method under test: {@link PromotionMessageImpl#isActive()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PromotionMessageImpl.isActive()"})
   public void testIsActive() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
-    promotionMessageImpl.setId(PromotionMessageImpl.serialVersionUID);
-    promotionMessageImpl.setLocale(new LocaleImpl());
-    promotionMessageImpl.setMedia(new CategoryMediaXrefImpl());
-    promotionMessageImpl.setMessage("Promotion Message");
-    promotionMessageImpl.setMessagePlacement("Message Location");
-    promotionMessageImpl.setName("Name");
-    promotionMessageImpl.setPriority(1);
-    promotionMessageImpl.setArchived(null);
-    promotionMessageImpl
+    PromotionMessageImpl promotionMessageImpl2 = new PromotionMessageImpl();
+    promotionMessageImpl2.setId(PromotionMessageImpl.serialVersionUID);
+    promotionMessageImpl2.setLocale(new LocaleImpl());
+    promotionMessageImpl2.setMedia(new CategoryMediaXrefImpl());
+    promotionMessageImpl2.setMessage("Promotion Message");
+    promotionMessageImpl2.setMessagePlacement("Message Location");
+    promotionMessageImpl2.setName("Name");
+    promotionMessageImpl2.setPriority(1);
+    promotionMessageImpl2.setArchived(null);
+    promotionMessageImpl2
         .setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    promotionMessageImpl
+    promotionMessageImpl2
         .setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
 
     // Act and Assert
-    assertFalse(promotionMessageImpl.isActive());
-  }
-
-  /**
-   * Test {@link PromotionMessageImpl#isActive()}.
-   * <p>
-   * Method under test: {@link PromotionMessageImpl#isActive()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsActive2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.promotionMessage.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1338 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.promotionMessage.domain.PromotionMessageImpl promotionMessageImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new PromotionMessageImpl()).isActive();
+    assertFalse(promotionMessageImpl2.isActive());
   }
 
   /**
    * Test {@link PromotionMessageImpl#isActive()}.
    * <ul>
-   *   <li>Given {@link PromotionMessageImpl} (default constructor) Archived is
-   * {@code Y}.</li>
+   *   <li>Given {@link PromotionMessageImpl} (default constructor) Archived is {@code Y}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link PromotionMessageImpl#isActive()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PromotionMessageImpl.isActive()"})
   public void testIsActive_givenPromotionMessageImplArchivedIsY_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
-    promotionMessageImpl.setId(PromotionMessageImpl.serialVersionUID);
-    promotionMessageImpl.setLocale(new LocaleImpl());
-    promotionMessageImpl.setMedia(new CategoryMediaXrefImpl());
-    promotionMessageImpl.setMessage("Promotion Message");
-    promotionMessageImpl.setMessagePlacement("Message Location");
-    promotionMessageImpl.setName("Name");
-    promotionMessageImpl.setPriority(1);
-    promotionMessageImpl.setArchived('Y');
-    promotionMessageImpl
+    PromotionMessageImpl promotionMessageImpl2 = new PromotionMessageImpl();
+    promotionMessageImpl2.setId(PromotionMessageImpl.serialVersionUID);
+    promotionMessageImpl2.setLocale(new LocaleImpl());
+    promotionMessageImpl2.setMedia(new CategoryMediaXrefImpl());
+    promotionMessageImpl2.setMessage("Promotion Message");
+    promotionMessageImpl2.setMessagePlacement("Message Location");
+    promotionMessageImpl2.setName("Name");
+    promotionMessageImpl2.setPriority(1);
+    promotionMessageImpl2.setArchived('Y');
+    promotionMessageImpl2
         .setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    promotionMessageImpl.setEndDate(null);
+    promotionMessageImpl2.setEndDate(null);
 
     // Act and Assert
-    assertFalse(promotionMessageImpl.isActive());
+    assertFalse(promotionMessageImpl2.isActive());
   }
 
   /**
@@ -518,9 +315,9 @@ public class PromotionMessageImplDiffblueTest {
    * Method under test: {@link PromotionMessageImpl#isActive()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PromotionMessageImpl.isActive()"})
   public void testIsActive_givenPromotionMessageImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertFalse((new PromotionMessageImpl()).isActive());
   }
@@ -531,69 +328,15 @@ public class PromotionMessageImplDiffblueTest {
    * Method under test: {@link PromotionMessageImpl#getMainEntityName()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String PromotionMessageImpl.getMainEntityName()"})
   public void testGetMainEntityName() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.promotionMessage.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1302 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.promotionMessage.domain.PromotionMessageImpl promotionMessageImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new PromotionMessageImpl()).getMainEntityName();
-  }
-
-  /**
-   * Test {@link PromotionMessageImpl#getMainEntityName()}.
-   * <ul>
-   *   <li>Given {@link PromotionMessageImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PromotionMessageImpl#getMainEntityName()}
-   */
-  @Test
-  public void testGetMainEntityName_givenPromotionMessageImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new PromotionMessageImpl()).getMainEntityName());
   }
 
   /**
-   * Test {@link PromotionMessageImpl#getMainEntityName()}.
-   * <ul>
-   *   <li>Given {@link PromotionMessageImpl} (default constructor) Media is
-   * {@link MediaImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PromotionMessageImpl#getMainEntityName()}
-   */
-  @Test
-  public void testGetMainEntityName_givenPromotionMessageImplMediaIsMediaImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
-    promotionMessageImpl.setMedia(mock(MediaImpl.class));
-
-    // Act and Assert
-    assertNull(promotionMessageImpl.getMainEntityName());
-  }
-
-  /**
-   * Test {@link PromotionMessageImpl#equals(Object)}, and
-   * {@link PromotionMessageImpl#hashCode()}.
+   * Test {@link PromotionMessageImpl#equals(Object)}, and {@link PromotionMessageImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -606,6 +349,8 @@ public class PromotionMessageImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PromotionMessageImpl.equals(Object)", "int PromotionMessageImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
@@ -641,57 +386,7 @@ public class PromotionMessageImplDiffblueTest {
   }
 
   /**
-   * Test {@link PromotionMessageImpl#equals(Object)}, and
-   * {@link PromotionMessageImpl#hashCode()}.
-   * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
-   * </ul>
-   * <p>
-   * Methods under test:
-   * <ul>
-   *   <li>{@link PromotionMessageImpl#equals(Object)}
-   *   <li>{@link PromotionMessageImpl#hashCode()}
-   * </ul>
-   */
-  @Test
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
-    // Arrange
-    PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
-    promotionMessageImpl
-        .setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    promotionMessageImpl.setId(PromotionMessageImpl.serialVersionUID);
-    promotionMessageImpl.setLocale(mock(Locale.class));
-    promotionMessageImpl.setMedia(new CategoryMediaXrefImpl());
-    promotionMessageImpl.setMessage("Promotion Message");
-    promotionMessageImpl.setMessagePlacement("Message Location");
-    promotionMessageImpl.setName("Name");
-    promotionMessageImpl.setPriority(1);
-    promotionMessageImpl
-        .setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-
-    PromotionMessageImpl promotionMessageImpl2 = new PromotionMessageImpl();
-    promotionMessageImpl2
-        .setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    promotionMessageImpl2.setId(PromotionMessageImpl.serialVersionUID);
-    promotionMessageImpl2.setLocale(new LocaleImpl());
-    promotionMessageImpl2.setMedia(new CategoryMediaXrefImpl());
-    promotionMessageImpl2.setMessage("Promotion Message");
-    promotionMessageImpl2.setMessagePlacement("Message Location");
-    promotionMessageImpl2.setName("Name");
-    promotionMessageImpl2.setPriority(1);
-    promotionMessageImpl2
-        .setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-
-    // Act and Assert
-    assertEquals(promotionMessageImpl, promotionMessageImpl2);
-    int expectedHashCodeResult = promotionMessageImpl.hashCode();
-    assertEquals(expectedHashCodeResult, promotionMessageImpl2.hashCode());
-  }
-
-  /**
-   * Test {@link PromotionMessageImpl#equals(Object)}, and
-   * {@link PromotionMessageImpl#hashCode()}.
+   * Test {@link PromotionMessageImpl#equals(Object)}, and {@link PromotionMessageImpl#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -704,6 +399,8 @@ public class PromotionMessageImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PromotionMessageImpl.equals(Object)", "int PromotionMessageImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
@@ -735,6 +432,8 @@ public class PromotionMessageImplDiffblueTest {
    * Method under test: {@link PromotionMessageImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PromotionMessageImpl.equals(Object)", "int PromotionMessageImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
@@ -777,6 +476,8 @@ public class PromotionMessageImplDiffblueTest {
    * Method under test: {@link PromotionMessageImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PromotionMessageImpl.equals(Object)", "int PromotionMessageImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
@@ -806,6 +507,8 @@ public class PromotionMessageImplDiffblueTest {
    * Method under test: {@link PromotionMessageImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PromotionMessageImpl.equals(Object)", "int PromotionMessageImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
@@ -826,25 +529,23 @@ public class PromotionMessageImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link PromotionMessageImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * Test {@link PromotionMessageImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <p>
-   * Method under test:
-   * {@link PromotionMessageImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link PromotionMessageImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse PromotionMessageImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
+    PromotionMessageImpl promotionMessageImpl2 = new PromotionMessageImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
     CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
 
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<PromotionMessage> actualCreateOrRetrieveCopyInstanceResult = promotionMessageImpl
+    CreateResponse<PromotionMessage> actualCreateOrRetrieveCopyInstanceResult = promotionMessageImpl2
         .createOrRetrieveCopyInstance(context);
 
     // Assert
@@ -853,106 +554,19 @@ public class PromotionMessageImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link PromotionMessageImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <p>
-   * Method under test:
-   * {@link PromotionMessageImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.promotionMessage.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1260 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.promotionMessage.domain.PromotionMessageImpl promotionMessageImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    PromotionMessageImpl promotionMessageImpl2 = new PromotionMessageImpl();
-    CatalogImpl fromCatalog = new CatalogImpl();
-    CatalogImpl toCatalog = new CatalogImpl();
-    SiteImpl fromSite = new SiteImpl();
-    SiteImpl toSite = new SiteImpl();
-    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
-
-    // Act
-    promotionMessageImpl2.createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite,
-        toSite, genericEntityService, new MultiTenantCopierExtensionManager()));
-  }
-
-  /**
-   * Test
-   * {@link PromotionMessageImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <ul>
-   *   <li>Then calls {@link CreateResponse#getClone()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link PromotionMessageImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  public void testCreateOrRetrieveCopyInstance_thenCallsGetClone() throws CloneNotSupportedException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
-    promotionMessageImpl.setPriority(1);
-
-    PromotionMessageImpl promotionMessageImpl2 = new PromotionMessageImpl();
-    promotionMessageImpl2
-        .setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    promotionMessageImpl2.setId(PromotionMessageImpl.serialVersionUID);
-    promotionMessageImpl2.setLocale(new LocaleImpl());
-    promotionMessageImpl2.setMedia(new CategoryMediaXrefImpl());
-    promotionMessageImpl2.setMessage("Promotion Message");
-    promotionMessageImpl2.setMessagePlacement("Message Location");
-    promotionMessageImpl2.setName("Name");
-    promotionMessageImpl2.setPriority(1);
-    promotionMessageImpl2
-        .setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    CreateResponse<Object> createResponse = mock(CreateResponse.class);
-    when(createResponse.isAlreadyPopulated()).thenReturn(false);
-    when(createResponse.getClone()).thenReturn(promotionMessageImpl2);
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    promotionMessageImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(createResponse).getClone();
-    verify(createResponse).isAlreadyPopulated();
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-  }
-
-  /**
-   * Test
-   * {@link PromotionMessageImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * Test {@link PromotionMessageImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <ul>
    *   <li>Then Clone return {@link PromotionMessageImpl}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PromotionMessageImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link PromotionMessageImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse PromotionMessageImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance_thenCloneReturnPromotionMessageImpl() throws CloneNotSupportedException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
+    PromotionMessageImpl promotionMessageImpl2 = new PromotionMessageImpl();
     GenericEntityService genericEntityService = mock(GenericEntityService.class);
     when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
     Class<Object> forNameResult = Object.class;
@@ -963,7 +577,7 @@ public class PromotionMessageImplDiffblueTest {
     SiteImpl toSite = new SiteImpl();
 
     // Act
-    CreateResponse<PromotionMessage> actualCreateOrRetrieveCopyInstanceResult = promotionMessageImpl
+    CreateResponse<PromotionMessage> actualCreateOrRetrieveCopyInstanceResult = promotionMessageImpl2
         .createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
             genericEntityService, new MultiTenantCopierExtensionManager()));
 
@@ -974,24 +588,22 @@ public class PromotionMessageImplDiffblueTest {
     PromotionMessage clone = actualCreateOrRetrieveCopyInstanceResult.getClone();
     assertTrue(clone instanceof PromotionMessageImpl);
     assertFalse(actualCreateOrRetrieveCopyInstanceResult.isAlreadyPopulated());
-    assertEquals(promotionMessageImpl, clone);
+    assertEquals(promotionMessageImpl2, clone);
   }
 
   /**
    * Test new {@link PromotionMessageImpl} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link PromotionMessageImpl}
+   * Method under test: default or parameterless constructor of {@link PromotionMessageImpl}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PromotionMessageImpl.<init>()"})
   public void testNewPromotionMessageImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange and Act
     PromotionMessageImpl actualPromotionMessageImpl = new PromotionMessageImpl();
 
     // Assert
-    assertEquals('N', actualPromotionMessageImpl.archiveStatus.getArchived().charValue());
     assertEquals('N', actualPromotionMessageImpl.getArchived().charValue());
     assertNull(actualPromotionMessageImpl.priority);
     assertNull(actualPromotionMessageImpl.getId());
@@ -1005,35 +617,5 @@ public class PromotionMessageImplDiffblueTest {
     assertNull(actualPromotionMessageImpl.getLocale());
     assertNull(actualPromotionMessageImpl.getMedia());
     assertEquals(2147483646, actualPromotionMessageImpl.getPriority());
-  }
-
-  /**
-   * Test new {@link PromotionMessageImpl} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link PromotionMessageImpl}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testNewPromotionMessageImpl2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.promotionMessage.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1259 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.promotionMessage.domain.PromotionMessageImpl promotionMessageImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    new PromotionMessageImpl();
   }
 }

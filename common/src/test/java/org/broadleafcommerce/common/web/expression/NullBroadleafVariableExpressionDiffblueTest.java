@@ -18,7 +18,10 @@
 package org.broadleafcommerce.common.web.expression;
 
 import static org.junit.Assert.assertNull;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class NullBroadleafVariableExpressionDiffblueTest {
   /**
@@ -27,6 +30,8 @@ public class NullBroadleafVariableExpressionDiffblueTest {
    * Method under test: {@link NullBroadleafVariableExpression#getName()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.String NullBroadleafVariableExpression.getName()"})
   public void testGetName() {
     // Arrange, Act and Assert
     assertNull((new NullBroadleafVariableExpression()).getName());

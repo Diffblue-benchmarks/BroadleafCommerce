@@ -1,13 +1,29 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework Web
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.web.checkout.validator;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.core.web.checkout.model.ShippingInfoForm;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.springframework.validation.BindException;
-import org.springframework.validation.Errors;
 
 class ShippingInfoFormValidatorDiffblueTest {
   /**
@@ -20,6 +36,8 @@ class ShippingInfoFormValidatorDiffblueTest {
    */
   @Test
   @DisplayName("Test supports(Class); then return 'true'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean ShippingInfoFormValidator.supports(Class)"})
   void testSupports_thenReturnTrue() {
     // Arrange
     ShippingInfoFormValidator shippingInfoFormValidator = new ShippingInfoFormValidator();
@@ -32,7 +50,7 @@ class ShippingInfoFormValidatorDiffblueTest {
   /**
    * Test {@link ShippingInfoFormValidator#supports(Class)}.
    * <ul>
-   *   <li>When {@code java.lang.Object}.</li>
+   *   <li>When {@code Object}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
@@ -40,6 +58,8 @@ class ShippingInfoFormValidatorDiffblueTest {
    */
   @Test
   @DisplayName("Test supports(Class); when 'java.lang.Object'; then return 'false'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean ShippingInfoFormValidator.supports(Class)"})
   void testSupports_whenJavaLangObject_thenReturnFalse() {
     // Arrange
     ShippingInfoFormValidator shippingInfoFormValidator = new ShippingInfoFormValidator();
@@ -47,36 +67,5 @@ class ShippingInfoFormValidatorDiffblueTest {
 
     // Act and Assert
     assertFalse(shippingInfoFormValidator.supports(clazz));
-  }
-
-  /**
-   * Test {@link ShippingInfoFormValidator#validate(Object, Errors)} with
-   * {@code obj}, {@code errors}.
-   * <p>
-   * Method under test: {@link ShippingInfoFormValidator#validate(Object, Errors)}
-   */
-  @Test
-  @DisplayName("Test validate(Object, Errors) with 'obj', 'errors'")
-  @Disabled("TODO: Complete this test")
-  void testValidateWithObjErrors() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.broadleafcommerce.common.util.BLCSystemProperty.getSystemPropertiesService(BLCSystemProperty.java:94)
-    //       at org.broadleafcommerce.common.util.BLCSystemProperty.resolveBooleanSystemProperty(BLCSystemProperty.java:72)
-    //       at org.broadleafcommerce.common.web.validator.BroadleafCommonAddressValidator.isCustomValidationEnabled(BroadleafCommonAddressValidator.java:49)
-    //       at org.broadleafcommerce.common.web.validator.BroadleafCommonAddressValidator.validate(BroadleafCommonAddressValidator.java:53)
-    //       at org.broadleafcommerce.core.web.checkout.validator.ShippingInfoFormValidator.validate(ShippingInfoFormValidator.java:38)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    ShippingInfoFormValidator shippingInfoFormValidator = new ShippingInfoFormValidator();
-    ShippingInfoForm shippingInfoForm = new ShippingInfoForm();
-
-    // Act
-    shippingInfoFormValidator.validate(shippingInfoForm,
-        new BindException(shippingInfoForm, "org.broadleafcommerce.core.web.checkout.model.ShippingInfoForm"));
   }
 }

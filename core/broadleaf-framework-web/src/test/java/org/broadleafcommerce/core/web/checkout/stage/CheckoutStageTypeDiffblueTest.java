@@ -1,8 +1,28 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework Web
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.web.checkout.stage;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 class CheckoutStageTypeDiffblueTest {
@@ -13,6 +33,8 @@ class CheckoutStageTypeDiffblueTest {
    */
   @Test
   @DisplayName("Test getInstance(String)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"CheckoutStageType CheckoutStageType.getInstance(String)"})
   void testGetInstance() {
     // Arrange and Act
     CheckoutStageType actualInstance = CheckoutStageType.getInstance("Type");
@@ -37,26 +59,31 @@ class CheckoutStageTypeDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void CheckoutStageType.<init>()", "String CheckoutStageType.getFriendlyType()",
+      "int CheckoutStageType.getOrder()", "String CheckoutStageType.getType()", "void CheckoutStageType.setOrder(int)"})
   void testGettersAndSetters() {
     // Arrange and Act
     CheckoutStageType actualCheckoutStageType = new CheckoutStageType();
     actualCheckoutStageType.setOrder(1);
-    actualCheckoutStageType.getFriendlyType();
+    String actualFriendlyType = actualCheckoutStageType.getFriendlyType();
     int actualOrder = actualCheckoutStageType.getOrder();
-    actualCheckoutStageType.getType();
 
-    // Assert that nothing has changed
+    // Assert
+    assertNull(actualFriendlyType);
+    assertNull(actualCheckoutStageType.getType());
     assertEquals(1, actualOrder);
   }
 
   /**
    * Test {@link CheckoutStageType#CheckoutStageType(String, String, int)}.
    * <p>
-   * Method under test:
-   * {@link CheckoutStageType#CheckoutStageType(String, String, int)}
+   * Method under test: {@link CheckoutStageType#CheckoutStageType(String, String, int)}
    */
   @Test
   @DisplayName("Test new CheckoutStageType(String, String, int)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void CheckoutStageType.<init>(String, String, int)"})
   void testNewCheckoutStageType() {
     // Arrange and Act
     CheckoutStageType actualCheckoutStageType = new CheckoutStageType("Type", "Friendly Type", 1);
@@ -68,26 +95,7 @@ class CheckoutStageTypeDiffblueTest {
   }
 
   /**
-   * Test {@link CheckoutStageType#setType(String)}.
-   * <ul>
-   *   <li>When {@code Type}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CheckoutStageType#setType(String)}
-   */
-  @Test
-  @DisplayName("Test setType(String); when 'Type'")
-  void testSetType_whenType() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange and Act
-    CheckoutStageType.PAYMENT_INFO.setType("Type");
-  }
-
-  /**
-   * Test {@link CheckoutStageType#equals(Object)}, and
-   * {@link CheckoutStageType#hashCode()}.
+   * Test {@link CheckoutStageType#equals(Object)}, and {@link CheckoutStageType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -101,6 +109,8 @@ class CheckoutStageTypeDiffblueTest {
    */
   @Test
   @DisplayName("Test equals(Object), and hashCode(); when other is equal; then return equal")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CheckoutStageType.equals(Object)", "int CheckoutStageType.hashCode()"})
   void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     CheckoutStageType checkoutStageType = CheckoutStageType.PAYMENT_INFO;
@@ -113,8 +123,7 @@ class CheckoutStageTypeDiffblueTest {
   }
 
   /**
-   * Test {@link CheckoutStageType#equals(Object)}, and
-   * {@link CheckoutStageType#hashCode()}.
+   * Test {@link CheckoutStageType#equals(Object)}, and {@link CheckoutStageType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -128,6 +137,8 @@ class CheckoutStageTypeDiffblueTest {
    */
   @Test
   @DisplayName("Test equals(Object), and hashCode(); when other is equal; then return equal")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CheckoutStageType.equals(Object)", "int CheckoutStageType.hashCode()"})
   void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     CheckoutStageType checkoutStageType = new CheckoutStageType();
@@ -140,8 +151,7 @@ class CheckoutStageTypeDiffblueTest {
   }
 
   /**
-   * Test {@link CheckoutStageType#equals(Object)}, and
-   * {@link CheckoutStageType#hashCode()}.
+   * Test {@link CheckoutStageType#equals(Object)}, and {@link CheckoutStageType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -155,6 +165,8 @@ class CheckoutStageTypeDiffblueTest {
    */
   @Test
   @DisplayName("Test equals(Object), and hashCode(); when other is equal; then return equal")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CheckoutStageType.equals(Object)", "int CheckoutStageType.hashCode()"})
   void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     CheckoutStageType checkoutStageType = new CheckoutStageType("PAYMENT_INFO", "Friendly Type", 1);
@@ -167,8 +179,7 @@ class CheckoutStageTypeDiffblueTest {
   }
 
   /**
-   * Test {@link CheckoutStageType#equals(Object)}, and
-   * {@link CheckoutStageType#hashCode()}.
+   * Test {@link CheckoutStageType#equals(Object)}, and {@link CheckoutStageType#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -182,6 +193,8 @@ class CheckoutStageTypeDiffblueTest {
    */
   @Test
   @DisplayName("Test equals(Object), and hashCode(); when other is same; then return equal")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CheckoutStageType.equals(Object)", "int CheckoutStageType.hashCode()"})
   void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     CheckoutStageType checkoutStageType = CheckoutStageType.PAYMENT_INFO;
@@ -203,9 +216,28 @@ class CheckoutStageTypeDiffblueTest {
    */
   @Test
   @DisplayName("Test equals(Object); when other is different; then return not equal")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CheckoutStageType.equals(Object)", "int CheckoutStageType.hashCode()"})
   void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(CheckoutStageType.REVIEW, CheckoutStageType.PAYMENT_INFO);
+  }
+
+  /**
+   * Test {@link CheckoutStageType#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CheckoutStageType#equals(Object)}
+   */
+  @Test
+  @DisplayName("Test equals(Object); when other is different; then return not equal")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CheckoutStageType.equals(Object)", "int CheckoutStageType.hashCode()"})
+  void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange, Act and Assert
     assertNotEquals(new CheckoutStageType(), CheckoutStageType.PAYMENT_INFO);
   }
 
@@ -220,6 +252,8 @@ class CheckoutStageTypeDiffblueTest {
    */
   @Test
   @DisplayName("Test equals(Object); when other is 'null'; then return not equal")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CheckoutStageType.equals(Object)", "int CheckoutStageType.hashCode()"})
   void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(CheckoutStageType.PAYMENT_INFO, null);
@@ -236,14 +270,15 @@ class CheckoutStageTypeDiffblueTest {
    */
   @Test
   @DisplayName("Test equals(Object); when other is wrong type; then return not equal")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CheckoutStageType.equals(Object)", "int CheckoutStageType.hashCode()"})
   void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(CheckoutStageType.PAYMENT_INFO, "Different type to CheckoutStageType");
   }
 
   /**
-   * Test {@link CheckoutStageType#compareTo(CheckoutStageType)} with
-   * {@code CheckoutStageType}.
+   * Test {@link CheckoutStageType#compareTo(CheckoutStageType)} with {@code CheckoutStageType}.
    * <ul>
    *   <li>When {@link CheckoutStageType#PAYMENT_INFO}.</li>
    *   <li>Then return zero.</li>
@@ -253,6 +288,8 @@ class CheckoutStageTypeDiffblueTest {
    */
   @Test
   @DisplayName("Test compareTo(CheckoutStageType) with 'CheckoutStageType'; when PAYMENT_INFO; then return zero")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"int CheckoutStageType.compareTo(CheckoutStageType)"})
   void testCompareToWithCheckoutStageType_whenPayment_info_thenReturnZero() {
     // Arrange, Act and Assert
     assertEquals(0, CheckoutStageType.PAYMENT_INFO.compareTo(CheckoutStageType.PAYMENT_INFO));

@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.pricing.service.fulfillment.provider;
 
 import static org.junit.Assert.assertEquals;
@@ -11,6 +28,8 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -27,73 +46,34 @@ import org.broadleafcommerce.core.order.domain.FulfillmentOptionImpl;
 import org.broadleafcommerce.core.order.fulfillment.domain.BandedPriceFulfillmentOptionImpl;
 import org.broadleafcommerce.core.order.fulfillment.domain.BandedWeightFulfillmentOptionImpl;
 import org.broadleafcommerce.core.order.service.type.FulfillmentType;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext-entity.xml", "/bl-framework-applicationContext-persistence.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@ContextConfiguration(classes = {BandedFulfillmentPricingProvider.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class BandedFulfillmentPricingProviderDiffblueTest {
   @Autowired
   private BandedFulfillmentPricingProvider bandedFulfillmentPricingProvider;
 
   /**
-   * Test
-   * {@link BandedFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)}.
-   * <p>
-   * Method under test:
-   * {@link BandedFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCanCalculateCostForFulfillmentGroup() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.pricing.service.fulfillment.provider;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3666 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.pricing.service.fulfillment.provider.BandedFulfillmentPricingProvider bandedFulfillmentPricingProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-
-    // Act
-    bandedFulfillmentPricingProvider.canCalculateCostForFulfillmentGroup(fulfillmentGroup, new FulfillmentOptionImpl());
-  }
-
-  /**
-   * Test
-   * {@link BandedFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)}.
+   * Test {@link BandedFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)}.
    * <ul>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BandedFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)}
+   * Method under test: {@link BandedFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "boolean BandedFulfillmentPricingProvider.canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)"})
   public void testCanCalculateCostForFulfillmentGroup_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    BandedFulfillmentPricingProvider bandedFulfillmentPricingProvider = new BandedFulfillmentPricingProvider();
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
 
     // Act and Assert
@@ -102,21 +82,19 @@ public class BandedFulfillmentPricingProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BandedFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)}.
+   * Test {@link BandedFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)}.
    * <ul>
    *   <li>When {@link BandedPriceFulfillmentOptionImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BandedFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)}
+   * Method under test: {@link BandedFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "boolean BandedFulfillmentPricingProvider.canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)"})
   public void testCanCalculateCostForFulfillmentGroup_whenBandedPriceFulfillmentOptionImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    BandedFulfillmentPricingProvider bandedFulfillmentPricingProvider = new BandedFulfillmentPricingProvider();
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
 
     // Act and Assert
@@ -125,22 +103,19 @@ public class BandedFulfillmentPricingProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BandedFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)}.
+   * Test {@link BandedFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)}.
    * <ul>
-   *   <li>When {@link BandedWeightFulfillmentOptionImpl} (default
-   * constructor).</li>
+   *   <li>When {@link BandedWeightFulfillmentOptionImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BandedFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)}
+   * Method under test: {@link BandedFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "boolean BandedFulfillmentPricingProvider.canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)"})
   public void testCanCalculateCostForFulfillmentGroup_whenBandedWeightFulfillmentOptionImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    BandedFulfillmentPricingProvider bandedFulfillmentPricingProvider = new BandedFulfillmentPricingProvider();
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
 
     // Act and Assert
@@ -149,43 +124,16 @@ public class BandedFulfillmentPricingProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BandedFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)}.
-   * <ul>
-   *   <li>When {@link FulfillmentGroup}.</li>
-   *   <li>Then return {@code false}.</li>
-   * </ul>
+   * Test {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}.
    * <p>
-   * Method under test:
-   * {@link BandedFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)}
+   * Method under test: {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}
    */
   @Test
-  public void testCanCalculateCostForFulfillmentGroup_whenFulfillmentGroup_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    BandedFulfillmentPricingProvider bandedFulfillmentPricingProvider = new BandedFulfillmentPricingProvider();
-    FulfillmentGroup fulfillmentGroup = mock(FulfillmentGroup.class);
-
-    // Act and Assert
-    assertFalse(bandedFulfillmentPricingProvider.canCalculateCostForFulfillmentGroup(fulfillmentGroup,
-        new FulfillmentOptionImpl()));
-  }
-
-  /**
-   * Test
-   * {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}.
-   * <p>
-   * Method under test:
-   * {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FulfillmentGroup BandedFulfillmentPricingProvider.calculateCostForFulfillmentGroup(FulfillmentGroup)"})
   public void testCalculateCostForFulfillmentGroup() throws FulfillmentPriceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    BandedFulfillmentPricingProvider bandedFulfillmentPricingProvider = new BandedFulfillmentPricingProvider();
-
     ArrayList<FulfillmentGroupItem> fulfillmentGroupItemList = new ArrayList<>();
     fulfillmentGroupItemList.add(new FulfillmentGroupItemImpl());
 
@@ -213,19 +161,16 @@ public class BandedFulfillmentPricingProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}.
+   * Test {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}.
    * <p>
-   * Method under test:
-   * {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}
+   * Method under test: {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FulfillmentGroup BandedFulfillmentPricingProvider.calculateCostForFulfillmentGroup(FulfillmentGroup)"})
   public void testCalculateCostForFulfillmentGroup2() throws FulfillmentPriceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    BandedFulfillmentPricingProvider bandedFulfillmentPricingProvider = new BandedFulfillmentPricingProvider();
-
     ArrayList<FulfillmentGroupItem> fulfillmentGroupItemList = new ArrayList<>();
     fulfillmentGroupItemList.add(new FulfillmentGroupItemImpl());
 
@@ -253,54 +198,21 @@ public class BandedFulfillmentPricingProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}.
-   * <p>
-   * Method under test:
-   * {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCalculateCostForFulfillmentGroup3() throws FulfillmentPriceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.pricing.service.fulfillment.provider;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3636 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.pricing.service.fulfillment.provider.BandedFulfillmentPricingProvider bandedFulfillmentPricingProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    bandedFulfillmentPricingProvider.calculateCostForFulfillmentGroup(new FulfillmentGroupImpl());
-  }
-
-  /**
-   * Test
-   * {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}.
+   * Test {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}.
    * <ul>
    *   <li>Given one.</li>
    *   <li>Then return {@link FulfillmentGroupImpl}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}
+   * Method under test: {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FulfillmentGroup BandedFulfillmentPricingProvider.calculateCostForFulfillmentGroup(FulfillmentGroup)"})
   public void testCalculateCostForFulfillmentGroup_givenOne_thenReturnFulfillmentGroupImpl()
       throws FulfillmentPriceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    BandedFulfillmentPricingProvider bandedFulfillmentPricingProvider = new BandedFulfillmentPricingProvider();
     FulfillmentGroupImpl fulfillmentGroup = mock(FulfillmentGroupImpl.class);
     when(fulfillmentGroup.getId()).thenReturn(1L);
     when(fulfillmentGroup.getFulfillmentGroupItems()).thenReturn(new ArrayList<>());
@@ -322,22 +234,19 @@ public class BandedFulfillmentPricingProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}.
+   * Test {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}.
    * <ul>
    *   <li>Then calls {@link BandedPriceFulfillmentOptionImpl#getBands()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}
+   * Method under test: {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FulfillmentGroup BandedFulfillmentPricingProvider.calculateCostForFulfillmentGroup(FulfillmentGroup)"})
   public void testCalculateCostForFulfillmentGroup_thenCallsGetBands() throws FulfillmentPriceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    BandedFulfillmentPricingProvider bandedFulfillmentPricingProvider = new BandedFulfillmentPricingProvider();
-
     ArrayList<FulfillmentGroupItem> fulfillmentGroupItemList = new ArrayList<>();
     fulfillmentGroupItemList.add(new FulfillmentGroupItemImpl());
     BandedPriceFulfillmentOptionImpl bandedPriceFulfillmentOptionImpl = mock(BandedPriceFulfillmentOptionImpl.class);
@@ -355,22 +264,19 @@ public class BandedFulfillmentPricingProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}.
+   * Test {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}.
    * <ul>
    *   <li>Then calls {@link BandedWeightFulfillmentOptionImpl#getBands()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}
+   * Method under test: {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FulfillmentGroup BandedFulfillmentPricingProvider.calculateCostForFulfillmentGroup(FulfillmentGroup)"})
   public void testCalculateCostForFulfillmentGroup_thenCallsGetBands2() throws FulfillmentPriceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    BandedFulfillmentPricingProvider bandedFulfillmentPricingProvider = new BandedFulfillmentPricingProvider();
-
     ArrayList<FulfillmentGroupItem> fulfillmentGroupItemList = new ArrayList<>();
     fulfillmentGroupItemList.add(new FulfillmentGroupItemImpl());
     BandedWeightFulfillmentOptionImpl bandedWeightFulfillmentOptionImpl = mock(BandedWeightFulfillmentOptionImpl.class);
@@ -388,21 +294,19 @@ public class BandedFulfillmentPricingProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}.
+   * Test {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}.
    * <ul>
    *   <li>Then return {@link FulfillmentGroupImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}
+   * Method under test: {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FulfillmentGroup BandedFulfillmentPricingProvider.calculateCostForFulfillmentGroup(FulfillmentGroup)"})
   public void testCalculateCostForFulfillmentGroup_thenReturnFulfillmentGroupImpl() throws FulfillmentPriceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    BandedFulfillmentPricingProvider bandedFulfillmentPricingProvider = new BandedFulfillmentPricingProvider();
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
 
     // Act and Assert
@@ -410,23 +314,20 @@ public class BandedFulfillmentPricingProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}.
+   * Test {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}.
    * <ul>
    *   <li>Then throw {@link FulfillmentPriceException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}
+   * Method under test: {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FulfillmentGroup BandedFulfillmentPricingProvider.calculateCostForFulfillmentGroup(FulfillmentGroup)"})
   public void testCalculateCostForFulfillmentGroup_thenThrowFulfillmentPriceException()
       throws FulfillmentPriceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    BandedFulfillmentPricingProvider bandedFulfillmentPricingProvider = new BandedFulfillmentPricingProvider();
-
     ArrayList<FulfillmentGroupItem> fulfillmentGroupItemList = new ArrayList<>();
     fulfillmentGroupItemList.add(new FulfillmentGroupItemImpl());
     FulfillmentGroupImpl fulfillmentGroup = mock(FulfillmentGroupImpl.class);
@@ -441,18 +342,16 @@ public class BandedFulfillmentPricingProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}.
+   * Test {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}.
    * <p>
-   * Method under test:
-   * {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
+   * Method under test: {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentEstimationResponse BandedFulfillmentPricingProvider.estimateCostForFulfillmentGroup(FulfillmentGroup, Set)"})
   public void testEstimateCostForFulfillmentGroup() throws FulfillmentPriceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    BandedFulfillmentPricingProvider bandedFulfillmentPricingProvider = new BandedFulfillmentPricingProvider();
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
 
     BandedPriceFulfillmentOptionImpl bandedPriceFulfillmentOptionImpl = new BandedPriceFulfillmentOptionImpl();
@@ -474,18 +373,16 @@ public class BandedFulfillmentPricingProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}.
+   * Test {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}.
    * <p>
-   * Method under test:
-   * {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
+   * Method under test: {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentEstimationResponse BandedFulfillmentPricingProvider.estimateCostForFulfillmentGroup(FulfillmentGroup, Set)"})
   public void testEstimateCostForFulfillmentGroup2() throws FulfillmentPriceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    BandedFulfillmentPricingProvider bandedFulfillmentPricingProvider = new BandedFulfillmentPricingProvider();
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
 
     BandedWeightFulfillmentOptionImpl bandedWeightFulfillmentOptionImpl = new BandedWeightFulfillmentOptionImpl();
@@ -507,55 +404,75 @@ public class BandedFulfillmentPricingProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}.
-   * <p>
-   * Method under test:
-   * {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testEstimateCostForFulfillmentGroup3() throws FulfillmentPriceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.pricing.service.fulfillment.provider;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3726 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.pricing.service.fulfillment.provider.BandedFulfillmentPricingProvider bandedFulfillmentPricingProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-
-    // Act
-    bandedFulfillmentPricingProvider.estimateCostForFulfillmentGroup(fulfillmentGroup, new HashSet<>());
-  }
-
-  /**
-   * Test
-   * {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}.
+   * Test {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}.
    * <ul>
    *   <li>Given {@link FulfillmentOptionImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
+   * Method under test: {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentEstimationResponse BandedFulfillmentPricingProvider.estimateCostForFulfillmentGroup(FulfillmentGroup, Set)"})
   public void testEstimateCostForFulfillmentGroup_givenFulfillmentOptionImpl() throws FulfillmentPriceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    BandedFulfillmentPricingProvider bandedFulfillmentPricingProvider = new BandedFulfillmentPricingProvider();
+    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
+    BandedPriceFulfillmentOptionImpl bandedPriceFulfillmentOptionImpl = mock(BandedPriceFulfillmentOptionImpl.class);
+    when(bandedPriceFulfillmentOptionImpl.getBands()).thenThrow(new IllegalStateException("foo"));
+
+    HashSet<FulfillmentOption> options = new HashSet<>();
+    options.add(new FulfillmentOptionImpl());
+    options.add(bandedPriceFulfillmentOptionImpl);
+
+    // Act and Assert
+    assertThrows(IllegalStateException.class,
+        () -> bandedFulfillmentPricingProvider.estimateCostForFulfillmentGroup(fulfillmentGroup, options));
+    verify(bandedPriceFulfillmentOptionImpl).getBands();
+  }
+
+  /**
+   * Test {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}.
+   * <ul>
+   *   <li>Then calls {@link BandedPriceFulfillmentOptionImpl#getBands()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentEstimationResponse BandedFulfillmentPricingProvider.estimateCostForFulfillmentGroup(FulfillmentGroup, Set)"})
+  public void testEstimateCostForFulfillmentGroup_thenCallsGetBands() throws FulfillmentPriceException {
+    // Arrange
+    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
+    BandedPriceFulfillmentOptionImpl bandedPriceFulfillmentOptionImpl = mock(BandedPriceFulfillmentOptionImpl.class);
+    when(bandedPriceFulfillmentOptionImpl.getBands()).thenThrow(new IllegalStateException("foo"));
+
+    HashSet<FulfillmentOption> options = new HashSet<>();
+    options.add(bandedPriceFulfillmentOptionImpl);
+
+    // Act and Assert
+    assertThrows(IllegalStateException.class,
+        () -> bandedFulfillmentPricingProvider.estimateCostForFulfillmentGroup(fulfillmentGroup, options));
+    verify(bandedPriceFulfillmentOptionImpl).getBands();
+  }
+
+  /**
+   * Test {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}.
+   * <ul>
+   *   <li>Then return FulfillmentOptionPrices Empty.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentEstimationResponse BandedFulfillmentPricingProvider.estimateCostForFulfillmentGroup(FulfillmentGroup, Set)"})
+  public void testEstimateCostForFulfillmentGroup_thenReturnFulfillmentOptionPricesEmpty()
+      throws FulfillmentPriceException {
+    // Arrange
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
 
     HashSet<FulfillmentOption> options = new HashSet<>();
@@ -568,104 +485,19 @@ public class BandedFulfillmentPricingProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}.
-   * <ul>
-   *   <li>Then calls {@link BandedPriceFulfillmentOptionImpl#getBands()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
-   */
-  @Test
-  public void testEstimateCostForFulfillmentGroup_thenCallsGetBands() throws FulfillmentPriceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    BandedFulfillmentPricingProvider bandedFulfillmentPricingProvider = new BandedFulfillmentPricingProvider();
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    BandedPriceFulfillmentOptionImpl bandedPriceFulfillmentOptionImpl = mock(BandedPriceFulfillmentOptionImpl.class);
-    when(bandedPriceFulfillmentOptionImpl.getBands()).thenThrow(new IllegalStateException("foo"));
-
-    HashSet<FulfillmentOption> options = new HashSet<>();
-    options.add(bandedPriceFulfillmentOptionImpl);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class,
-        () -> bandedFulfillmentPricingProvider.estimateCostForFulfillmentGroup(fulfillmentGroup, options));
-    verify(bandedPriceFulfillmentOptionImpl).getBands();
-  }
-
-  /**
-   * Test
-   * {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}.
-   * <ul>
-   *   <li>Then calls {@link BandedPriceFulfillmentOptionImpl#getBands()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
-   */
-  @Test
-  public void testEstimateCostForFulfillmentGroup_thenCallsGetBands2() throws FulfillmentPriceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    BandedFulfillmentPricingProvider bandedFulfillmentPricingProvider = new BandedFulfillmentPricingProvider();
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    BandedPriceFulfillmentOptionImpl bandedPriceFulfillmentOptionImpl = mock(BandedPriceFulfillmentOptionImpl.class);
-    when(bandedPriceFulfillmentOptionImpl.getBands()).thenThrow(new IllegalStateException("foo"));
-
-    HashSet<FulfillmentOption> options = new HashSet<>();
-    options.add(new FulfillmentOptionImpl());
-    options.add(bandedPriceFulfillmentOptionImpl);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class,
-        () -> bandedFulfillmentPricingProvider.estimateCostForFulfillmentGroup(fulfillmentGroup, options));
-    verify(bandedPriceFulfillmentOptionImpl).getBands();
-  }
-
-  /**
-   * Test
-   * {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}.
-   * <ul>
-   *   <li>When {@link FulfillmentGroupImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
-   */
-  @Test
-  public void testEstimateCostForFulfillmentGroup_whenFulfillmentGroupImpl() throws FulfillmentPriceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    BandedFulfillmentPricingProvider bandedFulfillmentPricingProvider = new BandedFulfillmentPricingProvider();
-    FulfillmentGroupImpl fulfillmentGroup = mock(FulfillmentGroupImpl.class);
-
-    // Act and Assert
-    assertTrue(bandedFulfillmentPricingProvider.estimateCostForFulfillmentGroup(fulfillmentGroup, new HashSet<>())
-        .getFulfillmentOptionPrices()
-        .isEmpty());
-  }
-
-  /**
-   * Test
-   * {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}.
+   * Test {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}.
    * <ul>
    *   <li>When {@link HashSet#HashSet()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
+   * Method under test: {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentEstimationResponse BandedFulfillmentPricingProvider.estimateCostForFulfillmentGroup(FulfillmentGroup, Set)"})
   public void testEstimateCostForFulfillmentGroup_whenHashSet() throws FulfillmentPriceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    BandedFulfillmentPricingProvider bandedFulfillmentPricingProvider = new BandedFulfillmentPricingProvider();
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
 
     // Act and Assert
@@ -675,56 +507,18 @@ public class BandedFulfillmentPricingProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BandedFulfillmentPricingProvider#convertWeight(BigDecimal, WeightUnitOfMeasureType)}.
-   * <p>
-   * Method under test:
-   * {@link BandedFulfillmentPricingProvider#convertWeight(BigDecimal, WeightUnitOfMeasureType)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testConvertWeight() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.pricing.service.fulfillment.provider;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3696 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.pricing.service.fulfillment.provider.BandedFulfillmentPricingProvider bandedFulfillmentPricingProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    BigDecimal weight = new BigDecimal("2.3");
-
-    // Act
-    bandedFulfillmentPricingProvider.convertWeight(weight, new WeightUnitOfMeasureType("Type", "Friendly Type"));
-  }
-
-  /**
-   * Test
-   * {@link BandedFulfillmentPricingProvider#convertWeight(BigDecimal, WeightUnitOfMeasureType)}.
+   * Test {@link BandedFulfillmentPricingProvider#convertWeight(BigDecimal, WeightUnitOfMeasureType)}.
    * <ul>
-   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with
-   * {@code 1.043262451}.</li>
+   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 1.043262451}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BandedFulfillmentPricingProvider#convertWeight(BigDecimal, WeightUnitOfMeasureType)}
+   * Method under test: {@link BandedFulfillmentPricingProvider#convertWeight(BigDecimal, WeightUnitOfMeasureType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal BandedFulfillmentPricingProvider.convertWeight(BigDecimal, WeightUnitOfMeasureType)"})
   public void testConvertWeight_thenReturnBigDecimalWith1043262451() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    BandedFulfillmentPricingProvider bandedFulfillmentPricingProvider = new BandedFulfillmentPricingProvider();
     BigDecimal weight = new BigDecimal("2.3");
 
     // Act
@@ -736,23 +530,18 @@ public class BandedFulfillmentPricingProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BandedFulfillmentPricingProvider#convertWeight(BigDecimal, WeightUnitOfMeasureType)}.
+   * Test {@link BandedFulfillmentPricingProvider#convertWeight(BigDecimal, WeightUnitOfMeasureType)}.
    * <ul>
-   *   <li>When
-   * {@link WeightUnitOfMeasureType#WeightUnitOfMeasureType(String, String)} with
-   * {@code Type} and {@code Friendly Type}.</li>
+   *   <li>When {@link WeightUnitOfMeasureType#WeightUnitOfMeasureType(String, String)} with {@code Type} and {@code Friendly Type}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BandedFulfillmentPricingProvider#convertWeight(BigDecimal, WeightUnitOfMeasureType)}
+   * Method under test: {@link BandedFulfillmentPricingProvider#convertWeight(BigDecimal, WeightUnitOfMeasureType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal BandedFulfillmentPricingProvider.convertWeight(BigDecimal, WeightUnitOfMeasureType)"})
   public void testConvertWeight_whenWeightUnitOfMeasureTypeWithTypeAndFriendlyType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    BandedFulfillmentPricingProvider bandedFulfillmentPricingProvider = new BandedFulfillmentPricingProvider();
     BigDecimal weight = new BigDecimal("2.3");
 
     // Act
@@ -764,22 +553,19 @@ public class BandedFulfillmentPricingProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BandedFulfillmentPricingProvider#convertWeight(BigDecimal, WeightUnitOfMeasureType)}.
+   * Test {@link BandedFulfillmentPricingProvider#convertWeight(BigDecimal, WeightUnitOfMeasureType)}.
    * <ul>
    *   <li>When {@link WeightUnitOfMeasureType#WeightUnitOfMeasureType()}.</li>
    *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 2.3}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BandedFulfillmentPricingProvider#convertWeight(BigDecimal, WeightUnitOfMeasureType)}
+   * Method under test: {@link BandedFulfillmentPricingProvider#convertWeight(BigDecimal, WeightUnitOfMeasureType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal BandedFulfillmentPricingProvider.convertWeight(BigDecimal, WeightUnitOfMeasureType)"})
   public void testConvertWeight_whenWeightUnitOfMeasureType_thenReturnBigDecimalWith23() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    BandedFulfillmentPricingProvider bandedFulfillmentPricingProvider = new BandedFulfillmentPricingProvider();
     BigDecimal weight = new BigDecimal("2.3");
 
     // Act
@@ -791,45 +577,23 @@ public class BandedFulfillmentPricingProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BandedFulfillmentPricingProvider#convertWeight(BigDecimal, WeightUnitOfMeasureType)}.
+   * Test {@link BandedFulfillmentPricingProvider#convertWeight(BigDecimal, WeightUnitOfMeasureType)}.
    * <ul>
    *   <li>When {@link WeightUnitOfMeasureType}.</li>
    *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 2.3}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BandedFulfillmentPricingProvider#convertWeight(BigDecimal, WeightUnitOfMeasureType)}
+   * Method under test: {@link BandedFulfillmentPricingProvider#convertWeight(BigDecimal, WeightUnitOfMeasureType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal BandedFulfillmentPricingProvider.convertWeight(BigDecimal, WeightUnitOfMeasureType)"})
   public void testConvertWeight_whenWeightUnitOfMeasureType_thenReturnBigDecimalWith232() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    BandedFulfillmentPricingProvider bandedFulfillmentPricingProvider = new BandedFulfillmentPricingProvider();
-
-    // Act
+    // Arrange and Act
     BigDecimal actualConvertWeightResult = bandedFulfillmentPricingProvider.convertWeight(new BigDecimal("2.3"),
         mock(WeightUnitOfMeasureType.class));
 
     // Assert
     assertEquals(new BigDecimal("2.3"), actualConvertWeightResult);
-  }
-
-  /**
-   * Test new {@link BandedFulfillmentPricingProvider} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link BandedFulfillmentPricingProvider}
-   */
-  @Test
-  public void testNewBandedFulfillmentPricingProvider() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing observers.
-    //   Diffblue Cover was unable to create an assertion.
-    //   There are no fields that could be asserted on.
-
-    // Arrange and Act
-    new BandedFulfillmentPricingProvider();
   }
 }

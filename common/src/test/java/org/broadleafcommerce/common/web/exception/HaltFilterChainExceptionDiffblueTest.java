@@ -20,7 +20,10 @@ package org.broadleafcommerce.common.web.exception;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class HaltFilterChainExceptionDiffblueTest {
   /**
@@ -29,10 +32,12 @@ public class HaltFilterChainExceptionDiffblueTest {
    *   <li>Then return Message is {@code An error occurred}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link HaltFilterChainException#HaltFilterChainException(String)}
+   * Method under test: {@link HaltFilterChainException#HaltFilterChainException(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void HaltFilterChainException.<init>()", "void HaltFilterChainException.<init>(String)",
+      "void HaltFilterChainException.<init>(String, Throwable)", "void HaltFilterChainException.<init>(Throwable)"})
   public void testNewHaltFilterChainException_thenReturnMessageIsAnErrorOccurred() {
     // Arrange and Act
     HaltFilterChainException actualHaltFilterChainException = new HaltFilterChainException("An error occurred");
@@ -44,16 +49,17 @@ public class HaltFilterChainExceptionDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link HaltFilterChainException#HaltFilterChainException(String, Throwable)}.
+   * Test {@link HaltFilterChainException#HaltFilterChainException(String, Throwable)}.
    * <ul>
    *   <li>Then return Message is {@code An error occurred}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link HaltFilterChainException#HaltFilterChainException(String, Throwable)}
+   * Method under test: {@link HaltFilterChainException#HaltFilterChainException(String, Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void HaltFilterChainException.<init>()", "void HaltFilterChainException.<init>(String)",
+      "void HaltFilterChainException.<init>(String, Throwable)", "void HaltFilterChainException.<init>(Throwable)"})
   public void testNewHaltFilterChainException_thenReturnMessageIsAnErrorOccurred2() {
     // Arrange
     Throwable cause = new Throwable();
@@ -70,13 +76,15 @@ public class HaltFilterChainExceptionDiffblueTest {
   /**
    * Test {@link HaltFilterChainException#HaltFilterChainException(Throwable)}.
    * <ul>
-   *   <li>Then return Message is {@code java.lang.Throwable}.</li>
+   *   <li>Then return Message is {@code Throwable}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link HaltFilterChainException#HaltFilterChainException(Throwable)}
+   * Method under test: {@link HaltFilterChainException#HaltFilterChainException(Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void HaltFilterChainException.<init>()", "void HaltFilterChainException.<init>(String)",
+      "void HaltFilterChainException.<init>(String, Throwable)", "void HaltFilterChainException.<init>(Throwable)"})
   public void testNewHaltFilterChainException_thenReturnMessageIsJavaLangThrowable() {
     // Arrange
     Throwable cause = new Throwable();
@@ -96,10 +104,12 @@ public class HaltFilterChainExceptionDiffblueTest {
    *   <li>Then return Message is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link HaltFilterChainException#HaltFilterChainException()}
+   * Method under test: {@link HaltFilterChainException#HaltFilterChainException()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void HaltFilterChainException.<init>()", "void HaltFilterChainException.<init>(String)",
+      "void HaltFilterChainException.<init>(String, Throwable)", "void HaltFilterChainException.<init>(Throwable)"})
   public void testNewHaltFilterChainException_thenReturnMessageIsNull() {
     // Arrange and Act
     HaltFilterChainException actualHaltFilterChainException = new HaltFilterChainException();

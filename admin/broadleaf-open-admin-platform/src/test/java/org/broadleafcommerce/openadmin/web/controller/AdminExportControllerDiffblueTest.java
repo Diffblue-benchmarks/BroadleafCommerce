@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.web.controller;
 
 import static org.junit.Assert.assertSame;
@@ -6,6 +23,8 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,23 +35,24 @@ import javax.servlet.http.HttpServletResponse;
 import org.broadleafcommerce.openadmin.server.service.export.AdminExporter;
 import org.broadleafcommerce.openadmin.web.compatibility.JSCompatibilityRequestWrapper;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
 public class AdminExportControllerDiffblueTest {
   /**
-   * Test
-   * {@link AdminExportController#export(HttpServletRequest, HttpServletResponse, Map)}.
+   * Test {@link AdminExportController#export(HttpServletRequest, HttpServletResponse, Map)}.
    * <ul>
-   *   <li>Given {@link AdminExporter} {@link AdminExporter#getName()} return
-   * {@code Name}.</li>
+   *   <li>Given {@link AdminExporter} {@link AdminExporter#getName()} return {@code Name}.</li>
    *   <li>Then calls {@link AdminExporter#getName()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminExportController#export(HttpServletRequest, HttpServletResponse, Map)}
+   * Method under test: {@link AdminExportController#export(HttpServletRequest, HttpServletResponse, Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.springframework.web.servlet.ModelAndView AdminExportController.export(HttpServletRequest, HttpServletResponse, Map)"})
   public void testExport_givenAdminExporterGetNameReturnName_thenCallsGetName() throws IOException {
     // Arrange
     AdminExporter adminExporter = mock(AdminExporter.class);
@@ -52,16 +72,17 @@ public class AdminExportControllerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminExportController#export(HttpServletRequest, HttpServletResponse, Map)}.
+   * Test {@link AdminExportController#export(HttpServletRequest, HttpServletResponse, Map)}.
    * <ul>
    *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminExportController#export(HttpServletRequest, HttpServletResponse, Map)}
+   * Method under test: {@link AdminExportController#export(HttpServletRequest, HttpServletResponse, Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.springframework.web.servlet.ModelAndView AdminExportController.export(HttpServletRequest, HttpServletResponse, Map)"})
   public void testExport_thenThrowRuntimeException() throws IOException {
     // Arrange
     AdminExportController adminExportController = new AdminExportController();
@@ -84,6 +105,9 @@ public class AdminExportControllerDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminExportController.<init>()", "List AdminExportController.getExporters()",
+      "void AdminExportController.setExporters(List)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     AdminExportController actualAdminExportController = new AdminExportController();
@@ -91,7 +115,7 @@ public class AdminExportControllerDiffblueTest {
     actualAdminExportController.setExporters(exporters);
     List<AdminExporter> actualExporters = actualAdminExportController.getExporters();
 
-    // Assert that nothing has changed
+    // Assert
     assertTrue(actualExporters.isEmpty());
     assertSame(exporters, actualExporters);
   }

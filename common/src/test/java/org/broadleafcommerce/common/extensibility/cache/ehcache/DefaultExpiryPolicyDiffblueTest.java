@@ -19,11 +19,16 @@ package org.broadleafcommerce.common.extensibility.cache.ehcache;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.mock;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.time.Duration;
 import java.util.function.Supplier;
 import org.broadleafcommerce.common.extensibility.cache.TimedValueHolder;
 import org.broadleafcommerce.common.util.BLCFieldUtils;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -41,6 +46,8 @@ public class DefaultExpiryPolicyDiffblueTest {
    * Method under test: {@link DefaultExpiryPolicy#DefaultExpiryPolicy()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DefaultExpiryPolicy.<init>()"})
   public void testNewDefaultExpiryPolicy() {
     // Arrange, Act and Assert
     assertEquals(Long.MAX_VALUE, (new DefaultExpiryPolicy()).getDefaultDuration().toNanos());
@@ -55,6 +62,8 @@ public class DefaultExpiryPolicyDiffblueTest {
    * Method under test: {@link DefaultExpiryPolicy#DefaultExpiryPolicy(int)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DefaultExpiryPolicy.<init>(int)"})
   public void testNewDefaultExpiryPolicy_thenReturnDefaultDurationToNanosIsMax_value() {
     // Arrange, Act and Assert
     assertEquals(Long.MAX_VALUE, (new DefaultExpiryPolicy(-1)).getDefaultDuration().toNanos());
@@ -70,6 +79,8 @@ public class DefaultExpiryPolicyDiffblueTest {
    * Method under test: {@link DefaultExpiryPolicy#DefaultExpiryPolicy(int)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DefaultExpiryPolicy.<init>(int)"})
   public void testNewDefaultExpiryPolicy_whenOne_thenReturnDefaultDurationToNanosIs1000000000() {
     // Arrange, Act and Assert
     assertEquals(1000000000L, (new DefaultExpiryPolicy(1)).getDefaultDuration().toNanos());
@@ -78,16 +89,29 @@ public class DefaultExpiryPolicyDiffblueTest {
   /**
    * Test {@link DefaultExpiryPolicy#getExpiryForCreation(Object, Object)}.
    * <p>
-   * Method under test:
-   * {@link DefaultExpiryPolicy#getExpiryForCreation(Object, Object)}
+   * Method under test: {@link DefaultExpiryPolicy#getExpiryForCreation(Object, Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Duration DefaultExpiryPolicy.getExpiryForCreation(Object, Object)"})
   public void testGetExpiryForCreation() {
     // Arrange, Act and Assert
     assertEquals(Long.MAX_VALUE,
         defaultExpiryPolicy
             .getExpiryForCreation(BLCFieldUtils.NULL_FIELD, new TimedValueHolder(BLCFieldUtils.NULL_FIELD, null))
             .toNanos());
+  }
+
+  /**
+   * Test {@link DefaultExpiryPolicy#getExpiryForCreation(Object, Object)}.
+   * <p>
+   * Method under test: {@link DefaultExpiryPolicy#getExpiryForCreation(Object, Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Duration DefaultExpiryPolicy.getExpiryForCreation(Object, Object)"})
+  public void testGetExpiryForCreation2() {
+    // Arrange, Act and Assert
     assertEquals(Long.MAX_VALUE,
         defaultExpiryPolicy
             .getExpiryForCreation(BLCFieldUtils.NULL_FIELD, new TimedValueHolder(BLCFieldUtils.NULL_FIELD, -1))
@@ -97,19 +121,22 @@ public class DefaultExpiryPolicyDiffblueTest {
   /**
    * Test {@link DefaultExpiryPolicy#getExpiryForCreation(Object, Object)}.
    * <ul>
-   *   <li>Then return toNanos is {@code 1000000000}.</li>
+   *   <li>Then return toNanos is zero.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DefaultExpiryPolicy#getExpiryForCreation(Object, Object)}
+   * Method under test: {@link DefaultExpiryPolicy#getExpiryForCreation(Object, Object)}
    */
   @Test
-  public void testGetExpiryForCreation_thenReturnToNanosIs1000000000() {
-    // Arrange, Act and Assert
-    assertEquals(1000000000L,
-        defaultExpiryPolicy
-            .getExpiryForCreation(BLCFieldUtils.NULL_FIELD, new TimedValueHolder(BLCFieldUtils.NULL_FIELD, 1))
-            .toNanos());
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Duration DefaultExpiryPolicy.getExpiryForCreation(Object, Object)"})
+  public void testGetExpiryForCreation_thenReturnToNanosIsZero() {
+    // Arrange and Act
+    Duration actualExpiryForCreation = defaultExpiryPolicy.getExpiryForCreation(BLCFieldUtils.NULL_FIELD,
+        new TimedValueHolder(BLCFieldUtils.NULL_FIELD, 0));
+
+    // Assert
+    assertEquals(0L, actualExpiryForCreation.toNanos());
+    assertSame(actualExpiryForCreation.ZERO, actualExpiryForCreation);
   }
 
   /**
@@ -119,10 +146,11 @@ public class DefaultExpiryPolicyDiffblueTest {
    *   <li>Then return toNanos is {@link Long#MAX_VALUE}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DefaultExpiryPolicy#getExpiryForCreation(Object, Object)}
+   * Method under test: {@link DefaultExpiryPolicy#getExpiryForCreation(Object, Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Duration DefaultExpiryPolicy.getExpiryForCreation(Object, Object)"})
   public void testGetExpiryForCreation_whenNull_field_thenReturnToNanosIsMax_value() {
     // Arrange, Act and Assert
     assertEquals(Long.MAX_VALUE,
@@ -130,42 +158,26 @@ public class DefaultExpiryPolicyDiffblueTest {
   }
 
   /**
-   * Test {@link DefaultExpiryPolicy#getExpiryForCreation(Object, Object)}.
-   * <ul>
-   *   <li>When {@link TimedValueHolder}.</li>
-   *   <li>Then return toNanos is {@link Long#MAX_VALUE}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link DefaultExpiryPolicy#getExpiryForCreation(Object, Object)}
-   */
-  @Test
-  public void testGetExpiryForCreation_whenTimedValueHolder_thenReturnToNanosIsMax_value() {
-    // Arrange, Act and Assert
-    assertEquals(Long.MAX_VALUE,
-        defaultExpiryPolicy.getExpiryForCreation(mock(TimedValueHolder.class), BLCFieldUtils.NULL_FIELD).toNanos());
-  }
-
-  /**
    * Test {@link DefaultExpiryPolicy#getExpiryForAccess(Object, Supplier)}.
    * <p>
-   * Method under test:
-   * {@link DefaultExpiryPolicy#getExpiryForAccess(Object, Supplier)}
+   * Method under test: {@link DefaultExpiryPolicy#getExpiryForAccess(Object, Supplier)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Duration DefaultExpiryPolicy.getExpiryForAccess(Object, Supplier)"})
   public void testGetExpiryForAccess() {
     // Arrange, Act and Assert
     assertNull(defaultExpiryPolicy.getExpiryForAccess(BLCFieldUtils.NULL_FIELD, mock(Supplier.class)));
   }
 
   /**
-   * Test
-   * {@link DefaultExpiryPolicy#getExpiryForUpdate(Object, Supplier, Object)}.
+   * Test {@link DefaultExpiryPolicy#getExpiryForUpdate(Object, Supplier, Object)}.
    * <p>
-   * Method under test:
-   * {@link DefaultExpiryPolicy#getExpiryForUpdate(Object, Supplier, Object)}
+   * Method under test: {@link DefaultExpiryPolicy#getExpiryForUpdate(Object, Supplier, Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Duration DefaultExpiryPolicy.getExpiryForUpdate(Object, Supplier, Object)"})
   public void testGetExpiryForUpdate() {
     // Arrange, Act and Assert
     assertNull(defaultExpiryPolicy.getExpiryForUpdate(BLCFieldUtils.NULL_FIELD, mock(Supplier.class),
@@ -178,6 +190,8 @@ public class DefaultExpiryPolicyDiffblueTest {
    * Method under test: {@link DefaultExpiryPolicy#getDefaultDuration()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Duration DefaultExpiryPolicy.getDefaultDuration()"})
   public void testGetDefaultDuration() {
     // Arrange, Act and Assert
     assertEquals(Long.MAX_VALUE, (new DefaultExpiryPolicy()).getDefaultDuration().toNanos());

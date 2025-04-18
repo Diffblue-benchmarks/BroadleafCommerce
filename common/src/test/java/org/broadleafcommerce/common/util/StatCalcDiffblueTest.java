@@ -18,20 +18,24 @@
 package org.broadleafcommerce.common.util;
 
 import static org.junit.Assert.assertEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class StatCalcDiffblueTest {
   /**
    * Test {@link StatCalc#enter(double)}.
    * <ul>
    *   <li>When {@link Double#NEGATIVE_INFINITY}.</li>
-   *   <li>Then {@link StatCalc} (default constructor) Max is
-   * {@link Double#NEGATIVE_INFINITY}.</li>
+   *   <li>Then {@link StatCalc} (default constructor) Max is {@link Double#NEGATIVE_INFINITY}.</li>
    * </ul>
    * <p>
    * Method under test: {@link StatCalc#enter(double)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StatCalc.enter(double)"})
   public void testEnter_whenNegative_infinity_thenStatCalcMaxIsNegative_infinity() {
     // Arrange
     StatCalc statCalc = new StatCalc();
@@ -50,13 +54,14 @@ public class StatCalcDiffblueTest {
    * Test {@link StatCalc#enter(double)}.
    * <ul>
    *   <li>When {@link Double#POSITIVE_INFINITY}.</li>
-   *   <li>Then {@link StatCalc} (default constructor) Max is
-   * {@link Double#POSITIVE_INFINITY}.</li>
+   *   <li>Then {@link StatCalc} (default constructor) Max is {@link Double#POSITIVE_INFINITY}.</li>
    * </ul>
    * <p>
    * Method under test: {@link StatCalc#enter(double)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StatCalc.enter(double)"})
   public void testEnter_whenPositive_infinity_thenStatCalcMaxIsPositive_infinity() {
     // Arrange
     StatCalc statCalc = new StatCalc();
@@ -75,13 +80,14 @@ public class StatCalcDiffblueTest {
    * Test {@link StatCalc#enter(double)}.
    * <ul>
    *   <li>When ten.</li>
-   *   <li>Then {@link StatCalc} (default constructor) StandardDeviation is
-   * zero.</li>
+   *   <li>Then {@link StatCalc} (default constructor) StandardDeviation is zero.</li>
    * </ul>
    * <p>
    * Method under test: {@link StatCalc#enter(double)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StatCalc.enter(double)"})
   public void testEnter_whenTen_thenStatCalcStandardDeviationIsZero() {
     // Arrange
     StatCalc statCalc = new StatCalc();
@@ -103,6 +109,8 @@ public class StatCalcDiffblueTest {
    * Method under test: {@link StatCalc#getMean()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"double StatCalc.getMean()"})
   public void testGetMean() {
     // Arrange, Act and Assert
     assertEquals(Double.NaN, (new StatCalc()).getMean(), 0.0);
@@ -114,6 +122,8 @@ public class StatCalcDiffblueTest {
    * Method under test: {@link StatCalc#getStandardDeviation()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"double StatCalc.getStandardDeviation()"})
   public void testGetStandardDeviation() {
     // Arrange, Act and Assert
     assertEquals(Double.NaN, (new StatCalc()).getStandardDeviation(), 0.0);
@@ -132,6 +142,9 @@ public class StatCalcDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StatCalc.<init>()", "int StatCalc.getCount()", "double StatCalc.getMax()",
+      "double StatCalc.getMin()", "double StatCalc.getSum()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     StatCalc actualStatCalc = new StatCalc();

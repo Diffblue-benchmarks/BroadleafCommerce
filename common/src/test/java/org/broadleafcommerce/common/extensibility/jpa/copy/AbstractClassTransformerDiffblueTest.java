@@ -20,19 +20,23 @@ package org.broadleafcommerce.common.extensibility.jpa.copy;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import org.broadleafcommerce.common.extensibility.jpa.convert.AlterTableNameClassTransformer;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {AlterTableNameClassTransformer.class})
 @RunWith(SpringJUnit4ClassRunner.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class AbstractClassTransformerDiffblueTest {
   @Autowired
   private AbstractClassTransformer abstractClassTransformer;
@@ -47,6 +51,8 @@ public class AbstractClassTransformerDiffblueTest {
    * Method under test: {@link AbstractClassTransformer#afterPropertiesSet()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AbstractClassTransformer.afterPropertiesSet()"})
   public void testAfterPropertiesSet_givenArrayListAddFoo_thenThrowRuntimeException() throws Exception {
     // Arrange
     ArrayList<String> fullyQualifiedClassNames = new ArrayList<>();
@@ -62,15 +68,16 @@ public class AbstractClassTransformerDiffblueTest {
   /**
    * Test {@link AbstractClassTransformer#setPreLoadClassNamePatterns(List)}.
    * <p>
-   * Method under test:
-   * {@link AbstractClassTransformer#setPreLoadClassNamePatterns(List)}
+   * Method under test: {@link AbstractClassTransformer#setPreLoadClassNamePatterns(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AbstractClassTransformer.setPreLoadClassNamePatterns(List)"})
   public void testSetPreLoadClassNamePatterns() {
     // Arrange and Act
     abstractClassTransformer.setPreLoadClassNamePatterns(new ArrayList<>());
 
-    // Assert
+    // Assert that nothing has changed
     assertTrue(abstractClassTransformer instanceof AlterTableNameClassTransformer);
     assertTrue(((AlterTableNameClassTransformer) abstractClassTransformer).preLoadClassNamePatterns.isEmpty());
   }
@@ -78,10 +85,11 @@ public class AbstractClassTransformerDiffblueTest {
   /**
    * Test {@link AbstractClassTransformer#setPreLoadClassNamePatterns(List)}.
    * <p>
-   * Method under test:
-   * {@link AbstractClassTransformer#setPreLoadClassNamePatterns(List)}
+   * Method under test: {@link AbstractClassTransformer#setPreLoadClassNamePatterns(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AbstractClassTransformer.setPreLoadClassNamePatterns(List)"})
   public void testSetPreLoadClassNamePatterns2() {
     // Arrange
     ArrayList<String> fullyQualifiedClassNames = new ArrayList<>();
@@ -100,10 +108,11 @@ public class AbstractClassTransformerDiffblueTest {
   /**
    * Test {@link AbstractClassTransformer#setPreLoadClassNamePatterns(List)}.
    * <p>
-   * Method under test:
-   * {@link AbstractClassTransformer#setPreLoadClassNamePatterns(List)}
+   * Method under test: {@link AbstractClassTransformer#setPreLoadClassNamePatterns(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AbstractClassTransformer.setPreLoadClassNamePatterns(List)"})
   public void testSetPreLoadClassNamePatterns3() {
     // Arrange
     ArrayList<String> fullyQualifiedClassNames = new ArrayList<>();

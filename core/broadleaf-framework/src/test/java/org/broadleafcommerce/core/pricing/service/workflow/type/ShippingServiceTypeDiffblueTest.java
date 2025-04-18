@@ -1,9 +1,29 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.pricing.service.workflow.type;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -21,6 +41,8 @@ public class ShippingServiceTypeDiffblueTest {
    * Method under test: {@link ShippingServiceType#getInstance(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ShippingServiceType ShippingServiceType.getInstance(String)"})
   public void testGetInstance() {
     // Arrange and Act
     ShippingServiceType actualInstance = ShippingServiceType.getInstance("Type");
@@ -41,6 +63,9 @@ public class ShippingServiceTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ShippingServiceType.<init>()", "String ShippingServiceType.getFriendlyType()",
+      "String ShippingServiceType.getType()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     ShippingServiceType actualShippingServiceType = new ShippingServiceType();
@@ -54,10 +79,11 @@ public class ShippingServiceTypeDiffblueTest {
   /**
    * Test {@link ShippingServiceType#ShippingServiceType(String, String)}.
    * <p>
-   * Method under test:
-   * {@link ShippingServiceType#ShippingServiceType(String, String)}
+   * Method under test: {@link ShippingServiceType#ShippingServiceType(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ShippingServiceType.<init>(String, String)"})
   public void testNewShippingServiceType() {
     // Arrange and Act
     ShippingServiceType actualShippingServiceType = new ShippingServiceType("Type", "Friendly Type");
@@ -68,8 +94,7 @@ public class ShippingServiceTypeDiffblueTest {
   }
 
   /**
-   * Test {@link ShippingServiceType#equals(Object)}, and
-   * {@link ShippingServiceType#hashCode()}.
+   * Test {@link ShippingServiceType#equals(Object)}, and {@link ShippingServiceType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -82,6 +107,8 @@ public class ShippingServiceTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ShippingServiceType.equals(Object)", "int ShippingServiceType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     ShippingServiceType shippingServiceType = ShippingServiceType.BANDED_SHIPPING;
@@ -94,8 +121,7 @@ public class ShippingServiceTypeDiffblueTest {
   }
 
   /**
-   * Test {@link ShippingServiceType#equals(Object)}, and
-   * {@link ShippingServiceType#hashCode()}.
+   * Test {@link ShippingServiceType#equals(Object)}, and {@link ShippingServiceType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -108,6 +134,8 @@ public class ShippingServiceTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ShippingServiceType.equals(Object)", "int ShippingServiceType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     ShippingServiceType shippingServiceType = new ShippingServiceType();
@@ -120,8 +148,7 @@ public class ShippingServiceTypeDiffblueTest {
   }
 
   /**
-   * Test {@link ShippingServiceType#equals(Object)}, and
-   * {@link ShippingServiceType#hashCode()}.
+   * Test {@link ShippingServiceType#equals(Object)}, and {@link ShippingServiceType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -134,6 +161,8 @@ public class ShippingServiceTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ShippingServiceType.equals(Object)", "int ShippingServiceType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     ShippingServiceType shippingServiceType = new ShippingServiceType("BANDED_SHIPPING", "Friendly Type");
@@ -146,8 +175,7 @@ public class ShippingServiceTypeDiffblueTest {
   }
 
   /**
-   * Test {@link ShippingServiceType#equals(Object)}, and
-   * {@link ShippingServiceType#hashCode()}.
+   * Test {@link ShippingServiceType#equals(Object)}, and {@link ShippingServiceType#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -160,6 +188,8 @@ public class ShippingServiceTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ShippingServiceType.equals(Object)", "int ShippingServiceType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     ShippingServiceType shippingServiceType = ShippingServiceType.BANDED_SHIPPING;
@@ -180,9 +210,27 @@ public class ShippingServiceTypeDiffblueTest {
    * Method under test: {@link ShippingServiceType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ShippingServiceType.equals(Object)", "int ShippingServiceType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(ShippingServiceType.DHL, ShippingServiceType.BANDED_SHIPPING);
+  }
+
+  /**
+   * Test {@link ShippingServiceType#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ShippingServiceType#equals(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ShippingServiceType.equals(Object)", "int ShippingServiceType.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange, Act and Assert
     assertNotEquals(new ShippingServiceType(), ShippingServiceType.BANDED_SHIPPING);
   }
 
@@ -196,6 +244,8 @@ public class ShippingServiceTypeDiffblueTest {
    * Method under test: {@link ShippingServiceType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ShippingServiceType.equals(Object)", "int ShippingServiceType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(ShippingServiceType.BANDED_SHIPPING, null);
@@ -211,6 +261,8 @@ public class ShippingServiceTypeDiffblueTest {
    * Method under test: {@link ShippingServiceType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ShippingServiceType.equals(Object)", "int ShippingServiceType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(ShippingServiceType.BANDED_SHIPPING, "Different type to ShippingServiceType");

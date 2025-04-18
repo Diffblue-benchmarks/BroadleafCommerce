@@ -19,704 +19,678 @@ package org.broadleafcommerce.common.web;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.IOException;
 import java.nio.file.Paths;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.broadleafcommerce.common.exception.SiteNotFoundException;
+import org.broadleafcommerce.common.web.exception.HaltFilterChainException;
 import org.broadleafcommerce.common.web.filter.SessionlessHttpServletRequestWrapper;
 import org.broadleafcommerce.common.web.util.FileSystemResponseWrapper;
 import org.broadleafcommerce.common.web.util.StatusExposingServletResponse;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.StandardEnvironment;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.web.context.request.WebRequest;
 
-@ContextConfiguration(locations = {"/bl-common-applicationContext-entity.xml",
-    "/bl-common-applicationContext-mbeans.xml", "/bl-common-applicationContext-persistence.xml",
-    "/bl-common-applicationContext-servlet.xml", "/bl-common-applicationContext-wrapper.xml",
-    "/bl-common-applicationContext.xml", "/bl-fake-applicationContext-ant.xml",
-    "/blc-config/admin/framework/bl-common-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-common-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-common-applicationContext-servlet.xml",
-    "/blc-config/site/framework/bl-common-applicationContext.xml",
-    "/override-contexts/admin-root-autoconfiguration-overrides.xml",
-    "/override-contexts/admin-servlet-autoconfiguration-overrides.xml",
-    "/override-contexts/autoconfiguration-overrides.xml", "/override-contexts/autoconfiguration-servlet-overrides.xml",
-    "/override-contexts/site-root-autoconfiguration-overrides.xml",
-    "/override-contexts/site-servlet-autoconfiguration-overrides.xml",
-    "/blc-config/admin/bl-admin-test-applicationContext.xml", "/blc-config/bl-test-applicationContext.xml",
-    "/blc-config/site/bl-site-test-applicationContext.xml", "/context/config/client-override.xml",
-    "/context/config/xml-import-override.xml", "/context/crossmodule/early-applicationContext.xml",
-    "/context/crossmodule/early-xml-applicationContext.xml", "/context/crossmodule/late-applicationContext.xml",
-    "/context/entityconfig/import-framework.xml", "/context/entityconfig/import-local.xml",
-    "/context/importer/applicationContext.xml", "/context/importer/merge/applicationContext-servlet.xml",
-    "/context/importer/merge/applicationContext.xml", "/context/merge/bl-framework.xml", "/context/merge/bl-module.xml",
-    "/context/merge/local.xml", "/context/reader/bean-override-early-test-applicationContext.xml",
-    "/context/reader/bean-override-framework-test-applicationContext.xml",
-    "/context/reader/bean-override-local-test-applicationContext.xml", "/context/reader/merge/testbeans.xml",
-    "/context/reader/merge/testbeans2.xml", "/context/reader/merge/testbeans3.xml"})
+@ContextConfiguration(classes = {BroadleafRequestFilter.class})
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class BroadleafRequestFilterDiffblueTest {
   @Autowired
   private BroadleafRequestFilter broadleafRequestFilter;
 
+  @MockBean(name = "blRequestProcessor")
+  private BroadleafRequestProcessor broadleafRequestProcessor;
+
   /**
-   * Test
-   * {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}.
+   * Test {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}.
    * <p>
-   * Method under test:
-   * {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}
+   * Method under test: {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void BroadleafRequestFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"})
   public void testDoFilterInternalUnlessIgnored() throws IOException, ServletException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.BeanInstantiationException: Could not instantiate bean: messageSource defined in bl-common-applicationContext.xml
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageSource' defined in class path resource [bl-common-applicationContext.xml]: Initialization of bean failed; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:628)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.web.AbstractGenericWebContextLoader.loadContext(AbstractGenericWebContextLoader.java:129)
-    //       at org.springframework.test.context.web.AbstractGenericWebContextLoader.loadContext(AbstractGenericWebContextLoader.java:61)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:600)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.web.AbstractGenericWebContextLoader.loadContext(AbstractGenericWebContextLoader.java:129)
-    //       at org.springframework.test.context.web.AbstractGenericWebContextLoader.loadContext(AbstractGenericWebContextLoader.java:61)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.propertyeditors.CustomBooleanEditor.setAsText(CustomBooleanEditor.java:154)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
-    //       at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:590)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.web.AbstractGenericWebContextLoader.loadContext(AbstractGenericWebContextLoader.java:129)
-    //       at org.springframework.test.context.web.AbstractGenericWebContextLoader.loadContext(AbstractGenericWebContextLoader.java:61)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   See https://diff.blue/R026 to resolve this issue.
-
     // Arrange
-    BroadleafRequestFilter broadleafRequestFilter2 = new BroadleafRequestFilter();
+    doNothing().when(broadleafRequestProcessor).postProcess(Mockito.<WebRequest>any());
+    doNothing().when(broadleafRequestProcessor).process(Mockito.<WebRequest>any());
     SessionlessHttpServletRequestWrapper request = new SessionlessHttpServletRequestWrapper(
         new MockHttpServletRequest());
     MockHttpServletResponse response = new MockHttpServletResponse();
+    StatusExposingServletResponse response2 = new StatusExposingServletResponse(
+        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
+    FilterChain filterChain = mock(FilterChain.class);
+    doNothing().when(filterChain).doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
 
     // Act
-    broadleafRequestFilter2.doFilterInternalUnlessIgnored(request, new StatusExposingServletResponse(
-        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile())),
-        mock(FilterChain.class));
+    broadleafRequestFilter.doFilterInternalUnlessIgnored(request, response2, filterChain);
+
+    // Assert that nothing has changed
+    verify(filterChain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
+    verify(broadleafRequestProcessor).postProcess(isA(WebRequest.class));
+    verify(broadleafRequestProcessor).process(isA(WebRequest.class));
+    ServletResponse response3 = response2.getResponse();
+    assertTrue(response3 instanceof FileSystemResponseWrapper);
+    ServletResponse response4 = ((FileSystemResponseWrapper) response3).getResponse();
+    assertTrue(response4 instanceof MockHttpServletResponse);
+    assertEquals(200, ((FileSystemResponseWrapper) response3).getStatus());
+    assertEquals(200, response2.getStatus());
+    assertEquals(200, ((MockHttpServletResponse) response4).getStatus());
   }
 
   /**
-   * Test
-   * {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String)}
-   * with {@code request}, {@code requestURI}.
+   * Test {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}.
    * <p>
-   * Method under test:
-   * {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String)}
+   * Method under test: {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testShouldProcessURLWithRequestRequestURI() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.BeanInstantiationException: Could not instantiate bean: messageSource defined in bl-common-applicationContext.xml
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageSource' defined in class path resource [bl-common-applicationContext.xml]: Initialization of bean failed; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:628)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.web.AbstractGenericWebContextLoader.loadContext(AbstractGenericWebContextLoader.java:129)
-    //       at org.springframework.test.context.web.AbstractGenericWebContextLoader.loadContext(AbstractGenericWebContextLoader.java:61)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:600)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.web.AbstractGenericWebContextLoader.loadContext(AbstractGenericWebContextLoader.java:129)
-    //       at org.springframework.test.context.web.AbstractGenericWebContextLoader.loadContext(AbstractGenericWebContextLoader.java:61)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.propertyeditors.CustomBooleanEditor.setAsText(CustomBooleanEditor.java:154)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
-    //       at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:590)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.web.AbstractGenericWebContextLoader.loadContext(AbstractGenericWebContextLoader.java:129)
-    //       at org.springframework.test.context.web.AbstractGenericWebContextLoader.loadContext(AbstractGenericWebContextLoader.java:61)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   See https://diff.blue/R026 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void BroadleafRequestFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"})
+  public void testDoFilterInternalUnlessIgnored2() throws IOException, ServletException {
     // Arrange
-    BroadleafRequestFilter broadleafRequestFilter2 = new BroadleafRequestFilter();
+    doNothing().when(broadleafRequestProcessor).postProcess(Mockito.<WebRequest>any());
+    doNothing().when(broadleafRequestProcessor).process(Mockito.<WebRequest>any());
+    SessionlessHttpServletRequestWrapper request = new SessionlessHttpServletRequestWrapper(
+        new MockHttpServletRequest());
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    StatusExposingServletResponse response2 = new StatusExposingServletResponse(
+        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
+    FilterChain filterChain = mock(FilterChain.class);
+    doThrow(new HaltFilterChainException("An error occurred")).when(filterChain)
+        .doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
 
     // Act
-    broadleafRequestFilter2.shouldProcessURL(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()),
-        "https://example.org/example");
+    broadleafRequestFilter.doFilterInternalUnlessIgnored(request, response2, filterChain);
+
+    // Assert that nothing has changed
+    verify(filterChain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
+    verify(broadleafRequestProcessor).postProcess(isA(WebRequest.class));
+    verify(broadleafRequestProcessor).process(isA(WebRequest.class));
+    ServletResponse response3 = response2.getResponse();
+    assertTrue(response3 instanceof FileSystemResponseWrapper);
+    ServletResponse response4 = ((FileSystemResponseWrapper) response3).getResponse();
+    assertTrue(response4 instanceof MockHttpServletResponse);
+    assertEquals(200, ((FileSystemResponseWrapper) response3).getStatus());
+    assertEquals(200, response2.getStatus());
+    assertEquals(200, ((MockHttpServletResponse) response4).getStatus());
   }
 
   /**
-   * Test
-   * {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)}
-   * with {@code request}, {@code requestURI}, {@code ignoreSessionCheck}.
+   * Test {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}.
    * <p>
-   * Method under test:
-   * {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)}
+   * Method under test: {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void BroadleafRequestFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"})
+  public void testDoFilterInternalUnlessIgnored3() throws IOException, ServletException {
+    // Arrange
+    doNothing().when(broadleafRequestProcessor).postProcess(Mockito.<WebRequest>any());
+    doNothing().when(broadleafRequestProcessor).process(Mockito.<WebRequest>any());
+    SessionlessHttpServletRequestWrapper request = new SessionlessHttpServletRequestWrapper(
+        new MockHttpServletRequest());
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    StatusExposingServletResponse response2 = new StatusExposingServletResponse(
+        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
+    FilterChain filterChain = mock(FilterChain.class);
+    doThrow(new SiteNotFoundException("An error occurred")).when(filterChain)
+        .doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
+
+    // Act
+    broadleafRequestFilter.doFilterInternalUnlessIgnored(request, response2, filterChain);
+
+    // Assert
+    verify(filterChain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
+    verify(broadleafRequestProcessor).postProcess(isA(WebRequest.class));
+    verify(broadleafRequestProcessor).process(isA(WebRequest.class));
+    ServletResponse response3 = response2.getResponse();
+    assertTrue(response3 instanceof FileSystemResponseWrapper);
+    ServletResponse response4 = ((FileSystemResponseWrapper) response3).getResponse();
+    assertTrue(response4 instanceof MockHttpServletResponse);
+    assertEquals(404, ((FileSystemResponseWrapper) response3).getStatus());
+    assertEquals(404, response2.getStatus());
+    assertEquals(404, ((MockHttpServletResponse) response4).getStatus());
+  }
+
+  /**
+   * Test {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}.
+   * <p>
+   * Method under test: {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void BroadleafRequestFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"})
+  public void testDoFilterInternalUnlessIgnored4() throws IOException, ServletException {
+    // Arrange
+    doNothing().when(broadleafRequestProcessor).postProcess(Mockito.<WebRequest>any());
+    doNothing().when(broadleafRequestProcessor).process(Mockito.<WebRequest>any());
+
+    MockHttpServletRequest request = new MockHttpServletRequest();
+    request.addParameter("https://example.org/example", "https://example.org/example");
+    SessionlessHttpServletRequestWrapper request2 = new SessionlessHttpServletRequestWrapper(request);
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    StatusExposingServletResponse response2 = new StatusExposingServletResponse(
+        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
+    FilterChain filterChain = mock(FilterChain.class);
+    doNothing().when(filterChain).doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
+
+    // Act
+    broadleafRequestFilter.doFilterInternalUnlessIgnored(request2, response2, filterChain);
+
+    // Assert that nothing has changed
+    verify(filterChain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
+    verify(broadleafRequestProcessor).postProcess(isA(WebRequest.class));
+    verify(broadleafRequestProcessor).process(isA(WebRequest.class));
+    ServletResponse response3 = response2.getResponse();
+    assertTrue(response3 instanceof FileSystemResponseWrapper);
+    ServletResponse response4 = ((FileSystemResponseWrapper) response3).getResponse();
+    assertTrue(response4 instanceof MockHttpServletResponse);
+    assertEquals(200, ((FileSystemResponseWrapper) response3).getStatus());
+    assertEquals(200, response2.getStatus());
+    assertEquals(200, ((MockHttpServletResponse) response4).getStatus());
+  }
+
+  /**
+   * Test {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}.
+   * <p>
+   * Method under test: {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void BroadleafRequestFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"})
+  public void testDoFilterInternalUnlessIgnored5() throws IOException, ServletException {
+    // Arrange
+    MockHttpServletRequest request = mock(MockHttpServletRequest.class);
+    when(request.getRequestURI()).thenReturn("org.broadleafcommerce.admin");
+    doNothing().when(request).addParameter(Mockito.<String>any(), Mockito.<String>any());
+    request.addParameter("https://example.org/example", "https://example.org/example");
+    SessionlessHttpServletRequestWrapper request2 = new SessionlessHttpServletRequestWrapper(request);
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    StatusExposingServletResponse response2 = new StatusExposingServletResponse(
+        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
+    FilterChain filterChain = mock(FilterChain.class);
+    doNothing().when(filterChain).doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
+
+    // Act
+    broadleafRequestFilter.doFilterInternalUnlessIgnored(request2, response2, filterChain);
+
+    // Assert that nothing has changed
+    verify(filterChain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
+    verify(request).addParameter(eq("https://example.org/example"), eq("https://example.org/example"));
+    verify(request).getRequestURI();
+    ServletResponse response3 = response2.getResponse();
+    assertTrue(response3 instanceof FileSystemResponseWrapper);
+    ServletResponse response4 = ((FileSystemResponseWrapper) response3).getResponse();
+    assertTrue(response4 instanceof MockHttpServletResponse);
+    assertEquals(200, ((FileSystemResponseWrapper) response3).getStatus());
+    assertEquals(200, response2.getStatus());
+    assertEquals(200, ((MockHttpServletResponse) response4).getStatus());
+  }
+
+  /**
+   * Test {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}.
+   * <ul>
+   *   <li>Given {@code blcadmin}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void BroadleafRequestFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"})
+  public void testDoFilterInternalUnlessIgnored_givenBlcadmin() throws IOException, ServletException {
+    // Arrange
+    MockHttpServletRequest request = mock(MockHttpServletRequest.class);
+    when(request.getRequestURI()).thenReturn("blcadmin");
+    doNothing().when(request).addParameter(Mockito.<String>any(), Mockito.<String>any());
+    request.addParameter("https://example.org/example", "https://example.org/example");
+    SessionlessHttpServletRequestWrapper request2 = new SessionlessHttpServletRequestWrapper(request);
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    StatusExposingServletResponse response2 = new StatusExposingServletResponse(
+        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
+    FilterChain filterChain = mock(FilterChain.class);
+    doNothing().when(filterChain).doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
+
+    // Act
+    broadleafRequestFilter.doFilterInternalUnlessIgnored(request2, response2, filterChain);
+
+    // Assert that nothing has changed
+    verify(filterChain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
+    verify(request).addParameter(eq("https://example.org/example"), eq("https://example.org/example"));
+    verify(request).getRequestURI();
+    ServletResponse response3 = response2.getResponse();
+    assertTrue(response3 instanceof FileSystemResponseWrapper);
+    ServletResponse response4 = ((FileSystemResponseWrapper) response3).getResponse();
+    assertTrue(response4 instanceof MockHttpServletResponse);
+    assertEquals(200, ((FileSystemResponseWrapper) response3).getStatus());
+    assertEquals(200, response2.getStatus());
+    assertEquals(200, ((MockHttpServletResponse) response4).getStatus());
+  }
+
+  /**
+   * Test {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}.
+   * <ul>
+   *   <li>Given {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void BroadleafRequestFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"})
+  public void testDoFilterInternalUnlessIgnored_givenFalse() throws IOException, ServletException {
+    // Arrange
+    doNothing().when(broadleafRequestProcessor).postProcess(Mockito.<WebRequest>any());
+    doNothing().when(broadleafRequestProcessor).process(Mockito.<WebRequest>any());
+    MockHttpServletRequest request = mock(MockHttpServletRequest.class);
+    when(request.getAttribute(Mockito.<String>any())).thenReturn(false);
+    when(request.getRequestURI()).thenReturn("https://example.org/example");
+    doNothing().when(request).addParameter(Mockito.<String>any(), Mockito.<String>any());
+    request.addParameter("https://example.org/example", "https://example.org/example");
+    SessionlessHttpServletRequestWrapper request2 = new SessionlessHttpServletRequestWrapper(request);
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    StatusExposingServletResponse response2 = new StatusExposingServletResponse(
+        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
+    FilterChain filterChain = mock(FilterChain.class);
+    doNothing().when(filterChain).doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
+
+    // Act
+    broadleafRequestFilter.doFilterInternalUnlessIgnored(request2, response2, filterChain);
+
+    // Assert that nothing has changed
+    verify(filterChain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
+    verify(broadleafRequestProcessor).postProcess(isA(WebRequest.class));
+    verify(broadleafRequestProcessor).process(isA(WebRequest.class));
+    verify(request).addParameter(eq("https://example.org/example"), eq("https://example.org/example"));
+    verify(request, atLeast(1)).getAttribute(Mockito.<String>any());
+    verify(request).getRequestURI();
+    ServletResponse response3 = response2.getResponse();
+    assertTrue(response3 instanceof FileSystemResponseWrapper);
+    ServletResponse response4 = ((FileSystemResponseWrapper) response3).getResponse();
+    assertTrue(response4 instanceof MockHttpServletResponse);
+    assertEquals(200, ((FileSystemResponseWrapper) response3).getStatus());
+    assertEquals(200, response2.getStatus());
+    assertEquals(200, ((MockHttpServletResponse) response4).getStatus());
+  }
+
+  /**
+   * Test {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}.
+   * <ul>
+   *   <li>Given {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void BroadleafRequestFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"})
+  public void testDoFilterInternalUnlessIgnored_givenNull() throws IOException, ServletException {
+    // Arrange
+    doNothing().when(broadleafRequestProcessor).postProcess(Mockito.<WebRequest>any());
+    doNothing().when(broadleafRequestProcessor).process(Mockito.<WebRequest>any());
+
+    MockHttpServletRequest request = new MockHttpServletRequest();
+    request.setContextPath(null);
+    request.setQueryString("not empty");
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    StatusExposingServletResponse response2 = new StatusExposingServletResponse(
+        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
+    FilterChain filterChain = mock(FilterChain.class);
+    doNothing().when(filterChain).doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
+
+    // Act
+    broadleafRequestFilter.doFilterInternalUnlessIgnored(request, response2, filterChain);
+
+    // Assert that nothing has changed
+    verify(filterChain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
+    verify(broadleafRequestProcessor).postProcess(isA(WebRequest.class));
+    verify(broadleafRequestProcessor).process(isA(WebRequest.class));
+    ServletResponse response3 = response2.getResponse();
+    assertTrue(response3 instanceof FileSystemResponseWrapper);
+    ServletResponse response4 = ((FileSystemResponseWrapper) response3).getResponse();
+    assertTrue(response4 instanceof MockHttpServletResponse);
+    assertEquals(200, ((FileSystemResponseWrapper) response3).getStatus());
+    assertEquals(200, response2.getStatus());
+    assertEquals(200, ((MockHttpServletResponse) response4).getStatus());
+  }
+
+  /**
+   * Test {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}.
+   * <ul>
+   *   <li>Given {@code .service}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void BroadleafRequestFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"})
+  public void testDoFilterInternalUnlessIgnored_givenService() throws IOException, ServletException {
+    // Arrange
+    MockHttpServletRequest request = mock(MockHttpServletRequest.class);
+    when(request.getRequestURI()).thenReturn(".service");
+    doNothing().when(request).addParameter(Mockito.<String>any(), Mockito.<String>any());
+    request.addParameter("https://example.org/example", "https://example.org/example");
+    SessionlessHttpServletRequestWrapper request2 = new SessionlessHttpServletRequestWrapper(request);
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    StatusExposingServletResponse response2 = new StatusExposingServletResponse(
+        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
+    FilterChain filterChain = mock(FilterChain.class);
+    doNothing().when(filterChain).doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
+
+    // Act
+    broadleafRequestFilter.doFilterInternalUnlessIgnored(request2, response2, filterChain);
+
+    // Assert that nothing has changed
+    verify(filterChain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
+    verify(request).addParameter(eq("https://example.org/example"), eq("https://example.org/example"));
+    verify(request).getRequestURI();
+    ServletResponse response3 = response2.getResponse();
+    assertTrue(response3 instanceof FileSystemResponseWrapper);
+    ServletResponse response4 = ((FileSystemResponseWrapper) response3).getResponse();
+    assertTrue(response4 instanceof MockHttpServletResponse);
+    assertEquals(200, ((FileSystemResponseWrapper) response3).getStatus());
+    assertEquals(200, response2.getStatus());
+    assertEquals(200, ((MockHttpServletResponse) response4).getStatus());
+  }
+
+  /**
+   * Test {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}.
+   * <ul>
+   *   <li>Given {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void BroadleafRequestFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"})
+  public void testDoFilterInternalUnlessIgnored_givenTrue() throws IOException, ServletException {
+    // Arrange
+    doNothing().when(broadleafRequestProcessor).postProcess(Mockito.<WebRequest>any());
+    doNothing().when(broadleafRequestProcessor).process(Mockito.<WebRequest>any());
+    MockHttpServletRequest request = mock(MockHttpServletRequest.class);
+    when(request.getAttribute(Mockito.<String>any())).thenReturn(true);
+    when(request.getRequestURI()).thenReturn("https://example.org/example");
+    doNothing().when(request).addParameter(Mockito.<String>any(), Mockito.<String>any());
+    request.addParameter("https://example.org/example", "https://example.org/example");
+    SessionlessHttpServletRequestWrapper request2 = new SessionlessHttpServletRequestWrapper(request);
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    StatusExposingServletResponse response2 = new StatusExposingServletResponse(
+        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
+    FilterChain filterChain = mock(FilterChain.class);
+    doNothing().when(filterChain).doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
+
+    // Act
+    broadleafRequestFilter.doFilterInternalUnlessIgnored(request2, response2, filterChain);
+
+    // Assert that nothing has changed
+    verify(filterChain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
+    verify(broadleafRequestProcessor).postProcess(isA(WebRequest.class));
+    verify(broadleafRequestProcessor).process(isA(WebRequest.class));
+    verify(request).addParameter(eq("https://example.org/example"), eq("https://example.org/example"));
+    verify(request, atLeast(1)).getAttribute(Mockito.<String>any());
+    verify(request).getRequestURI();
+    ServletResponse response3 = response2.getResponse();
+    assertTrue(response3 instanceof FileSystemResponseWrapper);
+    ServletResponse response4 = ((FileSystemResponseWrapper) response3).getResponse();
+    assertTrue(response4 instanceof MockHttpServletResponse);
+    assertEquals(200, ((FileSystemResponseWrapper) response3).getStatus());
+    assertEquals(200, response2.getStatus());
+    assertEquals(200, ((MockHttpServletResponse) response4).getStatus());
+  }
+
+  /**
+   * Test {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}.
+   * <ul>
+   *   <li>Then throw {@link HaltFilterChainException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void BroadleafRequestFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"})
+  public void testDoFilterInternalUnlessIgnored_thenThrowHaltFilterChainException()
+      throws IOException, ServletException {
+    // Arrange
+    BroadleafRequestFilter broadleafRequestFilter = new BroadleafRequestFilter();
+    SessionlessHttpServletRequestWrapper request = mock(SessionlessHttpServletRequestWrapper.class);
+    when(request.getRequestURI()).thenReturn("org.broadleafcommerce.admin");
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    StatusExposingServletResponse response2 = new StatusExposingServletResponse(
+        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
+    FilterChain filterChain = mock(FilterChain.class);
+    doThrow(new HaltFilterChainException("An error occurred")).when(filterChain)
+        .doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
+
+    // Act and Assert
+    assertThrows(HaltFilterChainException.class,
+        () -> broadleafRequestFilter.doFilterInternalUnlessIgnored(request, response2, filterChain));
+    verify(filterChain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
+    verify(request).getRequestURI();
+  }
+
+  /**
+   * Test {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}.
+   * <ul>
+   *   <li>Then throw {@link IOException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void BroadleafRequestFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"})
+  public void testDoFilterInternalUnlessIgnored_thenThrowIOException() throws IOException, ServletException {
+    // Arrange
+    doNothing().when(broadleafRequestProcessor).postProcess(Mockito.<WebRequest>any());
+    doNothing().when(broadleafRequestProcessor).process(Mockito.<WebRequest>any());
+    SessionlessHttpServletRequestWrapper request = new SessionlessHttpServletRequestWrapper(
+        new MockHttpServletRequest());
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    StatusExposingServletResponse response2 = new StatusExposingServletResponse(
+        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
+    FilterChain filterChain = mock(FilterChain.class);
+    doThrow(new IOException("org.broadleafcommerce.admin")).when(filterChain)
+        .doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
+
+    // Act and Assert
+    assertThrows(IOException.class,
+        () -> broadleafRequestFilter.doFilterInternalUnlessIgnored(request, response2, filterChain));
+    verify(filterChain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
+    verify(broadleafRequestProcessor).postProcess(isA(WebRequest.class));
+    verify(broadleafRequestProcessor).process(isA(WebRequest.class));
+  }
+
+  /**
+   * Test {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)} with {@code request}, {@code requestURI}, {@code ignoreSessionCheck}.
+   * <p>
+   * Method under test: {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BroadleafRequestFilter.shouldProcessURL(HttpServletRequest, String, boolean)"})
   public void testShouldProcessURLWithRequestRequestURIIgnoreSessionCheck() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    BroadleafRequestFilter broadleafRequestFilter = new BroadleafRequestFilter();
-
-    // Act and Assert
-    assertTrue(broadleafRequestFilter.shouldProcessURL(
-        new SessionlessHttpServletRequestWrapper(mock(SessionlessHttpServletRequestWrapper.class)),
-        "https://example.org/example", true));
-  }
-
-  /**
-   * Test
-   * {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)}
-   * with {@code request}, {@code requestURI}, {@code ignoreSessionCheck}.
-   * <p>
-   * Method under test:
-   * {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)}
-   */
-  @Test
-  public void testShouldProcessURLWithRequestRequestURIIgnoreSessionCheck2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    BroadleafRequestFilter broadleafRequestFilter = new BroadleafRequestFilter();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertFalse(broadleafRequestFilter.shouldProcessURL(
         new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()), "org.broadleafcommerce.admin", true));
   }
 
   /**
-   * Test
-   * {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)}
-   * with {@code request}, {@code requestURI}, {@code ignoreSessionCheck}.
-   * <p>
-   * Method under test:
-   * {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testShouldProcessURLWithRequestRequestURIIgnoreSessionCheck3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.BeanInstantiationException: Could not instantiate bean: messageSource defined in bl-common-applicationContext.xml
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageSource' defined in class path resource [bl-common-applicationContext.xml]: Initialization of bean failed; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:628)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.web.AbstractGenericWebContextLoader.loadContext(AbstractGenericWebContextLoader.java:129)
-    //       at org.springframework.test.context.web.AbstractGenericWebContextLoader.loadContext(AbstractGenericWebContextLoader.java:61)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:600)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.web.AbstractGenericWebContextLoader.loadContext(AbstractGenericWebContextLoader.java:129)
-    //       at org.springframework.test.context.web.AbstractGenericWebContextLoader.loadContext(AbstractGenericWebContextLoader.java:61)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.propertyeditors.CustomBooleanEditor.setAsText(CustomBooleanEditor.java:154)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
-    //       at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:590)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.web.AbstractGenericWebContextLoader.loadContext(AbstractGenericWebContextLoader.java:129)
-    //       at org.springframework.test.context.web.AbstractGenericWebContextLoader.loadContext(AbstractGenericWebContextLoader.java:61)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   See https://diff.blue/R026 to resolve this issue.
-
-    // Arrange
-    BroadleafRequestFilter broadleafRequestFilter2 = new BroadleafRequestFilter();
-
-    // Act
-    broadleafRequestFilter2.shouldProcessURL(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()),
-        "https://example.org/example", true);
-  }
-
-  /**
-   * Test
-   * {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)}
-   * with {@code request}, {@code requestURI}, {@code ignoreSessionCheck}.
-   * <ul>
-   *   <li>Given {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)}
-   */
-  @Test
-  public void testShouldProcessURLWithRequestRequestURIIgnoreSessionCheck_givenFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    BroadleafRequestFilter broadleafRequestFilter = new BroadleafRequestFilter();
-    SessionlessHttpServletRequestWrapper request = mock(SessionlessHttpServletRequestWrapper.class);
-    when(request.getAttribute(Mockito.<String>any())).thenReturn(false);
-
-    // Act
-    boolean actualShouldProcessURLResult = broadleafRequestFilter
-        .shouldProcessURL(new SessionlessHttpServletRequestWrapper(request), "https://example.org/example", false);
-
-    // Assert
-    verify(request).getAttribute(eq("blOkToUseSession"));
-    assertTrue(actualShouldProcessURLResult);
-  }
-
-  /**
-   * Test
-   * {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)}
-   * with {@code request}, {@code requestURI}, {@code ignoreSessionCheck}.
-   * <ul>
-   *   <li>Given {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)}
-   */
-  @Test
-  public void testShouldProcessURLWithRequestRequestURIIgnoreSessionCheck_givenTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    BroadleafRequestFilter broadleafRequestFilter = new BroadleafRequestFilter();
-    SessionlessHttpServletRequestWrapper request = mock(SessionlessHttpServletRequestWrapper.class);
-    when(request.getAttribute(Mockito.<String>any())).thenReturn(true);
-
-    // Act
-    boolean actualShouldProcessURLResult = broadleafRequestFilter
-        .shouldProcessURL(new SessionlessHttpServletRequestWrapper(request), "https://example.org/example", false);
-
-    // Assert
-    verify(request).getAttribute(eq("blOkToUseSession"));
-    assertTrue(actualShouldProcessURLResult);
-  }
-
-  /**
-   * Test
-   * {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)}
-   * with {@code request}, {@code requestURI}, {@code ignoreSessionCheck}.
+   * Test {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)} with {@code request}, {@code requestURI}, {@code ignoreSessionCheck}.
    * <ul>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)}
+   * Method under test: {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BroadleafRequestFilter.shouldProcessURL(HttpServletRequest, String, boolean)"})
   public void testShouldProcessURLWithRequestRequestURIIgnoreSessionCheck_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    BroadleafRequestFilter broadleafRequestFilter = new BroadleafRequestFilter();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertTrue(broadleafRequestFilter.shouldProcessURL(
         new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()), "https://example.org/example", true));
   }
 
   /**
-   * Test
-   * {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)}
-   * with {@code request}, {@code requestURI}, {@code ignoreSessionCheck}.
+   * Test {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)} with {@code request}, {@code requestURI}, {@code ignoreSessionCheck}.
    * <ul>
    *   <li>When {@code blcadmin}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)}
+   * Method under test: {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BroadleafRequestFilter.shouldProcessURL(HttpServletRequest, String, boolean)"})
   public void testShouldProcessURLWithRequestRequestURIIgnoreSessionCheck_whenBlcadmin() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    BroadleafRequestFilter broadleafRequestFilter = new BroadleafRequestFilter();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertFalse(broadleafRequestFilter
         .shouldProcessURL(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()), "blcadmin", true));
   }
 
   /**
-   * Test
-   * {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)}
-   * with {@code request}, {@code requestURI}, {@code ignoreSessionCheck}.
+   * Test {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)} with {@code request}, {@code requestURI}, {@code ignoreSessionCheck}.
    * <ul>
    *   <li>When {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)}
+   * Method under test: {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BroadleafRequestFilter.shouldProcessURL(HttpServletRequest, String, boolean)"})
   public void testShouldProcessURLWithRequestRequestURIIgnoreSessionCheck_whenFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    BroadleafRequestFilter broadleafRequestFilter = new BroadleafRequestFilter();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertTrue(broadleafRequestFilter.shouldProcessURL(
         new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()), "https://example.org/example", false));
   }
 
   /**
-   * Test
-   * {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)}
-   * with {@code request}, {@code requestURI}, {@code ignoreSessionCheck}.
+   * Test {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)} with {@code request}, {@code requestURI}, {@code ignoreSessionCheck}.
    * <ul>
    *   <li>When {@code .service}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)}
+   * Method under test: {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BroadleafRequestFilter.shouldProcessURL(HttpServletRequest, String, boolean)"})
   public void testShouldProcessURLWithRequestRequestURIIgnoreSessionCheck_whenService() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    BroadleafRequestFilter broadleafRequestFilter = new BroadleafRequestFilter();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertFalse(broadleafRequestFilter
         .shouldProcessURL(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()), ".service", true));
   }
 
   /**
-   * Test
-   * {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String)}
-   * with {@code request}, {@code requestURI}.
-   * <ul>
-   *   <li>Given {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String)}
-   */
-  @Test
-  public void testShouldProcessURLWithRequestRequestURI_givenFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    BroadleafRequestFilter broadleafRequestFilter = new BroadleafRequestFilter();
-    SessionlessHttpServletRequestWrapper request = mock(SessionlessHttpServletRequestWrapper.class);
-    when(request.getAttribute(Mockito.<String>any())).thenReturn(false);
-
-    // Act
-    boolean actualShouldProcessURLResult = broadleafRequestFilter
-        .shouldProcessURL(new SessionlessHttpServletRequestWrapper(request), "https://example.org/example");
-
-    // Assert
-    verify(request).getAttribute(eq("blOkToUseSession"));
-    assertTrue(actualShouldProcessURLResult);
-  }
-
-  /**
-   * Test
-   * {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String)}
-   * with {@code request}, {@code requestURI}.
-   * <ul>
-   *   <li>Given {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String)}
-   */
-  @Test
-  public void testShouldProcessURLWithRequestRequestURI_givenTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    BroadleafRequestFilter broadleafRequestFilter = new BroadleafRequestFilter();
-    SessionlessHttpServletRequestWrapper request = mock(SessionlessHttpServletRequestWrapper.class);
-    when(request.getAttribute(Mockito.<String>any())).thenReturn(true);
-
-    // Act
-    boolean actualShouldProcessURLResult = broadleafRequestFilter
-        .shouldProcessURL(new SessionlessHttpServletRequestWrapper(request), "https://example.org/example");
-
-    // Assert
-    verify(request).getAttribute(eq("blOkToUseSession"));
-    assertTrue(actualShouldProcessURLResult);
-  }
-
-  /**
-   * Test
-   * {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String)}
-   * with {@code request}, {@code requestURI}.
+   * Test {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String)} with {@code request}, {@code requestURI}.
    * <ul>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String)}
+   * Method under test: {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BroadleafRequestFilter.shouldProcessURL(HttpServletRequest, String)"})
   public void testShouldProcessURLWithRequestRequestURI_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    BroadleafRequestFilter broadleafRequestFilter = new BroadleafRequestFilter();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertTrue(broadleafRequestFilter.shouldProcessURL(
         new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()), "https://example.org/example"));
   }
 
   /**
-   * Test
-   * {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String)}
-   * with {@code request}, {@code requestURI}.
+   * Test {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String)} with {@code request}, {@code requestURI}.
    * <ul>
    *   <li>When {@code blcadmin}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String)}
+   * Method under test: {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BroadleafRequestFilter.shouldProcessURL(HttpServletRequest, String)"})
   public void testShouldProcessURLWithRequestRequestURI_whenBlcadmin_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    BroadleafRequestFilter broadleafRequestFilter = new BroadleafRequestFilter();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertFalse(broadleafRequestFilter
         .shouldProcessURL(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()), "blcadmin"));
   }
 
   /**
-   * Test
-   * {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String)}
-   * with {@code request}, {@code requestURI}.
+   * Test {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String)} with {@code request}, {@code requestURI}.
    * <ul>
    *   <li>When {@code org.broadleafcommerce.admin}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String)}
+   * Method under test: {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BroadleafRequestFilter.shouldProcessURL(HttpServletRequest, String)"})
   public void testShouldProcessURLWithRequestRequestURI_whenOrgBroadleafcommerceAdmin() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    BroadleafRequestFilter broadleafRequestFilter = new BroadleafRequestFilter();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertFalse(broadleafRequestFilter.shouldProcessURL(
         new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()), "org.broadleafcommerce.admin"));
   }
 
   /**
-   * Test
-   * {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String)}
-   * with {@code request}, {@code requestURI}.
-   * <ul>
-   *   <li>When {@code org.broadleafcommerce.admin}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String)}
-   */
-  @Test
-  public void testShouldProcessURLWithRequestRequestURI_whenOrgBroadleafcommerceAdmin2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    BroadleafRequestFilter broadleafRequestFilter = new BroadleafRequestFilter();
-
-    // Act and Assert
-    assertFalse(broadleafRequestFilter.shouldProcessURL(
-        new SessionlessHttpServletRequestWrapper(mock(SessionlessHttpServletRequestWrapper.class)),
-        "org.broadleafcommerce.admin"));
-  }
-
-  /**
-   * Test
-   * {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String)}
-   * with {@code request}, {@code requestURI}.
+   * Test {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String)} with {@code request}, {@code requestURI}.
    * <ul>
    *   <li>When {@code .service}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String)}
+   * Method under test: {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BroadleafRequestFilter.shouldProcessURL(HttpServletRequest, String)"})
   public void testShouldProcessURLWithRequestRequestURI_whenService_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    BroadleafRequestFilter broadleafRequestFilter = new BroadleafRequestFilter();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertFalse(broadleafRequestFilter
         .shouldProcessURL(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()), ".service"));
   }
@@ -727,358 +701,36 @@ public class BroadleafRequestFilterDiffblueTest {
    * Method under test: {@link BroadleafRequestFilter#getIgnoreSuffixes()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.util.Set BroadleafRequestFilter.getIgnoreSuffixes()"})
   public void testGetIgnoreSuffixes() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    BroadleafRequestFilter broadleafRequestFilter = new BroadleafRequestFilter();
-    broadleafRequestFilter.setEnvironment(mock(StandardEnvironment.class));
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertEquals(44, broadleafRequestFilter.getIgnoreSuffixes().size());
   }
 
   /**
-   * Test {@link BroadleafRequestFilter#getIgnoreSuffixes()}.
-   * <p>
-   * Method under test: {@link BroadleafRequestFilter#getIgnoreSuffixes()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetIgnoreSuffixes2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.BeanInstantiationException: Could not instantiate bean: messageSource defined in bl-common-applicationContext.xml
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageSource' defined in class path resource [bl-common-applicationContext.xml]: Initialization of bean failed; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:628)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.web.AbstractGenericWebContextLoader.loadContext(AbstractGenericWebContextLoader.java:129)
-    //       at org.springframework.test.context.web.AbstractGenericWebContextLoader.loadContext(AbstractGenericWebContextLoader.java:61)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:600)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.web.AbstractGenericWebContextLoader.loadContext(AbstractGenericWebContextLoader.java:129)
-    //       at org.springframework.test.context.web.AbstractGenericWebContextLoader.loadContext(AbstractGenericWebContextLoader.java:61)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.propertyeditors.CustomBooleanEditor.setAsText(CustomBooleanEditor.java:154)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
-    //       at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:590)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.web.AbstractGenericWebContextLoader.loadContext(AbstractGenericWebContextLoader.java:129)
-    //       at org.springframework.test.context.web.AbstractGenericWebContextLoader.loadContext(AbstractGenericWebContextLoader.java:61)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   See https://diff.blue/R026 to resolve this issue.
-
-    // Arrange and Act
-    (new BroadleafRequestFilter()).getIgnoreSuffixes();
-  }
-
-  /**
-   * Test {@link BroadleafRequestFilter#getIgnoreSuffixes()}.
-   * <ul>
-   *   <li>Given {@link BroadleafRequestFilter} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link BroadleafRequestFilter#getIgnoreSuffixes()}
-   */
-  @Test
-  public void testGetIgnoreSuffixes_givenBroadleafRequestFilter() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals(44, (new BroadleafRequestFilter()).getIgnoreSuffixes().size());
-  }
-
-  /**
    * Test {@link BroadleafRequestFilter#shouldNotFilterErrorDispatch()}.
    * <p>
-   * Method under test:
-   * {@link BroadleafRequestFilter#shouldNotFilterErrorDispatch()}
+   * Method under test: {@link BroadleafRequestFilter#shouldNotFilterErrorDispatch()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BroadleafRequestFilter.shouldNotFilterErrorDispatch()"})
   public void testShouldNotFilterErrorDispatch() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    BroadleafRequestFilter broadleafRequestFilter = new BroadleafRequestFilter();
-    broadleafRequestFilter.setEnvironment(mock(StandardEnvironment.class));
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertFalse(broadleafRequestFilter.shouldNotFilterErrorDispatch());
   }
 
   /**
-   * Test {@link BroadleafRequestFilter#shouldNotFilterErrorDispatch()}.
-   * <p>
-   * Method under test:
-   * {@link BroadleafRequestFilter#shouldNotFilterErrorDispatch()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testShouldNotFilterErrorDispatch2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.BeanInstantiationException: Could not instantiate bean: messageSource defined in bl-common-applicationContext.xml
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageSource' defined in class path resource [bl-common-applicationContext.xml]: Initialization of bean failed; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:628)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.web.AbstractGenericWebContextLoader.loadContext(AbstractGenericWebContextLoader.java:129)
-    //       at org.springframework.test.context.web.AbstractGenericWebContextLoader.loadContext(AbstractGenericWebContextLoader.java:61)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:600)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.web.AbstractGenericWebContextLoader.loadContext(AbstractGenericWebContextLoader.java:129)
-    //       at org.springframework.test.context.web.AbstractGenericWebContextLoader.loadContext(AbstractGenericWebContextLoader.java:61)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.propertyeditors.CustomBooleanEditor.setAsText(CustomBooleanEditor.java:154)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
-    //       at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:590)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.web.AbstractGenericWebContextLoader.loadContext(AbstractGenericWebContextLoader.java:129)
-    //       at org.springframework.test.context.web.AbstractGenericWebContextLoader.loadContext(AbstractGenericWebContextLoader.java:61)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   See https://diff.blue/R026 to resolve this issue.
-
-    // Arrange and Act
-    (new BroadleafRequestFilter()).shouldNotFilterErrorDispatch();
-  }
-
-  /**
-   * Test {@link BroadleafRequestFilter#shouldNotFilterErrorDispatch()}.
-   * <ul>
-   *   <li>Given {@link BroadleafRequestFilter} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link BroadleafRequestFilter#shouldNotFilterErrorDispatch()}
-   */
-  @Test
-  public void testShouldNotFilterErrorDispatch_givenBroadleafRequestFilter() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertFalse((new BroadleafRequestFilter()).shouldNotFilterErrorDispatch());
-  }
-
-  /**
    * Test {@link BroadleafRequestFilter#getOrder()}.
    * <p>
    * Method under test: {@link BroadleafRequestFilter#getOrder()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int BroadleafRequestFilter.getOrder()"})
   public void testGetOrder() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.BeanInstantiationException: Could not instantiate bean: messageSource defined in bl-common-applicationContext.xml
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageSource' defined in class path resource [bl-common-applicationContext.xml]: Initialization of bean failed; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:628)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.web.AbstractGenericWebContextLoader.loadContext(AbstractGenericWebContextLoader.java:129)
-    //       at org.springframework.test.context.web.AbstractGenericWebContextLoader.loadContext(AbstractGenericWebContextLoader.java:61)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:600)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.web.AbstractGenericWebContextLoader.loadContext(AbstractGenericWebContextLoader.java:129)
-    //       at org.springframework.test.context.web.AbstractGenericWebContextLoader.loadContext(AbstractGenericWebContextLoader.java:61)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.propertyeditors.CustomBooleanEditor.setAsText(CustomBooleanEditor.java:154)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
-    //       at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:590)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.web.AbstractGenericWebContextLoader.loadContext(AbstractGenericWebContextLoader.java:129)
-    //       at org.springframework.test.context.web.AbstractGenericWebContextLoader.loadContext(AbstractGenericWebContextLoader.java:61)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   See https://diff.blue/R026 to resolve this issue.
-
-    // Arrange and Act
-    (new BroadleafRequestFilter()).getOrder();
-  }
-
-  /**
-   * Test {@link BroadleafRequestFilter#getOrder()}.
-   * <ul>
-   *   <li>Given {@link BroadleafRequestFilter} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link BroadleafRequestFilter#getOrder()}
-   */
-  @Test
-  public void testGetOrder_givenBroadleafRequestFilter() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals(-10000, (new BroadleafRequestFilter()).getOrder());
-  }
-
-  /**
-   * Test {@link BroadleafRequestFilter#getOrder()}.
-   * <ul>
-   *   <li>Given {@link BroadleafRequestFilter} (default constructor) Environment is
-   * {@link StandardEnvironment}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link BroadleafRequestFilter#getOrder()}
-   */
-  @Test
-  public void testGetOrder_givenBroadleafRequestFilterEnvironmentIsStandardEnvironment() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    BroadleafRequestFilter broadleafRequestFilter = new BroadleafRequestFilter();
-    broadleafRequestFilter.setEnvironment(mock(StandardEnvironment.class));
-
-    // Act and Assert
     assertEquals(-10000, broadleafRequestFilter.getOrder());
   }
 }

@@ -19,49 +19,25 @@ package org.broadleafcommerce.common.site.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
-import org.broadleafcommerce.common.locale.domain.Locale;
 import org.broadleafcommerce.common.site.domain.Site;
 import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class AbstractSiteServiceExtensionHandlerDiffblueTest {
   /**
-   * Test
-   * {@link AbstractSiteServiceExtensionHandler#contributeNonPersitentSiteProperties(Site, Site)}.
-   * <ul>
-   *   <li>Given {@link Locale}.</li>
-   * </ul>
+   * Test {@link AbstractSiteServiceExtensionHandler#contributeNonPersitentSiteProperties(Site, Site)}.
    * <p>
-   * Method under test:
-   * {@link AbstractSiteServiceExtensionHandler#contributeNonPersitentSiteProperties(Site, Site)}
+   * Method under test: {@link AbstractSiteServiceExtensionHandler#contributeNonPersitentSiteProperties(Site, Site)}
    */
   @Test
-  public void testContributeNonPersitentSiteProperties_givenLocale() {
-    // Arrange
-    AbstractSiteServiceExtensionHandler abstractSiteServiceExtensionHandler = new AbstractSiteServiceExtensionHandler();
-
-    SiteImpl from = new SiteImpl();
-    from.setDefaultLocale(mock(Locale.class));
-
-    // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
-        abstractSiteServiceExtensionHandler.contributeNonPersitentSiteProperties(from, new SiteImpl()));
-  }
-
-  /**
-   * Test
-   * {@link AbstractSiteServiceExtensionHandler#contributeNonPersitentSiteProperties(Site, Site)}.
-   * <ul>
-   *   <li>When {@link SiteImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link AbstractSiteServiceExtensionHandler#contributeNonPersitentSiteProperties(Site, Site)}
-   */
-  @Test
-  public void testContributeNonPersitentSiteProperties_whenSiteImpl() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AbstractSiteServiceExtensionHandler.contributeNonPersitentSiteProperties(Site, Site)"})
+  public void testContributeNonPersitentSiteProperties() {
     // Arrange
     AbstractSiteServiceExtensionHandler abstractSiteServiceExtensionHandler = new AbstractSiteServiceExtensionHandler();
     SiteImpl from = new SiteImpl();
@@ -74,10 +50,11 @@ public class AbstractSiteServiceExtensionHandlerDiffblueTest {
   /**
    * Test new {@link AbstractSiteServiceExtensionHandler} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link AbstractSiteServiceExtensionHandler}
+   * Method under test: default or parameterless constructor of {@link AbstractSiteServiceExtensionHandler}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AbstractSiteServiceExtensionHandler.<init>()"})
   public void testNewAbstractSiteServiceExtensionHandler() {
     // Arrange and Act
     AbstractSiteServiceExtensionHandler actualAbstractSiteServiceExtensionHandler = new AbstractSiteServiceExtensionHandler();

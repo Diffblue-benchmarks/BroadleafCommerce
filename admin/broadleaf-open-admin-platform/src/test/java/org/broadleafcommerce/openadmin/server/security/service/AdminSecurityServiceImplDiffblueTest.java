@@ -1,16 +1,48 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.server.security.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.util.ArrayList;
 import java.util.List;
+import javax.cache.Cache;
+import javax.cache.CacheManager;
+import org.broadleafcommerce.common.email.service.EmailService;
 import org.broadleafcommerce.common.email.service.info.EmailInfo;
-import org.broadleafcommerce.common.security.util.PasswordChange;
+import org.broadleafcommerce.common.event.BroadleafApplicationEventPublisher;
 import org.broadleafcommerce.common.service.GenericResponse;
+import org.broadleafcommerce.openadmin.server.security.dao.AdminPermissionDao;
+import org.broadleafcommerce.openadmin.server.security.dao.AdminRoleDao;
+import org.broadleafcommerce.openadmin.server.security.dao.AdminUserDao;
+import org.broadleafcommerce.openadmin.server.security.dao.ForgotPasswordSecurityTokenDao;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminPermission;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminPermissionImpl;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminRole;
@@ -20,209 +52,70 @@ import org.broadleafcommerce.openadmin.server.security.domain.AdminUserImpl;
 import org.broadleafcommerce.openadmin.server.security.domain.ForgotPasswordSecurityToken;
 import org.broadleafcommerce.openadmin.server.security.domain.ForgotPasswordSecurityTokenImpl;
 import org.broadleafcommerce.openadmin.server.security.service.type.PermissionType;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
-    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
-    "/bl-open-admin-contentCreator-applicationContext.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class AdminSecurityServiceImplDiffblueTest {
-  @Autowired
+  @Mock
+  private AdminPermissionDao adminPermissionDao;
+
+  @Mock
+  private AdminRoleDao adminRoleDao;
+
+  @InjectMocks
   private AdminSecurityServiceImpl adminSecurityServiceImpl;
 
-  /**
-   * Test {@link AdminSecurityServiceImpl#getTokenExpiredMinutes()}.
-   * <p>
-   * Method under test: {@link AdminSecurityServiceImpl#getTokenExpiredMinutes()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetTokenExpiredMinutes() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1947 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.AdminSecurityServiceImpl adminSecurityServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Mock
+  private AdminUserDao adminUserDao;
 
-    // Arrange and Act
-    (new AdminSecurityServiceImpl()).getTokenExpiredMinutes();
-  }
+  @Mock
+  private BroadleafApplicationEventPublisher broadleafApplicationEventPublisher;
 
-  /**
-   * Test {@link AdminSecurityServiceImpl#getResetPasswordURL()}.
-   * <p>
-   * Method under test: {@link AdminSecurityServiceImpl#getResetPasswordURL()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetResetPasswordURL() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1944 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.AdminSecurityServiceImpl adminSecurityServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Mock
+  private CacheManager cacheManager;
 
-    // Arrange and Act
-    (new AdminSecurityServiceImpl()).getResetPasswordURL();
-  }
+  @Mock
+  private EmailInfo emailInfo;
 
-  /**
-   * Test {@link AdminSecurityServiceImpl#deleteAdminPermission(AdminPermission)}.
-   * <p>
-   * Method under test:
-   * {@link AdminSecurityServiceImpl#deleteAdminPermission(AdminPermission)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testDeleteAdminPermission() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1540 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.AdminSecurityServiceImpl adminSecurityServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Mock
+  private EmailService emailService;
 
-    // Arrange
-    AdminSecurityServiceImpl adminSecurityServiceImpl2 = new AdminSecurityServiceImpl();
+  @Mock
+  private ForgotPasswordSecurityTokenDao forgotPasswordSecurityTokenDao;
 
-    // Act
-    adminSecurityServiceImpl2.deleteAdminPermission(new AdminPermissionImpl());
-  }
-
-  /**
-   * Test {@link AdminSecurityServiceImpl#deleteAdminRole(AdminRole)}.
-   * <p>
-   * Method under test:
-   * {@link AdminSecurityServiceImpl#deleteAdminRole(AdminRole)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testDeleteAdminRole() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1555 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.AdminSecurityServiceImpl adminSecurityServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    AdminSecurityServiceImpl adminSecurityServiceImpl2 = new AdminSecurityServiceImpl();
-
-    // Act
-    adminSecurityServiceImpl2.deleteAdminRole(new AdminRoleImpl());
-  }
-
-  /**
-   * Test {@link AdminSecurityServiceImpl#deleteAdminUser(AdminUser)}.
-   * <p>
-   * Method under test:
-   * {@link AdminSecurityServiceImpl#deleteAdminUser(AdminUser)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testDeleteAdminUser() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1567 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.AdminSecurityServiceImpl adminSecurityServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    AdminSecurityServiceImpl adminSecurityServiceImpl2 = new AdminSecurityServiceImpl();
-
-    // Act
-    adminSecurityServiceImpl2.deleteAdminUser(new AdminUserImpl());
-  }
+  @Mock
+  private PasswordEncoder passwordEncoder;
 
   /**
    * Test {@link AdminSecurityServiceImpl#readAdminPermissionById(Long)}.
    * <p>
-   * Method under test:
-   * {@link AdminSecurityServiceImpl#readAdminPermissionById(Long)}
+   * Method under test: {@link AdminSecurityServiceImpl#readAdminPermissionById(Long)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"AdminPermission AdminSecurityServiceImpl.readAdminPermissionById(Long)"})
   public void testReadAdminPermissionById() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2068 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.AdminSecurityServiceImpl adminSecurityServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    AdminPermissionImpl adminPermissionImpl = new AdminPermissionImpl();
+    when(adminPermissionDao.readAdminPermissionById(Mockito.<Long>any())).thenReturn(adminPermissionImpl);
 
-    // Arrange and Act
-    (new AdminSecurityServiceImpl()).readAdminPermissionById(1L);
+    // Act
+    AdminPermission actualReadAdminPermissionByIdResult = adminSecurityServiceImpl.readAdminPermissionById(1L);
+
+    // Assert
+    verify(adminPermissionDao).readAdminPermissionById(eq(1L));
+    assertSame(adminPermissionImpl, actualReadAdminPermissionByIdResult);
   }
 
   /**
@@ -231,27 +124,19 @@ public class AdminSecurityServiceImplDiffblueTest {
    * Method under test: {@link AdminSecurityServiceImpl#readAdminRoleById(Long)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"AdminRole AdminSecurityServiceImpl.readAdminRoleById(Long)"})
   public void testReadAdminRoleById() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2085 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.AdminSecurityServiceImpl adminSecurityServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    AdminRoleImpl adminRoleImpl = new AdminRoleImpl();
+    when(adminRoleDao.readAdminRoleById(Mockito.<Long>any())).thenReturn(adminRoleImpl);
 
-    // Arrange and Act
-    (new AdminSecurityServiceImpl()).readAdminRoleById(1L);
+    // Act
+    AdminRole actualReadAdminRoleByIdResult = adminSecurityServiceImpl.readAdminRoleById(1L);
+
+    // Assert
+    verify(adminRoleDao).readAdminRoleById(eq(1L));
+    assertSame(adminRoleImpl, actualReadAdminRoleByIdResult);
   }
 
   /**
@@ -260,234 +145,110 @@ public class AdminSecurityServiceImplDiffblueTest {
    * Method under test: {@link AdminSecurityServiceImpl#readAdminUserById(Long)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"AdminUser AdminSecurityServiceImpl.readAdminUserById(Long)"})
   public void testReadAdminUserById() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2102 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.AdminSecurityServiceImpl adminSecurityServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new AdminSecurityServiceImpl()).readAdminUserById(1L);
-  }
-
-  /**
-   * Test {@link AdminSecurityServiceImpl#saveAdminPermission(AdminPermission)}.
-   * <p>
-   * Method under test:
-   * {@link AdminSecurityServiceImpl#saveAdminPermission(AdminPermission)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSaveAdminPermission() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2846 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.AdminSecurityServiceImpl adminSecurityServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    AdminSecurityServiceImpl adminSecurityServiceImpl2 = new AdminSecurityServiceImpl();
+    AdminUserImpl adminUserImpl = new AdminUserImpl();
+    when(adminUserDao.readAdminUserById(Mockito.<Long>any())).thenReturn(adminUserImpl);
 
     // Act
-    adminSecurityServiceImpl2.saveAdminPermission(new AdminPermissionImpl());
+    AdminUser actualReadAdminUserByIdResult = adminSecurityServiceImpl.readAdminUserById(1L);
+
+    // Assert
+    verify(adminUserDao).readAdminUserById(eq(1L));
+    assertSame(adminUserImpl, actualReadAdminUserByIdResult);
   }
 
   /**
-   * Test {@link AdminSecurityServiceImpl#saveAdminRole(AdminRole)}.
+   * Test {@link AdminSecurityServiceImpl#changePassword(String, String, String, String)} with {@code username}, {@code oldPassword}, {@code password}, {@code confirmPassword}.
    * <p>
-   * Method under test: {@link AdminSecurityServiceImpl#saveAdminRole(AdminRole)}
+   * Method under test: {@link AdminSecurityServiceImpl#changePassword(String, String, String, String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testSaveAdminRole() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2861 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.AdminSecurityServiceImpl adminSecurityServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    AdminSecurityServiceImpl adminSecurityServiceImpl2 = new AdminSecurityServiceImpl();
-
-    // Act
-    adminSecurityServiceImpl2.saveAdminRole(new AdminRoleImpl());
-  }
-
-  /**
-   * Test {@link AdminSecurityServiceImpl#saveAdminUser(AdminUser)}.
-   * <p>
-   * Method under test: {@link AdminSecurityServiceImpl#saveAdminUser(AdminUser)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSaveAdminUser() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2873 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.AdminSecurityServiceImpl adminSecurityServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    AdminSecurityServiceImpl adminSecurityServiceImpl2 = new AdminSecurityServiceImpl();
-
-    // Act
-    adminSecurityServiceImpl2.saveAdminUser(new AdminUserImpl());
-  }
-
-  /**
-   * Test {@link AdminSecurityServiceImpl#clearAdminSecurityCache()}.
-   * <p>
-   * Method under test: {@link AdminSecurityServiceImpl#clearAdminSecurityCache()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testClearAdminSecurityCache() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1537 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.AdminSecurityServiceImpl adminSecurityServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new AdminSecurityServiceImpl()).clearAdminSecurityCache();
-  }
-
-  /**
-   * Test {@link AdminSecurityServiceImpl#generateSecurePassword()}.
-   * <p>
-   * Method under test: {@link AdminSecurityServiceImpl#generateSecurePassword()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGenerateSecurePassword() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1938 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.AdminSecurityServiceImpl adminSecurityServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new AdminSecurityServiceImpl()).generateSecurePassword();
-  }
-
-  /**
-   * Test {@link AdminSecurityServiceImpl#changePassword(PasswordChange)} with
-   * {@code passwordChange}.
-   * <p>
-   * Method under test:
-   * {@link AdminSecurityServiceImpl#changePassword(PasswordChange)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testChangePasswordWithPasswordChange() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1375 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.AdminSecurityServiceImpl adminSecurityServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    AdminSecurityServiceImpl adminSecurityServiceImpl2 = new AdminSecurityServiceImpl();
-
-    // Act
-    adminSecurityServiceImpl2.changePassword(new PasswordChange("janedoe"));
-  }
-
-  /**
-   * Test
-   * {@link AdminSecurityServiceImpl#changePassword(String, String, String, String)}
-   * with {@code username}, {@code oldPassword}, {@code password},
-   * {@code confirmPassword}.
-   * <p>
-   * Method under test:
-   * {@link AdminSecurityServiceImpl#changePassword(String, String, String, String)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"GenericResponse AdminSecurityServiceImpl.changePassword(String, String, String, String)"})
   public void testChangePasswordWithUsernameOldPasswordPasswordConfirmPassword() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    // Arrange
+    when(adminUserDao.readAdminUserByUserName(Mockito.<String>any())).thenReturn(new AdminUserImpl());
 
-    // Arrange and Act
-    GenericResponse actualChangePasswordResult = (new AdminSecurityServiceImpl()).changePassword(null, "iloveyou",
+    // Act
+    GenericResponse actualChangePasswordResult = adminSecurityServiceImpl.changePassword("janedoe", "iloveyou",
         "iloveyou", "iloveyou");
+
+    // Assert
+    verify(adminUserDao).readAdminUserByUserName(eq("janedoe"));
+    List<String> errorCodesList = actualChangePasswordResult.getErrorCodesList();
+    assertEquals(1, errorCodesList.size());
+    assertEquals("emailNotFound", errorCodesList.get(0));
+    assertTrue(actualChangePasswordResult.getHasErrors());
+  }
+
+  /**
+   * Test {@link AdminSecurityServiceImpl#changePassword(String, String, String, String)} with {@code username}, {@code oldPassword}, {@code password}, {@code confirmPassword}.
+   * <p>
+   * Method under test: {@link AdminSecurityServiceImpl#changePassword(String, String, String, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"GenericResponse AdminSecurityServiceImpl.changePassword(String, String, String, String)"})
+  public void testChangePasswordWithUsernameOldPasswordPasswordConfirmPassword2() {
+    // Arrange
+    when(adminUserDao.readAdminUserByUserName(Mockito.<String>any())).thenReturn(null);
+
+    // Act
+    GenericResponse actualChangePasswordResult = adminSecurityServiceImpl.changePassword("janedoe", "iloveyou",
+        "iloveyou", "iloveyou");
+
+    // Assert
+    verify(adminUserDao).readAdminUserByUserName(eq("janedoe"));
+    List<String> errorCodesList = actualChangePasswordResult.getErrorCodesList();
+    assertEquals(1, errorCodesList.size());
+    assertEquals("invalidUser", errorCodesList.get(0));
+    assertTrue(actualChangePasswordResult.getHasErrors());
+  }
+
+  /**
+   * Test {@link AdminSecurityServiceImpl#changePassword(String, String, String, String)} with {@code username}, {@code oldPassword}, {@code password}, {@code confirmPassword}.
+   * <p>
+   * Method under test: {@link AdminSecurityServiceImpl#changePassword(String, String, String, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"GenericResponse AdminSecurityServiceImpl.changePassword(String, String, String, String)"})
+  public void testChangePasswordWithUsernameOldPasswordPasswordConfirmPassword3() {
+    // Arrange
+    AdminUserImpl adminUserImpl = mock(AdminUserImpl.class);
+    when(adminUserImpl.getActiveStatusFlag()).thenReturn(false);
+    when(adminUserImpl.getEmail()).thenReturn("jane.doe@example.org");
+    when(adminUserDao.readAdminUserByUserName(Mockito.<String>any())).thenReturn(adminUserImpl);
+
+    // Act
+    GenericResponse actualChangePasswordResult = adminSecurityServiceImpl.changePassword("janedoe", "iloveyou",
+        "iloveyou", "iloveyou");
+
+    // Assert
+    verify(adminUserDao).readAdminUserByUserName(eq("janedoe"));
+    verify(adminUserImpl).getActiveStatusFlag();
+    verify(adminUserImpl).getEmail();
+    List<String> errorCodesList = actualChangePasswordResult.getErrorCodesList();
+    assertEquals(1, errorCodesList.size());
+    assertEquals("inactiveUser", errorCodesList.get(0));
+    assertTrue(actualChangePasswordResult.getHasErrors());
+  }
+
+  /**
+   * Test {@link AdminSecurityServiceImpl#changePassword(String, String, String, String)} with {@code username}, {@code oldPassword}, {@code password}, {@code confirmPassword}.
+   * <p>
+   * Method under test: {@link AdminSecurityServiceImpl#changePassword(String, String, String, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"GenericResponse AdminSecurityServiceImpl.changePassword(String, String, String, String)"})
+  public void testChangePasswordWithUsernameOldPasswordPasswordConfirmPassword4() {
+    // Arrange and Act
+    GenericResponse actualChangePasswordResult = adminSecurityServiceImpl.changePassword(null, "iloveyou", "iloveyou",
+        "iloveyou");
 
     // Assert
     List<String> errorCodesList = actualChangePasswordResult.getErrorCodesList();
@@ -497,176 +258,141 @@ public class AdminSecurityServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminSecurityServiceImpl#changePassword(String, String, String, String)}
-   * with {@code username}, {@code oldPassword}, {@code password},
-   * {@code confirmPassword}.
+   * Test {@link AdminSecurityServiceImpl#changePassword(String, String, String, String)} with {@code username}, {@code oldPassword}, {@code password}, {@code confirmPassword}.
    * <p>
-   * Method under test:
-   * {@link AdminSecurityServiceImpl#changePassword(String, String, String, String)}
+   * Method under test: {@link AdminSecurityServiceImpl#changePassword(String, String, String, String)}
    */
   @Test
-  public void testChangePasswordWithUsernameOldPasswordPasswordConfirmPassword2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"GenericResponse AdminSecurityServiceImpl.changePassword(String, String, String, String)"})
+  public void testChangePasswordWithUsernameOldPasswordPasswordConfirmPassword5() {
+    // Arrange
+    AdminUserImpl adminUserImpl = mock(AdminUserImpl.class);
+    when(adminUserImpl.getActiveStatusFlag()).thenReturn(false);
+    when(adminUserImpl.getEmail()).thenReturn("jane.doe@example.org");
+    when(adminUserDao.readAdminUserByUserName(Mockito.<String>any())).thenReturn(adminUserImpl);
 
-    // Arrange and Act
-    GenericResponse actualChangePasswordResult = (new AdminSecurityServiceImpl()).changePassword(null, "iloveyou",
-        "invalidUser", "iloveyou");
+    // Act
+    GenericResponse actualChangePasswordResult = adminSecurityServiceImpl.changePassword("janedoe", "iloveyou",
+        "inactiveUser", "iloveyou");
 
     // Assert
+    verify(adminUserDao).readAdminUserByUserName(eq("janedoe"));
+    verify(adminUserImpl).getActiveStatusFlag();
+    verify(adminUserImpl).getEmail();
     List<String> errorCodesList = actualChangePasswordResult.getErrorCodesList();
     assertEquals(2, errorCodesList.size());
-    assertEquals("invalidUser", errorCodesList.get(0));
+    assertEquals("inactiveUser", errorCodesList.get(0));
     assertEquals("passwordMismatch", errorCodesList.get(1));
     assertTrue(actualChangePasswordResult.getHasErrors());
   }
 
   /**
-   * Test
-   * {@link AdminSecurityServiceImpl#changePassword(String, String, String, String)}
-   * with {@code username}, {@code oldPassword}, {@code password},
-   * {@code confirmPassword}.
+   * Test {@link AdminSecurityServiceImpl#changePassword(String, String, String, String)} with {@code username}, {@code oldPassword}, {@code password}, {@code confirmPassword}.
    * <p>
-   * Method under test:
-   * {@link AdminSecurityServiceImpl#changePassword(String, String, String, String)}
+   * Method under test: {@link AdminSecurityServiceImpl#changePassword(String, String, String, String)}
    */
   @Test
-  public void testChangePasswordWithUsernameOldPasswordPasswordConfirmPassword3() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"GenericResponse AdminSecurityServiceImpl.changePassword(String, String, String, String)"})
+  public void testChangePasswordWithUsernameOldPasswordPasswordConfirmPassword6() {
+    // Arrange
+    AdminUserImpl adminUserImpl = mock(AdminUserImpl.class);
+    when(adminUserImpl.getActiveStatusFlag()).thenReturn(false);
+    when(adminUserImpl.getEmail()).thenReturn("jane.doe@example.org");
+    when(adminUserDao.readAdminUserByUserName(Mockito.<String>any())).thenReturn(adminUserImpl);
 
-    // Arrange and Act
-    GenericResponse actualChangePasswordResult = (new AdminSecurityServiceImpl()).changePassword(null, "iloveyou", null,
+    // Act
+    GenericResponse actualChangePasswordResult = adminSecurityServiceImpl.changePassword("janedoe", "iloveyou", null,
         "iloveyou");
 
     // Assert
+    verify(adminUserDao).readAdminUserByUserName(eq("janedoe"));
+    verify(adminUserImpl).getActiveStatusFlag();
+    verify(adminUserImpl).getEmail();
     List<String> errorCodesList = actualChangePasswordResult.getErrorCodesList();
     assertEquals(2, errorCodesList.size());
+    assertEquals("inactiveUser", errorCodesList.get(0));
     assertEquals("invalidPassword", errorCodesList.get(1));
-    assertEquals("invalidUser", errorCodesList.get(0));
     assertTrue(actualChangePasswordResult.getHasErrors());
   }
 
   /**
-   * Test
-   * {@link AdminSecurityServiceImpl#changePassword(String, String, String, String)}
-   * with {@code username}, {@code oldPassword}, {@code password},
-   * {@code confirmPassword}.
+   * Test {@link AdminSecurityServiceImpl#changePassword(String, String, String, String)} with {@code username}, {@code oldPassword}, {@code password}, {@code confirmPassword}.
    * <p>
-   * Method under test:
-   * {@link AdminSecurityServiceImpl#changePassword(String, String, String, String)}
+   * Method under test: {@link AdminSecurityServiceImpl#changePassword(String, String, String, String)}
    */
   @Test
-  public void testChangePasswordWithUsernameOldPasswordPasswordConfirmPassword4() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"GenericResponse AdminSecurityServiceImpl.changePassword(String, String, String, String)"})
+  public void testChangePasswordWithUsernameOldPasswordPasswordConfirmPassword7() {
+    // Arrange
+    AdminUserImpl adminUserImpl = mock(AdminUserImpl.class);
+    when(adminUserImpl.getActiveStatusFlag()).thenReturn(false);
+    when(adminUserImpl.getEmail()).thenReturn("jane.doe@example.org");
+    when(adminUserDao.readAdminUserByUserName(Mockito.<String>any())).thenReturn(adminUserImpl);
 
-    // Arrange and Act
-    GenericResponse actualChangePasswordResult = (new AdminSecurityServiceImpl()).changePassword(null, "iloveyou",
+    // Act
+    GenericResponse actualChangePasswordResult = adminSecurityServiceImpl.changePassword("janedoe", "iloveyou",
         "iloveyou", null);
 
     // Assert
+    verify(adminUserDao).readAdminUserByUserName(eq("janedoe"));
+    verify(adminUserImpl).getActiveStatusFlag();
+    verify(adminUserImpl).getEmail();
     List<String> errorCodesList = actualChangePasswordResult.getErrorCodesList();
     assertEquals(2, errorCodesList.size());
+    assertEquals("inactiveUser", errorCodesList.get(0));
     assertEquals("invalidPassword", errorCodesList.get(1));
-    assertEquals("invalidUser", errorCodesList.get(0));
     assertTrue(actualChangePasswordResult.getHasErrors());
-  }
-
-  /**
-   * Test
-   * {@link AdminSecurityServiceImpl#changePassword(String, String, String, String)}
-   * with {@code username}, {@code oldPassword}, {@code password},
-   * {@code confirmPassword}.
-   * <p>
-   * Method under test:
-   * {@link AdminSecurityServiceImpl#changePassword(String, String, String, String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testChangePasswordWithUsernameOldPasswordPasswordConfirmPassword5() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1300 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.AdminSecurityServiceImpl adminSecurityServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new AdminSecurityServiceImpl()).changePassword("janedoe", "iloveyou", "iloveyou", "iloveyou");
-  }
-
-  /**
-   * Test
-   * {@link AdminSecurityServiceImpl#isUserQualifiedForOperationOnCeilingEntity(AdminUser, PermissionType, String)}.
-   * <p>
-   * Method under test:
-   * {@link AdminSecurityServiceImpl#isUserQualifiedForOperationOnCeilingEntity(AdminUser, PermissionType, String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsUserQualifiedForOperationOnCeilingEntity() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2021 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.AdminSecurityServiceImpl adminSecurityServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    AdminSecurityServiceImpl adminSecurityServiceImpl2 = new AdminSecurityServiceImpl();
-
-    // Act
-    adminSecurityServiceImpl2.isUserQualifiedForOperationOnCeilingEntity(new AdminUserImpl(), PermissionType.ALL,
-        "Dr Jane Doe");
   }
 
   /**
    * Test {@link AdminSecurityServiceImpl#isPasswordValid(String, String)}.
+   * <ul>
+   *   <li>Given {@link PasswordEncoder} {@link PasswordEncoder#matches(CharSequence, String)} return {@code false}.</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminSecurityServiceImpl#isPasswordValid(String, String)}
+   * Method under test: {@link AdminSecurityServiceImpl#isPasswordValid(String, String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsPasswordValid() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1969 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.AdminSecurityServiceImpl adminSecurityServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdminSecurityServiceImpl.isPasswordValid(String, String)"})
+  public void testIsPasswordValid_givenPasswordEncoderMatchesReturnFalse_thenReturnFalse() {
+    // Arrange
+    when(passwordEncoder.matches(Mockito.<CharSequence>any(), Mockito.<String>any())).thenReturn(false);
 
-    // Arrange and Act
-    (new AdminSecurityServiceImpl()).isPasswordValid("secret", "iloveyou");
+    // Act
+    boolean actualIsPasswordValidResult = adminSecurityServiceImpl.isPasswordValid("secret", "iloveyou");
+
+    // Assert
+    verify(passwordEncoder).matches(isA(CharSequence.class), eq("secret"));
+    assertFalse(actualIsPasswordValidResult);
+  }
+
+  /**
+   * Test {@link AdminSecurityServiceImpl#isPasswordValid(String, String)}.
+   * <ul>
+   *   <li>Given {@link PasswordEncoder} {@link PasswordEncoder#matches(CharSequence, String)} return {@code true}.</li>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminSecurityServiceImpl#isPasswordValid(String, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdminSecurityServiceImpl.isPasswordValid(String, String)"})
+  public void testIsPasswordValid_givenPasswordEncoderMatchesReturnTrue_thenReturnTrue() {
+    // Arrange
+    when(passwordEncoder.matches(Mockito.<CharSequence>any(), Mockito.<String>any())).thenReturn(true);
+
+    // Act
+    boolean actualIsPasswordValidResult = adminSecurityServiceImpl.isPasswordValid("secret", "iloveyou");
+
+    // Assert
+    verify(passwordEncoder).matches(isA(CharSequence.class), eq("secret"));
+    assertTrue(actualIsPasswordValidResult);
   }
 
   /**
@@ -675,27 +401,18 @@ public class AdminSecurityServiceImplDiffblueTest {
    * Method under test: {@link AdminSecurityServiceImpl#encodePassword(String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String AdminSecurityServiceImpl.encodePassword(String)"})
   public void testEncodePassword() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1617 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.AdminSecurityServiceImpl adminSecurityServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    when(passwordEncoder.encode(Mockito.<CharSequence>any())).thenReturn("secret");
 
-    // Arrange and Act
-    (new AdminSecurityServiceImpl()).encodePassword("iloveyou");
+    // Act
+    String actualEncodePasswordResult = adminSecurityServiceImpl.encodePassword("iloveyou");
+
+    // Assert
+    verify(passwordEncoder).encode(isA(CharSequence.class));
+    assertEquals("secret", actualEncodePasswordResult);
   }
 
   /**
@@ -704,205 +421,127 @@ public class AdminSecurityServiceImplDiffblueTest {
    * Method under test: {@link AdminSecurityServiceImpl#getCache()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Cache AdminSecurityServiceImpl.getCache()"})
   public void testGetCache() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1941 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.AdminSecurityServiceImpl adminSecurityServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new AdminSecurityServiceImpl()).getCache();
-  }
-
-  /**
-   * Test
-   * {@link AdminSecurityServiceImpl#buildCacheKey(AdminUser, PermissionType, String)}.
-   * <p>
-   * Method under test:
-   * {@link AdminSecurityServiceImpl#buildCacheKey(AdminUser, PermissionType, String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testBuildCacheKey() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1253 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.AdminSecurityServiceImpl adminSecurityServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    AdminSecurityServiceImpl adminSecurityServiceImpl2 = new AdminSecurityServiceImpl();
+    when(cacheManager.getCache(Mockito.<String>any())).thenReturn(null);
 
     // Act
-    adminSecurityServiceImpl2.buildCacheKey(new AdminUserImpl(), PermissionType.ALL, "Dr Jane Doe");
-  }
-
-  /**
-   * Test
-   * {@link AdminSecurityServiceImpl#buildCacheKey(AdminUser, PermissionType, String)}.
-   * <ul>
-   *   <li>Given one.</li>
-   *   <li>Then return
-   * {@code security:user:1,permType:All,ceiling:Dr Jane Doe}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link AdminSecurityServiceImpl#buildCacheKey(AdminUser, PermissionType, String)}
-   */
-  @Test
-  public void testBuildCacheKey_givenOne_thenReturnSecurityUser1PermTypeAllCeilingDrJaneDoe() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdminSecurityServiceImpl adminSecurityServiceImpl = new AdminSecurityServiceImpl();
-    AdminUserImpl adminUser = mock(AdminUserImpl.class);
-    when(adminUser.getId()).thenReturn(1L);
-
-    // Act
-    String actualBuildCacheKeyResult = adminSecurityServiceImpl.buildCacheKey(adminUser, PermissionType.ALL,
-        "Dr Jane Doe");
+    Cache<String, Boolean> actualCache = adminSecurityServiceImpl.getCache();
 
     // Assert
-    verify(adminUser).getId();
-    assertEquals("security:user:1,permType:All,ceiling:Dr Jane Doe", actualBuildCacheKeyResult);
+    verify(cacheManager).getCache(eq("blSecurityElements"));
+    assertNull(actualCache);
   }
 
   /**
-   * Test
-   * {@link AdminSecurityServiceImpl#buildCacheKey(AdminUser, PermissionType, String)}.
+   * Test {@link AdminSecurityServiceImpl#buildCacheKey(AdminUser, PermissionType, String)}.
    * <ul>
-   *   <li>Then return
-   * {@code security:user:null,permType:All,ceiling:Dr Jane Doe}.</li>
+   *   <li>Then return {@code security:user:null,permType:All,ceiling:Dr Jane Doe}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminSecurityServiceImpl#buildCacheKey(AdminUser, PermissionType, String)}
+   * Method under test: {@link AdminSecurityServiceImpl#buildCacheKey(AdminUser, PermissionType, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String AdminSecurityServiceImpl.buildCacheKey(AdminUser, PermissionType, String)"})
   public void testBuildCacheKey_thenReturnSecurityUserNullPermTypeAllCeilingDrJaneDoe() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdminSecurityServiceImpl adminSecurityServiceImpl = new AdminSecurityServiceImpl();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertEquals("security:user:null,permType:All,ceiling:Dr Jane Doe",
         adminSecurityServiceImpl.buildCacheKey(new AdminUserImpl(), PermissionType.ALL, "Dr Jane Doe"));
   }
 
   /**
-   * Test
-   * {@link AdminSecurityServiceImpl#doesOperationExistForCeilingEntity(PermissionType, String)}.
+   * Test {@link AdminSecurityServiceImpl#doesOperationExistForCeilingEntity(PermissionType, String)}.
+   * <ul>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminSecurityServiceImpl#doesOperationExistForCeilingEntity(PermissionType, String)}
+   * Method under test: {@link AdminSecurityServiceImpl#doesOperationExistForCeilingEntity(PermissionType, String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testDoesOperationExistForCeilingEntity() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1586 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.AdminSecurityServiceImpl adminSecurityServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdminSecurityServiceImpl.doesOperationExistForCeilingEntity(PermissionType, String)"})
+  public void testDoesOperationExistForCeilingEntity_thenReturnFalse() {
+    // Arrange
+    when(adminPermissionDao.doesOperationExistForCeilingEntity(Mockito.<PermissionType>any(), Mockito.<String>any()))
+        .thenReturn(false);
 
-    // Arrange and Act
-    (new AdminSecurityServiceImpl()).doesOperationExistForCeilingEntity(PermissionType.ALL, "Dr Jane Doe");
+    // Act
+    boolean actualDoesOperationExistForCeilingEntityResult = adminSecurityServiceImpl
+        .doesOperationExistForCeilingEntity(PermissionType.ALL, "Dr Jane Doe");
+
+    // Assert
+    verify(adminPermissionDao).doesOperationExistForCeilingEntity(isA(PermissionType.class), eq("Dr Jane Doe"));
+    assertFalse(actualDoesOperationExistForCeilingEntityResult);
+  }
+
+  /**
+   * Test {@link AdminSecurityServiceImpl#doesOperationExistForCeilingEntity(PermissionType, String)}.
+   * <ul>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminSecurityServiceImpl#doesOperationExistForCeilingEntity(PermissionType, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdminSecurityServiceImpl.doesOperationExistForCeilingEntity(PermissionType, String)"})
+  public void testDoesOperationExistForCeilingEntity_thenReturnTrue() {
+    // Arrange
+    when(adminPermissionDao.doesOperationExistForCeilingEntity(Mockito.<PermissionType>any(), Mockito.<String>any()))
+        .thenReturn(true);
+
+    // Act
+    boolean actualDoesOperationExistForCeilingEntityResult = adminSecurityServiceImpl
+        .doesOperationExistForCeilingEntity(PermissionType.ALL, "Dr Jane Doe");
+
+    // Assert
+    verify(adminPermissionDao).doesOperationExistForCeilingEntity(isA(PermissionType.class), eq("Dr Jane Doe"));
+    assertTrue(actualDoesOperationExistForCeilingEntityResult);
   }
 
   /**
    * Test {@link AdminSecurityServiceImpl#readAdminUserByUserName(String)}.
    * <p>
-   * Method under test:
-   * {@link AdminSecurityServiceImpl#readAdminUserByUserName(String)}
+   * Method under test: {@link AdminSecurityServiceImpl#readAdminUserByUserName(String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"AdminUser AdminSecurityServiceImpl.readAdminUserByUserName(String)"})
   public void testReadAdminUserByUserName() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2119 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.AdminSecurityServiceImpl adminSecurityServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    AdminUserImpl adminUserImpl = new AdminUserImpl();
+    when(adminUserDao.readAdminUserByUserName(Mockito.<String>any())).thenReturn(adminUserImpl);
 
-    // Arrange and Act
-    (new AdminSecurityServiceImpl()).readAdminUserByUserName("janedoe");
+    // Act
+    AdminUser actualReadAdminUserByUserNameResult = adminSecurityServiceImpl.readAdminUserByUserName("janedoe");
+
+    // Assert
+    verify(adminUserDao).readAdminUserByUserName(eq("janedoe"));
+    assertSame(adminUserImpl, actualReadAdminUserByUserNameResult);
   }
 
   /**
    * Test {@link AdminSecurityServiceImpl#readAdminUsersByEmail(String)}.
    * <p>
-   * Method under test:
-   * {@link AdminSecurityServiceImpl#readAdminUsersByEmail(String)}
+   * Method under test: {@link AdminSecurityServiceImpl#readAdminUsersByEmail(String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List AdminSecurityServiceImpl.readAdminUsersByEmail(String)"})
   public void testReadAdminUsersByEmail() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2440 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.AdminSecurityServiceImpl adminSecurityServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    when(adminUserDao.readAdminUserByEmail(Mockito.<String>any())).thenReturn(new ArrayList<>());
 
-    // Arrange and Act
-    (new AdminSecurityServiceImpl()).readAdminUsersByEmail("jane.doe@example.org");
+    // Act
+    List<AdminUser> actualReadAdminUsersByEmailResult = adminSecurityServiceImpl
+        .readAdminUsersByEmail("jane.doe@example.org");
+
+    // Assert
+    verify(adminUserDao).readAdminUserByEmail(eq("jane.doe@example.org"));
+    assertTrue(actualReadAdminUsersByEmailResult.isEmpty());
   }
 
   /**
@@ -911,27 +550,18 @@ public class AdminSecurityServiceImplDiffblueTest {
    * Method under test: {@link AdminSecurityServiceImpl#readAllAdminUsers()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List AdminSecurityServiceImpl.readAllAdminUsers()"})
   public void testReadAllAdminUsers() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2768 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.AdminSecurityServiceImpl adminSecurityServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    when(adminUserDao.readAllAdminUsers()).thenReturn(new ArrayList<>());
 
-    // Arrange and Act
-    (new AdminSecurityServiceImpl()).readAllAdminUsers();
+    // Act
+    List<AdminUser> actualReadAllAdminUsersResult = adminSecurityServiceImpl.readAllAdminUsers();
+
+    // Assert
+    verify(adminUserDao).readAllAdminUsers();
+    assertTrue(actualReadAllAdminUsersResult.isEmpty());
   }
 
   /**
@@ -940,27 +570,18 @@ public class AdminSecurityServiceImplDiffblueTest {
    * Method under test: {@link AdminSecurityServiceImpl#readAllAdminRoles()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List AdminSecurityServiceImpl.readAllAdminRoles()"})
   public void testReadAllAdminRoles() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2765 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.AdminSecurityServiceImpl adminSecurityServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    when(adminRoleDao.readAllAdminRoles()).thenReturn(new ArrayList<>());
 
-    // Arrange and Act
-    (new AdminSecurityServiceImpl()).readAllAdminRoles();
+    // Act
+    List<AdminRole> actualReadAllAdminRolesResult = adminSecurityServiceImpl.readAllAdminRoles();
+
+    // Assert
+    verify(adminRoleDao).readAllAdminRoles();
+    assertTrue(actualReadAllAdminRolesResult.isEmpty());
   }
 
   /**
@@ -969,181 +590,236 @@ public class AdminSecurityServiceImplDiffblueTest {
    * Method under test: {@link AdminSecurityServiceImpl#readAllAdminPermissions()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List AdminSecurityServiceImpl.readAllAdminPermissions()"})
   public void testReadAllAdminPermissions() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2762 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.AdminSecurityServiceImpl adminSecurityServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    when(adminPermissionDao.readAllAdminPermissions()).thenReturn(new ArrayList<>());
 
-    // Arrange and Act
-    (new AdminSecurityServiceImpl()).readAllAdminPermissions();
-  }
-
-  /**
-   * Test
-   * {@link AdminSecurityServiceImpl#resetPasswordUsingToken(String, String, String, String)}.
-   * <p>
-   * Method under test:
-   * {@link AdminSecurityServiceImpl#resetPasswordUsingToken(String, String, String, String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testResetPasswordUsingToken() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2771 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.AdminSecurityServiceImpl adminSecurityServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new AdminSecurityServiceImpl()).resetPasswordUsingToken("janedoe", "ABC123", "iloveyou", "iloveyou");
-  }
-
-  /**
-   * Test
-   * {@link AdminSecurityServiceImpl#resetPasswordUsingToken(String, String, String, String)}.
-   * <ul>
-   *   <li>Then return ErrorCodesList second is {@code invalidPassword}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link AdminSecurityServiceImpl#resetPasswordUsingToken(String, String, String, String)}
-   */
-  @Test
-  public void testResetPasswordUsingToken_thenReturnErrorCodesListSecondIsInvalidPassword() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange and Act
-    GenericResponse actualResetPasswordUsingTokenResult = (new AdminSecurityServiceImpl()).resetPasswordUsingToken(null,
-        "ABC123", null, "iloveyou");
+    // Act
+    List<AdminPermission> actualReadAllAdminPermissionsResult = adminSecurityServiceImpl.readAllAdminPermissions();
 
     // Assert
-    List<String> errorCodesList = actualResetPasswordUsingTokenResult.getErrorCodesList();
-    assertEquals(2, errorCodesList.size());
-    assertEquals("invalidPassword", errorCodesList.get(1));
-    assertEquals("invalidUser", errorCodesList.get(0));
-    assertTrue(actualResetPasswordUsingTokenResult.getHasErrors());
+    verify(adminPermissionDao).readAllAdminPermissions();
+    assertTrue(actualReadAllAdminPermissionsResult.isEmpty());
   }
 
   /**
-   * Test
-   * {@link AdminSecurityServiceImpl#resetPasswordUsingToken(String, String, String, String)}.
+   * Test {@link AdminSecurityServiceImpl#sendForgotUsernameNotification(String)}.
    * <ul>
-   *   <li>Then return ErrorCodesList second is {@code invalidPassword}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link AdminSecurityServiceImpl#resetPasswordUsingToken(String, String, String, String)}
-   */
-  @Test
-  public void testResetPasswordUsingToken_thenReturnErrorCodesListSecondIsInvalidPassword2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange and Act
-    GenericResponse actualResetPasswordUsingTokenResult = (new AdminSecurityServiceImpl()).resetPasswordUsingToken(null,
-        "ABC123", "iloveyou", null);
-
-    // Assert
-    List<String> errorCodesList = actualResetPasswordUsingTokenResult.getErrorCodesList();
-    assertEquals(2, errorCodesList.size());
-    assertEquals("invalidPassword", errorCodesList.get(1));
-    assertEquals("invalidUser", errorCodesList.get(0));
-    assertTrue(actualResetPasswordUsingTokenResult.getHasErrors());
-  }
-
-  /**
-   * Test
-   * {@link AdminSecurityServiceImpl#resetPasswordUsingToken(String, String, String, String)}.
-   * <ul>
-   *   <li>Then return ErrorCodesList second is {@code invalidToken}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link AdminSecurityServiceImpl#resetPasswordUsingToken(String, String, String, String)}
-   */
-  @Test
-  public void testResetPasswordUsingToken_thenReturnErrorCodesListSecondIsInvalidToken() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange and Act
-    GenericResponse actualResetPasswordUsingTokenResult = (new AdminSecurityServiceImpl()).resetPasswordUsingToken(null,
-        null, "iloveyou", "iloveyou");
-
-    // Assert
-    List<String> errorCodesList = actualResetPasswordUsingTokenResult.getErrorCodesList();
-    assertEquals(2, errorCodesList.size());
-    assertEquals("invalidToken", errorCodesList.get(1));
-    assertEquals("invalidUser", errorCodesList.get(0));
-    assertTrue(actualResetPasswordUsingTokenResult.getHasErrors());
-  }
-
-  /**
-   * Test
-   * {@link AdminSecurityServiceImpl#resetPasswordUsingToken(String, String, String, String)}.
-   * <ul>
-   *   <li>Then return ErrorCodesList second is {@code passwordMismatch}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link AdminSecurityServiceImpl#resetPasswordUsingToken(String, String, String, String)}
-   */
-  @Test
-  public void testResetPasswordUsingToken_thenReturnErrorCodesListSecondIsPasswordMismatch() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange and Act
-    GenericResponse actualResetPasswordUsingTokenResult = (new AdminSecurityServiceImpl()).resetPasswordUsingToken(null,
-        "ABC123", "invalidUser", "iloveyou");
-
-    // Assert
-    List<String> errorCodesList = actualResetPasswordUsingTokenResult.getErrorCodesList();
-    assertEquals(2, errorCodesList.size());
-    assertEquals("invalidUser", errorCodesList.get(0));
-    assertEquals("passwordMismatch", errorCodesList.get(1));
-    assertTrue(actualResetPasswordUsingTokenResult.getHasErrors());
-  }
-
-  /**
-   * Test
-   * {@link AdminSecurityServiceImpl#resetPasswordUsingToken(String, String, String, String)}.
-   * <ul>
+   *   <li>Given {@link AdminUserDao}.</li>
    *   <li>When {@code null}.</li>
-   *   <li>Then return ErrorCodesList size is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminSecurityServiceImpl#resetPasswordUsingToken(String, String, String, String)}
+   * Method under test: {@link AdminSecurityServiceImpl#sendForgotUsernameNotification(String)}
    */
   @Test
-  public void testResetPasswordUsingToken_whenNull_thenReturnErrorCodesListSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"GenericResponse AdminSecurityServiceImpl.sendForgotUsernameNotification(String)"})
+  public void testSendForgotUsernameNotification_givenAdminUserDao_whenNull() {
     // Arrange and Act
-    GenericResponse actualResetPasswordUsingTokenResult = (new AdminSecurityServiceImpl()).resetPasswordUsingToken(null,
+    GenericResponse actualSendForgotUsernameNotificationResult = adminSecurityServiceImpl
+        .sendForgotUsernameNotification(null);
+
+    // Assert
+    List<String> errorCodesList = actualSendForgotUsernameNotificationResult.getErrorCodesList();
+    assertEquals(1, errorCodesList.size());
+    assertEquals("notFound", errorCodesList.get(0));
+    assertTrue(actualSendForgotUsernameNotificationResult.getHasErrors());
+  }
+
+  /**
+   * Test {@link AdminSecurityServiceImpl#sendForgotUsernameNotification(String)}.
+   * <ul>
+   *   <li>Then return ErrorCodesList first is {@code inactiveUser}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminSecurityServiceImpl#sendForgotUsernameNotification(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"GenericResponse AdminSecurityServiceImpl.sendForgotUsernameNotification(String)"})
+  public void testSendForgotUsernameNotification_thenReturnErrorCodesListFirstIsInactiveUser() {
+    // Arrange
+    AdminUserImpl adminUserImpl = mock(AdminUserImpl.class);
+    when(adminUserImpl.getActiveStatusFlag()).thenReturn(false);
+
+    ArrayList<AdminUser> adminUserList = new ArrayList<>();
+    adminUserList.add(adminUserImpl);
+    when(adminUserDao.readAdminUserByEmail(Mockito.<String>any())).thenReturn(adminUserList);
+
+    // Act
+    GenericResponse actualSendForgotUsernameNotificationResult = adminSecurityServiceImpl
+        .sendForgotUsernameNotification("42 Main St");
+
+    // Assert
+    verify(adminUserDao).readAdminUserByEmail(eq("42 Main St"));
+    verify(adminUserImpl).getActiveStatusFlag();
+    List<String> errorCodesList = actualSendForgotUsernameNotificationResult.getErrorCodesList();
+    assertEquals(1, errorCodesList.size());
+    assertEquals("inactiveUser", errorCodesList.get(0));
+    assertTrue(actualSendForgotUsernameNotificationResult.getHasErrors());
+  }
+
+  /**
+   * Test {@link AdminSecurityServiceImpl#sendForgotUsernameNotification(String)}.
+   * <ul>
+   *   <li>Then return ErrorCodesList first is {@code notFound}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminSecurityServiceImpl#sendForgotUsernameNotification(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"GenericResponse AdminSecurityServiceImpl.sendForgotUsernameNotification(String)"})
+  public void testSendForgotUsernameNotification_thenReturnErrorCodesListFirstIsNotFound() {
+    // Arrange
+    when(adminUserDao.readAdminUserByEmail(Mockito.<String>any())).thenReturn(new ArrayList<>());
+
+    // Act
+    GenericResponse actualSendForgotUsernameNotificationResult = adminSecurityServiceImpl
+        .sendForgotUsernameNotification("42 Main St");
+
+    // Assert
+    verify(adminUserDao).readAdminUserByEmail(eq("42 Main St"));
+    List<String> errorCodesList = actualSendForgotUsernameNotificationResult.getErrorCodesList();
+    assertEquals(1, errorCodesList.size());
+    assertEquals("notFound", errorCodesList.get(0));
+    assertTrue(actualSendForgotUsernameNotificationResult.getHasErrors());
+  }
+
+  /**
+   * Test {@link AdminSecurityServiceImpl#sendForgotUsernameNotification(String)}.
+   * <ul>
+   *   <li>Then return not HasErrors.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminSecurityServiceImpl#sendForgotUsernameNotification(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"GenericResponse AdminSecurityServiceImpl.sendForgotUsernameNotification(String)"})
+  public void testSendForgotUsernameNotification_thenReturnNotHasErrors() {
+    // Arrange
+    AdminUserImpl adminUserImpl = mock(AdminUserImpl.class);
+    when(adminUserImpl.getLogin()).thenReturn("Login");
+    when(adminUserImpl.getActiveStatusFlag()).thenReturn(true);
+
+    ArrayList<AdminUser> adminUserList = new ArrayList<>();
+    adminUserList.add(adminUserImpl);
+    when(adminUserDao.readAdminUserByEmail(Mockito.<String>any())).thenReturn(adminUserList);
+    doNothing().when(broadleafApplicationEventPublisher).publishEvent(Mockito.<ApplicationEvent>any());
+
+    // Act
+    GenericResponse actualSendForgotUsernameNotificationResult = adminSecurityServiceImpl
+        .sendForgotUsernameNotification("42 Main St");
+
+    // Assert
+    verify(broadleafApplicationEventPublisher).publishEvent(isA(ApplicationEvent.class));
+    verify(adminUserDao).readAdminUserByEmail(eq("42 Main St"));
+    verify(adminUserImpl).getActiveStatusFlag();
+    verify(adminUserImpl).getLogin();
+    assertFalse(actualSendForgotUsernameNotificationResult.getHasErrors());
+    assertTrue(actualSendForgotUsernameNotificationResult.getErrorCodesList().isEmpty());
+  }
+
+  /**
+   * Test {@link AdminSecurityServiceImpl#sendResetPasswordNotification(String)}.
+   * <ul>
+   *   <li>Then return ErrorCodesList first is {@code emailNotFound}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminSecurityServiceImpl#sendResetPasswordNotification(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"GenericResponse AdminSecurityServiceImpl.sendResetPasswordNotification(String)"})
+  public void testSendResetPasswordNotification_thenReturnErrorCodesListFirstIsEmailNotFound() {
+    // Arrange
+    when(adminUserDao.readAdminUserByUserName(Mockito.<String>any())).thenReturn(new AdminUserImpl());
+
+    // Act
+    GenericResponse actualSendResetPasswordNotificationResult = adminSecurityServiceImpl
+        .sendResetPasswordNotification("janedoe");
+
+    // Assert
+    verify(adminUserDao).readAdminUserByUserName(eq("janedoe"));
+    List<String> errorCodesList = actualSendResetPasswordNotificationResult.getErrorCodesList();
+    assertEquals(1, errorCodesList.size());
+    assertEquals("emailNotFound", errorCodesList.get(0));
+    assertTrue(actualSendResetPasswordNotificationResult.getHasErrors());
+  }
+
+  /**
+   * Test {@link AdminSecurityServiceImpl#sendResetPasswordNotification(String)}.
+   * <ul>
+   *   <li>Then return ErrorCodesList first is {@code inactiveUser}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminSecurityServiceImpl#sendResetPasswordNotification(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"GenericResponse AdminSecurityServiceImpl.sendResetPasswordNotification(String)"})
+  public void testSendResetPasswordNotification_thenReturnErrorCodesListFirstIsInactiveUser() {
+    // Arrange
+    AdminUserImpl adminUserImpl = mock(AdminUserImpl.class);
+    when(adminUserImpl.getActiveStatusFlag()).thenReturn(false);
+    when(adminUserImpl.getEmail()).thenReturn("jane.doe@example.org");
+    when(adminUserDao.readAdminUserByUserName(Mockito.<String>any())).thenReturn(adminUserImpl);
+
+    // Act
+    GenericResponse actualSendResetPasswordNotificationResult = adminSecurityServiceImpl
+        .sendResetPasswordNotification("janedoe");
+
+    // Assert
+    verify(adminUserDao).readAdminUserByUserName(eq("janedoe"));
+    verify(adminUserImpl).getActiveStatusFlag();
+    verify(adminUserImpl).getEmail();
+    List<String> errorCodesList = actualSendResetPasswordNotificationResult.getErrorCodesList();
+    assertEquals(1, errorCodesList.size());
+    assertEquals("inactiveUser", errorCodesList.get(0));
+    assertTrue(actualSendResetPasswordNotificationResult.getHasErrors());
+  }
+
+  /**
+   * Test {@link AdminSecurityServiceImpl#sendResetPasswordNotification(String)}.
+   * <ul>
+   *   <li>Then return ErrorCodesList first is {@code invalidUser}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminSecurityServiceImpl#sendResetPasswordNotification(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"GenericResponse AdminSecurityServiceImpl.sendResetPasswordNotification(String)"})
+  public void testSendResetPasswordNotification_thenReturnErrorCodesListFirstIsInvalidUser() {
+    // Arrange and Act
+    GenericResponse actualSendResetPasswordNotificationResult = adminSecurityServiceImpl
+        .sendResetPasswordNotification(null);
+
+    // Assert
+    List<String> errorCodesList = actualSendResetPasswordNotificationResult.getErrorCodesList();
+    assertEquals(1, errorCodesList.size());
+    assertEquals("invalidUser", errorCodesList.get(0));
+    assertTrue(actualSendResetPasswordNotificationResult.getHasErrors());
+  }
+
+  /**
+   * Test {@link AdminSecurityServiceImpl#resetPasswordUsingToken(String, String, String, String)}.
+   * <ul>
+   *   <li>Given {@link AdminUserDao}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminSecurityServiceImpl#resetPasswordUsingToken(String, String, String, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "GenericResponse AdminSecurityServiceImpl.resetPasswordUsingToken(String, String, String, String)"})
+  public void testResetPasswordUsingToken_givenAdminUserDao() {
+    // Arrange and Act
+    GenericResponse actualResetPasswordUsingTokenResult = adminSecurityServiceImpl.resetPasswordUsingToken(null,
         "ABC123", "iloveyou", "iloveyou");
 
     // Assert
@@ -1154,90 +830,424 @@ public class AdminSecurityServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminSecurityServiceImpl#invalidateAllTokensForAdminUser(AdminUser)}.
+   * Test {@link AdminSecurityServiceImpl#resetPasswordUsingToken(String, String, String, String)}.
+   * <ul>
+   *   <li>Given {@link AdminUserDao} {@link AdminUserDao#readAdminUserByUserName(String)} return {@code null}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminSecurityServiceImpl#invalidateAllTokensForAdminUser(AdminUser)}
+   * Method under test: {@link AdminSecurityServiceImpl#resetPasswordUsingToken(String, String, String, String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testInvalidateAllTokensForAdminUser() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1950 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.AdminSecurityServiceImpl adminSecurityServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "GenericResponse AdminSecurityServiceImpl.resetPasswordUsingToken(String, String, String, String)"})
+  public void testResetPasswordUsingToken_givenAdminUserDaoReadAdminUserByUserNameReturnNull() {
     // Arrange
-    AdminSecurityServiceImpl adminSecurityServiceImpl2 = new AdminSecurityServiceImpl();
+    when(adminUserDao.readAdminUserByUserName(Mockito.<String>any())).thenReturn(null);
 
     // Act
-    adminSecurityServiceImpl2.invalidateAllTokensForAdminUser(new AdminUserImpl());
+    GenericResponse actualResetPasswordUsingTokenResult = adminSecurityServiceImpl.resetPasswordUsingToken("janedoe",
+        "ABC123", "iloveyou", "iloveyou");
+
+    // Assert
+    verify(adminUserDao).readAdminUserByUserName(eq("janedoe"));
+    List<String> errorCodesList = actualResetPasswordUsingTokenResult.getErrorCodesList();
+    assertEquals(1, errorCodesList.size());
+    assertEquals("invalidUser", errorCodesList.get(0));
+    assertTrue(actualResetPasswordUsingTokenResult.getHasErrors());
   }
 
   /**
-   * Test {@link AdminSecurityServiceImpl#checkUser(AdminUser, GenericResponse)}.
+   * Test {@link AdminSecurityServiceImpl#resetPasswordUsingToken(String, String, String, String)}.
+   * <ul>
+   *   <li>Given {@link PasswordEncoder} {@link PasswordEncoder#matches(CharSequence, String)} return {@code false}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminSecurityServiceImpl#checkUser(AdminUser, GenericResponse)}
+   * Method under test: {@link AdminSecurityServiceImpl#resetPasswordUsingToken(String, String, String, String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testCheckUser() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1514 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.AdminSecurityServiceImpl adminSecurityServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "GenericResponse AdminSecurityServiceImpl.resetPasswordUsingToken(String, String, String, String)"})
+  public void testResetPasswordUsingToken_givenPasswordEncoderMatchesReturnFalse() {
     // Arrange
-    AdminSecurityServiceImpl adminSecurityServiceImpl2 = new AdminSecurityServiceImpl();
-    AdminUserImpl user = new AdminUserImpl();
+    AdminUserImpl adminUserImpl = mock(AdminUserImpl.class);
+    when(adminUserImpl.getId()).thenReturn(1L);
+    when(adminUserImpl.getActiveStatusFlag()).thenReturn(true);
+    when(adminUserImpl.getEmail()).thenReturn("jane.doe@example.org");
+    when(adminUserDao.readAdminUserByUserName(Mockito.<String>any())).thenReturn(adminUserImpl);
+    ForgotPasswordSecurityTokenImpl forgotPasswordSecurityTokenImpl = mock(ForgotPasswordSecurityTokenImpl.class);
+    when(forgotPasswordSecurityTokenImpl.getToken()).thenReturn("ABC123");
+
+    ArrayList<ForgotPasswordSecurityToken> forgotPasswordSecurityTokenList = new ArrayList<>();
+    forgotPasswordSecurityTokenList.add(forgotPasswordSecurityTokenImpl);
+    when(forgotPasswordSecurityTokenDao.readUnusedTokensByAdminUserId(Mockito.<Long>any()))
+        .thenReturn(forgotPasswordSecurityTokenList);
+    when(passwordEncoder.matches(Mockito.<CharSequence>any(), Mockito.<String>any())).thenReturn(false);
 
     // Act
-    adminSecurityServiceImpl2.checkUser(user, new GenericResponse());
+    GenericResponse actualResetPasswordUsingTokenResult = adminSecurityServiceImpl.resetPasswordUsingToken("janedoe",
+        "ABC123", "iloveyou", "iloveyou");
+
+    // Assert
+    verify(adminUserDao).readAdminUserByUserName(eq("janedoe"));
+    verify(forgotPasswordSecurityTokenDao).readUnusedTokensByAdminUserId(eq(1L));
+    verify(adminUserImpl).getActiveStatusFlag();
+    verify(adminUserImpl).getEmail();
+    verify(adminUserImpl).getId();
+    verify(forgotPasswordSecurityTokenImpl).getToken();
+    verify(passwordEncoder).matches(isA(CharSequence.class), eq("ABC123"));
+    List<String> errorCodesList = actualResetPasswordUsingTokenResult.getErrorCodesList();
+    assertEquals(1, errorCodesList.size());
+    assertEquals("invalidToken", errorCodesList.get(0));
+    assertTrue(actualResetPasswordUsingTokenResult.getHasErrors());
+  }
+
+  /**
+   * Test {@link AdminSecurityServiceImpl#resetPasswordUsingToken(String, String, String, String)}.
+   * <ul>
+   *   <li>Then return ErrorCodesList first is {@code emailNotFound}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminSecurityServiceImpl#resetPasswordUsingToken(String, String, String, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "GenericResponse AdminSecurityServiceImpl.resetPasswordUsingToken(String, String, String, String)"})
+  public void testResetPasswordUsingToken_thenReturnErrorCodesListFirstIsEmailNotFound() {
+    // Arrange
+    when(adminUserDao.readAdminUserByUserName(Mockito.<String>any())).thenReturn(new AdminUserImpl());
+
+    // Act
+    GenericResponse actualResetPasswordUsingTokenResult = adminSecurityServiceImpl.resetPasswordUsingToken("janedoe",
+        "ABC123", "iloveyou", "iloveyou");
+
+    // Assert
+    verify(adminUserDao).readAdminUserByUserName(eq("janedoe"));
+    List<String> errorCodesList = actualResetPasswordUsingTokenResult.getErrorCodesList();
+    assertEquals(1, errorCodesList.size());
+    assertEquals("emailNotFound", errorCodesList.get(0));
+    assertTrue(actualResetPasswordUsingTokenResult.getHasErrors());
+  }
+
+  /**
+   * Test {@link AdminSecurityServiceImpl#resetPasswordUsingToken(String, String, String, String)}.
+   * <ul>
+   *   <li>Then return ErrorCodesList first is {@code inactiveUser}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminSecurityServiceImpl#resetPasswordUsingToken(String, String, String, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "GenericResponse AdminSecurityServiceImpl.resetPasswordUsingToken(String, String, String, String)"})
+  public void testResetPasswordUsingToken_thenReturnErrorCodesListFirstIsInactiveUser() {
+    // Arrange
+    AdminUserImpl adminUserImpl = mock(AdminUserImpl.class);
+    when(adminUserImpl.getActiveStatusFlag()).thenReturn(false);
+    when(adminUserImpl.getEmail()).thenReturn("jane.doe@example.org");
+    when(adminUserDao.readAdminUserByUserName(Mockito.<String>any())).thenReturn(adminUserImpl);
+
+    // Act
+    GenericResponse actualResetPasswordUsingTokenResult = adminSecurityServiceImpl.resetPasswordUsingToken("janedoe",
+        "ABC123", "iloveyou", "iloveyou");
+
+    // Assert
+    verify(adminUserDao).readAdminUserByUserName(eq("janedoe"));
+    verify(adminUserImpl).getActiveStatusFlag();
+    verify(adminUserImpl).getEmail();
+    List<String> errorCodesList = actualResetPasswordUsingTokenResult.getErrorCodesList();
+    assertEquals(1, errorCodesList.size());
+    assertEquals("inactiveUser", errorCodesList.get(0));
+    assertTrue(actualResetPasswordUsingTokenResult.getHasErrors());
+  }
+
+  /**
+   * Test {@link AdminSecurityServiceImpl#resetPasswordUsingToken(String, String, String, String)}.
+   * <ul>
+   *   <li>Then return ErrorCodesList first is {@code invalidPassword}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminSecurityServiceImpl#resetPasswordUsingToken(String, String, String, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "GenericResponse AdminSecurityServiceImpl.resetPasswordUsingToken(String, String, String, String)"})
+  public void testResetPasswordUsingToken_thenReturnErrorCodesListFirstIsInvalidPassword() {
+    // Arrange
+    AdminUserImpl adminUserImpl = mock(AdminUserImpl.class);
+    when(adminUserImpl.getActiveStatusFlag()).thenReturn(true);
+    when(adminUserImpl.getEmail()).thenReturn("jane.doe@example.org");
+    when(adminUserDao.readAdminUserByUserName(Mockito.<String>any())).thenReturn(adminUserImpl);
+
+    // Act
+    GenericResponse actualResetPasswordUsingTokenResult = adminSecurityServiceImpl.resetPasswordUsingToken("janedoe",
+        "ABC123", null, "iloveyou");
+
+    // Assert
+    verify(adminUserDao).readAdminUserByUserName(eq("janedoe"));
+    verify(adminUserImpl).getActiveStatusFlag();
+    verify(adminUserImpl).getEmail();
+    List<String> errorCodesList = actualResetPasswordUsingTokenResult.getErrorCodesList();
+    assertEquals(1, errorCodesList.size());
+    assertEquals("invalidPassword", errorCodesList.get(0));
+    assertTrue(actualResetPasswordUsingTokenResult.getHasErrors());
+  }
+
+  /**
+   * Test {@link AdminSecurityServiceImpl#resetPasswordUsingToken(String, String, String, String)}.
+   * <ul>
+   *   <li>Then return ErrorCodesList first is {@code invalidPassword}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminSecurityServiceImpl#resetPasswordUsingToken(String, String, String, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "GenericResponse AdminSecurityServiceImpl.resetPasswordUsingToken(String, String, String, String)"})
+  public void testResetPasswordUsingToken_thenReturnErrorCodesListFirstIsInvalidPassword2() {
+    // Arrange
+    AdminUserImpl adminUserImpl = mock(AdminUserImpl.class);
+    when(adminUserImpl.getActiveStatusFlag()).thenReturn(true);
+    when(adminUserImpl.getEmail()).thenReturn("jane.doe@example.org");
+    when(adminUserDao.readAdminUserByUserName(Mockito.<String>any())).thenReturn(adminUserImpl);
+
+    // Act
+    GenericResponse actualResetPasswordUsingTokenResult = adminSecurityServiceImpl.resetPasswordUsingToken("janedoe",
+        "ABC123", "iloveyou", null);
+
+    // Assert
+    verify(adminUserDao).readAdminUserByUserName(eq("janedoe"));
+    verify(adminUserImpl).getActiveStatusFlag();
+    verify(adminUserImpl).getEmail();
+    List<String> errorCodesList = actualResetPasswordUsingTokenResult.getErrorCodesList();
+    assertEquals(1, errorCodesList.size());
+    assertEquals("invalidPassword", errorCodesList.get(0));
+    assertTrue(actualResetPasswordUsingTokenResult.getHasErrors());
+  }
+
+  /**
+   * Test {@link AdminSecurityServiceImpl#resetPasswordUsingToken(String, String, String, String)}.
+   * <ul>
+   *   <li>Then return ErrorCodesList first is {@code invalidToken}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminSecurityServiceImpl#resetPasswordUsingToken(String, String, String, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "GenericResponse AdminSecurityServiceImpl.resetPasswordUsingToken(String, String, String, String)"})
+  public void testResetPasswordUsingToken_thenReturnErrorCodesListFirstIsInvalidToken() {
+    // Arrange
+    AdminUserImpl adminUserImpl = mock(AdminUserImpl.class);
+    when(adminUserImpl.getId()).thenReturn(1L);
+    when(adminUserImpl.getActiveStatusFlag()).thenReturn(true);
+    when(adminUserImpl.getEmail()).thenReturn("jane.doe@example.org");
+    when(adminUserDao.readAdminUserByUserName(Mockito.<String>any())).thenReturn(adminUserImpl);
+    when(forgotPasswordSecurityTokenDao.readUnusedTokensByAdminUserId(Mockito.<Long>any()))
+        .thenReturn(new ArrayList<>());
+
+    // Act
+    GenericResponse actualResetPasswordUsingTokenResult = adminSecurityServiceImpl.resetPasswordUsingToken("janedoe",
+        "ABC123", "iloveyou", "iloveyou");
+
+    // Assert
+    verify(adminUserDao).readAdminUserByUserName(eq("janedoe"));
+    verify(forgotPasswordSecurityTokenDao).readUnusedTokensByAdminUserId(eq(1L));
+    verify(adminUserImpl).getActiveStatusFlag();
+    verify(adminUserImpl).getEmail();
+    verify(adminUserImpl).getId();
+    List<String> errorCodesList = actualResetPasswordUsingTokenResult.getErrorCodesList();
+    assertEquals(1, errorCodesList.size());
+    assertEquals("invalidToken", errorCodesList.get(0));
+    assertTrue(actualResetPasswordUsingTokenResult.getHasErrors());
+  }
+
+  /**
+   * Test {@link AdminSecurityServiceImpl#resetPasswordUsingToken(String, String, String, String)}.
+   * <ul>
+   *   <li>Then return ErrorCodesList first is {@code passwordMismatch}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminSecurityServiceImpl#resetPasswordUsingToken(String, String, String, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "GenericResponse AdminSecurityServiceImpl.resetPasswordUsingToken(String, String, String, String)"})
+  public void testResetPasswordUsingToken_thenReturnErrorCodesListFirstIsPasswordMismatch() {
+    // Arrange
+    AdminUserImpl adminUserImpl = mock(AdminUserImpl.class);
+    when(adminUserImpl.getActiveStatusFlag()).thenReturn(true);
+    when(adminUserImpl.getEmail()).thenReturn("jane.doe@example.org");
+    when(adminUserDao.readAdminUserByUserName(Mockito.<String>any())).thenReturn(adminUserImpl);
+
+    // Act
+    GenericResponse actualResetPasswordUsingTokenResult = adminSecurityServiceImpl.resetPasswordUsingToken("janedoe",
+        "ABC123", "tokenUsed", "iloveyou");
+
+    // Assert
+    verify(adminUserDao).readAdminUserByUserName(eq("janedoe"));
+    verify(adminUserImpl).getActiveStatusFlag();
+    verify(adminUserImpl).getEmail();
+    List<String> errorCodesList = actualResetPasswordUsingTokenResult.getErrorCodesList();
+    assertEquals(1, errorCodesList.size());
+    assertEquals("passwordMismatch", errorCodesList.get(0));
+    assertTrue(actualResetPasswordUsingTokenResult.getHasErrors());
+  }
+
+  /**
+   * Test {@link AdminSecurityServiceImpl#resetPasswordUsingToken(String, String, String, String)}.
+   * <ul>
+   *   <li>Then return ErrorCodesList first is {@code tokenUsed}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminSecurityServiceImpl#resetPasswordUsingToken(String, String, String, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "GenericResponse AdminSecurityServiceImpl.resetPasswordUsingToken(String, String, String, String)"})
+  public void testResetPasswordUsingToken_thenReturnErrorCodesListFirstIsTokenUsed() {
+    // Arrange
+    AdminUserImpl adminUserImpl = mock(AdminUserImpl.class);
+    when(adminUserImpl.getId()).thenReturn(1L);
+    when(adminUserImpl.getActiveStatusFlag()).thenReturn(true);
+    when(adminUserImpl.getEmail()).thenReturn("jane.doe@example.org");
+    when(adminUserDao.readAdminUserByUserName(Mockito.<String>any())).thenReturn(adminUserImpl);
+    ForgotPasswordSecurityTokenImpl forgotPasswordSecurityTokenImpl = mock(ForgotPasswordSecurityTokenImpl.class);
+    when(forgotPasswordSecurityTokenImpl.isTokenUsedFlag()).thenReturn(true);
+    when(forgotPasswordSecurityTokenImpl.getToken()).thenReturn("ABC123");
+
+    ArrayList<ForgotPasswordSecurityToken> forgotPasswordSecurityTokenList = new ArrayList<>();
+    forgotPasswordSecurityTokenList.add(forgotPasswordSecurityTokenImpl);
+    when(forgotPasswordSecurityTokenDao.readUnusedTokensByAdminUserId(Mockito.<Long>any()))
+        .thenReturn(forgotPasswordSecurityTokenList);
+    when(passwordEncoder.matches(Mockito.<CharSequence>any(), Mockito.<String>any())).thenReturn(true);
+
+    // Act
+    GenericResponse actualResetPasswordUsingTokenResult = adminSecurityServiceImpl.resetPasswordUsingToken("janedoe",
+        "ABC123", "iloveyou", "iloveyou");
+
+    // Assert
+    verify(adminUserDao).readAdminUserByUserName(eq("janedoe"));
+    verify(forgotPasswordSecurityTokenDao).readUnusedTokensByAdminUserId(eq(1L));
+    verify(adminUserImpl).getActiveStatusFlag();
+    verify(adminUserImpl).getEmail();
+    verify(adminUserImpl).getId();
+    verify(forgotPasswordSecurityTokenImpl).getToken();
+    verify(forgotPasswordSecurityTokenImpl).isTokenUsedFlag();
+    verify(passwordEncoder).matches(isA(CharSequence.class), eq("ABC123"));
+    List<String> errorCodesList = actualResetPasswordUsingTokenResult.getErrorCodesList();
+    assertEquals(1, errorCodesList.size());
+    assertEquals("tokenUsed", errorCodesList.get(0));
+    assertTrue(actualResetPasswordUsingTokenResult.getHasErrors());
+  }
+
+  /**
+   * Test {@link AdminSecurityServiceImpl#resetPasswordUsingToken(String, String, String, String)}.
+   * <ul>
+   *   <li>When {@code null}.</li>
+   *   <li>Then return ErrorCodesList first is {@code invalidToken}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminSecurityServiceImpl#resetPasswordUsingToken(String, String, String, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "GenericResponse AdminSecurityServiceImpl.resetPasswordUsingToken(String, String, String, String)"})
+  public void testResetPasswordUsingToken_whenNull_thenReturnErrorCodesListFirstIsInvalidToken() {
+    // Arrange
+    AdminUserImpl adminUserImpl = mock(AdminUserImpl.class);
+    when(adminUserImpl.getActiveStatusFlag()).thenReturn(true);
+    when(adminUserImpl.getEmail()).thenReturn("jane.doe@example.org");
+    when(adminUserDao.readAdminUserByUserName(Mockito.<String>any())).thenReturn(adminUserImpl);
+
+    // Act
+    GenericResponse actualResetPasswordUsingTokenResult = adminSecurityServiceImpl.resetPasswordUsingToken("janedoe",
+        null, "iloveyou", "iloveyou");
+
+    // Assert
+    verify(adminUserDao).readAdminUserByUserName(eq("janedoe"));
+    verify(adminUserImpl).getActiveStatusFlag();
+    verify(adminUserImpl).getEmail();
+    List<String> errorCodesList = actualResetPasswordUsingTokenResult.getErrorCodesList();
+    assertEquals(1, errorCodesList.size());
+    assertEquals("invalidToken", errorCodesList.get(0));
+    assertTrue(actualResetPasswordUsingTokenResult.getHasErrors());
+  }
+
+  /**
+   * Test {@link AdminSecurityServiceImpl#invalidateAllTokensForAdminUser(AdminUser)}.
+   * <ul>
+   *   <li>Then calls {@link ForgotPasswordSecurityTokenDao#readUnusedTokensByAdminUserId(Long)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminSecurityServiceImpl#invalidateAllTokensForAdminUser(AdminUser)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminSecurityServiceImpl.invalidateAllTokensForAdminUser(AdminUser)"})
+  public void testInvalidateAllTokensForAdminUser_thenCallsReadUnusedTokensByAdminUserId() {
+    // Arrange
+    when(forgotPasswordSecurityTokenDao.readUnusedTokensByAdminUserId(Mockito.<Long>any()))
+        .thenReturn(new ArrayList<>());
+
+    // Act
+    adminSecurityServiceImpl.invalidateAllTokensForAdminUser(new AdminUserImpl());
+
+    // Assert
+    verify(forgotPasswordSecurityTokenDao).readUnusedTokensByAdminUserId(isNull());
+  }
+
+  /**
+   * Test {@link AdminSecurityServiceImpl#invalidateAllTokensForAdminUser(AdminUser)}.
+   * <ul>
+   *   <li>Then calls {@link ForgotPasswordSecurityTokenDao#saveToken(ForgotPasswordSecurityToken)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminSecurityServiceImpl#invalidateAllTokensForAdminUser(AdminUser)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminSecurityServiceImpl.invalidateAllTokensForAdminUser(AdminUser)"})
+  public void testInvalidateAllTokensForAdminUser_thenCallsSaveToken() {
+    // Arrange
+    ArrayList<ForgotPasswordSecurityToken> forgotPasswordSecurityTokenList = new ArrayList<>();
+    forgotPasswordSecurityTokenList.add(new ForgotPasswordSecurityTokenImpl());
+    when(forgotPasswordSecurityTokenDao.saveToken(Mockito.<ForgotPasswordSecurityToken>any()))
+        .thenReturn(new ForgotPasswordSecurityTokenImpl());
+    when(forgotPasswordSecurityTokenDao.readUnusedTokensByAdminUserId(Mockito.<Long>any()))
+        .thenReturn(forgotPasswordSecurityTokenList);
+
+    // Act
+    adminSecurityServiceImpl.invalidateAllTokensForAdminUser(new AdminUserImpl());
+
+    // Assert
+    verify(forgotPasswordSecurityTokenDao).readUnusedTokensByAdminUserId(isNull());
+    verify(forgotPasswordSecurityTokenDao).saveToken(isA(ForgotPasswordSecurityToken.class));
   }
 
   /**
    * Test {@link AdminSecurityServiceImpl#checkUser(AdminUser, GenericResponse)}.
    * <ul>
    *   <li>Given {@code false}.</li>
-   *   <li>Then {@link GenericResponse} (default constructor) ErrorCodesList first
-   * is {@code inactiveUser}.</li>
+   *   <li>Then {@link GenericResponse} (default constructor) ErrorCodesList first is {@code inactiveUser}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminSecurityServiceImpl#checkUser(AdminUser, GenericResponse)}
+   * Method under test: {@link AdminSecurityServiceImpl#checkUser(AdminUser, GenericResponse)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminSecurityServiceImpl.checkUser(AdminUser, GenericResponse)"})
   public void testCheckUser_givenFalse_thenGenericResponseErrorCodesListFirstIsInactiveUser() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminSecurityServiceImpl adminSecurityServiceImpl = new AdminSecurityServiceImpl();
     AdminUserImpl user = mock(AdminUserImpl.class);
     when(user.getActiveStatusFlag()).thenReturn(false);
     when(user.getEmail()).thenReturn("jane.doe@example.org");
@@ -1262,15 +1272,13 @@ public class AdminSecurityServiceImplDiffblueTest {
    *   <li>Then not {@link GenericResponse} (default constructor) HasErrors.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminSecurityServiceImpl#checkUser(AdminUser, GenericResponse)}
+   * Method under test: {@link AdminSecurityServiceImpl#checkUser(AdminUser, GenericResponse)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminSecurityServiceImpl.checkUser(AdminUser, GenericResponse)"})
   public void testCheckUser_givenTrue_thenNotGenericResponseHasErrors() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminSecurityServiceImpl adminSecurityServiceImpl = new AdminSecurityServiceImpl();
     AdminUserImpl user = mock(AdminUserImpl.class);
     when(user.getActiveStatusFlag()).thenReturn(true);
     when(user.getEmail()).thenReturn("jane.doe@example.org");
@@ -1279,7 +1287,7 @@ public class AdminSecurityServiceImplDiffblueTest {
     // Act
     adminSecurityServiceImpl.checkUser(user, response);
 
-    // Assert
+    // Assert that nothing has changed
     verify(user).getActiveStatusFlag();
     verify(user).getEmail();
     assertFalse(response.getHasErrors());
@@ -1289,19 +1297,16 @@ public class AdminSecurityServiceImplDiffblueTest {
   /**
    * Test {@link AdminSecurityServiceImpl#checkUser(AdminUser, GenericResponse)}.
    * <ul>
-   *   <li>Then {@link GenericResponse} (default constructor) ErrorCodesList first
-   * is {@code emailNotFound}.</li>
+   *   <li>Then {@link GenericResponse} (default constructor) ErrorCodesList first is {@code emailNotFound}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminSecurityServiceImpl#checkUser(AdminUser, GenericResponse)}
+   * Method under test: {@link AdminSecurityServiceImpl#checkUser(AdminUser, GenericResponse)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminSecurityServiceImpl.checkUser(AdminUser, GenericResponse)"})
   public void testCheckUser_thenGenericResponseErrorCodesListFirstIsEmailNotFound() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminSecurityServiceImpl adminSecurityServiceImpl = new AdminSecurityServiceImpl();
     AdminUserImpl user = new AdminUserImpl();
     GenericResponse response = new GenericResponse();
 
@@ -1319,19 +1324,16 @@ public class AdminSecurityServiceImplDiffblueTest {
    * Test {@link AdminSecurityServiceImpl#checkUser(AdminUser, GenericResponse)}.
    * <ul>
    *   <li>When {@code null}.</li>
-   *   <li>Then {@link GenericResponse} (default constructor) ErrorCodesList first
-   * is {@code invalidUser}.</li>
+   *   <li>Then {@link GenericResponse} (default constructor) ErrorCodesList first is {@code invalidUser}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminSecurityServiceImpl#checkUser(AdminUser, GenericResponse)}
+   * Method under test: {@link AdminSecurityServiceImpl#checkUser(AdminUser, GenericResponse)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminSecurityServiceImpl.checkUser(AdminUser, GenericResponse)"})
   public void testCheckUser_whenNull_thenGenericResponseErrorCodesListFirstIsInvalidUser() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminSecurityServiceImpl adminSecurityServiceImpl = new AdminSecurityServiceImpl();
     GenericResponse response = new GenericResponse();
 
     // Act
@@ -1345,56 +1347,18 @@ public class AdminSecurityServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminSecurityServiceImpl#checkPassword(String, String, GenericResponse)}.
-   * <p>
-   * Method under test:
-   * {@link AdminSecurityServiceImpl#checkPassword(String, String, GenericResponse)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCheckPassword() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1471 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.AdminSecurityServiceImpl adminSecurityServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    AdminSecurityServiceImpl adminSecurityServiceImpl2 = new AdminSecurityServiceImpl();
-
-    // Act
-    adminSecurityServiceImpl2.checkPassword("iloveyou", "iloveyou", new GenericResponse());
-  }
-
-  /**
-   * Test
-   * {@link AdminSecurityServiceImpl#checkPassword(String, String, GenericResponse)}.
+   * Test {@link AdminSecurityServiceImpl#checkPassword(String, String, GenericResponse)}.
    * <ul>
-   *   <li>Then {@link GenericResponse} (default constructor) ErrorCodesList first
-   * is {@code invalidPassword}.</li>
+   *   <li>Then {@link GenericResponse} (default constructor) ErrorCodesList first is {@code invalidPassword}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminSecurityServiceImpl#checkPassword(String, String, GenericResponse)}
+   * Method under test: {@link AdminSecurityServiceImpl#checkPassword(String, String, GenericResponse)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminSecurityServiceImpl.checkPassword(String, String, GenericResponse)"})
   public void testCheckPassword_thenGenericResponseErrorCodesListFirstIsInvalidPassword() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminSecurityServiceImpl adminSecurityServiceImpl = new AdminSecurityServiceImpl();
     GenericResponse response = new GenericResponse();
 
     // Act
@@ -1408,22 +1372,18 @@ public class AdminSecurityServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminSecurityServiceImpl#checkPassword(String, String, GenericResponse)}.
+   * Test {@link AdminSecurityServiceImpl#checkPassword(String, String, GenericResponse)}.
    * <ul>
-   *   <li>Then {@link GenericResponse} (default constructor) ErrorCodesList first
-   * is {@code invalidPassword}.</li>
+   *   <li>Then {@link GenericResponse} (default constructor) ErrorCodesList first is {@code invalidPassword}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminSecurityServiceImpl#checkPassword(String, String, GenericResponse)}
+   * Method under test: {@link AdminSecurityServiceImpl#checkPassword(String, String, GenericResponse)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminSecurityServiceImpl.checkPassword(String, String, GenericResponse)"})
   public void testCheckPassword_thenGenericResponseErrorCodesListFirstIsInvalidPassword2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminSecurityServiceImpl adminSecurityServiceImpl = new AdminSecurityServiceImpl();
     GenericResponse response = new GenericResponse();
 
     // Act
@@ -1437,22 +1397,18 @@ public class AdminSecurityServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminSecurityServiceImpl#checkPassword(String, String, GenericResponse)}.
+   * Test {@link AdminSecurityServiceImpl#checkPassword(String, String, GenericResponse)}.
    * <ul>
-   *   <li>Then {@link GenericResponse} (default constructor) ErrorCodesList first
-   * is {@code passwordMismatch}.</li>
+   *   <li>Then {@link GenericResponse} (default constructor) ErrorCodesList first is {@code passwordMismatch}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminSecurityServiceImpl#checkPassword(String, String, GenericResponse)}
+   * Method under test: {@link AdminSecurityServiceImpl#checkPassword(String, String, GenericResponse)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminSecurityServiceImpl.checkPassword(String, String, GenericResponse)"})
   public void testCheckPassword_thenGenericResponseErrorCodesListFirstIsPasswordMismatch() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminSecurityServiceImpl adminSecurityServiceImpl = new AdminSecurityServiceImpl();
     GenericResponse response = new GenericResponse();
 
     // Act
@@ -1466,22 +1422,19 @@ public class AdminSecurityServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminSecurityServiceImpl#checkPassword(String, String, GenericResponse)}.
+   * Test {@link AdminSecurityServiceImpl#checkPassword(String, String, GenericResponse)}.
    * <ul>
    *   <li>When {@link GenericResponse} (default constructor).</li>
    *   <li>Then not {@link GenericResponse} (default constructor) HasErrors.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminSecurityServiceImpl#checkPassword(String, String, GenericResponse)}
+   * Method under test: {@link AdminSecurityServiceImpl#checkPassword(String, String, GenericResponse)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminSecurityServiceImpl.checkPassword(String, String, GenericResponse)"})
   public void testCheckPassword_whenGenericResponse_thenNotGenericResponseHasErrors() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminSecurityServiceImpl adminSecurityServiceImpl = new AdminSecurityServiceImpl();
     GenericResponse response = new GenericResponse();
 
     // Act
@@ -1493,104 +1446,56 @@ public class AdminSecurityServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminSecurityServiceImpl#checkExistingPassword(String, AdminUser, GenericResponse)}.
-   * <p>
-   * Method under test:
-   * {@link AdminSecurityServiceImpl#checkExistingPassword(String, AdminUser, GenericResponse)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCheckExistingPassword() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1429 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.AdminSecurityServiceImpl adminSecurityServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    AdminSecurityServiceImpl adminSecurityServiceImpl2 = new AdminSecurityServiceImpl();
-    AdminUserImpl user = new AdminUserImpl();
-
-    // Act
-    adminSecurityServiceImpl2.checkExistingPassword("secret", user, new GenericResponse());
-  }
-
-  /**
-   * Test
-   * {@link AdminSecurityServiceImpl#isTokenExpired(ForgotPasswordSecurityToken)}.
-   * <p>
-   * Method under test:
-   * {@link AdminSecurityServiceImpl#isTokenExpired(ForgotPasswordSecurityToken)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsTokenExpired() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2009 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.AdminSecurityServiceImpl adminSecurityServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    AdminSecurityServiceImpl adminSecurityServiceImpl2 = new AdminSecurityServiceImpl();
-
-    // Act
-    adminSecurityServiceImpl2.isTokenExpired(new ForgotPasswordSecurityTokenImpl());
-  }
-
-  /**
-   * Test getters and setters.
-   * <p>
-   * Methods under test:
+   * Test {@link AdminSecurityServiceImpl#checkExistingPassword(String, AdminUser, GenericResponse)}.
    * <ul>
-   *   <li>{@link AdminSecurityServiceImpl#setResetPasswordEmailInfo(EmailInfo)}
-   *   <li>{@link AdminSecurityServiceImpl#setSendUsernameEmailInfo(EmailInfo)}
-   *   <li>{@link AdminSecurityServiceImpl#getPASSWORD_TOKEN_LENGTH()}
-   *   <li>{@link AdminSecurityServiceImpl#setPASSWORD_TOKEN_LENGTH(int)}
-   *   <li>{@link AdminSecurityServiceImpl#getResetPasswordEmailInfo()}
-   *   <li>{@link AdminSecurityServiceImpl#getSendUsernameEmailInfo()}
+   *   <li>Then {@link GenericResponse} (default constructor) ErrorCodesList size is one.</li>
    * </ul>
+   * <p>
+   * Method under test: {@link AdminSecurityServiceImpl#checkExistingPassword(String, AdminUser, GenericResponse)}
    */
   @Test
-  public void testGettersAndSetters() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminSecurityServiceImpl.checkExistingPassword(String, AdminUser, GenericResponse)"})
+  public void testCheckExistingPassword_thenGenericResponseErrorCodesListSizeIsOne() {
     // Arrange
-    AdminSecurityServiceImpl adminSecurityServiceImpl = new AdminSecurityServiceImpl();
-    EmailInfo resetPasswordEmailInfo = new EmailInfo();
+    when(passwordEncoder.matches(Mockito.<CharSequence>any(), Mockito.<String>any())).thenReturn(false);
+    AdminUserImpl user = new AdminUserImpl();
+    GenericResponse response = new GenericResponse();
 
     // Act
-    adminSecurityServiceImpl.setResetPasswordEmailInfo(resetPasswordEmailInfo);
-    EmailInfo sendUsernameEmailInfo = new EmailInfo();
-    adminSecurityServiceImpl.setSendUsernameEmailInfo(sendUsernameEmailInfo);
-    int actualPASSWORD_TOKEN_LENGTH = adminSecurityServiceImpl.getPASSWORD_TOKEN_LENGTH();
-    adminSecurityServiceImpl.setPASSWORD_TOKEN_LENGTH(1);
-    EmailInfo actualResetPasswordEmailInfo = adminSecurityServiceImpl.getResetPasswordEmailInfo();
+    adminSecurityServiceImpl.checkExistingPassword("secret", user, response);
+
+    // Assert
+    verify(passwordEncoder).matches(isA(CharSequence.class), isNull());
+    List<String> errorCodesList = response.getErrorCodesList();
+    assertEquals(1, errorCodesList.size());
+    assertEquals("invalidPassword", errorCodesList.get(0));
+    assertTrue(response.getHasErrors());
+  }
+
+  /**
+   * Test {@link AdminSecurityServiceImpl#checkExistingPassword(String, AdminUser, GenericResponse)}.
+   * <ul>
+   *   <li>Then not {@link GenericResponse} (default constructor) HasErrors.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminSecurityServiceImpl#checkExistingPassword(String, AdminUser, GenericResponse)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminSecurityServiceImpl.checkExistingPassword(String, AdminUser, GenericResponse)"})
+  public void testCheckExistingPassword_thenNotGenericResponseHasErrors() {
+    // Arrange
+    when(passwordEncoder.matches(Mockito.<CharSequence>any(), Mockito.<String>any())).thenReturn(true);
+    AdminUserImpl user = new AdminUserImpl();
+    GenericResponse response = new GenericResponse();
+
+    // Act
+    adminSecurityServiceImpl.checkExistingPassword("secret", user, response);
 
     // Assert that nothing has changed
-    assertEquals(1, actualPASSWORD_TOKEN_LENGTH);
-    assertSame(resetPasswordEmailInfo, actualResetPasswordEmailInfo);
-    assertSame(sendUsernameEmailInfo, adminSecurityServiceImpl.getSendUsernameEmailInfo());
+    verify(passwordEncoder).matches(isA(CharSequence.class), isNull());
+    assertFalse(response.getHasErrors());
+    assertTrue(response.getErrorCodesList().isEmpty());
   }
 }

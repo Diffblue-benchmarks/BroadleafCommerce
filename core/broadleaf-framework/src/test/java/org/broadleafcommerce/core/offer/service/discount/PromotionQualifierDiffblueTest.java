@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.offer.service.discount;
 
 import static org.junit.Assert.assertEquals;
@@ -6,12 +23,15 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.core.offer.domain.Offer;
 import org.broadleafcommerce.core.offer.domain.OfferImpl;
 import org.broadleafcommerce.core.offer.domain.OfferItemCriteria;
 import org.broadleafcommerce.core.offer.domain.OfferItemCriteriaImpl;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class PromotionQualifierDiffblueTest {
   /**
@@ -20,6 +40,8 @@ public class PromotionQualifierDiffblueTest {
    * Method under test: {@link PromotionQualifier#copy()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PromotionQualifier PromotionQualifier.copy()"})
   public void testCopy() {
     // Arrange and Act
     PromotionQualifier actualCopyResult = (new PromotionQualifier()).copy();
@@ -39,6 +61,8 @@ public class PromotionQualifierDiffblueTest {
    * Method under test: {@link PromotionQualifier#resetQty(int)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PromotionQualifier.resetQty(int)"})
   public void testResetQty() {
     // Arrange
     PromotionQualifier promotionQualifier = new PromotionQualifier();
@@ -61,6 +85,8 @@ public class PromotionQualifierDiffblueTest {
    * Method under test: {@link PromotionQualifier#split(int)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PromotionQualifier PromotionQualifier.split(int)"})
   public void testSplit_whenMinusOne_thenReturnPriceIsNull() {
     // Arrange
     PromotionQualifier promotionQualifier = new PromotionQualifier();
@@ -89,6 +115,8 @@ public class PromotionQualifierDiffblueTest {
    * Method under test: {@link PromotionQualifier#split(int)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PromotionQualifier PromotionQualifier.split(int)"})
   public void testSplit_whenOne_thenThrowIllegalArgumentException() {
     // Arrange, Act and Assert
     assertThrows(IllegalArgumentException.class, () -> (new PromotionQualifier()).split(1));
@@ -97,14 +125,15 @@ public class PromotionQualifierDiffblueTest {
   /**
    * Test {@link PromotionQualifier#isFinalized()}.
    * <ul>
-   *   <li>Given {@link PromotionQualifier} (default constructor) incrementQuantity
-   * one.</li>
+   *   <li>Given {@link PromotionQualifier} (default constructor) incrementQuantity one.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link PromotionQualifier#isFinalized()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PromotionQualifier.isFinalized()"})
   public void testIsFinalized_givenPromotionQualifierIncrementQuantityOne_thenReturnFalse() {
     // Arrange
     PromotionQualifier promotionQualifier = new PromotionQualifier();
@@ -124,6 +153,8 @@ public class PromotionQualifierDiffblueTest {
    * Method under test: {@link PromotionQualifier#isFinalized()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PromotionQualifier.isFinalized()"})
   public void testIsFinalized_givenPromotionQualifier_thenReturnTrue() {
     // Arrange, Act and Assert
     assertTrue((new PromotionQualifier()).isFinalized());
@@ -149,6 +180,13 @@ public class PromotionQualifierDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PromotionQualifier.<init>()", "int PromotionQualifier.getFinalizedQuantity()",
+      "OfferItemCriteria PromotionQualifier.getItemCriteria()", "Money PromotionQualifier.getPrice()",
+      "Offer PromotionQualifier.getPromotion()", "int PromotionQualifier.getQuantity()",
+      "void PromotionQualifier.incrementQuantity(int)", "void PromotionQualifier.setFinalizedQuantity(int)",
+      "void PromotionQualifier.setItemCriteria(OfferItemCriteria)", "void PromotionQualifier.setPrice(Money)",
+      "void PromotionQualifier.setPromotion(Offer)", "void PromotionQualifier.setQuantity(int)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     PromotionQualifier actualPromotionQualifier = new PromotionQualifier();
@@ -166,7 +204,7 @@ public class PromotionQualifierDiffblueTest {
     Money actualPrice = actualPromotionQualifier.getPrice();
     Offer actualPromotion = actualPromotionQualifier.getPromotion();
 
-    // Assert that nothing has changed
+    // Assert
     assertTrue(actualPromotion instanceof OfferImpl);
     assertEquals(1, actualFinalizedQuantity);
     assertEquals(1, actualPromotionQualifier.getQuantity());

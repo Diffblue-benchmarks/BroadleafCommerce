@@ -18,59 +18,20 @@
 package org.broadleafcommerce.common.extensibility.config;
 
 import static org.junit.Assert.assertEquals;
-import org.broadleafcommerce.common.resource.GeneratedResource;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.springframework.core.io.Resource;
+import org.junit.experimental.categories.Category;
 
 public class PropertyConfigurerDiffblueTest {
   /**
-   * Test {@link PropertyConfigurer#setLocation(Resource)}.
-   * <ul>
-   *   <li>When {@link GeneratedResource#GeneratedResource()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PropertyConfigurer#setLocation(Resource)}
-   */
-  @Test
-  public void testSetLocation_whenGeneratedResource() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange
-    PropertyConfigurer propertyConfigurer = new PropertyConfigurer();
-
-    // Act
-    propertyConfigurer.setLocation(new GeneratedResource());
-  }
-
-  /**
-   * Test {@link PropertyConfigurer#setLocations(Resource[])}.
-   * <ul>
-   *   <li>When array of {@link Resource} with
-   * {@link GeneratedResource#GeneratedResource()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PropertyConfigurer#setLocations(Resource[])}
-   */
-  @Test
-  public void testSetLocations_whenArrayOfResourceWithGeneratedResource() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange
-    PropertyConfigurer propertyConfigurer = new PropertyConfigurer();
-
-    // Act
-    propertyConfigurer.setLocations(new Resource[]{new GeneratedResource()});
-  }
-
-  /**
    * Test new {@link PropertyConfigurer} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link PropertyConfigurer}
+   * Method under test: default or parameterless constructor of {@link PropertyConfigurer}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PropertyConfigurer.<init>()"})
   public void testNewPropertyConfigurer() {
     // Arrange, Act and Assert
     assertEquals(Integer.MAX_VALUE, (new PropertyConfigurer()).getOrder());

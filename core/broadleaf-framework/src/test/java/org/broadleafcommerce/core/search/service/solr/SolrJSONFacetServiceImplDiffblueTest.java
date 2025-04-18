@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.search.service.solr;
 
 import static org.junit.Assert.assertEquals;
@@ -7,6 +24,8 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.AbstractMap;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
@@ -17,78 +36,35 @@ import org.apache.commons.collections.DefaultMapEntry;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.util.NamedList;
 import org.apache.solr.common.util.SimpleOrderedMap;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@ContextConfiguration(classes = {SolrJSONFacetServiceImpl.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class SolrJSONFacetServiceImplDiffblueTest {
   @Autowired
   private SolrJSONFacetServiceImpl solrJSONFacetServiceImpl;
 
   /**
-   * Test
-   * {@link SolrJSONFacetServiceImpl#resolveJSONFacetResponse(QueryResponse)}.
-   * <p>
-   * Method under test:
-   * {@link SolrJSONFacetServiceImpl#resolveJSONFacetResponse(QueryResponse)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testResolveJSONFacetResponse() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.search.service.solr;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1140 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.SolrJSONFacetServiceImpl solrJSONFacetServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    SolrJSONFacetServiceImpl solrJSONFacetServiceImpl2 = new SolrJSONFacetServiceImpl();
-
-    // Act
-    solrJSONFacetServiceImpl2.resolveJSONFacetResponse(new QueryResponse());
-  }
-
-  /**
-   * Test
-   * {@link SolrJSONFacetServiceImpl#resolveJSONFacetResponse(QueryResponse)}.
+   * Test {@link SolrJSONFacetServiceImpl#resolveJSONFacetResponse(QueryResponse)}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add
-   * {@link SimpleEntry#SimpleEntry(Object, Object)} with {@code facets} and
-   * {@code 42}.</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link SimpleEntry#SimpleEntry(Object, Object)} with {@code facets} and {@code 42}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SolrJSONFacetServiceImpl#resolveJSONFacetResponse(QueryResponse)}
+   * Method under test: {@link SolrJSONFacetServiceImpl#resolveJSONFacetResponse(QueryResponse)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map SolrJSONFacetServiceImpl.resolveJSONFacetResponse(QueryResponse)"})
   public void testResolveJSONFacetResponse_givenArrayListAddSimpleEntryWithFacetsAnd42() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SolrJSONFacetServiceImpl solrJSONFacetServiceImpl = new SolrJSONFacetServiceImpl();
-
-    ArrayList<Map.Entry<String, Object>> entryList = new ArrayList<>();
-    entryList.add(new AbstractMap.SimpleEntry<>("facets", "42"));
+    ArrayList<Entry<String, Object>> entryList = new ArrayList<>();
+    entryList.add(new SimpleEntry<>("facets", "42"));
     NamedList<Object> namedList = mock(NamedList.class);
     when(namedList.iterator()).thenReturn(entryList.iterator());
     NamedList<Object> namedList2 = mock(NamedList.class);
@@ -108,26 +84,21 @@ public class SolrJSONFacetServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link SolrJSONFacetServiceImpl#resolveJSONFacetResponse(QueryResponse)}.
+   * Test {@link SolrJSONFacetServiceImpl#resolveJSONFacetResponse(QueryResponse)}.
    * <ul>
-   *   <li>Given array of {@link Entry} with
-   * {@link SimpleEntry#SimpleEntry(Object, Object)} with {@code facets} and
-   * {@code 42}.</li>
+   *   <li>Given array of {@link Entry} with {@link SimpleEntry#SimpleEntry(Object, Object)} with {@code facets} and {@code 42}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SolrJSONFacetServiceImpl#resolveJSONFacetResponse(QueryResponse)}
+   * Method under test: {@link SolrJSONFacetServiceImpl#resolveJSONFacetResponse(QueryResponse)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map SolrJSONFacetServiceImpl.resolveJSONFacetResponse(QueryResponse)"})
   public void testResolveJSONFacetResponse_givenArrayOfEntryWithSimpleEntryWithFacetsAnd42() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SolrJSONFacetServiceImpl solrJSONFacetServiceImpl = new SolrJSONFacetServiceImpl();
     NamedList<Object> namedList = mock(NamedList.class);
     when(namedList.get(Mockito.<String>any()))
-        .thenReturn(new SimpleOrderedMap<>(new Map.Entry[]{new AbstractMap.SimpleEntry<>("facets", "42")}));
+        .thenReturn(new SimpleOrderedMap<>(new Entry[]{new SimpleEntry<>("facets", "42")}));
     QueryResponse response = mock(QueryResponse.class);
     when(response.getResponse()).thenReturn(namedList);
 
@@ -142,22 +113,18 @@ public class SolrJSONFacetServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link SolrJSONFacetServiceImpl#resolveJSONFacetResponse(QueryResponse)}.
+   * Test {@link SolrJSONFacetServiceImpl#resolveJSONFacetResponse(QueryResponse)}.
    * <ul>
-   *   <li>Given {@link NamedList} {@link NamedList#get(String)} return
-   * {@link NamedList#NamedList(int)} with sz is one.</li>
+   *   <li>Given {@link NamedList} {@link NamedList#get(String)} return {@link NamedList#NamedList(int)} with sz is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SolrJSONFacetServiceImpl#resolveJSONFacetResponse(QueryResponse)}
+   * Method under test: {@link SolrJSONFacetServiceImpl#resolveJSONFacetResponse(QueryResponse)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map SolrJSONFacetServiceImpl.resolveJSONFacetResponse(QueryResponse)"})
   public void testResolveJSONFacetResponse_givenNamedListGetReturnNamedListWithSzIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SolrJSONFacetServiceImpl solrJSONFacetServiceImpl = new SolrJSONFacetServiceImpl();
     NamedList<Object> namedList = mock(NamedList.class);
     when(namedList.get(Mockito.<String>any())).thenReturn(new NamedList<>(1));
     QueryResponse response = mock(QueryResponse.class);
@@ -174,21 +141,18 @@ public class SolrJSONFacetServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link SolrJSONFacetServiceImpl#resolveJSONFacetResponse(QueryResponse)}.
+   * Test {@link SolrJSONFacetServiceImpl#resolveJSONFacetResponse(QueryResponse)}.
    * <ul>
    *   <li>Given {@link NamedList#NamedList(int)} with sz is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SolrJSONFacetServiceImpl#resolveJSONFacetResponse(QueryResponse)}
+   * Method under test: {@link SolrJSONFacetServiceImpl#resolveJSONFacetResponse(QueryResponse)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map SolrJSONFacetServiceImpl.resolveJSONFacetResponse(QueryResponse)"})
   public void testResolveJSONFacetResponse_givenNamedListWithSzIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SolrJSONFacetServiceImpl solrJSONFacetServiceImpl = new SolrJSONFacetServiceImpl();
     QueryResponse response = mock(QueryResponse.class);
     when(response.getResponse()).thenReturn(new NamedList<>(1));
 
@@ -202,24 +166,21 @@ public class SolrJSONFacetServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link SolrJSONFacetServiceImpl#resolveJSONFacetResponse(QueryResponse)}.
+   * Test {@link SolrJSONFacetServiceImpl#resolveJSONFacetResponse(QueryResponse)}.
    * <ul>
    *   <li>Then calls {@link NamedList#iterator()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SolrJSONFacetServiceImpl#resolveJSONFacetResponse(QueryResponse)}
+   * Method under test: {@link SolrJSONFacetServiceImpl#resolveJSONFacetResponse(QueryResponse)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map SolrJSONFacetServiceImpl.resolveJSONFacetResponse(QueryResponse)"})
   public void testResolveJSONFacetResponse_thenCallsIterator() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SolrJSONFacetServiceImpl solrJSONFacetServiceImpl = new SolrJSONFacetServiceImpl();
     NamedList<Object> namedList = mock(NamedList.class);
 
-    ArrayList<Map.Entry<String, Object>> entryList = new ArrayList<>();
+    ArrayList<Entry<String, Object>> entryList = new ArrayList<>();
     when(namedList.iterator()).thenReturn(entryList.iterator());
     NamedList<Object> namedList2 = mock(NamedList.class);
     when(namedList2.get(Mockito.<String>any())).thenReturn(namedList);
@@ -239,56 +200,19 @@ public class SolrJSONFacetServiceImplDiffblueTest {
 
   /**
    * Test {@link SolrJSONFacetServiceImpl#resolveJSONFacet(NamedList)}.
-   * <p>
-   * Method under test:
-   * {@link SolrJSONFacetServiceImpl#resolveJSONFacet(NamedList)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testResolveJSONFacet() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.search.service.solr;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1111 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.SolrJSONFacetServiceImpl solrJSONFacetServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    SolrJSONFacetServiceImpl solrJSONFacetServiceImpl2 = new SolrJSONFacetServiceImpl();
-
-    // Act
-    solrJSONFacetServiceImpl2.resolveJSONFacet(new NamedList(1));
-  }
-
-  /**
-   * Test {@link SolrJSONFacetServiceImpl#resolveJSONFacet(NamedList)}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add
-   * {@link DefaultMapEntry#DefaultMapEntry()}.</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link DefaultMapEntry#DefaultMapEntry()}.</li>
    *   <li>Then return Map Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SolrJSONFacetServiceImpl#resolveJSONFacet(NamedList)}
+   * Method under test: {@link SolrJSONFacetServiceImpl#resolveJSONFacet(NamedList)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"SolrJSONFacet SolrJSONFacetServiceImpl.resolveJSONFacet(NamedList)"})
   public void testResolveJSONFacet_givenArrayListAddDefaultMapEntry_thenReturnMapEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SolrJSONFacetServiceImpl solrJSONFacetServiceImpl = new SolrJSONFacetServiceImpl();
-
-    ArrayList<Map.Entry> entryList = new ArrayList<>();
+    ArrayList<Entry> entryList = new ArrayList<>();
     entryList.add(new DefaultMapEntry());
     NamedList facetNamedList = mock(NamedList.class);
     when(facetNamedList.iterator()).thenReturn(entryList.iterator());
@@ -309,18 +233,16 @@ public class SolrJSONFacetServiceImplDiffblueTest {
    *   <li>Then return Map Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SolrJSONFacetServiceImpl#resolveJSONFacet(NamedList)}
+   * Method under test: {@link SolrJSONFacetServiceImpl#resolveJSONFacet(NamedList)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"SolrJSONFacet SolrJSONFacetServiceImpl.resolveJSONFacet(NamedList)"})
   public void testResolveJSONFacet_givenArrayListIterator_thenReturnMapEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SolrJSONFacetServiceImpl solrJSONFacetServiceImpl = new SolrJSONFacetServiceImpl();
     NamedList facetNamedList = mock(NamedList.class);
 
-    ArrayList<Map.Entry> entryList = new ArrayList<>();
+    ArrayList<Entry> entryList = new ArrayList<>();
     when(facetNamedList.iterator()).thenReturn(entryList.iterator());
 
     // Act
@@ -338,18 +260,15 @@ public class SolrJSONFacetServiceImplDiffblueTest {
    *   <li>Then return Map size is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SolrJSONFacetServiceImpl#resolveJSONFacet(NamedList)}
+   * Method under test: {@link SolrJSONFacetServiceImpl#resolveJSONFacet(NamedList)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"SolrJSONFacet SolrJSONFacetServiceImpl.resolveJSONFacet(NamedList)"})
   public void testResolveJSONFacet_thenReturnMapSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SolrJSONFacetServiceImpl solrJSONFacetServiceImpl = new SolrJSONFacetServiceImpl();
-
-    ArrayList<Map.Entry> entryList = new ArrayList<>();
-    entryList.add(new AbstractMap.SimpleEntry<>("42", "42"));
+    ArrayList<Entry> entryList = new ArrayList<>();
+    entryList.add(new SimpleEntry<>("42", "42"));
     NamedList facetNamedList = mock(NamedList.class);
     when(facetNamedList.iterator()).thenReturn(entryList.iterator());
 
@@ -371,17 +290,13 @@ public class SolrJSONFacetServiceImplDiffblueTest {
    *   <li>Then return Map Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SolrJSONFacetServiceImpl#resolveJSONFacet(NamedList)}
+   * Method under test: {@link SolrJSONFacetServiceImpl#resolveJSONFacet(NamedList)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"SolrJSONFacet SolrJSONFacetServiceImpl.resolveJSONFacet(NamedList)"})
   public void testResolveJSONFacet_whenNamedListWithSzIsOne_thenReturnMapEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SolrJSONFacetServiceImpl solrJSONFacetServiceImpl = new SolrJSONFacetServiceImpl();
-
-    // Act
+    // Arrange and Act
     SolrJSONFacet actualResolveJSONFacetResult = solrJSONFacetServiceImpl.resolveJSONFacet(new NamedList(1));
 
     // Assert
@@ -391,55 +306,18 @@ public class SolrJSONFacetServiceImplDiffblueTest {
 
   /**
    * Test {@link SolrJSONFacetServiceImpl#resolveJSONFacetList(List)}.
-   * <p>
-   * Method under test:
-   * {@link SolrJSONFacetServiceImpl#resolveJSONFacetList(List)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testResolveJSONFacetList() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.search.service.solr;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1135 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.SolrJSONFacetServiceImpl solrJSONFacetServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    SolrJSONFacetServiceImpl solrJSONFacetServiceImpl2 = new SolrJSONFacetServiceImpl();
-
-    // Act
-    solrJSONFacetServiceImpl2.resolveJSONFacetList(new ArrayList<>());
-  }
-
-  /**
-   * Test {@link SolrJSONFacetServiceImpl#resolveJSONFacetList(List)}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add
-   * {@link DefaultMapEntry#DefaultMapEntry()}.</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link DefaultMapEntry#DefaultMapEntry()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SolrJSONFacetServiceImpl#resolveJSONFacetList(List)}
+   * Method under test: {@link SolrJSONFacetServiceImpl#resolveJSONFacetList(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List SolrJSONFacetServiceImpl.resolveJSONFacetList(List)"})
   public void testResolveJSONFacetList_givenArrayListAddDefaultMapEntry() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SolrJSONFacetServiceImpl solrJSONFacetServiceImpl = new SolrJSONFacetServiceImpl();
-
-    ArrayList<Map.Entry> entryList = new ArrayList<>();
+    ArrayList<Entry> entryList = new ArrayList<>();
     entryList.add(new DefaultMapEntry());
     NamedList namedList = mock(NamedList.class);
     when(namedList.iterator()).thenReturn(entryList.iterator());
@@ -465,16 +343,13 @@ public class SolrJSONFacetServiceImplDiffblueTest {
    *   <li>Given {@link NamedList#NamedList(int)} with sz is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SolrJSONFacetServiceImpl#resolveJSONFacetList(List)}
+   * Method under test: {@link SolrJSONFacetServiceImpl#resolveJSONFacetList(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List SolrJSONFacetServiceImpl.resolveJSONFacetList(List)"})
   public void testResolveJSONFacetList_givenNamedListWithSzIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SolrJSONFacetServiceImpl solrJSONFacetServiceImpl = new SolrJSONFacetServiceImpl();
-
     ArrayList<NamedList> listOfNamedList = new ArrayList<>();
     listOfNamedList.add(new NamedList(1));
 
@@ -495,18 +370,16 @@ public class SolrJSONFacetServiceImplDiffblueTest {
    *   <li>Then return first Map Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SolrJSONFacetServiceImpl#resolveJSONFacetList(List)}
+   * Method under test: {@link SolrJSONFacetServiceImpl#resolveJSONFacetList(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List SolrJSONFacetServiceImpl.resolveJSONFacetList(List)"})
   public void testResolveJSONFacetList_thenReturnFirstMapEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SolrJSONFacetServiceImpl solrJSONFacetServiceImpl = new SolrJSONFacetServiceImpl();
     NamedList namedList = mock(NamedList.class);
 
-    ArrayList<Map.Entry> entryList = new ArrayList<>();
+    ArrayList<Entry> entryList = new ArrayList<>();
     when(namedList.iterator()).thenReturn(entryList.iterator());
 
     ArrayList<NamedList> listOfNamedList = new ArrayList<>();
@@ -530,18 +403,15 @@ public class SolrJSONFacetServiceImplDiffblueTest {
    *   <li>Then return first Map size is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SolrJSONFacetServiceImpl#resolveJSONFacetList(List)}
+   * Method under test: {@link SolrJSONFacetServiceImpl#resolveJSONFacetList(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List SolrJSONFacetServiceImpl.resolveJSONFacetList(List)"})
   public void testResolveJSONFacetList_thenReturnFirstMapSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SolrJSONFacetServiceImpl solrJSONFacetServiceImpl = new SolrJSONFacetServiceImpl();
-
-    ArrayList<Map.Entry> entryList = new ArrayList<>();
-    entryList.add(new AbstractMap.SimpleEntry<>("42", "42"));
+    ArrayList<Entry> entryList = new ArrayList<>();
+    entryList.add(new SimpleEntry<>("42", "42"));
     NamedList namedList = mock(NamedList.class);
     when(namedList.iterator()).thenReturn(entryList.iterator());
 
@@ -569,17 +439,13 @@ public class SolrJSONFacetServiceImplDiffblueTest {
    *   <li>Then return Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SolrJSONFacetServiceImpl#resolveJSONFacetList(List)}
+   * Method under test: {@link SolrJSONFacetServiceImpl#resolveJSONFacetList(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List SolrJSONFacetServiceImpl.resolveJSONFacetList(List)"})
   public void testResolveJSONFacetList_whenArrayList_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SolrJSONFacetServiceImpl solrJSONFacetServiceImpl = new SolrJSONFacetServiceImpl();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertTrue(solrJSONFacetServiceImpl.resolveJSONFacetList(new ArrayList<>()).isEmpty());
   }
 
@@ -590,14 +456,13 @@ public class SolrJSONFacetServiceImplDiffblueTest {
    *   <li>Then return Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SolrJSONFacetServiceImpl#resolveJSONFacetList(List)}
+   * Method under test: {@link SolrJSONFacetServiceImpl#resolveJSONFacetList(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List SolrJSONFacetServiceImpl.resolveJSONFacetList(List)"})
   public void testResolveJSONFacetList_whenNull_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertTrue((new SolrJSONFacetServiceImpl()).resolveJSONFacetList(null).isEmpty());
+    assertTrue(solrJSONFacetServiceImpl.resolveJSONFacetList(null).isEmpty());
   }
 }

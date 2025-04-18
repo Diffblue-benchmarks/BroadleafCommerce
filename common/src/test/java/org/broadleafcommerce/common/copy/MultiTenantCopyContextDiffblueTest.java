@@ -28,16 +28,14 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Currency;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.MissingResourceException;
-import java.util.Set;
 import org.broadleafcommerce.common.service.GenericEntityService;
 import org.broadleafcommerce.common.service.GenericEntityServiceImpl;
 import org.broadleafcommerce.common.site.domain.Catalog;
@@ -50,19 +48,20 @@ import org.broadleafcommerce.common.web.DeployBehavior;
 import org.broadleafcommerce.common.web.DeployState;
 import org.broadleafcommerce.common.web.EnforceEnterpriseCollectionBehaviorState;
 import org.broadleafcommerce.common.web.ValidateProductionChangesState;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @ContextConfiguration(classes = {MultiTenantCopyContext.class, MultiTenantCopierExtensionManager.class})
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class MultiTenantCopyContextDiffblueTest {
   @MockBean
   private Catalog catalog;
@@ -80,13 +79,14 @@ public class MultiTenantCopyContextDiffblueTest {
   private Site site;
 
   /**
-   * Test
-   * {@link MultiTenantCopyContext#MultiTenantCopyContext(Catalog, Catalog, Site, Site, GenericEntityService, MultiTenantCopierExtensionManager)}.
+   * Test {@link MultiTenantCopyContext#MultiTenantCopyContext(Catalog, Catalog, Site, Site, GenericEntityService, MultiTenantCopierExtensionManager)}.
    * <p>
-   * Method under test:
-   * {@link MultiTenantCopyContext#MultiTenantCopyContext(Catalog, Catalog, Site, Site, GenericEntityService, MultiTenantCopierExtensionManager)}
+   * Method under test: {@link MultiTenantCopyContext#MultiTenantCopyContext(Catalog, Catalog, Site, Site, GenericEntityService, MultiTenantCopierExtensionManager)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MultiTenantCopyContext.<init>(Catalog, Catalog, Site, Site, GenericEntityService, MultiTenantCopierExtensionManager)"})
   public void testNewMultiTenantCopyContext() {
     // Arrange and Act
     MultiTenantCopyContext actualMultiTenantCopyContext = new MultiTenantCopyContext(catalog, catalog, site, site,
@@ -109,14 +109,15 @@ public class MultiTenantCopyContextDiffblueTest {
   /**
    * Test {@link MultiTenantCopyContext#getClonedVersion(Class, Object)}.
    * <ul>
-   *   <li>Given {@code java.lang.Object}.</li>
+   *   <li>Given {@code Object}.</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MultiTenantCopyContext#getClonedVersion(Class, Object)}
+   * Method under test: {@link MultiTenantCopyContext#getClonedVersion(Class, Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object MultiTenantCopyContext.getClonedVersion(Class, Object)"})
   public void testGetClonedVersion_givenJavaLangObject_thenReturnNull() {
     // Arrange
     Class<Object> forNameResult = Object.class;
@@ -135,15 +136,16 @@ public class MultiTenantCopyContextDiffblueTest {
   /**
    * Test {@link MultiTenantCopyContext#getClonedVersion(Class, Object)}.
    * <ul>
-   *   <li>Given {@code java.lang.Object}.</li>
+   *   <li>Given {@code Object}.</li>
    *   <li>When {@link BLCFieldUtils#NULL_FIELD}.</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MultiTenantCopyContext#getClonedVersion(Class, Object)}
+   * Method under test: {@link MultiTenantCopyContext#getClonedVersion(Class, Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object MultiTenantCopyContext.getClonedVersion(Class, Object)"})
   public void testGetClonedVersion_givenJavaLangObject_whenNull_field_thenReturnNull() {
     // Arrange
     Class<Object> forNameResult = Object.class;
@@ -164,10 +166,11 @@ public class MultiTenantCopyContextDiffblueTest {
    *   <li>Then throw {@link IllegalArgumentException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MultiTenantCopyContext#getClonedVersion(Class, Object)}
+   * Method under test: {@link MultiTenantCopyContext#getClonedVersion(Class, Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object MultiTenantCopyContext.getClonedVersion(Class, Object)"})
   public void testGetClonedVersion_thenThrowIllegalArgumentException() {
     // Arrange
     Mockito.<Class<?>>when(genericEntityService.getCeilingImplClass(Mockito.<String>any()))
@@ -186,10 +189,11 @@ public class MultiTenantCopyContextDiffblueTest {
    *   <li>Then throw {@link IllegalArgumentException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MultiTenantCopyContext#getClonedVersion(Class, Object)}
+   * Method under test: {@link MultiTenantCopyContext#getClonedVersion(Class, Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object MultiTenantCopyContext.getClonedVersion(Class, Object)"})
   public void testGetClonedVersion_thenThrowIllegalArgumentException2() {
     // Arrange
     Mockito.<Class<?>>when(genericEntityService.getCeilingImplClass(Mockito.<String>any()))
@@ -205,14 +209,15 @@ public class MultiTenantCopyContextDiffblueTest {
   /**
    * Test {@link MultiTenantCopyContext#getEquivalentId(String, Object)}.
    * <ul>
-   *   <li>Given {@code java.lang.Object}.</li>
+   *   <li>Given {@code Object}.</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MultiTenantCopyContext#getEquivalentId(String, Object)}
+   * Method under test: {@link MultiTenantCopyContext#getEquivalentId(String, Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object MultiTenantCopyContext.getEquivalentId(String, Object)"})
   public void testGetEquivalentId_givenJavaLangObject_thenReturnNull() {
     // Arrange
     Class<Object> forNameResult = Object.class;
@@ -232,10 +237,11 @@ public class MultiTenantCopyContextDiffblueTest {
    *   <li>Then throw {@link IllegalArgumentException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MultiTenantCopyContext#getEquivalentId(String, Object)}
+   * Method under test: {@link MultiTenantCopyContext#getEquivalentId(String, Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object MultiTenantCopyContext.getEquivalentId(String, Object)"})
   public void testGetEquivalentId_thenThrowIllegalArgumentException() {
     // Arrange
     Mockito.<Class<?>>when(genericEntityService.getCeilingImplClass(Mockito.<String>any()))
@@ -248,31 +254,6 @@ public class MultiTenantCopyContextDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MultiTenantCopyContext#storeEquivalentMapping(String, Object, Object)}.
-   * <p>
-   * Method under test:
-   * {@link MultiTenantCopyContext#storeEquivalentMapping(String, Object, Object)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testStoreEquivalentMapping() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.broadleafcommerce.common.copy.MultiTenantCopyContext.storeEquivalentMapping(MultiTenantCopyContext.java:99)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    Mockito.<Class<?>>when(genericEntityService.getCeilingImplClass(Mockito.<String>any())).thenReturn(null);
-
-    // Act
-    multiTenantCopyContext.storeEquivalentMapping("Class Name", BLCFieldUtils.NULL_FIELD, BLCFieldUtils.NULL_FIELD);
-  }
-
-  /**
    * Test {@link MultiTenantCopyContext#getIdentifier(Object)}.
    * <ul>
    *   <li>Then return {@code null}.</li>
@@ -281,6 +262,8 @@ public class MultiTenantCopyContextDiffblueTest {
    * Method under test: {@link MultiTenantCopyContext#getIdentifier(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long MultiTenantCopyContext.getIdentifier(Object)"})
   public void testGetIdentifier_thenReturnNull() {
     // Arrange
     when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
@@ -302,6 +285,8 @@ public class MultiTenantCopyContextDiffblueTest {
    * Method under test: {@link MultiTenantCopyContext#getIdentifier(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long MultiTenantCopyContext.getIdentifier(Object)"})
   public void testGetIdentifier_thenThrowIllegalArgumentException() {
     // Arrange
     when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenThrow(new IllegalArgumentException("foo"));
@@ -312,73 +297,13 @@ public class MultiTenantCopyContextDiffblueTest {
   }
 
   /**
-   * Test {@link MultiTenantCopyContext#createOrRetrieveCopyInstance(Object)}.
-   * <p>
-   * Method under test:
-   * {@link MultiTenantCopyContext#createOrRetrieveCopyInstance(Object)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.RuntimeException: java.lang.NoSuchMethodException: java.lang.Object.createOrRetrieveCopyInstance(org.broadleafcommerce.common.copy.MultiTenantCopyContext)
-    //       at org.broadleafcommerce.common.exception.ExceptionHelper.wrapException(ExceptionHelper.java:96)
-    //       at org.broadleafcommerce.common.exception.ExceptionHelper.refineException(ExceptionHelper.java:47)
-    //       at org.broadleafcommerce.common.exception.ExceptionHelper.refineException(ExceptionHelper.java:59)
-    //       at org.broadleafcommerce.common.copy.MultiTenantCopyContext.validateClone(MultiTenantCopyContext.java:346)
-    //       at org.broadleafcommerce.common.copy.MultiTenantCopyContext.performCopy(MultiTenantCopyContext.java:312)
-    //       at org.broadleafcommerce.common.copy.MultiTenantCopyContext.handleStandardEntity(MultiTenantCopyContext.java:294)
-    //       at org.broadleafcommerce.common.copy.MultiTenantCopyContext.createOrRetrieveCopyInstance(MultiTenantCopyContext.java:148)
-    //   java.lang.NoSuchMethodException: java.lang.Object.createOrRetrieveCopyInstance(org.broadleafcommerce.common.copy.MultiTenantCopyContext)
-    //       at java.base/java.lang.Class.getMethod(Class.java:2108)
-    //       at org.broadleafcommerce.common.copy.MultiTenantCopyContext.validateClone(MultiTenantCopyContext.java:344)
-    //       at org.broadleafcommerce.common.copy.MultiTenantCopyContext.performCopy(MultiTenantCopyContext.java:312)
-    //       at org.broadleafcommerce.common.copy.MultiTenantCopyContext.handleStandardEntity(MultiTenantCopyContext.java:294)
-    //       at org.broadleafcommerce.common.copy.MultiTenantCopyContext.createOrRetrieveCopyInstance(MultiTenantCopyContext.java:148)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
-    Class<Object> forNameResult = Object.class;
-    Mockito.<Class<?>>when(genericEntityService.getCeilingImplClass(Mockito.<String>any())).thenReturn(forNameResult);
-    when(multiTenantCopierExtensionManager.getProxy()).thenReturn(new AbstractMultiTenantCopierExtensionHandler());
-
-    // Act
-    multiTenantCopyContext.createOrRetrieveCopyInstance(BLCFieldUtils.NULL_FIELD);
-  }
-
-  /**
-   * Test {@link MultiTenantCopyContext#clearOriginalIdentifiers()}.
-   * <p>
-   * Method under test: {@link MultiTenantCopyContext#clearOriginalIdentifiers()}
-   */
-  @Test
-  public void testClearOriginalIdentifiers() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange
-    CatalogImpl fromCatalog = new CatalogImpl();
-    CatalogImpl toCatalog = new CatalogImpl();
-    SiteImpl fromSite = new SiteImpl();
-    SiteImpl toSite = new SiteImpl();
-    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
-
-    // Act
-    (new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite, genericEntityService,
-        new MultiTenantCopierExtensionManager())).clearOriginalIdentifiers();
-  }
-
-  /**
    * Test {@link MultiTenantCopyContext#removeOriginalIdentifier(Object)}.
    * <p>
-   * Method under test:
-   * {@link MultiTenantCopyContext#removeOriginalIdentifier(Object)}
+   * Method under test: {@link MultiTenantCopyContext#removeOriginalIdentifier(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object MultiTenantCopyContext.removeOriginalIdentifier(Object)"})
   public void testRemoveOriginalIdentifier() {
     // Arrange, Act and Assert
     assertNull(multiTenantCopyContext.removeOriginalIdentifier(BLCFieldUtils.NULL_FIELD));
@@ -386,37 +311,16 @@ public class MultiTenantCopyContextDiffblueTest {
 
   /**
    * Test {@link MultiTenantCopyContext#getAllFields(Class)}.
-   * <p>
-   * Method under test: {@link MultiTenantCopyContext#getAllFields(Class)}
-   */
-  @Test
-  public void testGetAllFields() {
-    // Arrange
-    CatalogImpl fromCatalog = new CatalogImpl();
-    CatalogImpl toCatalog = new CatalogImpl();
-    SiteImpl fromSite = new SiteImpl();
-    SiteImpl toSite = new SiteImpl();
-    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
-
-    MultiTenantCopyContext multiTenantCopyContext = new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
-        genericEntityService, new MultiTenantCopierExtensionManager());
-    multiTenantCopyContext.addDeferredOperation(mock(DeferredOperation.class));
-    Class<Object> targetClass = Object.class;
-
-    // Act and Assert
-    assertEquals(0, multiTenantCopyContext.getAllFields(targetClass).length);
-  }
-
-  /**
-   * Test {@link MultiTenantCopyContext#getAllFields(Class)}.
    * <ul>
-   *   <li>When {@code java.lang.Boolean}.</li>
+   *   <li>When {@code Boolean}.</li>
    *   <li>Then return second element Name is {@code FALSE}.</li>
    * </ul>
    * <p>
    * Method under test: {@link MultiTenantCopyContext#getAllFields(Class)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Field[] MultiTenantCopyContext.getAllFields(Class)"})
   public void testGetAllFields_whenJavaLangBoolean_thenReturnSecondElementNameIsFalse() {
     // Arrange
     CatalogImpl fromCatalog = new CatalogImpl();
@@ -438,7 +342,6 @@ public class MultiTenantCopyContextDiffblueTest {
     assertEquals("TRUE", field2.getName());
     Field field3 = actualAllFields[2];
     assertEquals("TYPE", field3.getName());
-    assertEquals("java.lang.Class<java.lang.Boolean>", field3.getGenericType().getTypeName());
     Field field4 = actualAllFields[3];
     assertEquals("private final boolean java.lang.Boolean.value", field4.toGenericString());
     Field field5 = actualAllFields[4];
@@ -500,13 +403,15 @@ public class MultiTenantCopyContextDiffblueTest {
   /**
    * Test {@link MultiTenantCopyContext#getAllFields(Class)}.
    * <ul>
-   *   <li>When {@code java.lang.Object}.</li>
+   *   <li>When {@code Object}.</li>
    *   <li>Then return array length is zero.</li>
    * </ul>
    * <p>
    * Method under test: {@link MultiTenantCopyContext#getAllFields(Class)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Field[] MultiTenantCopyContext.getAllFields(Class)"})
   public void testGetAllFields_whenJavaLangObject_thenReturnArrayLengthIsZero() {
     // Arrange
     CatalogImpl fromCatalog = new CatalogImpl();
@@ -525,14 +430,15 @@ public class MultiTenantCopyContextDiffblueTest {
   /**
    * Test {@link MultiTenantCopyContext#getPreviousClone(Class, Long)}.
    * <ul>
-   *   <li>Given {@code java.lang.Object}.</li>
+   *   <li>Given {@code Object}.</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MultiTenantCopyContext#getPreviousClone(Class, Long)}
+   * Method under test: {@link MultiTenantCopyContext#getPreviousClone(Class, Long)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object MultiTenantCopyContext.getPreviousClone(Class, Long)"})
   public void testGetPreviousClone_givenJavaLangObject_thenReturnNull() {
     // Arrange
     GenericEntityService genericEntityService = mock(GenericEntityService.class);
@@ -557,10 +463,11 @@ public class MultiTenantCopyContextDiffblueTest {
   /**
    * Test {@link MultiTenantCopyContext#addDeferredOperation(DeferredOperation)}.
    * <p>
-   * Method under test:
-   * {@link MultiTenantCopyContext#addDeferredOperation(DeferredOperation)}
+   * Method under test: {@link MultiTenantCopyContext#addDeferredOperation(DeferredOperation)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void MultiTenantCopyContext.addDeferredOperation(DeferredOperation)"})
   public void testAddDeferredOperation() {
     // Arrange
     CatalogImpl fromCatalog = new CatalogImpl();
@@ -587,6 +494,8 @@ public class MultiTenantCopyContextDiffblueTest {
    * Method under test: {@link MultiTenantCopyContext#addDeferredOperations(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void MultiTenantCopyContext.addDeferredOperations(List)"})
   public void testAddDeferredOperations() {
     // Arrange
     ArrayList<DeferredOperation> operations = new ArrayList<>();
@@ -609,11 +518,13 @@ public class MultiTenantCopyContextDiffblueTest {
    * Method under test: {@link MultiTenantCopyContext#addDeferredOperations(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void MultiTenantCopyContext.addDeferredOperations(List)"})
   public void testAddDeferredOperations_thenMultiTenantCopyContextDeferredOperationsEmpty() {
     // Arrange and Act
     multiTenantCopyContext.addDeferredOperations(new ArrayList<>());
 
-    // Assert
+    // Assert that nothing has changed
     assertTrue(multiTenantCopyContext.getDeferredOperations().isEmpty());
   }
 
@@ -626,6 +537,8 @@ public class MultiTenantCopyContextDiffblueTest {
    * Method under test: {@link MultiTenantCopyContext#addDeferredOperations(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void MultiTenantCopyContext.addDeferredOperations(List)"})
   public void testAddDeferredOperations_thenMultiTenantCopyContextDeferredOperationsSizeIsOne() {
     // Arrange
     ArrayList<DeferredOperation> operations = new ArrayList<>();
@@ -656,6 +569,12 @@ public class MultiTenantCopyContextDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map MultiTenantCopyContext.getCopyHints()", "List MultiTenantCopyContext.getDeferredOperations()",
+      "Boolean MultiTenantCopyContext.getForDuplicate()", "Catalog MultiTenantCopyContext.getFromCatalog()",
+      "Site MultiTenantCopyContext.getFromSite()", "Catalog MultiTenantCopyContext.getToCatalog()",
+      "Site MultiTenantCopyContext.getToSite()", "void MultiTenantCopyContext.setCopyHints(Map)",
+      "void MultiTenantCopyContext.setForDuplicate(Boolean)", "void MultiTenantCopyContext.validateOriginal(Object)"})
   public void testGettersAndSetters() throws CloneNotSupportedException {
     // Arrange
     CatalogImpl fromCatalog = new CatalogImpl();
@@ -679,7 +598,7 @@ public class MultiTenantCopyContextDiffblueTest {
     Catalog actualToCatalog = multiTenantCopyContext.getToCatalog();
     Site actualToSite = multiTenantCopyContext.getToSite();
 
-    // Assert that nothing has changed
+    // Assert
     assertTrue(actualDeferredOperations.isEmpty());
     assertTrue(actualCopyHints.isEmpty());
     assertTrue(actualForDuplicate);
@@ -692,33 +611,37 @@ public class MultiTenantCopyContextDiffblueTest {
 
   /**
    * Test {@link MultiTenantCopyContext#checkCloneStatus(Object)}.
-   * <ul>
-   *   <li>Then return {@code true}.</li>
-   * </ul>
    * <p>
    * Method under test: {@link MultiTenantCopyContext#checkCloneStatus(Object)}
    */
   @Test
-  public void testCheckCloneStatus_thenReturnTrue() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MultiTenantCopyContext.checkCloneStatus(Object)"})
+  public void testCheckCloneStatus() {
     // Arrange
-    when(multiTenantCopierExtensionManager.getProxy()).thenReturn(new AbstractMultiTenantCopierExtensionHandler());
+    CatalogImpl fromCatalog = new CatalogImpl();
+    CatalogImpl toCatalog = new CatalogImpl();
+    SiteImpl fromSite = new SiteImpl();
+    SiteImpl toSite = new SiteImpl();
 
-    // Act
-    boolean actualCheckCloneStatusResult = multiTenantCopyContext.checkCloneStatus(BLCFieldUtils.NULL_FIELD);
-
-    // Assert
-    verify(multiTenantCopierExtensionManager).getProxy();
-    assertTrue(actualCheckCloneStatusResult);
+    // Act and Assert
+    assertTrue(
+        (new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite, new GenericEntityServiceImpl(), null))
+            .checkCloneStatus(BLCFieldUtils.NULL_FIELD));
   }
 
   /**
    * Test {@link MultiTenantCopyContext#tearDownContext(BroadleafRequestContext)}.
+   * <ul>
+   *   <li>Then {@link BroadleafRequestContext} (default constructor) CurrentCatalog {@link CatalogImpl}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link MultiTenantCopyContext#tearDownContext(BroadleafRequestContext)}
+   * Method under test: {@link MultiTenantCopyContext#tearDownContext(BroadleafRequestContext)}
    */
   @Test
-  public void testTearDownContext() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void MultiTenantCopyContext.tearDownContext(BroadleafRequestContext)"})
+  public void testTearDownContext_thenBroadleafRequestContextCurrentCatalogCatalogImpl() {
     // Arrange
     CatalogImpl fromCatalog = new CatalogImpl();
     CatalogImpl toCatalog = new CatalogImpl();
@@ -733,46 +656,15 @@ public class MultiTenantCopyContextDiffblueTest {
     multiTenantCopyContext.tearDownContext(context);
 
     // Assert
-    assertTrue(multiTenantCopyContext.getToSite() instanceof SiteImpl);
+    Catalog currentCatalog = context.getCurrentCatalog();
+    assertTrue(currentCatalog instanceof CatalogImpl);
+    Site currentProfile = context.getCurrentProfile();
+    assertTrue(currentProfile instanceof SiteImpl);
     assertSame(fromCatalog, multiTenantCopyContext.getFromCatalog());
     assertSame(toCatalog, multiTenantCopyContext.getToCatalog());
-    assertSame(fromCatalog, context.getCurrentCatalog());
+    assertSame(fromCatalog, currentCatalog);
     assertSame(fromSite, multiTenantCopyContext.getFromSite());
-    assertSame(fromSite, context.getCurrentProfile());
-    assertSame(fromSite, context.getNonPersistentSite());
-    assertSame(fromSite, context.getSite());
-  }
-
-  /**
-   * Test {@link MultiTenantCopyContext#tearDownContext(BroadleafRequestContext)}.
-   * <p>
-   * Method under test:
-   * {@link MultiTenantCopyContext#tearDownContext(BroadleafRequestContext)}
-   */
-  @Test
-  public void testTearDownContext2() {
-    // Arrange
-    CatalogImpl fromCatalog = new CatalogImpl();
-    CatalogImpl toCatalog = new CatalogImpl();
-    SiteImpl fromSite = new SiteImpl();
-    SiteImpl toSite = new SiteImpl();
-    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
-
-    MultiTenantCopyContext multiTenantCopyContext = new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
-        genericEntityService, new MultiTenantCopierExtensionManager());
-    multiTenantCopyContext.addDeferredOperation(mock(DeferredOperation.class));
-    BroadleafRequestContext context = new BroadleafRequestContext();
-
-    // Act
-    multiTenantCopyContext.tearDownContext(context);
-
-    // Assert
-    assertTrue(multiTenantCopyContext.getToSite() instanceof SiteImpl);
-    assertSame(fromCatalog, multiTenantCopyContext.getFromCatalog());
-    assertSame(toCatalog, multiTenantCopyContext.getToCatalog());
-    assertSame(fromCatalog, context.getCurrentCatalog());
-    assertSame(fromSite, multiTenantCopyContext.getFromSite());
-    assertSame(fromSite, context.getCurrentProfile());
+    assertSame(fromSite, currentProfile);
     assertSame(fromSite, context.getNonPersistentSite());
     assertSame(fromSite, context.getSite());
   }
@@ -783,7 +675,9 @@ public class MultiTenantCopyContextDiffblueTest {
    * Method under test: {@link MultiTenantCopyContext#setupContext()}
    */
   @Test
-  public void testSetupContext() throws MissingResourceException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BroadleafRequestContext MultiTenantCopyContext.setupContext()"})
+  public void testSetupContext() {
     // Arrange
     CatalogImpl fromCatalog = new CatalogImpl();
     CatalogImpl toCatalog = new CatalogImpl();
@@ -796,23 +690,10 @@ public class MultiTenantCopyContextDiffblueTest {
         toSite, genericEntityService, new MultiTenantCopierExtensionManager())).setupContext();
 
     // Assert
-    java.util.Locale javaLocale = actualSetupContextResult.getJavaLocale();
-    assertEquals("", javaLocale.getDisplayScript());
-    assertEquals("", javaLocale.getDisplayVariant());
-    assertEquals("", javaLocale.getScript());
-    assertEquals("", javaLocale.getVariant());
-    Currency javaCurrency = actualSetupContextResult.getJavaCurrency();
-    assertEquals("British Pound", javaCurrency.getDisplayName());
-    assertEquals("English (United Kingdom)", javaLocale.getDisplayName());
-    assertEquals("English", javaLocale.getDisplayLanguage());
-    assertEquals("GB", javaLocale.getCountry());
-    assertEquals("GBP", javaCurrency.getCurrencyCode());
-    assertEquals("GBP", javaCurrency.toString());
-    assertEquals("GBR", javaLocale.getISO3Country());
-    assertEquals("United Kingdom", javaLocale.getDisplayCountry());
-    assertEquals("£", javaCurrency.getSymbol());
-    assertEquals("en", javaLocale.getLanguage());
-    assertEquals("eng", javaLocale.getISO3Language());
+    Catalog currentCatalog = actualSetupContextResult.getCurrentCatalog();
+    assertTrue(currentCatalog instanceof CatalogImpl);
+    Site currentProfile = actualSetupContextResult.getCurrentProfile();
+    assertTrue(currentProfile instanceof SiteImpl);
     assertNull(actualSetupContextResult.getAdminUserId());
     assertNull(actualSetupContextResult.getSandBoxId());
     assertNull(actualSetupContextResult.getRequestURIWithoutContext());
@@ -827,180 +708,38 @@ public class MultiTenantCopyContextDiffblueTest {
     assertNull(actualSetupContextResult.getTheme());
     assertNull(actualSetupContextResult.getMessageSource());
     assertNull(actualSetupContextResult.getWebRequest());
-    assertEquals(2, javaCurrency.getDefaultFractionDigits());
-    assertEquals(826, javaCurrency.getNumericCode());
     assertEquals(DeployBehavior.UNDEFINED, actualSetupContextResult.getDeployBehavior());
     assertEquals(DeployState.UNDEFINED, actualSetupContextResult.getDeployState());
     assertEquals(EnforceEnterpriseCollectionBehaviorState.UNDEFINED,
         actualSetupContextResult.getEnforceEnterpriseCollectionBehaviorState());
     assertEquals(ValidateProductionChangesState.UNDEFINED,
         actualSetupContextResult.getValidateProductionChangesState());
-    assertFalse(javaLocale.hasExtensions());
     assertFalse(actualSetupContextResult.getAdmin());
     assertFalse(actualSetupContextResult.getIgnoreSite());
     assertFalse(actualSetupContextResult.getInternalIgnoreFilters());
     assertFalse(actualSetupContextResult.getInternalValidateFind());
     assertTrue(actualSetupContextResult.getExplicitCatalogs().isEmpty());
     assertTrue(actualSetupContextResult.getAdditionalProperties().isEmpty());
-    Set<Character> extensionKeys = javaLocale.getExtensionKeys();
-    assertTrue(extensionKeys.isEmpty());
     assertTrue(actualSetupContextResult.isProductionSandBox());
-    assertSame(toCatalog, actualSetupContextResult.getCurrentCatalog());
-    assertSame(toSite, actualSetupContextResult.getCurrentProfile());
+    assertEquals(fromCatalog, currentCatalog);
+    assertSame(toCatalog, currentCatalog);
+    assertSame(toSite, currentProfile);
     assertSame(toSite, actualSetupContextResult.getNonPersistentSite());
     assertSame(toSite, actualSetupContextResult.getSite());
-    assertSame(extensionKeys, javaLocale.getUnicodeLocaleAttributes());
-    assertSame(extensionKeys, javaLocale.getUnicodeLocaleKeys());
   }
 
   /**
-   * Test {@link MultiTenantCopyContext#setupContext()}.
-   * <p>
-   * Method under test: {@link MultiTenantCopyContext#setupContext()}
-   */
-  @Test
-  public void testSetupContext2() throws MissingResourceException {
-    // Arrange
-    CatalogImpl fromCatalog = new CatalogImpl();
-    CatalogImpl toCatalog = new CatalogImpl();
-    SiteImpl fromSite = new SiteImpl();
-    SiteImpl toSite = new SiteImpl();
-    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
-
-    MultiTenantCopyContext multiTenantCopyContext = new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
-        genericEntityService, new MultiTenantCopierExtensionManager());
-    multiTenantCopyContext.addDeferredOperation(mock(DeferredOperation.class));
-
-    // Act
-    BroadleafRequestContext actualSetupContextResult = multiTenantCopyContext.setupContext();
-
-    // Assert
-    java.util.Locale javaLocale = actualSetupContextResult.getJavaLocale();
-    assertEquals("", javaLocale.getDisplayScript());
-    assertEquals("", javaLocale.getDisplayVariant());
-    assertEquals("", javaLocale.getScript());
-    assertEquals("", javaLocale.getVariant());
-    Currency javaCurrency = actualSetupContextResult.getJavaCurrency();
-    assertEquals("British Pound", javaCurrency.getDisplayName());
-    assertEquals("English (United Kingdom)", javaLocale.getDisplayName());
-    assertEquals("English", javaLocale.getDisplayLanguage());
-    assertEquals("GB", javaLocale.getCountry());
-    assertEquals("GBP", javaCurrency.getCurrencyCode());
-    assertEquals("GBP", javaCurrency.toString());
-    assertEquals("GBR", javaLocale.getISO3Country());
-    assertEquals("United Kingdom", javaLocale.getDisplayCountry());
-    assertEquals("£", javaCurrency.getSymbol());
-    assertEquals("en", javaLocale.getLanguage());
-    assertEquals("eng", javaLocale.getISO3Language());
-    assertNull(actualSetupContextResult.getAdminUserId());
-    assertNull(actualSetupContextResult.getSandBoxId());
-    assertNull(actualSetupContextResult.getRequestURIWithoutContext());
-    assertNull(actualSetupContextResult.getTimeZone());
-    assertNull(actualSetupContextResult.getRequest());
-    assertNull(actualSetupContextResult.getResponse());
-    assertNull(actualSetupContextResult.getRequestDTO());
-    assertNull(actualSetupContextResult.getBroadleafCurrency());
-    assertNull(actualSetupContextResult.getRequestedBroadleafCurrency());
-    assertNull(actualSetupContextResult.getLocale());
-    assertNull(actualSetupContextResult.getSandBox());
-    assertNull(actualSetupContextResult.getTheme());
-    assertNull(actualSetupContextResult.getMessageSource());
-    assertNull(actualSetupContextResult.getWebRequest());
-    assertEquals(2, javaCurrency.getDefaultFractionDigits());
-    assertEquals(826, javaCurrency.getNumericCode());
-    assertEquals(DeployBehavior.UNDEFINED, actualSetupContextResult.getDeployBehavior());
-    assertEquals(DeployState.UNDEFINED, actualSetupContextResult.getDeployState());
-    assertEquals(EnforceEnterpriseCollectionBehaviorState.UNDEFINED,
-        actualSetupContextResult.getEnforceEnterpriseCollectionBehaviorState());
-    assertEquals(ValidateProductionChangesState.UNDEFINED,
-        actualSetupContextResult.getValidateProductionChangesState());
-    assertFalse(javaLocale.hasExtensions());
-    assertFalse(actualSetupContextResult.getAdmin());
-    assertFalse(actualSetupContextResult.getIgnoreSite());
-    assertFalse(actualSetupContextResult.getInternalIgnoreFilters());
-    assertFalse(actualSetupContextResult.getInternalValidateFind());
-    assertTrue(actualSetupContextResult.getExplicitCatalogs().isEmpty());
-    assertTrue(actualSetupContextResult.getAdditionalProperties().isEmpty());
-    Set<Character> extensionKeys = javaLocale.getExtensionKeys();
-    assertTrue(extensionKeys.isEmpty());
-    assertTrue(actualSetupContextResult.isProductionSandBox());
-    assertSame(toCatalog, actualSetupContextResult.getCurrentCatalog());
-    assertSame(toSite, actualSetupContextResult.getCurrentProfile());
-    assertSame(toSite, actualSetupContextResult.getNonPersistentSite());
-    assertSame(toSite, actualSetupContextResult.getSite());
-    assertSame(extensionKeys, javaLocale.getUnicodeLocaleAttributes());
-    assertSame(extensionKeys, javaLocale.getUnicodeLocaleKeys());
-  }
-
-  /**
-   * Test {@link MultiTenantCopyContext#createNewInstance(Class)}.
-   * <ul>
-   *   <li>When {@code java.lang.Object}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MultiTenantCopyContext#createNewInstance(Class)}
-   */
-  @Test
-  public void testCreateNewInstance_whenJavaLangObject() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange
-    CatalogImpl fromCatalog = new CatalogImpl();
-    CatalogImpl toCatalog = new CatalogImpl();
-    SiteImpl fromSite = new SiteImpl();
-    SiteImpl toSite = new SiteImpl();
-    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
-    MultiTenantCopyContext multiTenantCopyContext = new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
-        genericEntityService, new MultiTenantCopierExtensionManager());
-    Class<Object> instanceClass = Object.class;
-
-    // Act
-    multiTenantCopyContext.createNewInstance(instanceClass);
-  }
-
-  /**
-   * Test {@link MultiTenantCopyContext#createNewInstance(Class)}.
-   * <ul>
-   *   <li>When {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MultiTenantCopyContext#createNewInstance(Class)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateNewInstance_whenNull() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.broadleafcommerce.common.copy.MultiTenantCopyContext.createNewInstance(MultiTenantCopyContext.java:269)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    CatalogImpl fromCatalog = new CatalogImpl();
-    CatalogImpl toCatalog = new CatalogImpl();
-    SiteImpl fromSite = new SiteImpl();
-    SiteImpl toSite = new SiteImpl();
-    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
-
-    // Act
-    (new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite, genericEntityService,
-        new MultiTenantCopierExtensionManager())).createNewInstance(null);
-  }
-
-  /**
-   * Test
-   * {@link MultiTenantCopyContext#handleStandardEntity(Object, BroadleafRequestContext, Class)}.
+   * Test {@link MultiTenantCopyContext#handleStandardEntity(Object, BroadleafRequestContext, Class)}.
    * <ul>
    *   <li>Then throw {@link IllegalArgumentException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MultiTenantCopyContext#handleStandardEntity(Object, BroadleafRequestContext, Class)}
+   * Method under test: {@link MultiTenantCopyContext#handleStandardEntity(Object, BroadleafRequestContext, Class)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.common.copy.CreateResponse MultiTenantCopyContext.handleStandardEntity(Object, BroadleafRequestContext, Class)"})
   public void testHandleStandardEntity_thenThrowIllegalArgumentException() throws CloneNotSupportedException {
     // Arrange
     when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenThrow(new IllegalArgumentException("_"));
@@ -1015,37 +754,17 @@ public class MultiTenantCopyContextDiffblueTest {
 
   /**
    * Test {@link MultiTenantCopyContext#handleEmbedded(Class)}.
-   * <p>
-   * Method under test: {@link MultiTenantCopyContext#handleEmbedded(Class)}
-   */
-  @Test
-  public void testHandleEmbedded() {
-    // Arrange
-    CatalogImpl fromCatalog = new CatalogImpl();
-    CatalogImpl toCatalog = new CatalogImpl();
-    SiteImpl fromSite = new SiteImpl();
-    SiteImpl toSite = new SiteImpl();
-    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
-
-    MultiTenantCopyContext multiTenantCopyContext = new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
-        genericEntityService, new MultiTenantCopierExtensionManager());
-    multiTenantCopyContext.addDeferredOperation(mock(DeferredOperation.class));
-    Class<Object> instanceClass = Object.class;
-
-    // Act and Assert
-    assertNull(multiTenantCopyContext.handleEmbedded(instanceClass));
-  }
-
-  /**
-   * Test {@link MultiTenantCopyContext#handleEmbedded(Class)}.
    * <ul>
+   *   <li>When {@code Object}.</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link MultiTenantCopyContext#handleEmbedded(Class)}
    */
   @Test
-  public void testHandleEmbedded_thenReturnNull() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"org.broadleafcommerce.common.copy.CreateResponse MultiTenantCopyContext.handleEmbedded(Class)"})
+  public void testHandleEmbedded_whenJavaLangObject_thenReturnNull() {
     // Arrange
     CatalogImpl fromCatalog = new CatalogImpl();
     CatalogImpl toCatalog = new CatalogImpl();
@@ -1058,69 +777,5 @@ public class MultiTenantCopyContextDiffblueTest {
 
     // Act and Assert
     assertNull(multiTenantCopyContext.handleEmbedded(instanceClass));
-  }
-
-  /**
-   * Test {@link MultiTenantCopyContext#performCopy(Object, Class, Long)}.
-   * <ul>
-   *   <li>When {@code java.lang.Object}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link MultiTenantCopyContext#performCopy(Object, Class, Long)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testPerformCopy_whenJavaLangObject() throws CloneNotSupportedException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.RuntimeException: java.lang.NoSuchMethodException: java.lang.Object.createOrRetrieveCopyInstance(org.broadleafcommerce.common.copy.MultiTenantCopyContext)
-    //       at org.broadleafcommerce.common.exception.ExceptionHelper.wrapException(ExceptionHelper.java:96)
-    //       at org.broadleafcommerce.common.exception.ExceptionHelper.refineException(ExceptionHelper.java:47)
-    //       at org.broadleafcommerce.common.exception.ExceptionHelper.refineException(ExceptionHelper.java:59)
-    //       at org.broadleafcommerce.common.copy.MultiTenantCopyContext.validateClone(MultiTenantCopyContext.java:346)
-    //       at org.broadleafcommerce.common.copy.MultiTenantCopyContext.performCopy(MultiTenantCopyContext.java:312)
-    //   java.lang.NoSuchMethodException: java.lang.Object.createOrRetrieveCopyInstance(org.broadleafcommerce.common.copy.MultiTenantCopyContext)
-    //       at java.base/java.lang.Class.getMethod(Class.java:2108)
-    //       at org.broadleafcommerce.common.copy.MultiTenantCopyContext.validateClone(MultiTenantCopyContext.java:344)
-    //       at org.broadleafcommerce.common.copy.MultiTenantCopyContext.performCopy(MultiTenantCopyContext.java:312)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    Class<Object> instanceClass = Object.class;
-
-    // Act
-    multiTenantCopyContext.performCopy(BLCFieldUtils.NULL_FIELD, instanceClass, 1L);
-  }
-
-  /**
-   * Test {@link MultiTenantCopyContext#validateClone(Object)}.
-   * <ul>
-   *   <li>When {@link BLCFieldUtils#NULL_FIELD}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MultiTenantCopyContext#validateClone(Object)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testValidateClone_whenNull_field() throws CloneNotSupportedException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.RuntimeException: java.lang.NoSuchMethodException: java.lang.Object.createOrRetrieveCopyInstance(org.broadleafcommerce.common.copy.MultiTenantCopyContext)
-    //       at org.broadleafcommerce.common.exception.ExceptionHelper.wrapException(ExceptionHelper.java:96)
-    //       at org.broadleafcommerce.common.exception.ExceptionHelper.refineException(ExceptionHelper.java:47)
-    //       at org.broadleafcommerce.common.exception.ExceptionHelper.refineException(ExceptionHelper.java:59)
-    //       at org.broadleafcommerce.common.copy.MultiTenantCopyContext.validateClone(MultiTenantCopyContext.java:346)
-    //   java.lang.NoSuchMethodException: java.lang.Object.createOrRetrieveCopyInstance(org.broadleafcommerce.common.copy.MultiTenantCopyContext)
-    //       at java.base/java.lang.Class.getMethod(Class.java:2108)
-    //       at org.broadleafcommerce.common.copy.MultiTenantCopyContext.validateClone(MultiTenantCopyContext.java:344)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange and Act
-    multiTenantCopyContext.validateClone(BLCFieldUtils.NULL_FIELD);
   }
 }

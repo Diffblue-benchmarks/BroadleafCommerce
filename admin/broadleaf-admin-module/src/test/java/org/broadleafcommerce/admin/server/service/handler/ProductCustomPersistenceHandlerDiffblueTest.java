@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Admin Module
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.admin.server.service.handler;
 
 import static org.junit.Assert.assertEquals;
@@ -14,23 +31,23 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import java.time.LocalDate;
-import java.time.ZoneOffset;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.broadleafcommerce.common.exception.ServiceException;
 import org.broadleafcommerce.common.presentation.client.OperationType;
-import org.broadleafcommerce.core.catalog.domain.Category;
+import org.broadleafcommerce.common.sandbox.SandBoxHelper;
+import org.broadleafcommerce.common.service.ParentCategoryLegacyModeService;
 import org.broadleafcommerce.core.catalog.domain.CategoryImpl;
 import org.broadleafcommerce.core.catalog.domain.CategoryProductXref;
 import org.broadleafcommerce.core.catalog.domain.CategoryProductXrefImpl;
 import org.broadleafcommerce.core.catalog.domain.Product;
-import org.broadleafcommerce.core.catalog.domain.ProductBundle;
 import org.broadleafcommerce.core.catalog.domain.ProductBundleImpl;
 import org.broadleafcommerce.core.catalog.domain.ProductImpl;
+import org.broadleafcommerce.core.catalog.service.CatalogService;
 import org.broadleafcommerce.openadmin.dto.AdornedTargetCollectionMetadata;
 import org.broadleafcommerce.openadmin.dto.BasicFieldMetadata;
 import org.broadleafcommerce.openadmin.dto.CriteriaTransferObject;
@@ -41,47 +58,47 @@ import org.broadleafcommerce.openadmin.dto.OperationTypes;
 import org.broadleafcommerce.openadmin.dto.PersistencePackage;
 import org.broadleafcommerce.openadmin.dto.PersistencePerspective;
 import org.broadleafcommerce.openadmin.dto.Property;
-import org.broadleafcommerce.openadmin.dto.SectionCrumb;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDao;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl;
-import org.broadleafcommerce.openadmin.server.service.persistence.PersistenceManagerImpl;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule;
-import org.broadleafcommerce.openadmin.server.service.persistence.module.InspectHelper;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.RecordHelper;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.FieldPath;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.FieldPathBuilder;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.FilterMapping;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.Restriction;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.predicate.PredicateProvider;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml", "/bl-admin-applicationContext.xml",
-    "/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class ProductCustomPersistenceHandlerDiffblueTest {
-  @Autowired
+  @Mock
+  private CatalogService catalogService;
+
+  @Mock
+  private ParentCategoryLegacyModeService parentCategoryLegacyModeService;
+
+  @InjectMocks
   private ProductCustomPersistenceHandler productCustomPersistenceHandler;
 
+  @Mock
+  private SandBoxHelper sandBoxHelper;
+
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
+   * Test {@link ProductCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleAdd(PersistencePackage)"})
   public void testCanHandleAdd() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
     Entity entity = new Entity();
 
     // Act and Assert
@@ -90,191 +107,87 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
+   * Test {@link ProductCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleAdd(PersistencePackage)"})
   public void testCanHandleAdd2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3894 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.ProductCustomPersistenceHandler productCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler2 = new ProductCustomPersistenceHandler();
+    Entity entity = new Entity();
 
-    // Act
-    productCustomPersistenceHandler2.canHandleAdd(new PersistencePackage());
+    // Act and Assert
+    assertFalse(productCustomPersistenceHandler.canHandleAdd(new PersistencePackage("Dr Jane Doe", entity,
+        new PersistencePerspective(), new String[]{"productDirectEdit"}, "ABC123")));
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
-   * <ul>
-   *   <li>Given array of {@link String} with {@code Custom Criteria}.</li>
-   * </ul>
+   * Test {@link ProductCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
    */
   @Test
-  public void testCanHandleAdd_givenArrayOfStringWithCustomCriteria() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleAdd(PersistencePackage)"})
+  public void testCanHandleAdd3() {
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{"Custom Criteria"});
+    Entity entity = new Entity();
 
-    // Act
-    Boolean actualCanHandleAddResult = productCustomPersistenceHandler.canHandleAdd(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getCustomCriteria();
-    assertFalse(actualCanHandleAddResult);
+    // Act and Assert
+    assertFalse(productCustomPersistenceHandler.canHandleAdd(
+        new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(), new String[]{}, "ABC123")));
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
-   * <ul>
-   *   <li>Given array of {@link String} with {@code productDirectEdit}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
-   */
-  @Test
-  public void testCanHandleAdd_givenArrayOfStringWithProductDirectEdit() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{"productDirectEdit"});
-
-    // Act
-    Boolean actualCanHandleAddResult = productCustomPersistenceHandler.canHandleAdd(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getCustomCriteria();
-    assertFalse(actualCanHandleAddResult);
-  }
-
-  /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
-   * <ul>
-   *   <li>Given empty array of {@link String}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
-   */
-  @Test
-  public void testCanHandleAdd_givenEmptyArrayOfString() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{});
-
-    // Act
-    Boolean actualCanHandleAddResult = productCustomPersistenceHandler.canHandleAdd(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getCustomCriteria();
-    assertFalse(actualCanHandleAddResult);
-  }
-
-  /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
+   * Test {@link ProductCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
    * <ul>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleAdd(PersistencePackage)"})
   public void testCanHandleAdd_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname())
-        .thenReturn("org.broadleafcommerce.core.catalog.domain.Product");
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{"productDirectEdit"});
+    Entity entity = new Entity();
 
-    // Act
-    Boolean actualCanHandleAddResult = productCustomPersistenceHandler.canHandleAdd(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getCustomCriteria();
-    assertTrue(actualCanHandleAddResult);
+    // Act and Assert
+    assertTrue(productCustomPersistenceHandler
+        .canHandleAdd(new PersistencePackage("org.broadleafcommerce.core.catalog.domain.Product", entity,
+            new PersistencePerspective(), new String[]{"productDirectEdit"}, "ABC123")));
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
+   * Test {@link ProductCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
    * <ul>
    *   <li>When {@link PersistencePackage#PersistencePackage()}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleAdd(PersistencePackage)"})
   public void testCanHandleAdd_whenPersistencePackage_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertFalse(productCustomPersistenceHandler.canHandleAdd(new PersistencePackage()));
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
+   * Test {@link ProductCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"})
   public void testCanHandleUpdate() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
     Entity entity = new Entity();
 
     // Act and Assert
@@ -283,191 +196,87 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
+   * Test {@link ProductCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"})
   public void testCanHandleUpdate2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3990 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.ProductCustomPersistenceHandler productCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler2 = new ProductCustomPersistenceHandler();
+    Entity entity = new Entity();
 
-    // Act
-    productCustomPersistenceHandler2.canHandleUpdate(new PersistencePackage());
+    // Act and Assert
+    assertFalse(productCustomPersistenceHandler.canHandleUpdate(new PersistencePackage("Dr Jane Doe", entity,
+        new PersistencePerspective(), new String[]{"productDirectEdit"}, "ABC123")));
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
-   * <ul>
-   *   <li>Given array of {@link String} with {@code Custom Criteria}.</li>
-   * </ul>
+   * Test {@link ProductCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
    */
   @Test
-  public void testCanHandleUpdate_givenArrayOfStringWithCustomCriteria() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"})
+  public void testCanHandleUpdate3() {
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{"Custom Criteria"});
+    Entity entity = new Entity();
 
-    // Act
-    Boolean actualCanHandleUpdateResult = productCustomPersistenceHandler.canHandleUpdate(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getCustomCriteria();
-    assertFalse(actualCanHandleUpdateResult);
+    // Act and Assert
+    assertFalse(productCustomPersistenceHandler.canHandleUpdate(
+        new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(), new String[]{}, "ABC123")));
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
-   * <ul>
-   *   <li>Given array of {@link String} with {@code productDirectEdit}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
-   */
-  @Test
-  public void testCanHandleUpdate_givenArrayOfStringWithProductDirectEdit() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{"productDirectEdit"});
-
-    // Act
-    Boolean actualCanHandleUpdateResult = productCustomPersistenceHandler.canHandleUpdate(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getCustomCriteria();
-    assertFalse(actualCanHandleUpdateResult);
-  }
-
-  /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
-   * <ul>
-   *   <li>Given empty array of {@link String}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
-   */
-  @Test
-  public void testCanHandleUpdate_givenEmptyArrayOfString() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{});
-
-    // Act
-    Boolean actualCanHandleUpdateResult = productCustomPersistenceHandler.canHandleUpdate(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getCustomCriteria();
-    assertFalse(actualCanHandleUpdateResult);
-  }
-
-  /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
+   * Test {@link ProductCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
    * <ul>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"})
   public void testCanHandleUpdate_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname())
-        .thenReturn("org.broadleafcommerce.core.catalog.domain.Product");
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{"productDirectEdit"});
+    Entity entity = new Entity();
 
-    // Act
-    Boolean actualCanHandleUpdateResult = productCustomPersistenceHandler.canHandleUpdate(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getCustomCriteria();
-    assertTrue(actualCanHandleUpdateResult);
+    // Act and Assert
+    assertTrue(productCustomPersistenceHandler
+        .canHandleUpdate(new PersistencePackage("org.broadleafcommerce.core.catalog.domain.Product", entity,
+            new PersistencePerspective(), new String[]{"productDirectEdit"}, "ABC123")));
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
+   * Test {@link ProductCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
    * <ul>
    *   <li>When {@link PersistencePackage#PersistencePackage()}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"})
   public void testCanHandleUpdate_whenPersistencePackage_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertFalse(productCustomPersistenceHandler.canHandleUpdate(new PersistencePackage()));
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#canHandleRemove(PersistencePackage)}.
+   * Test {@link ProductCustomPersistenceHandler#canHandleRemove(PersistencePackage)}.
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#canHandleRemove(PersistencePackage)}
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleRemove(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleRemove(PersistencePackage)"})
   public void testCanHandleRemove() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
     Entity entity = new Entity();
 
     // Act and Assert
@@ -476,191 +285,87 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#canHandleRemove(PersistencePackage)}.
+   * Test {@link ProductCustomPersistenceHandler#canHandleRemove(PersistencePackage)}.
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#canHandleRemove(PersistencePackage)}
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleRemove(PersistencePackage)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleRemove(PersistencePackage)"})
   public void testCanHandleRemove2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3966 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.ProductCustomPersistenceHandler productCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler2 = new ProductCustomPersistenceHandler();
+    Entity entity = new Entity();
 
-    // Act
-    productCustomPersistenceHandler2.canHandleRemove(new PersistencePackage());
+    // Act and Assert
+    assertFalse(productCustomPersistenceHandler.canHandleRemove(new PersistencePackage("Dr Jane Doe", entity,
+        new PersistencePerspective(), new String[]{"productDirectEdit"}, "ABC123")));
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#canHandleRemove(PersistencePackage)}.
-   * <ul>
-   *   <li>Given array of {@link String} with {@code Custom Criteria}.</li>
-   * </ul>
+   * Test {@link ProductCustomPersistenceHandler#canHandleRemove(PersistencePackage)}.
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#canHandleRemove(PersistencePackage)}
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleRemove(PersistencePackage)}
    */
   @Test
-  public void testCanHandleRemove_givenArrayOfStringWithCustomCriteria() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleRemove(PersistencePackage)"})
+  public void testCanHandleRemove3() {
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{"Custom Criteria"});
+    Entity entity = new Entity();
 
-    // Act
-    Boolean actualCanHandleRemoveResult = productCustomPersistenceHandler.canHandleRemove(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getCustomCriteria();
-    assertFalse(actualCanHandleRemoveResult);
+    // Act and Assert
+    assertFalse(productCustomPersistenceHandler.canHandleRemove(
+        new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(), new String[]{}, "ABC123")));
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#canHandleRemove(PersistencePackage)}.
-   * <ul>
-   *   <li>Given array of {@link String} with {@code productDirectEdit}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#canHandleRemove(PersistencePackage)}
-   */
-  @Test
-  public void testCanHandleRemove_givenArrayOfStringWithProductDirectEdit() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{"productDirectEdit"});
-
-    // Act
-    Boolean actualCanHandleRemoveResult = productCustomPersistenceHandler.canHandleRemove(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getCustomCriteria();
-    assertFalse(actualCanHandleRemoveResult);
-  }
-
-  /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#canHandleRemove(PersistencePackage)}.
-   * <ul>
-   *   <li>Given empty array of {@link String}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#canHandleRemove(PersistencePackage)}
-   */
-  @Test
-  public void testCanHandleRemove_givenEmptyArrayOfString() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{});
-
-    // Act
-    Boolean actualCanHandleRemoveResult = productCustomPersistenceHandler.canHandleRemove(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getCustomCriteria();
-    assertFalse(actualCanHandleRemoveResult);
-  }
-
-  /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#canHandleRemove(PersistencePackage)}.
+   * Test {@link ProductCustomPersistenceHandler#canHandleRemove(PersistencePackage)}.
    * <ul>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#canHandleRemove(PersistencePackage)}
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleRemove(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleRemove(PersistencePackage)"})
   public void testCanHandleRemove_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname())
-        .thenReturn("org.broadleafcommerce.core.catalog.domain.Product");
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{"productDirectEdit"});
+    Entity entity = new Entity();
 
-    // Act
-    Boolean actualCanHandleRemoveResult = productCustomPersistenceHandler.canHandleRemove(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getCustomCriteria();
-    assertTrue(actualCanHandleRemoveResult);
+    // Act and Assert
+    assertTrue(productCustomPersistenceHandler
+        .canHandleRemove(new PersistencePackage("org.broadleafcommerce.core.catalog.domain.Product", entity,
+            new PersistencePerspective(), new String[]{"productDirectEdit"}, "ABC123")));
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#canHandleRemove(PersistencePackage)}.
+   * Test {@link ProductCustomPersistenceHandler#canHandleRemove(PersistencePackage)}.
    * <ul>
    *   <li>When {@link PersistencePackage#PersistencePackage()}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#canHandleRemove(PersistencePackage)}
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleRemove(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleRemove(PersistencePackage)"})
   public void testCanHandleRemove_whenPersistencePackage_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertFalse(productCustomPersistenceHandler.canHandleRemove(new PersistencePackage()));
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
+   * Test {@link ProductCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleFetch(PersistencePackage)"})
   public void testCanHandleFetch() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
     Entity entity = new Entity();
 
     // Act and Assert
@@ -669,196 +374,84 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
+   * Test {@link ProductCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleFetch(PersistencePackage)"})
   public void testCanHandleFetch2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3918 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.ProductCustomPersistenceHandler productCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler2 = new ProductCustomPersistenceHandler();
+    Entity entity = new Entity();
 
-    // Act
-    productCustomPersistenceHandler2.canHandleFetch(new PersistencePackage());
+    // Act and Assert
+    assertTrue(productCustomPersistenceHandler.canHandleFetch(new PersistencePackage("Dr Jane Doe", entity,
+        new PersistencePerspective(), new String[]{"upsaleProduct"}, "ABC123")));
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
-   * <ul>
-   *   <li>Given array of {@link String} with {@code Custom Criteria}.</li>
-   * </ul>
+   * Test {@link ProductCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
    */
   @Test
-  public void testCanHandleFetch_givenArrayOfStringWithCustomCriteria() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleFetch(PersistencePackage)"})
+  public void testCanHandleFetch3() {
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{"Custom Criteria"});
+    Entity entity = new Entity();
 
-    // Act
-    Boolean actualCanHandleFetchResult = productCustomPersistenceHandler.canHandleFetch(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage, atLeast(1)).getCustomCriteria();
-    assertFalse(actualCanHandleFetchResult);
+    // Act and Assert
+    assertFalse(productCustomPersistenceHandler.canHandleFetch(new PersistencePackage("Dr Jane Doe", entity,
+        new PersistencePerspective(), new String[]{"productDirectEdit"}, "ABC123")));
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
-   * <ul>
-   *   <li>Given array of {@link String} with {@code productDirectEdit}.</li>
-   * </ul>
+   * Test {@link ProductCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
    */
   @Test
-  public void testCanHandleFetch_givenArrayOfStringWithProductDirectEdit() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleFetch(PersistencePackage)"})
+  public void testCanHandleFetch4() {
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{"productDirectEdit"});
+    Entity entity = new Entity();
 
-    // Act
-    Boolean actualCanHandleFetchResult = productCustomPersistenceHandler.canHandleFetch(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage, atLeast(1)).getCustomCriteria();
-    assertFalse(actualCanHandleFetchResult);
+    // Act and Assert
+    assertFalse(productCustomPersistenceHandler.canHandleFetch(
+        new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(), new String[]{}, "ABC123")));
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
-   * <ul>
-   *   <li>Given array of {@link String} with {@code upsaleProduct}.</li>
-   * </ul>
+   * Test {@link ProductCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
    */
   @Test
-  public void testCanHandleFetch_givenArrayOfStringWithUpsaleProduct() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleFetch(PersistencePackage)"})
+  public void testCanHandleFetch5() {
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{"upsaleProduct"});
+    Entity entity = new Entity();
 
-    // Act
-    Boolean actualCanHandleFetchResult = productCustomPersistenceHandler.canHandleFetch(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getCustomCriteria();
-    assertTrue(actualCanHandleFetchResult);
+    // Act and Assert
+    assertTrue(productCustomPersistenceHandler
+        .canHandleFetch(new PersistencePackage("org.broadleafcommerce.core.catalog.domain.Product", entity,
+            new PersistencePerspective(), new String[]{"productDirectEdit"}, "ABC123")));
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
-   * <ul>
-   *   <li>Given empty array of {@link String}.</li>
-   * </ul>
+   * Test {@link ProductCustomPersistenceHandler#canHandleInspect(PersistencePackage)}.
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
    */
   @Test
-  public void testCanHandleFetch_givenEmptyArrayOfString() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{});
-
-    // Act
-    Boolean actualCanHandleFetchResult = productCustomPersistenceHandler.canHandleFetch(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage, atLeast(1)).getCustomCriteria();
-    assertFalse(actualCanHandleFetchResult);
-  }
-
-  /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
-   * <ul>
-   *   <li>Given {@code org.broadleafcommerce.core.catalog.domain.Product}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
-   */
-  @Test
-  public void testCanHandleFetch_givenOrgBroadleafcommerceCoreCatalogDomainProduct() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname())
-        .thenReturn("org.broadleafcommerce.core.catalog.domain.Product");
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{"productDirectEdit"});
-
-    // Act
-    Boolean actualCanHandleFetchResult = productCustomPersistenceHandler.canHandleFetch(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage, atLeast(1)).getCustomCriteria();
-    assertTrue(actualCanHandleFetchResult);
-  }
-
-  /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#canHandleInspect(PersistencePackage)}.
-   * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleInspect(PersistencePackage)"})
   public void testCanHandleInspect() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
     Entity entity = new Entity();
 
     // Act and Assert
@@ -867,306 +460,115 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#canHandleInspect(PersistencePackage)}.
+   * Test {@link ProductCustomPersistenceHandler#canHandleInspect(PersistencePackage)}.
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleInspect(PersistencePackage)"})
   public void testCanHandleInspect2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3942 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.ProductCustomPersistenceHandler productCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler2 = new ProductCustomPersistenceHandler();
+    Entity entity = new Entity();
 
-    // Act
-    productCustomPersistenceHandler2.canHandleInspect(new PersistencePackage());
+    // Act and Assert
+    assertFalse(productCustomPersistenceHandler.canHandleInspect(new PersistencePackage("Dr Jane Doe", entity,
+        new PersistencePerspective(), new String[]{"productDirectEdit"}, "ABC123")));
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#canHandleInspect(PersistencePackage)}.
-   * <ul>
-   *   <li>Given array of {@link String} with {@code Custom Criteria}.</li>
-   * </ul>
+   * Test {@link ProductCustomPersistenceHandler#canHandleInspect(PersistencePackage)}.
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
    */
   @Test
-  public void testCanHandleInspect_givenArrayOfStringWithCustomCriteria() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleInspect(PersistencePackage)"})
+  public void testCanHandleInspect3() {
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{"Custom Criteria"});
+    Entity entity = new Entity();
 
-    // Act
-    Boolean actualCanHandleInspectResult = productCustomPersistenceHandler.canHandleInspect(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getCustomCriteria();
-    assertFalse(actualCanHandleInspectResult);
+    // Act and Assert
+    assertFalse(productCustomPersistenceHandler.canHandleInspect(
+        new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(), new String[]{}, "ABC123")));
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#canHandleInspect(PersistencePackage)}.
-   * <ul>
-   *   <li>Given array of {@link String} with {@code productDirectEdit}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
-   */
-  @Test
-  public void testCanHandleInspect_givenArrayOfStringWithProductDirectEdit() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{"productDirectEdit"});
-
-    // Act
-    Boolean actualCanHandleInspectResult = productCustomPersistenceHandler.canHandleInspect(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getCustomCriteria();
-    assertFalse(actualCanHandleInspectResult);
-  }
-
-  /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#canHandleInspect(PersistencePackage)}.
-   * <ul>
-   *   <li>Given empty array of {@link String}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
-   */
-  @Test
-  public void testCanHandleInspect_givenEmptyArrayOfString() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{});
-
-    // Act
-    Boolean actualCanHandleInspectResult = productCustomPersistenceHandler.canHandleInspect(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getCustomCriteria();
-    assertFalse(actualCanHandleInspectResult);
-  }
-
-  /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#canHandleInspect(PersistencePackage)}.
+   * Test {@link ProductCustomPersistenceHandler#canHandleInspect(PersistencePackage)}.
    * <ul>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleInspect(PersistencePackage)"})
   public void testCanHandleInspect_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname())
-        .thenReturn("org.broadleafcommerce.core.catalog.domain.Product");
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{"productDirectEdit"});
+    Entity entity = new Entity();
 
-    // Act
-    Boolean actualCanHandleInspectResult = productCustomPersistenceHandler.canHandleInspect(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getCustomCriteria();
-    assertTrue(actualCanHandleInspectResult);
+    // Act and Assert
+    assertTrue(productCustomPersistenceHandler
+        .canHandleInspect(new PersistencePackage("org.broadleafcommerce.core.catalog.domain.Product", entity,
+            new PersistencePerspective(), new String[]{"productDirectEdit"}, "ABC123")));
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#canHandleInspect(PersistencePackage)}.
+   * Test {@link ProductCustomPersistenceHandler#canHandleInspect(PersistencePackage)}.
    * <ul>
    *   <li>When {@link PersistencePackage#PersistencePackage()}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleInspect(PersistencePackage)"})
   public void testCanHandleInspect_whenPersistencePackage_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertFalse(productCustomPersistenceHandler.canHandleInspect(new PersistencePackage()));
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao, InspectHelper)}.
-   * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao, InspectHelper)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testInspect() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4330 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.ProductCustomPersistenceHandler productCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler2 = new ProductCustomPersistenceHandler();
-    PersistencePackage persistencePackage = new PersistencePackage();
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    // Act
-    productCustomPersistenceHandler2.inspect(persistencePackage, dynamicEntityDao, new PersistenceManagerImpl());
-  }
-
-  /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
-   * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFetch() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4062 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.ProductCustomPersistenceHandler productCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler2 = new ProductCustomPersistenceHandler();
-    PersistencePackage persistencePackage = new PersistencePackage();
-    CriteriaTransferObject cto = new CriteriaTransferObject();
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    // Act
-    productCustomPersistenceHandler2.fetch(persistencePackage, cto, dynamicEntityDao,
-        new AdornedTargetListPersistenceModule());
-  }
-
-  /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
+   * Test {@link ProductCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
    * <ul>
-   *   <li>Then {@link CriteriaTransferObject} (default constructor)
-   * AdditionalFilterMappings size is one.</li>
+   *   <li>Given {@link ParentCategoryLegacyModeService} {@link ParentCategoryLegacyModeService#isLegacyMode()} return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   * Method under test: {@link ProductCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  public void testFetch_thenCriteriaTransferObjectAdditionalFilterMappingsSizeIsOne() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DynamicResultSet ProductCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"})
+  public void testFetch_givenParentCategoryLegacyModeServiceIsLegacyModeReturnFalse() throws ServiceException {
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
-    PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
-    when(persistencePerspective.getOperationTypes()).thenReturn(new OperationTypes());
+    when(parentCategoryLegacyModeService.isLegacyMode()).thenReturn(false);
+    Entity entity = new Entity();
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"Custom Criteria"}, "ABC123");
 
-    SectionCrumb sectionCrumb = new SectionCrumb();
-    sectionCrumb.setOriginalSectionIdentifier("42");
-    sectionCrumb.setSectionId("42");
-    sectionCrumb.setSectionIdentifier("42");
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getPersistencePerspective()).thenReturn(persistencePerspective);
-    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[]{sectionCrumb});
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{"upsaleProduct", "crossSaleProduct"});
     CriteriaTransferObject cto = new CriteriaTransferObject();
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
     AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = mock(
         AdornedTargetListPersistenceModule.class);
-    DynamicResultSet dynamicResultSet = new DynamicResultSet();
     when(adornedTargetListPersistenceModule.fetch(Mockito.<PersistencePackage>any(),
-        Mockito.<CriteriaTransferObject>any())).thenReturn(dynamicResultSet);
-    AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
+        Mockito.<CriteriaTransferObject>any())).thenReturn(new DynamicResultSet());
+    RecordHelper helper = mock(RecordHelper.class);
     when(helper.getCompatibleModule(Mockito.<OperationType>any())).thenReturn(adornedTargetListPersistenceModule);
 
     // Act
-    DynamicResultSet actualFetchResult = productCustomPersistenceHandler.fetch(persistencePackage, cto,
-        dynamicEntityDao, helper);
+    productCustomPersistenceHandler.fetch(persistencePackage, cto, dynamicEntityDao, helper);
 
     // Assert
-    verify(persistencePackage).getCustomCriteria();
-    verify(persistencePackage).getPersistencePerspective();
-    verify(persistencePackage).getSectionCrumbs();
-    verify(persistencePerspective).getOperationTypes();
+    verify(parentCategoryLegacyModeService).isLegacyMode();
     verify(adornedTargetListPersistenceModule).fetch(isA(PersistencePackage.class), isA(CriteriaTransferObject.class));
     verify(helper).getCompatibleModule(eq(OperationType.BASIC));
-    List<FilterMapping> additionalFilterMappings = cto.getAdditionalFilterMappings();
-    assertEquals(1, additionalFilterMappings.size());
-    FilterMapping getResult = additionalFilterMappings.get(0);
-    FieldPath fieldPath = getResult.getFieldPath();
-    assertEquals("id", fieldPath.getTargetProperty());
+    List<FilterMapping> nonCountAdditionalFilterMappings = cto.getNonCountAdditionalFilterMappings();
+    assertEquals(1, nonCountAdditionalFilterMappings.size());
+    FilterMapping getResult = nonCountAdditionalFilterMappings.get(0);
     assertNull(getResult.getInheritedFromClass());
     assertNull(getResult.getOrder());
     assertNull(getResult.getFullPropertyName());
@@ -1175,71 +577,120 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
     assertNull(fieldPathBuilder.getRestrictions());
     assertNull(fieldPathBuilder.getCriteria());
     assertNull(getResult.getSortDirection());
+    assertNull(getResult.getFieldPath());
     assertNull(restriction.getFilterValueConverter());
-    assertTrue(fieldPath.getAssociationPath().isEmpty());
-    assertTrue(fieldPath.getTargetPropertyPieces().isEmpty());
     assertTrue(getResult.getDirectFilterValues().isEmpty());
     assertTrue(getResult.getFilterValues().isEmpty());
     assertTrue(getResult.getNullsLast());
+  }
+
+  /**
+   * Test {@link ProductCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
+   * <ul>
+   *   <li>Then {@link CriteriaTransferObject} (default constructor) NonCountAdditionalFilterMappings Empty.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DynamicResultSet ProductCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"})
+  public void testFetch_thenCriteriaTransferObjectNonCountAdditionalFilterMappingsEmpty() throws ServiceException {
+    // Arrange
+    Entity entity = new Entity();
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"upsaleProduct"}, "ABC123");
+
+    CriteriaTransferObject cto = new CriteriaTransferObject();
+    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = mock(
+        AdornedTargetListPersistenceModule.class);
+    DynamicResultSet dynamicResultSet = new DynamicResultSet();
+    when(adornedTargetListPersistenceModule.fetch(Mockito.<PersistencePackage>any(),
+        Mockito.<CriteriaTransferObject>any())).thenReturn(dynamicResultSet);
+    RecordHelper helper = mock(RecordHelper.class);
+    when(helper.getCompatibleModule(Mockito.<OperationType>any())).thenReturn(adornedTargetListPersistenceModule);
+
+    // Act
+    DynamicResultSet actualFetchResult = productCustomPersistenceHandler.fetch(persistencePackage, cto,
+        dynamicEntityDao, helper);
+
+    // Assert
+    verify(adornedTargetListPersistenceModule).fetch(isA(PersistencePackage.class), isA(CriteriaTransferObject.class));
+    verify(helper).getCompatibleModule(eq(OperationType.BASIC));
+    assertTrue(cto.getNonCountAdditionalFilterMappings().isEmpty());
     assertSame(dynamicResultSet, actualFetchResult);
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
+   * Test {@link ProductCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
+   * <ul>
+   *   <li>Then {@link CriteriaTransferObject} (default constructor) NonCountAdditionalFilterMappings size is one.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
+   * Method under test: {@link ProductCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testAdd() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3841 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.ProductCustomPersistenceHandler productCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DynamicResultSet ProductCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"})
+  public void testFetch_thenCriteriaTransferObjectNonCountAdditionalFilterMappingsSizeIsOne() throws ServiceException {
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler2 = new ProductCustomPersistenceHandler();
-    PersistencePackage persistencePackage = new PersistencePackage();
+    when(parentCategoryLegacyModeService.isLegacyMode()).thenReturn(true);
+    Entity entity = new Entity();
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"Custom Criteria"}, "ABC123");
+
+    CriteriaTransferObject cto = new CriteriaTransferObject();
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = mock(
+        AdornedTargetListPersistenceModule.class);
+    when(adornedTargetListPersistenceModule.fetch(Mockito.<PersistencePackage>any(),
+        Mockito.<CriteriaTransferObject>any())).thenReturn(new DynamicResultSet());
+    RecordHelper helper = mock(RecordHelper.class);
+    when(helper.getCompatibleModule(Mockito.<OperationType>any())).thenReturn(adornedTargetListPersistenceModule);
 
     // Act
-    productCustomPersistenceHandler2.add(persistencePackage, dynamicEntityDao,
-        new AdornedTargetListPersistenceModule());
+    productCustomPersistenceHandler.fetch(persistencePackage, cto, dynamicEntityDao, helper);
+
+    // Assert
+    verify(parentCategoryLegacyModeService).isLegacyMode();
+    verify(adornedTargetListPersistenceModule).fetch(isA(PersistencePackage.class), isA(CriteriaTransferObject.class));
+    verify(helper).getCompatibleModule(eq(OperationType.BASIC));
+    List<FilterMapping> nonCountAdditionalFilterMappings = cto.getNonCountAdditionalFilterMappings();
+    assertEquals(1, nonCountAdditionalFilterMappings.size());
+    FilterMapping getResult = nonCountAdditionalFilterMappings.get(0);
+    assertNull(getResult.getInheritedFromClass());
+    assertNull(getResult.getOrder());
+    assertNull(getResult.getFullPropertyName());
+    Restriction restriction = getResult.getRestriction();
+    FieldPathBuilder fieldPathBuilder = restriction.getFieldPathBuilder();
+    assertNull(fieldPathBuilder.getRestrictions());
+    assertNull(fieldPathBuilder.getCriteria());
+    assertNull(getResult.getSortDirection());
+    assertNull(getResult.getFieldPath());
+    assertNull(restriction.getFilterValueConverter());
+    assertTrue(getResult.getDirectFilterValues().isEmpty());
+    assertTrue(getResult.getFilterValues().isEmpty());
+    assertTrue(getResult.getNullsLast());
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
+   * Test {@link ProductCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
    * <ul>
-   *   <li>Given {@link Entity} {@link Entity#getType()} return array of
-   * {@link String} with {@code Type}.</li>
+   *   <li>Given {@link Entity} {@link Entity#getType()} return array of {@link String} with {@code Type}.</li>
    *   <li>Then throw {@link ServiceException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
+   * Method under test: {@link ProductCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Entity ProductCustomPersistenceHandler.add(PersistencePackage, DynamicEntityDao, RecordHelper)"})
   public void testAdd_givenEntityGetTypeReturnArrayOfStringWithType_thenThrowServiceException()
       throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
     Entity entity = mock(Entity.class);
     when(entity.getType()).thenReturn(new String[]{"Type"});
 
@@ -1254,102 +705,194 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}.
+   * Test {@link ProductCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}.
+   * <ul>
+   *   <li>Given {@link Property} {@link Property#getValue()} return {@code 42}.</li>
+   *   <li>Then calls {@link Property#getValue()}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}
+   * Method under test: {@link ProductCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testUpdate() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4693 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.ProductCustomPersistenceHandler productCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Entity ProductCustomPersistenceHandler.update(PersistencePackage, DynamicEntityDao, RecordHelper)"})
+  public void testUpdate_givenPropertyGetValueReturn42_thenCallsGetValue() throws ServiceException {
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler2 = new ProductCustomPersistenceHandler();
-    PersistencePackage persistencePackage = new PersistencePackage();
+    Property property = mock(Property.class);
+    when(property.getValue()).thenReturn("42");
+    Entity entity = mock(Entity.class);
+    when(entity.getType()).thenReturn(new String[]{"Type"});
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"Unable to update entity for "}, "ABC123");
+
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
 
-    // Act
-    productCustomPersistenceHandler2.update(persistencePackage, dynamicEntityDao,
-        new AdornedTargetListPersistenceModule());
+    HashMap<String, FieldMetadata> stringFieldMetadataMap = new HashMap<>();
+    stringFieldMetadataMap.put("defaultCategory", new BasicFieldMetadata());
+    AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
+    when(helper.getPrimaryKey(Mockito.<Entity>any(), Mockito.<Map<String, FieldMetadata>>any()))
+        .thenReturn("Primary Key");
+    when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
+        .thenReturn(stringFieldMetadataMap);
+
+    // Act and Assert
+    assertThrows(ServiceException.class,
+        () -> productCustomPersistenceHandler.update(persistencePackage, dynamicEntityDao, helper));
+    verify(entity, atLeast(1)).findProperty(eq("defaultCategory"));
+    verify(entity, atLeast(1)).getType();
+    verify(property).getValue();
+    verify(helper).getPrimaryKey(isA(Entity.class), isA(Map.class));
+    verify(helper).getSimpleMergedProperties(eq("org.broadleafcommerce.core.catalog.domain.Product"),
+        isA(PersistencePerspective.class));
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#remove(PersistencePackage, DynamicEntityDao, RecordHelper)}.
+   * Test {@link ProductCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}.
+   * <ul>
+   *   <li>Given {@link Property} {@link Property#getValue()} return empty string.</li>
+   *   <li>Then calls {@link Property#getValue()}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#remove(PersistencePackage, DynamicEntityDao, RecordHelper)}
+   * Method under test: {@link ProductCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testRemove() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4413 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.ProductCustomPersistenceHandler productCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Entity ProductCustomPersistenceHandler.update(PersistencePackage, DynamicEntityDao, RecordHelper)"})
+  public void testUpdate_givenPropertyGetValueReturnEmptyString_thenCallsGetValue() throws ServiceException {
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler2 = new ProductCustomPersistenceHandler();
-    PersistencePackage persistencePackage = new PersistencePackage();
+    Property property = mock(Property.class);
+    when(property.getValue()).thenReturn("");
+    Entity entity = mock(Entity.class);
+    when(entity.getType()).thenReturn(new String[]{"Type"});
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"Unable to update entity for "}, "ABC123");
+
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
 
-    // Act
-    productCustomPersistenceHandler2.remove(persistencePackage, dynamicEntityDao,
-        new AdornedTargetListPersistenceModule());
+    HashMap<String, FieldMetadata> stringFieldMetadataMap = new HashMap<>();
+    stringFieldMetadataMap.put("defaultCategory", new BasicFieldMetadata());
+    AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
+    when(helper.getPrimaryKey(Mockito.<Entity>any(), Mockito.<Map<String, FieldMetadata>>any()))
+        .thenReturn("Primary Key");
+    when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
+        .thenReturn(stringFieldMetadataMap);
+
+    // Act and Assert
+    assertThrows(ServiceException.class,
+        () -> productCustomPersistenceHandler.update(persistencePackage, dynamicEntityDao, helper));
+    verify(entity, atLeast(1)).findProperty(eq("defaultCategory"));
+    verify(entity, atLeast(1)).getType();
+    verify(property).getValue();
+    verify(helper).getPrimaryKey(isA(Entity.class), isA(Map.class));
+    verify(helper).getSimpleMergedProperties(eq("org.broadleafcommerce.core.catalog.domain.Product"),
+        isA(PersistencePerspective.class));
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#remove(PersistencePackage, DynamicEntityDao, RecordHelper)}.
+   * Test {@link ProductCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}.
+   * <ul>
+   *   <li>Given {@link Property#Property(String, String)} with name is {@code defaultCategory} and value is {@code 42}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Entity ProductCustomPersistenceHandler.update(PersistencePackage, DynamicEntityDao, RecordHelper)"})
+  public void testUpdate_givenPropertyWithNameIsDefaultCategoryAndValueIs42() throws ServiceException {
+    // Arrange
+    Entity entity = mock(Entity.class);
+    when(entity.getType()).thenReturn(new String[]{"Type"});
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property("defaultCategory", "42"));
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"Unable to update entity for "}, "ABC123");
+
+    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+
+    HashMap<String, FieldMetadata> stringFieldMetadataMap = new HashMap<>();
+    stringFieldMetadataMap.put("defaultCategory", new BasicFieldMetadata());
+    AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
+    when(helper.getPrimaryKey(Mockito.<Entity>any(), Mockito.<Map<String, FieldMetadata>>any()))
+        .thenReturn("Primary Key");
+    when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
+        .thenReturn(stringFieldMetadataMap);
+
+    // Act and Assert
+    assertThrows(ServiceException.class,
+        () -> productCustomPersistenceHandler.update(persistencePackage, dynamicEntityDao, helper));
+    verify(entity, atLeast(1)).findProperty(eq("defaultCategory"));
+    verify(entity, atLeast(1)).getType();
+    verify(helper).getPrimaryKey(isA(Entity.class), isA(Map.class));
+    verify(helper).getSimpleMergedProperties(eq("org.broadleafcommerce.core.catalog.domain.Product"),
+        isA(PersistencePerspective.class));
+  }
+
+  /**
+   * Test {@link ProductCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}.
+   * <ul>
+   *   <li>Given {@link Property#Property()}.</li>
+   *   <li>When {@link Entity} {@link Entity#findProperty(String)} return {@link Property#Property()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Entity ProductCustomPersistenceHandler.update(PersistencePackage, DynamicEntityDao, RecordHelper)"})
+  public void testUpdate_givenProperty_whenEntityFindPropertyReturnProperty() throws ServiceException {
+    // Arrange
+    Entity entity = mock(Entity.class);
+    when(entity.getType()).thenReturn(new String[]{"Type"});
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property());
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"Unable to update entity for "}, "ABC123");
+
+    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+
+    HashMap<String, FieldMetadata> stringFieldMetadataMap = new HashMap<>();
+    stringFieldMetadataMap.put("defaultCategory", new BasicFieldMetadata());
+    AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
+    when(helper.getPrimaryKey(Mockito.<Entity>any(), Mockito.<Map<String, FieldMetadata>>any()))
+        .thenReturn("Primary Key");
+    when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
+        .thenReturn(stringFieldMetadataMap);
+
+    // Act and Assert
+    assertThrows(ServiceException.class,
+        () -> productCustomPersistenceHandler.update(persistencePackage, dynamicEntityDao, helper));
+    verify(entity, atLeast(1)).findProperty(eq("defaultCategory"));
+    verify(entity, atLeast(1)).getType();
+    verify(helper).getPrimaryKey(isA(Entity.class), isA(Map.class));
+    verify(helper).getSimpleMergedProperties(eq("org.broadleafcommerce.core.catalog.domain.Product"),
+        isA(PersistencePerspective.class));
+  }
+
+  /**
+   * Test {@link ProductCustomPersistenceHandler#remove(PersistencePackage, DynamicEntityDao, RecordHelper)}.
    * <ul>
    *   <li>Then throw {@link ServiceException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#remove(PersistencePackage, DynamicEntityDao, RecordHelper)}
+   * Method under test: {@link ProductCustomPersistenceHandler#remove(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProductCustomPersistenceHandler.remove(PersistencePackage, DynamicEntityDao, RecordHelper)"})
   public void testRemove_thenThrowServiceException() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
     Entity entity = mock(Entity.class);
     when(entity.getType()).thenReturn(new String[]{"Type"});
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getEntity()).thenReturn(entity);
-    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
+
+    PersistencePackage persistencePackage = new PersistencePackage();
+    persistencePackage.setEntity(entity);
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-    RecordHelper helper = mock(RecordHelper.class);
+    AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
     when(helper.getPrimaryKey(Mockito.<Entity>any(), Mockito.<Map<String, FieldMetadata>>any()))
         .thenReturn("Primary Key");
     when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
@@ -1359,219 +902,59 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
     assertThrows(ServiceException.class,
         () -> productCustomPersistenceHandler.remove(persistencePackage, dynamicEntityDao, helper));
     verify(entity, atLeast(1)).getType();
-    verify(persistencePackage).getEntity();
-    verify(persistencePackage).getPersistencePerspective();
     verify(helper).getPrimaryKey(isA(Entity.class), isA(Map.class));
-    verify(helper).getSimpleMergedProperties(eq("org.broadleafcommerce.core.catalog.domain.Product"),
-        isA(PersistencePerspective.class));
+    verify(helper).getSimpleMergedProperties(eq("org.broadleafcommerce.core.catalog.domain.Product"), isNull());
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#getAdminInstance(PersistencePackage, DynamicEntityDao, RecordHelper, Entity)}.
+   * Test {@link ProductCustomPersistenceHandler#removeProduct(PersistencePackage, Product, RecordHelper)}.
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#getAdminInstance(PersistencePackage, DynamicEntityDao, RecordHelper, Entity)}
+   * Method under test: {@link ProductCustomPersistenceHandler#removeProduct(PersistencePackage, Product, RecordHelper)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetAdminInstance() throws ClassNotFoundException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4131 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.ProductCustomPersistenceHandler productCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler2 = new ProductCustomPersistenceHandler();
-    PersistencePackage persistencePackage = new PersistencePackage();
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-    AdornedTargetListPersistenceModule helper = new AdornedTargetListPersistenceModule();
-
-    // Act
-    productCustomPersistenceHandler2.getAdminInstance(persistencePackage, dynamicEntityDao, helper, new Entity());
-  }
-
-  /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#removeProduct(PersistencePackage, Product, RecordHelper)}.
-   * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#removeProduct(PersistencePackage, Product, RecordHelper)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProductCustomPersistenceHandler.removeProduct(PersistencePackage, Product, RecordHelper)"})
   public void testRemoveProduct() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4584 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.ProductCustomPersistenceHandler productCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler2 = new ProductCustomPersistenceHandler();
+    doNothing().when(catalogService).removeProduct(Mockito.<Product>any());
     PersistencePackage persistencePackage = new PersistencePackage();
     ProductBundleImpl adminInstance = new ProductBundleImpl();
 
     // Act
-    productCustomPersistenceHandler2.removeProduct(persistencePackage, adminInstance,
+    productCustomPersistenceHandler.removeProduct(persistencePackage, adminInstance,
         new AdornedTargetListPersistenceModule());
-  }
 
-  /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#removeBundleFieldRestrictions(ProductBundle, Map, Entity)}.
-   * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#removeBundleFieldRestrictions(ProductBundle, Map, Entity)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testRemoveBundleFieldRestrictions() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4466 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.ProductCustomPersistenceHandler productCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler2 = new ProductCustomPersistenceHandler();
-    ProductBundleImpl adminInstance = new ProductBundleImpl();
-    HashMap<String, FieldMetadata> adminProperties = new HashMap<>();
-
-    // Act
-    productCustomPersistenceHandler2.removeBundleFieldRestrictions(adminInstance, adminProperties, new Entity());
+    // Assert
+    verify(catalogService).removeProduct(isA(Product.class));
   }
 
   /**
    * Test {@link ProductCustomPersistenceHandler#isDefaultCategoryLegacyMode()}.
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#isDefaultCategoryLegacyMode()}
+   * Method under test: {@link ProductCustomPersistenceHandler#isDefaultCategoryLegacyMode()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.isDefaultCategoryLegacyMode()"})
   public void testIsDefaultCategoryLegacyMode() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertFalse((new ProductCustomPersistenceHandler()).isDefaultCategoryLegacyMode());
+    assertFalse(productCustomPersistenceHandler.isDefaultCategoryLegacyMode());
   }
 
   /**
-   * Test {@link ProductCustomPersistenceHandler#isDefaultCategoryLegacyMode()}.
-   * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#isDefaultCategoryLegacyMode()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsDefaultCategoryLegacyMode2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4378 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.ProductCustomPersistenceHandler productCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new ProductCustomPersistenceHandler()).isDefaultCategoryLegacyMode();
-  }
-
-  /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#modifyParentCategoryMetadata(Map)}.
-   * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#modifyParentCategoryMetadata(Map)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testModifyParentCategoryMetadata() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4404 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.ProductCustomPersistenceHandler productCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler2 = new ProductCustomPersistenceHandler();
-
-    // Act
-    productCustomPersistenceHandler2.modifyParentCategoryMetadata(new HashMap<>());
-  }
-
-  /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#modifyParentCategoryMetadata(Map)}.
+   * Test {@link ProductCustomPersistenceHandler#modifyParentCategoryMetadata(Map)}.
    * <ul>
    *   <li>Given {@code defaultCategory}.</li>
    *   <li>Then {@link HashMap#HashMap()} size is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#modifyParentCategoryMetadata(Map)}
+   * Method under test: {@link ProductCustomPersistenceHandler#modifyParentCategoryMetadata(Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProductCustomPersistenceHandler.modifyParentCategoryMetadata(Map)"})
   public void testModifyParentCategoryMetadata_givenDefaultCategory_thenHashMapSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
-
     HashMap<String, FieldMetadata> md = new HashMap<>();
     md.put("defaultCategory", new BasicFieldMetadata());
     md.put("allParentCategoryXrefs", new AdornedTargetCollectionMetadata());
@@ -1587,215 +970,37 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#getExistingDefaultCategory(Product)}.
-   * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#getExistingDefaultCategory(Product)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetExistingDefaultCategory() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4237 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.ProductCustomPersistenceHandler productCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler2 = new ProductCustomPersistenceHandler();
-
-    // Act
-    productCustomPersistenceHandler2.getExistingDefaultCategory(new ProductBundleImpl());
-  }
-
-  /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#getExistingDefaultCategory(Product)}.
+   * Test {@link ProductCustomPersistenceHandler#getExistingDefaultCategory(Product)}.
    * <ul>
    *   <li>When {@link ProductBundleImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#getExistingDefaultCategory(Product)}
+   * Method under test: {@link ProductCustomPersistenceHandler#getExistingDefaultCategory(Product)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.core.catalog.domain.Category ProductCustomPersistenceHandler.getExistingDefaultCategory(Product)"})
   public void testGetExistingDefaultCategory_whenProductBundleImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertNull(productCustomPersistenceHandler.getExistingDefaultCategory(new ProductBundleImpl()));
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}.
-   * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}
-   */
-  @Test
-  public void testRemoveOldDefault() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
-    CategoryImpl categoryImpl = mock(CategoryImpl.class);
-    when(categoryImpl.isActive()).thenReturn(true);
-    CategoryProductXrefImpl categoryProductXrefImpl = mock(CategoryProductXrefImpl.class);
-    when(categoryProductXrefImpl.getDefaultReference()).thenReturn(true);
-    when(categoryProductXrefImpl.getCategory()).thenReturn(categoryImpl);
-
-    CategoryImpl categoryImpl2 = new CategoryImpl();
-    categoryImpl2
-        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    CategoryProductXref categoryProductXref = mock(CategoryProductXref.class);
-    when(categoryProductXref.getCategory()).thenReturn(categoryImpl2);
-
-    ArrayList<CategoryProductXref> categoryProductXrefList = new ArrayList<>();
-    categoryProductXrefList.add(categoryProductXref);
-    categoryProductXrefList.add(categoryProductXrefImpl);
-    ProductBundleImpl adminInstance = mock(ProductBundleImpl.class);
-    when(adminInstance.getAllParentCategoryXrefs()).thenReturn(categoryProductXrefList);
-
-    CategoryProductXrefImpl oldDefault = new CategoryProductXrefImpl();
-    oldDefault.setCategory(null);
-    Property property = mock(Property.class);
-    when(property.getValue()).thenReturn("42");
-    Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-
-    // Act
-    productCustomPersistenceHandler.removeOldDefault(adminInstance, oldDefault, entity);
-
-    // Assert
-    verify(categoryImpl).isActive();
-    verify(categoryProductXref).getCategory();
-    verify(categoryProductXrefImpl).getCategory();
-    verify(categoryProductXrefImpl, atLeast(1)).getDefaultReference();
-    verify(adminInstance, atLeast(1)).getAllParentCategoryXrefs();
-    verify(entity, atLeast(1)).findProperty(eq("defaultCategory"));
-    verify(property).getValue();
-  }
-
-  /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}.
-   * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testRemoveOldDefault2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4522 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.ProductCustomPersistenceHandler productCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler2 = new ProductCustomPersistenceHandler();
-    ProductBundleImpl adminInstance = new ProductBundleImpl();
-    CategoryProductXrefImpl oldDefault = new CategoryProductXrefImpl();
-
-    // Act
-    productCustomPersistenceHandler2.removeOldDefault(adminInstance, oldDefault, new Entity());
-  }
-
-  /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}.
+   * Test {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link CategoryProductXrefImpl}
-   * (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}
-   */
-  @Test
-  public void testRemoveOldDefault_givenArrayListAddCategoryProductXrefImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
-    CategoryImpl categoryImpl = mock(CategoryImpl.class);
-    when(categoryImpl.isActive()).thenReturn(true);
-    CategoryProductXrefImpl categoryProductXrefImpl = mock(CategoryProductXrefImpl.class);
-    when(categoryProductXrefImpl.getDefaultReference()).thenReturn(true);
-    when(categoryProductXrefImpl.getCategory()).thenReturn(categoryImpl);
-
-    ArrayList<CategoryProductXref> categoryProductXrefList = new ArrayList<>();
-    categoryProductXrefList.add(new CategoryProductXrefImpl());
-    categoryProductXrefList.add(categoryProductXrefImpl);
-    ProductBundleImpl adminInstance = mock(ProductBundleImpl.class);
-    when(adminInstance.getAllParentCategoryXrefs()).thenReturn(categoryProductXrefList);
-
-    CategoryProductXrefImpl oldDefault = new CategoryProductXrefImpl();
-    oldDefault.setCategory(null);
-    Property property = mock(Property.class);
-    when(property.getValue()).thenReturn("42");
-    Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-
-    // Act
-    productCustomPersistenceHandler.removeOldDefault(adminInstance, oldDefault, entity);
-
-    // Assert
-    verify(categoryImpl).isActive();
-    verify(categoryProductXrefImpl).getCategory();
-    verify(categoryProductXrefImpl, atLeast(1)).getDefaultReference();
-    verify(adminInstance, atLeast(1)).getAllParentCategoryXrefs();
-    verify(entity, atLeast(1)).findProperty(eq("defaultCategory"));
-    verify(property).getValue();
-  }
-
-  /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}.
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link CategoryProductXrefImpl}
-   * (default constructor).</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link CategoryProductXrefImpl} (default constructor).</li>
    *   <li>When {@link Entity} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}
+   * Method under test: {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProductCustomPersistenceHandler.removeOldDefault(Product, CategoryProductXref, Entity)"})
   public void testRemoveOldDefault_givenArrayListAddCategoryProductXrefImpl_whenEntity() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
-
     ArrayList<CategoryProductXref> categoryProductXrefList = new ArrayList<>();
     categoryProductXrefList.add(new CategoryProductXrefImpl());
     ProductBundleImpl adminInstance = mock(ProductBundleImpl.class);
@@ -1810,56 +1015,19 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}.
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then calls {@link Property#getValue()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}
-   */
-  @Test
-  public void testRemoveOldDefault_givenArrayList_thenCallsGetValue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
-    ProductBundleImpl adminInstance = mock(ProductBundleImpl.class);
-    when(adminInstance.getAllParentCategoryXrefs()).thenReturn(new ArrayList<>());
-    CategoryProductXrefImpl oldDefault = new CategoryProductXrefImpl();
-    Property property = mock(Property.class);
-    when(property.getValue()).thenReturn("42");
-    Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-
-    // Act
-    productCustomPersistenceHandler.removeOldDefault(adminInstance, oldDefault, entity);
-
-    // Assert
-    verify(adminInstance, atLeast(1)).getAllParentCategoryXrefs();
-    verify(entity, atLeast(1)).findProperty(eq("defaultCategory"));
-    verify(property).getValue();
-  }
-
-  /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}.
+   * Test {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}.
    * <ul>
    *   <li>Given {@link ArrayList#ArrayList()}.</li>
    *   <li>When {@link CategoryProductXref}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}
+   * Method under test: {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProductCustomPersistenceHandler.removeOldDefault(Product, CategoryProductXref, Entity)"})
   public void testRemoveOldDefault_givenArrayList_whenCategoryProductXref() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
     ProductBundleImpl adminInstance = mock(ProductBundleImpl.class);
     when(adminInstance.getAllParentCategoryXrefs()).thenReturn(new ArrayList<>());
     CategoryProductXref oldDefault = mock(CategoryProductXref.class);
@@ -1872,22 +1040,19 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}.
+   * Test {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}.
    * <ul>
    *   <li>Given {@link ArrayList#ArrayList()}.</li>
    *   <li>When {@link Entity} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}
+   * Method under test: {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProductCustomPersistenceHandler.removeOldDefault(Product, CategoryProductXref, Entity)"})
   public void testRemoveOldDefault_givenArrayList_whenEntity() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
     ProductBundleImpl adminInstance = mock(ProductBundleImpl.class);
     when(adminInstance.getAllParentCategoryXrefs()).thenReturn(new ArrayList<>());
     CategoryProductXrefImpl oldDefault = new CategoryProductXrefImpl();
@@ -1900,23 +1065,20 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}.
+   * Test {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}.
    * <ul>
    *   <li>Given {@link ArrayList#ArrayList()}.</li>
    *   <li>When {@code null}.</li>
    *   <li>Then calls {@link ProductImpl#getAllParentCategoryXrefs()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}
+   * Method under test: {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProductCustomPersistenceHandler.removeOldDefault(Product, CategoryProductXref, Entity)"})
   public void testRemoveOldDefault_givenArrayList_whenNull_thenCallsGetAllParentCategoryXrefs() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
     ProductBundleImpl adminInstance = mock(ProductBundleImpl.class);
     when(adminInstance.getAllParentCategoryXrefs()).thenReturn(new ArrayList<>());
 
@@ -1928,73 +1090,18 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}.
+   * Test {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}.
    * <ul>
-   *   <li>Given {@link CategoryImpl}.</li>
+   *   <li>Given {@link CategoryProductXrefImpl} {@link CategoryProductXrefImpl#getCategory()} return {@link CategoryImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}
+   * Method under test: {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}
    */
   @Test
-  public void testRemoveOldDefault_givenCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
-    CategoryImpl categoryImpl = mock(CategoryImpl.class);
-    when(categoryImpl.isActive()).thenReturn(true);
-    CategoryProductXrefImpl categoryProductXrefImpl = mock(CategoryProductXrefImpl.class);
-    when(categoryProductXrefImpl.getDefaultReference()).thenReturn(true);
-    when(categoryProductXrefImpl.getCategory()).thenReturn(categoryImpl);
-    CategoryProductXref categoryProductXref = mock(CategoryProductXref.class);
-    when(categoryProductXref.getCategory()).thenReturn(new CategoryImpl());
-
-    ArrayList<CategoryProductXref> categoryProductXrefList = new ArrayList<>();
-    categoryProductXrefList.add(categoryProductXref);
-    categoryProductXrefList.add(categoryProductXrefImpl);
-    ProductBundleImpl adminInstance = mock(ProductBundleImpl.class);
-    when(adminInstance.getAllParentCategoryXrefs()).thenReturn(categoryProductXrefList);
-
-    CategoryProductXrefImpl oldDefault = new CategoryProductXrefImpl();
-    oldDefault.setCategory(mock(CategoryImpl.class));
-    Property property = mock(Property.class);
-    when(property.getValue()).thenReturn("42");
-    Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-
-    // Act
-    productCustomPersistenceHandler.removeOldDefault(adminInstance, oldDefault, entity);
-
-    // Assert
-    verify(categoryImpl).isActive();
-    verify(categoryProductXref).getCategory();
-    verify(categoryProductXrefImpl).getCategory();
-    verify(categoryProductXrefImpl, atLeast(1)).getDefaultReference();
-    verify(adminInstance, atLeast(1)).getAllParentCategoryXrefs();
-    verify(entity, atLeast(1)).findProperty(eq("defaultCategory"));
-    verify(property).getValue();
-  }
-
-  /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}.
-   * <ul>
-   *   <li>Given {@link CategoryProductXrefImpl}
-   * {@link CategoryProductXrefImpl#getCategory()} return {@link CategoryImpl}
-   * (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProductCustomPersistenceHandler.removeOldDefault(Product, CategoryProductXref, Entity)"})
   public void testRemoveOldDefault_givenCategoryProductXrefImplGetCategoryReturnCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
     CategoryProductXrefImpl categoryProductXrefImpl = mock(CategoryProductXrefImpl.class);
     when(categoryProductXrefImpl.getCategory()).thenReturn(new CategoryImpl());
 
@@ -2019,23 +1126,18 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}.
+   * Test {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}.
    * <ul>
-   *   <li>Given {@link CategoryProductXrefImpl}
-   * {@link CategoryProductXrefImpl#getDefaultReference()} return
-   * {@code false}.</li>
+   *   <li>Given {@link CategoryProductXrefImpl} {@link CategoryProductXrefImpl#getDefaultReference()} return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}
+   * Method under test: {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProductCustomPersistenceHandler.removeOldDefault(Product, CategoryProductXref, Entity)"})
   public void testRemoveOldDefault_givenCategoryProductXrefImplGetDefaultReferenceReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
     CategoryImpl categoryImpl = mock(CategoryImpl.class);
     when(categoryImpl.isActive()).thenReturn(true);
     CategoryProductXrefImpl categoryProductXrefImpl = mock(CategoryProductXrefImpl.class);
@@ -2065,23 +1167,18 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}.
+   * Test {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}.
    * <ul>
-   *   <li>Given {@link CategoryProductXrefImpl}
-   * {@link CategoryProductXrefImpl#getDefaultReference()} return
-   * {@code null}.</li>
+   *   <li>Given {@link CategoryProductXrefImpl} {@link CategoryProductXrefImpl#getDefaultReference()} return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}
+   * Method under test: {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProductCustomPersistenceHandler.removeOldDefault(Product, CategoryProductXref, Entity)"})
   public void testRemoveOldDefault_givenCategoryProductXrefImplGetDefaultReferenceReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
     CategoryImpl categoryImpl = mock(CategoryImpl.class);
     when(categoryImpl.isActive()).thenReturn(true);
     CategoryProductXrefImpl categoryProductXrefImpl = mock(CategoryProductXrefImpl.class);
@@ -2111,23 +1208,18 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}.
+   * Test {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}.
    * <ul>
-   *   <li>Given {@link CategoryProductXrefImpl}
-   * {@link CategoryProductXrefImpl#getDefaultReference()} return
-   * {@code true}.</li>
+   *   <li>Given {@link CategoryProductXrefImpl} {@link CategoryProductXrefImpl#getDefaultReference()} return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}
+   * Method under test: {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProductCustomPersistenceHandler.removeOldDefault(Product, CategoryProductXref, Entity)"})
   public void testRemoveOldDefault_givenCategoryProductXrefImplGetDefaultReferenceReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
     CategoryImpl categoryImpl = mock(CategoryImpl.class);
     when(categoryImpl.isActive()).thenReturn(true);
     CategoryProductXrefImpl categoryProductXrefImpl = mock(CategoryProductXrefImpl.class);
@@ -2157,36 +1249,22 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}.
+   * Test {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}.
    * <ul>
-   *   <li>Given {@code null}.</li>
-   *   <li>When {@link CategoryProductXrefImpl} (default constructor) Category is
-   * {@code null}.</li>
+   *   <li>Given {@link Property} {@link Property#getValue()} return {@code 42}.</li>
+   *   <li>Then calls {@link Property#getValue()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}
+   * Method under test: {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}
    */
   @Test
-  public void testRemoveOldDefault_givenNull_whenCategoryProductXrefImplCategoryIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProductCustomPersistenceHandler.removeOldDefault(Product, CategoryProductXref, Entity)"})
+  public void testRemoveOldDefault_givenPropertyGetValueReturn42_thenCallsGetValue() {
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
-    CategoryImpl categoryImpl = mock(CategoryImpl.class);
-    when(categoryImpl.isActive()).thenReturn(true);
-    CategoryProductXrefImpl categoryProductXrefImpl = mock(CategoryProductXrefImpl.class);
-    when(categoryProductXrefImpl.getDefaultReference()).thenReturn(true);
-    when(categoryProductXrefImpl.getCategory()).thenReturn(categoryImpl);
-
-    ArrayList<CategoryProductXref> categoryProductXrefList = new ArrayList<>();
-    categoryProductXrefList.add(categoryProductXrefImpl);
     ProductBundleImpl adminInstance = mock(ProductBundleImpl.class);
-    when(adminInstance.getAllParentCategoryXrefs()).thenReturn(categoryProductXrefList);
-
+    when(adminInstance.getAllParentCategoryXrefs()).thenReturn(new ArrayList<>());
     CategoryProductXrefImpl oldDefault = new CategoryProductXrefImpl();
-    oldDefault.setCategory(null);
     Property property = mock(Property.class);
     when(property.getValue()).thenReturn("42");
     Entity entity = mock(Entity.class);
@@ -2196,81 +1274,27 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
     productCustomPersistenceHandler.removeOldDefault(adminInstance, oldDefault, entity);
 
     // Assert
-    verify(categoryImpl).isActive();
-    verify(categoryProductXrefImpl).getCategory();
-    verify(categoryProductXrefImpl, atLeast(1)).getDefaultReference();
     verify(adminInstance, atLeast(1)).getAllParentCategoryXrefs();
     verify(entity, atLeast(1)).findProperty(eq("defaultCategory"));
     verify(property).getValue();
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}.
+   * Test {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}.
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}
-   */
-  @Test
-  public void testRemoveOldDefault_givenProductBundleImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
-    CategoryImpl categoryImpl = mock(CategoryImpl.class);
-    when(categoryImpl.isActive()).thenReturn(true);
-    CategoryProductXrefImpl categoryProductXrefImpl = mock(CategoryProductXrefImpl.class);
-    when(categoryProductXrefImpl.getDefaultReference()).thenReturn(true);
-    when(categoryProductXrefImpl.getCategory()).thenReturn(categoryImpl);
-
-    ArrayList<CategoryProductXref> categoryProductXrefList = new ArrayList<>();
-    categoryProductXrefList.add(categoryProductXrefImpl);
-    ProductBundleImpl adminInstance = mock(ProductBundleImpl.class);
-    when(adminInstance.getAllParentCategoryXrefs()).thenReturn(categoryProductXrefList);
-
-    CategoryProductXrefImpl oldDefault = new CategoryProductXrefImpl();
-    oldDefault.setProduct(new ProductBundleImpl());
-    oldDefault.setCategory(null);
-    Property property = mock(Property.class);
-    when(property.getValue()).thenReturn("42");
-    Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-
-    // Act
-    productCustomPersistenceHandler.removeOldDefault(adminInstance, oldDefault, entity);
-
-    // Assert
-    verify(categoryImpl).isActive();
-    verify(categoryProductXrefImpl).getCategory();
-    verify(categoryProductXrefImpl, atLeast(1)).getDefaultReference();
-    verify(adminInstance, atLeast(1)).getAllParentCategoryXrefs();
-    verify(entity, atLeast(1)).findProperty(eq("defaultCategory"));
-    verify(property).getValue();
-  }
-
-  /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}.
-   * <ul>
-   *   <li>Given {@link Property} {@link Property#getValue()} return empty
-   * string.</li>
+   *   <li>Given {@link Property} {@link Property#getValue()} return empty string.</li>
    *   <li>Then calls {@link ProductImpl#setCategory(Category)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}
+   * Method under test: {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProductCustomPersistenceHandler.removeOldDefault(Product, CategoryProductXref, Entity)"})
   public void testRemoveOldDefault_givenPropertyGetValueReturnEmptyString_thenCallsSetCategory() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
     ProductBundleImpl adminInstance = mock(ProductBundleImpl.class);
-    doNothing().when(adminInstance).setCategory(Mockito.<Category>any());
+    doNothing().when(adminInstance).setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
     when(adminInstance.getAllParentCategoryXrefs()).thenReturn(new ArrayList<>());
     CategoryProductXrefImpl oldDefault = new CategoryProductXrefImpl();
     Property property = mock(Property.class);
@@ -2289,22 +1313,18 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}.
+   * Test {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}.
    * <ul>
-   *   <li>Given {@link Property#Property(String, String)} with name is
-   * {@code defaultCategory} and value is {@code 42}.</li>
+   *   <li>Given {@link Property#Property(String, String)} with name is {@code defaultCategory} and value is {@code 42}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}
+   * Method under test: {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProductCustomPersistenceHandler.removeOldDefault(Product, CategoryProductXref, Entity)"})
   public void testRemoveOldDefault_givenPropertyWithNameIsDefaultCategoryAndValueIs42() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
     ProductBundleImpl adminInstance = mock(ProductBundleImpl.class);
     when(adminInstance.getAllParentCategoryXrefs()).thenReturn(new ArrayList<>());
     CategoryProductXrefImpl oldDefault = new CategoryProductXrefImpl();
@@ -2320,25 +1340,21 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}.
+   * Test {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}.
    * <ul>
    *   <li>Given {@link Property#Property()}.</li>
-   *   <li>When {@link Entity} {@link Entity#findProperty(String)} return
-   * {@link Property#Property()}.</li>
+   *   <li>When {@link Entity} {@link Entity#findProperty(String)} return {@link Property#Property()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}
+   * Method under test: {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProductCustomPersistenceHandler.removeOldDefault(Product, CategoryProductXref, Entity)"})
   public void testRemoveOldDefault_givenProperty_whenEntityFindPropertyReturnProperty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
     ProductBundleImpl adminInstance = mock(ProductBundleImpl.class);
-    doNothing().when(adminInstance).setCategory(Mockito.<Category>any());
+    doNothing().when(adminInstance).setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
     when(adminInstance.getAllParentCategoryXrefs()).thenReturn(new ArrayList<>());
     CategoryProductXrefImpl oldDefault = new CategoryProductXrefImpl();
     Entity entity = mock(Entity.class);
@@ -2354,99 +1370,15 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}.
-   * <ul>
-   *   <li>Then calls {@link CategoryProductXref#getCategory()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}
-   */
-  @Test
-  public void testRemoveOldDefault_thenCallsGetCategory() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
-    CategoryImpl categoryImpl = mock(CategoryImpl.class);
-    when(categoryImpl.isActive()).thenReturn(true);
-    CategoryProductXrefImpl categoryProductXrefImpl = mock(CategoryProductXrefImpl.class);
-    when(categoryProductXrefImpl.getDefaultReference()).thenReturn(true);
-    when(categoryProductXrefImpl.getCategory()).thenReturn(categoryImpl);
-    CategoryProductXref categoryProductXref = mock(CategoryProductXref.class);
-    when(categoryProductXref.getCategory()).thenReturn(new CategoryImpl());
-
-    ArrayList<CategoryProductXref> categoryProductXrefList = new ArrayList<>();
-    categoryProductXrefList.add(categoryProductXref);
-    categoryProductXrefList.add(categoryProductXrefImpl);
-    ProductBundleImpl adminInstance = mock(ProductBundleImpl.class);
-    when(adminInstance.getAllParentCategoryXrefs()).thenReturn(categoryProductXrefList);
-
-    CategoryProductXrefImpl oldDefault = new CategoryProductXrefImpl();
-    oldDefault.setCategory(null);
-    Property property = mock(Property.class);
-    when(property.getValue()).thenReturn("42");
-    Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-
-    // Act
-    productCustomPersistenceHandler.removeOldDefault(adminInstance, oldDefault, entity);
-
-    // Assert
-    verify(categoryImpl).isActive();
-    verify(categoryProductXref).getCategory();
-    verify(categoryProductXrefImpl).getCategory();
-    verify(categoryProductXrefImpl, atLeast(1)).getDefaultReference();
-    verify(adminInstance, atLeast(1)).getAllParentCategoryXrefs();
-    verify(entity, atLeast(1)).findProperty(eq("defaultCategory"));
-    verify(property).getValue();
-  }
-
-  /**
-   * Test {@link ProductCustomPersistenceHandler#setupXref(Product)}.
-   * <p>
-   * Method under test: {@link ProductCustomPersistenceHandler#setupXref(Product)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetupXref() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4659 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.ProductCustomPersistenceHandler productCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler2 = new ProductCustomPersistenceHandler();
-
-    // Act
-    productCustomPersistenceHandler2.setupXref(new ProductBundleImpl());
-  }
-
-  /**
    * Test {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}.
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}
+   * Method under test: {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CategoryProductXref ProductCustomPersistenceHandler.getCurrentDefaultXref(Product)"})
   public void testGetCurrentDefaultXref() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
     CategoryProductXrefImpl categoryProductXrefImpl = mock(CategoryProductXrefImpl.class);
     when(categoryProductXrefImpl.getCategory()).thenReturn(new CategoryImpl());
 
@@ -2467,15 +1399,13 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
   /**
    * Test {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}.
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}
+   * Method under test: {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CategoryProductXref ProductCustomPersistenceHandler.getCurrentDefaultXref(Product)"})
   public void testGetCurrentDefaultXref2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
     CategoryImpl categoryImpl = mock(CategoryImpl.class);
     when(categoryImpl.isActive()).thenReturn(true);
     CategoryProductXrefImpl categoryProductXrefImpl = mock(CategoryProductXrefImpl.class);
@@ -2500,15 +1430,13 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
   /**
    * Test {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}.
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}
+   * Method under test: {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CategoryProductXref ProductCustomPersistenceHandler.getCurrentDefaultXref(Product)"})
   public void testGetCurrentDefaultXref3() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
     CategoryImpl categoryImpl = mock(CategoryImpl.class);
     when(categoryImpl.isActive()).thenReturn(true);
     CategoryProductXrefImpl categoryProductXrefImpl = mock(CategoryProductXrefImpl.class);
@@ -2534,15 +1462,13 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
   /**
    * Test {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}.
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}
+   * Method under test: {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CategoryProductXref ProductCustomPersistenceHandler.getCurrentDefaultXref(Product)"})
   public void testGetCurrentDefaultXref4() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
     CategoryImpl categoryImpl = mock(CategoryImpl.class);
     when(categoryImpl.isActive()).thenReturn(true);
     CategoryProductXrefImpl categoryProductXrefImpl = mock(CategoryProductXrefImpl.class);
@@ -2567,54 +1493,17 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}.
-   * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetCurrentDefaultXref5() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4203 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.ProductCustomPersistenceHandler productCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler2 = new ProductCustomPersistenceHandler();
-
-    // Act
-    productCustomPersistenceHandler2.getCurrentDefaultXref(new ProductBundleImpl());
-  }
-
-  /**
-   * Test {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link CategoryProductXrefImpl}
-   * (default constructor).</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link CategoryProductXrefImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}
+   * Method under test: {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CategoryProductXref ProductCustomPersistenceHandler.getCurrentDefaultXref(Product)"})
   public void testGetCurrentDefaultXref_givenArrayListAddCategoryProductXrefImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
-
     ArrayList<CategoryProductXref> categoryProductXrefList = new ArrayList<>();
     categoryProductXrefList.add(new CategoryProductXrefImpl());
     ProductBundleImpl product = mock(ProductBundleImpl.class);
@@ -2635,15 +1524,13 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}
+   * Method under test: {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CategoryProductXref ProductCustomPersistenceHandler.getCurrentDefaultXref(Product)"})
   public void testGetCurrentDefaultXref_givenArrayList_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getAllParentCategoryXrefs()).thenReturn(new ArrayList<>());
 
@@ -2662,33 +1549,29 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}
+   * Method under test: {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CategoryProductXref ProductCustomPersistenceHandler.getCurrentDefaultXref(Product)"})
   public void testGetCurrentDefaultXref_whenProductBundleImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertNull(productCustomPersistenceHandler.getCurrentDefaultXref(new ProductBundleImpl()));
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#isRecursiveProductSelection(PersistencePackage)}.
+   * Test {@link ProductCustomPersistenceHandler#isRecursiveProductSelection(PersistencePackage)}.
+   * <ul>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#isRecursiveProductSelection(PersistencePackage)}
+   * Method under test: {@link ProductCustomPersistenceHandler#isRecursiveProductSelection(PersistencePackage)}
    */
   @Test
-  public void testIsRecursiveProductSelection() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ProductCustomPersistenceHandler.isRecursiveProductSelection(PersistencePackage)"})
+  public void testIsRecursiveProductSelection_thenReturnFalse() {
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
     Entity entity = new Entity();
 
     // Act and Assert
@@ -2697,111 +1580,40 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#isRecursiveProductSelection(PersistencePackage)}.
-   * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#isRecursiveProductSelection(PersistencePackage)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsRecursiveProductSelection2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4380 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.ProductCustomPersistenceHandler productCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler2 = new ProductCustomPersistenceHandler();
-
-    // Act
-    productCustomPersistenceHandler2.isRecursiveProductSelection(new PersistencePackage());
-  }
-
-  /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#isRecursiveProductSelection(PersistencePackage)}.
-   * <ul>
-   *   <li>Given array of {@link String} with {@code Custom Criteria}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#isRecursiveProductSelection(PersistencePackage)}
-   */
-  @Test
-  public void testIsRecursiveProductSelection_givenArrayOfStringWithCustomCriteria() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{"Custom Criteria"});
-
-    // Act
-    boolean actualIsRecursiveProductSelectionResult = productCustomPersistenceHandler
-        .isRecursiveProductSelection(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getCustomCriteria();
-    assertFalse(actualIsRecursiveProductSelectionResult);
-  }
-
-  /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#isRecursiveProductSelection(PersistencePackage)}.
+   * Test {@link ProductCustomPersistenceHandler#isRecursiveProductSelection(PersistencePackage)}.
    * <ul>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#isRecursiveProductSelection(PersistencePackage)}
+   * Method under test: {@link ProductCustomPersistenceHandler#isRecursiveProductSelection(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ProductCustomPersistenceHandler.isRecursiveProductSelection(PersistencePackage)"})
   public void testIsRecursiveProductSelection_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{"upsaleProduct"});
+    Entity entity = new Entity();
 
-    // Act
-    boolean actualIsRecursiveProductSelectionResult = productCustomPersistenceHandler
-        .isRecursiveProductSelection(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getCustomCriteria();
-    assertTrue(actualIsRecursiveProductSelectionResult);
+    // Act and Assert
+    assertTrue(productCustomPersistenceHandler.isRecursiveProductSelection(new PersistencePackage("Dr Jane Doe", entity,
+        new PersistencePerspective(), new String[]{"upsaleProduct"}, "ABC123")));
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#createFilterMappingForProperty(String, PredicateProvider)}.
+   * Test {@link ProductCustomPersistenceHandler#createFilterMappingForProperty(String, PredicateProvider)}.
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#createFilterMappingForProperty(String, PredicateProvider)}
+   * Method under test: {@link ProductCustomPersistenceHandler#createFilterMappingForProperty(String, PredicateProvider)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FilterMapping ProductCustomPersistenceHandler.createFilterMappingForProperty(String, PredicateProvider)"})
   public void testCreateFilterMappingForProperty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    PredicateProvider predicateProvider = mock(PredicateProvider.class);
+    PredicateProvider<Object, Object> predicateProvider = mock(PredicateProvider.class);
 
     // Act
-    FilterMapping actualCreateFilterMappingForPropertyResult = (new ProductCustomPersistenceHandler())
+    FilterMapping actualCreateFilterMappingForPropertyResult = productCustomPersistenceHandler
         .createFilterMappingForProperty("Target Property Name", predicateProvider);
 
     // Assert
@@ -2810,11 +1622,8 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
     assertNull(actualCreateFilterMappingForPropertyResult.getInheritedFromClass());
     assertNull(actualCreateFilterMappingForPropertyResult.getOrder());
     assertNull(actualCreateFilterMappingForPropertyResult.getFullPropertyName());
-    Restriction restriction = actualCreateFilterMappingForPropertyResult.getRestriction();
-    FieldPathBuilder fieldPathBuilder = restriction.getFieldPathBuilder();
-    assertNull(fieldPathBuilder.getRestrictions());
-    assertNull(fieldPathBuilder.getCriteria());
     assertNull(actualCreateFilterMappingForPropertyResult.getSortDirection());
+    Restriction restriction = actualCreateFilterMappingForPropertyResult.getRestriction();
     assertNull(restriction.getFilterValueConverter());
     assertTrue(fieldPath.getAssociationPath().isEmpty());
     assertTrue(fieldPath.getTargetPropertyPieces().isEmpty());
@@ -2825,90 +1634,19 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#createFilterMappingForProperty(String, PredicateProvider)}.
-   * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#createFilterMappingForProperty(String, PredicateProvider)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateFilterMappingForProperty2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4014 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.ProductCustomPersistenceHandler productCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new ProductCustomPersistenceHandler()).createFilterMappingForProperty("Target Property Name",
-        mock(PredicateProvider.class));
-  }
-
-  /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#getFilteredDynamicResultSet(PersistencePackage, CriteriaTransferObject, RecordHelper)}.
-   * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#getFilteredDynamicResultSet(PersistencePackage, CriteriaTransferObject, RecordHelper)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetFilteredDynamicResultSet() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4271 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.ProductCustomPersistenceHandler productCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler2 = new ProductCustomPersistenceHandler();
-    PersistencePackage persistencePackage = new PersistencePackage();
-    CriteriaTransferObject cto = new CriteriaTransferObject();
-
-    // Act
-    productCustomPersistenceHandler2.getFilteredDynamicResultSet(persistencePackage, cto,
-        new AdornedTargetListPersistenceModule());
-  }
-
-  /**
-   * Test
-   * {@link ProductCustomPersistenceHandler#getFilteredDynamicResultSet(PersistencePackage, CriteriaTransferObject, RecordHelper)}.
+   * Test {@link ProductCustomPersistenceHandler#getFilteredDynamicResultSet(PersistencePackage, CriteriaTransferObject, RecordHelper)}.
    * <ul>
    *   <li>Then return {@link DynamicResultSet#DynamicResultSet()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductCustomPersistenceHandler#getFilteredDynamicResultSet(PersistencePackage, CriteriaTransferObject, RecordHelper)}
+   * Method under test: {@link ProductCustomPersistenceHandler#getFilteredDynamicResultSet(PersistencePackage, CriteriaTransferObject, RecordHelper)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DynamicResultSet ProductCustomPersistenceHandler.getFilteredDynamicResultSet(PersistencePackage, CriteriaTransferObject, RecordHelper)"})
   public void testGetFilteredDynamicResultSet_thenReturnDynamicResultSet() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler = new ProductCustomPersistenceHandler();
     PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
     when(persistencePerspective.getOperationTypes()).thenReturn(new OperationTypes());
 
@@ -2920,7 +1658,7 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
     DynamicResultSet dynamicResultSet = new DynamicResultSet();
     when(adornedTargetListPersistenceModule.fetch(Mockito.<PersistencePackage>any(),
         Mockito.<CriteriaTransferObject>any())).thenReturn(dynamicResultSet);
-    RecordHelper helper = mock(RecordHelper.class);
+    AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
     when(helper.getCompatibleModule(Mockito.<OperationType>any())).thenReturn(adornedTargetListPersistenceModule);
 
     // Act

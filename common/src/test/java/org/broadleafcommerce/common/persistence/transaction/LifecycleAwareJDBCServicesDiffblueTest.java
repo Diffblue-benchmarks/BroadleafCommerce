@@ -18,40 +18,20 @@
 package org.broadleafcommerce.common.persistence.transaction;
 
 import static org.junit.Assert.assertNull;
-import org.junit.Ignore;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class LifecycleAwareJDBCServicesDiffblueTest {
   /**
-   * Test {@link LifecycleAwareJDBCServices#getSqlStatementLogger()}.
-   * <ul>
-   *   <li>Given {@link LifecycleAwareJDBCServices} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link LifecycleAwareJDBCServices#getSqlStatementLogger()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetSqlStatementLogger_givenLifecycleAwareJDBCServices() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.broadleafcommerce.common.persistence.transaction.LifecycleAwareJDBCServices.getSqlStatementLogger(LifecycleAwareJDBCServices.java:36)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange and Act
-    (new LifecycleAwareJDBCServices()).getSqlStatementLogger();
-  }
-
-  /**
    * Test new {@link LifecycleAwareJDBCServices} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link LifecycleAwareJDBCServices}
+   * Method under test: default or parameterless constructor of {@link LifecycleAwareJDBCServices}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void LifecycleAwareJDBCServices.<init>()"})
   public void testNewLifecycleAwareJDBCServices() {
     // Arrange and Act
     LifecycleAwareJDBCServices actualLifecycleAwareJDBCServices = new LifecycleAwareJDBCServices();

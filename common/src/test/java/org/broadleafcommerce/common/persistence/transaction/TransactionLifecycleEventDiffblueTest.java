@@ -19,21 +19,22 @@ package org.broadleafcommerce.common.persistence.transaction;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.util.BLCFieldUtils;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class TransactionLifecycleEventDiffblueTest {
   /**
-   * Test
-   * {@link TransactionLifecycleEvent#TransactionLifecycleEvent(Object, TransactionLifecycle, Throwable, Object[])}.
+   * Test {@link TransactionLifecycleEvent#TransactionLifecycleEvent(Object, TransactionLifecycle, Throwable, Object[])}.
    * <p>
-   * Method under test:
-   * {@link TransactionLifecycleEvent#TransactionLifecycleEvent(Object, TransactionLifecycle, Throwable, Object[])}
+   * Method under test: {@link TransactionLifecycleEvent#TransactionLifecycleEvent(Object, TransactionLifecycle, Throwable, Object[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TransactionLifecycleEvent.<init>(Object, TransactionLifecycle, Throwable, Object[])"})
   public void testNewTransactionLifecycleEvent() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Object object = BLCFieldUtils.NULL_FIELD;
     Throwable e = new Throwable();
@@ -61,6 +62,10 @@ public class TransactionLifecycleEventDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Throwable TransactionLifecycleEvent.getException()",
+      "TransactionLifecycle TransactionLifecycleEvent.getLifecycle()",
+      "Object[] TransactionLifecycleEvent.getParams()"})
   public void testGettersAndSetters() {
     // Arrange
     TransactionLifecycleEvent transactionLifecycleEvent = new TransactionLifecycleEvent(BLCFieldUtils.NULL_FIELD,

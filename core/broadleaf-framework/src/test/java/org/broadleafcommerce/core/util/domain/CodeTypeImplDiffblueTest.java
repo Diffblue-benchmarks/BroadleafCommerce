@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.util.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -5,103 +22,72 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import org.junit.Ignore;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class CodeTypeImplDiffblueTest {
   @Autowired
   private CodeTypeImpl codeTypeImpl;
 
   /**
    * Test {@link CodeTypeImpl#isModifiable()}.
-   * <p>
-   * Method under test: {@link CodeTypeImpl#isModifiable()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsModifiable() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.util.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1792 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.util.domain.CodeTypeImpl codeTypeImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CodeTypeImpl()).isModifiable();
-  }
-
-  /**
-   * Test {@link CodeTypeImpl#isModifiable()}.
    * <ul>
-   *   <li>Given {@link CodeTypeImpl} (default constructor) Modifiable is
-   * {@code false}.</li>
+   *   <li>Given {@link CodeTypeImpl} (default constructor) Modifiable is {@code false}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CodeTypeImpl#isModifiable()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean CodeTypeImpl.isModifiable()"})
   public void testIsModifiable_givenCodeTypeImplModifiableIsFalse_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CodeTypeImpl codeTypeImpl = new CodeTypeImpl();
-    codeTypeImpl.setCodeType("Code Type");
-    codeTypeImpl.setDescription("The characteristics of someone or something");
-    codeTypeImpl.setId(CodeTypeImpl.serialVersionUID);
-    codeTypeImpl.setKey("Key");
-    codeTypeImpl.setModifiable(false);
+    CodeTypeImpl codeTypeImpl2 = new CodeTypeImpl();
+    codeTypeImpl2.setCodeType("Code Type");
+    codeTypeImpl2.setDescription("The characteristics of someone or something");
+    codeTypeImpl2.setId(CodeTypeImpl.serialVersionUID);
+    codeTypeImpl2.setKey("Key");
+    codeTypeImpl2.setModifiable(false);
 
     // Act and Assert
-    assertFalse(codeTypeImpl.isModifiable());
+    assertFalse(codeTypeImpl2.isModifiable());
   }
 
   /**
    * Test {@link CodeTypeImpl#isModifiable()}.
    * <ul>
-   *   <li>Given {@link CodeTypeImpl} (default constructor) Modifiable is
-   * {@code true}.</li>
+   *   <li>Given {@link CodeTypeImpl} (default constructor) Modifiable is {@code true}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CodeTypeImpl#isModifiable()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean CodeTypeImpl.isModifiable()"})
   public void testIsModifiable_givenCodeTypeImplModifiableIsTrue_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CodeTypeImpl codeTypeImpl = new CodeTypeImpl();
-    codeTypeImpl.setCodeType("Code Type");
-    codeTypeImpl.setDescription("The characteristics of someone or something");
-    codeTypeImpl.setId(CodeTypeImpl.serialVersionUID);
-    codeTypeImpl.setKey("Key");
-    codeTypeImpl.setModifiable(true);
+    CodeTypeImpl codeTypeImpl2 = new CodeTypeImpl();
+    codeTypeImpl2.setCodeType("Code Type");
+    codeTypeImpl2.setDescription("The characteristics of someone or something");
+    codeTypeImpl2.setId(CodeTypeImpl.serialVersionUID);
+    codeTypeImpl2.setKey("Key");
+    codeTypeImpl2.setModifiable(true);
 
     // Act and Assert
-    assertTrue(codeTypeImpl.isModifiable());
+    assertTrue(codeTypeImpl2.isModifiable());
   }
 
   /**
@@ -114,92 +100,61 @@ public class CodeTypeImplDiffblueTest {
    * Method under test: {@link CodeTypeImpl#isModifiable()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean CodeTypeImpl.isModifiable()"})
   public void testIsModifiable_givenCodeTypeImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new CodeTypeImpl()).isModifiable());
   }
 
   /**
    * Test {@link CodeTypeImpl#getModifiable()}.
-   * <p>
-   * Method under test: {@link CodeTypeImpl#getModifiable()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetModifiable() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.util.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1785 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.util.domain.CodeTypeImpl codeTypeImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CodeTypeImpl()).getModifiable();
-  }
-
-  /**
-   * Test {@link CodeTypeImpl#getModifiable()}.
    * <ul>
-   *   <li>Given {@link CodeTypeImpl} (default constructor) Modifiable is
-   * {@code false}.</li>
+   *   <li>Given {@link CodeTypeImpl} (default constructor) Modifiable is {@code false}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CodeTypeImpl#getModifiable()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean CodeTypeImpl.getModifiable()"})
   public void testGetModifiable_givenCodeTypeImplModifiableIsFalse_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CodeTypeImpl codeTypeImpl = new CodeTypeImpl();
-    codeTypeImpl.setCodeType("Code Type");
-    codeTypeImpl.setDescription("The characteristics of someone or something");
-    codeTypeImpl.setId(CodeTypeImpl.serialVersionUID);
-    codeTypeImpl.setKey("Key");
-    codeTypeImpl.setModifiable(false);
+    CodeTypeImpl codeTypeImpl2 = new CodeTypeImpl();
+    codeTypeImpl2.setCodeType("Code Type");
+    codeTypeImpl2.setDescription("The characteristics of someone or something");
+    codeTypeImpl2.setId(CodeTypeImpl.serialVersionUID);
+    codeTypeImpl2.setKey("Key");
+    codeTypeImpl2.setModifiable(false);
 
     // Act and Assert
-    assertFalse(codeTypeImpl.getModifiable());
+    assertFalse(codeTypeImpl2.getModifiable());
   }
 
   /**
    * Test {@link CodeTypeImpl#getModifiable()}.
    * <ul>
-   *   <li>Given {@link CodeTypeImpl} (default constructor) Modifiable is
-   * {@code true}.</li>
+   *   <li>Given {@link CodeTypeImpl} (default constructor) Modifiable is {@code true}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CodeTypeImpl#getModifiable()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean CodeTypeImpl.getModifiable()"})
   public void testGetModifiable_givenCodeTypeImplModifiableIsTrue_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CodeTypeImpl codeTypeImpl = new CodeTypeImpl();
-    codeTypeImpl.setCodeType("Code Type");
-    codeTypeImpl.setDescription("The characteristics of someone or something");
-    codeTypeImpl.setId(CodeTypeImpl.serialVersionUID);
-    codeTypeImpl.setKey("Key");
-    codeTypeImpl.setModifiable(true);
+    CodeTypeImpl codeTypeImpl2 = new CodeTypeImpl();
+    codeTypeImpl2.setCodeType("Code Type");
+    codeTypeImpl2.setDescription("The characteristics of someone or something");
+    codeTypeImpl2.setId(CodeTypeImpl.serialVersionUID);
+    codeTypeImpl2.setKey("Key");
+    codeTypeImpl2.setModifiable(true);
 
     // Act and Assert
-    assertTrue(codeTypeImpl.getModifiable());
+    assertTrue(codeTypeImpl2.getModifiable());
   }
 
   /**
@@ -212,124 +167,91 @@ public class CodeTypeImplDiffblueTest {
    * Method under test: {@link CodeTypeImpl#getModifiable()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean CodeTypeImpl.getModifiable()"})
   public void testGetModifiable_givenCodeTypeImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new CodeTypeImpl()).getModifiable());
   }
 
   /**
    * Test {@link CodeTypeImpl#setModifiable(Boolean)}.
-   * <p>
-   * Method under test: {@link CodeTypeImpl#setModifiable(Boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetModifiable() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.util.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1799 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.util.domain.CodeTypeImpl codeTypeImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CodeTypeImpl()).setModifiable(true);
-  }
-
-  /**
-   * Test {@link CodeTypeImpl#setModifiable(Boolean)}.
    * <ul>
-   *   <li>Then {@link CodeTypeImpl} (default constructor) Modifiable is
-   * {@code null}.</li>
+   *   <li>Then {@link CodeTypeImpl} (default constructor) Modifiable is {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CodeTypeImpl#setModifiable(Boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CodeTypeImpl.setModifiable(Boolean)"})
   public void testSetModifiable_thenCodeTypeImplModifiableIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CodeTypeImpl codeTypeImpl = new CodeTypeImpl();
-    codeTypeImpl.setCodeType("Code Type");
-    codeTypeImpl.setDescription("The characteristics of someone or something");
-    codeTypeImpl.setId(CodeTypeImpl.serialVersionUID);
-    codeTypeImpl.setKey("Key");
-    codeTypeImpl.setModifiable(true);
+    CodeTypeImpl codeTypeImpl2 = new CodeTypeImpl();
+    codeTypeImpl2.setCodeType("Code Type");
+    codeTypeImpl2.setDescription("The characteristics of someone or something");
+    codeTypeImpl2.setId(CodeTypeImpl.serialVersionUID);
+    codeTypeImpl2.setKey("Key");
+    codeTypeImpl2.setModifiable(true);
 
     // Act
-    codeTypeImpl.setModifiable(null);
+    codeTypeImpl2.setModifiable(null);
 
     // Assert
-    assertNull(codeTypeImpl.getModifiable());
-    assertNull(codeTypeImpl.modifiable);
+    assertNull(codeTypeImpl2.getModifiable());
+    assertNull(codeTypeImpl2.modifiable);
   }
 
   /**
    * Test {@link CodeTypeImpl#setModifiable(Boolean)}.
    * <ul>
    *   <li>When {@code false}.</li>
-   *   <li>Then {@link CodeTypeImpl} (default constructor)
-   * {@link CodeTypeImpl#modifiable} charValue is {@code N}.</li>
+   *   <li>Then {@link CodeTypeImpl} (default constructor) {@link CodeTypeImpl#modifiable} charValue is {@code N}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CodeTypeImpl#setModifiable(Boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CodeTypeImpl.setModifiable(Boolean)"})
   public void testSetModifiable_whenFalse_thenCodeTypeImplModifiableCharValueIsN() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CodeTypeImpl codeTypeImpl = new CodeTypeImpl();
+    CodeTypeImpl codeTypeImpl2 = new CodeTypeImpl();
 
     // Act
-    codeTypeImpl.setModifiable(false);
+    codeTypeImpl2.setModifiable(false);
 
     // Assert
-    assertEquals('N', codeTypeImpl.modifiable.charValue());
-    assertFalse(codeTypeImpl.getModifiable());
+    assertEquals('N', codeTypeImpl2.modifiable.charValue());
+    assertFalse(codeTypeImpl2.getModifiable());
   }
 
   /**
    * Test {@link CodeTypeImpl#setModifiable(Boolean)}.
    * <ul>
    *   <li>When {@code true}.</li>
-   *   <li>Then {@link CodeTypeImpl} (default constructor)
-   * {@link CodeTypeImpl#modifiable} charValue is {@code Y}.</li>
+   *   <li>Then {@link CodeTypeImpl} (default constructor) {@link CodeTypeImpl#modifiable} charValue is {@code Y}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CodeTypeImpl#setModifiable(Boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CodeTypeImpl.setModifiable(Boolean)"})
   public void testSetModifiable_whenTrue_thenCodeTypeImplModifiableCharValueIsY() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CodeTypeImpl codeTypeImpl = new CodeTypeImpl();
+    CodeTypeImpl codeTypeImpl2 = new CodeTypeImpl();
 
     // Act
-    codeTypeImpl.setModifiable(true);
+    codeTypeImpl2.setModifiable(true);
 
     // Assert
-    assertEquals('Y', codeTypeImpl.modifiable.charValue());
-    assertTrue(codeTypeImpl.getModifiable());
+    assertEquals('Y', codeTypeImpl2.modifiable.charValue());
+    assertTrue(codeTypeImpl2.getModifiable());
   }
 
   /**
-   * Test {@link CodeTypeImpl#equals(Object)}, and
-   * {@link CodeTypeImpl#hashCode()}.
+   * Test {@link CodeTypeImpl#equals(Object)}, and {@link CodeTypeImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -342,6 +264,8 @@ public class CodeTypeImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CodeTypeImpl.equals(Object)", "int CodeTypeImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     CodeTypeImpl codeTypeImpl = new CodeTypeImpl();
@@ -365,8 +289,7 @@ public class CodeTypeImplDiffblueTest {
   }
 
   /**
-   * Test {@link CodeTypeImpl#equals(Object)}, and
-   * {@link CodeTypeImpl#hashCode()}.
+   * Test {@link CodeTypeImpl#equals(Object)}, and {@link CodeTypeImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -379,6 +302,8 @@ public class CodeTypeImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CodeTypeImpl.equals(Object)", "int CodeTypeImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     CodeTypeImpl codeTypeImpl = new CodeTypeImpl();
@@ -402,8 +327,7 @@ public class CodeTypeImplDiffblueTest {
   }
 
   /**
-   * Test {@link CodeTypeImpl#equals(Object)}, and
-   * {@link CodeTypeImpl#hashCode()}.
+   * Test {@link CodeTypeImpl#equals(Object)}, and {@link CodeTypeImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -416,6 +340,8 @@ public class CodeTypeImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CodeTypeImpl.equals(Object)", "int CodeTypeImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     CodeTypeImpl codeTypeImpl = new CodeTypeImpl();
@@ -439,8 +365,7 @@ public class CodeTypeImplDiffblueTest {
   }
 
   /**
-   * Test {@link CodeTypeImpl#equals(Object)}, and
-   * {@link CodeTypeImpl#hashCode()}.
+   * Test {@link CodeTypeImpl#equals(Object)}, and {@link CodeTypeImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -453,6 +378,8 @@ public class CodeTypeImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CodeTypeImpl.equals(Object)", "int CodeTypeImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
     // Arrange
     CodeTypeImpl codeTypeImpl = new CodeTypeImpl();
@@ -476,8 +403,7 @@ public class CodeTypeImplDiffblueTest {
   }
 
   /**
-   * Test {@link CodeTypeImpl#equals(Object)}, and
-   * {@link CodeTypeImpl#hashCode()}.
+   * Test {@link CodeTypeImpl#equals(Object)}, and {@link CodeTypeImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -490,6 +416,8 @@ public class CodeTypeImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CodeTypeImpl.equals(Object)", "int CodeTypeImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual5() {
     // Arrange
     CodeTypeImpl codeTypeImpl = new CodeTypeImpl();
@@ -513,8 +441,45 @@ public class CodeTypeImplDiffblueTest {
   }
 
   /**
-   * Test {@link CodeTypeImpl#equals(Object)}, and
-   * {@link CodeTypeImpl#hashCode()}.
+   * Test {@link CodeTypeImpl#equals(Object)}, and {@link CodeTypeImpl#hashCode()}.
+   * <ul>
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
+   * </ul>
+   * <p>
+   * Methods under test:
+   * <ul>
+   *   <li>{@link CodeTypeImpl#equals(Object)}
+   *   <li>{@link CodeTypeImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CodeTypeImpl.equals(Object)", "int CodeTypeImpl.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual6() {
+    // Arrange
+    CodeTypeImpl codeTypeImpl = new CodeTypeImpl();
+    codeTypeImpl.setCodeType("Code Type");
+    codeTypeImpl.setDescription("The characteristics of someone or something");
+    codeTypeImpl.setId(CodeTypeImpl.serialVersionUID);
+    codeTypeImpl.setKey("Key");
+    codeTypeImpl.setModifiable(null);
+
+    CodeTypeImpl codeTypeImpl2 = new CodeTypeImpl();
+    codeTypeImpl2.setCodeType("Code Type");
+    codeTypeImpl2.setDescription("The characteristics of someone or something");
+    codeTypeImpl2.setId(CodeTypeImpl.serialVersionUID);
+    codeTypeImpl2.setKey("Key");
+    codeTypeImpl2.setModifiable(null);
+
+    // Act and Assert
+    assertEquals(codeTypeImpl, codeTypeImpl2);
+    int expectedHashCodeResult = codeTypeImpl.hashCode();
+    assertEquals(expectedHashCodeResult, codeTypeImpl2.hashCode());
+  }
+
+  /**
+   * Test {@link CodeTypeImpl#equals(Object)}, and {@link CodeTypeImpl#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -527,6 +492,8 @@ public class CodeTypeImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CodeTypeImpl.equals(Object)", "int CodeTypeImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     CodeTypeImpl codeTypeImpl = new CodeTypeImpl();
@@ -552,6 +519,8 @@ public class CodeTypeImplDiffblueTest {
    * Method under test: {@link CodeTypeImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CodeTypeImpl.equals(Object)", "int CodeTypeImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     CodeTypeImpl codeTypeImpl = new CodeTypeImpl();
@@ -582,6 +551,8 @@ public class CodeTypeImplDiffblueTest {
    * Method under test: {@link CodeTypeImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CodeTypeImpl.equals(Object)", "int CodeTypeImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     CodeTypeImpl codeTypeImpl = new CodeTypeImpl();
@@ -612,6 +583,8 @@ public class CodeTypeImplDiffblueTest {
    * Method under test: {@link CodeTypeImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CodeTypeImpl.equals(Object)", "int CodeTypeImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     CodeTypeImpl codeTypeImpl = new CodeTypeImpl();
@@ -642,6 +615,8 @@ public class CodeTypeImplDiffblueTest {
    * Method under test: {@link CodeTypeImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CodeTypeImpl.equals(Object)", "int CodeTypeImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     CodeTypeImpl codeTypeImpl = new CodeTypeImpl();
@@ -672,6 +647,8 @@ public class CodeTypeImplDiffblueTest {
    * Method under test: {@link CodeTypeImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CodeTypeImpl.equals(Object)", "int CodeTypeImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
     CodeTypeImpl codeTypeImpl = new CodeTypeImpl();
@@ -702,6 +679,8 @@ public class CodeTypeImplDiffblueTest {
    * Method under test: {@link CodeTypeImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CodeTypeImpl.equals(Object)", "int CodeTypeImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
     CodeTypeImpl codeTypeImpl = new CodeTypeImpl();
@@ -732,6 +711,8 @@ public class CodeTypeImplDiffblueTest {
    * Method under test: {@link CodeTypeImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CodeTypeImpl.equals(Object)", "int CodeTypeImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
     // Arrange
     CodeTypeImpl codeTypeImpl = new CodeTypeImpl();
@@ -762,6 +743,8 @@ public class CodeTypeImplDiffblueTest {
    * Method under test: {@link CodeTypeImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CodeTypeImpl.equals(Object)", "int CodeTypeImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual8() {
     // Arrange
     CodeTypeImpl codeTypeImpl = new CodeTypeImpl();
@@ -792,6 +775,8 @@ public class CodeTypeImplDiffblueTest {
    * Method under test: {@link CodeTypeImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CodeTypeImpl.equals(Object)", "int CodeTypeImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual9() {
     // Arrange
     CodeTypeImpl codeTypeImpl = new CodeTypeImpl();
@@ -822,6 +807,8 @@ public class CodeTypeImplDiffblueTest {
    * Method under test: {@link CodeTypeImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CodeTypeImpl.equals(Object)", "int CodeTypeImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual10() {
     // Arrange
     CodeTypeImpl codeTypeImpl = new CodeTypeImpl();
@@ -852,6 +839,8 @@ public class CodeTypeImplDiffblueTest {
    * Method under test: {@link CodeTypeImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CodeTypeImpl.equals(Object)", "int CodeTypeImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     CodeTypeImpl codeTypeImpl = new CodeTypeImpl();
@@ -875,6 +864,8 @@ public class CodeTypeImplDiffblueTest {
    * Method under test: {@link CodeTypeImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CodeTypeImpl.equals(Object)", "int CodeTypeImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     CodeTypeImpl codeTypeImpl = new CodeTypeImpl();
@@ -905,6 +896,11 @@ public class CodeTypeImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CodeTypeImpl.<init>()", "String CodeTypeImpl.getCodeType()",
+      "String CodeTypeImpl.getDescription()", "Long CodeTypeImpl.getId()", "String CodeTypeImpl.getKey()",
+      "void CodeTypeImpl.setCodeType(String)", "void CodeTypeImpl.setDescription(String)",
+      "void CodeTypeImpl.setId(Long)", "void CodeTypeImpl.setKey(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     CodeTypeImpl actualCodeTypeImpl = new CodeTypeImpl();
@@ -916,7 +912,7 @@ public class CodeTypeImplDiffblueTest {
     String actualDescription = actualCodeTypeImpl.getDescription();
     Long actualId = actualCodeTypeImpl.getId();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Code Type", actualCodeType);
     assertEquals("Key", actualCodeTypeImpl.getKey());
     assertEquals("The characteristics of someone or something", actualDescription);

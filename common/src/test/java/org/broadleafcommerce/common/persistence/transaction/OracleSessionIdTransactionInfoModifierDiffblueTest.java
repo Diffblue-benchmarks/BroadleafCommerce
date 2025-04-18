@@ -22,12 +22,15 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.engine.spi.SessionDelegatorBaseImpl;
 import org.hibernate.jdbc.ReturningWork;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.mockito.Mockito;
 
 public class OracleSessionIdTransactionInfoModifierDiffblueTest {
@@ -35,14 +38,14 @@ public class OracleSessionIdTransactionInfoModifierDiffblueTest {
    * Test {@link OracleSessionIdTransactionInfoModifier#modify(TransactionInfo)}.
    * <ul>
    *   <li>Given {@code null}.</li>
-   *   <li>When {@link TransactionInfo} {@link TransactionInfo#getEntityManager()}
-   * return {@code null}.</li>
+   *   <li>When {@link TransactionInfo} {@link TransactionInfo#getEntityManager()} return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OracleSessionIdTransactionInfoModifier#modify(TransactionInfo)}
+   * Method under test: {@link OracleSessionIdTransactionInfoModifier#modify(TransactionInfo)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OracleSessionIdTransactionInfoModifier.modify(TransactionInfo)"})
   public void testModify_givenNull_whenTransactionInfoGetEntityManagerReturnNull() {
     // Arrange
     OracleSessionIdTransactionInfoModifier oracleSessionIdTransactionInfoModifier = new OracleSessionIdTransactionInfoModifier();
@@ -59,15 +62,14 @@ public class OracleSessionIdTransactionInfoModifierDiffblueTest {
   /**
    * Test {@link OracleSessionIdTransactionInfoModifier#modify(TransactionInfo)}.
    * <ul>
-   *   <li>Given {@link SessionDelegatorBaseImpl}
-   * {@link SessionDelegatorBaseImpl#doReturningWork(ReturningWork)} return
-   * {@code null}.</li>
+   *   <li>Given {@link SessionDelegatorBaseImpl} {@link SessionDelegatorBaseImpl#doReturningWork(ReturningWork)} return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OracleSessionIdTransactionInfoModifier#modify(TransactionInfo)}
+   * Method under test: {@link OracleSessionIdTransactionInfoModifier#modify(TransactionInfo)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OracleSessionIdTransactionInfoModifier.modify(TransactionInfo)"})
   public void testModify_givenSessionDelegatorBaseImplDoReturningWorkReturnNull() throws HibernateException {
     // Arrange
     OracleSessionIdTransactionInfoModifier oracleSessionIdTransactionInfoModifier = new OracleSessionIdTransactionInfoModifier();
@@ -92,15 +94,14 @@ public class OracleSessionIdTransactionInfoModifierDiffblueTest {
   /**
    * Test {@link OracleSessionIdTransactionInfoModifier#modify(TransactionInfo)}.
    * <ul>
-   *   <li>Given {@link SessionDelegatorBaseImpl}
-   * {@link SessionDelegatorBaseImpl#doReturningWork(ReturningWork)} return
-   * one.</li>
+   *   <li>Given {@link SessionDelegatorBaseImpl} {@link SessionDelegatorBaseImpl#doReturningWork(ReturningWork)} return one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OracleSessionIdTransactionInfoModifier#modify(TransactionInfo)}
+   * Method under test: {@link OracleSessionIdTransactionInfoModifier#modify(TransactionInfo)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OracleSessionIdTransactionInfoModifier.modify(TransactionInfo)"})
   public void testModify_givenSessionDelegatorBaseImplDoReturningWorkReturnOne() throws HibernateException {
     // Arrange
     OracleSessionIdTransactionInfoModifier oracleSessionIdTransactionInfoModifier = new OracleSessionIdTransactionInfoModifier();
@@ -127,12 +128,14 @@ public class OracleSessionIdTransactionInfoModifierDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>default or parameterless constructor of
-   * {@link OracleSessionIdTransactionInfoModifier}
+   *   <li>default or parameterless constructor of {@link OracleSessionIdTransactionInfoModifier}
    *   <li>{@link OracleSessionIdTransactionInfoModifier#getOrder()}
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OracleSessionIdTransactionInfoModifier.<init>()",
+      "int OracleSessionIdTransactionInfoModifier.getOrder()"})
   public void testGettersAndSetters() {
     // Arrange, Act and Assert
     assertEquals(0, (new OracleSessionIdTransactionInfoModifier()).getOrder());

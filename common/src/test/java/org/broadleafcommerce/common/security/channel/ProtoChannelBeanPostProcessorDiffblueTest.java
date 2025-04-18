@@ -21,12 +21,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.xerces.impl.dv.util.ByteListImpl;
 import org.broadleafcommerce.common.util.BLCFieldUtils;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,13 +42,13 @@ public class ProtoChannelBeanPostProcessorDiffblueTest {
   private ProtoChannelBeanPostProcessor protoChannelBeanPostProcessor;
 
   /**
-   * Test
-   * {@link ProtoChannelBeanPostProcessor#postProcessAfterInitialization(Object, String)}.
+   * Test {@link ProtoChannelBeanPostProcessor#postProcessAfterInitialization(Object, String)}.
    * <p>
-   * Method under test:
-   * {@link ProtoChannelBeanPostProcessor#postProcessAfterInitialization(Object, String)}
+   * Method under test: {@link ProtoChannelBeanPostProcessor#postProcessAfterInitialization(Object, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object ProtoChannelBeanPostProcessor.postProcessAfterInitialization(Object, String)"})
   public void testPostProcessAfterInitialization() throws BeansException {
     // Arrange
     Object object = BLCFieldUtils.NULL_FIELD;
@@ -57,38 +58,17 @@ public class ProtoChannelBeanPostProcessorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ProtoChannelBeanPostProcessor#postProcessBeforeInitialization(Object, String)}.
+   * Test {@link ProtoChannelBeanPostProcessor#postProcessBeforeInitialization(Object, String)}.
    * <ul>
-   *   <li>When {@link ByteListImpl}.</li>
-   *   <li>Then return {@link ByteListImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link ProtoChannelBeanPostProcessor#postProcessBeforeInitialization(Object, String)}
-   */
-  @Test
-  public void testPostProcessBeforeInitialization_whenByteListImpl_thenReturnByteListImpl() throws BeansException {
-    // Arrange
-    ByteListImpl byteListImpl = mock(ByteListImpl.class);
-
-    // Act and Assert
-    assertSame(byteListImpl, protoChannelBeanPostProcessor.postProcessBeforeInitialization(byteListImpl, "Bean Name"));
-  }
-
-  /**
-   * Test
-   * {@link ProtoChannelBeanPostProcessor#postProcessBeforeInitialization(Object, String)}.
-   * <ul>
-   *   <li>When {@link BLCFieldUtils#NULL_FIELD}.</li>
    *   <li>Then return {@link BLCFieldUtils#NULL_FIELD}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProtoChannelBeanPostProcessor#postProcessBeforeInitialization(Object, String)}
+   * Method under test: {@link ProtoChannelBeanPostProcessor#postProcessBeforeInitialization(Object, String)}
    */
   @Test
-  public void testPostProcessBeforeInitialization_whenNull_field_thenReturnNull_field() throws BeansException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object ProtoChannelBeanPostProcessor.postProcessBeforeInitialization(Object, String)"})
+  public void testPostProcessBeforeInitialization_thenReturnNull_field() throws BeansException {
     // Arrange
     Object object = BLCFieldUtils.NULL_FIELD;
 
@@ -102,6 +82,8 @@ public class ProtoChannelBeanPostProcessorDiffblueTest {
    * Method under test: {@link ProtoChannelBeanPostProcessor#getOrder()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int ProtoChannelBeanPostProcessor.getOrder()"})
   public void testGetOrder() {
     // Arrange, Act and Assert
     assertEquals(9999, (new ProtoChannelBeanPostProcessor()).getOrder());
@@ -117,6 +99,9 @@ public class ProtoChannelBeanPostProcessorDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List ProtoChannelBeanPostProcessor.getChannelProcessorOverrides()",
+      "void ProtoChannelBeanPostProcessor.setChannelProcessorOverrides(List)"})
   public void testGettersAndSetters() {
     // Arrange
     ProtoChannelBeanPostProcessor protoChannelBeanPostProcessor = new ProtoChannelBeanPostProcessor();
@@ -127,7 +112,7 @@ public class ProtoChannelBeanPostProcessorDiffblueTest {
     List<ChannelProcessor> actualChannelProcessorOverrides = protoChannelBeanPostProcessor
         .getChannelProcessorOverrides();
 
-    // Assert that nothing has changed
+    // Assert
     assertTrue(actualChannelProcessorOverrides.isEmpty());
     assertSame(channelProcessorOverrides, actualChannelProcessorOverrides);
   }
@@ -135,10 +120,11 @@ public class ProtoChannelBeanPostProcessorDiffblueTest {
   /**
    * Test new {@link ProtoChannelBeanPostProcessor} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link ProtoChannelBeanPostProcessor}
+   * Method under test: default or parameterless constructor of {@link ProtoChannelBeanPostProcessor}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProtoChannelBeanPostProcessor.<init>()"})
   public void testNewProtoChannelBeanPostProcessor() {
     // Arrange and Act
     ProtoChannelBeanPostProcessor actualProtoChannelBeanPostProcessor = new ProtoChannelBeanPostProcessor();

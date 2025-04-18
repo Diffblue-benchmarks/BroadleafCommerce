@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.order.service.legacy;
 
 import static org.junit.Assert.assertEquals;
@@ -6,6 +23,19 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.anyBoolean;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -20,15 +50,16 @@ import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.core.catalog.dao.CategoryDao;
 import org.broadleafcommerce.core.catalog.dao.ProductDao;
 import org.broadleafcommerce.core.catalog.dao.SkuDao;
-import org.broadleafcommerce.core.catalog.domain.Category;
 import org.broadleafcommerce.core.catalog.domain.CategoryImpl;
 import org.broadleafcommerce.core.catalog.domain.Product;
 import org.broadleafcommerce.core.catalog.domain.ProductBundleImpl;
+import org.broadleafcommerce.core.catalog.domain.ProductImpl;
 import org.broadleafcommerce.core.catalog.domain.Sku;
 import org.broadleafcommerce.core.catalog.domain.SkuImpl;
 import org.broadleafcommerce.core.offer.dao.OfferDao;
+import org.broadleafcommerce.core.offer.domain.CandidateFulfillmentGroupOffer;
+import org.broadleafcommerce.core.offer.domain.FulfillmentGroupAdjustment;
 import org.broadleafcommerce.core.offer.service.OfferService;
-import org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager;
 import org.broadleafcommerce.core.order.dao.FulfillmentGroupDao;
 import org.broadleafcommerce.core.order.dao.FulfillmentGroupDaoImpl;
 import org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao;
@@ -41,7 +72,11 @@ import org.broadleafcommerce.core.order.domain.BundleOrderItemImpl;
 import org.broadleafcommerce.core.order.domain.DiscreteOrderItem;
 import org.broadleafcommerce.core.order.domain.DiscreteOrderItemImpl;
 import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
+import org.broadleafcommerce.core.order.domain.FulfillmentGroupFee;
 import org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl;
+import org.broadleafcommerce.core.order.domain.FulfillmentGroupItem;
+import org.broadleafcommerce.core.order.domain.FulfillmentGroupItemImpl;
+import org.broadleafcommerce.core.order.domain.FulfillmentOption;
 import org.broadleafcommerce.core.order.domain.FulfillmentOptionImpl;
 import org.broadleafcommerce.core.order.domain.GiftWrapOrderItemImpl;
 import org.broadleafcommerce.core.order.domain.NullOrderFactory;
@@ -49,26 +84,29 @@ import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.domain.OrderImpl;
 import org.broadleafcommerce.core.order.domain.OrderItem;
+import org.broadleafcommerce.core.order.domain.OrderItemImpl;
+import org.broadleafcommerce.core.order.domain.PersonalMessage;
 import org.broadleafcommerce.core.order.domain.PersonalMessageImpl;
+import org.broadleafcommerce.core.order.domain.TaxDetail;
 import org.broadleafcommerce.core.order.service.FulfillmentGroupService;
 import org.broadleafcommerce.core.order.service.MergeCartService;
 import org.broadleafcommerce.core.order.service.OrderItemService;
 import org.broadleafcommerce.core.order.service.OrderItemServiceImpl;
 import org.broadleafcommerce.core.order.service.OrderMultishipOptionService;
-import org.broadleafcommerce.core.order.service.OrderServiceExtensionManager;
 import org.broadleafcommerce.core.order.service.call.BundleOrderItemRequest;
+import org.broadleafcommerce.core.order.service.call.ConfigurableOrderItemRequest;
 import org.broadleafcommerce.core.order.service.call.DiscreteOrderItemRequest;
 import org.broadleafcommerce.core.order.service.call.FulfillmentGroupRequest;
-import org.broadleafcommerce.core.order.service.call.GiftWrapOrderItemRequest;
 import org.broadleafcommerce.core.order.service.call.OrderItemRequestDTO;
 import org.broadleafcommerce.core.order.service.exception.ItemNotFoundException;
+import org.broadleafcommerce.core.order.service.exception.RequiredAttributeNotProvidedException;
+import org.broadleafcommerce.core.order.service.type.FulfillmentGroupStatusType;
 import org.broadleafcommerce.core.order.service.type.FulfillmentType;
 import org.broadleafcommerce.core.order.service.type.OrderItemType;
 import org.broadleafcommerce.core.order.service.type.OrderStatus;
 import org.broadleafcommerce.core.payment.dao.OrderPaymentDao;
 import org.broadleafcommerce.core.payment.dao.OrderPaymentDaoImpl;
 import org.broadleafcommerce.core.payment.domain.OrderPayment;
-import org.broadleafcommerce.core.payment.domain.OrderPaymentImpl;
 import org.broadleafcommerce.core.payment.service.SecureOrderPaymentService;
 import org.broadleafcommerce.core.pricing.service.PricingService;
 import org.broadleafcommerce.core.pricing.service.exception.PricingException;
@@ -77,245 +115,354 @@ import org.broadleafcommerce.profile.core.domain.Address;
 import org.broadleafcommerce.profile.core.domain.AddressImpl;
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
+import org.broadleafcommerce.profile.core.domain.Phone;
 import org.broadleafcommerce.profile.core.domain.PhoneImpl;
 import org.broadleafcommerce.profile.core.service.CustomerService;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.transaction.PlatformTransactionManager;
 
-@ContextConfiguration(classes = {LegacyOrderServiceImpl.class})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class LegacyOrderServiceImplDiffblueTest {
-  @MockBean
+  @Mock
   private CategoryDao categoryDao;
 
-  @MockBean
+  @Mock
   private CustomerService customerService;
 
-  @MockBean
+  @Mock
   private FulfillmentGroupDao fulfillmentGroupDao;
 
-  @MockBean
+  @Mock
   private FulfillmentGroupItemDao fulfillmentGroupItemDao;
 
-  @MockBean
+  @Mock
   private FulfillmentGroupService fulfillmentGroupService;
 
-  @Autowired
+  @InjectMocks
   private LegacyOrderServiceImpl legacyOrderServiceImpl;
 
-  @MockBean
+  @Mock
   private MergeCartService mergeCartService;
 
-  @MockBean
+  @Mock
   private NullOrderFactory nullOrderFactory;
 
-  @MockBean
+  @Mock
   private OfferDao offerDao;
 
-  @MockBean
+  @Mock
   private OfferService offerService;
 
-  @MockBean(name = "blOfferServiceExtensionManager")
-  private OfferServiceExtensionManager offerServiceExtensionManager;
-
-  @MockBean
+  @Mock
   private OrderDao orderDao;
 
-  @MockBean
+  @Mock
   private OrderItemDao orderItemDao;
 
-  @MockBean
+  @Mock
   private OrderItemService orderItemService;
 
-  @MockBean
+  @Mock
   private OrderMultishipOptionService orderMultishipOptionService;
 
-  @MockBean
+  @Mock
   private OrderPaymentDao orderPaymentDao;
 
-  @MockBean(name = "blOrderServiceExtensionManager")
-  private OrderServiceExtensionManager orderServiceExtensionManager;
-
-  @MockBean
+  @Mock
   private PlatformTransactionManager platformTransactionManager;
 
-  @MockBean
+  @Mock
   private PricingService pricingService;
 
-  @MockBean
+  @Mock
   private Processor processor;
 
-  @MockBean
+  @Mock
   private ProductDao productDao;
 
-  @MockBean
+  @Mock
   private SecureOrderPaymentService secureOrderPaymentService;
 
-  @MockBean
+  @Mock
   private SkuDao skuDao;
 
   /**
-   * Test
-   * {@link LegacyOrderServiceImpl#findDefaultFulfillmentGroupForOrder(Order)}.
+   * Test {@link LegacyOrderServiceImpl#findDefaultFulfillmentGroupForOrder(Order)}.
+   * <ul>
+   *   <li>Then return {@link FulfillmentGroupImpl} (default constructor).</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#findDefaultFulfillmentGroupForOrder(Order)}
+   * Method under test: {@link LegacyOrderServiceImpl#findDefaultFulfillmentGroupForOrder(Order)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindDefaultFulfillmentGroupForOrder() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass979 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FulfillmentGroup LegacyOrderServiceImpl.findDefaultFulfillmentGroupForOrder(Order)"})
+  public void testFindDefaultFulfillmentGroupForOrder_thenReturnFulfillmentGroupImpl() {
+    // Arrange
+    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
+    when(fulfillmentGroupDao.readDefaultFulfillmentGroupForOrder(Mockito.<Order>any()))
+        .thenReturn(fulfillmentGroupImpl);
 
-    // Arrange and Act
-    legacyOrderServiceImpl.findDefaultFulfillmentGroupForOrder(new NullOrderImpl());
+    // Act
+    FulfillmentGroup actualFindDefaultFulfillmentGroupForOrderResult = legacyOrderServiceImpl
+        .findDefaultFulfillmentGroupForOrder(new NullOrderImpl());
+
+    // Assert
+    verify(fulfillmentGroupDao).readDefaultFulfillmentGroupForOrder(isA(Order.class));
+    assertSame(fulfillmentGroupImpl, actualFindDefaultFulfillmentGroupForOrderResult);
   }
 
   /**
-   * Test
-   * {@link LegacyOrderServiceImpl#createDiscreteOrderItemRequest(DiscreteOrderItem)}
-   * with {@code discreteOrderItem}.
+   * Test {@link LegacyOrderServiceImpl#findDefaultFulfillmentGroupForOrder(Order)}.
+   * <ul>
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#createDiscreteOrderItemRequest(DiscreteOrderItem)}
+   * Method under test: {@link LegacyOrderServiceImpl#findDefaultFulfillmentGroupForOrder(Order)}
    */
   @Test
-  public void testCreateDiscreteOrderItemRequestWithDiscreteOrderItem() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FulfillmentGroup LegacyOrderServiceImpl.findDefaultFulfillmentGroupForOrder(Order)"})
+  public void testFindDefaultFulfillmentGroupForOrder_thenThrowIllegalArgumentException() {
     // Arrange
-    LegacyOrderServiceImpl legacyOrderServiceImpl = new LegacyOrderServiceImpl();
+    when(fulfillmentGroupDao.readDefaultFulfillmentGroupForOrder(Mockito.<Order>any()))
+        .thenThrow(new IllegalArgumentException("foo"));
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.findDefaultFulfillmentGroupForOrder(new NullOrderImpl()));
+    verify(fulfillmentGroupDao).readDefaultFulfillmentGroupForOrder(isA(Order.class));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#createDiscreteOrderItemRequest(DiscreteOrderItem)} with {@code discreteOrderItem}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#createDiscreteOrderItemRequest(DiscreteOrderItem)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DiscreteOrderItemRequest LegacyOrderServiceImpl.createDiscreteOrderItemRequest(DiscreteOrderItem)"})
+  public void testCreateDiscreteOrderItemRequestWithDiscreteOrderItem() {
+    // Arrange
+    PersonalMessageImpl personalMessageImpl = new PersonalMessageImpl();
+    when(orderItemService.createPersonalMessage()).thenReturn(personalMessageImpl);
+    DiscreteOrderItem discreteOrderItem = mock(DiscreteOrderItem.class);
+    when(discreteOrderItem.getQuantity()).thenReturn(1);
+    CategoryImpl categoryImpl = new CategoryImpl();
+    when(discreteOrderItem.getCategory()).thenReturn(categoryImpl);
+    ProductBundleImpl productBundleImpl = new ProductBundleImpl();
+    when(discreteOrderItem.getProduct()).thenReturn(productBundleImpl);
+    SkuImpl skuImpl = new SkuImpl();
+    when(discreteOrderItem.getSku()).thenReturn(skuImpl);
+    when(discreteOrderItem.getPersonalMessage()).thenReturn(new PersonalMessageImpl());
 
     // Act
+    DiscreteOrderItemRequest actualCreateDiscreteOrderItemRequestResult = legacyOrderServiceImpl
+        .createDiscreteOrderItemRequest(discreteOrderItem);
+
+    // Assert
+    verify(discreteOrderItem).getProduct();
+    verify(discreteOrderItem).getSku();
+    verify(discreteOrderItem).getCategory();
+    verify(discreteOrderItem, atLeast(1)).getPersonalMessage();
+    verify(discreteOrderItem).getQuantity();
+    verify(orderItemService).createPersonalMessage();
+    org.broadleafcommerce.core.catalog.domain.Category category = actualCreateDiscreteOrderItemRequestResult
+        .getCategory();
+    assertTrue(category instanceof CategoryImpl);
+    Product product = actualCreateDiscreteOrderItemRequestResult.getProduct();
+    assertTrue(product instanceof ProductBundleImpl);
+    Sku sku = actualCreateDiscreteOrderItemRequestResult.getSku();
+    assertTrue(sku instanceof SkuImpl);
+    PersonalMessage personalMessage = actualCreateDiscreteOrderItemRequestResult.getPersonalMessage();
+    assertTrue(personalMessage instanceof PersonalMessageImpl);
+    assertEquals(1, actualCreateDiscreteOrderItemRequestResult.getQuantity());
+    assertSame(categoryImpl, category);
+    assertSame(productBundleImpl, product);
+    assertSame(skuImpl, sku);
+    assertSame(personalMessageImpl, personalMessage);
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#createDiscreteOrderItemRequest(DiscreteOrderItem)} with {@code discreteOrderItem}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#createDiscreteOrderItemRequest(DiscreteOrderItem)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DiscreteOrderItemRequest LegacyOrderServiceImpl.createDiscreteOrderItemRequest(DiscreteOrderItem)"})
+  public void testCreateDiscreteOrderItemRequestWithDiscreteOrderItem2() {
+    // Arrange
+    when(orderItemService.createPersonalMessage()).thenThrow(new IllegalArgumentException("foo"));
+    DiscreteOrderItem discreteOrderItem = mock(DiscreteOrderItem.class);
+    when(discreteOrderItem.getQuantity()).thenReturn(1);
+    when(discreteOrderItem.getCategory()).thenReturn(new CategoryImpl());
+    when(discreteOrderItem.getProduct()).thenReturn(new ProductBundleImpl());
+    when(discreteOrderItem.getSku()).thenReturn(new SkuImpl());
+    when(discreteOrderItem.getPersonalMessage()).thenReturn(new PersonalMessageImpl());
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.createDiscreteOrderItemRequest(discreteOrderItem));
+    verify(discreteOrderItem).getProduct();
+    verify(discreteOrderItem).getSku();
+    verify(discreteOrderItem).getCategory();
+    verify(discreteOrderItem).getPersonalMessage();
+    verify(discreteOrderItem).getQuantity();
+    verify(orderItemService).createPersonalMessage();
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#createDiscreteOrderItemRequest(DiscreteOrderItem)} with {@code discreteOrderItem}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#createDiscreteOrderItemRequest(DiscreteOrderItem)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DiscreteOrderItemRequest LegacyOrderServiceImpl.createDiscreteOrderItemRequest(DiscreteOrderItem)"})
+  public void testCreateDiscreteOrderItemRequestWithDiscreteOrderItem3() {
+    // Arrange
+    PersonalMessageImpl personalMessageImpl = mock(PersonalMessageImpl.class);
+    doThrow(new RequiredAttributeNotProvidedException("Attribute Name")).when(personalMessageImpl)
+        .setOccasion(Mockito.<String>any());
+    when(orderItemService.createPersonalMessage()).thenReturn(personalMessageImpl);
+    PersonalMessageImpl personalMessageImpl2 = mock(PersonalMessageImpl.class);
+    when(personalMessageImpl2.getOccasion()).thenReturn("Occasion");
+    DiscreteOrderItem discreteOrderItem = mock(DiscreteOrderItem.class);
+    when(discreteOrderItem.getQuantity()).thenReturn(1);
+    when(discreteOrderItem.getCategory()).thenReturn(new CategoryImpl());
+    when(discreteOrderItem.getProduct()).thenReturn(new ProductBundleImpl());
+    when(discreteOrderItem.getSku()).thenReturn(new SkuImpl());
+    when(discreteOrderItem.getPersonalMessage()).thenReturn(personalMessageImpl2);
+
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> legacyOrderServiceImpl.createDiscreteOrderItemRequest(discreteOrderItem));
+    verify(discreteOrderItem).getProduct();
+    verify(discreteOrderItem).getSku();
+    verify(discreteOrderItem).getCategory();
+    verify(discreteOrderItem, atLeast(1)).getPersonalMessage();
+    verify(discreteOrderItem).getQuantity();
+    verify(personalMessageImpl2).getOccasion();
+    verify(personalMessageImpl).setOccasion(eq("Occasion"));
+    verify(orderItemService).createPersonalMessage();
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#createDiscreteOrderItemRequest(DiscreteOrderItem)} with {@code discreteOrderItem}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#createDiscreteOrderItemRequest(DiscreteOrderItem)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DiscreteOrderItemRequest LegacyOrderServiceImpl.createDiscreteOrderItemRequest(DiscreteOrderItem)"})
+  public void testCreateDiscreteOrderItemRequestWithDiscreteOrderItem4() {
+    // Arrange
+    when(orderItemService.createPersonalMessage()).thenReturn(mock(PersonalMessageImpl.class));
+    PersonalMessageImpl personalMessageImpl = mock(PersonalMessageImpl.class);
+    when(personalMessageImpl.getOccasion()).thenThrow(new IllegalArgumentException("foo"));
+    DiscreteOrderItem discreteOrderItem = mock(DiscreteOrderItem.class);
+    when(discreteOrderItem.getQuantity()).thenReturn(1);
+    when(discreteOrderItem.getCategory()).thenReturn(new CategoryImpl());
+    when(discreteOrderItem.getProduct()).thenReturn(new ProductBundleImpl());
+    when(discreteOrderItem.getSku()).thenReturn(new SkuImpl());
+    when(discreteOrderItem.getPersonalMessage()).thenReturn(personalMessageImpl);
+
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> legacyOrderServiceImpl.createDiscreteOrderItemRequest(discreteOrderItem));
+    verify(discreteOrderItem).getProduct();
+    verify(discreteOrderItem).getSku();
+    verify(discreteOrderItem).getCategory();
+    verify(discreteOrderItem, atLeast(1)).getPersonalMessage();
+    verify(discreteOrderItem).getQuantity();
+    verify(personalMessageImpl).getOccasion();
+    verify(orderItemService).createPersonalMessage();
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#createDiscreteOrderItemRequest(DiscreteOrderItem)} with {@code discreteOrderItem}.
+   * <ul>
+   *   <li>Then calls {@link PersonalMessageImpl#setOccasion(String)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#createDiscreteOrderItemRequest(DiscreteOrderItem)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DiscreteOrderItemRequest LegacyOrderServiceImpl.createDiscreteOrderItemRequest(DiscreteOrderItem)"})
+  public void testCreateDiscreteOrderItemRequestWithDiscreteOrderItem_thenCallsSetOccasion() {
+    // Arrange
+    PersonalMessageImpl personalMessageImpl = mock(PersonalMessageImpl.class);
+    doThrow(new RequiredAttributeNotProvidedException("Attribute Name")).when(personalMessageImpl)
+        .setOccasion(Mockito.<String>any());
+    when(orderItemService.createPersonalMessage()).thenReturn(personalMessageImpl);
+    DiscreteOrderItem discreteOrderItem = mock(DiscreteOrderItem.class);
+    when(discreteOrderItem.getQuantity()).thenReturn(1);
+    when(discreteOrderItem.getCategory()).thenReturn(new CategoryImpl());
+    when(discreteOrderItem.getProduct()).thenReturn(new ProductBundleImpl());
+    when(discreteOrderItem.getSku()).thenReturn(new SkuImpl());
+    when(discreteOrderItem.getPersonalMessage()).thenReturn(new PersonalMessageImpl());
+
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> legacyOrderServiceImpl.createDiscreteOrderItemRequest(discreteOrderItem));
+    verify(discreteOrderItem).getProduct();
+    verify(discreteOrderItem).getSku();
+    verify(discreteOrderItem).getCategory();
+    verify(discreteOrderItem, atLeast(1)).getPersonalMessage();
+    verify(discreteOrderItem).getQuantity();
+    verify(personalMessageImpl).setOccasion(isNull());
+    verify(orderItemService).createPersonalMessage();
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#createDiscreteOrderItemRequest(DiscreteOrderItem)} with {@code discreteOrderItem}.
+   * <ul>
+   *   <li>Then return Category is {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#createDiscreteOrderItemRequest(DiscreteOrderItem)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DiscreteOrderItemRequest LegacyOrderServiceImpl.createDiscreteOrderItemRequest(DiscreteOrderItem)"})
+  public void testCreateDiscreteOrderItemRequestWithDiscreteOrderItem_thenReturnCategoryIsNull() {
+    // Arrange and Act
     DiscreteOrderItemRequest actualCreateDiscreteOrderItemRequestResult = legacyOrderServiceImpl
         .createDiscreteOrderItemRequest(new DiscreteOrderItemImpl());
 
     // Assert
-    assertNull(actualCreateDiscreteOrderItemRequestResult.getRetailPriceOverride());
-    assertNull(actualCreateDiscreteOrderItemRequestResult.getSalePriceOverride());
     assertNull(actualCreateDiscreteOrderItemRequestResult.getCategory());
     assertNull(actualCreateDiscreteOrderItemRequestResult.getProduct());
     assertNull(actualCreateDiscreteOrderItemRequestResult.getSku());
-    assertNull(actualCreateDiscreteOrderItemRequestResult.getBundleOrderItem());
-    assertNull(actualCreateDiscreteOrderItemRequestResult.getOrder());
     assertNull(actualCreateDiscreteOrderItemRequestResult.getPersonalMessage());
     assertEquals(0, actualCreateDiscreteOrderItemRequestResult.getQuantity());
-    assertTrue(actualCreateDiscreteOrderItemRequestResult.getDiscreteOrderItemFeePrices().isEmpty());
-    assertTrue(actualCreateDiscreteOrderItemRequestResult.getAdditionalAttributes().isEmpty());
-    assertTrue(actualCreateDiscreteOrderItemRequestResult.getItemAttributes().isEmpty());
   }
 
   /**
-   * Test
-   * {@link LegacyOrderServiceImpl#createDiscreteOrderItemRequest(DiscreteOrderItem)}
-   * with {@code discreteOrderItem}.
+   * Test {@link LegacyOrderServiceImpl#createDiscreteOrderItemRequest(Order, BundleOrderItem, Sku, Product, Category, Integer, Map)} with {@code order}, {@code bundleOrderItem}, {@code sku}, {@code product}, {@code category}, {@code quantity}, {@code itemAttributes}.
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#createDiscreteOrderItemRequest(DiscreteOrderItem)}
+   * Method under test: {@link LegacyOrderServiceImpl#createDiscreteOrderItemRequest(Order, BundleOrderItem, Sku, Product, org.broadleafcommerce.core.catalog.domain.Category, Integer, Map)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateDiscreteOrderItemRequestWithDiscreteOrderItem2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass974 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    legacyOrderServiceImpl.createDiscreteOrderItemRequest(new DiscreteOrderItemImpl());
-  }
-
-  /**
-   * Test
-   * {@link LegacyOrderServiceImpl#createDiscreteOrderItemRequest(Order, BundleOrderItem, Sku, Product, Category, Integer, Map)}
-   * with {@code order}, {@code bundleOrderItem}, {@code sku}, {@code product},
-   * {@code category}, {@code quantity}, {@code itemAttributes}.
-   * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#createDiscreteOrderItemRequest(Order, BundleOrderItem, Sku, Product, Category, Integer, Map)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DiscreteOrderItemRequest LegacyOrderServiceImpl.createDiscreteOrderItemRequest(Order, BundleOrderItem, Sku, Product, org.broadleafcommerce.core.catalog.domain.Category, Integer, Map)"})
   public void testCreateDiscreteOrderItemRequestWithOrderBundleOrderItemSkuProductCategoryQuantityItemAttributes() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    LegacyOrderServiceImpl legacyOrderServiceImpl = new LegacyOrderServiceImpl();
     NullOrderImpl order = new NullOrderImpl();
     BundleOrderItemImpl bundleOrderItem = new BundleOrderItemImpl();
     SkuImpl sku = new SkuImpl();
@@ -327,6 +474,17 @@ public class LegacyOrderServiceImplDiffblueTest {
         .createDiscreteOrderItemRequest(order, bundleOrderItem, sku, product, category, 1, new HashMap<>());
 
     // Assert
+    org.broadleafcommerce.core.catalog.domain.Category category2 = actualCreateDiscreteOrderItemRequestResult
+        .getCategory();
+    assertTrue(category2 instanceof CategoryImpl);
+    Product product2 = actualCreateDiscreteOrderItemRequestResult.getProduct();
+    assertTrue(product2 instanceof ProductBundleImpl);
+    Sku sku2 = actualCreateDiscreteOrderItemRequestResult.getSku();
+    assertTrue(sku2 instanceof SkuImpl);
+    BundleOrderItem bundleOrderItem2 = actualCreateDiscreteOrderItemRequestResult.getBundleOrderItem();
+    assertTrue(bundleOrderItem2 instanceof BundleOrderItemImpl);
+    Order order2 = actualCreateDiscreteOrderItemRequestResult.getOrder();
+    assertTrue(order2 instanceof NullOrderImpl);
     assertNull(actualCreateDiscreteOrderItemRequestResult.getRetailPriceOverride());
     assertNull(actualCreateDiscreteOrderItemRequestResult.getSalePriceOverride());
     assertNull(actualCreateDiscreteOrderItemRequestResult.getPersonalMessage());
@@ -334,306 +492,140 @@ public class LegacyOrderServiceImplDiffblueTest {
     assertTrue(actualCreateDiscreteOrderItemRequestResult.getDiscreteOrderItemFeePrices().isEmpty());
     assertTrue(actualCreateDiscreteOrderItemRequestResult.getAdditionalAttributes().isEmpty());
     assertTrue(actualCreateDiscreteOrderItemRequestResult.getItemAttributes().isEmpty());
-    assertSame(category, actualCreateDiscreteOrderItemRequestResult.getCategory());
-    assertSame(product, actualCreateDiscreteOrderItemRequestResult.getProduct());
-    assertSame(sku, actualCreateDiscreteOrderItemRequestResult.getSku());
-    assertSame(bundleOrderItem, actualCreateDiscreteOrderItemRequestResult.getBundleOrderItem());
-    assertSame(order, actualCreateDiscreteOrderItemRequestResult.getOrder());
+    assertSame(category, category2);
+    assertSame(product, product2);
+    assertSame(sku, sku2);
+    assertSame(bundleOrderItem, bundleOrderItem2);
+    assertSame(order, order2);
   }
 
   /**
-   * Test
-   * {@link LegacyOrderServiceImpl#createDiscreteOrderItemRequest(Order, BundleOrderItem, Sku, Product, Category, Integer, Map)}
-   * with {@code order}, {@code bundleOrderItem}, {@code sku}, {@code product},
-   * {@code category}, {@code quantity}, {@code itemAttributes}.
+   * Test {@link LegacyOrderServiceImpl#createDiscreteOrderItemRequest(Long, Long, Long, Long, Integer)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}.
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#createDiscreteOrderItemRequest(Order, BundleOrderItem, Sku, Product, Category, Integer, Map)}
+   * Method under test: {@link LegacyOrderServiceImpl#createDiscreteOrderItemRequest(Long, Long, Long, Long, Integer)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateDiscreteOrderItemRequestWithOrderBundleOrderItemSkuProductCategoryQuantityItemAttributes2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass975 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    NullOrderImpl order = new NullOrderImpl();
-    BundleOrderItemImpl bundleOrderItem = new BundleOrderItemImpl();
-    SkuImpl sku = new SkuImpl();
-    ProductBundleImpl product = new ProductBundleImpl();
-    CategoryImpl category = new CategoryImpl();
-
-    // Act
-    legacyOrderServiceImpl.createDiscreteOrderItemRequest(order, bundleOrderItem, sku, product, category, 1,
-        new HashMap<>());
-  }
-
-  /**
-   * Test
-   * {@link LegacyOrderServiceImpl#createDiscreteOrderItemRequest(Long, Long, Long, Long, Integer)}
-   * with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId},
-   * {@code quantity}.
-   * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#createDiscreteOrderItemRequest(Long, Long, Long, Long, Integer)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DiscreteOrderItemRequest LegacyOrderServiceImpl.createDiscreteOrderItemRequest(Long, Long, Long, Long, Integer)"})
   public void testCreateDiscreteOrderItemRequestWithOrderIdSkuIdProductIdCategoryIdQuantity() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass973 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    legacyOrderServiceImpl.createDiscreteOrderItemRequest(1L, 1L, 1L, 1L, 1);
-  }
-
-  /**
-   * Test
-   * {@link LegacyOrderServiceImpl#addGiftWrapItemToOrder(Order, GiftWrapOrderItemRequest)}
-   * with {@code order}, {@code itemRequest}.
-   * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#addGiftWrapItemToOrder(Order, GiftWrapOrderItemRequest)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddGiftWrapItemToOrderWithOrderItemRequest() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass953 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    NullOrderImpl order = new NullOrderImpl();
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(new NullOrderImpl());
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(new ProductBundleImpl());
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(new SkuImpl());
 
     // Act
-    legacyOrderServiceImpl.addGiftWrapItemToOrder(order, new GiftWrapOrderItemRequest());
+    DiscreteOrderItemRequest actualCreateDiscreteOrderItemRequestResult = legacyOrderServiceImpl
+        .createDiscreteOrderItemRequest(1L, 1L, 1L, 1L, 1);
+
+    // Assert
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(orderDao).readOrderById(eq(1L));
+    assertTrue(actualCreateDiscreteOrderItemRequestResult.getProduct() instanceof ProductBundleImpl);
+    assertTrue(actualCreateDiscreteOrderItemRequestResult.getSku() instanceof SkuImpl);
+    assertTrue(actualCreateDiscreteOrderItemRequestResult.getOrder() instanceof NullOrderImpl);
   }
 
   /**
-   * Test
-   * {@link LegacyOrderServiceImpl#addBundleItemToOrder(Order, BundleOrderItemRequest)}
-   * with {@code order}, {@code itemRequest}.
+   * Test {@link LegacyOrderServiceImpl#createDiscreteOrderItemRequest(Long, Long, Long, Long, Integer)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}.
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#addBundleItemToOrder(Order, BundleOrderItemRequest)}
+   * Method under test: {@link LegacyOrderServiceImpl#createDiscreteOrderItemRequest(Long, Long, Long, Long, Integer)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddBundleItemToOrderWithOrderItemRequest() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass943 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DiscreteOrderItemRequest LegacyOrderServiceImpl.createDiscreteOrderItemRequest(Long, Long, Long, Long, Integer)"})
+  public void testCreateDiscreteOrderItemRequestWithOrderIdSkuIdProductIdCategoryIdQuantity2() {
     // Arrange
-    NullOrderImpl order = new NullOrderImpl();
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenThrow(new IllegalArgumentException("foo"));
 
-    BundleOrderItemRequest itemRequest = new BundleOrderItemRequest();
-    itemRequest.setBundleOrderItemFeePrices(new ArrayList<>());
-    itemRequest.setCategory(new CategoryImpl());
-    itemRequest.setDiscreteOrderItems(new ArrayList<>());
-    itemRequest.setName("Name");
-    itemRequest.setOrder(new NullOrderImpl());
-    itemRequest.setQuantity(1);
-    itemRequest.setRetailPriceOverride(new Money());
-    itemRequest.setSalePriceOverride(new Money());
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.createDiscreteOrderItemRequest(1L, 1L, 1L, 1L, 1));
+    verify(skuDao).readSkuById(eq(1L));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#createDiscreteOrderItemRequest(Long, Long, Long, Long, Integer)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#createDiscreteOrderItemRequest(Long, Long, Long, Long, Integer)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DiscreteOrderItemRequest LegacyOrderServiceImpl.createDiscreteOrderItemRequest(Long, Long, Long, Long, Integer)"})
+  public void testCreateDiscreteOrderItemRequestWithOrderIdSkuIdProductIdCategoryIdQuantity3() {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(new NullOrderImpl());
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(new SkuImpl());
 
     // Act
-    legacyOrderServiceImpl.addBundleItemToOrder(order, itemRequest);
+    DiscreteOrderItemRequest actualCreateDiscreteOrderItemRequestResult = legacyOrderServiceImpl
+        .createDiscreteOrderItemRequest(1L, 1L, null, 1L, 1);
+
+    // Assert
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(orderDao).readOrderById(eq(1L));
+    Sku sku = actualCreateDiscreteOrderItemRequestResult.getSku();
+    assertTrue(sku instanceof SkuImpl);
+    Order order = actualCreateDiscreteOrderItemRequestResult.getOrder();
+    assertTrue(order instanceof NullOrderImpl);
+    assertNull(actualCreateDiscreteOrderItemRequestResult.getProduct());
+    BigDecimal expectedAmount = new BigDecimal("0.00");
+    Money orderAdjustmentsValue = order.getOrderAdjustmentsValue();
+    assertEquals(expectedAmount, orderAdjustmentsValue.getAmount());
+    assertEquals(orderAdjustmentsValue, orderAdjustmentsValue.abs());
+    assertEquals(orderAdjustmentsValue, orderAdjustmentsValue.zero());
+    assertEquals(orderAdjustmentsValue, order.getSubTotal());
+    assertSame(orderAdjustmentsValue, sku.getMargin());
   }
 
   /**
-   * Test
-   * {@link LegacyOrderServiceImpl#addBundleItemToOrder(Order, BundleOrderItemRequest, boolean)}
-   * with {@code order}, {@code itemRequest}, {@code priceOrder}.
+   * Test {@link LegacyOrderServiceImpl#createDiscreteOrderItemRequest(Long, Long, Long, Long, Integer)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}.
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#addBundleItemToOrder(Order, BundleOrderItemRequest, boolean)}
+   * Method under test: {@link LegacyOrderServiceImpl#createDiscreteOrderItemRequest(Long, Long, Long, Long, Integer)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DiscreteOrderItemRequest LegacyOrderServiceImpl.createDiscreteOrderItemRequest(Long, Long, Long, Long, Integer)"})
+  public void testCreateDiscreteOrderItemRequestWithOrderIdSkuIdProductIdCategoryIdQuantity4() {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(new NullOrderImpl());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(new ProductBundleImpl());
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(new SkuImpl());
+
+    // Act
+    DiscreteOrderItemRequest actualCreateDiscreteOrderItemRequestResult = legacyOrderServiceImpl
+        .createDiscreteOrderItemRequest(1L, 1L, 1L, null, 1);
+
+    // Assert
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(orderDao).readOrderById(eq(1L));
+    assertTrue(actualCreateDiscreteOrderItemRequestResult.getProduct() instanceof ProductBundleImpl);
+    assertTrue(actualCreateDiscreteOrderItemRequestResult.getSku() instanceof SkuImpl);
+    assertTrue(actualCreateDiscreteOrderItemRequestResult.getOrder() instanceof NullOrderImpl);
+    assertNull(actualCreateDiscreteOrderItemRequestResult.getCategory());
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addBundleItemToOrder(Order, BundleOrderItemRequest, boolean)} with {@code order}, {@code itemRequest}, {@code priceOrder}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addBundleItemToOrder(Order, BundleOrderItemRequest, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addBundleItemToOrder(Order, BundleOrderItemRequest, boolean)"})
   public void testAddBundleItemToOrderWithOrderItemRequestPriceOrder() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass944 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
+    when(orderItemService.createBundleOrderItem(Mockito.<BundleOrderItemRequest>any()))
+        .thenThrow(new IllegalArgumentException("foo"));
     NullOrderImpl order = new NullOrderImpl();
 
     BundleOrderItemRequest itemRequest = new BundleOrderItemRequest();
@@ -646,1064 +638,119 @@ public class LegacyOrderServiceImplDiffblueTest {
     itemRequest.setRetailPriceOverride(new Money());
     itemRequest.setSalePriceOverride(new Money());
 
-    // Act
-    legacyOrderServiceImpl.addBundleItemToOrder(order, itemRequest, true);
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.addBundleItemToOrder(order, itemRequest, true));
+    verify(orderItemService).createBundleOrderItem(isA(BundleOrderItemRequest.class));
   }
 
   /**
-   * Test {@link LegacyOrderServiceImpl#removeItemFromOrder(Long, Long)} with
-   * {@code orderId}, {@code itemId}.
-   * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#removeItemFromOrder(Long, Long)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testRemoveItemFromOrderWithOrderIdItemId() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass995 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    legacyOrderServiceImpl.removeItemFromOrder(1L, 1L);
-  }
-
-  /**
-   * Test {@link LegacyOrderServiceImpl#removeItemFromOrder(Long, Long, boolean)}
-   * with {@code orderId}, {@code itemId}, {@code priceOrder}.
-   * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#removeItemFromOrder(Long, Long, boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testRemoveItemFromOrderWithOrderIdItemIdPriceOrder() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass996 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    legacyOrderServiceImpl.removeItemFromOrder(1L, 1L, true);
-  }
-
-  /**
-   * Test {@link LegacyOrderServiceImpl#removeItemFromOrder(Order, OrderItem)}
-   * with {@code order}, {@code item}.
-   * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#removeItemFromOrder(Order, OrderItem)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testRemoveItemFromOrderWithOrderItem() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass997 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    NullOrderImpl order = new NullOrderImpl();
-
-    // Act
-    legacyOrderServiceImpl.removeItemFromOrder(order, new BundleOrderItemImpl());
-  }
-
-  /**
-   * Test
-   * {@link LegacyOrderServiceImpl#removeItemFromOrder(Order, OrderItem, boolean)}
-   * with {@code order}, {@code item}, {@code priceOrder}.
-   * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#removeItemFromOrder(Order, OrderItem, boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testRemoveItemFromOrderWithOrderItemPriceOrder() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass998 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    NullOrderImpl order = new NullOrderImpl();
-
-    // Act
-    legacyOrderServiceImpl.removeItemFromOrder(order, new BundleOrderItemImpl(), true);
-  }
-
-  /**
-   * Test {@link LegacyOrderServiceImpl#moveItemToOrder(Order, Order, OrderItem)}
-   * with {@code originalOrder}, {@code destinationOrder}, {@code item}.
-   * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#moveItemToOrder(Order, Order, OrderItem)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testMoveItemToOrderWithOriginalOrderDestinationOrderItem() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass986 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    NullOrderImpl originalOrder = new NullOrderImpl();
-    NullOrderImpl destinationOrder = new NullOrderImpl();
-
-    // Act
-    legacyOrderServiceImpl.moveItemToOrder(originalOrder, destinationOrder, new BundleOrderItemImpl());
-  }
-
-  /**
-   * Test
-   * {@link LegacyOrderServiceImpl#moveItemToOrder(Order, Order, OrderItem, boolean)}
-   * with {@code originalOrder}, {@code destinationOrder}, {@code item},
-   * {@code priceOrder}.
-   * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#moveItemToOrder(Order, Order, OrderItem, boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testMoveItemToOrderWithOriginalOrderDestinationOrderItemPriceOrder() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass987 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    NullOrderImpl originalOrder = new NullOrderImpl();
-    NullOrderImpl destinationOrder = new NullOrderImpl();
-
-    // Act
-    legacyOrderServiceImpl.moveItemToOrder(originalOrder, destinationOrder, new BundleOrderItemImpl(), true);
-  }
-
-  /**
-   * Test {@link LegacyOrderServiceImpl#addPaymentToOrder(Order, OrderPayment)}
-   * with {@code order}, {@code payment}.
-   * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#addPaymentToOrder(Order, OrderPayment)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddPaymentToOrderWithOrderPayment() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass964 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    NullOrderImpl order = new NullOrderImpl();
-
-    // Act
-    legacyOrderServiceImpl.addPaymentToOrder(order, new OrderPaymentImpl());
-  }
-
-  /**
-   * Test
-   * {@link LegacyOrderServiceImpl#addFulfillmentGroupToOrder(FulfillmentGroupRequest)}
-   * with {@code fulfillmentGroupRequest}.
-   * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#addFulfillmentGroupToOrder(FulfillmentGroupRequest)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddFulfillmentGroupToOrderWithFulfillmentGroupRequest() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass951 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentGroupRequest fulfillmentGroupRequest = new FulfillmentGroupRequest();
-    fulfillmentGroupRequest.setAddress(new AddressImpl());
-    fulfillmentGroupRequest.setFulfillmentGroupItemRequests(new ArrayList<>());
-    fulfillmentGroupRequest.setFulfillmentType(FulfillmentType.DIGITAL);
-    fulfillmentGroupRequest.setMethod("Method");
-    fulfillmentGroupRequest.setOption(new FulfillmentOptionImpl());
-    fulfillmentGroupRequest.setOrder(new NullOrderImpl());
-    fulfillmentGroupRequest.setPhone(new PhoneImpl());
-    fulfillmentGroupRequest.setService("Service");
-
-    // Act
-    legacyOrderServiceImpl.addFulfillmentGroupToOrder(fulfillmentGroupRequest);
-  }
-
-  /**
-   * Test
-   * {@link LegacyOrderServiceImpl#addFulfillmentGroupToOrder(FulfillmentGroupRequest, boolean)}
-   * with {@code fulfillmentGroupRequest}, {@code priceOrder}.
-   * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#addFulfillmentGroupToOrder(FulfillmentGroupRequest, boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddFulfillmentGroupToOrderWithFulfillmentGroupRequestPriceOrder() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass952 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentGroupRequest fulfillmentGroupRequest = new FulfillmentGroupRequest();
-    fulfillmentGroupRequest.setAddress(new AddressImpl());
-    fulfillmentGroupRequest.setFulfillmentGroupItemRequests(new ArrayList<>());
-    fulfillmentGroupRequest.setFulfillmentType(FulfillmentType.DIGITAL);
-    fulfillmentGroupRequest.setMethod("Method");
-    fulfillmentGroupRequest.setOption(new FulfillmentOptionImpl());
-    fulfillmentGroupRequest.setOrder(new NullOrderImpl());
-    fulfillmentGroupRequest.setPhone(new PhoneImpl());
-    fulfillmentGroupRequest.setService("Service");
-
-    // Act
-    legacyOrderServiceImpl.addFulfillmentGroupToOrder(fulfillmentGroupRequest, true);
-  }
-
-  /**
-   * Test
-   * {@link LegacyOrderServiceImpl#addFulfillmentGroupToOrder(Order, FulfillmentGroup)}
-   * with {@code order}, {@code fulfillmentGroup}.
-   * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#addFulfillmentGroupToOrder(Order, FulfillmentGroup)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddFulfillmentGroupToOrderWithOrderFulfillmentGroup() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass949 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    NullOrderImpl order = new NullOrderImpl();
-
-    // Act
-    legacyOrderServiceImpl.addFulfillmentGroupToOrder(order, new FulfillmentGroupImpl());
-  }
-
-  /**
-   * Test
-   * {@link LegacyOrderServiceImpl#addFulfillmentGroupToOrder(Order, FulfillmentGroup, boolean)}
-   * with {@code order}, {@code fulfillmentGroup}, {@code priceOrder}.
-   * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#addFulfillmentGroupToOrder(Order, FulfillmentGroup, boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddFulfillmentGroupToOrderWithOrderFulfillmentGroupPriceOrder() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass950 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    NullOrderImpl order = new NullOrderImpl();
-
-    // Act
-    legacyOrderServiceImpl.addFulfillmentGroupToOrder(order, new FulfillmentGroupImpl(), true);
-  }
-
-  /**
-   * Test
-   * {@link LegacyOrderServiceImpl#addItemToFulfillmentGroup(OrderItem, FulfillmentGroup)}
-   * with {@code item}, {@code fulfillmentGroup}.
-   * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#addItemToFulfillmentGroup(OrderItem, FulfillmentGroup)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddItemToFulfillmentGroupWithItemFulfillmentGroup() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass955 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    BundleOrderItemImpl item = new BundleOrderItemImpl();
-
-    // Act
-    legacyOrderServiceImpl.addItemToFulfillmentGroup(item, new FulfillmentGroupImpl());
-  }
-
-  /**
-   * Test
-   * {@link LegacyOrderServiceImpl#addItemToFulfillmentGroup(OrderItem, FulfillmentGroup, boolean)}
-   * with {@code item}, {@code fulfillmentGroup}, {@code priceOrder}.
-   * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#addItemToFulfillmentGroup(OrderItem, FulfillmentGroup, boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddItemToFulfillmentGroupWithItemFulfillmentGroupPriceOrder() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass958 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    BundleOrderItemImpl item = new BundleOrderItemImpl();
-
-    // Act
-    legacyOrderServiceImpl.addItemToFulfillmentGroup(item, new FulfillmentGroupImpl(), true);
-  }
-
-  /**
-   * Test
-   * {@link LegacyOrderServiceImpl#addItemToFulfillmentGroup(OrderItem, FulfillmentGroup, int)}
-   * with {@code item}, {@code fulfillmentGroup}, {@code quantity}.
-   * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#addItemToFulfillmentGroup(OrderItem, FulfillmentGroup, int)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddItemToFulfillmentGroupWithItemFulfillmentGroupQuantity() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass956 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    BundleOrderItemImpl item = new BundleOrderItemImpl();
-
-    // Act
-    legacyOrderServiceImpl.addItemToFulfillmentGroup(item, new FulfillmentGroupImpl(), 2);
-  }
-
-  /**
-   * Test
-   * {@link LegacyOrderServiceImpl#addItemToFulfillmentGroup(OrderItem, FulfillmentGroup, int, boolean)}
-   * with {@code item}, {@code fulfillmentGroup}, {@code quantity},
-   * {@code priceOrder}.
-   * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#addItemToFulfillmentGroup(OrderItem, FulfillmentGroup, int, boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddItemToFulfillmentGroupWithItemFulfillmentGroupQuantityPriceOrder() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass957 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    BundleOrderItemImpl item = new BundleOrderItemImpl();
-
-    // Act
-    legacyOrderServiceImpl.addItemToFulfillmentGroup(item, new FulfillmentGroupImpl(), 2, true);
-  }
-
-  /**
-   * Test
-   * {@link LegacyOrderServiceImpl#addItemToFulfillmentGroup(Order, OrderItem, FulfillmentGroup, int, boolean)}
-   * with {@code order}, {@code item}, {@code fulfillmentGroup}, {@code quantity},
-   * {@code priceOrder}.
-   * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#addItemToFulfillmentGroup(Order, OrderItem, FulfillmentGroup, int, boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddItemToFulfillmentGroupWithOrderItemFulfillmentGroupQuantityPriceOrder() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass954 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    NullOrderImpl order = new NullOrderImpl();
-    BundleOrderItemImpl item = new BundleOrderItemImpl();
-
-    // Act
-    legacyOrderServiceImpl.addItemToFulfillmentGroup(order, item, new FulfillmentGroupImpl(), 2, true);
-  }
-
-  /**
-   * Test {@link LegacyOrderServiceImpl#updateItemQuantity(Order, OrderItem)} with
-   * {@code order}, {@code item}.
-   * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#updateItemQuantity(Order, OrderItem)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testUpdateItemQuantityWithOrderItem() throws ItemNotFoundException, PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1002 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    NullOrderImpl order = new NullOrderImpl();
-
-    // Act
-    legacyOrderServiceImpl.updateItemQuantity(order, new BundleOrderItemImpl());
-  }
-
-  /**
-   * Test
-   * {@link LegacyOrderServiceImpl#updateItemQuantity(Order, OrderItem, boolean)}
-   * with {@code order}, {@code item}, {@code priceOrder}.
-   * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#updateItemQuantity(Order, OrderItem, boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testUpdateItemQuantityWithOrderItemPriceOrder() throws ItemNotFoundException, PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1003 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    NullOrderImpl order = new NullOrderImpl();
-
-    // Act
-    legacyOrderServiceImpl.updateItemQuantity(order, new BundleOrderItemImpl(), true);
-  }
-
-  /**
-   * Test
-   * {@link LegacyOrderServiceImpl#updateItemQuantity(Order, OrderItem, boolean)}
-   * with {@code order}, {@code item}, {@code priceOrder}.
+   * Test {@link LegacyOrderServiceImpl#addBundleItemToOrder(Order, BundleOrderItemRequest)} with {@code order}, {@code itemRequest}.
    * <ul>
-   *   <li>Then throw {@link ItemNotFoundException}.</li>
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#updateItemQuantity(Order, OrderItem, boolean)}
+   * Method under test: {@link LegacyOrderServiceImpl#addBundleItemToOrder(Order, BundleOrderItemRequest)}
    */
   @Test
-  public void testUpdateItemQuantityWithOrderItemPriceOrder_thenThrowItemNotFoundException()
-      throws ItemNotFoundException, PricingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addBundleItemToOrder(Order, BundleOrderItemRequest)"})
+  public void testAddBundleItemToOrderWithOrderItemRequest_thenThrowIllegalArgumentException() throws PricingException {
     // Arrange
-    LegacyOrderServiceImpl legacyOrderServiceImpl = new LegacyOrderServiceImpl();
+    when(orderItemService.createBundleOrderItem(Mockito.<BundleOrderItemRequest>any()))
+        .thenThrow(new IllegalArgumentException("foo"));
+    NullOrderImpl order = new NullOrderImpl();
+
+    BundleOrderItemRequest itemRequest = new BundleOrderItemRequest();
+    itemRequest.setBundleOrderItemFeePrices(new ArrayList<>());
+    itemRequest.setCategory(new CategoryImpl());
+    itemRequest.setDiscreteOrderItems(new ArrayList<>());
+    itemRequest.setName("Name");
+    itemRequest.setOrder(new NullOrderImpl());
+    itemRequest.setQuantity(1);
+    itemRequest.setRetailPriceOverride(new Money());
+    itemRequest.setSalePriceOverride(new Money());
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> legacyOrderServiceImpl.addBundleItemToOrder(order, itemRequest));
+    verify(orderItemService).createBundleOrderItem(isA(BundleOrderItemRequest.class));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#removeItemFromOrder(Long, Long, boolean)} with {@code orderId}, {@code itemId}, {@code priceOrder}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#removeItemFromOrder(Long, Long, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyOrderServiceImpl.removeItemFromOrder(Long, Long, boolean)"})
+  public void testRemoveItemFromOrderWithOrderIdItemIdPriceOrder() throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(new NullOrderImpl());
+    when(orderItemService.readOrderItemById(Mockito.<Long>any())).thenThrow(new IllegalArgumentException("foo"));
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> legacyOrderServiceImpl.removeItemFromOrder(1L, 1L, true));
+    verify(orderDao).readOrderById(eq(1L));
+    verify(orderItemService).readOrderItemById(eq(1L));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#removeItemFromOrder(Long, Long)} with {@code orderId}, {@code itemId}.
+   * <ul>
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#removeItemFromOrder(Long, Long)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyOrderServiceImpl.removeItemFromOrder(Long, Long)"})
+  public void testRemoveItemFromOrderWithOrderIdItemId_thenThrowIllegalArgumentException() throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(new NullOrderImpl());
+    when(orderItemService.readOrderItemById(Mockito.<Long>any())).thenThrow(new IllegalArgumentException("foo"));
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> legacyOrderServiceImpl.removeItemFromOrder(1L, 1L));
+    verify(orderDao).readOrderById(eq(1L));
+    verify(orderItemService).readOrderItemById(eq(1L));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#removeItemFromOrder(Order, OrderItem, boolean)} with {@code order}, {@code item}, {@code priceOrder}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#removeItemFromOrder(Order, OrderItem, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyOrderServiceImpl.removeItemFromOrder(Order, OrderItem, boolean)"})
+  public void testRemoveItemFromOrderWithOrderItemPriceOrder() throws PricingException {
+    // Arrange
+    doThrow(new IllegalArgumentException("foo")).when(fulfillmentGroupService)
+        .removeOrderItemFromFullfillmentGroups(Mockito.<Order>any(), Mockito.<OrderItem>any());
+    NullOrderImpl order = new NullOrderImpl();
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.removeItemFromOrder(order, new BundleOrderItemImpl(), true));
+    verify(fulfillmentGroupService).removeOrderItemFromFullfillmentGroups(isA(Order.class), isA(OrderItem.class));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#removeItemFromOrder(Order, OrderItem, boolean)} with {@code order}, {@code item}, {@code priceOrder}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#removeItemFromOrder(Order, OrderItem, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyOrderServiceImpl.removeItemFromOrder(Order, OrderItem, boolean)"})
+  public void testRemoveItemFromOrderWithOrderItemPriceOrder2() throws PricingException {
+    // Arrange
+    doNothing().when(fulfillmentGroupService)
+        .removeOrderItemFromFullfillmentGroups(Mockito.<Order>any(), Mockito.<OrderItem>any());
+    doNothing().when(orderItemService).delete(Mockito.<OrderItem>any());
+    when(pricingService.executePricing(Mockito.<Order>any())).thenThrow(new IllegalArgumentException("foo"));
 
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
@@ -1735,7 +782,913 @@ public class LegacyOrderServiceImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
+    order.setTotalTax(new Money());
+    order.setOrderItems(orderItems);
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.removeItemFromOrder(order, new BundleOrderItemImpl(), true));
+    verify(fulfillmentGroupService).removeOrderItemFromFullfillmentGroups(isA(Order.class), isA(OrderItem.class));
+    verify(orderItemService).delete(isA(OrderItem.class));
+    verify(pricingService).executePricing(isA(Order.class));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#removeItemFromOrder(Order, OrderItem, boolean)} with {@code order}, {@code item}, {@code priceOrder}.
+   * <ul>
+   *   <li>Then return {@link NullOrderImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#removeItemFromOrder(Order, OrderItem, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyOrderServiceImpl.removeItemFromOrder(Order, OrderItem, boolean)"})
+  public void testRemoveItemFromOrderWithOrderItemPriceOrder_thenReturnNullOrderImpl() throws PricingException {
+    // Arrange
+    doNothing().when(fulfillmentGroupService)
+        .removeOrderItemFromFullfillmentGroups(Mockito.<Order>any(), Mockito.<OrderItem>any());
+    NullOrderImpl nullOrderImpl = new NullOrderImpl();
+    when(orderDao.save(Mockito.<Order>any())).thenReturn(nullOrderImpl);
+    doNothing().when(orderItemService).delete(Mockito.<OrderItem>any());
+    when(pricingService.executePricing(Mockito.<Order>any())).thenReturn(new NullOrderImpl());
+
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(new BundleOrderItemImpl());
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+    order.setOrderItems(orderItems);
+
+    // Act
+    Order actualRemoveItemFromOrderResult = legacyOrderServiceImpl.removeItemFromOrder(order, new BundleOrderItemImpl(),
+        true);
+
+    // Assert
+    verify(orderDao).save(isA(Order.class));
+    verify(fulfillmentGroupService).removeOrderItemFromFullfillmentGroups(isA(Order.class), isA(OrderItem.class));
+    verify(orderItemService).delete(isA(OrderItem.class));
+    verify(pricingService).executePricing(isA(Order.class));
+    assertSame(nullOrderImpl, actualRemoveItemFromOrderResult);
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#removeItemFromOrder(Order, OrderItem)} with {@code order}, {@code item}.
+   * <ul>
+   *   <li>Then return {@link NullOrderImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#removeItemFromOrder(Order, OrderItem)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyOrderServiceImpl.removeItemFromOrder(Order, OrderItem)"})
+  public void testRemoveItemFromOrderWithOrderItem_thenReturnNullOrderImpl() throws PricingException {
+    // Arrange
+    doNothing().when(fulfillmentGroupService)
+        .removeOrderItemFromFullfillmentGroups(Mockito.<Order>any(), Mockito.<OrderItem>any());
+    NullOrderImpl nullOrderImpl = new NullOrderImpl();
+    when(orderDao.save(Mockito.<Order>any())).thenReturn(nullOrderImpl);
+    doNothing().when(orderItemService).delete(Mockito.<OrderItem>any());
+    when(pricingService.executePricing(Mockito.<Order>any())).thenReturn(new NullOrderImpl());
+
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(new BundleOrderItemImpl());
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+    order.setOrderItems(orderItems);
+
+    // Act
+    Order actualRemoveItemFromOrderResult = legacyOrderServiceImpl.removeItemFromOrder(order,
+        new BundleOrderItemImpl());
+
+    // Assert
+    verify(orderDao).save(isA(Order.class));
+    verify(fulfillmentGroupService).removeOrderItemFromFullfillmentGroups(isA(Order.class), isA(OrderItem.class));
+    verify(orderItemService).delete(isA(OrderItem.class));
+    verify(pricingService).executePricing(isA(Order.class));
+    assertSame(nullOrderImpl, actualRemoveItemFromOrderResult);
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#removeItemFromOrder(Order, OrderItem)} with {@code order}, {@code item}.
+   * <ul>
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#removeItemFromOrder(Order, OrderItem)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyOrderServiceImpl.removeItemFromOrder(Order, OrderItem)"})
+  public void testRemoveItemFromOrderWithOrderItem_thenThrowIllegalArgumentException() throws PricingException {
+    // Arrange
+    doNothing().when(fulfillmentGroupService)
+        .removeOrderItemFromFullfillmentGroups(Mockito.<Order>any(), Mockito.<OrderItem>any());
+    doNothing().when(orderItemService).delete(Mockito.<OrderItem>any());
+    when(pricingService.executePricing(Mockito.<Order>any())).thenThrow(new IllegalArgumentException("foo"));
+
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(new BundleOrderItemImpl());
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+    order.setOrderItems(orderItems);
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.removeItemFromOrder(order, new BundleOrderItemImpl()));
+    verify(fulfillmentGroupService).removeOrderItemFromFullfillmentGroups(isA(Order.class), isA(OrderItem.class));
+    verify(orderItemService).delete(isA(OrderItem.class));
+    verify(pricingService).executePricing(isA(Order.class));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#moveItemToOrder(Order, Order, OrderItem)} with {@code originalOrder}, {@code destinationOrder}, {@code item}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#moveItemToOrder(Order, Order, OrderItem)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyOrderServiceImpl.moveItemToOrder(Order, Order, OrderItem)"})
+  public void testMoveItemToOrderWithOriginalOrderDestinationOrderItem() throws PricingException {
+    // Arrange
+    doThrow(new IllegalArgumentException("foo")).when(fulfillmentGroupService)
+        .removeOrderItemFromFullfillmentGroups(Mockito.<Order>any(), Mockito.<OrderItem>any());
+    NullOrderImpl originalOrder = new NullOrderImpl();
+    NullOrderImpl destinationOrder = new NullOrderImpl();
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.moveItemToOrder(originalOrder, destinationOrder, new BundleOrderItemImpl()));
+    verify(fulfillmentGroupService).removeOrderItemFromFullfillmentGroups(isA(Order.class), isA(OrderItem.class));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#moveItemToOrder(Order, Order, OrderItem, boolean)} with {@code originalOrder}, {@code destinationOrder}, {@code item}, {@code priceOrder}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#moveItemToOrder(Order, Order, OrderItem, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyOrderServiceImpl.moveItemToOrder(Order, Order, OrderItem, boolean)"})
+  public void testMoveItemToOrderWithOriginalOrderDestinationOrderItemPriceOrder() throws PricingException {
+    // Arrange
+    doThrow(new IllegalArgumentException("foo")).when(fulfillmentGroupService)
+        .removeOrderItemFromFullfillmentGroups(Mockito.<Order>any(), Mockito.<OrderItem>any());
+    NullOrderImpl originalOrder = new NullOrderImpl();
+    NullOrderImpl destinationOrder = new NullOrderImpl();
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.moveItemToOrder(originalOrder, destinationOrder, new BundleOrderItemImpl(), true));
+    verify(fulfillmentGroupService).removeOrderItemFromFullfillmentGroups(isA(Order.class), isA(OrderItem.class));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addFulfillmentGroupToOrder(FulfillmentGroupRequest)} with {@code fulfillmentGroupRequest}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addFulfillmentGroupToOrder(FulfillmentGroupRequest)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FulfillmentGroup LegacyOrderServiceImpl.addFulfillmentGroupToOrder(FulfillmentGroupRequest)"})
+  public void testAddFulfillmentGroupToOrderWithFulfillmentGroupRequest() throws PricingException {
+    // Arrange
+    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
+    when(fulfillmentGroupDao.create()).thenReturn(fulfillmentGroupImpl);
+
+    FulfillmentGroupRequest fulfillmentGroupRequest = new FulfillmentGroupRequest();
+    fulfillmentGroupRequest.setAddress(new AddressImpl());
+    fulfillmentGroupRequest.setFulfillmentGroupItemRequests(new ArrayList<>());
+    fulfillmentGroupRequest.setFulfillmentType(FulfillmentType.DIGITAL);
+    fulfillmentGroupRequest.setMethod("Method");
+    fulfillmentGroupRequest.setOption(new FulfillmentOptionImpl());
+    fulfillmentGroupRequest.setOrder(new NullOrderImpl());
+    fulfillmentGroupRequest.setPhone(new PhoneImpl());
+    fulfillmentGroupRequest.setService("Service");
+
+    // Act
+    FulfillmentGroup actualAddFulfillmentGroupToOrderResult = legacyOrderServiceImpl
+        .addFulfillmentGroupToOrder(fulfillmentGroupRequest);
+
+    // Assert
+    verify(fulfillmentGroupDao).create();
+    assertSame(fulfillmentGroupImpl, actualAddFulfillmentGroupToOrderResult);
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addFulfillmentGroupToOrder(FulfillmentGroupRequest)} with {@code fulfillmentGroupRequest}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addFulfillmentGroupToOrder(FulfillmentGroupRequest)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FulfillmentGroup LegacyOrderServiceImpl.addFulfillmentGroupToOrder(FulfillmentGroupRequest)"})
+  public void testAddFulfillmentGroupToOrderWithFulfillmentGroupRequest2() throws PricingException {
+    // Arrange
+    when(fulfillmentGroupDao.create()).thenThrow(new IllegalArgumentException("foo"));
+
+    FulfillmentGroupRequest fulfillmentGroupRequest = new FulfillmentGroupRequest();
+    fulfillmentGroupRequest.setAddress(new AddressImpl());
+    fulfillmentGroupRequest.setFulfillmentGroupItemRequests(new ArrayList<>());
+    fulfillmentGroupRequest.setFulfillmentType(FulfillmentType.DIGITAL);
+    fulfillmentGroupRequest.setMethod("Method");
+    fulfillmentGroupRequest.setOption(new FulfillmentOptionImpl());
+    fulfillmentGroupRequest.setOrder(new NullOrderImpl());
+    fulfillmentGroupRequest.setPhone(new PhoneImpl());
+    fulfillmentGroupRequest.setService("Service");
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.addFulfillmentGroupToOrder(fulfillmentGroupRequest));
+    verify(fulfillmentGroupDao).create();
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addFulfillmentGroupToOrder(FulfillmentGroupRequest, boolean)} with {@code fulfillmentGroupRequest}, {@code priceOrder}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addFulfillmentGroupToOrder(FulfillmentGroupRequest, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FulfillmentGroup LegacyOrderServiceImpl.addFulfillmentGroupToOrder(FulfillmentGroupRequest, boolean)"})
+  public void testAddFulfillmentGroupToOrderWithFulfillmentGroupRequestPriceOrder() throws PricingException {
+    // Arrange
+    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
+    when(fulfillmentGroupDao.create()).thenReturn(fulfillmentGroupImpl);
+
+    FulfillmentGroupRequest fulfillmentGroupRequest = new FulfillmentGroupRequest();
+    fulfillmentGroupRequest.setAddress(new AddressImpl());
+    fulfillmentGroupRequest.setFulfillmentGroupItemRequests(new ArrayList<>());
+    fulfillmentGroupRequest.setFulfillmentType(FulfillmentType.DIGITAL);
+    fulfillmentGroupRequest.setMethod("Method");
+    fulfillmentGroupRequest.setOption(new FulfillmentOptionImpl());
+    fulfillmentGroupRequest.setOrder(new NullOrderImpl());
+    fulfillmentGroupRequest.setPhone(new PhoneImpl());
+    fulfillmentGroupRequest.setService("Service");
+
+    // Act
+    FulfillmentGroup actualAddFulfillmentGroupToOrderResult = legacyOrderServiceImpl
+        .addFulfillmentGroupToOrder(fulfillmentGroupRequest, true);
+
+    // Assert
+    verify(fulfillmentGroupDao).create();
+    assertSame(fulfillmentGroupImpl, actualAddFulfillmentGroupToOrderResult);
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addFulfillmentGroupToOrder(FulfillmentGroupRequest, boolean)} with {@code fulfillmentGroupRequest}, {@code priceOrder}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addFulfillmentGroupToOrder(FulfillmentGroupRequest, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FulfillmentGroup LegacyOrderServiceImpl.addFulfillmentGroupToOrder(FulfillmentGroupRequest, boolean)"})
+  public void testAddFulfillmentGroupToOrderWithFulfillmentGroupRequestPriceOrder2() throws PricingException {
+    // Arrange
+    when(fulfillmentGroupDao.create()).thenThrow(new IllegalArgumentException("foo"));
+
+    FulfillmentGroupRequest fulfillmentGroupRequest = new FulfillmentGroupRequest();
+    fulfillmentGroupRequest.setAddress(new AddressImpl());
+    fulfillmentGroupRequest.setFulfillmentGroupItemRequests(new ArrayList<>());
+    fulfillmentGroupRequest.setFulfillmentType(FulfillmentType.DIGITAL);
+    fulfillmentGroupRequest.setMethod("Method");
+    fulfillmentGroupRequest.setOption(new FulfillmentOptionImpl());
+    fulfillmentGroupRequest.setOrder(new NullOrderImpl());
+    fulfillmentGroupRequest.setPhone(new PhoneImpl());
+    fulfillmentGroupRequest.setService("Service");
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.addFulfillmentGroupToOrder(fulfillmentGroupRequest, true));
+    verify(fulfillmentGroupDao).create();
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addFulfillmentGroupToOrder(Order, FulfillmentGroup)} with {@code order}, {@code fulfillmentGroup}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addFulfillmentGroupToOrder(Order, FulfillmentGroup)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FulfillmentGroup LegacyOrderServiceImpl.addFulfillmentGroupToOrder(Order, FulfillmentGroup)"})
+  public void testAddFulfillmentGroupToOrderWithOrderFulfillmentGroup() throws PricingException {
+    // Arrange
+    when(pricingService.executePricing(Mockito.<Order>any())).thenThrow(new IllegalArgumentException("foo"));
+    when(fulfillmentGroupDao.readDefaultFulfillmentGroupForOrder(Mockito.<Order>any()))
+        .thenReturn(new FulfillmentGroupImpl());
+    when(fulfillmentGroupDao.save(Mockito.<FulfillmentGroup>any())).thenReturn(new FulfillmentGroupImpl());
+    OrderImpl order = new OrderImpl();
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.addFulfillmentGroupToOrder(order, new FulfillmentGroupImpl()));
+    verify(fulfillmentGroupDao).readDefaultFulfillmentGroupForOrder(isA(Order.class));
+    verify(fulfillmentGroupDao).save(isA(FulfillmentGroup.class));
+    verify(pricingService).executePricing(isA(Order.class));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addFulfillmentGroupToOrder(Order, FulfillmentGroup, boolean)} with {@code order}, {@code fulfillmentGroup}, {@code priceOrder}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addFulfillmentGroupToOrder(Order, FulfillmentGroup, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FulfillmentGroup LegacyOrderServiceImpl.addFulfillmentGroupToOrder(Order, FulfillmentGroup, boolean)"})
+  public void testAddFulfillmentGroupToOrderWithOrderFulfillmentGroupPriceOrder() throws PricingException {
+    // Arrange
+    when(pricingService.executePricing(Mockito.<Order>any())).thenThrow(new IllegalArgumentException("foo"));
+    when(fulfillmentGroupDao.readDefaultFulfillmentGroupForOrder(Mockito.<Order>any()))
+        .thenReturn(new FulfillmentGroupImpl());
+    when(fulfillmentGroupDao.save(Mockito.<FulfillmentGroup>any())).thenReturn(new FulfillmentGroupImpl());
+    OrderImpl order = new OrderImpl();
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.addFulfillmentGroupToOrder(order, new FulfillmentGroupImpl(), true));
+    verify(fulfillmentGroupDao).readDefaultFulfillmentGroupForOrder(isA(Order.class));
+    verify(fulfillmentGroupDao).save(isA(FulfillmentGroup.class));
+    verify(pricingService).executePricing(isA(Order.class));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addItemToFulfillmentGroup(OrderItem, FulfillmentGroup)} with {@code item}, {@code fulfillmentGroup}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addItemToFulfillmentGroup(OrderItem, FulfillmentGroup)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FulfillmentGroup LegacyOrderServiceImpl.addItemToFulfillmentGroup(OrderItem, FulfillmentGroup)"})
+  public void testAddItemToFulfillmentGroupWithItemFulfillmentGroup() throws PricingException {
+    // Arrange
+    when(fulfillmentGroupDao.readDefaultFulfillmentGroupForOrder(Mockito.<Order>any()))
+        .thenThrow(new RequiredAttributeNotProvidedException("Attribute Name"));
+
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    Auditable auditable2 = new Auditable();
+    auditable2.setCreatedBy(1L);
+    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setUpdatedBy(1L);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable2);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+
+    OrderItemImpl item = new OrderItemImpl();
+    item.setAuditable(auditable);
+    item.setCandidateItemOffers(new ArrayList<>());
+    item.setCartMessages(new ArrayList<>());
+    item.setChildOrderItems(new ArrayList<>());
+    item.setDiscountingAllowed(true);
+    item.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    item.setHasValidationError(true);
+    item.setId(1L);
+    item.setName("Name");
+    item.setOrder(order);
+    item.setOrderItemAdjustments(new ArrayList<>());
+    item.setOrderItemAttributes(new HashMap<>());
+    item.setOrderItemPriceDetails(new ArrayList<>());
+    item.setOrderItemQualifiers(new ArrayList<>());
+    item.setOrderItemType(OrderItemType.BASIC);
+    item.setParentOrderItem(new BundleOrderItemImpl());
+    item.setPersonalMessage(new PersonalMessageImpl());
+    item.setPrice(new Money());
+    item.setProratedOrderItemAdjustments(new ArrayList<>());
+    item.setQuantity(1);
+    item.setRetailPrice(new Money());
+    item.setRetailPriceOverride(true);
+    item.setSalePrice(new Money());
+    item.setSalePriceOverride(true);
+    item.setTaxable(true);
+    item.updateSaleAndRetailPrices();
+
+    // Act and Assert
+    assertThrows(RequiredAttributeNotProvidedException.class,
+        () -> legacyOrderServiceImpl.addItemToFulfillmentGroup(item, new FulfillmentGroupImpl()));
+    verify(fulfillmentGroupDao).readDefaultFulfillmentGroupForOrder(isA(Order.class));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addItemToFulfillmentGroup(OrderItem, FulfillmentGroup, boolean)} with {@code item}, {@code fulfillmentGroup}, {@code priceOrder}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addItemToFulfillmentGroup(OrderItem, FulfillmentGroup, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FulfillmentGroup LegacyOrderServiceImpl.addItemToFulfillmentGroup(OrderItem, FulfillmentGroup, boolean)"})
+  public void testAddItemToFulfillmentGroupWithItemFulfillmentGroupPriceOrder() throws PricingException {
+    // Arrange
+    when(fulfillmentGroupDao.readDefaultFulfillmentGroupForOrder(Mockito.<Order>any()))
+        .thenThrow(new RequiredAttributeNotProvidedException("Attribute Name"));
+
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    Auditable auditable2 = new Auditable();
+    auditable2.setCreatedBy(1L);
+    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setUpdatedBy(1L);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable2);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+
+    OrderItemImpl item = new OrderItemImpl();
+    item.setAuditable(auditable);
+    item.setCandidateItemOffers(new ArrayList<>());
+    item.setCartMessages(new ArrayList<>());
+    item.setChildOrderItems(new ArrayList<>());
+    item.setDiscountingAllowed(true);
+    item.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    item.setHasValidationError(true);
+    item.setId(1L);
+    item.setName("Name");
+    item.setOrder(order);
+    item.setOrderItemAdjustments(new ArrayList<>());
+    item.setOrderItemAttributes(new HashMap<>());
+    item.setOrderItemPriceDetails(new ArrayList<>());
+    item.setOrderItemQualifiers(new ArrayList<>());
+    item.setOrderItemType(OrderItemType.BASIC);
+    item.setParentOrderItem(new BundleOrderItemImpl());
+    item.setPersonalMessage(new PersonalMessageImpl());
+    item.setPrice(new Money());
+    item.setProratedOrderItemAdjustments(new ArrayList<>());
+    item.setQuantity(1);
+    item.setRetailPrice(new Money());
+    item.setRetailPriceOverride(true);
+    item.setSalePrice(new Money());
+    item.setSalePriceOverride(true);
+    item.setTaxable(true);
+    item.updateSaleAndRetailPrices();
+
+    // Act and Assert
+    assertThrows(RequiredAttributeNotProvidedException.class,
+        () -> legacyOrderServiceImpl.addItemToFulfillmentGroup(item, new FulfillmentGroupImpl(), true));
+    verify(fulfillmentGroupDao).readDefaultFulfillmentGroupForOrder(isA(Order.class));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addItemToFulfillmentGroup(OrderItem, FulfillmentGroup, int)} with {@code item}, {@code fulfillmentGroup}, {@code quantity}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addItemToFulfillmentGroup(OrderItem, FulfillmentGroup, int)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FulfillmentGroup LegacyOrderServiceImpl.addItemToFulfillmentGroup(OrderItem, FulfillmentGroup, int)"})
+  public void testAddItemToFulfillmentGroupWithItemFulfillmentGroupQuantity() throws PricingException {
+    // Arrange
+    when(fulfillmentGroupDao.readDefaultFulfillmentGroupForOrder(Mockito.<Order>any()))
+        .thenThrow(new RequiredAttributeNotProvidedException("Attribute Name"));
+
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    Auditable auditable2 = new Auditable();
+    auditable2.setCreatedBy(1L);
+    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setUpdatedBy(1L);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable2);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+
+    OrderItemImpl item = new OrderItemImpl();
+    item.setAuditable(auditable);
+    item.setCandidateItemOffers(new ArrayList<>());
+    item.setCartMessages(new ArrayList<>());
+    item.setChildOrderItems(new ArrayList<>());
+    item.setDiscountingAllowed(true);
+    item.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    item.setHasValidationError(true);
+    item.setId(1L);
+    item.setName("Name");
+    item.setOrder(order);
+    item.setOrderItemAdjustments(new ArrayList<>());
+    item.setOrderItemAttributes(new HashMap<>());
+    item.setOrderItemPriceDetails(new ArrayList<>());
+    item.setOrderItemQualifiers(new ArrayList<>());
+    item.setOrderItemType(OrderItemType.BASIC);
+    item.setParentOrderItem(new BundleOrderItemImpl());
+    item.setPersonalMessage(new PersonalMessageImpl());
+    item.setPrice(new Money());
+    item.setProratedOrderItemAdjustments(new ArrayList<>());
+    item.setQuantity(1);
+    item.setRetailPrice(new Money());
+    item.setRetailPriceOverride(true);
+    item.setSalePrice(new Money());
+    item.setSalePriceOverride(true);
+    item.setTaxable(true);
+    item.updateSaleAndRetailPrices();
+
+    // Act and Assert
+    assertThrows(RequiredAttributeNotProvidedException.class,
+        () -> legacyOrderServiceImpl.addItemToFulfillmentGroup(item, new FulfillmentGroupImpl(), 2));
+    verify(fulfillmentGroupDao).readDefaultFulfillmentGroupForOrder(isA(Order.class));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addItemToFulfillmentGroup(OrderItem, FulfillmentGroup, int, boolean)} with {@code item}, {@code fulfillmentGroup}, {@code quantity}, {@code priceOrder}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addItemToFulfillmentGroup(OrderItem, FulfillmentGroup, int, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FulfillmentGroup LegacyOrderServiceImpl.addItemToFulfillmentGroup(OrderItem, FulfillmentGroup, int, boolean)"})
+  public void testAddItemToFulfillmentGroupWithItemFulfillmentGroupQuantityPriceOrder() throws PricingException {
+    // Arrange
+    when(fulfillmentGroupDao.readDefaultFulfillmentGroupForOrder(Mockito.<Order>any()))
+        .thenThrow(new RequiredAttributeNotProvidedException("Attribute Name"));
+
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    Auditable auditable2 = new Auditable();
+    auditable2.setCreatedBy(1L);
+    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setUpdatedBy(1L);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable2);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+
+    OrderItemImpl item = new OrderItemImpl();
+    item.setAuditable(auditable);
+    item.setCandidateItemOffers(new ArrayList<>());
+    item.setCartMessages(new ArrayList<>());
+    item.setChildOrderItems(new ArrayList<>());
+    item.setDiscountingAllowed(true);
+    item.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    item.setHasValidationError(true);
+    item.setId(1L);
+    item.setName("Name");
+    item.setOrder(order);
+    item.setOrderItemAdjustments(new ArrayList<>());
+    item.setOrderItemAttributes(new HashMap<>());
+    item.setOrderItemPriceDetails(new ArrayList<>());
+    item.setOrderItemQualifiers(new ArrayList<>());
+    item.setOrderItemType(OrderItemType.BASIC);
+    item.setParentOrderItem(new BundleOrderItemImpl());
+    item.setPersonalMessage(new PersonalMessageImpl());
+    item.setPrice(new Money());
+    item.setProratedOrderItemAdjustments(new ArrayList<>());
+    item.setQuantity(1);
+    item.setRetailPrice(new Money());
+    item.setRetailPriceOverride(true);
+    item.setSalePrice(new Money());
+    item.setSalePriceOverride(true);
+    item.setTaxable(true);
+    item.updateSaleAndRetailPrices();
+
+    // Act and Assert
+    assertThrows(RequiredAttributeNotProvidedException.class,
+        () -> legacyOrderServiceImpl.addItemToFulfillmentGroup(item, new FulfillmentGroupImpl(), 2, true));
+    verify(fulfillmentGroupDao).readDefaultFulfillmentGroupForOrder(isA(Order.class));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addItemToFulfillmentGroup(Order, OrderItem, FulfillmentGroup, int, boolean)} with {@code order}, {@code item}, {@code fulfillmentGroup}, {@code quantity}, {@code priceOrder}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addItemToFulfillmentGroup(Order, OrderItem, FulfillmentGroup, int, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FulfillmentGroup LegacyOrderServiceImpl.addItemToFulfillmentGroup(Order, OrderItem, FulfillmentGroup, int, boolean)"})
+  public void testAddItemToFulfillmentGroupWithOrderItemFulfillmentGroupQuantityPriceOrder() throws PricingException {
+    // Arrange
+    when(fulfillmentGroupDao.readDefaultFulfillmentGroupForOrder(Mockito.<Order>any()))
+        .thenThrow(new RequiredAttributeNotProvidedException("Attribute Name"));
+
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+    BundleOrderItemImpl item = new BundleOrderItemImpl();
+
+    // Act and Assert
+    assertThrows(RequiredAttributeNotProvidedException.class,
+        () -> legacyOrderServiceImpl.addItemToFulfillmentGroup(order, item, new FulfillmentGroupImpl(), 2, true));
+    verify(fulfillmentGroupDao).readDefaultFulfillmentGroupForOrder(isA(Order.class));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addItemToFulfillmentGroup(Order, OrderItem, FulfillmentGroup, int, boolean)} with {@code order}, {@code item}, {@code fulfillmentGroup}, {@code quantity}, {@code priceOrder}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addItemToFulfillmentGroup(Order, OrderItem, FulfillmentGroup, int, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FulfillmentGroup LegacyOrderServiceImpl.addItemToFulfillmentGroup(Order, OrderItem, FulfillmentGroup, int, boolean)"})
+  public void testAddItemToFulfillmentGroupWithOrderItemFulfillmentGroupQuantityPriceOrder2() throws PricingException {
+    // Arrange
+    when(orderDao.save(Mockito.<Order>any())).thenReturn(new NullOrderImpl());
+    when(pricingService.executePricing(Mockito.<Order>any())).thenReturn(new NullOrderImpl());
+    when(fulfillmentGroupItemDao.save(Mockito.<FulfillmentGroupItem>any())).thenReturn(new FulfillmentGroupItemImpl());
+    when(fulfillmentGroupItemDao.create()).thenReturn(new FulfillmentGroupItemImpl());
+
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+    BundleOrderItemImpl item = new BundleOrderItemImpl();
+    FulfillmentGroupImpl fulfillmentGroup = mock(FulfillmentGroupImpl.class);
+    when(fulfillmentGroup.getId()).thenReturn(1L);
+    doNothing().when(fulfillmentGroup).addFulfillmentGroupItem(Mockito.<FulfillmentGroupItem>any());
+
+    // Act
+    FulfillmentGroup actualAddItemToFulfillmentGroupResult = legacyOrderServiceImpl.addItemToFulfillmentGroup(order,
+        item, fulfillmentGroup, 2, true);
+
+    // Assert
+    verify(fulfillmentGroupItemDao).create();
+    verify(fulfillmentGroupItemDao).save(isA(FulfillmentGroupItem.class));
+    verify(orderDao).save(isA(Order.class));
+    verify(fulfillmentGroup).addFulfillmentGroupItem(isA(FulfillmentGroupItem.class));
+    verify(fulfillmentGroup).getId();
+    verify(pricingService).executePricing(isA(Order.class));
+    assertSame(fulfillmentGroup, actualAddItemToFulfillmentGroupResult);
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#updateItemQuantity(Order, OrderItem, boolean)} with {@code order}, {@code item}, {@code priceOrder}.
+   * <ul>
+   *   <li>Then throw {@link ItemNotFoundException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#updateItemQuantity(Order, OrderItem, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void LegacyOrderServiceImpl.updateItemQuantity(Order, OrderItem, boolean)"})
+  public void testUpdateItemQuantityWithOrderItemPriceOrder_thenThrowItemNotFoundException()
+      throws ItemNotFoundException, PricingException {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(new BundleOrderItemImpl());
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
     order.setTotalTax(new Money());
     order.setOrderItems(orderItems);
 
@@ -1767,6 +1720,7 @@ public class LegacyOrderServiceImplDiffblueTest {
     item.setOrderItemType(OrderItemType.BASIC);
     item.setParentOrderItem(new BundleOrderItemImpl());
     item.setPersonalMessage(new PersonalMessageImpl());
+    item.setPrice(new Money());
     item.setProratedOrderItemAdjustments(new ArrayList<>());
     item.setRetailPrice(new Money());
     item.setRetailPriceOverride(true);
@@ -1781,23 +1735,19 @@ public class LegacyOrderServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link LegacyOrderServiceImpl#updateItemQuantity(Order, OrderItem)} with
-   * {@code order}, {@code item}.
+   * Test {@link LegacyOrderServiceImpl#updateItemQuantity(Order, OrderItem)} with {@code order}, {@code item}.
    * <ul>
    *   <li>Then throw {@link ItemNotFoundException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#updateItemQuantity(Order, OrderItem)}
+   * Method under test: {@link LegacyOrderServiceImpl#updateItemQuantity(Order, OrderItem)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void LegacyOrderServiceImpl.updateItemQuantity(Order, OrderItem)"})
   public void testUpdateItemQuantityWithOrderItem_thenThrowItemNotFoundException()
       throws ItemNotFoundException, PricingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    LegacyOrderServiceImpl legacyOrderServiceImpl = new LegacyOrderServiceImpl();
-
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
     auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
@@ -1828,7 +1778,6 @@ public class LegacyOrderServiceImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setOrderItems(orderItems);
 
@@ -1860,6 +1809,7 @@ public class LegacyOrderServiceImplDiffblueTest {
     item.setOrderItemType(OrderItemType.BASIC);
     item.setParentOrderItem(new BundleOrderItemImpl());
     item.setPersonalMessage(new PersonalMessageImpl());
+    item.setPrice(new Money());
     item.setProratedOrderItemAdjustments(new ArrayList<>());
     item.setRetailPrice(new Money());
     item.setRetailPriceOverride(true);
@@ -1874,403 +1824,929 @@ public class LegacyOrderServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link LegacyOrderServiceImpl#updateItemQuantity(Order, OrderItemRequestDTO)}
-   * with {@code order}, {@code orderItemRequestDTO}.
+   * Test {@link LegacyOrderServiceImpl#removeAllFulfillmentGroupsFromOrder(Order)} with {@code order}.
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#updateItemQuantity(Order, OrderItemRequestDTO)}
+   * Method under test: {@link LegacyOrderServiceImpl#removeAllFulfillmentGroupsFromOrder(Order)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testUpdateItemQuantityWithOrderOrderItemRequestDTO() throws ItemNotFoundException, PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1004 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void LegacyOrderServiceImpl.removeAllFulfillmentGroupsFromOrder(Order)"})
+  public void testRemoveAllFulfillmentGroupsFromOrderWithOrder() throws PricingException {
     // Arrange
-    NullOrderImpl order = new NullOrderImpl();
+    when(orderDao.save(Mockito.<Order>any())).thenReturn(new NullOrderImpl());
+
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+    order.setFulfillmentGroups(new ArrayList<>());
 
     // Act
-    legacyOrderServiceImpl.updateItemQuantity(order, new OrderItemRequestDTO());
+    legacyOrderServiceImpl.removeAllFulfillmentGroupsFromOrder(order);
+
+    // Assert that nothing has changed
+    verify(orderDao).save(isA(Order.class));
+    assertTrue(order.getFulfillmentGroups().isEmpty());
   }
 
   /**
-   * Test
-   * {@link LegacyOrderServiceImpl#removeAllFulfillmentGroupsFromOrder(Order)}
-   * with {@code order}.
+   * Test {@link LegacyOrderServiceImpl#removeAllFulfillmentGroupsFromOrder(Order)} with {@code order}.
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#removeAllFulfillmentGroupsFromOrder(Order)}
+   * Method under test: {@link LegacyOrderServiceImpl#removeAllFulfillmentGroupsFromOrder(Order)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testRemoveAllFulfillmentGroupsFromOrderWithOrder() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass990 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    legacyOrderServiceImpl.removeAllFulfillmentGroupsFromOrder(new NullOrderImpl());
-  }
-
-  /**
-   * Test
-   * {@link LegacyOrderServiceImpl#removeAllFulfillmentGroupsFromOrder(Order, boolean)}
-   * with {@code order}, {@code priceOrder}.
-   * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#removeAllFulfillmentGroupsFromOrder(Order, boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testRemoveAllFulfillmentGroupsFromOrderWithOrderPriceOrder() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass991 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    legacyOrderServiceImpl.removeAllFulfillmentGroupsFromOrder(new NullOrderImpl(), true);
-  }
-
-  /**
-   * Test
-   * {@link LegacyOrderServiceImpl#removeFulfillmentGroupFromOrder(Order, FulfillmentGroup)}
-   * with {@code order}, {@code fulfillmentGroup}.
-   * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#removeFulfillmentGroupFromOrder(Order, FulfillmentGroup)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testRemoveFulfillmentGroupFromOrderWithOrderFulfillmentGroup() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass992 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void LegacyOrderServiceImpl.removeAllFulfillmentGroupsFromOrder(Order)"})
+  public void testRemoveAllFulfillmentGroupsFromOrderWithOrder2() throws PricingException {
     // Arrange
-    NullOrderImpl order = new NullOrderImpl();
+    when(orderDao.save(Mockito.<Order>any())).thenReturn(new NullOrderImpl());
+    doNothing().when(fulfillmentGroupDao).delete(Mockito.<FulfillmentGroup>any());
+
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    ArrayList<FulfillmentGroup> fulfillmentGroups = new ArrayList<>();
+    fulfillmentGroups.add(new FulfillmentGroupImpl());
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+    order.setFulfillmentGroups(fulfillmentGroups);
+
+    // Act
+    legacyOrderServiceImpl.removeAllFulfillmentGroupsFromOrder(order);
+
+    // Assert
+    verify(fulfillmentGroupDao).delete(isA(FulfillmentGroup.class));
+    verify(orderDao).save(isA(Order.class));
+    assertTrue(order.getFulfillmentGroups().isEmpty());
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#removeAllFulfillmentGroupsFromOrder(Order)} with {@code order}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#removeAllFulfillmentGroupsFromOrder(Order)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void LegacyOrderServiceImpl.removeAllFulfillmentGroupsFromOrder(Order)"})
+  public void testRemoveAllFulfillmentGroupsFromOrderWithOrder3() throws PricingException {
+    // Arrange
+    doThrow(new IllegalArgumentException("foo")).when(fulfillmentGroupDao).delete(Mockito.<FulfillmentGroup>any());
+
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    ArrayList<FulfillmentGroup> fulfillmentGroups = new ArrayList<>();
+    fulfillmentGroups.add(new FulfillmentGroupImpl());
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+    order.setFulfillmentGroups(fulfillmentGroups);
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.removeAllFulfillmentGroupsFromOrder(order));
+    verify(fulfillmentGroupDao).delete(isA(FulfillmentGroup.class));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#removeAllFulfillmentGroupsFromOrder(Order)} with {@code order}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#removeAllFulfillmentGroupsFromOrder(Order)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void LegacyOrderServiceImpl.removeAllFulfillmentGroupsFromOrder(Order)"})
+  public void testRemoveAllFulfillmentGroupsFromOrderWithOrder4() throws PricingException {
+    // Arrange
+    when(orderDao.save(Mockito.<Order>any())).thenThrow(new IllegalArgumentException("foo"));
+
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.removeAllFulfillmentGroupsFromOrder(order));
+    verify(orderDao).save(isA(Order.class));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#removeAllFulfillmentGroupsFromOrder(Order, boolean)} with {@code order}, {@code priceOrder}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#removeAllFulfillmentGroupsFromOrder(Order, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void LegacyOrderServiceImpl.removeAllFulfillmentGroupsFromOrder(Order, boolean)"})
+  public void testRemoveAllFulfillmentGroupsFromOrderWithOrderPriceOrder() throws PricingException {
+    // Arrange
+    when(orderDao.save(Mockito.<Order>any())).thenReturn(new NullOrderImpl());
+    when(pricingService.executePricing(Mockito.<Order>any())).thenReturn(new NullOrderImpl());
+
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+    order.setFulfillmentGroups(new ArrayList<>());
+
+    // Act
+    legacyOrderServiceImpl.removeAllFulfillmentGroupsFromOrder(order, true);
+
+    // Assert that nothing has changed
+    verify(orderDao).save(isA(Order.class));
+    verify(pricingService).executePricing(isA(Order.class));
+    assertTrue(order.getFulfillmentGroups().isEmpty());
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#removeAllFulfillmentGroupsFromOrder(Order, boolean)} with {@code order}, {@code priceOrder}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#removeAllFulfillmentGroupsFromOrder(Order, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void LegacyOrderServiceImpl.removeAllFulfillmentGroupsFromOrder(Order, boolean)"})
+  public void testRemoveAllFulfillmentGroupsFromOrderWithOrderPriceOrder2() throws PricingException {
+    // Arrange
+    when(pricingService.executePricing(Mockito.<Order>any())).thenThrow(new IllegalArgumentException("foo"));
+
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+    order.setFulfillmentGroups(new ArrayList<>());
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.removeAllFulfillmentGroupsFromOrder(order, true));
+    verify(pricingService).executePricing(isA(Order.class));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#removeAllFulfillmentGroupsFromOrder(Order, boolean)} with {@code order}, {@code priceOrder}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#removeAllFulfillmentGroupsFromOrder(Order, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void LegacyOrderServiceImpl.removeAllFulfillmentGroupsFromOrder(Order, boolean)"})
+  public void testRemoveAllFulfillmentGroupsFromOrderWithOrderPriceOrder3() throws PricingException {
+    // Arrange
+    when(orderDao.save(Mockito.<Order>any())).thenReturn(new NullOrderImpl());
+    when(pricingService.executePricing(Mockito.<Order>any())).thenReturn(new NullOrderImpl());
+    doNothing().when(fulfillmentGroupDao).delete(Mockito.<FulfillmentGroup>any());
+
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    ArrayList<FulfillmentGroup> fulfillmentGroups = new ArrayList<>();
+    fulfillmentGroups.add(new FulfillmentGroupImpl());
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+    order.setFulfillmentGroups(fulfillmentGroups);
+
+    // Act
+    legacyOrderServiceImpl.removeAllFulfillmentGroupsFromOrder(order, true);
+
+    // Assert
+    verify(fulfillmentGroupDao).delete(isA(FulfillmentGroup.class));
+    verify(orderDao).save(isA(Order.class));
+    verify(pricingService).executePricing(isA(Order.class));
+    assertTrue(order.getFulfillmentGroups().isEmpty());
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#removeAllFulfillmentGroupsFromOrder(Order, boolean)} with {@code order}, {@code priceOrder}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#removeAllFulfillmentGroupsFromOrder(Order, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void LegacyOrderServiceImpl.removeAllFulfillmentGroupsFromOrder(Order, boolean)"})
+  public void testRemoveAllFulfillmentGroupsFromOrderWithOrderPriceOrder4() throws PricingException {
+    // Arrange
+    doThrow(new IllegalArgumentException("foo")).when(fulfillmentGroupDao).delete(Mockito.<FulfillmentGroup>any());
+
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    ArrayList<FulfillmentGroup> fulfillmentGroups = new ArrayList<>();
+    fulfillmentGroups.add(new FulfillmentGroupImpl());
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+    order.setFulfillmentGroups(fulfillmentGroups);
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.removeAllFulfillmentGroupsFromOrder(order, true));
+    verify(fulfillmentGroupDao).delete(isA(FulfillmentGroup.class));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#removeFulfillmentGroupFromOrder(Order, FulfillmentGroup)} with {@code order}, {@code fulfillmentGroup}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#removeFulfillmentGroupFromOrder(Order, FulfillmentGroup)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void LegacyOrderServiceImpl.removeFulfillmentGroupFromOrder(Order, FulfillmentGroup)"})
+  public void testRemoveFulfillmentGroupFromOrderWithOrderFulfillmentGroup() throws PricingException {
+    // Arrange
+    when(orderDao.save(Mockito.<Order>any())).thenReturn(new NullOrderImpl());
+    when(pricingService.executePricing(Mockito.<Order>any())).thenReturn(new NullOrderImpl());
+    doNothing().when(fulfillmentGroupDao).delete(Mockito.<FulfillmentGroup>any());
+
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+    order.setFulfillmentGroups(new ArrayList<>());
 
     // Act
     legacyOrderServiceImpl.removeFulfillmentGroupFromOrder(order, new FulfillmentGroupImpl());
+
+    // Assert
+    verify(fulfillmentGroupDao).delete(isA(FulfillmentGroup.class));
+    verify(orderDao).save(isA(Order.class));
+    verify(pricingService).executePricing(isA(Order.class));
   }
 
   /**
-   * Test
-   * {@link LegacyOrderServiceImpl#removeFulfillmentGroupFromOrder(Order, FulfillmentGroup, boolean)}
-   * with {@code order}, {@code fulfillmentGroup}, {@code priceOrder}.
+   * Test {@link LegacyOrderServiceImpl#removeFulfillmentGroupFromOrder(Order, FulfillmentGroup)} with {@code order}, {@code fulfillmentGroup}.
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#removeFulfillmentGroupFromOrder(Order, FulfillmentGroup, boolean)}
+   * Method under test: {@link LegacyOrderServiceImpl#removeFulfillmentGroupFromOrder(Order, FulfillmentGroup)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testRemoveFulfillmentGroupFromOrderWithOrderFulfillmentGroupPriceOrder() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass993 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void LegacyOrderServiceImpl.removeFulfillmentGroupFromOrder(Order, FulfillmentGroup)"})
+  public void testRemoveFulfillmentGroupFromOrderWithOrderFulfillmentGroup2() throws PricingException {
     // Arrange
-    NullOrderImpl order = new NullOrderImpl();
+    doThrow(new IllegalArgumentException("foo")).when(fulfillmentGroupDao).delete(Mockito.<FulfillmentGroup>any());
+
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+    order.setFulfillmentGroups(new ArrayList<>());
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.removeFulfillmentGroupFromOrder(order, new FulfillmentGroupImpl()));
+    verify(fulfillmentGroupDao).delete(isA(FulfillmentGroup.class));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#removeFulfillmentGroupFromOrder(Order, FulfillmentGroup)} with {@code order}, {@code fulfillmentGroup}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#removeFulfillmentGroupFromOrder(Order, FulfillmentGroup)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void LegacyOrderServiceImpl.removeFulfillmentGroupFromOrder(Order, FulfillmentGroup)"})
+  public void testRemoveFulfillmentGroupFromOrderWithOrderFulfillmentGroup3() throws PricingException {
+    // Arrange
+    when(orderDao.save(Mockito.<Order>any())).thenThrow(new IllegalArgumentException("foo"));
+    when(pricingService.executePricing(Mockito.<Order>any())).thenReturn(new NullOrderImpl());
+    doNothing().when(fulfillmentGroupDao).delete(Mockito.<FulfillmentGroup>any());
+
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.removeFulfillmentGroupFromOrder(order, new FulfillmentGroupImpl()));
+    verify(fulfillmentGroupDao).delete(isA(FulfillmentGroup.class));
+    verify(orderDao).save(isA(Order.class));
+    verify(pricingService).executePricing(isA(Order.class));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#removeFulfillmentGroupFromOrder(Order, FulfillmentGroup, boolean)} with {@code order}, {@code fulfillmentGroup}, {@code priceOrder}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#removeFulfillmentGroupFromOrder(Order, FulfillmentGroup, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void LegacyOrderServiceImpl.removeFulfillmentGroupFromOrder(Order, FulfillmentGroup, boolean)"})
+  public void testRemoveFulfillmentGroupFromOrderWithOrderFulfillmentGroupPriceOrder() throws PricingException {
+    // Arrange
+    when(orderDao.save(Mockito.<Order>any())).thenReturn(new NullOrderImpl());
+    when(pricingService.executePricing(Mockito.<Order>any())).thenReturn(new NullOrderImpl());
+    doNothing().when(fulfillmentGroupDao).delete(Mockito.<FulfillmentGroup>any());
+
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+    order.setFulfillmentGroups(new ArrayList<>());
 
     // Act
     legacyOrderServiceImpl.removeFulfillmentGroupFromOrder(order, new FulfillmentGroupImpl(), true);
+
+    // Assert
+    verify(fulfillmentGroupDao).delete(isA(FulfillmentGroup.class));
+    verify(orderDao).save(isA(Order.class));
+    verify(pricingService).executePricing(isA(Order.class));
   }
 
   /**
-   * Test
-   * {@link LegacyOrderServiceImpl#removeNamedOrderForCustomer(String, Customer)}.
+   * Test {@link LegacyOrderServiceImpl#removeFulfillmentGroupFromOrder(Order, FulfillmentGroup, boolean)} with {@code order}, {@code fulfillmentGroup}, {@code priceOrder}.
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#removeNamedOrderForCustomer(String, Customer)}
+   * Method under test: {@link LegacyOrderServiceImpl#removeFulfillmentGroupFromOrder(Order, FulfillmentGroup, boolean)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testRemoveNamedOrderForCustomer() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass999 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void LegacyOrderServiceImpl.removeFulfillmentGroupFromOrder(Order, FulfillmentGroup, boolean)"})
+  public void testRemoveFulfillmentGroupFromOrderWithOrderFulfillmentGroupPriceOrder2() throws PricingException {
+    // Arrange
+    doThrow(new IllegalArgumentException("foo")).when(fulfillmentGroupDao).delete(Mockito.<FulfillmentGroup>any());
 
-    // Arrange and Act
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+    order.setFulfillmentGroups(new ArrayList<>());
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.removeFulfillmentGroupFromOrder(order, new FulfillmentGroupImpl(), true));
+    verify(fulfillmentGroupDao).delete(isA(FulfillmentGroup.class));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#removeFulfillmentGroupFromOrder(Order, FulfillmentGroup, boolean)} with {@code order}, {@code fulfillmentGroup}, {@code priceOrder}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#removeFulfillmentGroupFromOrder(Order, FulfillmentGroup, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void LegacyOrderServiceImpl.removeFulfillmentGroupFromOrder(Order, FulfillmentGroup, boolean)"})
+  public void testRemoveFulfillmentGroupFromOrderWithOrderFulfillmentGroupPriceOrder3() throws PricingException {
+    // Arrange
+    when(orderDao.save(Mockito.<Order>any())).thenThrow(new IllegalArgumentException("foo"));
+    when(pricingService.executePricing(Mockito.<Order>any())).thenReturn(new NullOrderImpl());
+    doNothing().when(fulfillmentGroupDao).delete(Mockito.<FulfillmentGroup>any());
+
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.removeFulfillmentGroupFromOrder(order, new FulfillmentGroupImpl(), true));
+    verify(fulfillmentGroupDao).delete(isA(FulfillmentGroup.class));
+    verify(orderDao).save(isA(Order.class));
+    verify(pricingService).executePricing(isA(Order.class));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#removeNamedOrderForCustomer(String, Customer)}.
+   * <ul>
+   *   <li>Then calls {@link OrderDao#delete(Order)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#removeNamedOrderForCustomer(String, Customer)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void LegacyOrderServiceImpl.removeNamedOrderForCustomer(String, Customer)"})
+  public void testRemoveNamedOrderForCustomer_thenCallsDelete() {
+    // Arrange
+    when(orderDao.readNamedOrderForCustomer(Mockito.<Customer>any(), Mockito.<String>any()))
+        .thenReturn(new NullOrderImpl());
+    doNothing().when(orderDao).delete(Mockito.<Order>any());
+
+    // Act
     legacyOrderServiceImpl.removeNamedOrderForCustomer("Name", new CustomerImpl());
+
+    // Assert
+    verify(orderDao).delete(isA(Order.class));
+    verify(orderDao).readNamedOrderForCustomer(isA(Customer.class), eq("Name"));
   }
 
   /**
    * Test {@link LegacyOrderServiceImpl#readPaymentInfosForOrder(Order)}.
+   * <ul>
+   *   <li>Then return Empty.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#readPaymentInfosForOrder(Order)}
+   * Method under test: {@link LegacyOrderServiceImpl#readPaymentInfosForOrder(Order)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testReadPaymentInfosForOrder() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass989 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List LegacyOrderServiceImpl.readPaymentInfosForOrder(Order)"})
+  public void testReadPaymentInfosForOrder_thenReturnEmpty() {
+    // Arrange
+    when(orderPaymentDao.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(new ArrayList<>());
 
-    // Arrange and Act
-    legacyOrderServiceImpl.readPaymentInfosForOrder(new NullOrderImpl());
+    // Act
+    List<OrderPayment> actualReadPaymentInfosForOrderResult = legacyOrderServiceImpl
+        .readPaymentInfosForOrder(new NullOrderImpl());
+
+    // Assert
+    verify(orderPaymentDao).readPaymentsForOrder(isA(Order.class));
+    assertTrue(actualReadPaymentInfosForOrderResult.isEmpty());
   }
 
   /**
-   * Test
-   * {@link LegacyOrderServiceImpl#itemMatches(DiscreteOrderItem, DiscreteOrderItem)}
-   * with {@code item1}, {@code item2}.
+   * Test {@link LegacyOrderServiceImpl#readPaymentInfosForOrder(Order)}.
+   * <ul>
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#itemMatches(DiscreteOrderItem, DiscreteOrderItem)}
+   * Method under test: {@link LegacyOrderServiceImpl#readPaymentInfosForOrder(Order)}
    */
   @Test
-  public void testItemMatchesWithItem1Item2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List LegacyOrderServiceImpl.readPaymentInfosForOrder(Order)"})
+  public void testReadPaymentInfosForOrder_thenThrowIllegalArgumentException() {
     // Arrange
-    LegacyOrderServiceImpl legacyOrderServiceImpl = new LegacyOrderServiceImpl();
+    when(orderPaymentDao.readPaymentsForOrder(Mockito.<Order>any())).thenThrow(new IllegalArgumentException("foo"));
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.readPaymentInfosForOrder(new NullOrderImpl()));
+    verify(orderPaymentDao).readPaymentsForOrder(isA(Order.class));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#itemMatches(DiscreteOrderItem, DiscreteOrderItem)} with {@code item1}, {@code item2}.
+   * <ul>
+   *   <li>Given {@link SkuImpl} {@link SkuImpl#getId()} return one.</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#itemMatches(DiscreteOrderItem, DiscreteOrderItem)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean LegacyOrderServiceImpl.itemMatches(DiscreteOrderItem, DiscreteOrderItem)"})
+  public void testItemMatchesWithItem1Item2_givenSkuImplGetIdReturnOne_thenReturnFalse() {
+    // Arrange
+    SkuImpl skuImpl = mock(SkuImpl.class);
+    when(skuImpl.getId()).thenReturn(1L);
+    DiscreteOrderItem item1 = mock(DiscreteOrderItem.class);
+    when(item1.getSku()).thenReturn(skuImpl);
+    DiscreteOrderItem item2 = mock(DiscreteOrderItem.class);
+    when(item2.getSku()).thenReturn(new SkuImpl());
+
+    // Act
+    boolean actualItemMatchesResult = legacyOrderServiceImpl.itemMatches(item1, item2);
+
+    // Assert
+    verify(skuImpl).getId();
+    verify(item1, atLeast(1)).getSku();
+    verify(item2, atLeast(1)).getSku();
+    assertFalse(actualItemMatchesResult);
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#itemMatches(DiscreteOrderItem, DiscreteOrderItem)} with {@code item1}, {@code item2}.
+   * <ul>
+   *   <li>Given {@link SkuImpl} {@link SkuImpl#getId()} return one.</li>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#itemMatches(DiscreteOrderItem, DiscreteOrderItem)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean LegacyOrderServiceImpl.itemMatches(DiscreteOrderItem, DiscreteOrderItem)"})
+  public void testItemMatchesWithItem1Item2_givenSkuImplGetIdReturnOne_thenReturnTrue() {
+    // Arrange
+    SkuImpl skuImpl = mock(SkuImpl.class);
+    when(skuImpl.getId()).thenReturn(1L);
+    DiscreteOrderItem item1 = mock(DiscreteOrderItem.class);
+    when(item1.getSku()).thenReturn(skuImpl);
+    SkuImpl skuImpl2 = mock(SkuImpl.class);
+    when(skuImpl2.getId()).thenReturn(1L);
+    DiscreteOrderItem item2 = mock(DiscreteOrderItem.class);
+    when(item2.getSku()).thenReturn(skuImpl2);
+
+    // Act
+    boolean actualItemMatchesResult = legacyOrderServiceImpl.itemMatches(item1, item2);
+
+    // Assert
+    verify(skuImpl).getId();
+    verify(skuImpl2).getId();
+    verify(item1, atLeast(1)).getSku();
+    verify(item2, atLeast(1)).getSku();
+    assertTrue(actualItemMatchesResult);
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#itemMatches(DiscreteOrderItem, DiscreteOrderItem)} with {@code item1}, {@code item2}.
+   * <ul>
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#itemMatches(DiscreteOrderItem, DiscreteOrderItem)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean LegacyOrderServiceImpl.itemMatches(DiscreteOrderItem, DiscreteOrderItem)"})
+  public void testItemMatchesWithItem1Item2_thenThrowIllegalArgumentException() {
+    // Arrange
+    SkuImpl skuImpl = mock(SkuImpl.class);
+    when(skuImpl.getId()).thenReturn(1L);
+    DiscreteOrderItem item1 = mock(DiscreteOrderItem.class);
+    when(item1.getSku()).thenReturn(skuImpl);
+    SkuImpl skuImpl2 = mock(SkuImpl.class);
+    when(skuImpl2.getId()).thenThrow(new IllegalArgumentException("foo"));
+    DiscreteOrderItem item2 = mock(DiscreteOrderItem.class);
+    when(item2.getSku()).thenReturn(skuImpl2);
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> legacyOrderServiceImpl.itemMatches(item1, item2));
+    verify(skuImpl).getId();
+    verify(skuImpl2).getId();
+    verify(item1, atLeast(1)).getSku();
+    verify(item2, atLeast(1)).getSku();
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#itemMatches(DiscreteOrderItem, DiscreteOrderItem)} with {@code item1}, {@code item2}.
+   * <ul>
+   *   <li>When {@link DiscreteOrderItemImpl} (default constructor).</li>
+   *   <li>Then calls {@link DiscreteOrderItem#getProduct()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#itemMatches(DiscreteOrderItem, DiscreteOrderItem)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean LegacyOrderServiceImpl.itemMatches(DiscreteOrderItem, DiscreteOrderItem)"})
+  public void testItemMatchesWithItem1Item2_whenDiscreteOrderItemImpl_thenCallsGetProduct() {
+    // Arrange
+    DiscreteOrderItem item1 = mock(DiscreteOrderItem.class);
+    when(item1.getProduct()).thenReturn(new ProductBundleImpl());
+    when(item1.getSku()).thenReturn(new SkuImpl());
+
+    // Act
+    boolean actualItemMatchesResult = legacyOrderServiceImpl.itemMatches(item1, new DiscreteOrderItemImpl());
+
+    // Assert
+    verify(item1).getProduct();
+    verify(item1).getSku();
+    assertFalse(actualItemMatchesResult);
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#itemMatches(DiscreteOrderItem, DiscreteOrderItem)} with {@code item1}, {@code item2}.
+   * <ul>
+   *   <li>When {@link DiscreteOrderItemImpl} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#itemMatches(DiscreteOrderItem, DiscreteOrderItem)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean LegacyOrderServiceImpl.itemMatches(DiscreteOrderItem, DiscreteOrderItem)"})
+  public void testItemMatchesWithItem1Item2_whenDiscreteOrderItemImpl_thenReturnFalse() {
+    // Arrange
     DiscreteOrderItemImpl item1 = new DiscreteOrderItemImpl();
 
     // Act and Assert
@@ -2278,136 +2754,19 @@ public class LegacyOrderServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link LegacyOrderServiceImpl#itemMatches(DiscreteOrderItem, DiscreteOrderItem)}
-   * with {@code item1}, {@code item2}.
-   * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#itemMatches(DiscreteOrderItem, DiscreteOrderItem)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testItemMatchesWithItem1Item22() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass985 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DiscreteOrderItemImpl item1 = new DiscreteOrderItemImpl();
-
-    // Act
-    legacyOrderServiceImpl.itemMatches(item1, new DiscreteOrderItemImpl());
-  }
-
-  /**
-   * Test
-   * {@link LegacyOrderServiceImpl#findMatchingDiscreteItem(Order, DiscreteOrderItem)}.
-   * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#findMatchingDiscreteItem(Order, DiscreteOrderItem)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindMatchingDiscreteItem() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass981 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    NullOrderImpl order = new NullOrderImpl();
-
-    // Act
-    legacyOrderServiceImpl.findMatchingDiscreteItem(order, new DiscreteOrderItemImpl());
-  }
-
-  /**
-   * Test
-   * {@link LegacyOrderServiceImpl#findMatchingDiscreteItem(Order, DiscreteOrderItem)}.
+   * Test {@link LegacyOrderServiceImpl#findMatchingDiscreteItem(Order, DiscreteOrderItem)}.
    * <ul>
    *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#findMatchingDiscreteItem(Order, DiscreteOrderItem)}
+   * Method under test: {@link LegacyOrderServiceImpl#findMatchingDiscreteItem(Order, DiscreteOrderItem)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.findMatchingDiscreteItem(Order, DiscreteOrderItem)"})
   public void testFindMatchingDiscreteItem_givenAuditableCreatedByIsOne_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    LegacyOrderServiceImpl legacyOrderServiceImpl = new LegacyOrderServiceImpl();
-
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
     auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
@@ -2435,7 +2794,6 @@ public class LegacyOrderServiceImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setOrderItems(new ArrayList<>());
 
@@ -2444,18 +2802,107 @@ public class LegacyOrderServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link LegacyOrderServiceImpl#bundleItemMatches(BundleOrderItem, BundleOrderItem)}.
+   * Test {@link LegacyOrderServiceImpl#bundleItemMatches(BundleOrderItem, BundleOrderItem)}.
+   * <ul>
+   *   <li>Given {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then calls {@link BundleOrderItem#getDiscreteOrderItems()}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#bundleItemMatches(BundleOrderItem, BundleOrderItem)}
+   * Method under test: {@link LegacyOrderServiceImpl#bundleItemMatches(BundleOrderItem, BundleOrderItem)}
    */
   @Test
-  public void testBundleItemMatches() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean LegacyOrderServiceImpl.bundleItemMatches(BundleOrderItem, BundleOrderItem)"})
+  public void testBundleItemMatches_givenArrayList_thenCallsGetDiscreteOrderItems() {
     // Arrange
-    LegacyOrderServiceImpl legacyOrderServiceImpl = new LegacyOrderServiceImpl();
+    BundleOrderItem item1 = mock(BundleOrderItem.class);
+    when(item1.getDiscreteOrderItems()).thenReturn(new ArrayList<>());
+    when(item1.getSku()).thenReturn(new SkuImpl());
+
+    // Act
+    boolean actualBundleItemMatchesResult = legacyOrderServiceImpl.bundleItemMatches(item1, new BundleOrderItemImpl());
+
+    // Assert
+    verify(item1).getDiscreteOrderItems();
+    verify(item1).getSku();
+    assertTrue(actualBundleItemMatchesResult);
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#bundleItemMatches(BundleOrderItem, BundleOrderItem)}.
+   * <ul>
+   *   <li>Given {@link SkuImpl} {@link SkuImpl#getId()} return one.</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#bundleItemMatches(BundleOrderItem, BundleOrderItem)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean LegacyOrderServiceImpl.bundleItemMatches(BundleOrderItem, BundleOrderItem)"})
+  public void testBundleItemMatches_givenSkuImplGetIdReturnOne_thenReturnFalse() {
+    // Arrange
+    SkuImpl skuImpl = mock(SkuImpl.class);
+    when(skuImpl.getId()).thenReturn(1L);
+    BundleOrderItem item1 = mock(BundleOrderItem.class);
+    when(item1.getSku()).thenReturn(skuImpl);
+    BundleOrderItem item2 = mock(BundleOrderItem.class);
+    when(item2.getSku()).thenReturn(new SkuImpl());
+
+    // Act
+    boolean actualBundleItemMatchesResult = legacyOrderServiceImpl.bundleItemMatches(item1, item2);
+
+    // Assert
+    verify(skuImpl).getId();
+    verify(item1, atLeast(1)).getSku();
+    verify(item2, atLeast(1)).getSku();
+    assertFalse(actualBundleItemMatchesResult);
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#bundleItemMatches(BundleOrderItem, BundleOrderItem)}.
+   * <ul>
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#bundleItemMatches(BundleOrderItem, BundleOrderItem)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean LegacyOrderServiceImpl.bundleItemMatches(BundleOrderItem, BundleOrderItem)"})
+  public void testBundleItemMatches_thenThrowIllegalArgumentException() {
+    // Arrange
+    SkuImpl skuImpl = mock(SkuImpl.class);
+    when(skuImpl.getId()).thenReturn(1L);
+    BundleOrderItem item1 = mock(BundleOrderItem.class);
+    when(item1.getSku()).thenReturn(skuImpl);
+    SkuImpl skuImpl2 = mock(SkuImpl.class);
+    when(skuImpl2.getId()).thenThrow(new IllegalArgumentException("foo"));
+    BundleOrderItem item2 = mock(BundleOrderItem.class);
+    when(item2.getSku()).thenReturn(skuImpl2);
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> legacyOrderServiceImpl.bundleItemMatches(item1, item2));
+    verify(skuImpl).getId();
+    verify(skuImpl2).getId();
+    verify(item1, atLeast(1)).getSku();
+    verify(item2, atLeast(1)).getSku();
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#bundleItemMatches(BundleOrderItem, BundleOrderItem)}.
+   * <ul>
+   *   <li>When {@link BundleOrderItemImpl} (default constructor).</li>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#bundleItemMatches(BundleOrderItem, BundleOrderItem)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean LegacyOrderServiceImpl.bundleItemMatches(BundleOrderItem, BundleOrderItem)"})
+  public void testBundleItemMatches_whenBundleOrderItemImpl_thenReturnTrue() {
+    // Arrange
     BundleOrderItemImpl item1 = new BundleOrderItemImpl();
 
     // Act and Assert
@@ -2463,419 +2910,522 @@ public class LegacyOrderServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link LegacyOrderServiceImpl#bundleItemMatches(BundleOrderItem, BundleOrderItem)}.
+   * Test {@link LegacyOrderServiceImpl#findMatchingBundleItem(Order, BundleOrderItem)}.
+   * <ul>
+   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#bundleItemMatches(BundleOrderItem, BundleOrderItem)}
+   * Method under test: {@link LegacyOrderServiceImpl#findMatchingBundleItem(Order, BundleOrderItem)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testBundleItemMatches2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass969 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.findMatchingBundleItem(Order, BundleOrderItem)"})
+  public void testFindMatchingBundleItem_givenAuditableCreatedByIsOne_thenReturnNull() {
     // Arrange
-    BundleOrderItemImpl item1 = new BundleOrderItemImpl();
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
 
-    // Act
-    legacyOrderServiceImpl.bundleItemMatches(item1, new BundleOrderItemImpl());
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+
+    // Act and Assert
+    assertNull(legacyOrderServiceImpl.findMatchingBundleItem(order, new BundleOrderItemImpl()));
   }
 
   /**
-   * Test
-   * {@link LegacyOrderServiceImpl#findMatchingBundleItem(Order, BundleOrderItem)}.
+   * Test {@link LegacyOrderServiceImpl#findMatchingBundleItem(Order, BundleOrderItem)}.
+   * <ul>
+   *   <li>Then return {@link BundleOrderItemImpl} (default constructor).</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#findMatchingBundleItem(Order, BundleOrderItem)}
+   * Method under test: {@link LegacyOrderServiceImpl#findMatchingBundleItem(Order, BundleOrderItem)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindMatchingBundleItem() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass980 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.findMatchingBundleItem(Order, BundleOrderItem)"})
+  public void testFindMatchingBundleItem_thenReturnBundleOrderItemImpl() {
     // Arrange
-    NullOrderImpl order = new NullOrderImpl();
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
 
-    // Act
-    legacyOrderServiceImpl.findMatchingBundleItem(order, new BundleOrderItemImpl());
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    BundleOrderItemImpl bundleOrderItemImpl = new BundleOrderItemImpl();
+    orderItems.add(bundleOrderItemImpl);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(orderItems);
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+
+    // Act and Assert
+    assertSame(bundleOrderItemImpl, legacyOrderServiceImpl.findMatchingBundleItem(order, new BundleOrderItemImpl()));
   }
 
   /**
-   * Test {@link LegacyOrderServiceImpl#findMatchingItem(Order, OrderItem)} with
-   * {@code Order}, {@code OrderItem}.
+   * Test {@link LegacyOrderServiceImpl#findMatchingItem(Order, OrderItem)} with {@code Order}, {@code OrderItem}.
+   * <ul>
+   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#findMatchingItem(Order, OrderItem)}
+   * Method under test: {@link LegacyOrderServiceImpl#findMatchingItem(Order, OrderItem)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindMatchingItemWithOrderOrderItem() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass982 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.findMatchingItem(Order, OrderItem)"})
+  public void testFindMatchingItemWithOrderOrderItem_givenAuditableCreatedByIsOne() {
     // Arrange
-    NullOrderImpl order = new NullOrderImpl();
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    OrderItemImpl orderItem = new OrderItemImpl();
+    orderItem.setAuditable(auditable);
+    orderItem.setCandidateItemOffers(new ArrayList<>());
+    orderItem.setCartMessages(new ArrayList<>());
+    orderItem.setChildOrderItems(new ArrayList<>());
+    orderItem.setDiscountingAllowed(true);
+    orderItem.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    orderItem.setHasValidationError(true);
+    orderItem.setId(1L);
+    orderItem.setName("Name");
+    orderItem.setOrder(new NullOrderImpl());
+    orderItem.setOrderItemAdjustments(new ArrayList<>());
+    orderItem.setOrderItemAttributes(new HashMap<>());
+    orderItem.setOrderItemPriceDetails(new ArrayList<>());
+    orderItem.setOrderItemQualifiers(new ArrayList<>());
+    orderItem.setOrderItemType(OrderItemType.BASIC);
+    orderItem.setParentOrderItem(new BundleOrderItemImpl());
+    orderItem.setPersonalMessage(new PersonalMessageImpl());
+    orderItem.setPrice(new Money());
+    orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
+    orderItem.setQuantity(1);
+    orderItem.setRetailPrice(new Money());
+    orderItem.setRetailPriceOverride(true);
+    orderItem.setSalePrice(new Money());
+    orderItem.setSalePriceOverride(true);
+    orderItem.setTaxable(true);
+    orderItem.updateSaleAndRetailPrices();
+
+    OrderImpl order = new OrderImpl();
+    order.addOrderItem(orderItem);
+
+    // Act and Assert
+    assertNull(legacyOrderServiceImpl.findMatchingItem(order, new BundleOrderItemImpl()));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#findMatchingItem(Order, OrderItem)} with {@code Order}, {@code OrderItem}.
+   * <ul>
+   *   <li>Given {@link SkuImpl} {@link SkuImpl#getId()} return one.</li>
+   *   <li>Then calls {@link SkuImpl#getId()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#findMatchingItem(Order, OrderItem)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.findMatchingItem(Order, OrderItem)"})
+  public void testFindMatchingItemWithOrderOrderItem_givenSkuImplGetIdReturnOne_thenCallsGetId() {
+    // Arrange
+    SkuImpl skuImpl = mock(SkuImpl.class);
+    when(skuImpl.getId()).thenReturn(1L);
+    BundleOrderItemImpl orderItem = mock(BundleOrderItemImpl.class);
+    when(orderItem.getSku()).thenReturn(skuImpl);
+
+    OrderImpl order = new OrderImpl();
+    order.addOrderItem(orderItem);
+    BundleOrderItemImpl itemToFind = mock(BundleOrderItemImpl.class);
+    when(itemToFind.getSku()).thenReturn(new SkuImpl());
+
+    // Act
+    OrderItem actualFindMatchingItemResult = legacyOrderServiceImpl.findMatchingItem(order, itemToFind);
+
+    // Assert
+    verify(skuImpl).getId();
+    verify(orderItem, atLeast(1)).getSku();
+    verify(itemToFind, atLeast(1)).getSku();
+    assertNull(actualFindMatchingItemResult);
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#findMatchingItem(Order, OrderItem)} with {@code Order}, {@code OrderItem}.
+   * <ul>
+   *   <li>Then calls {@link BundleOrderItemImpl#getDiscreteOrderItems()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#findMatchingItem(Order, OrderItem)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.findMatchingItem(Order, OrderItem)"})
+  public void testFindMatchingItemWithOrderOrderItem_thenCallsGetDiscreteOrderItems() {
+    // Arrange
+    BundleOrderItemImpl orderItem = mock(BundleOrderItemImpl.class);
+    when(orderItem.getDiscreteOrderItems()).thenReturn(new ArrayList<>());
+    when(orderItem.getSku()).thenReturn(new SkuImpl());
+
+    OrderImpl order = new OrderImpl();
+    order.addOrderItem(orderItem);
 
     // Act
     legacyOrderServiceImpl.findMatchingItem(order, new BundleOrderItemImpl());
+
+    // Assert
+    verify(orderItem).getDiscreteOrderItems();
+    verify(orderItem).getSku();
   }
 
   /**
-   * Test
-   * {@link LegacyOrderServiceImpl#addOrderItemToBundle(Order, BundleOrderItem, DiscreteOrderItem, boolean)}.
-   * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#addOrderItemToBundle(Order, BundleOrderItem, DiscreteOrderItem, boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddOrderItemToBundle() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass961 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    NullOrderImpl order = new NullOrderImpl();
-    BundleOrderItemImpl bundle = new BundleOrderItemImpl();
-
-    // Act
-    legacyOrderServiceImpl.addOrderItemToBundle(order, bundle, new DiscreteOrderItemImpl(), true);
-  }
-
-  /**
-   * Test
-   * {@link LegacyOrderServiceImpl#removeItemFromBundle(Order, BundleOrderItem, OrderItem, boolean)}.
-   * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#removeItemFromBundle(Order, BundleOrderItem, OrderItem, boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testRemoveItemFromBundle() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass994 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    NullOrderImpl order = new NullOrderImpl();
-    BundleOrderItemImpl bundle = new BundleOrderItemImpl();
-
-    // Act
-    legacyOrderServiceImpl.removeItemFromBundle(order, bundle, new BundleOrderItemImpl(), true);
-  }
-
-  /**
-   * Test
-   * {@link LegacyOrderServiceImpl#addOrUpdateOrderItemAttributes(Order, OrderItem, Map, boolean)}.
-   * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#addOrUpdateOrderItemAttributes(Order, OrderItem, Map, boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddOrUpdateOrderItemAttributes() throws ItemNotFoundException, PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass960 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    NullOrderImpl order = new NullOrderImpl();
-    BundleOrderItemImpl item = new BundleOrderItemImpl();
-
-    // Act
-    legacyOrderServiceImpl.addOrUpdateOrderItemAttributes(order, item, new HashMap<>(), true);
-  }
-
-  /**
-   * Test
-   * {@link LegacyOrderServiceImpl#removeOrderItemAttribute(Order, OrderItem, String, boolean)}.
-   * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#removeOrderItemAttribute(Order, OrderItem, String, boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testRemoveOrderItemAttribute() throws ItemNotFoundException, PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1000 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    NullOrderImpl order = new NullOrderImpl();
-
-    // Act
-    legacyOrderServiceImpl.removeOrderItemAttribute(order, new BundleOrderItemImpl(), "Attribute Name", true);
-  }
-
-  /**
-   * Test
-   * {@link LegacyOrderServiceImpl#removeOrderItemAttribute(Order, OrderItem, String, boolean)}.
+   * Test {@link LegacyOrderServiceImpl#findMatchingItem(Order, OrderItem)} with {@code Order}, {@code OrderItem}.
    * <ul>
-   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.</li>
+   *   <li>Then return {@link BundleOrderItemImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#findMatchingItem(Order, OrderItem)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.findMatchingItem(Order, OrderItem)"})
+  public void testFindMatchingItemWithOrderOrderItem_thenReturnBundleOrderItemImpl() {
+    // Arrange
+    OrderImpl order = new OrderImpl();
+    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
+    order.addOrderItem(orderItem);
+
+    // Act and Assert
+    assertSame(orderItem, legacyOrderServiceImpl.findMatchingItem(order, new BundleOrderItemImpl()));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#findMatchingItem(Order, OrderItem)} with {@code Order}, {@code OrderItem}.
+   * <ul>
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#findMatchingItem(Order, OrderItem)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.findMatchingItem(Order, OrderItem)"})
+  public void testFindMatchingItemWithOrderOrderItem_thenThrowIllegalArgumentException() {
+    // Arrange
+    SkuImpl skuImpl = mock(SkuImpl.class);
+    when(skuImpl.getId()).thenReturn(1L);
+    BundleOrderItemImpl orderItem = mock(BundleOrderItemImpl.class);
+    when(orderItem.getSku()).thenReturn(skuImpl);
+
+    OrderImpl order = new OrderImpl();
+    order.addOrderItem(orderItem);
+    SkuImpl skuImpl2 = mock(SkuImpl.class);
+    when(skuImpl2.getId()).thenThrow(new IllegalArgumentException("foo"));
+    BundleOrderItemImpl itemToFind = mock(BundleOrderItemImpl.class);
+    when(itemToFind.getSku()).thenReturn(skuImpl2);
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> legacyOrderServiceImpl.findMatchingItem(order, itemToFind));
+    verify(skuImpl).getId();
+    verify(skuImpl2).getId();
+    verify(orderItem, atLeast(1)).getSku();
+    verify(itemToFind, atLeast(1)).getSku();
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#findMatchingItem(Order, OrderItem)} with {@code Order}, {@code OrderItem}.
+   * <ul>
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#findMatchingItem(Order, OrderItem)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.findMatchingItem(Order, OrderItem)"})
+  public void testFindMatchingItemWithOrderOrderItem_whenNull_thenReturnNull() {
+    // Arrange, Act and Assert
+    assertNull(legacyOrderServiceImpl.findMatchingItem(new NullOrderImpl(), (OrderItem) null));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#findMatchingItem(Order, OrderItem)} with {@code Order}, {@code OrderItem}.
+   * <ul>
+   *   <li>When {@link OrderImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#findMatchingItem(Order, OrderItem)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.findMatchingItem(Order, OrderItem)"})
+  public void testFindMatchingItemWithOrderOrderItem_whenOrderImpl_thenReturnNull() {
+    // Arrange
+    OrderImpl order = new OrderImpl();
+
+    // Act and Assert
+    assertNull(legacyOrderServiceImpl.findMatchingItem(order, new BundleOrderItemImpl()));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#findMatchingItem(Order, OrderItem)} with {@code Order}, {@code OrderItem}.
+   * <ul>
+   *   <li>When {@link OrderImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#findMatchingItem(Order, OrderItem)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.findMatchingItem(Order, OrderItem)"})
+  public void testFindMatchingItemWithOrderOrderItem_whenOrderImpl_thenReturnNull2() {
+    // Arrange
+    OrderImpl order = new OrderImpl();
+
+    // Act and Assert
+    assertNull(legacyOrderServiceImpl.findMatchingItem(order, new DiscreteOrderItemImpl()));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addOrderItemToBundle(Order, BundleOrderItem, DiscreteOrderItem, boolean)}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addOrderItemToBundle(Order, BundleOrderItem, DiscreteOrderItem, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "OrderItem LegacyOrderServiceImpl.addOrderItemToBundle(Order, BundleOrderItem, DiscreteOrderItem, boolean)"})
+  public void testAddOrderItemToBundle() throws PricingException {
+    // Arrange
+    when(pricingService.executePricing(Mockito.<Order>any())).thenThrow(new IllegalArgumentException("foo"));
+    NullOrderImpl order = new NullOrderImpl();
+    BundleOrderItemImpl bundle = new BundleOrderItemImpl();
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.addOrderItemToBundle(order, bundle, new DiscreteOrderItemImpl(), true));
+    verify(pricingService).executePricing(isA(Order.class));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addOrderItemToBundle(Order, BundleOrderItem, DiscreteOrderItem, boolean)}.
+   * <ul>
+   *   <li>Given {@link OrderDao} {@link OrderDao#save(Order)} return {@link OrderImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addOrderItemToBundle(Order, BundleOrderItem, DiscreteOrderItem, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "OrderItem LegacyOrderServiceImpl.addOrderItemToBundle(Order, BundleOrderItem, DiscreteOrderItem, boolean)"})
+  public void testAddOrderItemToBundle_givenOrderDaoSaveReturnOrderImpl_thenReturnNull() throws PricingException {
+    // Arrange
+    when(orderDao.save(Mockito.<Order>any())).thenReturn(new OrderImpl());
+    when(pricingService.executePricing(Mockito.<Order>any())).thenReturn(new NullOrderImpl());
+    NullOrderImpl order = new NullOrderImpl();
+    BundleOrderItemImpl bundle = new BundleOrderItemImpl();
+
+    // Act
+    OrderItem actualAddOrderItemToBundleResult = legacyOrderServiceImpl.addOrderItemToBundle(order, bundle,
+        new DiscreteOrderItemImpl(), true);
+
+    // Assert
+    verify(orderDao).save(isA(Order.class));
+    verify(pricingService).executePricing(isA(Order.class));
+    assertNull(actualAddOrderItemToBundleResult);
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addOrderItemToBundle(Order, BundleOrderItem, DiscreteOrderItem, boolean)}.
+   * <ul>
+   *   <li>Given {@link PricingService}.</li>
+   *   <li>Then calls {@link DiscreteOrderItem#setBundleOrderItem(BundleOrderItem)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addOrderItemToBundle(Order, BundleOrderItem, DiscreteOrderItem, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "OrderItem LegacyOrderServiceImpl.addOrderItemToBundle(Order, BundleOrderItem, DiscreteOrderItem, boolean)"})
+  public void testAddOrderItemToBundle_givenPricingService_thenCallsSetBundleOrderItem() throws PricingException {
+    // Arrange
+    NullOrderImpl order = new NullOrderImpl();
+    BundleOrderItemImpl bundle = new BundleOrderItemImpl();
+    DiscreteOrderItem newOrderItem = mock(DiscreteOrderItem.class);
+    doThrow(new IllegalArgumentException("foo")).when(newOrderItem).setBundleOrderItem(Mockito.<BundleOrderItem>any());
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.addOrderItemToBundle(order, bundle, newOrderItem, true));
+    verify(newOrderItem).setBundleOrderItem(isA(BundleOrderItem.class));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addOrUpdateOrderItemAttributes(Order, OrderItem, Map, boolean)}.
+   * <ul>
    *   <li>Then return {@link OrderImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#removeOrderItemAttribute(Order, OrderItem, String, boolean)}
+   * Method under test: {@link LegacyOrderServiceImpl#addOrUpdateOrderItemAttributes(Order, OrderItem, Map, boolean)}
    */
   @Test
-  public void testRemoveOrderItemAttribute_givenAuditableCreatedByIsOne_thenReturnOrderImpl()
-      throws ItemNotFoundException, PricingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyOrderServiceImpl.addOrUpdateOrderItemAttributes(Order, OrderItem, Map, boolean)"})
+  public void testAddOrUpdateOrderItemAttributes_thenReturnOrderImpl() throws ItemNotFoundException, PricingException {
     // Arrange
-    LegacyOrderServiceImpl legacyOrderServiceImpl = new LegacyOrderServiceImpl();
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
 
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(new BundleOrderItemImpl());
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(orderItems);
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+    BundleOrderItemImpl item = new BundleOrderItemImpl();
+
+    // Act and Assert
+    assertSame(order, legacyOrderServiceImpl.addOrUpdateOrderItemAttributes(order, item, new HashMap<>(), true));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addOrUpdateOrderItemAttributes(Order, OrderItem, Map, boolean)}.
+   * <ul>
+   *   <li>Then throw {@link ItemNotFoundException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addOrUpdateOrderItemAttributes(Order, OrderItem, Map, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyOrderServiceImpl.addOrUpdateOrderItemAttributes(Order, OrderItem, Map, boolean)"})
+  public void testAddOrUpdateOrderItemAttributes_thenThrowItemNotFoundException()
+      throws ItemNotFoundException, PricingException {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+    BundleOrderItemImpl item = new BundleOrderItemImpl();
+
+    // Act and Assert
+    assertThrows(ItemNotFoundException.class,
+        () -> legacyOrderServiceImpl.addOrUpdateOrderItemAttributes(order, item, new HashMap<>(), true));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#removeOrderItemAttribute(Order, OrderItem, String, boolean)}.
+   * <ul>
+   *   <li>Then return {@link OrderImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#removeOrderItemAttribute(Order, OrderItem, String, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyOrderServiceImpl.removeOrderItemAttribute(Order, OrderItem, String, boolean)"})
+  public void testRemoveOrderItemAttribute_thenReturnOrderImpl() throws ItemNotFoundException, PricingException {
+    // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
     auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
@@ -2906,7 +3456,6 @@ public class LegacyOrderServiceImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setOrderItems(orderItems);
 
@@ -2916,340 +3465,678 @@ public class LegacyOrderServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link LegacyOrderServiceImpl#createDefaultFulfillmentGroup(Order, Address)}.
+   * Test {@link LegacyOrderServiceImpl#removeOrderItemAttribute(Order, OrderItem, String, boolean)}.
+   * <ul>
+   *   <li>Then throw {@link ItemNotFoundException}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#createDefaultFulfillmentGroup(Order, Address)}
+   * Method under test: {@link LegacyOrderServiceImpl#removeOrderItemAttribute(Order, OrderItem, String, boolean)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateDefaultFulfillmentGroup() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass972 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyOrderServiceImpl.removeOrderItemAttribute(Order, OrderItem, String, boolean)"})
+  public void testRemoveOrderItemAttribute_thenThrowItemNotFoundException()
+      throws ItemNotFoundException, PricingException {
     // Arrange
-    NullOrderImpl order = new NullOrderImpl();
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+
+    // Act and Assert
+    assertThrows(ItemNotFoundException.class, () -> legacyOrderServiceImpl.removeOrderItemAttribute(order,
+        new BundleOrderItemImpl(), "Attribute Name", true));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#createDefaultFulfillmentGroup(Order, Address)}.
+   * <ul>
+   *   <li>Then calls {@link FulfillmentGroupImpl#isPrimary()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#createDefaultFulfillmentGroup(Order, Address)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FulfillmentGroup LegacyOrderServiceImpl.createDefaultFulfillmentGroup(Order, Address)"})
+  public void testCreateDefaultFulfillmentGroup_thenCallsIsPrimary() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+    FulfillmentGroupImpl fulfillmentGroupImpl = mock(FulfillmentGroupImpl.class);
+    when(fulfillmentGroupImpl.isPrimary()).thenReturn(true);
+    doNothing().when(fulfillmentGroupImpl).setAddress(Mockito.<Address>any());
+    doNothing().when(fulfillmentGroupImpl)
+        .setCandidateFulfillmentGroupOffer(Mockito.<List<CandidateFulfillmentGroupOffer>>any());
+    doNothing().when(fulfillmentGroupImpl).setDeliveryInstruction(Mockito.<String>any());
+    doNothing().when(fulfillmentGroupImpl)
+        .setFulfillmentGroupAdjustments(Mockito.<List<FulfillmentGroupAdjustment>>any());
+    doNothing().when(fulfillmentGroupImpl).setFulfillmentGroupFees(Mockito.<List<FulfillmentGroupFee>>any());
+    doNothing().when(fulfillmentGroupImpl).setFulfillmentGroupItems(Mockito.<List<FulfillmentGroupItem>>any());
+    doNothing().when(fulfillmentGroupImpl).setFulfillmentOption(Mockito.<FulfillmentOption>any());
+    doNothing().when(fulfillmentGroupImpl).setFulfillmentPrice(Mockito.<Money>any());
+    doNothing().when(fulfillmentGroupImpl).setId(Mockito.<Long>any());
+    doNothing().when(fulfillmentGroupImpl).setIsShippingPriceTaxable(Mockito.<Boolean>any());
+    doNothing().when(fulfillmentGroupImpl).setMerchandiseTotal(Mockito.<Money>any());
+    doNothing().when(fulfillmentGroupImpl).setMethod(Mockito.<String>any());
+    doNothing().when(fulfillmentGroupImpl).setOrder(Mockito.<Order>any());
+    doNothing().when(fulfillmentGroupImpl).setPersonalMessage(Mockito.<PersonalMessage>any());
+    doNothing().when(fulfillmentGroupImpl).setPhone(Mockito.<Phone>any());
+    doNothing().when(fulfillmentGroupImpl).setPrimary(anyBoolean());
+    doNothing().when(fulfillmentGroupImpl).setReferenceNumber(Mockito.<String>any());
+    doNothing().when(fulfillmentGroupImpl).setRetailFulfillmentPrice(Mockito.<Money>any());
+    doNothing().when(fulfillmentGroupImpl).setSaleFulfillmentPrice(Mockito.<Money>any());
+    doNothing().when(fulfillmentGroupImpl).setSequence(Mockito.<Integer>any());
+    doNothing().when(fulfillmentGroupImpl).setService(Mockito.<String>any());
+    doNothing().when(fulfillmentGroupImpl).setShippingOverride(Mockito.<Boolean>any());
+    doNothing().when(fulfillmentGroupImpl).setStatus(Mockito.<FulfillmentGroupStatusType>any());
+    doNothing().when(fulfillmentGroupImpl).setTaxes(Mockito.<List<TaxDetail>>any());
+    doNothing().when(fulfillmentGroupImpl).setTotal(Mockito.<Money>any());
+    doNothing().when(fulfillmentGroupImpl).setTotalFeeTax(Mockito.<Money>any());
+    doNothing().when(fulfillmentGroupImpl).setTotalFulfillmentGroupTax(Mockito.<Money>any());
+    doNothing().when(fulfillmentGroupImpl).setTotalItemTax(Mockito.<Money>any());
+    doNothing().when(fulfillmentGroupImpl).setTotalTax(Mockito.<Money>any());
+    doNothing().when(fulfillmentGroupImpl).setType(Mockito.<FulfillmentType>any());
+    fulfillmentGroupImpl.setAddress(new AddressImpl());
+    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
+    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
+    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
+    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
+    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
+    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
+    fulfillmentGroupImpl.setFulfillmentPrice(new Money());
+    fulfillmentGroupImpl.setId(1L);
+    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
+    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
+    fulfillmentGroupImpl.setMethod("Fulfillment Method");
+    fulfillmentGroupImpl.setOrder(new NullOrderImpl());
+    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
+    fulfillmentGroupImpl.setPhone(new PhoneImpl());
+    fulfillmentGroupImpl.setReferenceNumber("42");
+    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroupImpl.setSequence(1);
+    fulfillmentGroupImpl.setService("Service");
+    fulfillmentGroupImpl.setShippingOverride(true);
+    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
+    fulfillmentGroupImpl.setTotal(new Money());
+    fulfillmentGroupImpl.setTotalFeeTax(new Money());
+    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
+    fulfillmentGroupImpl.setTotalItemTax(new Money());
+    fulfillmentGroupImpl.setTotalTax(new Money());
+    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
+    fulfillmentGroupImpl.setPrimary(false);
+
+    ArrayList<FulfillmentGroup> fulfillmentGroups = new ArrayList<>();
+    fulfillmentGroups.add(fulfillmentGroupImpl);
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(new BundleOrderItemImpl());
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+    order.setFulfillmentGroups(fulfillmentGroups);
+    order.setOrderItems(orderItems);
 
     // Act
     legacyOrderServiceImpl.createDefaultFulfillmentGroup(order, new AddressImpl());
+
+    // Assert
+    verify(fulfillmentGroupImpl).isPrimary();
+    verify(fulfillmentGroupImpl).setAddress(isA(Address.class));
+    verify(fulfillmentGroupImpl).setCandidateFulfillmentGroupOffer(isA(List.class));
+    verify(fulfillmentGroupImpl).setDeliveryInstruction(eq("Delivery Instruction"));
+    verify(fulfillmentGroupImpl).setFulfillmentGroupAdjustments(isA(List.class));
+    verify(fulfillmentGroupImpl).setFulfillmentGroupFees(isA(List.class));
+    verify(fulfillmentGroupImpl).setFulfillmentGroupItems(isA(List.class));
+    verify(fulfillmentGroupImpl).setFulfillmentOption(isA(FulfillmentOption.class));
+    verify(fulfillmentGroupImpl).setFulfillmentPrice(isA(Money.class));
+    verify(fulfillmentGroupImpl).setId(eq(1L));
+    verify(fulfillmentGroupImpl).setIsShippingPriceTaxable(eq(true));
+    verify(fulfillmentGroupImpl).setMerchandiseTotal(isA(Money.class));
+    verify(fulfillmentGroupImpl).setMethod(eq("Fulfillment Method"));
+    verify(fulfillmentGroupImpl).setOrder(isA(Order.class));
+    verify(fulfillmentGroupImpl).setPersonalMessage(isA(PersonalMessage.class));
+    verify(fulfillmentGroupImpl).setPhone(isA(Phone.class));
+    verify(fulfillmentGroupImpl).setPrimary(eq(false));
+    verify(fulfillmentGroupImpl).setReferenceNumber(eq("42"));
+    verify(fulfillmentGroupImpl).setRetailFulfillmentPrice(isA(Money.class));
+    verify(fulfillmentGroupImpl).setSaleFulfillmentPrice(isA(Money.class));
+    verify(fulfillmentGroupImpl).setSequence(eq(1));
+    verify(fulfillmentGroupImpl).setService(eq("Service"));
+    verify(fulfillmentGroupImpl).setShippingOverride(eq(true));
+    verify(fulfillmentGroupImpl).setStatus(isA(FulfillmentGroupStatusType.class));
+    verify(fulfillmentGroupImpl).setTaxes(isA(List.class));
+    verify(fulfillmentGroupImpl).setTotal(isA(Money.class));
+    verify(fulfillmentGroupImpl).setTotalFeeTax(isA(Money.class));
+    verify(fulfillmentGroupImpl).setTotalFulfillmentGroupTax(isA(Money.class));
+    verify(fulfillmentGroupImpl).setTotalItemTax(isA(Money.class));
+    verify(fulfillmentGroupImpl).setTotalTax(isA(Money.class));
+    verify(fulfillmentGroupImpl).setType(isA(FulfillmentType.class));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#createDefaultFulfillmentGroup(Order, Address)}.
+   * <ul>
+   *   <li>Then return {@link FulfillmentGroupImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#createDefaultFulfillmentGroup(Order, Address)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FulfillmentGroup LegacyOrderServiceImpl.createDefaultFulfillmentGroup(Order, Address)"})
+  public void testCreateDefaultFulfillmentGroup_thenReturnFulfillmentGroupImpl() {
+    // Arrange
+    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
+    when(fulfillmentGroupService.createEmptyFulfillmentGroup()).thenReturn(fulfillmentGroupImpl);
+    when(fulfillmentGroupItemDao.create()).thenReturn(new FulfillmentGroupItemImpl());
+
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl2.setAddress(new AddressImpl());
+    fulfillmentGroupImpl2.setCandidateFulfillmentGroupOffer(new ArrayList<>());
+    fulfillmentGroupImpl2.setDeliveryInstruction("Delivery Instruction");
+    fulfillmentGroupImpl2.setFulfillmentGroupAdjustments(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupFees(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupItems(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentOption(new FulfillmentOptionImpl());
+    fulfillmentGroupImpl2.setFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setId(1L);
+    fulfillmentGroupImpl2.setIsShippingPriceTaxable(true);
+    fulfillmentGroupImpl2.setMerchandiseTotal(new Money());
+    fulfillmentGroupImpl2.setMethod("Fulfillment Method");
+    fulfillmentGroupImpl2.setOrder(new NullOrderImpl());
+    fulfillmentGroupImpl2.setPersonalMessage(new PersonalMessageImpl());
+    fulfillmentGroupImpl2.setPhone(new PhoneImpl());
+    fulfillmentGroupImpl2.setReferenceNumber("42");
+    fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSequence(1);
+    fulfillmentGroupImpl2.setService("Service");
+    fulfillmentGroupImpl2.setShippingOverride(true);
+    fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupImpl2.setTaxes(new ArrayList<>());
+    fulfillmentGroupImpl2.setTotal(new Money());
+    fulfillmentGroupImpl2.setTotalFeeTax(new Money());
+    fulfillmentGroupImpl2.setTotalFulfillmentGroupTax(new Money());
+    fulfillmentGroupImpl2.setTotalItemTax(new Money());
+    fulfillmentGroupImpl2.setTotalTax(new Money());
+    fulfillmentGroupImpl2.setType(FulfillmentType.DIGITAL);
+    fulfillmentGroupImpl2.setPrimary(false);
+
+    ArrayList<FulfillmentGroup> fulfillmentGroups = new ArrayList<>();
+    fulfillmentGroups.add(fulfillmentGroupImpl2);
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(new BundleOrderItemImpl());
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+    order.setFulfillmentGroups(fulfillmentGroups);
+    order.setOrderItems(orderItems);
+
+    // Act
+    FulfillmentGroup actualCreateDefaultFulfillmentGroupResult = legacyOrderServiceImpl
+        .createDefaultFulfillmentGroup(order, new AddressImpl());
+
+    // Assert
+    verify(fulfillmentGroupItemDao).create();
+    verify(fulfillmentGroupService).createEmptyFulfillmentGroup();
+    assertSame(fulfillmentGroupImpl, actualCreateDefaultFulfillmentGroupResult);
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#createDefaultFulfillmentGroup(Order, Address)}.
+   * <ul>
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#createDefaultFulfillmentGroup(Order, Address)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FulfillmentGroup LegacyOrderServiceImpl.createDefaultFulfillmentGroup(Order, Address)"})
+  public void testCreateDefaultFulfillmentGroup_thenThrowIllegalArgumentException() {
+    // Arrange
+    when(fulfillmentGroupService.createEmptyFulfillmentGroup()).thenReturn(new FulfillmentGroupImpl());
+    when(fulfillmentGroupItemDao.create()).thenThrow(new IllegalArgumentException("foo"));
+
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl.setAddress(new AddressImpl());
+    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
+    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
+    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
+    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
+    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
+    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
+    fulfillmentGroupImpl.setFulfillmentPrice(new Money());
+    fulfillmentGroupImpl.setId(1L);
+    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
+    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
+    fulfillmentGroupImpl.setMethod("Fulfillment Method");
+    fulfillmentGroupImpl.setOrder(new NullOrderImpl());
+    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
+    fulfillmentGroupImpl.setPhone(new PhoneImpl());
+    fulfillmentGroupImpl.setReferenceNumber("42");
+    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroupImpl.setSequence(1);
+    fulfillmentGroupImpl.setService("Service");
+    fulfillmentGroupImpl.setShippingOverride(true);
+    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
+    fulfillmentGroupImpl.setTotal(new Money());
+    fulfillmentGroupImpl.setTotalFeeTax(new Money());
+    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
+    fulfillmentGroupImpl.setTotalItemTax(new Money());
+    fulfillmentGroupImpl.setTotalTax(new Money());
+    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
+    fulfillmentGroupImpl.setPrimary(false);
+
+    ArrayList<FulfillmentGroup> fulfillmentGroups = new ArrayList<>();
+    fulfillmentGroups.add(fulfillmentGroupImpl);
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(new BundleOrderItemImpl());
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+    order.setFulfillmentGroups(fulfillmentGroups);
+    order.setOrderItems(orderItems);
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.createDefaultFulfillmentGroup(order, new AddressImpl()));
+    verify(fulfillmentGroupItemDao).create();
+    verify(fulfillmentGroupService).createEmptyFulfillmentGroup();
   }
 
   /**
    * Test {@link LegacyOrderServiceImpl#findOrderByOrderNumber(String)}.
+   * <ul>
+   *   <li>Then return {@link NullOrderImpl} (default constructor).</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#findOrderByOrderNumber(String)}
+   * Method under test: {@link LegacyOrderServiceImpl#findOrderByOrderNumber(String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindOrderByOrderNumber() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass984 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyOrderServiceImpl.findOrderByOrderNumber(String)"})
+  public void testFindOrderByOrderNumber_thenReturnNullOrderImpl() {
+    // Arrange
+    NullOrderImpl nullOrderImpl = new NullOrderImpl();
+    when(orderDao.readOrderByOrderNumber(Mockito.<String>any())).thenReturn(nullOrderImpl);
 
-    // Arrange and Act
-    legacyOrderServiceImpl.findOrderByOrderNumber("42");
+    // Act
+    Order actualFindOrderByOrderNumberResult = legacyOrderServiceImpl.findOrderByOrderNumber("42");
+
+    // Assert
+    verify(orderDao).readOrderByOrderNumber(eq("42"));
+    assertSame(nullOrderImpl, actualFindOrderByOrderNumberResult);
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#findOrderByOrderNumber(String)}.
+   * <ul>
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#findOrderByOrderNumber(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyOrderServiceImpl.findOrderByOrderNumber(String)"})
+  public void testFindOrderByOrderNumber_thenThrowIllegalArgumentException() {
+    // Arrange
+    when(orderDao.readOrderByOrderNumber(Mockito.<String>any())).thenThrow(new IllegalArgumentException("foo"));
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> legacyOrderServiceImpl.findOrderByOrderNumber("42"));
+    verify(orderDao).readOrderByOrderNumber(eq("42"));
   }
 
   /**
    * Test {@link LegacyOrderServiceImpl#updateOrder(Order, Boolean)}.
+   * <ul>
+   *   <li>Given {@link OrderDao}.</li>
+   *   <li>When {@code true}.</li>
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link LegacyOrderServiceImpl#updateOrder(Order, Boolean)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testUpdateOrder() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1005 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyOrderServiceImpl.updateOrder(Order, Boolean)"})
+  public void testUpdateOrder_givenOrderDao_whenTrue_thenThrowIllegalArgumentException() throws PricingException {
+    // Arrange
+    when(pricingService.executePricing(Mockito.<Order>any())).thenThrow(new IllegalArgumentException("foo"));
 
-    // Arrange and Act
-    legacyOrderServiceImpl.updateOrder(new NullOrderImpl(), true);
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> legacyOrderServiceImpl.updateOrder(new NullOrderImpl(), true));
+    verify(pricingService).executePricing(isA(Order.class));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#updateOrder(Order, Boolean)}.
+   * <ul>
+   *   <li>Given {@link PricingService} {@link PricingService#executePricing(Order)} return {@link NullOrderImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#updateOrder(Order, Boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyOrderServiceImpl.updateOrder(Order, Boolean)"})
+  public void testUpdateOrder_givenPricingServiceExecutePricingReturnNullOrderImpl() throws PricingException {
+    // Arrange
+    when(orderDao.save(Mockito.<Order>any())).thenReturn(new NullOrderImpl());
+    when(pricingService.executePricing(Mockito.<Order>any())).thenReturn(new NullOrderImpl());
+
+    // Act
+    Order actualUpdateOrderResult = legacyOrderServiceImpl.updateOrder(new NullOrderImpl(), true);
+
+    // Assert
+    verify(orderDao).save(isA(Order.class));
+    verify(pricingService).executePricing(isA(Order.class));
+    assertTrue(actualUpdateOrderResult instanceof NullOrderImpl);
+    Money orderAdjustmentsValue = actualUpdateOrderResult.getOrderAdjustmentsValue();
+    assertEquals(orderAdjustmentsValue, orderAdjustmentsValue.abs());
+    assertEquals(orderAdjustmentsValue, orderAdjustmentsValue.zero());
+    assertEquals(orderAdjustmentsValue, actualUpdateOrderResult.getSubTotal());
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#updateOrder(Order, Boolean)}.
+   * <ul>
+   *   <li>Given {@link PricingService}.</li>
+   *   <li>When {@code false}.</li>
+   *   <li>Then return {@link NullOrderImpl}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#updateOrder(Order, Boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyOrderServiceImpl.updateOrder(Order, Boolean)"})
+  public void testUpdateOrder_givenPricingService_whenFalse_thenReturnNullOrderImpl() throws PricingException {
+    // Arrange
+    when(orderDao.save(Mockito.<Order>any())).thenReturn(new NullOrderImpl());
+
+    // Act
+    Order actualUpdateOrderResult = legacyOrderServiceImpl.updateOrder(new NullOrderImpl(), false);
+
+    // Assert
+    verify(orderDao).save(isA(Order.class));
+    assertTrue(actualUpdateOrderResult instanceof NullOrderImpl);
+    Money orderAdjustmentsValue = actualUpdateOrderResult.getOrderAdjustmentsValue();
+    assertEquals(orderAdjustmentsValue, orderAdjustmentsValue.abs());
+    assertEquals(orderAdjustmentsValue, orderAdjustmentsValue.zero());
+    assertEquals(orderAdjustmentsValue, actualUpdateOrderResult.getSubTotal());
   }
 
   /**
    * Test {@link LegacyOrderServiceImpl#persistOrder(Order)}.
+   * <ul>
+   *   <li>Given {@link OrderDao} {@link OrderDao#save(Order)} return {@link NullOrderImpl} (default constructor).</li>
+   *   <li>Then return {@link NullOrderImpl} (default constructor).</li>
+   * </ul>
    * <p>
    * Method under test: {@link LegacyOrderServiceImpl#persistOrder(Order)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testPersistOrder() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass988 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyOrderServiceImpl.persistOrder(Order)"})
+  public void testPersistOrder_givenOrderDaoSaveReturnNullOrderImpl_thenReturnNullOrderImpl() {
+    // Arrange
+    NullOrderImpl nullOrderImpl = new NullOrderImpl();
+    when(orderDao.save(Mockito.<Order>any())).thenReturn(nullOrderImpl);
 
-    // Arrange and Act
-    legacyOrderServiceImpl.persistOrder(new NullOrderImpl());
+    // Act
+    Order actualPersistOrderResult = legacyOrderServiceImpl.persistOrder(new NullOrderImpl());
+
+    // Assert
+    verify(orderDao).save(isA(Order.class));
+    assertSame(nullOrderImpl, actualPersistOrderResult);
   }
 
   /**
-   * Test
-   * {@link LegacyOrderServiceImpl#createFulfillmentGroupItemFromOrderItem(OrderItem, FulfillmentGroup, int)}.
+   * Test {@link LegacyOrderServiceImpl#persistOrder(Order)}.
+   * <ul>
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#createFulfillmentGroupItemFromOrderItem(OrderItem, FulfillmentGroup, int)}
+   * Method under test: {@link LegacyOrderServiceImpl#persistOrder(Order)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateFulfillmentGroupItemFromOrderItem() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass976 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyOrderServiceImpl.persistOrder(Order)"})
+  public void testPersistOrder_thenThrowIllegalArgumentException() {
     // Arrange
+    when(orderDao.save(Mockito.<Order>any())).thenThrow(new IllegalArgumentException("foo"));
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> legacyOrderServiceImpl.persistOrder(new NullOrderImpl()));
+    verify(orderDao).save(isA(Order.class));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#createFulfillmentGroupItemFromOrderItem(OrderItem, FulfillmentGroup, int)}.
+   * <ul>
+   *   <li>Then return {@link FulfillmentGroupItemImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#createFulfillmentGroupItemFromOrderItem(OrderItem, FulfillmentGroup, int)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FulfillmentGroupItem LegacyOrderServiceImpl.createFulfillmentGroupItemFromOrderItem(OrderItem, FulfillmentGroup, int)"})
+  public void testCreateFulfillmentGroupItemFromOrderItem_thenReturnFulfillmentGroupItemImpl() {
+    // Arrange
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+    when(fulfillmentGroupItemDao.create()).thenReturn(fulfillmentGroupItemImpl);
     BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
 
     // Act
-    legacyOrderServiceImpl.createFulfillmentGroupItemFromOrderItem(orderItem, new FulfillmentGroupImpl(), 1);
+    FulfillmentGroupItem actualCreateFulfillmentGroupItemFromOrderItemResult = legacyOrderServiceImpl
+        .createFulfillmentGroupItemFromOrderItem(orderItem, new FulfillmentGroupImpl(), 1);
+
+    // Assert
+    verify(fulfillmentGroupItemDao).create();
+    assertSame(fulfillmentGroupItemImpl, actualCreateFulfillmentGroupItemFromOrderItemResult);
   }
 
   /**
-   * Test
-   * {@link LegacyOrderServiceImpl#removeOrderItemFromFullfillmentGroup(Order, OrderItem)}.
+   * Test {@link LegacyOrderServiceImpl#createFulfillmentGroupItemFromOrderItem(OrderItem, FulfillmentGroup, int)}.
+   * <ul>
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#removeOrderItemFromFullfillmentGroup(Order, OrderItem)}
+   * Method under test: {@link LegacyOrderServiceImpl#createFulfillmentGroupItemFromOrderItem(OrderItem, FulfillmentGroup, int)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testRemoveOrderItemFromFullfillmentGroup() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1001 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FulfillmentGroupItem LegacyOrderServiceImpl.createFulfillmentGroupItemFromOrderItem(OrderItem, FulfillmentGroup, int)"})
+  public void testCreateFulfillmentGroupItemFromOrderItem_thenThrowIllegalArgumentException() {
     // Arrange
-    NullOrderImpl order = new NullOrderImpl();
+    when(fulfillmentGroupItemDao.create()).thenThrow(new IllegalArgumentException("foo"));
+    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
 
-    // Act
-    legacyOrderServiceImpl.removeOrderItemFromFullfillmentGroup(order, new BundleOrderItemImpl());
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.createFulfillmentGroupItemFromOrderItem(orderItem, new FulfillmentGroupImpl(), 1));
+    verify(fulfillmentGroupItemDao).create();
   }
 
   /**
-   * Test
-   * {@link LegacyOrderServiceImpl#createBundleOrderItemRequest(BundleOrderItem, List)}.
+   * Test {@link LegacyOrderServiceImpl#createBundleOrderItemRequest(BundleOrderItem, List)}.
+   * <ul>
+   *   <li>Then return DiscreteOrderItems is {@link ArrayList#ArrayList()}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#createBundleOrderItemRequest(BundleOrderItem, List)}
+   * Method under test: {@link LegacyOrderServiceImpl#createBundleOrderItemRequest(BundleOrderItem, List)}
    */
   @Test
-  public void testCreateBundleOrderItemRequest() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "BundleOrderItemRequest LegacyOrderServiceImpl.createBundleOrderItemRequest(BundleOrderItem, List)"})
+  public void testCreateBundleOrderItemRequest_thenReturnDiscreteOrderItemsIsArrayList() {
     // Arrange
-    LegacyOrderServiceImpl legacyOrderServiceImpl = new LegacyOrderServiceImpl();
+    BundleOrderItemImpl bundleOrderItem = new BundleOrderItemImpl();
+
+    ArrayList<DiscreteOrderItemRequest> discreteOrderItemRequests = new ArrayList<>();
+    discreteOrderItemRequests.add(new DiscreteOrderItemRequest());
+
+    // Act and Assert
+    assertSame(discreteOrderItemRequests,
+        legacyOrderServiceImpl.createBundleOrderItemRequest(bundleOrderItem, discreteOrderItemRequests)
+            .getDiscreteOrderItems());
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#createBundleOrderItemRequest(BundleOrderItem, List)}.
+   * <ul>
+   *   <li>Then return DiscreteOrderItems size is two.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#createBundleOrderItemRequest(BundleOrderItem, List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "BundleOrderItemRequest LegacyOrderServiceImpl.createBundleOrderItemRequest(BundleOrderItem, List)"})
+  public void testCreateBundleOrderItemRequest_thenReturnDiscreteOrderItemsSizeIsTwo() {
+    // Arrange
+    BundleOrderItemImpl bundleOrderItem = new BundleOrderItemImpl();
+
+    ArrayList<DiscreteOrderItemRequest> discreteOrderItemRequests = new ArrayList<>();
+    discreteOrderItemRequests.add(new DiscreteOrderItemRequest());
+    DiscreteOrderItemRequest discreteOrderItemRequest = new DiscreteOrderItemRequest();
+    discreteOrderItemRequests.add(discreteOrderItemRequest);
+
+    // Act and Assert
+    List<DiscreteOrderItemRequest> discreteOrderItems = legacyOrderServiceImpl
+        .createBundleOrderItemRequest(bundleOrderItem, discreteOrderItemRequests)
+        .getDiscreteOrderItems();
+    assertEquals(2, discreteOrderItems.size());
+    assertSame(discreteOrderItemRequest, discreteOrderItems.get(1));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#createBundleOrderItemRequest(BundleOrderItem, List)}.
+   * <ul>
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then return Name is {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#createBundleOrderItemRequest(BundleOrderItem, List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "BundleOrderItemRequest LegacyOrderServiceImpl.createBundleOrderItemRequest(BundleOrderItem, List)"})
+  public void testCreateBundleOrderItemRequest_whenArrayList_thenReturnNameIsNull() {
+    // Arrange
     BundleOrderItemImpl bundleOrderItem = new BundleOrderItemImpl();
 
     // Act
@@ -3268,115 +4155,29 @@ public class LegacyOrderServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link LegacyOrderServiceImpl#createBundleOrderItemRequest(BundleOrderItem, List)}.
-   * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#createBundleOrderItemRequest(BundleOrderItem, List)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateBundleOrderItemRequest2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass971 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    BundleOrderItemImpl bundleOrderItem = new BundleOrderItemImpl();
-
-    // Act
-    legacyOrderServiceImpl.createBundleOrderItemRequest(bundleOrderItem, new ArrayList<>());
-  }
-
-  /**
    * Test {@link LegacyOrderServiceImpl#validateOrder(Long)}.
+   * <ul>
+   *   <li>Given {@link OrderDao} {@link OrderDao#readOrderById(Long)} return {@code null}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link LegacyOrderServiceImpl#validateOrder(Long)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testValidateOrder() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1006 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyOrderServiceImpl.validateOrder(Long)"})
+  public void testValidateOrder_givenOrderDaoReadOrderByIdReturnNull() {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(null);
 
-    // Arrange and Act
-    legacyOrderServiceImpl.validateOrder(1L);
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> legacyOrderServiceImpl.validateOrder(1L));
+    verify(orderDao).readOrderById(eq(1L));
   }
 
   /**
    * Test {@link LegacyOrderServiceImpl#validateOrder(Long)}.
    * <ul>
+   *   <li>Given {@link OrderDao}.</li>
    *   <li>When {@code null}.</li>
    *   <li>Then throw {@link IllegalArgumentException}.</li>
    * </ul>
@@ -3384,11 +4185,35 @@ public class LegacyOrderServiceImplDiffblueTest {
    * Method under test: {@link LegacyOrderServiceImpl#validateOrder(Long)}
    */
   @Test
-  public void testValidateOrder_whenNull_thenThrowIllegalArgumentException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyOrderServiceImpl.validateOrder(Long)"})
+  public void testValidateOrder_givenOrderDao_whenNull_thenThrowIllegalArgumentException() {
     // Arrange, Act and Assert
-    assertThrows(IllegalArgumentException.class, () -> (new LegacyOrderServiceImpl()).validateOrder(null));
+    assertThrows(IllegalArgumentException.class, () -> legacyOrderServiceImpl.validateOrder(null));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#validateOrder(Long)}.
+   * <ul>
+   *   <li>Then return {@link NullOrderImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#validateOrder(Long)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyOrderServiceImpl.validateOrder(Long)"})
+  public void testValidateOrder_thenReturnNullOrderImpl() {
+    // Arrange
+    NullOrderImpl nullOrderImpl = new NullOrderImpl();
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(nullOrderImpl);
+
+    // Act
+    Order actualValidateOrderResult = legacyOrderServiceImpl.validateOrder(1L);
+
+    // Assert
+    verify(orderDao).readOrderById(eq(1L));
+    assertSame(nullOrderImpl, actualValidateOrderResult);
   }
 
   /**
@@ -3397,54 +4222,42 @@ public class LegacyOrderServiceImplDiffblueTest {
    * Method under test: {@link LegacyOrderServiceImpl#validateProduct(Long)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Product LegacyOrderServiceImpl.validateProduct(Long)"})
   public void testValidateProduct() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1007 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    when(productDao.readProductById(Mockito.<Long>any()))
+        .thenThrow(new IllegalArgumentException("No product found matching passed in productId "));
 
-    // Arrange and Act
-    legacyOrderServiceImpl.validateProduct(1L);
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> legacyOrderServiceImpl.validateProduct(1L));
+    verify(productDao).readProductById(eq(1L));
   }
 
   /**
    * Test {@link LegacyOrderServiceImpl#validateProduct(Long)}.
    * <ul>
+   *   <li>Given {@link ProductDao} {@link ProductDao#readProductById(Long)} return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#validateProduct(Long)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Product LegacyOrderServiceImpl.validateProduct(Long)"})
+  public void testValidateProduct_givenProductDaoReadProductByIdReturnNull() {
+    // Arrange
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(null);
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> legacyOrderServiceImpl.validateProduct(1L));
+    verify(productDao).readProductById(eq(1L));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#validateProduct(Long)}.
+   * <ul>
+   *   <li>Given {@link ProductDao}.</li>
    *   <li>When {@code null}.</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
@@ -3452,171 +4265,235 @@ public class LegacyOrderServiceImplDiffblueTest {
    * Method under test: {@link LegacyOrderServiceImpl#validateProduct(Long)}
    */
   @Test
-  public void testValidateProduct_whenNull_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Product LegacyOrderServiceImpl.validateProduct(Long)"})
+  public void testValidateProduct_givenProductDao_whenNull_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull((new LegacyOrderServiceImpl()).validateProduct(null));
+    assertNull(legacyOrderServiceImpl.validateProduct(null));
   }
 
   /**
-   * Test {@link LegacyOrderServiceImpl#determineCategory(Product, Long)}.
+   * Test {@link LegacyOrderServiceImpl#validateProduct(Long)}.
+   * <ul>
+   *   <li>Then return {@link ProductBundleImpl} (default constructor).</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#determineCategory(Product, Long)}
+   * Method under test: {@link LegacyOrderServiceImpl#validateProduct(Long)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testDetermineCategory() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass977 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Product LegacyOrderServiceImpl.validateProduct(Long)"})
+  public void testValidateProduct_thenReturnProductBundleImpl() {
+    // Arrange
+    ProductBundleImpl productBundleImpl = new ProductBundleImpl();
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
 
-    // Arrange and Act
-    legacyOrderServiceImpl.determineCategory(new ProductBundleImpl(), 1L);
+    // Act
+    Product actualValidateProductResult = legacyOrderServiceImpl.validateProduct(1L);
+
+    // Assert
+    verify(productDao).readProductById(eq(1L));
+    assertSame(productBundleImpl, actualValidateProductResult);
   }
 
   /**
    * Test {@link LegacyOrderServiceImpl#determineCategory(Product, Long)}.
    * <ul>
+   *   <li>Given {@link CategoryDao}.</li>
    *   <li>When {@code null}.</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#determineCategory(Product, Long)}
+   * Method under test: {@link LegacyOrderServiceImpl#determineCategory(Product, Long)}
    */
   @Test
-  public void testDetermineCategory_whenNull_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.core.catalog.domain.Category LegacyOrderServiceImpl.determineCategory(Product, Long)"})
+  public void testDetermineCategory_givenCategoryDao_whenNull_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull((new LegacyOrderServiceImpl()).determineCategory(null, null));
+    assertNull(legacyOrderServiceImpl.determineCategory(null, null));
   }
 
   /**
    * Test {@link LegacyOrderServiceImpl#determineCategory(Product, Long)}.
+   * <ul>
+   *   <li>Given {@link CategoryDao}.</li>
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#determineCategory(Product, Long)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.core.catalog.domain.Category LegacyOrderServiceImpl.determineCategory(Product, Long)"})
+  public void testDetermineCategory_givenCategoryDao_whenNull_thenReturnNull2() {
+    // Arrange, Act and Assert
+    assertNull(legacyOrderServiceImpl.determineCategory(new ProductBundleImpl(), null));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#determineCategory(Product, Long)}.
+   * <ul>
+   *   <li>Then return {@link CategoryImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#determineCategory(Product, Long)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.core.catalog.domain.Category LegacyOrderServiceImpl.determineCategory(Product, Long)"})
+  public void testDetermineCategory_thenReturnCategoryImpl() {
+    // Arrange
+    CategoryImpl categoryImpl = new CategoryImpl();
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(categoryImpl);
+
+    // Act
+    org.broadleafcommerce.core.catalog.domain.Category actualDetermineCategoryResult = legacyOrderServiceImpl
+        .determineCategory(new ProductBundleImpl(), 1L);
+
+    // Assert
+    verify(categoryDao).readCategoryById(eq(1L));
+    assertSame(categoryImpl, actualDetermineCategoryResult);
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#determineCategory(Product, Long)}.
+   * <ul>
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#determineCategory(Product, Long)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.core.catalog.domain.Category LegacyOrderServiceImpl.determineCategory(Product, Long)"})
+  public void testDetermineCategory_thenThrowIllegalArgumentException() {
+    // Arrange
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenThrow(new IllegalArgumentException("foo"));
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.determineCategory(new ProductBundleImpl(), 1L));
+    verify(categoryDao).readCategoryById(eq(1L));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#determineSku(Product, Long, Map)}.
+   * <ul>
+   *   <li>Given {@link SkuDao} {@link SkuDao#readSkuById(Long)} return {@code null}.</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#determineSku(Product, Long, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Sku LegacyOrderServiceImpl.determineSku(Product, Long, Map)"})
+  public void testDetermineSku_givenSkuDaoReadSkuByIdReturnNull_thenReturnNull() {
+    // Arrange
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(null);
+    ProductBundleImpl product = new ProductBundleImpl();
+
+    // Act
+    Sku actualDetermineSkuResult = legacyOrderServiceImpl.determineSku(product, 1L, new HashMap<>());
+
+    // Assert
+    verify(skuDao).readSkuById(eq(1L));
+    assertNull(actualDetermineSkuResult);
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#determineSku(Product, Long, Map)}.
+   * <ul>
+   *   <li>Given {@link SkuDao} {@link SkuDao#readSkuById(Long)} return {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@link SkuImpl}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#determineSku(Product, Long, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Sku LegacyOrderServiceImpl.determineSku(Product, Long, Map)"})
+  public void testDetermineSku_givenSkuDaoReadSkuByIdReturnSkuImpl_thenReturnSkuImpl() {
+    // Arrange
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(new SkuImpl());
+    ProductBundleImpl product = new ProductBundleImpl();
+
+    // Act
+    Sku actualDetermineSkuResult = legacyOrderServiceImpl.determineSku(product, 1L, new HashMap<>());
+
+    // Assert
+    verify(skuDao).readSkuById(eq(1L));
+    assertTrue(actualDetermineSkuResult instanceof SkuImpl);
+    Money margin = actualDetermineSkuResult.getMargin();
+    assertEquals(margin, margin.abs());
+    assertEquals(margin, margin.zero());
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#determineSku(Product, Long, Map)}.
+   * <ul>
+   *   <li>Given {@link SkuDao} {@link SkuDao#readSkuById(Long)} return {@link SkuImpl} (default constructor).</li>
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@link SkuImpl}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#determineSku(Product, Long, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Sku LegacyOrderServiceImpl.determineSku(Product, Long, Map)"})
+  public void testDetermineSku_givenSkuDaoReadSkuByIdReturnSkuImpl_whenNull_thenReturnSkuImpl() {
+    // Arrange
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(new SkuImpl());
+
+    // Act
+    Sku actualDetermineSkuResult = legacyOrderServiceImpl.determineSku(null, 1L, new HashMap<>());
+
+    // Assert
+    verify(skuDao).readSkuById(eq(1L));
+    assertTrue(actualDetermineSkuResult instanceof SkuImpl);
+    Money margin = actualDetermineSkuResult.getMargin();
+    assertEquals(margin, margin.abs());
+    assertEquals(margin, margin.zero());
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#findMatchingSku(Product, Map)}.
+   * <ul>
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#findMatchingSku(Product, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Sku LegacyOrderServiceImpl.findMatchingSku(Product, Map)"})
+  public void testFindMatchingSku_whenNull_thenReturnNull() {
+    // Arrange, Act and Assert
+    assertNull(legacyOrderServiceImpl.findMatchingSku(null, new HashMap<>()));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#findMatchingSku(Product, Map)}.
    * <ul>
    *   <li>When {@link ProductBundleImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#determineCategory(Product, Long)}
+   * Method under test: {@link LegacyOrderServiceImpl#findMatchingSku(Product, Map)}
    */
   @Test
-  public void testDetermineCategory_whenProductBundleImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Sku LegacyOrderServiceImpl.findMatchingSku(Product, Map)"})
+  public void testFindMatchingSku_whenProductBundleImpl_thenReturnNull() {
     // Arrange
-    LegacyOrderServiceImpl legacyOrderServiceImpl = new LegacyOrderServiceImpl();
-
-    // Act and Assert
-    assertNull(legacyOrderServiceImpl.determineCategory(new ProductBundleImpl(), null));
-  }
-
-  /**
-   * Test {@link LegacyOrderServiceImpl#determineSku(Product, Long, Map)}.
-   * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#determineSku(Product, Long, Map)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testDetermineSku() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass978 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    ProductBundleImpl product = new ProductBundleImpl();
-
-    // Act
-    legacyOrderServiceImpl.determineSku(product, 1L, new HashMap<>());
-  }
-
-  /**
-   * Test {@link LegacyOrderServiceImpl#findMatchingSku(Product, Map)}.
-   * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#findMatchingSku(Product, Map)}
-   */
-  @Test
-  public void testFindMatchingSku() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    LegacyOrderServiceImpl legacyOrderServiceImpl = new LegacyOrderServiceImpl();
     ProductBundleImpl product = new ProductBundleImpl();
 
     // Act and Assert
@@ -3624,71 +4501,43 @@ public class LegacyOrderServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link LegacyOrderServiceImpl#findMatchingSku(Product, Map)}.
-   * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#findMatchingSku(Product, Map)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindMatchingSku2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass983 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    ProductBundleImpl product = new ProductBundleImpl();
-
-    // Act
-    legacyOrderServiceImpl.findMatchingSku(product, new HashMap<>());
-  }
-
-  /**
    * Test {@link LegacyOrderServiceImpl#checkSkuForMatch(Sku, Map)}.
+   * <ul>
+   *   <li>Given {@code foo}.</li>
+   *   <li>When {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link LegacyOrderServiceImpl#checkSkuForMatch(Sku, Map)}
    */
   @Test
-  public void testCheckSkuForMatch() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean LegacyOrderServiceImpl.checkSkuForMatch(Sku, Map)"})
+  public void testCheckSkuForMatch_givenFoo_whenSkuImpl_thenReturnFalse() {
     // Arrange
-    LegacyOrderServiceImpl legacyOrderServiceImpl = new LegacyOrderServiceImpl();
+    SkuImpl sku = new SkuImpl();
+
+    HashMap<String, String> attributeValues = new HashMap<>();
+    attributeValues.put("foo", "foo");
+
+    // Act and Assert
+    assertFalse(legacyOrderServiceImpl.checkSkuForMatch(sku, attributeValues));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#checkSkuForMatch(Sku, Map)}.
+   * <ul>
+   *   <li>When {@link HashMap#HashMap()}.</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#checkSkuForMatch(Sku, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean LegacyOrderServiceImpl.checkSkuForMatch(Sku, Map)"})
+  public void testCheckSkuForMatch_whenHashMap_thenReturnFalse() {
+    // Arrange
     SkuImpl sku = new SkuImpl();
 
     // Act and Assert
@@ -3696,131 +4545,82 @@ public class LegacyOrderServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link LegacyOrderServiceImpl#checkSkuForMatch(Sku, Map)}.
+   * Test {@link LegacyOrderServiceImpl#addItemToOrder(Long, OrderItemRequestDTO, boolean)}.
    * <p>
-   * Method under test: {@link LegacyOrderServiceImpl#checkSkuForMatch(Sku, Map)}
+   * Method under test: {@link LegacyOrderServiceImpl#addItemToOrder(Long, OrderItemRequestDTO, boolean)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testCheckSkuForMatch2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass970 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    SkuImpl sku = new SkuImpl();
-
-    // Act
-    legacyOrderServiceImpl.checkSkuForMatch(sku, new HashMap<>());
-  }
-
-  /**
-   * Test
-   * {@link LegacyOrderServiceImpl#addItemToOrder(Long, OrderItemRequestDTO, boolean)}.
-   * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#addItemToOrder(Long, OrderItemRequestDTO, boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyOrderServiceImpl.addItemToOrder(Long, OrderItemRequestDTO, boolean)"})
   public void testAddItemToOrder() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass959 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(new OrderImpl());
+    when(pricingService.executePricing(Mockito.<Order>any())).thenThrow(new IllegalArgumentException("name"));
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
+    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(new BundleOrderItemImpl());
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getName()).thenReturn("Name");
+    when(productBundleImpl.getSkuBundleItems()).thenReturn(new ArrayList<>());
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(new SkuImpl());
 
-    // Arrange and Act
-    legacyOrderServiceImpl.addItemToOrder(1L, new OrderItemRequestDTO(), true);
+    ConfigurableOrderItemRequest orderItemRequestDTO = new ConfigurableOrderItemRequest();
+    orderItemRequestDTO.setAdditionalAttributes(new HashMap<>());
+    orderItemRequestDTO.setCategoryId(1L);
+    orderItemRequestDTO.setChildOrderItems(new ArrayList<>());
+    orderItemRequestDTO.setDiscountsAllowed(true);
+    orderItemRequestDTO.setDisplayPrice(new Money());
+    orderItemRequestDTO.setExpandable(true);
+    orderItemRequestDTO.setFirstExpandable(true);
+    orderItemRequestDTO.setHasConfigurationError(true);
+    orderItemRequestDTO.setHasOverridenPrice(true);
+    orderItemRequestDTO.setIsMultiSelect(true);
+    orderItemRequestDTO.setItemAttributes(new HashMap<>());
+    orderItemRequestDTO.setLastExpandable(true);
+    orderItemRequestDTO.setMaxQuantity(3);
+    orderItemRequestDTO.setMinQuantity(1);
+    orderItemRequestDTO.setOrderItemId(1L);
+    orderItemRequestDTO.setOrderItemIndex(1);
+    orderItemRequestDTO.setOverrideRetailPrice(new Money());
+    orderItemRequestDTO.setOverrideSalePrice(new Money());
+    orderItemRequestDTO.setParentOrderItemId(1L);
+    orderItemRequestDTO.setPricingModelType("Not adding item to order because quantity is zero.");
+    orderItemRequestDTO.setProduct(new ProductBundleImpl());
+    orderItemRequestDTO.setProductChoices(new ArrayList<>());
+    orderItemRequestDTO.setProductId(1L);
+    orderItemRequestDTO.setQuantity(1);
+    orderItemRequestDTO.setSku(new SkuImpl());
+    orderItemRequestDTO.setSkuId(1L);
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.addItemToOrder(1L, orderItemRequestDTO, true));
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(productBundleImpl).getSkuBundleItems();
+    verify(productBundleImpl).getName();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+    verify(orderItemDao).create(isA(OrderItemType.class));
+    verify(pricingService).executePricing(isA(Order.class));
   }
 
   /**
-   * Test
-   * {@link LegacyOrderServiceImpl#addItemToOrder(Long, OrderItemRequestDTO, boolean)}.
+   * Test {@link LegacyOrderServiceImpl#addItemToOrder(Long, OrderItemRequestDTO, boolean)}.
    * <ul>
    *   <li>Given minus one.</li>
-   *   <li>When {@link OrderItemRequestDTO#OrderItemRequestDTO()} Quantity is minus
-   * one.</li>
+   *   <li>When {@link OrderItemRequestDTO#OrderItemRequestDTO()} Quantity is minus one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#addItemToOrder(Long, OrderItemRequestDTO, boolean)}
+   * Method under test: {@link LegacyOrderServiceImpl#addItemToOrder(Long, OrderItemRequestDTO, boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyOrderServiceImpl.addItemToOrder(Long, OrderItemRequestDTO, boolean)"})
   public void testAddItemToOrder_givenMinusOne_whenOrderItemRequestDTOQuantityIsMinusOne() throws PricingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    LegacyOrderServiceImpl legacyOrderServiceImpl = new LegacyOrderServiceImpl();
-
     OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO();
     orderItemRequestDTO.setQuantity(-1);
     orderItemRequestDTO.setCategoryId(null);
@@ -3834,24 +4634,395 @@ public class LegacyOrderServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link LegacyOrderServiceImpl#addItemToOrder(Long, OrderItemRequestDTO, boolean)}.
+   * Test {@link LegacyOrderServiceImpl#addItemToOrder(Long, OrderItemRequestDTO, boolean)}.
    * <ul>
-   *   <li>Given two.</li>
-   *   <li>When {@link OrderItemRequestDTO#OrderItemRequestDTO()} Quantity is
-   * two.</li>
+   *   <li>Given {@link OrderDao} {@link OrderDao#readOrderById(Long)} return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#addItemToOrder(Long, OrderItemRequestDTO, boolean)}
+   * Method under test: {@link LegacyOrderServiceImpl#addItemToOrder(Long, OrderItemRequestDTO, boolean)}
    */
   @Test
-  public void testAddItemToOrder_givenTwo_whenOrderItemRequestDTOQuantityIsTwo() throws PricingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyOrderServiceImpl.addItemToOrder(Long, OrderItemRequestDTO, boolean)"})
+  public void testAddItemToOrder_givenOrderDaoReadOrderByIdReturnNull() throws PricingException {
     // Arrange
-    LegacyOrderServiceImpl legacyOrderServiceImpl = new LegacyOrderServiceImpl();
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(null);
 
+    ConfigurableOrderItemRequest orderItemRequestDTO = new ConfigurableOrderItemRequest();
+    orderItemRequestDTO.setAdditionalAttributes(new HashMap<>());
+    orderItemRequestDTO.setCategoryId(1L);
+    orderItemRequestDTO.setChildOrderItems(new ArrayList<>());
+    orderItemRequestDTO.setDiscountsAllowed(true);
+    orderItemRequestDTO.setDisplayPrice(new Money());
+    orderItemRequestDTO.setExpandable(true);
+    orderItemRequestDTO.setFirstExpandable(true);
+    orderItemRequestDTO.setHasConfigurationError(true);
+    orderItemRequestDTO.setHasOverridenPrice(true);
+    orderItemRequestDTO.setIsMultiSelect(true);
+    orderItemRequestDTO.setItemAttributes(new HashMap<>());
+    orderItemRequestDTO.setLastExpandable(true);
+    orderItemRequestDTO.setMaxQuantity(3);
+    orderItemRequestDTO.setMinQuantity(1);
+    orderItemRequestDTO.setOrderItemId(1L);
+    orderItemRequestDTO.setOrderItemIndex(1);
+    orderItemRequestDTO.setOverrideRetailPrice(new Money());
+    orderItemRequestDTO.setOverrideSalePrice(new Money());
+    orderItemRequestDTO.setParentOrderItemId(1L);
+    orderItemRequestDTO.setPricingModelType("Not adding item to order because quantity is zero.");
+    orderItemRequestDTO.setProduct(new ProductBundleImpl());
+    orderItemRequestDTO.setProductChoices(new ArrayList<>());
+    orderItemRequestDTO.setProductId(1L);
+    orderItemRequestDTO.setQuantity(1);
+    orderItemRequestDTO.setSku(new SkuImpl());
+    orderItemRequestDTO.setSkuId(1L);
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.addItemToOrder(1L, orderItemRequestDTO, true));
+    verify(orderDao).readOrderById(eq(1L));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addItemToOrder(Long, OrderItemRequestDTO, boolean)}.
+   * <ul>
+   *   <li>Given {@link OrderDao} {@link OrderDao#save(Order)} return {@link NullOrderImpl} (default constructor).</li>
+   *   <li>Then return {@link NullOrderImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addItemToOrder(Long, OrderItemRequestDTO, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyOrderServiceImpl.addItemToOrder(Long, OrderItemRequestDTO, boolean)"})
+  public void testAddItemToOrder_givenOrderDaoSaveReturnNullOrderImpl_thenReturnNullOrderImpl()
+      throws PricingException {
+    // Arrange
+    NullOrderImpl nullOrderImpl = new NullOrderImpl();
+    when(orderDao.save(Mockito.<Order>any())).thenReturn(nullOrderImpl);
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(new OrderImpl());
+    when(pricingService.executePricing(Mockito.<Order>any())).thenReturn(new NullOrderImpl());
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
+    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(new BundleOrderItemImpl());
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getName()).thenReturn("Name");
+    when(productBundleImpl.getSkuBundleItems()).thenReturn(new ArrayList<>());
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(new SkuImpl());
+
+    ConfigurableOrderItemRequest orderItemRequestDTO = new ConfigurableOrderItemRequest();
+    orderItemRequestDTO.setAdditionalAttributes(new HashMap<>());
+    orderItemRequestDTO.setCategoryId(1L);
+    orderItemRequestDTO.setChildOrderItems(new ArrayList<>());
+    orderItemRequestDTO.setDiscountsAllowed(true);
+    orderItemRequestDTO.setDisplayPrice(new Money());
+    orderItemRequestDTO.setExpandable(true);
+    orderItemRequestDTO.setFirstExpandable(true);
+    orderItemRequestDTO.setHasConfigurationError(true);
+    orderItemRequestDTO.setHasOverridenPrice(true);
+    orderItemRequestDTO.setIsMultiSelect(true);
+    orderItemRequestDTO.setItemAttributes(new HashMap<>());
+    orderItemRequestDTO.setLastExpandable(true);
+    orderItemRequestDTO.setMaxQuantity(3);
+    orderItemRequestDTO.setMinQuantity(1);
+    orderItemRequestDTO.setOrderItemId(1L);
+    orderItemRequestDTO.setOrderItemIndex(1);
+    orderItemRequestDTO.setOverrideRetailPrice(new Money());
+    orderItemRequestDTO.setOverrideSalePrice(new Money());
+    orderItemRequestDTO.setParentOrderItemId(1L);
+    orderItemRequestDTO.setPricingModelType("Not adding item to order because quantity is zero.");
+    orderItemRequestDTO.setProduct(new ProductBundleImpl());
+    orderItemRequestDTO.setProductChoices(new ArrayList<>());
+    orderItemRequestDTO.setProductId(1L);
+    orderItemRequestDTO.setQuantity(1);
+    orderItemRequestDTO.setSku(new SkuImpl());
+    orderItemRequestDTO.setSkuId(1L);
+
+    // Act
+    Order actualAddItemToOrderResult = legacyOrderServiceImpl.addItemToOrder(1L, orderItemRequestDTO, true);
+
+    // Assert
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(productBundleImpl).getSkuBundleItems();
+    verify(productBundleImpl).getName();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+    verify(orderDao).save(isA(Order.class));
+    verify(orderItemDao).create(isA(OrderItemType.class));
+    verify(pricingService).executePricing(isA(Order.class));
+    assertSame(nullOrderImpl, actualAddItemToOrderResult);
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addItemToOrder(Long, OrderItemRequestDTO, boolean)}.
+   * <ul>
+   *   <li>Given {@link OrderDao}.</li>
+   *   <li>When {@link OrderItemRequestDTO#OrderItemRequestDTO()}.</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addItemToOrder(Long, OrderItemRequestDTO, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyOrderServiceImpl.addItemToOrder(Long, OrderItemRequestDTO, boolean)"})
+  public void testAddItemToOrder_givenOrderDao_whenOrderItemRequestDTO_thenReturnNull() throws PricingException {
+    // Arrange, Act and Assert
+    assertNull(legacyOrderServiceImpl.addItemToOrder(1L, new OrderItemRequestDTO(), true));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addItemToOrder(Long, OrderItemRequestDTO, boolean)}.
+   * <ul>
+   *   <li>Given {@link OrderItemDao} {@link OrderItemDao#create(OrderItemType)} throw {@link IllegalArgumentException#IllegalArgumentException(String)} with {@code foo}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addItemToOrder(Long, OrderItemRequestDTO, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyOrderServiceImpl.addItemToOrder(Long, OrderItemRequestDTO, boolean)"})
+  public void testAddItemToOrder_givenOrderItemDaoCreateThrowIllegalArgumentExceptionWithFoo() throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(new NullOrderImpl());
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
+    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenThrow(new IllegalArgumentException("foo"));
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(new ProductBundleImpl());
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(new SkuImpl());
+
+    ConfigurableOrderItemRequest orderItemRequestDTO = new ConfigurableOrderItemRequest();
+    orderItemRequestDTO.setAdditionalAttributes(new HashMap<>());
+    orderItemRequestDTO.setCategoryId(1L);
+    orderItemRequestDTO.setChildOrderItems(new ArrayList<>());
+    orderItemRequestDTO.setDiscountsAllowed(true);
+    orderItemRequestDTO.setDisplayPrice(new Money());
+    orderItemRequestDTO.setExpandable(true);
+    orderItemRequestDTO.setFirstExpandable(true);
+    orderItemRequestDTO.setHasConfigurationError(true);
+    orderItemRequestDTO.setHasOverridenPrice(true);
+    orderItemRequestDTO.setIsMultiSelect(true);
+    orderItemRequestDTO.setItemAttributes(new HashMap<>());
+    orderItemRequestDTO.setLastExpandable(true);
+    orderItemRequestDTO.setMaxQuantity(3);
+    orderItemRequestDTO.setMinQuantity(1);
+    orderItemRequestDTO.setOrderItemId(1L);
+    orderItemRequestDTO.setOrderItemIndex(1);
+    orderItemRequestDTO.setOverrideRetailPrice(new Money());
+    orderItemRequestDTO.setOverrideSalePrice(new Money());
+    orderItemRequestDTO.setParentOrderItemId(1L);
+    orderItemRequestDTO.setPricingModelType("Not adding item to order because quantity is zero.");
+    orderItemRequestDTO.setProduct(new ProductBundleImpl());
+    orderItemRequestDTO.setProductChoices(new ArrayList<>());
+    orderItemRequestDTO.setProductId(1L);
+    orderItemRequestDTO.setQuantity(1);
+    orderItemRequestDTO.setSku(new SkuImpl());
+    orderItemRequestDTO.setSkuId(1L);
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.addItemToOrder(1L, orderItemRequestDTO, true));
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(orderDao).readOrderById(eq(1L));
+    verify(orderItemDao).create(isA(OrderItemType.class));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addItemToOrder(Long, OrderItemRequestDTO, boolean)}.
+   * <ul>
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@code null}.</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addItemToOrder(Long, OrderItemRequestDTO, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyOrderServiceImpl.addItemToOrder(Long, OrderItemRequestDTO, boolean)"})
+  public void testAddItemToOrder_givenProductBundleImplGetDefaultSkuReturnNull_thenReturnNull()
+      throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(mock(Order.class));
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getAdditionalSkus()).thenReturn(new ArrayList<>());
+    when(productBundleImpl.getDefaultSku()).thenReturn(null);
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(null);
+
+    ConfigurableOrderItemRequest orderItemRequestDTO = new ConfigurableOrderItemRequest();
+    orderItemRequestDTO.setAdditionalAttributes(new HashMap<>());
+    orderItemRequestDTO.setCategoryId(1L);
+    orderItemRequestDTO.setChildOrderItems(new ArrayList<>());
+    orderItemRequestDTO.setDiscountsAllowed(true);
+    orderItemRequestDTO.setDisplayPrice(new Money());
+    orderItemRequestDTO.setExpandable(true);
+    orderItemRequestDTO.setFirstExpandable(true);
+    orderItemRequestDTO.setHasConfigurationError(true);
+    orderItemRequestDTO.setHasOverridenPrice(true);
+    orderItemRequestDTO.setIsMultiSelect(true);
+    orderItemRequestDTO.setItemAttributes(new HashMap<>());
+    orderItemRequestDTO.setLastExpandable(true);
+    orderItemRequestDTO.setMaxQuantity(3);
+    orderItemRequestDTO.setMinQuantity(1);
+    orderItemRequestDTO.setOrderItemId(1L);
+    orderItemRequestDTO.setOrderItemIndex(1);
+    orderItemRequestDTO.setOverrideRetailPrice(new Money());
+    orderItemRequestDTO.setOverrideSalePrice(new Money());
+    orderItemRequestDTO.setParentOrderItemId(1L);
+    orderItemRequestDTO.setPricingModelType("Not adding item to order because quantity is zero.");
+    orderItemRequestDTO.setProduct(new ProductBundleImpl());
+    orderItemRequestDTO.setProductChoices(new ArrayList<>());
+    orderItemRequestDTO.setProductId(1L);
+    orderItemRequestDTO.setQuantity(1);
+    orderItemRequestDTO.setSku(new SkuImpl());
+    orderItemRequestDTO.setSkuId(1L);
+
+    // Act
+    Order actualAddItemToOrderResult = legacyOrderServiceImpl.addItemToOrder(1L, orderItemRequestDTO, true);
+
+    // Assert
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(productBundleImpl, atLeast(1)).getAdditionalSkus();
+    verify(productBundleImpl).getDefaultSku();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+    assertNull(actualAddItemToOrderResult);
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addItemToOrder(Long, OrderItemRequestDTO, boolean)}.
+   * <ul>
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addItemToOrder(Long, OrderItemRequestDTO, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyOrderServiceImpl.addItemToOrder(Long, OrderItemRequestDTO, boolean)"})
+  public void testAddItemToOrder_givenProductBundleImplGetDefaultSkuReturnSkuImpl() throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(mock(Order.class));
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(null);
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getAdditionalSkus()).thenReturn(new ArrayList<>());
+    when(productBundleImpl.getDefaultSku()).thenReturn(new SkuImpl());
+    when(productBundleImpl.getDefaultCategory()).thenThrow(new IllegalArgumentException("foo"));
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(null);
+
+    ConfigurableOrderItemRequest orderItemRequestDTO = new ConfigurableOrderItemRequest();
+    orderItemRequestDTO.setAdditionalAttributes(new HashMap<>());
+    orderItemRequestDTO.setCategoryId(1L);
+    orderItemRequestDTO.setChildOrderItems(new ArrayList<>());
+    orderItemRequestDTO.setDiscountsAllowed(true);
+    orderItemRequestDTO.setDisplayPrice(new Money());
+    orderItemRequestDTO.setExpandable(true);
+    orderItemRequestDTO.setFirstExpandable(true);
+    orderItemRequestDTO.setHasConfigurationError(true);
+    orderItemRequestDTO.setHasOverridenPrice(true);
+    orderItemRequestDTO.setIsMultiSelect(true);
+    orderItemRequestDTO.setItemAttributes(new HashMap<>());
+    orderItemRequestDTO.setLastExpandable(true);
+    orderItemRequestDTO.setMaxQuantity(3);
+    orderItemRequestDTO.setMinQuantity(1);
+    orderItemRequestDTO.setOrderItemId(1L);
+    orderItemRequestDTO.setOrderItemIndex(1);
+    orderItemRequestDTO.setOverrideRetailPrice(new Money());
+    orderItemRequestDTO.setOverrideSalePrice(new Money());
+    orderItemRequestDTO.setParentOrderItemId(1L);
+    orderItemRequestDTO.setPricingModelType("Not adding item to order because quantity is zero.");
+    orderItemRequestDTO.setProduct(new ProductBundleImpl());
+    orderItemRequestDTO.setProductChoices(new ArrayList<>());
+    orderItemRequestDTO.setProductId(1L);
+    orderItemRequestDTO.setQuantity(1);
+    orderItemRequestDTO.setSku(new SkuImpl());
+    orderItemRequestDTO.setSkuId(1L);
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.addItemToOrder(1L, orderItemRequestDTO, true));
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(productBundleImpl, atLeast(1)).getAdditionalSkus();
+    verify(productBundleImpl).getDefaultCategory();
+    verify(productBundleImpl).getDefaultSku();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addItemToOrder(Long, OrderItemRequestDTO, boolean)}.
+   * <ul>
+   *   <li>Given {@link ProductDao} {@link ProductDao#readProductById(Long)} return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addItemToOrder(Long, OrderItemRequestDTO, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyOrderServiceImpl.addItemToOrder(Long, OrderItemRequestDTO, boolean)"})
+  public void testAddItemToOrder_givenProductDaoReadProductByIdReturnNull() throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(new NullOrderImpl());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(null);
+
+    ConfigurableOrderItemRequest orderItemRequestDTO = new ConfigurableOrderItemRequest();
+    orderItemRequestDTO.setAdditionalAttributes(new HashMap<>());
+    orderItemRequestDTO.setCategoryId(1L);
+    orderItemRequestDTO.setChildOrderItems(new ArrayList<>());
+    orderItemRequestDTO.setDiscountsAllowed(true);
+    orderItemRequestDTO.setDisplayPrice(new Money());
+    orderItemRequestDTO.setExpandable(true);
+    orderItemRequestDTO.setFirstExpandable(true);
+    orderItemRequestDTO.setHasConfigurationError(true);
+    orderItemRequestDTO.setHasOverridenPrice(true);
+    orderItemRequestDTO.setIsMultiSelect(true);
+    orderItemRequestDTO.setItemAttributes(new HashMap<>());
+    orderItemRequestDTO.setLastExpandable(true);
+    orderItemRequestDTO.setMaxQuantity(3);
+    orderItemRequestDTO.setMinQuantity(1);
+    orderItemRequestDTO.setOrderItemId(1L);
+    orderItemRequestDTO.setOrderItemIndex(1);
+    orderItemRequestDTO.setOverrideRetailPrice(new Money());
+    orderItemRequestDTO.setOverrideSalePrice(new Money());
+    orderItemRequestDTO.setParentOrderItemId(1L);
+    orderItemRequestDTO.setPricingModelType("Not adding item to order because quantity is zero.");
+    orderItemRequestDTO.setProduct(new ProductBundleImpl());
+    orderItemRequestDTO.setProductChoices(new ArrayList<>());
+    orderItemRequestDTO.setProductId(1L);
+    orderItemRequestDTO.setQuantity(1);
+    orderItemRequestDTO.setSku(new SkuImpl());
+    orderItemRequestDTO.setSkuId(1L);
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.addItemToOrder(1L, orderItemRequestDTO, true));
+    verify(productDao).readProductById(eq(1L));
+    verify(orderDao).readOrderById(eq(1L));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addItemToOrder(Long, OrderItemRequestDTO, boolean)}.
+   * <ul>
+   *   <li>Given two.</li>
+   *   <li>When {@link OrderItemRequestDTO#OrderItemRequestDTO()} Quantity is two.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addItemToOrder(Long, OrderItemRequestDTO, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyOrderServiceImpl.addItemToOrder(Long, OrderItemRequestDTO, boolean)"})
+  public void testAddItemToOrder_givenTwo_whenOrderItemRequestDTOQuantityIsTwo() throws PricingException {
+    // Arrange
     OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO();
     orderItemRequestDTO.setQuantity(2);
     orderItemRequestDTO.setCategoryId(null);
@@ -3865,24 +5036,19 @@ public class LegacyOrderServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link LegacyOrderServiceImpl#addItemToOrder(Long, OrderItemRequestDTO, boolean)}.
+   * Test {@link LegacyOrderServiceImpl#addItemToOrder(Long, OrderItemRequestDTO, boolean)}.
    * <ul>
    *   <li>Given zero.</li>
-   *   <li>When {@link OrderItemRequestDTO#OrderItemRequestDTO()} Quantity is
-   * zero.</li>
+   *   <li>When {@link OrderItemRequestDTO#OrderItemRequestDTO()} Quantity is zero.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#addItemToOrder(Long, OrderItemRequestDTO, boolean)}
+   * Method under test: {@link LegacyOrderServiceImpl#addItemToOrder(Long, OrderItemRequestDTO, boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyOrderServiceImpl.addItemToOrder(Long, OrderItemRequestDTO, boolean)"})
   public void testAddItemToOrder_givenZero_whenOrderItemRequestDTOQuantityIsZero() throws PricingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    LegacyOrderServiceImpl legacyOrderServiceImpl = new LegacyOrderServiceImpl();
-
     OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO();
     orderItemRequestDTO.setQuantity(0);
     orderItemRequestDTO.setCategoryId(null);
@@ -3895,799 +5061,2254 @@ public class LegacyOrderServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link LegacyOrderServiceImpl#addItemToOrder(Long, OrderItemRequestDTO, boolean)}.
+   * Test {@link LegacyOrderServiceImpl#addItemToOrder(Long, OrderItemRequestDTO, boolean)}.
    * <ul>
-   *   <li>When one.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Then calls {@link ProductImpl#getDefaultCategory()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#addItemToOrder(Long, OrderItemRequestDTO, boolean)}
+   * Method under test: {@link LegacyOrderServiceImpl#addItemToOrder(Long, OrderItemRequestDTO, boolean)}
    */
   @Test
-  public void testAddItemToOrder_whenOne_thenReturnNull() throws PricingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyOrderServiceImpl.addItemToOrder(Long, OrderItemRequestDTO, boolean)"})
+  public void testAddItemToOrder_thenCallsGetDefaultCategory() throws PricingException {
     // Arrange
-    LegacyOrderServiceImpl legacyOrderServiceImpl = new LegacyOrderServiceImpl();
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(mock(Order.class));
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(null);
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getDefaultCategory()).thenThrow(new IllegalArgumentException("foo"));
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(new SkuImpl());
+
+    ConfigurableOrderItemRequest orderItemRequestDTO = new ConfigurableOrderItemRequest();
+    orderItemRequestDTO.setAdditionalAttributes(new HashMap<>());
+    orderItemRequestDTO.setCategoryId(1L);
+    orderItemRequestDTO.setChildOrderItems(new ArrayList<>());
+    orderItemRequestDTO.setDiscountsAllowed(true);
+    orderItemRequestDTO.setDisplayPrice(new Money());
+    orderItemRequestDTO.setExpandable(true);
+    orderItemRequestDTO.setFirstExpandable(true);
+    orderItemRequestDTO.setHasConfigurationError(true);
+    orderItemRequestDTO.setHasOverridenPrice(true);
+    orderItemRequestDTO.setIsMultiSelect(true);
+    orderItemRequestDTO.setItemAttributes(new HashMap<>());
+    orderItemRequestDTO.setLastExpandable(true);
+    orderItemRequestDTO.setMaxQuantity(3);
+    orderItemRequestDTO.setMinQuantity(1);
+    orderItemRequestDTO.setOrderItemId(1L);
+    orderItemRequestDTO.setOrderItemIndex(1);
+    orderItemRequestDTO.setOverrideRetailPrice(new Money());
+    orderItemRequestDTO.setOverrideSalePrice(new Money());
+    orderItemRequestDTO.setParentOrderItemId(1L);
+    orderItemRequestDTO.setPricingModelType("Not adding item to order because quantity is zero.");
+    orderItemRequestDTO.setProduct(new ProductBundleImpl());
+    orderItemRequestDTO.setProductChoices(new ArrayList<>());
+    orderItemRequestDTO.setProductId(1L);
+    orderItemRequestDTO.setQuantity(1);
+    orderItemRequestDTO.setSku(new SkuImpl());
+    orderItemRequestDTO.setSkuId(1L);
 
     // Act and Assert
-    assertNull(legacyOrderServiceImpl.addItemToOrder(1L, new OrderItemRequestDTO(), true));
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.addItemToOrder(1L, orderItemRequestDTO, true));
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(productBundleImpl).getDefaultCategory();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
   }
 
   /**
-   * Test
-   * {@link LegacyOrderServiceImpl#addDiscreteItemToOrder(Order, DiscreteOrderItemRequest)}
-   * with {@code order}, {@code itemRequest}.
+   * Test {@link LegacyOrderServiceImpl#addItemToOrder(Long, OrderItemRequestDTO, boolean)}.
+   * <ul>
+   *   <li>Then calls {@link Order#getOrderItems()}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#addDiscreteItemToOrder(Order, DiscreteOrderItemRequest)}
+   * Method under test: {@link LegacyOrderServiceImpl#addItemToOrder(Long, OrderItemRequestDTO, boolean)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddDiscreteItemToOrderWithOrderItemRequest() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass945 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyOrderServiceImpl.addItemToOrder(Long, OrderItemRequestDTO, boolean)"})
+  public void testAddItemToOrder_thenCallsGetOrderItems() throws PricingException {
     // Arrange
-    NullOrderImpl order = new NullOrderImpl();
+    Order order = mock(Order.class);
+    when(order.getOrderItems()).thenThrow(new IllegalArgumentException("foo"));
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(order);
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
+    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(new BundleOrderItemImpl());
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getName()).thenReturn("Name");
+    when(productBundleImpl.getSkuBundleItems()).thenReturn(new ArrayList<>());
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(new SkuImpl());
 
-    // Act
-    legacyOrderServiceImpl.addDiscreteItemToOrder(order, new DiscreteOrderItemRequest());
+    ConfigurableOrderItemRequest orderItemRequestDTO = new ConfigurableOrderItemRequest();
+    orderItemRequestDTO.setAdditionalAttributes(new HashMap<>());
+    orderItemRequestDTO.setCategoryId(1L);
+    orderItemRequestDTO.setChildOrderItems(new ArrayList<>());
+    orderItemRequestDTO.setDiscountsAllowed(true);
+    orderItemRequestDTO.setDisplayPrice(new Money());
+    orderItemRequestDTO.setExpandable(true);
+    orderItemRequestDTO.setFirstExpandable(true);
+    orderItemRequestDTO.setHasConfigurationError(true);
+    orderItemRequestDTO.setHasOverridenPrice(true);
+    orderItemRequestDTO.setIsMultiSelect(true);
+    orderItemRequestDTO.setItemAttributes(new HashMap<>());
+    orderItemRequestDTO.setLastExpandable(true);
+    orderItemRequestDTO.setMaxQuantity(3);
+    orderItemRequestDTO.setMinQuantity(1);
+    orderItemRequestDTO.setOrderItemId(1L);
+    orderItemRequestDTO.setOrderItemIndex(1);
+    orderItemRequestDTO.setOverrideRetailPrice(new Money());
+    orderItemRequestDTO.setOverrideSalePrice(new Money());
+    orderItemRequestDTO.setParentOrderItemId(1L);
+    orderItemRequestDTO.setPricingModelType("Not adding item to order because quantity is zero.");
+    orderItemRequestDTO.setProduct(new ProductBundleImpl());
+    orderItemRequestDTO.setProductChoices(new ArrayList<>());
+    orderItemRequestDTO.setProductId(1L);
+    orderItemRequestDTO.setQuantity(1);
+    orderItemRequestDTO.setSku(new SkuImpl());
+    orderItemRequestDTO.setSkuId(1L);
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.addItemToOrder(1L, orderItemRequestDTO, true));
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(productBundleImpl).getSkuBundleItems();
+    verify(productBundleImpl).getName();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+    verify(orderItemDao).create(isA(OrderItemType.class));
+    verify(order).getOrderItems();
   }
 
   /**
-   * Test
-   * {@link LegacyOrderServiceImpl#addDiscreteItemToOrder(Order, DiscreteOrderItemRequest, boolean)}
-   * with {@code order}, {@code itemRequest}, {@code priceOrder}.
+   * Test {@link LegacyOrderServiceImpl#addItemToOrder(Long, OrderItemRequestDTO, boolean)}.
+   * <ul>
+   *   <li>Then throw {@link RequiredAttributeNotProvidedException}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#addDiscreteItemToOrder(Order, DiscreteOrderItemRequest, boolean)}
+   * Method under test: {@link LegacyOrderServiceImpl#addItemToOrder(Long, OrderItemRequestDTO, boolean)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyOrderServiceImpl.addItemToOrder(Long, OrderItemRequestDTO, boolean)"})
+  public void testAddItemToOrder_thenThrowRequiredAttributeNotProvidedException() throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(mock(Order.class));
+
+    ArrayList<Sku> skuList = new ArrayList<>();
+    skuList.add(new SkuImpl());
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getAdditionalSkus()).thenReturn(skuList);
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(null);
+
+    ConfigurableOrderItemRequest orderItemRequestDTO = new ConfigurableOrderItemRequest();
+    orderItemRequestDTO.setAdditionalAttributes(new HashMap<>());
+    orderItemRequestDTO.setCategoryId(1L);
+    orderItemRequestDTO.setChildOrderItems(new ArrayList<>());
+    orderItemRequestDTO.setDiscountsAllowed(true);
+    orderItemRequestDTO.setDisplayPrice(new Money());
+    orderItemRequestDTO.setExpandable(true);
+    orderItemRequestDTO.setFirstExpandable(true);
+    orderItemRequestDTO.setHasConfigurationError(true);
+    orderItemRequestDTO.setHasOverridenPrice(true);
+    orderItemRequestDTO.setIsMultiSelect(true);
+    orderItemRequestDTO.setItemAttributes(new HashMap<>());
+    orderItemRequestDTO.setLastExpandable(true);
+    orderItemRequestDTO.setMaxQuantity(3);
+    orderItemRequestDTO.setMinQuantity(1);
+    orderItemRequestDTO.setOrderItemId(1L);
+    orderItemRequestDTO.setOrderItemIndex(1);
+    orderItemRequestDTO.setOverrideRetailPrice(new Money());
+    orderItemRequestDTO.setOverrideSalePrice(new Money());
+    orderItemRequestDTO.setParentOrderItemId(1L);
+    orderItemRequestDTO.setPricingModelType("Not adding item to order because quantity is zero.");
+    orderItemRequestDTO.setProduct(new ProductBundleImpl());
+    orderItemRequestDTO.setProductChoices(new ArrayList<>());
+    orderItemRequestDTO.setProductId(1L);
+    orderItemRequestDTO.setQuantity(1);
+    orderItemRequestDTO.setSku(new SkuImpl());
+    orderItemRequestDTO.setSkuId(1L);
+
+    // Act and Assert
+    assertThrows(RequiredAttributeNotProvidedException.class,
+        () -> legacyOrderServiceImpl.addItemToOrder(1L, orderItemRequestDTO, true));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(productBundleImpl, atLeast(1)).getAdditionalSkus();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addItemToOrder(Long, OrderItemRequestDTO, boolean)}.
+   * <ul>
+   *   <li>When {@link ConfigurableOrderItemRequest} (default constructor) CategoryId is {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addItemToOrder(Long, OrderItemRequestDTO, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyOrderServiceImpl.addItemToOrder(Long, OrderItemRequestDTO, boolean)"})
+  public void testAddItemToOrder_whenConfigurableOrderItemRequestCategoryIdIsNull() throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(mock(Order.class));
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getAdditionalSkus()).thenReturn(new ArrayList<>());
+    when(productBundleImpl.getDefaultSku()).thenReturn(new SkuImpl());
+    when(productBundleImpl.getDefaultCategory()).thenThrow(new IllegalArgumentException("foo"));
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(null);
+
+    ConfigurableOrderItemRequest orderItemRequestDTO = new ConfigurableOrderItemRequest();
+    orderItemRequestDTO.setAdditionalAttributes(new HashMap<>());
+    orderItemRequestDTO.setCategoryId(null);
+    orderItemRequestDTO.setChildOrderItems(new ArrayList<>());
+    orderItemRequestDTO.setDiscountsAllowed(true);
+    orderItemRequestDTO.setDisplayPrice(new Money());
+    orderItemRequestDTO.setExpandable(true);
+    orderItemRequestDTO.setFirstExpandable(true);
+    orderItemRequestDTO.setHasConfigurationError(true);
+    orderItemRequestDTO.setHasOverridenPrice(true);
+    orderItemRequestDTO.setIsMultiSelect(true);
+    orderItemRequestDTO.setItemAttributes(new HashMap<>());
+    orderItemRequestDTO.setLastExpandable(true);
+    orderItemRequestDTO.setMaxQuantity(3);
+    orderItemRequestDTO.setMinQuantity(1);
+    orderItemRequestDTO.setOrderItemId(1L);
+    orderItemRequestDTO.setOrderItemIndex(1);
+    orderItemRequestDTO.setOverrideRetailPrice(new Money());
+    orderItemRequestDTO.setOverrideSalePrice(new Money());
+    orderItemRequestDTO.setParentOrderItemId(1L);
+    orderItemRequestDTO.setPricingModelType("Not adding item to order because quantity is zero.");
+    orderItemRequestDTO.setProduct(new ProductBundleImpl());
+    orderItemRequestDTO.setProductChoices(new ArrayList<>());
+    orderItemRequestDTO.setProductId(1L);
+    orderItemRequestDTO.setQuantity(1);
+    orderItemRequestDTO.setSku(new SkuImpl());
+    orderItemRequestDTO.setSkuId(1L);
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.addItemToOrder(1L, orderItemRequestDTO, true));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(productBundleImpl, atLeast(1)).getAdditionalSkus();
+    verify(productBundleImpl).getDefaultCategory();
+    verify(productBundleImpl).getDefaultSku();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addDiscreteItemToOrder(Order, DiscreteOrderItemRequest, boolean)} with {@code order}, {@code itemRequest}, {@code priceOrder}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addDiscreteItemToOrder(Order, DiscreteOrderItemRequest, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "OrderItem LegacyOrderServiceImpl.addDiscreteItemToOrder(Order, DiscreteOrderItemRequest, boolean)"})
   public void testAddDiscreteItemToOrderWithOrderItemRequestPriceOrder() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass946 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
+    when(orderItemService.createDiscreteOrderItem(Mockito.<DiscreteOrderItemRequest>any()))
+        .thenThrow(new IllegalArgumentException("foo"));
     NullOrderImpl order = new NullOrderImpl();
 
-    // Act
-    legacyOrderServiceImpl.addDiscreteItemToOrder(order, new DiscreteOrderItemRequest(), true);
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.addDiscreteItemToOrder(order, new DiscreteOrderItemRequest(), true));
+    verify(orderItemService).createDiscreteOrderItem(isA(DiscreteOrderItemRequest.class));
   }
 
   /**
-   * Test
-   * {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer)}
-   * with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId},
-   * {@code quantity}.
+   * Test {@link LegacyOrderServiceImpl#addDiscreteItemToOrder(Order, DiscreteOrderItemRequest)} with {@code order}, {@code itemRequest}.
+   * <ul>
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer)}
+   * Method under test: {@link LegacyOrderServiceImpl#addDiscreteItemToOrder(Order, DiscreteOrderItemRequest)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantity() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass965 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2);
-  }
-
-  /**
-   * Test
-   * {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)}
-   * with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId},
-   * {@code quantity}, {@code itemAttributes}.
-   * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)}
-   */
-  @Test
-  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityItemAttributes() throws PricingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addDiscreteItemToOrder(Order, DiscreteOrderItemRequest)"})
+  public void testAddDiscreteItemToOrderWithOrderItemRequest_thenThrowIllegalArgumentException()
+      throws PricingException {
     // Arrange
-    LegacyOrderServiceImpl legacyOrderServiceImpl = new LegacyOrderServiceImpl();
+    when(orderItemService.createDiscreteOrderItem(Mockito.<DiscreteOrderItemRequest>any()))
+        .thenThrow(new IllegalArgumentException("foo"));
+    NullOrderImpl order = new NullOrderImpl();
 
     // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.addDiscreteItemToOrder(order, new DiscreteOrderItemRequest()));
+    verify(orderItemService).createDiscreteOrderItem(isA(DiscreteOrderItemRequest.class));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantity() throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(new NullOrderImpl());
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
+    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenThrow(new IllegalArgumentException("foo"));
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(new ProductBundleImpl());
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(new SkuImpl());
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2));
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(orderDao).readOrderById(eq(1L));
+    verify(orderItemDao).create(isA(OrderItemType.class));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantity2() throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(null);
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2));
+    verify(orderDao).readOrderById(eq(1L));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantity3() throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(new NullOrderImpl());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(null);
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2));
+    verify(productDao).readProductById(eq(1L));
+    verify(orderDao).readOrderById(eq(1L));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantity4() throws PricingException {
+    // Arrange
+    when(orderDao.save(Mockito.<Order>any())).thenReturn(new NullOrderImpl());
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(new OrderImpl());
+    when(pricingService.executePricing(Mockito.<Order>any())).thenReturn(new NullOrderImpl());
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
+    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(new BundleOrderItemImpl());
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getName()).thenReturn("Name");
+    when(productBundleImpl.getSkuBundleItems()).thenReturn(new ArrayList<>());
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(new SkuImpl());
+
+    // Act
+    OrderItem actualAddSkuToOrderResult = legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2);
+
+    // Assert
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(productBundleImpl).getSkuBundleItems();
+    verify(productBundleImpl).getName();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+    verify(orderDao).save(isA(Order.class));
+    verify(orderItemDao).create(isA(OrderItemType.class));
+    verify(pricingService).executePricing(isA(Order.class));
+    assertNull(actualAddSkuToOrderResult);
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantity5() throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(new OrderImpl());
+    when(pricingService.executePricing(Mockito.<Order>any()))
+        .thenThrow(new IllegalArgumentException("ThreadLocalManager.notify.orphans"));
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
+    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(new BundleOrderItemImpl());
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getName()).thenReturn("Name");
+    when(productBundleImpl.getSkuBundleItems()).thenReturn(new ArrayList<>());
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(new SkuImpl());
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2));
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(productBundleImpl).getSkuBundleItems();
+    verify(productBundleImpl).getName();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+    verify(orderItemDao).create(isA(OrderItemType.class));
+    verify(pricingService).executePricing(isA(Order.class));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantity6() throws PricingException {
+    // Arrange
+    when(orderDao.save(Mockito.<Order>any())).thenReturn(null);
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(new OrderImpl());
+    when(pricingService.executePricing(Mockito.<Order>any())).thenReturn(new NullOrderImpl());
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
+    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(new BundleOrderItemImpl());
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getName()).thenReturn("Name");
+    when(productBundleImpl.getSkuBundleItems()).thenReturn(new ArrayList<>());
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(new SkuImpl());
+
+    // Act
+    OrderItem actualAddSkuToOrderResult = legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2);
+
+    // Assert
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(productBundleImpl).getSkuBundleItems();
+    verify(productBundleImpl).getName();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+    verify(orderDao).save(isA(Order.class));
+    verify(orderItemDao).create(isA(OrderItemType.class));
+    verify(pricingService).executePricing(isA(Order.class));
+    assertNull(actualAddSkuToOrderResult);
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantity7() throws PricingException {
+    // Arrange
+    Order order = mock(Order.class);
+    when(order.getOrderItems()).thenThrow(new IllegalArgumentException("foo"));
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(order);
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
+    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(new BundleOrderItemImpl());
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getName()).thenReturn("Name");
+    when(productBundleImpl.getSkuBundleItems()).thenReturn(new ArrayList<>());
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(new SkuImpl());
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2));
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(productBundleImpl).getSkuBundleItems();
+    verify(productBundleImpl).getName();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+    verify(orderItemDao).create(isA(OrderItemType.class));
+    verify(order).getOrderItems();
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantity8() throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(mock(Order.class));
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(null);
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getDefaultCategory()).thenThrow(new IllegalArgumentException("foo"));
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(new SkuImpl());
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2));
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(productBundleImpl).getDefaultCategory();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantity9() throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(mock(Order.class));
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(null);
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getAdditionalSkus()).thenReturn(new ArrayList<>());
+    when(productBundleImpl.getDefaultSku()).thenReturn(new SkuImpl());
+    when(productBundleImpl.getDefaultCategory()).thenThrow(new IllegalArgumentException("foo"));
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(null);
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2));
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(productBundleImpl, atLeast(1)).getAdditionalSkus();
+    verify(productBundleImpl).getDefaultCategory();
+    verify(productBundleImpl).getDefaultSku();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantity10() throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(mock(Order.class));
+
+    ArrayList<Sku> skuList = new ArrayList<>();
+    skuList.add(new SkuImpl());
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getAdditionalSkus()).thenReturn(skuList);
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(null);
+
+    // Act and Assert
+    assertThrows(RequiredAttributeNotProvidedException.class,
+        () -> legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(productBundleImpl, atLeast(1)).getAdditionalSkus();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantity11() throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(mock(Order.class));
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getAdditionalSkus()).thenReturn(new ArrayList<>());
+    when(productBundleImpl.getDefaultSku()).thenReturn(null);
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(null);
+
+    // Act
+    OrderItem actualAddSkuToOrderResult = legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2);
+
+    // Assert
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(productBundleImpl, atLeast(1)).getAdditionalSkus();
+    verify(productBundleImpl).getDefaultSku();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+    assertNull(actualAddSkuToOrderResult);
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantity12() throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(mock(Order.class));
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(null);
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getAdditionalSkus()).thenReturn(new ArrayList<>());
+    when(productBundleImpl.getDefaultSku()).thenReturn(new SkuImpl());
+    when(productBundleImpl.getDefaultCategory()).thenThrow(new IllegalArgumentException("foo"));
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> legacyOrderServiceImpl.addSkuToOrder(1L, null, 1L, 1L, 2));
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(productBundleImpl, atLeast(1)).getAdditionalSkus();
+    verify(productBundleImpl).getDefaultCategory();
+    verify(productBundleImpl).getDefaultSku();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantity13() throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(mock(Order.class));
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(null);
+
+    // Act
+    OrderItem actualAddSkuToOrderResult = legacyOrderServiceImpl.addSkuToOrder(1L, 1L, null, 1L, 2);
+
+    // Assert
+    verify(skuDao).readSkuById(eq(1L));
+    verify(orderDao).readOrderById(eq(1L));
+    assertNull(actualAddSkuToOrderResult);
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantity14() throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(mock(Order.class));
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getAdditionalSkus()).thenReturn(new ArrayList<>());
+    when(productBundleImpl.getDefaultSku()).thenReturn(new SkuImpl());
+    when(productBundleImpl.getDefaultCategory()).thenThrow(new IllegalArgumentException("foo"));
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(null);
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, null, 2));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(productBundleImpl, atLeast(1)).getAdditionalSkus();
+    verify(productBundleImpl).getDefaultCategory();
+    verify(productBundleImpl).getDefaultSku();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code itemAttributes}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, Map)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityItemAttributes() throws PricingException {
+    // Arrange, Act and Assert
     assertNull(legacyOrderServiceImpl.addSkuToOrder(null, null, null, 1L, null, new HashMap<>()));
   }
 
   /**
-   * Test
-   * {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)}
-   * with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId},
-   * {@code quantity}, {@code itemAttributes}.
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code itemAttributes}.
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)}
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, Map)"})
   public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityItemAttributes2() throws PricingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    LegacyOrderServiceImpl legacyOrderServiceImpl = new LegacyOrderServiceImpl();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertNull(legacyOrderServiceImpl.addSkuToOrder(1L, null, null, 1L, null, new HashMap<>()));
   }
 
   /**
-   * Test
-   * {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)}
-   * with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId},
-   * {@code quantity}, {@code itemAttributes}.
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code itemAttributes}.
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)}
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, Map)"})
   public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityItemAttributes3() throws PricingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    LegacyOrderServiceImpl legacyOrderServiceImpl = new LegacyOrderServiceImpl();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertNull(legacyOrderServiceImpl.addSkuToOrder(1L, null, 1L, 1L, null, new HashMap<>()));
   }
 
   /**
-   * Test
-   * {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)}
-   * with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId},
-   * {@code quantity}, {@code itemAttributes}.
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code itemAttributes}.
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)}
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, Map)"})
   public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityItemAttributes4() throws PricingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    LegacyOrderServiceImpl legacyOrderServiceImpl = new LegacyOrderServiceImpl();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertNull(legacyOrderServiceImpl.addSkuToOrder(1L, 1L, null, 1L, null, new HashMap<>()));
   }
 
   /**
-   * Test
-   * {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)}
-   * with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId},
-   * {@code quantity}, {@code itemAttributes}.
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code itemAttributes}.
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)}
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, Map)"})
   public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityItemAttributes5() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass966 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2, new HashMap<>());
-  }
-
-  /**
-   * Test
-   * {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean)}
-   * with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId},
-   * {@code quantity}, {@code priceOrder}.
-   * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean)}
-   */
-  @Test
-  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityPriceOrder() throws PricingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertNull((new LegacyOrderServiceImpl()).addSkuToOrder(null, null, null, 1L, null, true));
-    assertNull((new LegacyOrderServiceImpl()).addSkuToOrder(1L, null, null, 1L, null, true));
-    assertNull((new LegacyOrderServiceImpl()).addSkuToOrder(1L, null, 1L, 1L, null, true));
-    assertNull((new LegacyOrderServiceImpl()).addSkuToOrder(1L, 1L, null, 1L, null, true));
-  }
-
-  /**
-   * Test
-   * {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean)}
-   * with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId},
-   * {@code quantity}, {@code priceOrder}.
-   * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityPriceOrder2() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass967 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2, true);
-  }
-
-  /**
-   * Test
-   * {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)}
-   * with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId},
-   * {@code quantity}, {@code priceOrder}, {@code itemAttributes}.
-   * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)}
-   */
-  @Test
-  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityPriceOrderItemAttributes()
-      throws PricingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    LegacyOrderServiceImpl legacyOrderServiceImpl = new LegacyOrderServiceImpl();
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(new NullOrderImpl());
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
+    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenThrow(new IllegalArgumentException("foo"));
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(new ProductBundleImpl());
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(new SkuImpl());
 
     // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2, new HashMap<>()));
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(orderDao).readOrderById(eq(1L));
+    verify(orderItemDao).create(isA(OrderItemType.class));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code itemAttributes}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, Map)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityItemAttributes6() throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(null);
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2, new HashMap<>()));
+    verify(orderDao).readOrderById(eq(1L));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code itemAttributes}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, Map)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityItemAttributes7() throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(new NullOrderImpl());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(null);
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2, new HashMap<>()));
+    verify(productDao).readProductById(eq(1L));
+    verify(orderDao).readOrderById(eq(1L));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code itemAttributes}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, Map)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityItemAttributes8() throws PricingException {
+    // Arrange
+    when(orderDao.save(Mockito.<Order>any())).thenReturn(new NullOrderImpl());
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(new OrderImpl());
+    when(pricingService.executePricing(Mockito.<Order>any())).thenReturn(new NullOrderImpl());
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
+    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(new BundleOrderItemImpl());
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getName()).thenReturn("Name");
+    when(productBundleImpl.getSkuBundleItems()).thenReturn(new ArrayList<>());
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(new SkuImpl());
+
+    // Act
+    OrderItem actualAddSkuToOrderResult = legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2, new HashMap<>());
+
+    // Assert
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(productBundleImpl).getSkuBundleItems();
+    verify(productBundleImpl).getName();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+    verify(orderDao).save(isA(Order.class));
+    verify(orderItemDao).create(isA(OrderItemType.class));
+    verify(pricingService).executePricing(isA(Order.class));
+    assertNull(actualAddSkuToOrderResult);
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code itemAttributes}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, Map)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityItemAttributes9() throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(new OrderImpl());
+    when(pricingService.executePricing(Mockito.<Order>any()))
+        .thenThrow(new IllegalArgumentException("ThreadLocalManager.notify.orphans"));
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
+    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(new BundleOrderItemImpl());
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getName()).thenReturn("Name");
+    when(productBundleImpl.getSkuBundleItems()).thenReturn(new ArrayList<>());
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(new SkuImpl());
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2, new HashMap<>()));
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(productBundleImpl).getSkuBundleItems();
+    verify(productBundleImpl).getName();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+    verify(orderItemDao).create(isA(OrderItemType.class));
+    verify(pricingService).executePricing(isA(Order.class));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code itemAttributes}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, Map)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityItemAttributes10() throws PricingException {
+    // Arrange
+    when(orderDao.save(Mockito.<Order>any())).thenReturn(null);
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(new OrderImpl());
+    when(pricingService.executePricing(Mockito.<Order>any())).thenReturn(new NullOrderImpl());
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
+    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(new BundleOrderItemImpl());
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getName()).thenReturn("Name");
+    when(productBundleImpl.getSkuBundleItems()).thenReturn(new ArrayList<>());
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(new SkuImpl());
+
+    // Act
+    OrderItem actualAddSkuToOrderResult = legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2, new HashMap<>());
+
+    // Assert
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(productBundleImpl).getSkuBundleItems();
+    verify(productBundleImpl).getName();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+    verify(orderDao).save(isA(Order.class));
+    verify(orderItemDao).create(isA(OrderItemType.class));
+    verify(pricingService).executePricing(isA(Order.class));
+    assertNull(actualAddSkuToOrderResult);
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code itemAttributes}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, Map)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityItemAttributes11() throws PricingException {
+    // Arrange
+    Order order = mock(Order.class);
+    when(order.getOrderItems()).thenThrow(new IllegalArgumentException("foo"));
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(order);
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
+    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(new BundleOrderItemImpl());
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getName()).thenReturn("Name");
+    when(productBundleImpl.getSkuBundleItems()).thenReturn(new ArrayList<>());
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(new SkuImpl());
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2, new HashMap<>()));
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(productBundleImpl).getSkuBundleItems();
+    verify(productBundleImpl).getName();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+    verify(orderItemDao).create(isA(OrderItemType.class));
+    verify(order).getOrderItems();
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code itemAttributes}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, Map)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityItemAttributes12() throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(mock(Order.class));
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(null);
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getDefaultCategory()).thenThrow(new IllegalArgumentException("foo"));
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(new SkuImpl());
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2, new HashMap<>()));
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(productBundleImpl).getDefaultCategory();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code itemAttributes}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, Map)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityItemAttributes13() throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(mock(Order.class));
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(null);
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getAdditionalSkus()).thenReturn(new ArrayList<>());
+    when(productBundleImpl.getDefaultSku()).thenReturn(new SkuImpl());
+    when(productBundleImpl.getDefaultCategory()).thenThrow(new IllegalArgumentException("foo"));
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(null);
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2, new HashMap<>()));
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(productBundleImpl, atLeast(1)).getAdditionalSkus();
+    verify(productBundleImpl).getDefaultCategory();
+    verify(productBundleImpl).getDefaultSku();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code itemAttributes}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, Map)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityItemAttributes14() throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(mock(Order.class));
+
+    ArrayList<Sku> skuList = new ArrayList<>();
+    skuList.add(new SkuImpl());
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getAdditionalSkus()).thenReturn(skuList);
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(null);
+
+    // Act and Assert
+    assertThrows(RequiredAttributeNotProvidedException.class,
+        () -> legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2, new HashMap<>()));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(productBundleImpl, atLeast(1)).getAdditionalSkus();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code itemAttributes}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, Map)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityItemAttributes15() throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(mock(Order.class));
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getAdditionalSkus()).thenReturn(new ArrayList<>());
+    when(productBundleImpl.getDefaultSku()).thenReturn(null);
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(null);
+
+    // Act
+    OrderItem actualAddSkuToOrderResult = legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2, new HashMap<>());
+
+    // Assert
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(productBundleImpl, atLeast(1)).getAdditionalSkus();
+    verify(productBundleImpl).getDefaultSku();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+    assertNull(actualAddSkuToOrderResult);
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code itemAttributes}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, Map)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityItemAttributes16() throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(mock(Order.class));
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(null);
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getAdditionalSkus()).thenReturn(new ArrayList<>());
+    when(productBundleImpl.getDefaultSku()).thenReturn(new SkuImpl());
+    when(productBundleImpl.getDefaultCategory()).thenThrow(new IllegalArgumentException("foo"));
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.addSkuToOrder(1L, null, 1L, 1L, 2, new HashMap<>()));
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(productBundleImpl, atLeast(1)).getAdditionalSkus();
+    verify(productBundleImpl).getDefaultCategory();
+    verify(productBundleImpl).getDefaultSku();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code itemAttributes}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, Map)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityItemAttributes17() throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(mock(Order.class));
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(null);
+
+    // Act
+    OrderItem actualAddSkuToOrderResult = legacyOrderServiceImpl.addSkuToOrder(1L, 1L, null, 1L, 2, new HashMap<>());
+
+    // Assert
+    verify(skuDao).readSkuById(eq(1L));
+    verify(orderDao).readOrderById(eq(1L));
+    assertNull(actualAddSkuToOrderResult);
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code itemAttributes}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, Map)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityItemAttributes18() throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(mock(Order.class));
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getAdditionalSkus()).thenReturn(new ArrayList<>());
+    when(productBundleImpl.getDefaultSku()).thenReturn(new SkuImpl());
+    when(productBundleImpl.getDefaultCategory()).thenThrow(new IllegalArgumentException("foo"));
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(null);
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, null, 2, new HashMap<>()));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(productBundleImpl, atLeast(1)).getAdditionalSkus();
+    verify(productBundleImpl).getDefaultCategory();
+    verify(productBundleImpl).getDefaultSku();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code priceOrder}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, boolean)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityPriceOrder() throws PricingException {
+    // Arrange, Act and Assert
+    assertNull(legacyOrderServiceImpl.addSkuToOrder(null, null, null, 1L, null, true));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code priceOrder}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, boolean)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityPriceOrder2() throws PricingException {
+    // Arrange, Act and Assert
+    assertNull(legacyOrderServiceImpl.addSkuToOrder(1L, null, null, 1L, null, true));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code priceOrder}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, boolean)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityPriceOrder3() throws PricingException {
+    // Arrange, Act and Assert
+    assertNull(legacyOrderServiceImpl.addSkuToOrder(1L, null, 1L, 1L, null, true));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code priceOrder}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, boolean)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityPriceOrder4() throws PricingException {
+    // Arrange, Act and Assert
+    assertNull(legacyOrderServiceImpl.addSkuToOrder(1L, 1L, null, 1L, null, true));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code priceOrder}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, boolean)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityPriceOrder5() throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(new NullOrderImpl());
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
+    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenThrow(new IllegalArgumentException("foo"));
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(new ProductBundleImpl());
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(new SkuImpl());
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2, true));
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(orderDao).readOrderById(eq(1L));
+    verify(orderItemDao).create(isA(OrderItemType.class));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code priceOrder}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, boolean)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityPriceOrder6() throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(null);
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2, true));
+    verify(orderDao).readOrderById(eq(1L));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code priceOrder}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, boolean)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityPriceOrder7() throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(new NullOrderImpl());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(null);
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2, true));
+    verify(productDao).readProductById(eq(1L));
+    verify(orderDao).readOrderById(eq(1L));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code priceOrder}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, boolean)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityPriceOrder8() throws PricingException {
+    // Arrange
+    when(orderDao.save(Mockito.<Order>any())).thenReturn(new NullOrderImpl());
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(new OrderImpl());
+    when(pricingService.executePricing(Mockito.<Order>any())).thenReturn(new NullOrderImpl());
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
+    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(new BundleOrderItemImpl());
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getName()).thenReturn("Name");
+    when(productBundleImpl.getSkuBundleItems()).thenReturn(new ArrayList<>());
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(new SkuImpl());
+
+    // Act
+    OrderItem actualAddSkuToOrderResult = legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2, true);
+
+    // Assert
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(productBundleImpl).getSkuBundleItems();
+    verify(productBundleImpl).getName();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+    verify(orderDao).save(isA(Order.class));
+    verify(orderItemDao).create(isA(OrderItemType.class));
+    verify(pricingService).executePricing(isA(Order.class));
+    assertNull(actualAddSkuToOrderResult);
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code priceOrder}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, boolean)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityPriceOrder9() throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(new OrderImpl());
+    when(pricingService.executePricing(Mockito.<Order>any()))
+        .thenThrow(new IllegalArgumentException("ThreadLocalManager.notify.orphans"));
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
+    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(new BundleOrderItemImpl());
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getName()).thenReturn("Name");
+    when(productBundleImpl.getSkuBundleItems()).thenReturn(new ArrayList<>());
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(new SkuImpl());
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2, true));
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(productBundleImpl).getSkuBundleItems();
+    verify(productBundleImpl).getName();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+    verify(orderItemDao).create(isA(OrderItemType.class));
+    verify(pricingService).executePricing(isA(Order.class));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code priceOrder}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, boolean)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityPriceOrder10() throws PricingException {
+    // Arrange
+    when(orderDao.save(Mockito.<Order>any())).thenReturn(null);
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(new OrderImpl());
+    when(pricingService.executePricing(Mockito.<Order>any())).thenReturn(new NullOrderImpl());
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
+    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(new BundleOrderItemImpl());
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getName()).thenReturn("Name");
+    when(productBundleImpl.getSkuBundleItems()).thenReturn(new ArrayList<>());
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(new SkuImpl());
+
+    // Act
+    OrderItem actualAddSkuToOrderResult = legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2, true);
+
+    // Assert
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(productBundleImpl).getSkuBundleItems();
+    verify(productBundleImpl).getName();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+    verify(orderDao).save(isA(Order.class));
+    verify(orderItemDao).create(isA(OrderItemType.class));
+    verify(pricingService).executePricing(isA(Order.class));
+    assertNull(actualAddSkuToOrderResult);
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code priceOrder}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, boolean)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityPriceOrder11() throws PricingException {
+    // Arrange
+    Order order = mock(Order.class);
+    when(order.getOrderItems()).thenThrow(new IllegalArgumentException("foo"));
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(order);
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
+    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(new BundleOrderItemImpl());
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getName()).thenReturn("Name");
+    when(productBundleImpl.getSkuBundleItems()).thenReturn(new ArrayList<>());
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(new SkuImpl());
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2, true));
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(productBundleImpl).getSkuBundleItems();
+    verify(productBundleImpl).getName();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+    verify(orderItemDao).create(isA(OrderItemType.class));
+    verify(order).getOrderItems();
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code priceOrder}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, boolean)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityPriceOrder12() throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(mock(Order.class));
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(null);
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getDefaultCategory()).thenThrow(new IllegalArgumentException("foo"));
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(new SkuImpl());
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2, true));
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(productBundleImpl).getDefaultCategory();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code priceOrder}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, boolean)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityPriceOrder13() throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(mock(Order.class));
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(null);
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getAdditionalSkus()).thenReturn(new ArrayList<>());
+    when(productBundleImpl.getDefaultSku()).thenReturn(new SkuImpl());
+    when(productBundleImpl.getDefaultCategory()).thenThrow(new IllegalArgumentException("foo"));
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(null);
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2, true));
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(productBundleImpl, atLeast(1)).getAdditionalSkus();
+    verify(productBundleImpl).getDefaultCategory();
+    verify(productBundleImpl).getDefaultSku();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code priceOrder}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, boolean)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityPriceOrder14() throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(mock(Order.class));
+
+    ArrayList<Sku> skuList = new ArrayList<>();
+    skuList.add(new SkuImpl());
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getAdditionalSkus()).thenReturn(skuList);
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(null);
+
+    // Act and Assert
+    assertThrows(RequiredAttributeNotProvidedException.class,
+        () -> legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2, true));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(productBundleImpl, atLeast(1)).getAdditionalSkus();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code priceOrder}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, boolean)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityPriceOrder15() throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(mock(Order.class));
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getAdditionalSkus()).thenReturn(new ArrayList<>());
+    when(productBundleImpl.getDefaultSku()).thenReturn(null);
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(null);
+
+    // Act
+    OrderItem actualAddSkuToOrderResult = legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2, true);
+
+    // Assert
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(productBundleImpl, atLeast(1)).getAdditionalSkus();
+    verify(productBundleImpl).getDefaultSku();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+    assertNull(actualAddSkuToOrderResult);
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code priceOrder}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, boolean)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityPriceOrder16() throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(mock(Order.class));
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(null);
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getAdditionalSkus()).thenReturn(new ArrayList<>());
+    when(productBundleImpl.getDefaultSku()).thenReturn(new SkuImpl());
+    when(productBundleImpl.getDefaultCategory()).thenThrow(new IllegalArgumentException("foo"));
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> legacyOrderServiceImpl.addSkuToOrder(1L, null, 1L, 1L, 2, true));
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(productBundleImpl, atLeast(1)).getAdditionalSkus();
+    verify(productBundleImpl).getDefaultCategory();
+    verify(productBundleImpl).getDefaultSku();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code priceOrder}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, boolean)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityPriceOrder17() throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(mock(Order.class));
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(null);
+
+    // Act
+    OrderItem actualAddSkuToOrderResult = legacyOrderServiceImpl.addSkuToOrder(1L, 1L, null, 1L, 2, true);
+
+    // Assert
+    verify(skuDao).readSkuById(eq(1L));
+    verify(orderDao).readOrderById(eq(1L));
+    assertNull(actualAddSkuToOrderResult);
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code priceOrder}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, boolean)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityPriceOrder18() throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(mock(Order.class));
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getAdditionalSkus()).thenReturn(new ArrayList<>());
+    when(productBundleImpl.getDefaultSku()).thenReturn(new SkuImpl());
+    when(productBundleImpl.getDefaultCategory()).thenThrow(new IllegalArgumentException("foo"));
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(null);
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, null, 2, true));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(productBundleImpl, atLeast(1)).getAdditionalSkus();
+    verify(productBundleImpl).getDefaultCategory();
+    verify(productBundleImpl).getDefaultSku();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code priceOrder}, {@code itemAttributes}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityPriceOrderItemAttributes()
+      throws PricingException {
+    // Arrange, Act and Assert
     assertNull(legacyOrderServiceImpl.addSkuToOrder(null, null, null, 1L, null, true, new HashMap<>()));
   }
 
   /**
-   * Test
-   * {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)}
-   * with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId},
-   * {@code quantity}, {@code priceOrder}, {@code itemAttributes}.
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code priceOrder}, {@code itemAttributes}.
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)}
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)"})
   public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityPriceOrderItemAttributes2()
       throws PricingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    LegacyOrderServiceImpl legacyOrderServiceImpl = new LegacyOrderServiceImpl();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertNull(legacyOrderServiceImpl.addSkuToOrder(1L, null, null, 1L, null, true, new HashMap<>()));
   }
 
   /**
-   * Test
-   * {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)}
-   * with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId},
-   * {@code quantity}, {@code priceOrder}, {@code itemAttributes}.
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code priceOrder}, {@code itemAttributes}.
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)}
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)"})
   public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityPriceOrderItemAttributes3()
       throws PricingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    LegacyOrderServiceImpl legacyOrderServiceImpl = new LegacyOrderServiceImpl();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertNull(legacyOrderServiceImpl.addSkuToOrder(1L, null, 1L, 1L, null, true, new HashMap<>()));
   }
 
   /**
-   * Test
-   * {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)}
-   * with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId},
-   * {@code quantity}, {@code priceOrder}, {@code itemAttributes}.
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code priceOrder}, {@code itemAttributes}.
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)}
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)"})
   public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityPriceOrderItemAttributes4()
       throws PricingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    LegacyOrderServiceImpl legacyOrderServiceImpl = new LegacyOrderServiceImpl();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertNull(legacyOrderServiceImpl.addSkuToOrder(1L, 1L, null, 1L, null, true, new HashMap<>()));
   }
 
   /**
-   * Test
-   * {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)}
-   * with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId},
-   * {@code quantity}, {@code priceOrder}, {@code itemAttributes}.
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code priceOrder}, {@code itemAttributes}.
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)}
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)"})
   public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityPriceOrderItemAttributes5()
       throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass968 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(new NullOrderImpl());
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
+    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenThrow(new IllegalArgumentException("foo"));
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(new ProductBundleImpl());
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(new SkuImpl());
 
-    // Arrange and Act
-    legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2, true, new HashMap<>());
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2, true, new HashMap<>()));
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(orderDao).readOrderById(eq(1L));
+    verify(orderItemDao).create(isA(OrderItemType.class));
   }
 
   /**
-   * Test
-   * {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer)}
-   * with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId},
-   * {@code quantity}.
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code priceOrder}, {@code itemAttributes}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityPriceOrderItemAttributes6()
+      throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(null);
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2, true, new HashMap<>()));
+    verify(orderDao).readOrderById(eq(1L));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code priceOrder}, {@code itemAttributes}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityPriceOrderItemAttributes7()
+      throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(new NullOrderImpl());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(null);
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2, true, new HashMap<>()));
+    verify(productDao).readProductById(eq(1L));
+    verify(orderDao).readOrderById(eq(1L));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code priceOrder}, {@code itemAttributes}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityPriceOrderItemAttributes8()
+      throws PricingException {
+    // Arrange
+    when(orderDao.save(Mockito.<Order>any())).thenReturn(new NullOrderImpl());
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(new OrderImpl());
+    when(pricingService.executePricing(Mockito.<Order>any())).thenReturn(new NullOrderImpl());
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
+    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(new BundleOrderItemImpl());
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getName()).thenReturn("Name");
+    when(productBundleImpl.getSkuBundleItems()).thenReturn(new ArrayList<>());
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(new SkuImpl());
+
+    // Act
+    OrderItem actualAddSkuToOrderResult = legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2, true,
+        new HashMap<>());
+
+    // Assert
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(productBundleImpl).getSkuBundleItems();
+    verify(productBundleImpl).getName();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+    verify(orderDao).save(isA(Order.class));
+    verify(orderItemDao).create(isA(OrderItemType.class));
+    verify(pricingService).executePricing(isA(Order.class));
+    assertNull(actualAddSkuToOrderResult);
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code priceOrder}, {@code itemAttributes}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityPriceOrderItemAttributes9()
+      throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(new OrderImpl());
+    when(pricingService.executePricing(Mockito.<Order>any()))
+        .thenThrow(new IllegalArgumentException("ThreadLocalManager.notify.orphans"));
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
+    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(new BundleOrderItemImpl());
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getName()).thenReturn("Name");
+    when(productBundleImpl.getSkuBundleItems()).thenReturn(new ArrayList<>());
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(new SkuImpl());
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2, true, new HashMap<>()));
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(productBundleImpl).getSkuBundleItems();
+    verify(productBundleImpl).getName();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+    verify(orderItemDao).create(isA(OrderItemType.class));
+    verify(pricingService).executePricing(isA(Order.class));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code priceOrder}, {@code itemAttributes}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityPriceOrderItemAttributes10()
+      throws PricingException {
+    // Arrange
+    when(orderDao.save(Mockito.<Order>any())).thenReturn(null);
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(new OrderImpl());
+    when(pricingService.executePricing(Mockito.<Order>any())).thenReturn(new NullOrderImpl());
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
+    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(new BundleOrderItemImpl());
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getName()).thenReturn("Name");
+    when(productBundleImpl.getSkuBundleItems()).thenReturn(new ArrayList<>());
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(new SkuImpl());
+
+    // Act
+    OrderItem actualAddSkuToOrderResult = legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2, true,
+        new HashMap<>());
+
+    // Assert
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(productBundleImpl).getSkuBundleItems();
+    verify(productBundleImpl).getName();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+    verify(orderDao).save(isA(Order.class));
+    verify(orderItemDao).create(isA(OrderItemType.class));
+    verify(pricingService).executePricing(isA(Order.class));
+    assertNull(actualAddSkuToOrderResult);
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code priceOrder}, {@code itemAttributes}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityPriceOrderItemAttributes11()
+      throws PricingException {
+    // Arrange
+    Order order = mock(Order.class);
+    when(order.getOrderItems()).thenThrow(new IllegalArgumentException("foo"));
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(order);
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
+    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(new BundleOrderItemImpl());
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getName()).thenReturn("Name");
+    when(productBundleImpl.getSkuBundleItems()).thenReturn(new ArrayList<>());
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(new SkuImpl());
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2, true, new HashMap<>()));
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(productBundleImpl).getSkuBundleItems();
+    verify(productBundleImpl).getName();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+    verify(orderItemDao).create(isA(OrderItemType.class));
+    verify(order).getOrderItems();
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code priceOrder}, {@code itemAttributes}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityPriceOrderItemAttributes12()
+      throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(mock(Order.class));
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(null);
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getDefaultCategory()).thenThrow(new IllegalArgumentException("foo"));
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(new SkuImpl());
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2, true, new HashMap<>()));
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(productBundleImpl).getDefaultCategory();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code priceOrder}, {@code itemAttributes}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityPriceOrderItemAttributes13()
+      throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(mock(Order.class));
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(null);
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getAdditionalSkus()).thenReturn(new ArrayList<>());
+    when(productBundleImpl.getDefaultSku()).thenReturn(new SkuImpl());
+    when(productBundleImpl.getDefaultCategory()).thenThrow(new IllegalArgumentException("foo"));
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(null);
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2, true, new HashMap<>()));
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(productBundleImpl, atLeast(1)).getAdditionalSkus();
+    verify(productBundleImpl).getDefaultCategory();
+    verify(productBundleImpl).getDefaultSku();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code priceOrder}, {@code itemAttributes}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityPriceOrderItemAttributes14()
+      throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(mock(Order.class));
+
+    ArrayList<Sku> skuList = new ArrayList<>();
+    skuList.add(new SkuImpl());
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getAdditionalSkus()).thenReturn(skuList);
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(null);
+
+    // Act and Assert
+    assertThrows(RequiredAttributeNotProvidedException.class,
+        () -> legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2, true, new HashMap<>()));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(productBundleImpl, atLeast(1)).getAdditionalSkus();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code priceOrder}, {@code itemAttributes}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityPriceOrderItemAttributes15()
+      throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(mock(Order.class));
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getAdditionalSkus()).thenReturn(new ArrayList<>());
+    when(productBundleImpl.getDefaultSku()).thenReturn(null);
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(null);
+
+    // Act
+    OrderItem actualAddSkuToOrderResult = legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, 1L, 2, true,
+        new HashMap<>());
+
+    // Assert
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(productBundleImpl, atLeast(1)).getAdditionalSkus();
+    verify(productBundleImpl).getDefaultSku();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+    assertNull(actualAddSkuToOrderResult);
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code priceOrder}, {@code itemAttributes}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityPriceOrderItemAttributes16()
+      throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(mock(Order.class));
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(null);
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getAdditionalSkus()).thenReturn(new ArrayList<>());
+    when(productBundleImpl.getDefaultSku()).thenReturn(new SkuImpl());
+    when(productBundleImpl.getDefaultCategory()).thenThrow(new IllegalArgumentException("foo"));
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.addSkuToOrder(1L, null, 1L, 1L, 2, true, new HashMap<>()));
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(productBundleImpl, atLeast(1)).getAdditionalSkus();
+    verify(productBundleImpl).getDefaultCategory();
+    verify(productBundleImpl).getDefaultSku();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code priceOrder}, {@code itemAttributes}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityPriceOrderItemAttributes17()
+      throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(mock(Order.class));
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(null);
+
+    // Act
+    OrderItem actualAddSkuToOrderResult = legacyOrderServiceImpl.addSkuToOrder(1L, 1L, null, 1L, 2, true,
+        new HashMap<>());
+
+    // Assert
+    verify(skuDao).readSkuById(eq(1L));
+    verify(orderDao).readOrderById(eq(1L));
+    assertNull(actualAddSkuToOrderResult);
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}, {@code priceOrder}, {@code itemAttributes}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer, boolean, Map)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantityPriceOrderItemAttributes18()
+      throws PricingException {
+    // Arrange
+    when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(mock(Order.class));
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getAdditionalSkus()).thenReturn(new ArrayList<>());
+    when(productBundleImpl.getDefaultSku()).thenReturn(new SkuImpl());
+    when(productBundleImpl.getDefaultCategory()).thenThrow(new IllegalArgumentException("foo"));
+    when(productBundleImpl.getProductOptions()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(null);
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.addSkuToOrder(1L, 1L, 1L, null, 2, true, new HashMap<>()));
+    verify(productDao).readProductById(eq(1L));
+    verify(skuDao).readSkuById(eq(1L));
+    verify(productBundleImpl, atLeast(1)).getAdditionalSkus();
+    verify(productBundleImpl).getDefaultCategory();
+    verify(productBundleImpl).getDefaultSku();
+    verify(productBundleImpl, atLeast(1)).getProductOptions();
+    verify(orderDao).readOrderById(eq(1L));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}.
    * <ul>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given {@link OrderDao}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer)}
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer)}
    */
   @Test
-  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantity_thenReturnNull() throws PricingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantity_givenOrderDao() throws PricingException {
     // Arrange, Act and Assert
-    assertNull((new LegacyOrderServiceImpl()).addSkuToOrder(null, null, null, 1L, null));
-    assertNull((new LegacyOrderServiceImpl()).addSkuToOrder(1L, null, null, 1L, null));
-    assertNull((new LegacyOrderServiceImpl()).addSkuToOrder(1L, null, 1L, 1L, null));
-    assertNull((new LegacyOrderServiceImpl()).addSkuToOrder(1L, 1L, null, 1L, null));
+    assertNull(legacyOrderServiceImpl.addSkuToOrder(null, null, null, 1L, null));
   }
 
   /**
-   * Test {@link LegacyOrderServiceImpl#addOrderItemToOrder(Order, OrderItem)}
-   * with {@code order}, {@code newOrderItem}.
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}.
+   * <ul>
+   *   <li>Given {@link OrderDao}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#addOrderItemToOrder(Order, OrderItem)}
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddOrderItemToOrderWithOrderNewOrderItem() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass962 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    NullOrderImpl order = new NullOrderImpl();
-
-    // Act
-    legacyOrderServiceImpl.addOrderItemToOrder(order, new BundleOrderItemImpl());
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantity_givenOrderDao2() throws PricingException {
+    // Arrange, Act and Assert
+    assertNull(legacyOrderServiceImpl.addSkuToOrder(1L, null, null, 1L, null));
   }
 
   /**
-   * Test
-   * {@link LegacyOrderServiceImpl#addOrderItemToOrder(Order, OrderItem, boolean)}
-   * with {@code order}, {@code newOrderItem}, {@code priceOrder}.
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}.
+   * <ul>
+   *   <li>Given {@link OrderDao}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#addOrderItemToOrder(Order, OrderItem, boolean)}
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddOrderItemToOrderWithOrderNewOrderItemPriceOrder() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass963 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    NullOrderImpl order = new NullOrderImpl();
-
-    // Act
-    legacyOrderServiceImpl.addOrderItemToOrder(order, new BundleOrderItemImpl(), true);
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantity_givenOrderDao3() throws PricingException {
+    // Arrange, Act and Assert
+    assertNull(legacyOrderServiceImpl.addSkuToOrder(1L, null, 1L, 1L, null));
   }
 
   /**
-   * Test
-   * {@link LegacyOrderServiceImpl#addDynamicPriceDiscreteItemToOrder(Order, DiscreteOrderItemRequest, HashMap)}
-   * with {@code order}, {@code itemRequest}, {@code skuPricingConsiderations}.
+   * Test {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer)} with {@code orderId}, {@code skuId}, {@code productId}, {@code categoryId}, {@code quantity}.
+   * <ul>
+   *   <li>Given {@link OrderDao}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#addDynamicPriceDiscreteItemToOrder(Order, DiscreteOrderItemRequest, HashMap)}
+   * Method under test: {@link LegacyOrderServiceImpl#addSkuToOrder(Long, Long, Long, Long, Integer)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem LegacyOrderServiceImpl.addSkuToOrder(Long, Long, Long, Long, Integer)"})
+  public void testAddSkuToOrderWithOrderIdSkuIdProductIdCategoryIdQuantity_givenOrderDao4() throws PricingException {
+    // Arrange, Act and Assert
+    assertNull(legacyOrderServiceImpl.addSkuToOrder(1L, 1L, null, 1L, null));
+  }
+
+  /**
+   * Test {@link LegacyOrderServiceImpl#addDynamicPriceDiscreteItemToOrder(Order, DiscreteOrderItemRequest, HashMap)} with {@code order}, {@code itemRequest}, {@code skuPricingConsiderations}.
+   * <p>
+   * Method under test: {@link LegacyOrderServiceImpl#addDynamicPriceDiscreteItemToOrder(Order, DiscreteOrderItemRequest, HashMap)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "OrderItem LegacyOrderServiceImpl.addDynamicPriceDiscreteItemToOrder(Order, DiscreteOrderItemRequest, HashMap)"})
   public void testAddDynamicPriceDiscreteItemToOrderWithOrderItemRequestSkuPricingConsiderations()
       throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass947 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
+    when(orderItemService.createDynamicPriceDiscreteOrderItem(Mockito.<DiscreteOrderItemRequest>any(),
+        Mockito.<HashMap<Object, Object>>any())).thenThrow(new IllegalArgumentException("foo"));
     NullOrderImpl order = new NullOrderImpl();
     DiscreteOrderItemRequest itemRequest = new DiscreteOrderItemRequest();
 
-    // Act
-    legacyOrderServiceImpl.addDynamicPriceDiscreteItemToOrder(order, itemRequest, new HashMap());
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.addDynamicPriceDiscreteItemToOrder(order, itemRequest, new HashMap()));
+    verify(orderItemService).createDynamicPriceDiscreteOrderItem(isA(DiscreteOrderItemRequest.class),
+        isA(HashMap.class));
   }
 
   /**
-   * Test
-   * {@link LegacyOrderServiceImpl#addDynamicPriceDiscreteItemToOrder(Order, DiscreteOrderItemRequest, HashMap, boolean)}
-   * with {@code order}, {@code itemRequest}, {@code skuPricingConsiderations},
-   * {@code priceOrder}.
+   * Test {@link LegacyOrderServiceImpl#addDynamicPriceDiscreteItemToOrder(Order, DiscreteOrderItemRequest, HashMap, boolean)} with {@code order}, {@code itemRequest}, {@code skuPricingConsiderations}, {@code priceOrder}.
    * <p>
-   * Method under test:
-   * {@link LegacyOrderServiceImpl#addDynamicPriceDiscreteItemToOrder(Order, DiscreteOrderItemRequest, HashMap, boolean)}
+   * Method under test: {@link LegacyOrderServiceImpl#addDynamicPriceDiscreteItemToOrder(Order, DiscreteOrderItemRequest, HashMap, boolean)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "OrderItem LegacyOrderServiceImpl.addDynamicPriceDiscreteItemToOrder(Order, DiscreteOrderItemRequest, HashMap, boolean)"})
   public void testAddDynamicPriceDiscreteItemToOrderWithOrderItemRequestSkuPricingConsiderationsPriceOrder()
       throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.legacy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass948 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.CategoryDao categoryDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupDao fulfillmentGroupDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.legacy.LegacyOrderServiceImpl legacyOrderServiceImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.MergeCartService mergeCartService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.domain.NullOrderFactory nullOrderFactory;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.dao.OfferDao offerDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.offer.service.OfferService offerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOfferServiceExtensionManager") org.broadleafcommerce.core.offer.service.OfferServiceExtensionManager offerServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderDao orderDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.OrderItemDao orderItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.dao.OrderPaymentDao orderPaymentDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderServiceExtensionManager") org.broadleafcommerce.core.order.service.OrderServiceExtensionManager orderServiceExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.transaction.PlatformTransactionManager platformTransactionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.pricing.service.PricingService pricingService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.workflow.Processor processor;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.ProductDao productDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.SecureOrderPaymentService secureOrderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.dao.SkuDao skuDao;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
+    when(orderItemService.createDynamicPriceDiscreteOrderItem(Mockito.<DiscreteOrderItemRequest>any(),
+        Mockito.<HashMap<Object, Object>>any())).thenThrow(new IllegalArgumentException("foo"));
     NullOrderImpl order = new NullOrderImpl();
     DiscreteOrderItemRequest itemRequest = new DiscreteOrderItemRequest();
 
-    // Act
-    legacyOrderServiceImpl.addDynamicPriceDiscreteItemToOrder(order, itemRequest, new HashMap(), true);
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> legacyOrderServiceImpl.addDynamicPriceDiscreteItemToOrder(order, itemRequest, new HashMap(), true));
+    verify(orderItemService).createDynamicPriceDiscreteOrderItem(isA(DiscreteOrderItemRequest.class),
+        isA(HashMap.class));
   }
 
   /**
@@ -4696,10 +7317,8 @@ public class LegacyOrderServiceImplDiffblueTest {
    * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link LegacyOrderServiceImpl}
-   *   <li>
-   * {@link LegacyOrderServiceImpl#setFulfillmentGroupDao(FulfillmentGroupDao)}
-   *   <li>
-   * {@link LegacyOrderServiceImpl#setFulfillmentGroupItemDao(FulfillmentGroupItemDao)}
+   *   <li>{@link LegacyOrderServiceImpl#setFulfillmentGroupDao(FulfillmentGroupDao)}
+   *   <li>{@link LegacyOrderServiceImpl#setFulfillmentGroupItemDao(FulfillmentGroupItemDao)}
    *   <li>{@link LegacyOrderServiceImpl#setOrderDao(OrderDao)}
    *   <li>{@link LegacyOrderServiceImpl#setOrderItemService(OrderItemService)}
    *   <li>{@link LegacyOrderServiceImpl#setPaymentInfoDao(OrderPaymentDao)}
@@ -4711,6 +7330,17 @@ public class LegacyOrderServiceImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void LegacyOrderServiceImpl.<init>()",
+      "FulfillmentGroupDao LegacyOrderServiceImpl.getFulfillmentGroupDao()",
+      "FulfillmentGroupItemDao LegacyOrderServiceImpl.getFulfillmentGroupItemDao()",
+      "OrderDao LegacyOrderServiceImpl.getOrderDao()", "OrderItemService LegacyOrderServiceImpl.getOrderItemService()",
+      "OrderPaymentDao LegacyOrderServiceImpl.getPaymentInfoDao()",
+      "void LegacyOrderServiceImpl.setFulfillmentGroupDao(FulfillmentGroupDao)",
+      "void LegacyOrderServiceImpl.setFulfillmentGroupItemDao(FulfillmentGroupItemDao)",
+      "void LegacyOrderServiceImpl.setOrderDao(OrderDao)",
+      "void LegacyOrderServiceImpl.setOrderItemService(OrderItemService)",
+      "void LegacyOrderServiceImpl.setPaymentInfoDao(OrderPaymentDao)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     LegacyOrderServiceImpl actualLegacyOrderServiceImpl = new LegacyOrderServiceImpl();
@@ -4730,7 +7360,7 @@ public class LegacyOrderServiceImplDiffblueTest {
     OrderItemService actualOrderItemService = actualLegacyOrderServiceImpl.getOrderItemService();
     OrderPaymentDao actualPaymentInfoDao = actualLegacyOrderServiceImpl.getPaymentInfoDao();
 
-    // Assert that nothing has changed
+    // Assert
     assertTrue(actualFulfillmentGroupDao instanceof FulfillmentGroupDaoImpl);
     assertTrue(actualFulfillmentGroupItemDao instanceof FulfillmentGroupItemDaoImpl);
     assertTrue(actualOrderDao instanceof OrderDaoImpl);

@@ -1,61 +1,43 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.catalog.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import org.broadleafcommerce.core.catalog.domain.Category;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.core.catalog.domain.CategoryImpl;
 import org.broadleafcommerce.core.catalog.domain.Product;
 import org.broadleafcommerce.core.catalog.domain.ProductBundleImpl;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@ContextConfiguration(classes = {CatalogURLServiceImpl.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class CatalogURLServiceImplDiffblueTest {
   @Autowired
   private CatalogURLServiceImpl catalogURLServiceImpl;
-
-  /**
-   * Test {@link CatalogURLServiceImpl#buildRelativeProductURL(String, Product)}.
-   * <p>
-   * Method under test:
-   * {@link CatalogURLServiceImpl#buildRelativeProductURL(String, Product)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testBuildRelativeProductURL() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5355 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogURLServiceImpl catalogURLServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CatalogURLServiceImpl catalogURLServiceImpl2 = new CatalogURLServiceImpl();
-
-    // Act
-    catalogURLServiceImpl2.buildRelativeProductURL("https://example.org/example", new ProductBundleImpl());
-  }
 
   /**
    * Test {@link CatalogURLServiceImpl#buildRelativeProductURL(String, Product)}.
@@ -65,15 +47,13 @@ public class CatalogURLServiceImplDiffblueTest {
    *   <li>Then return {@code Current Url}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CatalogURLServiceImpl#buildRelativeProductURL(String, Product)}
+   * Method under test: {@link CatalogURLServiceImpl#buildRelativeProductURL(String, Product)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CatalogURLServiceImpl.buildRelativeProductURL(String, Product)"})
   public void testBuildRelativeProductURL_givenOne_whenCurrentUrl_thenReturnCurrentUrl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CatalogURLServiceImpl catalogURLServiceImpl = new CatalogURLServiceImpl();
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getId()).thenReturn(1L);
     when(product.getUrl()).thenReturn("https://example.org/example");
@@ -92,18 +72,16 @@ public class CatalogURLServiceImplDiffblueTest {
    * <ul>
    *   <li>Given one.</li>
    *   <li>When empty string.</li>
-   *   <li>Then return {@code /example}.</li>
+   *   <li>Then return {@code /example?productId=1}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CatalogURLServiceImpl#buildRelativeProductURL(String, Product)}
+   * Method under test: {@link CatalogURLServiceImpl#buildRelativeProductURL(String, Product)}
    */
   @Test
-  public void testBuildRelativeProductURL_givenOne_whenEmptyString_thenReturnExample() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CatalogURLServiceImpl.buildRelativeProductURL(String, Product)"})
+  public void testBuildRelativeProductURL_givenOne_whenEmptyString_thenReturnExampleProductId1() {
     // Arrange
-    CatalogURLServiceImpl catalogURLServiceImpl = new CatalogURLServiceImpl();
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getId()).thenReturn(1L);
     when(product.getUrl()).thenReturn("https://example.org/example");
@@ -114,7 +92,7 @@ public class CatalogURLServiceImplDiffblueTest {
     // Assert
     verify(product).getId();
     verify(product).getUrl();
-    assertEquals("/example", actualBuildRelativeProductURLResult);
+    assertEquals("/example?productId=1", actualBuildRelativeProductURLResult);
   }
 
   /**
@@ -122,18 +100,16 @@ public class CatalogURLServiceImplDiffblueTest {
    * <ul>
    *   <li>Given one.</li>
    *   <li>When {@code /}.</li>
-   *   <li>Then return {@code /example}.</li>
+   *   <li>Then return {@code /example?productId=1}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CatalogURLServiceImpl#buildRelativeProductURL(String, Product)}
+   * Method under test: {@link CatalogURLServiceImpl#buildRelativeProductURL(String, Product)}
    */
   @Test
-  public void testBuildRelativeProductURL_givenOne_whenSlash_thenReturnExample() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CatalogURLServiceImpl.buildRelativeProductURL(String, Product)"})
+  public void testBuildRelativeProductURL_givenOne_whenSlash_thenReturnExampleProductId1() {
     // Arrange
-    CatalogURLServiceImpl catalogURLServiceImpl = new CatalogURLServiceImpl();
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getId()).thenReturn(1L);
     when(product.getUrl()).thenReturn("https://example.org/example");
@@ -144,7 +120,7 @@ public class CatalogURLServiceImplDiffblueTest {
     // Assert
     verify(product).getId();
     verify(product).getUrl();
-    assertEquals("/example", actualBuildRelativeProductURLResult);
+    assertEquals("/example?productId=1", actualBuildRelativeProductURLResult);
   }
 
   /**
@@ -153,13 +129,12 @@ public class CatalogURLServiceImplDiffblueTest {
    *   <li>Then return {@code https://example.org/example/example}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CatalogURLServiceImpl#buildRelativeProductURL(String, Product)}
+   * Method under test: {@link CatalogURLServiceImpl#buildRelativeProductURL(String, Product)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CatalogURLServiceImpl.buildRelativeProductURL(String, Product)"})
   public void testBuildRelativeProductURL_thenReturnHttpsExampleOrgExampleExample() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     CatalogURLServiceImpl catalogURLServiceImpl = new CatalogURLServiceImpl();
     ProductBundleImpl product = mock(ProductBundleImpl.class);
@@ -177,57 +152,48 @@ public class CatalogURLServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CatalogURLServiceImpl#buildRelativeCategoryURL(String, Category)}.
+   * Test {@link CatalogURLServiceImpl#buildRelativeProductURL(String, Product)}.
+   * <ul>
+   *   <li>Then return {@code https://example.org/example/example?productId=1}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link CatalogURLServiceImpl#buildRelativeCategoryURL(String, Category)}
+   * Method under test: {@link CatalogURLServiceImpl#buildRelativeProductURL(String, Product)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testBuildRelativeCategoryURL() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5325 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogURLServiceImpl catalogURLServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CatalogURLServiceImpl.buildRelativeProductURL(String, Product)"})
+  public void testBuildRelativeProductURL_thenReturnHttpsExampleOrgExampleExampleProductId1() {
     // Arrange
-    CatalogURLServiceImpl catalogURLServiceImpl2 = new CatalogURLServiceImpl();
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getId()).thenReturn(1L);
+    when(product.getUrl()).thenReturn("https://example.org/example");
 
     // Act
-    catalogURLServiceImpl2.buildRelativeCategoryURL("https://example.org/example", new CategoryImpl());
+    String actualBuildRelativeProductURLResult = catalogURLServiceImpl
+        .buildRelativeProductURL("https://example.org/example", product);
+
+    // Assert
+    verify(product).getId();
+    verify(product).getUrl();
+    assertEquals("https://example.org/example/example?productId=1", actualBuildRelativeProductURLResult);
   }
 
   /**
-   * Test
-   * {@link CatalogURLServiceImpl#buildRelativeCategoryURL(String, Category)}.
+   * Test {@link CatalogURLServiceImpl#buildRelativeCategoryURL(String, Category)}.
    * <ul>
    *   <li>Given one.</li>
    *   <li>When {@code Current Url}.</li>
    *   <li>Then return {@code Current Url}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CatalogURLServiceImpl#buildRelativeCategoryURL(String, Category)}
+   * Method under test: {@link CatalogURLServiceImpl#buildRelativeCategoryURL(String, org.broadleafcommerce.core.catalog.domain.Category)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "String CatalogURLServiceImpl.buildRelativeCategoryURL(String, org.broadleafcommerce.core.catalog.domain.Category)"})
   public void testBuildRelativeCategoryURL_givenOne_whenCurrentUrl_thenReturnCurrentUrl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CatalogURLServiceImpl catalogURLServiceImpl = new CatalogURLServiceImpl();
     CategoryImpl category = mock(CategoryImpl.class);
     when(category.getId()).thenReturn(1L);
     when(category.getUrl()).thenReturn("https://example.org/example");
@@ -243,54 +209,21 @@ public class CatalogURLServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CatalogURLServiceImpl#buildRelativeCategoryURL(String, Category)}.
-   * <ul>
-   *   <li>Given one.</li>
-   *   <li>When empty string.</li>
-   *   <li>Then return {@code /example}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link CatalogURLServiceImpl#buildRelativeCategoryURL(String, Category)}
-   */
-  @Test
-  public void testBuildRelativeCategoryURL_givenOne_whenEmptyString_thenReturnExample() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CatalogURLServiceImpl catalogURLServiceImpl = new CatalogURLServiceImpl();
-    CategoryImpl category = mock(CategoryImpl.class);
-    when(category.getId()).thenReturn(1L);
-    when(category.getUrl()).thenReturn("https://example.org/example");
-
-    // Act
-    String actualBuildRelativeCategoryURLResult = catalogURLServiceImpl.buildRelativeCategoryURL("", category);
-
-    // Assert
-    verify(category).getId();
-    verify(category).getUrl();
-    assertEquals("/example", actualBuildRelativeCategoryURLResult);
-  }
-
-  /**
-   * Test
-   * {@link CatalogURLServiceImpl#buildRelativeCategoryURL(String, Category)}.
+   * Test {@link CatalogURLServiceImpl#buildRelativeCategoryURL(String, Category)}.
    * <ul>
    *   <li>Given one.</li>
    *   <li>When {@code /}.</li>
-   *   <li>Then return {@code /example}.</li>
+   *   <li>Then return {@code /example?categoryId=1}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CatalogURLServiceImpl#buildRelativeCategoryURL(String, Category)}
+   * Method under test: {@link CatalogURLServiceImpl#buildRelativeCategoryURL(String, org.broadleafcommerce.core.catalog.domain.Category)}
    */
   @Test
-  public void testBuildRelativeCategoryURL_givenOne_whenSlash_thenReturnExample() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "String CatalogURLServiceImpl.buildRelativeCategoryURL(String, org.broadleafcommerce.core.catalog.domain.Category)"})
+  public void testBuildRelativeCategoryURL_givenOne_whenSlash_thenReturnExampleCategoryId1() {
     // Arrange
-    CatalogURLServiceImpl catalogURLServiceImpl = new CatalogURLServiceImpl();
     CategoryImpl category = mock(CategoryImpl.class);
     when(category.getId()).thenReturn(1L);
     when(category.getUrl()).thenReturn("https://example.org/example");
@@ -301,23 +234,22 @@ public class CatalogURLServiceImplDiffblueTest {
     // Assert
     verify(category).getId();
     verify(category).getUrl();
-    assertEquals("/example", actualBuildRelativeCategoryURLResult);
+    assertEquals("/example?categoryId=1", actualBuildRelativeCategoryURLResult);
   }
 
   /**
-   * Test
-   * {@link CatalogURLServiceImpl#buildRelativeCategoryURL(String, Category)}.
+   * Test {@link CatalogURLServiceImpl#buildRelativeCategoryURL(String, Category)}.
    * <ul>
    *   <li>Then return {@code https://example.org/example/example}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CatalogURLServiceImpl#buildRelativeCategoryURL(String, Category)}
+   * Method under test: {@link CatalogURLServiceImpl#buildRelativeCategoryURL(String, org.broadleafcommerce.core.catalog.domain.Category)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "String CatalogURLServiceImpl.buildRelativeCategoryURL(String, org.broadleafcommerce.core.catalog.domain.Category)"})
   public void testBuildRelativeCategoryURL_thenReturnHttpsExampleOrgExampleExample() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     CatalogURLServiceImpl catalogURLServiceImpl = new CatalogURLServiceImpl();
     CategoryImpl category = mock(CategoryImpl.class);
@@ -335,16 +267,85 @@ public class CatalogURLServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CatalogURLServiceImpl#buildRelativeUrlWithParam(String, String, String, String)}.
+   * Test {@link CatalogURLServiceImpl#buildRelativeCategoryURL(String, Category)}.
+   * <ul>
+   *   <li>Then return {@code https://example.org/example/example?categoryId=1}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link CatalogURLServiceImpl#buildRelativeUrlWithParam(String, String, String, String)}
+   * Method under test: {@link CatalogURLServiceImpl#buildRelativeCategoryURL(String, org.broadleafcommerce.core.catalog.domain.Category)}
    */
   @Test
-  public void testBuildRelativeUrlWithParam() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "String CatalogURLServiceImpl.buildRelativeCategoryURL(String, org.broadleafcommerce.core.catalog.domain.Category)"})
+  public void testBuildRelativeCategoryURL_thenReturnHttpsExampleOrgExampleExampleCategoryId1() {
+    // Arrange
+    CategoryImpl category = mock(CategoryImpl.class);
+    when(category.getId()).thenReturn(1L);
+    when(category.getUrl()).thenReturn("https://example.org/example");
 
+    // Act
+    String actualBuildRelativeCategoryURLResult = catalogURLServiceImpl
+        .buildRelativeCategoryURL("https://example.org/example", category);
+
+    // Assert
+    verify(category).getId();
+    verify(category).getUrl();
+    assertEquals("https://example.org/example/example?categoryId=1", actualBuildRelativeCategoryURLResult);
+  }
+
+  /**
+   * Test {@link CatalogURLServiceImpl#buildRelativeCategoryURL(String, Category)}.
+   * <ul>
+   *   <li>When empty string.</li>
+   *   <li>Then return {@code /example?categoryId=1}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CatalogURLServiceImpl#buildRelativeCategoryURL(String, org.broadleafcommerce.core.catalog.domain.Category)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "String CatalogURLServiceImpl.buildRelativeCategoryURL(String, org.broadleafcommerce.core.catalog.domain.Category)"})
+  public void testBuildRelativeCategoryURL_whenEmptyString_thenReturnExampleCategoryId1() {
+    // Arrange
+    CategoryImpl category = mock(CategoryImpl.class);
+    when(category.getId()).thenReturn(1L);
+    when(category.getUrl()).thenReturn("https://example.org/example");
+
+    // Act
+    String actualBuildRelativeCategoryURLResult = catalogURLServiceImpl.buildRelativeCategoryURL("", category);
+
+    // Assert
+    verify(category).getId();
+    verify(category).getUrl();
+    assertEquals("/example?categoryId=1", actualBuildRelativeCategoryURLResult);
+  }
+
+  /**
+   * Test {@link CatalogURLServiceImpl#buildRelativeUrlWithParam(String, String, String, String)}.
+   * <p>
+   * Method under test: {@link CatalogURLServiceImpl#buildRelativeUrlWithParam(String, String, String, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CatalogURLServiceImpl.buildRelativeUrlWithParam(String, String, String, String)"})
+  public void testBuildRelativeUrlWithParam() {
+    // Arrange, Act and Assert
+    assertEquals("/https://example.org/example?https%3A%2F%2Fexample.org%2Fexample=https%3A%2F%2Fexample.org%2Fexample",
+        catalogURLServiceImpl.buildRelativeUrlWithParam("/", "https://example.org/example",
+            "https://example.org/example", "https://example.org/example"));
+  }
+
+  /**
+   * Test {@link CatalogURLServiceImpl#buildRelativeUrlWithParam(String, String, String, String)}.
+   * <p>
+   * Method under test: {@link CatalogURLServiceImpl#buildRelativeUrlWithParam(String, String, String, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CatalogURLServiceImpl.buildRelativeUrlWithParam(String, String, String, String)"})
+  public void testBuildRelativeUrlWithParam2() {
     // Arrange, Act and Assert
     assertEquals("https://example.org/example/https://example.org/example",
         (new CatalogURLServiceImpl()).buildRelativeUrlWithParam("https://example.org/example",
@@ -352,148 +353,78 @@ public class CatalogURLServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CatalogURLServiceImpl#buildRelativeUrlWithParam(String, String, String, String)}.
-   * <p>
-   * Method under test:
-   * {@link CatalogURLServiceImpl#buildRelativeUrlWithParam(String, String, String, String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testBuildRelativeUrlWithParam2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5385 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogURLServiceImpl catalogURLServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CatalogURLServiceImpl()).buildRelativeUrlWithParam("https://example.org/example",
-        "https://example.org/example", "https://example.org/example", "https://example.org/example");
-  }
-
-  /**
-   * Test
-   * {@link CatalogURLServiceImpl#buildRelativeUrlWithParam(String, String, String, String)}.
+   * Test {@link CatalogURLServiceImpl#buildRelativeUrlWithParam(String, String, String, String)}.
    * <ul>
-   *   <li>When {@code Current Url}.</li>
-   *   <li>Then return {@code Current Url}.</li>
+   *   <li>Given {@link CatalogURLServiceImpl}.</li>
+   *   <li>Then return a string.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CatalogURLServiceImpl#buildRelativeUrlWithParam(String, String, String, String)}
+   * Method under test: {@link CatalogURLServiceImpl#buildRelativeUrlWithParam(String, String, String, String)}
    */
   @Test
-  public void testBuildRelativeUrlWithParam_whenCurrentUrl_thenReturnCurrentUrl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CatalogURLServiceImpl.buildRelativeUrlWithParam(String, String, String, String)"})
+  public void testBuildRelativeUrlWithParam_givenCatalogURLServiceImpl_thenReturnAString() {
     // Arrange, Act and Assert
-    assertEquals("Current Url", (new CatalogURLServiceImpl()).buildRelativeUrlWithParam("Current Url",
-        "https://example.org/example", "https://example.org/example", "https://example.org/example"));
+    assertEquals(
+        "https://example.org/example/https://example.org/example?https%3A%2F%2Fexample.org%2Fexample=https%3A"
+            + "%2F%2Fexample.org%2Fexample",
+        catalogURLServiceImpl.buildRelativeUrlWithParam("https://example.org/example", "https://example.org/example",
+            "https://example.org/example", "https://example.org/example"));
   }
 
   /**
-   * Test
-   * {@link CatalogURLServiceImpl#buildRelativeUrlWithParam(String, String, String, String)}.
+   * Test {@link CatalogURLServiceImpl#buildRelativeUrlWithParam(String, String, String, String)}.
    * <ul>
-   *   <li>When empty string.</li>
-   *   <li>Then return {@code /https://example.org/example}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link CatalogURLServiceImpl#buildRelativeUrlWithParam(String, String, String, String)}
-   */
-  @Test
-  public void testBuildRelativeUrlWithParam_whenEmptyString_thenReturnHttpsExampleOrgExample() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("/https://example.org/example", (new CatalogURLServiceImpl()).buildRelativeUrlWithParam("",
-        "https://example.org/example", "https://example.org/example", "https://example.org/example"));
-  }
-
-  /**
-   * Test
-   * {@link CatalogURLServiceImpl#buildRelativeUrlWithParam(String, String, String, String)}.
-   * <ul>
-   *   <li>When {@code /}.</li>
-   *   <li>Then return {@code /https://example.org/example}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link CatalogURLServiceImpl#buildRelativeUrlWithParam(String, String, String, String)}
-   */
-  @Test
-  public void testBuildRelativeUrlWithParam_whenSlash_thenReturnHttpsExampleOrgExample() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("/https://example.org/example", (new CatalogURLServiceImpl()).buildRelativeUrlWithParam("/",
-        "https://example.org/example", "https://example.org/example", "https://example.org/example"));
-  }
-
-  /**
-   * Test
-   * {@link CatalogURLServiceImpl#buildRelativeUrlWithParam(String, String, String, String)}.
-   * <ul>
-   *   <li>When {@code /}.</li>
+   *   <li>Given {@link CatalogURLServiceImpl} (default constructor).</li>
    *   <li>Then return {@code /}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CatalogURLServiceImpl#buildRelativeUrlWithParam(String, String, String, String)}
+   * Method under test: {@link CatalogURLServiceImpl#buildRelativeUrlWithParam(String, String, String, String)}
    */
   @Test
-  public void testBuildRelativeUrlWithParam_whenSlash_thenReturnSlash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CatalogURLServiceImpl.buildRelativeUrlWithParam(String, String, String, String)"})
+  public void testBuildRelativeUrlWithParam_givenCatalogURLServiceImpl_thenReturnSlash() {
     // Arrange, Act and Assert
     assertEquals("/", (new CatalogURLServiceImpl()).buildRelativeUrlWithParam("/", "/", "https://example.org/example",
         "https://example.org/example"));
   }
 
   /**
-   * Test {@link CatalogURLServiceImpl#getProductUrlFragment(Product)}.
+   * Test {@link CatalogURLServiceImpl#buildRelativeUrlWithParam(String, String, String, String)}.
+   * <ul>
+   *   <li>When {@code Current Url}.</li>
+   *   <li>Then return {@code Current Url}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link CatalogURLServiceImpl#getProductUrlFragment(Product)}
+   * Method under test: {@link CatalogURLServiceImpl#buildRelativeUrlWithParam(String, String, String, String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetProductUrlFragment() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5462 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogURLServiceImpl catalogURLServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CatalogURLServiceImpl.buildRelativeUrlWithParam(String, String, String, String)"})
+  public void testBuildRelativeUrlWithParam_whenCurrentUrl_thenReturnCurrentUrl() {
+    // Arrange, Act and Assert
+    assertEquals("Current Url", catalogURLServiceImpl.buildRelativeUrlWithParam("Current Url",
+        "https://example.org/example", "https://example.org/example", "https://example.org/example"));
+  }
 
-    // Arrange
-    CatalogURLServiceImpl catalogURLServiceImpl2 = new CatalogURLServiceImpl();
-
-    // Act
-    catalogURLServiceImpl2.getProductUrlFragment(new ProductBundleImpl());
+  /**
+   * Test {@link CatalogURLServiceImpl#buildRelativeUrlWithParam(String, String, String, String)}.
+   * <ul>
+   *   <li>When empty string.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CatalogURLServiceImpl#buildRelativeUrlWithParam(String, String, String, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CatalogURLServiceImpl.buildRelativeUrlWithParam(String, String, String, String)"})
+  public void testBuildRelativeUrlWithParam_whenEmptyString() {
+    // Arrange, Act and Assert
+    assertEquals("/https://example.org/example?https%3A%2F%2Fexample.org%2Fexample=https%3A%2F%2Fexample.org%2Fexample",
+        catalogURLServiceImpl.buildRelativeUrlWithParam("", "https://example.org/example",
+            "https://example.org/example", "https://example.org/example"));
   }
 
   /**
@@ -503,15 +434,13 @@ public class CatalogURLServiceImplDiffblueTest {
    *   <li>Then return {@code example}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CatalogURLServiceImpl#getProductUrlFragment(Product)}
+   * Method under test: {@link CatalogURLServiceImpl#getProductUrlFragment(Product)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CatalogURLServiceImpl.getProductUrlFragment(Product)"})
   public void testGetProductUrlFragment_givenHttpsExampleOrgExample_thenReturnExample() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CatalogURLServiceImpl catalogURLServiceImpl = new CatalogURLServiceImpl();
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getUrl()).thenReturn("https://example.org/example");
 
@@ -525,53 +454,19 @@ public class CatalogURLServiceImplDiffblueTest {
 
   /**
    * Test {@link CatalogURLServiceImpl#getCategoryUrlFragment(Category)}.
-   * <p>
-   * Method under test:
-   * {@link CatalogURLServiceImpl#getCategoryUrlFragment(Category)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetCategoryUrlFragment() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5402 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogURLServiceImpl catalogURLServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CatalogURLServiceImpl catalogURLServiceImpl2 = new CatalogURLServiceImpl();
-
-    // Act
-    catalogURLServiceImpl2.getCategoryUrlFragment(new CategoryImpl());
-  }
-
-  /**
-   * Test {@link CatalogURLServiceImpl#getCategoryUrlFragment(Category)}.
    * <ul>
    *   <li>Given {@code https://example.org/example}.</li>
    *   <li>Then return {@code example}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CatalogURLServiceImpl#getCategoryUrlFragment(Category)}
+   * Method under test: {@link CatalogURLServiceImpl#getCategoryUrlFragment(org.broadleafcommerce.core.catalog.domain.Category)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "String CatalogURLServiceImpl.getCategoryUrlFragment(org.broadleafcommerce.core.catalog.domain.Category)"})
   public void testGetCategoryUrlFragment_givenHttpsExampleOrgExample_thenReturnExample() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CatalogURLServiceImpl catalogURLServiceImpl = new CatalogURLServiceImpl();
     CategoryImpl category = mock(CategoryImpl.class);
     when(category.getUrl()).thenReturn("https://example.org/example");
 
@@ -585,35 +480,6 @@ public class CatalogURLServiceImplDiffblueTest {
 
   /**
    * Test {@link CatalogURLServiceImpl#getLastFragment(String)}.
-   * <p>
-   * Method under test: {@link CatalogURLServiceImpl#getLastFragment(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetLastFragment() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5432 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogURLServiceImpl catalogURLServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CatalogURLServiceImpl()).getLastFragment("https://example.org/example");
-  }
-
-  /**
-   * Test {@link CatalogURLServiceImpl#getLastFragment(String)}.
    * <ul>
    *   <li>When {@code https://example.org/example}.</li>
    *   <li>Then return {@code example}.</li>
@@ -622,10 +488,10 @@ public class CatalogURLServiceImplDiffblueTest {
    * Method under test: {@link CatalogURLServiceImpl#getLastFragment(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CatalogURLServiceImpl.getLastFragment(String)"})
   public void testGetLastFragment_whenHttpsExampleOrgExample_thenReturnExample() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("example", (new CatalogURLServiceImpl()).getLastFragment("https://example.org/example"));
+    assertEquals("example", catalogURLServiceImpl.getLastFragment("https://example.org/example"));
   }
 }

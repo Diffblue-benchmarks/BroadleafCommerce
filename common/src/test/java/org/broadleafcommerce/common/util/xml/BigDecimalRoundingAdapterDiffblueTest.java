@@ -18,9 +18,12 @@
 package org.broadleafcommerce.common.util.xml;
 
 import static org.junit.Assert.assertEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import org.broadleafcommerce.common.money.BankersRounding;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -42,6 +45,8 @@ public class BigDecimalRoundingAdapterDiffblueTest {
    * Method under test: {@link BigDecimalRoundingAdapter#unmarshal(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal BigDecimalRoundingAdapter.unmarshal(String)"})
   public void testUnmarshalWithString_when23_thenReturnBigDecimalWith23() throws Exception {
     // Arrange and Act
     BigDecimal actualUnmarshalResult = bigDecimalRoundingAdapter.unmarshal("2.3");
@@ -51,8 +56,7 @@ public class BigDecimalRoundingAdapterDiffblueTest {
   }
 
   /**
-   * Test {@link BigDecimalRoundingAdapter#marshal(BigDecimal)} with
-   * {@code BigDecimal}.
+   * Test {@link BigDecimalRoundingAdapter#marshal(BigDecimal)} with {@code BigDecimal}.
    * <ul>
    *   <li>When {@link BankersRounding#ZERO}.</li>
    *   <li>Then return {@code 0.00}.</li>
@@ -61,25 +65,10 @@ public class BigDecimalRoundingAdapterDiffblueTest {
    * Method under test: {@link BigDecimalRoundingAdapter#marshal(BigDecimal)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BigDecimalRoundingAdapter.marshal(BigDecimal)"})
   public void testMarshalWithBigDecimal_whenZero_thenReturn000() throws Exception {
     // Arrange, Act and Assert
     assertEquals("0.00", (new BigDecimalRoundingAdapter()).marshal(BankersRounding.ZERO));
-  }
-
-  /**
-   * Test new {@link BigDecimalRoundingAdapter} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link BigDecimalRoundingAdapter}
-   */
-  @Test
-  public void testNewBigDecimalRoundingAdapter() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing observers.
-    //   Diffblue Cover was unable to create an assertion.
-    //   There are no fields that could be asserted on.
-
-    // Arrange and Act
-    new BigDecimalRoundingAdapter();
   }
 }

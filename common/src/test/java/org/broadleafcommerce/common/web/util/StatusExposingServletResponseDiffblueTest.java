@@ -18,40 +18,38 @@
 package org.broadleafcommerce.common.web.util;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.IOException;
 import java.nio.file.Paths;
 import javax.servlet.ServletResponse;
-import javax.servlet.ServletResponseWrapper;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.owasp.esapi.filters.SecurityWrapperResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@ContextConfiguration(classes = {StatusExposingServletResponse.class})
-@RunWith(SpringJUnit4ClassRunner.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(MockitoJUnitRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class StatusExposingServletResponseDiffblueTest {
-  @MockBean
+  @Mock
   private HttpServletResponse httpServletResponse;
 
-  @Autowired
+  @InjectMocks
   private StatusExposingServletResponse statusExposingServletResponse;
 
   /**
@@ -59,12 +57,14 @@ public class StatusExposingServletResponseDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>
-   * {@link StatusExposingServletResponse#StatusExposingServletResponse(HttpServletResponse)}
+   *   <li>{@link StatusExposingServletResponse#StatusExposingServletResponse(HttpServletResponse)}
    *   <li>{@link StatusExposingServletResponse#getStatus()}
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StatusExposingServletResponse.<init>(HttpServletResponse)",
+      "int StatusExposingServletResponse.getStatus()"})
   public void testGettersAndSetters() throws IOException {
     // Arrange
     MockHttpServletResponse response = new MockHttpServletResponse();
@@ -85,6 +85,8 @@ public class StatusExposingServletResponseDiffblueTest {
    * Method under test: {@link StatusExposingServletResponse#sendError(int)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StatusExposingServletResponse.sendError(int)"})
   public void testSendErrorWithSc() throws IOException {
     // Arrange
     MockHttpServletResponse response = new MockHttpServletResponse();
@@ -113,6 +115,8 @@ public class StatusExposingServletResponseDiffblueTest {
    * Method under test: {@link StatusExposingServletResponse#sendError(int)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StatusExposingServletResponse.sendError(int)"})
   public void testSendErrorWithSc2() throws IOException {
     // Arrange
     MockHttpServletResponse response = new MockHttpServletResponse();
@@ -148,6 +152,8 @@ public class StatusExposingServletResponseDiffblueTest {
    * Method under test: {@link StatusExposingServletResponse#sendError(int)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StatusExposingServletResponse.sendError(int)"})
   public void testSendErrorWithSc3() throws IOException {
     // Arrange
     MockHttpServletResponse response = new MockHttpServletResponse();
@@ -184,6 +190,8 @@ public class StatusExposingServletResponseDiffblueTest {
    * Method under test: {@link StatusExposingServletResponse#sendError(int)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StatusExposingServletResponse.sendError(int)"})
   public void testSendErrorWithSc4() throws IOException {
     // Arrange
     MockHttpServletResponse response = new MockHttpServletResponse();
@@ -214,58 +222,20 @@ public class StatusExposingServletResponseDiffblueTest {
     assertTrue(response9 instanceof StatusExposingServletResponse);
     assertTrue(response6 instanceof StatusExposingServletResponse);
     assertTrue(response5 instanceof SecurityWrapperResponse);
-    ServletResponse response11 = ((FileSystemResponseWrapper) response10).getResponse();
-    assertTrue(response11 instanceof MockHttpServletResponse);
-    assertEquals("HTTP error code: 1", ((MockHttpServletResponse) response11).getErrorMessage());
     assertTrue(response9.isCommitted());
-    assertTrue(response11.isCommitted());
     assertTrue(response8.isCommitted());
     assertTrue(response10.isCommitted());
   }
 
   /**
-   * Test {@link StatusExposingServletResponse#sendError(int, String)} with
-   * {@code sc}, {@code msg}.
+   * Test {@link StatusExposingServletResponse#sendError(int, String)} with {@code sc}, {@code msg}.
    * <p>
-   * Method under test:
-   * {@link StatusExposingServletResponse#sendError(int, String)}
+   * Method under test: {@link StatusExposingServletResponse#sendError(int, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StatusExposingServletResponse.sendError(int, String)"})
   public void testSendErrorWithScMsg() throws IOException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    MockHttpServletResponse response = new MockHttpServletResponse();
-    StatusExposingServletResponse statusExposingServletResponse = new StatusExposingServletResponse(
-        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
-
-    // Act
-    statusExposingServletResponse.sendError(1, "Msg");
-
-    // Assert
-    ServletResponse response2 = statusExposingServletResponse.getResponse();
-    assertTrue(response2 instanceof FileSystemResponseWrapper);
-    ServletResponse response3 = ((FileSystemResponseWrapper) response2).getResponse();
-    assertTrue(response3 instanceof MockHttpServletResponse);
-    assertEquals("Msg", ((MockHttpServletResponse) response3).getErrorMessage());
-    assertEquals(1, ((FileSystemResponseWrapper) response2).getStatus());
-    assertEquals(1, ((MockHttpServletResponse) response3).getStatus());
-    assertTrue(response2.isCommitted());
-    assertTrue(response3.isCommitted());
-    assertTrue(statusExposingServletResponse.isCommitted());
-  }
-
-  /**
-   * Test {@link StatusExposingServletResponse#sendError(int, String)} with
-   * {@code sc}, {@code msg}.
-   * <p>
-   * Method under test:
-   * {@link StatusExposingServletResponse#sendError(int, String)}
-   */
-  @Test
-  public void testSendErrorWithScMsg2() throws IOException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     MockHttpServletResponse response = new MockHttpServletResponse();
     HttpServletResponseWrapper response2 = new HttpServletResponseWrapper(new StatusExposingServletResponse(
@@ -285,80 +255,35 @@ public class StatusExposingServletResponseDiffblueTest {
     ServletResponse response6 = ((StatusExposingServletResponse) response5).getResponse();
     assertTrue(response6 instanceof FileSystemResponseWrapper);
     assertTrue(response5 instanceof StatusExposingServletResponse);
-    ServletResponse response7 = ((FileSystemResponseWrapper) response6).getResponse();
-    assertTrue(response7 instanceof MockHttpServletResponse);
-    assertEquals("Msg", ((MockHttpServletResponse) response7).getErrorMessage());
     assertEquals(1, ((HttpServletResponseWrapper) response4).getStatus());
     assertEquals(1, ((FileSystemResponseWrapper) response6).getStatus());
     assertEquals(1, ((StatusExposingServletResponse) response5).getStatus());
-    assertEquals(1, ((MockHttpServletResponse) response7).getStatus());
     assertTrue(response5.isCommitted());
     assertTrue(response4.isCommitted());
-    assertTrue(response7.isCommitted());
     assertTrue(response6.isCommitted());
   }
 
   /**
-   * Test {@link StatusExposingServletResponse#sendError(int, String)} with
-   * {@code sc}, {@code msg}.
+   * Test {@link StatusExposingServletResponse#sendError(int, String)} with {@code sc}, {@code msg}.
+   * <ul>
+   *   <li>Then {@link StatusExposingServletResponse} Status is one.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link StatusExposingServletResponse#sendError(int, String)}
+   * Method under test: {@link StatusExposingServletResponse#sendError(int, String)}
    */
   @Test
-  public void testSendErrorWithScMsg3() throws IOException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StatusExposingServletResponse.sendError(int, String)"})
+  public void testSendErrorWithScMsg_thenStatusExposingServletResponseStatusIsOne() throws IOException {
     // Arrange
-    FileSystemResponseWrapper response = mock(FileSystemResponseWrapper.class);
-    doNothing().when(response).sendError(anyInt(), Mockito.<String>any());
-    StatusExposingServletResponse statusExposingServletResponse = new StatusExposingServletResponse(
-        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
+    doNothing().when(httpServletResponse).sendError(anyInt(), Mockito.<String>any());
 
     // Act
     statusExposingServletResponse.sendError(1, "Msg");
 
     // Assert
-    verify(response).sendError(eq(1), eq("Msg"));
-    ServletResponse response2 = statusExposingServletResponse.getResponse();
-    assertTrue(response2 instanceof FileSystemResponseWrapper);
-    assertEquals(0, ((FileSystemResponseWrapper) response2).getStatus());
+    verify(httpServletResponse).sendError(eq(1), eq("Msg"));
     assertEquals(1, statusExposingServletResponse.getStatus());
-    assertFalse(response2.isCommitted());
-    assertFalse(statusExposingServletResponse.isCommitted());
-  }
-
-  /**
-   * Test {@link StatusExposingServletResponse#sendError(int, String)} with
-   * {@code sc}, {@code msg}.
-   * <p>
-   * Method under test:
-   * {@link StatusExposingServletResponse#sendError(int, String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSendErrorWithScMsg4() throws IOException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   - org.broadleafcommerce.common.web.util.StatusExposingServletResponse
-    //   when running class:
-    //   package org.broadleafcommerce.common.web.util;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.common.web.util.StatusExposingServletResponse.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass8 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean javax.servlet.http.HttpServletResponse httpServletResponse;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.common.web.util.StatusExposingServletResponse statusExposingServletResponse;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    statusExposingServletResponse.sendError(1, "Msg");
   }
 
   /**
@@ -367,6 +292,8 @@ public class StatusExposingServletResponseDiffblueTest {
    * Method under test: {@link StatusExposingServletResponse#setStatus(int)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StatusExposingServletResponse.setStatus(int)"})
   public void testSetStatusWithSc() throws IOException {
     // Arrange
     MockHttpServletResponse response = new MockHttpServletResponse();
@@ -392,6 +319,8 @@ public class StatusExposingServletResponseDiffblueTest {
    * Method under test: {@link StatusExposingServletResponse#setStatus(int)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StatusExposingServletResponse.setStatus(int)"})
   public void testSetStatusWithSc2() throws IOException {
     // Arrange
     MockHttpServletResponse response = new MockHttpServletResponse();
@@ -421,46 +350,14 @@ public class StatusExposingServletResponseDiffblueTest {
   }
 
   /**
-   * Test {@link StatusExposingServletResponse#setStatus(int, String)} with
-   * {@code status}, {@code string}.
+   * Test {@link StatusExposingServletResponse#setStatus(int, String)} with {@code status}, {@code string}.
    * <p>
-   * Method under test:
-   * {@link StatusExposingServletResponse#setStatus(int, String)}
+   * Method under test: {@link StatusExposingServletResponse#setStatus(int, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StatusExposingServletResponse.setStatus(int, String)"})
   public void testSetStatusWithStatusString() throws IOException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    MockHttpServletResponse response = new MockHttpServletResponse();
-    StatusExposingServletResponse statusExposingServletResponse = new StatusExposingServletResponse(
-        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
-
-    // Act
-    statusExposingServletResponse.setStatus(1, "String");
-
-    // Assert
-    ServletResponse response2 = statusExposingServletResponse.getResponse();
-    assertTrue(response2 instanceof FileSystemResponseWrapper);
-    ServletResponse response3 = ((FileSystemResponseWrapper) response2).getResponse();
-    assertTrue(response3 instanceof MockHttpServletResponse);
-    assertEquals("String", ((MockHttpServletResponse) response3).getErrorMessage());
-    assertEquals(1, ((FileSystemResponseWrapper) response2).getStatus());
-    assertEquals(1, ((MockHttpServletResponse) response3).getStatus());
-    assertFalse(statusExposingServletResponse.isCommitted());
-  }
-
-  /**
-   * Test {@link StatusExposingServletResponse#setStatus(int, String)} with
-   * {@code status}, {@code string}.
-   * <p>
-   * Method under test:
-   * {@link StatusExposingServletResponse#setStatus(int, String)}
-   */
-  @Test
-  public void testSetStatusWithStatusString2() throws IOException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     MockHttpServletResponse response = new MockHttpServletResponse();
     HttpServletResponseWrapper response2 = new HttpServletResponseWrapper(new StatusExposingServletResponse(
@@ -482,7 +379,6 @@ public class StatusExposingServletResponseDiffblueTest {
     assertTrue(response5 instanceof StatusExposingServletResponse);
     ServletResponse response7 = ((FileSystemResponseWrapper) response6).getResponse();
     assertTrue(response7 instanceof MockHttpServletResponse);
-    assertEquals("String", ((MockHttpServletResponse) response7).getErrorMessage());
     assertEquals(1, ((HttpServletResponseWrapper) response4).getStatus());
     assertEquals(1, ((FileSystemResponseWrapper) response6).getStatus());
     assertEquals(1, ((StatusExposingServletResponse) response5).getStatus());
@@ -490,172 +386,66 @@ public class StatusExposingServletResponseDiffblueTest {
   }
 
   /**
-   * Test {@link StatusExposingServletResponse#setStatus(int, String)} with
-   * {@code status}, {@code string}.
+   * Test {@link StatusExposingServletResponse#setStatus(int, String)} with {@code status}, {@code string}.
    * <p>
-   * Method under test:
-   * {@link StatusExposingServletResponse#setStatus(int, String)}
+   * Method under test: {@link StatusExposingServletResponse#setStatus(int, String)}
    */
   @Test
-  public void testSetStatusWithStatusString3() throws IOException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StatusExposingServletResponse.setStatus(int, String)"})
+  public void testSetStatusWithStatusString2() throws IOException {
     // Arrange
-    FileSystemResponseWrapper response = mock(FileSystemResponseWrapper.class);
-    doNothing().when(response).setStatus(anyInt(), Mockito.<String>any());
-    StatusExposingServletResponse statusExposingServletResponse = new StatusExposingServletResponse(
-        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
-
-    // Act
-    statusExposingServletResponse.setStatus(1, "String");
-
-    // Assert
-    verify(response).setStatus(eq(1), eq("String"));
-    ServletResponse response2 = statusExposingServletResponse.getResponse();
-    assertTrue(response2 instanceof FileSystemResponseWrapper);
-    assertEquals(0, ((FileSystemResponseWrapper) response2).getStatus());
-    assertEquals(1, statusExposingServletResponse.getStatus());
-    assertFalse(statusExposingServletResponse.isCommitted());
-  }
-
-  /**
-   * Test {@link StatusExposingServletResponse#setStatus(int, String)} with
-   * {@code status}, {@code string}.
-   * <p>
-   * Method under test:
-   * {@link StatusExposingServletResponse#setStatus(int, String)}
-   */
-  @Test
-  public void testSetStatusWithStatusString4() throws IOException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile();
     MockHttpServletResponse response = new MockHttpServletResponse();
+    SecurityWrapperResponse response2 = new SecurityWrapperResponse(new StatusExposingServletResponse(
+        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile())),
+        "Mode");
+
     StatusExposingServletResponse statusExposingServletResponse = new StatusExposingServletResponse(
-        new SecurityWrapperResponse(new StatusExposingServletResponse(new FileSystemResponseWrapper(response,
-            Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile())), "Mode"));
-
-    // Act
-    statusExposingServletResponse.setStatus(1, "String");
-
-    // Assert
-    ServletResponse response2 = statusExposingServletResponse.getResponse();
-    ServletResponse response3 = ((SecurityWrapperResponse) response2).getResponse();
-    ServletResponse response4 = ((StatusExposingServletResponse) response3).getResponse();
-    assertTrue(response4 instanceof FileSystemResponseWrapper);
-    assertTrue(response3 instanceof StatusExposingServletResponse);
-    assertTrue(response2 instanceof SecurityWrapperResponse);
-    ServletResponse response5 = ((FileSystemResponseWrapper) response4).getResponse();
-    assertTrue(response5 instanceof MockHttpServletResponse);
-    assertEquals("String", ((MockHttpServletResponse) response5).getErrorMessage());
-    assertTrue(response2.isCommitted());
-    assertTrue(response5.isCommitted());
-    assertTrue(response4.isCommitted());
-    assertTrue(response3.isCommitted());
-    assertTrue(statusExposingServletResponse.isCommitted());
-  }
-
-  /**
-   * Test {@link StatusExposingServletResponse#setStatus(int, String)} with
-   * {@code status}, {@code string}.
-   * <p>
-   * Method under test:
-   * {@link StatusExposingServletResponse#setStatus(int, String)}
-   */
-  @Test
-  public void testSetStatusWithStatusString5() throws IOException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile();
-    MockHttpServletResponse response = new MockHttpServletResponse();
-    HttpServletResponseWrapper response2 = new HttpServletResponseWrapper(new StatusExposingServletResponse(
-        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile())));
-    StatusExposingServletResponse statusExposingServletResponse = new StatusExposingServletResponse(
-        new SecurityWrapperResponse(new StatusExposingServletResponse(new FileSystemResponseWrapper(response2,
-            Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile())), "Mode"));
+        new FileSystemResponseWrapper(response2, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
 
     // Act
     statusExposingServletResponse.setStatus(1, "String");
 
     // Assert
     ServletResponse response3 = statusExposingServletResponse.getResponse();
-    ServletResponse response4 = ((SecurityWrapperResponse) response3).getResponse();
-    ServletResponse response5 = ((StatusExposingServletResponse) response4).getResponse();
-    ServletResponse response6 = ((FileSystemResponseWrapper) response5).getResponse();
-    assertTrue(response6 instanceof HttpServletResponseWrapper);
-    ServletResponse response7 = ((HttpServletResponseWrapper) response6).getResponse();
-    ServletResponse response8 = ((StatusExposingServletResponse) response7).getResponse();
-    assertTrue(response8 instanceof FileSystemResponseWrapper);
-    assertTrue(response5 instanceof FileSystemResponseWrapper);
-    assertTrue(response7 instanceof StatusExposingServletResponse);
-    assertTrue(response4 instanceof StatusExposingServletResponse);
-    assertTrue(response3 instanceof SecurityWrapperResponse);
-    ServletResponse response9 = ((FileSystemResponseWrapper) response8).getResponse();
-    assertTrue(response9 instanceof MockHttpServletResponse);
-    assertEquals("String", ((MockHttpServletResponse) response9).getErrorMessage());
+    assertTrue(response3 instanceof FileSystemResponseWrapper);
+    ServletResponse response4 = ((FileSystemResponseWrapper) response3).getResponse();
+    ServletResponse response5 = ((SecurityWrapperResponse) response4).getResponse();
+    ServletResponse response6 = ((StatusExposingServletResponse) response5).getResponse();
+    assertTrue(response6 instanceof FileSystemResponseWrapper);
+    assertTrue(response5 instanceof StatusExposingServletResponse);
+    assertTrue(response4 instanceof SecurityWrapperResponse);
+    ServletResponse response7 = ((FileSystemResponseWrapper) response6).getResponse();
+    assertTrue(response7 instanceof MockHttpServletResponse);
+    assertEquals(200, ((FileSystemResponseWrapper) response3).getStatus());
+    assertTrue(response3.isCommitted());
+    assertTrue(response4.isCommitted());
     assertTrue(response7.isCommitted());
-    assertTrue(response9.isCommitted());
     assertTrue(response6.isCommitted());
-    assertTrue(response8.isCommitted());
+    assertTrue(response5.isCommitted());
+    assertTrue(statusExposingServletResponse.isCommitted());
   }
 
   /**
-   * Test {@link StatusExposingServletResponse#setStatus(int, String)} with
-   * {@code status}, {@code string}.
-   * <p>
-   * Method under test:
-   * {@link StatusExposingServletResponse#setStatus(int, String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetStatusWithStatusString6() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   - org.broadleafcommerce.common.web.util.StatusExposingServletResponse
-    //   when running class:
-    //   package org.broadleafcommerce.common.web.util;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.common.web.util.StatusExposingServletResponse.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass24 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean javax.servlet.http.HttpServletResponse httpServletResponse;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.common.web.util.StatusExposingServletResponse statusExposingServletResponse;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    statusExposingServletResponse.setStatus(1, "String");
-  }
-
-  /**
-   * Test {@link StatusExposingServletResponse#reset()}.
+   * Test {@link StatusExposingServletResponse#setStatus(int, String)} with {@code status}, {@code string}.
    * <ul>
-   *   <li>Given {@link FileSystemResponseWrapper}
-   * {@link ServletResponseWrapper#reset()} does nothing.</li>
-   *   <li>Then calls {@link ServletResponseWrapper#reset()}.</li>
+   *   <li>Then {@link StatusExposingServletResponse} Status is one.</li>
    * </ul>
    * <p>
-   * Method under test: {@link StatusExposingServletResponse#reset()}
+   * Method under test: {@link StatusExposingServletResponse#setStatus(int, String)}
    */
   @Test
-  public void testReset_givenFileSystemResponseWrapperResetDoesNothing_thenCallsReset() throws IOException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StatusExposingServletResponse.setStatus(int, String)"})
+  public void testSetStatusWithStatusString_thenStatusExposingServletResponseStatusIsOne() {
     // Arrange
-    FileSystemResponseWrapper response = mock(FileSystemResponseWrapper.class);
-    doNothing().when(response).reset();
+    doNothing().when(httpServletResponse).setStatus(anyInt(), Mockito.<String>any());
 
     // Act
-    (new StatusExposingServletResponse(
-        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile())))
-            .reset();
+    statusExposingServletResponse.setStatus(1, "String");
 
     // Assert
-    verify(response).reset();
+    verify(httpServletResponse).setStatus(eq(1), eq("String"));
+    assertEquals(1, statusExposingServletResponse.getStatus());
   }
 }

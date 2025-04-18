@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.web.form.entity;
 
 import static org.junit.Assert.assertEquals;
@@ -5,18 +22,22 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @ContextConfiguration(classes = {ComboField.class})
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class ComboFieldDiffblueTest {
   @Autowired
   private ComboField comboField;
@@ -27,6 +48,8 @@ public class ComboFieldDiffblueTest {
    * Method under test: {@link ComboField#putOption(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ComboField.putOption(String, String)"})
   public void testPutOption() {
     // Arrange and Act
     comboField.putOption("Key", "42");
@@ -46,6 +69,8 @@ public class ComboFieldDiffblueTest {
    * Method under test: {@link ComboField#setOptions(String[][])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ComboField.setOptions(String[][])"})
   public void testSetOptionsWithString_thenComboFieldOptionsSizeIsOne() {
     // Arrange
     ComboField comboField = new ComboField();
@@ -69,6 +94,8 @@ public class ComboFieldDiffblueTest {
    * Method under test: {@link ComboField#setOptions(String[][])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ComboField.setOptions(String[][])"})
   public void testSetOptionsWithString_whenNull_thenComboFieldOptionsEmpty() {
     // Arrange
     ComboField comboField = new ComboField();
@@ -86,6 +113,8 @@ public class ComboFieldDiffblueTest {
    * Method under test: {@link ComboField#getOption(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String ComboField.getOption(String)"})
   public void testGetOption() {
     // Arrange, Act and Assert
     assertNull(comboField.getOption("Option Key"));
@@ -102,6 +131,8 @@ public class ComboFieldDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ComboField.<init>()", "Map ComboField.getOptions()", "void ComboField.setOptions(Map)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     ComboField actualComboField = new ComboField();
@@ -109,7 +140,25 @@ public class ComboFieldDiffblueTest {
     actualComboField.setOptions(options);
     Map<String, String> actualOptions = actualComboField.getOptions();
 
-    // Assert that nothing has changed
+    // Assert
+    assertNull(actualComboField.getOrder());
+    assertNull(actualComboField.getAssociatedFieldName());
+    assertNull(actualComboField.getColumnWidth());
+    assertNull(actualComboField.getConfirmEnabledText());
+    assertNull(actualComboField.getDisplayType());
+    assertNull(actualComboField.getFieldComponentRenderer());
+    assertNull(actualComboField.getFieldType());
+    assertNull(actualComboField.getForeignKeyClass());
+    assertNull(actualComboField.getForeignKeyDisplayValueProperty());
+    assertNull(actualComboField.getForeignKeySectionPath());
+    assertNull(actualComboField.getFriendlyName());
+    assertNull(actualComboField.getGridFieldComponentRenderer());
+    assertNull(actualComboField.getIdOverride());
+    assertNull(actualComboField.getName());
+    assertNull(actualComboField.getOnChangeTrigger());
+    assertNull(actualComboField.getOwningEntityClass());
+    assertNull(actualComboField.getRawDisplayValue());
+    assertNull(actualComboField.getValue());
     assertFalse(actualComboField.getAllowNoValueEnumOption());
     assertTrue(actualOptions.isEmpty());
     assertTrue(actualComboField.getAttributes().isEmpty());

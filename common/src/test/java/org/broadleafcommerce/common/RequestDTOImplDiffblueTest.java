@@ -22,13 +22,14 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.BiFunction;
 import javax.servlet.http.HttpServletRequest;
 import org.broadleafcommerce.common.web.filter.SessionlessHttpServletRequestWrapper;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
@@ -53,6 +54,13 @@ public class RequestDTOImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void RequestDTOImpl.<init>()", "String RequestDTOImpl.getFullUrLWithQueryString()",
+      "String RequestDTOImpl.getFullUrlWithQueryString()", "Map RequestDTOImpl.getRequestContextAttributes()",
+      "String RequestDTOImpl.getRequestURI()", "Boolean RequestDTOImpl.getSecure()",
+      "Boolean RequestDTOImpl.isSecure()", "void RequestDTOImpl.setFullUrlWithQueryString(String)",
+      "void RequestDTOImpl.setRequestContextAttributes(Map)", "void RequestDTOImpl.setRequestURI(String)",
+      "void RequestDTOImpl.setSecure(Boolean)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     RequestDTOImpl actualRequestDTOImpl = new RequestDTOImpl();
@@ -68,7 +76,7 @@ public class RequestDTOImplDiffblueTest {
     Boolean actualSecure = actualRequestDTOImpl.getSecure();
     Boolean actualIsSecureResult = actualRequestDTOImpl.isSecure();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Request URI", actualRequestURI);
     assertEquals("https://example.org/example", actualFullUrLWithQueryString);
     assertEquals("https://example.org/example", actualFullUrlWithQueryString);
@@ -81,6 +89,33 @@ public class RequestDTOImplDiffblueTest {
   /**
    * Test {@link RequestDTOImpl#RequestDTOImpl(HttpServletRequest)}.
    * <ul>
+   *   <li>Given empty string.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link RequestDTOImpl#RequestDTOImpl(HttpServletRequest)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void RequestDTOImpl.<init>(HttpServletRequest)"})
+  public void testNewRequestDTOImpl_givenEmptyString() {
+    // Arrange
+    MockHttpServletRequest request = new MockHttpServletRequest();
+    request.setQueryString("");
+
+    // Act
+    RequestDTOImpl actualRequestDTOImpl = new RequestDTOImpl(request);
+
+    // Assert
+    assertEquals("http://localhost", actualRequestDTOImpl.getFullUrLWithQueryString());
+    assertEquals("http://localhost", actualRequestDTOImpl.getFullUrlWithQueryString());
+    assertFalse(actualRequestDTOImpl.getSecure());
+    assertFalse(actualRequestDTOImpl.isSecure());
+    assertTrue(actualRequestDTOImpl.getRequestContextAttributes().isEmpty());
+  }
+
+  /**
+   * Test {@link RequestDTOImpl#RequestDTOImpl(HttpServletRequest)}.
+   * <ul>
    *   <li>Given {@code true}.</li>
    *   <li>Then return Secure.</li>
    * </ul>
@@ -88,6 +123,8 @@ public class RequestDTOImplDiffblueTest {
    * Method under test: {@link RequestDTOImpl#RequestDTOImpl(HttpServletRequest)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void RequestDTOImpl.<init>(HttpServletRequest)"})
   public void testNewRequestDTOImpl_givenTrue_thenReturnSecure() {
     // Arrange
     MockHttpServletRequest request = new MockHttpServletRequest();
@@ -114,6 +151,8 @@ public class RequestDTOImplDiffblueTest {
    * Method under test: {@link RequestDTOImpl#RequestDTOImpl(HttpServletRequest)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void RequestDTOImpl.<init>(HttpServletRequest)"})
   public void testNewRequestDTOImpl_thenReturnFullUrLWithQueryStringIsHttpLocalhost() {
     // Arrange and Act
     RequestDTOImpl actualRequestDTOImpl = new RequestDTOImpl(
@@ -130,51 +169,27 @@ public class RequestDTOImplDiffblueTest {
   /**
    * Test {@link RequestDTOImpl#RequestDTOImpl(HttpServletRequest)}.
    * <ul>
-   *   <li>Then return FullUrLWithQueryString is {@code http://localhost}.</li>
+   *   <li>Then return FullUrLWithQueryString is {@code http://localhost?not empty}.</li>
    * </ul>
    * <p>
    * Method under test: {@link RequestDTOImpl#RequestDTOImpl(HttpServletRequest)}
    */
   @Test
-  public void testNewRequestDTOImpl_thenReturnFullUrLWithQueryStringIsHttpLocalhost2() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void RequestDTOImpl.<init>(HttpServletRequest)"})
+  public void testNewRequestDTOImpl_thenReturnFullUrLWithQueryStringIsHttpLocalhostNotEmpty() {
     // Arrange
     MockHttpServletRequest request = new MockHttpServletRequest();
-    request.addParameter("https://example.org/example", "https://example.org/example");
-
-    // Act
-    RequestDTOImpl actualRequestDTOImpl = new RequestDTOImpl(new SessionlessHttpServletRequestWrapper(request));
-
-    // Assert
-    assertEquals("http://localhost", actualRequestDTOImpl.getFullUrLWithQueryString());
-    assertEquals("http://localhost", actualRequestDTOImpl.getFullUrlWithQueryString());
-    Map<String, String> requestContextAttributes = actualRequestDTOImpl.getRequestContextAttributes();
-    assertEquals(1, requestContextAttributes.size());
-    assertEquals("https://example.org/example", requestContextAttributes.get("https://example.org/example"));
-    assertFalse(actualRequestDTOImpl.getSecure());
-    assertFalse(actualRequestDTOImpl.isSecure());
-  }
-
-  /**
-   * Test {@link RequestDTOImpl#RequestDTOImpl(HttpServletRequest)}.
-   * <ul>
-   *   <li>Then return FullUrLWithQueryString is
-   * {@code http://localhost?Request}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link RequestDTOImpl#RequestDTOImpl(HttpServletRequest)}
-   */
-  @Test
-  public void testNewRequestDTOImpl_thenReturnFullUrLWithQueryStringIsHttpLocalhostRequest() {
-    // Arrange
-    MockHttpServletRequest request = new MockHttpServletRequest();
-    request.setQueryString("Request");
+    request.setQueryString("not empty");
 
     // Act
     RequestDTOImpl actualRequestDTOImpl = new RequestDTOImpl(request);
 
     // Assert
-    assertEquals("http://localhost?Request", actualRequestDTOImpl.getFullUrLWithQueryString());
-    assertEquals("http://localhost?Request", actualRequestDTOImpl.getFullUrlWithQueryString());
+    assertEquals("http://localhost?not empty", actualRequestDTOImpl.getFullUrLWithQueryString());
+    assertEquals("http://localhost?not empty", actualRequestDTOImpl.getFullUrlWithQueryString());
+    assertFalse(actualRequestDTOImpl.getSecure());
+    assertFalse(actualRequestDTOImpl.isSecure());
     assertTrue(actualRequestDTOImpl.getRequestContextAttributes().isEmpty());
   }
 
@@ -187,6 +202,8 @@ public class RequestDTOImplDiffblueTest {
    * Method under test: {@link RequestDTOImpl#RequestDTOImpl(WebRequest)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void RequestDTOImpl.<init>(WebRequest)"})
   public void testNewRequestDTOImpl_thenReturnRequestContextAttributesEmpty() {
     // Arrange and Act
     RequestDTOImpl actualRequestDTOImpl = new RequestDTOImpl(
@@ -203,6 +220,33 @@ public class RequestDTOImplDiffblueTest {
   }
 
   /**
+   * Test {@link RequestDTOImpl#RequestDTOImpl(HttpServletRequest)}.
+   * <ul>
+   *   <li>Then return RequestContextAttributes size is one.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link RequestDTOImpl#RequestDTOImpl(HttpServletRequest)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void RequestDTOImpl.<init>(HttpServletRequest)"})
+  public void testNewRequestDTOImpl_thenReturnRequestContextAttributesSizeIsOne() {
+    // Arrange
+    MockHttpServletRequest request = new MockHttpServletRequest();
+    request.addParameter("https://example.org/example", "https://example.org/example");
+
+    // Act
+    RequestDTOImpl actualRequestDTOImpl = new RequestDTOImpl(new SessionlessHttpServletRequestWrapper(request));
+
+    // Assert
+    assertEquals("http://localhost", actualRequestDTOImpl.getFullUrLWithQueryString());
+    assertEquals("http://localhost", actualRequestDTOImpl.getFullUrlWithQueryString());
+    Map<String, String> requestContextAttributes = actualRequestDTOImpl.getRequestContextAttributes();
+    assertEquals(1, requestContextAttributes.size());
+    assertEquals("https://example.org/example", requestContextAttributes.get("https://example.org/example"));
+  }
+
+  /**
    * Test {@link RequestDTOImpl#RequestDTOImpl(WebRequest)}.
    * <ul>
    *   <li>Then return RequestContextAttributes size is one.</li>
@@ -211,7 +255,9 @@ public class RequestDTOImplDiffblueTest {
    * Method under test: {@link RequestDTOImpl#RequestDTOImpl(WebRequest)}
    */
   @Test
-  public void testNewRequestDTOImpl_thenReturnRequestContextAttributesSizeIsOne() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void RequestDTOImpl.<init>(WebRequest)"})
+  public void testNewRequestDTOImpl_thenReturnRequestContextAttributesSizeIsOne2() {
     // Arrange
     MockHttpServletRequest request = new MockHttpServletRequest();
     request.addParameter("https://example.org/example", "https://example.org/example");
@@ -234,36 +280,13 @@ public class RequestDTOImplDiffblueTest {
 
   /**
    * Test {@link RequestDTOImpl#getProperties()}.
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} computeIfPresent {@code foo} and
-   * {@link BiFunction}.</li>
-   * </ul>
    * <p>
    * Method under test: {@link RequestDTOImpl#getProperties()}
    */
   @Test
-  public void testGetProperties_givenHashMapComputeIfPresentFooAndBiFunction() {
-    // Arrange
-    HashMap<String, String> requestContextAttributes = new HashMap<>();
-    requestContextAttributes.computeIfPresent("foo", mock(BiFunction.class));
-
-    RequestDTOImpl requestDTOImpl = new RequestDTOImpl();
-    requestDTOImpl.setRequestContextAttributes(requestContextAttributes);
-
-    // Act and Assert
-    assertTrue(requestDTOImpl.getProperties().isEmpty());
-  }
-
-  /**
-   * Test {@link RequestDTOImpl#getProperties()}.
-   * <ul>
-   *   <li>Given {@link RequestDTOImpl#RequestDTOImpl()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link RequestDTOImpl#getProperties()}
-   */
-  @Test
-  public void testGetProperties_givenRequestDTOImpl() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map RequestDTOImpl.getProperties()"})
+  public void testGetProperties() {
     // Arrange, Act and Assert
     assertTrue((new RequestDTOImpl()).getProperties().isEmpty());
   }

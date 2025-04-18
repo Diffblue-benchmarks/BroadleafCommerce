@@ -1,27 +1,48 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.search.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.broadleafcommerce.core.catalog.domain.Product;
 import org.broadleafcommerce.core.catalog.domain.ProductBundleImpl;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class SearchResultDiffblueTest {
   /**
    * Test {@link SearchResult#getStartResult()}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link ProductBundleImpl}
-   * (default constructor).</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link ProductBundleImpl} (default constructor).</li>
    *   <li>Then return intValue is one.</li>
    * </ul>
    * <p>
    * Method under test: {@link SearchResult#getStartResult()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Integer SearchResult.getStartResult()"})
   public void testGetStartResult_givenArrayListAddProductBundleImpl_thenReturnIntValueIsOne() {
     // Arrange
     ArrayList<Product> products = new ArrayList<>();
@@ -49,6 +70,8 @@ public class SearchResultDiffblueTest {
    * Method under test: {@link SearchResult#getStartResult()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Integer SearchResult.getStartResult()"})
   public void testGetStartResult_givenSearchResultPageIsOne_thenReturnIntValueIsZero() {
     // Arrange
     SearchResult searchResult = new SearchResult();
@@ -73,6 +96,8 @@ public class SearchResultDiffblueTest {
    * Method under test: {@link SearchResult#getStartResult()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Integer SearchResult.getStartResult()"})
   public void testGetStartResult_givenSearchResult_thenReturnIntValueIsZero() {
     // Arrange, Act and Assert
     assertEquals(0, (new SearchResult()).getStartResult().intValue());
@@ -81,14 +106,15 @@ public class SearchResultDiffblueTest {
   /**
    * Test {@link SearchResult#getEndResult()}.
    * <ul>
-   *   <li>Given {@link SearchResult} (default constructor) Facets is
-   * {@link ArrayList#ArrayList()}.</li>
+   *   <li>Given {@link SearchResult} (default constructor) Facets is {@link ArrayList#ArrayList()}.</li>
    *   <li>Then return intValue is one.</li>
    * </ul>
    * <p>
    * Method under test: {@link SearchResult#getEndResult()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Integer SearchResult.getEndResult()"})
   public void testGetEndResult_givenSearchResultFacetsIsArrayList_thenReturnIntValueIsOne() {
     // Arrange
     SearchResult searchResult = new SearchResult();
@@ -106,14 +132,15 @@ public class SearchResultDiffblueTest {
   /**
    * Test {@link SearchResult#getTotalPages()}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link ProductBundleImpl}
-   * (default constructor).</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link ProductBundleImpl} (default constructor).</li>
    *   <li>Then return intValue is one.</li>
    * </ul>
    * <p>
    * Method under test: {@link SearchResult#getTotalPages()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Integer SearchResult.getTotalPages()"})
   public void testGetTotalPages_givenArrayListAddProductBundleImpl_thenReturnIntValueIsOne() {
     // Arrange
     ArrayList<Product> products = new ArrayList<>();
@@ -141,6 +168,8 @@ public class SearchResultDiffblueTest {
    * Method under test: {@link SearchResult#getTotalPages()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Integer SearchResult.getTotalPages()"})
   public void testGetTotalPages_givenSearchResultPageSizeIsThree_thenReturnIntValueIsOne() {
     // Arrange
     SearchResult searchResult = new SearchResult();
@@ -165,6 +194,8 @@ public class SearchResultDiffblueTest {
    * Method under test: {@link SearchResult#getTotalPages()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Integer SearchResult.getTotalPages()"})
   public void testGetTotalPages_givenSearchResult_thenReturnIntValueIsOne() {
     // Arrange, Act and Assert
     assertEquals(1, (new SearchResult()).getTotalPages().intValue());
@@ -191,6 +222,13 @@ public class SearchResultDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SearchResult.<init>()", "List SearchResult.getFacets()", "Integer SearchResult.getPage()",
+      "Integer SearchResult.getPageSize()", "List SearchResult.getProducts()",
+      "QueryResponse SearchResult.getQueryResponse()", "Integer SearchResult.getTotalResults()",
+      "void SearchResult.setFacets(List)", "void SearchResult.setPage(Integer)",
+      "void SearchResult.setPageSize(Integer)", "void SearchResult.setProducts(List)",
+      "void SearchResult.setQueryResponse(QueryResponse)", "void SearchResult.setTotalResults(Integer)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     SearchResult actualSearchResult = new SearchResult();
@@ -210,7 +248,7 @@ public class SearchResultDiffblueTest {
     QueryResponse actualQueryResponse = actualSearchResult.getQueryResponse();
     Integer actualTotalResults = actualSearchResult.getTotalResults();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals(1, actualPage.intValue());
     assertEquals(1, actualTotalResults.intValue());
     assertEquals(3, actualPageSize.intValue());

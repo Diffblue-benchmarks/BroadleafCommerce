@@ -19,92 +19,46 @@ package org.broadleafcommerce.common.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.TimeZone;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class BLCDateUtilsDiffblueTest {
   /**
    * Test {@link BLCDateUtils#convertDateToUTC(Date)}.
+   * <ul>
+   *   <li>Then return {@code 1970-01-01 00:00:00.0}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link BLCDateUtils#convertDateToUTC(Date)}
    */
   @Test
-  public void testConvertDateToUTC() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BLCDateUtils.convertDateToUTC(Date)"})
+  public void testConvertDateToUTC_thenReturn197001010000000() {
     // Arrange, Act and Assert
     assertEquals("1970-01-01 00:00:00.0", BLCDateUtils
         .convertDateToUTC(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant())));
   }
 
   /**
-   * Test {@link BLCDateUtils#convertDateToUTC(Date)}.
+   * Test {@link BLCDateUtils#formatDateAsString(Date, TimeZone)} with {@code date}, {@code timeZone}.
    * <ul>
-   *   <li>Given ten.</li>
-   *   <li>When {@link java.sql.Date} {@link java.util.Date#getTime()} return
-   * ten.</li>
-   *   <li>Then calls {@link java.util.Date#getTime()}.</li>
+   *   <li>Then return {@code Dec 31, 1970 @ 04:00pm}.</li>
    * </ul>
-   * <p>
-   * Method under test: {@link BLCDateUtils#convertDateToUTC(java.util.Date)}
-   */
-  @Test
-  public void testConvertDateToUTC_givenTen_whenDateGetTimeReturnTen_thenCallsGetTime() {
-    // Arrange
-    java.sql.Date date = mock(java.sql.Date.class);
-    when(date.getTime()).thenReturn(10L);
-
-    // Act
-    String actualConvertDateToUTCResult = BLCDateUtils.convertDateToUTC(date);
-
-    // Assert
-    verify(date).getTime();
-    assertEquals("1970-01-01 00:00:00.0", actualConvertDateToUTCResult);
-  }
-
-  /**
-   * Test {@link BLCDateUtils#formatDateAsString(Date)} with {@code date}.
-   * <p>
-   * Method under test: {@link BLCDateUtils#formatDateAsString(Date)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFormatDateAsStringWithDate() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at java.base/java.util.GregorianCalendar.computeFields(GregorianCalendar.java:2339)
-    //       at java.base/java.util.GregorianCalendar.computeFields(GregorianCalendar.java:2309)
-    //       at java.base/java.util.Calendar.setTimeInMillis(Calendar.java:1834)
-    //       at java.base/java.util.Calendar.setTime(Calendar.java:1800)
-    //       at java.base/java.text.SimpleDateFormat.format(SimpleDateFormat.java:974)
-    //       at java.base/java.text.SimpleDateFormat.format(SimpleDateFormat.java:967)
-    //       at java.base/java.text.DateFormat.format(DateFormat.java:374)
-    //       at org.broadleafcommerce.common.util.BLCDateUtils.formatDateAsString(BLCDateUtils.java:66)
-    //       at org.broadleafcommerce.common.util.BLCDateUtils.formatDateAsString(BLCDateUtils.java:56)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange and Act
-    BLCDateUtils
-        .formatDateAsString(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-  }
-
-  /**
-   * Test {@link BLCDateUtils#formatDateAsString(Date, TimeZone)} with
-   * {@code date}, {@code timeZone}.
    * <p>
    * Method under test: {@link BLCDateUtils#formatDateAsString(Date, TimeZone)}
    */
   @Test
-  public void testFormatDateAsStringWithDateTimeZone() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BLCDateUtils.formatDateAsString(Date, TimeZone)"})
+  public void testFormatDateAsStringWithDateTimeZone_thenReturnDec3119700400pm() {
     // Arrange
     Date date = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
 
@@ -114,38 +68,13 @@ public class BLCDateUtilsDiffblueTest {
   }
 
   /**
-   * Test {@link BLCDateUtils#formatDateAsString(Date, TimeZone)} with
-   * {@code date}, {@code timeZone}.
-   * <ul>
-   *   <li>Given ten.</li>
-   *   <li>Then calls {@link java.util.Date#getTime()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link BLCDateUtils#formatDateAsString(java.util.Date, TimeZone)}
-   */
-  @Test
-  public void testFormatDateAsStringWithDateTimeZone_givenTen_thenCallsGetTime() {
-    // Arrange
-    java.sql.Date date = mock(java.sql.Date.class);
-    when(date.getTime()).thenReturn(10L);
-
-    // Act
-    String actualFormatDateAsStringResult = BLCDateUtils.formatDateAsString(date,
-        TimeZone.getTimeZone("America/Los_Angeles"));
-
-    // Assert
-    verify(date).getTime();
-    assertEquals("Dec 31, 1970 @ 04:00pm", actualFormatDateAsStringResult);
-  }
-
-  /**
-   * Test {@link BLCDateUtils#parseStringToDate(String, String)} with
-   * {@code dateString}, {@code dateFormat}.
+   * Test {@link BLCDateUtils#parseStringToDate(String, String)} with {@code dateString}, {@code dateFormat}.
    * <p>
    * Method under test: {@link BLCDateUtils#parseStringToDate(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Date BLCDateUtils.parseStringToDate(String, String)"})
   public void testParseStringToDateWithDateStringDateFormat() {
     // Arrange and Act
     Date actualParseStringToDateResult = BLCDateUtils.parseStringToDate("2020-03-01", "2020-03-01");
@@ -155,24 +84,7 @@ public class BLCDateUtilsDiffblueTest {
   }
 
   /**
-   * Test {@link BLCDateUtils#parseStringToDate(String, String)} with
-   * {@code dateString}, {@code dateFormat}.
-   * <ul>
-   *   <li>When {@code 2020/03/01}.</li>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link BLCDateUtils#parseStringToDate(String, String)}
-   */
-  @Test
-  public void testParseStringToDateWithDateStringDateFormat_when20200301_thenReturnNull() {
-    // Arrange, Act and Assert
-    assertNull(BLCDateUtils.parseStringToDate("2020/03/01", "2020-03-01"));
-  }
-
-  /**
-   * Test {@link BLCDateUtils#parseStringToDate(String, String)} with
-   * {@code dateString}, {@code dateFormat}.
+   * Test {@link BLCDateUtils#parseStringToDate(String, String)} with {@code dateString}, {@code dateFormat}.
    * <ul>
    *   <li>When empty string.</li>
    *   <li>Then return {@code null}.</li>
@@ -181,9 +93,45 @@ public class BLCDateUtilsDiffblueTest {
    * Method under test: {@link BLCDateUtils#parseStringToDate(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Date BLCDateUtils.parseStringToDate(String, String)"})
   public void testParseStringToDateWithDateStringDateFormat_whenEmptyString_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull(BLCDateUtils.parseStringToDate("", "2020-03-01"));
+  }
+
+  /**
+   * Test {@link BLCDateUtils#parseStringToDate(String, String)} with {@code dateString}, {@code dateFormat}.
+   * <ul>
+   *   <li>When {@code not empty}.</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BLCDateUtils#parseStringToDate(String, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Date BLCDateUtils.parseStringToDate(String, String)"})
+  public void testParseStringToDateWithDateStringDateFormat_whenNotEmpty_thenReturnNull() {
+    // Arrange, Act and Assert
+    assertNull(BLCDateUtils.parseStringToDate("not empty", "2020-03-01"));
+  }
+
+  /**
+   * Test {@link BLCDateUtils#parseStringToDate(String, String)} with {@code dateString}, {@code dateFormat}.
+   * <ul>
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BLCDateUtils#parseStringToDate(String, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Date BLCDateUtils.parseStringToDate(String, String)"})
+  public void testParseStringToDateWithDateStringDateFormat_whenNull_thenReturnNull() {
+    // Arrange, Act and Assert
+    assertNull(BLCDateUtils.parseStringToDate(null, "2020-03-01"));
   }
 
   /**
@@ -195,6 +143,8 @@ public class BLCDateUtilsDiffblueTest {
    * Method under test: {@link BLCDateUtils#parseStringToDate(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Date BLCDateUtils.parseStringToDate(String)"})
   public void testParseStringToDateWithDateString_when20200301() {
     // Arrange, Act and Assert
     assertNull(BLCDateUtils.parseStringToDate("2020-03-01"));
@@ -209,9 +159,27 @@ public class BLCDateUtilsDiffblueTest {
    * Method under test: {@link BLCDateUtils#parseStringToDate(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Date BLCDateUtils.parseStringToDate(String)"})
   public void testParseStringToDateWithDateString_whenEmptyString() {
     // Arrange, Act and Assert
     assertNull(BLCDateUtils.parseStringToDate(""));
+  }
+
+  /**
+   * Test {@link BLCDateUtils#parseStringToDate(String)} with {@code dateString}.
+   * <ul>
+   *   <li>When {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BLCDateUtils#parseStringToDate(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Date BLCDateUtils.parseStringToDate(String)"})
+  public void testParseStringToDateWithDateString_whenNull() {
+    // Arrange, Act and Assert
+    assertNull(BLCDateUtils.parseStringToDate(null));
   }
 
   /**
@@ -224,14 +192,15 @@ public class BLCDateUtilsDiffblueTest {
    * Method under test: {@link BLCDateUtils#formatSimpleDate(Date)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BLCDateUtils.formatSimpleDate(Date)"})
   public void testFormatSimpleDate_whenNull_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull(BLCDateUtils.formatSimpleDate(null));
   }
 
   /**
-   * Test {@link BLCDateUtils#formatDate(Date, String, TimeZone)} with
-   * {@code date}, {@code format}, {@code timeZone}.
+   * Test {@link BLCDateUtils#formatDate(Date, String, TimeZone)} with {@code date}, {@code format}, {@code timeZone}.
    * <ul>
    *   <li>When {@code 42}.</li>
    *   <li>Then return {@code 42}.</li>
@@ -240,6 +209,8 @@ public class BLCDateUtilsDiffblueTest {
    * Method under test: {@link BLCDateUtils#formatDate(Date, String, TimeZone)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BLCDateUtils.formatDate(Date, String, TimeZone)"})
   public void testFormatDateWithDateFormatTimeZone_when42_thenReturn42() {
     // Arrange
     Date date = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
@@ -249,8 +220,7 @@ public class BLCDateUtilsDiffblueTest {
   }
 
   /**
-   * Test {@link BLCDateUtils#formatDate(Date, String, TimeZone)} with
-   * {@code date}, {@code format}, {@code timeZone}.
+   * Test {@link BLCDateUtils#formatDate(Date, String, TimeZone)} with {@code date}, {@code format}, {@code timeZone}.
    * <ul>
    *   <li>When {@code null}.</li>
    *   <li>Then return {@code null}.</li>
@@ -259,14 +229,15 @@ public class BLCDateUtilsDiffblueTest {
    * Method under test: {@link BLCDateUtils#formatDate(Date, String, TimeZone)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BLCDateUtils.formatDate(Date, String, TimeZone)"})
   public void testFormatDateWithDateFormatTimeZone_whenNull_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull(BLCDateUtils.formatDate(null, "Format", TimeZone.getTimeZone("America/Los_Angeles")));
   }
 
   /**
-   * Test {@link BLCDateUtils#formatDate(Date, String)} with {@code date},
-   * {@code format}.
+   * Test {@link BLCDateUtils#formatDate(Date, String)} with {@code date}, {@code format}.
    * <ul>
    *   <li>When {@code null}.</li>
    *   <li>Then return {@code null}.</li>
@@ -275,6 +246,8 @@ public class BLCDateUtilsDiffblueTest {
    * Method under test: {@link BLCDateUtils#formatDate(Date, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BLCDateUtils.formatDate(Date, String)"})
   public void testFormatDateWithDateFormat_whenNull_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull(BLCDateUtils.formatDate(null, "Format"));
@@ -290,6 +263,8 @@ public class BLCDateUtilsDiffblueTest {
    * Method under test: {@link BLCDateUtils#formatDate(Date)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BLCDateUtils.formatDate(Date)"})
   public void testFormatDateWithDate_whenNull_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull(BLCDateUtils.formatDate(null));

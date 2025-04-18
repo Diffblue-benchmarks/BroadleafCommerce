@@ -17,41 +17,41 @@
  */
 package org.broadleafcommerce.common.extensibility.context.merge;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.util.BLCFieldUtils;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.reactive.context.AnnotationConfigReactiveWebApplicationContext;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationEvent;
-import org.springframework.context.ApplicationListener;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @ContextConfiguration(classes = {EarlyStageRemoveBeanPostProcessor.class})
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class AbstractRemoveBeanPostProcessorDiffblueTest {
   @Autowired
   private AbstractRemoveBeanPostProcessor abstractRemoveBeanPostProcessor;
 
   /**
-   * Test
-   * {@link AbstractRemoveBeanPostProcessor#setApplicationContext(ApplicationContext)}.
+   * Test {@link AbstractRemoveBeanPostProcessor#setApplicationContext(ApplicationContext)}.
    * <p>
-   * Method under test:
-   * {@link AbstractRemoveBeanPostProcessor#setApplicationContext(ApplicationContext)}
+   * Method under test: {@link AbstractRemoveBeanPostProcessor#setApplicationContext(ApplicationContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AbstractRemoveBeanPostProcessor.setApplicationContext(ApplicationContext)"})
   public void testSetApplicationContext() throws BeansException {
     // Arrange
     EarlyStageRemoveBeanPostProcessor earlyStageRemoveBeanPostProcessor = new EarlyStageRemoveBeanPostProcessor();
@@ -67,26 +67,19 @@ public class AbstractRemoveBeanPostProcessorDiffblueTest {
     assertNull(applicationContext.getParent());
     assertEquals(0L, applicationContext.getStartupDate());
     assertEquals(6, applicationContext.getBeanDefinitionCount());
+    assertEquals(6, applicationContext.getBeanDefinitionNames().length);
     assertFalse(((AnnotationConfigReactiveWebApplicationContext) applicationContext).isActive());
     assertFalse(((AnnotationConfigReactiveWebApplicationContext) applicationContext).isRunning());
-    assertArrayEquals(
-        new String[]{"org.springframework.context.annotation.internalConfigurationAnnotationProcessor",
-            "org.springframework.context.annotation.internalAutowiredAnnotationProcessor",
-            "org.springframework.context.annotation.internalCommonAnnotationProcessor",
-            "org.springframework.context.annotation.internalPersistenceAnnotationProcessor",
-            "org.springframework.context.event.internalEventListenerProcessor",
-            "org.springframework.context.event.internalEventListenerFactory"},
-        applicationContext.getBeanDefinitionNames());
   }
 
   /**
-   * Test
-   * {@link AbstractRemoveBeanPostProcessor#postProcessAfterInitialization(Object, String)}.
+   * Test {@link AbstractRemoveBeanPostProcessor#postProcessAfterInitialization(Object, String)}.
    * <p>
-   * Method under test:
-   * {@link AbstractRemoveBeanPostProcessor#postProcessAfterInitialization(Object, String)}
+   * Method under test: {@link AbstractRemoveBeanPostProcessor#postProcessAfterInitialization(Object, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object AbstractRemoveBeanPostProcessor.postProcessAfterInitialization(Object, String)"})
   public void testPostProcessAfterInitialization() throws BeansException {
     // Arrange
     Object object = BLCFieldUtils.NULL_FIELD;
@@ -96,13 +89,13 @@ public class AbstractRemoveBeanPostProcessorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AbstractRemoveBeanPostProcessor#postProcessBeforeInitialization(Object, String)}.
+   * Test {@link AbstractRemoveBeanPostProcessor#postProcessBeforeInitialization(Object, String)}.
    * <p>
-   * Method under test:
-   * {@link AbstractRemoveBeanPostProcessor#postProcessBeforeInitialization(Object, String)}
+   * Method under test: {@link AbstractRemoveBeanPostProcessor#postProcessBeforeInitialization(Object, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object AbstractRemoveBeanPostProcessor.postProcessBeforeInitialization(Object, String)"})
   public void testPostProcessBeforeInitialization() throws BeansException {
     // Arrange
     Object object = BLCFieldUtils.NULL_FIELD;
@@ -117,29 +110,9 @@ public class AbstractRemoveBeanPostProcessorDiffblueTest {
    * Method under test: {@link AbstractRemoveBeanPostProcessor#getBeanRef()}
    */
   @Test
-  public void testGetBeanRef() throws BeansException {
-    // Arrange
-    AnnotationConfigReactiveWebApplicationContext applicationContext = new AnnotationConfigReactiveWebApplicationContext();
-    applicationContext.addApplicationListener(mock(ApplicationListener.class));
-
-    EarlyStageRemoveBeanPostProcessor earlyStageRemoveBeanPostProcessor = new EarlyStageRemoveBeanPostProcessor();
-    earlyStageRemoveBeanPostProcessor.setApplicationContext(applicationContext);
-
-    // Act and Assert
-    assertNull(earlyStageRemoveBeanPostProcessor.getBeanRef());
-  }
-
-  /**
-   * Test {@link AbstractRemoveBeanPostProcessor#getBeanRef()}.
-   * <ul>
-   *   <li>Given {@link EarlyStageRemoveBeanPostProcessor} (default
-   * constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AbstractRemoveBeanPostProcessor#getBeanRef()}
-   */
-  @Test
-  public void testGetBeanRef_givenEarlyStageRemoveBeanPostProcessor() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String AbstractRemoveBeanPostProcessor.getBeanRef()"})
+  public void testGetBeanRef() {
     // Arrange, Act and Assert
     assertNull((new EarlyStageRemoveBeanPostProcessor()).getBeanRef());
   }
@@ -150,6 +123,8 @@ public class AbstractRemoveBeanPostProcessorDiffblueTest {
    * Method under test: {@link AbstractRemoveBeanPostProcessor#setBeanRef(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AbstractRemoveBeanPostProcessor.setBeanRef(String)"})
   public void testSetBeanRef() {
     // Arrange and Act
     abstractRemoveBeanPostProcessor.setBeanRef("Bean Ref");
@@ -165,29 +140,9 @@ public class AbstractRemoveBeanPostProcessorDiffblueTest {
    * Method under test: {@link AbstractRemoveBeanPostProcessor#getTargetRef()}
    */
   @Test
-  public void testGetTargetRef() throws BeansException {
-    // Arrange
-    AnnotationConfigReactiveWebApplicationContext applicationContext = new AnnotationConfigReactiveWebApplicationContext();
-    applicationContext.addApplicationListener(mock(ApplicationListener.class));
-
-    EarlyStageRemoveBeanPostProcessor earlyStageRemoveBeanPostProcessor = new EarlyStageRemoveBeanPostProcessor();
-    earlyStageRemoveBeanPostProcessor.setApplicationContext(applicationContext);
-
-    // Act and Assert
-    assertNull(earlyStageRemoveBeanPostProcessor.getTargetRef());
-  }
-
-  /**
-   * Test {@link AbstractRemoveBeanPostProcessor#getTargetRef()}.
-   * <ul>
-   *   <li>Given {@link EarlyStageRemoveBeanPostProcessor} (default
-   * constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AbstractRemoveBeanPostProcessor#getTargetRef()}
-   */
-  @Test
-  public void testGetTargetRef_givenEarlyStageRemoveBeanPostProcessor() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String AbstractRemoveBeanPostProcessor.getTargetRef()"})
+  public void testGetTargetRef() {
     // Arrange, Act and Assert
     assertNull((new EarlyStageRemoveBeanPostProcessor()).getTargetRef());
   }
@@ -195,10 +150,11 @@ public class AbstractRemoveBeanPostProcessorDiffblueTest {
   /**
    * Test {@link AbstractRemoveBeanPostProcessor#setTargetRef(String)}.
    * <p>
-   * Method under test:
-   * {@link AbstractRemoveBeanPostProcessor#setTargetRef(String)}
+   * Method under test: {@link AbstractRemoveBeanPostProcessor#setTargetRef(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AbstractRemoveBeanPostProcessor.setTargetRef(String)"})
   public void testSetTargetRef() {
     // Arrange and Act
     abstractRemoveBeanPostProcessor.setTargetRef("Target Ref");
@@ -214,29 +170,9 @@ public class AbstractRemoveBeanPostProcessorDiffblueTest {
    * Method under test: {@link AbstractRemoveBeanPostProcessor#getMapKey()}
    */
   @Test
-  public void testGetMapKey() throws BeansException {
-    // Arrange
-    AnnotationConfigReactiveWebApplicationContext applicationContext = new AnnotationConfigReactiveWebApplicationContext();
-    applicationContext.addApplicationListener(mock(ApplicationListener.class));
-
-    EarlyStageRemoveBeanPostProcessor earlyStageRemoveBeanPostProcessor = new EarlyStageRemoveBeanPostProcessor();
-    earlyStageRemoveBeanPostProcessor.setApplicationContext(applicationContext);
-
-    // Act and Assert
-    assertNull(earlyStageRemoveBeanPostProcessor.getMapKey());
-  }
-
-  /**
-   * Test {@link AbstractRemoveBeanPostProcessor#getMapKey()}.
-   * <ul>
-   *   <li>Given {@link EarlyStageRemoveBeanPostProcessor} (default
-   * constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AbstractRemoveBeanPostProcessor#getMapKey()}
-   */
-  @Test
-  public void testGetMapKey_givenEarlyStageRemoveBeanPostProcessor() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String AbstractRemoveBeanPostProcessor.getMapKey()"})
+  public void testGetMapKey() {
     // Arrange, Act and Assert
     assertNull((new EarlyStageRemoveBeanPostProcessor()).getMapKey());
   }
@@ -247,6 +183,8 @@ public class AbstractRemoveBeanPostProcessorDiffblueTest {
    * Method under test: {@link AbstractRemoveBeanPostProcessor#setMapKey(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AbstractRemoveBeanPostProcessor.setMapKey(String)"})
   public void testSetMapKey() {
     // Arrange and Act
     abstractRemoveBeanPostProcessor.setMapKey("Map Key");
@@ -262,29 +200,9 @@ public class AbstractRemoveBeanPostProcessorDiffblueTest {
    * Method under test: {@link AbstractRemoveBeanPostProcessor#getMapKeyRef()}
    */
   @Test
-  public void testGetMapKeyRef() throws BeansException {
-    // Arrange
-    AnnotationConfigReactiveWebApplicationContext applicationContext = new AnnotationConfigReactiveWebApplicationContext();
-    applicationContext.addApplicationListener(mock(ApplicationListener.class));
-
-    EarlyStageRemoveBeanPostProcessor earlyStageRemoveBeanPostProcessor = new EarlyStageRemoveBeanPostProcessor();
-    earlyStageRemoveBeanPostProcessor.setApplicationContext(applicationContext);
-
-    // Act and Assert
-    assertNull(earlyStageRemoveBeanPostProcessor.getMapKeyRef());
-  }
-
-  /**
-   * Test {@link AbstractRemoveBeanPostProcessor#getMapKeyRef()}.
-   * <ul>
-   *   <li>Given {@link EarlyStageRemoveBeanPostProcessor} (default
-   * constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AbstractRemoveBeanPostProcessor#getMapKeyRef()}
-   */
-  @Test
-  public void testGetMapKeyRef_givenEarlyStageRemoveBeanPostProcessor() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String AbstractRemoveBeanPostProcessor.getMapKeyRef()"})
+  public void testGetMapKeyRef() {
     // Arrange, Act and Assert
     assertNull((new EarlyStageRemoveBeanPostProcessor()).getMapKeyRef());
   }
@@ -292,10 +210,11 @@ public class AbstractRemoveBeanPostProcessorDiffblueTest {
   /**
    * Test {@link AbstractRemoveBeanPostProcessor#setMapKeyRef(String)}.
    * <p>
-   * Method under test:
-   * {@link AbstractRemoveBeanPostProcessor#setMapKeyRef(String)}
+   * Method under test: {@link AbstractRemoveBeanPostProcessor#setMapKeyRef(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AbstractRemoveBeanPostProcessor.setMapKeyRef(String)"})
   public void testSetMapKeyRef() {
     // Arrange and Act
     abstractRemoveBeanPostProcessor.setMapKeyRef("Map Key Ref");

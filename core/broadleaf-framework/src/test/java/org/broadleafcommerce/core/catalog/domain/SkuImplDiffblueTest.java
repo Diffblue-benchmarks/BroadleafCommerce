@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.catalog.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -12,19 +29,19 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Currency;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.BiFunction;
 import org.broadleafcommerce.common.copy.CreateResponse;
 import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
@@ -33,221 +50,52 @@ import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
 import org.broadleafcommerce.common.media.domain.Media;
 import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.common.service.GenericEntityService;
-import org.broadleafcommerce.common.service.GenericEntityServiceImpl;
 import org.broadleafcommerce.common.site.domain.CatalogImpl;
 import org.broadleafcommerce.common.site.domain.SiteImpl;
-import org.broadleafcommerce.common.util.DimensionUnitOfMeasureType;
 import org.broadleafcommerce.common.util.WeightUnitOfMeasureType;
-import org.broadleafcommerce.common.vendor.service.type.ContainerShapeType;
-import org.broadleafcommerce.common.vendor.service.type.ContainerSizeType;
 import org.broadleafcommerce.core.catalog.service.dynamic.DynamicSkuPrices;
 import org.broadleafcommerce.core.inventory.service.type.InventoryType;
 import org.broadleafcommerce.core.order.domain.FulfillmentOption;
 import org.broadleafcommerce.core.order.service.type.FulfillmentType;
 import org.broadleafcommerce.core.search.domain.FieldEntity;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.mvel2.util.InternalNumber;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class SkuImplDiffblueTest {
   @Autowired
   private SkuImpl skuImpl;
 
   /**
    * Test {@link SkuImpl#isOnSale()}.
-   * <p>
-   * Method under test: {@link SkuImpl#isOnSale()}
-   */
-  @Test
-  public void testIsOnSale() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenThrow(new IllegalStateException("ThreadLocalManager.notify.orphans"));
-    Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.isOnSale());
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-  }
-
-  /**
-   * Test {@link SkuImpl#isOnSale()}.
-   * <p>
-   * Method under test: {@link SkuImpl#isOnSale()}
-   */
-  @Test
-  public void testIsOnSale2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenThrow(new IllegalStateException("ThreadLocalManager.notify.orphans"));
-    Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setRetailPrice(new Money());
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.isOnSale());
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-  }
-
-  /**
-   * Test {@link SkuImpl#isOnSale()}.
-   * <p>
-   * Method under test: {@link SkuImpl#isOnSale()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsOnSale3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1927 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).isOnSale();
-  }
-
-  /**
-   * Test {@link SkuImpl#isOnSale()}.
    * <ul>
-   *   <li>Given {@link Money} {@link Money#isZero()} return {@code false}.</li>
-   *   <li>Then return {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#isOnSale()}
-   */
-  @Test
-  public void testIsOnSale_givenMoneyIsZeroReturnFalse_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Money money = mock(Money.class);
-    when(money.isZero()).thenReturn(false);
-    when(money.lessThan(Mockito.<Money>any())).thenReturn(true);
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenReturn(1L);
-    when(sku.getRetailPrice()).thenReturn(new Money());
-    when(sku.getSalePrice()).thenReturn(money);
-    Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
-
-    // Act
-    boolean actualIsOnSaleResult = skuImpl.isOnSale();
-
-    // Assert
-    verify(money).isZero();
-    verify(money).lessThan(isA(Money.class));
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku, atLeast(1)).getId();
-    verify(sku).getRetailPrice();
-    verify(sku).getSalePrice();
-    assertTrue(actualIsOnSaleResult);
-  }
-
-  /**
-   * Test {@link SkuImpl#isOnSale()}.
-   * <ul>
-   *   <li>Given {@link Money} {@link Money#isZero()} return {@code true}.</li>
-   *   <li>Then calls {@link Money#isZero()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#isOnSale()}
-   */
-  @Test
-  public void testIsOnSale_givenMoneyIsZeroReturnTrue_thenCallsIsZero() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Money money = mock(Money.class);
-    when(money.isZero()).thenReturn(true);
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenReturn(1L);
-    when(sku.getRetailPrice()).thenReturn(new Money());
-    when(sku.getSalePrice()).thenReturn(money);
-    Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
-
-    // Act
-    boolean actualIsOnSaleResult = skuImpl.isOnSale();
-
-    // Assert
-    verify(money).isZero();
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku, atLeast(1)).getId();
-    verify(sku).getRetailPrice();
-    verify(sku).getSalePrice();
-    assertFalse(actualIsOnSaleResult);
-  }
-
-  /**
-   * Test {@link SkuImpl#isOnSale()}.
-   * <ul>
-   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return
-   * {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    *   <li>Then calls {@link Product#getDefaultSku()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#isOnSale()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.isOnSale()"})
   public void testIsOnSale_givenProductGetDefaultSkuReturnSkuImpl_thenCallsGetDefaultSku() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    boolean actualIsOnSaleResult = skuImpl.isOnSale();
+    boolean actualIsOnSaleResult = skuImpl2.isOnSale();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -257,27 +105,26 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#isOnSale()}.
    * <ul>
-   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return
-   * {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    *   <li>Then calls {@link Product#getDefaultSku()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#isOnSale()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.isOnSale()"})
   public void testIsOnSale_givenProductGetDefaultSkuReturnSkuImpl_thenCallsGetDefaultSku2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    boolean actualIsOnSaleResult = skuImpl.isOnSale();
+    boolean actualIsOnSaleResult = skuImpl2.isOnSale();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -287,53 +134,48 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#isOnSale()}.
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getSalePrice()} return
-   * {@link Money#Money(double)} with amount is ten.</li>
+   *   <li>Given {@link Sku} {@link Sku#getId()} return one.</li>
+   *   <li>Then calls {@link Sku#getId()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#isOnSale()}
    */
   @Test
-  public void testIsOnSale_givenSkuGetSalePriceReturnMoneyWithAmountIsTen() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.isOnSale()"})
+  public void testIsOnSale_givenSkuGetIdReturnOne_thenCallsGetId() {
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
-    when(sku.getRetailPrice()).thenReturn(new Money());
-    when(sku.getSalePrice()).thenReturn(new Money(10.0d));
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    boolean actualIsOnSaleResult = skuImpl.isOnSale();
+    boolean actualIsOnSaleResult = skuImpl2.isOnSale();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
     verify(sku, atLeast(1)).getId();
-    verify(sku).getRetailPrice();
-    verify(sku).getSalePrice();
     assertFalse(actualIsOnSaleResult);
   }
 
   /**
    * Test {@link SkuImpl#isOnSale()}.
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getSalePrice()} return
-   * {@link Money#Money()}.</li>
-   *   <li>Then calls {@link Sku#getSalePrice()}.</li>
+   *   <li>Given {@link Sku} {@link Sku#getRetailPrice()} return {@link Money#Money()}.</li>
+   *   <li>Then calls {@link Sku#getRetailPrice()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#isOnSale()}
    */
   @Test
-  public void testIsOnSale_givenSkuGetSalePriceReturnMoney_thenCallsGetSalePrice() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.isOnSale()"})
+  public void testIsOnSale_givenSkuGetRetailPriceReturnMoney_thenCallsGetRetailPrice() {
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
@@ -342,12 +184,12 @@ public class SkuImplDiffblueTest {
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
 
     // Act
-    boolean actualIsOnSaleResult = skuImpl.isOnSale();
+    boolean actualIsOnSaleResult = skuImpl2.isOnSale();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -360,121 +202,64 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#isOnSale()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Id is one.</li>
-   *   <li>Then calls {@link Sku#getId()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#isOnSale()}
-   */
-  @Test
-  public void testIsOnSale_givenSkuImplIdIsOne_thenCallsGetId() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenReturn(1L);
-    Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
-
-    // Act
-    boolean actualIsOnSaleResult = skuImpl.isOnSale();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku, atLeast(1)).getId();
-    assertFalse(actualIsOnSaleResult);
-  }
-
-  /**
-   * Test {@link SkuImpl#isOnSale()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Product is
-   * {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#isOnSale()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.isOnSale()"})
   public void testIsOnSale_givenSkuImplProductIsProductBundleImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(new ProductBundleImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertFalse(skuImpl.isOnSale());
+    assertFalse(skuImpl2.isOnSale());
   }
 
   /**
    * Test {@link SkuImpl#isOnSale()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) RetailPrice is
-   * {@link Money#Money()}.</li>
+   *   <li>Given {@link SkuImpl} (default constructor) RetailPrice is {@link Money#Money()}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#isOnSale()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.isOnSale()"})
   public void testIsOnSale_givenSkuImplRetailPriceIsMoney_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setRetailPrice(new Money());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setRetailPrice(new Money());
 
     // Act and Assert
-    assertFalse(skuImpl.isOnSale());
+    assertFalse(skuImpl2.isOnSale());
   }
 
   /**
    * Test {@link SkuImpl#isOnSale()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is
-   * {@link Money#Money()}.</li>
+   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is {@link Money#Money()}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#isOnSale()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.isOnSale()"})
   public void testIsOnSale_givenSkuImplSalePriceIsMoney_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(new Money());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setSalePrice(new Money());
 
     // Act and Assert
-    assertFalse(skuImpl.isOnSale());
-  }
-
-  /**
-   * Test {@link SkuImpl#isOnSale()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is
-   * {@link Money}.</li>
-   *   <li>Then return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#isOnSale()}
-   */
-  @Test
-  public void testIsOnSale_givenSkuImplSalePriceIsMoney_thenReturnFalse2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(mock(Money.class));
-
-    // Act and Assert
-    assertFalse(skuImpl.isOnSale());
+    assertFalse(skuImpl2.isOnSale());
   }
 
   /**
@@ -487,9 +272,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#isOnSale()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.isOnSale()"})
   public void testIsOnSale_givenSkuImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertFalse((new SkuImpl()).isOnSale());
   }
@@ -497,108 +282,81 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#isOnSale()}.
    * <ul>
-   *   <li>Then calls {@link Sku#getCurrency()}.</li>
+   *   <li>Then throw {@link IllegalStateException}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#isOnSale()}
    */
   @Test
-  public void testIsOnSale_thenCallsGetCurrency() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.isOnSale()"})
+  public void testIsOnSale_thenThrowIllegalStateException() {
     // Arrange
     Sku sku = mock(Sku.class);
-    when(sku.getCurrency()).thenThrow(new IllegalStateException("currency.default"));
-    when(sku.getId()).thenReturn(1L);
-    when(sku.getRetailPrice()).thenReturn(new Money());
+    when(sku.getId()).thenThrow(new IllegalStateException("ThreadLocalManager.notify.orphans"));
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(new Money());
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.isOnSale());
+    assertThrows(IllegalStateException.class, () -> skuImpl2.isOnSale());
     verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getCurrency();
-    verify(sku, atLeast(1)).getId();
-    verify(sku).getRetailPrice();
+    verify(sku).getId();
   }
 
   /**
-   * Test {@link SkuImpl#hasDefaultSku()}.
+   * Test {@link SkuImpl#isOnSale()}.
+   * <ul>
+   *   <li>Then throw {@link IllegalStateException}.</li>
+   * </ul>
    * <p>
-   * Method under test: {@link SkuImpl#hasDefaultSku()}
+   * Method under test: {@link SkuImpl#isOnSale()}
    */
   @Test
-  public void testHasDefaultSku() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.isOnSale()"})
+  public void testIsOnSale_thenThrowIllegalStateException2() {
     // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException("foo"));
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("ThreadLocalManager.notify.orphans"));
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setRetailPrice(new Money());
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.hasDefaultSku());
-    verify(product).getDefaultSku();
-  }
-
-  /**
-   * Test {@link SkuImpl#hasDefaultSku()}.
-   * <p>
-   * Method under test: {@link SkuImpl#hasDefaultSku()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testHasDefaultSku2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1687 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).hasDefaultSku();
+    assertThrows(IllegalStateException.class, () -> skuImpl2.isOnSale());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#hasDefaultSku()}.
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()}
-   * return {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#hasDefaultSku()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.hasDefaultSku()"})
   public void testHasDefaultSku_givenProductBundleImplGetDefaultSkuReturnSkuImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    boolean actualHasDefaultSkuResult = skuImpl.hasDefaultSku();
+    boolean actualHasDefaultSkuResult = skuImpl2.hasDefaultSku();
 
     // Assert
     verify(product).getDefaultSku();
@@ -615,21 +373,21 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#hasDefaultSku()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.hasDefaultSku()"})
   public void testHasDefaultSku_givenSkuGetIdReturnOne_thenCallsGetId() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    boolean actualHasDefaultSkuResult = skuImpl.hasDefaultSku();
+    boolean actualHasDefaultSkuResult = skuImpl2.hasDefaultSku();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -640,53 +398,22 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#hasDefaultSku()}.
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} throw
-   * {@link IllegalStateException#IllegalStateException(String)} with
-   * {@code foo}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#hasDefaultSku()}
-   */
-  @Test
-  public void testHasDefaultSku_givenSkuGetIdThrowIllegalStateExceptionWithFoo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenThrow(new IllegalStateException("foo"));
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.hasDefaultSku());
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-  }
-
-  /**
-   * Test {@link SkuImpl#hasDefaultSku()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Product is
-   * {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#hasDefaultSku()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.hasDefaultSku()"})
   public void testHasDefaultSku_givenSkuImplProductIsProductBundleImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(new ProductBundleImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertFalse(skuImpl.hasDefaultSku());
+    assertFalse(skuImpl2.hasDefaultSku());
   }
 
   /**
@@ -699,9 +426,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#hasDefaultSku()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.hasDefaultSku()"})
   public void testHasDefaultSku_givenSkuImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertFalse((new SkuImpl()).hasDefaultSku());
   }
@@ -715,19 +442,19 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#hasDefaultSku()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.hasDefaultSku()"})
   public void testHasDefaultSku_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    boolean actualHasDefaultSkuResult = skuImpl.hasDefaultSku();
+    boolean actualHasDefaultSkuResult = skuImpl2.hasDefaultSku();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -735,54 +462,52 @@ public class SkuImplDiffblueTest {
   }
 
   /**
-   * Test {@link SkuImpl#lookupDefaultSku()}.
+   * Test {@link SkuImpl#hasDefaultSku()}.
+   * <ul>
+   *   <li>Then throw {@link IllegalStateException}.</li>
+   * </ul>
    * <p>
-   * Method under test: {@link SkuImpl#lookupDefaultSku()}
+   * Method under test: {@link SkuImpl#hasDefaultSku()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testLookupDefaultSku() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2017 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.hasDefaultSku()"})
+  public void testHasDefaultSku_thenThrowIllegalStateException() {
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("foo"));
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getDefaultSku()).thenReturn(sku);
 
-    // Arrange and Act
-    (new SkuImpl()).lookupDefaultSku();
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act and Assert
+    assertThrows(IllegalStateException.class, () -> skuImpl2.hasDefaultSku());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#lookupDefaultSku()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Product is
-   * {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#lookupDefaultSku()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Sku SkuImpl.lookupDefaultSku()"})
   public void testLookupDefaultSku_givenSkuImplProductIsProductBundleImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(new ProductBundleImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertNull(skuImpl.lookupDefaultSku());
+    assertNull(skuImpl2.lookupDefaultSku());
   }
 
   /**
@@ -795,9 +520,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#lookupDefaultSku()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Sku SkuImpl.lookupDefaultSku()"})
   public void testLookupDefaultSku_givenSkuImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new SkuImpl()).lookupDefaultSku());
   }
@@ -811,23 +536,23 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#lookupDefaultSku()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Sku SkuImpl.lookupDefaultSku()"})
   public void testLookupDefaultSku_thenReturnSkuImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
-    SkuImpl skuImpl = new SkuImpl();
-    when(product.getDefaultSku()).thenReturn(skuImpl);
-
     SkuImpl skuImpl2 = new SkuImpl();
-    skuImpl2.setProduct(product);
+    when(product.getDefaultSku()).thenReturn(skuImpl2);
+
+    SkuImpl skuImpl3 = new SkuImpl();
+    skuImpl3.setProduct(product);
 
     // Act
-    Sku actualLookupDefaultSkuResult = skuImpl2.lookupDefaultSku();
+    Sku actualLookupDefaultSkuResult = skuImpl3.lookupDefaultSku();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
-    assertSame(skuImpl, actualLookupDefaultSkuResult);
+    assertSame(skuImpl2, actualLookupDefaultSkuResult);
   }
 
   /**
@@ -839,18 +564,18 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#lookupDefaultSku()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Sku SkuImpl.lookupDefaultSku()"})
   public void testLookupDefaultSku_thenThrowIllegalStateException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenThrow(new IllegalStateException("foo"));
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.lookupDefaultSku());
+    assertThrows(IllegalStateException.class, () -> skuImpl2.lookupDefaultSku());
     verify(product).getDefaultSku();
   }
 
@@ -860,225 +585,35 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getProductOptionValueAdjustments()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getProductOptionValueAdjustments()"})
   public void testGetProductOptionValueAdjustments() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    HashSet<SkuProductOptionValueXref> productOptionValueXrefs = new HashSet<>();
-    SkuImpl sku = new SkuImpl();
-    productOptionValueXrefs.add(new SkuProductOptionValueXrefImpl(sku, new ProductOptionValueImpl()));
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProductOptionValueXrefs(productOptionValueXrefs);
-
-    // Act and Assert
-    assertNull(skuImpl.getProductOptionValueAdjustments());
-  }
-
-  /**
-   * Test {@link SkuImpl#getProductOptionValueAdjustments()}.
-   * <p>
-   * Method under test: {@link SkuImpl#getProductOptionValueAdjustments()}
-   */
-  @Test
-  public void testGetProductOptionValueAdjustments2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuProductOptionValueXrefImpl skuProductOptionValueXrefImpl = new SkuProductOptionValueXrefImpl(new SkuImpl(),
-        mock(ProductOptionValueImpl.class));
-    skuProductOptionValueXrefImpl.setProductOptionValue(new ProductOptionValueImpl());
-
-    HashSet<SkuProductOptionValueXref> productOptionValueXrefs = new HashSet<>();
-    productOptionValueXrefs.add(skuProductOptionValueXrefImpl);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProductOptionValueXrefs(productOptionValueXrefs);
-
-    // Act and Assert
-    assertNull(skuImpl.getProductOptionValueAdjustments());
-  }
-
-  /**
-   * Test {@link SkuImpl#getProductOptionValueAdjustments()}.
-   * <p>
-   * Method under test: {@link SkuImpl#getProductOptionValueAdjustments()}
-   */
-  @Test
-  public void testGetProductOptionValueAdjustments3() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProductOptionValueImpl productOptionValue = new ProductOptionValueImpl();
-    productOptionValue.setPriceAdjustment(new Money());
-
-    SkuProductOptionValueXrefImpl skuProductOptionValueXrefImpl = new SkuProductOptionValueXrefImpl(new SkuImpl(),
-        mock(ProductOptionValueImpl.class));
-    skuProductOptionValueXrefImpl.setProductOptionValue(productOptionValue);
-
-    HashSet<SkuProductOptionValueXref> productOptionValueXrefs = new HashSet<>();
-    productOptionValueXrefs.add(skuProductOptionValueXrefImpl);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProductOptionValueXrefs(productOptionValueXrefs);
-    Money expectedProductOptionValueAdjustments = new Money();
-
-    // Act and Assert
-    assertEquals(expectedProductOptionValueAdjustments, skuImpl.getProductOptionValueAdjustments());
-  }
-
-  /**
-   * Test {@link SkuImpl#getProductOptionValueAdjustments()}.
-   * <p>
-   * Method under test: {@link SkuImpl#getProductOptionValueAdjustments()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetProductOptionValueAdjustments4() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1297 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).getProductOptionValueAdjustments();
-  }
-
-  /**
-   * Test {@link SkuImpl#getProductOptionValueAdjustments()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is
-   * {@link Money}.</li>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getProductOptionValueAdjustments()}
-   */
-  @Test
-  public void testGetProductOptionValueAdjustments_givenSkuImplSalePriceIsMoney_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(mock(Money.class));
-
-    // Act and Assert
-    assertNull(skuImpl.getProductOptionValueAdjustments());
-  }
-
-  /**
-   * Test {@link SkuImpl#getProductOptionValueAdjustments()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor).</li>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getProductOptionValueAdjustments()}
-   */
-  @Test
-  public void testGetProductOptionValueAdjustments_givenSkuImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new SkuImpl()).getProductOptionValueAdjustments());
   }
 
   /**
-   * Test {@link SkuImpl#getProductOptionValueAdjustments()}.
-   * <ul>
-   *   <li>Then calls {@link ProductOptionValueImpl#getPriceAdjustment()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getProductOptionValueAdjustments()}
-   */
-  @Test
-  public void testGetProductOptionValueAdjustments_thenCallsGetPriceAdjustment() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProductOptionValueImpl val = mock(ProductOptionValueImpl.class);
-    Money money = new Money();
-    when(val.getPriceAdjustment()).thenReturn(money);
-    SkuProductOptionValueXrefImpl skuProductOptionValueXrefImpl = new SkuProductOptionValueXrefImpl(new SkuImpl(), val);
-
-    HashSet<SkuProductOptionValueXref> productOptionValueXrefs = new HashSet<>();
-    productOptionValueXrefs.add(skuProductOptionValueXrefImpl);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProductOptionValueXrefs(productOptionValueXrefs);
-
-    // Act
-    Money actualProductOptionValueAdjustments = skuImpl.getProductOptionValueAdjustments();
-
-    // Assert
-    verify(val, atLeast(1)).getPriceAdjustment();
-    assertSame(money, actualProductOptionValueAdjustments);
-  }
-
-  /**
-   * Test {@link SkuImpl#getSalePrice()}.
-   * <p>
-   * Method under test: {@link SkuImpl#getSalePrice()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetSalePrice() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1447 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).getSalePrice();
-  }
-
-  /**
    * Test {@link SkuImpl#getSalePrice()}.
    * <ul>
-   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return
-   * {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getSalePrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getSalePrice()"})
   public void testGetSalePrice_givenProductGetDefaultSkuReturnSkuImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    Money actualSalePrice = skuImpl.getSalePrice();
+    Money actualSalePrice = skuImpl2.getSalePrice();
 
     // Assert
     verify(product).getDefaultSku();
@@ -1088,27 +623,26 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getSalePrice()}.
    * <ul>
-   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return
-   * {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getSalePrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getSalePrice()"})
   public void testGetSalePrice_givenProductGetDefaultSkuReturnSkuImpl_thenReturnNull2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Money actualSalePrice = skuImpl.getSalePrice();
+    Money actualSalePrice = skuImpl2.getSalePrice();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -1118,17 +652,48 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getSalePrice()}.
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getSalePrice()} return
-   * {@link Money#Money()}.</li>
+   *   <li>Given {@link Sku} {@link Sku#getId()} return one.</li>
+   *   <li>Then calls {@link Sku#getId()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getSalePrice()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getSalePrice()"})
+  public void testGetSalePrice_givenSkuGetIdReturnOne_thenCallsGetId() {
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenReturn(1L);
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act
+    Money actualSalePrice = skuImpl2.getSalePrice();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
+    assertNull(actualSalePrice);
+  }
+
+  /**
+   * Test {@link SkuImpl#getSalePrice()}.
+   * <ul>
+   *   <li>Given {@link Sku} {@link Sku#getSalePrice()} return {@link Money#Money()}.</li>
    *   <li>Then calls {@link Sku#getSalePrice()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getSalePrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getSalePrice()"})
   public void testGetSalePrice_givenSkuGetSalePriceReturnMoney_thenCallsGetSalePrice() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
@@ -1137,12 +702,12 @@ public class SkuImplDiffblueTest {
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Money actualSalePrice = skuImpl.getSalePrice();
+    Money actualSalePrice = skuImpl2.getSalePrice();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -1154,100 +719,44 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getSalePrice()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Id is one.</li>
-   *   <li>Then calls {@link Sku#getId()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getSalePrice()}
-   */
-  @Test
-  public void testGetSalePrice_givenSkuImplIdIsOne_thenCallsGetId() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenReturn(1L);
-    Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
-
-    // Act
-    Money actualSalePrice = skuImpl.getSalePrice();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-    assertNull(actualSalePrice);
-  }
-
-  /**
-   * Test {@link SkuImpl#getSalePrice()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Product is
-   * {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getSalePrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getSalePrice()"})
   public void testGetSalePrice_givenSkuImplProductIsProductBundleImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(new ProductBundleImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertNull(skuImpl.getSalePrice());
+    assertNull(skuImpl2.getSalePrice());
   }
 
   /**
    * Test {@link SkuImpl#getSalePrice()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is
-   * {@link Money#Money()}.</li>
+   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is {@link Money#Money()}.</li>
    *   <li>Then return {@link Money#Money()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getSalePrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getSalePrice()"})
   public void testGetSalePrice_givenSkuImplSalePriceIsMoney_thenReturnMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
     Money salePrice = new Money();
-    skuImpl.setSalePrice(salePrice);
+    skuImpl2.setSalePrice(salePrice);
 
     // Act and Assert
-    assertEquals(salePrice, skuImpl.getSalePrice());
-  }
-
-  /**
-   * Test {@link SkuImpl#getSalePrice()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is
-   * {@link Money}.</li>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getSalePrice()}
-   */
-  @Test
-  public void testGetSalePrice_givenSkuImplSalePriceIsMoney_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(mock(Money.class));
-
-    // Act and Assert
-    assertNull(skuImpl.getSalePrice());
+    assertEquals(salePrice, skuImpl2.getSalePrice());
   }
 
   /**
@@ -1260,9 +769,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getSalePrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getSalePrice()"})
   public void testGetSalePrice_givenSkuImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new SkuImpl()).getSalePrice());
   }
@@ -1276,21 +785,21 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getSalePrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getSalePrice()"})
   public void testGetSalePrice_thenThrowIllegalStateException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenThrow(new IllegalStateException("ThreadLocalManager.notify.orphans"));
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getSalePrice());
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getSalePrice());
     verify(product, atLeast(1)).getDefaultSku();
     verify(sku).getId();
   }
@@ -1304,78 +813,48 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getSalePrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getSalePrice()"})
   public void testGetSalePrice_thenThrowIllegalStateException2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenThrow(new IllegalStateException("ThreadLocalManager.notify.orphans"));
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(new Money());
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setSalePrice(new Money());
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getSalePrice());
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getSalePrice());
     verify(product, atLeast(1)).getDefaultSku();
     verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#hasSalePrice()}.
-   * <p>
-   * Method under test: {@link SkuImpl#hasSalePrice()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testHasSalePrice() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1747 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).hasSalePrice();
-  }
-
-  /**
-   * Test {@link SkuImpl#hasSalePrice()}.
    * <ul>
-   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return
-   * {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#hasSalePrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.hasSalePrice()"})
   public void testHasSalePrice_givenProductGetDefaultSkuReturnSkuImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    boolean actualHasSalePriceResult = skuImpl.hasSalePrice();
+    boolean actualHasSalePriceResult = skuImpl2.hasSalePrice();
 
     // Assert
     verify(product).getDefaultSku();
@@ -1385,27 +864,26 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#hasSalePrice()}.
    * <ul>
-   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return
-   * {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#hasSalePrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.hasSalePrice()"})
   public void testHasSalePrice_givenProductGetDefaultSkuReturnSkuImpl_thenReturnFalse2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    boolean actualHasSalePriceResult = skuImpl.hasSalePrice();
+    boolean actualHasSalePriceResult = skuImpl2.hasSalePrice();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -1415,17 +893,48 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#hasSalePrice()}.
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getSalePrice()} return
-   * {@link Money#Money()}.</li>
+   *   <li>Given {@link Sku} {@link Sku#getId()} return one.</li>
+   *   <li>Then calls {@link Sku#getId()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#hasSalePrice()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.hasSalePrice()"})
+  public void testHasSalePrice_givenSkuGetIdReturnOne_thenCallsGetId() {
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenReturn(1L);
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act
+    boolean actualHasSalePriceResult = skuImpl2.hasSalePrice();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
+    assertFalse(actualHasSalePriceResult);
+  }
+
+  /**
+   * Test {@link SkuImpl#hasSalePrice()}.
+   * <ul>
+   *   <li>Given {@link Sku} {@link Sku#getSalePrice()} return {@link Money#Money()}.</li>
    *   <li>Then calls {@link Sku#getSalePrice()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#hasSalePrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.hasSalePrice()"})
   public void testHasSalePrice_givenSkuGetSalePriceReturnMoney_thenCallsGetSalePrice() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
@@ -1433,12 +942,12 @@ public class SkuImplDiffblueTest {
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
 
     // Act
-    boolean actualHasSalePriceResult = skuImpl.hasSalePrice();
+    boolean actualHasSalePriceResult = skuImpl2.hasSalePrice();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -1450,99 +959,43 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#hasSalePrice()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Id is one.</li>
-   *   <li>Then calls {@link Sku#getId()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#hasSalePrice()}
-   */
-  @Test
-  public void testHasSalePrice_givenSkuImplIdIsOne_thenCallsGetId() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenReturn(1L);
-    Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
-
-    // Act
-    boolean actualHasSalePriceResult = skuImpl.hasSalePrice();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-    assertFalse(actualHasSalePriceResult);
-  }
-
-  /**
-   * Test {@link SkuImpl#hasSalePrice()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Product is
-   * {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#hasSalePrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.hasSalePrice()"})
   public void testHasSalePrice_givenSkuImplProductIsProductBundleImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(new ProductBundleImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertFalse(skuImpl.hasSalePrice());
+    assertFalse(skuImpl2.hasSalePrice());
   }
 
   /**
    * Test {@link SkuImpl#hasSalePrice()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is
-   * {@link Money}.</li>
-   *   <li>Then return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#hasSalePrice()}
-   */
-  @Test
-  public void testHasSalePrice_givenSkuImplSalePriceIsMoney_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(mock(Money.class));
-
-    // Act and Assert
-    assertFalse(skuImpl.hasSalePrice());
-  }
-
-  /**
-   * Test {@link SkuImpl#hasSalePrice()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is
-   * {@link Money#Money()}.</li>
+   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is {@link Money#Money()}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#hasSalePrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.hasSalePrice()"})
   public void testHasSalePrice_givenSkuImplSalePriceIsMoney_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(new Money());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setSalePrice(new Money());
 
     // Act and Assert
-    assertTrue(skuImpl.hasSalePrice());
+    assertTrue(skuImpl2.hasSalePrice());
   }
 
   /**
@@ -1555,9 +1008,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#hasSalePrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.hasSalePrice()"})
   public void testHasSalePrice_givenSkuImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertFalse((new SkuImpl()).hasSalePrice());
   }
@@ -1571,21 +1024,21 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#hasSalePrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.hasSalePrice()"})
   public void testHasSalePrice_thenThrowIllegalStateException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenThrow(new IllegalStateException("ThreadLocalManager.notify.orphans"));
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.hasSalePrice());
+    assertThrows(IllegalStateException.class, () -> skuImpl2.hasSalePrice());
     verify(product, atLeast(1)).getDefaultSku();
     verify(sku).getId();
   }
@@ -1599,555 +1052,116 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#hasSalePrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.hasSalePrice()"})
   public void testHasSalePrice_thenThrowIllegalStateException2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenThrow(new IllegalStateException("ThreadLocalManager.notify.orphans"));
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(new Money());
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setSalePrice(new Money());
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.hasSalePrice());
+    assertThrows(IllegalStateException.class, () -> skuImpl2.hasSalePrice());
     verify(product, atLeast(1)).getDefaultSku();
     verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#setSalePrice(Money)}.
-   * <p>
-   * Method under test: {@link SkuImpl#setSalePrice(Money)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetSalePrice() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2317 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    SkuImpl skuImpl2 = new SkuImpl();
-
-    // Act
-    skuImpl2.setSalePrice(new Money());
-  }
-
-  /**
-   * Test {@link SkuImpl#setSalePrice(Money)}.
    * <ul>
    *   <li>When {@link Money#Money()}.</li>
-   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#salePrice} is
-   * {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#salePrice} is {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#setSalePrice(Money)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.setSalePrice(Money)"})
   public void testSetSalePrice_whenMoney_thenSkuImplSalePriceIsBigDecimalWith000() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
     Money salePrice = new Money();
 
     // Act
-    skuImpl.setSalePrice(salePrice);
+    skuImpl2.setSalePrice(salePrice);
 
     // Assert
-    assertEquals(new BigDecimal("0.00"), skuImpl.salePrice);
-    BigDecimal bigDecimal = skuImpl.salePrice;
+    assertEquals(new BigDecimal("0.00"), skuImpl2.salePrice);
+    BigDecimal bigDecimal = skuImpl2.salePrice;
     Money absResult = salePrice.abs();
     assertSame(bigDecimal, absResult.getAmount());
     Money absResult2 = absResult.abs();
     assertSame(bigDecimal, absResult2.getAmount());
-    Money absResult3 = absResult2.abs();
-    assertSame(bigDecimal, absResult3.getAmount());
-    Money absResult4 = absResult3.abs();
-    assertSame(bigDecimal, absResult4.getAmount());
-    Money absResult5 = absResult4.abs();
-    assertSame(bigDecimal, absResult5.getAmount());
-    Money absResult6 = absResult5.abs();
-    assertSame(bigDecimal, absResult6.getAmount());
-    assertSame(bigDecimal, absResult6.abs().getAmount());
+    assertSame(bigDecimal, absResult2.abs().getAmount());
     Money zeroResult = salePrice.zero();
-    Money absResult7 = zeroResult.abs();
-    Money absResult8 = absResult7.abs();
-    Money absResult9 = absResult8.abs();
-    Money absResult10 = absResult9.abs();
-    Money absResult11 = absResult10.abs();
-    assertSame(bigDecimal, absResult11.abs().getAmount());
-    assertSame(bigDecimal, absResult11.getAmount());
+    Money absResult3 = zeroResult.abs();
+    assertSame(bigDecimal, absResult3.abs().getAmount());
+    assertSame(bigDecimal, absResult3.getAmount());
     Money zeroResult2 = absResult.zero();
-    Money absResult12 = zeroResult2.abs();
-    Money absResult13 = absResult12.abs();
-    Money absResult14 = absResult13.abs();
-    Money absResult15 = absResult14.abs();
-    assertSame(bigDecimal, absResult15.abs().getAmount());
+    assertSame(bigDecimal, zeroResult2.abs().getAmount());
     Money zeroResult3 = zeroResult.zero();
-    Money absResult16 = zeroResult3.abs();
-    Money absResult17 = absResult16.abs();
-    Money absResult18 = absResult17.abs();
-    Money absResult19 = absResult18.abs();
-    assertSame(bigDecimal, absResult19.abs().getAmount());
-    assertSame(bigDecimal, absResult10.getAmount());
-    assertSame(bigDecimal, absResult15.getAmount());
-    Money zeroResult4 = absResult2.zero();
-    Money absResult20 = zeroResult4.abs();
-    Money absResult21 = absResult20.abs();
-    Money absResult22 = absResult21.abs();
-    assertSame(bigDecimal, absResult22.abs().getAmount());
-    Money zeroResult5 = absResult7.zero();
-    Money absResult23 = zeroResult5.abs();
-    Money absResult24 = absResult23.abs();
-    Money absResult25 = absResult24.abs();
-    assertSame(bigDecimal, absResult25.abs().getAmount());
-    assertSame(bigDecimal, absResult19.getAmount());
-    Money zeroResult6 = zeroResult2.zero();
-    Money absResult26 = zeroResult6.abs();
-    Money absResult27 = absResult26.abs();
-    Money absResult28 = absResult27.abs();
-    assertSame(bigDecimal, absResult28.abs().getAmount());
-    Money zeroResult7 = zeroResult3.zero();
-    Money absResult29 = zeroResult7.abs();
-    Money absResult30 = absResult29.abs();
-    Money absResult31 = absResult30.abs();
-    assertSame(bigDecimal, absResult31.abs().getAmount());
-    assertSame(bigDecimal, absResult9.getAmount());
-    assertSame(bigDecimal, absResult14.getAmount());
-    assertSame(bigDecimal, absResult22.getAmount());
-    Money zeroResult8 = absResult3.zero();
-    Money absResult32 = zeroResult8.abs();
-    Money absResult33 = absResult32.abs();
-    assertSame(bigDecimal, absResult33.abs().getAmount());
-    Money zeroResult9 = absResult8.zero();
-    Money absResult34 = zeroResult9.abs();
-    Money absResult35 = absResult34.abs();
-    assertSame(bigDecimal, absResult35.abs().getAmount());
-    assertSame(bigDecimal, absResult25.getAmount());
-    Money zeroResult10 = absResult12.zero();
-    Money absResult36 = zeroResult10.abs();
-    Money absResult37 = absResult36.abs();
-    assertSame(bigDecimal, absResult37.abs().getAmount());
-    Money zeroResult11 = absResult16.zero();
-    Money absResult38 = zeroResult11.abs();
-    Money absResult39 = absResult38.abs();
-    assertSame(bigDecimal, absResult39.abs().getAmount());
-    assertSame(bigDecimal, absResult18.getAmount());
-    assertSame(bigDecimal, absResult28.getAmount());
-    Money zeroResult12 = zeroResult4.zero();
-    Money absResult40 = zeroResult12.abs();
-    Money absResult41 = absResult40.abs();
-    assertSame(bigDecimal, absResult41.abs().getAmount());
-    Money zeroResult13 = zeroResult5.zero();
-    Money absResult42 = zeroResult13.abs();
-    Money absResult43 = absResult42.abs();
-    assertSame(bigDecimal, absResult43.abs().getAmount());
-    assertSame(bigDecimal, absResult31.getAmount());
-    Money zeroResult14 = zeroResult6.zero();
-    Money absResult44 = zeroResult14.abs();
-    Money absResult45 = absResult44.abs();
-    assertSame(bigDecimal, absResult45.abs().getAmount());
-    Money zeroResult15 = zeroResult7.zero();
-    Money absResult46 = zeroResult15.abs();
-    Money absResult47 = absResult46.abs();
-    assertSame(bigDecimal, absResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult8.getAmount());
-    assertSame(bigDecimal, absResult13.getAmount());
-    assertSame(bigDecimal, absResult21.getAmount());
-    assertSame(bigDecimal, absResult33.getAmount());
-    Money zeroResult16 = absResult4.zero();
-    Money absResult48 = zeroResult16.abs();
-    assertSame(bigDecimal, absResult48.abs().getAmount());
-    Money zeroResult17 = absResult9.zero();
-    Money absResult49 = zeroResult17.abs();
-    assertSame(bigDecimal, absResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult35.getAmount());
-    Money zeroResult18 = absResult13.zero();
-    Money absResult50 = zeroResult18.abs();
-    assertSame(bigDecimal, absResult50.abs().getAmount());
-    Money zeroResult19 = absResult17.zero();
-    Money absResult51 = zeroResult19.abs();
-    assertSame(bigDecimal, absResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult24.getAmount());
-    assertSame(bigDecimal, absResult37.getAmount());
-    Money zeroResult20 = absResult20.zero();
-    Money absResult52 = zeroResult20.abs();
-    assertSame(bigDecimal, absResult52.abs().getAmount());
-    Money zeroResult21 = absResult23.zero();
-    Money absResult53 = zeroResult21.abs();
-    assertSame(bigDecimal, absResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult39.getAmount());
-    Money zeroResult22 = absResult26.zero();
-    Money absResult54 = zeroResult22.abs();
-    assertSame(bigDecimal, absResult54.abs().getAmount());
-    Money zeroResult23 = absResult29.zero();
-    Money absResult55 = zeroResult23.abs();
-    assertSame(bigDecimal, absResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult17.getAmount());
-    assertSame(bigDecimal, absResult27.getAmount());
-    assertSame(bigDecimal, absResult41.getAmount());
-    Money zeroResult24 = zeroResult8.zero();
-    Money absResult56 = zeroResult24.abs();
-    assertSame(bigDecimal, absResult56.abs().getAmount());
-    Money zeroResult25 = zeroResult9.zero();
-    Money absResult57 = zeroResult25.abs();
-    assertSame(bigDecimal, absResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult43.getAmount());
-    Money zeroResult26 = zeroResult10.zero();
-    Money absResult58 = zeroResult26.abs();
-    assertSame(bigDecimal, absResult58.abs().getAmount());
-    Money zeroResult27 = zeroResult11.zero();
-    Money absResult59 = zeroResult27.abs();
-    assertSame(bigDecimal, absResult59.abs().getAmount());
-    assertSame(bigDecimal, absResult30.getAmount());
-    assertSame(bigDecimal, absResult45.getAmount());
-    Money zeroResult28 = zeroResult12.zero();
-    Money absResult60 = zeroResult28.abs();
-    assertSame(bigDecimal, absResult60.abs().getAmount());
-    Money zeroResult29 = zeroResult13.zero();
-    Money absResult61 = zeroResult29.abs();
-    assertSame(bigDecimal, absResult61.abs().getAmount());
-    assertSame(bigDecimal, absResult47.getAmount());
-    Money zeroResult30 = zeroResult14.zero();
-    Money absResult62 = zeroResult30.abs();
-    assertSame(bigDecimal, absResult62.abs().getAmount());
-    assertSame(bigDecimal, absResult7.getAmount());
-    assertSame(bigDecimal, absResult12.getAmount());
-    assertSame(bigDecimal, absResult20.getAmount());
-    assertSame(bigDecimal, absResult32.getAmount());
-    assertSame(bigDecimal, absResult48.getAmount());
-    Money zeroResult31 = absResult5.zero();
-    assertSame(bigDecimal, zeroResult31.abs().getAmount());
-    Money zeroResult32 = absResult10.zero();
-    assertSame(bigDecimal, zeroResult32.abs().getAmount());
-    assertSame(bigDecimal, absResult49.getAmount());
-    Money zeroResult33 = absResult14.zero();
-    assertSame(bigDecimal, zeroResult33.abs().getAmount());
-    Money zeroResult34 = absResult18.zero();
-    assertSame(bigDecimal, zeroResult34.abs().getAmount());
-    assertSame(bigDecimal, absResult34.getAmount());
-    assertSame(bigDecimal, absResult50.getAmount());
-    Money zeroResult35 = absResult21.zero();
-    assertSame(bigDecimal, zeroResult35.abs().getAmount());
-    Money zeroResult36 = absResult24.zero();
-    assertSame(bigDecimal, zeroResult36.abs().getAmount());
-    assertSame(bigDecimal, absResult51.getAmount());
-    Money zeroResult37 = absResult27.zero();
-    assertSame(bigDecimal, zeroResult37.abs().getAmount());
-    Money zeroResult38 = absResult30.zero();
-    assertSame(bigDecimal, zeroResult38.abs().getAmount());
-    assertSame(bigDecimal, absResult23.getAmount());
-    assertSame(bigDecimal, absResult36.getAmount());
-    assertSame(bigDecimal, absResult52.getAmount());
-    Money zeroResult39 = absResult32.zero();
-    assertSame(bigDecimal, zeroResult39.abs().getAmount());
-    Money zeroResult40 = absResult34.zero();
-    assertSame(bigDecimal, zeroResult40.abs().getAmount());
-    assertSame(bigDecimal, absResult53.getAmount());
-    Money zeroResult41 = absResult36.zero();
-    assertSame(bigDecimal, zeroResult41.abs().getAmount());
-    Money zeroResult42 = absResult38.zero();
-    assertSame(bigDecimal, zeroResult42.abs().getAmount());
-    assertSame(bigDecimal, absResult38.getAmount());
-    assertSame(bigDecimal, absResult54.getAmount());
-    Money zeroResult43 = absResult40.zero();
-    assertSame(bigDecimal, zeroResult43.abs().getAmount());
-    Money zeroResult44 = absResult42.zero();
-    assertSame(bigDecimal, zeroResult44.abs().getAmount());
-    assertSame(bigDecimal, absResult55.getAmount());
-    Money zeroResult45 = absResult44.zero();
-    assertSame(bigDecimal, zeroResult45.abs().getAmount());
-    assertSame(bigDecimal, absResult16.getAmount());
-    assertSame(bigDecimal, absResult26.getAmount());
-    assertSame(bigDecimal, absResult40.getAmount());
-    assertSame(bigDecimal, absResult56.getAmount());
-    Money zeroResult46 = zeroResult16.zero();
-    assertSame(bigDecimal, zeroResult46.abs().getAmount());
-    Money zeroResult47 = zeroResult17.zero();
-    assertSame(bigDecimal, zeroResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult57.getAmount());
-    Money zeroResult48 = zeroResult18.zero();
-    assertSame(bigDecimal, zeroResult48.abs().getAmount());
-    Money zeroResult49 = zeroResult19.zero();
-    assertSame(bigDecimal, zeroResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult42.getAmount());
-    assertSame(bigDecimal, absResult58.getAmount());
-    Money zeroResult50 = zeroResult20.zero();
-    assertSame(bigDecimal, zeroResult50.abs().getAmount());
-    Money zeroResult51 = zeroResult21.zero();
-    assertSame(bigDecimal, zeroResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult59.getAmount());
-    Money zeroResult52 = zeroResult22.zero();
-    assertSame(bigDecimal, zeroResult52.abs().getAmount());
-    Money zeroResult53 = zeroResult23.zero();
-    assertSame(bigDecimal, zeroResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult29.getAmount());
-    assertSame(bigDecimal, absResult44.getAmount());
-    assertSame(bigDecimal, absResult60.getAmount());
-    Money zeroResult54 = zeroResult24.zero();
-    assertSame(bigDecimal, zeroResult54.abs().getAmount());
-    Money zeroResult55 = zeroResult25.zero();
-    assertSame(bigDecimal, zeroResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult61.getAmount());
-    Money zeroResult56 = zeroResult26.zero();
-    assertSame(bigDecimal, zeroResult56.abs().getAmount());
-    Money zeroResult57 = zeroResult27.zero();
-    assertSame(bigDecimal, zeroResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult46.getAmount());
-    assertSame(bigDecimal, absResult62.getAmount());
-    Money zeroResult58 = zeroResult28.zero();
-    assertSame(bigDecimal, zeroResult58.abs().getAmount());
-    Money zeroResult59 = zeroResult29.zero();
-    assertSame(bigDecimal, zeroResult59.abs().getAmount());
-    Money zeroResult60 = zeroResult15.zero();
-    assertSame(bigDecimal, zeroResult60.abs().getAmount());
-    Money zeroResult61 = zeroResult30.zero();
-    assertSame(bigDecimal, zeroResult61.abs().getAmount());
+    assertSame(bigDecimal, zeroResult3.abs().getAmount());
     assertSame(bigDecimal, zeroResult.getAmount());
     assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, zeroResult4.getAmount());
-    assertSame(bigDecimal, zeroResult8.getAmount());
-    assertSame(bigDecimal, zeroResult16.getAmount());
-    assertSame(bigDecimal, zeroResult31.getAmount());
-    assertSame(bigDecimal, absResult6.zero().getAmount());
-    assertSame(bigDecimal, absResult11.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.getAmount());
-    assertSame(bigDecimal, absResult15.zero().getAmount());
-    assertSame(bigDecimal, absResult19.zero().getAmount());
-    assertSame(bigDecimal, zeroResult17.getAmount());
-    assertSame(bigDecimal, zeroResult33.getAmount());
-    assertSame(bigDecimal, absResult22.zero().getAmount());
-    assertSame(bigDecimal, absResult25.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.getAmount());
-    assertSame(bigDecimal, absResult28.zero().getAmount());
-    assertSame(bigDecimal, absResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult9.getAmount());
-    assertSame(bigDecimal, zeroResult18.getAmount());
-    assertSame(bigDecimal, zeroResult35.getAmount());
-    assertSame(bigDecimal, absResult33.zero().getAmount());
-    assertSame(bigDecimal, absResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.getAmount());
-    assertSame(bigDecimal, absResult37.zero().getAmount());
-    assertSame(bigDecimal, absResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult19.getAmount());
-    assertSame(bigDecimal, zeroResult37.getAmount());
-    assertSame(bigDecimal, absResult41.zero().getAmount());
-    assertSame(bigDecimal, absResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.getAmount());
-    assertSame(bigDecimal, absResult45.zero().getAmount());
-    assertSame(bigDecimal, absResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult5.getAmount());
-    assertSame(bigDecimal, zeroResult10.getAmount());
-    assertSame(bigDecimal, zeroResult20.getAmount());
-    assertSame(bigDecimal, zeroResult39.getAmount());
-    assertSame(bigDecimal, absResult48.zero().getAmount());
-    assertSame(bigDecimal, absResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.getAmount());
-    assertSame(bigDecimal, absResult50.zero().getAmount());
-    assertSame(bigDecimal, absResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult21.getAmount());
-    assertSame(bigDecimal, zeroResult41.getAmount());
-    assertSame(bigDecimal, absResult52.zero().getAmount());
-    assertSame(bigDecimal, absResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.getAmount());
-    assertSame(bigDecimal, absResult54.zero().getAmount());
-    assertSame(bigDecimal, absResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult11.getAmount());
-    assertSame(bigDecimal, zeroResult22.getAmount());
-    assertSame(bigDecimal, zeroResult43.getAmount());
-    assertSame(bigDecimal, absResult56.zero().getAmount());
-    assertSame(bigDecimal, absResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.getAmount());
-    assertSame(bigDecimal, absResult58.zero().getAmount());
-    assertSame(bigDecimal, absResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult23.getAmount());
-    assertSame(bigDecimal, zeroResult45.getAmount());
-    assertSame(bigDecimal, absResult60.zero().getAmount());
-    assertSame(bigDecimal, absResult61.zero().getAmount());
-    assertSame(bigDecimal, absResult46.zero().getAmount());
-    assertSame(bigDecimal, absResult62.zero().getAmount());
+    assertSame(bigDecimal, absResult2.zero().getAmount());
+    assertSame(bigDecimal, absResult3.zero().getAmount());
     assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult6.getAmount());
-    assertSame(bigDecimal, zeroResult12.getAmount());
-    assertSame(bigDecimal, zeroResult24.getAmount());
-    assertSame(bigDecimal, zeroResult46.getAmount());
-    assertSame(bigDecimal, zeroResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.getAmount());
-    assertSame(bigDecimal, zeroResult33.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.zero().getAmount());
-    assertSame(bigDecimal, zeroResult25.getAmount());
-    assertSame(bigDecimal, zeroResult48.getAmount());
-    assertSame(bigDecimal, zeroResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.getAmount());
-    assertSame(bigDecimal, zeroResult37.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.zero().getAmount());
-    assertSame(bigDecimal, zeroResult13.getAmount());
-    assertSame(bigDecimal, zeroResult26.getAmount());
-    assertSame(bigDecimal, zeroResult50.getAmount());
-    assertSame(bigDecimal, zeroResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.getAmount());
-    assertSame(bigDecimal, zeroResult41.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.zero().getAmount());
-    assertSame(bigDecimal, zeroResult27.getAmount());
-    assertSame(bigDecimal, zeroResult52.getAmount());
-    assertSame(bigDecimal, zeroResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.getAmount());
-    assertSame(bigDecimal, zeroResult45.zero().getAmount());
-    assertSame(bigDecimal, zeroResult7.getAmount());
-    assertSame(bigDecimal, zeroResult14.getAmount());
-    assertSame(bigDecimal, zeroResult28.getAmount());
-    assertSame(bigDecimal, zeroResult54.getAmount());
-    assertSame(bigDecimal, zeroResult46.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.getAmount());
-    assertSame(bigDecimal, zeroResult48.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult29.getAmount());
-    assertSame(bigDecimal, zeroResult56.getAmount());
-    assertSame(bigDecimal, zeroResult50.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.getAmount());
-    assertSame(bigDecimal, zeroResult52.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult15.getAmount());
-    assertSame(bigDecimal, zeroResult30.getAmount());
-    assertSame(bigDecimal, zeroResult58.getAmount());
-    assertSame(bigDecimal, zeroResult54.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.getAmount());
-    assertSame(bigDecimal, zeroResult56.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.getAmount());
-    assertSame(bigDecimal, zeroResult61.getAmount());
-    assertSame(bigDecimal, zeroResult58.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.zero().getAmount());
-    assertSame(bigDecimal, zeroResult61.zero().getAmount());
-  }
-
-  /**
-   * Test {@link SkuImpl#setSalePrice(Money)}.
-   * <ul>
-   *   <li>When {@link Money}.</li>
-   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#salePrice} is
-   * {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#setSalePrice(Money)}
-   */
-  @Test
-  public void testSetSalePrice_whenMoney_thenSkuImplSalePriceIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-
-    // Act
-    skuImpl.setSalePrice(mock(Money.class));
-
-    // Assert
-    assertNull(skuImpl.salePrice);
+    assertSame(bigDecimal, zeroResult2.zero().getAmount());
+    assertSame(bigDecimal, zeroResult3.zero().getAmount());
   }
 
   /**
    * Test {@link SkuImpl#setSalePrice(Money)}.
    * <ul>
    *   <li>When {@code null}.</li>
-   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#salePrice} is
-   * {@code null}.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#salePrice} is {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#setSalePrice(Money)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.setSalePrice(Money)"})
   public void testSetSalePrice_whenNull_thenSkuImplSalePriceIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
 
     // Act
-    skuImpl.setSalePrice(null);
+    skuImpl2.setSalePrice(null);
 
-    // Assert
-    assertNull(skuImpl.salePrice);
-  }
-
-  /**
-   * Test {@link SkuImpl#getRetailPrice()}.
-   * <p>
-   * Method under test: {@link SkuImpl#getRetailPrice()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetRetailPrice() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1387 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).getRetailPrice();
+    // Assert that nothing has changed
+    assertNull(skuImpl2.salePrice);
   }
 
   /**
    * Test {@link SkuImpl#getRetailPrice()}.
    * <ul>
-   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return
-   * {@link SkuImpl} (default constructor).</li>
-   *   <li>Then calls {@link Product#getDefaultSku()}.</li>
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getRetailPrice()}
    */
   @Test
-  public void testGetRetailPrice_givenProductGetDefaultSkuReturnSkuImpl_thenCallsGetDefaultSku() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getRetailPrice()"})
+  public void testGetRetailPrice_givenProductGetDefaultSkuReturnSkuImpl_thenReturnNull() {
     // Arrange
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    Money actualRetailPrice = skuImpl.getRetailPrice();
+    Money actualRetailPrice = skuImpl2.getRetailPrice();
 
     // Assert
     verify(product).getDefaultSku();
@@ -2157,27 +1171,26 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getRetailPrice()}.
    * <ul>
-   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return
-   * {@link SkuImpl} (default constructor).</li>
-   *   <li>Then calls {@link Product#getDefaultSku()}.</li>
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getRetailPrice()}
    */
   @Test
-  public void testGetRetailPrice_givenProductGetDefaultSkuReturnSkuImpl_thenCallsGetDefaultSku2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getRetailPrice()"})
+  public void testGetRetailPrice_givenProductGetDefaultSkuReturnSkuImpl_thenReturnNull2() {
     // Arrange
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Money actualRetailPrice = skuImpl.getRetailPrice();
+    Money actualRetailPrice = skuImpl2.getRetailPrice();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -2187,17 +1200,48 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getRetailPrice()}.
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getRetailPrice()} return
-   * {@link Money#Money()}.</li>
+   *   <li>Given {@link Sku} {@link Sku#getId()} return one.</li>
+   *   <li>Then calls {@link Sku#getId()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getRetailPrice()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getRetailPrice()"})
+  public void testGetRetailPrice_givenSkuGetIdReturnOne_thenCallsGetId() {
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenReturn(1L);
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act
+    Money actualRetailPrice = skuImpl2.getRetailPrice();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
+    assertNull(actualRetailPrice);
+  }
+
+  /**
+   * Test {@link SkuImpl#getRetailPrice()}.
+   * <ul>
+   *   <li>Given {@link Sku} {@link Sku#getRetailPrice()} return {@link Money#Money()}.</li>
    *   <li>Then calls {@link Sku#getRetailPrice()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getRetailPrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getRetailPrice()"})
   public void testGetRetailPrice_givenSkuGetRetailPriceReturnMoney_thenCallsGetRetailPrice() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
@@ -2206,12 +1250,12 @@ public class SkuImplDiffblueTest {
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Money actualRetailPrice = skuImpl.getRetailPrice();
+    Money actualRetailPrice = skuImpl2.getRetailPrice();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -2223,122 +1267,65 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getRetailPrice()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Id is one.</li>
-   *   <li>Then calls {@link Sku#getId()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getRetailPrice()}
-   */
-  @Test
-  public void testGetRetailPrice_givenSkuImplIdIsOne_thenCallsGetId() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenReturn(1L);
-    Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
-
-    // Act
-    Money actualRetailPrice = skuImpl.getRetailPrice();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-    assertNull(actualRetailPrice);
-  }
-
-  /**
-   * Test {@link SkuImpl#getRetailPrice()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Product is
-   * {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getRetailPrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getRetailPrice()"})
   public void testGetRetailPrice_givenSkuImplProductIsProductBundleImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(new ProductBundleImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertNull(skuImpl.getRetailPrice());
+    assertNull(skuImpl2.getRetailPrice());
   }
 
   /**
    * Test {@link SkuImpl#getRetailPrice()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) RetailPrice is
-   * {@link Money#Money()}.</li>
+   *   <li>Given {@link SkuImpl} (default constructor) RetailPrice is {@link Money#Money()}.</li>
    *   <li>Then return {@link Money#Money()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getRetailPrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getRetailPrice()"})
   public void testGetRetailPrice_givenSkuImplRetailPriceIsMoney_thenReturnMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
     Money retailPrice = new Money();
-    skuImpl.setRetailPrice(retailPrice);
+    skuImpl2.setRetailPrice(retailPrice);
 
     // Act and Assert
-    assertEquals(retailPrice, skuImpl.getRetailPrice());
+    assertEquals(retailPrice, skuImpl2.getRetailPrice());
   }
 
   /**
    * Test {@link SkuImpl#getRetailPrice()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is
-   * {@link Money#Money()}.</li>
+   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is {@link Money#Money()}.</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getRetailPrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getRetailPrice()"})
   public void testGetRetailPrice_givenSkuImplSalePriceIsMoney_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(new Money());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setSalePrice(new Money());
 
     // Act and Assert
-    assertNull(skuImpl.getRetailPrice());
-  }
-
-  /**
-   * Test {@link SkuImpl#getRetailPrice()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is
-   * {@link Money}.</li>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getRetailPrice()}
-   */
-  @Test
-  public void testGetRetailPrice_givenSkuImplSalePriceIsMoney_thenReturnNull2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(mock(Money.class));
-
-    // Act and Assert
-    assertNull(skuImpl.getRetailPrice());
+    assertNull(skuImpl2.getRetailPrice());
   }
 
   /**
@@ -2351,9 +1338,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getRetailPrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getRetailPrice()"})
   public void testGetRetailPrice_givenSkuImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new SkuImpl()).getRetailPrice());
   }
@@ -2367,21 +1354,21 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getRetailPrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getRetailPrice()"})
   public void testGetRetailPrice_thenThrowIllegalStateException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenThrow(new IllegalStateException("ThreadLocalManager.notify.orphans"));
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getRetailPrice());
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getRetailPrice());
     verify(product, atLeast(1)).getDefaultSku();
     verify(sku).getId();
   }
@@ -2395,77 +1382,48 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getRetailPrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getRetailPrice()"})
   public void testGetRetailPrice_thenThrowIllegalStateException2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenThrow(new IllegalStateException("ThreadLocalManager.notify.orphans"));
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setRetailPrice(new Money());
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setRetailPrice(new Money());
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getRetailPrice());
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getRetailPrice());
     verify(product, atLeast(1)).getDefaultSku();
     verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#getRetailPriceInternal()}.
-   * <p>
-   * Method under test: {@link SkuImpl#getRetailPriceInternal()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetRetailPriceInternal() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1417 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).getRetailPriceInternal();
-  }
-
-  /**
-   * Test {@link SkuImpl#getRetailPriceInternal()}.
    * <ul>
-   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return
-   * {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getRetailPriceInternal()}
    */
   @Test
-  public void testGetRetailPriceInternal_givenProductGetDefaultSkuReturnSkuImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getRetailPriceInternal()"})
+  public void testGetRetailPriceInternal_givenProductGetDefaultSkuReturnSkuImpl_thenReturnNull() {
     // Arrange
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    Money actualRetailPriceInternal = skuImpl.getRetailPriceInternal();
+    Money actualRetailPriceInternal = skuImpl2.getRetailPriceInternal();
 
     // Assert
     verify(product).getDefaultSku();
@@ -2475,26 +1433,26 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getRetailPriceInternal()}.
    * <ul>
-   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return
-   * {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getRetailPriceInternal()}
    */
   @Test
-  public void testGetRetailPriceInternal_givenProductGetDefaultSkuReturnSkuImpl2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getRetailPriceInternal()"})
+  public void testGetRetailPriceInternal_givenProductGetDefaultSkuReturnSkuImpl_thenReturnNull2() {
     // Arrange
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Money actualRetailPriceInternal = skuImpl.getRetailPriceInternal();
+    Money actualRetailPriceInternal = skuImpl2.getRetailPriceInternal();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -2504,28 +1462,28 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getRetailPriceInternal()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Id is one.</li>
+   *   <li>Given {@link Sku} {@link Sku#getId()} return one.</li>
    *   <li>Then calls {@link Sku#getId()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getRetailPriceInternal()}
    */
   @Test
-  public void testGetRetailPriceInternal_givenSkuImplIdIsOne_thenCallsGetId() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getRetailPriceInternal()"})
+  public void testGetRetailPriceInternal_givenSkuGetIdReturnOne_thenCallsGetId() {
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Money actualRetailPriceInternal = skuImpl.getRetailPriceInternal();
+    Money actualRetailPriceInternal = skuImpl2.getRetailPriceInternal();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -2536,90 +1494,65 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getRetailPriceInternal()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Product is
-   * {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getRetailPriceInternal()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getRetailPriceInternal()"})
   public void testGetRetailPriceInternal_givenSkuImplProductIsProductBundleImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(new ProductBundleImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertNull(skuImpl.getRetailPriceInternal());
+    assertNull(skuImpl2.getRetailPriceInternal());
   }
 
   /**
    * Test {@link SkuImpl#getRetailPriceInternal()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) RetailPrice is
-   * {@link Money#Money()}.</li>
+   *   <li>Given {@link SkuImpl} (default constructor) RetailPrice is {@link Money#Money()}.</li>
    *   <li>Then return {@link Money#Money()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getRetailPriceInternal()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getRetailPriceInternal()"})
   public void testGetRetailPriceInternal_givenSkuImplRetailPriceIsMoney_thenReturnMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
     Money retailPrice = new Money();
-    skuImpl.setRetailPrice(retailPrice);
+    skuImpl2.setRetailPrice(retailPrice);
 
     // Act and Assert
-    assertEquals(retailPrice, skuImpl.getRetailPriceInternal());
+    assertEquals(retailPrice, skuImpl2.getRetailPriceInternal());
   }
 
   /**
    * Test {@link SkuImpl#getRetailPriceInternal()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is
-   * {@link Money#Money()}.</li>
+   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is {@link Money#Money()}.</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getRetailPriceInternal()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getRetailPriceInternal()"})
   public void testGetRetailPriceInternal_givenSkuImplSalePriceIsMoney_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(new Money());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setSalePrice(new Money());
 
     // Act and Assert
-    assertNull(skuImpl.getRetailPriceInternal());
-  }
-
-  /**
-   * Test {@link SkuImpl#getRetailPriceInternal()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is
-   * {@link Money}.</li>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getRetailPriceInternal()}
-   */
-  @Test
-  public void testGetRetailPriceInternal_givenSkuImplSalePriceIsMoney_thenReturnNull2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(mock(Money.class));
-
-    // Act and Assert
-    assertNull(skuImpl.getRetailPriceInternal());
+    assertNull(skuImpl2.getRetailPriceInternal());
   }
 
   /**
@@ -2632,9 +1565,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getRetailPriceInternal()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getRetailPriceInternal()"})
   public void testGetRetailPriceInternal_givenSkuImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new SkuImpl()).getRetailPriceInternal());
   }
@@ -2648,9 +1581,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getRetailPriceInternal()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getRetailPriceInternal()"})
   public void testGetRetailPriceInternal_thenCallsGetRetailPrice() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
@@ -2659,12 +1592,12 @@ public class SkuImplDiffblueTest {
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Money actualRetailPriceInternal = skuImpl.getRetailPriceInternal();
+    Money actualRetailPriceInternal = skuImpl2.getRetailPriceInternal();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -2682,21 +1615,21 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getRetailPriceInternal()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getRetailPriceInternal()"})
   public void testGetRetailPriceInternal_thenThrowIllegalStateException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenThrow(new IllegalStateException("ThreadLocalManager.notify.orphans"));
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getRetailPriceInternal());
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getRetailPriceInternal());
     verify(product, atLeast(1)).getDefaultSku();
     verify(sku).getId();
   }
@@ -2710,77 +1643,47 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getRetailPriceInternal()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getRetailPriceInternal()"})
   public void testGetRetailPriceInternal_thenThrowIllegalStateException2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenThrow(new IllegalStateException("ThreadLocalManager.notify.orphans"));
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setRetailPrice(new Money());
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setRetailPrice(new Money());
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getRetailPriceInternal());
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getRetailPriceInternal());
     verify(product, atLeast(1)).getDefaultSku();
     verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#getBaseRetailPrice()}.
-   * <p>
-   * Method under test: {@link SkuImpl#getBaseRetailPrice()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetBaseRetailPrice() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass727 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).getBaseRetailPrice();
-  }
-
-  /**
-   * Test {@link SkuImpl#getBaseRetailPrice()}.
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()}
-   * return {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getBaseRetailPrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getBaseRetailPrice()"})
   public void testGetBaseRetailPrice_givenProductBundleImplGetDefaultSkuReturnSkuImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    Money actualBaseRetailPrice = skuImpl.getBaseRetailPrice();
+    Money actualBaseRetailPrice = skuImpl2.getBaseRetailPrice();
 
     // Assert
     verify(product).getDefaultSku();
@@ -2790,26 +1693,25 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getBaseRetailPrice()}.
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()}
-   * return {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getBaseRetailPrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getBaseRetailPrice()"})
   public void testGetBaseRetailPrice_givenProductBundleImplGetDefaultSkuReturnSkuImpl2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Money actualBaseRetailPrice = skuImpl.getBaseRetailPrice();
+    Money actualBaseRetailPrice = skuImpl2.getBaseRetailPrice();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -2819,28 +1721,28 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getBaseRetailPrice()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Id is one.</li>
+   *   <li>Given {@link Sku} {@link Sku#getId()} return one.</li>
    *   <li>Then calls {@link Sku#getId()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getBaseRetailPrice()}
    */
   @Test
-  public void testGetBaseRetailPrice_givenSkuImplIdIsOne_thenCallsGetId() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getBaseRetailPrice()"})
+  public void testGetBaseRetailPrice_givenSkuGetIdReturnOne_thenCallsGetId() {
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Money actualBaseRetailPrice = skuImpl.getBaseRetailPrice();
+    Money actualBaseRetailPrice = skuImpl2.getBaseRetailPrice();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -2851,68 +1753,44 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getBaseRetailPrice()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Product is
-   * {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getBaseRetailPrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getBaseRetailPrice()"})
   public void testGetBaseRetailPrice_givenSkuImplProductIsProductBundleImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(new ProductBundleImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertNull(skuImpl.getBaseRetailPrice());
+    assertNull(skuImpl2.getBaseRetailPrice());
   }
 
   /**
    * Test {@link SkuImpl#getBaseRetailPrice()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) RetailPrice is
-   * {@link Money#Money()}.</li>
+   *   <li>Given {@link SkuImpl} (default constructor) RetailPrice is {@link Money#Money()}.</li>
    *   <li>Then return {@link Money#Money()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getBaseRetailPrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getBaseRetailPrice()"})
   public void testGetBaseRetailPrice_givenSkuImplRetailPriceIsMoney_thenReturnMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
     Money retailPrice = new Money();
-    skuImpl.setRetailPrice(retailPrice);
+    skuImpl2.setRetailPrice(retailPrice);
 
     // Act and Assert
-    assertEquals(retailPrice, skuImpl.getBaseRetailPrice());
-  }
-
-  /**
-   * Test {@link SkuImpl#getBaseRetailPrice()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) RetailPrice is
-   * {@link Money}.</li>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getBaseRetailPrice()}
-   */
-  @Test
-  public void testGetBaseRetailPrice_givenSkuImplRetailPriceIsMoney_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setRetailPrice(mock(Money.class));
-
-    // Act and Assert
-    assertNull(skuImpl.getBaseRetailPrice());
+    assertEquals(retailPrice, skuImpl2.getBaseRetailPrice());
   }
 
   /**
@@ -2925,9 +1803,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getBaseRetailPrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getBaseRetailPrice()"})
   public void testGetBaseRetailPrice_givenSkuImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new SkuImpl()).getBaseRetailPrice());
   }
@@ -2941,9 +1819,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getBaseRetailPrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getBaseRetailPrice()"})
   public void testGetBaseRetailPrice_thenCallsGetBaseRetailPrice() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
@@ -2952,12 +1830,12 @@ public class SkuImplDiffblueTest {
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Money actualBaseRetailPrice = skuImpl.getBaseRetailPrice();
+    Money actualBaseRetailPrice = skuImpl2.getBaseRetailPrice();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -2975,21 +1853,21 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getBaseRetailPrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getBaseRetailPrice()"})
   public void testGetBaseRetailPrice_thenThrowIllegalStateException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenThrow(new IllegalStateException("foo"));
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getBaseRetailPrice());
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getBaseRetailPrice());
     verify(product, atLeast(1)).getDefaultSku();
     verify(sku).getId();
   }
@@ -3003,77 +1881,47 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getBaseRetailPrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getBaseRetailPrice()"})
   public void testGetBaseRetailPrice_thenThrowIllegalStateException2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenThrow(new IllegalStateException("foo"));
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setRetailPrice(new Money());
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setRetailPrice(new Money());
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getBaseRetailPrice());
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getBaseRetailPrice());
     verify(product, atLeast(1)).getDefaultSku();
     verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#getBaseSalePrice()}.
-   * <p>
-   * Method under test: {@link SkuImpl#getBaseSalePrice()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetBaseSalePrice() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass757 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).getBaseSalePrice();
-  }
-
-  /**
-   * Test {@link SkuImpl#getBaseSalePrice()}.
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()}
-   * return {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getBaseSalePrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getBaseSalePrice()"})
   public void testGetBaseSalePrice_givenProductBundleImplGetDefaultSkuReturnSkuImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    Money actualBaseSalePrice = skuImpl.getBaseSalePrice();
+    Money actualBaseSalePrice = skuImpl2.getBaseSalePrice();
 
     // Assert
     verify(product).getDefaultSku();
@@ -3083,26 +1931,25 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getBaseSalePrice()}.
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()}
-   * return {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getBaseSalePrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getBaseSalePrice()"})
   public void testGetBaseSalePrice_givenProductBundleImplGetDefaultSkuReturnSkuImpl2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Money actualBaseSalePrice = skuImpl.getBaseSalePrice();
+    Money actualBaseSalePrice = skuImpl2.getBaseSalePrice();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -3112,28 +1959,28 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getBaseSalePrice()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Id is one.</li>
+   *   <li>Given {@link Sku} {@link Sku#getId()} return one.</li>
    *   <li>Then calls {@link Sku#getId()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getBaseSalePrice()}
    */
   @Test
-  public void testGetBaseSalePrice_givenSkuImplIdIsOne_thenCallsGetId() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getBaseSalePrice()"})
+  public void testGetBaseSalePrice_givenSkuGetIdReturnOne_thenCallsGetId() {
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Money actualBaseSalePrice = skuImpl.getBaseSalePrice();
+    Money actualBaseSalePrice = skuImpl2.getBaseSalePrice();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -3144,68 +1991,44 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getBaseSalePrice()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Product is
-   * {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getBaseSalePrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getBaseSalePrice()"})
   public void testGetBaseSalePrice_givenSkuImplProductIsProductBundleImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(new ProductBundleImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertNull(skuImpl.getBaseSalePrice());
+    assertNull(skuImpl2.getBaseSalePrice());
   }
 
   /**
    * Test {@link SkuImpl#getBaseSalePrice()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is
-   * {@link Money#Money()}.</li>
+   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is {@link Money#Money()}.</li>
    *   <li>Then return {@link Money#Money()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getBaseSalePrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getBaseSalePrice()"})
   public void testGetBaseSalePrice_givenSkuImplSalePriceIsMoney_thenReturnMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
     Money salePrice = new Money();
-    skuImpl.setSalePrice(salePrice);
+    skuImpl2.setSalePrice(salePrice);
 
     // Act and Assert
-    assertEquals(salePrice, skuImpl.getBaseSalePrice());
-  }
-
-  /**
-   * Test {@link SkuImpl#getBaseSalePrice()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is
-   * {@link Money}.</li>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getBaseSalePrice()}
-   */
-  @Test
-  public void testGetBaseSalePrice_givenSkuImplSalePriceIsMoney_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(mock(Money.class));
-
-    // Act and Assert
-    assertNull(skuImpl.getBaseSalePrice());
+    assertEquals(salePrice, skuImpl2.getBaseSalePrice());
   }
 
   /**
@@ -3218,9 +2041,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getBaseSalePrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getBaseSalePrice()"})
   public void testGetBaseSalePrice_givenSkuImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new SkuImpl()).getBaseSalePrice());
   }
@@ -3234,9 +2057,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getBaseSalePrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getBaseSalePrice()"})
   public void testGetBaseSalePrice_thenCallsGetBaseSalePrice() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
@@ -3245,12 +2068,12 @@ public class SkuImplDiffblueTest {
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Money actualBaseSalePrice = skuImpl.getBaseSalePrice();
+    Money actualBaseSalePrice = skuImpl2.getBaseSalePrice();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -3268,21 +2091,21 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getBaseSalePrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getBaseSalePrice()"})
   public void testGetBaseSalePrice_thenThrowIllegalStateException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenThrow(new IllegalStateException("foo"));
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getBaseSalePrice());
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getBaseSalePrice());
     verify(product, atLeast(1)).getDefaultSku();
     verify(sku).getId();
   }
@@ -3296,474 +2119,68 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getBaseSalePrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getBaseSalePrice()"})
   public void testGetBaseSalePrice_thenThrowIllegalStateException2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenThrow(new IllegalStateException("foo"));
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(new Money());
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setSalePrice(new Money());
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getBaseSalePrice());
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getBaseSalePrice());
     verify(product, atLeast(1)).getDefaultSku();
     verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#getPriceData()}.
-   * <p>
-   * Method under test: {@link SkuImpl#getPriceData()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetPriceData() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1207 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).getPriceData();
-  }
-
-  /**
-   * Test {@link SkuImpl#getPriceData()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Currency is
-   * {@link BroadleafCurrencyImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getPriceData()}
-   */
-  @Test
-  public void testGetPriceData_givenSkuImplCurrencyIsBroadleafCurrencyImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setCurrency(new BroadleafCurrencyImpl());
-
-    // Act
-    DynamicSkuPrices actualPriceData = skuImpl.getPriceData();
-
-    // Assert
-    assertNull(actualPriceData.getPrice());
-    assertNull(actualPriceData.getPriceAdjustment());
-    assertNull(actualPriceData.getRetailPrice());
-    assertNull(actualPriceData.getSalePrice());
-    assertFalse(actualPriceData.getDidOverride());
-  }
-
-  /**
-   * Test {@link SkuImpl#getPriceData()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) RetailPrice is
-   * {@link Money#Money()}.</li>
+   *   <li>Given {@link SkuImpl} (default constructor) RetailPrice is {@link Money#Money()}.</li>
    *   <li>Then return RetailPrice is Price.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getPriceData()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"DynamicSkuPrices SkuImpl.getPriceData()"})
   public void testGetPriceData_givenSkuImplRetailPriceIsMoney_thenReturnRetailPriceIsPrice() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setRetailPrice(new Money());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setRetailPrice(new Money());
 
     // Act
-    DynamicSkuPrices actualPriceData = skuImpl.getPriceData();
+    DynamicSkuPrices actualPriceData = skuImpl2.getPriceData();
 
     // Assert
     Money price = actualPriceData.getPrice();
     assertSame(price, actualPriceData.getRetailPrice());
-    BigDecimal bigDecimal = skuImpl.retailPrice;
+    BigDecimal bigDecimal = skuImpl2.retailPrice;
     Money absResult = price.abs();
     Money absResult2 = absResult.abs();
-    Money absResult3 = absResult2.abs();
-    Money absResult4 = absResult3.abs();
-    Money absResult5 = absResult4.abs();
-    Money absResult6 = absResult5.abs();
-    assertSame(bigDecimal, absResult6.abs().getAmount());
+    assertSame(bigDecimal, absResult2.abs().getAmount());
     Money zeroResult = price.zero();
-    Money absResult7 = zeroResult.abs();
-    Money absResult8 = absResult7.abs();
-    Money absResult9 = absResult8.abs();
-    Money absResult10 = absResult9.abs();
-    Money absResult11 = absResult10.abs();
-    assertSame(bigDecimal, absResult11.abs().getAmount());
-    assertSame(bigDecimal, absResult6.getAmount());
-    Money zeroResult2 = absResult.zero();
-    Money absResult12 = zeroResult2.abs();
-    Money absResult13 = absResult12.abs();
-    Money absResult14 = absResult13.abs();
-    Money absResult15 = absResult14.abs();
-    assertSame(bigDecimal, absResult15.abs().getAmount());
-    Money zeroResult3 = zeroResult.zero();
-    Money absResult16 = zeroResult3.abs();
-    Money absResult17 = absResult16.abs();
-    Money absResult18 = absResult17.abs();
-    Money absResult19 = absResult18.abs();
-    assertSame(bigDecimal, absResult19.abs().getAmount());
-    assertSame(bigDecimal, absResult11.getAmount());
-    assertSame(bigDecimal, absResult5.getAmount());
-    Money zeroResult4 = absResult2.zero();
-    Money absResult20 = zeroResult4.abs();
-    Money absResult21 = absResult20.abs();
-    Money absResult22 = absResult21.abs();
-    assertSame(bigDecimal, absResult22.abs().getAmount());
-    Money zeroResult5 = absResult7.zero();
-    Money absResult23 = zeroResult5.abs();
-    Money absResult24 = absResult23.abs();
-    Money absResult25 = absResult24.abs();
-    assertSame(bigDecimal, absResult25.abs().getAmount());
-    assertSame(bigDecimal, absResult15.getAmount());
-    Money zeroResult6 = zeroResult2.zero();
-    Money absResult26 = zeroResult6.abs();
-    Money absResult27 = absResult26.abs();
-    Money absResult28 = absResult27.abs();
-    assertSame(bigDecimal, absResult28.abs().getAmount());
-    Money zeroResult7 = zeroResult3.zero();
-    Money absResult29 = zeroResult7.abs();
-    Money absResult30 = absResult29.abs();
-    Money absResult31 = absResult30.abs();
-    assertSame(bigDecimal, absResult31.abs().getAmount());
-    assertSame(bigDecimal, absResult19.getAmount());
-    assertSame(bigDecimal, absResult10.getAmount());
-    assertSame(bigDecimal, absResult4.getAmount());
-    Money zeroResult8 = absResult3.zero();
-    Money absResult32 = zeroResult8.abs();
-    Money absResult33 = absResult32.abs();
-    assertSame(bigDecimal, absResult33.abs().getAmount());
-    Money zeroResult9 = absResult8.zero();
-    Money absResult34 = zeroResult9.abs();
-    Money absResult35 = absResult34.abs();
-    assertSame(bigDecimal, absResult35.abs().getAmount());
-    assertSame(bigDecimal, absResult22.getAmount());
-    Money zeroResult10 = absResult12.zero();
-    Money absResult36 = zeroResult10.abs();
-    Money absResult37 = absResult36.abs();
-    assertSame(bigDecimal, absResult37.abs().getAmount());
-    Money zeroResult11 = absResult16.zero();
-    Money absResult38 = zeroResult11.abs();
-    Money absResult39 = absResult38.abs();
-    assertSame(bigDecimal, absResult39.abs().getAmount());
-    assertSame(bigDecimal, absResult25.getAmount());
-    assertSame(bigDecimal, absResult14.getAmount());
-    Money zeroResult12 = zeroResult4.zero();
-    Money absResult40 = zeroResult12.abs();
-    Money absResult41 = absResult40.abs();
-    assertSame(bigDecimal, absResult41.abs().getAmount());
-    Money zeroResult13 = zeroResult5.zero();
-    Money absResult42 = zeroResult13.abs();
-    Money absResult43 = absResult42.abs();
-    assertSame(bigDecimal, absResult43.abs().getAmount());
-    assertSame(bigDecimal, absResult28.getAmount());
-    Money zeroResult14 = zeroResult6.zero();
-    Money absResult44 = zeroResult14.abs();
-    Money absResult45 = absResult44.abs();
-    assertSame(bigDecimal, absResult45.abs().getAmount());
-    assertSame(bigDecimal, absResult31.getAmount());
-    assertSame(bigDecimal, absResult18.getAmount());
-    assertSame(bigDecimal, absResult9.getAmount());
-    assertSame(bigDecimal, absResult3.getAmount());
-    Money zeroResult15 = absResult4.zero();
-    Money absResult46 = zeroResult15.abs();
-    assertSame(bigDecimal, absResult46.abs().getAmount());
-    Money zeroResult16 = absResult9.zero();
-    Money absResult47 = zeroResult16.abs();
-    assertSame(bigDecimal, absResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult33.getAmount());
-    Money zeroResult17 = absResult13.zero();
-    Money absResult48 = zeroResult17.abs();
-    assertSame(bigDecimal, absResult48.abs().getAmount());
-    Money zeroResult18 = absResult17.zero();
-    Money absResult49 = zeroResult18.abs();
-    assertSame(bigDecimal, absResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult35.getAmount());
-    assertSame(bigDecimal, absResult21.getAmount());
-    Money zeroResult19 = absResult20.zero();
-    Money absResult50 = zeroResult19.abs();
-    assertSame(bigDecimal, absResult50.abs().getAmount());
-    Money zeroResult20 = absResult23.zero();
-    Money absResult51 = zeroResult20.abs();
-    assertSame(bigDecimal, absResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult37.getAmount());
-    Money zeroResult21 = absResult26.zero();
-    Money absResult52 = zeroResult21.abs();
-    assertSame(bigDecimal, absResult52.abs().getAmount());
-    Money zeroResult22 = absResult29.zero();
-    Money absResult53 = zeroResult22.abs();
-    assertSame(bigDecimal, absResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult39.getAmount());
-    assertSame(bigDecimal, absResult24.getAmount());
-    assertSame(bigDecimal, absResult13.getAmount());
-    Money zeroResult23 = zeroResult8.zero();
-    Money absResult54 = zeroResult23.abs();
-    assertSame(bigDecimal, absResult54.abs().getAmount());
-    Money zeroResult24 = zeroResult9.zero();
-    Money absResult55 = zeroResult24.abs();
-    assertSame(bigDecimal, absResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult41.getAmount());
-    Money zeroResult25 = zeroResult10.zero();
-    Money absResult56 = zeroResult25.abs();
-    assertSame(bigDecimal, absResult56.abs().getAmount());
-    Money zeroResult26 = zeroResult11.zero();
-    Money absResult57 = zeroResult26.abs();
-    assertSame(bigDecimal, absResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult43.getAmount());
-    assertSame(bigDecimal, absResult27.getAmount());
-    Money zeroResult27 = zeroResult12.zero();
-    Money absResult58 = zeroResult27.abs();
-    assertSame(bigDecimal, absResult58.abs().getAmount());
-    Money zeroResult28 = zeroResult13.zero();
-    Money absResult59 = zeroResult28.abs();
-    assertSame(bigDecimal, absResult59.abs().getAmount());
-    assertSame(bigDecimal, absResult45.getAmount());
-    Money zeroResult29 = zeroResult14.zero();
-    Money absResult60 = zeroResult29.abs();
-    assertSame(bigDecimal, absResult60.abs().getAmount());
-    Money zeroResult30 = zeroResult7.zero();
-    Money absResult61 = zeroResult30.abs();
-    assertSame(bigDecimal, absResult61.abs().getAmount());
-    assertSame(bigDecimal, absResult30.getAmount());
-    assertSame(bigDecimal, absResult17.getAmount());
-    assertSame(bigDecimal, absResult8.getAmount());
+    Money absResult3 = zeroResult.abs();
+    assertSame(bigDecimal, absResult3.abs().getAmount());
     assertSame(bigDecimal, absResult2.getAmount());
-    Money zeroResult31 = absResult5.zero();
-    assertSame(bigDecimal, zeroResult31.abs().getAmount());
-    Money zeroResult32 = absResult10.zero();
-    assertSame(bigDecimal, zeroResult32.abs().getAmount());
-    assertSame(bigDecimal, absResult46.getAmount());
-    Money zeroResult33 = absResult14.zero();
-    assertSame(bigDecimal, zeroResult33.abs().getAmount());
-    Money zeroResult34 = absResult18.zero();
-    assertSame(bigDecimal, zeroResult34.abs().getAmount());
-    assertSame(bigDecimal, absResult47.getAmount());
-    assertSame(bigDecimal, absResult32.getAmount());
-    Money zeroResult35 = absResult21.zero();
-    assertSame(bigDecimal, zeroResult35.abs().getAmount());
-    Money zeroResult36 = absResult24.zero();
-    assertSame(bigDecimal, zeroResult36.abs().getAmount());
-    assertSame(bigDecimal, absResult48.getAmount());
-    Money zeroResult37 = absResult27.zero();
-    assertSame(bigDecimal, zeroResult37.abs().getAmount());
-    Money zeroResult38 = absResult30.zero();
-    assertSame(bigDecimal, zeroResult38.abs().getAmount());
-    assertSame(bigDecimal, absResult49.getAmount());
-    assertSame(bigDecimal, absResult34.getAmount());
-    assertSame(bigDecimal, absResult20.getAmount());
-    Money zeroResult39 = absResult32.zero();
-    assertSame(bigDecimal, zeroResult39.abs().getAmount());
-    Money zeroResult40 = absResult34.zero();
-    assertSame(bigDecimal, zeroResult40.abs().getAmount());
-    assertSame(bigDecimal, absResult50.getAmount());
-    Money zeroResult41 = absResult36.zero();
-    assertSame(bigDecimal, zeroResult41.abs().getAmount());
-    Money zeroResult42 = absResult38.zero();
-    assertSame(bigDecimal, zeroResult42.abs().getAmount());
-    assertSame(bigDecimal, absResult51.getAmount());
-    assertSame(bigDecimal, absResult36.getAmount());
-    Money zeroResult43 = absResult40.zero();
-    assertSame(bigDecimal, zeroResult43.abs().getAmount());
-    Money zeroResult44 = absResult42.zero();
-    assertSame(bigDecimal, zeroResult44.abs().getAmount());
-    assertSame(bigDecimal, absResult52.getAmount());
-    Money zeroResult45 = absResult44.zero();
-    assertSame(bigDecimal, zeroResult45.abs().getAmount());
-    assertSame(bigDecimal, absResult53.getAmount());
-    assertSame(bigDecimal, absResult38.getAmount());
-    assertSame(bigDecimal, absResult23.getAmount());
-    assertSame(bigDecimal, absResult12.getAmount());
-    Money zeroResult46 = zeroResult15.zero();
-    assertSame(bigDecimal, zeroResult46.abs().getAmount());
-    Money zeroResult47 = zeroResult16.zero();
-    assertSame(bigDecimal, zeroResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult54.getAmount());
-    Money zeroResult48 = zeroResult17.zero();
-    assertSame(bigDecimal, zeroResult48.abs().getAmount());
-    Money zeroResult49 = zeroResult18.zero();
-    assertSame(bigDecimal, zeroResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult55.getAmount());
-    assertSame(bigDecimal, absResult40.getAmount());
-    Money zeroResult50 = zeroResult19.zero();
-    assertSame(bigDecimal, zeroResult50.abs().getAmount());
-    Money zeroResult51 = zeroResult20.zero();
-    assertSame(bigDecimal, zeroResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult56.getAmount());
-    Money zeroResult52 = zeroResult21.zero();
-    assertSame(bigDecimal, zeroResult52.abs().getAmount());
-    Money zeroResult53 = zeroResult22.zero();
-    assertSame(bigDecimal, zeroResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult57.getAmount());
-    assertSame(bigDecimal, absResult42.getAmount());
-    assertSame(bigDecimal, absResult26.getAmount());
-    Money zeroResult54 = zeroResult23.zero();
-    assertSame(bigDecimal, zeroResult54.abs().getAmount());
-    Money zeroResult55 = zeroResult24.zero();
-    assertSame(bigDecimal, zeroResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult58.getAmount());
-    Money zeroResult56 = zeroResult25.zero();
-    assertSame(bigDecimal, zeroResult56.abs().getAmount());
-    Money zeroResult57 = zeroResult26.zero();
-    assertSame(bigDecimal, zeroResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult59.getAmount());
-    assertSame(bigDecimal, absResult44.getAmount());
-    Money zeroResult58 = zeroResult27.zero();
-    assertSame(bigDecimal, zeroResult58.abs().getAmount());
-    Money zeroResult59 = zeroResult28.zero();
-    assertSame(bigDecimal, zeroResult59.abs().getAmount());
-    assertSame(bigDecimal, absResult60.getAmount());
-    Money zeroResult60 = zeroResult29.zero();
-    assertSame(bigDecimal, zeroResult60.abs().getAmount());
-    Money zeroResult61 = zeroResult30.zero();
-    assertSame(bigDecimal, zeroResult61.abs().getAmount());
-    assertSame(bigDecimal, absResult61.getAmount());
-    assertSame(bigDecimal, absResult29.getAmount());
-    assertSame(bigDecimal, absResult16.getAmount());
-    assertSame(bigDecimal, absResult7.getAmount());
+    Money zeroResult2 = absResult.zero();
+    assertSame(bigDecimal, zeroResult2.abs().getAmount());
+    Money zeroResult3 = zeroResult.zero();
+    assertSame(bigDecimal, zeroResult3.abs().getAmount());
+    assertSame(bigDecimal, absResult3.getAmount());
     assertSame(bigDecimal, absResult.getAmount());
-    assertSame(bigDecimal, absResult6.zero().getAmount());
-    assertSame(bigDecimal, absResult11.zero().getAmount());
-    assertSame(bigDecimal, zeroResult31.getAmount());
-    assertSame(bigDecimal, absResult15.zero().getAmount());
-    assertSame(bigDecimal, absResult19.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.getAmount());
-    assertSame(bigDecimal, zeroResult15.getAmount());
-    assertSame(bigDecimal, absResult22.zero().getAmount());
-    assertSame(bigDecimal, absResult25.zero().getAmount());
-    assertSame(bigDecimal, zeroResult33.getAmount());
-    assertSame(bigDecimal, absResult28.zero().getAmount());
-    assertSame(bigDecimal, absResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.getAmount());
-    assertSame(bigDecimal, zeroResult16.getAmount());
-    assertSame(bigDecimal, zeroResult8.getAmount());
-    assertSame(bigDecimal, absResult33.zero().getAmount());
-    assertSame(bigDecimal, absResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult35.getAmount());
-    assertSame(bigDecimal, absResult37.zero().getAmount());
-    assertSame(bigDecimal, absResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.getAmount());
-    assertSame(bigDecimal, zeroResult17.getAmount());
-    assertSame(bigDecimal, absResult41.zero().getAmount());
-    assertSame(bigDecimal, absResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult37.getAmount());
-    assertSame(bigDecimal, absResult45.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.getAmount());
-    assertSame(bigDecimal, zeroResult18.getAmount());
-    assertSame(bigDecimal, zeroResult9.getAmount());
-    assertSame(bigDecimal, zeroResult4.getAmount());
-    assertSame(bigDecimal, absResult46.zero().getAmount());
-    assertSame(bigDecimal, absResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult39.getAmount());
-    assertSame(bigDecimal, absResult48.zero().getAmount());
-    assertSame(bigDecimal, absResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.getAmount());
-    assertSame(bigDecimal, zeroResult19.getAmount());
-    assertSame(bigDecimal, absResult50.zero().getAmount());
-    assertSame(bigDecimal, absResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult41.getAmount());
-    assertSame(bigDecimal, absResult52.zero().getAmount());
-    assertSame(bigDecimal, absResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.getAmount());
-    assertSame(bigDecimal, zeroResult20.getAmount());
-    assertSame(bigDecimal, zeroResult10.getAmount());
-    assertSame(bigDecimal, absResult54.zero().getAmount());
-    assertSame(bigDecimal, absResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult43.getAmount());
-    assertSame(bigDecimal, absResult56.zero().getAmount());
-    assertSame(bigDecimal, absResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.getAmount());
-    assertSame(bigDecimal, zeroResult21.getAmount());
-    assertSame(bigDecimal, absResult58.zero().getAmount());
-    assertSame(bigDecimal, absResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult45.getAmount());
-    assertSame(bigDecimal, absResult60.zero().getAmount());
-    assertSame(bigDecimal, absResult61.zero().getAmount());
-    assertSame(bigDecimal, zeroResult22.getAmount());
-    assertSame(bigDecimal, zeroResult11.getAmount());
-    assertSame(bigDecimal, zeroResult5.getAmount());
+    assertSame(bigDecimal, absResult2.zero().getAmount());
+    assertSame(bigDecimal, absResult3.zero().getAmount());
     assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, zeroResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.zero().getAmount());
-    assertSame(bigDecimal, zeroResult46.getAmount());
-    assertSame(bigDecimal, zeroResult33.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.getAmount());
-    assertSame(bigDecimal, zeroResult23.getAmount());
-    assertSame(bigDecimal, zeroResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.zero().getAmount());
-    assertSame(bigDecimal, zeroResult48.getAmount());
-    assertSame(bigDecimal, zeroResult37.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.getAmount());
-    assertSame(bigDecimal, zeroResult24.getAmount());
-    assertSame(bigDecimal, zeroResult12.getAmount());
-    assertSame(bigDecimal, zeroResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.zero().getAmount());
-    assertSame(bigDecimal, zeroResult50.getAmount());
-    assertSame(bigDecimal, zeroResult41.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.getAmount());
-    assertSame(bigDecimal, zeroResult25.getAmount());
-    assertSame(bigDecimal, zeroResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.zero().getAmount());
-    assertSame(bigDecimal, zeroResult52.getAmount());
-    assertSame(bigDecimal, zeroResult45.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.getAmount());
-    assertSame(bigDecimal, zeroResult26.getAmount());
-    assertSame(bigDecimal, zeroResult13.getAmount());
-    assertSame(bigDecimal, zeroResult6.getAmount());
-    assertSame(bigDecimal, zeroResult46.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult54.getAmount());
-    assertSame(bigDecimal, zeroResult48.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.getAmount());
-    assertSame(bigDecimal, zeroResult27.getAmount());
-    assertSame(bigDecimal, zeroResult50.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult56.getAmount());
-    assertSame(bigDecimal, zeroResult52.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.getAmount());
-    assertSame(bigDecimal, zeroResult28.getAmount());
-    assertSame(bigDecimal, zeroResult14.getAmount());
-    assertSame(bigDecimal, zeroResult54.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult58.getAmount());
-    assertSame(bigDecimal, zeroResult56.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.getAmount());
-    assertSame(bigDecimal, zeroResult29.getAmount());
-    assertSame(bigDecimal, zeroResult58.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.getAmount());
-    assertSame(bigDecimal, zeroResult60.zero().getAmount());
-    assertSame(bigDecimal, zeroResult61.zero().getAmount());
-    assertSame(bigDecimal, zeroResult61.getAmount());
-    assertSame(bigDecimal, zeroResult30.getAmount());
-    assertSame(bigDecimal, zeroResult7.getAmount());
+    assertSame(bigDecimal, zeroResult2.zero().getAmount());
+    assertSame(bigDecimal, zeroResult3.zero().getAmount());
     assertSame(bigDecimal, zeroResult3.getAmount());
     assertSame(bigDecimal, zeroResult.getAmount());
   }
@@ -3771,423 +2188,45 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getPriceData()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is
-   * {@link Money}.</li>
-   *   <li>Then return Price is {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getPriceData()}
-   */
-  @Test
-  public void testGetPriceData_givenSkuImplSalePriceIsMoney_thenReturnPriceIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(mock(Money.class));
-
-    // Act
-    DynamicSkuPrices actualPriceData = skuImpl.getPriceData();
-
-    // Assert
-    assertNull(actualPriceData.getPrice());
-    assertNull(actualPriceData.getPriceAdjustment());
-    assertNull(actualPriceData.getRetailPrice());
-    assertNull(actualPriceData.getSalePrice());
-    assertFalse(actualPriceData.getDidOverride());
-  }
-
-  /**
-   * Test {@link SkuImpl#getPriceData()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is
-   * {@link Money#Money()}.</li>
+   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is {@link Money#Money()}.</li>
    *   <li>Then return SalePrice is Price.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getPriceData()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"DynamicSkuPrices SkuImpl.getPriceData()"})
   public void testGetPriceData_givenSkuImplSalePriceIsMoney_thenReturnSalePriceIsPrice() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(new Money());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setSalePrice(new Money());
 
     // Act
-    DynamicSkuPrices actualPriceData = skuImpl.getPriceData();
+    DynamicSkuPrices actualPriceData = skuImpl2.getPriceData();
 
     // Assert
     Money price = actualPriceData.getPrice();
     assertSame(price, actualPriceData.getSalePrice());
-    BigDecimal bigDecimal = skuImpl.salePrice;
+    BigDecimal bigDecimal = skuImpl2.salePrice;
     Money absResult = price.abs();
     Money absResult2 = absResult.abs();
-    Money absResult3 = absResult2.abs();
-    Money absResult4 = absResult3.abs();
-    Money absResult5 = absResult4.abs();
-    Money absResult6 = absResult5.abs();
-    assertSame(bigDecimal, absResult6.abs().getAmount());
+    assertSame(bigDecimal, absResult2.abs().getAmount());
     Money zeroResult = price.zero();
-    Money absResult7 = zeroResult.abs();
-    Money absResult8 = absResult7.abs();
-    Money absResult9 = absResult8.abs();
-    Money absResult10 = absResult9.abs();
-    Money absResult11 = absResult10.abs();
-    assertSame(bigDecimal, absResult11.abs().getAmount());
-    assertSame(bigDecimal, absResult6.getAmount());
-    Money zeroResult2 = absResult.zero();
-    Money absResult12 = zeroResult2.abs();
-    Money absResult13 = absResult12.abs();
-    Money absResult14 = absResult13.abs();
-    Money absResult15 = absResult14.abs();
-    assertSame(bigDecimal, absResult15.abs().getAmount());
-    Money zeroResult3 = zeroResult.zero();
-    Money absResult16 = zeroResult3.abs();
-    Money absResult17 = absResult16.abs();
-    Money absResult18 = absResult17.abs();
-    Money absResult19 = absResult18.abs();
-    assertSame(bigDecimal, absResult19.abs().getAmount());
-    assertSame(bigDecimal, absResult11.getAmount());
-    assertSame(bigDecimal, absResult5.getAmount());
-    Money zeroResult4 = absResult2.zero();
-    Money absResult20 = zeroResult4.abs();
-    Money absResult21 = absResult20.abs();
-    Money absResult22 = absResult21.abs();
-    assertSame(bigDecimal, absResult22.abs().getAmount());
-    Money zeroResult5 = absResult7.zero();
-    Money absResult23 = zeroResult5.abs();
-    Money absResult24 = absResult23.abs();
-    Money absResult25 = absResult24.abs();
-    assertSame(bigDecimal, absResult25.abs().getAmount());
-    assertSame(bigDecimal, absResult15.getAmount());
-    Money zeroResult6 = zeroResult2.zero();
-    Money absResult26 = zeroResult6.abs();
-    Money absResult27 = absResult26.abs();
-    Money absResult28 = absResult27.abs();
-    assertSame(bigDecimal, absResult28.abs().getAmount());
-    Money zeroResult7 = zeroResult3.zero();
-    Money absResult29 = zeroResult7.abs();
-    Money absResult30 = absResult29.abs();
-    Money absResult31 = absResult30.abs();
-    assertSame(bigDecimal, absResult31.abs().getAmount());
-    assertSame(bigDecimal, absResult19.getAmount());
-    assertSame(bigDecimal, absResult10.getAmount());
-    assertSame(bigDecimal, absResult4.getAmount());
-    Money zeroResult8 = absResult3.zero();
-    Money absResult32 = zeroResult8.abs();
-    Money absResult33 = absResult32.abs();
-    assertSame(bigDecimal, absResult33.abs().getAmount());
-    Money zeroResult9 = absResult8.zero();
-    Money absResult34 = zeroResult9.abs();
-    Money absResult35 = absResult34.abs();
-    assertSame(bigDecimal, absResult35.abs().getAmount());
-    assertSame(bigDecimal, absResult22.getAmount());
-    Money zeroResult10 = absResult12.zero();
-    Money absResult36 = zeroResult10.abs();
-    Money absResult37 = absResult36.abs();
-    assertSame(bigDecimal, absResult37.abs().getAmount());
-    Money zeroResult11 = absResult16.zero();
-    Money absResult38 = zeroResult11.abs();
-    Money absResult39 = absResult38.abs();
-    assertSame(bigDecimal, absResult39.abs().getAmount());
-    assertSame(bigDecimal, absResult25.getAmount());
-    assertSame(bigDecimal, absResult14.getAmount());
-    Money zeroResult12 = zeroResult4.zero();
-    Money absResult40 = zeroResult12.abs();
-    Money absResult41 = absResult40.abs();
-    assertSame(bigDecimal, absResult41.abs().getAmount());
-    Money zeroResult13 = zeroResult5.zero();
-    Money absResult42 = zeroResult13.abs();
-    Money absResult43 = absResult42.abs();
-    assertSame(bigDecimal, absResult43.abs().getAmount());
-    assertSame(bigDecimal, absResult28.getAmount());
-    Money zeroResult14 = zeroResult6.zero();
-    Money absResult44 = zeroResult14.abs();
-    Money absResult45 = absResult44.abs();
-    assertSame(bigDecimal, absResult45.abs().getAmount());
-    assertSame(bigDecimal, absResult31.getAmount());
-    assertSame(bigDecimal, absResult18.getAmount());
-    assertSame(bigDecimal, absResult9.getAmount());
-    assertSame(bigDecimal, absResult3.getAmount());
-    Money zeroResult15 = absResult4.zero();
-    Money absResult46 = zeroResult15.abs();
-    assertSame(bigDecimal, absResult46.abs().getAmount());
-    Money zeroResult16 = absResult9.zero();
-    Money absResult47 = zeroResult16.abs();
-    assertSame(bigDecimal, absResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult33.getAmount());
-    Money zeroResult17 = absResult13.zero();
-    Money absResult48 = zeroResult17.abs();
-    assertSame(bigDecimal, absResult48.abs().getAmount());
-    Money zeroResult18 = absResult17.zero();
-    Money absResult49 = zeroResult18.abs();
-    assertSame(bigDecimal, absResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult35.getAmount());
-    assertSame(bigDecimal, absResult21.getAmount());
-    Money zeroResult19 = absResult20.zero();
-    Money absResult50 = zeroResult19.abs();
-    assertSame(bigDecimal, absResult50.abs().getAmount());
-    Money zeroResult20 = absResult23.zero();
-    Money absResult51 = zeroResult20.abs();
-    assertSame(bigDecimal, absResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult37.getAmount());
-    Money zeroResult21 = absResult26.zero();
-    Money absResult52 = zeroResult21.abs();
-    assertSame(bigDecimal, absResult52.abs().getAmount());
-    Money zeroResult22 = absResult29.zero();
-    Money absResult53 = zeroResult22.abs();
-    assertSame(bigDecimal, absResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult39.getAmount());
-    assertSame(bigDecimal, absResult24.getAmount());
-    assertSame(bigDecimal, absResult13.getAmount());
-    Money zeroResult23 = zeroResult8.zero();
-    Money absResult54 = zeroResult23.abs();
-    assertSame(bigDecimal, absResult54.abs().getAmount());
-    Money zeroResult24 = zeroResult9.zero();
-    Money absResult55 = zeroResult24.abs();
-    assertSame(bigDecimal, absResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult41.getAmount());
-    Money zeroResult25 = zeroResult10.zero();
-    Money absResult56 = zeroResult25.abs();
-    assertSame(bigDecimal, absResult56.abs().getAmount());
-    Money zeroResult26 = zeroResult11.zero();
-    Money absResult57 = zeroResult26.abs();
-    assertSame(bigDecimal, absResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult43.getAmount());
-    assertSame(bigDecimal, absResult27.getAmount());
-    Money zeroResult27 = zeroResult12.zero();
-    Money absResult58 = zeroResult27.abs();
-    assertSame(bigDecimal, absResult58.abs().getAmount());
-    Money zeroResult28 = zeroResult13.zero();
-    Money absResult59 = zeroResult28.abs();
-    assertSame(bigDecimal, absResult59.abs().getAmount());
-    assertSame(bigDecimal, absResult45.getAmount());
-    Money zeroResult29 = zeroResult14.zero();
-    Money absResult60 = zeroResult29.abs();
-    assertSame(bigDecimal, absResult60.abs().getAmount());
-    Money zeroResult30 = zeroResult7.zero();
-    Money absResult61 = zeroResult30.abs();
-    assertSame(bigDecimal, absResult61.abs().getAmount());
-    assertSame(bigDecimal, absResult30.getAmount());
-    assertSame(bigDecimal, absResult17.getAmount());
-    assertSame(bigDecimal, absResult8.getAmount());
+    Money absResult3 = zeroResult.abs();
+    assertSame(bigDecimal, absResult3.abs().getAmount());
     assertSame(bigDecimal, absResult2.getAmount());
-    Money zeroResult31 = absResult5.zero();
-    assertSame(bigDecimal, zeroResult31.abs().getAmount());
-    Money zeroResult32 = absResult10.zero();
-    assertSame(bigDecimal, zeroResult32.abs().getAmount());
-    assertSame(bigDecimal, absResult46.getAmount());
-    Money zeroResult33 = absResult14.zero();
-    assertSame(bigDecimal, zeroResult33.abs().getAmount());
-    Money zeroResult34 = absResult18.zero();
-    assertSame(bigDecimal, zeroResult34.abs().getAmount());
-    assertSame(bigDecimal, absResult47.getAmount());
-    assertSame(bigDecimal, absResult32.getAmount());
-    Money zeroResult35 = absResult21.zero();
-    assertSame(bigDecimal, zeroResult35.abs().getAmount());
-    Money zeroResult36 = absResult24.zero();
-    assertSame(bigDecimal, zeroResult36.abs().getAmount());
-    assertSame(bigDecimal, absResult48.getAmount());
-    Money zeroResult37 = absResult27.zero();
-    assertSame(bigDecimal, zeroResult37.abs().getAmount());
-    Money zeroResult38 = absResult30.zero();
-    assertSame(bigDecimal, zeroResult38.abs().getAmount());
-    assertSame(bigDecimal, absResult49.getAmount());
-    assertSame(bigDecimal, absResult34.getAmount());
-    assertSame(bigDecimal, absResult20.getAmount());
-    Money zeroResult39 = absResult32.zero();
-    assertSame(bigDecimal, zeroResult39.abs().getAmount());
-    Money zeroResult40 = absResult34.zero();
-    assertSame(bigDecimal, zeroResult40.abs().getAmount());
-    assertSame(bigDecimal, absResult50.getAmount());
-    Money zeroResult41 = absResult36.zero();
-    assertSame(bigDecimal, zeroResult41.abs().getAmount());
-    Money zeroResult42 = absResult38.zero();
-    assertSame(bigDecimal, zeroResult42.abs().getAmount());
-    assertSame(bigDecimal, absResult51.getAmount());
-    assertSame(bigDecimal, absResult36.getAmount());
-    Money zeroResult43 = absResult40.zero();
-    assertSame(bigDecimal, zeroResult43.abs().getAmount());
-    Money zeroResult44 = absResult42.zero();
-    assertSame(bigDecimal, zeroResult44.abs().getAmount());
-    assertSame(bigDecimal, absResult52.getAmount());
-    Money zeroResult45 = absResult44.zero();
-    assertSame(bigDecimal, zeroResult45.abs().getAmount());
-    assertSame(bigDecimal, absResult53.getAmount());
-    assertSame(bigDecimal, absResult38.getAmount());
-    assertSame(bigDecimal, absResult23.getAmount());
-    assertSame(bigDecimal, absResult12.getAmount());
-    Money zeroResult46 = zeroResult15.zero();
-    assertSame(bigDecimal, zeroResult46.abs().getAmount());
-    Money zeroResult47 = zeroResult16.zero();
-    assertSame(bigDecimal, zeroResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult54.getAmount());
-    Money zeroResult48 = zeroResult17.zero();
-    assertSame(bigDecimal, zeroResult48.abs().getAmount());
-    Money zeroResult49 = zeroResult18.zero();
-    assertSame(bigDecimal, zeroResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult55.getAmount());
-    assertSame(bigDecimal, absResult40.getAmount());
-    Money zeroResult50 = zeroResult19.zero();
-    assertSame(bigDecimal, zeroResult50.abs().getAmount());
-    Money zeroResult51 = zeroResult20.zero();
-    assertSame(bigDecimal, zeroResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult56.getAmount());
-    Money zeroResult52 = zeroResult21.zero();
-    assertSame(bigDecimal, zeroResult52.abs().getAmount());
-    Money zeroResult53 = zeroResult22.zero();
-    assertSame(bigDecimal, zeroResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult57.getAmount());
-    assertSame(bigDecimal, absResult42.getAmount());
-    assertSame(bigDecimal, absResult26.getAmount());
-    Money zeroResult54 = zeroResult23.zero();
-    assertSame(bigDecimal, zeroResult54.abs().getAmount());
-    Money zeroResult55 = zeroResult24.zero();
-    assertSame(bigDecimal, zeroResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult58.getAmount());
-    Money zeroResult56 = zeroResult25.zero();
-    assertSame(bigDecimal, zeroResult56.abs().getAmount());
-    Money zeroResult57 = zeroResult26.zero();
-    assertSame(bigDecimal, zeroResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult59.getAmount());
-    assertSame(bigDecimal, absResult44.getAmount());
-    Money zeroResult58 = zeroResult27.zero();
-    assertSame(bigDecimal, zeroResult58.abs().getAmount());
-    Money zeroResult59 = zeroResult28.zero();
-    assertSame(bigDecimal, zeroResult59.abs().getAmount());
-    assertSame(bigDecimal, absResult60.getAmount());
-    Money zeroResult60 = zeroResult29.zero();
-    assertSame(bigDecimal, zeroResult60.abs().getAmount());
-    Money zeroResult61 = zeroResult30.zero();
-    assertSame(bigDecimal, zeroResult61.abs().getAmount());
-    assertSame(bigDecimal, absResult61.getAmount());
-    assertSame(bigDecimal, absResult29.getAmount());
-    assertSame(bigDecimal, absResult16.getAmount());
-    assertSame(bigDecimal, absResult7.getAmount());
+    Money zeroResult2 = absResult.zero();
+    assertSame(bigDecimal, zeroResult2.abs().getAmount());
+    Money zeroResult3 = zeroResult.zero();
+    assertSame(bigDecimal, zeroResult3.abs().getAmount());
+    assertSame(bigDecimal, absResult3.getAmount());
     assertSame(bigDecimal, absResult.getAmount());
-    assertSame(bigDecimal, absResult6.zero().getAmount());
-    assertSame(bigDecimal, absResult11.zero().getAmount());
-    assertSame(bigDecimal, zeroResult31.getAmount());
-    assertSame(bigDecimal, absResult15.zero().getAmount());
-    assertSame(bigDecimal, absResult19.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.getAmount());
-    assertSame(bigDecimal, zeroResult15.getAmount());
-    assertSame(bigDecimal, absResult22.zero().getAmount());
-    assertSame(bigDecimal, absResult25.zero().getAmount());
-    assertSame(bigDecimal, zeroResult33.getAmount());
-    assertSame(bigDecimal, absResult28.zero().getAmount());
-    assertSame(bigDecimal, absResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.getAmount());
-    assertSame(bigDecimal, zeroResult16.getAmount());
-    assertSame(bigDecimal, zeroResult8.getAmount());
-    assertSame(bigDecimal, absResult33.zero().getAmount());
-    assertSame(bigDecimal, absResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult35.getAmount());
-    assertSame(bigDecimal, absResult37.zero().getAmount());
-    assertSame(bigDecimal, absResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.getAmount());
-    assertSame(bigDecimal, zeroResult17.getAmount());
-    assertSame(bigDecimal, absResult41.zero().getAmount());
-    assertSame(bigDecimal, absResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult37.getAmount());
-    assertSame(bigDecimal, absResult45.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.getAmount());
-    assertSame(bigDecimal, zeroResult18.getAmount());
-    assertSame(bigDecimal, zeroResult9.getAmount());
-    assertSame(bigDecimal, zeroResult4.getAmount());
-    assertSame(bigDecimal, absResult46.zero().getAmount());
-    assertSame(bigDecimal, absResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult39.getAmount());
-    assertSame(bigDecimal, absResult48.zero().getAmount());
-    assertSame(bigDecimal, absResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.getAmount());
-    assertSame(bigDecimal, zeroResult19.getAmount());
-    assertSame(bigDecimal, absResult50.zero().getAmount());
-    assertSame(bigDecimal, absResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult41.getAmount());
-    assertSame(bigDecimal, absResult52.zero().getAmount());
-    assertSame(bigDecimal, absResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.getAmount());
-    assertSame(bigDecimal, zeroResult20.getAmount());
-    assertSame(bigDecimal, zeroResult10.getAmount());
-    assertSame(bigDecimal, absResult54.zero().getAmount());
-    assertSame(bigDecimal, absResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult43.getAmount());
-    assertSame(bigDecimal, absResult56.zero().getAmount());
-    assertSame(bigDecimal, absResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.getAmount());
-    assertSame(bigDecimal, zeroResult21.getAmount());
-    assertSame(bigDecimal, absResult58.zero().getAmount());
-    assertSame(bigDecimal, absResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult45.getAmount());
-    assertSame(bigDecimal, absResult60.zero().getAmount());
-    assertSame(bigDecimal, absResult61.zero().getAmount());
-    assertSame(bigDecimal, zeroResult22.getAmount());
-    assertSame(bigDecimal, zeroResult11.getAmount());
-    assertSame(bigDecimal, zeroResult5.getAmount());
+    assertSame(bigDecimal, absResult2.zero().getAmount());
+    assertSame(bigDecimal, absResult3.zero().getAmount());
     assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, zeroResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.zero().getAmount());
-    assertSame(bigDecimal, zeroResult46.getAmount());
-    assertSame(bigDecimal, zeroResult33.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.getAmount());
-    assertSame(bigDecimal, zeroResult23.getAmount());
-    assertSame(bigDecimal, zeroResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.zero().getAmount());
-    assertSame(bigDecimal, zeroResult48.getAmount());
-    assertSame(bigDecimal, zeroResult37.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.getAmount());
-    assertSame(bigDecimal, zeroResult24.getAmount());
-    assertSame(bigDecimal, zeroResult12.getAmount());
-    assertSame(bigDecimal, zeroResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.zero().getAmount());
-    assertSame(bigDecimal, zeroResult50.getAmount());
-    assertSame(bigDecimal, zeroResult41.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.getAmount());
-    assertSame(bigDecimal, zeroResult25.getAmount());
-    assertSame(bigDecimal, zeroResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.zero().getAmount());
-    assertSame(bigDecimal, zeroResult52.getAmount());
-    assertSame(bigDecimal, zeroResult45.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.getAmount());
-    assertSame(bigDecimal, zeroResult26.getAmount());
-    assertSame(bigDecimal, zeroResult13.getAmount());
-    assertSame(bigDecimal, zeroResult6.getAmount());
-    assertSame(bigDecimal, zeroResult46.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult54.getAmount());
-    assertSame(bigDecimal, zeroResult48.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.getAmount());
-    assertSame(bigDecimal, zeroResult27.getAmount());
-    assertSame(bigDecimal, zeroResult50.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult56.getAmount());
-    assertSame(bigDecimal, zeroResult52.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.getAmount());
-    assertSame(bigDecimal, zeroResult28.getAmount());
-    assertSame(bigDecimal, zeroResult14.getAmount());
-    assertSame(bigDecimal, zeroResult54.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult58.getAmount());
-    assertSame(bigDecimal, zeroResult56.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.getAmount());
-    assertSame(bigDecimal, zeroResult29.getAmount());
-    assertSame(bigDecimal, zeroResult58.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.getAmount());
-    assertSame(bigDecimal, zeroResult60.zero().getAmount());
-    assertSame(bigDecimal, zeroResult61.zero().getAmount());
-    assertSame(bigDecimal, zeroResult61.getAmount());
-    assertSame(bigDecimal, zeroResult30.getAmount());
-    assertSame(bigDecimal, zeroResult7.getAmount());
+    assertSame(bigDecimal, zeroResult2.zero().getAmount());
+    assertSame(bigDecimal, zeroResult3.zero().getAmount());
     assertSame(bigDecimal, zeroResult3.getAmount());
     assertSame(bigDecimal, zeroResult.getAmount());
   }
@@ -4202,9 +2241,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getPriceData()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"DynamicSkuPrices SkuImpl.getPriceData()"})
   public void testGetPriceData_givenSkuImpl_thenReturnPriceIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange and Act
     DynamicSkuPrices actualPriceData = (new SkuImpl()).getPriceData();
 
@@ -4217,57 +2256,54 @@ public class SkuImplDiffblueTest {
   }
 
   /**
-   * Test {@link SkuImpl#hasRetailPrice()}.
+   * Test {@link SkuImpl#getPriceData()}.
+   * <ul>
+   *   <li>Then return Price is {@code null}.</li>
+   * </ul>
    * <p>
-   * Method under test: {@link SkuImpl#hasRetailPrice()}
+   * Method under test: {@link SkuImpl#getPriceData()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testHasRetailPrice() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1717 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"DynamicSkuPrices SkuImpl.getPriceData()"})
+  public void testGetPriceData_thenReturnPriceIsNull() {
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setCurrency(new BroadleafCurrencyImpl());
 
-    // Arrange and Act
-    (new SkuImpl()).hasRetailPrice();
+    // Act
+    DynamicSkuPrices actualPriceData = skuImpl2.getPriceData();
+
+    // Assert
+    assertNull(actualPriceData.getPrice());
+    assertNull(actualPriceData.getPriceAdjustment());
+    assertNull(actualPriceData.getRetailPrice());
+    assertNull(actualPriceData.getSalePrice());
+    assertFalse(actualPriceData.getDidOverride());
   }
 
   /**
    * Test {@link SkuImpl#hasRetailPrice()}.
    * <ul>
-   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return
-   * {@link SkuImpl} (default constructor).</li>
-   *   <li>Then calls {@link Product#getDefaultSku()}.</li>
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#hasRetailPrice()}
    */
   @Test
-  public void testHasRetailPrice_givenProductGetDefaultSkuReturnSkuImpl_thenCallsGetDefaultSku() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.hasRetailPrice()"})
+  public void testHasRetailPrice_givenProductGetDefaultSkuReturnSkuImpl_thenReturnFalse() {
     // Arrange
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    boolean actualHasRetailPriceResult = skuImpl.hasRetailPrice();
+    boolean actualHasRetailPriceResult = skuImpl2.hasRetailPrice();
 
     // Assert
     verify(product).getDefaultSku();
@@ -4277,27 +2313,26 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#hasRetailPrice()}.
    * <ul>
-   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return
-   * {@link SkuImpl} (default constructor).</li>
-   *   <li>Then calls {@link Product#getDefaultSku()}.</li>
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#hasRetailPrice()}
    */
   @Test
-  public void testHasRetailPrice_givenProductGetDefaultSkuReturnSkuImpl_thenCallsGetDefaultSku2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.hasRetailPrice()"})
+  public void testHasRetailPrice_givenProductGetDefaultSkuReturnSkuImpl_thenReturnFalse2() {
     // Arrange
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    boolean actualHasRetailPriceResult = skuImpl.hasRetailPrice();
+    boolean actualHasRetailPriceResult = skuImpl2.hasRetailPrice();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -4307,17 +2342,48 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#hasRetailPrice()}.
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getRetailPrice()} return
-   * {@link Money#Money()}.</li>
+   *   <li>Given {@link Sku} {@link Sku#getId()} return one.</li>
+   *   <li>Then calls {@link Sku#getId()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#hasRetailPrice()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.hasRetailPrice()"})
+  public void testHasRetailPrice_givenSkuGetIdReturnOne_thenCallsGetId() {
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenReturn(1L);
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act
+    boolean actualHasRetailPriceResult = skuImpl2.hasRetailPrice();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
+    assertFalse(actualHasRetailPriceResult);
+  }
+
+  /**
+   * Test {@link SkuImpl#hasRetailPrice()}.
+   * <ul>
+   *   <li>Given {@link Sku} {@link Sku#getRetailPrice()} return {@link Money#Money()}.</li>
    *   <li>Then calls {@link Sku#getRetailPrice()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#hasRetailPrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.hasRetailPrice()"})
   public void testHasRetailPrice_givenSkuGetRetailPriceReturnMoney_thenCallsGetRetailPrice() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
@@ -4325,12 +2391,12 @@ public class SkuImplDiffblueTest {
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
 
     // Act
-    boolean actualHasRetailPriceResult = skuImpl.hasRetailPrice();
+    boolean actualHasRetailPriceResult = skuImpl2.hasRetailPrice();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -4342,121 +2408,64 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#hasRetailPrice()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Id is one.</li>
-   *   <li>Then calls {@link Sku#getId()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#hasRetailPrice()}
-   */
-  @Test
-  public void testHasRetailPrice_givenSkuImplIdIsOne_thenCallsGetId() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenReturn(1L);
-    Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
-
-    // Act
-    boolean actualHasRetailPriceResult = skuImpl.hasRetailPrice();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-    assertFalse(actualHasRetailPriceResult);
-  }
-
-  /**
-   * Test {@link SkuImpl#hasRetailPrice()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Product is
-   * {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#hasRetailPrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.hasRetailPrice()"})
   public void testHasRetailPrice_givenSkuImplProductIsProductBundleImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(new ProductBundleImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertFalse(skuImpl.hasRetailPrice());
+    assertFalse(skuImpl2.hasRetailPrice());
   }
 
   /**
    * Test {@link SkuImpl#hasRetailPrice()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) RetailPrice is
-   * {@link Money#Money()}.</li>
+   *   <li>Given {@link SkuImpl} (default constructor) RetailPrice is {@link Money#Money()}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#hasRetailPrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.hasRetailPrice()"})
   public void testHasRetailPrice_givenSkuImplRetailPriceIsMoney_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setRetailPrice(new Money());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setRetailPrice(new Money());
 
     // Act and Assert
-    assertTrue(skuImpl.hasRetailPrice());
+    assertTrue(skuImpl2.hasRetailPrice());
   }
 
   /**
    * Test {@link SkuImpl#hasRetailPrice()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is
-   * {@link Money#Money()}.</li>
+   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is {@link Money#Money()}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#hasRetailPrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.hasRetailPrice()"})
   public void testHasRetailPrice_givenSkuImplSalePriceIsMoney_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(new Money());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setSalePrice(new Money());
 
     // Act and Assert
-    assertFalse(skuImpl.hasRetailPrice());
-  }
-
-  /**
-   * Test {@link SkuImpl#hasRetailPrice()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is
-   * {@link Money}.</li>
-   *   <li>Then return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#hasRetailPrice()}
-   */
-  @Test
-  public void testHasRetailPrice_givenSkuImplSalePriceIsMoney_thenReturnFalse2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(mock(Money.class));
-
-    // Act and Assert
-    assertFalse(skuImpl.hasRetailPrice());
+    assertFalse(skuImpl2.hasRetailPrice());
   }
 
   /**
@@ -4469,9 +2478,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#hasRetailPrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.hasRetailPrice()"})
   public void testHasRetailPrice_givenSkuImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertFalse((new SkuImpl()).hasRetailPrice());
   }
@@ -4485,21 +2494,21 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#hasRetailPrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.hasRetailPrice()"})
   public void testHasRetailPrice_thenThrowIllegalStateException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenThrow(new IllegalStateException("ThreadLocalManager.notify.orphans"));
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.hasRetailPrice());
+    assertThrows(IllegalStateException.class, () -> skuImpl2.hasRetailPrice());
     verify(product, atLeast(1)).getDefaultSku();
     verify(sku).getId();
   }
@@ -4513,686 +2522,116 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#hasRetailPrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.hasRetailPrice()"})
   public void testHasRetailPrice_thenThrowIllegalStateException2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenThrow(new IllegalStateException("ThreadLocalManager.notify.orphans"));
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setRetailPrice(new Money());
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setRetailPrice(new Money());
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.hasRetailPrice());
+    assertThrows(IllegalStateException.class, () -> skuImpl2.hasRetailPrice());
     verify(product, atLeast(1)).getDefaultSku();
     verify(sku).getId();
-  }
-
-  /**
-   * Test {@link SkuImpl#setRetailPrice(Money)}.
-   * <p>
-   * Method under test: {@link SkuImpl#setRetailPrice(Money)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetRetailPrice() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2287 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    SkuImpl skuImpl2 = new SkuImpl();
-
-    // Act
-    skuImpl2.setRetailPrice(new Money());
   }
 
   /**
    * Test {@link SkuImpl#setRetailPrice(Money)}.
    * <ul>
    *   <li>When {@link Money#Money()}.</li>
-   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#retailPrice} is
-   * {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#retailPrice} is {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#setRetailPrice(Money)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.setRetailPrice(Money)"})
   public void testSetRetailPrice_whenMoney_thenSkuImplRetailPriceIsBigDecimalWith000() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
     Money retailPrice = new Money();
 
     // Act
-    skuImpl.setRetailPrice(retailPrice);
+    skuImpl2.setRetailPrice(retailPrice);
 
     // Assert
-    assertEquals(new BigDecimal("0.00"), skuImpl.retailPrice);
-    BigDecimal bigDecimal = skuImpl.retailPrice;
+    assertEquals(new BigDecimal("0.00"), skuImpl2.retailPrice);
+    BigDecimal bigDecimal = skuImpl2.retailPrice;
     Money absResult = retailPrice.abs();
     assertSame(bigDecimal, absResult.getAmount());
     Money absResult2 = absResult.abs();
     assertSame(bigDecimal, absResult2.getAmount());
-    Money absResult3 = absResult2.abs();
-    assertSame(bigDecimal, absResult3.getAmount());
-    Money absResult4 = absResult3.abs();
-    assertSame(bigDecimal, absResult4.getAmount());
-    Money absResult5 = absResult4.abs();
-    assertSame(bigDecimal, absResult5.getAmount());
-    Money absResult6 = absResult5.abs();
-    assertSame(bigDecimal, absResult6.getAmount());
-    assertSame(bigDecimal, absResult6.abs().getAmount());
+    assertSame(bigDecimal, absResult2.abs().getAmount());
     Money zeroResult = retailPrice.zero();
-    Money absResult7 = zeroResult.abs();
-    Money absResult8 = absResult7.abs();
-    Money absResult9 = absResult8.abs();
-    Money absResult10 = absResult9.abs();
-    Money absResult11 = absResult10.abs();
-    assertSame(bigDecimal, absResult11.abs().getAmount());
-    assertSame(bigDecimal, absResult11.getAmount());
+    Money absResult3 = zeroResult.abs();
+    assertSame(bigDecimal, absResult3.abs().getAmount());
+    assertSame(bigDecimal, absResult3.getAmount());
     Money zeroResult2 = absResult.zero();
-    Money absResult12 = zeroResult2.abs();
-    Money absResult13 = absResult12.abs();
-    Money absResult14 = absResult13.abs();
-    Money absResult15 = absResult14.abs();
-    assertSame(bigDecimal, absResult15.abs().getAmount());
+    assertSame(bigDecimal, zeroResult2.abs().getAmount());
     Money zeroResult3 = zeroResult.zero();
-    Money absResult16 = zeroResult3.abs();
-    Money absResult17 = absResult16.abs();
-    Money absResult18 = absResult17.abs();
-    Money absResult19 = absResult18.abs();
-    assertSame(bigDecimal, absResult19.abs().getAmount());
-    assertSame(bigDecimal, absResult10.getAmount());
-    assertSame(bigDecimal, absResult15.getAmount());
-    Money zeroResult4 = absResult2.zero();
-    Money absResult20 = zeroResult4.abs();
-    Money absResult21 = absResult20.abs();
-    Money absResult22 = absResult21.abs();
-    assertSame(bigDecimal, absResult22.abs().getAmount());
-    Money zeroResult5 = absResult7.zero();
-    Money absResult23 = zeroResult5.abs();
-    Money absResult24 = absResult23.abs();
-    Money absResult25 = absResult24.abs();
-    assertSame(bigDecimal, absResult25.abs().getAmount());
-    assertSame(bigDecimal, absResult19.getAmount());
-    Money zeroResult6 = zeroResult2.zero();
-    Money absResult26 = zeroResult6.abs();
-    Money absResult27 = absResult26.abs();
-    Money absResult28 = absResult27.abs();
-    assertSame(bigDecimal, absResult28.abs().getAmount());
-    Money zeroResult7 = zeroResult3.zero();
-    Money absResult29 = zeroResult7.abs();
-    Money absResult30 = absResult29.abs();
-    Money absResult31 = absResult30.abs();
-    assertSame(bigDecimal, absResult31.abs().getAmount());
-    assertSame(bigDecimal, absResult9.getAmount());
-    assertSame(bigDecimal, absResult14.getAmount());
-    assertSame(bigDecimal, absResult22.getAmount());
-    Money zeroResult8 = absResult3.zero();
-    Money absResult32 = zeroResult8.abs();
-    Money absResult33 = absResult32.abs();
-    assertSame(bigDecimal, absResult33.abs().getAmount());
-    Money zeroResult9 = absResult8.zero();
-    Money absResult34 = zeroResult9.abs();
-    Money absResult35 = absResult34.abs();
-    assertSame(bigDecimal, absResult35.abs().getAmount());
-    assertSame(bigDecimal, absResult25.getAmount());
-    Money zeroResult10 = absResult12.zero();
-    Money absResult36 = zeroResult10.abs();
-    Money absResult37 = absResult36.abs();
-    assertSame(bigDecimal, absResult37.abs().getAmount());
-    Money zeroResult11 = absResult16.zero();
-    Money absResult38 = zeroResult11.abs();
-    Money absResult39 = absResult38.abs();
-    assertSame(bigDecimal, absResult39.abs().getAmount());
-    assertSame(bigDecimal, absResult18.getAmount());
-    assertSame(bigDecimal, absResult28.getAmount());
-    Money zeroResult12 = zeroResult4.zero();
-    Money absResult40 = zeroResult12.abs();
-    Money absResult41 = absResult40.abs();
-    assertSame(bigDecimal, absResult41.abs().getAmount());
-    Money zeroResult13 = zeroResult5.zero();
-    Money absResult42 = zeroResult13.abs();
-    Money absResult43 = absResult42.abs();
-    assertSame(bigDecimal, absResult43.abs().getAmount());
-    assertSame(bigDecimal, absResult31.getAmount());
-    Money zeroResult14 = zeroResult6.zero();
-    Money absResult44 = zeroResult14.abs();
-    Money absResult45 = absResult44.abs();
-    assertSame(bigDecimal, absResult45.abs().getAmount());
-    Money zeroResult15 = zeroResult7.zero();
-    Money absResult46 = zeroResult15.abs();
-    Money absResult47 = absResult46.abs();
-    assertSame(bigDecimal, absResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult8.getAmount());
-    assertSame(bigDecimal, absResult13.getAmount());
-    assertSame(bigDecimal, absResult21.getAmount());
-    assertSame(bigDecimal, absResult33.getAmount());
-    Money zeroResult16 = absResult4.zero();
-    Money absResult48 = zeroResult16.abs();
-    assertSame(bigDecimal, absResult48.abs().getAmount());
-    Money zeroResult17 = absResult9.zero();
-    Money absResult49 = zeroResult17.abs();
-    assertSame(bigDecimal, absResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult35.getAmount());
-    Money zeroResult18 = absResult13.zero();
-    Money absResult50 = zeroResult18.abs();
-    assertSame(bigDecimal, absResult50.abs().getAmount());
-    Money zeroResult19 = absResult17.zero();
-    Money absResult51 = zeroResult19.abs();
-    assertSame(bigDecimal, absResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult24.getAmount());
-    assertSame(bigDecimal, absResult37.getAmount());
-    Money zeroResult20 = absResult20.zero();
-    Money absResult52 = zeroResult20.abs();
-    assertSame(bigDecimal, absResult52.abs().getAmount());
-    Money zeroResult21 = absResult23.zero();
-    Money absResult53 = zeroResult21.abs();
-    assertSame(bigDecimal, absResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult39.getAmount());
-    Money zeroResult22 = absResult26.zero();
-    Money absResult54 = zeroResult22.abs();
-    assertSame(bigDecimal, absResult54.abs().getAmount());
-    Money zeroResult23 = absResult29.zero();
-    Money absResult55 = zeroResult23.abs();
-    assertSame(bigDecimal, absResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult17.getAmount());
-    assertSame(bigDecimal, absResult27.getAmount());
-    assertSame(bigDecimal, absResult41.getAmount());
-    Money zeroResult24 = zeroResult8.zero();
-    Money absResult56 = zeroResult24.abs();
-    assertSame(bigDecimal, absResult56.abs().getAmount());
-    Money zeroResult25 = zeroResult9.zero();
-    Money absResult57 = zeroResult25.abs();
-    assertSame(bigDecimal, absResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult43.getAmount());
-    Money zeroResult26 = zeroResult10.zero();
-    Money absResult58 = zeroResult26.abs();
-    assertSame(bigDecimal, absResult58.abs().getAmount());
-    Money zeroResult27 = zeroResult11.zero();
-    Money absResult59 = zeroResult27.abs();
-    assertSame(bigDecimal, absResult59.abs().getAmount());
-    assertSame(bigDecimal, absResult30.getAmount());
-    assertSame(bigDecimal, absResult45.getAmount());
-    Money zeroResult28 = zeroResult12.zero();
-    Money absResult60 = zeroResult28.abs();
-    assertSame(bigDecimal, absResult60.abs().getAmount());
-    Money zeroResult29 = zeroResult13.zero();
-    Money absResult61 = zeroResult29.abs();
-    assertSame(bigDecimal, absResult61.abs().getAmount());
-    assertSame(bigDecimal, absResult47.getAmount());
-    Money zeroResult30 = zeroResult14.zero();
-    Money absResult62 = zeroResult30.abs();
-    assertSame(bigDecimal, absResult62.abs().getAmount());
-    assertSame(bigDecimal, absResult7.getAmount());
-    assertSame(bigDecimal, absResult12.getAmount());
-    assertSame(bigDecimal, absResult20.getAmount());
-    assertSame(bigDecimal, absResult32.getAmount());
-    assertSame(bigDecimal, absResult48.getAmount());
-    Money zeroResult31 = absResult5.zero();
-    assertSame(bigDecimal, zeroResult31.abs().getAmount());
-    Money zeroResult32 = absResult10.zero();
-    assertSame(bigDecimal, zeroResult32.abs().getAmount());
-    assertSame(bigDecimal, absResult49.getAmount());
-    Money zeroResult33 = absResult14.zero();
-    assertSame(bigDecimal, zeroResult33.abs().getAmount());
-    Money zeroResult34 = absResult18.zero();
-    assertSame(bigDecimal, zeroResult34.abs().getAmount());
-    assertSame(bigDecimal, absResult34.getAmount());
-    assertSame(bigDecimal, absResult50.getAmount());
-    Money zeroResult35 = absResult21.zero();
-    assertSame(bigDecimal, zeroResult35.abs().getAmount());
-    Money zeroResult36 = absResult24.zero();
-    assertSame(bigDecimal, zeroResult36.abs().getAmount());
-    assertSame(bigDecimal, absResult51.getAmount());
-    Money zeroResult37 = absResult27.zero();
-    assertSame(bigDecimal, zeroResult37.abs().getAmount());
-    Money zeroResult38 = absResult30.zero();
-    assertSame(bigDecimal, zeroResult38.abs().getAmount());
-    assertSame(bigDecimal, absResult23.getAmount());
-    assertSame(bigDecimal, absResult36.getAmount());
-    assertSame(bigDecimal, absResult52.getAmount());
-    Money zeroResult39 = absResult32.zero();
-    assertSame(bigDecimal, zeroResult39.abs().getAmount());
-    Money zeroResult40 = absResult34.zero();
-    assertSame(bigDecimal, zeroResult40.abs().getAmount());
-    assertSame(bigDecimal, absResult53.getAmount());
-    Money zeroResult41 = absResult36.zero();
-    assertSame(bigDecimal, zeroResult41.abs().getAmount());
-    Money zeroResult42 = absResult38.zero();
-    assertSame(bigDecimal, zeroResult42.abs().getAmount());
-    assertSame(bigDecimal, absResult38.getAmount());
-    assertSame(bigDecimal, absResult54.getAmount());
-    Money zeroResult43 = absResult40.zero();
-    assertSame(bigDecimal, zeroResult43.abs().getAmount());
-    Money zeroResult44 = absResult42.zero();
-    assertSame(bigDecimal, zeroResult44.abs().getAmount());
-    assertSame(bigDecimal, absResult55.getAmount());
-    Money zeroResult45 = absResult44.zero();
-    assertSame(bigDecimal, zeroResult45.abs().getAmount());
-    assertSame(bigDecimal, absResult16.getAmount());
-    assertSame(bigDecimal, absResult26.getAmount());
-    assertSame(bigDecimal, absResult40.getAmount());
-    assertSame(bigDecimal, absResult56.getAmount());
-    Money zeroResult46 = zeroResult16.zero();
-    assertSame(bigDecimal, zeroResult46.abs().getAmount());
-    Money zeroResult47 = zeroResult17.zero();
-    assertSame(bigDecimal, zeroResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult57.getAmount());
-    Money zeroResult48 = zeroResult18.zero();
-    assertSame(bigDecimal, zeroResult48.abs().getAmount());
-    Money zeroResult49 = zeroResult19.zero();
-    assertSame(bigDecimal, zeroResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult42.getAmount());
-    assertSame(bigDecimal, absResult58.getAmount());
-    Money zeroResult50 = zeroResult20.zero();
-    assertSame(bigDecimal, zeroResult50.abs().getAmount());
-    Money zeroResult51 = zeroResult21.zero();
-    assertSame(bigDecimal, zeroResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult59.getAmount());
-    Money zeroResult52 = zeroResult22.zero();
-    assertSame(bigDecimal, zeroResult52.abs().getAmount());
-    Money zeroResult53 = zeroResult23.zero();
-    assertSame(bigDecimal, zeroResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult29.getAmount());
-    assertSame(bigDecimal, absResult44.getAmount());
-    assertSame(bigDecimal, absResult60.getAmount());
-    Money zeroResult54 = zeroResult24.zero();
-    assertSame(bigDecimal, zeroResult54.abs().getAmount());
-    Money zeroResult55 = zeroResult25.zero();
-    assertSame(bigDecimal, zeroResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult61.getAmount());
-    Money zeroResult56 = zeroResult26.zero();
-    assertSame(bigDecimal, zeroResult56.abs().getAmount());
-    Money zeroResult57 = zeroResult27.zero();
-    assertSame(bigDecimal, zeroResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult46.getAmount());
-    assertSame(bigDecimal, absResult62.getAmount());
-    Money zeroResult58 = zeroResult28.zero();
-    assertSame(bigDecimal, zeroResult58.abs().getAmount());
-    Money zeroResult59 = zeroResult29.zero();
-    assertSame(bigDecimal, zeroResult59.abs().getAmount());
-    Money zeroResult60 = zeroResult15.zero();
-    assertSame(bigDecimal, zeroResult60.abs().getAmount());
-    Money zeroResult61 = zeroResult30.zero();
-    assertSame(bigDecimal, zeroResult61.abs().getAmount());
+    assertSame(bigDecimal, zeroResult3.abs().getAmount());
     assertSame(bigDecimal, zeroResult.getAmount());
     assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, zeroResult4.getAmount());
-    assertSame(bigDecimal, zeroResult8.getAmount());
-    assertSame(bigDecimal, zeroResult16.getAmount());
-    assertSame(bigDecimal, zeroResult31.getAmount());
-    assertSame(bigDecimal, absResult6.zero().getAmount());
-    assertSame(bigDecimal, absResult11.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.getAmount());
-    assertSame(bigDecimal, absResult15.zero().getAmount());
-    assertSame(bigDecimal, absResult19.zero().getAmount());
-    assertSame(bigDecimal, zeroResult17.getAmount());
-    assertSame(bigDecimal, zeroResult33.getAmount());
-    assertSame(bigDecimal, absResult22.zero().getAmount());
-    assertSame(bigDecimal, absResult25.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.getAmount());
-    assertSame(bigDecimal, absResult28.zero().getAmount());
-    assertSame(bigDecimal, absResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult9.getAmount());
-    assertSame(bigDecimal, zeroResult18.getAmount());
-    assertSame(bigDecimal, zeroResult35.getAmount());
-    assertSame(bigDecimal, absResult33.zero().getAmount());
-    assertSame(bigDecimal, absResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.getAmount());
-    assertSame(bigDecimal, absResult37.zero().getAmount());
-    assertSame(bigDecimal, absResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult19.getAmount());
-    assertSame(bigDecimal, zeroResult37.getAmount());
-    assertSame(bigDecimal, absResult41.zero().getAmount());
-    assertSame(bigDecimal, absResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.getAmount());
-    assertSame(bigDecimal, absResult45.zero().getAmount());
-    assertSame(bigDecimal, absResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult5.getAmount());
-    assertSame(bigDecimal, zeroResult10.getAmount());
-    assertSame(bigDecimal, zeroResult20.getAmount());
-    assertSame(bigDecimal, zeroResult39.getAmount());
-    assertSame(bigDecimal, absResult48.zero().getAmount());
-    assertSame(bigDecimal, absResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.getAmount());
-    assertSame(bigDecimal, absResult50.zero().getAmount());
-    assertSame(bigDecimal, absResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult21.getAmount());
-    assertSame(bigDecimal, zeroResult41.getAmount());
-    assertSame(bigDecimal, absResult52.zero().getAmount());
-    assertSame(bigDecimal, absResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.getAmount());
-    assertSame(bigDecimal, absResult54.zero().getAmount());
-    assertSame(bigDecimal, absResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult11.getAmount());
-    assertSame(bigDecimal, zeroResult22.getAmount());
-    assertSame(bigDecimal, zeroResult43.getAmount());
-    assertSame(bigDecimal, absResult56.zero().getAmount());
-    assertSame(bigDecimal, absResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.getAmount());
-    assertSame(bigDecimal, absResult58.zero().getAmount());
-    assertSame(bigDecimal, absResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult23.getAmount());
-    assertSame(bigDecimal, zeroResult45.getAmount());
-    assertSame(bigDecimal, absResult60.zero().getAmount());
-    assertSame(bigDecimal, absResult61.zero().getAmount());
-    assertSame(bigDecimal, absResult46.zero().getAmount());
-    assertSame(bigDecimal, absResult62.zero().getAmount());
+    assertSame(bigDecimal, absResult2.zero().getAmount());
+    assertSame(bigDecimal, absResult3.zero().getAmount());
     assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult6.getAmount());
-    assertSame(bigDecimal, zeroResult12.getAmount());
-    assertSame(bigDecimal, zeroResult24.getAmount());
-    assertSame(bigDecimal, zeroResult46.getAmount());
-    assertSame(bigDecimal, zeroResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.getAmount());
-    assertSame(bigDecimal, zeroResult33.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.zero().getAmount());
-    assertSame(bigDecimal, zeroResult25.getAmount());
-    assertSame(bigDecimal, zeroResult48.getAmount());
-    assertSame(bigDecimal, zeroResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.getAmount());
-    assertSame(bigDecimal, zeroResult37.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.zero().getAmount());
-    assertSame(bigDecimal, zeroResult13.getAmount());
-    assertSame(bigDecimal, zeroResult26.getAmount());
-    assertSame(bigDecimal, zeroResult50.getAmount());
-    assertSame(bigDecimal, zeroResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.getAmount());
-    assertSame(bigDecimal, zeroResult41.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.zero().getAmount());
-    assertSame(bigDecimal, zeroResult27.getAmount());
-    assertSame(bigDecimal, zeroResult52.getAmount());
-    assertSame(bigDecimal, zeroResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.getAmount());
-    assertSame(bigDecimal, zeroResult45.zero().getAmount());
-    assertSame(bigDecimal, zeroResult7.getAmount());
-    assertSame(bigDecimal, zeroResult14.getAmount());
-    assertSame(bigDecimal, zeroResult28.getAmount());
-    assertSame(bigDecimal, zeroResult54.getAmount());
-    assertSame(bigDecimal, zeroResult46.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.getAmount());
-    assertSame(bigDecimal, zeroResult48.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult29.getAmount());
-    assertSame(bigDecimal, zeroResult56.getAmount());
-    assertSame(bigDecimal, zeroResult50.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.getAmount());
-    assertSame(bigDecimal, zeroResult52.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult15.getAmount());
-    assertSame(bigDecimal, zeroResult30.getAmount());
-    assertSame(bigDecimal, zeroResult58.getAmount());
-    assertSame(bigDecimal, zeroResult54.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.getAmount());
-    assertSame(bigDecimal, zeroResult56.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.getAmount());
-    assertSame(bigDecimal, zeroResult61.getAmount());
-    assertSame(bigDecimal, zeroResult58.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.zero().getAmount());
-    assertSame(bigDecimal, zeroResult61.zero().getAmount());
-  }
-
-  /**
-   * Test {@link SkuImpl#setRetailPrice(Money)}.
-   * <ul>
-   *   <li>When {@link Money}.</li>
-   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#retailPrice} is
-   * {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#setRetailPrice(Money)}
-   */
-  @Test
-  public void testSetRetailPrice_whenMoney_thenSkuImplRetailPriceIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-
-    // Act
-    skuImpl.setRetailPrice(mock(Money.class));
-
-    // Assert
-    assertNull(skuImpl.retailPrice);
+    assertSame(bigDecimal, zeroResult2.zero().getAmount());
+    assertSame(bigDecimal, zeroResult3.zero().getAmount());
   }
 
   /**
    * Test {@link SkuImpl#setRetailPrice(Money)}.
    * <ul>
    *   <li>When {@code null}.</li>
-   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#retailPrice} is
-   * {@code null}.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#retailPrice} is {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#setRetailPrice(Money)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.setRetailPrice(Money)"})
   public void testSetRetailPrice_whenNull_thenSkuImplRetailPriceIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
 
     // Act
-    skuImpl.setRetailPrice(null);
+    skuImpl2.setRetailPrice(null);
 
-    // Assert
-    assertNull(skuImpl.retailPrice);
-  }
-
-  /**
-   * Test {@link SkuImpl#getPrice()}.
-   * <p>
-   * Method under test: {@link SkuImpl#getPrice()}
-   */
-  @Test
-  public void testGetPrice() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenThrow(new IllegalStateException("ThreadLocalManager.notify.orphans"));
-    Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getPrice());
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-  }
-
-  /**
-   * Test {@link SkuImpl#getPrice()}.
-   * <p>
-   * Method under test: {@link SkuImpl#getPrice()}
-   */
-  @Test
-  public void testGetPrice2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenThrow(new IllegalStateException("ThreadLocalManager.notify.orphans"));
-    Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setRetailPrice(new Money());
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getPrice());
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-  }
-
-  /**
-   * Test {@link SkuImpl#getPrice()}.
-   * <p>
-   * Method under test: {@link SkuImpl#getPrice()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetPrice3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1177 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).getPrice();
+    // Assert that nothing has changed
+    assertNull(skuImpl2.retailPrice);
   }
 
   /**
    * Test {@link SkuImpl#getPrice()}.
    * <ul>
-   *   <li>Given {@link Money} {@link Money#isZero()} return {@code false}.</li>
-   *   <li>Then calls {@link Money#lessThan(Money)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getPrice()}
-   */
-  @Test
-  public void testGetPrice_givenMoneyIsZeroReturnFalse_thenCallsLessThan() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Money money = mock(Money.class);
-    when(money.isZero()).thenReturn(false);
-    when(money.lessThan(Mockito.<Money>any())).thenReturn(true);
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenReturn(1L);
-    when(sku.getRetailPrice()).thenReturn(new Money());
-    when(sku.getSalePrice()).thenReturn(money);
-    Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
-
-    // Act
-    skuImpl.getPrice();
-
-    // Assert
-    verify(money).isZero();
-    verify(money).lessThan(isA(Money.class));
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku, atLeast(1)).getId();
-    verify(sku).getRetailPrice();
-    verify(sku, atLeast(1)).getSalePrice();
-  }
-
-  /**
-   * Test {@link SkuImpl#getPrice()}.
-   * <ul>
-   *   <li>Given {@link Money} {@link Money#isZero()} return {@code true}.</li>
-   *   <li>Then calls {@link Money#isZero()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getPrice()}
-   */
-  @Test
-  public void testGetPrice_givenMoneyIsZeroReturnTrue_thenCallsIsZero() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Money money = mock(Money.class);
-    when(money.isZero()).thenReturn(true);
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenReturn(1L);
-    Money money2 = new Money();
-    when(sku.getRetailPrice()).thenReturn(money2);
-    when(sku.getSalePrice()).thenReturn(money);
-    Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
-
-    // Act
-    Money actualPrice = skuImpl.getPrice();
-
-    // Assert
-    verify(money).isZero();
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku, atLeast(1)).getId();
-    verify(sku, atLeast(1)).getRetailPrice();
-    verify(sku).getSalePrice();
-    assertSame(money2, actualPrice);
-  }
-
-  /**
-   * Test {@link SkuImpl#getPrice()}.
-   * <ul>
-   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return
-   * {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getPrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getPrice()"})
   public void testGetPrice_givenProductGetDefaultSkuReturnSkuImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    Money actualPrice = skuImpl.getPrice();
+    Money actualPrice = skuImpl2.getPrice();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -5202,27 +2641,26 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getPrice()}.
    * <ul>
-   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return
-   * {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getPrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getPrice()"})
   public void testGetPrice_givenProductGetDefaultSkuReturnSkuImpl_thenReturnNull2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Money actualPrice = skuImpl.getPrice();
+    Money actualPrice = skuImpl2.getPrice();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -5232,55 +2670,48 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getPrice()}.
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getSalePrice()} return
-   * {@link Money#Money(double)} with amount is ten.</li>
-   *   <li>Then return {@link Money#Money()}.</li>
+   *   <li>Given {@link Sku} {@link Sku#getId()} return one.</li>
+   *   <li>Then calls {@link Sku#getId()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getPrice()}
    */
   @Test
-  public void testGetPrice_givenSkuGetSalePriceReturnMoneyWithAmountIsTen_thenReturnMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getPrice()"})
+  public void testGetPrice_givenSkuGetIdReturnOne_thenCallsGetId() {
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
-    Money money = new Money();
-    when(sku.getRetailPrice()).thenReturn(money);
-    when(sku.getSalePrice()).thenReturn(new Money(10.0d));
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Money actualPrice = skuImpl.getPrice();
+    Money actualPrice = skuImpl2.getPrice();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
     verify(sku, atLeast(1)).getId();
-    verify(sku, atLeast(1)).getRetailPrice();
-    verify(sku).getSalePrice();
-    assertSame(money, actualPrice);
+    assertNull(actualPrice);
   }
 
   /**
    * Test {@link SkuImpl#getPrice()}.
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getSalePrice()} return
-   * {@link Money#Money()}.</li>
-   *   <li>Then return {@link Money#Money()}.</li>
+   *   <li>Given {@link Sku} {@link Sku#getRetailPrice()} return {@link Money#Money()}.</li>
+   *   <li>Then calls {@link Sku#getRetailPrice()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getPrice()}
    */
   @Test
-  public void testGetPrice_givenSkuGetSalePriceReturnMoney_thenReturnMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getPrice()"})
+  public void testGetPrice_givenSkuGetRetailPriceReturnMoney_thenCallsGetRetailPrice() {
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
@@ -5290,12 +2721,12 @@ public class SkuImplDiffblueTest {
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Money actualPrice = skuImpl.getPrice();
+    Money actualPrice = skuImpl2.getPrice();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -5308,122 +2739,65 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getPrice()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Id is one.</li>
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getPrice()}
    */
   @Test
-  public void testGetPrice_givenSkuImplIdIsOne_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenReturn(1L);
-    Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
-
-    // Act
-    Money actualPrice = skuImpl.getPrice();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku, atLeast(1)).getId();
-    assertNull(actualPrice);
-  }
-
-  /**
-   * Test {@link SkuImpl#getPrice()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Product is
-   * {@link ProductBundleImpl} (default constructor).</li>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getPrice()}
-   */
-  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getPrice()"})
   public void testGetPrice_givenSkuImplProductIsProductBundleImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(new ProductBundleImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertNull(skuImpl.getPrice());
+    assertNull(skuImpl2.getPrice());
   }
 
   /**
    * Test {@link SkuImpl#getPrice()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) RetailPrice is
-   * {@link Money#Money()}.</li>
+   *   <li>Given {@link SkuImpl} (default constructor) RetailPrice is {@link Money#Money()}.</li>
    *   <li>Then return {@link Money#Money()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getPrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getPrice()"})
   public void testGetPrice_givenSkuImplRetailPriceIsMoney_thenReturnMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
     Money retailPrice = new Money();
-    skuImpl.setRetailPrice(retailPrice);
+    skuImpl2.setRetailPrice(retailPrice);
 
     // Act and Assert
-    assertEquals(retailPrice, skuImpl.getPrice());
+    assertEquals(retailPrice, skuImpl2.getPrice());
   }
 
   /**
    * Test {@link SkuImpl#getPrice()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is
-   * {@link Money#Money()}.</li>
+   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is {@link Money#Money()}.</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getPrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getPrice()"})
   public void testGetPrice_givenSkuImplSalePriceIsMoney_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(new Money());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setSalePrice(new Money());
 
     // Act and Assert
-    assertNull(skuImpl.getPrice());
-  }
-
-  /**
-   * Test {@link SkuImpl#getPrice()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is
-   * {@link Money}.</li>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getPrice()}
-   */
-  @Test
-  public void testGetPrice_givenSkuImplSalePriceIsMoney_thenReturnNull2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(mock(Money.class));
-
-    // Act and Assert
-    assertNull(skuImpl.getPrice());
+    assertNull(skuImpl2.getPrice());
   }
 
   /**
@@ -5436,9 +2810,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getPrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getPrice()"})
   public void testGetPrice_givenSkuImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new SkuImpl()).getPrice());
   }
@@ -5446,88 +2820,82 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getPrice()}.
    * <ul>
-   *   <li>Then calls {@link Sku#getCurrency()}.</li>
+   *   <li>Then throw {@link IllegalStateException}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getPrice()}
    */
   @Test
-  public void testGetPrice_thenCallsGetCurrency() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getPrice()"})
+  public void testGetPrice_thenThrowIllegalStateException() {
     // Arrange
     Sku sku = mock(Sku.class);
-    when(sku.getCurrency()).thenThrow(new IllegalStateException("currency.default"));
-    when(sku.getId()).thenReturn(1L);
-    when(sku.getRetailPrice()).thenReturn(new Money());
+    when(sku.getId()).thenThrow(new IllegalStateException("ThreadLocalManager.notify.orphans"));
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(new Money());
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getPrice());
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getPrice());
     verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getCurrency();
-    verify(sku, atLeast(1)).getId();
-    verify(sku).getRetailPrice();
+    verify(sku).getId();
   }
 
   /**
-   * Test {@link SkuImpl#getListPrice()}.
+   * Test {@link SkuImpl#getPrice()}.
+   * <ul>
+   *   <li>Then throw {@link IllegalStateException}.</li>
+   * </ul>
    * <p>
-   * Method under test: {@link SkuImpl#getListPrice()}
+   * Method under test: {@link SkuImpl#getPrice()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetListPrice() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1027 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getPrice()"})
+  public void testGetPrice_thenThrowIllegalStateException2() {
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("ThreadLocalManager.notify.orphans"));
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(sku);
 
-    // Arrange and Act
-    (new SkuImpl()).getListPrice();
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setRetailPrice(new Money());
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act and Assert
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getPrice());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#getListPrice()}.
    * <ul>
-   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return
-   * {@link SkuImpl} (default constructor).</li>
-   *   <li>Then calls {@link Product#getDefaultSku()}.</li>
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getListPrice()}
    */
   @Test
-  public void testGetListPrice_givenProductGetDefaultSkuReturnSkuImpl_thenCallsGetDefaultSku() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getListPrice()"})
+  public void testGetListPrice_givenProductGetDefaultSkuReturnSkuImpl_thenReturnNull() {
     // Arrange
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    Money actualListPrice = skuImpl.getListPrice();
+    Money actualListPrice = skuImpl2.getListPrice();
 
     // Assert
     verify(product).getDefaultSku();
@@ -5537,27 +2905,26 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getListPrice()}.
    * <ul>
-   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return
-   * {@link SkuImpl} (default constructor).</li>
-   *   <li>Then calls {@link Product#getDefaultSku()}.</li>
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getListPrice()}
    */
   @Test
-  public void testGetListPrice_givenProductGetDefaultSkuReturnSkuImpl_thenCallsGetDefaultSku2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getListPrice()"})
+  public void testGetListPrice_givenProductGetDefaultSkuReturnSkuImpl_thenReturnNull2() {
     // Arrange
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Money actualListPrice = skuImpl.getListPrice();
+    Money actualListPrice = skuImpl2.getListPrice();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -5567,17 +2934,48 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getListPrice()}.
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getRetailPrice()} return
-   * {@link Money#Money()}.</li>
+   *   <li>Given {@link Sku} {@link Sku#getId()} return one.</li>
+   *   <li>Then calls {@link Sku#getId()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getListPrice()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getListPrice()"})
+  public void testGetListPrice_givenSkuGetIdReturnOne_thenCallsGetId() {
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenReturn(1L);
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act
+    Money actualListPrice = skuImpl2.getListPrice();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
+    assertNull(actualListPrice);
+  }
+
+  /**
+   * Test {@link SkuImpl#getListPrice()}.
+   * <ul>
+   *   <li>Given {@link Sku} {@link Sku#getRetailPrice()} return {@link Money#Money()}.</li>
    *   <li>Then calls {@link Sku#getRetailPrice()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getListPrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getListPrice()"})
   public void testGetListPrice_givenSkuGetRetailPriceReturnMoney_thenCallsGetRetailPrice() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
@@ -5586,12 +2984,12 @@ public class SkuImplDiffblueTest {
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Money actualListPrice = skuImpl.getListPrice();
+    Money actualListPrice = skuImpl2.getListPrice();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -5603,122 +3001,65 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getListPrice()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Id is one.</li>
-   *   <li>Then calls {@link Sku#getId()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getListPrice()}
-   */
-  @Test
-  public void testGetListPrice_givenSkuImplIdIsOne_thenCallsGetId() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenReturn(1L);
-    Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
-
-    // Act
-    Money actualListPrice = skuImpl.getListPrice();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-    assertNull(actualListPrice);
-  }
-
-  /**
-   * Test {@link SkuImpl#getListPrice()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Product is
-   * {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getListPrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getListPrice()"})
   public void testGetListPrice_givenSkuImplProductIsProductBundleImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(new ProductBundleImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertNull(skuImpl.getListPrice());
+    assertNull(skuImpl2.getListPrice());
   }
 
   /**
    * Test {@link SkuImpl#getListPrice()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) RetailPrice is
-   * {@link Money#Money()}.</li>
+   *   <li>Given {@link SkuImpl} (default constructor) RetailPrice is {@link Money#Money()}.</li>
    *   <li>Then return {@link Money#Money()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getListPrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getListPrice()"})
   public void testGetListPrice_givenSkuImplRetailPriceIsMoney_thenReturnMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
     Money retailPrice = new Money();
-    skuImpl.setRetailPrice(retailPrice);
+    skuImpl2.setRetailPrice(retailPrice);
 
     // Act and Assert
-    assertEquals(retailPrice, skuImpl.getListPrice());
+    assertEquals(retailPrice, skuImpl2.getListPrice());
   }
 
   /**
    * Test {@link SkuImpl#getListPrice()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is
-   * {@link Money#Money()}.</li>
+   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is {@link Money#Money()}.</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getListPrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getListPrice()"})
   public void testGetListPrice_givenSkuImplSalePriceIsMoney_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(new Money());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setSalePrice(new Money());
 
     // Act and Assert
-    assertNull(skuImpl.getListPrice());
-  }
-
-  /**
-   * Test {@link SkuImpl#getListPrice()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is
-   * {@link Money}.</li>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getListPrice()}
-   */
-  @Test
-  public void testGetListPrice_givenSkuImplSalePriceIsMoney_thenReturnNull2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(mock(Money.class));
-
-    // Act and Assert
-    assertNull(skuImpl.getListPrice());
+    assertNull(skuImpl2.getListPrice());
   }
 
   /**
@@ -5731,9 +3072,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getListPrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getListPrice()"})
   public void testGetListPrice_givenSkuImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new SkuImpl()).getListPrice());
   }
@@ -5747,21 +3088,21 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getListPrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getListPrice()"})
   public void testGetListPrice_thenThrowIllegalStateException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenThrow(new IllegalStateException("ThreadLocalManager.notify.orphans"));
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getListPrice());
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getListPrice());
     verify(product, atLeast(1)).getDefaultSku();
     verify(sku).getId();
   }
@@ -5775,555 +3116,116 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getListPrice()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getListPrice()"})
   public void testGetListPrice_thenThrowIllegalStateException2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenThrow(new IllegalStateException("ThreadLocalManager.notify.orphans"));
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setRetailPrice(new Money());
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setRetailPrice(new Money());
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getListPrice());
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getListPrice());
     verify(product, atLeast(1)).getDefaultSku();
     verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#setListPrice(Money)}.
-   * <p>
-   * Method under test: {@link SkuImpl#setListPrice(Money)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetListPrice() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2197 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    SkuImpl skuImpl2 = new SkuImpl();
-
-    // Act
-    skuImpl2.setListPrice(new Money());
-  }
-
-  /**
-   * Test {@link SkuImpl#setListPrice(Money)}.
    * <ul>
    *   <li>When {@link Money#Money()}.</li>
-   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#retailPrice} is
-   * {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#retailPrice} is {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#setListPrice(Money)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.setListPrice(Money)"})
   public void testSetListPrice_whenMoney_thenSkuImplRetailPriceIsBigDecimalWith000() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
     Money listPrice = new Money();
 
     // Act
-    skuImpl.setListPrice(listPrice);
+    skuImpl2.setListPrice(listPrice);
 
     // Assert
-    assertEquals(new BigDecimal("0.00"), skuImpl.retailPrice);
-    BigDecimal bigDecimal = skuImpl.retailPrice;
+    assertEquals(new BigDecimal("0.00"), skuImpl2.retailPrice);
+    BigDecimal bigDecimal = skuImpl2.retailPrice;
     Money absResult = listPrice.abs();
     assertSame(bigDecimal, absResult.getAmount());
     Money absResult2 = absResult.abs();
     assertSame(bigDecimal, absResult2.getAmount());
-    Money absResult3 = absResult2.abs();
-    assertSame(bigDecimal, absResult3.getAmount());
-    Money absResult4 = absResult3.abs();
-    assertSame(bigDecimal, absResult4.getAmount());
-    Money absResult5 = absResult4.abs();
-    assertSame(bigDecimal, absResult5.getAmount());
-    Money absResult6 = absResult5.abs();
-    assertSame(bigDecimal, absResult6.getAmount());
-    assertSame(bigDecimal, absResult6.abs().getAmount());
+    assertSame(bigDecimal, absResult2.abs().getAmount());
     Money zeroResult = listPrice.zero();
-    Money absResult7 = zeroResult.abs();
-    Money absResult8 = absResult7.abs();
-    Money absResult9 = absResult8.abs();
-    Money absResult10 = absResult9.abs();
-    Money absResult11 = absResult10.abs();
-    assertSame(bigDecimal, absResult11.abs().getAmount());
-    assertSame(bigDecimal, absResult11.getAmount());
+    Money absResult3 = zeroResult.abs();
+    assertSame(bigDecimal, absResult3.abs().getAmount());
+    assertSame(bigDecimal, absResult3.getAmount());
     Money zeroResult2 = absResult.zero();
-    Money absResult12 = zeroResult2.abs();
-    Money absResult13 = absResult12.abs();
-    Money absResult14 = absResult13.abs();
-    Money absResult15 = absResult14.abs();
-    assertSame(bigDecimal, absResult15.abs().getAmount());
+    assertSame(bigDecimal, zeroResult2.abs().getAmount());
     Money zeroResult3 = zeroResult.zero();
-    Money absResult16 = zeroResult3.abs();
-    Money absResult17 = absResult16.abs();
-    Money absResult18 = absResult17.abs();
-    Money absResult19 = absResult18.abs();
-    assertSame(bigDecimal, absResult19.abs().getAmount());
-    assertSame(bigDecimal, absResult10.getAmount());
-    assertSame(bigDecimal, absResult15.getAmount());
-    Money zeroResult4 = absResult2.zero();
-    Money absResult20 = zeroResult4.abs();
-    Money absResult21 = absResult20.abs();
-    Money absResult22 = absResult21.abs();
-    assertSame(bigDecimal, absResult22.abs().getAmount());
-    Money zeroResult5 = absResult7.zero();
-    Money absResult23 = zeroResult5.abs();
-    Money absResult24 = absResult23.abs();
-    Money absResult25 = absResult24.abs();
-    assertSame(bigDecimal, absResult25.abs().getAmount());
-    assertSame(bigDecimal, absResult19.getAmount());
-    Money zeroResult6 = zeroResult2.zero();
-    Money absResult26 = zeroResult6.abs();
-    Money absResult27 = absResult26.abs();
-    Money absResult28 = absResult27.abs();
-    assertSame(bigDecimal, absResult28.abs().getAmount());
-    Money zeroResult7 = zeroResult3.zero();
-    Money absResult29 = zeroResult7.abs();
-    Money absResult30 = absResult29.abs();
-    Money absResult31 = absResult30.abs();
-    assertSame(bigDecimal, absResult31.abs().getAmount());
-    assertSame(bigDecimal, absResult9.getAmount());
-    assertSame(bigDecimal, absResult14.getAmount());
-    assertSame(bigDecimal, absResult22.getAmount());
-    Money zeroResult8 = absResult3.zero();
-    Money absResult32 = zeroResult8.abs();
-    Money absResult33 = absResult32.abs();
-    assertSame(bigDecimal, absResult33.abs().getAmount());
-    Money zeroResult9 = absResult8.zero();
-    Money absResult34 = zeroResult9.abs();
-    Money absResult35 = absResult34.abs();
-    assertSame(bigDecimal, absResult35.abs().getAmount());
-    assertSame(bigDecimal, absResult25.getAmount());
-    Money zeroResult10 = absResult12.zero();
-    Money absResult36 = zeroResult10.abs();
-    Money absResult37 = absResult36.abs();
-    assertSame(bigDecimal, absResult37.abs().getAmount());
-    Money zeroResult11 = absResult16.zero();
-    Money absResult38 = zeroResult11.abs();
-    Money absResult39 = absResult38.abs();
-    assertSame(bigDecimal, absResult39.abs().getAmount());
-    assertSame(bigDecimal, absResult18.getAmount());
-    assertSame(bigDecimal, absResult28.getAmount());
-    Money zeroResult12 = zeroResult4.zero();
-    Money absResult40 = zeroResult12.abs();
-    Money absResult41 = absResult40.abs();
-    assertSame(bigDecimal, absResult41.abs().getAmount());
-    Money zeroResult13 = zeroResult5.zero();
-    Money absResult42 = zeroResult13.abs();
-    Money absResult43 = absResult42.abs();
-    assertSame(bigDecimal, absResult43.abs().getAmount());
-    assertSame(bigDecimal, absResult31.getAmount());
-    Money zeroResult14 = zeroResult6.zero();
-    Money absResult44 = zeroResult14.abs();
-    Money absResult45 = absResult44.abs();
-    assertSame(bigDecimal, absResult45.abs().getAmount());
-    Money zeroResult15 = zeroResult7.zero();
-    Money absResult46 = zeroResult15.abs();
-    Money absResult47 = absResult46.abs();
-    assertSame(bigDecimal, absResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult8.getAmount());
-    assertSame(bigDecimal, absResult13.getAmount());
-    assertSame(bigDecimal, absResult21.getAmount());
-    assertSame(bigDecimal, absResult33.getAmount());
-    Money zeroResult16 = absResult4.zero();
-    Money absResult48 = zeroResult16.abs();
-    assertSame(bigDecimal, absResult48.abs().getAmount());
-    Money zeroResult17 = absResult9.zero();
-    Money absResult49 = zeroResult17.abs();
-    assertSame(bigDecimal, absResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult35.getAmount());
-    Money zeroResult18 = absResult13.zero();
-    Money absResult50 = zeroResult18.abs();
-    assertSame(bigDecimal, absResult50.abs().getAmount());
-    Money zeroResult19 = absResult17.zero();
-    Money absResult51 = zeroResult19.abs();
-    assertSame(bigDecimal, absResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult24.getAmount());
-    assertSame(bigDecimal, absResult37.getAmount());
-    Money zeroResult20 = absResult20.zero();
-    Money absResult52 = zeroResult20.abs();
-    assertSame(bigDecimal, absResult52.abs().getAmount());
-    Money zeroResult21 = absResult23.zero();
-    Money absResult53 = zeroResult21.abs();
-    assertSame(bigDecimal, absResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult39.getAmount());
-    Money zeroResult22 = absResult26.zero();
-    Money absResult54 = zeroResult22.abs();
-    assertSame(bigDecimal, absResult54.abs().getAmount());
-    Money zeroResult23 = absResult29.zero();
-    Money absResult55 = zeroResult23.abs();
-    assertSame(bigDecimal, absResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult17.getAmount());
-    assertSame(bigDecimal, absResult27.getAmount());
-    assertSame(bigDecimal, absResult41.getAmount());
-    Money zeroResult24 = zeroResult8.zero();
-    Money absResult56 = zeroResult24.abs();
-    assertSame(bigDecimal, absResult56.abs().getAmount());
-    Money zeroResult25 = zeroResult9.zero();
-    Money absResult57 = zeroResult25.abs();
-    assertSame(bigDecimal, absResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult43.getAmount());
-    Money zeroResult26 = zeroResult10.zero();
-    Money absResult58 = zeroResult26.abs();
-    assertSame(bigDecimal, absResult58.abs().getAmount());
-    Money zeroResult27 = zeroResult11.zero();
-    Money absResult59 = zeroResult27.abs();
-    assertSame(bigDecimal, absResult59.abs().getAmount());
-    assertSame(bigDecimal, absResult30.getAmount());
-    assertSame(bigDecimal, absResult45.getAmount());
-    Money zeroResult28 = zeroResult12.zero();
-    Money absResult60 = zeroResult28.abs();
-    assertSame(bigDecimal, absResult60.abs().getAmount());
-    Money zeroResult29 = zeroResult13.zero();
-    Money absResult61 = zeroResult29.abs();
-    assertSame(bigDecimal, absResult61.abs().getAmount());
-    assertSame(bigDecimal, absResult47.getAmount());
-    Money zeroResult30 = zeroResult14.zero();
-    Money absResult62 = zeroResult30.abs();
-    assertSame(bigDecimal, absResult62.abs().getAmount());
-    assertSame(bigDecimal, absResult7.getAmount());
-    assertSame(bigDecimal, absResult12.getAmount());
-    assertSame(bigDecimal, absResult20.getAmount());
-    assertSame(bigDecimal, absResult32.getAmount());
-    assertSame(bigDecimal, absResult48.getAmount());
-    Money zeroResult31 = absResult5.zero();
-    assertSame(bigDecimal, zeroResult31.abs().getAmount());
-    Money zeroResult32 = absResult10.zero();
-    assertSame(bigDecimal, zeroResult32.abs().getAmount());
-    assertSame(bigDecimal, absResult49.getAmount());
-    Money zeroResult33 = absResult14.zero();
-    assertSame(bigDecimal, zeroResult33.abs().getAmount());
-    Money zeroResult34 = absResult18.zero();
-    assertSame(bigDecimal, zeroResult34.abs().getAmount());
-    assertSame(bigDecimal, absResult34.getAmount());
-    assertSame(bigDecimal, absResult50.getAmount());
-    Money zeroResult35 = absResult21.zero();
-    assertSame(bigDecimal, zeroResult35.abs().getAmount());
-    Money zeroResult36 = absResult24.zero();
-    assertSame(bigDecimal, zeroResult36.abs().getAmount());
-    assertSame(bigDecimal, absResult51.getAmount());
-    Money zeroResult37 = absResult27.zero();
-    assertSame(bigDecimal, zeroResult37.abs().getAmount());
-    Money zeroResult38 = absResult30.zero();
-    assertSame(bigDecimal, zeroResult38.abs().getAmount());
-    assertSame(bigDecimal, absResult23.getAmount());
-    assertSame(bigDecimal, absResult36.getAmount());
-    assertSame(bigDecimal, absResult52.getAmount());
-    Money zeroResult39 = absResult32.zero();
-    assertSame(bigDecimal, zeroResult39.abs().getAmount());
-    Money zeroResult40 = absResult34.zero();
-    assertSame(bigDecimal, zeroResult40.abs().getAmount());
-    assertSame(bigDecimal, absResult53.getAmount());
-    Money zeroResult41 = absResult36.zero();
-    assertSame(bigDecimal, zeroResult41.abs().getAmount());
-    Money zeroResult42 = absResult38.zero();
-    assertSame(bigDecimal, zeroResult42.abs().getAmount());
-    assertSame(bigDecimal, absResult38.getAmount());
-    assertSame(bigDecimal, absResult54.getAmount());
-    Money zeroResult43 = absResult40.zero();
-    assertSame(bigDecimal, zeroResult43.abs().getAmount());
-    Money zeroResult44 = absResult42.zero();
-    assertSame(bigDecimal, zeroResult44.abs().getAmount());
-    assertSame(bigDecimal, absResult55.getAmount());
-    Money zeroResult45 = absResult44.zero();
-    assertSame(bigDecimal, zeroResult45.abs().getAmount());
-    assertSame(bigDecimal, absResult16.getAmount());
-    assertSame(bigDecimal, absResult26.getAmount());
-    assertSame(bigDecimal, absResult40.getAmount());
-    assertSame(bigDecimal, absResult56.getAmount());
-    Money zeroResult46 = zeroResult16.zero();
-    assertSame(bigDecimal, zeroResult46.abs().getAmount());
-    Money zeroResult47 = zeroResult17.zero();
-    assertSame(bigDecimal, zeroResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult57.getAmount());
-    Money zeroResult48 = zeroResult18.zero();
-    assertSame(bigDecimal, zeroResult48.abs().getAmount());
-    Money zeroResult49 = zeroResult19.zero();
-    assertSame(bigDecimal, zeroResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult42.getAmount());
-    assertSame(bigDecimal, absResult58.getAmount());
-    Money zeroResult50 = zeroResult20.zero();
-    assertSame(bigDecimal, zeroResult50.abs().getAmount());
-    Money zeroResult51 = zeroResult21.zero();
-    assertSame(bigDecimal, zeroResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult59.getAmount());
-    Money zeroResult52 = zeroResult22.zero();
-    assertSame(bigDecimal, zeroResult52.abs().getAmount());
-    Money zeroResult53 = zeroResult23.zero();
-    assertSame(bigDecimal, zeroResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult29.getAmount());
-    assertSame(bigDecimal, absResult44.getAmount());
-    assertSame(bigDecimal, absResult60.getAmount());
-    Money zeroResult54 = zeroResult24.zero();
-    assertSame(bigDecimal, zeroResult54.abs().getAmount());
-    Money zeroResult55 = zeroResult25.zero();
-    assertSame(bigDecimal, zeroResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult61.getAmount());
-    Money zeroResult56 = zeroResult26.zero();
-    assertSame(bigDecimal, zeroResult56.abs().getAmount());
-    Money zeroResult57 = zeroResult27.zero();
-    assertSame(bigDecimal, zeroResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult46.getAmount());
-    assertSame(bigDecimal, absResult62.getAmount());
-    Money zeroResult58 = zeroResult28.zero();
-    assertSame(bigDecimal, zeroResult58.abs().getAmount());
-    Money zeroResult59 = zeroResult29.zero();
-    assertSame(bigDecimal, zeroResult59.abs().getAmount());
-    Money zeroResult60 = zeroResult15.zero();
-    assertSame(bigDecimal, zeroResult60.abs().getAmount());
-    Money zeroResult61 = zeroResult30.zero();
-    assertSame(bigDecimal, zeroResult61.abs().getAmount());
+    assertSame(bigDecimal, zeroResult3.abs().getAmount());
     assertSame(bigDecimal, zeroResult.getAmount());
     assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, zeroResult4.getAmount());
-    assertSame(bigDecimal, zeroResult8.getAmount());
-    assertSame(bigDecimal, zeroResult16.getAmount());
-    assertSame(bigDecimal, zeroResult31.getAmount());
-    assertSame(bigDecimal, absResult6.zero().getAmount());
-    assertSame(bigDecimal, absResult11.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.getAmount());
-    assertSame(bigDecimal, absResult15.zero().getAmount());
-    assertSame(bigDecimal, absResult19.zero().getAmount());
-    assertSame(bigDecimal, zeroResult17.getAmount());
-    assertSame(bigDecimal, zeroResult33.getAmount());
-    assertSame(bigDecimal, absResult22.zero().getAmount());
-    assertSame(bigDecimal, absResult25.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.getAmount());
-    assertSame(bigDecimal, absResult28.zero().getAmount());
-    assertSame(bigDecimal, absResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult9.getAmount());
-    assertSame(bigDecimal, zeroResult18.getAmount());
-    assertSame(bigDecimal, zeroResult35.getAmount());
-    assertSame(bigDecimal, absResult33.zero().getAmount());
-    assertSame(bigDecimal, absResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.getAmount());
-    assertSame(bigDecimal, absResult37.zero().getAmount());
-    assertSame(bigDecimal, absResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult19.getAmount());
-    assertSame(bigDecimal, zeroResult37.getAmount());
-    assertSame(bigDecimal, absResult41.zero().getAmount());
-    assertSame(bigDecimal, absResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.getAmount());
-    assertSame(bigDecimal, absResult45.zero().getAmount());
-    assertSame(bigDecimal, absResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult5.getAmount());
-    assertSame(bigDecimal, zeroResult10.getAmount());
-    assertSame(bigDecimal, zeroResult20.getAmount());
-    assertSame(bigDecimal, zeroResult39.getAmount());
-    assertSame(bigDecimal, absResult48.zero().getAmount());
-    assertSame(bigDecimal, absResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.getAmount());
-    assertSame(bigDecimal, absResult50.zero().getAmount());
-    assertSame(bigDecimal, absResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult21.getAmount());
-    assertSame(bigDecimal, zeroResult41.getAmount());
-    assertSame(bigDecimal, absResult52.zero().getAmount());
-    assertSame(bigDecimal, absResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.getAmount());
-    assertSame(bigDecimal, absResult54.zero().getAmount());
-    assertSame(bigDecimal, absResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult11.getAmount());
-    assertSame(bigDecimal, zeroResult22.getAmount());
-    assertSame(bigDecimal, zeroResult43.getAmount());
-    assertSame(bigDecimal, absResult56.zero().getAmount());
-    assertSame(bigDecimal, absResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.getAmount());
-    assertSame(bigDecimal, absResult58.zero().getAmount());
-    assertSame(bigDecimal, absResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult23.getAmount());
-    assertSame(bigDecimal, zeroResult45.getAmount());
-    assertSame(bigDecimal, absResult60.zero().getAmount());
-    assertSame(bigDecimal, absResult61.zero().getAmount());
-    assertSame(bigDecimal, absResult46.zero().getAmount());
-    assertSame(bigDecimal, absResult62.zero().getAmount());
+    assertSame(bigDecimal, absResult2.zero().getAmount());
+    assertSame(bigDecimal, absResult3.zero().getAmount());
     assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult6.getAmount());
-    assertSame(bigDecimal, zeroResult12.getAmount());
-    assertSame(bigDecimal, zeroResult24.getAmount());
-    assertSame(bigDecimal, zeroResult46.getAmount());
-    assertSame(bigDecimal, zeroResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.getAmount());
-    assertSame(bigDecimal, zeroResult33.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.zero().getAmount());
-    assertSame(bigDecimal, zeroResult25.getAmount());
-    assertSame(bigDecimal, zeroResult48.getAmount());
-    assertSame(bigDecimal, zeroResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.getAmount());
-    assertSame(bigDecimal, zeroResult37.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.zero().getAmount());
-    assertSame(bigDecimal, zeroResult13.getAmount());
-    assertSame(bigDecimal, zeroResult26.getAmount());
-    assertSame(bigDecimal, zeroResult50.getAmount());
-    assertSame(bigDecimal, zeroResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.getAmount());
-    assertSame(bigDecimal, zeroResult41.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.zero().getAmount());
-    assertSame(bigDecimal, zeroResult27.getAmount());
-    assertSame(bigDecimal, zeroResult52.getAmount());
-    assertSame(bigDecimal, zeroResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.getAmount());
-    assertSame(bigDecimal, zeroResult45.zero().getAmount());
-    assertSame(bigDecimal, zeroResult7.getAmount());
-    assertSame(bigDecimal, zeroResult14.getAmount());
-    assertSame(bigDecimal, zeroResult28.getAmount());
-    assertSame(bigDecimal, zeroResult54.getAmount());
-    assertSame(bigDecimal, zeroResult46.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.getAmount());
-    assertSame(bigDecimal, zeroResult48.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult29.getAmount());
-    assertSame(bigDecimal, zeroResult56.getAmount());
-    assertSame(bigDecimal, zeroResult50.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.getAmount());
-    assertSame(bigDecimal, zeroResult52.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult15.getAmount());
-    assertSame(bigDecimal, zeroResult30.getAmount());
-    assertSame(bigDecimal, zeroResult58.getAmount());
-    assertSame(bigDecimal, zeroResult54.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.getAmount());
-    assertSame(bigDecimal, zeroResult56.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.getAmount());
-    assertSame(bigDecimal, zeroResult61.getAmount());
-    assertSame(bigDecimal, zeroResult58.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.zero().getAmount());
-    assertSame(bigDecimal, zeroResult61.zero().getAmount());
-  }
-
-  /**
-   * Test {@link SkuImpl#setListPrice(Money)}.
-   * <ul>
-   *   <li>When {@link Money}.</li>
-   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#retailPrice} is
-   * {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#setListPrice(Money)}
-   */
-  @Test
-  public void testSetListPrice_whenMoney_thenSkuImplRetailPriceIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-
-    // Act
-    skuImpl.setListPrice(mock(Money.class));
-
-    // Assert
-    assertNull(skuImpl.retailPrice);
+    assertSame(bigDecimal, zeroResult2.zero().getAmount());
+    assertSame(bigDecimal, zeroResult3.zero().getAmount());
   }
 
   /**
    * Test {@link SkuImpl#setListPrice(Money)}.
    * <ul>
    *   <li>When {@code null}.</li>
-   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#retailPrice} is
-   * {@code null}.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#retailPrice} is {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#setListPrice(Money)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.setListPrice(Money)"})
   public void testSetListPrice_whenNull_thenSkuImplRetailPriceIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
 
     // Act
-    skuImpl.setListPrice(null);
+    skuImpl2.setListPrice(null);
 
-    // Assert
-    assertNull(skuImpl.retailPrice);
-  }
-
-  /**
-   * Test {@link SkuImpl#getCost()}.
-   * <p>
-   * Method under test: {@link SkuImpl#getCost()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetCost() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass787 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).getCost();
+    // Assert that nothing has changed
+    assertNull(skuImpl2.retailPrice);
   }
 
   /**
    * Test {@link SkuImpl#getCost()}.
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()}
-   * return {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getCost()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getCost()"})
   public void testGetCost_givenProductBundleImplGetDefaultSkuReturnSkuImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    Money actualCost = skuImpl.getCost();
+    Money actualCost = skuImpl2.getCost();
 
     // Assert
     verify(product).getDefaultSku();
@@ -6333,27 +3235,26 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getCost()}.
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()}
-   * return {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getCost()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getCost()"})
   public void testGetCost_givenProductBundleImplGetDefaultSkuReturnSkuImpl_thenReturnNull2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Money actualCost = skuImpl.getCost();
+    Money actualCost = skuImpl2.getCost();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -6363,17 +3264,16 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getCost()}.
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getCost()} return
-   * {@link Money#Money()}.</li>
+   *   <li>Given {@link Sku} {@link Sku#getCost()} return {@link Money#Money()}.</li>
    *   <li>Then calls {@link Sku#getCost()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getCost()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getCost()"})
   public void testGetCost_givenSkuGetCostReturnMoney_thenCallsGetCost() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
@@ -6382,12 +3282,12 @@ public class SkuImplDiffblueTest {
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Money actualCost = skuImpl.getCost();
+    Money actualCost = skuImpl2.getCost();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -6399,72 +3299,28 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getCost()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Cost is
-   * {@link Money#Money()}.</li>
-   *   <li>Then return {@link Money#Money()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getCost()}
-   */
-  @Test
-  public void testGetCost_givenSkuImplCostIsMoney_thenReturnMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    Money cost = new Money();
-    skuImpl.setCost(cost);
-
-    // Act and Assert
-    assertEquals(cost, skuImpl.getCost());
-  }
-
-  /**
-   * Test {@link SkuImpl#getCost()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Cost is {@link Money}.</li>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getCost()}
-   */
-  @Test
-  public void testGetCost_givenSkuImplCostIsMoney_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setCost(mock(Money.class));
-
-    // Act and Assert
-    assertNull(skuImpl.getCost());
-  }
-
-  /**
-   * Test {@link SkuImpl#getCost()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Id is one.</li>
+   *   <li>Given {@link Sku} {@link Sku#getId()} return one.</li>
    *   <li>Then calls {@link Sku#getId()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getCost()}
    */
   @Test
-  public void testGetCost_givenSkuImplIdIsOne_thenCallsGetId() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getCost()"})
+  public void testGetCost_givenSkuGetIdReturnOne_thenCallsGetId() {
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Money actualCost = skuImpl.getCost();
+    Money actualCost = skuImpl2.getCost();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -6475,23 +3331,44 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getCost()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Product is
-   * {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Given {@link SkuImpl} (default constructor) Cost is {@link Money#Money()}.</li>
+   *   <li>Then return {@link Money#Money()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getCost()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getCost()"})
+  public void testGetCost_givenSkuImplCostIsMoney_thenReturnMoney() {
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+    Money cost = new Money();
+    skuImpl2.setCost(cost);
+
+    // Act and Assert
+    assertEquals(cost, skuImpl2.getCost());
+  }
+
+  /**
+   * Test {@link SkuImpl#getCost()}.
+   * <ul>
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getCost()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getCost()"})
   public void testGetCost_givenSkuImplProductIsProductBundleImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(new ProductBundleImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertNull(skuImpl.getCost());
+    assertNull(skuImpl2.getCost());
   }
 
   /**
@@ -6504,9 +3381,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getCost()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getCost()"})
   public void testGetCost_givenSkuImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new SkuImpl()).getCost());
   }
@@ -6520,21 +3397,21 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getCost()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getCost()"})
   public void testGetCost_thenThrowIllegalStateException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenThrow(new IllegalStateException("foo"));
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getCost());
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getCost());
     verify(product, atLeast(1)).getDefaultSku();
     verify(sku).getId();
   }
@@ -6548,897 +3425,149 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getCost()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getCost()"})
   public void testGetCost_thenThrowIllegalStateException2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenThrow(new IllegalStateException("foo"));
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setCost(new Money());
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setCost(new Money());
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getCost());
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getCost());
     verify(product, atLeast(1)).getDefaultSku();
     verify(sku).getId();
-  }
-
-  /**
-   * Test {@link SkuImpl#setCost(Money)}.
-   * <p>
-   * Method under test: {@link SkuImpl#setCost(Money)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetCost() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2077 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    SkuImpl skuImpl2 = new SkuImpl();
-
-    // Act
-    skuImpl2.setCost(new Money());
   }
 
   /**
    * Test {@link SkuImpl#setCost(Money)}.
    * <ul>
    *   <li>When {@link Money#Money()}.</li>
-   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#cost} is
-   * {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#cost} is {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#setCost(Money)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.setCost(Money)"})
   public void testSetCost_whenMoney_thenSkuImplCostIsBigDecimalWith000() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
     Money cost = new Money();
 
     // Act
-    skuImpl.setCost(cost);
+    skuImpl2.setCost(cost);
 
     // Assert
-    assertEquals(new BigDecimal("0.00"), skuImpl.cost);
-    BigDecimal bigDecimal = skuImpl.cost;
+    assertEquals(new BigDecimal("0.00"), skuImpl2.cost);
+    BigDecimal bigDecimal = skuImpl2.cost;
     Money absResult = cost.abs();
     assertSame(bigDecimal, absResult.getAmount());
     Money absResult2 = absResult.abs();
     assertSame(bigDecimal, absResult2.getAmount());
-    Money absResult3 = absResult2.abs();
-    assertSame(bigDecimal, absResult3.getAmount());
-    Money absResult4 = absResult3.abs();
-    assertSame(bigDecimal, absResult4.getAmount());
-    Money absResult5 = absResult4.abs();
-    assertSame(bigDecimal, absResult5.getAmount());
-    Money absResult6 = absResult5.abs();
-    assertSame(bigDecimal, absResult6.getAmount());
-    assertSame(bigDecimal, absResult6.abs().getAmount());
+    assertSame(bigDecimal, absResult2.abs().getAmount());
     Money zeroResult = cost.zero();
-    Money absResult7 = zeroResult.abs();
-    Money absResult8 = absResult7.abs();
-    Money absResult9 = absResult8.abs();
-    Money absResult10 = absResult9.abs();
-    Money absResult11 = absResult10.abs();
-    assertSame(bigDecimal, absResult11.abs().getAmount());
-    assertSame(bigDecimal, absResult11.getAmount());
+    Money absResult3 = zeroResult.abs();
+    assertSame(bigDecimal, absResult3.abs().getAmount());
+    assertSame(bigDecimal, absResult3.getAmount());
     Money zeroResult2 = absResult.zero();
-    Money absResult12 = zeroResult2.abs();
-    Money absResult13 = absResult12.abs();
-    Money absResult14 = absResult13.abs();
-    Money absResult15 = absResult14.abs();
-    assertSame(bigDecimal, absResult15.abs().getAmount());
+    assertSame(bigDecimal, zeroResult2.abs().getAmount());
     Money zeroResult3 = zeroResult.zero();
-    Money absResult16 = zeroResult3.abs();
-    Money absResult17 = absResult16.abs();
-    Money absResult18 = absResult17.abs();
-    Money absResult19 = absResult18.abs();
-    assertSame(bigDecimal, absResult19.abs().getAmount());
-    assertSame(bigDecimal, absResult10.getAmount());
-    assertSame(bigDecimal, absResult15.getAmount());
-    Money zeroResult4 = absResult2.zero();
-    Money absResult20 = zeroResult4.abs();
-    Money absResult21 = absResult20.abs();
-    Money absResult22 = absResult21.abs();
-    assertSame(bigDecimal, absResult22.abs().getAmount());
-    Money zeroResult5 = absResult7.zero();
-    Money absResult23 = zeroResult5.abs();
-    Money absResult24 = absResult23.abs();
-    Money absResult25 = absResult24.abs();
-    assertSame(bigDecimal, absResult25.abs().getAmount());
-    assertSame(bigDecimal, absResult19.getAmount());
-    Money zeroResult6 = zeroResult2.zero();
-    Money absResult26 = zeroResult6.abs();
-    Money absResult27 = absResult26.abs();
-    Money absResult28 = absResult27.abs();
-    assertSame(bigDecimal, absResult28.abs().getAmount());
-    Money zeroResult7 = zeroResult3.zero();
-    Money absResult29 = zeroResult7.abs();
-    Money absResult30 = absResult29.abs();
-    Money absResult31 = absResult30.abs();
-    assertSame(bigDecimal, absResult31.abs().getAmount());
-    assertSame(bigDecimal, absResult9.getAmount());
-    assertSame(bigDecimal, absResult14.getAmount());
-    assertSame(bigDecimal, absResult22.getAmount());
-    Money zeroResult8 = absResult3.zero();
-    Money absResult32 = zeroResult8.abs();
-    Money absResult33 = absResult32.abs();
-    assertSame(bigDecimal, absResult33.abs().getAmount());
-    Money zeroResult9 = absResult8.zero();
-    Money absResult34 = zeroResult9.abs();
-    Money absResult35 = absResult34.abs();
-    assertSame(bigDecimal, absResult35.abs().getAmount());
-    assertSame(bigDecimal, absResult25.getAmount());
-    Money zeroResult10 = absResult12.zero();
-    Money absResult36 = zeroResult10.abs();
-    Money absResult37 = absResult36.abs();
-    assertSame(bigDecimal, absResult37.abs().getAmount());
-    Money zeroResult11 = absResult16.zero();
-    Money absResult38 = zeroResult11.abs();
-    Money absResult39 = absResult38.abs();
-    assertSame(bigDecimal, absResult39.abs().getAmount());
-    assertSame(bigDecimal, absResult18.getAmount());
-    assertSame(bigDecimal, absResult28.getAmount());
-    Money zeroResult12 = zeroResult4.zero();
-    Money absResult40 = zeroResult12.abs();
-    Money absResult41 = absResult40.abs();
-    assertSame(bigDecimal, absResult41.abs().getAmount());
-    Money zeroResult13 = zeroResult5.zero();
-    Money absResult42 = zeroResult13.abs();
-    Money absResult43 = absResult42.abs();
-    assertSame(bigDecimal, absResult43.abs().getAmount());
-    assertSame(bigDecimal, absResult31.getAmount());
-    Money zeroResult14 = zeroResult6.zero();
-    Money absResult44 = zeroResult14.abs();
-    Money absResult45 = absResult44.abs();
-    assertSame(bigDecimal, absResult45.abs().getAmount());
-    Money zeroResult15 = zeroResult7.zero();
-    Money absResult46 = zeroResult15.abs();
-    Money absResult47 = absResult46.abs();
-    assertSame(bigDecimal, absResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult8.getAmount());
-    assertSame(bigDecimal, absResult13.getAmount());
-    assertSame(bigDecimal, absResult21.getAmount());
-    assertSame(bigDecimal, absResult33.getAmount());
-    Money zeroResult16 = absResult4.zero();
-    Money absResult48 = zeroResult16.abs();
-    assertSame(bigDecimal, absResult48.abs().getAmount());
-    Money zeroResult17 = absResult9.zero();
-    Money absResult49 = zeroResult17.abs();
-    assertSame(bigDecimal, absResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult35.getAmount());
-    Money zeroResult18 = absResult13.zero();
-    Money absResult50 = zeroResult18.abs();
-    assertSame(bigDecimal, absResult50.abs().getAmount());
-    Money zeroResult19 = absResult17.zero();
-    Money absResult51 = zeroResult19.abs();
-    assertSame(bigDecimal, absResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult24.getAmount());
-    assertSame(bigDecimal, absResult37.getAmount());
-    Money zeroResult20 = absResult20.zero();
-    Money absResult52 = zeroResult20.abs();
-    assertSame(bigDecimal, absResult52.abs().getAmount());
-    Money zeroResult21 = absResult23.zero();
-    Money absResult53 = zeroResult21.abs();
-    assertSame(bigDecimal, absResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult39.getAmount());
-    Money zeroResult22 = absResult26.zero();
-    Money absResult54 = zeroResult22.abs();
-    assertSame(bigDecimal, absResult54.abs().getAmount());
-    Money zeroResult23 = absResult29.zero();
-    Money absResult55 = zeroResult23.abs();
-    assertSame(bigDecimal, absResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult17.getAmount());
-    assertSame(bigDecimal, absResult27.getAmount());
-    assertSame(bigDecimal, absResult41.getAmount());
-    Money zeroResult24 = zeroResult8.zero();
-    Money absResult56 = zeroResult24.abs();
-    assertSame(bigDecimal, absResult56.abs().getAmount());
-    Money zeroResult25 = zeroResult9.zero();
-    Money absResult57 = zeroResult25.abs();
-    assertSame(bigDecimal, absResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult43.getAmount());
-    Money zeroResult26 = zeroResult10.zero();
-    Money absResult58 = zeroResult26.abs();
-    assertSame(bigDecimal, absResult58.abs().getAmount());
-    Money zeroResult27 = zeroResult11.zero();
-    Money absResult59 = zeroResult27.abs();
-    assertSame(bigDecimal, absResult59.abs().getAmount());
-    assertSame(bigDecimal, absResult30.getAmount());
-    assertSame(bigDecimal, absResult45.getAmount());
-    Money zeroResult28 = zeroResult12.zero();
-    Money absResult60 = zeroResult28.abs();
-    assertSame(bigDecimal, absResult60.abs().getAmount());
-    Money zeroResult29 = zeroResult13.zero();
-    Money absResult61 = zeroResult29.abs();
-    assertSame(bigDecimal, absResult61.abs().getAmount());
-    assertSame(bigDecimal, absResult47.getAmount());
-    Money zeroResult30 = zeroResult14.zero();
-    Money absResult62 = zeroResult30.abs();
-    assertSame(bigDecimal, absResult62.abs().getAmount());
-    assertSame(bigDecimal, absResult7.getAmount());
-    assertSame(bigDecimal, absResult12.getAmount());
-    assertSame(bigDecimal, absResult20.getAmount());
-    assertSame(bigDecimal, absResult32.getAmount());
-    assertSame(bigDecimal, absResult48.getAmount());
-    Money zeroResult31 = absResult5.zero();
-    assertSame(bigDecimal, zeroResult31.abs().getAmount());
-    Money zeroResult32 = absResult10.zero();
-    assertSame(bigDecimal, zeroResult32.abs().getAmount());
-    assertSame(bigDecimal, absResult49.getAmount());
-    Money zeroResult33 = absResult14.zero();
-    assertSame(bigDecimal, zeroResult33.abs().getAmount());
-    Money zeroResult34 = absResult18.zero();
-    assertSame(bigDecimal, zeroResult34.abs().getAmount());
-    assertSame(bigDecimal, absResult34.getAmount());
-    assertSame(bigDecimal, absResult50.getAmount());
-    Money zeroResult35 = absResult21.zero();
-    assertSame(bigDecimal, zeroResult35.abs().getAmount());
-    Money zeroResult36 = absResult24.zero();
-    assertSame(bigDecimal, zeroResult36.abs().getAmount());
-    assertSame(bigDecimal, absResult51.getAmount());
-    Money zeroResult37 = absResult27.zero();
-    assertSame(bigDecimal, zeroResult37.abs().getAmount());
-    Money zeroResult38 = absResult30.zero();
-    assertSame(bigDecimal, zeroResult38.abs().getAmount());
-    assertSame(bigDecimal, absResult23.getAmount());
-    assertSame(bigDecimal, absResult36.getAmount());
-    assertSame(bigDecimal, absResult52.getAmount());
-    Money zeroResult39 = absResult32.zero();
-    assertSame(bigDecimal, zeroResult39.abs().getAmount());
-    Money zeroResult40 = absResult34.zero();
-    assertSame(bigDecimal, zeroResult40.abs().getAmount());
-    assertSame(bigDecimal, absResult53.getAmount());
-    Money zeroResult41 = absResult36.zero();
-    assertSame(bigDecimal, zeroResult41.abs().getAmount());
-    Money zeroResult42 = absResult38.zero();
-    assertSame(bigDecimal, zeroResult42.abs().getAmount());
-    assertSame(bigDecimal, absResult38.getAmount());
-    assertSame(bigDecimal, absResult54.getAmount());
-    Money zeroResult43 = absResult40.zero();
-    assertSame(bigDecimal, zeroResult43.abs().getAmount());
-    Money zeroResult44 = absResult42.zero();
-    assertSame(bigDecimal, zeroResult44.abs().getAmount());
-    assertSame(bigDecimal, absResult55.getAmount());
-    Money zeroResult45 = absResult44.zero();
-    assertSame(bigDecimal, zeroResult45.abs().getAmount());
-    assertSame(bigDecimal, absResult16.getAmount());
-    assertSame(bigDecimal, absResult26.getAmount());
-    assertSame(bigDecimal, absResult40.getAmount());
-    assertSame(bigDecimal, absResult56.getAmount());
-    Money zeroResult46 = zeroResult16.zero();
-    assertSame(bigDecimal, zeroResult46.abs().getAmount());
-    Money zeroResult47 = zeroResult17.zero();
-    assertSame(bigDecimal, zeroResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult57.getAmount());
-    Money zeroResult48 = zeroResult18.zero();
-    assertSame(bigDecimal, zeroResult48.abs().getAmount());
-    Money zeroResult49 = zeroResult19.zero();
-    assertSame(bigDecimal, zeroResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult42.getAmount());
-    assertSame(bigDecimal, absResult58.getAmount());
-    Money zeroResult50 = zeroResult20.zero();
-    assertSame(bigDecimal, zeroResult50.abs().getAmount());
-    Money zeroResult51 = zeroResult21.zero();
-    assertSame(bigDecimal, zeroResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult59.getAmount());
-    Money zeroResult52 = zeroResult22.zero();
-    assertSame(bigDecimal, zeroResult52.abs().getAmount());
-    Money zeroResult53 = zeroResult23.zero();
-    assertSame(bigDecimal, zeroResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult29.getAmount());
-    assertSame(bigDecimal, absResult44.getAmount());
-    assertSame(bigDecimal, absResult60.getAmount());
-    Money zeroResult54 = zeroResult24.zero();
-    assertSame(bigDecimal, zeroResult54.abs().getAmount());
-    Money zeroResult55 = zeroResult25.zero();
-    assertSame(bigDecimal, zeroResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult61.getAmount());
-    Money zeroResult56 = zeroResult26.zero();
-    assertSame(bigDecimal, zeroResult56.abs().getAmount());
-    Money zeroResult57 = zeroResult27.zero();
-    assertSame(bigDecimal, zeroResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult46.getAmount());
-    assertSame(bigDecimal, absResult62.getAmount());
-    Money zeroResult58 = zeroResult28.zero();
-    assertSame(bigDecimal, zeroResult58.abs().getAmount());
-    Money zeroResult59 = zeroResult29.zero();
-    assertSame(bigDecimal, zeroResult59.abs().getAmount());
-    Money zeroResult60 = zeroResult15.zero();
-    assertSame(bigDecimal, zeroResult60.abs().getAmount());
-    Money zeroResult61 = zeroResult30.zero();
-    assertSame(bigDecimal, zeroResult61.abs().getAmount());
+    assertSame(bigDecimal, zeroResult3.abs().getAmount());
     assertSame(bigDecimal, zeroResult.getAmount());
     assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, zeroResult4.getAmount());
-    assertSame(bigDecimal, zeroResult8.getAmount());
-    assertSame(bigDecimal, zeroResult16.getAmount());
-    assertSame(bigDecimal, zeroResult31.getAmount());
-    assertSame(bigDecimal, absResult6.zero().getAmount());
-    assertSame(bigDecimal, absResult11.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.getAmount());
-    assertSame(bigDecimal, absResult15.zero().getAmount());
-    assertSame(bigDecimal, absResult19.zero().getAmount());
-    assertSame(bigDecimal, zeroResult17.getAmount());
-    assertSame(bigDecimal, zeroResult33.getAmount());
-    assertSame(bigDecimal, absResult22.zero().getAmount());
-    assertSame(bigDecimal, absResult25.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.getAmount());
-    assertSame(bigDecimal, absResult28.zero().getAmount());
-    assertSame(bigDecimal, absResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult9.getAmount());
-    assertSame(bigDecimal, zeroResult18.getAmount());
-    assertSame(bigDecimal, zeroResult35.getAmount());
-    assertSame(bigDecimal, absResult33.zero().getAmount());
-    assertSame(bigDecimal, absResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.getAmount());
-    assertSame(bigDecimal, absResult37.zero().getAmount());
-    assertSame(bigDecimal, absResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult19.getAmount());
-    assertSame(bigDecimal, zeroResult37.getAmount());
-    assertSame(bigDecimal, absResult41.zero().getAmount());
-    assertSame(bigDecimal, absResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.getAmount());
-    assertSame(bigDecimal, absResult45.zero().getAmount());
-    assertSame(bigDecimal, absResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult5.getAmount());
-    assertSame(bigDecimal, zeroResult10.getAmount());
-    assertSame(bigDecimal, zeroResult20.getAmount());
-    assertSame(bigDecimal, zeroResult39.getAmount());
-    assertSame(bigDecimal, absResult48.zero().getAmount());
-    assertSame(bigDecimal, absResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.getAmount());
-    assertSame(bigDecimal, absResult50.zero().getAmount());
-    assertSame(bigDecimal, absResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult21.getAmount());
-    assertSame(bigDecimal, zeroResult41.getAmount());
-    assertSame(bigDecimal, absResult52.zero().getAmount());
-    assertSame(bigDecimal, absResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.getAmount());
-    assertSame(bigDecimal, absResult54.zero().getAmount());
-    assertSame(bigDecimal, absResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult11.getAmount());
-    assertSame(bigDecimal, zeroResult22.getAmount());
-    assertSame(bigDecimal, zeroResult43.getAmount());
-    assertSame(bigDecimal, absResult56.zero().getAmount());
-    assertSame(bigDecimal, absResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.getAmount());
-    assertSame(bigDecimal, absResult58.zero().getAmount());
-    assertSame(bigDecimal, absResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult23.getAmount());
-    assertSame(bigDecimal, zeroResult45.getAmount());
-    assertSame(bigDecimal, absResult60.zero().getAmount());
-    assertSame(bigDecimal, absResult61.zero().getAmount());
-    assertSame(bigDecimal, absResult46.zero().getAmount());
-    assertSame(bigDecimal, absResult62.zero().getAmount());
+    assertSame(bigDecimal, absResult2.zero().getAmount());
+    assertSame(bigDecimal, absResult3.zero().getAmount());
     assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult6.getAmount());
-    assertSame(bigDecimal, zeroResult12.getAmount());
-    assertSame(bigDecimal, zeroResult24.getAmount());
-    assertSame(bigDecimal, zeroResult46.getAmount());
-    assertSame(bigDecimal, zeroResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.getAmount());
-    assertSame(bigDecimal, zeroResult33.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.zero().getAmount());
-    assertSame(bigDecimal, zeroResult25.getAmount());
-    assertSame(bigDecimal, zeroResult48.getAmount());
-    assertSame(bigDecimal, zeroResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.getAmount());
-    assertSame(bigDecimal, zeroResult37.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.zero().getAmount());
-    assertSame(bigDecimal, zeroResult13.getAmount());
-    assertSame(bigDecimal, zeroResult26.getAmount());
-    assertSame(bigDecimal, zeroResult50.getAmount());
-    assertSame(bigDecimal, zeroResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.getAmount());
-    assertSame(bigDecimal, zeroResult41.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.zero().getAmount());
-    assertSame(bigDecimal, zeroResult27.getAmount());
-    assertSame(bigDecimal, zeroResult52.getAmount());
-    assertSame(bigDecimal, zeroResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.getAmount());
-    assertSame(bigDecimal, zeroResult45.zero().getAmount());
-    assertSame(bigDecimal, zeroResult7.getAmount());
-    assertSame(bigDecimal, zeroResult14.getAmount());
-    assertSame(bigDecimal, zeroResult28.getAmount());
-    assertSame(bigDecimal, zeroResult54.getAmount());
-    assertSame(bigDecimal, zeroResult46.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.getAmount());
-    assertSame(bigDecimal, zeroResult48.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult29.getAmount());
-    assertSame(bigDecimal, zeroResult56.getAmount());
-    assertSame(bigDecimal, zeroResult50.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.getAmount());
-    assertSame(bigDecimal, zeroResult52.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult15.getAmount());
-    assertSame(bigDecimal, zeroResult30.getAmount());
-    assertSame(bigDecimal, zeroResult58.getAmount());
-    assertSame(bigDecimal, zeroResult54.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.getAmount());
-    assertSame(bigDecimal, zeroResult56.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.getAmount());
-    assertSame(bigDecimal, zeroResult61.getAmount());
-    assertSame(bigDecimal, zeroResult58.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.zero().getAmount());
-    assertSame(bigDecimal, zeroResult61.zero().getAmount());
-  }
-
-  /**
-   * Test {@link SkuImpl#setCost(Money)}.
-   * <ul>
-   *   <li>When {@link Money}.</li>
-   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#cost} is
-   * {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#setCost(Money)}
-   */
-  @Test
-  public void testSetCost_whenMoney_thenSkuImplCostIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-
-    // Act
-    skuImpl.setCost(mock(Money.class));
-
-    // Assert
-    assertNull(skuImpl.cost);
+    assertSame(bigDecimal, zeroResult2.zero().getAmount());
+    assertSame(bigDecimal, zeroResult3.zero().getAmount());
   }
 
   /**
    * Test {@link SkuImpl#setCost(Money)}.
    * <ul>
    *   <li>When {@code null}.</li>
-   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#cost} is
-   * {@code null}.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#cost} is {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#setCost(Money)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.setCost(Money)"})
   public void testSetCost_whenNull_thenSkuImplCostIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
 
     // Act
-    skuImpl.setCost(null);
+    skuImpl2.setCost(null);
 
-    // Assert
-    assertNull(skuImpl.cost);
-  }
-
-  /**
-   * Test {@link SkuImpl#getMargin()}.
-   * <p>
-   * Method under test: {@link SkuImpl#getMargin()}
-   */
-  @Test
-  public void testGetMargin() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenThrow(new IllegalStateException("ThreadLocalManager.notify.orphans"));
-    Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getMargin());
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-  }
-
-  /**
-   * Test {@link SkuImpl#getMargin()}.
-   * <p>
-   * Method under test: {@link SkuImpl#getMargin()}
-   */
-  @Test
-  public void testGetMargin2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenThrow(new IllegalStateException("ThreadLocalManager.notify.orphans"));
-    Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setRetailPrice(new Money());
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getMargin());
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-  }
-
-  /**
-   * Test {@link SkuImpl#getMargin()}.
-   * <p>
-   * Method under test: {@link SkuImpl#getMargin()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetMargin3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1087 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).getMargin();
+    // Assert that nothing has changed
+    assertNull(skuImpl2.cost);
   }
 
   /**
    * Test {@link SkuImpl#getMargin()}.
    * <ul>
-   *   <li>Given {@link Money} {@link Money#divide(BigDecimal)} return
-   * {@link Money#Money()}.</li>
-   *   <li>Then calls {@link Money#divide(BigDecimal)}.</li>
+   *   <li>Given {@link Money#Money()}.</li>
+   *   <li>Then return {@link Money#Money()} {@link Money#ZERO}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getMargin()}
    */
   @Test
-  public void testGetMargin_givenMoneyDivideReturnMoney_thenCallsDivide() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getMargin()"})
+  public void testGetMargin_givenMoney_thenReturnMoneyZero() {
     // Arrange
-    Money money = mock(Money.class);
-    Money money2 = new Money();
-    when(money.divide(Mockito.<BigDecimal>any())).thenReturn(money2);
-    Money money3 = mock(Money.class);
-    when(money3.subtract(Mockito.<Money>any())).thenReturn(money);
-    when(money3.getAmount()).thenReturn(new BigDecimal("2.3"));
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
-    when(sku.getCost()).thenReturn(new Money());
-    when(sku.getRetailPrice()).thenReturn(money3);
-    when(sku.getSalePrice()).thenReturn(new Money());
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+    Money money = new Money();
 
     // Act
-    Money actualMargin = skuImpl.getMargin();
+    Money actualMargin = skuImpl2.getMargin();
 
     // Assert
-    verify(money).divide(isA(BigDecimal.class));
-    verify(money3, atLeast(1)).getAmount();
-    verify(money3).subtract(isA(Money.class));
     verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getCost();
     verify(sku, atLeast(1)).getId();
-    verify(sku, atLeast(1)).getRetailPrice();
-    verify(sku).getSalePrice();
-    assertSame(money2, actualMargin);
+    assertSame(money.ZERO, actualMargin);
   }
 
   /**
    * Test {@link SkuImpl#getMargin()}.
    * <ul>
-   *   <li>Given {@link Money} {@link Money#isZero()} return {@code true}.</li>
-   *   <li>Then calls {@link Money#divide(BigDecimal)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getMargin()}
-   */
-  @Test
-  public void testGetMargin_givenMoneyIsZeroReturnTrue_thenCallsDivide() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Money money = mock(Money.class);
-    Money money2 = new Money();
-    when(money.divide(Mockito.<BigDecimal>any())).thenReturn(money2);
-    Money money3 = mock(Money.class);
-    when(money3.subtract(Mockito.<Money>any())).thenReturn(money);
-    when(money3.getAmount()).thenReturn(new BigDecimal("2.3"));
-    Money money4 = mock(Money.class);
-    when(money4.isZero()).thenReturn(true);
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenReturn(1L);
-    when(sku.getCost()).thenReturn(new Money());
-    when(sku.getRetailPrice()).thenReturn(money3);
-    when(sku.getSalePrice()).thenReturn(money4);
-    Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
-
-    // Act
-    Money actualMargin = skuImpl.getMargin();
-
-    // Assert
-    verify(money).divide(isA(BigDecimal.class));
-    verify(money3, atLeast(1)).getAmount();
-    verify(money4).isZero();
-    verify(money3).subtract(isA(Money.class));
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getCost();
-    verify(sku, atLeast(1)).getId();
-    verify(sku, atLeast(1)).getRetailPrice();
-    verify(sku).getSalePrice();
-    assertSame(money2, actualMargin);
-  }
-
-  /**
-   * Test {@link SkuImpl#getMargin()}.
-   * <ul>
-   *   <li>Given {@link Money} {@link Money#lessThan(Money)} return
-   * {@code false}.</li>
-   *   <li>Then calls {@link Money#lessThan(Money)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getMargin()}
-   */
-  @Test
-  public void testGetMargin_givenMoneyLessThanReturnFalse_thenCallsLessThan() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Money money = mock(Money.class);
-    Money money2 = new Money();
-    when(money.divide(Mockito.<BigDecimal>any())).thenReturn(money2);
-    Money money3 = mock(Money.class);
-    when(money3.subtract(Mockito.<Money>any())).thenReturn(money);
-    when(money3.getAmount()).thenReturn(new BigDecimal("2.3"));
-    Money money4 = mock(Money.class);
-    when(money4.subtract(Mockito.<Money>any())).thenReturn(new Money());
-    when(money4.getAmount()).thenReturn(mock(InternalNumber.class));
-    when(money4.isZero()).thenReturn(false);
-    when(money4.lessThan(Mockito.<Money>any())).thenReturn(false);
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenReturn(1L);
-    when(sku.getCost()).thenReturn(new Money());
-    when(sku.getRetailPrice()).thenReturn(money3);
-    when(sku.getSalePrice()).thenReturn(money4);
-    Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
-
-    // Act
-    Money actualMargin = skuImpl.getMargin();
-
-    // Assert
-    verify(money).divide(isA(BigDecimal.class));
-    verify(money3, atLeast(1)).getAmount();
-    verify(money4).isZero();
-    verify(money4).lessThan(isA(Money.class));
-    verify(money3).subtract(isA(Money.class));
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getCost();
-    verify(sku, atLeast(1)).getId();
-    verify(sku, atLeast(1)).getRetailPrice();
-    verify(sku).getSalePrice();
-    assertSame(money2, actualMargin);
-  }
-
-  /**
-   * Test {@link SkuImpl#getMargin()}.
-   * <ul>
-   *   <li>Given {@link Money} {@link Money#lessThan(Money)} return
-   * {@code true}.</li>
-   *   <li>Then calls {@link Money#lessThan(Money)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getMargin()}
-   */
-  @Test
-  public void testGetMargin_givenMoneyLessThanReturnTrue_thenCallsLessThan() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Money money = mock(Money.class);
-    when(money.subtract(Mockito.<Money>any())).thenReturn(mock(Money.class));
-    when(money.getAmount()).thenReturn(new BigDecimal("2.3"));
-    Money money2 = mock(Money.class);
-    when(money2.subtract(Mockito.<Money>any())).thenReturn(new Money());
-    when(money2.getAmount()).thenReturn(new BigDecimal("2.3"));
-    when(money2.isZero()).thenReturn(false);
-    when(money2.lessThan(Mockito.<Money>any())).thenReturn(true);
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenReturn(1L);
-    Money money3 = new Money();
-    when(sku.getCost()).thenReturn(money3);
-    when(sku.getRetailPrice()).thenReturn(money);
-    when(sku.getSalePrice()).thenReturn(money2);
-    Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
-
-    // Act
-    Money actualMargin = skuImpl.getMargin();
-
-    // Assert
-    verify(money2, atLeast(1)).getAmount();
-    verify(money2).isZero();
-    verify(money2).lessThan(isA(Money.class));
-    verify(money2).subtract(isA(Money.class));
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getCost();
-    verify(sku, atLeast(1)).getId();
-    verify(sku).getRetailPrice();
-    verify(sku, atLeast(1)).getSalePrice();
-    assertEquals(money3, actualMargin);
-  }
-
-  /**
-   * Test {@link SkuImpl#getMargin()}.
-   * <ul>
-   *   <li>Given {@link Money} {@link Money#subtract(Money)} return
-   * {@link Money#Money()}.</li>
-   *   <li>Then return {@link Money#Money()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getMargin()}
-   */
-  @Test
-  public void testGetMargin_givenMoneySubtractReturnMoney_thenReturnMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Money money = mock(Money.class);
-    when(money.subtract(Mockito.<Money>any())).thenReturn(new Money());
-    when(money.getAmount()).thenReturn(new BigDecimal("2.3"));
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenReturn(1L);
-    Money money2 = new Money();
-    when(sku.getCost()).thenReturn(money2);
-    when(sku.getRetailPrice()).thenReturn(money);
-    when(sku.getSalePrice()).thenReturn(new Money());
-    Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
-
-    // Act
-    Money actualMargin = skuImpl.getMargin();
-
-    // Assert
-    verify(money, atLeast(1)).getAmount();
-    verify(money).subtract(isA(Money.class));
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getCost();
-    verify(sku, atLeast(1)).getId();
-    verify(sku, atLeast(1)).getRetailPrice();
-    verify(sku).getSalePrice();
-    assertEquals(money2, actualMargin);
-  }
-
-  /**
-   * Test {@link SkuImpl#getMargin()}.
-   * <ul>
-   *   <li>Given {@link Money} {@link Money#subtract(Money)} throw
-   * {@link IllegalStateException#IllegalStateException(String)} with
-   * {@code foo}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getMargin()}
-   */
-  @Test
-  public void testGetMargin_givenMoneySubtractThrowIllegalStateExceptionWithFoo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Money money = mock(Money.class);
-    when(money.subtract(Mockito.<Money>any())).thenThrow(new IllegalStateException("foo"));
-    when(money.getAmount()).thenReturn(new BigDecimal("2.3"));
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenReturn(1L);
-    when(sku.getCost()).thenReturn(new Money());
-    when(sku.getRetailPrice()).thenReturn(money);
-    when(sku.getSalePrice()).thenReturn(new Money());
-    Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getMargin());
-    verify(money).getAmount();
-    verify(money).subtract(isA(Money.class));
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getCost();
-    verify(sku, atLeast(1)).getId();
-    verify(sku, atLeast(1)).getRetailPrice();
-    verify(sku).getSalePrice();
-  }
-
-  /**
-   * Test {@link SkuImpl#getMargin()}.
-   * <ul>
-   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return
-   * {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    *   <li>Then return abs is {@link Money#ZERO}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getMargin()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getMargin()"})
   public void testGetMargin_givenProductGetDefaultSkuReturnSkuImpl_thenReturnAbsIsZero() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    Money actualMargin = skuImpl.getMargin();
+    Money actualMargin = skuImpl2.getMargin();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -7450,27 +3579,26 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getMargin()}.
    * <ul>
-   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return
-   * {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    *   <li>Then return abs is {@link Money#ZERO}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getMargin()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getMargin()"})
   public void testGetMargin_givenProductGetDefaultSkuReturnSkuImpl_thenReturnAbsIsZero2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Money actualMargin = skuImpl.getMargin();
+    Money actualMargin = skuImpl2.getMargin();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -7482,70 +3610,32 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getMargin()}.
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getCost()} return {@code null}.</li>
-   *   <li>Then return {@link Money#ZERO}.</li>
+   *   <li>Given {@link Sku} {@link Sku#getCost()} return {@link Money#Money()}.</li>
+   *   <li>Then calls {@link Sku#getCost()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getMargin()}
    */
   @Test
-  public void testGetMargin_givenSkuGetCostReturnNull_thenReturnZero() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenReturn(1L);
-    when(sku.getCost()).thenReturn(null);
-    when(sku.getRetailPrice()).thenReturn(new Money());
-    when(sku.getSalePrice()).thenReturn(new Money());
-    Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
-
-    // Act
-    Money actualMargin = skuImpl.getMargin();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku, atLeast(1)).getCost();
-    verify(sku, atLeast(1)).getId();
-    verify(sku, atLeast(1)).getRetailPrice();
-    verify(sku).getSalePrice();
-    assertSame(actualMargin.ZERO, actualMargin);
-  }
-
-  /**
-   * Test {@link SkuImpl#getMargin()}.
-   * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getRetailPrice()} return
-   * {@link Money#Money()}.</li>
-   *   <li>Then return {@link Money#ZERO}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getMargin()}
-   */
-  @Test
-  public void testGetMargin_givenSkuGetRetailPriceReturnMoney_thenReturnZero() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getMargin()"})
+  public void testGetMargin_givenSkuGetCostReturnMoney_thenCallsGetCost() {
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
     when(sku.getCost()).thenReturn(new Money());
     when(sku.getRetailPrice()).thenReturn(new Money());
-    when(sku.getSalePrice()).thenReturn(new Money());
+    Money money = new Money();
+    when(sku.getSalePrice()).thenReturn(money);
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Money actualMargin = skuImpl.getMargin();
+    Money actualMargin = skuImpl2.getMargin();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -7553,128 +3643,72 @@ public class SkuImplDiffblueTest {
     verify(sku, atLeast(1)).getId();
     verify(sku, atLeast(1)).getRetailPrice();
     verify(sku).getSalePrice();
-    assertSame(actualMargin.ZERO, actualMargin);
+    assertSame(money.ZERO, actualMargin);
   }
 
   /**
    * Test {@link SkuImpl#getMargin()}.
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getRetailPrice()} return {@code null}.</li>
-   *   <li>Then calls {@link Sku#getPrice()}.</li>
+   *   <li>Given {@link SkuImpl} (default constructor) Cost is {@link Money#Money()}.</li>
+   *   <li>Then return abs abs abs Amount is {@link SkuImpl} (default constructor) {@link SkuImpl#cost}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getMargin()}
    */
   @Test
-  public void testGetMargin_givenSkuGetRetailPriceReturnNull_thenCallsGetPrice() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getMargin()"})
+  public void testGetMargin_givenSkuImplCostIsMoney_thenReturnAbsAbsAbsAmountIsSkuImplCost() {
     // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenReturn(1L);
-    when(sku.getCost()).thenReturn(new Money());
-    when(sku.getPrice()).thenReturn(new Money());
-    when(sku.getRetailPrice()).thenReturn(null);
-    when(sku.getSalePrice()).thenReturn(new Money());
-    Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setCost(new Money());
 
     // Act
-    Money actualMargin = skuImpl.getMargin();
+    Money actualMargin = skuImpl2.getMargin();
 
     // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getCost();
-    verify(sku, atLeast(1)).getId();
-    verify(sku).getPrice();
-    verify(sku, atLeast(1)).getRetailPrice();
-    verify(sku).getSalePrice();
-    assertSame(actualMargin.ZERO, actualMargin);
+    BigDecimal bigDecimal = skuImpl2.cost;
+    Money absResult = actualMargin.abs();
+    Money absResult2 = absResult.abs();
+    assertSame(bigDecimal, absResult2.abs().getAmount());
+    Money zeroResult = actualMargin.zero();
+    Money absResult3 = zeroResult.abs();
+    assertSame(bigDecimal, absResult3.abs().getAmount());
+    assertSame(bigDecimal, absResult2.getAmount());
+    Money zeroResult2 = absResult.zero();
+    assertSame(bigDecimal, zeroResult2.abs().getAmount());
+    Money zeroResult3 = zeroResult.zero();
+    assertSame(bigDecimal, zeroResult3.abs().getAmount());
+    assertSame(bigDecimal, absResult3.getAmount());
+    assertSame(bigDecimal, absResult.getAmount());
+    assertSame(bigDecimal, absResult2.zero().getAmount());
+    assertSame(bigDecimal, absResult3.zero().getAmount());
+    assertSame(bigDecimal, zeroResult2.getAmount());
+    assertSame(bigDecimal, zeroResult2.zero().getAmount());
+    assertSame(bigDecimal, zeroResult3.zero().getAmount());
+    assertSame(bigDecimal, zeroResult3.getAmount());
+    assertSame(bigDecimal, zeroResult.getAmount());
   }
 
   /**
    * Test {@link SkuImpl#getMargin()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Id is one.</li>
-   *   <li>Then return {@link Money#ZERO}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getMargin()}
-   */
-  @Test
-  public void testGetMargin_givenSkuImplIdIsOne_thenReturnZero() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenReturn(1L);
-    Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
-
-    // Act
-    Money actualMargin = skuImpl.getMargin();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku, atLeast(1)).getId();
-    assertSame(actualMargin.ZERO, actualMargin);
-  }
-
-  /**
-   * Test {@link SkuImpl#getMargin()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) RetailPrice is
-   * {@link Money#Money(double)} with amount is ten.</li>
+   *   <li>Given {@link SkuImpl} (default constructor) RetailPrice is {@link Money#Money(double)} with amount is ten.</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getMargin()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getMargin()"})
   public void testGetMargin_givenSkuImplRetailPriceIsMoneyWithAmountIsTen_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setRetailPrice(new Money(10.0d));
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setRetailPrice(new Money(10.0d));
 
     // Act and Assert
-    assertNull(skuImpl.getMargin());
-  }
-
-  /**
-   * Test {@link SkuImpl#getMargin()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is
-   * {@link Money}.</li>
-   *   <li>Then return abs is {@link Money#ZERO}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getMargin()}
-   */
-  @Test
-  public void testGetMargin_givenSkuImplSalePriceIsMoney_thenReturnAbsIsZero() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(mock(Money.class));
-
-    // Act
-    Money actualMargin = skuImpl.getMargin();
-
-    // Assert
-    Money money = actualMargin.ZERO;
-    assertEquals(money, actualMargin.abs());
-    assertEquals(money, actualMargin.zero());
+    assertNull(skuImpl2.getMargin());
   }
 
   /**
@@ -7687,9 +3721,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getMargin()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getMargin()"})
   public void testGetMargin_givenSkuImpl_thenReturnAbsIsZero() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange and Act
     Money actualMargin = (new SkuImpl()).getMargin();
 
@@ -7702,1681 +3736,168 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getMargin()}.
    * <ul>
-   *   <li>Then calls {@link Sku#getCurrency()}.</li>
+   *   <li>Then return abs abs abs Amount is {@link SkuImpl} (default constructor) {@link SkuImpl#retailPrice}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getMargin()}
    */
   @Test
-  public void testGetMargin_thenCallsGetCurrency() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getMargin()"})
+  public void testGetMargin_thenReturnAbsAbsAbsAmountIsSkuImplRetailPrice() {
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setRetailPrice(new Money());
 
+    // Act
+    Money actualMargin = skuImpl2.getMargin();
+
+    // Assert
+    BigDecimal bigDecimal = skuImpl2.retailPrice;
+    Money absResult = actualMargin.abs();
+    Money absResult2 = absResult.abs();
+    assertSame(bigDecimal, absResult2.abs().getAmount());
+    Money zeroResult = actualMargin.zero();
+    Money absResult3 = zeroResult.abs();
+    assertSame(bigDecimal, absResult3.abs().getAmount());
+    assertSame(bigDecimal, absResult2.getAmount());
+    Money zeroResult2 = absResult.zero();
+    assertSame(bigDecimal, zeroResult2.abs().getAmount());
+    Money zeroResult3 = zeroResult.zero();
+    assertSame(bigDecimal, zeroResult3.abs().getAmount());
+    assertSame(bigDecimal, absResult3.getAmount());
+    assertSame(bigDecimal, absResult.getAmount());
+    assertSame(bigDecimal, absResult2.zero().getAmount());
+    assertSame(bigDecimal, absResult3.zero().getAmount());
+    assertSame(bigDecimal, zeroResult2.getAmount());
+    assertSame(bigDecimal, zeroResult2.zero().getAmount());
+    assertSame(bigDecimal, zeroResult3.zero().getAmount());
+    assertSame(bigDecimal, zeroResult3.getAmount());
+    assertSame(bigDecimal, zeroResult.getAmount());
+  }
+
+  /**
+   * Test {@link SkuImpl#getMargin()}.
+   * <ul>
+   *   <li>Then return abs abs abs Amount is {@link SkuImpl} (default constructor) {@link SkuImpl#salePrice}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getMargin()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getMargin()"})
+  public void testGetMargin_thenReturnAbsAbsAbsAmountIsSkuImplSalePrice() {
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setSalePrice(new Money());
+
+    // Act
+    Money actualMargin = skuImpl2.getMargin();
+
+    // Assert
+    BigDecimal bigDecimal = skuImpl2.salePrice;
+    Money absResult = actualMargin.abs();
+    Money absResult2 = absResult.abs();
+    assertSame(bigDecimal, absResult2.abs().getAmount());
+    Money zeroResult = actualMargin.zero();
+    Money absResult3 = zeroResult.abs();
+    assertSame(bigDecimal, absResult3.abs().getAmount());
+    assertSame(bigDecimal, absResult2.getAmount());
+    Money zeroResult2 = absResult.zero();
+    assertSame(bigDecimal, zeroResult2.abs().getAmount());
+    Money zeroResult3 = zeroResult.zero();
+    assertSame(bigDecimal, zeroResult3.abs().getAmount());
+    assertSame(bigDecimal, absResult3.getAmount());
+    assertSame(bigDecimal, absResult.getAmount());
+    assertSame(bigDecimal, absResult2.zero().getAmount());
+    assertSame(bigDecimal, absResult3.zero().getAmount());
+    assertSame(bigDecimal, zeroResult2.getAmount());
+    assertSame(bigDecimal, zeroResult2.zero().getAmount());
+    assertSame(bigDecimal, zeroResult3.zero().getAmount());
+    assertSame(bigDecimal, zeroResult3.getAmount());
+    assertSame(bigDecimal, zeroResult.getAmount());
+  }
+
+  /**
+   * Test {@link SkuImpl#getMargin()}.
+   * <ul>
+   *   <li>Then throw {@link IllegalStateException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getMargin()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getMargin()"})
+  public void testGetMargin_thenThrowIllegalStateException() {
     // Arrange
     Sku sku = mock(Sku.class);
-    when(sku.getCurrency()).thenThrow(new IllegalStateException("currency.default"));
-    when(sku.getId()).thenReturn(1L);
-    when(sku.getRetailPrice()).thenReturn(mock(Money.class));
+    when(sku.getId()).thenThrow(new IllegalStateException("ThreadLocalManager.notify.orphans"));
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act and Assert
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getMargin());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
+  }
+
+  /**
+   * Test {@link SkuImpl#getMargin()}.
+   * <ul>
+   *   <li>Then throw {@link IllegalStateException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getMargin()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getMargin()"})
+  public void testGetMargin_thenThrowIllegalStateException2() {
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("ThreadLocalManager.notify.orphans"));
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
     SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(new Money());
-    skuImpl.setId(2L);
+    skuImpl.setRetailPrice(new Money());
+    skuImpl.setId(1L);
     skuImpl.setProduct(product);
 
     // Act and Assert
     assertThrows(IllegalStateException.class, () -> skuImpl.getMargin());
     verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getCurrency();
-    verify(sku, atLeast(1)).getId();
-    verify(sku).getRetailPrice();
-  }
-
-  /**
-   * Test {@link SkuImpl#getMargin()}.
-   * <ul>
-   *   <li>Then return abs abs abs abs abs abs abs Amount is {@link SkuImpl}
-   * (default constructor) {@link SkuImpl#cost}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getMargin()}
-   */
-  @Test
-  public void testGetMargin_thenReturnAbsAbsAbsAbsAbsAbsAbsAmountIsSkuImplCost() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setCost(new Money());
-
-    // Act
-    Money actualMargin = skuImpl.getMargin();
-
-    // Assert
-    BigDecimal bigDecimal = skuImpl.cost;
-    Money absResult = actualMargin.abs();
-    Money absResult2 = absResult.abs();
-    Money absResult3 = absResult2.abs();
-    Money absResult4 = absResult3.abs();
-    Money absResult5 = absResult4.abs();
-    Money absResult6 = absResult5.abs();
-    assertSame(bigDecimal, absResult6.abs().getAmount());
-    Money zeroResult = actualMargin.zero();
-    Money absResult7 = zeroResult.abs();
-    Money absResult8 = absResult7.abs();
-    Money absResult9 = absResult8.abs();
-    Money absResult10 = absResult9.abs();
-    Money absResult11 = absResult10.abs();
-    assertSame(bigDecimal, absResult11.abs().getAmount());
-    assertSame(bigDecimal, absResult6.getAmount());
-    Money zeroResult2 = absResult.zero();
-    Money absResult12 = zeroResult2.abs();
-    Money absResult13 = absResult12.abs();
-    Money absResult14 = absResult13.abs();
-    Money absResult15 = absResult14.abs();
-    assertSame(bigDecimal, absResult15.abs().getAmount());
-    Money zeroResult3 = zeroResult.zero();
-    Money absResult16 = zeroResult3.abs();
-    Money absResult17 = absResult16.abs();
-    Money absResult18 = absResult17.abs();
-    Money absResult19 = absResult18.abs();
-    assertSame(bigDecimal, absResult19.abs().getAmount());
-    assertSame(bigDecimal, absResult11.getAmount());
-    assertSame(bigDecimal, absResult5.getAmount());
-    Money zeroResult4 = absResult2.zero();
-    Money absResult20 = zeroResult4.abs();
-    Money absResult21 = absResult20.abs();
-    Money absResult22 = absResult21.abs();
-    assertSame(bigDecimal, absResult22.abs().getAmount());
-    Money zeroResult5 = absResult7.zero();
-    Money absResult23 = zeroResult5.abs();
-    Money absResult24 = absResult23.abs();
-    Money absResult25 = absResult24.abs();
-    assertSame(bigDecimal, absResult25.abs().getAmount());
-    assertSame(bigDecimal, absResult15.getAmount());
-    Money zeroResult6 = zeroResult2.zero();
-    Money absResult26 = zeroResult6.abs();
-    Money absResult27 = absResult26.abs();
-    Money absResult28 = absResult27.abs();
-    assertSame(bigDecimal, absResult28.abs().getAmount());
-    Money zeroResult7 = zeroResult3.zero();
-    Money absResult29 = zeroResult7.abs();
-    Money absResult30 = absResult29.abs();
-    Money absResult31 = absResult30.abs();
-    assertSame(bigDecimal, absResult31.abs().getAmount());
-    assertSame(bigDecimal, absResult19.getAmount());
-    assertSame(bigDecimal, absResult10.getAmount());
-    assertSame(bigDecimal, absResult4.getAmount());
-    Money zeroResult8 = absResult3.zero();
-    Money absResult32 = zeroResult8.abs();
-    Money absResult33 = absResult32.abs();
-    assertSame(bigDecimal, absResult33.abs().getAmount());
-    Money zeroResult9 = absResult8.zero();
-    Money absResult34 = zeroResult9.abs();
-    Money absResult35 = absResult34.abs();
-    assertSame(bigDecimal, absResult35.abs().getAmount());
-    assertSame(bigDecimal, absResult22.getAmount());
-    Money zeroResult10 = absResult12.zero();
-    Money absResult36 = zeroResult10.abs();
-    Money absResult37 = absResult36.abs();
-    assertSame(bigDecimal, absResult37.abs().getAmount());
-    Money zeroResult11 = absResult16.zero();
-    Money absResult38 = zeroResult11.abs();
-    Money absResult39 = absResult38.abs();
-    assertSame(bigDecimal, absResult39.abs().getAmount());
-    assertSame(bigDecimal, absResult25.getAmount());
-    assertSame(bigDecimal, absResult14.getAmount());
-    Money zeroResult12 = zeroResult4.zero();
-    Money absResult40 = zeroResult12.abs();
-    Money absResult41 = absResult40.abs();
-    assertSame(bigDecimal, absResult41.abs().getAmount());
-    Money zeroResult13 = zeroResult5.zero();
-    Money absResult42 = zeroResult13.abs();
-    Money absResult43 = absResult42.abs();
-    assertSame(bigDecimal, absResult43.abs().getAmount());
-    assertSame(bigDecimal, absResult28.getAmount());
-    Money zeroResult14 = zeroResult6.zero();
-    Money absResult44 = zeroResult14.abs();
-    Money absResult45 = absResult44.abs();
-    assertSame(bigDecimal, absResult45.abs().getAmount());
-    Money zeroResult15 = zeroResult7.zero();
-    Money absResult46 = zeroResult15.abs();
-    Money absResult47 = absResult46.abs();
-    assertSame(bigDecimal, absResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult31.getAmount());
-    assertSame(bigDecimal, absResult18.getAmount());
-    assertSame(bigDecimal, absResult9.getAmount());
-    assertSame(bigDecimal, absResult3.getAmount());
-    Money zeroResult16 = absResult4.zero();
-    Money absResult48 = zeroResult16.abs();
-    assertSame(bigDecimal, absResult48.abs().getAmount());
-    Money zeroResult17 = absResult9.zero();
-    Money absResult49 = zeroResult17.abs();
-    assertSame(bigDecimal, absResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult33.getAmount());
-    Money zeroResult18 = absResult13.zero();
-    Money absResult50 = zeroResult18.abs();
-    assertSame(bigDecimal, absResult50.abs().getAmount());
-    Money zeroResult19 = absResult17.zero();
-    Money absResult51 = zeroResult19.abs();
-    assertSame(bigDecimal, absResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult35.getAmount());
-    assertSame(bigDecimal, absResult21.getAmount());
-    Money zeroResult20 = absResult20.zero();
-    Money absResult52 = zeroResult20.abs();
-    assertSame(bigDecimal, absResult52.abs().getAmount());
-    Money zeroResult21 = absResult23.zero();
-    Money absResult53 = zeroResult21.abs();
-    assertSame(bigDecimal, absResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult37.getAmount());
-    Money zeroResult22 = absResult26.zero();
-    Money absResult54 = zeroResult22.abs();
-    assertSame(bigDecimal, absResult54.abs().getAmount());
-    Money zeroResult23 = absResult29.zero();
-    Money absResult55 = zeroResult23.abs();
-    assertSame(bigDecimal, absResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult39.getAmount());
-    assertSame(bigDecimal, absResult24.getAmount());
-    assertSame(bigDecimal, absResult13.getAmount());
-    Money zeroResult24 = zeroResult8.zero();
-    Money absResult56 = zeroResult24.abs();
-    assertSame(bigDecimal, absResult56.abs().getAmount());
-    Money zeroResult25 = zeroResult9.zero();
-    Money absResult57 = zeroResult25.abs();
-    assertSame(bigDecimal, absResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult41.getAmount());
-    Money zeroResult26 = zeroResult10.zero();
-    Money absResult58 = zeroResult26.abs();
-    assertSame(bigDecimal, absResult58.abs().getAmount());
-    Money zeroResult27 = zeroResult11.zero();
-    Money absResult59 = zeroResult27.abs();
-    assertSame(bigDecimal, absResult59.abs().getAmount());
-    assertSame(bigDecimal, absResult43.getAmount());
-    assertSame(bigDecimal, absResult27.getAmount());
-    Money zeroResult28 = zeroResult12.zero();
-    Money absResult60 = zeroResult28.abs();
-    assertSame(bigDecimal, absResult60.abs().getAmount());
-    Money zeroResult29 = zeroResult13.zero();
-    Money absResult61 = zeroResult29.abs();
-    assertSame(bigDecimal, absResult61.abs().getAmount());
-    assertSame(bigDecimal, absResult45.getAmount());
-    Money zeroResult30 = zeroResult14.zero();
-    Money absResult62 = zeroResult30.abs();
-    assertSame(bigDecimal, absResult62.abs().getAmount());
-    assertSame(bigDecimal, absResult47.getAmount());
-    assertSame(bigDecimal, absResult30.getAmount());
-    assertSame(bigDecimal, absResult17.getAmount());
-    assertSame(bigDecimal, absResult8.getAmount());
-    assertSame(bigDecimal, absResult2.getAmount());
-    Money zeroResult31 = absResult5.zero();
-    assertSame(bigDecimal, zeroResult31.abs().getAmount());
-    Money zeroResult32 = absResult10.zero();
-    assertSame(bigDecimal, zeroResult32.abs().getAmount());
-    assertSame(bigDecimal, absResult48.getAmount());
-    Money zeroResult33 = absResult14.zero();
-    assertSame(bigDecimal, zeroResult33.abs().getAmount());
-    Money zeroResult34 = absResult18.zero();
-    assertSame(bigDecimal, zeroResult34.abs().getAmount());
-    assertSame(bigDecimal, absResult49.getAmount());
-    assertSame(bigDecimal, absResult32.getAmount());
-    Money zeroResult35 = absResult21.zero();
-    assertSame(bigDecimal, zeroResult35.abs().getAmount());
-    Money zeroResult36 = absResult24.zero();
-    assertSame(bigDecimal, zeroResult36.abs().getAmount());
-    assertSame(bigDecimal, absResult50.getAmount());
-    Money zeroResult37 = absResult27.zero();
-    assertSame(bigDecimal, zeroResult37.abs().getAmount());
-    Money zeroResult38 = absResult30.zero();
-    assertSame(bigDecimal, zeroResult38.abs().getAmount());
-    assertSame(bigDecimal, absResult51.getAmount());
-    assertSame(bigDecimal, absResult34.getAmount());
-    assertSame(bigDecimal, absResult20.getAmount());
-    Money zeroResult39 = absResult32.zero();
-    assertSame(bigDecimal, zeroResult39.abs().getAmount());
-    Money zeroResult40 = absResult34.zero();
-    assertSame(bigDecimal, zeroResult40.abs().getAmount());
-    assertSame(bigDecimal, absResult52.getAmount());
-    Money zeroResult41 = absResult36.zero();
-    assertSame(bigDecimal, zeroResult41.abs().getAmount());
-    Money zeroResult42 = absResult38.zero();
-    assertSame(bigDecimal, zeroResult42.abs().getAmount());
-    assertSame(bigDecimal, absResult53.getAmount());
-    assertSame(bigDecimal, absResult36.getAmount());
-    Money zeroResult43 = absResult40.zero();
-    assertSame(bigDecimal, zeroResult43.abs().getAmount());
-    Money zeroResult44 = absResult42.zero();
-    assertSame(bigDecimal, zeroResult44.abs().getAmount());
-    assertSame(bigDecimal, absResult54.getAmount());
-    Money zeroResult45 = absResult44.zero();
-    assertSame(bigDecimal, zeroResult45.abs().getAmount());
-    assertSame(bigDecimal, absResult55.getAmount());
-    assertSame(bigDecimal, absResult38.getAmount());
-    assertSame(bigDecimal, absResult23.getAmount());
-    assertSame(bigDecimal, absResult12.getAmount());
-    Money zeroResult46 = zeroResult16.zero();
-    assertSame(bigDecimal, zeroResult46.abs().getAmount());
-    Money zeroResult47 = zeroResult17.zero();
-    assertSame(bigDecimal, zeroResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult56.getAmount());
-    Money zeroResult48 = zeroResult18.zero();
-    assertSame(bigDecimal, zeroResult48.abs().getAmount());
-    Money zeroResult49 = zeroResult19.zero();
-    assertSame(bigDecimal, zeroResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult57.getAmount());
-    assertSame(bigDecimal, absResult40.getAmount());
-    Money zeroResult50 = zeroResult20.zero();
-    assertSame(bigDecimal, zeroResult50.abs().getAmount());
-    Money zeroResult51 = zeroResult21.zero();
-    assertSame(bigDecimal, zeroResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult58.getAmount());
-    Money zeroResult52 = zeroResult22.zero();
-    assertSame(bigDecimal, zeroResult52.abs().getAmount());
-    Money zeroResult53 = zeroResult23.zero();
-    assertSame(bigDecimal, zeroResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult59.getAmount());
-    assertSame(bigDecimal, absResult42.getAmount());
-    assertSame(bigDecimal, absResult26.getAmount());
-    Money zeroResult54 = zeroResult24.zero();
-    assertSame(bigDecimal, zeroResult54.abs().getAmount());
-    Money zeroResult55 = zeroResult25.zero();
-    assertSame(bigDecimal, zeroResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult60.getAmount());
-    Money zeroResult56 = zeroResult26.zero();
-    assertSame(bigDecimal, zeroResult56.abs().getAmount());
-    Money zeroResult57 = zeroResult27.zero();
-    assertSame(bigDecimal, zeroResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult61.getAmount());
-    assertSame(bigDecimal, absResult44.getAmount());
-    Money zeroResult58 = zeroResult28.zero();
-    assertSame(bigDecimal, zeroResult58.abs().getAmount());
-    Money zeroResult59 = zeroResult29.zero();
-    assertSame(bigDecimal, zeroResult59.abs().getAmount());
-    assertSame(bigDecimal, absResult62.getAmount());
-    Money zeroResult60 = zeroResult30.zero();
-    assertSame(bigDecimal, zeroResult60.abs().getAmount());
-    Money zeroResult61 = zeroResult15.zero();
-    assertSame(bigDecimal, zeroResult61.abs().getAmount());
-    assertSame(bigDecimal, absResult46.getAmount());
-    assertSame(bigDecimal, absResult29.getAmount());
-    assertSame(bigDecimal, absResult16.getAmount());
-    assertSame(bigDecimal, absResult7.getAmount());
-    assertSame(bigDecimal, absResult.getAmount());
-    assertSame(bigDecimal, absResult6.zero().getAmount());
-    assertSame(bigDecimal, absResult11.zero().getAmount());
-    assertSame(bigDecimal, zeroResult31.getAmount());
-    assertSame(bigDecimal, absResult15.zero().getAmount());
-    assertSame(bigDecimal, absResult19.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.getAmount());
-    assertSame(bigDecimal, zeroResult16.getAmount());
-    assertSame(bigDecimal, absResult22.zero().getAmount());
-    assertSame(bigDecimal, absResult25.zero().getAmount());
-    assertSame(bigDecimal, zeroResult33.getAmount());
-    assertSame(bigDecimal, absResult28.zero().getAmount());
-    assertSame(bigDecimal, absResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.getAmount());
-    assertSame(bigDecimal, zeroResult17.getAmount());
-    assertSame(bigDecimal, zeroResult8.getAmount());
-    assertSame(bigDecimal, absResult33.zero().getAmount());
-    assertSame(bigDecimal, absResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult35.getAmount());
-    assertSame(bigDecimal, absResult37.zero().getAmount());
-    assertSame(bigDecimal, absResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.getAmount());
-    assertSame(bigDecimal, zeroResult18.getAmount());
-    assertSame(bigDecimal, absResult41.zero().getAmount());
-    assertSame(bigDecimal, absResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult37.getAmount());
-    assertSame(bigDecimal, absResult45.zero().getAmount());
-    assertSame(bigDecimal, absResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.getAmount());
-    assertSame(bigDecimal, zeroResult19.getAmount());
-    assertSame(bigDecimal, zeroResult9.getAmount());
-    assertSame(bigDecimal, zeroResult4.getAmount());
-    assertSame(bigDecimal, absResult48.zero().getAmount());
-    assertSame(bigDecimal, absResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult39.getAmount());
-    assertSame(bigDecimal, absResult50.zero().getAmount());
-    assertSame(bigDecimal, absResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.getAmount());
-    assertSame(bigDecimal, zeroResult20.getAmount());
-    assertSame(bigDecimal, absResult52.zero().getAmount());
-    assertSame(bigDecimal, absResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult41.getAmount());
-    assertSame(bigDecimal, absResult54.zero().getAmount());
-    assertSame(bigDecimal, absResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.getAmount());
-    assertSame(bigDecimal, zeroResult21.getAmount());
-    assertSame(bigDecimal, zeroResult10.getAmount());
-    assertSame(bigDecimal, absResult56.zero().getAmount());
-    assertSame(bigDecimal, absResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult43.getAmount());
-    assertSame(bigDecimal, absResult58.zero().getAmount());
-    assertSame(bigDecimal, absResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.getAmount());
-    assertSame(bigDecimal, zeroResult22.getAmount());
-    assertSame(bigDecimal, absResult60.zero().getAmount());
-    assertSame(bigDecimal, absResult61.zero().getAmount());
-    assertSame(bigDecimal, zeroResult45.getAmount());
-    assertSame(bigDecimal, absResult62.zero().getAmount());
-    assertSame(bigDecimal, absResult46.zero().getAmount());
-    assertSame(bigDecimal, zeroResult23.getAmount());
-    assertSame(bigDecimal, zeroResult11.getAmount());
-    assertSame(bigDecimal, zeroResult5.getAmount());
-    assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, zeroResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.zero().getAmount());
-    assertSame(bigDecimal, zeroResult46.getAmount());
-    assertSame(bigDecimal, zeroResult33.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.getAmount());
-    assertSame(bigDecimal, zeroResult24.getAmount());
-    assertSame(bigDecimal, zeroResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.zero().getAmount());
-    assertSame(bigDecimal, zeroResult48.getAmount());
-    assertSame(bigDecimal, zeroResult37.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.getAmount());
-    assertSame(bigDecimal, zeroResult25.getAmount());
-    assertSame(bigDecimal, zeroResult12.getAmount());
-    assertSame(bigDecimal, zeroResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.zero().getAmount());
-    assertSame(bigDecimal, zeroResult50.getAmount());
-    assertSame(bigDecimal, zeroResult41.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.getAmount());
-    assertSame(bigDecimal, zeroResult26.getAmount());
-    assertSame(bigDecimal, zeroResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.zero().getAmount());
-    assertSame(bigDecimal, zeroResult52.getAmount());
-    assertSame(bigDecimal, zeroResult45.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.getAmount());
-    assertSame(bigDecimal, zeroResult27.getAmount());
-    assertSame(bigDecimal, zeroResult13.getAmount());
-    assertSame(bigDecimal, zeroResult6.getAmount());
-    assertSame(bigDecimal, zeroResult46.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult54.getAmount());
-    assertSame(bigDecimal, zeroResult48.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.getAmount());
-    assertSame(bigDecimal, zeroResult28.getAmount());
-    assertSame(bigDecimal, zeroResult50.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult56.getAmount());
-    assertSame(bigDecimal, zeroResult52.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.getAmount());
-    assertSame(bigDecimal, zeroResult29.getAmount());
-    assertSame(bigDecimal, zeroResult14.getAmount());
-    assertSame(bigDecimal, zeroResult54.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult58.getAmount());
-    assertSame(bigDecimal, zeroResult56.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.getAmount());
-    assertSame(bigDecimal, zeroResult30.getAmount());
-    assertSame(bigDecimal, zeroResult58.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.getAmount());
-    assertSame(bigDecimal, zeroResult60.zero().getAmount());
-    assertSame(bigDecimal, zeroResult61.zero().getAmount());
-    assertSame(bigDecimal, zeroResult61.getAmount());
-    assertSame(bigDecimal, zeroResult15.getAmount());
-    assertSame(bigDecimal, zeroResult7.getAmount());
-    assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult.getAmount());
-  }
-
-  /**
-   * Test {@link SkuImpl#getMargin()}.
-   * <ul>
-   *   <li>Then return abs abs abs abs abs abs abs Amount is {@link SkuImpl}
-   * (default constructor) {@link SkuImpl#retailPrice}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getMargin()}
-   */
-  @Test
-  public void testGetMargin_thenReturnAbsAbsAbsAbsAbsAbsAbsAmountIsSkuImplRetailPrice() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setRetailPrice(new Money());
-
-    // Act
-    Money actualMargin = skuImpl.getMargin();
-
-    // Assert
-    BigDecimal bigDecimal = skuImpl.retailPrice;
-    Money absResult = actualMargin.abs();
-    Money absResult2 = absResult.abs();
-    Money absResult3 = absResult2.abs();
-    Money absResult4 = absResult3.abs();
-    Money absResult5 = absResult4.abs();
-    Money absResult6 = absResult5.abs();
-    assertSame(bigDecimal, absResult6.abs().getAmount());
-    Money zeroResult = actualMargin.zero();
-    Money absResult7 = zeroResult.abs();
-    Money absResult8 = absResult7.abs();
-    Money absResult9 = absResult8.abs();
-    Money absResult10 = absResult9.abs();
-    Money absResult11 = absResult10.abs();
-    assertSame(bigDecimal, absResult11.abs().getAmount());
-    assertSame(bigDecimal, absResult6.getAmount());
-    Money zeroResult2 = absResult.zero();
-    Money absResult12 = zeroResult2.abs();
-    Money absResult13 = absResult12.abs();
-    Money absResult14 = absResult13.abs();
-    Money absResult15 = absResult14.abs();
-    assertSame(bigDecimal, absResult15.abs().getAmount());
-    Money zeroResult3 = zeroResult.zero();
-    Money absResult16 = zeroResult3.abs();
-    Money absResult17 = absResult16.abs();
-    Money absResult18 = absResult17.abs();
-    Money absResult19 = absResult18.abs();
-    assertSame(bigDecimal, absResult19.abs().getAmount());
-    assertSame(bigDecimal, absResult11.getAmount());
-    assertSame(bigDecimal, absResult5.getAmount());
-    Money zeroResult4 = absResult2.zero();
-    Money absResult20 = zeroResult4.abs();
-    Money absResult21 = absResult20.abs();
-    Money absResult22 = absResult21.abs();
-    assertSame(bigDecimal, absResult22.abs().getAmount());
-    Money zeroResult5 = absResult7.zero();
-    Money absResult23 = zeroResult5.abs();
-    Money absResult24 = absResult23.abs();
-    Money absResult25 = absResult24.abs();
-    assertSame(bigDecimal, absResult25.abs().getAmount());
-    assertSame(bigDecimal, absResult15.getAmount());
-    Money zeroResult6 = zeroResult2.zero();
-    Money absResult26 = zeroResult6.abs();
-    Money absResult27 = absResult26.abs();
-    Money absResult28 = absResult27.abs();
-    assertSame(bigDecimal, absResult28.abs().getAmount());
-    Money zeroResult7 = zeroResult3.zero();
-    Money absResult29 = zeroResult7.abs();
-    Money absResult30 = absResult29.abs();
-    Money absResult31 = absResult30.abs();
-    assertSame(bigDecimal, absResult31.abs().getAmount());
-    assertSame(bigDecimal, absResult19.getAmount());
-    assertSame(bigDecimal, absResult10.getAmount());
-    assertSame(bigDecimal, absResult4.getAmount());
-    Money zeroResult8 = absResult3.zero();
-    Money absResult32 = zeroResult8.abs();
-    Money absResult33 = absResult32.abs();
-    assertSame(bigDecimal, absResult33.abs().getAmount());
-    Money zeroResult9 = absResult8.zero();
-    Money absResult34 = zeroResult9.abs();
-    Money absResult35 = absResult34.abs();
-    assertSame(bigDecimal, absResult35.abs().getAmount());
-    assertSame(bigDecimal, absResult22.getAmount());
-    Money zeroResult10 = absResult12.zero();
-    Money absResult36 = zeroResult10.abs();
-    Money absResult37 = absResult36.abs();
-    assertSame(bigDecimal, absResult37.abs().getAmount());
-    Money zeroResult11 = absResult16.zero();
-    Money absResult38 = zeroResult11.abs();
-    Money absResult39 = absResult38.abs();
-    assertSame(bigDecimal, absResult39.abs().getAmount());
-    assertSame(bigDecimal, absResult25.getAmount());
-    assertSame(bigDecimal, absResult14.getAmount());
-    Money zeroResult12 = zeroResult4.zero();
-    Money absResult40 = zeroResult12.abs();
-    Money absResult41 = absResult40.abs();
-    assertSame(bigDecimal, absResult41.abs().getAmount());
-    Money zeroResult13 = zeroResult5.zero();
-    Money absResult42 = zeroResult13.abs();
-    Money absResult43 = absResult42.abs();
-    assertSame(bigDecimal, absResult43.abs().getAmount());
-    assertSame(bigDecimal, absResult28.getAmount());
-    Money zeroResult14 = zeroResult6.zero();
-    Money absResult44 = zeroResult14.abs();
-    Money absResult45 = absResult44.abs();
-    assertSame(bigDecimal, absResult45.abs().getAmount());
-    Money zeroResult15 = zeroResult7.zero();
-    Money absResult46 = zeroResult15.abs();
-    Money absResult47 = absResult46.abs();
-    assertSame(bigDecimal, absResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult31.getAmount());
-    assertSame(bigDecimal, absResult18.getAmount());
-    assertSame(bigDecimal, absResult9.getAmount());
-    assertSame(bigDecimal, absResult3.getAmount());
-    Money zeroResult16 = absResult4.zero();
-    Money absResult48 = zeroResult16.abs();
-    assertSame(bigDecimal, absResult48.abs().getAmount());
-    Money zeroResult17 = absResult9.zero();
-    Money absResult49 = zeroResult17.abs();
-    assertSame(bigDecimal, absResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult33.getAmount());
-    Money zeroResult18 = absResult13.zero();
-    Money absResult50 = zeroResult18.abs();
-    assertSame(bigDecimal, absResult50.abs().getAmount());
-    Money zeroResult19 = absResult17.zero();
-    Money absResult51 = zeroResult19.abs();
-    assertSame(bigDecimal, absResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult35.getAmount());
-    assertSame(bigDecimal, absResult21.getAmount());
-    Money zeroResult20 = absResult20.zero();
-    Money absResult52 = zeroResult20.abs();
-    assertSame(bigDecimal, absResult52.abs().getAmount());
-    Money zeroResult21 = absResult23.zero();
-    Money absResult53 = zeroResult21.abs();
-    assertSame(bigDecimal, absResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult37.getAmount());
-    Money zeroResult22 = absResult26.zero();
-    Money absResult54 = zeroResult22.abs();
-    assertSame(bigDecimal, absResult54.abs().getAmount());
-    Money zeroResult23 = absResult29.zero();
-    Money absResult55 = zeroResult23.abs();
-    assertSame(bigDecimal, absResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult39.getAmount());
-    assertSame(bigDecimal, absResult24.getAmount());
-    assertSame(bigDecimal, absResult13.getAmount());
-    Money zeroResult24 = zeroResult8.zero();
-    Money absResult56 = zeroResult24.abs();
-    assertSame(bigDecimal, absResult56.abs().getAmount());
-    Money zeroResult25 = zeroResult9.zero();
-    Money absResult57 = zeroResult25.abs();
-    assertSame(bigDecimal, absResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult41.getAmount());
-    Money zeroResult26 = zeroResult10.zero();
-    Money absResult58 = zeroResult26.abs();
-    assertSame(bigDecimal, absResult58.abs().getAmount());
-    Money zeroResult27 = zeroResult11.zero();
-    Money absResult59 = zeroResult27.abs();
-    assertSame(bigDecimal, absResult59.abs().getAmount());
-    assertSame(bigDecimal, absResult43.getAmount());
-    assertSame(bigDecimal, absResult27.getAmount());
-    Money zeroResult28 = zeroResult12.zero();
-    Money absResult60 = zeroResult28.abs();
-    assertSame(bigDecimal, absResult60.abs().getAmount());
-    Money zeroResult29 = zeroResult13.zero();
-    Money absResult61 = zeroResult29.abs();
-    assertSame(bigDecimal, absResult61.abs().getAmount());
-    assertSame(bigDecimal, absResult45.getAmount());
-    Money zeroResult30 = zeroResult14.zero();
-    Money absResult62 = zeroResult30.abs();
-    assertSame(bigDecimal, absResult62.abs().getAmount());
-    assertSame(bigDecimal, absResult47.getAmount());
-    assertSame(bigDecimal, absResult30.getAmount());
-    assertSame(bigDecimal, absResult17.getAmount());
-    assertSame(bigDecimal, absResult8.getAmount());
-    assertSame(bigDecimal, absResult2.getAmount());
-    Money zeroResult31 = absResult5.zero();
-    assertSame(bigDecimal, zeroResult31.abs().getAmount());
-    Money zeroResult32 = absResult10.zero();
-    assertSame(bigDecimal, zeroResult32.abs().getAmount());
-    assertSame(bigDecimal, absResult48.getAmount());
-    Money zeroResult33 = absResult14.zero();
-    assertSame(bigDecimal, zeroResult33.abs().getAmount());
-    Money zeroResult34 = absResult18.zero();
-    assertSame(bigDecimal, zeroResult34.abs().getAmount());
-    assertSame(bigDecimal, absResult49.getAmount());
-    assertSame(bigDecimal, absResult32.getAmount());
-    Money zeroResult35 = absResult21.zero();
-    assertSame(bigDecimal, zeroResult35.abs().getAmount());
-    Money zeroResult36 = absResult24.zero();
-    assertSame(bigDecimal, zeroResult36.abs().getAmount());
-    assertSame(bigDecimal, absResult50.getAmount());
-    Money zeroResult37 = absResult27.zero();
-    assertSame(bigDecimal, zeroResult37.abs().getAmount());
-    Money zeroResult38 = absResult30.zero();
-    assertSame(bigDecimal, zeroResult38.abs().getAmount());
-    assertSame(bigDecimal, absResult51.getAmount());
-    assertSame(bigDecimal, absResult34.getAmount());
-    assertSame(bigDecimal, absResult20.getAmount());
-    Money zeroResult39 = absResult32.zero();
-    assertSame(bigDecimal, zeroResult39.abs().getAmount());
-    Money zeroResult40 = absResult34.zero();
-    assertSame(bigDecimal, zeroResult40.abs().getAmount());
-    assertSame(bigDecimal, absResult52.getAmount());
-    Money zeroResult41 = absResult36.zero();
-    assertSame(bigDecimal, zeroResult41.abs().getAmount());
-    Money zeroResult42 = absResult38.zero();
-    assertSame(bigDecimal, zeroResult42.abs().getAmount());
-    assertSame(bigDecimal, absResult53.getAmount());
-    assertSame(bigDecimal, absResult36.getAmount());
-    Money zeroResult43 = absResult40.zero();
-    assertSame(bigDecimal, zeroResult43.abs().getAmount());
-    Money zeroResult44 = absResult42.zero();
-    assertSame(bigDecimal, zeroResult44.abs().getAmount());
-    assertSame(bigDecimal, absResult54.getAmount());
-    Money zeroResult45 = absResult44.zero();
-    assertSame(bigDecimal, zeroResult45.abs().getAmount());
-    assertSame(bigDecimal, absResult55.getAmount());
-    assertSame(bigDecimal, absResult38.getAmount());
-    assertSame(bigDecimal, absResult23.getAmount());
-    assertSame(bigDecimal, absResult12.getAmount());
-    Money zeroResult46 = zeroResult16.zero();
-    assertSame(bigDecimal, zeroResult46.abs().getAmount());
-    Money zeroResult47 = zeroResult17.zero();
-    assertSame(bigDecimal, zeroResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult56.getAmount());
-    Money zeroResult48 = zeroResult18.zero();
-    assertSame(bigDecimal, zeroResult48.abs().getAmount());
-    Money zeroResult49 = zeroResult19.zero();
-    assertSame(bigDecimal, zeroResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult57.getAmount());
-    assertSame(bigDecimal, absResult40.getAmount());
-    Money zeroResult50 = zeroResult20.zero();
-    assertSame(bigDecimal, zeroResult50.abs().getAmount());
-    Money zeroResult51 = zeroResult21.zero();
-    assertSame(bigDecimal, zeroResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult58.getAmount());
-    Money zeroResult52 = zeroResult22.zero();
-    assertSame(bigDecimal, zeroResult52.abs().getAmount());
-    Money zeroResult53 = zeroResult23.zero();
-    assertSame(bigDecimal, zeroResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult59.getAmount());
-    assertSame(bigDecimal, absResult42.getAmount());
-    assertSame(bigDecimal, absResult26.getAmount());
-    Money zeroResult54 = zeroResult24.zero();
-    assertSame(bigDecimal, zeroResult54.abs().getAmount());
-    Money zeroResult55 = zeroResult25.zero();
-    assertSame(bigDecimal, zeroResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult60.getAmount());
-    Money zeroResult56 = zeroResult26.zero();
-    assertSame(bigDecimal, zeroResult56.abs().getAmount());
-    Money zeroResult57 = zeroResult27.zero();
-    assertSame(bigDecimal, zeroResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult61.getAmount());
-    assertSame(bigDecimal, absResult44.getAmount());
-    Money zeroResult58 = zeroResult28.zero();
-    assertSame(bigDecimal, zeroResult58.abs().getAmount());
-    Money zeroResult59 = zeroResult29.zero();
-    assertSame(bigDecimal, zeroResult59.abs().getAmount());
-    assertSame(bigDecimal, absResult62.getAmount());
-    Money zeroResult60 = zeroResult30.zero();
-    assertSame(bigDecimal, zeroResult60.abs().getAmount());
-    Money zeroResult61 = zeroResult15.zero();
-    assertSame(bigDecimal, zeroResult61.abs().getAmount());
-    assertSame(bigDecimal, absResult46.getAmount());
-    assertSame(bigDecimal, absResult29.getAmount());
-    assertSame(bigDecimal, absResult16.getAmount());
-    assertSame(bigDecimal, absResult7.getAmount());
-    assertSame(bigDecimal, absResult.getAmount());
-    assertSame(bigDecimal, absResult6.zero().getAmount());
-    assertSame(bigDecimal, absResult11.zero().getAmount());
-    assertSame(bigDecimal, zeroResult31.getAmount());
-    assertSame(bigDecimal, absResult15.zero().getAmount());
-    assertSame(bigDecimal, absResult19.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.getAmount());
-    assertSame(bigDecimal, zeroResult16.getAmount());
-    assertSame(bigDecimal, absResult22.zero().getAmount());
-    assertSame(bigDecimal, absResult25.zero().getAmount());
-    assertSame(bigDecimal, zeroResult33.getAmount());
-    assertSame(bigDecimal, absResult28.zero().getAmount());
-    assertSame(bigDecimal, absResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.getAmount());
-    assertSame(bigDecimal, zeroResult17.getAmount());
-    assertSame(bigDecimal, zeroResult8.getAmount());
-    assertSame(bigDecimal, absResult33.zero().getAmount());
-    assertSame(bigDecimal, absResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult35.getAmount());
-    assertSame(bigDecimal, absResult37.zero().getAmount());
-    assertSame(bigDecimal, absResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.getAmount());
-    assertSame(bigDecimal, zeroResult18.getAmount());
-    assertSame(bigDecimal, absResult41.zero().getAmount());
-    assertSame(bigDecimal, absResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult37.getAmount());
-    assertSame(bigDecimal, absResult45.zero().getAmount());
-    assertSame(bigDecimal, absResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.getAmount());
-    assertSame(bigDecimal, zeroResult19.getAmount());
-    assertSame(bigDecimal, zeroResult9.getAmount());
-    assertSame(bigDecimal, zeroResult4.getAmount());
-    assertSame(bigDecimal, absResult48.zero().getAmount());
-    assertSame(bigDecimal, absResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult39.getAmount());
-    assertSame(bigDecimal, absResult50.zero().getAmount());
-    assertSame(bigDecimal, absResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.getAmount());
-    assertSame(bigDecimal, zeroResult20.getAmount());
-    assertSame(bigDecimal, absResult52.zero().getAmount());
-    assertSame(bigDecimal, absResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult41.getAmount());
-    assertSame(bigDecimal, absResult54.zero().getAmount());
-    assertSame(bigDecimal, absResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.getAmount());
-    assertSame(bigDecimal, zeroResult21.getAmount());
-    assertSame(bigDecimal, zeroResult10.getAmount());
-    assertSame(bigDecimal, absResult56.zero().getAmount());
-    assertSame(bigDecimal, absResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult43.getAmount());
-    assertSame(bigDecimal, absResult58.zero().getAmount());
-    assertSame(bigDecimal, absResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.getAmount());
-    assertSame(bigDecimal, zeroResult22.getAmount());
-    assertSame(bigDecimal, absResult60.zero().getAmount());
-    assertSame(bigDecimal, absResult61.zero().getAmount());
-    assertSame(bigDecimal, zeroResult45.getAmount());
-    assertSame(bigDecimal, absResult62.zero().getAmount());
-    assertSame(bigDecimal, absResult46.zero().getAmount());
-    assertSame(bigDecimal, zeroResult23.getAmount());
-    assertSame(bigDecimal, zeroResult11.getAmount());
-    assertSame(bigDecimal, zeroResult5.getAmount());
-    assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, zeroResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.zero().getAmount());
-    assertSame(bigDecimal, zeroResult46.getAmount());
-    assertSame(bigDecimal, zeroResult33.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.getAmount());
-    assertSame(bigDecimal, zeroResult24.getAmount());
-    assertSame(bigDecimal, zeroResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.zero().getAmount());
-    assertSame(bigDecimal, zeroResult48.getAmount());
-    assertSame(bigDecimal, zeroResult37.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.getAmount());
-    assertSame(bigDecimal, zeroResult25.getAmount());
-    assertSame(bigDecimal, zeroResult12.getAmount());
-    assertSame(bigDecimal, zeroResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.zero().getAmount());
-    assertSame(bigDecimal, zeroResult50.getAmount());
-    assertSame(bigDecimal, zeroResult41.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.getAmount());
-    assertSame(bigDecimal, zeroResult26.getAmount());
-    assertSame(bigDecimal, zeroResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.zero().getAmount());
-    assertSame(bigDecimal, zeroResult52.getAmount());
-    assertSame(bigDecimal, zeroResult45.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.getAmount());
-    assertSame(bigDecimal, zeroResult27.getAmount());
-    assertSame(bigDecimal, zeroResult13.getAmount());
-    assertSame(bigDecimal, zeroResult6.getAmount());
-    assertSame(bigDecimal, zeroResult46.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult54.getAmount());
-    assertSame(bigDecimal, zeroResult48.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.getAmount());
-    assertSame(bigDecimal, zeroResult28.getAmount());
-    assertSame(bigDecimal, zeroResult50.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult56.getAmount());
-    assertSame(bigDecimal, zeroResult52.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.getAmount());
-    assertSame(bigDecimal, zeroResult29.getAmount());
-    assertSame(bigDecimal, zeroResult14.getAmount());
-    assertSame(bigDecimal, zeroResult54.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult58.getAmount());
-    assertSame(bigDecimal, zeroResult56.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.getAmount());
-    assertSame(bigDecimal, zeroResult30.getAmount());
-    assertSame(bigDecimal, zeroResult58.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.getAmount());
-    assertSame(bigDecimal, zeroResult60.zero().getAmount());
-    assertSame(bigDecimal, zeroResult61.zero().getAmount());
-    assertSame(bigDecimal, zeroResult61.getAmount());
-    assertSame(bigDecimal, zeroResult15.getAmount());
-    assertSame(bigDecimal, zeroResult7.getAmount());
-    assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult.getAmount());
-  }
-
-  /**
-   * Test {@link SkuImpl#getMargin()}.
-   * <ul>
-   *   <li>Then return abs abs abs abs abs abs abs Amount is {@link SkuImpl}
-   * (default constructor) {@link SkuImpl#salePrice}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getMargin()}
-   */
-  @Test
-  public void testGetMargin_thenReturnAbsAbsAbsAbsAbsAbsAbsAmountIsSkuImplSalePrice() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(new Money());
-
-    // Act
-    Money actualMargin = skuImpl.getMargin();
-
-    // Assert
-    BigDecimal bigDecimal = skuImpl.salePrice;
-    Money absResult = actualMargin.abs();
-    Money absResult2 = absResult.abs();
-    Money absResult3 = absResult2.abs();
-    Money absResult4 = absResult3.abs();
-    Money absResult5 = absResult4.abs();
-    Money absResult6 = absResult5.abs();
-    assertSame(bigDecimal, absResult6.abs().getAmount());
-    Money zeroResult = actualMargin.zero();
-    Money absResult7 = zeroResult.abs();
-    Money absResult8 = absResult7.abs();
-    Money absResult9 = absResult8.abs();
-    Money absResult10 = absResult9.abs();
-    Money absResult11 = absResult10.abs();
-    assertSame(bigDecimal, absResult11.abs().getAmount());
-    assertSame(bigDecimal, absResult6.getAmount());
-    Money zeroResult2 = absResult.zero();
-    Money absResult12 = zeroResult2.abs();
-    Money absResult13 = absResult12.abs();
-    Money absResult14 = absResult13.abs();
-    Money absResult15 = absResult14.abs();
-    assertSame(bigDecimal, absResult15.abs().getAmount());
-    Money zeroResult3 = zeroResult.zero();
-    Money absResult16 = zeroResult3.abs();
-    Money absResult17 = absResult16.abs();
-    Money absResult18 = absResult17.abs();
-    Money absResult19 = absResult18.abs();
-    assertSame(bigDecimal, absResult19.abs().getAmount());
-    assertSame(bigDecimal, absResult11.getAmount());
-    assertSame(bigDecimal, absResult5.getAmount());
-    Money zeroResult4 = absResult2.zero();
-    Money absResult20 = zeroResult4.abs();
-    Money absResult21 = absResult20.abs();
-    Money absResult22 = absResult21.abs();
-    assertSame(bigDecimal, absResult22.abs().getAmount());
-    Money zeroResult5 = absResult7.zero();
-    Money absResult23 = zeroResult5.abs();
-    Money absResult24 = absResult23.abs();
-    Money absResult25 = absResult24.abs();
-    assertSame(bigDecimal, absResult25.abs().getAmount());
-    assertSame(bigDecimal, absResult15.getAmount());
-    Money zeroResult6 = zeroResult2.zero();
-    Money absResult26 = zeroResult6.abs();
-    Money absResult27 = absResult26.abs();
-    Money absResult28 = absResult27.abs();
-    assertSame(bigDecimal, absResult28.abs().getAmount());
-    Money zeroResult7 = zeroResult3.zero();
-    Money absResult29 = zeroResult7.abs();
-    Money absResult30 = absResult29.abs();
-    Money absResult31 = absResult30.abs();
-    assertSame(bigDecimal, absResult31.abs().getAmount());
-    assertSame(bigDecimal, absResult19.getAmount());
-    assertSame(bigDecimal, absResult10.getAmount());
-    assertSame(bigDecimal, absResult4.getAmount());
-    Money zeroResult8 = absResult3.zero();
-    Money absResult32 = zeroResult8.abs();
-    Money absResult33 = absResult32.abs();
-    assertSame(bigDecimal, absResult33.abs().getAmount());
-    Money zeroResult9 = absResult8.zero();
-    Money absResult34 = zeroResult9.abs();
-    Money absResult35 = absResult34.abs();
-    assertSame(bigDecimal, absResult35.abs().getAmount());
-    assertSame(bigDecimal, absResult22.getAmount());
-    Money zeroResult10 = absResult12.zero();
-    Money absResult36 = zeroResult10.abs();
-    Money absResult37 = absResult36.abs();
-    assertSame(bigDecimal, absResult37.abs().getAmount());
-    Money zeroResult11 = absResult16.zero();
-    Money absResult38 = zeroResult11.abs();
-    Money absResult39 = absResult38.abs();
-    assertSame(bigDecimal, absResult39.abs().getAmount());
-    assertSame(bigDecimal, absResult25.getAmount());
-    assertSame(bigDecimal, absResult14.getAmount());
-    Money zeroResult12 = zeroResult4.zero();
-    Money absResult40 = zeroResult12.abs();
-    Money absResult41 = absResult40.abs();
-    assertSame(bigDecimal, absResult41.abs().getAmount());
-    Money zeroResult13 = zeroResult5.zero();
-    Money absResult42 = zeroResult13.abs();
-    Money absResult43 = absResult42.abs();
-    assertSame(bigDecimal, absResult43.abs().getAmount());
-    assertSame(bigDecimal, absResult28.getAmount());
-    Money zeroResult14 = zeroResult6.zero();
-    Money absResult44 = zeroResult14.abs();
-    Money absResult45 = absResult44.abs();
-    assertSame(bigDecimal, absResult45.abs().getAmount());
-    Money zeroResult15 = zeroResult7.zero();
-    Money absResult46 = zeroResult15.abs();
-    Money absResult47 = absResult46.abs();
-    assertSame(bigDecimal, absResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult31.getAmount());
-    assertSame(bigDecimal, absResult18.getAmount());
-    assertSame(bigDecimal, absResult9.getAmount());
-    assertSame(bigDecimal, absResult3.getAmount());
-    Money zeroResult16 = absResult4.zero();
-    Money absResult48 = zeroResult16.abs();
-    assertSame(bigDecimal, absResult48.abs().getAmount());
-    Money zeroResult17 = absResult9.zero();
-    Money absResult49 = zeroResult17.abs();
-    assertSame(bigDecimal, absResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult33.getAmount());
-    Money zeroResult18 = absResult13.zero();
-    Money absResult50 = zeroResult18.abs();
-    assertSame(bigDecimal, absResult50.abs().getAmount());
-    Money zeroResult19 = absResult17.zero();
-    Money absResult51 = zeroResult19.abs();
-    assertSame(bigDecimal, absResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult35.getAmount());
-    assertSame(bigDecimal, absResult21.getAmount());
-    Money zeroResult20 = absResult20.zero();
-    Money absResult52 = zeroResult20.abs();
-    assertSame(bigDecimal, absResult52.abs().getAmount());
-    Money zeroResult21 = absResult23.zero();
-    Money absResult53 = zeroResult21.abs();
-    assertSame(bigDecimal, absResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult37.getAmount());
-    Money zeroResult22 = absResult26.zero();
-    Money absResult54 = zeroResult22.abs();
-    assertSame(bigDecimal, absResult54.abs().getAmount());
-    Money zeroResult23 = absResult29.zero();
-    Money absResult55 = zeroResult23.abs();
-    assertSame(bigDecimal, absResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult39.getAmount());
-    assertSame(bigDecimal, absResult24.getAmount());
-    assertSame(bigDecimal, absResult13.getAmount());
-    Money zeroResult24 = zeroResult8.zero();
-    Money absResult56 = zeroResult24.abs();
-    assertSame(bigDecimal, absResult56.abs().getAmount());
-    Money zeroResult25 = zeroResult9.zero();
-    Money absResult57 = zeroResult25.abs();
-    assertSame(bigDecimal, absResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult41.getAmount());
-    Money zeroResult26 = zeroResult10.zero();
-    Money absResult58 = zeroResult26.abs();
-    assertSame(bigDecimal, absResult58.abs().getAmount());
-    Money zeroResult27 = zeroResult11.zero();
-    Money absResult59 = zeroResult27.abs();
-    assertSame(bigDecimal, absResult59.abs().getAmount());
-    assertSame(bigDecimal, absResult43.getAmount());
-    assertSame(bigDecimal, absResult27.getAmount());
-    Money zeroResult28 = zeroResult12.zero();
-    Money absResult60 = zeroResult28.abs();
-    assertSame(bigDecimal, absResult60.abs().getAmount());
-    Money zeroResult29 = zeroResult13.zero();
-    Money absResult61 = zeroResult29.abs();
-    assertSame(bigDecimal, absResult61.abs().getAmount());
-    assertSame(bigDecimal, absResult45.getAmount());
-    Money zeroResult30 = zeroResult14.zero();
-    Money absResult62 = zeroResult30.abs();
-    assertSame(bigDecimal, absResult62.abs().getAmount());
-    assertSame(bigDecimal, absResult47.getAmount());
-    assertSame(bigDecimal, absResult30.getAmount());
-    assertSame(bigDecimal, absResult17.getAmount());
-    assertSame(bigDecimal, absResult8.getAmount());
-    assertSame(bigDecimal, absResult2.getAmount());
-    Money zeroResult31 = absResult5.zero();
-    assertSame(bigDecimal, zeroResult31.abs().getAmount());
-    Money zeroResult32 = absResult10.zero();
-    assertSame(bigDecimal, zeroResult32.abs().getAmount());
-    assertSame(bigDecimal, absResult48.getAmount());
-    Money zeroResult33 = absResult14.zero();
-    assertSame(bigDecimal, zeroResult33.abs().getAmount());
-    Money zeroResult34 = absResult18.zero();
-    assertSame(bigDecimal, zeroResult34.abs().getAmount());
-    assertSame(bigDecimal, absResult49.getAmount());
-    assertSame(bigDecimal, absResult32.getAmount());
-    Money zeroResult35 = absResult21.zero();
-    assertSame(bigDecimal, zeroResult35.abs().getAmount());
-    Money zeroResult36 = absResult24.zero();
-    assertSame(bigDecimal, zeroResult36.abs().getAmount());
-    assertSame(bigDecimal, absResult50.getAmount());
-    Money zeroResult37 = absResult27.zero();
-    assertSame(bigDecimal, zeroResult37.abs().getAmount());
-    Money zeroResult38 = absResult30.zero();
-    assertSame(bigDecimal, zeroResult38.abs().getAmount());
-    assertSame(bigDecimal, absResult51.getAmount());
-    assertSame(bigDecimal, absResult34.getAmount());
-    assertSame(bigDecimal, absResult20.getAmount());
-    Money zeroResult39 = absResult32.zero();
-    assertSame(bigDecimal, zeroResult39.abs().getAmount());
-    Money zeroResult40 = absResult34.zero();
-    assertSame(bigDecimal, zeroResult40.abs().getAmount());
-    assertSame(bigDecimal, absResult52.getAmount());
-    Money zeroResult41 = absResult36.zero();
-    assertSame(bigDecimal, zeroResult41.abs().getAmount());
-    Money zeroResult42 = absResult38.zero();
-    assertSame(bigDecimal, zeroResult42.abs().getAmount());
-    assertSame(bigDecimal, absResult53.getAmount());
-    assertSame(bigDecimal, absResult36.getAmount());
-    Money zeroResult43 = absResult40.zero();
-    assertSame(bigDecimal, zeroResult43.abs().getAmount());
-    Money zeroResult44 = absResult42.zero();
-    assertSame(bigDecimal, zeroResult44.abs().getAmount());
-    assertSame(bigDecimal, absResult54.getAmount());
-    Money zeroResult45 = absResult44.zero();
-    assertSame(bigDecimal, zeroResult45.abs().getAmount());
-    assertSame(bigDecimal, absResult55.getAmount());
-    assertSame(bigDecimal, absResult38.getAmount());
-    assertSame(bigDecimal, absResult23.getAmount());
-    assertSame(bigDecimal, absResult12.getAmount());
-    Money zeroResult46 = zeroResult16.zero();
-    assertSame(bigDecimal, zeroResult46.abs().getAmount());
-    Money zeroResult47 = zeroResult17.zero();
-    assertSame(bigDecimal, zeroResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult56.getAmount());
-    Money zeroResult48 = zeroResult18.zero();
-    assertSame(bigDecimal, zeroResult48.abs().getAmount());
-    Money zeroResult49 = zeroResult19.zero();
-    assertSame(bigDecimal, zeroResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult57.getAmount());
-    assertSame(bigDecimal, absResult40.getAmount());
-    Money zeroResult50 = zeroResult20.zero();
-    assertSame(bigDecimal, zeroResult50.abs().getAmount());
-    Money zeroResult51 = zeroResult21.zero();
-    assertSame(bigDecimal, zeroResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult58.getAmount());
-    Money zeroResult52 = zeroResult22.zero();
-    assertSame(bigDecimal, zeroResult52.abs().getAmount());
-    Money zeroResult53 = zeroResult23.zero();
-    assertSame(bigDecimal, zeroResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult59.getAmount());
-    assertSame(bigDecimal, absResult42.getAmount());
-    assertSame(bigDecimal, absResult26.getAmount());
-    Money zeroResult54 = zeroResult24.zero();
-    assertSame(bigDecimal, zeroResult54.abs().getAmount());
-    Money zeroResult55 = zeroResult25.zero();
-    assertSame(bigDecimal, zeroResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult60.getAmount());
-    Money zeroResult56 = zeroResult26.zero();
-    assertSame(bigDecimal, zeroResult56.abs().getAmount());
-    Money zeroResult57 = zeroResult27.zero();
-    assertSame(bigDecimal, zeroResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult61.getAmount());
-    assertSame(bigDecimal, absResult44.getAmount());
-    Money zeroResult58 = zeroResult28.zero();
-    assertSame(bigDecimal, zeroResult58.abs().getAmount());
-    Money zeroResult59 = zeroResult29.zero();
-    assertSame(bigDecimal, zeroResult59.abs().getAmount());
-    assertSame(bigDecimal, absResult62.getAmount());
-    Money zeroResult60 = zeroResult30.zero();
-    assertSame(bigDecimal, zeroResult60.abs().getAmount());
-    Money zeroResult61 = zeroResult15.zero();
-    assertSame(bigDecimal, zeroResult61.abs().getAmount());
-    assertSame(bigDecimal, absResult46.getAmount());
-    assertSame(bigDecimal, absResult29.getAmount());
-    assertSame(bigDecimal, absResult16.getAmount());
-    assertSame(bigDecimal, absResult7.getAmount());
-    assertSame(bigDecimal, absResult.getAmount());
-    assertSame(bigDecimal, absResult6.zero().getAmount());
-    assertSame(bigDecimal, absResult11.zero().getAmount());
-    assertSame(bigDecimal, zeroResult31.getAmount());
-    assertSame(bigDecimal, absResult15.zero().getAmount());
-    assertSame(bigDecimal, absResult19.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.getAmount());
-    assertSame(bigDecimal, zeroResult16.getAmount());
-    assertSame(bigDecimal, absResult22.zero().getAmount());
-    assertSame(bigDecimal, absResult25.zero().getAmount());
-    assertSame(bigDecimal, zeroResult33.getAmount());
-    assertSame(bigDecimal, absResult28.zero().getAmount());
-    assertSame(bigDecimal, absResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.getAmount());
-    assertSame(bigDecimal, zeroResult17.getAmount());
-    assertSame(bigDecimal, zeroResult8.getAmount());
-    assertSame(bigDecimal, absResult33.zero().getAmount());
-    assertSame(bigDecimal, absResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult35.getAmount());
-    assertSame(bigDecimal, absResult37.zero().getAmount());
-    assertSame(bigDecimal, absResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.getAmount());
-    assertSame(bigDecimal, zeroResult18.getAmount());
-    assertSame(bigDecimal, absResult41.zero().getAmount());
-    assertSame(bigDecimal, absResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult37.getAmount());
-    assertSame(bigDecimal, absResult45.zero().getAmount());
-    assertSame(bigDecimal, absResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.getAmount());
-    assertSame(bigDecimal, zeroResult19.getAmount());
-    assertSame(bigDecimal, zeroResult9.getAmount());
-    assertSame(bigDecimal, zeroResult4.getAmount());
-    assertSame(bigDecimal, absResult48.zero().getAmount());
-    assertSame(bigDecimal, absResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult39.getAmount());
-    assertSame(bigDecimal, absResult50.zero().getAmount());
-    assertSame(bigDecimal, absResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.getAmount());
-    assertSame(bigDecimal, zeroResult20.getAmount());
-    assertSame(bigDecimal, absResult52.zero().getAmount());
-    assertSame(bigDecimal, absResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult41.getAmount());
-    assertSame(bigDecimal, absResult54.zero().getAmount());
-    assertSame(bigDecimal, absResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.getAmount());
-    assertSame(bigDecimal, zeroResult21.getAmount());
-    assertSame(bigDecimal, zeroResult10.getAmount());
-    assertSame(bigDecimal, absResult56.zero().getAmount());
-    assertSame(bigDecimal, absResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult43.getAmount());
-    assertSame(bigDecimal, absResult58.zero().getAmount());
-    assertSame(bigDecimal, absResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.getAmount());
-    assertSame(bigDecimal, zeroResult22.getAmount());
-    assertSame(bigDecimal, absResult60.zero().getAmount());
-    assertSame(bigDecimal, absResult61.zero().getAmount());
-    assertSame(bigDecimal, zeroResult45.getAmount());
-    assertSame(bigDecimal, absResult62.zero().getAmount());
-    assertSame(bigDecimal, absResult46.zero().getAmount());
-    assertSame(bigDecimal, zeroResult23.getAmount());
-    assertSame(bigDecimal, zeroResult11.getAmount());
-    assertSame(bigDecimal, zeroResult5.getAmount());
-    assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, zeroResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.zero().getAmount());
-    assertSame(bigDecimal, zeroResult46.getAmount());
-    assertSame(bigDecimal, zeroResult33.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.getAmount());
-    assertSame(bigDecimal, zeroResult24.getAmount());
-    assertSame(bigDecimal, zeroResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.zero().getAmount());
-    assertSame(bigDecimal, zeroResult48.getAmount());
-    assertSame(bigDecimal, zeroResult37.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.getAmount());
-    assertSame(bigDecimal, zeroResult25.getAmount());
-    assertSame(bigDecimal, zeroResult12.getAmount());
-    assertSame(bigDecimal, zeroResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.zero().getAmount());
-    assertSame(bigDecimal, zeroResult50.getAmount());
-    assertSame(bigDecimal, zeroResult41.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.getAmount());
-    assertSame(bigDecimal, zeroResult26.getAmount());
-    assertSame(bigDecimal, zeroResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.zero().getAmount());
-    assertSame(bigDecimal, zeroResult52.getAmount());
-    assertSame(bigDecimal, zeroResult45.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.getAmount());
-    assertSame(bigDecimal, zeroResult27.getAmount());
-    assertSame(bigDecimal, zeroResult13.getAmount());
-    assertSame(bigDecimal, zeroResult6.getAmount());
-    assertSame(bigDecimal, zeroResult46.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult54.getAmount());
-    assertSame(bigDecimal, zeroResult48.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.getAmount());
-    assertSame(bigDecimal, zeroResult28.getAmount());
-    assertSame(bigDecimal, zeroResult50.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult56.getAmount());
-    assertSame(bigDecimal, zeroResult52.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.getAmount());
-    assertSame(bigDecimal, zeroResult29.getAmount());
-    assertSame(bigDecimal, zeroResult14.getAmount());
-    assertSame(bigDecimal, zeroResult54.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult58.getAmount());
-    assertSame(bigDecimal, zeroResult56.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.getAmount());
-    assertSame(bigDecimal, zeroResult30.getAmount());
-    assertSame(bigDecimal, zeroResult58.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.getAmount());
-    assertSame(bigDecimal, zeroResult60.zero().getAmount());
-    assertSame(bigDecimal, zeroResult61.zero().getAmount());
-    assertSame(bigDecimal, zeroResult61.getAmount());
-    assertSame(bigDecimal, zeroResult15.getAmount());
-    assertSame(bigDecimal, zeroResult7.getAmount());
-    assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult.getAmount());
-  }
-
-  /**
-   * Test {@link SkuImpl#getMargin()}.
-   * <ul>
-   *   <li>Then return zero Amount is {@link BigDecimal#BigDecimal(String)} with
-   * {@code 0.00}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getMargin()}
-   */
-  @Test
-  public void testGetMargin_thenReturnZeroAmountIsBigDecimalWith000() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenReturn(1L);
-    when(sku.getCost()).thenReturn(new Money());
-    when(sku.getRetailPrice()).thenReturn(new Money(10.0d));
-    when(sku.getSalePrice()).thenReturn(new Money());
-    Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
-
-    // Act
-    Money actualMargin = skuImpl.getMargin();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getCost();
-    verify(sku, atLeast(1)).getId();
-    verify(sku, atLeast(1)).getRetailPrice();
-    verify(sku).getSalePrice();
-    BigDecimal expectedAmount = new BigDecimal("0.00");
-    Money zeroResult = actualMargin.zero();
-    BigDecimal amount = zeroResult.getAmount();
-    assertEquals(expectedAmount, amount);
-    BigDecimal expectedAmount2 = new BigDecimal("1.00");
-    assertEquals(expectedAmount2, actualMargin.getAmount());
-    Money zeroResult2 = zeroResult.zero();
-    Money zeroResult3 = zeroResult2.zero();
-    Money zeroResult4 = zeroResult3.zero();
-    Money zeroResult5 = zeroResult4.zero();
-    BigDecimal amount2 = zeroResult5.zero().getAmount();
-    Money absResult = zeroResult.abs();
-    Money absResult2 = absResult.abs();
-    Money absResult3 = absResult2.abs();
-    Money absResult4 = absResult3.abs();
-    Money absResult5 = absResult4.abs();
-    assertSame(amount2, absResult5.abs().getAmount());
-    Money absResult6 = actualMargin.abs();
-    Money zeroResult6 = absResult6.zero();
-    Money absResult7 = zeroResult6.abs();
-    Money absResult8 = absResult7.abs();
-    Money absResult9 = absResult8.abs();
-    Money absResult10 = absResult9.abs();
-    assertSame(amount2, absResult10.abs().getAmount());
-    assertSame(amount2, absResult5.getAmount());
-    Money absResult11 = absResult6.abs();
-    Money zeroResult7 = absResult11.zero();
-    Money absResult12 = zeroResult7.abs();
-    Money absResult13 = absResult12.abs();
-    Money absResult14 = absResult13.abs();
-    assertSame(amount2, absResult14.abs().getAmount());
-    Money zeroResult8 = absResult.zero();
-    Money absResult15 = zeroResult8.abs();
-    Money absResult16 = absResult15.abs();
-    Money absResult17 = absResult16.abs();
-    assertSame(amount2, absResult17.abs().getAmount());
-    assertSame(amount2, absResult10.getAmount());
-    Money zeroResult9 = zeroResult6.zero();
-    Money absResult18 = zeroResult9.abs();
-    Money absResult19 = absResult18.abs();
-    Money absResult20 = absResult19.abs();
-    assertSame(amount2, absResult20.abs().getAmount());
-    assertSame(amount2, absResult4.getAmount());
-    Money absResult21 = absResult11.abs();
-    Money zeroResult10 = absResult21.zero();
-    Money absResult22 = zeroResult10.abs();
-    Money absResult23 = absResult22.abs();
-    assertSame(amount2, absResult23.abs().getAmount());
-    Money zeroResult11 = absResult2.zero();
-    Money absResult24 = zeroResult11.abs();
-    Money absResult25 = absResult24.abs();
-    assertSame(amount2, absResult25.abs().getAmount());
-    assertSame(amount2, absResult14.getAmount());
-    Money zeroResult12 = absResult7.zero();
-    Money absResult26 = zeroResult12.abs();
-    Money absResult27 = absResult26.abs();
-    assertSame(amount2, absResult27.abs().getAmount());
-    assertSame(amount2, absResult17.getAmount());
-    assertSame(amount2, absResult9.getAmount());
-    Money zeroResult13 = zeroResult7.zero();
-    Money absResult28 = zeroResult13.abs();
-    Money absResult29 = absResult28.abs();
-    assertSame(amount2, absResult29.abs().getAmount());
-    Money zeroResult14 = zeroResult8.zero();
-    Money absResult30 = zeroResult14.abs();
-    Money absResult31 = absResult30.abs();
-    assertSame(amount2, absResult31.abs().getAmount());
-    assertSame(amount2, absResult20.getAmount());
-    Money zeroResult15 = zeroResult9.zero();
-    Money absResult32 = zeroResult15.abs();
-    Money absResult33 = absResult32.abs();
-    assertSame(amount2, absResult33.abs().getAmount());
-    assertSame(amount2, absResult3.getAmount());
-    Money absResult34 = absResult21.abs();
-    Money zeroResult16 = absResult34.zero();
-    Money absResult35 = zeroResult16.abs();
-    assertSame(amount2, absResult35.abs().getAmount());
-    Money zeroResult17 = absResult3.zero();
-    Money absResult36 = zeroResult17.abs();
-    assertSame(amount2, absResult36.abs().getAmount());
-    assertSame(amount2, absResult23.getAmount());
-    Money zeroResult18 = absResult8.zero();
-    Money absResult37 = zeroResult18.abs();
-    assertSame(amount2, absResult37.abs().getAmount());
-    assertSame(amount2, absResult25.getAmount());
-    assertSame(amount2, absResult13.getAmount());
-    Money zeroResult19 = absResult12.zero();
-    Money absResult38 = zeroResult19.abs();
-    assertSame(amount2, absResult38.abs().getAmount());
-    Money zeroResult20 = absResult15.zero();
-    Money absResult39 = zeroResult20.abs();
-    assertSame(amount2, absResult39.abs().getAmount());
-    assertSame(amount2, absResult27.getAmount());
-    Money zeroResult21 = absResult18.zero();
-    Money absResult40 = zeroResult21.abs();
-    assertSame(amount2, absResult40.abs().getAmount());
-    assertSame(amount2, absResult16.getAmount());
-    assertSame(amount2, absResult8.getAmount());
-    Money zeroResult22 = zeroResult10.zero();
-    Money absResult41 = zeroResult22.abs();
-    assertSame(amount2, absResult41.abs().getAmount());
-    Money zeroResult23 = zeroResult11.zero();
-    Money absResult42 = zeroResult23.abs();
-    assertSame(amount2, absResult42.abs().getAmount());
-    assertSame(amount2, absResult29.getAmount());
-    Money zeroResult24 = zeroResult12.zero();
-    Money absResult43 = zeroResult24.abs();
-    assertSame(amount2, absResult43.abs().getAmount());
-    assertSame(amount2, absResult31.getAmount());
-    assertSame(amount2, absResult19.getAmount());
-    Money zeroResult25 = zeroResult13.zero();
-    Money absResult44 = zeroResult25.abs();
-    assertSame(amount2, absResult44.abs().getAmount());
-    Money zeroResult26 = zeroResult14.zero();
-    Money absResult45 = zeroResult26.abs();
-    assertSame(amount2, absResult45.abs().getAmount());
-    assertSame(amount2, absResult33.getAmount());
-    Money zeroResult27 = zeroResult15.zero();
-    Money absResult46 = zeroResult27.abs();
-    assertSame(amount2, absResult46.abs().getAmount());
-    assertSame(amount2, absResult2.getAmount());
-    Money absResult47 = absResult34.abs();
-    Money zeroResult28 = absResult47.zero();
-    assertSame(amount2, zeroResult28.abs().getAmount());
-    Money zeroResult29 = absResult4.zero();
-    assertSame(amount2, zeroResult29.abs().getAmount());
-    assertSame(amount2, absResult35.getAmount());
-    Money zeroResult30 = absResult9.zero();
-    assertSame(amount2, zeroResult30.abs().getAmount());
-    assertSame(amount2, absResult36.getAmount());
-    assertSame(amount2, absResult22.getAmount());
-    Money zeroResult31 = absResult13.zero();
-    assertSame(amount2, zeroResult31.abs().getAmount());
-    Money zeroResult32 = absResult16.zero();
-    assertSame(amount2, zeroResult32.abs().getAmount());
-    assertSame(amount2, absResult37.getAmount());
-    Money zeroResult33 = absResult19.zero();
-    assertSame(amount2, zeroResult33.abs().getAmount());
-    assertSame(amount2, absResult24.getAmount());
-    assertSame(amount2, absResult12.getAmount());
-    Money zeroResult34 = absResult22.zero();
-    assertSame(amount2, zeroResult34.abs().getAmount());
-    Money zeroResult35 = absResult24.zero();
-    assertSame(amount2, zeroResult35.abs().getAmount());
-    assertSame(amount2, absResult38.getAmount());
-    Money zeroResult36 = absResult26.zero();
-    assertSame(amount2, zeroResult36.abs().getAmount());
-    assertSame(amount2, absResult39.getAmount());
-    assertSame(amount2, absResult26.getAmount());
-    Money zeroResult37 = absResult28.zero();
-    assertSame(amount2, zeroResult37.abs().getAmount());
-    Money zeroResult38 = absResult30.zero();
-    assertSame(amount2, zeroResult38.abs().getAmount());
-    assertSame(amount2, absResult40.getAmount());
-    Money zeroResult39 = absResult32.zero();
-    assertSame(amount2, zeroResult39.abs().getAmount());
-    assertSame(amount2, absResult15.getAmount());
-    assertSame(amount2, absResult7.getAmount());
-    Money zeroResult40 = zeroResult16.zero();
-    assertSame(amount2, zeroResult40.abs().getAmount());
-    Money zeroResult41 = zeroResult17.zero();
-    assertSame(amount2, zeroResult41.abs().getAmount());
-    assertSame(amount2, absResult41.getAmount());
-    Money zeroResult42 = zeroResult18.zero();
-    assertSame(amount2, zeroResult42.abs().getAmount());
-    assertSame(amount2, absResult42.getAmount());
-    assertSame(amount2, absResult28.getAmount());
-    Money zeroResult43 = zeroResult19.zero();
-    assertSame(amount2, zeroResult43.abs().getAmount());
-    Money zeroResult44 = zeroResult20.zero();
-    assertSame(amount2, zeroResult44.abs().getAmount());
-    assertSame(amount2, absResult43.getAmount());
-    Money zeroResult45 = zeroResult21.zero();
-    assertSame(amount2, zeroResult45.abs().getAmount());
-    assertSame(amount2, absResult30.getAmount());
-    assertSame(amount2, absResult18.getAmount());
-    Money zeroResult46 = zeroResult22.zero();
-    assertSame(amount2, zeroResult46.abs().getAmount());
-    Money zeroResult47 = zeroResult23.zero();
-    assertSame(amount2, zeroResult47.abs().getAmount());
-    assertSame(amount2, absResult44.getAmount());
-    Money zeroResult48 = zeroResult24.zero();
-    assertSame(amount2, zeroResult48.abs().getAmount());
-    assertSame(amount2, absResult45.getAmount());
-    assertSame(amount2, absResult32.getAmount());
-    Money zeroResult49 = zeroResult25.zero();
-    assertSame(amount2, zeroResult49.abs().getAmount());
-    Money zeroResult50 = zeroResult26.zero();
-    assertSame(amount2, zeroResult50.abs().getAmount());
-    assertSame(amount2, absResult46.getAmount());
-    Money zeroResult51 = zeroResult27.zero();
-    assertSame(amount2, zeroResult51.abs().getAmount());
-    assertSame(amount2, absResult.getAmount());
-    assertSame(amount2, absResult47.abs().zero().getAmount());
-    assertSame(amount2, absResult5.zero().getAmount());
-    assertSame(amount2, zeroResult28.getAmount());
-    assertSame(amount2, absResult10.zero().getAmount());
-    assertSame(amount2, zeroResult29.getAmount());
-    assertSame(amount2, zeroResult16.getAmount());
-    assertSame(amount2, absResult14.zero().getAmount());
-    assertSame(amount2, absResult17.zero().getAmount());
-    assertSame(amount2, zeroResult30.getAmount());
-    assertSame(amount2, absResult20.zero().getAmount());
-    assertSame(amount2, zeroResult17.getAmount());
-    assertSame(amount2, zeroResult10.getAmount());
-    assertSame(amount2, absResult23.zero().getAmount());
-    assertSame(amount2, absResult25.zero().getAmount());
-    assertSame(amount2, zeroResult31.getAmount());
-    assertSame(amount2, absResult27.zero().getAmount());
-    assertSame(amount2, zeroResult32.getAmount());
-    assertSame(amount2, zeroResult18.getAmount());
-    assertSame(amount2, absResult29.zero().getAmount());
-    assertSame(amount2, absResult31.zero().getAmount());
-    assertSame(amount2, zeroResult33.getAmount());
-    assertSame(amount2, absResult33.zero().getAmount());
-    assertSame(amount2, zeroResult11.getAmount());
-    assertSame(amount2, zeroResult7.getAmount());
-    assertSame(amount2, absResult35.zero().getAmount());
-    assertSame(amount2, absResult36.zero().getAmount());
-    assertSame(amount2, zeroResult34.getAmount());
-    assertSame(amount2, absResult37.zero().getAmount());
-    assertSame(amount2, zeroResult35.getAmount());
-    assertSame(amount2, zeroResult19.getAmount());
-    assertSame(amount2, absResult38.zero().getAmount());
-    assertSame(amount2, absResult39.zero().getAmount());
-    assertSame(amount2, zeroResult36.getAmount());
-    assertSame(amount2, absResult40.zero().getAmount());
-    assertSame(amount2, zeroResult20.getAmount());
-    assertSame(amount2, zeroResult12.getAmount());
-    assertSame(amount2, absResult41.zero().getAmount());
-    assertSame(amount2, absResult42.zero().getAmount());
-    assertSame(amount2, zeroResult37.getAmount());
-    assertSame(amount2, absResult43.zero().getAmount());
-    assertSame(amount2, zeroResult38.getAmount());
-    assertSame(amount2, zeroResult21.getAmount());
-    assertSame(amount2, absResult44.zero().getAmount());
-    assertSame(amount2, absResult45.zero().getAmount());
-    assertSame(amount2, zeroResult39.getAmount());
-    assertSame(amount2, absResult46.zero().getAmount());
-    assertSame(amount2, zeroResult8.getAmount());
-    assertSame(amount2, zeroResult6.getAmount());
-    assertSame(amount2, zeroResult28.zero().getAmount());
-    assertSame(amount2, zeroResult29.zero().getAmount());
-    assertSame(amount2, zeroResult40.getAmount());
-    assertSame(amount2, zeroResult30.zero().getAmount());
-    assertSame(amount2, zeroResult41.getAmount());
-    assertSame(amount2, zeroResult22.getAmount());
-    assertSame(amount2, zeroResult31.zero().getAmount());
-    assertSame(amount2, zeroResult32.zero().getAmount());
-    assertSame(amount2, zeroResult42.getAmount());
-    assertSame(amount2, zeroResult33.zero().getAmount());
-    assertSame(amount2, zeroResult23.getAmount());
-    assertSame(amount2, zeroResult13.getAmount());
-    assertSame(amount2, zeroResult34.zero().getAmount());
-    assertSame(amount2, zeroResult35.zero().getAmount());
-    assertSame(amount2, zeroResult43.getAmount());
-    assertSame(amount2, zeroResult36.zero().getAmount());
-    assertSame(amount2, zeroResult44.getAmount());
-    assertSame(amount2, zeroResult24.getAmount());
-    assertSame(amount2, zeroResult37.zero().getAmount());
-    assertSame(amount2, zeroResult38.zero().getAmount());
-    assertSame(amount2, zeroResult45.getAmount());
-    assertSame(amount2, zeroResult39.zero().getAmount());
-    assertSame(amount2, zeroResult14.getAmount());
-    assertSame(amount2, zeroResult9.getAmount());
-    assertSame(amount2, zeroResult40.zero().getAmount());
-    assertSame(amount2, zeroResult41.zero().getAmount());
-    assertSame(amount2, zeroResult46.getAmount());
-    assertSame(amount2, zeroResult42.zero().getAmount());
-    assertSame(amount2, zeroResult47.getAmount());
-    assertSame(amount2, zeroResult25.getAmount());
-    assertSame(amount2, zeroResult43.zero().getAmount());
-    assertSame(amount2, zeroResult44.zero().getAmount());
-    assertSame(amount2, zeroResult48.getAmount());
-    assertSame(amount2, zeroResult45.zero().getAmount());
-    assertSame(amount2, zeroResult26.getAmount());
-    assertSame(amount2, zeroResult15.getAmount());
-    assertSame(amount2, zeroResult46.zero().getAmount());
-    assertSame(amount2, zeroResult47.zero().getAmount());
-    assertSame(amount2, zeroResult49.getAmount());
-    assertSame(amount2, zeroResult48.zero().getAmount());
-    assertSame(amount2, zeroResult50.getAmount());
-    assertSame(amount2, zeroResult27.getAmount());
-    assertSame(amount2, zeroResult49.zero().getAmount());
-    assertSame(amount2, zeroResult50.zero().getAmount());
-    assertSame(amount2, zeroResult51.getAmount());
-    assertSame(amount2, zeroResult51.zero().getAmount());
-    assertSame(amount2, amount2);
-    assertSame(zeroResult5.getAmount(), zeroResult5.getAmount());
-    BigDecimal amount3 = zeroResult4.getAmount();
-    assertSame(amount3, zeroResult5.abs().getAmount());
-    assertSame(amount3, amount3);
-    BigDecimal amount4 = zeroResult3.getAmount();
-    Money absResult48 = zeroResult4.abs();
-    Money absResult49 = absResult48.abs();
-    assertSame(amount4, absResult49.abs().getAmount());
-    assertSame(amount4, absResult49.getAmount());
-    assertSame(amount4, absResult48.getAmount());
-    assertSame(amount4, absResult49.zero().getAmount());
-    assertSame(amount4, absResult48.zero().getAmount());
-    assertSame(amount4, amount4);
-    BigDecimal amount5 = zeroResult2.getAmount();
-    Money absResult50 = zeroResult3.abs();
-    Money absResult51 = absResult50.abs();
-    Money absResult52 = absResult51.abs();
-    assertSame(amount5, absResult52.abs().getAmount());
-    assertSame(amount5, absResult52.getAmount());
-    Money zeroResult52 = absResult50.zero();
-    Money absResult53 = zeroResult52.abs();
-    assertSame(amount5, absResult53.abs().getAmount());
-    assertSame(amount5, absResult51.getAmount());
-    Money zeroResult53 = absResult51.zero();
-    assertSame(amount5, zeroResult53.abs().getAmount());
-    assertSame(amount5, absResult53.getAmount());
-    Money zeroResult54 = zeroResult52.zero();
-    assertSame(amount5, zeroResult54.abs().getAmount());
-    assertSame(amount5, absResult50.getAmount());
-    assertSame(amount5, absResult52.zero().getAmount());
-    assertSame(amount5, zeroResult53.getAmount());
-    assertSame(amount5, absResult53.zero().getAmount());
-    assertSame(amount5, zeroResult52.getAmount());
-    assertSame(amount5, zeroResult53.zero().getAmount());
-    assertSame(amount5, zeroResult54.getAmount());
-    assertSame(amount5, zeroResult54.zero().getAmount());
-    assertSame(amount5, amount5);
-    Money absResult54 = zeroResult2.abs();
-    Money absResult55 = absResult54.abs();
-    Money absResult56 = absResult55.abs();
-    Money absResult57 = absResult56.abs();
-    assertSame(amount, absResult57.abs().getAmount());
-    assertSame(amount, absResult57.getAmount());
-    Money zeroResult55 = absResult54.zero();
-    Money absResult58 = zeroResult55.abs();
-    Money absResult59 = absResult58.abs();
-    assertSame(amount, absResult59.abs().getAmount());
-    assertSame(amount, absResult56.getAmount());
-    Money zeroResult56 = absResult55.zero();
-    Money absResult60 = zeroResult56.abs();
-    assertSame(amount, absResult60.abs().getAmount());
-    assertSame(amount, absResult59.getAmount());
-    Money zeroResult57 = zeroResult55.zero();
-    Money absResult61 = zeroResult57.abs();
-    assertSame(amount, absResult61.abs().getAmount());
-    assertSame(amount, absResult55.getAmount());
-    Money zeroResult58 = absResult56.zero();
-    assertSame(amount, zeroResult58.abs().getAmount());
-    assertSame(amount, absResult60.getAmount());
-    Money zeroResult59 = absResult58.zero();
-    assertSame(amount, zeroResult59.abs().getAmount());
-    assertSame(amount, absResult58.getAmount());
-    Money zeroResult60 = zeroResult56.zero();
-    assertSame(amount, zeroResult60.abs().getAmount());
-    assertSame(amount, absResult61.getAmount());
-    Money zeroResult61 = zeroResult57.zero();
-    assertSame(amount, zeroResult61.abs().getAmount());
-    assertSame(amount, absResult54.getAmount());
-    assertSame(amount, absResult57.zero().getAmount());
-    assertSame(amount, zeroResult58.getAmount());
-    assertSame(amount, absResult59.zero().getAmount());
-    assertSame(amount, zeroResult56.getAmount());
-    assertSame(amount, absResult60.zero().getAmount());
-    assertSame(amount, zeroResult59.getAmount());
-    assertSame(amount, absResult61.zero().getAmount());
-    assertSame(amount, zeroResult55.getAmount());
-    assertSame(amount, zeroResult58.zero().getAmount());
-    assertSame(amount, zeroResult60.getAmount());
-    assertSame(amount, zeroResult59.zero().getAmount());
-    assertSame(amount, zeroResult57.getAmount());
-    assertSame(amount, zeroResult60.zero().getAmount());
-    assertSame(amount, zeroResult61.getAmount());
-    assertSame(amount, zeroResult61.zero().getAmount());
-  }
-
-  /**
-   * Test {@link SkuImpl#getName()}.
-   * <p>
-   * Method under test: {@link SkuImpl#getName()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetName() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1147 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).getName();
+    verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#getName()}.
    * <ul>
-   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return
-   * {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    *   <li>Then calls {@link Product#getDefaultSku()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getName()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getName()"})
   public void testGetName_givenProductGetDefaultSkuReturnSkuImpl_thenCallsGetDefaultSku() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    String actualName = skuImpl.getName();
+    String actualName = skuImpl2.getName();
 
     // Assert
     verify(product).getDefaultSku();
@@ -9386,27 +3907,26 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getName()}.
    * <ul>
-   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return
-   * {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    *   <li>Then calls {@link Product#getDefaultSku()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getName()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getName()"})
   public void testGetName_givenProductGetDefaultSkuReturnSkuImpl_thenCallsGetDefaultSku2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    String actualName = skuImpl.getName();
+    String actualName = skuImpl2.getName();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -9423,21 +3943,21 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getName()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getName()"})
   public void testGetName_givenSkuGetIdReturnOne_thenCallsGetId() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    String actualName = skuImpl.getName();
+    String actualName = skuImpl2.getName();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -9455,9 +3975,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getName()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getName()"})
   public void testGetName_givenSkuGetNameReturnName_thenReturnName() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
@@ -9465,12 +3985,12 @@ public class SkuImplDiffblueTest {
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
 
     // Act
-    String actualName = skuImpl.getName();
+    String actualName = skuImpl2.getName();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -9489,81 +4009,57 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getName()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getName()"})
   public void testGetName_givenSkuImplNameIsName_thenReturnName() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setName("name");
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setName("name");
 
     // Act and Assert
-    assertEquals("name", skuImpl.getName());
+    assertEquals("name", skuImpl2.getName());
   }
 
   /**
    * Test {@link SkuImpl#getName()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Product is
-   * {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getName()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getName()"})
   public void testGetName_givenSkuImplProductIsProductBundleImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(new ProductBundleImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertNull(skuImpl.getName());
+    assertNull(skuImpl2.getName());
   }
 
   /**
    * Test {@link SkuImpl#getName()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is
-   * {@link Money#Money()}.</li>
+   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is {@link Money#Money()}.</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getName()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getName()"})
   public void testGetName_givenSkuImplSalePriceIsMoney_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(new Money());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setSalePrice(new Money());
 
     // Act and Assert
-    assertNull(skuImpl.getName());
-  }
-
-  /**
-   * Test {@link SkuImpl#getName()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is
-   * {@link Money}.</li>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getName()}
-   */
-  @Test
-  public void testGetName_givenSkuImplSalePriceIsMoney_thenReturnNull2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(mock(Money.class));
-
-    // Act and Assert
-    assertNull(skuImpl.getName());
+    assertNull(skuImpl2.getName());
   }
 
   /**
@@ -9576,9 +4072,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getName()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getName()"})
   public void testGetName_givenSkuImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new SkuImpl()).getName());
   }
@@ -9592,21 +4088,21 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getName()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getName()"})
   public void testGetName_thenThrowIllegalStateException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenThrow(new IllegalStateException("foo"));
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getName());
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getName());
     verify(product, atLeast(1)).getDefaultSku();
     verify(sku).getId();
   }
@@ -9617,69 +4113,39 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getDescription()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getDescription()"})
   public void testGetDescription() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setDescription("The characteristics of someone or something");
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDescription("The characteristics of someone or something");
 
     // Act and Assert
-    assertEquals("The characteristics of someone or something", skuImpl.getDescription());
-  }
-
-  /**
-   * Test {@link SkuImpl#getDescription()}.
-   * <p>
-   * Method under test: {@link SkuImpl#getDescription()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetDescription2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass847 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).getDescription();
+    assertEquals("The characteristics of someone or something", skuImpl2.getDescription());
   }
 
   /**
    * Test {@link SkuImpl#getDescription()}.
    * <ul>
-   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return
-   * {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    *   <li>Then calls {@link Product#getDefaultSku()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getDescription()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getDescription()"})
   public void testGetDescription_givenProductGetDefaultSkuReturnSkuImpl_thenCallsGetDefaultSku() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    String actualDescription = skuImpl.getDescription();
+    String actualDescription = skuImpl2.getDescription();
 
     // Assert
     verify(product).getDefaultSku();
@@ -9689,27 +4155,26 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getDescription()}.
    * <ul>
-   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return
-   * {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    *   <li>Then calls {@link Product#getDefaultSku()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getDescription()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getDescription()"})
   public void testGetDescription_givenProductGetDefaultSkuReturnSkuImpl_thenCallsGetDefaultSku2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    String actualDescription = skuImpl.getDescription();
+    String actualDescription = skuImpl2.getDescription();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -9726,21 +4191,21 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getDescription()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getDescription()"})
   public void testGetDescription_givenSkuGetIdReturnOne_thenCallsGetId() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    String actualDescription = skuImpl.getDescription();
+    String actualDescription = skuImpl2.getDescription();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -9751,67 +4216,43 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getDescription()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Product is
-   * {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getDescription()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getDescription()"})
   public void testGetDescription_givenSkuImplProductIsProductBundleImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(new ProductBundleImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertNull(skuImpl.getDescription());
+    assertNull(skuImpl2.getDescription());
   }
 
   /**
    * Test {@link SkuImpl#getDescription()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is
-   * {@link Money#Money()}.</li>
+   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is {@link Money#Money()}.</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getDescription()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getDescription()"})
   public void testGetDescription_givenSkuImplSalePriceIsMoney_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(new Money());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setSalePrice(new Money());
 
     // Act and Assert
-    assertNull(skuImpl.getDescription());
-  }
-
-  /**
-   * Test {@link SkuImpl#getDescription()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is
-   * {@link Money}.</li>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getDescription()}
-   */
-  @Test
-  public void testGetDescription_givenSkuImplSalePriceIsMoney_thenReturnNull2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(mock(Money.class));
-
-    // Act and Assert
-    assertNull(skuImpl.getDescription());
+    assertNull(skuImpl2.getDescription());
   }
 
   /**
@@ -9824,9 +4265,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getDescription()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getDescription()"})
   public void testGetDescription_givenSkuImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new SkuImpl()).getDescription());
   }
@@ -9840,9 +4281,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getDescription()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getDescription()"})
   public void testGetDescription_thenCallsGetDescription() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
@@ -9850,12 +4291,12 @@ public class SkuImplDiffblueTest {
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
 
     // Act
-    String actualDescription = skuImpl.getDescription();
+    String actualDescription = skuImpl2.getDescription();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -9873,76 +4314,46 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getDescription()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getDescription()"})
   public void testGetDescription_thenThrowIllegalStateException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenThrow(new IllegalStateException("foo"));
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getDescription());
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getDescription());
     verify(product, atLeast(1)).getDefaultSku();
     verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#getLongDescription()}.
-   * <p>
-   * Method under test: {@link SkuImpl#getLongDescription()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetLongDescription() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1057 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).getLongDescription();
-  }
-
-  /**
-   * Test {@link SkuImpl#getLongDescription()}.
    * <ul>
-   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return
-   * {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getLongDescription()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getLongDescription()"})
   public void testGetLongDescription_givenProductGetDefaultSkuReturnSkuImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    String actualLongDescription = skuImpl.getLongDescription();
+    String actualLongDescription = skuImpl2.getLongDescription();
 
     // Assert
     verify(product).getDefaultSku();
@@ -9952,26 +4363,25 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getLongDescription()}.
    * <ul>
-   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return
-   * {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getLongDescription()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getLongDescription()"})
   public void testGetLongDescription_givenProductGetDefaultSkuReturnSkuImpl2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    String actualLongDescription = skuImpl.getLongDescription();
+    String actualLongDescription = skuImpl2.getLongDescription();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -9988,21 +4398,21 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getLongDescription()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getLongDescription()"})
   public void testGetLongDescription_givenSkuGetIdReturnOne_thenCallsGetId() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    String actualLongDescription = skuImpl.getLongDescription();
+    String actualLongDescription = skuImpl2.getLongDescription();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -10013,67 +4423,43 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getLongDescription()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Product is
-   * {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getLongDescription()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getLongDescription()"})
   public void testGetLongDescription_givenSkuImplProductIsProductBundleImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(new ProductBundleImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertNull(skuImpl.getLongDescription());
+    assertNull(skuImpl2.getLongDescription());
   }
 
   /**
    * Test {@link SkuImpl#getLongDescription()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is
-   * {@link Money#Money()}.</li>
+   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is {@link Money#Money()}.</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getLongDescription()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getLongDescription()"})
   public void testGetLongDescription_givenSkuImplSalePriceIsMoney_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(new Money());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setSalePrice(new Money());
 
     // Act and Assert
-    assertNull(skuImpl.getLongDescription());
-  }
-
-  /**
-   * Test {@link SkuImpl#getLongDescription()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is
-   * {@link Money}.</li>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getLongDescription()}
-   */
-  @Test
-  public void testGetLongDescription_givenSkuImplSalePriceIsMoney_thenReturnNull2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(mock(Money.class));
-
-    // Act and Assert
-    assertNull(skuImpl.getLongDescription());
+    assertNull(skuImpl2.getLongDescription());
   }
 
   /**
@@ -10086,9 +4472,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getLongDescription()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getLongDescription()"})
   public void testGetLongDescription_givenSkuImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new SkuImpl()).getLongDescription());
   }
@@ -10102,15 +4488,15 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getLongDescription()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getLongDescription()"})
   public void testGetLongDescription_thenReturnLongDescription() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setLongDescription("longDescription");
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setLongDescription("longDescription");
 
     // Act and Assert
-    assertEquals("longDescription", skuImpl.getLongDescription());
+    assertEquals("longDescription", skuImpl2.getLongDescription());
   }
 
   /**
@@ -10122,9 +4508,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getLongDescription()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getLongDescription()"})
   public void testGetLongDescription_thenReturnLongDescription2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
@@ -10132,12 +4518,12 @@ public class SkuImplDiffblueTest {
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
 
     // Act
-    String actualLongDescription = skuImpl.getLongDescription();
+    String actualLongDescription = skuImpl2.getLongDescription();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -10155,98 +4541,47 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getLongDescription()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getLongDescription()"})
   public void testGetLongDescription_thenThrowIllegalStateException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenThrow(new IllegalStateException("foo"));
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getLongDescription());
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getLongDescription());
     verify(product, atLeast(1)).getDefaultSku();
     verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#isTaxable()}.
-   * <p>
-   * Method under test: {@link SkuImpl#isTaxable()}
-   */
-  @Test
-  public void testIsTaxable() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException("foo"));
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.isTaxable());
-    verify(product).getDefaultSku();
-  }
-
-  /**
-   * Test {@link SkuImpl#isTaxable()}.
-   * <p>
-   * Method under test: {@link SkuImpl#isTaxable()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsTaxable2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1987 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).isTaxable();
-  }
-
-  /**
-   * Test {@link SkuImpl#isTaxable()}.
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()}
-   * return {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#isTaxable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.isTaxable()"})
   public void testIsTaxable_givenProductBundleImplGetDefaultSkuReturnSkuImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualIsTaxableResult = skuImpl.isTaxable();
+    Boolean actualIsTaxableResult = skuImpl2.isTaxable();
 
     // Assert
     verify(product).getDefaultSku();
@@ -10256,27 +4591,26 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#isTaxable()}.
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()}
-   * return {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#isTaxable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.isTaxable()"})
   public void testIsTaxable_givenProductBundleImplGetDefaultSkuReturnSkuImpl_thenReturnNull2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualIsTaxableResult = skuImpl.isTaxable();
+    Boolean actualIsTaxableResult = skuImpl2.isTaxable();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -10293,21 +4627,21 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#isTaxable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.isTaxable()"})
   public void testIsTaxable_givenSkuGetIdReturnOne_thenCallsGetId() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualIsTaxableResult = skuImpl.isTaxable();
+    Boolean actualIsTaxableResult = skuImpl2.isTaxable();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -10318,75 +4652,43 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#isTaxable()}.
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} throw
-   * {@link IllegalStateException#IllegalStateException(String)} with
-   * {@code foo}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#isTaxable()}
-   */
-  @Test
-  public void testIsTaxable_givenSkuGetIdThrowIllegalStateExceptionWithFoo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenThrow(new IllegalStateException("foo"));
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.isTaxable());
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-  }
-
-  /**
-   * Test {@link SkuImpl#isTaxable()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Product is
-   * {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#isTaxable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.isTaxable()"})
   public void testIsTaxable_givenSkuImplProductIsProductBundleImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(new ProductBundleImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertNull(skuImpl.isTaxable());
+    assertNull(skuImpl2.isTaxable());
   }
 
   /**
    * Test {@link SkuImpl#isTaxable()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Taxable is
-   * {@code false}.</li>
+   *   <li>Given {@link SkuImpl} (default constructor) Taxable is {@code false}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#isTaxable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.isTaxable()"})
   public void testIsTaxable_givenSkuImplTaxableIsFalse_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setTaxable(false);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setTaxable(false);
 
     // Act and Assert
-    assertFalse(skuImpl.isTaxable());
+    assertFalse(skuImpl2.isTaxable());
   }
 
   /**
@@ -10399,15 +4701,15 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#isTaxable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.isTaxable()"})
   public void testIsTaxable_givenSkuImplTaxableIsTrue_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setTaxable(true);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setTaxable(true);
 
     // Act and Assert
-    assertTrue(skuImpl.isTaxable());
+    assertTrue(skuImpl2.isTaxable());
   }
 
   /**
@@ -10420,9 +4722,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#isTaxable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.isTaxable()"})
   public void testIsTaxable_givenSkuImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new SkuImpl()).isTaxable());
   }
@@ -10437,9 +4739,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#isTaxable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.isTaxable()"})
   public void testIsTaxable_givenSkuIsTaxableReturnTrue_thenCallsIsTaxable() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.isTaxable()).thenReturn(true);
@@ -10447,12 +4749,12 @@ public class SkuImplDiffblueTest {
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualIsTaxableResult = skuImpl.isTaxable();
+    Boolean actualIsTaxableResult = skuImpl2.isTaxable();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -10462,78 +4764,55 @@ public class SkuImplDiffblueTest {
   }
 
   /**
-   * Test {@link SkuImpl#getTaxable()}.
+   * Test {@link SkuImpl#isTaxable()}.
+   * <ul>
+   *   <li>Then throw {@link IllegalStateException}.</li>
+   * </ul>
    * <p>
-   * Method under test: {@link SkuImpl#getTaxable()}
+   * Method under test: {@link SkuImpl#isTaxable()}
    */
   @Test
-  public void testGetTaxable() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.isTaxable()"})
+  public void testIsTaxable_thenThrowIllegalStateException() {
     // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("foo"));
     ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException("foo"));
+    when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getTaxable());
-    verify(product).getDefaultSku();
-  }
-
-  /**
-   * Test {@link SkuImpl#getTaxable()}.
-   * <p>
-   * Method under test: {@link SkuImpl#getTaxable()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetTaxable2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1627 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).getTaxable();
+    assertThrows(IllegalStateException.class, () -> skuImpl2.isTaxable());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#getTaxable()}.
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()}
-   * return {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getTaxable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.getTaxable()"})
   public void testGetTaxable_givenProductBundleImplGetDefaultSkuReturnSkuImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualTaxable = skuImpl.getTaxable();
+    Boolean actualTaxable = skuImpl2.getTaxable();
 
     // Assert
     verify(product).getDefaultSku();
@@ -10543,27 +4822,26 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getTaxable()}.
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()}
-   * return {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getTaxable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.getTaxable()"})
   public void testGetTaxable_givenProductBundleImplGetDefaultSkuReturnSkuImpl_thenReturnNull2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualTaxable = skuImpl.getTaxable();
+    Boolean actualTaxable = skuImpl2.getTaxable();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -10580,21 +4858,21 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getTaxable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.getTaxable()"})
   public void testGetTaxable_givenSkuGetIdReturnOne_thenCallsGetId() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualTaxable = skuImpl.getTaxable();
+    Boolean actualTaxable = skuImpl2.getTaxable();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -10605,75 +4883,43 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getTaxable()}.
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} throw
-   * {@link IllegalStateException#IllegalStateException(String)} with
-   * {@code foo}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getTaxable()}
-   */
-  @Test
-  public void testGetTaxable_givenSkuGetIdThrowIllegalStateExceptionWithFoo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenThrow(new IllegalStateException("foo"));
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getTaxable());
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-  }
-
-  /**
-   * Test {@link SkuImpl#getTaxable()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Product is
-   * {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getTaxable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.getTaxable()"})
   public void testGetTaxable_givenSkuImplProductIsProductBundleImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(new ProductBundleImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertNull(skuImpl.getTaxable());
+    assertNull(skuImpl2.getTaxable());
   }
 
   /**
    * Test {@link SkuImpl#getTaxable()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Taxable is
-   * {@code false}.</li>
+   *   <li>Given {@link SkuImpl} (default constructor) Taxable is {@code false}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getTaxable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.getTaxable()"})
   public void testGetTaxable_givenSkuImplTaxableIsFalse_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setTaxable(false);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setTaxable(false);
 
     // Act and Assert
-    assertFalse(skuImpl.getTaxable());
+    assertFalse(skuImpl2.getTaxable());
   }
 
   /**
@@ -10686,15 +4932,15 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getTaxable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.getTaxable()"})
   public void testGetTaxable_givenSkuImplTaxableIsTrue_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setTaxable(true);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setTaxable(true);
 
     // Act and Assert
-    assertTrue(skuImpl.getTaxable());
+    assertTrue(skuImpl2.getTaxable());
   }
 
   /**
@@ -10707,9 +4953,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getTaxable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.getTaxable()"})
   public void testGetTaxable_givenSkuImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new SkuImpl()).getTaxable());
   }
@@ -10724,9 +4970,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getTaxable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.getTaxable()"})
   public void testGetTaxable_givenSkuIsTaxableReturnTrue_thenCallsIsTaxable() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.isTaxable()).thenReturn(true);
@@ -10734,12 +4980,12 @@ public class SkuImplDiffblueTest {
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualTaxable = skuImpl.getTaxable();
+    Boolean actualTaxable = skuImpl2.getTaxable();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -10749,91 +4995,60 @@ public class SkuImplDiffblueTest {
   }
 
   /**
-   * Test {@link SkuImpl#setTaxable(Boolean)}.
-   * <p>
-   * Method under test: {@link SkuImpl#setTaxable(Boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetTaxable() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2407 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).setTaxable(true);
-  }
-
-  /**
-   * Test {@link SkuImpl#setTaxable(Boolean)}.
+   * Test {@link SkuImpl#getTaxable()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is
-   * {@link Money}.</li>
-   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#taxable}
-   * charValue is {@code Y}.</li>
+   *   <li>Then throw {@link IllegalStateException}.</li>
    * </ul>
    * <p>
-   * Method under test: {@link SkuImpl#setTaxable(Boolean)}
+   * Method under test: {@link SkuImpl#getTaxable()}
    */
   @Test
-  public void testSetTaxable_givenSkuImplSalePriceIsMoney_thenSkuImplTaxableCharValueIsY() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.getTaxable()"})
+  public void testGetTaxable_thenThrowIllegalStateException() {
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(mock(Money.class));
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("foo"));
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getDefaultSku()).thenReturn(sku);
 
-    // Act
-    skuImpl.setTaxable(true);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
-    // Assert
-    assertEquals('Y', skuImpl.taxable.charValue());
-    assertTrue(skuImpl.getTaxable());
+    // Act and Assert
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getTaxable());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#setTaxable(Boolean)}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor).</li>
    *   <li>When {@code false}.</li>
-   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#taxable}
-   * charValue is {@code N}.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#taxable} charValue is {@code N}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#setTaxable(Boolean)}
    */
   @Test
-  public void testSetTaxable_givenSkuImpl_whenFalse_thenSkuImplTaxableCharValueIsN() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.setTaxable(Boolean)"})
+  public void testSetTaxable_whenFalse_thenSkuImplTaxableCharValueIsN() {
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
 
     // Act
-    skuImpl.setTaxable(false);
+    skuImpl2.setTaxable(false);
 
     // Assert
-    assertEquals('N', skuImpl.taxable.charValue());
-    assertFalse(skuImpl.getTaxable());
+    assertEquals('N', skuImpl2.taxable.charValue());
+    assertFalse(skuImpl2.getTaxable());
   }
 
   /**
    * Test {@link SkuImpl#setTaxable(Boolean)}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor).</li>
    *   <li>When {@code null}.</li>
    *   <li>Then {@link SkuImpl} (default constructor) Taxable is {@code null}.</li>
    * </ul>
@@ -10841,118 +5056,65 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#setTaxable(Boolean)}
    */
   @Test
-  public void testSetTaxable_givenSkuImpl_whenNull_thenSkuImplTaxableIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.setTaxable(Boolean)"})
+  public void testSetTaxable_whenNull_thenSkuImplTaxableIsNull() {
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
 
     // Act
-    skuImpl.setTaxable(null);
+    skuImpl2.setTaxable(null);
 
-    // Assert
-    assertNull(skuImpl.getTaxable());
-    assertNull(skuImpl.taxable);
+    // Assert that nothing has changed
+    assertNull(skuImpl2.getTaxable());
+    assertNull(skuImpl2.taxable);
   }
 
   /**
    * Test {@link SkuImpl#setTaxable(Boolean)}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor).</li>
    *   <li>When {@code true}.</li>
-   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#taxable}
-   * charValue is {@code Y}.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#taxable} charValue is {@code Y}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#setTaxable(Boolean)}
    */
   @Test
-  public void testSetTaxable_givenSkuImpl_whenTrue_thenSkuImplTaxableCharValueIsY() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.setTaxable(Boolean)"})
+  public void testSetTaxable_whenTrue_thenSkuImplTaxableCharValueIsY() {
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
 
     // Act
-    skuImpl.setTaxable(true);
+    skuImpl2.setTaxable(true);
 
     // Assert
-    assertEquals('Y', skuImpl.taxable.charValue());
-    assertTrue(skuImpl.getTaxable());
-  }
-
-  /**
-   * Test {@link SkuImpl#isDiscountable()}.
-   * <p>
-   * Method under test: {@link SkuImpl#isDiscountable()}
-   */
-  @Test
-  public void testIsDiscountable() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException("foo"));
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.isDiscountable());
-    verify(product).getDefaultSku();
-  }
-
-  /**
-   * Test {@link SkuImpl#isDiscountable()}.
-   * <p>
-   * Method under test: {@link SkuImpl#isDiscountable()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsDiscountable2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1867 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).isDiscountable();
+    assertEquals('Y', skuImpl2.taxable.charValue());
+    assertTrue(skuImpl2.getTaxable());
   }
 
   /**
    * Test {@link SkuImpl#isDiscountable()}.
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()}
-   * return {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#isDiscountable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.isDiscountable()"})
   public void testIsDiscountable_givenProductBundleImplGetDefaultSkuReturnSkuImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualIsDiscountableResult = skuImpl.isDiscountable();
+    Boolean actualIsDiscountableResult = skuImpl2.isDiscountable();
 
     // Assert
     verify(product).getDefaultSku();
@@ -10962,26 +5124,25 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#isDiscountable()}.
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()}
-   * return {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#isDiscountable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.isDiscountable()"})
   public void testIsDiscountable_givenProductBundleImplGetDefaultSkuReturnSkuImpl2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualIsDiscountableResult = skuImpl.isDiscountable();
+    Boolean actualIsDiscountableResult = skuImpl2.isDiscountable();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -10998,21 +5159,21 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#isDiscountable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.isDiscountable()"})
   public void testIsDiscountable_givenSkuGetIdReturnOne_thenCallsGetId() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualIsDiscountableResult = skuImpl.isDiscountable();
+    Boolean actualIsDiscountableResult = skuImpl2.isDiscountable();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -11023,97 +5184,64 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#isDiscountable()}.
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} throw
-   * {@link IllegalStateException#IllegalStateException(String)} with
-   * {@code foo}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#isDiscountable()}
-   */
-  @Test
-  public void testIsDiscountable_givenSkuGetIdThrowIllegalStateExceptionWithFoo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenThrow(new IllegalStateException("foo"));
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.isDiscountable());
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-  }
-
-  /**
-   * Test {@link SkuImpl#isDiscountable()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Discountable is
-   * {@code false}.</li>
+   *   <li>Given {@link SkuImpl} (default constructor) Discountable is {@code false}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#isDiscountable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.isDiscountable()"})
   public void testIsDiscountable_givenSkuImplDiscountableIsFalse_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setDiscountable(false);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDiscountable(false);
 
     // Act and Assert
-    assertFalse(skuImpl.isDiscountable());
+    assertFalse(skuImpl2.isDiscountable());
   }
 
   /**
    * Test {@link SkuImpl#isDiscountable()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Discountable is
-   * {@code true}.</li>
+   *   <li>Given {@link SkuImpl} (default constructor) Discountable is {@code true}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#isDiscountable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.isDiscountable()"})
   public void testIsDiscountable_givenSkuImplDiscountableIsTrue_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setDiscountable(true);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDiscountable(true);
 
     // Act and Assert
-    assertTrue(skuImpl.isDiscountable());
+    assertTrue(skuImpl2.isDiscountable());
   }
 
   /**
    * Test {@link SkuImpl#isDiscountable()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Product is
-   * {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#isDiscountable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.isDiscountable()"})
   public void testIsDiscountable_givenSkuImplProductIsProductBundleImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(new ProductBundleImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertFalse(skuImpl.isDiscountable());
+    assertFalse(skuImpl2.isDiscountable());
   }
 
   /**
@@ -11126,9 +5254,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#isDiscountable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.isDiscountable()"})
   public void testIsDiscountable_givenSkuImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertFalse((new SkuImpl()).isDiscountable());
   }
@@ -11143,9 +5271,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#isDiscountable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.isDiscountable()"})
   public void testIsDiscountable_givenSkuIsDiscountableReturnTrue_thenCallsIsDiscountable() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.isDiscountable()).thenReturn(true);
@@ -11153,12 +5281,12 @@ public class SkuImplDiffblueTest {
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualIsDiscountableResult = skuImpl.isDiscountable();
+    Boolean actualIsDiscountableResult = skuImpl2.isDiscountable();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -11168,77 +5296,54 @@ public class SkuImplDiffblueTest {
   }
 
   /**
-   * Test {@link SkuImpl#getDiscountable()}.
+   * Test {@link SkuImpl#isDiscountable()}.
+   * <ul>
+   *   <li>Then throw {@link IllegalStateException}.</li>
+   * </ul>
    * <p>
-   * Method under test: {@link SkuImpl#getDiscountable()}
+   * Method under test: {@link SkuImpl#isDiscountable()}
    */
   @Test
-  public void testGetDiscountable() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.isDiscountable()"})
+  public void testIsDiscountable_thenThrowIllegalStateException() {
     // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("foo"));
     ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException("foo"));
+    when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getDiscountable());
-    verify(product).getDefaultSku();
-  }
-
-  /**
-   * Test {@link SkuImpl#getDiscountable()}.
-   * <p>
-   * Method under test: {@link SkuImpl#getDiscountable()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetDiscountable2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass907 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).getDiscountable();
+    assertThrows(IllegalStateException.class, () -> skuImpl2.isDiscountable());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#getDiscountable()}.
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()}
-   * return {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getDiscountable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.getDiscountable()"})
   public void testGetDiscountable_givenProductBundleImplGetDefaultSkuReturnSkuImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualDiscountable = skuImpl.getDiscountable();
+    Boolean actualDiscountable = skuImpl2.getDiscountable();
 
     // Assert
     verify(product).getDefaultSku();
@@ -11248,26 +5353,25 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getDiscountable()}.
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()}
-   * return {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getDiscountable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.getDiscountable()"})
   public void testGetDiscountable_givenProductBundleImplGetDefaultSkuReturnSkuImpl2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualDiscountable = skuImpl.getDiscountable();
+    Boolean actualDiscountable = skuImpl2.getDiscountable();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -11284,21 +5388,21 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getDiscountable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.getDiscountable()"})
   public void testGetDiscountable_givenSkuGetIdReturnOne_thenCallsGetId() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualDiscountable = skuImpl.getDiscountable();
+    Boolean actualDiscountable = skuImpl2.getDiscountable();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -11309,97 +5413,64 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getDiscountable()}.
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} throw
-   * {@link IllegalStateException#IllegalStateException(String)} with
-   * {@code foo}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getDiscountable()}
-   */
-  @Test
-  public void testGetDiscountable_givenSkuGetIdThrowIllegalStateExceptionWithFoo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenThrow(new IllegalStateException("foo"));
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getDiscountable());
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-  }
-
-  /**
-   * Test {@link SkuImpl#getDiscountable()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Discountable is
-   * {@code false}.</li>
+   *   <li>Given {@link SkuImpl} (default constructor) Discountable is {@code false}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getDiscountable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.getDiscountable()"})
   public void testGetDiscountable_givenSkuImplDiscountableIsFalse_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setDiscountable(false);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDiscountable(false);
 
     // Act and Assert
-    assertFalse(skuImpl.getDiscountable());
+    assertFalse(skuImpl2.getDiscountable());
   }
 
   /**
    * Test {@link SkuImpl#getDiscountable()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Discountable is
-   * {@code true}.</li>
+   *   <li>Given {@link SkuImpl} (default constructor) Discountable is {@code true}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getDiscountable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.getDiscountable()"})
   public void testGetDiscountable_givenSkuImplDiscountableIsTrue_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setDiscountable(true);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDiscountable(true);
 
     // Act and Assert
-    assertTrue(skuImpl.getDiscountable());
+    assertTrue(skuImpl2.getDiscountable());
   }
 
   /**
    * Test {@link SkuImpl#getDiscountable()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Product is
-   * {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getDiscountable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.getDiscountable()"})
   public void testGetDiscountable_givenSkuImplProductIsProductBundleImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(new ProductBundleImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertFalse(skuImpl.getDiscountable());
+    assertFalse(skuImpl2.getDiscountable());
   }
 
   /**
@@ -11412,9 +5483,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getDiscountable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.getDiscountable()"})
   public void testGetDiscountable_givenSkuImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertFalse((new SkuImpl()).getDiscountable());
   }
@@ -11429,9 +5500,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getDiscountable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.getDiscountable()"})
   public void testGetDiscountable_givenSkuIsDiscountableReturnTrue_thenCallsIsDiscountable() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.isDiscountable()).thenReturn(true);
@@ -11439,12 +5510,12 @@ public class SkuImplDiffblueTest {
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualDiscountable = skuImpl.getDiscountable();
+    Boolean actualDiscountable = skuImpl2.getDiscountable();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -11454,190 +5525,127 @@ public class SkuImplDiffblueTest {
   }
 
   /**
-   * Test {@link SkuImpl#setDiscountable(Boolean)}.
-   * <p>
-   * Method under test: {@link SkuImpl#setDiscountable(Boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetDiscountable() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2107 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).setDiscountable(true);
-  }
-
-  /**
-   * Test {@link SkuImpl#setDiscountable(Boolean)}.
+   * Test {@link SkuImpl#getDiscountable()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is
-   * {@link Money}.</li>
+   *   <li>Then throw {@link IllegalStateException}.</li>
    * </ul>
    * <p>
-   * Method under test: {@link SkuImpl#setDiscountable(Boolean)}
+   * Method under test: {@link SkuImpl#getDiscountable()}
    */
   @Test
-  public void testSetDiscountable_givenSkuImplSalePriceIsMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.getDiscountable()"})
+  public void testGetDiscountable_thenThrowIllegalStateException() {
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(mock(Money.class));
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("foo"));
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getDefaultSku()).thenReturn(sku);
 
-    // Act
-    skuImpl.setDiscountable(true);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
-    // Assert
-    assertEquals('Y', skuImpl.discountable.charValue());
-    assertTrue(skuImpl.getDiscountable());
+    // Act and Assert
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getDiscountable());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#setDiscountable(Boolean)}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor).</li>
    *   <li>When {@code false}.</li>
-   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#discountable}
-   * charValue is {@code N}.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#discountable} charValue is {@code N}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#setDiscountable(Boolean)}
    */
   @Test
-  public void testSetDiscountable_givenSkuImpl_whenFalse_thenSkuImplDiscountableCharValueIsN() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.setDiscountable(Boolean)"})
+  public void testSetDiscountable_whenFalse_thenSkuImplDiscountableCharValueIsN() {
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
 
     // Act
-    skuImpl.setDiscountable(false);
+    skuImpl2.setDiscountable(false);
 
     // Assert
-    assertEquals('N', skuImpl.discountable.charValue());
-    assertFalse(skuImpl.getDiscountable());
+    assertEquals('N', skuImpl2.discountable.charValue());
+    assertFalse(skuImpl2.getDiscountable());
   }
 
   /**
    * Test {@link SkuImpl#setDiscountable(Boolean)}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor).</li>
    *   <li>When {@code null}.</li>
-   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#discountable}
-   * is {@code null}.</li>
+   *   <li>Then not {@link SkuImpl} (default constructor) Discountable.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#setDiscountable(Boolean)}
    */
   @Test
-  public void testSetDiscountable_givenSkuImpl_whenNull_thenSkuImplDiscountableIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.setDiscountable(Boolean)"})
+  public void testSetDiscountable_whenNull_thenNotSkuImplDiscountable() {
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
 
     // Act
-    skuImpl.setDiscountable(null);
+    skuImpl2.setDiscountable(null);
 
-    // Assert
-    assertNull(skuImpl.discountable);
-    assertFalse(skuImpl.getDiscountable());
+    // Assert that nothing has changed
+    assertFalse(skuImpl2.getDiscountable());
   }
 
   /**
    * Test {@link SkuImpl#setDiscountable(Boolean)}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor).</li>
    *   <li>When {@code true}.</li>
-   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#discountable}
-   * charValue is {@code Y}.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#discountable} charValue is {@code Y}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#setDiscountable(Boolean)}
    */
   @Test
-  public void testSetDiscountable_givenSkuImpl_whenTrue_thenSkuImplDiscountableCharValueIsY() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.setDiscountable(Boolean)"})
+  public void testSetDiscountable_whenTrue_thenSkuImplDiscountableCharValueIsY() {
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
 
     // Act
-    skuImpl.setDiscountable(true);
+    skuImpl2.setDiscountable(true);
 
     // Assert
-    assertEquals('Y', skuImpl.discountable.charValue());
-    assertTrue(skuImpl.getDiscountable());
-  }
-
-  /**
-   * Test {@link SkuImpl#isAvailable()}.
-   * <p>
-   * Method under test: {@link SkuImpl#isAvailable()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsAvailable() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1837 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).isAvailable();
+    assertEquals('Y', skuImpl2.discountable.charValue());
+    assertTrue(skuImpl2.getDiscountable());
   }
 
   /**
    * Test {@link SkuImpl#isAvailable()}.
    * <ul>
-   *   <li>Given {@link CategoryImpl} {@link CategoryImpl#getInventoryType()} return
-   * {@link InventoryType#ALWAYS_AVAILABLE}.</li>
+   *   <li>Given {@link CategoryImpl} {@link CategoryImpl#getInventoryType()} return {@link InventoryType#ALWAYS_AVAILABLE}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#isAvailable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.isAvailable()"})
   public void testIsAvailable_givenCategoryImplGetInventoryTypeReturnAlways_available() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     CategoryImpl categoryImpl = mock(CategoryImpl.class);
     when(categoryImpl.getInventoryType()).thenReturn(InventoryType.ALWAYS_AVAILABLE);
     ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
     when(defaultProduct.getDefaultCategory()).thenReturn(categoryImpl);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setDefaultProduct(defaultProduct);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDefaultProduct(defaultProduct);
 
     // Act
-    Boolean actualIsAvailableResult = skuImpl.isAvailable();
+    Boolean actualIsAvailableResult = skuImpl2.isAvailable();
 
     // Assert
     verify(categoryImpl).getInventoryType();
@@ -11648,27 +5656,26 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#isAvailable()}.
    * <ul>
-   *   <li>Given {@link CategoryImpl} {@link CategoryImpl#getInventoryType()} return
-   * {@link InventoryType#UNAVAILABLE}.</li>
+   *   <li>Given {@link CategoryImpl} {@link CategoryImpl#getInventoryType()} return {@link InventoryType#UNAVAILABLE}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#isAvailable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.isAvailable()"})
   public void testIsAvailable_givenCategoryImplGetInventoryTypeReturnUnavailable() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     CategoryImpl categoryImpl = mock(CategoryImpl.class);
     when(categoryImpl.getInventoryType()).thenReturn(InventoryType.UNAVAILABLE);
     ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
     when(defaultProduct.getDefaultCategory()).thenReturn(categoryImpl);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setDefaultProduct(defaultProduct);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDefaultProduct(defaultProduct);
 
     // Act
-    Boolean actualIsAvailableResult = skuImpl.isAvailable();
+    Boolean actualIsAvailableResult = skuImpl2.isAvailable();
 
     // Assert
     verify(categoryImpl).getInventoryType();
@@ -11679,25 +5686,24 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#isAvailable()}.
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultCategory()}
-   * return {@link CategoryImpl} (default constructor).</li>
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultCategory()} return {@link CategoryImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#isAvailable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.isAvailable()"})
   public void testIsAvailable_givenProductBundleImplGetDefaultCategoryReturnCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
     when(defaultProduct.getDefaultCategory()).thenReturn(new CategoryImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setDefaultProduct(defaultProduct);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDefaultProduct(defaultProduct);
 
     // Act
-    Boolean actualIsAvailableResult = skuImpl.isAvailable();
+    Boolean actualIsAvailableResult = skuImpl2.isAvailable();
 
     // Assert
     verify(defaultProduct, atLeast(1)).getDefaultCategory();
@@ -11707,111 +5713,106 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#isAvailable()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Available is
-   * {@code false}.</li>
+   *   <li>Given {@link SkuImpl} (default constructor) Available is {@code false}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#isAvailable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.isAvailable()"})
   public void testIsAvailable_givenSkuImplAvailableIsFalse_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setAvailable(false);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setAvailable(false);
 
     // Act and Assert
-    assertFalse(skuImpl.isAvailable());
+    assertFalse(skuImpl2.isAvailable());
   }
 
   /**
    * Test {@link SkuImpl#isAvailable()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Available is
-   * {@code true}.</li>
+   *   <li>Given {@link SkuImpl} (default constructor) Available is {@code true}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#isAvailable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.isAvailable()"})
   public void testIsAvailable_givenSkuImplAvailableIsTrue_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setAvailable(true);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setAvailable(true);
 
     // Act and Assert
-    assertTrue(skuImpl.isAvailable());
+    assertTrue(skuImpl2.isAvailable());
   }
 
   /**
    * Test {@link SkuImpl#isAvailable()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) DefaultProduct is
-   * {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Given {@link SkuImpl} (default constructor) DefaultProduct is {@link ProductBundleImpl} (default constructor).</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#isAvailable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.isAvailable()"})
   public void testIsAvailable_givenSkuImplDefaultProductIsProductBundleImpl_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setDefaultProduct(new ProductBundleImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDefaultProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertTrue(skuImpl.isAvailable());
+    assertTrue(skuImpl2.isAvailable());
   }
 
   /**
    * Test {@link SkuImpl#isAvailable()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) InventoryType is
-   * {@link InventoryType#ALWAYS_AVAILABLE}.</li>
+   *   <li>Given {@link SkuImpl} (default constructor) InventoryType is {@link InventoryType#ALWAYS_AVAILABLE}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#isAvailable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.isAvailable()"})
   public void testIsAvailable_givenSkuImplInventoryTypeIsAlways_available_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
 
     // Act and Assert
-    assertTrue(skuImpl.isAvailable());
+    assertTrue(skuImpl2.isAvailable());
   }
 
   /**
    * Test {@link SkuImpl#isAvailable()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Product is
-   * {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#isAvailable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.isAvailable()"})
   public void testIsAvailable_givenSkuImplProductIsProductBundleImpl_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(new ProductBundleImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertTrue(skuImpl.isAvailable());
+    assertTrue(skuImpl2.isAvailable());
   }
 
   /**
@@ -11824,9 +5825,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#isAvailable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.isAvailable()"})
   public void testIsAvailable_givenSkuImpl_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertTrue((new SkuImpl()).isAvailable());
   }
@@ -11840,77 +5841,47 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#isAvailable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.isAvailable()"})
   public void testIsAvailable_thenThrowIllegalStateException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     CategoryImpl categoryImpl = mock(CategoryImpl.class);
     when(categoryImpl.getInventoryType()).thenThrow(new IllegalStateException("foo"));
     ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
     when(defaultProduct.getDefaultCategory()).thenReturn(categoryImpl);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setDefaultProduct(defaultProduct);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDefaultProduct(defaultProduct);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.isAvailable());
+    assertThrows(IllegalStateException.class, () -> skuImpl2.isAvailable());
     verify(categoryImpl).getInventoryType();
     verify(defaultProduct, atLeast(1)).getDefaultCategory();
   }
 
   /**
    * Test {@link SkuImpl#getAvailable()}.
-   * <p>
-   * Method under test: {@link SkuImpl#getAvailable()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetAvailable() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass697 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).getAvailable();
-  }
-
-  /**
-   * Test {@link SkuImpl#getAvailable()}.
    * <ul>
-   *   <li>Given {@link CategoryImpl} {@link CategoryImpl#getInventoryType()} return
-   * {@link InventoryType#ALWAYS_AVAILABLE}.</li>
+   *   <li>Given {@link CategoryImpl} {@link CategoryImpl#getInventoryType()} return {@link InventoryType#ALWAYS_AVAILABLE}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getAvailable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.getAvailable()"})
   public void testGetAvailable_givenCategoryImplGetInventoryTypeReturnAlways_available() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     CategoryImpl categoryImpl = mock(CategoryImpl.class);
     when(categoryImpl.getInventoryType()).thenReturn(InventoryType.ALWAYS_AVAILABLE);
     ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
     when(defaultProduct.getDefaultCategory()).thenReturn(categoryImpl);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setDefaultProduct(defaultProduct);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDefaultProduct(defaultProduct);
 
     // Act
-    Boolean actualAvailable = skuImpl.getAvailable();
+    Boolean actualAvailable = skuImpl2.getAvailable();
 
     // Assert
     verify(categoryImpl).getInventoryType();
@@ -11921,27 +5892,26 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getAvailable()}.
    * <ul>
-   *   <li>Given {@link CategoryImpl} {@link CategoryImpl#getInventoryType()} return
-   * {@link InventoryType#UNAVAILABLE}.</li>
+   *   <li>Given {@link CategoryImpl} {@link CategoryImpl#getInventoryType()} return {@link InventoryType#UNAVAILABLE}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getAvailable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.getAvailable()"})
   public void testGetAvailable_givenCategoryImplGetInventoryTypeReturnUnavailable() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     CategoryImpl categoryImpl = mock(CategoryImpl.class);
     when(categoryImpl.getInventoryType()).thenReturn(InventoryType.UNAVAILABLE);
     ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
     when(defaultProduct.getDefaultCategory()).thenReturn(categoryImpl);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setDefaultProduct(defaultProduct);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDefaultProduct(defaultProduct);
 
     // Act
-    Boolean actualAvailable = skuImpl.getAvailable();
+    Boolean actualAvailable = skuImpl2.getAvailable();
 
     // Assert
     verify(categoryImpl).getInventoryType();
@@ -11952,25 +5922,24 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getAvailable()}.
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultCategory()}
-   * return {@link CategoryImpl} (default constructor).</li>
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultCategory()} return {@link CategoryImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getAvailable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.getAvailable()"})
   public void testGetAvailable_givenProductBundleImplGetDefaultCategoryReturnCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
     when(defaultProduct.getDefaultCategory()).thenReturn(new CategoryImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setDefaultProduct(defaultProduct);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDefaultProduct(defaultProduct);
 
     // Act
-    Boolean actualAvailable = skuImpl.getAvailable();
+    Boolean actualAvailable = skuImpl2.getAvailable();
 
     // Assert
     verify(defaultProduct, atLeast(1)).getDefaultCategory();
@@ -11980,111 +5949,106 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getAvailable()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Available is
-   * {@code false}.</li>
+   *   <li>Given {@link SkuImpl} (default constructor) Available is {@code false}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getAvailable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.getAvailable()"})
   public void testGetAvailable_givenSkuImplAvailableIsFalse_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setAvailable(false);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setAvailable(false);
 
     // Act and Assert
-    assertFalse(skuImpl.getAvailable());
+    assertFalse(skuImpl2.getAvailable());
   }
 
   /**
    * Test {@link SkuImpl#getAvailable()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Available is
-   * {@code true}.</li>
+   *   <li>Given {@link SkuImpl} (default constructor) Available is {@code true}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getAvailable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.getAvailable()"})
   public void testGetAvailable_givenSkuImplAvailableIsTrue_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setAvailable(true);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setAvailable(true);
 
     // Act and Assert
-    assertTrue(skuImpl.getAvailable());
+    assertTrue(skuImpl2.getAvailable());
   }
 
   /**
    * Test {@link SkuImpl#getAvailable()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) DefaultProduct is
-   * {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Given {@link SkuImpl} (default constructor) DefaultProduct is {@link ProductBundleImpl} (default constructor).</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getAvailable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.getAvailable()"})
   public void testGetAvailable_givenSkuImplDefaultProductIsProductBundleImpl_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setDefaultProduct(new ProductBundleImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDefaultProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertTrue(skuImpl.getAvailable());
+    assertTrue(skuImpl2.getAvailable());
   }
 
   /**
    * Test {@link SkuImpl#getAvailable()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) InventoryType is
-   * {@link InventoryType#ALWAYS_AVAILABLE}.</li>
+   *   <li>Given {@link SkuImpl} (default constructor) InventoryType is {@link InventoryType#ALWAYS_AVAILABLE}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getAvailable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.getAvailable()"})
   public void testGetAvailable_givenSkuImplInventoryTypeIsAlways_available_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
 
     // Act and Assert
-    assertTrue(skuImpl.getAvailable());
+    assertTrue(skuImpl2.getAvailable());
   }
 
   /**
    * Test {@link SkuImpl#getAvailable()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Product is
-   * {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getAvailable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.getAvailable()"})
   public void testGetAvailable_givenSkuImplProductIsProductBundleImpl_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(new ProductBundleImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertTrue(skuImpl.getAvailable());
+    assertTrue(skuImpl2.getAvailable());
   }
 
   /**
@@ -12097,9 +6061,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getAvailable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.getAvailable()"})
   public void testGetAvailable_givenSkuImpl_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertTrue((new SkuImpl()).getAvailable());
   }
@@ -12113,209 +6077,116 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getAvailable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.getAvailable()"})
   public void testGetAvailable_thenThrowIllegalStateException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     CategoryImpl categoryImpl = mock(CategoryImpl.class);
     when(categoryImpl.getInventoryType()).thenThrow(new IllegalStateException("foo"));
     ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
     when(defaultProduct.getDefaultCategory()).thenReturn(categoryImpl);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setDefaultProduct(defaultProduct);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDefaultProduct(defaultProduct);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getAvailable());
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getAvailable());
     verify(categoryImpl).getInventoryType();
     verify(defaultProduct, atLeast(1)).getDefaultCategory();
   }
 
   /**
    * Test {@link SkuImpl#setAvailable(Boolean)}.
-   * <p>
-   * Method under test: {@link SkuImpl#setAvailable(Boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetAvailable() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2047 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).setAvailable(true);
-  }
-
-  /**
-   * Test {@link SkuImpl#setAvailable(Boolean)}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is
-   * {@link Money}.</li>
-   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#available}
-   * charValue is {@code Y}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#setAvailable(Boolean)}
-   */
-  @Test
-  public void testSetAvailable_givenSkuImplSalePriceIsMoney_thenSkuImplAvailableCharValueIsY() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(mock(Money.class));
-
-    // Act
-    skuImpl.setAvailable(true);
-
-    // Assert
-    assertEquals('Y', skuImpl.available.charValue());
-    assertTrue(skuImpl.getAvailable());
-  }
-
-  /**
-   * Test {@link SkuImpl#setAvailable(Boolean)}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor).</li>
    *   <li>When {@code false}.</li>
-   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#available}
-   * charValue is {@code N}.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#available} charValue is {@code N}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#setAvailable(Boolean)}
    */
   @Test
-  public void testSetAvailable_givenSkuImpl_whenFalse_thenSkuImplAvailableCharValueIsN() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.setAvailable(Boolean)"})
+  public void testSetAvailable_whenFalse_thenSkuImplAvailableCharValueIsN() {
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
 
     // Act
-    skuImpl.setAvailable(false);
+    skuImpl2.setAvailable(false);
 
     // Assert
-    assertEquals('N', skuImpl.available.charValue());
-    assertFalse(skuImpl.getAvailable());
+    assertEquals('N', skuImpl2.available.charValue());
+    assertFalse(skuImpl2.getAvailable());
   }
 
   /**
    * Test {@link SkuImpl#setAvailable(Boolean)}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor).</li>
    *   <li>When {@code null}.</li>
-   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#available} is
-   * {@code null}.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) Available.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#setAvailable(Boolean)}
    */
   @Test
-  public void testSetAvailable_givenSkuImpl_whenNull_thenSkuImplAvailableIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.setAvailable(Boolean)"})
+  public void testSetAvailable_whenNull_thenSkuImplAvailable() {
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
 
     // Act
-    skuImpl.setAvailable(null);
+    skuImpl2.setAvailable(null);
 
-    // Assert
-    assertNull(skuImpl.available);
-    assertTrue(skuImpl.getAvailable());
+    // Assert that nothing has changed
+    assertTrue(skuImpl2.getAvailable());
   }
 
   /**
    * Test {@link SkuImpl#setAvailable(Boolean)}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor).</li>
    *   <li>When {@code true}.</li>
-   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#available}
-   * charValue is {@code Y}.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#available} charValue is {@code Y}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#setAvailable(Boolean)}
    */
   @Test
-  public void testSetAvailable_givenSkuImpl_whenTrue_thenSkuImplAvailableCharValueIsY() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.setAvailable(Boolean)"})
+  public void testSetAvailable_whenTrue_thenSkuImplAvailableCharValueIsY() {
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
 
     // Act
-    skuImpl.setAvailable(true);
+    skuImpl2.setAvailable(true);
 
     // Assert
-    assertEquals('Y', skuImpl.available.charValue());
-    assertTrue(skuImpl.getAvailable());
-  }
-
-  /**
-   * Test {@link SkuImpl#getActiveStartDate()}.
-   * <p>
-   * Method under test: {@link SkuImpl#getActiveStartDate()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetActiveStartDate() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass667 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).getActiveStartDate();
+    assertEquals('Y', skuImpl2.available.charValue());
+    assertTrue(skuImpl2.getAvailable());
   }
 
   /**
    * Test {@link SkuImpl#getActiveStartDate()}.
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()}
-   * return {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getActiveStartDate()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Date SkuImpl.getActiveStartDate()"})
   public void testGetActiveStartDate_givenProductBundleImplGetDefaultSkuReturnSkuImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    Date actualActiveStartDate = skuImpl.getActiveStartDate();
+    Date actualActiveStartDate = skuImpl2.getActiveStartDate();
 
     // Assert
     verify(product).getDefaultSku();
@@ -12325,26 +6196,25 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getActiveStartDate()}.
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()}
-   * return {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getActiveStartDate()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Date SkuImpl.getActiveStartDate()"})
   public void testGetActiveStartDate_givenProductBundleImplGetDefaultSkuReturnSkuImpl2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Date actualActiveStartDate = skuImpl.getActiveStartDate();
+    Date actualActiveStartDate = skuImpl2.getActiveStartDate();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -12361,21 +6231,21 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getActiveStartDate()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Date SkuImpl.getActiveStartDate()"})
   public void testGetActiveStartDate_givenSkuGetIdReturnOne_thenCallsGetId() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Date actualActiveStartDate = skuImpl.getActiveStartDate();
+    Date actualActiveStartDate = skuImpl2.getActiveStartDate();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -12386,23 +6256,22 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getActiveStartDate()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Product is
-   * {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getActiveStartDate()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Date SkuImpl.getActiveStartDate()"})
   public void testGetActiveStartDate_givenSkuImplProductIsProductBundleImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(new ProductBundleImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertNull(skuImpl.getActiveStartDate());
+    assertNull(skuImpl2.getActiveStartDate());
   }
 
   /**
@@ -12415,9 +6284,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getActiveStartDate()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Date SkuImpl.getActiveStartDate()"})
   public void testGetActiveStartDate_givenSkuImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new SkuImpl()).getActiveStartDate());
   }
@@ -12431,9 +6300,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getActiveStartDate()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Date SkuImpl.getActiveStartDate()"})
   public void testGetActiveStartDate_thenCallsGetActiveStartDate() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
@@ -12442,38 +6311,17 @@ public class SkuImplDiffblueTest {
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
 
     // Act
-    skuImpl.getActiveStartDate();
+    skuImpl2.getActiveStartDate();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
     verify(sku).getActiveStartDate();
     verify(sku).getId();
-  }
-
-  /**
-   * Test {@link SkuImpl#getActiveStartDate()}.
-   * <ul>
-   *   <li>Then return {@link SkuImpl} (default constructor)
-   * {@link SkuImpl#activeStartDate}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getActiveStartDate()}
-   */
-  @Test
-  public void testGetActiveStartDate_thenReturnSkuImplActiveStartDate() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setActiveStartDate(mock(java.sql.Date.class));
-
-    // Act and Assert
-    assertSame(skuImpl.activeStartDate, skuImpl.getActiveStartDate());
   }
 
   /**
@@ -12485,76 +6333,46 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getActiveStartDate()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Date SkuImpl.getActiveStartDate()"})
   public void testGetActiveStartDate_thenThrowIllegalStateException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenThrow(new IllegalStateException("foo"));
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getActiveStartDate());
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getActiveStartDate());
     verify(product, atLeast(1)).getDefaultSku();
     verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#getActiveEndDate()}.
-   * <p>
-   * Method under test: {@link SkuImpl#getActiveEndDate()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetActiveEndDate() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass637 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).getActiveEndDate();
-  }
-
-  /**
-   * Test {@link SkuImpl#getActiveEndDate()}.
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()}
-   * return {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getActiveEndDate()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Date SkuImpl.getActiveEndDate()"})
   public void testGetActiveEndDate_givenProductBundleImplGetDefaultSkuReturnSkuImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    Date actualActiveEndDate = skuImpl.getActiveEndDate();
+    Date actualActiveEndDate = skuImpl2.getActiveEndDate();
 
     // Assert
     verify(product).getDefaultSku();
@@ -12564,26 +6382,25 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getActiveEndDate()}.
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()}
-   * return {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getActiveEndDate()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Date SkuImpl.getActiveEndDate()"})
   public void testGetActiveEndDate_givenProductBundleImplGetDefaultSkuReturnSkuImpl2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Date actualActiveEndDate = skuImpl.getActiveEndDate();
+    Date actualActiveEndDate = skuImpl2.getActiveEndDate();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -12600,21 +6417,21 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getActiveEndDate()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Date SkuImpl.getActiveEndDate()"})
   public void testGetActiveEndDate_givenSkuGetIdReturnOne_thenCallsGetId() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Date actualActiveEndDate = skuImpl.getActiveEndDate();
+    Date actualActiveEndDate = skuImpl2.getActiveEndDate();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -12625,23 +6442,22 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getActiveEndDate()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Product is
-   * {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getActiveEndDate()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Date SkuImpl.getActiveEndDate()"})
   public void testGetActiveEndDate_givenSkuImplProductIsProductBundleImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(new ProductBundleImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertNull(skuImpl.getActiveEndDate());
+    assertNull(skuImpl2.getActiveEndDate());
   }
 
   /**
@@ -12654,9 +6470,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getActiveEndDate()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Date SkuImpl.getActiveEndDate()"})
   public void testGetActiveEndDate_givenSkuImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new SkuImpl()).getActiveEndDate());
   }
@@ -12670,9 +6486,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getActiveEndDate()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Date SkuImpl.getActiveEndDate()"})
   public void testGetActiveEndDate_thenCallsGetActiveEndDate() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
@@ -12681,38 +6497,17 @@ public class SkuImplDiffblueTest {
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
 
     // Act
-    skuImpl.getActiveEndDate();
+    skuImpl2.getActiveEndDate();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
     verify(sku).getActiveEndDate();
     verify(sku).getId();
-  }
-
-  /**
-   * Test {@link SkuImpl#getActiveEndDate()}.
-   * <ul>
-   *   <li>Then return {@link SkuImpl} (default constructor)
-   * {@link SkuImpl#activeEndDate}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getActiveEndDate()}
-   */
-  @Test
-  public void testGetActiveEndDate_thenReturnSkuImplActiveEndDate() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setActiveEndDate(mock(java.sql.Date.class));
-
-    // Act and Assert
-    assertSame(skuImpl.activeEndDate, skuImpl.getActiveEndDate());
   }
 
   /**
@@ -12724,21 +6519,21 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getActiveEndDate()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Date SkuImpl.getActiveEndDate()"})
   public void testGetActiveEndDate_thenThrowIllegalStateException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenThrow(new IllegalStateException("foo"));
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getActiveEndDate());
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getActiveEndDate());
     verify(product, atLeast(1)).getDefaultSku();
     verify(sku).getId();
   }
@@ -12749,263 +6544,175 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getDimension()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Dimension SkuImpl.getDimension()"})
   public void testGetDimension() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass877 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).getDimension();
-  }
-
-  /**
-   * Test {@link SkuImpl#getDimension()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getDimension()}
-   */
-  @Test
-  public void testGetDimension_givenSkuImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-
-    // Act and Assert
-    assertSame(skuImpl.dimension, skuImpl.getDimension());
-  }
-
-  /**
-   * Test {@link SkuImpl#getDimension()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is
-   * {@link Money}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getDimension()}
-   */
-  @Test
-  public void testGetDimension_givenSkuImplSalePriceIsMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(mock(Money.class));
-
-    // Act and Assert
-    assertSame(skuImpl.dimension, skuImpl.getDimension());
-  }
-
-  /**
-   * Test {@link SkuImpl#getWeight()}.
-   * <p>
-   * Method under test: {@link SkuImpl#getWeight()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetWeight() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1657 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).getWeight();
-  }
-
-  /**
-   * Test {@link SkuImpl#getWeight()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getWeight()}
-   */
-  @Test
-  public void testGetWeight_givenSkuImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-
-    // Act and Assert
-    assertSame(skuImpl.weight, skuImpl.getWeight());
-  }
-
-  /**
-   * Test {@link SkuImpl#getWeight()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is
-   * {@link Money}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getWeight()}
-   */
-  @Test
-  public void testGetWeight_givenSkuImplSalePriceIsMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(mock(Money.class));
-
-    // Act and Assert
-    assertSame(skuImpl.weight, skuImpl.getWeight());
-  }
-
-  /**
-   * Test {@link SkuImpl#isActive()}.
-   * <p>
-   * Method under test: {@link SkuImpl#isActive()}
-   */
-  @Test
-  public void testIsActive() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-
-    // Act and Assert
-    assertFalse(skuImpl.isActive());
-  }
-
-  /**
-   * Test {@link SkuImpl#isActive()}.
-   * <p>
-   * Method under test: {@link SkuImpl#isActive()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsActive2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1777 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).isActive();
-  }
-
-  /**
-   * Test {@link SkuImpl#isActive(Product, Category)} with {@code Product},
-   * {@code Category}.
-   * <p>
-   * Method under test: {@link SkuImpl#isActive(Product, Category)}
-   */
-  @Test
-  public void testIsActiveWithProductCategory() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    ProductBundleImpl product = new ProductBundleImpl();
-
-    // Act and Assert
-    assertFalse(skuImpl.isActive(product, new CategoryImpl()));
-  }
-
-  /**
-   * Test {@link SkuImpl#isActive(Product, Category)} with {@code Product},
-   * {@code Category}.
-   * <p>
-   * Method under test: {@link SkuImpl#isActive(Product, Category)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsActiveWithProductCategory2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1807 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
     SkuImpl skuImpl2 = new SkuImpl();
-    ProductBundleImpl product = new ProductBundleImpl();
 
-    // Act
-    skuImpl2.isActive(product, new CategoryImpl());
+    // Act and Assert
+    assertSame(skuImpl2.dimension, skuImpl2.getDimension());
   }
 
   /**
-   * Test {@link SkuImpl#isActive(Product, Category)} with {@code Product},
-   * {@code Category}.
+   * Test {@link SkuImpl#getWeight()}.
+   * <p>
+   * Method under test: {@link SkuImpl#getWeight()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Weight SkuImpl.getWeight()"})
+  public void testGetWeight() {
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+
+    // Act and Assert
+    assertSame(skuImpl2.weight, skuImpl2.getWeight());
+  }
+
+  /**
+   * Test {@link SkuImpl#isActive()}.
+   * <p>
+   * Method under test: {@link SkuImpl#isActive()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.isActive()"})
+  public void testIsActive() {
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+
+    // Act and Assert
+    assertFalse(skuImpl2.isActive());
+  }
+
+  /**
+   * Test {@link SkuImpl#isActive(Product, Category)} with {@code Product}, {@code Category}.
+   * <p>
+   * Method under test: {@link SkuImpl#isActive(Product, Category)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.isActive(Product, Category)"})
+  public void testIsActiveWithProductCategory() {
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    ProductBundleImpl product = new ProductBundleImpl();
+
+    // Act and Assert
+    assertFalse(skuImpl2.isActive(product, new CategoryImpl()));
+  }
+
+  /**
+   * Test {@link SkuImpl#isActive(Product, Category)} with {@code Product}, {@code Category}.
+   * <p>
+   * Method under test: {@link SkuImpl#isActive(Product, Category)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.isActive(Product, Category)"})
+  public void testIsActiveWithProductCategory2() {
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    skuImpl2.setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+
+    // Act and Assert
+    assertFalse(skuImpl2.isActive(mock(Product.class), mock(Category.class)));
+  }
+
+  /**
+   * Test {@link SkuImpl#isActive(Product, Category)} with {@code Product}, {@code Category}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is
-   * {@link Money#Money()}.</li>
+   *   <li>Given {@code false}.</li>
+   *   <li>When {@link Product} {@link Product#isActive()} return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#isActive(Product, Category)}
    */
   @Test
-  public void testIsActiveWithProductCategory_givenSkuImplSalePriceIsMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.isActive(Product, Category)"})
+  public void testIsActiveWithProductCategory_givenFalse_whenProductIsActiveReturnFalse() {
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(new Money());
-    ProductBundleImpl product = new ProductBundleImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    Product product = mock(Product.class);
+    when(product.isActive()).thenReturn(false);
 
     // Act and Assert
-    assertFalse(skuImpl.isActive(product, new CategoryImpl()));
+    assertFalse(skuImpl2.isActive(product, new CategoryImpl()));
   }
 
   /**
-   * Test {@link SkuImpl#isActive(Product, Category)} with {@code Product},
-   * {@code Category}.
+   * Test {@link SkuImpl#isActive(Product, Category)} with {@code Product}, {@code Category}.
+   * <ul>
+   *   <li>Given {@link SkuImpl} (default constructor) ActiveEndDate is {@link Date#Date()}.</li>
+   *   <li>When {@link Product}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#isActive(Product, Category)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.isActive(Product, Category)"})
+  public void testIsActiveWithProductCategory_givenSkuImplActiveEndDateIsDate_whenProduct() {
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setActiveEndDate(new Date());
+    skuImpl2.setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+
+    // Act and Assert
+    assertFalse(skuImpl2.isActive(mock(Product.class), mock(Category.class)));
+  }
+
+  /**
+   * Test {@link SkuImpl#isActive(Product, Category)} with {@code Product}, {@code Category}.
+   * <ul>
+   *   <li>Given {@link SkuImpl} (default constructor) ActiveEndDate is {@link Date#Date()}.</li>
+   *   <li>When {@link Product}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#isActive(Product, Category)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.isActive(Product, Category)"})
+  public void testIsActiveWithProductCategory_givenSkuImplActiveEndDateIsDate_whenProduct2() {
+    // Arrange
+    SkuImpl skuImpl = new SkuImpl();
+    skuImpl.setActiveEndDate(new Date());
+    skuImpl.setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+
+    // Act and Assert
+    assertFalse(skuImpl.isActive(mock(Product.class), mock(Category.class)));
+  }
+
+  /**
+   * Test {@link SkuImpl#isActive(Product, Category)} with {@code Product}, {@code Category}.
+   * <ul>
+   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is {@link Money#Money()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#isActive(Product, Category)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.isActive(Product, Category)"})
+  public void testIsActiveWithProductCategory_givenSkuImplSalePriceIsMoney() {
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setSalePrice(new Money());
+    ProductBundleImpl product = new ProductBundleImpl();
+
+    // Act and Assert
+    assertFalse(skuImpl2.isActive(product, new CategoryImpl()));
+  }
+
+  /**
+   * Test {@link SkuImpl#isActive(Product, Category)} with {@code Product}, {@code Category}.
    * <ul>
    *   <li>Given {@link SkuImpl} (default constructor).</li>
    *   <li>When {@link ProductBundleImpl} (default constructor).</li>
@@ -13014,65 +6721,42 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#isActive(Product, Category)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.isActive(Product, Category)"})
   public void testIsActiveWithProductCategory_givenSkuImpl_whenProductBundleImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
     ProductBundleImpl product = new ProductBundleImpl();
 
     // Act and Assert
-    assertFalse(skuImpl.isActive(product, new CategoryImpl()));
+    assertFalse(skuImpl2.isActive(product, new CategoryImpl()));
   }
 
   /**
-   * Test {@link SkuImpl#isActive(Product, Category)} with {@code Product},
-   * {@code Category}.
+   * Test {@link SkuImpl#isActive(Product, Category)} with {@code Product}, {@code Category}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor).</li>
-   *   <li>When {@link Product}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@code true}.</li>
+   *   <li>When {@link Product} {@link Product#isActive()} return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#isActive(Product, Category)}
    */
   @Test
-  public void testIsActiveWithProductCategory_givenSkuImpl_whenProduct_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.isActive(Product, Category)"})
+  public void testIsActiveWithProductCategory_givenTrue_whenProductIsActiveReturnTrue() {
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     Product product = mock(Product.class);
+    when(product.isActive()).thenReturn(true);
 
     // Act and Assert
-    assertFalse(skuImpl.isActive(product, new CategoryImpl()));
+    assertFalse(skuImpl2.isActive(product, new CategoryImpl()));
   }
 
   /**
-   * Test {@link SkuImpl#isActive(Product, Category)} with {@code Product},
-   * {@code Category}.
-   * <ul>
-   *   <li>When {@link Category}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#isActive(Product, Category)}
-   */
-  @Test
-  public void testIsActiveWithProductCategory_whenCategory() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    skuImpl.setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-
-    // Act and Assert
-    assertFalse(skuImpl.isActive(mock(Product.class), mock(Category.class)));
-  }
-
-  /**
-   * Test {@link SkuImpl#isActive(Product, Category)} with {@code Product},
-   * {@code Category}.
+   * Test {@link SkuImpl#isActive(Product, Category)} with {@code Product}, {@code Category}.
    * <ul>
    *   <li>When {@code null}.</li>
    *   <li>Then return {@code false}.</li>
@@ -13081,86 +6765,39 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#isActive(Product, Category)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.isActive(Product, Category)"})
   public void testIsActiveWithProductCategory_whenNull_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
 
     // Act and Assert
-    assertFalse(skuImpl.isActive(null, new CategoryImpl()));
-  }
-
-  /**
-   * Test {@link SkuImpl#isActive(Product, Category)} with {@code Product},
-   * {@code Category}.
-   * <ul>
-   *   <li>When {@link Product}.</li>
-   *   <li>Then return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#isActive(Product, Category)}
-   */
-  @Test
-  public void testIsActiveWithProductCategory_whenProduct_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    Product product = mock(Product.class);
-
-    // Act and Assert
-    assertFalse(skuImpl.isActive(product, new CategoryImpl()));
-  }
-
-  /**
-   * Test {@link SkuImpl#isActive(Product, Category)} with {@code Product},
-   * {@code Category}.
-   * <ul>
-   *   <li>When {@link Product}.</li>
-   *   <li>Then return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#isActive(Product, Category)}
-   */
-  @Test
-  public void testIsActiveWithProductCategory_whenProduct_thenReturnFalse2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    Product product = mock(Product.class);
-
-    // Act and Assert
-    assertFalse(skuImpl.isActive(product, new CategoryImpl()));
+    assertFalse(skuImpl2.isActive(null, new CategoryImpl()));
   }
 
   /**
    * Test {@link SkuImpl#isActive()}.
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#isActive()} return
-   * {@code false}.</li>
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#isActive()} return {@code false}.</li>
    *   <li>Then calls {@link ProductImpl#isActive()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#isActive()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.isActive()"})
   public void testIsActive_givenProductBundleImplIsActiveReturnFalse_thenCallsIsActive() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
     when(defaultProduct.isActive()).thenReturn(false);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setDefaultProduct(defaultProduct);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDefaultProduct(defaultProduct);
 
     // Act
-    boolean actualIsActiveResult = skuImpl.isActive();
+    boolean actualIsActiveResult = skuImpl2.isActive();
 
     // Assert
     verify(defaultProduct).isActive();
@@ -13170,26 +6807,25 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#isActive()}.
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#isActive()} return
-   * {@code true}.</li>
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#isActive()} return {@code true}.</li>
    *   <li>Then calls {@link ProductImpl#isActive()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#isActive()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.isActive()"})
   public void testIsActive_givenProductBundleImplIsActiveReturnTrue_thenCallsIsActive() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
     when(defaultProduct.isActive()).thenReturn(true);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setDefaultProduct(defaultProduct);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDefaultProduct(defaultProduct);
 
     // Act
-    boolean actualIsActiveResult = skuImpl.isActive();
+    boolean actualIsActiveResult = skuImpl2.isActive();
 
     // Assert
     verify(defaultProduct).isActive();
@@ -13199,66 +6835,22 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#isActive()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Id is one.</li>
+   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is {@link Money#Money()}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#isActive()}
    */
   @Test
-  public void testIsActive_givenSkuImplIdIsOne_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-
-    // Act and Assert
-    assertFalse(skuImpl.isActive());
-  }
-
-  /**
-   * Test {@link SkuImpl#isActive()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is
-   * {@link Money#Money()}.</li>
-   *   <li>Then return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#isActive()}
-   */
-  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.isActive()"})
   public void testIsActive_givenSkuImplSalePriceIsMoney_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(new Money());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setSalePrice(new Money());
 
     // Act and Assert
-    assertFalse(skuImpl.isActive());
-  }
-
-  /**
-   * Test {@link SkuImpl#isActive()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is
-   * {@link Money}.</li>
-   *   <li>Then return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#isActive()}
-   */
-  @Test
-  public void testIsActive_givenSkuImplSalePriceIsMoney_thenReturnFalse2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(mock(Money.class));
-
-    // Act and Assert
-    assertFalse(skuImpl.isActive());
+    assertFalse(skuImpl2.isActive());
   }
 
   /**
@@ -13271,77 +6863,43 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#isActive()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.isActive()"})
   public void testIsActive_givenSkuImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertFalse((new SkuImpl()).isActive());
   }
 
   /**
-   * Test {@link SkuImpl#getSkuMedia()}.
+   * Test {@link SkuImpl#isActive()}.
+   * <ul>
+   *   <li>Given {@link SkuImpl}.</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
    * <p>
-   * Method under test: {@link SkuImpl#getSkuMedia()}
+   * Method under test: {@link SkuImpl#isActive()}
    */
   @Test
-  public void testGetSkuMedia() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException("foo"));
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getSkuMedia());
-    verify(product).getDefaultSku();
-  }
-
-  /**
-   * Test {@link SkuImpl#getSkuMedia()}.
-   * <p>
-   * Method under test: {@link SkuImpl#getSkuMedia()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetSkuMedia2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1507 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).getSkuMedia();
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.isActive()"})
+  public void testIsActive_givenSkuImpl_thenReturnFalse2() {
+    // Arrange, Act and Assert
+    assertFalse(skuImpl.isActive());
   }
 
   /**
    * Test {@link SkuImpl#getSkuMedia()}.
    * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code 42} is
-   * {@link SkuMediaXrefImpl#SkuMediaXrefImpl()}.</li>
-   *   <li>Then return {@code 42} is {@code null}.</li>
+   *   <li>Given {@link HashMap#HashMap()} {@code 42} is {@link SkuMediaXrefImpl#SkuMediaXrefImpl()}.</li>
+   *   <li>Then return size is one.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getSkuMedia()}
    */
   @Test
-  public void testGetSkuMedia_givenHashMap42IsSkuMediaXrefImpl_thenReturn42IsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map SkuImpl.getSkuMedia()"})
+  public void testGetSkuMedia_givenHashMap42IsSkuMediaXrefImpl_thenReturnSizeIsOne() {
     // Arrange
     HashMap<String, SkuMediaXref> stringSkuMediaXrefMap = new HashMap<>();
     stringSkuMediaXrefMap.put("42", new SkuMediaXrefImpl());
@@ -13351,12 +6909,12 @@ public class SkuImplDiffblueTest {
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Map<String, Media> actualSkuMedia = skuImpl.getSkuMedia();
+    Map<String, Media> actualSkuMedia = skuImpl2.getSkuMedia();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -13369,26 +6927,25 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getSkuMedia()}.
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()}
-   * return {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    *   <li>Then return Empty.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getSkuMedia()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map SkuImpl.getSkuMedia()"})
   public void testGetSkuMedia_givenProductBundleImplGetDefaultSkuReturnSkuImpl_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    Map<String, Media> actualSkuMedia = skuImpl.getSkuMedia();
+    Map<String, Media> actualSkuMedia = skuImpl2.getSkuMedia();
 
     // Assert
     verify(product).getDefaultSku();
@@ -13398,27 +6955,26 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getSkuMedia()}.
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()}
-   * return {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    *   <li>Then return Empty.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getSkuMedia()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map SkuImpl.getSkuMedia()"})
   public void testGetSkuMedia_givenProductBundleImplGetDefaultSkuReturnSkuImpl_thenReturnEmpty2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Map<String, Media> actualSkuMedia = skuImpl.getSkuMedia();
+    Map<String, Media> actualSkuMedia = skuImpl2.getSkuMedia();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -13428,47 +6984,48 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getSkuMedia()}.
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} throw
-   * {@link IllegalStateException#IllegalStateException(String)} with
-   * {@code foo}.</li>
+   *   <li>Given {@link Sku} {@link Sku#getId()} return one.</li>
+   *   <li>Then calls {@link Sku#getId()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getSkuMedia()}
    */
   @Test
-  public void testGetSkuMedia_givenSkuGetIdThrowIllegalStateExceptionWithFoo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map SkuImpl.getSkuMedia()"})
+  public void testGetSkuMedia_givenSkuGetIdReturnOne_thenCallsGetId() {
     // Arrange
     Sku sku = mock(Sku.class);
-    when(sku.getId()).thenThrow(new IllegalStateException("foo"));
+    when(sku.getId()).thenReturn(1L);
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getSkuMedia());
+    // Act
+    Map<String, Media> actualSkuMedia = skuImpl2.getSkuMedia();
+
+    // Assert
     verify(product, atLeast(1)).getDefaultSku();
     verify(sku).getId();
+    assertTrue(actualSkuMedia.isEmpty());
   }
 
   /**
    * Test {@link SkuImpl#getSkuMedia()}.
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getSkuMediaXref()} return
-   * {@link HashMap#HashMap()}.</li>
+   *   <li>Given {@link Sku} {@link Sku#getSkuMediaXref()} return {@link HashMap#HashMap()}.</li>
    *   <li>Then calls {@link Sku#getSkuMediaXref()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getSkuMedia()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map SkuImpl.getSkuMedia()"})
   public void testGetSkuMedia_givenSkuGetSkuMediaXrefReturnHashMap_thenCallsGetSkuMediaXref() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
@@ -13476,12 +7033,12 @@ public class SkuImplDiffblueTest {
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Map<String, Media> actualSkuMedia = skuImpl.getSkuMedia();
+    Map<String, Media> actualSkuMedia = skuImpl2.getSkuMedia();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -13493,55 +7050,22 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getSkuMedia()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Id is one.</li>
-   *   <li>Then calls {@link Sku#getId()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getSkuMedia()}
-   */
-  @Test
-  public void testGetSkuMedia_givenSkuImplIdIsOne_thenCallsGetId() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenReturn(1L);
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
-
-    // Act
-    Map<String, Media> actualSkuMedia = skuImpl.getSkuMedia();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-    assertTrue(actualSkuMedia.isEmpty());
-  }
-
-  /**
-   * Test {@link SkuImpl#getSkuMedia()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Product is
-   * {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
    *   <li>Then return Empty.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getSkuMedia()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map SkuImpl.getSkuMedia()"})
   public void testGetSkuMedia_givenSkuImplProductIsProductBundleImpl_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(new ProductBundleImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertTrue(skuImpl.getSkuMedia().isEmpty());
+    assertTrue(skuImpl2.getSkuMedia().isEmpty());
   }
 
   /**
@@ -13554,9 +7078,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getSkuMedia()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map SkuImpl.getSkuMedia()"})
   public void testGetSkuMedia_givenSkuImpl_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertTrue((new SkuImpl()).getSkuMedia().isEmpty());
   }
@@ -13564,136 +7088,61 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getSkuMedia()}.
    * <ul>
-   *   <li>Then return {@code 42} is
-   * {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()}.</li>
+   *   <li>Then throw {@link IllegalStateException}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getSkuMedia()}
    */
   @Test
-  public void testGetSkuMedia_thenReturn42IsCategoryMediaXrefImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map SkuImpl.getSkuMedia()"})
+  public void testGetSkuMedia_thenThrowIllegalStateException() {
     // Arrange
-    SkuMediaXrefImpl skuMediaXrefImpl = mock(SkuMediaXrefImpl.class);
-    CategoryMediaXrefImpl categoryMediaXrefImpl = new CategoryMediaXrefImpl();
-    when(skuMediaXrefImpl.getMedia()).thenReturn(categoryMediaXrefImpl);
-
-    HashMap<String, SkuMediaXref> stringSkuMediaXrefMap = new HashMap<>();
-    stringSkuMediaXrefMap.put("42", skuMediaXrefImpl);
     Sku sku = mock(Sku.class);
-    when(sku.getId()).thenReturn(1L);
-    when(sku.getSkuMediaXref()).thenReturn(stringSkuMediaXrefMap);
+    when(sku.getId()).thenThrow(new IllegalStateException("foo"));
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
-    // Act
-    Map<String, Media> actualSkuMedia = skuImpl.getSkuMedia();
-
-    // Assert
+    // Act and Assert
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getSkuMedia());
     verify(product, atLeast(1)).getDefaultSku();
     verify(sku).getId();
-    verify(sku).getSkuMediaXref();
-    verify(skuMediaXrefImpl).getMedia();
-    assertEquals(1, actualSkuMedia.size());
-    assertSame(categoryMediaXrefImpl, actualSkuMedia.get("42"));
-  }
-
-  /**
-   * Test {@link SkuImpl#setSkuMedia(Map)}.
-   * <p>
-   * Method under test: {@link SkuImpl#setSkuMedia(Map)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetSkuMedia() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2377 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    SkuImpl skuImpl2 = new SkuImpl();
-
-    // Act
-    skuImpl2.setSkuMedia(new HashMap<>());
-  }
-
-  /**
-   * Test {@link SkuImpl#setSkuMedia(Map)}.
-   * <ul>
-   *   <li>Given {@link BiFunction}.</li>
-   *   <li>When {@link HashMap#HashMap()} computeIfPresent {@code foo} and
-   * {@link BiFunction}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#setSkuMedia(Map)}
-   */
-  @Test
-  public void testSetSkuMedia_givenBiFunction_whenHashMapComputeIfPresentFooAndBiFunction() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-
-    HashMap<String, Media> skuMedia = new HashMap<>();
-    skuMedia.computeIfPresent("foo", mock(BiFunction.class));
-    skuMedia.put("foo", new CategoryMediaXrefImpl());
-
-    // Act
-    skuImpl.setSkuMedia(skuMedia);
-
-    // Assert
-    assertEquals(1, skuImpl.skuMedia.size());
-    assertEquals(skuMedia, skuImpl.getSkuMedia());
-    Map<String, SkuMediaXref> expectedSkuMediaXref = skuImpl.skuMedia;
-    assertSame(expectedSkuMediaXref, skuImpl.getSkuMediaXref());
   }
 
   /**
    * Test {@link SkuImpl#setSkuMedia(Map)}.
    * <ul>
    *   <li>Given {@code foo}.</li>
-   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#skuMedia} size
-   * is one.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) SkuMedia size is one.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#setSkuMedia(Map)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.setSkuMedia(Map)"})
   public void testSetSkuMedia_givenFoo_thenSkuImplSkuMediaSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
 
     HashMap<String, Media> skuMedia = new HashMap<>();
-    skuMedia.put("foo", new CategoryMediaXrefImpl());
+    CategoryMediaXrefImpl categoryMediaXrefImpl = new CategoryMediaXrefImpl();
+    skuMedia.put("foo", categoryMediaXrefImpl);
 
     // Act
-    skuImpl.setSkuMedia(skuMedia);
+    skuImpl2.setSkuMedia(skuMedia);
 
     // Assert
-    assertEquals(1, skuImpl.skuMedia.size());
-    assertEquals(skuMedia, skuImpl.getSkuMedia());
-    Map<String, SkuMediaXref> expectedSkuMediaXref = skuImpl.skuMedia;
-    assertSame(expectedSkuMediaXref, skuImpl.getSkuMediaXref());
+    Map<String, Media> skuMedia2 = skuImpl2.getSkuMedia();
+    assertEquals(1, skuMedia2.size());
+    assertEquals(1, skuImpl2.skuMedia.size());
+    assertSame(categoryMediaXrefImpl, skuMedia2.get("foo"));
+    Map<String, SkuMediaXref> expectedSkuMediaXref = skuImpl2.skuMedia;
+    assertSame(expectedSkuMediaXref, skuImpl2.getSkuMediaXref());
   }
 
   /**
@@ -13706,93 +7155,42 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#setSkuMedia(Map)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.setSkuMedia(Map)"})
   public void testSetSkuMedia_whenHashMap_thenSkuImplSkuMediaEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
 
     // Act
-    skuImpl.setSkuMedia(new HashMap<>());
+    skuImpl2.setSkuMedia(new HashMap<>());
 
-    // Assert
-    assertTrue(skuImpl.getSkuMedia().isEmpty());
-    assertTrue(skuImpl.getSkuMediaXref().isEmpty());
-    assertTrue(skuImpl.skuMedia.isEmpty());
-  }
-
-  /**
-   * Test {@link SkuImpl#getSkuMediaXref()}.
-   * <p>
-   * Method under test: {@link SkuImpl#getSkuMediaXref()}
-   */
-  @Test
-  public void testGetSkuMediaXref() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException("foo"));
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getSkuMediaXref());
-    verify(product).getDefaultSku();
-  }
-
-  /**
-   * Test {@link SkuImpl#getSkuMediaXref()}.
-   * <p>
-   * Method under test: {@link SkuImpl#getSkuMediaXref()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetSkuMediaXref2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1537 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).getSkuMediaXref();
+    // Assert that nothing has changed
+    assertTrue(skuImpl2.getSkuMedia().isEmpty());
+    assertTrue(skuImpl2.getSkuMediaXref().isEmpty());
+    assertTrue(skuImpl2.skuMedia.isEmpty());
   }
 
   /**
    * Test {@link SkuImpl#getSkuMediaXref()}.
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()}
-   * return {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getSkuMediaXref()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map SkuImpl.getSkuMediaXref()"})
   public void testGetSkuMediaXref_givenProductBundleImplGetDefaultSkuReturnSkuImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    Map<String, SkuMediaXref> actualSkuMediaXref = skuImpl.getSkuMediaXref();
+    Map<String, SkuMediaXref> actualSkuMediaXref = skuImpl2.getSkuMediaXref();
 
     // Assert
     verify(product).getDefaultSku();
@@ -13802,26 +7200,25 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getSkuMediaXref()}.
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()}
-   * return {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getSkuMediaXref()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map SkuImpl.getSkuMediaXref()"})
   public void testGetSkuMediaXref_givenProductBundleImplGetDefaultSkuReturnSkuImpl2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Map<String, SkuMediaXref> actualSkuMediaXref = skuImpl.getSkuMediaXref();
+    Map<String, SkuMediaXref> actualSkuMediaXref = skuImpl2.getSkuMediaXref();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -13838,21 +7235,21 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getSkuMediaXref()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map SkuImpl.getSkuMediaXref()"})
   public void testGetSkuMediaXref_givenSkuGetIdReturnOne_thenCallsGetId() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Map<String, SkuMediaXref> actualSkuMediaXref = skuImpl.getSkuMediaXref();
+    Map<String, SkuMediaXref> actualSkuMediaXref = skuImpl2.getSkuMediaXref();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -13863,53 +7260,22 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getSkuMediaXref()}.
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} throw
-   * {@link IllegalStateException#IllegalStateException(String)} with
-   * {@code foo}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getSkuMediaXref()}
-   */
-  @Test
-  public void testGetSkuMediaXref_givenSkuGetIdThrowIllegalStateExceptionWithFoo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenThrow(new IllegalStateException("foo"));
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getSkuMediaXref());
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-  }
-
-  /**
-   * Test {@link SkuImpl#getSkuMediaXref()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Product is
-   * {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
    *   <li>Then return Empty.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getSkuMediaXref()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map SkuImpl.getSkuMediaXref()"})
   public void testGetSkuMediaXref_givenSkuImplProductIsProductBundleImpl_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(new ProductBundleImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertTrue(skuImpl.getSkuMediaXref().isEmpty());
+    assertTrue(skuImpl2.getSkuMediaXref().isEmpty());
   }
 
   /**
@@ -13922,9 +7288,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getSkuMediaXref()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map SkuImpl.getSkuMediaXref()"})
   public void testGetSkuMediaXref_givenSkuImpl_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertTrue((new SkuImpl()).getSkuMediaXref().isEmpty());
   }
@@ -13938,9 +7304,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getSkuMediaXref()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map SkuImpl.getSkuMediaXref()"})
   public void testGetSkuMediaXref_thenCallsGetSkuMediaXref() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
@@ -13948,12 +7314,12 @@ public class SkuImplDiffblueTest {
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Map<String, SkuMediaXref> actualSkuMediaXref = skuImpl.getSkuMediaXref();
+    Map<String, SkuMediaXref> actualSkuMediaXref = skuImpl2.getSkuMediaXref();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -13963,298 +7329,98 @@ public class SkuImplDiffblueTest {
   }
 
   /**
-   * Test {@link SkuImpl#getSkuMediaXrefIgnoreDefaultSku()}.
+   * Test {@link SkuImpl#getSkuMediaXref()}.
+   * <ul>
+   *   <li>Then throw {@link IllegalStateException}.</li>
+   * </ul>
    * <p>
-   * Method under test: {@link SkuImpl#getSkuMediaXrefIgnoreDefaultSku()}
+   * Method under test: {@link SkuImpl#getSkuMediaXref()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetSkuMediaXrefIgnoreDefaultSku() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1567 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map SkuImpl.getSkuMediaXref()"})
+  public void testGetSkuMediaXref_thenThrowIllegalStateException() {
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("foo"));
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getDefaultSku()).thenReturn(sku);
 
-    // Arrange and Act
-    (new SkuImpl()).getSkuMediaXrefIgnoreDefaultSku();
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act and Assert
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getSkuMediaXref());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#getSkuMediaXrefIgnoreDefaultSku()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor).</li>
-   * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getSkuMediaXrefIgnoreDefaultSku()}
    */
   @Test
-  public void testGetSkuMediaXrefIgnoreDefaultSku_givenSkuImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map SkuImpl.getSkuMediaXrefIgnoreDefaultSku()"})
+  public void testGetSkuMediaXrefIgnoreDefaultSku() {
     // Arrange, Act and Assert
     assertTrue((new SkuImpl()).getSkuMediaXrefIgnoreDefaultSku().isEmpty());
   }
 
   /**
-   * Test {@link SkuImpl#getSkuMediaXrefIgnoreDefaultSku()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is
-   * {@link Money}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getSkuMediaXrefIgnoreDefaultSku()}
-   */
-  @Test
-  public void testGetSkuMediaXrefIgnoreDefaultSku_givenSkuImplSalePriceIsMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(mock(Money.class));
-
-    // Act and Assert
-    assertTrue(skuImpl.getSkuMediaXrefIgnoreDefaultSku().isEmpty());
-  }
-
-  /**
    * Test {@link SkuImpl#getPrimarySkuMedia()}.
    * <p>
    * Method under test: {@link SkuImpl#getPrimarySkuMedia()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Media SkuImpl.getPrimarySkuMedia()"})
   public void testGetPrimarySkuMedia() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1237 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).getPrimarySkuMedia();
-  }
-
-  /**
-   * Test {@link SkuImpl#getPrimarySkuMedia()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getPrimarySkuMedia()}
-   */
-  @Test
-  public void testGetPrimarySkuMedia_givenSkuImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new SkuImpl()).getPrimarySkuMedia());
   }
 
   /**
-   * Test {@link SkuImpl#getPrimarySkuMedia()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is
-   * {@link Money}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getPrimarySkuMedia()}
-   */
-  @Test
-  public void testGetPrimarySkuMedia_givenSkuImplSalePriceIsMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(mock(Money.class));
-
-    // Act and Assert
-    assertNull(skuImpl.getPrimarySkuMedia());
-  }
-
-  /**
    * Test {@link SkuImpl#isOrderedSkuMedia(Map)}.
    * <p>
    * Method under test: {@link SkuImpl#isOrderedSkuMedia(Map)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.isOrderedSkuMedia(Map)"})
   public void testIsOrderedSkuMedia() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1957 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
     SkuImpl skuImpl2 = new SkuImpl();
 
-    // Act
-    skuImpl2.isOrderedSkuMedia(new HashMap<>());
-  }
-
-  /**
-   * Test {@link SkuImpl#isOrderedSkuMedia(Map)}.
-   * <ul>
-   *   <li>Given {@code foo}.</li>
-   *   <li>When {@link HashMap#HashMap()} computeIfPresent {@code foo} and
-   * {@link BiFunction}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#isOrderedSkuMedia(Map)}
-   */
-  @Test
-  public void testIsOrderedSkuMedia_givenFoo_whenHashMapComputeIfPresentFooAndBiFunction() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-
-    HashMap<String, SkuMediaXref> skuMedia = new HashMap<>();
-    skuMedia.computeIfPresent("foo", mock(BiFunction.class));
-
     // Act and Assert
-    assertFalse(skuImpl.isOrderedSkuMedia(skuMedia));
-  }
-
-  /**
-   * Test {@link SkuImpl#isOrderedSkuMedia(Map)}.
-   * <ul>
-   *   <li>When {@link HashMap#HashMap()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#isOrderedSkuMedia(Map)}
-   */
-  @Test
-  public void testIsOrderedSkuMedia_whenHashMap() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-
-    // Act and Assert
-    assertFalse(skuImpl.isOrderedSkuMedia(new HashMap<>()));
-  }
-
-  /**
-   * Test {@link SkuImpl#sortSkuMedia(Map)}.
-   * <p>
-   * Method under test: {@link SkuImpl#sortSkuMedia(Map)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSortSkuMedia() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2437 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    SkuImpl skuImpl2 = new SkuImpl();
-
-    // Act
-    skuImpl2.sortSkuMedia(new HashMap<>());
-  }
-
-  /**
-   * Test {@link SkuImpl#sortSkuMedia(Map)}.
-   * <ul>
-   *   <li>Given {@link BiFunction}.</li>
-   *   <li>When {@link HashMap#HashMap()} computeIfPresent {@code foo} and
-   * {@link BiFunction}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#sortSkuMedia(Map)}
-   */
-  @Test
-  public void testSortSkuMedia_givenBiFunction_whenHashMapComputeIfPresentFooAndBiFunction() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-
-    HashMap<String, SkuMediaXref> skuMedia = new HashMap<>();
-    skuMedia.computeIfPresent("foo", mock(BiFunction.class));
-    SkuMediaXrefImpl skuMediaXrefImpl = new SkuMediaXrefImpl();
-    skuMedia.put("foo", skuMediaXrefImpl);
-
-    // Act
-    Map<String, SkuMediaXref> actualSortSkuMediaResult = skuImpl.sortSkuMedia(skuMedia);
-
-    // Assert
-    assertEquals(1, actualSortSkuMediaResult.size());
-    assertSame(skuMediaXrefImpl, actualSortSkuMediaResult.get(null));
+    assertFalse(skuImpl2.isOrderedSkuMedia(new HashMap<>()));
   }
 
   /**
    * Test {@link SkuImpl#sortSkuMedia(Map)}.
    * <ul>
    *   <li>Given {@code foo}.</li>
-   *   <li>When {@link HashMap#HashMap()} {@code foo} is
-   * {@link SkuMediaXrefImpl#SkuMediaXrefImpl()}.</li>
+   *   <li>When {@link HashMap#HashMap()} {@code foo} is {@link SkuMediaXrefImpl#SkuMediaXrefImpl()}.</li>
    *   <li>Then return size is one.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#sortSkuMedia(Map)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map SkuImpl.sortSkuMedia(Map)"})
   public void testSortSkuMedia_givenFoo_whenHashMapFooIsSkuMediaXrefImpl_thenReturnSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
 
     HashMap<String, SkuMediaXref> skuMedia = new HashMap<>();
     SkuMediaXrefImpl skuMediaXrefImpl = new SkuMediaXrefImpl();
     skuMedia.put("foo", skuMediaXrefImpl);
 
     // Act
-    Map<String, SkuMediaXref> actualSortSkuMediaResult = skuImpl.sortSkuMedia(skuMedia);
+    Map<String, SkuMediaXref> actualSortSkuMediaResult = skuImpl2.sortSkuMedia(skuMedia);
 
     // Assert
     assertEquals(1, actualSortSkuMediaResult.size());
@@ -14271,14 +7437,14 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#sortSkuMedia(Map)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map SkuImpl.sortSkuMedia(Map)"})
   public void testSortSkuMedia_whenHashMap_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
 
     // Act and Assert
-    assertTrue(skuImpl.sortSkuMedia(new HashMap<>()).isEmpty());
+    assertTrue(skuImpl2.sortSkuMedia(new HashMap<>()).isEmpty());
   }
 
   /**
@@ -14324,6 +7490,22 @@ public class SkuImplDiffblueTest {
    * </ul>
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Product SkuImpl.getDefaultProduct()", "String SkuImpl.getDisplayTemplate()",
+      "List SkuImpl.getExcludedFulfillmentOptions()", "String SkuImpl.getExternalId()", "List SkuImpl.getFees()",
+      "FieldEntity SkuImpl.getFieldEntityType()", "Map SkuImpl.getFulfillmentFlatRates()", "Long SkuImpl.getId()",
+      "Set SkuImpl.getProductOptionValueXrefs()", "Integer SkuImpl.getQuantityAvailable()", "String SkuImpl.getUpc()",
+      "String SkuImpl.getUrlKey()", "void SkuImpl.setActiveEndDate(Date)", "void SkuImpl.setActiveStartDate(Date)",
+      "void SkuImpl.setCurrency(BroadleafCurrency)", "void SkuImpl.setDefaultProduct(Product)",
+      "void SkuImpl.setDescription(String)", "void SkuImpl.setDimension(Dimension)",
+      "void SkuImpl.setDisplayTemplate(String)", "void SkuImpl.setExcludedFulfillmentOptions(List)",
+      "void SkuImpl.setExternalId(String)", "void SkuImpl.setFees(List)", "void SkuImpl.setFulfillmentFlatRates(Map)",
+      "void SkuImpl.setId(Long)", "void SkuImpl.setIsMachineSortable(Boolean)",
+      "void SkuImpl.setLongDescription(String)", "void SkuImpl.setMachineSortable(Boolean)",
+      "void SkuImpl.setName(String)", "void SkuImpl.setProduct(Product)",
+      "void SkuImpl.setProductOptionValueXrefs(Set)", "void SkuImpl.setQuantityAvailable(Integer)",
+      "void SkuImpl.setSkuMediaXref(Map)", "void SkuImpl.setTaxCode(String)", "void SkuImpl.setUpc(String)",
+      "void SkuImpl.setUrlKey(String)", "void SkuImpl.setWeight(Weight)"})
   public void testGettersAndSetters() {
     // Arrange
     SkuImpl skuImpl = new SkuImpl();
@@ -14372,7 +7554,7 @@ public class SkuImplDiffblueTest {
     Integer actualQuantityAvailable = skuImpl.getQuantityAvailable();
     String actualUpc = skuImpl.getUpc();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("42", actualExternalId);
     assertEquals("Display Template", actualDisplayTemplate);
     assertEquals("Upc", actualUpc);
@@ -14389,35 +7571,6 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#getProduct()}.
-   * <p>
-   * Method under test: {@link SkuImpl#getProduct()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetProduct() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1267 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).getProduct();
-  }
-
-  /**
-   * Test {@link SkuImpl#getProduct()}.
    * <ul>
    *   <li>Given {@link SkuImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
@@ -14426,9 +7579,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getProduct()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Product SkuImpl.getProduct()"})
   public void testGetProduct_givenSkuImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new SkuImpl()).getProduct());
   }
@@ -14442,16 +7595,16 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getProduct()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Product SkuImpl.getProduct()"})
   public void testGetProduct_thenReturnProductBundleImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
     ProductBundleImpl defaultProduct = new ProductBundleImpl();
-    skuImpl.setDefaultProduct(defaultProduct);
+    skuImpl2.setDefaultProduct(defaultProduct);
 
     // Act and Assert
-    assertSame(defaultProduct, skuImpl.getProduct());
+    assertSame(defaultProduct, skuImpl2.getProduct());
   }
 
   /**
@@ -14460,262 +7613,132 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getProductOptionValuesCollection()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Set SkuImpl.getProductOptionValuesCollection()"})
   public void testGetProductOptionValuesCollection() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1357 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).getProductOptionValuesCollection();
-  }
-
-  /**
-   * Test {@link SkuImpl#getProductOptionValuesCollection()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is
-   * {@link Money}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getProductOptionValuesCollection()}
-   */
-  @Test
-  public void testGetProductOptionValuesCollection_givenSkuImplSalePriceIsMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(mock(Money.class));
-
-    // Act and Assert
-    assertTrue(skuImpl.getProductOptionValuesCollection().isEmpty());
-  }
-
-  /**
-   * Test {@link SkuImpl#getProductOptionValuesCollection()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor).</li>
-   *   <li>Then return Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getProductOptionValuesCollection()}
-   */
-  @Test
-  public void testGetProductOptionValuesCollection_givenSkuImpl_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertTrue((new SkuImpl()).getProductOptionValuesCollection().isEmpty());
   }
 
   /**
-   * Test {@link SkuImpl#getProductOptionValuesCollection()}.
-   * <ul>
-   *   <li>Then return size is one.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getProductOptionValuesCollection()}
-   */
-  @Test
-  public void testGetProductOptionValuesCollection_thenReturnSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    HashSet<SkuProductOptionValueXref> productOptionValueXrefs = new HashSet<>();
-    productOptionValueXrefs.add(new SkuProductOptionValueXrefImpl());
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProductOptionValueXrefs(productOptionValueXrefs);
-
-    // Act and Assert
-    assertEquals(1, skuImpl.getProductOptionValuesCollection().size());
-  }
-
-  /**
    * Test {@link SkuImpl#setProductOptionValuesCollection(Set)}.
+   * <ul>
+   *   <li>Given {@link SkuImpl} (default constructor) Name is {@code Name}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link SkuImpl#setProductOptionValuesCollection(Set)}
    */
   @Test
-  public void testSetProductOptionValuesCollection() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.setProductOptionValuesCollection(Set)"})
+  public void testSetProductOptionValuesCollection_givenSkuImplNameIsName() {
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setName("Name");
 
     HashSet<ProductOptionValue> productOptionValues = new HashSet<>();
     ProductOptionValueImpl productOptionValueImpl = new ProductOptionValueImpl();
     productOptionValues.add(productOptionValueImpl);
 
     // Act
-    skuImpl.setProductOptionValuesCollection(productOptionValues);
+    skuImpl2.setProductOptionValuesCollection(productOptionValues);
 
     // Assert
-    List<ProductOptionValue> productOptionValues2 = skuImpl.getProductOptionValues();
+    List<ProductOptionValue> productOptionValues2 = skuImpl2.getProductOptionValues();
     assertEquals(1, productOptionValues2.size());
+    assertEquals(1, skuImpl2.getProductOptionValueXrefs().size());
+    assertEquals(1, skuImpl2.getProductOptionValuesCollection().size());
+    assertEquals(1, skuImpl2.legacyProductOptionValues.size());
     assertSame(productOptionValueImpl, productOptionValues2.get(0));
   }
 
   /**
    * Test {@link SkuImpl#setProductOptionValuesCollection(Set)}.
+   * <ul>
+   *   <li>Then {@link SkuImpl} (default constructor) ProductOptionValues Empty.</li>
+   * </ul>
    * <p>
    * Method under test: {@link SkuImpl#setProductOptionValuesCollection(Set)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetProductOptionValuesCollection2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2257 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.setProductOptionValuesCollection(Set)"})
+  public void testSetProductOptionValuesCollection_thenSkuImplProductOptionValuesEmpty() {
     // Arrange
     SkuImpl skuImpl2 = new SkuImpl();
 
     // Act
     skuImpl2.setProductOptionValuesCollection(new HashSet<>());
+
+    // Assert that nothing has changed
+    assertTrue(skuImpl2.getProductOptionValues().isEmpty());
+    assertTrue(skuImpl2.getProductOptionValueXrefs().isEmpty());
+    assertTrue(skuImpl2.getProductOptionValuesCollection().isEmpty());
+    assertTrue(skuImpl2.legacyProductOptionValues.isEmpty());
   }
 
   /**
    * Test {@link SkuImpl#setProductOptionValuesCollection(Set)}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Name is {@code Name}.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) ProductOptionValues size is one.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#setProductOptionValuesCollection(Set)}
    */
   @Test
-  public void testSetProductOptionValuesCollection_givenSkuImplNameIsName() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.setProductOptionValuesCollection(Set)"})
+  public void testSetProductOptionValuesCollection_thenSkuImplProductOptionValuesSizeIsOne() {
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setName("Name");
+    SkuImpl skuImpl2 = new SkuImpl();
 
     HashSet<ProductOptionValue> productOptionValues = new HashSet<>();
     ProductOptionValueImpl productOptionValueImpl = new ProductOptionValueImpl();
     productOptionValues.add(productOptionValueImpl);
 
     // Act
-    skuImpl.setProductOptionValuesCollection(productOptionValues);
+    skuImpl2.setProductOptionValuesCollection(productOptionValues);
 
     // Assert
-    List<ProductOptionValue> productOptionValues2 = skuImpl.getProductOptionValues();
+    List<ProductOptionValue> productOptionValues2 = skuImpl2.getProductOptionValues();
     assertEquals(1, productOptionValues2.size());
+    assertEquals(1, skuImpl2.getProductOptionValueXrefs().size());
+    assertEquals(1, skuImpl2.getProductOptionValuesCollection().size());
+    assertEquals(1, skuImpl2.legacyProductOptionValues.size());
     assertSame(productOptionValueImpl, productOptionValues2.get(0));
   }
 
   /**
    * Test {@link SkuImpl#setProductOptionValuesCollection(Set)}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor).</li>
-   *   <li>When {@link HashSet#HashSet()}.</li>
-   *   <li>Then {@link HashSet#HashSet()} Empty.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) ProductOptionValues size is two.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#setProductOptionValuesCollection(Set)}
    */
   @Test
-  public void testSetProductOptionValuesCollection_givenSkuImpl_whenHashSet_thenHashSetEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.setProductOptionValuesCollection(Set)"})
+  public void testSetProductOptionValuesCollection_thenSkuImplProductOptionValuesSizeIsTwo() {
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    HashSet<ProductOptionValue> productOptionValues = new HashSet<>();
-
-    // Act
-    skuImpl.setProductOptionValuesCollection(productOptionValues);
-
-    // Assert
-    assertTrue(productOptionValues.isEmpty());
-    assertTrue(skuImpl.getProductOptionValues().isEmpty());
-    assertTrue(skuImpl.getProductOptionValueXrefs().isEmpty());
-    assertTrue(skuImpl.getProductOptionValuesCollection().isEmpty());
-    assertTrue(skuImpl.legacyProductOptionValues.isEmpty());
-  }
-
-  /**
-   * Test {@link SkuImpl#setProductOptionValuesCollection(Set)}.
-   * <ul>
-   *   <li>Then {@link HashSet#HashSet()} size is one.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#setProductOptionValuesCollection(Set)}
-   */
-  @Test
-  public void testSetProductOptionValuesCollection_thenHashSetSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
 
     HashSet<ProductOptionValue> productOptionValues = new HashSet<>();
-    productOptionValues.add(mock(ProductOptionValueImpl.class));
+    productOptionValues.add(null);
+    ProductOptionValueImpl productOptionValueImpl = new ProductOptionValueImpl();
+    productOptionValues.add(productOptionValueImpl);
 
     // Act
-    skuImpl.setProductOptionValuesCollection(productOptionValues);
+    skuImpl2.setProductOptionValuesCollection(productOptionValues);
 
     // Assert
-    assertEquals(1, productOptionValues.size());
-    assertEquals(1, skuImpl.getProductOptionValues().size());
-    assertEquals(1, skuImpl.getProductOptionValueXrefs().size());
-    assertEquals(1, skuImpl.getProductOptionValuesCollection().size());
-    assertEquals(1, skuImpl.legacyProductOptionValues.size());
-  }
-
-  /**
-   * Test {@link SkuImpl#setProductOptionValuesCollection(Set)}.
-   * <ul>
-   *   <li>Then {@link HashSet#HashSet()} size is two.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#setProductOptionValuesCollection(Set)}
-   */
-  @Test
-  public void testSetProductOptionValuesCollection_thenHashSetSizeIsTwo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-
-    HashSet<ProductOptionValue> productOptionValues = new HashSet<>();
-    productOptionValues.add(new ProductOptionValueImpl());
-    productOptionValues.add(mock(ProductOptionValueImpl.class));
-
-    // Act
-    skuImpl.setProductOptionValuesCollection(productOptionValues);
-
-    // Assert
-    assertEquals(2, productOptionValues.size());
-    assertEquals(2, skuImpl.getProductOptionValues().size());
-    assertEquals(2, skuImpl.getProductOptionValueXrefs().size());
-    assertEquals(2, skuImpl.getProductOptionValuesCollection().size());
-    assertEquals(2, skuImpl.legacyProductOptionValues.size());
+    List<ProductOptionValue> productOptionValues2 = skuImpl2.getProductOptionValues();
+    assertEquals(2, productOptionValues2.size());
+    assertNull(productOptionValues2.get(0));
+    assertEquals(2, skuImpl2.getProductOptionValueXrefs().size());
+    assertEquals(2, skuImpl2.getProductOptionValuesCollection().size());
+    assertEquals(2, skuImpl2.legacyProductOptionValues.size());
+    assertSame(productOptionValueImpl, productOptionValues2.get(1));
   }
 
   /**
@@ -14724,185 +7747,14 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getProductOptionValues()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List SkuImpl.getProductOptionValues()"})
   public void testGetProductOptionValues() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1327 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).getProductOptionValues();
-  }
-
-  /**
-   * Test {@link SkuImpl#getProductOptionValues()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is
-   * {@link Money}.</li>
-   *   <li>Then return Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getProductOptionValues()}
-   */
-  @Test
-  public void testGetProductOptionValues_givenSkuImplSalePriceIsMoney_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(mock(Money.class));
-
-    // Act and Assert
-    assertTrue(skuImpl.getProductOptionValues().isEmpty());
-  }
-
-  /**
-   * Test {@link SkuImpl#getProductOptionValues()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor).</li>
-   *   <li>Then return Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getProductOptionValues()}
-   */
-  @Test
-  public void testGetProductOptionValues_givenSkuImpl_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertTrue((new SkuImpl()).getProductOptionValues().isEmpty());
   }
 
   /**
-   * Test {@link SkuImpl#getProductOptionValues()}.
-   * <ul>
-   *   <li>Then return size is one.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getProductOptionValues()}
-   */
-  @Test
-  public void testGetProductOptionValues_thenReturnSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    HashSet<SkuProductOptionValueXref> productOptionValueXrefs = new HashSet<>();
-    productOptionValueXrefs.add(new SkuProductOptionValueXrefImpl());
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProductOptionValueXrefs(productOptionValueXrefs);
-
-    // Act
-    List<ProductOptionValue> actualProductOptionValues = skuImpl.getProductOptionValues();
-
-    // Assert
-    assertEquals(1, actualProductOptionValues.size());
-    assertNull(actualProductOptionValues.get(0));
-  }
-
-  /**
-   * Test {@link SkuImpl#setProductOptionValues(List)}.
-   * <p>
-   * Method under test: {@link SkuImpl#setProductOptionValues(List)}
-   */
-  @Test
-  public void testSetProductOptionValues() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-
-    ArrayList<ProductOptionValue> productOptionValues = new ArrayList<>();
-    ProductOptionValueImpl productOptionValueImpl = new ProductOptionValueImpl();
-    productOptionValues.add(productOptionValueImpl);
-    productOptionValues.add(new ProductOptionValueImpl());
-
-    // Act
-    skuImpl.setProductOptionValues(productOptionValues);
-
-    // Assert
-    List<ProductOptionValue> productOptionValues2 = skuImpl.getProductOptionValues();
-    assertEquals(1, productOptionValues2.size());
-    assertEquals(1, skuImpl.getProductOptionValueXrefs().size());
-    assertEquals(1, skuImpl.getProductOptionValuesCollection().size());
-    assertEquals(1, skuImpl.legacyProductOptionValues.size());
-    assertSame(productOptionValueImpl, productOptionValues2.get(0));
-  }
-
-  /**
-   * Test {@link SkuImpl#setProductOptionValues(List)}.
-   * <p>
-   * Method under test: {@link SkuImpl#setProductOptionValues(List)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetProductOptionValues2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2227 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    SkuImpl skuImpl2 = new SkuImpl();
-
-    // Act
-    skuImpl2.setProductOptionValues(new ArrayList<>());
-  }
-
-  /**
-   * Test {@link SkuImpl#setProductOptionValues(List)}.
-   * <ul>
-   *   <li>Given {@link ProductOptionValueImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#setProductOptionValues(List)}
-   */
-  @Test
-  public void testSetProductOptionValues_givenProductOptionValueImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-
-    ArrayList<ProductOptionValue> productOptionValues = new ArrayList<>();
-    productOptionValues.add(mock(ProductOptionValueImpl.class));
-
-    // Act
-    skuImpl.setProductOptionValues(productOptionValues);
-
-    // Assert
-    assertEquals(1, skuImpl.getProductOptionValues().size());
-    assertEquals(1, skuImpl.getProductOptionValueXrefs().size());
-    assertEquals(1, skuImpl.getProductOptionValuesCollection().size());
-    assertEquals(1, skuImpl.legacyProductOptionValues.size());
-  }
-
-  /**
    * Test {@link SkuImpl#setProductOptionValues(List)}.
    * <ul>
    *   <li>Given {@link SkuImpl} (default constructor) Name is {@code Name}.</li>
@@ -14911,154 +7763,141 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#setProductOptionValues(List)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.setProductOptionValues(List)"})
   public void testSetProductOptionValues_givenSkuImplNameIsName() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setName("Name");
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setName("Name");
 
     ArrayList<ProductOptionValue> productOptionValues = new ArrayList<>();
-    productOptionValues.add(new ProductOptionValueImpl());
+    ProductOptionValueImpl productOptionValueImpl = new ProductOptionValueImpl();
+    productOptionValues.add(productOptionValueImpl);
 
     // Act
-    skuImpl.setProductOptionValues(productOptionValues);
+    skuImpl2.setProductOptionValues(productOptionValues);
 
     // Assert
-    assertEquals(1, skuImpl.getProductOptionValueXrefs().size());
-    assertEquals(1, skuImpl.getProductOptionValuesCollection().size());
-    assertEquals(1, skuImpl.legacyProductOptionValues.size());
-    assertEquals(productOptionValues, skuImpl.getProductOptionValues());
+    List<ProductOptionValue> productOptionValues2 = skuImpl2.getProductOptionValues();
+    assertEquals(1, productOptionValues2.size());
+    assertEquals(1, skuImpl2.getProductOptionValueXrefs().size());
+    assertEquals(1, skuImpl2.getProductOptionValuesCollection().size());
+    assertEquals(1, skuImpl2.legacyProductOptionValues.size());
+    assertSame(productOptionValueImpl, productOptionValues2.get(0));
   }
 
   /**
    * Test {@link SkuImpl#setProductOptionValues(List)}.
    * <ul>
-   *   <li>Then {@link SkuImpl} (default constructor) ProductOptionValues is
-   * {@link ArrayList#ArrayList()}.</li>
+   *   <li>Given {@link SkuImpl} (default constructor).</li>
+   *   <li>Then {@link SkuImpl} (default constructor) ProductOptionValues size is one.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#setProductOptionValues(List)}
    */
   @Test
-  public void testSetProductOptionValues_thenSkuImplProductOptionValuesIsArrayList() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.setProductOptionValues(List)"})
+  public void testSetProductOptionValues_givenSkuImpl_thenSkuImplProductOptionValuesSizeIsOne() {
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
 
     ArrayList<ProductOptionValue> productOptionValues = new ArrayList<>();
+    ProductOptionValueImpl productOptionValueImpl = new ProductOptionValueImpl();
+    productOptionValues.add(productOptionValueImpl);
+
+    // Act
+    skuImpl2.setProductOptionValues(productOptionValues);
+
+    // Assert
+    List<ProductOptionValue> productOptionValues2 = skuImpl2.getProductOptionValues();
+    assertEquals(1, productOptionValues2.size());
+    assertEquals(1, skuImpl2.getProductOptionValueXrefs().size());
+    assertEquals(1, skuImpl2.getProductOptionValuesCollection().size());
+    assertEquals(1, skuImpl2.legacyProductOptionValues.size());
+    assertSame(productOptionValueImpl, productOptionValues2.get(0));
+  }
+
+  /**
+   * Test {@link SkuImpl#setProductOptionValues(List)}.
+   * <ul>
+   *   <li>Given {@link SkuImpl} (default constructor).</li>
+   *   <li>Then {@link SkuImpl} (default constructor) ProductOptionValues size is one.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#setProductOptionValues(List)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.setProductOptionValues(List)"})
+  public void testSetProductOptionValues_givenSkuImpl_thenSkuImplProductOptionValuesSizeIsOne2() {
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+
+    ArrayList<ProductOptionValue> productOptionValues = new ArrayList<>();
+    ProductOptionValueImpl productOptionValueImpl = new ProductOptionValueImpl();
+    productOptionValues.add(productOptionValueImpl);
     productOptionValues.add(new ProductOptionValueImpl());
 
     // Act
-    skuImpl.setProductOptionValues(productOptionValues);
+    skuImpl2.setProductOptionValues(productOptionValues);
 
     // Assert
-    assertEquals(1, skuImpl.getProductOptionValueXrefs().size());
-    assertEquals(1, skuImpl.getProductOptionValuesCollection().size());
-    assertEquals(1, skuImpl.legacyProductOptionValues.size());
-    assertEquals(productOptionValues, skuImpl.getProductOptionValues());
+    List<ProductOptionValue> productOptionValues2 = skuImpl2.getProductOptionValues();
+    assertEquals(1, productOptionValues2.size());
+    assertEquals(1, skuImpl2.getProductOptionValueXrefs().size());
+    assertEquals(1, skuImpl2.getProductOptionValuesCollection().size());
+    assertEquals(1, skuImpl2.legacyProductOptionValues.size());
+    assertSame(productOptionValueImpl, productOptionValues2.get(0));
   }
 
   /**
    * Test {@link SkuImpl#setProductOptionValues(List)}.
    * <ul>
    *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then {@link SkuImpl} (default constructor) ProductOptionValues
-   * Empty.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) ProductOptionValues Empty.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#setProductOptionValues(List)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.setProductOptionValues(List)"})
   public void testSetProductOptionValues_whenArrayList_thenSkuImplProductOptionValuesEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
 
     // Act
-    skuImpl.setProductOptionValues(new ArrayList<>());
+    skuImpl2.setProductOptionValues(new ArrayList<>());
 
-    // Assert
-    assertTrue(skuImpl.getProductOptionValues().isEmpty());
-    assertTrue(skuImpl.getProductOptionValueXrefs().isEmpty());
-    assertTrue(skuImpl.getProductOptionValuesCollection().isEmpty());
-    assertTrue(skuImpl.legacyProductOptionValues.isEmpty());
-  }
-
-  /**
-   * Test {@link SkuImpl#isMachineSortable()}.
-   * <p>
-   * Method under test: {@link SkuImpl#isMachineSortable()}
-   */
-  @Test
-  public void testIsMachineSortable() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException("foo"));
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.isMachineSortable());
-    verify(product).getDefaultSku();
-  }
-
-  /**
-   * Test {@link SkuImpl#isMachineSortable()}.
-   * <p>
-   * Method under test: {@link SkuImpl#isMachineSortable()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsMachineSortable2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1897 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).isMachineSortable();
+    // Assert that nothing has changed
+    assertTrue(skuImpl2.getProductOptionValues().isEmpty());
+    assertTrue(skuImpl2.getProductOptionValueXrefs().isEmpty());
+    assertTrue(skuImpl2.getProductOptionValuesCollection().isEmpty());
+    assertTrue(skuImpl2.legacyProductOptionValues.isEmpty());
   }
 
   /**
    * Test {@link SkuImpl#isMachineSortable()}.
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()}
-   * return {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#isMachineSortable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.isMachineSortable()"})
   public void testIsMachineSortable_givenProductBundleImplGetDefaultSkuReturnSkuImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualIsMachineSortableResult = skuImpl.isMachineSortable();
+    Boolean actualIsMachineSortableResult = skuImpl2.isMachineSortable();
 
     // Assert
     verify(product).getDefaultSku();
@@ -15068,26 +7907,25 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#isMachineSortable()}.
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()}
-   * return {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#isMachineSortable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.isMachineSortable()"})
   public void testIsMachineSortable_givenProductBundleImplGetDefaultSkuReturnSkuImpl2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualIsMachineSortableResult = skuImpl.isMachineSortable();
+    Boolean actualIsMachineSortableResult = skuImpl2.isMachineSortable();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -15104,21 +7942,21 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#isMachineSortable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.isMachineSortable()"})
   public void testIsMachineSortable_givenSkuGetIdReturnOne_thenCallsGetId() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualIsMachineSortableResult = skuImpl.isMachineSortable();
+    Boolean actualIsMachineSortableResult = skuImpl2.isMachineSortable();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -15129,75 +7967,43 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#isMachineSortable()}.
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} throw
-   * {@link IllegalStateException#IllegalStateException(String)} with
-   * {@code foo}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#isMachineSortable()}
-   */
-  @Test
-  public void testIsMachineSortable_givenSkuGetIdThrowIllegalStateExceptionWithFoo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenThrow(new IllegalStateException("foo"));
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.isMachineSortable());
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-  }
-
-  /**
-   * Test {@link SkuImpl#isMachineSortable()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) MachineSortable is
-   * {@code true}.</li>
+   *   <li>Given {@link SkuImpl} (default constructor) MachineSortable is {@code true}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#isMachineSortable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.isMachineSortable()"})
   public void testIsMachineSortable_givenSkuImplMachineSortableIsTrue_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setMachineSortable(true);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setMachineSortable(true);
 
     // Act and Assert
-    assertTrue(skuImpl.isMachineSortable());
+    assertTrue(skuImpl2.isMachineSortable());
   }
 
   /**
    * Test {@link SkuImpl#isMachineSortable()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Product is
-   * {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#isMachineSortable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.isMachineSortable()"})
   public void testIsMachineSortable_givenSkuImplProductIsProductBundleImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(new ProductBundleImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertFalse(skuImpl.isMachineSortable());
+    assertFalse(skuImpl2.isMachineSortable());
   }
 
   /**
@@ -15210,9 +8016,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#isMachineSortable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.isMachineSortable()"})
   public void testIsMachineSortable_givenSkuImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertFalse((new SkuImpl()).isMachineSortable());
   }
@@ -15226,9 +8032,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#isMachineSortable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.isMachineSortable()"})
   public void testIsMachineSortable_thenCallsIsMachineSortable() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.isMachineSortable()).thenReturn(true);
@@ -15236,12 +8042,12 @@ public class SkuImplDiffblueTest {
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualIsMachineSortableResult = skuImpl.isMachineSortable();
+    Boolean actualIsMachineSortableResult = skuImpl2.isMachineSortable();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -15251,77 +8057,54 @@ public class SkuImplDiffblueTest {
   }
 
   /**
-   * Test {@link SkuImpl#getIsMachineSortable()}.
+   * Test {@link SkuImpl#isMachineSortable()}.
+   * <ul>
+   *   <li>Then throw {@link IllegalStateException}.</li>
+   * </ul>
    * <p>
-   * Method under test: {@link SkuImpl#getIsMachineSortable()}
+   * Method under test: {@link SkuImpl#isMachineSortable()}
    */
   @Test
-  public void testGetIsMachineSortable() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.isMachineSortable()"})
+  public void testIsMachineSortable_thenThrowIllegalStateException() {
     // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("foo"));
     ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException("foo"));
+    when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getIsMachineSortable());
-    verify(product).getDefaultSku();
-  }
-
-  /**
-   * Test {@link SkuImpl#getIsMachineSortable()}.
-   * <p>
-   * Method under test: {@link SkuImpl#getIsMachineSortable()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetIsMachineSortable2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass997 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).getIsMachineSortable();
+    assertThrows(IllegalStateException.class, () -> skuImpl2.isMachineSortable());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#getIsMachineSortable()}.
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()}
-   * return {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getIsMachineSortable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.getIsMachineSortable()"})
   public void testGetIsMachineSortable_givenProductBundleImplGetDefaultSkuReturnSkuImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualIsMachineSortable = skuImpl.getIsMachineSortable();
+    Boolean actualIsMachineSortable = skuImpl2.getIsMachineSortable();
 
     // Assert
     verify(product).getDefaultSku();
@@ -15331,26 +8114,25 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getIsMachineSortable()}.
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()}
-   * return {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getIsMachineSortable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.getIsMachineSortable()"})
   public void testGetIsMachineSortable_givenProductBundleImplGetDefaultSkuReturnSkuImpl2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualIsMachineSortable = skuImpl.getIsMachineSortable();
+    Boolean actualIsMachineSortable = skuImpl2.getIsMachineSortable();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -15367,21 +8149,21 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getIsMachineSortable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.getIsMachineSortable()"})
   public void testGetIsMachineSortable_givenSkuGetIdReturnOne_thenCallsGetId() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualIsMachineSortable = skuImpl.getIsMachineSortable();
+    Boolean actualIsMachineSortable = skuImpl2.getIsMachineSortable();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -15392,75 +8174,43 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getIsMachineSortable()}.
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} throw
-   * {@link IllegalStateException#IllegalStateException(String)} with
-   * {@code foo}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getIsMachineSortable()}
-   */
-  @Test
-  public void testGetIsMachineSortable_givenSkuGetIdThrowIllegalStateExceptionWithFoo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenThrow(new IllegalStateException("foo"));
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getIsMachineSortable());
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-  }
-
-  /**
-   * Test {@link SkuImpl#getIsMachineSortable()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) MachineSortable is
-   * {@code true}.</li>
+   *   <li>Given {@link SkuImpl} (default constructor) MachineSortable is {@code true}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getIsMachineSortable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.getIsMachineSortable()"})
   public void testGetIsMachineSortable_givenSkuImplMachineSortableIsTrue_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setMachineSortable(true);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setMachineSortable(true);
 
     // Act and Assert
-    assertTrue(skuImpl.getIsMachineSortable());
+    assertTrue(skuImpl2.getIsMachineSortable());
   }
 
   /**
    * Test {@link SkuImpl#getIsMachineSortable()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Product is
-   * {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getIsMachineSortable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.getIsMachineSortable()"})
   public void testGetIsMachineSortable_givenSkuImplProductIsProductBundleImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(new ProductBundleImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertFalse(skuImpl.getIsMachineSortable());
+    assertFalse(skuImpl2.getIsMachineSortable());
   }
 
   /**
@@ -15473,9 +8223,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getIsMachineSortable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.getIsMachineSortable()"})
   public void testGetIsMachineSortable_givenSkuImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertFalse((new SkuImpl()).getIsMachineSortable());
   }
@@ -15489,9 +8239,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getIsMachineSortable()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.getIsMachineSortable()"})
   public void testGetIsMachineSortable_thenCallsGetIsMachineSortable() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getIsMachineSortable()).thenReturn(true);
@@ -15499,12 +8249,12 @@ public class SkuImplDiffblueTest {
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualIsMachineSortable = skuImpl.getIsMachineSortable();
+    Boolean actualIsMachineSortable = skuImpl2.getIsMachineSortable();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -15514,58 +8264,56 @@ public class SkuImplDiffblueTest {
   }
 
   /**
-   * Test {@link SkuImpl#getInventoryType()}.
+   * Test {@link SkuImpl#getIsMachineSortable()}.
+   * <ul>
+   *   <li>Then throw {@link IllegalStateException}.</li>
+   * </ul>
    * <p>
-   * Method under test: {@link SkuImpl#getInventoryType()}
+   * Method under test: {@link SkuImpl#getIsMachineSortable()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetInventoryType() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass967 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.getIsMachineSortable()"})
+  public void testGetIsMachineSortable_thenThrowIllegalStateException() {
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("foo"));
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getDefaultSku()).thenReturn(sku);
 
-    // Arrange and Act
-    (new SkuImpl()).getInventoryType();
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act and Assert
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getIsMachineSortable());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#getInventoryType()}.
    * <ul>
-   *   <li>Given {@link CategoryImpl} {@link CategoryImpl#getInventoryType()} return
-   * {@link InventoryType#ALWAYS_AVAILABLE}.</li>
+   *   <li>Given {@link CategoryImpl} {@link CategoryImpl#getInventoryType()} return {@link InventoryType#ALWAYS_AVAILABLE}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getInventoryType()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"InventoryType SkuImpl.getInventoryType()"})
   public void testGetInventoryType_givenCategoryImplGetInventoryTypeReturnAlways_available() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     CategoryImpl categoryImpl = mock(CategoryImpl.class);
     when(categoryImpl.getInventoryType()).thenReturn(InventoryType.ALWAYS_AVAILABLE);
     ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
     when(defaultProduct.getDefaultCategory()).thenReturn(categoryImpl);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setDefaultProduct(defaultProduct);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDefaultProduct(defaultProduct);
 
     // Act
-    InventoryType actualInventoryType = skuImpl.getInventoryType();
+    InventoryType actualInventoryType = skuImpl2.getInventoryType();
 
     // Assert
     verify(categoryImpl).getInventoryType();
@@ -15576,25 +8324,24 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getInventoryType()}.
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultCategory()}
-   * return {@link CategoryImpl} (default constructor).</li>
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultCategory()} return {@link CategoryImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getInventoryType()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"InventoryType SkuImpl.getInventoryType()"})
   public void testGetInventoryType_givenProductBundleImplGetDefaultCategoryReturnCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
     when(defaultProduct.getDefaultCategory()).thenReturn(new CategoryImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setDefaultProduct(defaultProduct);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDefaultProduct(defaultProduct);
 
     // Act
-    InventoryType actualInventoryType = skuImpl.getInventoryType();
+    InventoryType actualInventoryType = skuImpl2.getInventoryType();
 
     // Assert
     verify(defaultProduct, atLeast(1)).getDefaultCategory();
@@ -15604,43 +8351,41 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getInventoryType()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) DefaultProduct is
-   * {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Given {@link SkuImpl} (default constructor) DefaultProduct is {@link ProductBundleImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getInventoryType()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"InventoryType SkuImpl.getInventoryType()"})
   public void testGetInventoryType_givenSkuImplDefaultProductIsProductBundleImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setDefaultProduct(new ProductBundleImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDefaultProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertNull(skuImpl.getInventoryType());
+    assertNull(skuImpl2.getInventoryType());
   }
 
   /**
    * Test {@link SkuImpl#getInventoryType()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) InventoryType is
-   * {@link InventoryType#ALWAYS_AVAILABLE}.</li>
+   *   <li>Given {@link SkuImpl} (default constructor) InventoryType is {@link InventoryType#ALWAYS_AVAILABLE}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getInventoryType()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"InventoryType SkuImpl.getInventoryType()"})
   public void testGetInventoryType_givenSkuImplInventoryTypeIsAlways_available() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
 
     // Act
-    InventoryType actualInventoryType = skuImpl.getInventoryType();
+    InventoryType actualInventoryType = skuImpl2.getInventoryType();
 
     // Assert
     assertSame(actualInventoryType.ALWAYS_AVAILABLE, actualInventoryType);
@@ -15649,23 +8394,22 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getInventoryType()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Product is
-   * {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getInventoryType()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"InventoryType SkuImpl.getInventoryType()"})
   public void testGetInventoryType_givenSkuImplProductIsProductBundleImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(new ProductBundleImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertNull(skuImpl.getInventoryType());
+    assertNull(skuImpl2.getInventoryType());
   }
 
   /**
@@ -15678,9 +8422,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getInventoryType()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"InventoryType SkuImpl.getInventoryType()"})
   public void testGetInventoryType_givenSkuImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new SkuImpl()).getInventoryType());
   }
@@ -15694,158 +8438,71 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getInventoryType()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"InventoryType SkuImpl.getInventoryType()"})
   public void testGetInventoryType_thenThrowIllegalStateException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     CategoryImpl categoryImpl = mock(CategoryImpl.class);
     when(categoryImpl.getInventoryType()).thenThrow(new IllegalStateException("foo"));
     ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
     when(defaultProduct.getDefaultCategory()).thenReturn(categoryImpl);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setDefaultProduct(defaultProduct);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDefaultProduct(defaultProduct);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getInventoryType());
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getInventoryType());
     verify(categoryImpl).getInventoryType();
     verify(defaultProduct, atLeast(1)).getDefaultCategory();
   }
 
   /**
    * Test {@link SkuImpl#setInventoryType(InventoryType)}.
-   * <p>
-   * Method under test: {@link SkuImpl#setInventoryType(InventoryType)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetInventoryType() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2167 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-  }
-
-  /**
-   * Test {@link SkuImpl#setInventoryType(InventoryType)}.
    * <ul>
-   *   <li>Given {@link IllegalStateException#IllegalStateException(String)} with
-   * {@code foo}.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#inventoryType} is {@code ALWAYS_AVAILABLE}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#setInventoryType(InventoryType)}
    */
   @Test
-  public void testSetInventoryType_givenIllegalStateExceptionWithFoo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    InventoryType inventoryType = mock(InventoryType.class);
-    when(inventoryType.getType()).thenThrow(new IllegalStateException("foo"));
-
-    // Act
-    skuImpl.setInventoryType(inventoryType);
-
-    // Assert
-    verify(inventoryType).getType();
-    assertNull(skuImpl.inventoryType);
-    assertNull(skuImpl.getInventoryType());
-  }
-
-  /**
-   * Test {@link SkuImpl#setInventoryType(InventoryType)}.
-   * <ul>
-   *   <li>Then {@link SkuImpl} (default constructor) InventoryType FriendlyType is
-   * {@code Friendly Type}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#setInventoryType(InventoryType)}
-   */
-  @Test
-  public void testSetInventoryType_thenSkuImplInventoryTypeFriendlyTypeIsFriendlyType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    InventoryType inventoryType = mock(InventoryType.class);
-    when(inventoryType.getType()).thenReturn("Type");
-
-    // Act
-    skuImpl.setInventoryType(inventoryType);
-
-    // Assert
-    verify(inventoryType).getType();
-    InventoryType inventoryType2 = skuImpl.getInventoryType();
-    assertEquals("Friendly Type", inventoryType2.getFriendlyType());
-    assertEquals("Type", inventoryType2.getType());
-    assertEquals("Type", skuImpl.inventoryType);
-  }
-
-  /**
-   * Test {@link SkuImpl#setInventoryType(InventoryType)}.
-   * <ul>
-   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#inventoryType}
-   * is {@code ALWAYS_AVAILABLE}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#setInventoryType(InventoryType)}
-   */
-  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.setInventoryType(InventoryType)"})
   public void testSetInventoryType_thenSkuImplInventoryTypeIsAlwaysAvailable() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
     InventoryType inventoryType = InventoryType.ALWAYS_AVAILABLE;
 
     // Act
-    skuImpl.setInventoryType(inventoryType);
+    skuImpl2.setInventoryType(inventoryType);
 
     // Assert
-    assertEquals("ALWAYS_AVAILABLE", skuImpl.inventoryType);
+    assertEquals("ALWAYS_AVAILABLE", skuImpl2.inventoryType);
     InventoryType expectedInventoryType = inventoryType.ALWAYS_AVAILABLE;
-    assertSame(expectedInventoryType, skuImpl.getInventoryType());
+    assertSame(expectedInventoryType, skuImpl2.getInventoryType());
   }
 
   /**
    * Test {@link SkuImpl#setInventoryType(InventoryType)}.
    * <ul>
    *   <li>When {@code null}.</li>
-   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#inventoryType}
-   * is {@code null}.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#inventoryType} is {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#setInventoryType(InventoryType)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.setInventoryType(InventoryType)"})
   public void testSetInventoryType_whenNull_thenSkuImplInventoryTypeIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
 
     // Act
-    skuImpl.setInventoryType(null);
+    skuImpl2.setInventoryType(null);
 
-    // Assert
-    assertNull(skuImpl.inventoryType);
-    assertNull(skuImpl.getInventoryType());
+    // Assert that nothing has changed
+    assertNull(skuImpl2.inventoryType);
+    assertNull(skuImpl2.getInventoryType());
   }
 
   /**
@@ -15854,18 +8511,18 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getFulfillmentType()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FulfillmentType SkuImpl.getFulfillmentType()"})
   public void testGetFulfillmentType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
     when(defaultProduct.getDefaultCategory()).thenReturn(new CategoryImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setDefaultProduct(defaultProduct);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDefaultProduct(defaultProduct);
 
     // Act
-    FulfillmentType actualFulfillmentType = skuImpl.getFulfillmentType();
+    FulfillmentType actualFulfillmentType = skuImpl2.getFulfillmentType();
 
     // Assert
     verify(defaultProduct, atLeast(1)).getDefaultCategory();
@@ -15874,74 +8531,43 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#getFulfillmentType()}.
-   * <p>
-   * Method under test: {@link SkuImpl#getFulfillmentType()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetFulfillmentType2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass937 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).getFulfillmentType();
-  }
-
-  /**
-   * Test {@link SkuImpl#getFulfillmentType()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) DefaultProduct is
-   * {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Given {@link SkuImpl} (default constructor) DefaultProduct is {@link ProductBundleImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getFulfillmentType()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FulfillmentType SkuImpl.getFulfillmentType()"})
   public void testGetFulfillmentType_givenSkuImplDefaultProductIsProductBundleImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setDefaultProduct(new ProductBundleImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDefaultProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertNull(skuImpl.getFulfillmentType());
+    assertNull(skuImpl2.getFulfillmentType());
   }
 
   /**
    * Test {@link SkuImpl#getFulfillmentType()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) FulfillmentType is
-   * {@link FulfillmentType#DIGITAL}.</li>
+   *   <li>Given {@link SkuImpl} (default constructor) FulfillmentType is {@link FulfillmentType#DIGITAL}.</li>
    *   <li>Then return {@link FulfillmentType#DIGITAL}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getFulfillmentType()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FulfillmentType SkuImpl.getFulfillmentType()"})
   public void testGetFulfillmentType_givenSkuImplFulfillmentTypeIsDigital_thenReturnDigital() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setFulfillmentType(FulfillmentType.DIGITAL);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setFulfillmentType(FulfillmentType.DIGITAL);
 
     // Act
-    FulfillmentType actualFulfillmentType = skuImpl.getFulfillmentType();
+    FulfillmentType actualFulfillmentType = skuImpl2.getFulfillmentType();
 
     // Assert
     assertSame(actualFulfillmentType.DIGITAL, actualFulfillmentType);
@@ -15950,23 +8576,22 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getFulfillmentType()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Product is
-   * {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getFulfillmentType()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FulfillmentType SkuImpl.getFulfillmentType()"})
   public void testGetFulfillmentType_givenSkuImplProductIsProductBundleImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(new ProductBundleImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertNull(skuImpl.getFulfillmentType());
+    assertNull(skuImpl2.getFulfillmentType());
   }
 
   /**
@@ -15979,9 +8604,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getFulfillmentType()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FulfillmentType SkuImpl.getFulfillmentType()"})
   public void testGetFulfillmentType_givenSkuImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new SkuImpl()).getFulfillmentType());
   }
@@ -15995,159 +8620,72 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getFulfillmentType()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FulfillmentType SkuImpl.getFulfillmentType()"})
   public void testGetFulfillmentType_thenThrowIllegalStateException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     CategoryImpl categoryImpl = mock(CategoryImpl.class);
     when(categoryImpl.getFulfillmentType()).thenThrow(new IllegalStateException("foo"));
     ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
     when(defaultProduct.getDefaultCategory()).thenReturn(categoryImpl);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setDefaultProduct(defaultProduct);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDefaultProduct(defaultProduct);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getFulfillmentType());
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getFulfillmentType());
     verify(categoryImpl).getFulfillmentType();
     verify(defaultProduct, atLeast(1)).getDefaultCategory();
   }
 
   /**
    * Test {@link SkuImpl#setFulfillmentType(FulfillmentType)}.
-   * <p>
-   * Method under test: {@link SkuImpl#setFulfillmentType(FulfillmentType)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetFulfillmentType() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2137 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).setFulfillmentType(FulfillmentType.DIGITAL);
-  }
-
-  /**
-   * Test {@link SkuImpl#setFulfillmentType(FulfillmentType)}.
-   * <ul>
-   *   <li>Given {@link IllegalStateException#IllegalStateException(String)} with
-   * {@code foo}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#setFulfillmentType(FulfillmentType)}
-   */
-  @Test
-  public void testSetFulfillmentType_givenIllegalStateExceptionWithFoo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    FulfillmentType fulfillmentType = mock(FulfillmentType.class);
-    when(fulfillmentType.getType()).thenThrow(new IllegalStateException("foo"));
-
-    // Act
-    skuImpl.setFulfillmentType(fulfillmentType);
-
-    // Assert
-    verify(fulfillmentType).getType();
-    assertNull(skuImpl.fulfillmentType);
-    assertNull(skuImpl.getFulfillmentType());
-  }
-
-  /**
-   * Test {@link SkuImpl#setFulfillmentType(FulfillmentType)}.
-   * <ul>
-   *   <li>Then {@link SkuImpl} (default constructor) FulfillmentType FriendlyType
-   * is {@code Friendly Type}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#setFulfillmentType(FulfillmentType)}
-   */
-  @Test
-  public void testSetFulfillmentType_thenSkuImplFulfillmentTypeFriendlyTypeIsFriendlyType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    FulfillmentType fulfillmentType = mock(FulfillmentType.class);
-    when(fulfillmentType.getType()).thenReturn("Type");
-
-    // Act
-    skuImpl.setFulfillmentType(fulfillmentType);
-
-    // Assert
-    verify(fulfillmentType).getType();
-    FulfillmentType fulfillmentType2 = skuImpl.getFulfillmentType();
-    assertEquals("Friendly Type", fulfillmentType2.getFriendlyType());
-    assertEquals("Type", fulfillmentType2.getType());
-    assertEquals("Type", skuImpl.fulfillmentType);
-  }
-
-  /**
-   * Test {@link SkuImpl#setFulfillmentType(FulfillmentType)}.
    * <ul>
    *   <li>When {@link FulfillmentType#DIGITAL}.</li>
-   *   <li>Then {@link SkuImpl} (default constructor)
-   * {@link SkuImpl#fulfillmentType} is {@code DIGITAL}.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#fulfillmentType} is {@code DIGITAL}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#setFulfillmentType(FulfillmentType)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.setFulfillmentType(FulfillmentType)"})
   public void testSetFulfillmentType_whenDigital_thenSkuImplFulfillmentTypeIsDigital() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
     FulfillmentType fulfillmentType = FulfillmentType.DIGITAL;
 
     // Act
-    skuImpl.setFulfillmentType(fulfillmentType);
+    skuImpl2.setFulfillmentType(fulfillmentType);
 
     // Assert
-    assertEquals("DIGITAL", skuImpl.fulfillmentType);
+    assertEquals("DIGITAL", skuImpl2.fulfillmentType);
     FulfillmentType expectedFulfillmentType = fulfillmentType.DIGITAL;
-    assertSame(expectedFulfillmentType, skuImpl.getFulfillmentType());
+    assertSame(expectedFulfillmentType, skuImpl2.getFulfillmentType());
   }
 
   /**
    * Test {@link SkuImpl#setFulfillmentType(FulfillmentType)}.
    * <ul>
    *   <li>When {@code null}.</li>
-   *   <li>Then {@link SkuImpl} (default constructor)
-   * {@link SkuImpl#fulfillmentType} is {@code null}.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#fulfillmentType} is {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#setFulfillmentType(FulfillmentType)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.setFulfillmentType(FulfillmentType)"})
   public void testSetFulfillmentType_whenNull_thenSkuImplFulfillmentTypeIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
 
     // Act
-    skuImpl.setFulfillmentType(null);
+    skuImpl2.setFulfillmentType(null);
 
     // Assert that nothing has changed
-    assertNull(skuImpl.fulfillmentType);
-    assertNull(skuImpl.getFulfillmentType());
+    assertNull(skuImpl2.fulfillmentType);
+    assertNull(skuImpl2.getFulfillmentType());
   }
 
   /**
@@ -16156,427 +8694,57 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getSkuAttributes()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map SkuImpl.getSkuAttributes()"})
   public void testGetSkuAttributes() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    HashMap<String, SkuAttribute> skuAttributes = new HashMap<>();
-    SkuAttributeImpl skuAttributeImpl = new SkuAttributeImpl();
-    skuAttributes.put("ThreadLocalManager.notify.orphans", skuAttributeImpl);
-    skuAttributes.put("foo", new SkuAttributeImpl());
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSkuAttributes(skuAttributes);
-
-    // Act
-    Map<String, SkuAttribute> actualSkuAttributes = skuImpl.getSkuAttributes();
-
-    // Assert
-    assertEquals(1, actualSkuAttributes.size());
-    assertSame(skuAttributeImpl, actualSkuAttributes.get(null));
-  }
-
-  /**
-   * Test {@link SkuImpl#getSkuAttributes()}.
-   * <p>
-   * Method under test: {@link SkuImpl#getSkuAttributes()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetSkuAttributes2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1477 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).getSkuAttributes();
-  }
-
-  /**
-   * Test {@link SkuImpl#getSkuAttributes()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is
-   * {@link Money}.</li>
-   *   <li>Then return Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getSkuAttributes()}
-   */
-  @Test
-  public void testGetSkuAttributes_givenSkuImplSalePriceIsMoney_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(mock(Money.class));
-
-    // Act and Assert
-    assertTrue(skuImpl.getSkuAttributes().isEmpty());
-  }
-
-  /**
-   * Test {@link SkuImpl#getSkuAttributes()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor).</li>
-   *   <li>Then return Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getSkuAttributes()}
-   */
-  @Test
-  public void testGetSkuAttributes_givenSkuImpl_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertTrue((new SkuImpl()).getSkuAttributes().isEmpty());
   }
 
   /**
-   * Test {@link SkuImpl#getSkuAttributes()}.
-   * <ul>
-   *   <li>Then return containsKey {@code Name}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getSkuAttributes()}
-   */
-  @Test
-  public void testGetSkuAttributes_thenReturnContainsKeyName() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuAttributeImpl skuAttributeImpl = mock(SkuAttributeImpl.class);
-    when(skuAttributeImpl.getName()).thenReturn("Name");
-
-    HashMap<String, SkuAttribute> skuAttributes = new HashMap<>();
-    skuAttributes.put("foo", skuAttributeImpl);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSkuAttributes(skuAttributes);
-
-    // Act
-    Map<String, SkuAttribute> actualSkuAttributes = skuImpl.getSkuAttributes();
-
-    // Assert
-    verify(skuAttributeImpl).getName();
-    assertEquals(1, actualSkuAttributes.size());
-    assertTrue(actualSkuAttributes.containsKey("Name"));
-  }
-
-  /**
-   * Test {@link SkuImpl#getSkuAttributes()}.
-   * <ul>
-   *   <li>Then return {@code null} is {@link SkuAttributeImpl} (default
-   * constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getSkuAttributes()}
-   */
-  @Test
-  public void testGetSkuAttributes_thenReturnNullIsSkuAttributeImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    HashMap<String, SkuAttribute> skuAttributes = new HashMap<>();
-    SkuAttributeImpl skuAttributeImpl = new SkuAttributeImpl();
-    skuAttributes.put("foo", skuAttributeImpl);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSkuAttributes(skuAttributes);
-
-    // Act
-    Map<String, SkuAttribute> actualSkuAttributes = skuImpl.getSkuAttributes();
-
-    // Assert
-    assertEquals(1, actualSkuAttributes.size());
-    assertSame(skuAttributeImpl, actualSkuAttributes.get(null));
-  }
-
-  /**
    * Test {@link SkuImpl#getMultiValueSkuAttributes()}.
    * <p>
    * Method under test: {@link SkuImpl#getMultiValueSkuAttributes()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map SkuImpl.getMultiValueSkuAttributes()"})
   public void testGetMultiValueSkuAttributes() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1117 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).getMultiValueSkuAttributes();
-  }
-
-  /**
-   * Test {@link SkuImpl#getMultiValueSkuAttributes()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is
-   * {@link Money}.</li>
-   *   <li>Then return Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getMultiValueSkuAttributes()}
-   */
-  @Test
-  public void testGetMultiValueSkuAttributes_givenSkuImplSalePriceIsMoney_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(mock(Money.class));
-
-    // Act and Assert
-    assertTrue(skuImpl.getMultiValueSkuAttributes().isEmpty());
-  }
-
-  /**
-   * Test {@link SkuImpl#getMultiValueSkuAttributes()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor).</li>
-   *   <li>Then return Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getMultiValueSkuAttributes()}
-   */
-  @Test
-  public void testGetMultiValueSkuAttributes_givenSkuImpl_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertTrue((new SkuImpl()).getMultiValueSkuAttributes().isEmpty());
-  }
-
-  /**
-   * Test {@link SkuImpl#getMultiValueSkuAttributes()}.
-   * <ul>
-   *   <li>Then return {@code Name} size is one.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getMultiValueSkuAttributes()}
-   */
-  @Test
-  public void testGetMultiValueSkuAttributes_thenReturnNameSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuAttributeImpl skuAttributeImpl = mock(SkuAttributeImpl.class);
-    when(skuAttributeImpl.getName()).thenReturn("Name");
-
-    HashMap<String, SkuAttribute> skuAttributes = new HashMap<>();
-    skuAttributes.put("foo", skuAttributeImpl);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSkuAttributes(skuAttributes);
-
-    // Act
-    Map<String, Collection<SkuAttribute>> actualMultiValueSkuAttributes = skuImpl.getMultiValueSkuAttributes();
-
-    // Assert
-    verify(skuAttributeImpl).getName();
-    assertEquals(1, actualMultiValueSkuAttributes.size());
-    Collection<SkuAttribute> getResult = actualMultiValueSkuAttributes.get("Name");
-    assertEquals(1, getResult.size());
-    assertTrue(getResult instanceof List);
-  }
-
-  /**
-   * Test {@link SkuImpl#getMultiValueSkuAttributes()}.
-   * <ul>
-   *   <li>Then return {@code null} size is one.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getMultiValueSkuAttributes()}
-   */
-  @Test
-  public void testGetMultiValueSkuAttributes_thenReturnNullSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    HashMap<String, SkuAttribute> skuAttributes = new HashMap<>();
-    skuAttributes.put("foo", new SkuAttributeImpl());
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSkuAttributes(skuAttributes);
-
-    // Act
-    Map<String, Collection<SkuAttribute>> actualMultiValueSkuAttributes = skuImpl.getMultiValueSkuAttributes();
-
-    // Assert
-    assertEquals(1, actualMultiValueSkuAttributes.size());
-    Collection<SkuAttribute> getResult = actualMultiValueSkuAttributes.get(null);
-    assertEquals(1, getResult.size());
-    assertTrue(getResult instanceof List);
-    SkuAttribute getResult2 = ((List<SkuAttribute>) getResult).get(0);
-    assertTrue(getResult2 instanceof SkuAttributeImpl);
-    assertNull(getResult2.getId());
-    assertNull(getResult2.toString());
-    assertNull(getResult2.getValue());
-    assertNull(getResult2.getName());
-    assertNull(((SkuAttributeImpl) getResult2).name);
-    assertNull(getResult2.getSku());
-  }
-
-  /**
-   * Test {@link SkuImpl#getMultiValueSkuAttributes()}.
-   * <ul>
-   *   <li>Then return {@code null} size is two.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getMultiValueSkuAttributes()}
-   */
-  @Test
-  public void testGetMultiValueSkuAttributes_thenReturnNullSizeIsTwo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    HashMap<String, SkuAttribute> skuAttributes = new HashMap<>();
-    SkuAttributeImpl skuAttributeImpl = new SkuAttributeImpl();
-    skuAttributes.put("ThreadLocalManager.notify.orphans", skuAttributeImpl);
-    skuAttributes.put("foo", new SkuAttributeImpl());
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSkuAttributes(skuAttributes);
-
-    // Act
-    Map<String, Collection<SkuAttribute>> actualMultiValueSkuAttributes = skuImpl.getMultiValueSkuAttributes();
-
-    // Assert
-    assertEquals(1, actualMultiValueSkuAttributes.size());
-    Collection<SkuAttribute> getResult = actualMultiValueSkuAttributes.get(null);
-    assertEquals(2, getResult.size());
-    assertTrue(getResult instanceof List);
-    assertTrue(((List<SkuAttribute>) getResult).get(0) instanceof SkuAttributeImpl);
-    assertSame(skuAttributeImpl, ((List<SkuAttribute>) getResult).get(1));
-  }
-
-  /**
-   * Test {@link SkuImpl#setSkuAttributes(Map)}.
-   * <p>
-   * Method under test: {@link SkuImpl#setSkuAttributes(Map)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetSkuAttributes() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2347 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    SkuImpl skuImpl2 = new SkuImpl();
-
-    // Act
-    skuImpl2.setSkuAttributes(new HashMap<>());
-  }
-
-  /**
-   * Test {@link SkuImpl#setSkuAttributes(Map)}.
-   * <ul>
-   *   <li>Given {@link BiFunction}.</li>
-   *   <li>When {@link HashMap#HashMap()} computeIfPresent {@code foo} and
-   * {@link BiFunction}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#setSkuAttributes(Map)}
-   */
-  @Test
-  public void testSetSkuAttributes_givenBiFunction_whenHashMapComputeIfPresentFooAndBiFunction() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-
-    HashMap<String, SkuAttribute> skuAttributes = new HashMap<>();
-    skuAttributes.computeIfPresent("foo", mock(BiFunction.class));
-    SkuAttributeImpl skuAttributeImpl = new SkuAttributeImpl();
-    skuAttributes.put("foo", skuAttributeImpl);
-
-    // Act
-    skuImpl.setSkuAttributes(skuAttributes);
-
-    // Assert
-    List<SkuAttribute> skuAttributeList = skuImpl.skuAttributes;
-    assertEquals(1, skuAttributeList.size());
-    Map<String, Collection<SkuAttribute>> multiValueSkuAttributes = skuImpl.getMultiValueSkuAttributes();
-    assertEquals(1, multiValueSkuAttributes.size());
-    Map<String, SkuAttribute> skuAttributes2 = skuImpl.getSkuAttributes();
-    assertEquals(1, skuAttributes2.size());
-    List<SkuAttribute> expectedGetResult = skuImpl.skuAttributes;
-    assertEquals(expectedGetResult, multiValueSkuAttributes.get(null));
-    assertSame(skuAttributeImpl, skuAttributeList.get(0));
-    assertSame(skuAttributeImpl, skuAttributes2.get(null));
   }
 
   /**
    * Test {@link SkuImpl#setSkuAttributes(Map)}.
    * <ul>
    *   <li>Given {@code foo}.</li>
-   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#skuAttributes}
-   * size is one.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#skuAttributes} size is one.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#setSkuAttributes(Map)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.setSkuAttributes(Map)"})
   public void testSetSkuAttributes_givenFoo_thenSkuImplSkuAttributesSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
 
     HashMap<String, SkuAttribute> skuAttributes = new HashMap<>();
     SkuAttributeImpl skuAttributeImpl = new SkuAttributeImpl();
     skuAttributes.put("foo", skuAttributeImpl);
 
     // Act
-    skuImpl.setSkuAttributes(skuAttributes);
+    skuImpl2.setSkuAttributes(skuAttributes);
 
     // Assert
-    List<SkuAttribute> skuAttributeList = skuImpl.skuAttributes;
+    List<SkuAttribute> skuAttributeList = skuImpl2.skuAttributes;
     assertEquals(1, skuAttributeList.size());
-    Map<String, Collection<SkuAttribute>> multiValueSkuAttributes = skuImpl.getMultiValueSkuAttributes();
+    Map<String, Collection<SkuAttribute>> multiValueSkuAttributes = skuImpl2.getMultiValueSkuAttributes();
     assertEquals(1, multiValueSkuAttributes.size());
-    Map<String, SkuAttribute> skuAttributes2 = skuImpl.getSkuAttributes();
+    Map<String, SkuAttribute> skuAttributes2 = skuImpl2.getSkuAttributes();
     assertEquals(1, skuAttributes2.size());
-    List<SkuAttribute> expectedGetResult = skuImpl.skuAttributes;
+    List<SkuAttribute> expectedGetResult = skuImpl2.skuAttributes;
     assertEquals(expectedGetResult, multiValueSkuAttributes.get(null));
     assertSame(skuAttributeImpl, skuAttributeList.get(0));
     assertSame(skuAttributeImpl, skuAttributes2.get(null));
@@ -16586,101 +8754,49 @@ public class SkuImplDiffblueTest {
    * Test {@link SkuImpl#setSkuAttributes(Map)}.
    * <ul>
    *   <li>When {@link HashMap#HashMap()}.</li>
-   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#skuAttributes}
-   * Empty.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#skuAttributes} Empty.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#setSkuAttributes(Map)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.setSkuAttributes(Map)"})
   public void testSetSkuAttributes_whenHashMap_thenSkuImplSkuAttributesEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
 
     // Act
-    skuImpl.setSkuAttributes(new HashMap<>());
+    skuImpl2.setSkuAttributes(new HashMap<>());
 
-    // Assert
-    assertTrue(skuImpl.skuAttributes.isEmpty());
-    assertTrue(skuImpl.getMultiValueSkuAttributes().isEmpty());
-    assertTrue(skuImpl.getSkuAttributes().isEmpty());
-  }
-
-  /**
-   * Test {@link SkuImpl#getCurrency()}.
-   * <p>
-   * Method under test: {@link SkuImpl#getCurrency()}
-   */
-  @Test
-  public void testGetCurrency() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException("foo"));
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getCurrency());
-    verify(product).getDefaultSku();
-  }
-
-  /**
-   * Test {@link SkuImpl#getCurrency()}.
-   * <p>
-   * Method under test: {@link SkuImpl#getCurrency()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetCurrency2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass817 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).getCurrency();
+    // Assert that nothing has changed
+    assertTrue(skuImpl2.skuAttributes.isEmpty());
+    assertTrue(skuImpl2.getMultiValueSkuAttributes().isEmpty());
+    assertTrue(skuImpl2.getSkuAttributes().isEmpty());
   }
 
   /**
    * Test {@link SkuImpl#getCurrency()}.
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()}
-   * return {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getCurrency()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BroadleafCurrency SkuImpl.getCurrency()"})
   public void testGetCurrency_givenProductBundleImplGetDefaultSkuReturnSkuImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    BroadleafCurrency actualCurrency = skuImpl.getCurrency();
+    BroadleafCurrency actualCurrency = skuImpl2.getCurrency();
 
     // Assert
     verify(product).getDefaultSku();
@@ -16690,27 +8806,26 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getCurrency()}.
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()}
-   * return {@link SkuImpl} (default constructor).</li>
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getCurrency()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BroadleafCurrency SkuImpl.getCurrency()"})
   public void testGetCurrency_givenProductBundleImplGetDefaultSkuReturnSkuImpl_thenReturnNull2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    BroadleafCurrency actualCurrency = skuImpl.getCurrency();
+    BroadleafCurrency actualCurrency = skuImpl2.getCurrency();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -16727,21 +8842,21 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getCurrency()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BroadleafCurrency SkuImpl.getCurrency()"})
   public void testGetCurrency_givenSkuGetIdReturnOne_thenCallsGetId() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    BroadleafCurrency actualCurrency = skuImpl.getCurrency();
+    BroadleafCurrency actualCurrency = skuImpl2.getCurrency();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -16752,75 +8867,43 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getCurrency()}.
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} throw
-   * {@link IllegalStateException#IllegalStateException(String)} with
-   * {@code foo}.</li>
+   *   <li>Given {@link SkuImpl} (default constructor) Currency is {@link BroadleafCurrencyImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getCurrency()}
    */
   @Test
-  public void testGetCurrency_givenSkuGetIdThrowIllegalStateExceptionWithFoo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenThrow(new IllegalStateException("foo"));
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getCurrency());
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-  }
-
-  /**
-   * Test {@link SkuImpl#getCurrency()}.
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Currency is
-   * {@link BroadleafCurrencyImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#getCurrency()}
-   */
-  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BroadleafCurrency SkuImpl.getCurrency()"})
   public void testGetCurrency_givenSkuImplCurrencyIsBroadleafCurrencyImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
     BroadleafCurrencyImpl currency = new BroadleafCurrencyImpl();
-    skuImpl.setCurrency(currency);
+    skuImpl2.setCurrency(currency);
 
     // Act and Assert
-    assertSame(currency, skuImpl.getCurrency());
+    assertSame(currency, skuImpl2.getCurrency());
   }
 
   /**
    * Test {@link SkuImpl#getCurrency()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Product is
-   * {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getCurrency()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BroadleafCurrency SkuImpl.getCurrency()"})
   public void testGetCurrency_givenSkuImplProductIsProductBundleImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(new ProductBundleImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertNull(skuImpl.getCurrency());
+    assertNull(skuImpl2.getCurrency());
   }
 
   /**
@@ -16833,9 +8916,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getCurrency()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BroadleafCurrency SkuImpl.getCurrency()"})
   public void testGetCurrency_givenSkuImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new SkuImpl()).getCurrency());
   }
@@ -16849,9 +8932,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getCurrency()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BroadleafCurrency SkuImpl.getCurrency()"})
   public void testGetCurrency_thenCallsGetCurrency() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
@@ -16860,12 +8943,12 @@ public class SkuImplDiffblueTest {
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
 
     // Act
-    BroadleafCurrency actualCurrency = skuImpl.getCurrency();
+    BroadleafCurrency actualCurrency = skuImpl2.getCurrency();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -16875,412 +8958,54 @@ public class SkuImplDiffblueTest {
   }
 
   /**
-   * Test {@link SkuImpl#clearDynamicPrices()}.
-   * <p>
-   * Method under test: {@link SkuImpl#clearDynamicPrices()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testClearDynamicPrices() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass577 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).clearDynamicPrices();
-  }
-
-  /**
-   * Test {@link SkuImpl#equals(Object)}.
+   * Test {@link SkuImpl#getCurrency()}.
    * <ul>
-   *   <li>When other is different.</li>
+   *   <li>Then throw {@link IllegalStateException}.</li>
    * </ul>
    * <p>
-   * Method under test: {@link SkuImpl#equals(Object)}
+   * Method under test: {@link SkuImpl#getCurrency()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testEquals_whenOtherIsDifferent() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.RuntimeException: Cannot add the type: (Type). It already exists as a type via org.broadleafcommerce.common.vendor.service.type.ContainerShapeType
-    //       at org.broadleafcommerce.common.vendor.service.type.ContainerShapeType.setType(ContainerShapeType.java:66)
-    //       at org.broadleafcommerce.common.vendor.service.type.ContainerShapeType.<init>(ContainerShapeType.java:50)
-    //   See https://diff.blue/R013 to resolve this issue.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BroadleafCurrency SkuImpl.getCurrency()"})
+  public void testGetCurrency_thenThrowIllegalStateException() {
     // Arrange
-    Dimension dimension = new Dimension();
-    dimension.setContainer(new ContainerShapeType("Type", "Friendly Type"));
-    dimension.setDepth(new BigDecimal("2.3"));
-    dimension.setDimensionUnitOfMeasure(new DimensionUnitOfMeasureType("Type", "Friendly Type"));
-    dimension.setGirth(new BigDecimal("2.3"));
-    dimension.setHeight(new BigDecimal("2.3"));
-    dimension.setSize(new ContainerSizeType("Type", "Friendly Type"));
-    dimension.setWidth(new BigDecimal("2.3"));
-
-    Weight weight = new Weight();
-    weight.setWeight(new BigDecimal("2.3"));
-    weight.setWeightUnitOfMeasure(new WeightUnitOfMeasureType("Type", "Friendly Type"));
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    skuImpl.setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    skuImpl.setAvailable(true);
-    skuImpl.setCost(new Money());
-    skuImpl.setCurrency(new BroadleafCurrencyImpl());
-    skuImpl.setDefaultProduct(new ProductBundleImpl());
-    skuImpl.setDescription("The characteristics of someone or something");
-    skuImpl.setDimension(dimension);
-    skuImpl.setDiscountable(true);
-    skuImpl.setDisplayTemplate("Display Template");
-    skuImpl.setExcludedFulfillmentOptions(new ArrayList<>());
-    skuImpl.setExternalId("42");
-    skuImpl.setFees(new ArrayList<>());
-    skuImpl.setFulfillmentFlatRates(new HashMap<>());
-    skuImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    skuImpl.setId(1L);
-    skuImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    skuImpl.setIsMachineSortable(true);
-    skuImpl.setListPrice(new Money());
-    skuImpl.setLongDescription("Long Description");
-    skuImpl.setMachineSortable(true);
-    skuImpl.setName("Name");
-    skuImpl.setProduct(new ProductBundleImpl());
-    skuImpl.setProductOptionValueXrefs(new HashSet<>());
-    skuImpl.setQuantityAvailable(1);
-    skuImpl.setRetailPrice(new Money());
-    skuImpl.setSalePrice(new Money());
-    skuImpl.setSkuAttributes(new HashMap<>());
-    skuImpl.setSkuMediaXref(new HashMap<>());
-    skuImpl.setTaxCode("Tax Code");
-    skuImpl.setTaxable(true);
-    skuImpl.setUpc("Upc");
-    skuImpl.setUrlKey("https://example.org/example");
-    skuImpl.setWeight(weight);
-
-    Dimension dimension2 = new Dimension();
-    dimension2.setContainer(new ContainerShapeType("Type", "Friendly Type"));
-    dimension2.setDepth(new BigDecimal("2.3"));
-    dimension2.setDimensionUnitOfMeasure(new DimensionUnitOfMeasureType("Type", "Friendly Type"));
-    dimension2.setGirth(new BigDecimal("2.3"));
-    dimension2.setHeight(new BigDecimal("2.3"));
-    dimension2.setSize(new ContainerSizeType("Type", "Friendly Type"));
-    dimension2.setWidth(new BigDecimal("2.3"));
-
-    Weight weight2 = new Weight();
-    weight2.setWeight(new BigDecimal("2.3"));
-    weight2.setWeightUnitOfMeasure(new WeightUnitOfMeasureType("Type", "Friendly Type"));
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("foo"));
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getDefaultSku()).thenReturn(sku);
 
     SkuImpl skuImpl2 = new SkuImpl();
-    skuImpl2.setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    skuImpl2.setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    skuImpl2.setAvailable(true);
-    skuImpl2.setCost(new Money());
-    skuImpl2.setCurrency(new BroadleafCurrencyImpl());
-    skuImpl2.setDefaultProduct(new ProductBundleImpl());
-    skuImpl2.setDescription("The characteristics of someone or something");
-    skuImpl2.setDimension(dimension2);
-    skuImpl2.setDiscountable(true);
-    skuImpl2.setDisplayTemplate("Display Template");
-    skuImpl2.setExcludedFulfillmentOptions(new ArrayList<>());
-    skuImpl2.setExternalId("42");
-    skuImpl2.setFees(new ArrayList<>());
-    skuImpl2.setFulfillmentFlatRates(new HashMap<>());
-    skuImpl2.setFulfillmentType(FulfillmentType.DIGITAL);
     skuImpl2.setId(1L);
-    skuImpl2.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    skuImpl2.setIsMachineSortable(true);
-    skuImpl2.setListPrice(new Money());
-    skuImpl2.setLongDescription("Long Description");
-    skuImpl2.setMachineSortable(true);
-    skuImpl2.setName("Name");
-    skuImpl2.setProduct(new ProductBundleImpl());
-    skuImpl2.setProductOptionValueXrefs(new HashSet<>());
-    skuImpl2.setQuantityAvailable(1);
-    skuImpl2.setRetailPrice(new Money());
-    skuImpl2.setSalePrice(new Money());
-    skuImpl2.setSkuAttributes(new HashMap<>());
-    skuImpl2.setSkuMediaXref(new HashMap<>());
-    skuImpl2.setTaxCode("Tax Code");
-    skuImpl2.setTaxable(true);
-    skuImpl2.setUpc("Upc");
-    skuImpl2.setUrlKey("https://example.org/example");
-    skuImpl2.setWeight(weight2);
+    skuImpl2.setProduct(product);
 
-    // Act
-    skuImpl.equals(skuImpl2);
-  }
-
-  /**
-   * Test {@link SkuImpl#equals(Object)}.
-   * <ul>
-   *   <li>When other is {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#equals(Object)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testEquals_whenOtherIsNull() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange
-    Dimension dimension = new Dimension();
-    dimension.setContainer(new ContainerShapeType("Type", "Friendly Type"));
-    dimension.setDepth(new BigDecimal("2.3"));
-    dimension.setDimensionUnitOfMeasure(new DimensionUnitOfMeasureType("Type", "Friendly Type"));
-    dimension.setGirth(new BigDecimal("2.3"));
-    dimension.setHeight(new BigDecimal("2.3"));
-    dimension.setSize(new ContainerSizeType("Type", "Friendly Type"));
-    dimension.setWidth(new BigDecimal("2.3"));
-
-    Weight weight = new Weight();
-    weight.setWeight(new BigDecimal("2.3"));
-    weight.setWeightUnitOfMeasure(new WeightUnitOfMeasureType("Type", "Friendly Type"));
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    skuImpl.setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    skuImpl.setAvailable(true);
-    skuImpl.setCost(new Money());
-    skuImpl.setCurrency(new BroadleafCurrencyImpl());
-    skuImpl.setDefaultProduct(new ProductBundleImpl());
-    skuImpl.setDescription("The characteristics of someone or something");
-    skuImpl.setDimension(dimension);
-    skuImpl.setDiscountable(true);
-    skuImpl.setDisplayTemplate("Display Template");
-    skuImpl.setExcludedFulfillmentOptions(new ArrayList<>());
-    skuImpl.setExternalId("42");
-    skuImpl.setFees(new ArrayList<>());
-    skuImpl.setFulfillmentFlatRates(new HashMap<>());
-    skuImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    skuImpl.setId(1L);
-    skuImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    skuImpl.setIsMachineSortable(true);
-    skuImpl.setListPrice(new Money());
-    skuImpl.setLongDescription("Long Description");
-    skuImpl.setMachineSortable(true);
-    skuImpl.setName("Name");
-    skuImpl.setProduct(new ProductBundleImpl());
-    skuImpl.setProductOptionValueXrefs(new HashSet<>());
-    skuImpl.setQuantityAvailable(1);
-    skuImpl.setRetailPrice(new Money());
-    skuImpl.setSalePrice(new Money());
-    skuImpl.setSkuAttributes(new HashMap<>());
-    skuImpl.setSkuMediaXref(new HashMap<>());
-    skuImpl.setTaxCode("Tax Code");
-    skuImpl.setTaxable(true);
-    skuImpl.setUpc("Upc");
-    skuImpl.setUrlKey("https://example.org/example");
-    skuImpl.setWeight(weight);
-
-    // Act
-    skuImpl.equals(null);
-  }
-
-  /**
-   * Test {@link SkuImpl#equals(Object)}.
-   * <ul>
-   *   <li>When other is same.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#equals(Object)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testEquals_whenOtherIsSame() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange
-    Dimension dimension = new Dimension();
-    dimension.setContainer(new ContainerShapeType("Type", "Friendly Type"));
-    dimension.setDepth(new BigDecimal("2.3"));
-    dimension.setDimensionUnitOfMeasure(new DimensionUnitOfMeasureType("Type", "Friendly Type"));
-    dimension.setGirth(new BigDecimal("2.3"));
-    dimension.setHeight(new BigDecimal("2.3"));
-    dimension.setSize(new ContainerSizeType("Type", "Friendly Type"));
-    dimension.setWidth(new BigDecimal("2.3"));
-
-    Weight weight = new Weight();
-    weight.setWeight(new BigDecimal("2.3"));
-    weight.setWeightUnitOfMeasure(new WeightUnitOfMeasureType("Type", "Friendly Type"));
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    skuImpl.setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    skuImpl.setAvailable(true);
-    skuImpl.setCost(new Money());
-    skuImpl.setCurrency(new BroadleafCurrencyImpl());
-    skuImpl.setDefaultProduct(new ProductBundleImpl());
-    skuImpl.setDescription("The characteristics of someone or something");
-    skuImpl.setDimension(dimension);
-    skuImpl.setDiscountable(true);
-    skuImpl.setDisplayTemplate("Display Template");
-    skuImpl.setExcludedFulfillmentOptions(new ArrayList<>());
-    skuImpl.setExternalId("42");
-    skuImpl.setFees(new ArrayList<>());
-    skuImpl.setFulfillmentFlatRates(new HashMap<>());
-    skuImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    skuImpl.setId(1L);
-    skuImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    skuImpl.setIsMachineSortable(true);
-    skuImpl.setListPrice(new Money());
-    skuImpl.setLongDescription("Long Description");
-    skuImpl.setMachineSortable(true);
-    skuImpl.setName("Name");
-    skuImpl.setProduct(new ProductBundleImpl());
-    skuImpl.setProductOptionValueXrefs(new HashSet<>());
-    skuImpl.setQuantityAvailable(1);
-    skuImpl.setRetailPrice(new Money());
-    skuImpl.setSalePrice(new Money());
-    skuImpl.setSkuAttributes(new HashMap<>());
-    skuImpl.setSkuMediaXref(new HashMap<>());
-    skuImpl.setTaxCode("Tax Code");
-    skuImpl.setTaxable(true);
-    skuImpl.setUpc("Upc");
-    skuImpl.setUrlKey("https://example.org/example");
-    skuImpl.setWeight(weight);
-
-    // Act
-    skuImpl.equals(skuImpl);
-  }
-
-  /**
-   * Test {@link SkuImpl#equals(Object)}.
-   * <ul>
-   *   <li>When other is wrong type.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuImpl#equals(Object)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testEquals_whenOtherIsWrongType() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange
-    Dimension dimension = new Dimension();
-    dimension.setContainer(new ContainerShapeType("Type", "Friendly Type"));
-    dimension.setDepth(new BigDecimal("2.3"));
-    dimension.setDimensionUnitOfMeasure(new DimensionUnitOfMeasureType("Type", "Friendly Type"));
-    dimension.setGirth(new BigDecimal("2.3"));
-    dimension.setHeight(new BigDecimal("2.3"));
-    dimension.setSize(new ContainerSizeType("Type", "Friendly Type"));
-    dimension.setWidth(new BigDecimal("2.3"));
-
-    Weight weight = new Weight();
-    weight.setWeight(new BigDecimal("2.3"));
-    weight.setWeightUnitOfMeasure(new WeightUnitOfMeasureType("Type", "Friendly Type"));
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    skuImpl.setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    skuImpl.setAvailable(true);
-    skuImpl.setCost(new Money());
-    skuImpl.setCurrency(new BroadleafCurrencyImpl());
-    skuImpl.setDefaultProduct(new ProductBundleImpl());
-    skuImpl.setDescription("The characteristics of someone or something");
-    skuImpl.setDimension(dimension);
-    skuImpl.setDiscountable(true);
-    skuImpl.setDisplayTemplate("Display Template");
-    skuImpl.setExcludedFulfillmentOptions(new ArrayList<>());
-    skuImpl.setExternalId("42");
-    skuImpl.setFees(new ArrayList<>());
-    skuImpl.setFulfillmentFlatRates(new HashMap<>());
-    skuImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    skuImpl.setId(1L);
-    skuImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    skuImpl.setIsMachineSortable(true);
-    skuImpl.setListPrice(new Money());
-    skuImpl.setLongDescription("Long Description");
-    skuImpl.setMachineSortable(true);
-    skuImpl.setName("Name");
-    skuImpl.setProduct(new ProductBundleImpl());
-    skuImpl.setProductOptionValueXrefs(new HashSet<>());
-    skuImpl.setQuantityAvailable(1);
-    skuImpl.setRetailPrice(new Money());
-    skuImpl.setSalePrice(new Money());
-    skuImpl.setSkuAttributes(new HashMap<>());
-    skuImpl.setSkuMediaXref(new HashMap<>());
-    skuImpl.setTaxCode("Tax Code");
-    skuImpl.setTaxable(true);
-    skuImpl.setUpc("Upc");
-    skuImpl.setUrlKey("https://example.org/example");
-    skuImpl.setWeight(weight);
-
-    // Act
-    skuImpl.equals("Different type to SkuImpl");
-  }
-
-  /**
-   * Test {@link SkuImpl#getTaxCode()}.
-   * <p>
-   * Method under test: {@link SkuImpl#getTaxCode()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetTaxCode() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1597 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuImpl()).getTaxCode();
+    // Act and Assert
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getCurrency());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#getTaxCode()}.
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultCategory()}
-   * return {@link CategoryImpl} (default constructor).</li>
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultCategory()} return {@link CategoryImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getTaxCode()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getTaxCode()"})
   public void testGetTaxCode_givenProductBundleImplGetDefaultCategoryReturnCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
     when(defaultProduct.getDefaultCategory()).thenReturn(new CategoryImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setDefaultProduct(defaultProduct);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDefaultProduct(defaultProduct);
 
     // Act
-    String actualTaxCode = skuImpl.getTaxCode();
+    String actualTaxCode = skuImpl2.getTaxCode();
 
     // Assert
     verify(defaultProduct, atLeast(1)).getDefaultCategory();
@@ -17290,67 +9015,64 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#getTaxCode()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) DefaultProduct is
-   * {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Given {@link SkuImpl} (default constructor) DefaultProduct is {@link ProductBundleImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getTaxCode()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getTaxCode()"})
   public void testGetTaxCode_givenSkuImplDefaultProductIsProductBundleImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setDefaultProduct(new ProductBundleImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDefaultProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertNull(skuImpl.getTaxCode());
+    assertNull(skuImpl2.getTaxCode());
   }
 
   /**
    * Test {@link SkuImpl#getTaxCode()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Product is
-   * {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getTaxCode()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getTaxCode()"})
   public void testGetTaxCode_givenSkuImplProductIsProductBundleImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(new ProductBundleImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertNull(skuImpl.getTaxCode());
+    assertNull(skuImpl2.getTaxCode());
   }
 
   /**
    * Test {@link SkuImpl#getTaxCode()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) TaxCode is
-   * {@code Tax Code}.</li>
+   *   <li>Given {@link SkuImpl} (default constructor) TaxCode is {@code Tax Code}.</li>
    *   <li>Then return {@code Tax Code}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuImpl#getTaxCode()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getTaxCode()"})
   public void testGetTaxCode_givenSkuImplTaxCodeIsTaxCode_thenReturnTaxCode() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setTaxCode("Tax Code");
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setTaxCode("Tax Code");
 
     // Act and Assert
-    assertEquals("Tax Code", skuImpl.getTaxCode());
+    assertEquals("Tax Code", skuImpl2.getTaxCode());
   }
 
   /**
@@ -17363,9 +9085,9 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getTaxCode()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getTaxCode()"})
   public void testGetTaxCode_givenSkuImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new SkuImpl()).getTaxCode());
   }
@@ -17379,20 +9101,20 @@ public class SkuImplDiffblueTest {
    * Method under test: {@link SkuImpl#getTaxCode()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getTaxCode()"})
   public void testGetTaxCode_thenThrowIllegalStateException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     CategoryImpl categoryImpl = mock(CategoryImpl.class);
     when(categoryImpl.getTaxCode()).thenThrow(new IllegalStateException("foo"));
     ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
     when(defaultProduct.getDefaultCategory()).thenReturn(categoryImpl);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setDefaultProduct(defaultProduct);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDefaultProduct(defaultProduct);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getTaxCode());
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getTaxCode());
     verify(categoryImpl).getTaxCode();
     verify(defaultProduct, atLeast(1)).getDefaultCategory();
   }
@@ -17400,22 +9122,21 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <p>
-   * Method under test:
-   * {@link SkuImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link SkuImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse SkuImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
     CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
 
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<Sku> actualCreateOrRetrieveCopyInstanceResult = skuImpl.createOrRetrieveCopyInstance(context);
+    CreateResponse<Sku> actualCreateOrRetrieveCopyInstanceResult = skuImpl2.createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
@@ -17424,60 +9145,20 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <p>
-   * Method under test:
-   * {@link SkuImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass607 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    SkuImpl skuImpl2 = new SkuImpl();
-    CatalogImpl fromCatalog = new CatalogImpl();
-    CatalogImpl toCatalog = new CatalogImpl();
-    SiteImpl fromSite = new SiteImpl();
-    SiteImpl toSite = new SiteImpl();
-    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
-
-    // Act
-    skuImpl2.createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
-        genericEntityService, new MultiTenantCopierExtensionManager()));
-  }
-
-  /**
-   * Test {@link SkuImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <ul>
-   *   <li>Given {@code java.lang.Object}.</li>
+   *   <li>Given {@code Object}.</li>
    *   <li>Then Clone return {@link SkuImpl}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link SkuImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse SkuImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance_givenJavaLangObject_thenCloneReturnSkuImpl()
       throws CloneNotSupportedException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
     GenericEntityService genericEntityService = mock(GenericEntityService.class);
     when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
     Class<Object> forNameResult = Object.class;
@@ -17488,7 +9169,7 @@ public class SkuImplDiffblueTest {
     SiteImpl toSite = new SiteImpl();
 
     // Act
-    CreateResponse<Sku> actualCreateOrRetrieveCopyInstanceResult = skuImpl
+    CreateResponse<Sku> actualCreateOrRetrieveCopyInstanceResult = skuImpl2
         .createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
             genericEntityService, new MultiTenantCopierExtensionManager()));
 
@@ -17498,7 +9179,7 @@ public class SkuImplDiffblueTest {
     Sku clone = actualCreateOrRetrieveCopyInstanceResult.getClone();
     assertTrue(clone instanceof SkuImpl);
     assertFalse(actualCreateOrRetrieveCopyInstanceResult.isAlreadyPopulated());
-    assertEquals(skuImpl, clone);
+    assertEquals(skuImpl2, clone);
   }
 
   /**
@@ -17507,27 +9188,13 @@ public class SkuImplDiffblueTest {
    * Method under test: default or parameterless constructor of {@link SkuImpl}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.<init>()"})
   public void testNewSkuImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange and Act
     SkuImpl actualSkuImpl = new SkuImpl();
 
     // Assert
-    Money margin = actualSkuImpl.getMargin();
-    Currency currency = margin.getCurrency();
-    assertEquals("British Pound", currency.getDisplayName());
-    assertEquals("GBP", currency.getCurrencyCode());
-    assertEquals("GBP", currency.toString());
-    FieldEntity fieldEntityType = actualSkuImpl.getFieldEntityType();
-    List<String> allLookupTypes = fieldEntityType.getAllLookupTypes();
-    assertEquals(1, allLookupTypes.size());
-    assertEquals("SKU", allLookupTypes.get(0));
-    assertEquals("SKU", fieldEntityType.getType());
-    assertEquals("Sku", fieldEntityType.getFriendlyType());
-    assertEquals("£", currency.getSymbol());
-    Dimension dimension = actualSkuImpl.dimension;
-    assertEquals("nullHxnullWxnullD\"", dimension.getDimensionString());
     assertNull(actualSkuImpl.getTaxable());
     assertNull(actualSkuImpl.isMachineSortable);
     assertNull(actualSkuImpl.available);
@@ -17542,22 +9209,12 @@ public class SkuImplDiffblueTest {
     assertNull(actualSkuImpl.getTaxCode());
     assertNull(actualSkuImpl.getUpc());
     assertNull(actualSkuImpl.getUrlKey());
-    assertNull(dimension.container);
-    assertNull(dimension.dimensionUnitOfMeasure);
-    assertNull(dimension.size);
     assertNull(actualSkuImpl.description);
     assertNull(actualSkuImpl.fulfillmentType);
     assertNull(actualSkuImpl.inventoryType);
     assertNull(actualSkuImpl.longDescription);
     assertNull(actualSkuImpl.name);
     assertNull(actualSkuImpl.taxCode);
-    Weight weight = actualSkuImpl.weight;
-    assertNull(weight.weightUnitOfMeasure);
-    assertNull(dimension.getDepth());
-    assertNull(dimension.getGirth());
-    assertNull(dimension.getHeight());
-    assertNull(dimension.getWidth());
-    assertNull(weight.getWeight());
     assertNull(actualSkuImpl.cost);
     assertNull(actualSkuImpl.retailPrice);
     assertNull(actualSkuImpl.salePrice);
@@ -17577,33 +9234,20 @@ public class SkuImplDiffblueTest {
     assertNull(actualSkuImpl.getRetailPrice());
     assertNull(actualSkuImpl.getRetailPriceInternal());
     assertNull(actualSkuImpl.getSalePrice());
-    DynamicSkuPrices priceData = actualSkuImpl.getPriceData();
-    assertNull(priceData.getPrice());
-    assertNull(priceData.getPriceAdjustment());
-    assertNull(priceData.getRetailPrice());
-    assertNull(priceData.getSalePrice());
-    assertNull(dimension.getDimensionUnitOfMeasure());
-    assertNull(weight.getWeightUnitOfMeasure());
-    assertNull(dimension.getContainer());
-    assertNull(dimension.getSize());
     assertNull(actualSkuImpl.getDefaultProduct());
     assertNull(actualSkuImpl.getProduct());
     assertNull(actualSkuImpl.product);
     assertNull(actualSkuImpl.getInventoryType());
     assertNull(actualSkuImpl.getFulfillmentType());
     assertEquals(0, actualSkuImpl.getQuantityAvailable().intValue());
-    assertEquals(2, currency.getDefaultFractionDigits());
-    assertEquals(826, currency.getNumericCode());
     assertFalse(actualSkuImpl.getDiscountable());
     assertFalse(actualSkuImpl.getIsMachineSortable());
     assertFalse(actualSkuImpl.hasDefaultSku());
     assertFalse(actualSkuImpl.hasRetailPrice());
     assertFalse(actualSkuImpl.hasSalePrice());
-    assertFalse(priceData.getDidOverride());
     assertTrue(actualSkuImpl.getExcludedFulfillmentOptions().isEmpty());
     assertTrue(actualSkuImpl.getFees().isEmpty());
     assertTrue(actualSkuImpl.getProductOptionValues().isEmpty());
-    assertTrue(fieldEntityType.getAdditionalLookupTypes().isEmpty());
     assertTrue(actualSkuImpl.skuAttributes.isEmpty());
     assertTrue(actualSkuImpl.getFulfillmentFlatRates().isEmpty());
     assertTrue(actualSkuImpl.getMultiValueSkuAttributes().isEmpty());
@@ -17616,44 +9260,11 @@ public class SkuImplDiffblueTest {
     assertTrue(actualSkuImpl.getProductOptionValuesCollection().isEmpty());
     assertTrue(actualSkuImpl.legacyProductOptionValues.isEmpty());
     assertTrue(actualSkuImpl.getAvailable());
-    BigDecimal expectedAmount = new BigDecimal("0.00");
-    assertEquals(expectedAmount, margin.getAmount());
-    assertEquals(margin, margin.abs());
-    assertEquals(margin, margin.zero());
     Dimension expectedDimension = actualSkuImpl.dimension;
     assertSame(expectedDimension, actualSkuImpl.getDimension());
     Map<String, SkuMediaXref> expectedSkuMediaXrefIgnoreDefaultSku = actualSkuImpl.skuMedia;
     assertSame(expectedSkuMediaXrefIgnoreDefaultSku, actualSkuImpl.getSkuMediaXrefIgnoreDefaultSku());
     Weight expectedWeight = actualSkuImpl.weight;
     assertSame(expectedWeight, actualSkuImpl.getWeight());
-  }
-
-  /**
-   * Test new {@link SkuImpl} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link SkuImpl}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testNewSkuImpl2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass576 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuImpl skuImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    new SkuImpl();
   }
 }

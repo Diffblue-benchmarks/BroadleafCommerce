@@ -18,67 +18,15 @@
 package org.broadleafcommerce.common.web.filter;
 
 import static org.junit.Assert.assertNull;
-import org.junit.Ignore;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 
 public class TranslationInterceptorDiffblueTest {
-  /**
-   * Test {@link TranslationInterceptor#preHandle(WebRequest)}.
-   * <p>
-   * Method under test: {@link TranslationInterceptor#preHandle(WebRequest)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testPreHandle() throws Exception {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.broadleafcommerce.common.web.filter.TranslationInterceptor.preHandle(TranslationInterceptor.java:38)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    TranslationInterceptor translationInterceptor = new TranslationInterceptor();
-
-    // Act
-    translationInterceptor
-        .preHandle(new ServletWebRequest(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest())));
-  }
-
-  /**
-   * Test {@link TranslationInterceptor#postHandle(WebRequest, ModelMap)}.
-   * <ul>
-   *   <li>When {@link ModelMap#ModelMap()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link TranslationInterceptor#postHandle(WebRequest, ModelMap)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testPostHandle_whenModelMap() throws Exception {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.broadleafcommerce.common.web.filter.TranslationInterceptor.postHandle(TranslationInterceptor.java:43)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    TranslationInterceptor translationInterceptor = new TranslationInterceptor();
-    ServletWebRequest request = new ServletWebRequest(
-        new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
-
-    // Act
-    translationInterceptor.postHandle(request, new ModelMap());
-  }
-
   /**
    * Test getters and setters.
    * <p>
@@ -89,6 +37,9 @@ public class TranslationInterceptorDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TranslationInterceptor.<init>()",
+      "void TranslationInterceptor.afterCompletion(WebRequest, Exception)"})
   public void testGettersAndSetters() throws Exception {
     // Arrange and Act
     TranslationInterceptor actualTranslationInterceptor = new TranslationInterceptor();
@@ -96,7 +47,7 @@ public class TranslationInterceptorDiffblueTest {
         new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
     actualTranslationInterceptor.afterCompletion(request, new Exception("foo"));
 
-    // Assert that nothing has changed
+    // Assert
     assertNull(actualTranslationInterceptor.translationRequestProcessor);
   }
 }

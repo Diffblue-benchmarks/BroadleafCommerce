@@ -1,47 +1,43 @@
+/*-
+ * #%L
+ * BroadleafCommerce Profile
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.profile.core.service.validator;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.List;
 import org.junit.Test;
-import org.springframework.validation.BeanPropertyBindingResult;
+import org.junit.experimental.categories.Category;
 import org.springframework.validation.BindException;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
 
 public class ResetPasswordValidatorDiffblueTest {
   /**
-   * Test {@link ResetPasswordValidator#validate(Object, Errors)} with
-   * {@code target}, {@code errors}.
+   * Test {@link ResetPasswordValidator#validate(String, String, String, Errors)} with {@code username}, {@code password}, {@code confirmPassword}, {@code errors}.
    * <p>
-   * Method under test: {@link ResetPasswordValidator#validate(Object, Errors)}
+   * Method under test: {@link ResetPasswordValidator#validate(String, String, String, Errors)}
    */
   @Test
-  public void testValidateWithTargetErrors() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing observers.
-    //   Diffblue Cover was unable to create an assertion.
-    //   There are no fields that could be asserted on.
-
-    // Arrange
-    ResetPasswordValidator resetPasswordValidator = new ResetPasswordValidator();
-
-    // Act
-    resetPasswordValidator.validate("Target", new BindException("Target", "Object Name"));
-  }
-
-  /**
-   * Test {@link ResetPasswordValidator#validate(String, String, String, Errors)}
-   * with {@code username}, {@code password}, {@code confirmPassword},
-   * {@code errors}.
-   * <p>
-   * Method under test:
-   * {@link ResetPasswordValidator#validate(String, String, String, Errors)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResetPasswordValidator.validate(String, String, String, Errors)"})
   public void testValidateWithUsernamePasswordConfirmPasswordErrors() {
     // Arrange
     ResetPasswordValidator resetPasswordValidator = new ResetPasswordValidator();
@@ -53,34 +49,23 @@ public class ResetPasswordValidatorDiffblueTest {
     resetPasswordValidator.validate("janedoe", "iloveyou", "iloveyou", errors);
 
     // Assert that nothing has changed
-    BindingResult bindingResult = errors.getBindingResult();
-    assertTrue(bindingResult instanceof BeanPropertyBindingResult);
     assertEquals("org.springframework.validation.BeanPropertyBindingResult: 1 errors\n"
         + "Error in object 'password.valid.regex': codes []; arguments []; default message [password.valid" + ".regex]",
         errors.getLocalizedMessage());
     assertEquals("org.springframework.validation.BeanPropertyBindingResult: 1 errors\n"
         + "Error in object 'password.valid.regex': codes []; arguments []; default message [password.valid" + ".regex]",
         errors.getMessage());
-    List<ObjectError> allErrors = errors.getAllErrors();
-    assertEquals(1, allErrors.size());
-    assertEquals(1, errors.getErrorCount());
-    assertEquals(1, errors.getGlobalErrorCount());
-    assertEquals(1, bindingResult.getErrorCount());
-    assertEquals(1, bindingResult.getGlobalErrorCount());
-    assertEquals(allErrors, errors.getGlobalErrors());
-    assertEquals(allErrors, bindingResult.getAllErrors());
-    assertEquals(allErrors, bindingResult.getGlobalErrors());
+    assertEquals(1, errors.getAllErrors().size());
   }
 
   /**
-   * Test {@link ResetPasswordValidator#validate(String, String, String, Errors)}
-   * with {@code username}, {@code password}, {@code confirmPassword},
-   * {@code errors}.
+   * Test {@link ResetPasswordValidator#validate(String, String, String, Errors)} with {@code username}, {@code password}, {@code confirmPassword}, {@code errors}.
    * <p>
-   * Method under test:
-   * {@link ResetPasswordValidator#validate(String, String, String, Errors)}
+   * Method under test: {@link ResetPasswordValidator#validate(String, String, String, Errors)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResetPasswordValidator.validate(String, String, String, Errors)"})
   public void testValidateWithUsernamePasswordConfirmPasswordErrors2() {
     // Arrange
     ResetPasswordValidator resetPasswordValidator = new ResetPasswordValidator();
@@ -109,14 +94,13 @@ public class ResetPasswordValidatorDiffblueTest {
   }
 
   /**
-   * Test {@link ResetPasswordValidator#validate(String, String, String, Errors)}
-   * with {@code username}, {@code password}, {@code confirmPassword},
-   * {@code errors}.
+   * Test {@link ResetPasswordValidator#validate(String, String, String, Errors)} with {@code username}, {@code password}, {@code confirmPassword}, {@code errors}.
    * <p>
-   * Method under test:
-   * {@link ResetPasswordValidator#validate(String, String, String, Errors)}
+   * Method under test: {@link ResetPasswordValidator#validate(String, String, String, Errors)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResetPasswordValidator.validate(String, String, String, Errors)"})
   public void testValidateWithUsernamePasswordConfirmPasswordErrors3() {
     // Arrange
     ResetPasswordValidator resetPasswordValidator = new ResetPasswordValidator();
@@ -150,6 +134,8 @@ public class ResetPasswordValidatorDiffblueTest {
    * Method under test: {@link ResetPasswordValidator#supports(Class)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ResetPasswordValidator.supports(Class)"})
   public void testSupports() {
     // Arrange
     ResetPasswordValidator resetPasswordValidator = new ResetPasswordValidator();

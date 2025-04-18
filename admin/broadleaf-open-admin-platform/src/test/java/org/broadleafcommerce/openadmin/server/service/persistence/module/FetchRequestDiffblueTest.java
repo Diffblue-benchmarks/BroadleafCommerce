@@ -1,14 +1,34 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.server.service.persistence.module;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import org.broadleafcommerce.openadmin.dto.CriteriaTransferObject;
 import org.broadleafcommerce.openadmin.dto.PersistencePackage;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.FilterMapping;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class FetchRequestDiffblueTest {
   /**
@@ -16,8 +36,7 @@ public class FetchRequestDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>
-   * {@link FetchRequest#FetchRequest(PersistencePackage, CriteriaTransferObject, String, List)}
+   *   <li>{@link FetchRequest#FetchRequest(PersistencePackage, CriteriaTransferObject, String, List)}
    *   <li>{@link FetchRequest#setCeilingEntity(String)}
    *   <li>{@link FetchRequest#setCto(CriteriaTransferObject)}
    *   <li>{@link FetchRequest#setFilterMappings(List)}
@@ -29,6 +48,12 @@ public class FetchRequestDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FetchRequest.<init>(PersistencePackage, CriteriaTransferObject, String, List)",
+      "String FetchRequest.getCeilingEntity()", "CriteriaTransferObject FetchRequest.getCto()",
+      "List FetchRequest.getFilterMappings()", "PersistencePackage FetchRequest.getPersistencePackage()",
+      "void FetchRequest.setCeilingEntity(String)", "void FetchRequest.setCto(CriteriaTransferObject)",
+      "void FetchRequest.setFilterMappings(List)", "void FetchRequest.setPersistencePackage(PersistencePackage)"})
   public void testGettersAndSetters() {
     // Arrange
     PersistencePackage persistencePackage = new PersistencePackage();
@@ -48,7 +73,7 @@ public class FetchRequestDiffblueTest {
     List<FilterMapping> actualFilterMappings = actualFetchRequest.getFilterMappings();
     PersistencePackage actualPersistencePackage = actualFetchRequest.getPersistencePackage();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Ceiling Entity", actualCeilingEntity);
     assertTrue(actualFilterMappings.isEmpty());
     assertSame(filterMappings, actualFilterMappings);

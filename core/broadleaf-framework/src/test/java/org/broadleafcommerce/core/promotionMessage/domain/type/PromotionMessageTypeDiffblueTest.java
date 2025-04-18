@@ -1,36 +1,42 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.promotionMessage.domain.type;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @ContextConfiguration(classes = {PromotionMessageType.class})
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class PromotionMessageTypeDiffblueTest {
   @Autowired
   private PromotionMessageType promotionMessageType;
-
-  /**
-   * Test {@link PromotionMessageType#getInstance(String)}.
-   * <p>
-   * Method under test: {@link PromotionMessageType#getInstance(String)}
-   */
-  @Test
-  public void testGetInstance() {
-    // Arrange and Act
-    PromotionMessageType actualInstance = PromotionMessageType.getInstance("Type");
-
-    // Assert
-    assertEquals("Friendly Type", actualInstance.getFriendlyType());
-    assertEquals("Type", actualInstance.getType());
-    assertEquals(1, actualInstance.getOrder());
-  }
 
   /**
    * Test getters and setters.
@@ -45,25 +51,31 @@ public class PromotionMessageTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PromotionMessageType.<init>()", "String PromotionMessageType.getFriendlyType()",
+      "int PromotionMessageType.getOrder()", "String PromotionMessageType.getType()",
+      "void PromotionMessageType.setOrder(int)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     PromotionMessageType actualPromotionMessageType = new PromotionMessageType();
     actualPromotionMessageType.setOrder(1);
-    actualPromotionMessageType.getFriendlyType();
+    String actualFriendlyType = actualPromotionMessageType.getFriendlyType();
     int actualOrder = actualPromotionMessageType.getOrder();
-    actualPromotionMessageType.getType();
 
-    // Assert that nothing has changed
+    // Assert
+    assertNull(actualFriendlyType);
+    assertNull(actualPromotionMessageType.getType());
     assertEquals(1, actualOrder);
   }
 
   /**
    * Test {@link PromotionMessageType#PromotionMessageType(String, String, int)}.
    * <p>
-   * Method under test:
-   * {@link PromotionMessageType#PromotionMessageType(String, String, int)}
+   * Method under test: {@link PromotionMessageType#PromotionMessageType(String, String, int)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PromotionMessageType.<init>(String, String, int)"})
   public void testNewPromotionMessageType() {
     // Arrange and Act
     PromotionMessageType actualPromotionMessageType = new PromotionMessageType("Type", "Friendly Type", 1);
@@ -78,13 +90,14 @@ public class PromotionMessageTypeDiffblueTest {
    * Test {@link PromotionMessageType#setType(String)}.
    * <ul>
    *   <li>When {@code TypeType}.</li>
-   *   <li>Then {@link PromotionMessageType#QUALIFIERS} Type is
-   * {@code TypeType}.</li>
+   *   <li>Then {@link PromotionMessageType#QUALIFIERS} Type is {@code TypeType}.</li>
    * </ul>
    * <p>
    * Method under test: {@link PromotionMessageType#setType(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PromotionMessageType.setType(String)"})
   public void testSetType_whenTypeType_thenQualifiersTypeIsTypeType() {
     // Arrange
     PromotionMessageType promotionMessageType2 = PromotionMessageType.QUALIFIERS;
@@ -106,6 +119,8 @@ public class PromotionMessageTypeDiffblueTest {
    * Method under test: {@link PromotionMessageType#setType(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PromotionMessageType.setType(String)"})
   public void testSetType_whenType_thenQualifiersTypeIsType() {
     // Arrange
     PromotionMessageType promotionMessageType2 = PromotionMessageType.QUALIFIERS;
@@ -118,8 +133,7 @@ public class PromotionMessageTypeDiffblueTest {
   }
 
   /**
-   * Test {@link PromotionMessageType#equals(Object)}, and
-   * {@link PromotionMessageType#hashCode()}.
+   * Test {@link PromotionMessageType#equals(Object)}, and {@link PromotionMessageType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -132,6 +146,8 @@ public class PromotionMessageTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PromotionMessageType.equals(Object)", "int PromotionMessageType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     PromotionMessageType promotionMessageType = PromotionMessageType.QUALIFIERS;
@@ -144,8 +160,7 @@ public class PromotionMessageTypeDiffblueTest {
   }
 
   /**
-   * Test {@link PromotionMessageType#equals(Object)}, and
-   * {@link PromotionMessageType#hashCode()}.
+   * Test {@link PromotionMessageType#equals(Object)}, and {@link PromotionMessageType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -158,6 +173,8 @@ public class PromotionMessageTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PromotionMessageType.equals(Object)", "int PromotionMessageType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     PromotionMessageType promotionMessageType = new PromotionMessageType();
@@ -170,34 +187,7 @@ public class PromotionMessageTypeDiffblueTest {
   }
 
   /**
-   * Test {@link PromotionMessageType#equals(Object)}, and
-   * {@link PromotionMessageType#hashCode()}.
-   * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
-   * </ul>
-   * <p>
-   * Methods under test:
-   * <ul>
-   *   <li>{@link PromotionMessageType#equals(Object)}
-   *   <li>{@link PromotionMessageType#hashCode()}
-   * </ul>
-   */
-  @Test
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
-    // Arrange
-    PromotionMessageType promotionMessageType = new PromotionMessageType("QUALIFIERS", "Friendly Type", 1);
-    PromotionMessageType promotionMessageType2 = PromotionMessageType.QUALIFIERS;
-
-    // Act and Assert
-    assertEquals(promotionMessageType, promotionMessageType2);
-    int expectedHashCodeResult = promotionMessageType.hashCode();
-    assertEquals(expectedHashCodeResult, promotionMessageType2.hashCode());
-  }
-
-  /**
-   * Test {@link PromotionMessageType#equals(Object)}, and
-   * {@link PromotionMessageType#hashCode()}.
+   * Test {@link PromotionMessageType#equals(Object)}, and {@link PromotionMessageType#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -210,6 +200,8 @@ public class PromotionMessageTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PromotionMessageType.equals(Object)", "int PromotionMessageType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     PromotionMessageType promotionMessageType = PromotionMessageType.QUALIFIERS;
@@ -230,9 +222,27 @@ public class PromotionMessageTypeDiffblueTest {
    * Method under test: {@link PromotionMessageType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PromotionMessageType.equals(Object)", "int PromotionMessageType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(PromotionMessageType.TARGETS, PromotionMessageType.QUALIFIERS);
+  }
+
+  /**
+   * Test {@link PromotionMessageType#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PromotionMessageType#equals(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PromotionMessageType.equals(Object)", "int PromotionMessageType.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange, Act and Assert
     assertNotEquals(new PromotionMessageType(), PromotionMessageType.QUALIFIERS);
   }
 
@@ -246,6 +256,8 @@ public class PromotionMessageTypeDiffblueTest {
    * Method under test: {@link PromotionMessageType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PromotionMessageType.equals(Object)", "int PromotionMessageType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(PromotionMessageType.QUALIFIERS, null);
@@ -261,23 +273,25 @@ public class PromotionMessageTypeDiffblueTest {
    * Method under test: {@link PromotionMessageType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PromotionMessageType.equals(Object)", "int PromotionMessageType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(PromotionMessageType.QUALIFIERS, "Different type to PromotionMessageType");
   }
 
   /**
-   * Test {@link PromotionMessageType#compareTo(PromotionMessageType)} with
-   * {@code PromotionMessageType}.
+   * Test {@link PromotionMessageType#compareTo(PromotionMessageType)} with {@code PromotionMessageType}.
    * <ul>
    *   <li>When {@link PromotionMessageType#QUALIFIERS}.</li>
    *   <li>Then return zero.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PromotionMessageType#compareTo(PromotionMessageType)}
+   * Method under test: {@link PromotionMessageType#compareTo(PromotionMessageType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int PromotionMessageType.compareTo(PromotionMessageType)"})
   public void testCompareToWithPromotionMessageType_whenQualifiers_thenReturnZero() {
     // Arrange, Act and Assert
     assertEquals(0, PromotionMessageType.QUALIFIERS.compareTo(PromotionMessageType.QUALIFIERS));

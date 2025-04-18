@@ -1,10 +1,30 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.server.security.service;
 
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class EntityFormModifierConfigurationDiffblueTest {
   /**
@@ -20,6 +40,11 @@ public class EntityFormModifierConfigurationDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void EntityFormModifierConfiguration.<init>()",
+      "void EntityFormModifierConfiguration.<init>(List, List)", "List EntityFormModifierConfiguration.getData()",
+      "List EntityFormModifierConfiguration.getModifier()", "void EntityFormModifierConfiguration.setData(List)",
+      "void EntityFormModifierConfiguration.setModifier(List)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     EntityFormModifierConfiguration actualEntityFormModifierConfiguration = new EntityFormModifierConfiguration();
@@ -31,7 +56,7 @@ public class EntityFormModifierConfigurationDiffblueTest {
         .getData();
     List<EntityFormModifier> actualModifier = actualEntityFormModifierConfiguration.getModifier();
 
-    // Assert that nothing has changed
+    // Assert
     assertTrue(actualData.isEmpty());
     assertTrue(actualModifier.isEmpty());
     assertSame(data, actualData);
@@ -46,8 +71,7 @@ public class EntityFormModifierConfigurationDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>
-   * {@link EntityFormModifierConfiguration#EntityFormModifierConfiguration(List, List)}
+   *   <li>{@link EntityFormModifierConfiguration#EntityFormModifierConfiguration(List, List)}
    *   <li>{@link EntityFormModifierConfiguration#setData(List)}
    *   <li>{@link EntityFormModifierConfiguration#setModifier(List)}
    *   <li>{@link EntityFormModifierConfiguration#getData()}
@@ -55,6 +79,11 @@ public class EntityFormModifierConfigurationDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void EntityFormModifierConfiguration.<init>()",
+      "void EntityFormModifierConfiguration.<init>(List, List)", "List EntityFormModifierConfiguration.getData()",
+      "List EntityFormModifierConfiguration.getModifier()", "void EntityFormModifierConfiguration.setData(List)",
+      "void EntityFormModifierConfiguration.setModifier(List)"})
   public void testGettersAndSetters_whenArrayList() {
     // Arrange
     ArrayList<EntityFormModifier> modifier = new ArrayList<>();
@@ -70,7 +99,7 @@ public class EntityFormModifierConfigurationDiffblueTest {
         .getData();
     List<EntityFormModifier> actualModifier = actualEntityFormModifierConfiguration.getModifier();
 
-    // Assert that nothing has changed
+    // Assert
     assertTrue(actualData.isEmpty());
     assertTrue(actualModifier.isEmpty());
     assertSame(data, actualData);

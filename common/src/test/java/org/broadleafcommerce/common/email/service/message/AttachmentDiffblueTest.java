@@ -17,10 +17,14 @@
  */
 package org.broadleafcommerce.common.email.service.message;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.UnsupportedEncodingException;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class AttachmentDiffblueTest {
   /**
@@ -38,6 +42,10 @@ public class AttachmentDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Attachment.<init>()", "byte[] Attachment.getData()", "String Attachment.getFilename()",
+      "String Attachment.getMimeType()", "void Attachment.setData(byte[])", "void Attachment.setFilename(String)",
+      "void Attachment.setMimeType(String)"})
   public void testGettersAndSetters() throws UnsupportedEncodingException {
     // Arrange and Act
     Attachment actualAttachment = new Attachment();
@@ -48,9 +56,10 @@ public class AttachmentDiffblueTest {
     byte[] actualData = actualAttachment.getData();
     String actualFilename = actualAttachment.getFilename();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Mime Type", actualAttachment.getMimeType());
     assertEquals("foo.txt", actualFilename);
     assertSame(data, actualData);
+    assertArrayEquals("AXAXAXAX".getBytes("UTF-8"), actualData);
   }
 }

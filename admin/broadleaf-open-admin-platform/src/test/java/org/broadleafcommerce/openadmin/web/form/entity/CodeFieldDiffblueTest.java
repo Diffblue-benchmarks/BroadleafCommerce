@@ -1,9 +1,30 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.web.form.entity;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class CodeFieldDiffblueTest {
   /**
@@ -19,6 +40,10 @@ public class CodeFieldDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CodeField.<init>()", "String CodeField.getFetchUrlSuffix()",
+      "String CodeField.getFileType()", "void CodeField.setFetchUrlSuffix(String)",
+      "void CodeField.setFileType(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     CodeField actualCodeField = new CodeField();
@@ -26,9 +51,27 @@ public class CodeFieldDiffblueTest {
     actualCodeField.setFileType("File Type");
     String actualFetchUrlSuffix = actualCodeField.getFetchUrlSuffix();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("File Type", actualCodeField.getFileType());
     assertEquals("https://example.org/example", actualFetchUrlSuffix);
+    assertNull(actualCodeField.getOrder());
+    assertNull(actualCodeField.getAssociatedFieldName());
+    assertNull(actualCodeField.getColumnWidth());
+    assertNull(actualCodeField.getConfirmEnabledText());
+    assertNull(actualCodeField.getDisplayType());
+    assertNull(actualCodeField.getFieldComponentRenderer());
+    assertNull(actualCodeField.getFieldType());
+    assertNull(actualCodeField.getForeignKeyClass());
+    assertNull(actualCodeField.getForeignKeyDisplayValueProperty());
+    assertNull(actualCodeField.getForeignKeySectionPath());
+    assertNull(actualCodeField.getFriendlyName());
+    assertNull(actualCodeField.getGridFieldComponentRenderer());
+    assertNull(actualCodeField.getIdOverride());
+    assertNull(actualCodeField.getName());
+    assertNull(actualCodeField.getOnChangeTrigger());
+    assertNull(actualCodeField.getOwningEntityClass());
+    assertNull(actualCodeField.getRawDisplayValue());
+    assertNull(actualCodeField.getValue());
     assertFalse(actualCodeField.getAllowNoValueEnumOption());
     assertTrue(actualCodeField.getAttributes().isEmpty());
     assertTrue(actualCodeField.getShouldRender());

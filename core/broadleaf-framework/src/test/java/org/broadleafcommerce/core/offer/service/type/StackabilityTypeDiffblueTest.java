@@ -1,17 +1,39 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.offer.service.type;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @ContextConfiguration(classes = {StackabilityType.class})
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class StackabilityTypeDiffblueTest {
   @Autowired
   private StackabilityType stackabilityType;
@@ -22,6 +44,8 @@ public class StackabilityTypeDiffblueTest {
    * Method under test: {@link StackabilityType#getInstance(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"StackabilityType StackabilityType.getInstance(String)"})
   public void testGetInstance() {
     // Arrange and Act
     StackabilityType actualInstance = StackabilityType.getInstance("Type");
@@ -45,25 +69,30 @@ public class StackabilityTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StackabilityType.<init>()", "String StackabilityType.getFriendlyType()",
+      "int StackabilityType.getOrder()", "String StackabilityType.getType()", "void StackabilityType.setOrder(int)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     StackabilityType actualStackabilityType = new StackabilityType();
     actualStackabilityType.setOrder(1);
-    actualStackabilityType.getFriendlyType();
+    String actualFriendlyType = actualStackabilityType.getFriendlyType();
     int actualOrder = actualStackabilityType.getOrder();
-    actualStackabilityType.getType();
 
-    // Assert that nothing has changed
+    // Assert
+    assertNull(actualFriendlyType);
+    assertNull(actualStackabilityType.getType());
     assertEquals(1, actualOrder);
   }
 
   /**
    * Test {@link StackabilityType#StackabilityType(String, String, int)}.
    * <p>
-   * Method under test:
-   * {@link StackabilityType#StackabilityType(String, String, int)}
+   * Method under test: {@link StackabilityType#StackabilityType(String, String, int)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StackabilityType.<init>(String, String, int)"})
   public void testNewStackabilityType() {
     // Arrange and Act
     StackabilityType actualStackabilityType = new StackabilityType("Type", "Friendly Type", 1);
@@ -84,6 +113,8 @@ public class StackabilityTypeDiffblueTest {
    * Method under test: {@link StackabilityType#setType(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StackabilityType.setType(String)"})
   public void testSetType_whenTypeType_thenNoTypeIsTypeType() {
     // Arrange
     StackabilityType stackabilityType2 = StackabilityType.NO;
@@ -105,6 +136,8 @@ public class StackabilityTypeDiffblueTest {
    * Method under test: {@link StackabilityType#setType(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StackabilityType.setType(String)"})
   public void testSetType_whenType_thenNoTypeIsType() {
     // Arrange
     StackabilityType stackabilityType2 = StackabilityType.NO;
@@ -117,8 +150,7 @@ public class StackabilityTypeDiffblueTest {
   }
 
   /**
-   * Test {@link StackabilityType#equals(Object)}, and
-   * {@link StackabilityType#hashCode()}.
+   * Test {@link StackabilityType#equals(Object)}, and {@link StackabilityType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -131,6 +163,8 @@ public class StackabilityTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StackabilityType.equals(Object)", "int StackabilityType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     StackabilityType stackabilityType = StackabilityType.NO;
@@ -143,8 +177,7 @@ public class StackabilityTypeDiffblueTest {
   }
 
   /**
-   * Test {@link StackabilityType#equals(Object)}, and
-   * {@link StackabilityType#hashCode()}.
+   * Test {@link StackabilityType#equals(Object)}, and {@link StackabilityType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -157,6 +190,8 @@ public class StackabilityTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StackabilityType.equals(Object)", "int StackabilityType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     StackabilityType stackabilityType = new StackabilityType();
@@ -169,8 +204,7 @@ public class StackabilityTypeDiffblueTest {
   }
 
   /**
-   * Test {@link StackabilityType#equals(Object)}, and
-   * {@link StackabilityType#hashCode()}.
+   * Test {@link StackabilityType#equals(Object)}, and {@link StackabilityType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -183,6 +217,8 @@ public class StackabilityTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StackabilityType.equals(Object)", "int StackabilityType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     StackabilityType stackabilityType = new StackabilityType("NO", "Friendly Type", 1);
@@ -195,8 +231,7 @@ public class StackabilityTypeDiffblueTest {
   }
 
   /**
-   * Test {@link StackabilityType#equals(Object)}, and
-   * {@link StackabilityType#hashCode()}.
+   * Test {@link StackabilityType#equals(Object)}, and {@link StackabilityType#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -209,6 +244,8 @@ public class StackabilityTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StackabilityType.equals(Object)", "int StackabilityType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     StackabilityType stackabilityType = StackabilityType.NO;
@@ -229,9 +266,27 @@ public class StackabilityTypeDiffblueTest {
    * Method under test: {@link StackabilityType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StackabilityType.equals(Object)", "int StackabilityType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(StackabilityType.YES, StackabilityType.NO);
+  }
+
+  /**
+   * Test {@link StackabilityType#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StackabilityType#equals(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StackabilityType.equals(Object)", "int StackabilityType.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange, Act and Assert
     assertNotEquals(new StackabilityType(), StackabilityType.NO);
   }
 
@@ -245,6 +300,8 @@ public class StackabilityTypeDiffblueTest {
    * Method under test: {@link StackabilityType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StackabilityType.equals(Object)", "int StackabilityType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(StackabilityType.NO, null);
@@ -260,14 +317,15 @@ public class StackabilityTypeDiffblueTest {
    * Method under test: {@link StackabilityType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StackabilityType.equals(Object)", "int StackabilityType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(StackabilityType.NO, "Different type to StackabilityType");
   }
 
   /**
-   * Test {@link StackabilityType#compareTo(StackabilityType)} with
-   * {@code StackabilityType}.
+   * Test {@link StackabilityType#compareTo(StackabilityType)} with {@code StackabilityType}.
    * <ul>
    *   <li>When {@link StackabilityType#NO}.</li>
    *   <li>Then return zero.</li>
@@ -276,6 +334,8 @@ public class StackabilityTypeDiffblueTest {
    * Method under test: {@link StackabilityType#compareTo(StackabilityType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int StackabilityType.compareTo(StackabilityType)"})
   public void testCompareToWithStackabilityType_whenNo_thenReturnZero() {
     // Arrange, Act and Assert
     assertEquals(0, StackabilityType.NO.compareTo(StackabilityType.NO));

@@ -20,9 +20,12 @@ package org.broadleafcommerce.common.resource;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.springframework.core.io.Resource;
 
 public class BundledResourceInfoDiffblueTest {
@@ -41,6 +44,11 @@ public class BundledResourceInfoDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BundledResourceInfo.<init>(Resource, String, List)",
+      "List BundledResourceInfo.getBundledFilePaths()", "Resource BundledResourceInfo.getResource()",
+      "String BundledResourceInfo.getVersionedBundleName()", "void BundledResourceInfo.setBundledFilePaths(List)",
+      "void BundledResourceInfo.setResource(Resource)", "void BundledResourceInfo.setVersionedBundleName(String)"})
   public void testGettersAndSetters() {
     // Arrange
     GeneratedResource resource = new GeneratedResource();
@@ -55,7 +63,7 @@ public class BundledResourceInfoDiffblueTest {
     List<String> actualBundledFilePaths = actualBundledResourceInfo.getBundledFilePaths();
     Resource actualResource = actualBundledResourceInfo.getResource();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("1.0.2", actualBundledResourceInfo.getVersionedBundleName());
     assertTrue(actualBundledFilePaths.isEmpty());
     assertSame(bundledFilePaths, actualBundledFilePaths);

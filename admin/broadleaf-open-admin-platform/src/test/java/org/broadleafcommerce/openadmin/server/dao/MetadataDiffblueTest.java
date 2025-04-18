@@ -1,14 +1,35 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.server.dao;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,92 +41,66 @@ import org.broadleafcommerce.openadmin.dto.ClassMetadata;
 import org.broadleafcommerce.openadmin.dto.ClassTree;
 import org.broadleafcommerce.openadmin.dto.FieldMetadata;
 import org.broadleafcommerce.openadmin.dto.MergedPropertyType;
-import org.broadleafcommerce.openadmin.dto.Property;
+import org.broadleafcommerce.openadmin.dto.TabMetadata;
 import org.broadleafcommerce.openadmin.server.dao.provider.metadata.AdornedTargetCollectionFieldMetadataProvider;
-import org.broadleafcommerce.openadmin.server.dao.provider.metadata.AdvancedCollectionFieldMetadataProvider;
+import org.broadleafcommerce.openadmin.server.dao.provider.metadata.BasicEntityMetadataProvider;
 import org.broadleafcommerce.openadmin.server.dao.provider.metadata.BasicFieldMetadataProvider;
 import org.broadleafcommerce.openadmin.server.dao.provider.metadata.DefaultFieldMetadataProvider;
 import org.broadleafcommerce.openadmin.server.dao.provider.metadata.FieldMetadataProvider;
+import org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.AddFieldMetadataRequest;
 import org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.AddMetadataFromMappingDataRequest;
+import org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.AddMetadataRequest;
 import org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.OverrideViaAnnotationRequest;
 import org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.OverrideViaXmlRequest;
 import org.broadleafcommerce.openadmin.server.service.type.MetadataProviderResponse;
+import org.hibernate.mapping.Property;
 import org.hibernate.type.BigDecimalType;
 import org.hibernate.type.Type;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
-    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
-    "/bl-open-admin-contentCreator-applicationContext.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class MetadataDiffblueTest {
-  @Autowired
+  @Mock
+  private BasicEntityMetadataProvider basicEntityMetadataProvider;
+
+  @Mock
+  private FieldMetadataProvider fieldMetadataProvider;
+
+  @Mock
+  private List<FieldMetadataProvider> list;
+
+  @InjectMocks
   private Metadata metadata;
 
   /**
-   * Test
-   * {@link Metadata#getFieldMetadataForTargetClass(Class, Class, DynamicEntityDao, String)}.
+   * Test {@link Metadata#getFieldMetadataForTargetClass(Class, Class, DynamicEntityDao, String)}.
    * <p>
-   * Method under test:
-   * {@link Metadata#getFieldMetadataForTargetClass(Class, Class, DynamicEntityDao, String)}
+   * Method under test: {@link Metadata#getFieldMetadataForTargetClass(Class, Class, DynamicEntityDao, String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map Metadata.getFieldMetadataForTargetClass(Class, Class, DynamicEntityDao, String)"})
   public void testGetFieldMetadataForTargetClass() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass15429 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.Metadata metadata;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    Metadata metadata2 = new Metadata();
+    when(fieldMetadataProvider.addMetadata(Mockito.<AddFieldMetadataRequest>any(),
+        Mockito.<Map<String, FieldMetadata>>any())).thenReturn(MetadataProviderResponse.HANDLED);
+    when(fieldMetadataProvider.addMetadata(Mockito.<AddFieldMetadataRequest>any(),
+        Mockito.<Map<String, FieldMetadata>>any())).thenReturn(MetadataProviderResponse.NOT_HANDLED);
+
+    ArrayList<FieldMetadataProvider> fieldMetadataProviderList = new ArrayList<>();
+    fieldMetadataProviderList.add(fieldMetadataProvider);
+    when(list.iterator()).thenReturn(fieldMetadataProviderList.iterator());
     Class<Object> parentClass = Object.class;
-    Class<Object> targetClass = Object.class;
-
-    // Act
-    metadata2.getFieldMetadataForTargetClass(parentClass, targetClass, new DynamicEntityDaoImpl(), "Prefix");
-  }
-
-  /**
-   * Test
-   * {@link Metadata#getFieldMetadataForTargetClass(Class, Class, DynamicEntityDao, String)}.
-   * <ul>
-   *   <li>Then calls {@link DynamicEntityDao#getAllFields(Class)}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link Metadata#getFieldMetadataForTargetClass(Class, Class, DynamicEntityDao, String)}
-   */
-  @Test
-  public void testGetFieldMetadataForTargetClass_thenCallsGetAllFields() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Metadata metadata = new Metadata();
-    metadata.setDefaultFieldMetadataProvider(new AdvancedCollectionFieldMetadataProvider());
-    Class<Object> parentClass = Object.class;
-    Class<Object> targetClass = Object.class;
+    Class<Metadata> targetClass = Metadata.class;
     DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
     when(dynamicEntityDao.getAllFields(Mockito.<Class<Object>>any())).thenReturn(new Field[]{null});
 
@@ -114,27 +109,91 @@ public class MetadataDiffblueTest {
         targetClass, dynamicEntityDao, "Prefix");
 
     // Assert
+    verify(list).iterator();
     verify(dynamicEntityDao).getAllFields(isA(Class.class));
+    verify(fieldMetadataProvider, atLeast(1)).addMetadata(Mockito.<AddFieldMetadataRequest>any(), isA(Map.class));
     assertTrue(actualFieldMetadataForTargetClass.isEmpty());
   }
 
   /**
-   * Test
-   * {@link Metadata#getFieldMetadataForTargetClass(Class, Class, DynamicEntityDao, String)}.
-   * <ul>
-   *   <li>When {@link DynamicEntityDaoImpl} (default constructor).</li>
-   *   <li>Then return Empty.</li>
-   * </ul>
+   * Test {@link Metadata#getFieldMetadataForTargetClass(Class, Class, DynamicEntityDao, String)}.
    * <p>
-   * Method under test:
-   * {@link Metadata#getFieldMetadataForTargetClass(Class, Class, DynamicEntityDao, String)}
+   * Method under test: {@link Metadata#getFieldMetadataForTargetClass(Class, Class, DynamicEntityDao, String)}
    */
   @Test
-  public void testGetFieldMetadataForTargetClass_whenDynamicEntityDaoImpl_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map Metadata.getFieldMetadataForTargetClass(Class, Class, DynamicEntityDao, String)"})
+  public void testGetFieldMetadataForTargetClass2() {
     // Arrange
-    Metadata metadata = new Metadata();
+    when(fieldMetadataProvider.addMetadata(Mockito.<AddFieldMetadataRequest>any(),
+        Mockito.<Map<String, FieldMetadata>>any())).thenReturn(MetadataProviderResponse.HANDLED);
+    when(fieldMetadataProvider.addMetadata(Mockito.<AddFieldMetadataRequest>any(),
+        Mockito.<Map<String, FieldMetadata>>any())).thenReturn(MetadataProviderResponse.HANDLED_BREAK);
+
+    ArrayList<FieldMetadataProvider> fieldMetadataProviderList = new ArrayList<>();
+    fieldMetadataProviderList.add(fieldMetadataProvider);
+    when(list.iterator()).thenReturn(fieldMetadataProviderList.iterator());
+    Class<Object> parentClass = Object.class;
+    Class<Metadata> targetClass = Metadata.class;
+    DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
+    when(dynamicEntityDao.getAllFields(Mockito.<Class<Object>>any())).thenReturn(new Field[]{null});
+
+    // Act
+    Map<String, FieldMetadata> actualFieldMetadataForTargetClass = metadata.getFieldMetadataForTargetClass(parentClass,
+        targetClass, dynamicEntityDao, "Prefix");
+
+    // Assert
+    verify(list).iterator();
+    verify(dynamicEntityDao).getAllFields(isA(Class.class));
+    verify(fieldMetadataProvider, atLeast(1)).addMetadata(isA(AddFieldMetadataRequest.class), isA(Map.class));
+    assertTrue(actualFieldMetadataForTargetClass.isEmpty());
+  }
+
+  /**
+   * Test {@link Metadata#getFieldMetadataForTargetClass(Class, Class, DynamicEntityDao, String)}.
+   * <ul>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link FieldMetadataProvider}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link Metadata#getFieldMetadataForTargetClass(Class, Class, DynamicEntityDao, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map Metadata.getFieldMetadataForTargetClass(Class, Class, DynamicEntityDao, String)"})
+  public void testGetFieldMetadataForTargetClass_givenArrayListAddFieldMetadataProvider() {
+    // Arrange
+    when(fieldMetadataProvider.addMetadata(Mockito.<AddFieldMetadataRequest>any(),
+        Mockito.<Map<String, FieldMetadata>>any())).thenReturn(MetadataProviderResponse.HANDLED);
+
+    ArrayList<FieldMetadataProvider> fieldMetadataProviderList = new ArrayList<>();
+    fieldMetadataProviderList.add(fieldMetadataProvider);
+    when(list.iterator()).thenReturn(fieldMetadataProviderList.iterator());
+    Class<Object> parentClass = Object.class;
+    Class<Metadata> targetClass = Metadata.class;
+
+    // Act
+    Map<String, FieldMetadata> actualFieldMetadataForTargetClass = metadata.getFieldMetadataForTargetClass(parentClass,
+        targetClass, new DynamicEntityDaoImpl(), "Prefix");
+
+    // Assert
+    verify(list, atLeast(1)).iterator();
+    verify(fieldMetadataProvider, atLeast(1)).addMetadata(Mockito.<AddFieldMetadataRequest>any(), isA(Map.class));
+    assertTrue(actualFieldMetadataForTargetClass.isEmpty());
+  }
+
+  /**
+   * Test {@link Metadata#getFieldMetadataForTargetClass(Class, Class, DynamicEntityDao, String)}.
+   * <ul>
+   *   <li>Given {@link FieldMetadataProvider}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link Metadata#getFieldMetadataForTargetClass(Class, Class, DynamicEntityDao, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map Metadata.getFieldMetadataForTargetClass(Class, Class, DynamicEntityDao, String)"})
+  public void testGetFieldMetadataForTargetClass_givenFieldMetadataProvider() {
+    // Arrange
     Class<Object> parentClass = Object.class;
     Class<Object> targetClass = Object.class;
 
@@ -144,144 +203,136 @@ public class MetadataDiffblueTest {
   }
 
   /**
-   * Test {@link Metadata#getBaseTabAndGroupMetadata(Class[])}.
+   * Test {@link Metadata#getFieldMetadataForTargetClass(Class, Class, DynamicEntityDao, String)}.
+   * <ul>
+   *   <li>Then calls {@link List#iterator()}.</li>
+   * </ul>
    * <p>
-   * Method under test: {@link Metadata#getBaseTabAndGroupMetadata(Class[])}
+   * Method under test: {@link Metadata#getFieldMetadataForTargetClass(Class, Class, DynamicEntityDao, String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetBaseTabAndGroupMetadata() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass14541 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.Metadata metadata;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map Metadata.getFieldMetadataForTargetClass(Class, Class, DynamicEntityDao, String)"})
+  public void testGetFieldMetadataForTargetClass_thenCallsIterator() {
     // Arrange
-    Metadata metadata2 = new Metadata();
-    Class<Object> forNameResult = Object.class;
+    when(fieldMetadataProvider.addMetadata(Mockito.<AddFieldMetadataRequest>any(),
+        Mockito.<Map<String, FieldMetadata>>any())).thenReturn(MetadataProviderResponse.HANDLED);
+
+    ArrayList<FieldMetadataProvider> fieldMetadataProviderList = new ArrayList<>();
+    when(list.iterator()).thenReturn(fieldMetadataProviderList.iterator());
+    Class<Object> parentClass = Object.class;
+    Class<Metadata> targetClass = Metadata.class;
 
     // Act
-    metadata2.getBaseTabAndGroupMetadata(new Class[]{forNameResult});
+    Map<String, FieldMetadata> actualFieldMetadataForTargetClass = metadata.getFieldMetadataForTargetClass(parentClass,
+        targetClass, new DynamicEntityDaoImpl(), "Prefix");
+
+    // Assert
+    verify(list, atLeast(1)).iterator();
+    verify(fieldMetadataProvider, atLeast(1)).addMetadata(Mockito.<AddFieldMetadataRequest>any(), isA(Map.class));
+    assertTrue(actualFieldMetadataForTargetClass.isEmpty());
   }
 
   /**
    * Test {@link Metadata#getBaseTabAndGroupMetadata(Class[])}.
-   * <ul>
-   *   <li>When empty array of {@link Class}.</li>
-   *   <li>Then return Empty.</li>
-   * </ul>
    * <p>
    * Method under test: {@link Metadata#getBaseTabAndGroupMetadata(Class[])}
    */
   @Test
-  public void testGetBaseTabAndGroupMetadata_whenEmptyArrayOfClass_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map Metadata.getBaseTabAndGroupMetadata(Class[])"})
+  public void testGetBaseTabAndGroupMetadata() {
+    // Arrange
+    when(basicEntityMetadataProvider.addTabAndGroupMetadata(Mockito.<AddMetadataRequest>any(),
+        Mockito.<Map<String, TabMetadata>>any())).thenReturn(MetadataProviderResponse.HANDLED);
+    Class<Object> forNameResult = Object.class;
 
-    // Arrange, Act and Assert
-    assertTrue((new Metadata()).getBaseTabAndGroupMetadata(new Class[]{}).isEmpty());
+    // Act
+    Map<String, TabMetadata> actualBaseTabAndGroupMetadata = metadata
+        .getBaseTabAndGroupMetadata(new Class[]{forNameResult});
+
+    // Assert
+    verify(basicEntityMetadataProvider).addTabAndGroupMetadata(isA(AddMetadataRequest.class), isA(Map.class));
+    assertTrue(actualBaseTabAndGroupMetadata.isEmpty());
   }
 
   /**
    * Test {@link Metadata#applyTabAndGroupMetadataOverrides(Class[], Map)}.
+   * <ul>
+   *   <li>Then calls {@link BasicEntityMetadataProvider#overrideMetadataViaAnnotation(OverrideViaAnnotationRequest, Map)}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link Metadata#applyTabAndGroupMetadataOverrides(Class[], Map)}
+   * Method under test: {@link Metadata#applyTabAndGroupMetadataOverrides(Class[], Map)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testApplyTabAndGroupMetadataOverrides() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass13953 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.Metadata metadata;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Metadata.applyTabAndGroupMetadataOverrides(Class[], Map)"})
+  public void testApplyTabAndGroupMetadataOverrides_thenCallsOverrideMetadataViaAnnotation() {
     // Arrange
-    Metadata metadata2 = new Metadata();
+    when(basicEntityMetadataProvider.overrideMetadataViaAnnotation(Mockito.<OverrideViaAnnotationRequest>any(),
+        Mockito.<Map<String, TabMetadata>>any())).thenReturn(MetadataProviderResponse.HANDLED);
+    when(basicEntityMetadataProvider.overrideMetadataViaXml(Mockito.<OverrideViaXmlRequest>any(),
+        Mockito.<Map<String, TabMetadata>>any())).thenReturn(MetadataProviderResponse.HANDLED);
     Class<Object> forNameResult = Object.class;
 
     // Act
-    metadata2.applyTabAndGroupMetadataOverrides(new Class[]{forNameResult}, new HashMap<>());
+    metadata.applyTabAndGroupMetadataOverrides(new Class[]{forNameResult}, new HashMap<>());
+
+    // Assert
+    verify(basicEntityMetadataProvider).overrideMetadataViaAnnotation(isA(OverrideViaAnnotationRequest.class),
+        isA(Map.class));
+    verify(basicEntityMetadataProvider).overrideMetadataViaXml(isA(OverrideViaXmlRequest.class), isA(Map.class));
   }
 
   /**
-   * Test
-   * {@link Metadata#buildAdditionalTabAndGroupMetadataFromCmdProperties(ClassMetadata, Map)}.
+   * Test {@link Metadata#buildAdditionalTabAndGroupMetadataFromCmdProperties(ClassMetadata, Map)}.
    * <p>
-   * Method under test:
-   * {@link Metadata#buildAdditionalTabAndGroupMetadataFromCmdProperties(ClassMetadata, Map)}
+   * Method under test: {@link Metadata#buildAdditionalTabAndGroupMetadataFromCmdProperties(ClassMetadata, Map)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Metadata.buildAdditionalTabAndGroupMetadataFromCmdProperties(ClassMetadata, Map)"})
   public void testBuildAdditionalTabAndGroupMetadataFromCmdProperties() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass14226 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.Metadata metadata;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    Metadata metadata2 = new Metadata();
+    when(basicEntityMetadataProvider.addTabAndGroupMetadataFromCmdProperties(Mockito.<ClassMetadata>any(),
+        Mockito.<Map<String, TabMetadata>>any())).thenReturn(MetadataProviderResponse.HANDLED);
 
     ClassMetadata cmd = new ClassMetadata();
     cmd.setCeilingType("Type");
     cmd.setCurrencyCode("GBP");
     cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
+    cmd.setProperties(
+        new org.broadleafcommerce.openadmin.dto.Property[]{new org.broadleafcommerce.openadmin.dto.Property()});
     cmd.setSecurityCeilingType("Security Ceiling Type");
     cmd.setTabAndGroupMetadata(new HashMap<>());
 
     // Act
-    metadata2.buildAdditionalTabAndGroupMetadataFromCmdProperties(cmd, new HashMap<>());
+    metadata.buildAdditionalTabAndGroupMetadataFromCmdProperties(cmd, new HashMap<>());
+
+    // Assert
+    verify(basicEntityMetadataProvider).addTabAndGroupMetadataFromCmdProperties(isA(ClassMetadata.class),
+        isA(Map.class));
   }
 
   /**
-   * Test
-   * {@link Metadata#overrideMetadata(Class[], PropertyBuilder, String, Boolean, String, String, DynamicEntityDao)}.
+   * Test {@link Metadata#overrideMetadata(Class[], PropertyBuilder, String, Boolean, String, String, DynamicEntityDao)}.
    * <p>
-   * Method under test:
-   * {@link Metadata#overrideMetadata(Class[], PropertyBuilder, String, Boolean, String, String, DynamicEntityDao)}
+   * Method under test: {@link Metadata#overrideMetadata(Class[], PropertyBuilder, String, Boolean, String, String, DynamicEntityDao)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Map Metadata.overrideMetadata(Class[], PropertyBuilder, String, Boolean, String, String, DynamicEntityDao)"})
   public void testOverrideMetadata() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    Metadata metadata = new Metadata();
+    when(fieldMetadataProvider.overrideViaAnnotation(Mockito.<OverrideViaAnnotationRequest>any(),
+        Mockito.<Map<String, FieldMetadata>>any())).thenReturn(MetadataProviderResponse.NOT_HANDLED);
+    when(fieldMetadataProvider.overrideViaXml(Mockito.<OverrideViaXmlRequest>any(),
+        Mockito.<Map<String, FieldMetadata>>any())).thenReturn(MetadataProviderResponse.HANDLED);
+
+    ArrayList<FieldMetadataProvider> fieldMetadataProviders = new ArrayList<>();
+    fieldMetadataProviders.add(fieldMetadataProvider);
+    metadata.setFieldMetadataProviders(fieldMetadataProviders);
     metadata.setDefaultFieldMetadataProvider(new DefaultFieldMetadataProvider());
     Class<Object> forNameResult = Object.class;
     PropertyBuilder propertyBuilder = mock(PropertyBuilder.class);
@@ -293,61 +344,173 @@ public class MetadataDiffblueTest {
 
     // Assert
     verify(propertyBuilder).execute(isNull());
+    verify(fieldMetadataProvider).overrideViaAnnotation(isA(OverrideViaAnnotationRequest.class), isA(Map.class));
+    verify(fieldMetadataProvider).overrideViaXml(isA(OverrideViaXmlRequest.class), isA(Map.class));
     assertTrue(actualOverrideMetadataResult.isEmpty());
   }
 
   /**
-   * Test
-   * {@link Metadata#overrideMetadata(Class[], PropertyBuilder, String, Boolean, String, String, DynamicEntityDao)}.
+   * Test {@link Metadata#overrideMetadata(Class[], PropertyBuilder, String, Boolean, String, String, DynamicEntityDao)}.
    * <p>
-   * Method under test:
-   * {@link Metadata#overrideMetadata(Class[], PropertyBuilder, String, Boolean, String, String, DynamicEntityDao)}
+   * Method under test: {@link Metadata#overrideMetadata(Class[], PropertyBuilder, String, Boolean, String, String, DynamicEntityDao)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Map Metadata.overrideMetadata(Class[], PropertyBuilder, String, Boolean, String, String, DynamicEntityDao)"})
   public void testOverrideMetadata2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass15755 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.Metadata metadata;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    Metadata metadata2 = new Metadata();
+    when(fieldMetadataProvider.overrideViaAnnotation(Mockito.<OverrideViaAnnotationRequest>any(),
+        Mockito.<Map<String, FieldMetadata>>any())).thenReturn(MetadataProviderResponse.HANDLED_BREAK);
+    when(fieldMetadataProvider.overrideViaXml(Mockito.<OverrideViaXmlRequest>any(),
+        Mockito.<Map<String, FieldMetadata>>any())).thenReturn(MetadataProviderResponse.HANDLED);
+
+    ArrayList<FieldMetadataProvider> fieldMetadataProviders = new ArrayList<>();
+    fieldMetadataProviders.add(fieldMetadataProvider);
+    metadata.setFieldMetadataProviders(fieldMetadataProviders);
+    metadata.setDefaultFieldMetadataProvider(new DefaultFieldMetadataProvider());
     Class<Object> forNameResult = Object.class;
     PropertyBuilder propertyBuilder = mock(PropertyBuilder.class);
+    when(propertyBuilder.execute(Mockito.<Boolean>any())).thenReturn(new HashMap<>());
 
     // Act
-    metadata2.overrideMetadata(new Class[]{forNameResult}, propertyBuilder, "Prefix", true, "Dr Jane Doe",
-        "Configuration Key", new DynamicEntityDaoImpl());
+    Map<String, FieldMetadata> actualOverrideMetadataResult = metadata.overrideMetadata(new Class[]{forNameResult},
+        propertyBuilder, "Prefix", true, "Dr Jane Doe", "Configuration Key", new DynamicEntityDaoImpl());
+
+    // Assert
+    verify(propertyBuilder).execute(isNull());
+    verify(fieldMetadataProvider).overrideViaAnnotation(isA(OverrideViaAnnotationRequest.class), isA(Map.class));
+    verify(fieldMetadataProvider).overrideViaXml(isA(OverrideViaXmlRequest.class), isA(Map.class));
+    assertTrue(actualOverrideMetadataResult.isEmpty());
   }
 
   /**
-   * Test
-   * {@link Metadata#overrideMetadata(Class[], PropertyBuilder, String, Boolean, String, String, DynamicEntityDao)}.
+   * Test {@link Metadata#overrideMetadata(Class[], PropertyBuilder, String, Boolean, String, String, DynamicEntityDao)}.
    * <ul>
-   *   <li>Then calls
-   * {@link BasicFieldMetadataProvider#overrideViaAnnotation(OverrideViaAnnotationRequest, Map)}.</li>
+   *   <li>Given {@link FieldMetadataProvider} {@link FieldMetadataProvider#overrideViaXml(OverrideViaXmlRequest, Map)} return {@code HANDLED}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link Metadata#overrideMetadata(Class[], PropertyBuilder, String, Boolean, String, String, DynamicEntityDao)}
+   * Method under test: {@link Metadata#overrideMetadata(Class[], PropertyBuilder, String, Boolean, String, String, DynamicEntityDao)}
    */
   @Test
-  public void testOverrideMetadata_thenCallsOverrideViaAnnotation() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Map Metadata.overrideMetadata(Class[], PropertyBuilder, String, Boolean, String, String, DynamicEntityDao)"})
+  public void testOverrideMetadata_givenFieldMetadataProviderOverrideViaXmlReturnHandled() {
+    // Arrange
+    when(fieldMetadataProvider.overrideViaAnnotation(Mockito.<OverrideViaAnnotationRequest>any(),
+        Mockito.<Map<String, FieldMetadata>>any())).thenReturn(MetadataProviderResponse.HANDLED);
+    when(fieldMetadataProvider.overrideViaXml(Mockito.<OverrideViaXmlRequest>any(),
+        Mockito.<Map<String, FieldMetadata>>any())).thenReturn(MetadataProviderResponse.HANDLED);
 
+    ArrayList<FieldMetadataProvider> fieldMetadataProviders = new ArrayList<>();
+    fieldMetadataProviders.add(fieldMetadataProvider);
+    metadata.setFieldMetadataProviders(fieldMetadataProviders);
+    metadata.setDefaultFieldMetadataProvider(new DefaultFieldMetadataProvider());
+    Class<Object> forNameResult = Object.class;
+    PropertyBuilder propertyBuilder = mock(PropertyBuilder.class);
+    when(propertyBuilder.execute(Mockito.<Boolean>any())).thenReturn(new HashMap<>());
+
+    // Act
+    Map<String, FieldMetadata> actualOverrideMetadataResult = metadata.overrideMetadata(new Class[]{forNameResult},
+        propertyBuilder, "Prefix", true, "Dr Jane Doe", "Configuration Key", new DynamicEntityDaoImpl());
+
+    // Assert
+    verify(propertyBuilder).execute(isNull());
+    verify(fieldMetadataProvider).overrideViaAnnotation(isA(OverrideViaAnnotationRequest.class), isA(Map.class));
+    verify(fieldMetadataProvider).overrideViaXml(isA(OverrideViaXmlRequest.class), isA(Map.class));
+    assertTrue(actualOverrideMetadataResult.isEmpty());
+  }
+
+  /**
+   * Test {@link Metadata#overrideMetadata(Class[], PropertyBuilder, String, Boolean, String, String, DynamicEntityDao)}.
+   * <ul>
+   *   <li>Given {@link FieldMetadataProvider} {@link FieldMetadataProvider#overrideViaXml(OverrideViaXmlRequest, Map)} return {@code HANDLED_BREAK}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link Metadata#overrideMetadata(Class[], PropertyBuilder, String, Boolean, String, String, DynamicEntityDao)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Map Metadata.overrideMetadata(Class[], PropertyBuilder, String, Boolean, String, String, DynamicEntityDao)"})
+  public void testOverrideMetadata_givenFieldMetadataProviderOverrideViaXmlReturnHandledBreak() {
+    // Arrange
+    when(fieldMetadataProvider.overrideViaAnnotation(Mockito.<OverrideViaAnnotationRequest>any(),
+        Mockito.<Map<String, FieldMetadata>>any())).thenReturn(MetadataProviderResponse.HANDLED);
+    when(fieldMetadataProvider.overrideViaXml(Mockito.<OverrideViaXmlRequest>any(),
+        Mockito.<Map<String, FieldMetadata>>any())).thenReturn(MetadataProviderResponse.HANDLED_BREAK);
+
+    ArrayList<FieldMetadataProvider> fieldMetadataProviders = new ArrayList<>();
+    fieldMetadataProviders.add(fieldMetadataProvider);
+    metadata.setFieldMetadataProviders(fieldMetadataProviders);
+    metadata.setDefaultFieldMetadataProvider(new DefaultFieldMetadataProvider());
+    Class<Object> forNameResult = Object.class;
+    PropertyBuilder propertyBuilder = mock(PropertyBuilder.class);
+    when(propertyBuilder.execute(Mockito.<Boolean>any())).thenReturn(new HashMap<>());
+
+    // Act
+    Map<String, FieldMetadata> actualOverrideMetadataResult = metadata.overrideMetadata(new Class[]{forNameResult},
+        propertyBuilder, "Prefix", true, "Dr Jane Doe", "Configuration Key", new DynamicEntityDaoImpl());
+
+    // Assert
+    verify(propertyBuilder).execute(isNull());
+    verify(fieldMetadataProvider).overrideViaAnnotation(isA(OverrideViaAnnotationRequest.class), isA(Map.class));
+    verify(fieldMetadataProvider).overrideViaXml(isA(OverrideViaXmlRequest.class), isA(Map.class));
+    assertTrue(actualOverrideMetadataResult.isEmpty());
+  }
+
+  /**
+   * Test {@link Metadata#overrideMetadata(Class[], PropertyBuilder, String, Boolean, String, String, DynamicEntityDao)}.
+   * <ul>
+   *   <li>Given {@link FieldMetadataProvider} {@link FieldMetadataProvider#overrideViaXml(OverrideViaXmlRequest, Map)} return {@code NOT_HANDLED}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link Metadata#overrideMetadata(Class[], PropertyBuilder, String, Boolean, String, String, DynamicEntityDao)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Map Metadata.overrideMetadata(Class[], PropertyBuilder, String, Boolean, String, String, DynamicEntityDao)"})
+  public void testOverrideMetadata_givenFieldMetadataProviderOverrideViaXmlReturnNotHandled() {
+    // Arrange
+    when(fieldMetadataProvider.overrideViaAnnotation(Mockito.<OverrideViaAnnotationRequest>any(),
+        Mockito.<Map<String, FieldMetadata>>any())).thenReturn(MetadataProviderResponse.HANDLED);
+    when(fieldMetadataProvider.overrideViaXml(Mockito.<OverrideViaXmlRequest>any(),
+        Mockito.<Map<String, FieldMetadata>>any())).thenReturn(MetadataProviderResponse.NOT_HANDLED);
+
+    ArrayList<FieldMetadataProvider> fieldMetadataProviders = new ArrayList<>();
+    fieldMetadataProviders.add(fieldMetadataProvider);
+    metadata.setFieldMetadataProviders(fieldMetadataProviders);
+    metadata.setDefaultFieldMetadataProvider(new DefaultFieldMetadataProvider());
+    Class<Object> forNameResult = Object.class;
+    PropertyBuilder propertyBuilder = mock(PropertyBuilder.class);
+    when(propertyBuilder.execute(Mockito.<Boolean>any())).thenReturn(new HashMap<>());
+
+    // Act
+    Map<String, FieldMetadata> actualOverrideMetadataResult = metadata.overrideMetadata(new Class[]{forNameResult},
+        propertyBuilder, "Prefix", true, "Dr Jane Doe", "Configuration Key", new DynamicEntityDaoImpl());
+
+    // Assert
+    verify(propertyBuilder).execute(isNull());
+    verify(fieldMetadataProvider).overrideViaAnnotation(isA(OverrideViaAnnotationRequest.class), isA(Map.class));
+    verify(fieldMetadataProvider).overrideViaXml(isA(OverrideViaXmlRequest.class), isA(Map.class));
+    assertTrue(actualOverrideMetadataResult.isEmpty());
+  }
+
+  /**
+   * Test {@link Metadata#overrideMetadata(Class[], PropertyBuilder, String, Boolean, String, String, DynamicEntityDao)}.
+   * <ul>
+   *   <li>Then calls {@link BasicFieldMetadataProvider#overrideViaAnnotation(OverrideViaAnnotationRequest, Map)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link Metadata#overrideMetadata(Class[], PropertyBuilder, String, Boolean, String, String, DynamicEntityDao)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Map Metadata.overrideMetadata(Class[], PropertyBuilder, String, Boolean, String, String, DynamicEntityDao)"})
+  public void testOverrideMetadata_thenCallsOverrideViaAnnotation() {
     // Arrange
     DefaultFieldMetadataProvider defaultFieldMetadataProvider = mock(DefaultFieldMetadataProvider.class);
     when(defaultFieldMetadataProvider.overrideViaAnnotation(Mockito.<OverrideViaAnnotationRequest>any(),
@@ -376,36 +539,25 @@ public class MetadataDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link Metadata#getFieldMetadata(String, String, List, SupportedFieldType, Type, Class, FieldMetadata, MergedPropertyType, DynamicEntityDao)}
-   * with {@code prefix}, {@code propertyName}, {@code componentProperties},
-   * {@code type}, {@code entityType}, {@code targetClass},
-   * {@code presentationAttribute}, {@code mergedPropertyType},
-   * {@code dynamicEntityDao}.
+   * Test {@link Metadata#getFieldMetadata(String, String, List, SupportedFieldType, Type, Class, FieldMetadata, MergedPropertyType, DynamicEntityDao)} with {@code prefix}, {@code propertyName}, {@code componentProperties}, {@code type}, {@code entityType}, {@code targetClass}, {@code presentationAttribute}, {@code mergedPropertyType}, {@code dynamicEntityDao}.
    * <p>
-   * Method under test:
-   * {@link Metadata#getFieldMetadata(String, String, List, SupportedFieldType, Type, Class, FieldMetadata, MergedPropertyType, DynamicEntityDao)}
+   * Method under test: {@link Metadata#getFieldMetadata(String, String, List, SupportedFieldType, Type, Class, FieldMetadata, MergedPropertyType, DynamicEntityDao)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FieldMetadata Metadata.getFieldMetadata(String, String, List, SupportedFieldType, Type, Class, FieldMetadata, MergedPropertyType, DynamicEntityDao)"})
   public void testGetFieldMetadataWithPrefixPropertyNameComponentPropertiesTypeEntityTypeTargetClassPresentationAttributeMergedPropertyTypeDynamicEntityDao() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DefaultFieldMetadataProvider defaultFieldMetadataProvider = mock(DefaultFieldMetadataProvider.class);
-    when(defaultFieldMetadataProvider.addMetadataFromMappingData(Mockito.<AddMetadataFromMappingDataRequest>any(),
+    when(fieldMetadataProvider.addMetadataFromMappingData(Mockito.<AddMetadataFromMappingDataRequest>any(),
         Mockito.<FieldMetadata>any())).thenReturn(MetadataProviderResponse.HANDLED);
 
-    ArrayList<FieldMetadataProvider> fieldMetadataProviders = new ArrayList<>();
-    fieldMetadataProviders.add(defaultFieldMetadataProvider);
-
-    Metadata metadata = new Metadata();
-    metadata.setFieldMetadataProviders(fieldMetadataProviders);
-    ArrayList<org.hibernate.mapping.Property> componentProperties = new ArrayList<>();
+    ArrayList<FieldMetadataProvider> fieldMetadataProviderList = new ArrayList<>();
+    when(list.iterator()).thenReturn(fieldMetadataProviderList.iterator());
+    ArrayList<Property> componentProperties = new ArrayList<>();
     BigDecimalType entityType = new BigDecimalType();
     Class<Object> targetClass = Object.class;
-
     AdornedTargetCollectionMetadata presentationAttribute = new AdornedTargetCollectionMetadata();
-    presentationAttribute.setTargetClass(null);
 
     // Act
     FieldMetadata actualFieldMetadata = metadata.getFieldMetadata("Prefix", "Property Name", componentProperties,
@@ -413,7 +565,8 @@ public class MetadataDiffblueTest {
         new DynamicEntityDaoImpl());
 
     // Assert
-    verify(defaultFieldMetadataProvider).addMetadataFromMappingData(isA(AddMetadataFromMappingDataRequest.class),
+    verify(list).iterator();
+    verify(fieldMetadataProvider).addMetadataFromMappingData(isA(AddMetadataFromMappingDataRequest.class),
         isA(FieldMetadata.class));
     assertEquals("Property Name", presentationAttribute.getFieldName());
     assertEquals("java.lang.Object", presentationAttribute.getInheritedFromType());
@@ -422,228 +575,191 @@ public class MetadataDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link Metadata#getFieldMetadata(String, String, List, SupportedFieldType, Type, Class, FieldMetadata, MergedPropertyType, DynamicEntityDao)}
-   * with {@code prefix}, {@code propertyName}, {@code componentProperties},
-   * {@code type}, {@code entityType}, {@code targetClass},
-   * {@code presentationAttribute}, {@code mergedPropertyType},
-   * {@code dynamicEntityDao}.
+   * Test {@link Metadata#getFieldMetadata(String, String, List, SupportedFieldType, Type, Class, FieldMetadata, MergedPropertyType, DynamicEntityDao)} with {@code prefix}, {@code propertyName}, {@code componentProperties}, {@code type}, {@code entityType}, {@code targetClass}, {@code presentationAttribute}, {@code mergedPropertyType}, {@code dynamicEntityDao}.
    * <p>
-   * Method under test:
-   * {@link Metadata#getFieldMetadata(String, String, List, SupportedFieldType, Type, Class, FieldMetadata, MergedPropertyType, DynamicEntityDao)}
+   * Method under test: {@link Metadata#getFieldMetadata(String, String, List, SupportedFieldType, Type, Class, FieldMetadata, MergedPropertyType, DynamicEntityDao)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FieldMetadata Metadata.getFieldMetadata(String, String, List, SupportedFieldType, Type, Class, FieldMetadata, MergedPropertyType, DynamicEntityDao)"})
   public void testGetFieldMetadataWithPrefixPropertyNameComponentPropertiesTypeEntityTypeTargetClassPresentationAttributeMergedPropertyTypeDynamicEntityDao2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DefaultFieldMetadataProvider defaultFieldMetadataProvider = mock(DefaultFieldMetadataProvider.class);
-    when(defaultFieldMetadataProvider.addMetadataFromMappingData(Mockito.<AddMetadataFromMappingDataRequest>any(),
-        Mockito.<FieldMetadata>any())).thenReturn(MetadataProviderResponse.HANDLED_BREAK);
-
-    ArrayList<FieldMetadataProvider> fieldMetadataProviders = new ArrayList<>();
-    fieldMetadataProviders.add(defaultFieldMetadataProvider);
-
-    Metadata metadata = new Metadata();
-    metadata.setFieldMetadataProviders(fieldMetadataProviders);
-    ArrayList<org.hibernate.mapping.Property> componentProperties = new ArrayList<>();
-    BigDecimalType entityType = new BigDecimalType();
-    Class<Object> targetClass = Object.class;
-
-    AdornedTargetCollectionMetadata presentationAttribute = new AdornedTargetCollectionMetadata();
-    presentationAttribute.setTargetClass(null);
-
-    // Act
-    FieldMetadata actualFieldMetadata = metadata.getFieldMetadata("Prefix", "Property Name", componentProperties,
-        SupportedFieldType.UNKNOWN, entityType, targetClass, presentationAttribute, MergedPropertyType.PRIMARY,
-        new DynamicEntityDaoImpl());
-
-    // Assert
-    verify(defaultFieldMetadataProvider).addMetadataFromMappingData(isA(AddMetadataFromMappingDataRequest.class),
-        isA(FieldMetadata.class));
-    assertEquals("Property Name", presentationAttribute.getFieldName());
-    assertEquals("java.lang.Object", presentationAttribute.getInheritedFromType());
-    assertEquals("java.lang.Object", presentationAttribute.getTargetClass());
-    assertSame(presentationAttribute, actualFieldMetadata);
-  }
-
-  /**
-   * Test
-   * {@link Metadata#getFieldMetadata(String, String, List, SupportedFieldType, Type, Class, FieldMetadata, MergedPropertyType, DynamicEntityDao)}
-   * with {@code prefix}, {@code propertyName}, {@code componentProperties},
-   * {@code type}, {@code entityType}, {@code targetClass},
-   * {@code presentationAttribute}, {@code mergedPropertyType},
-   * {@code dynamicEntityDao}.
-   * <p>
-   * Method under test:
-   * {@link Metadata#getFieldMetadata(String, String, List, SupportedFieldType, Type, Class, FieldMetadata, MergedPropertyType, DynamicEntityDao)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetFieldMetadataWithPrefixPropertyNameComponentPropertiesTypeEntityTypeTargetClassPresentationAttributeMergedPropertyTypeDynamicEntityDao3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass15117 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.Metadata metadata;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    Metadata metadata2 = new Metadata();
-    ArrayList<org.hibernate.mapping.Property> componentProperties = new ArrayList<>();
-    BigDecimalType entityType = new BigDecimalType();
-    Class<Object> targetClass = Object.class;
-    AdornedTargetCollectionMetadata presentationAttribute = new AdornedTargetCollectionMetadata();
-
-    // Act
-    metadata2.getFieldMetadata("Prefix", "Property Name", componentProperties, SupportedFieldType.UNKNOWN, entityType,
-        targetClass, presentationAttribute, MergedPropertyType.PRIMARY, new DynamicEntityDaoImpl());
-  }
-
-  /**
-   * Test
-   * {@link Metadata#getFieldMetadata(String, String, List, SupportedFieldType, SupportedFieldType, Type, Class, FieldMetadata, MergedPropertyType, DynamicEntityDao)}
-   * with {@code prefix}, {@code propertyName}, {@code componentProperties},
-   * {@code type}, {@code secondaryType}, {@code entityType}, {@code targetClass},
-   * {@code presentationAttribute}, {@code mergedPropertyType},
-   * {@code dynamicEntityDao}.
-   * <p>
-   * Method under test:
-   * {@link Metadata#getFieldMetadata(String, String, List, SupportedFieldType, SupportedFieldType, Type, Class, FieldMetadata, MergedPropertyType, DynamicEntityDao)}
-   */
-  @Test
-  public void testGetFieldMetadataWithPrefixPropertyNameComponentPropertiesTypeSecondaryTypeEntityTypeTargetClassPresentationAttributeMergedPropertyTypeDynamicEntityDao() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    DefaultFieldMetadataProvider defaultFieldMetadataProvider = mock(DefaultFieldMetadataProvider.class);
-    when(defaultFieldMetadataProvider.addMetadataFromMappingData(Mockito.<AddMetadataFromMappingDataRequest>any(),
+    when(fieldMetadataProvider.addMetadataFromMappingData(Mockito.<AddMetadataFromMappingDataRequest>any(),
         Mockito.<FieldMetadata>any())).thenReturn(MetadataProviderResponse.HANDLED);
 
-    ArrayList<FieldMetadataProvider> fieldMetadataProviders = new ArrayList<>();
-    fieldMetadataProviders.add(defaultFieldMetadataProvider);
-
-    Metadata metadata = new Metadata();
-    metadata.setFieldMetadataProviders(fieldMetadataProviders);
-    ArrayList<org.hibernate.mapping.Property> componentProperties = new ArrayList<>();
+    ArrayList<FieldMetadataProvider> fieldMetadataProviderList = new ArrayList<>();
+    fieldMetadataProviderList.add(fieldMetadataProvider);
+    when(list.iterator()).thenReturn(fieldMetadataProviderList.iterator());
+    ArrayList<Property> componentProperties = new ArrayList<>();
     BigDecimalType entityType = new BigDecimalType();
     Class<Object> targetClass = Object.class;
-
     AdornedTargetCollectionMetadata presentationAttribute = new AdornedTargetCollectionMetadata();
-    presentationAttribute.setTargetClass(null);
 
     // Act
     FieldMetadata actualFieldMetadata = metadata.getFieldMetadata("Prefix", "Property Name", componentProperties,
-        SupportedFieldType.UNKNOWN, SupportedFieldType.UNKNOWN, entityType, targetClass, presentationAttribute,
-        MergedPropertyType.PRIMARY, new DynamicEntityDaoImpl());
-
-    // Assert
-    verify(defaultFieldMetadataProvider).addMetadataFromMappingData(isA(AddMetadataFromMappingDataRequest.class),
-        isA(FieldMetadata.class));
-    assertEquals("Property Name", presentationAttribute.getFieldName());
-    assertEquals("java.lang.Object", presentationAttribute.getInheritedFromType());
-    assertEquals("java.lang.Object", presentationAttribute.getTargetClass());
-    assertSame(presentationAttribute, actualFieldMetadata);
-  }
-
-  /**
-   * Test
-   * {@link Metadata#getFieldMetadata(String, String, List, SupportedFieldType, SupportedFieldType, Type, Class, FieldMetadata, MergedPropertyType, DynamicEntityDao)}
-   * with {@code prefix}, {@code propertyName}, {@code componentProperties},
-   * {@code type}, {@code secondaryType}, {@code entityType}, {@code targetClass},
-   * {@code presentationAttribute}, {@code mergedPropertyType},
-   * {@code dynamicEntityDao}.
-   * <p>
-   * Method under test:
-   * {@link Metadata#getFieldMetadata(String, String, List, SupportedFieldType, SupportedFieldType, Type, Class, FieldMetadata, MergedPropertyType, DynamicEntityDao)}
-   */
-  @Test
-  public void testGetFieldMetadataWithPrefixPropertyNameComponentPropertiesTypeSecondaryTypeEntityTypeTargetClassPresentationAttributeMergedPropertyTypeDynamicEntityDao2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    DefaultFieldMetadataProvider defaultFieldMetadataProvider = mock(DefaultFieldMetadataProvider.class);
-    when(defaultFieldMetadataProvider.addMetadataFromMappingData(Mockito.<AddMetadataFromMappingDataRequest>any(),
-        Mockito.<FieldMetadata>any())).thenReturn(MetadataProviderResponse.HANDLED_BREAK);
-
-    ArrayList<FieldMetadataProvider> fieldMetadataProviders = new ArrayList<>();
-    fieldMetadataProviders.add(defaultFieldMetadataProvider);
-
-    Metadata metadata = new Metadata();
-    metadata.setFieldMetadataProviders(fieldMetadataProviders);
-    ArrayList<org.hibernate.mapping.Property> componentProperties = new ArrayList<>();
-    BigDecimalType entityType = new BigDecimalType();
-    Class<Object> targetClass = Object.class;
-
-    AdornedTargetCollectionMetadata presentationAttribute = new AdornedTargetCollectionMetadata();
-    presentationAttribute.setTargetClass(null);
-
-    // Act
-    FieldMetadata actualFieldMetadata = metadata.getFieldMetadata("Prefix", "Property Name", componentProperties,
-        SupportedFieldType.UNKNOWN, SupportedFieldType.UNKNOWN, entityType, targetClass, presentationAttribute,
-        MergedPropertyType.PRIMARY, new DynamicEntityDaoImpl());
-
-    // Assert
-    verify(defaultFieldMetadataProvider).addMetadataFromMappingData(isA(AddMetadataFromMappingDataRequest.class),
-        isA(FieldMetadata.class));
-    assertEquals("Property Name", presentationAttribute.getFieldName());
-    assertEquals("java.lang.Object", presentationAttribute.getInheritedFromType());
-    assertEquals("java.lang.Object", presentationAttribute.getTargetClass());
-    assertSame(presentationAttribute, actualFieldMetadata);
-  }
-
-  /**
-   * Test
-   * {@link Metadata#getFieldMetadata(String, String, List, SupportedFieldType, SupportedFieldType, Type, Class, FieldMetadata, MergedPropertyType, DynamicEntityDao)}
-   * with {@code prefix}, {@code propertyName}, {@code componentProperties},
-   * {@code type}, {@code secondaryType}, {@code entityType}, {@code targetClass},
-   * {@code presentationAttribute}, {@code mergedPropertyType},
-   * {@code dynamicEntityDao}.
-   * <p>
-   * Method under test:
-   * {@link Metadata#getFieldMetadata(String, String, List, SupportedFieldType, SupportedFieldType, Type, Class, FieldMetadata, MergedPropertyType, DynamicEntityDao)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetFieldMetadataWithPrefixPropertyNameComponentPropertiesTypeSecondaryTypeEntityTypeTargetClassPresentationAttributeMergedPropertyTypeDynamicEntityDao3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass14807 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.Metadata metadata;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    Metadata metadata2 = new Metadata();
-    ArrayList<org.hibernate.mapping.Property> componentProperties = new ArrayList<>();
-    BigDecimalType entityType = new BigDecimalType();
-    Class<Object> targetClass = Object.class;
-    AdornedTargetCollectionMetadata presentationAttribute = new AdornedTargetCollectionMetadata();
-
-    // Act
-    metadata2.getFieldMetadata("Prefix", "Property Name", componentProperties, SupportedFieldType.UNKNOWN,
         SupportedFieldType.UNKNOWN, entityType, targetClass, presentationAttribute, MergedPropertyType.PRIMARY,
         new DynamicEntityDaoImpl());
+
+    // Assert
+    verify(list).iterator();
+    verify(fieldMetadataProvider).addMetadataFromMappingData(isA(AddMetadataFromMappingDataRequest.class),
+        isA(FieldMetadata.class));
+    assertEquals("Property Name", presentationAttribute.getFieldName());
+    assertEquals("java.lang.Object", presentationAttribute.getInheritedFromType());
+    assertEquals("java.lang.Object", presentationAttribute.getTargetClass());
+    assertSame(presentationAttribute, actualFieldMetadata);
+  }
+
+  /**
+   * Test {@link Metadata#getFieldMetadata(String, String, List, SupportedFieldType, Type, Class, FieldMetadata, MergedPropertyType, DynamicEntityDao)} with {@code prefix}, {@code propertyName}, {@code componentProperties}, {@code type}, {@code entityType}, {@code targetClass}, {@code presentationAttribute}, {@code mergedPropertyType}, {@code dynamicEntityDao}.
+   * <p>
+   * Method under test: {@link Metadata#getFieldMetadata(String, String, List, SupportedFieldType, Type, Class, FieldMetadata, MergedPropertyType, DynamicEntityDao)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FieldMetadata Metadata.getFieldMetadata(String, String, List, SupportedFieldType, Type, Class, FieldMetadata, MergedPropertyType, DynamicEntityDao)"})
+  public void testGetFieldMetadataWithPrefixPropertyNameComponentPropertiesTypeEntityTypeTargetClassPresentationAttributeMergedPropertyTypeDynamicEntityDao3() {
+    // Arrange
+    when(fieldMetadataProvider.addMetadataFromMappingData(Mockito.<AddMetadataFromMappingDataRequest>any(),
+        Mockito.<FieldMetadata>any())).thenReturn(MetadataProviderResponse.HANDLED);
+
+    ArrayList<FieldMetadataProvider> fieldMetadataProviderList = new ArrayList<>();
+    when(list.iterator()).thenReturn(fieldMetadataProviderList.iterator());
+    ArrayList<Property> componentProperties = new ArrayList<>();
+    BigDecimalType entityType = new BigDecimalType();
+    Class<Object> targetClass = Object.class;
+    FieldMetadata presentationAttribute = mock(FieldMetadata.class);
+    when(presentationAttribute.getTargetClass()).thenReturn("Target Class");
+    doNothing().when(presentationAttribute).setAvailableToTypes(Mockito.<String[]>any());
+    doNothing().when(presentationAttribute).setInheritedFromType(Mockito.<String>any());
+
+    // Act
+    FieldMetadata actualFieldMetadata = metadata.getFieldMetadata("Prefix", "Property Name", componentProperties,
+        SupportedFieldType.UNKNOWN, entityType, targetClass, presentationAttribute, MergedPropertyType.PRIMARY,
+        new DynamicEntityDaoImpl());
+
+    // Assert
+    verify(list).iterator();
+    verify(presentationAttribute).getTargetClass();
+    verify(presentationAttribute).setAvailableToTypes(isA(String[].class));
+    verify(presentationAttribute).setInheritedFromType(eq("java.lang.Object"));
+    verify(fieldMetadataProvider).addMetadataFromMappingData(isA(AddMetadataFromMappingDataRequest.class),
+        isA(FieldMetadata.class));
+    assertSame(presentationAttribute, actualFieldMetadata);
+  }
+
+  /**
+   * Test {@link Metadata#getFieldMetadata(String, String, List, SupportedFieldType, SupportedFieldType, Type, Class, FieldMetadata, MergedPropertyType, DynamicEntityDao)} with {@code prefix}, {@code propertyName}, {@code componentProperties}, {@code type}, {@code secondaryType}, {@code entityType}, {@code targetClass}, {@code presentationAttribute}, {@code mergedPropertyType}, {@code dynamicEntityDao}.
+   * <p>
+   * Method under test: {@link Metadata#getFieldMetadata(String, String, List, SupportedFieldType, SupportedFieldType, Type, Class, FieldMetadata, MergedPropertyType, DynamicEntityDao)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FieldMetadata Metadata.getFieldMetadata(String, String, List, SupportedFieldType, SupportedFieldType, Type, Class, FieldMetadata, MergedPropertyType, DynamicEntityDao)"})
+  public void testGetFieldMetadataWithPrefixPropertyNameComponentPropertiesTypeSecondaryTypeEntityTypeTargetClassPresentationAttributeMergedPropertyTypeDynamicEntityDao() {
+    // Arrange
+    when(fieldMetadataProvider.addMetadataFromMappingData(Mockito.<AddMetadataFromMappingDataRequest>any(),
+        Mockito.<FieldMetadata>any())).thenReturn(MetadataProviderResponse.HANDLED);
+
+    ArrayList<FieldMetadataProvider> fieldMetadataProviderList = new ArrayList<>();
+    when(list.iterator()).thenReturn(fieldMetadataProviderList.iterator());
+    ArrayList<Property> componentProperties = new ArrayList<>();
+    BigDecimalType entityType = new BigDecimalType();
+    Class<Object> targetClass = Object.class;
+    AdornedTargetCollectionMetadata presentationAttribute = new AdornedTargetCollectionMetadata();
+
+    // Act
+    FieldMetadata actualFieldMetadata = metadata.getFieldMetadata("Prefix", "Property Name", componentProperties,
+        SupportedFieldType.UNKNOWN, SupportedFieldType.UNKNOWN, entityType, targetClass, presentationAttribute,
+        MergedPropertyType.PRIMARY, new DynamicEntityDaoImpl());
+
+    // Assert
+    verify(list).iterator();
+    verify(fieldMetadataProvider).addMetadataFromMappingData(isA(AddMetadataFromMappingDataRequest.class),
+        isA(FieldMetadata.class));
+    assertEquals("Property Name", presentationAttribute.getFieldName());
+    assertEquals("java.lang.Object", presentationAttribute.getInheritedFromType());
+    assertEquals("java.lang.Object", presentationAttribute.getTargetClass());
+    assertSame(presentationAttribute, actualFieldMetadata);
+  }
+
+  /**
+   * Test {@link Metadata#getFieldMetadata(String, String, List, SupportedFieldType, SupportedFieldType, Type, Class, FieldMetadata, MergedPropertyType, DynamicEntityDao)} with {@code prefix}, {@code propertyName}, {@code componentProperties}, {@code type}, {@code secondaryType}, {@code entityType}, {@code targetClass}, {@code presentationAttribute}, {@code mergedPropertyType}, {@code dynamicEntityDao}.
+   * <p>
+   * Method under test: {@link Metadata#getFieldMetadata(String, String, List, SupportedFieldType, SupportedFieldType, Type, Class, FieldMetadata, MergedPropertyType, DynamicEntityDao)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FieldMetadata Metadata.getFieldMetadata(String, String, List, SupportedFieldType, SupportedFieldType, Type, Class, FieldMetadata, MergedPropertyType, DynamicEntityDao)"})
+  public void testGetFieldMetadataWithPrefixPropertyNameComponentPropertiesTypeSecondaryTypeEntityTypeTargetClassPresentationAttributeMergedPropertyTypeDynamicEntityDao2() {
+    // Arrange
+    when(fieldMetadataProvider.addMetadataFromMappingData(Mockito.<AddMetadataFromMappingDataRequest>any(),
+        Mockito.<FieldMetadata>any())).thenReturn(MetadataProviderResponse.HANDLED);
+
+    ArrayList<FieldMetadataProvider> fieldMetadataProviderList = new ArrayList<>();
+    fieldMetadataProviderList.add(fieldMetadataProvider);
+    when(list.iterator()).thenReturn(fieldMetadataProviderList.iterator());
+    ArrayList<Property> componentProperties = new ArrayList<>();
+    BigDecimalType entityType = new BigDecimalType();
+    Class<Object> targetClass = Object.class;
+    AdornedTargetCollectionMetadata presentationAttribute = new AdornedTargetCollectionMetadata();
+
+    // Act
+    FieldMetadata actualFieldMetadata = metadata.getFieldMetadata("Prefix", "Property Name", componentProperties,
+        SupportedFieldType.UNKNOWN, SupportedFieldType.UNKNOWN, entityType, targetClass, presentationAttribute,
+        MergedPropertyType.PRIMARY, new DynamicEntityDaoImpl());
+
+    // Assert
+    verify(list).iterator();
+    verify(fieldMetadataProvider).addMetadataFromMappingData(isA(AddMetadataFromMappingDataRequest.class),
+        isA(FieldMetadata.class));
+    assertEquals("Property Name", presentationAttribute.getFieldName());
+    assertEquals("java.lang.Object", presentationAttribute.getInheritedFromType());
+    assertEquals("java.lang.Object", presentationAttribute.getTargetClass());
+    assertSame(presentationAttribute, actualFieldMetadata);
+  }
+
+  /**
+   * Test {@link Metadata#getFieldMetadata(String, String, List, SupportedFieldType, SupportedFieldType, Type, Class, FieldMetadata, MergedPropertyType, DynamicEntityDao)} with {@code prefix}, {@code propertyName}, {@code componentProperties}, {@code type}, {@code secondaryType}, {@code entityType}, {@code targetClass}, {@code presentationAttribute}, {@code mergedPropertyType}, {@code dynamicEntityDao}.
+   * <p>
+   * Method under test: {@link Metadata#getFieldMetadata(String, String, List, SupportedFieldType, SupportedFieldType, Type, Class, FieldMetadata, MergedPropertyType, DynamicEntityDao)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FieldMetadata Metadata.getFieldMetadata(String, String, List, SupportedFieldType, SupportedFieldType, Type, Class, FieldMetadata, MergedPropertyType, DynamicEntityDao)"})
+  public void testGetFieldMetadataWithPrefixPropertyNameComponentPropertiesTypeSecondaryTypeEntityTypeTargetClassPresentationAttributeMergedPropertyTypeDynamicEntityDao3() {
+    // Arrange
+    when(fieldMetadataProvider.addMetadataFromMappingData(Mockito.<AddMetadataFromMappingDataRequest>any(),
+        Mockito.<FieldMetadata>any())).thenReturn(MetadataProviderResponse.HANDLED);
+
+    ArrayList<FieldMetadataProvider> fieldMetadataProviderList = new ArrayList<>();
+    when(list.iterator()).thenReturn(fieldMetadataProviderList.iterator());
+    ArrayList<Property> componentProperties = new ArrayList<>();
+    BigDecimalType entityType = new BigDecimalType();
+    Class<Object> targetClass = Object.class;
+    FieldMetadata presentationAttribute = mock(FieldMetadata.class);
+    when(presentationAttribute.getTargetClass()).thenReturn("Target Class");
+    doNothing().when(presentationAttribute).setAvailableToTypes(Mockito.<String[]>any());
+    doNothing().when(presentationAttribute).setInheritedFromType(Mockito.<String>any());
+
+    // Act
+    FieldMetadata actualFieldMetadata = metadata.getFieldMetadata("Prefix", "Property Name", componentProperties,
+        SupportedFieldType.UNKNOWN, SupportedFieldType.UNKNOWN, entityType, targetClass, presentationAttribute,
+        MergedPropertyType.PRIMARY, new DynamicEntityDaoImpl());
+
+    // Assert
+    verify(list).iterator();
+    verify(presentationAttribute).getTargetClass();
+    verify(presentationAttribute).setAvailableToTypes(isA(String[].class));
+    verify(presentationAttribute).setInheritedFromType(eq("java.lang.Object"));
+    verify(fieldMetadataProvider).addMetadataFromMappingData(isA(AddMetadataFromMappingDataRequest.class),
+        isA(FieldMetadata.class));
+    assertSame(presentationAttribute, actualFieldMetadata);
   }
 
   /**
@@ -658,6 +774,11 @@ public class MetadataDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FieldMetadataProvider Metadata.getDefaultFieldMetadataProvider()",
+      "List Metadata.getFieldMetadataProviders()",
+      "void Metadata.setDefaultFieldMetadataProvider(FieldMetadataProvider)",
+      "void Metadata.setFieldMetadataProviders(List)"})
   public void testGettersAndSetters() {
     // Arrange
     Metadata metadata = new Metadata();
@@ -670,7 +791,7 @@ public class MetadataDiffblueTest {
     FieldMetadataProvider actualDefaultFieldMetadataProvider = metadata.getDefaultFieldMetadataProvider();
     List<FieldMetadataProvider> actualFieldMetadataProviders = metadata.getFieldMetadataProviders();
 
-    // Assert that nothing has changed
+    // Assert
     assertTrue(actualDefaultFieldMetadataProvider instanceof AdornedTargetCollectionFieldMetadataProvider);
     assertTrue(actualFieldMetadataProviders.isEmpty());
     assertSame(fieldMetadataProviders, actualFieldMetadataProviders);

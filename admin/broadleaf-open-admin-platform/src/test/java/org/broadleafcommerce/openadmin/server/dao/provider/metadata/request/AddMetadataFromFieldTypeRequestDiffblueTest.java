@@ -1,9 +1,28 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.server.dao.provider.metadata.request;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,6 +39,7 @@ import org.hibernate.mapping.Property;
 import org.hibernate.type.BigDecimalType;
 import org.hibernate.type.Type;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class AddMetadataFromFieldTypeRequestDiffblueTest {
   /**
@@ -27,11 +47,9 @@ public class AddMetadataFromFieldTypeRequestDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>
-   * {@link AddMetadataFromFieldTypeRequest#AddMetadataFromFieldTypeRequest(Field, Class, ForeignKey, ForeignKey[], MergedPropertyType, List, String, String, String, Type, boolean, int, Map, FieldMetadata, SupportedFieldType, Class, DynamicEntityDao)}
+   *   <li>{@link AddMetadataFromFieldTypeRequest#AddMetadataFromFieldTypeRequest(Field, Class, ForeignKey, ForeignKey[], MergedPropertyType, List, String, String, String, Type, boolean, int, Map, FieldMetadata, SupportedFieldType, Class, DynamicEntityDao)}
    *   <li>{@link AddMetadataFromFieldTypeRequest#getAdditionalForeignFields()}
-   *   <li>
-   * {@link AddMetadataFromFieldTypeRequest#getAdditionalForeignKeyIndexPosition()}
+   *   <li>{@link AddMetadataFromFieldTypeRequest#getAdditionalForeignKeyIndexPosition()}
    *   <li>{@link AddMetadataFromFieldTypeRequest#getComponentProperties()}
    *   <li>{@link AddMetadataFromFieldTypeRequest#getDynamicEntityDao()}
    *   <li>{@link AddMetadataFromFieldTypeRequest#getExplicitType()}
@@ -50,6 +68,25 @@ public class AddMetadataFromFieldTypeRequestDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void AddMetadataFromFieldTypeRequest.<init>(Field, Class, ForeignKey, ForeignKey[], MergedPropertyType, List, String, String, String, Type, boolean, int, Map, FieldMetadata, SupportedFieldType, Class, DynamicEntityDao)",
+      "ForeignKey[] AddMetadataFromFieldTypeRequest.getAdditionalForeignFields()",
+      "int AddMetadataFromFieldTypeRequest.getAdditionalForeignKeyIndexPosition()",
+      "List AddMetadataFromFieldTypeRequest.getComponentProperties()",
+      "DynamicEntityDao AddMetadataFromFieldTypeRequest.getDynamicEntityDao()",
+      "SupportedFieldType AddMetadataFromFieldTypeRequest.getExplicitType()",
+      "ForeignKey AddMetadataFromFieldTypeRequest.getForeignField()",
+      "String AddMetadataFromFieldTypeRequest.getIdProperty()",
+      "MergedPropertyType AddMetadataFromFieldTypeRequest.getMergedPropertyType()",
+      "String AddMetadataFromFieldTypeRequest.getPrefix()",
+      "FieldMetadata AddMetadataFromFieldTypeRequest.getPresentationAttribute()",
+      "Map AddMetadataFromFieldTypeRequest.getPresentationAttributes()",
+      "Field AddMetadataFromFieldTypeRequest.getRequestedField()",
+      "String AddMetadataFromFieldTypeRequest.getRequestedPropertyName()",
+      "Class AddMetadataFromFieldTypeRequest.getReturnedClass()",
+      "Class AddMetadataFromFieldTypeRequest.getTargetClass()", "Type AddMetadataFromFieldTypeRequest.getType()",
+      "boolean AddMetadataFromFieldTypeRequest.isPropertyForeignKey()"})
   public void testGettersAndSetters() {
     // Arrange
     Class<Object> targetClass = Object.class;

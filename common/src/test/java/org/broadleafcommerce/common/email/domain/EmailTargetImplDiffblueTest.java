@@ -21,12 +21,14 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class EmailTargetImplDiffblueTest {
   /**
-   * Test {@link EmailTargetImpl#equals(Object)}, and
-   * {@link EmailTargetImpl#hashCode()}.
+   * Test {@link EmailTargetImpl#equals(Object)}, and {@link EmailTargetImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -39,6 +41,8 @@ public class EmailTargetImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EmailTargetImpl.equals(Object)", "int EmailTargetImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     EmailTargetImpl emailTargetImpl = new EmailTargetImpl();
@@ -58,8 +62,7 @@ public class EmailTargetImplDiffblueTest {
   }
 
   /**
-   * Test {@link EmailTargetImpl#equals(Object)}, and
-   * {@link EmailTargetImpl#hashCode()}.
+   * Test {@link EmailTargetImpl#equals(Object)}, and {@link EmailTargetImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -72,6 +75,8 @@ public class EmailTargetImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EmailTargetImpl.equals(Object)", "int EmailTargetImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     EmailTargetImpl emailTargetImpl = new EmailTargetImpl();
@@ -91,8 +96,7 @@ public class EmailTargetImplDiffblueTest {
   }
 
   /**
-   * Test {@link EmailTargetImpl#equals(Object)}, and
-   * {@link EmailTargetImpl#hashCode()}.
+   * Test {@link EmailTargetImpl#equals(Object)}, and {@link EmailTargetImpl#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -105,6 +109,8 @@ public class EmailTargetImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EmailTargetImpl.equals(Object)", "int EmailTargetImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     EmailTargetImpl emailTargetImpl = new EmailTargetImpl();
@@ -128,6 +134,8 @@ public class EmailTargetImplDiffblueTest {
    * Method under test: {@link EmailTargetImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EmailTargetImpl.equals(Object)", "int EmailTargetImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     EmailTargetImpl emailTargetImpl = new EmailTargetImpl();
@@ -154,6 +162,8 @@ public class EmailTargetImplDiffblueTest {
    * Method under test: {@link EmailTargetImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EmailTargetImpl.equals(Object)", "int EmailTargetImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     EmailTargetImpl emailTargetImpl = new EmailTargetImpl();
@@ -180,6 +190,8 @@ public class EmailTargetImplDiffblueTest {
    * Method under test: {@link EmailTargetImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EmailTargetImpl.equals(Object)", "int EmailTargetImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     EmailTargetImpl emailTargetImpl = new EmailTargetImpl();
@@ -206,6 +218,8 @@ public class EmailTargetImplDiffblueTest {
    * Method under test: {@link EmailTargetImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EmailTargetImpl.equals(Object)", "int EmailTargetImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     EmailTargetImpl emailTargetImpl = new EmailTargetImpl();
@@ -232,6 +246,8 @@ public class EmailTargetImplDiffblueTest {
    * Method under test: {@link EmailTargetImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EmailTargetImpl.equals(Object)", "int EmailTargetImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     EmailTargetImpl emailTargetImpl = new EmailTargetImpl();
@@ -253,6 +269,8 @@ public class EmailTargetImplDiffblueTest {
    * Method under test: {@link EmailTargetImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EmailTargetImpl.equals(Object)", "int EmailTargetImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     EmailTargetImpl emailTargetImpl = new EmailTargetImpl();
@@ -279,6 +297,11 @@ public class EmailTargetImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void EmailTargetImpl.<init>()", "String[] EmailTargetImpl.getBCCAddresses()",
+      "String[] EmailTargetImpl.getCCAddresses()", "String EmailTargetImpl.getEmailAddress()",
+      "void EmailTargetImpl.setBCCAddresses(String[])", "void EmailTargetImpl.setCCAddresses(String[])",
+      "void EmailTargetImpl.setEmailAddress(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     EmailTargetImpl actualEmailTargetImpl = new EmailTargetImpl();
@@ -290,7 +313,7 @@ public class EmailTargetImplDiffblueTest {
     String[] actualBCCAddresses = actualEmailTargetImpl.getBCCAddresses();
     String[] actualCCAddresses = actualEmailTargetImpl.getCCAddresses();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("42 Main St", actualEmailTargetImpl.getEmailAddress());
     assertSame(ccAddresses, actualCCAddresses);
     assertSame(bccAddresses, actualBCCAddresses);

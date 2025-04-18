@@ -1,84 +1,76 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.payment.dao;
 
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
-import org.broadleafcommerce.core.payment.domain.secure.Referenced;
-import org.junit.Ignore;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import org.broadleafcommerce.common.encryption.EncryptionModule;
+import org.broadleafcommerce.common.persistence.EntityConfiguration;
+import org.broadleafcommerce.core.payment.domain.secure.BankAccountPayment;
+import org.broadleafcommerce.core.payment.domain.secure.CreditCardPayment;
+import org.broadleafcommerce.core.payment.domain.secure.GiftCardPayment;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
-@Transactional
+@RunWith(MockitoJUnitRunner.class)
 public class SecureOrderPaymentDaoImplDiffblueTest {
-  @Autowired
+  @Mock
+  private EncryptionModule encryptionModule;
+
+  @Mock
+  private EntityConfiguration entityConfiguration;
+
+  @InjectMocks
   private SecureOrderPaymentDaoImpl secureOrderPaymentDaoImpl;
-
-  /**
-   * Test {@link SecureOrderPaymentDaoImpl#save(Referenced)}.
-   * <p>
-   * Method under test: {@link SecureOrderPaymentDaoImpl#save(Referenced)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSave() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.payment.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass830 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.dao.SecureOrderPaymentDaoImpl secureOrderPaymentDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SecureOrderPaymentDaoImpl()).save(mock(Referenced.class));
-  }
 
   /**
    * Test {@link SecureOrderPaymentDaoImpl#createBankAccountPayment()}.
    * <p>
-   * Method under test:
-   * {@link SecureOrderPaymentDaoImpl#createBankAccountPayment()}
+   * Method under test: {@link SecureOrderPaymentDaoImpl#createBankAccountPayment()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BankAccountPayment SecureOrderPaymentDaoImpl.createBankAccountPayment()"})
   public void testCreateBankAccountPayment() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.payment.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass781 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.dao.SecureOrderPaymentDaoImpl secureOrderPaymentDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    BankAccountPayment bankAccountPayment = mock(BankAccountPayment.class);
+    doNothing().when(bankAccountPayment).setEncryptionModule(Mockito.<EncryptionModule>any());
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any(), Mockito.<Class<BankAccountPayment>>any()))
+        .thenReturn(bankAccountPayment);
 
-    // Arrange and Act
-    (new SecureOrderPaymentDaoImpl()).createBankAccountPayment();
+    // Act
+    secureOrderPaymentDaoImpl.createBankAccountPayment();
+
+    // Assert
+    verify(entityConfiguration).createEntityInstance(
+        eq("org.broadleafcommerce.core.payment.domain.secure.BankAccountPayment"), isA(Class.class));
+    verify(bankAccountPayment).setEncryptionModule(isA(EncryptionModule.class));
   }
 
   /**
@@ -87,181 +79,45 @@ public class SecureOrderPaymentDaoImplDiffblueTest {
    * Method under test: {@link SecureOrderPaymentDaoImpl#createGiftCardPayment()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"GiftCardPayment SecureOrderPaymentDaoImpl.createGiftCardPayment()"})
   public void testCreateGiftCardPayment() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.payment.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass783 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.dao.SecureOrderPaymentDaoImpl secureOrderPaymentDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    GiftCardPayment giftCardPayment = mock(GiftCardPayment.class);
+    doNothing().when(giftCardPayment).setEncryptionModule(Mockito.<EncryptionModule>any());
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any(), Mockito.<Class<GiftCardPayment>>any()))
+        .thenReturn(giftCardPayment);
 
-    // Arrange and Act
-    (new SecureOrderPaymentDaoImpl()).createGiftCardPayment();
+    // Act
+    secureOrderPaymentDaoImpl.createGiftCardPayment();
+
+    // Assert
+    verify(entityConfiguration)
+        .createEntityInstance(eq("org.broadleafcommerce.core.payment.domain.secure.GiftCardPayment"), isA(Class.class));
+    verify(giftCardPayment).setEncryptionModule(isA(EncryptionModule.class));
   }
 
   /**
    * Test {@link SecureOrderPaymentDaoImpl#createCreditCardPayment()}.
    * <p>
-   * Method under test:
-   * {@link SecureOrderPaymentDaoImpl#createCreditCardPayment()}
+   * Method under test: {@link SecureOrderPaymentDaoImpl#createCreditCardPayment()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreditCardPayment SecureOrderPaymentDaoImpl.createCreditCardPayment()"})
   public void testCreateCreditCardPayment() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.payment.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass782 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.dao.SecureOrderPaymentDaoImpl secureOrderPaymentDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    CreditCardPayment creditCardPayment = mock(CreditCardPayment.class);
+    doNothing().when(creditCardPayment).setEncryptionModule(Mockito.<EncryptionModule>any());
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any(), Mockito.<Class<CreditCardPayment>>any()))
+        .thenReturn(creditCardPayment);
 
-    // Arrange and Act
-    (new SecureOrderPaymentDaoImpl()).createCreditCardPayment();
-  }
+    // Act
+    secureOrderPaymentDaoImpl.createCreditCardPayment();
 
-  /**
-   * Test {@link SecureOrderPaymentDaoImpl#findBankAccountPayment(String)}.
-   * <p>
-   * Method under test:
-   * {@link SecureOrderPaymentDaoImpl#findBankAccountPayment(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindBankAccountPayment() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.payment.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass785 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.dao.SecureOrderPaymentDaoImpl secureOrderPaymentDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SecureOrderPaymentDaoImpl()).findBankAccountPayment("42");
-  }
-
-  /**
-   * Test {@link SecureOrderPaymentDaoImpl#findCreditCardPayment(String)}.
-   * <p>
-   * Method under test:
-   * {@link SecureOrderPaymentDaoImpl#findCreditCardPayment(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindCreditCardPayment() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.payment.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass800 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.dao.SecureOrderPaymentDaoImpl secureOrderPaymentDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SecureOrderPaymentDaoImpl()).findCreditCardPayment("42");
-  }
-
-  /**
-   * Test {@link SecureOrderPaymentDaoImpl#findGiftCardPayment(String)}.
-   * <p>
-   * Method under test:
-   * {@link SecureOrderPaymentDaoImpl#findGiftCardPayment(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindGiftCardPayment() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.payment.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass815 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.dao.SecureOrderPaymentDaoImpl secureOrderPaymentDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SecureOrderPaymentDaoImpl()).findGiftCardPayment("42");
-  }
-
-  /**
-   * Test {@link SecureOrderPaymentDaoImpl#delete(Referenced)}.
-   * <p>
-   * Method under test: {@link SecureOrderPaymentDaoImpl#delete(Referenced)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testDelete() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.payment.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass784 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.dao.SecureOrderPaymentDaoImpl secureOrderPaymentDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SecureOrderPaymentDaoImpl()).delete(mock(Referenced.class));
+    // Assert
+    verify(entityConfiguration).createEntityInstance(
+        eq("org.broadleafcommerce.core.payment.domain.secure.CreditCardPayment"), isA(Class.class));
+    verify(creditCardPayment).setEncryptionModule(isA(EncryptionModule.class));
   }
 }

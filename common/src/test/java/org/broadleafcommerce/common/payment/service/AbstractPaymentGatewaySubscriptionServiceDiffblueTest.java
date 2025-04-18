@@ -18,19 +18,23 @@
 package org.broadleafcommerce.common.payment.service;
 
 import static org.junit.Assert.assertThrows;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.payment.dto.PaymentRequestDTO;
 import org.broadleafcommerce.common.vendor.service.exception.PaymentException;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class AbstractPaymentGatewaySubscriptionServiceDiffblueTest {
   /**
-   * Test
-   * {@link AbstractPaymentGatewaySubscriptionService#createGatewaySubscription(PaymentRequestDTO)}.
+   * Test {@link AbstractPaymentGatewaySubscriptionService#createGatewaySubscription(PaymentRequestDTO)}.
    * <p>
-   * Method under test:
-   * {@link AbstractPaymentGatewaySubscriptionService#createGatewaySubscription(PaymentRequestDTO)}
+   * Method under test: {@link AbstractPaymentGatewaySubscriptionService#createGatewaySubscription(PaymentRequestDTO)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.common.payment.dto.PaymentResponseDTO AbstractPaymentGatewaySubscriptionService.createGatewaySubscription(PaymentRequestDTO)"})
   public void testCreateGatewaySubscription() throws PaymentException {
     // Arrange
     AbstractPaymentGatewaySubscriptionService abstractPaymentGatewaySubscriptionService = new AbstractPaymentGatewaySubscriptionService();
@@ -41,13 +45,14 @@ public class AbstractPaymentGatewaySubscriptionServiceDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AbstractPaymentGatewaySubscriptionService#updateGatewaySubscription(PaymentRequestDTO)}.
+   * Test {@link AbstractPaymentGatewaySubscriptionService#updateGatewaySubscription(PaymentRequestDTO)}.
    * <p>
-   * Method under test:
-   * {@link AbstractPaymentGatewaySubscriptionService#updateGatewaySubscription(PaymentRequestDTO)}
+   * Method under test: {@link AbstractPaymentGatewaySubscriptionService#updateGatewaySubscription(PaymentRequestDTO)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.common.payment.dto.PaymentResponseDTO AbstractPaymentGatewaySubscriptionService.updateGatewaySubscription(PaymentRequestDTO)"})
   public void testUpdateGatewaySubscription() throws PaymentException {
     // Arrange
     AbstractPaymentGatewaySubscriptionService abstractPaymentGatewaySubscriptionService = new AbstractPaymentGatewaySubscriptionService();
@@ -58,13 +63,14 @@ public class AbstractPaymentGatewaySubscriptionServiceDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AbstractPaymentGatewaySubscriptionService#cancelGatewaySubscription(PaymentRequestDTO)}.
+   * Test {@link AbstractPaymentGatewaySubscriptionService#cancelGatewaySubscription(PaymentRequestDTO)}.
    * <p>
-   * Method under test:
-   * {@link AbstractPaymentGatewaySubscriptionService#cancelGatewaySubscription(PaymentRequestDTO)}
+   * Method under test: {@link AbstractPaymentGatewaySubscriptionService#cancelGatewaySubscription(PaymentRequestDTO)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.common.payment.dto.PaymentResponseDTO AbstractPaymentGatewaySubscriptionService.cancelGatewaySubscription(PaymentRequestDTO)"})
   public void testCancelGatewaySubscription() throws PaymentException {
     // Arrange
     AbstractPaymentGatewaySubscriptionService abstractPaymentGatewaySubscriptionService = new AbstractPaymentGatewaySubscriptionService();
@@ -72,23 +78,5 @@ public class AbstractPaymentGatewaySubscriptionServiceDiffblueTest {
     // Act and Assert
     assertThrows(UnsupportedOperationException.class,
         () -> abstractPaymentGatewaySubscriptionService.cancelGatewaySubscription(new PaymentRequestDTO()));
-  }
-
-  /**
-   * Test new {@link AbstractPaymentGatewaySubscriptionService} (default
-   * constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link AbstractPaymentGatewaySubscriptionService}
-   */
-  @Test
-  public void testNewAbstractPaymentGatewaySubscriptionService() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing observers.
-    //   Diffblue Cover was unable to create an assertion.
-    //   There are no fields that could be asserted on.
-
-    // Arrange and Act
-    new AbstractPaymentGatewaySubscriptionService();
   }
 }

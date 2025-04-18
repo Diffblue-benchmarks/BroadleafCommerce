@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce CMS Module
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.cms.file.service.operation;
 
 import static org.junit.Assert.assertSame;
@@ -6,75 +23,42 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-cms-contentClient-applicationContext.xml",
-    "/applicationContext-servlet-cms-contentClient.xml", "/applicationContext-servlet-cms-contentCreator.xml",
-    "/bl-cms-applicationContext-entity.xml", "/bl-cms-contentCreator-applicationContext.xml",
-    "/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-cms-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-cms-applicationContext-servlet.xml",
-    "/blc-config/site/framework/bl-cms-applicationContext.xml"})
+@ContextConfiguration(classes = {NamedOperationManagerImpl.class})
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class NamedOperationManagerImplDiffblueTest {
   @Autowired
   private NamedOperationManagerImpl namedOperationManagerImpl;
 
   /**
    * Test {@link NamedOperationManagerImpl#manageNamedParameters(Map)}.
-   * <p>
-   * Method under test:
-   * {@link NamedOperationManagerImpl#manageNamedParameters(Map)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testManageNamedParameters() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.file.service.operation;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-cms-contentClient-applicationContext.xml","/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass10418 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.file.service.operation.NamedOperationManagerImpl namedOperationManagerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    namedOperationManagerImpl.manageNamedParameters(new HashMap<>());
-  }
-
-  /**
-   * Test {@link NamedOperationManagerImpl#manageNamedParameters(Map)}.
    * <ul>
    *   <li>Given {@link ArrayList#ArrayList()} add {@code foo}.</li>
-   *   <li>Then calls
-   * {@link NamedOperationComponent#setOperationValues(Map, Map)}.</li>
+   *   <li>Then calls {@link NamedOperationComponent#setOperationValues(Map, Map)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link NamedOperationManagerImpl#manageNamedParameters(Map)}
+   * Method under test: {@link NamedOperationManagerImpl#manageNamedParameters(Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map NamedOperationManagerImpl.manageNamedParameters(Map)"})
   public void testManageNamedParameters_givenArrayListAddFoo_thenCallsSetOperationValues() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ArrayList<String> stringList = new ArrayList<>();
     stringList.add("foo");
@@ -84,8 +68,6 @@ public class NamedOperationManagerImplDiffblueTest {
 
     ArrayList<NamedOperationComponent> namedOperationComponents = new ArrayList<>();
     namedOperationComponents.add(namedOperationComponent);
-
-    NamedOperationManagerImpl namedOperationManagerImpl = new NamedOperationManagerImpl();
     namedOperationManagerImpl.setNamedOperationComponents(namedOperationComponents);
 
     // Act
@@ -100,37 +82,31 @@ public class NamedOperationManagerImplDiffblueTest {
   /**
    * Test {@link NamedOperationManagerImpl#manageNamedParameters(Map)}.
    * <ul>
-   *   <li>Given {@link NamedOperationManagerImpl} (default constructor).</li>
+   *   <li>Given {@link NamedOperationManagerImpl}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link NamedOperationManagerImpl#manageNamedParameters(Map)}
+   * Method under test: {@link NamedOperationManagerImpl#manageNamedParameters(Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map NamedOperationManagerImpl.manageNamedParameters(Map)"})
   public void testManageNamedParameters_givenNamedOperationManagerImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    NamedOperationManagerImpl namedOperationManagerImpl = new NamedOperationManagerImpl();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertTrue(namedOperationManagerImpl.manageNamedParameters(new HashMap<>()).isEmpty());
   }
 
   /**
    * Test {@link NamedOperationManagerImpl#manageNamedParameters(Map)}.
    * <ul>
-   *   <li>Then calls
-   * {@link NamedOperationComponent#setOperationValues(Map, Map)}.</li>
+   *   <li>Then calls {@link NamedOperationComponent#setOperationValues(Map, Map)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link NamedOperationManagerImpl#manageNamedParameters(Map)}
+   * Method under test: {@link NamedOperationManagerImpl#manageNamedParameters(Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map NamedOperationManagerImpl.manageNamedParameters(Map)"})
   public void testManageNamedParameters_thenCallsSetOperationValues() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     NamedOperationComponent namedOperationComponent = mock(NamedOperationComponent.class);
     when(namedOperationComponent.setOperationValues(Mockito.<Map<String, String>>any(),
@@ -138,8 +114,6 @@ public class NamedOperationManagerImplDiffblueTest {
 
     ArrayList<NamedOperationComponent> namedOperationComponents = new ArrayList<>();
     namedOperationComponents.add(namedOperationComponent);
-
-    NamedOperationManagerImpl namedOperationManagerImpl = new NamedOperationManagerImpl();
     namedOperationManagerImpl.setNamedOperationComponents(namedOperationComponents);
 
     // Act
@@ -162,6 +136,10 @@ public class NamedOperationManagerImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void NamedOperationManagerImpl.<init>()",
+      "List NamedOperationManagerImpl.getNamedOperationComponents()",
+      "void NamedOperationManagerImpl.setNamedOperationComponents(List)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     NamedOperationManagerImpl actualNamedOperationManagerImpl = new NamedOperationManagerImpl();
@@ -170,7 +148,7 @@ public class NamedOperationManagerImplDiffblueTest {
     List<NamedOperationComponent> actualNamedOperationComponents = actualNamedOperationManagerImpl
         .getNamedOperationComponents();
 
-    // Assert that nothing has changed
+    // Assert
     assertTrue(actualNamedOperationComponents.isEmpty());
     assertSame(namedOperationComponents, actualNamedOperationComponents);
   }

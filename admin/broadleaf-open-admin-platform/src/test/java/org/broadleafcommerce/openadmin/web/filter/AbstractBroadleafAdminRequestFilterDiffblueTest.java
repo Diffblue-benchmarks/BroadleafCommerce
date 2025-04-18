@@ -1,130 +1,127 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.web.filter;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
+import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
+import org.broadleafcommerce.common.security.service.StaleStateProtectionService;
+import org.broadleafcommerce.common.web.BroadleafWebRequestProcessor;
+import org.broadleafcommerce.openadmin.security.ClassNameRequestParamValidationService;
+import org.broadleafcommerce.openadmin.server.service.persistence.PersistenceThreadManager;
 import org.broadleafcommerce.openadmin.web.compatibility.JSCompatibilityRequestWrapper;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.StandardEnvironment;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
-    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
-    "/bl-open-admin-contentCreator-applicationContext.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+@ContextConfiguration(classes = {BroadleafAdminRequestFilter.class})
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class AbstractBroadleafAdminRequestFilterDiffblueTest {
   @Autowired
   private AbstractBroadleafAdminRequestFilter abstractBroadleafAdminRequestFilter;
 
+  @MockBean(name = "blAdminRequestProcessor")
+  private BroadleafWebRequestProcessor broadleafWebRequestProcessor;
+
+  @MockBean(name = "blClassNameRequestParamValidationService")
+  private ClassNameRequestParamValidationService classNameRequestParamValidationService;
+
+  @MockBean(name = "blPersistenceThreadManager")
+  private PersistenceThreadManager persistenceThreadManager;
+
+  @MockBean(name = "blStaleStateProtectionService")
+  private StaleStateProtectionService staleStateProtectionService;
+
   /**
-   * Test
-   * {@link AbstractBroadleafAdminRequestFilter#shouldProcessURL(HttpServletRequest, String)}.
+   * Test {@link AbstractBroadleafAdminRequestFilter#shouldProcessURL(HttpServletRequest, String)}.
    * <p>
-   * Method under test:
-   * {@link AbstractBroadleafAdminRequestFilter#shouldProcessURL(HttpServletRequest, String)}
+   * Method under test: {@link AbstractBroadleafAdminRequestFilter#shouldProcessURL(HttpServletRequest, String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AbstractBroadleafAdminRequestFilter.shouldProcessURL(HttpServletRequest, String)"})
   public void testShouldProcessURL() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.web.filter;
-    //   @org.springframework.test.context.web.WebAppConfiguration
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass620 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.filter.AbstractBroadleafAdminRequestFilter abstractBroadleafAdminRequestFilter;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    BroadleafAdminRequestFilter broadleafAdminRequestFilter = new BroadleafAdminRequestFilter();
-
-    // Act
-    broadleafAdminRequestFilter.shouldProcessURL(new JSCompatibilityRequestWrapper(new MockHttpServletRequest()),
-        "https://example.org/example");
+    // Arrange, Act and Assert
+    assertTrue(abstractBroadleafAdminRequestFilter.shouldProcessURL(
+        new JSCompatibilityRequestWrapper(
+            new HttpServletRequestWrapper(new JSCompatibilityRequestWrapper(new MockHttpServletRequest()))),
+        "https://example.org/example"));
   }
 
   /**
-   * Test {@link AbstractBroadleafAdminRequestFilter#getIgnoreSuffixes()}.
-   * <p>
-   * Method under test:
-   * {@link AbstractBroadleafAdminRequestFilter#getIgnoreSuffixes()}
-   */
-  @Test
-  public void testGetIgnoreSuffixes() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    BroadleafAdminRequestFilter broadleafAdminRequestFilter = new BroadleafAdminRequestFilter();
-    broadleafAdminRequestFilter.setEnvironment(mock(StandardEnvironment.class));
-
-    // Act and Assert
-    assertEquals(44, broadleafAdminRequestFilter.getIgnoreSuffixes().size());
-  }
-
-  /**
-   * Test {@link AbstractBroadleafAdminRequestFilter#getIgnoreSuffixes()}.
-   * <p>
-   * Method under test:
-   * {@link AbstractBroadleafAdminRequestFilter#getIgnoreSuffixes()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetIgnoreSuffixes2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.web.filter;
-    //   @org.springframework.test.context.web.WebAppConfiguration
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass615 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.filter.AbstractBroadleafAdminRequestFilter abstractBroadleafAdminRequestFilter;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new BroadleafAdminRequestFilter()).getIgnoreSuffixes();
-  }
-
-  /**
-   * Test {@link AbstractBroadleafAdminRequestFilter#getIgnoreSuffixes()}.
+   * Test {@link AbstractBroadleafAdminRequestFilter#shouldProcessURL(HttpServletRequest, String)}.
    * <ul>
-   *   <li>Given {@link BroadleafAdminRequestFilter} (default constructor).</li>
+   *   <li>When {@code .}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AbstractBroadleafAdminRequestFilter#getIgnoreSuffixes()}
+   * Method under test: {@link AbstractBroadleafAdminRequestFilter#shouldProcessURL(HttpServletRequest, String)}
    */
   @Test
-  public void testGetIgnoreSuffixes_givenBroadleafAdminRequestFilter() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AbstractBroadleafAdminRequestFilter.shouldProcessURL(HttpServletRequest, String)"})
+  public void testShouldProcessURL_whenDot_thenReturnTrue() {
     // Arrange, Act and Assert
-    assertEquals(44, (new BroadleafAdminRequestFilter()).getIgnoreSuffixes().size());
+    assertTrue(abstractBroadleafAdminRequestFilter
+        .shouldProcessURL(new JSCompatibilityRequestWrapper(new MockHttpServletRequest()), "."));
+  }
+
+  /**
+   * Test {@link AbstractBroadleafAdminRequestFilter#shouldProcessURL(HttpServletRequest, String)}.
+   * <ul>
+   *   <li>When {@code https://example.org/example}.</li>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AbstractBroadleafAdminRequestFilter#shouldProcessURL(HttpServletRequest, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AbstractBroadleafAdminRequestFilter.shouldProcessURL(HttpServletRequest, String)"})
+  public void testShouldProcessURL_whenHttpsExampleOrgExample_thenReturnTrue() {
+    // Arrange, Act and Assert
+    assertTrue(abstractBroadleafAdminRequestFilter.shouldProcessURL(
+        new JSCompatibilityRequestWrapper(new MockHttpServletRequest()), "https://example.org/example"));
+  }
+
+  /**
+   * Test {@link AbstractBroadleafAdminRequestFilter#getIgnoreSuffixes()}.
+   * <p>
+   * Method under test: {@link AbstractBroadleafAdminRequestFilter#getIgnoreSuffixes()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.util.Set AbstractBroadleafAdminRequestFilter.getIgnoreSuffixes()"})
+  public void testGetIgnoreSuffixes() {
+    // Arrange, Act and Assert
+    assertEquals(44, abstractBroadleafAdminRequestFilter.getIgnoreSuffixes().size());
   }
 }

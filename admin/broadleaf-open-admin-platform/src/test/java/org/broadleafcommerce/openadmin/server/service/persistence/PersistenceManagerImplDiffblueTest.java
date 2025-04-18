@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.server.service.persistence;
 
 import static org.junit.Assert.assertEquals;
@@ -12,6 +29,8 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,101 +39,55 @@ import org.broadleafcommerce.common.exception.NoPossibleResultsException;
 import org.broadleafcommerce.common.exception.ServiceException;
 import org.broadleafcommerce.common.persistence.TargetModeType;
 import org.broadleafcommerce.common.presentation.client.OperationType;
-import org.broadleafcommerce.openadmin.dto.ClassMetadata;
-import org.broadleafcommerce.openadmin.dto.ClassTree;
+import org.broadleafcommerce.common.presentation.client.PersistencePerspectiveItemType;
+import org.broadleafcommerce.openadmin.dto.AdornedTargetList;
 import org.broadleafcommerce.openadmin.dto.CriteriaTransferObject;
 import org.broadleafcommerce.openadmin.dto.DynamicResultSet;
 import org.broadleafcommerce.openadmin.dto.Entity;
+import org.broadleafcommerce.openadmin.dto.FieldMetadata;
 import org.broadleafcommerce.openadmin.dto.PersistencePackage;
 import org.broadleafcommerce.openadmin.dto.PersistencePerspective;
 import org.broadleafcommerce.openadmin.dto.Property;
 import org.broadleafcommerce.openadmin.dto.SectionCrumb;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDao;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl;
+import org.broadleafcommerce.openadmin.server.security.handler.AdminPermissionCustomPersistenceHandler;
 import org.broadleafcommerce.openadmin.server.security.remote.AdminSecurityServiceRemote;
 import org.broadleafcommerce.openadmin.server.security.remote.SecurityVerifier;
+import org.broadleafcommerce.openadmin.server.service.handler.ClassCustomPersistenceHandlerAdapter;
+import org.broadleafcommerce.openadmin.server.service.handler.CustomPersistenceHandler;
 import org.broadleafcommerce.openadmin.server.service.handler.CustomPersistenceHandlerFilter;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.BasicPersistenceModule;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.PersistenceModule;
-import org.broadleafcommerce.openadmin.server.service.type.ChangeType;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.experimental.categories.Category;
 import org.mockito.Mockito;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.reactive.context.AnnotationConfigReactiveWebApplicationContext;
 import org.springframework.context.ApplicationContext;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
-    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
-    "/bl-open-admin-contentCreator-applicationContext.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class PersistenceManagerImplDiffblueTest {
-  @Autowired
-  private PersistenceManagerImpl persistenceManagerImpl;
-
   /**
-   * Test
-   * {@link PersistenceManagerImpl#getAllPolymorphicEntitiesFromCeiling(Class)}.
-   * <p>
-   * Method under test:
-   * {@link PersistenceManagerImpl#getAllPolymorphicEntitiesFromCeiling(Class)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetAllPolymorphicEntitiesFromCeiling() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5314 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.PersistenceManagerImpl persistenceManagerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    PersistenceManagerImpl persistenceManagerImpl2 = new PersistenceManagerImpl();
-    Class<Object> ceilingClass = Object.class;
-
-    // Act
-    persistenceManagerImpl2.getAllPolymorphicEntitiesFromCeiling(ceilingClass);
-  }
-
-  /**
-   * Test
-   * {@link PersistenceManagerImpl#getAllPolymorphicEntitiesFromCeiling(Class)}.
+   * Test {@link PersistenceManagerImpl#getAllPolymorphicEntitiesFromCeiling(Class)}.
    * <ul>
    *   <li>Then return array length is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PersistenceManagerImpl#getAllPolymorphicEntitiesFromCeiling(Class)}
+   * Method under test: {@link PersistenceManagerImpl#getAllPolymorphicEntitiesFromCeiling(Class)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class[] PersistenceManagerImpl.getAllPolymorphicEntitiesFromCeiling(Class)"})
   public void testGetAllPolymorphicEntitiesFromCeiling_thenReturnArrayLengthIsOne() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
     Class<Object> forNameResult = Object.class;
-    when(dynamicEntityDao.getAllPolymorphicEntitiesFromCeiling(Mockito.<Class<Object>>any()))
+    Mockito.<Class<?>[]>when(dynamicEntityDao.getAllPolymorphicEntitiesFromCeiling(Mockito.<Class<Object>>any()))
         .thenReturn(new Class[]{forNameResult});
 
     PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
@@ -133,18 +106,20 @@ public class PersistenceManagerImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link PersistenceManagerImpl#getAllPolymorphicEntitiesFromCeiling(Class)}.
+   * Test {@link PersistenceManagerImpl#getAllPolymorphicEntitiesFromCeiling(Class)}.
    * <ul>
    *   <li>Then return array length is zero.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PersistenceManagerImpl#getAllPolymorphicEntitiesFromCeiling(Class)}
+   * Method under test: {@link PersistenceManagerImpl#getAllPolymorphicEntitiesFromCeiling(Class)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class[] PersistenceManagerImpl.getAllPolymorphicEntitiesFromCeiling(Class)"})
   public void testGetAllPolymorphicEntitiesFromCeiling_thenReturnArrayLengthIsZero() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
@@ -156,251 +131,383 @@ public class PersistenceManagerImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link PersistenceManagerImpl#buildClassMetadata(Class[], PersistencePackage, Map)}.
-   * <p>
-   * Method under test:
-   * {@link PersistenceManagerImpl#buildClassMetadata(Class[], PersistencePackage, Map)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testBuildClassMetadata() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4317 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.PersistenceManagerImpl persistenceManagerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    PersistenceManagerImpl persistenceManagerImpl2 = new PersistenceManagerImpl();
-    Class<Object> forNameResult = Object.class;
-    PersistencePackage persistencePackage = new PersistencePackage();
-
-    // Act
-    persistenceManagerImpl2.buildClassMetadata(new Class[]{forNameResult}, persistencePackage, new HashMap<>());
-  }
-
-  /**
-   * Test
-   * {@link PersistenceManagerImpl#buildClassMetadata(Class[], PersistencePackage, Map)}.
+   * Test {@link PersistenceManagerImpl#getUpDownInheritance(Class)} with {@code testClass}.
    * <ul>
-   *   <li>Then return CeilingType is {@code Dr Jane Doe}.</li>
+   *   <li>Then return array length is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PersistenceManagerImpl#buildClassMetadata(Class[], PersistencePackage, Map)}
+   * Method under test: {@link PersistenceManagerImpl#getUpDownInheritance(Class)}
    */
   @Test
-  public void testBuildClassMetadata_thenReturnCeilingTypeIsDrJaneDoe() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class[] PersistenceManagerImpl.getUpDownInheritance(Class)"})
+  public void testGetUpDownInheritanceWithTestClass_thenReturnArrayLengthIsOne() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
-    when(dynamicEntityDao.getTabAndGroupMetadata(Mockito.<Class<Object>[]>any(), Mockito.<ClassMetadata>any()))
-        .thenReturn(new HashMap<>());
-    ClassTree classTree = new ClassTree();
-    when(dynamicEntityDao.getClassTree(Mockito.<Class<Object>[]>any())).thenReturn(classTree);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>[]>when(dynamicEntityDao.getUpDownInheritance(Mockito.<Class<Object>>any()))
+        .thenReturn(new Class[]{forNameResult});
 
     PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
-    persistenceManagerImpl.setModules(new PersistenceModule[]{new AdornedTargetListPersistenceModule()});
     persistenceManagerImpl.setDynamicEntityDao(dynamicEntityDao);
-    Class<Object> forNameResult = Object.class;
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getSecurityCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
+    Class<Object> testClass = Object.class;
 
     // Act
-    ClassMetadata actualBuildClassMetadataResult = persistenceManagerImpl.buildClassMetadata(new Class[]{forNameResult},
-        persistencePackage, new HashMap<>());
+    Class<?>[] actualUpDownInheritance = persistenceManagerImpl.getUpDownInheritance(testClass);
 
     // Assert
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getSecurityCeilingEntityFullyQualifiedClassname();
-    verify(dynamicEntityDao).getClassTree(isA(Class[].class));
-    verify(dynamicEntityDao).getTabAndGroupMetadata(isA(Class[].class), isA(ClassMetadata.class));
-    assertEquals("Dr Jane Doe", actualBuildClassMetadataResult.getCeilingType());
-    assertEquals("Dr Jane Doe", actualBuildClassMetadataResult.getSecurityCeilingType());
-    assertEquals("GBP", actualBuildClassMetadataResult.getCurrencyCode());
-    assertNull(actualBuildClassMetadataResult.getFirstTab());
-    assertEquals(0, actualBuildClassMetadataResult.getGroupOptionsFromTabAndGroupMetadata().length);
-    assertEquals(0, actualBuildClassMetadataResult.getProperties().length);
-    assertTrue(actualBuildClassMetadataResult.getPMap().isEmpty());
-    assertTrue(actualBuildClassMetadataResult.getTabAndGroupMetadata().isEmpty());
-    assertSame(classTree, actualBuildClassMetadataResult.getPolymorphicEntities());
+    verify(dynamicEntityDao).getUpDownInheritance(isA(Class.class));
+    assertEquals(1, actualUpDownInheritance.length);
+    Class<Object> expectedResultClass = Object.class;
+    assertEquals(expectedResultClass, actualUpDownInheritance[0]);
   }
 
   /**
-   * Test
-   * {@link PersistenceManagerImpl#buildClassMetadata(Class[], PersistencePackage, Map)}.
+   * Test {@link PersistenceManagerImpl#getUpDownInheritance(Class)} with {@code testClass}.
    * <ul>
-   *   <li>Then throw {@link NoPossibleResultsException}.</li>
+   *   <li>Then return array length is zero.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PersistenceManagerImpl#buildClassMetadata(Class[], PersistencePackage, Map)}
+   * Method under test: {@link PersistenceManagerImpl#getUpDownInheritance(Class)}
    */
   @Test
-  public void testBuildClassMetadata_thenThrowNoPossibleResultsException() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class[] PersistenceManagerImpl.getUpDownInheritance(Class)"})
+  public void testGetUpDownInheritanceWithTestClass_thenReturnArrayLengthIsZero() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
+    // Arrange
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+    persistenceManagerImpl.setDynamicEntityDao(new DynamicEntityDaoImpl());
+    Class<Object> testClass = Object.class;
+
+    // Act and Assert
+    assertEquals(0, persistenceManagerImpl.getUpDownInheritance(testClass).length);
+  }
+
+  /**
+   * Test {@link PersistenceManagerImpl#getUpDownInheritance(String)} with {@code testClassname}.
+   * <ul>
+   *   <li>Then return array length is one.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PersistenceManagerImpl#getUpDownInheritance(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class[] PersistenceManagerImpl.getUpDownInheritance(String)"})
+  public void testGetUpDownInheritanceWithTestClassname_thenReturnArrayLengthIsOne() throws ClassNotFoundException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
-    when(dynamicEntityDao.getTabAndGroupMetadata(Mockito.<Class<Object>[]>any(), Mockito.<ClassMetadata>any()))
-        .thenThrow(new NoPossibleResultsException("An error occurred"));
-    when(dynamicEntityDao.getClassTree(Mockito.<Class<Object>[]>any())).thenReturn(new ClassTree());
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>[]>when(dynamicEntityDao.getUpDownInheritance(Mockito.<Class<Object>>any()))
+        .thenReturn(new Class[]{forNameResult});
 
     PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
-    persistenceManagerImpl.setModules(new PersistenceModule[]{new AdornedTargetListPersistenceModule()});
     persistenceManagerImpl.setDynamicEntityDao(dynamicEntityDao);
-    Class<Object> forNameResult = Object.class;
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getSecurityCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
+
+    // Act
+    Class<?>[] actualUpDownInheritance = persistenceManagerImpl.getUpDownInheritance("java.lang.String");
+
+    // Assert
+    verify(dynamicEntityDao).getUpDownInheritance(isA(Class.class));
+    assertEquals(1, actualUpDownInheritance.length);
+    Class<Object> expectedResultClass = Object.class;
+    assertEquals(expectedResultClass, actualUpDownInheritance[0]);
+  }
+
+  /**
+   * Test {@link PersistenceManagerImpl#getUpDownInheritance(String)} with {@code testClassname}.
+   * <ul>
+   *   <li>Then return array length is zero.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PersistenceManagerImpl#getUpDownInheritance(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class[] PersistenceManagerImpl.getUpDownInheritance(String)"})
+  public void testGetUpDownInheritanceWithTestClassname_thenReturnArrayLengthIsZero() throws ClassNotFoundException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
+    // Arrange
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+    persistenceManagerImpl.setDynamicEntityDao(new DynamicEntityDaoImpl());
 
     // Act and Assert
-    assertThrows(NoPossibleResultsException.class, () -> persistenceManagerImpl
-        .buildClassMetadata(new Class[]{forNameResult}, persistencePackage, new HashMap<>()));
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getSecurityCeilingEntityFullyQualifiedClassname();
-    verify(dynamicEntityDao).getClassTree(isA(Class[].class));
-    verify(dynamicEntityDao).getTabAndGroupMetadata(isA(Class[].class), isA(ClassMetadata.class));
+    assertEquals(0, persistenceManagerImpl.getUpDownInheritance("java.lang.String").length);
   }
 
   /**
-   * Test
-   * {@link PersistenceManagerImpl#executePostInspectHandlers(PersistencePackage, PersistenceResponse)}.
+   * Test {@link PersistenceManagerImpl#getPolymorphicEntities(String)}.
+   * <ul>
+   *   <li>Given {@code Object}.</li>
+   *   <li>Then return array length is one.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link PersistenceManagerImpl#executePostInspectHandlers(PersistencePackage, PersistenceResponse)}
+   * Method under test: {@link PersistenceManagerImpl#getPolymorphicEntities(String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testExecutePostInspectHandlers() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5113 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.PersistenceManagerImpl persistenceManagerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class[] PersistenceManagerImpl.getPolymorphicEntities(String)"})
+  public void testGetPolymorphicEntities_givenJavaLangObject_thenReturnArrayLengthIsOne()
+      throws ClassNotFoundException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
-    PersistenceManagerImpl persistenceManagerImpl2 = new PersistenceManagerImpl();
-    PersistencePackage persistencePackage = new PersistencePackage();
+    DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>[]>when(dynamicEntityDao.getAllPolymorphicEntitiesFromCeiling(Mockito.<Class<Object>>any()))
+        .thenReturn(new Class[]{forNameResult});
+
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+    persistenceManagerImpl.setDynamicEntityDao(dynamicEntityDao);
 
     // Act
-    persistenceManagerImpl2.executePostInspectHandlers(persistencePackage, new PersistenceResponse());
+    Class<?>[] actualPolymorphicEntities = persistenceManagerImpl.getPolymorphicEntities("java.lang.String");
+
+    // Assert
+    verify(dynamicEntityDao).getAllPolymorphicEntitiesFromCeiling(isA(Class.class));
+    assertEquals(1, actualPolymorphicEntities.length);
+    Class<Object> expectedResultClass = Object.class;
+    assertEquals(expectedResultClass, actualPolymorphicEntities[0]);
   }
 
   /**
-   * Test
-   * {@link PersistenceManagerImpl#fetch(PersistencePackage, CriteriaTransferObject)}.
+   * Test {@link PersistenceManagerImpl#getPolymorphicEntities(String)}.
+   * <ul>
+   *   <li>Then return array length is zero.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link PersistenceManagerImpl#fetch(PersistencePackage, CriteriaTransferObject)}
+   * Method under test: {@link PersistenceManagerImpl#getPolymorphicEntities(String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testFetch() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5265 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.PersistenceManagerImpl persistenceManagerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class[] PersistenceManagerImpl.getPolymorphicEntities(String)"})
+  public void testGetPolymorphicEntities_thenReturnArrayLengthIsZero() throws ClassNotFoundException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
-    PersistenceManagerImpl persistenceManagerImpl2 = new PersistenceManagerImpl();
-    PersistencePackage persistencePackage = new PersistencePackage();
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+    persistenceManagerImpl.setDynamicEntityDao(new DynamicEntityDaoImpl());
 
-    // Act
-    persistenceManagerImpl2.fetch(persistencePackage, new CriteriaTransferObject());
+    // Act and Assert
+    assertEquals(0, persistenceManagerImpl.getPolymorphicEntities("java.lang.String").length);
   }
 
   /**
-   * Test
-   * {@link PersistenceManagerImpl#executePostFetchHandlers(PersistencePackage, CriteriaTransferObject, PersistenceResponse)}.
+   * Test {@link PersistenceManagerImpl#getSimpleMergedProperties(String, PersistencePerspective)}.
+   * <ul>
+   *   <li>Then return Empty.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link PersistenceManagerImpl#executePostFetchHandlers(PersistencePackage, CriteriaTransferObject, PersistenceResponse)}
+   * Method under test: {@link PersistenceManagerImpl#getSimpleMergedProperties(String, PersistencePerspective)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testExecutePostFetchHandlers() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5059 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.PersistenceManagerImpl persistenceManagerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map PersistenceManagerImpl.getSimpleMergedProperties(String, PersistencePerspective)"})
+  public void testGetSimpleMergedProperties_thenReturnEmpty() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
-    PersistenceManagerImpl persistenceManagerImpl2 = new PersistenceManagerImpl();
-    PersistencePackage persistencePackage = new PersistencePackage();
-    CriteriaTransferObject cto = new CriteriaTransferObject();
+    DynamicEntityDaoImpl dynamicEntityDao = mock(DynamicEntityDaoImpl.class);
+    when(dynamicEntityDao.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
+        .thenReturn(new HashMap<>());
+
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+    persistenceManagerImpl.setDynamicEntityDao(dynamicEntityDao);
 
     // Act
-    persistenceManagerImpl2.executePostFetchHandlers(persistencePackage, cto, new PersistenceResponse());
+    Map<String, FieldMetadata> actualSimpleMergedProperties = persistenceManagerImpl
+        .getSimpleMergedProperties("Entity Name", new PersistencePerspective());
+
+    // Assert
+    verify(dynamicEntityDao).getSimpleMergedProperties(eq("Entity Name"), isA(PersistencePerspective.class));
+    assertTrue(actualSimpleMergedProperties.isEmpty());
   }
 
   /**
-   * Test
-   * {@link PersistenceManagerImpl#executePostFetchHandlers(PersistencePackage, CriteriaTransferObject, PersistenceResponse)}.
+   * Test {@link PersistenceManagerImpl#processMergedProperties(Class[], Map)}.
+   * <ul>
+   *   <li>Then return array length is zero.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PersistenceManagerImpl#processMergedProperties(Class[], Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Property[] PersistenceManagerImpl.processMergedProperties(Class[], Map)"})
+  public void testProcessMergedProperties_thenReturnArrayLengthIsZero() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
+    // Arrange
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+    persistenceManagerImpl.setModules(new PersistenceModule[]{new AdornedTargetListPersistenceModule()});
+    Class<Object> forNameResult = Object.class;
+
+    // Act and Assert
+    assertEquals(0, persistenceManagerImpl.processMergedProperties(new Class[]{forNameResult}, new HashMap<>()).length);
+  }
+
+  /**
+   * Test {@link PersistenceManagerImpl#getIdPropertyName(String)}.
+   * <p>
+   * Method under test: {@link PersistenceManagerImpl#getIdPropertyName(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String PersistenceManagerImpl.getIdPropertyName(String)"})
+  public void testGetIdPropertyName() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
+    // Arrange
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+    persistenceManagerImpl.setDynamicEntityDao(new DynamicEntityDaoImpl());
+
+    // Act and Assert
+    assertNull(persistenceManagerImpl.getIdPropertyName("java.lang.String"));
+  }
+
+  /**
+   * Test {@link PersistenceManagerImpl#getIdPropertyName(String)}.
+   * <ul>
+   *   <li>Given {@link DynamicEntityDao} {@link DynamicEntityDao#getIdMetadata(Class)} return {@link HashMap#HashMap()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PersistenceManagerImpl#getIdPropertyName(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String PersistenceManagerImpl.getIdPropertyName(String)"})
+  public void testGetIdPropertyName_givenDynamicEntityDaoGetIdMetadataReturnHashMap() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
+    // Arrange
+    DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
+    when(dynamicEntityDao.getIdMetadata(Mockito.<Class<Object>>any())).thenReturn(new HashMap<>());
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>[]>when(dynamicEntityDao.getUpDownInheritance(Mockito.<Class<Object>>any()))
+        .thenReturn(new Class[]{forNameResult});
+
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+    persistenceManagerImpl.setDynamicEntityDao(dynamicEntityDao);
+
+    // Act
+    String actualIdPropertyName = persistenceManagerImpl.getIdPropertyName("java.lang.String");
+
+    // Assert
+    verify(dynamicEntityDao).getIdMetadata(isA(Class.class));
+    verify(dynamicEntityDao).getUpDownInheritance(isA(Class.class));
+    assertNull(actualIdPropertyName);
+  }
+
+  /**
+   * Test {@link PersistenceManagerImpl#getIdPropertyName(String)}.
+   * <ul>
+   *   <li>Given {@link DynamicEntityDao} {@link DynamicEntityDao#getUpDownInheritance(Class)} return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PersistenceManagerImpl#getIdPropertyName(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String PersistenceManagerImpl.getIdPropertyName(String)"})
+  public void testGetIdPropertyName_givenDynamicEntityDaoGetUpDownInheritanceReturnNull() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
+    // Arrange
+    DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
+    Mockito.<Class<?>[]>when(dynamicEntityDao.getUpDownInheritance(Mockito.<Class<Object>>any())).thenReturn(null);
+
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+    persistenceManagerImpl.setDynamicEntityDao(dynamicEntityDao);
+
+    // Act
+    String actualIdPropertyName = persistenceManagerImpl.getIdPropertyName("java.lang.String");
+
+    // Assert
+    verify(dynamicEntityDao).getUpDownInheritance(isA(Class.class));
+    assertNull(actualIdPropertyName);
+  }
+
+  /**
+   * Test {@link PersistenceManagerImpl#getIdPropertyName(String)}.
    * <ul>
    *   <li>Then throw {@link NoPossibleResultsException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PersistenceManagerImpl#executePostFetchHandlers(PersistencePackage, CriteriaTransferObject, PersistenceResponse)}
+   * Method under test: {@link PersistenceManagerImpl#getIdPropertyName(String)}
    */
   @Test
-  public void testExecutePostFetchHandlers_thenThrowNoPossibleResultsException() throws ServiceException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String PersistenceManagerImpl.getIdPropertyName(String)"})
+  public void testGetIdPropertyName_thenThrowNoPossibleResultsException() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
+    // Arrange
+    DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
+    when(dynamicEntityDao.getIdMetadata(Mockito.<Class<Object>>any()))
+        .thenThrow(new NoPossibleResultsException("An error occurred"));
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>[]>when(dynamicEntityDao.getUpDownInheritance(Mockito.<Class<Object>>any()))
+        .thenReturn(new Class[]{forNameResult});
+
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+    persistenceManagerImpl.setDynamicEntityDao(dynamicEntityDao);
+
+    // Act and Assert
+    assertThrows(NoPossibleResultsException.class, () -> persistenceManagerImpl.getIdPropertyName("java.lang.String"));
+    verify(dynamicEntityDao).getIdMetadata(isA(Class.class));
+    verify(dynamicEntityDao).getUpDownInheritance(isA(Class.class));
+  }
+
+  /**
+   * Test {@link PersistenceManagerImpl#postFetchValidation(PersistencePackage, PersistenceResponse)}.
+   * <p>
+   * Method under test: {@link PersistenceManagerImpl#postFetchValidation(PersistencePackage, PersistenceResponse)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistenceManagerImpl.postFetchValidation(PersistencePackage, PersistenceResponse)"})
+  public void testPostFetchValidation() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
-    PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
-    when(persistencePerspective.getPersistencePerspectiveItems()).thenReturn(new HashMap<>());
+
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    persistencePerspective.addPersistencePerspectiveItem(PersistencePerspectiveItemType.FOREIGNKEY,
+        new AdornedTargetList());
 
     SectionCrumb sectionCrumb = new SectionCrumb();
     sectionCrumb.setOriginalSectionIdentifier("42");
@@ -410,7 +517,232 @@ public class PersistenceManagerImplDiffblueTest {
     PersistencePackage persistencePackage = new PersistencePackage();
     persistencePackage.setSectionCrumbs(new SectionCrumb[]{sectionCrumb});
     persistencePackage.setPersistencePerspective(persistencePerspective);
-    CriteriaTransferObject cto = new CriteriaTransferObject();
+    PersistenceResponse persistenceResponse = mock(PersistenceResponse.class);
+    when(persistenceResponse.getDynamicResultSet()).thenReturn(new DynamicResultSet());
+
+    // Act
+    persistenceManagerImpl.postFetchValidation(persistencePackage, persistenceResponse);
+
+    // Assert
+    verify(persistenceResponse).getDynamicResultSet();
+  }
+
+  /**
+   * Test {@link PersistenceManagerImpl#postFetchValidation(PersistencePackage, PersistenceResponse)}.
+   * <p>
+   * Method under test: {@link PersistenceManagerImpl#postFetchValidation(PersistencePackage, PersistenceResponse)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistenceManagerImpl.postFetchValidation(PersistencePackage, PersistenceResponse)"})
+  public void testPostFetchValidation2() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
+    // Arrange
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    persistencePerspective.addPersistencePerspectiveItem(PersistencePerspectiveItemType.MAPSTRUCTURE,
+        new AdornedTargetList());
+
+    SectionCrumb sectionCrumb = new SectionCrumb();
+    sectionCrumb.setOriginalSectionIdentifier("42");
+    sectionCrumb.setSectionId("42");
+    sectionCrumb.setSectionIdentifier("42");
+
+    PersistencePackage persistencePackage = new PersistencePackage();
+    persistencePackage.setSectionCrumbs(new SectionCrumb[]{sectionCrumb});
+    persistencePackage.setPersistencePerspective(persistencePerspective);
+    DynamicResultSet dynamicResultSet = mock(DynamicResultSet.class);
+    when(dynamicResultSet.getRecords()).thenReturn(new Entity[]{new Entity()});
+    PersistenceResponse persistenceResponse = mock(PersistenceResponse.class);
+    when(persistenceResponse.getDynamicResultSet()).thenReturn(dynamicResultSet);
+
+    // Act
+    persistenceManagerImpl.postFetchValidation(persistencePackage, persistenceResponse);
+
+    // Assert
+    verify(dynamicResultSet, atLeast(1)).getRecords();
+    verify(persistenceResponse).getDynamicResultSet();
+  }
+
+  /**
+   * Test {@link PersistenceManagerImpl#postFetchValidation(PersistencePackage, PersistenceResponse)}.
+   * <p>
+   * Method under test: {@link PersistenceManagerImpl#postFetchValidation(PersistencePackage, PersistenceResponse)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistenceManagerImpl.postFetchValidation(PersistencePackage, PersistenceResponse)"})
+  public void testPostFetchValidation3() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
+    // Arrange
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    persistencePerspective.addPersistencePerspectiveItem(PersistencePerspectiveItemType.ADORNEDTARGETLIST,
+        new AdornedTargetList());
+    persistencePerspective.addPersistencePerspectiveItem(PersistencePerspectiveItemType.MAPSTRUCTURE,
+        new AdornedTargetList());
+
+    SectionCrumb sectionCrumb = new SectionCrumb();
+    sectionCrumb.setOriginalSectionIdentifier("42");
+    sectionCrumb.setSectionId("42");
+    sectionCrumb.setSectionIdentifier("42");
+
+    PersistencePackage persistencePackage = new PersistencePackage();
+    persistencePackage.setSectionCrumbs(new SectionCrumb[]{sectionCrumb});
+    persistencePackage.setPersistencePerspective(persistencePerspective);
+    DynamicResultSet dynamicResultSet = mock(DynamicResultSet.class);
+    when(dynamicResultSet.getRecords()).thenReturn(new Entity[]{new Entity()});
+    PersistenceResponse persistenceResponse = mock(PersistenceResponse.class);
+    when(persistenceResponse.getDynamicResultSet()).thenReturn(dynamicResultSet);
+
+    // Act
+    persistenceManagerImpl.postFetchValidation(persistencePackage, persistenceResponse);
+
+    // Assert
+    verify(dynamicResultSet, atLeast(1)).getRecords();
+    verify(persistenceResponse).getDynamicResultSet();
+  }
+
+  /**
+   * Test {@link PersistenceManagerImpl#postFetchValidation(PersistencePackage, PersistenceResponse)}.
+   * <ul>
+   *   <li>Given {@link DynamicResultSet#DynamicResultSet()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PersistenceManagerImpl#postFetchValidation(PersistencePackage, PersistenceResponse)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistenceManagerImpl.postFetchValidation(PersistencePackage, PersistenceResponse)"})
+  public void testPostFetchValidation_givenDynamicResultSet() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
+    // Arrange
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+
+    PersistencePackage persistencePackage = new PersistencePackage();
+    persistencePackage.setPersistencePerspective(new PersistencePerspective());
+    PersistenceResponse persistenceResponse = mock(PersistenceResponse.class);
+    when(persistenceResponse.getDynamicResultSet()).thenReturn(new DynamicResultSet());
+
+    // Act
+    persistenceManagerImpl.postFetchValidation(persistencePackage, persistenceResponse);
+
+    // Assert
+    verify(persistenceResponse).getDynamicResultSet();
+  }
+
+  /**
+   * Test {@link PersistenceManagerImpl#postFetchValidation(PersistencePackage, PersistenceResponse)}.
+   * <ul>
+   *   <li>Given {@link DynamicResultSet#DynamicResultSet()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PersistenceManagerImpl#postFetchValidation(PersistencePackage, PersistenceResponse)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistenceManagerImpl.postFetchValidation(PersistencePackage, PersistenceResponse)"})
+  public void testPostFetchValidation_givenDynamicResultSet2() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
+    // Arrange
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+
+    SectionCrumb sectionCrumb = new SectionCrumb();
+    sectionCrumb.setOriginalSectionIdentifier("42");
+    sectionCrumb.setSectionId("42");
+    sectionCrumb.setSectionIdentifier("42");
+
+    PersistencePackage persistencePackage = new PersistencePackage();
+    persistencePackage.setSectionCrumbs(new SectionCrumb[]{sectionCrumb});
+    persistencePackage.setPersistencePerspective(new PersistencePerspective());
+    PersistenceResponse persistenceResponse = mock(PersistenceResponse.class);
+    when(persistenceResponse.getDynamicResultSet()).thenReturn(new DynamicResultSet());
+
+    // Act
+    persistenceManagerImpl.postFetchValidation(persistencePackage, persistenceResponse);
+
+    // Assert
+    verify(persistenceResponse).getDynamicResultSet();
+  }
+
+  /**
+   * Test {@link PersistenceManagerImpl#postFetchValidation(PersistencePackage, PersistenceResponse)}.
+   * <ul>
+   *   <li>Given {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PersistenceManagerImpl#postFetchValidation(PersistencePackage, PersistenceResponse)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistenceManagerImpl.postFetchValidation(PersistencePackage, PersistenceResponse)"})
+  public void testPostFetchValidation_givenNull() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
+    // Arrange
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+
+    SectionCrumb sectionCrumb = new SectionCrumb();
+    sectionCrumb.setOriginalSectionIdentifier("42");
+    sectionCrumb.setSectionId("42");
+    sectionCrumb.setSectionIdentifier("42");
+
+    PersistencePackage persistencePackage = new PersistencePackage();
+    persistencePackage.setSectionCrumbs(new SectionCrumb[]{sectionCrumb});
+    persistencePackage.setPersistencePerspective(new PersistencePerspective());
+    PersistenceResponse persistenceResponse = mock(PersistenceResponse.class);
+    when(persistenceResponse.getDynamicResultSet()).thenReturn(null);
+
+    // Act
+    persistenceManagerImpl.postFetchValidation(persistencePackage, persistenceResponse);
+
+    // Assert
+    verify(persistenceResponse).getDynamicResultSet();
+  }
+
+  /**
+   * Test {@link PersistenceManagerImpl#postFetchValidation(PersistencePackage, PersistenceResponse)}.
+   * <ul>
+   *   <li>Then throw {@link NoPossibleResultsException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PersistenceManagerImpl#postFetchValidation(PersistencePackage, PersistenceResponse)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistenceManagerImpl.postFetchValidation(PersistencePackage, PersistenceResponse)"})
+  public void testPostFetchValidation_thenThrowNoPossibleResultsException() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
+    // Arrange
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+
+    SectionCrumb sectionCrumb = new SectionCrumb();
+    sectionCrumb.setOriginalSectionIdentifier("42");
+    sectionCrumb.setSectionId("42");
+    sectionCrumb.setSectionIdentifier("42");
+
+    PersistencePackage persistencePackage = new PersistencePackage();
+    persistencePackage.setSectionCrumbs(new SectionCrumb[]{sectionCrumb});
+    persistencePackage.setPersistencePerspective(new PersistencePerspective());
     DynamicResultSet dynamicResultSet = mock(DynamicResultSet.class);
     when(dynamicResultSet.getRecords()).thenThrow(new NoPossibleResultsException("An error occurred"));
     PersistenceResponse persistenceResponse = mock(PersistenceResponse.class);
@@ -418,127 +750,51 @@ public class PersistenceManagerImplDiffblueTest {
 
     // Act and Assert
     assertThrows(NoPossibleResultsException.class,
-        () -> persistenceManagerImpl.executePostFetchHandlers(persistencePackage, cto, persistenceResponse));
+        () -> persistenceManagerImpl.postFetchValidation(persistencePackage, persistenceResponse));
     verify(dynamicResultSet).getRecords();
-    verify(persistencePerspective).getPersistencePerspectiveItems();
     verify(persistenceResponse).getDynamicResultSet();
   }
 
   /**
-   * Test {@link PersistenceManagerImpl#add(PersistencePackage)}.
+   * Test {@link PersistenceManagerImpl#postFetch(DynamicResultSet, PersistencePackage, CriteriaTransferObject)}.
    * <p>
-   * Method under test: {@link PersistenceManagerImpl#add(PersistencePackage)}
+   * Method under test: {@link PersistenceManagerImpl#postFetch(DynamicResultSet, PersistencePackage, CriteriaTransferObject)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testAdd() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4284 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.PersistenceManagerImpl persistenceManagerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DynamicResultSet PersistenceManagerImpl.postFetch(DynamicResultSet, PersistencePackage, CriteriaTransferObject)"})
+  public void testPostFetch() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
-    PersistenceManagerImpl persistenceManagerImpl2 = new PersistenceManagerImpl();
-
-    // Act
-    persistenceManagerImpl2.add(new PersistencePackage());
-  }
-
-  /**
-   * Test
-   * {@link PersistenceManagerImpl#executeValidationProcessors(PersistencePackage, PersistenceResponse)}.
-   * <p>
-   * Method under test:
-   * {@link PersistenceManagerImpl#executeValidationProcessors(PersistencePackage, PersistenceResponse)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testExecuteValidationProcessors() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5227 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.PersistenceManagerImpl persistenceManagerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    PersistenceManagerImpl persistenceManagerImpl2 = new PersistenceManagerImpl();
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+    DynamicResultSet resultSet = new DynamicResultSet();
     PersistencePackage persistencePackage = new PersistencePackage();
 
-    // Act
-    persistenceManagerImpl2.executeValidationProcessors(persistencePackage, new PersistenceResponse());
+    // Act and Assert
+    assertSame(resultSet,
+        persistenceManagerImpl.postFetch(resultSet, persistencePackage, new CriteriaTransferObject()));
   }
 
   /**
-   * Test
-   * {@link PersistenceManagerImpl#executePostAddHandlers(PersistencePackage, PersistenceResponse)}.
-   * <p>
-   * Method under test:
-   * {@link PersistenceManagerImpl#executePostAddHandlers(PersistencePackage, PersistenceResponse)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testExecutePostAddHandlers() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5021 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.PersistenceManagerImpl persistenceManagerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    PersistenceManagerImpl persistenceManagerImpl2 = new PersistenceManagerImpl();
-    PersistencePackage persistencePackage = new PersistencePackage();
-
-    // Act
-    persistenceManagerImpl2.executePostAddHandlers(persistencePackage, new PersistenceResponse());
-  }
-
-  /**
-   * Test
-   * {@link PersistenceManagerImpl#executePostAddHandlers(PersistencePackage, PersistenceResponse)}.
+   * Test {@link PersistenceManagerImpl#executePostAddHandlers(PersistencePackage, PersistenceResponse)}.
    * <ul>
    *   <li>Then throw {@link NoPossibleResultsException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PersistenceManagerImpl#executePostAddHandlers(PersistencePackage, PersistenceResponse)}
+   * Method under test: {@link PersistenceManagerImpl#executePostAddHandlers(PersistencePackage, PersistenceResponse)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "PersistenceResponse PersistenceManagerImpl.executePostAddHandlers(PersistencePackage, PersistenceResponse)"})
   public void testExecutePostAddHandlers_thenThrowNoPossibleResultsException() throws ServiceException {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     DynamicEntityDaoImpl dynamicEntityDao = mock(DynamicEntityDaoImpl.class);
@@ -569,179 +825,71 @@ public class PersistenceManagerImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link PersistenceManagerImpl#executeDeferredOperations(PersistencePackage)}.
+   * Test {@link PersistenceManagerImpl#postAdd(Entity, PersistencePackage)}.
    * <p>
-   * Method under test:
-   * {@link PersistenceManagerImpl#executeDeferredOperations(PersistencePackage)}
+   * Method under test: {@link PersistenceManagerImpl#postAdd(Entity, PersistencePackage)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testExecuteDeferredOperations() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4988 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.PersistenceManagerImpl persistenceManagerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    PersistenceManagerImpl persistenceManagerImpl2 = new PersistenceManagerImpl();
-
-    // Act
-    persistenceManagerImpl2.executeDeferredOperations(new PersistencePackage());
-  }
-
-  /**
-   * Test
-   * {@link PersistenceManagerImpl#executeDeferredOperations(PersistencePackage)}.
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code ADD} is
-   * {@link ArrayList#ArrayList()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link PersistenceManagerImpl#executeDeferredOperations(PersistencePackage)}
-   */
-  @Test
-  public void testExecuteDeferredOperations_givenHashMapAddIsArrayList() throws ServiceException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Entity PersistenceManagerImpl.postAdd(Entity, PersistencePackage)"})
+  public void testPostAdd() throws ServiceException {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+    Entity entity = new Entity();
 
-    HashMap<ChangeType, List<PersistencePackage>> changeTypeListMap = new HashMap<>();
-    changeTypeListMap.put(ChangeType.ADD, new ArrayList<>());
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getDeferredOperations()).thenReturn(changeTypeListMap);
-    when(persistencePackage.getSubPackages()).thenReturn(new HashMap<>());
-
-    // Act
-    persistenceManagerImpl.executeDeferredOperations(persistencePackage);
-
-    // Assert
-    verify(persistencePackage, atLeast(1)).getDeferredOperations();
-    verify(persistencePackage).getSubPackages();
+    // Act and Assert
+    assertSame(entity, persistenceManagerImpl.postAdd(entity, new PersistencePackage()));
   }
 
   /**
-   * Test
-   * {@link PersistenceManagerImpl#executeDeferredOperations(PersistencePackage)}.
+   * Test {@link PersistenceManagerImpl#logValidationError(Entity)}.
    * <ul>
    *   <li>Given {@link HashMap#HashMap()}.</li>
-   *   <li>Then calls {@link PersistencePackage#getDeferredOperations()}.</li>
+   *   <li>Then calls {@link Entity#getPropertyValidationErrors()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PersistenceManagerImpl#executeDeferredOperations(PersistencePackage)}
+   * Method under test: {@link PersistenceManagerImpl#logValidationError(Entity)}
    */
   @Test
-  public void testExecuteDeferredOperations_givenHashMap_thenCallsGetDeferredOperations() throws ServiceException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistenceManagerImpl.logValidationError(Entity)"})
+  public void testLogValidationError_givenHashMap_thenCallsGetPropertyValidationErrors() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getDeferredOperations()).thenReturn(new HashMap<>());
-    when(persistencePackage.getSubPackages()).thenReturn(new HashMap<>());
+    Entity response = mock(Entity.class);
+    when(response.getPropertyValidationErrors()).thenReturn(new HashMap<>());
 
     // Act
-    persistenceManagerImpl.executeDeferredOperations(persistencePackage);
+    persistenceManagerImpl.logValidationError(response);
 
     // Assert
-    verify(persistencePackage).getDeferredOperations();
-    verify(persistencePackage).getSubPackages();
+    verify(response).getPropertyValidationErrors();
   }
 
   /**
-   * Test
-   * {@link PersistenceManagerImpl#executeDeferredOperations(PersistencePackage)}.
-   * <ul>
-   *   <li>Then calls {@link PersistencePackage#getDeferredOperations()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link PersistenceManagerImpl#executeDeferredOperations(PersistencePackage)}
-   */
-  @Test
-  public void testExecuteDeferredOperations_thenCallsGetDeferredOperations() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
-
-    HashMap<String, PersistencePackage> stringPersistencePackageMap = new HashMap<>();
-    stringPersistencePackageMap.put("foo", new PersistencePackage());
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getDeferredOperations()).thenReturn(new HashMap<>());
-    when(persistencePackage.getSubPackages()).thenReturn(stringPersistencePackageMap);
-
-    // Act
-    persistenceManagerImpl.executeDeferredOperations(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getDeferredOperations();
-    verify(persistencePackage).getSubPackages();
-  }
-
-  /**
-   * Test
-   * {@link PersistenceManagerImpl#executePostUpdateHandlers(PersistencePackage, PersistenceResponse)}.
-   * <p>
-   * Method under test:
-   * {@link PersistenceManagerImpl#executePostUpdateHandlers(PersistencePackage, PersistenceResponse)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testExecutePostUpdateHandlers() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5189 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.PersistenceManagerImpl persistenceManagerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    PersistenceManagerImpl persistenceManagerImpl2 = new PersistenceManagerImpl();
-    PersistencePackage persistencePackage = new PersistencePackage();
-
-    // Act
-    persistenceManagerImpl2.executePostUpdateHandlers(persistencePackage, new PersistenceResponse());
-  }
-
-  /**
-   * Test
-   * {@link PersistenceManagerImpl#executePostUpdateHandlers(PersistencePackage, PersistenceResponse)}.
+   * Test {@link PersistenceManagerImpl#executePostUpdateHandlers(PersistencePackage, PersistenceResponse)}.
    * <ul>
    *   <li>Then throw {@link NoPossibleResultsException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PersistenceManagerImpl#executePostUpdateHandlers(PersistencePackage, PersistenceResponse)}
+   * Method under test: {@link PersistenceManagerImpl#executePostUpdateHandlers(PersistencePackage, PersistenceResponse)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "PersistenceResponse PersistenceManagerImpl.executePostUpdateHandlers(PersistencePackage, PersistenceResponse)"})
   public void testExecutePostUpdateHandlers_thenThrowNoPossibleResultsException() throws ServiceException {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     DynamicEntityDaoImpl dynamicEntityDao = mock(DynamicEntityDaoImpl.class);
@@ -772,53 +920,42 @@ public class PersistenceManagerImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link PersistenceManagerImpl#executePostRemoveHandlers(PersistencePackage, PersistenceResponse)}.
+   * Test {@link PersistenceManagerImpl#postUpdate(Entity, PersistencePackage)}.
    * <p>
-   * Method under test:
-   * {@link PersistenceManagerImpl#executePostRemoveHandlers(PersistencePackage, PersistenceResponse)}
+   * Method under test: {@link PersistenceManagerImpl#postUpdate(Entity, PersistencePackage)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testExecutePostRemoveHandlers() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5151 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.PersistenceManagerImpl persistenceManagerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Entity PersistenceManagerImpl.postUpdate(Entity, PersistencePackage)"})
+  public void testPostUpdate() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
-    PersistenceManagerImpl persistenceManagerImpl2 = new PersistenceManagerImpl();
-    PersistencePackage persistencePackage = new PersistencePackage();
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+    Entity entity = new Entity();
 
-    // Act
-    persistenceManagerImpl2.executePostRemoveHandlers(persistencePackage, new PersistenceResponse());
+    // Act and Assert
+    assertSame(entity, persistenceManagerImpl.postUpdate(entity, new PersistencePackage()));
   }
 
   /**
-   * Test
-   * {@link PersistenceManagerImpl#executePostRemoveHandlers(PersistencePackage, PersistenceResponse)}.
+   * Test {@link PersistenceManagerImpl#executePostRemoveHandlers(PersistencePackage, PersistenceResponse)}.
    * <ul>
    *   <li>Then throw {@link NoPossibleResultsException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PersistenceManagerImpl#executePostRemoveHandlers(PersistencePackage, PersistenceResponse)}
+   * Method under test: {@link PersistenceManagerImpl#executePostRemoveHandlers(PersistencePackage, PersistenceResponse)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "PersistenceResponse PersistenceManagerImpl.executePostRemoveHandlers(PersistencePackage, PersistenceResponse)"})
   public void testExecutePostRemoveHandlers_thenThrowNoPossibleResultsException() throws ServiceException {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     DynamicEntityDaoImpl dynamicEntityDao = mock(DynamicEntityDaoImpl.class);
@@ -850,75 +987,19 @@ public class PersistenceManagerImplDiffblueTest {
 
   /**
    * Test {@link PersistenceManagerImpl#getCompatibleModule(OperationType)}.
-   * <p>
-   * Method under test:
-   * {@link PersistenceManagerImpl#getCompatibleModule(OperationType)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetCompatibleModule() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5638 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.PersistenceManagerImpl persistenceManagerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new PersistenceManagerImpl()).getCompatibleModule(OperationType.NONDESTRUCTIVEREMOVE);
-  }
-
-  /**
-   * Test {@link PersistenceManagerImpl#getCompatibleModule(OperationType)}.
-   * <ul>
-   *   <li>Then calls
-   * {@link AdornedTargetListPersistenceModule#isCompatible(OperationType)}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link PersistenceManagerImpl#getCompatibleModule(OperationType)}
-   */
-  @Test
-  public void testGetCompatibleModule_thenCallsIsCompatible() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = mock(
-        AdornedTargetListPersistenceModule.class);
-    when(adornedTargetListPersistenceModule.isCompatible(Mockito.<OperationType>any())).thenReturn(true);
-
-    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
-    persistenceManagerImpl.setModules(new PersistenceModule[]{adornedTargetListPersistenceModule});
-
-    // Act
-    persistenceManagerImpl.getCompatibleModule(OperationType.NONDESTRUCTIVEREMOVE);
-
-    // Assert
-    verify(adornedTargetListPersistenceModule).isCompatible(eq(OperationType.NONDESTRUCTIVEREMOVE));
-  }
-
-  /**
-   * Test {@link PersistenceManagerImpl#getCompatibleModule(OperationType)}.
    * <ul>
    *   <li>Then return {@link BasicPersistenceModule} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PersistenceManagerImpl#getCompatibleModule(OperationType)}
+   * Method under test: {@link PersistenceManagerImpl#getCompatibleModule(OperationType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistenceModule PersistenceManagerImpl.getCompatibleModule(OperationType)"})
   public void testGetCompatibleModule_thenReturnBasicPersistenceModule() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
@@ -935,12 +1016,15 @@ public class PersistenceManagerImplDiffblueTest {
    *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PersistenceManagerImpl#getCompatibleModule(OperationType)}
+   * Method under test: {@link PersistenceManagerImpl#getCompatibleModule(OperationType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistenceModule PersistenceManagerImpl.getCompatibleModule(OperationType)"})
   public void testGetCompatibleModule_thenThrowRuntimeException() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
@@ -952,116 +1036,17 @@ public class PersistenceManagerImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link PersistenceManagerImpl#configureDynamicEntityDao(Class, TargetModeType)}.
-   * <p>
-   * Method under test:
-   * {@link PersistenceManagerImpl#configureDynamicEntityDao(Class, TargetModeType)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testConfigureDynamicEntityDao() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4662 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.PersistenceManagerImpl persistenceManagerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    PersistenceManagerImpl persistenceManagerImpl2 = new PersistenceManagerImpl();
-    Class<Object> entityClass = Object.class;
-
-    // Act
-    persistenceManagerImpl2.configureDynamicEntityDao(entityClass, new TargetModeType("Type", "Friendly Type"));
-  }
-
-  /**
-   * Test
-   * {@link PersistenceManagerImpl#configureDefaultDynamicEntityDao(TargetModeType)}.
-   * <p>
-   * Method under test:
-   * {@link PersistenceManagerImpl#configureDefaultDynamicEntityDao(TargetModeType)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testConfigureDefaultDynamicEntityDao() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4645 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.PersistenceManagerImpl persistenceManagerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    PersistenceManagerImpl persistenceManagerImpl2 = new PersistenceManagerImpl();
-
-    // Act
-    persistenceManagerImpl2.configureDefaultDynamicEntityDao(new TargetModeType("Type", "Friendly Type"));
-  }
-
-  /**
-   * Test {@link PersistenceManagerImpl#getDefaultEntityManager(TargetModeType)}.
-   * <p>
-   * Method under test:
-   * {@link PersistenceManagerImpl#getDefaultEntityManager(TargetModeType)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetDefaultEntityManager() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5663 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.PersistenceManagerImpl persistenceManagerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    PersistenceManagerImpl persistenceManagerImpl2 = new PersistenceManagerImpl();
-
-    // Act
-    persistenceManagerImpl2.getDefaultEntityManager(new TargetModeType("Type", "Friendly Type"));
-  }
-
-  /**
    * Test {@link PersistenceManagerImpl#getCustomPersistenceHandlers()}.
    * <p>
-   * Method under test:
-   * {@link PersistenceManagerImpl#getCustomPersistenceHandlers()}
+   * Method under test: {@link PersistenceManagerImpl#getCustomPersistenceHandlers()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List PersistenceManagerImpl.getCustomPersistenceHandlers()"})
   public void testGetCustomPersistenceHandlers() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
@@ -1073,47 +1058,19 @@ public class PersistenceManagerImplDiffblueTest {
 
   /**
    * Test {@link PersistenceManagerImpl#getCustomPersistenceHandlers()}.
-   * <p>
-   * Method under test:
-   * {@link PersistenceManagerImpl#getCustomPersistenceHandlers()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetCustomPersistenceHandlers2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5652 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.PersistenceManagerImpl persistenceManagerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new PersistenceManagerImpl()).getCustomPersistenceHandlers();
-  }
-
-  /**
-   * Test {@link PersistenceManagerImpl#getCustomPersistenceHandlers()}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add
-   * {@link CustomPersistenceHandlerFilter}.</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link CustomPersistenceHandlerFilter}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PersistenceManagerImpl#getCustomPersistenceHandlers()}
+   * Method under test: {@link PersistenceManagerImpl#getCustomPersistenceHandlers()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List PersistenceManagerImpl.getCustomPersistenceHandlers()"})
   public void testGetCustomPersistenceHandlers_givenArrayListAddCustomPersistenceHandlerFilter() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     ArrayList<CustomPersistenceHandlerFilter> customPersistenceHandlerFilters = new ArrayList<>();
@@ -1132,15 +1089,235 @@ public class PersistenceManagerImplDiffblueTest {
    *   <li>Given {@link PersistenceManagerImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PersistenceManagerImpl#getCustomPersistenceHandlers()}
+   * Method under test: {@link PersistenceManagerImpl#getCustomPersistenceHandlers()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List PersistenceManagerImpl.getCustomPersistenceHandlers()"})
   public void testGetCustomPersistenceHandlers_givenPersistenceManagerImpl() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange, Act and Assert
     assertTrue((new PersistenceManagerImpl()).getCustomPersistenceHandlers().isEmpty());
+  }
+
+  /**
+   * Test {@link PersistenceManagerImpl#setMainEntityName(PersistencePackage, Entity)}.
+   * <ul>
+   *   <li>Given {@link HashMap#HashMap()} {@code __adminMainEntity} is {@link Property#Property()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PersistenceManagerImpl#setMainEntityName(PersistencePackage, Entity)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistenceManagerImpl.setMainEntityName(PersistencePackage, Entity)"})
+  public void testSetMainEntityName_givenHashMapAdminMainEntityIsProperty() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
+    // Arrange
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+    PersistencePackage pp = new PersistencePackage();
+
+    HashMap<String, Property> stringPropertyMap = new HashMap<>();
+    stringPropertyMap.put("__adminMainEntity", new Property());
+    Entity entity = mock(Entity.class);
+    when(entity.getPMap()).thenReturn(stringPropertyMap);
+
+    // Act
+    persistenceManagerImpl.setMainEntityName(pp, entity);
+
+    // Assert that nothing has changed
+    verify(entity).getPMap();
+  }
+
+  /**
+   * Test {@link PersistenceManagerImpl#setMainEntityName(PersistencePackage, Entity)}.
+   * <ul>
+   *   <li>Given {@link HashMap#HashMap()}.</li>
+   *   <li>When {@link Entity} {@link Entity#getPMap()} return {@link HashMap#HashMap()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PersistenceManagerImpl#setMainEntityName(PersistencePackage, Entity)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistenceManagerImpl.setMainEntityName(PersistencePackage, Entity)"})
+  public void testSetMainEntityName_givenHashMap_whenEntityGetPMapReturnHashMap() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
+    // Arrange
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+    PersistencePackage pp = new PersistencePackage();
+    Entity entity = mock(Entity.class);
+    when(entity.getPMap()).thenReturn(new HashMap<>());
+
+    // Act
+    persistenceManagerImpl.setMainEntityName(pp, entity);
+
+    // Assert that nothing has changed
+    verify(entity).getPMap();
+  }
+
+  /**
+   * Test {@link PersistenceManagerImpl#setMainEntityName(PersistencePackage, Entity)}.
+   * <ul>
+   *   <li>Given {@code Pp}.</li>
+   *   <li>Then {@link PersistencePackage#PersistencePackage()} RequestingEntityName is {@code Pp}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PersistenceManagerImpl#setMainEntityName(PersistencePackage, Entity)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistenceManagerImpl.setMainEntityName(PersistencePackage, Entity)"})
+  public void testSetMainEntityName_givenPp_thenPersistencePackageRequestingEntityNameIsPp() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
+    // Arrange
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+
+    PersistencePackage pp = new PersistencePackage();
+    pp.setRequestingEntityName("Pp");
+
+    // Act
+    persistenceManagerImpl.setMainEntityName(pp, null);
+
+    // Assert that nothing has changed
+    assertEquals("Pp", pp.getRequestingEntityName());
+  }
+
+  /**
+   * Test {@link PersistenceManagerImpl#setMainEntityName(PersistencePackage, Entity)}.
+   * <ul>
+   *   <li>Then {@link PersistencePackage#PersistencePackage()} RequestingEntityName is {@code 42}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PersistenceManagerImpl#setMainEntityName(PersistencePackage, Entity)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistenceManagerImpl.setMainEntityName(PersistencePackage, Entity)"})
+  public void testSetMainEntityName_thenPersistencePackageRequestingEntityNameIs42() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
+    // Arrange
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+    PersistencePackage pp = new PersistencePackage();
+    Property property = mock(Property.class);
+    when(property.getValue()).thenReturn("42");
+
+    HashMap<String, Property> stringPropertyMap = new HashMap<>();
+    stringPropertyMap.put("__adminMainEntity", property);
+    Entity entity = mock(Entity.class);
+    when(entity.getPMap()).thenReturn(stringPropertyMap);
+
+    // Act
+    persistenceManagerImpl.setMainEntityName(pp, entity);
+
+    // Assert
+    verify(entity).getPMap();
+    verify(property).getValue();
+    assertEquals("42", pp.getRequestingEntityName());
+  }
+
+  /**
+   * Test {@link PersistenceManagerImpl#setMainEntityName(PersistencePackage, Entity)}.
+   * <ul>
+   *   <li>Then {@link PersistencePackage#PersistencePackage()} RequestingEntityName is {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PersistenceManagerImpl#setMainEntityName(PersistencePackage, Entity)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistenceManagerImpl.setMainEntityName(PersistencePackage, Entity)"})
+  public void testSetMainEntityName_thenPersistencePackageRequestingEntityNameIsNull() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
+    // Arrange
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+    PersistencePackage pp = new PersistencePackage();
+
+    // Act
+    persistenceManagerImpl.setMainEntityName(pp, new Entity());
+
+    // Assert that nothing has changed
+    assertNull(pp.getRequestingEntityName());
+  }
+
+  /**
+   * Test {@link PersistenceManagerImpl#setMainEntityName(PersistencePackage, Entity)}.
+   * <ul>
+   *   <li>Then {@link PersistencePackage#PersistencePackage()} RequestingEntityName is space.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PersistenceManagerImpl#setMainEntityName(PersistencePackage, Entity)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistenceManagerImpl.setMainEntityName(PersistencePackage, Entity)"})
+  public void testSetMainEntityName_thenPersistencePackageRequestingEntityNameIsSpace() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
+    // Arrange
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+
+    PersistencePackage pp = new PersistencePackage();
+    pp.setRequestingEntityName(" ");
+
+    // Act
+    persistenceManagerImpl.setMainEntityName(pp, null);
+
+    // Assert that nothing has changed
+    assertEquals(" ", pp.getRequestingEntityName());
+  }
+
+  /**
+   * Test {@link PersistenceManagerImpl#setMainEntityName(PersistencePackage, Entity)}.
+   * <ul>
+   *   <li>Then throw {@link NoPossibleResultsException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PersistenceManagerImpl#setMainEntityName(PersistencePackage, Entity)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistenceManagerImpl.setMainEntityName(PersistencePackage, Entity)"})
+  public void testSetMainEntityName_thenThrowNoPossibleResultsException() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
+    // Arrange
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+    PersistencePackage pp = new PersistencePackage();
+    Property property = mock(Property.class);
+    when(property.getValue()).thenThrow(new NoPossibleResultsException("An error occurred"));
+
+    HashMap<String, Property> stringPropertyMap = new HashMap<>();
+    stringPropertyMap.put("__adminMainEntity", property);
+    Entity entity = mock(Entity.class);
+    when(entity.getPMap()).thenReturn(stringPropertyMap);
+
+    // Act and Assert
+    assertThrows(NoPossibleResultsException.class, () -> persistenceManagerImpl.setMainEntityName(pp, entity));
+    verify(entity).getPMap();
+    verify(property).getValue();
   }
 
   /**
@@ -1148,8 +1325,7 @@ public class PersistenceManagerImplDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>
-   * {@link PersistenceManagerImpl#setAdminRemoteSecurityService(AdminSecurityServiceRemote)}
+   *   <li>{@link PersistenceManagerImpl#setAdminRemoteSecurityService(AdminSecurityServiceRemote)}
    *   <li>{@link PersistenceManagerImpl#setApplicationContext(ApplicationContext)}
    *   <li>{@link PersistenceManagerImpl#setCustomPersistenceHandlerFilters(List)}
    *   <li>{@link PersistenceManagerImpl#setCustomPersistenceHandlers(List)}
@@ -1164,6 +1340,19 @@ public class PersistenceManagerImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"SecurityVerifier PersistenceManagerImpl.getAdminRemoteSecurityService()",
+      "List PersistenceManagerImpl.getCustomPersistenceHandlerFilters()",
+      "DynamicEntityDao PersistenceManagerImpl.getDynamicEntityDao()",
+      "PersistenceModule[] PersistenceManagerImpl.getModules()",
+      "TargetModeType PersistenceManagerImpl.getTargetMode()",
+      "void PersistenceManagerImpl.setAdminRemoteSecurityService(AdminSecurityServiceRemote)",
+      "void PersistenceManagerImpl.setApplicationContext(ApplicationContext)",
+      "void PersistenceManagerImpl.setCustomPersistenceHandlerFilters(List)",
+      "void PersistenceManagerImpl.setCustomPersistenceHandlers(List)",
+      "void PersistenceManagerImpl.setDynamicEntityDao(DynamicEntityDao)",
+      "void PersistenceManagerImpl.setModules(PersistenceModule[])",
+      "void PersistenceManagerImpl.setTargetMode(TargetModeType)"})
   public void testGettersAndSetters() throws BeansException {
     // Arrange
     PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
@@ -1189,12 +1378,224 @@ public class PersistenceManagerImplDiffblueTest {
     PersistenceModule[] actualModules = persistenceManagerImpl.getModules();
     TargetModeType actualTargetMode = persistenceManagerImpl.getTargetMode();
 
-    // Assert that nothing has changed
+    // Assert
     assertTrue(actualCustomPersistenceHandlerFilters.isEmpty());
     assertSame(customPersistenceHandlerFilters, actualCustomPersistenceHandlerFilters);
     assertSame(targetMode, actualTargetMode);
     assertSame(dynamicEntityDao, actualDynamicEntityDao);
     assertSame(adminRemoteSecurityService, actualAdminRemoteSecurityService);
     assertSame(modules, actualModules);
+  }
+
+  /**
+   * Test {@link PersistenceManagerImpl#honorExplicitPersistenceHandlerSorting()}.
+   * <p>
+   * Method under test: {@link PersistenceManagerImpl#honorExplicitPersistenceHandlerSorting()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistenceManagerImpl.honorExplicitPersistenceHandlerSorting()"})
+  public void testHonorExplicitPersistenceHandlerSorting() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
+    // Arrange
+    ArrayList<CustomPersistenceHandler> customPersistenceHandlers = new ArrayList<>();
+    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler = new AdminPermissionCustomPersistenceHandler();
+    customPersistenceHandlers.add(adminPermissionCustomPersistenceHandler);
+
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+    persistenceManagerImpl.setCustomPersistenceHandlers(customPersistenceHandlers);
+
+    // Act
+    persistenceManagerImpl.honorExplicitPersistenceHandlerSorting();
+
+    // Assert that nothing has changed
+    assertEquals(1, persistenceManagerImpl.getCustomPersistenceHandlers().size());
+    List<CustomPersistenceHandler> customPersistenceHandlerList = persistenceManagerImpl.customPersistenceHandlers;
+    assertEquals(1, customPersistenceHandlerList.size());
+    assertSame(adminPermissionCustomPersistenceHandler, customPersistenceHandlerList.get(0));
+  }
+
+  /**
+   * Test {@link PersistenceManagerImpl#honorExplicitPersistenceHandlerSorting()}.
+   * <p>
+   * Method under test: {@link PersistenceManagerImpl#honorExplicitPersistenceHandlerSorting()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistenceManagerImpl.honorExplicitPersistenceHandlerSorting()"})
+  public void testHonorExplicitPersistenceHandlerSorting2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
+    // Arrange
+    ClassCustomPersistenceHandlerAdapter classCustomPersistenceHandlerAdapter = mock(
+        ClassCustomPersistenceHandlerAdapter.class);
+    when(classCustomPersistenceHandlerAdapter.getOrder()).thenReturn(1);
+
+    ArrayList<CustomPersistenceHandler> customPersistenceHandlers = new ArrayList<>();
+    customPersistenceHandlers.add(classCustomPersistenceHandlerAdapter);
+
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+    persistenceManagerImpl.setCustomPersistenceHandlers(customPersistenceHandlers);
+
+    // Act
+    persistenceManagerImpl.honorExplicitPersistenceHandlerSorting();
+
+    // Assert
+    verify(classCustomPersistenceHandlerAdapter).getOrder();
+    assertTrue(persistenceManagerImpl.getCustomPersistenceHandlers().isEmpty());
+    assertTrue(persistenceManagerImpl.customPersistenceHandlers.isEmpty());
+  }
+
+  /**
+   * Test {@link PersistenceManagerImpl#honorExplicitPersistenceHandlerSorting()}.
+   * <p>
+   * Method under test: {@link PersistenceManagerImpl#honorExplicitPersistenceHandlerSorting()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistenceManagerImpl.honorExplicitPersistenceHandlerSorting()"})
+  public void testHonorExplicitPersistenceHandlerSorting3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
+    // Arrange
+    ClassCustomPersistenceHandlerAdapter classCustomPersistenceHandlerAdapter = mock(
+        ClassCustomPersistenceHandlerAdapter.class);
+    when(classCustomPersistenceHandlerAdapter.getOrder()).thenReturn(1);
+
+    ArrayList<CustomPersistenceHandler> customPersistenceHandlers = new ArrayList<>();
+    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler = new AdminPermissionCustomPersistenceHandler();
+    customPersistenceHandlers.add(adminPermissionCustomPersistenceHandler);
+    customPersistenceHandlers.add(classCustomPersistenceHandlerAdapter);
+
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+    persistenceManagerImpl.setCustomPersistenceHandlers(customPersistenceHandlers);
+
+    // Act
+    persistenceManagerImpl.honorExplicitPersistenceHandlerSorting();
+
+    // Assert
+    verify(classCustomPersistenceHandlerAdapter, atLeast(1)).getOrder();
+    List<CustomPersistenceHandler> customPersistenceHandlerList = persistenceManagerImpl.customPersistenceHandlers;
+    assertEquals(2, customPersistenceHandlerList.size());
+    List<CustomPersistenceHandler> expectedCustomPersistenceHandlers = persistenceManagerImpl.customPersistenceHandlers;
+    assertEquals(expectedCustomPersistenceHandlers, persistenceManagerImpl.getCustomPersistenceHandlers());
+    assertSame(adminPermissionCustomPersistenceHandler, customPersistenceHandlerList.get(1));
+  }
+
+  /**
+   * Test {@link PersistenceManagerImpl#honorExplicitPersistenceHandlerSorting()}.
+   * <p>
+   * Method under test: {@link PersistenceManagerImpl#honorExplicitPersistenceHandlerSorting()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistenceManagerImpl.honorExplicitPersistenceHandlerSorting()"})
+  public void testHonorExplicitPersistenceHandlerSorting4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
+    // Arrange
+    ClassCustomPersistenceHandlerAdapter classCustomPersistenceHandlerAdapter = mock(
+        ClassCustomPersistenceHandlerAdapter.class);
+    when(classCustomPersistenceHandlerAdapter.getOrder()).thenReturn(1);
+
+    ArrayList<CustomPersistenceHandler> customPersistenceHandlers = new ArrayList<>();
+    customPersistenceHandlers.add(new AdminPermissionCustomPersistenceHandler());
+    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler = new AdminPermissionCustomPersistenceHandler();
+    customPersistenceHandlers.add(adminPermissionCustomPersistenceHandler);
+    customPersistenceHandlers.add(classCustomPersistenceHandlerAdapter);
+
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+    persistenceManagerImpl.setCustomPersistenceHandlers(customPersistenceHandlers);
+
+    // Act
+    persistenceManagerImpl.honorExplicitPersistenceHandlerSorting();
+
+    // Assert
+    verify(classCustomPersistenceHandlerAdapter, atLeast(1)).getOrder();
+    List<CustomPersistenceHandler> customPersistenceHandlers2 = persistenceManagerImpl.getCustomPersistenceHandlers();
+    assertEquals(3, customPersistenceHandlers2.size());
+    List<CustomPersistenceHandler> customPersistenceHandlerList = persistenceManagerImpl.customPersistenceHandlers;
+    assertEquals(3, customPersistenceHandlerList.size());
+    assertSame(adminPermissionCustomPersistenceHandler, customPersistenceHandlerList.get(2));
+    assertSame(customPersistenceHandlers2.get(0), customPersistenceHandlerList.get(0));
+  }
+
+  /**
+   * Test {@link PersistenceManagerImpl#honorExplicitPersistenceHandlerSorting()}.
+   * <p>
+   * Method under test: {@link PersistenceManagerImpl#honorExplicitPersistenceHandlerSorting()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistenceManagerImpl.honorExplicitPersistenceHandlerSorting()"})
+  public void testHonorExplicitPersistenceHandlerSorting5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
+    // Arrange
+    ClassCustomPersistenceHandlerAdapter classCustomPersistenceHandlerAdapter = mock(
+        ClassCustomPersistenceHandlerAdapter.class);
+    when(classCustomPersistenceHandlerAdapter.getOrder()).thenReturn(1);
+    ClassCustomPersistenceHandlerAdapter classCustomPersistenceHandlerAdapter2 = mock(
+        ClassCustomPersistenceHandlerAdapter.class);
+    when(classCustomPersistenceHandlerAdapter2.getOrder()).thenReturn(1);
+
+    ArrayList<CustomPersistenceHandler> customPersistenceHandlers = new ArrayList<>();
+    customPersistenceHandlers.add(classCustomPersistenceHandlerAdapter2);
+    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler = new AdminPermissionCustomPersistenceHandler();
+    customPersistenceHandlers.add(adminPermissionCustomPersistenceHandler);
+    customPersistenceHandlers.add(classCustomPersistenceHandlerAdapter);
+
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+    persistenceManagerImpl.setCustomPersistenceHandlers(customPersistenceHandlers);
+
+    // Act
+    persistenceManagerImpl.honorExplicitPersistenceHandlerSorting();
+
+    // Assert
+    verify(classCustomPersistenceHandlerAdapter2, atLeast(1)).getOrder();
+    verify(classCustomPersistenceHandlerAdapter, atLeast(1)).getOrder();
+    List<CustomPersistenceHandler> customPersistenceHandlerList = persistenceManagerImpl.customPersistenceHandlers;
+    assertEquals(3, customPersistenceHandlerList.size());
+    List<CustomPersistenceHandler> expectedCustomPersistenceHandlers = persistenceManagerImpl.customPersistenceHandlers;
+    assertEquals(expectedCustomPersistenceHandlers, persistenceManagerImpl.getCustomPersistenceHandlers());
+    assertSame(adminPermissionCustomPersistenceHandler, customPersistenceHandlerList.get(2));
+  }
+
+  /**
+   * Test {@link PersistenceManagerImpl#honorExplicitPersistenceHandlerSorting()}.
+   * <ul>
+   *   <li>Given {@link PersistenceManagerImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PersistenceManagerImpl#honorExplicitPersistenceHandlerSorting()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistenceManagerImpl.honorExplicitPersistenceHandlerSorting()"})
+  public void testHonorExplicitPersistenceHandlerSorting_givenPersistenceManagerImpl() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
+    // Arrange
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+
+    // Act
+    persistenceManagerImpl.honorExplicitPersistenceHandlerSorting();
+
+    // Assert that nothing has changed
+    assertTrue(persistenceManagerImpl.getCustomPersistenceHandlers().isEmpty());
+    assertTrue(persistenceManagerImpl.customPersistenceHandlers.isEmpty());
   }
 }

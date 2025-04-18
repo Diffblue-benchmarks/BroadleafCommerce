@@ -1,176 +1,289 @@
+/*-
+ * #%L
+ * BroadleafCommerce CMS Module
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.cms.url.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.mock;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
+import javax.cache.Cache;
+import javax.cache.CacheManager;
+import org.broadleafcommerce.cms.url.dao.URLHandlerDao;
+import org.broadleafcommerce.cms.url.domain.NullURLHandler;
 import org.broadleafcommerce.cms.url.domain.URLHandler;
+import org.broadleafcommerce.cms.url.domain.URLHandlerImpl;
+import org.broadleafcommerce.cms.url.type.URLRedirectType;
+import org.broadleafcommerce.common.cache.StatisticsService;
 import org.broadleafcommerce.common.site.domain.Site;
 import org.broadleafcommerce.common.site.domain.SiteImpl;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml",
-    "/applicationContext-servlet-cms-contentCreator.xml", "/bl-cms-applicationContext-entity.xml",
-    "/bl-cms-contentClient-applicationContext.xml", "/bl-cms-contentCreator-applicationContext.xml",
-    "/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-cms-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-cms-applicationContext-servlet.xml",
-    "/blc-config/site/framework/bl-cms-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class URLHandlerServiceImplDiffblueTest {
-  @Autowired
+  @Mock
+  private CacheManager cacheManager;
+
+  @Mock
+  private StatisticsService statisticsService;
+
+  @Mock
+  private URLHandlerDao uRLHandlerDao;
+
+  @InjectMocks
   private URLHandlerServiceImpl uRLHandlerServiceImpl;
 
   /**
    * Test {@link URLHandlerServiceImpl#findURLHandlerByURI(String)}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link URLHandlerServiceImpl#findURLHandlerByURI(String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindURLHandlerByURI() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.url.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass10021 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.url.service.URLHandlerServiceImpl uRLHandlerServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"URLHandler URLHandlerServiceImpl.findURLHandlerByURI(String)"})
+  public void testFindURLHandlerByURI_thenThrowRuntimeException() {
+    // Arrange
+    when(cacheManager.getCache(Mockito.<String>any()))
+        .thenThrow(new RuntimeException("ThreadLocalManager.notify.orphans"));
 
-    // Arrange and Act
-    (new URLHandlerServiceImpl()).findURLHandlerByURI("https://example.org/example");
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> uRLHandlerServiceImpl.findURLHandlerByURI("https://example.org/example"));
+    verify(cacheManager).getCache(eq("cmsUrlHandlerCache"));
+  }
+
+  /**
+   * Test {@link URLHandlerServiceImpl#findURLHandlerByURI(String)}.
+   * <ul>
+   *   <li>When {@code null}.</li>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#findURLHandlerByURI(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"URLHandler URLHandlerServiceImpl.findURLHandlerByURI(String)"})
+  public void testFindURLHandlerByURI_whenNull_thenThrowRuntimeException() {
+    // Arrange
+    when(cacheManager.getCache(Mockito.<String>any()))
+        .thenThrow(new RuntimeException("ThreadLocalManager.notify.orphans"));
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> uRLHandlerServiceImpl.findURLHandlerByURI(null));
+    verify(cacheManager).getCache(eq("cmsUrlHandlerCache"));
   }
 
   /**
    * Test {@link URLHandlerServiceImpl#findURLHandlerById(Long)}.
+   * <ul>
+   *   <li>Then return {@link URLHandlerServiceImpl} {@link URLHandlerServiceImpl#NULL_URL_HANDLER}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link URLHandlerServiceImpl#findURLHandlerById(Long)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindURLHandlerById() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.url.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass10006 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.url.service.URLHandlerServiceImpl uRLHandlerServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"URLHandler URLHandlerServiceImpl.findURLHandlerById(Long)"})
+  public void testFindURLHandlerById_thenReturnURLHandlerServiceImplNull_url_handler() {
+    // Arrange
+    when(uRLHandlerDao.findURLHandlerById(Mockito.<Long>any())).thenReturn(URLHandlerServiceImpl.NULL_URL_HANDLER);
 
-    // Arrange and Act
-    (new URLHandlerServiceImpl()).findURLHandlerById(1L);
+    // Act
+    URLHandler actualFindURLHandlerByIdResult = uRLHandlerServiceImpl.findURLHandlerById(1L);
+
+    // Assert
+    verify(uRLHandlerDao).findURLHandlerById(eq(1L));
+    assertSame(uRLHandlerServiceImpl.NULL_URL_HANDLER, actualFindURLHandlerByIdResult);
+  }
+
+  /**
+   * Test {@link URLHandlerServiceImpl#findURLHandlerById(Long)}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#findURLHandlerById(Long)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"URLHandler URLHandlerServiceImpl.findURLHandlerById(Long)"})
+  public void testFindURLHandlerById_thenThrowRuntimeException() {
+    // Arrange
+    when(uRLHandlerDao.findURLHandlerById(Mockito.<Long>any())).thenThrow(new RuntimeException("foo"));
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> uRLHandlerServiceImpl.findURLHandlerById(1L));
+    verify(uRLHandlerDao).findURLHandlerById(eq(1L));
   }
 
   /**
    * Test {@link URLHandlerServiceImpl#findAllURLHandlers()}.
+   * <ul>
+   *   <li>Then return Empty.</li>
+   * </ul>
    * <p>
    * Method under test: {@link URLHandlerServiceImpl#findAllURLHandlers()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindAllURLHandlers() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.url.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass10005 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.url.service.URLHandlerServiceImpl uRLHandlerServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List URLHandlerServiceImpl.findAllURLHandlers()"})
+  public void testFindAllURLHandlers_thenReturnEmpty() {
+    // Arrange
+    when(uRLHandlerDao.findAllURLHandlers()).thenReturn(new ArrayList<>());
 
-    // Arrange and Act
-    (new URLHandlerServiceImpl()).findAllURLHandlers();
+    // Act
+    List<URLHandler> actualFindAllURLHandlersResult = uRLHandlerServiceImpl.findAllURLHandlers();
+
+    // Assert
+    verify(uRLHandlerDao).findAllURLHandlers();
+    assertTrue(actualFindAllURLHandlersResult.isEmpty());
+  }
+
+  /**
+   * Test {@link URLHandlerServiceImpl#findAllURLHandlers()}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#findAllURLHandlers()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List URLHandlerServiceImpl.findAllURLHandlers()"})
+  public void testFindAllURLHandlers_thenThrowRuntimeException() {
+    // Arrange
+    when(uRLHandlerDao.findAllURLHandlers()).thenThrow(new RuntimeException("foo"));
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> uRLHandlerServiceImpl.findAllURLHandlers());
+    verify(uRLHandlerDao).findAllURLHandlers();
   }
 
   /**
    * Test {@link URLHandlerServiceImpl#findAllRegexURLHandlers()}.
+   * <ul>
+   *   <li>Then return Empty.</li>
+   * </ul>
    * <p>
    * Method under test: {@link URLHandlerServiceImpl#findAllRegexURLHandlers()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindAllRegexURLHandlers() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.url.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass10004 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.url.service.URLHandlerServiceImpl uRLHandlerServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List URLHandlerServiceImpl.findAllRegexURLHandlers()"})
+  public void testFindAllRegexURLHandlers_thenReturnEmpty() {
+    // Arrange
+    when(uRLHandlerDao.findAllRegexURLHandlers()).thenReturn(new ArrayList<>());
 
-    // Arrange and Act
-    (new URLHandlerServiceImpl()).findAllRegexURLHandlers();
+    // Act
+    List<URLHandler> actualFindAllRegexURLHandlersResult = uRLHandlerServiceImpl.findAllRegexURLHandlers();
+
+    // Assert
+    verify(uRLHandlerDao).findAllRegexURLHandlers();
+    assertTrue(actualFindAllRegexURLHandlersResult.isEmpty());
+  }
+
+  /**
+   * Test {@link URLHandlerServiceImpl#findAllRegexURLHandlers()}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#findAllRegexURLHandlers()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List URLHandlerServiceImpl.findAllRegexURLHandlers()"})
+  public void testFindAllRegexURLHandlers_thenThrowRuntimeException() {
+    // Arrange
+    when(uRLHandlerDao.findAllRegexURLHandlers()).thenThrow(new RuntimeException("foo"));
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> uRLHandlerServiceImpl.findAllRegexURLHandlers());
+    verify(uRLHandlerDao).findAllRegexURLHandlers();
   }
 
   /**
    * Test {@link URLHandlerServiceImpl#saveURLHandler(URLHandler)}.
+   * <ul>
+   *   <li>Then return {@link URLHandlerServiceImpl#NULL_URL_HANDLER}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link URLHandlerServiceImpl#saveURLHandler(URLHandler)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testSaveURLHandler() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.url.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass11258 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.url.service.URLHandlerServiceImpl uRLHandlerServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"URLHandler URLHandlerServiceImpl.saveURLHandler(URLHandler)"})
+  public void testSaveURLHandler_thenReturnNull_url_handler() {
+    // Arrange
+    when(uRLHandlerDao.saveURLHandler(Mockito.<URLHandler>any())).thenReturn(URLHandlerServiceImpl.NULL_URL_HANDLER);
+    NullURLHandler handler = URLHandlerServiceImpl.NULL_URL_HANDLER;
 
-    // Arrange and Act
-    (new URLHandlerServiceImpl()).saveURLHandler(URLHandlerServiceImpl.NULL_URL_HANDLER);
+    // Act
+    URLHandler actualSaveURLHandlerResult = uRLHandlerServiceImpl.saveURLHandler(handler);
+
+    // Assert
+    verify(uRLHandlerDao).saveURLHandler(isA(URLHandler.class));
+    assertSame(handler, actualSaveURLHandlerResult);
+  }
+
+  /**
+   * Test {@link URLHandlerServiceImpl#saveURLHandler(URLHandler)}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#saveURLHandler(URLHandler)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"URLHandler URLHandlerServiceImpl.saveURLHandler(URLHandler)"})
+  public void testSaveURLHandler_thenThrowRuntimeException() {
+    // Arrange
+    when(uRLHandlerDao.saveURLHandler(Mockito.<URLHandler>any())).thenThrow(new RuntimeException("foo"));
+
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> uRLHandlerServiceImpl.saveURLHandler(URLHandlerServiceImpl.NULL_URL_HANDLER));
+    verify(uRLHandlerDao).saveURLHandler(isA(URLHandler.class));
   }
 
   /**
@@ -179,11 +292,19 @@ public class URLHandlerServiceImplDiffblueTest {
    * Method under test: {@link URLHandlerServiceImpl#checkForMatches(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"URLHandler URLHandlerServiceImpl.checkForMatches(String)"})
   public void testCheckForMatches() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    // Arrange
+    when(uRLHandlerDao.findAllRegexURLHandlers()).thenThrow(new RuntimeException("foo"));
 
-    // Arrange, Act and Assert
-    assertNull((new URLHandlerServiceImpl()).checkForMatches("https://example.org/example"));
+    // Act
+    URLHandler actualCheckForMatchesResult = uRLHandlerServiceImpl.checkForMatches("https://example.org/example");
+
+    // Assert
+    verify(uRLHandlerDao).findAllRegexURLHandlers();
+    assertNull(actualCheckForMatchesResult);
+    assertTrue(uRLHandlerServiceImpl.urlPatternMap.isEmpty());
   }
 
   /**
@@ -192,75 +313,440 @@ public class URLHandlerServiceImplDiffblueTest {
    * Method under test: {@link URLHandlerServiceImpl#checkForMatches(String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"URLHandler URLHandlerServiceImpl.checkForMatches(String)"})
   public void testCheckForMatches2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.url.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass9695 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.url.service.URLHandlerServiceImpl uRLHandlerServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
+    urlHandlerImpl.setId(1L);
+    urlHandlerImpl.setIncomingURL("https://example.org/example");
+    urlHandlerImpl.setNewURL("https://example.org/example");
+    urlHandlerImpl.setRegexHandler(true);
+    urlHandlerImpl.setUrlRedirectType(URLRedirectType.FORWARD);
 
-    // Arrange and Act
-    (new URLHandlerServiceImpl()).checkForMatches("https://example.org/example");
+    ArrayList<URLHandler> urlHandlerList = new ArrayList<>();
+    urlHandlerList.add(urlHandlerImpl);
+    when(uRLHandlerDao.findAllRegexURLHandlers()).thenReturn(urlHandlerList);
+
+    // Act
+    URLHandler actualCheckForMatchesResult = uRLHandlerServiceImpl.checkForMatches("https://example.org/example");
+
+    // Assert
+    verify(uRLHandlerDao).findAllRegexURLHandlers();
+    Map<String, Pattern> stringPatternMap = uRLHandlerServiceImpl.urlPatternMap;
+    assertEquals(1, stringPatternMap.size());
+    assertEquals("^/https://example.org/example$", stringPatternMap.get("^/https://example.org/example$").pattern());
+    assertNull(actualCheckForMatchesResult);
   }
 
   /**
-   * Test {@link URLHandlerServiceImpl#removeURLHandlerFromCache(String)}.
+   * Test {@link URLHandlerServiceImpl#checkForMatches(String)}.
    * <p>
-   * Method under test:
-   * {@link URLHandlerServiceImpl#removeURLHandlerFromCache(String)}
+   * Method under test: {@link URLHandlerServiceImpl#checkForMatches(String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testRemoveURLHandlerFromCache() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.url.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass10949 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.url.service.URLHandlerServiceImpl uRLHandlerServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"URLHandler URLHandlerServiceImpl.checkForMatches(String)"})
+  public void testCheckForMatches3() {
+    // Arrange
+    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
+    urlHandlerImpl.setId(1L);
+    urlHandlerImpl.setIncomingURL(" ");
+    urlHandlerImpl.setNewURL("https://example.org/example");
+    urlHandlerImpl.setRegexHandler(true);
+    urlHandlerImpl.setUrlRedirectType(URLRedirectType.FORWARD);
 
-    // Arrange and Act
-    (new URLHandlerServiceImpl()).removeURLHandlerFromCache("https://example.org/example");
+    ArrayList<URLHandler> urlHandlerList = new ArrayList<>();
+    urlHandlerList.add(urlHandlerImpl);
+    when(uRLHandlerDao.findAllRegexURLHandlers()).thenReturn(urlHandlerList);
+
+    // Act
+    URLHandler actualCheckForMatchesResult = uRLHandlerServiceImpl.checkForMatches("https://example.org/example");
+
+    // Assert
+    verify(uRLHandlerDao).findAllRegexURLHandlers();
+    Map<String, Pattern> stringPatternMap = uRLHandlerServiceImpl.urlPatternMap;
+    assertEquals(1, stringPatternMap.size());
+    assertEquals("^ $", stringPatternMap.get("^ $").pattern());
+    assertNull(actualCheckForMatchesResult);
+  }
+
+  /**
+   * Test {@link URLHandlerServiceImpl#checkForMatches(String)}.
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#checkForMatches(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"URLHandler URLHandlerServiceImpl.checkForMatches(String)"})
+  public void testCheckForMatches4() {
+    // Arrange
+    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
+    urlHandlerImpl.setId(1L);
+    urlHandlerImpl.setIncomingURL("/https://exampleUorg/example");
+    urlHandlerImpl.setNewURL("https://example.org/example");
+    urlHandlerImpl.setRegexHandler(true);
+    urlHandlerImpl.setUrlRedirectType(URLRedirectType.FORWARD);
+
+    ArrayList<URLHandler> urlHandlerList = new ArrayList<>();
+    urlHandlerList.add(urlHandlerImpl);
+    when(uRLHandlerDao.findAllRegexURLHandlers()).thenReturn(urlHandlerList);
+
+    // Act
+    URLHandler actualCheckForMatchesResult = uRLHandlerServiceImpl.checkForMatches("https://example.org/example");
+
+    // Assert
+    verify(uRLHandlerDao).findAllRegexURLHandlers();
+    Map<String, Pattern> stringPatternMap = uRLHandlerServiceImpl.urlPatternMap;
+    assertEquals(1, stringPatternMap.size());
+    assertEquals("^/https://exampleUorg/example$", stringPatternMap.get("^/https://exampleUorg/example$").pattern());
+    assertNull(actualCheckForMatchesResult);
+  }
+
+  /**
+   * Test {@link URLHandlerServiceImpl#checkForMatches(String)}.
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#checkForMatches(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"URLHandler URLHandlerServiceImpl.checkForMatches(String)"})
+  public void testCheckForMatches5() {
+    // Arrange
+    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
+    urlHandlerImpl.setId(1L);
+    urlHandlerImpl.setIncomingURL("^");
+    urlHandlerImpl.setNewURL("https://example.org/example");
+    urlHandlerImpl.setRegexHandler(true);
+    urlHandlerImpl.setUrlRedirectType(URLRedirectType.FORWARD);
+
+    ArrayList<URLHandler> urlHandlerList = new ArrayList<>();
+    urlHandlerList.add(urlHandlerImpl);
+    when(uRLHandlerDao.findAllRegexURLHandlers()).thenReturn(urlHandlerList);
+
+    // Act
+    URLHandler actualCheckForMatchesResult = uRLHandlerServiceImpl.checkForMatches("https://example.org/example");
+
+    // Assert
+    verify(uRLHandlerDao).findAllRegexURLHandlers();
+    Map<String, Pattern> stringPatternMap = uRLHandlerServiceImpl.urlPatternMap;
+    assertEquals(1, stringPatternMap.size());
+    assertEquals("^$", stringPatternMap.get("^$").pattern());
+    assertNull(actualCheckForMatchesResult);
+  }
+
+  /**
+   * Test {@link URLHandlerServiceImpl#checkForMatches(String)}.
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#checkForMatches(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"URLHandler URLHandlerServiceImpl.checkForMatches(String)"})
+  public void testCheckForMatches6() {
+    // Arrange
+    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
+    urlHandlerImpl.setId(1L);
+    urlHandlerImpl.setIncomingURL("([\\[\\]\\.\\|\\?\\*\\+\\(\\)\\\\~`\\!@#%&\\-_+={}'\"\"<>:;, \\/])");
+    urlHandlerImpl.setNewURL("https://example.org/example");
+    urlHandlerImpl.setRegexHandler(true);
+    urlHandlerImpl.setUrlRedirectType(URLRedirectType.FORWARD);
+
+    ArrayList<URLHandler> urlHandlerList = new ArrayList<>();
+    urlHandlerList.add(urlHandlerImpl);
+    when(uRLHandlerDao.findAllRegexURLHandlers()).thenReturn(urlHandlerList);
+
+    // Act
+    URLHandler actualCheckForMatchesResult = uRLHandlerServiceImpl.checkForMatches("https://example.org/example");
+
+    // Assert
+    verify(uRLHandlerDao).findAllRegexURLHandlers();
+    Map<String, Pattern> stringPatternMap = uRLHandlerServiceImpl.urlPatternMap;
+    assertEquals(1, stringPatternMap.size());
+    assertEquals("^([\\[\\]\\.\\|\\?\\*\\+\\(\\)\\\\~`\\!@#%&\\-_+={}'\"\"<>:;, \\/])$",
+        stringPatternMap.get("^([\\[\\]\\.\\|\\?\\*\\+\\(\\)\\\\~`\\!@#%&\\-_+={}'\"\"<>:;, \\/])$").pattern());
+    assertNull(actualCheckForMatchesResult);
+  }
+
+  /**
+   * Test {@link URLHandlerServiceImpl#checkForMatches(String)}.
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#checkForMatches(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"URLHandler URLHandlerServiceImpl.checkForMatches(String)"})
+  public void testCheckForMatches7() {
+    // Arrange
+    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
+    urlHandlerImpl.setId(1L);
+    urlHandlerImpl.setIncomingURL("$");
+    urlHandlerImpl.setNewURL("https://example.org/example");
+    urlHandlerImpl.setRegexHandler(true);
+    urlHandlerImpl.setUrlRedirectType(URLRedirectType.FORWARD);
+
+    ArrayList<URLHandler> urlHandlerList = new ArrayList<>();
+    urlHandlerList.add(urlHandlerImpl);
+    when(uRLHandlerDao.findAllRegexURLHandlers()).thenReturn(urlHandlerList);
+
+    // Act
+    URLHandler actualCheckForMatchesResult = uRLHandlerServiceImpl.checkForMatches("https://example.org/example");
+
+    // Assert
+    verify(uRLHandlerDao).findAllRegexURLHandlers();
+    Map<String, Pattern> stringPatternMap = uRLHandlerServiceImpl.urlPatternMap;
+    assertEquals(1, stringPatternMap.size());
+    assertEquals("^/$", stringPatternMap.get("^/$").pattern());
+    assertNull(actualCheckForMatchesResult);
+  }
+
+  /**
+   * Test {@link URLHandlerServiceImpl#checkForMatches(String)}.
+   * <ul>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#checkForMatches(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"URLHandler URLHandlerServiceImpl.checkForMatches(String)"})
+  public void testCheckForMatches_givenArrayListAddNull() {
+    // Arrange
+    ArrayList<URLHandler> urlHandlerList = new ArrayList<>();
+    urlHandlerList.add(null);
+    when(uRLHandlerDao.findAllRegexURLHandlers()).thenReturn(urlHandlerList);
+
+    // Act
+    URLHandler actualCheckForMatchesResult = uRLHandlerServiceImpl.checkForMatches("https://example.org/example");
+
+    // Assert
+    verify(uRLHandlerDao).findAllRegexURLHandlers();
+    assertNull(actualCheckForMatchesResult);
+    assertTrue(uRLHandlerServiceImpl.urlPatternMap.isEmpty());
+  }
+
+  /**
+   * Test {@link URLHandlerServiceImpl#checkForMatches(String)}.
+   * <ul>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link URLHandlerServiceImpl#NULL_URL_HANDLER}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#checkForMatches(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"URLHandler URLHandlerServiceImpl.checkForMatches(String)"})
+  public void testCheckForMatches_givenArrayListAddNull_url_handler() {
+    // Arrange
+    ArrayList<URLHandler> urlHandlerList = new ArrayList<>();
+    urlHandlerList.add(URLHandlerServiceImpl.NULL_URL_HANDLER);
+    when(uRLHandlerDao.findAllRegexURLHandlers()).thenReturn(urlHandlerList);
+
+    // Act
+    URLHandler actualCheckForMatchesResult = uRLHandlerServiceImpl.checkForMatches("https://example.org/example");
+
+    // Assert
+    verify(uRLHandlerDao).findAllRegexURLHandlers();
+    assertNull(actualCheckForMatchesResult);
+    assertTrue(uRLHandlerServiceImpl.urlPatternMap.isEmpty());
+  }
+
+  /**
+   * Test {@link URLHandlerServiceImpl#checkForMatches(String)}.
+   * <ul>
+   *   <li>Given {@link URLHandlerImpl} (default constructor) IncomingURL is {@code (}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#checkForMatches(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"URLHandler URLHandlerServiceImpl.checkForMatches(String)"})
+  public void testCheckForMatches_givenURLHandlerImplIncomingURLIsLeftParenthesis() {
+    // Arrange
+    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
+    urlHandlerImpl.setId(1L);
+    urlHandlerImpl.setIncomingURL("(");
+    urlHandlerImpl.setNewURL("https://example.org/example");
+    urlHandlerImpl.setRegexHandler(true);
+    urlHandlerImpl.setUrlRedirectType(URLRedirectType.FORWARD);
+
+    ArrayList<URLHandler> urlHandlerList = new ArrayList<>();
+    urlHandlerList.add(urlHandlerImpl);
+    when(uRLHandlerDao.findAllRegexURLHandlers()).thenReturn(urlHandlerList);
+
+    // Act
+    URLHandler actualCheckForMatchesResult = uRLHandlerServiceImpl.checkForMatches("https://example.org/example");
+
+    // Assert
+    verify(uRLHandlerDao).findAllRegexURLHandlers();
+    assertNull(actualCheckForMatchesResult);
+    assertTrue(uRLHandlerServiceImpl.urlPatternMap.isEmpty());
+  }
+
+  /**
+   * Test {@link URLHandlerServiceImpl#checkForMatches(String)}.
+   * <ul>
+   *   <li>Given {@link URLHandlerImpl} (default constructor) IncomingURL is {@code )}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#checkForMatches(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"URLHandler URLHandlerServiceImpl.checkForMatches(String)"})
+  public void testCheckForMatches_givenURLHandlerImplIncomingURLIsRightParenthesis() {
+    // Arrange
+    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
+    urlHandlerImpl.setId(1L);
+    urlHandlerImpl.setIncomingURL(")");
+    urlHandlerImpl.setNewURL("https://example.org/example");
+    urlHandlerImpl.setRegexHandler(true);
+    urlHandlerImpl.setUrlRedirectType(URLRedirectType.FORWARD);
+
+    ArrayList<URLHandler> urlHandlerList = new ArrayList<>();
+    urlHandlerList.add(urlHandlerImpl);
+    when(uRLHandlerDao.findAllRegexURLHandlers()).thenReturn(urlHandlerList);
+
+    // Act
+    URLHandler actualCheckForMatchesResult = uRLHandlerServiceImpl.checkForMatches("https://example.org/example");
+
+    // Assert
+    verify(uRLHandlerDao).findAllRegexURLHandlers();
+    assertNull(actualCheckForMatchesResult);
+    assertTrue(uRLHandlerServiceImpl.urlPatternMap.isEmpty());
+  }
+
+  /**
+   * Test {@link URLHandlerServiceImpl#checkForMatches(String)}.
+   * <ul>
+   *   <li>Then {@link URLHandlerServiceImpl} {@link URLHandlerServiceImpl#urlPatternMap} Empty.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#checkForMatches(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"URLHandler URLHandlerServiceImpl.checkForMatches(String)"})
+  public void testCheckForMatches_thenURLHandlerServiceImplUrlPatternMapEmpty() {
+    // Arrange
+    when(uRLHandlerDao.findAllRegexURLHandlers()).thenReturn(new ArrayList<>());
+
+    // Act
+    URLHandler actualCheckForMatchesResult = uRLHandlerServiceImpl.checkForMatches("https://example.org/example");
+
+    // Assert
+    verify(uRLHandlerDao).findAllRegexURLHandlers();
+    assertNull(actualCheckForMatchesResult);
+    assertTrue(uRLHandlerServiceImpl.urlPatternMap.isEmpty());
+  }
+
+  /**
+   * Test {@link URLHandlerServiceImpl#checkForMatches(String)}.
+   * <ul>
+   *   <li>When {@code /https://exampleUorg/example}.</li>
+   *   <li>Then return {@link URLHandlerImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#checkForMatches(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"URLHandler URLHandlerServiceImpl.checkForMatches(String)"})
+  public void testCheckForMatches_whenHttpsExampleUorgExample_thenReturnURLHandlerImpl() {
+    // Arrange
+    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
+    urlHandlerImpl.setId(1L);
+    urlHandlerImpl.setIncomingURL("https://example.org/example");
+    urlHandlerImpl.setNewURL("https://example.org/example");
+    urlHandlerImpl.setRegexHandler(true);
+    urlHandlerImpl.setUrlRedirectType(URLRedirectType.FORWARD);
+
+    ArrayList<URLHandler> urlHandlerList = new ArrayList<>();
+    urlHandlerList.add(urlHandlerImpl);
+    when(uRLHandlerDao.findAllRegexURLHandlers()).thenReturn(urlHandlerList);
+
+    // Act
+    URLHandler actualCheckForMatchesResult = uRLHandlerServiceImpl.checkForMatches("/https://exampleUorg/example");
+
+    // Assert
+    verify(uRLHandlerDao).findAllRegexURLHandlers();
+    assertSame(urlHandlerImpl, actualCheckForMatchesResult);
+  }
+
+  /**
+   * Test {@link URLHandlerServiceImpl#checkForMatches(String)}.
+   * <ul>
+   *   <li>When {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#checkForMatches(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"URLHandler URLHandlerServiceImpl.checkForMatches(String)"})
+  public void testCheckForMatches_whenNull() {
+    // Arrange
+    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
+    urlHandlerImpl.setId(1L);
+    urlHandlerImpl.setIncomingURL("https://example.org/example");
+    urlHandlerImpl.setNewURL("https://example.org/example");
+    urlHandlerImpl.setRegexHandler(true);
+    urlHandlerImpl.setUrlRedirectType(URLRedirectType.FORWARD);
+
+    ArrayList<URLHandler> urlHandlerList = new ArrayList<>();
+    urlHandlerList.add(urlHandlerImpl);
+    when(uRLHandlerDao.findAllRegexURLHandlers()).thenReturn(urlHandlerList);
+
+    // Act
+    URLHandler actualCheckForMatchesResult = uRLHandlerServiceImpl.checkForMatches(null);
+
+    // Assert
+    verify(uRLHandlerDao).findAllRegexURLHandlers();
+    Map<String, Pattern> stringPatternMap = uRLHandlerServiceImpl.urlPatternMap;
+    assertEquals(1, stringPatternMap.size());
+    assertEquals("^/https://example.org/example$", stringPatternMap.get("^/https://example.org/example$").pattern());
+    assertNull(actualCheckForMatchesResult);
   }
 
   /**
    * Test {@link URLHandlerServiceImpl#removeURLHandlerFromCache(String)}.
    * <ul>
+   *   <li>Given {@link CacheManager}.</li>
    *   <li>When {@code null}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link URLHandlerServiceImpl#removeURLHandlerFromCache(String)}
+   * Method under test: {@link URLHandlerServiceImpl#removeURLHandlerFromCache(String)}
    */
   @Test
-  public void testRemoveURLHandlerFromCache_whenNull_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean URLHandlerServiceImpl.removeURLHandlerFromCache(String)"})
+  public void testRemoveURLHandlerFromCache_givenCacheManager_whenNull_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse((new URLHandlerServiceImpl()).removeURLHandlerFromCache(null));
+    assertFalse(uRLHandlerServiceImpl.removeURLHandlerFromCache(null));
+  }
+
+  /**
+   * Test {@link URLHandlerServiceImpl#removeURLHandlerFromCache(String)}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#removeURLHandlerFromCache(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean URLHandlerServiceImpl.removeURLHandlerFromCache(String)"})
+  public void testRemoveURLHandlerFromCache_thenThrowRuntimeException() {
+    // Arrange
+    when(cacheManager.getCache(Mockito.<String>any())).thenThrow(new RuntimeException("cmsUrlHandlerCache"));
+
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> uRLHandlerServiceImpl.removeURLHandlerFromCache("https://example.org/example"));
+    verify(cacheManager).getCache(eq("cmsUrlHandlerCache"));
   }
 
   /**
@@ -269,187 +755,76 @@ public class URLHandlerServiceImplDiffblueTest {
    * Method under test: {@link URLHandlerServiceImpl#manipulateUri(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String URLHandlerServiceImpl.manipulateUri(String)"})
   public void testManipulateUri() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("https://example.org/example",
-        (new URLHandlerServiceImpl()).manipulateUri("https://example.org/example"));
-  }
-
-  /**
-   * Test {@link URLHandlerServiceImpl#manipulateUri(String)}.
-   * <p>
-   * Method under test: {@link URLHandlerServiceImpl#manipulateUri(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testManipulateUri2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.url.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass10640 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.url.service.URLHandlerServiceImpl uRLHandlerServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new URLHandlerServiceImpl()).manipulateUri("https://example.org/example");
+    assertEquals("https://example.org/example", uRLHandlerServiceImpl.manipulateUri("https://example.org/example"));
   }
 
   /**
    * Test {@link URLHandlerServiceImpl#getUrlHandlerFromCache(String)}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link URLHandlerServiceImpl#getUrlHandlerFromCache(String)}
+   * Method under test: {@link URLHandlerServiceImpl#getUrlHandlerFromCache(String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetUrlHandlerFromCache() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.url.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass10331 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.url.service.URLHandlerServiceImpl uRLHandlerServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"URLHandler URLHandlerServiceImpl.getUrlHandlerFromCache(String)"})
+  public void testGetUrlHandlerFromCache_thenThrowRuntimeException() {
+    // Arrange
+    when(cacheManager.getCache(Mockito.<String>any())).thenThrow(new RuntimeException("cmsUrlHandlerCache"));
 
-    // Arrange and Act
-    (new URLHandlerServiceImpl()).getUrlHandlerFromCache("https://example.org/example");
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> uRLHandlerServiceImpl.getUrlHandlerFromCache("https://example.org/example"));
+    verify(cacheManager).getCache(eq("cmsUrlHandlerCache"));
   }
 
   /**
    * Test {@link URLHandlerServiceImpl#getUrlHandlerCache()}.
+   * <ul>
+   *   <li>Given {@link CacheManager} {@link CacheManager#getCache(String)} return {@code null}.</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link URLHandlerServiceImpl#getUrlHandlerCache()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetUrlHandlerCache() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.url.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass10330 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.url.service.URLHandlerServiceImpl uRLHandlerServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new URLHandlerServiceImpl()).getUrlHandlerCache();
-  }
-
-  /**
-   * Test {@link URLHandlerServiceImpl#buildURLHandlerCacheKey(Site, String)}.
-   * <p>
-   * Method under test:
-   * {@link URLHandlerServiceImpl#buildURLHandlerCacheKey(Site, String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testBuildURLHandlerCacheKey() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.url.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass9673 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.url.service.URLHandlerServiceImpl uRLHandlerServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Cache URLHandlerServiceImpl.getUrlHandlerCache()"})
+  public void testGetUrlHandlerCache_givenCacheManagerGetCacheReturnNull_thenReturnNull() {
     // Arrange
-    URLHandlerServiceImpl urlHandlerServiceImpl = new URLHandlerServiceImpl();
+    when(cacheManager.getCache(Mockito.<String>any())).thenReturn(null);
 
     // Act
-    urlHandlerServiceImpl.buildURLHandlerCacheKey(new SiteImpl(), "https://example.org/example");
-  }
-
-  /**
-   * Test {@link URLHandlerServiceImpl#buildURLHandlerCacheKey(Site, String)}.
-   * <ul>
-   *   <li>Given one.</li>
-   *   <li>Then return {@code site:1_https://example.org/example}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link URLHandlerServiceImpl#buildURLHandlerCacheKey(Site, String)}
-   */
-  @Test
-  public void testBuildURLHandlerCacheKey_givenOne_thenReturnSite1HttpsExampleOrgExample() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    URLHandlerServiceImpl urlHandlerServiceImpl = new URLHandlerServiceImpl();
-    SiteImpl site = mock(SiteImpl.class);
-    when(site.getId()).thenReturn(1L);
-
-    // Act
-    String actualBuildURLHandlerCacheKeyResult = urlHandlerServiceImpl.buildURLHandlerCacheKey(site,
-        "https://example.org/example");
+    Cache<String, URLHandler> actualUrlHandlerCache = uRLHandlerServiceImpl.getUrlHandlerCache();
 
     // Assert
-    verify(site).getId();
-    assertEquals("site:1_https://example.org/example", actualBuildURLHandlerCacheKeyResult);
+    verify(cacheManager).getCache(eq("cmsUrlHandlerCache"));
+    assertNull(actualUrlHandlerCache);
   }
 
   /**
-   * Test {@link URLHandlerServiceImpl#buildURLHandlerCacheKey(Site, String)}.
+   * Test {@link URLHandlerServiceImpl#getUrlHandlerCache()}.
    * <ul>
-   *   <li>Given {@link RuntimeException#RuntimeException(String)} with
-   * {@code site:}.</li>
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link URLHandlerServiceImpl#buildURLHandlerCacheKey(Site, String)}
+   * Method under test: {@link URLHandlerServiceImpl#getUrlHandlerCache()}
    */
   @Test
-  public void testBuildURLHandlerCacheKey_givenRuntimeExceptionWithSite() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Cache URLHandlerServiceImpl.getUrlHandlerCache()"})
+  public void testGetUrlHandlerCache_thenThrowRuntimeException() {
     // Arrange
-    URLHandlerServiceImpl urlHandlerServiceImpl = new URLHandlerServiceImpl();
-    SiteImpl site = mock(SiteImpl.class);
-    when(site.getId()).thenThrow(new RuntimeException("site:"));
+    when(cacheManager.getCache(Mockito.<String>any())).thenThrow(new RuntimeException("cmsUrlHandlerCache"));
 
-    // Act
-    urlHandlerServiceImpl.buildURLHandlerCacheKey(site, "https://example.org/example");
-
-    // Assert
-    verify(site).getId();
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> uRLHandlerServiceImpl.getUrlHandlerCache());
+    verify(cacheManager).getCache(eq("cmsUrlHandlerCache"));
   }
 
   /**
@@ -458,19 +833,15 @@ public class URLHandlerServiceImplDiffblueTest {
    *   <li>Then return {@code site:null_https://example.org/example}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link URLHandlerServiceImpl#buildURLHandlerCacheKey(Site, String)}
+   * Method under test: {@link URLHandlerServiceImpl#buildURLHandlerCacheKey(Site, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String URLHandlerServiceImpl.buildURLHandlerCacheKey(Site, String)"})
   public void testBuildURLHandlerCacheKey_thenReturnSiteNullHttpsExampleOrgExample() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    URLHandlerServiceImpl urlHandlerServiceImpl = new URLHandlerServiceImpl();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertEquals("site:null_https://example.org/example",
-        urlHandlerServiceImpl.buildURLHandlerCacheKey(new SiteImpl(), "https://example.org/example"));
+        uRLHandlerServiceImpl.buildURLHandlerCacheKey(new SiteImpl(), "https://example.org/example"));
   }
 
   /**
@@ -480,60 +851,28 @@ public class URLHandlerServiceImplDiffblueTest {
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link URLHandlerServiceImpl#buildURLHandlerCacheKey(Site, String)}
+   * Method under test: {@link URLHandlerServiceImpl#buildURLHandlerCacheKey(Site, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String URLHandlerServiceImpl.buildURLHandlerCacheKey(Site, String)"})
   public void testBuildURLHandlerCacheKey_whenNull_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("null", (new URLHandlerServiceImpl()).buildURLHandlerCacheKey(null, null));
+    assertEquals("null", uRLHandlerServiceImpl.buildURLHandlerCacheKey(null, null));
   }
 
   /**
    * Test {@link URLHandlerServiceImpl#wrapStringsWithAnchors(String)}.
    * <p>
-   * Method under test:
-   * {@link URLHandlerServiceImpl#wrapStringsWithAnchors(String)}
+   * Method under test: {@link URLHandlerServiceImpl#wrapStringsWithAnchors(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String URLHandlerServiceImpl.wrapStringsWithAnchors(String)"})
   public void testWrapStringsWithAnchors() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("^([\\[\\]\\.\\|\\?\\*\\+\\(\\)\\\\~`\\!@#%&\\-_+={}'\"\"<>:;, \\/])$", (new URLHandlerServiceImpl())
+    assertEquals("^([\\[\\]\\.\\|\\?\\*\\+\\(\\)\\\\~`\\!@#%&\\-_+={}'\"\"<>:;, \\/])$", uRLHandlerServiceImpl
         .wrapStringsWithAnchors("([\\[\\]\\.\\|\\?\\*\\+\\(\\)\\\\~`\\!@#%&\\-_+={}'\"\"<>:;, \\/])"));
-  }
-
-  /**
-   * Test {@link URLHandlerServiceImpl#wrapStringsWithAnchors(String)}.
-   * <p>
-   * Method under test:
-   * {@link URLHandlerServiceImpl#wrapStringsWithAnchors(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testWrapStringsWithAnchors2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.url.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass11273 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.url.service.URLHandlerServiceImpl uRLHandlerServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new URLHandlerServiceImpl()).wrapStringsWithAnchors("https://example.org/example");
   }
 
   /**
@@ -542,15 +881,14 @@ public class URLHandlerServiceImplDiffblueTest {
    *   <li>Then return {@code ^$}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link URLHandlerServiceImpl#wrapStringsWithAnchors(String)}
+   * Method under test: {@link URLHandlerServiceImpl#wrapStringsWithAnchors(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String URLHandlerServiceImpl.wrapStringsWithAnchors(String)"})
   public void testWrapStringsWithAnchors_thenReturnCircumflexAccentDollarSign() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("^$", (new URLHandlerServiceImpl()).wrapStringsWithAnchors("^"));
+    assertEquals("^$", uRLHandlerServiceImpl.wrapStringsWithAnchors("^"));
   }
 
   /**
@@ -559,15 +897,14 @@ public class URLHandlerServiceImplDiffblueTest {
    *   <li>Then return {@code ^/$}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link URLHandlerServiceImpl#wrapStringsWithAnchors(String)}
+   * Method under test: {@link URLHandlerServiceImpl#wrapStringsWithAnchors(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String URLHandlerServiceImpl.wrapStringsWithAnchors(String)"})
   public void testWrapStringsWithAnchors_thenReturnCircumflexAccentSlashDollarSign() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("^/$", (new URLHandlerServiceImpl()).wrapStringsWithAnchors("$"));
+    assertEquals("^/$", uRLHandlerServiceImpl.wrapStringsWithAnchors("$"));
   }
 
   /**
@@ -576,16 +913,15 @@ public class URLHandlerServiceImplDiffblueTest {
    *   <li>Then return {@code ^/https://example.org/example$}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link URLHandlerServiceImpl#wrapStringsWithAnchors(String)}
+   * Method under test: {@link URLHandlerServiceImpl#wrapStringsWithAnchors(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String URLHandlerServiceImpl.wrapStringsWithAnchors(String)"})
   public void testWrapStringsWithAnchors_thenReturnHttpsExampleOrgExample() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertEquals("^/https://example.org/example$",
-        (new URLHandlerServiceImpl()).wrapStringsWithAnchors("https://example.org/example"));
+        uRLHandlerServiceImpl.wrapStringsWithAnchors("https://example.org/example"));
   }
 
   /**
@@ -595,14 +931,13 @@ public class URLHandlerServiceImplDiffblueTest {
    *   <li>Then return {@code ^ $}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link URLHandlerServiceImpl#wrapStringsWithAnchors(String)}
+   * Method under test: {@link URLHandlerServiceImpl#wrapStringsWithAnchors(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String URLHandlerServiceImpl.wrapStringsWithAnchors(String)"})
   public void testWrapStringsWithAnchors_whenSpace_thenReturnCircumflexAccentSpaceDollarSign() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("^ $", (new URLHandlerServiceImpl()).wrapStringsWithAnchors(" "));
+    assertEquals("^ $", uRLHandlerServiceImpl.wrapStringsWithAnchors(" "));
   }
 }

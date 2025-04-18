@@ -19,12 +19,13 @@ package org.broadleafcommerce.common.extensibility.context.merge.handlers;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.mock;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import javax.imageio.metadata.IIOMetadataNode;
-import org.broadleafcommerce.common.extensibility.context.merge.handlers.SchemaLocationMergeTest.DummyNode;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -40,37 +41,16 @@ public class InsertItemsDiffblueTest {
   /**
    * Test {@link InsertItems#merge(List, List, List)}.
    * <ul>
-   *   <li>Given {@link DummyNode}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link DummyNode}.</li>
+   *   <li>Given {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link InsertItems#merge(List, List, List)}
    */
   @Test
-  public void testMerge_givenDummyNode_whenArrayListAddDummyNode_thenReturnNull() {
-    // Arrange
-    ArrayList<Node> nodeList1 = new ArrayList<>();
-    nodeList1.add(mock(SchemaLocationMergeTest.DummyNode.class));
-    ArrayList<Node> nodeList2 = new ArrayList<>();
-
-    // Act and Assert
-    assertNull(insertItems.merge(nodeList1, nodeList2, new ArrayList<>()));
-  }
-
-  /**
-   * Test {@link InsertItems#merge(List, List, List)}.
-   * <ul>
-   *   <li>Given {@link IIOMetadataNode#IIOMetadataNode(String)} with
-   * {@code foo}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add
-   * {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link InsertItems#merge(List, List, List)}
-   */
-  @Test
-  public void testMerge_givenIIOMetadataNodeWithFoo_whenArrayListAddIIOMetadataNodeWithFoo() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Node[] InsertItems.merge(List, List, List)"})
+  public void testMerge_givenIIOMetadataNodeWithFoo_thenReturnNull() {
     // Arrange
     ArrayList<Node> nodeList1 = new ArrayList<>();
     nodeList1.add(new IIOMetadataNode("foo"));
@@ -83,16 +63,16 @@ public class InsertItemsDiffblueTest {
   /**
    * Test {@link InsertItems#merge(List, List, List)}.
    * <ul>
-   *   <li>Given {@link IIOMetadataNode#IIOMetadataNode(String)} with
-   * {@code foo}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add
-   * {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
+   *   <li>Given {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link InsertItems#merge(List, List, List)}
    */
   @Test
-  public void testMerge_givenIIOMetadataNodeWithFoo_whenArrayListAddIIOMetadataNodeWithFoo2() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Node[] InsertItems.merge(List, List, List)"})
+  public void testMerge_givenIIOMetadataNodeWithFoo_thenReturnNull2() {
     // Arrange
     ArrayList<Node> nodeList1 = new ArrayList<>();
     nodeList1.add(new IIOMetadataNode("foo"));
@@ -106,63 +86,16 @@ public class InsertItemsDiffblueTest {
   /**
    * Test {@link InsertItems#merge(List, List, List)}.
    * <ul>
-   *   <li>Given {@link IIOMetadataNode#IIOMetadataNode(String)} with
-   * {@code foo}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add
-   * {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
+   *   <li>Given {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link InsertItems#merge(List, List, List)}
    */
   @Test
-  public void testMerge_givenIIOMetadataNodeWithFoo_whenArrayListAddIIOMetadataNodeWithFoo3() {
-    // Arrange
-    ArrayList<Node> nodeList1 = new ArrayList<>();
-
-    ArrayList<Node> nodeList2 = new ArrayList<>();
-    nodeList2.add(new IIOMetadataNode("foo"));
-
-    // Act and Assert
-    assertNull(insertItems.merge(nodeList1, nodeList2, new ArrayList<>()));
-  }
-
-  /**
-   * Test {@link InsertItems#merge(List, List, List)}.
-   * <ul>
-   *   <li>Given {@link IIOMetadataNode#IIOMetadataNode(String)} with
-   * {@code foo}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add
-   * {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link InsertItems#merge(List, List, List)}
-   */
-  @Test
-  public void testMerge_givenIIOMetadataNodeWithFoo_whenArrayListAddIIOMetadataNodeWithFoo4() {
-    // Arrange
-    ArrayList<Node> nodeList1 = new ArrayList<>();
-
-    ArrayList<Node> nodeList2 = new ArrayList<>();
-    nodeList2.add(new IIOMetadataNode("foo"));
-    nodeList2.add(new IIOMetadataNode("foo"));
-
-    // Act and Assert
-    assertNull(insertItems.merge(nodeList1, nodeList2, new ArrayList<>()));
-  }
-
-  /**
-   * Test {@link InsertItems#merge(List, List, List)}.
-   * <ul>
-   *   <li>Given {@link IIOMetadataNode#IIOMetadataNode(String)} with
-   * {@code foo}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add
-   * {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link InsertItems#merge(List, List, List)}
-   */
-  @Test
-  public void testMerge_givenIIOMetadataNodeWithFoo_whenArrayListAddIIOMetadataNodeWithFoo5() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Node[] InsertItems.merge(List, List, List)"})
+  public void testMerge_givenIIOMetadataNodeWithFoo_thenReturnNull3() {
     // Arrange
     ArrayList<Node> nodeList1 = new ArrayList<>();
     ArrayList<Node> nodeList2 = new ArrayList<>();
@@ -177,16 +110,16 @@ public class InsertItemsDiffblueTest {
   /**
    * Test {@link InsertItems#merge(List, List, List)}.
    * <ul>
-   *   <li>Given {@link IIOMetadataNode#IIOMetadataNode(String)} with
-   * {@code foo}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add
-   * {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
+   *   <li>Given {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link InsertItems#merge(List, List, List)}
    */
   @Test
-  public void testMerge_givenIIOMetadataNodeWithFoo_whenArrayListAddIIOMetadataNodeWithFoo6() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Node[] InsertItems.merge(List, List, List)"})
+  public void testMerge_givenIIOMetadataNodeWithFoo_thenReturnNull4() {
     // Arrange
     ArrayList<Node> nodeList1 = new ArrayList<>();
     ArrayList<Node> nodeList2 = new ArrayList<>();
@@ -209,6 +142,8 @@ public class InsertItemsDiffblueTest {
    * Method under test: {@link InsertItems#merge(List, List, List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Node[] InsertItems.merge(List, List, List)"})
   public void testMerge_whenArrayList_thenReturnNull() {
     // Arrange
     ArrayList<Node> nodeList1 = new ArrayList<>();
@@ -221,10 +156,11 @@ public class InsertItemsDiffblueTest {
   /**
    * Test new {@link InsertItems} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link InsertItems}
+   * Method under test: default or parameterless constructor of {@link InsertItems}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void InsertItems.<init>()"})
   public void testNewInsertItems() {
     // Arrange and Act
     InsertItems actualInsertItems = new InsertItems();

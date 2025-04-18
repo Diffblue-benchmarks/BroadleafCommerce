@@ -1,27 +1,42 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.server.service.artifact.image.effects.chain.filter;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Rectangle;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.awt.RenderingHints;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBuffer;
-import java.awt.image.DataBufferInt;
-import java.awt.image.Raster;
-import java.awt.image.WritableRaster;
+import java.awt.image.ColorModel;
+import java.awt.image.DirectColorModel;
+import java.awt.image.SampleModel;
+import java.awt.image.SinglePixelPackedSampleModel;
 import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -42,6 +57,8 @@ public class GaussianBlurDiffblueTest {
    * Method under test: {@link GaussianBlur#generateGaussianBlurKernels(int)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"float[][] GaussianBlur.generateGaussianBlurKernels(int)"})
   public void testGenerateGaussianBlurKernels_thenReturnArrayLengthIsNum_kernels() {
     // Arrange and Act
     float[][] actualGenerateGaussianBlurKernelsResult = GaussianBlur
@@ -49,6 +66,8 @@ public class GaussianBlurDiffblueTest {
 
     // Assert
     assertEquals(GaussianBlur.NUM_KERNELS, actualGenerateGaussianBlurKernelsResult.length);
+    assertArrayEquals(new float[]{1.0f}, actualGenerateGaussianBlurKernelsResult[0], 0.0f);
+    assertArrayEquals(new float[]{0.5f, 0.5f}, actualGenerateGaussianBlurKernelsResult[1], 0.0f);
     assertArrayEquals(new float[]{0.25f, 0.5f, 0.25f}, actualGenerateGaussianBlurKernelsResult[2], 0.0f);
     assertArrayEquals(new float[]{0.125f, 0.375f, 0.375f, 0.125f}, actualGenerateGaussianBlurKernelsResult[3], 0.0f);
     assertArrayEquals(new float[]{0.0625f, 0.25f, 0.375f, 0.25f, 0.0625f}, actualGenerateGaussianBlurKernelsResult[4],
@@ -98,6 +117,8 @@ public class GaussianBlurDiffblueTest {
    * Method under test: {@link GaussianBlur#generateGaussianBlurKernels(int)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"float[][] GaussianBlur.generateGaussianBlurKernels(int)"})
   public void testGenerateGaussianBlurKernels_whenOne_thenReturnArrayLengthIsTwo() {
     // Arrange and Act
     float[][] actualGenerateGaussianBlurKernelsResult = GaussianBlur.generateGaussianBlurKernels(1);
@@ -118,6 +139,8 @@ public class GaussianBlurDiffblueTest {
    * Method under test: {@link GaussianBlur#generateGaussianBlurKernels(int)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"float[][] GaussianBlur.generateGaussianBlurKernels(int)"})
   public void testGenerateGaussianBlurKernels_whenTwo_thenReturnArrayLengthIsTwo() {
     // Arrange and Act
     float[][] actualGenerateGaussianBlurKernelsResult = GaussianBlur.generateGaussianBlurKernels(2);
@@ -138,6 +161,8 @@ public class GaussianBlurDiffblueTest {
    * Method under test: {@link GaussianBlur#generatePascalsTriangle(int)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"float[][] GaussianBlur.generatePascalsTriangle(int)"})
   public void testGeneratePascalsTriangle_whenOne_thenReturnArrayLengthIsTwo() {
     // Arrange and Act
     float[][] actualGeneratePascalsTriangleResult = GaussianBlur.generatePascalsTriangle(1);
@@ -158,12 +183,16 @@ public class GaussianBlurDiffblueTest {
    * Method under test: {@link GaussianBlur#generatePascalsTriangle(int)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"float[][] GaussianBlur.generatePascalsTriangle(int)"})
   public void testGeneratePascalsTriangle_whenThree_thenReturnArrayLengthIsThree() {
     // Arrange and Act
     float[][] actualGeneratePascalsTriangleResult = GaussianBlur.generatePascalsTriangle(3);
 
     // Assert
     assertEquals(3, actualGeneratePascalsTriangleResult.length);
+    assertArrayEquals(new float[]{1.0f}, actualGeneratePascalsTriangleResult[0], 0.0f);
+    assertArrayEquals(new float[]{1.0f, 1.0f}, actualGeneratePascalsTriangleResult[1], 0.0f);
     assertArrayEquals(new float[]{1.0f, 2.0f, 1.0f}, actualGeneratePascalsTriangleResult[2], 0.0f);
   }
 
@@ -177,6 +206,8 @@ public class GaussianBlurDiffblueTest {
    * Method under test: {@link GaussianBlur#generatePascalsTriangle(int)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"float[][] GaussianBlur.generatePascalsTriangle(int)"})
   public void testGeneratePascalsTriangle_whenTwo_thenReturnArrayLengthIsTwo() {
     // Arrange and Act
     float[][] actualGeneratePascalsTriangleResult = GaussianBlur.generatePascalsTriangle(2);
@@ -193,6 +224,8 @@ public class GaussianBlurDiffblueTest {
    * Method under test: {@link GaussianBlur#GaussianBlur()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void GaussianBlur.<init>()", "void GaussianBlur.<init>(int, int, RenderingHints)"})
   public void testNewGaussianBlur() {
     // Arrange and Act
     GaussianBlur actualGaussianBlur = new GaussianBlur();
@@ -208,10 +241,11 @@ public class GaussianBlurDiffblueTest {
    *   <li>When three.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link GaussianBlur#GaussianBlur(int, int, RenderingHints)}
+   * Method under test: {@link GaussianBlur#GaussianBlur(int, int, RenderingHints)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void GaussianBlur.<init>()", "void GaussianBlur.<init>(int, int, RenderingHints)"})
   public void testNewGaussianBlur_whenThree() {
     // Arrange and Act
     GaussianBlur actualGaussianBlur = new GaussianBlur(3, 10, null);
@@ -223,16 +257,14 @@ public class GaussianBlurDiffblueTest {
 
   /**
    * Test {@link GaussianBlur#buildOperation(Map, InputStream, String)}.
-   * <ul>
-   *   <li>When {@link ByteArrayInputStream#ByteArrayInputStream(byte[])} with
-   * {@code AXAXAXAX} Bytes is {@code UTF-8}.</li>
-   * </ul>
    * <p>
-   * Method under test:
-   * {@link GaussianBlur#buildOperation(Map, InputStream, String)}
+   * Method under test: {@link GaussianBlur#buildOperation(Map, InputStream, String)}
    */
   @Test
-  public void testBuildOperation_whenByteArrayInputStreamWithAxaxaxaxBytesIsUtf8() throws UnsupportedEncodingException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.openadmin.server.service.artifact.image.Operation GaussianBlur.buildOperation(Map, InputStream, String)"})
+  public void testBuildOperation() throws UnsupportedEncodingException {
     // Arrange
     HashMap<String, String> parameterMap = new HashMap<>();
 
@@ -242,26 +274,13 @@ public class GaussianBlurDiffblueTest {
   }
 
   /**
-   * Test {@link GaussianBlur#buildOperation(Map, InputStream, String)}.
-   * <ul>
-   *   <li>When {@link DataInputStream}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link GaussianBlur#buildOperation(Map, InputStream, String)}
-   */
-  @Test
-  public void testBuildOperation_whenDataInputStream() {
-    // Arrange, Act and Assert
-    assertNull(gaussianBlur.buildOperation(new HashMap<>(), mock(DataInputStream.class), "Mime Type"));
-  }
-
-  /**
    * Test {@link GaussianBlur#filter(BufferedImage, BufferedImage)}.
    * <p>
    * Method under test: {@link GaussianBlur#filter(BufferedImage, BufferedImage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BufferedImage GaussianBlur.filter(BufferedImage, BufferedImage)"})
   public void testFilter() {
     // Arrange
     GaussianBlur gaussianBlur = new GaussianBlur(3, 0, null);
@@ -271,43 +290,33 @@ public class GaussianBlurDiffblueTest {
     BufferedImage actualFilterResult = gaussianBlur.filter(src, new BufferedImage(1, 1, 1));
 
     // Assert
-    Raster data = actualFilterResult.getData();
-    Rectangle bounds = data.getBounds();
-    Rectangle2D bounds2D = bounds.getBounds2D();
-    assertTrue(bounds2D instanceof Rectangle);
-    Rectangle2D frame = bounds.getFrame();
-    assertTrue(frame instanceof Rectangle2D.Double);
-    DataBuffer dataBuffer = data.getDataBuffer();
-    assertTrue(dataBuffer instanceof DataBufferInt);
-    WritableRaster raster = actualFilterResult.getRaster();
-    DataBuffer dataBuffer2 = raster.getDataBuffer();
-    assertTrue(dataBuffer2 instanceof DataBufferInt);
-    Point[] writableTileIndices = actualFilterResult.getWritableTileIndices();
-    assertEquals(1, writableTileIndices.length);
-    assertEquals(1, ((DataBufferInt) dataBuffer).getBankData().length);
-    assertEquals(1, ((DataBufferInt) dataBuffer2).getBankData().length);
-    Dimension size = bounds.getSize();
-    assertEquals(size, size.getSize());
-    assertEquals(bounds, bounds.getBounds());
-    assertEquals(bounds, raster.getBounds());
-    assertEquals(bounds, bounds2D);
-    assertEquals(bounds, frame);
-    Point point = writableTileIndices[0];
-    assertEquals(point, point.getLocation());
-    assertEquals(point, bounds.getLocation());
+    ColorModel colorModel = actualFilterResult.getColorModel();
+    assertTrue(colorModel instanceof DirectColorModel);
+    SampleModel sampleModel = actualFilterResult.getSampleModel();
+    assertTrue(sampleModel instanceof SinglePixelPackedSampleModel);
+    assertSame(sampleModel, actualFilterResult.getData().getSampleModel());
+    assertSame(sampleModel, actualFilterResult.getRaster().getSampleModel());
+    assertArrayEquals(new int[]{16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
+    assertArrayEquals(new int[]{16711680, 65280, 255}, ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
+    assertArrayEquals(new int[]{8, 8, 8}, colorModel.getComponentSize());
+    assertArrayEquals(new int[]{8, 8, 8}, sampleModel.getSampleSize());
+    assertArrayEquals(new int[]{GaussianBlur.NUM_KERNELS, 8, 0},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitOffsets());
   }
 
   /**
    * Test {@link GaussianBlur#filter(BufferedImage, BufferedImage)}.
    * <ul>
    *   <li>Given {@link GaussianBlur#GaussianBlur()}.</li>
-   *   <li>Then Data Bounds Bounds2D return {@link Rectangle}.</li>
+   *   <li>Then ColorModel return {@link DirectColorModel}.</li>
    * </ul>
    * <p>
    * Method under test: {@link GaussianBlur#filter(BufferedImage, BufferedImage)}
    */
   @Test
-  public void testFilter_givenGaussianBlur_thenDataBoundsBounds2DReturnRectangle() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BufferedImage GaussianBlur.filter(BufferedImage, BufferedImage)"})
+  public void testFilter_givenGaussianBlur_thenColorModelReturnDirectColorModel() {
     // Arrange
     GaussianBlur gaussianBlur = new GaussianBlur();
     BufferedImage src = new BufferedImage(1, 1, 1);
@@ -316,42 +325,32 @@ public class GaussianBlurDiffblueTest {
     BufferedImage actualFilterResult = gaussianBlur.filter(src, new BufferedImage(1, 1, 1));
 
     // Assert
-    Raster data = actualFilterResult.getData();
-    Rectangle bounds = data.getBounds();
-    Rectangle2D bounds2D = bounds.getBounds2D();
-    assertTrue(bounds2D instanceof Rectangle);
-    Rectangle2D frame = bounds.getFrame();
-    assertTrue(frame instanceof Rectangle2D.Double);
-    DataBuffer dataBuffer = data.getDataBuffer();
-    assertTrue(dataBuffer instanceof DataBufferInt);
-    WritableRaster raster = actualFilterResult.getRaster();
-    DataBuffer dataBuffer2 = raster.getDataBuffer();
-    assertTrue(dataBuffer2 instanceof DataBufferInt);
-    Point[] writableTileIndices = actualFilterResult.getWritableTileIndices();
-    assertEquals(1, writableTileIndices.length);
-    assertEquals(1, ((DataBufferInt) dataBuffer).getBankData().length);
-    assertEquals(1, ((DataBufferInt) dataBuffer2).getBankData().length);
-    Dimension size = bounds.getSize();
-    assertEquals(size, size.getSize());
-    assertEquals(bounds, bounds.getBounds());
-    assertEquals(bounds, raster.getBounds());
-    assertEquals(bounds, bounds2D);
-    assertEquals(bounds, frame);
-    Point point = writableTileIndices[0];
-    assertEquals(point, point.getLocation());
-    assertEquals(point, bounds.getLocation());
+    ColorModel colorModel = actualFilterResult.getColorModel();
+    assertTrue(colorModel instanceof DirectColorModel);
+    SampleModel sampleModel = actualFilterResult.getSampleModel();
+    assertTrue(sampleModel instanceof SinglePixelPackedSampleModel);
+    assertSame(sampleModel, actualFilterResult.getData().getSampleModel());
+    assertSame(sampleModel, actualFilterResult.getRaster().getSampleModel());
+    assertArrayEquals(new int[]{16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
+    assertArrayEquals(new int[]{16711680, 65280, 255}, ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
+    assertArrayEquals(new int[]{8, 8, 8}, colorModel.getComponentSize());
+    assertArrayEquals(new int[]{8, 8, 8}, sampleModel.getSampleSize());
+    assertArrayEquals(new int[]{GaussianBlur.NUM_KERNELS, 8, 0},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitOffsets());
   }
 
   /**
    * Test {@link GaussianBlur#filter(BufferedImage, BufferedImage)}.
    * <ul>
-   *   <li>Then Data Bounds Bounds2D return {@link Rectangle}.</li>
+   *   <li>Then ColorModel return {@link DirectColorModel}.</li>
    * </ul>
    * <p>
    * Method under test: {@link GaussianBlur#filter(BufferedImage, BufferedImage)}
    */
   @Test
-  public void testFilter_thenDataBoundsBounds2DReturnRectangle() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BufferedImage GaussianBlur.filter(BufferedImage, BufferedImage)"})
+  public void testFilter_thenColorModelReturnDirectColorModel() {
     // Arrange
     GaussianBlur gaussianBlur = new GaussianBlur(3, 10, null);
     BufferedImage src = new BufferedImage(1, 1, 1);
@@ -360,42 +359,31 @@ public class GaussianBlurDiffblueTest {
     BufferedImage actualFilterResult = gaussianBlur.filter(src, new BufferedImage(1, 1, 1));
 
     // Assert
-    Raster data = actualFilterResult.getData();
-    Rectangle bounds = data.getBounds();
-    Rectangle2D bounds2D = bounds.getBounds2D();
-    assertTrue(bounds2D instanceof Rectangle);
-    Rectangle2D frame = bounds.getFrame();
-    assertTrue(frame instanceof Rectangle2D.Double);
-    DataBuffer dataBuffer = data.getDataBuffer();
-    assertTrue(dataBuffer instanceof DataBufferInt);
-    WritableRaster raster = actualFilterResult.getRaster();
-    DataBuffer dataBuffer2 = raster.getDataBuffer();
-    assertTrue(dataBuffer2 instanceof DataBufferInt);
-    Point[] writableTileIndices = actualFilterResult.getWritableTileIndices();
-    assertEquals(1, writableTileIndices.length);
-    assertEquals(1, ((DataBufferInt) dataBuffer).getBankData().length);
-    assertEquals(1, ((DataBufferInt) dataBuffer2).getBankData().length);
-    Dimension size = bounds.getSize();
-    assertEquals(size, size.getSize());
-    assertEquals(bounds, bounds.getBounds());
-    assertEquals(bounds, raster.getBounds());
-    assertEquals(bounds, bounds2D);
-    assertEquals(bounds, frame);
-    Point point = writableTileIndices[0];
-    assertEquals(point, point.getLocation());
-    assertEquals(point, bounds.getLocation());
+    ColorModel colorModel = actualFilterResult.getColorModel();
+    assertTrue(colorModel instanceof DirectColorModel);
+    SampleModel sampleModel = actualFilterResult.getSampleModel();
+    assertTrue(sampleModel instanceof SinglePixelPackedSampleModel);
+    assertSame(sampleModel, actualFilterResult.getData().getSampleModel());
+    assertSame(sampleModel, actualFilterResult.getRaster().getSampleModel());
+    assertArrayEquals(new int[]{16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
+    assertArrayEquals(new int[]{16711680, 65280, 255}, ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
+    assertArrayEquals(new int[]{8, 8, 8}, colorModel.getComponentSize());
+    assertArrayEquals(new int[]{8, 8, 8}, sampleModel.getSampleSize());
+    assertArrayEquals(new int[]{GaussianBlur.NUM_KERNELS, 8, 0},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitOffsets());
   }
 
   /**
    * Test {@link GaussianBlur#filter(BufferedImage, BufferedImage)}.
    * <ul>
-   *   <li>When {@link BufferedImage#BufferedImage(int, int, int)} with one and one
-   * and {@link BufferedImage#TYPE_BYTE_GRAY}.</li>
+   *   <li>When {@link BufferedImage#BufferedImage(int, int, int)} with one and one and {@link BufferedImage#TYPE_BYTE_GRAY}.</li>
    * </ul>
    * <p>
    * Method under test: {@link GaussianBlur#filter(BufferedImage, BufferedImage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BufferedImage GaussianBlur.filter(BufferedImage, BufferedImage)"})
   public void testFilter_whenBufferedImageWithOneAndOneAndType_byte_gray() {
     // Arrange
     GaussianBlur gaussianBlur = new GaussianBlur(3, 10, null);
@@ -405,43 +393,33 @@ public class GaussianBlurDiffblueTest {
     BufferedImage actualFilterResult = gaussianBlur.filter(src, new BufferedImage(1, 1, 1));
 
     // Assert
-    Raster data = actualFilterResult.getData();
-    Rectangle bounds = data.getBounds();
-    Rectangle2D bounds2D = bounds.getBounds2D();
-    assertTrue(bounds2D instanceof Rectangle);
-    Rectangle2D frame = bounds.getFrame();
-    assertTrue(frame instanceof Rectangle2D.Double);
-    DataBuffer dataBuffer = data.getDataBuffer();
-    assertTrue(dataBuffer instanceof DataBufferInt);
-    WritableRaster raster = actualFilterResult.getRaster();
-    DataBuffer dataBuffer2 = raster.getDataBuffer();
-    assertTrue(dataBuffer2 instanceof DataBufferInt);
-    Point[] writableTileIndices = actualFilterResult.getWritableTileIndices();
-    assertEquals(1, writableTileIndices.length);
-    assertEquals(1, ((DataBufferInt) dataBuffer).getBankData().length);
-    assertEquals(1, ((DataBufferInt) dataBuffer2).getBankData().length);
-    Dimension size = bounds.getSize();
-    assertEquals(size, size.getSize());
-    assertEquals(bounds, bounds.getBounds());
-    assertEquals(bounds, raster.getBounds());
-    assertEquals(bounds, bounds2D);
-    assertEquals(bounds, frame);
-    Point point = writableTileIndices[0];
-    assertEquals(point, point.getLocation());
-    assertEquals(point, bounds.getLocation());
+    ColorModel colorModel = actualFilterResult.getColorModel();
+    assertTrue(colorModel instanceof DirectColorModel);
+    SampleModel sampleModel = actualFilterResult.getSampleModel();
+    assertTrue(sampleModel instanceof SinglePixelPackedSampleModel);
+    assertSame(sampleModel, actualFilterResult.getData().getSampleModel());
+    assertSame(sampleModel, actualFilterResult.getRaster().getSampleModel());
+    assertArrayEquals(new int[]{16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
+    assertArrayEquals(new int[]{16711680, 65280, 255}, ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
+    assertArrayEquals(new int[]{8, 8, 8}, colorModel.getComponentSize());
+    assertArrayEquals(new int[]{8, 8, 8}, sampleModel.getSampleSize());
+    assertArrayEquals(new int[]{GaussianBlur.NUM_KERNELS, 8, 0},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitOffsets());
   }
 
   /**
    * Test {@link GaussianBlur#filter(BufferedImage, BufferedImage)}.
    * <ul>
    *   <li>When {@code null}.</li>
-   *   <li>Then Data Bounds Bounds2D return {@link Rectangle}.</li>
+   *   <li>Then ColorModel return {@link DirectColorModel}.</li>
    * </ul>
    * <p>
    * Method under test: {@link GaussianBlur#filter(BufferedImage, BufferedImage)}
    */
   @Test
-  public void testFilter_whenNull_thenDataBoundsBounds2DReturnRectangle() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BufferedImage GaussianBlur.filter(BufferedImage, BufferedImage)"})
+  public void testFilter_whenNull_thenColorModelReturnDirectColorModel() {
     // Arrange
     GaussianBlur gaussianBlur = new GaussianBlur(3, 10, null);
 
@@ -449,29 +427,17 @@ public class GaussianBlurDiffblueTest {
     BufferedImage actualFilterResult = gaussianBlur.filter(new BufferedImage(1, 1, 1), null);
 
     // Assert
-    Raster data = actualFilterResult.getData();
-    Rectangle bounds = data.getBounds();
-    Rectangle2D bounds2D = bounds.getBounds2D();
-    assertTrue(bounds2D instanceof Rectangle);
-    Rectangle2D frame = bounds.getFrame();
-    assertTrue(frame instanceof Rectangle2D.Double);
-    DataBuffer dataBuffer = data.getDataBuffer();
-    assertTrue(dataBuffer instanceof DataBufferInt);
-    WritableRaster raster = actualFilterResult.getRaster();
-    DataBuffer dataBuffer2 = raster.getDataBuffer();
-    assertTrue(dataBuffer2 instanceof DataBufferInt);
-    Point[] writableTileIndices = actualFilterResult.getWritableTileIndices();
-    assertEquals(1, writableTileIndices.length);
-    assertEquals(1, ((DataBufferInt) dataBuffer).getBankData().length);
-    assertEquals(1, ((DataBufferInt) dataBuffer2).getBankData().length);
-    Dimension size = bounds.getSize();
-    assertEquals(size, size.getSize());
-    assertEquals(bounds, bounds.getBounds());
-    assertEquals(bounds, raster.getBounds());
-    assertEquals(bounds, bounds2D);
-    assertEquals(bounds, frame);
-    Point point = writableTileIndices[0];
-    assertEquals(point, point.getLocation());
-    assertEquals(point, bounds.getLocation());
+    ColorModel colorModel = actualFilterResult.getColorModel();
+    assertTrue(colorModel instanceof DirectColorModel);
+    SampleModel sampleModel = actualFilterResult.getSampleModel();
+    assertTrue(sampleModel instanceof SinglePixelPackedSampleModel);
+    assertSame(sampleModel, actualFilterResult.getData().getSampleModel());
+    assertSame(sampleModel, actualFilterResult.getRaster().getSampleModel());
+    assertArrayEquals(new int[]{16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
+    assertArrayEquals(new int[]{16711680, 65280, 255}, ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
+    assertArrayEquals(new int[]{8, 8, 8}, colorModel.getComponentSize());
+    assertArrayEquals(new int[]{8, 8, 8}, sampleModel.getSampleSize());
+    assertArrayEquals(new int[]{GaussianBlur.NUM_KERNELS, 8, 0},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitOffsets());
   }
 }

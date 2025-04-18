@@ -20,74 +20,32 @@ package org.broadleafcommerce.admin.web.rulebuilder.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.mock;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.List;
 import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
 import org.broadleafcommerce.openadmin.web.rulebuilder.dto.FieldData;
-import org.broadleafcommerce.openadmin.web.rulebuilder.service.RuleBuilderFieldServiceExtensionManager;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class CategoryFieldServiceImplDiffblueTest {
+  @InjectMocks
+  private CategoryFieldServiceImpl categoryFieldServiceImpl;
+
   /**
    * Test {@link CategoryFieldServiceImpl#init()}.
    * <p>
    * Method under test: {@link CategoryFieldServiceImpl#init()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryFieldServiceImpl.init()"})
   public void testInit() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryFieldServiceImpl categoryFieldServiceImpl = new CategoryFieldServiceImpl();
-    categoryFieldServiceImpl
-        .setRuleBuilderFieldServiceExtensionManager(mock(RuleBuilderFieldServiceExtensionManager.class));
-
-    // Act
-    categoryFieldServiceImpl.init();
-
-    // Assert
-    List<FieldData> fields = categoryFieldServiceImpl.getFields();
-    assertEquals(2, fields.size());
-    FieldData getResult = fields.get(0);
-    assertEquals("[]", getResult.getOptions());
-    FieldData getResult2 = fields.get(1);
-    assertEquals("[]", getResult2.getOptions());
-    assertEquals("blcOperators_Text", getResult.getOperators());
-    assertEquals("blcOperators_Text", getResult2.getOperators());
-    assertEquals("name", getResult.getFieldName());
-    assertEquals("rule_categoryName", getResult.getFieldLabel());
-    assertEquals("rule_categoryUrl", getResult2.getFieldLabel());
-    assertEquals("url", getResult2.getFieldName());
-    assertNull(getResult.getOverrideDtoClassName());
-    assertNull(getResult2.getOverrideDtoClassName());
-    assertNull(getResult.getOverrideEntityKey());
-    assertNull(getResult2.getOverrideEntityKey());
-    assertNull(getResult.getSelectizeSectionKey());
-    assertNull(getResult2.getSelectizeSectionKey());
-    assertNull(getResult.getSecondaryFieldType());
-    assertNull(getResult2.getSecondaryFieldType());
-    assertEquals(SupportedFieldType.STRING, getResult.getFieldType());
-    assertEquals(SupportedFieldType.STRING, getResult2.getFieldType());
-    assertFalse(getResult.getSkipValidation());
-    assertFalse(getResult2.getSkipValidation());
-  }
-
-  /**
-   * Test {@link CategoryFieldServiceImpl#init()}.
-   * <ul>
-   *   <li>Given {@link CategoryFieldServiceImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryFieldServiceImpl#init()}
-   */
-  @Test
-  public void testInit_givenCategoryFieldServiceImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryFieldServiceImpl categoryFieldServiceImpl = new CategoryFieldServiceImpl();
-
-    // Act
+    // Arrange and Act
     categoryFieldServiceImpl.init();
 
     // Assert
@@ -127,6 +85,8 @@ public class CategoryFieldServiceImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CategoryFieldServiceImpl.getDtoClassName()", "String CategoryFieldServiceImpl.getName()"})
   public void testGettersAndSetters() {
     // Arrange
     CategoryFieldServiceImpl categoryFieldServiceImpl = new CategoryFieldServiceImpl();

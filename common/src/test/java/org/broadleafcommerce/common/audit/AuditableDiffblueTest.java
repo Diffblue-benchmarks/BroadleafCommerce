@@ -20,10 +20,13 @@ package org.broadleafcommerce.common.audit;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.Date;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class AuditableDiffblueTest {
   /**
@@ -40,6 +43,8 @@ public class AuditableDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Auditable.equals(Object)", "int Auditable.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     Auditable auditable = new Auditable();
@@ -74,6 +79,8 @@ public class AuditableDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Auditable.equals(Object)", "int Auditable.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     Auditable auditable = new Auditable();
@@ -108,6 +115,8 @@ public class AuditableDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Auditable.equals(Object)", "int Auditable.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     Auditable auditable = new Auditable();
@@ -142,6 +151,8 @@ public class AuditableDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Auditable.equals(Object)", "int Auditable.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
     // Arrange
     Auditable auditable = new Auditable();
@@ -176,6 +187,8 @@ public class AuditableDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Auditable.equals(Object)", "int Auditable.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual5() {
     // Arrange
     Auditable auditable = new Auditable();
@@ -210,6 +223,8 @@ public class AuditableDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Auditable.equals(Object)", "int Auditable.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     Auditable auditable = new Auditable();
@@ -234,6 +249,8 @@ public class AuditableDiffblueTest {
    * Method under test: {@link Auditable#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Auditable.equals(Object)", "int Auditable.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     Auditable auditable = new Auditable();
@@ -262,6 +279,8 @@ public class AuditableDiffblueTest {
    * Method under test: {@link Auditable#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Auditable.equals(Object)", "int Auditable.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     Auditable auditable = new Auditable();
@@ -290,6 +309,8 @@ public class AuditableDiffblueTest {
    * Method under test: {@link Auditable#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Auditable.equals(Object)", "int Auditable.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     Auditable auditable = new Auditable();
@@ -318,6 +339,8 @@ public class AuditableDiffblueTest {
    * Method under test: {@link Auditable#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Auditable.equals(Object)", "int Auditable.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     Auditable auditable = new Auditable();
@@ -346,6 +369,8 @@ public class AuditableDiffblueTest {
    * Method under test: {@link Auditable#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Auditable.equals(Object)", "int Auditable.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
     Auditable auditable = new Auditable();
@@ -374,6 +399,8 @@ public class AuditableDiffblueTest {
    * Method under test: {@link Auditable#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Auditable.equals(Object)", "int Auditable.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
     Auditable auditable = new Auditable();
@@ -402,6 +429,8 @@ public class AuditableDiffblueTest {
    * Method under test: {@link Auditable#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Auditable.equals(Object)", "int Auditable.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
     // Arrange
     Auditable auditable = new Auditable();
@@ -430,6 +459,8 @@ public class AuditableDiffblueTest {
    * Method under test: {@link Auditable#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Auditable.equals(Object)", "int Auditable.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual8() {
     // Arrange
     Auditable auditable = new Auditable();
@@ -458,6 +489,8 @@ public class AuditableDiffblueTest {
    * Method under test: {@link Auditable#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Auditable.equals(Object)", "int Auditable.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     Auditable auditable = new Auditable();
@@ -480,6 +513,8 @@ public class AuditableDiffblueTest {
    * Method under test: {@link Auditable#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Auditable.equals(Object)", "int Auditable.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     Auditable auditable = new Auditable();
@@ -509,6 +544,11 @@ public class AuditableDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Auditable.<init>()", "Long Auditable.getCreatedBy()", "Date Auditable.getDateCreated()",
+      "Date Auditable.getDateUpdated()", "Long Auditable.getUpdatedBy()", "void Auditable.setCreatedBy(Long)",
+      "void Auditable.setDateCreated(Date)", "void Auditable.setDateUpdated(Date)",
+      "void Auditable.setUpdatedBy(Long)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     Auditable actualAuditable = new Auditable();
@@ -523,7 +563,7 @@ public class AuditableDiffblueTest {
     Date actualDateUpdated = actualAuditable.getDateUpdated();
     Long actualUpdatedBy = actualAuditable.getUpdatedBy();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals(1L, actualCreatedBy.longValue());
     assertEquals(1L, actualUpdatedBy.longValue());
     assertSame(dateCreated, actualDateCreated);

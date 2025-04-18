@@ -1,15 +1,34 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.pricing.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class ShippingRateImplDiffblueTest {
   /**
-   * Test {@link ShippingRateImpl#equals(Object)}, and
-   * {@link ShippingRateImpl#hashCode()}.
+   * Test {@link ShippingRateImpl#equals(Object)}, and {@link ShippingRateImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -22,6 +41,8 @@ public class ShippingRateImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ShippingRateImpl.equals(Object)", "int ShippingRateImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     ShippingRateImpl shippingRateImpl = new ShippingRateImpl();
@@ -49,8 +70,7 @@ public class ShippingRateImplDiffblueTest {
   }
 
   /**
-   * Test {@link ShippingRateImpl#equals(Object)}, and
-   * {@link ShippingRateImpl#hashCode()}.
+   * Test {@link ShippingRateImpl#equals(Object)}, and {@link ShippingRateImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -63,6 +83,8 @@ public class ShippingRateImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ShippingRateImpl.equals(Object)", "int ShippingRateImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     ShippingRateImpl shippingRateImpl = new ShippingRateImpl();
@@ -90,8 +112,7 @@ public class ShippingRateImplDiffblueTest {
   }
 
   /**
-   * Test {@link ShippingRateImpl#equals(Object)}, and
-   * {@link ShippingRateImpl#hashCode()}.
+   * Test {@link ShippingRateImpl#equals(Object)}, and {@link ShippingRateImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -104,6 +125,8 @@ public class ShippingRateImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ShippingRateImpl.equals(Object)", "int ShippingRateImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     ShippingRateImpl shippingRateImpl = new ShippingRateImpl();
@@ -131,8 +154,7 @@ public class ShippingRateImplDiffblueTest {
   }
 
   /**
-   * Test {@link ShippingRateImpl#equals(Object)}, and
-   * {@link ShippingRateImpl#hashCode()}.
+   * Test {@link ShippingRateImpl#equals(Object)}, and {@link ShippingRateImpl#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -145,6 +167,8 @@ public class ShippingRateImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ShippingRateImpl.equals(Object)", "int ShippingRateImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     ShippingRateImpl shippingRateImpl = new ShippingRateImpl();
@@ -172,6 +196,8 @@ public class ShippingRateImplDiffblueTest {
    * Method under test: {@link ShippingRateImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ShippingRateImpl.equals(Object)", "int ShippingRateImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     ShippingRateImpl shippingRateImpl = new ShippingRateImpl();
@@ -206,6 +232,8 @@ public class ShippingRateImplDiffblueTest {
    * Method under test: {@link ShippingRateImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ShippingRateImpl.equals(Object)", "int ShippingRateImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     ShippingRateImpl shippingRateImpl = new ShippingRateImpl();
@@ -240,6 +268,8 @@ public class ShippingRateImplDiffblueTest {
    * Method under test: {@link ShippingRateImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ShippingRateImpl.equals(Object)", "int ShippingRateImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     ShippingRateImpl shippingRateImpl = new ShippingRateImpl();
@@ -274,6 +304,8 @@ public class ShippingRateImplDiffblueTest {
    * Method under test: {@link ShippingRateImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ShippingRateImpl.equals(Object)", "int ShippingRateImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     ShippingRateImpl shippingRateImpl = new ShippingRateImpl();
@@ -308,6 +340,8 @@ public class ShippingRateImplDiffblueTest {
    * Method under test: {@link ShippingRateImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ShippingRateImpl.equals(Object)", "int ShippingRateImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
     ShippingRateImpl shippingRateImpl = new ShippingRateImpl();
@@ -342,6 +376,8 @@ public class ShippingRateImplDiffblueTest {
    * Method under test: {@link ShippingRateImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ShippingRateImpl.equals(Object)", "int ShippingRateImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
     ShippingRateImpl shippingRateImpl = new ShippingRateImpl();
@@ -376,6 +412,8 @@ public class ShippingRateImplDiffblueTest {
    * Method under test: {@link ShippingRateImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ShippingRateImpl.equals(Object)", "int ShippingRateImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
     // Arrange
     ShippingRateImpl shippingRateImpl = new ShippingRateImpl();
@@ -410,6 +448,8 @@ public class ShippingRateImplDiffblueTest {
    * Method under test: {@link ShippingRateImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ShippingRateImpl.equals(Object)", "int ShippingRateImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual8() {
     // Arrange
     ShippingRateImpl shippingRateImpl = new ShippingRateImpl();
@@ -444,6 +484,8 @@ public class ShippingRateImplDiffblueTest {
    * Method under test: {@link ShippingRateImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ShippingRateImpl.equals(Object)", "int ShippingRateImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual9() {
     // Arrange
     ShippingRateImpl shippingRateImpl = new ShippingRateImpl();
@@ -478,6 +520,8 @@ public class ShippingRateImplDiffblueTest {
    * Method under test: {@link ShippingRateImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ShippingRateImpl.equals(Object)", "int ShippingRateImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual10() {
     // Arrange
     ShippingRateImpl shippingRateImpl = new ShippingRateImpl();
@@ -512,6 +556,8 @@ public class ShippingRateImplDiffblueTest {
    * Method under test: {@link ShippingRateImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ShippingRateImpl.equals(Object)", "int ShippingRateImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual11() {
     // Arrange
     ShippingRateImpl shippingRateImpl = new ShippingRateImpl();
@@ -546,6 +592,8 @@ public class ShippingRateImplDiffblueTest {
    * Method under test: {@link ShippingRateImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ShippingRateImpl.equals(Object)", "int ShippingRateImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual12() {
     // Arrange
     ShippingRateImpl shippingRateImpl = new ShippingRateImpl();
@@ -580,6 +628,8 @@ public class ShippingRateImplDiffblueTest {
    * Method under test: {@link ShippingRateImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ShippingRateImpl.equals(Object)", "int ShippingRateImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual13() {
     // Arrange
     ShippingRateImpl shippingRateImpl = new ShippingRateImpl();
@@ -614,6 +664,8 @@ public class ShippingRateImplDiffblueTest {
    * Method under test: {@link ShippingRateImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ShippingRateImpl.equals(Object)", "int ShippingRateImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     ShippingRateImpl shippingRateImpl = new ShippingRateImpl();
@@ -639,6 +691,8 @@ public class ShippingRateImplDiffblueTest {
    * Method under test: {@link ShippingRateImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ShippingRateImpl.equals(Object)", "int ShippingRateImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     ShippingRateImpl shippingRateImpl = new ShippingRateImpl();
@@ -678,6 +732,15 @@ public class ShippingRateImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ShippingRateImpl.<init>()", "Integer ShippingRateImpl.getBandResultPercent()",
+      "BigDecimal ShippingRateImpl.getBandResultQuantity()", "BigDecimal ShippingRateImpl.getBandUnitQuantity()",
+      "Integer ShippingRateImpl.getFeeBand()", "String ShippingRateImpl.getFeeSubType()",
+      "String ShippingRateImpl.getFeeType()", "Long ShippingRateImpl.getId()",
+      "void ShippingRateImpl.setBandResultPercent(Integer)", "void ShippingRateImpl.setBandResultQuantity(BigDecimal)",
+      "void ShippingRateImpl.setBandUnitQuantity(BigDecimal)", "void ShippingRateImpl.setFeeBand(Integer)",
+      "void ShippingRateImpl.setFeeSubType(String)", "void ShippingRateImpl.setFeeType(String)",
+      "void ShippingRateImpl.setId(Long)", "String ShippingRateImpl.toString()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     ShippingRateImpl actualShippingRateImpl = new ShippingRateImpl();
@@ -699,7 +762,7 @@ public class ShippingRateImplDiffblueTest {
     String actualFeeType = actualShippingRateImpl.getFeeType();
     Long actualId = actualShippingRateImpl.getId();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Fee Sub Type 2.3 1", actualToStringResult);
     assertEquals("Fee Sub Type", actualFeeSubType);
     assertEquals("Fee Type", actualFeeType);

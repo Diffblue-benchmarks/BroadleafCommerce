@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.checkout.service.strategy;
 
 import static org.junit.Assert.assertEquals;
@@ -6,27 +23,34 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.anyBoolean;
 import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import java.math.BigDecimal;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.Currency;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import org.broadleafcommerce.common.audit.Auditable;
+import org.broadleafcommerce.common.config.service.SystemPropertiesService;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
 import org.broadleafcommerce.common.locale.domain.LocaleImpl;
 import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.common.payment.PaymentGatewayType;
-import org.broadleafcommerce.common.payment.PaymentTransactionType;
 import org.broadleafcommerce.common.payment.PaymentType;
 import org.broadleafcommerce.common.payment.dto.PaymentRequestDTO;
 import org.broadleafcommerce.common.payment.dto.PaymentResponseDTO;
+import org.broadleafcommerce.common.payment.service.PaymentGatewayConfigurationService;
+import org.broadleafcommerce.common.payment.service.PaymentGatewayConfigurationServiceProvider;
+import org.broadleafcommerce.common.payment.service.PaymentGatewayTransactionConfirmationService;
 import org.broadleafcommerce.common.vendor.service.exception.PaymentException;
 import org.broadleafcommerce.core.checkout.service.exception.CheckoutException;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
@@ -37,77 +61,52 @@ import org.broadleafcommerce.core.payment.domain.OrderPayment;
 import org.broadleafcommerce.core.payment.domain.OrderPaymentImpl;
 import org.broadleafcommerce.core.payment.domain.PaymentTransaction;
 import org.broadleafcommerce.core.payment.domain.PaymentTransactionImpl;
+import org.broadleafcommerce.core.payment.service.OrderToPaymentRequestDTOService;
+import org.broadleafcommerce.core.payment.service.SecureOrderPaymentService;
 import org.broadleafcommerce.core.workflow.DefaultProcessContextImpl;
 import org.broadleafcommerce.core.workflow.ProcessContext;
 import org.broadleafcommerce.core.workflow.WorkflowException;
+import org.broadleafcommerce.profile.core.domain.AddressImpl;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class OrderPaymentConfirmationStrategyImplDiffblueTest {
-  @Autowired
+  @InjectMocks
   private OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl;
 
-  /**
-   * Test
-   * {@link OrderPaymentConfirmationStrategyImpl#confirmTransaction(PaymentTransaction, ProcessContext)}.
-   * <p>
-   * Method under test:
-   * {@link OrderPaymentConfirmationStrategyImpl#confirmTransaction(PaymentTransaction, ProcessContext)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testConfirmTransaction() throws PaymentException, CheckoutException, WorkflowException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.checkout.service.strategy;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass975 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.checkout.service.strategy.OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Mock
+  private OrderToPaymentRequestDTOService orderToPaymentRequestDTOService;
 
-    // Arrange
-    OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl2 = new OrderPaymentConfirmationStrategyImpl();
-    PaymentTransactionImpl tx = new PaymentTransactionImpl();
+  @Mock
+  private PaymentGatewayConfigurationServiceProvider paymentGatewayConfigurationServiceProvider;
 
-    // Act
-    orderPaymentConfirmationStrategyImpl2.confirmTransaction(tx, new DefaultProcessContextImpl<>());
-  }
+  @Mock
+  private SecureOrderPaymentService secureOrderPaymentService;
+
+  @Mock
+  private SystemPropertiesService systemPropertiesService;
 
   /**
-   * Test
-   * {@link OrderPaymentConfirmationStrategyImpl#confirmTransaction(PaymentTransaction, ProcessContext)}.
+   * Test {@link OrderPaymentConfirmationStrategyImpl#confirmTransaction(PaymentTransaction, ProcessContext)}.
    * <ul>
-   *   <li>When {@link PaymentTransactionImpl} (default constructor).</li>
    *   <li>Then throw {@link CheckoutException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentConfirmationStrategyImpl#confirmTransaction(PaymentTransaction, ProcessContext)}
+   * Method under test: {@link OrderPaymentConfirmationStrategyImpl#confirmTransaction(PaymentTransaction, ProcessContext)}
    */
   @Test
-  public void testConfirmTransaction_whenPaymentTransactionImpl_thenThrowCheckoutException()
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "PaymentResponseDTO OrderPaymentConfirmationStrategyImpl.confirmTransaction(PaymentTransaction, ProcessContext)"})
+  public void testConfirmTransaction_thenThrowCheckoutException()
       throws PaymentException, CheckoutException, WorkflowException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl = new OrderPaymentConfirmationStrategyImpl();
     PaymentTransactionImpl tx = new PaymentTransactionImpl();
@@ -118,55 +117,217 @@ public class OrderPaymentConfirmationStrategyImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link OrderPaymentConfirmationStrategyImpl#confirmPendingTransaction(PaymentTransaction, ProcessContext)}.
+   * Test {@link OrderPaymentConfirmationStrategyImpl#confirmPendingTransaction(PaymentTransaction, ProcessContext)}.
    * <p>
-   * Method under test:
-   * {@link OrderPaymentConfirmationStrategyImpl#confirmPendingTransaction(PaymentTransaction, ProcessContext)}
+   * Method under test: {@link OrderPaymentConfirmationStrategyImpl#confirmPendingTransaction(PaymentTransaction, ProcessContext)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "PaymentResponseDTO OrderPaymentConfirmationStrategyImpl.confirmPendingTransaction(PaymentTransaction, ProcessContext)"})
   public void testConfirmPendingTransaction() throws PaymentException, CheckoutException, WorkflowException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.checkout.service.strategy;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass951 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.checkout.service.strategy.OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl2 = new OrderPaymentConfirmationStrategyImpl();
-    PaymentTransactionImpl tx = new PaymentTransactionImpl();
+    when(orderToPaymentRequestDTOService.translatePaymentTransaction(Mockito.<Money>any(),
+        Mockito.<PaymentTransaction>any(), anyBoolean())).thenReturn(new PaymentRequestDTO());
+    doNothing().when(orderToPaymentRequestDTOService)
+        .populateBillTo(Mockito.<Order>any(), Mockito.<PaymentRequestDTO>any());
+    doNothing().when(orderToPaymentRequestDTOService)
+        .populateCustomerInfo(Mockito.<Order>any(), Mockito.<PaymentRequestDTO>any());
+    doNothing().when(orderToPaymentRequestDTOService)
+        .populateShipTo(Mockito.<Order>any(), Mockito.<PaymentRequestDTO>any());
+    PaymentGatewayTransactionConfirmationService paymentGatewayTransactionConfirmationService = mock(
+        PaymentGatewayTransactionConfirmationService.class);
+    PaymentType paymentType = new PaymentType("Type", "Friendly Type");
+
+    PaymentResponseDTO paymentResponseDTO = new PaymentResponseDTO(paymentType,
+        new PaymentGatewayType("Type", "Friendly Type"));
+
+    when(paymentGatewayTransactionConfirmationService.confirmTransaction(Mockito.<PaymentRequestDTO>any()))
+        .thenReturn(paymentResponseDTO);
+    PaymentGatewayConfigurationService paymentGatewayConfigurationService = mock(
+        PaymentGatewayConfigurationService.class);
+    when(paymentGatewayConfigurationService.getTransactionConfirmationService())
+        .thenReturn(paymentGatewayTransactionConfirmationService);
+    when(paymentGatewayConfigurationServiceProvider.getGatewayConfigurationService(Mockito.<PaymentGatewayType>any()))
+        .thenReturn(paymentGatewayConfigurationService);
+
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(14L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(14L);
+
+    OrderImpl orderImpl = new OrderImpl();
+    orderImpl.setAdditionalOfferInformation(new HashMap<>());
+    orderImpl.setAuditable(auditable);
+    orderImpl.setCandidateOrderOffers(new ArrayList<>());
+    orderImpl.setCurrency(new BroadleafCurrencyImpl());
+    orderImpl.setCustomer(new CustomerImpl());
+    orderImpl.setEmailAddress("42 Main St");
+    orderImpl.setFulfillmentGroups(new ArrayList<>());
+    orderImpl.setId(1L);
+    orderImpl.setLocale(new LocaleImpl());
+    orderImpl.setName("Name");
+    orderImpl.setOrderAttributes(new HashMap<>());
+    orderImpl.setOrderItems(new ArrayList<>());
+    orderImpl.setOrderMessages(new ArrayList<>());
+    orderImpl.setOrderNumber("42");
+    orderImpl.setPayments(new ArrayList<>());
+    orderImpl.setStatus(OrderStatus.ARCHIVED);
+    orderImpl.setSubTotal(new Money());
+    orderImpl.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    orderImpl.setTaxOverride(true);
+    orderImpl.setTotal(new Money());
+    orderImpl.setTotalFulfillmentCharges(new Money());
+    orderImpl.setTotalTax(new Money());
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.isFinalPayment()).thenReturn(true);
+    when(orderPaymentImpl.getAmount()).thenReturn(new Money());
+    when(orderPaymentImpl.getGatewayType()).thenReturn(new PaymentGatewayType("Type", "Friendly Type"));
+    when(orderPaymentImpl.getType()).thenReturn(new PaymentType("Type", "Friendly Type"));
+    when(orderPaymentImpl.getOrder()).thenReturn(orderImpl);
+    when(orderPaymentImpl.getBillingAddress()).thenReturn(new AddressImpl());
+    PaymentTransactionImpl tx = mock(PaymentTransactionImpl.class);
+    when(tx.getOrderPayment()).thenReturn(orderPaymentImpl);
 
     // Act
-    orderPaymentConfirmationStrategyImpl2.confirmPendingTransaction(tx, new DefaultProcessContextImpl<>());
+    PaymentResponseDTO actualConfirmPendingTransactionResult = orderPaymentConfirmationStrategyImpl
+        .confirmPendingTransaction(tx, new DefaultProcessContextImpl<>());
+
+    // Assert
+    verify(paymentGatewayConfigurationService).getTransactionConfirmationService();
+    verify(paymentGatewayConfigurationServiceProvider).getGatewayConfigurationService(isA(PaymentGatewayType.class));
+    verify(paymentGatewayTransactionConfirmationService).confirmTransaction(isA(PaymentRequestDTO.class));
+    verify(orderPaymentImpl).getAmount();
+    verify(orderPaymentImpl).getBillingAddress();
+    verify(orderPaymentImpl).getGatewayType();
+    verify(orderPaymentImpl, atLeast(1)).getOrder();
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isFinalPayment();
+    verify(tx, atLeast(1)).getOrderPayment();
+    verify(orderToPaymentRequestDTOService).populateBillTo(isA(Order.class), isA(PaymentRequestDTO.class));
+    verify(orderToPaymentRequestDTOService).populateCustomerInfo(isA(Order.class), isA(PaymentRequestDTO.class));
+    verify(orderToPaymentRequestDTOService).populateShipTo(isA(Order.class), isA(PaymentRequestDTO.class));
+    verify(orderToPaymentRequestDTOService).translatePaymentTransaction(isA(Money.class), isA(PaymentTransaction.class),
+        eq(true));
+    assertSame(paymentResponseDTO, actualConfirmPendingTransactionResult);
   }
 
   /**
-   * Test
-   * {@link OrderPaymentConfirmationStrategyImpl#confirmPendingTransaction(PaymentTransaction, ProcessContext)}.
+   * Test {@link OrderPaymentConfirmationStrategyImpl#confirmPendingTransaction(PaymentTransaction, ProcessContext)}.
+   * <ul>
+   *   <li>Then calls {@link OrderToPaymentRequestDTOService#translatePaymentTransaction(Money, PaymentTransaction)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OrderPaymentConfirmationStrategyImpl#confirmPendingTransaction(PaymentTransaction, ProcessContext)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "PaymentResponseDTO OrderPaymentConfirmationStrategyImpl.confirmPendingTransaction(PaymentTransaction, ProcessContext)"})
+  public void testConfirmPendingTransaction_thenCallsTranslatePaymentTransaction()
+      throws PaymentException, CheckoutException, WorkflowException {
+    // Arrange
+    doNothing().when(orderToPaymentRequestDTOService)
+        .populateBillTo(Mockito.<Order>any(), Mockito.<PaymentRequestDTO>any());
+    doNothing().when(orderToPaymentRequestDTOService)
+        .populateCustomerInfo(Mockito.<Order>any(), Mockito.<PaymentRequestDTO>any());
+    doNothing().when(orderToPaymentRequestDTOService)
+        .populateShipTo(Mockito.<Order>any(), Mockito.<PaymentRequestDTO>any());
+    when(orderToPaymentRequestDTOService.translatePaymentTransaction(Mockito.<Money>any(),
+        Mockito.<PaymentTransaction>any())).thenReturn(new PaymentRequestDTO());
+    PaymentGatewayTransactionConfirmationService paymentGatewayTransactionConfirmationService = mock(
+        PaymentGatewayTransactionConfirmationService.class);
+    PaymentType paymentType = new PaymentType("Type", "Friendly Type");
+
+    PaymentResponseDTO paymentResponseDTO = new PaymentResponseDTO(paymentType,
+        new PaymentGatewayType("Type", "Friendly Type"));
+
+    when(paymentGatewayTransactionConfirmationService.confirmTransaction(Mockito.<PaymentRequestDTO>any()))
+        .thenReturn(paymentResponseDTO);
+    PaymentGatewayConfigurationService paymentGatewayConfigurationService = mock(
+        PaymentGatewayConfigurationService.class);
+    when(paymentGatewayConfigurationService.getTransactionConfirmationService())
+        .thenReturn(paymentGatewayTransactionConfirmationService);
+    when(paymentGatewayConfigurationServiceProvider.getGatewayConfigurationService(Mockito.<PaymentGatewayType>any()))
+        .thenReturn(paymentGatewayConfigurationService);
+
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(14L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(14L);
+
+    OrderImpl orderImpl = new OrderImpl();
+    orderImpl.setAdditionalOfferInformation(new HashMap<>());
+    orderImpl.setAuditable(auditable);
+    orderImpl.setCandidateOrderOffers(new ArrayList<>());
+    orderImpl.setCurrency(new BroadleafCurrencyImpl());
+    orderImpl.setCustomer(new CustomerImpl());
+    orderImpl.setEmailAddress("42 Main St");
+    orderImpl.setFulfillmentGroups(new ArrayList<>());
+    orderImpl.setId(1L);
+    orderImpl.setLocale(new LocaleImpl());
+    orderImpl.setName("Name");
+    orderImpl.setOrderAttributes(new HashMap<>());
+    orderImpl.setOrderItems(new ArrayList<>());
+    orderImpl.setOrderMessages(new ArrayList<>());
+    orderImpl.setOrderNumber("42");
+    orderImpl.setPayments(new ArrayList<>());
+    orderImpl.setStatus(OrderStatus.ARCHIVED);
+    orderImpl.setSubTotal(new Money());
+    orderImpl.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    orderImpl.setTaxOverride(true);
+    orderImpl.setTotal(new Money());
+    orderImpl.setTotalFulfillmentCharges(new Money());
+    orderImpl.setTotalTax(new Money());
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.isFinalPayment()).thenReturn(false);
+    when(orderPaymentImpl.getAmount()).thenReturn(new Money());
+    when(orderPaymentImpl.getGatewayType()).thenReturn(new PaymentGatewayType("Type", "Friendly Type"));
+    when(orderPaymentImpl.getType()).thenReturn(new PaymentType("Type", "Friendly Type"));
+    when(orderPaymentImpl.getOrder()).thenReturn(orderImpl);
+    when(orderPaymentImpl.getBillingAddress()).thenReturn(new AddressImpl());
+    PaymentTransactionImpl tx = mock(PaymentTransactionImpl.class);
+    when(tx.getOrderPayment()).thenReturn(orderPaymentImpl);
+
+    // Act
+    PaymentResponseDTO actualConfirmPendingTransactionResult = orderPaymentConfirmationStrategyImpl
+        .confirmPendingTransaction(tx, new DefaultProcessContextImpl<>());
+
+    // Assert
+    verify(paymentGatewayConfigurationService).getTransactionConfirmationService();
+    verify(paymentGatewayConfigurationServiceProvider).getGatewayConfigurationService(isA(PaymentGatewayType.class));
+    verify(paymentGatewayTransactionConfirmationService).confirmTransaction(isA(PaymentRequestDTO.class));
+    verify(orderPaymentImpl).getAmount();
+    verify(orderPaymentImpl).getBillingAddress();
+    verify(orderPaymentImpl).getGatewayType();
+    verify(orderPaymentImpl, atLeast(1)).getOrder();
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isFinalPayment();
+    verify(tx, atLeast(1)).getOrderPayment();
+    verify(orderToPaymentRequestDTOService).populateBillTo(isA(Order.class), isA(PaymentRequestDTO.class));
+    verify(orderToPaymentRequestDTOService).populateCustomerInfo(isA(Order.class), isA(PaymentRequestDTO.class));
+    verify(orderToPaymentRequestDTOService).populateShipTo(isA(Order.class), isA(PaymentRequestDTO.class));
+    verify(orderToPaymentRequestDTOService).translatePaymentTransaction(isA(Money.class),
+        isA(PaymentTransaction.class));
+    assertSame(paymentResponseDTO, actualConfirmPendingTransactionResult);
+  }
+
+  /**
+   * Test {@link OrderPaymentConfirmationStrategyImpl#confirmPendingTransaction(PaymentTransaction, ProcessContext)}.
    * <ul>
    *   <li>Then throw {@link CheckoutException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentConfirmationStrategyImpl#confirmPendingTransaction(PaymentTransaction, ProcessContext)}
+   * Method under test: {@link OrderPaymentConfirmationStrategyImpl#confirmPendingTransaction(PaymentTransaction, ProcessContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "PaymentResponseDTO OrderPaymentConfirmationStrategyImpl.confirmPendingTransaction(PaymentTransaction, ProcessContext)"})
   public void testConfirmPendingTransaction_thenThrowCheckoutException()
       throws PaymentException, CheckoutException, WorkflowException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl = new OrderPaymentConfirmationStrategyImpl();
     PaymentTransactionImpl tx = new PaymentTransactionImpl();
@@ -177,55 +338,200 @@ public class OrderPaymentConfirmationStrategyImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link OrderPaymentConfirmationStrategyImpl#confirmTransactionInternal(PaymentTransaction, ProcessContext, boolean)}.
+   * Test {@link OrderPaymentConfirmationStrategyImpl#confirmPendingTransaction(PaymentTransaction, ProcessContext)}.
+   * <ul>
+   *   <li>Then throw {@link PaymentException}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentConfirmationStrategyImpl#confirmTransactionInternal(PaymentTransaction, ProcessContext, boolean)}
+   * Method under test: {@link OrderPaymentConfirmationStrategyImpl#confirmPendingTransaction(PaymentTransaction, ProcessContext)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testConfirmTransactionInternal() throws PaymentException, CheckoutException, WorkflowException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.checkout.service.strategy;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass999 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.checkout.service.strategy.OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "PaymentResponseDTO OrderPaymentConfirmationStrategyImpl.confirmPendingTransaction(PaymentTransaction, ProcessContext)"})
+  public void testConfirmPendingTransaction_thenThrowPaymentException()
+      throws PaymentException, CheckoutException, WorkflowException {
     // Arrange
-    OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl2 = new OrderPaymentConfirmationStrategyImpl();
-    PaymentTransactionImpl tx = new PaymentTransactionImpl();
+    when(orderToPaymentRequestDTOService.translatePaymentTransaction(Mockito.<Money>any(),
+        Mockito.<PaymentTransaction>any(), anyBoolean())).thenReturn(new PaymentRequestDTO());
+    doNothing().when(orderToPaymentRequestDTOService)
+        .populateBillTo(Mockito.<Order>any(), Mockito.<PaymentRequestDTO>any());
+    doNothing().when(orderToPaymentRequestDTOService)
+        .populateCustomerInfo(Mockito.<Order>any(), Mockito.<PaymentRequestDTO>any());
+    doNothing().when(orderToPaymentRequestDTOService)
+        .populateShipTo(Mockito.<Order>any(), Mockito.<PaymentRequestDTO>any());
+    PaymentGatewayTransactionConfirmationService paymentGatewayTransactionConfirmationService = mock(
+        PaymentGatewayTransactionConfirmationService.class);
+    when(paymentGatewayTransactionConfirmationService.confirmTransaction(Mockito.<PaymentRequestDTO>any()))
+        .thenThrow(new PaymentException("An error occurred"));
+    PaymentGatewayConfigurationService paymentGatewayConfigurationService = mock(
+        PaymentGatewayConfigurationService.class);
+    when(paymentGatewayConfigurationService.getTransactionConfirmationService())
+        .thenReturn(paymentGatewayTransactionConfirmationService);
+    when(paymentGatewayConfigurationServiceProvider.getGatewayConfigurationService(Mockito.<PaymentGatewayType>any()))
+        .thenReturn(paymentGatewayConfigurationService);
 
-    // Act
-    orderPaymentConfirmationStrategyImpl2.confirmTransactionInternal(tx, new DefaultProcessContextImpl<>(), true);
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(14L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(14L);
+
+    OrderImpl orderImpl = new OrderImpl();
+    orderImpl.setAdditionalOfferInformation(new HashMap<>());
+    orderImpl.setAuditable(auditable);
+    orderImpl.setCandidateOrderOffers(new ArrayList<>());
+    orderImpl.setCurrency(new BroadleafCurrencyImpl());
+    orderImpl.setCustomer(new CustomerImpl());
+    orderImpl.setEmailAddress("42 Main St");
+    orderImpl.setFulfillmentGroups(new ArrayList<>());
+    orderImpl.setId(1L);
+    orderImpl.setLocale(new LocaleImpl());
+    orderImpl.setName("Name");
+    orderImpl.setOrderAttributes(new HashMap<>());
+    orderImpl.setOrderItems(new ArrayList<>());
+    orderImpl.setOrderMessages(new ArrayList<>());
+    orderImpl.setOrderNumber("42");
+    orderImpl.setPayments(new ArrayList<>());
+    orderImpl.setStatus(OrderStatus.ARCHIVED);
+    orderImpl.setSubTotal(new Money());
+    orderImpl.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    orderImpl.setTaxOverride(true);
+    orderImpl.setTotal(new Money());
+    orderImpl.setTotalFulfillmentCharges(new Money());
+    orderImpl.setTotalTax(new Money());
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.isFinalPayment()).thenReturn(true);
+    when(orderPaymentImpl.getAmount()).thenReturn(new Money());
+    when(orderPaymentImpl.getGatewayType()).thenReturn(new PaymentGatewayType("Type", "Friendly Type"));
+    when(orderPaymentImpl.getType()).thenReturn(new PaymentType("Type", "Friendly Type"));
+    when(orderPaymentImpl.getOrder()).thenReturn(orderImpl);
+    when(orderPaymentImpl.getBillingAddress()).thenReturn(new AddressImpl());
+    PaymentTransactionImpl tx = mock(PaymentTransactionImpl.class);
+    when(tx.getOrderPayment()).thenReturn(orderPaymentImpl);
+
+    // Act and Assert
+    assertThrows(PaymentException.class,
+        () -> orderPaymentConfirmationStrategyImpl.confirmPendingTransaction(tx, new DefaultProcessContextImpl<>()));
+    verify(paymentGatewayConfigurationService).getTransactionConfirmationService();
+    verify(paymentGatewayConfigurationServiceProvider).getGatewayConfigurationService(isA(PaymentGatewayType.class));
+    verify(paymentGatewayTransactionConfirmationService).confirmTransaction(isA(PaymentRequestDTO.class));
+    verify(orderPaymentImpl).getAmount();
+    verify(orderPaymentImpl).getBillingAddress();
+    verify(orderPaymentImpl).getGatewayType();
+    verify(orderPaymentImpl, atLeast(1)).getOrder();
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isFinalPayment();
+    verify(tx, atLeast(1)).getOrderPayment();
+    verify(orderToPaymentRequestDTOService).populateBillTo(isA(Order.class), isA(PaymentRequestDTO.class));
+    verify(orderToPaymentRequestDTOService).populateCustomerInfo(isA(Order.class), isA(PaymentRequestDTO.class));
+    verify(orderToPaymentRequestDTOService).populateShipTo(isA(Order.class), isA(PaymentRequestDTO.class));
+    verify(orderToPaymentRequestDTOService).translatePaymentTransaction(isA(Money.class), isA(PaymentTransaction.class),
+        eq(true));
   }
 
   /**
-   * Test
-   * {@link OrderPaymentConfirmationStrategyImpl#confirmTransactionInternal(PaymentTransaction, ProcessContext, boolean)}.
+   * Test {@link OrderPaymentConfirmationStrategyImpl#confirmPendingTransaction(PaymentTransaction, ProcessContext)}.
+   * <ul>
+   *   <li>Then throw {@link WorkflowException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OrderPaymentConfirmationStrategyImpl#confirmPendingTransaction(PaymentTransaction, ProcessContext)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "PaymentResponseDTO OrderPaymentConfirmationStrategyImpl.confirmPendingTransaction(PaymentTransaction, ProcessContext)"})
+  public void testConfirmPendingTransaction_thenThrowWorkflowException()
+      throws PaymentException, CheckoutException, WorkflowException {
+    // Arrange
+    when(orderToPaymentRequestDTOService.translatePaymentTransaction(Mockito.<Money>any(),
+        Mockito.<PaymentTransaction>any(), anyBoolean())).thenReturn(new PaymentRequestDTO());
+    doNothing().when(orderToPaymentRequestDTOService)
+        .populateBillTo(Mockito.<Order>any(), Mockito.<PaymentRequestDTO>any());
+    doNothing().when(orderToPaymentRequestDTOService)
+        .populateCustomerInfo(Mockito.<Order>any(), Mockito.<PaymentRequestDTO>any());
+    doNothing().when(orderToPaymentRequestDTOService)
+        .populateShipTo(Mockito.<Order>any(), Mockito.<PaymentRequestDTO>any());
+    when(paymentGatewayConfigurationServiceProvider.getGatewayConfigurationService(Mockito.<PaymentGatewayType>any()))
+        .thenReturn(mock(PaymentGatewayConfigurationService.class));
+    when(secureOrderPaymentService.findSecurePaymentInfo(Mockito.<String>any(), Mockito.<PaymentType>any()))
+        .thenThrow(new WorkflowException("An error occurred"));
+
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(14L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(14L);
+
+    OrderImpl orderImpl = new OrderImpl();
+    orderImpl.setAdditionalOfferInformation(new HashMap<>());
+    orderImpl.setAuditable(auditable);
+    orderImpl.setCandidateOrderOffers(new ArrayList<>());
+    orderImpl.setCurrency(new BroadleafCurrencyImpl());
+    orderImpl.setCustomer(new CustomerImpl());
+    orderImpl.setEmailAddress("42 Main St");
+    orderImpl.setFulfillmentGroups(new ArrayList<>());
+    orderImpl.setId(1L);
+    orderImpl.setLocale(new LocaleImpl());
+    orderImpl.setName("Name");
+    orderImpl.setOrderAttributes(new HashMap<>());
+    orderImpl.setOrderItems(new ArrayList<>());
+    orderImpl.setOrderMessages(new ArrayList<>());
+    orderImpl.setOrderNumber("42");
+    orderImpl.setPayments(new ArrayList<>());
+    orderImpl.setStatus(OrderStatus.ARCHIVED);
+    orderImpl.setSubTotal(new Money());
+    orderImpl.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    orderImpl.setTaxOverride(true);
+    orderImpl.setTotal(new Money());
+    orderImpl.setTotalFulfillmentCharges(new Money());
+    orderImpl.setTotalTax(new Money());
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.getReferenceNumber()).thenReturn("42");
+    when(orderPaymentImpl.isFinalPayment()).thenReturn(true);
+    when(orderPaymentImpl.getAmount()).thenReturn(new Money());
+    when(orderPaymentImpl.getGatewayType()).thenReturn(new PaymentGatewayType("Type", "Friendly Type"));
+    when(orderPaymentImpl.getType()).thenReturn(new PaymentType("Type", "Friendly Type", true, true));
+    when(orderPaymentImpl.getOrder()).thenReturn(orderImpl);
+    when(orderPaymentImpl.getBillingAddress()).thenReturn(new AddressImpl());
+    PaymentTransactionImpl tx = mock(PaymentTransactionImpl.class);
+    when(tx.getOrderPayment()).thenReturn(orderPaymentImpl);
+
+    // Act and Assert
+    assertThrows(WorkflowException.class,
+        () -> orderPaymentConfirmationStrategyImpl.confirmPendingTransaction(tx, new DefaultProcessContextImpl<>()));
+    verify(paymentGatewayConfigurationServiceProvider).getGatewayConfigurationService(isA(PaymentGatewayType.class));
+    verify(orderPaymentImpl).getAmount();
+    verify(orderPaymentImpl).getBillingAddress();
+    verify(orderPaymentImpl).getGatewayType();
+    verify(orderPaymentImpl, atLeast(1)).getOrder();
+    verify(orderPaymentImpl, atLeast(1)).getReferenceNumber();
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isFinalPayment();
+    verify(tx, atLeast(1)).getOrderPayment();
+    verify(orderToPaymentRequestDTOService).populateBillTo(isA(Order.class), isA(PaymentRequestDTO.class));
+    verify(orderToPaymentRequestDTOService).populateCustomerInfo(isA(Order.class), isA(PaymentRequestDTO.class));
+    verify(orderToPaymentRequestDTOService).populateShipTo(isA(Order.class), isA(PaymentRequestDTO.class));
+    verify(orderToPaymentRequestDTOService).translatePaymentTransaction(isA(Money.class), isA(PaymentTransaction.class),
+        eq(true));
+    verify(secureOrderPaymentService).findSecurePaymentInfo(eq("42"), isA(PaymentType.class));
+  }
+
+  /**
+   * Test {@link OrderPaymentConfirmationStrategyImpl#confirmTransactionInternal(PaymentTransaction, ProcessContext, boolean)}.
    * <ul>
    *   <li>Then throw {@link CheckoutException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentConfirmationStrategyImpl#confirmTransactionInternal(PaymentTransaction, ProcessContext, boolean)}
+   * Method under test: {@link OrderPaymentConfirmationStrategyImpl#confirmTransactionInternal(PaymentTransaction, ProcessContext, boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "PaymentResponseDTO OrderPaymentConfirmationStrategyImpl.confirmTransactionInternal(PaymentTransaction, ProcessContext, boolean)"})
   public void testConfirmTransactionInternal_thenThrowCheckoutException()
       throws PaymentException, CheckoutException, WorkflowException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl = new OrderPaymentConfirmationStrategyImpl();
     PaymentTransactionImpl tx = new PaymentTransactionImpl();
@@ -236,360 +542,37 @@ public class OrderPaymentConfirmationStrategyImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link OrderPaymentConfirmationStrategyImpl#orderContainsMultipleFinalPayments(Order)}.
-   * <p>
-   * Method under test:
-   * {@link OrderPaymentConfirmationStrategyImpl#orderContainsMultipleFinalPayments(Order)}
-   */
-  @Test
-  public void testOrderContainsMultipleFinalPayments() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl = new OrderPaymentConfirmationStrategyImpl();
-    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
-    when(orderPaymentImpl.isFinalPayment()).thenReturn(true);
-    when(orderPaymentImpl.isActive()).thenReturn(true);
-
-    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
-    orderPaymentList.add(orderPaymentImpl);
-    NullOrderImpl order = mock(NullOrderImpl.class);
-    when(order.getPayments()).thenReturn(orderPaymentList);
-
-    // Act
-    boolean actualOrderContainsMultipleFinalPaymentsResult = orderPaymentConfirmationStrategyImpl
-        .orderContainsMultipleFinalPayments(order);
-
-    // Assert
-    verify(order).getPayments();
-    verify(orderPaymentImpl).isActive();
-    verify(orderPaymentImpl).isFinalPayment();
-    assertFalse(actualOrderContainsMultipleFinalPaymentsResult);
-  }
-
-  /**
-   * Test
-   * {@link OrderPaymentConfirmationStrategyImpl#orderContainsMultipleFinalPayments(Order)}.
-   * <p>
-   * Method under test:
-   * {@link OrderPaymentConfirmationStrategyImpl#orderContainsMultipleFinalPayments(Order)}
-   */
-  @Test
-  public void testOrderContainsMultipleFinalPayments2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl = new OrderPaymentConfirmationStrategyImpl();
-    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
-    when(orderPaymentImpl.isFinalPayment()).thenReturn(false);
-    when(orderPaymentImpl.isActive()).thenReturn(true);
-
-    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
-    orderPaymentList.add(orderPaymentImpl);
-    NullOrderImpl order = mock(NullOrderImpl.class);
-    when(order.getPayments()).thenReturn(orderPaymentList);
-
-    // Act
-    boolean actualOrderContainsMultipleFinalPaymentsResult = orderPaymentConfirmationStrategyImpl
-        .orderContainsMultipleFinalPayments(order);
-
-    // Assert
-    verify(order).getPayments();
-    verify(orderPaymentImpl).isActive();
-    verify(orderPaymentImpl).isFinalPayment();
-    assertFalse(actualOrderContainsMultipleFinalPaymentsResult);
-  }
-
-  /**
-   * Test
-   * {@link OrderPaymentConfirmationStrategyImpl#orderContainsMultipleFinalPayments(Order)}.
-   * <p>
-   * Method under test:
-   * {@link OrderPaymentConfirmationStrategyImpl#orderContainsMultipleFinalPayments(Order)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testOrderContainsMultipleFinalPayments3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.checkout.service.strategy;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1063 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.checkout.service.strategy.OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl2 = new OrderPaymentConfirmationStrategyImpl();
-
-    // Act
-    orderPaymentConfirmationStrategyImpl2.orderContainsMultipleFinalPayments(new NullOrderImpl());
-  }
-
-  /**
-   * Test
-   * {@link OrderPaymentConfirmationStrategyImpl#orderContainsMultipleFinalPayments(Order)}.
+   * Test {@link OrderPaymentConfirmationStrategyImpl#transactionIsDetachedCreditRequest(PaymentTransaction)}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then calls {@link NullOrderImpl#getPayments()}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentConfirmationStrategyImpl#orderContainsMultipleFinalPayments(Order)}
+   * Method under test: {@link OrderPaymentConfirmationStrategyImpl#transactionIsDetachedCreditRequest(PaymentTransaction)}
    */
   @Test
-  public void testOrderContainsMultipleFinalPayments_givenArrayList_thenCallsGetPayments() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl = new OrderPaymentConfirmationStrategyImpl();
-    NullOrderImpl order = mock(NullOrderImpl.class);
-    when(order.getPayments()).thenReturn(new ArrayList<>());
-
-    // Act
-    boolean actualOrderContainsMultipleFinalPaymentsResult = orderPaymentConfirmationStrategyImpl
-        .orderContainsMultipleFinalPayments(order);
-
-    // Assert
-    verify(order).getPayments();
-    assertFalse(actualOrderContainsMultipleFinalPaymentsResult);
-  }
-
-  /**
-   * Test
-   * {@link OrderPaymentConfirmationStrategyImpl#orderContainsMultipleFinalPayments(Order)}.
-   * <ul>
-   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link OrderPaymentConfirmationStrategyImpl#orderContainsMultipleFinalPayments(Order)}
-   */
-  @Test
-  public void testOrderContainsMultipleFinalPayments_givenAuditableCreatedByIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl = new OrderPaymentConfirmationStrategyImpl();
-
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    OrderImpl order = new OrderImpl();
-    order.setAdditionalOfferInformation(new HashMap<>());
-    order.setAuditable(auditable);
-    order.setCandidateOrderOffers(new ArrayList<>());
-    order.setCurrency(new BroadleafCurrencyImpl());
-    order.setCustomer(new CustomerImpl());
-    order.setEmailAddress("42 Main St");
-    order.setFulfillmentGroups(new ArrayList<>());
-    order.setId(1L);
-    order.setLocale(new LocaleImpl());
-    order.setName("Name");
-    order.setOrderAttributes(new HashMap<>());
-    order.setOrderItems(new ArrayList<>());
-    order.setOrderMessages(new ArrayList<>());
-    order.setOrderNumber("42");
-    order.setPayments(new ArrayList<>());
-    order.setStatus(OrderStatus.ARCHIVED);
-    order.setSubTotal(new Money());
-    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    order.setTaxOverride(true);
-    order.setTotal(new Money());
-    order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
-    order.setTotalTax(new Money());
-
-    // Act and Assert
-    assertFalse(orderPaymentConfirmationStrategyImpl.orderContainsMultipleFinalPayments(order));
-  }
-
-  /**
-   * Test
-   * {@link OrderPaymentConfirmationStrategyImpl#orderContainsMultipleFinalPayments(Order)}.
-   * <ul>
-   *   <li>Given {@link OrderPaymentImpl} {@link OrderPaymentImpl#isActive()} return
-   * {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link OrderPaymentConfirmationStrategyImpl#orderContainsMultipleFinalPayments(Order)}
-   */
-  @Test
-  public void testOrderContainsMultipleFinalPayments_givenOrderPaymentImplIsActiveReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl = new OrderPaymentConfirmationStrategyImpl();
-    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
-    when(orderPaymentImpl.isActive()).thenReturn(false);
-
-    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
-    orderPaymentList.add(orderPaymentImpl);
-    NullOrderImpl order = mock(NullOrderImpl.class);
-    when(order.getPayments()).thenReturn(orderPaymentList);
-
-    // Act
-    boolean actualOrderContainsMultipleFinalPaymentsResult = orderPaymentConfirmationStrategyImpl
-        .orderContainsMultipleFinalPayments(order);
-
-    // Assert
-    verify(order).getPayments();
-    verify(orderPaymentImpl).isActive();
-    assertFalse(actualOrderContainsMultipleFinalPaymentsResult);
-  }
-
-  /**
-   * Test
-   * {@link OrderPaymentConfirmationStrategyImpl#transactionIsDetachedCreditRequest(PaymentTransaction)}.
-   * <p>
-   * Method under test:
-   * {@link OrderPaymentConfirmationStrategyImpl#transactionIsDetachedCreditRequest(PaymentTransaction)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testTransactionIsDetachedCreditRequest() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.checkout.service.strategy;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1192 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.checkout.service.strategy.OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl2 = new OrderPaymentConfirmationStrategyImpl();
-
-    // Act
-    orderPaymentConfirmationStrategyImpl2.transactionIsDetachedCreditRequest(new PaymentTransactionImpl());
-  }
-
-  /**
-   * Test
-   * {@link OrderPaymentConfirmationStrategyImpl#transactionIsDetachedCreditRequest(PaymentTransaction)}.
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()}.</li>
-   *   <li>Then calls {@link PaymentTransactionImpl#getAdditionalFields()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link OrderPaymentConfirmationStrategyImpl#transactionIsDetachedCreditRequest(PaymentTransaction)}
-   */
-  @Test
-  public void testTransactionIsDetachedCreditRequest_givenHashMap_thenCallsGetAdditionalFields() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl = new OrderPaymentConfirmationStrategyImpl();
-    PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
-    when(transaction.getAdditionalFields()).thenReturn(new HashMap<>());
-
-    // Act
-    boolean actualTransactionIsDetachedCreditRequestResult = orderPaymentConfirmationStrategyImpl
-        .transactionIsDetachedCreditRequest(transaction);
-
-    // Assert
-    verify(transaction).getAdditionalFields();
-    assertFalse(actualTransactionIsDetachedCreditRequestResult);
-  }
-
-  /**
-   * Test
-   * {@link OrderPaymentConfirmationStrategyImpl#transactionIsDetachedCreditRequest(PaymentTransaction)}.
-   * <ul>
-   *   <li>When {@link PaymentTransactionImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link OrderPaymentConfirmationStrategyImpl#transactionIsDetachedCreditRequest(PaymentTransaction)}
-   */
-  @Test
-  public void testTransactionIsDetachedCreditRequest_whenPaymentTransactionImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl = new OrderPaymentConfirmationStrategyImpl();
-
-    // Act and Assert
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "boolean OrderPaymentConfirmationStrategyImpl.transactionIsDetachedCreditRequest(PaymentTransaction)"})
+  public void testTransactionIsDetachedCreditRequest_thenReturnFalse() {
+    // Arrange, Act and Assert
     assertFalse(orderPaymentConfirmationStrategyImpl.transactionIsDetachedCreditRequest(new PaymentTransactionImpl()));
   }
 
   /**
-   * Test
-   * {@link OrderPaymentConfirmationStrategyImpl#constructPendingTransaction(PaymentType, PaymentGatewayType, PaymentRequestDTO)}.
-   * <p>
-   * Method under test:
-   * {@link OrderPaymentConfirmationStrategyImpl#constructPendingTransaction(PaymentType, PaymentGatewayType, PaymentRequestDTO)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testConstructPendingTransaction() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.checkout.service.strategy;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1031 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.checkout.service.strategy.OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl2 = new OrderPaymentConfirmationStrategyImpl();
-    PaymentType paymentType = new PaymentType("Type", "Friendly Type");
-
-    PaymentGatewayType gatewayType = new PaymentGatewayType("Type", "Friendly Type");
-
-    // Act
-    orderPaymentConfirmationStrategyImpl2.constructPendingTransaction(paymentType, gatewayType,
-        new PaymentRequestDTO());
-  }
-
-  /**
-   * Test
-   * {@link OrderPaymentConfirmationStrategyImpl#constructPendingTransaction(PaymentType, PaymentGatewayType, PaymentRequestDTO)}.
+   * Test {@link OrderPaymentConfirmationStrategyImpl#constructPendingTransaction(PaymentType, PaymentGatewayType, PaymentRequestDTO)}.
    * <ul>
    *   <li>Given {@link HashMap#HashMap()}.</li>
    *   <li>Then return ResponseMap Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentConfirmationStrategyImpl#constructPendingTransaction(PaymentType, PaymentGatewayType, PaymentRequestDTO)}
+   * Method under test: {@link OrderPaymentConfirmationStrategyImpl#constructPendingTransaction(PaymentType, PaymentGatewayType, PaymentRequestDTO)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "PaymentResponseDTO OrderPaymentConfirmationStrategyImpl.constructPendingTransaction(PaymentType, PaymentGatewayType, PaymentRequestDTO)"})
   public void testConstructPendingTransaction_givenHashMap_thenReturnResponseMapEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl = new OrderPaymentConfirmationStrategyImpl();
     PaymentType paymentType = new PaymentType("Type", "Friendly Type");
 
     PaymentGatewayType gatewayType = new PaymentGatewayType("Type", "Friendly Type");
@@ -605,15 +588,6 @@ public class OrderPaymentConfirmationStrategyImplDiffblueTest {
     // Assert
     verify(confirmationRequest).getAdditionalFields();
     verify(confirmationRequest).getTransactionTotal();
-    Money amount = actualConstructPendingTransactionResult.getAmount();
-    Currency currency = amount.getCurrency();
-    assertEquals("British Pound", currency.getDisplayName());
-    assertEquals("GBP", currency.getCurrencyCode());
-    assertEquals("GBP", currency.toString());
-    PaymentTransactionType paymentTransactionType = actualConstructPendingTransactionResult.getPaymentTransactionType();
-    assertEquals("PENDING", paymentTransactionType.getType());
-    assertEquals("Pending Authorize or Authorize and Capture", paymentTransactionType.getFriendlyType());
-    assertEquals("£", currency.getSymbol());
     assertEquals(
         "org.broadleafcommerce.core.checkout.service.strategy.OrderPaymentConfirmationStrategyImpl: converting"
             + " UNCONFIRMED transaction into a PENDING payment",
@@ -624,43 +598,30 @@ public class OrderPaymentConfirmationStrategyImplDiffblueTest {
     assertNull(actualConstructPendingTransactionResult.getShipTo());
     assertNull(actualConstructPendingTransactionResult.getCreditCard());
     assertNull(actualConstructPendingTransactionResult.getCustomer());
-    assertEquals(2, currency.getDefaultFractionDigits());
-    assertEquals(826, currency.getNumericCode());
     assertTrue(actualConstructPendingTransactionResult.getCustomerCredits().isEmpty());
     assertTrue(actualConstructPendingTransactionResult.getGiftCards().isEmpty());
     assertTrue(actualConstructPendingTransactionResult.getResponseMap().isEmpty());
     assertTrue(actualConstructPendingTransactionResult.isCompleteCheckoutOnCallback());
     assertTrue(actualConstructPendingTransactionResult.isSuccessful());
     assertTrue(actualConstructPendingTransactionResult.isValid());
-    BigDecimal expectedAmount = new BigDecimal("0.00");
-    Money zeroResult = amount.zero();
-    assertEquals(expectedAmount, zeroResult.getAmount());
-    BigDecimal expectedAmount2 = new BigDecimal("42.00");
-    assertEquals(expectedAmount2, amount.getAmount());
-    assertEquals(zeroResult.zero(), zeroResult.zero());
-    assertEquals(zeroResult, zeroResult.abs());
-    assertEquals(amount, amount.abs());
     assertSame(gatewayType, actualConstructPendingTransactionResult.getPaymentGatewayType());
     assertSame(paymentType, actualConstructPendingTransactionResult.getPaymentType());
-    assertSame(currency, zeroResult.getCurrency());
   }
 
   /**
-   * Test
-   * {@link OrderPaymentConfirmationStrategyImpl#constructPendingTransaction(PaymentType, PaymentGatewayType, PaymentRequestDTO)}.
+   * Test {@link OrderPaymentConfirmationStrategyImpl#constructPendingTransaction(PaymentType, PaymentGatewayType, PaymentRequestDTO)}.
    * <ul>
    *   <li>Then return ResponseMap size is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentConfirmationStrategyImpl#constructPendingTransaction(PaymentType, PaymentGatewayType, PaymentRequestDTO)}
+   * Method under test: {@link OrderPaymentConfirmationStrategyImpl#constructPendingTransaction(PaymentType, PaymentGatewayType, PaymentRequestDTO)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "PaymentResponseDTO OrderPaymentConfirmationStrategyImpl.constructPendingTransaction(PaymentType, PaymentGatewayType, PaymentRequestDTO)"})
   public void testConstructPendingTransaction_thenReturnResponseMapSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl = new OrderPaymentConfirmationStrategyImpl();
     PaymentType paymentType = new PaymentType("Type", "Friendly Type");
 
     PaymentGatewayType gatewayType = new PaymentGatewayType("Type", "Friendly Type");
@@ -678,18 +639,6 @@ public class OrderPaymentConfirmationStrategyImplDiffblueTest {
     // Assert
     verify(confirmationRequest, atLeast(1)).getAdditionalFields();
     verify(confirmationRequest).getTransactionTotal();
-    Map<String, String> responseMap = actualConstructPendingTransactionResult.getResponseMap();
-    assertEquals(1, responseMap.size());
-    assertEquals("42", responseMap.get("ThreadLocalManager.notify.orphans"));
-    Money amount = actualConstructPendingTransactionResult.getAmount();
-    Currency currency = amount.getCurrency();
-    assertEquals("British Pound", currency.getDisplayName());
-    assertEquals("GBP", currency.getCurrencyCode());
-    assertEquals("GBP", currency.toString());
-    PaymentTransactionType paymentTransactionType = actualConstructPendingTransactionResult.getPaymentTransactionType();
-    assertEquals("PENDING", paymentTransactionType.getType());
-    assertEquals("Pending Authorize or Authorize and Capture", paymentTransactionType.getFriendlyType());
-    assertEquals("£", currency.getSymbol());
     assertEquals(
         "org.broadleafcommerce.core.checkout.service.strategy.OrderPaymentConfirmationStrategyImpl: converting"
             + " UNCONFIRMED transaction into a PENDING payment",
@@ -700,256 +649,317 @@ public class OrderPaymentConfirmationStrategyImplDiffblueTest {
     assertNull(actualConstructPendingTransactionResult.getShipTo());
     assertNull(actualConstructPendingTransactionResult.getCreditCard());
     assertNull(actualConstructPendingTransactionResult.getCustomer());
-    assertEquals(2, currency.getDefaultFractionDigits());
-    assertEquals(826, currency.getNumericCode());
+    Map<String, String> responseMap = actualConstructPendingTransactionResult.getResponseMap();
+    assertEquals(1, responseMap.size());
     assertTrue(actualConstructPendingTransactionResult.getCustomerCredits().isEmpty());
     assertTrue(actualConstructPendingTransactionResult.getGiftCards().isEmpty());
+    assertTrue(responseMap.containsKey("ThreadLocalManager.notify.orphans"));
     assertTrue(actualConstructPendingTransactionResult.isCompleteCheckoutOnCallback());
     assertTrue(actualConstructPendingTransactionResult.isSuccessful());
     assertTrue(actualConstructPendingTransactionResult.isValid());
-    BigDecimal expectedAmount = new BigDecimal("0.00");
-    Money zeroResult = amount.zero();
-    assertEquals(expectedAmount, zeroResult.getAmount());
-    BigDecimal expectedAmount2 = new BigDecimal("42.00");
-    assertEquals(expectedAmount2, amount.getAmount());
-    assertEquals(zeroResult.zero(), zeroResult.zero());
-    assertEquals(zeroResult, zeroResult.abs());
-    assertEquals(amount, amount.abs());
     assertSame(gatewayType, actualConstructPendingTransactionResult.getPaymentGatewayType());
     assertSame(paymentType, actualConstructPendingTransactionResult.getPaymentType());
-    assertSame(currency, zeroResult.getCurrency());
   }
 
   /**
-   * Test
-   * {@link OrderPaymentConfirmationStrategyImpl#populateCreditCardOnRequest(PaymentRequestDTO, OrderPayment)}.
+   * Test {@link OrderPaymentConfirmationStrategyImpl#populateCreditCardOnRequest(PaymentRequestDTO, OrderPayment)}.
+   * <ul>
+   *   <li>Then throw {@link WorkflowException}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentConfirmationStrategyImpl#populateCreditCardOnRequest(PaymentRequestDTO, OrderPayment)}
+   * Method under test: {@link OrderPaymentConfirmationStrategyImpl#populateCreditCardOnRequest(PaymentRequestDTO, OrderPayment)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testPopulateCreditCardOnRequest() throws WorkflowException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.checkout.service.strategy;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1105 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.checkout.service.strategy.OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void OrderPaymentConfirmationStrategyImpl.populateCreditCardOnRequest(PaymentRequestDTO, OrderPayment)"})
+  public void testPopulateCreditCardOnRequest_thenThrowWorkflowException() throws WorkflowException {
     // Arrange
-    OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl2 = new OrderPaymentConfirmationStrategyImpl();
+    when(secureOrderPaymentService.findSecurePaymentInfo(Mockito.<String>any(), Mockito.<PaymentType>any()))
+        .thenThrow(new WorkflowException("An error occurred"));
+    PaymentRequestDTO requestDTO = new PaymentRequestDTO();
+    OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
+    when(payment.getReferenceNumber()).thenReturn("42");
+
+    // Act and Assert
+    assertThrows(WorkflowException.class,
+        () -> orderPaymentConfirmationStrategyImpl.populateCreditCardOnRequest(requestDTO, payment));
+    verify(payment, atLeast(1)).getReferenceNumber();
+    verify(secureOrderPaymentService).findSecurePaymentInfo(eq("42"), isA(PaymentType.class));
+  }
+
+  /**
+   * Test {@link OrderPaymentConfirmationStrategyImpl#populateBillingAddressOnRequest(PaymentRequestDTO, OrderPayment)}.
+   * <ul>
+   *   <li>Then calls {@link OrderToPaymentRequestDTOService#populateBillTo(Order, PaymentRequestDTO)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OrderPaymentConfirmationStrategyImpl#populateBillingAddressOnRequest(PaymentRequestDTO, OrderPayment)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void OrderPaymentConfirmationStrategyImpl.populateBillingAddressOnRequest(PaymentRequestDTO, OrderPayment)"})
+  public void testPopulateBillingAddressOnRequest_thenCallsPopulateBillTo() {
+    // Arrange
+    doNothing().when(orderToPaymentRequestDTOService)
+        .populateBillTo(Mockito.<Order>any(), Mockito.<PaymentRequestDTO>any());
     PaymentRequestDTO requestDTO = new PaymentRequestDTO();
 
+    OrderPaymentImpl payment = new OrderPaymentImpl();
+    payment.setAmount(new Money());
+    payment.setId(1L);
+    payment.setOrder(new NullOrderImpl());
+    payment.setPaymentGatewayType(new PaymentGatewayType("Type", "Friendly Type"));
+    payment.setReferenceNumber("42");
+    payment.setTransactions(new ArrayList<>());
+    payment.setType(new PaymentType("Type", "Friendly Type"));
+    payment.setBillingAddress(new AddressImpl());
+
     // Act
-    orderPaymentConfirmationStrategyImpl2.populateCreditCardOnRequest(requestDTO, new OrderPaymentImpl());
+    orderPaymentConfirmationStrategyImpl.populateBillingAddressOnRequest(requestDTO, payment);
+
+    // Assert
+    verify(orderToPaymentRequestDTOService).populateBillTo(isA(Order.class), isA(PaymentRequestDTO.class));
   }
 
   /**
-   * Test
-   * {@link OrderPaymentConfirmationStrategyImpl#populateBillingAddressOnRequest(PaymentRequestDTO, OrderPayment)}.
+   * Test {@link OrderPaymentConfirmationStrategyImpl#populateCustomerOnRequest(PaymentRequestDTO, OrderPayment)}.
+   * <ul>
+   *   <li>Then calls {@link OrderToPaymentRequestDTOService#populateCustomerInfo(Order, PaymentRequestDTO)}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentConfirmationStrategyImpl#populateBillingAddressOnRequest(PaymentRequestDTO, OrderPayment)}
+   * Method under test: {@link OrderPaymentConfirmationStrategyImpl#populateCustomerOnRequest(PaymentRequestDTO, OrderPayment)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testPopulateBillingAddressOnRequest() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.checkout.service.strategy;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1076 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.checkout.service.strategy.OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void OrderPaymentConfirmationStrategyImpl.populateCustomerOnRequest(PaymentRequestDTO, OrderPayment)"})
+  public void testPopulateCustomerOnRequest_thenCallsPopulateCustomerInfo() {
     // Arrange
-    OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl2 = new OrderPaymentConfirmationStrategyImpl();
+    doNothing().when(orderToPaymentRequestDTOService)
+        .populateCustomerInfo(Mockito.<Order>any(), Mockito.<PaymentRequestDTO>any());
     PaymentRequestDTO requestDTO = new PaymentRequestDTO();
 
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+    order.setCustomer(new CustomerImpl());
+
+    OrderPaymentImpl payment = new OrderPaymentImpl();
+    payment.setAmount(new Money());
+    payment.setBillingAddress(new AddressImpl());
+    payment.setId(1L);
+    payment.setPaymentGatewayType(new PaymentGatewayType("Type", "Friendly Type"));
+    payment.setReferenceNumber("42");
+    payment.setTransactions(new ArrayList<>());
+    payment.setType(new PaymentType("Type", "Friendly Type"));
+    payment.setOrder(order);
+
     // Act
-    orderPaymentConfirmationStrategyImpl2.populateBillingAddressOnRequest(requestDTO, new OrderPaymentImpl());
+    orderPaymentConfirmationStrategyImpl.populateCustomerOnRequest(requestDTO, payment);
+
+    // Assert
+    verify(orderToPaymentRequestDTOService).populateCustomerInfo(isA(Order.class), isA(PaymentRequestDTO.class));
   }
 
   /**
-   * Test
-   * {@link OrderPaymentConfirmationStrategyImpl#populateCustomerOnRequest(PaymentRequestDTO, OrderPayment)}.
+   * Test {@link OrderPaymentConfirmationStrategyImpl#populateShippingAddressOnRequest(PaymentRequestDTO, OrderPayment)}.
+   * <ul>
+   *   <li>Then calls {@link OrderToPaymentRequestDTOService#populateShipTo(Order, PaymentRequestDTO)}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentConfirmationStrategyImpl#populateCustomerOnRequest(PaymentRequestDTO, OrderPayment)}
+   * Method under test: {@link OrderPaymentConfirmationStrategyImpl#populateShippingAddressOnRequest(PaymentRequestDTO, OrderPayment)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testPopulateCustomerOnRequest() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.checkout.service.strategy;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1134 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.checkout.service.strategy.OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void OrderPaymentConfirmationStrategyImpl.populateShippingAddressOnRequest(PaymentRequestDTO, OrderPayment)"})
+  public void testPopulateShippingAddressOnRequest_thenCallsPopulateShipTo() {
     // Arrange
-    OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl2 = new OrderPaymentConfirmationStrategyImpl();
+    doNothing().when(orderToPaymentRequestDTOService)
+        .populateShipTo(Mockito.<Order>any(), Mockito.<PaymentRequestDTO>any());
     PaymentRequestDTO requestDTO = new PaymentRequestDTO();
 
+    OrderPaymentImpl payment = new OrderPaymentImpl();
+    payment.setAmount(new Money());
+    payment.setBillingAddress(new AddressImpl());
+    payment.setId(1L);
+    payment.setPaymentGatewayType(new PaymentGatewayType("Type", "Friendly Type"));
+    payment.setReferenceNumber("42");
+    payment.setTransactions(new ArrayList<>());
+    payment.setType(new PaymentType("Type", "Friendly Type"));
+    payment.setOrder(new NullOrderImpl());
+
     // Act
-    orderPaymentConfirmationStrategyImpl2.populateCustomerOnRequest(requestDTO, new OrderPaymentImpl());
+    orderPaymentConfirmationStrategyImpl.populateShippingAddressOnRequest(requestDTO, payment);
+
+    // Assert
+    verify(orderToPaymentRequestDTOService).populateShipTo(isA(Order.class), isA(PaymentRequestDTO.class));
   }
 
   /**
-   * Test
-   * {@link OrderPaymentConfirmationStrategyImpl#populateShippingAddressOnRequest(PaymentRequestDTO, OrderPayment)}.
+   * Test {@link OrderPaymentConfirmationStrategyImpl#constructExpirationDate(Integer, Integer)}.
+   * <ul>
+   *   <li>Then return {@code 42}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentConfirmationStrategyImpl#populateShippingAddressOnRequest(PaymentRequestDTO, OrderPayment)}
+   * Method under test: {@link OrderPaymentConfirmationStrategyImpl#constructExpirationDate(Integer, Integer)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testPopulateShippingAddressOnRequest() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.checkout.service.strategy;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1163 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.checkout.service.strategy.OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String OrderPaymentConfirmationStrategyImpl.constructExpirationDate(Integer, Integer)"})
+  public void testConstructExpirationDate_thenReturn42() {
     // Arrange
-    OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl2 = new OrderPaymentConfirmationStrategyImpl();
-    PaymentRequestDTO requestDTO = new PaymentRequestDTO();
+    when(systemPropertiesService.resolveSystemProperty(Mockito.<String>any())).thenReturn("42");
 
     // Act
-    orderPaymentConfirmationStrategyImpl2.populateShippingAddressOnRequest(requestDTO, new OrderPaymentImpl());
+    String actualConstructExpirationDateResult = orderPaymentConfirmationStrategyImpl.constructExpirationDate(1, 1);
+
+    // Assert
+    verify(systemPropertiesService).resolveSystemProperty(eq("gateway.config.global.expDateFormat"));
+    assertEquals("42", actualConstructExpirationDateResult);
   }
 
   /**
-   * Test
-   * {@link OrderPaymentConfirmationStrategyImpl#constructExpirationDate(Integer, Integer)}.
+   * Test {@link OrderPaymentConfirmationStrategyImpl#constructExpirationDate(Integer, Integer)}.
+   * <ul>
+   *   <li>Then return {@code 01/01}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentConfirmationStrategyImpl#constructExpirationDate(Integer, Integer)}
+   * Method under test: {@link OrderPaymentConfirmationStrategyImpl#constructExpirationDate(Integer, Integer)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testConstructExpirationDate() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.checkout.service.strategy;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1024 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.checkout.service.strategy.OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String OrderPaymentConfirmationStrategyImpl.constructExpirationDate(Integer, Integer)"})
+  public void testConstructExpirationDate_thenReturn0101() {
+    // Arrange
+    when(systemPropertiesService.resolveSystemProperty(Mockito.<String>any())).thenReturn("");
 
-    // Arrange and Act
-    (new OrderPaymentConfirmationStrategyImpl()).constructExpirationDate(1, 1);
+    // Act
+    String actualConstructExpirationDateResult = orderPaymentConfirmationStrategyImpl.constructExpirationDate(1, 1);
+
+    // Assert
+    verify(systemPropertiesService).resolveSystemProperty(eq("gateway.config.global.expDateFormat"));
+    assertEquals("01/01", actualConstructExpirationDateResult);
   }
 
   /**
-   * Test
-   * {@link OrderPaymentConfirmationStrategyImpl#getGatewayExpirationDateFormat()}.
+   * Test {@link OrderPaymentConfirmationStrategyImpl#getGatewayExpirationDateFormat()}.
+   * <ul>
+   *   <li>Then return {@code MM/YY}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentConfirmationStrategyImpl#getGatewayExpirationDateFormat()}
+   * Method under test: {@link OrderPaymentConfirmationStrategyImpl#getGatewayExpirationDateFormat()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetGatewayExpirationDateFormat() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.checkout.service.strategy;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1062 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.checkout.service.strategy.OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String OrderPaymentConfirmationStrategyImpl.getGatewayExpirationDateFormat()"})
+  public void testGetGatewayExpirationDateFormat_thenReturnMmYy() {
+    // Arrange
+    when(systemPropertiesService.resolveSystemProperty(Mockito.<String>any())).thenReturn("");
 
-    // Arrange and Act
-    (new OrderPaymentConfirmationStrategyImpl()).getGatewayExpirationDateFormat();
+    // Act
+    String actualGatewayExpirationDateFormat = orderPaymentConfirmationStrategyImpl.getGatewayExpirationDateFormat();
+
+    // Assert
+    verify(systemPropertiesService).resolveSystemProperty(eq("gateway.config.global.expDateFormat"));
+    assertEquals("MM/YY", actualGatewayExpirationDateFormat);
   }
 
   /**
-   * Test
-   * {@link OrderPaymentConfirmationStrategyImpl#enablePendingPaymentsOnCheckoutConfirmation()}.
+   * Test {@link OrderPaymentConfirmationStrategyImpl#getGatewayExpirationDateFormat()}.
+   * <ul>
+   *   <li>Then return {@code Resolve System Property}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentConfirmationStrategyImpl#enablePendingPaymentsOnCheckoutConfirmation()}
+   * Method under test: {@link OrderPaymentConfirmationStrategyImpl#getGatewayExpirationDateFormat()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testEnablePendingPaymentsOnCheckoutConfirmation() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.checkout.service.strategy;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1061 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.checkout.service.strategy.OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String OrderPaymentConfirmationStrategyImpl.getGatewayExpirationDateFormat()"})
+  public void testGetGatewayExpirationDateFormat_thenReturnResolveSystemProperty() {
+    // Arrange
+    when(systemPropertiesService.resolveSystemProperty(Mockito.<String>any())).thenReturn("Resolve System Property");
 
-    // Arrange and Act
-    (new OrderPaymentConfirmationStrategyImpl()).enablePendingPaymentsOnCheckoutConfirmation();
+    // Act
+    String actualGatewayExpirationDateFormat = orderPaymentConfirmationStrategyImpl.getGatewayExpirationDateFormat();
+
+    // Assert
+    verify(systemPropertiesService).resolveSystemProperty(eq("gateway.config.global.expDateFormat"));
+    assertEquals("Resolve System Property", actualGatewayExpirationDateFormat);
+  }
+
+  /**
+   * Test {@link OrderPaymentConfirmationStrategyImpl#enablePendingPaymentsOnCheckoutConfirmation()}.
+   * <ul>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OrderPaymentConfirmationStrategyImpl#enablePendingPaymentsOnCheckoutConfirmation()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentConfirmationStrategyImpl.enablePendingPaymentsOnCheckoutConfirmation()"})
+  public void testEnablePendingPaymentsOnCheckoutConfirmation_thenReturnFalse() {
+    // Arrange
+    when(systemPropertiesService.resolveBooleanSystemProperty(Mockito.<String>any())).thenReturn(false);
+
+    // Act
+    boolean actualEnablePendingPaymentsOnCheckoutConfirmationResult = orderPaymentConfirmationStrategyImpl
+        .enablePendingPaymentsOnCheckoutConfirmation();
+
+    // Assert
+    verify(systemPropertiesService).resolveBooleanSystemProperty(eq("gateway.config.global.enablePendingPayments"));
+    assertFalse(actualEnablePendingPaymentsOnCheckoutConfirmationResult);
+  }
+
+  /**
+   * Test {@link OrderPaymentConfirmationStrategyImpl#enablePendingPaymentsOnCheckoutConfirmation()}.
+   * <ul>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OrderPaymentConfirmationStrategyImpl#enablePendingPaymentsOnCheckoutConfirmation()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentConfirmationStrategyImpl.enablePendingPaymentsOnCheckoutConfirmation()"})
+  public void testEnablePendingPaymentsOnCheckoutConfirmation_thenReturnTrue() {
+    // Arrange
+    when(systemPropertiesService.resolveBooleanSystemProperty(Mockito.<String>any())).thenReturn(true);
+
+    // Act
+    boolean actualEnablePendingPaymentsOnCheckoutConfirmationResult = orderPaymentConfirmationStrategyImpl
+        .enablePendingPaymentsOnCheckoutConfirmation();
+
+    // Assert
+    verify(systemPropertiesService).resolveBooleanSystemProperty(eq("gateway.config.global.enablePendingPayments"));
+    assertTrue(actualEnablePendingPaymentsOnCheckoutConfirmationResult);
   }
 }

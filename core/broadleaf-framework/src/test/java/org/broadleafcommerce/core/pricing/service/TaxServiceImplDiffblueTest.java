@@ -1,24 +1,62 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.pricing.service;
 
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThrows;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import org.broadleafcommerce.common.config.domain.AbstractModuleConfiguration;
+import org.broadleafcommerce.common.config.domain.ModuleConfiguration;
+import org.broadleafcommerce.common.config.service.ModuleConfigurationService;
+import org.broadleafcommerce.common.config.service.type.ModuleConfigurationType;
+import org.broadleafcommerce.common.sitemap.domain.SiteMapConfigurationImpl;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.pricing.service.exception.TaxException;
-import org.junit.Ignore;
+import org.broadleafcommerce.core.pricing.service.tax.provider.SimpleTaxProvider;
+import org.broadleafcommerce.core.pricing.service.tax.provider.TaxProvider;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class TaxServiceImplDiffblueTest {
-  @Autowired
+  @Mock
+  private List<TaxProvider> list;
+
+  @Mock
+  private ModuleConfigurationService moduleConfigurationService;
+
+  @InjectMocks
   private TaxServiceImpl taxServiceImpl;
 
   /**
@@ -27,120 +65,737 @@ public class TaxServiceImplDiffblueTest {
    * Method under test: {@link TaxServiceImpl#calculateTaxForOrder(Order)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order TaxServiceImpl.calculateTaxForOrder(Order)"})
   public void testCalculateTaxForOrder() throws TaxException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.pricing.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3561 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.pricing.service.TaxServiceImpl taxServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    TaxServiceImpl taxServiceImpl2 = new TaxServiceImpl();
+    SiteMapConfigurationImpl siteMapConfigurationImpl = mock(SiteMapConfigurationImpl.class);
+    when(siteMapConfigurationImpl.getIsDefault()).thenReturn(true);
+
+    ArrayList<ModuleConfiguration> moduleConfigurationList = new ArrayList<>();
+    moduleConfigurationList.add(siteMapConfigurationImpl);
+    when(moduleConfigurationService.findActiveConfigurationsByType(Mockito.<ModuleConfigurationType>any()))
+        .thenReturn(moduleConfigurationList);
+    SimpleTaxProvider simpleTaxProvider = mock(SimpleTaxProvider.class);
+    NullOrderImpl nullOrderImpl = new NullOrderImpl();
+    when(simpleTaxProvider.calculateTaxForOrder(Mockito.<Order>any(), Mockito.<ModuleConfiguration>any()))
+        .thenReturn(nullOrderImpl);
+    when(simpleTaxProvider.canRespond(Mockito.<ModuleConfiguration>any())).thenReturn(true);
+
+    ArrayList<TaxProvider> taxProviderList = new ArrayList<>();
+    taxProviderList.add(simpleTaxProvider);
+    Iterator<TaxProvider> iteratorResult = taxProviderList.iterator();
+    when(list.isEmpty()).thenReturn(false);
+    when(list.iterator()).thenReturn(iteratorResult);
 
     // Act
-    taxServiceImpl2.calculateTaxForOrder(new NullOrderImpl());
+    Order actualCalculateTaxForOrderResult = taxServiceImpl.calculateTaxForOrder(new NullOrderImpl());
+
+    // Assert
+    verify(list).isEmpty();
+    verify(list).iterator();
+    verify(siteMapConfigurationImpl).getIsDefault();
+    verify(moduleConfigurationService).findActiveConfigurationsByType(isA(ModuleConfigurationType.class));
+    verify(simpleTaxProvider).calculateTaxForOrder(isA(Order.class), isA(ModuleConfiguration.class));
+    verify(simpleTaxProvider).canRespond(isA(ModuleConfiguration.class));
+    assertSame(nullOrderImpl, actualCalculateTaxForOrderResult);
+  }
+
+  /**
+   * Test {@link TaxServiceImpl#calculateTaxForOrder(Order)}.
+   * <ul>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link SimpleTaxProvider} (default constructor).</li>
+   *   <li>Then calls {@link List#iterator()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link TaxServiceImpl#calculateTaxForOrder(Order)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order TaxServiceImpl.calculateTaxForOrder(Order)"})
+  public void testCalculateTaxForOrder_givenArrayListAddSimpleTaxProvider_thenCallsIterator() throws TaxException {
+    // Arrange
+    SiteMapConfigurationImpl siteMapConfigurationImpl = mock(SiteMapConfigurationImpl.class);
+    when(siteMapConfigurationImpl.getIsDefault()).thenReturn(true);
+
+    ArrayList<ModuleConfiguration> moduleConfigurationList = new ArrayList<>();
+    moduleConfigurationList.add(siteMapConfigurationImpl);
+    when(moduleConfigurationService.findActiveConfigurationsByType(Mockito.<ModuleConfigurationType>any()))
+        .thenReturn(moduleConfigurationList);
+
+    ArrayList<TaxProvider> taxProviderList = new ArrayList<>();
+    taxProviderList.add(new SimpleTaxProvider());
+    Iterator<TaxProvider> iteratorResult = taxProviderList.iterator();
+    when(list.isEmpty()).thenReturn(false);
+    when(list.iterator()).thenReturn(iteratorResult);
+    NullOrderImpl order = new NullOrderImpl();
+
+    // Act
+    Order actualCalculateTaxForOrderResult = taxServiceImpl.calculateTaxForOrder(order);
+
+    // Assert
+    verify(list).isEmpty();
+    verify(list).iterator();
+    verify(siteMapConfigurationImpl).getIsDefault();
+    verify(moduleConfigurationService).findActiveConfigurationsByType(isA(ModuleConfigurationType.class));
+    assertSame(order, actualCalculateTaxForOrderResult);
+  }
+
+  /**
+   * Test {@link TaxServiceImpl#calculateTaxForOrder(Order)}.
+   * <ul>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link SiteMapConfigurationImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link TaxServiceImpl#calculateTaxForOrder(Order)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order TaxServiceImpl.calculateTaxForOrder(Order)"})
+  public void testCalculateTaxForOrder_givenArrayListAddSiteMapConfigurationImpl() throws TaxException {
+    // Arrange
+    ArrayList<ModuleConfiguration> moduleConfigurationList = new ArrayList<>();
+    moduleConfigurationList.add(new SiteMapConfigurationImpl());
+    when(moduleConfigurationService.findActiveConfigurationsByType(Mockito.<ModuleConfigurationType>any()))
+        .thenReturn(moduleConfigurationList);
+    when(list.isEmpty()).thenReturn(true);
+    NullOrderImpl order = new NullOrderImpl();
+
+    // Act
+    Order actualCalculateTaxForOrderResult = taxServiceImpl.calculateTaxForOrder(order);
+
+    // Assert
+    verify(list).isEmpty();
+    verify(moduleConfigurationService).findActiveConfigurationsByType(isA(ModuleConfigurationType.class));
+    assertSame(order, actualCalculateTaxForOrderResult);
+  }
+
+  /**
+   * Test {@link TaxServiceImpl#calculateTaxForOrder(Order)}.
+   * <ul>
+   *   <li>Given {@link List} {@link List#isEmpty()} return {@code false}.</li>
+   *   <li>Then calls {@link List#iterator()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link TaxServiceImpl#calculateTaxForOrder(Order)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order TaxServiceImpl.calculateTaxForOrder(Order)"})
+  public void testCalculateTaxForOrder_givenListIsEmptyReturnFalse_thenCallsIterator() throws TaxException {
+    // Arrange
+    when(moduleConfigurationService.findActiveConfigurationsByType(Mockito.<ModuleConfigurationType>any()))
+        .thenReturn(new ArrayList<>());
+    when(list.isEmpty()).thenReturn(false);
+
+    ArrayList<TaxProvider> taxProviderList = new ArrayList<>();
+    when(list.iterator()).thenReturn(taxProviderList.iterator());
+    NullOrderImpl order = new NullOrderImpl();
+
+    // Act
+    Order actualCalculateTaxForOrderResult = taxServiceImpl.calculateTaxForOrder(order);
+
+    // Assert
+    verify(list).isEmpty();
+    verify(list).iterator();
+    verify(moduleConfigurationService).findActiveConfigurationsByType(isA(ModuleConfigurationType.class));
+    assertSame(order, actualCalculateTaxForOrderResult);
+  }
+
+  /**
+   * Test {@link TaxServiceImpl#calculateTaxForOrder(Order)}.
+   * <ul>
+   *   <li>Given {@link List} {@link List#isEmpty()} return {@code true}.</li>
+   *   <li>Then return {@link NullOrderImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link TaxServiceImpl#calculateTaxForOrder(Order)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order TaxServiceImpl.calculateTaxForOrder(Order)"})
+  public void testCalculateTaxForOrder_givenListIsEmptyReturnTrue_thenReturnNullOrderImpl() throws TaxException {
+    // Arrange
+    when(moduleConfigurationService.findActiveConfigurationsByType(Mockito.<ModuleConfigurationType>any()))
+        .thenReturn(new ArrayList<>());
+    when(list.isEmpty()).thenReturn(true);
+    NullOrderImpl order = new NullOrderImpl();
+
+    // Act
+    Order actualCalculateTaxForOrderResult = taxServiceImpl.calculateTaxForOrder(order);
+
+    // Assert
+    verify(list).isEmpty();
+    verify(moduleConfigurationService).findActiveConfigurationsByType(isA(ModuleConfigurationType.class));
+    assertSame(order, actualCalculateTaxForOrderResult);
+  }
+
+  /**
+   * Test {@link TaxServiceImpl#calculateTaxForOrder(Order)}.
+   * <ul>
+   *   <li>Then calls {@link AbstractModuleConfiguration#getIsDefault()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link TaxServiceImpl#calculateTaxForOrder(Order)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order TaxServiceImpl.calculateTaxForOrder(Order)"})
+  public void testCalculateTaxForOrder_thenCallsGetIsDefault() throws TaxException {
+    // Arrange
+    SiteMapConfigurationImpl siteMapConfigurationImpl = mock(SiteMapConfigurationImpl.class);
+    when(siteMapConfigurationImpl.getIsDefault()).thenReturn(true);
+
+    ArrayList<ModuleConfiguration> moduleConfigurationList = new ArrayList<>();
+    moduleConfigurationList.add(siteMapConfigurationImpl);
+    when(moduleConfigurationService.findActiveConfigurationsByType(Mockito.<ModuleConfigurationType>any()))
+        .thenReturn(moduleConfigurationList);
+    when(list.isEmpty()).thenReturn(true);
+    NullOrderImpl order = new NullOrderImpl();
+
+    // Act
+    Order actualCalculateTaxForOrderResult = taxServiceImpl.calculateTaxForOrder(order);
+
+    // Assert
+    verify(list).isEmpty();
+    verify(siteMapConfigurationImpl).getIsDefault();
+    verify(moduleConfigurationService).findActiveConfigurationsByType(isA(ModuleConfigurationType.class));
+    assertSame(order, actualCalculateTaxForOrderResult);
+  }
+
+  /**
+   * Test {@link TaxServiceImpl#calculateTaxForOrder(Order)}.
+   * <ul>
+   *   <li>Then throw {@link TaxException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link TaxServiceImpl#calculateTaxForOrder(Order)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order TaxServiceImpl.calculateTaxForOrder(Order)"})
+  public void testCalculateTaxForOrder_thenThrowTaxException() throws TaxException {
+    // Arrange
+    SiteMapConfigurationImpl siteMapConfigurationImpl = mock(SiteMapConfigurationImpl.class);
+    when(siteMapConfigurationImpl.getIsDefault()).thenReturn(true);
+
+    ArrayList<ModuleConfiguration> moduleConfigurationList = new ArrayList<>();
+    moduleConfigurationList.add(siteMapConfigurationImpl);
+    when(moduleConfigurationService.findActiveConfigurationsByType(Mockito.<ModuleConfigurationType>any()))
+        .thenReturn(moduleConfigurationList);
+    SimpleTaxProvider simpleTaxProvider = mock(SimpleTaxProvider.class);
+    when(simpleTaxProvider.calculateTaxForOrder(Mockito.<Order>any(), Mockito.<ModuleConfiguration>any()))
+        .thenThrow(new TaxException("An error occurred"));
+    when(simpleTaxProvider.canRespond(Mockito.<ModuleConfiguration>any())).thenReturn(true);
+
+    ArrayList<TaxProvider> taxProviderList = new ArrayList<>();
+    taxProviderList.add(simpleTaxProvider);
+    Iterator<TaxProvider> iteratorResult = taxProviderList.iterator();
+    when(list.isEmpty()).thenReturn(false);
+    when(list.iterator()).thenReturn(iteratorResult);
+
+    // Act and Assert
+    assertThrows(TaxException.class, () -> taxServiceImpl.calculateTaxForOrder(new NullOrderImpl()));
+    verify(list).isEmpty();
+    verify(list).iterator();
+    verify(siteMapConfigurationImpl).getIsDefault();
+    verify(moduleConfigurationService).findActiveConfigurationsByType(isA(ModuleConfigurationType.class));
+    verify(simpleTaxProvider).calculateTaxForOrder(isA(Order.class), isA(ModuleConfiguration.class));
+    verify(simpleTaxProvider).canRespond(isA(ModuleConfiguration.class));
   }
 
   /**
    * Test {@link TaxServiceImpl#commitTaxForOrder(Order)}.
+   * <ul>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link SimpleTaxProvider} (default constructor).</li>
+   *   <li>Then calls {@link List#iterator()}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link TaxServiceImpl#commitTaxForOrder(Order)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testCommitTaxForOrder() throws TaxException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.pricing.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3591 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.pricing.service.TaxServiceImpl taxServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order TaxServiceImpl.commitTaxForOrder(Order)"})
+  public void testCommitTaxForOrder_givenArrayListAddSimpleTaxProvider_thenCallsIterator() throws TaxException {
     // Arrange
-    TaxServiceImpl taxServiceImpl2 = new TaxServiceImpl();
+    SiteMapConfigurationImpl siteMapConfigurationImpl = mock(SiteMapConfigurationImpl.class);
+    when(siteMapConfigurationImpl.getIsDefault()).thenReturn(true);
+
+    ArrayList<ModuleConfiguration> moduleConfigurationList = new ArrayList<>();
+    moduleConfigurationList.add(siteMapConfigurationImpl);
+    when(moduleConfigurationService.findActiveConfigurationsByType(Mockito.<ModuleConfigurationType>any()))
+        .thenReturn(moduleConfigurationList);
+
+    ArrayList<TaxProvider> taxProviderList = new ArrayList<>();
+    taxProviderList.add(new SimpleTaxProvider());
+    Iterator<TaxProvider> iteratorResult = taxProviderList.iterator();
+    when(list.isEmpty()).thenReturn(false);
+    when(list.iterator()).thenReturn(iteratorResult);
+    NullOrderImpl order = new NullOrderImpl();
 
     // Act
-    taxServiceImpl2.commitTaxForOrder(new NullOrderImpl());
+    Order actualCommitTaxForOrderResult = taxServiceImpl.commitTaxForOrder(order);
+
+    // Assert
+    verify(list).isEmpty();
+    verify(list).iterator();
+    verify(siteMapConfigurationImpl).getIsDefault();
+    verify(moduleConfigurationService).findActiveConfigurationsByType(isA(ModuleConfigurationType.class));
+    assertSame(order, actualCommitTaxForOrderResult);
+  }
+
+  /**
+   * Test {@link TaxServiceImpl#commitTaxForOrder(Order)}.
+   * <ul>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link SiteMapConfigurationImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link TaxServiceImpl#commitTaxForOrder(Order)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order TaxServiceImpl.commitTaxForOrder(Order)"})
+  public void testCommitTaxForOrder_givenArrayListAddSiteMapConfigurationImpl() throws TaxException {
+    // Arrange
+    ArrayList<ModuleConfiguration> moduleConfigurationList = new ArrayList<>();
+    moduleConfigurationList.add(new SiteMapConfigurationImpl());
+    when(moduleConfigurationService.findActiveConfigurationsByType(Mockito.<ModuleConfigurationType>any()))
+        .thenReturn(moduleConfigurationList);
+    when(list.isEmpty()).thenReturn(true);
+    NullOrderImpl order = new NullOrderImpl();
+
+    // Act
+    Order actualCommitTaxForOrderResult = taxServiceImpl.commitTaxForOrder(order);
+
+    // Assert
+    verify(list).isEmpty();
+    verify(moduleConfigurationService).findActiveConfigurationsByType(isA(ModuleConfigurationType.class));
+    assertSame(order, actualCommitTaxForOrderResult);
+  }
+
+  /**
+   * Test {@link TaxServiceImpl#commitTaxForOrder(Order)}.
+   * <ul>
+   *   <li>Given {@link List} {@link List#isEmpty()} return {@code false}.</li>
+   *   <li>Then calls {@link List#iterator()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link TaxServiceImpl#commitTaxForOrder(Order)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order TaxServiceImpl.commitTaxForOrder(Order)"})
+  public void testCommitTaxForOrder_givenListIsEmptyReturnFalse_thenCallsIterator() throws TaxException {
+    // Arrange
+    SiteMapConfigurationImpl siteMapConfigurationImpl = mock(SiteMapConfigurationImpl.class);
+    when(siteMapConfigurationImpl.getIsDefault()).thenReturn(true);
+
+    ArrayList<ModuleConfiguration> moduleConfigurationList = new ArrayList<>();
+    moduleConfigurationList.add(siteMapConfigurationImpl);
+    when(moduleConfigurationService.findActiveConfigurationsByType(Mockito.<ModuleConfigurationType>any()))
+        .thenReturn(moduleConfigurationList);
+    when(list.isEmpty()).thenReturn(false);
+
+    ArrayList<TaxProvider> taxProviderList = new ArrayList<>();
+    when(list.iterator()).thenReturn(taxProviderList.iterator());
+    NullOrderImpl order = new NullOrderImpl();
+
+    // Act
+    Order actualCommitTaxForOrderResult = taxServiceImpl.commitTaxForOrder(order);
+
+    // Assert
+    verify(list).isEmpty();
+    verify(list).iterator();
+    verify(siteMapConfigurationImpl).getIsDefault();
+    verify(moduleConfigurationService).findActiveConfigurationsByType(isA(ModuleConfigurationType.class));
+    assertSame(order, actualCommitTaxForOrderResult);
+  }
+
+  /**
+   * Test {@link TaxServiceImpl#commitTaxForOrder(Order)}.
+   * <ul>
+   *   <li>Given {@link List} {@link List#isEmpty()} return {@code true}.</li>
+   *   <li>Then calls {@link AbstractModuleConfiguration#getIsDefault()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link TaxServiceImpl#commitTaxForOrder(Order)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order TaxServiceImpl.commitTaxForOrder(Order)"})
+  public void testCommitTaxForOrder_givenListIsEmptyReturnTrue_thenCallsGetIsDefault() throws TaxException {
+    // Arrange
+    SiteMapConfigurationImpl siteMapConfigurationImpl = mock(SiteMapConfigurationImpl.class);
+    when(siteMapConfigurationImpl.getIsDefault()).thenReturn(true);
+
+    ArrayList<ModuleConfiguration> moduleConfigurationList = new ArrayList<>();
+    moduleConfigurationList.add(siteMapConfigurationImpl);
+    when(moduleConfigurationService.findActiveConfigurationsByType(Mockito.<ModuleConfigurationType>any()))
+        .thenReturn(moduleConfigurationList);
+    when(list.isEmpty()).thenReturn(true);
+    NullOrderImpl order = new NullOrderImpl();
+
+    // Act
+    Order actualCommitTaxForOrderResult = taxServiceImpl.commitTaxForOrder(order);
+
+    // Assert
+    verify(list).isEmpty();
+    verify(siteMapConfigurationImpl).getIsDefault();
+    verify(moduleConfigurationService).findActiveConfigurationsByType(isA(ModuleConfigurationType.class));
+    assertSame(order, actualCommitTaxForOrderResult);
+  }
+
+  /**
+   * Test {@link TaxServiceImpl#commitTaxForOrder(Order)}.
+   * <ul>
+   *   <li>Given {@link List}.</li>
+   *   <li>Then return {@link NullOrderImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link TaxServiceImpl#commitTaxForOrder(Order)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order TaxServiceImpl.commitTaxForOrder(Order)"})
+  public void testCommitTaxForOrder_givenList_thenReturnNullOrderImpl() throws TaxException {
+    // Arrange
+    when(moduleConfigurationService.findActiveConfigurationsByType(Mockito.<ModuleConfigurationType>any()))
+        .thenReturn(new ArrayList<>());
+    NullOrderImpl order = new NullOrderImpl();
+
+    // Act
+    Order actualCommitTaxForOrderResult = taxServiceImpl.commitTaxForOrder(order);
+
+    // Assert
+    verify(moduleConfigurationService).findActiveConfigurationsByType(isA(ModuleConfigurationType.class));
+    assertSame(order, actualCommitTaxForOrderResult);
+  }
+
+  /**
+   * Test {@link TaxServiceImpl#commitTaxForOrder(Order)}.
+   * <ul>
+   *   <li>Given {@link SimpleTaxProvider} {@link SimpleTaxProvider#commitTaxForOrder(Order, ModuleConfiguration)} return {@link NullOrderImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link TaxServiceImpl#commitTaxForOrder(Order)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order TaxServiceImpl.commitTaxForOrder(Order)"})
+  public void testCommitTaxForOrder_givenSimpleTaxProviderCommitTaxForOrderReturnNullOrderImpl() throws TaxException {
+    // Arrange
+    SiteMapConfigurationImpl siteMapConfigurationImpl = mock(SiteMapConfigurationImpl.class);
+    when(siteMapConfigurationImpl.getIsDefault()).thenReturn(true);
+
+    ArrayList<ModuleConfiguration> moduleConfigurationList = new ArrayList<>();
+    moduleConfigurationList.add(siteMapConfigurationImpl);
+    when(moduleConfigurationService.findActiveConfigurationsByType(Mockito.<ModuleConfigurationType>any()))
+        .thenReturn(moduleConfigurationList);
+    SimpleTaxProvider simpleTaxProvider = mock(SimpleTaxProvider.class);
+    NullOrderImpl nullOrderImpl = new NullOrderImpl();
+    when(simpleTaxProvider.commitTaxForOrder(Mockito.<Order>any(), Mockito.<ModuleConfiguration>any()))
+        .thenReturn(nullOrderImpl);
+    when(simpleTaxProvider.canRespond(Mockito.<ModuleConfiguration>any())).thenReturn(true);
+
+    ArrayList<TaxProvider> taxProviderList = new ArrayList<>();
+    taxProviderList.add(simpleTaxProvider);
+    Iterator<TaxProvider> iteratorResult = taxProviderList.iterator();
+    when(list.isEmpty()).thenReturn(false);
+    when(list.iterator()).thenReturn(iteratorResult);
+
+    // Act
+    Order actualCommitTaxForOrderResult = taxServiceImpl.commitTaxForOrder(new NullOrderImpl());
+
+    // Assert
+    verify(list).isEmpty();
+    verify(list).iterator();
+    verify(siteMapConfigurationImpl).getIsDefault();
+    verify(moduleConfigurationService).findActiveConfigurationsByType(isA(ModuleConfigurationType.class));
+    verify(simpleTaxProvider).canRespond(isA(ModuleConfiguration.class));
+    verify(simpleTaxProvider).commitTaxForOrder(isA(Order.class), isA(ModuleConfiguration.class));
+    assertSame(nullOrderImpl, actualCommitTaxForOrderResult);
+  }
+
+  /**
+   * Test {@link TaxServiceImpl#commitTaxForOrder(Order)}.
+   * <ul>
+   *   <li>Then throw {@link TaxException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link TaxServiceImpl#commitTaxForOrder(Order)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order TaxServiceImpl.commitTaxForOrder(Order)"})
+  public void testCommitTaxForOrder_thenThrowTaxException() throws TaxException {
+    // Arrange
+    SiteMapConfigurationImpl siteMapConfigurationImpl = mock(SiteMapConfigurationImpl.class);
+    when(siteMapConfigurationImpl.getIsDefault()).thenReturn(true);
+
+    ArrayList<ModuleConfiguration> moduleConfigurationList = new ArrayList<>();
+    moduleConfigurationList.add(siteMapConfigurationImpl);
+    when(moduleConfigurationService.findActiveConfigurationsByType(Mockito.<ModuleConfigurationType>any()))
+        .thenReturn(moduleConfigurationList);
+    SimpleTaxProvider simpleTaxProvider = mock(SimpleTaxProvider.class);
+    when(simpleTaxProvider.commitTaxForOrder(Mockito.<Order>any(), Mockito.<ModuleConfiguration>any()))
+        .thenThrow(new TaxException("An error occurred"));
+    when(simpleTaxProvider.canRespond(Mockito.<ModuleConfiguration>any())).thenReturn(true);
+
+    ArrayList<TaxProvider> taxProviderList = new ArrayList<>();
+    taxProviderList.add(simpleTaxProvider);
+    Iterator<TaxProvider> iteratorResult = taxProviderList.iterator();
+    when(list.isEmpty()).thenReturn(false);
+    when(list.iterator()).thenReturn(iteratorResult);
+
+    // Act and Assert
+    assertThrows(TaxException.class, () -> taxServiceImpl.commitTaxForOrder(new NullOrderImpl()));
+    verify(list).isEmpty();
+    verify(list).iterator();
+    verify(siteMapConfigurationImpl).getIsDefault();
+    verify(moduleConfigurationService).findActiveConfigurationsByType(isA(ModuleConfigurationType.class));
+    verify(simpleTaxProvider).canRespond(isA(ModuleConfiguration.class));
+    verify(simpleTaxProvider).commitTaxForOrder(isA(Order.class), isA(ModuleConfiguration.class));
   }
 
   /**
    * Test {@link TaxServiceImpl#cancelTax(Order)}.
+   * <ul>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link SimpleTaxProvider} (default constructor).</li>
+   *   <li>Then calls {@link List#iterator()}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link TaxServiceImpl#cancelTax(Order)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testCancelTax() throws TaxException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.pricing.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3576 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.pricing.service.TaxServiceImpl taxServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TaxServiceImpl.cancelTax(Order)"})
+  public void testCancelTax_givenArrayListAddSimpleTaxProvider_thenCallsIterator() throws TaxException {
     // Arrange
-    TaxServiceImpl taxServiceImpl2 = new TaxServiceImpl();
+    SiteMapConfigurationImpl siteMapConfigurationImpl = mock(SiteMapConfigurationImpl.class);
+    when(siteMapConfigurationImpl.getIsDefault()).thenReturn(true);
+
+    ArrayList<ModuleConfiguration> moduleConfigurationList = new ArrayList<>();
+    moduleConfigurationList.add(siteMapConfigurationImpl);
+    when(moduleConfigurationService.findActiveConfigurationsByType(Mockito.<ModuleConfigurationType>any()))
+        .thenReturn(moduleConfigurationList);
+
+    ArrayList<TaxProvider> taxProviderList = new ArrayList<>();
+    taxProviderList.add(new SimpleTaxProvider());
+    Iterator<TaxProvider> iteratorResult = taxProviderList.iterator();
+    when(list.isEmpty()).thenReturn(false);
+    when(list.iterator()).thenReturn(iteratorResult);
 
     // Act
-    taxServiceImpl2.cancelTax(new NullOrderImpl());
+    taxServiceImpl.cancelTax(new NullOrderImpl());
+
+    // Assert
+    verify(list).isEmpty();
+    verify(list).iterator();
+    verify(siteMapConfigurationImpl).getIsDefault();
+    verify(moduleConfigurationService).findActiveConfigurationsByType(isA(ModuleConfigurationType.class));
   }
 
   /**
-   * Test getters and setters.
-   * <p>
-   * Methods under test:
+   * Test {@link TaxServiceImpl#cancelTax(Order)}.
    * <ul>
-   *   <li>{@link TaxServiceImpl#setMustCalculate(boolean)}
-   *   <li>{@link TaxServiceImpl#setTaxProviders(List)}
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link SiteMapConfigurationImpl} (default constructor).</li>
+   *   <li>Then calls {@link List#isEmpty()}.</li>
    * </ul>
+   * <p>
+   * Method under test: {@link TaxServiceImpl#cancelTax(Order)}
    */
   @Test
-  public void testGettersAndSetters() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing observers.
-    //   Diffblue Cover was unable to create an assertion.
-    //   Add getters for the following fields or make them package-private:
-    //     TaxServiceImpl.moduleConfigService
-    //     TaxServiceImpl.mustCalculate
-    //     TaxServiceImpl.providers
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TaxServiceImpl.cancelTax(Order)"})
+  public void testCancelTax_givenArrayListAddSiteMapConfigurationImpl_thenCallsIsEmpty() throws TaxException {
     // Arrange
-    TaxServiceImpl taxServiceImpl = new TaxServiceImpl();
+    ArrayList<ModuleConfiguration> moduleConfigurationList = new ArrayList<>();
+    moduleConfigurationList.add(new SiteMapConfigurationImpl());
+    when(moduleConfigurationService.findActiveConfigurationsByType(Mockito.<ModuleConfigurationType>any()))
+        .thenReturn(moduleConfigurationList);
+    when(list.isEmpty()).thenReturn(true);
 
     // Act
-    taxServiceImpl.setMustCalculate(true);
-    taxServiceImpl.setTaxProviders(new ArrayList<>());
+    taxServiceImpl.cancelTax(new NullOrderImpl());
+
+    // Assert
+    verify(list).isEmpty();
+    verify(moduleConfigurationService).findActiveConfigurationsByType(isA(ModuleConfigurationType.class));
+  }
+
+  /**
+   * Test {@link TaxServiceImpl#cancelTax(Order)}.
+   * <ul>
+   *   <li>Given {@link List} {@link List#isEmpty()} return {@code false}.</li>
+   *   <li>Then calls {@link List#iterator()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link TaxServiceImpl#cancelTax(Order)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TaxServiceImpl.cancelTax(Order)"})
+  public void testCancelTax_givenListIsEmptyReturnFalse_thenCallsIterator() throws TaxException {
+    // Arrange
+    SiteMapConfigurationImpl siteMapConfigurationImpl = mock(SiteMapConfigurationImpl.class);
+    when(siteMapConfigurationImpl.getIsDefault()).thenReturn(true);
+
+    ArrayList<ModuleConfiguration> moduleConfigurationList = new ArrayList<>();
+    moduleConfigurationList.add(siteMapConfigurationImpl);
+    when(moduleConfigurationService.findActiveConfigurationsByType(Mockito.<ModuleConfigurationType>any()))
+        .thenReturn(moduleConfigurationList);
+    when(list.isEmpty()).thenReturn(false);
+
+    ArrayList<TaxProvider> taxProviderList = new ArrayList<>();
+    when(list.iterator()).thenReturn(taxProviderList.iterator());
+
+    // Act
+    taxServiceImpl.cancelTax(new NullOrderImpl());
+
+    // Assert
+    verify(list).isEmpty();
+    verify(list).iterator();
+    verify(siteMapConfigurationImpl).getIsDefault();
+    verify(moduleConfigurationService).findActiveConfigurationsByType(isA(ModuleConfigurationType.class));
+  }
+
+  /**
+   * Test {@link TaxServiceImpl#cancelTax(Order)}.
+   * <ul>
+   *   <li>Given {@link List} {@link List#isEmpty()} return {@code true}.</li>
+   *   <li>Then calls {@link AbstractModuleConfiguration#getIsDefault()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link TaxServiceImpl#cancelTax(Order)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TaxServiceImpl.cancelTax(Order)"})
+  public void testCancelTax_givenListIsEmptyReturnTrue_thenCallsGetIsDefault() throws TaxException {
+    // Arrange
+    SiteMapConfigurationImpl siteMapConfigurationImpl = mock(SiteMapConfigurationImpl.class);
+    when(siteMapConfigurationImpl.getIsDefault()).thenReturn(true);
+
+    ArrayList<ModuleConfiguration> moduleConfigurationList = new ArrayList<>();
+    moduleConfigurationList.add(siteMapConfigurationImpl);
+    when(moduleConfigurationService.findActiveConfigurationsByType(Mockito.<ModuleConfigurationType>any()))
+        .thenReturn(moduleConfigurationList);
+    when(list.isEmpty()).thenReturn(true);
+
+    // Act
+    taxServiceImpl.cancelTax(new NullOrderImpl());
+
+    // Assert
+    verify(list).isEmpty();
+    verify(siteMapConfigurationImpl).getIsDefault();
+    verify(moduleConfigurationService).findActiveConfigurationsByType(isA(ModuleConfigurationType.class));
+  }
+
+  /**
+   * Test {@link TaxServiceImpl#cancelTax(Order)}.
+   * <ul>
+   *   <li>Given {@link List}.</li>
+   *   <li>Then calls {@link ModuleConfigurationService#findActiveConfigurationsByType(ModuleConfigurationType)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link TaxServiceImpl#cancelTax(Order)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TaxServiceImpl.cancelTax(Order)"})
+  public void testCancelTax_givenList_thenCallsFindActiveConfigurationsByType() throws TaxException {
+    // Arrange
+    when(moduleConfigurationService.findActiveConfigurationsByType(Mockito.<ModuleConfigurationType>any()))
+        .thenReturn(new ArrayList<>());
+
+    // Act
+    taxServiceImpl.cancelTax(new NullOrderImpl());
+
+    // Assert
+    verify(moduleConfigurationService).findActiveConfigurationsByType(isA(ModuleConfigurationType.class));
+  }
+
+  /**
+   * Test {@link TaxServiceImpl#cancelTax(Order)}.
+   * <ul>
+   *   <li>Given {@link SimpleTaxProvider} {@link SimpleTaxProvider#cancelTax(Order, ModuleConfiguration)} does nothing.</li>
+   *   <li>Then calls {@link SimpleTaxProvider#canRespond(ModuleConfiguration)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link TaxServiceImpl#cancelTax(Order)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TaxServiceImpl.cancelTax(Order)"})
+  public void testCancelTax_givenSimpleTaxProviderCancelTaxDoesNothing_thenCallsCanRespond() throws TaxException {
+    // Arrange
+    SiteMapConfigurationImpl siteMapConfigurationImpl = mock(SiteMapConfigurationImpl.class);
+    when(siteMapConfigurationImpl.getIsDefault()).thenReturn(true);
+
+    ArrayList<ModuleConfiguration> moduleConfigurationList = new ArrayList<>();
+    moduleConfigurationList.add(siteMapConfigurationImpl);
+    when(moduleConfigurationService.findActiveConfigurationsByType(Mockito.<ModuleConfigurationType>any()))
+        .thenReturn(moduleConfigurationList);
+    SimpleTaxProvider simpleTaxProvider = mock(SimpleTaxProvider.class);
+    doNothing().when(simpleTaxProvider).cancelTax(Mockito.<Order>any(), Mockito.<ModuleConfiguration>any());
+    when(simpleTaxProvider.canRespond(Mockito.<ModuleConfiguration>any())).thenReturn(true);
+
+    ArrayList<TaxProvider> taxProviderList = new ArrayList<>();
+    taxProviderList.add(simpleTaxProvider);
+    Iterator<TaxProvider> iteratorResult = taxProviderList.iterator();
+    when(list.isEmpty()).thenReturn(false);
+    when(list.iterator()).thenReturn(iteratorResult);
+
+    // Act
+    taxServiceImpl.cancelTax(new NullOrderImpl());
+
+    // Assert
+    verify(list).isEmpty();
+    verify(list).iterator();
+    verify(siteMapConfigurationImpl).getIsDefault();
+    verify(moduleConfigurationService).findActiveConfigurationsByType(isA(ModuleConfigurationType.class));
+    verify(simpleTaxProvider).canRespond(isA(ModuleConfiguration.class));
+    verify(simpleTaxProvider).cancelTax(isA(Order.class), isA(ModuleConfiguration.class));
+  }
+
+  /**
+   * Test {@link TaxServiceImpl#cancelTax(Order)}.
+   * <ul>
+   *   <li>Then throw {@link TaxException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link TaxServiceImpl#cancelTax(Order)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TaxServiceImpl.cancelTax(Order)"})
+  public void testCancelTax_thenThrowTaxException() throws TaxException {
+    // Arrange
+    SiteMapConfigurationImpl siteMapConfigurationImpl = mock(SiteMapConfigurationImpl.class);
+    when(siteMapConfigurationImpl.getIsDefault()).thenReturn(true);
+
+    ArrayList<ModuleConfiguration> moduleConfigurationList = new ArrayList<>();
+    moduleConfigurationList.add(siteMapConfigurationImpl);
+    when(moduleConfigurationService.findActiveConfigurationsByType(Mockito.<ModuleConfigurationType>any()))
+        .thenReturn(moduleConfigurationList);
+    SimpleTaxProvider simpleTaxProvider = mock(SimpleTaxProvider.class);
+    doThrow(new TaxException("An error occurred")).when(simpleTaxProvider)
+        .cancelTax(Mockito.<Order>any(), Mockito.<ModuleConfiguration>any());
+    when(simpleTaxProvider.canRespond(Mockito.<ModuleConfiguration>any())).thenReturn(true);
+
+    ArrayList<TaxProvider> taxProviderList = new ArrayList<>();
+    taxProviderList.add(simpleTaxProvider);
+    Iterator<TaxProvider> iteratorResult = taxProviderList.iterator();
+    when(list.isEmpty()).thenReturn(false);
+    when(list.iterator()).thenReturn(iteratorResult);
+
+    // Act and Assert
+    assertThrows(TaxException.class, () -> taxServiceImpl.cancelTax(new NullOrderImpl()));
+    verify(list).isEmpty();
+    verify(list).iterator();
+    verify(siteMapConfigurationImpl).getIsDefault();
+    verify(moduleConfigurationService).findActiveConfigurationsByType(isA(ModuleConfigurationType.class));
+    verify(simpleTaxProvider).canRespond(isA(ModuleConfiguration.class));
+    verify(simpleTaxProvider).cancelTax(isA(Order.class), isA(ModuleConfiguration.class));
   }
 }

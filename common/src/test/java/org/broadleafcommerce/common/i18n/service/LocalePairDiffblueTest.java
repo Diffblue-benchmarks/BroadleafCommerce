@@ -18,10 +18,13 @@
 package org.broadleafcommerce.common.i18n.service;
 
 import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.extension.ItemStatus;
 import org.broadleafcommerce.common.extension.StandardCacheItem;
 import org.broadleafcommerce.common.util.BLCFieldUtils;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class LocalePairDiffblueTest {
   /**
@@ -37,6 +40,10 @@ public class LocalePairDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void LocalePair.<init>()", "StandardCacheItem LocalePair.getGeneralItem()",
+      "StandardCacheItem LocalePair.getSpecificItem()", "void LocalePair.setGeneralItem(StandardCacheItem)",
+      "void LocalePair.setSpecificItem(StandardCacheItem)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     LocalePair actualLocalePair = new LocalePair();
@@ -52,7 +59,7 @@ public class LocalePairDiffblueTest {
     actualLocalePair.setSpecificItem(specificItem);
     StandardCacheItem actualGeneralItem = actualLocalePair.getGeneralItem();
 
-    // Assert that nothing has changed
+    // Assert
     assertSame(generalItem, actualGeneralItem);
     assertSame(specificItem, actualLocalePair.getSpecificItem());
   }

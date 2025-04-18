@@ -20,34 +20,12 @@ package org.broadleafcommerce.common.time;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThrows;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.junit.experimental.categories.Category;
 
-@ContextConfiguration(classes = {DayOfMonthType.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class DayOfMonthTypeDiffblueTest {
-  @Autowired
-  private DayOfMonthType dayOfMonthType;
-
-  /**
-   * Test {@link DayOfMonthType#getInstance(String)}.
-   * <p>
-   * Method under test: {@link DayOfMonthType#getInstance(String)}
-   */
-  @Test
-  public void testGetInstance() {
-    // Arrange and Act
-    DayOfMonthType actualInstance = DayOfMonthType.getInstance("Type");
-
-    // Assert
-    assertEquals("Friendly Type", actualInstance.getFriendlyType());
-    assertEquals("Type", actualInstance.getType());
-  }
-
   /**
    * Test getters and setters.
    * <p>
@@ -59,6 +37,9 @@ public class DayOfMonthTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DayOfMonthType.<init>()", "String DayOfMonthType.getFriendlyType()",
+      "String DayOfMonthType.getType()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     DayOfMonthType actualDayOfMonthType = new DayOfMonthType();
@@ -70,38 +51,7 @@ public class DayOfMonthTypeDiffblueTest {
   }
 
   /**
-   * Test {@link DayOfMonthType#DayOfMonthType(String, String)}.
-   * <ul>
-   *   <li>When {@code Cannot add the type: (}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link DayOfMonthType#DayOfMonthType(String, String)}
-   */
-  @Test
-  public void testNewDayOfMonthType_whenCannotAddTheType() {
-    // Arrange, Act and Assert
-    assertThrows(RuntimeException.class, () -> new DayOfMonthType("Cannot add the type: (", "Friendly Type"));
-
-  }
-
-  /**
-   * Test {@link DayOfMonthType#DayOfMonthType(String, String)}.
-   * <ul>
-   *   <li>When {@code Type}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link DayOfMonthType#DayOfMonthType(String, String)}
-   */
-  @Test
-  public void testNewDayOfMonthType_whenType() {
-    // Arrange, Act and Assert
-    assertThrows(RuntimeException.class, () -> new DayOfMonthType("Type", "Friendly Type"));
-
-  }
-
-  /**
-   * Test {@link DayOfMonthType#equals(Object)}, and
-   * {@link DayOfMonthType#hashCode()}.
+   * Test {@link DayOfMonthType#equals(Object)}, and {@link DayOfMonthType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -114,6 +64,8 @@ public class DayOfMonthTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean DayOfMonthType.equals(Object)", "int DayOfMonthType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     DayOfMonthType dayOfMonthType = DayOfMonthType.EIGHT;
@@ -126,8 +78,7 @@ public class DayOfMonthTypeDiffblueTest {
   }
 
   /**
-   * Test {@link DayOfMonthType#equals(Object)}, and
-   * {@link DayOfMonthType#hashCode()}.
+   * Test {@link DayOfMonthType#equals(Object)}, and {@link DayOfMonthType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -140,6 +91,8 @@ public class DayOfMonthTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean DayOfMonthType.equals(Object)", "int DayOfMonthType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     DayOfMonthType dayOfMonthType = new DayOfMonthType();
@@ -152,8 +105,7 @@ public class DayOfMonthTypeDiffblueTest {
   }
 
   /**
-   * Test {@link DayOfMonthType#equals(Object)}, and
-   * {@link DayOfMonthType#hashCode()}.
+   * Test {@link DayOfMonthType#equals(Object)}, and {@link DayOfMonthType#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -166,6 +118,8 @@ public class DayOfMonthTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean DayOfMonthType.equals(Object)", "int DayOfMonthType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     DayOfMonthType dayOfMonthType = DayOfMonthType.EIGHT;
@@ -186,9 +140,27 @@ public class DayOfMonthTypeDiffblueTest {
    * Method under test: {@link DayOfMonthType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean DayOfMonthType.equals(Object)", "int DayOfMonthType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(DayOfMonthType.EIGHTEEN, DayOfMonthType.EIGHT);
+  }
+
+  /**
+   * Test {@link DayOfMonthType#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DayOfMonthType#equals(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean DayOfMonthType.equals(Object)", "int DayOfMonthType.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange, Act and Assert
     assertNotEquals(new DayOfMonthType(), DayOfMonthType.EIGHT);
   }
 
@@ -202,6 +174,8 @@ public class DayOfMonthTypeDiffblueTest {
    * Method under test: {@link DayOfMonthType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean DayOfMonthType.equals(Object)", "int DayOfMonthType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(DayOfMonthType.EIGHT, null);
@@ -217,6 +191,8 @@ public class DayOfMonthTypeDiffblueTest {
    * Method under test: {@link DayOfMonthType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean DayOfMonthType.equals(Object)", "int DayOfMonthType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(DayOfMonthType.EIGHT, "Different type to DayOfMonthType");

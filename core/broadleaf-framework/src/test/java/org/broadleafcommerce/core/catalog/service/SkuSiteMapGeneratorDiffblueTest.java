@@ -1,14 +1,36 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.catalog.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
+import java.util.HashMap;
 import org.broadleafcommerce.common.file.domain.FileWorkArea;
 import org.broadleafcommerce.common.sitemap.domain.CustomUrlSiteMapGeneratorConfigurationImpl;
 import org.broadleafcommerce.common.sitemap.domain.SiteMapConfigurationImpl;
@@ -17,107 +39,38 @@ import org.broadleafcommerce.common.sitemap.service.SiteMapBuilder;
 import org.broadleafcommerce.common.sitemap.service.type.SiteMapChangeFreqType;
 import org.broadleafcommerce.common.sitemap.service.type.SiteMapGeneratorType;
 import org.broadleafcommerce.common.sitemap.service.type.SiteMapPriorityType;
-import org.broadleafcommerce.common.sitemap.wrapper.SiteMapURLWrapper;
 import org.broadleafcommerce.core.catalog.dao.SkuDao;
 import org.broadleafcommerce.core.catalog.dao.SkuDaoImpl;
 import org.broadleafcommerce.core.catalog.domain.CategorySiteMapGeneratorConfigurationImpl;
 import org.broadleafcommerce.core.catalog.domain.ProductBundleImpl;
+import org.broadleafcommerce.core.catalog.domain.ProductImpl;
 import org.broadleafcommerce.core.catalog.domain.Sku;
 import org.broadleafcommerce.core.catalog.domain.SkuImpl;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class SkuSiteMapGeneratorDiffblueTest {
-  @Autowired
+  @Mock
+  private SkuDao skuDao;
+
+  @InjectMocks
   private SkuSiteMapGenerator skuSiteMapGenerator;
 
   /**
-   * Test
-   * {@link SkuSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}.
+   * Test {@link SkuSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}.
    * <p>
-   * Method under test:
-   * {@link SkuSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}
+   * Method under test: {@link SkuSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuSiteMapGenerator.canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)"})
   public void testCanHandleSiteMapConfiguration() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuSiteMapGenerator skuSiteMapGenerator = new SkuSiteMapGenerator();
-    CustomUrlSiteMapGeneratorConfigurationImpl siteMapGeneratorConfiguration = mock(
-        CustomUrlSiteMapGeneratorConfigurationImpl.class);
-    when(siteMapGeneratorConfiguration.getSiteMapGeneratorType())
-        .thenReturn(new SiteMapGeneratorType("Type", "Friendly Type"));
-
-    // Act
-    boolean actualCanHandleSiteMapConfigurationResult = skuSiteMapGenerator
-        .canHandleSiteMapConfiguration(siteMapGeneratorConfiguration);
-
-    // Assert
-    verify(siteMapGeneratorConfiguration).getSiteMapGeneratorType();
-    assertFalse(actualCanHandleSiteMapConfigurationResult);
-  }
-
-  /**
-   * Test
-   * {@link SkuSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}.
-   * <p>
-   * Method under test:
-   * {@link SkuSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCanHandleSiteMapConfiguration2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6400 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.SkuSiteMapGenerator skuSiteMapGenerator;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    SkuSiteMapGenerator skuSiteMapGenerator2 = new SkuSiteMapGenerator();
-
-    // Act
-    skuSiteMapGenerator2.canHandleSiteMapConfiguration(new CategorySiteMapGeneratorConfigurationImpl());
-  }
-
-  /**
-   * Test
-   * {@link SkuSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}.
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SkuSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}
-   */
-  @Test
-  public void testCanHandleSiteMapConfiguration_givenArrayList() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuSiteMapGenerator skuSiteMapGenerator = new SkuSiteMapGenerator();
-
     CustomUrlSiteMapGeneratorConfigurationImpl siteMapGeneratorConfiguration = new CustomUrlSiteMapGeneratorConfigurationImpl();
     siteMapGeneratorConfiguration.setCustomURLEntries(new ArrayList<>());
     siteMapGeneratorConfiguration.setDisabled(true);
@@ -132,145 +85,331 @@ public class SkuSiteMapGeneratorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link SkuSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}.
+   * Test {@link SkuSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}.
    * <ul>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}
+   * Method under test: {@link SkuSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuSiteMapGenerator.canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)"})
   public void testCanHandleSiteMapConfiguration_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuSiteMapGenerator skuSiteMapGenerator = new SkuSiteMapGenerator();
-    CustomUrlSiteMapGeneratorConfigurationImpl siteMapGeneratorConfiguration = mock(
-        CustomUrlSiteMapGeneratorConfigurationImpl.class);
-    when(siteMapGeneratorConfiguration.getSiteMapGeneratorType())
-        .thenReturn(new SiteMapGeneratorType("SKU", "Friendly Type"));
+    CustomUrlSiteMapGeneratorConfigurationImpl siteMapGeneratorConfiguration = new CustomUrlSiteMapGeneratorConfigurationImpl();
+    siteMapGeneratorConfiguration.setCustomURLEntries(new ArrayList<>());
+    siteMapGeneratorConfiguration.setDisabled(true);
+    siteMapGeneratorConfiguration.setId(1L);
+    siteMapGeneratorConfiguration.setSiteMapChangeFreq(new SiteMapChangeFreqType("Type", "Friendly Type"));
+    siteMapGeneratorConfiguration.setSiteMapConfiguration(new SiteMapConfigurationImpl());
+    siteMapGeneratorConfiguration.setSiteMapGeneratorType(new SiteMapGeneratorType("SKU", "Friendly Type"));
+    siteMapGeneratorConfiguration.setSiteMapPriority(new SiteMapPriorityType("Type", "Friendly Type"));
 
-    // Act
-    boolean actualCanHandleSiteMapConfigurationResult = skuSiteMapGenerator
-        .canHandleSiteMapConfiguration(siteMapGeneratorConfiguration);
-
-    // Assert
-    verify(siteMapGeneratorConfiguration).getSiteMapGeneratorType();
-    assertTrue(actualCanHandleSiteMapConfigurationResult);
+    // Act and Assert
+    assertTrue(skuSiteMapGenerator.canHandleSiteMapConfiguration(siteMapGeneratorConfiguration));
   }
 
   /**
-   * Test
-   * {@link SkuSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}.
+   * Test {@link SkuSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}.
    * <ul>
-   *   <li>When {@link CategorySiteMapGeneratorConfigurationImpl} (default
-   * constructor).</li>
+   *   <li>When {@link CategorySiteMapGeneratorConfigurationImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}
+   * Method under test: {@link SkuSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuSiteMapGenerator.canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)"})
   public void testCanHandleSiteMapConfiguration_whenCategorySiteMapGeneratorConfigurationImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuSiteMapGenerator skuSiteMapGenerator = new SkuSiteMapGenerator();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertFalse(skuSiteMapGenerator.canHandleSiteMapConfiguration(new CategorySiteMapGeneratorConfigurationImpl()));
   }
 
   /**
-   * Test
-   * {@link SkuSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}.
+   * Test {@link SkuSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}.
    * <p>
-   * Method under test:
-   * {@link SkuSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
+   * Method under test: {@link SkuSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuSiteMapGenerator.addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)"})
   public void testAddSiteMapEntries() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6370 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.SkuSiteMapGenerator skuSiteMapGenerator;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    SkuSiteMapGenerator skuSiteMapGenerator2 = new SkuSiteMapGenerator();
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getUrl()).thenReturn("https://example.org/example");
+    SkuImpl skuImpl = mock(SkuImpl.class);
+    when(skuImpl.getSkuMediaXref()).thenReturn(new HashMap<>());
+    when(skuImpl.getUrlKey()).thenReturn("https://example.org/example");
+    when(skuImpl.getDefaultProduct()).thenReturn(null);
+    when(skuImpl.getProduct()).thenReturn(productBundleImpl);
+
+    ArrayList<Sku> skuList = new ArrayList<>();
+    skuList.add(skuImpl);
+    when(skuDao.readAllActiveSkus(anyInt(), anyInt())).thenReturn(skuList);
+    SiteMapGeneratorConfiguration smgc = mock(SiteMapGeneratorConfiguration.class);
+    when(smgc.getSiteMapChangeFreq()).thenReturn(new SiteMapChangeFreqType("Type", "Friendly Type"));
+    when(smgc.getSiteMapPriority()).thenReturn(new SiteMapPriorityType("Type", "Friendly Type"));
+    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
+
+    // Act
+    skuSiteMapGenerator.addSiteMapEntries(smgc, new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "/", true));
+
+    // Assert
+    verify(smgc).getSiteMapChangeFreq();
+    verify(smgc).getSiteMapPriority();
+    verify(skuDao).readAllActiveSkus(eq(0), eq(0));
+    verify(productBundleImpl, atLeast(1)).getUrl();
+    verify(skuImpl).getDefaultProduct();
+    verify(skuImpl, atLeast(1)).getProduct();
+    verify(skuImpl).getSkuMediaXref();
+    verify(skuImpl, atLeast(1)).getUrlKey();
+  }
+
+  /**
+   * Test {@link SkuSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}.
+   * <ul>
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getUrl()} return {@code /}.</li>
+   *   <li>Then calls {@link ProductImpl#getUrl()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuSiteMapGenerator.addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)"})
+  public void testAddSiteMapEntries_givenProductBundleImplGetUrlReturnSlash_thenCallsGetUrl() {
+    // Arrange
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getUrl()).thenReturn("/");
+    SkuImpl skuImpl = mock(SkuImpl.class);
+    when(skuImpl.getSkuMediaXref()).thenReturn(new HashMap<>());
+    when(skuImpl.getUrlKey()).thenReturn("https://example.org/example");
+    when(skuImpl.getDefaultProduct()).thenReturn(null);
+    when(skuImpl.getProduct()).thenReturn(productBundleImpl);
+
+    ArrayList<Sku> skuList = new ArrayList<>();
+    skuList.add(skuImpl);
+    when(skuDao.readAllActiveSkus(anyInt(), anyInt())).thenReturn(skuList);
     CategorySiteMapGeneratorConfigurationImpl smgc = new CategorySiteMapGeneratorConfigurationImpl();
     SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
 
     // Act
-    skuSiteMapGenerator2.addSiteMapEntries(smgc,
+    skuSiteMapGenerator.addSiteMapEntries(smgc,
         new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "https://example.org/example", true));
+
+    // Assert
+    verify(skuDao).readAllActiveSkus(eq(0), eq(0));
+    verify(productBundleImpl, atLeast(1)).getUrl();
+    verify(skuImpl).getDefaultProduct();
+    verify(skuImpl, atLeast(1)).getProduct();
+    verify(skuImpl).getSkuMediaXref();
+    verify(skuImpl, atLeast(1)).getUrlKey();
   }
 
   /**
-   * Test
-   * {@link SkuSiteMapGenerator#constructImageURLs(SiteMapBuilder, SiteMapURLWrapper, Sku)}.
+   * Test {@link SkuSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}.
+   * <ul>
+   *   <li>Given {@link SkuImpl} {@link SkuImpl#getDefaultProduct()} return {@link ProductBundleImpl} (default constructor).</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuSiteMapGenerator#constructImageURLs(SiteMapBuilder, SiteMapURLWrapper, Sku)}
+   * Method under test: {@link SkuSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testConstructImageURLs() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6425 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.SkuSiteMapGenerator skuSiteMapGenerator;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuSiteMapGenerator.addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)"})
+  public void testAddSiteMapEntries_givenSkuImplGetDefaultProductReturnProductBundleImpl() {
     // Arrange
-    SkuSiteMapGenerator skuSiteMapGenerator2 = new SkuSiteMapGenerator();
-    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
-    SiteMapBuilder siteMapBuilder = new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "https://example.org/example",
-        true);
+    SkuImpl skuImpl = mock(SkuImpl.class);
+    when(skuImpl.getDefaultProduct()).thenReturn(new ProductBundleImpl());
 
-    SiteMapURLWrapper siteMapUrl = new SiteMapURLWrapper();
+    ArrayList<Sku> skuList = new ArrayList<>();
+    skuList.add(skuImpl);
+    when(skuDao.readAllActiveSkus(anyInt(), anyInt())).thenReturn(skuList);
+    CategorySiteMapGeneratorConfigurationImpl smgc = new CategorySiteMapGeneratorConfigurationImpl();
+    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
 
     // Act
-    skuSiteMapGenerator2.constructImageURLs(siteMapBuilder, siteMapUrl, new SkuImpl());
+    skuSiteMapGenerator.addSiteMapEntries(smgc,
+        new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "https://example.org/example", true));
+
+    // Assert
+    verify(skuDao).readAllActiveSkus(eq(0), eq(0));
+    verify(skuImpl).getDefaultProduct();
+  }
+
+  /**
+   * Test {@link SkuSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}.
+   * <ul>
+   *   <li>Given {@link SkuImpl} {@link SkuImpl#getProduct()} return {@link ProductBundleImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuSiteMapGenerator.addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)"})
+  public void testAddSiteMapEntries_givenSkuImplGetProductReturnProductBundleImpl() {
+    // Arrange
+    SkuImpl skuImpl = mock(SkuImpl.class);
+    when(skuImpl.getSkuMediaXref()).thenReturn(new HashMap<>());
+    when(skuImpl.getUrlKey()).thenReturn("https://example.org/example");
+    when(skuImpl.getDefaultProduct()).thenReturn(null);
+    when(skuImpl.getProduct()).thenReturn(new ProductBundleImpl());
+
+    ArrayList<Sku> skuList = new ArrayList<>();
+    skuList.add(skuImpl);
+    when(skuDao.readAllActiveSkus(anyInt(), anyInt())).thenReturn(skuList);
+    CategorySiteMapGeneratorConfigurationImpl smgc = new CategorySiteMapGeneratorConfigurationImpl();
+    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
+
+    // Act
+    skuSiteMapGenerator.addSiteMapEntries(smgc,
+        new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "https://example.org/example", true));
+
+    // Assert
+    verify(skuDao).readAllActiveSkus(eq(0), eq(0));
+    verify(skuImpl).getDefaultProduct();
+    verify(skuImpl, atLeast(1)).getProduct();
+    verify(skuImpl).getSkuMediaXref();
+    verify(skuImpl, atLeast(1)).getUrlKey();
+  }
+
+  /**
+   * Test {@link SkuSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}.
+   * <ul>
+   *   <li>Given {@link SkuImpl} {@link SkuImpl#getUrlKey()} return {@code null}.</li>
+   *   <li>Then calls {@link ProductImpl#getUrl()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuSiteMapGenerator.addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)"})
+  public void testAddSiteMapEntries_givenSkuImplGetUrlKeyReturnNull_thenCallsGetUrl() {
+    // Arrange
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getUrl()).thenReturn("https://example.org/example");
+    SkuImpl skuImpl = mock(SkuImpl.class);
+    when(skuImpl.getSkuMediaXref()).thenReturn(new HashMap<>());
+    when(skuImpl.getUrlKey()).thenReturn(null);
+    when(skuImpl.getDefaultProduct()).thenReturn(null);
+    when(skuImpl.getProduct()).thenReturn(productBundleImpl);
+
+    ArrayList<Sku> skuList = new ArrayList<>();
+    skuList.add(skuImpl);
+    when(skuDao.readAllActiveSkus(anyInt(), anyInt())).thenReturn(skuList);
+    CategorySiteMapGeneratorConfigurationImpl smgc = new CategorySiteMapGeneratorConfigurationImpl();
+    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
+
+    // Act
+    skuSiteMapGenerator.addSiteMapEntries(smgc,
+        new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "https://example.org/example", true));
+
+    // Assert
+    verify(skuDao).readAllActiveSkus(eq(0), eq(0));
+    verify(productBundleImpl, atLeast(1)).getUrl();
+    verify(skuImpl).getDefaultProduct();
+    verify(skuImpl, atLeast(1)).getProduct();
+    verify(skuImpl).getSkuMediaXref();
+    verify(skuImpl, atLeast(1)).getUrlKey();
+  }
+
+  /**
+   * Test {@link SkuSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}.
+   * <ul>
+   *   <li>Then calls {@link SiteMapGeneratorConfiguration#getSiteMapChangeFreq()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuSiteMapGenerator.addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)"})
+  public void testAddSiteMapEntries_thenCallsGetSiteMapChangeFreq() {
+    // Arrange
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getUrl()).thenReturn("https://example.org/example");
+    SkuImpl skuImpl = mock(SkuImpl.class);
+    when(skuImpl.getSkuMediaXref()).thenReturn(new HashMap<>());
+    when(skuImpl.getUrlKey()).thenReturn("https://example.org/example");
+    when(skuImpl.getDefaultProduct()).thenReturn(null);
+    when(skuImpl.getProduct()).thenReturn(productBundleImpl);
+
+    ArrayList<Sku> skuList = new ArrayList<>();
+    skuList.add(skuImpl);
+    when(skuDao.readAllActiveSkus(anyInt(), anyInt())).thenReturn(skuList);
+    SiteMapGeneratorConfiguration smgc = mock(SiteMapGeneratorConfiguration.class);
+    when(smgc.getSiteMapChangeFreq()).thenReturn(new SiteMapChangeFreqType("Type", "Friendly Type"));
+    when(smgc.getSiteMapPriority()).thenReturn(new SiteMapPriorityType("Type", "Friendly Type"));
+    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
+
+    // Act
+    skuSiteMapGenerator.addSiteMapEntries(smgc,
+        new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "https://example.org/example", true));
+
+    // Assert
+    verify(smgc).getSiteMapChangeFreq();
+    verify(smgc).getSiteMapPriority();
+    verify(skuDao).readAllActiveSkus(eq(0), eq(0));
+    verify(productBundleImpl, atLeast(1)).getUrl();
+    verify(skuImpl).getDefaultProduct();
+    verify(skuImpl, atLeast(1)).getProduct();
+    verify(skuImpl).getSkuMediaXref();
+    verify(skuImpl, atLeast(1)).getUrlKey();
+  }
+
+  /**
+   * Test {@link SkuSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}.
+   * <ul>
+   *   <li>Then calls {@link ProductImpl#getUrl()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuSiteMapGenerator.addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)"})
+  public void testAddSiteMapEntries_thenCallsGetUrl() {
+    // Arrange
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getUrl()).thenReturn("https://example.org/example");
+    SkuImpl skuImpl = mock(SkuImpl.class);
+    when(skuImpl.getSkuMediaXref()).thenReturn(new HashMap<>());
+    when(skuImpl.getUrlKey()).thenReturn("https://example.org/example");
+    when(skuImpl.getDefaultProduct()).thenReturn(null);
+    when(skuImpl.getProduct()).thenReturn(productBundleImpl);
+
+    ArrayList<Sku> skuList = new ArrayList<>();
+    skuList.add(skuImpl);
+    when(skuDao.readAllActiveSkus(anyInt(), anyInt())).thenReturn(skuList);
+    CategorySiteMapGeneratorConfigurationImpl smgc = new CategorySiteMapGeneratorConfigurationImpl();
+    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
+
+    // Act
+    skuSiteMapGenerator.addSiteMapEntries(smgc,
+        new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "https://example.org/example", true));
+
+    // Assert
+    verify(skuDao).readAllActiveSkus(eq(0), eq(0));
+    verify(productBundleImpl, atLeast(1)).getUrl();
+    verify(skuImpl).getDefaultProduct();
+    verify(skuImpl, atLeast(1)).getProduct();
+    verify(skuImpl).getSkuMediaXref();
+    verify(skuImpl, atLeast(1)).getUrlKey();
   }
 
   /**
    * Test {@link SkuSiteMapGenerator#generateUri(SiteMapBuilder, Sku)}.
    * <p>
-   * Method under test:
-   * {@link SkuSiteMapGenerator#generateUri(SiteMapBuilder, Sku)}
+   * Method under test: {@link SkuSiteMapGenerator#generateUri(SiteMapBuilder, Sku)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuSiteMapGenerator.generateUri(SiteMapBuilder, Sku)"})
   public void testGenerateUri() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuSiteMapGenerator skuSiteMapGenerator = new SkuSiteMapGenerator();
     SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
     SiteMapBuilder smb = new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "https://example.org/example", true);
 
@@ -293,54 +432,17 @@ public class SkuSiteMapGeneratorDiffblueTest {
 
   /**
    * Test {@link SkuSiteMapGenerator#generateUri(SiteMapBuilder, Sku)}.
-   * <p>
-   * Method under test:
-   * {@link SkuSiteMapGenerator#generateUri(SiteMapBuilder, Sku)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGenerateUri2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6485 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.SkuSiteMapGenerator skuSiteMapGenerator;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    SkuSiteMapGenerator skuSiteMapGenerator2 = new SkuSiteMapGenerator();
-    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
-    SiteMapBuilder smb = new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "https://example.org/example", true);
-
-    // Act
-    skuSiteMapGenerator2.generateUri(smb, new SkuImpl());
-  }
-
-  /**
-   * Test {@link SkuSiteMapGenerator#generateUri(SiteMapBuilder, Sku)}.
    * <ul>
    *   <li>Then return {@code /https://example.org/example}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuSiteMapGenerator#generateUri(SiteMapBuilder, Sku)}
+   * Method under test: {@link SkuSiteMapGenerator#generateUri(SiteMapBuilder, Sku)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuSiteMapGenerator.generateUri(SiteMapBuilder, Sku)"})
   public void testGenerateUri_thenReturnHttpsExampleOrgExample() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuSiteMapGenerator skuSiteMapGenerator = new SkuSiteMapGenerator();
     SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
     SiteMapBuilder smb = new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "/", true);
 
@@ -363,19 +465,16 @@ public class SkuSiteMapGeneratorDiffblueTest {
   /**
    * Test {@link SkuSiteMapGenerator#generateUri(SiteMapBuilder, Sku)}.
    * <ul>
-   *   <li>Then return
-   * {@code https://example.org/example/https://example.org/example}.</li>
+   *   <li>Then return {@code https://example.org/example/https://example.org/example}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuSiteMapGenerator#generateUri(SiteMapBuilder, Sku)}
+   * Method under test: {@link SkuSiteMapGenerator#generateUri(SiteMapBuilder, Sku)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuSiteMapGenerator.generateUri(SiteMapBuilder, Sku)"})
   public void testGenerateUri_thenReturnHttpsExampleOrgExampleHttpsExampleOrgExample() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuSiteMapGenerator skuSiteMapGenerator = new SkuSiteMapGenerator();
     SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
     SiteMapBuilder smb = new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "https://example.org/example", true);
 
@@ -398,19 +497,16 @@ public class SkuSiteMapGeneratorDiffblueTest {
   /**
    * Test {@link SkuSiteMapGenerator#generateUri(SiteMapBuilder, Sku)}.
    * <ul>
-   *   <li>Then return
-   * {@code https://example.org/example/https://example.org/example}.</li>
+   *   <li>Then return {@code https://example.org/example/https://example.org/example}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuSiteMapGenerator#generateUri(SiteMapBuilder, Sku)}
+   * Method under test: {@link SkuSiteMapGenerator#generateUri(SiteMapBuilder, Sku)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuSiteMapGenerator.generateUri(SiteMapBuilder, Sku)"})
   public void testGenerateUri_thenReturnHttpsExampleOrgExampleHttpsExampleOrgExample2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuSiteMapGenerator skuSiteMapGenerator = new SkuSiteMapGenerator();
     SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
     SiteMapBuilder smb = new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "https://example.org/example", true);
 
@@ -433,19 +529,16 @@ public class SkuSiteMapGeneratorDiffblueTest {
   /**
    * Test {@link SkuSiteMapGenerator#generateUri(SiteMapBuilder, Sku)}.
    * <ul>
-   *   <li>Then return
-   * {@code https://example.org/example/nullhttps://example.org/example}.</li>
+   *   <li>Then return {@code https://example.org/example/nullhttps://example.org/example}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuSiteMapGenerator#generateUri(SiteMapBuilder, Sku)}
+   * Method under test: {@link SkuSiteMapGenerator#generateUri(SiteMapBuilder, Sku)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuSiteMapGenerator.generateUri(SiteMapBuilder, Sku)"})
   public void testGenerateUri_thenReturnHttpsExampleOrgExampleNullhttpsExampleOrgExample() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuSiteMapGenerator skuSiteMapGenerator = new SkuSiteMapGenerator();
     SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
     SiteMapBuilder smb = new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "https://example.org/example", true);
 
@@ -468,15 +561,13 @@ public class SkuSiteMapGeneratorDiffblueTest {
    *   <li>Then return {@code /nullhttps://example.org/example}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuSiteMapGenerator#generateUri(SiteMapBuilder, Sku)}
+   * Method under test: {@link SkuSiteMapGenerator#generateUri(SiteMapBuilder, Sku)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuSiteMapGenerator.generateUri(SiteMapBuilder, Sku)"})
   public void testGenerateUri_thenReturnNullhttpsExampleOrgExample() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuSiteMapGenerator skuSiteMapGenerator = new SkuSiteMapGenerator();
     SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
     SiteMapBuilder smb = new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "/", true);
 
@@ -494,38 +585,6 @@ public class SkuSiteMapGeneratorDiffblueTest {
   }
 
   /**
-   * Test {@link SkuSiteMapGenerator#generateDate(Sku)}.
-   * <p>
-   * Method under test: {@link SkuSiteMapGenerator#generateDate(Sku)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGenerateDate() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6455 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.SkuSiteMapGenerator skuSiteMapGenerator;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    SkuSiteMapGenerator skuSiteMapGenerator2 = new SkuSiteMapGenerator();
-
-    // Act
-    skuSiteMapGenerator2.generateDate(new SkuImpl());
-  }
-
-  /**
    * Test getters and setters.
    * <p>
    * Methods under test:
@@ -537,6 +596,9 @@ public class SkuSiteMapGeneratorDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int SkuSiteMapGenerator.getPageSize()", "SkuDao SkuSiteMapGenerator.getSkuDao()",
+      "void SkuSiteMapGenerator.setPageSize(int)", "void SkuSiteMapGenerator.setSkuDao(SkuDao)"})
   public void testGettersAndSetters() {
     // Arrange
     SkuSiteMapGenerator skuSiteMapGenerator = new SkuSiteMapGenerator();
@@ -548,7 +610,7 @@ public class SkuSiteMapGeneratorDiffblueTest {
     int actualPageSize = skuSiteMapGenerator.getPageSize();
     SkuDao actualSkuDao = skuSiteMapGenerator.getSkuDao();
 
-    // Assert that nothing has changed
+    // Assert
     assertTrue(actualSkuDao instanceof SkuDaoImpl);
     assertEquals(3, actualPageSize);
     assertSame(skuDao, actualSkuDao);

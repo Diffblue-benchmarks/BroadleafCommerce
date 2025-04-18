@@ -18,7 +18,10 @@
 package org.broadleafcommerce.common.logging;
 
 import static org.junit.Assert.assertNull;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class DisableSupportLoggerAdapterDiffblueTest {
   /**
@@ -26,8 +29,7 @@ public class DisableSupportLoggerAdapterDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>default or parameterless constructor of
-   * {@link DisableSupportLoggerAdapter}
+   *   <li>default or parameterless constructor of {@link DisableSupportLoggerAdapter}
    *   <li>{@link DisableSupportLoggerAdapter#debug(String)}
    *   <li>{@link DisableSupportLoggerAdapter#debug(String, Throwable)}
    *   <li>{@link DisableSupportLoggerAdapter#error(String)}
@@ -46,6 +48,16 @@ public class DisableSupportLoggerAdapterDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DisableSupportLoggerAdapter.<init>()", "void DisableSupportLoggerAdapter.debug(String)",
+      "void DisableSupportLoggerAdapter.debug(String, Throwable)", "void DisableSupportLoggerAdapter.error(String)",
+      "void DisableSupportLoggerAdapter.error(String, Throwable)", "void DisableSupportLoggerAdapter.fatal(String)",
+      "void DisableSupportLoggerAdapter.fatal(String, Throwable)", "String DisableSupportLoggerAdapter.getName()",
+      "void DisableSupportLoggerAdapter.info(String)", "void DisableSupportLoggerAdapter.info(String, Throwable)",
+      "void DisableSupportLoggerAdapter.lifecycle(LifeCycleEvent, String)",
+      "void DisableSupportLoggerAdapter.setName(String)", "void DisableSupportLoggerAdapter.support(String)",
+      "void DisableSupportLoggerAdapter.support(String, Throwable)", "void DisableSupportLoggerAdapter.warn(String)",
+      "void DisableSupportLoggerAdapter.warn(String, Throwable)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     DisableSupportLoggerAdapter actualDisableSupportLoggerAdapter = new DisableSupportLoggerAdapter();
@@ -64,7 +76,7 @@ public class DisableSupportLoggerAdapterDiffblueTest {
     actualDisableSupportLoggerAdapter.warn("Not all who wander are lost");
     actualDisableSupportLoggerAdapter.warn("Not all who wander are lost", new Throwable());
 
-    // Assert that nothing has changed
+    // Assert
     assertNull(actualDisableSupportLoggerAdapter.getName());
   }
 }

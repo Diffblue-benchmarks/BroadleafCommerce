@@ -26,6 +26,8 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import javax.imageio.metadata.IIOMetadataNode;
@@ -33,6 +35,7 @@ import org.apache.xerces.impl.xs.opti.DefaultDocument;
 import org.apache.xerces.impl.xs.opti.DefaultNode;
 import org.broadleafcommerce.common.extensibility.context.merge.handlers.SchemaLocationMergeTest.DummyNode;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,18 +53,19 @@ public class NodeReplaceDiffblueTest {
    * Test {@link NodeReplace#checkNode(List, Node[], Node)}.
    * <ul>
    *   <li>Given {@code false}.</li>
-   *   <li>When {@link DummyNode} {@link DefaultNode#isEqualNode(Node)} return
-   * {@code false}.</li>
+   *   <li>When {@link DummyNode} {@link DefaultNode#isEqualNode(Node)} return {@code false}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link NodeReplace#checkNode(List, Node[], Node)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean NodeReplace.checkNode(List, Node[], Node)"})
   public void testCheckNode_givenFalse_whenDummyNodeIsEqualNodeReturnFalse_thenReturnFalse() {
     // Arrange
     ArrayList<Node> usedNodes = new ArrayList<>();
-    SchemaLocationMergeTest.DummyNode dummyNode = mock(SchemaLocationMergeTest.DummyNode.class);
+    DummyNode dummyNode = mock(DummyNode.class);
     when(dummyNode.isEqualNode(Mockito.<Node>any())).thenReturn(false);
     when(dummyNode.getNodeName()).thenReturn("Node Name");
 
@@ -85,10 +89,12 @@ public class NodeReplaceDiffblueTest {
    * Method under test: {@link NodeReplace#checkNode(List, Node[], Node)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean NodeReplace.checkNode(List, Node[], Node)"})
   public void testCheckNode_givenTrue_thenArrayListSizeIsOne() {
     // Arrange
     ArrayList<Node> usedNodes = new ArrayList<>();
-    SchemaLocationMergeTest.DummyNode dummyNode = mock(SchemaLocationMergeTest.DummyNode.class);
+    DummyNode dummyNode = mock(DummyNode.class);
     when(dummyNode.isEqualNode(Mockito.<Node>any())).thenReturn(true);
     when(dummyNode.getNodeName()).thenReturn("Node Name");
     Node[] primaryNodes = new Node[]{dummyNode};
@@ -106,13 +112,17 @@ public class NodeReplaceDiffblueTest {
   }
 
   /**
-   * Test {@link NodeReplace#replaceNode(Node[], Node, List)} with
-   * {@code primaryNodes}, {@code testNode}, {@code usedNodes}.
+   * Test {@link NodeReplace#replaceNode(Node[], Node, List)} with {@code primaryNodes}, {@code testNode}, {@code usedNodes}.
+   * <ul>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link NodeReplace#replaceNode(Node[], Node, List)}
    */
   @Test
-  public void testReplaceNodeWithPrimaryNodesTestNodeUsedNodes() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean NodeReplace.replaceNode(Node[], Node, List)"})
+  public void testReplaceNodeWithPrimaryNodesTestNodeUsedNodes_thenReturnFalse() {
     // Arrange
     IIOMetadataNode testNode = new IIOMetadataNode("foo");
 
@@ -121,85 +131,13 @@ public class NodeReplaceDiffblueTest {
   }
 
   /**
-   * Test {@link NodeReplace#replaceNode(Node[], Node, List)} with
-   * {@code primaryNodes}, {@code testNode}, {@code usedNodes}.
-   * <p>
-   * Method under test: {@link NodeReplace#replaceNode(Node[], Node, List)}
-   */
-  @Test
-  public void testReplaceNodeWithPrimaryNodesTestNodeUsedNodes2() {
-    // Arrange
-    SchemaLocationMergeTest.DummyNode dummyNode = mock(SchemaLocationMergeTest.DummyNode.class);
-    when(dummyNode.getNodeName()).thenReturn("Node Name");
-    IIOMetadataNode testNode = new IIOMetadataNode("foo");
-
-    ArrayList<Node> usedNodes = new ArrayList<>();
-    usedNodes.add(new IIOMetadataNode("Node Name"));
-
-    // Act
-    boolean actualReplaceNodeResult = nodeReplace.replaceNode(new Node[]{dummyNode}, testNode, usedNodes);
-
-    // Assert
-    verify(dummyNode).getNodeName();
-    assertFalse(actualReplaceNodeResult);
-  }
-
-  /**
-   * Test {@link NodeReplace#replaceNode(Node[], Node, List)} with
-   * {@code primaryNodes}, {@code testNode}, {@code usedNodes}.
-   * <p>
-   * Method under test: {@link NodeReplace#replaceNode(Node[], Node, List)}
-   */
-  @Test
-  public void testReplaceNodeWithPrimaryNodesTestNodeUsedNodes3() {
-    // Arrange
-    SchemaLocationMergeTest.DummyNode dummyNode = mock(SchemaLocationMergeTest.DummyNode.class);
-    when(dummyNode.getNodeName()).thenReturn("Node Name");
-    IIOMetadataNode testNode = new IIOMetadataNode("foo");
-
-    ArrayList<Node> usedNodes = new ArrayList<>();
-    usedNodes.add(new IIOMetadataNode("Node Name"));
-    usedNodes.add(new IIOMetadataNode("Node Name"));
-
-    // Act
-    boolean actualReplaceNodeResult = nodeReplace.replaceNode(new Node[]{dummyNode}, testNode, usedNodes);
-
-    // Assert
-    verify(dummyNode).getNodeName();
-    assertFalse(actualReplaceNodeResult);
-  }
-
-  /**
-   * Test {@link NodeReplace#replaceNode(Node[], Node, List)} with
-   * {@code primaryNodes}, {@code testNode}, {@code usedNodes}.
-   * <ul>
-   *   <li>Then calls {@link DefaultNode#getNodeName()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link NodeReplace#replaceNode(Node[], Node, List)}
-   */
-  @Test
-  public void testReplaceNodeWithPrimaryNodesTestNodeUsedNodes_thenCallsGetNodeName() {
-    // Arrange
-    SchemaLocationMergeTest.DummyNode dummyNode = mock(SchemaLocationMergeTest.DummyNode.class);
-    when(dummyNode.getNodeName()).thenReturn("Node Name");
-    IIOMetadataNode testNode = new IIOMetadataNode("foo");
-
-    // Act
-    boolean actualReplaceNodeResult = nodeReplace.replaceNode(new Node[]{dummyNode}, testNode, new ArrayList<>());
-
-    // Assert
-    verify(dummyNode).getNodeName();
-    assertFalse(actualReplaceNodeResult);
-  }
-
-  /**
    * Test new {@link NodeReplace} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link NodeReplace}
+   * Method under test: default or parameterless constructor of {@link NodeReplace}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void NodeReplace.<init>()"})
   public void testNewNodeReplace() {
     // Arrange and Act
     NodeReplace actualNodeReplace = new NodeReplace();

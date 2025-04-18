@@ -20,7 +20,10 @@ package org.broadleafcommerce.common.config.service.type;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -38,6 +41,8 @@ public class SystemPropertyFieldTypeDiffblueTest {
    * Method under test: {@link SystemPropertyFieldType#getInstance(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"SystemPropertyFieldType SystemPropertyFieldType.getInstance(String)"})
   public void testGetInstance() {
     // Arrange and Act
     SystemPropertyFieldType actualInstance = SystemPropertyFieldType.getInstance("Type");
@@ -58,6 +63,9 @@ public class SystemPropertyFieldTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SystemPropertyFieldType.<init>()", "String SystemPropertyFieldType.getFriendlyType()",
+      "String SystemPropertyFieldType.getType()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     SystemPropertyFieldType actualSystemPropertyFieldType = new SystemPropertyFieldType();
@@ -71,10 +79,11 @@ public class SystemPropertyFieldTypeDiffblueTest {
   /**
    * Test {@link SystemPropertyFieldType#SystemPropertyFieldType(String, String)}.
    * <p>
-   * Method under test:
-   * {@link SystemPropertyFieldType#SystemPropertyFieldType(String, String)}
+   * Method under test: {@link SystemPropertyFieldType#SystemPropertyFieldType(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SystemPropertyFieldType.<init>(String, String)"})
   public void testNewSystemPropertyFieldType() {
     // Arrange and Act
     SystemPropertyFieldType actualSystemPropertyFieldType = new SystemPropertyFieldType("Type", "Friendly Type");
@@ -85,8 +94,7 @@ public class SystemPropertyFieldTypeDiffblueTest {
   }
 
   /**
-   * Test {@link SystemPropertyFieldType#equals(Object)}, and
-   * {@link SystemPropertyFieldType#hashCode()}.
+   * Test {@link SystemPropertyFieldType#equals(Object)}, and {@link SystemPropertyFieldType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -99,6 +107,8 @@ public class SystemPropertyFieldTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SystemPropertyFieldType.equals(Object)", "int SystemPropertyFieldType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     SystemPropertyFieldType systemPropertyFieldType = SystemPropertyFieldType.BOOLEAN_TYPE;
@@ -111,8 +121,7 @@ public class SystemPropertyFieldTypeDiffblueTest {
   }
 
   /**
-   * Test {@link SystemPropertyFieldType#equals(Object)}, and
-   * {@link SystemPropertyFieldType#hashCode()}.
+   * Test {@link SystemPropertyFieldType#equals(Object)}, and {@link SystemPropertyFieldType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -125,6 +134,8 @@ public class SystemPropertyFieldTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SystemPropertyFieldType.equals(Object)", "int SystemPropertyFieldType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     SystemPropertyFieldType systemPropertyFieldType = new SystemPropertyFieldType();
@@ -137,8 +148,7 @@ public class SystemPropertyFieldTypeDiffblueTest {
   }
 
   /**
-   * Test {@link SystemPropertyFieldType#equals(Object)}, and
-   * {@link SystemPropertyFieldType#hashCode()}.
+   * Test {@link SystemPropertyFieldType#equals(Object)}, and {@link SystemPropertyFieldType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -151,6 +161,8 @@ public class SystemPropertyFieldTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SystemPropertyFieldType.equals(Object)", "int SystemPropertyFieldType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     SystemPropertyFieldType systemPropertyFieldType = new SystemPropertyFieldType("BOOLEAN_TYPE", "Friendly Type");
@@ -163,8 +175,7 @@ public class SystemPropertyFieldTypeDiffblueTest {
   }
 
   /**
-   * Test {@link SystemPropertyFieldType#equals(Object)}, and
-   * {@link SystemPropertyFieldType#hashCode()}.
+   * Test {@link SystemPropertyFieldType#equals(Object)}, and {@link SystemPropertyFieldType#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -177,6 +188,8 @@ public class SystemPropertyFieldTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SystemPropertyFieldType.equals(Object)", "int SystemPropertyFieldType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     SystemPropertyFieldType systemPropertyFieldType = SystemPropertyFieldType.BOOLEAN_TYPE;
@@ -197,9 +210,27 @@ public class SystemPropertyFieldTypeDiffblueTest {
    * Method under test: {@link SystemPropertyFieldType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SystemPropertyFieldType.equals(Object)", "int SystemPropertyFieldType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(SystemPropertyFieldType.DOUBLE_TYPE, SystemPropertyFieldType.BOOLEAN_TYPE);
+  }
+
+  /**
+   * Test {@link SystemPropertyFieldType#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SystemPropertyFieldType#equals(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SystemPropertyFieldType.equals(Object)", "int SystemPropertyFieldType.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange, Act and Assert
     assertNotEquals(new SystemPropertyFieldType(), SystemPropertyFieldType.BOOLEAN_TYPE);
   }
 
@@ -213,6 +244,8 @@ public class SystemPropertyFieldTypeDiffblueTest {
    * Method under test: {@link SystemPropertyFieldType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SystemPropertyFieldType.equals(Object)", "int SystemPropertyFieldType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(SystemPropertyFieldType.BOOLEAN_TYPE, null);
@@ -228,6 +261,8 @@ public class SystemPropertyFieldTypeDiffblueTest {
    * Method under test: {@link SystemPropertyFieldType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SystemPropertyFieldType.equals(Object)", "int SystemPropertyFieldType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(SystemPropertyFieldType.BOOLEAN_TYPE, "Different type to SystemPropertyFieldType");

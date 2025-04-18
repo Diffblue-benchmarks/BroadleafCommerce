@@ -23,13 +23,13 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.anyLong;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.FilterInputStream;
@@ -37,16 +37,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class GloballySharedInputStreamDiffblueTest {
   /**
-   * Test
-   * {@link GloballySharedInputStream#GloballySharedInputStream(InputStream)}.
+   * Test {@link GloballySharedInputStream#GloballySharedInputStream(InputStream)}.
    * <p>
-   * Method under test:
-   * {@link GloballySharedInputStream#GloballySharedInputStream(InputStream)}
+   * Method under test: {@link GloballySharedInputStream#GloballySharedInputStream(InputStream)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void GloballySharedInputStream.<init>(InputStream)"})
   public void testNewGloballySharedInputStream() throws IOException {
     // Arrange, Act and Assert
     assertEquals(8,
@@ -56,42 +57,19 @@ public class GloballySharedInputStreamDiffblueTest {
   /**
    * Test {@link GloballySharedInputStream#available()}.
    * <ul>
-   *   <li>Given {@link ByteArrayInputStream#ByteArrayInputStream(byte[])} with
-   * {@code AXAXAXAX} Bytes is {@code UTF-8}.</li>
+   *   <li>Given {@link ByteArrayInputStream#ByteArrayInputStream(byte[])} with {@code AXAXAXAX} Bytes is {@code UTF-8}.</li>
    *   <li>Then return eight.</li>
    * </ul>
    * <p>
    * Method under test: {@link GloballySharedInputStream#available()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int GloballySharedInputStream.available()"})
   public void testAvailable_givenByteArrayInputStreamWithAxaxaxaxBytesIsUtf8_thenReturnEight() throws IOException {
     // Arrange, Act and Assert
     assertEquals(8,
         (new GloballySharedInputStream(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")))).available());
-  }
-
-  /**
-   * Test {@link GloballySharedInputStream#available()}.
-   * <ul>
-   *   <li>Given {@link DataInputStream} {@link FilterInputStream#available()}
-   * return one.</li>
-   *   <li>Then return one.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link GloballySharedInputStream#available()}
-   */
-  @Test
-  public void testAvailable_givenDataInputStreamAvailableReturnOne_thenReturnOne() throws IOException {
-    // Arrange
-    DataInputStream parentInputStream = mock(DataInputStream.class);
-    when(parentInputStream.available()).thenReturn(1);
-
-    // Act
-    int actualAvailableResult = (new GloballySharedInputStream(parentInputStream)).available();
-
-    // Assert
-    verify(parentInputStream).available();
-    assertEquals(1, actualAvailableResult);
   }
 
   /**
@@ -103,6 +81,8 @@ public class GloballySharedInputStreamDiffblueTest {
    * Method under test: {@link GloballySharedInputStream#available()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int GloballySharedInputStream.available()"})
   public void testAvailable_thenThrowIOException() throws IOException {
     // Arrange
     DataInputStream parentInputStream = mock(DataInputStream.class);
@@ -116,37 +96,15 @@ public class GloballySharedInputStreamDiffblueTest {
   /**
    * Test {@link GloballySharedInputStream#close()}.
    * <ul>
-   *   <li>Given {@link DataInputStream} {@link FilterInputStream#close()} does
-   * nothing.</li>
-   *   <li>Then calls {@link FilterInputStream#close()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link GloballySharedInputStream#close()}
-   */
-  @Test
-  public void testClose_givenDataInputStreamCloseDoesNothing_thenCallsClose() throws IOException {
-    // Arrange
-    DataInputStream parentInputStream = mock(DataInputStream.class);
-    doNothing().when(parentInputStream).close();
-
-    // Act
-    (new GloballySharedInputStream(parentInputStream)).close();
-
-    // Assert that nothing has changed
-    verify(parentInputStream).close();
-  }
-
-  /**
-   * Test {@link GloballySharedInputStream#close()}.
-   * <ul>
-   *   <li>Given {@link DataInputStream} {@link FilterInputStream#close()} throw
-   * {@link IOException#IOException(String)} with {@code foo}.</li>
+   *   <li>Given {@link DataInputStream} {@link FilterInputStream#close()} throw {@link IOException#IOException(String)} with {@code foo}.</li>
    *   <li>Then throw {@link IOException}.</li>
    * </ul>
    * <p>
    * Method under test: {@link GloballySharedInputStream#close()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void GloballySharedInputStream.close()"})
   public void testClose_givenDataInputStreamCloseThrowIOExceptionWithFoo_thenThrowIOException() throws IOException {
     // Arrange
     DataInputStream parentInputStream = mock(DataInputStream.class);
@@ -158,54 +116,17 @@ public class GloballySharedInputStreamDiffblueTest {
   }
 
   /**
-   * Test {@link GloballySharedInputStream#mark(int)}.
-   * <ul>
-   *   <li>Given {@link DataInputStream} {@link FilterInputStream#mark(int)} does
-   * nothing.</li>
-   *   <li>Then calls {@link FilterInputStream#mark(int)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link GloballySharedInputStream#mark(int)}
-   */
-  @Test
-  public void testMark_givenDataInputStreamMarkDoesNothing_thenCallsMark() {
-    // Arrange
-    DataInputStream parentInputStream = mock(DataInputStream.class);
-    doNothing().when(parentInputStream).mark(anyInt());
-
-    // Act
-    (new GloballySharedInputStream(parentInputStream)).mark(1);
-
-    // Assert that nothing has changed
-    verify(parentInputStream).mark(eq(1));
-  }
-
-  /**
    * Test {@link GloballySharedInputStream#markSupported()}.
    * <ul>
-   *   <li>Given {@link ByteArrayInputStream#ByteArrayInputStream(byte[])} with
-   * {@code AXAXAXAX} Bytes is {@code UTF-8}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link GloballySharedInputStream#markSupported()}
-   */
-  @Test
-  public void testMarkSupported_givenByteArrayInputStreamWithAxaxaxaxBytesIsUtf8() throws UnsupportedEncodingException {
-    // Arrange, Act and Assert
-    assertTrue((new GloballySharedInputStream(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")))).markSupported());
-  }
-
-  /**
-   * Test {@link GloballySharedInputStream#markSupported()}.
-   * <ul>
-   *   <li>Given {@link DataInputStream} {@link FilterInputStream#markSupported()}
-   * return {@code false}.</li>
+   *   <li>Given {@link DataInputStream} {@link FilterInputStream#markSupported()} return {@code false}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link GloballySharedInputStream#markSupported()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean GloballySharedInputStream.markSupported()"})
   public void testMarkSupported_givenDataInputStreamMarkSupportedReturnFalse_thenReturnFalse() {
     // Arrange
     DataInputStream parentInputStream = mock(DataInputStream.class);
@@ -222,25 +143,17 @@ public class GloballySharedInputStreamDiffblueTest {
   /**
    * Test {@link GloballySharedInputStream#markSupported()}.
    * <ul>
-   *   <li>Given {@link DataInputStream} {@link FilterInputStream#markSupported()}
-   * return {@code true}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link GloballySharedInputStream#markSupported()}
    */
   @Test
-  public void testMarkSupported_givenDataInputStreamMarkSupportedReturnTrue_thenReturnTrue() {
-    // Arrange
-    DataInputStream parentInputStream = mock(DataInputStream.class);
-    when(parentInputStream.markSupported()).thenReturn(true);
-
-    // Act
-    boolean actualMarkSupportedResult = (new GloballySharedInputStream(parentInputStream)).markSupported();
-
-    // Assert
-    verify(parentInputStream).markSupported();
-    assertTrue(actualMarkSupportedResult);
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean GloballySharedInputStream.markSupported()"})
+  public void testMarkSupported_thenReturnTrue() throws UnsupportedEncodingException {
+    // Arrange, Act and Assert
+    assertTrue((new GloballySharedInputStream(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")))).markSupported());
   }
 
   /**
@@ -249,6 +162,8 @@ public class GloballySharedInputStreamDiffblueTest {
    * Method under test: {@link GloballySharedInputStream#read(byte[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int GloballySharedInputStream.read(byte[])"})
   public void testReadWithArg0() throws IOException {
     // Arrange
     GloballySharedInputStream globallySharedInputStream = new GloballySharedInputStream(
@@ -263,8 +178,7 @@ public class GloballySharedInputStreamDiffblueTest {
   }
 
   /**
-   * Test {@link GloballySharedInputStream#read(byte[], int, int)} with
-   * {@code arg0}, {@code arg1}, {@code arg2}.
+   * Test {@link GloballySharedInputStream#read(byte[], int, int)} with {@code arg0}, {@code arg1}, {@code arg2}.
    * <ul>
    *   <li>Then return one.</li>
    * </ul>
@@ -272,6 +186,8 @@ public class GloballySharedInputStreamDiffblueTest {
    * Method under test: {@link GloballySharedInputStream#read(byte[], int, int)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int GloballySharedInputStream.read(byte[], int, int)"})
   public void testReadWithArg0Arg1Arg2_thenReturnOne() throws IOException {
     // Arrange
     GloballySharedInputStream globallySharedInputStream = new GloballySharedInputStream(
@@ -282,22 +198,22 @@ public class GloballySharedInputStreamDiffblueTest {
     assertEquals(1, globallySharedInputStream.read(arg0, 1, 1));
     byte[] arg02 = new byte[7];
     assertEquals(7, globallySharedInputStream.read(arg02));
-    assertEquals(8, arg0.length);
-    assertEquals('A', arg0[1]);
+    assertArrayEquals("AAAXAXAX".getBytes("UTF-8"), arg0);
     assertArrayEquals("XAXAXAX".getBytes("UTF-8"), arg02);
   }
 
   /**
    * Test {@link GloballySharedInputStream#read()}.
    * <ul>
-   *   <li>Given {@link ByteArrayInputStream#ByteArrayInputStream(byte[])} with
-   * {@code AXAXAXAX} Bytes is {@code UTF-8}.</li>
+   *   <li>Given {@link ByteArrayInputStream#ByteArrayInputStream(byte[])} with {@code AXAXAXAX} Bytes is {@code UTF-8}.</li>
    *   <li>Then return sixty-five.</li>
    * </ul>
    * <p>
    * Method under test: {@link GloballySharedInputStream#read()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int GloballySharedInputStream.read()"})
   public void testRead_givenByteArrayInputStreamWithAxaxaxaxBytesIsUtf8_thenReturnSixtyFive() throws IOException {
     // Arrange
     GloballySharedInputStream globallySharedInputStream = new GloballySharedInputStream(
@@ -313,14 +229,15 @@ public class GloballySharedInputStreamDiffblueTest {
   /**
    * Test {@link GloballySharedInputStream#read()}.
    * <ul>
-   *   <li>Given {@link DataInputStream} {@link FilterInputStream#read()} throw
-   * {@link IOException#IOException(String)} with {@code foo}.</li>
+   *   <li>Given {@link DataInputStream} {@link FilterInputStream#read()} throw {@link IOException#IOException(String)} with {@code foo}.</li>
    *   <li>Then throw {@link IOException}.</li>
    * </ul>
    * <p>
    * Method under test: {@link GloballySharedInputStream#read()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int GloballySharedInputStream.read()"})
   public void testRead_givenDataInputStreamReadThrowIOExceptionWithFoo_thenThrowIOException() throws IOException {
     // Arrange
     DataInputStream parentInputStream = mock(DataInputStream.class);
@@ -334,37 +251,15 @@ public class GloballySharedInputStreamDiffblueTest {
   /**
    * Test {@link GloballySharedInputStream#reset()}.
    * <ul>
-   *   <li>Given {@link DataInputStream} {@link FilterInputStream#reset()} does
-   * nothing.</li>
-   *   <li>Then calls {@link FilterInputStream#reset()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link GloballySharedInputStream#reset()}
-   */
-  @Test
-  public void testReset_givenDataInputStreamResetDoesNothing_thenCallsReset() throws IOException {
-    // Arrange
-    DataInputStream parentInputStream = mock(DataInputStream.class);
-    doNothing().when(parentInputStream).reset();
-
-    // Act
-    (new GloballySharedInputStream(parentInputStream)).reset();
-
-    // Assert that nothing has changed
-    verify(parentInputStream).reset();
-  }
-
-  /**
-   * Test {@link GloballySharedInputStream#reset()}.
-   * <ul>
-   *   <li>Given {@link DataInputStream} {@link FilterInputStream#reset()} throw
-   * {@link IOException#IOException(String)} with {@code foo}.</li>
+   *   <li>Given {@link DataInputStream} {@link FilterInputStream#reset()} throw {@link IOException#IOException(String)} with {@code foo}.</li>
    *   <li>Then throw {@link IOException}.</li>
    * </ul>
    * <p>
    * Method under test: {@link GloballySharedInputStream#reset()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void GloballySharedInputStream.reset()"})
   public void testReset_givenDataInputStreamResetThrowIOExceptionWithFoo_thenThrowIOException() throws IOException {
     // Arrange
     DataInputStream parentInputStream = mock(DataInputStream.class);
@@ -377,11 +272,17 @@ public class GloballySharedInputStreamDiffblueTest {
 
   /**
    * Test {@link GloballySharedInputStream#skip(long)}.
+   * <ul>
+   *   <li>Given {@link ByteArrayInputStream#ByteArrayInputStream(byte[])} with {@code AXAXAXAX} Bytes is {@code UTF-8}.</li>
+   *   <li>Then return one.</li>
+   * </ul>
    * <p>
    * Method under test: {@link GloballySharedInputStream#skip(long)}
    */
   @Test
-  public void testSkip() throws IOException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"long GloballySharedInputStream.skip(long)"})
+  public void testSkip_givenByteArrayInputStreamWithAxaxaxaxBytesIsUtf8_thenReturnOne() throws IOException {
     // Arrange
     GloballySharedInputStream globallySharedInputStream = new GloballySharedInputStream(
         new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")));
@@ -396,14 +297,15 @@ public class GloballySharedInputStreamDiffblueTest {
   /**
    * Test {@link GloballySharedInputStream#skip(long)}.
    * <ul>
-   *   <li>Given {@link DataInputStream} {@link FilterInputStream#skip(long)} throw
-   * {@link IOException#IOException(String)} with {@code foo}.</li>
+   *   <li>Given {@link DataInputStream} {@link FilterInputStream#skip(long)} throw {@link IOException#IOException(String)} with {@code foo}.</li>
    *   <li>Then throw {@link IOException}.</li>
    * </ul>
    * <p>
    * Method under test: {@link GloballySharedInputStream#skip(long)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"long GloballySharedInputStream.skip(long)"})
   public void testSkip_givenDataInputStreamSkipThrowIOExceptionWithFoo_thenThrowIOException() throws IOException {
     // Arrange
     DataInputStream parentInputStream = mock(DataInputStream.class);

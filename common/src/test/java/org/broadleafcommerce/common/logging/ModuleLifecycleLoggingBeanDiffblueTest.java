@@ -19,7 +19,10 @@ package org.broadleafcommerce.common.logging;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class ModuleLifecycleLoggingBeanDiffblueTest {
   /**
@@ -35,6 +38,13 @@ public class ModuleLifecycleLoggingBeanDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ModuleLifecycleLoggingBean.<init>()",
+      "void ModuleLifecycleLoggingBean.<init>(String, LifeCycleEvent)",
+      "LifeCycleEvent ModuleLifecycleLoggingBean.getLifeCycleEvent()",
+      "String ModuleLifecycleLoggingBean.getModuleName()",
+      "void ModuleLifecycleLoggingBean.setLifeCycleEvent(LifeCycleEvent)",
+      "void ModuleLifecycleLoggingBean.setModuleName(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     ModuleLifecycleLoggingBean actualModuleLifecycleLoggingBean = new ModuleLifecycleLoggingBean();
@@ -42,7 +52,7 @@ public class ModuleLifecycleLoggingBeanDiffblueTest {
     actualModuleLifecycleLoggingBean.setModuleName("Module Name");
     LifeCycleEvent actualLifeCycleEvent = actualModuleLifecycleLoggingBean.getLifeCycleEvent();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Module Name", actualModuleLifecycleLoggingBean.getModuleName());
     assertEquals(LifeCycleEvent.START, actualLifeCycleEvent);
   }
@@ -55,8 +65,7 @@ public class ModuleLifecycleLoggingBeanDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>
-   * {@link ModuleLifecycleLoggingBean#ModuleLifecycleLoggingBean(String, LifeCycleEvent)}
+   *   <li>{@link ModuleLifecycleLoggingBean#ModuleLifecycleLoggingBean(String, LifeCycleEvent)}
    *   <li>{@link ModuleLifecycleLoggingBean#setLifeCycleEvent(LifeCycleEvent)}
    *   <li>{@link ModuleLifecycleLoggingBean#setModuleName(String)}
    *   <li>{@link ModuleLifecycleLoggingBean#getLifeCycleEvent()}
@@ -64,6 +73,13 @@ public class ModuleLifecycleLoggingBeanDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ModuleLifecycleLoggingBean.<init>()",
+      "void ModuleLifecycleLoggingBean.<init>(String, LifeCycleEvent)",
+      "LifeCycleEvent ModuleLifecycleLoggingBean.getLifeCycleEvent()",
+      "String ModuleLifecycleLoggingBean.getModuleName()",
+      "void ModuleLifecycleLoggingBean.setLifeCycleEvent(LifeCycleEvent)",
+      "void ModuleLifecycleLoggingBean.setModuleName(String)"})
   public void testGettersAndSetters_whenModuleName() {
     // Arrange and Act
     ModuleLifecycleLoggingBean actualModuleLifecycleLoggingBean = new ModuleLifecycleLoggingBean("Module Name",
@@ -72,7 +88,7 @@ public class ModuleLifecycleLoggingBeanDiffblueTest {
     actualModuleLifecycleLoggingBean.setModuleName("Module Name");
     LifeCycleEvent actualLifeCycleEvent = actualModuleLifecycleLoggingBean.getLifeCycleEvent();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Module Name", actualModuleLifecycleLoggingBean.getModuleName());
     assertEquals(LifeCycleEvent.START, actualLifeCycleEvent);
   }
@@ -83,31 +99,26 @@ public class ModuleLifecycleLoggingBeanDiffblueTest {
    * Method under test: {@link ModuleLifecycleLoggingBean#init()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ModuleLifecycleLoggingBean.init()"})
   public void testInit() {
-    // Arrange
-    ModuleLifecycleLoggingBean moduleLifecycleLoggingBean = new ModuleLifecycleLoggingBean("Module Name",
-        LifeCycleEvent.START);
-    moduleLifecycleLoggingBean.setModuleName(null);
-    moduleLifecycleLoggingBean.setLifeCycleEvent(null);
-
-    // Act and Assert
-    assertThrows(IllegalArgumentException.class, () -> moduleLifecycleLoggingBean.init());
+    // Arrange, Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> (new ModuleLifecycleLoggingBean(null, null)).init());
   }
 
   /**
    * Test {@link ModuleLifecycleLoggingBean#init()}.
+   * <ul>
+   *   <li>Given {@link ModuleLifecycleLoggingBean#ModuleLifecycleLoggingBean(String, LifeCycleEvent)} with {@code Module Name} and lifeCycleEvent is {@code null}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link ModuleLifecycleLoggingBean#init()}
    */
   @Test
-  public void testInit2() {
-    // Arrange
-    ModuleLifecycleLoggingBean moduleLifecycleLoggingBean = new ModuleLifecycleLoggingBean("Module Name",
-        LifeCycleEvent.START);
-    moduleLifecycleLoggingBean.setModuleName("foo");
-    moduleLifecycleLoggingBean.setLifeCycleEvent(null);
-
-    // Act and Assert
-    assertThrows(IllegalArgumentException.class, () -> moduleLifecycleLoggingBean.init());
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ModuleLifecycleLoggingBean.init()"})
+  public void testInit_givenModuleLifecycleLoggingBeanWithModuleNameAndLifeCycleEventIsNull() {
+    // Arrange, Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> (new ModuleLifecycleLoggingBean("Module Name", null)).init());
   }
 }

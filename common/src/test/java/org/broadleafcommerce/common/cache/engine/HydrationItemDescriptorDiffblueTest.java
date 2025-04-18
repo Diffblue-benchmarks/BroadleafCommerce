@@ -18,9 +18,13 @@
 package org.broadleafcommerce.common.cache.engine;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.lang.reflect.Method;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class HydrationItemDescriptorDiffblueTest {
   /**
@@ -36,6 +40,10 @@ public class HydrationItemDescriptorDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void HydrationItemDescriptor.<init>()", "String HydrationItemDescriptor.getFactoryMethod()",
+      "Method[] HydrationItemDescriptor.getMutators()", "void HydrationItemDescriptor.setFactoryMethod(String)",
+      "void HydrationItemDescriptor.setMutators(Method[])"})
   public void testGettersAndSetters() {
     // Arrange and Act
     HydrationItemDescriptor actualHydrationItemDescriptor = new HydrationItemDescriptor();
@@ -45,8 +53,9 @@ public class HydrationItemDescriptorDiffblueTest {
     String actualFactoryMethod = actualHydrationItemDescriptor.getFactoryMethod();
     Method[] actualMutators = actualHydrationItemDescriptor.getMutators();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Factory Method", actualFactoryMethod);
+    assertNull(actualMutators[0]);
     assertEquals(1, actualMutators.length);
     assertSame(mutators, actualMutators);
   }

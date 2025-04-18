@@ -1,73 +1,29 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.workflow.state;
 
 import static org.junit.Assert.assertEquals;
-import org.junit.Ignore;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class RollbackStateLocalDiffblueTest {
-  /**
-   * Test {@link RollbackStateLocal#getRollbackStateLocal()}.
-   * <p>
-   * Method under test: {@link RollbackStateLocal#getRollbackStateLocal()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetRollbackStateLocal() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.util.EmptyStackException
-    //       at java.base/java.util.Stack.peek(Stack.java:102)
-    //       at org.broadleafcommerce.core.workflow.state.RollbackStateLocal.getRollbackStateLocal(RollbackStateLocal.java:35)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange and Act
-    RollbackStateLocal.getRollbackStateLocal();
-  }
-
-  /**
-   * Test {@link RollbackStateLocal#setRollbackStateLocal(RollbackStateLocal)}.
-   * <p>
-   * Method under test:
-   * {@link RollbackStateLocal#setRollbackStateLocal(RollbackStateLocal)}
-   */
-  @Test
-  public void testSetRollbackStateLocal() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange
-    RollbackStateLocal rollbackStateLocal = new RollbackStateLocal();
-    rollbackStateLocal.setThreadId("42");
-    rollbackStateLocal.setWorkflowId("42");
-
-    // Act
-    RollbackStateLocal.setRollbackStateLocal(rollbackStateLocal);
-  }
-
-  /**
-   * Test {@link RollbackStateLocal#clearRollbackStateLocal()}.
-   * <p>
-   * Method under test: {@link RollbackStateLocal#clearRollbackStateLocal()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testClearRollbackStateLocal() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.util.EmptyStackException
-    //       at java.base/java.util.Stack.peek(Stack.java:102)
-    //       at java.base/java.util.Stack.pop(Stack.java:84)
-    //       at org.broadleafcommerce.core.workflow.state.RollbackStateLocal.clearRollbackStateLocal(RollbackStateLocal.java:45)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange and Act
-    RollbackStateLocal.clearRollbackStateLocal();
-  }
-
   /**
    * Test getters and setters.
    * <p>
@@ -81,6 +37,10 @@ public class RollbackStateLocalDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void RollbackStateLocal.<init>()", "String RollbackStateLocal.getThreadId()",
+      "String RollbackStateLocal.getWorkflowId()", "void RollbackStateLocal.setThreadId(String)",
+      "void RollbackStateLocal.setWorkflowId(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     RollbackStateLocal actualRollbackStateLocal = new RollbackStateLocal();
@@ -88,7 +48,7 @@ public class RollbackStateLocalDiffblueTest {
     actualRollbackStateLocal.setWorkflowId("42");
     String actualThreadId = actualRollbackStateLocal.getThreadId();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("42", actualThreadId);
     assertEquals("42", actualRollbackStateLocal.getWorkflowId());
   }

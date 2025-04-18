@@ -18,32 +18,20 @@
 package org.broadleafcommerce.common.extensibility;
 
 import static org.junit.Assert.assertNull;
-import java.lang.instrument.Instrumentation;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class InstrumentationRuntimeFactoryDiffblueTest {
-  /**
-   * Test
-   * {@link InstrumentationRuntimeFactory#agentmain(String, Instrumentation)}.
-   * <p>
-   * Method under test:
-   * {@link InstrumentationRuntimeFactory#agentmain(String, Instrumentation)}
-   */
-  @Test
-  public void testAgentmain() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange and Act
-    InstrumentationRuntimeFactory.agentmain("Agent Args", null);
-  }
-
   /**
    * Test {@link InstrumentationRuntimeFactory#getInstrumentation()}.
    * <p>
    * Method under test: {@link InstrumentationRuntimeFactory#getInstrumentation()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.instrument.Instrumentation InstrumentationRuntimeFactory.getInstrumentation()"})
   public void testGetInstrumentation() {
     // Arrange, Act and Assert
     assertNull(InstrumentationRuntimeFactory.getInstrumentation());

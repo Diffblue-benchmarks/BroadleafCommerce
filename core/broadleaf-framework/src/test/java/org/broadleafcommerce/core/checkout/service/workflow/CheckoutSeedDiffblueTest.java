@@ -1,11 +1,31 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.checkout.service.workflow;
 
 import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class CheckoutSeedDiffblueTest {
   /**
@@ -20,6 +40,9 @@ public class CheckoutSeedDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CheckoutSeed.<init>(Order, Map)", "Order CheckoutSeed.getOrder()",
+      "Map CheckoutSeed.getUserDefinedFields()", "void CheckoutSeed.setOrder(Order)"})
   public void testGettersAndSetters() {
     // Arrange
     NullOrderImpl order = new NullOrderImpl();
@@ -31,7 +54,7 @@ public class CheckoutSeedDiffblueTest {
     actualCheckoutSeed.setOrder(order2);
     Order actualOrder = actualCheckoutSeed.getOrder();
 
-    // Assert that nothing has changed
+    // Assert
     assertSame(userDefinedFields, actualCheckoutSeed.getUserDefinedFields());
     assertSame(order2, actualOrder);
   }

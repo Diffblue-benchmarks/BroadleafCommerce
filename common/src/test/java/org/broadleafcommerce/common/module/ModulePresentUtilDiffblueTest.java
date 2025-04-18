@@ -19,22 +19,26 @@ package org.broadleafcommerce.common.module;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
+import org.broadleafcommerce.common.module.BroadleafModuleRegistration.BroadleafModuleEnum;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class ModulePresentUtilDiffblueTest {
   /**
-   * Test {@link ModulePresentUtil#isPresent(BroadleafModuleEnum)} with
-   * {@code BroadleafModuleEnum}.
+   * Test {@link ModulePresentUtil#isPresent(BroadleafModuleEnum)} with {@code BroadleafModuleEnum}.
    * <p>
-   * Method under test:
-   * {@link ModulePresentUtil#isPresent(BroadleafModuleRegistration.BroadleafModuleEnum)}
+   * Method under test: {@link ModulePresentUtil#isPresent(BroadleafModuleEnum)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ModulePresentUtil.isPresent(BroadleafModuleEnum)"})
   public void testIsPresentWithBroadleafModuleEnum() {
     // Arrange, Act and Assert
-    assertFalse(ModulePresentUtil.isPresent(BroadleafModuleRegistration.BroadleafModuleEnum.ACCOUNT));
+    assertFalse(ModulePresentUtil.isPresent(BroadleafModuleEnum.ACCOUNT));
   }
 
   /**
@@ -47,6 +51,8 @@ public class ModulePresentUtilDiffblueTest {
    * Method under test: {@link ModulePresentUtil#isPresent(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ModulePresentUtil.isPresent(String)"})
   public void testIsPresentWithString_whenCommonTest_thenReturnTrue() {
     // Arrange, Act and Assert
     assertTrue(ModulePresentUtil.isPresent("CommonTest"));
@@ -62,6 +68,8 @@ public class ModulePresentUtilDiffblueTest {
    * Method under test: {@link ModulePresentUtil#isPresent(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ModulePresentUtil.isPresent(String)"})
   public void testIsPresentWithString_whenModuleInQuestion_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse(ModulePresentUtil.isPresent("Module In Question"));
@@ -78,6 +86,8 @@ public class ModulePresentUtilDiffblueTest {
    * Method under test: {@link ModulePresentUtil#allPresent(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ModulePresentUtil.allPresent(List)"})
   public void testAllPresent_givenCommonTest_whenArrayListAddCommonTest_thenReturnTrue() {
     // Arrange
     ArrayList<String> modulesInQuestion = new ArrayList<>();
@@ -98,6 +108,8 @@ public class ModulePresentUtilDiffblueTest {
    * Method under test: {@link ModulePresentUtil#allPresent(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ModulePresentUtil.allPresent(List)"})
   public void testAllPresent_givenEmptyString_whenArrayListAddEmptyString_thenReturnFalse() {
     // Arrange
     ArrayList<String> modulesInQuestion = new ArrayList<>();
@@ -118,6 +130,8 @@ public class ModulePresentUtilDiffblueTest {
    * Method under test: {@link ModulePresentUtil#allPresent(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ModulePresentUtil.allPresent(List)"})
   public void testAllPresent_givenFoo_whenArrayListAddFoo_thenReturnFalse() {
     // Arrange
     ArrayList<String> modulesInQuestion = new ArrayList<>();
@@ -138,6 +152,8 @@ public class ModulePresentUtilDiffblueTest {
    * Method under test: {@link ModulePresentUtil#allPresent(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ModulePresentUtil.allPresent(List)"})
   public void testAllPresent_givenFoo_whenArrayListAddFoo_thenReturnFalse2() {
     // Arrange
     ArrayList<String> modulesInQuestion = new ArrayList<>();
@@ -158,6 +174,8 @@ public class ModulePresentUtilDiffblueTest {
    * Method under test: {@link ModulePresentUtil#allPresent(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ModulePresentUtil.allPresent(List)"})
   public void testAllPresent_whenArrayList_thenReturnTrue() {
     // Arrange, Act and Assert
     assertTrue(ModulePresentUtil.allPresent(new ArrayList<>()));

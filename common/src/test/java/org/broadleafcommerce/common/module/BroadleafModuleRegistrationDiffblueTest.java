@@ -20,131 +20,62 @@ package org.broadleafcommerce.common.module;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.module.BroadleafModuleRegistration.BroadleafModuleEnum;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.junit.experimental.categories.Category;
 
-@ContextConfiguration(classes = {BroadleafModuleRegistration.BroadleafModuleEnum.class, String.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class BroadleafModuleRegistrationDiffblueTest {
-  @Autowired
-  private BroadleafModuleRegistration.BroadleafModuleEnum broadleafModuleEnum;
-
   /**
-   * Test BroadleafModuleEnum
-   * {@link BroadleafModuleEnum#equalsModuleName(String)}.
-   * <p>
-   * Method under test:
-   * {@link BroadleafModuleRegistration.BroadleafModuleEnum#equalsModuleName(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testBroadleafModuleEnumEqualsModuleName() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //       at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:195)
-    //       at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1655)
-    //       at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:484)
-    //       at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:474)
-    //       at java.base/java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:913)
-    //       at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
-    //       at java.base/java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:578)
-    //   org.mockito.exceptions.base.MockitoException: 
-    //   Cannot mock/spy int
-    //   Mockito cannot mock/spy because :
-    //    - primitive type
-    //       at org.springframework.boot.test.mock.mockito.MockDefinition.createMock(MockDefinition.java:158)
-    //       at org.springframework.boot.test.mock.mockito.MockitoPostProcessor.registerMock(MockitoPostProcessor.java:185)
-    //       at org.springframework.boot.test.mock.mockito.MockitoPostProcessor.register(MockitoPostProcessor.java:167)
-    //       at org.springframework.boot.test.mock.mockito.MockitoPostProcessor.postProcessBeanFactory(MockitoPostProcessor.java:141)
-    //       at org.springframework.boot.test.mock.mockito.MockitoPostProcessor.postProcessBeanFactory(MockitoPostProcessor.java:129)
-    //       at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(PostProcessorRegistrationDelegate.java:325)
-    //       at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(PostProcessorRegistrationDelegate.java:191)
-    //       at org.springframework.context.support.AbstractApplicationContext.invokeBeanFactoryPostProcessors(AbstractApplicationContext.java:756)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:573)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //       at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:195)
-    //       at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1655)
-    //       at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:484)
-    //       at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:474)
-    //       at java.base/java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:913)
-    //       at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
-    //       at java.base/java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:578)
-    //   See https://diff.blue/R026 to resolve this issue.
-
-    // Arrange and Act
-    BroadleafModuleRegistration.BroadleafModuleEnum.ACCOUNT.equalsModuleName("Name");
-  }
-
-  /**
-   * Test BroadleafModuleEnum
-   * {@link BroadleafModuleEnum#equalsModuleName(String)}.
+   * Test BroadleafModuleEnum {@link BroadleafModuleEnum#equalsModuleName(String)}.
    * <ul>
    *   <li>When {@code ACCOUNT}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafModuleRegistration.BroadleafModuleEnum#equalsModuleName(String)}
+   * Method under test: {@link BroadleafModuleEnum#equalsModuleName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BroadleafModuleEnum.equalsModuleName(String)"})
   public void testBroadleafModuleEnumEqualsModuleName_whenAccount_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertFalse(BroadleafModuleRegistration.BroadleafModuleEnum.ACCOUNT.equalsModuleName("ACCOUNT"));
+    assertFalse(BroadleafModuleEnum.ACCOUNT.equalsModuleName("ACCOUNT"));
   }
 
   /**
-   * Test BroadleafModuleEnum
-   * {@link BroadleafModuleEnum#equalsModuleName(String)}.
+   * Test BroadleafModuleEnum {@link BroadleafModuleEnum#equalsModuleName(String)}.
    * <ul>
    *   <li>When {@code Account}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafModuleRegistration.BroadleafModuleEnum#equalsModuleName(String)}
+   * Method under test: {@link BroadleafModuleEnum#equalsModuleName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BroadleafModuleEnum.equalsModuleName(String)"})
   public void testBroadleafModuleEnumEqualsModuleName_whenAccount_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertTrue(BroadleafModuleRegistration.BroadleafModuleEnum.ACCOUNT.equalsModuleName("Account"));
+    assertTrue(BroadleafModuleEnum.ACCOUNT.equalsModuleName("Account"));
   }
 
   /**
-   * Test BroadleafModuleEnum
-   * {@link BroadleafModuleEnum#equalsModuleName(String)}.
+   * Test BroadleafModuleEnum {@link BroadleafModuleEnum#equalsModuleName(String)}.
    * <ul>
    *   <li>When {@code Name}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafModuleRegistration.BroadleafModuleEnum#equalsModuleName(String)}
+   * Method under test: {@link BroadleafModuleEnum#equalsModuleName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BroadleafModuleEnum.equalsModuleName(String)"})
   public void testBroadleafModuleEnumEqualsModuleName_whenName_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertFalse(BroadleafModuleRegistration.BroadleafModuleEnum.ACCOUNT.equalsModuleName("Name"));
+    assertFalse(BroadleafModuleEnum.ACCOUNT.equalsModuleName("Name"));
   }
 
   /**
@@ -152,15 +83,16 @@ public class BroadleafModuleRegistrationDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>{@link BroadleafModuleRegistration.BroadleafModuleEnum#getName()}
-   *   <li>{@link BroadleafModuleRegistration.BroadleafModuleEnum#toString()}
+   *   <li>{@link BroadleafModuleEnum#getName()}
+   *   <li>{@link BroadleafModuleEnum#toString()}
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BroadleafModuleEnum.getName()", "String BroadleafModuleEnum.toString()"})
   public void testBroadleafModuleEnumGettersAndSetters() {
     // Arrange
-    BroadleafModuleRegistration.BroadleafModuleEnum valueOfResult = BroadleafModuleRegistration.BroadleafModuleEnum
-        .valueOf("ACCOUNT");
+    BroadleafModuleEnum valueOfResult = BroadleafModuleEnum.valueOf("ACCOUNT");
 
     // Act
     String actualName = valueOfResult.getName();

@@ -25,9 +25,12 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashSet;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.mockito.Mockito;
 
 public class BLCArrayUtilsDiffblueTest {
@@ -35,14 +38,15 @@ public class BLCArrayUtilsDiffblueTest {
    * Test {@link BLCArrayUtils#contains(Object[], TypedPredicate)}.
    * <ul>
    *   <li>Given {@code false}.</li>
-   *   <li>When {@link TypedPredicate} {@link TypedPredicate#evaluate(Object)}
-   * return {@code false}.</li>
+   *   <li>When {@link TypedPredicate} {@link TypedPredicate#evaluate(Object)} return {@code false}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link BLCArrayUtils#contains(Object[], TypedPredicate)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BLCArrayUtils.contains(Object[], TypedPredicate)"})
   public void testContains_givenFalse_whenTypedPredicateEvaluateReturnFalse_thenReturnFalse() {
     // Arrange
     TypedPredicate<Object> predicate = mock(TypedPredicate.class);
@@ -60,14 +64,15 @@ public class BLCArrayUtilsDiffblueTest {
    * Test {@link BLCArrayUtils#contains(Object[], TypedPredicate)}.
    * <ul>
    *   <li>Given {@code true}.</li>
-   *   <li>When {@link TypedPredicate} {@link TypedPredicate#evaluate(Object)}
-   * return {@code true}.</li>
+   *   <li>When {@link TypedPredicate} {@link TypedPredicate#evaluate(Object)} return {@code true}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link BLCArrayUtils#contains(Object[], TypedPredicate)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BLCArrayUtils.contains(Object[], TypedPredicate)"})
   public void testContains_givenTrue_whenTypedPredicateEvaluateReturnTrue_thenReturnTrue() {
     // Arrange
     TypedPredicate<Object> predicate = mock(TypedPredicate.class);
@@ -91,6 +96,8 @@ public class BLCArrayUtilsDiffblueTest {
    * Method under test: {@link BLCArrayUtils#contains(Object[], TypedPredicate)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BLCArrayUtils.contains(Object[], TypedPredicate)"})
   public void testContains_whenEmptyArrayOfObject_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse(BLCArrayUtils.contains(new Object[]{}, mock(TypedPredicate.class)));
@@ -106,6 +113,8 @@ public class BLCArrayUtilsDiffblueTest {
    * Method under test: {@link BLCArrayUtils#asList(Object[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ArrayList BLCArrayUtils.asList(Object[])"})
   public void testAsList_whenArrayOfObjectWithNull_field_thenReturnSizeIsOne() {
     // Arrange and Act
     ArrayList<Object> actualAsListResult = BLCArrayUtils.asList(new Object[]{BLCFieldUtils.NULL_FIELD});
@@ -124,6 +133,8 @@ public class BLCArrayUtilsDiffblueTest {
    * Method under test: {@link BLCArrayUtils#asList(Object[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ArrayList BLCArrayUtils.asList(Object[])"})
   public void testAsList_whenNull_thenReturnNull() {
     // Arrange and Act
     ArrayList<Object> actualAsListResult = BLCArrayUtils.asList(null);
@@ -138,6 +149,8 @@ public class BLCArrayUtilsDiffblueTest {
    * Method under test: {@link BLCArrayUtils#collect(Object[], TypedTransformer)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ArrayList BLCArrayUtils.collect(Object[], TypedTransformer)"})
   public void testCollect() {
     // Arrange
     TypedTransformer<Object> transformer = mock(TypedTransformer.class);
@@ -154,10 +167,11 @@ public class BLCArrayUtilsDiffblueTest {
   /**
    * Test {@link BLCArrayUtils#collectSet(Object[], TypedTransformer)}.
    * <p>
-   * Method under test:
-   * {@link BLCArrayUtils#collectSet(Object[], TypedTransformer)}
+   * Method under test: {@link BLCArrayUtils#collectSet(Object[], TypedTransformer)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"HashSet BLCArrayUtils.collectSet(Object[], TypedTransformer)"})
   public void testCollectSet() {
     // Arrange
     TypedTransformer<Object> transformer = mock(TypedTransformer.class);

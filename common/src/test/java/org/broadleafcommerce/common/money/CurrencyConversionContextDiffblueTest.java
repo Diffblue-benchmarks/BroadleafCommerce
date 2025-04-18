@@ -18,54 +18,22 @@
 package org.broadleafcommerce.common.money;
 
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import java.util.HashMap;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class CurrencyConversionContextDiffblueTest {
   /**
    * Test {@link CurrencyConversionContext#getCurrencyConversionContext()}.
    * <p>
-   * Method under test:
-   * {@link CurrencyConversionContext#getCurrencyConversionContext()}
+   * Method under test: {@link CurrencyConversionContext#getCurrencyConversionContext()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.util.HashMap CurrencyConversionContext.getCurrencyConversionContext()"})
   public void testGetCurrencyConversionContext() {
     // Arrange, Act and Assert
     assertTrue(CurrencyConversionContext.getCurrencyConversionContext().isEmpty());
-  }
-
-  /**
-   * Test {@link CurrencyConversionContext#setCurrencyConversionContext(HashMap)}.
-   * <ul>
-   *   <li>When {@link HashMap#HashMap()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link CurrencyConversionContext#setCurrencyConversionContext(HashMap)}
-   */
-  @Test
-  public void testSetCurrencyConversionContext_whenHashMap() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange and Act
-    CurrencyConversionContext.setCurrencyConversionContext(new HashMap());
-  }
-
-  /**
-   * Test
-   * {@link CurrencyConversionContext#setCurrencyConversionService(CurrencyConversionService)}.
-   * <p>
-   * Method under test:
-   * {@link CurrencyConversionContext#setCurrencyConversionService(CurrencyConversionService)}
-   */
-  @Test
-  public void testSetCurrencyConversionService() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange and Act
-    CurrencyConversionContext.setCurrencyConversionService(mock(CurrencyConversionService.class));
   }
 }

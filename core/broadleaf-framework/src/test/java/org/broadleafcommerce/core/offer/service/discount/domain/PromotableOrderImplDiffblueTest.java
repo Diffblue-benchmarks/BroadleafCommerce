@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.offer.service.discount.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -9,6 +26,8 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -21,7 +40,6 @@ import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
 import org.broadleafcommerce.common.locale.domain.LocaleImpl;
 import org.broadleafcommerce.common.money.Money;
-import org.broadleafcommerce.core.offer.domain.OfferImpl;
 import org.broadleafcommerce.core.offer.domain.OrderAdjustment;
 import org.broadleafcommerce.core.order.domain.BundleOrderItemImpl;
 import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
@@ -32,106 +50,24 @@ import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.domain.OrderImpl;
 import org.broadleafcommerce.core.order.domain.OrderItem;
 import org.broadleafcommerce.core.order.domain.OrderItemImpl;
+import org.broadleafcommerce.core.order.domain.OrderItemPriceDetail;
+import org.broadleafcommerce.core.order.domain.OrderItemPriceDetailImpl;
 import org.broadleafcommerce.core.order.domain.PersonalMessageImpl;
 import org.broadleafcommerce.core.order.service.type.OrderItemType;
 import org.broadleafcommerce.core.order.service.type.OrderStatus;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.junit.experimental.categories.Category;
 
-@ContextConfiguration(classes = {PromotableOrderImpl.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class PromotableOrderImplDiffblueTest {
-  @MockBean
-  private Order order;
-
-  @MockBean
-  private PromotableItemFactory promotableItemFactory;
-
-  @Autowired
-  private PromotableOrderImpl promotableOrderImpl;
-
-  /**
-   * Test
-   * {@link PromotableOrderImpl#PromotableOrderImpl(Order, PromotableItemFactory, boolean)}.
-   * <ul>
-   *   <li>When {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#PromotableOrderImpl(Order, PromotableItemFactory, boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testNewPromotableOrderImpl_whenNull() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange and Act
-    new PromotableOrderImpl(null, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
-
-  }
-
-  /**
-   * Test
-   * {@link PromotableOrderImpl#PromotableOrderImpl(Order, PromotableItemFactory, boolean)}.
-   * <ul>
-   *   <li>When {@link NullOrderImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#PromotableOrderImpl(Order, PromotableItemFactory, boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testNewPromotableOrderImpl_whenNullOrderImpl() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange
-    NullOrderImpl order = new NullOrderImpl();
-
-    // Act
-    new PromotableOrderImpl(order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
-
-  }
-
-  /**
-   * Test {@link PromotableOrderImpl#createExistingOrderAdjustments()}.
-   * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#createExistingOrderAdjustments()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateExistingOrderAdjustments() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange
-    NullOrderImpl order = new NullOrderImpl();
-
-    // Act
-    (new PromotableOrderImpl(order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true))
-        .createExistingOrderAdjustments();
-  }
-
   /**
    * Test {@link PromotableOrderImpl#setOrderSubTotalToPriceWithoutAdjustments()}.
    * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#setOrderSubTotalToPriceWithoutAdjustments()}
+   * Method under test: {@link PromotableOrderImpl#setOrderSubTotalToPriceWithoutAdjustments()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PromotableOrderImpl.setOrderSubTotalToPriceWithoutAdjustments()"})
   public void testSetOrderSubTotalToPriceWithoutAdjustments() {
     // Arrange
     OrderImpl order = new OrderImpl();
@@ -144,17 +80,17 @@ public class PromotableOrderImplDiffblueTest {
     // Assert
     assertTrue(promotableOrderImpl.getOrder() instanceof OrderImpl);
     assertTrue(promotableOrderImpl.getAllOrderItems().isEmpty());
-    assertTrue(promotableOrderImpl.getDiscountableOrderItems().isEmpty());
     assertTrue(promotableOrderImpl.allOrderItems.isEmpty());
   }
 
   /**
    * Test {@link PromotableOrderImpl#setOrderSubTotalToPriceWithoutAdjustments()}.
    * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#setOrderSubTotalToPriceWithoutAdjustments()}
+   * Method under test: {@link PromotableOrderImpl#setOrderSubTotalToPriceWithoutAdjustments()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PromotableOrderImpl.setOrderSubTotalToPriceWithoutAdjustments()"})
   public void testSetOrderSubTotalToPriceWithoutAdjustments2() {
     // Arrange
     BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
@@ -169,12 +105,10 @@ public class PromotableOrderImplDiffblueTest {
     promotableOrderImpl.setOrderSubTotalToPriceWithoutAdjustments();
 
     // Assert
-    assertTrue(promotableOrderImpl.getOrder() instanceof OrderImpl);
     List<PromotableOrderItem> allOrderItems = promotableOrderImpl.getAllOrderItems();
     assertEquals(1, allOrderItems.size());
     List<PromotableOrderItem> promotableOrderItemList = promotableOrderImpl.allOrderItems;
     assertEquals(1, promotableOrderItemList.size());
-    assertTrue(promotableOrderImpl.getDiscountableOrderItems().isEmpty());
     assertSame(allOrderItems.get(0), promotableOrderItemList.get(0));
     assertSame(promotableOrderImpl.allOrderItems, allOrderItems);
   }
@@ -182,10 +116,11 @@ public class PromotableOrderImplDiffblueTest {
   /**
    * Test {@link PromotableOrderImpl#setOrderSubTotalToPriceWithoutAdjustments()}.
    * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#setOrderSubTotalToPriceWithoutAdjustments()}
+   * Method under test: {@link PromotableOrderImpl#setOrderSubTotalToPriceWithoutAdjustments()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PromotableOrderImpl.setOrderSubTotalToPriceWithoutAdjustments()"})
   public void testSetOrderSubTotalToPriceWithoutAdjustments3() {
     // Arrange
     Auditable auditable = new Auditable();
@@ -212,10 +147,11 @@ public class PromotableOrderImplDiffblueTest {
     orderItem.setOrderItemType(OrderItemType.BASIC);
     orderItem.setParentOrderItem(new BundleOrderItemImpl());
     orderItem.setPersonalMessage(new PersonalMessageImpl());
+    Money finalPrice = new Money();
+    orderItem.setPrice(finalPrice);
     orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
     orderItem.setQuantity(1);
-    Money retailPrice = new Money();
-    orderItem.setRetailPrice(retailPrice);
+    orderItem.setRetailPrice(new Money());
     orderItem.setRetailPriceOverride(true);
     orderItem.setSalePrice(new Money());
     orderItem.setSalePriceOverride(true);
@@ -233,17 +169,17 @@ public class PromotableOrderImplDiffblueTest {
     // Assert
     Order order2 = promotableOrderImpl.getOrder();
     assertTrue(order2 instanceof OrderImpl);
-    assertEquals(1, promotableOrderImpl.getDiscountableOrderItems().size());
-    assertEquals(retailPrice, order2.getSubTotal());
+    assertEquals(finalPrice, order2.getSubTotal());
   }
 
   /**
    * Test {@link PromotableOrderImpl#setOrderSubTotalToPriceWithAdjustments()}.
    * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#setOrderSubTotalToPriceWithAdjustments()}
+   * Method under test: {@link PromotableOrderImpl#setOrderSubTotalToPriceWithAdjustments()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PromotableOrderImpl.setOrderSubTotalToPriceWithAdjustments()"})
   public void testSetOrderSubTotalToPriceWithAdjustments() {
     // Arrange
     OrderImpl order = new OrderImpl();
@@ -256,17 +192,17 @@ public class PromotableOrderImplDiffblueTest {
     // Assert
     assertTrue(promotableOrderImpl.getOrder() instanceof OrderImpl);
     assertTrue(promotableOrderImpl.getAllOrderItems().isEmpty());
-    assertTrue(promotableOrderImpl.getDiscountableOrderItems().isEmpty());
     assertTrue(promotableOrderImpl.allOrderItems.isEmpty());
   }
 
   /**
    * Test {@link PromotableOrderImpl#setOrderSubTotalToPriceWithAdjustments()}.
    * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#setOrderSubTotalToPriceWithAdjustments()}
+   * Method under test: {@link PromotableOrderImpl#setOrderSubTotalToPriceWithAdjustments()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PromotableOrderImpl.setOrderSubTotalToPriceWithAdjustments()"})
   public void testSetOrderSubTotalToPriceWithAdjustments2() {
     // Arrange
     Auditable auditable = new Auditable();
@@ -293,10 +229,11 @@ public class PromotableOrderImplDiffblueTest {
     orderItem.setOrderItemType(OrderItemType.BASIC);
     orderItem.setParentOrderItem(new BundleOrderItemImpl());
     orderItem.setPersonalMessage(new PersonalMessageImpl());
+    Money finalPrice = new Money();
+    orderItem.setPrice(finalPrice);
     orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
     orderItem.setQuantity(1);
-    Money retailPrice = new Money();
-    orderItem.setRetailPrice(retailPrice);
+    orderItem.setRetailPrice(new Money());
     orderItem.setRetailPriceOverride(true);
     orderItem.setSalePrice(new Money());
     orderItem.setSalePriceOverride(true);
@@ -316,124 +253,26 @@ public class PromotableOrderImplDiffblueTest {
     assertTrue(order2 instanceof OrderImpl);
     List<PromotableOrderItem> allOrderItems = promotableOrderImpl.getAllOrderItems();
     assertEquals(1, allOrderItems.size());
-    assertEquals(1, promotableOrderImpl.getDiscountableOrderItems().size());
     List<PromotableOrderItem> promotableOrderItemList = promotableOrderImpl.allOrderItems;
     assertEquals(1, promotableOrderItemList.size());
-    assertEquals(retailPrice, order2.getSubTotal());
+    assertEquals(finalPrice, order2.getSubTotal());
     assertSame(allOrderItems.get(0), promotableOrderItemList.get(0));
     assertSame(promotableOrderImpl.allOrderItems, allOrderItems);
   }
 
   /**
    * Test {@link PromotableOrderImpl#getAllOrderItems()}.
-   * <p>
-   * Method under test: {@link PromotableOrderImpl#getAllOrderItems()}
-   */
-  @Test
-  public void testGetAllOrderItems() {
-    // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    ArrayList<OrderItem> orderItems = new ArrayList<>();
-    orderItems.add(new BundleOrderItemImpl());
-
-    OrderImpl order = new OrderImpl();
-    order.setAdditionalOfferInformation(new HashMap<>());
-    order.setAuditable(auditable);
-    order.setCandidateOrderOffers(new ArrayList<>());
-    order.setCurrency(new BroadleafCurrencyImpl());
-    order.setCustomer(new CustomerImpl());
-    order.setEmailAddress("42 Main St");
-    order.setFulfillmentGroups(new ArrayList<>());
-    order.setId(1L);
-    order.setLocale(new LocaleImpl());
-    order.setName("Name");
-    order.setOrderAttributes(new HashMap<>());
-    order.setOrderItems(orderItems);
-    order.setOrderMessages(new ArrayList<>());
-    order.setOrderNumber("42");
-    order.setPayments(new ArrayList<>());
-    order.setStatus(OrderStatus.ARCHIVED);
-    order.setSubTotal(new Money());
-    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    order.setTaxOverride(true);
-    order.setTotal(new Money());
-    order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
-    order.setTotalTax(new Money());
-    PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
-        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
-
-    // Act and Assert
-    assertSame(promotableOrderImpl.allOrderItems, promotableOrderImpl.getAllOrderItems());
-  }
-
-  /**
-   * Test {@link PromotableOrderImpl#getAllOrderItems()}.
    * <ul>
-   *   <li>Given {@link Auditable} (default constructor) DateCreated is
-   * {@link java.sql.Date}.</li>
+   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.</li>
    *   <li>Then return Empty.</li>
    * </ul>
    * <p>
    * Method under test: {@link PromotableOrderImpl#getAllOrderItems()}
    */
   @Test
-  public void testGetAllOrderItems_givenAuditableDateCreatedIsDate_thenReturnEmpty() {
-    // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(mock(java.sql.Date.class));
-    auditable.setDateUpdated(
-        java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    OrderImpl order = new OrderImpl();
-    order.setAdditionalOfferInformation(new HashMap<>());
-    order.setAuditable(auditable);
-    order.setCandidateOrderOffers(new ArrayList<>());
-    order.setCurrency(new BroadleafCurrencyImpl());
-    order.setCustomer(new CustomerImpl());
-    order.setEmailAddress("42 Main St");
-    order.setFulfillmentGroups(new ArrayList<>());
-    order.setId(1L);
-    order.setLocale(new LocaleImpl());
-    order.setName("Name");
-    order.setOrderAttributes(new HashMap<>());
-    order.setOrderItems(new ArrayList<>());
-    order.setOrderMessages(new ArrayList<>());
-    order.setOrderNumber("42");
-    order.setPayments(new ArrayList<>());
-    order.setStatus(OrderStatus.ARCHIVED);
-    order.setSubTotal(new Money());
-    order
-        .setSubmitDate(java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    order.setTaxOverride(true);
-    order.setTotal(new Money());
-    order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
-    order.setTotalTax(new Money());
-
-    // Act and Assert
-    assertTrue((new PromotableOrderImpl(order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true))
-        .getAllOrderItems()
-        .isEmpty());
-  }
-
-  /**
-   * Test {@link PromotableOrderImpl#getAllOrderItems()}.
-   * <ul>
-   *   <li>Then return Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PromotableOrderImpl#getAllOrderItems()}
-   */
-  @Test
-  public void testGetAllOrderItems_thenReturnEmpty() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List PromotableOrderImpl.getAllOrderItems()"})
+  public void testGetAllOrderItems_givenAuditableCreatedByIsOne_thenReturnEmpty() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
@@ -463,7 +302,6 @@ public class PromotableOrderImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
 
     // Act and Assert
@@ -478,6 +316,8 @@ public class PromotableOrderImplDiffblueTest {
    * Method under test: {@link PromotableOrderImpl#getDiscountableOrderItems()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List PromotableOrderImpl.getDiscountableOrderItems()"})
   public void testGetDiscountableOrderItems() {
     // Arrange
     Auditable auditable = new Auditable();
@@ -508,7 +348,6 @@ public class PromotableOrderImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
         new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
@@ -520,72 +359,17 @@ public class PromotableOrderImplDiffblueTest {
     assertTrue(promotableOrderImpl.getAllOrderItems().isEmpty());
     assertTrue(actualDiscountableOrderItems.isEmpty());
     assertTrue(promotableOrderImpl.allOrderItems.isEmpty());
+    assertTrue(promotableOrderImpl.discountableOrderItems.isEmpty());
   }
 
   /**
-   * Test {@link PromotableOrderImpl#getDiscountableOrderItems()}.
+   * Test {@link PromotableOrderImpl#getDiscountableOrderItems(boolean)} with {@code boolean}.
    * <p>
-   * Method under test: {@link PromotableOrderImpl#getDiscountableOrderItems()}
+   * Method under test: {@link PromotableOrderImpl#getDiscountableOrderItems(boolean)}
    */
   @Test
-  public void testGetDiscountableOrderItems2() {
-    // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    ArrayList<OrderItem> orderItems = new ArrayList<>();
-    orderItems.add(new BundleOrderItemImpl());
-
-    OrderImpl order = new OrderImpl();
-    order.setAdditionalOfferInformation(new HashMap<>());
-    order.setAuditable(auditable);
-    order.setCandidateOrderOffers(new ArrayList<>());
-    order.setCurrency(new BroadleafCurrencyImpl());
-    order.setCustomer(new CustomerImpl());
-    order.setEmailAddress("42 Main St");
-    order.setFulfillmentGroups(new ArrayList<>());
-    order.setId(1L);
-    order.setLocale(new LocaleImpl());
-    order.setName("Name");
-    order.setOrderAttributes(new HashMap<>());
-    order.setOrderItems(orderItems);
-    order.setOrderMessages(new ArrayList<>());
-    order.setOrderNumber("42");
-    order.setPayments(new ArrayList<>());
-    order.setStatus(OrderStatus.ARCHIVED);
-    order.setSubTotal(new Money());
-    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    order.setTaxOverride(true);
-    order.setTotal(new Money());
-    order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
-    order.setTotalTax(new Money());
-    PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
-        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
-
-    // Act
-    promotableOrderImpl.getDiscountableOrderItems();
-
-    // Assert
-    List<PromotableOrderItem> allOrderItems = promotableOrderImpl.getAllOrderItems();
-    assertEquals(1, allOrderItems.size());
-    List<PromotableOrderItem> promotableOrderItemList = promotableOrderImpl.allOrderItems;
-    assertEquals(1, promotableOrderItemList.size());
-    assertSame(allOrderItems.get(0), promotableOrderItemList.get(0));
-    assertSame(promotableOrderImpl.allOrderItems, allOrderItems);
-  }
-
-  /**
-   * Test {@link PromotableOrderImpl#getDiscountableOrderItems(boolean)} with
-   * {@code boolean}.
-   * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#getDiscountableOrderItems(boolean)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List PromotableOrderImpl.getDiscountableOrderItems(boolean)"})
   public void testGetDiscountableOrderItemsWithBoolean() {
     // Arrange
     Auditable auditable = new Auditable();
@@ -616,7 +400,6 @@ public class PromotableOrderImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
         new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
@@ -626,19 +409,20 @@ public class PromotableOrderImplDiffblueTest {
 
     // Assert
     assertTrue(promotableOrderImpl.getAllOrderItems().isEmpty());
+    assertTrue(promotableOrderImpl.getDiscountableOrderItems().isEmpty());
     assertTrue(actualDiscountableOrderItems.isEmpty());
     assertTrue(promotableOrderImpl.allOrderItems.isEmpty());
-    assertTrue(promotableOrderImpl.currentSortParam);
+    assertTrue(promotableOrderImpl.discountableOrderItems.isEmpty());
   }
 
   /**
-   * Test {@link PromotableOrderImpl#getDiscountableOrderItems(boolean)} with
-   * {@code boolean}.
+   * Test {@link PromotableOrderImpl#getDiscountableOrderItems(boolean)} with {@code boolean}.
    * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#getDiscountableOrderItems(boolean)}
+   * Method under test: {@link PromotableOrderImpl#getDiscountableOrderItems(boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List PromotableOrderImpl.getDiscountableOrderItems(boolean)"})
   public void testGetDiscountableOrderItemsWithBoolean2() {
     // Arrange
     Auditable auditable = new Auditable();
@@ -648,7 +432,7 @@ public class PromotableOrderImplDiffblueTest {
     auditable.setUpdatedBy(1L);
 
     ArrayList<OrderItem> orderItems = new ArrayList<>();
-    orderItems.add(new BundleOrderItemImpl());
+    orderItems.add(new OrderItemImpl());
 
     OrderImpl order = new OrderImpl();
     order.setAdditionalOfferInformation(new HashMap<>());
@@ -672,7 +456,98 @@ public class PromotableOrderImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
+    order.setTotalTax(new Money());
+    PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    // Act
+    List<PromotableOrderItem> actualDiscountableOrderItems = promotableOrderImpl.getDiscountableOrderItems(true);
+
+    // Assert
+    assertEquals(1, promotableOrderImpl.discountableOrderItems.size());
+    List<PromotableOrderItem> promotableOrderItemList = promotableOrderImpl.discountableOrderItems;
+    assertSame(promotableOrderItemList, promotableOrderImpl.getDiscountableOrderItems());
+    assertSame(promotableOrderItemList, actualDiscountableOrderItems);
+  }
+
+  /**
+   * Test {@link PromotableOrderImpl#getDiscountableOrderItems(boolean)} with {@code boolean}.
+   * <p>
+   * Method under test: {@link PromotableOrderImpl#getDiscountableOrderItems(boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List PromotableOrderImpl.getDiscountableOrderItems(boolean)"})
+  public void testGetDiscountableOrderItemsWithBoolean3() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    Auditable auditable2 = new Auditable();
+    auditable2.setCreatedBy(1L);
+    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setUpdatedBy(1L);
+
+    ArrayList<OrderItemPriceDetail> orderItemPriceDetails = new ArrayList<>();
+    orderItemPriceDetails.add(new OrderItemPriceDetailImpl());
+
+    OrderItemImpl orderItemImpl = new OrderItemImpl();
+    orderItemImpl.setAuditable(auditable2);
+    orderItemImpl.setCandidateItemOffers(new ArrayList<>());
+    orderItemImpl.setCartMessages(new ArrayList<>());
+    orderItemImpl.setChildOrderItems(new ArrayList<>());
+    orderItemImpl.setDiscountingAllowed(true);
+    orderItemImpl.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    orderItemImpl.setHasValidationError(true);
+    orderItemImpl.setId(1L);
+    orderItemImpl.setName("Name");
+    orderItemImpl.setOrder(new NullOrderImpl());
+    orderItemImpl.setOrderItemAdjustments(new ArrayList<>());
+    orderItemImpl.setOrderItemAttributes(new HashMap<>());
+    orderItemImpl.setOrderItemPriceDetails(orderItemPriceDetails);
+    orderItemImpl.setOrderItemQualifiers(new ArrayList<>());
+    orderItemImpl.setOrderItemType(OrderItemType.BASIC);
+    orderItemImpl.setParentOrderItem(new BundleOrderItemImpl());
+    orderItemImpl.setPersonalMessage(new PersonalMessageImpl());
+    orderItemImpl.setPrice(new Money());
+    orderItemImpl.setProratedOrderItemAdjustments(new ArrayList<>());
+    orderItemImpl.setQuantity(1);
+    orderItemImpl.setRetailPrice(new Money());
+    orderItemImpl.setRetailPriceOverride(true);
+    orderItemImpl.setSalePrice(new Money());
+    orderItemImpl.setSalePriceOverride(true);
+    orderItemImpl.setTaxable(true);
+    orderItemImpl.updateSaleAndRetailPrices();
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(orderItemImpl);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(orderItems);
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
     order.setTotalTax(new Money());
     PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
         new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
@@ -690,128 +565,17 @@ public class PromotableOrderImplDiffblueTest {
   }
 
   /**
-   * Test {@link PromotableOrderImpl#getDiscountableOrderItems(boolean)} with
-   * {@code boolean}.
+   * Test {@link PromotableOrderImpl#getDiscountableOrderItems(boolean)} with {@code boolean}.
    * <ul>
-   *   <li>Given {@link Auditable} (default constructor) DateCreated is
-   * {@link java.sql.Date}.</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link BundleOrderItemImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#getDiscountableOrderItems(boolean)}
+   * Method under test: {@link PromotableOrderImpl#getDiscountableOrderItems(boolean)}
    */
   @Test
-  public void testGetDiscountableOrderItemsWithBoolean_givenAuditableDateCreatedIsDate() {
-    // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(mock(java.sql.Date.class));
-    auditable.setDateUpdated(
-        java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    OrderImpl order = new OrderImpl();
-    order.setAdditionalOfferInformation(new HashMap<>());
-    order.setAuditable(auditable);
-    order.setCandidateOrderOffers(new ArrayList<>());
-    order.setCurrency(new BroadleafCurrencyImpl());
-    order.setCustomer(new CustomerImpl());
-    order.setEmailAddress("42 Main St");
-    order.setFulfillmentGroups(new ArrayList<>());
-    order.setId(1L);
-    order.setLocale(new LocaleImpl());
-    order.setName("Name");
-    order.setOrderAttributes(new HashMap<>());
-    order.setOrderItems(new ArrayList<>());
-    order.setOrderMessages(new ArrayList<>());
-    order.setOrderNumber("42");
-    order.setPayments(new ArrayList<>());
-    order.setStatus(OrderStatus.ARCHIVED);
-    order.setSubTotal(new Money());
-    order
-        .setSubmitDate(java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    order.setTaxOverride(true);
-    order.setTotal(new Money());
-    order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
-    order.setTotalTax(new Money());
-    PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
-        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
-
-    // Act
-    List<PromotableOrderItem> actualDiscountableOrderItems = promotableOrderImpl.getDiscountableOrderItems(true);
-
-    // Assert
-    assertTrue(promotableOrderImpl.getAllOrderItems().isEmpty());
-    assertTrue(actualDiscountableOrderItems.isEmpty());
-    assertTrue(promotableOrderImpl.allOrderItems.isEmpty());
-    assertTrue(promotableOrderImpl.currentSortParam);
-  }
-
-  /**
-   * Test {@link PromotableOrderImpl#getDiscountableOrderItems()}.
-   * <ul>
-   *   <li>Given {@link Auditable} (default constructor) DateCreated is
-   * {@link java.sql.Date}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PromotableOrderImpl#getDiscountableOrderItems()}
-   */
-  @Test
-  public void testGetDiscountableOrderItems_givenAuditableDateCreatedIsDate() {
-    // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(mock(java.sql.Date.class));
-    auditable.setDateUpdated(
-        java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    OrderImpl order = new OrderImpl();
-    order.setAdditionalOfferInformation(new HashMap<>());
-    order.setAuditable(auditable);
-    order.setCandidateOrderOffers(new ArrayList<>());
-    order.setCurrency(new BroadleafCurrencyImpl());
-    order.setCustomer(new CustomerImpl());
-    order.setEmailAddress("42 Main St");
-    order.setFulfillmentGroups(new ArrayList<>());
-    order.setId(1L);
-    order.setLocale(new LocaleImpl());
-    order.setName("Name");
-    order.setOrderAttributes(new HashMap<>());
-    order.setOrderItems(new ArrayList<>());
-    order.setOrderMessages(new ArrayList<>());
-    order.setOrderNumber("42");
-    order.setPayments(new ArrayList<>());
-    order.setStatus(OrderStatus.ARCHIVED);
-    order.setSubTotal(new Money());
-    order
-        .setSubmitDate(java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    order.setTaxOverride(true);
-    order.setTotal(new Money());
-    order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
-    order.setTotalTax(new Money());
-    PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
-        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
-
-    // Act
-    List<PromotableOrderItem> actualDiscountableOrderItems = promotableOrderImpl.getDiscountableOrderItems();
-
-    // Assert
-    assertTrue(promotableOrderImpl.getAllOrderItems().isEmpty());
-    assertTrue(actualDiscountableOrderItems.isEmpty());
-    assertTrue(promotableOrderImpl.allOrderItems.isEmpty());
-  }
-
-  /**
-   * Test {@link PromotableOrderImpl#buildPromotableOrderItemsList()}.
-   * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#buildPromotableOrderItemsList()}
-   */
-  @Test
-  public void testBuildPromotableOrderItemsList() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List PromotableOrderImpl.getDiscountableOrderItems(boolean)"})
+  public void testGetDiscountableOrderItemsWithBoolean_givenArrayListAddBundleOrderItemImpl() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
@@ -844,7 +608,411 @@ public class PromotableOrderImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
+    order.setTotalTax(new Money());
+    PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    // Act
+    promotableOrderImpl.getDiscountableOrderItems(true);
+
+    // Assert
+    List<PromotableOrderItem> allOrderItems = promotableOrderImpl.getAllOrderItems();
+    assertEquals(1, allOrderItems.size());
+    List<PromotableOrderItem> promotableOrderItemList = promotableOrderImpl.allOrderItems;
+    assertEquals(1, promotableOrderItemList.size());
+    assertSame(allOrderItems.get(0), promotableOrderItemList.get(0));
+    assertSame(promotableOrderImpl.allOrderItems, allOrderItems);
+  }
+
+  /**
+   * Test {@link PromotableOrderImpl#getDiscountableOrderItems(boolean)} with {@code boolean}.
+   * <ul>
+   *   <li>Given {@link OrderItemImpl} (default constructor) Auditable is {@link Auditable} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PromotableOrderImpl#getDiscountableOrderItems(boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List PromotableOrderImpl.getDiscountableOrderItems(boolean)"})
+  public void testGetDiscountableOrderItemsWithBoolean_givenOrderItemImplAuditableIsAuditable() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    Auditable auditable2 = new Auditable();
+    auditable2.setCreatedBy(1L);
+    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setUpdatedBy(1L);
+
+    OrderItemImpl orderItemImpl = new OrderItemImpl();
+    orderItemImpl.setAuditable(auditable2);
+    orderItemImpl.setCandidateItemOffers(new ArrayList<>());
+    orderItemImpl.setCartMessages(new ArrayList<>());
+    orderItemImpl.setChildOrderItems(new ArrayList<>());
+    orderItemImpl.setDiscountingAllowed(true);
+    orderItemImpl.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    orderItemImpl.setHasValidationError(true);
+    orderItemImpl.setId(1L);
+    orderItemImpl.setName("Name");
+    orderItemImpl.setOrder(new NullOrderImpl());
+    orderItemImpl.setOrderItemAdjustments(new ArrayList<>());
+    orderItemImpl.setOrderItemAttributes(new HashMap<>());
+    orderItemImpl.setOrderItemPriceDetails(new ArrayList<>());
+    orderItemImpl.setOrderItemQualifiers(new ArrayList<>());
+    orderItemImpl.setOrderItemType(OrderItemType.BASIC);
+    orderItemImpl.setParentOrderItem(new BundleOrderItemImpl());
+    orderItemImpl.setPersonalMessage(new PersonalMessageImpl());
+    orderItemImpl.setPrice(new Money());
+    orderItemImpl.setProratedOrderItemAdjustments(new ArrayList<>());
+    orderItemImpl.setQuantity(1);
+    orderItemImpl.setRetailPrice(new Money());
+    orderItemImpl.setRetailPriceOverride(true);
+    orderItemImpl.setSalePrice(new Money());
+    orderItemImpl.setSalePriceOverride(true);
+    orderItemImpl.setTaxable(true);
+    orderItemImpl.updateSaleAndRetailPrices();
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(orderItemImpl);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(orderItems);
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+    PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    // Act
+    promotableOrderImpl.getDiscountableOrderItems(true);
+
+    // Assert
+    List<PromotableOrderItem> allOrderItems = promotableOrderImpl.getAllOrderItems();
+    assertEquals(1, allOrderItems.size());
+    List<PromotableOrderItem> promotableOrderItemList = promotableOrderImpl.allOrderItems;
+    assertEquals(1, promotableOrderItemList.size());
+    assertSame(allOrderItems.get(0), promotableOrderItemList.get(0));
+    assertSame(promotableOrderImpl.allOrderItems, allOrderItems);
+  }
+
+  /**
+   * Test {@link PromotableOrderImpl#getDiscountableOrderItems()}.
+   * <ul>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link BundleOrderItemImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PromotableOrderImpl#getDiscountableOrderItems()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List PromotableOrderImpl.getDiscountableOrderItems()"})
+  public void testGetDiscountableOrderItems_givenArrayListAddBundleOrderItemImpl() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(new BundleOrderItemImpl());
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(orderItems);
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+    PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    // Act
+    promotableOrderImpl.getDiscountableOrderItems();
+
+    // Assert
+    List<PromotableOrderItem> allOrderItems = promotableOrderImpl.getAllOrderItems();
+    assertEquals(1, allOrderItems.size());
+    List<PromotableOrderItem> promotableOrderItemList = promotableOrderImpl.allOrderItems;
+    assertEquals(1, promotableOrderItemList.size());
+    assertSame(allOrderItems.get(0), promotableOrderItemList.get(0));
+    assertSame(promotableOrderImpl.allOrderItems, allOrderItems);
+  }
+
+  /**
+   * Test {@link PromotableOrderImpl#getDiscountableOrderItems()}.
+   * <ul>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link OrderItemPriceDetailImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PromotableOrderImpl#getDiscountableOrderItems()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List PromotableOrderImpl.getDiscountableOrderItems()"})
+  public void testGetDiscountableOrderItems_givenArrayListAddOrderItemPriceDetailImpl() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    Auditable auditable2 = new Auditable();
+    auditable2.setCreatedBy(1L);
+    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setUpdatedBy(1L);
+
+    ArrayList<OrderItemPriceDetail> orderItemPriceDetails = new ArrayList<>();
+    orderItemPriceDetails.add(new OrderItemPriceDetailImpl());
+
+    OrderItemImpl orderItemImpl = new OrderItemImpl();
+    orderItemImpl.setAuditable(auditable2);
+    orderItemImpl.setCandidateItemOffers(new ArrayList<>());
+    orderItemImpl.setCartMessages(new ArrayList<>());
+    orderItemImpl.setChildOrderItems(new ArrayList<>());
+    orderItemImpl.setDiscountingAllowed(true);
+    orderItemImpl.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    orderItemImpl.setHasValidationError(true);
+    orderItemImpl.setId(1L);
+    orderItemImpl.setName("Name");
+    orderItemImpl.setOrder(new NullOrderImpl());
+    orderItemImpl.setOrderItemAdjustments(new ArrayList<>());
+    orderItemImpl.setOrderItemAttributes(new HashMap<>());
+    orderItemImpl.setOrderItemPriceDetails(orderItemPriceDetails);
+    orderItemImpl.setOrderItemQualifiers(new ArrayList<>());
+    orderItemImpl.setOrderItemType(OrderItemType.BASIC);
+    orderItemImpl.setParentOrderItem(new BundleOrderItemImpl());
+    orderItemImpl.setPersonalMessage(new PersonalMessageImpl());
+    orderItemImpl.setPrice(new Money());
+    orderItemImpl.setProratedOrderItemAdjustments(new ArrayList<>());
+    orderItemImpl.setQuantity(1);
+    orderItemImpl.setRetailPrice(new Money());
+    orderItemImpl.setRetailPriceOverride(true);
+    orderItemImpl.setSalePrice(new Money());
+    orderItemImpl.setSalePriceOverride(true);
+    orderItemImpl.setTaxable(true);
+    orderItemImpl.updateSaleAndRetailPrices();
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(orderItemImpl);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(orderItems);
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+    PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    // Act
+    promotableOrderImpl.getDiscountableOrderItems();
+
+    // Assert
+    List<PromotableOrderItem> allOrderItems = promotableOrderImpl.getAllOrderItems();
+    assertEquals(1, allOrderItems.size());
+    List<PromotableOrderItem> promotableOrderItemList = promotableOrderImpl.allOrderItems;
+    assertEquals(1, promotableOrderItemList.size());
+    assertSame(allOrderItems.get(0), promotableOrderItemList.get(0));
+    assertSame(promotableOrderImpl.allOrderItems, allOrderItems);
+  }
+
+  /**
+   * Test {@link PromotableOrderImpl#getDiscountableOrderItems()}.
+   * <ul>
+   *   <li>Given {@link OrderItemImpl} (default constructor) Auditable is {@link Auditable} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PromotableOrderImpl#getDiscountableOrderItems()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List PromotableOrderImpl.getDiscountableOrderItems()"})
+  public void testGetDiscountableOrderItems_givenOrderItemImplAuditableIsAuditable() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    Auditable auditable2 = new Auditable();
+    auditable2.setCreatedBy(1L);
+    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setUpdatedBy(1L);
+
+    OrderItemImpl orderItemImpl = new OrderItemImpl();
+    orderItemImpl.setAuditable(auditable2);
+    orderItemImpl.setCandidateItemOffers(new ArrayList<>());
+    orderItemImpl.setCartMessages(new ArrayList<>());
+    orderItemImpl.setChildOrderItems(new ArrayList<>());
+    orderItemImpl.setDiscountingAllowed(true);
+    orderItemImpl.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    orderItemImpl.setHasValidationError(true);
+    orderItemImpl.setId(1L);
+    orderItemImpl.setName("Name");
+    orderItemImpl.setOrder(new NullOrderImpl());
+    orderItemImpl.setOrderItemAdjustments(new ArrayList<>());
+    orderItemImpl.setOrderItemAttributes(new HashMap<>());
+    orderItemImpl.setOrderItemPriceDetails(new ArrayList<>());
+    orderItemImpl.setOrderItemQualifiers(new ArrayList<>());
+    orderItemImpl.setOrderItemType(OrderItemType.BASIC);
+    orderItemImpl.setParentOrderItem(new BundleOrderItemImpl());
+    orderItemImpl.setPersonalMessage(new PersonalMessageImpl());
+    orderItemImpl.setPrice(new Money());
+    orderItemImpl.setProratedOrderItemAdjustments(new ArrayList<>());
+    orderItemImpl.setQuantity(1);
+    orderItemImpl.setRetailPrice(new Money());
+    orderItemImpl.setRetailPriceOverride(true);
+    orderItemImpl.setSalePrice(new Money());
+    orderItemImpl.setSalePriceOverride(true);
+    orderItemImpl.setTaxable(true);
+    orderItemImpl.updateSaleAndRetailPrices();
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(orderItemImpl);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(orderItems);
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+    PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    // Act
+    promotableOrderImpl.getDiscountableOrderItems();
+
+    // Assert
+    List<PromotableOrderItem> allOrderItems = promotableOrderImpl.getAllOrderItems();
+    assertEquals(1, allOrderItems.size());
+    List<PromotableOrderItem> promotableOrderItemList = promotableOrderImpl.allOrderItems;
+    assertEquals(1, promotableOrderItemList.size());
+    assertSame(allOrderItems.get(0), promotableOrderItemList.get(0));
+    assertSame(promotableOrderImpl.allOrderItems, allOrderItems);
+  }
+
+  /**
+   * Test {@link PromotableOrderImpl#buildPromotableOrderItemsList()}.
+   * <ul>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link BundleOrderItemImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PromotableOrderImpl#buildPromotableOrderItemsList()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List PromotableOrderImpl.buildPromotableOrderItemsList()"})
+  public void testBuildPromotableOrderItemsList_givenArrayListAddBundleOrderItemImpl() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(new BundleOrderItemImpl());
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(orderItems);
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
     order.setTotalTax(new Money());
     PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
         new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
@@ -864,21 +1032,118 @@ public class PromotableOrderImplDiffblueTest {
   /**
    * Test {@link PromotableOrderImpl#buildPromotableOrderItemsList()}.
    * <ul>
-   *   <li>Given {@link Auditable} (default constructor) DateCreated is
-   * {@link java.sql.Date}.</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link OrderItemPriceDetailImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#buildPromotableOrderItemsList()}
+   * Method under test: {@link PromotableOrderImpl#buildPromotableOrderItemsList()}
    */
   @Test
-  public void testBuildPromotableOrderItemsList_givenAuditableDateCreatedIsDate() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List PromotableOrderImpl.buildPromotableOrderItemsList()"})
+  public void testBuildPromotableOrderItemsList_givenArrayListAddOrderItemPriceDetailImpl() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(mock(java.sql.Date.class));
-    auditable.setDateUpdated(
-        java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    Auditable auditable2 = new Auditable();
+    auditable2.setCreatedBy(1L);
+    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setUpdatedBy(1L);
+
+    ArrayList<OrderItemPriceDetail> orderItemPriceDetails = new ArrayList<>();
+    orderItemPriceDetails.add(new OrderItemPriceDetailImpl());
+
+    OrderItemImpl orderItemImpl = new OrderItemImpl();
+    orderItemImpl.setAuditable(auditable2);
+    orderItemImpl.setCandidateItemOffers(new ArrayList<>());
+    orderItemImpl.setCartMessages(new ArrayList<>());
+    orderItemImpl.setChildOrderItems(new ArrayList<>());
+    orderItemImpl.setDiscountingAllowed(true);
+    orderItemImpl.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    orderItemImpl.setHasValidationError(true);
+    orderItemImpl.setId(1L);
+    orderItemImpl.setName("Name");
+    orderItemImpl.setOrder(new NullOrderImpl());
+    orderItemImpl.setOrderItemAdjustments(new ArrayList<>());
+    orderItemImpl.setOrderItemAttributes(new HashMap<>());
+    orderItemImpl.setOrderItemPriceDetails(orderItemPriceDetails);
+    orderItemImpl.setOrderItemQualifiers(new ArrayList<>());
+    orderItemImpl.setOrderItemType(OrderItemType.BASIC);
+    orderItemImpl.setParentOrderItem(new BundleOrderItemImpl());
+    orderItemImpl.setPersonalMessage(new PersonalMessageImpl());
+    orderItemImpl.setPrice(new Money());
+    orderItemImpl.setProratedOrderItemAdjustments(new ArrayList<>());
+    orderItemImpl.setQuantity(1);
+    orderItemImpl.setRetailPrice(new Money());
+    orderItemImpl.setRetailPriceOverride(true);
+    orderItemImpl.setSalePrice(new Money());
+    orderItemImpl.setSalePriceOverride(true);
+    orderItemImpl.setTaxable(true);
+    orderItemImpl.updateSaleAndRetailPrices();
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(orderItemImpl);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(orderItems);
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+    PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    // Act
+    promotableOrderImpl.buildPromotableOrderItemsList();
+
+    // Assert
+    List<PromotableOrderItem> allOrderItems = promotableOrderImpl.getAllOrderItems();
+    assertEquals(1, allOrderItems.size());
+    List<PromotableOrderItem> promotableOrderItemList = promotableOrderImpl.allOrderItems;
+    assertEquals(1, promotableOrderItemList.size());
+    assertSame(allOrderItems.get(0), promotableOrderItemList.get(0));
+    assertSame(promotableOrderImpl.allOrderItems, allOrderItems);
+  }
+
+  /**
+   * Test {@link PromotableOrderImpl#buildPromotableOrderItemsList()}.
+   * <ul>
+   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.</li>
+   *   <li>Then return Empty.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PromotableOrderImpl#buildPromotableOrderItemsList()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List PromotableOrderImpl.buildPromotableOrderItemsList()"})
+  public void testBuildPromotableOrderItemsList_givenAuditableCreatedByIsOne_thenReturnEmpty() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     OrderImpl order = new OrderImpl();
@@ -899,12 +1164,10 @@ public class PromotableOrderImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order
-        .setSubmitDate(java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
         new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
@@ -918,20 +1181,58 @@ public class PromotableOrderImplDiffblueTest {
   /**
    * Test {@link PromotableOrderImpl#buildPromotableOrderItemsList()}.
    * <ul>
-   *   <li>Then return Empty.</li>
+   *   <li>Given {@link OrderItemImpl} (default constructor) Auditable is {@link Auditable} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#buildPromotableOrderItemsList()}
+   * Method under test: {@link PromotableOrderImpl#buildPromotableOrderItemsList()}
    */
   @Test
-  public void testBuildPromotableOrderItemsList_thenReturnEmpty() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List PromotableOrderImpl.buildPromotableOrderItemsList()"})
+  public void testBuildPromotableOrderItemsList_givenOrderItemImplAuditableIsAuditable() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
     auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
+
+    Auditable auditable2 = new Auditable();
+    auditable2.setCreatedBy(1L);
+    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setUpdatedBy(1L);
+
+    OrderItemImpl orderItemImpl = new OrderItemImpl();
+    orderItemImpl.setAuditable(auditable2);
+    orderItemImpl.setCandidateItemOffers(new ArrayList<>());
+    orderItemImpl.setCartMessages(new ArrayList<>());
+    orderItemImpl.setChildOrderItems(new ArrayList<>());
+    orderItemImpl.setDiscountingAllowed(true);
+    orderItemImpl.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    orderItemImpl.setHasValidationError(true);
+    orderItemImpl.setId(1L);
+    orderItemImpl.setName("Name");
+    orderItemImpl.setOrder(new NullOrderImpl());
+    orderItemImpl.setOrderItemAdjustments(new ArrayList<>());
+    orderItemImpl.setOrderItemAttributes(new HashMap<>());
+    orderItemImpl.setOrderItemPriceDetails(new ArrayList<>());
+    orderItemImpl.setOrderItemQualifiers(new ArrayList<>());
+    orderItemImpl.setOrderItemType(OrderItemType.BASIC);
+    orderItemImpl.setParentOrderItem(new BundleOrderItemImpl());
+    orderItemImpl.setPersonalMessage(new PersonalMessageImpl());
+    orderItemImpl.setPrice(new Money());
+    orderItemImpl.setProratedOrderItemAdjustments(new ArrayList<>());
+    orderItemImpl.setQuantity(1);
+    orderItemImpl.setRetailPrice(new Money());
+    orderItemImpl.setRetailPriceOverride(true);
+    orderItemImpl.setSalePrice(new Money());
+    orderItemImpl.setSalePriceOverride(true);
+    orderItemImpl.setTaxable(true);
+    orderItemImpl.updateSaleAndRetailPrices();
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(orderItemImpl);
 
     OrderImpl order = new OrderImpl();
     order.setAdditionalOfferInformation(new HashMap<>());
@@ -945,7 +1246,7 @@ public class PromotableOrderImplDiffblueTest {
     order.setLocale(new LocaleImpl());
     order.setName("Name");
     order.setOrderAttributes(new HashMap<>());
-    order.setOrderItems(new ArrayList<>());
+    order.setOrderItems(orderItems);
     order.setOrderMessages(new ArrayList<>());
     order.setOrderNumber("42");
     order.setPayments(new ArrayList<>());
@@ -955,173 +1256,20 @@ public class PromotableOrderImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
         new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
-
-    // Act and Assert
-    assertTrue(promotableOrderImpl.buildPromotableOrderItemsList().isEmpty());
-    assertTrue(promotableOrderImpl.getAllOrderItems().isEmpty());
-    assertTrue(promotableOrderImpl.allOrderItems.isEmpty());
-  }
-
-  /**
-   * Test {@link PromotableOrderImpl#addPromotableOrderItem(OrderItem, List)}.
-   * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#addPromotableOrderItem(OrderItem, List)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddPromotableOrderItem() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //       at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:195)
-    //       at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1655)
-    //       at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:484)
-    //       at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:474)
-    //       at java.base/java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:913)
-    //       at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
-    //       at java.base/java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:578)
-    //   org.mockito.exceptions.base.MockitoException: 
-    //   Cannot mock/spy boolean
-    //   Mockito cannot mock/spy because :
-    //    - primitive type
-    //       at org.springframework.boot.test.mock.mockito.MockDefinition.createMock(MockDefinition.java:158)
-    //       at org.springframework.boot.test.mock.mockito.MockitoPostProcessor.registerMock(MockitoPostProcessor.java:185)
-    //       at org.springframework.boot.test.mock.mockito.MockitoPostProcessor.register(MockitoPostProcessor.java:167)
-    //       at org.springframework.boot.test.mock.mockito.MockitoPostProcessor.postProcessBeanFactory(MockitoPostProcessor.java:141)
-    //       at org.springframework.boot.test.mock.mockito.MockitoPostProcessor.postProcessBeanFactory(MockitoPostProcessor.java:129)
-    //       at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(PostProcessorRegistrationDelegate.java:325)
-    //       at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(PostProcessorRegistrationDelegate.java:191)
-    //       at org.springframework.context.support.AbstractApplicationContext.invokeBeanFactoryPostProcessors(AbstractApplicationContext.java:756)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:573)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //       at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:195)
-    //       at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1655)
-    //       at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:484)
-    //       at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:474)
-    //       at java.base/java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:913)
-    //       at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
-    //       at java.base/java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:578)
-    //   See https://diff.blue/R026 to resolve this issue.
-
-    // Arrange
-    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
 
     // Act
-    promotableOrderImpl.addPromotableOrderItem(orderItem, new ArrayList<>());
-  }
+    promotableOrderImpl.buildPromotableOrderItemsList();
 
-  /**
-   * Test {@link PromotableOrderImpl#getFulfillmentGroups()}.
-   * <p>
-   * Method under test: {@link PromotableOrderImpl#getFulfillmentGroups()}
-   */
-  @Test
-  public void testGetFulfillmentGroups() {
-    // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    ArrayList<FulfillmentGroup> fulfillmentGroups = new ArrayList<>();
-    fulfillmentGroups.add(new FulfillmentGroupImpl());
-
-    OrderImpl order = new OrderImpl();
-    order.setAdditionalOfferInformation(new HashMap<>());
-    order.setAuditable(auditable);
-    order.setCandidateOrderOffers(new ArrayList<>());
-    order.setCurrency(new BroadleafCurrencyImpl());
-    order.setCustomer(new CustomerImpl());
-    order.setEmailAddress("42 Main St");
-    order.setFulfillmentGroups(fulfillmentGroups);
-    order.setId(1L);
-    order.setLocale(new LocaleImpl());
-    order.setName("Name");
-    order.setOrderAttributes(new HashMap<>());
-    order.setOrderItems(new ArrayList<>());
-    order.setOrderMessages(new ArrayList<>());
-    order.setOrderNumber("42");
-    order.setPayments(new ArrayList<>());
-    order.setStatus(OrderStatus.ARCHIVED);
-    order.setSubTotal(new Money());
-    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    order.setTaxOverride(true);
-    order.setTotal(new Money());
-    order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
-    order.setTotalTax(new Money());
-    PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
-        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
-
-    // Act and Assert
-    assertEquals(promotableOrderImpl.fulfillmentGroups, promotableOrderImpl.getFulfillmentGroups());
-  }
-
-  /**
-   * Test {@link PromotableOrderImpl#getFulfillmentGroups()}.
-   * <ul>
-   *   <li>Given {@link Auditable} (default constructor) DateCreated is
-   * {@link java.sql.Date}.</li>
-   *   <li>Then return Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PromotableOrderImpl#getFulfillmentGroups()}
-   */
-  @Test
-  public void testGetFulfillmentGroups_givenAuditableDateCreatedIsDate_thenReturnEmpty() {
-    // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(mock(java.sql.Date.class));
-    auditable.setDateUpdated(
-        java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    OrderImpl order = new OrderImpl();
-    order.setAdditionalOfferInformation(new HashMap<>());
-    order.setAuditable(auditable);
-    order.setCandidateOrderOffers(new ArrayList<>());
-    order.setCurrency(new BroadleafCurrencyImpl());
-    order.setCustomer(new CustomerImpl());
-    order.setEmailAddress("42 Main St");
-    order.setFulfillmentGroups(new ArrayList<>());
-    order.setId(1L);
-    order.setLocale(new LocaleImpl());
-    order.setName("Name");
-    order.setOrderAttributes(new HashMap<>());
-    order.setOrderItems(new ArrayList<>());
-    order.setOrderMessages(new ArrayList<>());
-    order.setOrderNumber("42");
-    order.setPayments(new ArrayList<>());
-    order.setStatus(OrderStatus.ARCHIVED);
-    order.setSubTotal(new Money());
-    order
-        .setSubmitDate(java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    order.setTaxOverride(true);
-    order.setTotal(new Money());
-    order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
-    order.setTotalTax(new Money());
-
-    // Act and Assert
-    assertTrue((new PromotableOrderImpl(order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true))
-        .getFulfillmentGroups()
-        .isEmpty());
+    // Assert
+    List<PromotableOrderItem> allOrderItems = promotableOrderImpl.getAllOrderItems();
+    assertEquals(1, allOrderItems.size());
+    List<PromotableOrderItem> promotableOrderItemList = promotableOrderImpl.allOrderItems;
+    assertEquals(1, promotableOrderItemList.size());
+    assertSame(allOrderItems.get(0), promotableOrderItemList.get(0));
+    assertSame(promotableOrderImpl.allOrderItems, allOrderItems);
   }
 
   /**
@@ -1133,6 +1281,8 @@ public class PromotableOrderImplDiffblueTest {
    * Method under test: {@link PromotableOrderImpl#getFulfillmentGroups()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List PromotableOrderImpl.getFulfillmentGroups()"})
   public void testGetFulfillmentGroups_thenReturnEmpty() {
     // Arrange
     Auditable auditable = new Auditable();
@@ -1163,32 +1313,12 @@ public class PromotableOrderImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
 
     // Act and Assert
     assertTrue((new PromotableOrderImpl(order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true))
         .getFulfillmentGroups()
         .isEmpty());
-  }
-
-  /**
-   * Test {@link PromotableOrderImpl#isHasOrderAdjustments()}.
-   * <p>
-   * Method under test: {@link PromotableOrderImpl#isHasOrderAdjustments()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsHasOrderAdjustments() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange
-    NullOrderImpl order = new NullOrderImpl();
-
-    // Act
-    (new PromotableOrderImpl(order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true))
-        .isHasOrderAdjustments();
   }
 
   /**
@@ -1203,6 +1333,10 @@ public class PromotableOrderImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List PromotableOrderImpl.getCandidateOrderAdjustments()",
+      "Map PromotableOrderImpl.getExtraDataMap()", "Order PromotableOrderImpl.getOrder()",
+      "boolean PromotableOrderImpl.isIncludeOrderAndItemAdjustments()"})
   public void testGettersAndSetters() {
     // Arrange
     NullOrderImpl order = new NullOrderImpl();
@@ -1224,71 +1358,13 @@ public class PromotableOrderImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link PromotableOrderImpl#addCandidateOrderAdjustment(PromotableOrderAdjustment)}.
-   * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#addCandidateOrderAdjustment(PromotableOrderAdjustment)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddCandidateOrderAdjustment() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    NullOrderImpl order = new NullOrderImpl();
-    PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
-        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
-    NullOrderImpl order2 = new NullOrderImpl();
-    PromotableOrderImpl promotableOrder = new PromotableOrderImpl(order2,
-        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
-
-    PromotableCandidateOrderOfferImpl promotableCandidateOrderOffer = new PromotableCandidateOrderOfferImpl(
-        promotableOrder, new OfferImpl());
-
-    NullOrderImpl order3 = new NullOrderImpl();
-
-    // Act
-    promotableOrderImpl.addCandidateOrderAdjustment(new PromotableOrderAdjustmentImpl(promotableCandidateOrderOffer,
-        new PromotableOrderImpl(order3, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true)));
-  }
-
-  /**
-   * Test
-   * {@link PromotableOrderImpl#addCandidateOrderAdjustment(PromotableOrderAdjustment)}.
-   * <ul>
-   *   <li>When {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#addCandidateOrderAdjustment(PromotableOrderAdjustment)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddCandidateOrderAdjustment_whenNull() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange
-    NullOrderImpl order = new NullOrderImpl();
-
-    // Act
-    (new PromotableOrderImpl(order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true))
-        .addCandidateOrderAdjustment(null);
-  }
-
-  /**
    * Test {@link PromotableOrderImpl#removeAllCandidateOfferAdjustments()}.
    * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#removeAllCandidateOfferAdjustments()}
+   * Method under test: {@link PromotableOrderImpl#removeAllCandidateOfferAdjustments()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PromotableOrderImpl.removeAllCandidateOfferAdjustments()"})
   public void testRemoveAllCandidateOfferAdjustments() {
     // Arrange
     Auditable auditable = new Auditable();
@@ -1319,7 +1395,6 @@ public class PromotableOrderImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
         new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
@@ -1336,10 +1411,11 @@ public class PromotableOrderImplDiffblueTest {
   /**
    * Test {@link PromotableOrderImpl#removeAllCandidateOfferAdjustments()}.
    * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#removeAllCandidateOfferAdjustments()}
+   * Method under test: {@link PromotableOrderImpl#removeAllCandidateOfferAdjustments()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PromotableOrderImpl.removeAllCandidateOfferAdjustments()"})
   public void testRemoveAllCandidateOfferAdjustments2() {
     // Arrange
     Auditable auditable = new Auditable();
@@ -1373,7 +1449,6 @@ public class PromotableOrderImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
         new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
@@ -1389,12 +1464,16 @@ public class PromotableOrderImplDiffblueTest {
 
   /**
    * Test {@link PromotableOrderImpl#removeAllCandidateOfferAdjustments()}.
+   * <ul>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link BundleOrderItemImpl} (default constructor).</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#removeAllCandidateOfferAdjustments()}
+   * Method under test: {@link PromotableOrderImpl#removeAllCandidateOfferAdjustments()}
    */
   @Test
-  public void testRemoveAllCandidateOfferAdjustments3() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PromotableOrderImpl.removeAllCandidateOfferAdjustments()"})
+  public void testRemoveAllCandidateOfferAdjustments_givenArrayListAddBundleOrderItemImpl() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
@@ -1427,7 +1506,6 @@ public class PromotableOrderImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
         new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
@@ -1447,22 +1525,58 @@ public class PromotableOrderImplDiffblueTest {
   /**
    * Test {@link PromotableOrderImpl#removeAllCandidateOfferAdjustments()}.
    * <ul>
-   *   <li>Given {@link Auditable} (default constructor) DateCreated is
-   * {@link java.sql.Date}.</li>
+   *   <li>Given {@link OrderItemImpl} (default constructor) Auditable is {@link Auditable} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#removeAllCandidateOfferAdjustments()}
+   * Method under test: {@link PromotableOrderImpl#removeAllCandidateOfferAdjustments()}
    */
   @Test
-  public void testRemoveAllCandidateOfferAdjustments_givenAuditableDateCreatedIsDate() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PromotableOrderImpl.removeAllCandidateOfferAdjustments()"})
+  public void testRemoveAllCandidateOfferAdjustments_givenOrderItemImplAuditableIsAuditable() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(mock(java.sql.Date.class));
-    auditable.setDateUpdated(
-        java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
+
+    Auditable auditable2 = new Auditable();
+    auditable2.setCreatedBy(1L);
+    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setUpdatedBy(1L);
+
+    OrderItemImpl orderItemImpl = new OrderItemImpl();
+    orderItemImpl.setAuditable(auditable2);
+    orderItemImpl.setCandidateItemOffers(new ArrayList<>());
+    orderItemImpl.setCartMessages(new ArrayList<>());
+    orderItemImpl.setChildOrderItems(new ArrayList<>());
+    orderItemImpl.setDiscountingAllowed(true);
+    orderItemImpl.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    orderItemImpl.setHasValidationError(true);
+    orderItemImpl.setId(1L);
+    orderItemImpl.setName("Name");
+    orderItemImpl.setOrder(new NullOrderImpl());
+    orderItemImpl.setOrderItemAdjustments(new ArrayList<>());
+    orderItemImpl.setOrderItemAttributes(new HashMap<>());
+    orderItemImpl.setOrderItemPriceDetails(new ArrayList<>());
+    orderItemImpl.setOrderItemQualifiers(new ArrayList<>());
+    orderItemImpl.setOrderItemType(OrderItemType.BASIC);
+    orderItemImpl.setParentOrderItem(new BundleOrderItemImpl());
+    orderItemImpl.setPersonalMessage(new PersonalMessageImpl());
+    orderItemImpl.setPrice(new Money());
+    orderItemImpl.setProratedOrderItemAdjustments(new ArrayList<>());
+    orderItemImpl.setQuantity(1);
+    orderItemImpl.setRetailPrice(new Money());
+    orderItemImpl.setRetailPriceOverride(true);
+    orderItemImpl.setSalePrice(new Money());
+    orderItemImpl.setSalePriceOverride(true);
+    orderItemImpl.setTaxable(true);
+    orderItemImpl.updateSaleAndRetailPrices();
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(orderItemImpl);
 
     OrderImpl order = new OrderImpl();
     order.setAdditionalOfferInformation(new HashMap<>());
@@ -1476,18 +1590,16 @@ public class PromotableOrderImplDiffblueTest {
     order.setLocale(new LocaleImpl());
     order.setName("Name");
     order.setOrderAttributes(new HashMap<>());
-    order.setOrderItems(new ArrayList<>());
+    order.setOrderItems(orderItems);
     order.setOrderMessages(new ArrayList<>());
     order.setOrderNumber("42");
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order
-        .setSubmitDate(java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
         new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
@@ -1496,38 +1608,22 @@ public class PromotableOrderImplDiffblueTest {
     promotableOrderImpl.removeAllCandidateOfferAdjustments();
 
     // Assert
-    assertTrue(promotableOrderImpl.getAllOrderItems().isEmpty());
-    assertTrue(promotableOrderImpl.getFulfillmentGroups().isEmpty());
-    assertTrue(promotableOrderImpl.allOrderItems.isEmpty());
-  }
-
-  /**
-   * Test {@link PromotableOrderImpl#removeAllCandidateOrderOfferAdjustments()}.
-   * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#removeAllCandidateOrderOfferAdjustments()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testRemoveAllCandidateOrderOfferAdjustments() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange
-    NullOrderImpl order = new NullOrderImpl();
-
-    // Act
-    (new PromotableOrderImpl(order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true))
-        .removeAllCandidateOrderOfferAdjustments();
+    List<PromotableOrderItem> allOrderItems = promotableOrderImpl.getAllOrderItems();
+    assertEquals(1, allOrderItems.size());
+    List<PromotableOrderItem> promotableOrderItemList = promotableOrderImpl.allOrderItems;
+    assertEquals(1, promotableOrderItemList.size());
+    assertSame(allOrderItems.get(0), promotableOrderItemList.get(0));
+    assertSame(promotableOrderImpl.allOrderItems, allOrderItems);
   }
 
   /**
    * Test {@link PromotableOrderImpl#removeAllCandidateItemOfferAdjustments()}.
    * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#removeAllCandidateItemOfferAdjustments()}
+   * Method under test: {@link PromotableOrderImpl#removeAllCandidateItemOfferAdjustments()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PromotableOrderImpl.removeAllCandidateItemOfferAdjustments()"})
   public void testRemoveAllCandidateItemOfferAdjustments() {
     // Arrange
     Auditable auditable = new Auditable();
@@ -1558,7 +1654,6 @@ public class PromotableOrderImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
         new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
@@ -1568,17 +1663,263 @@ public class PromotableOrderImplDiffblueTest {
 
     // Assert
     assertTrue(promotableOrderImpl.getAllOrderItems().isEmpty());
+    assertTrue(promotableOrderImpl.getDiscountableOrderItems().isEmpty());
     assertTrue(promotableOrderImpl.allOrderItems.isEmpty());
+    assertTrue(promotableOrderImpl.discountableOrderItems.isEmpty());
   }
 
   /**
    * Test {@link PromotableOrderImpl#removeAllCandidateItemOfferAdjustments()}.
    * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#removeAllCandidateItemOfferAdjustments()}
+   * Method under test: {@link PromotableOrderImpl#removeAllCandidateItemOfferAdjustments()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PromotableOrderImpl.removeAllCandidateItemOfferAdjustments()"})
   public void testRemoveAllCandidateItemOfferAdjustments2() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    Auditable auditable2 = new Auditable();
+    auditable2.setCreatedBy(1L);
+    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setUpdatedBy(1L);
+
+    OrderItemImpl orderItemImpl = new OrderItemImpl();
+    orderItemImpl.setAuditable(auditable2);
+    orderItemImpl.setCandidateItemOffers(new ArrayList<>());
+    orderItemImpl.setCartMessages(new ArrayList<>());
+    orderItemImpl.setChildOrderItems(new ArrayList<>());
+    orderItemImpl.setDiscountingAllowed(true);
+    orderItemImpl.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    orderItemImpl.setHasValidationError(true);
+    orderItemImpl.setId(1L);
+    orderItemImpl.setName("Name");
+    orderItemImpl.setOrder(new NullOrderImpl());
+    orderItemImpl.setOrderItemAdjustments(new ArrayList<>());
+    orderItemImpl.setOrderItemAttributes(new HashMap<>());
+    orderItemImpl.setOrderItemPriceDetails(new ArrayList<>());
+    orderItemImpl.setOrderItemQualifiers(new ArrayList<>());
+    orderItemImpl.setOrderItemType(OrderItemType.BASIC);
+    orderItemImpl.setParentOrderItem(new BundleOrderItemImpl());
+    orderItemImpl.setPersonalMessage(new PersonalMessageImpl());
+    orderItemImpl.setPrice(new Money());
+    orderItemImpl.setProratedOrderItemAdjustments(new ArrayList<>());
+    orderItemImpl.setQuantity(1);
+    orderItemImpl.setRetailPrice(new Money());
+    orderItemImpl.setRetailPriceOverride(true);
+    orderItemImpl.setSalePrice(new Money());
+    orderItemImpl.setSalePriceOverride(true);
+    orderItemImpl.setTaxable(true);
+    orderItemImpl.updateSaleAndRetailPrices();
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(orderItemImpl);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(orderItems);
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+    PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    // Act
+    promotableOrderImpl.removeAllCandidateItemOfferAdjustments();
+
+    // Assert
+    List<PromotableOrderItem> allOrderItems = promotableOrderImpl.getAllOrderItems();
+    assertEquals(1, allOrderItems.size());
+    List<PromotableOrderItem> promotableOrderItemList = promotableOrderImpl.allOrderItems;
+    assertEquals(1, promotableOrderItemList.size());
+    assertSame(allOrderItems.get(0), promotableOrderItemList.get(0));
+    assertSame(promotableOrderImpl.allOrderItems, allOrderItems);
+  }
+
+  /**
+   * Test {@link PromotableOrderImpl#removeAllCandidateItemOfferAdjustments()}.
+   * <p>
+   * Method under test: {@link PromotableOrderImpl#removeAllCandidateItemOfferAdjustments()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PromotableOrderImpl.removeAllCandidateItemOfferAdjustments()"})
+  public void testRemoveAllCandidateItemOfferAdjustments3() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(new OrderItemImpl());
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(orderItems);
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+    PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    // Act
+    promotableOrderImpl.removeAllCandidateItemOfferAdjustments();
+
+    // Assert
+    List<PromotableOrderItem> discountableOrderItems = promotableOrderImpl.getDiscountableOrderItems();
+    assertEquals(1, discountableOrderItems.size());
+    assertEquals(1, promotableOrderImpl.discountableOrderItems.size());
+    assertSame(promotableOrderImpl.discountableOrderItems, discountableOrderItems);
+  }
+
+  /**
+   * Test {@link PromotableOrderImpl#removeAllCandidateItemOfferAdjustments()}.
+   * <p>
+   * Method under test: {@link PromotableOrderImpl#removeAllCandidateItemOfferAdjustments()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PromotableOrderImpl.removeAllCandidateItemOfferAdjustments()"})
+  public void testRemoveAllCandidateItemOfferAdjustments4() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    Auditable auditable2 = new Auditable();
+    auditable2.setCreatedBy(1L);
+    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setUpdatedBy(1L);
+
+    ArrayList<OrderItemPriceDetail> orderItemPriceDetails = new ArrayList<>();
+    orderItemPriceDetails.add(new OrderItemPriceDetailImpl());
+
+    OrderItemImpl orderItemImpl = new OrderItemImpl();
+    orderItemImpl.setAuditable(auditable2);
+    orderItemImpl.setCandidateItemOffers(new ArrayList<>());
+    orderItemImpl.setCartMessages(new ArrayList<>());
+    orderItemImpl.setChildOrderItems(new ArrayList<>());
+    orderItemImpl.setDiscountingAllowed(true);
+    orderItemImpl.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    orderItemImpl.setHasValidationError(true);
+    orderItemImpl.setId(1L);
+    orderItemImpl.setName("Name");
+    orderItemImpl.setOrder(new NullOrderImpl());
+    orderItemImpl.setOrderItemAdjustments(new ArrayList<>());
+    orderItemImpl.setOrderItemAttributes(new HashMap<>());
+    orderItemImpl.setOrderItemPriceDetails(orderItemPriceDetails);
+    orderItemImpl.setOrderItemQualifiers(new ArrayList<>());
+    orderItemImpl.setOrderItemType(OrderItemType.BASIC);
+    orderItemImpl.setParentOrderItem(new BundleOrderItemImpl());
+    orderItemImpl.setPersonalMessage(new PersonalMessageImpl());
+    orderItemImpl.setPrice(new Money());
+    orderItemImpl.setProratedOrderItemAdjustments(new ArrayList<>());
+    orderItemImpl.setQuantity(1);
+    orderItemImpl.setRetailPrice(new Money());
+    orderItemImpl.setRetailPriceOverride(true);
+    orderItemImpl.setSalePrice(new Money());
+    orderItemImpl.setSalePriceOverride(true);
+    orderItemImpl.setTaxable(true);
+    orderItemImpl.updateSaleAndRetailPrices();
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(orderItemImpl);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(orderItems);
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+    PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    // Act
+    promotableOrderImpl.removeAllCandidateItemOfferAdjustments();
+
+    // Assert
+    List<PromotableOrderItem> allOrderItems = promotableOrderImpl.getAllOrderItems();
+    assertEquals(1, allOrderItems.size());
+    List<PromotableOrderItem> promotableOrderItemList = promotableOrderImpl.allOrderItems;
+    assertEquals(1, promotableOrderItemList.size());
+    assertSame(allOrderItems.get(0), promotableOrderItemList.get(0));
+    assertSame(promotableOrderImpl.allOrderItems, allOrderItems);
+  }
+
+  /**
+   * Test {@link PromotableOrderImpl#removeAllCandidateItemOfferAdjustments()}.
+   * <ul>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link BundleOrderItemImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PromotableOrderImpl#removeAllCandidateItemOfferAdjustments()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PromotableOrderImpl.removeAllCandidateItemOfferAdjustments()"})
+  public void testRemoveAllCandidateItemOfferAdjustments_givenArrayListAddBundleOrderItemImpl() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
@@ -1611,7 +1952,6 @@ public class PromotableOrderImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
         new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
@@ -1629,69 +1969,13 @@ public class PromotableOrderImplDiffblueTest {
   }
 
   /**
-   * Test {@link PromotableOrderImpl#removeAllCandidateItemOfferAdjustments()}.
-   * <ul>
-   *   <li>Given {@link Auditable} (default constructor) DateCreated is
-   * {@link java.sql.Date}.</li>
-   * </ul>
+   * Test {@link PromotableOrderImpl#removeAllCandidateFulfillmentOfferAdjustments()}.
    * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#removeAllCandidateItemOfferAdjustments()}
+   * Method under test: {@link PromotableOrderImpl#removeAllCandidateFulfillmentOfferAdjustments()}
    */
   @Test
-  public void testRemoveAllCandidateItemOfferAdjustments_givenAuditableDateCreatedIsDate() {
-    // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(mock(java.sql.Date.class));
-    auditable.setDateUpdated(
-        java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    OrderImpl order = new OrderImpl();
-    order.setAdditionalOfferInformation(new HashMap<>());
-    order.setAuditable(auditable);
-    order.setCandidateOrderOffers(new ArrayList<>());
-    order.setCurrency(new BroadleafCurrencyImpl());
-    order.setCustomer(new CustomerImpl());
-    order.setEmailAddress("42 Main St");
-    order.setFulfillmentGroups(new ArrayList<>());
-    order.setId(1L);
-    order.setLocale(new LocaleImpl());
-    order.setName("Name");
-    order.setOrderAttributes(new HashMap<>());
-    order.setOrderItems(new ArrayList<>());
-    order.setOrderMessages(new ArrayList<>());
-    order.setOrderNumber("42");
-    order.setPayments(new ArrayList<>());
-    order.setStatus(OrderStatus.ARCHIVED);
-    order.setSubTotal(new Money());
-    order
-        .setSubmitDate(java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    order.setTaxOverride(true);
-    order.setTotal(new Money());
-    order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
-    order.setTotalTax(new Money());
-    PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
-        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
-
-    // Act
-    promotableOrderImpl.removeAllCandidateItemOfferAdjustments();
-
-    // Assert
-    assertTrue(promotableOrderImpl.getAllOrderItems().isEmpty());
-    assertTrue(promotableOrderImpl.allOrderItems.isEmpty());
-  }
-
-  /**
-   * Test
-   * {@link PromotableOrderImpl#removeAllCandidateFulfillmentOfferAdjustments()}.
-   * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#removeAllCandidateFulfillmentOfferAdjustments()}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PromotableOrderImpl.removeAllCandidateFulfillmentOfferAdjustments()"})
   public void testRemoveAllCandidateFulfillmentOfferAdjustments() {
     // Arrange
     Auditable auditable = new Auditable();
@@ -1722,7 +2006,6 @@ public class PromotableOrderImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
         new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
@@ -1730,71 +2013,19 @@ public class PromotableOrderImplDiffblueTest {
     // Act
     promotableOrderImpl.removeAllCandidateFulfillmentOfferAdjustments();
 
-    // Assert
+    // Assert that nothing has changed
     assertTrue(promotableOrderImpl.getFulfillmentGroups().isEmpty());
   }
 
   /**
-   * Test
-   * {@link PromotableOrderImpl#removeAllCandidateFulfillmentOfferAdjustments()}.
+   * Test {@link PromotableOrderImpl#removeAllCandidateFulfillmentOfferAdjustments()}.
    * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#removeAllCandidateFulfillmentOfferAdjustments()}
+   * Method under test: {@link PromotableOrderImpl#removeAllCandidateFulfillmentOfferAdjustments()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PromotableOrderImpl.removeAllCandidateFulfillmentOfferAdjustments()"})
   public void testRemoveAllCandidateFulfillmentOfferAdjustments2() {
-    // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(mock(java.sql.Date.class));
-    auditable.setDateUpdated(
-        java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    OrderImpl order = new OrderImpl();
-    order.setAdditionalOfferInformation(new HashMap<>());
-    order.setAuditable(auditable);
-    order.setCandidateOrderOffers(new ArrayList<>());
-    order.setCurrency(new BroadleafCurrencyImpl());
-    order.setCustomer(new CustomerImpl());
-    order.setEmailAddress("42 Main St");
-    order.setFulfillmentGroups(new ArrayList<>());
-    order.setId(1L);
-    order.setLocale(new LocaleImpl());
-    order.setName("Name");
-    order.setOrderAttributes(new HashMap<>());
-    order.setOrderItems(new ArrayList<>());
-    order.setOrderMessages(new ArrayList<>());
-    order.setOrderNumber("42");
-    order.setPayments(new ArrayList<>());
-    order.setStatus(OrderStatus.ARCHIVED);
-    order.setSubTotal(new Money());
-    order
-        .setSubmitDate(java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    order.setTaxOverride(true);
-    order.setTotal(new Money());
-    order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
-    order.setTotalTax(new Money());
-    PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
-        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
-
-    // Act
-    promotableOrderImpl.removeAllCandidateFulfillmentOfferAdjustments();
-
-    // Assert
-    assertTrue(promotableOrderImpl.getFulfillmentGroups().isEmpty());
-  }
-
-  /**
-   * Test
-   * {@link PromotableOrderImpl#removeAllCandidateFulfillmentOfferAdjustments()}.
-   * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#removeAllCandidateFulfillmentOfferAdjustments()}
-   */
-  @Test
-  public void testRemoveAllCandidateFulfillmentOfferAdjustments3() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
@@ -1827,7 +2058,6 @@ public class PromotableOrderImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
         new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
@@ -1840,34 +2070,13 @@ public class PromotableOrderImplDiffblueTest {
   }
 
   /**
-   * Test {@link PromotableOrderImpl#updateRuleVariables(Map)}.
-   * <ul>
-   *   <li>When {@link HashMap#HashMap()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PromotableOrderImpl#updateRuleVariables(Map)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testUpdateRuleVariables_whenHashMap() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange
-    NullOrderImpl order = new NullOrderImpl();
-    PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
-        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
-
-    // Act
-    promotableOrderImpl.updateRuleVariables(new HashMap<>());
-  }
-
-  /**
    * Test {@link PromotableOrderImpl#isTotalitarianOfferApplied()}.
    * <p>
    * Method under test: {@link PromotableOrderImpl#isTotalitarianOfferApplied()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PromotableOrderImpl.isTotalitarianOfferApplied()"})
   public void testIsTotalitarianOfferApplied() {
     // Arrange
     Auditable auditable = new Auditable();
@@ -1901,7 +2110,6 @@ public class PromotableOrderImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
         new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
@@ -1917,11 +2125,16 @@ public class PromotableOrderImplDiffblueTest {
 
   /**
    * Test {@link PromotableOrderImpl#isTotalitarianOfferApplied()}.
+   * <ul>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link BundleOrderItemImpl} (default constructor).</li>
+   * </ul>
    * <p>
    * Method under test: {@link PromotableOrderImpl#isTotalitarianOfferApplied()}
    */
   @Test
-  public void testIsTotalitarianOfferApplied2() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PromotableOrderImpl.isTotalitarianOfferApplied()"})
+  public void testIsTotalitarianOfferApplied_givenArrayListAddBundleOrderItemImpl() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
@@ -1954,7 +2167,6 @@ public class PromotableOrderImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
         new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
@@ -1974,22 +2186,58 @@ public class PromotableOrderImplDiffblueTest {
   /**
    * Test {@link PromotableOrderImpl#isTotalitarianOfferApplied()}.
    * <ul>
-   *   <li>Given {@link Auditable} (default constructor) DateCreated is
-   * {@link java.sql.Date}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link OrderItemImpl} (default constructor) Auditable is {@link Auditable} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link PromotableOrderImpl#isTotalitarianOfferApplied()}
    */
   @Test
-  public void testIsTotalitarianOfferApplied_givenAuditableDateCreatedIsDate_thenReturnFalse() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PromotableOrderImpl.isTotalitarianOfferApplied()"})
+  public void testIsTotalitarianOfferApplied_givenOrderItemImplAuditableIsAuditable() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(mock(java.sql.Date.class));
-    auditable.setDateUpdated(
-        java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
+
+    Auditable auditable2 = new Auditable();
+    auditable2.setCreatedBy(1L);
+    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setUpdatedBy(1L);
+
+    OrderItemImpl orderItemImpl = new OrderItemImpl();
+    orderItemImpl.setAuditable(auditable2);
+    orderItemImpl.setCandidateItemOffers(new ArrayList<>());
+    orderItemImpl.setCartMessages(new ArrayList<>());
+    orderItemImpl.setChildOrderItems(new ArrayList<>());
+    orderItemImpl.setDiscountingAllowed(true);
+    orderItemImpl.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    orderItemImpl.setHasValidationError(true);
+    orderItemImpl.setId(1L);
+    orderItemImpl.setName("Name");
+    orderItemImpl.setOrder(new NullOrderImpl());
+    orderItemImpl.setOrderItemAdjustments(new ArrayList<>());
+    orderItemImpl.setOrderItemAttributes(new HashMap<>());
+    orderItemImpl.setOrderItemPriceDetails(new ArrayList<>());
+    orderItemImpl.setOrderItemQualifiers(new ArrayList<>());
+    orderItemImpl.setOrderItemType(OrderItemType.BASIC);
+    orderItemImpl.setParentOrderItem(new BundleOrderItemImpl());
+    orderItemImpl.setPersonalMessage(new PersonalMessageImpl());
+    orderItemImpl.setPrice(new Money());
+    orderItemImpl.setProratedOrderItemAdjustments(new ArrayList<>());
+    orderItemImpl.setQuantity(1);
+    orderItemImpl.setRetailPrice(new Money());
+    orderItemImpl.setRetailPriceOverride(true);
+    orderItemImpl.setSalePrice(new Money());
+    orderItemImpl.setSalePriceOverride(true);
+    orderItemImpl.setTaxable(true);
+    orderItemImpl.updateSaleAndRetailPrices();
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(orderItemImpl);
 
     OrderImpl order = new OrderImpl();
     order.setAdditionalOfferInformation(new HashMap<>());
@@ -2003,27 +2251,30 @@ public class PromotableOrderImplDiffblueTest {
     order.setLocale(new LocaleImpl());
     order.setName("Name");
     order.setOrderAttributes(new HashMap<>());
-    order.setOrderItems(new ArrayList<>());
+    order.setOrderItems(orderItems);
     order.setOrderMessages(new ArrayList<>());
     order.setOrderNumber("42");
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order
-        .setSubmitDate(java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
         new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
 
-    // Act and Assert
-    assertFalse(promotableOrderImpl.isTotalitarianOfferApplied());
-    assertTrue(promotableOrderImpl.getAllOrderItems().isEmpty());
-    assertTrue(promotableOrderImpl.getFulfillmentGroups().isEmpty());
-    assertTrue(promotableOrderImpl.allOrderItems.isEmpty());
+    // Act
+    promotableOrderImpl.isTotalitarianOfferApplied();
+
+    // Assert
+    List<PromotableOrderItem> allOrderItems = promotableOrderImpl.getAllOrderItems();
+    assertEquals(1, allOrderItems.size());
+    List<PromotableOrderItem> promotableOrderItemList = promotableOrderImpl.allOrderItems;
+    assertEquals(1, promotableOrderItemList.size());
+    assertSame(allOrderItems.get(0), promotableOrderItemList.get(0));
+    assertSame(promotableOrderImpl.allOrderItems, allOrderItems);
   }
 
   /**
@@ -2035,6 +2286,8 @@ public class PromotableOrderImplDiffblueTest {
    * Method under test: {@link PromotableOrderImpl#isTotalitarianOfferApplied()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PromotableOrderImpl.isTotalitarianOfferApplied()"})
   public void testIsTotalitarianOfferApplied_thenReturnFalse() {
     // Arrange
     Auditable auditable = new Auditable();
@@ -2065,7 +2318,6 @@ public class PromotableOrderImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
         new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
@@ -2078,33 +2330,124 @@ public class PromotableOrderImplDiffblueTest {
   }
 
   /**
-   * Test {@link PromotableOrderImpl#isTotalitarianOrderOfferApplied()}.
+   * Test {@link PromotableOrderImpl#isTotalitarianItemOfferApplied()}.
    * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#isTotalitarianOrderOfferApplied()}
+   * Method under test: {@link PromotableOrderImpl#isTotalitarianItemOfferApplied()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsTotalitarianOrderOfferApplied() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PromotableOrderImpl.isTotalitarianItemOfferApplied()"})
+  public void testIsTotalitarianItemOfferApplied() {
     // Arrange
-    NullOrderImpl order = new NullOrderImpl();
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+    PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
 
     // Act
-    (new PromotableOrderImpl(order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true))
-        .isTotalitarianOrderOfferApplied();
+    promotableOrderImpl.isTotalitarianItemOfferApplied();
+
+    // Assert
+    assertTrue(promotableOrderImpl.getAllOrderItems().isEmpty());
+    assertTrue(promotableOrderImpl.getDiscountableOrderItems().isEmpty());
+    assertTrue(promotableOrderImpl.allOrderItems.isEmpty());
+    assertTrue(promotableOrderImpl.discountableOrderItems.isEmpty());
   }
 
   /**
    * Test {@link PromotableOrderImpl#isTotalitarianItemOfferApplied()}.
    * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#isTotalitarianItemOfferApplied()}
+   * Method under test: {@link PromotableOrderImpl#isTotalitarianItemOfferApplied()}
    */
   @Test
-  public void testIsTotalitarianItemOfferApplied() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PromotableOrderImpl.isTotalitarianItemOfferApplied()"})
+  public void testIsTotalitarianItemOfferApplied2() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(new OrderItemImpl());
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(orderItems);
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+    PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    // Act
+    promotableOrderImpl.isTotalitarianItemOfferApplied();
+
+    // Assert
+    List<PromotableOrderItem> discountableOrderItems = promotableOrderImpl.getDiscountableOrderItems();
+    assertEquals(1, discountableOrderItems.size());
+    assertEquals(1, promotableOrderImpl.discountableOrderItems.size());
+    assertSame(promotableOrderImpl.discountableOrderItems, discountableOrderItems);
+  }
+
+  /**
+   * Test {@link PromotableOrderImpl#isTotalitarianItemOfferApplied()}.
+   * <ul>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link BundleOrderItemImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PromotableOrderImpl#isTotalitarianItemOfferApplied()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PromotableOrderImpl.isTotalitarianItemOfferApplied()"})
+  public void testIsTotalitarianItemOfferApplied_givenArrayListAddBundleOrderItemImpl() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
@@ -2137,7 +2480,6 @@ public class PromotableOrderImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
         new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
@@ -2157,68 +2499,15 @@ public class PromotableOrderImplDiffblueTest {
   /**
    * Test {@link PromotableOrderImpl#isTotalitarianItemOfferApplied()}.
    * <ul>
-   *   <li>Given {@link Auditable} (default constructor) DateCreated is
-   * {@link java.sql.Date}.</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link OrderItemPriceDetailImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#isTotalitarianItemOfferApplied()}
+   * Method under test: {@link PromotableOrderImpl#isTotalitarianItemOfferApplied()}
    */
   @Test
-  public void testIsTotalitarianItemOfferApplied_givenAuditableDateCreatedIsDate() {
-    // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(mock(java.sql.Date.class));
-    auditable.setDateUpdated(
-        java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    OrderImpl order = new OrderImpl();
-    order.setAdditionalOfferInformation(new HashMap<>());
-    order.setAuditable(auditable);
-    order.setCandidateOrderOffers(new ArrayList<>());
-    order.setCurrency(new BroadleafCurrencyImpl());
-    order.setCustomer(new CustomerImpl());
-    order.setEmailAddress("42 Main St");
-    order.setFulfillmentGroups(new ArrayList<>());
-    order.setId(1L);
-    order.setLocale(new LocaleImpl());
-    order.setName("Name");
-    order.setOrderAttributes(new HashMap<>());
-    order.setOrderItems(new ArrayList<>());
-    order.setOrderMessages(new ArrayList<>());
-    order.setOrderNumber("42");
-    order.setPayments(new ArrayList<>());
-    order.setStatus(OrderStatus.ARCHIVED);
-    order.setSubTotal(new Money());
-    order
-        .setSubmitDate(java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    order.setTaxOverride(true);
-    order.setTotal(new Money());
-    order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
-    order.setTotalTax(new Money());
-    PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
-        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
-
-    // Act and Assert
-    assertFalse(promotableOrderImpl.isTotalitarianItemOfferApplied());
-    assertTrue(promotableOrderImpl.getAllOrderItems().isEmpty());
-    assertTrue(promotableOrderImpl.allOrderItems.isEmpty());
-  }
-
-  /**
-   * Test {@link PromotableOrderImpl#isTotalitarianItemOfferApplied()}.
-   * <ul>
-   *   <li>Then return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#isTotalitarianItemOfferApplied()}
-   */
-  @Test
-  public void testIsTotalitarianItemOfferApplied_thenReturnFalse() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PromotableOrderImpl.isTotalitarianItemOfferApplied()"})
+  public void testIsTotalitarianItemOfferApplied_givenArrayListAddOrderItemPriceDetailImpl() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
@@ -2226,6 +2515,46 @@ public class PromotableOrderImplDiffblueTest {
     auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
+    Auditable auditable2 = new Auditable();
+    auditable2.setCreatedBy(1L);
+    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setUpdatedBy(1L);
+
+    ArrayList<OrderItemPriceDetail> orderItemPriceDetails = new ArrayList<>();
+    orderItemPriceDetails.add(new OrderItemPriceDetailImpl());
+
+    OrderItemImpl orderItemImpl = new OrderItemImpl();
+    orderItemImpl.setAuditable(auditable2);
+    orderItemImpl.setCandidateItemOffers(new ArrayList<>());
+    orderItemImpl.setCartMessages(new ArrayList<>());
+    orderItemImpl.setChildOrderItems(new ArrayList<>());
+    orderItemImpl.setDiscountingAllowed(true);
+    orderItemImpl.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    orderItemImpl.setHasValidationError(true);
+    orderItemImpl.setId(1L);
+    orderItemImpl.setName("Name");
+    orderItemImpl.setOrder(new NullOrderImpl());
+    orderItemImpl.setOrderItemAdjustments(new ArrayList<>());
+    orderItemImpl.setOrderItemAttributes(new HashMap<>());
+    orderItemImpl.setOrderItemPriceDetails(orderItemPriceDetails);
+    orderItemImpl.setOrderItemQualifiers(new ArrayList<>());
+    orderItemImpl.setOrderItemType(OrderItemType.BASIC);
+    orderItemImpl.setParentOrderItem(new BundleOrderItemImpl());
+    orderItemImpl.setPersonalMessage(new PersonalMessageImpl());
+    orderItemImpl.setPrice(new Money());
+    orderItemImpl.setProratedOrderItemAdjustments(new ArrayList<>());
+    orderItemImpl.setQuantity(1);
+    orderItemImpl.setRetailPrice(new Money());
+    orderItemImpl.setRetailPriceOverride(true);
+    orderItemImpl.setSalePrice(new Money());
+    orderItemImpl.setSalePriceOverride(true);
+    orderItemImpl.setTaxable(true);
+    orderItemImpl.updateSaleAndRetailPrices();
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(orderItemImpl);
+
     OrderImpl order = new OrderImpl();
     order.setAdditionalOfferInformation(new HashMap<>());
     order.setAuditable(auditable);
@@ -2238,7 +2567,7 @@ public class PromotableOrderImplDiffblueTest {
     order.setLocale(new LocaleImpl());
     order.setName("Name");
     order.setOrderAttributes(new HashMap<>());
-    order.setOrderItems(new ArrayList<>());
+    order.setOrderItems(orderItems);
     order.setOrderMessages(new ArrayList<>());
     order.setOrderNumber("42");
     order.setPayments(new ArrayList<>());
@@ -2248,15 +2577,114 @@ public class PromotableOrderImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
         new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
 
-    // Act and Assert
-    assertFalse(promotableOrderImpl.isTotalitarianItemOfferApplied());
-    assertTrue(promotableOrderImpl.getAllOrderItems().isEmpty());
-    assertTrue(promotableOrderImpl.allOrderItems.isEmpty());
+    // Act
+    promotableOrderImpl.isTotalitarianItemOfferApplied();
+
+    // Assert
+    List<PromotableOrderItem> allOrderItems = promotableOrderImpl.getAllOrderItems();
+    assertEquals(1, allOrderItems.size());
+    List<PromotableOrderItem> promotableOrderItemList = promotableOrderImpl.allOrderItems;
+    assertEquals(1, promotableOrderItemList.size());
+    assertSame(allOrderItems.get(0), promotableOrderItemList.get(0));
+    assertSame(promotableOrderImpl.allOrderItems, allOrderItems);
+  }
+
+  /**
+   * Test {@link PromotableOrderImpl#isTotalitarianItemOfferApplied()}.
+   * <ul>
+   *   <li>Given {@link OrderItemImpl} (default constructor) Auditable is {@link Auditable} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PromotableOrderImpl#isTotalitarianItemOfferApplied()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PromotableOrderImpl.isTotalitarianItemOfferApplied()"})
+  public void testIsTotalitarianItemOfferApplied_givenOrderItemImplAuditableIsAuditable() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    Auditable auditable2 = new Auditable();
+    auditable2.setCreatedBy(1L);
+    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setUpdatedBy(1L);
+
+    OrderItemImpl orderItemImpl = new OrderItemImpl();
+    orderItemImpl.setAuditable(auditable2);
+    orderItemImpl.setCandidateItemOffers(new ArrayList<>());
+    orderItemImpl.setCartMessages(new ArrayList<>());
+    orderItemImpl.setChildOrderItems(new ArrayList<>());
+    orderItemImpl.setDiscountingAllowed(true);
+    orderItemImpl.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    orderItemImpl.setHasValidationError(true);
+    orderItemImpl.setId(1L);
+    orderItemImpl.setName("Name");
+    orderItemImpl.setOrder(new NullOrderImpl());
+    orderItemImpl.setOrderItemAdjustments(new ArrayList<>());
+    orderItemImpl.setOrderItemAttributes(new HashMap<>());
+    orderItemImpl.setOrderItemPriceDetails(new ArrayList<>());
+    orderItemImpl.setOrderItemQualifiers(new ArrayList<>());
+    orderItemImpl.setOrderItemType(OrderItemType.BASIC);
+    orderItemImpl.setParentOrderItem(new BundleOrderItemImpl());
+    orderItemImpl.setPersonalMessage(new PersonalMessageImpl());
+    orderItemImpl.setPrice(new Money());
+    orderItemImpl.setProratedOrderItemAdjustments(new ArrayList<>());
+    orderItemImpl.setQuantity(1);
+    orderItemImpl.setRetailPrice(new Money());
+    orderItemImpl.setRetailPriceOverride(true);
+    orderItemImpl.setSalePrice(new Money());
+    orderItemImpl.setSalePriceOverride(true);
+    orderItemImpl.setTaxable(true);
+    orderItemImpl.updateSaleAndRetailPrices();
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(orderItemImpl);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(orderItems);
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+    PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    // Act
+    promotableOrderImpl.isTotalitarianItemOfferApplied();
+
+    // Assert
+    List<PromotableOrderItem> allOrderItems = promotableOrderImpl.getAllOrderItems();
+    assertEquals(1, allOrderItems.size());
+    List<PromotableOrderItem> promotableOrderItemList = promotableOrderImpl.allOrderItems;
+    assertEquals(1, promotableOrderItemList.size());
+    assertSame(allOrderItems.get(0), promotableOrderItemList.get(0));
+    assertSame(promotableOrderImpl.allOrderItems, allOrderItems);
   }
 
   /**
@@ -2265,6 +2693,8 @@ public class PromotableOrderImplDiffblueTest {
    * Method under test: {@link PromotableOrderImpl#isTotalitarianFgOfferApplied()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PromotableOrderImpl.isTotalitarianFgOfferApplied()"})
   public void testIsTotalitarianFgOfferApplied() {
     // Arrange
     Auditable auditable = new Auditable();
@@ -2295,7 +2725,6 @@ public class PromotableOrderImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
         new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
@@ -2311,6 +2740,8 @@ public class PromotableOrderImplDiffblueTest {
    * Method under test: {@link PromotableOrderImpl#isTotalitarianFgOfferApplied()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PromotableOrderImpl.isTotalitarianFgOfferApplied()"})
   public void testIsTotalitarianFgOfferApplied2() {
     // Arrange
     Auditable auditable = new Auditable();
@@ -2344,7 +2775,6 @@ public class PromotableOrderImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
         new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
@@ -2358,138 +2788,73 @@ public class PromotableOrderImplDiffblueTest {
   }
 
   /**
-   * Test {@link PromotableOrderImpl#isTotalitarianFgOfferApplied()}.
-   * <ul>
-   *   <li>Given {@link Auditable} (default constructor) DateCreated is
-   * {@link java.sql.Date}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PromotableOrderImpl#isTotalitarianFgOfferApplied()}
-   */
-  @Test
-  public void testIsTotalitarianFgOfferApplied_givenAuditableDateCreatedIsDate() {
-    // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(mock(java.sql.Date.class));
-    auditable.setDateUpdated(
-        java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    OrderImpl order = new OrderImpl();
-    order.setAdditionalOfferInformation(new HashMap<>());
-    order.setAuditable(auditable);
-    order.setCandidateOrderOffers(new ArrayList<>());
-    order.setCurrency(new BroadleafCurrencyImpl());
-    order.setCustomer(new CustomerImpl());
-    order.setEmailAddress("42 Main St");
-    order.setFulfillmentGroups(new ArrayList<>());
-    order.setId(1L);
-    order.setLocale(new LocaleImpl());
-    order.setName("Name");
-    order.setOrderAttributes(new HashMap<>());
-    order.setOrderItems(new ArrayList<>());
-    order.setOrderMessages(new ArrayList<>());
-    order.setOrderNumber("42");
-    order.setPayments(new ArrayList<>());
-    order.setStatus(OrderStatus.ARCHIVED);
-    order.setSubTotal(new Money());
-    order
-        .setSubmitDate(java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    order.setTaxOverride(true);
-    order.setTotal(new Money());
-    order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
-    order.setTotalTax(new Money());
-    PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
-        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
-
-    // Act and Assert
-    assertFalse(promotableOrderImpl.isTotalitarianFgOfferApplied());
-    assertTrue(promotableOrderImpl.getFulfillmentGroups().isEmpty());
-  }
-
-  /**
-   * Test {@link PromotableOrderImpl#calculateOrderAdjustmentTotal()}.
-   * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#calculateOrderAdjustmentTotal()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCalculateOrderAdjustmentTotal() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange
-    NullOrderImpl order = new NullOrderImpl();
-
-    // Act
-    (new PromotableOrderImpl(order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true))
-        .calculateOrderAdjustmentTotal();
-  }
-
-  /**
-   * Test {@link PromotableOrderImpl#calculateOrderAdjustmentTotal()}.
-   * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#calculateOrderAdjustmentTotal()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCalculateOrderAdjustmentTotal2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.broadleafcommerce.core.offer.service.discount.domain.PromotableOrderImpl.calculateOrderAdjustmentTotal(PromotableOrderImpl.java:257)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange and Act
-    (new PromotableOrderImpl(null, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), false))
-        .calculateOrderAdjustmentTotal();
-  }
-
-  /**
    * Test {@link PromotableOrderImpl#calculateItemAdjustmentTotal()}.
-   * <ul>
-   *   <li>Given {@link OrderItemImpl} (default constructor) Price is
-   * {@link Money#Money()}.</li>
-   *   <li>Then return {@link Money#Money()}.</li>
-   * </ul>
    * <p>
    * Method under test: {@link PromotableOrderImpl#calculateItemAdjustmentTotal()}
    */
   @Test
-  public void testCalculateItemAdjustmentTotal_givenOrderItemImplPriceIsMoney_thenReturnMoney() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money PromotableOrderImpl.calculateItemAdjustmentTotal()"})
+  public void testCalculateItemAdjustmentTotal() {
     // Arrange
     OrderItemImpl orderItem = new OrderItemImpl();
-    Money finalPrice = new Money();
-    orderItem.setPrice(finalPrice);
+    orderItem.setOrder(new NullOrderImpl());
     BroadleafCurrency currency = mock(BroadleafCurrency.class);
     when(currency.getCurrencyCode()).thenReturn("GBP");
 
     OrderImpl order = new OrderImpl();
     order.setCurrency(currency);
     order.addOrderItem(orderItem);
+    PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
 
     // Act
-    Money actualCalculateItemAdjustmentTotalResult = (new PromotableOrderImpl(order,
-        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true)).calculateItemAdjustmentTotal();
+    Money actualCalculateItemAdjustmentTotalResult = promotableOrderImpl.calculateItemAdjustmentTotal();
 
     // Assert
     verify(currency).getCurrencyCode();
-    assertEquals(finalPrice, actualCalculateItemAdjustmentTotalResult);
+    assertEquals(actualCalculateItemAdjustmentTotalResult.ZERO, actualCalculateItemAdjustmentTotalResult);
+    assertEquals(promotableOrderImpl.allOrderItems, promotableOrderImpl.discountableOrderItems);
+  }
+
+  /**
+   * Test {@link PromotableOrderImpl#calculateItemAdjustmentTotal()}.
+   * <p>
+   * Method under test: {@link PromotableOrderImpl#calculateItemAdjustmentTotal()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money PromotableOrderImpl.calculateItemAdjustmentTotal()"})
+  public void testCalculateItemAdjustmentTotal2() {
+    // Arrange
+    OrderItemImpl orderItem = new OrderItemImpl();
+    orderItem.setOrder(new NullOrderImpl());
+    BroadleafCurrency currency = mock(BroadleafCurrency.class);
+    when(currency.getCurrencyCode()).thenReturn("GBP");
+
+    OrderImpl order = new OrderImpl();
+    order.setCurrency(currency);
+    order.addOrderItem(orderItem);
+    PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), false);
+
+    // Act
+    Money actualCalculateItemAdjustmentTotalResult = promotableOrderImpl.calculateItemAdjustmentTotal();
+
+    // Assert
+    verify(currency).getCurrencyCode();
+    assertEquals(actualCalculateItemAdjustmentTotalResult.ZERO, actualCalculateItemAdjustmentTotalResult);
+    assertEquals(promotableOrderImpl.allOrderItems, promotableOrderImpl.discountableOrderItems);
   }
 
   /**
    * Test {@link PromotableOrderImpl#getAllPromotableOrderItemPriceDetails()}.
    * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#getAllPromotableOrderItemPriceDetails()}
+   * Method under test: {@link PromotableOrderImpl#getAllPromotableOrderItemPriceDetails()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List PromotableOrderImpl.getAllPromotableOrderItemPriceDetails()"})
   public void testGetAllPromotableOrderItemPriceDetails() {
     // Arrange
     Auditable auditable = new Auditable();
@@ -2520,29 +2885,181 @@ public class PromotableOrderImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
         new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
 
     // Act
-    List<PromotableOrderItemPriceDetail> actualAllPromotableOrderItemPriceDetails = promotableOrderImpl
-        .getAllPromotableOrderItemPriceDetails();
+    promotableOrderImpl.getAllPromotableOrderItemPriceDetails();
 
     // Assert
     assertTrue(promotableOrderImpl.getAllOrderItems().isEmpty());
-    assertTrue(actualAllPromotableOrderItemPriceDetails.isEmpty());
+    assertTrue(promotableOrderImpl.getDiscountableOrderItems().isEmpty());
     assertTrue(promotableOrderImpl.allOrderItems.isEmpty());
+    assertTrue(promotableOrderImpl.discountableOrderItems.isEmpty());
   }
 
   /**
    * Test {@link PromotableOrderImpl#getAllPromotableOrderItemPriceDetails()}.
    * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#getAllPromotableOrderItemPriceDetails()}
+   * Method under test: {@link PromotableOrderImpl#getAllPromotableOrderItemPriceDetails()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List PromotableOrderImpl.getAllPromotableOrderItemPriceDetails()"})
   public void testGetAllPromotableOrderItemPriceDetails2() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(new OrderItemImpl());
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(orderItems);
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+    PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    // Act
+    promotableOrderImpl.getAllPromotableOrderItemPriceDetails();
+
+    // Assert
+    List<PromotableOrderItem> discountableOrderItems = promotableOrderImpl.getDiscountableOrderItems();
+    assertEquals(1, discountableOrderItems.size());
+    assertEquals(1, promotableOrderImpl.discountableOrderItems.size());
+    assertSame(promotableOrderImpl.discountableOrderItems, discountableOrderItems);
+  }
+
+  /**
+   * Test {@link PromotableOrderImpl#getAllPromotableOrderItemPriceDetails()}.
+   * <p>
+   * Method under test: {@link PromotableOrderImpl#getAllPromotableOrderItemPriceDetails()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List PromotableOrderImpl.getAllPromotableOrderItemPriceDetails()"})
+  public void testGetAllPromotableOrderItemPriceDetails3() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    Auditable auditable2 = new Auditable();
+    auditable2.setCreatedBy(1L);
+    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setUpdatedBy(1L);
+
+    ArrayList<OrderItemPriceDetail> orderItemPriceDetails = new ArrayList<>();
+    orderItemPriceDetails.add(new OrderItemPriceDetailImpl());
+
+    OrderItemImpl orderItemImpl = new OrderItemImpl();
+    orderItemImpl.setAuditable(auditable2);
+    orderItemImpl.setCandidateItemOffers(new ArrayList<>());
+    orderItemImpl.setCartMessages(new ArrayList<>());
+    orderItemImpl.setChildOrderItems(new ArrayList<>());
+    orderItemImpl.setDiscountingAllowed(true);
+    orderItemImpl.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    orderItemImpl.setHasValidationError(true);
+    orderItemImpl.setId(1L);
+    orderItemImpl.setName("Name");
+    orderItemImpl.setOrder(new NullOrderImpl());
+    orderItemImpl.setOrderItemAdjustments(new ArrayList<>());
+    orderItemImpl.setOrderItemAttributes(new HashMap<>());
+    orderItemImpl.setOrderItemPriceDetails(orderItemPriceDetails);
+    orderItemImpl.setOrderItemQualifiers(new ArrayList<>());
+    orderItemImpl.setOrderItemType(OrderItemType.BASIC);
+    orderItemImpl.setParentOrderItem(new BundleOrderItemImpl());
+    orderItemImpl.setPersonalMessage(new PersonalMessageImpl());
+    orderItemImpl.setPrice(new Money());
+    orderItemImpl.setProratedOrderItemAdjustments(new ArrayList<>());
+    orderItemImpl.setQuantity(1);
+    orderItemImpl.setRetailPrice(new Money());
+    orderItemImpl.setRetailPriceOverride(true);
+    orderItemImpl.setSalePrice(new Money());
+    orderItemImpl.setSalePriceOverride(true);
+    orderItemImpl.setTaxable(true);
+    orderItemImpl.updateSaleAndRetailPrices();
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(orderItemImpl);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(orderItems);
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+    PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    // Act
+    promotableOrderImpl.getAllPromotableOrderItemPriceDetails();
+
+    // Assert
+    List<PromotableOrderItem> allOrderItems = promotableOrderImpl.getAllOrderItems();
+    assertEquals(1, allOrderItems.size());
+    List<PromotableOrderItem> promotableOrderItemList = promotableOrderImpl.allOrderItems;
+    assertEquals(1, promotableOrderItemList.size());
+    assertSame(allOrderItems.get(0), promotableOrderItemList.get(0));
+    assertSame(promotableOrderImpl.allOrderItems, allOrderItems);
+  }
+
+  /**
+   * Test {@link PromotableOrderImpl#getAllPromotableOrderItemPriceDetails()}.
+   * <ul>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link BundleOrderItemImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PromotableOrderImpl#getAllPromotableOrderItemPriceDetails()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List PromotableOrderImpl.getAllPromotableOrderItemPriceDetails()"})
+  public void testGetAllPromotableOrderItemPriceDetails_givenArrayListAddBundleOrderItemImpl() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
@@ -2575,7 +3092,6 @@ public class PromotableOrderImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
         new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
@@ -2595,22 +3111,58 @@ public class PromotableOrderImplDiffblueTest {
   /**
    * Test {@link PromotableOrderImpl#getAllPromotableOrderItemPriceDetails()}.
    * <ul>
-   *   <li>Given {@link Auditable} (default constructor) DateCreated is
-   * {@link java.sql.Date}.</li>
+   *   <li>Given {@link OrderItemImpl} (default constructor) Auditable is {@link Auditable} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#getAllPromotableOrderItemPriceDetails()}
+   * Method under test: {@link PromotableOrderImpl#getAllPromotableOrderItemPriceDetails()}
    */
   @Test
-  public void testGetAllPromotableOrderItemPriceDetails_givenAuditableDateCreatedIsDate() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List PromotableOrderImpl.getAllPromotableOrderItemPriceDetails()"})
+  public void testGetAllPromotableOrderItemPriceDetails_givenOrderItemImplAuditableIsAuditable() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(mock(java.sql.Date.class));
-    auditable.setDateUpdated(
-        java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
+
+    Auditable auditable2 = new Auditable();
+    auditable2.setCreatedBy(1L);
+    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setUpdatedBy(1L);
+
+    OrderItemImpl orderItemImpl = new OrderItemImpl();
+    orderItemImpl.setAuditable(auditable2);
+    orderItemImpl.setCandidateItemOffers(new ArrayList<>());
+    orderItemImpl.setCartMessages(new ArrayList<>());
+    orderItemImpl.setChildOrderItems(new ArrayList<>());
+    orderItemImpl.setDiscountingAllowed(true);
+    orderItemImpl.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    orderItemImpl.setHasValidationError(true);
+    orderItemImpl.setId(1L);
+    orderItemImpl.setName("Name");
+    orderItemImpl.setOrder(new NullOrderImpl());
+    orderItemImpl.setOrderItemAdjustments(new ArrayList<>());
+    orderItemImpl.setOrderItemAttributes(new HashMap<>());
+    orderItemImpl.setOrderItemPriceDetails(new ArrayList<>());
+    orderItemImpl.setOrderItemQualifiers(new ArrayList<>());
+    orderItemImpl.setOrderItemType(OrderItemType.BASIC);
+    orderItemImpl.setParentOrderItem(new BundleOrderItemImpl());
+    orderItemImpl.setPersonalMessage(new PersonalMessageImpl());
+    orderItemImpl.setPrice(new Money());
+    orderItemImpl.setProratedOrderItemAdjustments(new ArrayList<>());
+    orderItemImpl.setQuantity(1);
+    orderItemImpl.setRetailPrice(new Money());
+    orderItemImpl.setRetailPriceOverride(true);
+    orderItemImpl.setSalePrice(new Money());
+    orderItemImpl.setSalePriceOverride(true);
+    orderItemImpl.setTaxable(true);
+    orderItemImpl.updateSaleAndRetailPrices();
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(orderItemImpl);
 
     OrderImpl order = new OrderImpl();
     order.setAdditionalOfferInformation(new HashMap<>());
@@ -2624,58 +3176,40 @@ public class PromotableOrderImplDiffblueTest {
     order.setLocale(new LocaleImpl());
     order.setName("Name");
     order.setOrderAttributes(new HashMap<>());
-    order.setOrderItems(new ArrayList<>());
+    order.setOrderItems(orderItems);
     order.setOrderMessages(new ArrayList<>());
     order.setOrderNumber("42");
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order
-        .setSubmitDate(java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
         new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
 
     // Act
-    List<PromotableOrderItemPriceDetail> actualAllPromotableOrderItemPriceDetails = promotableOrderImpl
-        .getAllPromotableOrderItemPriceDetails();
+    promotableOrderImpl.getAllPromotableOrderItemPriceDetails();
 
     // Assert
-    assertTrue(promotableOrderImpl.getAllOrderItems().isEmpty());
-    assertTrue(actualAllPromotableOrderItemPriceDetails.isEmpty());
-    assertTrue(promotableOrderImpl.allOrderItems.isEmpty());
-  }
-
-  /**
-   * Test {@link PromotableOrderImpl#getOrderCurrency()}.
-   * <p>
-   * Method under test: {@link PromotableOrderImpl#getOrderCurrency()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetOrderCurrency() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange
-    NullOrderImpl order = new NullOrderImpl();
-
-    // Act
-    (new PromotableOrderImpl(order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true))
-        .getOrderCurrency();
+    List<PromotableOrderItem> allOrderItems = promotableOrderImpl.getAllOrderItems();
+    assertEquals(1, allOrderItems.size());
+    List<PromotableOrderItem> promotableOrderItemList = promotableOrderImpl.allOrderItems;
+    assertEquals(1, promotableOrderItemList.size());
+    assertSame(allOrderItems.get(0), promotableOrderItemList.get(0));
+    assertSame(promotableOrderImpl.allOrderItems, allOrderItems);
   }
 
   /**
    * Test {@link PromotableOrderImpl#setTotalFufillmentCharges(Money)}.
    * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#setTotalFufillmentCharges(Money)}
+   * Method under test: {@link PromotableOrderImpl#setTotalFufillmentCharges(Money)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PromotableOrderImpl.setTotalFufillmentCharges(Money)"})
   public void testSetTotalFufillmentCharges() {
     // Arrange
     Auditable auditable = new Auditable();
@@ -2706,7 +3240,6 @@ public class PromotableOrderImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
         new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
@@ -2722,73 +3255,16 @@ public class PromotableOrderImplDiffblueTest {
   }
 
   /**
-   * Test {@link PromotableOrderImpl#isNotCombinableOrderOfferApplied()}.
-   * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#isNotCombinableOrderOfferApplied()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsNotCombinableOrderOfferApplied() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange
-    NullOrderImpl order = new NullOrderImpl();
-
-    // Act
-    (new PromotableOrderImpl(order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true))
-        .isNotCombinableOrderOfferApplied();
-  }
-
-  /**
-   * Test
-   * {@link PromotableOrderImpl#canApplyOrderOffer(PromotableCandidateOrderOffer)}.
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then calls {@link NullOrderImpl#getCurrency()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#canApplyOrderOffer(PromotableCandidateOrderOffer)}
-   */
-  @Test
-  public void testCanApplyOrderOffer_givenArrayList_thenCallsGetCurrency() {
-    // Arrange
-    NullOrderImpl order = mock(NullOrderImpl.class);
-    when(order.getOrderAdjustments()).thenReturn(new ArrayList<>());
-    PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
-        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
-    NullOrderImpl order2 = mock(NullOrderImpl.class);
-    when(order2.getOrderAdjustments()).thenReturn(new ArrayList<>());
-    when(order2.getOrderItems()).thenReturn(new ArrayList<>());
-    when(order2.getCurrency()).thenReturn(null);
-    PromotableOrderImpl promotableOrder = new PromotableOrderImpl(order2,
-        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
-
-    // Act
-    boolean actualCanApplyOrderOfferResult = promotableOrderImpl
-        .canApplyOrderOffer(new PromotableCandidateOrderOfferImpl(promotableOrder, new OfferImpl()));
-
-    // Assert
-    verify(order2, atLeast(1)).getCurrency();
-    verify(order, atLeast(1)).getOrderAdjustments();
-    verify(order2, atLeast(1)).getOrderAdjustments();
-    verify(order2).getOrderItems();
-    assertTrue(actualCanApplyOrderOfferResult);
-  }
-
-  /**
-   * Test
-   * {@link PromotableOrderImpl#canApplyOrderOffer(PromotableCandidateOrderOffer)}.
+   * Test {@link PromotableOrderImpl#canApplyOrderOffer(PromotableCandidateOrderOffer)}.
    * <ul>
    *   <li>Given {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#canApplyOrderOffer(PromotableCandidateOrderOffer)}
+   * Method under test: {@link PromotableOrderImpl#canApplyOrderOffer(PromotableCandidateOrderOffer)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PromotableOrderImpl.canApplyOrderOffer(PromotableCandidateOrderOffer)"})
   public void testCanApplyOrderOffer_givenFalse() {
     // Arrange
     NullOrderImpl order = mock(NullOrderImpl.class);
@@ -2808,18 +3284,16 @@ public class PromotableOrderImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link PromotableOrderImpl#canApplyOrderOffer(PromotableCandidateOrderOffer)}.
+   * Test {@link PromotableOrderImpl#canApplyOrderOffer(PromotableCandidateOrderOffer)}.
    * <ul>
-   *   <li>Given {@link PromotableOrderAdjustmentImpl}
-   * {@link PromotableOrderAdjustmentImpl#isCombinable()} return
-   * {@code false}.</li>
+   *   <li>Given {@link PromotableOrderAdjustmentImpl} {@link PromotableOrderAdjustmentImpl#isCombinable()} return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#canApplyOrderOffer(PromotableCandidateOrderOffer)}
+   * Method under test: {@link PromotableOrderImpl#canApplyOrderOffer(PromotableCandidateOrderOffer)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PromotableOrderImpl.canApplyOrderOffer(PromotableCandidateOrderOffer)"})
   public void testCanApplyOrderOffer_givenPromotableOrderAdjustmentImplIsCombinableReturnFalse() {
     // Arrange
     NullOrderImpl order = mock(NullOrderImpl.class);
@@ -2842,18 +3316,16 @@ public class PromotableOrderImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link PromotableOrderImpl#canApplyOrderOffer(PromotableCandidateOrderOffer)}.
+   * Test {@link PromotableOrderImpl#canApplyOrderOffer(PromotableCandidateOrderOffer)}.
    * <ul>
-   *   <li>Given {@link PromotableOrderAdjustmentImpl}
-   * {@link PromotableOrderAdjustmentImpl#isCombinable()} return
-   * {@code true}.</li>
+   *   <li>Given {@link PromotableOrderAdjustmentImpl} {@link PromotableOrderAdjustmentImpl#isCombinable()} return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#canApplyOrderOffer(PromotableCandidateOrderOffer)}
+   * Method under test: {@link PromotableOrderImpl#canApplyOrderOffer(PromotableCandidateOrderOffer)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PromotableOrderImpl.canApplyOrderOffer(PromotableCandidateOrderOffer)"})
   public void testCanApplyOrderOffer_givenPromotableOrderAdjustmentImplIsCombinableReturnTrue() {
     // Arrange
     NullOrderImpl order = mock(NullOrderImpl.class);
@@ -2880,18 +3352,17 @@ public class PromotableOrderImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link PromotableOrderImpl#canApplyOrderOffer(PromotableCandidateOrderOffer)}.
+   * Test {@link PromotableOrderImpl#canApplyOrderOffer(PromotableCandidateOrderOffer)}.
    * <ul>
    *   <li>Given {@code true}.</li>
-   *   <li>Then calls
-   * {@link PromotableCandidateOrderOfferImpl#isTotalitarian()}.</li>
+   *   <li>Then calls {@link PromotableCandidateOrderOfferImpl#isTotalitarian()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#canApplyOrderOffer(PromotableCandidateOrderOffer)}
+   * Method under test: {@link PromotableOrderImpl#canApplyOrderOffer(PromotableCandidateOrderOffer)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PromotableOrderImpl.canApplyOrderOffer(PromotableCandidateOrderOffer)"})
   public void testCanApplyOrderOffer_givenTrue_thenCallsIsTotalitarian() {
     // Arrange
     NullOrderImpl order = mock(NullOrderImpl.class);
@@ -2915,10 +3386,11 @@ public class PromotableOrderImplDiffblueTest {
   /**
    * Test {@link PromotableOrderImpl#calculateSubtotalWithoutAdjustments()}.
    * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#calculateSubtotalWithoutAdjustments()}
+   * Method under test: {@link PromotableOrderImpl#calculateSubtotalWithoutAdjustments()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money PromotableOrderImpl.calculateSubtotalWithoutAdjustments()"})
   public void testCalculateSubtotalWithoutAdjustments() {
     // Arrange
     BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
@@ -2938,10 +3410,11 @@ public class PromotableOrderImplDiffblueTest {
   /**
    * Test {@link PromotableOrderImpl#calculateSubtotalWithAdjustments()}.
    * <p>
-   * Method under test:
-   * {@link PromotableOrderImpl#calculateSubtotalWithAdjustments()}
+   * Method under test: {@link PromotableOrderImpl#calculateSubtotalWithAdjustments()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money PromotableOrderImpl.calculateSubtotalWithAdjustments()"})
   public void testCalculateSubtotalWithAdjustments() {
     // Arrange
     BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
@@ -2964,5 +3437,413 @@ public class PromotableOrderImplDiffblueTest {
     verify(order).getOrderItems();
     assertEquals(orderAdjustmentList, promotableOrderImpl.allOrderItems);
     assertEquals(actualCalculateSubtotalWithAdjustmentsResult.ZERO, actualCalculateSubtotalWithAdjustmentsResult);
+  }
+
+  /**
+   * Test {@link PromotableOrderImpl#calculateSubtotalWithAdjustments()}.
+   * <p>
+   * Method under test: {@link PromotableOrderImpl#calculateSubtotalWithAdjustments()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money PromotableOrderImpl.calculateSubtotalWithAdjustments()"})
+  public void testCalculateSubtotalWithAdjustments2() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(6L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(6L);
+    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
+    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
+    Order order = mock(Order.class);
+    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
+
+    ArrayList<OrderItemPriceDetail> orderItemPriceDetails = new ArrayList<>();
+    orderItemPriceDetails.add(new OrderItemPriceDetailImpl());
+
+    Auditable auditable2 = new Auditable();
+    auditable2.setCreatedBy(6L);
+    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setUpdatedBy(6L);
+
+    BundleOrderItemImpl bundleOrderItemImpl = new BundleOrderItemImpl();
+    bundleOrderItemImpl.setAuditable(auditable2);
+    Money baseRetailPrice = new Money();
+    bundleOrderItemImpl.setBaseRetailPrice(baseRetailPrice);
+    bundleOrderItemImpl.setBaseSalePrice(new Money());
+    bundleOrderItemImpl.setBundleOrderItemFeePrices(new ArrayList<>());
+    bundleOrderItemImpl.setCandidateItemOffers(new ArrayList<>());
+    bundleOrderItemImpl.setCartMessages(new ArrayList<>());
+    bundleOrderItemImpl.setChildOrderItems(new ArrayList<>());
+    bundleOrderItemImpl.setDiscountingAllowed(true);
+    bundleOrderItemImpl.setDiscreteOrderItems(new ArrayList<>());
+    bundleOrderItemImpl.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    bundleOrderItemImpl.setHasValidationError(true);
+    bundleOrderItemImpl.setId(1L);
+    bundleOrderItemImpl.setName("Name");
+    bundleOrderItemImpl.setOrder(new NullOrderImpl());
+    bundleOrderItemImpl.setOrderItemAdjustments(new ArrayList<>());
+    bundleOrderItemImpl.setOrderItemAttributes(new HashMap<>());
+    bundleOrderItemImpl.setOrderItemPriceDetails(new ArrayList<>());
+    bundleOrderItemImpl.setOrderItemQualifiers(new ArrayList<>());
+    bundleOrderItemImpl.setOrderItemType(OrderItemType.BASIC);
+    bundleOrderItemImpl.setParentOrderItem(new BundleOrderItemImpl());
+    bundleOrderItemImpl.setPersonalMessage(new PersonalMessageImpl());
+    bundleOrderItemImpl.setPrice(new Money());
+    bundleOrderItemImpl.setProratedOrderItemAdjustments(new ArrayList<>());
+    bundleOrderItemImpl.setQuantity(6);
+    bundleOrderItemImpl.setRetailPrice(new Money());
+    bundleOrderItemImpl.setRetailPriceOverride(true);
+    bundleOrderItemImpl.setSalePrice(new Money());
+    bundleOrderItemImpl.setSalePriceOverride(true);
+    bundleOrderItemImpl.setTaxable(true);
+    bundleOrderItemImpl.updateSaleAndRetailPrices();
+    bundleOrderItemImpl.setAuditable(auditable);
+    bundleOrderItemImpl.setCandidateItemOffers(new ArrayList<>());
+    bundleOrderItemImpl.setCartMessages(new ArrayList<>());
+    bundleOrderItemImpl.setChildOrderItems(new ArrayList<>());
+    bundleOrderItemImpl.setDiscountingAllowed(true);
+    bundleOrderItemImpl.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    bundleOrderItemImpl.setHasValidationError(true);
+    bundleOrderItemImpl.setId(1L);
+    bundleOrderItemImpl.setName("Name");
+    bundleOrderItemImpl.setOrder(order);
+    bundleOrderItemImpl.setOrderItemAdjustments(new ArrayList<>());
+    bundleOrderItemImpl.setOrderItemAttributes(new HashMap<>());
+    bundleOrderItemImpl.setOrderItemPriceDetails(orderItemPriceDetails);
+    bundleOrderItemImpl.setOrderItemQualifiers(new ArrayList<>());
+    bundleOrderItemImpl.setOrderItemType(OrderItemType.BASIC);
+    bundleOrderItemImpl.setParentOrderItem(new BundleOrderItemImpl());
+    bundleOrderItemImpl.setPersonalMessage(new PersonalMessageImpl());
+    bundleOrderItemImpl.setPrice(new Money());
+    bundleOrderItemImpl.setProratedOrderItemAdjustments(new ArrayList<>());
+    bundleOrderItemImpl.setQuantity(6);
+    bundleOrderItemImpl.setRetailPrice(new Money());
+    bundleOrderItemImpl.setRetailPriceOverride(true);
+    bundleOrderItemImpl.setSalePrice(new Money());
+    bundleOrderItemImpl.setSalePriceOverride(true);
+    bundleOrderItemImpl.setTaxable(true);
+    bundleOrderItemImpl.updateSaleAndRetailPrices();
+
+    ArrayList<OrderItem> orderItemList = new ArrayList<>();
+    orderItemList.add(bundleOrderItemImpl);
+    BroadleafCurrencyImpl broadleafCurrencyImpl2 = mock(BroadleafCurrencyImpl.class);
+    when(broadleafCurrencyImpl2.getCurrencyCode()).thenReturn("GBP");
+    Order order2 = mock(Order.class);
+    when(order2.getOrderAdjustments()).thenReturn(new ArrayList<>());
+    when(order2.getOrderItems()).thenReturn(orderItemList);
+    when(order2.getCurrency()).thenReturn(broadleafCurrencyImpl2);
+
+    // Act
+    Money actualCalculateSubtotalWithAdjustmentsResult = (new PromotableOrderImpl(order2,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true)).calculateSubtotalWithAdjustments();
+
+    // Assert
+    verify(broadleafCurrencyImpl2).getCurrencyCode();
+    verify(broadleafCurrencyImpl, atLeast(1)).getCurrencyCode();
+    verify(order2).getCurrency();
+    verify(order, atLeast(1)).getCurrency();
+    verify(order2, atLeast(1)).getOrderAdjustments();
+    verify(order2).getOrderItems();
+    assertEquals(baseRetailPrice, actualCalculateSubtotalWithAdjustmentsResult);
+  }
+
+  /**
+   * Test {@link PromotableOrderImpl#calculateSubtotalWithAdjustments()}.
+   * <p>
+   * Method under test: {@link PromotableOrderImpl#calculateSubtotalWithAdjustments()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money PromotableOrderImpl.calculateSubtotalWithAdjustments()"})
+  public void testCalculateSubtotalWithAdjustments3() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(6L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(6L);
+    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
+    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
+    Order order = mock(Order.class);
+    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
+
+    ArrayList<OrderItemPriceDetail> orderItemPriceDetails = new ArrayList<>();
+    orderItemPriceDetails.add(new OrderItemPriceDetailImpl());
+
+    OrderItemImpl orderItemImpl = new OrderItemImpl();
+    orderItemImpl.setAuditable(auditable);
+    orderItemImpl.setCandidateItemOffers(new ArrayList<>());
+    orderItemImpl.setCartMessages(new ArrayList<>());
+    orderItemImpl.setChildOrderItems(new ArrayList<>());
+    orderItemImpl.setDiscountingAllowed(true);
+    orderItemImpl.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    orderItemImpl.setHasValidationError(true);
+    orderItemImpl.setId(1L);
+    orderItemImpl.setName("Name");
+    orderItemImpl.setOrder(order);
+    orderItemImpl.setOrderItemAdjustments(new ArrayList<>());
+    orderItemImpl.setOrderItemAttributes(new HashMap<>());
+    orderItemImpl.setOrderItemPriceDetails(orderItemPriceDetails);
+    orderItemImpl.setOrderItemQualifiers(new ArrayList<>());
+    orderItemImpl.setOrderItemType(OrderItemType.BASIC);
+    orderItemImpl.setParentOrderItem(new BundleOrderItemImpl());
+    orderItemImpl.setPersonalMessage(new PersonalMessageImpl());
+    Money finalPrice = new Money();
+    orderItemImpl.setPrice(finalPrice);
+    orderItemImpl.setProratedOrderItemAdjustments(new ArrayList<>());
+    orderItemImpl.setQuantity(6);
+    orderItemImpl.setRetailPrice(new Money());
+    orderItemImpl.setRetailPriceOverride(true);
+    orderItemImpl.setSalePrice(new Money(10.0d));
+    orderItemImpl.setSalePriceOverride(true);
+    orderItemImpl.setTaxable(true);
+    orderItemImpl.updateSaleAndRetailPrices();
+
+    ArrayList<OrderItem> orderItemList = new ArrayList<>();
+    orderItemList.add(orderItemImpl);
+    BroadleafCurrencyImpl broadleafCurrencyImpl2 = mock(BroadleafCurrencyImpl.class);
+    when(broadleafCurrencyImpl2.getCurrencyCode()).thenReturn("GBP");
+    Order order2 = mock(Order.class);
+    when(order2.getOrderAdjustments()).thenReturn(new ArrayList<>());
+    when(order2.getOrderItems()).thenReturn(orderItemList);
+    when(order2.getCurrency()).thenReturn(broadleafCurrencyImpl2);
+
+    // Act
+    Money actualCalculateSubtotalWithAdjustmentsResult = (new PromotableOrderImpl(order2,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true)).calculateSubtotalWithAdjustments();
+
+    // Assert
+    verify(broadleafCurrencyImpl2).getCurrencyCode();
+    verify(broadleafCurrencyImpl, atLeast(1)).getCurrencyCode();
+    verify(order2).getCurrency();
+    verify(order, atLeast(1)).getCurrency();
+    verify(order2, atLeast(1)).getOrderAdjustments();
+    verify(order2).getOrderItems();
+    assertEquals(finalPrice, actualCalculateSubtotalWithAdjustmentsResult);
+  }
+
+  /**
+   * Test {@link PromotableOrderImpl#calculateSubtotalWithAdjustments()}.
+   * <ul>
+   *   <li>Given {@link Order} {@link Order#getCurrency()} return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PromotableOrderImpl#calculateSubtotalWithAdjustments()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money PromotableOrderImpl.calculateSubtotalWithAdjustments()"})
+  public void testCalculateSubtotalWithAdjustments_givenOrderGetCurrencyReturnNull() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(6L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(6L);
+    Order order = mock(Order.class);
+    when(order.getCurrency()).thenReturn(null);
+
+    ArrayList<OrderItemPriceDetail> orderItemPriceDetails = new ArrayList<>();
+    orderItemPriceDetails.add(new OrderItemPriceDetailImpl());
+
+    OrderItemImpl orderItemImpl = new OrderItemImpl();
+    orderItemImpl.setAuditable(auditable);
+    orderItemImpl.setCandidateItemOffers(new ArrayList<>());
+    orderItemImpl.setCartMessages(new ArrayList<>());
+    orderItemImpl.setChildOrderItems(new ArrayList<>());
+    orderItemImpl.setDiscountingAllowed(true);
+    orderItemImpl.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    orderItemImpl.setHasValidationError(true);
+    orderItemImpl.setId(1L);
+    orderItemImpl.setName("Name");
+    orderItemImpl.setOrder(order);
+    orderItemImpl.setOrderItemAdjustments(new ArrayList<>());
+    orderItemImpl.setOrderItemAttributes(new HashMap<>());
+    orderItemImpl.setOrderItemPriceDetails(orderItemPriceDetails);
+    orderItemImpl.setOrderItemQualifiers(new ArrayList<>());
+    orderItemImpl.setOrderItemType(OrderItemType.BASIC);
+    orderItemImpl.setParentOrderItem(new BundleOrderItemImpl());
+    orderItemImpl.setPersonalMessage(new PersonalMessageImpl());
+    Money finalPrice = new Money();
+    orderItemImpl.setPrice(finalPrice);
+    orderItemImpl.setProratedOrderItemAdjustments(new ArrayList<>());
+    orderItemImpl.setQuantity(6);
+    orderItemImpl.setRetailPrice(new Money());
+    orderItemImpl.setRetailPriceOverride(true);
+    orderItemImpl.setSalePrice(new Money());
+    orderItemImpl.setSalePriceOverride(true);
+    orderItemImpl.setTaxable(true);
+    orderItemImpl.updateSaleAndRetailPrices();
+
+    ArrayList<OrderItem> orderItemList = new ArrayList<>();
+    orderItemList.add(orderItemImpl);
+    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
+    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
+    Order order2 = mock(Order.class);
+    when(order2.getOrderAdjustments()).thenReturn(new ArrayList<>());
+    when(order2.getOrderItems()).thenReturn(orderItemList);
+    when(order2.getCurrency()).thenReturn(broadleafCurrencyImpl);
+
+    // Act
+    Money actualCalculateSubtotalWithAdjustmentsResult = (new PromotableOrderImpl(order2,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true)).calculateSubtotalWithAdjustments();
+
+    // Assert
+    verify(broadleafCurrencyImpl).getCurrencyCode();
+    verify(order2).getCurrency();
+    verify(order, atLeast(1)).getCurrency();
+    verify(order2, atLeast(1)).getOrderAdjustments();
+    verify(order2).getOrderItems();
+    assertEquals(finalPrice, actualCalculateSubtotalWithAdjustmentsResult);
+  }
+
+  /**
+   * Test {@link PromotableOrderImpl#calculateSubtotalWithAdjustments()}.
+   * <ul>
+   *   <li>Given {@link OrderItemImpl} (default constructor) Order is {@link NullOrderImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PromotableOrderImpl#calculateSubtotalWithAdjustments()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money PromotableOrderImpl.calculateSubtotalWithAdjustments()"})
+  public void testCalculateSubtotalWithAdjustments_givenOrderItemImplOrderIsNullOrderImpl() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(6L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(6L);
+
+    OrderItemImpl orderItemImpl = new OrderItemImpl();
+    orderItemImpl.setAuditable(auditable);
+    orderItemImpl.setCandidateItemOffers(new ArrayList<>());
+    orderItemImpl.setCartMessages(new ArrayList<>());
+    orderItemImpl.setChildOrderItems(new ArrayList<>());
+    orderItemImpl.setDiscountingAllowed(true);
+    orderItemImpl.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    orderItemImpl.setHasValidationError(true);
+    orderItemImpl.setId(1L);
+    orderItemImpl.setName("Name");
+    orderItemImpl.setOrder(new NullOrderImpl());
+    orderItemImpl.setOrderItemAdjustments(new ArrayList<>());
+    orderItemImpl.setOrderItemAttributes(new HashMap<>());
+    orderItemImpl.setOrderItemPriceDetails(new ArrayList<>());
+    orderItemImpl.setOrderItemQualifiers(new ArrayList<>());
+    orderItemImpl.setOrderItemType(OrderItemType.BASIC);
+    orderItemImpl.setParentOrderItem(new BundleOrderItemImpl());
+    orderItemImpl.setPersonalMessage(new PersonalMessageImpl());
+    Money finalPrice = new Money();
+    orderItemImpl.setPrice(finalPrice);
+    orderItemImpl.setProratedOrderItemAdjustments(new ArrayList<>());
+    orderItemImpl.setQuantity(6);
+    orderItemImpl.setRetailPrice(new Money());
+    orderItemImpl.setRetailPriceOverride(true);
+    orderItemImpl.setSalePrice(new Money());
+    orderItemImpl.setSalePriceOverride(true);
+    orderItemImpl.setTaxable(true);
+    orderItemImpl.updateSaleAndRetailPrices();
+
+    ArrayList<OrderItem> orderItemList = new ArrayList<>();
+    orderItemList.add(orderItemImpl);
+    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
+    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
+    Order order = mock(Order.class);
+    when(order.getOrderAdjustments()).thenReturn(new ArrayList<>());
+    when(order.getOrderItems()).thenReturn(orderItemList);
+    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
+
+    // Act
+    Money actualCalculateSubtotalWithAdjustmentsResult = (new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true)).calculateSubtotalWithAdjustments();
+
+    // Assert
+    verify(broadleafCurrencyImpl).getCurrencyCode();
+    verify(order).getCurrency();
+    verify(order, atLeast(1)).getOrderAdjustments();
+    verify(order).getOrderItems();
+    assertEquals(finalPrice, actualCalculateSubtotalWithAdjustmentsResult);
+  }
+
+  /**
+   * Test {@link PromotableOrderImpl#calculateSubtotalWithAdjustments()}.
+   * <ul>
+   *   <li>Then return {@link Money#Money()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PromotableOrderImpl#calculateSubtotalWithAdjustments()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money PromotableOrderImpl.calculateSubtotalWithAdjustments()"})
+  public void testCalculateSubtotalWithAdjustments_thenReturnMoney() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(6L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(6L);
+    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
+    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
+    Order order = mock(Order.class);
+    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
+
+    ArrayList<OrderItemPriceDetail> orderItemPriceDetails = new ArrayList<>();
+    orderItemPriceDetails.add(new OrderItemPriceDetailImpl());
+
+    OrderItemImpl orderItemImpl = new OrderItemImpl();
+    orderItemImpl.setAuditable(auditable);
+    orderItemImpl.setCandidateItemOffers(new ArrayList<>());
+    orderItemImpl.setCartMessages(new ArrayList<>());
+    orderItemImpl.setChildOrderItems(new ArrayList<>());
+    orderItemImpl.setDiscountingAllowed(true);
+    orderItemImpl.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    orderItemImpl.setHasValidationError(true);
+    orderItemImpl.setId(1L);
+    orderItemImpl.setName("Name");
+    orderItemImpl.setOrder(order);
+    orderItemImpl.setOrderItemAdjustments(new ArrayList<>());
+    orderItemImpl.setOrderItemAttributes(new HashMap<>());
+    orderItemImpl.setOrderItemPriceDetails(orderItemPriceDetails);
+    orderItemImpl.setOrderItemQualifiers(new ArrayList<>());
+    orderItemImpl.setOrderItemType(OrderItemType.BASIC);
+    orderItemImpl.setParentOrderItem(new BundleOrderItemImpl());
+    orderItemImpl.setPersonalMessage(new PersonalMessageImpl());
+    Money finalPrice = new Money();
+    orderItemImpl.setPrice(finalPrice);
+    orderItemImpl.setProratedOrderItemAdjustments(new ArrayList<>());
+    orderItemImpl.setQuantity(6);
+    orderItemImpl.setRetailPrice(new Money());
+    orderItemImpl.setRetailPriceOverride(true);
+    orderItemImpl.setSalePrice(new Money());
+    orderItemImpl.setSalePriceOverride(true);
+    orderItemImpl.setTaxable(true);
+    orderItemImpl.updateSaleAndRetailPrices();
+
+    ArrayList<OrderItem> orderItemList = new ArrayList<>();
+    orderItemList.add(orderItemImpl);
+    BroadleafCurrencyImpl broadleafCurrencyImpl2 = mock(BroadleafCurrencyImpl.class);
+    when(broadleafCurrencyImpl2.getCurrencyCode()).thenReturn("GBP");
+    Order order2 = mock(Order.class);
+    when(order2.getOrderAdjustments()).thenReturn(new ArrayList<>());
+    when(order2.getOrderItems()).thenReturn(orderItemList);
+    when(order2.getCurrency()).thenReturn(broadleafCurrencyImpl2);
+
+    // Act
+    Money actualCalculateSubtotalWithAdjustmentsResult = (new PromotableOrderImpl(order2,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true)).calculateSubtotalWithAdjustments();
+
+    // Assert
+    verify(broadleafCurrencyImpl2).getCurrencyCode();
+    verify(broadleafCurrencyImpl, atLeast(1)).getCurrencyCode();
+    verify(order2).getCurrency();
+    verify(order, atLeast(1)).getCurrency();
+    verify(order2, atLeast(1)).getOrderAdjustments();
+    verify(order2).getOrderItems();
+    assertEquals(finalPrice, actualCalculateSubtotalWithAdjustmentsResult);
   }
 }

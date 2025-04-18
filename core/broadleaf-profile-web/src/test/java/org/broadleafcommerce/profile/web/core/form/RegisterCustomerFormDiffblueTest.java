@@ -1,10 +1,29 @@
+/*-
+ * #%L
+ * BroadleafCommerce Profile Web
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.profile.web.core.form;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 class RegisterCustomerFormDiffblueTest {
@@ -26,6 +45,12 @@ class RegisterCustomerFormDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void RegisterCustomerForm.<init>()", "Customer RegisterCustomerForm.getCustomer()",
+      "String RegisterCustomerForm.getPassword()", "String RegisterCustomerForm.getPasswordConfirm()",
+      "String RegisterCustomerForm.getRedirectUrl()", "void RegisterCustomerForm.setCustomer(Customer)",
+      "void RegisterCustomerForm.setPassword(String)", "void RegisterCustomerForm.setPasswordConfirm(String)",
+      "void RegisterCustomerForm.setRedirectUrl(String)"})
   void testGettersAndSetters() {
     // Arrange and Act
     RegisterCustomerForm actualRegisterCustomerForm = new RegisterCustomerForm();
@@ -38,7 +63,7 @@ class RegisterCustomerFormDiffblueTest {
     String actualPassword = actualRegisterCustomerForm.getPassword();
     String actualPasswordConfirm = actualRegisterCustomerForm.getPasswordConfirm();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Password Confirm", actualPasswordConfirm);
     assertEquals("https://example.org/example", actualRegisterCustomerForm.getRedirectUrl());
     assertEquals("iloveyou", actualPassword);

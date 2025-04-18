@@ -20,20 +20,24 @@ package org.broadleafcommerce.common.extensibility.context.merge.exceptions;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class MergeManagerSetupExceptionDiffblueTest {
   /**
-   * Test
-   * {@link MergeManagerSetupException#MergeManagerSetupException(Throwable)}.
+   * Test {@link MergeManagerSetupException#MergeManagerSetupException(Throwable)}.
    * <ul>
-   *   <li>Then return Message is {@code java.lang.Throwable}.</li>
+   *   <li>Then return Message is {@code Throwable}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MergeManagerSetupException#MergeManagerSetupException(Throwable)}
+   * Method under test: {@link MergeManagerSetupException#MergeManagerSetupException(Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void MergeManagerSetupException.<init>()", "void MergeManagerSetupException.<init>(String)",
+      "void MergeManagerSetupException.<init>(String, Throwable)", "void MergeManagerSetupException.<init>(Throwable)"})
   public void testNewMergeManagerSetupException_thenReturnMessageIsJavaLangThrowable() {
     // Arrange
     Throwable arg0 = new Throwable();
@@ -53,10 +57,12 @@ public class MergeManagerSetupExceptionDiffblueTest {
    *   <li>Then return Message is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MergeManagerSetupException#MergeManagerSetupException()}
+   * Method under test: {@link MergeManagerSetupException#MergeManagerSetupException()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void MergeManagerSetupException.<init>()", "void MergeManagerSetupException.<init>(String)",
+      "void MergeManagerSetupException.<init>(String, Throwable)", "void MergeManagerSetupException.<init>(Throwable)"})
   public void testNewMergeManagerSetupException_thenReturnMessageIsNull() {
     // Arrange and Act
     MergeManagerSetupException actualMergeManagerSetupException = new MergeManagerSetupException();
@@ -74,10 +80,12 @@ public class MergeManagerSetupExceptionDiffblueTest {
    *   <li>Then return Message is {@code Arg0}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MergeManagerSetupException#MergeManagerSetupException(String)}
+   * Method under test: {@link MergeManagerSetupException#MergeManagerSetupException(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void MergeManagerSetupException.<init>()", "void MergeManagerSetupException.<init>(String)",
+      "void MergeManagerSetupException.<init>(String, Throwable)", "void MergeManagerSetupException.<init>(Throwable)"})
   public void testNewMergeManagerSetupException_whenArg0_thenReturnMessageIsArg0() {
     // Arrange and Act
     MergeManagerSetupException actualMergeManagerSetupException = new MergeManagerSetupException("Arg0");
@@ -89,17 +97,18 @@ public class MergeManagerSetupExceptionDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MergeManagerSetupException#MergeManagerSetupException(String, Throwable)}.
+   * Test {@link MergeManagerSetupException#MergeManagerSetupException(String, Throwable)}.
    * <ul>
    *   <li>When {@code Arg0}.</li>
    *   <li>Then return Message is {@code Arg0}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MergeManagerSetupException#MergeManagerSetupException(String, Throwable)}
+   * Method under test: {@link MergeManagerSetupException#MergeManagerSetupException(String, Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void MergeManagerSetupException.<init>()", "void MergeManagerSetupException.<init>(String)",
+      "void MergeManagerSetupException.<init>(String, Throwable)", "void MergeManagerSetupException.<init>(Throwable)"})
   public void testNewMergeManagerSetupException_whenArg0_thenReturnMessageIsArg02() {
     // Arrange
     Throwable arg1 = new Throwable();

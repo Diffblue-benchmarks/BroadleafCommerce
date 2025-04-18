@@ -1,17 +1,40 @@
+/*-
+ * #%L
+ * BroadleafCommerce Admin Module
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.admin.server.service.handler;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
 import org.broadleafcommerce.common.exception.ServiceException;
+import org.broadleafcommerce.core.offer.dao.OfferCodeDao;
 import org.broadleafcommerce.core.offer.domain.OfferCode;
 import org.broadleafcommerce.core.offer.domain.OfferCodeImpl;
 import org.broadleafcommerce.core.offer.domain.OfferImpl;
@@ -23,74 +46,36 @@ import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDao;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.RecordHelper;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml", "/bl-admin-applicationContext.xml",
-    "/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class OfferCodeCustomPersistenceHandlerDiffblueTest {
-  @Autowired
+  @InjectMocks
   private OfferCodeCustomPersistenceHandler offerCodeCustomPersistenceHandler;
 
-  /**
-   * Test
-   * {@link OfferCodeCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
-   * <p>
-   * Method under test:
-   * {@link OfferCodeCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCanHandleAdd() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3098 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.OfferCodeCustomPersistenceHandler offerCodeCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    OfferCodeCustomPersistenceHandler offerCodeCustomPersistenceHandler2 = new OfferCodeCustomPersistenceHandler();
-
-    // Act
-    offerCodeCustomPersistenceHandler2.canHandleAdd(new PersistencePackage());
-  }
+  @Mock
+  private OfferCodeDao offerCodeDao;
 
   /**
-   * Test
-   * {@link OfferCodeCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
+   * Test {@link OfferCodeCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
    * <ul>
    *   <li>Given {@code java.text}.</li>
    *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OfferCodeCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
+   * Method under test: {@link OfferCodeCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean OfferCodeCustomPersistenceHandler.canHandleAdd(PersistencePackage)"})
   public void testCanHandleAdd_givenJavaText_thenThrowRuntimeException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OfferCodeCustomPersistenceHandler offerCodeCustomPersistenceHandler = new OfferCodeCustomPersistenceHandler();
-
     PersistencePackage persistencePackage = new PersistencePackage();
     persistencePackage.setCeilingEntityFullyQualifiedClassname("java.text");
 
@@ -99,79 +84,36 @@ public class OfferCodeCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link OfferCodeCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
+   * Test {@link OfferCodeCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
    * <ul>
    *   <li>When {@link PersistencePackage#PersistencePackage()}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OfferCodeCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
+   * Method under test: {@link OfferCodeCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean OfferCodeCustomPersistenceHandler.canHandleAdd(PersistencePackage)"})
   public void testCanHandleAdd_whenPersistencePackage_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferCodeCustomPersistenceHandler offerCodeCustomPersistenceHandler = new OfferCodeCustomPersistenceHandler();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertFalse(offerCodeCustomPersistenceHandler.canHandleAdd(new PersistencePackage()));
   }
 
   /**
-   * Test
-   * {@link OfferCodeCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
-   * <p>
-   * Method under test:
-   * {@link OfferCodeCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCanHandleUpdate() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3122 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.OfferCodeCustomPersistenceHandler offerCodeCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    OfferCodeCustomPersistenceHandler offerCodeCustomPersistenceHandler2 = new OfferCodeCustomPersistenceHandler();
-
-    // Act
-    offerCodeCustomPersistenceHandler2.canHandleUpdate(new PersistencePackage());
-  }
-
-  /**
-   * Test
-   * {@link OfferCodeCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
+   * Test {@link OfferCodeCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
    * <ul>
    *   <li>Given {@code java.text}.</li>
    *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OfferCodeCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
+   * Method under test: {@link OfferCodeCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean OfferCodeCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"})
   public void testCanHandleUpdate_givenJavaText_thenThrowRuntimeException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OfferCodeCustomPersistenceHandler offerCodeCustomPersistenceHandler = new OfferCodeCustomPersistenceHandler();
-
     PersistencePackage persistencePackage = new PersistencePackage();
     persistencePackage.setCeilingEntityFullyQualifiedClassname("java.text");
 
@@ -180,83 +122,38 @@ public class OfferCodeCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link OfferCodeCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
+   * Test {@link OfferCodeCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
    * <ul>
    *   <li>When {@link PersistencePackage#PersistencePackage()}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OfferCodeCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
+   * Method under test: {@link OfferCodeCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean OfferCodeCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"})
   public void testCanHandleUpdate_whenPersistencePackage_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferCodeCustomPersistenceHandler offerCodeCustomPersistenceHandler = new OfferCodeCustomPersistenceHandler();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertFalse(offerCodeCustomPersistenceHandler.canHandleUpdate(new PersistencePackage()));
   }
 
   /**
-   * Test
-   * {@link OfferCodeCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
-   * <p>
-   * Method under test:
-   * {@link OfferCodeCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAdd() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3045 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.OfferCodeCustomPersistenceHandler offerCodeCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    OfferCodeCustomPersistenceHandler offerCodeCustomPersistenceHandler2 = new OfferCodeCustomPersistenceHandler();
-    PersistencePackage persistencePackage = new PersistencePackage();
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    // Act
-    offerCodeCustomPersistenceHandler2.add(persistencePackage, dynamicEntityDao,
-        new AdornedTargetListPersistenceModule());
-  }
-
-  /**
-   * Test
-   * {@link OfferCodeCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
+   * Test {@link OfferCodeCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
    * <ul>
-   *   <li>Given {@link Entity} {@link Entity#getType()} return array of
-   * {@link String} with {@code Type}.</li>
+   *   <li>Given {@link Entity} {@link Entity#getType()} return array of {@link String} with {@code Type}.</li>
    *   <li>Then throw {@link ServiceException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OfferCodeCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
+   * Method under test: {@link OfferCodeCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Entity OfferCodeCustomPersistenceHandler.add(PersistencePackage, DynamicEntityDao, RecordHelper)"})
   public void testAdd_givenEntityGetTypeReturnArrayOfStringWithType_thenThrowServiceException()
       throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OfferCodeCustomPersistenceHandler offerCodeCustomPersistenceHandler = new OfferCodeCustomPersistenceHandler();
     Entity entity = mock(Entity.class);
     when(entity.getType()).thenReturn(new String[]{"Type"});
 
@@ -271,65 +168,26 @@ public class OfferCodeCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link OfferCodeCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}.
-   * <p>
-   * Method under test:
-   * {@link OfferCodeCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testUpdate() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3162 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.OfferCodeCustomPersistenceHandler offerCodeCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    OfferCodeCustomPersistenceHandler offerCodeCustomPersistenceHandler2 = new OfferCodeCustomPersistenceHandler();
-    PersistencePackage persistencePackage = new PersistencePackage();
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    // Act
-    offerCodeCustomPersistenceHandler2.update(persistencePackage, dynamicEntityDao,
-        new AdornedTargetListPersistenceModule());
-  }
-
-  /**
-   * Test
-   * {@link OfferCodeCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}.
+   * Test {@link OfferCodeCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}.
    * <ul>
    *   <li>Then throw {@link ServiceException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OfferCodeCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}
+   * Method under test: {@link OfferCodeCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Entity OfferCodeCustomPersistenceHandler.update(PersistencePackage, DynamicEntityDao, RecordHelper)"})
   public void testUpdate_thenThrowServiceException() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OfferCodeCustomPersistenceHandler offerCodeCustomPersistenceHandler = new OfferCodeCustomPersistenceHandler();
     Entity entity = mock(Entity.class);
     when(entity.getType()).thenReturn(new String[]{"Type"});
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getEntity()).thenReturn(entity);
-    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
+
+    PersistencePackage persistencePackage = new PersistencePackage();
+    persistencePackage.setEntity(entity);
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-    RecordHelper helper = mock(RecordHelper.class);
+    AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
     when(helper.getPrimaryKey(Mockito.<Entity>any(), Mockito.<Map<String, FieldMetadata>>any()))
         .thenReturn("Primary Key");
     when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
@@ -339,66 +197,24 @@ public class OfferCodeCustomPersistenceHandlerDiffblueTest {
     assertThrows(ServiceException.class,
         () -> offerCodeCustomPersistenceHandler.update(persistencePackage, dynamicEntityDao, helper));
     verify(entity, atLeast(1)).getType();
-    verify(persistencePackage).getEntity();
-    verify(persistencePackage).getPersistencePerspective();
     verify(helper).getPrimaryKey(isA(Entity.class), isA(Map.class));
-    verify(helper).getSimpleMergedProperties(eq("org.broadleafcommerce.core.offer.domain.OfferCode"),
-        isA(PersistencePerspective.class));
+    verify(helper).getSimpleMergedProperties(eq("org.broadleafcommerce.core.offer.domain.OfferCode"), isNull());
   }
 
   /**
-   * Test
-   * {@link OfferCodeCustomPersistenceHandler#validateOfferCode(Entity, OfferCode)}.
-   * <p>
-   * Method under test:
-   * {@link OfferCodeCustomPersistenceHandler#validateOfferCode(Entity, OfferCode)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testValidateOfferCode() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3215 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.OfferCodeCustomPersistenceHandler offerCodeCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    OfferCodeCustomPersistenceHandler offerCodeCustomPersistenceHandler2 = new OfferCodeCustomPersistenceHandler();
-    Entity entity = new Entity();
-
-    // Act
-    offerCodeCustomPersistenceHandler2.validateOfferCode(entity, new OfferCodeImpl());
-  }
-
-  /**
-   * Test
-   * {@link OfferCodeCustomPersistenceHandler#validateOfferCode(Entity, OfferCode)}.
+   * Test {@link OfferCodeCustomPersistenceHandler#validateOfferCode(Entity, OfferCode)}.
    * <ul>
-   *   <li>Given {@link RuntimeException#RuntimeException(String)} with
-   * {@code foo}.</li>
+   *   <li>Given {@link RuntimeException#RuntimeException(String)} with {@code foo}.</li>
    *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OfferCodeCustomPersistenceHandler#validateOfferCode(Entity, OfferCode)}
+   * Method under test: {@link OfferCodeCustomPersistenceHandler#validateOfferCode(Entity, OfferCode)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Entity OfferCodeCustomPersistenceHandler.validateOfferCode(Entity, OfferCode)"})
   public void testValidateOfferCode_givenRuntimeExceptionWithFoo_thenThrowRuntimeException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OfferCodeCustomPersistenceHandler offerCodeCustomPersistenceHandler = new OfferCodeCustomPersistenceHandler();
     Entity entity = new Entity();
     OfferCode offerCode = mock(OfferCode.class);
     when(offerCode.getOfferCode()).thenThrow(new RuntimeException("foo"));
@@ -411,48 +227,73 @@ public class OfferCodeCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link OfferCodeCustomPersistenceHandler#checkIfOfferHasAdditionStatusNew(Long)}.
+   * Test {@link OfferCodeCustomPersistenceHandler#validateOfferCode(Entity, OfferCode)}.
+   * <ul>
+   *   <li>Then return {@link Entity} (default constructor).</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link OfferCodeCustomPersistenceHandler#checkIfOfferHasAdditionStatusNew(Long)}
+   * Method under test: {@link OfferCodeCustomPersistenceHandler#validateOfferCode(Entity, OfferCode)}
    */
   @Test
-  public void testCheckIfOfferHasAdditionStatusNew() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Entity OfferCodeCustomPersistenceHandler.validateOfferCode(Entity, OfferCode)"})
+  public void testValidateOfferCode_thenReturnEntity() {
+    // Arrange
+    when(offerCodeDao.readOfferCodeByCode(Mockito.<String>any())).thenReturn(new OfferCodeImpl());
+    Entity entity = new Entity();
+    OfferCode offerCode = mock(OfferCode.class);
+    when(offerCode.getOfferCode()).thenReturn("Offer Code");
+    when(offerCode.getOffer()).thenReturn(new OfferImpl());
 
-    // Arrange, Act and Assert
-    assertTrue((new OfferCodeCustomPersistenceHandler()).checkIfOfferHasAdditionStatusNew(1L).isEmpty());
+    // Act
+    Entity actualValidateOfferCodeResult = offerCodeCustomPersistenceHandler.validateOfferCode(entity, offerCode);
+
+    // Assert
+    verify(offerCodeDao).readOfferCodeByCode(eq("Offer Code"));
+    verify(offerCode).getOffer();
+    verify(offerCode).getOfferCode();
+    assertSame(entity, actualValidateOfferCodeResult);
   }
 
   /**
-   * Test
-   * {@link OfferCodeCustomPersistenceHandler#checkIfOfferHasAdditionStatusNew(Long)}.
+   * Test {@link OfferCodeCustomPersistenceHandler#validateOfferCode(Entity, OfferCode)}.
+   * <ul>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link OfferCodeCustomPersistenceHandler#checkIfOfferHasAdditionStatusNew(Long)}
+   * Method under test: {@link OfferCodeCustomPersistenceHandler#validateOfferCode(Entity, OfferCode)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testCheckIfOfferHasAdditionStatusNew2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3146 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.OfferCodeCustomPersistenceHandler offerCodeCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Entity OfferCodeCustomPersistenceHandler.validateOfferCode(Entity, OfferCode)"})
+  public void testValidateOfferCode_thenReturnNull() {
+    // Arrange
+    when(offerCodeDao.readOfferCodeByCode(Mockito.<String>any())).thenReturn(null);
+    Entity entity = new Entity();
+    OfferCode offerCode = mock(OfferCode.class);
+    when(offerCode.getOfferCode()).thenReturn("Offer Code");
+    when(offerCode.getOffer()).thenReturn(new OfferImpl());
 
-    // Arrange and Act
-    (new OfferCodeCustomPersistenceHandler()).checkIfOfferHasAdditionStatusNew(1L);
+    // Act
+    Entity actualValidateOfferCodeResult = offerCodeCustomPersistenceHandler.validateOfferCode(entity, offerCode);
+
+    // Assert
+    verify(offerCodeDao).readOfferCodeByCode(eq("Offer Code"));
+    verify(offerCode).getOffer();
+    verify(offerCode).getOfferCode();
+    assertNull(actualValidateOfferCodeResult);
+  }
+
+  /**
+   * Test {@link OfferCodeCustomPersistenceHandler#checkIfOfferHasAdditionStatusNew(Long)}.
+   * <p>
+   * Method under test: {@link OfferCodeCustomPersistenceHandler#checkIfOfferHasAdditionStatusNew(Long)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.util.List OfferCodeCustomPersistenceHandler.checkIfOfferHasAdditionStatusNew(Long)"})
+  public void testCheckIfOfferHasAdditionStatusNew() {
+    // Arrange, Act and Assert
+    assertTrue(offerCodeCustomPersistenceHandler.checkIfOfferHasAdditionStatusNew(1L).isEmpty());
   }
 }

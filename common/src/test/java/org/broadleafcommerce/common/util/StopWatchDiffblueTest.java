@@ -19,8 +19,10 @@ package org.broadleafcommerce.common.util;
 
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
-import org.junit.Ignore;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -33,31 +35,13 @@ public class StopWatchDiffblueTest {
   private StopWatch stopWatch;
 
   /**
-   * Test new {@link StopWatch} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link StopWatch}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testNewStopWatch() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Method may be time-sensitive.
-    //   Diffblue Cover was only able to write tests that are time-sensitive.
-    //   The assertions don't pass when run at an alternate date, time, and
-    //   timezone. Try refactoring the method to take a 'java.time.Clock' instance so
-    //   that the time can be parameterized during testing.
-    //   See Working with code R031 (https://diff.blue/R031) for details.
-
-    // Arrange and Act
-    new StopWatch();
-  }
-
-  /**
    * Test {@link StopWatch#start()}.
    * <p>
    * Method under test: {@link StopWatch#start()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"StopWatch StopWatch.start()"})
   public void testStart() {
     // Arrange, Act and Assert
     assertThrows(IllegalStateException.class, () -> (new StopWatch()).start());
@@ -69,6 +53,8 @@ public class StopWatchDiffblueTest {
    * Method under test: {@link StopWatch#stop()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"StopWatch StopWatch.stop()"})
   public void testStop() {
     // Arrange
     StopWatch stopWatch = new StopWatch();
@@ -83,6 +69,8 @@ public class StopWatchDiffblueTest {
    * Method under test: {@link StopWatch#reset()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"StopWatch StopWatch.reset()"})
   public void testReset() {
     // Arrange
     StopWatch stopWatch = new StopWatch();
@@ -97,6 +85,8 @@ public class StopWatchDiffblueTest {
    * Method under test: {@link StopWatch#split()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"StopWatch StopWatch.split()"})
   public void testSplit() {
     // Arrange
     StopWatch stopWatch = new StopWatch();
@@ -111,6 +101,8 @@ public class StopWatchDiffblueTest {
    * Method under test: {@link StopWatch#unsplit()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"StopWatch StopWatch.unsplit()"})
   public void testUnsplit() {
     // Arrange
     StopWatch stopWatch = new StopWatch();
@@ -125,6 +117,8 @@ public class StopWatchDiffblueTest {
    * Method under test: {@link StopWatch#suspend()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"StopWatch StopWatch.suspend()"})
   public void testSuspend() {
     // Arrange
     StopWatch stopWatch = new StopWatch();
@@ -139,149 +133,11 @@ public class StopWatchDiffblueTest {
    * Method under test: {@link StopWatch#resume()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"StopWatch StopWatch.resume()"})
   public void testResume() {
     // Arrange, Act and Assert
     assertThrows(IllegalStateException.class, () -> (new StopWatch()).resume());
-  }
-
-  /**
-   * Test {@link StopWatch#getTime()}.
-   * <p>
-   * Method under test: {@link StopWatch#getTime()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetTime() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Method may be time-sensitive.
-    //   Diffblue Cover was only able to write tests that are time-sensitive.
-    //   The assertions don't pass when run at an alternate date, time, and
-    //   timezone. Try refactoring the method to take a 'java.time.Clock' instance so
-    //   that the time can be parameterized during testing.
-    //   See Working with code R031 (https://diff.blue/R031) for details.
-
-    // Arrange and Act
-    (new StopWatch()).getTime();
-  }
-
-  /**
-   * Test {@link StopWatch#getSplitTime()}.
-   * <p>
-   * Method under test: {@link StopWatch#getSplitTime()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetSplitTime() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Method may be time-sensitive.
-    //   Diffblue Cover was only able to write tests that are time-sensitive.
-    //   The assertions don't pass when run at an alternate date, time, and
-    //   timezone. Try refactoring the method to take a 'java.time.Clock' instance so
-    //   that the time can be parameterized during testing.
-    //   See Working with code R031 (https://diff.blue/R031) for details.
-
-    // Arrange and Act
-    (new StopWatch()).getSplitTime();
-  }
-
-  /**
-   * Test {@link StopWatch#getLapTime()}.
-   * <p>
-   * Method under test: {@link StopWatch#getLapTime()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetLapTime() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Method may be time-sensitive.
-    //   Diffblue Cover was only able to write tests that are time-sensitive.
-    //   The assertions don't pass when run at an alternate date, time, and
-    //   timezone. Try refactoring the method to take a 'java.time.Clock' instance so
-    //   that the time can be parameterized during testing.
-    //   See Working with code R031 (https://diff.blue/R031) for details.
-
-    // Arrange and Act
-    (new StopWatch()).getLapTime();
-  }
-
-  /**
-   * Test {@link StopWatch#getStartTime()}.
-   * <p>
-   * Method under test: {@link StopWatch#getStartTime()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetStartTime() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Method may be time-sensitive.
-    //   Diffblue Cover was only able to write tests that are time-sensitive.
-    //   The assertions don't pass when run at an alternate date, time, and
-    //   timezone. Try refactoring the method to take a 'java.time.Clock' instance so
-    //   that the time can be parameterized during testing.
-    //   See Working with code R031 (https://diff.blue/R031) for details.
-
-    // Arrange and Act
-    (new StopWatch()).getStartTime();
-  }
-
-  /**
-   * Test {@link StopWatch#toString()}.
-   * <p>
-   * Method under test: {@link StopWatch#toString()}
-   */
-  @Test
-  public void testToString() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing observers.
-    //   Diffblue Cover was unable to create an assertion.
-    //   Add getters for the following fields or make them package-private:
-    //     StopWatch.runningState
-    //     StopWatch.splitState
-    //     StopWatch.startTime
-    //     StopWatch.stopTime
-
-    // Arrange and Act
-    (new StopWatch()).toString();
-  }
-
-  /**
-   * Test {@link StopWatch#toSplitString()}.
-   * <p>
-   * Method under test: {@link StopWatch#toSplitString()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testToSplitString() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Method may be time-sensitive.
-    //   Diffblue Cover was only able to write tests that are time-sensitive.
-    //   The assertions don't pass when run at an alternate date, time, and
-    //   timezone. Try refactoring the method to take a 'java.time.Clock' instance so
-    //   that the time can be parameterized during testing.
-    //   See Working with code R031 (https://diff.blue/R031) for details.
-
-    // Arrange and Act
-    (new StopWatch()).toSplitString();
-  }
-
-  /**
-   * Test {@link StopWatch#toLapString()}.
-   * <p>
-   * Method under test: {@link StopWatch#toLapString()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testToLapString() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Method may be time-sensitive.
-    //   Diffblue Cover was only able to write tests that are time-sensitive.
-    //   The assertions don't pass when run at an alternate date, time, and
-    //   timezone. Try refactoring the method to take a 'java.time.Clock' instance so
-    //   that the time can be parameterized during testing.
-    //   See Working with code R031 (https://diff.blue/R031) for details.
-
-    // Arrange and Act
-    (new StopWatch()).toLapString();
   }
 
   /**
@@ -290,6 +146,8 @@ public class StopWatchDiffblueTest {
    * Method under test: {@link StopWatch#printString(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"StopWatch StopWatch.printString(String)"})
   public void testPrintString() {
     // Arrange, Act and Assert
     assertSame(stopWatch, stopWatch.printString("Msg"));
@@ -301,6 +159,8 @@ public class StopWatchDiffblueTest {
    * Method under test: {@link StopWatch#printSplitString(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"StopWatch StopWatch.printSplitString(String)"})
   public void testPrintSplitString() {
     // Arrange, Act and Assert
     assertSame(stopWatch, stopWatch.printSplitString("Msg"));
@@ -312,6 +172,8 @@ public class StopWatchDiffblueTest {
    * Method under test: {@link StopWatch#printLapString(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"StopWatch StopWatch.printLapString(String)"})
   public void testPrintLapString() {
     // Arrange, Act and Assert
     assertSame(stopWatch, stopWatch.printLapString("Msg"));

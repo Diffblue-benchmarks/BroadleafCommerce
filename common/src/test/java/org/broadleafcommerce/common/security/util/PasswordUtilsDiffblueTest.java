@@ -18,7 +18,10 @@
 package org.broadleafcommerce.common.security.util;
 
 import static org.junit.Assert.assertEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class PasswordUtilsDiffblueTest {
   /**
@@ -31,6 +34,8 @@ public class PasswordUtilsDiffblueTest {
    * Method under test: {@link PasswordUtils#generateSecurePassword(int)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.String PasswordUtils.generateSecurePassword(int)"})
   public void testGenerateSecurePassword_whenZero_thenReturnEmptyString() {
     // Arrange, Act and Assert
     assertEquals("", PasswordUtils.generateSecurePassword(0));

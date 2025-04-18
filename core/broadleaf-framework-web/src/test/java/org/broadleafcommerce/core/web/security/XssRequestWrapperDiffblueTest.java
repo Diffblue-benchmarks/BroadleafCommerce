@@ -1,26 +1,122 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework Web
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.web.security;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.List;
+import javax.servlet.DispatcherType;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
+import javax.servlet.http.Part;
 import org.broadleafcommerce.common.web.filter.SessionlessHttpServletRequestWrapper;
 import org.broadleafcommerce.core.web.search.SearchRequestWrapper;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.owasp.esapi.filters.SecurityWrapperRequest;
 import org.springframework.boot.web.reactive.context.StandardReactiveWebEnvironment;
+import org.springframework.core.env.Environment;
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
+import org.springframework.mock.web.MockHttpSession;
+import org.springframework.mock.web.MockServletContext;
 
 class XssRequestWrapperDiffblueTest {
+  /**
+   * Test {@link XssRequestWrapper#XssRequestWrapper(HttpServletRequest, Environment, String[])}.
+   * <p>
+   * Method under test: {@link XssRequestWrapper#XssRequestWrapper(HttpServletRequest, Environment, String[])}
+   */
+  @Test
+  @DisplayName("Test new XssRequestWrapper(HttpServletRequest, Environment, String[])")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void XssRequestWrapper.<init>(HttpServletRequest, Environment, String[])"})
+  void testNewXssRequestWrapper() throws IOException, ServletException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
+    // Arrange
+    SearchRequestWrapper servletRequest = new SearchRequestWrapper(new MockHttpServletRequest());
+
+    // Act
+    XssRequestWrapper actualXssRequestWrapper = new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"});
+
+    // Assert
+    Collection<Part> parts = actualXssRequestWrapper.getParts();
+    assertTrue(parts instanceof List);
+    ServletRequest request = actualXssRequestWrapper.getRequest();
+    assertTrue(request instanceof SearchRequestWrapper);
+    assertTrue(actualXssRequestWrapper.environment instanceof StandardReactiveWebEnvironment);
+    assertTrue(actualXssRequestWrapper.getSession() instanceof MockHttpSession);
+    assertTrue(actualXssRequestWrapper.getServletContext() instanceof MockServletContext);
+    assertEquals("", actualXssRequestWrapper.getContextPath());
+    assertEquals("", actualXssRequestWrapper.getMethod());
+    assertEquals("", actualXssRequestWrapper.getRequestURI());
+    assertEquals("", actualXssRequestWrapper.getServletPath());
+    assertEquals("HTTP/1.1", actualXssRequestWrapper.getProtocol());
+    assertEquals("http", actualXssRequestWrapper.getScheme());
+    assertEquals("localhost", actualXssRequestWrapper.getLocalName());
+    assertEquals("localhost", actualXssRequestWrapper.getRemoteHost());
+    assertEquals("localhost", actualXssRequestWrapper.getServerName());
+    assertNull(actualXssRequestWrapper.getCharacterEncoding());
+    assertNull(actualXssRequestWrapper.getContentType());
+    assertNull(actualXssRequestWrapper.getAuthType());
+    assertNull(actualXssRequestWrapper.getPathInfo());
+    assertNull(actualXssRequestWrapper.getPathTranslated());
+    assertNull(actualXssRequestWrapper.getQueryString());
+    assertNull(actualXssRequestWrapper.getRemoteUser());
+    assertNull(actualXssRequestWrapper.getRequestedSessionId());
+    assertNull(actualXssRequestWrapper.getUserPrincipal());
+    assertNull(actualXssRequestWrapper.getAsyncContext());
+    assertNull(actualXssRequestWrapper.getCookies());
+    assertEquals(-1, actualXssRequestWrapper.getContentLength());
+    assertEquals(-1L, actualXssRequestWrapper.getContentLengthLong());
+    assertEquals(80, actualXssRequestWrapper.getLocalPort());
+    assertEquals(80, actualXssRequestWrapper.getRemotePort());
+    assertEquals(80, actualXssRequestWrapper.getServerPort());
+    assertEquals(DispatcherType.REQUEST, actualXssRequestWrapper.getDispatcherType());
+    assertFalse(actualXssRequestWrapper.isAsyncStarted());
+    assertFalse(actualXssRequestWrapper.isAsyncSupported());
+    assertFalse(actualXssRequestWrapper.isSecure());
+    assertFalse(actualXssRequestWrapper.customStripXssEnabled);
+    assertTrue(parts.isEmpty());
+    assertTrue(actualXssRequestWrapper.getParameterMap().isEmpty());
+    assertTrue(actualXssRequestWrapper.getTrailerFields().isEmpty());
+    assertTrue(actualXssRequestWrapper.isTrailerFieldsReady());
+    assertSame(servletRequest, request);
+  }
+
   /**
    * Test {@link XssRequestWrapper#getParameterValues(String)}.
    * <p>
@@ -28,8 +124,12 @@ class XssRequestWrapperDiffblueTest {
    */
   @Test
   @DisplayName("Test getParameterValues(String)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String[] XssRequestWrapper.getParameterValues(String)"})
   void testGetParameterValues() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     SearchRequestWrapper servletRequest = new SearchRequestWrapper(new MockHttpServletRequest());
@@ -46,8 +146,12 @@ class XssRequestWrapperDiffblueTest {
    */
   @Test
   @DisplayName("Test getParameterValues(String)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String[] XssRequestWrapper.getParameterValues(String)"})
   void testGetParameterValues2() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     MockHttpServletRequest servletRequest = new MockHttpServletRequest();
@@ -67,8 +171,12 @@ class XssRequestWrapperDiffblueTest {
    */
   @Test
   @DisplayName("Test getParameterValues(String)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String[] XssRequestWrapper.getParameterValues(String)"})
   void testGetParameterValues3() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     SessionlessHttpServletRequestWrapper servletRequest = mock(SessionlessHttpServletRequestWrapper.class);
@@ -93,8 +201,12 @@ class XssRequestWrapperDiffblueTest {
    */
   @Test
   @DisplayName("Test getParameterValues(String); then return array of String with '42'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String[] XssRequestWrapper.getParameterValues(String)"})
   void testGetParameterValues_thenReturnArrayOfStringWith42() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     SessionlessHttpServletRequestWrapper servletRequest = mock(SessionlessHttpServletRequestWrapper.class);
@@ -119,8 +231,12 @@ class XssRequestWrapperDiffblueTest {
    */
   @Test
   @DisplayName("Test getParameterValues(String); when 'null'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String[] XssRequestWrapper.getParameterValues(String)"})
   void testGetParameterValues_whenNull() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     SessionlessHttpServletRequestWrapper servletRequest = mock(SessionlessHttpServletRequestWrapper.class);
@@ -128,24 +244,6 @@ class XssRequestWrapperDiffblueTest {
     // Act and Assert
     assertNull((new XssRequestWrapper(servletRequest, new StandardReactiveWebEnvironment(),
         new String[]{"White List Param Names"})).getParameterValues(null));
-  }
-
-  /**
-   * Test {@link XssRequestWrapper#checkWhitelist(String)}.
-   * <p>
-   * Method under test: {@link XssRequestWrapper#checkWhitelist(String)}
-   */
-  @Test
-  @DisplayName("Test checkWhitelist(String)")
-  void testCheckWhitelist() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SearchRequestWrapper servletRequest = new SearchRequestWrapper(mock(DefaultMultipartHttpServletRequest.class));
-
-    // Act and Assert
-    assertFalse((new XssRequestWrapper(servletRequest, new StandardReactiveWebEnvironment(),
-        new String[]{"White List Param Names"})).checkWhitelist("Parameter"));
   }
 
   /**
@@ -158,8 +256,12 @@ class XssRequestWrapperDiffblueTest {
    */
   @Test
   @DisplayName("Test checkWhitelist(String); then return 'false'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean XssRequestWrapper.checkWhitelist(String)"})
   void testCheckWhitelist_thenReturnFalse() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     SearchRequestWrapper servletRequest = new SearchRequestWrapper(new MockHttpServletRequest());
@@ -179,8 +281,12 @@ class XssRequestWrapperDiffblueTest {
    */
   @Test
   @DisplayName("Test checkWhitelist(String); then return 'true'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean XssRequestWrapper.checkWhitelist(String)"})
   void testCheckWhitelist_thenReturnTrue() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     SearchRequestWrapper servletRequest = new SearchRequestWrapper(new MockHttpServletRequest());
@@ -197,8 +303,12 @@ class XssRequestWrapperDiffblueTest {
    */
   @Test
   @DisplayName("Test getParameter(String)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String XssRequestWrapper.getParameter(String)"})
   void testGetParameter() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     SearchRequestWrapper servletRequest = new SearchRequestWrapper(new MockHttpServletRequest());
@@ -210,42 +320,20 @@ class XssRequestWrapperDiffblueTest {
 
   /**
    * Test {@link XssRequestWrapper#getParameter(String)}.
-   * <p>
-   * Method under test: {@link XssRequestWrapper#getParameter(String)}
-   */
-  @Test
-  @DisplayName("Test getParameter(String)")
-  void testGetParameter2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SessionlessHttpServletRequestWrapper servletRequest = mock(SessionlessHttpServletRequestWrapper.class);
-    when(servletRequest.getParameter(Mockito.<String>any())).thenReturn("Parameter");
-
-    // Act
-    String actualParameter = (new XssRequestWrapper(servletRequest, new StandardReactiveWebEnvironment(),
-        new String[]{"Parameter"})).getParameter("Parameter");
-
-    // Assert
-    verify(servletRequest).getParameter(eq("Parameter"));
-    assertEquals("Parameter", actualParameter);
-  }
-
-  /**
-   * Test {@link XssRequestWrapper#getParameter(String)}.
    * <ul>
-   *   <li>Given
-   * {@link HttpServletRequestWrapper#HttpServletRequestWrapper(HttpServletRequest)}
-   * with request is
-   * {@link SearchRequestWrapper#SearchRequestWrapper(HttpServletRequest)}.</li>
+   *   <li>Given {@link HttpServletRequestWrapper#HttpServletRequestWrapper(HttpServletRequest)} with request is {@link SearchRequestWrapper#SearchRequestWrapper(HttpServletRequest)}.</li>
    * </ul>
    * <p>
    * Method under test: {@link XssRequestWrapper#getParameter(String)}
    */
   @Test
   @DisplayName("Test getParameter(String); given HttpServletRequestWrapper(HttpServletRequest) with request is SearchRequestWrapper(HttpServletRequest)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String XssRequestWrapper.getParameter(String)"})
   void testGetParameter_givenHttpServletRequestWrapperWithRequestIsSearchRequestWrapper() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     MockHttpServletRequest servletRequest = new MockHttpServletRequest();
@@ -261,18 +349,19 @@ class XssRequestWrapperDiffblueTest {
   /**
    * Test {@link XssRequestWrapper#getParameter(String)}.
    * <ul>
-   *   <li>Given
-   * {@link SecurityWrapperRequest#SecurityWrapperRequest(HttpServletRequest)}
-   * with request is
-   * {@link SearchRequestWrapper#SearchRequestWrapper(HttpServletRequest)}.</li>
+   *   <li>Given {@link SecurityWrapperRequest#SecurityWrapperRequest(HttpServletRequest)} with request is {@link SearchRequestWrapper#SearchRequestWrapper(HttpServletRequest)}.</li>
    * </ul>
    * <p>
    * Method under test: {@link XssRequestWrapper#getParameter(String)}
    */
   @Test
   @DisplayName("Test getParameter(String); given SecurityWrapperRequest(HttpServletRequest) with request is SearchRequestWrapper(HttpServletRequest)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String XssRequestWrapper.getParameter(String)"})
   void testGetParameter_givenSecurityWrapperRequestWithRequestIsSearchRequestWrapper() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     MockHttpServletRequest servletRequest = new MockHttpServletRequest();
@@ -285,55 +374,7 @@ class XssRequestWrapperDiffblueTest {
   }
 
   /**
-   * Test {@link XssRequestWrapper#getParameter(String)}.
-   * <ul>
-   *   <li>Then return {@code Parameter}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link XssRequestWrapper#getParameter(String)}
-   */
-  @Test
-  @DisplayName("Test getParameter(String); then return 'Parameter'")
-  void testGetParameter_thenReturnParameter() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SessionlessHttpServletRequestWrapper servletRequest = mock(SessionlessHttpServletRequestWrapper.class);
-    when(servletRequest.getParameter(Mockito.<String>any())).thenReturn("Parameter");
-
-    // Act
-    String actualParameter = (new XssRequestWrapper(servletRequest, new StandardReactiveWebEnvironment(),
-        new String[]{"White List Param Names"})).getParameter("Parameter");
-
-    // Assert
-    verify(servletRequest).getParameter(eq("Parameter"));
-    assertEquals("Parameter", actualParameter);
-  }
-
-  /**
-   * Test {@link XssRequestWrapper#getParameter(String)}.
-   * <ul>
-   *   <li>When {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link XssRequestWrapper#getParameter(String)}
-   */
-  @Test
-  @DisplayName("Test getParameter(String); when 'null'")
-  void testGetParameter_whenNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SessionlessHttpServletRequestWrapper servletRequest = mock(SessionlessHttpServletRequestWrapper.class);
-
-    // Act and Assert
-    assertNull((new XssRequestWrapper(servletRequest, new StandardReactiveWebEnvironment(),
-        new String[]{"White List Param Names"})).getParameter(null));
-  }
-
-  /**
-   * Test {@link XssRequestWrapper#stripXss(String, String)} with {@code value},
-   * {@code esapiInputType}.
+   * Test {@link XssRequestWrapper#stripXss(String, String)} with {@code value}, {@code esapiInputType}.
    * <ul>
    *   <li>When {@code BroadleafHttpParameterValue}.</li>
    *   <li>Then return {@code 42}.</li>
@@ -343,8 +384,12 @@ class XssRequestWrapperDiffblueTest {
    */
   @Test
   @DisplayName("Test stripXss(String, String) with 'value', 'esapiInputType'; when 'BroadleafHttpParameterValue'; then return '42'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String XssRequestWrapper.stripXss(String, String)"})
   void testStripXssWithValueEsapiInputType_whenBroadleafHttpParameterValue_thenReturn42() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     SearchRequestWrapper servletRequest = new SearchRequestWrapper(new MockHttpServletRequest());
@@ -356,34 +401,21 @@ class XssRequestWrapperDiffblueTest {
 
   /**
    * Test {@link XssRequestWrapper#customStripXss(String)}.
-   * <p>
-   * Method under test: {@link XssRequestWrapper#customStripXss(String)}
-   */
-  @Test
-  @DisplayName("Test customStripXss(String)")
-  void testCustomStripXss() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SearchRequestWrapper servletRequest = new SearchRequestWrapper(mock(DefaultMultipartHttpServletRequest.class));
-
-    // Act and Assert
-    assertEquals("42", (new XssRequestWrapper(servletRequest, new StandardReactiveWebEnvironment(),
-        new String[]{"White List Param Names"})).customStripXss("42"));
-  }
-
-  /**
-   * Test {@link XssRequestWrapper#customStripXss(String)}.
    * <ul>
+   *   <li>When {@code 42}.</li>
    *   <li>Then return {@code 42}.</li>
    * </ul>
    * <p>
    * Method under test: {@link XssRequestWrapper#customStripXss(String)}
    */
   @Test
-  @DisplayName("Test customStripXss(String); then return '42'")
-  void testCustomStripXss_thenReturn42() {
+  @DisplayName("Test customStripXss(String); when '42'; then return '42'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String XssRequestWrapper.customStripXss(String)"})
+  void testCustomStripXss_when42_thenReturn42() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     SearchRequestWrapper servletRequest = new SearchRequestWrapper(new MockHttpServletRequest());
@@ -404,8 +436,12 @@ class XssRequestWrapperDiffblueTest {
    */
   @Test
   @DisplayName("Test customStripXss(String); when 'null'; then return 'null'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String XssRequestWrapper.customStripXss(String)"})
   void testCustomStripXss_whenNull_thenReturnNull() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     SearchRequestWrapper servletRequest = new SearchRequestWrapper(new MockHttpServletRequest());
@@ -422,13 +458,16 @@ class XssRequestWrapperDiffblueTest {
    *   <li>Then return {@code 42}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link XssRequestWrapper#stripXssWithESAPI(String, String)}
+   * Method under test: {@link XssRequestWrapper#stripXssWithESAPI(String, String)}
    */
   @Test
   @DisplayName("Test stripXssWithESAPI(String, String); when 'BroadleafHttpParameterValue'; then return '42'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String XssRequestWrapper.stripXssWithESAPI(String, String)"})
   void testStripXssWithESAPI_whenBroadleafHttpParameterValue_thenReturn42() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     SearchRequestWrapper servletRequest = new SearchRequestWrapper(new MockHttpServletRequest());

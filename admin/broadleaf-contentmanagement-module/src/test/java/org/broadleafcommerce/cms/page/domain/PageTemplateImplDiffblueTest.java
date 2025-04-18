@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce CMS Module
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.cms.page.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -10,6 +27,8 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import org.broadleafcommerce.cms.field.domain.FieldGroup;
@@ -20,91 +39,24 @@ import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
 import org.broadleafcommerce.common.locale.domain.Locale;
 import org.broadleafcommerce.common.locale.domain.LocaleImpl;
 import org.broadleafcommerce.common.service.GenericEntityService;
-import org.broadleafcommerce.common.service.GenericEntityServiceImpl;
 import org.broadleafcommerce.common.site.domain.CatalogImpl;
 import org.broadleafcommerce.common.site.domain.SiteImpl;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-cms-applicationContext-entity.xml",
-    "/applicationContext-servlet-cms-contentClient.xml", "/applicationContext-servlet-cms-contentCreator.xml",
-    "/bl-cms-contentClient-applicationContext.xml", "/bl-cms-contentCreator-applicationContext.xml",
-    "/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-cms-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-cms-applicationContext-servlet.xml",
-    "/blc-config/site/framework/bl-cms-applicationContext.xml"})
+@ContextConfiguration(locations = {"/bl-cms-applicationContext-entity.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class PageTemplateImplDiffblueTest {
   @Autowired
   private PageTemplateImpl pageTemplateImpl;
-
-  /**
-   * Test {@link PageTemplateImpl#getFieldGroups()}.
-   * <p>
-   * Method under test: {@link PageTemplateImpl#getFieldGroups()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetFieldGroups() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.page.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-cms-applicationContext-entity.xml","/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass326 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.domain.PageTemplateImpl pageTemplateImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new PageTemplateImpl()).getFieldGroups();
-  }
-
-  /**
-   * Test {@link PageTemplateImpl#getFieldGroups()}.
-   * <ul>
-   *   <li>Given {@link PageTemplateImpl} (default constructor) Locale is
-   * {@link Locale}.</li>
-   *   <li>Then return size is one.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PageTemplateImpl#getFieldGroups()}
-   */
-  @Test
-  public void testGetFieldGroups_givenPageTemplateImplLocaleIsLocale_thenReturnSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ArrayList<PageTemplateFieldGroupXref> fieldGroups = new ArrayList<>();
-    fieldGroups.add(new PageTemplateFieldGroupXrefImpl());
-
-    PageTemplateImpl pageTemplateImpl = new PageTemplateImpl();
-    pageTemplateImpl.setId(PageItemCriteriaImpl.serialVersionUID);
-    pageTemplateImpl.setLocale(mock(Locale.class));
-    pageTemplateImpl.setTemplateDescription("Template Description");
-    pageTemplateImpl.setTemplateName("Template Name");
-    pageTemplateImpl.setTemplatePath("Template Path");
-    pageTemplateImpl.setFieldGroupXrefs(fieldGroups);
-
-    // Act
-    List<FieldGroup> actualFieldGroups = pageTemplateImpl.getFieldGroups();
-
-    // Assert
-    assertEquals(1, actualFieldGroups.size());
-    assertNull(actualFieldGroups.get(0));
-  }
 
   /**
    * Test {@link PageTemplateImpl#getFieldGroups()}.
@@ -116,9 +68,9 @@ public class PageTemplateImplDiffblueTest {
    * Method under test: {@link PageTemplateImpl#getFieldGroups()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List PageTemplateImpl.getFieldGroups()"})
   public void testGetFieldGroups_givenPageTemplateImpl_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertTrue((new PageTemplateImpl()).getFieldGroups().isEmpty());
   }
@@ -132,23 +84,23 @@ public class PageTemplateImplDiffblueTest {
    * Method under test: {@link PageTemplateImpl#getFieldGroups()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List PageTemplateImpl.getFieldGroups()"})
   public void testGetFieldGroups_thenReturnSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ArrayList<PageTemplateFieldGroupXref> fieldGroups = new ArrayList<>();
     fieldGroups.add(new PageTemplateFieldGroupXrefImpl());
 
-    PageTemplateImpl pageTemplateImpl = new PageTemplateImpl();
-    pageTemplateImpl.setId(PageItemCriteriaImpl.serialVersionUID);
-    pageTemplateImpl.setLocale(new LocaleImpl());
-    pageTemplateImpl.setTemplateDescription("Template Description");
-    pageTemplateImpl.setTemplateName("Template Name");
-    pageTemplateImpl.setTemplatePath("Template Path");
-    pageTemplateImpl.setFieldGroupXrefs(fieldGroups);
+    PageTemplateImpl pageTemplateImpl2 = new PageTemplateImpl();
+    pageTemplateImpl2.setId(PageItemCriteriaImpl.serialVersionUID);
+    pageTemplateImpl2.setLocale(new LocaleImpl());
+    pageTemplateImpl2.setTemplateDescription("Template Description");
+    pageTemplateImpl2.setTemplateName("Template Name");
+    pageTemplateImpl2.setTemplatePath("Template Path");
+    pageTemplateImpl2.setFieldGroupXrefs(fieldGroups);
 
     // Act
-    List<FieldGroup> actualFieldGroups = pageTemplateImpl.getFieldGroups();
+    List<FieldGroup> actualFieldGroups = pageTemplateImpl2.getFieldGroups();
 
     // Assert
     assertEquals(1, actualFieldGroups.size());
@@ -157,156 +109,54 @@ public class PageTemplateImplDiffblueTest {
 
   /**
    * Test {@link PageTemplateImpl#setFieldGroups(List)}.
+   * <ul>
+   *   <li>Then {@link PageTemplateImpl} (default constructor) FieldGroupXrefs size is one.</li>
+   * </ul>
    * <p>
    * Method under test: {@link PageTemplateImpl#setFieldGroups(List)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetFieldGroups() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.page.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-cms-applicationContext-entity.xml","/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass342 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.domain.PageTemplateImpl pageTemplateImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PageTemplateImpl.setFieldGroups(List)"})
+  public void testSetFieldGroups_thenPageTemplateImplFieldGroupXrefsSizeIsOne() {
     // Arrange
     PageTemplateImpl pageTemplateImpl2 = new PageTemplateImpl();
-
-    // Act
-    pageTemplateImpl2.setFieldGroups(new ArrayList<>());
-  }
-
-  /**
-   * Test {@link PageTemplateImpl#setFieldGroups(List)}.
-   * <ul>
-   *   <li>Given {@link PageTemplateImpl} (default constructor) Locale is
-   * {@link LocaleImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PageTemplateImpl#setFieldGroups(List)}
-   */
-  @Test
-  public void testSetFieldGroups_givenPageTemplateImplLocaleIsLocaleImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PageTemplateImpl pageTemplateImpl = new PageTemplateImpl();
     ArrayList<PageTemplateFieldGroupXref> fieldGroups = new ArrayList<>();
-    pageTemplateImpl.setFieldGroupXrefs(fieldGroups);
-    pageTemplateImpl.setId(PageItemCriteriaImpl.serialVersionUID);
-    pageTemplateImpl.setLocale(new LocaleImpl());
-    pageTemplateImpl.setTemplateDescription("Template Description");
-    pageTemplateImpl.setTemplateName("Template Name");
-    pageTemplateImpl.setTemplatePath("Template Path");
+    pageTemplateImpl2.setFieldGroupXrefs(fieldGroups);
+    pageTemplateImpl2.setId(PageItemCriteriaImpl.serialVersionUID);
+    pageTemplateImpl2.setLocale(new LocaleImpl());
+    pageTemplateImpl2.setTemplateDescription("Template Description");
+    pageTemplateImpl2.setTemplateName("Template Name");
+    pageTemplateImpl2.setTemplatePath("Template Path");
 
     ArrayList<FieldGroup> fieldGroups2 = new ArrayList<>();
     fieldGroups2.add(new FieldGroupImpl());
 
     // Act
-    pageTemplateImpl.setFieldGroups(fieldGroups2);
+    pageTemplateImpl2.setFieldGroups(fieldGroups2);
 
     // Assert
-    assertEquals(1, fieldGroups2.size());
-    List<PageTemplateFieldGroupXref> fieldGroupXrefs = pageTemplateImpl.getFieldGroupXrefs();
+    List<PageTemplateFieldGroupXref> fieldGroupXrefs = pageTemplateImpl2.getFieldGroupXrefs();
     assertEquals(1, fieldGroupXrefs.size());
-    assertEquals(1, pageTemplateImpl.getFieldGroups().size());
-    assertEquals(1, pageTemplateImpl.legacyFieldGroups.size());
+    assertEquals(1, pageTemplateImpl2.getFieldGroups().size());
+    assertEquals(1, pageTemplateImpl2.legacyFieldGroups.size());
     assertSame(fieldGroups, fieldGroupXrefs);
   }
 
   /**
    * Test {@link PageTemplateImpl#setFieldGroups(List)}.
    * <ul>
-   *   <li>Given {@link PageTemplateImpl} (default constructor) Locale is
-   * {@link Locale}.</li>
-   *   <li>Then {@link ArrayList#ArrayList()} size is one.</li>
+   *   <li>Then {@link PageTemplateImpl} (default constructor) FieldGroupXrefs size is two.</li>
    * </ul>
    * <p>
    * Method under test: {@link PageTemplateImpl#setFieldGroups(List)}
    */
   @Test
-  public void testSetFieldGroups_givenPageTemplateImplLocaleIsLocale_thenArrayListSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PageTemplateImpl pageTemplateImpl = new PageTemplateImpl();
-    ArrayList<PageTemplateFieldGroupXref> fieldGroups = new ArrayList<>();
-    pageTemplateImpl.setFieldGroupXrefs(fieldGroups);
-    pageTemplateImpl.setId(PageItemCriteriaImpl.serialVersionUID);
-    pageTemplateImpl.setLocale(mock(Locale.class));
-    pageTemplateImpl.setTemplateDescription("Template Description");
-    pageTemplateImpl.setTemplateName("Template Name");
-    pageTemplateImpl.setTemplatePath("Template Path");
-
-    ArrayList<FieldGroup> fieldGroups2 = new ArrayList<>();
-    fieldGroups2.add(new FieldGroupImpl());
-
-    // Act
-    pageTemplateImpl.setFieldGroups(fieldGroups2);
-
-    // Assert
-    assertEquals(1, fieldGroups2.size());
-    List<PageTemplateFieldGroupXref> fieldGroupXrefs = pageTemplateImpl.getFieldGroupXrefs();
-    assertEquals(1, fieldGroupXrefs.size());
-    assertEquals(1, pageTemplateImpl.getFieldGroups().size());
-    assertEquals(1, pageTemplateImpl.legacyFieldGroups.size());
-    assertSame(fieldGroups, fieldGroupXrefs);
-  }
-
-  /**
-   * Test {@link PageTemplateImpl#setFieldGroups(List)}.
-   * <ul>
-   *   <li>Given {@link PageTemplateImpl} (default constructor).</li>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then {@link ArrayList#ArrayList()} Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PageTemplateImpl#setFieldGroups(List)}
-   */
-  @Test
-  public void testSetFieldGroups_givenPageTemplateImpl_whenArrayList_thenArrayListEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PageTemplateImpl pageTemplateImpl = new PageTemplateImpl();
-    ArrayList<FieldGroup> fieldGroups = new ArrayList<>();
-
-    // Act
-    pageTemplateImpl.setFieldGroups(fieldGroups);
-
-    // Assert
-    assertTrue(fieldGroups.isEmpty());
-    assertTrue(pageTemplateImpl.getFieldGroupXrefs().isEmpty());
-    assertTrue(pageTemplateImpl.getFieldGroups().isEmpty());
-    assertTrue(pageTemplateImpl.legacyFieldGroups.isEmpty());
-  }
-
-  /**
-   * Test {@link PageTemplateImpl#setFieldGroups(List)}.
-   * <ul>
-   *   <li>Then {@link PageTemplateImpl} (default constructor) FieldGroupXrefs size
-   * is two.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PageTemplateImpl#setFieldGroups(List)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PageTemplateImpl.setFieldGroups(List)"})
   public void testSetFieldGroups_thenPageTemplateImplFieldGroupXrefsSizeIsTwo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    PageTemplateImpl pageTemplateImpl = new PageTemplateImpl();
+    PageTemplateImpl pageTemplateImpl2 = new PageTemplateImpl();
 
     ArrayList<FieldGroup> fieldGroups = new ArrayList<>();
     fieldGroups.add(new FieldGroupImpl());
@@ -314,112 +164,81 @@ public class PageTemplateImplDiffblueTest {
     fieldGroups.add(fieldGroupImpl);
 
     // Act
-    pageTemplateImpl.setFieldGroups(fieldGroups);
+    pageTemplateImpl2.setFieldGroups(fieldGroups);
 
     // Assert
-    List<PageTemplateFieldGroupXref> fieldGroupXrefs = pageTemplateImpl.getFieldGroupXrefs();
+    List<PageTemplateFieldGroupXref> fieldGroupXrefs = pageTemplateImpl2.getFieldGroupXrefs();
     assertEquals(2, fieldGroupXrefs.size());
     PageTemplateFieldGroupXref getResult = fieldGroupXrefs.get(1);
     assertTrue(getResult instanceof PageTemplateFieldGroupXrefImpl);
     assertNull(getResult.getId());
     assertNull(getResult.getGroupOrder());
-    assertEquals(2, fieldGroups.size());
-    List<FieldGroup> fieldGroups2 = pageTemplateImpl.getFieldGroups();
+    List<FieldGroup> fieldGroups2 = pageTemplateImpl2.getFieldGroups();
     assertEquals(2, fieldGroups2.size());
-    List<FieldGroup> fieldGroupList = pageTemplateImpl.legacyFieldGroups;
+    List<FieldGroup> fieldGroupList = pageTemplateImpl2.legacyFieldGroups;
     assertEquals(2, fieldGroupList.size());
     assertSame(fieldGroupImpl, fieldGroups2.get(1));
     assertSame(fieldGroupImpl, fieldGroupList.get(1));
     assertSame(fieldGroupImpl, getResult.getFieldGroup());
-    assertSame(pageTemplateImpl, getResult.getPageTemplate());
+    assertSame(pageTemplateImpl2, getResult.getPageTemplate());
   }
 
   /**
-   * Test {@link PageTemplateImpl#getMainEntityName()}.
-   * <p>
-   * Method under test: {@link PageTemplateImpl#getMainEntityName()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetMainEntityName() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.page.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-cms-applicationContext-entity.xml","/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass334 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.domain.PageTemplateImpl pageTemplateImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new PageTemplateImpl()).getMainEntityName();
-  }
-
-  /**
-   * Test {@link PageTemplateImpl#getMainEntityName()}.
+   * Test {@link PageTemplateImpl#setFieldGroups(List)}.
    * <ul>
-   *   <li>Given {@link PageTemplateImpl} (default constructor).</li>
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then {@link PageTemplateImpl} (default constructor) FieldGroupXrefs Empty.</li>
    * </ul>
    * <p>
+   * Method under test: {@link PageTemplateImpl#setFieldGroups(List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PageTemplateImpl.setFieldGroups(List)"})
+  public void testSetFieldGroups_whenArrayList_thenPageTemplateImplFieldGroupXrefsEmpty() {
+    // Arrange
+    PageTemplateImpl pageTemplateImpl2 = new PageTemplateImpl();
+
+    // Act
+    pageTemplateImpl2.setFieldGroups(new ArrayList<>());
+
+    // Assert that nothing has changed
+    assertTrue(pageTemplateImpl2.getFieldGroupXrefs().isEmpty());
+    assertTrue(pageTemplateImpl2.getFieldGroups().isEmpty());
+    assertTrue(pageTemplateImpl2.legacyFieldGroups.isEmpty());
+  }
+
+  /**
+   * Test {@link PageTemplateImpl#getMainEntityName()}.
+   * <p>
    * Method under test: {@link PageTemplateImpl#getMainEntityName()}
    */
   @Test
-  public void testGetMainEntityName_givenPageTemplateImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String PageTemplateImpl.getMainEntityName()"})
+  public void testGetMainEntityName() {
     // Arrange, Act and Assert
     assertNull((new PageTemplateImpl()).getMainEntityName());
   }
 
   /**
-   * Test {@link PageTemplateImpl#getMainEntityName()}.
-   * <ul>
-   *   <li>Given {@link PageTemplateImpl} (default constructor) Locale is
-   * {@link LocaleImpl}.</li>
-   * </ul>
+   * Test {@link PageTemplateImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <p>
-   * Method under test: {@link PageTemplateImpl#getMainEntityName()}
+   * Method under test: {@link PageTemplateImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  public void testGetMainEntityName_givenPageTemplateImplLocaleIsLocaleImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PageTemplateImpl pageTemplateImpl = new PageTemplateImpl();
-    pageTemplateImpl.setLocale(mock(LocaleImpl.class));
-
-    // Act and Assert
-    assertNull(pageTemplateImpl.getMainEntityName());
-  }
-
-  /**
-   * Test
-   * {@link PageTemplateImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <p>
-   * Method under test:
-   * {@link PageTemplateImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse PageTemplateImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    PageTemplateImpl pageTemplateImpl = new PageTemplateImpl();
+    PageTemplateImpl pageTemplateImpl2 = new PageTemplateImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
     CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
 
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<PageTemplate> actualCreateOrRetrieveCopyInstanceResult = pageTemplateImpl
+    CreateResponse<PageTemplate> actualCreateOrRetrieveCopyInstanceResult = pageTemplateImpl2
         .createOrRetrieveCopyInstance(context);
 
     // Assert
@@ -428,61 +247,19 @@ public class PageTemplateImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link PageTemplateImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <p>
-   * Method under test:
-   * {@link PageTemplateImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.page.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-cms-applicationContext-entity.xml","/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass260 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.domain.PageTemplateImpl pageTemplateImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    PageTemplateImpl pageTemplateImpl2 = new PageTemplateImpl();
-    CatalogImpl fromCatalog = new CatalogImpl();
-    CatalogImpl toCatalog = new CatalogImpl();
-    SiteImpl fromSite = new SiteImpl();
-    SiteImpl toSite = new SiteImpl();
-    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
-
-    // Act
-    pageTemplateImpl2.createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
-        genericEntityService, new MultiTenantCopierExtensionManager()));
-  }
-
-  /**
-   * Test
-   * {@link PageTemplateImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * Test {@link PageTemplateImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <ul>
    *   <li>Then Clone return {@link PageTemplateImpl}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PageTemplateImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link PageTemplateImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse PageTemplateImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance_thenCloneReturnPageTemplateImpl() throws CloneNotSupportedException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    PageTemplateImpl pageTemplateImpl = new PageTemplateImpl();
+    PageTemplateImpl pageTemplateImpl2 = new PageTemplateImpl();
     GenericEntityService genericEntityService = mock(GenericEntityService.class);
     when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
     Class<Object> forNameResult = Object.class;
@@ -493,7 +270,7 @@ public class PageTemplateImplDiffblueTest {
     SiteImpl toSite = new SiteImpl();
 
     // Act
-    CreateResponse<PageTemplate> actualCreateOrRetrieveCopyInstanceResult = pageTemplateImpl
+    CreateResponse<PageTemplate> actualCreateOrRetrieveCopyInstanceResult = pageTemplateImpl2
         .createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
             genericEntityService, new MultiTenantCopierExtensionManager()));
 
@@ -535,6 +312,14 @@ public class PageTemplateImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PageTemplateImpl.<init>()", "List PageTemplateImpl.getFieldGroupXrefs()",
+      "Long PageTemplateImpl.getId()", "Locale PageTemplateImpl.getLocale()",
+      "String PageTemplateImpl.getTemplateDescription()", "String PageTemplateImpl.getTemplateName()",
+      "String PageTemplateImpl.getTemplatePath()", "void PageTemplateImpl.setFieldGroupXrefs(List)",
+      "void PageTemplateImpl.setId(Long)", "void PageTemplateImpl.setLocale(Locale)",
+      "void PageTemplateImpl.setTemplateDescription(String)", "void PageTemplateImpl.setTemplateName(String)",
+      "void PageTemplateImpl.setTemplatePath(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     PageTemplateImpl actualPageTemplateImpl = new PageTemplateImpl();
@@ -552,7 +337,7 @@ public class PageTemplateImplDiffblueTest {
     String actualTemplateDescription = actualPageTemplateImpl.getTemplateDescription();
     String actualTemplateName = actualPageTemplateImpl.getTemplateName();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Template Description", actualTemplateDescription);
     assertEquals("Template Name", actualTemplateName);
     assertEquals("Template Path", actualPageTemplateImpl.getTemplatePath());

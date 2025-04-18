@@ -1,123 +1,47 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.pricing.dao;
 
+import static org.junit.Assert.assertSame;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
+import org.broadleafcommerce.common.persistence.EntityConfiguration;
 import org.broadleafcommerce.core.pricing.domain.ShippingRate;
 import org.broadleafcommerce.core.pricing.domain.ShippingRateImpl;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
-@Transactional
+@RunWith(MockitoJUnitRunner.class)
 public class ShippingRateDaoImplDiffblueTest {
-  @Autowired
+  @Mock
+  private EntityConfiguration entityConfiguration;
+
+  @InjectMocks
   private ShippingRateDaoImpl shippingRateDaoImpl;
-
-  /**
-   * Test {@link ShippingRateDaoImpl#save(ShippingRate)}.
-   * <p>
-   * Method under test: {@link ShippingRateDaoImpl#save(ShippingRate)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSave() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.pricing.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3419 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.pricing.dao.ShippingRateDaoImpl shippingRateDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    ShippingRateDaoImpl shippingRateDaoImpl2 = new ShippingRateDaoImpl();
-
-    // Act
-    shippingRateDaoImpl2.save(new ShippingRateImpl());
-  }
-
-  /**
-   * Test {@link ShippingRateDaoImpl#readShippingRateById(Long)}.
-   * <p>
-   * Method under test: {@link ShippingRateDaoImpl#readShippingRateById(Long)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testReadShippingRateById() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.pricing.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3404 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.pricing.dao.ShippingRateDaoImpl shippingRateDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new ShippingRateDaoImpl()).readShippingRateById(1L);
-  }
-
-  /**
-   * Test
-   * {@link ShippingRateDaoImpl#readShippingRateByFeeTypesUnityQty(String, String, BigDecimal)}.
-   * <p>
-   * Method under test:
-   * {@link ShippingRateDaoImpl#readShippingRateByFeeTypesUnityQty(String, String, BigDecimal)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testReadShippingRateByFeeTypesUnityQty() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.pricing.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3374 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.pricing.dao.ShippingRateDaoImpl shippingRateDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    ShippingRateDaoImpl shippingRateDaoImpl2 = new ShippingRateDaoImpl();
-
-    // Act
-    shippingRateDaoImpl2.readShippingRateByFeeTypesUnityQty("Fee Type", "Fee Sub Type", new BigDecimal("2.3"));
-  }
 
   /**
    * Test {@link ShippingRateDaoImpl#create()}.
@@ -125,27 +49,25 @@ public class ShippingRateDaoImplDiffblueTest {
    * Method under test: {@link ShippingRateDaoImpl#create()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ShippingRate ShippingRateDaoImpl.create()"})
   public void testCreate() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.pricing.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3373 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.pricing.dao.ShippingRateDaoImpl shippingRateDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    ShippingRateImpl shippingRateImpl = new ShippingRateImpl();
+    shippingRateImpl.setBandResultPercent(1);
+    shippingRateImpl.setBandResultQuantity(new BigDecimal("2.3"));
+    shippingRateImpl.setBandUnitQuantity(new BigDecimal("2.3"));
+    shippingRateImpl.setFeeBand(1);
+    shippingRateImpl.setFeeSubType("Fee Sub Type");
+    shippingRateImpl.setFeeType("Fee Type");
+    shippingRateImpl.setId(1L);
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any())).thenReturn(shippingRateImpl);
 
-    // Arrange and Act
-    (new ShippingRateDaoImpl()).create();
+    // Act
+    ShippingRate actualCreateResult = shippingRateDaoImpl.create();
+
+    // Assert
+    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.core.pricing.domain.ShippingRate"));
+    assertSame(shippingRateImpl, actualCreateResult);
   }
 }

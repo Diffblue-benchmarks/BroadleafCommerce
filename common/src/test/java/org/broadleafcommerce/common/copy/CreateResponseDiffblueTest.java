@@ -19,8 +19,11 @@ package org.broadleafcommerce.common.copy;
 
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.util.BLCFieldUtils;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class CreateResponseDiffblueTest {
   /**
@@ -34,6 +37,9 @@ public class CreateResponseDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CreateResponse.<init>(Object, boolean)", "Object CreateResponse.getClone()",
+      "boolean CreateResponse.isAlreadyPopulated()"})
   public void testGettersAndSetters() {
     // Arrange
     Object object = BLCFieldUtils.NULL_FIELD;

@@ -21,38 +21,40 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
+import org.broadleafcommerce.common.util.dao.TQRestriction.Mode;
 import org.junit.Test;
-import org.mockito.Mockito;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.experimental.categories.Category;
 
 public class TQRestrictionDiffblueTest {
-  @MockBean
-  private TQRestriction tQRestriction;
-
   /**
    * Test {@link TQRestriction#TQRestriction(Mode)}.
    * <p>
-   * Method under test: {@link TQRestriction#TQRestriction(TQRestriction.Mode)}
+   * Method under test: {@link TQRestriction#TQRestriction(Mode)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TQRestriction.<init>(Mode)"})
   public void testNewTQRestriction() {
     // Arrange, Act and Assert
-    assertTrue((new TQRestriction(TQRestriction.Mode.OR)).restrictions.isEmpty());
+    assertTrue((new TQRestriction(Mode.OR)).restrictions.isEmpty());
   }
 
   /**
    * Test {@link TQRestriction#TQRestriction(String, String)}.
+   * <ul>
+   *   <li>Then return {@code Expression}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link TQRestriction#TQRestriction(String, String)}
    */
   @Test
-  public void testNewTQRestriction2() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TQRestriction.<init>(String, String)"})
+  public void testNewTQRestriction_thenReturnExpression() {
     // Arrange and Act
     TQRestriction actualTqRestriction = new TQRestriction("Expression", "Operation");
 
@@ -66,12 +68,16 @@ public class TQRestrictionDiffblueTest {
 
   /**
    * Test {@link TQRestriction#TQRestriction(String, String, Object)}.
+   * <ul>
+   *   <li>Then return {@code Expression}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link TQRestriction#TQRestriction(String, String, Object)}
+   * Method under test: {@link TQRestriction#TQRestriction(String, String, Object)}
    */
   @Test
-  public void testNewTQRestriction3() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TQRestriction.<init>(String, String, Object)"})
+  public void testNewTQRestriction_thenReturnExpression2() {
     // Arrange and Act
     TQRestriction actualTqRestriction = new TQRestriction("Expression", "Operation", DynamicDaoHelperImpl.LOCK_OBJECT);
 
@@ -88,12 +94,14 @@ public class TQRestrictionDiffblueTest {
    * Method under test: {@link TQRestriction#addChildRestriction(TQRestriction)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"TQRestriction TQRestriction.addChildRestriction(TQRestriction)"})
   public void testAddChildRestriction() {
     // Arrange
-    TQRestriction tqRestriction = new TQRestriction(TQRestriction.Mode.OR);
+    TQRestriction tqRestriction = new TQRestriction(Mode.OR);
 
     // Act and Assert
-    assertSame(tqRestriction, tqRestriction.addChildRestriction(new TQRestriction(TQRestriction.Mode.OR)));
+    assertSame(tqRestriction, tqRestriction.addChildRestriction(new TQRestriction(Mode.OR)));
   }
 
   /**
@@ -102,15 +110,175 @@ public class TQRestrictionDiffblueTest {
    * Method under test: {@link TQRestriction#toQl(String, Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String TQRestriction.toQl(String, Map)"})
   public void testToQl() {
     // Arrange
-    when(tQRestriction.toQl(Mockito.<String>any(), Mockito.<Map<String, Object>>any())).thenReturn("Ql");
+    TQRestriction tqRestriction = new TQRestriction("(", "(");
+    HashMap<String, Object> paramMap = new HashMap<>();
 
-    // Act
-    String actualToQlResult = tQRestriction.toQl("Parameter Name", new HashMap<>());
+    // Act and Assert
+    assertEquals("(( ()", tqRestriction.toQl("Parameter Name", paramMap));
+    assertTrue(paramMap.isEmpty());
+  }
 
-    // Assert
-    verify(tQRestriction).toQl(eq("Parameter Name"), isA(Map.class));
-    assertEquals("Ql", actualToQlResult);
+  /**
+   * Test {@link TQRestriction#toQl(String, Map)}.
+   * <p>
+   * Method under test: {@link TQRestriction#toQl(String, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String TQRestriction.toQl(String, Map)"})
+  public void testToQl2() {
+    // Arrange
+    TQRestriction tqRestriction = new TQRestriction(Mode.OR);
+    tqRestriction.addChildRestriction(new TQRestriction(Mode.OR));
+    HashMap<String, Object> paramMap = new HashMap<>();
+
+    // Act and Assert
+    assertEquals("(())", tqRestriction.toQl("Parameter Name", paramMap));
+    assertEquals(1, paramMap.size());
+    assertNull(paramMap.get("Parameter Name_0"));
+  }
+
+  /**
+   * Test {@link TQRestriction#toQl(String, Map)}.
+   * <ul>
+   *   <li>Then return {@code (( (() AND ())}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link TQRestriction#toQl(String, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String TQRestriction.toQl(String, Map)"})
+  public void testToQl_thenReturnAnd() {
+    // Arrange
+    TQRestriction tqRestriction = new TQRestriction("(", "(");
+    tqRestriction.addChildRestriction(new TQRestriction(Mode.OR));
+    tqRestriction.addChildRestriction(new TQRestriction(Mode.OR));
+    HashMap<String, Object> paramMap = new HashMap<>();
+
+    // Act and Assert
+    assertEquals("(( (() AND ())", tqRestriction.toQl("Parameter Name", paramMap));
+    assertEquals(2, paramMap.size());
+    assertNull(paramMap.get("Parameter Name_0"));
+    assertNull(paramMap.get("Parameter Name_1"));
+  }
+
+  /**
+   * Test {@link TQRestriction#toQl(String, Map)}.
+   * <ul>
+   *   <li>Then return {@code (( in (:Parameter Name))}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link TQRestriction#toQl(String, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String TQRestriction.toQl(String, Map)"})
+  public void testToQl_thenReturnInParameterName() {
+    // Arrange
+    TQRestriction tqRestriction = new TQRestriction("(", "in", DynamicDaoHelperImpl.LOCK_OBJECT);
+    HashMap<String, Object> paramMap = new HashMap<>();
+
+    // Act and Assert
+    assertEquals("(( in (:Parameter Name))", tqRestriction.toQl("Parameter Name", paramMap));
+    assertEquals(1, paramMap.size());
+    Object expectedGetResult = tqRestriction.parameter;
+    assertSame(expectedGetResult, paramMap.get("Parameter Name"));
+  }
+
+  /**
+   * Test {@link TQRestriction#toQl(String, Map)}.
+   * <ul>
+   *   <li>Then return {@code ()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link TQRestriction#toQl(String, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String TQRestriction.toQl(String, Map)"})
+  public void testToQl_thenReturnLeftParenthesisRightParenthesis() {
+    // Arrange
+    TQRestriction tqRestriction = new TQRestriction(Mode.OR);
+    HashMap<String, Object> paramMap = new HashMap<>();
+
+    // Act and Assert
+    assertEquals("()", tqRestriction.toQl("Parameter Name", paramMap));
+    assertTrue(paramMap.isEmpty());
+  }
+
+  /**
+   * Test {@link TQRestriction#toQl(String, Map)}.
+   * <ul>
+   *   <li>Then return {@code (( not in (:Parameter Name))}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link TQRestriction#toQl(String, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String TQRestriction.toQl(String, Map)"})
+  public void testToQl_thenReturnNotInParameterName() {
+    // Arrange
+    TQRestriction tqRestriction = new TQRestriction("(", "not in", DynamicDaoHelperImpl.LOCK_OBJECT);
+    HashMap<String, Object> paramMap = new HashMap<>();
+
+    // Act and Assert
+    assertEquals("(( not in (:Parameter Name))", tqRestriction.toQl("Parameter Name", paramMap));
+    assertEquals(1, paramMap.size());
+    Object expectedGetResult = tqRestriction.parameter;
+    assertSame(expectedGetResult, paramMap.get("Parameter Name"));
+  }
+
+  /**
+   * Test {@link TQRestriction#toQl(String, Map)}.
+   * <ul>
+   *   <li>Then return {@code (() OR ())}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link TQRestriction#toQl(String, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String TQRestriction.toQl(String, Map)"})
+  public void testToQl_thenReturnOr() {
+    // Arrange
+    TQRestriction tqRestriction = new TQRestriction(Mode.OR);
+    tqRestriction.addChildRestriction(new TQRestriction(Mode.OR));
+    tqRestriction.addChildRestriction(new TQRestriction(Mode.OR));
+    HashMap<String, Object> paramMap = new HashMap<>();
+
+    // Act and Assert
+    assertEquals("(() OR ())", tqRestriction.toQl("Parameter Name", paramMap));
+    assertEquals(2, paramMap.size());
+    assertNull(paramMap.get("Parameter Name_0"));
+    assertNull(paramMap.get("Parameter Name_1"));
+  }
+
+  /**
+   * Test {@link TQRestriction#toQl(String, Map)}.
+   * <ul>
+   *   <li>Then return {@code (( ( :Parameter Name)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link TQRestriction#toQl(String, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String TQRestriction.toQl(String, Map)"})
+  public void testToQl_thenReturnParameterName() {
+    // Arrange
+    TQRestriction tqRestriction = new TQRestriction("(", "(", DynamicDaoHelperImpl.LOCK_OBJECT);
+    HashMap<String, Object> paramMap = new HashMap<>();
+
+    // Act and Assert
+    assertEquals("(( ( :Parameter Name)", tqRestriction.toQl("Parameter Name", paramMap));
+    assertEquals(1, paramMap.size());
+    Object expectedGetResult = tqRestriction.parameter;
+    assertSame(expectedGetResult, paramMap.get("Parameter Name"));
   }
 }

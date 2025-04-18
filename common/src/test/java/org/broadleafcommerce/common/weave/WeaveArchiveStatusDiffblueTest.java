@@ -20,7 +20,10 @@ package org.broadleafcommerce.common.weave;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class WeaveArchiveStatusDiffblueTest {
   /**
@@ -29,6 +32,8 @@ public class WeaveArchiveStatusDiffblueTest {
    * Method under test: {@link WeaveArchiveStatus#setArchived(Character)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void WeaveArchiveStatus.setArchived(Character)"})
   public void testSetArchived() {
     // Arrange
     WeaveArchiveStatus weaveArchiveStatus = new WeaveArchiveStatus();
@@ -47,6 +52,8 @@ public class WeaveArchiveStatusDiffblueTest {
    * Method under test: {@link WeaveArchiveStatus#getArchived()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Character WeaveArchiveStatus.getArchived()"})
   public void testGetArchived() {
     // Arrange, Act and Assert
     assertEquals('N', (new WeaveArchiveStatus()).getArchived().charValue());
@@ -58,6 +65,8 @@ public class WeaveArchiveStatusDiffblueTest {
    * Method under test: {@link WeaveArchiveStatus#isActive()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean WeaveArchiveStatus.isActive()"})
   public void testIsActive() {
     // Arrange, Act and Assert
     assertTrue((new WeaveArchiveStatus()).isActive());
@@ -66,10 +75,11 @@ public class WeaveArchiveStatusDiffblueTest {
   /**
    * Test new {@link WeaveArchiveStatus} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link WeaveArchiveStatus}
+   * Method under test: default or parameterless constructor of {@link WeaveArchiveStatus}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void WeaveArchiveStatus.<init>()"})
   public void testNewWeaveArchiveStatus() {
     // Arrange and Act
     WeaveArchiveStatus actualWeaveArchiveStatus = new WeaveArchiveStatus();

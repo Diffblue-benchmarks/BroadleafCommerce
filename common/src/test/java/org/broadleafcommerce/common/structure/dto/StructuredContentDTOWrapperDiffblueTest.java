@@ -21,71 +21,37 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiFunction;
 import org.broadleafcommerce.common.util.BLCFieldUtils;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@ContextConfiguration(classes = {StructuredContentDTOWrapper.class})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class StructuredContentDTOWrapperDiffblueTest {
-  @MockBean
+  @Mock
   private StructuredContentDTO structuredContentDTO;
 
-  @Autowired
+  @InjectMocks
   private StructuredContentDTOWrapper structuredContentDTOWrapper;
-
-  /**
-   * Test getters and setters.
-   * <p>
-   * Methods under test:
-   * <ul>
-   *   <li>
-   * {@link StructuredContentDTOWrapper#StructuredContentDTOWrapper(StructuredContentDTO)}
-   *   <li>{@link StructuredContentDTOWrapper#toString()}
-   * </ul>
-   */
-  @Test
-  public void testGettersAndSetters() {
-    // Arrange
-    StructuredContentDTO structuredContentDTO = new StructuredContentDTO();
-    structuredContentDTO.setContentName("Not all who wander are lost");
-    structuredContentDTO.setContentType("text/plain");
-    structuredContentDTO.setId(1L);
-    structuredContentDTO.setItemCriteriaDTOList(new ArrayList<>());
-    structuredContentDTO.setLocaleCode("en");
-    structuredContentDTO.setPriority(1);
-    structuredContentDTO.setRuleExpression("Rule Expression");
-    structuredContentDTO.setValues(new HashMap<>());
-
-    // Act
-    StructuredContentDTOWrapper actualStructuredContentDTOWrapper = new StructuredContentDTOWrapper(
-        structuredContentDTO);
-    actualStructuredContentDTOWrapper.toString();
-
-    // Assert
-    assertEquals(structuredContentDTO, actualStructuredContentDTOWrapper);
-  }
 
   /**
    * Test {@link StructuredContentDTOWrapper#equals(Object)}.
@@ -97,6 +63,9 @@ public class StructuredContentDTOWrapperDiffblueTest {
    * Method under test: {@link StructuredContentDTOWrapper#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StructuredContentDTOWrapper.equals(Object)",
+      "int StructuredContentDTOWrapper.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     StructuredContentDTOWrapper structuredContentDTOWrapper = new StructuredContentDTOWrapper(
@@ -116,6 +85,9 @@ public class StructuredContentDTOWrapperDiffblueTest {
    * Method under test: {@link StructuredContentDTOWrapper#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StructuredContentDTOWrapper.equals(Object)",
+      "int StructuredContentDTOWrapper.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     StructuredContentDTOWrapper structuredContentDTOWrapper = new StructuredContentDTOWrapper(
@@ -128,53 +100,6 @@ public class StructuredContentDTOWrapperDiffblueTest {
   /**
    * Test {@link StructuredContentDTOWrapper#equals(Object)}.
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link StructuredContentDTOWrapper#equals(Object)}
-   */
-  @Test
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
-    // Arrange
-    StructuredContentDTOWrapper structuredContentDTOWrapper = new StructuredContentDTOWrapper(
-        mock(StructuredContentDTO.class));
-
-    // Act and Assert
-    assertNotEquals(structuredContentDTOWrapper, new StructuredContentDTOWrapper(new StructuredContentDTO()));
-  }
-
-  /**
-   * Test {@link StructuredContentDTOWrapper#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then throw exception.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link StructuredContentDTOWrapper#equals(Object)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testEquals_whenOtherIsDifferent_thenThrowException() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.broadleafcommerce.common.structure.dto.StructuredContentDTOWrapper.equals(StructuredContentDTOWrapper.java:39)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    StructuredContentDTOWrapper structuredContentDTOWrapper = new StructuredContentDTOWrapper(null);
-
-    // Act and Assert
-    assertThrows(NullPointerException.class,
-        () -> structuredContentDTOWrapper.equals(new StructuredContentDTOWrapper(new StructuredContentDTO())));
-  }
-
-  /**
-   * Test {@link StructuredContentDTOWrapper#equals(Object)}.
-   * <ul>
    *   <li>When other is {@code null}.</li>
    *   <li>Then return not equal.</li>
    * </ul>
@@ -182,6 +107,9 @@ public class StructuredContentDTOWrapperDiffblueTest {
    * Method under test: {@link StructuredContentDTOWrapper#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StructuredContentDTOWrapper.equals(Object)",
+      "int StructuredContentDTOWrapper.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new StructuredContentDTOWrapper(new StructuredContentDTO()), null);
@@ -197,6 +125,9 @@ public class StructuredContentDTOWrapperDiffblueTest {
    * Method under test: {@link StructuredContentDTOWrapper#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StructuredContentDTOWrapper.equals(Object)",
+      "int StructuredContentDTOWrapper.hashCode()"})
   public void testEquals_whenOtherIsSame_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new StructuredContentDTOWrapper(new StructuredContentDTO()),
@@ -213,6 +144,9 @@ public class StructuredContentDTOWrapperDiffblueTest {
    * Method under test: {@link StructuredContentDTOWrapper#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StructuredContentDTOWrapper.equals(Object)",
+      "int StructuredContentDTOWrapper.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new StructuredContentDTOWrapper(new StructuredContentDTO()),
@@ -222,48 +156,15 @@ public class StructuredContentDTOWrapperDiffblueTest {
   /**
    * Test {@link StructuredContentDTOWrapper#getPropertyValue(String)}.
    * <p>
-   * Method under test:
-   * {@link StructuredContentDTOWrapper#getPropertyValue(String)}
+   * Method under test: {@link StructuredContentDTOWrapper#getPropertyValue(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object StructuredContentDTOWrapper.getPropertyValue(String)"})
   public void testGetPropertyValue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new StructuredContentDTOWrapper(new StructuredContentDTOWrapper(new StructuredContentDTO())))
         .getPropertyValue("Property Name"));
-  }
-
-  /**
-   * Test {@link StructuredContentDTOWrapper#getPropertyValue(String)}.
-   * <p>
-   * Method under test:
-   * {@link StructuredContentDTOWrapper#getPropertyValue(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetPropertyValue2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   - org.broadleafcommerce.common.structure.dto.StructuredContentDTOWrapper
-    //   when running class:
-    //   package org.broadleafcommerce.common.structure.dto;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.common.structure.dto.StructuredContentDTOWrapper.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3458 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.structure.dto.StructuredContentDTO structuredContentDTO;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.common.structure.dto.StructuredContentDTOWrapper structuredContentDTOWrapper;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    structuredContentDTOWrapper.getPropertyValue("Property Name");
   }
 
   /**
@@ -272,19 +173,17 @@ public class StructuredContentDTOWrapperDiffblueTest {
    *   <li>Then calls {@link StructuredContentDTO#getPropertyValue(String)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link StructuredContentDTOWrapper#getPropertyValue(String)}
+   * Method under test: {@link StructuredContentDTOWrapper#getPropertyValue(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object StructuredContentDTOWrapper.getPropertyValue(String)"})
   public void testGetPropertyValue_thenCallsGetPropertyValue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    StructuredContentDTO structuredContentDTO = mock(StructuredContentDTO.class);
     when(structuredContentDTO.getPropertyValue(Mockito.<String>any())).thenReturn(BLCFieldUtils.NULL_FIELD);
 
     // Act
-    (new StructuredContentDTOWrapper(structuredContentDTO)).getPropertyValue("Property Name");
+    structuredContentDTOWrapper.getPropertyValue("Property Name");
 
     // Assert
     verify(structuredContentDTO).getPropertyValue(eq("Property Name"));
@@ -296,13 +195,12 @@ public class StructuredContentDTOWrapperDiffblueTest {
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link StructuredContentDTOWrapper#getPropertyValue(String)}
+   * Method under test: {@link StructuredContentDTOWrapper#getPropertyValue(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object StructuredContentDTOWrapper.getPropertyValue(String)"})
   public void testGetPropertyValue_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new StructuredContentDTOWrapper(new StructuredContentDTO())).getPropertyValue("Property Name"));
   }
@@ -313,6 +211,8 @@ public class StructuredContentDTOWrapperDiffblueTest {
    * Method under test: {@link StructuredContentDTOWrapper#getId()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long StructuredContentDTOWrapper.getId()"})
   public void testGetId() {
     // Arrange, Act and Assert
     assertNull((new StructuredContentDTOWrapper(new StructuredContentDTOWrapper(new StructuredContentDTO()))).getId());
@@ -327,6 +227,8 @@ public class StructuredContentDTOWrapperDiffblueTest {
    * Method under test: {@link StructuredContentDTOWrapper#getId()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long StructuredContentDTOWrapper.getId()"})
   public void testGetId_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull((new StructuredContentDTOWrapper(new StructuredContentDTO())).getId());
@@ -338,6 +240,8 @@ public class StructuredContentDTOWrapperDiffblueTest {
    * Method under test: {@link StructuredContentDTOWrapper#getContentName()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String StructuredContentDTOWrapper.getContentName()"})
   public void testGetContentName() {
     // Arrange, Act and Assert
     assertNull((new StructuredContentDTOWrapper(new StructuredContentDTOWrapper(new StructuredContentDTO())))
@@ -353,6 +257,8 @@ public class StructuredContentDTOWrapperDiffblueTest {
    * Method under test: {@link StructuredContentDTOWrapper#getContentName()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String StructuredContentDTOWrapper.getContentName()"})
   public void testGetContentName_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull((new StructuredContentDTOWrapper(new StructuredContentDTO())).getContentName());
@@ -364,6 +270,8 @@ public class StructuredContentDTOWrapperDiffblueTest {
    * Method under test: {@link StructuredContentDTOWrapper#getContentType()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String StructuredContentDTOWrapper.getContentType()"})
   public void testGetContentType() {
     // Arrange, Act and Assert
     assertNull((new StructuredContentDTOWrapper(new StructuredContentDTOWrapper(new StructuredContentDTO())))
@@ -379,6 +287,8 @@ public class StructuredContentDTOWrapperDiffblueTest {
    * Method under test: {@link StructuredContentDTOWrapper#getContentType()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String StructuredContentDTOWrapper.getContentType()"})
   public void testGetContentType_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull((new StructuredContentDTOWrapper(new StructuredContentDTO())).getContentType());
@@ -390,6 +300,8 @@ public class StructuredContentDTOWrapperDiffblueTest {
    * Method under test: {@link StructuredContentDTOWrapper#getLocaleCode()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String StructuredContentDTOWrapper.getLocaleCode()"})
   public void testGetLocaleCode() {
     // Arrange, Act and Assert
     assertNull(
@@ -405,6 +317,8 @@ public class StructuredContentDTOWrapperDiffblueTest {
    * Method under test: {@link StructuredContentDTOWrapper#getLocaleCode()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String StructuredContentDTOWrapper.getLocaleCode()"})
   public void testGetLocaleCode_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull((new StructuredContentDTOWrapper(new StructuredContentDTO())).getLocaleCode());
@@ -416,6 +330,8 @@ public class StructuredContentDTOWrapperDiffblueTest {
    * Method under test: {@link StructuredContentDTOWrapper#getPriority()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Integer StructuredContentDTOWrapper.getPriority()"})
   public void testGetPriority() {
     // Arrange, Act and Assert
     assertNull(
@@ -431,6 +347,8 @@ public class StructuredContentDTOWrapperDiffblueTest {
    * Method under test: {@link StructuredContentDTOWrapper#getPriority()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Integer StructuredContentDTOWrapper.getPriority()"})
   public void testGetPriority_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull((new StructuredContentDTOWrapper(new StructuredContentDTO())).getPriority());
@@ -442,6 +360,8 @@ public class StructuredContentDTOWrapperDiffblueTest {
    * Method under test: {@link StructuredContentDTOWrapper#getValues()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map StructuredContentDTOWrapper.getValues()"})
   public void testGetValues() {
     // Arrange
     StructuredContentDTO structuredContentDTO = new StructuredContentDTO();
@@ -464,6 +384,8 @@ public class StructuredContentDTOWrapperDiffblueTest {
    * Method under test: {@link StructuredContentDTOWrapper#getValues()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map StructuredContentDTOWrapper.getValues()"})
   public void testGetValues_thenReturnEmpty() {
     // Arrange
     StructuredContentDTO structuredContentDTO = new StructuredContentDTO();
@@ -482,6 +404,8 @@ public class StructuredContentDTOWrapperDiffblueTest {
    * Method under test: {@link StructuredContentDTOWrapper#getRuleExpression()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String StructuredContentDTOWrapper.getRuleExpression()"})
   public void testGetRuleExpression() {
     // Arrange, Act and Assert
     assertNull((new StructuredContentDTOWrapper(new StructuredContentDTOWrapper(new StructuredContentDTO())))
@@ -497,6 +421,8 @@ public class StructuredContentDTOWrapperDiffblueTest {
    * Method under test: {@link StructuredContentDTOWrapper#getRuleExpression()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String StructuredContentDTOWrapper.getRuleExpression()"})
   public void testGetRuleExpression_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull((new StructuredContentDTOWrapper(new StructuredContentDTO())).getRuleExpression());
@@ -505,10 +431,11 @@ public class StructuredContentDTOWrapperDiffblueTest {
   /**
    * Test {@link StructuredContentDTOWrapper#getItemCriteriaDTOList()}.
    * <p>
-   * Method under test:
-   * {@link StructuredContentDTOWrapper#getItemCriteriaDTOList()}
+   * Method under test: {@link StructuredContentDTOWrapper#getItemCriteriaDTOList()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List StructuredContentDTOWrapper.getItemCriteriaDTOList()"})
   public void testGetItemCriteriaDTOList() {
     // Arrange, Act and Assert
     assertNull((new StructuredContentDTOWrapper(new StructuredContentDTOWrapper(new StructuredContentDTO())))
@@ -521,10 +448,11 @@ public class StructuredContentDTOWrapperDiffblueTest {
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link StructuredContentDTOWrapper#getItemCriteriaDTOList()}
+   * Method under test: {@link StructuredContentDTOWrapper#getItemCriteriaDTOList()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List StructuredContentDTOWrapper.getItemCriteriaDTOList()"})
   public void testGetItemCriteriaDTOList_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull((new StructuredContentDTOWrapper(new StructuredContentDTO())).getItemCriteriaDTOList());
@@ -536,6 +464,8 @@ public class StructuredContentDTOWrapperDiffblueTest {
    * Method under test: {@link StructuredContentDTOWrapper#setId(Long)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StructuredContentDTOWrapper.setId(Long)"})
   public void testSetId() {
     // Arrange
     StructuredContentDTOWrapper structuredContentDTOWrapper = new StructuredContentDTOWrapper(
@@ -554,6 +484,8 @@ public class StructuredContentDTOWrapperDiffblueTest {
    * Method under test: {@link StructuredContentDTOWrapper#setId(Long)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StructuredContentDTOWrapper.setId(Long)"})
   public void testSetId2() {
     // Arrange
     StructuredContentDTOWrapper structuredContentDTOWrapper = new StructuredContentDTOWrapper(
@@ -572,9 +504,9 @@ public class StructuredContentDTOWrapperDiffblueTest {
    * Method under test: {@link StructuredContentDTOWrapper#setContentName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StructuredContentDTOWrapper.setContentName(String)"})
   public void testSetContentName() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     StructuredContentDTOWrapper structuredContentDTOWrapper = new StructuredContentDTOWrapper(
         new StructuredContentDTO());
@@ -583,10 +515,10 @@ public class StructuredContentDTOWrapperDiffblueTest {
     structuredContentDTOWrapper.setContentName("Not all who wander are lost");
 
     // Assert
-    assertEquals("Not all who wander are lost", structuredContentDTOWrapper.getContentName());
     Map values = structuredContentDTOWrapper.getValues();
     assertEquals(1, values.size());
     assertEquals("Not all who wander are lost", values.get("contentName"));
+    assertEquals("Not all who wander are lost", structuredContentDTOWrapper.getContentName());
     assertEquals(
         structuredContentDTOWrapper.getClone()
             .getClone()
@@ -614,9 +546,9 @@ public class StructuredContentDTOWrapperDiffblueTest {
    * Method under test: {@link StructuredContentDTOWrapper#setContentName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StructuredContentDTOWrapper.setContentName(String)"})
   public void testSetContentName2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     StructuredContentDTOWrapper structuredContentDTOWrapper = new StructuredContentDTOWrapper(
         new StructuredContentDTOWrapper(new StructuredContentDTO()));
@@ -625,10 +557,10 @@ public class StructuredContentDTOWrapperDiffblueTest {
     structuredContentDTOWrapper.setContentName("Not all who wander are lost");
 
     // Assert
-    assertEquals("Not all who wander are lost", structuredContentDTOWrapper.getContentName());
     Map values = structuredContentDTOWrapper.getValues();
     assertEquals(1, values.size());
     assertEquals("Not all who wander are lost", values.get("contentName"));
+    assertEquals("Not all who wander are lost", structuredContentDTOWrapper.getContentName());
     assertEquals(
         structuredContentDTOWrapper.getClone()
             .getClone()
@@ -652,67 +584,24 @@ public class StructuredContentDTOWrapperDiffblueTest {
 
   /**
    * Test {@link StructuredContentDTOWrapper#setContentName(String)}.
+   * <ul>
+   *   <li>Then calls {@link StructuredContentDTO#setContentName(String)}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link StructuredContentDTOWrapper#setContentName(String)}
    */
   @Test
-  public void testSetContentName3() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StructuredContentDTOWrapper.setContentName(String)"})
+  public void testSetContentName_thenCallsSetContentName() {
     // Arrange
-    StructuredContentDTO structuredContentDTO = mock(StructuredContentDTO.class);
     doNothing().when(structuredContentDTO).setContentName(Mockito.<String>any());
-    StructuredContentDTOWrapper structuredContentDTOWrapper = new StructuredContentDTOWrapper(structuredContentDTO);
 
     // Act
     structuredContentDTOWrapper.setContentName("Not all who wander are lost");
 
     // Assert
     verify(structuredContentDTO).setContentName(eq("Not all who wander are lost"));
-    assertNull(structuredContentDTOWrapper.getContentName());
-    Map values = structuredContentDTOWrapper.getValues();
-    assertTrue(values.isEmpty());
-    assertEquals(values,
-        structuredContentDTOWrapper.getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getValues());
-  }
-
-  /**
-   * Test {@link StructuredContentDTOWrapper#setContentName(String)}.
-   * <p>
-   * Method under test: {@link StructuredContentDTOWrapper#setContentName(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetContentName4() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   - org.broadleafcommerce.common.structure.dto.StructuredContentDTOWrapper
-    //   when running class:
-    //   package org.broadleafcommerce.common.structure.dto;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.common.structure.dto.StructuredContentDTOWrapper.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3489 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.structure.dto.StructuredContentDTO structuredContentDTO;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.common.structure.dto.StructuredContentDTOWrapper structuredContentDTOWrapper;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    structuredContentDTOWrapper.setContentName("Not all who wander are lost");
   }
 
   /**
@@ -721,9 +610,9 @@ public class StructuredContentDTOWrapperDiffblueTest {
    * Method under test: {@link StructuredContentDTOWrapper#setContentType(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StructuredContentDTOWrapper.setContentType(String)"})
   public void testSetContentType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     StructuredContentDTOWrapper structuredContentDTOWrapper = new StructuredContentDTOWrapper(
         new StructuredContentDTO());
@@ -732,10 +621,10 @@ public class StructuredContentDTOWrapperDiffblueTest {
     structuredContentDTOWrapper.setContentType("text/plain");
 
     // Assert
-    assertEquals("text/plain", structuredContentDTOWrapper.getContentType());
     Map values = structuredContentDTOWrapper.getValues();
     assertEquals(1, values.size());
     assertEquals("text/plain", values.get("contentType"));
+    assertEquals("text/plain", structuredContentDTOWrapper.getContentType());
     assertEquals(
         structuredContentDTOWrapper.getClone()
             .getClone()
@@ -763,9 +652,9 @@ public class StructuredContentDTOWrapperDiffblueTest {
    * Method under test: {@link StructuredContentDTOWrapper#setContentType(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StructuredContentDTOWrapper.setContentType(String)"})
   public void testSetContentType2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     StructuredContentDTOWrapper structuredContentDTOWrapper = new StructuredContentDTOWrapper(
         new StructuredContentDTOWrapper(new StructuredContentDTO()));
@@ -774,10 +663,10 @@ public class StructuredContentDTOWrapperDiffblueTest {
     structuredContentDTOWrapper.setContentType("text/plain");
 
     // Assert
-    assertEquals("text/plain", structuredContentDTOWrapper.getContentType());
     Map values = structuredContentDTOWrapper.getValues();
     assertEquals(1, values.size());
     assertEquals("text/plain", values.get("contentType"));
+    assertEquals("text/plain", structuredContentDTOWrapper.getContentType());
     assertEquals(
         structuredContentDTOWrapper.getClone()
             .getClone()
@@ -801,67 +690,24 @@ public class StructuredContentDTOWrapperDiffblueTest {
 
   /**
    * Test {@link StructuredContentDTOWrapper#setContentType(String)}.
+   * <ul>
+   *   <li>Then calls {@link StructuredContentDTO#setContentType(String)}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link StructuredContentDTOWrapper#setContentType(String)}
    */
   @Test
-  public void testSetContentType3() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StructuredContentDTOWrapper.setContentType(String)"})
+  public void testSetContentType_thenCallsSetContentType() {
     // Arrange
-    StructuredContentDTO structuredContentDTO = mock(StructuredContentDTO.class);
     doNothing().when(structuredContentDTO).setContentType(Mockito.<String>any());
-    StructuredContentDTOWrapper structuredContentDTOWrapper = new StructuredContentDTOWrapper(structuredContentDTO);
 
     // Act
     structuredContentDTOWrapper.setContentType("text/plain");
 
     // Assert
     verify(structuredContentDTO).setContentType(eq("text/plain"));
-    assertNull(structuredContentDTOWrapper.getContentType());
-    Map values = structuredContentDTOWrapper.getValues();
-    assertTrue(values.isEmpty());
-    assertEquals(values,
-        structuredContentDTOWrapper.getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getValues());
-  }
-
-  /**
-   * Test {@link StructuredContentDTOWrapper#setContentType(String)}.
-   * <p>
-   * Method under test: {@link StructuredContentDTOWrapper#setContentType(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetContentType4() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   - org.broadleafcommerce.common.structure.dto.StructuredContentDTOWrapper
-    //   when running class:
-    //   package org.broadleafcommerce.common.structure.dto;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.common.structure.dto.StructuredContentDTOWrapper.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3570 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.structure.dto.StructuredContentDTO structuredContentDTO;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.common.structure.dto.StructuredContentDTOWrapper structuredContentDTOWrapper;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    structuredContentDTOWrapper.setContentType("text/plain");
   }
 
   /**
@@ -870,9 +716,9 @@ public class StructuredContentDTOWrapperDiffblueTest {
    * Method under test: {@link StructuredContentDTOWrapper#setLocaleCode(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StructuredContentDTOWrapper.setLocaleCode(String)"})
   public void testSetLocaleCode() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     StructuredContentDTOWrapper structuredContentDTOWrapper = new StructuredContentDTOWrapper(
         new StructuredContentDTO());
@@ -881,10 +727,10 @@ public class StructuredContentDTOWrapperDiffblueTest {
     structuredContentDTOWrapper.setLocaleCode("en");
 
     // Assert
-    assertEquals("en", structuredContentDTOWrapper.getLocaleCode());
     Map values = structuredContentDTOWrapper.getValues();
     assertEquals(1, values.size());
     assertEquals("en", values.get("localeCode"));
+    assertEquals("en", structuredContentDTOWrapper.getLocaleCode());
     assertEquals(
         structuredContentDTOWrapper.getClone()
             .getClone()
@@ -912,9 +758,9 @@ public class StructuredContentDTOWrapperDiffblueTest {
    * Method under test: {@link StructuredContentDTOWrapper#setLocaleCode(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StructuredContentDTOWrapper.setLocaleCode(String)"})
   public void testSetLocaleCode2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     StructuredContentDTOWrapper structuredContentDTOWrapper = new StructuredContentDTOWrapper(
         new StructuredContentDTOWrapper(new StructuredContentDTO()));
@@ -923,10 +769,10 @@ public class StructuredContentDTOWrapperDiffblueTest {
     structuredContentDTOWrapper.setLocaleCode("en");
 
     // Assert
-    assertEquals("en", structuredContentDTOWrapper.getLocaleCode());
     Map values = structuredContentDTOWrapper.getValues();
     assertEquals(1, values.size());
     assertEquals("en", values.get("localeCode"));
+    assertEquals("en", structuredContentDTOWrapper.getLocaleCode());
     assertEquals(
         structuredContentDTOWrapper.getClone()
             .getClone()
@@ -950,67 +796,24 @@ public class StructuredContentDTOWrapperDiffblueTest {
 
   /**
    * Test {@link StructuredContentDTOWrapper#setLocaleCode(String)}.
+   * <ul>
+   *   <li>Then calls {@link StructuredContentDTO#setLocaleCode(String)}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link StructuredContentDTOWrapper#setLocaleCode(String)}
    */
   @Test
-  public void testSetLocaleCode3() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StructuredContentDTOWrapper.setLocaleCode(String)"})
+  public void testSetLocaleCode_thenCallsSetLocaleCode() {
     // Arrange
-    StructuredContentDTO structuredContentDTO = mock(StructuredContentDTO.class);
     doNothing().when(structuredContentDTO).setLocaleCode(Mockito.<String>any());
-    StructuredContentDTOWrapper structuredContentDTOWrapper = new StructuredContentDTOWrapper(structuredContentDTO);
 
     // Act
     structuredContentDTOWrapper.setLocaleCode("en");
 
     // Assert
     verify(structuredContentDTO).setLocaleCode(eq("en"));
-    assertNull(structuredContentDTOWrapper.getLocaleCode());
-    Map values = structuredContentDTOWrapper.getValues();
-    assertTrue(values.isEmpty());
-    assertEquals(values,
-        structuredContentDTOWrapper.getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getValues());
-  }
-
-  /**
-   * Test {@link StructuredContentDTOWrapper#setLocaleCode(String)}.
-   * <p>
-   * Method under test: {@link StructuredContentDTOWrapper#setLocaleCode(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetLocaleCode4() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   - org.broadleafcommerce.common.structure.dto.StructuredContentDTOWrapper
-    //   when running class:
-    //   package org.broadleafcommerce.common.structure.dto;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.common.structure.dto.StructuredContentDTOWrapper.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3752 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.structure.dto.StructuredContentDTO structuredContentDTO;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.common.structure.dto.StructuredContentDTOWrapper structuredContentDTOWrapper;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    structuredContentDTOWrapper.setLocaleCode("en");
   }
 
   /**
@@ -1019,6 +822,8 @@ public class StructuredContentDTOWrapperDiffblueTest {
    * Method under test: {@link StructuredContentDTOWrapper#setPriority(Integer)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StructuredContentDTOWrapper.setPriority(Integer)"})
   public void testSetPriority() {
     // Arrange
     StructuredContentDTOWrapper structuredContentDTOWrapper = new StructuredContentDTOWrapper(
@@ -1031,7 +836,7 @@ public class StructuredContentDTOWrapperDiffblueTest {
     assertEquals(1, structuredContentDTOWrapper.getPriority().intValue());
     Map values = structuredContentDTOWrapper.getValues();
     assertEquals(1, values.size());
-    assertTrue(values.containsKey("priority"));
+    assertEquals(1, ((Integer) values.get("priority")).intValue());
     assertEquals(
         structuredContentDTOWrapper.getClone()
             .getClone()
@@ -1059,6 +864,8 @@ public class StructuredContentDTOWrapperDiffblueTest {
    * Method under test: {@link StructuredContentDTOWrapper#setPriority(Integer)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StructuredContentDTOWrapper.setPriority(Integer)"})
   public void testSetPriority2() {
     // Arrange
     StructuredContentDTOWrapper structuredContentDTOWrapper = new StructuredContentDTOWrapper(
@@ -1071,7 +878,7 @@ public class StructuredContentDTOWrapperDiffblueTest {
     assertEquals(1, structuredContentDTOWrapper.getPriority().intValue());
     Map values = structuredContentDTOWrapper.getValues();
     assertEquals(1, values.size());
-    assertTrue(values.containsKey("priority"));
+    assertEquals(1, ((Integer) values.get("priority")).intValue());
     assertEquals(
         structuredContentDTOWrapper.getClone()
             .getClone()
@@ -1099,6 +906,8 @@ public class StructuredContentDTOWrapperDiffblueTest {
    * Method under test: {@link StructuredContentDTOWrapper#setValues(Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StructuredContentDTOWrapper.setValues(Map)"})
   public void testSetValues() {
     // Arrange
     StructuredContentDTOWrapper structuredContentDTOWrapper = new StructuredContentDTOWrapper(
@@ -1118,6 +927,8 @@ public class StructuredContentDTOWrapperDiffblueTest {
    * Method under test: {@link StructuredContentDTOWrapper#setValues(Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StructuredContentDTOWrapper.setValues(Map)"})
   public void testSetValues2() {
     // Arrange
     StructuredContentDTOWrapper structuredContentDTOWrapper = new StructuredContentDTOWrapper(
@@ -1132,41 +943,14 @@ public class StructuredContentDTOWrapperDiffblueTest {
   }
 
   /**
-   * Test {@link StructuredContentDTOWrapper#setValues(Map)}.
-   * <ul>
-   *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.</li>
-   *   <li>When {@link HashMap#HashMap()} computeIfPresent
-   * {@link BLCFieldUtils#NULL_FIELD} and {@link BiFunction}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link StructuredContentDTOWrapper#setValues(Map)}
-   */
-  @Test
-  public void testSetValues_givenNull_field_whenHashMapComputeIfPresentNull_fieldAndBiFunction() {
-    // Arrange
-    StructuredContentDTOWrapper structuredContentDTOWrapper = new StructuredContentDTOWrapper(
-        new StructuredContentDTO());
-
-    HashMap<Object, Object> values = new HashMap<>();
-    values.computeIfPresent(BLCFieldUtils.NULL_FIELD, mock(BiFunction.class));
-
-    // Act
-    structuredContentDTOWrapper.setValues((Map) values);
-
-    // Assert
-    assertSame(values, structuredContentDTOWrapper.getValues());
-  }
-
-  /**
    * Test {@link StructuredContentDTOWrapper#setRuleExpression(String)}.
    * <p>
-   * Method under test:
-   * {@link StructuredContentDTOWrapper#setRuleExpression(String)}
+   * Method under test: {@link StructuredContentDTOWrapper#setRuleExpression(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StructuredContentDTOWrapper.setRuleExpression(String)"})
   public void testSetRuleExpression() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     StructuredContentDTOWrapper structuredContentDTOWrapper = new StructuredContentDTOWrapper(
         new StructuredContentDTO());
@@ -1181,13 +965,12 @@ public class StructuredContentDTOWrapperDiffblueTest {
   /**
    * Test {@link StructuredContentDTOWrapper#setRuleExpression(String)}.
    * <p>
-   * Method under test:
-   * {@link StructuredContentDTOWrapper#setRuleExpression(String)}
+   * Method under test: {@link StructuredContentDTOWrapper#setRuleExpression(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StructuredContentDTOWrapper.setRuleExpression(String)"})
   public void testSetRuleExpression2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     StructuredContentDTOWrapper structuredContentDTOWrapper = new StructuredContentDTOWrapper(
         new StructuredContentDTOWrapper(new StructuredContentDTO()));
@@ -1201,69 +984,35 @@ public class StructuredContentDTOWrapperDiffblueTest {
 
   /**
    * Test {@link StructuredContentDTOWrapper#setRuleExpression(String)}.
+   * <ul>
+   *   <li>Then calls {@link StructuredContentDTO#setRuleExpression(String)}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link StructuredContentDTOWrapper#setRuleExpression(String)}
+   * Method under test: {@link StructuredContentDTOWrapper#setRuleExpression(String)}
    */
   @Test
-  public void testSetRuleExpression3() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StructuredContentDTOWrapper.setRuleExpression(String)"})
+  public void testSetRuleExpression_thenCallsSetRuleExpression() {
     // Arrange
-    StructuredContentDTO structuredContentDTO = mock(StructuredContentDTO.class);
     doNothing().when(structuredContentDTO).setRuleExpression(Mockito.<String>any());
-    StructuredContentDTOWrapper structuredContentDTOWrapper = new StructuredContentDTOWrapper(structuredContentDTO);
 
     // Act
     structuredContentDTOWrapper.setRuleExpression("Rule Expression");
 
     // Assert
     verify(structuredContentDTO).setRuleExpression(eq("Rule Expression"));
-    assertNull(structuredContentDTOWrapper.getRuleExpression());
-  }
-
-  /**
-   * Test {@link StructuredContentDTOWrapper#setRuleExpression(String)}.
-   * <p>
-   * Method under test:
-   * {@link StructuredContentDTOWrapper#setRuleExpression(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetRuleExpression4() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   - org.broadleafcommerce.common.structure.dto.StructuredContentDTOWrapper
-    //   when running class:
-    //   package org.broadleafcommerce.common.structure.dto;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.common.structure.dto.StructuredContentDTOWrapper.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3833 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.structure.dto.StructuredContentDTO structuredContentDTO;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.common.structure.dto.StructuredContentDTOWrapper structuredContentDTOWrapper;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    structuredContentDTOWrapper.setRuleExpression("Rule Expression");
   }
 
   /**
    * Test {@link StructuredContentDTOWrapper#setItemCriteriaDTOList(List)}.
    * <p>
-   * Method under test:
-   * {@link StructuredContentDTOWrapper#setItemCriteriaDTOList(List)}
+   * Method under test: {@link StructuredContentDTOWrapper#setItemCriteriaDTOList(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StructuredContentDTOWrapper.setItemCriteriaDTOList(List)"})
   public void testSetItemCriteriaDTOList() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     StructuredContentDTOWrapper structuredContentDTOWrapper = new StructuredContentDTOWrapper(
         new StructuredContentDTO());
@@ -1279,13 +1028,12 @@ public class StructuredContentDTOWrapperDiffblueTest {
   /**
    * Test {@link StructuredContentDTOWrapper#setItemCriteriaDTOList(List)}.
    * <p>
-   * Method under test:
-   * {@link StructuredContentDTOWrapper#setItemCriteriaDTOList(List)}
+   * Method under test: {@link StructuredContentDTOWrapper#setItemCriteriaDTOList(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StructuredContentDTOWrapper.setItemCriteriaDTOList(List)"})
   public void testSetItemCriteriaDTOList2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     StructuredContentDTOWrapper structuredContentDTOWrapper = new StructuredContentDTOWrapper(
         new StructuredContentDTOWrapper(new StructuredContentDTO()));
@@ -1300,77 +1048,18 @@ public class StructuredContentDTOWrapperDiffblueTest {
 
   /**
    * Test {@link StructuredContentDTOWrapper#setItemCriteriaDTOList(List)}.
-   * <p>
-   * Method under test:
-   * {@link StructuredContentDTOWrapper#setItemCriteriaDTOList(List)}
-   */
-  @Test
-  public void testSetItemCriteriaDTOList3() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    StructuredContentDTO structuredContentDTO = mock(StructuredContentDTO.class);
-    doNothing().when(structuredContentDTO).setItemCriteriaDTOList(Mockito.<List<ItemCriteriaDTO>>any());
-    StructuredContentDTOWrapper structuredContentDTOWrapper = new StructuredContentDTOWrapper(structuredContentDTO);
-
-    // Act
-    structuredContentDTOWrapper.setItemCriteriaDTOList(new ArrayList<>());
-
-    // Assert
-    verify(structuredContentDTO).setItemCriteriaDTOList(isA(List.class));
-    assertTrue(structuredContentDTOWrapper.getItemCriteriaDTOList().isEmpty());
-  }
-
-  /**
-   * Test {@link StructuredContentDTOWrapper#setItemCriteriaDTOList(List)}.
-   * <p>
-   * Method under test:
-   * {@link StructuredContentDTOWrapper#setItemCriteriaDTOList(List)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetItemCriteriaDTOList4() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   - org.broadleafcommerce.common.structure.dto.StructuredContentDTOWrapper
-    //   when running class:
-    //   package org.broadleafcommerce.common.structure.dto;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.common.structure.dto.StructuredContentDTOWrapper.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3741 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.structure.dto.StructuredContentDTO structuredContentDTO;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.common.structure.dto.StructuredContentDTOWrapper structuredContentDTOWrapper;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    structuredContentDTOWrapper.setItemCriteriaDTOList(new ArrayList<>());
-  }
-
-  /**
-   * Test {@link StructuredContentDTOWrapper#setItemCriteriaDTOList(List)}.
    * <ul>
-   *   <li>Given {@link ItemCriteriaDTO} (default constructor) MatchRule is
-   * {@code 42}.</li>
+   *   <li>Given {@link ItemCriteriaDTO} (default constructor) MatchRule is {@code 42}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link StructuredContentDTOWrapper#setItemCriteriaDTOList(List)}
+   * Method under test: {@link StructuredContentDTOWrapper#setItemCriteriaDTOList(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StructuredContentDTOWrapper.setItemCriteriaDTOList(List)"})
   public void testSetItemCriteriaDTOList_givenItemCriteriaDTOMatchRuleIs42() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    StructuredContentDTO structuredContentDTO = mock(StructuredContentDTO.class);
     doNothing().when(structuredContentDTO).setItemCriteriaDTOList(Mockito.<List<ItemCriteriaDTO>>any());
-    StructuredContentDTOWrapper structuredContentDTOWrapper = new StructuredContentDTOWrapper(structuredContentDTO);
 
     ItemCriteriaDTO itemCriteriaDTO = new ItemCriteriaDTO();
     itemCriteriaDTO.setMatchRule("Match Rule");
@@ -1389,27 +1078,22 @@ public class StructuredContentDTOWrapperDiffblueTest {
 
     // Assert
     verify(structuredContentDTO).setItemCriteriaDTOList(isA(List.class));
-    assertTrue(structuredContentDTOWrapper.getItemCriteriaDTOList().isEmpty());
   }
 
   /**
    * Test {@link StructuredContentDTOWrapper#setItemCriteriaDTOList(List)}.
    * <ul>
-   *   <li>Given {@link ItemCriteriaDTO} (default constructor) MatchRule is
-   * {@code Match Rule}.</li>
+   *   <li>Given {@link ItemCriteriaDTO} (default constructor) MatchRule is {@code Match Rule}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link StructuredContentDTOWrapper#setItemCriteriaDTOList(List)}
+   * Method under test: {@link StructuredContentDTOWrapper#setItemCriteriaDTOList(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StructuredContentDTOWrapper.setItemCriteriaDTOList(List)"})
   public void testSetItemCriteriaDTOList_givenItemCriteriaDTOMatchRuleIsMatchRule() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    StructuredContentDTO structuredContentDTO = mock(StructuredContentDTO.class);
     doNothing().when(structuredContentDTO).setItemCriteriaDTOList(Mockito.<List<ItemCriteriaDTO>>any());
-    StructuredContentDTOWrapper structuredContentDTOWrapper = new StructuredContentDTOWrapper(structuredContentDTO);
 
     ItemCriteriaDTO itemCriteriaDTO = new ItemCriteriaDTO();
     itemCriteriaDTO.setMatchRule("Match Rule");
@@ -1423,6 +1107,27 @@ public class StructuredContentDTOWrapperDiffblueTest {
 
     // Assert
     verify(structuredContentDTO).setItemCriteriaDTOList(isA(List.class));
-    assertTrue(structuredContentDTOWrapper.getItemCriteriaDTOList().isEmpty());
+  }
+
+  /**
+   * Test {@link StructuredContentDTOWrapper#setItemCriteriaDTOList(List)}.
+   * <ul>
+   *   <li>Then calls {@link StructuredContentDTO#setItemCriteriaDTOList(List)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StructuredContentDTOWrapper#setItemCriteriaDTOList(List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StructuredContentDTOWrapper.setItemCriteriaDTOList(List)"})
+  public void testSetItemCriteriaDTOList_thenCallsSetItemCriteriaDTOList() {
+    // Arrange
+    doNothing().when(structuredContentDTO).setItemCriteriaDTOList(Mockito.<List<ItemCriteriaDTO>>any());
+
+    // Act
+    structuredContentDTOWrapper.setItemCriteriaDTOList(new ArrayList<>());
+
+    // Assert
+    verify(structuredContentDTO).setItemCriteriaDTOList(isA(List.class));
   }
 }

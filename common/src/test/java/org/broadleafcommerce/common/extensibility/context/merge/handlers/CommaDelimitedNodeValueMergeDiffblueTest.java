@@ -19,7 +19,10 @@ package org.broadleafcommerce.common.extensibility.context.merge.handlers;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class CommaDelimitedNodeValueMergeDiffblueTest {
   /**
@@ -28,6 +31,8 @@ public class CommaDelimitedNodeValueMergeDiffblueTest {
    * Method under test: {@link CommaDelimitedNodeValueMerge#getDelimiter()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.String CommaDelimitedNodeValueMerge.getDelimiter()"})
   public void testGetDelimiter() {
     // Arrange, Act and Assert
     assertEquals(",", (new CommaDelimitedNodeValueMerge()).getDelimiter());
@@ -39,6 +44,8 @@ public class CommaDelimitedNodeValueMergeDiffblueTest {
    * Method under test: {@link CommaDelimitedNodeValueMerge#getRegEx()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.String CommaDelimitedNodeValueMerge.getRegEx()"})
   public void testGetRegEx() {
     // Arrange, Act and Assert
     assertEquals(",", (new CommaDelimitedNodeValueMerge()).getRegEx());
@@ -47,10 +54,11 @@ public class CommaDelimitedNodeValueMergeDiffblueTest {
   /**
    * Test new {@link CommaDelimitedNodeValueMerge} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link CommaDelimitedNodeValueMerge}
+   * Method under test: default or parameterless constructor of {@link CommaDelimitedNodeValueMerge}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CommaDelimitedNodeValueMerge.<init>()"})
   public void testNewCommaDelimitedNodeValueMerge() {
     // Arrange and Act
     CommaDelimitedNodeValueMerge actualCommaDelimitedNodeValueMerge = new CommaDelimitedNodeValueMerge();

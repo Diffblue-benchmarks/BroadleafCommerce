@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.order.service.call;
 
 import static org.junit.Assert.assertEquals;
@@ -5,20 +22,21 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import org.broadleafcommerce.common.money.Money;
-import org.broadleafcommerce.core.catalog.domain.Category;
 import org.broadleafcommerce.core.catalog.domain.CategoryImpl;
 import org.broadleafcommerce.core.order.domain.BundleOrderItemFeePrice;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class BundleOrderItemRequestDiffblueTest {
   /**
-   * Test {@link BundleOrderItemRequest#equals(Object)}, and
-   * {@link BundleOrderItemRequest#hashCode()}.
+   * Test {@link BundleOrderItemRequest#equals(Object)}, and {@link BundleOrderItemRequest#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -31,6 +49,8 @@ public class BundleOrderItemRequestDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BundleOrderItemRequest.equals(Object)", "int BundleOrderItemRequest.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     BundleOrderItemRequest bundleOrderItemRequest = new BundleOrderItemRequest();
@@ -60,8 +80,7 @@ public class BundleOrderItemRequestDiffblueTest {
   }
 
   /**
-   * Test {@link BundleOrderItemRequest#equals(Object)}, and
-   * {@link BundleOrderItemRequest#hashCode()}.
+   * Test {@link BundleOrderItemRequest#equals(Object)}, and {@link BundleOrderItemRequest#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -74,6 +93,8 @@ public class BundleOrderItemRequestDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BundleOrderItemRequest.equals(Object)", "int BundleOrderItemRequest.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     BundleOrderItemRequest bundleOrderItemRequest = new BundleOrderItemRequest();
@@ -103,8 +124,7 @@ public class BundleOrderItemRequestDiffblueTest {
   }
 
   /**
-   * Test {@link BundleOrderItemRequest#equals(Object)}, and
-   * {@link BundleOrderItemRequest#hashCode()}.
+   * Test {@link BundleOrderItemRequest#equals(Object)}, and {@link BundleOrderItemRequest#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -117,6 +137,8 @@ public class BundleOrderItemRequestDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BundleOrderItemRequest.equals(Object)", "int BundleOrderItemRequest.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     BundleOrderItemRequest bundleOrderItemRequest = new BundleOrderItemRequest();
@@ -146,8 +168,7 @@ public class BundleOrderItemRequestDiffblueTest {
   }
 
   /**
-   * Test {@link BundleOrderItemRequest#equals(Object)}, and
-   * {@link BundleOrderItemRequest#hashCode()}.
+   * Test {@link BundleOrderItemRequest#equals(Object)}, and {@link BundleOrderItemRequest#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -160,6 +181,8 @@ public class BundleOrderItemRequestDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BundleOrderItemRequest.equals(Object)", "int BundleOrderItemRequest.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     BundleOrderItemRequest bundleOrderItemRequest = new BundleOrderItemRequest();
@@ -188,6 +211,8 @@ public class BundleOrderItemRequestDiffblueTest {
    * Method under test: {@link BundleOrderItemRequest#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BundleOrderItemRequest.equals(Object)", "int BundleOrderItemRequest.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     BundleOrderItemRequest bundleOrderItemRequest = new BundleOrderItemRequest();
@@ -224,6 +249,8 @@ public class BundleOrderItemRequestDiffblueTest {
    * Method under test: {@link BundleOrderItemRequest#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BundleOrderItemRequest.equals(Object)", "int BundleOrderItemRequest.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     BundleOrderItemRequest bundleOrderItemRequest = new BundleOrderItemRequest();
@@ -260,6 +287,8 @@ public class BundleOrderItemRequestDiffblueTest {
    * Method under test: {@link BundleOrderItemRequest#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BundleOrderItemRequest.equals(Object)", "int BundleOrderItemRequest.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     ArrayList<DiscreteOrderItemRequest> discreteOrderItems = new ArrayList<>();
@@ -299,6 +328,8 @@ public class BundleOrderItemRequestDiffblueTest {
    * Method under test: {@link BundleOrderItemRequest#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BundleOrderItemRequest.equals(Object)", "int BundleOrderItemRequest.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     BundleOrderItemRequest bundleOrderItemRequest = new BundleOrderItemRequest();
@@ -335,6 +366,8 @@ public class BundleOrderItemRequestDiffblueTest {
    * Method under test: {@link BundleOrderItemRequest#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BundleOrderItemRequest.equals(Object)", "int BundleOrderItemRequest.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
     BundleOrderItemRequest bundleOrderItemRequest = new BundleOrderItemRequest();
@@ -371,6 +404,8 @@ public class BundleOrderItemRequestDiffblueTest {
    * Method under test: {@link BundleOrderItemRequest#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BundleOrderItemRequest.equals(Object)", "int BundleOrderItemRequest.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
     BundleOrderItemRequest bundleOrderItemRequest = new BundleOrderItemRequest();
@@ -407,6 +442,8 @@ public class BundleOrderItemRequestDiffblueTest {
    * Method under test: {@link BundleOrderItemRequest#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BundleOrderItemRequest.equals(Object)", "int BundleOrderItemRequest.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     BundleOrderItemRequest bundleOrderItemRequest = new BundleOrderItemRequest();
@@ -433,6 +470,8 @@ public class BundleOrderItemRequestDiffblueTest {
    * Method under test: {@link BundleOrderItemRequest#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BundleOrderItemRequest.equals(Object)", "int BundleOrderItemRequest.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     BundleOrderItemRequest bundleOrderItemRequest = new BundleOrderItemRequest();
@@ -456,7 +495,7 @@ public class BundleOrderItemRequestDiffblueTest {
    * <ul>
    *   <li>default or parameterless constructor of {@link BundleOrderItemRequest}
    *   <li>{@link BundleOrderItemRequest#setBundleOrderItemFeePrices(List)}
-   *   <li>{@link BundleOrderItemRequest#setCategory(Category)}
+   *   <li>{@link BundleOrderItemRequest#setCategory(org.broadleafcommerce.core.catalog.domain.Category)}
    *   <li>{@link BundleOrderItemRequest#setDiscreteOrderItems(List)}
    *   <li>{@link BundleOrderItemRequest#setName(String)}
    *   <li>{@link BundleOrderItemRequest#setOrder(Order)}
@@ -474,6 +513,19 @@ public class BundleOrderItemRequestDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BundleOrderItemRequest.<init>()",
+      "List BundleOrderItemRequest.getBundleOrderItemFeePrices()",
+      "org.broadleafcommerce.core.catalog.domain.Category BundleOrderItemRequest.getCategory()",
+      "List BundleOrderItemRequest.getDiscreteOrderItems()", "String BundleOrderItemRequest.getName()",
+      "Order BundleOrderItemRequest.getOrder()", "int BundleOrderItemRequest.getQuantity()",
+      "Money BundleOrderItemRequest.getRetailPriceOverride()", "Money BundleOrderItemRequest.getSalePriceOverride()",
+      "void BundleOrderItemRequest.setBundleOrderItemFeePrices(List)",
+      "void BundleOrderItemRequest.setCategory(org.broadleafcommerce.core.catalog.domain.Category)",
+      "void BundleOrderItemRequest.setDiscreteOrderItems(List)", "void BundleOrderItemRequest.setName(String)",
+      "void BundleOrderItemRequest.setOrder(Order)", "void BundleOrderItemRequest.setQuantity(int)",
+      "void BundleOrderItemRequest.setRetailPriceOverride(Money)",
+      "void BundleOrderItemRequest.setSalePriceOverride(Money)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     BundleOrderItemRequest actualBundleOrderItemRequest = new BundleOrderItemRequest();
@@ -493,7 +545,7 @@ public class BundleOrderItemRequestDiffblueTest {
     actualBundleOrderItemRequest.setSalePriceOverride(salePriceOverride);
     List<BundleOrderItemFeePrice> actualBundleOrderItemFeePrices = actualBundleOrderItemRequest
         .getBundleOrderItemFeePrices();
-    Category actualCategory = actualBundleOrderItemRequest.getCategory();
+    org.broadleafcommerce.core.catalog.domain.Category actualCategory = actualBundleOrderItemRequest.getCategory();
     List<DiscreteOrderItemRequest> actualDiscreteOrderItems = actualBundleOrderItemRequest.getDiscreteOrderItems();
     String actualName = actualBundleOrderItemRequest.getName();
     Order actualOrder = actualBundleOrderItemRequest.getOrder();
@@ -501,7 +553,7 @@ public class BundleOrderItemRequestDiffblueTest {
     Money actualRetailPriceOverride = actualBundleOrderItemRequest.getRetailPriceOverride();
     Money actualSalePriceOverride = actualBundleOrderItemRequest.getSalePriceOverride();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Name", actualName);
     assertEquals(1, actualQuantity);
     assertTrue(actualBundleOrderItemFeePrices.isEmpty());

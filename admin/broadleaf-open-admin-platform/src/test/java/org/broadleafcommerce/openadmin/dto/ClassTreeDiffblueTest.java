@@ -1,11 +1,31 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.dto;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.List;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class ClassTreeDiffblueTest {
   /**
@@ -14,6 +34,8 @@ public class ClassTreeDiffblueTest {
    * Method under test: {@link ClassTree#ClassTree()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ClassTree.<init>()"})
   public void testNewClassTree() {
     // Arrange and Act
     ClassTree actualClassTree = new ClassTree();
@@ -39,6 +61,8 @@ public class ClassTreeDiffblueTest {
    * Method under test: {@link ClassTree#ClassTree()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ClassTree.<init>()"})
   public void testNewClassTree2() {
     // Arrange and Act
     ClassTree actualClassTree = new ClassTree();
@@ -77,6 +101,12 @@ public class ClassTreeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ClassTree[] ClassTree.getChildren()", "String ClassTree.getFullyQualifiedClassname()",
+      "int ClassTree.getLeft()", "String ClassTree.getName()", "int ClassTree.getRight()",
+      "boolean ClassTree.isExcludeFromPolymorphism()", "void ClassTree.setChildren(ClassTree[])",
+      "void ClassTree.setFriendlyName(String)", "void ClassTree.setLeft(int)", "void ClassTree.setName(String)",
+      "void ClassTree.setRight(int)"})
   public void testGettersAndSetters() {
     // Arrange
     ClassTree classTree = new ClassTree();
@@ -89,13 +119,14 @@ public class ClassTreeDiffblueTest {
     classTree.setName("Name");
     classTree.setRight(1);
     ClassTree[] actualChildren = classTree.getChildren();
-    classTree.getFullyQualifiedClassname();
+    String actualFullyQualifiedClassname = classTree.getFullyQualifiedClassname();
     int actualLeft = classTree.getLeft();
     String actualName = classTree.getName();
     int actualRight = classTree.getRight();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Name", actualName);
+    assertNull(actualFullyQualifiedClassname);
     assertEquals(1, actualLeft);
     assertEquals(1, actualRight);
     assertFalse(classTree.isExcludeFromPolymorphism());
@@ -121,6 +152,12 @@ public class ClassTreeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ClassTree[] ClassTree.getChildren()", "String ClassTree.getFullyQualifiedClassname()",
+      "int ClassTree.getLeft()", "String ClassTree.getName()", "int ClassTree.getRight()",
+      "boolean ClassTree.isExcludeFromPolymorphism()", "void ClassTree.setChildren(ClassTree[])",
+      "void ClassTree.setFriendlyName(String)", "void ClassTree.setLeft(int)", "void ClassTree.setName(String)",
+      "void ClassTree.setRight(int)"})
   public void testGettersAndSetters2() {
     // Arrange
     ClassTree classTree = new ClassTree();
@@ -133,13 +170,14 @@ public class ClassTreeDiffblueTest {
     classTree.setName("Name");
     classTree.setRight(1);
     ClassTree[] actualChildren = classTree.getChildren();
-    classTree.getFullyQualifiedClassname();
+    String actualFullyQualifiedClassname = classTree.getFullyQualifiedClassname();
     int actualLeft = classTree.getLeft();
     String actualName = classTree.getName();
     int actualRight = classTree.getRight();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Name", actualName);
+    assertNull(actualFullyQualifiedClassname);
     assertEquals(1, actualLeft);
     assertEquals(1, actualRight);
     assertFalse(classTree.isExcludeFromPolymorphism());

@@ -1,9 +1,29 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.order.service.exception;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class AddToCartExceptionDiffblueTest {
   /**
@@ -15,6 +35,9 @@ public class AddToCartExceptionDiffblueTest {
    * Method under test: {@link AddToCartException#AddToCartException()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AddToCartException.<init>()", "void AddToCartException.<init>(String)",
+      "void AddToCartException.<init>(String, Throwable)", "void AddToCartException.<init>(Throwable)"})
   public void testNewAddToCartException_thenReturnMessageIsNull() {
     // Arrange and Act
     AddToCartException actualAddToCartException = new AddToCartException();
@@ -35,6 +58,9 @@ public class AddToCartExceptionDiffblueTest {
    * Method under test: {@link AddToCartException#AddToCartException(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AddToCartException.<init>()", "void AddToCartException.<init>(String)",
+      "void AddToCartException.<init>(String, Throwable)", "void AddToCartException.<init>(Throwable)"})
   public void testNewAddToCartException_whenAnErrorOccurred_thenReturnMessageIsAnErrorOccurred() {
     // Arrange and Act
     AddToCartException actualAddToCartException = new AddToCartException("An error occurred");
@@ -52,10 +78,12 @@ public class AddToCartExceptionDiffblueTest {
    *   <li>Then return Message is {@code An error occurred}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AddToCartException#AddToCartException(String, Throwable)}
+   * Method under test: {@link AddToCartException#AddToCartException(String, Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AddToCartException.<init>()", "void AddToCartException.<init>(String)",
+      "void AddToCartException.<init>(String, Throwable)", "void AddToCartException.<init>(Throwable)"})
   public void testNewAddToCartException_whenAnErrorOccurred_thenReturnMessageIsAnErrorOccurred2() {
     // Arrange
     Throwable cause = new Throwable();
@@ -73,12 +101,15 @@ public class AddToCartExceptionDiffblueTest {
    * Test {@link AddToCartException#AddToCartException(Throwable)}.
    * <ul>
    *   <li>When {@link Throwable#Throwable()}.</li>
-   *   <li>Then return Message is {@code java.lang.Throwable}.</li>
+   *   <li>Then return Message is {@code Throwable}.</li>
    * </ul>
    * <p>
    * Method under test: {@link AddToCartException#AddToCartException(Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AddToCartException.<init>()", "void AddToCartException.<init>(String)",
+      "void AddToCartException.<init>(String, Throwable)", "void AddToCartException.<init>(Throwable)"})
   public void testNewAddToCartException_whenThrowable_thenReturnMessageIsJavaLangThrowable() {
     // Arrange
     Throwable cause = new Throwable();

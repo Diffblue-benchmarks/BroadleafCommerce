@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce CMS Module
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.cms.file.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -10,6 +27,8 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.copy.CreateResponse;
 import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
@@ -17,6 +36,7 @@ import org.broadleafcommerce.common.service.GenericEntityService;
 import org.broadleafcommerce.common.site.domain.CatalogImpl;
 import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.mockito.Mockito;
 
 public class StaticAssetDescriptionImplDiffblueTest {
@@ -26,6 +46,8 @@ public class StaticAssetDescriptionImplDiffblueTest {
    * Method under test: {@link StaticAssetDescriptionImpl#cloneEntity()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"StaticAssetDescription StaticAssetDescriptionImpl.cloneEntity()"})
   public void testCloneEntity() {
     // Arrange and Act
     StaticAssetDescription actualCloneEntityResult = (new StaticAssetDescriptionImpl()).cloneEntity();
@@ -38,13 +60,13 @@ public class StaticAssetDescriptionImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link StaticAssetDescriptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * Test {@link StaticAssetDescriptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <p>
-   * Method under test:
-   * {@link StaticAssetDescriptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link StaticAssetDescriptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse StaticAssetDescriptionImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
     // Arrange
     StaticAssetDescriptionImpl staticAssetDescriptionImpl = new StaticAssetDescriptionImpl();
@@ -63,16 +85,16 @@ public class StaticAssetDescriptionImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link StaticAssetDescriptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * Test {@link StaticAssetDescriptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <ul>
    *   <li>Then Clone return {@link StaticAssetDescriptionImpl}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link StaticAssetDescriptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link StaticAssetDescriptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse StaticAssetDescriptionImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance_thenCloneReturnStaticAssetDescriptionImpl()
       throws CloneNotSupportedException {
     // Arrange
@@ -108,8 +130,7 @@ public class StaticAssetDescriptionImplDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>default or parameterless constructor of
-   * {@link StaticAssetDescriptionImpl}
+   *   <li>default or parameterless constructor of {@link StaticAssetDescriptionImpl}
    *   <li>{@link StaticAssetDescriptionImpl#setDescription(String)}
    *   <li>{@link StaticAssetDescriptionImpl#setId(Long)}
    *   <li>{@link StaticAssetDescriptionImpl#setLongDescription(String)}
@@ -119,6 +140,11 @@ public class StaticAssetDescriptionImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StaticAssetDescriptionImpl.<init>()", "String StaticAssetDescriptionImpl.getDescription()",
+      "Long StaticAssetDescriptionImpl.getId()", "String StaticAssetDescriptionImpl.getLongDescription()",
+      "void StaticAssetDescriptionImpl.setDescription(String)", "void StaticAssetDescriptionImpl.setId(Long)",
+      "void StaticAssetDescriptionImpl.setLongDescription(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     StaticAssetDescriptionImpl actualStaticAssetDescriptionImpl = new StaticAssetDescriptionImpl();
@@ -128,7 +154,7 @@ public class StaticAssetDescriptionImplDiffblueTest {
     String actualDescription = actualStaticAssetDescriptionImpl.getDescription();
     Long actualId = actualStaticAssetDescriptionImpl.getId();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Long Description", actualStaticAssetDescriptionImpl.getLongDescription());
     assertEquals("The characteristics of someone or something", actualDescription);
     assertEquals(1L, actualId.longValue());

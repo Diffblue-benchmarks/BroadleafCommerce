@@ -20,35 +20,41 @@ package org.broadleafcommerce.core.order.service;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import org.broadleafcommerce.common.page.dto.NullPageDTO;
 import org.broadleafcommerce.common.page.dto.PageDTO;
 import org.broadleafcommerce.common.structure.dto.ItemCriteriaDTO;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(classes = {PageCartRuleProcessor.class})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class PageCartRuleProcessorDiffblueTest {
+  @Autowired
+  private PageCartRuleProcessor pageCartRuleProcessor;
+
   /**
-   * Test {@link PageCartRuleProcessor#checkForMatch(PageDTO, Map)} with
-   * {@code PageDTO}, {@code Map}.
+   * Test {@link PageCartRuleProcessor#checkForMatch(PageDTO, Map)} with {@code PageDTO}, {@code Map}.
    * <ul>
    *   <li>Given {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link PageCartRuleProcessor#checkForMatch(PageDTO, Map)}
    */
   @Test
-  public void testCheckForMatchWithPageDTOMap_givenArrayList() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PageCartRuleProcessor.checkForMatch(PageDTO, Map)"})
+  public void testCheckForMatchWithPageDTOMap_givenArrayList_thenReturnTrue() {
     // Arrange
-    PageCartRuleProcessor pageCartRuleProcessor = new PageCartRuleProcessor();
-
     PageDTO page = new PageDTO();
     page.setItemCriteriaDTOList(new ArrayList<>());
 
@@ -60,68 +66,38 @@ public class PageCartRuleProcessorDiffblueTest {
   }
 
   /**
-   * Test {@link PageCartRuleProcessor#checkForMatch(PageDTO, Map)} with
-   * {@code PageDTO}, {@code Map}.
+   * Test {@link PageCartRuleProcessor#checkForMatch(PageDTO, Map)} with {@code PageDTO}, {@code Map}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then calls {@link PageDTO#getItemCriteriaDTOList()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PageCartRuleProcessor#checkForMatch(PageDTO, Map)}
-   */
-  @Test
-  public void testCheckForMatchWithPageDTOMap_givenArrayList_thenCallsGetItemCriteriaDTOList() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PageCartRuleProcessor pageCartRuleProcessor = new PageCartRuleProcessor();
-    NullPageDTO page = mock(NullPageDTO.class);
-    when(page.getItemCriteriaDTOList()).thenReturn(new ArrayList<>());
-
-    // Act
-    boolean actualCheckForMatchResult = pageCartRuleProcessor.checkForMatch(page, new HashMap<>());
-
-    // Assert
-    verify(page).getItemCriteriaDTOList();
-    assertTrue(actualCheckForMatchResult);
-  }
-
-  /**
-   * Test {@link PageCartRuleProcessor#checkForMatch(PageDTO, Map)} with
-   * {@code PageDTO}, {@code Map}.
-   * <ul>
+   *   <li>Given {@code null}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link PageCartRuleProcessor#checkForMatch(PageDTO, Map)}
    */
   @Test
-  public void testCheckForMatchWithPageDTOMap_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PageCartRuleProcessor.checkForMatch(PageDTO, Map)"})
+  public void testCheckForMatchWithPageDTOMap_givenNull_thenReturnFalse() {
     // Arrange
-    PageCartRuleProcessor pageCartRuleProcessor = new PageCartRuleProcessor();
-
     ItemCriteriaDTO itemCriteriaDTO = new ItemCriteriaDTO();
     itemCriteriaDTO.setMatchRule("Match Rule");
     itemCriteriaDTO.setQty(1);
 
     ArrayList<ItemCriteriaDTO> itemCriteriaDTOList = new ArrayList<>();
     itemCriteriaDTOList.add(itemCriteriaDTO);
-    NullPageDTO page = mock(NullPageDTO.class);
-    when(page.getItemCriteriaDTOList()).thenReturn(itemCriteriaDTOList);
 
-    // Act
-    boolean actualCheckForMatchResult = pageCartRuleProcessor.checkForMatch(page, new HashMap<>());
+    PageDTO page = new PageDTO();
+    page.setItemCriteriaDTOList(itemCriteriaDTOList);
 
-    // Assert
-    verify(page).getItemCriteriaDTOList();
-    assertFalse(actualCheckForMatchResult);
+    HashMap<String, Object> valueMap = new HashMap<>();
+    valueMap.put("customer", null);
+
+    // Act and Assert
+    assertFalse(pageCartRuleProcessor.checkForMatch(page, valueMap));
   }
 
   /**
-   * Test {@link PageCartRuleProcessor#checkForMatch(PageDTO, Map)} with
-   * {@code PageDTO}, {@code Map}.
+   * Test {@link PageCartRuleProcessor#checkForMatch(PageDTO, Map)} with {@code PageDTO}, {@code Map}.
    * <ul>
    *   <li>When {@link PageDTO} (default constructor).</li>
    *   <li>Then return {@code true}.</li>
@@ -130,11 +106,10 @@ public class PageCartRuleProcessorDiffblueTest {
    * Method under test: {@link PageCartRuleProcessor#checkForMatch(PageDTO, Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PageCartRuleProcessor.checkForMatch(PageDTO, Map)"})
   public void testCheckForMatchWithPageDTOMap_whenPageDTO_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    PageCartRuleProcessor pageCartRuleProcessor = new PageCartRuleProcessor();
     PageDTO page = new PageDTO();
 
     // Act and Assert
@@ -144,13 +119,12 @@ public class PageCartRuleProcessorDiffblueTest {
   /**
    * Test new {@link PageCartRuleProcessor} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link PageCartRuleProcessor}
+   * Method under test: default or parameterless constructor of {@link PageCartRuleProcessor}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PageCartRuleProcessor.<init>()"})
   public void testNewPageCartRuleProcessor() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange and Act
     PageCartRuleProcessor actualPageCartRuleProcessor = new PageCartRuleProcessor();
 

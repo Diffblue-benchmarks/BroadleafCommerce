@@ -19,12 +19,13 @@ package org.broadleafcommerce.common.extensibility.context.merge.handlers;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.mock;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import javax.imageio.metadata.IIOMetadataNode;
-import org.broadleafcommerce.common.extensibility.context.merge.handlers.SchemaLocationMergeTest.DummyNode;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -40,40 +41,22 @@ public class AttributePreserveInsertDiffblueTest {
   /**
    * Test {@link AttributePreserveInsert#merge(List, List, List)}.
    * <ul>
-   *   <li>Given {@link DummyNode}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link DummyNode}.</li>
+   *   <li>Given {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
    * </ul>
    * <p>
    * Method under test: {@link AttributePreserveInsert#merge(List, List, List)}
    */
   @Test
-  public void testMerge_givenDummyNode_whenArrayListAddDummyNode() {
-    // Arrange
-    ArrayList<Node> nodeList1 = new ArrayList<>();
-    nodeList1.add(mock(SchemaLocationMergeTest.DummyNode.class));
-    ArrayList<Node> nodeList2 = new ArrayList<>();
-
-    // Act and Assert
-    assertNull(attributePreserveInsert.merge(nodeList1, nodeList2, new ArrayList<>()));
-  }
-
-  /**
-   * Test {@link AttributePreserveInsert#merge(List, List, List)}.
-   * <ul>
-   *   <li>Given {@link IIOMetadataNode#IIOMetadataNode(String)} with
-   * {@code foo}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add
-   * {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AttributePreserveInsert#merge(List, List, List)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Node[] AttributePreserveInsert.merge(List, List, List)"})
   public void testMerge_givenIIOMetadataNodeWithFoo_whenArrayListAddIIOMetadataNodeWithFoo() {
     // Arrange
     ArrayList<Node> nodeList1 = new ArrayList<>();
     nodeList1.add(new IIOMetadataNode("foo"));
+
     ArrayList<Node> nodeList2 = new ArrayList<>();
+    nodeList2.add(new IIOMetadataNode("foo"));
 
     // Act and Assert
     assertNull(attributePreserveInsert.merge(nodeList1, nodeList2, new ArrayList<>()));
@@ -82,19 +65,41 @@ public class AttributePreserveInsertDiffblueTest {
   /**
    * Test {@link AttributePreserveInsert#merge(List, List, List)}.
    * <ul>
-   *   <li>Given {@link IIOMetadataNode#IIOMetadataNode(String)} with
-   * {@code foo}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add
-   * {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
+   *   <li>Given {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
    * </ul>
    * <p>
    * Method under test: {@link AttributePreserveInsert#merge(List, List, List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Node[] AttributePreserveInsert.merge(List, List, List)"})
   public void testMerge_givenIIOMetadataNodeWithFoo_whenArrayListAddIIOMetadataNodeWithFoo2() {
     // Arrange
     ArrayList<Node> nodeList1 = new ArrayList<>();
     nodeList1.add(new IIOMetadataNode("foo"));
+    ArrayList<Node> nodeList2 = new ArrayList<>();
+
+    // Act and Assert
+    assertNull(attributePreserveInsert.merge(nodeList1, nodeList2, new ArrayList<>()));
+  }
+
+  /**
+   * Test {@link AttributePreserveInsert#merge(List, List, List)}.
+   * <ul>
+   *   <li>Given {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AttributePreserveInsert#merge(List, List, List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Node[] AttributePreserveInsert.merge(List, List, List)"})
+  public void testMerge_givenIIOMetadataNodeWithFoo_whenArrayListAddIIOMetadataNodeWithFoo3() {
+    // Arrange
+    ArrayList<Node> nodeList1 = new ArrayList<>();
+    nodeList1.add(new IIOMetadataNode("foo"));
     nodeList1.add(new IIOMetadataNode("foo"));
     ArrayList<Node> nodeList2 = new ArrayList<>();
 
@@ -105,62 +110,39 @@ public class AttributePreserveInsertDiffblueTest {
   /**
    * Test {@link AttributePreserveInsert#merge(List, List, List)}.
    * <ul>
-   *   <li>Given {@link IIOMetadataNode#IIOMetadataNode(String)} with
-   * {@code foo}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add
-   * {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
+   *   <li>Given {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
    * </ul>
    * <p>
    * Method under test: {@link AttributePreserveInsert#merge(List, List, List)}
    */
   @Test
-  public void testMerge_givenIIOMetadataNodeWithFoo_whenArrayListAddIIOMetadataNodeWithFoo3() {
-    // Arrange
-    ArrayList<Node> nodeList1 = new ArrayList<>();
-
-    ArrayList<Node> nodeList2 = new ArrayList<>();
-    nodeList2.add(new IIOMetadataNode("foo"));
-
-    // Act and Assert
-    assertNull(attributePreserveInsert.merge(nodeList1, nodeList2, new ArrayList<>()));
-  }
-
-  /**
-   * Test {@link AttributePreserveInsert#merge(List, List, List)}.
-   * <ul>
-   *   <li>Given {@link IIOMetadataNode#IIOMetadataNode(String)} with
-   * {@code foo}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add
-   * {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AttributePreserveInsert#merge(List, List, List)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Node[] AttributePreserveInsert.merge(List, List, List)"})
   public void testMerge_givenIIOMetadataNodeWithFoo_whenArrayListAddIIOMetadataNodeWithFoo4() {
     // Arrange
     ArrayList<Node> nodeList1 = new ArrayList<>();
-
     ArrayList<Node> nodeList2 = new ArrayList<>();
-    nodeList2.add(new IIOMetadataNode("foo"));
-    nodeList2.add(new IIOMetadataNode("foo"));
+
+    ArrayList<Node> exhaustedNodes = new ArrayList<>();
+    exhaustedNodes.add(new IIOMetadataNode("foo"));
 
     // Act and Assert
-    assertNull(attributePreserveInsert.merge(nodeList1, nodeList2, new ArrayList<>()));
+    assertNull(attributePreserveInsert.merge(nodeList1, nodeList2, exhaustedNodes));
   }
 
   /**
    * Test {@link AttributePreserveInsert#merge(List, List, List)}.
    * <ul>
-   *   <li>Given {@link IIOMetadataNode#IIOMetadataNode(String)} with
-   * {@code foo}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add
-   * {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
+   *   <li>Given {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
    * </ul>
    * <p>
    * Method under test: {@link AttributePreserveInsert#merge(List, List, List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Node[] AttributePreserveInsert.merge(List, List, List)"})
   public void testMerge_givenIIOMetadataNodeWithFoo_whenArrayListAddIIOMetadataNodeWithFoo5() {
     // Arrange
     ArrayList<Node> nodeList1 = new ArrayList<>();
@@ -168,58 +150,10 @@ public class AttributePreserveInsertDiffblueTest {
 
     ArrayList<Node> exhaustedNodes = new ArrayList<>();
     exhaustedNodes.add(new IIOMetadataNode("foo"));
-
-    // Act and Assert
-    assertNull(attributePreserveInsert.merge(nodeList1, nodeList2, exhaustedNodes));
-  }
-
-  /**
-   * Test {@link AttributePreserveInsert#merge(List, List, List)}.
-   * <ul>
-   *   <li>Given {@link IIOMetadataNode#IIOMetadataNode(String)} with
-   * {@code foo}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add
-   * {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AttributePreserveInsert#merge(List, List, List)}
-   */
-  @Test
-  public void testMerge_givenIIOMetadataNodeWithFoo_whenArrayListAddIIOMetadataNodeWithFoo6() {
-    // Arrange
-    ArrayList<Node> nodeList1 = new ArrayList<>();
-    ArrayList<Node> nodeList2 = new ArrayList<>();
-
-    ArrayList<Node> exhaustedNodes = new ArrayList<>();
-    exhaustedNodes.add(new IIOMetadataNode("foo"));
     exhaustedNodes.add(new IIOMetadataNode("foo"));
 
     // Act and Assert
     assertNull(attributePreserveInsert.merge(nodeList1, nodeList2, exhaustedNodes));
-  }
-
-  /**
-   * Test {@link AttributePreserveInsert#merge(List, List, List)}.
-   * <ul>
-   *   <li>Given {@link IIOMetadataNode#IIOMetadataNode(String)} with
-   * {@code foo}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add
-   * {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AttributePreserveInsert#merge(List, List, List)}
-   */
-  @Test
-  public void testMerge_givenIIOMetadataNodeWithFoo_whenArrayListAddIIOMetadataNodeWithFoo7() {
-    // Arrange
-    ArrayList<Node> nodeList1 = new ArrayList<>();
-    nodeList1.add(new IIOMetadataNode("foo"));
-
-    ArrayList<Node> nodeList2 = new ArrayList<>();
-    nodeList2.add(new IIOMetadataNode("foo"));
-
-    // Act and Assert
-    assertNull(attributePreserveInsert.merge(nodeList1, nodeList2, new ArrayList<>()));
   }
 
   /**
@@ -231,6 +165,8 @@ public class AttributePreserveInsertDiffblueTest {
    * Method under test: {@link AttributePreserveInsert#merge(List, List, List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Node[] AttributePreserveInsert.merge(List, List, List)"})
   public void testMerge_whenArrayList() {
     // Arrange
     ArrayList<Node> nodeList1 = new ArrayList<>();
@@ -243,10 +179,11 @@ public class AttributePreserveInsertDiffblueTest {
   /**
    * Test new {@link AttributePreserveInsert} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link AttributePreserveInsert}
+   * Method under test: default or parameterless constructor of {@link AttributePreserveInsert}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AttributePreserveInsert.<init>()"})
   public void testNewAttributePreserveInsert() {
     // Arrange and Act
     AttributePreserveInsert actualAttributePreserveInsert = new AttributePreserveInsert();

@@ -18,6 +18,7 @@
 package org.broadleafcommerce.common.web;
 
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.anyInt;
@@ -26,256 +27,96 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import javax.servlet.http.HttpServletRequest;
+import org.broadleafcommerce.common.crossapp.service.CrossAppAuthService;
+import org.broadleafcommerce.common.sandbox.dao.SandBoxDao;
 import org.broadleafcommerce.common.sandbox.domain.SandBox;
 import org.broadleafcommerce.common.site.domain.Site;
 import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.broadleafcommerce.common.web.filter.SessionlessHttpServletRequestWrapper;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 
-@ContextConfiguration(locations = {"/bl-common-applicationContext-entity.xml",
-    "/bl-common-applicationContext-mbeans.xml", "/bl-common-applicationContext-persistence.xml",
-    "/bl-common-applicationContext-servlet.xml", "/bl-common-applicationContext-wrapper.xml",
-    "/bl-common-applicationContext.xml", "/bl-fake-applicationContext-ant.xml",
-    "/blc-config/admin/framework/bl-common-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-common-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-common-applicationContext-servlet.xml",
-    "/blc-config/site/framework/bl-common-applicationContext.xml",
-    "/override-contexts/admin-root-autoconfiguration-overrides.xml",
-    "/override-contexts/admin-servlet-autoconfiguration-overrides.xml",
-    "/override-contexts/autoconfiguration-overrides.xml", "/override-contexts/autoconfiguration-servlet-overrides.xml",
-    "/override-contexts/site-root-autoconfiguration-overrides.xml",
-    "/override-contexts/site-servlet-autoconfiguration-overrides.xml",
-    "/blc-config/admin/bl-admin-test-applicationContext.xml", "/blc-config/bl-test-applicationContext.xml",
-    "/blc-config/site/bl-site-test-applicationContext.xml", "/context/config/client-override.xml",
-    "/context/config/xml-import-override.xml", "/context/crossmodule/early-applicationContext.xml",
-    "/context/crossmodule/early-xml-applicationContext.xml", "/context/crossmodule/late-applicationContext.xml",
-    "/context/entityconfig/import-framework.xml", "/context/entityconfig/import-local.xml",
-    "/context/importer/applicationContext.xml", "/context/importer/merge/applicationContext-servlet.xml",
-    "/context/importer/merge/applicationContext.xml", "/context/merge/bl-framework.xml", "/context/merge/bl-module.xml",
-    "/context/merge/local.xml", "/context/reader/bean-override-early-test-applicationContext.xml",
-    "/context/reader/bean-override-framework-test-applicationContext.xml",
-    "/context/reader/bean-override-local-test-applicationContext.xml", "/context/reader/merge/testbeans.xml",
-    "/context/reader/merge/testbeans2.xml", "/context/reader/merge/testbeans3.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class BroadleafSandBoxResolverImplDiffblueTest {
-  @Autowired
+  @InjectMocks
   private BroadleafSandBoxResolverImpl broadleafSandBoxResolverImpl;
 
+  @Mock
+  private CrossAppAuthService crossAppAuthService;
+
+  @Mock
+  private SandBoxDao sandBoxDao;
+
   /**
-   * Test
-   * {@link BroadleafSandBoxResolverImpl#resolveSandBox(HttpServletRequest, Site)}
-   * with {@code HttpServletRequest}, {@code Site}.
+   * Test {@link BroadleafSandBoxResolverImpl#resolveSandBox(HttpServletRequest, Site)} with {@code HttpServletRequest}, {@code Site}.
    * <p>
-   * Method under test:
-   * {@link BroadleafSandBoxResolverImpl#resolveSandBox(HttpServletRequest, Site)}
+   * Method under test: {@link BroadleafSandBoxResolverImpl#resolveSandBox(HttpServletRequest, Site)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"SandBox BroadleafSandBoxResolverImpl.resolveSandBox(HttpServletRequest, Site)"})
   public void testResolveSandBoxWithHttpServletRequestSite() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    BroadleafSandBoxResolverImpl broadleafSandBoxResolverImpl = new BroadleafSandBoxResolverImpl();
+    when(crossAppAuthService.hasCsrPermission()).thenReturn(true);
+    when(crossAppAuthService.isAuthedFromAdmin()).thenReturn(true);
     SessionlessHttpServletRequestWrapper request = new SessionlessHttpServletRequestWrapper(
-        new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
+        new MockHttpServletRequest());
 
-    // Act and Assert
-    assertNull(broadleafSandBoxResolverImpl.resolveSandBox(request, new SiteImpl()));
+    // Act
+    SandBox actualResolveSandBoxResult = broadleafSandBoxResolverImpl.resolveSandBox(request, new SiteImpl());
+
+    // Assert
+    verify(crossAppAuthService).hasCsrPermission();
+    verify(crossAppAuthService).isAuthedFromAdmin();
+    assertNull(actualResolveSandBoxResult);
   }
 
   /**
-   * Test
-   * {@link BroadleafSandBoxResolverImpl#resolveSandBox(HttpServletRequest, Site)}
-   * with {@code HttpServletRequest}, {@code Site}.
+   * Test {@link BroadleafSandBoxResolverImpl#resolveSandBox(HttpServletRequest, Site)} with {@code HttpServletRequest}, {@code Site}.
    * <p>
-   * Method under test:
-   * {@link BroadleafSandBoxResolverImpl#resolveSandBox(HttpServletRequest, Site)}
+   * Method under test: {@link BroadleafSandBoxResolverImpl#resolveSandBox(HttpServletRequest, Site)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"SandBox BroadleafSandBoxResolverImpl.resolveSandBox(HttpServletRequest, Site)"})
   public void testResolveSandBoxWithHttpServletRequestSite2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    BroadleafSandBoxResolverImpl broadleafSandBoxResolverImpl = new BroadleafSandBoxResolverImpl();
-
-    MockHttpServletRequest request = new MockHttpServletRequest();
-    request.addParameter(BroadleafSandBoxResolver.SANDBOX_ID_VAR, BroadleafSandBoxResolver.SANDBOX_ID_VAR);
-
-    // Act and Assert
-    assertNull(broadleafSandBoxResolverImpl.resolveSandBox(new SessionlessHttpServletRequestWrapper(request),
-        mock(Site.class)));
-  }
-
-  /**
-   * Test
-   * {@link BroadleafSandBoxResolverImpl#resolveSandBox(HttpServletRequest, Site)}
-   * with {@code HttpServletRequest}, {@code Site}.
-   * <p>
-   * Method under test:
-   * {@link BroadleafSandBoxResolverImpl#resolveSandBox(HttpServletRequest, Site)}
-   */
-  @Test
-  public void testResolveSandBoxWithHttpServletRequestSite3() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    BroadleafSandBoxResolverImpl broadleafSandBoxResolverImpl = new BroadleafSandBoxResolverImpl();
-
-    MockHttpServletRequest request = new MockHttpServletRequest();
-    request.addParameter("blSandboxDateTimeRibbonProduction", "42");
-    request.addParameter(BroadleafSandBoxResolver.SANDBOX_ID_VAR, BroadleafSandBoxResolver.SANDBOX_ID_VAR);
-
-    // Act and Assert
-    assertNull(broadleafSandBoxResolverImpl.resolveSandBox(new SessionlessHttpServletRequestWrapper(request),
-        mock(Site.class)));
-  }
-
-  /**
-   * Test
-   * {@link BroadleafSandBoxResolverImpl#resolveSandBox(HttpServletRequest, Site)}
-   * with {@code HttpServletRequest}, {@code Site}.
-   * <p>
-   * Method under test:
-   * {@link BroadleafSandBoxResolverImpl#resolveSandBox(HttpServletRequest, Site)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testResolveSandBoxWithHttpServletRequestSite4() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.BeanInstantiationException: Could not instantiate bean: messageSource defined in bl-common-applicationContext.xml
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageSource' defined in class path resource [bl-common-applicationContext.xml]: Initialization of bean failed; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:628)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:600)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.propertyeditors.CustomBooleanEditor.setAsText(CustomBooleanEditor.java:154)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
-    //       at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:590)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   See https://diff.blue/R026 to resolve this issue.
-
-    // Arrange
-    BroadleafSandBoxResolverImpl broadleafSandBoxResolverImpl2 = new BroadleafSandBoxResolverImpl();
+    when(crossAppAuthService.isAuthedFromAdmin()).thenReturn(false);
     SessionlessHttpServletRequestWrapper request = new SessionlessHttpServletRequestWrapper(
         new MockHttpServletRequest());
 
     // Act
-    broadleafSandBoxResolverImpl2.resolveSandBox(request, new SiteImpl());
+    SandBox actualResolveSandBoxResult = broadleafSandBoxResolverImpl.resolveSandBox(request, new SiteImpl());
+
+    // Assert
+    verify(crossAppAuthService).isAuthedFromAdmin();
+    assertNull(actualResolveSandBoxResult);
   }
 
   /**
-   * Test
-   * {@link BroadleafSandBoxResolverImpl#resolveSandBox(HttpServletRequest, Site)}
-   * with {@code HttpServletRequest}, {@code Site}.
+   * Test {@link BroadleafSandBoxResolverImpl#resolveSandBox(HttpServletRequest, Site)} with {@code HttpServletRequest}, {@code Site}.
    * <ul>
-   *   <li>Given {@code blClearSandBox}.</li>
+   *   <li>Given {@link BroadleafSandBoxResolverImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafSandBoxResolverImpl#resolveSandBox(HttpServletRequest, Site)}
+   * Method under test: {@link BroadleafSandBoxResolverImpl#resolveSandBox(HttpServletRequest, Site)}
    */
   @Test
-  public void testResolveSandBoxWithHttpServletRequestSite_givenBlClearSandBox() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    BroadleafSandBoxResolverImpl broadleafSandBoxResolverImpl = new BroadleafSandBoxResolverImpl();
-
-    MockHttpServletRequest request = new MockHttpServletRequest();
-    request.addParameter("blClearSandBox", "42");
-    request.addParameter(BroadleafSandBoxResolver.SANDBOX_ID_VAR, BroadleafSandBoxResolver.SANDBOX_ID_VAR);
-
-    // Act and Assert
-    assertNull(broadleafSandBoxResolverImpl.resolveSandBox(new SessionlessHttpServletRequestWrapper(request),
-        mock(Site.class)));
-  }
-
-  /**
-   * Test
-   * {@link BroadleafSandBoxResolverImpl#resolveSandBox(HttpServletRequest, Site)}
-   * with {@code HttpServletRequest}, {@code Site}.
-   * <ul>
-   *   <li>When {@link SiteImpl} (default constructor).</li>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link BroadleafSandBoxResolverImpl#resolveSandBox(HttpServletRequest, Site)}
-   */
-  @Test
-  public void testResolveSandBoxWithHttpServletRequestSite_whenSiteImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"SandBox BroadleafSandBoxResolverImpl.resolveSandBox(HttpServletRequest, Site)"})
+  public void testResolveSandBoxWithHttpServletRequestSite_givenBroadleafSandBoxResolverImpl() {
     // Arrange
     BroadleafSandBoxResolverImpl broadleafSandBoxResolverImpl = new BroadleafSandBoxResolverImpl();
     SessionlessHttpServletRequestWrapper request = new SessionlessHttpServletRequestWrapper(
@@ -286,40 +127,178 @@ public class BroadleafSandBoxResolverImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BroadleafSandBoxResolverImpl#resolveSandBox(HttpServletRequest, Site)}
-   * with {@code HttpServletRequest}, {@code Site}.
+   * Test {@link BroadleafSandBoxResolverImpl#resolveSandBox(HttpServletRequest, Site)} with {@code HttpServletRequest}, {@code Site}.
    * <ul>
-   *   <li>When {@link Site}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given {@code false}.</li>
+   *   <li>Then calls {@link MockHttpServletRequest#addParameter(String, String)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafSandBoxResolverImpl#resolveSandBox(HttpServletRequest, Site)}
+   * Method under test: {@link BroadleafSandBoxResolverImpl#resolveSandBox(HttpServletRequest, Site)}
    */
   @Test
-  public void testResolveSandBoxWithHttpServletRequestSite_whenSite_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"SandBox BroadleafSandBoxResolverImpl.resolveSandBox(HttpServletRequest, Site)"})
+  public void testResolveSandBoxWithHttpServletRequestSite_givenFalse_thenCallsAddParameter() {
     // Arrange
-    BroadleafSandBoxResolverImpl broadleafSandBoxResolverImpl = new BroadleafSandBoxResolverImpl();
+    when(crossAppAuthService.hasCsrPermission()).thenReturn(false);
+    when(crossAppAuthService.isAuthedFromAdmin()).thenReturn(true);
+    MockHttpServletRequest request = mock(MockHttpServletRequest.class);
+    when(request.getAttribute(Mockito.<String>any())).thenReturn(false);
+    when(request.getParameter(Mockito.<String>any())).thenReturn("https://example.org/example");
+    doNothing().when(request).addParameter(Mockito.<String>any(), Mockito.<String>any());
+    doNothing().when(request).setAttribute(Mockito.<String>any(), Mockito.<Object>any());
+    request.addParameter(BroadleafIncludeMyChangesResolver.INCLUDE_MY_CHANGES_VAR,
+        BroadleafSandBoxResolver.SANDBOX_ID_VAR);
+    SessionlessHttpServletRequestWrapper request2 = new SessionlessHttpServletRequestWrapper(request);
 
-    // Act and Assert
-    assertNull(broadleafSandBoxResolverImpl
-        .resolveSandBox(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()), mock(Site.class)));
+    // Act
+    SandBox actualResolveSandBoxResult = broadleafSandBoxResolverImpl.resolveSandBox(request2, new SiteImpl());
+
+    // Assert
+    verify(crossAppAuthService).hasCsrPermission();
+    verify(crossAppAuthService).isAuthedFromAdmin();
+    verify(request).addParameter(eq("blIncludeMyChanges"), eq("blSandboxId"));
+    verify(request, atLeast(1)).getAttribute(eq("blOkToUseSession"));
+    verify(request).getParameter(eq("blClearSandBox"));
+    verify(request, atLeast(1)).setAttribute(Mockito.<String>any(), Mockito.<Object>any());
+    assertNull(actualResolveSandBoxResult);
   }
 
   /**
-   * Test {@link BroadleafSandBoxResolverImpl#resolveSandBox(WebRequest, Site)}
-   * with {@code WebRequest}, {@code Site}.
+   * Test {@link BroadleafSandBoxResolverImpl#resolveSandBox(HttpServletRequest, Site)} with {@code HttpServletRequest}, {@code Site}.
+   * <ul>
+   *   <li>Then calls {@link CrossAppAuthService#hasCsrPermission()}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafSandBoxResolverImpl#resolveSandBox(WebRequest, Site)}
+   * Method under test: {@link BroadleafSandBoxResolverImpl#resolveSandBox(HttpServletRequest, Site)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"SandBox BroadleafSandBoxResolverImpl.resolveSandBox(HttpServletRequest, Site)"})
+  public void testResolveSandBoxWithHttpServletRequestSite_thenCallsHasCsrPermission() {
+    // Arrange
+    when(crossAppAuthService.hasCsrPermission()).thenReturn(false);
+    when(crossAppAuthService.isAuthedFromAdmin()).thenReturn(true);
+    SessionlessHttpServletRequestWrapper request = new SessionlessHttpServletRequestWrapper(
+        new MockHttpServletRequest());
+
+    // Act
+    SandBox actualResolveSandBoxResult = broadleafSandBoxResolverImpl.resolveSandBox(request, new SiteImpl());
+
+    // Assert
+    verify(crossAppAuthService).hasCsrPermission();
+    verify(crossAppAuthService).isAuthedFromAdmin();
+    assertNull(actualResolveSandBoxResult);
+  }
+
+  /**
+   * Test {@link BroadleafSandBoxResolverImpl#resolveSandBox(HttpServletRequest, Site)} with {@code HttpServletRequest}, {@code Site}.
+   * <ul>
+   *   <li>Then throw {@link NumberFormatException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BroadleafSandBoxResolverImpl#resolveSandBox(HttpServletRequest, Site)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"SandBox BroadleafSandBoxResolverImpl.resolveSandBox(HttpServletRequest, Site)"})
+  public void testResolveSandBoxWithHttpServletRequestSite_thenThrowNumberFormatException() {
+    // Arrange
+    when(crossAppAuthService.hasCsrPermission())
+        .thenThrow(new NumberFormatException(BroadleafSandBoxResolver.SANDBOX_ID_VAR));
+    when(crossAppAuthService.isAuthedFromAdmin()).thenReturn(true);
+    SessionlessHttpServletRequestWrapper request = new SessionlessHttpServletRequestWrapper(
+        new MockHttpServletRequest());
+
+    // Act and Assert
+    assertThrows(NumberFormatException.class,
+        () -> broadleafSandBoxResolverImpl.resolveSandBox(request, new SiteImpl()));
+    verify(crossAppAuthService).hasCsrPermission();
+    verify(crossAppAuthService).isAuthedFromAdmin();
+  }
+
+  /**
+   * Test {@link BroadleafSandBoxResolverImpl#resolveSandBox(WebRequest, Site)} with {@code WebRequest}, {@code Site}.
+   * <p>
+   * Method under test: {@link BroadleafSandBoxResolverImpl#resolveSandBox(WebRequest, Site)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"SandBox BroadleafSandBoxResolverImpl.resolveSandBox(WebRequest, Site)"})
   public void testResolveSandBoxWithWebRequestSite() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    // Arrange
+    when(crossAppAuthService.hasCsrPermission()).thenReturn(true);
+    when(crossAppAuthService.isAuthedFromAdmin()).thenReturn(true);
+    ServletWebRequest request = new ServletWebRequest(
+        new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
 
+    // Act
+    SandBox actualResolveSandBoxResult = broadleafSandBoxResolverImpl.resolveSandBox(request, new SiteImpl());
+
+    // Assert
+    verify(crossAppAuthService).hasCsrPermission();
+    verify(crossAppAuthService).isAuthedFromAdmin();
+    assertNull(actualResolveSandBoxResult);
+  }
+
+  /**
+   * Test {@link BroadleafSandBoxResolverImpl#resolveSandBox(WebRequest, Site)} with {@code WebRequest}, {@code Site}.
+   * <p>
+   * Method under test: {@link BroadleafSandBoxResolverImpl#resolveSandBox(WebRequest, Site)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"SandBox BroadleafSandBoxResolverImpl.resolveSandBox(WebRequest, Site)"})
+  public void testResolveSandBoxWithWebRequestSite2() {
+    // Arrange
+    when(crossAppAuthService.hasCsrPermission()).thenReturn(false);
+    when(crossAppAuthService.isAuthedFromAdmin()).thenReturn(true);
+    ServletWebRequest request = new ServletWebRequest(
+        new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
+
+    // Act
+    SandBox actualResolveSandBoxResult = broadleafSandBoxResolverImpl.resolveSandBox(request, new SiteImpl());
+
+    // Assert
+    verify(crossAppAuthService).hasCsrPermission();
+    verify(crossAppAuthService).isAuthedFromAdmin();
+    assertNull(actualResolveSandBoxResult);
+  }
+
+  /**
+   * Test {@link BroadleafSandBoxResolverImpl#resolveSandBox(WebRequest, Site)} with {@code WebRequest}, {@code Site}.
+   * <p>
+   * Method under test: {@link BroadleafSandBoxResolverImpl#resolveSandBox(WebRequest, Site)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"SandBox BroadleafSandBoxResolverImpl.resolveSandBox(WebRequest, Site)"})
+  public void testResolveSandBoxWithWebRequestSite3() {
+    // Arrange
+    when(crossAppAuthService.isAuthedFromAdmin()).thenReturn(false);
+    ServletWebRequest request = new ServletWebRequest(
+        new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
+
+    // Act
+    SandBox actualResolveSandBoxResult = broadleafSandBoxResolverImpl.resolveSandBox(request, new SiteImpl());
+
+    // Assert
+    verify(crossAppAuthService).isAuthedFromAdmin();
+    assertNull(actualResolveSandBoxResult);
+  }
+
+  /**
+   * Test {@link BroadleafSandBoxResolverImpl#resolveSandBox(WebRequest, Site)} with {@code WebRequest}, {@code Site}.
+   * <ul>
+   *   <li>Given {@link BroadleafSandBoxResolverImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BroadleafSandBoxResolverImpl#resolveSandBox(WebRequest, Site)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"SandBox BroadleafSandBoxResolverImpl.resolveSandBox(WebRequest, Site)"})
+  public void testResolveSandBoxWithWebRequestSite_givenBroadleafSandBoxResolverImpl() {
     // Arrange
     BroadleafSandBoxResolverImpl broadleafSandBoxResolverImpl = new BroadleafSandBoxResolverImpl();
     ServletWebRequest request = new ServletWebRequest(
@@ -330,112 +309,49 @@ public class BroadleafSandBoxResolverImplDiffblueTest {
   }
 
   /**
-   * Test {@link BroadleafSandBoxResolverImpl#resolveSandBox(WebRequest, Site)}
-   * with {@code WebRequest}, {@code Site}.
-   * <p>
-   * Method under test:
-   * {@link BroadleafSandBoxResolverImpl#resolveSandBox(WebRequest, Site)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testResolveSandBoxWithWebRequestSite2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.BeanInstantiationException: Could not instantiate bean: messageSource defined in bl-common-applicationContext.xml
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageSource' defined in class path resource [bl-common-applicationContext.xml]: Initialization of bean failed; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:628)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:600)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.propertyeditors.CustomBooleanEditor.setAsText(CustomBooleanEditor.java:154)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
-    //       at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:590)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   See https://diff.blue/R026 to resolve this issue.
-
-    // Arrange
-    BroadleafSandBoxResolverImpl broadleafSandBoxResolverImpl2 = new BroadleafSandBoxResolverImpl();
-    ServletWebRequest request = new ServletWebRequest(
-        new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
-
-    // Act
-    broadleafSandBoxResolverImpl2.resolveSandBox(request, new SiteImpl());
-  }
-
-  /**
-   * Test {@link BroadleafSandBoxResolverImpl#resolveSandBox(WebRequest, Site)}
-   * with {@code WebRequest}, {@code Site}.
+   * Test {@link BroadleafSandBoxResolverImpl#resolveSandBox(WebRequest, Site)} with {@code WebRequest}, {@code Site}.
    * <ul>
    *   <li>Given {@code false}.</li>
    *   <li>Then calls {@link RequestAttributes#getAttribute(String, int)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafSandBoxResolverImpl#resolveSandBox(WebRequest, Site)}
+   * Method under test: {@link BroadleafSandBoxResolverImpl#resolveSandBox(WebRequest, Site)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"SandBox BroadleafSandBoxResolverImpl.resolveSandBox(WebRequest, Site)"})
   public void testResolveSandBoxWithWebRequestSite_givenFalse_thenCallsGetAttribute() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    // Arrange
+    when(crossAppAuthService.hasCsrPermission()).thenReturn(true);
+    when(crossAppAuthService.isAuthedFromAdmin()).thenReturn(true);
+    WebRequest request = mock(WebRequest.class);
+    when(request.getAttribute(Mockito.<String>any(), anyInt())).thenReturn(false);
+    doNothing().when(request).setAttribute(Mockito.<String>any(), Mockito.<Object>any(), anyInt());
 
+    // Act
+    SandBox actualResolveSandBoxResult = broadleafSandBoxResolverImpl.resolveSandBox(request, new SiteImpl());
+
+    // Assert
+    verify(crossAppAuthService).hasCsrPermission();
+    verify(crossAppAuthService).isAuthedFromAdmin();
+    verify(request).getAttribute(eq("blOkToUseSession"), eq(0));
+    verify(request, atLeast(1)).setAttribute(Mockito.<String>any(), Mockito.<Object>any(), eq(0));
+    assertNull(actualResolveSandBoxResult);
+  }
+
+  /**
+   * Test {@link BroadleafSandBoxResolverImpl#resolveSandBox(WebRequest, Site)} with {@code WebRequest}, {@code Site}.
+   * <ul>
+   *   <li>Given {@code Parameter}.</li>
+   *   <li>Then calls {@link WebRequest#getParameter(String)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BroadleafSandBoxResolverImpl#resolveSandBox(WebRequest, Site)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"SandBox BroadleafSandBoxResolverImpl.resolveSandBox(WebRequest, Site)"})
+  public void testResolveSandBoxWithWebRequestSite_givenParameter_thenCallsGetParameter() {
     // Arrange
     BroadleafSandBoxResolverImpl broadleafSandBoxResolverImpl = new BroadleafSandBoxResolverImpl();
     WebRequest request = mock(WebRequest.class);
@@ -454,6 +370,32 @@ public class BroadleafSandBoxResolverImplDiffblueTest {
   }
 
   /**
+   * Test {@link BroadleafSandBoxResolverImpl#resolveSandBox(WebRequest, Site)} with {@code WebRequest}, {@code Site}.
+   * <ul>
+   *   <li>Then throw {@link NumberFormatException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BroadleafSandBoxResolverImpl#resolveSandBox(WebRequest, Site)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"SandBox BroadleafSandBoxResolverImpl.resolveSandBox(WebRequest, Site)"})
+  public void testResolveSandBoxWithWebRequestSite_thenThrowNumberFormatException() {
+    // Arrange
+    when(crossAppAuthService.hasCsrPermission())
+        .thenThrow(new NumberFormatException(BroadleafSandBoxResolver.SANDBOX_ID_VAR));
+    when(crossAppAuthService.isAuthedFromAdmin()).thenReturn(true);
+    ServletWebRequest request = new ServletWebRequest(
+        new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
+
+    // Act and Assert
+    assertThrows(NumberFormatException.class,
+        () -> broadleafSandBoxResolverImpl.resolveSandBox(request, new SiteImpl()));
+    verify(crossAppAuthService).hasCsrPermission();
+    verify(crossAppAuthService).isAuthedFromAdmin();
+  }
+
+  /**
    * Test getters and setters.
    * <p>
    * Methods under test:
@@ -463,6 +405,9 @@ public class BroadleafSandBoxResolverImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean BroadleafSandBoxResolverImpl.getSandBoxPreviewEnabled()",
+      "void BroadleafSandBoxResolverImpl.setSandBoxPreviewEnabled(Boolean)"})
   public void testGettersAndSetters() {
     // Arrange
     BroadleafSandBoxResolverImpl broadleafSandBoxResolverImpl = new BroadleafSandBoxResolverImpl();
@@ -470,7 +415,7 @@ public class BroadleafSandBoxResolverImplDiffblueTest {
     // Act
     broadleafSandBoxResolverImpl.setSandBoxPreviewEnabled(true);
 
-    // Assert that nothing has changed
+    // Assert
     assertTrue(broadleafSandBoxResolverImpl.getSandBoxPreviewEnabled());
   }
 }

@@ -19,9 +19,12 @@ package org.broadleafcommerce.common.extension;
 
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Map;
 import org.broadleafcommerce.common.util.BLCFieldUtils;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class ExtensionResultHolderDiffblueTest {
   /**
@@ -38,6 +41,10 @@ public class ExtensionResultHolderDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ExtensionResultHolder.<init>()", "Map ExtensionResultHolder.getContextMap()",
+      "Object ExtensionResultHolder.getResult()", "Throwable ExtensionResultHolder.getThrowable()",
+      "void ExtensionResultHolder.setResult(Object)", "void ExtensionResultHolder.setThrowable(Throwable)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     ExtensionResultHolder<Object> actualExtensionResultHolder = new ExtensionResultHolder<>();
@@ -49,7 +56,7 @@ public class ExtensionResultHolderDiffblueTest {
     Object actualResult = actualExtensionResultHolder.getResult();
     Throwable actualThrowable = actualExtensionResultHolder.getThrowable();
 
-    // Assert that nothing has changed
+    // Assert
     assertTrue(actualContextMap.isEmpty());
     assertSame(throwable, actualThrowable);
     assertSame(object, actualResult);

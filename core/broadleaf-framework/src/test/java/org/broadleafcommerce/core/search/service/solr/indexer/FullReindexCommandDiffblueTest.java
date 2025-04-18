@@ -1,30 +1,32 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.search.service.solr.indexer;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class FullReindexCommandDiffblueTest {
   /**
-   * Test new {@link FullReindexCommand} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link FullReindexCommand}
-   */
-  @Test
-  public void testNewFullReindexCommand() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing observers.
-    //   Diffblue Cover was unable to create an assertion.
-    //   There are no fields that could be asserted on.
-
-    // Arrange and Act
-    new FullReindexCommand();
-  }
-
-  /**
-   * Test {@link FullReindexCommand#equals(Object)}, and
-   * {@link FullReindexCommand#hashCode()}.
+   * Test {@link FullReindexCommand#equals(Object)}, and {@link FullReindexCommand#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -37,6 +39,8 @@ public class FullReindexCommandDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean FullReindexCommand.equals(Object)", "int FullReindexCommand.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     FullReindexCommand fullReindexCommand = FullReindexCommand.DEFAULT_INSTANCE;
@@ -49,8 +53,7 @@ public class FullReindexCommandDiffblueTest {
   }
 
   /**
-   * Test {@link FullReindexCommand#equals(Object)}, and
-   * {@link FullReindexCommand#hashCode()}.
+   * Test {@link FullReindexCommand#equals(Object)}, and {@link FullReindexCommand#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -63,6 +66,8 @@ public class FullReindexCommandDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean FullReindexCommand.equals(Object)", "int FullReindexCommand.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     FullReindexCommand fullReindexCommand = new FullReindexCommand();
@@ -75,8 +80,7 @@ public class FullReindexCommandDiffblueTest {
   }
 
   /**
-   * Test {@link FullReindexCommand#equals(Object)}, and
-   * {@link FullReindexCommand#hashCode()}.
+   * Test {@link FullReindexCommand#equals(Object)}, and {@link FullReindexCommand#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -89,6 +93,8 @@ public class FullReindexCommandDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean FullReindexCommand.equals(Object)", "int FullReindexCommand.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     FullReindexCommand fullReindexCommand = FullReindexCommand.DEFAULT_INSTANCE;
@@ -109,6 +115,8 @@ public class FullReindexCommandDiffblueTest {
    * Method under test: {@link FullReindexCommand#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean FullReindexCommand.equals(Object)", "int FullReindexCommand.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(FullReindexCommand.DEFAULT_INSTANCE, 1);
@@ -124,6 +132,8 @@ public class FullReindexCommandDiffblueTest {
    * Method under test: {@link FullReindexCommand#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean FullReindexCommand.equals(Object)", "int FullReindexCommand.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(FullReindexCommand.DEFAULT_INSTANCE, null);
@@ -139,6 +149,8 @@ public class FullReindexCommandDiffblueTest {
    * Method under test: {@link FullReindexCommand#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean FullReindexCommand.equals(Object)", "int FullReindexCommand.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(FullReindexCommand.DEFAULT_INSTANCE, "Different type to FullReindexCommand");

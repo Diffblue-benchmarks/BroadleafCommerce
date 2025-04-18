@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.payment.service;
 
 import static org.junit.Assert.assertFalse;
@@ -8,6 +25,8 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.common.payment.PaymentTransactionType;
@@ -17,110 +36,33 @@ import org.broadleafcommerce.core.payment.domain.OrderPaymentImpl;
 import org.broadleafcommerce.core.payment.domain.PaymentTransaction;
 import org.broadleafcommerce.core.payment.domain.PaymentTransactionImpl;
 import org.broadleafcommerce.core.payment.service.type.OrderPaymentStatus;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@ContextConfiguration(classes = {OrderPaymentStatusServiceImpl.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class OrderPaymentStatusServiceImplDiffblueTest {
   @Autowired
   private OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl;
 
   /**
-   * Test
-   * {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}.
-   * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testDetermineOrderPaymentStatus() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.payment.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2268 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl2 = new OrderPaymentStatusServiceImpl();
-
-    // Act
-    orderPaymentStatusServiceImpl2.determineOrderPaymentStatus(new OrderPaymentImpl());
-  }
-
-  /**
-   * Test
-   * {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}.
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link PaymentTransactionImpl}
-   * (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}
-   */
-  @Test
-  public void testDetermineOrderPaymentStatus_givenArrayListAddPaymentTransactionImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
-
-    ArrayList<PaymentTransaction> paymentTransactionList = new ArrayList<>();
-    paymentTransactionList.add(new PaymentTransactionImpl());
-    OrderPaymentImpl orderPayment = mock(OrderPaymentImpl.class);
-    when(orderPayment.getTransactions()).thenReturn(paymentTransactionList);
-    when(orderPayment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(new ArrayList<>());
-    when(orderPayment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
-        .thenReturn(new Money());
-
-    // Act
-    OrderPaymentStatus actualDetermineOrderPaymentStatusResult = orderPaymentStatusServiceImpl
-        .determineOrderPaymentStatus(orderPayment);
-
-    // Assert
-    verify(orderPayment, atLeast(1)).getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
-    verify(orderPayment, atLeast(1)).getTransactions();
-    verify(orderPayment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
-    assertSame(actualDetermineOrderPaymentStatusResult.UNDETERMINED, actualDetermineOrderPaymentStatusResult);
-  }
-
-  /**
-   * Test
-   * {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}.
+   * Test {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}.
    * <ul>
    *   <li>Given {@link Money#Money()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderPaymentStatus OrderPaymentStatusServiceImpl.determineOrderPaymentStatus(OrderPayment)"})
   public void testDetermineOrderPaymentStatus_givenMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
     OrderPaymentImpl orderPayment = mock(OrderPaymentImpl.class);
     when(orderPayment.getTransactions()).thenReturn(new ArrayList<>());
     when(orderPayment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(new ArrayList<>());
@@ -139,22 +81,18 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}.
+   * Test {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}.
    * <ul>
-   *   <li>Given {@link Money} {@link Money#add(Money)} return
-   * {@link Money#Money()}.</li>
+   *   <li>Given {@link Money} {@link Money#add(Money)} return {@link Money#Money()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderPaymentStatus OrderPaymentStatusServiceImpl.determineOrderPaymentStatus(OrderPayment)"})
   public void testDetermineOrderPaymentStatus_givenMoneyAddReturnMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
     Money money = mock(Money.class);
     when(money.greaterThan(Mockito.<Money>any())).thenReturn(true);
     when(money.add(Mockito.<Money>any())).thenReturn(new Money());
@@ -175,21 +113,18 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}.
+   * Test {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}.
    * <ul>
    *   <li>Given {@link Money} {@link Money#add(Money)} return {@link Money}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderPaymentStatus OrderPaymentStatusServiceImpl.determineOrderPaymentStatus(OrderPayment)"})
   public void testDetermineOrderPaymentStatus_givenMoneyAddReturnMoney2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
     Money money = mock(Money.class);
     when(money.greaterThan(Mockito.<Money>any())).thenReturn(true);
     Money money2 = mock(Money.class);
@@ -213,22 +148,18 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}.
+   * Test {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}.
    * <ul>
-   *   <li>Given {@link Money} {@link Money#greaterThan(Money)} return
-   * {@code false}.</li>
+   *   <li>Given {@link Money} {@link Money#greaterThan(Money)} return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderPaymentStatus OrderPaymentStatusServiceImpl.determineOrderPaymentStatus(OrderPayment)"})
   public void testDetermineOrderPaymentStatus_givenMoneyGreaterThanReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
     Money money = mock(Money.class);
     when(money.greaterThan(Mockito.<Money>any())).thenReturn(false);
     when(money.add(Mockito.<Money>any())).thenReturn(new Money());
@@ -251,21 +182,18 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}.
+   * Test {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}.
    * <ul>
    *   <li>Given {@link Money#Money(double)} with amount is ten.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderPaymentStatus OrderPaymentStatusServiceImpl.determineOrderPaymentStatus(OrderPayment)"})
   public void testDetermineOrderPaymentStatus_givenMoneyWithAmountIsTen() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
     OrderPaymentImpl orderPayment = mock(OrderPaymentImpl.class);
     when(orderPayment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(new ArrayList<>());
     when(orderPayment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
@@ -282,22 +210,18 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}.
+   * Test {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}.
    * <ul>
    *   <li>Given {@link NullOrderImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderPaymentStatus OrderPaymentStatusServiceImpl.determineOrderPaymentStatus(OrderPayment)"})
   public void testDetermineOrderPaymentStatus_givenNullOrderImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
-
     OrderPaymentImpl orderPayment = new OrderPaymentImpl();
     orderPayment.setOrder(new NullOrderImpl());
 
@@ -310,21 +234,18 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}.
+   * Test {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}.
    * <ul>
    *   <li>Then calls {@link PaymentTransactionImpl#getSuccess()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderPaymentStatus OrderPaymentStatusServiceImpl.determineOrderPaymentStatus(OrderPayment)"})
   public void testDetermineOrderPaymentStatus_thenCallsGetSuccess() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
     PaymentTransactionImpl paymentTransactionImpl = mock(PaymentTransactionImpl.class);
     when(paymentTransactionImpl.getSuccess()).thenReturn(false);
 
@@ -354,22 +275,18 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}.
+   * Test {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}.
    * <ul>
    *   <li>Then return {@link OrderPaymentStatus#COMPLETE}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderPaymentStatus OrderPaymentStatusServiceImpl.determineOrderPaymentStatus(OrderPayment)"})
   public void testDetermineOrderPaymentStatus_thenReturnComplete() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
-
     ArrayList<PaymentTransaction> paymentTransactionList = new ArrayList<>();
     paymentTransactionList.add(new PaymentTransactionImpl());
     OrderPaymentImpl orderPayment = mock(OrderPaymentImpl.class);
@@ -385,151 +302,136 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link OrderPaymentStatusServiceImpl#containsSuccessfulType(OrderPayment, PaymentTransactionType)}.
+   * Test {@link OrderPaymentStatusServiceImpl#containsSuccessfulType(OrderPayment, PaymentTransactionType)}.
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#containsSuccessfulType(OrderPayment, PaymentTransactionType)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#containsSuccessfulType(OrderPayment, PaymentTransactionType)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "boolean OrderPaymentStatusServiceImpl.containsSuccessfulType(OrderPayment, PaymentTransactionType)"})
   public void testContainsSuccessfulType() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.payment.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2197 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl2 = new OrderPaymentStatusServiceImpl();
+    PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
+    when(transaction.getType()).thenReturn(new PaymentTransactionType("42", "Friendly Type"));
+
     OrderPaymentImpl payment = new OrderPaymentImpl();
-
-    // Act
-    orderPaymentStatusServiceImpl2.containsSuccessfulType(payment, new PaymentTransactionType("Type", "Friendly Type"));
-  }
-
-  /**
-   * Test
-   * {@link OrderPaymentStatusServiceImpl#containsSuccessfulType(OrderPayment, PaymentTransactionType)}.
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#containsSuccessfulType(OrderPayment, PaymentTransactionType)}
-   */
-  @Test
-  public void testContainsSuccessfulType_givenArrayList_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
-    OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
-    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(new ArrayList<>());
+    payment.addTransaction(transaction);
 
     // Act
     boolean actualContainsSuccessfulTypeResult = orderPaymentStatusServiceImpl.containsSuccessfulType(payment,
         new PaymentTransactionType("Type", "Friendly Type"));
 
     // Assert
-    verify(payment).getTransactionsForType(isA(PaymentTransactionType.class));
+    verify(transaction).getType();
     assertFalse(actualContainsSuccessfulTypeResult);
   }
 
   /**
-   * Test
-   * {@link OrderPaymentStatusServiceImpl#containsSuccessfulType(OrderPayment, PaymentTransactionType)}.
+   * Test {@link OrderPaymentStatusServiceImpl#containsSuccessfulType(OrderPayment, PaymentTransactionType)}.
    * <ul>
-   *   <li>Then calls {@link PaymentTransactionImpl#getSuccess()}.</li>
+   *   <li>Given {@link PaymentTransactionImpl} {@link PaymentTransactionImpl#getSuccess()} return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#containsSuccessfulType(OrderPayment, PaymentTransactionType)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#containsSuccessfulType(OrderPayment, PaymentTransactionType)}
    */
   @Test
-  public void testContainsSuccessfulType_thenCallsGetSuccess() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "boolean OrderPaymentStatusServiceImpl.containsSuccessfulType(OrderPayment, PaymentTransactionType)"})
+  public void testContainsSuccessfulType_givenPaymentTransactionImplGetSuccessReturnFalse() {
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
-    PaymentTransactionImpl paymentTransactionImpl = mock(PaymentTransactionImpl.class);
-    when(paymentTransactionImpl.getSuccess()).thenReturn(false);
+    PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
+    when(transaction.getSuccess()).thenReturn(false);
+    when(transaction.getType()).thenReturn(new PaymentTransactionType("Type", "Friendly Type"));
 
-    ArrayList<PaymentTransaction> paymentTransactionList = new ArrayList<>();
-    paymentTransactionList.add(paymentTransactionImpl);
-    OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
-    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(paymentTransactionList);
+    OrderPaymentImpl payment = new OrderPaymentImpl();
+    payment.addTransaction(transaction);
 
     // Act
     boolean actualContainsSuccessfulTypeResult = orderPaymentStatusServiceImpl.containsSuccessfulType(payment,
         new PaymentTransactionType("Type", "Friendly Type"));
 
     // Assert
-    verify(payment).getTransactionsForType(isA(PaymentTransactionType.class));
-    verify(paymentTransactionImpl).getSuccess();
+    verify(transaction).getSuccess();
+    verify(transaction).getType();
     assertFalse(actualContainsSuccessfulTypeResult);
   }
 
   /**
-   * Test
-   * {@link OrderPaymentStatusServiceImpl#containsSuccessfulType(OrderPayment, PaymentTransactionType)}.
+   * Test {@link OrderPaymentStatusServiceImpl#containsSuccessfulType(OrderPayment, PaymentTransactionType)}.
    * <ul>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#containsSuccessfulType(OrderPayment, PaymentTransactionType)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#containsSuccessfulType(OrderPayment, PaymentTransactionType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "boolean OrderPaymentStatusServiceImpl.containsSuccessfulType(OrderPayment, PaymentTransactionType)"})
   public void testContainsSuccessfulType_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
+    PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
+    when(transaction.getSuccess()).thenReturn(true);
+    when(transaction.getType()).thenReturn(new PaymentTransactionType("Type", "Friendly Type"));
 
-    ArrayList<PaymentTransaction> paymentTransactionList = new ArrayList<>();
-    paymentTransactionList.add(new PaymentTransactionImpl());
-    OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
-    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(paymentTransactionList);
+    OrderPaymentImpl payment = new OrderPaymentImpl();
+    payment.addTransaction(transaction);
 
     // Act
     boolean actualContainsSuccessfulTypeResult = orderPaymentStatusServiceImpl.containsSuccessfulType(payment,
         new PaymentTransactionType("Type", "Friendly Type"));
 
     // Assert
-    verify(payment).getTransactionsForType(isA(PaymentTransactionType.class));
+    verify(transaction).getSuccess();
+    verify(transaction).getType();
     assertTrue(actualContainsSuccessfulTypeResult);
   }
 
   /**
-   * Test
-   * {@link OrderPaymentStatusServiceImpl#containsSuccessfulType(OrderPayment, PaymentTransactionType)}.
+   * Test {@link OrderPaymentStatusServiceImpl#containsSuccessfulType(OrderPayment, PaymentTransactionType)}.
+   * <ul>
+   *   <li>When {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OrderPaymentStatusServiceImpl#containsSuccessfulType(OrderPayment, PaymentTransactionType)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "boolean OrderPaymentStatusServiceImpl.containsSuccessfulType(OrderPayment, PaymentTransactionType)"})
+  public void testContainsSuccessfulType_whenNull() {
+    // Arrange
+    PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
+    when(transaction.getType()).thenReturn(new PaymentTransactionType("Type", "Friendly Type"));
+
+    OrderPaymentImpl payment = new OrderPaymentImpl();
+    payment.addTransaction(transaction);
+
+    // Act
+    boolean actualContainsSuccessfulTypeResult = orderPaymentStatusServiceImpl.containsSuccessfulType(payment, null);
+
+    // Assert
+    verify(transaction).getType();
+    assertFalse(actualContainsSuccessfulTypeResult);
+  }
+
+  /**
+   * Test {@link OrderPaymentStatusServiceImpl#containsSuccessfulType(OrderPayment, PaymentTransactionType)}.
    * <ul>
    *   <li>When {@link OrderPaymentImpl} (default constructor).</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#containsSuccessfulType(OrderPayment, PaymentTransactionType)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#containsSuccessfulType(OrderPayment, PaymentTransactionType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "boolean OrderPaymentStatusServiceImpl.containsSuccessfulType(OrderPayment, PaymentTransactionType)"})
   public void testContainsSuccessfulType_whenOrderPaymentImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
     OrderPaymentImpl payment = new OrderPaymentImpl();
 
     // Act and Assert
@@ -539,55 +441,18 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
 
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determineComplete(OrderPayment)}.
-   * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determineComplete(OrderPayment)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testDetermineComplete() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.payment.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2236 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl2 = new OrderPaymentStatusServiceImpl();
-
-    // Act
-    orderPaymentStatusServiceImpl2.determineComplete(new OrderPaymentImpl());
-  }
-
-  /**
-   * Test {@link OrderPaymentStatusServiceImpl#determineComplete(OrderPayment)}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link PaymentTransactionImpl}
-   * (default constructor).</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link PaymentTransactionImpl} (default constructor).</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determineComplete(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determineComplete(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineComplete(OrderPayment)"})
   public void testDetermineComplete_givenArrayListAddPaymentTransactionImpl_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
-
     ArrayList<PaymentTransaction> paymentTransactionList = new ArrayList<>();
     paymentTransactionList.add(new PaymentTransactionImpl());
     OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
@@ -607,15 +472,13 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
    *   <li>Given {@link Money#Money()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determineComplete(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determineComplete(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineComplete(OrderPayment)"})
   public void testDetermineComplete_givenMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
     OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
     when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(new ArrayList<>());
     when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any())).thenReturn(new Money());
@@ -632,20 +495,17 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determineComplete(OrderPayment)}.
    * <ul>
-   *   <li>Given {@link Money} {@link Money#add(Money)} return
-   * {@link Money#Money()}.</li>
+   *   <li>Given {@link Money} {@link Money#add(Money)} return {@link Money#Money()}.</li>
    *   <li>Then calls {@link Money#add(Money)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determineComplete(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determineComplete(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineComplete(OrderPayment)"})
   public void testDetermineComplete_givenMoneyAddReturnMoney_thenCallsAdd() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
     Money money = mock(Money.class);
     when(money.add(Mockito.<Money>any())).thenReturn(new Money());
     OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
@@ -665,20 +525,17 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determineComplete(OrderPayment)}.
    * <ul>
-   *   <li>Given {@link Money} {@link Money#greaterThan(Money)} return
-   * {@code true}.</li>
+   *   <li>Given {@link Money} {@link Money#greaterThan(Money)} return {@code true}.</li>
    *   <li>Then calls {@link Money#greaterThan(Money)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determineComplete(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determineComplete(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineComplete(OrderPayment)"})
   public void testDetermineComplete_givenMoneyGreaterThanReturnTrue_thenCallsGreaterThan() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
     Money money = mock(Money.class);
     when(money.greaterThan(Mockito.<Money>any())).thenReturn(true);
     Money money2 = mock(Money.class);
@@ -704,15 +561,13 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
    *   <li>Given {@link Money#Money(double)} with amount is ten.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determineComplete(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determineComplete(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineComplete(OrderPayment)"})
   public void testDetermineComplete_givenMoneyWithAmountIsTen() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
     OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
     when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(new ArrayList<>());
     when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
@@ -733,16 +588,13 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
    *   <li>Given {@link NullOrderImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determineComplete(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determineComplete(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineComplete(OrderPayment)"})
   public void testDetermineComplete_givenNullOrderImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
-
     OrderPaymentImpl payment = new OrderPaymentImpl();
     payment.setOrder(new NullOrderImpl());
 
@@ -756,15 +608,13 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
    *   <li>Then calls {@link PaymentTransactionImpl#getSuccess()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determineComplete(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determineComplete(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineComplete(OrderPayment)"})
   public void testDetermineComplete_thenCallsGetSuccess() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
     PaymentTransactionImpl paymentTransactionImpl = mock(PaymentTransactionImpl.class);
     when(paymentTransactionImpl.getSuccess()).thenReturn(false);
 
@@ -791,57 +641,18 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}.
-   * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testDeterminePartiallyComplete() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.payment.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2284 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl2 = new OrderPaymentStatusServiceImpl();
-
-    // Act
-    orderPaymentStatusServiceImpl2.determinePartiallyComplete(new OrderPaymentImpl());
-  }
-
-  /**
-   * Test
-   * {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}.
+   * Test {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link PaymentTransactionImpl}
-   * (default constructor).</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link PaymentTransactionImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determinePartiallyComplete(OrderPayment)"})
   public void testDeterminePartiallyComplete_givenArrayListAddPaymentTransactionImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
-
     ArrayList<PaymentTransaction> paymentTransactionList = new ArrayList<>();
     paymentTransactionList.add(new PaymentTransactionImpl());
     OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
@@ -858,21 +669,18 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}.
+   * Test {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}.
    * <ul>
    *   <li>Given {@link Money#Money()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determinePartiallyComplete(OrderPayment)"})
   public void testDeterminePartiallyComplete_givenMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
     OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
     when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(new ArrayList<>());
     when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any())).thenReturn(new Money());
@@ -887,23 +695,19 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}.
+   * Test {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}.
    * <ul>
-   *   <li>Given {@link Money} {@link Money#add(Money)} return
-   * {@link Money#Money()}.</li>
+   *   <li>Given {@link Money} {@link Money#add(Money)} return {@link Money#Money()}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determinePartiallyComplete(OrderPayment)"})
   public void testDeterminePartiallyComplete_givenMoneyAddReturnMoney_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
     Money money = mock(Money.class);
     when(money.greaterThan(Mockito.<Money>any())).thenReturn(true);
     when(money.add(Mockito.<Money>any())).thenReturn(new Money());
@@ -923,22 +727,19 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}.
+   * Test {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}.
    * <ul>
    *   <li>Given {@link Money} {@link Money#add(Money)} return {@link Money}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determinePartiallyComplete(OrderPayment)"})
   public void testDeterminePartiallyComplete_givenMoneyAddReturnMoney_thenReturnTrue2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
     Money money = mock(Money.class);
     when(money.greaterThan(Mockito.<Money>any())).thenReturn(true);
     Money money2 = mock(Money.class);
@@ -961,23 +762,19 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}.
+   * Test {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}.
    * <ul>
-   *   <li>Given {@link Money} {@link Money#greaterThan(Money)} return
-   * {@code false}.</li>
+   *   <li>Given {@link Money} {@link Money#greaterThan(Money)} return {@code false}.</li>
    *   <li>Then calls {@link Money#add(Money)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determinePartiallyComplete(OrderPayment)"})
   public void testDeterminePartiallyComplete_givenMoneyGreaterThanReturnFalse_thenCallsAdd() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
     Money money = mock(Money.class);
     when(money.greaterThan(Mockito.<Money>any())).thenReturn(false);
     when(money.add(Mockito.<Money>any())).thenReturn(new Money());
@@ -997,21 +794,18 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}.
+   * Test {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}.
    * <ul>
    *   <li>Given {@link Money#Money(double)} with amount is ten.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determinePartiallyComplete(OrderPayment)"})
   public void testDeterminePartiallyComplete_givenMoneyWithAmountIsTen() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
     OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
     when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(new ArrayList<>());
     when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
@@ -1027,22 +821,18 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}.
+   * Test {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}.
    * <ul>
    *   <li>Given {@link NullOrderImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determinePartiallyComplete(OrderPayment)"})
   public void testDeterminePartiallyComplete_givenNullOrderImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
-
     OrderPaymentImpl payment = new OrderPaymentImpl();
     payment.setOrder(new NullOrderImpl());
 
@@ -1051,21 +841,18 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}.
+   * Test {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}.
    * <ul>
    *   <li>Then calls {@link PaymentTransactionImpl#getSuccess()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determinePartiallyComplete(OrderPayment)"})
   public void testDeterminePartiallyComplete_thenCallsGetSuccess() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
     PaymentTransactionImpl paymentTransactionImpl = mock(PaymentTransactionImpl.class);
     when(paymentTransactionImpl.getSuccess()).thenReturn(false);
 
@@ -1094,21 +881,18 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}.
+   * Test {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}.
    * <ul>
    *   <li>Then calls {@link PaymentTransactionImpl#getSuccess()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determinePartiallyComplete(OrderPayment)"})
   public void testDeterminePartiallyComplete_thenCallsGetSuccess2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
     PaymentTransactionImpl paymentTransactionImpl = mock(PaymentTransactionImpl.class);
     when(paymentTransactionImpl.getSuccess()).thenReturn(false);
 
@@ -1137,57 +921,18 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}.
-   * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testDetermineFullyCaptured() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.payment.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2252 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl2 = new OrderPaymentStatusServiceImpl();
-
-    // Act
-    orderPaymentStatusServiceImpl2.determineFullyCaptured(new OrderPaymentImpl());
-  }
-
-  /**
-   * Test
-   * {@link OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}.
+   * Test {@link OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link PaymentTransactionImpl}
-   * (default constructor).</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link PaymentTransactionImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineFullyCaptured(OrderPayment)"})
   public void testDetermineFullyCaptured_givenArrayListAddPaymentTransactionImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
-
     ArrayList<PaymentTransaction> paymentTransactionList = new ArrayList<>();
     paymentTransactionList.add(new PaymentTransactionImpl());
     OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
@@ -1204,23 +949,19 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}.
+   * Test {@link OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}.
    * <ul>
-   *   <li>Given {@link Money} {@link Money#greaterThan(Money)} return
-   * {@code true}.</li>
+   *   <li>Given {@link Money} {@link Money#greaterThan(Money)} return {@code true}.</li>
    *   <li>Then calls {@link Money#greaterThan(Money)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineFullyCaptured(OrderPayment)"})
   public void testDetermineFullyCaptured_givenMoneyGreaterThanReturnTrue_thenCallsGreaterThan() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
     Money money = mock(Money.class);
     when(money.greaterThan(Mockito.<Money>any())).thenReturn(true);
     OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
@@ -1238,21 +979,18 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}.
+   * Test {@link OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}.
    * <ul>
    *   <li>Given {@link Money#Money(double)} with amount is ten.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineFullyCaptured(OrderPayment)"})
   public void testDetermineFullyCaptured_givenMoneyWithAmountIsTen() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
     OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
     when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(new ArrayList<>());
     when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
@@ -1268,22 +1006,19 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}.
+   * Test {@link OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}.
    * <ul>
    *   <li>Given {@link Money#Money()}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineFullyCaptured(OrderPayment)"})
   public void testDetermineFullyCaptured_givenMoney_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
     OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
     when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(new ArrayList<>());
     when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any())).thenReturn(new Money());
@@ -1298,22 +1033,18 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}.
+   * Test {@link OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}.
    * <ul>
    *   <li>Given {@link NullOrderImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineFullyCaptured(OrderPayment)"})
   public void testDetermineFullyCaptured_givenNullOrderImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
-
     OrderPaymentImpl payment = new OrderPaymentImpl();
     payment.setOrder(new NullOrderImpl());
 
@@ -1322,21 +1053,18 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}.
+   * Test {@link OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}.
    * <ul>
    *   <li>Then calls {@link PaymentTransactionImpl#getSuccess()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineFullyCaptured(OrderPayment)"})
   public void testDetermineFullyCaptured_thenCallsGetSuccess() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
     PaymentTransactionImpl paymentTransactionImpl = mock(PaymentTransactionImpl.class);
     when(paymentTransactionImpl.getSuccess()).thenReturn(false);
 
@@ -1361,54 +1089,17 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
 
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determineAuthorized(OrderPayment)}.
-   * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determineAuthorized(OrderPayment)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testDetermineAuthorized() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.payment.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2220 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl2 = new OrderPaymentStatusServiceImpl();
-
-    // Act
-    orderPaymentStatusServiceImpl2.determineAuthorized(new OrderPaymentImpl());
-  }
-
-  /**
-   * Test {@link OrderPaymentStatusServiceImpl#determineAuthorized(OrderPayment)}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link PaymentTransactionImpl}
-   * (default constructor).</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link PaymentTransactionImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determineAuthorized(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determineAuthorized(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineAuthorized(OrderPayment)"})
   public void testDetermineAuthorized_givenArrayListAddPaymentTransactionImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
-
     ArrayList<PaymentTransaction> paymentTransactionList = new ArrayList<>();
     paymentTransactionList.add(new PaymentTransactionImpl());
     OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
@@ -1430,15 +1121,13 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
    *   <li>Given {@link Money#Money()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determineAuthorized(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determineAuthorized(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineAuthorized(OrderPayment)"})
   public void testDetermineAuthorized_givenMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
     OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
     when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(new ArrayList<>());
     when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any())).thenReturn(new Money());
@@ -1455,20 +1144,17 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determineAuthorized(OrderPayment)}.
    * <ul>
-   *   <li>Given {@link Money} {@link Money#greaterThan(Money)} return
-   * {@code true}.</li>
+   *   <li>Given {@link Money} {@link Money#greaterThan(Money)} return {@code true}.</li>
    *   <li>Then calls {@link Money#greaterThan(Money)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determineAuthorized(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determineAuthorized(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineAuthorized(OrderPayment)"})
   public void testDetermineAuthorized_givenMoneyGreaterThanReturnTrue_thenCallsGreaterThan() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
     Money money = mock(Money.class);
     when(money.greaterThan(Mockito.<Money>any())).thenReturn(true);
     OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
@@ -1491,15 +1177,13 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
    *   <li>Given {@link Money#Money(double)} with amount is ten.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determineAuthorized(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determineAuthorized(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineAuthorized(OrderPayment)"})
   public void testDetermineAuthorized_givenMoneyWithAmountIsTen() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
     OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
     when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(new ArrayList<>());
     when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
@@ -1520,16 +1204,13 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
    *   <li>Given {@link NullOrderImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determineAuthorized(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determineAuthorized(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineAuthorized(OrderPayment)"})
   public void testDetermineAuthorized_givenNullOrderImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
-
     OrderPaymentImpl payment = new OrderPaymentImpl();
     payment.setOrder(new NullOrderImpl());
 
@@ -1543,15 +1224,13 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
    *   <li>Then calls {@link PaymentTransactionImpl#getSuccess()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determineAuthorized(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determineAuthorized(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineAuthorized(OrderPayment)"})
   public void testDetermineAuthorized_thenCallsGetSuccess() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
     PaymentTransactionImpl paymentTransactionImpl = mock(PaymentTransactionImpl.class);
     when(paymentTransactionImpl.getSuccess()).thenReturn(false);
 
@@ -1576,54 +1255,17 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
 
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determinePending(OrderPayment)}.
-   * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determinePending(OrderPayment)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testDeterminePending() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.payment.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2300 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl2 = new OrderPaymentStatusServiceImpl();
-
-    // Act
-    orderPaymentStatusServiceImpl2.determinePending(new OrderPaymentImpl());
-  }
-
-  /**
-   * Test {@link OrderPaymentStatusServiceImpl#determinePending(OrderPayment)}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link PaymentTransactionImpl}
-   * (default constructor).</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link PaymentTransactionImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determinePending(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determinePending(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determinePending(OrderPayment)"})
   public void testDeterminePending_givenArrayListAddPaymentTransactionImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
-
     ArrayList<PaymentTransaction> paymentTransactionList = new ArrayList<>();
     paymentTransactionList.add(new PaymentTransactionImpl());
     OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
@@ -1645,15 +1287,13 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
    *   <li>Given {@link Money#Money()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determinePending(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determinePending(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determinePending(OrderPayment)"})
   public void testDeterminePending_givenMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
     OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
     when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(new ArrayList<>());
     when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any())).thenReturn(new Money());
@@ -1670,20 +1310,17 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determinePending(OrderPayment)}.
    * <ul>
-   *   <li>Given {@link Money} {@link Money#greaterThan(Money)} return
-   * {@code true}.</li>
+   *   <li>Given {@link Money} {@link Money#greaterThan(Money)} return {@code true}.</li>
    *   <li>Then calls {@link Money#greaterThan(Money)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determinePending(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determinePending(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determinePending(OrderPayment)"})
   public void testDeterminePending_givenMoneyGreaterThanReturnTrue_thenCallsGreaterThan() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
     Money money = mock(Money.class);
     when(money.greaterThan(Mockito.<Money>any())).thenReturn(true);
     OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
@@ -1706,15 +1343,13 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
    *   <li>Given {@link Money#Money(double)} with amount is ten.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determinePending(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determinePending(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determinePending(OrderPayment)"})
   public void testDeterminePending_givenMoneyWithAmountIsTen() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
     OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
     when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(new ArrayList<>());
     when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
@@ -1733,20 +1368,16 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
    * Test {@link OrderPaymentStatusServiceImpl#determinePending(OrderPayment)}.
    * <ul>
    *   <li>Given {@link NullOrderImpl} (default constructor).</li>
-   *   <li>When {@link OrderPaymentImpl} (default constructor) Order is
-   * {@link NullOrderImpl} (default constructor).</li>
+   *   <li>When {@link OrderPaymentImpl} (default constructor) Order is {@link NullOrderImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determinePending(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determinePending(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determinePending(OrderPayment)"})
   public void testDeterminePending_givenNullOrderImpl_whenOrderPaymentImplOrderIsNullOrderImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
-
     OrderPaymentImpl payment = new OrderPaymentImpl();
     payment.setOrder(new NullOrderImpl());
 
@@ -1760,15 +1391,13 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
    *   <li>Then calls {@link PaymentTransactionImpl#getSuccess()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determinePending(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determinePending(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determinePending(OrderPayment)"})
   public void testDeterminePending_thenCallsGetSuccess() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
     PaymentTransactionImpl paymentTransactionImpl = mock(PaymentTransactionImpl.class);
     when(paymentTransactionImpl.getSuccess()).thenReturn(false);
 
@@ -1792,251 +1421,127 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}.
+   * Test {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}.
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineUnconfirmed(OrderPayment)"})
   public void testDetermineUnconfirmed() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
-    PaymentTransactionImpl paymentTransactionImpl = mock(PaymentTransactionImpl.class);
-    when(paymentTransactionImpl.getType()).thenReturn(new PaymentTransactionType("Type", "Friendly Type"));
-    when(paymentTransactionImpl.getSuccess()).thenReturn(true);
+    PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
+    when(transaction.getType()).thenReturn(new PaymentTransactionType("Type", "Friendly Type"));
+    when(transaction.getSuccess()).thenReturn(true);
 
-    ArrayList<PaymentTransaction> paymentTransactionList = new ArrayList<>();
-    paymentTransactionList.add(paymentTransactionImpl);
-    OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
-    when(payment.getTransactions()).thenReturn(paymentTransactionList);
+    OrderPaymentImpl payment = new OrderPaymentImpl();
+    payment.addTransaction(transaction);
 
     // Act
     boolean actualDetermineUnconfirmedResult = orderPaymentStatusServiceImpl.determineUnconfirmed(payment);
 
     // Assert
-    verify(payment, atLeast(1)).getTransactions();
-    verify(paymentTransactionImpl).getSuccess();
-    verify(paymentTransactionImpl).getType();
+    verify(transaction).getSuccess();
+    verify(transaction).getType();
     assertFalse(actualDetermineUnconfirmedResult);
   }
 
   /**
-   * Test
-   * {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}.
+   * Test {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}.
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineUnconfirmed(OrderPayment)"})
   public void testDetermineUnconfirmed2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
-    PaymentTransactionImpl paymentTransactionImpl = mock(PaymentTransactionImpl.class);
-    when(paymentTransactionImpl.getType()).thenReturn(mock(PaymentTransactionType.class));
-    when(paymentTransactionImpl.getSuccess()).thenReturn(true);
+    PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
+    when(transaction.getType()).thenReturn(mock(PaymentTransactionType.class));
+    when(transaction.getSuccess()).thenReturn(true);
 
-    ArrayList<PaymentTransaction> paymentTransactionList = new ArrayList<>();
-    paymentTransactionList.add(paymentTransactionImpl);
-    OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
-    when(payment.getTransactions()).thenReturn(paymentTransactionList);
+    OrderPaymentImpl payment = new OrderPaymentImpl();
+    payment.addTransaction(transaction);
 
     // Act
     boolean actualDetermineUnconfirmedResult = orderPaymentStatusServiceImpl.determineUnconfirmed(payment);
 
     // Assert
-    verify(payment, atLeast(1)).getTransactions();
-    verify(paymentTransactionImpl).getSuccess();
-    verify(paymentTransactionImpl).getType();
+    verify(transaction).getSuccess();
+    verify(transaction).getType();
     assertFalse(actualDetermineUnconfirmedResult);
   }
 
   /**
-   * Test
-   * {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}.
-   * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testDetermineUnconfirmed3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.payment.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2316 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl2 = new OrderPaymentStatusServiceImpl();
-
-    // Act
-    orderPaymentStatusServiceImpl2.determineUnconfirmed(new OrderPaymentImpl());
-  }
-
-  /**
-   * Test
-   * {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}.
+   * Test {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link PaymentTransactionImpl}
-   * (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link PaymentTransactionImpl} {@link PaymentTransactionImpl#getSuccess()} return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}
    */
   @Test
-  public void testDetermineUnconfirmed_givenArrayListAddPaymentTransactionImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
-
-    ArrayList<PaymentTransaction> paymentTransactionList = new ArrayList<>();
-    paymentTransactionList.add(new PaymentTransactionImpl());
-    OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
-    when(payment.getTransactions()).thenReturn(paymentTransactionList);
-
-    // Act
-    boolean actualDetermineUnconfirmedResult = orderPaymentStatusServiceImpl.determineUnconfirmed(payment);
-
-    // Assert
-    verify(payment, atLeast(1)).getTransactions();
-    assertFalse(actualDetermineUnconfirmedResult);
-  }
-
-  /**
-   * Test
-   * {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}.
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}
-   */
-  @Test
-  public void testDetermineUnconfirmed_givenArrayList_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
-    OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
-    when(payment.getTransactions()).thenReturn(new ArrayList<>());
-
-    // Act
-    boolean actualDetermineUnconfirmedResult = orderPaymentStatusServiceImpl.determineUnconfirmed(payment);
-
-    // Assert
-    verify(payment).getTransactions();
-    assertFalse(actualDetermineUnconfirmedResult);
-  }
-
-  /**
-   * Test
-   * {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}.
-   * <ul>
-   *   <li>Given {@link PaymentTransactionImpl}
-   * {@link PaymentTransactionImpl#getSuccess()} return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineUnconfirmed(OrderPayment)"})
   public void testDetermineUnconfirmed_givenPaymentTransactionImplGetSuccessReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
-    PaymentTransactionImpl paymentTransactionImpl = mock(PaymentTransactionImpl.class);
-    when(paymentTransactionImpl.getSuccess()).thenReturn(false);
+    PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
+    when(transaction.getSuccess()).thenReturn(false);
 
-    ArrayList<PaymentTransaction> paymentTransactionList = new ArrayList<>();
-    paymentTransactionList.add(paymentTransactionImpl);
-    OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
-    when(payment.getTransactions()).thenReturn(paymentTransactionList);
+    OrderPaymentImpl payment = new OrderPaymentImpl();
+    payment.addTransaction(transaction);
 
     // Act
     boolean actualDetermineUnconfirmedResult = orderPaymentStatusServiceImpl.determineUnconfirmed(payment);
 
     // Assert
-    verify(payment, atLeast(1)).getTransactions();
-    verify(paymentTransactionImpl).getSuccess();
+    verify(transaction).getSuccess();
     assertFalse(actualDetermineUnconfirmedResult);
   }
 
   /**
-   * Test
-   * {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}.
+   * Test {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}.
    * <ul>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineUnconfirmed(OrderPayment)"})
   public void testDetermineUnconfirmed_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
-    PaymentTransactionImpl paymentTransactionImpl = mock(PaymentTransactionImpl.class);
-    when(paymentTransactionImpl.getType()).thenReturn(new PaymentTransactionType("UNCONFIRMED", "Friendly Type"));
-    when(paymentTransactionImpl.getSuccess()).thenReturn(true);
+    PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
+    when(transaction.getType()).thenReturn(new PaymentTransactionType("UNCONFIRMED", "Friendly Type"));
+    when(transaction.getSuccess()).thenReturn(true);
 
-    ArrayList<PaymentTransaction> paymentTransactionList = new ArrayList<>();
-    paymentTransactionList.add(paymentTransactionImpl);
-    OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
-    when(payment.getTransactions()).thenReturn(paymentTransactionList);
+    OrderPaymentImpl payment = new OrderPaymentImpl();
+    payment.addTransaction(transaction);
 
     // Act
     boolean actualDetermineUnconfirmedResult = orderPaymentStatusServiceImpl.determineUnconfirmed(payment);
 
     // Assert
-    verify(payment, atLeast(1)).getTransactions();
-    verify(paymentTransactionImpl).getSuccess();
-    verify(paymentTransactionImpl).getType();
+    verify(transaction).getSuccess();
+    verify(transaction).getType();
     assertTrue(actualDetermineUnconfirmedResult);
   }
 
   /**
-   * Test
-   * {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}.
+   * Test {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}.
    * <ul>
    *   <li>When {@link OrderPaymentImpl} (default constructor).</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}
+   * Method under test: {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineUnconfirmed(OrderPayment)"})
   public void testDetermineUnconfirmed_whenOrderPaymentImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertFalse(orderPaymentStatusServiceImpl.determineUnconfirmed(new OrderPaymentImpl()));
   }
 }

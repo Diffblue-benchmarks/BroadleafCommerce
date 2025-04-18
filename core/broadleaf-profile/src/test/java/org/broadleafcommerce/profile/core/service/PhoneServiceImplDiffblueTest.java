@@ -1,28 +1,47 @@
+/*-
+ * #%L
+ * BroadleafCommerce Profile
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.profile.core.service;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import static org.mockito.ArgumentMatchers.isNull;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import org.broadleafcommerce.profile.core.dao.PhoneDao;
 import org.broadleafcommerce.profile.core.domain.Phone;
 import org.broadleafcommerce.profile.core.domain.PhoneImpl;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml",
-    "/bl-profile-applicationContext-persistence.xml", "/bl-profile-applicationContext.xml",
-    "/blc-config/admin/framework/bl-profile-applicationContext.xml",
-    "/blc-config/site/framework/bl-profile-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class PhoneServiceImplDiffblueTest {
-  @Autowired
+  @Mock
+  private PhoneDao phoneDao;
+
+  @InjectMocks
   private PhoneServiceImpl phoneServiceImpl;
 
   /**
@@ -31,30 +50,19 @@ public class PhoneServiceImplDiffblueTest {
    * Method under test: {@link PhoneServiceImpl#savePhone(Phone)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Phone PhoneServiceImpl.savePhone(Phone)"})
   public void testSavePhone() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4163 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.service.PhoneServiceImpl phoneServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    PhoneServiceImpl phoneServiceImpl2 = new PhoneServiceImpl();
+    PhoneImpl phoneImpl = new PhoneImpl();
+    when(phoneDao.save(Mockito.<Phone>any())).thenReturn(phoneImpl);
 
     // Act
-    phoneServiceImpl2.savePhone(new PhoneImpl());
+    Phone actualSavePhoneResult = phoneServiceImpl.savePhone(new PhoneImpl());
+
+    // Assert
+    verify(phoneDao).save(isA(Phone.class));
+    assertSame(phoneImpl, actualSavePhoneResult);
   }
 
   /**
@@ -63,27 +71,19 @@ public class PhoneServiceImplDiffblueTest {
    * Method under test: {@link PhoneServiceImpl#readPhoneById(Long)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Phone PhoneServiceImpl.readPhoneById(Long)"})
   public void testReadPhoneById() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4148 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.service.PhoneServiceImpl phoneServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    PhoneImpl phoneImpl = new PhoneImpl();
+    when(phoneDao.readPhoneById(Mockito.<Long>any())).thenReturn(phoneImpl);
 
-    // Arrange and Act
-    (new PhoneServiceImpl()).readPhoneById(1L);
+    // Act
+    Phone actualReadPhoneByIdResult = phoneServiceImpl.readPhoneById(1L);
+
+    // Assert
+    verify(phoneDao).readPhoneById(eq(1L));
+    assertSame(phoneImpl, actualReadPhoneByIdResult);
   }
 
   /**
@@ -92,118 +92,67 @@ public class PhoneServiceImplDiffblueTest {
    * Method under test: {@link PhoneServiceImpl#create()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Phone PhoneServiceImpl.create()"})
   public void testCreate() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4147 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.service.PhoneServiceImpl phoneServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new PhoneServiceImpl()).create();
-  }
-
-  /**
-   * Test {@link PhoneServiceImpl#copyPhone(Phone, Phone)} with {@code dest},
-   * {@code orig}.
-   * <p>
-   * Method under test: {@link PhoneServiceImpl#copyPhone(Phone, Phone)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCopyPhoneWithDestOrig() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4126 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.service.PhoneServiceImpl phoneServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    PhoneServiceImpl phoneServiceImpl2 = new PhoneServiceImpl();
-    PhoneImpl dest = new PhoneImpl();
+    PhoneImpl phoneImpl = new PhoneImpl();
+    when(phoneDao.create()).thenReturn(phoneImpl);
 
     // Act
-    phoneServiceImpl2.copyPhone(dest, new PhoneImpl());
+    Phone actualCreateResult = phoneServiceImpl.create();
+
+    // Assert
+    verify(phoneDao).create();
+    assertSame(phoneImpl, actualCreateResult);
   }
 
   /**
-   * Test {@link PhoneServiceImpl#copyPhone(Phone, Phone)} with {@code dest},
-   * {@code orig}.
+   * Test {@link PhoneServiceImpl#copyPhone(Phone, Phone)} with {@code dest}, {@code orig}.
    * <ul>
-   *   <li>Then return {@link PhoneImpl}.</li>
+   *   <li>Given {@link PhoneDao} {@link PhoneDao#create()} return {@link PhoneImpl} (default constructor).</li>
+   *   <li>Then calls {@link PhoneDao#create()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link PhoneServiceImpl#copyPhone(Phone, Phone)}
    */
   @Test
-  public void testCopyPhoneWithDestOrig_thenReturnPhoneImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Phone PhoneServiceImpl.copyPhone(Phone, Phone)"})
+  public void testCopyPhoneWithDestOrig_givenPhoneDaoCreateReturnPhoneImpl_thenCallsCreate() {
     // Arrange
-    PhoneServiceImpl phoneServiceImpl = new PhoneServiceImpl();
-    PhoneImpl dest = mock(PhoneImpl.class);
-    doNothing().when(dest).setCountryCode(Mockito.<String>any());
-    doNothing().when(dest).setExtension(Mockito.<String>any());
-    doNothing().when(dest).setPhoneNumber(Mockito.<String>any());
+    when(phoneDao.create()).thenReturn(new PhoneImpl());
 
     // Act
-    Phone actualCopyPhoneResult = phoneServiceImpl.copyPhone(dest, new PhoneImpl());
+    Phone actualCopyPhoneResult = phoneServiceImpl.copyPhone(null, null);
 
     // Assert
-    verify(dest).setCountryCode(isNull());
-    verify(dest).setExtension(isNull());
-    verify(dest).setPhoneNumber(isNull());
-    assertSame(dest, actualCopyPhoneResult);
+    verify(phoneDao).create();
+    assertNull(actualCopyPhoneResult);
   }
 
   /**
-   * Test {@link PhoneServiceImpl#copyPhone(Phone, Phone)} with {@code dest},
-   * {@code orig}.
+   * Test {@link PhoneServiceImpl#copyPhone(Phone, Phone)} with {@code dest}, {@code orig}.
    * <ul>
-   *   <li>When {@code null}.</li>
+   *   <li>Given {@link PhoneDao}.</li>
+   *   <li>When {@link PhoneImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link PhoneServiceImpl#copyPhone(Phone, Phone)}
    */
   @Test
-  public void testCopyPhoneWithDestOrig_whenNull_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PhoneServiceImpl phoneServiceImpl = new PhoneServiceImpl();
-
-    // Act and Assert
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Phone PhoneServiceImpl.copyPhone(Phone, Phone)"})
+  public void testCopyPhoneWithDestOrig_givenPhoneDao_whenPhoneImpl_thenReturnNull() {
+    // Arrange, Act and Assert
     assertNull(phoneServiceImpl.copyPhone(new PhoneImpl(), null));
   }
 
   /**
-   * Test {@link PhoneServiceImpl#copyPhone(Phone, Phone)} with {@code dest},
-   * {@code orig}.
+   * Test {@link PhoneServiceImpl#copyPhone(Phone, Phone)} with {@code dest}, {@code orig}.
    * <ul>
+   *   <li>Given {@link PhoneDao}.</li>
    *   <li>When {@link PhoneImpl} (default constructor).</li>
    *   <li>Then return {@link PhoneImpl} (default constructor).</li>
    * </ul>
@@ -211,11 +160,10 @@ public class PhoneServiceImplDiffblueTest {
    * Method under test: {@link PhoneServiceImpl#copyPhone(Phone, Phone)}
    */
   @Test
-  public void testCopyPhoneWithDestOrig_whenPhoneImpl_thenReturnPhoneImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Phone PhoneServiceImpl.copyPhone(Phone, Phone)"})
+  public void testCopyPhoneWithDestOrig_givenPhoneDao_whenPhoneImpl_thenReturnPhoneImpl() {
     // Arrange
-    PhoneServiceImpl phoneServiceImpl = new PhoneServiceImpl();
     PhoneImpl dest = new PhoneImpl();
 
     // Act and Assert
@@ -224,33 +172,51 @@ public class PhoneServiceImplDiffblueTest {
 
   /**
    * Test {@link PhoneServiceImpl#copyPhone(Phone)} with {@code orig}.
+   * <ul>
+   *   <li>Given {@link PhoneDao} {@link PhoneDao#create()} return {@link PhoneImpl} (default constructor).</li>
+   *   <li>Then return {@link PhoneImpl} (default constructor).</li>
+   * </ul>
    * <p>
    * Method under test: {@link PhoneServiceImpl#copyPhone(Phone)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testCopyPhoneWithOrig() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4115 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.service.PhoneServiceImpl phoneServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Phone PhoneServiceImpl.copyPhone(Phone)"})
+  public void testCopyPhoneWithOrig_givenPhoneDaoCreateReturnPhoneImpl_thenReturnPhoneImpl() {
     // Arrange
-    PhoneServiceImpl phoneServiceImpl2 = new PhoneServiceImpl();
+    PhoneImpl phoneImpl = new PhoneImpl();
+    when(phoneDao.create()).thenReturn(phoneImpl);
 
     // Act
-    phoneServiceImpl2.copyPhone(new PhoneImpl());
+    Phone actualCopyPhoneResult = phoneServiceImpl.copyPhone(new PhoneImpl());
+
+    // Assert
+    verify(phoneDao).create();
+    assertSame(phoneImpl, actualCopyPhoneResult);
+  }
+
+  /**
+   * Test {@link PhoneServiceImpl#copyPhone(Phone)} with {@code orig}.
+   * <ul>
+   *   <li>Given {@link PhoneDao} {@link PhoneDao#create()} return {@link PhoneImpl} (default constructor).</li>
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PhoneServiceImpl#copyPhone(Phone)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Phone PhoneServiceImpl.copyPhone(Phone)"})
+  public void testCopyPhoneWithOrig_givenPhoneDaoCreateReturnPhoneImpl_whenNull_thenReturnNull() {
+    // Arrange
+    when(phoneDao.create()).thenReturn(new PhoneImpl());
+
+    // Act
+    Phone actualCopyPhoneResult = phoneServiceImpl.copyPhone(null);
+
+    // Assert
+    verify(phoneDao).create();
+    assertNull(actualCopyPhoneResult);
   }
 }

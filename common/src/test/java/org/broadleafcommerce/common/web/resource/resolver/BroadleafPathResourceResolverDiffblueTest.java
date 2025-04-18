@@ -18,7 +18,10 @@
 package org.broadleafcommerce.common.web.resource.resolver;
 
 import static org.junit.Assert.assertEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class BroadleafPathResourceResolverDiffblueTest {
   /**
@@ -31,6 +34,9 @@ public class BroadleafPathResourceResolverDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int BroadleafPathResourceResolver.getOrder()",
+      "void BroadleafPathResourceResolver.setOrder(int)"})
   public void testGettersAndSetters() {
     // Arrange
     BroadleafPathResourceResolver broadleafPathResourceResolver = new BroadleafPathResourceResolver();
@@ -38,7 +44,7 @@ public class BroadleafPathResourceResolverDiffblueTest {
     // Act
     broadleafPathResourceResolver.setOrder(1);
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals(1, broadleafPathResourceResolver.getOrder());
   }
 }

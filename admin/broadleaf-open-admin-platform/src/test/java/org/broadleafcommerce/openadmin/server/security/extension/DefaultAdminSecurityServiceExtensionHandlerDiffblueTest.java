@@ -17,93 +17,50 @@
  */
 package org.broadleafcommerce.openadmin.server.security.extension;
 
+import static org.junit.Assert.assertEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.extension.ExtensionResultHolder;
+import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminUser;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminUserImpl;
 import org.broadleafcommerce.openadmin.server.security.service.type.PermissionType;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
-    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
-    "/bl-open-admin-contentCreator-applicationContext.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+@ContextConfiguration(classes = {DefaultAdminSecurityServiceExtensionHandler.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class DefaultAdminSecurityServiceExtensionHandlerDiffblueTest {
+  @MockBean(name = "blAdminSecurityServiceExtensionManager")
+  private AdminSecurityServiceExtensionManager adminSecurityServiceExtensionManager;
+
   @Autowired
   private DefaultAdminSecurityServiceExtensionHandler defaultAdminSecurityServiceExtensionHandler;
 
   /**
-   * Test {@link DefaultAdminSecurityServiceExtensionHandler#init()}.
+   * Test {@link DefaultAdminSecurityServiceExtensionHandler#hasPrivilegesForOperation(AdminUser, PermissionType, ExtensionResultHolder)}.
    * <p>
-   * Method under test: {@link DefaultAdminSecurityServiceExtensionHandler#init()}
+   * Method under test: {@link DefaultAdminSecurityServiceExtensionHandler#hasPrivilegesForOperation(AdminUser, PermissionType, ExtensionResultHolder)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testInit() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.extension;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass174 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.extension.DefaultAdminSecurityServiceExtensionHandler defaultAdminSecurityServiceExtensionHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new DefaultAdminSecurityServiceExtensionHandler()).init();
-  }
-
-  /**
-   * Test
-   * {@link DefaultAdminSecurityServiceExtensionHandler#hasPrivilegesForOperation(AdminUser, PermissionType, ExtensionResultHolder)}.
-   * <p>
-   * Method under test:
-   * {@link DefaultAdminSecurityServiceExtensionHandler#hasPrivilegesForOperation(AdminUser, PermissionType, ExtensionResultHolder)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "ExtensionResultStatusType DefaultAdminSecurityServiceExtensionHandler.hasPrivilegesForOperation(AdminUser, PermissionType, ExtensionResultHolder)"})
   public void testHasPrivilegesForOperation() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.extension;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass104 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.extension.DefaultAdminSecurityServiceExtensionHandler defaultAdminSecurityServiceExtensionHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    DefaultAdminSecurityServiceExtensionHandler defaultAdminSecurityServiceExtensionHandler2 = new DefaultAdminSecurityServiceExtensionHandler();
     AdminUserImpl adminUser = new AdminUserImpl();
 
     ExtensionResultHolder<Boolean> erh = new ExtensionResultHolder<>();
     erh.setResult(true);
     erh.setThrowable(new Throwable());
 
-    // Act
-    defaultAdminSecurityServiceExtensionHandler2.hasPrivilegesForOperation(adminUser, PermissionType.ALL, erh);
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        defaultAdminSecurityServiceExtensionHandler.hasPrivilegesForOperation(adminUser, PermissionType.ALL, erh));
   }
 }

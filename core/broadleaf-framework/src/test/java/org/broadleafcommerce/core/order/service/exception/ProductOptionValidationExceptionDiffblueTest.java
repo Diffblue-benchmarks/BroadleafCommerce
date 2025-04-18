@@ -1,9 +1,29 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.order.service.exception;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -20,8 +40,7 @@ public class ProductOptionValidationExceptionDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>
-   * {@link ProductOptionValidationException#ProductOptionValidationException()}
+   *   <li>{@link ProductOptionValidationException#ProductOptionValidationException()}
    *   <li>{@link ProductOptionValidationException#setAttributeName(String)}
    *   <li>{@link ProductOptionValidationException#setAttributeValue(String)}
    *   <li>{@link ProductOptionValidationException#setErrorCode(String)}
@@ -35,6 +54,18 @@ public class ProductOptionValidationExceptionDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProductOptionValidationException.<init>()",
+      "String ProductOptionValidationException.getAttributeName()",
+      "String ProductOptionValidationException.getAttributeValue()",
+      "String ProductOptionValidationException.getErrorCode()",
+      "String ProductOptionValidationException.getErrorMessage()",
+      "String ProductOptionValidationException.getValidationString()",
+      "void ProductOptionValidationException.setAttributeName(String)",
+      "void ProductOptionValidationException.setAttributeValue(String)",
+      "void ProductOptionValidationException.setErrorCode(String)",
+      "void ProductOptionValidationException.setErrorMessage(String)",
+      "void ProductOptionValidationException.setValidationString(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     ProductOptionValidationException actualProductOptionValidationException = new ProductOptionValidationException();
@@ -48,23 +79,25 @@ public class ProductOptionValidationExceptionDiffblueTest {
     String actualErrorCode = actualProductOptionValidationException.getErrorCode();
     String actualErrorMessage = actualProductOptionValidationException.getErrorMessage();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("42", actualAttributeValue);
     assertEquals("An error occurred", actualErrorCode);
     assertEquals("An error occurred", actualErrorMessage);
     assertEquals("Attribute Name", actualAttributeName);
     assertEquals("Validation String", actualProductOptionValidationException.getValidationString());
+    assertNull(actualProductOptionValidationException.getMessage());
+    assertNull(actualProductOptionValidationException.getCause());
     assertEquals(0, actualProductOptionValidationException.getSuppressed().length);
   }
 
   /**
-   * Test
-   * {@link ProductOptionValidationException#ProductOptionValidationException(String, String, String, String, String, String)}.
+   * Test {@link ProductOptionValidationException#ProductOptionValidationException(String, String, String, String, String, String)}.
    * <p>
-   * Method under test:
-   * {@link ProductOptionValidationException#ProductOptionValidationException(String, String, String, String, String, String)}
+   * Method under test: {@link ProductOptionValidationException#ProductOptionValidationException(String, String, String, String, String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProductOptionValidationException.<init>(String, String, String, String, String, String)"})
   public void testNewProductOptionValidationException() {
     // Arrange and Act
     ProductOptionValidationException actualProductOptionValidationException = new ProductOptionValidationException(
@@ -83,13 +116,14 @@ public class ProductOptionValidationExceptionDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ProductOptionValidationException#ProductOptionValidationException(String, String, String, String, String, String, Throwable)}.
+   * Test {@link ProductOptionValidationException#ProductOptionValidationException(String, String, String, String, String, String, Throwable)}.
    * <p>
-   * Method under test:
-   * {@link ProductOptionValidationException#ProductOptionValidationException(String, String, String, String, String, String, Throwable)}
+   * Method under test: {@link ProductOptionValidationException#ProductOptionValidationException(String, String, String, String, String, String, Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void ProductOptionValidationException.<init>(String, String, String, String, String, String, Throwable)"})
   public void testNewProductOptionValidationException2() {
     // Arrange
     Throwable cause = new Throwable();

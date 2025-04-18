@@ -1,11 +1,29 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.catalog.service.type;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.mock;
-import org.broadleafcommerce.core.spec.order.service.workflow.add.ValidateAddRequestActivitySkuSpec;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -20,10 +38,11 @@ public class ProductOptionValidationStrategyTypeDiffblueTest {
   /**
    * Test {@link ProductOptionValidationStrategyType#getInstance(String)}.
    * <p>
-   * Method under test:
-   * {@link ProductOptionValidationStrategyType#getInstance(String)}
+   * Method under test: {@link ProductOptionValidationStrategyType#getInstance(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ProductOptionValidationStrategyType ProductOptionValidationStrategyType.getInstance(String)"})
   public void testGetInstance() {
     // Arrange and Act
     ProductOptionValidationStrategyType actualInstance = ProductOptionValidationStrategyType.getInstance("Type");
@@ -39,14 +58,17 @@ public class ProductOptionValidationStrategyTypeDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>
-   * {@link ProductOptionValidationStrategyType#ProductOptionValidationStrategyType()}
+   *   <li>{@link ProductOptionValidationStrategyType#ProductOptionValidationStrategyType()}
    *   <li>{@link ProductOptionValidationStrategyType#getFriendlyType()}
    *   <li>{@link ProductOptionValidationStrategyType#getRank()}
    *   <li>{@link ProductOptionValidationStrategyType#getType()}
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProductOptionValidationStrategyType.<init>()",
+      "String ProductOptionValidationStrategyType.getFriendlyType()",
+      "Integer ProductOptionValidationStrategyType.getRank()", "String ProductOptionValidationStrategyType.getType()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     ProductOptionValidationStrategyType actualProductOptionValidationStrategyType = new ProductOptionValidationStrategyType();
@@ -60,13 +82,13 @@ public class ProductOptionValidationStrategyTypeDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ProductOptionValidationStrategyType#ProductOptionValidationStrategyType(String, Integer, String)}.
+   * Test {@link ProductOptionValidationStrategyType#ProductOptionValidationStrategyType(String, Integer, String)}.
    * <p>
-   * Method under test:
-   * {@link ProductOptionValidationStrategyType#ProductOptionValidationStrategyType(String, Integer, String)}
+   * Method under test: {@link ProductOptionValidationStrategyType#ProductOptionValidationStrategyType(String, Integer, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProductOptionValidationStrategyType.<init>(String, Integer, String)"})
   public void testNewProductOptionValidationStrategyType() {
     // Arrange and Act
     ProductOptionValidationStrategyType actualProductOptionValidationStrategyType = new ProductOptionValidationStrategyType(
@@ -79,8 +101,7 @@ public class ProductOptionValidationStrategyTypeDiffblueTest {
   }
 
   /**
-   * Test {@link ProductOptionValidationStrategyType#equals(Object)}, and
-   * {@link ProductOptionValidationStrategyType#hashCode()}.
+   * Test {@link ProductOptionValidationStrategyType#equals(Object)}, and {@link ProductOptionValidationStrategyType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -93,6 +114,9 @@ public class ProductOptionValidationStrategyTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ProductOptionValidationStrategyType.equals(Object)",
+      "int ProductOptionValidationStrategyType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     ProductOptionValidationStrategyType productOptionValidationStrategyType = ProductOptionValidationStrategyType.ADD_ITEM;
@@ -105,8 +129,7 @@ public class ProductOptionValidationStrategyTypeDiffblueTest {
   }
 
   /**
-   * Test {@link ProductOptionValidationStrategyType#equals(Object)}, and
-   * {@link ProductOptionValidationStrategyType#hashCode()}.
+   * Test {@link ProductOptionValidationStrategyType#equals(Object)}, and {@link ProductOptionValidationStrategyType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -119,6 +142,9 @@ public class ProductOptionValidationStrategyTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ProductOptionValidationStrategyType.equals(Object)",
+      "int ProductOptionValidationStrategyType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     ProductOptionValidationStrategyType productOptionValidationStrategyType = ProductOptionValidationStrategyType.NONE;
@@ -132,8 +158,7 @@ public class ProductOptionValidationStrategyTypeDiffblueTest {
   }
 
   /**
-   * Test {@link ProductOptionValidationStrategyType#equals(Object)}, and
-   * {@link ProductOptionValidationStrategyType#hashCode()}.
+   * Test {@link ProductOptionValidationStrategyType#equals(Object)}, and {@link ProductOptionValidationStrategyType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -146,6 +171,9 @@ public class ProductOptionValidationStrategyTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ProductOptionValidationStrategyType.equals(Object)",
+      "int ProductOptionValidationStrategyType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     ProductOptionValidationStrategyType productOptionValidationStrategyType = new ProductOptionValidationStrategyType();
@@ -158,8 +186,7 @@ public class ProductOptionValidationStrategyTypeDiffblueTest {
   }
 
   /**
-   * Test {@link ProductOptionValidationStrategyType#equals(Object)}, and
-   * {@link ProductOptionValidationStrategyType#hashCode()}.
+   * Test {@link ProductOptionValidationStrategyType#equals(Object)}, and {@link ProductOptionValidationStrategyType#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -172,6 +199,9 @@ public class ProductOptionValidationStrategyTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ProductOptionValidationStrategyType.equals(Object)",
+      "int ProductOptionValidationStrategyType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     ProductOptionValidationStrategyType productOptionValidationStrategyType = ProductOptionValidationStrategyType.ADD_ITEM;
@@ -192,12 +222,30 @@ public class ProductOptionValidationStrategyTypeDiffblueTest {
    * Method under test: {@link ProductOptionValidationStrategyType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ProductOptionValidationStrategyType.equals(Object)",
+      "int ProductOptionValidationStrategyType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(ProductOptionValidationStrategyType.NONE, ProductOptionValidationStrategyType.ADD_ITEM);
+  }
+
+  /**
+   * Test {@link ProductOptionValidationStrategyType#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ProductOptionValidationStrategyType#equals(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ProductOptionValidationStrategyType.equals(Object)",
+      "int ProductOptionValidationStrategyType.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange, Act and Assert
     assertNotEquals(new ProductOptionValidationStrategyType(), ProductOptionValidationStrategyType.ADD_ITEM);
-    assertNotEquals(ProductOptionValidationStrategyType.NONE,
-        mock(ValidateAddRequestActivitySkuSpec.CustomValidationStrategyType.class));
   }
 
   /**
@@ -210,6 +258,9 @@ public class ProductOptionValidationStrategyTypeDiffblueTest {
    * Method under test: {@link ProductOptionValidationStrategyType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ProductOptionValidationStrategyType.equals(Object)",
+      "int ProductOptionValidationStrategyType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(ProductOptionValidationStrategyType.ADD_ITEM, null);
@@ -225,6 +276,9 @@ public class ProductOptionValidationStrategyTypeDiffblueTest {
    * Method under test: {@link ProductOptionValidationStrategyType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ProductOptionValidationStrategyType.equals(Object)",
+      "int ProductOptionValidationStrategyType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(ProductOptionValidationStrategyType.ADD_ITEM,

@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.web.form.entity;
 
 import static org.junit.Assert.assertEquals;
@@ -5,18 +22,22 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @ContextConfiguration(classes = {Field.class})
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class FieldDiffblueTest {
   @Autowired
   private Field field;
@@ -27,6 +48,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#withName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Field Field.withName(String)"})
   public void testWithName() {
     // Arrange and Act
     Field actualWithNameResult = field.withName("Name");
@@ -43,6 +66,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#withFriendlyName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Field Field.withFriendlyName(String)"})
   public void testWithFriendlyName() {
     // Arrange and Act
     Field actualWithFriendlyNameResult = field.withFriendlyName("Friendly Name");
@@ -58,6 +83,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#withFieldType(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Field Field.withFieldType(String)"})
   public void testWithFieldType() {
     // Arrange and Act
     Field actualWithFieldTypeResult = field.withFieldType("Field Type");
@@ -73,6 +100,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#withDisplayType(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Field Field.withDisplayType(String)"})
   public void testWithDisplayType() {
     // Arrange and Act
     Field actualWithDisplayTypeResult = field.withDisplayType("Display Type");
@@ -88,6 +117,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#withFieldComponentRenderer(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Field Field.withFieldComponentRenderer(String)"})
   public void testWithFieldComponentRenderer() {
     // Arrange and Act
     Field actualWithFieldComponentRendererResult = field.withFieldComponentRenderer("Field Component Renderer");
@@ -103,6 +134,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#withGridFieldComponentRenderer(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Field Field.withGridFieldComponentRenderer(String)"})
   public void testWithGridFieldComponentRenderer() {
     // Arrange and Act
     Field actualWithGridFieldComponentRendererResult = field
@@ -119,6 +152,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#withValue(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Field Field.withValue(String)"})
   public void testWithValue() {
     // Arrange and Act
     Field actualWithValueResult = field.withValue("42");
@@ -136,6 +171,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#withDisplayValue(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Field Field.withDisplayValue(String)"})
   public void testWithDisplayValue() {
     // Arrange and Act
     Field actualWithDisplayValueResult = field.withDisplayValue("42");
@@ -152,6 +189,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#withForeignKeyDisplayValueProperty(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Field Field.withForeignKeyDisplayValueProperty(String)"})
   public void testWithForeignKeyDisplayValueProperty() {
     // Arrange and Act
     Field actualWithForeignKeyDisplayValuePropertyResult = field.withForeignKeyDisplayValueProperty("42");
@@ -167,6 +206,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#withForeignKeyClass(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Field Field.withForeignKeyClass(String)"})
   public void testWithForeignKeyClass() {
     // Arrange and Act
     Field actualWithForeignKeyClassResult = field.withForeignKeyClass("Foreign Key Class");
@@ -183,6 +224,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#withForeignKeySectionPath(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Field Field.withForeignKeySectionPath(String)"})
   public void testWithForeignKeySectionPath() {
     // Arrange and Act
     Field actualWithForeignKeySectionPathResult = field.withForeignKeySectionPath("Foreign Key Section Path");
@@ -198,6 +241,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#withOwningEntityClass(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Field Field.withOwningEntityClass(String)"})
   public void testWithOwningEntityClass() {
     // Arrange and Act
     Field actualWithOwningEntityClassResult = field.withOwningEntityClass("Owning Entity Class");
@@ -213,6 +258,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#withIdOverride(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Field Field.withIdOverride(String)"})
   public void testWithIdOverride() {
     // Arrange and Act
     Field actualWithIdOverrideResult = field.withIdOverride("Id Override");
@@ -228,6 +275,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#withOrder(Integer)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Field Field.withOrder(Integer)"})
   public void testWithOrder() {
     // Arrange
     Field field = new Field();
@@ -246,6 +295,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#withAlternateOrdering(Boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Field Field.withAlternateOrdering(Boolean)"})
   public void testWithAlternateOrdering() {
     // Arrange
     Field field = new Field();
@@ -265,6 +316,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#withRequired(Boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Field Field.withRequired(Boolean)"})
   public void testWithRequired() {
     // Arrange
     Field field = new Field();
@@ -288,6 +341,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#withColumnWidth(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Field Field.withColumnWidth(String)"})
   public void testWithColumnWidth_whenAsterisk_thenFieldColumnWidthIsNull() {
     // Arrange and Act
     Field actualWithColumnWidthResult = field.withColumnWidth("*");
@@ -307,6 +362,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#withColumnWidth(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Field Field.withColumnWidth(String)"})
   public void testWithColumnWidth_whenColumnWidth_thenFieldColumnWidthIsColumnWidth() {
     // Arrange and Act
     Field actualWithColumnWidthResult = field.withColumnWidth("Column Width");
@@ -322,6 +379,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#withReadOnly(Boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Field Field.withReadOnly(Boolean)"})
   public void testWithReadOnly() {
     // Arrange
     Field field = new Field();
@@ -341,6 +400,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#withDisabled(Boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Field Field.withDisabled(Boolean)"})
   public void testWithDisabled() {
     // Arrange
     Field field = new Field();
@@ -360,6 +421,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#withTranslatable(Boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Field Field.withTranslatable(Boolean)"})
   public void testWithTranslatable() {
     // Arrange
     Field field = new Field();
@@ -379,6 +442,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#withMainEntityLink(Boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Field Field.withMainEntityLink(Boolean)"})
   public void testWithMainEntityLink() {
     // Arrange
     Field field = new Field();
@@ -398,6 +463,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#withFilterSortDisabled(Boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Field Field.withFilterSortDisabled(Boolean)"})
   public void testWithFilterSortDisabled() {
     // Arrange
     Field field = new Field();
@@ -417,6 +484,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#withDerived(Boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Field Field.withDerived(Boolean)"})
   public void testWithDerived() {
     // Arrange
     Field field = new Field();
@@ -436,6 +505,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#withLargeEntry(Boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Field Field.withLargeEntry(Boolean)"})
   public void testWithLargeEntry() {
     // Arrange
     Field field = new Field();
@@ -455,6 +526,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#withHint(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Field Field.withHint(String)"})
   public void testWithHint() {
     // Arrange and Act
     Field actualWithHintResult = field.withHint("Hint");
@@ -471,6 +544,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#withHelp(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Field Field.withHelp(String)"})
   public void testWithHelp() {
     // Arrange and Act
     Field actualWithHelpResult = field.withHelp("Help");
@@ -487,6 +562,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#withTooltip(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Field Field.withTooltip(String)"})
   public void testWithTooltip() {
     // Arrange, Act and Assert
     assertSame(field, field.withTooltip("127.0.0.1"));
@@ -498,6 +575,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#withAttribute(String, Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Field Field.withAttribute(String, Object)"})
   public void testWithAttribute() {
     // Arrange, Act and Assert
     assertSame(field, field.withAttribute("Key", "Value"));
@@ -509,6 +588,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#withTypeaheadEnabled(Boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Field Field.withTypeaheadEnabled(Boolean)"})
   public void testWithTypeaheadEnabled() {
     // Arrange
     Field field = new Field();
@@ -528,6 +609,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#withTranslationFieldName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Field Field.withTranslationFieldName(String)"})
   public void testWithTranslationFieldName() {
     // Arrange and Act
     Field actualWithTranslationFieldNameResult = field.withTranslationFieldName("Translation Field Name");
@@ -544,6 +627,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#withCanLinkToExternalEntity(Boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Field Field.withCanLinkToExternalEntity(Boolean)"})
   public void testWithCanLinkToExternalEntity() {
     // Arrange
     Field field = new Field();
@@ -558,6 +643,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#withAssociatedFieldName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Field Field.withAssociatedFieldName(String)"})
   public void testWithAssociatedFieldName() {
     // Arrange and Act
     Field actualWithAssociatedFieldNameResult = field.withAssociatedFieldName("Associated Field Name");
@@ -570,14 +657,15 @@ public class FieldDiffblueTest {
   /**
    * Test {@link Field#getIsVisible()}.
    * <ul>
-   *   <li>Given {@link Field} (default constructor) FieldType is
-   * {@code Field Type}.</li>
+   *   <li>Given {@link Field} (default constructor) FieldType is {@code Field Type}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link Field#getIsVisible()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean Field.getIsVisible()"})
   public void testGetIsVisible_givenFieldFieldTypeIsFieldType_thenReturnTrue() {
     // Arrange
     Field field = new Field();
@@ -590,14 +678,15 @@ public class FieldDiffblueTest {
   /**
    * Test {@link Field#getIsVisible()}.
    * <ul>
-   *   <li>Given {@link Field} (default constructor) IsVisible is
-   * {@code false}.</li>
+   *   <li>Given {@link Field} (default constructor) IsVisible is {@code false}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link Field#getIsVisible()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean Field.getIsVisible()"})
   public void testGetIsVisible_givenFieldIsVisibleIsFalse_thenReturnFalse() {
     // Arrange
     Field field = new Field();
@@ -617,6 +706,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#getIsVisible()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean Field.getIsVisible()"})
   public void testGetIsVisible_givenFieldIsVisibleIsTrue_thenReturnTrue() {
     // Arrange
     Field field = new Field();
@@ -636,6 +727,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#getIsVisible()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean Field.getIsVisible()"})
   public void testGetIsVisible_givenField_thenReturnTrue() {
     // Arrange, Act and Assert
     assertTrue((new Field()).getIsVisible());
@@ -651,11 +744,13 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#setColumnWidth(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Field.setColumnWidth(String)"})
   public void testSetColumnWidth_whenAsterisk_thenFieldColumnWidthIsNull() {
     // Arrange and Act
     field.setColumnWidth("*");
 
-    // Assert
+    // Assert that nothing has changed
     assertNull(field.getColumnWidth());
   }
 
@@ -669,6 +764,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#setColumnWidth(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Field.setColumnWidth(String)"})
   public void testSetColumnWidth_whenColumnWidth_thenFieldColumnWidthIsColumnWidth() {
     // Arrange and Act
     field.setColumnWidth("Column Width");
@@ -680,14 +777,15 @@ public class FieldDiffblueTest {
   /**
    * Test {@link Field#getDisplayValue()}.
    * <ul>
-   *   <li>Given {@link Field} (default constructor) DisplayValue is
-   * {@code foo}.</li>
+   *   <li>Given {@link Field} (default constructor) DisplayValue is {@code foo}.</li>
    *   <li>Then return {@code foo}.</li>
    * </ul>
    * <p>
    * Method under test: {@link Field#getDisplayValue()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String Field.getDisplayValue()"})
   public void testGetDisplayValue_givenFieldDisplayValueIsFoo_thenReturnFoo() {
     // Arrange
     Field field = new Field();
@@ -707,6 +805,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#getDisplayValue()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String Field.getDisplayValue()"})
   public void testGetDisplayValue_givenField_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull((new Field()).getDisplayValue());
@@ -718,6 +818,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#getEntityViewPath()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String Field.getEntityViewPath()"})
   public void testGetEntityViewPath() {
     // Arrange, Act and Assert
     assertEquals("null/null", (new Field()).getEntityViewPath());
@@ -733,6 +835,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#getReadOnly()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean Field.getReadOnly()"})
   public void testGetReadOnly_givenFieldReadOnlyIsTrue_thenReturnTrue() {
     // Arrange
     Field field = new Field();
@@ -752,6 +856,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#getReadOnly()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean Field.getReadOnly()"})
   public void testGetReadOnly_givenField_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse((new Field()).getReadOnly());
@@ -767,6 +873,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#getDisabled()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean Field.getDisabled()"})
   public void testGetDisabled_givenFieldDisabledIsTrue_thenReturnTrue() {
     // Arrange
     Field field = new Field();
@@ -786,6 +894,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#getDisabled()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean Field.getDisabled()"})
   public void testGetDisabled_givenField_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse((new Field()).getDisabled());
@@ -794,14 +904,15 @@ public class FieldDiffblueTest {
   /**
    * Test {@link Field#getAlternateOrdering()}.
    * <ul>
-   *   <li>Given {@link Field} (default constructor) AlternateOrdering is
-   * {@code true}.</li>
+   *   <li>Given {@link Field} (default constructor) AlternateOrdering is {@code true}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link Field#getAlternateOrdering()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean Field.getAlternateOrdering()"})
   public void testGetAlternateOrdering_givenFieldAlternateOrderingIsTrue_thenReturnTrue() {
     // Arrange
     Field field = new Field();
@@ -821,6 +932,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#getAlternateOrdering()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean Field.getAlternateOrdering()"})
   public void testGetAlternateOrdering_givenField_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse((new Field()).getAlternateOrdering());
@@ -829,14 +942,15 @@ public class FieldDiffblueTest {
   /**
    * Test {@link Field#getTranslatable()}.
    * <ul>
-   *   <li>Given {@link Field} (default constructor) Translatable is
-   * {@code true}.</li>
+   *   <li>Given {@link Field} (default constructor) Translatable is {@code true}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link Field#getTranslatable()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean Field.getTranslatable()"})
   public void testGetTranslatable_givenFieldTranslatableIsTrue_thenReturnTrue() {
     // Arrange
     Field field = new Field();
@@ -856,6 +970,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#getTranslatable()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean Field.getTranslatable()"})
   public void testGetTranslatable_givenField_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse((new Field()).getTranslatable());
@@ -864,14 +980,15 @@ public class FieldDiffblueTest {
   /**
    * Test {@link Field#getMainEntityLink()}.
    * <ul>
-   *   <li>Given {@link Field} (default constructor) MainEntityLink is
-   * {@code true}.</li>
+   *   <li>Given {@link Field} (default constructor) MainEntityLink is {@code true}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link Field#getMainEntityLink()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean Field.getMainEntityLink()"})
   public void testGetMainEntityLink_givenFieldMainEntityLinkIsTrue_thenReturnTrue() {
     // Arrange
     Field field = new Field();
@@ -891,6 +1008,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#getMainEntityLink()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean Field.getMainEntityLink()"})
   public void testGetMainEntityLink_givenField_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse((new Field()).getMainEntityLink());
@@ -899,14 +1018,15 @@ public class FieldDiffblueTest {
   /**
    * Test {@link Field#getFilterSortDisabled()}.
    * <ul>
-   *   <li>Given {@link Field} (default constructor) FilterSortDisabled is
-   * {@code true}.</li>
+   *   <li>Given {@link Field} (default constructor) FilterSortDisabled is {@code true}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link Field#getFilterSortDisabled()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean Field.getFilterSortDisabled()"})
   public void testGetFilterSortDisabled_givenFieldFilterSortDisabledIsTrue_thenReturnTrue() {
     // Arrange
     Field field = new Field();
@@ -926,6 +1046,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#getFilterSortDisabled()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean Field.getFilterSortDisabled()"})
   public void testGetFilterSortDisabled_givenField_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse((new Field()).getFilterSortDisabled());
@@ -934,14 +1056,15 @@ public class FieldDiffblueTest {
   /**
    * Test {@link Field#getResizeDisabled()}.
    * <ul>
-   *   <li>Given {@link Field} (default constructor) ResizeDisabled is
-   * {@code true}.</li>
+   *   <li>Given {@link Field} (default constructor) ResizeDisabled is {@code true}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link Field#getResizeDisabled()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean Field.getResizeDisabled()"})
   public void testGetResizeDisabled_givenFieldResizeDisabledIsTrue_thenReturnTrue() {
     // Arrange
     Field field = new Field();
@@ -961,6 +1084,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#getResizeDisabled()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean Field.getResizeDisabled()"})
   public void testGetResizeDisabled_givenField_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse((new Field()).getResizeDisabled());
@@ -976,6 +1101,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#getContentOverflowAllowed()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean Field.getContentOverflowAllowed()"})
   public void testGetContentOverflowAllowed_givenField_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse((new Field()).getContentOverflowAllowed());
@@ -990,6 +1117,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#getContentOverflowAllowed()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean Field.getContentOverflowAllowed()"})
   public void testGetContentOverflowAllowed_thenReturnTrue() {
     // Arrange
     Field field = new Field();
@@ -1005,6 +1134,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#getAttribute(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object Field.getAttribute(String)"})
   public void testGetAttribute() {
     // Arrange, Act and Assert
     assertNull(field.getAttribute("Key"));
@@ -1013,14 +1144,15 @@ public class FieldDiffblueTest {
   /**
    * Test {@link Field#getIsTypeaheadEnabled()}.
    * <ul>
-   *   <li>Given {@link Field} (default constructor) IsTypeaheadEnabled is
-   * {@code true}.</li>
+   *   <li>Given {@link Field} (default constructor) IsTypeaheadEnabled is {@code true}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link Field#getIsTypeaheadEnabled()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean Field.getIsTypeaheadEnabled()"})
   public void testGetIsTypeaheadEnabled_givenFieldIsTypeaheadEnabledIsTrue_thenReturnTrue() {
     // Arrange
     Field field = new Field();
@@ -1040,6 +1172,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#getIsTypeaheadEnabled()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean Field.getIsTypeaheadEnabled()"})
   public void testGetIsTypeaheadEnabled_givenField_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse((new Field()).getIsTypeaheadEnabled());
@@ -1048,14 +1182,15 @@ public class FieldDiffblueTest {
   /**
    * Test {@link Field#getTranslationFieldName()}.
    * <ul>
-   *   <li>Given {@link Field} (default constructor) TranslationFieldName is
-   * {@code foo}.</li>
+   *   <li>Given {@link Field} (default constructor) TranslationFieldName is {@code foo}.</li>
    *   <li>Then return {@code foo}.</li>
    * </ul>
    * <p>
    * Method under test: {@link Field#getTranslationFieldName()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String Field.getTranslationFieldName()"})
   public void testGetTranslationFieldName_givenFieldTranslationFieldNameIsFoo_thenReturnFoo() {
     // Arrange
     Field field = new Field();
@@ -1075,6 +1210,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#getTranslationFieldName()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String Field.getTranslationFieldName()"})
   public void testGetTranslationFieldName_givenField_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull((new Field()).getTranslationFieldName());
@@ -1083,14 +1220,15 @@ public class FieldDiffblueTest {
   /**
    * Test {@link Field#getIsConfirmEnabled()}.
    * <ul>
-   *   <li>Given {@link Field} (default constructor) IsConfirmEnabled is
-   * {@code true}.</li>
+   *   <li>Given {@link Field} (default constructor) IsConfirmEnabled is {@code true}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link Field#getIsConfirmEnabled()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean Field.getIsConfirmEnabled()"})
   public void testGetIsConfirmEnabled_givenFieldIsConfirmEnabledIsTrue_thenReturnTrue() {
     // Arrange
     Field field = new Field();
@@ -1110,6 +1248,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#getIsConfirmEnabled()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean Field.getIsConfirmEnabled()"})
   public void testGetIsConfirmEnabled_givenField_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse((new Field()).getIsConfirmEnabled());
@@ -1125,6 +1265,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#getRequired()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean Field.getRequired()"})
   public void testGetRequired_givenFieldRequiredIsNull_thenReturnFalse() {
     // Arrange
     Field field = new Field();
@@ -1144,6 +1286,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#getRequired()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean Field.getRequired()"})
   public void testGetRequired_givenFieldRequiredIsTrue_thenReturnTrue() {
     // Arrange
     Field field = new Field();
@@ -1163,6 +1307,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#getRequired()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean Field.getRequired()"})
   public void testGetRequired_givenField_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse((new Field()).getRequired());
@@ -1178,6 +1324,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#getIsDerived()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean Field.getIsDerived()"})
   public void testGetIsDerived_givenFieldDerivedIsTrue_thenReturnTrue() {
     // Arrange
     Field field = new Field();
@@ -1197,6 +1345,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#getIsDerived()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean Field.getIsDerived()"})
   public void testGetIsDerived_givenField_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse((new Field()).getIsDerived());
@@ -1205,14 +1355,15 @@ public class FieldDiffblueTest {
   /**
    * Test {@link Field#getIsLargeEntry()}.
    * <ul>
-   *   <li>Given {@link Field} (default constructor) LargeEntry is
-   * {@code true}.</li>
+   *   <li>Given {@link Field} (default constructor) LargeEntry is {@code true}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link Field#getIsLargeEntry()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean Field.getIsLargeEntry()"})
   public void testGetIsLargeEntry_givenFieldLargeEntryIsTrue_thenReturnTrue() {
     // Arrange
     Field field = new Field();
@@ -1232,6 +1383,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#getIsLargeEntry()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean Field.getIsLargeEntry()"})
   public void testGetIsLargeEntry_givenField_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse((new Field()).getIsLargeEntry());
@@ -1247,6 +1400,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#getIsDirty()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean Field.getIsDirty()"})
   public void testGetIsDirty_givenFieldDirtyIsTrue_thenReturnTrue() {
     // Arrange
     Field field = new Field();
@@ -1266,6 +1421,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#getIsDirty()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean Field.getIsDirty()"})
   public void testGetIsDirty_givenField_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse((new Field()).getIsDirty());
@@ -1281,6 +1438,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#getHint()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String Field.getHint()"})
   public void testGetHint_givenFieldHintIsFoo_thenReturnFoo() {
     // Arrange
     Field field = new Field();
@@ -1293,6 +1452,27 @@ public class FieldDiffblueTest {
   /**
    * Test {@link Field#getHint()}.
    * <ul>
+   *   <li>Given {@link Field} (default constructor) Hint is space.</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link Field#getHint()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String Field.getHint()"})
+  public void testGetHint_givenFieldHintIsSpace_thenReturnNull() {
+    // Arrange
+    Field field = new Field();
+    field.setHint(" ");
+
+    // Act and Assert
+    assertNull(field.getHint());
+  }
+
+  /**
+   * Test {@link Field#getHint()}.
+   * <ul>
    *   <li>Given {@link Field} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
@@ -1300,6 +1480,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#getHint()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String Field.getHint()"})
   public void testGetHint_givenField_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull((new Field()).getHint());
@@ -1315,6 +1497,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#getTooltip()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String Field.getTooltip()"})
   public void testGetTooltip_givenFieldTooltipIsFoo_thenReturnFoo() {
     // Arrange
     Field field = new Field();
@@ -1327,6 +1511,27 @@ public class FieldDiffblueTest {
   /**
    * Test {@link Field#getTooltip()}.
    * <ul>
+   *   <li>Given {@link Field} (default constructor) Tooltip is space.</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link Field#getTooltip()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String Field.getTooltip()"})
+  public void testGetTooltip_givenFieldTooltipIsSpace_thenReturnNull() {
+    // Arrange
+    Field field = new Field();
+    field.setTooltip(" ");
+
+    // Act and Assert
+    assertNull(field.getTooltip());
+  }
+
+  /**
+   * Test {@link Field#getTooltip()}.
+   * <ul>
    *   <li>Given {@link Field} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
@@ -1334,6 +1539,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#getTooltip()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String Field.getTooltip()"})
   public void testGetTooltip_givenField_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull((new Field()).getTooltip());
@@ -1349,6 +1556,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#getHelp()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String Field.getHelp()"})
   public void testGetHelp_givenFieldHelpIsFoo_thenReturnFoo() {
     // Arrange
     Field field = new Field();
@@ -1361,6 +1570,27 @@ public class FieldDiffblueTest {
   /**
    * Test {@link Field#getHelp()}.
    * <ul>
+   *   <li>Given {@link Field} (default constructor) Help is space.</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link Field#getHelp()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String Field.getHelp()"})
+  public void testGetHelp_givenFieldHelpIsSpace_thenReturnNull() {
+    // Arrange
+    Field field = new Field();
+    field.setHelp(" ");
+
+    // Act and Assert
+    assertNull(field.getHelp());
+  }
+
+  /**
+   * Test {@link Field#getHelp()}.
+   * <ul>
    *   <li>Given {@link Field} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
@@ -1368,6 +1598,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#getHelp()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String Field.getHelp()"})
   public void testGetHelp_givenField_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull((new Field()).getHelp());
@@ -1382,6 +1614,8 @@ public class FieldDiffblueTest {
    * Method under test: {@link Field#getCanLinkToExternalEntity()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Field.getCanLinkToExternalEntity()"})
   public void testGetCanLinkToExternalEntity_givenField() {
     // Arrange, Act and Assert
     assertFalse((new Field()).getCanLinkToExternalEntity());
@@ -1390,13 +1624,14 @@ public class FieldDiffblueTest {
   /**
    * Test {@link Field#getCanLinkToExternalEntity()}.
    * <ul>
-   *   <li>Given {@link Field} (default constructor) CanLinkToExternalEntity is
-   * {@code false}.</li>
+   *   <li>Given {@link Field} (default constructor) CanLinkToExternalEntity is {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link Field#getCanLinkToExternalEntity()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Field.getCanLinkToExternalEntity()"})
   public void testGetCanLinkToExternalEntity_givenFieldCanLinkToExternalEntityIsFalse() {
     // Arrange
     Field field = new Field();
@@ -1476,6 +1711,33 @@ public class FieldDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Field.<init>()", "Boolean Field.getAllowNoValueEnumOption()",
+      "String Field.getAssociatedFieldName()", "Map Field.getAttributes()", "String Field.getColumnWidth()",
+      "String Field.getConfirmEnabledText()", "String Field.getDisplayType()",
+      "String Field.getFieldComponentRenderer()", "String Field.getFieldType()", "String Field.getForeignKeyClass()",
+      "String Field.getForeignKeyDisplayValueProperty()", "String Field.getForeignKeySectionPath()",
+      "String Field.getFriendlyName()", "String Field.getGridFieldComponentRenderer()", "String Field.getIdOverride()",
+      "String Field.getName()", "String Field.getOnChangeTrigger()", "Integer Field.getOrder()",
+      "String Field.getOwningEntityClass()", "String Field.getRawDisplayValue()", "Boolean Field.getShouldRender()",
+      "String Field.getValue()", "void Field.setAllowNoValueEnumOption(Boolean)",
+      "void Field.setAlternateOrdering(Boolean)", "void Field.setAssociatedFieldName(String)",
+      "void Field.setAttributes(Map)", "void Field.setCanLinkToExternalEntity(Boolean)",
+      "void Field.setConfirmEnabledText(String)", "void Field.setContentOverflowAllowed(Boolean)",
+      "void Field.setDerived(Boolean)", "void Field.setDirty(Boolean)", "void Field.setDisabled(Boolean)",
+      "void Field.setDisplayType(String)", "void Field.setDisplayValue(String)",
+      "void Field.setFieldComponentRenderer(String)", "void Field.setFieldType(String)",
+      "void Field.setFilterSortDisabled(Boolean)", "void Field.setForeignKeyClass(String)",
+      "void Field.setForeignKeyDisplayValueProperty(String)", "void Field.setForeignKeySectionPath(String)",
+      "void Field.setFriendlyName(String)", "void Field.setGridFieldComponentRenderer(String)",
+      "void Field.setHelp(String)", "void Field.setHint(String)", "void Field.setIdOverride(String)",
+      "void Field.setIsConfirmEnabled(Boolean)", "void Field.setIsTypeaheadEnabled(Boolean)",
+      "void Field.setIsVisible(Boolean)", "void Field.setLargeEntry(Boolean)", "void Field.setMainEntityLink(Boolean)",
+      "void Field.setName(String)", "void Field.setOnChangeTrigger(String)", "void Field.setOrder(Integer)",
+      "void Field.setOwningEntityClass(String)", "void Field.setReadOnly(Boolean)", "void Field.setRequired(Boolean)",
+      "void Field.setResizeDisabled(Boolean)", "void Field.setShouldRender(Boolean)", "void Field.setTooltip(String)",
+      "void Field.setTranslatable(Boolean)", "void Field.setTranslationFieldName(String)",
+      "void Field.setValue(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     Field actualField = new Field();
@@ -1523,7 +1785,7 @@ public class FieldDiffblueTest {
     Boolean actualAllowNoValueEnumOption = actualField.getAllowNoValueEnumOption();
     String actualAssociatedFieldName = actualField.getAssociatedFieldName();
     Map<String, Object> actualAttributes = actualField.getAttributes();
-    actualField.getColumnWidth();
+    String actualColumnWidth = actualField.getColumnWidth();
     String actualConfirmEnabledText = actualField.getConfirmEnabledText();
     String actualDisplayType = actualField.getDisplayType();
     String actualFieldComponentRenderer = actualField.getFieldComponentRenderer();
@@ -1541,7 +1803,7 @@ public class FieldDiffblueTest {
     String actualRawDisplayValue = actualField.getRawDisplayValue();
     Boolean actualShouldRender = actualField.getShouldRender();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("42", actualForeignKeyDisplayValueProperty);
     assertEquals("42", actualRawDisplayValue);
     assertEquals("42", actualField.getValue());
@@ -1558,6 +1820,7 @@ public class FieldDiffblueTest {
     assertEquals("Name", actualName);
     assertEquals("On Change Trigger", actualOnChangeTrigger);
     assertEquals("Owning Entity Class", actualOwningEntityClass);
+    assertNull(actualColumnWidth);
     assertEquals(1, actualOrder.intValue());
     assertTrue(actualAttributes.isEmpty());
     assertTrue(actualAllowNoValueEnumOption);

@@ -1,24 +1,45 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.search.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class SearchFacetDTODiffblueTest {
   /**
    * Test {@link SearchFacetDTO#getAbbreviation()}.
    * <ul>
-   *   <li>Given {@link SearchFacetDTO} (default constructor) Active is
-   * {@code true}.</li>
+   *   <li>Given {@link SearchFacetDTO} (default constructor) Active is {@code true}.</li>
    *   <li>Then return {@code foo}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SearchFacetDTO#getAbbreviation()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SearchFacetDTO.getAbbreviation()"})
   public void testGetAbbreviation_givenSearchFacetDTOActiveIsTrue_thenReturnFoo() {
     // Arrange
     SearchFacetDTO searchFacetDTO = new SearchFacetDTO();
@@ -50,6 +71,12 @@ public class SearchFacetDTODiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SearchFacetDTO.<init>()", "SearchFacet SearchFacetDTO.getFacet()",
+      "List SearchFacetDTO.getFacetValues()", "boolean SearchFacetDTO.isActive()",
+      "boolean SearchFacetDTO.isShowQuantity()", "void SearchFacetDTO.setAbbreviation(String)",
+      "void SearchFacetDTO.setActive(boolean)", "void SearchFacetDTO.setFacet(SearchFacet)",
+      "void SearchFacetDTO.setFacetValues(List)", "void SearchFacetDTO.setShowQuantity(boolean)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     SearchFacetDTO actualSearchFacetDTO = new SearchFacetDTO();
@@ -65,7 +92,7 @@ public class SearchFacetDTODiffblueTest {
     boolean actualIsActiveResult = actualSearchFacetDTO.isActive();
     boolean actualIsShowQuantityResult = actualSearchFacetDTO.isShowQuantity();
 
-    // Assert that nothing has changed
+    // Assert
     assertTrue(actualFacetValues.isEmpty());
     assertTrue(actualIsActiveResult);
     assertTrue(actualIsShowQuantityResult);

@@ -1,9 +1,29 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.order.service.exception;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class RemoveFromCartExceptionDiffblueTest {
   /**
@@ -12,10 +32,12 @@ public class RemoveFromCartExceptionDiffblueTest {
    *   <li>Then return Message is {@code An error occurred}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link RemoveFromCartException#RemoveFromCartException(String)}
+   * Method under test: {@link RemoveFromCartException#RemoveFromCartException(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void RemoveFromCartException.<init>()", "void RemoveFromCartException.<init>(String)",
+      "void RemoveFromCartException.<init>(String, Throwable)", "void RemoveFromCartException.<init>(Throwable)"})
   public void testNewRemoveFromCartException_thenReturnMessageIsAnErrorOccurred() {
     // Arrange and Act
     RemoveFromCartException actualRemoveFromCartException = new RemoveFromCartException("An error occurred");
@@ -27,16 +49,17 @@ public class RemoveFromCartExceptionDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link RemoveFromCartException#RemoveFromCartException(String, Throwable)}.
+   * Test {@link RemoveFromCartException#RemoveFromCartException(String, Throwable)}.
    * <ul>
    *   <li>Then return Message is {@code An error occurred}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link RemoveFromCartException#RemoveFromCartException(String, Throwable)}
+   * Method under test: {@link RemoveFromCartException#RemoveFromCartException(String, Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void RemoveFromCartException.<init>()", "void RemoveFromCartException.<init>(String)",
+      "void RemoveFromCartException.<init>(String, Throwable)", "void RemoveFromCartException.<init>(Throwable)"})
   public void testNewRemoveFromCartException_thenReturnMessageIsAnErrorOccurred2() {
     // Arrange
     Throwable cause = new Throwable();
@@ -53,13 +76,15 @@ public class RemoveFromCartExceptionDiffblueTest {
   /**
    * Test {@link RemoveFromCartException#RemoveFromCartException(Throwable)}.
    * <ul>
-   *   <li>Then return Message is {@code java.lang.Throwable}.</li>
+   *   <li>Then return Message is {@code Throwable}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link RemoveFromCartException#RemoveFromCartException(Throwable)}
+   * Method under test: {@link RemoveFromCartException#RemoveFromCartException(Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void RemoveFromCartException.<init>()", "void RemoveFromCartException.<init>(String)",
+      "void RemoveFromCartException.<init>(String, Throwable)", "void RemoveFromCartException.<init>(Throwable)"})
   public void testNewRemoveFromCartException_thenReturnMessageIsJavaLangThrowable() {
     // Arrange
     Throwable cause = new Throwable();
@@ -82,6 +107,9 @@ public class RemoveFromCartExceptionDiffblueTest {
    * Method under test: {@link RemoveFromCartException#RemoveFromCartException()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void RemoveFromCartException.<init>()", "void RemoveFromCartException.<init>(String)",
+      "void RemoveFromCartException.<init>(String, Throwable)", "void RemoveFromCartException.<init>(Throwable)"})
   public void testNewRemoveFromCartException_thenReturnMessageIsNull() {
     // Arrange and Act
     RemoveFromCartException actualRemoveFromCartException = new RemoveFromCartException();

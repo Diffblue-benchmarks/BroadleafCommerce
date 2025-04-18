@@ -1,8 +1,29 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.server.service.artifact.image.effects.chain.conversion.impl;
 
 import static org.junit.Assert.assertEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.openadmin.server.service.artifact.image.effects.chain.conversion.ConversionException;
+import org.broadleafcommerce.openadmin.server.service.artifact.image.effects.chain.conversion.Parameter;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -18,64 +39,62 @@ public class IntParameterConverterDiffblueTest {
    * Test {@link IntParameterConverter#convert(String, Double, boolean)}.
    * <ul>
    *   <li>When {@code 42}.</li>
-   *   <li>Then return ParameterClass Name is {@code int}.</li>
+   *   <li>Then return ParameterInstance intValue is forty-two.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link IntParameterConverter#convert(String, Double, boolean)}
+   * Method under test: {@link IntParameterConverter#convert(String, Double, boolean)}
    */
   @Test
-  public void testConvert_when42_thenReturnParameterClassNameIsInt() throws ConversionException {
-    // Arrange, Act and Assert
-    assertEquals("int", intParameterConverter.convert("42", 10.0d, true).getParameterClass().getName());
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Parameter IntParameterConverter.convert(String, Double, boolean)"})
+  public void testConvert_when42_thenReturnParameterInstanceIntValueIsFortyTwo() throws ConversionException {
+    // Arrange and Act
+    Parameter actualConvertResult = intParameterConverter.convert("42", null, true);
+
+    // Assert
+    assertEquals("int", actualConvertResult.getParameterClass().getName());
+    assertEquals(42, ((Integer) actualConvertResult.getParameterInstance()).intValue());
   }
 
   /**
    * Test {@link IntParameterConverter#convert(String, Double, boolean)}.
    * <ul>
    *   <li>When {@code false}.</li>
-   *   <li>Then return ParameterClass Name is {@code int}.</li>
+   *   <li>Then return ParameterInstance intValue is forty-two.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link IntParameterConverter#convert(String, Double, boolean)}
+   * Method under test: {@link IntParameterConverter#convert(String, Double, boolean)}
    */
   @Test
-  public void testConvert_whenFalse_thenReturnParameterClassNameIsInt() throws ConversionException {
-    // Arrange, Act and Assert
-    assertEquals("int", intParameterConverter.convert("42", 10.0d, false).getParameterClass().getName());
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Parameter IntParameterConverter.convert(String, Double, boolean)"})
+  public void testConvert_whenFalse_thenReturnParameterInstanceIntValueIsFortyTwo() throws ConversionException {
+    // Arrange and Act
+    Parameter actualConvertResult = intParameterConverter.convert("42", null, false);
+
+    // Assert
+    assertEquals("int", actualConvertResult.getParameterClass().getName());
+    assertEquals(42, ((Integer) actualConvertResult.getParameterInstance()).intValue());
   }
 
   /**
    * Test {@link IntParameterConverter#convert(String, Double, boolean)}.
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return ParameterClass Name is {@code int}.</li>
+   *   <li>When ten.</li>
+   *   <li>Then return ParameterInstance intValue is four.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link IntParameterConverter#convert(String, Double, boolean)}
+   * Method under test: {@link IntParameterConverter#convert(String, Double, boolean)}
    */
   @Test
-  public void testConvert_whenNull_thenReturnParameterClassNameIsInt() throws ConversionException {
-    // Arrange, Act and Assert
-    assertEquals("int", intParameterConverter.convert("42", null, true).getParameterClass().getName());
-  }
-
-  /**
-   * Test new {@link IntParameterConverter} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link IntParameterConverter}
-   */
-  @Test
-  public void testNewIntParameterConverter() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing observers.
-    //   Diffblue Cover was unable to create an assertion.
-    //   There are no fields that could be asserted on.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Parameter IntParameterConverter.convert(String, Double, boolean)"})
+  public void testConvert_whenTen_thenReturnParameterInstanceIntValueIsFour() throws ConversionException {
     // Arrange and Act
-    new IntParameterConverter();
+    Parameter actualConvertResult = intParameterConverter.convert("42", 10.0d, true);
+
+    // Assert
+    assertEquals("int", actualConvertResult.getParameterClass().getName());
+    assertEquals(4, ((Integer) actualConvertResult.getParameterInstance()).intValue());
   }
 }

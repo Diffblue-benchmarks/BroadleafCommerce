@@ -1,36 +1,42 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.offer.service.type;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @ContextConfiguration(classes = {OfferItemRestrictionRuleType.class})
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class OfferItemRestrictionRuleTypeDiffblueTest {
   @Autowired
   private OfferItemRestrictionRuleType offerItemRestrictionRuleType;
-
-  /**
-   * Test {@link OfferItemRestrictionRuleType#getInstance(String)}.
-   * <p>
-   * Method under test: {@link OfferItemRestrictionRuleType#getInstance(String)}
-   */
-  @Test
-  public void testGetInstance() {
-    // Arrange and Act
-    OfferItemRestrictionRuleType actualInstance = OfferItemRestrictionRuleType.getInstance("Type");
-
-    // Assert
-    assertEquals("Friendly Type", actualInstance.getFriendlyType());
-    assertEquals("Type", actualInstance.getType());
-  }
 
   /**
    * Test getters and setters.
@@ -43,6 +49,9 @@ public class OfferItemRestrictionRuleTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OfferItemRestrictionRuleType.<init>()",
+      "String OfferItemRestrictionRuleType.getFriendlyType()", "String OfferItemRestrictionRuleType.getType()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     OfferItemRestrictionRuleType actualOfferItemRestrictionRuleType = new OfferItemRestrictionRuleType();
@@ -54,13 +63,13 @@ public class OfferItemRestrictionRuleTypeDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link OfferItemRestrictionRuleType#OfferItemRestrictionRuleType(String, String)}.
+   * Test {@link OfferItemRestrictionRuleType#OfferItemRestrictionRuleType(String, String)}.
    * <p>
-   * Method under test:
-   * {@link OfferItemRestrictionRuleType#OfferItemRestrictionRuleType(String, String)}
+   * Method under test: {@link OfferItemRestrictionRuleType#OfferItemRestrictionRuleType(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OfferItemRestrictionRuleType.<init>(String, String)"})
   public void testNewOfferItemRestrictionRuleType() {
     // Arrange and Act
     OfferItemRestrictionRuleType actualOfferItemRestrictionRuleType = new OfferItemRestrictionRuleType("Type",
@@ -75,13 +84,14 @@ public class OfferItemRestrictionRuleTypeDiffblueTest {
    * Test {@link OfferItemRestrictionRuleType#setType(String)}.
    * <ul>
    *   <li>When {@code TypeType}.</li>
-   *   <li>Then {@link OfferItemRestrictionRuleType#NONE} Type is
-   * {@code TypeType}.</li>
+   *   <li>Then {@link OfferItemRestrictionRuleType#NONE} Type is {@code TypeType}.</li>
    * </ul>
    * <p>
    * Method under test: {@link OfferItemRestrictionRuleType#setType(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OfferItemRestrictionRuleType.setType(String)"})
   public void testSetType_whenTypeType_thenNoneTypeIsTypeType() {
     // Arrange
     OfferItemRestrictionRuleType offerItemRestrictionRuleType2 = OfferItemRestrictionRuleType.NONE;
@@ -103,6 +113,8 @@ public class OfferItemRestrictionRuleTypeDiffblueTest {
    * Method under test: {@link OfferItemRestrictionRuleType#setType(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OfferItemRestrictionRuleType.setType(String)"})
   public void testSetType_whenType_thenNoneTypeIsType() {
     // Arrange
     OfferItemRestrictionRuleType offerItemRestrictionRuleType2 = OfferItemRestrictionRuleType.NONE;
@@ -115,8 +127,7 @@ public class OfferItemRestrictionRuleTypeDiffblueTest {
   }
 
   /**
-   * Test {@link OfferItemRestrictionRuleType#equals(Object)}, and
-   * {@link OfferItemRestrictionRuleType#hashCode()}.
+   * Test {@link OfferItemRestrictionRuleType#equals(Object)}, and {@link OfferItemRestrictionRuleType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -129,6 +140,9 @@ public class OfferItemRestrictionRuleTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferItemRestrictionRuleType.equals(Object)",
+      "int OfferItemRestrictionRuleType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     OfferItemRestrictionRuleType offerItemRestrictionRuleType = OfferItemRestrictionRuleType.NONE;
@@ -141,8 +155,7 @@ public class OfferItemRestrictionRuleTypeDiffblueTest {
   }
 
   /**
-   * Test {@link OfferItemRestrictionRuleType#equals(Object)}, and
-   * {@link OfferItemRestrictionRuleType#hashCode()}.
+   * Test {@link OfferItemRestrictionRuleType#equals(Object)}, and {@link OfferItemRestrictionRuleType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -155,6 +168,9 @@ public class OfferItemRestrictionRuleTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferItemRestrictionRuleType.equals(Object)",
+      "int OfferItemRestrictionRuleType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     OfferItemRestrictionRuleType offerItemRestrictionRuleType = new OfferItemRestrictionRuleType();
@@ -167,35 +183,7 @@ public class OfferItemRestrictionRuleTypeDiffblueTest {
   }
 
   /**
-   * Test {@link OfferItemRestrictionRuleType#equals(Object)}, and
-   * {@link OfferItemRestrictionRuleType#hashCode()}.
-   * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
-   * </ul>
-   * <p>
-   * Methods under test:
-   * <ul>
-   *   <li>{@link OfferItemRestrictionRuleType#equals(Object)}
-   *   <li>{@link OfferItemRestrictionRuleType#hashCode()}
-   * </ul>
-   */
-  @Test
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
-    // Arrange
-    OfferItemRestrictionRuleType offerItemRestrictionRuleType = new OfferItemRestrictionRuleType("NONE",
-        "Friendly Type");
-    OfferItemRestrictionRuleType offerItemRestrictionRuleType2 = OfferItemRestrictionRuleType.NONE;
-
-    // Act and Assert
-    assertEquals(offerItemRestrictionRuleType, offerItemRestrictionRuleType2);
-    int expectedHashCodeResult = offerItemRestrictionRuleType.hashCode();
-    assertEquals(expectedHashCodeResult, offerItemRestrictionRuleType2.hashCode());
-  }
-
-  /**
-   * Test {@link OfferItemRestrictionRuleType#equals(Object)}, and
-   * {@link OfferItemRestrictionRuleType#hashCode()}.
+   * Test {@link OfferItemRestrictionRuleType#equals(Object)}, and {@link OfferItemRestrictionRuleType#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -208,6 +196,9 @@ public class OfferItemRestrictionRuleTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferItemRestrictionRuleType.equals(Object)",
+      "int OfferItemRestrictionRuleType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     OfferItemRestrictionRuleType offerItemRestrictionRuleType = OfferItemRestrictionRuleType.NONE;
@@ -228,9 +219,29 @@ public class OfferItemRestrictionRuleTypeDiffblueTest {
    * Method under test: {@link OfferItemRestrictionRuleType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferItemRestrictionRuleType.equals(Object)",
+      "int OfferItemRestrictionRuleType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(OfferItemRestrictionRuleType.QUALIFIER, OfferItemRestrictionRuleType.NONE);
+  }
+
+  /**
+   * Test {@link OfferItemRestrictionRuleType#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferItemRestrictionRuleType#equals(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferItemRestrictionRuleType.equals(Object)",
+      "int OfferItemRestrictionRuleType.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange, Act and Assert
     assertNotEquals(new OfferItemRestrictionRuleType(), OfferItemRestrictionRuleType.NONE);
   }
 
@@ -244,6 +255,9 @@ public class OfferItemRestrictionRuleTypeDiffblueTest {
    * Method under test: {@link OfferItemRestrictionRuleType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferItemRestrictionRuleType.equals(Object)",
+      "int OfferItemRestrictionRuleType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(OfferItemRestrictionRuleType.NONE, null);
@@ -259,6 +273,9 @@ public class OfferItemRestrictionRuleTypeDiffblueTest {
    * Method under test: {@link OfferItemRestrictionRuleType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferItemRestrictionRuleType.equals(Object)",
+      "int OfferItemRestrictionRuleType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(OfferItemRestrictionRuleType.NONE, "Different type to OfferItemRestrictionRuleType");

@@ -20,7 +20,10 @@ package org.broadleafcommerce.common.file.service.type;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -33,21 +36,6 @@ public class FileApplicationTypeDiffblueTest {
   private FileApplicationType fileApplicationType;
 
   /**
-   * Test {@link FileApplicationType#getInstance(String)}.
-   * <p>
-   * Method under test: {@link FileApplicationType#getInstance(String)}
-   */
-  @Test
-  public void testGetInstance() {
-    // Arrange and Act
-    FileApplicationType actualInstance = FileApplicationType.getInstance("Type");
-
-    // Assert
-    assertEquals("/", actualInstance.getFriendlyType());
-    assertEquals("Type", actualInstance.getType());
-  }
-
-  /**
    * Test getters and setters.
    * <p>
    * Methods under test:
@@ -58,6 +46,9 @@ public class FileApplicationTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FileApplicationType.<init>()", "String FileApplicationType.getFriendlyType()",
+      "String FileApplicationType.getType()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     FileApplicationType actualFileApplicationType = new FileApplicationType();
@@ -75,10 +66,11 @@ public class FileApplicationTypeDiffblueTest {
    *   <li>Then return Type is {@code Images}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FileApplicationType#FileApplicationType(String, String)}
+   * Method under test: {@link FileApplicationType#FileApplicationType(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FileApplicationType.<init>(String, String)"})
   public void testNewFileApplicationType_whenImages_thenReturnTypeIsImages() {
     // Arrange and Act
     FileApplicationType actualFileApplicationType = new FileApplicationType("Images", "Friendly Type");
@@ -95,10 +87,11 @@ public class FileApplicationTypeDiffblueTest {
    *   <li>Then return {@code Type}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FileApplicationType#FileApplicationType(String, String)}
+   * Method under test: {@link FileApplicationType#FileApplicationType(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FileApplicationType.<init>(String, String)"})
   public void testNewFileApplicationType_whenType_thenReturnType() {
     // Arrange and Act
     FileApplicationType actualFileApplicationType = new FileApplicationType("Type", "Friendly Type");
@@ -109,8 +102,7 @@ public class FileApplicationTypeDiffblueTest {
   }
 
   /**
-   * Test {@link FileApplicationType#equals(Object)}, and
-   * {@link FileApplicationType#hashCode()}.
+   * Test {@link FileApplicationType#equals(Object)}, and {@link FileApplicationType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -123,6 +115,8 @@ public class FileApplicationTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean FileApplicationType.equals(Object)", "int FileApplicationType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     FileApplicationType fileApplicationType = FileApplicationType.ALL;
@@ -135,8 +129,7 @@ public class FileApplicationTypeDiffblueTest {
   }
 
   /**
-   * Test {@link FileApplicationType#equals(Object)}, and
-   * {@link FileApplicationType#hashCode()}.
+   * Test {@link FileApplicationType#equals(Object)}, and {@link FileApplicationType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -149,6 +142,8 @@ public class FileApplicationTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean FileApplicationType.equals(Object)", "int FileApplicationType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     FileApplicationType fileApplicationType = new FileApplicationType();
@@ -161,8 +156,7 @@ public class FileApplicationTypeDiffblueTest {
   }
 
   /**
-   * Test {@link FileApplicationType#equals(Object)}, and
-   * {@link FileApplicationType#hashCode()}.
+   * Test {@link FileApplicationType#equals(Object)}, and {@link FileApplicationType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -175,6 +169,8 @@ public class FileApplicationTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean FileApplicationType.equals(Object)", "int FileApplicationType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     FileApplicationType fileApplicationType = new FileApplicationType("ALL", "Friendly Type");
@@ -187,8 +183,7 @@ public class FileApplicationTypeDiffblueTest {
   }
 
   /**
-   * Test {@link FileApplicationType#equals(Object)}, and
-   * {@link FileApplicationType#hashCode()}.
+   * Test {@link FileApplicationType#equals(Object)}, and {@link FileApplicationType#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -201,6 +196,8 @@ public class FileApplicationTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean FileApplicationType.equals(Object)", "int FileApplicationType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     FileApplicationType fileApplicationType = FileApplicationType.ALL;
@@ -221,9 +218,27 @@ public class FileApplicationTypeDiffblueTest {
    * Method under test: {@link FileApplicationType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean FileApplicationType.equals(Object)", "int FileApplicationType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(FileApplicationType.IMAGE, FileApplicationType.ALL);
+  }
+
+  /**
+   * Test {@link FileApplicationType#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link FileApplicationType#equals(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean FileApplicationType.equals(Object)", "int FileApplicationType.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange, Act and Assert
     assertNotEquals(new FileApplicationType(), FileApplicationType.ALL);
   }
 
@@ -237,6 +252,8 @@ public class FileApplicationTypeDiffblueTest {
    * Method under test: {@link FileApplicationType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean FileApplicationType.equals(Object)", "int FileApplicationType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(FileApplicationType.ALL, null);
@@ -252,6 +269,8 @@ public class FileApplicationTypeDiffblueTest {
    * Method under test: {@link FileApplicationType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean FileApplicationType.equals(Object)", "int FileApplicationType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(FileApplicationType.ALL, "Different type to FileApplicationType");

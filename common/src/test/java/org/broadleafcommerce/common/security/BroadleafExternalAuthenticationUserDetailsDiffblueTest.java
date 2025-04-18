@@ -21,31 +21,30 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 import org.broadleafcommerce.common.site.domain.Site;
 import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.junit.Test;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.experimental.categories.Category;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 public class BroadleafExternalAuthenticationUserDetailsDiffblueTest {
-  @MockBean
-  private BroadleafExternalAuthenticationUserDetails broadleafExternalAuthenticationUserDetails;
-
   /**
-   * Test
-   * {@link BroadleafExternalAuthenticationUserDetails#BroadleafExternalAuthenticationUserDetails(String, String, Collection)}.
+   * Test {@link BroadleafExternalAuthenticationUserDetails#BroadleafExternalAuthenticationUserDetails(String, String, Collection)}.
    * <ul>
    *   <li>Then return Authorities Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafExternalAuthenticationUserDetails#BroadleafExternalAuthenticationUserDetails(String, String, Collection)}
+   * Method under test: {@link BroadleafExternalAuthenticationUserDetails#BroadleafExternalAuthenticationUserDetails(String, String, Collection)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BroadleafExternalAuthenticationUserDetails.<init>(String, String, Collection)"})
   public void testNewBroadleafExternalAuthenticationUserDetails_thenReturnAuthoritiesEmpty() {
     // Arrange and Act
     BroadleafExternalAuthenticationUserDetails actualBroadleafExternalAuthenticationUserDetails = new BroadleafExternalAuthenticationUserDetails(
@@ -68,16 +67,17 @@ public class BroadleafExternalAuthenticationUserDetailsDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BroadleafExternalAuthenticationUserDetails#BroadleafExternalAuthenticationUserDetails(String, String, boolean, boolean, boolean, boolean, Collection)}.
+   * Test {@link BroadleafExternalAuthenticationUserDetails#BroadleafExternalAuthenticationUserDetails(String, String, boolean, boolean, boolean, boolean, Collection)}.
    * <ul>
    *   <li>Then return Authorities Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafExternalAuthenticationUserDetails#BroadleafExternalAuthenticationUserDetails(String, String, boolean, boolean, boolean, boolean, Collection)}
+   * Method under test: {@link BroadleafExternalAuthenticationUserDetails#BroadleafExternalAuthenticationUserDetails(String, String, boolean, boolean, boolean, boolean, Collection)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void BroadleafExternalAuthenticationUserDetails.<init>(String, String, boolean, boolean, boolean, boolean, Collection)"})
   public void testNewBroadleafExternalAuthenticationUserDetails_thenReturnAuthoritiesEmpty2() {
     // Arrange and Act
     BroadleafExternalAuthenticationUserDetails actualBroadleafExternalAuthenticationUserDetails = new BroadleafExternalAuthenticationUserDetails(
@@ -100,16 +100,16 @@ public class BroadleafExternalAuthenticationUserDetailsDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BroadleafExternalAuthenticationUserDetails#BroadleafExternalAuthenticationUserDetails(String, String, Collection)}.
+   * Test {@link BroadleafExternalAuthenticationUserDetails#BroadleafExternalAuthenticationUserDetails(String, String, Collection)}.
    * <ul>
    *   <li>Then return Authorities size is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafExternalAuthenticationUserDetails#BroadleafExternalAuthenticationUserDetails(String, String, Collection)}
+   * Method under test: {@link BroadleafExternalAuthenticationUserDetails#BroadleafExternalAuthenticationUserDetails(String, String, Collection)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BroadleafExternalAuthenticationUserDetails.<init>(String, String, Collection)"})
   public void testNewBroadleafExternalAuthenticationUserDetails_thenReturnAuthoritiesSizeIsOne() {
     // Arrange
     ArrayList<GrantedAuthority> authorities = new ArrayList<>();
@@ -136,16 +136,16 @@ public class BroadleafExternalAuthenticationUserDetailsDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BroadleafExternalAuthenticationUserDetails#BroadleafExternalAuthenticationUserDetails(String, String, Collection)}.
+   * Test {@link BroadleafExternalAuthenticationUserDetails#BroadleafExternalAuthenticationUserDetails(String, String, Collection)}.
    * <ul>
    *   <li>Then return Authorities size is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafExternalAuthenticationUserDetails#BroadleafExternalAuthenticationUserDetails(String, String, Collection)}
+   * Method under test: {@link BroadleafExternalAuthenticationUserDetails#BroadleafExternalAuthenticationUserDetails(String, String, Collection)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BroadleafExternalAuthenticationUserDetails.<init>(String, String, Collection)"})
   public void testNewBroadleafExternalAuthenticationUserDetails_thenReturnAuthoritiesSizeIsOne2() {
     // Arrange
     ArrayList<GrantedAuthority> authorities = new ArrayList<>();
@@ -173,16 +173,17 @@ public class BroadleafExternalAuthenticationUserDetailsDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BroadleafExternalAuthenticationUserDetails#BroadleafExternalAuthenticationUserDetails(String, String, boolean, boolean, boolean, boolean, Collection)}.
+   * Test {@link BroadleafExternalAuthenticationUserDetails#BroadleafExternalAuthenticationUserDetails(String, String, boolean, boolean, boolean, boolean, Collection)}.
    * <ul>
    *   <li>Then return Authorities size is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafExternalAuthenticationUserDetails#BroadleafExternalAuthenticationUserDetails(String, String, boolean, boolean, boolean, boolean, Collection)}
+   * Method under test: {@link BroadleafExternalAuthenticationUserDetails#BroadleafExternalAuthenticationUserDetails(String, String, boolean, boolean, boolean, boolean, Collection)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void BroadleafExternalAuthenticationUserDetails.<init>(String, String, boolean, boolean, boolean, boolean, Collection)"})
   public void testNewBroadleafExternalAuthenticationUserDetails_thenReturnAuthoritiesSizeIsOne3() {
     // Arrange
     ArrayList<GrantedAuthority> authorities = new ArrayList<>();
@@ -209,16 +210,17 @@ public class BroadleafExternalAuthenticationUserDetailsDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BroadleafExternalAuthenticationUserDetails#BroadleafExternalAuthenticationUserDetails(String, String, boolean, boolean, boolean, boolean, Collection)}.
+   * Test {@link BroadleafExternalAuthenticationUserDetails#BroadleafExternalAuthenticationUserDetails(String, String, boolean, boolean, boolean, boolean, Collection)}.
    * <ul>
    *   <li>Then return Authorities size is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafExternalAuthenticationUserDetails#BroadleafExternalAuthenticationUserDetails(String, String, boolean, boolean, boolean, boolean, Collection)}
+   * Method under test: {@link BroadleafExternalAuthenticationUserDetails#BroadleafExternalAuthenticationUserDetails(String, String, boolean, boolean, boolean, boolean, Collection)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void BroadleafExternalAuthenticationUserDetails.<init>(String, String, boolean, boolean, boolean, boolean, Collection)"})
   public void testNewBroadleafExternalAuthenticationUserDetails_thenReturnAuthoritiesSizeIsOne4() {
     // Arrange
     ArrayList<GrantedAuthority> authorities = new ArrayList<>();
@@ -261,6 +263,15 @@ public class BroadleafExternalAuthenticationUserDetailsDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BroadleafExternalAuthenticationUserDetails.getEmail()",
+      "String BroadleafExternalAuthenticationUserDetails.getFirstName()",
+      "String BroadleafExternalAuthenticationUserDetails.getLastName()",
+      "Site BroadleafExternalAuthenticationUserDetails.getSite()",
+      "void BroadleafExternalAuthenticationUserDetails.setEmail(String)",
+      "void BroadleafExternalAuthenticationUserDetails.setFirstName(String)",
+      "void BroadleafExternalAuthenticationUserDetails.setLastName(String)",
+      "void BroadleafExternalAuthenticationUserDetails.setSite(Site)"})
   public void testGettersAndSetters() {
     // Arrange
     BroadleafExternalAuthenticationUserDetails broadleafExternalAuthenticationUserDetails = new BroadleafExternalAuthenticationUserDetails(
@@ -276,7 +287,7 @@ public class BroadleafExternalAuthenticationUserDetailsDiffblueTest {
     String actualFirstName = broadleafExternalAuthenticationUserDetails.getFirstName();
     String actualLastName = broadleafExternalAuthenticationUserDetails.getLastName();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Doe", actualLastName);
     assertEquals("Jane", actualFirstName);
     assertEquals("jane.doe@example.org", actualEmail);

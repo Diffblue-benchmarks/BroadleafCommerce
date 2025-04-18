@@ -19,7 +19,10 @@ package org.broadleafcommerce.common.site.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class ThemeDTODiffblueTest {
   /**
@@ -37,6 +40,10 @@ public class ThemeDTODiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ThemeDTO.<init>()", "void ThemeDTO.<init>(String, String)", "Long ThemeDTO.getId()",
+      "String ThemeDTO.getName()", "String ThemeDTO.getPath()", "void ThemeDTO.setId(Long)",
+      "void ThemeDTO.setName(String)", "void ThemeDTO.setPath(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     ThemeDTO actualThemeDTO = new ThemeDTO();
@@ -46,7 +53,7 @@ public class ThemeDTODiffblueTest {
     Long actualId = actualThemeDTO.getId();
     String actualName = actualThemeDTO.getName();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Name", actualName);
     assertEquals("Path", actualThemeDTO.getPath());
     assertEquals(1L, actualId.longValue());
@@ -70,6 +77,10 @@ public class ThemeDTODiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ThemeDTO.<init>()", "void ThemeDTO.<init>(String, String)", "Long ThemeDTO.getId()",
+      "String ThemeDTO.getName()", "String ThemeDTO.getPath()", "void ThemeDTO.setId(Long)",
+      "void ThemeDTO.setName(String)", "void ThemeDTO.setPath(String)"})
   public void testGettersAndSetters_whenName() {
     // Arrange and Act
     ThemeDTO actualThemeDTO = new ThemeDTO("Name", "Path");
@@ -79,7 +90,7 @@ public class ThemeDTODiffblueTest {
     Long actualId = actualThemeDTO.getId();
     String actualName = actualThemeDTO.getName();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Name", actualName);
     assertEquals("Path", actualThemeDTO.getPath());
     assertEquals(1L, actualId.longValue());
@@ -99,6 +110,8 @@ public class ThemeDTODiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ThemeDTO.equals(Object)", "int ThemeDTO.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     ThemeDTO themeDTO = new ThemeDTO("Name", "Path");
@@ -124,6 +137,8 @@ public class ThemeDTODiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ThemeDTO.equals(Object)", "int ThemeDTO.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     ThemeDTO themeDTO = new ThemeDTO("Name", "Path");
@@ -144,6 +159,8 @@ public class ThemeDTODiffblueTest {
    * Method under test: {@link ThemeDTO#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ThemeDTO.equals(Object)", "int ThemeDTO.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     ThemeDTO themeDTO = new ThemeDTO("Name", "Path");
@@ -163,6 +180,8 @@ public class ThemeDTODiffblueTest {
    * Method under test: {@link ThemeDTO#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ThemeDTO.equals(Object)", "int ThemeDTO.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new ThemeDTO("Name", "Path"), null);
@@ -178,6 +197,8 @@ public class ThemeDTODiffblueTest {
    * Method under test: {@link ThemeDTO#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ThemeDTO.equals(Object)", "int ThemeDTO.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new ThemeDTO("Name", "Path"), "Different type to ThemeDTO");

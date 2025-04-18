@@ -20,34 +20,12 @@ package org.broadleafcommerce.common.time;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThrows;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.junit.experimental.categories.Category;
 
-@ContextConfiguration(classes = {MonthType.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class MonthTypeDiffblueTest {
-  @Autowired
-  private MonthType monthType;
-
-  /**
-   * Test {@link MonthType#getInstance(String)}.
-   * <p>
-   * Method under test: {@link MonthType#getInstance(String)}
-   */
-  @Test
-  public void testGetInstance() {
-    // Arrange and Act
-    MonthType actualInstance = MonthType.getInstance("Type");
-
-    // Assert
-    assertEquals("Friendly Type", actualInstance.getFriendlyType());
-    assertEquals("Type", actualInstance.getType());
-  }
-
   /**
    * Test getters and setters.
    * <p>
@@ -59,6 +37,8 @@ public class MonthTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void MonthType.<init>()", "String MonthType.getFriendlyType()", "String MonthType.getType()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     MonthType actualMonthType = new MonthType();
@@ -67,36 +47,6 @@ public class MonthTypeDiffblueTest {
     // Assert
     assertNull(actualFriendlyType);
     assertNull(actualMonthType.getType());
-  }
-
-  /**
-   * Test {@link MonthType#MonthType(String, String)}.
-   * <ul>
-   *   <li>When {@code Cannot add the type: (}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MonthType#MonthType(String, String)}
-   */
-  @Test
-  public void testNewMonthType_whenCannotAddTheType() {
-    // Arrange, Act and Assert
-    assertThrows(RuntimeException.class, () -> new MonthType("Cannot add the type: (", "Friendly Type"));
-
-  }
-
-  /**
-   * Test {@link MonthType#MonthType(String, String)}.
-   * <ul>
-   *   <li>When {@code Type}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MonthType#MonthType(String, String)}
-   */
-  @Test
-  public void testNewMonthType_whenType() {
-    // Arrange, Act and Assert
-    assertThrows(RuntimeException.class, () -> new MonthType("Type", "Friendly Type"));
-
   }
 
   /**
@@ -113,6 +63,8 @@ public class MonthTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MonthType.equals(Object)", "int MonthType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     MonthType monthType = MonthType.APRIL;
@@ -138,6 +90,8 @@ public class MonthTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MonthType.equals(Object)", "int MonthType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     MonthType monthType = new MonthType();
@@ -163,6 +117,8 @@ public class MonthTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MonthType.equals(Object)", "int MonthType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     MonthType monthType = MonthType.APRIL;
@@ -183,9 +139,27 @@ public class MonthTypeDiffblueTest {
    * Method under test: {@link MonthType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MonthType.equals(Object)", "int MonthType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(MonthType.AUGUST, MonthType.APRIL);
+  }
+
+  /**
+   * Test {@link MonthType#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MonthType#equals(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MonthType.equals(Object)", "int MonthType.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange, Act and Assert
     assertNotEquals(new MonthType(), MonthType.APRIL);
   }
 
@@ -199,6 +173,8 @@ public class MonthTypeDiffblueTest {
    * Method under test: {@link MonthType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MonthType.equals(Object)", "int MonthType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(MonthType.APRIL, null);
@@ -214,6 +190,8 @@ public class MonthTypeDiffblueTest {
    * Method under test: {@link MonthType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MonthType.equals(Object)", "int MonthType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(MonthType.APRIL, "Different type to MonthType");

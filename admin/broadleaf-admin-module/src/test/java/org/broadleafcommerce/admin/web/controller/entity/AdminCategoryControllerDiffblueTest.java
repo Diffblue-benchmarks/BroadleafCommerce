@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Admin Module
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.admin.web.controller.entity;
 
 import static org.junit.Assert.assertEquals;
@@ -8,10 +25,10 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.BiFunction;
-import org.broadleafcommerce.common.persistence.EntityConfiguration;
 import org.broadleafcommerce.common.persistence.EntityDuplicator;
 import org.broadleafcommerce.common.sandbox.SandBoxHelper;
 import org.broadleafcommerce.common.security.service.ExploitProtectionService;
@@ -25,161 +42,64 @@ import org.broadleafcommerce.openadmin.server.security.service.RowLevelSecurityS
 import org.broadleafcommerce.openadmin.server.security.service.navigation.AdminNavigationService;
 import org.broadleafcommerce.openadmin.server.service.AdminEntityService;
 import org.broadleafcommerce.openadmin.server.service.AdminSectionCustomCriteriaService;
-import org.broadleafcommerce.openadmin.server.service.extension.FilterProductTypePersistenceHandlerExtensionManager;
-import org.broadleafcommerce.openadmin.server.service.persistence.extension.AdornedTargetAutoPopulateExtensionManager;
-import org.broadleafcommerce.openadmin.web.controller.AdminAbstractControllerExtensionManager;
-import org.broadleafcommerce.openadmin.web.dao.MultipleCatalogExtensionManager;
 import org.broadleafcommerce.openadmin.web.form.entity.CodeField;
 import org.broadleafcommerce.openadmin.web.form.entity.EntityForm;
-import org.broadleafcommerce.openadmin.web.form.entity.EntityFormValidator;
 import org.broadleafcommerce.openadmin.web.form.entity.Field;
 import org.broadleafcommerce.openadmin.web.service.FormBuilderService;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ContextConfiguration(classes = {AdminCategoryController.class})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class AdminCategoryControllerDiffblueTest {
-  @MockBean(name = "blAdminAbstractControllerExtensionManager")
-  private AdminAbstractControllerExtensionManager adminAbstractControllerExtensionManager;
-
-  @Autowired
+  @InjectMocks
   private AdminCategoryController adminCategoryController;
 
-  @MockBean
+  @Mock
   private AdminEntityService adminEntityService;
 
-  @MockBean
+  @Mock
   private AdminNavigationService adminNavigationService;
 
-  @MockBean
+  @Mock
   private AdminSectionCustomCriteriaService adminSectionCustomCriteriaService;
 
-  @MockBean
+  @Mock
   private AdminUserDao adminUserDao;
 
-  @MockBean(name = "blAdornedTargetAutoPopulateExtensionManager")
-  private AdornedTargetAutoPopulateExtensionManager adornedTargetAutoPopulateExtensionManager;
-
-  @MockBean
+  @Mock
   private CatalogService catalogService;
 
-  @MockBean
+  @Mock
   private ClassNameRequestParamValidationService classNameRequestParamValidationService;
 
-  @MockBean
+  @Mock
   private DynamicEntityDao dynamicEntityDao;
 
-  @MockBean(name = "blEntityConfiguration")
-  private EntityConfiguration entityConfiguration;
-
-  @MockBean
+  @Mock
   private EntityDuplicator entityDuplicator;
 
-  @MockBean(name = "blEntityFormValidator")
-  private EntityFormValidator entityFormValidator;
-
-  @MockBean
+  @Mock
   private ExploitProtectionService exploitProtectionService;
 
-  @MockBean(name = "blFilterProductTypePersistenceHandlerExtensionManager")
-  private FilterProductTypePersistenceHandlerExtensionManager filterProductTypePersistenceHandlerExtensionManager;
-
-  @MockBean
+  @Mock
   private FormBuilderService formBuilderService;
 
-  @MockBean
+  @Mock
   private GenericEntityService genericEntityService;
 
-  @MockBean(name = "blMultipleCatalogExtensionManager")
-  private MultipleCatalogExtensionManager multipleCatalogExtensionManager;
-
-  @MockBean
+  @Mock
   private RowLevelSecurityService rowLevelSecurityService;
 
-  @MockBean
+  @Mock
   private SandBoxHelper sandBoxHelper;
 
-  @MockBean
+  @Mock
   private SecurityVerifier securityVerifier;
-
-  /**
-   * Test {@link AdminCategoryController#getSectionKey(Map)}.
-   * <p>
-   * Method under test: {@link AdminCategoryController#getSectionKey(Map)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetSectionKey() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.web.controller.entity;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.admin.web.controller.entity.AdminCategoryController.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass351 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blAdminAbstractControllerExtensionManager") org.broadleafcommerce.openadmin.web.controller.AdminAbstractControllerExtensionManager adminAbstractControllerExtensionManager;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.web.controller.entity.AdminCategoryController adminCategoryController;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminEntityService adminEntityService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.service.navigation.AdminNavigationService adminNavigationService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminSectionCustomCriteriaService adminSectionCustomCriteriaService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.dao.AdminUserDao adminUserDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blAdornedTargetAutoPopulateExtensionManager") org.broadleafcommerce.openadmin.server.service.persistence.extension.AdornedTargetAutoPopulateExtensionManager adornedTargetAutoPopulateExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.service.CatalogService catalogService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.security.ClassNameRequestParamValidationService classNameRequestParamValidationService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.dao.DynamicEntityDao dynamicEntityDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityConfiguration") org.broadleafcommerce.common.persistence.EntityConfiguration entityConfiguration;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.persistence.EntityDuplicator entityDuplicator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityFormValidator") org.broadleafcommerce.openadmin.web.form.entity.EntityFormValidator entityFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.security.service.ExploitProtectionService exploitProtectionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blFilterProductTypePersistenceHandlerExtensionManager") org.broadleafcommerce.openadmin.server.service.extension.FilterProductTypePersistenceHandlerExtensionManager filterProductTypePersistenceHandlerExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.web.service.FormBuilderService formBuilderService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.service.GenericEntityService genericEntityService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blMultipleCatalogExtensionManager") org.broadleafcommerce.openadmin.web.dao.MultipleCatalogExtensionManager multipleCatalogExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.service.RowLevelSecurityService rowLevelSecurityService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.sandbox.SandBoxHelper sandBoxHelper;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.remote.SecurityVerifier securityVerifier;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    adminCategoryController.getSectionKey(new HashMap<>());
-  }
-
-  /**
-   * Test {@link AdminCategoryController#getSectionKey(Map)}.
-   * <ul>
-   *   <li>Given {@link BiFunction}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AdminCategoryController#getSectionKey(Map)}
-   */
-  @Test
-  public void testGetSectionKey_givenBiFunction() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdminCategoryController adminCategoryController = new AdminCategoryController();
-
-    HashMap<String, String> pathVars = new HashMap<>();
-    pathVars.computeIfPresent("sectionKey", mock(BiFunction.class));
-    pathVars.put("sectionKey", "sectionKey");
-
-    // Act and Assert
-    assertEquals("sectionKey", adminCategoryController.getSectionKey(pathVars));
-  }
 
   /**
    * Test {@link AdminCategoryController#getSectionKey(Map)}.
@@ -191,12 +111,10 @@ public class AdminCategoryControllerDiffblueTest {
    * Method under test: {@link AdminCategoryController#getSectionKey(Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String AdminCategoryController.getSectionKey(Map)"})
   public void testGetSectionKey_givenSectionKey_thenReturnSectionKey() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminCategoryController adminCategoryController = new AdminCategoryController();
-
     HashMap<String, String> pathVars = new HashMap<>();
     pathVars.put("sectionKey", "sectionKey");
 
@@ -214,86 +132,27 @@ public class AdminCategoryControllerDiffblueTest {
    * Method under test: {@link AdminCategoryController#getSectionKey(Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String AdminCategoryController.getSectionKey(Map)"})
   public void testGetSectionKey_whenHashMap_thenReturnSection_key() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdminCategoryController adminCategoryController = new AdminCategoryController();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertEquals(AdminCategoryController.SECTION_KEY, adminCategoryController.getSectionKey(new HashMap<>()));
   }
 
   /**
    * Test {@link AdminCategoryController#modifyAddEntityForm(EntityForm, Map)}.
-   * <p>
-   * Method under test:
-   * {@link AdminCategoryController#modifyAddEntityForm(EntityForm, Map)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testModifyAddEntityForm() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.web.controller.entity;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.admin.web.controller.entity.AdminCategoryController.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass352 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blAdminAbstractControllerExtensionManager") org.broadleafcommerce.openadmin.web.controller.AdminAbstractControllerExtensionManager adminAbstractControllerExtensionManager;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.web.controller.entity.AdminCategoryController adminCategoryController;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminEntityService adminEntityService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.service.navigation.AdminNavigationService adminNavigationService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminSectionCustomCriteriaService adminSectionCustomCriteriaService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.dao.AdminUserDao adminUserDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blAdornedTargetAutoPopulateExtensionManager") org.broadleafcommerce.openadmin.server.service.persistence.extension.AdornedTargetAutoPopulateExtensionManager adornedTargetAutoPopulateExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.service.CatalogService catalogService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.security.ClassNameRequestParamValidationService classNameRequestParamValidationService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.dao.DynamicEntityDao dynamicEntityDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityConfiguration") org.broadleafcommerce.common.persistence.EntityConfiguration entityConfiguration;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.persistence.EntityDuplicator entityDuplicator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityFormValidator") org.broadleafcommerce.openadmin.web.form.entity.EntityFormValidator entityFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.security.service.ExploitProtectionService exploitProtectionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blFilterProductTypePersistenceHandlerExtensionManager") org.broadleafcommerce.openadmin.server.service.extension.FilterProductTypePersistenceHandlerExtensionManager filterProductTypePersistenceHandlerExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.web.service.FormBuilderService formBuilderService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.service.GenericEntityService genericEntityService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blMultipleCatalogExtensionManager") org.broadleafcommerce.openadmin.web.dao.MultipleCatalogExtensionManager multipleCatalogExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.service.RowLevelSecurityService rowLevelSecurityService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.sandbox.SandBoxHelper sandBoxHelper;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.remote.SecurityVerifier securityVerifier;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    EntityForm ef = new EntityForm();
-
-    // Act
-    adminCategoryController.modifyAddEntityForm(ef, new HashMap<>());
-  }
-
-  /**
-   * Test {@link AdminCategoryController#modifyAddEntityForm(EntityForm, Map)}.
    * <ul>
-   *   <li>Given {@link CodeField} {@link Field#withAttribute(String, Object)}
-   * return {@link Field} (default constructor).</li>
+   *   <li>Given {@link CodeField} {@link Field#withAttribute(String, Object)} return {@link Field} (default constructor).</li>
    *   <li>Then calls {@link Field#getValue()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminCategoryController#modifyAddEntityForm(EntityForm, Map)}
+   * Method under test: {@link AdminCategoryController#modifyAddEntityForm(EntityForm, Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminCategoryController.modifyAddEntityForm(EntityForm, Map)"})
   public void testModifyAddEntityForm_givenCodeFieldWithAttributeReturnField_thenCallsGetValue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminCategoryController adminCategoryController = new AdminCategoryController();
     CodeField codeField = mock(CodeField.class);
     when(codeField.getValue()).thenReturn("42");
     when(codeField.withAttribute(Mockito.<String>any(), Mockito.<Object>any())).thenReturn(new Field());
@@ -314,20 +173,17 @@ public class AdminCategoryControllerDiffblueTest {
   /**
    * Test {@link AdminCategoryController#modifyAddEntityForm(EntityForm, Map)}.
    * <ul>
-   *   <li>Given {@link CodeField} {@link Field#withAttribute(String, Object)}
-   * return {@link Field} (default constructor).</li>
+   *   <li>Given {@link CodeField} {@link Field#withAttribute(String, Object)} return {@link Field} (default constructor).</li>
    *   <li>Then calls {@link Field#getValue()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminCategoryController#modifyAddEntityForm(EntityForm, Map)}
+   * Method under test: {@link AdminCategoryController#modifyAddEntityForm(EntityForm, Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminCategoryController.modifyAddEntityForm(EntityForm, Map)"})
   public void testModifyAddEntityForm_givenCodeFieldWithAttributeReturnField_thenCallsGetValue2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminCategoryController adminCategoryController = new AdminCategoryController();
     CodeField codeField = mock(CodeField.class);
     when(codeField.withAttribute(Mockito.<String>any(), Mockito.<Object>any())).thenReturn(new Field());
     CodeField codeField2 = mock(CodeField.class);
@@ -351,20 +207,17 @@ public class AdminCategoryControllerDiffblueTest {
   /**
    * Test {@link AdminCategoryController#modifyAddEntityForm(EntityForm, Map)}.
    * <ul>
-   *   <li>Given {@link CodeField} {@link Field#withAttribute(String, Object)}
-   * return {@link Field} (default constructor).</li>
+   *   <li>Given {@link CodeField} {@link Field#withAttribute(String, Object)} return {@link Field} (default constructor).</li>
    *   <li>Then calls {@link Field#getValue()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminCategoryController#modifyAddEntityForm(EntityForm, Map)}
+   * Method under test: {@link AdminCategoryController#modifyAddEntityForm(EntityForm, Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminCategoryController.modifyAddEntityForm(EntityForm, Map)"})
   public void testModifyAddEntityForm_givenCodeFieldWithAttributeReturnField_thenCallsGetValue3() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminCategoryController adminCategoryController = new AdminCategoryController();
     CodeField codeField = mock(CodeField.class);
     when(codeField.withAttribute(Mockito.<String>any(), Mockito.<Object>any())).thenReturn(new Field());
     CodeField codeField2 = mock(CodeField.class);
@@ -392,19 +245,16 @@ public class AdminCategoryControllerDiffblueTest {
    * Test {@link AdminCategoryController#modifyAddEntityForm(EntityForm, Map)}.
    * <ul>
    *   <li>Given {@link Field} (default constructor).</li>
-   *   <li>When {@link EntityForm} {@link EntityForm#findField(String)} return
-   * {@link Field} (default constructor).</li>
+   *   <li>When {@link EntityForm} {@link EntityForm#findField(String)} return {@link Field} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminCategoryController#modifyAddEntityForm(EntityForm, Map)}
+   * Method under test: {@link AdminCategoryController#modifyAddEntityForm(EntityForm, Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminCategoryController.modifyAddEntityForm(EntityForm, Map)"})
   public void testModifyAddEntityForm_givenField_whenEntityFormFindFieldReturnField() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminCategoryController adminCategoryController = new AdminCategoryController();
     EntityForm ef = mock(EntityForm.class);
     when(ef.findField(Mockito.<String>any())).thenReturn(new Field());
 
@@ -421,15 +271,13 @@ public class AdminCategoryControllerDiffblueTest {
    *   <li>Then calls {@link Field#withFieldType(String)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminCategoryController#modifyAddEntityForm(EntityForm, Map)}
+   * Method under test: {@link AdminCategoryController#modifyAddEntityForm(EntityForm, Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminCategoryController.modifyAddEntityForm(EntityForm, Map)"})
   public void testModifyAddEntityForm_thenCallsWithFieldType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminCategoryController adminCategoryController = new AdminCategoryController();
     CodeField codeField = mock(CodeField.class);
     when(codeField.withFieldType(Mockito.<String>any())).thenReturn(new Field());
     CodeField codeField2 = mock(CodeField.class);

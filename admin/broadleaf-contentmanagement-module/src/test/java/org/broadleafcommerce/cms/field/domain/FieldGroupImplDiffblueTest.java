@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce CMS Module
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.cms.field.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -10,6 +27,8 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import org.broadleafcommerce.cms.structure.domain.StructuredContentFieldGroupXref;
@@ -20,17 +39,18 @@ import org.broadleafcommerce.common.service.GenericEntityService;
 import org.broadleafcommerce.common.site.domain.CatalogImpl;
 import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.mockito.Mockito;
 
 public class FieldGroupImplDiffblueTest {
   /**
-   * Test
-   * {@link FieldGroupImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * Test {@link FieldGroupImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <p>
-   * Method under test:
-   * {@link FieldGroupImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link FieldGroupImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse FieldGroupImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
     // Arrange
     FieldGroupImpl fieldGroupImpl = new FieldGroupImpl();
@@ -49,16 +69,16 @@ public class FieldGroupImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FieldGroupImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * Test {@link FieldGroupImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <ul>
    *   <li>Then Clone return {@link FieldGroupImpl}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FieldGroupImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link FieldGroupImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse FieldGroupImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance_thenCloneReturnFieldGroupImpl() throws CloneNotSupportedException {
     // Arrange
     FieldGroupImpl fieldGroupImpl = new FieldGroupImpl();
@@ -94,13 +114,14 @@ public class FieldGroupImplDiffblueTest {
   /**
    * Test {@link FieldGroupImpl#isMasterFieldGroup()}.
    * <ul>
-   *   <li>Given {@link FieldGroupImpl} (default constructor) IsMasterFieldGroup is
-   * {@code null}.</li>
+   *   <li>Given {@link FieldGroupImpl} (default constructor) IsMasterFieldGroup is {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link FieldGroupImpl#isMasterFieldGroup()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean FieldGroupImpl.isMasterFieldGroup()"})
   public void testIsMasterFieldGroup_givenFieldGroupImplIsMasterFieldGroupIsNull() {
     // Arrange
     FieldGroupImpl fieldGroupImpl = new FieldGroupImpl();
@@ -125,6 +146,8 @@ public class FieldGroupImplDiffblueTest {
    * Method under test: {@link FieldGroupImpl#isMasterFieldGroup()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean FieldGroupImpl.isMasterFieldGroup()"})
   public void testIsMasterFieldGroup_givenFieldGroupImpl_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse((new FieldGroupImpl()).isMasterFieldGroup());
@@ -139,6 +162,8 @@ public class FieldGroupImplDiffblueTest {
    * Method under test: {@link FieldGroupImpl#isMasterFieldGroup()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean FieldGroupImpl.isMasterFieldGroup()"})
   public void testIsMasterFieldGroup_thenReturnTrue() {
     // Arrange
     FieldGroupImpl fieldGroupImpl = new FieldGroupImpl();
@@ -173,6 +198,13 @@ public class FieldGroupImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FieldGroupImpl.<init>()", "List FieldGroupImpl.getFieldDefinitions()",
+      "List FieldGroupImpl.getFieldGroupXrefs()", "Long FieldGroupImpl.getId()",
+      "Boolean FieldGroupImpl.getInitCollapsedFlag()", "String FieldGroupImpl.getName()",
+      "void FieldGroupImpl.setFieldDefinitions(List)", "void FieldGroupImpl.setFieldGroupXrefs(List)",
+      "void FieldGroupImpl.setId(Long)", "void FieldGroupImpl.setInitCollapsedFlag(Boolean)",
+      "void FieldGroupImpl.setIsMasterFieldGroup(Boolean)", "void FieldGroupImpl.setName(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     FieldGroupImpl actualFieldGroupImpl = new FieldGroupImpl();
@@ -189,7 +221,7 @@ public class FieldGroupImplDiffblueTest {
     Long actualId = actualFieldGroupImpl.getId();
     Boolean actualInitCollapsedFlag = actualFieldGroupImpl.getInitCollapsedFlag();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Name", actualFieldGroupImpl.getName());
     assertEquals(1L, actualId.longValue());
     assertTrue(actualFieldDefinitions.isEmpty());

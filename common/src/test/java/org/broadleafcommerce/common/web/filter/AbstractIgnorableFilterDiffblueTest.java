@@ -18,25 +18,29 @@
 package org.broadleafcommerce.common.web.filter;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.IOException;
 import java.nio.file.Paths;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
-import javax.servlet.ServletRequestWrapper;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import org.broadleafcommerce.api.common.web.filter.StatelessSessionFilter;
 import org.broadleafcommerce.common.web.util.FileSystemResponseWrapper;
 import org.broadleafcommerce.common.web.util.StatusExposingServletResponse;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,14 +58,18 @@ public class AbstractIgnorableFilterDiffblueTest {
   private AbstractIgnorableFilter abstractIgnorableFilter;
 
   /**
-   * Test
-   * {@link AbstractIgnorableFilter#doFilter(ServletRequest, ServletResponse, FilterChain)}.
+   * Test {@link AbstractIgnorableFilter#doFilter(ServletRequest, ServletResponse, FilterChain)}.
+   * <ul>
+   *   <li>When {@link FilterChain} {@link FilterChain#doFilter(ServletRequest, ServletResponse)} does nothing.</li>
+   *   <li>Then calls {@link FilterChain#doFilter(ServletRequest, ServletResponse)}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link AbstractIgnorableFilter#doFilter(ServletRequest, ServletResponse, FilterChain)}
+   * Method under test: {@link AbstractIgnorableFilter#doFilter(ServletRequest, ServletResponse, FilterChain)}
    */
   @Test
-  public void testDoFilter() throws IOException, ServletException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AbstractIgnorableFilter.doFilter(ServletRequest, ServletResponse, FilterChain)"})
+  public void testDoFilter_whenFilterChainDoFilterDoesNothing_thenCallsDoFilter() throws IOException, ServletException {
     // Arrange
     SessionlessHttpServletRequestWrapper request = new SessionlessHttpServletRequestWrapper(
         new MockHttpServletRequest());
@@ -79,47 +87,68 @@ public class AbstractIgnorableFilterDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AbstractIgnorableFilter#doFilter(ServletRequest, ServletResponse, FilterChain)}.
+   * Test {@link AbstractIgnorableFilter#isIgnored(HttpServletRequest, HttpServletResponse)}.
    * <ul>
-   *   <li>Given {@code true}.</li>
-   *   <li>Then calls {@link ServletRequestWrapper#getAttribute(String)}.</li>
+   *   <li>Given {@link StatelessSessionFilter} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AbstractIgnorableFilter#doFilter(ServletRequest, ServletResponse, FilterChain)}
+   * Method under test: {@link AbstractIgnorableFilter#isIgnored(HttpServletRequest, HttpServletResponse)}
    */
   @Test
-  public void testDoFilter_givenTrue_thenCallsGetAttribute() throws IOException, ServletException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AbstractIgnorableFilter.isIgnored(HttpServletRequest, HttpServletResponse)"})
+  public void testIsIgnored_givenStatelessSessionFilter() throws IOException {
     // Arrange
-    SessionlessHttpServletRequestWrapper request = mock(SessionlessHttpServletRequestWrapper.class);
-    when(request.getAttribute(Mockito.<String>any())).thenReturn(true);
-    SessionlessHttpServletRequestWrapper request2 = new SessionlessHttpServletRequestWrapper(request);
+    StatelessSessionFilter statelessSessionFilter = new StatelessSessionFilter();
+    SessionlessHttpServletRequestWrapper httpServletRequest = new SessionlessHttpServletRequestWrapper(
+        new HttpServletRequestWrapper(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest())));
     MockHttpServletResponse response = new MockHttpServletResponse();
-    StatusExposingServletResponse response2 = new StatusExposingServletResponse(
-        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
-    FilterChain chain = mock(FilterChain.class);
-    doNothing().when(chain).doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
 
-    // Act
-    abstractIgnorableFilter.doFilter(request2, response2, chain);
-
-    // Assert
-    verify(chain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
-    verify(request).getAttribute(eq("blUriIsFilterIgnored"));
+    // Act and Assert
+    assertFalse(statelessSessionFilter.isIgnored(httpServletRequest,
+        new StatusExposingServletResponse(new FileSystemResponseWrapper(response,
+            Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()))));
   }
 
   /**
-   * Test
-   * {@link AbstractIgnorableFilter#isIgnored(HttpServletRequest, HttpServletResponse)}.
+   * Test {@link AbstractIgnorableFilter#isIgnored(HttpServletRequest, HttpServletResponse)}.
+   * <ul>
+   *   <li>Given {@code true}.</li>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AbstractIgnorableFilter#isIgnored(HttpServletRequest, HttpServletResponse)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AbstractIgnorableFilter.isIgnored(HttpServletRequest, HttpServletResponse)"})
+  public void testIsIgnored_givenTrue_thenReturnTrue() throws IOException {
+    // Arrange
+    SessionlessHttpServletRequestWrapper httpServletRequest = mock(SessionlessHttpServletRequestWrapper.class);
+    when(httpServletRequest.getAttribute(Mockito.<String>any())).thenReturn(true);
+    MockHttpServletResponse response = new MockHttpServletResponse();
+
+    // Act
+    boolean actualIsIgnoredResult = abstractIgnorableFilter.isIgnored(httpServletRequest,
+        new StatusExposingServletResponse(new FileSystemResponseWrapper(response,
+            Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile())));
+
+    // Assert
+    verify(httpServletRequest).getAttribute(eq("blUriIsFilterIgnored"));
+    assertTrue(actualIsIgnoredResult);
+  }
+
+  /**
+   * Test {@link AbstractIgnorableFilter#isIgnored(HttpServletRequest, HttpServletResponse)}.
    * <ul>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AbstractIgnorableFilter#isIgnored(HttpServletRequest, HttpServletResponse)}
+   * Method under test: {@link AbstractIgnorableFilter#isIgnored(HttpServletRequest, HttpServletResponse)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AbstractIgnorableFilter.isIgnored(HttpServletRequest, HttpServletResponse)"})
   public void testIsIgnored_thenReturnFalse() throws IOException {
     // Arrange
     SessionlessHttpServletRequestWrapper httpServletRequest = new SessionlessHttpServletRequestWrapper(

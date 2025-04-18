@@ -1,36 +1,31 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.web.controller.modal;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThrows;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.junit.experimental.categories.Category;
 
-@ContextConfiguration(classes = {ModalHeaderType.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class ModalHeaderTypeDiffblueTest {
-  @Autowired
-  private ModalHeaderType modalHeaderType;
-
-  /**
-   * Test {@link ModalHeaderType#getInstance(String)}.
-   * <p>
-   * Method under test: {@link ModalHeaderType#getInstance(String)}
-   */
-  @Test
-  public void testGetInstance() {
-    // Arrange and Act
-    ModalHeaderType actualInstance = ModalHeaderType.getInstance("Type");
-
-    // Assert
-    assertEquals("Friendly Type", actualInstance.getFriendlyType());
-    assertEquals("Type", actualInstance.getType());
-  }
-
   /**
    * Test getters and setters.
    * <p>
@@ -42,6 +37,9 @@ public class ModalHeaderTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ModalHeaderType.<init>()", "String ModalHeaderType.getFriendlyType()",
+      "String ModalHeaderType.getType()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     ModalHeaderType actualModalHeaderType = new ModalHeaderType();
@@ -53,38 +51,7 @@ public class ModalHeaderTypeDiffblueTest {
   }
 
   /**
-   * Test {@link ModalHeaderType#ModalHeaderType(String, String)}.
-   * <ul>
-   *   <li>When {@code Cannot add the type: (}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ModalHeaderType#ModalHeaderType(String, String)}
-   */
-  @Test
-  public void testNewModalHeaderType_whenCannotAddTheType() {
-    // Arrange, Act and Assert
-    assertThrows(RuntimeException.class, () -> new ModalHeaderType("Cannot add the type: (", "Friendly Type"));
-
-  }
-
-  /**
-   * Test {@link ModalHeaderType#ModalHeaderType(String, String)}.
-   * <ul>
-   *   <li>When {@code Type}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ModalHeaderType#ModalHeaderType(String, String)}
-   */
-  @Test
-  public void testNewModalHeaderType_whenType() {
-    // Arrange, Act and Assert
-    assertThrows(RuntimeException.class, () -> new ModalHeaderType("Type", "Friendly Type"));
-
-  }
-
-  /**
-   * Test {@link ModalHeaderType#equals(Object)}, and
-   * {@link ModalHeaderType#hashCode()}.
+   * Test {@link ModalHeaderType#equals(Object)}, and {@link ModalHeaderType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -97,6 +64,8 @@ public class ModalHeaderTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ModalHeaderType.equals(Object)", "int ModalHeaderType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     ModalHeaderType modalHeaderType = ModalHeaderType.ADD_COLLECTION_ITEM;
@@ -109,8 +78,7 @@ public class ModalHeaderTypeDiffblueTest {
   }
 
   /**
-   * Test {@link ModalHeaderType#equals(Object)}, and
-   * {@link ModalHeaderType#hashCode()}.
+   * Test {@link ModalHeaderType#equals(Object)}, and {@link ModalHeaderType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -123,6 +91,8 @@ public class ModalHeaderTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ModalHeaderType.equals(Object)", "int ModalHeaderType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     ModalHeaderType modalHeaderType = new ModalHeaderType();
@@ -135,8 +105,7 @@ public class ModalHeaderTypeDiffblueTest {
   }
 
   /**
-   * Test {@link ModalHeaderType#equals(Object)}, and
-   * {@link ModalHeaderType#hashCode()}.
+   * Test {@link ModalHeaderType#equals(Object)}, and {@link ModalHeaderType#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -149,6 +118,8 @@ public class ModalHeaderTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ModalHeaderType.equals(Object)", "int ModalHeaderType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     ModalHeaderType modalHeaderType = ModalHeaderType.ADD_COLLECTION_ITEM;
@@ -169,9 +140,27 @@ public class ModalHeaderTypeDiffblueTest {
    * Method under test: {@link ModalHeaderType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ModalHeaderType.equals(Object)", "int ModalHeaderType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(ModalHeaderType.ADD_ENTITY, ModalHeaderType.ADD_COLLECTION_ITEM);
+  }
+
+  /**
+   * Test {@link ModalHeaderType#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ModalHeaderType#equals(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ModalHeaderType.equals(Object)", "int ModalHeaderType.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange, Act and Assert
     assertNotEquals(new ModalHeaderType(), ModalHeaderType.ADD_COLLECTION_ITEM);
   }
 
@@ -185,6 +174,8 @@ public class ModalHeaderTypeDiffblueTest {
    * Method under test: {@link ModalHeaderType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ModalHeaderType.equals(Object)", "int ModalHeaderType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(ModalHeaderType.ADD_COLLECTION_ITEM, null);
@@ -200,6 +191,8 @@ public class ModalHeaderTypeDiffblueTest {
    * Method under test: {@link ModalHeaderType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ModalHeaderType.equals(Object)", "int ModalHeaderType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(ModalHeaderType.ADD_COLLECTION_ITEM, "Different type to ModalHeaderType");

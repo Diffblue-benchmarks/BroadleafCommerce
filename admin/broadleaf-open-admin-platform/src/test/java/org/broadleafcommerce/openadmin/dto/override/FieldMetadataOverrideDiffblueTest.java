@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.dto.override;
 
 import static org.junit.Assert.assertArrayEquals;
@@ -5,6 +22,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -20,15 +39,17 @@ import org.broadleafcommerce.common.presentation.client.UnspecifiedBooleanType;
 import org.broadleafcommerce.common.presentation.client.VisibilityEnum;
 import org.broadleafcommerce.openadmin.dto.MergedPropertyType;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {FieldMetadataOverride.class})
 @RunWith(SpringJUnit4ClassRunner.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class FieldMetadataOverrideDiffblueTest {
   @Autowired
   private FieldMetadataOverride fieldMetadataOverride;
@@ -41,8 +62,7 @@ public class FieldMetadataOverrideDiffblueTest {
    *   <li>{@link FieldMetadataOverride#setAddFriendlyName(String)}
    *   <li>{@link FieldMetadataOverride#setAddMethodType(AddMethodType)}
    *   <li>{@link FieldMetadataOverride#setAddType(OperationType)}
-   *   <li>
-   * {@link FieldMetadataOverride#setAdornedTargetAddMethodType(AdornedTargetAddMethodType)}
+   *   <li>{@link FieldMetadataOverride#setAdornedTargetAddMethodType(AdornedTargetAddMethodType)}
    *   <li>{@link FieldMetadataOverride#setAllowNoValueEnumOption(Boolean)}
    *   <li>{@link FieldMetadataOverride#setAssociatedFieldName(String)}
    *   <li>{@link FieldMetadataOverride#setBroadleafEnumeration(String)}
@@ -59,8 +79,7 @@ public class FieldMetadataOverrideDiffblueTest {
    *   <li>{@link FieldMetadataOverride#setExcluded(Boolean)}
    *   <li>{@link FieldMetadataOverride#setExplicitFieldType(SupportedFieldType)}
    *   <li>{@link FieldMetadataOverride#setFetchType(OperationType)}
-   *   <li>
-   * {@link FieldMetadataOverride#setFieldComponentRenderer(SupportedFieldType)}
+   *   <li>{@link FieldMetadataOverride#setFieldComponentRenderer(SupportedFieldType)}
    *   <li>{@link FieldMetadataOverride#setFieldComponentRendererTemplate(String)}
    *   <li>{@link FieldMetadataOverride#setFieldType(SupportedFieldType)}
    *   <li>{@link FieldMetadataOverride#setForceFreeFormKeys(Boolean)}
@@ -70,10 +89,8 @@ public class FieldMetadataOverrideDiffblueTest {
    *   <li>{@link FieldMetadataOverride#setForeignKeyDisplayValueProperty(String)}
    *   <li>{@link FieldMetadataOverride#setForeignKeyProperty(String)}
    *   <li>{@link FieldMetadataOverride#setFriendlyName(String)}
-   *   <li>
-   * {@link FieldMetadataOverride#setGridFieldComponentRenderer(SupportedFieldType)}
-   *   <li>
-   * {@link FieldMetadataOverride#setGridFieldComponentRendererTemplate(String)}
+   *   <li>{@link FieldMetadataOverride#setGridFieldComponentRenderer(SupportedFieldType)}
+   *   <li>{@link FieldMetadataOverride#setGridFieldComponentRendererTemplate(String)}
    *   <li>{@link FieldMetadataOverride#setGridOrder(Integer)}
    *   <li>{@link FieldMetadataOverride#setGridVisibleFields(String[])}
    *   <li>{@link FieldMetadataOverride#setGroup(String)}
@@ -250,6 +267,148 @@ public class FieldMetadataOverrideDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String FieldMetadataOverride.getAddFriendlyName()",
+      "AddMethodType FieldMetadataOverride.getAddMethodType()", "OperationType FieldMetadataOverride.getAddType()",
+      "AdornedTargetAddMethodType FieldMetadataOverride.getAdornedTargetAddMethodType()",
+      "Boolean FieldMetadataOverride.getAllowNoValueEnumOption()",
+      "String FieldMetadataOverride.getAssociatedFieldName()", "String FieldMetadataOverride.getBroadleafEnumeration()",
+      "Boolean FieldMetadataOverride.getCanLinkToExternalEntity()", "String FieldMetadataOverride.getColumnWidth()",
+      "String FieldMetadataOverride.getCurrencyCodeField()", "String[] FieldMetadataOverride.getCustomCriteria()",
+      "String FieldMetadataOverride.getDefaultValue()", "RuleBuilderDisplayType FieldMetadataOverride.getDisplayType()",
+      "Boolean FieldMetadataOverride.getEnableTypeaheadLookup()", "String FieldMetadataOverride.getEnumerationClass()",
+      "String[][] FieldMetadataOverride.getEnumerationValues()", "Boolean FieldMetadataOverride.getExcluded()",
+      "SupportedFieldType FieldMetadataOverride.getExplicitFieldType()",
+      "OperationType FieldMetadataOverride.getFetchType()",
+      "SupportedFieldType FieldMetadataOverride.getFieldComponentRenderer()",
+      "String FieldMetadataOverride.getFieldComponentRendererTemplate()",
+      "SupportedFieldType FieldMetadataOverride.getFieldType()", "Boolean FieldMetadataOverride.getForceFreeFormKeys()",
+      "Boolean FieldMetadataOverride.getForcePopulateChildProperties()",
+      "String FieldMetadataOverride.getForeignKeyClass()", "Boolean FieldMetadataOverride.getForeignKeyCollection()",
+      "String FieldMetadataOverride.getForeignKeyDisplayValueProperty()",
+      "String FieldMetadataOverride.getForeignKeyProperty()", "String FieldMetadataOverride.getFriendlyName()",
+      "SupportedFieldType FieldMetadataOverride.getGridFieldComponentRenderer()",
+      "String FieldMetadataOverride.getGridFieldComponentRendererTemplate()",
+      "Integer FieldMetadataOverride.getGridOrder()", "String[] FieldMetadataOverride.getGridVisibleFields()",
+      "String FieldMetadataOverride.getGroup()", "Boolean FieldMetadataOverride.getGroupCollapsed()",
+      "Integer FieldMetadataOverride.getGroupOrder()", "String FieldMetadataOverride.getHelpText()",
+      "Boolean FieldMetadataOverride.getHideEnumerationIfEmpty()", "String FieldMetadataOverride.getHint()",
+      "OperationType FieldMetadataOverride.getInspectType()", "Boolean FieldMetadataOverride.getIsDerived()",
+      "String FieldMetadataOverride.getJoinEntityClass()", "String FieldMetadataOverride.getKeyClass()",
+      "String FieldMetadataOverride.getKeyPropertyFriendlyName()", "String[][] FieldMetadataOverride.getKeys()",
+      "Boolean FieldMetadataOverride.getLazyFetch()", "Integer FieldMetadataOverride.getLength()",
+      "String FieldMetadataOverride.getLookupDisplayProperty()", "LookupType FieldMetadataOverride.getLookupType()",
+      "String[] FieldMetadataOverride.getMaintainedAdornedTargetFields()",
+      "Boolean FieldMetadataOverride.getManualFetch()", "String FieldMetadataOverride.getManyToField()",
+      "String FieldMetadataOverride.getMapFieldValueClass()",
+      "String FieldMetadataOverride.getMapKeyOptionEntityClass()",
+      "String FieldMetadataOverride.getMapKeyOptionEntityDisplayField()",
+      "String FieldMetadataOverride.getMapKeyOptionEntityValueField()",
+      "String FieldMetadataOverride.getMapKeyValueProperty()", "String FieldMetadataOverride.getMediaField()",
+      "MergedPropertyType FieldMetadataOverride.getMergedPropertyType()", "String FieldMetadataOverride.getName()",
+      "Boolean FieldMetadataOverride.getOptionCanEditValues()",
+      "String FieldMetadataOverride.getOptionDisplayFieldName()",
+      "Serializable[][] FieldMetadataOverride.getOptionFilterValues()",
+      "String FieldMetadataOverride.getOptionListEntity()", "String FieldMetadataOverride.getOptionValueFieldName()",
+      "String FieldMetadataOverride.getParentObjectIdProperty()",
+      "String FieldMetadataOverride.getParentObjectProperty()", "Integer FieldMetadataOverride.getPrecision()",
+      "Boolean FieldMetadataOverride.getReadOnly()", "OperationType FieldMetadataOverride.getRemoveType()",
+      "Boolean FieldMetadataOverride.getRequired()", "Boolean FieldMetadataOverride.getRequiredOverride()",
+      "String FieldMetadataOverride.getRuleIdentifier()", "Integer FieldMetadataOverride.getScale()",
+      "Boolean FieldMetadataOverride.getSearchable()", "SupportedFieldType FieldMetadataOverride.getSecondaryType()",
+      "String FieldMetadataOverride.getSecurityLevel()", "String FieldMetadataOverride.getSelectizeVisibleField()",
+      "Map FieldMetadataOverride.getShowIfFieldEquals()", "String FieldMetadataOverride.getShowIfProperty()",
+      "UnspecifiedBooleanType FieldMetadataOverride.getSimpleValue()", "String FieldMetadataOverride.getSortProperty()",
+      "String FieldMetadataOverride.getTab()", "Integer FieldMetadataOverride.getTabOrder()",
+      "String FieldMetadataOverride.getTargetObjectIdProperty()",
+      "String FieldMetadataOverride.getTargetObjectProperty()",
+      "Boolean FieldMetadataOverride.getToOneLookupCreatedViaAnnotation()",
+      "String FieldMetadataOverride.getToOneParentProperty()", "String FieldMetadataOverride.getToOneTargetProperty()",
+      "String FieldMetadataOverride.getTooltip()", "Boolean FieldMetadataOverride.getTranslatable()",
+      "Boolean FieldMetadataOverride.getUnique()", "OperationType FieldMetadataOverride.getUpdateType()",
+      "Boolean FieldMetadataOverride.getUseServerSideInspectionCache()",
+      "Map FieldMetadataOverride.getValidationConfigurations()", "String FieldMetadataOverride.getValueClass()",
+      "String FieldMetadataOverride.getValuePropertyFriendlyName()",
+      "VisibilityEnum FieldMetadataOverride.getVisibility()",
+      "Boolean FieldMetadataOverride.isDeleteEntityUponRemove()",
+      "Boolean FieldMetadataOverride.isIgnoreAdornedProperties()", "Boolean FieldMetadataOverride.isLargeEntry()",
+      "Boolean FieldMetadataOverride.isProminent()", "Boolean FieldMetadataOverride.isSortAscending()",
+      "void FieldMetadataOverride.setAddFriendlyName(String)",
+      "void FieldMetadataOverride.setAddMethodType(AddMethodType)",
+      "void FieldMetadataOverride.setAddType(OperationType)",
+      "void FieldMetadataOverride.setAdornedTargetAddMethodType(AdornedTargetAddMethodType)",
+      "void FieldMetadataOverride.setAllowNoValueEnumOption(Boolean)",
+      "void FieldMetadataOverride.setAssociatedFieldName(String)",
+      "void FieldMetadataOverride.setBroadleafEnumeration(String)",
+      "void FieldMetadataOverride.setCanLinkToExternalEntity(Boolean)",
+      "void FieldMetadataOverride.setColumnWidth(String)", "void FieldMetadataOverride.setCurrencyCodeField(String)",
+      "void FieldMetadataOverride.setCustomCriteria(String[])",
+      "void FieldMetadataOverride.setDeleteEntityUponRemove(Boolean)", "void FieldMetadataOverride.setDerived(Boolean)",
+      "void FieldMetadataOverride.setDisplayType(RuleBuilderDisplayType)",
+      "void FieldMetadataOverride.setEnableTypeaheadLookup(Boolean)",
+      "void FieldMetadataOverride.setEnumerationClass(String)",
+      "void FieldMetadataOverride.setEnumerationValues(String[][])", "void FieldMetadataOverride.setExcluded(Boolean)",
+      "void FieldMetadataOverride.setExplicitFieldType(SupportedFieldType)",
+      "void FieldMetadataOverride.setFetchType(OperationType)",
+      "void FieldMetadataOverride.setFieldComponentRenderer(SupportedFieldType)",
+      "void FieldMetadataOverride.setFieldComponentRendererTemplate(String)",
+      "void FieldMetadataOverride.setFieldType(SupportedFieldType)",
+      "void FieldMetadataOverride.setForceFreeFormKeys(Boolean)",
+      "void FieldMetadataOverride.setForcePopulateChildProperties(Boolean)",
+      "void FieldMetadataOverride.setForeignKeyClass(String)",
+      "void FieldMetadataOverride.setForeignKeyCollection(Boolean)",
+      "void FieldMetadataOverride.setForeignKeyDisplayValueProperty(String)",
+      "void FieldMetadataOverride.setForeignKeyProperty(String)", "void FieldMetadataOverride.setFriendlyName(String)",
+      "void FieldMetadataOverride.setGridFieldComponentRenderer(SupportedFieldType)",
+      "void FieldMetadataOverride.setGridFieldComponentRendererTemplate(String)",
+      "void FieldMetadataOverride.setGridOrder(Integer)", "void FieldMetadataOverride.setGridVisibleFields(String[])",
+      "void FieldMetadataOverride.setGroup(String)", "void FieldMetadataOverride.setGroupCollapsed(Boolean)",
+      "void FieldMetadataOverride.setGroupOrder(Integer)", "void FieldMetadataOverride.setHelpText(String)",
+      "void FieldMetadataOverride.setHideEnumerationIfEmpty(Boolean)", "void FieldMetadataOverride.setHint(String)",
+      "void FieldMetadataOverride.setIgnoreAdornedProperties(Boolean)",
+      "void FieldMetadataOverride.setInspectType(OperationType)",
+      "void FieldMetadataOverride.setJoinEntityClass(String)", "void FieldMetadataOverride.setKeyClass(String)",
+      "void FieldMetadataOverride.setKeyPropertyFriendlyName(String)", "void FieldMetadataOverride.setKeys(String[][])",
+      "void FieldMetadataOverride.setLargeEntry(Boolean)", "void FieldMetadataOverride.setLazyFetch(Boolean)",
+      "void FieldMetadataOverride.setLength(Integer)", "void FieldMetadataOverride.setLookupDisplayProperty(String)",
+      "void FieldMetadataOverride.setLookupType(LookupType)",
+      "void FieldMetadataOverride.setMaintainedAdornedTargetFields(String[])",
+      "void FieldMetadataOverride.setManualFetch(Boolean)", "void FieldMetadataOverride.setManyToField(String)",
+      "void FieldMetadataOverride.setMapFieldValueClass(String)",
+      "void FieldMetadataOverride.setMapKeyOptionEntityClass(String)",
+      "void FieldMetadataOverride.setMapKeyOptionEntityDisplayField(String)",
+      "void FieldMetadataOverride.setMapKeyOptionEntityValueField(String)",
+      "void FieldMetadataOverride.setMapKeyValueProperty(String)", "void FieldMetadataOverride.setMediaField(String)",
+      "void FieldMetadataOverride.setMergedPropertyType(MergedPropertyType)",
+      "void FieldMetadataOverride.setName(String)", "void FieldMetadataOverride.setOptionCanEditValues(Boolean)",
+      "void FieldMetadataOverride.setOptionDisplayFieldName(String)",
+      "void FieldMetadataOverride.setOptionFilterValues(Serializable[][])",
+      "void FieldMetadataOverride.setOptionListEntity(String)",
+      "void FieldMetadataOverride.setOptionValueFieldName(String)",
+      "void FieldMetadataOverride.setParentObjectIdProperty(String)",
+      "void FieldMetadataOverride.setParentObjectProperty(String)", "void FieldMetadataOverride.setPrecision(Integer)",
+      "void FieldMetadataOverride.setProminent(Boolean)", "void FieldMetadataOverride.setReadOnly(Boolean)",
+      "void FieldMetadataOverride.setRemoveType(OperationType)", "void FieldMetadataOverride.setRequired(Boolean)",
+      "void FieldMetadataOverride.setRequiredOverride(Boolean)", "void FieldMetadataOverride.setRuleIdentifier(String)",
+      "void FieldMetadataOverride.setScale(Integer)", "void FieldMetadataOverride.setSearchable(Boolean)",
+      "void FieldMetadataOverride.setSecondaryType(SupportedFieldType)",
+      "void FieldMetadataOverride.setSecurityLevel(String)",
+      "void FieldMetadataOverride.setSelectizeVisibleField(String)",
+      "void FieldMetadataOverride.setShowIfFieldEquals(Map)", "void FieldMetadataOverride.setShowIfProperty(String)",
+      "void FieldMetadataOverride.setSimpleValue(UnspecifiedBooleanType)",
+      "void FieldMetadataOverride.setSortAscending(Boolean)", "void FieldMetadataOverride.setSortProperty(String)",
+      "void FieldMetadataOverride.setTab(String)", "void FieldMetadataOverride.setTabOrder(Integer)",
+      "void FieldMetadataOverride.setTargetObjectIdProperty(String)",
+      "void FieldMetadataOverride.setTargetObjectProperty(String)",
+      "void FieldMetadataOverride.setToOneLookupCreatedViaAnnotation(Boolean)",
+      "void FieldMetadataOverride.setToOneParentProperty(String)",
+      "void FieldMetadataOverride.setToOneTargetProperty(String)", "void FieldMetadataOverride.setTooltip(String)",
+      "void FieldMetadataOverride.setTranslatable(Boolean)", "void FieldMetadataOverride.setUnique(Boolean)",
+      "void FieldMetadataOverride.setUpdateType(OperationType)",
+      "void FieldMetadataOverride.setUseServerSideInspectionCache(Boolean)",
+      "void FieldMetadataOverride.setValidationConfigurations(Map)", "void FieldMetadataOverride.setValueClass(String)",
+      "void FieldMetadataOverride.setValuePropertyFriendlyName(String)",
+      "void FieldMetadataOverride.setVisibility(VisibilityEnum)"})
   public void testGettersAndSetters() {
     // Arrange
     FieldMetadataOverride fieldMetadataOverride = new FieldMetadataOverride();
@@ -376,7 +535,7 @@ public class FieldMetadataOverrideDiffblueTest {
     String actualColumnWidth = fieldMetadataOverride.getColumnWidth();
     String actualCurrencyCodeField = fieldMetadataOverride.getCurrencyCodeField();
     String[] actualCustomCriteria = fieldMetadataOverride.getCustomCriteria();
-    fieldMetadataOverride.getDefaultValue();
+    String actualDefaultValue = fieldMetadataOverride.getDefaultValue();
     RuleBuilderDisplayType actualDisplayType = fieldMetadataOverride.getDisplayType();
     Boolean actualEnableTypeaheadLookup = fieldMetadataOverride.getEnableTypeaheadLookup();
     String actualEnumerationClass = fieldMetadataOverride.getEnumerationClass();
@@ -470,7 +629,7 @@ public class FieldMetadataOverrideDiffblueTest {
     Boolean actualIsProminentResult = fieldMetadataOverride.isProminent();
     Boolean actualIsSortAscendingResult = fieldMetadataOverride.isSortAscending();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("42", actualForeignKeyDisplayValueProperty);
     assertEquals("42", actualMapFieldValueClass);
     assertEquals("42", actualMapKeyOptionEntityValueField);
@@ -515,6 +674,7 @@ public class FieldMetadataOverrideDiffblueTest {
     assertEquals("Target Object Property", actualTargetObjectProperty);
     assertEquals("To One Parent Property", actualToOneParentProperty);
     assertEquals("To One Target Property", actualToOneTargetProperty);
+    assertNull(actualDefaultValue);
     assertEquals(1, actualGridOrder.intValue());
     assertEquals(1, actualGroupOrder.intValue());
     assertEquals(1, actualPrecision.intValue());
@@ -592,6 +752,8 @@ public class FieldMetadataOverrideDiffblueTest {
    * Method under test: {@link FieldMetadataOverride#setDefaultValue(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FieldMetadataOverride.setDefaultValue(String)"})
   public void testSetDefaultValue_givenFieldMetadataOverride() {
     // Arrange
     FieldMetadataOverride fieldMetadataOverride2 = new FieldMetadataOverride();
@@ -606,13 +768,14 @@ public class FieldMetadataOverrideDiffblueTest {
   /**
    * Test {@link FieldMetadataOverride#setDefaultValue(String)}.
    * <ul>
-   *   <li>Given {@link FieldMetadataOverride} (default constructor) FieldType is
-   * {@code INTEGER}.</li>
+   *   <li>Given {@link FieldMetadataOverride} (default constructor) FieldType is {@code INTEGER}.</li>
    * </ul>
    * <p>
    * Method under test: {@link FieldMetadataOverride#setDefaultValue(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FieldMetadataOverride.setDefaultValue(String)"})
   public void testSetDefaultValue_givenFieldMetadataOverrideFieldTypeIsInteger() {
     // Arrange
     FieldMetadataOverride fieldMetadataOverride2 = new FieldMetadataOverride();
@@ -629,13 +792,14 @@ public class FieldMetadataOverrideDiffblueTest {
   /**
    * Test {@link FieldMetadataOverride#setDefaultValue(String)}.
    * <ul>
-   *   <li>Given {@link FieldMetadataOverride} (default constructor) FieldType is
-   * {@code UNKNOWN}.</li>
+   *   <li>Given {@link FieldMetadataOverride} (default constructor) FieldType is {@code UNKNOWN}.</li>
    * </ul>
    * <p>
    * Method under test: {@link FieldMetadataOverride#setDefaultValue(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FieldMetadataOverride.setDefaultValue(String)"})
   public void testSetDefaultValue_givenFieldMetadataOverrideFieldTypeIsUnknown() {
     // Arrange
     FieldMetadataOverride fieldMetadataOverride2 = new FieldMetadataOverride();
@@ -658,6 +822,8 @@ public class FieldMetadataOverrideDiffblueTest {
    * Method under test: {@link FieldMetadataOverride#setDefaultValue(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FieldMetadataOverride.setDefaultValue(String)"})
   public void testSetDefaultValue_thenFieldMetadataOverrideDefaultValueIs42() {
     // Arrange and Act
     fieldMetadataOverride.setDefaultValue("42");
@@ -669,21 +835,17 @@ public class FieldMetadataOverrideDiffblueTest {
   /**
    * Test new {@link FieldMetadataOverride} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link FieldMetadataOverride}
+   * Method under test: default or parameterless constructor of {@link FieldMetadataOverride}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FieldMetadataOverride.<init>()"})
   public void testNewFieldMetadataOverride() {
     // Arrange and Act
     FieldMetadataOverride actualFieldMetadataOverride = new FieldMetadataOverride();
 
     // Assert
-    assertNull(actualFieldMetadataOverride.getCustomCriteria());
-    assertNull(actualFieldMetadataOverride.getGridVisibleFields());
-    assertNull(actualFieldMetadataOverride.getMaintainedAdornedTargetFields());
     assertNull(actualFieldMetadataOverride.getOptionFilterValues());
-    assertNull(actualFieldMetadataOverride.getEnumerationValues());
-    assertNull(actualFieldMetadataOverride.getKeys());
     assertNull(actualFieldMetadataOverride.getAllowNoValueEnumOption());
     assertNull(actualFieldMetadataOverride.getCanLinkToExternalEntity());
     assertNull(actualFieldMetadataOverride.getEnableTypeaheadLookup());
@@ -763,6 +925,11 @@ public class FieldMetadataOverrideDiffblueTest {
     assertNull(actualFieldMetadataOverride.getTooltip());
     assertNull(actualFieldMetadataOverride.getValueClass());
     assertNull(actualFieldMetadataOverride.getValuePropertyFriendlyName());
+    assertNull(actualFieldMetadataOverride.getCustomCriteria());
+    assertNull(actualFieldMetadataOverride.getGridVisibleFields());
+    assertNull(actualFieldMetadataOverride.getMaintainedAdornedTargetFields());
+    assertNull(actualFieldMetadataOverride.getEnumerationValues());
+    assertNull(actualFieldMetadataOverride.getKeys());
     assertNull(actualFieldMetadataOverride.getShowIfFieldEquals());
     assertNull(actualFieldMetadataOverride.getValidationConfigurations());
     assertNull(actualFieldMetadataOverride.getAddMethodType());

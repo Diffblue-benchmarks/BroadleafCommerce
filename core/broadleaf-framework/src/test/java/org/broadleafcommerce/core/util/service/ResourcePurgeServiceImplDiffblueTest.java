@@ -1,16 +1,37 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.util.service;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.atLeast;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.anyInt;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -19,35 +40,67 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.BiFunction;
 import org.broadleafcommerce.common.audit.Auditable;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
+import org.broadleafcommerce.common.exception.ServiceException;
 import org.broadleafcommerce.common.locale.domain.LocaleImpl;
 import org.broadleafcommerce.common.money.Money;
+import org.broadleafcommerce.common.notification.service.NotificationDispatcher;
+import org.broadleafcommerce.common.notification.service.type.Notification;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.domain.OrderImpl;
+import org.broadleafcommerce.core.order.service.OrderService;
 import org.broadleafcommerce.core.order.service.type.OrderStatus;
+import org.broadleafcommerce.core.util.dao.ResourcePurgeDao;
+import org.broadleafcommerce.core.util.service.DeleteStatementGeneratorImpl.PathElement;
 import org.broadleafcommerce.core.util.service.ResourcePurgeServiceImpl.CartPurgeParams;
 import org.broadleafcommerce.core.util.service.ResourcePurgeServiceImpl.CustomerPurgeParams;
 import org.broadleafcommerce.core.util.service.ResourcePurgeServiceImpl.PurgeErrorCache;
 import org.broadleafcommerce.profile.core.domain.ChallengeQuestionImpl;
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
-import org.junit.Ignore;
+import org.broadleafcommerce.profile.core.service.CustomerService;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.PropertyResolver;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionException;
+import org.springframework.transaction.TransactionExecution;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.SimpleTransactionStatus;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class ResourcePurgeServiceImplDiffblueTest {
-  @Autowired
+  @Mock
+  private CustomerService customerService;
+
+  @Mock
+  private DeleteStatementGenerator deleteStatementGenerator;
+
+  @Mock
+  private Environment environment;
+
+  @Mock
+  private NotificationDispatcher notificationDispatcher;
+
+  @Mock
+  private OrderService orderService;
+
+  @Mock
+  private PlatformTransactionManager platformTransactionManager;
+
+  @Mock
+  private ResourcePurgeDao resourcePurgeDao;
+
+  @InjectMocks
   private ResourcePurgeServiceImpl resourcePurgeServiceImpl;
 
   /**
@@ -55,25 +108,27 @@ public class ResourcePurgeServiceImplDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>
-   * {@link ResourcePurgeServiceImpl.CartPurgeParams#CartPurgeParams(ResourcePurgeServiceImpl, Map)}
-   *   <li>{@link ResourcePurgeServiceImpl.CartPurgeParams#getBatchSize()}
-   *   <li>
-   * {@link ResourcePurgeServiceImpl.CartPurgeParams#getDateCreatedMinThreshold()}
-   *   <li>{@link ResourcePurgeServiceImpl.CartPurgeParams#getFailedRetryTime()}
-   *   <li>{@link ResourcePurgeServiceImpl.CartPurgeParams#getIsPreview()}
-   *   <li>{@link ResourcePurgeServiceImpl.CartPurgeParams#getNameArray()}
-   *   <li>{@link ResourcePurgeServiceImpl.CartPurgeParams#getStatusArray()}
+   *   <li>{@link CartPurgeParams#CartPurgeParams(ResourcePurgeServiceImpl, Map)}
+   *   <li>{@link CartPurgeParams#getBatchSize()}
+   *   <li>{@link CartPurgeParams#getDateCreatedMinThreshold()}
+   *   <li>{@link CartPurgeParams#getFailedRetryTime()}
+   *   <li>{@link CartPurgeParams#getIsPreview()}
+   *   <li>{@link CartPurgeParams#getNameArray()}
+   *   <li>{@link CartPurgeParams#getStatusArray()}
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CartPurgeParams.<init>(ResourcePurgeServiceImpl, Map)",
+      "Long CartPurgeParams.getBatchSize()", "Date CartPurgeParams.getDateCreatedMinThreshold()",
+      "Long CartPurgeParams.getFailedRetryTime()", "Boolean CartPurgeParams.getIsPreview()",
+      "String[] CartPurgeParams.getNameArray()", "OrderStatus[] CartPurgeParams.getStatusArray()"})
   public void testCartPurgeParamsGettersAndSetters() {
     // Arrange
     ResourcePurgeServiceImpl resourcePurgeServiceImpl = new ResourcePurgeServiceImpl();
 
     // Act
-    ResourcePurgeServiceImpl.CartPurgeParams actualCartPurgeParams = resourcePurgeServiceImpl.new CartPurgeParams(
-        new HashMap<>());
+    CartPurgeParams actualCartPurgeParams = resourcePurgeServiceImpl.new CartPurgeParams(new HashMap<>());
     Long actualBatchSize = actualCartPurgeParams.getBatchSize();
     Date actualDateCreatedMinThreshold = actualCartPurgeParams.getDateCreatedMinThreshold();
     Long actualFailedRetryTime = actualCartPurgeParams.getFailedRetryTime();
@@ -81,238 +136,12 @@ public class ResourcePurgeServiceImplDiffblueTest {
     String[] actualNameArray = actualCartPurgeParams.getNameArray();
 
     // Assert
-    assertNull(actualNameArray);
-    assertNull(actualCartPurgeParams.getStatusArray());
     assertNull(actualIsPreview);
     assertNull(actualBatchSize);
     assertNull(actualFailedRetryTime);
+    assertNull(actualNameArray);
     assertNull(actualDateCreatedMinThreshold);
-  }
-
-  /**
-   * Test CartPurgeParams {@link CartPurgeParams#invoke()}.
-   * <p>
-   * Method under test: {@link ResourcePurgeServiceImpl.CartPurgeParams#invoke()}
-   */
-  @Test
-  public void testCartPurgeParamsInvoke() {
-    // Arrange
-    ResourcePurgeServiceImpl resourcePurgeServiceImpl = new ResourcePurgeServiceImpl();
-    ResourcePurgeServiceImpl.CartPurgeParams cartPurgeParams = resourcePurgeServiceImpl.new CartPurgeParams(
-        new HashMap<>());
-
-    // Act
-    ResourcePurgeServiceImpl.CartPurgeParams actualInvokeResult = cartPurgeParams.invoke();
-
-    // Assert
-    assertNull(cartPurgeParams.getIsPreview());
-    assertEquals(1736867873990L, cartPurgeParams.getFailedRetryTime().longValue());
-    assertEquals(50L, cartPurgeParams.getBatchSize().longValue());
-    assertSame(cartPurgeParams, actualInvokeResult);
-  }
-
-  /**
-   * Test CartPurgeParams {@link CartPurgeParams#invoke()}.
-   * <p>
-   * Method under test: {@link ResourcePurgeServiceImpl.CartPurgeParams#invoke()}
-   */
-  @Test
-  public void testCartPurgeParamsInvoke2() {
-    // Arrange
-    HashMap<Object, Object> config = new HashMap<>();
-    config.put("IS_PREVIEW", "42");
-    ResourcePurgeServiceImpl.CartPurgeParams cartPurgeParams = (new ResourcePurgeServiceImpl()).new CartPurgeParams(
-        config);
-
-    // Act
-    ResourcePurgeServiceImpl.CartPurgeParams actualInvokeResult = cartPurgeParams.invoke();
-
-    // Assert
-    assertEquals(1736867873990L, cartPurgeParams.getFailedRetryTime().longValue());
-    assertEquals(50L, cartPurgeParams.getBatchSize().longValue());
-    assertFalse(cartPurgeParams.getIsPreview());
-    assertSame(cartPurgeParams, actualInvokeResult);
-  }
-
-  /**
-   * Test CartPurgeParams {@link CartPurgeParams#invoke()}.
-   * <p>
-   * Method under test: {@link ResourcePurgeServiceImpl.CartPurgeParams#invoke()}
-   */
-  @Test
-  public void testCartPurgeParamsInvoke3() {
-    // Arrange
-    HashMap<Object, Object> config = new HashMap<>();
-    config.put("BATCH_SIZE", "42");
-    ResourcePurgeServiceImpl.CartPurgeParams cartPurgeParams = (new ResourcePurgeServiceImpl()).new CartPurgeParams(
-        config);
-
-    // Act
-    ResourcePurgeServiceImpl.CartPurgeParams actualInvokeResult = cartPurgeParams.invoke();
-
-    // Assert
-    assertNull(cartPurgeParams.getIsPreview());
-    assertEquals(1736867873990L, cartPurgeParams.getFailedRetryTime().longValue());
-    assertEquals(42L, cartPurgeParams.getBatchSize().longValue());
-    assertSame(cartPurgeParams, actualInvokeResult);
-  }
-
-  /**
-   * Test CartPurgeParams {@link CartPurgeParams#invoke()}.
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code 42} is {@code 42}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ResourcePurgeServiceImpl.CartPurgeParams#invoke()}
-   */
-  @Test
-  public void testCartPurgeParamsInvoke_givenHashMap42Is42() {
-    // Arrange
-    HashMap<Object, Object> config = new HashMap<>();
-    config.put("42", "42");
-    ResourcePurgeServiceImpl.CartPurgeParams cartPurgeParams = (new ResourcePurgeServiceImpl()).new CartPurgeParams(
-        config);
-
-    // Act
-    ResourcePurgeServiceImpl.CartPurgeParams actualInvokeResult = cartPurgeParams.invoke();
-
-    // Assert
-    assertNull(cartPurgeParams.getIsPreview());
-    assertEquals(1736867873990L, cartPurgeParams.getFailedRetryTime().longValue());
-    assertEquals(50L, cartPurgeParams.getBatchSize().longValue());
-    assertSame(cartPurgeParams, actualInvokeResult);
-  }
-
-  /**
-   * Test CartPurgeParams {@link CartPurgeParams#invoke()}.
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} computeIfPresent {@code 42} and
-   * {@link BiFunction}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ResourcePurgeServiceImpl.CartPurgeParams#invoke()}
-   */
-  @Test
-  public void testCartPurgeParamsInvoke_givenHashMapComputeIfPresent42AndBiFunction() {
-    // Arrange
-    HashMap<Object, Object> config = new HashMap<>();
-    config.computeIfPresent("42", mock(BiFunction.class));
-    config.put("42", "42");
-    ResourcePurgeServiceImpl.CartPurgeParams cartPurgeParams = (new ResourcePurgeServiceImpl()).new CartPurgeParams(
-        config);
-
-    // Act
-    ResourcePurgeServiceImpl.CartPurgeParams actualInvokeResult = cartPurgeParams.invoke();
-
-    // Assert
-    assertNull(cartPurgeParams.getIsPreview());
-    assertEquals(1736867873990L, cartPurgeParams.getFailedRetryTime().longValue());
-    assertEquals(50L, cartPurgeParams.getBatchSize().longValue());
-    assertSame(cartPurgeParams, actualInvokeResult);
-  }
-
-  /**
-   * Test CartPurgeParams {@link CartPurgeParams#invoke()}.
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code RETRY_FAILED_SECONDS} is
-   * {@code 42}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ResourcePurgeServiceImpl.CartPurgeParams#invoke()}
-   */
-  @Test
-  public void testCartPurgeParamsInvoke_givenHashMapRetryFailedSecondsIs42() {
-    // Arrange
-    HashMap<Object, Object> config = new HashMap<>();
-    config.put("RETRY_FAILED_SECONDS", "42");
-    ResourcePurgeServiceImpl.CartPurgeParams cartPurgeParams = (new ResourcePurgeServiceImpl()).new CartPurgeParams(
-        config);
-
-    // Act
-    ResourcePurgeServiceImpl.CartPurgeParams actualInvokeResult = cartPurgeParams.invoke();
-
-    // Assert
-    assertNull(cartPurgeParams.getIsPreview());
-    assertEquals(50L, cartPurgeParams.getBatchSize().longValue());
-    assertSame(cartPurgeParams, actualInvokeResult);
-  }
-
-  /**
-   * Test CartPurgeParams {@link CartPurgeParams#invoke()}.
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code SECONDS_OLD} is {@code 42}.</li>
-   *   <li>Then return IsPreview is {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ResourcePurgeServiceImpl.CartPurgeParams#invoke()}
-   */
-  @Test
-  public void testCartPurgeParamsInvoke_givenHashMapSecondsOldIs42_thenReturnIsPreviewIsNull() {
-    // Arrange
-    HashMap<Object, Object> config = new HashMap<>();
-    config.put("SECONDS_OLD", "42");
-
-    // Act
-    ResourcePurgeServiceImpl.CartPurgeParams actualInvokeResult = ((new ResourcePurgeServiceImpl()).new CartPurgeParams(
-        config)).invoke();
-
-    // Assert
-    assertNull(actualInvokeResult.getNameArray());
-    assertNull(actualInvokeResult.getStatusArray());
-    assertNull(actualInvokeResult.getIsPreview());
-    assertEquals(1736867873990L, actualInvokeResult.getFailedRetryTime().longValue());
-    assertEquals(50L, actualInvokeResult.getBatchSize().longValue());
-  }
-
-  /**
-   * Test CartPurgeParams {@link CartPurgeParams#invoke()}.
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code STATUS} is {@code 42}.</li>
-   *   <li>Then return first element is {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ResourcePurgeServiceImpl.CartPurgeParams#invoke()}
-   */
-  @Test
-  public void testCartPurgeParamsInvoke_givenHashMapStatusIs42_thenReturnFirstElementIsNull() {
-    // Arrange
-    HashMap<Object, Object> config = new HashMap<>();
-    config.put("STATUS", "42");
-
-    // Act
-    ResourcePurgeServiceImpl.CartPurgeParams actualInvokeResult = ((new ResourcePurgeServiceImpl()).new CartPurgeParams(
-        config)).invoke();
-
-    // Assert
-    assertNull(actualInvokeResult.getNameArray());
-    assertNull(actualInvokeResult.getDateCreatedMinThreshold());
-    OrderStatus[] statusArray = actualInvokeResult.getStatusArray();
-    assertNull(statusArray[0]);
-    assertEquals(1, statusArray.length);
-  }
-
-  /**
-   * Test CartPurgeParams {@link CartPurgeParams#invoke()}.
-   * <ul>
-   *   <li>Then return NameArray is array of {@link String} with {@code 42}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ResourcePurgeServiceImpl.CartPurgeParams#invoke()}
-   */
-  @Test
-  public void testCartPurgeParamsInvoke_thenReturnNameArrayIsArrayOfStringWith42() {
-    // Arrange
-    HashMap<Object, Object> config = new HashMap<>();
-    config.put("NAME", "42");
-
-    // Act
-    ResourcePurgeServiceImpl.CartPurgeParams actualInvokeResult = ((new ResourcePurgeServiceImpl()).new CartPurgeParams(
-        config)).invoke();
-
-    // Assert
-    assertNull(actualInvokeResult.getStatusArray());
-    assertNull(actualInvokeResult.getDateCreatedMinThreshold());
-    assertArrayEquals(new String[]{"42"}, actualInvokeResult.getNameArray());
+    assertNull(actualCartPurgeParams.getStatusArray());
   }
 
   /**
@@ -320,25 +149,27 @@ public class ResourcePurgeServiceImplDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>
-   * {@link ResourcePurgeServiceImpl.CustomerPurgeParams#CustomerPurgeParams(ResourcePurgeServiceImpl, Map)}
-   *   <li>{@link ResourcePurgeServiceImpl.CustomerPurgeParams#getBatchSize()}
-   *   <li>
-   * {@link ResourcePurgeServiceImpl.CustomerPurgeParams#getDateCreatedMinThreshold()}
-   *   <li>{@link ResourcePurgeServiceImpl.CustomerPurgeParams#getFailedRetryTime()}
-   *   <li>{@link ResourcePurgeServiceImpl.CustomerPurgeParams#getIsDeactivated()}
-   *   <li>{@link ResourcePurgeServiceImpl.CustomerPurgeParams#getIsPreview()}
-   *   <li>{@link ResourcePurgeServiceImpl.CustomerPurgeParams#getIsRegistered()}
+   *   <li>{@link CustomerPurgeParams#CustomerPurgeParams(ResourcePurgeServiceImpl, Map)}
+   *   <li>{@link CustomerPurgeParams#getBatchSize()}
+   *   <li>{@link CustomerPurgeParams#getDateCreatedMinThreshold()}
+   *   <li>{@link CustomerPurgeParams#getFailedRetryTime()}
+   *   <li>{@link CustomerPurgeParams#getIsDeactivated()}
+   *   <li>{@link CustomerPurgeParams#getIsPreview()}
+   *   <li>{@link CustomerPurgeParams#getIsRegistered()}
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CustomerPurgeParams.<init>(ResourcePurgeServiceImpl, Map)",
+      "Long CustomerPurgeParams.getBatchSize()", "Date CustomerPurgeParams.getDateCreatedMinThreshold()",
+      "Long CustomerPurgeParams.getFailedRetryTime()", "Boolean CustomerPurgeParams.getIsDeactivated()",
+      "Boolean CustomerPurgeParams.getIsPreview()", "Boolean CustomerPurgeParams.getIsRegistered()"})
   public void testCustomerPurgeParamsGettersAndSetters() {
     // Arrange
     ResourcePurgeServiceImpl resourcePurgeServiceImpl = new ResourcePurgeServiceImpl();
 
     // Act
-    ResourcePurgeServiceImpl.CustomerPurgeParams actualCustomerPurgeParams = resourcePurgeServiceImpl.new CustomerPurgeParams(
-        new HashMap<>());
+    CustomerPurgeParams actualCustomerPurgeParams = resourcePurgeServiceImpl.new CustomerPurgeParams(new HashMap<>());
     Long actualBatchSize = actualCustomerPurgeParams.getBatchSize();
     Date actualDateCreatedMinThreshold = actualCustomerPurgeParams.getDateCreatedMinThreshold();
     Long actualFailedRetryTime = actualCustomerPurgeParams.getFailedRetryTime();
@@ -355,355 +186,847 @@ public class ResourcePurgeServiceImplDiffblueTest {
   }
 
   /**
-   * Test CustomerPurgeParams {@link CustomerPurgeParams#invoke()}.
-   * <p>
-   * Method under test:
-   * {@link ResourcePurgeServiceImpl.CustomerPurgeParams#invoke()}
-   */
-  @Test
-  public void testCustomerPurgeParamsInvoke() {
-    // Arrange
-    ResourcePurgeServiceImpl resourcePurgeServiceImpl = new ResourcePurgeServiceImpl();
-    ResourcePurgeServiceImpl.CustomerPurgeParams customerPurgeParams = resourcePurgeServiceImpl.new CustomerPurgeParams(
-        new HashMap<>());
-
-    // Act
-    customerPurgeParams.invoke();
-
-    // Assert
-    assertNull(customerPurgeParams.getIsDeactivated());
-    assertNull(customerPurgeParams.getIsPreview());
-    assertNull(customerPurgeParams.getIsRegistered());
-    assertEquals(1736867873990L, customerPurgeParams.getFailedRetryTime().longValue());
-    assertEquals(50L, customerPurgeParams.getBatchSize().longValue());
-  }
-
-  /**
-   * Test CustomerPurgeParams {@link CustomerPurgeParams#invoke()}.
-   * <p>
-   * Method under test:
-   * {@link ResourcePurgeServiceImpl.CustomerPurgeParams#invoke()}
-   */
-  @Test
-  public void testCustomerPurgeParamsInvoke2() {
-    // Arrange
-    HashMap<Object, Object> config = new HashMap<>();
-    config.put("IS_REGISTERED", "42");
-    ResourcePurgeServiceImpl.CustomerPurgeParams customerPurgeParams = (new ResourcePurgeServiceImpl()).new CustomerPurgeParams(
-        config);
-
-    // Act
-    customerPurgeParams.invoke();
-
-    // Assert
-    assertNull(customerPurgeParams.getIsDeactivated());
-    assertNull(customerPurgeParams.getIsPreview());
-    assertEquals(1736867873990L, customerPurgeParams.getFailedRetryTime().longValue());
-    assertEquals(50L, customerPurgeParams.getBatchSize().longValue());
-    assertFalse(customerPurgeParams.getIsRegistered());
-  }
-
-  /**
-   * Test CustomerPurgeParams {@link CustomerPurgeParams#invoke()}.
-   * <p>
-   * Method under test:
-   * {@link ResourcePurgeServiceImpl.CustomerPurgeParams#invoke()}
-   */
-  @Test
-  public void testCustomerPurgeParamsInvoke3() {
-    // Arrange
-    HashMap<Object, Object> config = new HashMap<>();
-    config.put("IS_DEACTIVATED", "42");
-    ResourcePurgeServiceImpl.CustomerPurgeParams customerPurgeParams = (new ResourcePurgeServiceImpl()).new CustomerPurgeParams(
-        config);
-
-    // Act
-    customerPurgeParams.invoke();
-
-    // Assert
-    assertNull(customerPurgeParams.getIsPreview());
-    assertNull(customerPurgeParams.getIsRegistered());
-    assertEquals(1736867873990L, customerPurgeParams.getFailedRetryTime().longValue());
-    assertEquals(50L, customerPurgeParams.getBatchSize().longValue());
-    assertFalse(customerPurgeParams.getIsDeactivated());
-  }
-
-  /**
-   * Test CustomerPurgeParams {@link CustomerPurgeParams#invoke()}.
-   * <p>
-   * Method under test:
-   * {@link ResourcePurgeServiceImpl.CustomerPurgeParams#invoke()}
-   */
-  @Test
-  public void testCustomerPurgeParamsInvoke4() {
-    // Arrange
-    HashMap<Object, Object> config = new HashMap<>();
-    config.put("IS_PREVIEW", "42");
-    ResourcePurgeServiceImpl.CustomerPurgeParams customerPurgeParams = (new ResourcePurgeServiceImpl()).new CustomerPurgeParams(
-        config);
-
-    // Act
-    customerPurgeParams.invoke();
-
-    // Assert
-    assertNull(customerPurgeParams.getIsDeactivated());
-    assertNull(customerPurgeParams.getIsRegistered());
-    assertEquals(1736867873990L, customerPurgeParams.getFailedRetryTime().longValue());
-    assertEquals(50L, customerPurgeParams.getBatchSize().longValue());
-    assertFalse(customerPurgeParams.getIsPreview());
-  }
-
-  /**
-   * Test CustomerPurgeParams {@link CustomerPurgeParams#invoke()}.
-   * <p>
-   * Method under test:
-   * {@link ResourcePurgeServiceImpl.CustomerPurgeParams#invoke()}
-   */
-  @Test
-  public void testCustomerPurgeParamsInvoke5() {
-    // Arrange
-    HashMap<Object, Object> config = new HashMap<>();
-    config.put("BATCH_SIZE", "42");
-    ResourcePurgeServiceImpl.CustomerPurgeParams customerPurgeParams = (new ResourcePurgeServiceImpl()).new CustomerPurgeParams(
-        config);
-
-    // Act
-    customerPurgeParams.invoke();
-
-    // Assert
-    assertNull(customerPurgeParams.getIsDeactivated());
-    assertNull(customerPurgeParams.getIsPreview());
-    assertNull(customerPurgeParams.getIsRegistered());
-    assertEquals(1736867873990L, customerPurgeParams.getFailedRetryTime().longValue());
-    assertEquals(42L, customerPurgeParams.getBatchSize().longValue());
-  }
-
-  /**
-   * Test CustomerPurgeParams {@link CustomerPurgeParams#invoke()}.
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code 42} is {@code 42}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link ResourcePurgeServiceImpl.CustomerPurgeParams#invoke()}
-   */
-  @Test
-  public void testCustomerPurgeParamsInvoke_givenHashMap42Is42() {
-    // Arrange
-    HashMap<Object, Object> config = new HashMap<>();
-    config.put("42", "42");
-    ResourcePurgeServiceImpl.CustomerPurgeParams customerPurgeParams = (new ResourcePurgeServiceImpl()).new CustomerPurgeParams(
-        config);
-
-    // Act
-    customerPurgeParams.invoke();
-
-    // Assert
-    assertNull(customerPurgeParams.getIsDeactivated());
-    assertNull(customerPurgeParams.getIsPreview());
-    assertNull(customerPurgeParams.getIsRegistered());
-    assertEquals(1736867873990L, customerPurgeParams.getFailedRetryTime().longValue());
-    assertEquals(50L, customerPurgeParams.getBatchSize().longValue());
-  }
-
-  /**
-   * Test CustomerPurgeParams {@link CustomerPurgeParams#invoke()}.
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} computeIfPresent {@code 42} and
-   * {@link BiFunction}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link ResourcePurgeServiceImpl.CustomerPurgeParams#invoke()}
-   */
-  @Test
-  public void testCustomerPurgeParamsInvoke_givenHashMapComputeIfPresent42AndBiFunction() {
-    // Arrange
-    HashMap<Object, Object> config = new HashMap<>();
-    config.computeIfPresent("42", mock(BiFunction.class));
-    config.put("42", "42");
-    ResourcePurgeServiceImpl.CustomerPurgeParams customerPurgeParams = (new ResourcePurgeServiceImpl()).new CustomerPurgeParams(
-        config);
-
-    // Act
-    customerPurgeParams.invoke();
-
-    // Assert
-    assertNull(customerPurgeParams.getIsDeactivated());
-    assertNull(customerPurgeParams.getIsPreview());
-    assertNull(customerPurgeParams.getIsRegistered());
-    assertEquals(1736867873990L, customerPurgeParams.getFailedRetryTime().longValue());
-    assertEquals(50L, customerPurgeParams.getBatchSize().longValue());
-  }
-
-  /**
-   * Test CustomerPurgeParams {@link CustomerPurgeParams#invoke()}.
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code RETRY_FAILED_SECONDS} is
-   * {@code 42}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link ResourcePurgeServiceImpl.CustomerPurgeParams#invoke()}
-   */
-  @Test
-  public void testCustomerPurgeParamsInvoke_givenHashMapRetryFailedSecondsIs42() {
-    // Arrange
-    HashMap<Object, Object> config = new HashMap<>();
-    config.put("RETRY_FAILED_SECONDS", "42");
-    ResourcePurgeServiceImpl.CustomerPurgeParams customerPurgeParams = (new ResourcePurgeServiceImpl()).new CustomerPurgeParams(
-        config);
-
-    // Act
-    customerPurgeParams.invoke();
-
-    // Assert
-    assertNull(customerPurgeParams.getIsDeactivated());
-    assertNull(customerPurgeParams.getIsPreview());
-    assertNull(customerPurgeParams.getIsRegistered());
-    assertEquals(50L, customerPurgeParams.getBatchSize().longValue());
-  }
-
-  /**
-   * Test CustomerPurgeParams {@link CustomerPurgeParams#invoke()}.
-   * <ul>
-   *   <li>Then return IsDeactivated is {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link ResourcePurgeServiceImpl.CustomerPurgeParams#invoke()}
-   */
-  @Test
-  public void testCustomerPurgeParamsInvoke_thenReturnIsDeactivatedIsNull() {
-    // Arrange
-    HashMap<Object, Object> config = new HashMap<>();
-    config.put("SECONDS_OLD", "42");
-
-    // Act
-    ResourcePurgeServiceImpl.CustomerPurgeParams actualInvokeResult = ((new ResourcePurgeServiceImpl()).new CustomerPurgeParams(
-        config)).invoke();
-
-    // Assert
-    assertNull(actualInvokeResult.getIsDeactivated());
-    assertNull(actualInvokeResult.getIsPreview());
-    assertNull(actualInvokeResult.getIsRegistered());
-    assertEquals(1736867873990L, actualInvokeResult.getFailedRetryTime().longValue());
-    assertEquals(50L, actualInvokeResult.getBatchSize().longValue());
-  }
-
-  /**
    * Test {@link ResourcePurgeServiceImpl#purgeCarts(Map)}.
+   * <ul>
+   *   <li>Given {@code 42}.</li>
+   *   <li>When {@link HashMap#HashMap()} {@code SECONDS_OLD} is {@code 42}.</li>
+   *   <li>Then calls {@link TransactionExecution#isRollbackOnly()}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link ResourcePurgeServiceImpl#purgeCarts(Map)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testPurgeCarts() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.util.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass173 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.util.service.ResourcePurgeServiceImpl resourcePurgeServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourcePurgeServiceImpl.purgeCarts(Map)"})
+  public void testPurgeCarts_given42_whenHashMapSecondsOldIs42_thenCallsIsRollbackOnly() throws TransactionException {
     // Arrange
-    ResourcePurgeServiceImpl resourcePurgeServiceImpl2 = new ResourcePurgeServiceImpl();
+    doNothing().when(orderService).deleteOrder(Mockito.<Order>any());
+
+    ArrayList<Order> orderList = new ArrayList<>();
+    orderList.add(new NullOrderImpl());
+    when(resourcePurgeDao.findCartsCount(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), Mockito.<List<Long>>any())).thenReturn(3L);
+    when(resourcePurgeDao.findCarts(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), anyInt(), anyInt(), Mockito.<List<Long>>any())).thenReturn(orderList);
+    TransactionStatus transactionStatus = mock(TransactionStatus.class);
+    when(transactionStatus.isRollbackOnly()).thenReturn(true);
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(transactionStatus);
+    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
+
+    HashMap<String, String> config = new HashMap<>();
+    config.put("SECONDS_OLD", "42");
 
     // Act
-    resourcePurgeServiceImpl2.purgeCarts(new HashMap<>());
+    resourcePurgeServiceImpl.purgeCarts(config);
+
+    // Assert that nothing has changed
+    verify(orderService).deleteOrder(isA(Order.class));
+    verify(resourcePurgeDao).findCarts(isNull(), isNull(), isA(Date.class), isNull(), eq(0), eq(3), isA(List.class));
+    verify(resourcePurgeDao).findCartsCount(isNull(), isNull(), isA(Date.class), isNull(), isA(List.class));
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
+    verify(platformTransactionManager).rollback(isA(TransactionStatus.class));
+    verify(transactionStatus).isRollbackOnly();
+    assertEquals(0, resourcePurgeServiceImpl.cartPurgeErrors.size());
   }
 
   /**
    * Test {@link ResourcePurgeServiceImpl#purgeCarts(Map)}.
    * <ul>
-   *   <li>When {@link HashMap#HashMap()}.</li>
+   *   <li>Given {@code IS_PREVIEW}.</li>
+   *   <li>When {@link HashMap#HashMap()} {@code IS_PREVIEW} is a string.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#purgeCarts(Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourcePurgeServiceImpl.purgeCarts(Map)"})
+  public void testPurgeCarts_givenIsPreview_whenHashMapIsPreviewIsAString() throws TransactionException {
+    // Arrange
+    doNothing().when(orderService).deleteOrder(Mockito.<Order>any());
+
+    ArrayList<Order> orderList = new ArrayList<>();
+    orderList.add(new NullOrderImpl());
+    when(resourcePurgeDao.findCartsCount(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), Mockito.<List<Long>>any())).thenReturn(3L);
+    when(resourcePurgeDao.findCarts(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), anyInt(), anyInt(), Mockito.<List<Long>>any())).thenReturn(orderList);
+    TransactionStatus transactionStatus = mock(TransactionStatus.class);
+    when(transactionStatus.isRollbackOnly()).thenReturn(true);
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(transactionStatus);
+    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
+
+    HashMap<String, String> config = new HashMap<>();
+    config.put("IS_PREVIEW",
+        "Cannot purge carts since there was no configuration provided. In the absence of config params, all"
+            + " carts would be candidates for deletion.");
+
+    // Act
+    resourcePurgeServiceImpl.purgeCarts(config);
+
+    // Assert that nothing has changed
+    verify(orderService).deleteOrder(isA(Order.class));
+    verify(resourcePurgeDao).findCarts(isNull(), isNull(), isNull(), eq(false), eq(0), eq(3), isA(List.class));
+    verify(resourcePurgeDao).findCartsCount(isNull(), isNull(), isNull(), eq(false), isA(List.class));
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
+    verify(platformTransactionManager).rollback(isA(TransactionStatus.class));
+    verify(transactionStatus).isRollbackOnly();
+    assertEquals(0, resourcePurgeServiceImpl.cartPurgeErrors.size());
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#purgeCarts(Map)}.
+   * <ul>
+   *   <li>Given {@code NAME}.</li>
+   *   <li>When {@link HashMap#HashMap()} {@code NAME} is a string.</li>
+   *   <li>Then calls {@link TransactionExecution#isRollbackOnly()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#purgeCarts(Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourcePurgeServiceImpl.purgeCarts(Map)"})
+  public void testPurgeCarts_givenName_whenHashMapNameIsAString_thenCallsIsRollbackOnly() throws TransactionException {
+    // Arrange
+    doNothing().when(orderService).deleteOrder(Mockito.<Order>any());
+
+    ArrayList<Order> orderList = new ArrayList<>();
+    orderList.add(new NullOrderImpl());
+    when(resourcePurgeDao.findCartsCount(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), Mockito.<List<Long>>any())).thenReturn(3L);
+    when(resourcePurgeDao.findCarts(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), anyInt(), anyInt(), Mockito.<List<Long>>any())).thenReturn(orderList);
+    TransactionStatus transactionStatus = mock(TransactionStatus.class);
+    when(transactionStatus.isRollbackOnly()).thenReturn(true);
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(transactionStatus);
+    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
+
+    HashMap<String, String> config = new HashMap<>();
+    config.put("NAME",
+        "Cannot purge carts since there was no configuration provided. In the absence of config params, all"
+            + " carts would be candidates for deletion.");
+
+    // Act
+    resourcePurgeServiceImpl.purgeCarts(config);
+
+    // Assert that nothing has changed
+    verify(orderService).deleteOrder(isA(Order.class));
+    verify(resourcePurgeDao).findCarts(isA(String[].class), isNull(), isNull(), isNull(), eq(0), eq(3),
+        isA(List.class));
+    verify(resourcePurgeDao).findCartsCount(isA(String[].class), isNull(), isNull(), isNull(), isA(List.class));
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
+    verify(platformTransactionManager).rollback(isA(TransactionStatus.class));
+    verify(transactionStatus).isRollbackOnly();
+    assertEquals(0, resourcePurgeServiceImpl.cartPurgeErrors.size());
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#purgeCarts(Map)}.
+   * <ul>
+   *   <li>Given {@link OrderService}.</li>
+   *   <li>When {@link HashMap#HashMap()} a string is a string.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#purgeCarts(Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourcePurgeServiceImpl.purgeCarts(Map)"})
+  public void testPurgeCarts_givenOrderService_whenHashMapAStringIsAString() {
+    // Arrange
+    when(resourcePurgeDao.findCartsCount(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), Mockito.<List<Long>>any())).thenReturn(3L);
+    when(resourcePurgeDao.findCarts(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), anyInt(), anyInt(), Mockito.<List<Long>>any())).thenReturn(new ArrayList<>());
+
+    HashMap<String, String> config = new HashMap<>();
+    config.put(
+        "Cannot purge carts since there was no configuration provided. In the absence of config params, all"
+            + " carts would be candidates for deletion.",
+        "Cannot purge carts since there was no configuration provided. In the absence of config params, all"
+            + " carts would be candidates for deletion.");
+
+    // Act
+    resourcePurgeServiceImpl.purgeCarts(config);
+
+    // Assert that nothing has changed
+    verify(resourcePurgeDao).findCarts(isNull(), isNull(), isNull(), isNull(), eq(0), eq(3), isA(List.class));
+    verify(resourcePurgeDao).findCartsCount(isNull(), isNull(), isNull(), isNull(), isA(List.class));
+    assertEquals(0, resourcePurgeServiceImpl.cartPurgeErrors.size());
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#purgeCarts(Map)}.
+   * <ul>
+   *   <li>Given {@link PlatformTransactionManager} {@link PlatformTransactionManager#getTransaction(TransactionDefinition)} return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#purgeCarts(Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourcePurgeServiceImpl.purgeCarts(Map)"})
+  public void testPurgeCarts_givenPlatformTransactionManagerGetTransactionReturnNull() throws TransactionException {
+    // Arrange
+    doNothing().when(orderService).deleteOrder(Mockito.<Order>any());
+
+    ArrayList<Order> orderList = new ArrayList<>();
+    orderList.add(new NullOrderImpl());
+    when(resourcePurgeDao.findCartsCount(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), Mockito.<List<Long>>any())).thenReturn(3L);
+    when(resourcePurgeDao.findCarts(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), anyInt(), anyInt(), Mockito.<List<Long>>any())).thenReturn(orderList);
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(null);
+    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
+
+    HashMap<String, String> config = new HashMap<>();
+    config.put(
+        "Cannot purge carts since there was no configuration provided. In the absence of config params, all"
+            + " carts would be candidates for deletion.",
+        "Cannot purge carts since there was no configuration provided. In the absence of config params, all"
+            + " carts would be candidates for deletion.");
+
+    // Act
+    resourcePurgeServiceImpl.purgeCarts(config);
+
+    // Assert that nothing has changed
+    verify(orderService).deleteOrder(isA(Order.class));
+    verify(resourcePurgeDao).findCarts(isNull(), isNull(), isNull(), isNull(), eq(0), eq(3), isA(List.class));
+    verify(resourcePurgeDao).findCartsCount(isNull(), isNull(), isNull(), isNull(), isA(List.class));
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
+    verify(platformTransactionManager).rollback(isNull());
+    assertEquals(0, resourcePurgeServiceImpl.cartPurgeErrors.size());
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#purgeCarts(Map)}.
+   * <ul>
+   *   <li>Given {@link ResourcePurgeDao} {@link ResourcePurgeDao#findCartsCount(String[], OrderStatus[], Date, Boolean, List)} return {@link Long#MAX_VALUE}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#purgeCarts(Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourcePurgeServiceImpl.purgeCarts(Map)"})
+  public void testPurgeCarts_givenResourcePurgeDaoFindCartsCountReturnMax_value() {
+    // Arrange
+    when(resourcePurgeDao.findCartsCount(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), Mockito.<List<Long>>any())).thenReturn(Long.MAX_VALUE);
+    when(resourcePurgeDao.findCarts(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), anyInt(), anyInt(), Mockito.<List<Long>>any())).thenReturn(new ArrayList<>());
+
+    HashMap<String, String> config = new HashMap<>();
+    config.put(
+        "Cannot purge carts since there was no configuration provided. In the absence of config params, all"
+            + " carts would be candidates for deletion.",
+        "Cannot purge carts since there was no configuration provided. In the absence of config params, all"
+            + " carts would be candidates for deletion.");
+
+    // Act
+    resourcePurgeServiceImpl.purgeCarts(config);
+
+    // Assert that nothing has changed
+    verify(resourcePurgeDao).findCarts(isNull(), isNull(), isNull(), isNull(), eq(0), eq(50), isA(List.class));
+    verify(resourcePurgeDao).findCartsCount(isNull(), isNull(), isNull(), isNull(), isA(List.class));
+    assertEquals(0, resourcePurgeServiceImpl.cartPurgeErrors.size());
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#purgeCarts(Map)}.
+   * <ul>
+   *   <li>Given {@link ResourcePurgeDao}.</li>
    *   <li>Then throw {@link IllegalArgumentException}.</li>
    * </ul>
    * <p>
    * Method under test: {@link ResourcePurgeServiceImpl#purgeCarts(Map)}
    */
   @Test
-  public void testPurgeCarts_whenHashMap_thenThrowIllegalArgumentException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ResourcePurgeServiceImpl resourcePurgeServiceImpl = new ResourcePurgeServiceImpl();
-
-    // Act and Assert
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourcePurgeServiceImpl.purgeCarts(Map)"})
+  public void testPurgeCarts_givenResourcePurgeDao_thenThrowIllegalArgumentException() {
+    // Arrange, Act and Assert
     assertThrows(IllegalArgumentException.class, () -> resourcePurgeServiceImpl.purgeCarts(new HashMap<>()));
   }
 
   /**
+   * Test {@link ResourcePurgeServiceImpl#purgeCarts(Map)}.
+   * <ul>
+   *   <li>Given {@code STATUS}.</li>
+   *   <li>When {@link HashMap#HashMap()} {@code STATUS} is a string.</li>
+   *   <li>Then calls {@link TransactionExecution#isRollbackOnly()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#purgeCarts(Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourcePurgeServiceImpl.purgeCarts(Map)"})
+  public void testPurgeCarts_givenStatus_whenHashMapStatusIsAString_thenCallsIsRollbackOnly()
+      throws TransactionException {
+    // Arrange
+    doNothing().when(orderService).deleteOrder(Mockito.<Order>any());
+
+    ArrayList<Order> orderList = new ArrayList<>();
+    orderList.add(new NullOrderImpl());
+    when(resourcePurgeDao.findCartsCount(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), Mockito.<List<Long>>any())).thenReturn(3L);
+    when(resourcePurgeDao.findCarts(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), anyInt(), anyInt(), Mockito.<List<Long>>any())).thenReturn(orderList);
+    TransactionStatus transactionStatus = mock(TransactionStatus.class);
+    when(transactionStatus.isRollbackOnly()).thenReturn(true);
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(transactionStatus);
+    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
+
+    HashMap<String, String> config = new HashMap<>();
+    config.put("STATUS",
+        "Cannot purge carts since there was no configuration provided. In the absence of config params, all"
+            + " carts would be candidates for deletion.");
+
+    // Act
+    resourcePurgeServiceImpl.purgeCarts(config);
+
+    // Assert that nothing has changed
+    verify(orderService).deleteOrder(isA(Order.class));
+    verify(resourcePurgeDao).findCarts(isNull(), isA(OrderStatus[].class), isNull(), isNull(), eq(0), eq(3),
+        isA(List.class));
+    verify(resourcePurgeDao).findCartsCount(isNull(), isA(OrderStatus[].class), isNull(), isNull(), isA(List.class));
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
+    verify(platformTransactionManager).rollback(isA(TransactionStatus.class));
+    verify(transactionStatus).isRollbackOnly();
+    assertEquals(0, resourcePurgeServiceImpl.cartPurgeErrors.size());
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#purgeCarts(Map)}.
+   * <ul>
+   *   <li>Then calls {@link PlatformTransactionManager#commit(TransactionStatus)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#purgeCarts(Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourcePurgeServiceImpl.purgeCarts(Map)"})
+  public void testPurgeCarts_thenCallsCommit() throws TransactionException {
+    // Arrange
+    doNothing().when(orderService).deleteOrder(Mockito.<Order>any());
+
+    ArrayList<Order> orderList = new ArrayList<>();
+    orderList.add(new NullOrderImpl());
+    when(resourcePurgeDao.findCartsCount(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), Mockito.<List<Long>>any())).thenReturn(3L);
+    when(resourcePurgeDao.findCarts(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), anyInt(), anyInt(), Mockito.<List<Long>>any())).thenReturn(orderList);
+    doNothing().when(platformTransactionManager).commit(Mockito.<TransactionStatus>any());
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any()))
+        .thenReturn(new SimpleTransactionStatus(true));
+
+    HashMap<String, String> config = new HashMap<>();
+    config.put(
+        "Cannot purge carts since there was no configuration provided. In the absence of config params, all"
+            + " carts would be candidates for deletion.",
+        "Cannot purge carts since there was no configuration provided. In the absence of config params, all"
+            + " carts would be candidates for deletion.");
+
+    // Act
+    resourcePurgeServiceImpl.purgeCarts(config);
+
+    // Assert that nothing has changed
+    verify(orderService).deleteOrder(isA(Order.class));
+    verify(resourcePurgeDao).findCarts(isNull(), isNull(), isNull(), isNull(), eq(0), eq(3), isA(List.class));
+    verify(resourcePurgeDao).findCartsCount(isNull(), isNull(), isNull(), isNull(), isA(List.class));
+    verify(platformTransactionManager).commit(isA(TransactionStatus.class));
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
+    assertEquals(0, resourcePurgeServiceImpl.cartPurgeErrors.size());
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#purgeCarts(Map)}.
+   * <ul>
+   *   <li>Then {@link ResourcePurgeServiceImpl} {@link ResourcePurgeServiceImpl#cartPurgeErrors} size is one.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#purgeCarts(Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourcePurgeServiceImpl.purgeCarts(Map)"})
+  public void testPurgeCarts_thenResourcePurgeServiceImplCartPurgeErrorsSizeIsOne() throws TransactionException {
+    // Arrange
+    doNothing().when(orderService).deleteOrder(Mockito.<Order>any());
+
+    ArrayList<Order> orderList = new ArrayList<>();
+    orderList.add(new NullOrderImpl());
+    when(resourcePurgeDao.findCartsCount(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), Mockito.<List<Long>>any())).thenReturn(3L);
+    when(resourcePurgeDao.findCarts(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), anyInt(), anyInt(), Mockito.<List<Long>>any())).thenReturn(orderList);
+    doThrow(new IllegalArgumentException("STATUS")).when(platformTransactionManager)
+        .commit(Mockito.<TransactionStatus>any());
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any()))
+        .thenReturn(new SimpleTransactionStatus(true));
+    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
+
+    HashMap<String, String> config = new HashMap<>();
+    config.put(
+        "Cannot purge carts since there was no configuration provided. In the absence of config params, all"
+            + " carts would be candidates for deletion.",
+        "Cannot purge carts since there was no configuration provided. In the absence of config params, all"
+            + " carts would be candidates for deletion.");
+
+    // Act
+    resourcePurgeServiceImpl.purgeCarts(config);
+
+    // Assert
+    verify(orderService).deleteOrder(isA(Order.class));
+    verify(resourcePurgeDao).findCarts(isNull(), isNull(), isNull(), isNull(), eq(0), eq(3), isA(List.class));
+    verify(resourcePurgeDao).findCartsCount(isNull(), isNull(), isNull(), isNull(), isA(List.class));
+    verify(platformTransactionManager).commit(isA(TransactionStatus.class));
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
+    verify(platformTransactionManager).rollback(isA(TransactionStatus.class));
+    assertEquals(1, resourcePurgeServiceImpl.cartPurgeErrors.size());
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#purgeCarts(Map)}.
+   * <ul>
+   *   <li>When {@link HashMap#HashMap()} a string is a string.</li>
+   *   <li>Then calls {@link TransactionExecution#isRollbackOnly()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#purgeCarts(Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourcePurgeServiceImpl.purgeCarts(Map)"})
+  public void testPurgeCarts_whenHashMapAStringIsAString_thenCallsIsRollbackOnly() throws TransactionException {
+    // Arrange
+    doNothing().when(orderService).deleteOrder(Mockito.<Order>any());
+
+    ArrayList<Order> orderList = new ArrayList<>();
+    orderList.add(new NullOrderImpl());
+    when(resourcePurgeDao.findCartsCount(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), Mockito.<List<Long>>any())).thenReturn(3L);
+    when(resourcePurgeDao.findCarts(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), anyInt(), anyInt(), Mockito.<List<Long>>any())).thenReturn(orderList);
+    TransactionStatus transactionStatus = mock(TransactionStatus.class);
+    when(transactionStatus.isRollbackOnly()).thenReturn(true);
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(transactionStatus);
+    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
+
+    HashMap<String, String> config = new HashMap<>();
+    config.put(
+        "Cannot purge carts since there was no configuration provided. In the absence of config params, all"
+            + " carts would be candidates for deletion.",
+        "Cannot purge carts since there was no configuration provided. In the absence of config params, all"
+            + " carts would be candidates for deletion.");
+
+    // Act
+    resourcePurgeServiceImpl.purgeCarts(config);
+
+    // Assert that nothing has changed
+    verify(orderService).deleteOrder(isA(Order.class));
+    verify(resourcePurgeDao).findCarts(isNull(), isNull(), isNull(), isNull(), eq(0), eq(3), isA(List.class));
+    verify(resourcePurgeDao).findCartsCount(isNull(), isNull(), isNull(), isNull(), isA(List.class));
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
+    verify(platformTransactionManager).rollback(isA(TransactionStatus.class));
+    verify(transactionStatus).isRollbackOnly();
+    assertEquals(0, resourcePurgeServiceImpl.cartPurgeErrors.size());
+  }
+
+  /**
    * Test {@link ResourcePurgeServiceImpl#notifyCarts(Map)}.
    * <p>
    * Method under test: {@link ResourcePurgeServiceImpl#notifyCarts(Map)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourcePurgeServiceImpl.notifyCarts(Map)"})
   public void testNotifyCarts() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.util.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass165 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.util.service.ResourcePurgeServiceImpl resourcePurgeServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    ResourcePurgeServiceImpl resourcePurgeServiceImpl2 = new ResourcePurgeServiceImpl();
+    when(resourcePurgeDao.findCartsCount(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), Mockito.<List<Long>>any())).thenThrow(new IllegalArgumentException("STATUS"));
 
-    // Act
-    resourcePurgeServiceImpl2.notifyCarts(new HashMap<>());
+    HashMap<String, String> config = new HashMap<>();
+    config.put(
+        "Cannot notify carts of purge since there was no configuration provided. In the absence of config params,"
+            + " all carts would be candidates for deletion.",
+        "Cannot notify carts of purge since there was no configuration provided. In the absence of config params,"
+            + " all carts would be candidates for deletion.");
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> resourcePurgeServiceImpl.notifyCarts(config));
+    verify(resourcePurgeDao).findCartsCount(isNull(), isNull(), isNull(), isNull(), isA(List.class));
   }
 
   /**
    * Test {@link ResourcePurgeServiceImpl#notifyCarts(Map)}.
    * <ul>
-   *   <li>When {@link HashMap#HashMap()}.</li>
-   *   <li>Then throw {@link IllegalArgumentException}.</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link NullOrderImpl} (default constructor).</li>
+   *   <li>When {@link HashMap#HashMap()} a string is a string.</li>
    * </ul>
    * <p>
    * Method under test: {@link ResourcePurgeServiceImpl#notifyCarts(Map)}
    */
   @Test
-  public void testNotifyCarts_whenHashMap_thenThrowIllegalArgumentException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourcePurgeServiceImpl.notifyCarts(Map)"})
+  public void testNotifyCarts_givenArrayListAddNullOrderImpl_whenHashMapAStringIsAString() {
     // Arrange
-    ResourcePurgeServiceImpl resourcePurgeServiceImpl = new ResourcePurgeServiceImpl();
+    ArrayList<Order> orderList = new ArrayList<>();
+    orderList.add(new NullOrderImpl());
+    when(resourcePurgeDao.findCartsCount(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), Mockito.<List<Long>>any())).thenReturn(3L);
+    when(resourcePurgeDao.findCarts(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), anyInt(), anyInt(), Mockito.<List<Long>>any())).thenReturn(orderList);
 
-    // Act and Assert
+    HashMap<String, String> config = new HashMap<>();
+    config.put(
+        "Cannot notify carts of purge since there was no configuration provided. In the absence of config params,"
+            + " all carts would be candidates for deletion.",
+        "Cannot notify carts of purge since there was no configuration provided. In the absence of config params,"
+            + " all carts would be candidates for deletion.");
+
+    // Act
+    resourcePurgeServiceImpl.notifyCarts(config);
+
+    // Assert
+    verify(resourcePurgeDao).findCarts(isNull(), isNull(), isNull(), isNull(), eq(0), eq(3), isA(List.class));
+    verify(resourcePurgeDao).findCartsCount(isNull(), isNull(), isNull(), isNull(), isA(List.class));
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#notifyCarts(Map)}.
+   * <ul>
+   *   <li>Given {@code IS_PREVIEW}.</li>
+   *   <li>When {@link HashMap#HashMap()} {@code IS_PREVIEW} is a string.</li>
+   *   <li>Then calls {@link ResourcePurgeDao#findCarts(String[], OrderStatus[], Date, Boolean, int, int, List)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#notifyCarts(Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourcePurgeServiceImpl.notifyCarts(Map)"})
+  public void testNotifyCarts_givenIsPreview_whenHashMapIsPreviewIsAString_thenCallsFindCarts() {
+    // Arrange
+    when(resourcePurgeDao.findCartsCount(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), Mockito.<List<Long>>any())).thenReturn(3L);
+    when(resourcePurgeDao.findCarts(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), anyInt(), anyInt(), Mockito.<List<Long>>any())).thenReturn(new ArrayList<>());
+
+    HashMap<String, String> config = new HashMap<>();
+    config.put("IS_PREVIEW",
+        "Cannot notify carts of purge since there was no configuration provided. In the absence of config params,"
+            + " all carts would be candidates for deletion.");
+
+    // Act
+    resourcePurgeServiceImpl.notifyCarts(config);
+
+    // Assert
+    verify(resourcePurgeDao).findCarts(isNull(), isNull(), isNull(), eq(false), eq(0), eq(3), isA(List.class));
+    verify(resourcePurgeDao).findCartsCount(isNull(), isNull(), isNull(), eq(false), isA(List.class));
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#notifyCarts(Map)}.
+   * <ul>
+   *   <li>Given {@code NAME}.</li>
+   *   <li>When {@link HashMap#HashMap()} {@code NAME} is a string.</li>
+   *   <li>Then calls {@link ResourcePurgeDao#findCarts(String[], OrderStatus[], Date, Boolean, int, int, List)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#notifyCarts(Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourcePurgeServiceImpl.notifyCarts(Map)"})
+  public void testNotifyCarts_givenName_whenHashMapNameIsAString_thenCallsFindCarts() {
+    // Arrange
+    when(resourcePurgeDao.findCartsCount(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), Mockito.<List<Long>>any())).thenReturn(3L);
+    when(resourcePurgeDao.findCarts(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), anyInt(), anyInt(), Mockito.<List<Long>>any())).thenReturn(new ArrayList<>());
+
+    HashMap<String, String> config = new HashMap<>();
+    config.put("NAME",
+        "Cannot notify carts of purge since there was no configuration provided. In the absence of config params,"
+            + " all carts would be candidates for deletion.");
+
+    // Act
+    resourcePurgeServiceImpl.notifyCarts(config);
+
+    // Assert
+    verify(resourcePurgeDao).findCarts(isA(String[].class), isNull(), isNull(), isNull(), eq(0), eq(3),
+        isA(List.class));
+    verify(resourcePurgeDao).findCartsCount(isA(String[].class), isNull(), isNull(), isNull(), isA(List.class));
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#notifyCarts(Map)}.
+   * <ul>
+   *   <li>Given {@link OrderImpl} (default constructor) EmailAddress is {@code null}.</li>
+   *   <li>When {@link HashMap#HashMap()} a string is a string.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#notifyCarts(Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourcePurgeServiceImpl.notifyCarts(Map)"})
+  public void testNotifyCarts_givenOrderImplEmailAddressIsNull_whenHashMapAStringIsAString() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    OrderImpl orderImpl = new OrderImpl();
+    orderImpl.setAdditionalOfferInformation(new HashMap<>());
+    orderImpl.setAuditable(auditable);
+    orderImpl.setCandidateOrderOffers(new ArrayList<>());
+    orderImpl.setCurrency(new BroadleafCurrencyImpl());
+    orderImpl.setCustomer(new CustomerImpl());
+    orderImpl.setEmailAddress(null);
+    orderImpl.setFulfillmentGroups(new ArrayList<>());
+    orderImpl.setId(1L);
+    orderImpl.setLocale(new LocaleImpl());
+    orderImpl.setName("STATUS");
+    orderImpl.setOrderAttributes(new HashMap<>());
+    orderImpl.setOrderItems(new ArrayList<>());
+    orderImpl.setOrderMessages(new ArrayList<>());
+    orderImpl.setOrderNumber("42");
+    orderImpl.setPayments(new ArrayList<>());
+    orderImpl.setStatus(OrderStatus.ARCHIVED);
+    orderImpl.setSubTotal(new Money());
+    orderImpl.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    orderImpl.setTaxOverride(true);
+    orderImpl.setTotal(new Money());
+    orderImpl.setTotalFulfillmentCharges(new Money());
+    orderImpl.setTotalTax(new Money());
+
+    ArrayList<Order> orderList = new ArrayList<>();
+    orderList.add(orderImpl);
+    when(resourcePurgeDao.findCartsCount(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), Mockito.<List<Long>>any())).thenReturn(3L);
+    when(resourcePurgeDao.findCarts(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), anyInt(), anyInt(), Mockito.<List<Long>>any())).thenReturn(orderList);
+
+    HashMap<String, String> config = new HashMap<>();
+    config.put(
+        "Cannot notify carts of purge since there was no configuration provided. In the absence of config params,"
+            + " all carts would be candidates for deletion.",
+        "Cannot notify carts of purge since there was no configuration provided. In the absence of config params,"
+            + " all carts would be candidates for deletion.");
+
+    // Act
+    resourcePurgeServiceImpl.notifyCarts(config);
+
+    // Assert
+    verify(resourcePurgeDao).findCarts(isNull(), isNull(), isNull(), isNull(), eq(0), eq(3), isA(List.class));
+    verify(resourcePurgeDao).findCartsCount(isNull(), isNull(), isNull(), isNull(), isA(List.class));
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#notifyCarts(Map)}.
+   * <ul>
+   *   <li>Given {@link ResourcePurgeDao} {@link ResourcePurgeDao#findCartsCount(String[], OrderStatus[], Date, Boolean, List)} return {@link Long#MAX_VALUE}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#notifyCarts(Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourcePurgeServiceImpl.notifyCarts(Map)"})
+  public void testNotifyCarts_givenResourcePurgeDaoFindCartsCountReturnMax_value() {
+    // Arrange
+    when(resourcePurgeDao.findCartsCount(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), Mockito.<List<Long>>any())).thenReturn(Long.MAX_VALUE);
+    when(resourcePurgeDao.findCarts(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), anyInt(), anyInt(), Mockito.<List<Long>>any())).thenReturn(new ArrayList<>());
+
+    HashMap<String, String> config = new HashMap<>();
+    config.put(
+        "Cannot notify carts of purge since there was no configuration provided. In the absence of config params,"
+            + " all carts would be candidates for deletion.",
+        "Cannot notify carts of purge since there was no configuration provided. In the absence of config params,"
+            + " all carts would be candidates for deletion.");
+
+    // Act
+    resourcePurgeServiceImpl.notifyCarts(config);
+
+    // Assert
+    verify(resourcePurgeDao).findCarts(isNull(), isNull(), isNull(), isNull(), eq(0), eq(50), isA(List.class));
+    verify(resourcePurgeDao).findCartsCount(isNull(), isNull(), isNull(), isNull(), isA(List.class));
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#notifyCarts(Map)}.
+   * <ul>
+   *   <li>Given {@link ResourcePurgeDao}.</li>
+   *   <li>When {@link HashMap#HashMap()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#notifyCarts(Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourcePurgeServiceImpl.notifyCarts(Map)"})
+  public void testNotifyCarts_givenResourcePurgeDao_whenHashMap() {
+    // Arrange, Act and Assert
     assertThrows(IllegalArgumentException.class, () -> resourcePurgeServiceImpl.notifyCarts(new HashMap<>()));
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#notifyCarts(Map)}.
+   * <ul>
+   *   <li>Given {@code STATUS}.</li>
+   *   <li>When {@link HashMap#HashMap()} {@code STATUS} is a string.</li>
+   *   <li>Then calls {@link ResourcePurgeDao#findCarts(String[], OrderStatus[], Date, Boolean, int, int, List)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#notifyCarts(Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourcePurgeServiceImpl.notifyCarts(Map)"})
+  public void testNotifyCarts_givenStatus_whenHashMapStatusIsAString_thenCallsFindCarts() {
+    // Arrange
+    when(resourcePurgeDao.findCartsCount(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), Mockito.<List<Long>>any())).thenReturn(3L);
+    when(resourcePurgeDao.findCarts(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), anyInt(), anyInt(), Mockito.<List<Long>>any())).thenReturn(new ArrayList<>());
+
+    HashMap<String, String> config = new HashMap<>();
+    config.put("STATUS",
+        "Cannot notify carts of purge since there was no configuration provided. In the absence of config params,"
+            + " all carts would be candidates for deletion.");
+
+    // Act
+    resourcePurgeServiceImpl.notifyCarts(config);
+
+    // Assert
+    verify(resourcePurgeDao).findCarts(isNull(), isA(OrderStatus[].class), isNull(), isNull(), eq(0), eq(3),
+        isA(List.class));
+    verify(resourcePurgeDao).findCartsCount(isNull(), isA(OrderStatus[].class), isNull(), isNull(), isA(List.class));
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#notifyCarts(Map)}.
+   * <ul>
+   *   <li>Then calls {@link NotificationDispatcher#dispatchNotification(Notification)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#notifyCarts(Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourcePurgeServiceImpl.notifyCarts(Map)"})
+  public void testNotifyCarts_thenCallsDispatchNotification() throws ServiceException {
+    // Arrange
+    doNothing().when(notificationDispatcher).dispatchNotification(Mockito.<Notification>any());
+
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    OrderImpl orderImpl = new OrderImpl();
+    orderImpl.setAdditionalOfferInformation(new HashMap<>());
+    orderImpl.setAuditable(auditable);
+    orderImpl.setCandidateOrderOffers(new ArrayList<>());
+    orderImpl.setCurrency(new BroadleafCurrencyImpl());
+    orderImpl.setCustomer(new CustomerImpl());
+    orderImpl.setEmailAddress("42 Main St");
+    orderImpl.setFulfillmentGroups(new ArrayList<>());
+    orderImpl.setId(1L);
+    orderImpl.setLocale(new LocaleImpl());
+    orderImpl.setName("STATUS");
+    orderImpl.setOrderAttributes(new HashMap<>());
+    orderImpl.setOrderItems(new ArrayList<>());
+    orderImpl.setOrderMessages(new ArrayList<>());
+    orderImpl.setOrderNumber("42");
+    orderImpl.setPayments(new ArrayList<>());
+    orderImpl.setStatus(OrderStatus.ARCHIVED);
+    orderImpl.setSubTotal(new Money());
+    orderImpl.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    orderImpl.setTaxOverride(true);
+    orderImpl.setTotal(new Money());
+    orderImpl.setTotalFulfillmentCharges(new Money());
+    orderImpl.setTotalTax(new Money());
+
+    ArrayList<Order> orderList = new ArrayList<>();
+    orderList.add(orderImpl);
+    when(resourcePurgeDao.findCartsCount(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), Mockito.<List<Long>>any())).thenReturn(3L);
+    when(resourcePurgeDao.findCarts(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), anyInt(), anyInt(), Mockito.<List<Long>>any())).thenReturn(orderList);
+
+    HashMap<String, String> config = new HashMap<>();
+    config.put(
+        "Cannot notify carts of purge since there was no configuration provided. In the absence of config params,"
+            + " all carts would be candidates for deletion.",
+        "Cannot notify carts of purge since there was no configuration provided. In the absence of config params,"
+            + " all carts would be candidates for deletion.");
+
+    // Act
+    resourcePurgeServiceImpl.notifyCarts(config);
+
+    // Assert
+    verify(notificationDispatcher).dispatchNotification(isA(Notification.class));
+    verify(resourcePurgeDao).findCarts(isNull(), isNull(), isNull(), isNull(), eq(0), eq(3), isA(List.class));
+    verify(resourcePurgeDao).findCartsCount(isNull(), isNull(), isNull(), isNull(), isA(List.class));
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#notifyCarts(Map)}.
+   * <ul>
+   *   <li>When {@link HashMap#HashMap()} a string is a string.</li>
+   *   <li>Then calls {@link ResourcePurgeDao#findCarts(String[], OrderStatus[], Date, Boolean, int, int, List)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#notifyCarts(Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourcePurgeServiceImpl.notifyCarts(Map)"})
+  public void testNotifyCarts_whenHashMapAStringIsAString_thenCallsFindCarts() {
+    // Arrange
+    when(resourcePurgeDao.findCartsCount(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), Mockito.<List<Long>>any())).thenReturn(3L);
+    when(resourcePurgeDao.findCarts(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), anyInt(), anyInt(), Mockito.<List<Long>>any())).thenReturn(new ArrayList<>());
+
+    HashMap<String, String> config = new HashMap<>();
+    config.put(
+        "Cannot notify carts of purge since there was no configuration provided. In the absence of config params,"
+            + " all carts would be candidates for deletion.",
+        "Cannot notify carts of purge since there was no configuration provided. In the absence of config params,"
+            + " all carts would be candidates for deletion.");
+
+    // Act
+    resourcePurgeServiceImpl.notifyCarts(config);
+
+    // Assert
+    verify(resourcePurgeDao).findCarts(isNull(), isNull(), isNull(), isNull(), eq(0), eq(3), isA(List.class));
+    verify(resourcePurgeDao).findCartsCount(isNull(), isNull(), isNull(), isNull(), isA(List.class));
   }
 
   /**
    * Test PurgeErrorCache {@link PurgeErrorCache#add(Long)}.
    * <p>
-   * Method under test: {@link ResourcePurgeServiceImpl.PurgeErrorCache#add(Long)}
+   * Method under test: {@link PurgeErrorCache#add(Long)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long PurgeErrorCache.add(Long)"})
   public void testPurgeErrorCacheAdd() {
     // Arrange
-    ResourcePurgeServiceImpl.PurgeErrorCache purgeErrorCache = (new ResourcePurgeServiceImpl()).new PurgeErrorCache();
+    PurgeErrorCache purgeErrorCache = (new ResourcePurgeServiceImpl()).new PurgeErrorCache();
     purgeErrorCache.add(1L);
 
     // Act and Assert
@@ -714,16 +1037,17 @@ public class ResourcePurgeServiceImplDiffblueTest {
   /**
    * Test PurgeErrorCache {@link PurgeErrorCache#add(Long)}.
    * <ul>
-   *   <li>Given {@link PurgeErrorCache#PurgeErrorCache(ResourcePurgeServiceImpl)}
-   * with this$0 is {@link ResourcePurgeServiceImpl} (default constructor).</li>
+   *   <li>Given {@link PurgeErrorCache#PurgeErrorCache(ResourcePurgeServiceImpl)} with this$0 is {@link ResourcePurgeServiceImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test: {@link ResourcePurgeServiceImpl.PurgeErrorCache#add(Long)}
+   * Method under test: {@link PurgeErrorCache#add(Long)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long PurgeErrorCache.add(Long)"})
   public void testPurgeErrorCacheAdd_givenPurgeErrorCacheWithThis$0IsResourcePurgeServiceImpl() {
     // Arrange
-    ResourcePurgeServiceImpl.PurgeErrorCache purgeErrorCache = (new ResourcePurgeServiceImpl()).new PurgeErrorCache();
+    PurgeErrorCache purgeErrorCache = (new ResourcePurgeServiceImpl()).new PurgeErrorCache();
 
     // Act and Assert
     assertNull(purgeErrorCache.add(1L));
@@ -733,13 +1057,14 @@ public class ResourcePurgeServiceImplDiffblueTest {
   /**
    * Test PurgeErrorCache {@link PurgeErrorCache#getEntriesSince(long)}.
    * <p>
-   * Method under test:
-   * {@link ResourcePurgeServiceImpl.PurgeErrorCache#getEntriesSince(long)}
+   * Method under test: {@link PurgeErrorCache#getEntriesSince(long)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Set PurgeErrorCache.getEntriesSince(long)"})
   public void testPurgeErrorCacheGetEntriesSince() {
     // Arrange
-    ResourcePurgeServiceImpl.PurgeErrorCache purgeErrorCache = (new ResourcePurgeServiceImpl()).new PurgeErrorCache();
+    PurgeErrorCache purgeErrorCache = (new ResourcePurgeServiceImpl()).new PurgeErrorCache();
 
     // Act
     Set<Long> actualEntriesSince = purgeErrorCache.getEntriesSince(1L);
@@ -755,13 +1080,14 @@ public class ResourcePurgeServiceImplDiffblueTest {
    *   <li>When {@link Long#MAX_VALUE}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ResourcePurgeServiceImpl.PurgeErrorCache#getEntriesSince(long)}
+   * Method under test: {@link PurgeErrorCache#getEntriesSince(long)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Set PurgeErrorCache.getEntriesSince(long)"})
   public void testPurgeErrorCacheGetEntriesSince_whenMax_value() {
     // Arrange
-    ResourcePurgeServiceImpl.PurgeErrorCache purgeErrorCache = (new ResourcePurgeServiceImpl()).new PurgeErrorCache();
+    PurgeErrorCache purgeErrorCache = (new ResourcePurgeServiceImpl()).new PurgeErrorCache();
     purgeErrorCache.add(1L);
 
     // Act
@@ -773,13 +1099,13 @@ public class ResourcePurgeServiceImplDiffblueTest {
   }
 
   /**
-   * Test PurgeErrorCache
-   * {@link PurgeErrorCache#PurgeErrorCache(ResourcePurgeServiceImpl)}.
+   * Test PurgeErrorCache {@link PurgeErrorCache#PurgeErrorCache(ResourcePurgeServiceImpl)}.
    * <p>
-   * Method under test:
-   * {@link ResourcePurgeServiceImpl.PurgeErrorCache#PurgeErrorCache(ResourcePurgeServiceImpl)}
+   * Method under test: {@link PurgeErrorCache#PurgeErrorCache(ResourcePurgeServiceImpl)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PurgeErrorCache.<init>(ResourcePurgeServiceImpl)"})
   public void testPurgeErrorCacheNewPurgeErrorCache() {
     // Arrange, Act and Assert
     assertEquals(0, ((new ResourcePurgeServiceImpl()).new PurgeErrorCache()).size());
@@ -788,155 +1114,528 @@ public class ResourcePurgeServiceImplDiffblueTest {
   /**
    * Test PurgeErrorCache {@link PurgeErrorCache#size()}.
    * <p>
-   * Method under test: {@link ResourcePurgeServiceImpl.PurgeErrorCache#size()}
+   * Method under test: {@link PurgeErrorCache#size()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int PurgeErrorCache.size()"})
   public void testPurgeErrorCacheSize() {
     // Arrange, Act and Assert
     assertEquals(0, ((new ResourcePurgeServiceImpl()).new PurgeErrorCache()).size());
   }
 
   /**
-   * Test
-   * {@link ResourcePurgeServiceImpl#purgeOrderHistory(Class, String, Map, Map)}.
+   * Test {@link ResourcePurgeServiceImpl#purgeOrderHistory(Class, String, Map, Map)}.
+   * <ul>
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String)} return {@code Property}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link ResourcePurgeServiceImpl#purgeOrderHistory(Class, String, Map, Map)}
+   * Method under test: {@link ResourcePurgeServiceImpl#purgeOrderHistory(Class, String, Map, Map)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testPurgeOrderHistory() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.util.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass189 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.util.service.ResourcePurgeServiceImpl resourcePurgeServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourcePurgeServiceImpl.purgeOrderHistory(Class, String, Map, Map)"})
+  public void testPurgeOrderHistory_givenEnvironmentGetPropertyReturnProperty() {
     // Arrange
-    ResourcePurgeServiceImpl resourcePurgeServiceImpl2 = new ResourcePurgeServiceImpl();
+    when(environment.getProperty(Mockito.<String>any())).thenReturn("Property");
     Class<Object> rootType = Object.class;
-    HashMap<String, List<DeleteStatementGeneratorImpl.PathElement>> depends = new HashMap<>();
+    HashMap<String, List<PathElement>> depends = new HashMap<>();
 
     // Act
-    resourcePurgeServiceImpl2.purgeOrderHistory(rootType, "42", depends, new HashMap<>());
+    resourcePurgeServiceImpl.purgeOrderHistory(rootType, "42", depends, new HashMap<>());
+
+    // Assert
+    verify(environment).getProperty(eq("enable.purge.order.history"));
   }
 
   /**
-   * Test {@link ResourcePurgeServiceImpl#purgeCustomers(Map)}.
+   * Test {@link ResourcePurgeServiceImpl#purgeOrderHistory(Class, String, Map, Map)}.
+   * <ul>
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
+   * </ul>
    * <p>
-   * Method under test: {@link ResourcePurgeServiceImpl#purgeCustomers(Map)}
+   * Method under test: {@link ResourcePurgeServiceImpl#purgeOrderHistory(Class, String, Map, Map)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testPurgeCustomers() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.util.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass181 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.util.service.ResourcePurgeServiceImpl resourcePurgeServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourcePurgeServiceImpl.purgeOrderHistory(Class, String, Map, Map)"})
+  public void testPurgeOrderHistory_thenThrowIllegalArgumentException() {
     // Arrange
-    ResourcePurgeServiceImpl resourcePurgeServiceImpl2 = new ResourcePurgeServiceImpl();
+    when(environment.getProperty(Mockito.<String>any()))
+        .thenThrow(new IllegalArgumentException("enable.purge.order.history"));
+    Class<Object> rootType = Object.class;
+    HashMap<String, List<PathElement>> depends = new HashMap<>();
 
-    // Act
-    resourcePurgeServiceImpl2.purgeCustomers(new HashMap<>());
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> resourcePurgeServiceImpl.purgeOrderHistory(rootType, "42", depends, new HashMap<>()));
+    verify(environment).getProperty(eq("enable.purge.order.history"));
   }
 
   /**
    * Test {@link ResourcePurgeServiceImpl#purgeCustomers(Map)}.
    * <ul>
-   *   <li>When {@link HashMap#HashMap()}.</li>
+   *   <li>Given {@code 42}.</li>
+   *   <li>When {@link HashMap#HashMap()} {@code SECONDS_OLD} is {@code 42}.</li>
+   *   <li>Then calls {@link TransactionExecution#isRollbackOnly()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#purgeCustomers(Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourcePurgeServiceImpl.purgeCustomers(Map)"})
+  public void testPurgeCustomers_given42_whenHashMapSecondsOldIs42_thenCallsIsRollbackOnly()
+      throws TransactionException {
+    // Arrange
+    doNothing().when(customerService).deleteCustomer(Mockito.<Customer>any());
+
+    ArrayList<Customer> customerList = new ArrayList<>();
+    customerList.add(new CustomerImpl());
+    when(resourcePurgeDao.findCustomersCount(Mockito.<Date>any(), Mockito.<Boolean>any(), Mockito.<Boolean>any(),
+        Mockito.<Boolean>any(), Mockito.<List<Long>>any())).thenReturn(3L);
+    when(resourcePurgeDao.findCustomers(Mockito.<Date>any(), Mockito.<Boolean>any(), Mockito.<Boolean>any(),
+        Mockito.<Boolean>any(), anyInt(), anyInt(), Mockito.<List<Long>>any())).thenReturn(customerList);
+    TransactionStatus transactionStatus = mock(TransactionStatus.class);
+    when(transactionStatus.isRollbackOnly()).thenReturn(true);
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(transactionStatus);
+    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
+
+    HashMap<String, String> config = new HashMap<>();
+    config.put("SECONDS_OLD", "42");
+
+    // Act
+    resourcePurgeServiceImpl.purgeCustomers(config);
+
+    // Assert that nothing has changed
+    verify(resourcePurgeDao).findCustomers(isA(Date.class), isNull(), isNull(), isNull(), eq(0), eq(3),
+        isA(List.class));
+    verify(resourcePurgeDao).findCustomersCount(isA(Date.class), isNull(), isNull(), isNull(), isA(List.class));
+    verify(customerService).deleteCustomer(isA(Customer.class));
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
+    verify(platformTransactionManager).rollback(isA(TransactionStatus.class));
+    verify(transactionStatus).isRollbackOnly();
+    assertEquals(0, resourcePurgeServiceImpl.customerPurgeErrors.size());
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#purgeCustomers(Map)}.
+   * <ul>
+   *   <li>Given {@link CustomerService}.</li>
+   *   <li>When {@link HashMap#HashMap()} a string is a string.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#purgeCustomers(Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourcePurgeServiceImpl.purgeCustomers(Map)"})
+  public void testPurgeCustomers_givenCustomerService_whenHashMapAStringIsAString() {
+    // Arrange
+    when(resourcePurgeDao.findCustomersCount(Mockito.<Date>any(), Mockito.<Boolean>any(), Mockito.<Boolean>any(),
+        Mockito.<Boolean>any(), Mockito.<List<Long>>any())).thenReturn(3L);
+    when(resourcePurgeDao.findCustomers(Mockito.<Date>any(), Mockito.<Boolean>any(), Mockito.<Boolean>any(),
+        Mockito.<Boolean>any(), anyInt(), anyInt(), Mockito.<List<Long>>any())).thenReturn(new ArrayList<>());
+
+    HashMap<String, String> config = new HashMap<>();
+    config.put(
+        "Cannot purge customers since there was no configuration provided. In the absence of config params, all"
+            + " customers would be candidates for deletion.",
+        "Cannot purge customers since there was no configuration provided. In the absence of config params, all"
+            + " customers would be candidates for deletion.");
+
+    // Act
+    resourcePurgeServiceImpl.purgeCustomers(config);
+
+    // Assert that nothing has changed
+    verify(resourcePurgeDao).findCustomers(isNull(), isNull(), isNull(), isNull(), eq(0), eq(3), isA(List.class));
+    verify(resourcePurgeDao).findCustomersCount(isNull(), isNull(), isNull(), isNull(), isA(List.class));
+    assertEquals(0, resourcePurgeServiceImpl.customerPurgeErrors.size());
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#purgeCustomers(Map)}.
+   * <ul>
+   *   <li>Given {@code IS_DEACTIVATED}.</li>
+   *   <li>When {@link HashMap#HashMap()} {@code IS_DEACTIVATED} is a string.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#purgeCustomers(Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourcePurgeServiceImpl.purgeCustomers(Map)"})
+  public void testPurgeCustomers_givenIsDeactivated_whenHashMapIsDeactivatedIsAString() throws TransactionException {
+    // Arrange
+    doNothing().when(customerService).deleteCustomer(Mockito.<Customer>any());
+
+    ArrayList<Customer> customerList = new ArrayList<>();
+    customerList.add(new CustomerImpl());
+    when(resourcePurgeDao.findCustomersCount(Mockito.<Date>any(), Mockito.<Boolean>any(), Mockito.<Boolean>any(),
+        Mockito.<Boolean>any(), Mockito.<List<Long>>any())).thenReturn(3L);
+    when(resourcePurgeDao.findCustomers(Mockito.<Date>any(), Mockito.<Boolean>any(), Mockito.<Boolean>any(),
+        Mockito.<Boolean>any(), anyInt(), anyInt(), Mockito.<List<Long>>any())).thenReturn(customerList);
+    TransactionStatus transactionStatus = mock(TransactionStatus.class);
+    when(transactionStatus.isRollbackOnly()).thenReturn(true);
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(transactionStatus);
+    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
+
+    HashMap<String, String> config = new HashMap<>();
+    config.put("IS_DEACTIVATED",
+        "Cannot purge customers since there was no configuration provided. In the absence of config params, all"
+            + " customers would be candidates for deletion.");
+
+    // Act
+    resourcePurgeServiceImpl.purgeCustomers(config);
+
+    // Assert that nothing has changed
+    verify(resourcePurgeDao).findCustomers(isNull(), isNull(), eq(false), isNull(), eq(0), eq(3), isA(List.class));
+    verify(resourcePurgeDao).findCustomersCount(isNull(), isNull(), eq(false), isNull(), isA(List.class));
+    verify(customerService).deleteCustomer(isA(Customer.class));
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
+    verify(platformTransactionManager).rollback(isA(TransactionStatus.class));
+    verify(transactionStatus).isRollbackOnly();
+    assertEquals(0, resourcePurgeServiceImpl.customerPurgeErrors.size());
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#purgeCustomers(Map)}.
+   * <ul>
+   *   <li>Given {@code IS_PREVIEW}.</li>
+   *   <li>When {@link HashMap#HashMap()} {@code IS_PREVIEW} is a string.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#purgeCustomers(Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourcePurgeServiceImpl.purgeCustomers(Map)"})
+  public void testPurgeCustomers_givenIsPreview_whenHashMapIsPreviewIsAString() throws TransactionException {
+    // Arrange
+    doNothing().when(customerService).deleteCustomer(Mockito.<Customer>any());
+
+    ArrayList<Customer> customerList = new ArrayList<>();
+    customerList.add(new CustomerImpl());
+    when(resourcePurgeDao.findCustomersCount(Mockito.<Date>any(), Mockito.<Boolean>any(), Mockito.<Boolean>any(),
+        Mockito.<Boolean>any(), Mockito.<List<Long>>any())).thenReturn(3L);
+    when(resourcePurgeDao.findCustomers(Mockito.<Date>any(), Mockito.<Boolean>any(), Mockito.<Boolean>any(),
+        Mockito.<Boolean>any(), anyInt(), anyInt(), Mockito.<List<Long>>any())).thenReturn(customerList);
+    TransactionStatus transactionStatus = mock(TransactionStatus.class);
+    when(transactionStatus.isRollbackOnly()).thenReturn(true);
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(transactionStatus);
+    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
+
+    HashMap<String, String> config = new HashMap<>();
+    config.put("IS_PREVIEW",
+        "Cannot purge customers since there was no configuration provided. In the absence of config params, all"
+            + " customers would be candidates for deletion.");
+
+    // Act
+    resourcePurgeServiceImpl.purgeCustomers(config);
+
+    // Assert that nothing has changed
+    verify(resourcePurgeDao).findCustomers(isNull(), isNull(), isNull(), eq(false), eq(0), eq(3), isA(List.class));
+    verify(resourcePurgeDao).findCustomersCount(isNull(), isNull(), isNull(), eq(false), isA(List.class));
+    verify(customerService).deleteCustomer(isA(Customer.class));
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
+    verify(platformTransactionManager).rollback(isA(TransactionStatus.class));
+    verify(transactionStatus).isRollbackOnly();
+    assertEquals(0, resourcePurgeServiceImpl.customerPurgeErrors.size());
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#purgeCustomers(Map)}.
+   * <ul>
+   *   <li>Given {@code IS_REGISTERED}.</li>
+   *   <li>When {@link HashMap#HashMap()} {@code IS_REGISTERED} is a string.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#purgeCustomers(Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourcePurgeServiceImpl.purgeCustomers(Map)"})
+  public void testPurgeCustomers_givenIsRegistered_whenHashMapIsRegisteredIsAString() throws TransactionException {
+    // Arrange
+    doNothing().when(customerService).deleteCustomer(Mockito.<Customer>any());
+
+    ArrayList<Customer> customerList = new ArrayList<>();
+    customerList.add(new CustomerImpl());
+    when(resourcePurgeDao.findCustomersCount(Mockito.<Date>any(), Mockito.<Boolean>any(), Mockito.<Boolean>any(),
+        Mockito.<Boolean>any(), Mockito.<List<Long>>any())).thenReturn(3L);
+    when(resourcePurgeDao.findCustomers(Mockito.<Date>any(), Mockito.<Boolean>any(), Mockito.<Boolean>any(),
+        Mockito.<Boolean>any(), anyInt(), anyInt(), Mockito.<List<Long>>any())).thenReturn(customerList);
+    TransactionStatus transactionStatus = mock(TransactionStatus.class);
+    when(transactionStatus.isRollbackOnly()).thenReturn(true);
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(transactionStatus);
+    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
+
+    HashMap<String, String> config = new HashMap<>();
+    config.put("IS_REGISTERED",
+        "Cannot purge customers since there was no configuration provided. In the absence of config params, all"
+            + " customers would be candidates for deletion.");
+
+    // Act
+    resourcePurgeServiceImpl.purgeCustomers(config);
+
+    // Assert that nothing has changed
+    verify(resourcePurgeDao).findCustomers(isNull(), eq(false), isNull(), isNull(), eq(0), eq(3), isA(List.class));
+    verify(resourcePurgeDao).findCustomersCount(isNull(), eq(false), isNull(), isNull(), isA(List.class));
+    verify(customerService).deleteCustomer(isA(Customer.class));
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
+    verify(platformTransactionManager).rollback(isA(TransactionStatus.class));
+    verify(transactionStatus).isRollbackOnly();
+    assertEquals(0, resourcePurgeServiceImpl.customerPurgeErrors.size());
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#purgeCustomers(Map)}.
+   * <ul>
+   *   <li>Given {@link PlatformTransactionManager} {@link PlatformTransactionManager#getTransaction(TransactionDefinition)} return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#purgeCustomers(Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourcePurgeServiceImpl.purgeCustomers(Map)"})
+  public void testPurgeCustomers_givenPlatformTransactionManagerGetTransactionReturnNull() throws TransactionException {
+    // Arrange
+    doNothing().when(customerService).deleteCustomer(Mockito.<Customer>any());
+
+    ArrayList<Customer> customerList = new ArrayList<>();
+    customerList.add(new CustomerImpl());
+    when(resourcePurgeDao.findCustomersCount(Mockito.<Date>any(), Mockito.<Boolean>any(), Mockito.<Boolean>any(),
+        Mockito.<Boolean>any(), Mockito.<List<Long>>any())).thenReturn(3L);
+    when(resourcePurgeDao.findCustomers(Mockito.<Date>any(), Mockito.<Boolean>any(), Mockito.<Boolean>any(),
+        Mockito.<Boolean>any(), anyInt(), anyInt(), Mockito.<List<Long>>any())).thenReturn(customerList);
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(null);
+    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
+
+    HashMap<String, String> config = new HashMap<>();
+    config.put(
+        "Cannot purge customers since there was no configuration provided. In the absence of config params, all"
+            + " customers would be candidates for deletion.",
+        "Cannot purge customers since there was no configuration provided. In the absence of config params, all"
+            + " customers would be candidates for deletion.");
+
+    // Act
+    resourcePurgeServiceImpl.purgeCustomers(config);
+
+    // Assert that nothing has changed
+    verify(resourcePurgeDao).findCustomers(isNull(), isNull(), isNull(), isNull(), eq(0), eq(3), isA(List.class));
+    verify(resourcePurgeDao).findCustomersCount(isNull(), isNull(), isNull(), isNull(), isA(List.class));
+    verify(customerService).deleteCustomer(isA(Customer.class));
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
+    verify(platformTransactionManager).rollback(isNull());
+    assertEquals(0, resourcePurgeServiceImpl.customerPurgeErrors.size());
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#purgeCustomers(Map)}.
+   * <ul>
+   *   <li>Given {@link ResourcePurgeDao} {@link ResourcePurgeDao#findCustomersCount(Date, Boolean, Boolean, Boolean, List)} return {@link Long#MAX_VALUE}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#purgeCustomers(Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourcePurgeServiceImpl.purgeCustomers(Map)"})
+  public void testPurgeCustomers_givenResourcePurgeDaoFindCustomersCountReturnMax_value() {
+    // Arrange
+    when(resourcePurgeDao.findCustomersCount(Mockito.<Date>any(), Mockito.<Boolean>any(), Mockito.<Boolean>any(),
+        Mockito.<Boolean>any(), Mockito.<List<Long>>any())).thenReturn(Long.MAX_VALUE);
+    when(resourcePurgeDao.findCustomers(Mockito.<Date>any(), Mockito.<Boolean>any(), Mockito.<Boolean>any(),
+        Mockito.<Boolean>any(), anyInt(), anyInt(), Mockito.<List<Long>>any())).thenReturn(new ArrayList<>());
+
+    HashMap<String, String> config = new HashMap<>();
+    config.put(
+        "Cannot purge customers since there was no configuration provided. In the absence of config params, all"
+            + " customers would be candidates for deletion.",
+        "Cannot purge customers since there was no configuration provided. In the absence of config params, all"
+            + " customers would be candidates for deletion.");
+
+    // Act
+    resourcePurgeServiceImpl.purgeCustomers(config);
+
+    // Assert that nothing has changed
+    verify(resourcePurgeDao).findCustomers(isNull(), isNull(), isNull(), isNull(), eq(0), eq(50), isA(List.class));
+    verify(resourcePurgeDao).findCustomersCount(isNull(), isNull(), isNull(), isNull(), isA(List.class));
+    assertEquals(0, resourcePurgeServiceImpl.customerPurgeErrors.size());
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#purgeCustomers(Map)}.
+   * <ul>
+   *   <li>Given {@link ResourcePurgeDao}.</li>
    *   <li>Then throw {@link IllegalArgumentException}.</li>
    * </ul>
    * <p>
    * Method under test: {@link ResourcePurgeServiceImpl#purgeCustomers(Map)}
    */
   @Test
-  public void testPurgeCustomers_whenHashMap_thenThrowIllegalArgumentException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ResourcePurgeServiceImpl resourcePurgeServiceImpl = new ResourcePurgeServiceImpl();
-
-    // Act and Assert
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourcePurgeServiceImpl.purgeCustomers(Map)"})
+  public void testPurgeCustomers_givenResourcePurgeDao_thenThrowIllegalArgumentException() {
+    // Arrange, Act and Assert
     assertThrows(IllegalArgumentException.class, () -> resourcePurgeServiceImpl.purgeCustomers(new HashMap<>()));
   }
 
   /**
-   * Test
-   * {@link ResourcePurgeServiceImpl#getCartsInErrorToIgnore(CartPurgeParams)}.
+   * Test {@link ResourcePurgeServiceImpl#purgeCustomers(Map)}.
+   * <ul>
+   *   <li>Then calls {@link PlatformTransactionManager#commit(TransactionStatus)}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link ResourcePurgeServiceImpl#getCartsInErrorToIgnore(ResourcePurgeServiceImpl.CartPurgeParams)}
+   * Method under test: {@link ResourcePurgeServiceImpl#purgeCustomers(Map)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetCartsInErrorToIgnore() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.util.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass43 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.util.service.ResourcePurgeServiceImpl resourcePurgeServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourcePurgeServiceImpl.purgeCustomers(Map)"})
+  public void testPurgeCustomers_thenCallsCommit() throws TransactionException {
     // Arrange
-    ResourcePurgeServiceImpl resourcePurgeServiceImpl2 = new ResourcePurgeServiceImpl();
-    ResourcePurgeServiceImpl resourcePurgeServiceImpl3 = new ResourcePurgeServiceImpl();
+    doNothing().when(customerService).deleteCustomer(Mockito.<Customer>any());
+
+    ArrayList<Customer> customerList = new ArrayList<>();
+    customerList.add(new CustomerImpl());
+    when(resourcePurgeDao.findCustomersCount(Mockito.<Date>any(), Mockito.<Boolean>any(), Mockito.<Boolean>any(),
+        Mockito.<Boolean>any(), Mockito.<List<Long>>any())).thenReturn(3L);
+    when(resourcePurgeDao.findCustomers(Mockito.<Date>any(), Mockito.<Boolean>any(), Mockito.<Boolean>any(),
+        Mockito.<Boolean>any(), anyInt(), anyInt(), Mockito.<List<Long>>any())).thenReturn(customerList);
+    doNothing().when(platformTransactionManager).commit(Mockito.<TransactionStatus>any());
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any()))
+        .thenReturn(new SimpleTransactionStatus(true));
+
+    HashMap<String, String> config = new HashMap<>();
+    config.put(
+        "Cannot purge customers since there was no configuration provided. In the absence of config params, all"
+            + " customers would be candidates for deletion.",
+        "Cannot purge customers since there was no configuration provided. In the absence of config params, all"
+            + " customers would be candidates for deletion.");
 
     // Act
-    resourcePurgeServiceImpl2.getCartsInErrorToIgnore(resourcePurgeServiceImpl3.new CartPurgeParams(new HashMap<>()));
+    resourcePurgeServiceImpl.purgeCustomers(config);
+
+    // Assert that nothing has changed
+    verify(resourcePurgeDao).findCustomers(isNull(), isNull(), isNull(), isNull(), eq(0), eq(3), isA(List.class));
+    verify(resourcePurgeDao).findCustomersCount(isNull(), isNull(), isNull(), isNull(), isA(List.class));
+    verify(customerService).deleteCustomer(isA(Customer.class));
+    verify(platformTransactionManager).commit(isA(TransactionStatus.class));
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
+    assertEquals(0, resourcePurgeServiceImpl.customerPurgeErrors.size());
   }
 
   /**
-   * Test
-   * {@link ResourcePurgeServiceImpl#getCartsInErrorToIgnore(CartPurgeParams)}.
+   * Test {@link ResourcePurgeServiceImpl#purgeCustomers(Map)}.
+   * <ul>
+   *   <li>Then {@link ResourcePurgeServiceImpl} {@link ResourcePurgeServiceImpl#customerPurgeErrors} size is one.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#purgeCustomers(Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourcePurgeServiceImpl.purgeCustomers(Map)"})
+  public void testPurgeCustomers_thenResourcePurgeServiceImplCustomerPurgeErrorsSizeIsOne()
+      throws TransactionException {
+    // Arrange
+    doNothing().when(customerService).deleteCustomer(Mockito.<Customer>any());
+
+    ArrayList<Customer> customerList = new ArrayList<>();
+    customerList.add(new CustomerImpl());
+    when(resourcePurgeDao.findCustomersCount(Mockito.<Date>any(), Mockito.<Boolean>any(), Mockito.<Boolean>any(),
+        Mockito.<Boolean>any(), Mockito.<List<Long>>any())).thenReturn(3L);
+    when(resourcePurgeDao.findCustomers(Mockito.<Date>any(), Mockito.<Boolean>any(), Mockito.<Boolean>any(),
+        Mockito.<Boolean>any(), anyInt(), anyInt(), Mockito.<List<Long>>any())).thenReturn(customerList);
+    doThrow(new IllegalArgumentException("SECONDS_OLD")).when(platformTransactionManager)
+        .commit(Mockito.<TransactionStatus>any());
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any()))
+        .thenReturn(new SimpleTransactionStatus(true));
+    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
+
+    HashMap<String, String> config = new HashMap<>();
+    config.put(
+        "Cannot purge customers since there was no configuration provided. In the absence of config params, all"
+            + " customers would be candidates for deletion.",
+        "Cannot purge customers since there was no configuration provided. In the absence of config params, all"
+            + " customers would be candidates for deletion.");
+
+    // Act
+    resourcePurgeServiceImpl.purgeCustomers(config);
+
+    // Assert
+    verify(resourcePurgeDao).findCustomers(isNull(), isNull(), isNull(), isNull(), eq(0), eq(3), isA(List.class));
+    verify(resourcePurgeDao).findCustomersCount(isNull(), isNull(), isNull(), isNull(), isA(List.class));
+    verify(customerService).deleteCustomer(isA(Customer.class));
+    verify(platformTransactionManager).commit(isA(TransactionStatus.class));
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
+    verify(platformTransactionManager).rollback(isA(TransactionStatus.class));
+    assertEquals(1, resourcePurgeServiceImpl.customerPurgeErrors.size());
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#purgeCustomers(Map)}.
+   * <ul>
+   *   <li>When {@link HashMap#HashMap()} a string is a string.</li>
+   *   <li>Then calls {@link TransactionExecution#isRollbackOnly()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#purgeCustomers(Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourcePurgeServiceImpl.purgeCustomers(Map)"})
+  public void testPurgeCustomers_whenHashMapAStringIsAString_thenCallsIsRollbackOnly() throws TransactionException {
+    // Arrange
+    doNothing().when(customerService).deleteCustomer(Mockito.<Customer>any());
+
+    ArrayList<Customer> customerList = new ArrayList<>();
+    customerList.add(new CustomerImpl());
+    when(resourcePurgeDao.findCustomersCount(Mockito.<Date>any(), Mockito.<Boolean>any(), Mockito.<Boolean>any(),
+        Mockito.<Boolean>any(), Mockito.<List<Long>>any())).thenReturn(3L);
+    when(resourcePurgeDao.findCustomers(Mockito.<Date>any(), Mockito.<Boolean>any(), Mockito.<Boolean>any(),
+        Mockito.<Boolean>any(), anyInt(), anyInt(), Mockito.<List<Long>>any())).thenReturn(customerList);
+    TransactionStatus transactionStatus = mock(TransactionStatus.class);
+    when(transactionStatus.isRollbackOnly()).thenReturn(true);
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(transactionStatus);
+    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
+
+    HashMap<String, String> config = new HashMap<>();
+    config.put(
+        "Cannot purge customers since there was no configuration provided. In the absence of config params, all"
+            + " customers would be candidates for deletion.",
+        "Cannot purge customers since there was no configuration provided. In the absence of config params, all"
+            + " customers would be candidates for deletion.");
+
+    // Act
+    resourcePurgeServiceImpl.purgeCustomers(config);
+
+    // Assert that nothing has changed
+    verify(resourcePurgeDao).findCustomers(isNull(), isNull(), isNull(), isNull(), eq(0), eq(3), isA(List.class));
+    verify(resourcePurgeDao).findCustomersCount(isNull(), isNull(), isNull(), isNull(), isA(List.class));
+    verify(customerService).deleteCustomer(isA(Customer.class));
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
+    verify(platformTransactionManager).rollback(isA(TransactionStatus.class));
+    verify(transactionStatus).isRollbackOnly();
+    assertEquals(0, resourcePurgeServiceImpl.customerPurgeErrors.size());
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#getCartsInErrorToIgnore(CartPurgeParams)}.
    * <ul>
    *   <li>Given one.</li>
    *   <li>Then return Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ResourcePurgeServiceImpl#getCartsInErrorToIgnore(ResourcePurgeServiceImpl.CartPurgeParams)}
+   * Method under test: {@link ResourcePurgeServiceImpl#getCartsInErrorToIgnore(CartPurgeParams)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Set ResourcePurgeServiceImpl.getCartsInErrorToIgnore(CartPurgeParams)"})
   public void testGetCartsInErrorToIgnore_givenOne_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ResourcePurgeServiceImpl resourcePurgeServiceImpl = new ResourcePurgeServiceImpl();
-    ResourcePurgeServiceImpl.CartPurgeParams purgeParams = mock(ResourcePurgeServiceImpl.CartPurgeParams.class);
+    CartPurgeParams purgeParams = mock(CartPurgeParams.class);
     when(purgeParams.getFailedRetryTime()).thenReturn(1L);
 
     // Act
@@ -948,192 +1647,372 @@ public class ResourcePurgeServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ResourcePurgeServiceImpl#getCartsToPurge(CartPurgeParams, int, int, List)}.
+   * Test {@link ResourcePurgeServiceImpl#getCartsToPurge(CartPurgeParams, int, int, List)}.
    * <p>
-   * Method under test:
-   * {@link ResourcePurgeServiceImpl#getCartsToPurge(ResourcePurgeServiceImpl.CartPurgeParams, int, int, List)}
+   * Method under test: {@link ResourcePurgeServiceImpl#getCartsToPurge(CartPurgeParams, int, int, List)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List ResourcePurgeServiceImpl.getCartsToPurge(CartPurgeParams, int, int, List)"})
   public void testGetCartsToPurge() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.util.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass54 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.util.service.ResourcePurgeServiceImpl resourcePurgeServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    ResourcePurgeServiceImpl resourcePurgeServiceImpl2 = new ResourcePurgeServiceImpl();
-    ResourcePurgeServiceImpl resourcePurgeServiceImpl3 = new ResourcePurgeServiceImpl();
-    ResourcePurgeServiceImpl.CartPurgeParams purgeParams = resourcePurgeServiceImpl3.new CartPurgeParams(
-        new HashMap<>());
+    when(resourcePurgeDao.findCarts(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), anyInt(), anyInt(), Mockito.<List<Long>>any())).thenReturn(new ArrayList<>());
+    CartPurgeParams purgeParams = resourcePurgeServiceImpl.new CartPurgeParams(new HashMap<>());
 
     // Act
-    resourcePurgeServiceImpl2.getCartsToPurge(purgeParams, 1, 3, new ArrayList<>());
+    List<Order> actualCartsToPurge = resourcePurgeServiceImpl.getCartsToPurge(purgeParams, 1, 3, new ArrayList<>());
+
+    // Assert
+    verify(resourcePurgeDao).findCarts(isNull(), isNull(), isNull(), isNull(), eq(1), eq(3), isA(List.class));
+    assertTrue(actualCartsToPurge.isEmpty());
   }
 
   /**
-   * Test
-   * {@link ResourcePurgeServiceImpl#getCartsToPurgeLength(CartPurgeParams, List)}.
+   * Test {@link ResourcePurgeServiceImpl#getCartsToPurge(CartPurgeParams, int, int, List)}.
+   * <ul>
+   *   <li>Given one.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add one.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link ResourcePurgeServiceImpl#getCartsToPurgeLength(ResourcePurgeServiceImpl.CartPurgeParams, List)}
+   * Method under test: {@link ResourcePurgeServiceImpl#getCartsToPurge(CartPurgeParams, int, int, List)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetCartsToPurgeLength() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.util.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass76 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.util.service.ResourcePurgeServiceImpl resourcePurgeServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List ResourcePurgeServiceImpl.getCartsToPurge(CartPurgeParams, int, int, List)"})
+  public void testGetCartsToPurge_givenOne_whenArrayListAddOne() {
     // Arrange
-    ResourcePurgeServiceImpl resourcePurgeServiceImpl2 = new ResourcePurgeServiceImpl();
-    ResourcePurgeServiceImpl resourcePurgeServiceImpl3 = new ResourcePurgeServiceImpl();
-    ResourcePurgeServiceImpl.CartPurgeParams purgeParams = resourcePurgeServiceImpl3.new CartPurgeParams(
-        new HashMap<>());
+    when(resourcePurgeDao.findCarts(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), anyInt(), anyInt(), Mockito.<List<Long>>any())).thenReturn(new ArrayList<>());
+    CartPurgeParams purgeParams = mock(CartPurgeParams.class);
+    when(purgeParams.getIsPreview()).thenReturn(true);
+    when(purgeParams.getNameArray()).thenReturn(new String[]{"Name Array"});
+    when(purgeParams.getDateCreatedMinThreshold())
+        .thenReturn(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    when(purgeParams.getStatusArray()).thenReturn(new OrderStatus[]{OrderStatus.ARCHIVED});
+
+    ArrayList<Long> cartsInError = new ArrayList<>();
+    cartsInError.add(1L);
 
     // Act
-    resourcePurgeServiceImpl2.getCartsToPurgeLength(purgeParams, new ArrayList<>());
+    List<Order> actualCartsToPurge = resourcePurgeServiceImpl.getCartsToPurge(purgeParams, 1, 3, cartsInError);
+
+    // Assert
+    verify(resourcePurgeDao).findCarts(isA(String[].class), isA(OrderStatus[].class), isA(Date.class), eq(true), eq(1),
+        eq(3), isA(List.class));
+    verify(purgeParams).getDateCreatedMinThreshold();
+    verify(purgeParams).getIsPreview();
+    verify(purgeParams).getNameArray();
+    verify(purgeParams).getStatusArray();
+    assertTrue(actualCartsToPurge.isEmpty());
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#getCartsToPurge(CartPurgeParams, int, int, List)}.
+   * <ul>
+   *   <li>Given {@code true}.</li>
+   *   <li>Then calls {@link CartPurgeParams#getDateCreatedMinThreshold()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#getCartsToPurge(CartPurgeParams, int, int, List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List ResourcePurgeServiceImpl.getCartsToPurge(CartPurgeParams, int, int, List)"})
+  public void testGetCartsToPurge_givenTrue_thenCallsGetDateCreatedMinThreshold() {
+    // Arrange
+    when(resourcePurgeDao.findCarts(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), anyInt(), anyInt(), Mockito.<List<Long>>any())).thenReturn(new ArrayList<>());
+    CartPurgeParams purgeParams = mock(CartPurgeParams.class);
+    when(purgeParams.getIsPreview()).thenReturn(true);
+    when(purgeParams.getNameArray()).thenReturn(new String[]{"Name Array"});
+    when(purgeParams.getDateCreatedMinThreshold())
+        .thenReturn(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    when(purgeParams.getStatusArray()).thenReturn(new OrderStatus[]{OrderStatus.ARCHIVED});
+
+    // Act
+    List<Order> actualCartsToPurge = resourcePurgeServiceImpl.getCartsToPurge(purgeParams, 1, 3, new ArrayList<>());
+
+    // Assert
+    verify(resourcePurgeDao).findCarts(isA(String[].class), isA(OrderStatus[].class), isA(Date.class), eq(true), eq(1),
+        eq(3), isA(List.class));
+    verify(purgeParams).getDateCreatedMinThreshold();
+    verify(purgeParams).getIsPreview();
+    verify(purgeParams).getNameArray();
+    verify(purgeParams).getStatusArray();
+    assertTrue(actualCartsToPurge.isEmpty());
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#getCartsToPurge(CartPurgeParams, int, int, List)}.
+   * <ul>
+   *   <li>Given zero.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add zero.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#getCartsToPurge(CartPurgeParams, int, int, List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List ResourcePurgeServiceImpl.getCartsToPurge(CartPurgeParams, int, int, List)"})
+  public void testGetCartsToPurge_givenZero_whenArrayListAddZero() {
+    // Arrange
+    when(resourcePurgeDao.findCarts(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), anyInt(), anyInt(), Mockito.<List<Long>>any())).thenReturn(new ArrayList<>());
+    CartPurgeParams purgeParams = mock(CartPurgeParams.class);
+    when(purgeParams.getIsPreview()).thenReturn(true);
+    when(purgeParams.getNameArray()).thenReturn(new String[]{"Name Array"});
+    when(purgeParams.getDateCreatedMinThreshold())
+        .thenReturn(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    when(purgeParams.getStatusArray()).thenReturn(new OrderStatus[]{OrderStatus.ARCHIVED});
+
+    ArrayList<Long> cartsInError = new ArrayList<>();
+    cartsInError.add(0L);
+    cartsInError.add(1L);
+
+    // Act
+    List<Order> actualCartsToPurge = resourcePurgeServiceImpl.getCartsToPurge(purgeParams, 1, 3, cartsInError);
+
+    // Assert
+    verify(resourcePurgeDao).findCarts(isA(String[].class), isA(OrderStatus[].class), isA(Date.class), eq(true), eq(1),
+        eq(3), isA(List.class));
+    verify(purgeParams).getDateCreatedMinThreshold();
+    verify(purgeParams).getIsPreview();
+    verify(purgeParams).getNameArray();
+    verify(purgeParams).getStatusArray();
+    assertTrue(actualCartsToPurge.isEmpty());
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#getCartsToPurgeLength(CartPurgeParams, List)}.
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#getCartsToPurgeLength(CartPurgeParams, List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long ResourcePurgeServiceImpl.getCartsToPurgeLength(CartPurgeParams, List)"})
+  public void testGetCartsToPurgeLength() {
+    // Arrange
+    when(resourcePurgeDao.findCartsCount(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), Mockito.<List<Long>>any())).thenReturn(3L);
+    CartPurgeParams purgeParams = resourcePurgeServiceImpl.new CartPurgeParams(new HashMap<>());
+
+    // Act
+    Long actualCartsToPurgeLength = resourcePurgeServiceImpl.getCartsToPurgeLength(purgeParams, new ArrayList<>());
+
+    // Assert
+    verify(resourcePurgeDao).findCartsCount(isNull(), isNull(), isNull(), isNull(), isA(List.class));
+    assertEquals(3L, actualCartsToPurgeLength.longValue());
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#getCartsToPurgeLength(CartPurgeParams, List)}.
+   * <ul>
+   *   <li>Given one.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add one.</li>
+   *   <li>Then calls {@link CartPurgeParams#getBatchSize()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#getCartsToPurgeLength(CartPurgeParams, List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long ResourcePurgeServiceImpl.getCartsToPurgeLength(CartPurgeParams, List)"})
+  public void testGetCartsToPurgeLength_givenOne_whenArrayListAddOne_thenCallsGetBatchSize() {
+    // Arrange
+    when(resourcePurgeDao.findCartsCount(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), Mockito.<List<Long>>any())).thenReturn(3L);
+    CartPurgeParams purgeParams = mock(CartPurgeParams.class);
+    when(purgeParams.getIsPreview()).thenReturn(true);
+    when(purgeParams.getBatchSize()).thenReturn(3L);
+    when(purgeParams.getNameArray()).thenReturn(new String[]{"Name Array"});
+    when(purgeParams.getDateCreatedMinThreshold())
+        .thenReturn(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    when(purgeParams.getStatusArray()).thenReturn(new OrderStatus[]{OrderStatus.ARCHIVED});
+
+    ArrayList<Long> cartsInError = new ArrayList<>();
+    cartsInError.add(1L);
+    cartsInError.add(3L);
+
+    // Act
+    Long actualCartsToPurgeLength = resourcePurgeServiceImpl.getCartsToPurgeLength(purgeParams, cartsInError);
+
+    // Assert
+    verify(resourcePurgeDao).findCartsCount(isA(String[].class), isA(OrderStatus[].class), isA(Date.class), eq(true),
+        isA(List.class));
+    verify(purgeParams).getBatchSize();
+    verify(purgeParams).getDateCreatedMinThreshold();
+    verify(purgeParams).getIsPreview();
+    verify(purgeParams).getNameArray();
+    verify(purgeParams).getStatusArray();
+    assertEquals(3L, actualCartsToPurgeLength.longValue());
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#getCartsToPurgeLength(CartPurgeParams, List)}.
+   * <ul>
+   *   <li>Given {@link ResourcePurgeDao} {@link ResourcePurgeDao#findCartsCount(String[], OrderStatus[], Date, Boolean, List)} return {@link Long#MAX_VALUE}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#getCartsToPurgeLength(CartPurgeParams, List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long ResourcePurgeServiceImpl.getCartsToPurgeLength(CartPurgeParams, List)"})
+  public void testGetCartsToPurgeLength_givenResourcePurgeDaoFindCartsCountReturnMax_value() {
+    // Arrange
+    when(resourcePurgeDao.findCartsCount(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), Mockito.<List<Long>>any())).thenReturn(Long.MAX_VALUE);
+    CartPurgeParams purgeParams = mock(CartPurgeParams.class);
+    when(purgeParams.getIsPreview()).thenReturn(true);
+    when(purgeParams.getBatchSize()).thenReturn(3L);
+    when(purgeParams.getNameArray()).thenReturn(new String[]{"Name Array"});
+    when(purgeParams.getDateCreatedMinThreshold())
+        .thenReturn(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    when(purgeParams.getStatusArray()).thenReturn(new OrderStatus[]{OrderStatus.ARCHIVED});
+
+    // Act
+    Long actualCartsToPurgeLength = resourcePurgeServiceImpl.getCartsToPurgeLength(purgeParams, new ArrayList<>());
+
+    // Assert
+    verify(resourcePurgeDao).findCartsCount(isA(String[].class), isA(OrderStatus[].class), isA(Date.class), eq(true),
+        isA(List.class));
+    verify(purgeParams).getBatchSize();
+    verify(purgeParams).getDateCreatedMinThreshold();
+    verify(purgeParams).getIsPreview();
+    verify(purgeParams).getNameArray();
+    verify(purgeParams).getStatusArray();
+    assertEquals(3L, actualCartsToPurgeLength.longValue());
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#getCartsToPurgeLength(CartPurgeParams, List)}.
+   * <ul>
+   *   <li>Then calls {@link CartPurgeParams#getBatchSize()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#getCartsToPurgeLength(CartPurgeParams, List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long ResourcePurgeServiceImpl.getCartsToPurgeLength(CartPurgeParams, List)"})
+  public void testGetCartsToPurgeLength_thenCallsGetBatchSize() {
+    // Arrange
+    when(resourcePurgeDao.findCartsCount(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), Mockito.<List<Long>>any())).thenReturn(3L);
+    CartPurgeParams purgeParams = mock(CartPurgeParams.class);
+    when(purgeParams.getIsPreview()).thenReturn(true);
+    when(purgeParams.getBatchSize()).thenReturn(3L);
+    when(purgeParams.getNameArray()).thenReturn(new String[]{"Name Array"});
+    when(purgeParams.getDateCreatedMinThreshold())
+        .thenReturn(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    when(purgeParams.getStatusArray()).thenReturn(new OrderStatus[]{OrderStatus.ARCHIVED});
+
+    // Act
+    Long actualCartsToPurgeLength = resourcePurgeServiceImpl.getCartsToPurgeLength(purgeParams, new ArrayList<>());
+
+    // Assert
+    verify(resourcePurgeDao).findCartsCount(isA(String[].class), isA(OrderStatus[].class), isA(Date.class), eq(true),
+        isA(List.class));
+    verify(purgeParams).getBatchSize();
+    verify(purgeParams).getDateCreatedMinThreshold();
+    verify(purgeParams).getIsPreview();
+    verify(purgeParams).getNameArray();
+    verify(purgeParams).getStatusArray();
+    assertEquals(3L, actualCartsToPurgeLength.longValue());
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#getCartsToPurgeLength(CartPurgeParams, List)}.
+   * <ul>
+   *   <li>When {@link ArrayList#ArrayList()} add three.</li>
+   *   <li>Then calls {@link CartPurgeParams#getBatchSize()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#getCartsToPurgeLength(CartPurgeParams, List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long ResourcePurgeServiceImpl.getCartsToPurgeLength(CartPurgeParams, List)"})
+  public void testGetCartsToPurgeLength_whenArrayListAddThree_thenCallsGetBatchSize() {
+    // Arrange
+    when(resourcePurgeDao.findCartsCount(Mockito.<String[]>any(), Mockito.<OrderStatus[]>any(), Mockito.<Date>any(),
+        Mockito.<Boolean>any(), Mockito.<List<Long>>any())).thenReturn(3L);
+    CartPurgeParams purgeParams = mock(CartPurgeParams.class);
+    when(purgeParams.getIsPreview()).thenReturn(true);
+    when(purgeParams.getBatchSize()).thenReturn(3L);
+    when(purgeParams.getNameArray()).thenReturn(new String[]{"Name Array"});
+    when(purgeParams.getDateCreatedMinThreshold())
+        .thenReturn(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    when(purgeParams.getStatusArray()).thenReturn(new OrderStatus[]{OrderStatus.ARCHIVED});
+
+    ArrayList<Long> cartsInError = new ArrayList<>();
+    cartsInError.add(3L);
+
+    // Act
+    Long actualCartsToPurgeLength = resourcePurgeServiceImpl.getCartsToPurgeLength(purgeParams, cartsInError);
+
+    // Assert
+    verify(resourcePurgeDao).findCartsCount(isA(String[].class), isA(OrderStatus[].class), isA(Date.class), eq(true),
+        isA(List.class));
+    verify(purgeParams).getBatchSize();
+    verify(purgeParams).getDateCreatedMinThreshold();
+    verify(purgeParams).getIsPreview();
+    verify(purgeParams).getNameArray();
+    verify(purgeParams).getStatusArray();
+    assertEquals(3L, actualCartsToPurgeLength.longValue());
   }
 
   /**
    * Test {@link ResourcePurgeServiceImpl#notifyCart(Order)}.
+   * <ul>
+   *   <li>Given {@code Cart}.</li>
+   *   <li>When {@link OrderImpl} (default constructor) EmailAddress is {@code Cart}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link ResourcePurgeServiceImpl#notifyCart(Order)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testNotifyCart() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.util.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass152 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.util.service.ResourcePurgeServiceImpl resourcePurgeServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourcePurgeServiceImpl.notifyCart(Order)"})
+  public void testNotifyCart_givenCart_whenOrderImplEmailAddressIsCart() throws ServiceException {
     // Arrange
-    ResourcePurgeServiceImpl resourcePurgeServiceImpl2 = new ResourcePurgeServiceImpl();
-
-    // Act
-    resourcePurgeServiceImpl2.notifyCart(new NullOrderImpl());
-  }
-
-  /**
-   * Test {@link ResourcePurgeServiceImpl#getEmailForCart(Order)}.
-   * <p>
-   * Method under test: {@link ResourcePurgeServiceImpl#getEmailForCart(Order)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetEmailForCart() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.util.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass139 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.util.service.ResourcePurgeServiceImpl resourcePurgeServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    ResourcePurgeServiceImpl resourcePurgeServiceImpl2 = new ResourcePurgeServiceImpl();
-
-    // Act
-    resourcePurgeServiceImpl2.getEmailForCart(new NullOrderImpl());
-  }
-
-  /**
-   * Test {@link ResourcePurgeServiceImpl#getEmailForCart(Order)}.
-   * <ul>
-   *   <li>Given {@code 42 Main St}.</li>
-   *   <li>Then return {@code 42 Main St}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ResourcePurgeServiceImpl#getEmailForCart(Order)}
-   */
-  @Test
-  public void testGetEmailForCart_given42MainSt_thenReturn42MainSt() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ResourcePurgeServiceImpl resourcePurgeServiceImpl = new ResourcePurgeServiceImpl();
-    NullOrderImpl cart = mock(NullOrderImpl.class);
-    when(cart.getEmailAddress()).thenReturn("42 Main St");
-
-    // Act
-    String actualEmailForCart = resourcePurgeServiceImpl.getEmailForCart(cart);
-
-    // Assert
-    verify(cart, atLeast(1)).getEmailAddress();
-    assertEquals("42 Main St", actualEmailForCart);
-  }
-
-  /**
-   * Test {@link ResourcePurgeServiceImpl#getEmailForCart(Order)}.
-   * <ul>
-   *   <li>Given {@code Cart}.</li>
-   *   <li>When {@link OrderImpl} (default constructor) EmailAddress is
-   * {@code Cart}.</li>
-   *   <li>Then return {@code Cart}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ResourcePurgeServiceImpl#getEmailForCart(Order)}
-   */
-  @Test
-  public void testGetEmailForCart_givenCart_whenOrderImplEmailAddressIsCart_thenReturnCart() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ResourcePurgeServiceImpl resourcePurgeServiceImpl = new ResourcePurgeServiceImpl();
+    doNothing().when(notificationDispatcher).dispatchNotification(Mockito.<Notification>any());
 
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
     auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
+
+    Auditable auditable2 = new Auditable();
+    auditable2.setCreatedBy(1L);
+    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setUpdatedBy(1L);
+
+    CustomerImpl customer = new CustomerImpl();
+    customer.setAuditable(auditable2);
+    customer.setChallengeAnswer("Challenge Answer");
+    customer.setChallengeQuestion(new ChallengeQuestionImpl());
+    customer.setCustomerAddresses(new ArrayList<>());
+    customer.setCustomerAttributes(new HashMap<>());
+    customer.setCustomerLocale(new LocaleImpl());
+    customer.setCustomerPayments(new ArrayList<>());
+    customer.setCustomerPhones(new ArrayList<>());
+    customer.setDeactivated(true);
+    customer.setExternalId("42");
+    customer.setFirstName("Jane");
+    customer.setId(1L);
+    customer.setLastName("Doe");
+    customer.setPassword("iloveyou");
+    customer.setPasswordChangeRequired(true);
+    customer.setReceiveEmail(true);
+    customer.setRegistered(true);
+    customer.setUnencodedChallengeAnswer("secret");
+    customer.setUnencodedPassword("secret");
+    customer.setUsername("janedoe");
+    customer.setEmailAddress(null);
 
     OrderImpl cart = new OrderImpl();
     cart.setAdditionalOfferInformation(new HashMap<>());
@@ -1155,31 +2034,31 @@ public class ResourcePurgeServiceImplDiffblueTest {
     cart.setTaxOverride(true);
     cart.setTotal(new Money());
     cart.setTotalFulfillmentCharges(new Money());
-    cart.setTotalShipping(new Money());
     cart.setTotalTax(new Money());
+    cart.setCustomer(customer);
     cart.setEmailAddress("Cart");
-    cart.setCustomer(null);
 
-    // Act and Assert
-    assertEquals("Cart", resourcePurgeServiceImpl.getEmailForCart(cart));
+    // Act
+    resourcePurgeServiceImpl.notifyCart(cart);
+
+    // Assert
+    verify(notificationDispatcher).dispatchNotification(isA(Notification.class));
   }
 
   /**
-   * Test {@link ResourcePurgeServiceImpl#getEmailForCart(Order)}.
+   * Test {@link ResourcePurgeServiceImpl#notifyCart(Order)}.
    * <ul>
-   *   <li>Given {@link CustomerImpl} (default constructor) Auditable is
-   * {@link Auditable} (default constructor).</li>
-   *   <li>Then return {@code Cart}.</li>
+   *   <li>Given {@link CustomerImpl} (default constructor) EmailAddress is {@code Cart}.</li>
    * </ul>
    * <p>
-   * Method under test: {@link ResourcePurgeServiceImpl#getEmailForCart(Order)}
+   * Method under test: {@link ResourcePurgeServiceImpl#notifyCart(Order)}
    */
   @Test
-  public void testGetEmailForCart_givenCustomerImplAuditableIsAuditable_thenReturnCart() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourcePurgeServiceImpl.notifyCart(Order)"})
+  public void testNotifyCart_givenCustomerImplEmailAddressIsCart() throws ServiceException {
     // Arrange
-    ResourcePurgeServiceImpl resourcePurgeServiceImpl = new ResourcePurgeServiceImpl();
+    doNothing().when(notificationDispatcher).dispatchNotification(Mockito.<Notification>any());
 
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
@@ -1236,31 +2115,83 @@ public class ResourcePurgeServiceImplDiffblueTest {
     cart.setTaxOverride(true);
     cart.setTotal(new Money());
     cart.setTotalFulfillmentCharges(new Money());
-    cart.setTotalShipping(new Money());
     cart.setTotalTax(new Money());
-    cart.setEmailAddress(null);
     cart.setCustomer(customer);
+    cart.setEmailAddress(null);
+
+    // Act
+    resourcePurgeServiceImpl.notifyCart(cart);
+
+    // Assert
+    verify(notificationDispatcher).dispatchNotification(isA(Notification.class));
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#notifyCart(Order)}.
+   * <ul>
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#notifyCart(Order)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourcePurgeServiceImpl.notifyCart(Order)"})
+  public void testNotifyCart_thenThrowIllegalArgumentException() throws ServiceException {
+    // Arrange
+    doThrow(new IllegalArgumentException("cart")).when(notificationDispatcher)
+        .dispatchNotification(Mockito.<Notification>any());
+
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    OrderImpl cart = new OrderImpl();
+    cart.setAdditionalOfferInformation(new HashMap<>());
+    cart.setAuditable(auditable);
+    cart.setCandidateOrderOffers(new ArrayList<>());
+    cart.setCurrency(new BroadleafCurrencyImpl());
+    cart.setCustomer(new CustomerImpl());
+    cart.setEmailAddress("42 Main St");
+    cart.setFulfillmentGroups(new ArrayList<>());
+    cart.setId(1L);
+    cart.setLocale(new LocaleImpl());
+    cart.setName("Name");
+    cart.setOrderAttributes(new HashMap<>());
+    cart.setOrderItems(new ArrayList<>());
+    cart.setOrderMessages(new ArrayList<>());
+    cart.setOrderNumber("42");
+    cart.setPayments(new ArrayList<>());
+    cart.setStatus(OrderStatus.ARCHIVED);
+    cart.setSubTotal(new Money());
+    cart.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    cart.setTaxOverride(true);
+    cart.setTotal(new Money());
+    cart.setTotalFulfillmentCharges(new Money());
+    cart.setTotalTax(new Money());
 
     // Act and Assert
-    assertEquals("Cart", resourcePurgeServiceImpl.getEmailForCart(cart));
+    assertThrows(IllegalArgumentException.class, () -> resourcePurgeServiceImpl.notifyCart(cart));
+    verify(notificationDispatcher).dispatchNotification(isA(Notification.class));
   }
 
   /**
    * Test {@link ResourcePurgeServiceImpl#getEmailForCart(Order)}.
    * <ul>
-   *   <li>Given {@link CustomerImpl} (default constructor).</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given {@code Cart}.</li>
+   *   <li>When {@link OrderImpl} (default constructor) EmailAddress is {@code Cart}.</li>
+   *   <li>Then return {@code Cart}.</li>
    * </ul>
    * <p>
    * Method under test: {@link ResourcePurgeServiceImpl#getEmailForCart(Order)}
    */
   @Test
-  public void testGetEmailForCart_givenCustomerImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String ResourcePurgeServiceImpl.getEmailForCart(Order)"})
+  public void testGetEmailForCart_givenCart_whenOrderImplEmailAddressIsCart_thenReturnCart() {
     // Arrange
-    ResourcePurgeServiceImpl resourcePurgeServiceImpl = new ResourcePurgeServiceImpl();
-
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
     auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
@@ -1287,7 +2218,131 @@ public class ResourcePurgeServiceImplDiffblueTest {
     cart.setTaxOverride(true);
     cart.setTotal(new Money());
     cart.setTotalFulfillmentCharges(new Money());
-    cart.setTotalShipping(new Money());
+    cart.setTotalTax(new Money());
+    cart.setEmailAddress("Cart");
+    cart.setCustomer(null);
+
+    // Act and Assert
+    assertEquals("Cart", resourcePurgeServiceImpl.getEmailForCart(cart));
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#getEmailForCart(Order)}.
+   * <ul>
+   *   <li>Given {@link CustomerImpl} (default constructor) Auditable is {@link Auditable} (default constructor).</li>
+   *   <li>Then return {@code Cart}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#getEmailForCart(Order)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String ResourcePurgeServiceImpl.getEmailForCart(Order)"})
+  public void testGetEmailForCart_givenCustomerImplAuditableIsAuditable_thenReturnCart() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    Auditable auditable2 = new Auditable();
+    auditable2.setCreatedBy(1L);
+    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setUpdatedBy(1L);
+
+    CustomerImpl customer = new CustomerImpl();
+    customer.setAuditable(auditable2);
+    customer.setChallengeAnswer("Challenge Answer");
+    customer.setChallengeQuestion(new ChallengeQuestionImpl());
+    customer.setCustomerAddresses(new ArrayList<>());
+    customer.setCustomerAttributes(new HashMap<>());
+    customer.setCustomerLocale(new LocaleImpl());
+    customer.setCustomerPayments(new ArrayList<>());
+    customer.setCustomerPhones(new ArrayList<>());
+    customer.setDeactivated(true);
+    customer.setExternalId("42");
+    customer.setFirstName("Jane");
+    customer.setId(1L);
+    customer.setLastName("Doe");
+    customer.setPassword("iloveyou");
+    customer.setPasswordChangeRequired(true);
+    customer.setReceiveEmail(true);
+    customer.setRegistered(true);
+    customer.setUnencodedChallengeAnswer("secret");
+    customer.setUnencodedPassword("secret");
+    customer.setUsername("janedoe");
+    customer.setEmailAddress("Cart");
+
+    OrderImpl cart = new OrderImpl();
+    cart.setAdditionalOfferInformation(new HashMap<>());
+    cart.setAuditable(auditable);
+    cart.setCandidateOrderOffers(new ArrayList<>());
+    cart.setCurrency(new BroadleafCurrencyImpl());
+    cart.setFulfillmentGroups(new ArrayList<>());
+    cart.setId(1L);
+    cart.setLocale(new LocaleImpl());
+    cart.setName("Name");
+    cart.setOrderAttributes(new HashMap<>());
+    cart.setOrderItems(new ArrayList<>());
+    cart.setOrderMessages(new ArrayList<>());
+    cart.setOrderNumber("42");
+    cart.setPayments(new ArrayList<>());
+    cart.setStatus(OrderStatus.ARCHIVED);
+    cart.setSubTotal(new Money());
+    cart.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    cart.setTaxOverride(true);
+    cart.setTotal(new Money());
+    cart.setTotalFulfillmentCharges(new Money());
+    cart.setTotalTax(new Money());
+    cart.setEmailAddress(null);
+    cart.setCustomer(customer);
+
+    // Act and Assert
+    assertEquals("Cart", resourcePurgeServiceImpl.getEmailForCart(cart));
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#getEmailForCart(Order)}.
+   * <ul>
+   *   <li>Given {@link CustomerImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#getEmailForCart(Order)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String ResourcePurgeServiceImpl.getEmailForCart(Order)"})
+  public void testGetEmailForCart_givenCustomerImpl_thenReturnNull() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    OrderImpl cart = new OrderImpl();
+    cart.setAdditionalOfferInformation(new HashMap<>());
+    cart.setAuditable(auditable);
+    cart.setCandidateOrderOffers(new ArrayList<>());
+    cart.setCurrency(new BroadleafCurrencyImpl());
+    cart.setFulfillmentGroups(new ArrayList<>());
+    cart.setId(1L);
+    cart.setLocale(new LocaleImpl());
+    cart.setName("Name");
+    cart.setOrderAttributes(new HashMap<>());
+    cart.setOrderItems(new ArrayList<>());
+    cart.setOrderMessages(new ArrayList<>());
+    cart.setOrderNumber("42");
+    cart.setPayments(new ArrayList<>());
+    cart.setStatus(OrderStatus.ARCHIVED);
+    cart.setSubTotal(new Money());
+    cart.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    cart.setTaxOverride(true);
+    cart.setTotal(new Money());
+    cart.setTotalFulfillmentCharges(new Money());
     cart.setTotalTax(new Money());
     cart.setEmailAddress(null);
     cart.setCustomer(new CustomerImpl());
@@ -1306,102 +2361,70 @@ public class ResourcePurgeServiceImplDiffblueTest {
    * Method under test: {@link ResourcePurgeServiceImpl#getEmailForCart(Order)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String ResourcePurgeServiceImpl.getEmailForCart(Order)"})
   public void testGetEmailForCart_whenNullOrderImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ResourcePurgeServiceImpl resourcePurgeServiceImpl = new ResourcePurgeServiceImpl();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertNull(resourcePurgeServiceImpl.getEmailForCart(new NullOrderImpl()));
   }
 
   /**
    * Test {@link ResourcePurgeServiceImpl#deleteCart(Order)}.
+   * <ul>
+   *   <li>Given {@link OrderService} {@link OrderService#deleteOrder(Order)} does nothing.</li>
+   * </ul>
    * <p>
    * Method under test: {@link ResourcePurgeServiceImpl#deleteCart(Order)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testDeleteCart() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.util.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.util.service.ResourcePurgeServiceImpl resourcePurgeServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourcePurgeServiceImpl.deleteCart(Order)"})
+  public void testDeleteCart_givenOrderServiceDeleteOrderDoesNothing() {
     // Arrange
-    ResourcePurgeServiceImpl resourcePurgeServiceImpl2 = new ResourcePurgeServiceImpl();
+    doNothing().when(orderService).deleteOrder(Mockito.<Order>any());
 
     // Act
-    resourcePurgeServiceImpl2.deleteCart(new NullOrderImpl());
+    resourcePurgeServiceImpl.deleteCart(new NullOrderImpl());
+
+    // Assert
+    verify(orderService).deleteOrder(isA(Order.class));
   }
 
   /**
-   * Test
-   * {@link ResourcePurgeServiceImpl#getCustomersInErrorToIgnore(CustomerPurgeParams)}.
+   * Test {@link ResourcePurgeServiceImpl#deleteCart(Order)}.
+   * <ul>
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link ResourcePurgeServiceImpl#getCustomersInErrorToIgnore(ResourcePurgeServiceImpl.CustomerPurgeParams)}
+   * Method under test: {@link ResourcePurgeServiceImpl#deleteCart(Order)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetCustomersInErrorToIgnore() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.util.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass91 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.util.service.ResourcePurgeServiceImpl resourcePurgeServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourcePurgeServiceImpl.deleteCart(Order)"})
+  public void testDeleteCart_thenThrowIllegalArgumentException() {
     // Arrange
-    ResourcePurgeServiceImpl resourcePurgeServiceImpl2 = new ResourcePurgeServiceImpl();
-    ResourcePurgeServiceImpl resourcePurgeServiceImpl3 = new ResourcePurgeServiceImpl();
+    doThrow(new IllegalArgumentException("foo")).when(orderService).deleteOrder(Mockito.<Order>any());
 
-    // Act
-    resourcePurgeServiceImpl2
-        .getCustomersInErrorToIgnore(resourcePurgeServiceImpl3.new CustomerPurgeParams(new HashMap<>()));
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> resourcePurgeServiceImpl.deleteCart(new NullOrderImpl()));
+    verify(orderService).deleteOrder(isA(Order.class));
   }
 
   /**
-   * Test
-   * {@link ResourcePurgeServiceImpl#getCustomersInErrorToIgnore(CustomerPurgeParams)}.
+   * Test {@link ResourcePurgeServiceImpl#getCustomersInErrorToIgnore(CustomerPurgeParams)}.
    * <ul>
    *   <li>Given one.</li>
    *   <li>Then return Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ResourcePurgeServiceImpl#getCustomersInErrorToIgnore(ResourcePurgeServiceImpl.CustomerPurgeParams)}
+   * Method under test: {@link ResourcePurgeServiceImpl#getCustomersInErrorToIgnore(CustomerPurgeParams)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Set ResourcePurgeServiceImpl.getCustomersInErrorToIgnore(CustomerPurgeParams)"})
   public void testGetCustomersInErrorToIgnore_givenOne_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ResourcePurgeServiceImpl resourcePurgeServiceImpl = new ResourcePurgeServiceImpl();
-    ResourcePurgeServiceImpl.CustomerPurgeParams purgeParams = mock(ResourcePurgeServiceImpl.CustomerPurgeParams.class);
+    CustomerPurgeParams purgeParams = mock(CustomerPurgeParams.class);
     when(purgeParams.getFailedRetryTime()).thenReturn(1L);
 
     // Act
@@ -1413,108 +2436,363 @@ public class ResourcePurgeServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ResourcePurgeServiceImpl#getCustomersToPurge(CustomerPurgeParams, int, int, List)}.
+   * Test {@link ResourcePurgeServiceImpl#getCustomersToPurge(CustomerPurgeParams, int, int, List)}.
    * <p>
-   * Method under test:
-   * {@link ResourcePurgeServiceImpl#getCustomersToPurge(ResourcePurgeServiceImpl.CustomerPurgeParams, int, int, List)}
+   * Method under test: {@link ResourcePurgeServiceImpl#getCustomersToPurge(CustomerPurgeParams, int, int, List)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List ResourcePurgeServiceImpl.getCustomersToPurge(CustomerPurgeParams, int, int, List)"})
   public void testGetCustomersToPurge() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.util.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass102 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.util.service.ResourcePurgeServiceImpl resourcePurgeServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    ResourcePurgeServiceImpl resourcePurgeServiceImpl2 = new ResourcePurgeServiceImpl();
-    ResourcePurgeServiceImpl resourcePurgeServiceImpl3 = new ResourcePurgeServiceImpl();
-    ResourcePurgeServiceImpl.CustomerPurgeParams purgeParams = resourcePurgeServiceImpl3.new CustomerPurgeParams(
-        new HashMap<>());
+    when(resourcePurgeDao.findCustomers(Mockito.<Date>any(), Mockito.<Boolean>any(), Mockito.<Boolean>any(),
+        Mockito.<Boolean>any(), anyInt(), anyInt(), Mockito.<List<Long>>any())).thenReturn(new ArrayList<>());
+    CustomerPurgeParams purgeParams = resourcePurgeServiceImpl.new CustomerPurgeParams(new HashMap<>());
 
     // Act
-    resourcePurgeServiceImpl2.getCustomersToPurge(purgeParams, 1, 3, new ArrayList<>());
+    List<Customer> actualCustomersToPurge = resourcePurgeServiceImpl.getCustomersToPurge(purgeParams, 1, 3,
+        new ArrayList<>());
+
+    // Assert
+    verify(resourcePurgeDao).findCustomers(isNull(), isNull(), isNull(), isNull(), eq(1), eq(3), isA(List.class));
+    assertTrue(actualCustomersToPurge.isEmpty());
   }
 
   /**
-   * Test
-   * {@link ResourcePurgeServiceImpl#getCustomersToPurgeLength(CustomerPurgeParams, List)}.
+   * Test {@link ResourcePurgeServiceImpl#getCustomersToPurge(CustomerPurgeParams, int, int, List)}.
+   * <ul>
+   *   <li>Given one.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add one.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link ResourcePurgeServiceImpl#getCustomersToPurgeLength(ResourcePurgeServiceImpl.CustomerPurgeParams, List)}
+   * Method under test: {@link ResourcePurgeServiceImpl#getCustomersToPurge(CustomerPurgeParams, int, int, List)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetCustomersToPurgeLength() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.util.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass124 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.util.service.ResourcePurgeServiceImpl resourcePurgeServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List ResourcePurgeServiceImpl.getCustomersToPurge(CustomerPurgeParams, int, int, List)"})
+  public void testGetCustomersToPurge_givenOne_whenArrayListAddOne() {
     // Arrange
-    ResourcePurgeServiceImpl resourcePurgeServiceImpl2 = new ResourcePurgeServiceImpl();
-    ResourcePurgeServiceImpl resourcePurgeServiceImpl3 = new ResourcePurgeServiceImpl();
-    ResourcePurgeServiceImpl.CustomerPurgeParams purgeParams = resourcePurgeServiceImpl3.new CustomerPurgeParams(
-        new HashMap<>());
+    when(resourcePurgeDao.findCustomers(Mockito.<Date>any(), Mockito.<Boolean>any(), Mockito.<Boolean>any(),
+        Mockito.<Boolean>any(), anyInt(), anyInt(), Mockito.<List<Long>>any())).thenReturn(new ArrayList<>());
+    CustomerPurgeParams purgeParams = mock(CustomerPurgeParams.class);
+    when(purgeParams.getIsDeactivated()).thenReturn(true);
+    when(purgeParams.getIsPreview()).thenReturn(true);
+    when(purgeParams.getIsRegistered()).thenReturn(true);
+    when(purgeParams.getDateCreatedMinThreshold())
+        .thenReturn(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+
+    ArrayList<Long> customersInError = new ArrayList<>();
+    customersInError.add(1L);
 
     // Act
-    resourcePurgeServiceImpl2.getCustomersToPurgeLength(purgeParams, new ArrayList<>());
+    List<Customer> actualCustomersToPurge = resourcePurgeServiceImpl.getCustomersToPurge(purgeParams, 1, 3,
+        customersInError);
+
+    // Assert
+    verify(resourcePurgeDao).findCustomers(isA(Date.class), eq(true), eq(true), eq(true), eq(1), eq(3),
+        isA(List.class));
+    verify(purgeParams).getDateCreatedMinThreshold();
+    verify(purgeParams).getIsDeactivated();
+    verify(purgeParams).getIsPreview();
+    verify(purgeParams).getIsRegistered();
+    assertTrue(actualCustomersToPurge.isEmpty());
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#getCustomersToPurge(CustomerPurgeParams, int, int, List)}.
+   * <ul>
+   *   <li>Given {@code true}.</li>
+   *   <li>Then calls {@link CustomerPurgeParams#getDateCreatedMinThreshold()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#getCustomersToPurge(CustomerPurgeParams, int, int, List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List ResourcePurgeServiceImpl.getCustomersToPurge(CustomerPurgeParams, int, int, List)"})
+  public void testGetCustomersToPurge_givenTrue_thenCallsGetDateCreatedMinThreshold() {
+    // Arrange
+    when(resourcePurgeDao.findCustomers(Mockito.<Date>any(), Mockito.<Boolean>any(), Mockito.<Boolean>any(),
+        Mockito.<Boolean>any(), anyInt(), anyInt(), Mockito.<List<Long>>any())).thenReturn(new ArrayList<>());
+    CustomerPurgeParams purgeParams = mock(CustomerPurgeParams.class);
+    when(purgeParams.getIsDeactivated()).thenReturn(true);
+    when(purgeParams.getIsPreview()).thenReturn(true);
+    when(purgeParams.getIsRegistered()).thenReturn(true);
+    when(purgeParams.getDateCreatedMinThreshold())
+        .thenReturn(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+
+    // Act
+    List<Customer> actualCustomersToPurge = resourcePurgeServiceImpl.getCustomersToPurge(purgeParams, 1, 3,
+        new ArrayList<>());
+
+    // Assert
+    verify(resourcePurgeDao).findCustomers(isA(Date.class), eq(true), eq(true), eq(true), eq(1), eq(3),
+        isA(List.class));
+    verify(purgeParams).getDateCreatedMinThreshold();
+    verify(purgeParams).getIsDeactivated();
+    verify(purgeParams).getIsPreview();
+    verify(purgeParams).getIsRegistered();
+    assertTrue(actualCustomersToPurge.isEmpty());
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#getCustomersToPurge(CustomerPurgeParams, int, int, List)}.
+   * <ul>
+   *   <li>Given zero.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add zero.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#getCustomersToPurge(CustomerPurgeParams, int, int, List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List ResourcePurgeServiceImpl.getCustomersToPurge(CustomerPurgeParams, int, int, List)"})
+  public void testGetCustomersToPurge_givenZero_whenArrayListAddZero() {
+    // Arrange
+    when(resourcePurgeDao.findCustomers(Mockito.<Date>any(), Mockito.<Boolean>any(), Mockito.<Boolean>any(),
+        Mockito.<Boolean>any(), anyInt(), anyInt(), Mockito.<List<Long>>any())).thenReturn(new ArrayList<>());
+    CustomerPurgeParams purgeParams = mock(CustomerPurgeParams.class);
+    when(purgeParams.getIsDeactivated()).thenReturn(true);
+    when(purgeParams.getIsPreview()).thenReturn(true);
+    when(purgeParams.getIsRegistered()).thenReturn(true);
+    when(purgeParams.getDateCreatedMinThreshold())
+        .thenReturn(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+
+    ArrayList<Long> customersInError = new ArrayList<>();
+    customersInError.add(0L);
+    customersInError.add(1L);
+
+    // Act
+    List<Customer> actualCustomersToPurge = resourcePurgeServiceImpl.getCustomersToPurge(purgeParams, 1, 3,
+        customersInError);
+
+    // Assert
+    verify(resourcePurgeDao).findCustomers(isA(Date.class), eq(true), eq(true), eq(true), eq(1), eq(3),
+        isA(List.class));
+    verify(purgeParams).getDateCreatedMinThreshold();
+    verify(purgeParams).getIsDeactivated();
+    verify(purgeParams).getIsPreview();
+    verify(purgeParams).getIsRegistered();
+    assertTrue(actualCustomersToPurge.isEmpty());
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#getCustomersToPurgeLength(CustomerPurgeParams, List)}.
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#getCustomersToPurgeLength(CustomerPurgeParams, List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long ResourcePurgeServiceImpl.getCustomersToPurgeLength(CustomerPurgeParams, List)"})
+  public void testGetCustomersToPurgeLength() {
+    // Arrange
+    when(resourcePurgeDao.findCustomersCount(Mockito.<Date>any(), Mockito.<Boolean>any(), Mockito.<Boolean>any(),
+        Mockito.<Boolean>any(), Mockito.<List<Long>>any())).thenReturn(3L);
+    CustomerPurgeParams purgeParams = resourcePurgeServiceImpl.new CustomerPurgeParams(new HashMap<>());
+
+    // Act
+    Long actualCustomersToPurgeLength = resourcePurgeServiceImpl.getCustomersToPurgeLength(purgeParams,
+        new ArrayList<>());
+
+    // Assert
+    verify(resourcePurgeDao).findCustomersCount(isNull(), isNull(), isNull(), isNull(), isA(List.class));
+    assertEquals(3L, actualCustomersToPurgeLength.longValue());
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#getCustomersToPurgeLength(CustomerPurgeParams, List)}.
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#getCustomersToPurgeLength(CustomerPurgeParams, List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long ResourcePurgeServiceImpl.getCustomersToPurgeLength(CustomerPurgeParams, List)"})
+  public void testGetCustomersToPurgeLength2() {
+    // Arrange
+    when(resourcePurgeDao.findCustomersCount(Mockito.<Date>any(), Mockito.<Boolean>any(), Mockito.<Boolean>any(),
+        Mockito.<Boolean>any(), Mockito.<List<Long>>any())).thenReturn(Long.MAX_VALUE);
+    CustomerPurgeParams purgeParams = mock(CustomerPurgeParams.class);
+    when(purgeParams.getIsDeactivated()).thenReturn(true);
+    when(purgeParams.getIsPreview()).thenReturn(true);
+    when(purgeParams.getIsRegistered()).thenReturn(true);
+    when(purgeParams.getBatchSize()).thenReturn(3L);
+    when(purgeParams.getDateCreatedMinThreshold())
+        .thenReturn(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+
+    // Act
+    Long actualCustomersToPurgeLength = resourcePurgeServiceImpl.getCustomersToPurgeLength(purgeParams,
+        new ArrayList<>());
+
+    // Assert
+    verify(resourcePurgeDao).findCustomersCount(isA(Date.class), eq(true), eq(true), eq(true), isA(List.class));
+    verify(purgeParams).getBatchSize();
+    verify(purgeParams).getDateCreatedMinThreshold();
+    verify(purgeParams).getIsDeactivated();
+    verify(purgeParams).getIsPreview();
+    verify(purgeParams).getIsRegistered();
+    assertEquals(3L, actualCustomersToPurgeLength.longValue());
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#getCustomersToPurgeLength(CustomerPurgeParams, List)}.
+   * <ul>
+   *   <li>Given one.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add one.</li>
+   *   <li>Then calls {@link CustomerPurgeParams#getBatchSize()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#getCustomersToPurgeLength(CustomerPurgeParams, List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long ResourcePurgeServiceImpl.getCustomersToPurgeLength(CustomerPurgeParams, List)"})
+  public void testGetCustomersToPurgeLength_givenOne_whenArrayListAddOne_thenCallsGetBatchSize() {
+    // Arrange
+    when(resourcePurgeDao.findCustomersCount(Mockito.<Date>any(), Mockito.<Boolean>any(), Mockito.<Boolean>any(),
+        Mockito.<Boolean>any(), Mockito.<List<Long>>any())).thenReturn(3L);
+    CustomerPurgeParams purgeParams = mock(CustomerPurgeParams.class);
+    when(purgeParams.getIsDeactivated()).thenReturn(true);
+    when(purgeParams.getIsPreview()).thenReturn(true);
+    when(purgeParams.getIsRegistered()).thenReturn(true);
+    when(purgeParams.getBatchSize()).thenReturn(3L);
+    when(purgeParams.getDateCreatedMinThreshold())
+        .thenReturn(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+
+    ArrayList<Long> customersInError = new ArrayList<>();
+    customersInError.add(1L);
+    customersInError.add(3L);
+
+    // Act
+    Long actualCustomersToPurgeLength = resourcePurgeServiceImpl.getCustomersToPurgeLength(purgeParams,
+        customersInError);
+
+    // Assert
+    verify(resourcePurgeDao).findCustomersCount(isA(Date.class), eq(true), eq(true), eq(true), isA(List.class));
+    verify(purgeParams).getBatchSize();
+    verify(purgeParams).getDateCreatedMinThreshold();
+    verify(purgeParams).getIsDeactivated();
+    verify(purgeParams).getIsPreview();
+    verify(purgeParams).getIsRegistered();
+    assertEquals(3L, actualCustomersToPurgeLength.longValue());
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#getCustomersToPurgeLength(CustomerPurgeParams, List)}.
+   * <ul>
+   *   <li>Then calls {@link CustomerPurgeParams#getBatchSize()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#getCustomersToPurgeLength(CustomerPurgeParams, List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long ResourcePurgeServiceImpl.getCustomersToPurgeLength(CustomerPurgeParams, List)"})
+  public void testGetCustomersToPurgeLength_thenCallsGetBatchSize() {
+    // Arrange
+    when(resourcePurgeDao.findCustomersCount(Mockito.<Date>any(), Mockito.<Boolean>any(), Mockito.<Boolean>any(),
+        Mockito.<Boolean>any(), Mockito.<List<Long>>any())).thenReturn(3L);
+    CustomerPurgeParams purgeParams = mock(CustomerPurgeParams.class);
+    when(purgeParams.getIsDeactivated()).thenReturn(true);
+    when(purgeParams.getIsPreview()).thenReturn(true);
+    when(purgeParams.getIsRegistered()).thenReturn(true);
+    when(purgeParams.getBatchSize()).thenReturn(3L);
+    when(purgeParams.getDateCreatedMinThreshold())
+        .thenReturn(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+
+    // Act
+    Long actualCustomersToPurgeLength = resourcePurgeServiceImpl.getCustomersToPurgeLength(purgeParams,
+        new ArrayList<>());
+
+    // Assert
+    verify(resourcePurgeDao).findCustomersCount(isA(Date.class), eq(true), eq(true), eq(true), isA(List.class));
+    verify(purgeParams).getBatchSize();
+    verify(purgeParams).getDateCreatedMinThreshold();
+    verify(purgeParams).getIsDeactivated();
+    verify(purgeParams).getIsPreview();
+    verify(purgeParams).getIsRegistered();
+    assertEquals(3L, actualCustomersToPurgeLength.longValue());
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#getCustomersToPurgeLength(CustomerPurgeParams, List)}.
+   * <ul>
+   *   <li>When {@link ArrayList#ArrayList()} add three.</li>
+   *   <li>Then calls {@link CustomerPurgeParams#getBatchSize()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#getCustomersToPurgeLength(CustomerPurgeParams, List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long ResourcePurgeServiceImpl.getCustomersToPurgeLength(CustomerPurgeParams, List)"})
+  public void testGetCustomersToPurgeLength_whenArrayListAddThree_thenCallsGetBatchSize() {
+    // Arrange
+    when(resourcePurgeDao.findCustomersCount(Mockito.<Date>any(), Mockito.<Boolean>any(), Mockito.<Boolean>any(),
+        Mockito.<Boolean>any(), Mockito.<List<Long>>any())).thenReturn(3L);
+    CustomerPurgeParams purgeParams = mock(CustomerPurgeParams.class);
+    when(purgeParams.getIsDeactivated()).thenReturn(true);
+    when(purgeParams.getIsPreview()).thenReturn(true);
+    when(purgeParams.getIsRegistered()).thenReturn(true);
+    when(purgeParams.getBatchSize()).thenReturn(3L);
+    when(purgeParams.getDateCreatedMinThreshold())
+        .thenReturn(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+
+    ArrayList<Long> customersInError = new ArrayList<>();
+    customersInError.add(3L);
+
+    // Act
+    Long actualCustomersToPurgeLength = resourcePurgeServiceImpl.getCustomersToPurgeLength(purgeParams,
+        customersInError);
+
+    // Assert
+    verify(resourcePurgeDao).findCustomersCount(isA(Date.class), eq(true), eq(true), eq(true), isA(List.class));
+    verify(purgeParams).getBatchSize();
+    verify(purgeParams).getDateCreatedMinThreshold();
+    verify(purgeParams).getIsDeactivated();
+    verify(purgeParams).getIsPreview();
+    verify(purgeParams).getIsRegistered();
+    assertEquals(3L, actualCustomersToPurgeLength.longValue());
   }
 
   /**
    * Test {@link ResourcePurgeServiceImpl#deleteCustomer(Customer)}.
+   * <ul>
+   *   <li>Given {@link CustomerService} {@link CustomerService#deleteCustomer(Customer)} does nothing.</li>
+   * </ul>
    * <p>
    * Method under test: {@link ResourcePurgeServiceImpl#deleteCustomer(Customer)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testDeleteCustomer() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.util.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass16 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.util.service.ResourcePurgeServiceImpl resourcePurgeServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourcePurgeServiceImpl.deleteCustomer(Customer)"})
+  public void testDeleteCustomer_givenCustomerServiceDeleteCustomerDoesNothing() {
     // Arrange
-    ResourcePurgeServiceImpl resourcePurgeServiceImpl2 = new ResourcePurgeServiceImpl();
+    doNothing().when(customerService).deleteCustomer(Mockito.<Customer>any());
 
     // Act
-    resourcePurgeServiceImpl2.deleteCustomer(new CustomerImpl());
+    resourcePurgeServiceImpl.deleteCustomer(new CustomerImpl());
+
+    // Assert
+    verify(customerService).deleteCustomer(isA(Customer.class));
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#deleteCustomer(Customer)}.
+   * <ul>
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#deleteCustomer(Customer)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourcePurgeServiceImpl.deleteCustomer(Customer)"})
+  public void testDeleteCustomer_thenThrowIllegalArgumentException() {
+    // Arrange
+    doThrow(new IllegalArgumentException("foo")).when(customerService).deleteCustomer(Mockito.<Customer>any());
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> resourcePurgeServiceImpl.deleteCustomer(new CustomerImpl()));
+    verify(customerService).deleteCustomer(isA(Customer.class));
   }
 }

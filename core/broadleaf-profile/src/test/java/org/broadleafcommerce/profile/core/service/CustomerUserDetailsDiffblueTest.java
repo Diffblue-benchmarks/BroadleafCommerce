@@ -1,27 +1,47 @@
+/*-
+ * #%L
+ * BroadleafCommerce Profile
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.profile.core.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 public class CustomerUserDetailsDiffblueTest {
   /**
-   * Test
-   * {@link CustomerUserDetails#CustomerUserDetails(Long, String, String, Collection)}.
+   * Test {@link CustomerUserDetails#CustomerUserDetails(Long, String, String, Collection)}.
    * <ul>
    *   <li>Then return Authorities size is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomerUserDetails#CustomerUserDetails(Long, String, String, Collection)}
+   * Method under test: {@link CustomerUserDetails#CustomerUserDetails(Long, String, String, Collection)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CustomerUserDetails.<init>(Long, String, String, Collection)"})
   public void testNewCustomerUserDetails_thenReturnAuthoritiesSizeIsOne() {
     // Arrange
     ArrayList<GrantedAuthority> authorities = new ArrayList<>();
@@ -45,16 +65,17 @@ public class CustomerUserDetailsDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomerUserDetails#CustomerUserDetails(Long, String, String, boolean, boolean, boolean, boolean, Collection)}.
+   * Test {@link CustomerUserDetails#CustomerUserDetails(Long, String, String, boolean, boolean, boolean, boolean, Collection)}.
    * <ul>
    *   <li>Then return Authorities size is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomerUserDetails#CustomerUserDetails(Long, String, String, boolean, boolean, boolean, boolean, Collection)}
+   * Method under test: {@link CustomerUserDetails#CustomerUserDetails(Long, String, String, boolean, boolean, boolean, boolean, Collection)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void CustomerUserDetails.<init>(Long, String, String, boolean, boolean, boolean, boolean, Collection)"})
   public void testNewCustomerUserDetails_thenReturnAuthoritiesSizeIsOne2() {
     // Arrange
     ArrayList<GrantedAuthority> authorities = new ArrayList<>();
@@ -79,17 +100,17 @@ public class CustomerUserDetailsDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomerUserDetails#CustomerUserDetails(Long, String, String, Collection)}.
+   * Test {@link CustomerUserDetails#CustomerUserDetails(Long, String, String, Collection)}.
    * <ul>
    *   <li>When {@link ArrayList#ArrayList()}.</li>
    *   <li>Then return Authorities Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomerUserDetails#CustomerUserDetails(Long, String, String, Collection)}
+   * Method under test: {@link CustomerUserDetails#CustomerUserDetails(Long, String, String, Collection)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CustomerUserDetails.<init>(Long, String, String, Collection)"})
   public void testNewCustomerUserDetails_whenArrayList_thenReturnAuthoritiesEmpty() {
     // Arrange and Act
     CustomerUserDetails actualCustomerUserDetails = new CustomerUserDetails(1L, "janedoe", "iloveyou",
@@ -109,17 +130,18 @@ public class CustomerUserDetailsDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomerUserDetails#CustomerUserDetails(Long, String, String, boolean, boolean, boolean, boolean, Collection)}.
+   * Test {@link CustomerUserDetails#CustomerUserDetails(Long, String, String, boolean, boolean, boolean, boolean, Collection)}.
    * <ul>
    *   <li>When {@link ArrayList#ArrayList()}.</li>
    *   <li>Then return Authorities Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomerUserDetails#CustomerUserDetails(Long, String, String, boolean, boolean, boolean, boolean, Collection)}
+   * Method under test: {@link CustomerUserDetails#CustomerUserDetails(Long, String, String, boolean, boolean, boolean, boolean, Collection)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void CustomerUserDetails.<init>(Long, String, String, boolean, boolean, boolean, boolean, Collection)"})
   public void testNewCustomerUserDetails_whenArrayList_thenReturnAuthoritiesEmpty2() {
     // Arrange and Act
     CustomerUserDetails actualCustomerUserDetails = new CustomerUserDetails(1L, "janedoe", "iloveyou", true, true, true,
@@ -144,6 +166,8 @@ public class CustomerUserDetailsDiffblueTest {
    * Method under test: {@link CustomerUserDetails#withId(Long)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CustomerUserDetails CustomerUserDetails.withId(Long)"})
   public void testWithId() {
     // Arrange
     CustomerUserDetails customerUserDetails = new CustomerUserDetails(1L, "janedoe", "iloveyou", new ArrayList<>());
@@ -162,6 +186,8 @@ public class CustomerUserDetailsDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long CustomerUserDetails.getId()", "void CustomerUserDetails.setId(Long)"})
   public void testGettersAndSetters() {
     // Arrange
     CustomerUserDetails customerUserDetails = new CustomerUserDetails(1L, "janedoe", "iloveyou", new ArrayList<>());
@@ -169,7 +195,7 @@ public class CustomerUserDetailsDiffblueTest {
     // Act
     customerUserDetails.setId(1L);
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals(1L, customerUserDetails.getId().longValue());
   }
 }

@@ -1,21 +1,46 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework Web
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.web.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.anyBoolean;
+import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.broadleafcommerce.common.audit.Auditable;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
+import org.broadleafcommerce.common.extension.ExtensionManager;
 import org.broadleafcommerce.common.extension.ExtensionResultHolder;
 import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
 import org.broadleafcommerce.common.locale.domain.LocaleImpl;
@@ -25,186 +50,90 @@ import org.broadleafcommerce.core.catalog.domain.ProductOptionValue;
 import org.broadleafcommerce.core.catalog.domain.ProductOptionValueImpl;
 import org.broadleafcommerce.core.catalog.domain.Sku;
 import org.broadleafcommerce.core.catalog.domain.SkuImpl;
+import org.broadleafcommerce.core.catalog.service.CatalogService;
+import org.broadleafcommerce.core.offer.domain.CandidateItemOffer;
+import org.broadleafcommerce.core.offer.domain.OrderItemAdjustment;
+import org.broadleafcommerce.core.offer.domain.ProratedOrderItemAdjustment;
+import org.broadleafcommerce.core.order.domain.BundleOrderItemFeePrice;
 import org.broadleafcommerce.core.order.domain.BundleOrderItemImpl;
 import org.broadleafcommerce.core.order.domain.DiscreteOrderItem;
 import org.broadleafcommerce.core.order.domain.DiscreteOrderItemImpl;
+import org.broadleafcommerce.core.order.domain.GiftWrapOrderItem;
 import org.broadleafcommerce.core.order.domain.GiftWrapOrderItemImpl;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.domain.OrderImpl;
 import org.broadleafcommerce.core.order.domain.OrderItem;
+import org.broadleafcommerce.core.order.domain.OrderItemAttribute;
+import org.broadleafcommerce.core.order.domain.OrderItemAttributeImpl;
+import org.broadleafcommerce.core.order.domain.OrderItemPriceDetail;
+import org.broadleafcommerce.core.order.domain.OrderItemQualifier;
+import org.broadleafcommerce.core.order.domain.PersonalMessage;
 import org.broadleafcommerce.core.order.domain.PersonalMessageImpl;
 import org.broadleafcommerce.core.order.service.type.OrderItemType;
 import org.broadleafcommerce.core.order.service.type.OrderStatus;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml",
-    "/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 class i18nUpdateCartServiceExtensionHandlerDiffblueTest {
-  @Autowired
+  @Mock
+  private CatalogService catalogService;
+
+  @InjectMocks
   private i18nUpdateCartServiceExtensionHandler i18nUpdateCartServiceExtensionHandler;
 
-  /**
-   * Test
-   * {@link i18nUpdateCartServiceExtensionHandler#getClearCartOnLocaleSwitch()}.
-   * <p>
-   * Method under test:
-   * {@link i18nUpdateCartServiceExtensionHandler#getClearCartOnLocaleSwitch()}
-   */
-  @Test
-  @DisplayName("Test getClearCartOnLocaleSwitch()")
-  @Disabled("TODO: Complete this test")
-  void testGetClearCartOnLocaleSwitch() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4831 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.service.i18nUpdateCartServiceExtensionHandler i18nUpdateCartServiceExtensionHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new i18nUpdateCartServiceExtensionHandler()).getClearCartOnLocaleSwitch();
-  }
+  @Mock
+  private UpdateCartServiceExtensionManager updateCartServiceExtensionManager;
 
   /**
    * Test {@link i18nUpdateCartServiceExtensionHandler#init()}.
+   * <ul>
+   *   <li>Then calls {@link ExtensionManager#getHandlers()}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link i18nUpdateCartServiceExtensionHandler#init()}
    */
   @Test
-  @DisplayName("Test init()")
-  @Disabled("TODO: Complete this test")
-  void testInit() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4837 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.service.i18nUpdateCartServiceExtensionHandler i18nUpdateCartServiceExtensionHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new i18nUpdateCartServiceExtensionHandler()).init();
-  }
-
-  /**
-   * Test {@link i18nUpdateCartServiceExtensionHandler#getTranslationEnabled()}.
-   * <p>
-   * Method under test:
-   * {@link i18nUpdateCartServiceExtensionHandler#getTranslationEnabled()}
-   */
-  @Test
-  @DisplayName("Test getTranslationEnabled()")
-  @Disabled("TODO: Complete this test")
-  void testGetTranslationEnabled() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4834 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.service.i18nUpdateCartServiceExtensionHandler i18nUpdateCartServiceExtensionHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new i18nUpdateCartServiceExtensionHandler()).getTranslationEnabled();
-  }
-
-  /**
-   * Test
-   * {@link i18nUpdateCartServiceExtensionHandler#updateAndValidateCart(Order, ExtensionResultHolder)}.
-   * <p>
-   * Method under test:
-   * {@link i18nUpdateCartServiceExtensionHandler#updateAndValidateCart(Order, ExtensionResultHolder)}
-   */
-  @Test
-  @DisplayName("Test updateAndValidateCart(Order, ExtensionResultHolder)")
-  @Disabled("TODO: Complete this test")
-  void testUpdateAndValidateCart() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4932 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.service.i18nUpdateCartServiceExtensionHandler i18nUpdateCartServiceExtensionHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @DisplayName("Test init(); then calls getHandlers()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void i18nUpdateCartServiceExtensionHandler.init()"})
+  void testInit_thenCallsGetHandlers() {
     // Arrange
-    i18nUpdateCartServiceExtensionHandler i18nUpdateCartServiceExtensionHandler2 = new i18nUpdateCartServiceExtensionHandler();
-    NullOrderImpl cart = new NullOrderImpl();
-
-    ExtensionResultHolder resultHolder = new ExtensionResultHolder();
-    resultHolder.setResult("Result");
-    resultHolder.setThrowable(new Throwable());
+    when(updateCartServiceExtensionManager.getHandlers()).thenReturn(new ArrayList<>());
 
     // Act
-    i18nUpdateCartServiceExtensionHandler2.updateAndValidateCart(cart, resultHolder);
+    i18nUpdateCartServiceExtensionHandler.init();
+
+    // Assert
+    verify(updateCartServiceExtensionManager).getHandlers();
   }
 
   /**
-   * Test
-   * {@link i18nUpdateCartServiceExtensionHandler#updateAndValidateCart(Order, ExtensionResultHolder)}.
+   * Test {@link i18nUpdateCartServiceExtensionHandler#updateAndValidateCart(Order, ExtensionResultHolder)}.
    * <ul>
    *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link i18nUpdateCartServiceExtensionHandler#updateAndValidateCart(Order, ExtensionResultHolder)}
+   * Method under test: {@link i18nUpdateCartServiceExtensionHandler#updateAndValidateCart(Order, ExtensionResultHolder)}
    */
   @Test
   @DisplayName("Test updateAndValidateCart(Order, ExtensionResultHolder); given Auditable (default constructor) CreatedBy is one")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "ExtensionResultStatusType i18nUpdateCartServiceExtensionHandler.updateAndValidateCart(Order, ExtensionResultHolder)"})
   void testUpdateAndValidateCart_givenAuditableCreatedByIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    i18nUpdateCartServiceExtensionHandler i18nUpdateCartServiceExtensionHandler = new i18nUpdateCartServiceExtensionHandler();
-
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
     auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
@@ -238,6 +167,7 @@ class i18nUpdateCartServiceExtensionHandlerDiffblueTest {
     bundleOrderItemImpl.setOrderItemType(new OrderItemType("Type", "Friendly Type"));
     bundleOrderItemImpl.setParentOrderItem(new BundleOrderItemImpl());
     bundleOrderItemImpl.setPersonalMessage(new PersonalMessageImpl());
+    bundleOrderItemImpl.setPrice(new Money());
     bundleOrderItemImpl.setProratedOrderItemAdjustments(new ArrayList<>());
     bundleOrderItemImpl.setQuantity(1);
     bundleOrderItemImpl.setRetailPrice(new Money());
@@ -278,7 +208,6 @@ class i18nUpdateCartServiceExtensionHandlerDiffblueTest {
     cart.setTaxOverride(true);
     cart.setTotal(new Money());
     cart.setTotalFulfillmentCharges(new Money());
-    cart.setTotalShipping(new Money());
     cart.setTotalTax(new Money());
     cart.setOrderItems(orderItems);
     cart.setLocale(locale);
@@ -293,22 +222,20 @@ class i18nUpdateCartServiceExtensionHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link i18nUpdateCartServiceExtensionHandler#updateAndValidateCart(Order, ExtensionResultHolder)}.
+   * Test {@link i18nUpdateCartServiceExtensionHandler#updateAndValidateCart(Order, ExtensionResultHolder)}.
    * <ul>
    *   <li>When {@link NullOrderImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link i18nUpdateCartServiceExtensionHandler#updateAndValidateCart(Order, ExtensionResultHolder)}
+   * Method under test: {@link i18nUpdateCartServiceExtensionHandler#updateAndValidateCart(Order, ExtensionResultHolder)}
    */
   @Test
   @DisplayName("Test updateAndValidateCart(Order, ExtensionResultHolder); when NullOrderImpl (default constructor)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "ExtensionResultStatusType i18nUpdateCartServiceExtensionHandler.updateAndValidateCart(Order, ExtensionResultHolder)"})
   void testUpdateAndValidateCart_whenNullOrderImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    i18nUpdateCartServiceExtensionHandler i18nUpdateCartServiceExtensionHandler = new i18nUpdateCartServiceExtensionHandler();
     NullOrderImpl cart = new NullOrderImpl();
 
     ExtensionResultHolder resultHolder = new ExtensionResultHolder();
@@ -321,135 +248,328 @@ class i18nUpdateCartServiceExtensionHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link i18nUpdateCartServiceExtensionHandler#updateAndValidateCart(Order, ExtensionResultHolder)}.
-   * <ul>
-   *   <li>When {@link Order}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link i18nUpdateCartServiceExtensionHandler#updateAndValidateCart(Order, ExtensionResultHolder)}
-   */
-  @Test
-  @DisplayName("Test updateAndValidateCart(Order, ExtensionResultHolder); when Order")
-  void testUpdateAndValidateCart_whenOrder() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    i18nUpdateCartServiceExtensionHandler i18nUpdateCartServiceExtensionHandler = new i18nUpdateCartServiceExtensionHandler();
-    Order cart = mock(Order.class);
-
-    ExtensionResultHolder resultHolder = new ExtensionResultHolder();
-    resultHolder.setResult("Result");
-    resultHolder.setThrowable(new Throwable());
-
-    // Act and Assert
-    assertEquals(ExtensionResultStatusType.HANDLED_CONTINUE,
-        i18nUpdateCartServiceExtensionHandler.updateAndValidateCart(cart, resultHolder));
-  }
-
-  /**
-   * Test {@link i18nUpdateCartServiceExtensionHandler#fixTranslations(Order)}.
-   * <p>
-   * Method under test:
-   * {@link i18nUpdateCartServiceExtensionHandler#fixTranslations(Order)}
-   */
-  @Test
-  @DisplayName("Test fixTranslations(Order)")
-  @Disabled("TODO: Complete this test")
-  void testFixTranslations() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4817 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.service.i18nUpdateCartServiceExtensionHandler i18nUpdateCartServiceExtensionHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    i18nUpdateCartServiceExtensionHandler i18nUpdateCartServiceExtensionHandler2 = new i18nUpdateCartServiceExtensionHandler();
-
-    // Act
-    i18nUpdateCartServiceExtensionHandler2.fixTranslations(new NullOrderImpl());
-  }
-
-  /**
    * Test {@link i18nUpdateCartServiceExtensionHandler#fixTranslations(Order)}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link DiscreteOrderItemImpl}
-   * (default constructor).</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link DiscreteOrderItemImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link i18nUpdateCartServiceExtensionHandler#fixTranslations(Order)}
+   * Method under test: {@link i18nUpdateCartServiceExtensionHandler#fixTranslations(Order)}
    */
   @Test
   @DisplayName("Test fixTranslations(Order); given ArrayList() add DiscreteOrderItemImpl (default constructor)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void i18nUpdateCartServiceExtensionHandler.fixTranslations(Order)"})
   void testFixTranslations_givenArrayListAddDiscreteOrderItemImpl() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     i18nUpdateCartServiceExtensionHandler i18nUpdateCartServiceExtensionHandler = new i18nUpdateCartServiceExtensionHandler();
 
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    Auditable auditable2 = new Auditable();
+    auditable2.setCreatedBy(1L);
+    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setUpdatedBy(1L);
+
     ArrayList<DiscreteOrderItem> discreteOrderItemList = new ArrayList<>();
     discreteOrderItemList.add(new DiscreteOrderItemImpl());
-    NullOrderImpl cart = mock(NullOrderImpl.class);
-    when(cart.getDiscreteOrderItems()).thenReturn(discreteOrderItemList);
-    when(cart.getOrderItems()).thenReturn(new ArrayList<>());
+    BundleOrderItemImpl bundleOrderItemImpl = mock(BundleOrderItemImpl.class);
+    when(bundleOrderItemImpl.updateSaleAndRetailPrices()).thenReturn(true);
+    when(bundleOrderItemImpl.getDiscreteOrderItems()).thenReturn(discreteOrderItemList);
+    when(bundleOrderItemImpl.getSku()).thenReturn(new SkuImpl());
+    doNothing().when(bundleOrderItemImpl).setBaseRetailPrice(Mockito.<Money>any());
+    doNothing().when(bundleOrderItemImpl).setBaseSalePrice(Mockito.<Money>any());
+    doNothing().when(bundleOrderItemImpl).setBundleOrderItemFeePrices(Mockito.<List<BundleOrderItemFeePrice>>any());
+    doNothing().when(bundleOrderItemImpl).setDiscreteOrderItems(Mockito.<List<DiscreteOrderItem>>any());
+    doNothing().when(bundleOrderItemImpl).setAuditable(Mockito.<Auditable>any());
+    doNothing().when(bundleOrderItemImpl).setCandidateItemOffers(Mockito.<List<CandidateItemOffer>>any());
+    doNothing().when(bundleOrderItemImpl).setCartMessages(Mockito.<List<String>>any());
+    doNothing().when(bundleOrderItemImpl).setChildOrderItems(Mockito.<List<OrderItem>>any());
+    doNothing().when(bundleOrderItemImpl).setDiscountingAllowed(anyBoolean());
+    doNothing().when(bundleOrderItemImpl).setGiftWrapOrderItem(Mockito.<GiftWrapOrderItem>any());
+    doNothing().when(bundleOrderItemImpl).setHasValidationError(Mockito.<Boolean>any());
+    doNothing().when(bundleOrderItemImpl).setId(Mockito.<Long>any());
+    doNothing().when(bundleOrderItemImpl).setName(Mockito.<String>any());
+    doNothing().when(bundleOrderItemImpl).setOrder(Mockito.<Order>any());
+    doNothing().when(bundleOrderItemImpl).setOrderItemAdjustments(Mockito.<List<OrderItemAdjustment>>any());
+    doNothing().when(bundleOrderItemImpl).setOrderItemAttributes(Mockito.<Map<String, OrderItemAttribute>>any());
+    doNothing().when(bundleOrderItemImpl).setOrderItemPriceDetails(Mockito.<List<OrderItemPriceDetail>>any());
+    doNothing().when(bundleOrderItemImpl).setOrderItemQualifiers(Mockito.<List<OrderItemQualifier>>any());
+    doNothing().when(bundleOrderItemImpl).setOrderItemType(Mockito.<OrderItemType>any());
+    doNothing().when(bundleOrderItemImpl).setParentOrderItem(Mockito.<OrderItem>any());
+    doNothing().when(bundleOrderItemImpl).setPersonalMessage(Mockito.<PersonalMessage>any());
+    doNothing().when(bundleOrderItemImpl).setPrice(Mockito.<Money>any());
+    doNothing().when(bundleOrderItemImpl)
+        .setProratedOrderItemAdjustments(Mockito.<List<ProratedOrderItemAdjustment>>any());
+    doNothing().when(bundleOrderItemImpl).setQuantity(anyInt());
+    doNothing().when(bundleOrderItemImpl).setRetailPrice(Mockito.<Money>any());
+    doNothing().when(bundleOrderItemImpl).setRetailPriceOverride(anyBoolean());
+    doNothing().when(bundleOrderItemImpl).setSalePrice(Mockito.<Money>any());
+    doNothing().when(bundleOrderItemImpl).setSalePriceOverride(anyBoolean());
+    doNothing().when(bundleOrderItemImpl).setTaxable(Mockito.<Boolean>any());
+    bundleOrderItemImpl.setAuditable(auditable2);
+    bundleOrderItemImpl.setBaseRetailPrice(new Money());
+    bundleOrderItemImpl.setBaseSalePrice(new Money());
+    bundleOrderItemImpl.setBundleOrderItemFeePrices(new ArrayList<>());
+    bundleOrderItemImpl.setCandidateItemOffers(new ArrayList<>());
+    bundleOrderItemImpl.setCartMessages(new ArrayList<>());
+    bundleOrderItemImpl.setChildOrderItems(new ArrayList<>());
+    bundleOrderItemImpl.setDiscountingAllowed(true);
+    bundleOrderItemImpl.setDiscreteOrderItems(new ArrayList<>());
+    bundleOrderItemImpl.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    bundleOrderItemImpl.setHasValidationError(true);
+    bundleOrderItemImpl.setId(1L);
+    bundleOrderItemImpl.setName("Name");
+    bundleOrderItemImpl.setOrder(new NullOrderImpl());
+    bundleOrderItemImpl.setOrderItemAdjustments(new ArrayList<>());
+    bundleOrderItemImpl.setOrderItemPriceDetails(new ArrayList<>());
+    bundleOrderItemImpl.setOrderItemQualifiers(new ArrayList<>());
+    bundleOrderItemImpl.setOrderItemType(new OrderItemType("Type", "Friendly Type"));
+    bundleOrderItemImpl.setParentOrderItem(new BundleOrderItemImpl());
+    bundleOrderItemImpl.setPersonalMessage(new PersonalMessageImpl());
+    bundleOrderItemImpl.setPrice(new Money());
+    bundleOrderItemImpl.setProratedOrderItemAdjustments(new ArrayList<>());
+    bundleOrderItemImpl.setQuantity(1);
+    bundleOrderItemImpl.setRetailPrice(new Money());
+    bundleOrderItemImpl.setRetailPriceOverride(true);
+    bundleOrderItemImpl.setSalePrice(new Money());
+    bundleOrderItemImpl.setSalePriceOverride(true);
+    bundleOrderItemImpl.setTaxable(true);
+    bundleOrderItemImpl.updateSaleAndRetailPrices();
+    bundleOrderItemImpl.setOrderItemAttributes(new HashMap<>());
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(bundleOrderItemImpl);
+
+    OrderImpl cart = new OrderImpl();
+    cart.setAdditionalOfferInformation(new HashMap<>());
+    cart.setAuditable(auditable);
+    cart.setCandidateOrderOffers(new ArrayList<>());
+    cart.setCurrency(new BroadleafCurrencyImpl());
+    cart.setCustomer(new CustomerImpl());
+    cart.setEmailAddress("42 Main St");
+    cart.setFulfillmentGroups(new ArrayList<>());
+    cart.setId(1L);
+    cart.setLocale(new LocaleImpl());
+    cart.setName("Name");
+    cart.setOrderAttributes(new HashMap<>());
+    cart.setOrderMessages(new ArrayList<>());
+    cart.setOrderNumber("42");
+    cart.setPayments(new ArrayList<>());
+    cart.setStatus(new OrderStatus("Type", "Friendly Type"));
+    cart.setSubTotal(new Money());
+    cart.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    cart.setTaxOverride(true);
+    cart.setTotal(new Money());
+    cart.setTotalFulfillmentCharges(new Money());
+    cart.setTotalTax(new Money());
+    cart.setOrderItems(orderItems);
 
     // Act
     i18nUpdateCartServiceExtensionHandler.fixTranslations(cart);
 
     // Assert
-    verify(cart).getDiscreteOrderItems();
-    verify(cart).getOrderItems();
+    verify(bundleOrderItemImpl).getDiscreteOrderItems();
+    verify(bundleOrderItemImpl).getSku();
+    verify(bundleOrderItemImpl).setBaseRetailPrice(isA(Money.class));
+    verify(bundleOrderItemImpl).setBaseSalePrice(isA(Money.class));
+    verify(bundleOrderItemImpl).setBundleOrderItemFeePrices(isA(List.class));
+    verify(bundleOrderItemImpl).setDiscreteOrderItems(isA(List.class));
+    verify(bundleOrderItemImpl).updateSaleAndRetailPrices();
+    verify(bundleOrderItemImpl).setAuditable(isA(Auditable.class));
+    verify(bundleOrderItemImpl).setCandidateItemOffers(isA(List.class));
+    verify(bundleOrderItemImpl).setCartMessages(isA(List.class));
+    verify(bundleOrderItemImpl).setChildOrderItems(isA(List.class));
+    verify(bundleOrderItemImpl).setDiscountingAllowed(eq(true));
+    verify(bundleOrderItemImpl).setGiftWrapOrderItem(isA(GiftWrapOrderItem.class));
+    verify(bundleOrderItemImpl).setHasValidationError(eq(true));
+    verify(bundleOrderItemImpl).setId(eq(1L));
+    verify(bundleOrderItemImpl, atLeast(1)).setName(Mockito.<String>any());
+    verify(bundleOrderItemImpl).setOrder(isA(Order.class));
+    verify(bundleOrderItemImpl).setOrderItemAdjustments(isA(List.class));
+    verify(bundleOrderItemImpl).setOrderItemAttributes(isA(Map.class));
+    verify(bundleOrderItemImpl).setOrderItemPriceDetails(isA(List.class));
+    verify(bundleOrderItemImpl).setOrderItemQualifiers(isA(List.class));
+    verify(bundleOrderItemImpl).setOrderItemType(isA(OrderItemType.class));
+    verify(bundleOrderItemImpl).setParentOrderItem(isA(OrderItem.class));
+    verify(bundleOrderItemImpl).setPersonalMessage(isA(PersonalMessage.class));
+    verify(bundleOrderItemImpl).setPrice(isA(Money.class));
+    verify(bundleOrderItemImpl).setProratedOrderItemAdjustments(isA(List.class));
+    verify(bundleOrderItemImpl).setQuantity(eq(1));
+    verify(bundleOrderItemImpl).setRetailPrice(isA(Money.class));
+    verify(bundleOrderItemImpl).setRetailPriceOverride(eq(true));
+    verify(bundleOrderItemImpl).setSalePrice(isA(Money.class));
+    verify(bundleOrderItemImpl).setSalePriceOverride(eq(true));
+    verify(bundleOrderItemImpl).setTaxable(eq(true));
   }
 
   /**
    * Test {@link i18nUpdateCartServiceExtensionHandler#fixTranslations(Order)}.
    * <ul>
-   *   <li>Given {@link DiscreteOrderItemImpl}
-   * {@link DiscreteOrderItemImpl#getSku()} return {@link SkuImpl} (default
-   * constructor).</li>
+   *   <li>Given {@link BundleOrderItemImpl} {@link BundleOrderItemImpl#getSku()} return {@link SkuImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link i18nUpdateCartServiceExtensionHandler#fixTranslations(Order)}
+   * Method under test: {@link i18nUpdateCartServiceExtensionHandler#fixTranslations(Order)}
    */
   @Test
-  @DisplayName("Test fixTranslations(Order); given DiscreteOrderItemImpl getSku() return SkuImpl (default constructor)")
-  void testFixTranslations_givenDiscreteOrderItemImplGetSkuReturnSkuImpl() {
+  @DisplayName("Test fixTranslations(Order); given BundleOrderItemImpl getSku() return SkuImpl (default constructor)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void i18nUpdateCartServiceExtensionHandler.fixTranslations(Order)"})
+  void testFixTranslations_givenBundleOrderItemImplGetSkuReturnSkuImpl() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     i18nUpdateCartServiceExtensionHandler i18nUpdateCartServiceExtensionHandler = new i18nUpdateCartServiceExtensionHandler();
-    DiscreteOrderItemImpl discreteOrderItemImpl = mock(DiscreteOrderItemImpl.class);
-    doNothing().when(discreteOrderItemImpl).setName(Mockito.<String>any());
-    when(discreteOrderItemImpl.getSku()).thenReturn(new SkuImpl());
 
-    ArrayList<DiscreteOrderItem> discreteOrderItemList = new ArrayList<>();
-    discreteOrderItemList.add(discreteOrderItemImpl);
-    NullOrderImpl cart = mock(NullOrderImpl.class);
-    when(cart.getDiscreteOrderItems()).thenReturn(discreteOrderItemList);
-    when(cart.getOrderItems()).thenReturn(new ArrayList<>());
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    Auditable auditable2 = new Auditable();
+    auditable2.setCreatedBy(1L);
+    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setUpdatedBy(1L);
+    BundleOrderItemImpl bundleOrderItemImpl = mock(BundleOrderItemImpl.class);
+    when(bundleOrderItemImpl.updateSaleAndRetailPrices()).thenReturn(true);
+    when(bundleOrderItemImpl.getDiscreteOrderItems()).thenReturn(new ArrayList<>());
+    when(bundleOrderItemImpl.getSku()).thenReturn(new SkuImpl());
+    doNothing().when(bundleOrderItemImpl).setBaseRetailPrice(Mockito.<Money>any());
+    doNothing().when(bundleOrderItemImpl).setBaseSalePrice(Mockito.<Money>any());
+    doNothing().when(bundleOrderItemImpl).setBundleOrderItemFeePrices(Mockito.<List<BundleOrderItemFeePrice>>any());
+    doNothing().when(bundleOrderItemImpl).setDiscreteOrderItems(Mockito.<List<DiscreteOrderItem>>any());
+    doNothing().when(bundleOrderItemImpl).setAuditable(Mockito.<Auditable>any());
+    doNothing().when(bundleOrderItemImpl).setCandidateItemOffers(Mockito.<List<CandidateItemOffer>>any());
+    doNothing().when(bundleOrderItemImpl).setCartMessages(Mockito.<List<String>>any());
+    doNothing().when(bundleOrderItemImpl).setChildOrderItems(Mockito.<List<OrderItem>>any());
+    doNothing().when(bundleOrderItemImpl).setDiscountingAllowed(anyBoolean());
+    doNothing().when(bundleOrderItemImpl).setGiftWrapOrderItem(Mockito.<GiftWrapOrderItem>any());
+    doNothing().when(bundleOrderItemImpl).setHasValidationError(Mockito.<Boolean>any());
+    doNothing().when(bundleOrderItemImpl).setId(Mockito.<Long>any());
+    doNothing().when(bundleOrderItemImpl).setName(Mockito.<String>any());
+    doNothing().when(bundleOrderItemImpl).setOrder(Mockito.<Order>any());
+    doNothing().when(bundleOrderItemImpl).setOrderItemAdjustments(Mockito.<List<OrderItemAdjustment>>any());
+    doNothing().when(bundleOrderItemImpl).setOrderItemAttributes(Mockito.<Map<String, OrderItemAttribute>>any());
+    doNothing().when(bundleOrderItemImpl).setOrderItemPriceDetails(Mockito.<List<OrderItemPriceDetail>>any());
+    doNothing().when(bundleOrderItemImpl).setOrderItemQualifiers(Mockito.<List<OrderItemQualifier>>any());
+    doNothing().when(bundleOrderItemImpl).setOrderItemType(Mockito.<OrderItemType>any());
+    doNothing().when(bundleOrderItemImpl).setParentOrderItem(Mockito.<OrderItem>any());
+    doNothing().when(bundleOrderItemImpl).setPersonalMessage(Mockito.<PersonalMessage>any());
+    doNothing().when(bundleOrderItemImpl).setPrice(Mockito.<Money>any());
+    doNothing().when(bundleOrderItemImpl)
+        .setProratedOrderItemAdjustments(Mockito.<List<ProratedOrderItemAdjustment>>any());
+    doNothing().when(bundleOrderItemImpl).setQuantity(anyInt());
+    doNothing().when(bundleOrderItemImpl).setRetailPrice(Mockito.<Money>any());
+    doNothing().when(bundleOrderItemImpl).setRetailPriceOverride(anyBoolean());
+    doNothing().when(bundleOrderItemImpl).setSalePrice(Mockito.<Money>any());
+    doNothing().when(bundleOrderItemImpl).setSalePriceOverride(anyBoolean());
+    doNothing().when(bundleOrderItemImpl).setTaxable(Mockito.<Boolean>any());
+    bundleOrderItemImpl.setAuditable(auditable2);
+    bundleOrderItemImpl.setBaseRetailPrice(new Money());
+    bundleOrderItemImpl.setBaseSalePrice(new Money());
+    bundleOrderItemImpl.setBundleOrderItemFeePrices(new ArrayList<>());
+    bundleOrderItemImpl.setCandidateItemOffers(new ArrayList<>());
+    bundleOrderItemImpl.setCartMessages(new ArrayList<>());
+    bundleOrderItemImpl.setChildOrderItems(new ArrayList<>());
+    bundleOrderItemImpl.setDiscountingAllowed(true);
+    bundleOrderItemImpl.setDiscreteOrderItems(new ArrayList<>());
+    bundleOrderItemImpl.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    bundleOrderItemImpl.setHasValidationError(true);
+    bundleOrderItemImpl.setId(1L);
+    bundleOrderItemImpl.setName("Name");
+    bundleOrderItemImpl.setOrder(new NullOrderImpl());
+    bundleOrderItemImpl.setOrderItemAdjustments(new ArrayList<>());
+    bundleOrderItemImpl.setOrderItemPriceDetails(new ArrayList<>());
+    bundleOrderItemImpl.setOrderItemQualifiers(new ArrayList<>());
+    bundleOrderItemImpl.setOrderItemType(new OrderItemType("Type", "Friendly Type"));
+    bundleOrderItemImpl.setParentOrderItem(new BundleOrderItemImpl());
+    bundleOrderItemImpl.setPersonalMessage(new PersonalMessageImpl());
+    bundleOrderItemImpl.setPrice(new Money());
+    bundleOrderItemImpl.setProratedOrderItemAdjustments(new ArrayList<>());
+    bundleOrderItemImpl.setQuantity(1);
+    bundleOrderItemImpl.setRetailPrice(new Money());
+    bundleOrderItemImpl.setRetailPriceOverride(true);
+    bundleOrderItemImpl.setSalePrice(new Money());
+    bundleOrderItemImpl.setSalePriceOverride(true);
+    bundleOrderItemImpl.setTaxable(true);
+    bundleOrderItemImpl.updateSaleAndRetailPrices();
+    bundleOrderItemImpl.setOrderItemAttributes(new HashMap<>());
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(bundleOrderItemImpl);
+
+    OrderImpl cart = new OrderImpl();
+    cart.setAdditionalOfferInformation(new HashMap<>());
+    cart.setAuditable(auditable);
+    cart.setCandidateOrderOffers(new ArrayList<>());
+    cart.setCurrency(new BroadleafCurrencyImpl());
+    cart.setCustomer(new CustomerImpl());
+    cart.setEmailAddress("42 Main St");
+    cart.setFulfillmentGroups(new ArrayList<>());
+    cart.setId(1L);
+    cart.setLocale(new LocaleImpl());
+    cart.setName("Name");
+    cart.setOrderAttributes(new HashMap<>());
+    cart.setOrderMessages(new ArrayList<>());
+    cart.setOrderNumber("42");
+    cart.setPayments(new ArrayList<>());
+    cart.setStatus(new OrderStatus("Type", "Friendly Type"));
+    cart.setSubTotal(new Money());
+    cart.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    cart.setTaxOverride(true);
+    cart.setTotal(new Money());
+    cart.setTotalFulfillmentCharges(new Money());
+    cart.setTotalTax(new Money());
+    cart.setOrderItems(orderItems);
 
     // Act
     i18nUpdateCartServiceExtensionHandler.fixTranslations(cart);
 
     // Assert
-    verify(discreteOrderItemImpl).getSku();
-    verify(cart).getDiscreteOrderItems();
-    verify(cart).getOrderItems();
-    verify(discreteOrderItemImpl).setName(isNull());
+    verify(bundleOrderItemImpl).getDiscreteOrderItems();
+    verify(bundleOrderItemImpl).getSku();
+    verify(bundleOrderItemImpl).setBaseRetailPrice(isA(Money.class));
+    verify(bundleOrderItemImpl).setBaseSalePrice(isA(Money.class));
+    verify(bundleOrderItemImpl).setBundleOrderItemFeePrices(isA(List.class));
+    verify(bundleOrderItemImpl).setDiscreteOrderItems(isA(List.class));
+    verify(bundleOrderItemImpl).updateSaleAndRetailPrices();
+    verify(bundleOrderItemImpl).setAuditable(isA(Auditable.class));
+    verify(bundleOrderItemImpl).setCandidateItemOffers(isA(List.class));
+    verify(bundleOrderItemImpl).setCartMessages(isA(List.class));
+    verify(bundleOrderItemImpl).setChildOrderItems(isA(List.class));
+    verify(bundleOrderItemImpl).setDiscountingAllowed(eq(true));
+    verify(bundleOrderItemImpl).setGiftWrapOrderItem(isA(GiftWrapOrderItem.class));
+    verify(bundleOrderItemImpl).setHasValidationError(eq(true));
+    verify(bundleOrderItemImpl).setId(eq(1L));
+    verify(bundleOrderItemImpl, atLeast(1)).setName(Mockito.<String>any());
+    verify(bundleOrderItemImpl).setOrder(isA(Order.class));
+    verify(bundleOrderItemImpl).setOrderItemAdjustments(isA(List.class));
+    verify(bundleOrderItemImpl).setOrderItemAttributes(isA(Map.class));
+    verify(bundleOrderItemImpl).setOrderItemPriceDetails(isA(List.class));
+    verify(bundleOrderItemImpl).setOrderItemQualifiers(isA(List.class));
+    verify(bundleOrderItemImpl).setOrderItemType(isA(OrderItemType.class));
+    verify(bundleOrderItemImpl).setParentOrderItem(isA(OrderItem.class));
+    verify(bundleOrderItemImpl).setPersonalMessage(isA(PersonalMessage.class));
+    verify(bundleOrderItemImpl).setPrice(isA(Money.class));
+    verify(bundleOrderItemImpl).setProratedOrderItemAdjustments(isA(List.class));
+    verify(bundleOrderItemImpl).setQuantity(eq(1));
+    verify(bundleOrderItemImpl).setRetailPrice(isA(Money.class));
+    verify(bundleOrderItemImpl).setRetailPriceOverride(eq(true));
+    verify(bundleOrderItemImpl).setSalePrice(isA(Money.class));
+    verify(bundleOrderItemImpl).setSalePriceOverride(eq(true));
+    verify(bundleOrderItemImpl).setTaxable(eq(true));
   }
 
   /**
@@ -459,28 +579,125 @@ class i18nUpdateCartServiceExtensionHandlerDiffblueTest {
    *   <li>Then calls {@link SkuImpl#getName()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link i18nUpdateCartServiceExtensionHandler#fixTranslations(Order)}
+   * Method under test: {@link i18nUpdateCartServiceExtensionHandler#fixTranslations(Order)}
    */
   @Test
   @DisplayName("Test fixTranslations(Order); given SkuImpl getName() return 'Name'; then calls getName()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void i18nUpdateCartServiceExtensionHandler.fixTranslations(Order)"})
   void testFixTranslations_givenSkuImplGetNameReturnName_thenCallsGetName() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     i18nUpdateCartServiceExtensionHandler i18nUpdateCartServiceExtensionHandler = new i18nUpdateCartServiceExtensionHandler();
+
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    Auditable auditable2 = new Auditable();
+    auditable2.setCreatedBy(1L);
+    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setUpdatedBy(1L);
     SkuImpl skuImpl = mock(SkuImpl.class);
     when(skuImpl.getName()).thenReturn("Name");
     when(skuImpl.getProductOptionValues()).thenReturn(new ArrayList<>());
-    DiscreteOrderItemImpl discreteOrderItemImpl = mock(DiscreteOrderItemImpl.class);
-    doNothing().when(discreteOrderItemImpl).setName(Mockito.<String>any());
-    when(discreteOrderItemImpl.getSku()).thenReturn(skuImpl);
+    BundleOrderItemImpl bundleOrderItemImpl = mock(BundleOrderItemImpl.class);
+    when(bundleOrderItemImpl.updateSaleAndRetailPrices()).thenReturn(true);
+    when(bundleOrderItemImpl.getDiscreteOrderItems()).thenReturn(new ArrayList<>());
+    when(bundleOrderItemImpl.getSku()).thenReturn(skuImpl);
+    doNothing().when(bundleOrderItemImpl).setBaseRetailPrice(Mockito.<Money>any());
+    doNothing().when(bundleOrderItemImpl).setBaseSalePrice(Mockito.<Money>any());
+    doNothing().when(bundleOrderItemImpl).setBundleOrderItemFeePrices(Mockito.<List<BundleOrderItemFeePrice>>any());
+    doNothing().when(bundleOrderItemImpl).setDiscreteOrderItems(Mockito.<List<DiscreteOrderItem>>any());
+    doNothing().when(bundleOrderItemImpl).setAuditable(Mockito.<Auditable>any());
+    doNothing().when(bundleOrderItemImpl).setCandidateItemOffers(Mockito.<List<CandidateItemOffer>>any());
+    doNothing().when(bundleOrderItemImpl).setCartMessages(Mockito.<List<String>>any());
+    doNothing().when(bundleOrderItemImpl).setChildOrderItems(Mockito.<List<OrderItem>>any());
+    doNothing().when(bundleOrderItemImpl).setDiscountingAllowed(anyBoolean());
+    doNothing().when(bundleOrderItemImpl).setGiftWrapOrderItem(Mockito.<GiftWrapOrderItem>any());
+    doNothing().when(bundleOrderItemImpl).setHasValidationError(Mockito.<Boolean>any());
+    doNothing().when(bundleOrderItemImpl).setId(Mockito.<Long>any());
+    doNothing().when(bundleOrderItemImpl).setName(Mockito.<String>any());
+    doNothing().when(bundleOrderItemImpl).setOrder(Mockito.<Order>any());
+    doNothing().when(bundleOrderItemImpl).setOrderItemAdjustments(Mockito.<List<OrderItemAdjustment>>any());
+    doNothing().when(bundleOrderItemImpl).setOrderItemAttributes(Mockito.<Map<String, OrderItemAttribute>>any());
+    doNothing().when(bundleOrderItemImpl).setOrderItemPriceDetails(Mockito.<List<OrderItemPriceDetail>>any());
+    doNothing().when(bundleOrderItemImpl).setOrderItemQualifiers(Mockito.<List<OrderItemQualifier>>any());
+    doNothing().when(bundleOrderItemImpl).setOrderItemType(Mockito.<OrderItemType>any());
+    doNothing().when(bundleOrderItemImpl).setParentOrderItem(Mockito.<OrderItem>any());
+    doNothing().when(bundleOrderItemImpl).setPersonalMessage(Mockito.<PersonalMessage>any());
+    doNothing().when(bundleOrderItemImpl).setPrice(Mockito.<Money>any());
+    doNothing().when(bundleOrderItemImpl)
+        .setProratedOrderItemAdjustments(Mockito.<List<ProratedOrderItemAdjustment>>any());
+    doNothing().when(bundleOrderItemImpl).setQuantity(anyInt());
+    doNothing().when(bundleOrderItemImpl).setRetailPrice(Mockito.<Money>any());
+    doNothing().when(bundleOrderItemImpl).setRetailPriceOverride(anyBoolean());
+    doNothing().when(bundleOrderItemImpl).setSalePrice(Mockito.<Money>any());
+    doNothing().when(bundleOrderItemImpl).setSalePriceOverride(anyBoolean());
+    doNothing().when(bundleOrderItemImpl).setTaxable(Mockito.<Boolean>any());
+    bundleOrderItemImpl.setAuditable(auditable2);
+    bundleOrderItemImpl.setBaseRetailPrice(new Money());
+    bundleOrderItemImpl.setBaseSalePrice(new Money());
+    bundleOrderItemImpl.setBundleOrderItemFeePrices(new ArrayList<>());
+    bundleOrderItemImpl.setCandidateItemOffers(new ArrayList<>());
+    bundleOrderItemImpl.setCartMessages(new ArrayList<>());
+    bundleOrderItemImpl.setChildOrderItems(new ArrayList<>());
+    bundleOrderItemImpl.setDiscountingAllowed(true);
+    bundleOrderItemImpl.setDiscreteOrderItems(new ArrayList<>());
+    bundleOrderItemImpl.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    bundleOrderItemImpl.setHasValidationError(true);
+    bundleOrderItemImpl.setId(1L);
+    bundleOrderItemImpl.setName("Name");
+    bundleOrderItemImpl.setOrder(new NullOrderImpl());
+    bundleOrderItemImpl.setOrderItemAdjustments(new ArrayList<>());
+    bundleOrderItemImpl.setOrderItemPriceDetails(new ArrayList<>());
+    bundleOrderItemImpl.setOrderItemQualifiers(new ArrayList<>());
+    bundleOrderItemImpl.setOrderItemType(new OrderItemType("Type", "Friendly Type"));
+    bundleOrderItemImpl.setParentOrderItem(new BundleOrderItemImpl());
+    bundleOrderItemImpl.setPersonalMessage(new PersonalMessageImpl());
+    bundleOrderItemImpl.setPrice(new Money());
+    bundleOrderItemImpl.setProratedOrderItemAdjustments(new ArrayList<>());
+    bundleOrderItemImpl.setQuantity(1);
+    bundleOrderItemImpl.setRetailPrice(new Money());
+    bundleOrderItemImpl.setRetailPriceOverride(true);
+    bundleOrderItemImpl.setSalePrice(new Money());
+    bundleOrderItemImpl.setSalePriceOverride(true);
+    bundleOrderItemImpl.setTaxable(true);
+    bundleOrderItemImpl.updateSaleAndRetailPrices();
+    bundleOrderItemImpl.setOrderItemAttributes(new HashMap<>());
 
-    ArrayList<DiscreteOrderItem> discreteOrderItemList = new ArrayList<>();
-    discreteOrderItemList.add(discreteOrderItemImpl);
-    NullOrderImpl cart = mock(NullOrderImpl.class);
-    when(cart.getDiscreteOrderItems()).thenReturn(discreteOrderItemList);
-    when(cart.getOrderItems()).thenReturn(new ArrayList<>());
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(bundleOrderItemImpl);
+
+    OrderImpl cart = new OrderImpl();
+    cart.setAdditionalOfferInformation(new HashMap<>());
+    cart.setAuditable(auditable);
+    cart.setCandidateOrderOffers(new ArrayList<>());
+    cart.setCurrency(new BroadleafCurrencyImpl());
+    cart.setCustomer(new CustomerImpl());
+    cart.setEmailAddress("42 Main St");
+    cart.setFulfillmentGroups(new ArrayList<>());
+    cart.setId(1L);
+    cart.setLocale(new LocaleImpl());
+    cart.setName("Name");
+    cart.setOrderAttributes(new HashMap<>());
+    cart.setOrderMessages(new ArrayList<>());
+    cart.setOrderNumber("42");
+    cart.setPayments(new ArrayList<>());
+    cart.setStatus(new OrderStatus("Type", "Friendly Type"));
+    cart.setSubTotal(new Money());
+    cart.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    cart.setTaxOverride(true);
+    cart.setTotal(new Money());
+    cart.setTotalFulfillmentCharges(new Money());
+    cart.setTotalTax(new Money());
+    cart.setOrderItems(orderItems);
 
     // Act
     i18nUpdateCartServiceExtensionHandler.fixTranslations(cart);
@@ -488,180 +705,54 @@ class i18nUpdateCartServiceExtensionHandlerDiffblueTest {
     // Assert
     verify(skuImpl).getName();
     verify(skuImpl, atLeast(1)).getProductOptionValues();
-    verify(discreteOrderItemImpl).getSku();
-    verify(cart).getDiscreteOrderItems();
-    verify(cart).getOrderItems();
-    verify(discreteOrderItemImpl).setName(eq("Name"));
+    verify(bundleOrderItemImpl).getDiscreteOrderItems();
+    verify(bundleOrderItemImpl).getSku();
+    verify(bundleOrderItemImpl).setBaseRetailPrice(isA(Money.class));
+    verify(bundleOrderItemImpl).setBaseSalePrice(isA(Money.class));
+    verify(bundleOrderItemImpl).setBundleOrderItemFeePrices(isA(List.class));
+    verify(bundleOrderItemImpl).setDiscreteOrderItems(isA(List.class));
+    verify(bundleOrderItemImpl).updateSaleAndRetailPrices();
+    verify(bundleOrderItemImpl).setAuditable(isA(Auditable.class));
+    verify(bundleOrderItemImpl).setCandidateItemOffers(isA(List.class));
+    verify(bundleOrderItemImpl).setCartMessages(isA(List.class));
+    verify(bundleOrderItemImpl).setChildOrderItems(isA(List.class));
+    verify(bundleOrderItemImpl).setDiscountingAllowed(eq(true));
+    verify(bundleOrderItemImpl).setGiftWrapOrderItem(isA(GiftWrapOrderItem.class));
+    verify(bundleOrderItemImpl).setHasValidationError(eq(true));
+    verify(bundleOrderItemImpl).setId(eq(1L));
+    verify(bundleOrderItemImpl, atLeast(1)).setName(eq("Name"));
+    verify(bundleOrderItemImpl).setOrder(isA(Order.class));
+    verify(bundleOrderItemImpl).setOrderItemAdjustments(isA(List.class));
+    verify(bundleOrderItemImpl).setOrderItemAttributes(isA(Map.class));
+    verify(bundleOrderItemImpl).setOrderItemPriceDetails(isA(List.class));
+    verify(bundleOrderItemImpl).setOrderItemQualifiers(isA(List.class));
+    verify(bundleOrderItemImpl).setOrderItemType(isA(OrderItemType.class));
+    verify(bundleOrderItemImpl).setParentOrderItem(isA(OrderItem.class));
+    verify(bundleOrderItemImpl).setPersonalMessage(isA(PersonalMessage.class));
+    verify(bundleOrderItemImpl).setPrice(isA(Money.class));
+    verify(bundleOrderItemImpl).setProratedOrderItemAdjustments(isA(List.class));
+    verify(bundleOrderItemImpl).setQuantity(eq(1));
+    verify(bundleOrderItemImpl).setRetailPrice(isA(Money.class));
+    verify(bundleOrderItemImpl).setRetailPriceOverride(eq(true));
+    verify(bundleOrderItemImpl).setSalePrice(isA(Money.class));
+    verify(bundleOrderItemImpl).setSalePriceOverride(eq(true));
+    verify(bundleOrderItemImpl).setTaxable(eq(true));
   }
 
   /**
-   * Test {@link i18nUpdateCartServiceExtensionHandler#fixTranslations(Order)}.
+   * Test {@link i18nUpdateCartServiceExtensionHandler#translateOrderItem(OrderItem, Sku)}.
    * <ul>
-   *   <li>Then calls {@link ProductOptionValueImpl#getAttributeValue()}.</li>
+   *   <li>Then {@link BundleOrderItemImpl} (default constructor) MainEntityName is {@code Name}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link i18nUpdateCartServiceExtensionHandler#fixTranslations(Order)}
-   */
-  @Test
-  @DisplayName("Test fixTranslations(Order); then calls getAttributeValue()")
-  void testFixTranslations_thenCallsGetAttributeValue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    i18nUpdateCartServiceExtensionHandler i18nUpdateCartServiceExtensionHandler = new i18nUpdateCartServiceExtensionHandler();
-    ProductOptionValueImpl productOptionValueImpl = mock(ProductOptionValueImpl.class);
-    when(productOptionValueImpl.getAttributeValue()).thenReturn("42");
-    when(productOptionValueImpl.getProductOption()).thenReturn(new ProductOptionImpl());
-
-    ArrayList<ProductOptionValue> productOptionValueList = new ArrayList<>();
-    productOptionValueList.add(productOptionValueImpl);
-    SkuImpl skuImpl = mock(SkuImpl.class);
-    when(skuImpl.getName()).thenReturn("Name");
-    when(skuImpl.getProductOptionValues()).thenReturn(productOptionValueList);
-    DiscreteOrderItemImpl discreteOrderItemImpl = mock(DiscreteOrderItemImpl.class);
-    when(discreteOrderItemImpl.getOrderItemAttributes()).thenReturn(new HashMap<>());
-    doNothing().when(discreteOrderItemImpl).setName(Mockito.<String>any());
-    when(discreteOrderItemImpl.getSku()).thenReturn(skuImpl);
-
-    ArrayList<DiscreteOrderItem> discreteOrderItemList = new ArrayList<>();
-    discreteOrderItemList.add(discreteOrderItemImpl);
-    NullOrderImpl cart = mock(NullOrderImpl.class);
-    when(cart.getDiscreteOrderItems()).thenReturn(discreteOrderItemList);
-    when(cart.getOrderItems()).thenReturn(new ArrayList<>());
-
-    // Act
-    i18nUpdateCartServiceExtensionHandler.fixTranslations(cart);
-
-    // Assert
-    verify(productOptionValueImpl).getAttributeValue();
-    verify(productOptionValueImpl).getProductOption();
-    verify(skuImpl).getName();
-    verify(skuImpl, atLeast(1)).getProductOptionValues();
-    verify(discreteOrderItemImpl).getSku();
-    verify(cart).getDiscreteOrderItems();
-    verify(cart).getOrderItems();
-    verify(discreteOrderItemImpl, atLeast(1)).getOrderItemAttributes();
-    verify(discreteOrderItemImpl).setName(eq("Name"));
-  }
-
-  /**
-   * Test {@link i18nUpdateCartServiceExtensionHandler#fixTranslations(Order)}.
-   * <ul>
-   *   <li>Then calls {@link NullOrderImpl#getDiscreteOrderItems()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link i18nUpdateCartServiceExtensionHandler#fixTranslations(Order)}
-   */
-  @Test
-  @DisplayName("Test fixTranslations(Order); then calls getDiscreteOrderItems()")
-  void testFixTranslations_thenCallsGetDiscreteOrderItems() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    i18nUpdateCartServiceExtensionHandler i18nUpdateCartServiceExtensionHandler = new i18nUpdateCartServiceExtensionHandler();
-    NullOrderImpl cart = mock(NullOrderImpl.class);
-    when(cart.getDiscreteOrderItems()).thenReturn(new ArrayList<>());
-    when(cart.getOrderItems()).thenReturn(new ArrayList<>());
-
-    // Act
-    i18nUpdateCartServiceExtensionHandler.fixTranslations(cart);
-
-    // Assert
-    verify(cart).getDiscreteOrderItems();
-    verify(cart).getOrderItems();
-  }
-
-  /**
-   * Test
-   * {@link i18nUpdateCartServiceExtensionHandler#translateOrderItem(OrderItem, Sku)}.
-   * <p>
-   * Method under test:
-   * {@link i18nUpdateCartServiceExtensionHandler#translateOrderItem(OrderItem, Sku)}
-   */
-  @Test
-  @DisplayName("Test translateOrderItem(OrderItem, Sku)")
-  @Disabled("TODO: Complete this test")
-  void testTranslateOrderItem() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4840 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.service.i18nUpdateCartServiceExtensionHandler i18nUpdateCartServiceExtensionHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    i18nUpdateCartServiceExtensionHandler i18nUpdateCartServiceExtensionHandler2 = new i18nUpdateCartServiceExtensionHandler();
-    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
-
-    // Act
-    i18nUpdateCartServiceExtensionHandler2.translateOrderItem(orderItem, new SkuImpl());
-  }
-
-  /**
-   * Test
-   * {@link i18nUpdateCartServiceExtensionHandler#translateOrderItem(OrderItem, Sku)}.
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()}.</li>
-   *   <li>When {@link Sku} {@link Sku#getName()} return {@code Name}.</li>
-   *   <li>Then calls {@link Sku#getName()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link i18nUpdateCartServiceExtensionHandler#translateOrderItem(OrderItem, Sku)}
-   */
-  @Test
-  @DisplayName("Test translateOrderItem(OrderItem, Sku); given ArrayList(); when Sku getName() return 'Name'; then calls getName()")
-  void testTranslateOrderItem_givenArrayList_whenSkuGetNameReturnName_thenCallsGetName() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    i18nUpdateCartServiceExtensionHandler i18nUpdateCartServiceExtensionHandler = new i18nUpdateCartServiceExtensionHandler();
-    OrderItem orderItem = mock(OrderItem.class);
-    doNothing().when(orderItem).setName(Mockito.<String>any());
-    Sku sku = mock(Sku.class);
-    when(sku.getName()).thenReturn("Name");
-    when(sku.getProductOptionValues()).thenReturn(new ArrayList<>());
-
-    // Act
-    i18nUpdateCartServiceExtensionHandler.translateOrderItem(orderItem, sku);
-
-    // Assert
-    verify(sku).getName();
-    verify(sku, atLeast(1)).getProductOptionValues();
-    verify(orderItem).setName(eq("Name"));
-  }
-
-  /**
-   * Test
-   * {@link i18nUpdateCartServiceExtensionHandler#translateOrderItem(OrderItem, Sku)}.
-   * <ul>
-   *   <li>Then {@link BundleOrderItemImpl} (default constructor) MainEntityName is
-   * {@code Name}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link i18nUpdateCartServiceExtensionHandler#translateOrderItem(OrderItem, Sku)}
+   * Method under test: {@link i18nUpdateCartServiceExtensionHandler#translateOrderItem(OrderItem, Sku)}
    */
   @Test
   @DisplayName("Test translateOrderItem(OrderItem, Sku); then BundleOrderItemImpl (default constructor) MainEntityName is 'Name'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void i18nUpdateCartServiceExtensionHandler.translateOrderItem(OrderItem, Sku)"})
   void testTranslateOrderItem_thenBundleOrderItemImplMainEntityNameIsName() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    i18nUpdateCartServiceExtensionHandler i18nUpdateCartServiceExtensionHandler = new i18nUpdateCartServiceExtensionHandler();
-
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
     auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
@@ -689,6 +780,7 @@ class i18nUpdateCartServiceExtensionHandlerDiffblueTest {
     orderItem.setOrderItemType(new OrderItemType("Type", "Friendly Type"));
     orderItem.setParentOrderItem(new BundleOrderItemImpl());
     orderItem.setPersonalMessage(new PersonalMessageImpl());
+    orderItem.setPrice(new Money());
     orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
     orderItem.setQuantity(1);
     orderItem.setRetailPrice(new Money());
@@ -705,27 +797,53 @@ class i18nUpdateCartServiceExtensionHandlerDiffblueTest {
     // Assert that nothing has changed
     assertEquals("Name", orderItem.getMainEntityName());
     assertEquals("Name", orderItem.getName());
+    assertTrue(orderItem.getOrderItemAttributes().isEmpty());
   }
 
   /**
-   * Test
-   * {@link i18nUpdateCartServiceExtensionHandler#translateOrderItem(OrderItem, Sku)}.
+   * Test {@link i18nUpdateCartServiceExtensionHandler#translateOrderItem(OrderItem, Sku)}.
    * <ul>
-   *   <li>Then {@link BundleOrderItemImpl} (default constructor) MainEntityName is
-   * {@code null}.</li>
+   *   <li>Then {@link BundleOrderItemImpl} (default constructor) MainEntityName is {@code Name}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link i18nUpdateCartServiceExtensionHandler#translateOrderItem(OrderItem, Sku)}
+   * Method under test: {@link i18nUpdateCartServiceExtensionHandler#translateOrderItem(OrderItem, Sku)}
+   */
+  @Test
+  @DisplayName("Test translateOrderItem(OrderItem, Sku); then BundleOrderItemImpl (default constructor) MainEntityName is 'Name'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void i18nUpdateCartServiceExtensionHandler.translateOrderItem(OrderItem, Sku)"})
+  void testTranslateOrderItem_thenBundleOrderItemImplMainEntityNameIsName2() {
+    // Arrange
+    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
+    Sku sku = mock(Sku.class);
+    when(sku.getName()).thenReturn("Name");
+    when(sku.getProductOptionValues()).thenReturn(new ArrayList<>());
+
+    // Act
+    i18nUpdateCartServiceExtensionHandler.translateOrderItem(orderItem, sku);
+
+    // Assert
+    verify(sku).getName();
+    verify(sku, atLeast(1)).getProductOptionValues();
+    assertEquals("Name", orderItem.getMainEntityName());
+    assertEquals("Name", orderItem.getName());
+    assertTrue(orderItem.getOrderItemAttributes().isEmpty());
+  }
+
+  /**
+   * Test {@link i18nUpdateCartServiceExtensionHandler#translateOrderItem(OrderItem, Sku)}.
+   * <ul>
+   *   <li>Then {@link BundleOrderItemImpl} (default constructor) MainEntityName is {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link i18nUpdateCartServiceExtensionHandler#translateOrderItem(OrderItem, Sku)}
    */
   @Test
   @DisplayName("Test translateOrderItem(OrderItem, Sku); then BundleOrderItemImpl (default constructor) MainEntityName is 'null'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void i18nUpdateCartServiceExtensionHandler.translateOrderItem(OrderItem, Sku)"})
   void testTranslateOrderItem_thenBundleOrderItemImplMainEntityNameIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    i18nUpdateCartServiceExtensionHandler i18nUpdateCartServiceExtensionHandler = new i18nUpdateCartServiceExtensionHandler();
-
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
     auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
@@ -753,6 +871,7 @@ class i18nUpdateCartServiceExtensionHandlerDiffblueTest {
     orderItem.setOrderItemType(new OrderItemType("Type", "Friendly Type"));
     orderItem.setParentOrderItem(new BundleOrderItemImpl());
     orderItem.setPersonalMessage(new PersonalMessageImpl());
+    orderItem.setPrice(new Money());
     orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
     orderItem.setQuantity(1);
     orderItem.setRetailPrice(new Money());
@@ -769,28 +888,24 @@ class i18nUpdateCartServiceExtensionHandlerDiffblueTest {
     // Assert
     assertNull(orderItem.getMainEntityName());
     assertNull(orderItem.getName());
+    assertTrue(orderItem.getOrderItemAttributes().isEmpty());
   }
 
   /**
-   * Test
-   * {@link i18nUpdateCartServiceExtensionHandler#translateOrderItem(OrderItem, Sku)}.
+   * Test {@link i18nUpdateCartServiceExtensionHandler#translateOrderItem(OrderItem, Sku)}.
    * <ul>
-   *   <li>Then calls {@link ProductOptionValueImpl#getAttributeValue()}.</li>
+   *   <li>Then {@link BundleOrderItemImpl} (default constructor) OrderItemAttributes size is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link i18nUpdateCartServiceExtensionHandler#translateOrderItem(OrderItem, Sku)}
+   * Method under test: {@link i18nUpdateCartServiceExtensionHandler#translateOrderItem(OrderItem, Sku)}
    */
   @Test
-  @DisplayName("Test translateOrderItem(OrderItem, Sku); then calls getAttributeValue()")
-  void testTranslateOrderItem_thenCallsGetAttributeValue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @DisplayName("Test translateOrderItem(OrderItem, Sku); then BundleOrderItemImpl (default constructor) OrderItemAttributes size is one")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void i18nUpdateCartServiceExtensionHandler.translateOrderItem(OrderItem, Sku)"})
+  void testTranslateOrderItem_thenBundleOrderItemImplOrderItemAttributesSizeIsOne() {
     // Arrange
-    i18nUpdateCartServiceExtensionHandler i18nUpdateCartServiceExtensionHandler = new i18nUpdateCartServiceExtensionHandler();
-    OrderItem orderItem = mock(OrderItem.class);
-    when(orderItem.getOrderItemAttributes()).thenReturn(new HashMap<>());
-    doNothing().when(orderItem).setName(Mockito.<String>any());
+    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
     ProductOptionValueImpl productOptionValueImpl = mock(ProductOptionValueImpl.class);
     when(productOptionValueImpl.getAttributeValue()).thenReturn("42");
     when(productOptionValueImpl.getProductOption()).thenReturn(new ProductOptionImpl());
@@ -809,62 +924,37 @@ class i18nUpdateCartServiceExtensionHandlerDiffblueTest {
     verify(productOptionValueImpl).getProductOption();
     verify(sku).getName();
     verify(sku, atLeast(1)).getProductOptionValues();
-    verify(orderItem, atLeast(1)).getOrderItemAttributes();
-    verify(orderItem).setName(eq("Name"));
+    Map<String, OrderItemAttribute> orderItemAttributes = orderItem.getOrderItemAttributes();
+    assertEquals(1, orderItemAttributes.size());
+    OrderItemAttribute getResult = orderItemAttributes.get(null);
+    assertTrue(getResult instanceof OrderItemAttributeImpl);
+    assertEquals("42", getResult.toString());
+    assertEquals("42", getResult.getValue());
+    assertNull(getResult.getId());
+    assertNull(getResult.getName());
+    assertSame(orderItem, getResult.getOrderItem());
   }
 
   /**
-   * Test
-   * {@link i18nUpdateCartServiceExtensionHandler#translateOrderItem(OrderItem, Sku)}.
+   * Test {@link i18nUpdateCartServiceExtensionHandler#translateOrderItem(OrderItem, Sku)}.
    * <ul>
-   *   <li>When {@link BundleOrderItemImpl} (default constructor).</li>
+   *   <li>When {@link SkuImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link i18nUpdateCartServiceExtensionHandler#translateOrderItem(OrderItem, Sku)}
+   * Method under test: {@link i18nUpdateCartServiceExtensionHandler#translateOrderItem(OrderItem, Sku)}
    */
   @Test
-  @DisplayName("Test translateOrderItem(OrderItem, Sku); when BundleOrderItemImpl (default constructor)")
-  void testTranslateOrderItem_whenBundleOrderItemImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @DisplayName("Test translateOrderItem(OrderItem, Sku); when SkuImpl (default constructor)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void i18nUpdateCartServiceExtensionHandler.translateOrderItem(OrderItem, Sku)"})
+  void testTranslateOrderItem_whenSkuImpl() {
     // Arrange
-    i18nUpdateCartServiceExtensionHandler i18nUpdateCartServiceExtensionHandler = new i18nUpdateCartServiceExtensionHandler();
     BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
 
     // Act
     i18nUpdateCartServiceExtensionHandler.translateOrderItem(orderItem, new SkuImpl());
 
-    // Assert
-    assertNull(orderItem.getMainEntityName());
-    assertNull(orderItem.getName());
-  }
-
-  /**
-   * Test
-   * {@link i18nUpdateCartServiceExtensionHandler#translateOrderItem(OrderItem, Sku)}.
-   * <ul>
-   *   <li>When {@link SkuImpl} (default constructor).</li>
-   *   <li>Then calls {@link OrderItem#setName(String)}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link i18nUpdateCartServiceExtensionHandler#translateOrderItem(OrderItem, Sku)}
-   */
-  @Test
-  @DisplayName("Test translateOrderItem(OrderItem, Sku); when SkuImpl (default constructor); then calls setName(String)")
-  void testTranslateOrderItem_whenSkuImpl_thenCallsSetName() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    i18nUpdateCartServiceExtensionHandler i18nUpdateCartServiceExtensionHandler = new i18nUpdateCartServiceExtensionHandler();
-    OrderItem orderItem = mock(OrderItem.class);
-    doNothing().when(orderItem).setName(Mockito.<String>any());
-
-    // Act
-    i18nUpdateCartServiceExtensionHandler.translateOrderItem(orderItem, new SkuImpl());
-
-    // Assert
-    verify(orderItem).setName(isNull());
+    // Assert that nothing has changed
+    assertTrue(orderItem.getOrderItemAttributes().isEmpty());
   }
 }

@@ -18,7 +18,10 @@
 package org.broadleafcommerce.common.util;
 
 import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class TupleDiffblueTest {
   /**
@@ -32,6 +35,8 @@ public class TupleDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Tuple.<init>(Object, Object)", "Object Tuple.getFirst()", "Object Tuple.getSecond()"})
   public void testGettersAndSetters() {
     // Arrange
     Object object = BLCFieldUtils.NULL_FIELD;

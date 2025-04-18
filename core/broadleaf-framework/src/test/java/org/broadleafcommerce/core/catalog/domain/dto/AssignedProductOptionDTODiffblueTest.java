@@ -1,12 +1,32 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.catalog.domain.dto;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.core.catalog.domain.ProductOptionValue;
 import org.broadleafcommerce.core.catalog.domain.ProductOptionValueImpl;
 import org.broadleafcommerce.core.catalog.domain.Sku;
 import org.broadleafcommerce.core.catalog.domain.SkuImpl;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class AssignedProductOptionDTODiffblueTest {
   /**
@@ -14,12 +34,10 @@ public class AssignedProductOptionDTODiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>
-   * {@link AssignedProductOptionDTO#AssignedProductOptionDTO(Long, String, ProductOptionValue, Sku)}
+   *   <li>{@link AssignedProductOptionDTO#AssignedProductOptionDTO(Long, String, ProductOptionValue, Sku)}
    *   <li>{@link AssignedProductOptionDTO#setProductId(Long)}
    *   <li>{@link AssignedProductOptionDTO#setProductOptionAttrName(String)}
-   *   <li>
-   * {@link AssignedProductOptionDTO#setProductOptionValue(ProductOptionValue)}
+   *   <li>{@link AssignedProductOptionDTO#setProductOptionValue(ProductOptionValue)}
    *   <li>{@link AssignedProductOptionDTO#setSku(Sku)}
    *   <li>{@link AssignedProductOptionDTO#getProductId()}
    *   <li>{@link AssignedProductOptionDTO#getProductOptionAttrName()}
@@ -28,6 +46,14 @@ public class AssignedProductOptionDTODiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AssignedProductOptionDTO.<init>(Long, String, ProductOptionValue, Sku)",
+      "Long AssignedProductOptionDTO.getProductId()", "String AssignedProductOptionDTO.getProductOptionAttrName()",
+      "ProductOptionValue AssignedProductOptionDTO.getProductOptionValue()", "Sku AssignedProductOptionDTO.getSku()",
+      "void AssignedProductOptionDTO.setProductId(Long)",
+      "void AssignedProductOptionDTO.setProductOptionAttrName(String)",
+      "void AssignedProductOptionDTO.setProductOptionValue(ProductOptionValue)",
+      "void AssignedProductOptionDTO.setSku(Sku)"})
   public void testGettersAndSetters() {
     // Arrange
     ProductOptionValueImpl productOptionValue = new ProductOptionValueImpl();
@@ -46,7 +72,7 @@ public class AssignedProductOptionDTODiffblueTest {
     ProductOptionValue actualProductOptionValue = actualAssignedProductOptionDTO.getProductOptionValue();
     Sku actualSku = actualAssignedProductOptionDTO.getSku();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Product Option Attr Name", actualProductOptionAttrName);
     assertEquals(1L, actualProductId.longValue());
     assertSame(productOptionValue2, actualProductOptionValue);

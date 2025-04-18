@@ -20,16 +20,20 @@ package org.broadleafcommerce.common.util;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class UnknownUnwrapTypeExceptionDiffblueTest {
   /**
    * Test {@link UnknownUnwrapTypeException#UnknownUnwrapTypeException(Class)}.
    * <p>
-   * Method under test:
-   * {@link UnknownUnwrapTypeException#UnknownUnwrapTypeException(Class)}
+   * Method under test: {@link UnknownUnwrapTypeException#UnknownUnwrapTypeException(Class)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void UnknownUnwrapTypeException.<init>(Class)"})
   public void testNewUnknownUnwrapTypeException() {
     // Arrange
     Class<Object> unwrapType = Object.class;
@@ -46,13 +50,13 @@ public class UnknownUnwrapTypeExceptionDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link UnknownUnwrapTypeException#UnknownUnwrapTypeException(Class, Throwable)}.
+   * Test {@link UnknownUnwrapTypeException#UnknownUnwrapTypeException(Class, Throwable)}.
    * <p>
-   * Method under test:
-   * {@link UnknownUnwrapTypeException#UnknownUnwrapTypeException(Class, Throwable)}
+   * Method under test: {@link UnknownUnwrapTypeException#UnknownUnwrapTypeException(Class, Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void UnknownUnwrapTypeException.<init>(Class, Throwable)"})
   public void testNewUnknownUnwrapTypeException2() {
     // Arrange
     Class<Object> unwrapType = Object.class;

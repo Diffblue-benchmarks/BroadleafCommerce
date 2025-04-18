@@ -1,7 +1,26 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework Web
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.web.controller.account;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 class UpdateAccountFormDiffblueTest {
@@ -21,6 +40,11 @@ class UpdateAccountFormDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void UpdateAccountForm.<init>()", "String UpdateAccountForm.getEmailAddress()",
+      "String UpdateAccountForm.getFirstName()", "String UpdateAccountForm.getLastName()",
+      "void UpdateAccountForm.setEmailAddress(String)", "void UpdateAccountForm.setFirstName(String)",
+      "void UpdateAccountForm.setLastName(String)"})
   void testGettersAndSetters() {
     // Arrange and Act
     UpdateAccountForm actualUpdateAccountForm = new UpdateAccountForm();
@@ -30,7 +54,7 @@ class UpdateAccountFormDiffblueTest {
     String actualEmailAddress = actualUpdateAccountForm.getEmailAddress();
     String actualFirstName = actualUpdateAccountForm.getFirstName();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("42 Main St", actualEmailAddress);
     assertEquals("Doe", actualUpdateAccountForm.getLastName());
     assertEquals("Jane", actualFirstName);

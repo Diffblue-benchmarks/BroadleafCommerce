@@ -1,11 +1,31 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.order.service.call;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class AddToCartItemsDiffblueTest {
   /**
@@ -18,6 +38,8 @@ public class AddToCartItemsDiffblueTest {
    * Method under test: {@link AddToCartItems#setProductId(long)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AddToCartItems.setProductId(long)"})
   public void testSetProductId_givenAddToCartItems_thenAddToCartItemsProductIdIsOne() {
     // Arrange
     AddToCartItems addToCartItems = new AddToCartItems();
@@ -32,13 +54,14 @@ public class AddToCartItemsDiffblueTest {
   /**
    * Test {@link AddToCartItems#setProductId(long)}.
    * <ul>
-   *   <li>Then {@link AddToCartItems} (default constructor) AddToCartItems size is
-   * one.</li>
+   *   <li>Then {@link AddToCartItems} (default constructor) AddToCartItems size is one.</li>
    * </ul>
    * <p>
    * Method under test: {@link AddToCartItems#setProductId(long)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AddToCartItems.setProductId(long)"})
   public void testSetProductId_thenAddToCartItemsAddToCartItemsSizeIsOne() {
     // Arrange
     ArrayList<OrderItemRequestDTO> addToCartItems = new ArrayList<>();
@@ -69,6 +92,8 @@ public class AddToCartItemsDiffblueTest {
    * Method under test: {@link AddToCartItems#setCategoryId(long)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AddToCartItems.setCategoryId(long)"})
   public void testSetCategoryId_givenAddToCartItems_thenAddToCartItemsCategoryIdIsOne() {
     // Arrange
     AddToCartItems addToCartItems = new AddToCartItems();
@@ -83,13 +108,14 @@ public class AddToCartItemsDiffblueTest {
   /**
    * Test {@link AddToCartItems#setCategoryId(long)}.
    * <ul>
-   *   <li>Then {@link AddToCartItems} (default constructor) AddToCartItems size is
-   * one.</li>
+   *   <li>Then {@link AddToCartItems} (default constructor) AddToCartItems size is one.</li>
    * </ul>
    * <p>
    * Method under test: {@link AddToCartItems#setCategoryId(long)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AddToCartItems.setCategoryId(long)"})
   public void testSetCategoryId_thenAddToCartItemsAddToCartItemsSizeIsOne() {
     // Arrange
     ArrayList<OrderItemRequestDTO> addToCartItems = new ArrayList<>();
@@ -120,6 +146,9 @@ public class AddToCartItemsDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List AddToCartItems.getAddToCartItems()", "long AddToCartItems.getCategoryId()",
+      "long AddToCartItems.getProductId()", "void AddToCartItems.setAddToCartItem(List)"})
   public void testGettersAndSetters() {
     // Arrange
     AddToCartItems addToCartItems = new AddToCartItems();
@@ -130,7 +159,7 @@ public class AddToCartItemsDiffblueTest {
     List<OrderItemRequestDTO> actualAddToCartItems = addToCartItems.getAddToCartItems();
     long actualCategoryId = addToCartItems.getCategoryId();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals(0L, actualCategoryId);
     assertEquals(0L, addToCartItems.getProductId());
     assertTrue(actualAddToCartItems.isEmpty());
@@ -140,10 +169,11 @@ public class AddToCartItemsDiffblueTest {
   /**
    * Test new {@link AddToCartItems} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link AddToCartItems}
+   * Method under test: default or parameterless constructor of {@link AddToCartItems}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AddToCartItems.<init>()"})
   public void testNewAddToCartItems() {
     // Arrange and Act
     AddToCartItems actualAddToCartItems = new AddToCartItems();

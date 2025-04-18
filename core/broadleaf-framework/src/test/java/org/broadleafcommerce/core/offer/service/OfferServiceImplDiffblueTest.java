@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.offer.service;
 
 import static org.junit.Assert.assertEquals;
@@ -8,12 +25,16 @@ import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -26,8 +47,14 @@ import java.util.Map;
 import java.util.Set;
 import org.broadleafcommerce.common.audit.Auditable;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
+import org.broadleafcommerce.common.extension.ExtensionManager;
+import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
 import org.broadleafcommerce.common.locale.domain.LocaleImpl;
 import org.broadleafcommerce.common.money.Money;
+import org.broadleafcommerce.common.persistence.EntityDuplicator;
+import org.broadleafcommerce.common.sandbox.SandBoxHelper;
+import org.broadleafcommerce.common.util.StreamCapableTransactionalOperation;
+import org.broadleafcommerce.common.util.StreamingTransactionCapableUtil;
 import org.broadleafcommerce.core.offer.dao.CustomerOfferDao;
 import org.broadleafcommerce.core.offer.dao.CustomerOfferDaoImpl;
 import org.broadleafcommerce.core.offer.dao.OfferCodeDao;
@@ -39,8 +66,6 @@ import org.broadleafcommerce.core.offer.domain.Offer;
 import org.broadleafcommerce.core.offer.domain.OfferCode;
 import org.broadleafcommerce.core.offer.domain.OfferCodeImpl;
 import org.broadleafcommerce.core.offer.domain.OfferImpl;
-import org.broadleafcommerce.core.offer.domain.OrderAdjustment;
-import org.broadleafcommerce.core.offer.domain.OrderAdjustmentImpl;
 import org.broadleafcommerce.core.offer.service.discount.domain.PromotableItemFactory;
 import org.broadleafcommerce.core.offer.service.discount.domain.PromotableItemFactoryImpl;
 import org.broadleafcommerce.core.offer.service.discount.domain.PromotableOfferUtilityImpl;
@@ -52,6 +77,9 @@ import org.broadleafcommerce.core.offer.service.processor.ItemOfferProcessor;
 import org.broadleafcommerce.core.offer.service.processor.ItemOfferProcessorImpl;
 import org.broadleafcommerce.core.offer.service.processor.OrderOfferProcessor;
 import org.broadleafcommerce.core.offer.service.type.CustomerMaxUsesStrategyType;
+import org.broadleafcommerce.core.offer.service.type.OfferAdjustmentType;
+import org.broadleafcommerce.core.offer.service.type.OfferDiscountType;
+import org.broadleafcommerce.core.offer.service.type.OfferItemRestrictionRuleType;
 import org.broadleafcommerce.core.offer.service.type.OfferType;
 import org.broadleafcommerce.core.order.domain.BundleOrderItemImpl;
 import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
@@ -76,72 +104,73 @@ import org.broadleafcommerce.profile.core.domain.AddressImpl;
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
 import org.broadleafcommerce.profile.core.domain.PhoneImpl;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class OfferServiceImplDiffblueTest {
-  @Autowired
+  @Mock
+  private CustomerOfferDao customerOfferDao;
+
+  @Mock
+  private EntityDuplicator entityDuplicator;
+
+  @Mock
+  private FulfillmentGroupOfferProcessor fulfillmentGroupOfferProcessor;
+
+  @Mock
+  private ItemOfferProcessor itemOfferProcessor;
+
+  @Mock
+  private OfferAuditService offerAuditService;
+
+  @Mock
+  private OfferCodeDao offerCodeDao;
+
+  @Mock
+  private OfferDao offerDao;
+
+  @Mock
+  private OfferServiceExtensionManager offerServiceExtensionManager;
+
+  @InjectMocks
   private OfferServiceImpl offerServiceImpl;
 
-  /**
-   * Test {@link OfferServiceImpl#findAllOffers()}.
-   * <p>
-   * Method under test: {@link OfferServiceImpl#findAllOffers()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindAllOffers() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass218 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Mock
+  private OrderOfferProcessor orderOfferProcessor;
 
-    // Arrange and Act
-    (new OfferServiceImpl()).findAllOffers();
-  }
+  @Mock
+  private OrderService orderService;
+
+  @Mock
+  private PromotableItemFactory promotableItemFactory;
+
+  @Mock
+  private SandBoxHelper sandBoxHelper;
+
+  @Mock
+  private StreamingTransactionCapableUtil streamingTransactionCapableUtil;
 
   /**
    * Test {@link OfferServiceImpl#findAllOffers()}.
    * <ul>
-   *   <li>Given {@link OfferDaoImpl} {@link OfferDaoImpl#readAllOffers()} return
-   * {@link ArrayList#ArrayList()}.</li>
+   *   <li>Given {@link OfferDao} {@link OfferDao#readAllOffers()} return {@link ArrayList#ArrayList()}.</li>
    *   <li>Then return Empty.</li>
    * </ul>
    * <p>
    * Method under test: {@link OfferServiceImpl#findAllOffers()}
    */
   @Test
-  public void testFindAllOffers_givenOfferDaoImplReadAllOffersReturnArrayList_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List OfferServiceImpl.findAllOffers()"})
+  public void testFindAllOffers_givenOfferDaoReadAllOffersReturnArrayList_thenReturnEmpty() {
     // Arrange
-    OfferDaoImpl offerDao = mock(OfferDaoImpl.class);
     when(offerDao.readAllOffers()).thenReturn(new ArrayList<>());
-
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
-    offerServiceImpl.setOfferDao(offerDao);
 
     // Act
     List<Offer> actualFindAllOffersResult = offerServiceImpl.findAllOffers();
@@ -152,59 +181,41 @@ public class OfferServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link OfferServiceImpl#save(Offer)}.
+   * Test {@link OfferServiceImpl#findAllOffers()}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
    * <p>
-   * Method under test: {@link OfferServiceImpl#save(Offer)}
+   * Method under test: {@link OfferServiceImpl#findAllOffers()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testSave() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1685 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List OfferServiceImpl.findAllOffers()"})
+  public void testFindAllOffers_thenThrowRuntimeException() {
     // Arrange
-    OfferServiceImpl offerServiceImpl2 = new OfferServiceImpl();
+    when(offerDao.readAllOffers()).thenThrow(new RuntimeException("foo"));
 
-    // Act
-    offerServiceImpl2.save(new OfferImpl());
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> offerServiceImpl.findAllOffers());
+    verify(offerDao).readAllOffers();
   }
 
   /**
    * Test {@link OfferServiceImpl#save(Offer)}.
    * <ul>
-   *   <li>Given {@link OfferDaoImpl} {@link OfferDaoImpl#save(Offer)} return
-   * {@link OfferImpl} (default constructor).</li>
-   *   <li>When {@link OfferImpl} (default constructor).</li>
+   *   <li>Given {@link OfferDao} {@link OfferDao#save(Offer)} return {@link OfferImpl} (default constructor).</li>
    *   <li>Then return {@link OfferImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link OfferServiceImpl#save(Offer)}
    */
   @Test
-  public void testSave_givenOfferDaoImplSaveReturnOfferImpl_whenOfferImpl_thenReturnOfferImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Offer OfferServiceImpl.save(Offer)"})
+  public void testSave_givenOfferDaoSaveReturnOfferImpl_thenReturnOfferImpl() {
     // Arrange
-    OfferDaoImpl offerDao = mock(OfferDaoImpl.class);
     OfferImpl offerImpl = new OfferImpl();
     when(offerDao.save(Mockito.<Offer>any())).thenReturn(offerImpl);
-
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
-    offerServiceImpl.setOfferDao(offerDao);
 
     // Act
     Offer actualSaveResult = offerServiceImpl.save(new OfferImpl());
@@ -215,120 +226,93 @@ public class OfferServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link OfferServiceImpl#saveOfferCode(OfferCode)}.
+   * Test {@link OfferServiceImpl#save(Offer)}.
+   * <ul>
+   *   <li>Given {@link OfferDao} {@link OfferDao#save(Offer)} throw {@link RuntimeException#RuntimeException(String)} with {@code foo}.</li>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
    * <p>
-   * Method under test: {@link OfferServiceImpl#saveOfferCode(OfferCode)}
+   * Method under test: {@link OfferServiceImpl#save(Offer)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testSaveOfferCode() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1733 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Offer OfferServiceImpl.save(Offer)"})
+  public void testSave_givenOfferDaoSaveThrowRuntimeExceptionWithFoo_thenThrowRuntimeException() {
     // Arrange
-    OfferServiceImpl offerServiceImpl2 = new OfferServiceImpl();
+    when(offerDao.save(Mockito.<Offer>any())).thenThrow(new RuntimeException("foo"));
 
-    // Act
-    offerServiceImpl2.saveOfferCode(new OfferCodeImpl());
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> offerServiceImpl.save(new OfferImpl()));
+    verify(offerDao).save(isA(Offer.class));
   }
 
   /**
    * Test {@link OfferServiceImpl#saveOfferCode(OfferCode)}.
    * <ul>
-   *   <li>Given {@link RuntimeException#RuntimeException(String)} with
-   * {@code foo}.</li>
+   *   <li>Given {@link OfferCodeDao}.</li>
+   *   <li>When {@link OfferCodeImpl} (default constructor).</li>
    *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
    * <p>
    * Method under test: {@link OfferServiceImpl#saveOfferCode(OfferCode)}
    */
   @Test
-  public void testSaveOfferCode_givenRuntimeExceptionWithFoo_thenThrowRuntimeException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OfferCode OfferServiceImpl.saveOfferCode(OfferCode)"})
+  public void testSaveOfferCode_givenOfferCodeDao_whenOfferCodeImpl_thenThrowRuntimeException() {
     // Arrange
-    OfferDaoImpl offerDao = mock(OfferDaoImpl.class);
-    when(offerDao.save(Mockito.<Offer>any())).thenReturn(new OfferImpl());
-
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
-    offerServiceImpl.setOfferDao(offerDao);
-    OfferCode offerCode = mock(OfferCode.class);
-    doThrow(new RuntimeException("foo")).when(offerCode).setOffer(Mockito.<Offer>any());
-    when(offerCode.getOffer()).thenReturn(new OfferImpl());
+    when(offerDao.save(Mockito.<Offer>any())).thenThrow(new RuntimeException("foo"));
 
     // Act and Assert
-    assertThrows(RuntimeException.class, () -> offerServiceImpl.saveOfferCode(offerCode));
-    verify(offerDao).save(isA(Offer.class));
-    verify(offerCode).getOffer();
-    verify(offerCode).setOffer(isA(Offer.class));
+    assertThrows(RuntimeException.class, () -> offerServiceImpl.saveOfferCode(new OfferCodeImpl()));
+    verify(offerDao).save((Offer) isNull());
   }
 
   /**
    * Test {@link OfferServiceImpl#saveOfferCode(OfferCode)}.
    * <ul>
-   *   <li>Then return {@link OfferCodeImpl} (default constructor).</li>
+   *   <li>Then {@link OfferCodeImpl} (default constructor) Offer {@link OfferImpl}.</li>
    * </ul>
    * <p>
    * Method under test: {@link OfferServiceImpl#saveOfferCode(OfferCode)}
    */
   @Test
-  public void testSaveOfferCode_thenReturnOfferCodeImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OfferCode OfferServiceImpl.saveOfferCode(OfferCode)"})
+  public void testSaveOfferCode_thenOfferCodeImplOfferOfferImpl() {
     // Arrange
-    OfferDaoImpl offerDao = mock(OfferDaoImpl.class);
-    when(offerDao.save(Mockito.<Offer>any())).thenReturn(new OfferImpl());
-    OfferCodeDaoImpl offerCodeDao = mock(OfferCodeDaoImpl.class);
     OfferCodeImpl offerCodeImpl = new OfferCodeImpl();
     when(offerCodeDao.save(Mockito.<OfferCode>any())).thenReturn(offerCodeImpl);
-
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
-    offerServiceImpl.setOfferCodeDao(offerCodeDao);
-    offerServiceImpl.setOfferDao(offerDao);
-    OfferCode offerCode = mock(OfferCode.class);
-    doNothing().when(offerCode).setOffer(Mockito.<Offer>any());
-    when(offerCode.getOffer()).thenReturn(new OfferImpl());
+    OfferImpl offerImpl = new OfferImpl();
+    when(offerDao.save(Mockito.<Offer>any())).thenReturn(offerImpl);
+    OfferCodeImpl offerCode = new OfferCodeImpl();
 
     // Act
     OfferCode actualSaveOfferCodeResult = offerServiceImpl.saveOfferCode(offerCode);
 
     // Assert
     verify(offerCodeDao).save(isA(OfferCode.class));
-    verify(offerDao).save(isA(Offer.class));
-    verify(offerCode).getOffer();
-    verify(offerCode).setOffer(isA(Offer.class));
+    verify(offerDao).save((Offer) isNull());
+    Offer offer = offerCode.getOffer();
+    assertTrue(offer instanceof OfferImpl);
     assertSame(offerCodeImpl, actualSaveOfferCodeResult);
+    assertSame(offerImpl, offer);
   }
 
   /**
    * Test {@link OfferServiceImpl#lookupOfferByCode(String)}.
+   * <ul>
+   *   <li>Given {@link OfferCodeDao} {@link OfferCodeDao#readOfferCodeByCode(String)} return {@code null}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link OfferServiceImpl#lookupOfferByCode(String)}
    */
   @Test
-  public void testLookupOfferByCode() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Offer OfferServiceImpl.lookupOfferByCode(String)"})
+  public void testLookupOfferByCode_givenOfferCodeDaoReadOfferCodeByCodeReturnNull() {
     // Arrange
-    OfferCodeDaoImpl offerCodeDao = mock(OfferCodeDaoImpl.class);
-    when(offerCodeDao.readOfferCodeByCode(Mockito.<String>any())).thenReturn(new OfferCodeImpl());
-
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
-    offerServiceImpl.setOfferCodeDao(offerCodeDao);
+    when(offerCodeDao.readOfferCodeByCode(Mockito.<String>any())).thenReturn(null);
 
     // Act
     Offer actualLookupOfferByCodeResult = offerServiceImpl.lookupOfferByCode("Code");
@@ -340,53 +324,18 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#lookupOfferByCode(String)}.
-   * <p>
-   * Method under test: {@link OfferServiceImpl#lookupOfferByCode(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testLookupOfferByCode2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass984 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferServiceImpl()).lookupOfferByCode("Code");
-  }
-
-  /**
-   * Test {@link OfferServiceImpl#lookupOfferByCode(String)}.
    * <ul>
-   *   <li>Given {@link OfferCodeDaoImpl}
-   * {@link OfferCodeDaoImpl#readOfferCodeByCode(String)} return
-   * {@code null}.</li>
+   *   <li>Given {@link OfferCodeDao} {@link OfferCodeDao#readOfferCodeByCode(String)} return {@link OfferCodeImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link OfferServiceImpl#lookupOfferByCode(String)}
    */
   @Test
-  public void testLookupOfferByCode_givenOfferCodeDaoImplReadOfferCodeByCodeReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Offer OfferServiceImpl.lookupOfferByCode(String)"})
+  public void testLookupOfferByCode_givenOfferCodeDaoReadOfferCodeByCodeReturnOfferCodeImpl() {
     // Arrange
-    OfferCodeDaoImpl offerCodeDao = mock(OfferCodeDaoImpl.class);
-    when(offerCodeDao.readOfferCodeByCode(Mockito.<String>any())).thenReturn(null);
-
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
-    offerServiceImpl.setOfferCodeDao(offerCodeDao);
+    when(offerCodeDao.readOfferCodeByCode(Mockito.<String>any())).thenReturn(new OfferCodeImpl());
 
     // Act
     Offer actualLookupOfferByCodeResult = offerServiceImpl.lookupOfferByCode("Code");
@@ -405,51 +354,18 @@ public class OfferServiceImplDiffblueTest {
    * Method under test: {@link OfferServiceImpl#lookupOfferByCode(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Offer OfferServiceImpl.lookupOfferByCode(String)"})
   public void testLookupOfferByCode_thenThrowRuntimeException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OfferCodeImpl offerCodeImpl = mock(OfferCodeImpl.class);
-    when(offerCodeImpl.getOffer()).thenThrow(new RuntimeException("foo"));
-    OfferCodeDaoImpl offerCodeDao = mock(OfferCodeDaoImpl.class);
-    when(offerCodeDao.readOfferCodeByCode(Mockito.<String>any())).thenReturn(offerCodeImpl);
-
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
-    offerServiceImpl.setOfferCodeDao(offerCodeDao);
+    OfferCode offerCode = mock(OfferCode.class);
+    when(offerCode.getOffer()).thenThrow(new RuntimeException("foo"));
+    when(offerCodeDao.readOfferCodeByCode(Mockito.<String>any())).thenReturn(offerCode);
 
     // Act and Assert
     assertThrows(RuntimeException.class, () -> offerServiceImpl.lookupOfferByCode("Code"));
     verify(offerCodeDao).readOfferCodeByCode(eq("Code"));
-    verify(offerCodeImpl).getOffer();
-  }
-
-  /**
-   * Test {@link OfferServiceImpl#lookupOfferCodeByCode(String)}.
-   * <p>
-   * Method under test: {@link OfferServiceImpl#lookupOfferCodeByCode(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testLookupOfferCodeByCode() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1300 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferServiceImpl()).lookupOfferCodeByCode("Code");
+    verify(offerCode).getOffer();
   }
 
   /**
@@ -461,16 +377,12 @@ public class OfferServiceImplDiffblueTest {
    * Method under test: {@link OfferServiceImpl#lookupOfferCodeByCode(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OfferCode OfferServiceImpl.lookupOfferCodeByCode(String)"})
   public void testLookupOfferCodeByCode_thenReturnOfferCodeImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OfferCodeDaoImpl offerCodeDao = mock(OfferCodeDaoImpl.class);
     OfferCodeImpl offerCodeImpl = new OfferCodeImpl();
     when(offerCodeDao.readOfferCodeByCode(Mockito.<String>any())).thenReturn(offerCodeImpl);
-
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
-    offerServiceImpl.setOfferCodeDao(offerCodeDao);
 
     // Act
     OfferCode actualLookupOfferCodeByCodeResult = offerServiceImpl.lookupOfferCodeByCode("Code");
@@ -481,32 +393,40 @@ public class OfferServiceImplDiffblueTest {
   }
 
   /**
+   * Test {@link OfferServiceImpl#lookupOfferCodeByCode(String)}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferServiceImpl#lookupOfferCodeByCode(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OfferCode OfferServiceImpl.lookupOfferCodeByCode(String)"})
+  public void testLookupOfferCodeByCode_thenThrowRuntimeException() {
+    // Arrange
+    when(offerCodeDao.readOfferCodeByCode(Mockito.<String>any())).thenThrow(new RuntimeException("foo"));
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> offerServiceImpl.lookupOfferCodeByCode("Code"));
+    verify(offerCodeDao).readOfferCodeByCode(eq("Code"));
+  }
+
+  /**
    * Test {@link OfferServiceImpl#lookupAllOffersByCode(String)}.
    * <p>
    * Method under test: {@link OfferServiceImpl#lookupAllOffersByCode(String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List OfferServiceImpl.lookupAllOffersByCode(String)"})
   public void testLookupAllOffersByCode() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass659 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    when(offerCodeDao.readAllOfferCodesByCode(Mockito.<String>any())).thenThrow(new RuntimeException("foo"));
 
-    // Arrange and Act
-    (new OfferServiceImpl()).lookupAllOffersByCode("Code");
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> offerServiceImpl.lookupAllOffersByCode("Code"));
+    verify(offerCodeDao).readAllOfferCodesByCode(eq("Code"));
   }
 
   /**
@@ -519,17 +439,13 @@ public class OfferServiceImplDiffblueTest {
    * Method under test: {@link OfferServiceImpl#lookupAllOffersByCode(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List OfferServiceImpl.lookupAllOffersByCode(String)"})
   public void testLookupAllOffersByCode_givenArrayListAddNull_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ArrayList<OfferCode> offerCodeList = new ArrayList<>();
     offerCodeList.add(null);
-    OfferCodeDaoImpl offerCodeDao = mock(OfferCodeDaoImpl.class);
     when(offerCodeDao.readAllOfferCodesByCode(Mockito.<String>any())).thenReturn(offerCodeList);
-
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
-    offerServiceImpl.setOfferCodeDao(offerCodeDao);
 
     // Act
     List<Offer> actualLookupAllOffersByCodeResult = offerServiceImpl.lookupAllOffersByCode("Code");
@@ -542,25 +458,20 @@ public class OfferServiceImplDiffblueTest {
   /**
    * Test {@link OfferServiceImpl#lookupAllOffersByCode(String)}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link OfferCodeImpl} (default
-   * constructor).</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link OfferCodeImpl} (default constructor).</li>
    *   <li>Then return size is one.</li>
    * </ul>
    * <p>
    * Method under test: {@link OfferServiceImpl#lookupAllOffersByCode(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List OfferServiceImpl.lookupAllOffersByCode(String)"})
   public void testLookupAllOffersByCode_givenArrayListAddOfferCodeImpl_thenReturnSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ArrayList<OfferCode> offerCodeList = new ArrayList<>();
     offerCodeList.add(new OfferCodeImpl());
-    OfferCodeDaoImpl offerCodeDao = mock(OfferCodeDaoImpl.class);
     when(offerCodeDao.readAllOfferCodesByCode(Mockito.<String>any())).thenReturn(offerCodeList);
-
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
-    offerServiceImpl.setOfferCodeDao(offerCodeDao);
 
     // Act
     List<Offer> actualLookupAllOffersByCodeResult = offerServiceImpl.lookupAllOffersByCode("Code");
@@ -574,21 +485,43 @@ public class OfferServiceImplDiffblueTest {
   /**
    * Test {@link OfferServiceImpl#lookupAllOffersByCode(String)}.
    * <ul>
+   *   <li>Then calls {@link OfferCodeImpl#getOffer()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferServiceImpl#lookupAllOffersByCode(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List OfferServiceImpl.lookupAllOffersByCode(String)"})
+  public void testLookupAllOffersByCode_thenCallsGetOffer() {
+    // Arrange
+    OfferCodeImpl offerCodeImpl = mock(OfferCodeImpl.class);
+    when(offerCodeImpl.getOffer()).thenThrow(new RuntimeException("foo"));
+
+    ArrayList<OfferCode> offerCodeList = new ArrayList<>();
+    offerCodeList.add(offerCodeImpl);
+    when(offerCodeDao.readAllOfferCodesByCode(Mockito.<String>any())).thenReturn(offerCodeList);
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> offerServiceImpl.lookupAllOffersByCode("Code"));
+    verify(offerCodeDao).readAllOfferCodesByCode(eq("Code"));
+    verify(offerCodeImpl).getOffer();
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#lookupAllOffersByCode(String)}.
+   * <ul>
    *   <li>Then return Empty.</li>
    * </ul>
    * <p>
    * Method under test: {@link OfferServiceImpl#lookupAllOffersByCode(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List OfferServiceImpl.lookupAllOffersByCode(String)"})
   public void testLookupAllOffersByCode_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OfferCodeDaoImpl offerCodeDao = mock(OfferCodeDaoImpl.class);
     when(offerCodeDao.readAllOfferCodesByCode(Mockito.<String>any())).thenReturn(new ArrayList<>());
-
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
-    offerServiceImpl.setOfferCodeDao(offerCodeDao);
 
     // Act
     List<Offer> actualLookupAllOffersByCodeResult = offerServiceImpl.lookupAllOffersByCode("Code");
@@ -599,65 +532,6 @@ public class OfferServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link OfferServiceImpl#lookupAllOffersByCode(String)}.
-   * <ul>
-   *   <li>Then throw {@link RuntimeException}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#lookupAllOffersByCode(String)}
-   */
-  @Test
-  public void testLookupAllOffersByCode_thenThrowRuntimeException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferCodeImpl offerCodeImpl = mock(OfferCodeImpl.class);
-    when(offerCodeImpl.getOffer()).thenThrow(new RuntimeException("foo"));
-
-    ArrayList<OfferCode> offerCodeList = new ArrayList<>();
-    offerCodeList.add(offerCodeImpl);
-    OfferCodeDaoImpl offerCodeDao = mock(OfferCodeDaoImpl.class);
-    when(offerCodeDao.readAllOfferCodesByCode(Mockito.<String>any())).thenReturn(offerCodeList);
-
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
-    offerServiceImpl.setOfferCodeDao(offerCodeDao);
-
-    // Act and Assert
-    assertThrows(RuntimeException.class, () -> offerServiceImpl.lookupAllOffersByCode("Code"));
-    verify(offerCodeDao).readAllOfferCodesByCode(eq("Code"));
-    verify(offerCodeImpl).getOffer();
-  }
-
-  /**
-   * Test {@link OfferServiceImpl#lookupAllOfferCodesByCode(String)}.
-   * <p>
-   * Method under test: {@link OfferServiceImpl#lookupAllOfferCodesByCode(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testLookupAllOfferCodesByCode() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass343 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferServiceImpl()).lookupAllOfferCodesByCode("Code");
-  }
-
-  /**
    * Test {@link OfferServiceImpl#lookupAllOfferCodesByCode(String)}.
    * <ul>
    *   <li>Then return Empty.</li>
@@ -666,15 +540,11 @@ public class OfferServiceImplDiffblueTest {
    * Method under test: {@link OfferServiceImpl#lookupAllOfferCodesByCode(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List OfferServiceImpl.lookupAllOfferCodesByCode(String)"})
   public void testLookupAllOfferCodesByCode_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OfferCodeDaoImpl offerCodeDao = mock(OfferCodeDaoImpl.class);
     when(offerCodeDao.readAllOfferCodesByCode(Mockito.<String>any())).thenReturn(new ArrayList<>());
-
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
-    offerServiceImpl.setOfferCodeDao(offerCodeDao);
 
     // Act
     List<OfferCode> actualLookupAllOfferCodesByCodeResult = offerServiceImpl.lookupAllOfferCodesByCode("Code");
@@ -685,117 +555,337 @@ public class OfferServiceImplDiffblueTest {
   }
 
   /**
+   * Test {@link OfferServiceImpl#lookupAllOfferCodesByCode(String)}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferServiceImpl#lookupAllOfferCodesByCode(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List OfferServiceImpl.lookupAllOfferCodesByCode(String)"})
+  public void testLookupAllOfferCodesByCode_thenThrowRuntimeException() {
+    // Arrange
+    when(offerCodeDao.readAllOfferCodesByCode(Mockito.<String>any())).thenThrow(new RuntimeException("foo"));
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> offerServiceImpl.lookupAllOfferCodesByCode("Code"));
+    verify(offerCodeDao).readAllOfferCodesByCode(eq("Code"));
+  }
+
+  /**
    * Test {@link OfferServiceImpl#buildOfferListForOrder(Order)}.
    * <p>
    * Method under test: {@link OfferServiceImpl#buildOfferListForOrder(Order)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testBuildOfferListForOrder() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass151 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List OfferServiceImpl.buildOfferListForOrder(Order)"})
+  public void testBuildOfferListForOrder() throws Throwable {
     // Arrange
-    OfferServiceImpl offerServiceImpl2 = new OfferServiceImpl();
+    when(customerOfferDao.readCustomerOffersByCustomer(Mockito.<Customer>any())).thenReturn(new ArrayList<>());
+    doThrow(new RuntimeException("foo")).when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
+            Mockito.<Class<RuntimeException>>any());
 
-    // Act
-    offerServiceImpl2.buildOfferListForOrder(new NullOrderImpl());
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> offerServiceImpl.buildOfferListForOrder(new NullOrderImpl()));
+    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
+        isA(Class.class));
+    verify(customerOfferDao).readCustomerOffersByCustomer(isNull());
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#buildOfferListForOrder(Order)}.
+   * <p>
+   * Method under test: {@link OfferServiceImpl#buildOfferListForOrder(Order)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List OfferServiceImpl.buildOfferListForOrder(Order)"})
+  public void testBuildOfferListForOrder2() throws Throwable {
+    // Arrange
+    when(customerOfferDao.readCustomerOffersByCustomer(Mockito.<Customer>any())).thenReturn(new ArrayList<>());
+    when(offerDao.readOffersByAutomaticDeliveryType()).thenThrow(new RuntimeException("foo"));
+    doNothing().when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
+            Mockito.<Class<RuntimeException>>any());
+
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(2L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(2L);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> offerServiceImpl.buildOfferListForOrder(order));
+    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
+        isA(Class.class));
+    verify(customerOfferDao).readCustomerOffersByCustomer(isA(Customer.class));
+    verify(offerDao).readOffersByAutomaticDeliveryType();
   }
 
   /**
    * Test {@link OfferServiceImpl#buildOfferListForOrder(Order)}.
    * <ul>
-   *   <li>Then calls
-   * {@link CustomerOfferDaoImpl#readCustomerOffersByCustomer(Customer)}.</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link OfferImpl} (default constructor).</li>
+   *   <li>Then return {@link ArrayList#ArrayList()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link OfferServiceImpl#buildOfferListForOrder(Order)}
    */
   @Test
-  public void testBuildOfferListForOrder_thenCallsReadCustomerOffersByCustomer() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List OfferServiceImpl.buildOfferListForOrder(Order)"})
+  public void testBuildOfferListForOrder_givenArrayListAddOfferImpl_thenReturnArrayList() throws Throwable {
     // Arrange
-    CustomerOfferDaoImpl customerOfferDao = mock(CustomerOfferDaoImpl.class);
     when(customerOfferDao.readCustomerOffersByCustomer(Mockito.<Customer>any())).thenReturn(new ArrayList<>());
+    when(offerServiceExtensionManager.applyAdditionalFilters(Mockito.<List<Offer>>any(), Mockito.<Order>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
 
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
-    offerServiceImpl.setCustomerOfferDao(customerOfferDao);
-    NullOrderImpl order = mock(NullOrderImpl.class);
-    when(order.getAddedOfferCodes()).thenThrow(new RuntimeException("foo"));
-    when(order.getCustomer()).thenReturn(new CustomerImpl());
+    ArrayList<Offer> offerList = new ArrayList<>();
+    offerList.add(new OfferImpl());
+    when(offerDao.readOffersByAutomaticDeliveryType()).thenReturn(offerList);
+    doNothing().when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
+            Mockito.<Class<RuntimeException>>any());
+
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(2L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(2L);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
 
     // Act
-    offerServiceImpl.buildOfferListForOrder(order);
+    List<Offer> actualBuildOfferListForOrderResult = offerServiceImpl.buildOfferListForOrder(order);
 
     // Assert
+    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
+        isA(Class.class));
     verify(customerOfferDao).readCustomerOffersByCustomer(isA(Customer.class));
-    verify(order).getAddedOfferCodes();
-    verify(order).getCustomer();
+    verify(offerDao).readOffersByAutomaticDeliveryType();
+    verify(offerServiceExtensionManager).applyAdditionalFilters(isA(List.class), isA(Order.class));
+    assertEquals(offerList, actualBuildOfferListForOrderResult);
   }
 
   /**
-   * Test {@link OfferServiceImpl#buildOfferCodeListForCustomer(Customer)} with
-   * {@code customer}.
-   * <p>
-   * Method under test:
-   * {@link OfferServiceImpl#buildOfferCodeListForCustomer(Customer)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testBuildOfferCodeListForCustomerWithCustomer() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass121 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    OfferServiceImpl offerServiceImpl2 = new OfferServiceImpl();
-
-    // Act
-    offerServiceImpl2.buildOfferCodeListForCustomer(new CustomerImpl());
-  }
-
-  /**
-   * Test {@link OfferServiceImpl#buildOfferCodeListForCustomer(Customer)} with
-   * {@code customer}.
+   * Test {@link OfferServiceImpl#buildOfferListForOrder(Order)}.
    * <ul>
-   *   <li>When {@link CustomerImpl} (default constructor).</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link OfferImpl} (default constructor).</li>
+   *   <li>Then return size is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OfferServiceImpl#buildOfferCodeListForCustomer(Customer)}
+   * Method under test: {@link OfferServiceImpl#buildOfferListForOrder(Order)}
    */
   @Test
-  public void testBuildOfferCodeListForCustomerWithCustomer_whenCustomerImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List OfferServiceImpl.buildOfferListForOrder(Order)"})
+  public void testBuildOfferListForOrder_givenArrayListAddOfferImpl_thenReturnSizeIsOne() throws Throwable {
+    // Arrange
+    when(customerOfferDao.readCustomerOffersByCustomer(Mockito.<Customer>any())).thenReturn(new ArrayList<>());
+    when(offerServiceExtensionManager.applyAdditionalFilters(Mockito.<List<Offer>>any(), Mockito.<Order>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
 
+    ArrayList<Offer> offerList = new ArrayList<>();
+    OfferImpl offerImpl = new OfferImpl();
+    offerList.add(offerImpl);
+    offerList.add(new OfferImpl());
+    when(offerDao.readOffersByAutomaticDeliveryType()).thenReturn(offerList);
+    doNothing().when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
+            Mockito.<Class<RuntimeException>>any());
+
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(2L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(2L);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+
+    // Act
+    List<Offer> actualBuildOfferListForOrderResult = offerServiceImpl.buildOfferListForOrder(order);
+
+    // Assert
+    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
+        isA(Class.class));
+    verify(customerOfferDao).readCustomerOffersByCustomer(isA(Customer.class));
+    verify(offerDao).readOffersByAutomaticDeliveryType();
+    verify(offerServiceExtensionManager).applyAdditionalFilters(isA(List.class), isA(Order.class));
+    assertEquals(1, actualBuildOfferListForOrderResult.size());
+    Offer getResult = actualBuildOfferListForOrderResult.get(0);
+    assertTrue(getResult instanceof OfferImpl);
+    assertSame(offerImpl, getResult);
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#buildOfferListForOrder(Order)}.
+   * <ul>
+   *   <li>Then return Empty.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferServiceImpl#buildOfferListForOrder(Order)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List OfferServiceImpl.buildOfferListForOrder(Order)"})
+  public void testBuildOfferListForOrder_thenReturnEmpty() throws Throwable {
+    // Arrange
+    when(customerOfferDao.readCustomerOffersByCustomer(Mockito.<Customer>any())).thenReturn(new ArrayList<>());
+    when(offerServiceExtensionManager.applyAdditionalFilters(Mockito.<List<Offer>>any(), Mockito.<Order>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(offerDao.readOffersByAutomaticDeliveryType()).thenReturn(new ArrayList<>());
+    doNothing().when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
+            Mockito.<Class<RuntimeException>>any());
+
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(2L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(2L);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+
+    // Act
+    List<Offer> actualBuildOfferListForOrderResult = offerServiceImpl.buildOfferListForOrder(order);
+
+    // Assert
+    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
+        isA(Class.class));
+    verify(customerOfferDao).readCustomerOffersByCustomer(isA(Customer.class));
+    verify(offerDao).readOffersByAutomaticDeliveryType();
+    verify(offerServiceExtensionManager).applyAdditionalFilters(isA(List.class), isA(Order.class));
+    assertTrue(actualBuildOfferListForOrderResult.isEmpty());
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#buildOfferCodeListForCustomer(Customer)} with {@code customer}.
+   * <p>
+   * Method under test: {@link OfferServiceImpl#buildOfferCodeListForCustomer(Customer)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List OfferServiceImpl.buildOfferCodeListForCustomer(Customer)"})
+  public void testBuildOfferCodeListForCustomerWithCustomer() {
+    // Arrange
+    when(offerServiceExtensionManager.buildOfferCodeListForCustomer(Mockito.<Customer>any(),
+        Mockito.<List<OfferCode>>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+
+    // Act
+    List<OfferCode> actualBuildOfferCodeListForCustomerResult = offerServiceImpl
+        .buildOfferCodeListForCustomer(new CustomerImpl());
+
+    // Assert
+    verify(offerServiceExtensionManager).buildOfferCodeListForCustomer(isA(Customer.class), isA(List.class));
+    assertTrue(actualBuildOfferCodeListForCustomerResult.isEmpty());
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#buildOfferCodeListForCustomer(Customer)} with {@code customer}.
+   * <ul>
+   *   <li>Given {@link OfferServiceImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferServiceImpl#buildOfferCodeListForCustomer(Customer)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List OfferServiceImpl.buildOfferCodeListForCustomer(Customer)"})
+  public void testBuildOfferCodeListForCustomerWithCustomer_givenOfferServiceImpl() {
     // Arrange
     OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
 
@@ -804,99 +894,39 @@ public class OfferServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link OfferServiceImpl#buildOfferCodeListForCustomer(Customer)} with
-   * {@code customer}.
+   * Test {@link OfferServiceImpl#buildOfferCodeListForCustomer(Customer)} with {@code customer}.
    * <ul>
-   *   <li>When {@link CustomerImpl}.</li>
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OfferServiceImpl#buildOfferCodeListForCustomer(Customer)}
+   * Method under test: {@link OfferServiceImpl#buildOfferCodeListForCustomer(Customer)}
    */
   @Test
-  public void testBuildOfferCodeListForCustomerWithCustomer_whenCustomerImpl2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertTrue((new OfferServiceImpl()).buildOfferCodeListForCustomer(mock(CustomerImpl.class)).isEmpty());
-  }
-
-  /**
-   * Test {@link OfferServiceImpl#buildOfferCodeListForCustomer(Order)} with
-   * {@code order}.
-   * <p>
-   * Method under test:
-   * {@link OfferServiceImpl#buildOfferCodeListForCustomer(Order)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testBuildOfferCodeListForCustomerWithOrder() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass100 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List OfferServiceImpl.buildOfferCodeListForCustomer(Customer)"})
+  public void testBuildOfferCodeListForCustomerWithCustomer_thenThrowRuntimeException() {
     // Arrange
-    OfferServiceImpl offerServiceImpl2 = new OfferServiceImpl();
+    when(offerServiceExtensionManager.buildOfferCodeListForCustomer(Mockito.<Customer>any(),
+        Mockito.<List<OfferCode>>any())).thenThrow(new RuntimeException("foo"));
 
-    // Act
-    offerServiceImpl2.buildOfferCodeListForCustomer(new NullOrderImpl());
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> offerServiceImpl.buildOfferCodeListForCustomer(new CustomerImpl()));
+    verify(offerServiceExtensionManager).buildOfferCodeListForCustomer(isA(Customer.class), isA(List.class));
   }
 
   /**
-   * Test {@link OfferServiceImpl#buildOfferCodeListForCustomer(Order)} with
-   * {@code order}.
+   * Test {@link OfferServiceImpl#buildOfferCodeListForCustomer(Order)} with {@code order}.
    * <ul>
-   *   <li>Then calls {@link NullOrderImpl#getCustomer()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link OfferServiceImpl#buildOfferCodeListForCustomer(Order)}
-   */
-  @Test
-  public void testBuildOfferCodeListForCustomerWithOrder_thenCallsGetCustomer() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
-    NullOrderImpl order = mock(NullOrderImpl.class);
-    when(order.getCustomer()).thenReturn(new CustomerImpl());
-
-    // Act
-    List<OfferCode> actualBuildOfferCodeListForCustomerResult = offerServiceImpl.buildOfferCodeListForCustomer(order);
-
-    // Assert
-    verify(order).getCustomer();
-    assertTrue(actualBuildOfferCodeListForCustomerResult.isEmpty());
-  }
-
-  /**
-   * Test {@link OfferServiceImpl#buildOfferCodeListForCustomer(Order)} with
-   * {@code order}.
-   * <ul>
-   *   <li>When {@link NullOrderImpl} (default constructor).</li>
+   *   <li>Given {@link OfferServiceImpl} (default constructor).</li>
    *   <li>Then return Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OfferServiceImpl#buildOfferCodeListForCustomer(Order)}
+   * Method under test: {@link OfferServiceImpl#buildOfferCodeListForCustomer(Order)}
    */
   @Test
-  public void testBuildOfferCodeListForCustomerWithOrder_whenNullOrderImpl_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List OfferServiceImpl.buildOfferCodeListForCustomer(Order)"})
+  public void testBuildOfferCodeListForCustomerWithOrder_givenOfferServiceImpl_thenReturnEmpty() {
     // Arrange
     OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
 
@@ -905,36 +935,49 @@ public class OfferServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link OfferServiceImpl#lookupOfferCustomerByCustomer(Customer)}.
+   * Test {@link OfferServiceImpl#buildOfferCodeListForCustomer(Order)} with {@code order}.
+   * <ul>
+   *   <li>Then return Empty.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link OfferServiceImpl#lookupOfferCustomerByCustomer(Customer)}
+   * Method under test: {@link OfferServiceImpl#buildOfferCodeListForCustomer(Order)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testLookupOfferCustomerByCustomer() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1616 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List OfferServiceImpl.buildOfferCodeListForCustomer(Order)"})
+  public void testBuildOfferCodeListForCustomerWithOrder_thenReturnEmpty() {
     // Arrange
-    OfferServiceImpl offerServiceImpl2 = new OfferServiceImpl();
+    when(offerServiceExtensionManager.buildOfferCodeListForCustomer(Mockito.<Customer>any(),
+        Mockito.<List<OfferCode>>any())).thenReturn(ExtensionResultStatusType.HANDLED);
 
     // Act
-    offerServiceImpl2.lookupOfferCustomerByCustomer(new CustomerImpl());
+    List<OfferCode> actualBuildOfferCodeListForCustomerResult = offerServiceImpl
+        .buildOfferCodeListForCustomer(new NullOrderImpl());
+
+    // Assert
+    verify(offerServiceExtensionManager).buildOfferCodeListForCustomer(isNull(), isA(List.class));
+    assertTrue(actualBuildOfferCodeListForCustomerResult.isEmpty());
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#buildOfferCodeListForCustomer(Order)} with {@code order}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferServiceImpl#buildOfferCodeListForCustomer(Order)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List OfferServiceImpl.buildOfferCodeListForCustomer(Order)"})
+  public void testBuildOfferCodeListForCustomerWithOrder_thenThrowRuntimeException() {
+    // Arrange
+    when(offerServiceExtensionManager.buildOfferCodeListForCustomer(Mockito.<Customer>any(),
+        Mockito.<List<OfferCode>>any())).thenThrow(new RuntimeException("foo"));
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> offerServiceImpl.buildOfferCodeListForCustomer(new NullOrderImpl()));
+    verify(offerServiceExtensionManager).buildOfferCodeListForCustomer(isNull(), isA(List.class));
   }
 
   /**
@@ -943,19 +986,14 @@ public class OfferServiceImplDiffblueTest {
    *   <li>Then return Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OfferServiceImpl#lookupOfferCustomerByCustomer(Customer)}
+   * Method under test: {@link OfferServiceImpl#lookupOfferCustomerByCustomer(Customer)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List OfferServiceImpl.lookupOfferCustomerByCustomer(Customer)"})
   public void testLookupOfferCustomerByCustomer_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CustomerOfferDaoImpl customerOfferDao = mock(CustomerOfferDaoImpl.class);
     when(customerOfferDao.readCustomerOffersByCustomer(Mockito.<Customer>any())).thenReturn(new ArrayList<>());
-
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
-    offerServiceImpl.setCustomerOfferDao(customerOfferDao);
 
     // Act
     List<CustomerOffer> actualLookupOfferCustomerByCustomerResult = offerServiceImpl
@@ -967,32 +1005,23 @@ public class OfferServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link OfferServiceImpl#lookupAutomaticDeliveryOffers()}.
+   * Test {@link OfferServiceImpl#lookupOfferCustomerByCustomer(Customer)}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
    * <p>
-   * Method under test: {@link OfferServiceImpl#lookupAutomaticDeliveryOffers()}
+   * Method under test: {@link OfferServiceImpl#lookupOfferCustomerByCustomer(Customer)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testLookupAutomaticDeliveryOffers() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass975 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List OfferServiceImpl.lookupOfferCustomerByCustomer(Customer)"})
+  public void testLookupOfferCustomerByCustomer_thenThrowRuntimeException() {
+    // Arrange
+    when(customerOfferDao.readCustomerOffersByCustomer(Mockito.<Customer>any())).thenThrow(new RuntimeException("foo"));
 
-    // Arrange and Act
-    (new OfferServiceImpl()).lookupAutomaticDeliveryOffers();
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> offerServiceImpl.lookupOfferCustomerByCustomer(new CustomerImpl()));
+    verify(customerOfferDao).readCustomerOffersByCustomer(isA(Customer.class));
   }
 
   /**
@@ -1004,15 +1033,11 @@ public class OfferServiceImplDiffblueTest {
    * Method under test: {@link OfferServiceImpl#lookupAutomaticDeliveryOffers()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List OfferServiceImpl.lookupAutomaticDeliveryOffers()"})
   public void testLookupAutomaticDeliveryOffers_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OfferDaoImpl offerDao = mock(OfferDaoImpl.class);
     when(offerDao.readOffersByAutomaticDeliveryType()).thenReturn(new ArrayList<>());
-
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
-    offerServiceImpl.setOfferDao(offerDao);
 
     // Act
     List<Offer> actualLookupAutomaticDeliveryOffersResult = offerServiceImpl.lookupAutomaticDeliveryOffers();
@@ -1023,52 +1048,38 @@ public class OfferServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link OfferServiceImpl#removeOutOfDateOfferCodes(List)}.
+   * Test {@link OfferServiceImpl#lookupAutomaticDeliveryOffers()}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
    * <p>
-   * Method under test: {@link OfferServiceImpl#removeOutOfDateOfferCodes(List)}
+   * Method under test: {@link OfferServiceImpl#lookupAutomaticDeliveryOffers()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testRemoveOutOfDateOfferCodes() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1672 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List OfferServiceImpl.lookupAutomaticDeliveryOffers()"})
+  public void testLookupAutomaticDeliveryOffers_thenThrowRuntimeException() {
     // Arrange
-    OfferServiceImpl offerServiceImpl2 = new OfferServiceImpl();
+    when(offerDao.readOffersByAutomaticDeliveryType()).thenThrow(new RuntimeException("foo"));
 
-    // Act
-    offerServiceImpl2.removeOutOfDateOfferCodes(new ArrayList<>());
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> offerServiceImpl.lookupAutomaticDeliveryOffers());
+    verify(offerDao).readOffersByAutomaticDeliveryType();
   }
 
   /**
    * Test {@link OfferServiceImpl#removeOutOfDateOfferCodes(List)}.
    * <ul>
-   *   <li>Given {@link OfferCodeImpl} {@link OfferCodeImpl#isActive()} return
-   * {@code false}.</li>
+   *   <li>Given {@link OfferCodeImpl} {@link OfferCodeImpl#isActive()} return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link OfferServiceImpl#removeOutOfDateOfferCodes(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List OfferServiceImpl.removeOutOfDateOfferCodes(List)"})
   public void testRemoveOutOfDateOfferCodes_givenOfferCodeImplIsActiveReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
     OfferCodeImpl offerCodeImpl = mock(OfferCodeImpl.class);
     when(offerCodeImpl.isActive()).thenReturn(false);
 
@@ -1087,17 +1098,16 @@ public class OfferServiceImplDiffblueTest {
   /**
    * Test {@link OfferServiceImpl#removeOutOfDateOfferCodes(List)}.
    * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} size is one.</li>
+   *   <li>Then return {@link ArrayList#ArrayList()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link OfferServiceImpl#removeOutOfDateOfferCodes(List)}
    */
   @Test
-  public void testRemoveOutOfDateOfferCodes_thenArrayListSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List OfferServiceImpl.removeOutOfDateOfferCodes(List)"})
+  public void testRemoveOutOfDateOfferCodes_thenReturnArrayList() {
     // Arrange
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
     OfferCodeImpl offerCodeImpl = mock(OfferCodeImpl.class);
     when(offerCodeImpl.isActive()).thenReturn(true);
 
@@ -1123,11 +1133,10 @@ public class OfferServiceImplDiffblueTest {
    * Method under test: {@link OfferServiceImpl#removeOutOfDateOfferCodes(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List OfferServiceImpl.removeOutOfDateOfferCodes(List)"})
   public void testRemoveOutOfDateOfferCodes_whenArrayList_thenArrayListEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
     ArrayList<OfferCode> offerCodes = new ArrayList<>();
 
     // Act
@@ -1140,69 +1149,30 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#refreshOfferCodesIfApplicable(Order)}.
+   * <ul>
+   *   <li>When {@link NullOrderImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link OfferServiceImpl#refreshOfferCodesIfApplicable(Order)}
+   * Method under test: {@link OfferServiceImpl#refreshOfferCodesIfApplicable(Order)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testRefreshOfferCodesIfApplicable() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1651 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List OfferServiceImpl.refreshOfferCodesIfApplicable(Order)"})
+  public void testRefreshOfferCodesIfApplicable_whenNullOrderImpl_thenReturnNull() throws Throwable {
     // Arrange
-    OfferServiceImpl offerServiceImpl2 = new OfferServiceImpl();
+    doNothing().when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
+            Mockito.<Class<RuntimeException>>any());
 
     // Act
-    offerServiceImpl2.refreshOfferCodesIfApplicable(new NullOrderImpl());
-  }
+    List<OfferCode> actualRefreshOfferCodesIfApplicableResult = offerServiceImpl
+        .refreshOfferCodesIfApplicable(new NullOrderImpl());
 
-  /**
-   * Test {@link OfferServiceImpl#applyAndSaveOffersToOrder(List, Order)}.
-   * <p>
-   * Method under test:
-   * {@link OfferServiceImpl#applyAndSaveOffersToOrder(List, Order)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testApplyAndSaveOffersToOrder() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass25 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    OfferServiceImpl offerServiceImpl2 = new OfferServiceImpl();
-    ArrayList<Offer> offers = new ArrayList<>();
-
-    // Act
-    offerServiceImpl2.applyAndSaveOffersToOrder(offers, new NullOrderImpl());
+    // Assert
+    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
+        isA(Class.class));
+    assertNull(actualRefreshOfferCodesIfApplicableResult);
   }
 
   /**
@@ -1211,12 +1181,15 @@ public class OfferServiceImplDiffblueTest {
    *   <li>Then return {@link NullOrderImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OfferServiceImpl#applyAndSaveOffersToOrder(List, Order)}
+   * Method under test: {@link OfferServiceImpl#applyAndSaveOffersToOrder(List, Order)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order OfferServiceImpl.applyAndSaveOffersToOrder(List, Order)"})
   public void testApplyAndSaveOffersToOrder_thenReturnNullOrderImpl() throws PricingException {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     OrderOfferProcessor orderOfferProcessor = mock(OrderOfferProcessor.class);
@@ -1260,12 +1233,10 @@ public class OfferServiceImplDiffblueTest {
    * Method under test: {@link OfferServiceImpl#verifyAdjustments(Order, boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferServiceImpl.verifyAdjustments(Order, boolean)"})
   public void testVerifyAdjustments() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
-
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
     auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
@@ -1309,6 +1280,7 @@ public class OfferServiceImplDiffblueTest {
     bundleOrderItemImpl.setOrderItemType(OrderItemType.BASIC);
     bundleOrderItemImpl.setParentOrderItem(new BundleOrderItemImpl());
     bundleOrderItemImpl.setPersonalMessage(new PersonalMessageImpl());
+    bundleOrderItemImpl.setPrice(new Money());
     bundleOrderItemImpl.setProratedOrderItemAdjustments(new ArrayList<>());
     bundleOrderItemImpl.setQuantity(1);
     bundleOrderItemImpl.setRetailPrice(new Money());
@@ -1343,7 +1315,6 @@ public class OfferServiceImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setOrderItems(orderItems);
 
@@ -1353,51 +1324,18 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#verifyAdjustments(Order, boolean)}.
-   * <p>
-   * Method under test: {@link OfferServiceImpl#verifyAdjustments(Order, boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testVerifyAdjustments2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1756 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    OfferServiceImpl offerServiceImpl2 = new OfferServiceImpl();
-
-    // Act
-    offerServiceImpl2.verifyAdjustments(new NullOrderImpl(), true);
-  }
-
-  /**
-   * Test {@link OfferServiceImpl#verifyAdjustments(Order, boolean)}.
    * <ul>
    *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link OfferServiceImpl#verifyAdjustments(Order, boolean)}
    */
   @Test
-  public void testVerifyAdjustments_givenAuditableCreatedByIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferServiceImpl.verifyAdjustments(Order, boolean)"})
+  public void testVerifyAdjustments_givenAuditableCreatedByIsOne_thenReturnFalse() {
     // Arrange
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
-
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
     auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
@@ -1425,7 +1363,6 @@ public class OfferServiceImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setOrderItems(new ArrayList<>());
 
@@ -1436,19 +1373,16 @@ public class OfferServiceImplDiffblueTest {
   /**
    * Test {@link OfferServiceImpl#verifyAdjustments(Order, boolean)}.
    * <ul>
-   *   <li>Given {@link BundleOrderItemImpl} (default constructor)
-   * OrderItemPriceDetails is {@link ArrayList#ArrayList()}.</li>
+   *   <li>Given {@link BundleOrderItemImpl} (default constructor) OrderItemPriceDetails is {@link ArrayList#ArrayList()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link OfferServiceImpl#verifyAdjustments(Order, boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferServiceImpl.verifyAdjustments(Order, boolean)"})
   public void testVerifyAdjustments_givenBundleOrderItemImplOrderItemPriceDetailsIsArrayList() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
-
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
     auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
@@ -1482,6 +1416,7 @@ public class OfferServiceImplDiffblueTest {
     bundleOrderItemImpl.setOrderItemType(OrderItemType.BASIC);
     bundleOrderItemImpl.setParentOrderItem(new BundleOrderItemImpl());
     bundleOrderItemImpl.setPersonalMessage(new PersonalMessageImpl());
+    bundleOrderItemImpl.setPrice(new Money());
     bundleOrderItemImpl.setProratedOrderItemAdjustments(new ArrayList<>());
     bundleOrderItemImpl.setQuantity(1);
     bundleOrderItemImpl.setRetailPrice(new Money());
@@ -1516,7 +1451,6 @@ public class OfferServiceImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setOrderItems(orderItems);
 
@@ -1527,19 +1461,16 @@ public class OfferServiceImplDiffblueTest {
   /**
    * Test {@link OfferServiceImpl#verifyAdjustments(Order, boolean)}.
    * <ul>
-   *   <li>Given {@link BundleOrderItemImpl} (default constructor)
-   * OrderItemPriceDetails is {@code null}.</li>
+   *   <li>Given {@link BundleOrderItemImpl} (default constructor) OrderItemPriceDetails is {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link OfferServiceImpl#verifyAdjustments(Order, boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferServiceImpl.verifyAdjustments(Order, boolean)"})
   public void testVerifyAdjustments_givenBundleOrderItemImplOrderItemPriceDetailsIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
-
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
     auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
@@ -1573,6 +1504,7 @@ public class OfferServiceImplDiffblueTest {
     bundleOrderItemImpl.setOrderItemType(OrderItemType.BASIC);
     bundleOrderItemImpl.setParentOrderItem(new BundleOrderItemImpl());
     bundleOrderItemImpl.setPersonalMessage(new PersonalMessageImpl());
+    bundleOrderItemImpl.setPrice(new Money());
     bundleOrderItemImpl.setProratedOrderItemAdjustments(new ArrayList<>());
     bundleOrderItemImpl.setQuantity(1);
     bundleOrderItemImpl.setRetailPrice(new Money());
@@ -1607,7 +1539,6 @@ public class OfferServiceImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setOrderItems(orderItems);
 
@@ -1618,19 +1549,16 @@ public class OfferServiceImplDiffblueTest {
   /**
    * Test {@link OfferServiceImpl#verifyAdjustments(Order, boolean)}.
    * <ul>
-   *   <li>Given {@link OrderItemPriceDetailImpl} (default constructor)
-   * OrderItemAdjustments is {@code null}.</li>
+   *   <li>Given {@link OrderItemPriceDetailImpl} (default constructor) OrderItemAdjustments is {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link OfferServiceImpl#verifyAdjustments(Order, boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferServiceImpl.verifyAdjustments(Order, boolean)"})
   public void testVerifyAdjustments_givenOrderItemPriceDetailImplOrderItemAdjustmentsIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
-
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
     auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
@@ -1674,6 +1602,7 @@ public class OfferServiceImplDiffblueTest {
     bundleOrderItemImpl.setOrderItemType(OrderItemType.BASIC);
     bundleOrderItemImpl.setParentOrderItem(new BundleOrderItemImpl());
     bundleOrderItemImpl.setPersonalMessage(new PersonalMessageImpl());
+    bundleOrderItemImpl.setPrice(new Money());
     bundleOrderItemImpl.setProratedOrderItemAdjustments(new ArrayList<>());
     bundleOrderItemImpl.setQuantity(1);
     bundleOrderItemImpl.setRetailPrice(new Money());
@@ -1708,37 +1637,11 @@ public class OfferServiceImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setOrderItems(orderItems);
 
     // Act and Assert
     assertFalse(offerServiceImpl.verifyAdjustments(order, false));
-  }
-
-  /**
-   * Test {@link OfferServiceImpl#verifyAdjustments(Order, boolean)}.
-   * <ul>
-   *   <li>Then calls {@link NullOrderImpl#getOrderItems()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#verifyAdjustments(Order, boolean)}
-   */
-  @Test
-  public void testVerifyAdjustments_thenCallsGetOrderItems() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
-    NullOrderImpl order = mock(NullOrderImpl.class);
-    when(order.getOrderItems()).thenReturn(new ArrayList<>());
-
-    // Act
-    boolean actualVerifyAdjustmentsResult = offerServiceImpl.verifyAdjustments(order, true);
-
-    // Assert
-    verify(order, atLeast(1)).getOrderItems();
-    assertFalse(actualVerifyAdjustmentsResult);
   }
 
   /**
@@ -1751,47 +1654,11 @@ public class OfferServiceImplDiffblueTest {
    * Method under test: {@link OfferServiceImpl#verifyAdjustments(Order, boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferServiceImpl.verifyAdjustments(Order, boolean)"})
   public void testVerifyAdjustments_whenNullOrderImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertFalse(offerServiceImpl.verifyAdjustments(new NullOrderImpl(), true));
-  }
-
-  /**
-   * Test {@link OfferServiceImpl#applyOffersToOrder(List, Order)}.
-   * <p>
-   * Method under test: {@link OfferServiceImpl#applyOffersToOrder(List, Order)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testApplyOffersToOrder() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass75 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    OfferServiceImpl offerServiceImpl2 = new OfferServiceImpl();
-    ArrayList<Offer> offers = new ArrayList<>();
-
-    // Act
-    offerServiceImpl2.applyOffersToOrder(offers, new NullOrderImpl());
   }
 
   /**
@@ -1803,8 +1670,12 @@ public class OfferServiceImplDiffblueTest {
    * Method under test: {@link OfferServiceImpl#applyOffersToOrder(List, Order)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OfferServiceImpl.applyOffersToOrder(List, Order)"})
   public void testApplyOffersToOrder_thenCallsFilterOffers() throws PricingException {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     OrderOfferProcessor orderOfferProcessor = mock(OrderOfferProcessor.class);
@@ -1841,53 +1712,20 @@ public class OfferServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link OfferServiceImpl#applyFulfillmentGroupOffersToOrder(List, Order)}.
-   * <p>
-   * Method under test:
-   * {@link OfferServiceImpl#applyFulfillmentGroupOffersToOrder(List, Order)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testApplyFulfillmentGroupOffersToOrder() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass50 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    OfferServiceImpl offerServiceImpl2 = new OfferServiceImpl();
-    ArrayList<Offer> offers = new ArrayList<>();
-
-    // Act
-    offerServiceImpl2.applyFulfillmentGroupOffersToOrder(offers, new NullOrderImpl());
-  }
-
-  /**
-   * Test
-   * {@link OfferServiceImpl#applyFulfillmentGroupOffersToOrder(List, Order)}.
+   * Test {@link OfferServiceImpl#applyFulfillmentGroupOffersToOrder(List, Order)}.
    * <ul>
    *   <li>Then calls {@link OfferImpl#getType()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OfferServiceImpl#applyFulfillmentGroupOffersToOrder(List, Order)}
+   * Method under test: {@link OfferServiceImpl#applyFulfillmentGroupOffersToOrder(List, Order)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OfferServiceImpl.applyFulfillmentGroupOffersToOrder(List, Order)"})
   public void testApplyFulfillmentGroupOffersToOrder_thenCallsGetType() throws PricingException {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     OrderService orderService = mock(OrderService.class);
@@ -1912,53 +1750,20 @@ public class OfferServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link OfferServiceImpl#applyAndSaveFulfillmentGroupOffersToOrder(List, Order)}.
-   * <p>
-   * Method under test:
-   * {@link OfferServiceImpl#applyAndSaveFulfillmentGroupOffersToOrder(List, Order)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testApplyAndSaveFulfillmentGroupOffersToOrder() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass0 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    OfferServiceImpl offerServiceImpl2 = new OfferServiceImpl();
-    ArrayList<Offer> offers = new ArrayList<>();
-
-    // Act
-    offerServiceImpl2.applyAndSaveFulfillmentGroupOffersToOrder(offers, new NullOrderImpl());
-  }
-
-  /**
-   * Test
-   * {@link OfferServiceImpl#applyAndSaveFulfillmentGroupOffersToOrder(List, Order)}.
+   * Test {@link OfferServiceImpl#applyAndSaveFulfillmentGroupOffersToOrder(List, Order)}.
    * <ul>
    *   <li>Then return {@link NullOrderImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OfferServiceImpl#applyAndSaveFulfillmentGroupOffersToOrder(List, Order)}
+   * Method under test: {@link OfferServiceImpl#applyAndSaveFulfillmentGroupOffersToOrder(List, Order)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order OfferServiceImpl.applyAndSaveFulfillmentGroupOffersToOrder(List, Order)"})
   public void testApplyAndSaveFulfillmentGroupOffersToOrder_thenReturnNullOrderImpl() throws PricingException {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     OrderService orderService = mock(OrderService.class);
@@ -1986,61 +1791,93 @@ public class OfferServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, OfferCode)}
-   * with {@code customer}, {@code code}.
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, OfferCode)} with {@code customer}, {@code code}.
    * <p>
-   * Method under test:
-   * {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, OfferCode)}
+   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, OfferCode)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Customer, OfferCode)"})
   public void testVerifyMaxCustomerUsageThresholdWithCustomerCode() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1947 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    OfferServiceImpl offerServiceImpl2 = new OfferServiceImpl();
+    when(offerAuditService.countOfferCodeUses(Mockito.<Long>any())).thenReturn(3L);
     CustomerImpl customer = new CustomerImpl();
+    OfferCode code = mock(OfferCode.class);
+    when(code.getMaxUses()).thenReturn(3);
+    when(code.getId()).thenReturn(1L);
+    when(code.isLimitedUse()).thenReturn(true);
 
     // Act
-    offerServiceImpl2.verifyMaxCustomerUsageThreshold(customer, new OfferCodeImpl());
+    boolean actualVerifyMaxCustomerUsageThresholdResult = offerServiceImpl.verifyMaxCustomerUsageThreshold(customer,
+        code);
+
+    // Assert
+    verify(code).getId();
+    verify(code).getMaxUses();
+    verify(code).isLimitedUse();
+    verify(offerAuditService).countOfferCodeUses(eq(1L));
+    assertFalse(actualVerifyMaxCustomerUsageThresholdResult);
   }
 
   /**
-   * Test
-   * {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, OfferCode)}
-   * with {@code customer}, {@code code}.
-   * <ul>
-   *   <li>Then return {@code true}.</li>
-   * </ul>
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, OfferCode)} with {@code customer}, {@code code}.
    * <p>
-   * Method under test:
-   * {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, OfferCode)}
+   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, OfferCode)}
    */
   @Test
-  public void testVerifyMaxCustomerUsageThresholdWithCustomerCode_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Customer, OfferCode)"})
+  public void testVerifyMaxCustomerUsageThresholdWithCustomerCode2() {
     // Arrange
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
+    when(offerAuditService.countUsesByCustomer(Mockito.<Long>any(), Mockito.<Long>any())).thenReturn(-1L);
+    when(offerAuditService.countOfferCodeUses(Mockito.<Long>any())).thenReturn(1L);
+    CustomerImpl customer = new CustomerImpl();
+    OfferImpl offerImpl = mock(OfferImpl.class);
+    when(offerImpl.getId()).thenReturn(1L);
+    when(offerImpl.getMaxUsesPerCustomer()).thenReturn(1L);
+    when(offerImpl.isLimitedUsePerCustomer()).thenReturn(true);
+    OfferCode code = mock(OfferCode.class);
+    when(code.getMaxUses()).thenReturn(3);
+    when(code.getId()).thenReturn(1L);
+    when(code.isLimitedUse()).thenReturn(true);
+    when(code.getOffer()).thenReturn(offerImpl);
+
+    // Act
+    boolean actualVerifyMaxCustomerUsageThresholdResult = offerServiceImpl.verifyMaxCustomerUsageThreshold(customer,
+        code);
+
+    // Assert
+    verify(code).getId();
+    verify(code).getMaxUses();
+    verify(code).getOffer();
+    verify(code).isLimitedUse();
+    verify(offerImpl).getId();
+    verify(offerImpl).getMaxUsesPerCustomer();
+    verify(offerImpl).isLimitedUsePerCustomer();
+    verify(offerAuditService).countOfferCodeUses(eq(1L));
+    verify(offerAuditService).countUsesByCustomer(isNull(), eq(1L));
+    assertTrue(actualVerifyMaxCustomerUsageThresholdResult);
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, OfferCode)} with {@code customer}, {@code code}.
+   * <ul>
+   *   <li>Given {@link OfferImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, OfferCode)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Customer, OfferCode)"})
+  public void testVerifyMaxCustomerUsageThresholdWithCustomerCode_givenOfferImpl() {
+    // Arrange
+    when(offerAuditService.countOfferCodeUses(Mockito.<Long>any())).thenReturn(1L);
     CustomerImpl customer = new CustomerImpl();
     OfferCode code = mock(OfferCode.class);
-    when(code.isLimitedUse()).thenReturn(false);
+    when(code.getMaxUses()).thenReturn(3);
+    when(code.getId()).thenReturn(1L);
+    when(code.isLimitedUse()).thenReturn(true);
     when(code.getOffer()).thenReturn(new OfferImpl());
 
     // Act
@@ -2048,28 +1885,70 @@ public class OfferServiceImplDiffblueTest {
         code);
 
     // Assert
+    verify(code).getId();
+    verify(code).getMaxUses();
     verify(code).getOffer();
     verify(code).isLimitedUse();
+    verify(offerAuditService).countOfferCodeUses(eq(1L));
     assertTrue(actualVerifyMaxCustomerUsageThresholdResult);
   }
 
   /**
-   * Test
-   * {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, OfferCode)}
-   * with {@code customer}, {@code code}.
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, OfferCode)} with {@code customer}, {@code code}.
+   * <ul>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, OfferCode)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Customer, OfferCode)"})
+  public void testVerifyMaxCustomerUsageThresholdWithCustomerCode_thenReturnFalse() {
+    // Arrange
+    when(offerAuditService.countUsesByCustomer(Mockito.<Long>any(), Mockito.<Long>any())).thenReturn(3L);
+    when(offerAuditService.countOfferCodeUses(Mockito.<Long>any())).thenReturn(1L);
+    CustomerImpl customer = new CustomerImpl();
+    OfferImpl offerImpl = mock(OfferImpl.class);
+    when(offerImpl.getId()).thenReturn(1L);
+    when(offerImpl.getMaxUsesPerCustomer()).thenReturn(1L);
+    when(offerImpl.isLimitedUsePerCustomer()).thenReturn(true);
+    OfferCode code = mock(OfferCode.class);
+    when(code.getMaxUses()).thenReturn(3);
+    when(code.getId()).thenReturn(1L);
+    when(code.isLimitedUse()).thenReturn(true);
+    when(code.getOffer()).thenReturn(offerImpl);
+
+    // Act
+    boolean actualVerifyMaxCustomerUsageThresholdResult = offerServiceImpl.verifyMaxCustomerUsageThreshold(customer,
+        code);
+
+    // Assert
+    verify(code).getId();
+    verify(code).getMaxUses();
+    verify(code).getOffer();
+    verify(code).isLimitedUse();
+    verify(offerImpl).getId();
+    verify(offerImpl).getMaxUsesPerCustomer();
+    verify(offerImpl).isLimitedUsePerCustomer();
+    verify(offerAuditService).countOfferCodeUses(eq(1L));
+    verify(offerAuditService).countUsesByCustomer(isNull(), eq(1L));
+    assertFalse(actualVerifyMaxCustomerUsageThresholdResult);
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, OfferCode)} with {@code customer}, {@code code}.
    * <ul>
    *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, OfferCode)}
+   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, OfferCode)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Customer, OfferCode)"})
   public void testVerifyMaxCustomerUsageThresholdWithCustomerCode_thenThrowRuntimeException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
     CustomerImpl customer = new CustomerImpl();
     OfferCode code = mock(OfferCode.class);
     when(code.getId()).thenThrow(new RuntimeException("foo"));
@@ -2082,88 +1961,79 @@ public class OfferServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, Offer)}
-   * with {@code customer}, {@code offer}.
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, Offer)} with {@code customer}, {@code offer}.
    * <p>
-   * Method under test:
-   * {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, Offer)}
+   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, Offer)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Customer, Offer)"})
   public void testVerifyMaxCustomerUsageThresholdWithCustomerOffer() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1873 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    OfferServiceImpl offerServiceImpl2 = new OfferServiceImpl();
-    CustomerImpl customer = new CustomerImpl();
-
-    // Act
-    offerServiceImpl2.verifyMaxCustomerUsageThreshold(customer, new OfferImpl());
-  }
-
-  /**
-   * Test
-   * {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, Offer)}
-   * with {@code customer}, {@code offer}.
-   * <ul>
-   *   <li>Then calls {@link OfferImpl#getId()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, Offer)}
-   */
-  @Test
-  public void testVerifyMaxCustomerUsageThresholdWithCustomerOffer_thenCallsGetId() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
+    when(offerAuditService.countUsesByCustomer(Mockito.<Long>any(), Mockito.<Long>any())).thenReturn(0L);
     CustomerImpl customer = new CustomerImpl();
     OfferImpl offer = mock(OfferImpl.class);
-    when(offer.getId()).thenThrow(new RuntimeException("foo"));
+    when(offer.getId()).thenReturn(1L);
+    when(offer.getMaxUsesPerCustomer()).thenReturn(1L);
     when(offer.isLimitedUsePerCustomer()).thenReturn(true);
 
     // Act
-    offerServiceImpl.verifyMaxCustomerUsageThreshold(customer, offer);
+    boolean actualVerifyMaxCustomerUsageThresholdResult = offerServiceImpl.verifyMaxCustomerUsageThreshold(customer,
+        offer);
 
     // Assert
     verify(offer).getId();
+    verify(offer).getMaxUsesPerCustomer();
     verify(offer).isLimitedUsePerCustomer();
+    verify(offerAuditService).countUsesByCustomer(isNull(), eq(1L));
+    assertTrue(actualVerifyMaxCustomerUsageThresholdResult);
   }
 
   /**
-   * Test
-   * {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, Offer)}
-   * with {@code customer}, {@code offer}.
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, Offer)} with {@code customer}, {@code offer}.
    * <ul>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, Offer)}
+   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, Offer)}
    */
   @Test
-  public void testVerifyMaxCustomerUsageThresholdWithCustomerOffer_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Customer, Offer)"})
+  public void testVerifyMaxCustomerUsageThresholdWithCustomerOffer_thenReturnFalse() {
     // Arrange
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
+    when(offerAuditService.countUsesByCustomer(Mockito.<Long>any(), Mockito.<Long>any())).thenReturn(3L);
+    CustomerImpl customer = new CustomerImpl();
+    OfferImpl offer = mock(OfferImpl.class);
+    when(offer.getId()).thenReturn(1L);
+    when(offer.getMaxUsesPerCustomer()).thenReturn(1L);
+    when(offer.isLimitedUsePerCustomer()).thenReturn(true);
+
+    // Act
+    boolean actualVerifyMaxCustomerUsageThresholdResult = offerServiceImpl.verifyMaxCustomerUsageThreshold(customer,
+        offer);
+
+    // Assert
+    verify(offer).getId();
+    verify(offer).getMaxUsesPerCustomer();
+    verify(offer).isLimitedUsePerCustomer();
+    verify(offerAuditService).countUsesByCustomer(isNull(), eq(1L));
+    assertFalse(actualVerifyMaxCustomerUsageThresholdResult);
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, Offer)} with {@code customer}, {@code offer}.
+   * <ul>
+   *   <li>When {@link OfferImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, Offer)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Customer, Offer)"})
+  public void testVerifyMaxCustomerUsageThresholdWithCustomerOffer_whenOfferImpl() {
+    // Arrange
     CustomerImpl customer = new CustomerImpl();
 
     // Act and Assert
@@ -2171,114 +2041,245 @@ public class OfferServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, Offer)}
-   * with {@code customer}, {@code offer}.
-   * <ul>
-   *   <li>When {@link CustomerImpl}.</li>
-   * </ul>
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)} with {@code order}, {@code code}.
    * <p>
-   * Method under test:
-   * {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, Offer)}
+   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)}
    */
   @Test
-  public void testVerifyMaxCustomerUsageThresholdWithCustomerOffer_whenCustomerImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
-    CustomerImpl customer = mock(CustomerImpl.class);
-
-    // Act and Assert
-    assertTrue(offerServiceImpl.verifyMaxCustomerUsageThreshold(customer, new OfferImpl()));
-  }
-
-  /**
-   * Test
-   * {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)}
-   * with {@code order}, {@code code}.
-   * <p>
-   * Method under test:
-   * {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Order, OfferCode)"})
   public void testVerifyMaxCustomerUsageThresholdWithOrderCode() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1838 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    OfferServiceImpl offerServiceImpl2 = new OfferServiceImpl();
-    NullOrderImpl order = new NullOrderImpl();
-
-    // Act
-    offerServiceImpl2.verifyMaxCustomerUsageThreshold(order, new OfferCodeImpl());
-  }
-
-  /**
-   * Test
-   * {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)}
-   * with {@code order}, {@code code}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   *   <li>Then return {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)}
-   */
-  @Test
-  public void testVerifyMaxCustomerUsageThresholdWithOrderCode_givenOfferImpl_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
+    when(offerAuditService.countOfferCodeUses(Mockito.<Order>any(), Mockito.<Long>any())).thenReturn(3L);
     NullOrderImpl order = new NullOrderImpl();
     OfferCode code = mock(OfferCode.class);
-    when(code.isLimitedUse()).thenReturn(false);
+    when(code.getMaxUses()).thenReturn(3);
+    when(code.getId()).thenReturn(1L);
+    when(code.isLimitedUse()).thenReturn(true);
+
+    // Act
+    boolean actualVerifyMaxCustomerUsageThresholdResult = offerServiceImpl.verifyMaxCustomerUsageThreshold(order, code);
+
+    // Assert
+    verify(code).getId();
+    verify(code).getMaxUses();
+    verify(code).isLimitedUse();
+    verify(offerAuditService).countOfferCodeUses(isA(Order.class), eq(1L));
+    assertFalse(actualVerifyMaxCustomerUsageThresholdResult);
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)} with {@code order}, {@code code}.
+   * <p>
+   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Order, OfferCode)"})
+  public void testVerifyMaxCustomerUsageThresholdWithOrderCode2() {
+    // Arrange
+    when(offerAuditService.countOfferCodeUses(Mockito.<Order>any(), Mockito.<Long>any())).thenReturn(1L);
+    NullOrderImpl order = new NullOrderImpl();
+    OfferImpl offerImpl = mock(OfferImpl.class);
+    when(offerImpl.getId()).thenThrow(new RuntimeException("ACCOUNT"));
+    when(offerImpl.getMaxUsesStrategyType()).thenReturn(CustomerMaxUsesStrategyType.ACCOUNT);
+    when(offerImpl.isLimitedUsePerCustomer()).thenReturn(true);
+    OfferCode code = mock(OfferCode.class);
+    when(code.getMaxUses()).thenReturn(3);
+    when(code.getId()).thenReturn(1L);
+    when(code.isLimitedUse()).thenReturn(true);
+    when(code.getOffer()).thenReturn(offerImpl);
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> offerServiceImpl.verifyMaxCustomerUsageThreshold(order, code));
+    verify(code).getId();
+    verify(code).getMaxUses();
+    verify(code).getOffer();
+    verify(code).isLimitedUse();
+    verify(offerImpl).getId();
+    verify(offerImpl).getMaxUsesStrategyType();
+    verify(offerImpl).isLimitedUsePerCustomer();
+    verify(offerAuditService).countOfferCodeUses(isA(Order.class), eq(1L));
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)} with {@code order}, {@code code}.
+   * <p>
+   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Order, OfferCode)"})
+  public void testVerifyMaxCustomerUsageThresholdWithOrderCode3() {
+    // Arrange
+    when(offerAuditService.countUsesByAccount(Mockito.<Order>any(), Mockito.<Long>any(), Mockito.<Long>any(),
+        Mockito.<Long>any())).thenReturn(-1L);
+    when(offerAuditService.countOfferCodeUses(Mockito.<Order>any(), Mockito.<Long>any())).thenReturn(1L);
+    NullOrderImpl order = new NullOrderImpl();
+    OfferImpl offerImpl = mock(OfferImpl.class);
+    when(offerImpl.getId()).thenReturn(1L);
+    when(offerImpl.getMaxUsesPerCustomer()).thenReturn(1L);
+    when(offerImpl.getMinimumDaysPerUsage()).thenReturn(1L);
+    when(offerImpl.getMaxUsesStrategyType()).thenReturn(CustomerMaxUsesStrategyType.ACCOUNT);
+    when(offerImpl.isLimitedUsePerCustomer()).thenReturn(true);
+    OfferCode code = mock(OfferCode.class);
+    when(code.getMaxUses()).thenReturn(3);
+    when(code.getId()).thenReturn(1L);
+    when(code.isLimitedUse()).thenReturn(true);
+    when(code.getOffer()).thenReturn(offerImpl);
+
+    // Act
+    boolean actualVerifyMaxCustomerUsageThresholdResult = offerServiceImpl.verifyMaxCustomerUsageThreshold(order, code);
+
+    // Assert
+    verify(code).getId();
+    verify(code).getMaxUses();
+    verify(code).getOffer();
+    verify(code).isLimitedUse();
+    verify(offerImpl).getId();
+    verify(offerImpl).getMaxUsesPerCustomer();
+    verify(offerImpl).getMaxUsesStrategyType();
+    verify(offerImpl).getMinimumDaysPerUsage();
+    verify(offerImpl).isLimitedUsePerCustomer();
+    verify(offerAuditService).countOfferCodeUses(isA(Order.class), eq(1L));
+    verify(offerAuditService).countUsesByAccount(isA(Order.class), isNull(), eq(1L), eq(1L));
+    assertTrue(actualVerifyMaxCustomerUsageThresholdResult);
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)} with {@code order}, {@code code}.
+   * <p>
+   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Order, OfferCode)"})
+  public void testVerifyMaxCustomerUsageThresholdWithOrderCode4() {
+    // Arrange
+    when(offerAuditService.countUsesByAccount(Mockito.<Order>any(), Mockito.<Long>any(), Mockito.<Long>any(),
+        Mockito.<Long>any())).thenReturn(3L);
+    when(offerAuditService.countOfferCodeUses(Mockito.<Order>any(), Mockito.<Long>any())).thenReturn(1L);
+    NullOrderImpl order = new NullOrderImpl();
+    OfferImpl offerImpl = mock(OfferImpl.class);
+    when(offerImpl.getId()).thenReturn(1L);
+    when(offerImpl.getMaxUsesPerCustomer()).thenReturn(1L);
+    when(offerImpl.getMinimumDaysPerUsage()).thenReturn(1L);
+    when(offerImpl.getMaxUsesStrategyType()).thenReturn(new CustomerMaxUsesStrategyType());
+    when(offerImpl.isLimitedUsePerCustomer()).thenReturn(true);
+    OfferCode code = mock(OfferCode.class);
+    when(code.getMaxUses()).thenReturn(3);
+    when(code.getId()).thenReturn(1L);
+    when(code.isLimitedUse()).thenReturn(true);
+    when(code.getOffer()).thenReturn(offerImpl);
+
+    // Act
+    boolean actualVerifyMaxCustomerUsageThresholdResult = offerServiceImpl.verifyMaxCustomerUsageThreshold(order, code);
+
+    // Assert
+    verify(code).getId();
+    verify(code).getMaxUses();
+    verify(code).getOffer();
+    verify(code).isLimitedUse();
+    verify(offerImpl).getId();
+    verify(offerImpl).getMaxUsesPerCustomer();
+    verify(offerImpl).getMaxUsesStrategyType();
+    verify(offerImpl).getMinimumDaysPerUsage();
+    verify(offerImpl).isLimitedUsePerCustomer();
+    verify(offerAuditService).countOfferCodeUses(isA(Order.class), eq(1L));
+    verify(offerAuditService).countUsesByAccount(isA(Order.class), isNull(), eq(1L), eq(1L));
+    assertFalse(actualVerifyMaxCustomerUsageThresholdResult);
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)} with {@code order}, {@code code}.
+   * <p>
+   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Order, OfferCode)"})
+  public void testVerifyMaxCustomerUsageThresholdWithOrderCode5() {
+    // Arrange
+    when(offerAuditService.countUsesByAccount(Mockito.<Order>any(), Mockito.<Long>any(), Mockito.<Long>any(),
+        Mockito.<Long>any())).thenReturn(3L);
+    when(offerAuditService.countOfferCodeUses(Mockito.<Order>any(), Mockito.<Long>any())).thenReturn(1L);
+    NullOrderImpl order = new NullOrderImpl();
+    OfferImpl offerImpl = mock(OfferImpl.class);
+    when(offerImpl.getId()).thenReturn(1L);
+    when(offerImpl.getMaxUsesPerCustomer()).thenReturn(1L);
+    when(offerImpl.getMinimumDaysPerUsage()).thenReturn(1L);
+    when(offerImpl.getMaxUsesStrategyType()).thenReturn(mock(CustomerMaxUsesStrategyType.class));
+    when(offerImpl.isLimitedUsePerCustomer()).thenReturn(true);
+    OfferCode code = mock(OfferCode.class);
+    when(code.getMaxUses()).thenReturn(3);
+    when(code.getId()).thenReturn(1L);
+    when(code.isLimitedUse()).thenReturn(true);
+    when(code.getOffer()).thenReturn(offerImpl);
+
+    // Act
+    boolean actualVerifyMaxCustomerUsageThresholdResult = offerServiceImpl.verifyMaxCustomerUsageThreshold(order, code);
+
+    // Assert
+    verify(code).getId();
+    verify(code).getMaxUses();
+    verify(code).getOffer();
+    verify(code).isLimitedUse();
+    verify(offerImpl).getId();
+    verify(offerImpl).getMaxUsesPerCustomer();
+    verify(offerImpl).getMaxUsesStrategyType();
+    verify(offerImpl).getMinimumDaysPerUsage();
+    verify(offerImpl).isLimitedUsePerCustomer();
+    verify(offerAuditService).countOfferCodeUses(isA(Order.class), eq(1L));
+    verify(offerAuditService).countUsesByAccount(isA(Order.class), isNull(), eq(1L), eq(1L));
+    assertFalse(actualVerifyMaxCustomerUsageThresholdResult);
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)} with {@code order}, {@code code}.
+   * <ul>
+   *   <li>Given {@link OfferImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Order, OfferCode)"})
+  public void testVerifyMaxCustomerUsageThresholdWithOrderCode_givenOfferImpl() {
+    // Arrange
+    when(offerAuditService.countOfferCodeUses(Mockito.<Order>any(), Mockito.<Long>any())).thenReturn(1L);
+    NullOrderImpl order = new NullOrderImpl();
+    OfferCode code = mock(OfferCode.class);
+    when(code.getMaxUses()).thenReturn(3);
+    when(code.getId()).thenReturn(1L);
+    when(code.isLimitedUse()).thenReturn(true);
     when(code.getOffer()).thenReturn(new OfferImpl());
 
     // Act
     boolean actualVerifyMaxCustomerUsageThresholdResult = offerServiceImpl.verifyMaxCustomerUsageThreshold(order, code);
 
     // Assert
+    verify(code).getId();
+    verify(code).getMaxUses();
     verify(code).getOffer();
     verify(code).isLimitedUse();
+    verify(offerAuditService).countOfferCodeUses(isA(Order.class), eq(1L));
     assertTrue(actualVerifyMaxCustomerUsageThresholdResult);
   }
 
   /**
-   * Test
-   * {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)}
-   * with {@code order}, {@code code}.
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)} with {@code order}, {@code code}.
    * <ul>
-   *   <li>Given {@code true}.</li>
-   *   <li>Then calls {@link OfferCode#getId()}.</li>
+   *   <li>Given {@link RuntimeException#RuntimeException(String)} with {@code foo}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)}
+   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)}
    */
   @Test
-  public void testVerifyMaxCustomerUsageThresholdWithOrderCode_givenTrue_thenCallsGetId() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Order, OfferCode)"})
+  public void testVerifyMaxCustomerUsageThresholdWithOrderCode_givenRuntimeExceptionWithFoo() {
     // Arrange
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
     NullOrderImpl order = new NullOrderImpl();
     OfferCode code = mock(OfferCode.class);
     when(code.getId()).thenThrow(new RuntimeException("foo"));
@@ -2291,145 +2292,275 @@ public class OfferServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)}
-   * with {@code order}, {@code code}.
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)} with {@code order}, {@code code}.
    * <ul>
-   *   <li>Then calls {@link OfferImpl#getId()}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)}
+   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)}
    */
   @Test
-  public void testVerifyMaxCustomerUsageThresholdWithOrderCode_thenCallsGetId() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Order, OfferCode)"})
+  public void testVerifyMaxCustomerUsageThresholdWithOrderCode_thenReturnFalse() {
     // Arrange
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
+    when(offerAuditService.countUsesByAccount(Mockito.<Order>any(), Mockito.<Long>any(), Mockito.<Long>any(),
+        Mockito.<Long>any())).thenReturn(3L);
+    when(offerAuditService.countOfferCodeUses(Mockito.<Order>any(), Mockito.<Long>any())).thenReturn(1L);
     NullOrderImpl order = new NullOrderImpl();
     OfferImpl offerImpl = mock(OfferImpl.class);
-    when(offerImpl.getId()).thenThrow(new RuntimeException("ACCOUNT"));
+    when(offerImpl.getId()).thenReturn(1L);
+    when(offerImpl.getMaxUsesPerCustomer()).thenReturn(1L);
+    when(offerImpl.getMinimumDaysPerUsage()).thenReturn(1L);
     when(offerImpl.getMaxUsesStrategyType()).thenReturn(CustomerMaxUsesStrategyType.ACCOUNT);
     when(offerImpl.isLimitedUsePerCustomer()).thenReturn(true);
     OfferCode code = mock(OfferCode.class);
-    when(code.isLimitedUse()).thenReturn(false);
+    when(code.getMaxUses()).thenReturn(3);
+    when(code.getId()).thenReturn(1L);
+    when(code.isLimitedUse()).thenReturn(true);
     when(code.getOffer()).thenReturn(offerImpl);
 
-    // Act and Assert
-    assertThrows(RuntimeException.class, () -> offerServiceImpl.verifyMaxCustomerUsageThreshold(order, code));
+    // Act
+    boolean actualVerifyMaxCustomerUsageThresholdResult = offerServiceImpl.verifyMaxCustomerUsageThreshold(order, code);
+
+    // Assert
+    verify(code).getId();
+    verify(code).getMaxUses();
     verify(code).getOffer();
     verify(code).isLimitedUse();
     verify(offerImpl).getId();
+    verify(offerImpl).getMaxUsesPerCustomer();
     verify(offerImpl).getMaxUsesStrategyType();
+    verify(offerImpl).getMinimumDaysPerUsage();
     verify(offerImpl).isLimitedUsePerCustomer();
+    verify(offerAuditService).countOfferCodeUses(isA(Order.class), eq(1L));
+    verify(offerAuditService).countUsesByAccount(isA(Order.class), isNull(), eq(1L), eq(1L));
+    assertFalse(actualVerifyMaxCustomerUsageThresholdResult);
   }
 
   /**
-   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)}
-   * with {@code order}, {@code offer}.
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)} with {@code order}, {@code offer}.
    * <p>
-   * Method under test:
-   * {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)}
+   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Order, Offer)"})
   public void testVerifyMaxCustomerUsageThresholdWithOrderOffer() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1778 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    OfferServiceImpl offerServiceImpl2 = new OfferServiceImpl();
-    NullOrderImpl order = new NullOrderImpl();
-
-    // Act
-    offerServiceImpl2.verifyMaxCustomerUsageThreshold(order, new OfferImpl());
-  }
-
-  /**
-   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)}
-   * with {@code order}, {@code offer}.
-   * <ul>
-   *   <li>Then calls {@link OfferImpl#getId()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)}
-   */
-  @Test
-  public void testVerifyMaxCustomerUsageThresholdWithOrderOffer_thenCallsGetId() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
+    when(offerAuditService.countUsesByAccount(Mockito.<Order>any(), Mockito.<Long>any(), Mockito.<Long>any(),
+        Mockito.<Long>any())).thenReturn(0L);
     NullOrderImpl order = new NullOrderImpl();
     OfferImpl offer = mock(OfferImpl.class);
-    when(offer.getId()).thenThrow(new RuntimeException("ACCOUNT"));
+    when(offer.getId()).thenReturn(1L);
+    when(offer.getMaxUsesPerCustomer()).thenReturn(1L);
+    when(offer.getMinimumDaysPerUsage()).thenReturn(1L);
     when(offer.getMaxUsesStrategyType()).thenReturn(CustomerMaxUsesStrategyType.ACCOUNT);
     when(offer.isLimitedUsePerCustomer()).thenReturn(true);
 
     // Act
-    offerServiceImpl.verifyMaxCustomerUsageThreshold(order, offer);
+    boolean actualVerifyMaxCustomerUsageThresholdResult = offerServiceImpl.verifyMaxCustomerUsageThreshold(order,
+        offer);
 
     // Assert
     verify(offer).getId();
+    verify(offer).getMaxUsesPerCustomer();
     verify(offer).getMaxUsesStrategyType();
+    verify(offer).getMinimumDaysPerUsage();
     verify(offer).isLimitedUsePerCustomer();
+    verify(offerAuditService).countUsesByAccount(isA(Order.class), isNull(), eq(1L), eq(1L));
+    assertTrue(actualVerifyMaxCustomerUsageThresholdResult);
   }
 
   /**
-   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)}
-   * with {@code order}, {@code offer}.
-   * <ul>
-   *   <li>When {@link NullOrderImpl}.</li>
-   * </ul>
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)} with {@code order}, {@code offer}.
    * <p>
-   * Method under test:
-   * {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)}
+   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)}
    */
   @Test
-  public void testVerifyMaxCustomerUsageThresholdWithOrderOffer_whenNullOrderImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Order, Offer)"})
+  public void testVerifyMaxCustomerUsageThresholdWithOrderOffer2() {
     // Arrange
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
-    NullOrderImpl order = mock(NullOrderImpl.class);
+    when(offerAuditService.countUsesByAccount(Mockito.<Order>any(), Mockito.<Long>any(), Mockito.<Long>any(),
+        Mockito.<Long>any())).thenReturn(3L);
+    NullOrderImpl order = new NullOrderImpl();
+    OfferImpl offer = mock(OfferImpl.class);
+    when(offer.getId()).thenReturn(1L);
+    when(offer.getMaxUsesPerCustomer()).thenReturn(1L);
+    when(offer.getMinimumDaysPerUsage()).thenReturn(1L);
+    when(offer.getMaxUsesStrategyType()).thenReturn(new CustomerMaxUsesStrategyType());
+    when(offer.isLimitedUsePerCustomer()).thenReturn(true);
 
-    // Act and Assert
-    assertTrue(offerServiceImpl.verifyMaxCustomerUsageThreshold(order, new OfferImpl()));
+    // Act
+    boolean actualVerifyMaxCustomerUsageThresholdResult = offerServiceImpl.verifyMaxCustomerUsageThreshold(order,
+        offer);
+
+    // Assert
+    verify(offer).getId();
+    verify(offer).getMaxUsesPerCustomer();
+    verify(offer).getMaxUsesStrategyType();
+    verify(offer).getMinimumDaysPerUsage();
+    verify(offer).isLimitedUsePerCustomer();
+    verify(offerAuditService).countUsesByAccount(isA(Order.class), isNull(), eq(1L), eq(1L));
+    assertFalse(actualVerifyMaxCustomerUsageThresholdResult);
   }
 
   /**
-   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)}
-   * with {@code order}, {@code offer}.
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)} with {@code order}, {@code offer}.
+   * <p>
+   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Order, Offer)"})
+  public void testVerifyMaxCustomerUsageThresholdWithOrderOffer3() {
+    // Arrange
+    when(offerAuditService.countUsesByAccount(Mockito.<Order>any(), Mockito.<Long>any(), Mockito.<Long>any(),
+        Mockito.<Long>any())).thenReturn(3L);
+    NullOrderImpl order = new NullOrderImpl();
+    OfferImpl offer = mock(OfferImpl.class);
+    when(offer.getId()).thenReturn(1L);
+    when(offer.getMaxUsesPerCustomer()).thenReturn(1L);
+    when(offer.getMinimumDaysPerUsage()).thenReturn(1L);
+    when(offer.getMaxUsesStrategyType()).thenReturn(mock(CustomerMaxUsesStrategyType.class));
+    when(offer.isLimitedUsePerCustomer()).thenReturn(true);
+
+    // Act
+    boolean actualVerifyMaxCustomerUsageThresholdResult = offerServiceImpl.verifyMaxCustomerUsageThreshold(order,
+        offer);
+
+    // Assert
+    verify(offer).getId();
+    verify(offer).getMaxUsesPerCustomer();
+    verify(offer).getMaxUsesStrategyType();
+    verify(offer).getMinimumDaysPerUsage();
+    verify(offer).isLimitedUsePerCustomer();
+    verify(offerAuditService).countUsesByAccount(isA(Order.class), isNull(), eq(1L), eq(1L));
+    assertFalse(actualVerifyMaxCustomerUsageThresholdResult);
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)} with {@code order}, {@code offer}.
+   * <p>
+   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Order, Offer)"})
+  public void testVerifyMaxCustomerUsageThresholdWithOrderOffer4() {
+    // Arrange
+    when(offerAuditService.countUsesByCustomer(Mockito.<Order>any(), Mockito.<Long>any(), Mockito.<Long>any(),
+        Mockito.<Long>any())).thenReturn(3L);
+    Order order = mock(Order.class);
+    when(order.getCustomer()).thenReturn(new CustomerImpl());
+    OfferImpl offer = mock(OfferImpl.class);
+    when(offer.getId()).thenReturn(1L);
+    when(offer.getMaxUsesPerCustomer()).thenReturn(1L);
+    when(offer.getMinimumDaysPerUsage()).thenReturn(1L);
+    when(offer.getMaxUsesStrategyType()).thenReturn(CustomerMaxUsesStrategyType.CUSTOMER);
+    when(offer.isLimitedUsePerCustomer()).thenReturn(true);
+
+    // Act
+    boolean actualVerifyMaxCustomerUsageThresholdResult = offerServiceImpl.verifyMaxCustomerUsageThreshold(order,
+        offer);
+
+    // Assert
+    verify(offer).getId();
+    verify(offer).getMaxUsesPerCustomer();
+    verify(offer).getMaxUsesStrategyType();
+    verify(offer).getMinimumDaysPerUsage();
+    verify(offer).isLimitedUsePerCustomer();
+    verify(offerAuditService).countUsesByCustomer(isA(Order.class), isNull(), eq(1L), eq(1L));
+    verify(order).getCustomer();
+    assertFalse(actualVerifyMaxCustomerUsageThresholdResult);
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)} with {@code order}, {@code offer}.
+   * <ul>
+   *   <li>Given {@link CustomerMaxUsesStrategyType#ACCOUNT}.</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Order, Offer)"})
+  public void testVerifyMaxCustomerUsageThresholdWithOrderOffer_givenAccount_thenReturnFalse() {
+    // Arrange
+    when(offerAuditService.countUsesByAccount(Mockito.<Order>any(), Mockito.<Long>any(), Mockito.<Long>any(),
+        Mockito.<Long>any())).thenReturn(3L);
+    NullOrderImpl order = new NullOrderImpl();
+    OfferImpl offer = mock(OfferImpl.class);
+    when(offer.getId()).thenReturn(1L);
+    when(offer.getMaxUsesPerCustomer()).thenReturn(1L);
+    when(offer.getMinimumDaysPerUsage()).thenReturn(1L);
+    when(offer.getMaxUsesStrategyType()).thenReturn(CustomerMaxUsesStrategyType.ACCOUNT);
+    when(offer.isLimitedUsePerCustomer()).thenReturn(true);
+
+    // Act
+    boolean actualVerifyMaxCustomerUsageThresholdResult = offerServiceImpl.verifyMaxCustomerUsageThreshold(order,
+        offer);
+
+    // Assert
+    verify(offer).getId();
+    verify(offer).getMaxUsesPerCustomer();
+    verify(offer).getMaxUsesStrategyType();
+    verify(offer).getMinimumDaysPerUsage();
+    verify(offer).isLimitedUsePerCustomer();
+    verify(offerAuditService).countUsesByAccount(isA(Order.class), isNull(), eq(1L), eq(1L));
+    assertFalse(actualVerifyMaxCustomerUsageThresholdResult);
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)} with {@code order}, {@code offer}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Order, Offer)"})
+  public void testVerifyMaxCustomerUsageThresholdWithOrderOffer_thenThrowRuntimeException() {
+    // Arrange
+    when(offerAuditService.countUsesByCustomer(Mockito.<Order>any(), Mockito.<Long>any(), Mockito.<Long>any(),
+        Mockito.<Long>any())).thenThrow(new RuntimeException("foo"));
+    Order order = mock(Order.class);
+    when(order.getCustomer()).thenReturn(new CustomerImpl());
+    OfferImpl offer = mock(OfferImpl.class);
+    when(offer.getId()).thenReturn(1L);
+    when(offer.getMinimumDaysPerUsage()).thenReturn(1L);
+    when(offer.getMaxUsesStrategyType()).thenReturn(CustomerMaxUsesStrategyType.CUSTOMER);
+    when(offer.isLimitedUsePerCustomer()).thenReturn(true);
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> offerServiceImpl.verifyMaxCustomerUsageThreshold(order, offer));
+    verify(offer).getId();
+    verify(offer).getMaxUsesStrategyType();
+    verify(offer).getMinimumDaysPerUsage();
+    verify(offer).isLimitedUsePerCustomer();
+    verify(offerAuditService).countUsesByCustomer(isA(Order.class), isNull(), eq(1L), eq(1L));
+    verify(order).getCustomer();
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)} with {@code order}, {@code offer}.
    * <ul>
    *   <li>When {@link OfferImpl} (default constructor).</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)}
+   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Order, Offer)"})
   public void testVerifyMaxCustomerUsageThresholdWithOrderOffer_whenOfferImpl_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
     NullOrderImpl order = new NullOrderImpl();
 
     // Act and Assert
@@ -2442,12 +2573,10 @@ public class OfferServiceImplDiffblueTest {
    * Method under test: {@link OfferServiceImpl#getUniqueOffersFromOrder(Order)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Set OfferServiceImpl.getUniqueOffersFromOrder(Order)"})
   public void testGetUniqueOffersFromOrder() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
-
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
     auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
@@ -2472,13 +2601,10 @@ public class OfferServiceImplDiffblueTest {
     fulfillmentGroupImpl.setPrimary(true);
     fulfillmentGroupImpl.setReferenceNumber("42");
     fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
     fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
     fulfillmentGroupImpl.setSequence(1);
     fulfillmentGroupImpl.setService("Service");
     fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
     fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
     fulfillmentGroupImpl.setTaxes(new ArrayList<>());
     fulfillmentGroupImpl.setTotal(new Money());
@@ -2512,7 +2638,6 @@ public class OfferServiceImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setOrderItems(null);
     order.setFulfillmentGroups(fulfillmentGroups);
@@ -2527,12 +2652,10 @@ public class OfferServiceImplDiffblueTest {
    * Method under test: {@link OfferServiceImpl#getUniqueOffersFromOrder(Order)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Set OfferServiceImpl.getUniqueOffersFromOrder(Order)"})
   public void testGetUniqueOffersFromOrder2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
-
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
     auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
@@ -2565,6 +2688,7 @@ public class OfferServiceImplDiffblueTest {
     bundleOrderItemImpl.setOrderItemType(OrderItemType.BASIC);
     bundleOrderItemImpl.setParentOrderItem(new BundleOrderItemImpl());
     bundleOrderItemImpl.setPersonalMessage(new PersonalMessageImpl());
+    bundleOrderItemImpl.setPrice(new Money());
     bundleOrderItemImpl.setProratedOrderItemAdjustments(new ArrayList<>());
     bundleOrderItemImpl.setQuantity(1);
     bundleOrderItemImpl.setRetailPrice(new Money());
@@ -2599,7 +2723,6 @@ public class OfferServiceImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setOrderItems(orderItems);
     order.setFulfillmentGroups(null);
@@ -2610,52 +2733,17 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#getUniqueOffersFromOrder(Order)}.
-   * <p>
-   * Method under test: {@link OfferServiceImpl#getUniqueOffersFromOrder(Order)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetUniqueOffersFromOrder3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass322 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    OfferServiceImpl offerServiceImpl2 = new OfferServiceImpl();
-
-    // Act
-    offerServiceImpl2.getUniqueOffersFromOrder(new NullOrderImpl());
-  }
-
-  /**
-   * Test {@link OfferServiceImpl#getUniqueOffersFromOrder(Order)}.
    * <ul>
-   *   <li>Given {@link BundleOrderItemImpl} (default constructor)
-   * OrderItemPriceDetails is {@code null}.</li>
+   *   <li>Given {@link BundleOrderItemImpl} (default constructor) OrderItemPriceDetails is {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link OfferServiceImpl#getUniqueOffersFromOrder(Order)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Set OfferServiceImpl.getUniqueOffersFromOrder(Order)"})
   public void testGetUniqueOffersFromOrder_givenBundleOrderItemImplOrderItemPriceDetailsIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
-
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
     auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
@@ -2688,6 +2776,7 @@ public class OfferServiceImplDiffblueTest {
     bundleOrderItemImpl.setOrderItemType(OrderItemType.BASIC);
     bundleOrderItemImpl.setParentOrderItem(new BundleOrderItemImpl());
     bundleOrderItemImpl.setPersonalMessage(new PersonalMessageImpl());
+    bundleOrderItemImpl.setPrice(new Money());
     bundleOrderItemImpl.setProratedOrderItemAdjustments(new ArrayList<>());
     bundleOrderItemImpl.setQuantity(1);
     bundleOrderItemImpl.setRetailPrice(new Money());
@@ -2722,7 +2811,6 @@ public class OfferServiceImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setOrderItems(orderItems);
     order.setFulfillmentGroups(null);
@@ -2734,80 +2822,16 @@ public class OfferServiceImplDiffblueTest {
   /**
    * Test {@link OfferServiceImpl#getUniqueOffersFromOrder(Order)}.
    * <ul>
-   *   <li>Then calls {@link NullOrderImpl#getFulfillmentGroups()}.</li>
+   *   <li>When {@link OrderImpl} (default constructor) FulfillmentGroups is {@link ArrayList#ArrayList()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link OfferServiceImpl#getUniqueOffersFromOrder(Order)}
    */
   @Test
-  public void testGetUniqueOffersFromOrder_thenCallsGetFulfillmentGroups() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
-    NullOrderImpl order = mock(NullOrderImpl.class);
-    when(order.getFulfillmentGroups()).thenReturn(new ArrayList<>());
-    when(order.getOrderAdjustments()).thenReturn(new ArrayList<>());
-    when(order.getOrderItems()).thenReturn(new ArrayList<>());
-
-    // Act
-    Set<Offer> actualUniqueOffersFromOrder = offerServiceImpl.getUniqueOffersFromOrder(order);
-
-    // Assert
-    verify(order, atLeast(1)).getFulfillmentGroups();
-    verify(order).getOrderAdjustments();
-    verify(order, atLeast(1)).getOrderItems();
-    assertTrue(actualUniqueOffersFromOrder.isEmpty());
-  }
-
-  /**
-   * Test {@link OfferServiceImpl#getUniqueOffersFromOrder(Order)}.
-   * <ul>
-   *   <li>Then return size is one.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#getUniqueOffersFromOrder(Order)}
-   */
-  @Test
-  public void testGetUniqueOffersFromOrder_thenReturnSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
-
-    ArrayList<OrderAdjustment> orderAdjustmentList = new ArrayList<>();
-    orderAdjustmentList.add(new OrderAdjustmentImpl());
-    NullOrderImpl order = mock(NullOrderImpl.class);
-    when(order.getFulfillmentGroups()).thenReturn(new ArrayList<>());
-    when(order.getOrderAdjustments()).thenReturn(orderAdjustmentList);
-    when(order.getOrderItems()).thenReturn(new ArrayList<>());
-
-    // Act
-    Set<Offer> actualUniqueOffersFromOrder = offerServiceImpl.getUniqueOffersFromOrder(order);
-
-    // Assert
-    verify(order, atLeast(1)).getFulfillmentGroups();
-    verify(order).getOrderAdjustments();
-    verify(order, atLeast(1)).getOrderItems();
-    assertEquals(1, actualUniqueOffersFromOrder.size());
-  }
-
-  /**
-   * Test {@link OfferServiceImpl#getUniqueOffersFromOrder(Order)}.
-   * <ul>
-   *   <li>When {@link OrderImpl} (default constructor) FulfillmentGroups is
-   * {@link ArrayList#ArrayList()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#getUniqueOffersFromOrder(Order)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Set OfferServiceImpl.getUniqueOffersFromOrder(Order)"})
   public void testGetUniqueOffersFromOrder_whenOrderImplFulfillmentGroupsIsArrayList() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
-
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
     auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
@@ -2834,7 +2858,6 @@ public class OfferServiceImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setOrderItems(null);
     order.setFulfillmentGroups(new ArrayList<>());
@@ -2846,20 +2869,17 @@ public class OfferServiceImplDiffblueTest {
   /**
    * Test {@link OfferServiceImpl#getUniqueOffersFromOrder(Order)}.
    * <ul>
-   *   <li>When {@link OrderImpl} (default constructor) OrderItems is
-   * {@link ArrayList#ArrayList()}.</li>
+   *   <li>When {@link OrderImpl} (default constructor) OrderItems is {@link ArrayList#ArrayList()}.</li>
    *   <li>Then return Empty.</li>
    * </ul>
    * <p>
    * Method under test: {@link OfferServiceImpl#getUniqueOffersFromOrder(Order)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Set OfferServiceImpl.getUniqueOffersFromOrder(Order)"})
   public void testGetUniqueOffersFromOrder_whenOrderImplOrderItemsIsArrayList_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
-
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
     auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
@@ -2886,7 +2906,6 @@ public class OfferServiceImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setOrderItems(new ArrayList<>());
     order.setFulfillmentGroups(null);
@@ -2898,20 +2917,17 @@ public class OfferServiceImplDiffblueTest {
   /**
    * Test {@link OfferServiceImpl#getUniqueOffersFromOrder(Order)}.
    * <ul>
-   *   <li>When {@link OrderImpl} (default constructor) OrderItems is
-   * {@code null}.</li>
+   *   <li>When {@link OrderImpl} (default constructor) OrderItems is {@code null}.</li>
    *   <li>Then return Empty.</li>
    * </ul>
    * <p>
    * Method under test: {@link OfferServiceImpl#getUniqueOffersFromOrder(Order)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Set OfferServiceImpl.getUniqueOffersFromOrder(Order)"})
   public void testGetUniqueOffersFromOrder_whenOrderImplOrderItemsIsNull_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
-
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
     auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
@@ -2938,7 +2954,6 @@ public class OfferServiceImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setOrderItems(null);
     order.setFulfillmentGroups(null);
@@ -2948,81 +2963,181 @@ public class OfferServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)} with
-   * {@code codes}, {@code appliedOffers}.
+   * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)} with {@code codes}, {@code appliedOffers}.
    * <p>
-   * Method under test:
-   * {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)}
+   * Method under test: {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map OfferServiceImpl.getOffersRetrievedFromCodes(List, Set)"})
   public void testGetOffersRetrievedFromCodesWithCodesAppliedOffers() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass286 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    OfferServiceImpl offerServiceImpl2 = new OfferServiceImpl();
+    when(offerServiceExtensionManager.getProxy()).thenReturn(new AbstractOfferServiceExtensionHandler());
+
     ArrayList<OfferCode> codes = new ArrayList<>();
+    codes.add(new OfferCodeImpl());
 
     // Act
-    offerServiceImpl2.getOffersRetrievedFromCodes(codes, new HashSet<>());
+    Map<Offer, OfferCode> actualOffersRetrievedFromCodes = offerServiceImpl.getOffersRetrievedFromCodes(codes,
+        new HashSet<>());
+
+    // Assert
+    verify(offerServiceExtensionManager).getProxy();
+    assertTrue(actualOffersRetrievedFromCodes.isEmpty());
   }
 
   /**
-   * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)} with
-   * {@code codes}, {@code appliedOffers}.
-   * <ul>
-   *   <li>Then return Empty.</li>
-   * </ul>
+   * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)} with {@code codes}, {@code appliedOffers}.
    * <p>
-   * Method under test:
-   * {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)}
+   * Method under test: {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)}
    */
   @Test
-  public void testGetOffersRetrievedFromCodesWithCodesAppliedOffers_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map OfferServiceImpl.getOffersRetrievedFromCodes(List, Set)"})
+  public void testGetOffersRetrievedFromCodesWithCodesAppliedOffers2() {
     // Arrange
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
-    ArrayList<OfferCode> codes = new ArrayList<>();
+    when(offerServiceExtensionManager.getProxy()).thenReturn(new OfferServiceExtensionManager());
 
-    // Act and Assert
-    assertTrue(offerServiceImpl.getOffersRetrievedFromCodes(codes, new HashSet<>()).isEmpty());
+    ArrayList<OfferCode> codes = new ArrayList<>();
+    codes.add(new OfferCodeImpl());
+
+    // Act
+    Map<Offer, OfferCode> actualOffersRetrievedFromCodes = offerServiceImpl.getOffersRetrievedFromCodes(codes,
+        new HashSet<>());
+
+    // Assert
+    verify(offerServiceExtensionManager).getProxy();
+    assertTrue(actualOffersRetrievedFromCodes.isEmpty());
   }
 
   /**
-   * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)} with
-   * {@code codes}, {@code appliedOffers}.
-   * <ul>
-   *   <li>Then return Empty.</li>
-   * </ul>
+   * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)} with {@code codes}, {@code appliedOffers}.
    * <p>
-   * Method under test:
-   * {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)}
+   * Method under test: {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)}
    */
   @Test
-  public void testGetOffersRetrievedFromCodesWithCodesAppliedOffers_thenReturnEmpty2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map OfferServiceImpl.getOffersRetrievedFromCodes(List, Set)"})
+  public void testGetOffersRetrievedFromCodesWithCodesAppliedOffers3() {
+    // Arrange
+    when(offerServiceExtensionManager.getProxy()).thenReturn(new AbstractOfferServiceExtensionHandler());
 
+    ArrayList<OfferCode> codes = new ArrayList<>();
+    codes.add(new OfferCodeImpl());
+    codes.add(new OfferCodeImpl());
+
+    // Act
+    Map<Offer, OfferCode> actualOffersRetrievedFromCodes = offerServiceImpl.getOffersRetrievedFromCodes(codes,
+        new HashSet<>());
+
+    // Assert
+    verify(offerServiceExtensionManager, atLeast(1)).getProxy();
+    assertTrue(actualOffersRetrievedFromCodes.isEmpty());
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)} with {@code codes}, {@code appliedOffers}.
+   * <p>
+   * Method under test: {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map OfferServiceImpl.getOffersRetrievedFromCodes(List, Set)"})
+  public void testGetOffersRetrievedFromCodesWithCodesAppliedOffers4() {
+    // Arrange
+    OfferServiceExtensionManager offerServiceExtensionManager2 = new OfferServiceExtensionManager();
+    ArrayList<Offer> offers = new ArrayList<>();
+    offerServiceExtensionManager2.addAdditionalOffersForCode(offers, new OfferCodeImpl());
+    when(offerServiceExtensionManager.getProxy()).thenReturn(offerServiceExtensionManager2);
+
+    ArrayList<OfferCode> codes = new ArrayList<>();
+    codes.add(new OfferCodeImpl());
+
+    // Act
+    Map<Offer, OfferCode> actualOffersRetrievedFromCodes = offerServiceImpl.getOffersRetrievedFromCodes(codes,
+        new HashSet<>());
+
+    // Assert
+    verify(offerServiceExtensionManager).getProxy();
+    assertTrue(actualOffersRetrievedFromCodes.isEmpty());
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)} with {@code codes}, {@code appliedOffers}.
+   * <p>
+   * Method under test: {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map OfferServiceImpl.getOffersRetrievedFromCodes(List, Set)"})
+  public void testGetOffersRetrievedFromCodesWithCodesAppliedOffers5() {
+    // Arrange
+    OfferServiceExtensionManager offerServiceExtensionManager2 = new OfferServiceExtensionManager();
+    offerServiceExtensionManager2.registerHandler(new AbstractOfferServiceExtensionHandler());
+    ArrayList<Offer> offers = new ArrayList<>();
+    offerServiceExtensionManager2.addAdditionalOffersForCode(offers, new OfferCodeImpl());
+    when(offerServiceExtensionManager.getProxy()).thenReturn(offerServiceExtensionManager2);
+
+    ArrayList<OfferCode> codes = new ArrayList<>();
+    codes.add(new OfferCodeImpl());
+
+    // Act
+    Map<Offer, OfferCode> actualOffersRetrievedFromCodes = offerServiceImpl.getOffersRetrievedFromCodes(codes,
+        new HashSet<>());
+
+    // Assert
+    verify(offerServiceExtensionManager).getProxy();
+    assertTrue(actualOffersRetrievedFromCodes.isEmpty());
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)} with {@code codes}, {@code appliedOffers}.
+   * <ul>
+   *   <li>Given {@link OfferImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map OfferServiceImpl.getOffersRetrievedFromCodes(List, Set)"})
+  public void testGetOffersRetrievedFromCodesWithCodesAppliedOffers_givenOfferImpl() {
+    // Arrange
+    when(offerServiceExtensionManager.getProxy()).thenReturn(new AbstractOfferServiceExtensionHandler());
+
+    ArrayList<OfferCode> codes = new ArrayList<>();
+    codes.add(new OfferCodeImpl());
+
+    HashSet<Offer> appliedOffers = new HashSet<>();
+    appliedOffers.add(new OfferImpl());
+
+    // Act
+    Map<Offer, OfferCode> actualOffersRetrievedFromCodes = offerServiceImpl.getOffersRetrievedFromCodes(codes,
+        appliedOffers);
+
+    // Assert
+    verify(offerServiceExtensionManager).getProxy();
+    assertTrue(actualOffersRetrievedFromCodes.isEmpty());
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)} with {@code codes}, {@code appliedOffers}.
+   * <ul>
+   *   <li>Given {@link OfferServiceImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map OfferServiceImpl.getOffersRetrievedFromCodes(List, Set)"})
+  public void testGetOffersRetrievedFromCodesWithCodesAppliedOffers_givenOfferServiceImpl() {
     // Arrange
     OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
     ArrayList<OfferCode> codes = new ArrayList<>();
 
     HashSet<Offer> appliedOffers = new HashSet<>();
+    appliedOffers.add(null);
     appliedOffers.add(new OfferImpl());
 
     // Act and Assert
@@ -3030,167 +3145,312 @@ public class OfferServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(Order)} with
-   * {@code order}.
+   * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)} with {@code codes}, {@code appliedOffers}.
+   * <ul>
+   *   <li>Then return size is one.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link OfferServiceImpl#getOffersRetrievedFromCodes(Order)}
+   * Method under test: {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map OfferServiceImpl.getOffersRetrievedFromCodes(List, Set)"})
+  public void testGetOffersRetrievedFromCodesWithCodesAppliedOffers_thenReturnSizeIsOne() {
+    // Arrange
+    when(offerServiceExtensionManager.getProxy()).thenReturn(new AbstractOfferServiceExtensionHandler());
+    OfferCodeImpl offerCodeImpl = mock(OfferCodeImpl.class);
+    when(offerCodeImpl.getOffer()).thenReturn(new OfferImpl());
+
+    ArrayList<OfferCode> codes = new ArrayList<>();
+    codes.add(offerCodeImpl);
+
+    HashSet<Offer> appliedOffers = new HashSet<>();
+    appliedOffers.add(new OfferImpl());
+
+    // Act
+    Map<Offer, OfferCode> actualOffersRetrievedFromCodes = offerServiceImpl.getOffersRetrievedFromCodes(codes,
+        appliedOffers);
+
+    // Assert
+    verify(offerServiceExtensionManager).getProxy();
+    verify(offerCodeImpl, atLeast(1)).getOffer();
+    assertEquals(1, actualOffersRetrievedFromCodes.size());
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)} with {@code codes}, {@code appliedOffers}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map OfferServiceImpl.getOffersRetrievedFromCodes(List, Set)"})
+  public void testGetOffersRetrievedFromCodesWithCodesAppliedOffers_thenThrowRuntimeException() {
+    // Arrange
+    when(offerServiceExtensionManager.getProxy()).thenThrow(new RuntimeException("foo"));
+
+    ArrayList<OfferCode> codes = new ArrayList<>();
+    codes.add(new OfferCodeImpl());
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> offerServiceImpl.getOffersRetrievedFromCodes(codes, new HashSet<>()));
+    verify(offerServiceExtensionManager).getProxy();
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)} with {@code codes}, {@code appliedOffers}.
+   * <ul>
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map OfferServiceImpl.getOffersRetrievedFromCodes(List, Set)"})
+  public void testGetOffersRetrievedFromCodesWithCodesAppliedOffers_whenArrayList() {
+    // Arrange
+    ArrayList<OfferCode> codes = new ArrayList<>();
+
+    // Act and Assert
+    assertTrue(offerServiceImpl.getOffersRetrievedFromCodes(codes, new HashSet<>()).isEmpty());
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(Order)} with {@code order}.
+   * <p>
+   * Method under test: {@link OfferServiceImpl#getOffersRetrievedFromCodes(Order)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map OfferServiceImpl.getOffersRetrievedFromCodes(Order)"})
   public void testGetOffersRetrievedFromCodesWithOrder() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass301 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    OfferServiceImpl offerServiceImpl2 = new OfferServiceImpl();
+    when(offerServiceExtensionManager.getProxy()).thenReturn(new OfferServiceExtensionManager());
+
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    OrderImpl order = new OrderImpl();
+    order.addAddedOfferCode(new OfferCodeImpl());
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
 
     // Act
-    offerServiceImpl2.getOffersRetrievedFromCodes(new NullOrderImpl());
+    Map<Offer, OfferCode> actualOffersRetrievedFromCodes = offerServiceImpl.getOffersRetrievedFromCodes(order);
+
+    // Assert
+    verify(offerServiceExtensionManager).getProxy();
+    assertTrue(actualOffersRetrievedFromCodes.isEmpty());
   }
 
   /**
-   * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(Order)} with
-   * {@code order}.
+   * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(Order)} with {@code order}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link BundleOrderItemImpl}
-   * (default constructor).</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link BundleOrderItemImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OfferServiceImpl#getOffersRetrievedFromCodes(Order)}
+   * Method under test: {@link OfferServiceImpl#getOffersRetrievedFromCodes(Order)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map OfferServiceImpl.getOffersRetrievedFromCodes(Order)"})
   public void testGetOffersRetrievedFromCodesWithOrder_givenArrayListAddBundleOrderItemImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
+    when(offerServiceExtensionManager.getProxy()).thenReturn(new AbstractOfferServiceExtensionHandler());
 
-    ArrayList<OrderItem> orderItemList = new ArrayList<>();
-    orderItemList.add(new BundleOrderItemImpl());
-    NullOrderImpl order = mock(NullOrderImpl.class);
-    when(order.getAddedOfferCodes()).thenReturn(new ArrayList<>());
-    when(order.getFulfillmentGroups()).thenReturn(new ArrayList<>());
-    when(order.getOrderAdjustments()).thenReturn(new ArrayList<>());
-    when(order.getOrderItems()).thenReturn(orderItemList);
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(new BundleOrderItemImpl());
+
+    OrderImpl order = new OrderImpl();
+    order.addAddedOfferCode(new OfferCodeImpl());
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(orderItems);
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
 
     // Act
     Map<Offer, OfferCode> actualOffersRetrievedFromCodes = offerServiceImpl.getOffersRetrievedFromCodes(order);
 
     // Assert
-    verify(order).getAddedOfferCodes();
-    verify(order, atLeast(1)).getFulfillmentGroups();
-    verify(order).getOrderAdjustments();
-    verify(order, atLeast(1)).getOrderItems();
+    verify(offerServiceExtensionManager).getProxy();
     assertTrue(actualOffersRetrievedFromCodes.isEmpty());
   }
 
   /**
-   * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(Order)} with
-   * {@code order}.
+   * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(Order)} with {@code order}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link FulfillmentGroupImpl}
-   * (default constructor).</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link FulfillmentGroupImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OfferServiceImpl#getOffersRetrievedFromCodes(Order)}
+   * Method under test: {@link OfferServiceImpl#getOffersRetrievedFromCodes(Order)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map OfferServiceImpl.getOffersRetrievedFromCodes(Order)"})
   public void testGetOffersRetrievedFromCodesWithOrder_givenArrayListAddFulfillmentGroupImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
+    when(offerServiceExtensionManager.getProxy()).thenReturn(new AbstractOfferServiceExtensionHandler());
 
-    ArrayList<FulfillmentGroup> fulfillmentGroupList = new ArrayList<>();
-    fulfillmentGroupList.add(new FulfillmentGroupImpl());
-    NullOrderImpl order = mock(NullOrderImpl.class);
-    when(order.getAddedOfferCodes()).thenReturn(new ArrayList<>());
-    when(order.getFulfillmentGroups()).thenReturn(fulfillmentGroupList);
-    when(order.getOrderAdjustments()).thenReturn(new ArrayList<>());
-    when(order.getOrderItems()).thenReturn(new ArrayList<>());
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    ArrayList<FulfillmentGroup> fulfillmentGroups = new ArrayList<>();
+    fulfillmentGroups.add(new FulfillmentGroupImpl());
+
+    OrderImpl order = new OrderImpl();
+    order.addAddedOfferCode(new OfferCodeImpl());
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(fulfillmentGroups);
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
 
     // Act
     Map<Offer, OfferCode> actualOffersRetrievedFromCodes = offerServiceImpl.getOffersRetrievedFromCodes(order);
 
     // Assert
-    verify(order).getAddedOfferCodes();
-    verify(order, atLeast(1)).getFulfillmentGroups();
-    verify(order).getOrderAdjustments();
-    verify(order, atLeast(1)).getOrderItems();
+    verify(offerServiceExtensionManager).getProxy();
     assertTrue(actualOffersRetrievedFromCodes.isEmpty());
   }
 
   /**
-   * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(Order)} with
-   * {@code order}.
+   * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(Order)} with {@code order}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link OrderAdjustmentImpl}
-   * (default constructor).</li>
+   *   <li>Then calls {@link ExtensionManager#getProxy()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OfferServiceImpl#getOffersRetrievedFromCodes(Order)}
+   * Method under test: {@link OfferServiceImpl#getOffersRetrievedFromCodes(Order)}
    */
   @Test
-  public void testGetOffersRetrievedFromCodesWithOrder_givenArrayListAddOrderAdjustmentImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map OfferServiceImpl.getOffersRetrievedFromCodes(Order)"})
+  public void testGetOffersRetrievedFromCodesWithOrder_thenCallsGetProxy() {
     // Arrange
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
+    when(offerServiceExtensionManager.getProxy()).thenReturn(new AbstractOfferServiceExtensionHandler());
 
-    ArrayList<OrderAdjustment> orderAdjustmentList = new ArrayList<>();
-    orderAdjustmentList.add(new OrderAdjustmentImpl());
-    NullOrderImpl order = mock(NullOrderImpl.class);
-    when(order.getAddedOfferCodes()).thenReturn(new ArrayList<>());
-    when(order.getFulfillmentGroups()).thenReturn(new ArrayList<>());
-    when(order.getOrderAdjustments()).thenReturn(orderAdjustmentList);
-    when(order.getOrderItems()).thenReturn(new ArrayList<>());
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    OrderImpl order = new OrderImpl();
+    order.addAddedOfferCode(new OfferCodeImpl());
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
 
     // Act
     Map<Offer, OfferCode> actualOffersRetrievedFromCodes = offerServiceImpl.getOffersRetrievedFromCodes(order);
 
     // Assert
-    verify(order).getAddedOfferCodes();
-    verify(order, atLeast(1)).getFulfillmentGroups();
-    verify(order).getOrderAdjustments();
-    verify(order, atLeast(1)).getOrderItems();
+    verify(offerServiceExtensionManager).getProxy();
     assertTrue(actualOffersRetrievedFromCodes.isEmpty());
   }
 
   /**
-   * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(Order)} with
-   * {@code order}.
+   * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(Order)} with {@code order}.
    * <ul>
-   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.</li>
+   *   <li>Then return Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OfferServiceImpl#getOffersRetrievedFromCodes(Order)}
+   * Method under test: {@link OfferServiceImpl#getOffersRetrievedFromCodes(Order)}
    */
   @Test
-  public void testGetOffersRetrievedFromCodesWithOrder_givenAuditableCreatedByIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map OfferServiceImpl.getOffersRetrievedFromCodes(Order)"})
+  public void testGetOffersRetrievedFromCodesWithOrder_thenReturnEmpty() {
     // Arrange
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
-
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
     auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
@@ -3219,7 +3479,6 @@ public class OfferServiceImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
 
     // Act and Assert
@@ -3227,88 +3486,46 @@ public class OfferServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(Order)} with
-   * {@code order}.
-   * <ul>
-   *   <li>Then calls {@link NullOrderImpl#getAddedOfferCodes()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link OfferServiceImpl#getOffersRetrievedFromCodes(Order)}
-   */
-  @Test
-  public void testGetOffersRetrievedFromCodesWithOrder_thenCallsGetAddedOfferCodes() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
-    NullOrderImpl order = mock(NullOrderImpl.class);
-    when(order.getAddedOfferCodes()).thenReturn(new ArrayList<>());
-    when(order.getFulfillmentGroups()).thenReturn(new ArrayList<>());
-    when(order.getOrderAdjustments()).thenReturn(new ArrayList<>());
-    when(order.getOrderItems()).thenReturn(new ArrayList<>());
-
-    // Act
-    Map<Offer, OfferCode> actualOffersRetrievedFromCodes = offerServiceImpl.getOffersRetrievedFromCodes(order);
-
-    // Assert
-    verify(order).getAddedOfferCodes();
-    verify(order, atLeast(1)).getFulfillmentGroups();
-    verify(order).getOrderAdjustments();
-    verify(order, atLeast(1)).getOrderItems();
-    assertTrue(actualOffersRetrievedFromCodes.isEmpty());
-  }
-
-  /**
    * Test {@link OfferServiceImpl#deleteOfferCode(OfferCode)}.
+   * <ul>
+   *   <li>Given {@link OfferCodeDao} {@link OfferCodeDao#offerCodeIsUsed(OfferCode)} return {@code false}.</li>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link OfferServiceImpl#deleteOfferCode(OfferCode)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testDeleteOfferCode() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass172 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean OfferServiceImpl.deleteOfferCode(OfferCode)"})
+  public void testDeleteOfferCode_givenOfferCodeDaoOfferCodeIsUsedReturnFalse_thenReturnTrue() {
     // Arrange
-    OfferServiceImpl offerServiceImpl2 = new OfferServiceImpl();
+    when(offerCodeDao.offerCodeIsUsed(Mockito.<OfferCode>any())).thenReturn(false);
+    doNothing().when(offerCodeDao).delete(Mockito.<OfferCode>any());
 
     // Act
-    offerServiceImpl2.deleteOfferCode(new OfferCodeImpl());
+    Boolean actualDeleteOfferCodeResult = offerServiceImpl.deleteOfferCode(new OfferCodeImpl());
+
+    // Assert
+    verify(offerCodeDao).delete(isA(OfferCode.class));
+    verify(offerCodeDao).offerCodeIsUsed(isA(OfferCode.class));
+    assertTrue(actualDeleteOfferCodeResult);
   }
 
   /**
    * Test {@link OfferServiceImpl#deleteOfferCode(OfferCode)}.
    * <ul>
+   *   <li>Given {@link OfferCodeDao} {@link OfferCodeDao#offerCodeIsUsed(OfferCode)} return {@code true}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link OfferServiceImpl#deleteOfferCode(OfferCode)}
    */
   @Test
-  public void testDeleteOfferCode_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean OfferServiceImpl.deleteOfferCode(OfferCode)"})
+  public void testDeleteOfferCode_givenOfferCodeDaoOfferCodeIsUsedReturnTrue_thenReturnFalse() {
     // Arrange
-    OfferCodeDaoImpl offerCodeDao = mock(OfferCodeDaoImpl.class);
     when(offerCodeDao.offerCodeIsUsed(Mockito.<OfferCode>any())).thenReturn(true);
-
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
-    offerServiceImpl.setOfferCodeDao(offerCodeDao);
 
     // Act
     Boolean actualDeleteOfferCodeResult = offerServiceImpl.deleteOfferCode(new OfferCodeImpl());
@@ -3321,59 +3538,100 @@ public class OfferServiceImplDiffblueTest {
   /**
    * Test {@link OfferServiceImpl#deleteOfferCode(OfferCode)}.
    * <ul>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
    * <p>
    * Method under test: {@link OfferServiceImpl#deleteOfferCode(OfferCode)}
    */
   @Test
-  public void testDeleteOfferCode_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean OfferServiceImpl.deleteOfferCode(OfferCode)"})
+  public void testDeleteOfferCode_thenThrowRuntimeException() {
     // Arrange
-    OfferCodeDaoImpl offerCodeDao = mock(OfferCodeDaoImpl.class);
-    when(offerCodeDao.offerCodeIsUsed(Mockito.<OfferCode>any())).thenReturn(false);
-    doNothing().when(offerCodeDao).delete(Mockito.<OfferCode>any());
+    when(offerCodeDao.offerCodeIsUsed(Mockito.<OfferCode>any())).thenThrow(new RuntimeException("foo"));
 
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
-    offerServiceImpl.setOfferCodeDao(offerCodeDao);
-
-    // Act
-    Boolean actualDeleteOfferCodeResult = offerServiceImpl.deleteOfferCode(new OfferCodeImpl());
-
-    // Assert
-    verify(offerCodeDao).delete(isA(OfferCode.class));
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> offerServiceImpl.deleteOfferCode(new OfferCodeImpl()));
     verify(offerCodeDao).offerCodeIsUsed(isA(OfferCode.class));
-    assertTrue(actualDeleteOfferCodeResult);
   }
 
   /**
    * Test {@link OfferServiceImpl#duplicate(Long)}.
+   * <ul>
+   *   <li>Given {@link OfferImpl} (default constructor) AdjustmentType is {@link OfferAdjustmentType#FUTURE_CREDIT}.</li>
+   *   <li>Then return {@link OfferImpl} (default constructor).</li>
+   * </ul>
    * <p>
    * Method under test: {@link OfferServiceImpl#duplicate(Long)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testDuplicate() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass195 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Offer OfferServiceImpl.duplicate(Long)"})
+  public void testDuplicate_givenOfferImplAdjustmentTypeIsFuture_credit_thenReturnOfferImpl() {
+    // Arrange
+    OfferImpl offerImpl = new OfferImpl();
+    offerImpl.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
+    offerImpl.setApplyDiscountToSalePrice(true);
+    offerImpl.setApplyToChildItems(true);
+    offerImpl.setAutomaticallyAdded(true);
+    offerImpl.setCombinableWithOtherOffers(true);
+    offerImpl.setDescription("The characteristics of someone or something");
+    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
+    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl.setId(OfferImpl.serialVersionUID);
+    offerImpl.setMarketingMessage("Marketing Message");
+    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
+    offerImpl.setMaxUsesPerOrder(3);
+    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
+    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
+    offerImpl.setName("Name");
+    offerImpl.setOfferCodes(new ArrayList<>());
+    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl.setOfferMatchRulesXref(new HashMap<>());
+    offerImpl.setOfferPriceData(new ArrayList<>());
+    offerImpl.setOrderMinSubTotal(new Money());
+    offerImpl.setPriority(1);
+    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
+    offerImpl.setQualifyingItemSubTotal(new Money());
+    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
+    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
+    offerImpl.setTargetMinSubTotal(new Money());
+    offerImpl.setTargetSystem("Target System");
+    offerImpl.setTotalitarianOffer(true);
+    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
+    offerImpl.setUseListForDiscounts(true);
+    offerImpl.setValue(new BigDecimal("2.3"));
+    when(entityDuplicator.copy(Mockito.<Class<OfferImpl>>any(), Mockito.<Long>any())).thenReturn(offerImpl);
 
-    // Arrange and Act
-    (new OfferServiceImpl()).duplicate(1L);
+    // Act
+    Offer actualDuplicateResult = offerServiceImpl.duplicate(1L);
+
+    // Assert
+    verify(entityDuplicator).copy(isA(Class.class), eq(1L));
+    assertSame(offerImpl, actualDuplicateResult);
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#duplicate(Long)}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferServiceImpl#duplicate(Long)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Offer OfferServiceImpl.duplicate(Long)"})
+  public void testDuplicate_thenThrowRuntimeException() {
+    // Arrange
+    when(entityDuplicator.copy(Mockito.<Class<OfferImpl>>any(), Mockito.<Long>any()))
+        .thenThrow(new RuntimeException("foo"));
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> offerServiceImpl.duplicate(1L));
+    verify(entityDuplicator).copy(isA(Class.class), eq(1L));
   }
 
   /**
@@ -3382,8 +3640,7 @@ public class OfferServiceImplDiffblueTest {
    * Methods under test:
    * <ul>
    *   <li>{@link OfferServiceImpl#setCustomerOfferDao(CustomerOfferDao)}
-   *   <li>
-   * {@link OfferServiceImpl#setFulfillmentGroupOfferProcessor(FulfillmentGroupOfferProcessor)}
+   *   <li>{@link OfferServiceImpl#setFulfillmentGroupOfferProcessor(FulfillmentGroupOfferProcessor)}
    *   <li>{@link OfferServiceImpl#setItemOfferProcessor(ItemOfferProcessor)}
    *   <li>{@link OfferServiceImpl#setOfferCodeDao(OfferCodeDao)}
    *   <li>{@link OfferServiceImpl#setOfferDao(OfferDao)}
@@ -3401,6 +3658,20 @@ public class OfferServiceImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CustomerOfferDao OfferServiceImpl.getCustomerOfferDao()",
+      "FulfillmentGroupOfferProcessor OfferServiceImpl.getFulfillmentGroupOfferProcessor()",
+      "ItemOfferProcessor OfferServiceImpl.getItemOfferProcessor()", "OfferCodeDao OfferServiceImpl.getOfferCodeDao()",
+      "OfferDao OfferServiceImpl.getOfferDao()", "OrderOfferProcessor OfferServiceImpl.getOrderOfferProcessor()",
+      "OrderService OfferServiceImpl.getOrderService()",
+      "PromotableItemFactory OfferServiceImpl.getPromotableItemFactory()",
+      "void OfferServiceImpl.setCustomerOfferDao(CustomerOfferDao)",
+      "void OfferServiceImpl.setFulfillmentGroupOfferProcessor(FulfillmentGroupOfferProcessor)",
+      "void OfferServiceImpl.setItemOfferProcessor(ItemOfferProcessor)",
+      "void OfferServiceImpl.setOfferCodeDao(OfferCodeDao)", "void OfferServiceImpl.setOfferDao(OfferDao)",
+      "void OfferServiceImpl.setOrderOfferProcessor(OrderOfferProcessor)",
+      "void OfferServiceImpl.setOrderService(OrderService)",
+      "void OfferServiceImpl.setPromotableItemFactory(PromotableItemFactory)"})
   public void testGettersAndSetters() {
     // Arrange
     OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
@@ -3434,7 +3705,7 @@ public class OfferServiceImplDiffblueTest {
     OrderService actualOrderService = offerServiceImpl.getOrderService();
     PromotableItemFactory actualPromotableItemFactory = offerServiceImpl.getPromotableItemFactory();
 
-    // Assert that nothing has changed
+    // Assert
     assertTrue(actualCustomerOfferDao instanceof CustomerOfferDaoImpl);
     assertTrue(actualOfferCodeDao instanceof OfferCodeDaoImpl);
     assertTrue(actualOfferDao instanceof OfferDaoImpl);
@@ -3451,35 +3722,6 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#findOfferCodeById(Long)}.
-   * <p>
-   * Method under test: {@link OfferServiceImpl#findOfferCodeById(Long)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindOfferCodeById() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass250 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferServiceImpl()).findOfferCodeById(1L);
-  }
-
-  /**
-   * Test {@link OfferServiceImpl#findOfferCodeById(Long)}.
    * <ul>
    *   <li>Then return {@link OfferCodeImpl} (default constructor).</li>
    * </ul>
@@ -3487,16 +3729,12 @@ public class OfferServiceImplDiffblueTest {
    * Method under test: {@link OfferServiceImpl#findOfferCodeById(Long)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OfferCode OfferServiceImpl.findOfferCodeById(Long)"})
   public void testFindOfferCodeById_thenReturnOfferCodeImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OfferCodeDaoImpl offerCodeDao = mock(OfferCodeDaoImpl.class);
     OfferCodeImpl offerCodeImpl = new OfferCodeImpl();
     when(offerCodeDao.readOfferCodeById(Mockito.<Long>any())).thenReturn(offerCodeImpl);
-
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
-    offerServiceImpl.setOfferCodeDao(offerCodeDao);
 
     // Act
     OfferCode actualFindOfferCodeByIdResult = offerServiceImpl.findOfferCodeById(1L);
@@ -3507,55 +3745,117 @@ public class OfferServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link OfferServiceImpl#findOfferCodesByIds(Collection)}.
+   * Test {@link OfferServiceImpl#findOfferCodeById(Long)}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
    * <p>
-   * Method under test: {@link OfferServiceImpl#findOfferCodesByIds(Collection)}
+   * Method under test: {@link OfferServiceImpl#findOfferCodeById(Long)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindOfferCodesByIds() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass273 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OfferCode OfferServiceImpl.findOfferCodeById(Long)"})
+  public void testFindOfferCodeById_thenThrowRuntimeException() {
     // Arrange
-    OfferServiceImpl offerServiceImpl2 = new OfferServiceImpl();
+    when(offerCodeDao.readOfferCodeById(Mockito.<Long>any())).thenThrow(new RuntimeException("foo"));
 
-    // Act
-    offerServiceImpl2.findOfferCodesByIds(new ArrayList<>());
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> offerServiceImpl.findOfferCodeById(1L));
+    verify(offerCodeDao).readOfferCodeById(eq(1L));
   }
 
   /**
    * Test {@link OfferServiceImpl#findOfferCodesByIds(Collection)}.
    * <ul>
+   *   <li>Given one.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add one.</li>
    *   <li>Then return Empty.</li>
    * </ul>
    * <p>
    * Method under test: {@link OfferServiceImpl#findOfferCodesByIds(Collection)}
    */
   @Test
-  public void testFindOfferCodesByIds_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List OfferServiceImpl.findOfferCodesByIds(Collection)"})
+  public void testFindOfferCodesByIds_givenOne_whenArrayListAddOne_thenReturnEmpty() {
     // Arrange
-    OfferCodeDaoImpl offerCodeDao = mock(OfferCodeDaoImpl.class);
     when(offerCodeDao.readOfferCodesByIds(Mockito.<Collection<Long>>any())).thenReturn(new ArrayList<>());
 
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
-    offerServiceImpl.setOfferCodeDao(offerCodeDao);
+    ArrayList<Long> ids = new ArrayList<>();
+    ids.add(1L);
+
+    // Act
+    List<OfferCode> actualFindOfferCodesByIdsResult = offerServiceImpl.findOfferCodesByIds(ids);
+
+    // Assert
+    verify(offerCodeDao).readOfferCodesByIds(isA(Collection.class));
+    assertTrue(actualFindOfferCodesByIdsResult.isEmpty());
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#findOfferCodesByIds(Collection)}.
+   * <ul>
+   *   <li>Given zero.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add zero.</li>
+   *   <li>Then return Empty.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferServiceImpl#findOfferCodesByIds(Collection)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List OfferServiceImpl.findOfferCodesByIds(Collection)"})
+  public void testFindOfferCodesByIds_givenZero_whenArrayListAddZero_thenReturnEmpty() {
+    // Arrange
+    when(offerCodeDao.readOfferCodesByIds(Mockito.<Collection<Long>>any())).thenReturn(new ArrayList<>());
+
+    ArrayList<Long> ids = new ArrayList<>();
+    ids.add(0L);
+    ids.add(1L);
+
+    // Act
+    List<OfferCode> actualFindOfferCodesByIdsResult = offerServiceImpl.findOfferCodesByIds(ids);
+
+    // Assert
+    verify(offerCodeDao).readOfferCodesByIds(isA(Collection.class));
+    assertTrue(actualFindOfferCodesByIdsResult.isEmpty());
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#findOfferCodesByIds(Collection)}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferServiceImpl#findOfferCodesByIds(Collection)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List OfferServiceImpl.findOfferCodesByIds(Collection)"})
+  public void testFindOfferCodesByIds_thenThrowRuntimeException() {
+    // Arrange
+    when(offerCodeDao.readOfferCodesByIds(Mockito.<Collection<Long>>any())).thenThrow(new RuntimeException("foo"));
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> offerServiceImpl.findOfferCodesByIds(new ArrayList<>()));
+    verify(offerCodeDao).readOfferCodesByIds(isA(Collection.class));
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#findOfferCodesByIds(Collection)}.
+   * <ul>
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then return Empty.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferServiceImpl#findOfferCodesByIds(Collection)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List OfferServiceImpl.findOfferCodesByIds(Collection)"})
+  public void testFindOfferCodesByIds_whenArrayList_thenReturnEmpty() {
+    // Arrange
+    when(offerCodeDao.readOfferCodesByIds(Mockito.<Collection<Long>>any())).thenReturn(new ArrayList<>());
 
     // Act
     List<OfferCode> actualFindOfferCodesByIdsResult = offerServiceImpl.findOfferCodesByIds(new ArrayList<>());
@@ -3567,52 +3867,20 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#findOfferById(Long)}.
-   * <p>
-   * Method under test: {@link OfferServiceImpl#findOfferById(Long)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindOfferById() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass227 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferServiceImpl()).findOfferById(1L);
-  }
-
-  /**
-   * Test {@link OfferServiceImpl#findOfferById(Long)}.
    * <ul>
+   *   <li>Given {@link OfferDao} {@link OfferDao#readOfferById(Long)} return {@link OfferImpl} (default constructor).</li>
    *   <li>Then return {@link OfferImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link OfferServiceImpl#findOfferById(Long)}
    */
   @Test
-  public void testFindOfferById_thenReturnOfferImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Offer OfferServiceImpl.findOfferById(Long)"})
+  public void testFindOfferById_givenOfferDaoReadOfferByIdReturnOfferImpl_thenReturnOfferImpl() {
     // Arrange
-    OfferDaoImpl offerDao = mock(OfferDaoImpl.class);
     OfferImpl offerImpl = new OfferImpl();
     when(offerDao.readOfferById(Mockito.<Long>any())).thenReturn(offerImpl);
-
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
-    offerServiceImpl.setOfferDao(offerDao);
 
     // Act
     Offer actualFindOfferByIdResult = offerServiceImpl.findOfferById(1L);
@@ -3620,5 +3888,25 @@ public class OfferServiceImplDiffblueTest {
     // Assert
     verify(offerDao).readOfferById(eq(1L));
     assertSame(offerImpl, actualFindOfferByIdResult);
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#findOfferById(Long)}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferServiceImpl#findOfferById(Long)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Offer OfferServiceImpl.findOfferById(Long)"})
+  public void testFindOfferById_thenThrowRuntimeException() {
+    // Arrange
+    when(offerDao.readOfferById(Mockito.<Long>any())).thenThrow(new RuntimeException("foo"));
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> offerServiceImpl.findOfferById(1L));
+    verify(offerDao).readOfferById(eq(1L));
   }
 }

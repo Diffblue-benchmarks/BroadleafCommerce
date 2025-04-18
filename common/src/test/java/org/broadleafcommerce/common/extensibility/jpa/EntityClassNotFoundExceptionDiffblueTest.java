@@ -20,20 +20,25 @@ package org.broadleafcommerce.common.extensibility.jpa;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class EntityClassNotFoundExceptionDiffblueTest {
   /**
-   * Test
-   * {@link EntityClassNotFoundException#EntityClassNotFoundException(Throwable)}.
+   * Test {@link EntityClassNotFoundException#EntityClassNotFoundException(Throwable)}.
    * <ul>
-   *   <li>Then return Message is {@code java.lang.Throwable}.</li>
+   *   <li>Then return Message is {@code Throwable}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link EntityClassNotFoundException#EntityClassNotFoundException(Throwable)}
+   * Method under test: {@link EntityClassNotFoundException#EntityClassNotFoundException(Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void EntityClassNotFoundException.<init>()", "void EntityClassNotFoundException.<init>(String)",
+      "void EntityClassNotFoundException.<init>(String, Throwable)",
+      "void EntityClassNotFoundException.<init>(Throwable)"})
   public void testNewEntityClassNotFoundException_thenReturnMessageIsJavaLangThrowable() {
     // Arrange
     Throwable arg0 = new Throwable();
@@ -53,10 +58,13 @@ public class EntityClassNotFoundExceptionDiffblueTest {
    *   <li>Then return Message is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link EntityClassNotFoundException#EntityClassNotFoundException()}
+   * Method under test: {@link EntityClassNotFoundException#EntityClassNotFoundException()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void EntityClassNotFoundException.<init>()", "void EntityClassNotFoundException.<init>(String)",
+      "void EntityClassNotFoundException.<init>(String, Throwable)",
+      "void EntityClassNotFoundException.<init>(Throwable)"})
   public void testNewEntityClassNotFoundException_thenReturnMessageIsNull() {
     // Arrange and Act
     EntityClassNotFoundException actualEntityClassNotFoundException = new EntityClassNotFoundException();
@@ -68,17 +76,19 @@ public class EntityClassNotFoundExceptionDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link EntityClassNotFoundException#EntityClassNotFoundException(String)}.
+   * Test {@link EntityClassNotFoundException#EntityClassNotFoundException(String)}.
    * <ul>
    *   <li>When {@code Arg0}.</li>
    *   <li>Then return Message is {@code Arg0}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link EntityClassNotFoundException#EntityClassNotFoundException(String)}
+   * Method under test: {@link EntityClassNotFoundException#EntityClassNotFoundException(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void EntityClassNotFoundException.<init>()", "void EntityClassNotFoundException.<init>(String)",
+      "void EntityClassNotFoundException.<init>(String, Throwable)",
+      "void EntityClassNotFoundException.<init>(Throwable)"})
   public void testNewEntityClassNotFoundException_whenArg0_thenReturnMessageIsArg0() {
     // Arrange and Act
     EntityClassNotFoundException actualEntityClassNotFoundException = new EntityClassNotFoundException("Arg0");
@@ -90,17 +100,19 @@ public class EntityClassNotFoundExceptionDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link EntityClassNotFoundException#EntityClassNotFoundException(String, Throwable)}.
+   * Test {@link EntityClassNotFoundException#EntityClassNotFoundException(String, Throwable)}.
    * <ul>
    *   <li>When {@code Arg0}.</li>
    *   <li>Then return Message is {@code Arg0}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link EntityClassNotFoundException#EntityClassNotFoundException(String, Throwable)}
+   * Method under test: {@link EntityClassNotFoundException#EntityClassNotFoundException(String, Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void EntityClassNotFoundException.<init>()", "void EntityClassNotFoundException.<init>(String)",
+      "void EntityClassNotFoundException.<init>(String, Throwable)",
+      "void EntityClassNotFoundException.<init>(Throwable)"})
   public void testNewEntityClassNotFoundException_whenArg0_thenReturnMessageIsArg02() {
     // Arrange
     Throwable arg1 = new Throwable();

@@ -1,13 +1,28 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.server.security.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -15,73 +30,21 @@ import java.util.Set;
 import org.broadleafcommerce.common.sandbox.domain.SandBox;
 import org.broadleafcommerce.common.sandbox.domain.SandBoxImpl;
 import org.broadleafcommerce.openadmin.server.service.type.ContextType;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-open-admin-applicationContext-entity.xml",
-    "/applicationContext-servlet-open-admin.xml", "/bl-open-admin-contentClient-applicationContext.xml",
-    "/bl-open-admin-contentCreator-applicationContext.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+@ContextConfiguration(locations = {"/bl-open-admin-applicationContext-entity.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class AdminUserImplDiffblueTest {
   @Autowired
   private AdminUserImpl adminUserImpl;
-
-  /**
-   * Test {@link AdminUserImpl#getFlatAdditionalFields()}.
-   * <p>
-   * Method under test: {@link AdminUserImpl#getFlatAdditionalFields()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetFlatAdditionalFields() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-open-admin-applicationContext-entity.xml","/applicationContext-servlet-open-admin.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass32 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.domain.AdminUserImpl adminUserImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new AdminUserImpl()).getFlatAdditionalFields();
-  }
-
-  /**
-   * Test {@link AdminUserImpl#getFlatAdditionalFields()}.
-   * <ul>
-   *   <li>Given {@link AdminUserImpl} (default constructor) OverrideSandBox is
-   * {@link SandBoxImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AdminUserImpl#getFlatAdditionalFields()}
-   */
-  @Test
-  public void testGetFlatAdditionalFields_givenAdminUserImplOverrideSandBoxIsSandBoxImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdminUserImpl adminUserImpl = new AdminUserImpl();
-    adminUserImpl.setOverrideSandBox(mock(SandBoxImpl.class));
-
-    // Act and Assert
-    assertTrue(adminUserImpl.getFlatAdditionalFields().isEmpty());
-  }
 
   /**
    * Test {@link AdminUserImpl#getFlatAdditionalFields()}.
@@ -93,9 +56,9 @@ public class AdminUserImplDiffblueTest {
    * Method under test: {@link AdminUserImpl#getFlatAdditionalFields()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map AdminUserImpl.getFlatAdditionalFields()"})
   public void testGetFlatAdditionalFields_givenAdminUserImpl_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertTrue((new AdminUserImpl()).getFlatAdditionalFields().isEmpty());
   }
@@ -109,18 +72,18 @@ public class AdminUserImplDiffblueTest {
    * Method under test: {@link AdminUserImpl#getFlatAdditionalFields()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map AdminUserImpl.getFlatAdditionalFields()"})
   public void testGetFlatAdditionalFields_thenReturnSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     HashMap<String, AdminUserAttribute> additionalFields = new HashMap<>();
     additionalFields.put("foo", new AdminUserAttributeImpl());
 
-    AdminUserImpl adminUserImpl = new AdminUserImpl();
-    adminUserImpl.setAdditionalFields(additionalFields);
+    AdminUserImpl adminUserImpl2 = new AdminUserImpl();
+    adminUserImpl2.setAdditionalFields(additionalFields);
 
     // Act
-    Map<String, String> actualFlatAdditionalFields = adminUserImpl.getFlatAdditionalFields();
+    Map<String, String> actualFlatAdditionalFields = adminUserImpl2.getFlatAdditionalFields();
 
     // Assert
     assertEquals(1, actualFlatAdditionalFields.size());
@@ -129,66 +92,43 @@ public class AdminUserImplDiffblueTest {
 
   /**
    * Test {@link AdminUserImpl#getLastUsedSandBoxId()}.
-   * <p>
-   * Method under test: {@link AdminUserImpl#getLastUsedSandBoxId()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetLastUsedSandBoxId() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-open-admin-applicationContext-entity.xml","/applicationContext-servlet-open-admin.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass46 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.domain.AdminUserImpl adminUserImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new AdminUserImpl()).getLastUsedSandBoxId();
-  }
-
-  /**
-   * Test {@link AdminUserImpl#getLastUsedSandBoxId()}.
    * <ul>
-   *   <li>Given {@link AdminUserImpl} (default constructor) OverrideSandBox is
-   * {@link SandBox}.</li>
+   *   <li>Given {@link AdminUserAttributeImpl} (default constructor) Value is space.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link AdminUserImpl#getLastUsedSandBoxId()}
    */
   @Test
-  public void testGetLastUsedSandBoxId_givenAdminUserImplOverrideSandBoxIsSandBox() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long AdminUserImpl.getLastUsedSandBoxId()"})
+  public void testGetLastUsedSandBoxId_givenAdminUserAttributeImplValueIsSpace_thenReturnNull() {
     // Arrange
-    HashMap<String, AdminUserAttribute> additionalFields = new HashMap<>();
-    additionalFields.put("LAST_USED_SANDBOX", new AdminUserAttributeImpl());
+    AdminUserAttributeImpl adminUserAttributeImpl = new AdminUserAttributeImpl();
+    adminUserAttributeImpl.setAdminUser(new AdminUserImpl());
+    adminUserAttributeImpl.setId(1L);
+    adminUserAttributeImpl.setName("Name");
+    adminUserAttributeImpl.setValue(" ");
 
-    AdminUserImpl adminUserImpl = new AdminUserImpl();
-    adminUserImpl.setActiveStatusFlag(true);
-    adminUserImpl.setAllPermissions(new HashSet<>());
-    adminUserImpl.setAllRoles(new HashSet<>());
-    adminUserImpl.setEmail("jane.doe@example.org");
-    adminUserImpl.setId(1L);
-    adminUserImpl.setLogin("Login");
-    adminUserImpl.setName("Name");
-    adminUserImpl.setOverrideSandBox(mock(SandBox.class));
-    adminUserImpl.setPassword("iloveyou");
-    adminUserImpl.setPhoneNumber("6625550144");
-    adminUserImpl.setUnencodedPassword("secret");
-    adminUserImpl.setAdditionalFields(additionalFields);
+    HashMap<String, AdminUserAttribute> additionalFields = new HashMap<>();
+    additionalFields.put("LAST_USED_SANDBOX", adminUserAttributeImpl);
+
+    AdminUserImpl adminUserImpl2 = new AdminUserImpl();
+    adminUserImpl2.setActiveStatusFlag(true);
+    adminUserImpl2.setAllPermissions(new HashSet<>());
+    adminUserImpl2.setAllRoles(new HashSet<>());
+    adminUserImpl2.setEmail("jane.doe@example.org");
+    adminUserImpl2.setId(1L);
+    adminUserImpl2.setLogin("Login");
+    adminUserImpl2.setName("Name");
+    adminUserImpl2.setOverrideSandBox(new SandBoxImpl());
+    adminUserImpl2.setPassword("iloveyou");
+    adminUserImpl2.setPhoneNumber("6625550144");
+    adminUserImpl2.setUnencodedPassword("secret");
+    adminUserImpl2.setAdditionalFields(additionalFields);
 
     // Act and Assert
-    assertNull(adminUserImpl.getLastUsedSandBoxId());
+    assertNull(adminUserImpl2.getLastUsedSandBoxId());
   }
 
   /**
@@ -201,9 +141,9 @@ public class AdminUserImplDiffblueTest {
    * Method under test: {@link AdminUserImpl#getLastUsedSandBoxId()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long AdminUserImpl.getLastUsedSandBoxId()"})
   public void testGetLastUsedSandBoxId_givenAdminUserImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new AdminUserImpl()).getLastUsedSandBoxId());
   }
@@ -211,219 +151,106 @@ public class AdminUserImplDiffblueTest {
   /**
    * Test {@link AdminUserImpl#getLastUsedSandBoxId()}.
    * <ul>
-   *   <li>Then return longValue is forty-two.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AdminUserImpl#getLastUsedSandBoxId()}
-   */
-  @Test
-  public void testGetLastUsedSandBoxId_thenReturnLongValueIsFortyTwo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdminUserAttributeImpl adminUserAttributeImpl = mock(AdminUserAttributeImpl.class);
-    when(adminUserAttributeImpl.getValue()).thenReturn("42");
-
-    HashMap<String, AdminUserAttribute> additionalFields = new HashMap<>();
-    additionalFields.put("LAST_USED_SANDBOX", adminUserAttributeImpl);
-
-    AdminUserImpl adminUserImpl = new AdminUserImpl();
-    adminUserImpl.setActiveStatusFlag(true);
-    adminUserImpl.setAllPermissions(new HashSet<>());
-    adminUserImpl.setAllRoles(new HashSet<>());
-    adminUserImpl.setEmail("jane.doe@example.org");
-    adminUserImpl.setId(1L);
-    adminUserImpl.setLogin("Login");
-    adminUserImpl.setName("Name");
-    adminUserImpl.setOverrideSandBox(new SandBoxImpl());
-    adminUserImpl.setPassword("iloveyou");
-    adminUserImpl.setPhoneNumber("6625550144");
-    adminUserImpl.setUnencodedPassword("secret");
-    adminUserImpl.setAdditionalFields(additionalFields);
-
-    // Act
-    Long actualLastUsedSandBoxId = adminUserImpl.getLastUsedSandBoxId();
-
-    // Assert
-    verify(adminUserAttributeImpl, atLeast(1)).getValue();
-    assertEquals(42L, actualLastUsedSandBoxId.longValue());
-  }
-
-  /**
-   * Test {@link AdminUserImpl#getLastUsedSandBoxId()}.
-   * <ul>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link AdminUserImpl#getLastUsedSandBoxId()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long AdminUserImpl.getLastUsedSandBoxId()"})
   public void testGetLastUsedSandBoxId_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     HashMap<String, AdminUserAttribute> additionalFields = new HashMap<>();
     additionalFields.put("LAST_USED_SANDBOX", new AdminUserAttributeImpl());
 
-    AdminUserImpl adminUserImpl = new AdminUserImpl();
-    adminUserImpl.setActiveStatusFlag(true);
-    adminUserImpl.setAllPermissions(new HashSet<>());
-    adminUserImpl.setAllRoles(new HashSet<>());
-    adminUserImpl.setEmail("jane.doe@example.org");
-    adminUserImpl.setId(1L);
-    adminUserImpl.setLogin("Login");
-    adminUserImpl.setName("Name");
-    adminUserImpl.setOverrideSandBox(new SandBoxImpl());
-    adminUserImpl.setPassword("iloveyou");
-    adminUserImpl.setPhoneNumber("6625550144");
-    adminUserImpl.setUnencodedPassword("secret");
-    adminUserImpl.setAdditionalFields(additionalFields);
+    AdminUserImpl adminUserImpl2 = new AdminUserImpl();
+    adminUserImpl2.setActiveStatusFlag(true);
+    adminUserImpl2.setAllPermissions(new HashSet<>());
+    adminUserImpl2.setAllRoles(new HashSet<>());
+    adminUserImpl2.setEmail("jane.doe@example.org");
+    adminUserImpl2.setId(1L);
+    adminUserImpl2.setLogin("Login");
+    adminUserImpl2.setName("Name");
+    adminUserImpl2.setOverrideSandBox(new SandBoxImpl());
+    adminUserImpl2.setPassword("iloveyou");
+    adminUserImpl2.setPhoneNumber("6625550144");
+    adminUserImpl2.setUnencodedPassword("secret");
+    adminUserImpl2.setAdditionalFields(additionalFields);
 
     // Act and Assert
-    assertNull(adminUserImpl.getLastUsedSandBoxId());
-  }
-
-  /**
-   * Test {@link AdminUserImpl#setLastUsedSandBoxId(Long)}.
-   * <p>
-   * Method under test: {@link AdminUserImpl#setLastUsedSandBoxId(Long)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetLastUsedSandBoxId() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-open-admin-applicationContext-entity.xml","/applicationContext-servlet-open-admin.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass74 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.domain.AdminUserImpl adminUserImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new AdminUserImpl()).setLastUsedSandBoxId(1L);
+    assertNull(adminUserImpl2.getLastUsedSandBoxId());
   }
 
   /**
    * Test {@link AdminUserImpl#setLastUsedSandBoxId(Long)}.
    * <ul>
-   *   <li>Given {@link AdminUserImpl} (default constructor) OverrideSandBox is
-   * {@link SandBox}.</li>
+   *   <li>Then {@link AdminUserImpl} (default constructor) AdditionalFields is {@link HashMap#HashMap()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link AdminUserImpl#setLastUsedSandBoxId(Long)}
    */
   @Test
-  public void testSetLastUsedSandBoxId_givenAdminUserImplOverrideSandBoxIsSandBox() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminUserImpl.setLastUsedSandBoxId(Long)"})
+  public void testSetLastUsedSandBoxId_thenAdminUserImplAdditionalFieldsIsHashMap() {
     // Arrange
     HashMap<String, AdminUserAttribute> additionalFields = new HashMap<>();
     additionalFields.put("LAST_USED_SANDBOX", new AdminUserAttributeImpl());
 
-    AdminUserImpl adminUserImpl = new AdminUserImpl();
-    adminUserImpl.setActiveStatusFlag(true);
-    adminUserImpl.setAllPermissions(new HashSet<>());
-    adminUserImpl.setAllRoles(new HashSet<>());
-    adminUserImpl.setEmail("jane.doe@example.org");
-    adminUserImpl.setId(1L);
-    adminUserImpl.setLogin("Login");
-    adminUserImpl.setName("Name");
-    adminUserImpl.setOverrideSandBox(mock(SandBox.class));
-    adminUserImpl.setPassword("iloveyou");
-    adminUserImpl.setPhoneNumber("6625550144");
-    adminUserImpl.setUnencodedPassword("secret");
-    adminUserImpl.setAdditionalFields(additionalFields);
+    AdminUserImpl adminUserImpl2 = new AdminUserImpl();
+    adminUserImpl2.setActiveStatusFlag(true);
+    adminUserImpl2.setAllPermissions(new HashSet<>());
+    adminUserImpl2.setAllRoles(new HashSet<>());
+    adminUserImpl2.setEmail("jane.doe@example.org");
+    adminUserImpl2.setId(1L);
+    adminUserImpl2.setLogin("Login");
+    adminUserImpl2.setName("Name");
+    adminUserImpl2.setOverrideSandBox(new SandBoxImpl());
+    adminUserImpl2.setPassword("iloveyou");
+    adminUserImpl2.setPhoneNumber("6625550144");
+    adminUserImpl2.setUnencodedPassword("secret");
+    adminUserImpl2.setAdditionalFields(additionalFields);
 
     // Act
-    adminUserImpl.setLastUsedSandBoxId(1L);
+    adminUserImpl2.setLastUsedSandBoxId(1L);
 
-    // Assert
-    Map<String, String> flatAdditionalFields = adminUserImpl.getFlatAdditionalFields();
+    // Assert that nothing has changed
+    Map<String, String> flatAdditionalFields = adminUserImpl2.getFlatAdditionalFields();
     assertEquals(1, flatAdditionalFields.size());
     assertTrue(flatAdditionalFields.containsKey("LAST_USED_SANDBOX"));
-    assertSame(additionalFields, adminUserImpl.getAdditionalFields());
+    assertSame(additionalFields, adminUserImpl2.getAdditionalFields());
   }
 
   /**
    * Test {@link AdminUserImpl#setLastUsedSandBoxId(Long)}.
    * <ul>
-   *   <li>Given {@link AdminUserImpl} (default constructor) OverrideSandBox is
-   * {@link SandBoxImpl} (default constructor).</li>
+   *   <li>Then {@link AdminUserImpl} (default constructor) AdditionalFields size is one.</li>
    * </ul>
    * <p>
    * Method under test: {@link AdminUserImpl#setLastUsedSandBoxId(Long)}
    */
   @Test
-  public void testSetLastUsedSandBoxId_givenAdminUserImplOverrideSandBoxIsSandBoxImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    HashMap<String, AdminUserAttribute> additionalFields = new HashMap<>();
-    additionalFields.put("LAST_USED_SANDBOX", new AdminUserAttributeImpl());
-
-    AdminUserImpl adminUserImpl = new AdminUserImpl();
-    adminUserImpl.setActiveStatusFlag(true);
-    adminUserImpl.setAllPermissions(new HashSet<>());
-    adminUserImpl.setAllRoles(new HashSet<>());
-    adminUserImpl.setEmail("jane.doe@example.org");
-    adminUserImpl.setId(1L);
-    adminUserImpl.setLogin("Login");
-    adminUserImpl.setName("Name");
-    adminUserImpl.setOverrideSandBox(new SandBoxImpl());
-    adminUserImpl.setPassword("iloveyou");
-    adminUserImpl.setPhoneNumber("6625550144");
-    adminUserImpl.setUnencodedPassword("secret");
-    adminUserImpl.setAdditionalFields(additionalFields);
-
-    // Act
-    adminUserImpl.setLastUsedSandBoxId(1L);
-
-    // Assert
-    Map<String, String> flatAdditionalFields = adminUserImpl.getFlatAdditionalFields();
-    assertEquals(1, flatAdditionalFields.size());
-    assertTrue(flatAdditionalFields.containsKey("LAST_USED_SANDBOX"));
-    assertSame(additionalFields, adminUserImpl.getAdditionalFields());
-  }
-
-  /**
-   * Test {@link AdminUserImpl#setLastUsedSandBoxId(Long)}.
-   * <ul>
-   *   <li>Then {@link AdminUserImpl} (default constructor) AdditionalFields size is
-   * one.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AdminUserImpl#setLastUsedSandBoxId(Long)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminUserImpl.setLastUsedSandBoxId(Long)"})
   public void testSetLastUsedSandBoxId_thenAdminUserImplAdditionalFieldsSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminUserImpl adminUserImpl = new AdminUserImpl();
+    AdminUserImpl adminUserImpl2 = new AdminUserImpl();
 
     // Act
-    adminUserImpl.setLastUsedSandBoxId(1L);
+    adminUserImpl2.setLastUsedSandBoxId(1L);
 
     // Assert
-    Map<String, AdminUserAttribute> additionalFields = adminUserImpl.getAdditionalFields();
+    Map<String, AdminUserAttribute> additionalFields = adminUserImpl2.getAdditionalFields();
     assertEquals(1, additionalFields.size());
     AdminUserAttribute getResult = additionalFields.get("LAST_USED_SANDBOX");
     assertTrue(getResult instanceof AdminUserAttributeImpl);
     assertEquals("LAST_USED_SANDBOX", getResult.getName());
     assertNull(getResult.getId());
-    Map<String, String> flatAdditionalFields = adminUserImpl.getFlatAdditionalFields();
+    Map<String, String> flatAdditionalFields = adminUserImpl2.getFlatAdditionalFields();
     assertEquals(1, flatAdditionalFields.size());
     assertTrue(flatAdditionalFields.containsKey("LAST_USED_SANDBOX"));
-    assertSame(adminUserImpl, getResult.getAdminUser());
+    assertSame(adminUserImpl2, getResult.getAdminUser());
   }
 
   /**
@@ -432,64 +259,11 @@ public class AdminUserImplDiffblueTest {
    * Method under test: {@link AdminUserImpl#getMainEntityName()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String AdminUserImpl.getMainEntityName()"})
   public void testGetMainEntityName() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-open-admin-applicationContext-entity.xml","/applicationContext-servlet-open-admin.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass60 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.domain.AdminUserImpl adminUserImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new AdminUserImpl()).getMainEntityName();
-  }
-
-  /**
-   * Test {@link AdminUserImpl#getMainEntityName()}.
-   * <ul>
-   *   <li>Given {@link AdminUserImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AdminUserImpl#getMainEntityName()}
-   */
-  @Test
-  public void testGetMainEntityName_givenAdminUserImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new AdminUserImpl()).getMainEntityName());
-  }
-
-  /**
-   * Test {@link AdminUserImpl#getMainEntityName()}.
-   * <ul>
-   *   <li>Given {@link AdminUserImpl} (default constructor) OverrideSandBox is
-   * {@link SandBoxImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AdminUserImpl#getMainEntityName()}
-   */
-  @Test
-  public void testGetMainEntityName_givenAdminUserImplOverrideSandBoxIsSandBoxImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdminUserImpl adminUserImpl = new AdminUserImpl();
-    adminUserImpl.setOverrideSandBox(mock(SandBoxImpl.class));
-
-    // Act and Assert
-    assertNull(adminUserImpl.getMainEntityName());
   }
 
   /**
@@ -529,6 +303,20 @@ public class AdminUserImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminUserImpl.<init>()", "Boolean AdminUserImpl.getActiveStatusFlag()",
+      "Map AdminUserImpl.getAdditionalFields()", "Set AdminUserImpl.getAllPermissions()",
+      "Set AdminUserImpl.getAllRoles()", "String AdminUserImpl.getContextKey()",
+      "ContextType AdminUserImpl.getContextType()", "String AdminUserImpl.getEmail()", "Long AdminUserImpl.getId()",
+      "String AdminUserImpl.getLogin()", "String AdminUserImpl.getName()", "SandBox AdminUserImpl.getOverrideSandBox()",
+      "String AdminUserImpl.getPassword()", "String AdminUserImpl.getPhoneNumber()",
+      "String AdminUserImpl.getUnencodedPassword()", "void AdminUserImpl.setActiveStatusFlag(Boolean)",
+      "void AdminUserImpl.setAdditionalFields(Map)", "void AdminUserImpl.setAllPermissions(Set)",
+      "void AdminUserImpl.setAllRoles(Set)", "void AdminUserImpl.setContextKey(String)",
+      "void AdminUserImpl.setContextType(ContextType)", "void AdminUserImpl.setEmail(String)",
+      "void AdminUserImpl.setId(Long)", "void AdminUserImpl.setLogin(String)", "void AdminUserImpl.setName(String)",
+      "void AdminUserImpl.setOverrideSandBox(SandBox)", "void AdminUserImpl.setPassword(String)",
+      "void AdminUserImpl.setPhoneNumber(String)", "void AdminUserImpl.setUnencodedPassword(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     AdminUserImpl actualAdminUserImpl = new AdminUserImpl();
@@ -554,7 +342,7 @@ public class AdminUserImplDiffblueTest {
     Map<String, AdminUserAttribute> actualAdditionalFields = actualAdminUserImpl.getAdditionalFields();
     Set<AdminPermission> actualAllPermissions = actualAdminUserImpl.getAllPermissions();
     Set<AdminRole> actualAllRoles = actualAdminUserImpl.getAllRoles();
-    actualAdminUserImpl.getContextKey();
+    String actualContextKey = actualAdminUserImpl.getContextKey();
     ContextType actualContextType = actualAdminUserImpl.getContextType();
     String actualEmail = actualAdminUserImpl.getEmail();
     Long actualId = actualAdminUserImpl.getId();
@@ -564,13 +352,14 @@ public class AdminUserImplDiffblueTest {
     String actualPassword = actualAdminUserImpl.getPassword();
     String actualPhoneNumber = actualAdminUserImpl.getPhoneNumber();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("6625550144", actualPhoneNumber);
     assertEquals("Login", actualLogin);
     assertEquals("Name", actualName);
     assertEquals("iloveyou", actualPassword);
     assertEquals("jane.doe@example.org", actualEmail);
     assertEquals("secret", actualAdminUserImpl.getUnencodedPassword());
+    assertNull(actualContextKey);
     assertEquals(1L, actualId.longValue());
     assertTrue(actualAdditionalFields.isEmpty());
     assertTrue(actualAllPermissions.isEmpty());

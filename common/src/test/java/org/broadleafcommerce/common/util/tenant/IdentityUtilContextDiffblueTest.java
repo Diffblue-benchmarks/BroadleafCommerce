@@ -18,33 +18,14 @@
 package org.broadleafcommerce.common.util.tenant;
 
 import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.site.domain.Site;
 import org.broadleafcommerce.common.site.domain.SiteImpl;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class IdentityUtilContextDiffblueTest {
-  /**
-   * Test {@link IdentityUtilContext#getUtilContext()}.
-   * <p>
-   * Method under test: {@link IdentityUtilContext#getUtilContext()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetUtilContext() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.util.EmptyStackException
-    //       at java.base/java.util.Stack.peek(Stack.java:102)
-    //       at org.broadleafcommerce.common.util.tenant.IdentityUtilContext.getUtilContext(IdentityUtilContext.java:41)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange and Act
-    IdentityUtilContext.getUtilContext();
-  }
-
   /**
    * Test getters and setters.
    * <p>
@@ -56,13 +37,16 @@ public class IdentityUtilContextDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void IdentityUtilContext.<init>()", "Site IdentityUtilContext.getIdentifier()",
+      "void IdentityUtilContext.setIdentifier(Site)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     IdentityUtilContext actualIdentityUtilContext = new IdentityUtilContext();
     SiteImpl identifier = new SiteImpl();
     actualIdentityUtilContext.setIdentifier(identifier);
 
-    // Assert that nothing has changed
+    // Assert
     assertSame(identifier, actualIdentityUtilContext.getIdentifier());
   }
 }

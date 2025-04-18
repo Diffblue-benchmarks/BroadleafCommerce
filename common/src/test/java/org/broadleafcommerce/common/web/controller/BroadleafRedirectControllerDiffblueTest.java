@@ -18,6 +18,8 @@
 package org.broadleafcommerce.common.web.controller;
 
 import static org.junit.Assert.assertEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.IOException;
 import java.nio.file.Paths;
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.broadleafcommerce.common.web.util.FileSystemResponseWrapper;
 import org.broadleafcommerce.common.web.util.StatusExposingServletResponse;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.ui.ConcurrentModel;
@@ -32,17 +35,18 @@ import org.springframework.ui.Model;
 
 public class BroadleafRedirectControllerDiffblueTest {
   /**
-   * Test
-   * {@link BroadleafRedirectController#redirect(HttpServletRequest, HttpServletResponse, Model)}.
+   * Test {@link BroadleafRedirectController#redirect(HttpServletRequest, HttpServletResponse, Model)}.
    * <ul>
    *   <li>When {@link MockHttpServletRequest#MockHttpServletRequest()}.</li>
    *   <li>Then return {@code ajaxredirect:}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafRedirectController#redirect(HttpServletRequest, HttpServletResponse, Model)}
+   * Method under test: {@link BroadleafRedirectController#redirect(HttpServletRequest, HttpServletResponse, Model)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "java.lang.String BroadleafRedirectController.redirect(HttpServletRequest, HttpServletResponse, Model)"})
   public void testRedirect_whenMockHttpServletRequest_thenReturnAjaxredirect() throws IOException {
     // Arrange
     BroadleafRedirectController broadleafRedirectController = new BroadleafRedirectController();
@@ -53,22 +57,5 @@ public class BroadleafRedirectControllerDiffblueTest {
 
     // Act and Assert
     assertEquals("ajaxredirect:", broadleafRedirectController.redirect(request, response2, new ConcurrentModel()));
-  }
-
-  /**
-   * Test new {@link BroadleafRedirectController} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link BroadleafRedirectController}
-   */
-  @Test
-  public void testNewBroadleafRedirectController() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing observers.
-    //   Diffblue Cover was unable to create an assertion.
-    //   There are no fields that could be asserted on.
-
-    // Arrange and Act
-    new BroadleafRedirectController();
   }
 }

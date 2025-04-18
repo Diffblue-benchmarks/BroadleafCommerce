@@ -20,7 +20,10 @@ package org.broadleafcommerce.common.payment;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -38,6 +41,8 @@ public class PaymentLogEventTypeDiffblueTest {
    * Method under test: {@link PaymentLogEventType#getInstance(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PaymentLogEventType PaymentLogEventType.getInstance(String)"})
   public void testGetInstance() {
     // Arrange and Act
     PaymentLogEventType actualInstance = PaymentLogEventType.getInstance("Type");
@@ -58,6 +63,9 @@ public class PaymentLogEventTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PaymentLogEventType.<init>()", "String PaymentLogEventType.getFriendlyType()",
+      "String PaymentLogEventType.getType()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     PaymentLogEventType actualPaymentLogEventType = new PaymentLogEventType();
@@ -71,10 +79,11 @@ public class PaymentLogEventTypeDiffblueTest {
   /**
    * Test {@link PaymentLogEventType#PaymentLogEventType(String, String)}.
    * <p>
-   * Method under test:
-   * {@link PaymentLogEventType#PaymentLogEventType(String, String)}
+   * Method under test: {@link PaymentLogEventType#PaymentLogEventType(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PaymentLogEventType.<init>(String, String)"})
   public void testNewPaymentLogEventType() {
     // Arrange and Act
     PaymentLogEventType actualPaymentLogEventType = new PaymentLogEventType("Type", "Friendly Type");
@@ -85,8 +94,7 @@ public class PaymentLogEventTypeDiffblueTest {
   }
 
   /**
-   * Test {@link PaymentLogEventType#equals(Object)}, and
-   * {@link PaymentLogEventType#hashCode()}.
+   * Test {@link PaymentLogEventType#equals(Object)}, and {@link PaymentLogEventType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -99,6 +107,8 @@ public class PaymentLogEventTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PaymentLogEventType.equals(Object)", "int PaymentLogEventType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     PaymentLogEventType paymentLogEventType = PaymentLogEventType.FINISHED;
@@ -111,8 +121,7 @@ public class PaymentLogEventTypeDiffblueTest {
   }
 
   /**
-   * Test {@link PaymentLogEventType#equals(Object)}, and
-   * {@link PaymentLogEventType#hashCode()}.
+   * Test {@link PaymentLogEventType#equals(Object)}, and {@link PaymentLogEventType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -125,6 +134,8 @@ public class PaymentLogEventTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PaymentLogEventType.equals(Object)", "int PaymentLogEventType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     PaymentLogEventType paymentLogEventType = new PaymentLogEventType();
@@ -137,8 +148,7 @@ public class PaymentLogEventTypeDiffblueTest {
   }
 
   /**
-   * Test {@link PaymentLogEventType#equals(Object)}, and
-   * {@link PaymentLogEventType#hashCode()}.
+   * Test {@link PaymentLogEventType#equals(Object)}, and {@link PaymentLogEventType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -151,6 +161,8 @@ public class PaymentLogEventTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PaymentLogEventType.equals(Object)", "int PaymentLogEventType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     PaymentLogEventType paymentLogEventType = new PaymentLogEventType("FINISHED", "Friendly Type");
@@ -163,8 +175,7 @@ public class PaymentLogEventTypeDiffblueTest {
   }
 
   /**
-   * Test {@link PaymentLogEventType#equals(Object)}, and
-   * {@link PaymentLogEventType#hashCode()}.
+   * Test {@link PaymentLogEventType#equals(Object)}, and {@link PaymentLogEventType#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -177,6 +188,8 @@ public class PaymentLogEventTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PaymentLogEventType.equals(Object)", "int PaymentLogEventType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     PaymentLogEventType paymentLogEventType = PaymentLogEventType.FINISHED;
@@ -197,9 +210,27 @@ public class PaymentLogEventTypeDiffblueTest {
    * Method under test: {@link PaymentLogEventType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PaymentLogEventType.equals(Object)", "int PaymentLogEventType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(PaymentLogEventType.START, PaymentLogEventType.FINISHED);
+  }
+
+  /**
+   * Test {@link PaymentLogEventType#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PaymentLogEventType#equals(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PaymentLogEventType.equals(Object)", "int PaymentLogEventType.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange, Act and Assert
     assertNotEquals(new PaymentLogEventType(), PaymentLogEventType.FINISHED);
   }
 
@@ -213,6 +244,8 @@ public class PaymentLogEventTypeDiffblueTest {
    * Method under test: {@link PaymentLogEventType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PaymentLogEventType.equals(Object)", "int PaymentLogEventType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(PaymentLogEventType.FINISHED, null);
@@ -228,6 +261,8 @@ public class PaymentLogEventTypeDiffblueTest {
    * Method under test: {@link PaymentLogEventType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PaymentLogEventType.equals(Object)", "int PaymentLogEventType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(PaymentLogEventType.FINISHED, "Different type to PaymentLogEventType");

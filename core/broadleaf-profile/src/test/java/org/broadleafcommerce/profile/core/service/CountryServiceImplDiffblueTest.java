@@ -1,21 +1,49 @@
+/*-
+ * #%L
+ * BroadleafCommerce Profile
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.profile.core.service;
 
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.util.ArrayList;
+import java.util.List;
+import org.broadleafcommerce.profile.core.dao.CountryDao;
 import org.broadleafcommerce.profile.core.domain.Country;
 import org.broadleafcommerce.profile.core.domain.CountryImpl;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml",
-    "/bl-profile-applicationContext-persistence.xml", "/bl-profile-applicationContext.xml",
-    "/blc-config/admin/framework/bl-profile-applicationContext.xml",
-    "/blc-config/site/framework/bl-profile-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class CountryServiceImplDiffblueTest {
-  @Autowired
+  @Mock
+  private CountryDao countryDao;
+
+  @InjectMocks
   private CountryServiceImpl countryServiceImpl;
 
   /**
@@ -24,57 +52,39 @@ public class CountryServiceImplDiffblueTest {
    * Method under test: {@link CountryServiceImpl#findCountries()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CountryServiceImpl.findCountries()"})
   public void testFindCountries() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass525 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.service.CountryServiceImpl countryServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    when(countryDao.findCountries()).thenReturn(new ArrayList<>());
 
-    // Arrange and Act
-    (new CountryServiceImpl()).findCountries();
+    // Act
+    List<Country> actualFindCountriesResult = countryServiceImpl.findCountries();
+
+    // Assert
+    verify(countryDao).findCountries();
+    assertTrue(actualFindCountriesResult.isEmpty());
   }
 
   /**
    * Test {@link CountryServiceImpl#findCountryByAbbreviation(String)}.
    * <p>
-   * Method under test:
-   * {@link CountryServiceImpl#findCountryByAbbreviation(String)}
+   * Method under test: {@link CountryServiceImpl#findCountryByAbbreviation(String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Country CountryServiceImpl.findCountryByAbbreviation(String)"})
   public void testFindCountryByAbbreviation() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass526 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.service.CountryServiceImpl countryServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    CountryImpl countryImpl = new CountryImpl();
+    when(countryDao.findCountryByAbbreviation(Mockito.<String>any())).thenReturn(countryImpl);
 
-    // Arrange and Act
-    (new CountryServiceImpl()).findCountryByAbbreviation("Abbreviation");
+    // Act
+    Country actualFindCountryByAbbreviationResult = countryServiceImpl.findCountryByAbbreviation("Abbreviation");
+
+    // Assert
+    verify(countryDao).findCountryByAbbreviation(eq("Abbreviation"));
+    assertSame(countryImpl, actualFindCountryByAbbreviationResult);
   }
 
   /**
@@ -83,29 +93,18 @@ public class CountryServiceImplDiffblueTest {
    * Method under test: {@link CountryServiceImpl#save(Country)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Country CountryServiceImpl.save(Country)"})
   public void testSave() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass541 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.service.CountryServiceImpl countryServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    CountryServiceImpl countryServiceImpl2 = new CountryServiceImpl();
+    CountryImpl countryImpl = new CountryImpl();
+    when(countryDao.save(Mockito.<Country>any())).thenReturn(countryImpl);
 
     // Act
-    countryServiceImpl2.save(new CountryImpl());
+    Country actualSaveResult = countryServiceImpl.save(new CountryImpl());
+
+    // Assert
+    verify(countryDao).save(isA(Country.class));
+    assertSame(countryImpl, actualSaveResult);
   }
 }

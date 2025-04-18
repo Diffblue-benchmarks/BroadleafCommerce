@@ -18,7 +18,11 @@
 package org.broadleafcommerce.common.extensibility.context.merge;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class LateStageRemoveBeanPostProcessorDiffblueTest {
   /**
@@ -26,19 +30,26 @@ public class LateStageRemoveBeanPostProcessorDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>default or parameterless constructor of
-   * {@link LateStageRemoveBeanPostProcessor}
+   *   <li>default or parameterless constructor of {@link LateStageRemoveBeanPostProcessor}
    *   <li>{@link LateStageRemoveBeanPostProcessor#setOrder(int)}
    *   <li>{@link LateStageRemoveBeanPostProcessor#getOrder()}
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void LateStageRemoveBeanPostProcessor.<init>()",
+      "int LateStageRemoveBeanPostProcessor.getOrder()", "void LateStageRemoveBeanPostProcessor.setOrder(int)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     LateStageRemoveBeanPostProcessor actualLateStageRemoveBeanPostProcessor = new LateStageRemoveBeanPostProcessor();
     actualLateStageRemoveBeanPostProcessor.setOrder(1);
+    int actualOrder = actualLateStageRemoveBeanPostProcessor.getOrder();
 
-    // Assert that nothing has changed
-    assertEquals(1, actualLateStageRemoveBeanPostProcessor.getOrder());
+    // Assert
+    assertNull(actualLateStageRemoveBeanPostProcessor.getBeanRef());
+    assertNull(actualLateStageRemoveBeanPostProcessor.getMapKey());
+    assertNull(actualLateStageRemoveBeanPostProcessor.getMapKeyRef());
+    assertNull(actualLateStageRemoveBeanPostProcessor.getTargetRef());
+    assertEquals(1, actualOrder);
   }
 }

@@ -1,118 +1,48 @@
+/*-
+ * #%L
+ * BroadleafCommerce Profile Web
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.profile.web.core.service.login;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
-import org.broadleafcommerce.profile.core.domain.Customer;
-import org.broadleafcommerce.profile.core.domain.CustomerImpl;
-import org.junit.jupiter.api.Disabled;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import org.broadleafcommerce.common.web.BroadleafWebRequestProcessor;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
-@ContextConfiguration(locations = {"/bl-profile-web-applicationContext.xml",
-    "/blc-config/admin/framework/bl-profile-web-applicationContext.xml",
-    "/blc-config/site/bl-profile-web-applicationContext-servlet.xml",
-    "/blc-config/site/framework/bl-profile-web-applicationContext.xml"})
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 class LoginServiceImplDiffblueTest {
-  @Autowired
+  @Mock
+  private AuthenticationManager authenticationManager;
+
+  @Mock
+  private BroadleafWebRequestProcessor broadleafWebRequestProcessor;
+
+  @InjectMocks
   private LoginServiceImpl loginServiceImpl;
 
-  /**
-   * Test {@link LoginServiceImpl#loginCustomer(Customer)} with {@code customer}.
-   * <p>
-   * Method under test: {@link LoginServiceImpl#loginCustomer(Customer)}
-   */
-  @Test
-  @DisplayName("Test loginCustomer(Customer) with 'customer'")
-  @Disabled("TODO: Complete this test")
-  void testLoginCustomerWithCustomer() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.web.core.service.login;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-web-applicationContext.xml","/blc-config/admin/framework/bl-profile-web-applicationContext.xml","/blc-config/site/bl-profile-web-applicationContext-servlet.xml","/blc-config/site/framework/bl-profile-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1959 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.web.core.service.login.LoginServiceImpl loginServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    LoginServiceImpl loginServiceImpl2 = new LoginServiceImpl();
-
-    // Act
-    loginServiceImpl2.loginCustomer(new CustomerImpl());
-  }
-
-  /**
-   * Test {@link LoginServiceImpl#loginCustomer(String, String)} with
-   * {@code username}, {@code clearTextPassword}.
-   * <p>
-   * Method under test: {@link LoginServiceImpl#loginCustomer(String, String)}
-   */
-  @Test
-  @DisplayName("Test loginCustomer(String, String) with 'username', 'clearTextPassword'")
-  @Disabled("TODO: Complete this test")
-  void testLoginCustomerWithUsernameClearTextPassword() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.web.core.service.login;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-web-applicationContext.xml","/blc-config/admin/framework/bl-profile-web-applicationContext.xml","/blc-config/site/bl-profile-web-applicationContext-servlet.xml","/blc-config/site/framework/bl-profile-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1952 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.web.core.service.login.LoginServiceImpl loginServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new LoginServiceImpl()).loginCustomer("janedoe", "iloveyou");
-  }
-
-  /**
-   * Test {@link LoginServiceImpl#logoutCustomer()}.
-   * <p>
-   * Method under test: {@link LoginServiceImpl#logoutCustomer()}
-   */
-  @Test
-  @DisplayName("Test logoutCustomer()")
-  @Disabled("TODO: Complete this test")
-  void testLogoutCustomer() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.web.core.service.login;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-web-applicationContext.xml","/blc-config/admin/framework/bl-profile-web-applicationContext.xml","/blc-config/site/bl-profile-web-applicationContext-servlet.xml","/blc-config/site/framework/bl-profile-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1986 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.web.core.service.login.LoginServiceImpl loginServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new LoginServiceImpl()).logoutCustomer();
-  }
+  @Mock
+  private UserDetailsService userDetailsService;
 
   /**
    * Test {@link LoginServiceImpl#getWebRequest()}.
@@ -121,40 +51,10 @@ class LoginServiceImplDiffblueTest {
    */
   @Test
   @DisplayName("Test getWebRequest()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"org.springframework.web.context.request.WebRequest LoginServiceImpl.getWebRequest()"})
   void testGetWebRequest() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertNull((new LoginServiceImpl()).getWebRequest());
-  }
-
-  /**
-   * Test {@link LoginServiceImpl#getWebRequest()}.
-   * <p>
-   * Method under test: {@link LoginServiceImpl#getWebRequest()}
-   */
-  @Test
-  @DisplayName("Test getWebRequest()")
-  @Disabled("TODO: Complete this test")
-  void testGetWebRequest2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.web.core.service.login;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-web-applicationContext.xml","/blc-config/admin/framework/bl-profile-web-applicationContext.xml","/blc-config/site/bl-profile-web-applicationContext-servlet.xml","/blc-config/site/framework/bl-profile-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1951 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.web.core.service.login.LoginServiceImpl loginServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new LoginServiceImpl()).getWebRequest();
+    assertNull(loginServiceImpl.getWebRequest());
   }
 }

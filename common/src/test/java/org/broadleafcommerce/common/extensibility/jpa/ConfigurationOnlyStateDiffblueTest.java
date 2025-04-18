@@ -19,7 +19,10 @@ package org.broadleafcommerce.common.extensibility.jpa;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class ConfigurationOnlyStateDiffblueTest {
   /**
@@ -28,28 +31,11 @@ public class ConfigurationOnlyStateDiffblueTest {
    * Method under test: {@link ConfigurationOnlyState#getState()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ConfigurationOnlyState ConfigurationOnlyState.getState()"})
   public void testGetState() {
     // Arrange, Act and Assert
     assertFalse(ConfigurationOnlyState.getState().isConfigurationOnly());
-  }
-
-  /**
-   * Test {@link ConfigurationOnlyState#setState(ConfigurationOnlyState)}.
-   * <p>
-   * Method under test:
-   * {@link ConfigurationOnlyState#setState(ConfigurationOnlyState)}
-   */
-  @Test
-  public void testSetState() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange
-    ConfigurationOnlyState state = new ConfigurationOnlyState();
-    state.setConfigurationOnly(true);
-
-    // Act
-    ConfigurationOnlyState.setState(state);
   }
 
   /**
@@ -63,12 +49,15 @@ public class ConfigurationOnlyStateDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ConfigurationOnlyState.<init>()", "boolean ConfigurationOnlyState.isConfigurationOnly()",
+      "void ConfigurationOnlyState.setConfigurationOnly(boolean)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     ConfigurationOnlyState actualConfigurationOnlyState = new ConfigurationOnlyState();
     actualConfigurationOnlyState.setConfigurationOnly(true);
 
-    // Assert that nothing has changed
+    // Assert
     assertTrue(actualConfigurationOnlyState.isConfigurationOnly());
   }
 }

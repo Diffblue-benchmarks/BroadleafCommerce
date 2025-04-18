@@ -23,47 +23,28 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Locale;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class LocaleImplDiffblueTest {
   /**
    * Test {@link LocaleImpl#getDefaultFlag()}.
    * <ul>
-   *   <li>Given {@link LocaleImpl} (default constructor) DefaultCurrency is
-   * {@link BroadleafCurrency}.</li>
+   *   <li>Given {@link LocaleImpl} (default constructor) DefaultFlag is {@code null}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link LocaleImpl#getDefaultFlag()}
    */
   @Test
-  public void testGetDefaultFlag_givenLocaleImplDefaultCurrencyIsBroadleafCurrency() {
-    // Arrange
-    LocaleImpl localeImpl = new LocaleImpl();
-    localeImpl.setDefaultCurrency(mock(BroadleafCurrency.class));
-    localeImpl.setFriendlyName("en");
-    localeImpl.setLocaleCode("en");
-    localeImpl.setUseCountryInSearchIndex(true);
-    localeImpl.setDefaultFlag(null);
-
-    // Act and Assert
-    assertFalse(localeImpl.getDefaultFlag());
-  }
-
-  /**
-   * Test {@link LocaleImpl#getDefaultFlag()}.
-   * <ul>
-   *   <li>Given {@link LocaleImpl} (default constructor) DefaultCurrency is
-   * {@link BroadleafCurrencyImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link LocaleImpl#getDefaultFlag()}
-   */
-  @Test
-  public void testGetDefaultFlag_givenLocaleImplDefaultCurrencyIsBroadleafCurrencyImpl() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean LocaleImpl.getDefaultFlag()"})
+  public void testGetDefaultFlag_givenLocaleImplDefaultFlagIsNull_thenReturnFalse() {
     // Arrange
     LocaleImpl localeImpl = new LocaleImpl();
     localeImpl.setDefaultCurrency(new BroadleafCurrencyImpl());
@@ -79,14 +60,15 @@ public class LocaleImplDiffblueTest {
   /**
    * Test {@link LocaleImpl#getDefaultFlag()}.
    * <ul>
-   *   <li>Given {@link LocaleImpl} (default constructor) DefaultFlag is
-   * {@code true}.</li>
+   *   <li>Given {@link LocaleImpl} (default constructor) DefaultFlag is {@code true}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link LocaleImpl#getDefaultFlag()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean LocaleImpl.getDefaultFlag()"})
   public void testGetDefaultFlag_givenLocaleImplDefaultFlagIsTrue_thenReturnTrue() {
     // Arrange
     LocaleImpl localeImpl = new LocaleImpl();
@@ -110,6 +92,8 @@ public class LocaleImplDiffblueTest {
    * Method under test: {@link LocaleImpl#getDefaultFlag()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean LocaleImpl.getDefaultFlag()"})
   public void testGetDefaultFlag_givenLocaleImpl_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse((new LocaleImpl()).getDefaultFlag());
@@ -117,37 +101,19 @@ public class LocaleImplDiffblueTest {
 
   /**
    * Test {@link LocaleImpl#getUseCountryInSearchIndex()}.
-   * <p>
-   * Method under test: {@link LocaleImpl#getUseCountryInSearchIndex()}
-   */
-  @Test
-  public void testGetUseCountryInSearchIndex() {
-    // Arrange
-    LocaleImpl localeImpl = new LocaleImpl();
-    localeImpl.setDefaultCurrency(new BroadleafCurrencyImpl());
-    localeImpl.setDefaultFlag(true);
-    localeImpl.setFriendlyName("en");
-    localeImpl.setLocaleCode("en");
-    localeImpl.setUseCountryInSearchIndex(null);
-
-    // Act and Assert
-    assertFalse(localeImpl.getUseCountryInSearchIndex());
-  }
-
-  /**
-   * Test {@link LocaleImpl#getUseCountryInSearchIndex()}.
    * <ul>
-   *   <li>Given {@link LocaleImpl} (default constructor) DefaultCurrency is
-   * {@link BroadleafCurrency}.</li>
+   *   <li>Given {@link LocaleImpl} (default constructor) UseCountryInSearchIndex is {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link LocaleImpl#getUseCountryInSearchIndex()}
    */
   @Test
-  public void testGetUseCountryInSearchIndex_givenLocaleImplDefaultCurrencyIsBroadleafCurrency() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean LocaleImpl.getUseCountryInSearchIndex()"})
+  public void testGetUseCountryInSearchIndex_givenLocaleImplUseCountryInSearchIndexIsNull() {
     // Arrange
     LocaleImpl localeImpl = new LocaleImpl();
-    localeImpl.setDefaultCurrency(mock(BroadleafCurrency.class));
+    localeImpl.setDefaultCurrency(new BroadleafCurrencyImpl());
     localeImpl.setDefaultFlag(true);
     localeImpl.setFriendlyName("en");
     localeImpl.setLocaleCode("en");
@@ -167,6 +133,8 @@ public class LocaleImplDiffblueTest {
    * Method under test: {@link LocaleImpl#getUseCountryInSearchIndex()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean LocaleImpl.getUseCountryInSearchIndex()"})
   public void testGetUseCountryInSearchIndex_givenLocaleImpl_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse((new LocaleImpl()).getUseCountryInSearchIndex());
@@ -181,6 +149,8 @@ public class LocaleImplDiffblueTest {
    * Method under test: {@link LocaleImpl#getUseCountryInSearchIndex()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean LocaleImpl.getUseCountryInSearchIndex()"})
   public void testGetUseCountryInSearchIndex_thenReturnTrue() {
     // Arrange
     LocaleImpl localeImpl = new LocaleImpl();
@@ -197,33 +167,15 @@ public class LocaleImplDiffblueTest {
   /**
    * Test {@link LocaleImpl#getJavaLocale()}.
    * <ul>
-   *   <li>Given {@link LocaleImpl} (default constructor) DefaultCurrency is
-   * {@link BroadleafCurrency}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link LocaleImpl#getJavaLocale()}
-   */
-  @Test
-  public void testGetJavaLocale_givenLocaleImplDefaultCurrencyIsBroadleafCurrency() {
-    // Arrange
-    LocaleImpl localeImpl = new LocaleImpl();
-    localeImpl.setDefaultCurrency(mock(BroadleafCurrency.class));
-
-    // Act and Assert
-    assertNull(localeImpl.getJavaLocale());
-  }
-
-  /**
-   * Test {@link LocaleImpl#getJavaLocale()}.
-   * <ul>
-   *   <li>Given {@link LocaleImpl} (default constructor) LocaleCode is
-   * {@code en}.</li>
+   *   <li>Given {@link LocaleImpl} (default constructor) LocaleCode is {@code en}.</li>
    *   <li>Then return {@link Locale#ENGLISH}.</li>
    * </ul>
    * <p>
    * Method under test: {@link LocaleImpl#getJavaLocale()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Locale LocaleImpl.getJavaLocale()"})
   public void testGetJavaLocale_givenLocaleImplLocaleCodeIsEn_thenReturnEnglish() {
     // Arrange
     LocaleImpl localeImpl = new LocaleImpl();
@@ -246,6 +198,8 @@ public class LocaleImplDiffblueTest {
    * Method under test: {@link LocaleImpl#getJavaLocale()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Locale LocaleImpl.getJavaLocale()"})
   public void testGetJavaLocale_givenLocaleImpl_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull((new LocaleImpl()).getJavaLocale());
@@ -265,6 +219,8 @@ public class LocaleImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean LocaleImpl.equals(Object)", "int LocaleImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     LocaleImpl localeImpl = new LocaleImpl();
@@ -301,43 +257,9 @@ public class LocaleImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean LocaleImpl.equals(Object)", "int LocaleImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
-    // Arrange
-    LocaleImpl localeImpl = new LocaleImpl();
-    localeImpl.setDefaultCurrency(mock(BroadleafCurrency.class));
-    localeImpl.setDefaultFlag(true);
-    localeImpl.setFriendlyName("en");
-    localeImpl.setLocaleCode("en");
-    localeImpl.setUseCountryInSearchIndex(true);
-
-    LocaleImpl localeImpl2 = new LocaleImpl();
-    localeImpl2.setDefaultCurrency(new BroadleafCurrencyImpl());
-    localeImpl2.setDefaultFlag(true);
-    localeImpl2.setFriendlyName("en");
-    localeImpl2.setLocaleCode("en");
-    localeImpl2.setUseCountryInSearchIndex(true);
-
-    // Act and Assert
-    assertEquals(localeImpl, localeImpl2);
-    int expectedHashCodeResult = localeImpl.hashCode();
-    assertEquals(expectedHashCodeResult, localeImpl2.hashCode());
-  }
-
-  /**
-   * Test {@link LocaleImpl#equals(Object)}, and {@link LocaleImpl#hashCode()}.
-   * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
-   * </ul>
-   * <p>
-   * Methods under test:
-   * <ul>
-   *   <li>{@link LocaleImpl#equals(Object)}
-   *   <li>{@link LocaleImpl#hashCode()}
-   * </ul>
-   */
-  @Test
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     LocaleImpl localeImpl = new LocaleImpl();
     localeImpl.setDefaultCurrency(new BroadleafCurrencyImpl());
@@ -373,7 +295,9 @@ public class LocaleImplDiffblueTest {
    * </ul>
    */
   @Test
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean LocaleImpl.equals(Object)", "int LocaleImpl.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     LocaleImpl localeImpl = new LocaleImpl();
     localeImpl.setDefaultCurrency(new BroadleafCurrencyImpl());
@@ -409,6 +333,8 @@ public class LocaleImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean LocaleImpl.equals(Object)", "int LocaleImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     LocaleImpl localeImpl = new LocaleImpl();
@@ -434,6 +360,8 @@ public class LocaleImplDiffblueTest {
    * Method under test: {@link LocaleImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean LocaleImpl.equals(Object)", "int LocaleImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     LocaleImpl localeImpl = new LocaleImpl();
@@ -464,6 +392,8 @@ public class LocaleImplDiffblueTest {
    * Method under test: {@link LocaleImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean LocaleImpl.equals(Object)", "int LocaleImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     LocaleImpl localeImpl = new LocaleImpl();
@@ -494,6 +424,8 @@ public class LocaleImplDiffblueTest {
    * Method under test: {@link LocaleImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean LocaleImpl.equals(Object)", "int LocaleImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     LocaleImpl localeImpl = new LocaleImpl();
@@ -524,6 +456,8 @@ public class LocaleImplDiffblueTest {
    * Method under test: {@link LocaleImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean LocaleImpl.equals(Object)", "int LocaleImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     LocaleImpl localeImpl = new LocaleImpl();
@@ -554,6 +488,8 @@ public class LocaleImplDiffblueTest {
    * Method under test: {@link LocaleImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean LocaleImpl.equals(Object)", "int LocaleImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     LocaleImpl localeImpl = new LocaleImpl();
@@ -577,6 +513,8 @@ public class LocaleImplDiffblueTest {
    * Method under test: {@link LocaleImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean LocaleImpl.equals(Object)", "int LocaleImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     LocaleImpl localeImpl = new LocaleImpl();
@@ -592,35 +530,15 @@ public class LocaleImplDiffblueTest {
 
   /**
    * Test {@link LocaleImpl#getMainEntityName()}.
-   * <ul>
-   *   <li>Given {@link LocaleImpl} (default constructor).</li>
-   * </ul>
    * <p>
    * Method under test: {@link LocaleImpl#getMainEntityName()}
    */
   @Test
-  public void testGetMainEntityName_givenLocaleImpl() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String LocaleImpl.getMainEntityName()"})
+  public void testGetMainEntityName() {
     // Arrange, Act and Assert
     assertNull((new LocaleImpl()).getMainEntityName());
-  }
-
-  /**
-   * Test {@link LocaleImpl#getMainEntityName()}.
-   * <ul>
-   *   <li>Given {@link LocaleImpl} (default constructor) DefaultCurrency is
-   * {@link BroadleafCurrency}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link LocaleImpl#getMainEntityName()}
-   */
-  @Test
-  public void testGetMainEntityName_givenLocaleImplDefaultCurrencyIsBroadleafCurrency() {
-    // Arrange
-    LocaleImpl localeImpl = new LocaleImpl();
-    localeImpl.setDefaultCurrency(mock(BroadleafCurrency.class));
-
-    // Act and Assert
-    assertNull(localeImpl.getMainEntityName());
   }
 
   /**
@@ -640,6 +558,12 @@ public class LocaleImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void LocaleImpl.<init>()", "BroadleafCurrency LocaleImpl.getDefaultCurrency()",
+      "String LocaleImpl.getFriendlyName()", "String LocaleImpl.getLocaleCode()",
+      "void LocaleImpl.setDefaultCurrency(BroadleafCurrency)", "void LocaleImpl.setDefaultFlag(Boolean)",
+      "void LocaleImpl.setFriendlyName(String)", "void LocaleImpl.setLocaleCode(String)",
+      "void LocaleImpl.setUseCountryInSearchIndex(Boolean)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     LocaleImpl actualLocaleImpl = new LocaleImpl();
@@ -652,7 +576,7 @@ public class LocaleImplDiffblueTest {
     BroadleafCurrency actualDefaultCurrency = actualLocaleImpl.getDefaultCurrency();
     String actualFriendlyName = actualLocaleImpl.getFriendlyName();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("en", actualFriendlyName);
     assertEquals("en", actualLocaleImpl.getLocaleCode());
     assertSame(defaultCurrency, actualDefaultCurrency);

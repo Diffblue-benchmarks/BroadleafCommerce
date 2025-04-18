@@ -1,20 +1,31 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.dto;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
-import java.util.function.BiFunction;
-import org.broadleafcommerce.openadmin.dto.visitor.PersistencePerspectiveItemVisitor;
-import org.broadleafcommerce.openadmin.dto.visitor.PersistencePerspectiveItemVisitorAdapter;
 import org.junit.Test;
-import org.mockito.Mockito;
+import org.junit.experimental.categories.Category;
 
 public class ParentRecordStructureDiffblueTest {
   /**
@@ -30,6 +41,11 @@ public class ParentRecordStructureDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ParentRecordStructure.<init>()", "void ParentRecordStructure.<init>(Entity, ClassMetadata)",
+      "ClassMetadata ParentRecordStructure.getParentMetadata()", "Entity ParentRecordStructure.getParentRecord()",
+      "void ParentRecordStructure.setParentMetadata(ClassMetadata)",
+      "void ParentRecordStructure.setParentRecord(Entity)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     ParentRecordStructure actualParentRecordStructure = new ParentRecordStructure();
@@ -45,7 +61,7 @@ public class ParentRecordStructureDiffblueTest {
     actualParentRecordStructure.setParentRecord(parentRecord);
     ClassMetadata actualParentMetadata = actualParentRecordStructure.getParentMetadata();
 
-    // Assert that nothing has changed
+    // Assert
     assertSame(parentMetadata, actualParentMetadata);
     assertSame(parentRecord, actualParentRecordStructure.getParentRecord());
   }
@@ -59,8 +75,7 @@ public class ParentRecordStructureDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>
-   * {@link ParentRecordStructure#ParentRecordStructure(Entity, ClassMetadata)}
+   *   <li>{@link ParentRecordStructure#ParentRecordStructure(Entity, ClassMetadata)}
    *   <li>{@link ParentRecordStructure#setParentMetadata(ClassMetadata)}
    *   <li>{@link ParentRecordStructure#setParentRecord(Entity)}
    *   <li>{@link ParentRecordStructure#getParentMetadata()}
@@ -68,6 +83,11 @@ public class ParentRecordStructureDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ParentRecordStructure.<init>()", "void ParentRecordStructure.<init>(Entity, ClassMetadata)",
+      "ClassMetadata ParentRecordStructure.getParentMetadata()", "Entity ParentRecordStructure.getParentRecord()",
+      "void ParentRecordStructure.setParentMetadata(ClassMetadata)",
+      "void ParentRecordStructure.setParentRecord(Entity)"})
   public void testGettersAndSetters_givenType_whenEntity() {
     // Arrange
     Entity parentRecord = new Entity();
@@ -94,83 +114,20 @@ public class ParentRecordStructureDiffblueTest {
     actualParentRecordStructure.setParentRecord(parentRecord2);
     ClassMetadata actualParentMetadata = actualParentRecordStructure.getParentMetadata();
 
-    // Assert that nothing has changed
+    // Assert
     assertSame(parentMetadata2, actualParentMetadata);
     assertSame(parentRecord2, actualParentRecordStructure.getParentRecord());
   }
 
   /**
-   * Test {@link ParentRecordStructure#accept(PersistencePerspectiveItemVisitor)}.
-   * <ul>
-   *   <li>Then calls
-   * {@link PersistencePerspectiveItemVisitorAdapter#visit(ParentRecordStructure)}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link ParentRecordStructure#accept(PersistencePerspectiveItemVisitor)}
-   */
-  @Test
-  public void testAccept_thenCallsVisit() {
-    // Arrange
-    ParentRecordStructure parentRecordStructure = new ParentRecordStructure();
-    PersistencePerspectiveItemVisitorAdapter visitor = mock(PersistencePerspectiveItemVisitorAdapter.class);
-    doNothing().when(visitor).visit(Mockito.<ParentRecordStructure>any());
-
-    // Act
-    parentRecordStructure.accept(visitor);
-
-    // Assert
-    verify(visitor).visit(isA(ParentRecordStructure.class));
-  }
-
-  /**
    * Test {@link ParentRecordStructure#clonePersistencePerspectiveItem()}.
-   * <ul>
-   *   <li>Then return ParentRecord is {@code null}.</li>
-   * </ul>
    * <p>
-   * Method under test:
-   * {@link ParentRecordStructure#clonePersistencePerspectiveItem()}
+   * Method under test: {@link ParentRecordStructure#clonePersistencePerspectiveItem()}
    */
   @Test
-  public void testClonePersistencePerspectiveItem_thenReturnParentRecordIsNull() {
-    // Arrange
-    HashMap<String, TabMetadata> tabAndGroupMetadata = new HashMap<>();
-    tabAndGroupMetadata.computeIfPresent("foo", mock(BiFunction.class));
-
-    ClassMetadata parentMetadata = new ClassMetadata();
-    parentMetadata.setCeilingType("Type");
-    parentMetadata.setCurrencyCode("GBP");
-    parentMetadata.setPolymorphicEntities(new ClassTree());
-    parentMetadata.setProperties(new Property[]{new Property()});
-    parentMetadata.setSecurityCeilingType("Security Ceiling Type");
-    parentMetadata.setTabAndGroupMetadata(tabAndGroupMetadata);
-
-    ParentRecordStructure parentRecordStructure = new ParentRecordStructure();
-    parentRecordStructure.setParentMetadata(parentMetadata);
-
-    // Act
-    PersistencePerspectiveItem actualClonePersistencePerspectiveItemResult = parentRecordStructure
-        .clonePersistencePerspectiveItem();
-
-    // Assert
-    assertTrue(actualClonePersistencePerspectiveItemResult instanceof ParentRecordStructure);
-    assertNull(((ParentRecordStructure) actualClonePersistencePerspectiveItemResult).getParentRecord());
-    assertSame(parentMetadata,
-        ((ParentRecordStructure) actualClonePersistencePerspectiveItemResult).getParentMetadata());
-  }
-
-  /**
-   * Test {@link ParentRecordStructure#clonePersistencePerspectiveItem()}.
-   * <ul>
-   *   <li>Then return {@link ParentRecordStructure#ParentRecordStructure()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link ParentRecordStructure#clonePersistencePerspectiveItem()}
-   */
-  @Test
-  public void testClonePersistencePerspectiveItem_thenReturnParentRecordStructure() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePerspectiveItem ParentRecordStructure.clonePersistencePerspectiveItem()"})
+  public void testClonePersistencePerspectiveItem() {
     // Arrange
     ParentRecordStructure parentRecordStructure = new ParentRecordStructure();
 
@@ -189,6 +146,8 @@ public class ParentRecordStructureDiffblueTest {
    * Method under test: {@link ParentRecordStructure#toString()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.String ParentRecordStructure.toString()"})
   public void testToString() {
     // Arrange
     ParentRecordStructure parentRecordStructure = new ParentRecordStructure();
@@ -206,6 +165,8 @@ public class ParentRecordStructureDiffblueTest {
    * Method under test: {@link ParentRecordStructure#toString()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.String ParentRecordStructure.toString()"})
   public void testToString2() {
     // Arrange
     ClassMetadata parentMetadata = new ClassMetadata();
@@ -233,6 +194,8 @@ public class ParentRecordStructureDiffblueTest {
    * Method under test: {@link ParentRecordStructure#toString()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.String ParentRecordStructure.toString()"})
   public void testToString3() {
     // Arrange
     ClassMetadata parentMetadata = new ClassMetadata();
@@ -258,13 +221,14 @@ public class ParentRecordStructureDiffblueTest {
   /**
    * Test {@link ParentRecordStructure#toString()}.
    * <ul>
-   *   <li>Given {@link ClassMetadata} (default constructor) Properties is array of
-   * {@link Property} with {@link Property#Property()}.</li>
+   *   <li>Given {@link ClassMetadata} (default constructor) Properties is array of {@link Property} with {@link Property#Property()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link ParentRecordStructure#toString()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.String ParentRecordStructure.toString()"})
   public void testToString_givenClassMetadataPropertiesIsArrayOfPropertyWithProperty() {
     // Arrange
     ClassMetadata parentMetadata = new ClassMetadata();
@@ -287,14 +251,15 @@ public class ParentRecordStructureDiffblueTest {
   /**
    * Test {@link ParentRecordStructure#toString()}.
    * <ul>
-   *   <li>Given {@link ClassMetadata} (default constructor) Properties is
-   * {@code null}.</li>
+   *   <li>Given {@link ClassMetadata} (default constructor) Properties is {@code null}.</li>
    *   <li>Then return {@code ParentRecordStructure{}}.</li>
    * </ul>
    * <p>
    * Method under test: {@link ParentRecordStructure#toString()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.String ParentRecordStructure.toString()"})
   public void testToString_givenClassMetadataPropertiesIsNull_thenReturnParentRecordStructure() {
     // Arrange
     ClassMetadata parentMetadata = new ClassMetadata();
@@ -316,37 +281,6 @@ public class ParentRecordStructureDiffblueTest {
   /**
    * Test {@link ParentRecordStructure#toString()}.
    * <ul>
-   *   <li>Given {@link HashMap#HashMap()} computeIfPresent
-   * {@code ParentRecordStructure{} and {@link BiFunction}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ParentRecordStructure#toString()}
-   */
-  @Test
-  public void testToString_givenHashMapComputeIfPresentParentRecordStructureAndBiFunction() {
-    // Arrange
-    HashMap<String, TabMetadata> tabAndGroupMetadata = new HashMap<>();
-    tabAndGroupMetadata.computeIfPresent("ParentRecordStructure{", mock(BiFunction.class));
-
-    ClassMetadata parentMetadata = new ClassMetadata();
-    parentMetadata.setCeilingType("Type");
-    parentMetadata.setCurrencyCode("GBP");
-    parentMetadata.setPolymorphicEntities(new ClassTree());
-    parentMetadata.setSecurityCeilingType("Security Ceiling Type");
-    parentMetadata.setTabAndGroupMetadata(tabAndGroupMetadata);
-    parentMetadata.setProperties(null);
-
-    ParentRecordStructure parentRecordStructure = new ParentRecordStructure();
-    parentRecordStructure.setParentRecord(null);
-    parentRecordStructure.setParentMetadata(parentMetadata);
-
-    // Act and Assert
-    assertEquals("ParentRecordStructure{}", parentRecordStructure.toString());
-  }
-
-  /**
-   * Test {@link ParentRecordStructure#toString()}.
-   * <ul>
    *   <li>Given {@link ParentRecordStructure#ParentRecordStructure()}.</li>
    *   <li>Then return {@code ParentRecordStructure{}}.</li>
    * </ul>
@@ -354,6 +288,8 @@ public class ParentRecordStructureDiffblueTest {
    * Method under test: {@link ParentRecordStructure#toString()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.String ParentRecordStructure.toString()"})
   public void testToString_givenParentRecordStructure_thenReturnParentRecordStructure() {
     // Arrange, Act and Assert
     assertEquals("ParentRecordStructure{}", (new ParentRecordStructure()).toString());
@@ -368,6 +304,8 @@ public class ParentRecordStructureDiffblueTest {
    * Method under test: {@link ParentRecordStructure#toString()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.String ParentRecordStructure.toString()"})
   public void testToString_thenReturnParentRecordStructureParentMetadataNull() {
     // Arrange
     ClassMetadata parentMetadata = new ClassMetadata();
@@ -387,8 +325,7 @@ public class ParentRecordStructureDiffblueTest {
   }
 
   /**
-   * Test {@link ParentRecordStructure#equals(Object)}, and
-   * {@link ParentRecordStructure#hashCode()}.
+   * Test {@link ParentRecordStructure#equals(Object)}, and {@link ParentRecordStructure#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -401,6 +338,8 @@ public class ParentRecordStructureDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ParentRecordStructure.equals(Object)", "int ParentRecordStructure.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     ParentRecordStructure parentRecordStructure = new ParentRecordStructure();
@@ -413,8 +352,7 @@ public class ParentRecordStructureDiffblueTest {
   }
 
   /**
-   * Test {@link ParentRecordStructure#equals(Object)}, and
-   * {@link ParentRecordStructure#hashCode()}.
+   * Test {@link ParentRecordStructure#equals(Object)}, and {@link ParentRecordStructure#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -427,6 +365,8 @@ public class ParentRecordStructureDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ParentRecordStructure.equals(Object)", "int ParentRecordStructure.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     ParentRecordStructure parentRecordStructure = new ParentRecordStructure();
@@ -447,6 +387,8 @@ public class ParentRecordStructureDiffblueTest {
    * Method under test: {@link ParentRecordStructure#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ParentRecordStructure.equals(Object)", "int ParentRecordStructure.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     Entity parentRecord = new Entity();
@@ -466,6 +408,8 @@ public class ParentRecordStructureDiffblueTest {
    * Method under test: {@link ParentRecordStructure#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ParentRecordStructure.equals(Object)", "int ParentRecordStructure.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     ParentRecordStructure parentRecordStructure = new ParentRecordStructure();
@@ -485,6 +429,8 @@ public class ParentRecordStructureDiffblueTest {
    * Method under test: {@link ParentRecordStructure#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ParentRecordStructure.equals(Object)", "int ParentRecordStructure.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     ClassMetadata parentMetadata = new ClassMetadata();
@@ -512,26 +458,9 @@ public class ParentRecordStructureDiffblueTest {
    * Method under test: {@link ParentRecordStructure#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ParentRecordStructure.equals(Object)", "int ParentRecordStructure.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
-    // Arrange
-    Entity parentRecord = mock(Entity.class);
-    ParentRecordStructure parentRecordStructure = new ParentRecordStructure(parentRecord, new ClassMetadata());
-
-    // Act and Assert
-    assertNotEquals(parentRecordStructure, new ParentRecordStructure());
-  }
-
-  /**
-   * Test {@link ParentRecordStructure#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ParentRecordStructure#equals(Object)}
-   */
-  @Test
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
     Entity parentRecord = new Entity();
     ParentRecordStructure parentRecordStructure = new ParentRecordStructure(parentRecord, new ClassMetadata());
@@ -553,7 +482,9 @@ public class ParentRecordStructureDiffblueTest {
    * Method under test: {@link ParentRecordStructure#equals(Object)}
    */
   @Test
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ParentRecordStructure.equals(Object)", "int ParentRecordStructure.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
     ParentRecordStructure parentRecordStructure = new ParentRecordStructure();
 
@@ -582,6 +513,8 @@ public class ParentRecordStructureDiffblueTest {
    * Method under test: {@link ParentRecordStructure#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ParentRecordStructure.equals(Object)", "int ParentRecordStructure.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new ParentRecordStructure(), null);
@@ -597,6 +530,8 @@ public class ParentRecordStructureDiffblueTest {
    * Method under test: {@link ParentRecordStructure#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ParentRecordStructure.equals(Object)", "int ParentRecordStructure.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new ParentRecordStructure(), "Different type to ParentRecordStructure");

@@ -1,48 +1,63 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.config;
 
-import org.junit.Ignore;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.core.userdetails.cache.NullUserCache;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(classes = {OpenAdminSecurityConfig.class, PasswordEncoder.class, UserDetailsService.class})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class OpenAdminSecurityConfigDiffblueTest {
-  @Autowired
+  @InjectMocks
   private OpenAdminSecurityConfig openAdminSecurityConfig;
+
+  @Mock
+  private PasswordEncoder passwordEncoder;
 
   /**
    * Test {@link OpenAdminSecurityConfig#blAdminAuthenticationProvider()}.
    * <p>
-   * Method under test:
-   * {@link OpenAdminSecurityConfig#blAdminAuthenticationProvider()}
+   * Method under test: {@link OpenAdminSecurityConfig#blAdminAuthenticationProvider()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"AuthenticationProvider OpenAdminSecurityConfig.blAdminAuthenticationProvider()"})
   public void testBlAdminAuthenticationProvider() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   - org.springframework.security.core.userdetails.UserDetailsService
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.config;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.openadmin.config.OpenAdminSecurityConfig.class,org.springframework.security.crypto.password.PasswordEncoder.class,org.springframework.security.core.userdetails.UserDetailsService.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass48 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.config.OpenAdminSecurityConfig openAdminSecurityConfig;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange and Act
-    openAdminSecurityConfig.blAdminAuthenticationProvider();
+    AuthenticationProvider actualBlAdminAuthenticationProviderResult = openAdminSecurityConfig
+        .blAdminAuthenticationProvider();
+
+    // Assert
+    assertTrue(actualBlAdminAuthenticationProviderResult instanceof DaoAuthenticationProvider);
+    assertTrue(((DaoAuthenticationProvider) actualBlAdminAuthenticationProviderResult)
+        .getUserCache() instanceof NullUserCache);
+    assertFalse(((DaoAuthenticationProvider) actualBlAdminAuthenticationProviderResult).isForcePrincipalAsString());
+    assertTrue(((DaoAuthenticationProvider) actualBlAdminAuthenticationProviderResult).isHideUserNotFoundExceptions());
   }
 }

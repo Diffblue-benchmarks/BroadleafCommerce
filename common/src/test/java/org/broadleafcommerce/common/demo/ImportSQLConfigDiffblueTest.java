@@ -18,8 +18,10 @@
 package org.broadleafcommerce.common.demo;
 
 import static org.junit.Assert.assertEquals;
-import org.junit.Ignore;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -33,11 +35,16 @@ public class ImportSQLConfigDiffblueTest {
 
   /**
    * Test {@link ImportSQLConfig#blCommonPreBasicData()}.
+   * <ul>
+   *   <li>Given {@link ImportSQLConfig}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link ImportSQLConfig#blCommonPreBasicData()}
    */
   @Test
-  public void testBlCommonPreBasicData() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"AutoImportSql ImportSQLConfig.blCommonPreBasicData()"})
+  public void testBlCommonPreBasicData_givenImportSQLConfig() {
     // Arrange and Act
     AutoImportSql actualBlCommonPreBasicDataResult = importSQLConfig.blCommonPreBasicData();
 
@@ -48,14 +55,62 @@ public class ImportSQLConfigDiffblueTest {
   }
 
   /**
+   * Test {@link ImportSQLConfig#blCommonPreBasicData()}.
+   * <ul>
+   *   <li>Given {@link ImportSQLConfig} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ImportSQLConfig#blCommonPreBasicData()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"AutoImportSql ImportSQLConfig.blCommonPreBasicData()"})
+  public void testBlCommonPreBasicData_givenImportSQLConfig2() {
+    // Arrange and Act
+    AutoImportSql actualBlCommonPreBasicDataResult = (new ImportSQLConfig()).blCommonPreBasicData();
+
+    // Assert
+    assertEquals("config/bc/sql/demo/load_i18n_countries.sql", actualBlCommonPreBasicDataResult.getSqlFilePath());
+    assertEquals(AutoImportPersistenceUnit.BL_PU, actualBlCommonPreBasicDataResult.getPersistenceUnit());
+    assertEquals(AutoImportStage.PRIMARY_PRE_BASIC_DATA, actualBlCommonPreBasicDataResult.getOrder());
+  }
+
+  /**
    * Test {@link ImportSQLConfig#blCommonBasicData()}.
+   * <ul>
+   *   <li>Given {@link ImportSQLConfig}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link ImportSQLConfig#blCommonBasicData()}
    */
   @Test
-  public void testBlCommonBasicData() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"AutoImportSql ImportSQLConfig.blCommonBasicData()"})
+  public void testBlCommonBasicData_givenImportSQLConfig() {
     // Arrange and Act
     AutoImportSql actualBlCommonBasicDataResult = importSQLConfig.blCommonBasicData();
+
+    // Assert
+    assertEquals("config/bc/sql/demo/load_admin_users.sql,config/bc/sql/demo/load_sitemap_data.sql",
+        actualBlCommonBasicDataResult.getSqlFilePath());
+    assertEquals(AutoImportPersistenceUnit.BL_PU, actualBlCommonBasicDataResult.getPersistenceUnit());
+    assertEquals(AutoImportStage.PRIMARY_BASIC_DATA, actualBlCommonBasicDataResult.getOrder());
+  }
+
+  /**
+   * Test {@link ImportSQLConfig#blCommonBasicData()}.
+   * <ul>
+   *   <li>Given {@link ImportSQLConfig} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ImportSQLConfig#blCommonBasicData()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"AutoImportSql ImportSQLConfig.blCommonBasicData()"})
+  public void testBlCommonBasicData_givenImportSQLConfig2() {
+    // Arrange and Act
+    AutoImportSql actualBlCommonBasicDataResult = (new ImportSQLConfig()).blCommonBasicData();
 
     // Assert
     assertEquals("config/bc/sql/demo/load_admin_users.sql,config/bc/sql/demo/load_sitemap_data.sql",
@@ -70,9 +125,9 @@ public class ImportSQLConfigDiffblueTest {
    * Method under test: {@link ImportSQLConfig#blCommonLateData()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"AutoImportSql ImportSQLConfig.blCommonLateData()"})
   public void testBlCommonLateData() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange and Act
     AutoImportSql actualBlCommonLateDataResult = (new ImportSQLConfig()).blCommonLateData();
 
@@ -81,24 +136,5 @@ public class ImportSQLConfigDiffblueTest {
         actualBlCommonLateDataResult.getSqlFilePath());
     assertEquals(AutoImportPersistenceUnit.BL_PU, actualBlCommonLateDataResult.getPersistenceUnit());
     assertEquals(AutoImportStage.PRIMARY_LATE, actualBlCommonLateDataResult.getOrder());
-  }
-
-  /**
-   * Test {@link ImportSQLConfig#blCommonLateData()}.
-   * <p>
-   * Method under test: {@link ImportSQLConfig#blCommonLateData()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testBlCommonLateData2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   org.springframework.beans.factory.NoSuchBeanDefinitionException: No bean named 'blCommonLateData' available
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange and Act
-    importSQLConfig.blCommonLateData();
   }
 }

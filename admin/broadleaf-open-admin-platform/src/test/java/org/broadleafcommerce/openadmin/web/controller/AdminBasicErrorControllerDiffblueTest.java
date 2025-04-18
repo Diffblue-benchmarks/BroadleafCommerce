@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.web.controller;
 
 import static org.junit.Assert.assertEquals;
@@ -8,20 +25,22 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import java.util.HashMap;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.broadleafcommerce.common.web.BroadleafWebRequestProcessor;
 import org.broadleafcommerce.openadmin.web.compatibility.JSCompatibilityRequestWrapper;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ErrorProperties;
+import org.springframework.boot.autoconfigure.web.ErrorProperties.IncludeAttribute;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.web.error.ErrorAttributeOptions;
+import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -43,41 +62,41 @@ public class AdminBasicErrorControllerDiffblueTest {
   private ErrorAttributes errorAttributes;
 
   /**
-   * Test
-   * {@link AdminBasicErrorController#AdminBasicErrorController(ErrorAttributes, ErrorProperties)}.
+   * Test {@link AdminBasicErrorController#AdminBasicErrorController(ErrorAttributes, ErrorProperties)}.
    * <p>
-   * Method under test:
-   * {@link AdminBasicErrorController#AdminBasicErrorController(ErrorAttributes, ErrorProperties)}
+   * Method under test: {@link AdminBasicErrorController#AdminBasicErrorController(ErrorAttributes, ErrorProperties)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminBasicErrorController.<init>(ErrorAttributes, ErrorProperties)"})
   public void testNewAdminBasicErrorController() {
     // Arrange
+    DefaultErrorAttributes errorAttributes2 = new DefaultErrorAttributes();
+
     ErrorProperties errorProperties = new ErrorProperties();
-    errorProperties.setIncludeBindingErrors(ErrorProperties.IncludeAttribute.NEVER);
+    errorProperties.setIncludeBindingErrors(IncludeAttribute.NEVER);
     errorProperties.setIncludeException(true);
-    errorProperties.setIncludeMessage(ErrorProperties.IncludeAttribute.NEVER);
-    errorProperties.setIncludeStacktrace(ErrorProperties.IncludeAttribute.NEVER);
+    errorProperties.setIncludeMessage(IncludeAttribute.NEVER);
+    errorProperties.setIncludeStacktrace(IncludeAttribute.NEVER);
     errorProperties.setPath("Path");
 
     // Act and Assert
-    assertNull((new AdminBasicErrorController(errorAttributes, errorProperties)).requestProcessor);
+    assertNull((new AdminBasicErrorController(errorAttributes2, errorProperties)).requestProcessor);
   }
 
   /**
-   * Test
-   * {@link AdminBasicErrorController#errorHtml(HttpServletRequest, HttpServletResponse)}.
+   * Test {@link AdminBasicErrorController#errorHtml(HttpServletRequest, HttpServletResponse)}.
    * <ul>
    *   <li>Then return ViewName is {@code error}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminBasicErrorController#errorHtml(HttpServletRequest, HttpServletResponse)}
+   * Method under test: {@link AdminBasicErrorController#errorHtml(HttpServletRequest, HttpServletResponse)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ModelAndView AdminBasicErrorController.errorHtml(HttpServletRequest, HttpServletResponse)"})
   public void testErrorHtml_thenReturnViewNameIsError() {
     // Arrange
-    when(errorAttributes.getErrorAttributes(Mockito.<WebRequest>any(), Mockito.<ErrorAttributeOptions>any()))
-        .thenReturn(new HashMap<>());
     doNothing().when(broadleafWebRequestProcessor).process(Mockito.<WebRequest>any());
     JSCompatibilityRequestWrapper request = new JSCompatibilityRequestWrapper(new MockHttpServletRequest());
     MockHttpServletResponse response = new MockHttpServletResponse();
@@ -87,7 +106,6 @@ public class AdminBasicErrorControllerDiffblueTest {
 
     // Assert
     verify(broadleafWebRequestProcessor).process(isA(WebRequest.class));
-    verify(errorAttributes).getErrorAttributes(isA(WebRequest.class), isA(ErrorAttributeOptions.class));
     assertEquals("error", actualErrorHtmlResult.getViewName());
     assertNull(actualErrorHtmlResult.getStatus());
     assertNull(actualErrorHtmlResult.getView());

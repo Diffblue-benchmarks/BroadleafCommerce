@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.order.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -8,10 +25,11 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -43,21 +61,19 @@ import org.broadleafcommerce.profile.core.domain.AddressImpl;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
 import org.broadleafcommerce.profile.core.domain.Phone;
 import org.broadleafcommerce.profile.core.domain.PhoneImpl;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class FulfillmentGroupImplDiffblueTest {
   @Autowired
   private FulfillmentGroupImpl fulfillmentGroupImpl;
@@ -68,68 +84,15 @@ public class FulfillmentGroupImplDiffblueTest {
    * Method under test: {@link FulfillmentGroupImpl#getDiscreteOrderItems()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List FulfillmentGroupImpl.getDiscreteOrderItems()"})
   public void testGetDiscreteOrderItems() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.addFulfillmentGroupItem(new FulfillmentGroupItemImpl());
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl2.addFulfillmentGroupItem(new FulfillmentGroupItemImpl());
 
     // Act and Assert
-    assertTrue(fulfillmentGroupImpl.getDiscreteOrderItems().isEmpty());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#getDiscreteOrderItems()}.
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#getDiscreteOrderItems()}
-   */
-  @Test
-  public void testGetDiscreteOrderItems2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupItemImpl fulfillmentGroupItem = mock(FulfillmentGroupItemImpl.class);
-    when(fulfillmentGroupItem.getOrderItem()).thenReturn(new BundleOrderItemImpl());
-
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.addFulfillmentGroupItem(fulfillmentGroupItem);
-
-    // Act
-    List<DiscreteOrderItem> actualDiscreteOrderItems = fulfillmentGroupImpl.getDiscreteOrderItems();
-
-    // Assert
-    verify(fulfillmentGroupItem).getOrderItem();
-    assertTrue(actualDiscreteOrderItems.isEmpty());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#getDiscreteOrderItems()}.
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#getDiscreteOrderItems()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetDiscreteOrderItems3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass432 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new FulfillmentGroupImpl()).getDiscreteOrderItems();
+    assertTrue(fulfillmentGroupImpl2.getDiscreteOrderItems().isEmpty());
   }
 
   /**
@@ -142,9 +105,9 @@ public class FulfillmentGroupImplDiffblueTest {
    * Method under test: {@link FulfillmentGroupImpl#getDiscreteOrderItems()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List FulfillmentGroupImpl.getDiscreteOrderItems()"})
   public void testGetDiscreteOrderItems_givenFulfillmentGroupImpl_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertTrue((new FulfillmentGroupImpl()).getDiscreteOrderItems().isEmpty());
   }
@@ -158,9 +121,9 @@ public class FulfillmentGroupImplDiffblueTest {
    * Method under test: {@link FulfillmentGroupImpl#getDiscreteOrderItems()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List FulfillmentGroupImpl.getDiscreteOrderItems()"})
   public void testGetDiscreteOrderItems_thenReturnArrayList() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
@@ -192,6 +155,7 @@ public class FulfillmentGroupImplDiffblueTest {
     orderItem.setOrderItemType(OrderItemType.BASIC);
     orderItem.setParentOrderItem(new BundleOrderItemImpl());
     orderItem.setPersonalMessage(new PersonalMessageImpl());
+    orderItem.setPrice(new Money());
     orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
     orderItem.setQuantity(1);
     orderItem.setRetailPrice(new Money());
@@ -217,215 +181,121 @@ public class FulfillmentGroupImplDiffblueTest {
     ArrayList<FulfillmentGroupItem> fulfillmentGroupItems = new ArrayList<>();
     fulfillmentGroupItems.add(fulfillmentGroupItemImpl);
 
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(new AddressImpl());
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroupImpl.setFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setOrder(NullOrderFactoryImpl.NULL_ORDER);
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroupImpl.setFulfillmentGroupItems(fulfillmentGroupItems);
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl2.setAddress(new AddressImpl());
+    fulfillmentGroupImpl2.setCandidateFulfillmentGroupOffer(new ArrayList<>());
+    fulfillmentGroupImpl2.setDeliveryInstruction("Delivery Instruction");
+    fulfillmentGroupImpl2.setFulfillmentGroupAdjustments(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupFees(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentOption(new FulfillmentOptionImpl());
+    fulfillmentGroupImpl2.setFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupImpl2.setIsShippingPriceTaxable(true);
+    fulfillmentGroupImpl2.setMerchandiseTotal(new Money());
+    fulfillmentGroupImpl2.setMethod("Fulfillment Method");
+    fulfillmentGroupImpl2.setOrder(NullOrderFactoryImpl.NULL_ORDER);
+    fulfillmentGroupImpl2.setPersonalMessage(new PersonalMessageImpl());
+    fulfillmentGroupImpl2.setPhone(new PhoneImpl());
+    fulfillmentGroupImpl2.setPrimary(true);
+    fulfillmentGroupImpl2.setReferenceNumber("42");
+    fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSequence(1);
+    fulfillmentGroupImpl2.setService("Service");
+    fulfillmentGroupImpl2.setShippingOverride(true);
+    fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupImpl2.setTaxes(new ArrayList<>());
+    fulfillmentGroupImpl2.setTotal(new Money());
+    fulfillmentGroupImpl2.setTotalFeeTax(new Money());
+    fulfillmentGroupImpl2.setTotalFulfillmentGroupTax(new Money());
+    fulfillmentGroupImpl2.setTotalItemTax(new Money());
+    fulfillmentGroupImpl2.setTotalTax(new Money());
+    fulfillmentGroupImpl2.setType(FulfillmentType.DIGITAL);
+    fulfillmentGroupImpl2.setFulfillmentGroupItems(fulfillmentGroupItems);
 
     // Act and Assert
-    assertEquals(discreteOrderItems, fulfillmentGroupImpl.getDiscreteOrderItems());
+    assertEquals(discreteOrderItems, fulfillmentGroupImpl2.getDiscreteOrderItems());
   }
 
   /**
-   * Test {@link FulfillmentGroupImpl#getDiscreteOrderItems()}.
+   * Test {@link FulfillmentGroupImpl#addFulfillmentGroupItem(FulfillmentGroupItem)}.
    * <ul>
-   *   <li>Then return size is one.</li>
+   *   <li>Given {@link FulfillmentGroupImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test: {@link FulfillmentGroupImpl#getDiscreteOrderItems()}
+   * Method under test: {@link FulfillmentGroupImpl#addFulfillmentGroupItem(FulfillmentGroupItem)}
    */
   @Test
-  public void testGetDiscreteOrderItems_thenReturnSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupItemImpl fulfillmentGroupItem = mock(FulfillmentGroupItemImpl.class);
-    when(fulfillmentGroupItem.getOrderItem()).thenReturn(mock(DiscreteOrderItemImpl.class));
-
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.addFulfillmentGroupItem(fulfillmentGroupItem);
-
-    // Act
-    List<DiscreteOrderItem> actualDiscreteOrderItems = fulfillmentGroupImpl.getDiscreteOrderItems();
-
-    // Assert
-    verify(fulfillmentGroupItem).getOrderItem();
-    assertEquals(1, actualDiscreteOrderItems.size());
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupImpl#addFulfillmentGroupItem(FulfillmentGroupItem)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#addFulfillmentGroupItem(FulfillmentGroupItem)}
-   */
-  @Test
-  public void testAddFulfillmentGroupItem() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    FulfillmentGroupItemImpl fulfillmentGroupItem = new FulfillmentGroupItemImpl();
-
-    // Act
-    fulfillmentGroupImpl.addFulfillmentGroupItem(fulfillmentGroupItem);
-
-    // Assert
-    List<FulfillmentGroupItem> fulfillmentGroupItems = fulfillmentGroupImpl.getFulfillmentGroupItems();
-    assertEquals(1, fulfillmentGroupItems.size());
-    assertTrue(fulfillmentGroupImpl.getDiscreteOrderItems().isEmpty());
-    assertSame(fulfillmentGroupItem, fulfillmentGroupItems.get(0));
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupImpl#addFulfillmentGroupItem(FulfillmentGroupItem)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#addFulfillmentGroupItem(FulfillmentGroupItem)}
-   */
-  @Test
-  public void testAddFulfillmentGroupItem2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    FulfillmentGroupItemImpl fulfillmentGroupItem = mock(FulfillmentGroupItemImpl.class);
-
-    // Act
-    fulfillmentGroupImpl.addFulfillmentGroupItem(fulfillmentGroupItem);
-
-    // Assert
-    List<FulfillmentGroupItem> fulfillmentGroupItems = fulfillmentGroupImpl.getFulfillmentGroupItems();
-    assertEquals(1, fulfillmentGroupItems.size());
-    assertTrue(fulfillmentGroupImpl.getDiscreteOrderItems().isEmpty());
-    assertSame(fulfillmentGroupItem, fulfillmentGroupItems.get(0));
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupImpl#addFulfillmentGroupItem(FulfillmentGroupItem)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#addFulfillmentGroupItem(FulfillmentGroupItem)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddFulfillmentGroupItem3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass312 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupImpl.addFulfillmentGroupItem(FulfillmentGroupItem)"})
+  public void testAddFulfillmentGroupItem_givenFulfillmentGroupImpl() {
     // Arrange
     FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
-
-    // Act
-    fulfillmentGroupImpl2.addFulfillmentGroupItem(new FulfillmentGroupItemImpl());
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupImpl#addFulfillmentGroupItem(FulfillmentGroupItem)}.
-   * <ul>
-   *   <li>Given {@link FulfillmentGroupImpl} (default constructor) Address is
-   * {@link AddressImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#addFulfillmentGroupItem(FulfillmentGroupItem)}
-   */
-  @Test
-  public void testAddFulfillmentGroupItem_givenFulfillmentGroupImplAddressIsAddressImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(new AddressImpl());
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroupImpl.setFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setOrder(NullOrderFactoryImpl.NULL_ORDER);
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroupImpl.setFulfillmentGroupItems(null);
     FulfillmentGroupItemImpl fulfillmentGroupItem = new FulfillmentGroupItemImpl();
 
     // Act
-    fulfillmentGroupImpl.addFulfillmentGroupItem(fulfillmentGroupItem);
+    fulfillmentGroupImpl2.addFulfillmentGroupItem(fulfillmentGroupItem);
 
     // Assert
-    List<FulfillmentGroupItem> fulfillmentGroupItems = fulfillmentGroupImpl.getFulfillmentGroupItems();
+    List<FulfillmentGroupItem> fulfillmentGroupItems = fulfillmentGroupImpl2.getFulfillmentGroupItems();
     assertEquals(1, fulfillmentGroupItems.size());
-    assertTrue(fulfillmentGroupImpl.getDiscreteOrderItems().isEmpty());
+    assertTrue(fulfillmentGroupImpl2.getDiscreteOrderItems().isEmpty());
+    assertSame(fulfillmentGroupItem, fulfillmentGroupItems.get(0));
+  }
+
+  /**
+   * Test {@link FulfillmentGroupImpl#addFulfillmentGroupItem(FulfillmentGroupItem)}.
+   * <ul>
+   *   <li>Given {@link FulfillmentGroupImpl} (default constructor) Address is {@link AddressImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link FulfillmentGroupImpl#addFulfillmentGroupItem(FulfillmentGroupItem)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupImpl.addFulfillmentGroupItem(FulfillmentGroupItem)"})
+  public void testAddFulfillmentGroupItem_givenFulfillmentGroupImplAddressIsAddressImpl() {
+    // Arrange
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl2.setAddress(new AddressImpl());
+    fulfillmentGroupImpl2.setCandidateFulfillmentGroupOffer(new ArrayList<>());
+    fulfillmentGroupImpl2.setDeliveryInstruction("Delivery Instruction");
+    fulfillmentGroupImpl2.setFulfillmentGroupAdjustments(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupFees(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentOption(new FulfillmentOptionImpl());
+    fulfillmentGroupImpl2.setFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupImpl2.setIsShippingPriceTaxable(true);
+    fulfillmentGroupImpl2.setMerchandiseTotal(new Money());
+    fulfillmentGroupImpl2.setMethod("Fulfillment Method");
+    fulfillmentGroupImpl2.setOrder(NullOrderFactoryImpl.NULL_ORDER);
+    fulfillmentGroupImpl2.setPersonalMessage(new PersonalMessageImpl());
+    fulfillmentGroupImpl2.setPhone(new PhoneImpl());
+    fulfillmentGroupImpl2.setPrimary(true);
+    fulfillmentGroupImpl2.setReferenceNumber("42");
+    fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSequence(1);
+    fulfillmentGroupImpl2.setService("Service");
+    fulfillmentGroupImpl2.setShippingOverride(true);
+    fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupImpl2.setTaxes(new ArrayList<>());
+    fulfillmentGroupImpl2.setTotal(new Money());
+    fulfillmentGroupImpl2.setTotalFeeTax(new Money());
+    fulfillmentGroupImpl2.setTotalFulfillmentGroupTax(new Money());
+    fulfillmentGroupImpl2.setTotalItemTax(new Money());
+    fulfillmentGroupImpl2.setTotalTax(new Money());
+    fulfillmentGroupImpl2.setType(FulfillmentType.DIGITAL);
+    fulfillmentGroupImpl2.setFulfillmentGroupItems(null);
+    FulfillmentGroupItemImpl fulfillmentGroupItem = new FulfillmentGroupItemImpl();
+
+    // Act
+    fulfillmentGroupImpl2.addFulfillmentGroupItem(fulfillmentGroupItem);
+
+    // Assert
+    List<FulfillmentGroupItem> fulfillmentGroupItems = fulfillmentGroupImpl2.getFulfillmentGroupItems();
+    assertEquals(1, fulfillmentGroupItems.size());
+    assertTrue(fulfillmentGroupImpl2.getDiscreteOrderItems().isEmpty());
     assertSame(fulfillmentGroupItem, fulfillmentGroupItems.get(0));
   }
 
@@ -474,6 +344,31 @@ public class FulfillmentGroupImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Address FulfillmentGroupImpl.getAddress()",
+      "List FulfillmentGroupImpl.getCandidateFulfillmentGroupOffers()",
+      "String FulfillmentGroupImpl.getDeliveryInstruction()",
+      "List FulfillmentGroupImpl.getFulfillmentGroupAdjustments()",
+      "List FulfillmentGroupImpl.getFulfillmentGroupFees()", "List FulfillmentGroupImpl.getFulfillmentGroupItems()",
+      "FulfillmentOption FulfillmentGroupImpl.getFulfillmentOption()", "Long FulfillmentGroupImpl.getId()",
+      "String FulfillmentGroupImpl.getMethod()", "Order FulfillmentGroupImpl.getOrder()",
+      "PersonalMessage FulfillmentGroupImpl.getPersonalMessage()", "Phone FulfillmentGroupImpl.getPhone()",
+      "String FulfillmentGroupImpl.getReferenceNumber()", "Integer FulfillmentGroupImpl.getSequence()",
+      "String FulfillmentGroupImpl.getService()", "List FulfillmentGroupImpl.getTaxes()",
+      "boolean FulfillmentGroupImpl.isPrimary()", "Boolean FulfillmentGroupImpl.isShippingPriceTaxable()",
+      "void FulfillmentGroupImpl.setAddress(Address)",
+      "void FulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(List)",
+      "void FulfillmentGroupImpl.setDeliveryInstruction(String)",
+      "void FulfillmentGroupImpl.setFulfillmentGroupAdjustments(List)",
+      "void FulfillmentGroupImpl.setFulfillmentGroupFees(List)",
+      "void FulfillmentGroupImpl.setFulfillmentGroupItems(List)",
+      "void FulfillmentGroupImpl.setFulfillmentOption(FulfillmentOption)", "void FulfillmentGroupImpl.setId(Long)",
+      "void FulfillmentGroupImpl.setIsShippingPriceTaxable(Boolean)", "void FulfillmentGroupImpl.setMethod(String)",
+      "void FulfillmentGroupImpl.setOrder(Order)", "void FulfillmentGroupImpl.setPersonalMessage(PersonalMessage)",
+      "void FulfillmentGroupImpl.setPhone(Phone)", "void FulfillmentGroupImpl.setPrimary(boolean)",
+      "void FulfillmentGroupImpl.setReferenceNumber(String)", "void FulfillmentGroupImpl.setSequence(Integer)",
+      "void FulfillmentGroupImpl.setService(String)", "void FulfillmentGroupImpl.setShippingOverride(Boolean)",
+      "void FulfillmentGroupImpl.setTaxes(List)"})
   public void testGettersAndSetters() {
     // Arrange
     FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
@@ -529,7 +424,7 @@ public class FulfillmentGroupImplDiffblueTest {
     boolean actualIsPrimaryResult = fulfillmentGroupImpl.isPrimary();
     Boolean actualIsShippingPriceTaxableResult = fulfillmentGroupImpl.isShippingPriceTaxable();
 
-    // Assert that nothing has changed
+    // Assert
     assertTrue(actualPersonalMessage instanceof PersonalMessageImpl);
     assertTrue(actualPhone instanceof PhoneImpl);
     assertEquals("42", actualReferenceNumber);
@@ -558,52 +453,6 @@ public class FulfillmentGroupImplDiffblueTest {
 
   /**
    * Test {@link FulfillmentGroupImpl#getRetailFulfillmentPrice()}.
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#getRetailFulfillmentPrice()}
-   */
-  @Test
-  public void testGetRetailFulfillmentPrice() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(mock(Money.class));
-
-    // Act and Assert
-    assertNull(fulfillmentGroupImpl.getRetailFulfillmentPrice());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#getRetailFulfillmentPrice()}.
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#getRetailFulfillmentPrice()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetRetailFulfillmentPrice2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass612 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new FulfillmentGroupImpl()).getRetailFulfillmentPrice();
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#getRetailFulfillmentPrice()}.
    * <ul>
    *   <li>Given {@link FulfillmentGroupImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
@@ -612,9 +461,9 @@ public class FulfillmentGroupImplDiffblueTest {
    * Method under test: {@link FulfillmentGroupImpl#getRetailFulfillmentPrice()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money FulfillmentGroupImpl.getRetailFulfillmentPrice()"})
   public void testGetRetailFulfillmentPrice_givenFulfillmentGroupImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new FulfillmentGroupImpl()).getRetailFulfillmentPrice());
   }
@@ -622,17 +471,16 @@ public class FulfillmentGroupImplDiffblueTest {
   /**
    * Test {@link FulfillmentGroupImpl#getRetailFulfillmentPrice()}.
    * <ul>
-   *   <li>Given {@link OrderImpl} (default constructor) Currency is
-   * {@code null}.</li>
+   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@code null}.</li>
    *   <li>Then return {@link Money#Money()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link FulfillmentGroupImpl#getRetailFulfillmentPrice()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money FulfillmentGroupImpl.getRetailFulfillmentPrice()"})
   public void testGetRetailFulfillmentPrice_givenOrderImplCurrencyIsNull_thenReturnMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
@@ -662,750 +510,151 @@ public class FulfillmentGroupImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setCurrency(null);
 
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(new AddressImpl());
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl2.setAddress(new AddressImpl());
+    fulfillmentGroupImpl2.setCandidateFulfillmentGroupOffer(new ArrayList<>());
+    fulfillmentGroupImpl2.setDeliveryInstruction("Delivery Instruction");
+    fulfillmentGroupImpl2.setFulfillmentGroupAdjustments(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupFees(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupItems(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentOption(new FulfillmentOptionImpl());
     Money fulfillmentPrice = new Money();
-    fulfillmentGroupImpl.setFulfillmentPrice(fulfillmentPrice);
-    fulfillmentGroupImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setOrder(order);
+    fulfillmentGroupImpl2.setFulfillmentPrice(fulfillmentPrice);
+    fulfillmentGroupImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupImpl2.setIsShippingPriceTaxable(true);
+    fulfillmentGroupImpl2.setMerchandiseTotal(new Money());
+    fulfillmentGroupImpl2.setMethod("Fulfillment Method");
+    fulfillmentGroupImpl2.setPersonalMessage(new PersonalMessageImpl());
+    fulfillmentGroupImpl2.setPhone(new PhoneImpl());
+    fulfillmentGroupImpl2.setPrimary(true);
+    fulfillmentGroupImpl2.setReferenceNumber("42");
+    fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSequence(1);
+    fulfillmentGroupImpl2.setService("Service");
+    fulfillmentGroupImpl2.setShippingOverride(true);
+    fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupImpl2.setTaxes(new ArrayList<>());
+    fulfillmentGroupImpl2.setTotal(new Money());
+    fulfillmentGroupImpl2.setTotalFeeTax(new Money());
+    fulfillmentGroupImpl2.setTotalFulfillmentGroupTax(new Money());
+    fulfillmentGroupImpl2.setTotalItemTax(new Money());
+    fulfillmentGroupImpl2.setTotalTax(new Money());
+    fulfillmentGroupImpl2.setType(FulfillmentType.DIGITAL);
+    fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setOrder(order);
 
     // Act and Assert
-    assertEquals(fulfillmentPrice, fulfillmentGroupImpl.getRetailFulfillmentPrice());
+    assertEquals(fulfillmentPrice, fulfillmentGroupImpl2.getRetailFulfillmentPrice());
   }
 
   /**
    * Test {@link FulfillmentGroupImpl#setRetailFulfillmentPrice(Money)}.
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#setRetailFulfillmentPrice(Money)}
+   * Method under test: {@link FulfillmentGroupImpl#setRetailFulfillmentPrice(Money)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupImpl.setRetailFulfillmentPrice(Money)"})
   public void testSetRetailFulfillmentPrice() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
     Money retailFulfillmentPrice = new Money();
 
     // Act
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(retailFulfillmentPrice);
+    fulfillmentGroupImpl2.setRetailFulfillmentPrice(retailFulfillmentPrice);
 
     // Assert
-    assertEquals(new BigDecimal("0.00"), fulfillmentGroupImpl.retailFulfillmentPrice);
-    BigDecimal bigDecimal = fulfillmentGroupImpl.retailFulfillmentPrice;
+    assertEquals(new BigDecimal("0.00"), fulfillmentGroupImpl2.retailFulfillmentPrice);
+    BigDecimal bigDecimal = fulfillmentGroupImpl2.retailFulfillmentPrice;
     Money absResult = retailFulfillmentPrice.abs();
     assertSame(bigDecimal, absResult.getAmount());
     Money absResult2 = absResult.abs();
     assertSame(bigDecimal, absResult2.getAmount());
-    Money absResult3 = absResult2.abs();
-    assertSame(bigDecimal, absResult3.getAmount());
-    Money absResult4 = absResult3.abs();
-    assertSame(bigDecimal, absResult4.getAmount());
-    Money absResult5 = absResult4.abs();
-    assertSame(bigDecimal, absResult5.getAmount());
-    Money absResult6 = absResult5.abs();
-    assertSame(bigDecimal, absResult6.getAmount());
-    assertSame(bigDecimal, absResult6.abs().getAmount());
+    assertSame(bigDecimal, absResult2.abs().getAmount());
     Money zeroResult = retailFulfillmentPrice.zero();
-    Money absResult7 = zeroResult.abs();
-    Money absResult8 = absResult7.abs();
-    Money absResult9 = absResult8.abs();
-    Money absResult10 = absResult9.abs();
-    Money absResult11 = absResult10.abs();
-    assertSame(bigDecimal, absResult11.abs().getAmount());
-    assertSame(bigDecimal, absResult11.getAmount());
+    Money absResult3 = zeroResult.abs();
+    assertSame(bigDecimal, absResult3.abs().getAmount());
+    assertSame(bigDecimal, absResult3.getAmount());
     Money zeroResult2 = absResult.zero();
-    Money absResult12 = zeroResult2.abs();
-    Money absResult13 = absResult12.abs();
-    Money absResult14 = absResult13.abs();
-    Money absResult15 = absResult14.abs();
-    assertSame(bigDecimal, absResult15.abs().getAmount());
+    assertSame(bigDecimal, zeroResult2.abs().getAmount());
     Money zeroResult3 = zeroResult.zero();
-    Money absResult16 = zeroResult3.abs();
-    Money absResult17 = absResult16.abs();
-    Money absResult18 = absResult17.abs();
-    Money absResult19 = absResult18.abs();
-    assertSame(bigDecimal, absResult19.abs().getAmount());
-    assertSame(bigDecimal, absResult10.getAmount());
-    assertSame(bigDecimal, absResult15.getAmount());
-    Money zeroResult4 = absResult2.zero();
-    Money absResult20 = zeroResult4.abs();
-    Money absResult21 = absResult20.abs();
-    Money absResult22 = absResult21.abs();
-    assertSame(bigDecimal, absResult22.abs().getAmount());
-    Money zeroResult5 = absResult7.zero();
-    Money absResult23 = zeroResult5.abs();
-    Money absResult24 = absResult23.abs();
-    Money absResult25 = absResult24.abs();
-    assertSame(bigDecimal, absResult25.abs().getAmount());
-    assertSame(bigDecimal, absResult19.getAmount());
-    Money zeroResult6 = zeroResult2.zero();
-    Money absResult26 = zeroResult6.abs();
-    Money absResult27 = absResult26.abs();
-    Money absResult28 = absResult27.abs();
-    assertSame(bigDecimal, absResult28.abs().getAmount());
-    Money zeroResult7 = zeroResult3.zero();
-    Money absResult29 = zeroResult7.abs();
-    Money absResult30 = absResult29.abs();
-    Money absResult31 = absResult30.abs();
-    assertSame(bigDecimal, absResult31.abs().getAmount());
-    assertSame(bigDecimal, absResult9.getAmount());
-    assertSame(bigDecimal, absResult14.getAmount());
-    assertSame(bigDecimal, absResult22.getAmount());
-    Money zeroResult8 = absResult3.zero();
-    Money absResult32 = zeroResult8.abs();
-    Money absResult33 = absResult32.abs();
-    assertSame(bigDecimal, absResult33.abs().getAmount());
-    Money zeroResult9 = absResult8.zero();
-    Money absResult34 = zeroResult9.abs();
-    Money absResult35 = absResult34.abs();
-    assertSame(bigDecimal, absResult35.abs().getAmount());
-    assertSame(bigDecimal, absResult25.getAmount());
-    Money zeroResult10 = absResult12.zero();
-    Money absResult36 = zeroResult10.abs();
-    Money absResult37 = absResult36.abs();
-    assertSame(bigDecimal, absResult37.abs().getAmount());
-    Money zeroResult11 = absResult16.zero();
-    Money absResult38 = zeroResult11.abs();
-    Money absResult39 = absResult38.abs();
-    assertSame(bigDecimal, absResult39.abs().getAmount());
-    assertSame(bigDecimal, absResult18.getAmount());
-    assertSame(bigDecimal, absResult28.getAmount());
-    Money zeroResult12 = zeroResult4.zero();
-    Money absResult40 = zeroResult12.abs();
-    Money absResult41 = absResult40.abs();
-    assertSame(bigDecimal, absResult41.abs().getAmount());
-    Money zeroResult13 = zeroResult5.zero();
-    Money absResult42 = zeroResult13.abs();
-    Money absResult43 = absResult42.abs();
-    assertSame(bigDecimal, absResult43.abs().getAmount());
-    assertSame(bigDecimal, absResult31.getAmount());
-    Money zeroResult14 = zeroResult6.zero();
-    Money absResult44 = zeroResult14.abs();
-    Money absResult45 = absResult44.abs();
-    assertSame(bigDecimal, absResult45.abs().getAmount());
-    Money zeroResult15 = zeroResult7.zero();
-    Money absResult46 = zeroResult15.abs();
-    Money absResult47 = absResult46.abs();
-    assertSame(bigDecimal, absResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult8.getAmount());
-    assertSame(bigDecimal, absResult13.getAmount());
-    assertSame(bigDecimal, absResult21.getAmount());
-    assertSame(bigDecimal, absResult33.getAmount());
-    Money zeroResult16 = absResult4.zero();
-    Money absResult48 = zeroResult16.abs();
-    assertSame(bigDecimal, absResult48.abs().getAmount());
-    Money zeroResult17 = absResult9.zero();
-    Money absResult49 = zeroResult17.abs();
-    assertSame(bigDecimal, absResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult35.getAmount());
-    Money zeroResult18 = absResult13.zero();
-    Money absResult50 = zeroResult18.abs();
-    assertSame(bigDecimal, absResult50.abs().getAmount());
-    Money zeroResult19 = absResult17.zero();
-    Money absResult51 = zeroResult19.abs();
-    assertSame(bigDecimal, absResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult24.getAmount());
-    assertSame(bigDecimal, absResult37.getAmount());
-    Money zeroResult20 = absResult20.zero();
-    Money absResult52 = zeroResult20.abs();
-    assertSame(bigDecimal, absResult52.abs().getAmount());
-    Money zeroResult21 = absResult23.zero();
-    Money absResult53 = zeroResult21.abs();
-    assertSame(bigDecimal, absResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult39.getAmount());
-    Money zeroResult22 = absResult26.zero();
-    Money absResult54 = zeroResult22.abs();
-    assertSame(bigDecimal, absResult54.abs().getAmount());
-    Money zeroResult23 = absResult29.zero();
-    Money absResult55 = zeroResult23.abs();
-    assertSame(bigDecimal, absResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult17.getAmount());
-    assertSame(bigDecimal, absResult27.getAmount());
-    assertSame(bigDecimal, absResult41.getAmount());
-    Money zeroResult24 = zeroResult8.zero();
-    Money absResult56 = zeroResult24.abs();
-    assertSame(bigDecimal, absResult56.abs().getAmount());
-    Money zeroResult25 = zeroResult9.zero();
-    Money absResult57 = zeroResult25.abs();
-    assertSame(bigDecimal, absResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult43.getAmount());
-    Money zeroResult26 = zeroResult10.zero();
-    Money absResult58 = zeroResult26.abs();
-    assertSame(bigDecimal, absResult58.abs().getAmount());
-    Money zeroResult27 = zeroResult11.zero();
-    Money absResult59 = zeroResult27.abs();
-    assertSame(bigDecimal, absResult59.abs().getAmount());
-    assertSame(bigDecimal, absResult30.getAmount());
-    assertSame(bigDecimal, absResult45.getAmount());
-    Money zeroResult28 = zeroResult12.zero();
-    Money absResult60 = zeroResult28.abs();
-    assertSame(bigDecimal, absResult60.abs().getAmount());
-    Money zeroResult29 = zeroResult13.zero();
-    Money absResult61 = zeroResult29.abs();
-    assertSame(bigDecimal, absResult61.abs().getAmount());
-    assertSame(bigDecimal, absResult47.getAmount());
-    Money zeroResult30 = zeroResult14.zero();
-    Money absResult62 = zeroResult30.abs();
-    assertSame(bigDecimal, absResult62.abs().getAmount());
-    assertSame(bigDecimal, absResult7.getAmount());
-    assertSame(bigDecimal, absResult12.getAmount());
-    assertSame(bigDecimal, absResult20.getAmount());
-    assertSame(bigDecimal, absResult32.getAmount());
-    assertSame(bigDecimal, absResult48.getAmount());
-    Money zeroResult31 = absResult5.zero();
-    assertSame(bigDecimal, zeroResult31.abs().getAmount());
-    Money zeroResult32 = absResult10.zero();
-    assertSame(bigDecimal, zeroResult32.abs().getAmount());
-    assertSame(bigDecimal, absResult49.getAmount());
-    Money zeroResult33 = absResult14.zero();
-    assertSame(bigDecimal, zeroResult33.abs().getAmount());
-    Money zeroResult34 = absResult18.zero();
-    assertSame(bigDecimal, zeroResult34.abs().getAmount());
-    assertSame(bigDecimal, absResult34.getAmount());
-    assertSame(bigDecimal, absResult50.getAmount());
-    Money zeroResult35 = absResult21.zero();
-    assertSame(bigDecimal, zeroResult35.abs().getAmount());
-    Money zeroResult36 = absResult24.zero();
-    assertSame(bigDecimal, zeroResult36.abs().getAmount());
-    assertSame(bigDecimal, absResult51.getAmount());
-    Money zeroResult37 = absResult27.zero();
-    assertSame(bigDecimal, zeroResult37.abs().getAmount());
-    Money zeroResult38 = absResult30.zero();
-    assertSame(bigDecimal, zeroResult38.abs().getAmount());
-    assertSame(bigDecimal, absResult23.getAmount());
-    assertSame(bigDecimal, absResult36.getAmount());
-    assertSame(bigDecimal, absResult52.getAmount());
-    Money zeroResult39 = absResult32.zero();
-    assertSame(bigDecimal, zeroResult39.abs().getAmount());
-    Money zeroResult40 = absResult34.zero();
-    assertSame(bigDecimal, zeroResult40.abs().getAmount());
-    assertSame(bigDecimal, absResult53.getAmount());
-    Money zeroResult41 = absResult36.zero();
-    assertSame(bigDecimal, zeroResult41.abs().getAmount());
-    Money zeroResult42 = absResult38.zero();
-    assertSame(bigDecimal, zeroResult42.abs().getAmount());
-    assertSame(bigDecimal, absResult38.getAmount());
-    assertSame(bigDecimal, absResult54.getAmount());
-    Money zeroResult43 = absResult40.zero();
-    assertSame(bigDecimal, zeroResult43.abs().getAmount());
-    Money zeroResult44 = absResult42.zero();
-    assertSame(bigDecimal, zeroResult44.abs().getAmount());
-    assertSame(bigDecimal, absResult55.getAmount());
-    Money zeroResult45 = absResult44.zero();
-    assertSame(bigDecimal, zeroResult45.abs().getAmount());
-    assertSame(bigDecimal, absResult16.getAmount());
-    assertSame(bigDecimal, absResult26.getAmount());
-    assertSame(bigDecimal, absResult40.getAmount());
-    assertSame(bigDecimal, absResult56.getAmount());
-    Money zeroResult46 = zeroResult16.zero();
-    assertSame(bigDecimal, zeroResult46.abs().getAmount());
-    Money zeroResult47 = zeroResult17.zero();
-    assertSame(bigDecimal, zeroResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult57.getAmount());
-    Money zeroResult48 = zeroResult18.zero();
-    assertSame(bigDecimal, zeroResult48.abs().getAmount());
-    Money zeroResult49 = zeroResult19.zero();
-    assertSame(bigDecimal, zeroResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult42.getAmount());
-    assertSame(bigDecimal, absResult58.getAmount());
-    Money zeroResult50 = zeroResult20.zero();
-    assertSame(bigDecimal, zeroResult50.abs().getAmount());
-    Money zeroResult51 = zeroResult21.zero();
-    assertSame(bigDecimal, zeroResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult59.getAmount());
-    Money zeroResult52 = zeroResult22.zero();
-    assertSame(bigDecimal, zeroResult52.abs().getAmount());
-    Money zeroResult53 = zeroResult23.zero();
-    assertSame(bigDecimal, zeroResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult29.getAmount());
-    assertSame(bigDecimal, absResult44.getAmount());
-    assertSame(bigDecimal, absResult60.getAmount());
-    Money zeroResult54 = zeroResult24.zero();
-    assertSame(bigDecimal, zeroResult54.abs().getAmount());
-    Money zeroResult55 = zeroResult25.zero();
-    assertSame(bigDecimal, zeroResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult61.getAmount());
-    Money zeroResult56 = zeroResult26.zero();
-    assertSame(bigDecimal, zeroResult56.abs().getAmount());
-    Money zeroResult57 = zeroResult27.zero();
-    assertSame(bigDecimal, zeroResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult46.getAmount());
-    assertSame(bigDecimal, absResult62.getAmount());
-    Money zeroResult58 = zeroResult28.zero();
-    assertSame(bigDecimal, zeroResult58.abs().getAmount());
-    Money zeroResult59 = zeroResult29.zero();
-    assertSame(bigDecimal, zeroResult59.abs().getAmount());
-    Money zeroResult60 = zeroResult15.zero();
-    assertSame(bigDecimal, zeroResult60.abs().getAmount());
-    Money zeroResult61 = zeroResult30.zero();
-    assertSame(bigDecimal, zeroResult61.abs().getAmount());
+    assertSame(bigDecimal, zeroResult3.abs().getAmount());
     assertSame(bigDecimal, zeroResult.getAmount());
     assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, zeroResult4.getAmount());
-    assertSame(bigDecimal, zeroResult8.getAmount());
-    assertSame(bigDecimal, zeroResult16.getAmount());
-    assertSame(bigDecimal, zeroResult31.getAmount());
-    assertSame(bigDecimal, absResult6.zero().getAmount());
-    assertSame(bigDecimal, absResult11.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.getAmount());
-    assertSame(bigDecimal, absResult15.zero().getAmount());
-    assertSame(bigDecimal, absResult19.zero().getAmount());
-    assertSame(bigDecimal, zeroResult17.getAmount());
-    assertSame(bigDecimal, zeroResult33.getAmount());
-    assertSame(bigDecimal, absResult22.zero().getAmount());
-    assertSame(bigDecimal, absResult25.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.getAmount());
-    assertSame(bigDecimal, absResult28.zero().getAmount());
-    assertSame(bigDecimal, absResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult9.getAmount());
-    assertSame(bigDecimal, zeroResult18.getAmount());
-    assertSame(bigDecimal, zeroResult35.getAmount());
-    assertSame(bigDecimal, absResult33.zero().getAmount());
-    assertSame(bigDecimal, absResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.getAmount());
-    assertSame(bigDecimal, absResult37.zero().getAmount());
-    assertSame(bigDecimal, absResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult19.getAmount());
-    assertSame(bigDecimal, zeroResult37.getAmount());
-    assertSame(bigDecimal, absResult41.zero().getAmount());
-    assertSame(bigDecimal, absResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.getAmount());
-    assertSame(bigDecimal, absResult45.zero().getAmount());
-    assertSame(bigDecimal, absResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult5.getAmount());
-    assertSame(bigDecimal, zeroResult10.getAmount());
-    assertSame(bigDecimal, zeroResult20.getAmount());
-    assertSame(bigDecimal, zeroResult39.getAmount());
-    assertSame(bigDecimal, absResult48.zero().getAmount());
-    assertSame(bigDecimal, absResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.getAmount());
-    assertSame(bigDecimal, absResult50.zero().getAmount());
-    assertSame(bigDecimal, absResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult21.getAmount());
-    assertSame(bigDecimal, zeroResult41.getAmount());
-    assertSame(bigDecimal, absResult52.zero().getAmount());
-    assertSame(bigDecimal, absResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.getAmount());
-    assertSame(bigDecimal, absResult54.zero().getAmount());
-    assertSame(bigDecimal, absResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult11.getAmount());
-    assertSame(bigDecimal, zeroResult22.getAmount());
-    assertSame(bigDecimal, zeroResult43.getAmount());
-    assertSame(bigDecimal, absResult56.zero().getAmount());
-    assertSame(bigDecimal, absResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.getAmount());
-    assertSame(bigDecimal, absResult58.zero().getAmount());
-    assertSame(bigDecimal, absResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult23.getAmount());
-    assertSame(bigDecimal, zeroResult45.getAmount());
-    assertSame(bigDecimal, absResult60.zero().getAmount());
-    assertSame(bigDecimal, absResult61.zero().getAmount());
-    assertSame(bigDecimal, absResult46.zero().getAmount());
-    assertSame(bigDecimal, absResult62.zero().getAmount());
+    assertSame(bigDecimal, absResult2.zero().getAmount());
+    assertSame(bigDecimal, absResult3.zero().getAmount());
     assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult6.getAmount());
-    assertSame(bigDecimal, zeroResult12.getAmount());
-    assertSame(bigDecimal, zeroResult24.getAmount());
-    assertSame(bigDecimal, zeroResult46.getAmount());
-    assertSame(bigDecimal, zeroResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.getAmount());
-    assertSame(bigDecimal, zeroResult33.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.zero().getAmount());
-    assertSame(bigDecimal, zeroResult25.getAmount());
-    assertSame(bigDecimal, zeroResult48.getAmount());
-    assertSame(bigDecimal, zeroResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.getAmount());
-    assertSame(bigDecimal, zeroResult37.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.zero().getAmount());
-    assertSame(bigDecimal, zeroResult13.getAmount());
-    assertSame(bigDecimal, zeroResult26.getAmount());
-    assertSame(bigDecimal, zeroResult50.getAmount());
-    assertSame(bigDecimal, zeroResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.getAmount());
-    assertSame(bigDecimal, zeroResult41.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.zero().getAmount());
-    assertSame(bigDecimal, zeroResult27.getAmount());
-    assertSame(bigDecimal, zeroResult52.getAmount());
-    assertSame(bigDecimal, zeroResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.getAmount());
-    assertSame(bigDecimal, zeroResult45.zero().getAmount());
-    assertSame(bigDecimal, zeroResult7.getAmount());
-    assertSame(bigDecimal, zeroResult14.getAmount());
-    assertSame(bigDecimal, zeroResult28.getAmount());
-    assertSame(bigDecimal, zeroResult54.getAmount());
-    assertSame(bigDecimal, zeroResult46.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.getAmount());
-    assertSame(bigDecimal, zeroResult48.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult29.getAmount());
-    assertSame(bigDecimal, zeroResult56.getAmount());
-    assertSame(bigDecimal, zeroResult50.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.getAmount());
-    assertSame(bigDecimal, zeroResult52.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult15.getAmount());
-    assertSame(bigDecimal, zeroResult30.getAmount());
-    assertSame(bigDecimal, zeroResult58.getAmount());
-    assertSame(bigDecimal, zeroResult54.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.getAmount());
-    assertSame(bigDecimal, zeroResult56.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.getAmount());
-    assertSame(bigDecimal, zeroResult61.getAmount());
-    assertSame(bigDecimal, zeroResult58.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.zero().getAmount());
-    assertSame(bigDecimal, zeroResult61.zero().getAmount());
+    assertSame(bigDecimal, zeroResult2.zero().getAmount());
+    assertSame(bigDecimal, zeroResult3.zero().getAmount());
   }
 
   /**
    * Test {@link FulfillmentGroupImpl#setRetailFulfillmentPrice(Money)}.
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#setRetailFulfillmentPrice(Money)}
+   * Method under test: {@link FulfillmentGroupImpl#setRetailFulfillmentPrice(Money)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupImpl.setRetailFulfillmentPrice(Money)"})
   public void testSetRetailFulfillmentPrice2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(new AddressImpl());
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
-    Money fulfillmentPrice = new Money();
-    fulfillmentGroupImpl.setFulfillmentPrice(fulfillmentPrice);
-    fulfillmentGroupImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setOrder(NullOrderFactoryImpl.NULL_ORDER);
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-
-    // Act
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(null);
-
-    // Assert
-    assertNull(fulfillmentGroupImpl.retailFulfillmentPrice);
-    assertNull(fulfillmentGroupImpl.getRetailFulfillmentPrice());
-    assertNull(fulfillmentGroupImpl.getRetailShippingPrice());
-    Money fulfillmentGroupAdjustmentsValue = fulfillmentGroupImpl.getFulfillmentGroupAdjustmentsValue();
-    Money absResult = fulfillmentGroupAdjustmentsValue.abs();
-    Money absResult2 = absResult.abs();
-    Money absResult3 = absResult2.abs();
-    Money absResult4 = absResult3.abs();
-    assertEquals(fulfillmentPrice, absResult4.abs());
-    Money fulfillmentPrice2 = fulfillmentGroupImpl.getFulfillmentPrice();
-    Money absResult5 = fulfillmentPrice2.abs();
-    Money absResult6 = absResult5.abs();
-    Money absResult7 = absResult6.abs();
-    Money absResult8 = absResult7.abs();
-    assertEquals(fulfillmentPrice, absResult8.abs());
-    Money zeroResult = fulfillmentGroupAdjustmentsValue.zero();
-    Money absResult9 = zeroResult.abs();
-    Money absResult10 = absResult9.abs();
-    Money absResult11 = absResult10.abs();
-    assertEquals(fulfillmentPrice, absResult11.abs());
-    Money absResult12 = fulfillmentPrice2.zero().abs();
-    Money absResult13 = absResult12.abs();
-    Money absResult14 = absResult13.abs();
-    assertEquals(fulfillmentPrice, absResult14.abs());
-    Money zeroResult2 = absResult.zero();
-    Money absResult15 = zeroResult2.abs();
-    Money absResult16 = absResult15.abs();
-    assertEquals(fulfillmentPrice, absResult16.abs());
-    Money zeroResult3 = absResult5.zero();
-    Money absResult17 = zeroResult3.abs();
-    Money absResult18 = absResult17.abs();
-    assertEquals(fulfillmentPrice, absResult18.abs());
-    Money zeroResult4 = zeroResult.zero();
-    Money absResult19 = zeroResult4.abs();
-    Money absResult20 = absResult19.abs();
-    assertEquals(fulfillmentPrice, absResult20.abs());
-    Money zeroResult5 = absResult2.zero();
-    Money absResult21 = zeroResult5.abs();
-    assertEquals(fulfillmentPrice, absResult21.abs());
-    Money zeroResult6 = absResult6.zero();
-    Money absResult22 = zeroResult6.abs();
-    assertEquals(fulfillmentPrice, absResult22.abs());
-    Money zeroResult7 = absResult9.zero();
-    Money absResult23 = zeroResult7.abs();
-    assertEquals(fulfillmentPrice, absResult23.abs());
-    Money zeroResult8 = absResult12.zero();
-    Money absResult24 = zeroResult8.abs();
-    assertEquals(fulfillmentPrice, absResult24.abs());
-    Money zeroResult9 = zeroResult2.zero();
-    Money absResult25 = zeroResult9.abs();
-    assertEquals(fulfillmentPrice, absResult25.abs());
-    Money zeroResult10 = zeroResult3.zero();
-    Money absResult26 = zeroResult10.abs();
-    assertEquals(fulfillmentPrice, absResult26.abs());
-    Money zeroResult11 = zeroResult4.zero();
-    Money absResult27 = zeroResult11.abs();
-    assertEquals(fulfillmentPrice, absResult27.abs());
-    Money zeroResult12 = fulfillmentGroupImpl.getTotalTax().zero();
-    Money zeroResult13 = zeroResult12.zero();
-    Money absResult28 = zeroResult13.abs();
-    assertEquals(fulfillmentPrice, absResult28.abs());
-    Money zeroResult14 = absResult3.zero();
-    assertEquals(fulfillmentPrice, zeroResult14.abs());
-    Money zeroResult15 = absResult7.zero();
-    assertEquals(fulfillmentPrice, zeroResult15.abs());
-    Money zeroResult16 = absResult10.zero();
-    assertEquals(fulfillmentPrice, zeroResult16.abs());
-    Money zeroResult17 = absResult13.zero();
-    assertEquals(fulfillmentPrice, zeroResult17.abs());
-    Money zeroResult18 = absResult15.zero();
-    assertEquals(fulfillmentPrice, zeroResult18.abs());
-    Money zeroResult19 = absResult17.zero();
-    assertEquals(fulfillmentPrice, zeroResult19.abs());
-    Money zeroResult20 = absResult19.zero();
-    assertEquals(fulfillmentPrice, zeroResult20.abs());
-    Money zeroResult21 = zeroResult5.zero();
-    assertEquals(fulfillmentPrice, zeroResult21.abs());
-    Money zeroResult22 = zeroResult6.zero();
-    assertEquals(fulfillmentPrice, zeroResult22.abs());
-    Money zeroResult23 = zeroResult7.zero();
-    assertEquals(fulfillmentPrice, zeroResult23.abs());
-    assertEquals(fulfillmentPrice, zeroResult8.zero().abs());
-    Money zeroResult24 = zeroResult9.zero();
-    assertEquals(fulfillmentPrice, zeroResult24.abs());
-    Money zeroResult25 = zeroResult10.zero();
-    assertEquals(fulfillmentPrice, zeroResult25.abs());
-    Money zeroResult26 = zeroResult11.zero();
-    assertEquals(fulfillmentPrice, zeroResult26.abs());
-    Money zeroResult27 = zeroResult13.zero();
-    assertEquals(fulfillmentPrice, zeroResult27.abs());
-    assertEquals(fulfillmentPrice, absResult4.zero());
-    assertEquals(fulfillmentPrice, absResult8.zero());
-    assertEquals(fulfillmentPrice, absResult11.zero());
-    assertEquals(fulfillmentPrice, absResult14.zero());
-    assertEquals(fulfillmentPrice, absResult16.zero());
-    assertEquals(fulfillmentPrice, absResult18.zero());
-    assertEquals(fulfillmentPrice, absResult20.zero());
-    assertEquals(fulfillmentPrice, absResult21.zero());
-    assertEquals(fulfillmentPrice, absResult22.zero());
-    assertEquals(fulfillmentPrice, absResult23.zero());
-    assertEquals(fulfillmentPrice, absResult24.zero());
-    assertEquals(fulfillmentPrice, absResult25.zero());
-    assertEquals(fulfillmentPrice, absResult26.zero());
-    assertEquals(fulfillmentPrice, absResult27.zero());
-    assertEquals(fulfillmentPrice, absResult28.zero());
-    assertEquals(fulfillmentPrice, zeroResult14.zero());
-    assertEquals(fulfillmentPrice, zeroResult15.zero());
-    assertEquals(fulfillmentPrice, zeroResult16.zero());
-    assertEquals(fulfillmentPrice, zeroResult17.zero());
-    assertEquals(fulfillmentPrice, zeroResult18.zero());
-    assertEquals(fulfillmentPrice, zeroResult19.zero());
-    assertEquals(fulfillmentPrice, zeroResult20.zero());
-    Money zeroResult28 = zeroResult12.abs().zero();
-    assertEquals(fulfillmentPrice, zeroResult28.zero());
-    assertEquals(fulfillmentPrice, zeroResult21.zero());
-    assertEquals(fulfillmentPrice, zeroResult22.zero());
-    assertEquals(fulfillmentPrice, zeroResult23.zero());
-    assertEquals(fulfillmentPrice, zeroResult24.zero());
-    assertEquals(fulfillmentPrice, zeroResult25.zero());
-    assertEquals(fulfillmentPrice, zeroResult26.zero());
-    assertEquals(fulfillmentPrice, zeroResult27.zero());
-    BigDecimal bigDecimal = fulfillmentGroupImpl.totalTax;
-    assertSame(bigDecimal, absResult4.getAmount());
-    assertSame(bigDecimal, absResult8.getAmount());
-    assertSame(bigDecimal, absResult11.getAmount());
-    assertSame(bigDecimal, absResult14.getAmount());
-    assertSame(bigDecimal, absResult16.getAmount());
-    assertSame(bigDecimal, absResult18.getAmount());
-    assertSame(bigDecimal, absResult20.getAmount());
-    assertSame(bigDecimal, absResult21.getAmount());
-    assertSame(bigDecimal, absResult22.getAmount());
-    assertSame(bigDecimal, absResult23.getAmount());
-    assertSame(bigDecimal, absResult24.getAmount());
-    assertSame(bigDecimal, absResult25.getAmount());
-    assertSame(bigDecimal, absResult26.getAmount());
-    assertSame(bigDecimal, absResult27.getAmount());
-    assertSame(bigDecimal, absResult28.getAmount());
-    assertSame(bigDecimal, zeroResult14.getAmount());
-    assertSame(bigDecimal, zeroResult15.getAmount());
-    assertSame(bigDecimal, zeroResult16.getAmount());
-    assertSame(bigDecimal, zeroResult17.getAmount());
-    assertSame(bigDecimal, zeroResult18.getAmount());
-    assertSame(bigDecimal, zeroResult19.getAmount());
-    assertSame(bigDecimal, zeroResult20.getAmount());
-    assertSame(bigDecimal, zeroResult28.getAmount());
-    assertSame(bigDecimal, zeroResult21.getAmount());
-    assertSame(bigDecimal, zeroResult22.getAmount());
-    assertSame(bigDecimal, zeroResult23.getAmount());
-    assertSame(bigDecimal, zeroResult24.getAmount());
-    assertSame(bigDecimal, zeroResult25.getAmount());
-    assertSame(bigDecimal, zeroResult26.getAmount());
-    assertSame(bigDecimal, zeroResult27.getAmount());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#setRetailFulfillmentPrice(Money)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#setRetailFulfillmentPrice(Money)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetRetailFulfillmentPrice3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1152 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
     FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
-
-    // Act
+    fulfillmentGroupImpl2.setAddress(new AddressImpl());
+    fulfillmentGroupImpl2.setCandidateFulfillmentGroupOffer(new ArrayList<>());
+    fulfillmentGroupImpl2.setDeliveryInstruction("Delivery Instruction");
+    fulfillmentGroupImpl2.setFulfillmentGroupAdjustments(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupFees(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupItems(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentOption(new FulfillmentOptionImpl());
+    Money fulfillmentPrice = new Money();
+    fulfillmentGroupImpl2.setFulfillmentPrice(fulfillmentPrice);
+    fulfillmentGroupImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupImpl2.setIsShippingPriceTaxable(true);
+    fulfillmentGroupImpl2.setMerchandiseTotal(new Money());
+    fulfillmentGroupImpl2.setMethod("Fulfillment Method");
+    fulfillmentGroupImpl2.setOrder(NullOrderFactoryImpl.NULL_ORDER);
+    fulfillmentGroupImpl2.setPersonalMessage(new PersonalMessageImpl());
+    fulfillmentGroupImpl2.setPhone(new PhoneImpl());
+    fulfillmentGroupImpl2.setPrimary(true);
+    fulfillmentGroupImpl2.setReferenceNumber("42");
     fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#setRetailFulfillmentPrice(Money)}.
-   * <ul>
-   *   <li>When {@link Money}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#setRetailFulfillmentPrice(Money)}
-   */
-  @Test
-  public void testSetRetailFulfillmentPrice_whenMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSequence(1);
+    fulfillmentGroupImpl2.setService("Service");
+    fulfillmentGroupImpl2.setShippingOverride(true);
+    fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupImpl2.setTaxes(new ArrayList<>());
+    fulfillmentGroupImpl2.setTotal(new Money());
+    fulfillmentGroupImpl2.setTotalFeeTax(new Money());
+    fulfillmentGroupImpl2.setTotalFulfillmentGroupTax(new Money());
+    fulfillmentGroupImpl2.setTotalItemTax(new Money());
+    fulfillmentGroupImpl2.setTotalTax(new Money());
+    fulfillmentGroupImpl2.setType(FulfillmentType.DIGITAL);
 
     // Act
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(mock(Money.class));
+    fulfillmentGroupImpl2.setRetailFulfillmentPrice(null);
 
     // Assert
-    assertNull(fulfillmentGroupImpl.retailFulfillmentPrice);
-    assertNull(fulfillmentGroupImpl.getRetailFulfillmentPrice());
-    assertNull(fulfillmentGroupImpl.getRetailShippingPrice());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#getRetailShippingPrice()}.
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#getRetailShippingPrice()}
-   */
-  @Test
-  public void testGetRetailShippingPrice() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(mock(Money.class));
-
-    // Act and Assert
-    assertNull(fulfillmentGroupImpl.getRetailShippingPrice());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#getRetailShippingPrice()}.
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#getRetailShippingPrice()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetRetailShippingPrice2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass642 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new FulfillmentGroupImpl()).getRetailShippingPrice();
+    assertNull(fulfillmentGroupImpl2.retailFulfillmentPrice);
+    assertNull(fulfillmentGroupImpl2.getRetailFulfillmentPrice());
+    assertNull(fulfillmentGroupImpl2.getRetailShippingPrice());
+    Money zeroResult = fulfillmentGroupImpl2.getTotalTax().zero();
+    Money zeroResult2 = zeroResult.zero();
+    Money absResult = zeroResult2.abs();
+    assertEquals(fulfillmentPrice, absResult.abs());
+    Money zeroResult3 = zeroResult2.zero();
+    assertEquals(fulfillmentPrice, zeroResult3.abs());
+    assertEquals(fulfillmentPrice, absResult.zero());
+    Money zeroResult4 = zeroResult.abs().zero();
+    assertEquals(fulfillmentPrice, zeroResult4.zero());
+    assertEquals(fulfillmentPrice, zeroResult3.zero());
+    BigDecimal bigDecimal = fulfillmentGroupImpl2.totalTax;
+    assertSame(bigDecimal, absResult.getAmount());
+    assertSame(bigDecimal, zeroResult4.getAmount());
+    assertSame(bigDecimal, zeroResult3.getAmount());
   }
 
   /**
@@ -1418,9 +667,9 @@ public class FulfillmentGroupImplDiffblueTest {
    * Method under test: {@link FulfillmentGroupImpl#getRetailShippingPrice()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money FulfillmentGroupImpl.getRetailShippingPrice()"})
   public void testGetRetailShippingPrice_givenFulfillmentGroupImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new FulfillmentGroupImpl()).getRetailShippingPrice());
   }
@@ -1428,17 +677,16 @@ public class FulfillmentGroupImplDiffblueTest {
   /**
    * Test {@link FulfillmentGroupImpl#getRetailShippingPrice()}.
    * <ul>
-   *   <li>Given {@link OrderImpl} (default constructor) Currency is
-   * {@code null}.</li>
+   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@code null}.</li>
    *   <li>Then return {@link Money#Money()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link FulfillmentGroupImpl#getRetailShippingPrice()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money FulfillmentGroupImpl.getRetailShippingPrice()"})
   public void testGetRetailShippingPrice_givenOrderImplCurrencyIsNull_thenReturnMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
@@ -1468,48 +716,44 @@ public class FulfillmentGroupImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setCurrency(null);
 
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(new AddressImpl());
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl2.setAddress(new AddressImpl());
+    fulfillmentGroupImpl2.setCandidateFulfillmentGroupOffer(new ArrayList<>());
+    fulfillmentGroupImpl2.setDeliveryInstruction("Delivery Instruction");
+    fulfillmentGroupImpl2.setFulfillmentGroupAdjustments(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupFees(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupItems(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentOption(new FulfillmentOptionImpl());
     Money fulfillmentPrice = new Money();
-    fulfillmentGroupImpl.setFulfillmentPrice(fulfillmentPrice);
-    fulfillmentGroupImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setOrder(order);
+    fulfillmentGroupImpl2.setFulfillmentPrice(fulfillmentPrice);
+    fulfillmentGroupImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupImpl2.setIsShippingPriceTaxable(true);
+    fulfillmentGroupImpl2.setMerchandiseTotal(new Money());
+    fulfillmentGroupImpl2.setMethod("Fulfillment Method");
+    fulfillmentGroupImpl2.setPersonalMessage(new PersonalMessageImpl());
+    fulfillmentGroupImpl2.setPhone(new PhoneImpl());
+    fulfillmentGroupImpl2.setPrimary(true);
+    fulfillmentGroupImpl2.setReferenceNumber("42");
+    fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSequence(1);
+    fulfillmentGroupImpl2.setService("Service");
+    fulfillmentGroupImpl2.setShippingOverride(true);
+    fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupImpl2.setTaxes(new ArrayList<>());
+    fulfillmentGroupImpl2.setTotal(new Money());
+    fulfillmentGroupImpl2.setTotalFeeTax(new Money());
+    fulfillmentGroupImpl2.setTotalFulfillmentGroupTax(new Money());
+    fulfillmentGroupImpl2.setTotalItemTax(new Money());
+    fulfillmentGroupImpl2.setTotalTax(new Money());
+    fulfillmentGroupImpl2.setType(FulfillmentType.DIGITAL);
+    fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setOrder(order);
 
     // Act and Assert
-    assertEquals(fulfillmentPrice, fulfillmentGroupImpl.getRetailShippingPrice());
+    assertEquals(fulfillmentPrice, fulfillmentGroupImpl2.getRetailShippingPrice());
   }
 
   /**
@@ -1518,650 +762,108 @@ public class FulfillmentGroupImplDiffblueTest {
    * Method under test: {@link FulfillmentGroupImpl#setRetailShippingPrice(Money)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupImpl.setRetailShippingPrice(Money)"})
   public void testSetRetailShippingPrice() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
     Money retailShippingPrice = new Money();
 
     // Act
-    fulfillmentGroupImpl.setRetailShippingPrice(retailShippingPrice);
+    fulfillmentGroupImpl2.setRetailShippingPrice(retailShippingPrice);
 
     // Assert
-    assertEquals(new BigDecimal("0.00"), fulfillmentGroupImpl.retailFulfillmentPrice);
-    BigDecimal bigDecimal = fulfillmentGroupImpl.retailFulfillmentPrice;
+    assertEquals(new BigDecimal("0.00"), fulfillmentGroupImpl2.retailFulfillmentPrice);
+    BigDecimal bigDecimal = fulfillmentGroupImpl2.retailFulfillmentPrice;
     Money absResult = retailShippingPrice.abs();
     assertSame(bigDecimal, absResult.getAmount());
     Money absResult2 = absResult.abs();
     assertSame(bigDecimal, absResult2.getAmount());
-    Money absResult3 = absResult2.abs();
-    assertSame(bigDecimal, absResult3.getAmount());
-    Money absResult4 = absResult3.abs();
-    assertSame(bigDecimal, absResult4.getAmount());
-    Money absResult5 = absResult4.abs();
-    assertSame(bigDecimal, absResult5.getAmount());
-    Money absResult6 = absResult5.abs();
-    assertSame(bigDecimal, absResult6.getAmount());
-    assertSame(bigDecimal, absResult6.abs().getAmount());
+    assertSame(bigDecimal, absResult2.abs().getAmount());
     Money zeroResult = retailShippingPrice.zero();
-    Money absResult7 = zeroResult.abs();
-    Money absResult8 = absResult7.abs();
-    Money absResult9 = absResult8.abs();
-    Money absResult10 = absResult9.abs();
-    Money absResult11 = absResult10.abs();
-    assertSame(bigDecimal, absResult11.abs().getAmount());
-    assertSame(bigDecimal, absResult11.getAmount());
+    Money absResult3 = zeroResult.abs();
+    assertSame(bigDecimal, absResult3.abs().getAmount());
+    assertSame(bigDecimal, absResult3.getAmount());
     Money zeroResult2 = absResult.zero();
-    Money absResult12 = zeroResult2.abs();
-    Money absResult13 = absResult12.abs();
-    Money absResult14 = absResult13.abs();
-    Money absResult15 = absResult14.abs();
-    assertSame(bigDecimal, absResult15.abs().getAmount());
+    assertSame(bigDecimal, zeroResult2.abs().getAmount());
     Money zeroResult3 = zeroResult.zero();
-    Money absResult16 = zeroResult3.abs();
-    Money absResult17 = absResult16.abs();
-    Money absResult18 = absResult17.abs();
-    Money absResult19 = absResult18.abs();
-    assertSame(bigDecimal, absResult19.abs().getAmount());
-    assertSame(bigDecimal, absResult10.getAmount());
-    assertSame(bigDecimal, absResult15.getAmount());
-    Money zeroResult4 = absResult2.zero();
-    Money absResult20 = zeroResult4.abs();
-    Money absResult21 = absResult20.abs();
-    Money absResult22 = absResult21.abs();
-    assertSame(bigDecimal, absResult22.abs().getAmount());
-    Money zeroResult5 = absResult7.zero();
-    Money absResult23 = zeroResult5.abs();
-    Money absResult24 = absResult23.abs();
-    Money absResult25 = absResult24.abs();
-    assertSame(bigDecimal, absResult25.abs().getAmount());
-    assertSame(bigDecimal, absResult19.getAmount());
-    Money zeroResult6 = zeroResult2.zero();
-    Money absResult26 = zeroResult6.abs();
-    Money absResult27 = absResult26.abs();
-    Money absResult28 = absResult27.abs();
-    assertSame(bigDecimal, absResult28.abs().getAmount());
-    Money zeroResult7 = zeroResult3.zero();
-    Money absResult29 = zeroResult7.abs();
-    Money absResult30 = absResult29.abs();
-    Money absResult31 = absResult30.abs();
-    assertSame(bigDecimal, absResult31.abs().getAmount());
-    assertSame(bigDecimal, absResult9.getAmount());
-    assertSame(bigDecimal, absResult14.getAmount());
-    assertSame(bigDecimal, absResult22.getAmount());
-    Money zeroResult8 = absResult3.zero();
-    Money absResult32 = zeroResult8.abs();
-    Money absResult33 = absResult32.abs();
-    assertSame(bigDecimal, absResult33.abs().getAmount());
-    Money zeroResult9 = absResult8.zero();
-    Money absResult34 = zeroResult9.abs();
-    Money absResult35 = absResult34.abs();
-    assertSame(bigDecimal, absResult35.abs().getAmount());
-    assertSame(bigDecimal, absResult25.getAmount());
-    Money zeroResult10 = absResult12.zero();
-    Money absResult36 = zeroResult10.abs();
-    Money absResult37 = absResult36.abs();
-    assertSame(bigDecimal, absResult37.abs().getAmount());
-    Money zeroResult11 = absResult16.zero();
-    Money absResult38 = zeroResult11.abs();
-    Money absResult39 = absResult38.abs();
-    assertSame(bigDecimal, absResult39.abs().getAmount());
-    assertSame(bigDecimal, absResult18.getAmount());
-    assertSame(bigDecimal, absResult28.getAmount());
-    Money zeroResult12 = zeroResult4.zero();
-    Money absResult40 = zeroResult12.abs();
-    Money absResult41 = absResult40.abs();
-    assertSame(bigDecimal, absResult41.abs().getAmount());
-    Money zeroResult13 = zeroResult5.zero();
-    Money absResult42 = zeroResult13.abs();
-    Money absResult43 = absResult42.abs();
-    assertSame(bigDecimal, absResult43.abs().getAmount());
-    assertSame(bigDecimal, absResult31.getAmount());
-    Money zeroResult14 = zeroResult6.zero();
-    Money absResult44 = zeroResult14.abs();
-    Money absResult45 = absResult44.abs();
-    assertSame(bigDecimal, absResult45.abs().getAmount());
-    Money zeroResult15 = zeroResult7.zero();
-    Money absResult46 = zeroResult15.abs();
-    Money absResult47 = absResult46.abs();
-    assertSame(bigDecimal, absResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult8.getAmount());
-    assertSame(bigDecimal, absResult13.getAmount());
-    assertSame(bigDecimal, absResult21.getAmount());
-    assertSame(bigDecimal, absResult33.getAmount());
-    Money zeroResult16 = absResult4.zero();
-    Money absResult48 = zeroResult16.abs();
-    assertSame(bigDecimal, absResult48.abs().getAmount());
-    Money zeroResult17 = absResult9.zero();
-    Money absResult49 = zeroResult17.abs();
-    assertSame(bigDecimal, absResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult35.getAmount());
-    Money zeroResult18 = absResult13.zero();
-    Money absResult50 = zeroResult18.abs();
-    assertSame(bigDecimal, absResult50.abs().getAmount());
-    Money zeroResult19 = absResult17.zero();
-    Money absResult51 = zeroResult19.abs();
-    assertSame(bigDecimal, absResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult24.getAmount());
-    assertSame(bigDecimal, absResult37.getAmount());
-    Money zeroResult20 = absResult20.zero();
-    Money absResult52 = zeroResult20.abs();
-    assertSame(bigDecimal, absResult52.abs().getAmount());
-    Money zeroResult21 = absResult23.zero();
-    Money absResult53 = zeroResult21.abs();
-    assertSame(bigDecimal, absResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult39.getAmount());
-    Money zeroResult22 = absResult26.zero();
-    Money absResult54 = zeroResult22.abs();
-    assertSame(bigDecimal, absResult54.abs().getAmount());
-    Money zeroResult23 = absResult29.zero();
-    Money absResult55 = zeroResult23.abs();
-    assertSame(bigDecimal, absResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult17.getAmount());
-    assertSame(bigDecimal, absResult27.getAmount());
-    assertSame(bigDecimal, absResult41.getAmount());
-    Money zeroResult24 = zeroResult8.zero();
-    Money absResult56 = zeroResult24.abs();
-    assertSame(bigDecimal, absResult56.abs().getAmount());
-    Money zeroResult25 = zeroResult9.zero();
-    Money absResult57 = zeroResult25.abs();
-    assertSame(bigDecimal, absResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult43.getAmount());
-    Money zeroResult26 = zeroResult10.zero();
-    Money absResult58 = zeroResult26.abs();
-    assertSame(bigDecimal, absResult58.abs().getAmount());
-    Money zeroResult27 = zeroResult11.zero();
-    Money absResult59 = zeroResult27.abs();
-    assertSame(bigDecimal, absResult59.abs().getAmount());
-    assertSame(bigDecimal, absResult30.getAmount());
-    assertSame(bigDecimal, absResult45.getAmount());
-    Money zeroResult28 = zeroResult12.zero();
-    Money absResult60 = zeroResult28.abs();
-    assertSame(bigDecimal, absResult60.abs().getAmount());
-    Money zeroResult29 = zeroResult13.zero();
-    Money absResult61 = zeroResult29.abs();
-    assertSame(bigDecimal, absResult61.abs().getAmount());
-    assertSame(bigDecimal, absResult47.getAmount());
-    Money zeroResult30 = zeroResult14.zero();
-    Money absResult62 = zeroResult30.abs();
-    assertSame(bigDecimal, absResult62.abs().getAmount());
-    assertSame(bigDecimal, absResult7.getAmount());
-    assertSame(bigDecimal, absResult12.getAmount());
-    assertSame(bigDecimal, absResult20.getAmount());
-    assertSame(bigDecimal, absResult32.getAmount());
-    assertSame(bigDecimal, absResult48.getAmount());
-    Money zeroResult31 = absResult5.zero();
-    assertSame(bigDecimal, zeroResult31.abs().getAmount());
-    Money zeroResult32 = absResult10.zero();
-    assertSame(bigDecimal, zeroResult32.abs().getAmount());
-    assertSame(bigDecimal, absResult49.getAmount());
-    Money zeroResult33 = absResult14.zero();
-    assertSame(bigDecimal, zeroResult33.abs().getAmount());
-    Money zeroResult34 = absResult18.zero();
-    assertSame(bigDecimal, zeroResult34.abs().getAmount());
-    assertSame(bigDecimal, absResult34.getAmount());
-    assertSame(bigDecimal, absResult50.getAmount());
-    Money zeroResult35 = absResult21.zero();
-    assertSame(bigDecimal, zeroResult35.abs().getAmount());
-    Money zeroResult36 = absResult24.zero();
-    assertSame(bigDecimal, zeroResult36.abs().getAmount());
-    assertSame(bigDecimal, absResult51.getAmount());
-    Money zeroResult37 = absResult27.zero();
-    assertSame(bigDecimal, zeroResult37.abs().getAmount());
-    Money zeroResult38 = absResult30.zero();
-    assertSame(bigDecimal, zeroResult38.abs().getAmount());
-    assertSame(bigDecimal, absResult23.getAmount());
-    assertSame(bigDecimal, absResult36.getAmount());
-    assertSame(bigDecimal, absResult52.getAmount());
-    Money zeroResult39 = absResult32.zero();
-    assertSame(bigDecimal, zeroResult39.abs().getAmount());
-    Money zeroResult40 = absResult34.zero();
-    assertSame(bigDecimal, zeroResult40.abs().getAmount());
-    assertSame(bigDecimal, absResult53.getAmount());
-    Money zeroResult41 = absResult36.zero();
-    assertSame(bigDecimal, zeroResult41.abs().getAmount());
-    Money zeroResult42 = absResult38.zero();
-    assertSame(bigDecimal, zeroResult42.abs().getAmount());
-    assertSame(bigDecimal, absResult38.getAmount());
-    assertSame(bigDecimal, absResult54.getAmount());
-    Money zeroResult43 = absResult40.zero();
-    assertSame(bigDecimal, zeroResult43.abs().getAmount());
-    Money zeroResult44 = absResult42.zero();
-    assertSame(bigDecimal, zeroResult44.abs().getAmount());
-    assertSame(bigDecimal, absResult55.getAmount());
-    Money zeroResult45 = absResult44.zero();
-    assertSame(bigDecimal, zeroResult45.abs().getAmount());
-    assertSame(bigDecimal, absResult16.getAmount());
-    assertSame(bigDecimal, absResult26.getAmount());
-    assertSame(bigDecimal, absResult40.getAmount());
-    assertSame(bigDecimal, absResult56.getAmount());
-    Money zeroResult46 = zeroResult16.zero();
-    assertSame(bigDecimal, zeroResult46.abs().getAmount());
-    Money zeroResult47 = zeroResult17.zero();
-    assertSame(bigDecimal, zeroResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult57.getAmount());
-    Money zeroResult48 = zeroResult18.zero();
-    assertSame(bigDecimal, zeroResult48.abs().getAmount());
-    Money zeroResult49 = zeroResult19.zero();
-    assertSame(bigDecimal, zeroResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult42.getAmount());
-    assertSame(bigDecimal, absResult58.getAmount());
-    Money zeroResult50 = zeroResult20.zero();
-    assertSame(bigDecimal, zeroResult50.abs().getAmount());
-    Money zeroResult51 = zeroResult21.zero();
-    assertSame(bigDecimal, zeroResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult59.getAmount());
-    Money zeroResult52 = zeroResult22.zero();
-    assertSame(bigDecimal, zeroResult52.abs().getAmount());
-    Money zeroResult53 = zeroResult23.zero();
-    assertSame(bigDecimal, zeroResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult29.getAmount());
-    assertSame(bigDecimal, absResult44.getAmount());
-    assertSame(bigDecimal, absResult60.getAmount());
-    Money zeroResult54 = zeroResult24.zero();
-    assertSame(bigDecimal, zeroResult54.abs().getAmount());
-    Money zeroResult55 = zeroResult25.zero();
-    assertSame(bigDecimal, zeroResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult61.getAmount());
-    Money zeroResult56 = zeroResult26.zero();
-    assertSame(bigDecimal, zeroResult56.abs().getAmount());
-    Money zeroResult57 = zeroResult27.zero();
-    assertSame(bigDecimal, zeroResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult46.getAmount());
-    assertSame(bigDecimal, absResult62.getAmount());
-    Money zeroResult58 = zeroResult28.zero();
-    assertSame(bigDecimal, zeroResult58.abs().getAmount());
-    Money zeroResult59 = zeroResult29.zero();
-    assertSame(bigDecimal, zeroResult59.abs().getAmount());
-    Money zeroResult60 = zeroResult15.zero();
-    assertSame(bigDecimal, zeroResult60.abs().getAmount());
-    Money zeroResult61 = zeroResult30.zero();
-    assertSame(bigDecimal, zeroResult61.abs().getAmount());
+    assertSame(bigDecimal, zeroResult3.abs().getAmount());
     assertSame(bigDecimal, zeroResult.getAmount());
     assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, zeroResult4.getAmount());
-    assertSame(bigDecimal, zeroResult8.getAmount());
-    assertSame(bigDecimal, zeroResult16.getAmount());
-    assertSame(bigDecimal, zeroResult31.getAmount());
-    assertSame(bigDecimal, absResult6.zero().getAmount());
-    assertSame(bigDecimal, absResult11.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.getAmount());
-    assertSame(bigDecimal, absResult15.zero().getAmount());
-    assertSame(bigDecimal, absResult19.zero().getAmount());
-    assertSame(bigDecimal, zeroResult17.getAmount());
-    assertSame(bigDecimal, zeroResult33.getAmount());
-    assertSame(bigDecimal, absResult22.zero().getAmount());
-    assertSame(bigDecimal, absResult25.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.getAmount());
-    assertSame(bigDecimal, absResult28.zero().getAmount());
-    assertSame(bigDecimal, absResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult9.getAmount());
-    assertSame(bigDecimal, zeroResult18.getAmount());
-    assertSame(bigDecimal, zeroResult35.getAmount());
-    assertSame(bigDecimal, absResult33.zero().getAmount());
-    assertSame(bigDecimal, absResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.getAmount());
-    assertSame(bigDecimal, absResult37.zero().getAmount());
-    assertSame(bigDecimal, absResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult19.getAmount());
-    assertSame(bigDecimal, zeroResult37.getAmount());
-    assertSame(bigDecimal, absResult41.zero().getAmount());
-    assertSame(bigDecimal, absResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.getAmount());
-    assertSame(bigDecimal, absResult45.zero().getAmount());
-    assertSame(bigDecimal, absResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult5.getAmount());
-    assertSame(bigDecimal, zeroResult10.getAmount());
-    assertSame(bigDecimal, zeroResult20.getAmount());
-    assertSame(bigDecimal, zeroResult39.getAmount());
-    assertSame(bigDecimal, absResult48.zero().getAmount());
-    assertSame(bigDecimal, absResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.getAmount());
-    assertSame(bigDecimal, absResult50.zero().getAmount());
-    assertSame(bigDecimal, absResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult21.getAmount());
-    assertSame(bigDecimal, zeroResult41.getAmount());
-    assertSame(bigDecimal, absResult52.zero().getAmount());
-    assertSame(bigDecimal, absResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.getAmount());
-    assertSame(bigDecimal, absResult54.zero().getAmount());
-    assertSame(bigDecimal, absResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult11.getAmount());
-    assertSame(bigDecimal, zeroResult22.getAmount());
-    assertSame(bigDecimal, zeroResult43.getAmount());
-    assertSame(bigDecimal, absResult56.zero().getAmount());
-    assertSame(bigDecimal, absResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.getAmount());
-    assertSame(bigDecimal, absResult58.zero().getAmount());
-    assertSame(bigDecimal, absResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult23.getAmount());
-    assertSame(bigDecimal, zeroResult45.getAmount());
-    assertSame(bigDecimal, absResult60.zero().getAmount());
-    assertSame(bigDecimal, absResult61.zero().getAmount());
-    assertSame(bigDecimal, absResult46.zero().getAmount());
-    assertSame(bigDecimal, absResult62.zero().getAmount());
+    assertSame(bigDecimal, absResult2.zero().getAmount());
+    assertSame(bigDecimal, absResult3.zero().getAmount());
     assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult6.getAmount());
-    assertSame(bigDecimal, zeroResult12.getAmount());
-    assertSame(bigDecimal, zeroResult24.getAmount());
-    assertSame(bigDecimal, zeroResult46.getAmount());
-    assertSame(bigDecimal, zeroResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.getAmount());
-    assertSame(bigDecimal, zeroResult33.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.zero().getAmount());
-    assertSame(bigDecimal, zeroResult25.getAmount());
-    assertSame(bigDecimal, zeroResult48.getAmount());
-    assertSame(bigDecimal, zeroResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.getAmount());
-    assertSame(bigDecimal, zeroResult37.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.zero().getAmount());
-    assertSame(bigDecimal, zeroResult13.getAmount());
-    assertSame(bigDecimal, zeroResult26.getAmount());
-    assertSame(bigDecimal, zeroResult50.getAmount());
-    assertSame(bigDecimal, zeroResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.getAmount());
-    assertSame(bigDecimal, zeroResult41.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.zero().getAmount());
-    assertSame(bigDecimal, zeroResult27.getAmount());
-    assertSame(bigDecimal, zeroResult52.getAmount());
-    assertSame(bigDecimal, zeroResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.getAmount());
-    assertSame(bigDecimal, zeroResult45.zero().getAmount());
-    assertSame(bigDecimal, zeroResult7.getAmount());
-    assertSame(bigDecimal, zeroResult14.getAmount());
-    assertSame(bigDecimal, zeroResult28.getAmount());
-    assertSame(bigDecimal, zeroResult54.getAmount());
-    assertSame(bigDecimal, zeroResult46.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.getAmount());
-    assertSame(bigDecimal, zeroResult48.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult29.getAmount());
-    assertSame(bigDecimal, zeroResult56.getAmount());
-    assertSame(bigDecimal, zeroResult50.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.getAmount());
-    assertSame(bigDecimal, zeroResult52.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult15.getAmount());
-    assertSame(bigDecimal, zeroResult30.getAmount());
-    assertSame(bigDecimal, zeroResult58.getAmount());
-    assertSame(bigDecimal, zeroResult54.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.getAmount());
-    assertSame(bigDecimal, zeroResult56.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.getAmount());
-    assertSame(bigDecimal, zeroResult61.getAmount());
-    assertSame(bigDecimal, zeroResult58.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.zero().getAmount());
-    assertSame(bigDecimal, zeroResult61.zero().getAmount());
+    assertSame(bigDecimal, zeroResult2.zero().getAmount());
+    assertSame(bigDecimal, zeroResult3.zero().getAmount());
   }
 
   /**
    * Test {@link FulfillmentGroupImpl#setRetailShippingPrice(Money)}.
+   * <ul>
+   *   <li>Then {@link FulfillmentGroupImpl} (default constructor) {@link FulfillmentGroupImpl#retailFulfillmentPrice} is {@code null}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link FulfillmentGroupImpl#setRetailShippingPrice(Money)}
    */
   @Test
-  public void testSetRetailShippingPrice2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(new AddressImpl());
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
-    Money fulfillmentPrice = new Money();
-    fulfillmentGroupImpl.setFulfillmentPrice(fulfillmentPrice);
-    fulfillmentGroupImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setOrder(NullOrderFactoryImpl.NULL_ORDER);
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-
-    // Act
-    fulfillmentGroupImpl.setRetailShippingPrice(null);
-
-    // Assert
-    assertNull(fulfillmentGroupImpl.retailFulfillmentPrice);
-    assertNull(fulfillmentGroupImpl.getRetailFulfillmentPrice());
-    assertNull(fulfillmentGroupImpl.getRetailShippingPrice());
-    Money fulfillmentGroupAdjustmentsValue = fulfillmentGroupImpl.getFulfillmentGroupAdjustmentsValue();
-    Money absResult = fulfillmentGroupAdjustmentsValue.abs();
-    Money absResult2 = absResult.abs();
-    Money absResult3 = absResult2.abs();
-    Money absResult4 = absResult3.abs();
-    assertEquals(fulfillmentPrice, absResult4.abs());
-    Money fulfillmentPrice2 = fulfillmentGroupImpl.getFulfillmentPrice();
-    Money absResult5 = fulfillmentPrice2.abs();
-    Money absResult6 = absResult5.abs();
-    Money absResult7 = absResult6.abs();
-    Money absResult8 = absResult7.abs();
-    assertEquals(fulfillmentPrice, absResult8.abs());
-    Money zeroResult = fulfillmentGroupAdjustmentsValue.zero();
-    Money absResult9 = zeroResult.abs();
-    Money absResult10 = absResult9.abs();
-    Money absResult11 = absResult10.abs();
-    assertEquals(fulfillmentPrice, absResult11.abs());
-    Money absResult12 = fulfillmentPrice2.zero().abs();
-    Money absResult13 = absResult12.abs();
-    Money absResult14 = absResult13.abs();
-    assertEquals(fulfillmentPrice, absResult14.abs());
-    Money zeroResult2 = absResult.zero();
-    Money absResult15 = zeroResult2.abs();
-    Money absResult16 = absResult15.abs();
-    assertEquals(fulfillmentPrice, absResult16.abs());
-    Money zeroResult3 = absResult5.zero();
-    Money absResult17 = zeroResult3.abs();
-    Money absResult18 = absResult17.abs();
-    assertEquals(fulfillmentPrice, absResult18.abs());
-    Money zeroResult4 = zeroResult.zero();
-    Money absResult19 = zeroResult4.abs();
-    Money absResult20 = absResult19.abs();
-    assertEquals(fulfillmentPrice, absResult20.abs());
-    Money zeroResult5 = absResult2.zero();
-    Money absResult21 = zeroResult5.abs();
-    assertEquals(fulfillmentPrice, absResult21.abs());
-    Money zeroResult6 = absResult6.zero();
-    Money absResult22 = zeroResult6.abs();
-    assertEquals(fulfillmentPrice, absResult22.abs());
-    Money zeroResult7 = absResult9.zero();
-    Money absResult23 = zeroResult7.abs();
-    assertEquals(fulfillmentPrice, absResult23.abs());
-    Money zeroResult8 = absResult12.zero();
-    Money absResult24 = zeroResult8.abs();
-    assertEquals(fulfillmentPrice, absResult24.abs());
-    Money zeroResult9 = zeroResult2.zero();
-    Money absResult25 = zeroResult9.abs();
-    assertEquals(fulfillmentPrice, absResult25.abs());
-    Money zeroResult10 = zeroResult3.zero();
-    Money absResult26 = zeroResult10.abs();
-    assertEquals(fulfillmentPrice, absResult26.abs());
-    Money zeroResult11 = zeroResult4.zero();
-    Money absResult27 = zeroResult11.abs();
-    assertEquals(fulfillmentPrice, absResult27.abs());
-    Money zeroResult12 = fulfillmentGroupImpl.getTotalTax().zero();
-    Money zeroResult13 = zeroResult12.zero();
-    Money absResult28 = zeroResult13.abs();
-    assertEquals(fulfillmentPrice, absResult28.abs());
-    Money zeroResult14 = absResult3.zero();
-    assertEquals(fulfillmentPrice, zeroResult14.abs());
-    Money zeroResult15 = absResult7.zero();
-    assertEquals(fulfillmentPrice, zeroResult15.abs());
-    Money zeroResult16 = absResult10.zero();
-    assertEquals(fulfillmentPrice, zeroResult16.abs());
-    Money zeroResult17 = absResult13.zero();
-    assertEquals(fulfillmentPrice, zeroResult17.abs());
-    Money zeroResult18 = absResult15.zero();
-    assertEquals(fulfillmentPrice, zeroResult18.abs());
-    Money zeroResult19 = absResult17.zero();
-    assertEquals(fulfillmentPrice, zeroResult19.abs());
-    Money zeroResult20 = absResult19.zero();
-    assertEquals(fulfillmentPrice, zeroResult20.abs());
-    Money zeroResult21 = zeroResult5.zero();
-    assertEquals(fulfillmentPrice, zeroResult21.abs());
-    Money zeroResult22 = zeroResult6.zero();
-    assertEquals(fulfillmentPrice, zeroResult22.abs());
-    Money zeroResult23 = zeroResult7.zero();
-    assertEquals(fulfillmentPrice, zeroResult23.abs());
-    assertEquals(fulfillmentPrice, zeroResult8.zero().abs());
-    Money zeroResult24 = zeroResult9.zero();
-    assertEquals(fulfillmentPrice, zeroResult24.abs());
-    Money zeroResult25 = zeroResult10.zero();
-    assertEquals(fulfillmentPrice, zeroResult25.abs());
-    Money zeroResult26 = zeroResult11.zero();
-    assertEquals(fulfillmentPrice, zeroResult26.abs());
-    Money zeroResult27 = zeroResult13.zero();
-    assertEquals(fulfillmentPrice, zeroResult27.abs());
-    assertEquals(fulfillmentPrice, absResult4.zero());
-    assertEquals(fulfillmentPrice, absResult8.zero());
-    assertEquals(fulfillmentPrice, absResult11.zero());
-    assertEquals(fulfillmentPrice, absResult14.zero());
-    assertEquals(fulfillmentPrice, absResult16.zero());
-    assertEquals(fulfillmentPrice, absResult18.zero());
-    assertEquals(fulfillmentPrice, absResult20.zero());
-    assertEquals(fulfillmentPrice, absResult21.zero());
-    assertEquals(fulfillmentPrice, absResult22.zero());
-    assertEquals(fulfillmentPrice, absResult23.zero());
-    assertEquals(fulfillmentPrice, absResult24.zero());
-    assertEquals(fulfillmentPrice, absResult25.zero());
-    assertEquals(fulfillmentPrice, absResult26.zero());
-    assertEquals(fulfillmentPrice, absResult27.zero());
-    assertEquals(fulfillmentPrice, absResult28.zero());
-    assertEquals(fulfillmentPrice, zeroResult14.zero());
-    assertEquals(fulfillmentPrice, zeroResult15.zero());
-    assertEquals(fulfillmentPrice, zeroResult16.zero());
-    assertEquals(fulfillmentPrice, zeroResult17.zero());
-    assertEquals(fulfillmentPrice, zeroResult18.zero());
-    assertEquals(fulfillmentPrice, zeroResult19.zero());
-    assertEquals(fulfillmentPrice, zeroResult20.zero());
-    Money zeroResult28 = zeroResult12.abs().zero();
-    assertEquals(fulfillmentPrice, zeroResult28.zero());
-    assertEquals(fulfillmentPrice, zeroResult21.zero());
-    assertEquals(fulfillmentPrice, zeroResult22.zero());
-    assertEquals(fulfillmentPrice, zeroResult23.zero());
-    assertEquals(fulfillmentPrice, zeroResult24.zero());
-    assertEquals(fulfillmentPrice, zeroResult25.zero());
-    assertEquals(fulfillmentPrice, zeroResult26.zero());
-    assertEquals(fulfillmentPrice, zeroResult27.zero());
-    BigDecimal bigDecimal = fulfillmentGroupImpl.totalTax;
-    assertSame(bigDecimal, absResult4.getAmount());
-    assertSame(bigDecimal, absResult8.getAmount());
-    assertSame(bigDecimal, absResult11.getAmount());
-    assertSame(bigDecimal, absResult14.getAmount());
-    assertSame(bigDecimal, absResult16.getAmount());
-    assertSame(bigDecimal, absResult18.getAmount());
-    assertSame(bigDecimal, absResult20.getAmount());
-    assertSame(bigDecimal, absResult21.getAmount());
-    assertSame(bigDecimal, absResult22.getAmount());
-    assertSame(bigDecimal, absResult23.getAmount());
-    assertSame(bigDecimal, absResult24.getAmount());
-    assertSame(bigDecimal, absResult25.getAmount());
-    assertSame(bigDecimal, absResult26.getAmount());
-    assertSame(bigDecimal, absResult27.getAmount());
-    assertSame(bigDecimal, absResult28.getAmount());
-    assertSame(bigDecimal, zeroResult14.getAmount());
-    assertSame(bigDecimal, zeroResult15.getAmount());
-    assertSame(bigDecimal, zeroResult16.getAmount());
-    assertSame(bigDecimal, zeroResult17.getAmount());
-    assertSame(bigDecimal, zeroResult18.getAmount());
-    assertSame(bigDecimal, zeroResult19.getAmount());
-    assertSame(bigDecimal, zeroResult20.getAmount());
-    assertSame(bigDecimal, zeroResult28.getAmount());
-    assertSame(bigDecimal, zeroResult21.getAmount());
-    assertSame(bigDecimal, zeroResult22.getAmount());
-    assertSame(bigDecimal, zeroResult23.getAmount());
-    assertSame(bigDecimal, zeroResult24.getAmount());
-    assertSame(bigDecimal, zeroResult25.getAmount());
-    assertSame(bigDecimal, zeroResult26.getAmount());
-    assertSame(bigDecimal, zeroResult27.getAmount());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#setRetailShippingPrice(Money)}.
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#setRetailShippingPrice(Money)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetRetailShippingPrice3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1182 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupImpl.setRetailShippingPrice(Money)"})
+  public void testSetRetailShippingPrice_thenFulfillmentGroupImplRetailFulfillmentPriceIsNull() {
     // Arrange
     FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl2.setAddress(new AddressImpl());
+    fulfillmentGroupImpl2.setCandidateFulfillmentGroupOffer(new ArrayList<>());
+    fulfillmentGroupImpl2.setDeliveryInstruction("Delivery Instruction");
+    fulfillmentGroupImpl2.setFulfillmentGroupAdjustments(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupFees(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupItems(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentOption(new FulfillmentOptionImpl());
+    Money fulfillmentPrice = new Money();
+    fulfillmentGroupImpl2.setFulfillmentPrice(fulfillmentPrice);
+    fulfillmentGroupImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupImpl2.setIsShippingPriceTaxable(true);
+    fulfillmentGroupImpl2.setMerchandiseTotal(new Money());
+    fulfillmentGroupImpl2.setMethod("Fulfillment Method");
+    fulfillmentGroupImpl2.setOrder(NullOrderFactoryImpl.NULL_ORDER);
+    fulfillmentGroupImpl2.setPersonalMessage(new PersonalMessageImpl());
+    fulfillmentGroupImpl2.setPhone(new PhoneImpl());
+    fulfillmentGroupImpl2.setPrimary(true);
+    fulfillmentGroupImpl2.setReferenceNumber("42");
+    fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSequence(1);
+    fulfillmentGroupImpl2.setService("Service");
+    fulfillmentGroupImpl2.setShippingOverride(true);
+    fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupImpl2.setTaxes(new ArrayList<>());
+    fulfillmentGroupImpl2.setTotal(new Money());
+    fulfillmentGroupImpl2.setTotalFeeTax(new Money());
+    fulfillmentGroupImpl2.setTotalFulfillmentGroupTax(new Money());
+    fulfillmentGroupImpl2.setTotalItemTax(new Money());
+    fulfillmentGroupImpl2.setTotalTax(new Money());
+    fulfillmentGroupImpl2.setType(FulfillmentType.DIGITAL);
 
     // Act
-    fulfillmentGroupImpl2.setRetailShippingPrice(new Money());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#setRetailShippingPrice(Money)}.
-   * <ul>
-   *   <li>When {@link Money}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#setRetailShippingPrice(Money)}
-   */
-  @Test
-  public void testSetRetailShippingPrice_whenMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-
-    // Act
-    fulfillmentGroupImpl.setRetailShippingPrice(mock(Money.class));
+    fulfillmentGroupImpl2.setRetailShippingPrice(null);
 
     // Assert
-    assertNull(fulfillmentGroupImpl.retailFulfillmentPrice);
-    assertNull(fulfillmentGroupImpl.getRetailFulfillmentPrice());
-    assertNull(fulfillmentGroupImpl.getRetailShippingPrice());
+    assertNull(fulfillmentGroupImpl2.retailFulfillmentPrice);
+    assertNull(fulfillmentGroupImpl2.getRetailFulfillmentPrice());
+    assertNull(fulfillmentGroupImpl2.getRetailShippingPrice());
+    Money zeroResult = fulfillmentGroupImpl2.getTotalTax().zero();
+    Money zeroResult2 = zeroResult.zero();
+    Money absResult = zeroResult2.abs();
+    assertEquals(fulfillmentPrice, absResult.abs());
+    Money zeroResult3 = zeroResult2.zero();
+    assertEquals(fulfillmentPrice, zeroResult3.abs());
+    assertEquals(fulfillmentPrice, absResult.zero());
+    Money zeroResult4 = zeroResult.abs().zero();
+    assertEquals(fulfillmentPrice, zeroResult4.zero());
+    assertEquals(fulfillmentPrice, zeroResult3.zero());
+    BigDecimal bigDecimal = fulfillmentGroupImpl2.totalTax;
+    assertSame(bigDecimal, absResult.getAmount());
+    assertSame(bigDecimal, zeroResult4.getAmount());
+    assertSame(bigDecimal, zeroResult3.getAmount());
   }
 
   /**
@@ -2170,289 +872,115 @@ public class FulfillmentGroupImplDiffblueTest {
    * Method under test: {@link FulfillmentGroupImpl#getType()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FulfillmentType FulfillmentGroupImpl.getType()"})
   public void testGetType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.addFulfillmentGroupItem(mock(FulfillmentGroupItemImpl.class));
-
-    // Act and Assert
-    assertNull(fulfillmentGroupImpl.getType());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#getType()}.
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#getType()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetType2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass972 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new FulfillmentGroupImpl()).getType();
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#getType()}.
-   * <ul>
-   *   <li>Given {@link FulfillmentGroupImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#getType()}
-   */
-  @Test
-  public void testGetType_givenFulfillmentGroupImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new FulfillmentGroupImpl()).getType());
   }
 
   /**
    * Test {@link FulfillmentGroupImpl#setType(FulfillmentType)}.
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#setType(FulfillmentType)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetType() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1482 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new FulfillmentGroupImpl()).setType(FulfillmentType.DIGITAL);
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#setType(FulfillmentType)}.
    * <ul>
-   *   <li>Given {@code Type}.</li>
-   *   <li>Then {@link FulfillmentGroupImpl} (default constructor) Type FriendlyType
-   * is {@code Friendly Type}.</li>
+   *   <li>Then {@link FulfillmentGroupImpl} (default constructor) {@link FulfillmentGroupImpl#type} is {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link FulfillmentGroupImpl#setType(FulfillmentType)}
    */
   @Test
-  public void testSetType_givenType_thenFulfillmentGroupImplTypeFriendlyTypeIsFriendlyType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    FulfillmentType type = mock(FulfillmentType.class);
-    when(type.getType()).thenReturn("Type");
-
-    // Act
-    fulfillmentGroupImpl.setType(type);
-
-    // Assert
-    verify(type).getType();
-    FulfillmentType type2 = fulfillmentGroupImpl.getType();
-    assertEquals("Friendly Type", type2.getFriendlyType());
-    assertEquals("Type", type2.getType());
-    assertEquals("Type", fulfillmentGroupImpl.type);
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#setType(FulfillmentType)}.
-   * <ul>
-   *   <li>Then {@link FulfillmentGroupImpl} (default constructor)
-   * {@link FulfillmentGroupImpl#type} is {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#setType(FulfillmentType)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupImpl.setType(FulfillmentType)"})
   public void testSetType_thenFulfillmentGroupImplTypeIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(new AddressImpl());
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroupImpl.setFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setOrder(NullOrderFactoryImpl.NULL_ORDER);
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl2.setAddress(new AddressImpl());
+    fulfillmentGroupImpl2.setCandidateFulfillmentGroupOffer(new ArrayList<>());
+    fulfillmentGroupImpl2.setDeliveryInstruction("Delivery Instruction");
+    fulfillmentGroupImpl2.setFulfillmentGroupAdjustments(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupFees(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupItems(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentOption(new FulfillmentOptionImpl());
+    fulfillmentGroupImpl2.setFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupImpl2.setIsShippingPriceTaxable(true);
+    fulfillmentGroupImpl2.setMerchandiseTotal(new Money());
+    fulfillmentGroupImpl2.setMethod("Fulfillment Method");
+    fulfillmentGroupImpl2.setOrder(NullOrderFactoryImpl.NULL_ORDER);
+    fulfillmentGroupImpl2.setPersonalMessage(new PersonalMessageImpl());
+    fulfillmentGroupImpl2.setPhone(new PhoneImpl());
+    fulfillmentGroupImpl2.setPrimary(true);
+    fulfillmentGroupImpl2.setReferenceNumber("42");
+    fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSequence(1);
+    fulfillmentGroupImpl2.setService("Service");
+    fulfillmentGroupImpl2.setShippingOverride(true);
+    fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupImpl2.setTaxes(new ArrayList<>());
+    fulfillmentGroupImpl2.setTotal(new Money());
+    fulfillmentGroupImpl2.setTotalFeeTax(new Money());
+    fulfillmentGroupImpl2.setTotalFulfillmentGroupTax(new Money());
+    fulfillmentGroupImpl2.setTotalItemTax(new Money());
+    fulfillmentGroupImpl2.setTotalTax(new Money());
+    fulfillmentGroupImpl2.setType(FulfillmentType.DIGITAL);
 
     // Act
-    fulfillmentGroupImpl.setType(null);
+    fulfillmentGroupImpl2.setType(null);
 
     // Assert
-    assertNull(fulfillmentGroupImpl.type);
-    assertNull(fulfillmentGroupImpl.getType());
-    BigDecimal expectedAmount = fulfillmentGroupImpl.totalTax;
-    assertSame(expectedAmount, fulfillmentGroupImpl.getTotalTax().zero().abs().zero().getAmount());
+    assertNull(fulfillmentGroupImpl2.type);
+    assertNull(fulfillmentGroupImpl2.getType());
+    BigDecimal expectedAmount = fulfillmentGroupImpl2.totalTax;
+    assertSame(expectedAmount, fulfillmentGroupImpl2.getTotalTax().zero().abs().zero().getAmount());
   }
 
   /**
    * Test {@link FulfillmentGroupImpl#setType(FulfillmentType)}.
    * <ul>
    *   <li>When {@link FulfillmentType#DIGITAL}.</li>
-   *   <li>Then {@link FulfillmentGroupImpl} (default constructor)
-   * {@link FulfillmentGroupImpl#type} is {@code DIGITAL}.</li>
+   *   <li>Then {@link FulfillmentGroupImpl} (default constructor) {@link FulfillmentGroupImpl#type} is {@code DIGITAL}.</li>
    * </ul>
    * <p>
    * Method under test: {@link FulfillmentGroupImpl#setType(FulfillmentType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupImpl.setType(FulfillmentType)"})
   public void testSetType_whenDigital_thenFulfillmentGroupImplTypeIsDigital() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
     FulfillmentType type = FulfillmentType.DIGITAL;
 
     // Act
-    fulfillmentGroupImpl.setType(type);
+    fulfillmentGroupImpl2.setType(type);
 
     // Assert
-    assertEquals("DIGITAL", fulfillmentGroupImpl.type);
+    assertEquals("DIGITAL", fulfillmentGroupImpl2.type);
     FulfillmentType expectedType = type.DIGITAL;
-    assertSame(expectedType, fulfillmentGroupImpl.getType());
+    assertSame(expectedType, fulfillmentGroupImpl2.getType());
   }
 
   /**
-   * Test
-   * {@link FulfillmentGroupImpl#addCandidateFulfillmentGroupOffer(CandidateFulfillmentGroupOffer)}.
+   * Test {@link FulfillmentGroupImpl#addCandidateFulfillmentGroupOffer(CandidateFulfillmentGroupOffer)}.
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#addCandidateFulfillmentGroupOffer(CandidateFulfillmentGroupOffer)}
+   * Method under test: {@link FulfillmentGroupImpl#addCandidateFulfillmentGroupOffer(CandidateFulfillmentGroupOffer)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupImpl.addCandidateFulfillmentGroupOffer(CandidateFulfillmentGroupOffer)"})
   public void testAddCandidateFulfillmentGroupOffer() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
     CandidateFulfillmentGroupOfferImpl candidateOffer = new CandidateFulfillmentGroupOfferImpl();
 
     // Act
-    fulfillmentGroupImpl.addCandidateFulfillmentGroupOffer(candidateOffer);
+    fulfillmentGroupImpl2.addCandidateFulfillmentGroupOffer(candidateOffer);
 
     // Assert
-    List<CandidateFulfillmentGroupOffer> candidateFulfillmentGroupOffers = fulfillmentGroupImpl
+    List<CandidateFulfillmentGroupOffer> candidateFulfillmentGroupOffers = fulfillmentGroupImpl2
         .getCandidateFulfillmentGroupOffers();
     assertEquals(1, candidateFulfillmentGroupOffers.size());
     assertSame(candidateOffer, candidateFulfillmentGroupOffers.get(0));
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupImpl#addCandidateFulfillmentGroupOffer(CandidateFulfillmentGroupOffer)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#addCandidateFulfillmentGroupOffer(CandidateFulfillmentGroupOffer)}
-   */
-  @Test
-  public void testAddCandidateFulfillmentGroupOffer2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    CandidateFulfillmentGroupOfferImpl candidateOffer = mock(CandidateFulfillmentGroupOfferImpl.class);
-
-    // Act
-    fulfillmentGroupImpl.addCandidateFulfillmentGroupOffer(candidateOffer);
-
-    // Assert
-    List<CandidateFulfillmentGroupOffer> candidateFulfillmentGroupOffers = fulfillmentGroupImpl
-        .getCandidateFulfillmentGroupOffers();
-    assertEquals(1, candidateFulfillmentGroupOffers.size());
-    assertSame(candidateOffer, candidateFulfillmentGroupOffers.get(0));
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupImpl#addCandidateFulfillmentGroupOffer(CandidateFulfillmentGroupOffer)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#addCandidateFulfillmentGroupOffer(CandidateFulfillmentGroupOffer)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddCandidateFulfillmentGroupOffer3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass252 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
-
-    // Act
-    fulfillmentGroupImpl2.addCandidateFulfillmentGroupOffer(new CandidateFulfillmentGroupOfferImpl());
   }
 
   /**
@@ -2461,93 +989,116 @@ public class FulfillmentGroupImplDiffblueTest {
    * Method under test: {@link FulfillmentGroupImpl#removeAllCandidateOffers()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupImpl.removeAllCandidateOffers()"})
   public void testRemoveAllCandidateOffers() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1032 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl2.setAddress(new AddressImpl());
+    fulfillmentGroupImpl2.setDeliveryInstruction("Delivery Instruction");
+    fulfillmentGroupImpl2.setFulfillmentGroupAdjustments(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupFees(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupItems(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentOption(new FulfillmentOptionImpl());
+    Money fulfillmentPrice = new Money();
+    fulfillmentGroupImpl2.setFulfillmentPrice(fulfillmentPrice);
+    fulfillmentGroupImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupImpl2.setIsShippingPriceTaxable(true);
+    fulfillmentGroupImpl2.setMerchandiseTotal(new Money());
+    fulfillmentGroupImpl2.setMethod("Fulfillment Method");
+    fulfillmentGroupImpl2.setOrder(NullOrderFactoryImpl.NULL_ORDER);
+    fulfillmentGroupImpl2.setPersonalMessage(new PersonalMessageImpl());
+    fulfillmentGroupImpl2.setPhone(new PhoneImpl());
+    fulfillmentGroupImpl2.setPrimary(true);
+    fulfillmentGroupImpl2.setReferenceNumber("42");
+    fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSequence(1);
+    fulfillmentGroupImpl2.setService("Service");
+    fulfillmentGroupImpl2.setShippingOverride(true);
+    fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupImpl2.setTaxes(new ArrayList<>());
+    fulfillmentGroupImpl2.setTotal(new Money());
+    fulfillmentGroupImpl2.setTotalFeeTax(new Money());
+    fulfillmentGroupImpl2.setTotalFulfillmentGroupTax(new Money());
+    fulfillmentGroupImpl2.setTotalItemTax(new Money());
+    fulfillmentGroupImpl2.setTotalTax(new Money());
+    fulfillmentGroupImpl2.setType(FulfillmentType.DIGITAL);
+    fulfillmentGroupImpl2.setCandidateFulfillmentGroupOffer(null);
 
-    // Arrange and Act
-    (new FulfillmentGroupImpl()).removeAllCandidateOffers();
+    // Act
+    fulfillmentGroupImpl2.removeAllCandidateOffers();
+
+    // Assert that nothing has changed
+    Money absResult = fulfillmentGroupImpl2.getTotalTax().zero().abs();
+    Money absResult2 = absResult.abs();
+    assertEquals(fulfillmentPrice, absResult2.abs());
+    assertEquals(fulfillmentPrice, absResult.zero().abs());
+    assertEquals(fulfillmentPrice, absResult2.zero());
+    BigDecimal expectedAmount = fulfillmentGroupImpl2.totalTax;
+    assertSame(expectedAmount, absResult2.getAmount());
   }
 
   /**
    * Test {@link FulfillmentGroupImpl#removeAllCandidateOffers()}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add
-   * {@link CandidateFulfillmentGroupOfferImpl} (default constructor).</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link CandidateFulfillmentGroupOfferImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link FulfillmentGroupImpl#removeAllCandidateOffers()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupImpl.removeAllCandidateOffers()"})
   public void testRemoveAllCandidateOffers_givenArrayListAddCandidateFulfillmentGroupOfferImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ArrayList<CandidateFulfillmentGroupOffer> candidateOffers = new ArrayList<>();
     candidateOffers.add(new CandidateFulfillmentGroupOfferImpl());
 
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(new AddressImpl());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl2.setAddress(new AddressImpl());
+    fulfillmentGroupImpl2.setDeliveryInstruction("Delivery Instruction");
+    fulfillmentGroupImpl2.setFulfillmentGroupAdjustments(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupFees(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupItems(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentOption(new FulfillmentOptionImpl());
     Money fulfillmentPrice = new Money();
-    fulfillmentGroupImpl.setFulfillmentPrice(fulfillmentPrice);
-    fulfillmentGroupImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setOrder(NullOrderFactoryImpl.NULL_ORDER);
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(candidateOffers);
+    fulfillmentGroupImpl2.setFulfillmentPrice(fulfillmentPrice);
+    fulfillmentGroupImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupImpl2.setIsShippingPriceTaxable(true);
+    fulfillmentGroupImpl2.setMerchandiseTotal(new Money());
+    fulfillmentGroupImpl2.setMethod("Fulfillment Method");
+    fulfillmentGroupImpl2.setOrder(NullOrderFactoryImpl.NULL_ORDER);
+    fulfillmentGroupImpl2.setPersonalMessage(new PersonalMessageImpl());
+    fulfillmentGroupImpl2.setPhone(new PhoneImpl());
+    fulfillmentGroupImpl2.setPrimary(true);
+    fulfillmentGroupImpl2.setReferenceNumber("42");
+    fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSequence(1);
+    fulfillmentGroupImpl2.setService("Service");
+    fulfillmentGroupImpl2.setShippingOverride(true);
+    fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupImpl2.setTaxes(new ArrayList<>());
+    fulfillmentGroupImpl2.setTotal(new Money());
+    fulfillmentGroupImpl2.setTotalFeeTax(new Money());
+    fulfillmentGroupImpl2.setTotalFulfillmentGroupTax(new Money());
+    fulfillmentGroupImpl2.setTotalItemTax(new Money());
+    fulfillmentGroupImpl2.setTotalTax(new Money());
+    fulfillmentGroupImpl2.setType(FulfillmentType.DIGITAL);
+    fulfillmentGroupImpl2.setCandidateFulfillmentGroupOffer(candidateOffers);
 
     // Act
-    fulfillmentGroupImpl.removeAllCandidateOffers();
+    fulfillmentGroupImpl2.removeAllCandidateOffers();
 
     // Assert
-    assertTrue(fulfillmentGroupImpl.getCandidateFulfillmentGroupOffers().isEmpty());
-    Money absResult = fulfillmentGroupImpl.getTotalTax().zero().abs();
+    assertTrue(fulfillmentGroupImpl2.getCandidateFulfillmentGroupOffers().isEmpty());
+    Money absResult = fulfillmentGroupImpl2.getTotalTax().zero().abs();
     Money absResult2 = absResult.abs();
     assertEquals(fulfillmentPrice, absResult2.abs());
     assertEquals(fulfillmentPrice, absResult.zero().abs());
     assertEquals(fulfillmentPrice, absResult2.zero());
-    BigDecimal expectedAmount = fulfillmentGroupImpl.totalTax;
+    BigDecimal expectedAmount = fulfillmentGroupImpl2.totalTax;
     assertSame(expectedAmount, absResult2.getAmount());
   }
 
@@ -2560,316 +1111,96 @@ public class FulfillmentGroupImplDiffblueTest {
    * Method under test: {@link FulfillmentGroupImpl#removeAllCandidateOffers()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupImpl.removeAllCandidateOffers()"})
   public void testRemoveAllCandidateOffers_givenFulfillmentGroupImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
 
     // Act
-    fulfillmentGroupImpl.removeAllCandidateOffers();
-
-    // Assert
-    assertTrue(fulfillmentGroupImpl.getCandidateFulfillmentGroupOffers().isEmpty());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#removeAllCandidateOffers()}.
-   * <ul>
-   *   <li>Given {@link FulfillmentGroupImpl} (default constructor) Address is
-   * {@link AddressImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#removeAllCandidateOffers()}
-   */
-  @Test
-  public void testRemoveAllCandidateOffers_givenFulfillmentGroupImplAddressIsAddressImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(new AddressImpl());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
-    Money fulfillmentPrice = new Money();
-    fulfillmentGroupImpl.setFulfillmentPrice(fulfillmentPrice);
-    fulfillmentGroupImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setOrder(NullOrderFactoryImpl.NULL_ORDER);
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(null);
-
-    // Act
-    fulfillmentGroupImpl.removeAllCandidateOffers();
+    fulfillmentGroupImpl2.removeAllCandidateOffers();
 
     // Assert that nothing has changed
-    Money absResult = fulfillmentGroupImpl.getTotalTax().zero().abs();
-    Money absResult2 = absResult.abs();
-    assertEquals(fulfillmentPrice, absResult2.abs());
-    assertEquals(fulfillmentPrice, absResult.zero().abs());
-    assertEquals(fulfillmentPrice, absResult2.zero());
-    BigDecimal expectedAmount = fulfillmentGroupImpl.totalTax;
-    assertSame(expectedAmount, absResult2.getAmount());
+    assertTrue(fulfillmentGroupImpl2.getCandidateFulfillmentGroupOffers().isEmpty());
   }
 
   /**
-   * Test {@link FulfillmentGroupImpl#removeAllCandidateOffers()}.
-   * <ul>
-   *   <li>Given {@link FulfillmentGroupImpl} (default constructor) Address is
-   * {@link AddressImpl}.</li>
-   * </ul>
+   * Test {@link FulfillmentGroupImpl#getFutureCreditFulfillmentGroupAdjustments()}.
    * <p>
-   * Method under test: {@link FulfillmentGroupImpl#removeAllCandidateOffers()}
+   * Method under test: {@link FulfillmentGroupImpl#getFutureCreditFulfillmentGroupAdjustments()}
    */
   @Test
-  public void testRemoveAllCandidateOffers_givenFulfillmentGroupImplAddressIsAddressImpl2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(mock(AddressImpl.class));
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
-    Money fulfillmentPrice = new Money();
-    fulfillmentGroupImpl.setFulfillmentPrice(fulfillmentPrice);
-    fulfillmentGroupImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setOrder(NullOrderFactoryImpl.NULL_ORDER);
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(null);
-
-    // Act
-    fulfillmentGroupImpl.removeAllCandidateOffers();
-
-    // Assert that nothing has changed
-    Money absResult = fulfillmentGroupImpl.getTotalTax().zero().abs();
-    Money absResult2 = absResult.abs();
-    assertEquals(fulfillmentPrice, absResult2.abs());
-    assertEquals(fulfillmentPrice, absResult.zero().abs());
-    assertEquals(fulfillmentPrice, absResult2.zero());
-    BigDecimal expectedAmount = fulfillmentGroupImpl.totalTax;
-    assertSame(expectedAmount, absResult2.getAmount());
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupImpl#getFutureCreditFulfillmentGroupAdjustments()}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#getFutureCreditFulfillmentGroupAdjustments()}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List FulfillmentGroupImpl.getFutureCreditFulfillmentGroupAdjustments()"})
   public void testGetFutureCreditFulfillmentGroupAdjustments() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ArrayList<FulfillmentGroupAdjustment> fulfillmentGroupAdjustments = new ArrayList<>();
     fulfillmentGroupAdjustments.add(new FulfillmentGroupAdjustmentImpl());
 
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(new AddressImpl());
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroupImpl.setFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setOrder(NullOrderFactoryImpl.NULL_ORDER);
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(fulfillmentGroupAdjustments);
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl2.setAddress(new AddressImpl());
+    fulfillmentGroupImpl2.setCandidateFulfillmentGroupOffer(new ArrayList<>());
+    fulfillmentGroupImpl2.setDeliveryInstruction("Delivery Instruction");
+    fulfillmentGroupImpl2.setFulfillmentGroupFees(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupItems(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentOption(new FulfillmentOptionImpl());
+    fulfillmentGroupImpl2.setFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupImpl2.setIsShippingPriceTaxable(true);
+    fulfillmentGroupImpl2.setMerchandiseTotal(new Money());
+    fulfillmentGroupImpl2.setMethod("Fulfillment Method");
+    fulfillmentGroupImpl2.setOrder(NullOrderFactoryImpl.NULL_ORDER);
+    fulfillmentGroupImpl2.setPersonalMessage(new PersonalMessageImpl());
+    fulfillmentGroupImpl2.setPhone(new PhoneImpl());
+    fulfillmentGroupImpl2.setPrimary(true);
+    fulfillmentGroupImpl2.setReferenceNumber("42");
+    fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSequence(1);
+    fulfillmentGroupImpl2.setService("Service");
+    fulfillmentGroupImpl2.setShippingOverride(true);
+    fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupImpl2.setTaxes(new ArrayList<>());
+    fulfillmentGroupImpl2.setTotal(new Money());
+    fulfillmentGroupImpl2.setTotalFeeTax(new Money());
+    fulfillmentGroupImpl2.setTotalFulfillmentGroupTax(new Money());
+    fulfillmentGroupImpl2.setTotalItemTax(new Money());
+    fulfillmentGroupImpl2.setTotalTax(new Money());
+    fulfillmentGroupImpl2.setType(FulfillmentType.DIGITAL);
+    fulfillmentGroupImpl2.setFulfillmentGroupAdjustments(fulfillmentGroupAdjustments);
 
     // Act and Assert
-    assertTrue(fulfillmentGroupImpl.getFutureCreditFulfillmentGroupAdjustments().isEmpty());
+    assertTrue(fulfillmentGroupImpl2.getFutureCreditFulfillmentGroupAdjustments().isEmpty());
   }
 
   /**
-   * Test
-   * {@link FulfillmentGroupImpl#getFutureCreditFulfillmentGroupAdjustments()}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#getFutureCreditFulfillmentGroupAdjustments()}
-   */
-  @Test
-  public void testGetFutureCreditFulfillmentGroupAdjustments2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ArrayList<FulfillmentGroupAdjustment> fulfillmentGroupAdjustments = new ArrayList<>();
-    fulfillmentGroupAdjustments.add(new FulfillmentGroupAdjustmentImpl());
-
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(mock(Address.class));
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroupImpl.setFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setOrder(NullOrderFactoryImpl.NULL_ORDER);
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(fulfillmentGroupAdjustments);
-
-    // Act and Assert
-    assertTrue(fulfillmentGroupImpl.getFutureCreditFulfillmentGroupAdjustments().isEmpty());
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupImpl#getFutureCreditFulfillmentGroupAdjustments()}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#getFutureCreditFulfillmentGroupAdjustments()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetFutureCreditFulfillmentGroupAdjustments3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass522 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new FulfillmentGroupImpl()).getFutureCreditFulfillmentGroupAdjustments();
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupImpl#getFutureCreditFulfillmentGroupAdjustments()}.
+   * Test {@link FulfillmentGroupImpl#getFutureCreditFulfillmentGroupAdjustments()}.
    * <ul>
    *   <li>Given {@link FulfillmentGroupImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#getFutureCreditFulfillmentGroupAdjustments()}
+   * Method under test: {@link FulfillmentGroupImpl#getFutureCreditFulfillmentGroupAdjustments()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List FulfillmentGroupImpl.getFutureCreditFulfillmentGroupAdjustments()"})
   public void testGetFutureCreditFulfillmentGroupAdjustments_givenFulfillmentGroupImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertTrue((new FulfillmentGroupImpl()).getFutureCreditFulfillmentGroupAdjustments().isEmpty());
   }
 
   /**
-   * Test
-   * {@link FulfillmentGroupImpl#getFutureCreditFulfillmentGroupAdjustments()}.
+   * Test {@link FulfillmentGroupImpl#getFutureCreditFulfillmentGroupAdjustments()}.
    * <ul>
    *   <li>Then return size is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#getFutureCreditFulfillmentGroupAdjustments()}
+   * Method under test: {@link FulfillmentGroupImpl#getFutureCreditFulfillmentGroupAdjustments()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List FulfillmentGroupImpl.getFutureCreditFulfillmentGroupAdjustments()"})
   public void testGetFutureCreditFulfillmentGroupAdjustments_thenReturnSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl = mock(FulfillmentGroupAdjustmentImpl.class);
     when(fulfillmentGroupAdjustmentImpl.isFutureCredit()).thenReturn(true);
@@ -2877,43 +1208,40 @@ public class FulfillmentGroupImplDiffblueTest {
     ArrayList<FulfillmentGroupAdjustment> fulfillmentGroupAdjustments = new ArrayList<>();
     fulfillmentGroupAdjustments.add(fulfillmentGroupAdjustmentImpl);
 
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(new AddressImpl());
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroupImpl.setFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setOrder(NullOrderFactoryImpl.NULL_ORDER);
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(fulfillmentGroupAdjustments);
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl2.setAddress(new AddressImpl());
+    fulfillmentGroupImpl2.setCandidateFulfillmentGroupOffer(new ArrayList<>());
+    fulfillmentGroupImpl2.setDeliveryInstruction("Delivery Instruction");
+    fulfillmentGroupImpl2.setFulfillmentGroupFees(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupItems(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentOption(new FulfillmentOptionImpl());
+    fulfillmentGroupImpl2.setFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupImpl2.setIsShippingPriceTaxable(true);
+    fulfillmentGroupImpl2.setMerchandiseTotal(new Money());
+    fulfillmentGroupImpl2.setMethod("Fulfillment Method");
+    fulfillmentGroupImpl2.setOrder(NullOrderFactoryImpl.NULL_ORDER);
+    fulfillmentGroupImpl2.setPersonalMessage(new PersonalMessageImpl());
+    fulfillmentGroupImpl2.setPhone(new PhoneImpl());
+    fulfillmentGroupImpl2.setPrimary(true);
+    fulfillmentGroupImpl2.setReferenceNumber("42");
+    fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSequence(1);
+    fulfillmentGroupImpl2.setService("Service");
+    fulfillmentGroupImpl2.setShippingOverride(true);
+    fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupImpl2.setTaxes(new ArrayList<>());
+    fulfillmentGroupImpl2.setTotal(new Money());
+    fulfillmentGroupImpl2.setTotalFeeTax(new Money());
+    fulfillmentGroupImpl2.setTotalFulfillmentGroupTax(new Money());
+    fulfillmentGroupImpl2.setTotalItemTax(new Money());
+    fulfillmentGroupImpl2.setTotalTax(new Money());
+    fulfillmentGroupImpl2.setType(FulfillmentType.DIGITAL);
+    fulfillmentGroupImpl2.setFulfillmentGroupAdjustments(fulfillmentGroupAdjustments);
 
     // Act
-    List<FulfillmentGroupAdjustment> actualFutureCreditFulfillmentGroupAdjustments = fulfillmentGroupImpl
+    List<FulfillmentGroupAdjustment> actualFutureCreditFulfillmentGroupAdjustments = fulfillmentGroupImpl2
         .getFutureCreditFulfillmentGroupAdjustments();
 
     // Assert
@@ -2924,19 +1252,18 @@ public class FulfillmentGroupImplDiffblueTest {
   /**
    * Test {@link FulfillmentGroupImpl#getFulfillmentGroupAdjustmentsValue()}.
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#getFulfillmentGroupAdjustmentsValue()}
+   * Method under test: {@link FulfillmentGroupImpl#getFulfillmentGroupAdjustmentsValue()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money FulfillmentGroupImpl.getFulfillmentGroupAdjustmentsValue()"})
   public void testGetFulfillmentGroupAdjustmentsValue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setOrder(NullOrderFactoryImpl.NULL_ORDER);
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl2.setOrder(NullOrderFactoryImpl.NULL_ORDER);
 
     // Act
-    Money actualFulfillmentGroupAdjustmentsValue = fulfillmentGroupImpl.getFulfillmentGroupAdjustmentsValue();
+    Money actualFulfillmentGroupAdjustmentsValue = fulfillmentGroupImpl2.getFulfillmentGroupAdjustmentsValue();
 
     // Assert
     assertEquals(actualFulfillmentGroupAdjustmentsValue.ZERO, actualFulfillmentGroupAdjustmentsValue);
@@ -2944,182 +1271,27 @@ public class FulfillmentGroupImplDiffblueTest {
 
   /**
    * Test {@link FulfillmentGroupImpl#getFulfillmentGroupAdjustmentsValue()}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#getFulfillmentGroupAdjustmentsValue()}
-   */
-  @Test
-  public void testGetFulfillmentGroupAdjustmentsValue2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
-    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
-    Order order = mock(Order.class);
-    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
-    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl = mock(FulfillmentGroupAdjustmentImpl.class);
-    when(fulfillmentGroupAdjustmentImpl.isFutureCredit()).thenReturn(true);
-    doNothing().when(fulfillmentGroupAdjustmentImpl).setFulfillmentGroup(Mockito.<FulfillmentGroup>any());
-    fulfillmentGroupAdjustmentImpl.setFulfillmentGroup(mock(FulfillmentGroup.class));
-
-    ArrayList<FulfillmentGroupAdjustment> fulfillmentGroupAdjustments = new ArrayList<>();
-    fulfillmentGroupAdjustments.add(fulfillmentGroupAdjustmentImpl);
-
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(fulfillmentGroupAdjustments);
-    fulfillmentGroupImpl.setOrder(order);
-    Money expectedFulfillmentGroupAdjustmentsValue = new Money();
-
-    // Act
-    Money actualFulfillmentGroupAdjustmentsValue = fulfillmentGroupImpl.getFulfillmentGroupAdjustmentsValue();
-
-    // Assert
-    verify(broadleafCurrencyImpl).getCurrencyCode();
-    verify(fulfillmentGroupAdjustmentImpl).isFutureCredit();
-    verify(fulfillmentGroupAdjustmentImpl).setFulfillmentGroup(isA(FulfillmentGroup.class));
-    verify(order).getCurrency();
-    assertEquals(expectedFulfillmentGroupAdjustmentsValue, actualFulfillmentGroupAdjustmentsValue);
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#getFulfillmentGroupAdjustmentsValue()}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#getFulfillmentGroupAdjustmentsValue()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetFulfillmentGroupAdjustmentsValue3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass462 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new FulfillmentGroupImpl()).getFulfillmentGroupAdjustmentsValue();
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#getFulfillmentGroupAdjustmentsValue()}.
    * <ul>
-   *   <li>Then calls {@link FulfillmentGroup#getOrder()}.</li>
+   *   <li>Then calls {@link BroadleafCurrencyImpl#getCurrencyCode()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#getFulfillmentGroupAdjustmentsValue()}
+   * Method under test: {@link FulfillmentGroupImpl#getFulfillmentGroupAdjustmentsValue()}
    */
   @Test
-  public void testGetFulfillmentGroupAdjustmentsValue_thenCallsGetOrder() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
-    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
-    Order order = mock(Order.class);
-    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
-    FulfillmentGroup fulfillmentGroup = mock(FulfillmentGroup.class);
-    when(fulfillmentGroup.getOrder()).thenReturn(NullOrderFactoryImpl.NULL_ORDER);
-
-    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl = new FulfillmentGroupAdjustmentImpl();
-    fulfillmentGroupAdjustmentImpl.setFulfillmentGroup(fulfillmentGroup);
-
-    ArrayList<FulfillmentGroupAdjustment> fulfillmentGroupAdjustments = new ArrayList<>();
-    fulfillmentGroupAdjustments.add(fulfillmentGroupAdjustmentImpl);
-
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(fulfillmentGroupAdjustments);
-    fulfillmentGroupImpl.setOrder(order);
-
-    // Act
-    Money actualFulfillmentGroupAdjustmentsValue = fulfillmentGroupImpl.getFulfillmentGroupAdjustmentsValue();
-
-    // Assert
-    verify(broadleafCurrencyImpl).getCurrencyCode();
-    verify(fulfillmentGroup).getOrder();
-    verify(order).getCurrency();
-    assertEquals(actualFulfillmentGroupAdjustmentsValue.ZERO, actualFulfillmentGroupAdjustmentsValue);
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#getFulfillmentGroupAdjustmentsValue()}.
-   * <ul>
-   *   <li>Then calls {@link FulfillmentGroupAdjustmentImpl#getValue()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#getFulfillmentGroupAdjustmentsValue()}
-   */
-  @Test
-  public void testGetFulfillmentGroupAdjustmentsValue_thenCallsGetValue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
-    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
-    Order order = mock(Order.class);
-    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
-    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl = mock(FulfillmentGroupAdjustmentImpl.class);
-    when(fulfillmentGroupAdjustmentImpl.isFutureCredit()).thenReturn(false);
-    Money money = new Money();
-    when(fulfillmentGroupAdjustmentImpl.getValue()).thenReturn(money);
-    doNothing().when(fulfillmentGroupAdjustmentImpl).setFulfillmentGroup(Mockito.<FulfillmentGroup>any());
-    fulfillmentGroupAdjustmentImpl.setFulfillmentGroup(mock(FulfillmentGroup.class));
-
-    ArrayList<FulfillmentGroupAdjustment> fulfillmentGroupAdjustments = new ArrayList<>();
-    fulfillmentGroupAdjustments.add(fulfillmentGroupAdjustmentImpl);
-
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(fulfillmentGroupAdjustments);
-    fulfillmentGroupImpl.setOrder(order);
-
-    // Act
-    Money actualFulfillmentGroupAdjustmentsValue = fulfillmentGroupImpl.getFulfillmentGroupAdjustmentsValue();
-
-    // Assert
-    verify(broadleafCurrencyImpl).getCurrencyCode();
-    verify(fulfillmentGroupAdjustmentImpl).getValue();
-    verify(fulfillmentGroupAdjustmentImpl).isFutureCredit();
-    verify(fulfillmentGroupAdjustmentImpl).setFulfillmentGroup(isA(FulfillmentGroup.class));
-    verify(order).getCurrency();
-    assertEquals(money, actualFulfillmentGroupAdjustmentsValue);
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#getFulfillmentGroupAdjustmentsValue()}.
-   * <ul>
-   *   <li>Then return {@link Money#ZERO}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#getFulfillmentGroupAdjustmentsValue()}
-   */
-  @Test
-  public void testGetFulfillmentGroupAdjustmentsValue_thenReturnZero() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money FulfillmentGroupImpl.getFulfillmentGroupAdjustmentsValue()"})
+  public void testGetFulfillmentGroupAdjustmentsValue_thenCallsGetCurrencyCode() {
     // Arrange
     BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
     when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
     Order order = mock(Order.class);
     when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
 
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setOrder(order);
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl2.setOrder(order);
 
     // Act
-    Money actualFulfillmentGroupAdjustmentsValue = fulfillmentGroupImpl.getFulfillmentGroupAdjustmentsValue();
+    Money actualFulfillmentGroupAdjustmentsValue = fulfillmentGroupImpl2.getFulfillmentGroupAdjustmentsValue();
 
     // Assert
     verify(broadleafCurrencyImpl).getCurrencyCode();
@@ -3128,22 +1300,20 @@ public class FulfillmentGroupImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentGroupImpl#getFutureCreditFulfillmentGroupAdjustmentsValue()}.
+   * Test {@link FulfillmentGroupImpl#getFutureCreditFulfillmentGroupAdjustmentsValue()}.
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#getFutureCreditFulfillmentGroupAdjustmentsValue()}
+   * Method under test: {@link FulfillmentGroupImpl#getFutureCreditFulfillmentGroupAdjustmentsValue()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money FulfillmentGroupImpl.getFutureCreditFulfillmentGroupAdjustmentsValue()"})
   public void testGetFutureCreditFulfillmentGroupAdjustmentsValue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setOrder(NullOrderFactoryImpl.NULL_ORDER);
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl2.setOrder(NullOrderFactoryImpl.NULL_ORDER);
 
     // Act
-    Money actualFutureCreditFulfillmentGroupAdjustmentsValue = fulfillmentGroupImpl
+    Money actualFutureCreditFulfillmentGroupAdjustmentsValue = fulfillmentGroupImpl2
         .getFutureCreditFulfillmentGroupAdjustmentsValue();
 
     // Assert
@@ -3152,139 +1322,28 @@ public class FulfillmentGroupImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentGroupImpl#getFutureCreditFulfillmentGroupAdjustmentsValue()}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#getFutureCreditFulfillmentGroupAdjustmentsValue()}
-   */
-  @Test
-  public void testGetFutureCreditFulfillmentGroupAdjustmentsValue2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
-    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
-    Order order = mock(Order.class);
-    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
-
-    ArrayList<FulfillmentGroupAdjustment> fulfillmentGroupAdjustments = new ArrayList<>();
-    fulfillmentGroupAdjustments.add(new FulfillmentGroupAdjustmentImpl());
-
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(fulfillmentGroupAdjustments);
-    fulfillmentGroupImpl.setOrder(order);
-
-    // Act
-    Money actualFutureCreditFulfillmentGroupAdjustmentsValue = fulfillmentGroupImpl
-        .getFutureCreditFulfillmentGroupAdjustmentsValue();
-
-    // Assert
-    verify(broadleafCurrencyImpl).getCurrencyCode();
-    verify(order).getCurrency();
-    assertEquals(actualFutureCreditFulfillmentGroupAdjustmentsValue.ZERO,
-        actualFutureCreditFulfillmentGroupAdjustmentsValue);
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupImpl#getFutureCreditFulfillmentGroupAdjustmentsValue()}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#getFutureCreditFulfillmentGroupAdjustmentsValue()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetFutureCreditFulfillmentGroupAdjustmentsValue3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass552 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new FulfillmentGroupImpl()).getFutureCreditFulfillmentGroupAdjustmentsValue();
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupImpl#getFutureCreditFulfillmentGroupAdjustmentsValue()}.
+   * Test {@link FulfillmentGroupImpl#getFutureCreditFulfillmentGroupAdjustmentsValue()}.
    * <ul>
-   *   <li>Then return {@link Money#Money()}.</li>
+   *   <li>Then calls {@link BroadleafCurrencyImpl#getCurrencyCode()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#getFutureCreditFulfillmentGroupAdjustmentsValue()}
+   * Method under test: {@link FulfillmentGroupImpl#getFutureCreditFulfillmentGroupAdjustmentsValue()}
    */
   @Test
-  public void testGetFutureCreditFulfillmentGroupAdjustmentsValue_thenReturnMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
-    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
-    Order order = mock(Order.class);
-    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
-    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl = mock(FulfillmentGroupAdjustmentImpl.class);
-    Money money = new Money();
-    when(fulfillmentGroupAdjustmentImpl.getValue()).thenReturn(money);
-    when(fulfillmentGroupAdjustmentImpl.isFutureCredit()).thenReturn(true);
-
-    ArrayList<FulfillmentGroupAdjustment> fulfillmentGroupAdjustments = new ArrayList<>();
-    fulfillmentGroupAdjustments.add(fulfillmentGroupAdjustmentImpl);
-
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(fulfillmentGroupAdjustments);
-    fulfillmentGroupImpl.setOrder(order);
-
-    // Act
-    Money actualFutureCreditFulfillmentGroupAdjustmentsValue = fulfillmentGroupImpl
-        .getFutureCreditFulfillmentGroupAdjustmentsValue();
-
-    // Assert
-    verify(broadleafCurrencyImpl).getCurrencyCode();
-    verify(fulfillmentGroupAdjustmentImpl).getValue();
-    verify(fulfillmentGroupAdjustmentImpl).isFutureCredit();
-    verify(order).getCurrency();
-    assertEquals(money, actualFutureCreditFulfillmentGroupAdjustmentsValue);
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupImpl#getFutureCreditFulfillmentGroupAdjustmentsValue()}.
-   * <ul>
-   *   <li>Then return {@link Money#ZERO}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#getFutureCreditFulfillmentGroupAdjustmentsValue()}
-   */
-  @Test
-  public void testGetFutureCreditFulfillmentGroupAdjustmentsValue_thenReturnZero() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money FulfillmentGroupImpl.getFutureCreditFulfillmentGroupAdjustmentsValue()"})
+  public void testGetFutureCreditFulfillmentGroupAdjustmentsValue_thenCallsGetCurrencyCode() {
     // Arrange
     BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
     when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
     Order order = mock(Order.class);
     when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
 
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setOrder(order);
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl2.setOrder(order);
 
     // Act
-    Money actualFutureCreditFulfillmentGroupAdjustmentsValue = fulfillmentGroupImpl
+    Money actualFutureCreditFulfillmentGroupAdjustmentsValue = fulfillmentGroupImpl2
         .getFutureCreditFulfillmentGroupAdjustmentsValue();
 
     // Assert
@@ -3300,56 +1359,47 @@ public class FulfillmentGroupImplDiffblueTest {
    * Method under test: {@link FulfillmentGroupImpl#removeAllAdjustments()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupImpl.removeAllAdjustments()"})
   public void testRemoveAllAdjustments() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ArrayList<FulfillmentGroupAdjustment> fulfillmentGroupAdjustments = new ArrayList<>();
-    fulfillmentGroupAdjustments.add(new FulfillmentGroupAdjustmentImpl());
-
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(new AddressImpl());
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
-    Money fulfillmentPrice = new Money();
-    fulfillmentGroupImpl.setFulfillmentPrice(fulfillmentPrice);
-    fulfillmentGroupImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setOrder(NullOrderFactoryImpl.NULL_ORDER);
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(fulfillmentGroupAdjustments);
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl2.setAddress(new AddressImpl());
+    fulfillmentGroupImpl2.setCandidateFulfillmentGroupOffer(new ArrayList<>());
+    fulfillmentGroupImpl2.setDeliveryInstruction("Delivery Instruction");
+    fulfillmentGroupImpl2.setFulfillmentGroupFees(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupItems(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentOption(new FulfillmentOptionImpl());
+    fulfillmentGroupImpl2.setFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupImpl2.setIsShippingPriceTaxable(true);
+    fulfillmentGroupImpl2.setMerchandiseTotal(new Money());
+    fulfillmentGroupImpl2.setMethod("Fulfillment Method");
+    fulfillmentGroupImpl2.setOrder(NullOrderFactoryImpl.NULL_ORDER);
+    fulfillmentGroupImpl2.setPersonalMessage(new PersonalMessageImpl());
+    fulfillmentGroupImpl2.setPhone(new PhoneImpl());
+    fulfillmentGroupImpl2.setPrimary(true);
+    fulfillmentGroupImpl2.setReferenceNumber("42");
+    fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSequence(1);
+    fulfillmentGroupImpl2.setService("Service");
+    fulfillmentGroupImpl2.setShippingOverride(true);
+    fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupImpl2.setTaxes(new ArrayList<>());
+    fulfillmentGroupImpl2.setTotal(new Money());
+    fulfillmentGroupImpl2.setTotalFeeTax(new Money());
+    fulfillmentGroupImpl2.setTotalFulfillmentGroupTax(new Money());
+    fulfillmentGroupImpl2.setTotalItemTax(new Money());
+    fulfillmentGroupImpl2.setTotalTax(new Money());
+    fulfillmentGroupImpl2.setType(FulfillmentType.DIGITAL);
+    fulfillmentGroupImpl2.setFulfillmentGroupAdjustments(null);
 
     // Act
-    fulfillmentGroupImpl.removeAllAdjustments();
+    fulfillmentGroupImpl2.removeAllAdjustments();
 
-    // Assert
-    assertTrue(fulfillmentGroupImpl.getOrder() instanceof NullOrderImpl);
-    assertTrue(fulfillmentGroupImpl.getFulfillmentGroupAdjustments().isEmpty());
-    assertEquals(fulfillmentPrice, fulfillmentGroupImpl.getFulfillmentGroupAdjustmentsValue());
+    // Assert that nothing has changed
+    assertNull(fulfillmentGroupImpl2.getFulfillmentGroupAdjustments());
   }
 
   /**
@@ -3358,27 +1408,52 @@ public class FulfillmentGroupImplDiffblueTest {
    * Method under test: {@link FulfillmentGroupImpl#removeAllAdjustments()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupImpl.removeAllAdjustments()"})
   public void testRemoveAllAdjustments2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1002 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    ArrayList<FulfillmentGroupAdjustment> fulfillmentGroupAdjustments = new ArrayList<>();
+    fulfillmentGroupAdjustments.add(new FulfillmentGroupAdjustmentImpl());
 
-    // Arrange and Act
-    (new FulfillmentGroupImpl()).removeAllAdjustments();
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl2.setAddress(new AddressImpl());
+    fulfillmentGroupImpl2.setCandidateFulfillmentGroupOffer(new ArrayList<>());
+    fulfillmentGroupImpl2.setDeliveryInstruction("Delivery Instruction");
+    fulfillmentGroupImpl2.setFulfillmentGroupFees(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupItems(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentOption(new FulfillmentOptionImpl());
+    Money fulfillmentPrice = new Money();
+    fulfillmentGroupImpl2.setFulfillmentPrice(fulfillmentPrice);
+    fulfillmentGroupImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupImpl2.setIsShippingPriceTaxable(true);
+    fulfillmentGroupImpl2.setMerchandiseTotal(new Money());
+    fulfillmentGroupImpl2.setMethod("Fulfillment Method");
+    fulfillmentGroupImpl2.setOrder(NullOrderFactoryImpl.NULL_ORDER);
+    fulfillmentGroupImpl2.setPersonalMessage(new PersonalMessageImpl());
+    fulfillmentGroupImpl2.setPhone(new PhoneImpl());
+    fulfillmentGroupImpl2.setPrimary(true);
+    fulfillmentGroupImpl2.setReferenceNumber("42");
+    fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSequence(1);
+    fulfillmentGroupImpl2.setService("Service");
+    fulfillmentGroupImpl2.setShippingOverride(true);
+    fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupImpl2.setTaxes(new ArrayList<>());
+    fulfillmentGroupImpl2.setTotal(new Money());
+    fulfillmentGroupImpl2.setTotalFeeTax(new Money());
+    fulfillmentGroupImpl2.setTotalFulfillmentGroupTax(new Money());
+    fulfillmentGroupImpl2.setTotalItemTax(new Money());
+    fulfillmentGroupImpl2.setTotalTax(new Money());
+    fulfillmentGroupImpl2.setType(FulfillmentType.DIGITAL);
+    fulfillmentGroupImpl2.setFulfillmentGroupAdjustments(fulfillmentGroupAdjustments);
+
+    // Act
+    fulfillmentGroupImpl2.removeAllAdjustments();
+
+    // Assert
+    assertTrue(fulfillmentGroupImpl2.getFulfillmentGroupAdjustments().isEmpty());
+    assertEquals(fulfillmentPrice, fulfillmentGroupImpl2.getFulfillmentGroupAdjustmentsValue());
   }
 
   /**
@@ -3390,179 +1465,17 @@ public class FulfillmentGroupImplDiffblueTest {
    * Method under test: {@link FulfillmentGroupImpl#removeAllAdjustments()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupImpl.removeAllAdjustments()"})
   public void testRemoveAllAdjustments_givenFulfillmentGroupImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
 
     // Act
-    fulfillmentGroupImpl.removeAllAdjustments();
-
-    // Assert
-    assertTrue(fulfillmentGroupImpl.getFulfillmentGroupAdjustments().isEmpty());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#removeAllAdjustments()}.
-   * <ul>
-   *   <li>Given {@link FulfillmentGroupImpl} (default constructor) Address is
-   * {@link AddressImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#removeAllAdjustments()}
-   */
-  @Test
-  public void testRemoveAllAdjustments_givenFulfillmentGroupImplAddressIsAddressImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(new AddressImpl());
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroupImpl.setFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setOrder(NullOrderFactoryImpl.NULL_ORDER);
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(null);
-
-    // Act
-    fulfillmentGroupImpl.removeAllAdjustments();
+    fulfillmentGroupImpl2.removeAllAdjustments();
 
     // Assert that nothing has changed
-    assertTrue(fulfillmentGroupImpl.getOrder() instanceof NullOrderImpl);
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#removeAllAdjustments()}.
-   * <ul>
-   *   <li>Given {@link FulfillmentGroupImpl} (default constructor) Address is
-   * {@link AddressImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#removeAllAdjustments()}
-   */
-  @Test
-  public void testRemoveAllAdjustments_givenFulfillmentGroupImplAddressIsAddressImpl2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(mock(AddressImpl.class));
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroupImpl.setFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setOrder(NullOrderFactoryImpl.NULL_ORDER);
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(null);
-
-    // Act
-    fulfillmentGroupImpl.removeAllAdjustments();
-
-    // Assert that nothing has changed
-    assertTrue(fulfillmentGroupImpl.getOrder() instanceof NullOrderImpl);
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#getSaleFulfillmentPrice()}.
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#getSaleFulfillmentPrice()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetSaleFulfillmentPrice() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass672 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new FulfillmentGroupImpl()).getSaleFulfillmentPrice();
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#getSaleFulfillmentPrice()}.
-   * <ul>
-   *   <li>Given {@link FulfillmentGroupImpl} (default constructor)
-   * SaleFulfillmentPrice is {@link Money}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#getSaleFulfillmentPrice()}
-   */
-  @Test
-  public void testGetSaleFulfillmentPrice_givenFulfillmentGroupImplSaleFulfillmentPriceIsMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(mock(Money.class));
-
-    // Act and Assert
-    assertNull(fulfillmentGroupImpl.getSaleFulfillmentPrice());
+    assertTrue(fulfillmentGroupImpl2.getFulfillmentGroupAdjustments().isEmpty());
   }
 
   /**
@@ -3575,9 +1488,9 @@ public class FulfillmentGroupImplDiffblueTest {
    * Method under test: {@link FulfillmentGroupImpl#getSaleFulfillmentPrice()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money FulfillmentGroupImpl.getSaleFulfillmentPrice()"})
   public void testGetSaleFulfillmentPrice_givenFulfillmentGroupImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new FulfillmentGroupImpl()).getSaleFulfillmentPrice());
   }
@@ -3585,17 +1498,16 @@ public class FulfillmentGroupImplDiffblueTest {
   /**
    * Test {@link FulfillmentGroupImpl#getSaleFulfillmentPrice()}.
    * <ul>
-   *   <li>Given {@link OrderImpl} (default constructor) Currency is
-   * {@code null}.</li>
+   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@code null}.</li>
    *   <li>Then return {@link Money#Money()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link FulfillmentGroupImpl#getSaleFulfillmentPrice()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money FulfillmentGroupImpl.getSaleFulfillmentPrice()"})
   public void testGetSaleFulfillmentPrice_givenOrderImplCurrencyIsNull_thenReturnMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
@@ -3625,754 +1537,154 @@ public class FulfillmentGroupImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setCurrency(null);
 
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(new AddressImpl());
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl2.setAddress(new AddressImpl());
+    fulfillmentGroupImpl2.setCandidateFulfillmentGroupOffer(new ArrayList<>());
+    fulfillmentGroupImpl2.setDeliveryInstruction("Delivery Instruction");
+    fulfillmentGroupImpl2.setFulfillmentGroupAdjustments(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupFees(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupItems(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentOption(new FulfillmentOptionImpl());
     Money fulfillmentPrice = new Money();
-    fulfillmentGroupImpl.setFulfillmentPrice(fulfillmentPrice);
-    fulfillmentGroupImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setOrder(order);
+    fulfillmentGroupImpl2.setFulfillmentPrice(fulfillmentPrice);
+    fulfillmentGroupImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupImpl2.setIsShippingPriceTaxable(true);
+    fulfillmentGroupImpl2.setMerchandiseTotal(new Money());
+    fulfillmentGroupImpl2.setMethod("Fulfillment Method");
+    fulfillmentGroupImpl2.setPersonalMessage(new PersonalMessageImpl());
+    fulfillmentGroupImpl2.setPhone(new PhoneImpl());
+    fulfillmentGroupImpl2.setPrimary(true);
+    fulfillmentGroupImpl2.setReferenceNumber("42");
+    fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSequence(1);
+    fulfillmentGroupImpl2.setService("Service");
+    fulfillmentGroupImpl2.setShippingOverride(true);
+    fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupImpl2.setTaxes(new ArrayList<>());
+    fulfillmentGroupImpl2.setTotal(new Money());
+    fulfillmentGroupImpl2.setTotalFeeTax(new Money());
+    fulfillmentGroupImpl2.setTotalFulfillmentGroupTax(new Money());
+    fulfillmentGroupImpl2.setTotalItemTax(new Money());
+    fulfillmentGroupImpl2.setTotalTax(new Money());
+    fulfillmentGroupImpl2.setType(FulfillmentType.DIGITAL);
+    fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setOrder(order);
 
     // Act and Assert
-    assertEquals(fulfillmentPrice, fulfillmentGroupImpl.getSaleFulfillmentPrice());
+    assertEquals(fulfillmentPrice, fulfillmentGroupImpl2.getSaleFulfillmentPrice());
   }
 
   /**
    * Test {@link FulfillmentGroupImpl#setSaleFulfillmentPrice(Money)}.
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#setSaleFulfillmentPrice(Money)}
+   * Method under test: {@link FulfillmentGroupImpl#setSaleFulfillmentPrice(Money)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupImpl.setSaleFulfillmentPrice(Money)"})
   public void testSetSaleFulfillmentPrice() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
     Money saleFulfillmentPrice = new Money();
 
     // Act
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(saleFulfillmentPrice);
+    fulfillmentGroupImpl2.setSaleFulfillmentPrice(saleFulfillmentPrice);
 
     // Assert
-    assertEquals(new BigDecimal("0.00"), fulfillmentGroupImpl.saleFulfillmentPrice);
-    BigDecimal bigDecimal = fulfillmentGroupImpl.saleFulfillmentPrice;
+    assertEquals(new BigDecimal("0.00"), fulfillmentGroupImpl2.saleFulfillmentPrice);
+    BigDecimal bigDecimal = fulfillmentGroupImpl2.saleFulfillmentPrice;
     Money absResult = saleFulfillmentPrice.abs();
     assertSame(bigDecimal, absResult.getAmount());
     Money absResult2 = absResult.abs();
     assertSame(bigDecimal, absResult2.getAmount());
-    Money absResult3 = absResult2.abs();
-    assertSame(bigDecimal, absResult3.getAmount());
-    Money absResult4 = absResult3.abs();
-    assertSame(bigDecimal, absResult4.getAmount());
-    Money absResult5 = absResult4.abs();
-    assertSame(bigDecimal, absResult5.getAmount());
-    Money absResult6 = absResult5.abs();
-    assertSame(bigDecimal, absResult6.getAmount());
-    assertSame(bigDecimal, absResult6.abs().getAmount());
+    assertSame(bigDecimal, absResult2.abs().getAmount());
     Money zeroResult = saleFulfillmentPrice.zero();
-    Money absResult7 = zeroResult.abs();
-    Money absResult8 = absResult7.abs();
-    Money absResult9 = absResult8.abs();
-    Money absResult10 = absResult9.abs();
-    Money absResult11 = absResult10.abs();
-    assertSame(bigDecimal, absResult11.abs().getAmount());
-    assertSame(bigDecimal, absResult11.getAmount());
+    Money absResult3 = zeroResult.abs();
+    assertSame(bigDecimal, absResult3.abs().getAmount());
+    assertSame(bigDecimal, absResult3.getAmount());
     Money zeroResult2 = absResult.zero();
-    Money absResult12 = zeroResult2.abs();
-    Money absResult13 = absResult12.abs();
-    Money absResult14 = absResult13.abs();
-    Money absResult15 = absResult14.abs();
-    assertSame(bigDecimal, absResult15.abs().getAmount());
+    assertSame(bigDecimal, zeroResult2.abs().getAmount());
     Money zeroResult3 = zeroResult.zero();
-    Money absResult16 = zeroResult3.abs();
-    Money absResult17 = absResult16.abs();
-    Money absResult18 = absResult17.abs();
-    Money absResult19 = absResult18.abs();
-    assertSame(bigDecimal, absResult19.abs().getAmount());
-    assertSame(bigDecimal, absResult10.getAmount());
-    assertSame(bigDecimal, absResult15.getAmount());
-    Money zeroResult4 = absResult2.zero();
-    Money absResult20 = zeroResult4.abs();
-    Money absResult21 = absResult20.abs();
-    Money absResult22 = absResult21.abs();
-    assertSame(bigDecimal, absResult22.abs().getAmount());
-    Money zeroResult5 = absResult7.zero();
-    Money absResult23 = zeroResult5.abs();
-    Money absResult24 = absResult23.abs();
-    Money absResult25 = absResult24.abs();
-    assertSame(bigDecimal, absResult25.abs().getAmount());
-    assertSame(bigDecimal, absResult19.getAmount());
-    Money zeroResult6 = zeroResult2.zero();
-    Money absResult26 = zeroResult6.abs();
-    Money absResult27 = absResult26.abs();
-    Money absResult28 = absResult27.abs();
-    assertSame(bigDecimal, absResult28.abs().getAmount());
-    Money zeroResult7 = zeroResult3.zero();
-    Money absResult29 = zeroResult7.abs();
-    Money absResult30 = absResult29.abs();
-    Money absResult31 = absResult30.abs();
-    assertSame(bigDecimal, absResult31.abs().getAmount());
-    assertSame(bigDecimal, absResult9.getAmount());
-    assertSame(bigDecimal, absResult14.getAmount());
-    assertSame(bigDecimal, absResult22.getAmount());
-    Money zeroResult8 = absResult3.zero();
-    Money absResult32 = zeroResult8.abs();
-    Money absResult33 = absResult32.abs();
-    assertSame(bigDecimal, absResult33.abs().getAmount());
-    Money zeroResult9 = absResult8.zero();
-    Money absResult34 = zeroResult9.abs();
-    Money absResult35 = absResult34.abs();
-    assertSame(bigDecimal, absResult35.abs().getAmount());
-    assertSame(bigDecimal, absResult25.getAmount());
-    Money zeroResult10 = absResult12.zero();
-    Money absResult36 = zeroResult10.abs();
-    Money absResult37 = absResult36.abs();
-    assertSame(bigDecimal, absResult37.abs().getAmount());
-    Money zeroResult11 = absResult16.zero();
-    Money absResult38 = zeroResult11.abs();
-    Money absResult39 = absResult38.abs();
-    assertSame(bigDecimal, absResult39.abs().getAmount());
-    assertSame(bigDecimal, absResult18.getAmount());
-    assertSame(bigDecimal, absResult28.getAmount());
-    Money zeroResult12 = zeroResult4.zero();
-    Money absResult40 = zeroResult12.abs();
-    Money absResult41 = absResult40.abs();
-    assertSame(bigDecimal, absResult41.abs().getAmount());
-    Money zeroResult13 = zeroResult5.zero();
-    Money absResult42 = zeroResult13.abs();
-    Money absResult43 = absResult42.abs();
-    assertSame(bigDecimal, absResult43.abs().getAmount());
-    assertSame(bigDecimal, absResult31.getAmount());
-    Money zeroResult14 = zeroResult6.zero();
-    Money absResult44 = zeroResult14.abs();
-    Money absResult45 = absResult44.abs();
-    assertSame(bigDecimal, absResult45.abs().getAmount());
-    Money zeroResult15 = zeroResult7.zero();
-    Money absResult46 = zeroResult15.abs();
-    Money absResult47 = absResult46.abs();
-    assertSame(bigDecimal, absResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult8.getAmount());
-    assertSame(bigDecimal, absResult13.getAmount());
-    assertSame(bigDecimal, absResult21.getAmount());
-    assertSame(bigDecimal, absResult33.getAmount());
-    Money zeroResult16 = absResult4.zero();
-    Money absResult48 = zeroResult16.abs();
-    assertSame(bigDecimal, absResult48.abs().getAmount());
-    Money zeroResult17 = absResult9.zero();
-    Money absResult49 = zeroResult17.abs();
-    assertSame(bigDecimal, absResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult35.getAmount());
-    Money zeroResult18 = absResult13.zero();
-    Money absResult50 = zeroResult18.abs();
-    assertSame(bigDecimal, absResult50.abs().getAmount());
-    Money zeroResult19 = absResult17.zero();
-    Money absResult51 = zeroResult19.abs();
-    assertSame(bigDecimal, absResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult24.getAmount());
-    assertSame(bigDecimal, absResult37.getAmount());
-    Money zeroResult20 = absResult20.zero();
-    Money absResult52 = zeroResult20.abs();
-    assertSame(bigDecimal, absResult52.abs().getAmount());
-    Money zeroResult21 = absResult23.zero();
-    Money absResult53 = zeroResult21.abs();
-    assertSame(bigDecimal, absResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult39.getAmount());
-    Money zeroResult22 = absResult26.zero();
-    Money absResult54 = zeroResult22.abs();
-    assertSame(bigDecimal, absResult54.abs().getAmount());
-    Money zeroResult23 = absResult29.zero();
-    Money absResult55 = zeroResult23.abs();
-    assertSame(bigDecimal, absResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult17.getAmount());
-    assertSame(bigDecimal, absResult27.getAmount());
-    assertSame(bigDecimal, absResult41.getAmount());
-    Money zeroResult24 = zeroResult8.zero();
-    Money absResult56 = zeroResult24.abs();
-    assertSame(bigDecimal, absResult56.abs().getAmount());
-    Money zeroResult25 = zeroResult9.zero();
-    Money absResult57 = zeroResult25.abs();
-    assertSame(bigDecimal, absResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult43.getAmount());
-    Money zeroResult26 = zeroResult10.zero();
-    Money absResult58 = zeroResult26.abs();
-    assertSame(bigDecimal, absResult58.abs().getAmount());
-    Money zeroResult27 = zeroResult11.zero();
-    Money absResult59 = zeroResult27.abs();
-    assertSame(bigDecimal, absResult59.abs().getAmount());
-    assertSame(bigDecimal, absResult30.getAmount());
-    assertSame(bigDecimal, absResult45.getAmount());
-    Money zeroResult28 = zeroResult12.zero();
-    Money absResult60 = zeroResult28.abs();
-    assertSame(bigDecimal, absResult60.abs().getAmount());
-    Money zeroResult29 = zeroResult13.zero();
-    Money absResult61 = zeroResult29.abs();
-    assertSame(bigDecimal, absResult61.abs().getAmount());
-    assertSame(bigDecimal, absResult47.getAmount());
-    Money zeroResult30 = zeroResult14.zero();
-    Money absResult62 = zeroResult30.abs();
-    assertSame(bigDecimal, absResult62.abs().getAmount());
-    assertSame(bigDecimal, absResult7.getAmount());
-    assertSame(bigDecimal, absResult12.getAmount());
-    assertSame(bigDecimal, absResult20.getAmount());
-    assertSame(bigDecimal, absResult32.getAmount());
-    assertSame(bigDecimal, absResult48.getAmount());
-    Money zeroResult31 = absResult5.zero();
-    assertSame(bigDecimal, zeroResult31.abs().getAmount());
-    Money zeroResult32 = absResult10.zero();
-    assertSame(bigDecimal, zeroResult32.abs().getAmount());
-    assertSame(bigDecimal, absResult49.getAmount());
-    Money zeroResult33 = absResult14.zero();
-    assertSame(bigDecimal, zeroResult33.abs().getAmount());
-    Money zeroResult34 = absResult18.zero();
-    assertSame(bigDecimal, zeroResult34.abs().getAmount());
-    assertSame(bigDecimal, absResult34.getAmount());
-    assertSame(bigDecimal, absResult50.getAmount());
-    Money zeroResult35 = absResult21.zero();
-    assertSame(bigDecimal, zeroResult35.abs().getAmount());
-    Money zeroResult36 = absResult24.zero();
-    assertSame(bigDecimal, zeroResult36.abs().getAmount());
-    assertSame(bigDecimal, absResult51.getAmount());
-    Money zeroResult37 = absResult27.zero();
-    assertSame(bigDecimal, zeroResult37.abs().getAmount());
-    Money zeroResult38 = absResult30.zero();
-    assertSame(bigDecimal, zeroResult38.abs().getAmount());
-    assertSame(bigDecimal, absResult23.getAmount());
-    assertSame(bigDecimal, absResult36.getAmount());
-    assertSame(bigDecimal, absResult52.getAmount());
-    Money zeroResult39 = absResult32.zero();
-    assertSame(bigDecimal, zeroResult39.abs().getAmount());
-    Money zeroResult40 = absResult34.zero();
-    assertSame(bigDecimal, zeroResult40.abs().getAmount());
-    assertSame(bigDecimal, absResult53.getAmount());
-    Money zeroResult41 = absResult36.zero();
-    assertSame(bigDecimal, zeroResult41.abs().getAmount());
-    Money zeroResult42 = absResult38.zero();
-    assertSame(bigDecimal, zeroResult42.abs().getAmount());
-    assertSame(bigDecimal, absResult38.getAmount());
-    assertSame(bigDecimal, absResult54.getAmount());
-    Money zeroResult43 = absResult40.zero();
-    assertSame(bigDecimal, zeroResult43.abs().getAmount());
-    Money zeroResult44 = absResult42.zero();
-    assertSame(bigDecimal, zeroResult44.abs().getAmount());
-    assertSame(bigDecimal, absResult55.getAmount());
-    Money zeroResult45 = absResult44.zero();
-    assertSame(bigDecimal, zeroResult45.abs().getAmount());
-    assertSame(bigDecimal, absResult16.getAmount());
-    assertSame(bigDecimal, absResult26.getAmount());
-    assertSame(bigDecimal, absResult40.getAmount());
-    assertSame(bigDecimal, absResult56.getAmount());
-    Money zeroResult46 = zeroResult16.zero();
-    assertSame(bigDecimal, zeroResult46.abs().getAmount());
-    Money zeroResult47 = zeroResult17.zero();
-    assertSame(bigDecimal, zeroResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult57.getAmount());
-    Money zeroResult48 = zeroResult18.zero();
-    assertSame(bigDecimal, zeroResult48.abs().getAmount());
-    Money zeroResult49 = zeroResult19.zero();
-    assertSame(bigDecimal, zeroResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult42.getAmount());
-    assertSame(bigDecimal, absResult58.getAmount());
-    Money zeroResult50 = zeroResult20.zero();
-    assertSame(bigDecimal, zeroResult50.abs().getAmount());
-    Money zeroResult51 = zeroResult21.zero();
-    assertSame(bigDecimal, zeroResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult59.getAmount());
-    Money zeroResult52 = zeroResult22.zero();
-    assertSame(bigDecimal, zeroResult52.abs().getAmount());
-    Money zeroResult53 = zeroResult23.zero();
-    assertSame(bigDecimal, zeroResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult29.getAmount());
-    assertSame(bigDecimal, absResult44.getAmount());
-    assertSame(bigDecimal, absResult60.getAmount());
-    Money zeroResult54 = zeroResult24.zero();
-    assertSame(bigDecimal, zeroResult54.abs().getAmount());
-    Money zeroResult55 = zeroResult25.zero();
-    assertSame(bigDecimal, zeroResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult61.getAmount());
-    Money zeroResult56 = zeroResult26.zero();
-    assertSame(bigDecimal, zeroResult56.abs().getAmount());
-    Money zeroResult57 = zeroResult27.zero();
-    assertSame(bigDecimal, zeroResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult46.getAmount());
-    assertSame(bigDecimal, absResult62.getAmount());
-    Money zeroResult58 = zeroResult28.zero();
-    assertSame(bigDecimal, zeroResult58.abs().getAmount());
-    Money zeroResult59 = zeroResult29.zero();
-    assertSame(bigDecimal, zeroResult59.abs().getAmount());
-    Money zeroResult60 = zeroResult15.zero();
-    assertSame(bigDecimal, zeroResult60.abs().getAmount());
-    Money zeroResult61 = zeroResult30.zero();
-    assertSame(bigDecimal, zeroResult61.abs().getAmount());
+    assertSame(bigDecimal, zeroResult3.abs().getAmount());
     assertSame(bigDecimal, zeroResult.getAmount());
     assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, zeroResult4.getAmount());
-    assertSame(bigDecimal, zeroResult8.getAmount());
-    assertSame(bigDecimal, zeroResult16.getAmount());
-    assertSame(bigDecimal, zeroResult31.getAmount());
-    assertSame(bigDecimal, absResult6.zero().getAmount());
-    assertSame(bigDecimal, absResult11.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.getAmount());
-    assertSame(bigDecimal, absResult15.zero().getAmount());
-    assertSame(bigDecimal, absResult19.zero().getAmount());
-    assertSame(bigDecimal, zeroResult17.getAmount());
-    assertSame(bigDecimal, zeroResult33.getAmount());
-    assertSame(bigDecimal, absResult22.zero().getAmount());
-    assertSame(bigDecimal, absResult25.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.getAmount());
-    assertSame(bigDecimal, absResult28.zero().getAmount());
-    assertSame(bigDecimal, absResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult9.getAmount());
-    assertSame(bigDecimal, zeroResult18.getAmount());
-    assertSame(bigDecimal, zeroResult35.getAmount());
-    assertSame(bigDecimal, absResult33.zero().getAmount());
-    assertSame(bigDecimal, absResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.getAmount());
-    assertSame(bigDecimal, absResult37.zero().getAmount());
-    assertSame(bigDecimal, absResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult19.getAmount());
-    assertSame(bigDecimal, zeroResult37.getAmount());
-    assertSame(bigDecimal, absResult41.zero().getAmount());
-    assertSame(bigDecimal, absResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.getAmount());
-    assertSame(bigDecimal, absResult45.zero().getAmount());
-    assertSame(bigDecimal, absResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult5.getAmount());
-    assertSame(bigDecimal, zeroResult10.getAmount());
-    assertSame(bigDecimal, zeroResult20.getAmount());
-    assertSame(bigDecimal, zeroResult39.getAmount());
-    assertSame(bigDecimal, absResult48.zero().getAmount());
-    assertSame(bigDecimal, absResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.getAmount());
-    assertSame(bigDecimal, absResult50.zero().getAmount());
-    assertSame(bigDecimal, absResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult21.getAmount());
-    assertSame(bigDecimal, zeroResult41.getAmount());
-    assertSame(bigDecimal, absResult52.zero().getAmount());
-    assertSame(bigDecimal, absResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.getAmount());
-    assertSame(bigDecimal, absResult54.zero().getAmount());
-    assertSame(bigDecimal, absResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult11.getAmount());
-    assertSame(bigDecimal, zeroResult22.getAmount());
-    assertSame(bigDecimal, zeroResult43.getAmount());
-    assertSame(bigDecimal, absResult56.zero().getAmount());
-    assertSame(bigDecimal, absResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.getAmount());
-    assertSame(bigDecimal, absResult58.zero().getAmount());
-    assertSame(bigDecimal, absResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult23.getAmount());
-    assertSame(bigDecimal, zeroResult45.getAmount());
-    assertSame(bigDecimal, absResult60.zero().getAmount());
-    assertSame(bigDecimal, absResult61.zero().getAmount());
-    assertSame(bigDecimal, absResult46.zero().getAmount());
-    assertSame(bigDecimal, absResult62.zero().getAmount());
+    assertSame(bigDecimal, absResult2.zero().getAmount());
+    assertSame(bigDecimal, absResult3.zero().getAmount());
     assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult6.getAmount());
-    assertSame(bigDecimal, zeroResult12.getAmount());
-    assertSame(bigDecimal, zeroResult24.getAmount());
-    assertSame(bigDecimal, zeroResult46.getAmount());
-    assertSame(bigDecimal, zeroResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.getAmount());
-    assertSame(bigDecimal, zeroResult33.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.zero().getAmount());
-    assertSame(bigDecimal, zeroResult25.getAmount());
-    assertSame(bigDecimal, zeroResult48.getAmount());
-    assertSame(bigDecimal, zeroResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.getAmount());
-    assertSame(bigDecimal, zeroResult37.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.zero().getAmount());
-    assertSame(bigDecimal, zeroResult13.getAmount());
-    assertSame(bigDecimal, zeroResult26.getAmount());
-    assertSame(bigDecimal, zeroResult50.getAmount());
-    assertSame(bigDecimal, zeroResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.getAmount());
-    assertSame(bigDecimal, zeroResult41.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.zero().getAmount());
-    assertSame(bigDecimal, zeroResult27.getAmount());
-    assertSame(bigDecimal, zeroResult52.getAmount());
-    assertSame(bigDecimal, zeroResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.getAmount());
-    assertSame(bigDecimal, zeroResult45.zero().getAmount());
-    assertSame(bigDecimal, zeroResult7.getAmount());
-    assertSame(bigDecimal, zeroResult14.getAmount());
-    assertSame(bigDecimal, zeroResult28.getAmount());
-    assertSame(bigDecimal, zeroResult54.getAmount());
-    assertSame(bigDecimal, zeroResult46.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.getAmount());
-    assertSame(bigDecimal, zeroResult48.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult29.getAmount());
-    assertSame(bigDecimal, zeroResult56.getAmount());
-    assertSame(bigDecimal, zeroResult50.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.getAmount());
-    assertSame(bigDecimal, zeroResult52.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult15.getAmount());
-    assertSame(bigDecimal, zeroResult30.getAmount());
-    assertSame(bigDecimal, zeroResult58.getAmount());
-    assertSame(bigDecimal, zeroResult54.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.getAmount());
-    assertSame(bigDecimal, zeroResult56.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.getAmount());
-    assertSame(bigDecimal, zeroResult61.getAmount());
-    assertSame(bigDecimal, zeroResult58.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.zero().getAmount());
-    assertSame(bigDecimal, zeroResult61.zero().getAmount());
+    assertSame(bigDecimal, zeroResult2.zero().getAmount());
+    assertSame(bigDecimal, zeroResult3.zero().getAmount());
   }
 
   /**
    * Test {@link FulfillmentGroupImpl#setSaleFulfillmentPrice(Money)}.
+   * <ul>
+   *   <li>Then {@link FulfillmentGroupImpl} (default constructor) {@link FulfillmentGroupImpl#saleFulfillmentPrice} is {@code null}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#setSaleFulfillmentPrice(Money)}
+   * Method under test: {@link FulfillmentGroupImpl#setSaleFulfillmentPrice(Money)}
    */
   @Test
-  public void testSetSaleFulfillmentPrice2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(new AddressImpl());
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
-    Money fulfillmentPrice = new Money();
-    fulfillmentGroupImpl.setFulfillmentPrice(fulfillmentPrice);
-    fulfillmentGroupImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setOrder(NullOrderFactoryImpl.NULL_ORDER);
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-
-    // Act
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(null);
-
-    // Assert
-    assertNull(fulfillmentGroupImpl.saleFulfillmentPrice);
-    assertNull(fulfillmentGroupImpl.getSaleFulfillmentPrice());
-    assertNull(fulfillmentGroupImpl.getSaleShippingPrice());
-    Money fulfillmentGroupAdjustmentsValue = fulfillmentGroupImpl.getFulfillmentGroupAdjustmentsValue();
-    Money absResult = fulfillmentGroupAdjustmentsValue.abs();
-    Money absResult2 = absResult.abs();
-    Money absResult3 = absResult2.abs();
-    Money absResult4 = absResult3.abs();
-    assertEquals(fulfillmentPrice, absResult4.abs());
-    Money fulfillmentPrice2 = fulfillmentGroupImpl.getFulfillmentPrice();
-    Money absResult5 = fulfillmentPrice2.abs();
-    Money absResult6 = absResult5.abs();
-    Money absResult7 = absResult6.abs();
-    Money absResult8 = absResult7.abs();
-    assertEquals(fulfillmentPrice, absResult8.abs());
-    Money zeroResult = fulfillmentGroupAdjustmentsValue.zero();
-    Money absResult9 = zeroResult.abs();
-    Money absResult10 = absResult9.abs();
-    Money absResult11 = absResult10.abs();
-    assertEquals(fulfillmentPrice, absResult11.abs());
-    Money absResult12 = fulfillmentPrice2.zero().abs();
-    Money absResult13 = absResult12.abs();
-    Money absResult14 = absResult13.abs();
-    assertEquals(fulfillmentPrice, absResult14.abs());
-    Money zeroResult2 = absResult.zero();
-    Money absResult15 = zeroResult2.abs();
-    Money absResult16 = absResult15.abs();
-    assertEquals(fulfillmentPrice, absResult16.abs());
-    Money zeroResult3 = absResult5.zero();
-    Money absResult17 = zeroResult3.abs();
-    Money absResult18 = absResult17.abs();
-    assertEquals(fulfillmentPrice, absResult18.abs());
-    Money zeroResult4 = zeroResult.zero();
-    Money absResult19 = zeroResult4.abs();
-    Money absResult20 = absResult19.abs();
-    assertEquals(fulfillmentPrice, absResult20.abs());
-    Money zeroResult5 = absResult2.zero();
-    Money absResult21 = zeroResult5.abs();
-    assertEquals(fulfillmentPrice, absResult21.abs());
-    Money zeroResult6 = absResult6.zero();
-    Money absResult22 = zeroResult6.abs();
-    assertEquals(fulfillmentPrice, absResult22.abs());
-    Money zeroResult7 = absResult9.zero();
-    Money absResult23 = zeroResult7.abs();
-    assertEquals(fulfillmentPrice, absResult23.abs());
-    Money zeroResult8 = absResult12.zero();
-    Money absResult24 = zeroResult8.abs();
-    assertEquals(fulfillmentPrice, absResult24.abs());
-    Money zeroResult9 = zeroResult2.zero();
-    Money absResult25 = zeroResult9.abs();
-    assertEquals(fulfillmentPrice, absResult25.abs());
-    Money zeroResult10 = zeroResult3.zero();
-    Money absResult26 = zeroResult10.abs();
-    assertEquals(fulfillmentPrice, absResult26.abs());
-    Money zeroResult11 = zeroResult4.zero();
-    Money absResult27 = zeroResult11.abs();
-    assertEquals(fulfillmentPrice, absResult27.abs());
-    Money zeroResult12 = fulfillmentGroupImpl.getTotalTax().zero();
-    Money zeroResult13 = zeroResult12.zero();
-    Money absResult28 = zeroResult13.abs();
-    assertEquals(fulfillmentPrice, absResult28.abs());
-    Money zeroResult14 = absResult3.zero();
-    assertEquals(fulfillmentPrice, zeroResult14.abs());
-    Money zeroResult15 = absResult7.zero();
-    assertEquals(fulfillmentPrice, zeroResult15.abs());
-    Money zeroResult16 = absResult10.zero();
-    assertEquals(fulfillmentPrice, zeroResult16.abs());
-    Money zeroResult17 = absResult13.zero();
-    assertEquals(fulfillmentPrice, zeroResult17.abs());
-    Money zeroResult18 = absResult15.zero();
-    assertEquals(fulfillmentPrice, zeroResult18.abs());
-    Money zeroResult19 = absResult17.zero();
-    assertEquals(fulfillmentPrice, zeroResult19.abs());
-    Money zeroResult20 = absResult19.zero();
-    assertEquals(fulfillmentPrice, zeroResult20.abs());
-    Money zeroResult21 = zeroResult5.zero();
-    assertEquals(fulfillmentPrice, zeroResult21.abs());
-    Money zeroResult22 = zeroResult6.zero();
-    assertEquals(fulfillmentPrice, zeroResult22.abs());
-    Money zeroResult23 = zeroResult7.zero();
-    assertEquals(fulfillmentPrice, zeroResult23.abs());
-    assertEquals(fulfillmentPrice, zeroResult8.zero().abs());
-    Money zeroResult24 = zeroResult9.zero();
-    assertEquals(fulfillmentPrice, zeroResult24.abs());
-    Money zeroResult25 = zeroResult10.zero();
-    assertEquals(fulfillmentPrice, zeroResult25.abs());
-    Money zeroResult26 = zeroResult11.zero();
-    assertEquals(fulfillmentPrice, zeroResult26.abs());
-    Money zeroResult27 = zeroResult13.zero();
-    assertEquals(fulfillmentPrice, zeroResult27.abs());
-    assertEquals(fulfillmentPrice, absResult4.zero());
-    assertEquals(fulfillmentPrice, absResult8.zero());
-    assertEquals(fulfillmentPrice, absResult11.zero());
-    assertEquals(fulfillmentPrice, absResult14.zero());
-    assertEquals(fulfillmentPrice, absResult16.zero());
-    assertEquals(fulfillmentPrice, absResult18.zero());
-    assertEquals(fulfillmentPrice, absResult20.zero());
-    assertEquals(fulfillmentPrice, absResult21.zero());
-    assertEquals(fulfillmentPrice, absResult22.zero());
-    assertEquals(fulfillmentPrice, absResult23.zero());
-    assertEquals(fulfillmentPrice, absResult24.zero());
-    assertEquals(fulfillmentPrice, absResult25.zero());
-    assertEquals(fulfillmentPrice, absResult26.zero());
-    assertEquals(fulfillmentPrice, absResult27.zero());
-    assertEquals(fulfillmentPrice, absResult28.zero());
-    assertEquals(fulfillmentPrice, zeroResult14.zero());
-    assertEquals(fulfillmentPrice, zeroResult15.zero());
-    assertEquals(fulfillmentPrice, zeroResult16.zero());
-    assertEquals(fulfillmentPrice, zeroResult17.zero());
-    assertEquals(fulfillmentPrice, zeroResult18.zero());
-    assertEquals(fulfillmentPrice, zeroResult19.zero());
-    assertEquals(fulfillmentPrice, zeroResult20.zero());
-    Money zeroResult28 = zeroResult12.abs().zero();
-    assertEquals(fulfillmentPrice, zeroResult28.zero());
-    assertEquals(fulfillmentPrice, zeroResult21.zero());
-    assertEquals(fulfillmentPrice, zeroResult22.zero());
-    assertEquals(fulfillmentPrice, zeroResult23.zero());
-    assertEquals(fulfillmentPrice, zeroResult24.zero());
-    assertEquals(fulfillmentPrice, zeroResult25.zero());
-    assertEquals(fulfillmentPrice, zeroResult26.zero());
-    assertEquals(fulfillmentPrice, zeroResult27.zero());
-    BigDecimal bigDecimal = fulfillmentGroupImpl.totalTax;
-    assertSame(bigDecimal, absResult4.getAmount());
-    assertSame(bigDecimal, absResult8.getAmount());
-    assertSame(bigDecimal, absResult11.getAmount());
-    assertSame(bigDecimal, absResult14.getAmount());
-    assertSame(bigDecimal, absResult16.getAmount());
-    assertSame(bigDecimal, absResult18.getAmount());
-    assertSame(bigDecimal, absResult20.getAmount());
-    assertSame(bigDecimal, absResult21.getAmount());
-    assertSame(bigDecimal, absResult22.getAmount());
-    assertSame(bigDecimal, absResult23.getAmount());
-    assertSame(bigDecimal, absResult24.getAmount());
-    assertSame(bigDecimal, absResult25.getAmount());
-    assertSame(bigDecimal, absResult26.getAmount());
-    assertSame(bigDecimal, absResult27.getAmount());
-    assertSame(bigDecimal, absResult28.getAmount());
-    assertSame(bigDecimal, zeroResult14.getAmount());
-    assertSame(bigDecimal, zeroResult15.getAmount());
-    assertSame(bigDecimal, zeroResult16.getAmount());
-    assertSame(bigDecimal, zeroResult17.getAmount());
-    assertSame(bigDecimal, zeroResult18.getAmount());
-    assertSame(bigDecimal, zeroResult19.getAmount());
-    assertSame(bigDecimal, zeroResult20.getAmount());
-    assertSame(bigDecimal, zeroResult28.getAmount());
-    assertSame(bigDecimal, zeroResult21.getAmount());
-    assertSame(bigDecimal, zeroResult22.getAmount());
-    assertSame(bigDecimal, zeroResult23.getAmount());
-    assertSame(bigDecimal, zeroResult24.getAmount());
-    assertSame(bigDecimal, zeroResult25.getAmount());
-    assertSame(bigDecimal, zeroResult26.getAmount());
-    assertSame(bigDecimal, zeroResult27.getAmount());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#setSaleFulfillmentPrice(Money)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#setSaleFulfillmentPrice(Money)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetSaleFulfillmentPrice3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1212 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupImpl.setSaleFulfillmentPrice(Money)"})
+  public void testSetSaleFulfillmentPrice_thenFulfillmentGroupImplSaleFulfillmentPriceIsNull() {
     // Arrange
     FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
-
-    // Act
+    fulfillmentGroupImpl2.setAddress(new AddressImpl());
+    fulfillmentGroupImpl2.setCandidateFulfillmentGroupOffer(new ArrayList<>());
+    fulfillmentGroupImpl2.setDeliveryInstruction("Delivery Instruction");
+    fulfillmentGroupImpl2.setFulfillmentGroupAdjustments(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupFees(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupItems(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentOption(new FulfillmentOptionImpl());
+    Money fulfillmentPrice = new Money();
+    fulfillmentGroupImpl2.setFulfillmentPrice(fulfillmentPrice);
+    fulfillmentGroupImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupImpl2.setIsShippingPriceTaxable(true);
+    fulfillmentGroupImpl2.setMerchandiseTotal(new Money());
+    fulfillmentGroupImpl2.setMethod("Fulfillment Method");
+    fulfillmentGroupImpl2.setOrder(NullOrderFactoryImpl.NULL_ORDER);
+    fulfillmentGroupImpl2.setPersonalMessage(new PersonalMessageImpl());
+    fulfillmentGroupImpl2.setPhone(new PhoneImpl());
+    fulfillmentGroupImpl2.setPrimary(true);
+    fulfillmentGroupImpl2.setReferenceNumber("42");
+    fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
     fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#setSaleFulfillmentPrice(Money)}.
-   * <ul>
-   *   <li>When {@link Money}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#setSaleFulfillmentPrice(Money)}
-   */
-  @Test
-  public void testSetSaleFulfillmentPrice_whenMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl2.setSequence(1);
+    fulfillmentGroupImpl2.setService("Service");
+    fulfillmentGroupImpl2.setShippingOverride(true);
+    fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupImpl2.setTaxes(new ArrayList<>());
+    fulfillmentGroupImpl2.setTotal(new Money());
+    fulfillmentGroupImpl2.setTotalFeeTax(new Money());
+    fulfillmentGroupImpl2.setTotalFulfillmentGroupTax(new Money());
+    fulfillmentGroupImpl2.setTotalItemTax(new Money());
+    fulfillmentGroupImpl2.setTotalTax(new Money());
+    fulfillmentGroupImpl2.setType(FulfillmentType.DIGITAL);
 
     // Act
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(mock(Money.class));
+    fulfillmentGroupImpl2.setSaleFulfillmentPrice(null);
 
     // Assert
-    assertNull(fulfillmentGroupImpl.saleFulfillmentPrice);
-    assertNull(fulfillmentGroupImpl.getSaleFulfillmentPrice());
-    assertNull(fulfillmentGroupImpl.getSaleShippingPrice());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#getSaleShippingPrice()}.
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#getSaleShippingPrice()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetSaleShippingPrice() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass702 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new FulfillmentGroupImpl()).getSaleShippingPrice();
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#getSaleShippingPrice()}.
-   * <ul>
-   *   <li>Given {@link FulfillmentGroupImpl} (default constructor)
-   * SaleFulfillmentPrice is {@link Money}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#getSaleShippingPrice()}
-   */
-  @Test
-  public void testGetSaleShippingPrice_givenFulfillmentGroupImplSaleFulfillmentPriceIsMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(mock(Money.class));
-
-    // Act and Assert
-    assertNull(fulfillmentGroupImpl.getSaleShippingPrice());
+    assertNull(fulfillmentGroupImpl2.saleFulfillmentPrice);
+    assertNull(fulfillmentGroupImpl2.getSaleFulfillmentPrice());
+    assertNull(fulfillmentGroupImpl2.getSaleShippingPrice());
+    Money zeroResult = fulfillmentGroupImpl2.getTotalTax().zero();
+    Money zeroResult2 = zeroResult.zero();
+    Money absResult = zeroResult2.abs();
+    assertEquals(fulfillmentPrice, absResult.abs());
+    Money zeroResult3 = zeroResult2.zero();
+    assertEquals(fulfillmentPrice, zeroResult3.abs());
+    assertEquals(fulfillmentPrice, absResult.zero());
+    Money zeroResult4 = zeroResult.abs().zero();
+    assertEquals(fulfillmentPrice, zeroResult4.zero());
+    assertEquals(fulfillmentPrice, zeroResult3.zero());
+    BigDecimal bigDecimal = fulfillmentGroupImpl2.totalTax;
+    assertSame(bigDecimal, absResult.getAmount());
+    assertSame(bigDecimal, zeroResult4.getAmount());
+    assertSame(bigDecimal, zeroResult3.getAmount());
   }
 
   /**
@@ -4385,9 +1697,9 @@ public class FulfillmentGroupImplDiffblueTest {
    * Method under test: {@link FulfillmentGroupImpl#getSaleShippingPrice()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money FulfillmentGroupImpl.getSaleShippingPrice()"})
   public void testGetSaleShippingPrice_givenFulfillmentGroupImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new FulfillmentGroupImpl()).getSaleShippingPrice());
   }
@@ -4395,17 +1707,16 @@ public class FulfillmentGroupImplDiffblueTest {
   /**
    * Test {@link FulfillmentGroupImpl#getSaleShippingPrice()}.
    * <ul>
-   *   <li>Given {@link OrderImpl} (default constructor) Currency is
-   * {@code null}.</li>
+   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@code null}.</li>
    *   <li>Then return {@link Money#Money()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link FulfillmentGroupImpl#getSaleShippingPrice()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money FulfillmentGroupImpl.getSaleShippingPrice()"})
   public void testGetSaleShippingPrice_givenOrderImplCurrencyIsNull_thenReturnMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
@@ -4435,48 +1746,44 @@ public class FulfillmentGroupImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setCurrency(null);
 
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(new AddressImpl());
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl2.setAddress(new AddressImpl());
+    fulfillmentGroupImpl2.setCandidateFulfillmentGroupOffer(new ArrayList<>());
+    fulfillmentGroupImpl2.setDeliveryInstruction("Delivery Instruction");
+    fulfillmentGroupImpl2.setFulfillmentGroupAdjustments(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupFees(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupItems(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentOption(new FulfillmentOptionImpl());
     Money fulfillmentPrice = new Money();
-    fulfillmentGroupImpl.setFulfillmentPrice(fulfillmentPrice);
-    fulfillmentGroupImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setOrder(order);
+    fulfillmentGroupImpl2.setFulfillmentPrice(fulfillmentPrice);
+    fulfillmentGroupImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupImpl2.setIsShippingPriceTaxable(true);
+    fulfillmentGroupImpl2.setMerchandiseTotal(new Money());
+    fulfillmentGroupImpl2.setMethod("Fulfillment Method");
+    fulfillmentGroupImpl2.setPersonalMessage(new PersonalMessageImpl());
+    fulfillmentGroupImpl2.setPhone(new PhoneImpl());
+    fulfillmentGroupImpl2.setPrimary(true);
+    fulfillmentGroupImpl2.setReferenceNumber("42");
+    fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSequence(1);
+    fulfillmentGroupImpl2.setService("Service");
+    fulfillmentGroupImpl2.setShippingOverride(true);
+    fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupImpl2.setTaxes(new ArrayList<>());
+    fulfillmentGroupImpl2.setTotal(new Money());
+    fulfillmentGroupImpl2.setTotalFeeTax(new Money());
+    fulfillmentGroupImpl2.setTotalFulfillmentGroupTax(new Money());
+    fulfillmentGroupImpl2.setTotalItemTax(new Money());
+    fulfillmentGroupImpl2.setTotalTax(new Money());
+    fulfillmentGroupImpl2.setType(FulfillmentType.DIGITAL);
+    fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setOrder(order);
 
     // Act and Assert
-    assertEquals(fulfillmentPrice, fulfillmentGroupImpl.getSaleShippingPrice());
+    assertEquals(fulfillmentPrice, fulfillmentGroupImpl2.getSaleShippingPrice());
   }
 
   /**
@@ -4485,700 +1792,108 @@ public class FulfillmentGroupImplDiffblueTest {
    * Method under test: {@link FulfillmentGroupImpl#setSaleShippingPrice(Money)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupImpl.setSaleShippingPrice(Money)"})
   public void testSetSaleShippingPrice() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
     Money saleShippingPrice = new Money();
 
     // Act
-    fulfillmentGroupImpl.setSaleShippingPrice(saleShippingPrice);
+    fulfillmentGroupImpl2.setSaleShippingPrice(saleShippingPrice);
 
     // Assert
-    assertEquals(new BigDecimal("0.00"), fulfillmentGroupImpl.saleFulfillmentPrice);
-    BigDecimal bigDecimal = fulfillmentGroupImpl.saleFulfillmentPrice;
+    assertEquals(new BigDecimal("0.00"), fulfillmentGroupImpl2.saleFulfillmentPrice);
+    BigDecimal bigDecimal = fulfillmentGroupImpl2.saleFulfillmentPrice;
     Money absResult = saleShippingPrice.abs();
     assertSame(bigDecimal, absResult.getAmount());
     Money absResult2 = absResult.abs();
     assertSame(bigDecimal, absResult2.getAmount());
-    Money absResult3 = absResult2.abs();
-    assertSame(bigDecimal, absResult3.getAmount());
-    Money absResult4 = absResult3.abs();
-    assertSame(bigDecimal, absResult4.getAmount());
-    Money absResult5 = absResult4.abs();
-    assertSame(bigDecimal, absResult5.getAmount());
-    Money absResult6 = absResult5.abs();
-    assertSame(bigDecimal, absResult6.getAmount());
-    assertSame(bigDecimal, absResult6.abs().getAmount());
+    assertSame(bigDecimal, absResult2.abs().getAmount());
     Money zeroResult = saleShippingPrice.zero();
-    Money absResult7 = zeroResult.abs();
-    Money absResult8 = absResult7.abs();
-    Money absResult9 = absResult8.abs();
-    Money absResult10 = absResult9.abs();
-    Money absResult11 = absResult10.abs();
-    assertSame(bigDecimal, absResult11.abs().getAmount());
-    assertSame(bigDecimal, absResult11.getAmount());
+    Money absResult3 = zeroResult.abs();
+    assertSame(bigDecimal, absResult3.abs().getAmount());
+    assertSame(bigDecimal, absResult3.getAmount());
     Money zeroResult2 = absResult.zero();
-    Money absResult12 = zeroResult2.abs();
-    Money absResult13 = absResult12.abs();
-    Money absResult14 = absResult13.abs();
-    Money absResult15 = absResult14.abs();
-    assertSame(bigDecimal, absResult15.abs().getAmount());
+    assertSame(bigDecimal, zeroResult2.abs().getAmount());
     Money zeroResult3 = zeroResult.zero();
-    Money absResult16 = zeroResult3.abs();
-    Money absResult17 = absResult16.abs();
-    Money absResult18 = absResult17.abs();
-    Money absResult19 = absResult18.abs();
-    assertSame(bigDecimal, absResult19.abs().getAmount());
-    assertSame(bigDecimal, absResult10.getAmount());
-    assertSame(bigDecimal, absResult15.getAmount());
-    Money zeroResult4 = absResult2.zero();
-    Money absResult20 = zeroResult4.abs();
-    Money absResult21 = absResult20.abs();
-    Money absResult22 = absResult21.abs();
-    assertSame(bigDecimal, absResult22.abs().getAmount());
-    Money zeroResult5 = absResult7.zero();
-    Money absResult23 = zeroResult5.abs();
-    Money absResult24 = absResult23.abs();
-    Money absResult25 = absResult24.abs();
-    assertSame(bigDecimal, absResult25.abs().getAmount());
-    assertSame(bigDecimal, absResult19.getAmount());
-    Money zeroResult6 = zeroResult2.zero();
-    Money absResult26 = zeroResult6.abs();
-    Money absResult27 = absResult26.abs();
-    Money absResult28 = absResult27.abs();
-    assertSame(bigDecimal, absResult28.abs().getAmount());
-    Money zeroResult7 = zeroResult3.zero();
-    Money absResult29 = zeroResult7.abs();
-    Money absResult30 = absResult29.abs();
-    Money absResult31 = absResult30.abs();
-    assertSame(bigDecimal, absResult31.abs().getAmount());
-    assertSame(bigDecimal, absResult9.getAmount());
-    assertSame(bigDecimal, absResult14.getAmount());
-    assertSame(bigDecimal, absResult22.getAmount());
-    Money zeroResult8 = absResult3.zero();
-    Money absResult32 = zeroResult8.abs();
-    Money absResult33 = absResult32.abs();
-    assertSame(bigDecimal, absResult33.abs().getAmount());
-    Money zeroResult9 = absResult8.zero();
-    Money absResult34 = zeroResult9.abs();
-    Money absResult35 = absResult34.abs();
-    assertSame(bigDecimal, absResult35.abs().getAmount());
-    assertSame(bigDecimal, absResult25.getAmount());
-    Money zeroResult10 = absResult12.zero();
-    Money absResult36 = zeroResult10.abs();
-    Money absResult37 = absResult36.abs();
-    assertSame(bigDecimal, absResult37.abs().getAmount());
-    Money zeroResult11 = absResult16.zero();
-    Money absResult38 = zeroResult11.abs();
-    Money absResult39 = absResult38.abs();
-    assertSame(bigDecimal, absResult39.abs().getAmount());
-    assertSame(bigDecimal, absResult18.getAmount());
-    assertSame(bigDecimal, absResult28.getAmount());
-    Money zeroResult12 = zeroResult4.zero();
-    Money absResult40 = zeroResult12.abs();
-    Money absResult41 = absResult40.abs();
-    assertSame(bigDecimal, absResult41.abs().getAmount());
-    Money zeroResult13 = zeroResult5.zero();
-    Money absResult42 = zeroResult13.abs();
-    Money absResult43 = absResult42.abs();
-    assertSame(bigDecimal, absResult43.abs().getAmount());
-    assertSame(bigDecimal, absResult31.getAmount());
-    Money zeroResult14 = zeroResult6.zero();
-    Money absResult44 = zeroResult14.abs();
-    Money absResult45 = absResult44.abs();
-    assertSame(bigDecimal, absResult45.abs().getAmount());
-    Money zeroResult15 = zeroResult7.zero();
-    Money absResult46 = zeroResult15.abs();
-    Money absResult47 = absResult46.abs();
-    assertSame(bigDecimal, absResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult8.getAmount());
-    assertSame(bigDecimal, absResult13.getAmount());
-    assertSame(bigDecimal, absResult21.getAmount());
-    assertSame(bigDecimal, absResult33.getAmount());
-    Money zeroResult16 = absResult4.zero();
-    Money absResult48 = zeroResult16.abs();
-    assertSame(bigDecimal, absResult48.abs().getAmount());
-    Money zeroResult17 = absResult9.zero();
-    Money absResult49 = zeroResult17.abs();
-    assertSame(bigDecimal, absResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult35.getAmount());
-    Money zeroResult18 = absResult13.zero();
-    Money absResult50 = zeroResult18.abs();
-    assertSame(bigDecimal, absResult50.abs().getAmount());
-    Money zeroResult19 = absResult17.zero();
-    Money absResult51 = zeroResult19.abs();
-    assertSame(bigDecimal, absResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult24.getAmount());
-    assertSame(bigDecimal, absResult37.getAmount());
-    Money zeroResult20 = absResult20.zero();
-    Money absResult52 = zeroResult20.abs();
-    assertSame(bigDecimal, absResult52.abs().getAmount());
-    Money zeroResult21 = absResult23.zero();
-    Money absResult53 = zeroResult21.abs();
-    assertSame(bigDecimal, absResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult39.getAmount());
-    Money zeroResult22 = absResult26.zero();
-    Money absResult54 = zeroResult22.abs();
-    assertSame(bigDecimal, absResult54.abs().getAmount());
-    Money zeroResult23 = absResult29.zero();
-    Money absResult55 = zeroResult23.abs();
-    assertSame(bigDecimal, absResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult17.getAmount());
-    assertSame(bigDecimal, absResult27.getAmount());
-    assertSame(bigDecimal, absResult41.getAmount());
-    Money zeroResult24 = zeroResult8.zero();
-    Money absResult56 = zeroResult24.abs();
-    assertSame(bigDecimal, absResult56.abs().getAmount());
-    Money zeroResult25 = zeroResult9.zero();
-    Money absResult57 = zeroResult25.abs();
-    assertSame(bigDecimal, absResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult43.getAmount());
-    Money zeroResult26 = zeroResult10.zero();
-    Money absResult58 = zeroResult26.abs();
-    assertSame(bigDecimal, absResult58.abs().getAmount());
-    Money zeroResult27 = zeroResult11.zero();
-    Money absResult59 = zeroResult27.abs();
-    assertSame(bigDecimal, absResult59.abs().getAmount());
-    assertSame(bigDecimal, absResult30.getAmount());
-    assertSame(bigDecimal, absResult45.getAmount());
-    Money zeroResult28 = zeroResult12.zero();
-    Money absResult60 = zeroResult28.abs();
-    assertSame(bigDecimal, absResult60.abs().getAmount());
-    Money zeroResult29 = zeroResult13.zero();
-    Money absResult61 = zeroResult29.abs();
-    assertSame(bigDecimal, absResult61.abs().getAmount());
-    assertSame(bigDecimal, absResult47.getAmount());
-    Money zeroResult30 = zeroResult14.zero();
-    Money absResult62 = zeroResult30.abs();
-    assertSame(bigDecimal, absResult62.abs().getAmount());
-    assertSame(bigDecimal, absResult7.getAmount());
-    assertSame(bigDecimal, absResult12.getAmount());
-    assertSame(bigDecimal, absResult20.getAmount());
-    assertSame(bigDecimal, absResult32.getAmount());
-    assertSame(bigDecimal, absResult48.getAmount());
-    Money zeroResult31 = absResult5.zero();
-    assertSame(bigDecimal, zeroResult31.abs().getAmount());
-    Money zeroResult32 = absResult10.zero();
-    assertSame(bigDecimal, zeroResult32.abs().getAmount());
-    assertSame(bigDecimal, absResult49.getAmount());
-    Money zeroResult33 = absResult14.zero();
-    assertSame(bigDecimal, zeroResult33.abs().getAmount());
-    Money zeroResult34 = absResult18.zero();
-    assertSame(bigDecimal, zeroResult34.abs().getAmount());
-    assertSame(bigDecimal, absResult34.getAmount());
-    assertSame(bigDecimal, absResult50.getAmount());
-    Money zeroResult35 = absResult21.zero();
-    assertSame(bigDecimal, zeroResult35.abs().getAmount());
-    Money zeroResult36 = absResult24.zero();
-    assertSame(bigDecimal, zeroResult36.abs().getAmount());
-    assertSame(bigDecimal, absResult51.getAmount());
-    Money zeroResult37 = absResult27.zero();
-    assertSame(bigDecimal, zeroResult37.abs().getAmount());
-    Money zeroResult38 = absResult30.zero();
-    assertSame(bigDecimal, zeroResult38.abs().getAmount());
-    assertSame(bigDecimal, absResult23.getAmount());
-    assertSame(bigDecimal, absResult36.getAmount());
-    assertSame(bigDecimal, absResult52.getAmount());
-    Money zeroResult39 = absResult32.zero();
-    assertSame(bigDecimal, zeroResult39.abs().getAmount());
-    Money zeroResult40 = absResult34.zero();
-    assertSame(bigDecimal, zeroResult40.abs().getAmount());
-    assertSame(bigDecimal, absResult53.getAmount());
-    Money zeroResult41 = absResult36.zero();
-    assertSame(bigDecimal, zeroResult41.abs().getAmount());
-    Money zeroResult42 = absResult38.zero();
-    assertSame(bigDecimal, zeroResult42.abs().getAmount());
-    assertSame(bigDecimal, absResult38.getAmount());
-    assertSame(bigDecimal, absResult54.getAmount());
-    Money zeroResult43 = absResult40.zero();
-    assertSame(bigDecimal, zeroResult43.abs().getAmount());
-    Money zeroResult44 = absResult42.zero();
-    assertSame(bigDecimal, zeroResult44.abs().getAmount());
-    assertSame(bigDecimal, absResult55.getAmount());
-    Money zeroResult45 = absResult44.zero();
-    assertSame(bigDecimal, zeroResult45.abs().getAmount());
-    assertSame(bigDecimal, absResult16.getAmount());
-    assertSame(bigDecimal, absResult26.getAmount());
-    assertSame(bigDecimal, absResult40.getAmount());
-    assertSame(bigDecimal, absResult56.getAmount());
-    Money zeroResult46 = zeroResult16.zero();
-    assertSame(bigDecimal, zeroResult46.abs().getAmount());
-    Money zeroResult47 = zeroResult17.zero();
-    assertSame(bigDecimal, zeroResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult57.getAmount());
-    Money zeroResult48 = zeroResult18.zero();
-    assertSame(bigDecimal, zeroResult48.abs().getAmount());
-    Money zeroResult49 = zeroResult19.zero();
-    assertSame(bigDecimal, zeroResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult42.getAmount());
-    assertSame(bigDecimal, absResult58.getAmount());
-    Money zeroResult50 = zeroResult20.zero();
-    assertSame(bigDecimal, zeroResult50.abs().getAmount());
-    Money zeroResult51 = zeroResult21.zero();
-    assertSame(bigDecimal, zeroResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult59.getAmount());
-    Money zeroResult52 = zeroResult22.zero();
-    assertSame(bigDecimal, zeroResult52.abs().getAmount());
-    Money zeroResult53 = zeroResult23.zero();
-    assertSame(bigDecimal, zeroResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult29.getAmount());
-    assertSame(bigDecimal, absResult44.getAmount());
-    assertSame(bigDecimal, absResult60.getAmount());
-    Money zeroResult54 = zeroResult24.zero();
-    assertSame(bigDecimal, zeroResult54.abs().getAmount());
-    Money zeroResult55 = zeroResult25.zero();
-    assertSame(bigDecimal, zeroResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult61.getAmount());
-    Money zeroResult56 = zeroResult26.zero();
-    assertSame(bigDecimal, zeroResult56.abs().getAmount());
-    Money zeroResult57 = zeroResult27.zero();
-    assertSame(bigDecimal, zeroResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult46.getAmount());
-    assertSame(bigDecimal, absResult62.getAmount());
-    Money zeroResult58 = zeroResult28.zero();
-    assertSame(bigDecimal, zeroResult58.abs().getAmount());
-    Money zeroResult59 = zeroResult29.zero();
-    assertSame(bigDecimal, zeroResult59.abs().getAmount());
-    Money zeroResult60 = zeroResult15.zero();
-    assertSame(bigDecimal, zeroResult60.abs().getAmount());
-    Money zeroResult61 = zeroResult30.zero();
-    assertSame(bigDecimal, zeroResult61.abs().getAmount());
+    assertSame(bigDecimal, zeroResult3.abs().getAmount());
     assertSame(bigDecimal, zeroResult.getAmount());
     assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, zeroResult4.getAmount());
-    assertSame(bigDecimal, zeroResult8.getAmount());
-    assertSame(bigDecimal, zeroResult16.getAmount());
-    assertSame(bigDecimal, zeroResult31.getAmount());
-    assertSame(bigDecimal, absResult6.zero().getAmount());
-    assertSame(bigDecimal, absResult11.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.getAmount());
-    assertSame(bigDecimal, absResult15.zero().getAmount());
-    assertSame(bigDecimal, absResult19.zero().getAmount());
-    assertSame(bigDecimal, zeroResult17.getAmount());
-    assertSame(bigDecimal, zeroResult33.getAmount());
-    assertSame(bigDecimal, absResult22.zero().getAmount());
-    assertSame(bigDecimal, absResult25.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.getAmount());
-    assertSame(bigDecimal, absResult28.zero().getAmount());
-    assertSame(bigDecimal, absResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult9.getAmount());
-    assertSame(bigDecimal, zeroResult18.getAmount());
-    assertSame(bigDecimal, zeroResult35.getAmount());
-    assertSame(bigDecimal, absResult33.zero().getAmount());
-    assertSame(bigDecimal, absResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.getAmount());
-    assertSame(bigDecimal, absResult37.zero().getAmount());
-    assertSame(bigDecimal, absResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult19.getAmount());
-    assertSame(bigDecimal, zeroResult37.getAmount());
-    assertSame(bigDecimal, absResult41.zero().getAmount());
-    assertSame(bigDecimal, absResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.getAmount());
-    assertSame(bigDecimal, absResult45.zero().getAmount());
-    assertSame(bigDecimal, absResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult5.getAmount());
-    assertSame(bigDecimal, zeroResult10.getAmount());
-    assertSame(bigDecimal, zeroResult20.getAmount());
-    assertSame(bigDecimal, zeroResult39.getAmount());
-    assertSame(bigDecimal, absResult48.zero().getAmount());
-    assertSame(bigDecimal, absResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.getAmount());
-    assertSame(bigDecimal, absResult50.zero().getAmount());
-    assertSame(bigDecimal, absResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult21.getAmount());
-    assertSame(bigDecimal, zeroResult41.getAmount());
-    assertSame(bigDecimal, absResult52.zero().getAmount());
-    assertSame(bigDecimal, absResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.getAmount());
-    assertSame(bigDecimal, absResult54.zero().getAmount());
-    assertSame(bigDecimal, absResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult11.getAmount());
-    assertSame(bigDecimal, zeroResult22.getAmount());
-    assertSame(bigDecimal, zeroResult43.getAmount());
-    assertSame(bigDecimal, absResult56.zero().getAmount());
-    assertSame(bigDecimal, absResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.getAmount());
-    assertSame(bigDecimal, absResult58.zero().getAmount());
-    assertSame(bigDecimal, absResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult23.getAmount());
-    assertSame(bigDecimal, zeroResult45.getAmount());
-    assertSame(bigDecimal, absResult60.zero().getAmount());
-    assertSame(bigDecimal, absResult61.zero().getAmount());
-    assertSame(bigDecimal, absResult46.zero().getAmount());
-    assertSame(bigDecimal, absResult62.zero().getAmount());
+    assertSame(bigDecimal, absResult2.zero().getAmount());
+    assertSame(bigDecimal, absResult3.zero().getAmount());
     assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult6.getAmount());
-    assertSame(bigDecimal, zeroResult12.getAmount());
-    assertSame(bigDecimal, zeroResult24.getAmount());
-    assertSame(bigDecimal, zeroResult46.getAmount());
-    assertSame(bigDecimal, zeroResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.getAmount());
-    assertSame(bigDecimal, zeroResult33.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.zero().getAmount());
-    assertSame(bigDecimal, zeroResult25.getAmount());
-    assertSame(bigDecimal, zeroResult48.getAmount());
-    assertSame(bigDecimal, zeroResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.getAmount());
-    assertSame(bigDecimal, zeroResult37.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.zero().getAmount());
-    assertSame(bigDecimal, zeroResult13.getAmount());
-    assertSame(bigDecimal, zeroResult26.getAmount());
-    assertSame(bigDecimal, zeroResult50.getAmount());
-    assertSame(bigDecimal, zeroResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.getAmount());
-    assertSame(bigDecimal, zeroResult41.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.zero().getAmount());
-    assertSame(bigDecimal, zeroResult27.getAmount());
-    assertSame(bigDecimal, zeroResult52.getAmount());
-    assertSame(bigDecimal, zeroResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.getAmount());
-    assertSame(bigDecimal, zeroResult45.zero().getAmount());
-    assertSame(bigDecimal, zeroResult7.getAmount());
-    assertSame(bigDecimal, zeroResult14.getAmount());
-    assertSame(bigDecimal, zeroResult28.getAmount());
-    assertSame(bigDecimal, zeroResult54.getAmount());
-    assertSame(bigDecimal, zeroResult46.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.getAmount());
-    assertSame(bigDecimal, zeroResult48.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult29.getAmount());
-    assertSame(bigDecimal, zeroResult56.getAmount());
-    assertSame(bigDecimal, zeroResult50.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.getAmount());
-    assertSame(bigDecimal, zeroResult52.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult15.getAmount());
-    assertSame(bigDecimal, zeroResult30.getAmount());
-    assertSame(bigDecimal, zeroResult58.getAmount());
-    assertSame(bigDecimal, zeroResult54.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.getAmount());
-    assertSame(bigDecimal, zeroResult56.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.getAmount());
-    assertSame(bigDecimal, zeroResult61.getAmount());
-    assertSame(bigDecimal, zeroResult58.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.zero().getAmount());
-    assertSame(bigDecimal, zeroResult61.zero().getAmount());
+    assertSame(bigDecimal, zeroResult2.zero().getAmount());
+    assertSame(bigDecimal, zeroResult3.zero().getAmount());
   }
 
   /**
    * Test {@link FulfillmentGroupImpl#setSaleShippingPrice(Money)}.
+   * <ul>
+   *   <li>Then {@link FulfillmentGroupImpl} (default constructor) {@link FulfillmentGroupImpl#saleFulfillmentPrice} is {@code null}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link FulfillmentGroupImpl#setSaleShippingPrice(Money)}
    */
   @Test
-  public void testSetSaleShippingPrice2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(new AddressImpl());
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
-    Money fulfillmentPrice = new Money();
-    fulfillmentGroupImpl.setFulfillmentPrice(fulfillmentPrice);
-    fulfillmentGroupImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setOrder(NullOrderFactoryImpl.NULL_ORDER);
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-
-    // Act
-    fulfillmentGroupImpl.setSaleShippingPrice(null);
-
-    // Assert
-    assertNull(fulfillmentGroupImpl.saleFulfillmentPrice);
-    assertNull(fulfillmentGroupImpl.getSaleFulfillmentPrice());
-    assertNull(fulfillmentGroupImpl.getSaleShippingPrice());
-    Money fulfillmentGroupAdjustmentsValue = fulfillmentGroupImpl.getFulfillmentGroupAdjustmentsValue();
-    Money absResult = fulfillmentGroupAdjustmentsValue.abs();
-    Money absResult2 = absResult.abs();
-    Money absResult3 = absResult2.abs();
-    Money absResult4 = absResult3.abs();
-    assertEquals(fulfillmentPrice, absResult4.abs());
-    Money fulfillmentPrice2 = fulfillmentGroupImpl.getFulfillmentPrice();
-    Money absResult5 = fulfillmentPrice2.abs();
-    Money absResult6 = absResult5.abs();
-    Money absResult7 = absResult6.abs();
-    Money absResult8 = absResult7.abs();
-    assertEquals(fulfillmentPrice, absResult8.abs());
-    Money zeroResult = fulfillmentGroupAdjustmentsValue.zero();
-    Money absResult9 = zeroResult.abs();
-    Money absResult10 = absResult9.abs();
-    Money absResult11 = absResult10.abs();
-    assertEquals(fulfillmentPrice, absResult11.abs());
-    Money absResult12 = fulfillmentPrice2.zero().abs();
-    Money absResult13 = absResult12.abs();
-    Money absResult14 = absResult13.abs();
-    assertEquals(fulfillmentPrice, absResult14.abs());
-    Money zeroResult2 = absResult.zero();
-    Money absResult15 = zeroResult2.abs();
-    Money absResult16 = absResult15.abs();
-    assertEquals(fulfillmentPrice, absResult16.abs());
-    Money zeroResult3 = absResult5.zero();
-    Money absResult17 = zeroResult3.abs();
-    Money absResult18 = absResult17.abs();
-    assertEquals(fulfillmentPrice, absResult18.abs());
-    Money zeroResult4 = zeroResult.zero();
-    Money absResult19 = zeroResult4.abs();
-    Money absResult20 = absResult19.abs();
-    assertEquals(fulfillmentPrice, absResult20.abs());
-    Money zeroResult5 = absResult2.zero();
-    Money absResult21 = zeroResult5.abs();
-    assertEquals(fulfillmentPrice, absResult21.abs());
-    Money zeroResult6 = absResult6.zero();
-    Money absResult22 = zeroResult6.abs();
-    assertEquals(fulfillmentPrice, absResult22.abs());
-    Money zeroResult7 = absResult9.zero();
-    Money absResult23 = zeroResult7.abs();
-    assertEquals(fulfillmentPrice, absResult23.abs());
-    Money zeroResult8 = absResult12.zero();
-    Money absResult24 = zeroResult8.abs();
-    assertEquals(fulfillmentPrice, absResult24.abs());
-    Money zeroResult9 = zeroResult2.zero();
-    Money absResult25 = zeroResult9.abs();
-    assertEquals(fulfillmentPrice, absResult25.abs());
-    Money zeroResult10 = zeroResult3.zero();
-    Money absResult26 = zeroResult10.abs();
-    assertEquals(fulfillmentPrice, absResult26.abs());
-    Money zeroResult11 = zeroResult4.zero();
-    Money absResult27 = zeroResult11.abs();
-    assertEquals(fulfillmentPrice, absResult27.abs());
-    Money zeroResult12 = fulfillmentGroupImpl.getTotalTax().zero();
-    Money zeroResult13 = zeroResult12.zero();
-    Money absResult28 = zeroResult13.abs();
-    assertEquals(fulfillmentPrice, absResult28.abs());
-    Money zeroResult14 = absResult3.zero();
-    assertEquals(fulfillmentPrice, zeroResult14.abs());
-    Money zeroResult15 = absResult7.zero();
-    assertEquals(fulfillmentPrice, zeroResult15.abs());
-    Money zeroResult16 = absResult10.zero();
-    assertEquals(fulfillmentPrice, zeroResult16.abs());
-    Money zeroResult17 = absResult13.zero();
-    assertEquals(fulfillmentPrice, zeroResult17.abs());
-    Money zeroResult18 = absResult15.zero();
-    assertEquals(fulfillmentPrice, zeroResult18.abs());
-    Money zeroResult19 = absResult17.zero();
-    assertEquals(fulfillmentPrice, zeroResult19.abs());
-    Money zeroResult20 = absResult19.zero();
-    assertEquals(fulfillmentPrice, zeroResult20.abs());
-    Money zeroResult21 = zeroResult5.zero();
-    assertEquals(fulfillmentPrice, zeroResult21.abs());
-    Money zeroResult22 = zeroResult6.zero();
-    assertEquals(fulfillmentPrice, zeroResult22.abs());
-    Money zeroResult23 = zeroResult7.zero();
-    assertEquals(fulfillmentPrice, zeroResult23.abs());
-    assertEquals(fulfillmentPrice, zeroResult8.zero().abs());
-    Money zeroResult24 = zeroResult9.zero();
-    assertEquals(fulfillmentPrice, zeroResult24.abs());
-    Money zeroResult25 = zeroResult10.zero();
-    assertEquals(fulfillmentPrice, zeroResult25.abs());
-    Money zeroResult26 = zeroResult11.zero();
-    assertEquals(fulfillmentPrice, zeroResult26.abs());
-    Money zeroResult27 = zeroResult13.zero();
-    assertEquals(fulfillmentPrice, zeroResult27.abs());
-    assertEquals(fulfillmentPrice, absResult4.zero());
-    assertEquals(fulfillmentPrice, absResult8.zero());
-    assertEquals(fulfillmentPrice, absResult11.zero());
-    assertEquals(fulfillmentPrice, absResult14.zero());
-    assertEquals(fulfillmentPrice, absResult16.zero());
-    assertEquals(fulfillmentPrice, absResult18.zero());
-    assertEquals(fulfillmentPrice, absResult20.zero());
-    assertEquals(fulfillmentPrice, absResult21.zero());
-    assertEquals(fulfillmentPrice, absResult22.zero());
-    assertEquals(fulfillmentPrice, absResult23.zero());
-    assertEquals(fulfillmentPrice, absResult24.zero());
-    assertEquals(fulfillmentPrice, absResult25.zero());
-    assertEquals(fulfillmentPrice, absResult26.zero());
-    assertEquals(fulfillmentPrice, absResult27.zero());
-    assertEquals(fulfillmentPrice, absResult28.zero());
-    assertEquals(fulfillmentPrice, zeroResult14.zero());
-    assertEquals(fulfillmentPrice, zeroResult15.zero());
-    assertEquals(fulfillmentPrice, zeroResult16.zero());
-    assertEquals(fulfillmentPrice, zeroResult17.zero());
-    assertEquals(fulfillmentPrice, zeroResult18.zero());
-    assertEquals(fulfillmentPrice, zeroResult19.zero());
-    assertEquals(fulfillmentPrice, zeroResult20.zero());
-    Money zeroResult28 = zeroResult12.abs().zero();
-    assertEquals(fulfillmentPrice, zeroResult28.zero());
-    assertEquals(fulfillmentPrice, zeroResult21.zero());
-    assertEquals(fulfillmentPrice, zeroResult22.zero());
-    assertEquals(fulfillmentPrice, zeroResult23.zero());
-    assertEquals(fulfillmentPrice, zeroResult24.zero());
-    assertEquals(fulfillmentPrice, zeroResult25.zero());
-    assertEquals(fulfillmentPrice, zeroResult26.zero());
-    assertEquals(fulfillmentPrice, zeroResult27.zero());
-    BigDecimal bigDecimal = fulfillmentGroupImpl.totalTax;
-    assertSame(bigDecimal, absResult4.getAmount());
-    assertSame(bigDecimal, absResult8.getAmount());
-    assertSame(bigDecimal, absResult11.getAmount());
-    assertSame(bigDecimal, absResult14.getAmount());
-    assertSame(bigDecimal, absResult16.getAmount());
-    assertSame(bigDecimal, absResult18.getAmount());
-    assertSame(bigDecimal, absResult20.getAmount());
-    assertSame(bigDecimal, absResult21.getAmount());
-    assertSame(bigDecimal, absResult22.getAmount());
-    assertSame(bigDecimal, absResult23.getAmount());
-    assertSame(bigDecimal, absResult24.getAmount());
-    assertSame(bigDecimal, absResult25.getAmount());
-    assertSame(bigDecimal, absResult26.getAmount());
-    assertSame(bigDecimal, absResult27.getAmount());
-    assertSame(bigDecimal, absResult28.getAmount());
-    assertSame(bigDecimal, zeroResult14.getAmount());
-    assertSame(bigDecimal, zeroResult15.getAmount());
-    assertSame(bigDecimal, zeroResult16.getAmount());
-    assertSame(bigDecimal, zeroResult17.getAmount());
-    assertSame(bigDecimal, zeroResult18.getAmount());
-    assertSame(bigDecimal, zeroResult19.getAmount());
-    assertSame(bigDecimal, zeroResult20.getAmount());
-    assertSame(bigDecimal, zeroResult28.getAmount());
-    assertSame(bigDecimal, zeroResult21.getAmount());
-    assertSame(bigDecimal, zeroResult22.getAmount());
-    assertSame(bigDecimal, zeroResult23.getAmount());
-    assertSame(bigDecimal, zeroResult24.getAmount());
-    assertSame(bigDecimal, zeroResult25.getAmount());
-    assertSame(bigDecimal, zeroResult26.getAmount());
-    assertSame(bigDecimal, zeroResult27.getAmount());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#setSaleShippingPrice(Money)}.
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#setSaleShippingPrice(Money)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetSaleShippingPrice3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1242 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupImpl.setSaleShippingPrice(Money)"})
+  public void testSetSaleShippingPrice_thenFulfillmentGroupImplSaleFulfillmentPriceIsNull() {
     // Arrange
     FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl2.setAddress(new AddressImpl());
+    fulfillmentGroupImpl2.setCandidateFulfillmentGroupOffer(new ArrayList<>());
+    fulfillmentGroupImpl2.setDeliveryInstruction("Delivery Instruction");
+    fulfillmentGroupImpl2.setFulfillmentGroupAdjustments(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupFees(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupItems(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentOption(new FulfillmentOptionImpl());
+    Money fulfillmentPrice = new Money();
+    fulfillmentGroupImpl2.setFulfillmentPrice(fulfillmentPrice);
+    fulfillmentGroupImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupImpl2.setIsShippingPriceTaxable(true);
+    fulfillmentGroupImpl2.setMerchandiseTotal(new Money());
+    fulfillmentGroupImpl2.setMethod("Fulfillment Method");
+    fulfillmentGroupImpl2.setOrder(NullOrderFactoryImpl.NULL_ORDER);
+    fulfillmentGroupImpl2.setPersonalMessage(new PersonalMessageImpl());
+    fulfillmentGroupImpl2.setPhone(new PhoneImpl());
+    fulfillmentGroupImpl2.setPrimary(true);
+    fulfillmentGroupImpl2.setReferenceNumber("42");
+    fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSequence(1);
+    fulfillmentGroupImpl2.setService("Service");
+    fulfillmentGroupImpl2.setShippingOverride(true);
+    fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupImpl2.setTaxes(new ArrayList<>());
+    fulfillmentGroupImpl2.setTotal(new Money());
+    fulfillmentGroupImpl2.setTotalFeeTax(new Money());
+    fulfillmentGroupImpl2.setTotalFulfillmentGroupTax(new Money());
+    fulfillmentGroupImpl2.setTotalItemTax(new Money());
+    fulfillmentGroupImpl2.setTotalTax(new Money());
+    fulfillmentGroupImpl2.setType(FulfillmentType.DIGITAL);
 
     // Act
-    fulfillmentGroupImpl2.setSaleShippingPrice(new Money());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#setSaleShippingPrice(Money)}.
-   * <ul>
-   *   <li>When {@link Money}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#setSaleShippingPrice(Money)}
-   */
-  @Test
-  public void testSetSaleShippingPrice_whenMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-
-    // Act
-    fulfillmentGroupImpl.setSaleShippingPrice(mock(Money.class));
+    fulfillmentGroupImpl2.setSaleShippingPrice(null);
 
     // Assert
-    assertNull(fulfillmentGroupImpl.saleFulfillmentPrice);
-    assertNull(fulfillmentGroupImpl.getSaleFulfillmentPrice());
-    assertNull(fulfillmentGroupImpl.getSaleShippingPrice());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#getFulfillmentPrice()}.
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#getFulfillmentPrice()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetFulfillmentPrice() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass492 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new FulfillmentGroupImpl()).getFulfillmentPrice();
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#getFulfillmentPrice()}.
-   * <ul>
-   *   <li>Given {@link FulfillmentGroupImpl} (default constructor) FulfillmentPrice
-   * is {@link Money}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#getFulfillmentPrice()}
-   */
-  @Test
-  public void testGetFulfillmentPrice_givenFulfillmentGroupImplFulfillmentPriceIsMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setFulfillmentPrice(mock(Money.class));
-
-    // Act and Assert
-    assertNull(fulfillmentGroupImpl.getFulfillmentPrice());
+    assertNull(fulfillmentGroupImpl2.saleFulfillmentPrice);
+    assertNull(fulfillmentGroupImpl2.getSaleFulfillmentPrice());
+    assertNull(fulfillmentGroupImpl2.getSaleShippingPrice());
+    Money zeroResult = fulfillmentGroupImpl2.getTotalTax().zero();
+    Money zeroResult2 = zeroResult.zero();
+    Money absResult = zeroResult2.abs();
+    assertEquals(fulfillmentPrice, absResult.abs());
+    Money zeroResult3 = zeroResult2.zero();
+    assertEquals(fulfillmentPrice, zeroResult3.abs());
+    assertEquals(fulfillmentPrice, absResult.zero());
+    Money zeroResult4 = zeroResult.abs().zero();
+    assertEquals(fulfillmentPrice, zeroResult4.zero());
+    assertEquals(fulfillmentPrice, zeroResult3.zero());
+    BigDecimal bigDecimal = fulfillmentGroupImpl2.totalTax;
+    assertSame(bigDecimal, absResult.getAmount());
+    assertSame(bigDecimal, zeroResult4.getAmount());
+    assertSame(bigDecimal, zeroResult3.getAmount());
   }
 
   /**
@@ -5191,9 +1906,9 @@ public class FulfillmentGroupImplDiffblueTest {
    * Method under test: {@link FulfillmentGroupImpl#getFulfillmentPrice()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money FulfillmentGroupImpl.getFulfillmentPrice()"})
   public void testGetFulfillmentPrice_givenFulfillmentGroupImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new FulfillmentGroupImpl()).getFulfillmentPrice());
   }
@@ -5201,17 +1916,16 @@ public class FulfillmentGroupImplDiffblueTest {
   /**
    * Test {@link FulfillmentGroupImpl#getFulfillmentPrice()}.
    * <ul>
-   *   <li>Given {@link OrderImpl} (default constructor) Currency is
-   * {@code null}.</li>
+   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@code null}.</li>
    *   <li>Then return {@link Money#Money()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link FulfillmentGroupImpl#getFulfillmentPrice()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money FulfillmentGroupImpl.getFulfillmentPrice()"})
   public void testGetFulfillmentPrice_givenOrderImplCurrencyIsNull_thenReturnMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
@@ -5241,48 +1955,44 @@ public class FulfillmentGroupImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setCurrency(null);
 
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(new AddressImpl());
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroupImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl2.setAddress(new AddressImpl());
+    fulfillmentGroupImpl2.setCandidateFulfillmentGroupOffer(new ArrayList<>());
+    fulfillmentGroupImpl2.setDeliveryInstruction("Delivery Instruction");
+    fulfillmentGroupImpl2.setFulfillmentGroupAdjustments(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupFees(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupItems(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentOption(new FulfillmentOptionImpl());
+    fulfillmentGroupImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupImpl2.setIsShippingPriceTaxable(true);
     Money merchandiseTotal = new Money();
-    fulfillmentGroupImpl.setMerchandiseTotal(merchandiseTotal);
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroupImpl.setFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setOrder(order);
+    fulfillmentGroupImpl2.setMerchandiseTotal(merchandiseTotal);
+    fulfillmentGroupImpl2.setMethod("Fulfillment Method");
+    fulfillmentGroupImpl2.setPersonalMessage(new PersonalMessageImpl());
+    fulfillmentGroupImpl2.setPhone(new PhoneImpl());
+    fulfillmentGroupImpl2.setPrimary(true);
+    fulfillmentGroupImpl2.setReferenceNumber("42");
+    fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSequence(1);
+    fulfillmentGroupImpl2.setService("Service");
+    fulfillmentGroupImpl2.setShippingOverride(true);
+    fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupImpl2.setTaxes(new ArrayList<>());
+    fulfillmentGroupImpl2.setTotal(new Money());
+    fulfillmentGroupImpl2.setTotalFeeTax(new Money());
+    fulfillmentGroupImpl2.setTotalFulfillmentGroupTax(new Money());
+    fulfillmentGroupImpl2.setTotalItemTax(new Money());
+    fulfillmentGroupImpl2.setTotalTax(new Money());
+    fulfillmentGroupImpl2.setType(FulfillmentType.DIGITAL);
+    fulfillmentGroupImpl2.setFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setOrder(order);
 
     // Act and Assert
-    assertEquals(merchandiseTotal, fulfillmentGroupImpl.getFulfillmentPrice());
+    assertEquals(merchandiseTotal, fulfillmentGroupImpl2.getFulfillmentPrice());
   }
 
   /**
@@ -5291,703 +2001,108 @@ public class FulfillmentGroupImplDiffblueTest {
    * Method under test: {@link FulfillmentGroupImpl#setFulfillmentPrice(Money)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupImpl.setFulfillmentPrice(Money)"})
   public void testSetFulfillmentPrice() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
     Money fulfillmentPrice = new Money();
 
     // Act
-    fulfillmentGroupImpl.setFulfillmentPrice(fulfillmentPrice);
+    fulfillmentGroupImpl2.setFulfillmentPrice(fulfillmentPrice);
 
     // Assert
-    assertEquals(new BigDecimal("0.00"), fulfillmentGroupImpl.fulfillmentPrice);
-    BigDecimal bigDecimal = fulfillmentGroupImpl.fulfillmentPrice;
+    assertEquals(new BigDecimal("0.00"), fulfillmentGroupImpl2.fulfillmentPrice);
+    BigDecimal bigDecimal = fulfillmentGroupImpl2.fulfillmentPrice;
     Money absResult = fulfillmentPrice.abs();
     assertSame(bigDecimal, absResult.getAmount());
     Money absResult2 = absResult.abs();
     assertSame(bigDecimal, absResult2.getAmount());
-    Money absResult3 = absResult2.abs();
-    assertSame(bigDecimal, absResult3.getAmount());
-    Money absResult4 = absResult3.abs();
-    assertSame(bigDecimal, absResult4.getAmount());
-    Money absResult5 = absResult4.abs();
-    assertSame(bigDecimal, absResult5.getAmount());
-    Money absResult6 = absResult5.abs();
-    assertSame(bigDecimal, absResult6.getAmount());
-    assertSame(bigDecimal, absResult6.abs().getAmount());
+    assertSame(bigDecimal, absResult2.abs().getAmount());
     Money zeroResult = fulfillmentPrice.zero();
-    Money absResult7 = zeroResult.abs();
-    Money absResult8 = absResult7.abs();
-    Money absResult9 = absResult8.abs();
-    Money absResult10 = absResult9.abs();
-    Money absResult11 = absResult10.abs();
-    assertSame(bigDecimal, absResult11.abs().getAmount());
-    assertSame(bigDecimal, absResult11.getAmount());
+    Money absResult3 = zeroResult.abs();
+    assertSame(bigDecimal, absResult3.abs().getAmount());
+    assertSame(bigDecimal, absResult3.getAmount());
     Money zeroResult2 = absResult.zero();
-    Money absResult12 = zeroResult2.abs();
-    Money absResult13 = absResult12.abs();
-    Money absResult14 = absResult13.abs();
-    Money absResult15 = absResult14.abs();
-    assertSame(bigDecimal, absResult15.abs().getAmount());
+    assertSame(bigDecimal, zeroResult2.abs().getAmount());
     Money zeroResult3 = zeroResult.zero();
-    Money absResult16 = zeroResult3.abs();
-    Money absResult17 = absResult16.abs();
-    Money absResult18 = absResult17.abs();
-    Money absResult19 = absResult18.abs();
-    assertSame(bigDecimal, absResult19.abs().getAmount());
-    assertSame(bigDecimal, absResult10.getAmount());
-    assertSame(bigDecimal, absResult15.getAmount());
-    Money zeroResult4 = absResult2.zero();
-    Money absResult20 = zeroResult4.abs();
-    Money absResult21 = absResult20.abs();
-    Money absResult22 = absResult21.abs();
-    assertSame(bigDecimal, absResult22.abs().getAmount());
-    Money zeroResult5 = absResult7.zero();
-    Money absResult23 = zeroResult5.abs();
-    Money absResult24 = absResult23.abs();
-    Money absResult25 = absResult24.abs();
-    assertSame(bigDecimal, absResult25.abs().getAmount());
-    assertSame(bigDecimal, absResult19.getAmount());
-    Money zeroResult6 = zeroResult2.zero();
-    Money absResult26 = zeroResult6.abs();
-    Money absResult27 = absResult26.abs();
-    Money absResult28 = absResult27.abs();
-    assertSame(bigDecimal, absResult28.abs().getAmount());
-    Money zeroResult7 = zeroResult3.zero();
-    Money absResult29 = zeroResult7.abs();
-    Money absResult30 = absResult29.abs();
-    Money absResult31 = absResult30.abs();
-    assertSame(bigDecimal, absResult31.abs().getAmount());
-    assertSame(bigDecimal, absResult9.getAmount());
-    assertSame(bigDecimal, absResult14.getAmount());
-    assertSame(bigDecimal, absResult22.getAmount());
-    Money zeroResult8 = absResult3.zero();
-    Money absResult32 = zeroResult8.abs();
-    Money absResult33 = absResult32.abs();
-    assertSame(bigDecimal, absResult33.abs().getAmount());
-    Money zeroResult9 = absResult8.zero();
-    Money absResult34 = zeroResult9.abs();
-    Money absResult35 = absResult34.abs();
-    assertSame(bigDecimal, absResult35.abs().getAmount());
-    assertSame(bigDecimal, absResult25.getAmount());
-    Money zeroResult10 = absResult12.zero();
-    Money absResult36 = zeroResult10.abs();
-    Money absResult37 = absResult36.abs();
-    assertSame(bigDecimal, absResult37.abs().getAmount());
-    Money zeroResult11 = absResult16.zero();
-    Money absResult38 = zeroResult11.abs();
-    Money absResult39 = absResult38.abs();
-    assertSame(bigDecimal, absResult39.abs().getAmount());
-    assertSame(bigDecimal, absResult18.getAmount());
-    assertSame(bigDecimal, absResult28.getAmount());
-    Money zeroResult12 = zeroResult4.zero();
-    Money absResult40 = zeroResult12.abs();
-    Money absResult41 = absResult40.abs();
-    assertSame(bigDecimal, absResult41.abs().getAmount());
-    Money zeroResult13 = zeroResult5.zero();
-    Money absResult42 = zeroResult13.abs();
-    Money absResult43 = absResult42.abs();
-    assertSame(bigDecimal, absResult43.abs().getAmount());
-    assertSame(bigDecimal, absResult31.getAmount());
-    Money zeroResult14 = zeroResult6.zero();
-    Money absResult44 = zeroResult14.abs();
-    Money absResult45 = absResult44.abs();
-    assertSame(bigDecimal, absResult45.abs().getAmount());
-    Money zeroResult15 = zeroResult7.zero();
-    Money absResult46 = zeroResult15.abs();
-    Money absResult47 = absResult46.abs();
-    assertSame(bigDecimal, absResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult8.getAmount());
-    assertSame(bigDecimal, absResult13.getAmount());
-    assertSame(bigDecimal, absResult21.getAmount());
-    assertSame(bigDecimal, absResult33.getAmount());
-    Money zeroResult16 = absResult4.zero();
-    Money absResult48 = zeroResult16.abs();
-    assertSame(bigDecimal, absResult48.abs().getAmount());
-    Money zeroResult17 = absResult9.zero();
-    Money absResult49 = zeroResult17.abs();
-    assertSame(bigDecimal, absResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult35.getAmount());
-    Money zeroResult18 = absResult13.zero();
-    Money absResult50 = zeroResult18.abs();
-    assertSame(bigDecimal, absResult50.abs().getAmount());
-    Money zeroResult19 = absResult17.zero();
-    Money absResult51 = zeroResult19.abs();
-    assertSame(bigDecimal, absResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult24.getAmount());
-    assertSame(bigDecimal, absResult37.getAmount());
-    Money zeroResult20 = absResult20.zero();
-    Money absResult52 = zeroResult20.abs();
-    assertSame(bigDecimal, absResult52.abs().getAmount());
-    Money zeroResult21 = absResult23.zero();
-    Money absResult53 = zeroResult21.abs();
-    assertSame(bigDecimal, absResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult39.getAmount());
-    Money zeroResult22 = absResult26.zero();
-    Money absResult54 = zeroResult22.abs();
-    assertSame(bigDecimal, absResult54.abs().getAmount());
-    Money zeroResult23 = absResult29.zero();
-    Money absResult55 = zeroResult23.abs();
-    assertSame(bigDecimal, absResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult17.getAmount());
-    assertSame(bigDecimal, absResult27.getAmount());
-    assertSame(bigDecimal, absResult41.getAmount());
-    Money zeroResult24 = zeroResult8.zero();
-    Money absResult56 = zeroResult24.abs();
-    assertSame(bigDecimal, absResult56.abs().getAmount());
-    Money zeroResult25 = zeroResult9.zero();
-    Money absResult57 = zeroResult25.abs();
-    assertSame(bigDecimal, absResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult43.getAmount());
-    Money zeroResult26 = zeroResult10.zero();
-    Money absResult58 = zeroResult26.abs();
-    assertSame(bigDecimal, absResult58.abs().getAmount());
-    Money zeroResult27 = zeroResult11.zero();
-    Money absResult59 = zeroResult27.abs();
-    assertSame(bigDecimal, absResult59.abs().getAmount());
-    assertSame(bigDecimal, absResult30.getAmount());
-    assertSame(bigDecimal, absResult45.getAmount());
-    Money zeroResult28 = zeroResult12.zero();
-    Money absResult60 = zeroResult28.abs();
-    assertSame(bigDecimal, absResult60.abs().getAmount());
-    Money zeroResult29 = zeroResult13.zero();
-    Money absResult61 = zeroResult29.abs();
-    assertSame(bigDecimal, absResult61.abs().getAmount());
-    assertSame(bigDecimal, absResult47.getAmount());
-    Money zeroResult30 = zeroResult14.zero();
-    Money absResult62 = zeroResult30.abs();
-    assertSame(bigDecimal, absResult62.abs().getAmount());
-    assertSame(bigDecimal, absResult7.getAmount());
-    assertSame(bigDecimal, absResult12.getAmount());
-    assertSame(bigDecimal, absResult20.getAmount());
-    assertSame(bigDecimal, absResult32.getAmount());
-    assertSame(bigDecimal, absResult48.getAmount());
-    Money zeroResult31 = absResult5.zero();
-    assertSame(bigDecimal, zeroResult31.abs().getAmount());
-    Money zeroResult32 = absResult10.zero();
-    assertSame(bigDecimal, zeroResult32.abs().getAmount());
-    assertSame(bigDecimal, absResult49.getAmount());
-    Money zeroResult33 = absResult14.zero();
-    assertSame(bigDecimal, zeroResult33.abs().getAmount());
-    Money zeroResult34 = absResult18.zero();
-    assertSame(bigDecimal, zeroResult34.abs().getAmount());
-    assertSame(bigDecimal, absResult34.getAmount());
-    assertSame(bigDecimal, absResult50.getAmount());
-    Money zeroResult35 = absResult21.zero();
-    assertSame(bigDecimal, zeroResult35.abs().getAmount());
-    Money zeroResult36 = absResult24.zero();
-    assertSame(bigDecimal, zeroResult36.abs().getAmount());
-    assertSame(bigDecimal, absResult51.getAmount());
-    Money zeroResult37 = absResult27.zero();
-    assertSame(bigDecimal, zeroResult37.abs().getAmount());
-    Money zeroResult38 = absResult30.zero();
-    assertSame(bigDecimal, zeroResult38.abs().getAmount());
-    assertSame(bigDecimal, absResult23.getAmount());
-    assertSame(bigDecimal, absResult36.getAmount());
-    assertSame(bigDecimal, absResult52.getAmount());
-    Money zeroResult39 = absResult32.zero();
-    assertSame(bigDecimal, zeroResult39.abs().getAmount());
-    Money zeroResult40 = absResult34.zero();
-    assertSame(bigDecimal, zeroResult40.abs().getAmount());
-    assertSame(bigDecimal, absResult53.getAmount());
-    Money zeroResult41 = absResult36.zero();
-    assertSame(bigDecimal, zeroResult41.abs().getAmount());
-    Money zeroResult42 = absResult38.zero();
-    assertSame(bigDecimal, zeroResult42.abs().getAmount());
-    assertSame(bigDecimal, absResult38.getAmount());
-    assertSame(bigDecimal, absResult54.getAmount());
-    Money zeroResult43 = absResult40.zero();
-    assertSame(bigDecimal, zeroResult43.abs().getAmount());
-    Money zeroResult44 = absResult42.zero();
-    assertSame(bigDecimal, zeroResult44.abs().getAmount());
-    assertSame(bigDecimal, absResult55.getAmount());
-    Money zeroResult45 = absResult44.zero();
-    assertSame(bigDecimal, zeroResult45.abs().getAmount());
-    assertSame(bigDecimal, absResult16.getAmount());
-    assertSame(bigDecimal, absResult26.getAmount());
-    assertSame(bigDecimal, absResult40.getAmount());
-    assertSame(bigDecimal, absResult56.getAmount());
-    Money zeroResult46 = zeroResult16.zero();
-    assertSame(bigDecimal, zeroResult46.abs().getAmount());
-    Money zeroResult47 = zeroResult17.zero();
-    assertSame(bigDecimal, zeroResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult57.getAmount());
-    Money zeroResult48 = zeroResult18.zero();
-    assertSame(bigDecimal, zeroResult48.abs().getAmount());
-    Money zeroResult49 = zeroResult19.zero();
-    assertSame(bigDecimal, zeroResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult42.getAmount());
-    assertSame(bigDecimal, absResult58.getAmount());
-    Money zeroResult50 = zeroResult20.zero();
-    assertSame(bigDecimal, zeroResult50.abs().getAmount());
-    Money zeroResult51 = zeroResult21.zero();
-    assertSame(bigDecimal, zeroResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult59.getAmount());
-    Money zeroResult52 = zeroResult22.zero();
-    assertSame(bigDecimal, zeroResult52.abs().getAmount());
-    Money zeroResult53 = zeroResult23.zero();
-    assertSame(bigDecimal, zeroResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult29.getAmount());
-    assertSame(bigDecimal, absResult44.getAmount());
-    assertSame(bigDecimal, absResult60.getAmount());
-    Money zeroResult54 = zeroResult24.zero();
-    assertSame(bigDecimal, zeroResult54.abs().getAmount());
-    Money zeroResult55 = zeroResult25.zero();
-    assertSame(bigDecimal, zeroResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult61.getAmount());
-    Money zeroResult56 = zeroResult26.zero();
-    assertSame(bigDecimal, zeroResult56.abs().getAmount());
-    Money zeroResult57 = zeroResult27.zero();
-    assertSame(bigDecimal, zeroResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult46.getAmount());
-    assertSame(bigDecimal, absResult62.getAmount());
-    Money zeroResult58 = zeroResult28.zero();
-    assertSame(bigDecimal, zeroResult58.abs().getAmount());
-    Money zeroResult59 = zeroResult29.zero();
-    assertSame(bigDecimal, zeroResult59.abs().getAmount());
-    Money zeroResult60 = zeroResult15.zero();
-    assertSame(bigDecimal, zeroResult60.abs().getAmount());
-    Money zeroResult61 = zeroResult30.zero();
-    assertSame(bigDecimal, zeroResult61.abs().getAmount());
+    assertSame(bigDecimal, zeroResult3.abs().getAmount());
     assertSame(bigDecimal, zeroResult.getAmount());
     assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, zeroResult4.getAmount());
-    assertSame(bigDecimal, zeroResult8.getAmount());
-    assertSame(bigDecimal, zeroResult16.getAmount());
-    assertSame(bigDecimal, zeroResult31.getAmount());
-    assertSame(bigDecimal, absResult6.zero().getAmount());
-    assertSame(bigDecimal, absResult11.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.getAmount());
-    assertSame(bigDecimal, absResult15.zero().getAmount());
-    assertSame(bigDecimal, absResult19.zero().getAmount());
-    assertSame(bigDecimal, zeroResult17.getAmount());
-    assertSame(bigDecimal, zeroResult33.getAmount());
-    assertSame(bigDecimal, absResult22.zero().getAmount());
-    assertSame(bigDecimal, absResult25.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.getAmount());
-    assertSame(bigDecimal, absResult28.zero().getAmount());
-    assertSame(bigDecimal, absResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult9.getAmount());
-    assertSame(bigDecimal, zeroResult18.getAmount());
-    assertSame(bigDecimal, zeroResult35.getAmount());
-    assertSame(bigDecimal, absResult33.zero().getAmount());
-    assertSame(bigDecimal, absResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.getAmount());
-    assertSame(bigDecimal, absResult37.zero().getAmount());
-    assertSame(bigDecimal, absResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult19.getAmount());
-    assertSame(bigDecimal, zeroResult37.getAmount());
-    assertSame(bigDecimal, absResult41.zero().getAmount());
-    assertSame(bigDecimal, absResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.getAmount());
-    assertSame(bigDecimal, absResult45.zero().getAmount());
-    assertSame(bigDecimal, absResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult5.getAmount());
-    assertSame(bigDecimal, zeroResult10.getAmount());
-    assertSame(bigDecimal, zeroResult20.getAmount());
-    assertSame(bigDecimal, zeroResult39.getAmount());
-    assertSame(bigDecimal, absResult48.zero().getAmount());
-    assertSame(bigDecimal, absResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.getAmount());
-    assertSame(bigDecimal, absResult50.zero().getAmount());
-    assertSame(bigDecimal, absResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult21.getAmount());
-    assertSame(bigDecimal, zeroResult41.getAmount());
-    assertSame(bigDecimal, absResult52.zero().getAmount());
-    assertSame(bigDecimal, absResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.getAmount());
-    assertSame(bigDecimal, absResult54.zero().getAmount());
-    assertSame(bigDecimal, absResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult11.getAmount());
-    assertSame(bigDecimal, zeroResult22.getAmount());
-    assertSame(bigDecimal, zeroResult43.getAmount());
-    assertSame(bigDecimal, absResult56.zero().getAmount());
-    assertSame(bigDecimal, absResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.getAmount());
-    assertSame(bigDecimal, absResult58.zero().getAmount());
-    assertSame(bigDecimal, absResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult23.getAmount());
-    assertSame(bigDecimal, zeroResult45.getAmount());
-    assertSame(bigDecimal, absResult60.zero().getAmount());
-    assertSame(bigDecimal, absResult61.zero().getAmount());
-    assertSame(bigDecimal, absResult46.zero().getAmount());
-    assertSame(bigDecimal, absResult62.zero().getAmount());
+    assertSame(bigDecimal, absResult2.zero().getAmount());
+    assertSame(bigDecimal, absResult3.zero().getAmount());
     assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult6.getAmount());
-    assertSame(bigDecimal, zeroResult12.getAmount());
-    assertSame(bigDecimal, zeroResult24.getAmount());
-    assertSame(bigDecimal, zeroResult46.getAmount());
-    assertSame(bigDecimal, zeroResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.getAmount());
-    assertSame(bigDecimal, zeroResult33.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.zero().getAmount());
-    assertSame(bigDecimal, zeroResult25.getAmount());
-    assertSame(bigDecimal, zeroResult48.getAmount());
-    assertSame(bigDecimal, zeroResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.getAmount());
-    assertSame(bigDecimal, zeroResult37.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.zero().getAmount());
-    assertSame(bigDecimal, zeroResult13.getAmount());
-    assertSame(bigDecimal, zeroResult26.getAmount());
-    assertSame(bigDecimal, zeroResult50.getAmount());
-    assertSame(bigDecimal, zeroResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.getAmount());
-    assertSame(bigDecimal, zeroResult41.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.zero().getAmount());
-    assertSame(bigDecimal, zeroResult27.getAmount());
-    assertSame(bigDecimal, zeroResult52.getAmount());
-    assertSame(bigDecimal, zeroResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.getAmount());
-    assertSame(bigDecimal, zeroResult45.zero().getAmount());
-    assertSame(bigDecimal, zeroResult7.getAmount());
-    assertSame(bigDecimal, zeroResult14.getAmount());
-    assertSame(bigDecimal, zeroResult28.getAmount());
-    assertSame(bigDecimal, zeroResult54.getAmount());
-    assertSame(bigDecimal, zeroResult46.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.getAmount());
-    assertSame(bigDecimal, zeroResult48.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult29.getAmount());
-    assertSame(bigDecimal, zeroResult56.getAmount());
-    assertSame(bigDecimal, zeroResult50.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.getAmount());
-    assertSame(bigDecimal, zeroResult52.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult15.getAmount());
-    assertSame(bigDecimal, zeroResult30.getAmount());
-    assertSame(bigDecimal, zeroResult58.getAmount());
-    assertSame(bigDecimal, zeroResult54.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.getAmount());
-    assertSame(bigDecimal, zeroResult56.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.getAmount());
-    assertSame(bigDecimal, zeroResult61.getAmount());
-    assertSame(bigDecimal, zeroResult58.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.zero().getAmount());
-    assertSame(bigDecimal, zeroResult61.zero().getAmount());
+    assertSame(bigDecimal, zeroResult2.zero().getAmount());
+    assertSame(bigDecimal, zeroResult3.zero().getAmount());
   }
 
   /**
    * Test {@link FulfillmentGroupImpl#setFulfillmentPrice(Money)}.
+   * <ul>
+   *   <li>Then {@link FulfillmentGroupImpl} (default constructor) {@link FulfillmentGroupImpl#fulfillmentPrice} is {@code null}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link FulfillmentGroupImpl#setFulfillmentPrice(Money)}
    */
   @Test
-  public void testSetFulfillmentPrice2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(new AddressImpl());
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
-    Money fulfillmentPrice = new Money();
-    fulfillmentGroupImpl.setFulfillmentPrice(fulfillmentPrice);
-    fulfillmentGroupImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setOrder(NullOrderFactoryImpl.NULL_ORDER);
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-
-    // Act
-    fulfillmentGroupImpl.setFulfillmentPrice(null);
-
-    // Assert
-    assertNull(fulfillmentGroupImpl.fulfillmentPrice);
-    assertNull(fulfillmentGroupImpl.getFulfillmentPrice());
-    assertNull(fulfillmentGroupImpl.getShippingPrice());
-    Money fulfillmentGroupAdjustmentsValue = fulfillmentGroupImpl.getFulfillmentGroupAdjustmentsValue();
-    Money absResult = fulfillmentGroupAdjustmentsValue.abs();
-    Money absResult2 = absResult.abs();
-    Money absResult3 = absResult2.abs();
-    Money absResult4 = absResult3.abs();
-    assertEquals(fulfillmentPrice, absResult4.abs());
-    Money futureCreditFulfillmentGroupAdjustmentsValue = fulfillmentGroupImpl
-        .getFutureCreditFulfillmentGroupAdjustmentsValue();
-    Money absResult5 = futureCreditFulfillmentGroupAdjustmentsValue.abs();
-    Money absResult6 = absResult5.abs();
-    Money absResult7 = absResult6.abs();
-    Money absResult8 = absResult7.abs();
-    assertEquals(fulfillmentPrice, absResult8.abs());
-    Money zeroResult = fulfillmentGroupAdjustmentsValue.zero();
-    Money absResult9 = zeroResult.abs();
-    Money absResult10 = absResult9.abs();
-    Money absResult11 = absResult10.abs();
-    assertEquals(fulfillmentPrice, absResult11.abs());
-    Money absResult12 = futureCreditFulfillmentGroupAdjustmentsValue.zero().abs();
-    Money absResult13 = absResult12.abs();
-    Money absResult14 = absResult13.abs();
-    assertEquals(fulfillmentPrice, absResult14.abs());
-    Money zeroResult2 = absResult.zero();
-    Money absResult15 = zeroResult2.abs();
-    Money absResult16 = absResult15.abs();
-    assertEquals(fulfillmentPrice, absResult16.abs());
-    Money zeroResult3 = absResult5.zero();
-    Money absResult17 = zeroResult3.abs();
-    Money absResult18 = absResult17.abs();
-    assertEquals(fulfillmentPrice, absResult18.abs());
-    Money zeroResult4 = zeroResult.zero();
-    Money absResult19 = zeroResult4.abs();
-    Money absResult20 = absResult19.abs();
-    assertEquals(fulfillmentPrice, absResult20.abs());
-    Money zeroResult5 = absResult2.zero();
-    Money absResult21 = zeroResult5.abs();
-    assertEquals(fulfillmentPrice, absResult21.abs());
-    Money zeroResult6 = absResult6.zero();
-    Money absResult22 = zeroResult6.abs();
-    assertEquals(fulfillmentPrice, absResult22.abs());
-    Money zeroResult7 = absResult9.zero();
-    Money absResult23 = zeroResult7.abs();
-    assertEquals(fulfillmentPrice, absResult23.abs());
-    Money zeroResult8 = absResult12.zero();
-    Money absResult24 = zeroResult8.abs();
-    assertEquals(fulfillmentPrice, absResult24.abs());
-    Money zeroResult9 = zeroResult2.zero();
-    Money absResult25 = zeroResult9.abs();
-    assertEquals(fulfillmentPrice, absResult25.abs());
-    Money zeroResult10 = zeroResult3.zero();
-    Money absResult26 = zeroResult10.abs();
-    assertEquals(fulfillmentPrice, absResult26.abs());
-    Money zeroResult11 = zeroResult4.zero();
-    Money absResult27 = zeroResult11.abs();
-    assertEquals(fulfillmentPrice, absResult27.abs());
-    Money zeroResult12 = fulfillmentGroupImpl.getTotalTax().zero();
-    Money zeroResult13 = zeroResult12.zero();
-    Money absResult28 = zeroResult13.abs();
-    assertEquals(fulfillmentPrice, absResult28.abs());
-    Money zeroResult14 = absResult3.zero();
-    assertEquals(fulfillmentPrice, zeroResult14.abs());
-    Money zeroResult15 = absResult7.zero();
-    assertEquals(fulfillmentPrice, zeroResult15.abs());
-    Money zeroResult16 = absResult10.zero();
-    assertEquals(fulfillmentPrice, zeroResult16.abs());
-    Money zeroResult17 = absResult13.zero();
-    assertEquals(fulfillmentPrice, zeroResult17.abs());
-    Money zeroResult18 = absResult15.zero();
-    assertEquals(fulfillmentPrice, zeroResult18.abs());
-    Money zeroResult19 = absResult17.zero();
-    assertEquals(fulfillmentPrice, zeroResult19.abs());
-    Money zeroResult20 = absResult19.zero();
-    assertEquals(fulfillmentPrice, zeroResult20.abs());
-    Money zeroResult21 = zeroResult5.zero();
-    assertEquals(fulfillmentPrice, zeroResult21.abs());
-    Money zeroResult22 = zeroResult6.zero();
-    assertEquals(fulfillmentPrice, zeroResult22.abs());
-    Money zeroResult23 = zeroResult7.zero();
-    assertEquals(fulfillmentPrice, zeroResult23.abs());
-    assertEquals(fulfillmentPrice, zeroResult8.zero().abs());
-    Money zeroResult24 = zeroResult9.zero();
-    assertEquals(fulfillmentPrice, zeroResult24.abs());
-    Money zeroResult25 = zeroResult10.zero();
-    assertEquals(fulfillmentPrice, zeroResult25.abs());
-    Money zeroResult26 = zeroResult11.zero();
-    assertEquals(fulfillmentPrice, zeroResult26.abs());
-    Money zeroResult27 = zeroResult13.zero();
-    assertEquals(fulfillmentPrice, zeroResult27.abs());
-    assertEquals(fulfillmentPrice, absResult4.zero());
-    assertEquals(fulfillmentPrice, absResult8.zero());
-    assertEquals(fulfillmentPrice, absResult11.zero());
-    assertEquals(fulfillmentPrice, absResult14.zero());
-    assertEquals(fulfillmentPrice, absResult16.zero());
-    assertEquals(fulfillmentPrice, absResult18.zero());
-    assertEquals(fulfillmentPrice, absResult20.zero());
-    assertEquals(fulfillmentPrice, absResult21.zero());
-    assertEquals(fulfillmentPrice, absResult22.zero());
-    assertEquals(fulfillmentPrice, absResult23.zero());
-    assertEquals(fulfillmentPrice, absResult24.zero());
-    assertEquals(fulfillmentPrice, absResult25.zero());
-    assertEquals(fulfillmentPrice, absResult26.zero());
-    assertEquals(fulfillmentPrice, absResult27.zero());
-    assertEquals(fulfillmentPrice, absResult28.zero());
-    assertEquals(fulfillmentPrice, zeroResult14.zero());
-    assertEquals(fulfillmentPrice, zeroResult15.zero());
-    assertEquals(fulfillmentPrice, zeroResult16.zero());
-    assertEquals(fulfillmentPrice, zeroResult17.zero());
-    assertEquals(fulfillmentPrice, zeroResult18.zero());
-    assertEquals(fulfillmentPrice, zeroResult19.zero());
-    assertEquals(fulfillmentPrice, zeroResult20.zero());
-    Money zeroResult28 = zeroResult12.abs().zero();
-    assertEquals(fulfillmentPrice, zeroResult28.zero());
-    assertEquals(fulfillmentPrice, zeroResult21.zero());
-    assertEquals(fulfillmentPrice, zeroResult22.zero());
-    assertEquals(fulfillmentPrice, zeroResult23.zero());
-    assertEquals(fulfillmentPrice, zeroResult24.zero());
-    assertEquals(fulfillmentPrice, zeroResult25.zero());
-    assertEquals(fulfillmentPrice, zeroResult26.zero());
-    assertEquals(fulfillmentPrice, zeroResult27.zero());
-    BigDecimal bigDecimal = fulfillmentGroupImpl.totalTax;
-    assertSame(bigDecimal, absResult4.getAmount());
-    assertSame(bigDecimal, absResult8.getAmount());
-    assertSame(bigDecimal, absResult11.getAmount());
-    assertSame(bigDecimal, absResult14.getAmount());
-    assertSame(bigDecimal, absResult16.getAmount());
-    assertSame(bigDecimal, absResult18.getAmount());
-    assertSame(bigDecimal, absResult20.getAmount());
-    assertSame(bigDecimal, absResult21.getAmount());
-    assertSame(bigDecimal, absResult22.getAmount());
-    assertSame(bigDecimal, absResult23.getAmount());
-    assertSame(bigDecimal, absResult24.getAmount());
-    assertSame(bigDecimal, absResult25.getAmount());
-    assertSame(bigDecimal, absResult26.getAmount());
-    assertSame(bigDecimal, absResult27.getAmount());
-    assertSame(bigDecimal, absResult28.getAmount());
-    assertSame(bigDecimal, zeroResult14.getAmount());
-    assertSame(bigDecimal, zeroResult15.getAmount());
-    assertSame(bigDecimal, zeroResult16.getAmount());
-    assertSame(bigDecimal, zeroResult17.getAmount());
-    assertSame(bigDecimal, zeroResult18.getAmount());
-    assertSame(bigDecimal, zeroResult19.getAmount());
-    assertSame(bigDecimal, zeroResult20.getAmount());
-    assertSame(bigDecimal, zeroResult28.getAmount());
-    assertSame(bigDecimal, zeroResult21.getAmount());
-    assertSame(bigDecimal, zeroResult22.getAmount());
-    assertSame(bigDecimal, zeroResult23.getAmount());
-    assertSame(bigDecimal, zeroResult24.getAmount());
-    assertSame(bigDecimal, zeroResult25.getAmount());
-    assertSame(bigDecimal, zeroResult26.getAmount());
-    assertSame(bigDecimal, zeroResult27.getAmount());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#setFulfillmentPrice(Money)}.
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#setFulfillmentPrice(Money)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetFulfillmentPrice3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1092 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupImpl.setFulfillmentPrice(Money)"})
+  public void testSetFulfillmentPrice_thenFulfillmentGroupImplFulfillmentPriceIsNull() {
     // Arrange
     FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl2.setAddress(new AddressImpl());
+    fulfillmentGroupImpl2.setCandidateFulfillmentGroupOffer(new ArrayList<>());
+    fulfillmentGroupImpl2.setDeliveryInstruction("Delivery Instruction");
+    fulfillmentGroupImpl2.setFulfillmentGroupAdjustments(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupFees(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupItems(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentOption(new FulfillmentOptionImpl());
+    Money fulfillmentPrice = new Money();
+    fulfillmentGroupImpl2.setFulfillmentPrice(fulfillmentPrice);
+    fulfillmentGroupImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupImpl2.setIsShippingPriceTaxable(true);
+    fulfillmentGroupImpl2.setMerchandiseTotal(new Money());
+    fulfillmentGroupImpl2.setMethod("Fulfillment Method");
+    fulfillmentGroupImpl2.setOrder(NullOrderFactoryImpl.NULL_ORDER);
+    fulfillmentGroupImpl2.setPersonalMessage(new PersonalMessageImpl());
+    fulfillmentGroupImpl2.setPhone(new PhoneImpl());
+    fulfillmentGroupImpl2.setPrimary(true);
+    fulfillmentGroupImpl2.setReferenceNumber("42");
+    fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSequence(1);
+    fulfillmentGroupImpl2.setService("Service");
+    fulfillmentGroupImpl2.setShippingOverride(true);
+    fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupImpl2.setTaxes(new ArrayList<>());
+    fulfillmentGroupImpl2.setTotal(new Money());
+    fulfillmentGroupImpl2.setTotalFeeTax(new Money());
+    fulfillmentGroupImpl2.setTotalFulfillmentGroupTax(new Money());
+    fulfillmentGroupImpl2.setTotalItemTax(new Money());
+    fulfillmentGroupImpl2.setTotalTax(new Money());
+    fulfillmentGroupImpl2.setType(FulfillmentType.DIGITAL);
 
     // Act
-    fulfillmentGroupImpl2.setFulfillmentPrice(new Money());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#setFulfillmentPrice(Money)}.
-   * <ul>
-   *   <li>When {@link Money}.</li>
-   *   <li>Then {@link FulfillmentGroupImpl} (default constructor)
-   * {@link FulfillmentGroupImpl#fulfillmentPrice} is {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#setFulfillmentPrice(Money)}
-   */
-  @Test
-  public void testSetFulfillmentPrice_whenMoney_thenFulfillmentGroupImplFulfillmentPriceIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-
-    // Act
-    fulfillmentGroupImpl.setFulfillmentPrice(mock(Money.class));
+    fulfillmentGroupImpl2.setFulfillmentPrice(null);
 
     // Assert
-    assertNull(fulfillmentGroupImpl.fulfillmentPrice);
-    assertNull(fulfillmentGroupImpl.getFulfillmentPrice());
-    assertNull(fulfillmentGroupImpl.getShippingPrice());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#getShippingPrice()}.
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#getShippingPrice()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetShippingPrice() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass762 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new FulfillmentGroupImpl()).getShippingPrice();
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#getShippingPrice()}.
-   * <ul>
-   *   <li>Given {@link FulfillmentGroupImpl} (default constructor) FulfillmentPrice
-   * is {@link Money}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#getShippingPrice()}
-   */
-  @Test
-  public void testGetShippingPrice_givenFulfillmentGroupImplFulfillmentPriceIsMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setFulfillmentPrice(mock(Money.class));
-
-    // Act and Assert
-    assertNull(fulfillmentGroupImpl.getShippingPrice());
+    assertNull(fulfillmentGroupImpl2.fulfillmentPrice);
+    assertNull(fulfillmentGroupImpl2.getFulfillmentPrice());
+    assertNull(fulfillmentGroupImpl2.getShippingPrice());
+    Money zeroResult = fulfillmentGroupImpl2.getTotalTax().zero();
+    Money zeroResult2 = zeroResult.zero();
+    Money absResult = zeroResult2.abs();
+    assertEquals(fulfillmentPrice, absResult.abs());
+    Money zeroResult3 = zeroResult2.zero();
+    assertEquals(fulfillmentPrice, zeroResult3.abs());
+    assertEquals(fulfillmentPrice, absResult.zero());
+    Money zeroResult4 = zeroResult.abs().zero();
+    assertEquals(fulfillmentPrice, zeroResult4.zero());
+    assertEquals(fulfillmentPrice, zeroResult3.zero());
+    BigDecimal bigDecimal = fulfillmentGroupImpl2.totalTax;
+    assertSame(bigDecimal, absResult.getAmount());
+    assertSame(bigDecimal, zeroResult4.getAmount());
+    assertSame(bigDecimal, zeroResult3.getAmount());
   }
 
   /**
@@ -6000,9 +2115,9 @@ public class FulfillmentGroupImplDiffblueTest {
    * Method under test: {@link FulfillmentGroupImpl#getShippingPrice()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money FulfillmentGroupImpl.getShippingPrice()"})
   public void testGetShippingPrice_givenFulfillmentGroupImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new FulfillmentGroupImpl()).getShippingPrice());
   }
@@ -6010,17 +2125,16 @@ public class FulfillmentGroupImplDiffblueTest {
   /**
    * Test {@link FulfillmentGroupImpl#getShippingPrice()}.
    * <ul>
-   *   <li>Given {@link OrderImpl} (default constructor) Currency is
-   * {@code null}.</li>
+   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@code null}.</li>
    *   <li>Then return {@link Money#Money()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link FulfillmentGroupImpl#getShippingPrice()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money FulfillmentGroupImpl.getShippingPrice()"})
   public void testGetShippingPrice_givenOrderImplCurrencyIsNull_thenReturnMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
@@ -6050,759 +2164,157 @@ public class FulfillmentGroupImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setCurrency(null);
 
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(new AddressImpl());
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroupImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl2.setAddress(new AddressImpl());
+    fulfillmentGroupImpl2.setCandidateFulfillmentGroupOffer(new ArrayList<>());
+    fulfillmentGroupImpl2.setDeliveryInstruction("Delivery Instruction");
+    fulfillmentGroupImpl2.setFulfillmentGroupAdjustments(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupFees(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupItems(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentOption(new FulfillmentOptionImpl());
+    fulfillmentGroupImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupImpl2.setIsShippingPriceTaxable(true);
     Money merchandiseTotal = new Money();
-    fulfillmentGroupImpl.setMerchandiseTotal(merchandiseTotal);
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroupImpl.setFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setOrder(order);
+    fulfillmentGroupImpl2.setMerchandiseTotal(merchandiseTotal);
+    fulfillmentGroupImpl2.setMethod("Fulfillment Method");
+    fulfillmentGroupImpl2.setPersonalMessage(new PersonalMessageImpl());
+    fulfillmentGroupImpl2.setPhone(new PhoneImpl());
+    fulfillmentGroupImpl2.setPrimary(true);
+    fulfillmentGroupImpl2.setReferenceNumber("42");
+    fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSequence(1);
+    fulfillmentGroupImpl2.setService("Service");
+    fulfillmentGroupImpl2.setShippingOverride(true);
+    fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupImpl2.setTaxes(new ArrayList<>());
+    fulfillmentGroupImpl2.setTotal(new Money());
+    fulfillmentGroupImpl2.setTotalFeeTax(new Money());
+    fulfillmentGroupImpl2.setTotalFulfillmentGroupTax(new Money());
+    fulfillmentGroupImpl2.setTotalItemTax(new Money());
+    fulfillmentGroupImpl2.setTotalTax(new Money());
+    fulfillmentGroupImpl2.setType(FulfillmentType.DIGITAL);
+    fulfillmentGroupImpl2.setFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setOrder(order);
 
     // Act and Assert
-    assertEquals(merchandiseTotal, fulfillmentGroupImpl.getShippingPrice());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#setShippingPrice(Money)}.
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#setShippingPrice(Money)}
-   */
-  @Test
-  public void testSetShippingPrice() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(new AddressImpl());
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
-    Money fulfillmentPrice = new Money();
-    fulfillmentGroupImpl.setFulfillmentPrice(fulfillmentPrice);
-    fulfillmentGroupImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setOrder(NullOrderFactoryImpl.NULL_ORDER);
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-
-    // Act
-    fulfillmentGroupImpl.setShippingPrice(null);
-
-    // Assert
-    assertNull(fulfillmentGroupImpl.fulfillmentPrice);
-    assertNull(fulfillmentGroupImpl.getFulfillmentPrice());
-    assertNull(fulfillmentGroupImpl.getShippingPrice());
-    Money fulfillmentGroupAdjustmentsValue = fulfillmentGroupImpl.getFulfillmentGroupAdjustmentsValue();
-    Money absResult = fulfillmentGroupAdjustmentsValue.abs();
-    Money absResult2 = absResult.abs();
-    Money absResult3 = absResult2.abs();
-    Money absResult4 = absResult3.abs();
-    assertEquals(fulfillmentPrice, absResult4.abs());
-    Money futureCreditFulfillmentGroupAdjustmentsValue = fulfillmentGroupImpl
-        .getFutureCreditFulfillmentGroupAdjustmentsValue();
-    Money absResult5 = futureCreditFulfillmentGroupAdjustmentsValue.abs();
-    Money absResult6 = absResult5.abs();
-    Money absResult7 = absResult6.abs();
-    Money absResult8 = absResult7.abs();
-    assertEquals(fulfillmentPrice, absResult8.abs());
-    Money zeroResult = fulfillmentGroupAdjustmentsValue.zero();
-    Money absResult9 = zeroResult.abs();
-    Money absResult10 = absResult9.abs();
-    Money absResult11 = absResult10.abs();
-    assertEquals(fulfillmentPrice, absResult11.abs());
-    Money absResult12 = futureCreditFulfillmentGroupAdjustmentsValue.zero().abs();
-    Money absResult13 = absResult12.abs();
-    Money absResult14 = absResult13.abs();
-    assertEquals(fulfillmentPrice, absResult14.abs());
-    Money zeroResult2 = absResult.zero();
-    Money absResult15 = zeroResult2.abs();
-    Money absResult16 = absResult15.abs();
-    assertEquals(fulfillmentPrice, absResult16.abs());
-    Money zeroResult3 = absResult5.zero();
-    Money absResult17 = zeroResult3.abs();
-    Money absResult18 = absResult17.abs();
-    assertEquals(fulfillmentPrice, absResult18.abs());
-    Money zeroResult4 = zeroResult.zero();
-    Money absResult19 = zeroResult4.abs();
-    Money absResult20 = absResult19.abs();
-    assertEquals(fulfillmentPrice, absResult20.abs());
-    Money zeroResult5 = absResult2.zero();
-    Money absResult21 = zeroResult5.abs();
-    assertEquals(fulfillmentPrice, absResult21.abs());
-    Money zeroResult6 = absResult6.zero();
-    Money absResult22 = zeroResult6.abs();
-    assertEquals(fulfillmentPrice, absResult22.abs());
-    Money zeroResult7 = absResult9.zero();
-    Money absResult23 = zeroResult7.abs();
-    assertEquals(fulfillmentPrice, absResult23.abs());
-    Money zeroResult8 = absResult12.zero();
-    Money absResult24 = zeroResult8.abs();
-    assertEquals(fulfillmentPrice, absResult24.abs());
-    Money zeroResult9 = zeroResult2.zero();
-    Money absResult25 = zeroResult9.abs();
-    assertEquals(fulfillmentPrice, absResult25.abs());
-    Money zeroResult10 = zeroResult3.zero();
-    Money absResult26 = zeroResult10.abs();
-    assertEquals(fulfillmentPrice, absResult26.abs());
-    Money zeroResult11 = zeroResult4.zero();
-    Money absResult27 = zeroResult11.abs();
-    assertEquals(fulfillmentPrice, absResult27.abs());
-    Money zeroResult12 = fulfillmentGroupImpl.getTotalTax().zero();
-    Money zeroResult13 = zeroResult12.zero();
-    Money absResult28 = zeroResult13.abs();
-    assertEquals(fulfillmentPrice, absResult28.abs());
-    Money zeroResult14 = absResult3.zero();
-    assertEquals(fulfillmentPrice, zeroResult14.abs());
-    Money zeroResult15 = absResult7.zero();
-    assertEquals(fulfillmentPrice, zeroResult15.abs());
-    Money zeroResult16 = absResult10.zero();
-    assertEquals(fulfillmentPrice, zeroResult16.abs());
-    Money zeroResult17 = absResult13.zero();
-    assertEquals(fulfillmentPrice, zeroResult17.abs());
-    Money zeroResult18 = absResult15.zero();
-    assertEquals(fulfillmentPrice, zeroResult18.abs());
-    Money zeroResult19 = absResult17.zero();
-    assertEquals(fulfillmentPrice, zeroResult19.abs());
-    Money zeroResult20 = absResult19.zero();
-    assertEquals(fulfillmentPrice, zeroResult20.abs());
-    Money zeroResult21 = zeroResult5.zero();
-    assertEquals(fulfillmentPrice, zeroResult21.abs());
-    Money zeroResult22 = zeroResult6.zero();
-    assertEquals(fulfillmentPrice, zeroResult22.abs());
-    Money zeroResult23 = zeroResult7.zero();
-    assertEquals(fulfillmentPrice, zeroResult23.abs());
-    assertEquals(fulfillmentPrice, zeroResult8.zero().abs());
-    Money zeroResult24 = zeroResult9.zero();
-    assertEquals(fulfillmentPrice, zeroResult24.abs());
-    Money zeroResult25 = zeroResult10.zero();
-    assertEquals(fulfillmentPrice, zeroResult25.abs());
-    Money zeroResult26 = zeroResult11.zero();
-    assertEquals(fulfillmentPrice, zeroResult26.abs());
-    Money zeroResult27 = zeroResult13.zero();
-    assertEquals(fulfillmentPrice, zeroResult27.abs());
-    assertEquals(fulfillmentPrice, absResult4.zero());
-    assertEquals(fulfillmentPrice, absResult8.zero());
-    assertEquals(fulfillmentPrice, absResult11.zero());
-    assertEquals(fulfillmentPrice, absResult14.zero());
-    assertEquals(fulfillmentPrice, absResult16.zero());
-    assertEquals(fulfillmentPrice, absResult18.zero());
-    assertEquals(fulfillmentPrice, absResult20.zero());
-    assertEquals(fulfillmentPrice, absResult21.zero());
-    assertEquals(fulfillmentPrice, absResult22.zero());
-    assertEquals(fulfillmentPrice, absResult23.zero());
-    assertEquals(fulfillmentPrice, absResult24.zero());
-    assertEquals(fulfillmentPrice, absResult25.zero());
-    assertEquals(fulfillmentPrice, absResult26.zero());
-    assertEquals(fulfillmentPrice, absResult27.zero());
-    assertEquals(fulfillmentPrice, absResult28.zero());
-    assertEquals(fulfillmentPrice, zeroResult14.zero());
-    assertEquals(fulfillmentPrice, zeroResult15.zero());
-    assertEquals(fulfillmentPrice, zeroResult16.zero());
-    assertEquals(fulfillmentPrice, zeroResult17.zero());
-    assertEquals(fulfillmentPrice, zeroResult18.zero());
-    assertEquals(fulfillmentPrice, zeroResult19.zero());
-    assertEquals(fulfillmentPrice, zeroResult20.zero());
-    Money zeroResult28 = zeroResult12.abs().zero();
-    assertEquals(fulfillmentPrice, zeroResult28.zero());
-    assertEquals(fulfillmentPrice, zeroResult21.zero());
-    assertEquals(fulfillmentPrice, zeroResult22.zero());
-    assertEquals(fulfillmentPrice, zeroResult23.zero());
-    assertEquals(fulfillmentPrice, zeroResult24.zero());
-    assertEquals(fulfillmentPrice, zeroResult25.zero());
-    assertEquals(fulfillmentPrice, zeroResult26.zero());
-    assertEquals(fulfillmentPrice, zeroResult27.zero());
-    BigDecimal bigDecimal = fulfillmentGroupImpl.totalTax;
-    assertSame(bigDecimal, absResult4.getAmount());
-    assertSame(bigDecimal, absResult8.getAmount());
-    assertSame(bigDecimal, absResult11.getAmount());
-    assertSame(bigDecimal, absResult14.getAmount());
-    assertSame(bigDecimal, absResult16.getAmount());
-    assertSame(bigDecimal, absResult18.getAmount());
-    assertSame(bigDecimal, absResult20.getAmount());
-    assertSame(bigDecimal, absResult21.getAmount());
-    assertSame(bigDecimal, absResult22.getAmount());
-    assertSame(bigDecimal, absResult23.getAmount());
-    assertSame(bigDecimal, absResult24.getAmount());
-    assertSame(bigDecimal, absResult25.getAmount());
-    assertSame(bigDecimal, absResult26.getAmount());
-    assertSame(bigDecimal, absResult27.getAmount());
-    assertSame(bigDecimal, absResult28.getAmount());
-    assertSame(bigDecimal, zeroResult14.getAmount());
-    assertSame(bigDecimal, zeroResult15.getAmount());
-    assertSame(bigDecimal, zeroResult16.getAmount());
-    assertSame(bigDecimal, zeroResult17.getAmount());
-    assertSame(bigDecimal, zeroResult18.getAmount());
-    assertSame(bigDecimal, zeroResult19.getAmount());
-    assertSame(bigDecimal, zeroResult20.getAmount());
-    assertSame(bigDecimal, zeroResult28.getAmount());
-    assertSame(bigDecimal, zeroResult21.getAmount());
-    assertSame(bigDecimal, zeroResult22.getAmount());
-    assertSame(bigDecimal, zeroResult23.getAmount());
-    assertSame(bigDecimal, zeroResult24.getAmount());
-    assertSame(bigDecimal, zeroResult25.getAmount());
-    assertSame(bigDecimal, zeroResult26.getAmount());
-    assertSame(bigDecimal, zeroResult27.getAmount());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#setShippingPrice(Money)}.
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#setShippingPrice(Money)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetShippingPrice2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1272 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
-
-    // Act
-    fulfillmentGroupImpl2.setShippingPrice(new Money());
+    assertEquals(merchandiseTotal, fulfillmentGroupImpl2.getShippingPrice());
   }
 
   /**
    * Test {@link FulfillmentGroupImpl#setShippingPrice(Money)}.
    * <ul>
-   *   <li>Then {@link FulfillmentGroupImpl} (default constructor)
-   * {@link FulfillmentGroupImpl#fulfillmentPrice} is
-   * {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
+   *   <li>Then {@link FulfillmentGroupImpl} (default constructor) {@link FulfillmentGroupImpl#fulfillmentPrice} is {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
    * </ul>
    * <p>
    * Method under test: {@link FulfillmentGroupImpl#setShippingPrice(Money)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupImpl.setShippingPrice(Money)"})
   public void testSetShippingPrice_thenFulfillmentGroupImplFulfillmentPriceIsBigDecimalWith000() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
     Money shippingPrice = new Money();
 
     // Act
-    fulfillmentGroupImpl.setShippingPrice(shippingPrice);
+    fulfillmentGroupImpl2.setShippingPrice(shippingPrice);
 
     // Assert
-    assertEquals(new BigDecimal("0.00"), fulfillmentGroupImpl.fulfillmentPrice);
-    BigDecimal bigDecimal = fulfillmentGroupImpl.fulfillmentPrice;
+    assertEquals(new BigDecimal("0.00"), fulfillmentGroupImpl2.fulfillmentPrice);
+    BigDecimal bigDecimal = fulfillmentGroupImpl2.fulfillmentPrice;
     Money absResult = shippingPrice.abs();
     assertSame(bigDecimal, absResult.getAmount());
     Money absResult2 = absResult.abs();
     assertSame(bigDecimal, absResult2.getAmount());
-    Money absResult3 = absResult2.abs();
-    assertSame(bigDecimal, absResult3.getAmount());
-    Money absResult4 = absResult3.abs();
-    assertSame(bigDecimal, absResult4.getAmount());
-    Money absResult5 = absResult4.abs();
-    assertSame(bigDecimal, absResult5.getAmount());
-    Money absResult6 = absResult5.abs();
-    assertSame(bigDecimal, absResult6.getAmount());
-    assertSame(bigDecimal, absResult6.abs().getAmount());
+    assertSame(bigDecimal, absResult2.abs().getAmount());
     Money zeroResult = shippingPrice.zero();
-    Money absResult7 = zeroResult.abs();
-    Money absResult8 = absResult7.abs();
-    Money absResult9 = absResult8.abs();
-    Money absResult10 = absResult9.abs();
-    Money absResult11 = absResult10.abs();
-    assertSame(bigDecimal, absResult11.abs().getAmount());
-    assertSame(bigDecimal, absResult11.getAmount());
+    Money absResult3 = zeroResult.abs();
+    assertSame(bigDecimal, absResult3.abs().getAmount());
+    assertSame(bigDecimal, absResult3.getAmount());
     Money zeroResult2 = absResult.zero();
-    Money absResult12 = zeroResult2.abs();
-    Money absResult13 = absResult12.abs();
-    Money absResult14 = absResult13.abs();
-    Money absResult15 = absResult14.abs();
-    assertSame(bigDecimal, absResult15.abs().getAmount());
+    assertSame(bigDecimal, zeroResult2.abs().getAmount());
     Money zeroResult3 = zeroResult.zero();
-    Money absResult16 = zeroResult3.abs();
-    Money absResult17 = absResult16.abs();
-    Money absResult18 = absResult17.abs();
-    Money absResult19 = absResult18.abs();
-    assertSame(bigDecimal, absResult19.abs().getAmount());
-    assertSame(bigDecimal, absResult10.getAmount());
-    assertSame(bigDecimal, absResult15.getAmount());
-    Money zeroResult4 = absResult2.zero();
-    Money absResult20 = zeroResult4.abs();
-    Money absResult21 = absResult20.abs();
-    Money absResult22 = absResult21.abs();
-    assertSame(bigDecimal, absResult22.abs().getAmount());
-    Money zeroResult5 = absResult7.zero();
-    Money absResult23 = zeroResult5.abs();
-    Money absResult24 = absResult23.abs();
-    Money absResult25 = absResult24.abs();
-    assertSame(bigDecimal, absResult25.abs().getAmount());
-    assertSame(bigDecimal, absResult19.getAmount());
-    Money zeroResult6 = zeroResult2.zero();
-    Money absResult26 = zeroResult6.abs();
-    Money absResult27 = absResult26.abs();
-    Money absResult28 = absResult27.abs();
-    assertSame(bigDecimal, absResult28.abs().getAmount());
-    Money zeroResult7 = zeroResult3.zero();
-    Money absResult29 = zeroResult7.abs();
-    Money absResult30 = absResult29.abs();
-    Money absResult31 = absResult30.abs();
-    assertSame(bigDecimal, absResult31.abs().getAmount());
-    assertSame(bigDecimal, absResult9.getAmount());
-    assertSame(bigDecimal, absResult14.getAmount());
-    assertSame(bigDecimal, absResult22.getAmount());
-    Money zeroResult8 = absResult3.zero();
-    Money absResult32 = zeroResult8.abs();
-    Money absResult33 = absResult32.abs();
-    assertSame(bigDecimal, absResult33.abs().getAmount());
-    Money zeroResult9 = absResult8.zero();
-    Money absResult34 = zeroResult9.abs();
-    Money absResult35 = absResult34.abs();
-    assertSame(bigDecimal, absResult35.abs().getAmount());
-    assertSame(bigDecimal, absResult25.getAmount());
-    Money zeroResult10 = absResult12.zero();
-    Money absResult36 = zeroResult10.abs();
-    Money absResult37 = absResult36.abs();
-    assertSame(bigDecimal, absResult37.abs().getAmount());
-    Money zeroResult11 = absResult16.zero();
-    Money absResult38 = zeroResult11.abs();
-    Money absResult39 = absResult38.abs();
-    assertSame(bigDecimal, absResult39.abs().getAmount());
-    assertSame(bigDecimal, absResult18.getAmount());
-    assertSame(bigDecimal, absResult28.getAmount());
-    Money zeroResult12 = zeroResult4.zero();
-    Money absResult40 = zeroResult12.abs();
-    Money absResult41 = absResult40.abs();
-    assertSame(bigDecimal, absResult41.abs().getAmount());
-    Money zeroResult13 = zeroResult5.zero();
-    Money absResult42 = zeroResult13.abs();
-    Money absResult43 = absResult42.abs();
-    assertSame(bigDecimal, absResult43.abs().getAmount());
-    assertSame(bigDecimal, absResult31.getAmount());
-    Money zeroResult14 = zeroResult6.zero();
-    Money absResult44 = zeroResult14.abs();
-    Money absResult45 = absResult44.abs();
-    assertSame(bigDecimal, absResult45.abs().getAmount());
-    Money zeroResult15 = zeroResult7.zero();
-    Money absResult46 = zeroResult15.abs();
-    Money absResult47 = absResult46.abs();
-    assertSame(bigDecimal, absResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult8.getAmount());
-    assertSame(bigDecimal, absResult13.getAmount());
-    assertSame(bigDecimal, absResult21.getAmount());
-    assertSame(bigDecimal, absResult33.getAmount());
-    Money zeroResult16 = absResult4.zero();
-    Money absResult48 = zeroResult16.abs();
-    assertSame(bigDecimal, absResult48.abs().getAmount());
-    Money zeroResult17 = absResult9.zero();
-    Money absResult49 = zeroResult17.abs();
-    assertSame(bigDecimal, absResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult35.getAmount());
-    Money zeroResult18 = absResult13.zero();
-    Money absResult50 = zeroResult18.abs();
-    assertSame(bigDecimal, absResult50.abs().getAmount());
-    Money zeroResult19 = absResult17.zero();
-    Money absResult51 = zeroResult19.abs();
-    assertSame(bigDecimal, absResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult24.getAmount());
-    assertSame(bigDecimal, absResult37.getAmount());
-    Money zeroResult20 = absResult20.zero();
-    Money absResult52 = zeroResult20.abs();
-    assertSame(bigDecimal, absResult52.abs().getAmount());
-    Money zeroResult21 = absResult23.zero();
-    Money absResult53 = zeroResult21.abs();
-    assertSame(bigDecimal, absResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult39.getAmount());
-    Money zeroResult22 = absResult26.zero();
-    Money absResult54 = zeroResult22.abs();
-    assertSame(bigDecimal, absResult54.abs().getAmount());
-    Money zeroResult23 = absResult29.zero();
-    Money absResult55 = zeroResult23.abs();
-    assertSame(bigDecimal, absResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult17.getAmount());
-    assertSame(bigDecimal, absResult27.getAmount());
-    assertSame(bigDecimal, absResult41.getAmount());
-    Money zeroResult24 = zeroResult8.zero();
-    Money absResult56 = zeroResult24.abs();
-    assertSame(bigDecimal, absResult56.abs().getAmount());
-    Money zeroResult25 = zeroResult9.zero();
-    Money absResult57 = zeroResult25.abs();
-    assertSame(bigDecimal, absResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult43.getAmount());
-    Money zeroResult26 = zeroResult10.zero();
-    Money absResult58 = zeroResult26.abs();
-    assertSame(bigDecimal, absResult58.abs().getAmount());
-    Money zeroResult27 = zeroResult11.zero();
-    Money absResult59 = zeroResult27.abs();
-    assertSame(bigDecimal, absResult59.abs().getAmount());
-    assertSame(bigDecimal, absResult30.getAmount());
-    assertSame(bigDecimal, absResult45.getAmount());
-    Money zeroResult28 = zeroResult12.zero();
-    Money absResult60 = zeroResult28.abs();
-    assertSame(bigDecimal, absResult60.abs().getAmount());
-    Money zeroResult29 = zeroResult13.zero();
-    Money absResult61 = zeroResult29.abs();
-    assertSame(bigDecimal, absResult61.abs().getAmount());
-    assertSame(bigDecimal, absResult47.getAmount());
-    Money zeroResult30 = zeroResult14.zero();
-    Money absResult62 = zeroResult30.abs();
-    assertSame(bigDecimal, absResult62.abs().getAmount());
-    assertSame(bigDecimal, absResult7.getAmount());
-    assertSame(bigDecimal, absResult12.getAmount());
-    assertSame(bigDecimal, absResult20.getAmount());
-    assertSame(bigDecimal, absResult32.getAmount());
-    assertSame(bigDecimal, absResult48.getAmount());
-    Money zeroResult31 = absResult5.zero();
-    assertSame(bigDecimal, zeroResult31.abs().getAmount());
-    Money zeroResult32 = absResult10.zero();
-    assertSame(bigDecimal, zeroResult32.abs().getAmount());
-    assertSame(bigDecimal, absResult49.getAmount());
-    Money zeroResult33 = absResult14.zero();
-    assertSame(bigDecimal, zeroResult33.abs().getAmount());
-    Money zeroResult34 = absResult18.zero();
-    assertSame(bigDecimal, zeroResult34.abs().getAmount());
-    assertSame(bigDecimal, absResult34.getAmount());
-    assertSame(bigDecimal, absResult50.getAmount());
-    Money zeroResult35 = absResult21.zero();
-    assertSame(bigDecimal, zeroResult35.abs().getAmount());
-    Money zeroResult36 = absResult24.zero();
-    assertSame(bigDecimal, zeroResult36.abs().getAmount());
-    assertSame(bigDecimal, absResult51.getAmount());
-    Money zeroResult37 = absResult27.zero();
-    assertSame(bigDecimal, zeroResult37.abs().getAmount());
-    Money zeroResult38 = absResult30.zero();
-    assertSame(bigDecimal, zeroResult38.abs().getAmount());
-    assertSame(bigDecimal, absResult23.getAmount());
-    assertSame(bigDecimal, absResult36.getAmount());
-    assertSame(bigDecimal, absResult52.getAmount());
-    Money zeroResult39 = absResult32.zero();
-    assertSame(bigDecimal, zeroResult39.abs().getAmount());
-    Money zeroResult40 = absResult34.zero();
-    assertSame(bigDecimal, zeroResult40.abs().getAmount());
-    assertSame(bigDecimal, absResult53.getAmount());
-    Money zeroResult41 = absResult36.zero();
-    assertSame(bigDecimal, zeroResult41.abs().getAmount());
-    Money zeroResult42 = absResult38.zero();
-    assertSame(bigDecimal, zeroResult42.abs().getAmount());
-    assertSame(bigDecimal, absResult38.getAmount());
-    assertSame(bigDecimal, absResult54.getAmount());
-    Money zeroResult43 = absResult40.zero();
-    assertSame(bigDecimal, zeroResult43.abs().getAmount());
-    Money zeroResult44 = absResult42.zero();
-    assertSame(bigDecimal, zeroResult44.abs().getAmount());
-    assertSame(bigDecimal, absResult55.getAmount());
-    Money zeroResult45 = absResult44.zero();
-    assertSame(bigDecimal, zeroResult45.abs().getAmount());
-    assertSame(bigDecimal, absResult16.getAmount());
-    assertSame(bigDecimal, absResult26.getAmount());
-    assertSame(bigDecimal, absResult40.getAmount());
-    assertSame(bigDecimal, absResult56.getAmount());
-    Money zeroResult46 = zeroResult16.zero();
-    assertSame(bigDecimal, zeroResult46.abs().getAmount());
-    Money zeroResult47 = zeroResult17.zero();
-    assertSame(bigDecimal, zeroResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult57.getAmount());
-    Money zeroResult48 = zeroResult18.zero();
-    assertSame(bigDecimal, zeroResult48.abs().getAmount());
-    Money zeroResult49 = zeroResult19.zero();
-    assertSame(bigDecimal, zeroResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult42.getAmount());
-    assertSame(bigDecimal, absResult58.getAmount());
-    Money zeroResult50 = zeroResult20.zero();
-    assertSame(bigDecimal, zeroResult50.abs().getAmount());
-    Money zeroResult51 = zeroResult21.zero();
-    assertSame(bigDecimal, zeroResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult59.getAmount());
-    Money zeroResult52 = zeroResult22.zero();
-    assertSame(bigDecimal, zeroResult52.abs().getAmount());
-    Money zeroResult53 = zeroResult23.zero();
-    assertSame(bigDecimal, zeroResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult29.getAmount());
-    assertSame(bigDecimal, absResult44.getAmount());
-    assertSame(bigDecimal, absResult60.getAmount());
-    Money zeroResult54 = zeroResult24.zero();
-    assertSame(bigDecimal, zeroResult54.abs().getAmount());
-    Money zeroResult55 = zeroResult25.zero();
-    assertSame(bigDecimal, zeroResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult61.getAmount());
-    Money zeroResult56 = zeroResult26.zero();
-    assertSame(bigDecimal, zeroResult56.abs().getAmount());
-    Money zeroResult57 = zeroResult27.zero();
-    assertSame(bigDecimal, zeroResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult46.getAmount());
-    assertSame(bigDecimal, absResult62.getAmount());
-    Money zeroResult58 = zeroResult28.zero();
-    assertSame(bigDecimal, zeroResult58.abs().getAmount());
-    Money zeroResult59 = zeroResult29.zero();
-    assertSame(bigDecimal, zeroResult59.abs().getAmount());
-    Money zeroResult60 = zeroResult15.zero();
-    assertSame(bigDecimal, zeroResult60.abs().getAmount());
-    Money zeroResult61 = zeroResult30.zero();
-    assertSame(bigDecimal, zeroResult61.abs().getAmount());
+    assertSame(bigDecimal, zeroResult3.abs().getAmount());
     assertSame(bigDecimal, zeroResult.getAmount());
     assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, zeroResult4.getAmount());
-    assertSame(bigDecimal, zeroResult8.getAmount());
-    assertSame(bigDecimal, zeroResult16.getAmount());
-    assertSame(bigDecimal, zeroResult31.getAmount());
-    assertSame(bigDecimal, absResult6.zero().getAmount());
-    assertSame(bigDecimal, absResult11.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.getAmount());
-    assertSame(bigDecimal, absResult15.zero().getAmount());
-    assertSame(bigDecimal, absResult19.zero().getAmount());
-    assertSame(bigDecimal, zeroResult17.getAmount());
-    assertSame(bigDecimal, zeroResult33.getAmount());
-    assertSame(bigDecimal, absResult22.zero().getAmount());
-    assertSame(bigDecimal, absResult25.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.getAmount());
-    assertSame(bigDecimal, absResult28.zero().getAmount());
-    assertSame(bigDecimal, absResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult9.getAmount());
-    assertSame(bigDecimal, zeroResult18.getAmount());
-    assertSame(bigDecimal, zeroResult35.getAmount());
-    assertSame(bigDecimal, absResult33.zero().getAmount());
-    assertSame(bigDecimal, absResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.getAmount());
-    assertSame(bigDecimal, absResult37.zero().getAmount());
-    assertSame(bigDecimal, absResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult19.getAmount());
-    assertSame(bigDecimal, zeroResult37.getAmount());
-    assertSame(bigDecimal, absResult41.zero().getAmount());
-    assertSame(bigDecimal, absResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.getAmount());
-    assertSame(bigDecimal, absResult45.zero().getAmount());
-    assertSame(bigDecimal, absResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult5.getAmount());
-    assertSame(bigDecimal, zeroResult10.getAmount());
-    assertSame(bigDecimal, zeroResult20.getAmount());
-    assertSame(bigDecimal, zeroResult39.getAmount());
-    assertSame(bigDecimal, absResult48.zero().getAmount());
-    assertSame(bigDecimal, absResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.getAmount());
-    assertSame(bigDecimal, absResult50.zero().getAmount());
-    assertSame(bigDecimal, absResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult21.getAmount());
-    assertSame(bigDecimal, zeroResult41.getAmount());
-    assertSame(bigDecimal, absResult52.zero().getAmount());
-    assertSame(bigDecimal, absResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.getAmount());
-    assertSame(bigDecimal, absResult54.zero().getAmount());
-    assertSame(bigDecimal, absResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult11.getAmount());
-    assertSame(bigDecimal, zeroResult22.getAmount());
-    assertSame(bigDecimal, zeroResult43.getAmount());
-    assertSame(bigDecimal, absResult56.zero().getAmount());
-    assertSame(bigDecimal, absResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.getAmount());
-    assertSame(bigDecimal, absResult58.zero().getAmount());
-    assertSame(bigDecimal, absResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult23.getAmount());
-    assertSame(bigDecimal, zeroResult45.getAmount());
-    assertSame(bigDecimal, absResult60.zero().getAmount());
-    assertSame(bigDecimal, absResult61.zero().getAmount());
-    assertSame(bigDecimal, absResult46.zero().getAmount());
-    assertSame(bigDecimal, absResult62.zero().getAmount());
+    assertSame(bigDecimal, absResult2.zero().getAmount());
+    assertSame(bigDecimal, absResult3.zero().getAmount());
     assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult6.getAmount());
-    assertSame(bigDecimal, zeroResult12.getAmount());
-    assertSame(bigDecimal, zeroResult24.getAmount());
-    assertSame(bigDecimal, zeroResult46.getAmount());
-    assertSame(bigDecimal, zeroResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.getAmount());
-    assertSame(bigDecimal, zeroResult33.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.zero().getAmount());
-    assertSame(bigDecimal, zeroResult25.getAmount());
-    assertSame(bigDecimal, zeroResult48.getAmount());
-    assertSame(bigDecimal, zeroResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.getAmount());
-    assertSame(bigDecimal, zeroResult37.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.zero().getAmount());
-    assertSame(bigDecimal, zeroResult13.getAmount());
-    assertSame(bigDecimal, zeroResult26.getAmount());
-    assertSame(bigDecimal, zeroResult50.getAmount());
-    assertSame(bigDecimal, zeroResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.getAmount());
-    assertSame(bigDecimal, zeroResult41.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.zero().getAmount());
-    assertSame(bigDecimal, zeroResult27.getAmount());
-    assertSame(bigDecimal, zeroResult52.getAmount());
-    assertSame(bigDecimal, zeroResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.getAmount());
-    assertSame(bigDecimal, zeroResult45.zero().getAmount());
-    assertSame(bigDecimal, zeroResult7.getAmount());
-    assertSame(bigDecimal, zeroResult14.getAmount());
-    assertSame(bigDecimal, zeroResult28.getAmount());
-    assertSame(bigDecimal, zeroResult54.getAmount());
-    assertSame(bigDecimal, zeroResult46.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.getAmount());
-    assertSame(bigDecimal, zeroResult48.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult29.getAmount());
-    assertSame(bigDecimal, zeroResult56.getAmount());
-    assertSame(bigDecimal, zeroResult50.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.getAmount());
-    assertSame(bigDecimal, zeroResult52.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult15.getAmount());
-    assertSame(bigDecimal, zeroResult30.getAmount());
-    assertSame(bigDecimal, zeroResult58.getAmount());
-    assertSame(bigDecimal, zeroResult54.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.getAmount());
-    assertSame(bigDecimal, zeroResult56.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.getAmount());
-    assertSame(bigDecimal, zeroResult61.getAmount());
-    assertSame(bigDecimal, zeroResult58.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.zero().getAmount());
-    assertSame(bigDecimal, zeroResult61.zero().getAmount());
+    assertSame(bigDecimal, zeroResult2.zero().getAmount());
+    assertSame(bigDecimal, zeroResult3.zero().getAmount());
   }
 
   /**
    * Test {@link FulfillmentGroupImpl#setShippingPrice(Money)}.
    * <ul>
-   *   <li>When {@link Money}.</li>
-   *   <li>Then {@link FulfillmentGroupImpl} (default constructor)
-   * {@link FulfillmentGroupImpl#fulfillmentPrice} is {@code null}.</li>
+   *   <li>Then {@link FulfillmentGroupImpl} (default constructor) {@link FulfillmentGroupImpl#fulfillmentPrice} is {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link FulfillmentGroupImpl#setShippingPrice(Money)}
    */
   @Test
-  public void testSetShippingPrice_whenMoney_thenFulfillmentGroupImplFulfillmentPriceIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupImpl.setShippingPrice(Money)"})
+  public void testSetShippingPrice_thenFulfillmentGroupImplFulfillmentPriceIsNull() {
     // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl2.setAddress(new AddressImpl());
+    fulfillmentGroupImpl2.setCandidateFulfillmentGroupOffer(new ArrayList<>());
+    fulfillmentGroupImpl2.setDeliveryInstruction("Delivery Instruction");
+    fulfillmentGroupImpl2.setFulfillmentGroupAdjustments(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupFees(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupItems(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentOption(new FulfillmentOptionImpl());
+    Money fulfillmentPrice = new Money();
+    fulfillmentGroupImpl2.setFulfillmentPrice(fulfillmentPrice);
+    fulfillmentGroupImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupImpl2.setIsShippingPriceTaxable(true);
+    fulfillmentGroupImpl2.setMerchandiseTotal(new Money());
+    fulfillmentGroupImpl2.setMethod("Fulfillment Method");
+    fulfillmentGroupImpl2.setOrder(NullOrderFactoryImpl.NULL_ORDER);
+    fulfillmentGroupImpl2.setPersonalMessage(new PersonalMessageImpl());
+    fulfillmentGroupImpl2.setPhone(new PhoneImpl());
+    fulfillmentGroupImpl2.setPrimary(true);
+    fulfillmentGroupImpl2.setReferenceNumber("42");
+    fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSequence(1);
+    fulfillmentGroupImpl2.setService("Service");
+    fulfillmentGroupImpl2.setShippingOverride(true);
+    fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupImpl2.setTaxes(new ArrayList<>());
+    fulfillmentGroupImpl2.setTotal(new Money());
+    fulfillmentGroupImpl2.setTotalFeeTax(new Money());
+    fulfillmentGroupImpl2.setTotalFulfillmentGroupTax(new Money());
+    fulfillmentGroupImpl2.setTotalItemTax(new Money());
+    fulfillmentGroupImpl2.setTotalTax(new Money());
+    fulfillmentGroupImpl2.setType(FulfillmentType.DIGITAL);
 
     // Act
-    fulfillmentGroupImpl.setShippingPrice(mock(Money.class));
+    fulfillmentGroupImpl2.setShippingPrice(null);
 
     // Assert
-    assertNull(fulfillmentGroupImpl.fulfillmentPrice);
-    assertNull(fulfillmentGroupImpl.getFulfillmentPrice());
-    assertNull(fulfillmentGroupImpl.getShippingPrice());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#getTotalTax()}.
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#getTotalTax()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetTotalTax() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass942 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new FulfillmentGroupImpl()).getTotalTax();
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#getTotalTax()}.
-   * <ul>
-   *   <li>Given {@link FulfillmentGroupImpl} (default constructor) TotalTax is
-   * {@link Money}.</li>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#getTotalTax()}
-   */
-  @Test
-  public void testGetTotalTax_givenFulfillmentGroupImplTotalTaxIsMoney_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setTotalTax(mock(Money.class));
-
-    // Act and Assert
-    assertNull(fulfillmentGroupImpl.getTotalTax());
+    assertNull(fulfillmentGroupImpl2.fulfillmentPrice);
+    assertNull(fulfillmentGroupImpl2.getFulfillmentPrice());
+    assertNull(fulfillmentGroupImpl2.getShippingPrice());
+    Money zeroResult = fulfillmentGroupImpl2.getTotalTax().zero();
+    Money zeroResult2 = zeroResult.zero();
+    Money absResult = zeroResult2.abs();
+    assertEquals(fulfillmentPrice, absResult.abs());
+    Money zeroResult3 = zeroResult2.zero();
+    assertEquals(fulfillmentPrice, zeroResult3.abs());
+    assertEquals(fulfillmentPrice, absResult.zero());
+    Money zeroResult4 = zeroResult.abs().zero();
+    assertEquals(fulfillmentPrice, zeroResult4.zero());
+    assertEquals(fulfillmentPrice, zeroResult3.zero());
+    BigDecimal bigDecimal = fulfillmentGroupImpl2.totalTax;
+    assertSame(bigDecimal, absResult.getAmount());
+    assertSame(bigDecimal, zeroResult4.getAmount());
+    assertSame(bigDecimal, zeroResult3.getAmount());
   }
 
   /**
@@ -6815,9 +2327,9 @@ public class FulfillmentGroupImplDiffblueTest {
    * Method under test: {@link FulfillmentGroupImpl#getTotalTax()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money FulfillmentGroupImpl.getTotalTax()"})
   public void testGetTotalTax_givenFulfillmentGroupImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new FulfillmentGroupImpl()).getTotalTax());
   }
@@ -6825,17 +2337,16 @@ public class FulfillmentGroupImplDiffblueTest {
   /**
    * Test {@link FulfillmentGroupImpl#getTotalTax()}.
    * <ul>
-   *   <li>Given {@link OrderImpl} (default constructor) Currency is
-   * {@code null}.</li>
+   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@code null}.</li>
    *   <li>Then return {@link Money#Money()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link FulfillmentGroupImpl#getTotalTax()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money FulfillmentGroupImpl.getTotalTax()"})
   public void testGetTotalTax_givenOrderImplCurrencyIsNull_thenReturnMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
@@ -6865,670 +2376,141 @@ public class FulfillmentGroupImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setCurrency(null);
 
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(new AddressImpl());
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl2.setAddress(new AddressImpl());
+    fulfillmentGroupImpl2.setCandidateFulfillmentGroupOffer(new ArrayList<>());
+    fulfillmentGroupImpl2.setDeliveryInstruction("Delivery Instruction");
+    fulfillmentGroupImpl2.setFulfillmentGroupAdjustments(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupFees(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupItems(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentOption(new FulfillmentOptionImpl());
     Money fulfillmentPrice = new Money();
-    fulfillmentGroupImpl.setFulfillmentPrice(fulfillmentPrice);
-    fulfillmentGroupImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setOrder(order);
+    fulfillmentGroupImpl2.setFulfillmentPrice(fulfillmentPrice);
+    fulfillmentGroupImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupImpl2.setIsShippingPriceTaxable(true);
+    fulfillmentGroupImpl2.setMerchandiseTotal(new Money());
+    fulfillmentGroupImpl2.setMethod("Fulfillment Method");
+    fulfillmentGroupImpl2.setPersonalMessage(new PersonalMessageImpl());
+    fulfillmentGroupImpl2.setPhone(new PhoneImpl());
+    fulfillmentGroupImpl2.setPrimary(true);
+    fulfillmentGroupImpl2.setReferenceNumber("42");
+    fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSequence(1);
+    fulfillmentGroupImpl2.setService("Service");
+    fulfillmentGroupImpl2.setShippingOverride(true);
+    fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupImpl2.setTaxes(new ArrayList<>());
+    fulfillmentGroupImpl2.setTotal(new Money());
+    fulfillmentGroupImpl2.setTotalFeeTax(new Money());
+    fulfillmentGroupImpl2.setTotalFulfillmentGroupTax(new Money());
+    fulfillmentGroupImpl2.setTotalItemTax(new Money());
+    fulfillmentGroupImpl2.setType(FulfillmentType.DIGITAL);
+    fulfillmentGroupImpl2.setTotalTax(new Money());
+    fulfillmentGroupImpl2.setOrder(order);
 
     // Act and Assert
-    assertEquals(fulfillmentPrice, fulfillmentGroupImpl.getTotalTax());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#setTotalTax(Money)}.
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#setTotalTax(Money)}
-   */
-  @Test
-  public void testSetTotalTax() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(new AddressImpl());
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
-    Money fulfillmentPrice = new Money();
-    fulfillmentGroupImpl.setFulfillmentPrice(fulfillmentPrice);
-    fulfillmentGroupImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setOrder(NullOrderFactoryImpl.NULL_ORDER);
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-
-    // Act
-    fulfillmentGroupImpl.setTotalTax(null);
-
-    // Assert
-    assertNull(fulfillmentGroupImpl.totalTax);
-    assertNull(fulfillmentGroupImpl.getTotalTax());
-    Money fulfillmentGroupAdjustmentsValue = fulfillmentGroupImpl.getFulfillmentGroupAdjustmentsValue();
-    Money absResult = fulfillmentGroupAdjustmentsValue.abs();
-    Money absResult2 = absResult.abs();
-    Money absResult3 = absResult2.abs();
-    Money absResult4 = absResult3.abs();
-    assertEquals(fulfillmentPrice, absResult4.abs());
-    Money zeroResult = fulfillmentGroupAdjustmentsValue.zero();
-    Money absResult5 = zeroResult.abs();
-    Money absResult6 = absResult5.abs();
-    Money absResult7 = absResult6.abs();
-    assertEquals(fulfillmentPrice, absResult7.abs());
-    Money zeroResult2 = absResult.zero();
-    Money absResult8 = zeroResult2.abs();
-    Money absResult9 = absResult8.abs();
-    assertEquals(fulfillmentPrice, absResult9.abs());
-    assertEquals(fulfillmentPrice, zeroResult.zero().abs().abs().abs());
-    Money zeroResult3 = absResult2.zero();
-    Money absResult10 = zeroResult3.abs();
-    assertEquals(fulfillmentPrice, absResult10.abs());
-    Money zeroResult4 = absResult5.zero();
-    Money absResult11 = zeroResult4.abs();
-    assertEquals(fulfillmentPrice, absResult11.abs());
-    Money zeroResult5 = zeroResult2.zero();
-    Money absResult12 = zeroResult5.abs();
-    assertEquals(fulfillmentPrice, absResult12.abs());
-    Money zeroResult6 = absResult3.zero();
-    assertEquals(fulfillmentPrice, zeroResult6.abs());
-    Money zeroResult7 = absResult6.zero();
-    assertEquals(fulfillmentPrice, zeroResult7.abs());
-    Money zeroResult8 = absResult8.zero();
-    assertEquals(fulfillmentPrice, zeroResult8.abs());
-    Money zeroResult9 = zeroResult3.zero();
-    assertEquals(fulfillmentPrice, zeroResult9.abs());
-    Money zeroResult10 = zeroResult4.zero();
-    assertEquals(fulfillmentPrice, zeroResult10.abs());
-    Money zeroResult11 = zeroResult5.zero();
-    assertEquals(fulfillmentPrice, zeroResult11.abs());
-    assertEquals(fulfillmentPrice, absResult4.zero());
-    assertEquals(fulfillmentPrice, absResult7.zero());
-    assertEquals(fulfillmentPrice, absResult9.zero());
-    assertEquals(fulfillmentPrice, absResult10.zero());
-    assertEquals(fulfillmentPrice, absResult11.zero());
-    assertEquals(fulfillmentPrice, absResult12.zero());
-    assertEquals(fulfillmentPrice, zeroResult6.zero());
-    assertEquals(fulfillmentPrice, zeroResult7.zero());
-    assertEquals(fulfillmentPrice, zeroResult8.zero());
-    assertEquals(fulfillmentPrice, zeroResult9.zero());
-    assertEquals(fulfillmentPrice, zeroResult10.zero());
-    assertEquals(fulfillmentPrice, zeroResult11.zero());
-    BigDecimal bigDecimal = fulfillmentGroupImpl.totalItemTax;
-    assertSame(bigDecimal, absResult4.getAmount());
-    assertSame(bigDecimal, absResult7.getAmount());
-    assertSame(bigDecimal, absResult9.getAmount());
-    assertSame(bigDecimal, absResult10.getAmount());
-    assertSame(bigDecimal, absResult11.getAmount());
-    assertSame(bigDecimal, absResult12.getAmount());
-    assertSame(bigDecimal, zeroResult6.getAmount());
-    assertSame(bigDecimal, zeroResult7.getAmount());
-    assertSame(bigDecimal, zeroResult8.getAmount());
-    assertSame(bigDecimal, zeroResult9.getAmount());
-    assertSame(bigDecimal, zeroResult10.getAmount());
-    assertSame(bigDecimal, zeroResult11.getAmount());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#setTotalTax(Money)}.
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#setTotalTax(Money)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetTotalTax2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1452 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
-
-    // Act
-    fulfillmentGroupImpl2.setTotalTax(new Money());
+    assertEquals(fulfillmentPrice, fulfillmentGroupImpl2.getTotalTax());
   }
 
   /**
    * Test {@link FulfillmentGroupImpl#setTotalTax(Money)}.
    * <ul>
-   *   <li>When {@link Money#Money()}.</li>
-   *   <li>Then {@link FulfillmentGroupImpl} (default constructor)
-   * {@link FulfillmentGroupImpl#totalTax} is
-   * {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
+   *   <li>Then {@link FulfillmentGroupImpl} (default constructor) {@link FulfillmentGroupImpl#totalTax} is {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
    * </ul>
    * <p>
    * Method under test: {@link FulfillmentGroupImpl#setTotalTax(Money)}
    */
   @Test
-  public void testSetTotalTax_whenMoney_thenFulfillmentGroupImplTotalTaxIsBigDecimalWith000() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupImpl.setTotalTax(Money)"})
+  public void testSetTotalTax_thenFulfillmentGroupImplTotalTaxIsBigDecimalWith000() {
     // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
     Money totalTax = new Money();
 
     // Act
-    fulfillmentGroupImpl.setTotalTax(totalTax);
+    fulfillmentGroupImpl2.setTotalTax(totalTax);
 
     // Assert
-    assertEquals(new BigDecimal("0.00"), fulfillmentGroupImpl.totalTax);
-    BigDecimal bigDecimal = fulfillmentGroupImpl.totalTax;
+    assertEquals(new BigDecimal("0.00"), fulfillmentGroupImpl2.totalTax);
+    BigDecimal bigDecimal = fulfillmentGroupImpl2.totalTax;
     Money absResult = totalTax.abs();
     assertSame(bigDecimal, absResult.getAmount());
     Money absResult2 = absResult.abs();
     assertSame(bigDecimal, absResult2.getAmount());
-    Money absResult3 = absResult2.abs();
-    assertSame(bigDecimal, absResult3.getAmount());
-    Money absResult4 = absResult3.abs();
-    assertSame(bigDecimal, absResult4.getAmount());
-    Money absResult5 = absResult4.abs();
-    assertSame(bigDecimal, absResult5.getAmount());
-    Money absResult6 = absResult5.abs();
-    assertSame(bigDecimal, absResult6.getAmount());
-    assertSame(bigDecimal, absResult6.abs().getAmount());
+    assertSame(bigDecimal, absResult2.abs().getAmount());
     Money zeroResult = totalTax.zero();
-    Money absResult7 = zeroResult.abs();
-    Money absResult8 = absResult7.abs();
-    Money absResult9 = absResult8.abs();
-    Money absResult10 = absResult9.abs();
-    Money absResult11 = absResult10.abs();
-    assertSame(bigDecimal, absResult11.abs().getAmount());
-    assertSame(bigDecimal, absResult11.getAmount());
+    Money absResult3 = zeroResult.abs();
+    assertSame(bigDecimal, absResult3.abs().getAmount());
+    assertSame(bigDecimal, absResult3.getAmount());
     Money zeroResult2 = absResult.zero();
-    Money absResult12 = zeroResult2.abs();
-    Money absResult13 = absResult12.abs();
-    Money absResult14 = absResult13.abs();
-    Money absResult15 = absResult14.abs();
-    assertSame(bigDecimal, absResult15.abs().getAmount());
+    assertSame(bigDecimal, zeroResult2.abs().getAmount());
     Money zeroResult3 = zeroResult.zero();
-    Money absResult16 = zeroResult3.abs();
-    Money absResult17 = absResult16.abs();
-    Money absResult18 = absResult17.abs();
-    Money absResult19 = absResult18.abs();
-    assertSame(bigDecimal, absResult19.abs().getAmount());
-    assertSame(bigDecimal, absResult10.getAmount());
-    assertSame(bigDecimal, absResult15.getAmount());
-    Money zeroResult4 = absResult2.zero();
-    Money absResult20 = zeroResult4.abs();
-    Money absResult21 = absResult20.abs();
-    Money absResult22 = absResult21.abs();
-    assertSame(bigDecimal, absResult22.abs().getAmount());
-    Money zeroResult5 = absResult7.zero();
-    Money absResult23 = zeroResult5.abs();
-    Money absResult24 = absResult23.abs();
-    Money absResult25 = absResult24.abs();
-    assertSame(bigDecimal, absResult25.abs().getAmount());
-    assertSame(bigDecimal, absResult19.getAmount());
-    Money zeroResult6 = zeroResult2.zero();
-    Money absResult26 = zeroResult6.abs();
-    Money absResult27 = absResult26.abs();
-    Money absResult28 = absResult27.abs();
-    assertSame(bigDecimal, absResult28.abs().getAmount());
-    Money zeroResult7 = zeroResult3.zero();
-    Money absResult29 = zeroResult7.abs();
-    Money absResult30 = absResult29.abs();
-    Money absResult31 = absResult30.abs();
-    assertSame(bigDecimal, absResult31.abs().getAmount());
-    assertSame(bigDecimal, absResult9.getAmount());
-    assertSame(bigDecimal, absResult14.getAmount());
-    assertSame(bigDecimal, absResult22.getAmount());
-    Money zeroResult8 = absResult3.zero();
-    Money absResult32 = zeroResult8.abs();
-    Money absResult33 = absResult32.abs();
-    assertSame(bigDecimal, absResult33.abs().getAmount());
-    Money zeroResult9 = absResult8.zero();
-    Money absResult34 = zeroResult9.abs();
-    Money absResult35 = absResult34.abs();
-    assertSame(bigDecimal, absResult35.abs().getAmount());
-    assertSame(bigDecimal, absResult25.getAmount());
-    Money zeroResult10 = absResult12.zero();
-    Money absResult36 = zeroResult10.abs();
-    Money absResult37 = absResult36.abs();
-    assertSame(bigDecimal, absResult37.abs().getAmount());
-    Money zeroResult11 = absResult16.zero();
-    Money absResult38 = zeroResult11.abs();
-    Money absResult39 = absResult38.abs();
-    assertSame(bigDecimal, absResult39.abs().getAmount());
-    assertSame(bigDecimal, absResult18.getAmount());
-    assertSame(bigDecimal, absResult28.getAmount());
-    Money zeroResult12 = zeroResult4.zero();
-    Money absResult40 = zeroResult12.abs();
-    Money absResult41 = absResult40.abs();
-    assertSame(bigDecimal, absResult41.abs().getAmount());
-    Money zeroResult13 = zeroResult5.zero();
-    Money absResult42 = zeroResult13.abs();
-    Money absResult43 = absResult42.abs();
-    assertSame(bigDecimal, absResult43.abs().getAmount());
-    assertSame(bigDecimal, absResult31.getAmount());
-    Money zeroResult14 = zeroResult6.zero();
-    Money absResult44 = zeroResult14.abs();
-    Money absResult45 = absResult44.abs();
-    assertSame(bigDecimal, absResult45.abs().getAmount());
-    Money zeroResult15 = zeroResult7.zero();
-    Money absResult46 = zeroResult15.abs();
-    Money absResult47 = absResult46.abs();
-    assertSame(bigDecimal, absResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult8.getAmount());
-    assertSame(bigDecimal, absResult13.getAmount());
-    assertSame(bigDecimal, absResult21.getAmount());
-    assertSame(bigDecimal, absResult33.getAmount());
-    Money zeroResult16 = absResult4.zero();
-    Money absResult48 = zeroResult16.abs();
-    assertSame(bigDecimal, absResult48.abs().getAmount());
-    Money zeroResult17 = absResult9.zero();
-    Money absResult49 = zeroResult17.abs();
-    assertSame(bigDecimal, absResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult35.getAmount());
-    Money zeroResult18 = absResult13.zero();
-    Money absResult50 = zeroResult18.abs();
-    assertSame(bigDecimal, absResult50.abs().getAmount());
-    Money zeroResult19 = absResult17.zero();
-    Money absResult51 = zeroResult19.abs();
-    assertSame(bigDecimal, absResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult24.getAmount());
-    assertSame(bigDecimal, absResult37.getAmount());
-    Money zeroResult20 = absResult20.zero();
-    Money absResult52 = zeroResult20.abs();
-    assertSame(bigDecimal, absResult52.abs().getAmount());
-    Money zeroResult21 = absResult23.zero();
-    Money absResult53 = zeroResult21.abs();
-    assertSame(bigDecimal, absResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult39.getAmount());
-    Money zeroResult22 = absResult26.zero();
-    Money absResult54 = zeroResult22.abs();
-    assertSame(bigDecimal, absResult54.abs().getAmount());
-    Money zeroResult23 = absResult29.zero();
-    Money absResult55 = zeroResult23.abs();
-    assertSame(bigDecimal, absResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult17.getAmount());
-    assertSame(bigDecimal, absResult27.getAmount());
-    assertSame(bigDecimal, absResult41.getAmount());
-    Money zeroResult24 = zeroResult8.zero();
-    Money absResult56 = zeroResult24.abs();
-    assertSame(bigDecimal, absResult56.abs().getAmount());
-    Money zeroResult25 = zeroResult9.zero();
-    Money absResult57 = zeroResult25.abs();
-    assertSame(bigDecimal, absResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult43.getAmount());
-    Money zeroResult26 = zeroResult10.zero();
-    Money absResult58 = zeroResult26.abs();
-    assertSame(bigDecimal, absResult58.abs().getAmount());
-    Money zeroResult27 = zeroResult11.zero();
-    Money absResult59 = zeroResult27.abs();
-    assertSame(bigDecimal, absResult59.abs().getAmount());
-    assertSame(bigDecimal, absResult30.getAmount());
-    assertSame(bigDecimal, absResult45.getAmount());
-    Money zeroResult28 = zeroResult12.zero();
-    Money absResult60 = zeroResult28.abs();
-    assertSame(bigDecimal, absResult60.abs().getAmount());
-    Money zeroResult29 = zeroResult13.zero();
-    Money absResult61 = zeroResult29.abs();
-    assertSame(bigDecimal, absResult61.abs().getAmount());
-    assertSame(bigDecimal, absResult47.getAmount());
-    Money zeroResult30 = zeroResult14.zero();
-    Money absResult62 = zeroResult30.abs();
-    assertSame(bigDecimal, absResult62.abs().getAmount());
-    assertSame(bigDecimal, absResult7.getAmount());
-    assertSame(bigDecimal, absResult12.getAmount());
-    assertSame(bigDecimal, absResult20.getAmount());
-    assertSame(bigDecimal, absResult32.getAmount());
-    assertSame(bigDecimal, absResult48.getAmount());
-    Money zeroResult31 = absResult5.zero();
-    assertSame(bigDecimal, zeroResult31.abs().getAmount());
-    Money zeroResult32 = absResult10.zero();
-    assertSame(bigDecimal, zeroResult32.abs().getAmount());
-    assertSame(bigDecimal, absResult49.getAmount());
-    Money zeroResult33 = absResult14.zero();
-    assertSame(bigDecimal, zeroResult33.abs().getAmount());
-    Money zeroResult34 = absResult18.zero();
-    assertSame(bigDecimal, zeroResult34.abs().getAmount());
-    assertSame(bigDecimal, absResult34.getAmount());
-    assertSame(bigDecimal, absResult50.getAmount());
-    Money zeroResult35 = absResult21.zero();
-    assertSame(bigDecimal, zeroResult35.abs().getAmount());
-    Money zeroResult36 = absResult24.zero();
-    assertSame(bigDecimal, zeroResult36.abs().getAmount());
-    assertSame(bigDecimal, absResult51.getAmount());
-    Money zeroResult37 = absResult27.zero();
-    assertSame(bigDecimal, zeroResult37.abs().getAmount());
-    Money zeroResult38 = absResult30.zero();
-    assertSame(bigDecimal, zeroResult38.abs().getAmount());
-    assertSame(bigDecimal, absResult23.getAmount());
-    assertSame(bigDecimal, absResult36.getAmount());
-    assertSame(bigDecimal, absResult52.getAmount());
-    Money zeroResult39 = absResult32.zero();
-    assertSame(bigDecimal, zeroResult39.abs().getAmount());
-    Money zeroResult40 = absResult34.zero();
-    assertSame(bigDecimal, zeroResult40.abs().getAmount());
-    assertSame(bigDecimal, absResult53.getAmount());
-    Money zeroResult41 = absResult36.zero();
-    assertSame(bigDecimal, zeroResult41.abs().getAmount());
-    Money zeroResult42 = absResult38.zero();
-    assertSame(bigDecimal, zeroResult42.abs().getAmount());
-    assertSame(bigDecimal, absResult38.getAmount());
-    assertSame(bigDecimal, absResult54.getAmount());
-    Money zeroResult43 = absResult40.zero();
-    assertSame(bigDecimal, zeroResult43.abs().getAmount());
-    Money zeroResult44 = absResult42.zero();
-    assertSame(bigDecimal, zeroResult44.abs().getAmount());
-    assertSame(bigDecimal, absResult55.getAmount());
-    Money zeroResult45 = absResult44.zero();
-    assertSame(bigDecimal, zeroResult45.abs().getAmount());
-    assertSame(bigDecimal, absResult16.getAmount());
-    assertSame(bigDecimal, absResult26.getAmount());
-    assertSame(bigDecimal, absResult40.getAmount());
-    assertSame(bigDecimal, absResult56.getAmount());
-    Money zeroResult46 = zeroResult16.zero();
-    assertSame(bigDecimal, zeroResult46.abs().getAmount());
-    Money zeroResult47 = zeroResult17.zero();
-    assertSame(bigDecimal, zeroResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult57.getAmount());
-    Money zeroResult48 = zeroResult18.zero();
-    assertSame(bigDecimal, zeroResult48.abs().getAmount());
-    Money zeroResult49 = zeroResult19.zero();
-    assertSame(bigDecimal, zeroResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult42.getAmount());
-    assertSame(bigDecimal, absResult58.getAmount());
-    Money zeroResult50 = zeroResult20.zero();
-    assertSame(bigDecimal, zeroResult50.abs().getAmount());
-    Money zeroResult51 = zeroResult21.zero();
-    assertSame(bigDecimal, zeroResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult59.getAmount());
-    Money zeroResult52 = zeroResult22.zero();
-    assertSame(bigDecimal, zeroResult52.abs().getAmount());
-    Money zeroResult53 = zeroResult23.zero();
-    assertSame(bigDecimal, zeroResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult29.getAmount());
-    assertSame(bigDecimal, absResult44.getAmount());
-    assertSame(bigDecimal, absResult60.getAmount());
-    Money zeroResult54 = zeroResult24.zero();
-    assertSame(bigDecimal, zeroResult54.abs().getAmount());
-    Money zeroResult55 = zeroResult25.zero();
-    assertSame(bigDecimal, zeroResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult61.getAmount());
-    Money zeroResult56 = zeroResult26.zero();
-    assertSame(bigDecimal, zeroResult56.abs().getAmount());
-    Money zeroResult57 = zeroResult27.zero();
-    assertSame(bigDecimal, zeroResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult46.getAmount());
-    assertSame(bigDecimal, absResult62.getAmount());
-    Money zeroResult58 = zeroResult28.zero();
-    assertSame(bigDecimal, zeroResult58.abs().getAmount());
-    Money zeroResult59 = zeroResult29.zero();
-    assertSame(bigDecimal, zeroResult59.abs().getAmount());
-    Money zeroResult60 = zeroResult15.zero();
-    assertSame(bigDecimal, zeroResult60.abs().getAmount());
-    Money zeroResult61 = zeroResult30.zero();
-    assertSame(bigDecimal, zeroResult61.abs().getAmount());
+    assertSame(bigDecimal, zeroResult3.abs().getAmount());
     assertSame(bigDecimal, zeroResult.getAmount());
     assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, zeroResult4.getAmount());
-    assertSame(bigDecimal, zeroResult8.getAmount());
-    assertSame(bigDecimal, zeroResult16.getAmount());
-    assertSame(bigDecimal, zeroResult31.getAmount());
-    assertSame(bigDecimal, absResult6.zero().getAmount());
-    assertSame(bigDecimal, absResult11.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.getAmount());
-    assertSame(bigDecimal, absResult15.zero().getAmount());
-    assertSame(bigDecimal, absResult19.zero().getAmount());
-    assertSame(bigDecimal, zeroResult17.getAmount());
-    assertSame(bigDecimal, zeroResult33.getAmount());
-    assertSame(bigDecimal, absResult22.zero().getAmount());
-    assertSame(bigDecimal, absResult25.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.getAmount());
-    assertSame(bigDecimal, absResult28.zero().getAmount());
-    assertSame(bigDecimal, absResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult9.getAmount());
-    assertSame(bigDecimal, zeroResult18.getAmount());
-    assertSame(bigDecimal, zeroResult35.getAmount());
-    assertSame(bigDecimal, absResult33.zero().getAmount());
-    assertSame(bigDecimal, absResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.getAmount());
-    assertSame(bigDecimal, absResult37.zero().getAmount());
-    assertSame(bigDecimal, absResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult19.getAmount());
-    assertSame(bigDecimal, zeroResult37.getAmount());
-    assertSame(bigDecimal, absResult41.zero().getAmount());
-    assertSame(bigDecimal, absResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.getAmount());
-    assertSame(bigDecimal, absResult45.zero().getAmount());
-    assertSame(bigDecimal, absResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult5.getAmount());
-    assertSame(bigDecimal, zeroResult10.getAmount());
-    assertSame(bigDecimal, zeroResult20.getAmount());
-    assertSame(bigDecimal, zeroResult39.getAmount());
-    assertSame(bigDecimal, absResult48.zero().getAmount());
-    assertSame(bigDecimal, absResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.getAmount());
-    assertSame(bigDecimal, absResult50.zero().getAmount());
-    assertSame(bigDecimal, absResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult21.getAmount());
-    assertSame(bigDecimal, zeroResult41.getAmount());
-    assertSame(bigDecimal, absResult52.zero().getAmount());
-    assertSame(bigDecimal, absResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.getAmount());
-    assertSame(bigDecimal, absResult54.zero().getAmount());
-    assertSame(bigDecimal, absResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult11.getAmount());
-    assertSame(bigDecimal, zeroResult22.getAmount());
-    assertSame(bigDecimal, zeroResult43.getAmount());
-    assertSame(bigDecimal, absResult56.zero().getAmount());
-    assertSame(bigDecimal, absResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.getAmount());
-    assertSame(bigDecimal, absResult58.zero().getAmount());
-    assertSame(bigDecimal, absResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult23.getAmount());
-    assertSame(bigDecimal, zeroResult45.getAmount());
-    assertSame(bigDecimal, absResult60.zero().getAmount());
-    assertSame(bigDecimal, absResult61.zero().getAmount());
-    assertSame(bigDecimal, absResult46.zero().getAmount());
-    assertSame(bigDecimal, absResult62.zero().getAmount());
+    assertSame(bigDecimal, absResult2.zero().getAmount());
+    assertSame(bigDecimal, absResult3.zero().getAmount());
     assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult6.getAmount());
-    assertSame(bigDecimal, zeroResult12.getAmount());
-    assertSame(bigDecimal, zeroResult24.getAmount());
-    assertSame(bigDecimal, zeroResult46.getAmount());
-    assertSame(bigDecimal, zeroResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.getAmount());
-    assertSame(bigDecimal, zeroResult33.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.zero().getAmount());
-    assertSame(bigDecimal, zeroResult25.getAmount());
-    assertSame(bigDecimal, zeroResult48.getAmount());
-    assertSame(bigDecimal, zeroResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.getAmount());
-    assertSame(bigDecimal, zeroResult37.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.zero().getAmount());
-    assertSame(bigDecimal, zeroResult13.getAmount());
-    assertSame(bigDecimal, zeroResult26.getAmount());
-    assertSame(bigDecimal, zeroResult50.getAmount());
-    assertSame(bigDecimal, zeroResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.getAmount());
-    assertSame(bigDecimal, zeroResult41.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.zero().getAmount());
-    assertSame(bigDecimal, zeroResult27.getAmount());
-    assertSame(bigDecimal, zeroResult52.getAmount());
-    assertSame(bigDecimal, zeroResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.getAmount());
-    assertSame(bigDecimal, zeroResult45.zero().getAmount());
-    assertSame(bigDecimal, zeroResult7.getAmount());
-    assertSame(bigDecimal, zeroResult14.getAmount());
-    assertSame(bigDecimal, zeroResult28.getAmount());
-    assertSame(bigDecimal, zeroResult54.getAmount());
-    assertSame(bigDecimal, zeroResult46.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.getAmount());
-    assertSame(bigDecimal, zeroResult48.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult29.getAmount());
-    assertSame(bigDecimal, zeroResult56.getAmount());
-    assertSame(bigDecimal, zeroResult50.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.getAmount());
-    assertSame(bigDecimal, zeroResult52.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult15.getAmount());
-    assertSame(bigDecimal, zeroResult30.getAmount());
-    assertSame(bigDecimal, zeroResult58.getAmount());
-    assertSame(bigDecimal, zeroResult54.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.getAmount());
-    assertSame(bigDecimal, zeroResult56.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.getAmount());
-    assertSame(bigDecimal, zeroResult61.getAmount());
-    assertSame(bigDecimal, zeroResult58.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.zero().getAmount());
-    assertSame(bigDecimal, zeroResult61.zero().getAmount());
+    assertSame(bigDecimal, zeroResult2.zero().getAmount());
+    assertSame(bigDecimal, zeroResult3.zero().getAmount());
   }
 
   /**
    * Test {@link FulfillmentGroupImpl#setTotalTax(Money)}.
    * <ul>
-   *   <li>When {@link Money}.</li>
-   *   <li>Then {@link FulfillmentGroupImpl} (default constructor)
-   * {@link FulfillmentGroupImpl#totalTax} is {@code null}.</li>
+   *   <li>Then {@link FulfillmentGroupImpl} (default constructor) {@link FulfillmentGroupImpl#totalTax} is {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link FulfillmentGroupImpl#setTotalTax(Money)}
    */
   @Test
-  public void testSetTotalTax_whenMoney_thenFulfillmentGroupImplTotalTaxIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupImpl.setTotalTax(Money)"})
+  public void testSetTotalTax_thenFulfillmentGroupImplTotalTaxIsNull() {
     // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl2.setAddress(new AddressImpl());
+    fulfillmentGroupImpl2.setCandidateFulfillmentGroupOffer(new ArrayList<>());
+    fulfillmentGroupImpl2.setDeliveryInstruction("Delivery Instruction");
+    fulfillmentGroupImpl2.setFulfillmentGroupAdjustments(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupFees(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupItems(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentOption(new FulfillmentOptionImpl());
+    fulfillmentGroupImpl2.setFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupImpl2.setIsShippingPriceTaxable(true);
+    fulfillmentGroupImpl2.setMerchandiseTotal(new Money());
+    fulfillmentGroupImpl2.setMethod("Fulfillment Method");
+    fulfillmentGroupImpl2.setOrder(NullOrderFactoryImpl.NULL_ORDER);
+    fulfillmentGroupImpl2.setPersonalMessage(new PersonalMessageImpl());
+    fulfillmentGroupImpl2.setPhone(new PhoneImpl());
+    fulfillmentGroupImpl2.setPrimary(true);
+    fulfillmentGroupImpl2.setReferenceNumber("42");
+    fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSequence(1);
+    fulfillmentGroupImpl2.setService("Service");
+    fulfillmentGroupImpl2.setShippingOverride(true);
+    fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupImpl2.setTaxes(new ArrayList<>());
+    fulfillmentGroupImpl2.setTotal(new Money());
+    fulfillmentGroupImpl2.setTotalFeeTax(new Money());
+    fulfillmentGroupImpl2.setTotalFulfillmentGroupTax(new Money());
+    fulfillmentGroupImpl2.setTotalItemTax(new Money());
+    fulfillmentGroupImpl2.setTotalTax(new Money());
+    fulfillmentGroupImpl2.setType(FulfillmentType.DIGITAL);
 
     // Act
-    fulfillmentGroupImpl.setTotalTax(mock(Money.class));
+    fulfillmentGroupImpl2.setTotalTax(null);
 
     // Assert
-    assertNull(fulfillmentGroupImpl.totalTax);
-    assertNull(fulfillmentGroupImpl.getTotalTax());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#getTotalItemTax()}.
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#getTotalItemTax()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetTotalItemTax() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass912 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new FulfillmentGroupImpl()).getTotalItemTax();
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#getTotalItemTax()}.
-   * <ul>
-   *   <li>Given {@link FulfillmentGroupImpl} (default constructor) TotalItemTax is
-   * {@link Money}.</li>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#getTotalItemTax()}
-   */
-  @Test
-  public void testGetTotalItemTax_givenFulfillmentGroupImplTotalItemTaxIsMoney_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setTotalItemTax(mock(Money.class));
-
-    // Act and Assert
-    assertNull(fulfillmentGroupImpl.getTotalItemTax());
+    assertNull(fulfillmentGroupImpl2.totalTax);
+    assertNull(fulfillmentGroupImpl2.getTotalTax());
   }
 
   /**
@@ -7541,9 +2523,9 @@ public class FulfillmentGroupImplDiffblueTest {
    * Method under test: {@link FulfillmentGroupImpl#getTotalItemTax()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money FulfillmentGroupImpl.getTotalItemTax()"})
   public void testGetTotalItemTax_givenFulfillmentGroupImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new FulfillmentGroupImpl()).getTotalItemTax());
   }
@@ -7551,17 +2533,16 @@ public class FulfillmentGroupImplDiffblueTest {
   /**
    * Test {@link FulfillmentGroupImpl#getTotalItemTax()}.
    * <ul>
-   *   <li>Given {@link OrderImpl} (default constructor) Currency is
-   * {@code null}.</li>
+   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@code null}.</li>
    *   <li>Then return {@link Money#Money()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link FulfillmentGroupImpl#getTotalItemTax()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money FulfillmentGroupImpl.getTotalItemTax()"})
   public void testGetTotalItemTax_givenOrderImplCurrencyIsNull_thenReturnMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
@@ -7591,682 +2572,156 @@ public class FulfillmentGroupImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setCurrency(null);
 
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(new AddressImpl());
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl2.setAddress(new AddressImpl());
+    fulfillmentGroupImpl2.setCandidateFulfillmentGroupOffer(new ArrayList<>());
+    fulfillmentGroupImpl2.setDeliveryInstruction("Delivery Instruction");
+    fulfillmentGroupImpl2.setFulfillmentGroupAdjustments(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupFees(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupItems(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentOption(new FulfillmentOptionImpl());
     Money fulfillmentPrice = new Money();
-    fulfillmentGroupImpl.setFulfillmentPrice(fulfillmentPrice);
-    fulfillmentGroupImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setOrder(order);
+    fulfillmentGroupImpl2.setFulfillmentPrice(fulfillmentPrice);
+    fulfillmentGroupImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupImpl2.setIsShippingPriceTaxable(true);
+    fulfillmentGroupImpl2.setMerchandiseTotal(new Money());
+    fulfillmentGroupImpl2.setMethod("Fulfillment Method");
+    fulfillmentGroupImpl2.setPersonalMessage(new PersonalMessageImpl());
+    fulfillmentGroupImpl2.setPhone(new PhoneImpl());
+    fulfillmentGroupImpl2.setPrimary(true);
+    fulfillmentGroupImpl2.setReferenceNumber("42");
+    fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSequence(1);
+    fulfillmentGroupImpl2.setService("Service");
+    fulfillmentGroupImpl2.setShippingOverride(true);
+    fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupImpl2.setTaxes(new ArrayList<>());
+    fulfillmentGroupImpl2.setTotal(new Money());
+    fulfillmentGroupImpl2.setTotalFeeTax(new Money());
+    fulfillmentGroupImpl2.setTotalFulfillmentGroupTax(new Money());
+    fulfillmentGroupImpl2.setTotalTax(new Money());
+    fulfillmentGroupImpl2.setType(FulfillmentType.DIGITAL);
+    fulfillmentGroupImpl2.setTotalItemTax(new Money());
+    fulfillmentGroupImpl2.setOrder(order);
 
     // Act and Assert
-    assertEquals(fulfillmentPrice, fulfillmentGroupImpl.getTotalItemTax());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#setTotalItemTax(Money)}.
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#setTotalItemTax(Money)}
-   */
-  @Test
-  public void testSetTotalItemTax() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(new AddressImpl());
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
-    Money fulfillmentPrice = new Money();
-    fulfillmentGroupImpl.setFulfillmentPrice(fulfillmentPrice);
-    fulfillmentGroupImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setOrder(NullOrderFactoryImpl.NULL_ORDER);
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-
-    // Act
-    fulfillmentGroupImpl.setTotalItemTax(null);
-
-    // Assert
-    assertNull(fulfillmentGroupImpl.totalItemTax);
-    assertNull(fulfillmentGroupImpl.getTotalItemTax());
-    Money fulfillmentGroupAdjustmentsValue = fulfillmentGroupImpl.getFulfillmentGroupAdjustmentsValue();
-    Money absResult = fulfillmentGroupAdjustmentsValue.abs();
-    Money absResult2 = absResult.abs();
-    Money absResult3 = absResult2.abs();
-    Money absResult4 = absResult3.abs();
-    assertEquals(fulfillmentPrice, absResult4.abs());
-    Money zeroResult = fulfillmentGroupAdjustmentsValue.zero();
-    Money absResult5 = zeroResult.abs();
-    Money absResult6 = absResult5.abs();
-    Money absResult7 = absResult6.abs();
-    assertEquals(fulfillmentPrice, absResult7.abs());
-    Money zeroResult2 = absResult.zero();
-    Money absResult8 = zeroResult2.abs();
-    Money absResult9 = absResult8.abs();
-    assertEquals(fulfillmentPrice, absResult9.abs());
-    assertEquals(fulfillmentPrice, zeroResult.zero().abs().abs().abs());
-    Money zeroResult3 = absResult2.zero();
-    Money absResult10 = zeroResult3.abs();
-    assertEquals(fulfillmentPrice, absResult10.abs());
-    Money zeroResult4 = absResult5.zero();
-    Money absResult11 = zeroResult4.abs();
-    assertEquals(fulfillmentPrice, absResult11.abs());
-    Money zeroResult5 = zeroResult2.zero();
-    Money absResult12 = zeroResult5.abs();
-    assertEquals(fulfillmentPrice, absResult12.abs());
-    Money zeroResult6 = fulfillmentGroupImpl.getTotalTax().zero();
-    Money zeroResult7 = zeroResult6.zero();
-    Money absResult13 = zeroResult7.abs();
-    assertEquals(fulfillmentPrice, absResult13.abs());
-    Money zeroResult8 = absResult3.zero();
-    assertEquals(fulfillmentPrice, zeroResult8.abs());
-    Money zeroResult9 = absResult6.zero();
-    assertEquals(fulfillmentPrice, zeroResult9.abs());
-    Money zeroResult10 = absResult8.zero();
-    assertEquals(fulfillmentPrice, zeroResult10.abs());
-    Money zeroResult11 = zeroResult3.zero();
-    assertEquals(fulfillmentPrice, zeroResult11.abs());
-    Money zeroResult12 = zeroResult4.zero();
-    assertEquals(fulfillmentPrice, zeroResult12.abs());
-    Money zeroResult13 = zeroResult5.zero();
-    assertEquals(fulfillmentPrice, zeroResult13.abs());
-    Money zeroResult14 = zeroResult7.zero();
-    assertEquals(fulfillmentPrice, zeroResult14.abs());
-    assertEquals(fulfillmentPrice, absResult4.zero());
-    assertEquals(fulfillmentPrice, absResult7.zero());
-    assertEquals(fulfillmentPrice, absResult9.zero());
-    assertEquals(fulfillmentPrice, absResult10.zero());
-    assertEquals(fulfillmentPrice, absResult11.zero());
-    assertEquals(fulfillmentPrice, absResult12.zero());
-    assertEquals(fulfillmentPrice, absResult13.zero());
-    assertEquals(fulfillmentPrice, zeroResult8.zero());
-    assertEquals(fulfillmentPrice, zeroResult9.zero());
-    assertEquals(fulfillmentPrice, zeroResult10.zero());
-    Money zeroResult15 = zeroResult6.abs().zero();
-    assertEquals(fulfillmentPrice, zeroResult15.zero());
-    assertEquals(fulfillmentPrice, zeroResult11.zero());
-    assertEquals(fulfillmentPrice, zeroResult12.zero());
-    assertEquals(fulfillmentPrice, zeroResult13.zero());
-    assertEquals(fulfillmentPrice, zeroResult14.zero());
-    BigDecimal bigDecimal = fulfillmentGroupImpl.totalTax;
-    assertSame(bigDecimal, absResult4.getAmount());
-    assertSame(bigDecimal, absResult7.getAmount());
-    assertSame(bigDecimal, absResult9.getAmount());
-    assertSame(bigDecimal, absResult10.getAmount());
-    assertSame(bigDecimal, absResult11.getAmount());
-    assertSame(bigDecimal, absResult12.getAmount());
-    assertSame(bigDecimal, absResult13.getAmount());
-    assertSame(bigDecimal, zeroResult8.getAmount());
-    assertSame(bigDecimal, zeroResult9.getAmount());
-    assertSame(bigDecimal, zeroResult10.getAmount());
-    assertSame(bigDecimal, zeroResult15.getAmount());
-    assertSame(bigDecimal, zeroResult11.getAmount());
-    assertSame(bigDecimal, zeroResult12.getAmount());
-    assertSame(bigDecimal, zeroResult13.getAmount());
-    assertSame(bigDecimal, zeroResult14.getAmount());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#setTotalItemTax(Money)}.
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#setTotalItemTax(Money)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetTotalItemTax2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1422 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
-
-    // Act
-    fulfillmentGroupImpl2.setTotalItemTax(new Money());
+    assertEquals(fulfillmentPrice, fulfillmentGroupImpl2.getTotalItemTax());
   }
 
   /**
    * Test {@link FulfillmentGroupImpl#setTotalItemTax(Money)}.
    * <ul>
-   *   <li>Then {@link FulfillmentGroupImpl} (default constructor)
-   * {@link FulfillmentGroupImpl#totalItemTax} is
-   * {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
+   *   <li>Then {@link FulfillmentGroupImpl} (default constructor) {@link FulfillmentGroupImpl#totalItemTax} is {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
    * </ul>
    * <p>
    * Method under test: {@link FulfillmentGroupImpl#setTotalItemTax(Money)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupImpl.setTotalItemTax(Money)"})
   public void testSetTotalItemTax_thenFulfillmentGroupImplTotalItemTaxIsBigDecimalWith000() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
     Money totalItemTax = new Money();
 
     // Act
-    fulfillmentGroupImpl.setTotalItemTax(totalItemTax);
+    fulfillmentGroupImpl2.setTotalItemTax(totalItemTax);
 
     // Assert
-    assertEquals(new BigDecimal("0.00"), fulfillmentGroupImpl.totalItemTax);
-    BigDecimal bigDecimal = fulfillmentGroupImpl.totalItemTax;
+    assertEquals(new BigDecimal("0.00"), fulfillmentGroupImpl2.totalItemTax);
+    BigDecimal bigDecimal = fulfillmentGroupImpl2.totalItemTax;
     Money absResult = totalItemTax.abs();
     assertSame(bigDecimal, absResult.getAmount());
     Money absResult2 = absResult.abs();
     assertSame(bigDecimal, absResult2.getAmount());
-    Money absResult3 = absResult2.abs();
-    assertSame(bigDecimal, absResult3.getAmount());
-    Money absResult4 = absResult3.abs();
-    assertSame(bigDecimal, absResult4.getAmount());
-    Money absResult5 = absResult4.abs();
-    assertSame(bigDecimal, absResult5.getAmount());
-    Money absResult6 = absResult5.abs();
-    assertSame(bigDecimal, absResult6.getAmount());
-    assertSame(bigDecimal, absResult6.abs().getAmount());
+    assertSame(bigDecimal, absResult2.abs().getAmount());
     Money zeroResult = totalItemTax.zero();
-    Money absResult7 = zeroResult.abs();
-    Money absResult8 = absResult7.abs();
-    Money absResult9 = absResult8.abs();
-    Money absResult10 = absResult9.abs();
-    Money absResult11 = absResult10.abs();
-    assertSame(bigDecimal, absResult11.abs().getAmount());
-    assertSame(bigDecimal, absResult11.getAmount());
+    Money absResult3 = zeroResult.abs();
+    assertSame(bigDecimal, absResult3.abs().getAmount());
+    assertSame(bigDecimal, absResult3.getAmount());
     Money zeroResult2 = absResult.zero();
-    Money absResult12 = zeroResult2.abs();
-    Money absResult13 = absResult12.abs();
-    Money absResult14 = absResult13.abs();
-    Money absResult15 = absResult14.abs();
-    assertSame(bigDecimal, absResult15.abs().getAmount());
+    assertSame(bigDecimal, zeroResult2.abs().getAmount());
     Money zeroResult3 = zeroResult.zero();
-    Money absResult16 = zeroResult3.abs();
-    Money absResult17 = absResult16.abs();
-    Money absResult18 = absResult17.abs();
-    Money absResult19 = absResult18.abs();
-    assertSame(bigDecimal, absResult19.abs().getAmount());
-    assertSame(bigDecimal, absResult10.getAmount());
-    assertSame(bigDecimal, absResult15.getAmount());
-    Money zeroResult4 = absResult2.zero();
-    Money absResult20 = zeroResult4.abs();
-    Money absResult21 = absResult20.abs();
-    Money absResult22 = absResult21.abs();
-    assertSame(bigDecimal, absResult22.abs().getAmount());
-    Money zeroResult5 = absResult7.zero();
-    Money absResult23 = zeroResult5.abs();
-    Money absResult24 = absResult23.abs();
-    Money absResult25 = absResult24.abs();
-    assertSame(bigDecimal, absResult25.abs().getAmount());
-    assertSame(bigDecimal, absResult19.getAmount());
-    Money zeroResult6 = zeroResult2.zero();
-    Money absResult26 = zeroResult6.abs();
-    Money absResult27 = absResult26.abs();
-    Money absResult28 = absResult27.abs();
-    assertSame(bigDecimal, absResult28.abs().getAmount());
-    Money zeroResult7 = zeroResult3.zero();
-    Money absResult29 = zeroResult7.abs();
-    Money absResult30 = absResult29.abs();
-    Money absResult31 = absResult30.abs();
-    assertSame(bigDecimal, absResult31.abs().getAmount());
-    assertSame(bigDecimal, absResult9.getAmount());
-    assertSame(bigDecimal, absResult14.getAmount());
-    assertSame(bigDecimal, absResult22.getAmount());
-    Money zeroResult8 = absResult3.zero();
-    Money absResult32 = zeroResult8.abs();
-    Money absResult33 = absResult32.abs();
-    assertSame(bigDecimal, absResult33.abs().getAmount());
-    Money zeroResult9 = absResult8.zero();
-    Money absResult34 = zeroResult9.abs();
-    Money absResult35 = absResult34.abs();
-    assertSame(bigDecimal, absResult35.abs().getAmount());
-    assertSame(bigDecimal, absResult25.getAmount());
-    Money zeroResult10 = absResult12.zero();
-    Money absResult36 = zeroResult10.abs();
-    Money absResult37 = absResult36.abs();
-    assertSame(bigDecimal, absResult37.abs().getAmount());
-    Money zeroResult11 = absResult16.zero();
-    Money absResult38 = zeroResult11.abs();
-    Money absResult39 = absResult38.abs();
-    assertSame(bigDecimal, absResult39.abs().getAmount());
-    assertSame(bigDecimal, absResult18.getAmount());
-    assertSame(bigDecimal, absResult28.getAmount());
-    Money zeroResult12 = zeroResult4.zero();
-    Money absResult40 = zeroResult12.abs();
-    Money absResult41 = absResult40.abs();
-    assertSame(bigDecimal, absResult41.abs().getAmount());
-    Money zeroResult13 = zeroResult5.zero();
-    Money absResult42 = zeroResult13.abs();
-    Money absResult43 = absResult42.abs();
-    assertSame(bigDecimal, absResult43.abs().getAmount());
-    assertSame(bigDecimal, absResult31.getAmount());
-    Money zeroResult14 = zeroResult6.zero();
-    Money absResult44 = zeroResult14.abs();
-    Money absResult45 = absResult44.abs();
-    assertSame(bigDecimal, absResult45.abs().getAmount());
-    Money zeroResult15 = zeroResult7.zero();
-    Money absResult46 = zeroResult15.abs();
-    Money absResult47 = absResult46.abs();
-    assertSame(bigDecimal, absResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult8.getAmount());
-    assertSame(bigDecimal, absResult13.getAmount());
-    assertSame(bigDecimal, absResult21.getAmount());
-    assertSame(bigDecimal, absResult33.getAmount());
-    Money zeroResult16 = absResult4.zero();
-    Money absResult48 = zeroResult16.abs();
-    assertSame(bigDecimal, absResult48.abs().getAmount());
-    Money zeroResult17 = absResult9.zero();
-    Money absResult49 = zeroResult17.abs();
-    assertSame(bigDecimal, absResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult35.getAmount());
-    Money zeroResult18 = absResult13.zero();
-    Money absResult50 = zeroResult18.abs();
-    assertSame(bigDecimal, absResult50.abs().getAmount());
-    Money zeroResult19 = absResult17.zero();
-    Money absResult51 = zeroResult19.abs();
-    assertSame(bigDecimal, absResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult24.getAmount());
-    assertSame(bigDecimal, absResult37.getAmount());
-    Money zeroResult20 = absResult20.zero();
-    Money absResult52 = zeroResult20.abs();
-    assertSame(bigDecimal, absResult52.abs().getAmount());
-    Money zeroResult21 = absResult23.zero();
-    Money absResult53 = zeroResult21.abs();
-    assertSame(bigDecimal, absResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult39.getAmount());
-    Money zeroResult22 = absResult26.zero();
-    Money absResult54 = zeroResult22.abs();
-    assertSame(bigDecimal, absResult54.abs().getAmount());
-    Money zeroResult23 = absResult29.zero();
-    Money absResult55 = zeroResult23.abs();
-    assertSame(bigDecimal, absResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult17.getAmount());
-    assertSame(bigDecimal, absResult27.getAmount());
-    assertSame(bigDecimal, absResult41.getAmount());
-    Money zeroResult24 = zeroResult8.zero();
-    Money absResult56 = zeroResult24.abs();
-    assertSame(bigDecimal, absResult56.abs().getAmount());
-    Money zeroResult25 = zeroResult9.zero();
-    Money absResult57 = zeroResult25.abs();
-    assertSame(bigDecimal, absResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult43.getAmount());
-    Money zeroResult26 = zeroResult10.zero();
-    Money absResult58 = zeroResult26.abs();
-    assertSame(bigDecimal, absResult58.abs().getAmount());
-    Money zeroResult27 = zeroResult11.zero();
-    Money absResult59 = zeroResult27.abs();
-    assertSame(bigDecimal, absResult59.abs().getAmount());
-    assertSame(bigDecimal, absResult30.getAmount());
-    assertSame(bigDecimal, absResult45.getAmount());
-    Money zeroResult28 = zeroResult12.zero();
-    Money absResult60 = zeroResult28.abs();
-    assertSame(bigDecimal, absResult60.abs().getAmount());
-    Money zeroResult29 = zeroResult13.zero();
-    Money absResult61 = zeroResult29.abs();
-    assertSame(bigDecimal, absResult61.abs().getAmount());
-    assertSame(bigDecimal, absResult47.getAmount());
-    Money zeroResult30 = zeroResult14.zero();
-    Money absResult62 = zeroResult30.abs();
-    assertSame(bigDecimal, absResult62.abs().getAmount());
-    assertSame(bigDecimal, absResult7.getAmount());
-    assertSame(bigDecimal, absResult12.getAmount());
-    assertSame(bigDecimal, absResult20.getAmount());
-    assertSame(bigDecimal, absResult32.getAmount());
-    assertSame(bigDecimal, absResult48.getAmount());
-    Money zeroResult31 = absResult5.zero();
-    assertSame(bigDecimal, zeroResult31.abs().getAmount());
-    Money zeroResult32 = absResult10.zero();
-    assertSame(bigDecimal, zeroResult32.abs().getAmount());
-    assertSame(bigDecimal, absResult49.getAmount());
-    Money zeroResult33 = absResult14.zero();
-    assertSame(bigDecimal, zeroResult33.abs().getAmount());
-    Money zeroResult34 = absResult18.zero();
-    assertSame(bigDecimal, zeroResult34.abs().getAmount());
-    assertSame(bigDecimal, absResult34.getAmount());
-    assertSame(bigDecimal, absResult50.getAmount());
-    Money zeroResult35 = absResult21.zero();
-    assertSame(bigDecimal, zeroResult35.abs().getAmount());
-    Money zeroResult36 = absResult24.zero();
-    assertSame(bigDecimal, zeroResult36.abs().getAmount());
-    assertSame(bigDecimal, absResult51.getAmount());
-    Money zeroResult37 = absResult27.zero();
-    assertSame(bigDecimal, zeroResult37.abs().getAmount());
-    Money zeroResult38 = absResult30.zero();
-    assertSame(bigDecimal, zeroResult38.abs().getAmount());
-    assertSame(bigDecimal, absResult23.getAmount());
-    assertSame(bigDecimal, absResult36.getAmount());
-    assertSame(bigDecimal, absResult52.getAmount());
-    Money zeroResult39 = absResult32.zero();
-    assertSame(bigDecimal, zeroResult39.abs().getAmount());
-    Money zeroResult40 = absResult34.zero();
-    assertSame(bigDecimal, zeroResult40.abs().getAmount());
-    assertSame(bigDecimal, absResult53.getAmount());
-    Money zeroResult41 = absResult36.zero();
-    assertSame(bigDecimal, zeroResult41.abs().getAmount());
-    Money zeroResult42 = absResult38.zero();
-    assertSame(bigDecimal, zeroResult42.abs().getAmount());
-    assertSame(bigDecimal, absResult38.getAmount());
-    assertSame(bigDecimal, absResult54.getAmount());
-    Money zeroResult43 = absResult40.zero();
-    assertSame(bigDecimal, zeroResult43.abs().getAmount());
-    Money zeroResult44 = absResult42.zero();
-    assertSame(bigDecimal, zeroResult44.abs().getAmount());
-    assertSame(bigDecimal, absResult55.getAmount());
-    Money zeroResult45 = absResult44.zero();
-    assertSame(bigDecimal, zeroResult45.abs().getAmount());
-    assertSame(bigDecimal, absResult16.getAmount());
-    assertSame(bigDecimal, absResult26.getAmount());
-    assertSame(bigDecimal, absResult40.getAmount());
-    assertSame(bigDecimal, absResult56.getAmount());
-    Money zeroResult46 = zeroResult16.zero();
-    assertSame(bigDecimal, zeroResult46.abs().getAmount());
-    Money zeroResult47 = zeroResult17.zero();
-    assertSame(bigDecimal, zeroResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult57.getAmount());
-    Money zeroResult48 = zeroResult18.zero();
-    assertSame(bigDecimal, zeroResult48.abs().getAmount());
-    Money zeroResult49 = zeroResult19.zero();
-    assertSame(bigDecimal, zeroResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult42.getAmount());
-    assertSame(bigDecimal, absResult58.getAmount());
-    Money zeroResult50 = zeroResult20.zero();
-    assertSame(bigDecimal, zeroResult50.abs().getAmount());
-    Money zeroResult51 = zeroResult21.zero();
-    assertSame(bigDecimal, zeroResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult59.getAmount());
-    Money zeroResult52 = zeroResult22.zero();
-    assertSame(bigDecimal, zeroResult52.abs().getAmount());
-    Money zeroResult53 = zeroResult23.zero();
-    assertSame(bigDecimal, zeroResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult29.getAmount());
-    assertSame(bigDecimal, absResult44.getAmount());
-    assertSame(bigDecimal, absResult60.getAmount());
-    Money zeroResult54 = zeroResult24.zero();
-    assertSame(bigDecimal, zeroResult54.abs().getAmount());
-    Money zeroResult55 = zeroResult25.zero();
-    assertSame(bigDecimal, zeroResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult61.getAmount());
-    Money zeroResult56 = zeroResult26.zero();
-    assertSame(bigDecimal, zeroResult56.abs().getAmount());
-    Money zeroResult57 = zeroResult27.zero();
-    assertSame(bigDecimal, zeroResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult46.getAmount());
-    assertSame(bigDecimal, absResult62.getAmount());
-    Money zeroResult58 = zeroResult28.zero();
-    assertSame(bigDecimal, zeroResult58.abs().getAmount());
-    Money zeroResult59 = zeroResult29.zero();
-    assertSame(bigDecimal, zeroResult59.abs().getAmount());
-    Money zeroResult60 = zeroResult15.zero();
-    assertSame(bigDecimal, zeroResult60.abs().getAmount());
-    Money zeroResult61 = zeroResult30.zero();
-    assertSame(bigDecimal, zeroResult61.abs().getAmount());
+    assertSame(bigDecimal, zeroResult3.abs().getAmount());
     assertSame(bigDecimal, zeroResult.getAmount());
     assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, zeroResult4.getAmount());
-    assertSame(bigDecimal, zeroResult8.getAmount());
-    assertSame(bigDecimal, zeroResult16.getAmount());
-    assertSame(bigDecimal, zeroResult31.getAmount());
-    assertSame(bigDecimal, absResult6.zero().getAmount());
-    assertSame(bigDecimal, absResult11.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.getAmount());
-    assertSame(bigDecimal, absResult15.zero().getAmount());
-    assertSame(bigDecimal, absResult19.zero().getAmount());
-    assertSame(bigDecimal, zeroResult17.getAmount());
-    assertSame(bigDecimal, zeroResult33.getAmount());
-    assertSame(bigDecimal, absResult22.zero().getAmount());
-    assertSame(bigDecimal, absResult25.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.getAmount());
-    assertSame(bigDecimal, absResult28.zero().getAmount());
-    assertSame(bigDecimal, absResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult9.getAmount());
-    assertSame(bigDecimal, zeroResult18.getAmount());
-    assertSame(bigDecimal, zeroResult35.getAmount());
-    assertSame(bigDecimal, absResult33.zero().getAmount());
-    assertSame(bigDecimal, absResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.getAmount());
-    assertSame(bigDecimal, absResult37.zero().getAmount());
-    assertSame(bigDecimal, absResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult19.getAmount());
-    assertSame(bigDecimal, zeroResult37.getAmount());
-    assertSame(bigDecimal, absResult41.zero().getAmount());
-    assertSame(bigDecimal, absResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.getAmount());
-    assertSame(bigDecimal, absResult45.zero().getAmount());
-    assertSame(bigDecimal, absResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult5.getAmount());
-    assertSame(bigDecimal, zeroResult10.getAmount());
-    assertSame(bigDecimal, zeroResult20.getAmount());
-    assertSame(bigDecimal, zeroResult39.getAmount());
-    assertSame(bigDecimal, absResult48.zero().getAmount());
-    assertSame(bigDecimal, absResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.getAmount());
-    assertSame(bigDecimal, absResult50.zero().getAmount());
-    assertSame(bigDecimal, absResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult21.getAmount());
-    assertSame(bigDecimal, zeroResult41.getAmount());
-    assertSame(bigDecimal, absResult52.zero().getAmount());
-    assertSame(bigDecimal, absResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.getAmount());
-    assertSame(bigDecimal, absResult54.zero().getAmount());
-    assertSame(bigDecimal, absResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult11.getAmount());
-    assertSame(bigDecimal, zeroResult22.getAmount());
-    assertSame(bigDecimal, zeroResult43.getAmount());
-    assertSame(bigDecimal, absResult56.zero().getAmount());
-    assertSame(bigDecimal, absResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.getAmount());
-    assertSame(bigDecimal, absResult58.zero().getAmount());
-    assertSame(bigDecimal, absResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult23.getAmount());
-    assertSame(bigDecimal, zeroResult45.getAmount());
-    assertSame(bigDecimal, absResult60.zero().getAmount());
-    assertSame(bigDecimal, absResult61.zero().getAmount());
-    assertSame(bigDecimal, absResult46.zero().getAmount());
-    assertSame(bigDecimal, absResult62.zero().getAmount());
+    assertSame(bigDecimal, absResult2.zero().getAmount());
+    assertSame(bigDecimal, absResult3.zero().getAmount());
     assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult6.getAmount());
-    assertSame(bigDecimal, zeroResult12.getAmount());
-    assertSame(bigDecimal, zeroResult24.getAmount());
-    assertSame(bigDecimal, zeroResult46.getAmount());
-    assertSame(bigDecimal, zeroResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.getAmount());
-    assertSame(bigDecimal, zeroResult33.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.zero().getAmount());
-    assertSame(bigDecimal, zeroResult25.getAmount());
-    assertSame(bigDecimal, zeroResult48.getAmount());
-    assertSame(bigDecimal, zeroResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.getAmount());
-    assertSame(bigDecimal, zeroResult37.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.zero().getAmount());
-    assertSame(bigDecimal, zeroResult13.getAmount());
-    assertSame(bigDecimal, zeroResult26.getAmount());
-    assertSame(bigDecimal, zeroResult50.getAmount());
-    assertSame(bigDecimal, zeroResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.getAmount());
-    assertSame(bigDecimal, zeroResult41.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.zero().getAmount());
-    assertSame(bigDecimal, zeroResult27.getAmount());
-    assertSame(bigDecimal, zeroResult52.getAmount());
-    assertSame(bigDecimal, zeroResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.getAmount());
-    assertSame(bigDecimal, zeroResult45.zero().getAmount());
-    assertSame(bigDecimal, zeroResult7.getAmount());
-    assertSame(bigDecimal, zeroResult14.getAmount());
-    assertSame(bigDecimal, zeroResult28.getAmount());
-    assertSame(bigDecimal, zeroResult54.getAmount());
-    assertSame(bigDecimal, zeroResult46.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.getAmount());
-    assertSame(bigDecimal, zeroResult48.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult29.getAmount());
-    assertSame(bigDecimal, zeroResult56.getAmount());
-    assertSame(bigDecimal, zeroResult50.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.getAmount());
-    assertSame(bigDecimal, zeroResult52.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult15.getAmount());
-    assertSame(bigDecimal, zeroResult30.getAmount());
-    assertSame(bigDecimal, zeroResult58.getAmount());
-    assertSame(bigDecimal, zeroResult54.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.getAmount());
-    assertSame(bigDecimal, zeroResult56.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.getAmount());
-    assertSame(bigDecimal, zeroResult61.getAmount());
-    assertSame(bigDecimal, zeroResult58.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.zero().getAmount());
-    assertSame(bigDecimal, zeroResult61.zero().getAmount());
+    assertSame(bigDecimal, zeroResult2.zero().getAmount());
+    assertSame(bigDecimal, zeroResult3.zero().getAmount());
   }
 
   /**
    * Test {@link FulfillmentGroupImpl#setTotalItemTax(Money)}.
    * <ul>
-   *   <li>When {@link Money}.</li>
-   *   <li>Then {@link FulfillmentGroupImpl} (default constructor)
-   * {@link FulfillmentGroupImpl#totalItemTax} is {@code null}.</li>
+   *   <li>Then {@link FulfillmentGroupImpl} (default constructor) {@link FulfillmentGroupImpl#totalItemTax} is {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link FulfillmentGroupImpl#setTotalItemTax(Money)}
    */
   @Test
-  public void testSetTotalItemTax_whenMoney_thenFulfillmentGroupImplTotalItemTaxIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupImpl.setTotalItemTax(Money)"})
+  public void testSetTotalItemTax_thenFulfillmentGroupImplTotalItemTaxIsNull() {
     // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl2.setAddress(new AddressImpl());
+    fulfillmentGroupImpl2.setCandidateFulfillmentGroupOffer(new ArrayList<>());
+    fulfillmentGroupImpl2.setDeliveryInstruction("Delivery Instruction");
+    fulfillmentGroupImpl2.setFulfillmentGroupAdjustments(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupFees(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupItems(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentOption(new FulfillmentOptionImpl());
+    Money fulfillmentPrice = new Money();
+    fulfillmentGroupImpl2.setFulfillmentPrice(fulfillmentPrice);
+    fulfillmentGroupImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupImpl2.setIsShippingPriceTaxable(true);
+    fulfillmentGroupImpl2.setMerchandiseTotal(new Money());
+    fulfillmentGroupImpl2.setMethod("Fulfillment Method");
+    fulfillmentGroupImpl2.setOrder(NullOrderFactoryImpl.NULL_ORDER);
+    fulfillmentGroupImpl2.setPersonalMessage(new PersonalMessageImpl());
+    fulfillmentGroupImpl2.setPhone(new PhoneImpl());
+    fulfillmentGroupImpl2.setPrimary(true);
+    fulfillmentGroupImpl2.setReferenceNumber("42");
+    fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSequence(1);
+    fulfillmentGroupImpl2.setService("Service");
+    fulfillmentGroupImpl2.setShippingOverride(true);
+    fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupImpl2.setTaxes(new ArrayList<>());
+    fulfillmentGroupImpl2.setTotal(new Money());
+    fulfillmentGroupImpl2.setTotalFeeTax(new Money());
+    fulfillmentGroupImpl2.setTotalFulfillmentGroupTax(new Money());
+    fulfillmentGroupImpl2.setTotalItemTax(new Money());
+    fulfillmentGroupImpl2.setTotalTax(new Money());
+    fulfillmentGroupImpl2.setType(FulfillmentType.DIGITAL);
 
     // Act
-    fulfillmentGroupImpl.setTotalItemTax(mock(Money.class));
+    fulfillmentGroupImpl2.setTotalItemTax(null);
 
     // Assert
-    assertNull(fulfillmentGroupImpl.totalItemTax);
-    assertNull(fulfillmentGroupImpl.getTotalItemTax());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#getTotalFeeTax()}.
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#getTotalFeeTax()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetTotalFeeTax() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass852 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new FulfillmentGroupImpl()).getTotalFeeTax();
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#getTotalFeeTax()}.
-   * <ul>
-   *   <li>Given {@link FulfillmentGroupImpl} (default constructor) TotalFeeTax is
-   * {@link Money}.</li>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#getTotalFeeTax()}
-   */
-  @Test
-  public void testGetTotalFeeTax_givenFulfillmentGroupImplTotalFeeTaxIsMoney_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setTotalFeeTax(mock(Money.class));
-
-    // Act and Assert
-    assertNull(fulfillmentGroupImpl.getTotalFeeTax());
+    assertNull(fulfillmentGroupImpl2.totalItemTax);
+    assertNull(fulfillmentGroupImpl2.getTotalItemTax());
+    Money zeroResult = fulfillmentGroupImpl2.getTotalTax().zero();
+    Money zeroResult2 = zeroResult.zero();
+    Money absResult = zeroResult2.abs();
+    assertEquals(fulfillmentPrice, absResult.abs());
+    Money zeroResult3 = zeroResult2.zero();
+    assertEquals(fulfillmentPrice, zeroResult3.abs());
+    assertEquals(fulfillmentPrice, absResult.zero());
+    Money zeroResult4 = zeroResult.abs().zero();
+    assertEquals(fulfillmentPrice, zeroResult4.zero());
+    assertEquals(fulfillmentPrice, zeroResult3.zero());
+    BigDecimal bigDecimal = fulfillmentGroupImpl2.totalTax;
+    assertSame(bigDecimal, absResult.getAmount());
+    assertSame(bigDecimal, zeroResult4.getAmount());
+    assertSame(bigDecimal, zeroResult3.getAmount());
   }
 
   /**
@@ -8279,9 +2734,9 @@ public class FulfillmentGroupImplDiffblueTest {
    * Method under test: {@link FulfillmentGroupImpl#getTotalFeeTax()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money FulfillmentGroupImpl.getTotalFeeTax()"})
   public void testGetTotalFeeTax_givenFulfillmentGroupImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new FulfillmentGroupImpl()).getTotalFeeTax());
   }
@@ -8289,17 +2744,16 @@ public class FulfillmentGroupImplDiffblueTest {
   /**
    * Test {@link FulfillmentGroupImpl#getTotalFeeTax()}.
    * <ul>
-   *   <li>Given {@link OrderImpl} (default constructor) Currency is
-   * {@code null}.</li>
+   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@code null}.</li>
    *   <li>Then return {@link Money#Money()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link FulfillmentGroupImpl#getTotalFeeTax()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money FulfillmentGroupImpl.getTotalFeeTax()"})
   public void testGetTotalFeeTax_givenOrderImplCurrencyIsNull_thenReturnMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
@@ -8329,677 +2783,156 @@ public class FulfillmentGroupImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setCurrency(null);
 
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(new AddressImpl());
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl2.setAddress(new AddressImpl());
+    fulfillmentGroupImpl2.setCandidateFulfillmentGroupOffer(new ArrayList<>());
+    fulfillmentGroupImpl2.setDeliveryInstruction("Delivery Instruction");
+    fulfillmentGroupImpl2.setFulfillmentGroupAdjustments(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupFees(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupItems(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentOption(new FulfillmentOptionImpl());
     Money fulfillmentPrice = new Money();
-    fulfillmentGroupImpl.setFulfillmentPrice(fulfillmentPrice);
-    fulfillmentGroupImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setOrder(order);
+    fulfillmentGroupImpl2.setFulfillmentPrice(fulfillmentPrice);
+    fulfillmentGroupImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupImpl2.setIsShippingPriceTaxable(true);
+    fulfillmentGroupImpl2.setMerchandiseTotal(new Money());
+    fulfillmentGroupImpl2.setMethod("Fulfillment Method");
+    fulfillmentGroupImpl2.setPersonalMessage(new PersonalMessageImpl());
+    fulfillmentGroupImpl2.setPhone(new PhoneImpl());
+    fulfillmentGroupImpl2.setPrimary(true);
+    fulfillmentGroupImpl2.setReferenceNumber("42");
+    fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSequence(1);
+    fulfillmentGroupImpl2.setService("Service");
+    fulfillmentGroupImpl2.setShippingOverride(true);
+    fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupImpl2.setTaxes(new ArrayList<>());
+    fulfillmentGroupImpl2.setTotal(new Money());
+    fulfillmentGroupImpl2.setTotalFulfillmentGroupTax(new Money());
+    fulfillmentGroupImpl2.setTotalItemTax(new Money());
+    fulfillmentGroupImpl2.setTotalTax(new Money());
+    fulfillmentGroupImpl2.setType(FulfillmentType.DIGITAL);
+    fulfillmentGroupImpl2.setTotalFeeTax(new Money());
+    fulfillmentGroupImpl2.setOrder(order);
 
     // Act and Assert
-    assertEquals(fulfillmentPrice, fulfillmentGroupImpl.getTotalFeeTax());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#setTotalFeeTax(Money)}.
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#setTotalFeeTax(Money)}
-   */
-  @Test
-  public void testSetTotalFeeTax() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(new AddressImpl());
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
-    Money fulfillmentPrice = new Money();
-    fulfillmentGroupImpl.setFulfillmentPrice(fulfillmentPrice);
-    fulfillmentGroupImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setOrder(NullOrderFactoryImpl.NULL_ORDER);
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-
-    // Act
-    fulfillmentGroupImpl.setTotalFeeTax(null);
-
-    // Assert
-    assertNull(fulfillmentGroupImpl.totalFeeTax);
-    assertNull(fulfillmentGroupImpl.getTotalFeeTax());
-    Money fulfillmentGroupAdjustmentsValue = fulfillmentGroupImpl.getFulfillmentGroupAdjustmentsValue();
-    Money absResult = fulfillmentGroupAdjustmentsValue.abs();
-    Money absResult2 = absResult.abs();
-    Money absResult3 = absResult2.abs();
-    Money absResult4 = absResult3.abs();
-    assertEquals(fulfillmentPrice, absResult4.abs());
-    Money zeroResult = fulfillmentGroupAdjustmentsValue.zero();
-    Money absResult5 = zeroResult.abs();
-    Money absResult6 = absResult5.abs();
-    Money absResult7 = absResult6.abs();
-    assertEquals(fulfillmentPrice, absResult7.abs());
-    Money zeroResult2 = absResult.zero();
-    Money absResult8 = zeroResult2.abs();
-    Money absResult9 = absResult8.abs();
-    assertEquals(fulfillmentPrice, absResult9.abs());
-    assertEquals(fulfillmentPrice, zeroResult.zero().abs().abs().abs());
-    Money zeroResult3 = absResult2.zero();
-    Money absResult10 = zeroResult3.abs();
-    assertEquals(fulfillmentPrice, absResult10.abs());
-    Money zeroResult4 = absResult5.zero();
-    Money absResult11 = zeroResult4.abs();
-    assertEquals(fulfillmentPrice, absResult11.abs());
-    Money zeroResult5 = zeroResult2.zero();
-    Money absResult12 = zeroResult5.abs();
-    assertEquals(fulfillmentPrice, absResult12.abs());
-    Money zeroResult6 = fulfillmentGroupImpl.getTotalTax().zero();
-    Money zeroResult7 = zeroResult6.zero();
-    Money absResult13 = zeroResult7.abs();
-    assertEquals(fulfillmentPrice, absResult13.abs());
-    Money zeroResult8 = absResult3.zero();
-    assertEquals(fulfillmentPrice, zeroResult8.abs());
-    Money zeroResult9 = absResult6.zero();
-    assertEquals(fulfillmentPrice, zeroResult9.abs());
-    Money zeroResult10 = absResult8.zero();
-    assertEquals(fulfillmentPrice, zeroResult10.abs());
-    Money zeroResult11 = zeroResult3.zero();
-    assertEquals(fulfillmentPrice, zeroResult11.abs());
-    Money zeroResult12 = zeroResult4.zero();
-    assertEquals(fulfillmentPrice, zeroResult12.abs());
-    Money zeroResult13 = zeroResult5.zero();
-    assertEquals(fulfillmentPrice, zeroResult13.abs());
-    Money zeroResult14 = zeroResult7.zero();
-    assertEquals(fulfillmentPrice, zeroResult14.abs());
-    assertEquals(fulfillmentPrice, absResult4.zero());
-    assertEquals(fulfillmentPrice, absResult7.zero());
-    assertEquals(fulfillmentPrice, absResult9.zero());
-    assertEquals(fulfillmentPrice, absResult10.zero());
-    assertEquals(fulfillmentPrice, absResult11.zero());
-    assertEquals(fulfillmentPrice, absResult12.zero());
-    assertEquals(fulfillmentPrice, absResult13.zero());
-    assertEquals(fulfillmentPrice, zeroResult8.zero());
-    assertEquals(fulfillmentPrice, zeroResult9.zero());
-    assertEquals(fulfillmentPrice, zeroResult10.zero());
-    Money zeroResult15 = zeroResult6.abs().zero();
-    assertEquals(fulfillmentPrice, zeroResult15.zero());
-    assertEquals(fulfillmentPrice, zeroResult11.zero());
-    assertEquals(fulfillmentPrice, zeroResult12.zero());
-    assertEquals(fulfillmentPrice, zeroResult13.zero());
-    assertEquals(fulfillmentPrice, zeroResult14.zero());
-    BigDecimal bigDecimal = fulfillmentGroupImpl.totalTax;
-    assertSame(bigDecimal, absResult4.getAmount());
-    assertSame(bigDecimal, absResult7.getAmount());
-    assertSame(bigDecimal, absResult9.getAmount());
-    assertSame(bigDecimal, absResult10.getAmount());
-    assertSame(bigDecimal, absResult11.getAmount());
-    assertSame(bigDecimal, absResult12.getAmount());
-    assertSame(bigDecimal, absResult13.getAmount());
-    assertSame(bigDecimal, zeroResult8.getAmount());
-    assertSame(bigDecimal, zeroResult9.getAmount());
-    assertSame(bigDecimal, zeroResult10.getAmount());
-    assertSame(bigDecimal, zeroResult15.getAmount());
-    assertSame(bigDecimal, zeroResult11.getAmount());
-    assertSame(bigDecimal, zeroResult12.getAmount());
-    assertSame(bigDecimal, zeroResult13.getAmount());
-    assertSame(bigDecimal, zeroResult14.getAmount());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#setTotalFeeTax(Money)}.
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#setTotalFeeTax(Money)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetTotalFeeTax2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1362 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
-
-    // Act
-    fulfillmentGroupImpl2.setTotalFeeTax(new Money());
+    assertEquals(fulfillmentPrice, fulfillmentGroupImpl2.getTotalFeeTax());
   }
 
   /**
    * Test {@link FulfillmentGroupImpl#setTotalFeeTax(Money)}.
    * <ul>
-   *   <li>Then {@link FulfillmentGroupImpl} (default constructor)
-   * {@link FulfillmentGroupImpl#totalFeeTax} is
-   * {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
+   *   <li>Then {@link FulfillmentGroupImpl} (default constructor) {@link FulfillmentGroupImpl#totalFeeTax} is {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
    * </ul>
    * <p>
    * Method under test: {@link FulfillmentGroupImpl#setTotalFeeTax(Money)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupImpl.setTotalFeeTax(Money)"})
   public void testSetTotalFeeTax_thenFulfillmentGroupImplTotalFeeTaxIsBigDecimalWith000() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
     Money totalFeeTax = new Money();
 
     // Act
-    fulfillmentGroupImpl.setTotalFeeTax(totalFeeTax);
+    fulfillmentGroupImpl2.setTotalFeeTax(totalFeeTax);
 
     // Assert
-    assertEquals(new BigDecimal("0.00"), fulfillmentGroupImpl.totalFeeTax);
-    BigDecimal bigDecimal = fulfillmentGroupImpl.totalFeeTax;
+    assertEquals(new BigDecimal("0.00"), fulfillmentGroupImpl2.totalFeeTax);
+    BigDecimal bigDecimal = fulfillmentGroupImpl2.totalFeeTax;
     Money absResult = totalFeeTax.abs();
     assertSame(bigDecimal, absResult.getAmount());
     Money absResult2 = absResult.abs();
     assertSame(bigDecimal, absResult2.getAmount());
-    Money absResult3 = absResult2.abs();
-    assertSame(bigDecimal, absResult3.getAmount());
-    Money absResult4 = absResult3.abs();
-    assertSame(bigDecimal, absResult4.getAmount());
-    Money absResult5 = absResult4.abs();
-    assertSame(bigDecimal, absResult5.getAmount());
-    Money absResult6 = absResult5.abs();
-    assertSame(bigDecimal, absResult6.getAmount());
-    assertSame(bigDecimal, absResult6.abs().getAmount());
+    assertSame(bigDecimal, absResult2.abs().getAmount());
     Money zeroResult = totalFeeTax.zero();
-    Money absResult7 = zeroResult.abs();
-    Money absResult8 = absResult7.abs();
-    Money absResult9 = absResult8.abs();
-    Money absResult10 = absResult9.abs();
-    Money absResult11 = absResult10.abs();
-    assertSame(bigDecimal, absResult11.abs().getAmount());
-    assertSame(bigDecimal, absResult11.getAmount());
+    Money absResult3 = zeroResult.abs();
+    assertSame(bigDecimal, absResult3.abs().getAmount());
+    assertSame(bigDecimal, absResult3.getAmount());
     Money zeroResult2 = absResult.zero();
-    Money absResult12 = zeroResult2.abs();
-    Money absResult13 = absResult12.abs();
-    Money absResult14 = absResult13.abs();
-    Money absResult15 = absResult14.abs();
-    assertSame(bigDecimal, absResult15.abs().getAmount());
+    assertSame(bigDecimal, zeroResult2.abs().getAmount());
     Money zeroResult3 = zeroResult.zero();
-    Money absResult16 = zeroResult3.abs();
-    Money absResult17 = absResult16.abs();
-    Money absResult18 = absResult17.abs();
-    Money absResult19 = absResult18.abs();
-    assertSame(bigDecimal, absResult19.abs().getAmount());
-    assertSame(bigDecimal, absResult10.getAmount());
-    assertSame(bigDecimal, absResult15.getAmount());
-    Money zeroResult4 = absResult2.zero();
-    Money absResult20 = zeroResult4.abs();
-    Money absResult21 = absResult20.abs();
-    Money absResult22 = absResult21.abs();
-    assertSame(bigDecimal, absResult22.abs().getAmount());
-    Money zeroResult5 = absResult7.zero();
-    Money absResult23 = zeroResult5.abs();
-    Money absResult24 = absResult23.abs();
-    Money absResult25 = absResult24.abs();
-    assertSame(bigDecimal, absResult25.abs().getAmount());
-    assertSame(bigDecimal, absResult19.getAmount());
-    Money zeroResult6 = zeroResult2.zero();
-    Money absResult26 = zeroResult6.abs();
-    Money absResult27 = absResult26.abs();
-    Money absResult28 = absResult27.abs();
-    assertSame(bigDecimal, absResult28.abs().getAmount());
-    Money zeroResult7 = zeroResult3.zero();
-    Money absResult29 = zeroResult7.abs();
-    Money absResult30 = absResult29.abs();
-    Money absResult31 = absResult30.abs();
-    assertSame(bigDecimal, absResult31.abs().getAmount());
-    assertSame(bigDecimal, absResult9.getAmount());
-    assertSame(bigDecimal, absResult14.getAmount());
-    assertSame(bigDecimal, absResult22.getAmount());
-    Money zeroResult8 = absResult3.zero();
-    Money absResult32 = zeroResult8.abs();
-    Money absResult33 = absResult32.abs();
-    assertSame(bigDecimal, absResult33.abs().getAmount());
-    Money zeroResult9 = absResult8.zero();
-    Money absResult34 = zeroResult9.abs();
-    Money absResult35 = absResult34.abs();
-    assertSame(bigDecimal, absResult35.abs().getAmount());
-    assertSame(bigDecimal, absResult25.getAmount());
-    Money zeroResult10 = absResult12.zero();
-    Money absResult36 = zeroResult10.abs();
-    Money absResult37 = absResult36.abs();
-    assertSame(bigDecimal, absResult37.abs().getAmount());
-    Money zeroResult11 = absResult16.zero();
-    Money absResult38 = zeroResult11.abs();
-    Money absResult39 = absResult38.abs();
-    assertSame(bigDecimal, absResult39.abs().getAmount());
-    assertSame(bigDecimal, absResult18.getAmount());
-    assertSame(bigDecimal, absResult28.getAmount());
-    Money zeroResult12 = zeroResult4.zero();
-    Money absResult40 = zeroResult12.abs();
-    Money absResult41 = absResult40.abs();
-    assertSame(bigDecimal, absResult41.abs().getAmount());
-    Money zeroResult13 = zeroResult5.zero();
-    Money absResult42 = zeroResult13.abs();
-    Money absResult43 = absResult42.abs();
-    assertSame(bigDecimal, absResult43.abs().getAmount());
-    assertSame(bigDecimal, absResult31.getAmount());
-    Money zeroResult14 = zeroResult6.zero();
-    Money absResult44 = zeroResult14.abs();
-    Money absResult45 = absResult44.abs();
-    assertSame(bigDecimal, absResult45.abs().getAmount());
-    Money zeroResult15 = zeroResult7.zero();
-    Money absResult46 = zeroResult15.abs();
-    Money absResult47 = absResult46.abs();
-    assertSame(bigDecimal, absResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult8.getAmount());
-    assertSame(bigDecimal, absResult13.getAmount());
-    assertSame(bigDecimal, absResult21.getAmount());
-    assertSame(bigDecimal, absResult33.getAmount());
-    Money zeroResult16 = absResult4.zero();
-    Money absResult48 = zeroResult16.abs();
-    assertSame(bigDecimal, absResult48.abs().getAmount());
-    Money zeroResult17 = absResult9.zero();
-    Money absResult49 = zeroResult17.abs();
-    assertSame(bigDecimal, absResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult35.getAmount());
-    Money zeroResult18 = absResult13.zero();
-    Money absResult50 = zeroResult18.abs();
-    assertSame(bigDecimal, absResult50.abs().getAmount());
-    Money zeroResult19 = absResult17.zero();
-    Money absResult51 = zeroResult19.abs();
-    assertSame(bigDecimal, absResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult24.getAmount());
-    assertSame(bigDecimal, absResult37.getAmount());
-    Money zeroResult20 = absResult20.zero();
-    Money absResult52 = zeroResult20.abs();
-    assertSame(bigDecimal, absResult52.abs().getAmount());
-    Money zeroResult21 = absResult23.zero();
-    Money absResult53 = zeroResult21.abs();
-    assertSame(bigDecimal, absResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult39.getAmount());
-    Money zeroResult22 = absResult26.zero();
-    Money absResult54 = zeroResult22.abs();
-    assertSame(bigDecimal, absResult54.abs().getAmount());
-    Money zeroResult23 = absResult29.zero();
-    Money absResult55 = zeroResult23.abs();
-    assertSame(bigDecimal, absResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult17.getAmount());
-    assertSame(bigDecimal, absResult27.getAmount());
-    assertSame(bigDecimal, absResult41.getAmount());
-    Money zeroResult24 = zeroResult8.zero();
-    Money absResult56 = zeroResult24.abs();
-    assertSame(bigDecimal, absResult56.abs().getAmount());
-    Money zeroResult25 = zeroResult9.zero();
-    Money absResult57 = zeroResult25.abs();
-    assertSame(bigDecimal, absResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult43.getAmount());
-    Money zeroResult26 = zeroResult10.zero();
-    Money absResult58 = zeroResult26.abs();
-    assertSame(bigDecimal, absResult58.abs().getAmount());
-    Money zeroResult27 = zeroResult11.zero();
-    Money absResult59 = zeroResult27.abs();
-    assertSame(bigDecimal, absResult59.abs().getAmount());
-    assertSame(bigDecimal, absResult30.getAmount());
-    assertSame(bigDecimal, absResult45.getAmount());
-    Money zeroResult28 = zeroResult12.zero();
-    Money absResult60 = zeroResult28.abs();
-    assertSame(bigDecimal, absResult60.abs().getAmount());
-    Money zeroResult29 = zeroResult13.zero();
-    Money absResult61 = zeroResult29.abs();
-    assertSame(bigDecimal, absResult61.abs().getAmount());
-    assertSame(bigDecimal, absResult47.getAmount());
-    Money zeroResult30 = zeroResult14.zero();
-    Money absResult62 = zeroResult30.abs();
-    assertSame(bigDecimal, absResult62.abs().getAmount());
-    assertSame(bigDecimal, absResult7.getAmount());
-    assertSame(bigDecimal, absResult12.getAmount());
-    assertSame(bigDecimal, absResult20.getAmount());
-    assertSame(bigDecimal, absResult32.getAmount());
-    assertSame(bigDecimal, absResult48.getAmount());
-    Money zeroResult31 = absResult5.zero();
-    assertSame(bigDecimal, zeroResult31.abs().getAmount());
-    Money zeroResult32 = absResult10.zero();
-    assertSame(bigDecimal, zeroResult32.abs().getAmount());
-    assertSame(bigDecimal, absResult49.getAmount());
-    Money zeroResult33 = absResult14.zero();
-    assertSame(bigDecimal, zeroResult33.abs().getAmount());
-    Money zeroResult34 = absResult18.zero();
-    assertSame(bigDecimal, zeroResult34.abs().getAmount());
-    assertSame(bigDecimal, absResult34.getAmount());
-    assertSame(bigDecimal, absResult50.getAmount());
-    Money zeroResult35 = absResult21.zero();
-    assertSame(bigDecimal, zeroResult35.abs().getAmount());
-    Money zeroResult36 = absResult24.zero();
-    assertSame(bigDecimal, zeroResult36.abs().getAmount());
-    assertSame(bigDecimal, absResult51.getAmount());
-    Money zeroResult37 = absResult27.zero();
-    assertSame(bigDecimal, zeroResult37.abs().getAmount());
-    Money zeroResult38 = absResult30.zero();
-    assertSame(bigDecimal, zeroResult38.abs().getAmount());
-    assertSame(bigDecimal, absResult23.getAmount());
-    assertSame(bigDecimal, absResult36.getAmount());
-    assertSame(bigDecimal, absResult52.getAmount());
-    Money zeroResult39 = absResult32.zero();
-    assertSame(bigDecimal, zeroResult39.abs().getAmount());
-    Money zeroResult40 = absResult34.zero();
-    assertSame(bigDecimal, zeroResult40.abs().getAmount());
-    assertSame(bigDecimal, absResult53.getAmount());
-    Money zeroResult41 = absResult36.zero();
-    assertSame(bigDecimal, zeroResult41.abs().getAmount());
-    Money zeroResult42 = absResult38.zero();
-    assertSame(bigDecimal, zeroResult42.abs().getAmount());
-    assertSame(bigDecimal, absResult38.getAmount());
-    assertSame(bigDecimal, absResult54.getAmount());
-    Money zeroResult43 = absResult40.zero();
-    assertSame(bigDecimal, zeroResult43.abs().getAmount());
-    Money zeroResult44 = absResult42.zero();
-    assertSame(bigDecimal, zeroResult44.abs().getAmount());
-    assertSame(bigDecimal, absResult55.getAmount());
-    Money zeroResult45 = absResult44.zero();
-    assertSame(bigDecimal, zeroResult45.abs().getAmount());
-    assertSame(bigDecimal, absResult16.getAmount());
-    assertSame(bigDecimal, absResult26.getAmount());
-    assertSame(bigDecimal, absResult40.getAmount());
-    assertSame(bigDecimal, absResult56.getAmount());
-    Money zeroResult46 = zeroResult16.zero();
-    assertSame(bigDecimal, zeroResult46.abs().getAmount());
-    Money zeroResult47 = zeroResult17.zero();
-    assertSame(bigDecimal, zeroResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult57.getAmount());
-    Money zeroResult48 = zeroResult18.zero();
-    assertSame(bigDecimal, zeroResult48.abs().getAmount());
-    Money zeroResult49 = zeroResult19.zero();
-    assertSame(bigDecimal, zeroResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult42.getAmount());
-    assertSame(bigDecimal, absResult58.getAmount());
-    Money zeroResult50 = zeroResult20.zero();
-    assertSame(bigDecimal, zeroResult50.abs().getAmount());
-    Money zeroResult51 = zeroResult21.zero();
-    assertSame(bigDecimal, zeroResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult59.getAmount());
-    Money zeroResult52 = zeroResult22.zero();
-    assertSame(bigDecimal, zeroResult52.abs().getAmount());
-    Money zeroResult53 = zeroResult23.zero();
-    assertSame(bigDecimal, zeroResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult29.getAmount());
-    assertSame(bigDecimal, absResult44.getAmount());
-    assertSame(bigDecimal, absResult60.getAmount());
-    Money zeroResult54 = zeroResult24.zero();
-    assertSame(bigDecimal, zeroResult54.abs().getAmount());
-    Money zeroResult55 = zeroResult25.zero();
-    assertSame(bigDecimal, zeroResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult61.getAmount());
-    Money zeroResult56 = zeroResult26.zero();
-    assertSame(bigDecimal, zeroResult56.abs().getAmount());
-    Money zeroResult57 = zeroResult27.zero();
-    assertSame(bigDecimal, zeroResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult46.getAmount());
-    assertSame(bigDecimal, absResult62.getAmount());
-    Money zeroResult58 = zeroResult28.zero();
-    assertSame(bigDecimal, zeroResult58.abs().getAmount());
-    Money zeroResult59 = zeroResult29.zero();
-    assertSame(bigDecimal, zeroResult59.abs().getAmount());
-    Money zeroResult60 = zeroResult15.zero();
-    assertSame(bigDecimal, zeroResult60.abs().getAmount());
-    Money zeroResult61 = zeroResult30.zero();
-    assertSame(bigDecimal, zeroResult61.abs().getAmount());
+    assertSame(bigDecimal, zeroResult3.abs().getAmount());
     assertSame(bigDecimal, zeroResult.getAmount());
     assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, zeroResult4.getAmount());
-    assertSame(bigDecimal, zeroResult8.getAmount());
-    assertSame(bigDecimal, zeroResult16.getAmount());
-    assertSame(bigDecimal, zeroResult31.getAmount());
-    assertSame(bigDecimal, absResult6.zero().getAmount());
-    assertSame(bigDecimal, absResult11.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.getAmount());
-    assertSame(bigDecimal, absResult15.zero().getAmount());
-    assertSame(bigDecimal, absResult19.zero().getAmount());
-    assertSame(bigDecimal, zeroResult17.getAmount());
-    assertSame(bigDecimal, zeroResult33.getAmount());
-    assertSame(bigDecimal, absResult22.zero().getAmount());
-    assertSame(bigDecimal, absResult25.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.getAmount());
-    assertSame(bigDecimal, absResult28.zero().getAmount());
-    assertSame(bigDecimal, absResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult9.getAmount());
-    assertSame(bigDecimal, zeroResult18.getAmount());
-    assertSame(bigDecimal, zeroResult35.getAmount());
-    assertSame(bigDecimal, absResult33.zero().getAmount());
-    assertSame(bigDecimal, absResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.getAmount());
-    assertSame(bigDecimal, absResult37.zero().getAmount());
-    assertSame(bigDecimal, absResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult19.getAmount());
-    assertSame(bigDecimal, zeroResult37.getAmount());
-    assertSame(bigDecimal, absResult41.zero().getAmount());
-    assertSame(bigDecimal, absResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.getAmount());
-    assertSame(bigDecimal, absResult45.zero().getAmount());
-    assertSame(bigDecimal, absResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult5.getAmount());
-    assertSame(bigDecimal, zeroResult10.getAmount());
-    assertSame(bigDecimal, zeroResult20.getAmount());
-    assertSame(bigDecimal, zeroResult39.getAmount());
-    assertSame(bigDecimal, absResult48.zero().getAmount());
-    assertSame(bigDecimal, absResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.getAmount());
-    assertSame(bigDecimal, absResult50.zero().getAmount());
-    assertSame(bigDecimal, absResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult21.getAmount());
-    assertSame(bigDecimal, zeroResult41.getAmount());
-    assertSame(bigDecimal, absResult52.zero().getAmount());
-    assertSame(bigDecimal, absResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.getAmount());
-    assertSame(bigDecimal, absResult54.zero().getAmount());
-    assertSame(bigDecimal, absResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult11.getAmount());
-    assertSame(bigDecimal, zeroResult22.getAmount());
-    assertSame(bigDecimal, zeroResult43.getAmount());
-    assertSame(bigDecimal, absResult56.zero().getAmount());
-    assertSame(bigDecimal, absResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.getAmount());
-    assertSame(bigDecimal, absResult58.zero().getAmount());
-    assertSame(bigDecimal, absResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult23.getAmount());
-    assertSame(bigDecimal, zeroResult45.getAmount());
-    assertSame(bigDecimal, absResult60.zero().getAmount());
-    assertSame(bigDecimal, absResult61.zero().getAmount());
-    assertSame(bigDecimal, absResult46.zero().getAmount());
-    assertSame(bigDecimal, absResult62.zero().getAmount());
+    assertSame(bigDecimal, absResult2.zero().getAmount());
+    assertSame(bigDecimal, absResult3.zero().getAmount());
     assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult6.getAmount());
-    assertSame(bigDecimal, zeroResult12.getAmount());
-    assertSame(bigDecimal, zeroResult24.getAmount());
-    assertSame(bigDecimal, zeroResult46.getAmount());
-    assertSame(bigDecimal, zeroResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.getAmount());
-    assertSame(bigDecimal, zeroResult33.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.zero().getAmount());
-    assertSame(bigDecimal, zeroResult25.getAmount());
-    assertSame(bigDecimal, zeroResult48.getAmount());
-    assertSame(bigDecimal, zeroResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.getAmount());
-    assertSame(bigDecimal, zeroResult37.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.zero().getAmount());
-    assertSame(bigDecimal, zeroResult13.getAmount());
-    assertSame(bigDecimal, zeroResult26.getAmount());
-    assertSame(bigDecimal, zeroResult50.getAmount());
-    assertSame(bigDecimal, zeroResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.getAmount());
-    assertSame(bigDecimal, zeroResult41.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.zero().getAmount());
-    assertSame(bigDecimal, zeroResult27.getAmount());
-    assertSame(bigDecimal, zeroResult52.getAmount());
-    assertSame(bigDecimal, zeroResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.getAmount());
-    assertSame(bigDecimal, zeroResult45.zero().getAmount());
-    assertSame(bigDecimal, zeroResult7.getAmount());
-    assertSame(bigDecimal, zeroResult14.getAmount());
-    assertSame(bigDecimal, zeroResult28.getAmount());
-    assertSame(bigDecimal, zeroResult54.getAmount());
-    assertSame(bigDecimal, zeroResult46.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.getAmount());
-    assertSame(bigDecimal, zeroResult48.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult29.getAmount());
-    assertSame(bigDecimal, zeroResult56.getAmount());
-    assertSame(bigDecimal, zeroResult50.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.getAmount());
-    assertSame(bigDecimal, zeroResult52.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult15.getAmount());
-    assertSame(bigDecimal, zeroResult30.getAmount());
-    assertSame(bigDecimal, zeroResult58.getAmount());
-    assertSame(bigDecimal, zeroResult54.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.getAmount());
-    assertSame(bigDecimal, zeroResult56.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.getAmount());
-    assertSame(bigDecimal, zeroResult61.getAmount());
-    assertSame(bigDecimal, zeroResult58.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.zero().getAmount());
-    assertSame(bigDecimal, zeroResult61.zero().getAmount());
+    assertSame(bigDecimal, zeroResult2.zero().getAmount());
+    assertSame(bigDecimal, zeroResult3.zero().getAmount());
   }
 
   /**
    * Test {@link FulfillmentGroupImpl#setTotalFeeTax(Money)}.
    * <ul>
-   *   <li>When {@link Money}.</li>
-   *   <li>Then {@link FulfillmentGroupImpl} (default constructor)
-   * {@link FulfillmentGroupImpl#totalFeeTax} is {@code null}.</li>
+   *   <li>Then {@link FulfillmentGroupImpl} (default constructor) {@link FulfillmentGroupImpl#totalFeeTax} is {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link FulfillmentGroupImpl#setTotalFeeTax(Money)}
    */
   @Test
-  public void testSetTotalFeeTax_whenMoney_thenFulfillmentGroupImplTotalFeeTaxIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupImpl.setTotalFeeTax(Money)"})
+  public void testSetTotalFeeTax_thenFulfillmentGroupImplTotalFeeTaxIsNull() {
     // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl2.setAddress(new AddressImpl());
+    fulfillmentGroupImpl2.setCandidateFulfillmentGroupOffer(new ArrayList<>());
+    fulfillmentGroupImpl2.setDeliveryInstruction("Delivery Instruction");
+    fulfillmentGroupImpl2.setFulfillmentGroupAdjustments(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupFees(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupItems(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentOption(new FulfillmentOptionImpl());
+    Money fulfillmentPrice = new Money();
+    fulfillmentGroupImpl2.setFulfillmentPrice(fulfillmentPrice);
+    fulfillmentGroupImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupImpl2.setIsShippingPriceTaxable(true);
+    fulfillmentGroupImpl2.setMerchandiseTotal(new Money());
+    fulfillmentGroupImpl2.setMethod("Fulfillment Method");
+    fulfillmentGroupImpl2.setOrder(NullOrderFactoryImpl.NULL_ORDER);
+    fulfillmentGroupImpl2.setPersonalMessage(new PersonalMessageImpl());
+    fulfillmentGroupImpl2.setPhone(new PhoneImpl());
+    fulfillmentGroupImpl2.setPrimary(true);
+    fulfillmentGroupImpl2.setReferenceNumber("42");
+    fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSequence(1);
+    fulfillmentGroupImpl2.setService("Service");
+    fulfillmentGroupImpl2.setShippingOverride(true);
+    fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupImpl2.setTaxes(new ArrayList<>());
+    fulfillmentGroupImpl2.setTotal(new Money());
+    fulfillmentGroupImpl2.setTotalFeeTax(new Money());
+    fulfillmentGroupImpl2.setTotalFulfillmentGroupTax(new Money());
+    fulfillmentGroupImpl2.setTotalItemTax(new Money());
+    fulfillmentGroupImpl2.setTotalTax(new Money());
+    fulfillmentGroupImpl2.setType(FulfillmentType.DIGITAL);
 
     // Act
-    fulfillmentGroupImpl.setTotalFeeTax(mock(Money.class));
+    fulfillmentGroupImpl2.setTotalFeeTax(null);
 
     // Assert
-    assertNull(fulfillmentGroupImpl.totalFeeTax);
-    assertNull(fulfillmentGroupImpl.getTotalFeeTax());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#getTotalFulfillmentGroupTax()}.
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#getTotalFulfillmentGroupTax()}
-   */
-  @Test
-  public void testGetTotalFulfillmentGroupTax() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(mock(Money.class));
-
-    // Act and Assert
-    assertNull(fulfillmentGroupImpl.getTotalFulfillmentGroupTax());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#getTotalFulfillmentGroupTax()}.
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#getTotalFulfillmentGroupTax()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetTotalFulfillmentGroupTax2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass882 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new FulfillmentGroupImpl()).getTotalFulfillmentGroupTax();
+    assertNull(fulfillmentGroupImpl2.totalFeeTax);
+    assertNull(fulfillmentGroupImpl2.getTotalFeeTax());
+    Money zeroResult = fulfillmentGroupImpl2.getTotalTax().zero();
+    Money zeroResult2 = zeroResult.zero();
+    Money absResult = zeroResult2.abs();
+    assertEquals(fulfillmentPrice, absResult.abs());
+    Money zeroResult3 = zeroResult2.zero();
+    assertEquals(fulfillmentPrice, zeroResult3.abs());
+    assertEquals(fulfillmentPrice, absResult.zero());
+    Money zeroResult4 = zeroResult.abs().zero();
+    assertEquals(fulfillmentPrice, zeroResult4.zero());
+    assertEquals(fulfillmentPrice, zeroResult3.zero());
+    BigDecimal bigDecimal = fulfillmentGroupImpl2.totalTax;
+    assertSame(bigDecimal, absResult.getAmount());
+    assertSame(bigDecimal, zeroResult4.getAmount());
+    assertSame(bigDecimal, zeroResult3.getAmount());
   }
 
   /**
@@ -9012,9 +2945,9 @@ public class FulfillmentGroupImplDiffblueTest {
    * Method under test: {@link FulfillmentGroupImpl#getTotalFulfillmentGroupTax()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money FulfillmentGroupImpl.getTotalFulfillmentGroupTax()"})
   public void testGetTotalFulfillmentGroupTax_givenFulfillmentGroupImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new FulfillmentGroupImpl()).getTotalFulfillmentGroupTax());
   }
@@ -9022,17 +2955,16 @@ public class FulfillmentGroupImplDiffblueTest {
   /**
    * Test {@link FulfillmentGroupImpl#getTotalFulfillmentGroupTax()}.
    * <ul>
-   *   <li>Given {@link OrderImpl} (default constructor) Currency is
-   * {@code null}.</li>
+   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@code null}.</li>
    *   <li>Then return {@link Money#Money()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link FulfillmentGroupImpl#getTotalFulfillmentGroupTax()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money FulfillmentGroupImpl.getTotalFulfillmentGroupTax()"})
   public void testGetTotalFulfillmentGroupTax_givenOrderImplCurrencyIsNull_thenReturnMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
@@ -9062,678 +2994,150 @@ public class FulfillmentGroupImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setCurrency(null);
 
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(new AddressImpl());
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl2.setAddress(new AddressImpl());
+    fulfillmentGroupImpl2.setCandidateFulfillmentGroupOffer(new ArrayList<>());
+    fulfillmentGroupImpl2.setDeliveryInstruction("Delivery Instruction");
+    fulfillmentGroupImpl2.setFulfillmentGroupAdjustments(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupFees(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupItems(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentOption(new FulfillmentOptionImpl());
     Money fulfillmentPrice = new Money();
-    fulfillmentGroupImpl.setFulfillmentPrice(fulfillmentPrice);
-    fulfillmentGroupImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setOrder(order);
+    fulfillmentGroupImpl2.setFulfillmentPrice(fulfillmentPrice);
+    fulfillmentGroupImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupImpl2.setIsShippingPriceTaxable(true);
+    fulfillmentGroupImpl2.setMerchandiseTotal(new Money());
+    fulfillmentGroupImpl2.setMethod("Fulfillment Method");
+    fulfillmentGroupImpl2.setPersonalMessage(new PersonalMessageImpl());
+    fulfillmentGroupImpl2.setPhone(new PhoneImpl());
+    fulfillmentGroupImpl2.setPrimary(true);
+    fulfillmentGroupImpl2.setReferenceNumber("42");
+    fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSequence(1);
+    fulfillmentGroupImpl2.setService("Service");
+    fulfillmentGroupImpl2.setShippingOverride(true);
+    fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupImpl2.setTaxes(new ArrayList<>());
+    fulfillmentGroupImpl2.setTotal(new Money());
+    fulfillmentGroupImpl2.setTotalFeeTax(new Money());
+    fulfillmentGroupImpl2.setTotalItemTax(new Money());
+    fulfillmentGroupImpl2.setTotalTax(new Money());
+    fulfillmentGroupImpl2.setType(FulfillmentType.DIGITAL);
+    fulfillmentGroupImpl2.setTotalFulfillmentGroupTax(new Money());
+    fulfillmentGroupImpl2.setOrder(order);
 
     // Act and Assert
-    assertEquals(fulfillmentPrice, fulfillmentGroupImpl.getTotalFulfillmentGroupTax());
+    assertEquals(fulfillmentPrice, fulfillmentGroupImpl2.getTotalFulfillmentGroupTax());
   }
 
   /**
    * Test {@link FulfillmentGroupImpl#setTotalFulfillmentGroupTax(Money)}.
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#setTotalFulfillmentGroupTax(Money)}
+   * Method under test: {@link FulfillmentGroupImpl#setTotalFulfillmentGroupTax(Money)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupImpl.setTotalFulfillmentGroupTax(Money)"})
   public void testSetTotalFulfillmentGroupTax() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
     Money totalFulfillmentGroupTax = new Money();
 
     // Act
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(totalFulfillmentGroupTax);
+    fulfillmentGroupImpl2.setTotalFulfillmentGroupTax(totalFulfillmentGroupTax);
 
     // Assert
-    assertEquals(new BigDecimal("0.00"), fulfillmentGroupImpl.totalFulfillmentGroupTax);
-    BigDecimal bigDecimal = fulfillmentGroupImpl.totalFulfillmentGroupTax;
+    assertEquals(new BigDecimal("0.00"), fulfillmentGroupImpl2.totalFulfillmentGroupTax);
+    BigDecimal bigDecimal = fulfillmentGroupImpl2.totalFulfillmentGroupTax;
     Money absResult = totalFulfillmentGroupTax.abs();
     assertSame(bigDecimal, absResult.getAmount());
     Money absResult2 = absResult.abs();
     assertSame(bigDecimal, absResult2.getAmount());
-    Money absResult3 = absResult2.abs();
-    assertSame(bigDecimal, absResult3.getAmount());
-    Money absResult4 = absResult3.abs();
-    assertSame(bigDecimal, absResult4.getAmount());
-    Money absResult5 = absResult4.abs();
-    assertSame(bigDecimal, absResult5.getAmount());
-    Money absResult6 = absResult5.abs();
-    assertSame(bigDecimal, absResult6.getAmount());
-    assertSame(bigDecimal, absResult6.abs().getAmount());
+    assertSame(bigDecimal, absResult2.abs().getAmount());
     Money zeroResult = totalFulfillmentGroupTax.zero();
-    Money absResult7 = zeroResult.abs();
-    Money absResult8 = absResult7.abs();
-    Money absResult9 = absResult8.abs();
-    Money absResult10 = absResult9.abs();
-    Money absResult11 = absResult10.abs();
-    assertSame(bigDecimal, absResult11.abs().getAmount());
-    assertSame(bigDecimal, absResult11.getAmount());
+    Money absResult3 = zeroResult.abs();
+    assertSame(bigDecimal, absResult3.abs().getAmount());
+    assertSame(bigDecimal, absResult3.getAmount());
     Money zeroResult2 = absResult.zero();
-    Money absResult12 = zeroResult2.abs();
-    Money absResult13 = absResult12.abs();
-    Money absResult14 = absResult13.abs();
-    Money absResult15 = absResult14.abs();
-    assertSame(bigDecimal, absResult15.abs().getAmount());
+    assertSame(bigDecimal, zeroResult2.abs().getAmount());
     Money zeroResult3 = zeroResult.zero();
-    Money absResult16 = zeroResult3.abs();
-    Money absResult17 = absResult16.abs();
-    Money absResult18 = absResult17.abs();
-    Money absResult19 = absResult18.abs();
-    assertSame(bigDecimal, absResult19.abs().getAmount());
-    assertSame(bigDecimal, absResult10.getAmount());
-    assertSame(bigDecimal, absResult15.getAmount());
-    Money zeroResult4 = absResult2.zero();
-    Money absResult20 = zeroResult4.abs();
-    Money absResult21 = absResult20.abs();
-    Money absResult22 = absResult21.abs();
-    assertSame(bigDecimal, absResult22.abs().getAmount());
-    Money zeroResult5 = absResult7.zero();
-    Money absResult23 = zeroResult5.abs();
-    Money absResult24 = absResult23.abs();
-    Money absResult25 = absResult24.abs();
-    assertSame(bigDecimal, absResult25.abs().getAmount());
-    assertSame(bigDecimal, absResult19.getAmount());
-    Money zeroResult6 = zeroResult2.zero();
-    Money absResult26 = zeroResult6.abs();
-    Money absResult27 = absResult26.abs();
-    Money absResult28 = absResult27.abs();
-    assertSame(bigDecimal, absResult28.abs().getAmount());
-    Money zeroResult7 = zeroResult3.zero();
-    Money absResult29 = zeroResult7.abs();
-    Money absResult30 = absResult29.abs();
-    Money absResult31 = absResult30.abs();
-    assertSame(bigDecimal, absResult31.abs().getAmount());
-    assertSame(bigDecimal, absResult9.getAmount());
-    assertSame(bigDecimal, absResult14.getAmount());
-    assertSame(bigDecimal, absResult22.getAmount());
-    Money zeroResult8 = absResult3.zero();
-    Money absResult32 = zeroResult8.abs();
-    Money absResult33 = absResult32.abs();
-    assertSame(bigDecimal, absResult33.abs().getAmount());
-    Money zeroResult9 = absResult8.zero();
-    Money absResult34 = zeroResult9.abs();
-    Money absResult35 = absResult34.abs();
-    assertSame(bigDecimal, absResult35.abs().getAmount());
-    assertSame(bigDecimal, absResult25.getAmount());
-    Money zeroResult10 = absResult12.zero();
-    Money absResult36 = zeroResult10.abs();
-    Money absResult37 = absResult36.abs();
-    assertSame(bigDecimal, absResult37.abs().getAmount());
-    Money zeroResult11 = absResult16.zero();
-    Money absResult38 = zeroResult11.abs();
-    Money absResult39 = absResult38.abs();
-    assertSame(bigDecimal, absResult39.abs().getAmount());
-    assertSame(bigDecimal, absResult18.getAmount());
-    assertSame(bigDecimal, absResult28.getAmount());
-    Money zeroResult12 = zeroResult4.zero();
-    Money absResult40 = zeroResult12.abs();
-    Money absResult41 = absResult40.abs();
-    assertSame(bigDecimal, absResult41.abs().getAmount());
-    Money zeroResult13 = zeroResult5.zero();
-    Money absResult42 = zeroResult13.abs();
-    Money absResult43 = absResult42.abs();
-    assertSame(bigDecimal, absResult43.abs().getAmount());
-    assertSame(bigDecimal, absResult31.getAmount());
-    Money zeroResult14 = zeroResult6.zero();
-    Money absResult44 = zeroResult14.abs();
-    Money absResult45 = absResult44.abs();
-    assertSame(bigDecimal, absResult45.abs().getAmount());
-    Money zeroResult15 = zeroResult7.zero();
-    Money absResult46 = zeroResult15.abs();
-    Money absResult47 = absResult46.abs();
-    assertSame(bigDecimal, absResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult8.getAmount());
-    assertSame(bigDecimal, absResult13.getAmount());
-    assertSame(bigDecimal, absResult21.getAmount());
-    assertSame(bigDecimal, absResult33.getAmount());
-    Money zeroResult16 = absResult4.zero();
-    Money absResult48 = zeroResult16.abs();
-    assertSame(bigDecimal, absResult48.abs().getAmount());
-    Money zeroResult17 = absResult9.zero();
-    Money absResult49 = zeroResult17.abs();
-    assertSame(bigDecimal, absResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult35.getAmount());
-    Money zeroResult18 = absResult13.zero();
-    Money absResult50 = zeroResult18.abs();
-    assertSame(bigDecimal, absResult50.abs().getAmount());
-    Money zeroResult19 = absResult17.zero();
-    Money absResult51 = zeroResult19.abs();
-    assertSame(bigDecimal, absResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult24.getAmount());
-    assertSame(bigDecimal, absResult37.getAmount());
-    Money zeroResult20 = absResult20.zero();
-    Money absResult52 = zeroResult20.abs();
-    assertSame(bigDecimal, absResult52.abs().getAmount());
-    Money zeroResult21 = absResult23.zero();
-    Money absResult53 = zeroResult21.abs();
-    assertSame(bigDecimal, absResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult39.getAmount());
-    Money zeroResult22 = absResult26.zero();
-    Money absResult54 = zeroResult22.abs();
-    assertSame(bigDecimal, absResult54.abs().getAmount());
-    Money zeroResult23 = absResult29.zero();
-    Money absResult55 = zeroResult23.abs();
-    assertSame(bigDecimal, absResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult17.getAmount());
-    assertSame(bigDecimal, absResult27.getAmount());
-    assertSame(bigDecimal, absResult41.getAmount());
-    Money zeroResult24 = zeroResult8.zero();
-    Money absResult56 = zeroResult24.abs();
-    assertSame(bigDecimal, absResult56.abs().getAmount());
-    Money zeroResult25 = zeroResult9.zero();
-    Money absResult57 = zeroResult25.abs();
-    assertSame(bigDecimal, absResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult43.getAmount());
-    Money zeroResult26 = zeroResult10.zero();
-    Money absResult58 = zeroResult26.abs();
-    assertSame(bigDecimal, absResult58.abs().getAmount());
-    Money zeroResult27 = zeroResult11.zero();
-    Money absResult59 = zeroResult27.abs();
-    assertSame(bigDecimal, absResult59.abs().getAmount());
-    assertSame(bigDecimal, absResult30.getAmount());
-    assertSame(bigDecimal, absResult45.getAmount());
-    Money zeroResult28 = zeroResult12.zero();
-    Money absResult60 = zeroResult28.abs();
-    assertSame(bigDecimal, absResult60.abs().getAmount());
-    Money zeroResult29 = zeroResult13.zero();
-    Money absResult61 = zeroResult29.abs();
-    assertSame(bigDecimal, absResult61.abs().getAmount());
-    assertSame(bigDecimal, absResult47.getAmount());
-    Money zeroResult30 = zeroResult14.zero();
-    Money absResult62 = zeroResult30.abs();
-    assertSame(bigDecimal, absResult62.abs().getAmount());
-    assertSame(bigDecimal, absResult7.getAmount());
-    assertSame(bigDecimal, absResult12.getAmount());
-    assertSame(bigDecimal, absResult20.getAmount());
-    assertSame(bigDecimal, absResult32.getAmount());
-    assertSame(bigDecimal, absResult48.getAmount());
-    Money zeroResult31 = absResult5.zero();
-    assertSame(bigDecimal, zeroResult31.abs().getAmount());
-    Money zeroResult32 = absResult10.zero();
-    assertSame(bigDecimal, zeroResult32.abs().getAmount());
-    assertSame(bigDecimal, absResult49.getAmount());
-    Money zeroResult33 = absResult14.zero();
-    assertSame(bigDecimal, zeroResult33.abs().getAmount());
-    Money zeroResult34 = absResult18.zero();
-    assertSame(bigDecimal, zeroResult34.abs().getAmount());
-    assertSame(bigDecimal, absResult34.getAmount());
-    assertSame(bigDecimal, absResult50.getAmount());
-    Money zeroResult35 = absResult21.zero();
-    assertSame(bigDecimal, zeroResult35.abs().getAmount());
-    Money zeroResult36 = absResult24.zero();
-    assertSame(bigDecimal, zeroResult36.abs().getAmount());
-    assertSame(bigDecimal, absResult51.getAmount());
-    Money zeroResult37 = absResult27.zero();
-    assertSame(bigDecimal, zeroResult37.abs().getAmount());
-    Money zeroResult38 = absResult30.zero();
-    assertSame(bigDecimal, zeroResult38.abs().getAmount());
-    assertSame(bigDecimal, absResult23.getAmount());
-    assertSame(bigDecimal, absResult36.getAmount());
-    assertSame(bigDecimal, absResult52.getAmount());
-    Money zeroResult39 = absResult32.zero();
-    assertSame(bigDecimal, zeroResult39.abs().getAmount());
-    Money zeroResult40 = absResult34.zero();
-    assertSame(bigDecimal, zeroResult40.abs().getAmount());
-    assertSame(bigDecimal, absResult53.getAmount());
-    Money zeroResult41 = absResult36.zero();
-    assertSame(bigDecimal, zeroResult41.abs().getAmount());
-    Money zeroResult42 = absResult38.zero();
-    assertSame(bigDecimal, zeroResult42.abs().getAmount());
-    assertSame(bigDecimal, absResult38.getAmount());
-    assertSame(bigDecimal, absResult54.getAmount());
-    Money zeroResult43 = absResult40.zero();
-    assertSame(bigDecimal, zeroResult43.abs().getAmount());
-    Money zeroResult44 = absResult42.zero();
-    assertSame(bigDecimal, zeroResult44.abs().getAmount());
-    assertSame(bigDecimal, absResult55.getAmount());
-    Money zeroResult45 = absResult44.zero();
-    assertSame(bigDecimal, zeroResult45.abs().getAmount());
-    assertSame(bigDecimal, absResult16.getAmount());
-    assertSame(bigDecimal, absResult26.getAmount());
-    assertSame(bigDecimal, absResult40.getAmount());
-    assertSame(bigDecimal, absResult56.getAmount());
-    Money zeroResult46 = zeroResult16.zero();
-    assertSame(bigDecimal, zeroResult46.abs().getAmount());
-    Money zeroResult47 = zeroResult17.zero();
-    assertSame(bigDecimal, zeroResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult57.getAmount());
-    Money zeroResult48 = zeroResult18.zero();
-    assertSame(bigDecimal, zeroResult48.abs().getAmount());
-    Money zeroResult49 = zeroResult19.zero();
-    assertSame(bigDecimal, zeroResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult42.getAmount());
-    assertSame(bigDecimal, absResult58.getAmount());
-    Money zeroResult50 = zeroResult20.zero();
-    assertSame(bigDecimal, zeroResult50.abs().getAmount());
-    Money zeroResult51 = zeroResult21.zero();
-    assertSame(bigDecimal, zeroResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult59.getAmount());
-    Money zeroResult52 = zeroResult22.zero();
-    assertSame(bigDecimal, zeroResult52.abs().getAmount());
-    Money zeroResult53 = zeroResult23.zero();
-    assertSame(bigDecimal, zeroResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult29.getAmount());
-    assertSame(bigDecimal, absResult44.getAmount());
-    assertSame(bigDecimal, absResult60.getAmount());
-    Money zeroResult54 = zeroResult24.zero();
-    assertSame(bigDecimal, zeroResult54.abs().getAmount());
-    Money zeroResult55 = zeroResult25.zero();
-    assertSame(bigDecimal, zeroResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult61.getAmount());
-    Money zeroResult56 = zeroResult26.zero();
-    assertSame(bigDecimal, zeroResult56.abs().getAmount());
-    Money zeroResult57 = zeroResult27.zero();
-    assertSame(bigDecimal, zeroResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult46.getAmount());
-    assertSame(bigDecimal, absResult62.getAmount());
-    Money zeroResult58 = zeroResult28.zero();
-    assertSame(bigDecimal, zeroResult58.abs().getAmount());
-    Money zeroResult59 = zeroResult29.zero();
-    assertSame(bigDecimal, zeroResult59.abs().getAmount());
-    Money zeroResult60 = zeroResult15.zero();
-    assertSame(bigDecimal, zeroResult60.abs().getAmount());
-    Money zeroResult61 = zeroResult30.zero();
-    assertSame(bigDecimal, zeroResult61.abs().getAmount());
+    assertSame(bigDecimal, zeroResult3.abs().getAmount());
     assertSame(bigDecimal, zeroResult.getAmount());
     assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, zeroResult4.getAmount());
-    assertSame(bigDecimal, zeroResult8.getAmount());
-    assertSame(bigDecimal, zeroResult16.getAmount());
-    assertSame(bigDecimal, zeroResult31.getAmount());
-    assertSame(bigDecimal, absResult6.zero().getAmount());
-    assertSame(bigDecimal, absResult11.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.getAmount());
-    assertSame(bigDecimal, absResult15.zero().getAmount());
-    assertSame(bigDecimal, absResult19.zero().getAmount());
-    assertSame(bigDecimal, zeroResult17.getAmount());
-    assertSame(bigDecimal, zeroResult33.getAmount());
-    assertSame(bigDecimal, absResult22.zero().getAmount());
-    assertSame(bigDecimal, absResult25.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.getAmount());
-    assertSame(bigDecimal, absResult28.zero().getAmount());
-    assertSame(bigDecimal, absResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult9.getAmount());
-    assertSame(bigDecimal, zeroResult18.getAmount());
-    assertSame(bigDecimal, zeroResult35.getAmount());
-    assertSame(bigDecimal, absResult33.zero().getAmount());
-    assertSame(bigDecimal, absResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.getAmount());
-    assertSame(bigDecimal, absResult37.zero().getAmount());
-    assertSame(bigDecimal, absResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult19.getAmount());
-    assertSame(bigDecimal, zeroResult37.getAmount());
-    assertSame(bigDecimal, absResult41.zero().getAmount());
-    assertSame(bigDecimal, absResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.getAmount());
-    assertSame(bigDecimal, absResult45.zero().getAmount());
-    assertSame(bigDecimal, absResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult5.getAmount());
-    assertSame(bigDecimal, zeroResult10.getAmount());
-    assertSame(bigDecimal, zeroResult20.getAmount());
-    assertSame(bigDecimal, zeroResult39.getAmount());
-    assertSame(bigDecimal, absResult48.zero().getAmount());
-    assertSame(bigDecimal, absResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.getAmount());
-    assertSame(bigDecimal, absResult50.zero().getAmount());
-    assertSame(bigDecimal, absResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult21.getAmount());
-    assertSame(bigDecimal, zeroResult41.getAmount());
-    assertSame(bigDecimal, absResult52.zero().getAmount());
-    assertSame(bigDecimal, absResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.getAmount());
-    assertSame(bigDecimal, absResult54.zero().getAmount());
-    assertSame(bigDecimal, absResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult11.getAmount());
-    assertSame(bigDecimal, zeroResult22.getAmount());
-    assertSame(bigDecimal, zeroResult43.getAmount());
-    assertSame(bigDecimal, absResult56.zero().getAmount());
-    assertSame(bigDecimal, absResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.getAmount());
-    assertSame(bigDecimal, absResult58.zero().getAmount());
-    assertSame(bigDecimal, absResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult23.getAmount());
-    assertSame(bigDecimal, zeroResult45.getAmount());
-    assertSame(bigDecimal, absResult60.zero().getAmount());
-    assertSame(bigDecimal, absResult61.zero().getAmount());
-    assertSame(bigDecimal, absResult46.zero().getAmount());
-    assertSame(bigDecimal, absResult62.zero().getAmount());
+    assertSame(bigDecimal, absResult2.zero().getAmount());
+    assertSame(bigDecimal, absResult3.zero().getAmount());
     assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult6.getAmount());
-    assertSame(bigDecimal, zeroResult12.getAmount());
-    assertSame(bigDecimal, zeroResult24.getAmount());
-    assertSame(bigDecimal, zeroResult46.getAmount());
-    assertSame(bigDecimal, zeroResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.getAmount());
-    assertSame(bigDecimal, zeroResult33.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.zero().getAmount());
-    assertSame(bigDecimal, zeroResult25.getAmount());
-    assertSame(bigDecimal, zeroResult48.getAmount());
-    assertSame(bigDecimal, zeroResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.getAmount());
-    assertSame(bigDecimal, zeroResult37.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.zero().getAmount());
-    assertSame(bigDecimal, zeroResult13.getAmount());
-    assertSame(bigDecimal, zeroResult26.getAmount());
-    assertSame(bigDecimal, zeroResult50.getAmount());
-    assertSame(bigDecimal, zeroResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.getAmount());
-    assertSame(bigDecimal, zeroResult41.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.zero().getAmount());
-    assertSame(bigDecimal, zeroResult27.getAmount());
-    assertSame(bigDecimal, zeroResult52.getAmount());
-    assertSame(bigDecimal, zeroResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.getAmount());
-    assertSame(bigDecimal, zeroResult45.zero().getAmount());
-    assertSame(bigDecimal, zeroResult7.getAmount());
-    assertSame(bigDecimal, zeroResult14.getAmount());
-    assertSame(bigDecimal, zeroResult28.getAmount());
-    assertSame(bigDecimal, zeroResult54.getAmount());
-    assertSame(bigDecimal, zeroResult46.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.getAmount());
-    assertSame(bigDecimal, zeroResult48.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult29.getAmount());
-    assertSame(bigDecimal, zeroResult56.getAmount());
-    assertSame(bigDecimal, zeroResult50.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.getAmount());
-    assertSame(bigDecimal, zeroResult52.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult15.getAmount());
-    assertSame(bigDecimal, zeroResult30.getAmount());
-    assertSame(bigDecimal, zeroResult58.getAmount());
-    assertSame(bigDecimal, zeroResult54.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.getAmount());
-    assertSame(bigDecimal, zeroResult56.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.getAmount());
-    assertSame(bigDecimal, zeroResult61.getAmount());
-    assertSame(bigDecimal, zeroResult58.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.zero().getAmount());
-    assertSame(bigDecimal, zeroResult61.zero().getAmount());
+    assertSame(bigDecimal, zeroResult2.zero().getAmount());
+    assertSame(bigDecimal, zeroResult3.zero().getAmount());
   }
 
   /**
    * Test {@link FulfillmentGroupImpl#setTotalFulfillmentGroupTax(Money)}.
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#setTotalFulfillmentGroupTax(Money)}
+   * Method under test: {@link FulfillmentGroupImpl#setTotalFulfillmentGroupTax(Money)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupImpl.setTotalFulfillmentGroupTax(Money)"})
   public void testSetTotalFulfillmentGroupTax2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(new AddressImpl());
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
-    Money fulfillmentPrice = new Money();
-    fulfillmentGroupImpl.setFulfillmentPrice(fulfillmentPrice);
-    fulfillmentGroupImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setOrder(NullOrderFactoryImpl.NULL_ORDER);
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-
-    // Act
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(null);
-
-    // Assert
-    assertNull(fulfillmentGroupImpl.totalFulfillmentGroupTax);
-    assertNull(fulfillmentGroupImpl.getTotalFulfillmentGroupTax());
-    Money fulfillmentGroupAdjustmentsValue = fulfillmentGroupImpl.getFulfillmentGroupAdjustmentsValue();
-    Money absResult = fulfillmentGroupAdjustmentsValue.abs();
-    Money absResult2 = absResult.abs();
-    Money absResult3 = absResult2.abs();
-    Money absResult4 = absResult3.abs();
-    assertEquals(fulfillmentPrice, absResult4.abs());
-    Money zeroResult = fulfillmentGroupAdjustmentsValue.zero();
-    Money absResult5 = zeroResult.abs();
-    Money absResult6 = absResult5.abs();
-    Money absResult7 = absResult6.abs();
-    assertEquals(fulfillmentPrice, absResult7.abs());
-    Money zeroResult2 = absResult.zero();
-    Money absResult8 = zeroResult2.abs();
-    Money absResult9 = absResult8.abs();
-    assertEquals(fulfillmentPrice, absResult9.abs());
-    assertEquals(fulfillmentPrice, zeroResult.zero().abs().abs().abs());
-    Money zeroResult3 = absResult2.zero();
-    Money absResult10 = zeroResult3.abs();
-    assertEquals(fulfillmentPrice, absResult10.abs());
-    Money zeroResult4 = absResult5.zero();
-    Money absResult11 = zeroResult4.abs();
-    assertEquals(fulfillmentPrice, absResult11.abs());
-    Money zeroResult5 = zeroResult2.zero();
-    Money absResult12 = zeroResult5.abs();
-    assertEquals(fulfillmentPrice, absResult12.abs());
-    Money zeroResult6 = fulfillmentGroupImpl.getTotalTax().zero();
-    Money zeroResult7 = zeroResult6.zero();
-    Money absResult13 = zeroResult7.abs();
-    assertEquals(fulfillmentPrice, absResult13.abs());
-    Money zeroResult8 = absResult3.zero();
-    assertEquals(fulfillmentPrice, zeroResult8.abs());
-    Money zeroResult9 = absResult6.zero();
-    assertEquals(fulfillmentPrice, zeroResult9.abs());
-    Money zeroResult10 = absResult8.zero();
-    assertEquals(fulfillmentPrice, zeroResult10.abs());
-    Money zeroResult11 = zeroResult3.zero();
-    assertEquals(fulfillmentPrice, zeroResult11.abs());
-    Money zeroResult12 = zeroResult4.zero();
-    assertEquals(fulfillmentPrice, zeroResult12.abs());
-    Money zeroResult13 = zeroResult5.zero();
-    assertEquals(fulfillmentPrice, zeroResult13.abs());
-    Money zeroResult14 = zeroResult7.zero();
-    assertEquals(fulfillmentPrice, zeroResult14.abs());
-    assertEquals(fulfillmentPrice, absResult4.zero());
-    assertEquals(fulfillmentPrice, absResult7.zero());
-    assertEquals(fulfillmentPrice, absResult9.zero());
-    assertEquals(fulfillmentPrice, absResult10.zero());
-    assertEquals(fulfillmentPrice, absResult11.zero());
-    assertEquals(fulfillmentPrice, absResult12.zero());
-    assertEquals(fulfillmentPrice, absResult13.zero());
-    assertEquals(fulfillmentPrice, zeroResult8.zero());
-    assertEquals(fulfillmentPrice, zeroResult9.zero());
-    assertEquals(fulfillmentPrice, zeroResult10.zero());
-    Money zeroResult15 = zeroResult6.abs().zero();
-    assertEquals(fulfillmentPrice, zeroResult15.zero());
-    assertEquals(fulfillmentPrice, zeroResult11.zero());
-    assertEquals(fulfillmentPrice, zeroResult12.zero());
-    assertEquals(fulfillmentPrice, zeroResult13.zero());
-    assertEquals(fulfillmentPrice, zeroResult14.zero());
-    BigDecimal bigDecimal = fulfillmentGroupImpl.totalTax;
-    assertSame(bigDecimal, absResult4.getAmount());
-    assertSame(bigDecimal, absResult7.getAmount());
-    assertSame(bigDecimal, absResult9.getAmount());
-    assertSame(bigDecimal, absResult10.getAmount());
-    assertSame(bigDecimal, absResult11.getAmount());
-    assertSame(bigDecimal, absResult12.getAmount());
-    assertSame(bigDecimal, absResult13.getAmount());
-    assertSame(bigDecimal, zeroResult8.getAmount());
-    assertSame(bigDecimal, zeroResult9.getAmount());
-    assertSame(bigDecimal, zeroResult10.getAmount());
-    assertSame(bigDecimal, zeroResult15.getAmount());
-    assertSame(bigDecimal, zeroResult11.getAmount());
-    assertSame(bigDecimal, zeroResult12.getAmount());
-    assertSame(bigDecimal, zeroResult13.getAmount());
-    assertSame(bigDecimal, zeroResult14.getAmount());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#setTotalFulfillmentGroupTax(Money)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#setTotalFulfillmentGroupTax(Money)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetTotalFulfillmentGroupTax3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1392 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
     FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
-
-    // Act
+    fulfillmentGroupImpl2.setAddress(new AddressImpl());
+    fulfillmentGroupImpl2.setCandidateFulfillmentGroupOffer(new ArrayList<>());
+    fulfillmentGroupImpl2.setDeliveryInstruction("Delivery Instruction");
+    fulfillmentGroupImpl2.setFulfillmentGroupAdjustments(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupFees(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupItems(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentOption(new FulfillmentOptionImpl());
+    Money fulfillmentPrice = new Money();
+    fulfillmentGroupImpl2.setFulfillmentPrice(fulfillmentPrice);
+    fulfillmentGroupImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupImpl2.setIsShippingPriceTaxable(true);
+    fulfillmentGroupImpl2.setMerchandiseTotal(new Money());
+    fulfillmentGroupImpl2.setMethod("Fulfillment Method");
+    fulfillmentGroupImpl2.setOrder(NullOrderFactoryImpl.NULL_ORDER);
+    fulfillmentGroupImpl2.setPersonalMessage(new PersonalMessageImpl());
+    fulfillmentGroupImpl2.setPhone(new PhoneImpl());
+    fulfillmentGroupImpl2.setPrimary(true);
+    fulfillmentGroupImpl2.setReferenceNumber("42");
+    fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSequence(1);
+    fulfillmentGroupImpl2.setService("Service");
+    fulfillmentGroupImpl2.setShippingOverride(true);
+    fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupImpl2.setTaxes(new ArrayList<>());
+    fulfillmentGroupImpl2.setTotal(new Money());
+    fulfillmentGroupImpl2.setTotalFeeTax(new Money());
     fulfillmentGroupImpl2.setTotalFulfillmentGroupTax(new Money());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#setTotalFulfillmentGroupTax(Money)}.
-   * <ul>
-   *   <li>When {@link Money}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#setTotalFulfillmentGroupTax(Money)}
-   */
-  @Test
-  public void testSetTotalFulfillmentGroupTax_whenMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl2.setTotalItemTax(new Money());
+    fulfillmentGroupImpl2.setTotalTax(new Money());
+    fulfillmentGroupImpl2.setType(FulfillmentType.DIGITAL);
 
     // Act
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(mock(Money.class));
+    fulfillmentGroupImpl2.setTotalFulfillmentGroupTax(null);
 
     // Assert
-    assertNull(fulfillmentGroupImpl.totalFulfillmentGroupTax);
-    assertNull(fulfillmentGroupImpl.getTotalFulfillmentGroupTax());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#getMerchandiseTotal()}.
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#getMerchandiseTotal()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetMerchandiseTotal() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass582 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new FulfillmentGroupImpl()).getMerchandiseTotal();
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#getMerchandiseTotal()}.
-   * <ul>
-   *   <li>Given {@link FulfillmentGroupImpl} (default constructor) MerchandiseTotal
-   * is {@link Money}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#getMerchandiseTotal()}
-   */
-  @Test
-  public void testGetMerchandiseTotal_givenFulfillmentGroupImplMerchandiseTotalIsMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setMerchandiseTotal(mock(Money.class));
-
-    // Act and Assert
-    assertNull(fulfillmentGroupImpl.getMerchandiseTotal());
+    assertNull(fulfillmentGroupImpl2.totalFulfillmentGroupTax);
+    assertNull(fulfillmentGroupImpl2.getTotalFulfillmentGroupTax());
+    Money zeroResult = fulfillmentGroupImpl2.getTotalTax().zero();
+    Money zeroResult2 = zeroResult.zero();
+    Money absResult = zeroResult2.abs();
+    assertEquals(fulfillmentPrice, absResult.abs());
+    Money zeroResult3 = zeroResult2.zero();
+    assertEquals(fulfillmentPrice, zeroResult3.abs());
+    assertEquals(fulfillmentPrice, absResult.zero());
+    Money zeroResult4 = zeroResult.abs().zero();
+    assertEquals(fulfillmentPrice, zeroResult4.zero());
+    assertEquals(fulfillmentPrice, zeroResult3.zero());
+    BigDecimal bigDecimal = fulfillmentGroupImpl2.totalTax;
+    assertSame(bigDecimal, absResult.getAmount());
+    assertSame(bigDecimal, zeroResult4.getAmount());
+    assertSame(bigDecimal, zeroResult3.getAmount());
   }
 
   /**
@@ -9746,9 +3150,9 @@ public class FulfillmentGroupImplDiffblueTest {
    * Method under test: {@link FulfillmentGroupImpl#getMerchandiseTotal()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money FulfillmentGroupImpl.getMerchandiseTotal()"})
   public void testGetMerchandiseTotal_givenFulfillmentGroupImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new FulfillmentGroupImpl()).getMerchandiseTotal());
   }
@@ -9756,17 +3160,16 @@ public class FulfillmentGroupImplDiffblueTest {
   /**
    * Test {@link FulfillmentGroupImpl#getMerchandiseTotal()}.
    * <ul>
-   *   <li>Given {@link OrderImpl} (default constructor) Currency is
-   * {@code null}.</li>
+   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@code null}.</li>
    *   <li>Then return {@link Money#Money()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link FulfillmentGroupImpl#getMerchandiseTotal()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money FulfillmentGroupImpl.getMerchandiseTotal()"})
   public void testGetMerchandiseTotal_givenOrderImplCurrencyIsNull_thenReturnMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
@@ -9796,48 +3199,44 @@ public class FulfillmentGroupImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setCurrency(null);
 
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(new AddressImpl());
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl2.setAddress(new AddressImpl());
+    fulfillmentGroupImpl2.setCandidateFulfillmentGroupOffer(new ArrayList<>());
+    fulfillmentGroupImpl2.setDeliveryInstruction("Delivery Instruction");
+    fulfillmentGroupImpl2.setFulfillmentGroupAdjustments(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupFees(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupItems(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentOption(new FulfillmentOptionImpl());
     Money fulfillmentPrice = new Money();
-    fulfillmentGroupImpl.setFulfillmentPrice(fulfillmentPrice);
-    fulfillmentGroupImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setOrder(order);
+    fulfillmentGroupImpl2.setFulfillmentPrice(fulfillmentPrice);
+    fulfillmentGroupImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupImpl2.setIsShippingPriceTaxable(true);
+    fulfillmentGroupImpl2.setMethod("Fulfillment Method");
+    fulfillmentGroupImpl2.setPersonalMessage(new PersonalMessageImpl());
+    fulfillmentGroupImpl2.setPhone(new PhoneImpl());
+    fulfillmentGroupImpl2.setPrimary(true);
+    fulfillmentGroupImpl2.setReferenceNumber("42");
+    fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSequence(1);
+    fulfillmentGroupImpl2.setService("Service");
+    fulfillmentGroupImpl2.setShippingOverride(true);
+    fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupImpl2.setTaxes(new ArrayList<>());
+    fulfillmentGroupImpl2.setTotal(new Money());
+    fulfillmentGroupImpl2.setTotalFeeTax(new Money());
+    fulfillmentGroupImpl2.setTotalFulfillmentGroupTax(new Money());
+    fulfillmentGroupImpl2.setTotalItemTax(new Money());
+    fulfillmentGroupImpl2.setTotalTax(new Money());
+    fulfillmentGroupImpl2.setType(FulfillmentType.DIGITAL);
+    fulfillmentGroupImpl2.setMerchandiseTotal(new Money());
+    fulfillmentGroupImpl2.setOrder(order);
 
     // Act and Assert
-    assertEquals(fulfillmentPrice, fulfillmentGroupImpl.getMerchandiseTotal());
+    assertEquals(fulfillmentPrice, fulfillmentGroupImpl2.getMerchandiseTotal());
   }
 
   /**
@@ -9846,627 +3245,107 @@ public class FulfillmentGroupImplDiffblueTest {
    * Method under test: {@link FulfillmentGroupImpl#setMerchandiseTotal(Money)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupImpl.setMerchandiseTotal(Money)"})
   public void testSetMerchandiseTotal() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
     Money merchandiseTotal = new Money();
 
     // Act
-    fulfillmentGroupImpl.setMerchandiseTotal(merchandiseTotal);
+    fulfillmentGroupImpl2.setMerchandiseTotal(merchandiseTotal);
 
     // Assert
-    assertEquals(new BigDecimal("0.00"), fulfillmentGroupImpl.merchandiseTotal);
-    BigDecimal bigDecimal = fulfillmentGroupImpl.merchandiseTotal;
+    assertEquals(new BigDecimal("0.00"), fulfillmentGroupImpl2.merchandiseTotal);
+    BigDecimal bigDecimal = fulfillmentGroupImpl2.merchandiseTotal;
     Money absResult = merchandiseTotal.abs();
     assertSame(bigDecimal, absResult.getAmount());
     Money absResult2 = absResult.abs();
     assertSame(bigDecimal, absResult2.getAmount());
-    Money absResult3 = absResult2.abs();
-    assertSame(bigDecimal, absResult3.getAmount());
-    Money absResult4 = absResult3.abs();
-    assertSame(bigDecimal, absResult4.getAmount());
-    Money absResult5 = absResult4.abs();
-    assertSame(bigDecimal, absResult5.getAmount());
-    Money absResult6 = absResult5.abs();
-    assertSame(bigDecimal, absResult6.getAmount());
-    assertSame(bigDecimal, absResult6.abs().getAmount());
+    assertSame(bigDecimal, absResult2.abs().getAmount());
     Money zeroResult = merchandiseTotal.zero();
-    Money absResult7 = zeroResult.abs();
-    Money absResult8 = absResult7.abs();
-    Money absResult9 = absResult8.abs();
-    Money absResult10 = absResult9.abs();
-    Money absResult11 = absResult10.abs();
-    assertSame(bigDecimal, absResult11.abs().getAmount());
-    assertSame(bigDecimal, absResult11.getAmount());
+    Money absResult3 = zeroResult.abs();
+    assertSame(bigDecimal, absResult3.abs().getAmount());
+    assertSame(bigDecimal, absResult3.getAmount());
     Money zeroResult2 = absResult.zero();
-    Money absResult12 = zeroResult2.abs();
-    Money absResult13 = absResult12.abs();
-    Money absResult14 = absResult13.abs();
-    Money absResult15 = absResult14.abs();
-    assertSame(bigDecimal, absResult15.abs().getAmount());
+    assertSame(bigDecimal, zeroResult2.abs().getAmount());
     Money zeroResult3 = zeroResult.zero();
-    Money absResult16 = zeroResult3.abs();
-    Money absResult17 = absResult16.abs();
-    Money absResult18 = absResult17.abs();
-    Money absResult19 = absResult18.abs();
-    assertSame(bigDecimal, absResult19.abs().getAmount());
-    assertSame(bigDecimal, absResult10.getAmount());
-    assertSame(bigDecimal, absResult15.getAmount());
-    Money zeroResult4 = absResult2.zero();
-    Money absResult20 = zeroResult4.abs();
-    Money absResult21 = absResult20.abs();
-    Money absResult22 = absResult21.abs();
-    assertSame(bigDecimal, absResult22.abs().getAmount());
-    Money zeroResult5 = absResult7.zero();
-    Money absResult23 = zeroResult5.abs();
-    Money absResult24 = absResult23.abs();
-    Money absResult25 = absResult24.abs();
-    assertSame(bigDecimal, absResult25.abs().getAmount());
-    assertSame(bigDecimal, absResult19.getAmount());
-    Money zeroResult6 = zeroResult2.zero();
-    Money absResult26 = zeroResult6.abs();
-    Money absResult27 = absResult26.abs();
-    Money absResult28 = absResult27.abs();
-    assertSame(bigDecimal, absResult28.abs().getAmount());
-    Money zeroResult7 = zeroResult3.zero();
-    Money absResult29 = zeroResult7.abs();
-    Money absResult30 = absResult29.abs();
-    Money absResult31 = absResult30.abs();
-    assertSame(bigDecimal, absResult31.abs().getAmount());
-    assertSame(bigDecimal, absResult9.getAmount());
-    assertSame(bigDecimal, absResult14.getAmount());
-    assertSame(bigDecimal, absResult22.getAmount());
-    Money zeroResult8 = absResult3.zero();
-    Money absResult32 = zeroResult8.abs();
-    Money absResult33 = absResult32.abs();
-    assertSame(bigDecimal, absResult33.abs().getAmount());
-    Money zeroResult9 = absResult8.zero();
-    Money absResult34 = zeroResult9.abs();
-    Money absResult35 = absResult34.abs();
-    assertSame(bigDecimal, absResult35.abs().getAmount());
-    assertSame(bigDecimal, absResult25.getAmount());
-    Money zeroResult10 = absResult12.zero();
-    Money absResult36 = zeroResult10.abs();
-    Money absResult37 = absResult36.abs();
-    assertSame(bigDecimal, absResult37.abs().getAmount());
-    Money zeroResult11 = absResult16.zero();
-    Money absResult38 = zeroResult11.abs();
-    Money absResult39 = absResult38.abs();
-    assertSame(bigDecimal, absResult39.abs().getAmount());
-    assertSame(bigDecimal, absResult18.getAmount());
-    assertSame(bigDecimal, absResult28.getAmount());
-    Money zeroResult12 = zeroResult4.zero();
-    Money absResult40 = zeroResult12.abs();
-    Money absResult41 = absResult40.abs();
-    assertSame(bigDecimal, absResult41.abs().getAmount());
-    Money zeroResult13 = zeroResult5.zero();
-    Money absResult42 = zeroResult13.abs();
-    Money absResult43 = absResult42.abs();
-    assertSame(bigDecimal, absResult43.abs().getAmount());
-    assertSame(bigDecimal, absResult31.getAmount());
-    Money zeroResult14 = zeroResult6.zero();
-    Money absResult44 = zeroResult14.abs();
-    Money absResult45 = absResult44.abs();
-    assertSame(bigDecimal, absResult45.abs().getAmount());
-    Money zeroResult15 = zeroResult7.zero();
-    Money absResult46 = zeroResult15.abs();
-    Money absResult47 = absResult46.abs();
-    assertSame(bigDecimal, absResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult8.getAmount());
-    assertSame(bigDecimal, absResult13.getAmount());
-    assertSame(bigDecimal, absResult21.getAmount());
-    assertSame(bigDecimal, absResult33.getAmount());
-    Money zeroResult16 = absResult4.zero();
-    Money absResult48 = zeroResult16.abs();
-    assertSame(bigDecimal, absResult48.abs().getAmount());
-    Money zeroResult17 = absResult9.zero();
-    Money absResult49 = zeroResult17.abs();
-    assertSame(bigDecimal, absResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult35.getAmount());
-    Money zeroResult18 = absResult13.zero();
-    Money absResult50 = zeroResult18.abs();
-    assertSame(bigDecimal, absResult50.abs().getAmount());
-    Money zeroResult19 = absResult17.zero();
-    Money absResult51 = zeroResult19.abs();
-    assertSame(bigDecimal, absResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult24.getAmount());
-    assertSame(bigDecimal, absResult37.getAmount());
-    Money zeroResult20 = absResult20.zero();
-    Money absResult52 = zeroResult20.abs();
-    assertSame(bigDecimal, absResult52.abs().getAmount());
-    Money zeroResult21 = absResult23.zero();
-    Money absResult53 = zeroResult21.abs();
-    assertSame(bigDecimal, absResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult39.getAmount());
-    Money zeroResult22 = absResult26.zero();
-    Money absResult54 = zeroResult22.abs();
-    assertSame(bigDecimal, absResult54.abs().getAmount());
-    Money zeroResult23 = absResult29.zero();
-    Money absResult55 = zeroResult23.abs();
-    assertSame(bigDecimal, absResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult17.getAmount());
-    assertSame(bigDecimal, absResult27.getAmount());
-    assertSame(bigDecimal, absResult41.getAmount());
-    Money zeroResult24 = zeroResult8.zero();
-    Money absResult56 = zeroResult24.abs();
-    assertSame(bigDecimal, absResult56.abs().getAmount());
-    Money zeroResult25 = zeroResult9.zero();
-    Money absResult57 = zeroResult25.abs();
-    assertSame(bigDecimal, absResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult43.getAmount());
-    Money zeroResult26 = zeroResult10.zero();
-    Money absResult58 = zeroResult26.abs();
-    assertSame(bigDecimal, absResult58.abs().getAmount());
-    Money zeroResult27 = zeroResult11.zero();
-    Money absResult59 = zeroResult27.abs();
-    assertSame(bigDecimal, absResult59.abs().getAmount());
-    assertSame(bigDecimal, absResult30.getAmount());
-    assertSame(bigDecimal, absResult45.getAmount());
-    Money zeroResult28 = zeroResult12.zero();
-    Money absResult60 = zeroResult28.abs();
-    assertSame(bigDecimal, absResult60.abs().getAmount());
-    Money zeroResult29 = zeroResult13.zero();
-    Money absResult61 = zeroResult29.abs();
-    assertSame(bigDecimal, absResult61.abs().getAmount());
-    assertSame(bigDecimal, absResult47.getAmount());
-    Money zeroResult30 = zeroResult14.zero();
-    Money absResult62 = zeroResult30.abs();
-    assertSame(bigDecimal, absResult62.abs().getAmount());
-    assertSame(bigDecimal, absResult7.getAmount());
-    assertSame(bigDecimal, absResult12.getAmount());
-    assertSame(bigDecimal, absResult20.getAmount());
-    assertSame(bigDecimal, absResult32.getAmount());
-    assertSame(bigDecimal, absResult48.getAmount());
-    Money zeroResult31 = absResult5.zero();
-    assertSame(bigDecimal, zeroResult31.abs().getAmount());
-    Money zeroResult32 = absResult10.zero();
-    assertSame(bigDecimal, zeroResult32.abs().getAmount());
-    assertSame(bigDecimal, absResult49.getAmount());
-    Money zeroResult33 = absResult14.zero();
-    assertSame(bigDecimal, zeroResult33.abs().getAmount());
-    Money zeroResult34 = absResult18.zero();
-    assertSame(bigDecimal, zeroResult34.abs().getAmount());
-    assertSame(bigDecimal, absResult34.getAmount());
-    assertSame(bigDecimal, absResult50.getAmount());
-    Money zeroResult35 = absResult21.zero();
-    assertSame(bigDecimal, zeroResult35.abs().getAmount());
-    Money zeroResult36 = absResult24.zero();
-    assertSame(bigDecimal, zeroResult36.abs().getAmount());
-    assertSame(bigDecimal, absResult51.getAmount());
-    Money zeroResult37 = absResult27.zero();
-    assertSame(bigDecimal, zeroResult37.abs().getAmount());
-    Money zeroResult38 = absResult30.zero();
-    assertSame(bigDecimal, zeroResult38.abs().getAmount());
-    assertSame(bigDecimal, absResult23.getAmount());
-    assertSame(bigDecimal, absResult36.getAmount());
-    assertSame(bigDecimal, absResult52.getAmount());
-    Money zeroResult39 = absResult32.zero();
-    assertSame(bigDecimal, zeroResult39.abs().getAmount());
-    Money zeroResult40 = absResult34.zero();
-    assertSame(bigDecimal, zeroResult40.abs().getAmount());
-    assertSame(bigDecimal, absResult53.getAmount());
-    Money zeroResult41 = absResult36.zero();
-    assertSame(bigDecimal, zeroResult41.abs().getAmount());
-    Money zeroResult42 = absResult38.zero();
-    assertSame(bigDecimal, zeroResult42.abs().getAmount());
-    assertSame(bigDecimal, absResult38.getAmount());
-    assertSame(bigDecimal, absResult54.getAmount());
-    Money zeroResult43 = absResult40.zero();
-    assertSame(bigDecimal, zeroResult43.abs().getAmount());
-    Money zeroResult44 = absResult42.zero();
-    assertSame(bigDecimal, zeroResult44.abs().getAmount());
-    assertSame(bigDecimal, absResult55.getAmount());
-    Money zeroResult45 = absResult44.zero();
-    assertSame(bigDecimal, zeroResult45.abs().getAmount());
-    assertSame(bigDecimal, absResult16.getAmount());
-    assertSame(bigDecimal, absResult26.getAmount());
-    assertSame(bigDecimal, absResult40.getAmount());
-    assertSame(bigDecimal, absResult56.getAmount());
-    Money zeroResult46 = zeroResult16.zero();
-    assertSame(bigDecimal, zeroResult46.abs().getAmount());
-    Money zeroResult47 = zeroResult17.zero();
-    assertSame(bigDecimal, zeroResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult57.getAmount());
-    Money zeroResult48 = zeroResult18.zero();
-    assertSame(bigDecimal, zeroResult48.abs().getAmount());
-    Money zeroResult49 = zeroResult19.zero();
-    assertSame(bigDecimal, zeroResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult42.getAmount());
-    assertSame(bigDecimal, absResult58.getAmount());
-    Money zeroResult50 = zeroResult20.zero();
-    assertSame(bigDecimal, zeroResult50.abs().getAmount());
-    Money zeroResult51 = zeroResult21.zero();
-    assertSame(bigDecimal, zeroResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult59.getAmount());
-    Money zeroResult52 = zeroResult22.zero();
-    assertSame(bigDecimal, zeroResult52.abs().getAmount());
-    Money zeroResult53 = zeroResult23.zero();
-    assertSame(bigDecimal, zeroResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult29.getAmount());
-    assertSame(bigDecimal, absResult44.getAmount());
-    assertSame(bigDecimal, absResult60.getAmount());
-    Money zeroResult54 = zeroResult24.zero();
-    assertSame(bigDecimal, zeroResult54.abs().getAmount());
-    Money zeroResult55 = zeroResult25.zero();
-    assertSame(bigDecimal, zeroResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult61.getAmount());
-    Money zeroResult56 = zeroResult26.zero();
-    assertSame(bigDecimal, zeroResult56.abs().getAmount());
-    Money zeroResult57 = zeroResult27.zero();
-    assertSame(bigDecimal, zeroResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult46.getAmount());
-    assertSame(bigDecimal, absResult62.getAmount());
-    Money zeroResult58 = zeroResult28.zero();
-    assertSame(bigDecimal, zeroResult58.abs().getAmount());
-    Money zeroResult59 = zeroResult29.zero();
-    assertSame(bigDecimal, zeroResult59.abs().getAmount());
-    Money zeroResult60 = zeroResult15.zero();
-    assertSame(bigDecimal, zeroResult60.abs().getAmount());
-    Money zeroResult61 = zeroResult30.zero();
-    assertSame(bigDecimal, zeroResult61.abs().getAmount());
+    assertSame(bigDecimal, zeroResult3.abs().getAmount());
     assertSame(bigDecimal, zeroResult.getAmount());
     assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, zeroResult4.getAmount());
-    assertSame(bigDecimal, zeroResult8.getAmount());
-    assertSame(bigDecimal, zeroResult16.getAmount());
-    assertSame(bigDecimal, zeroResult31.getAmount());
-    assertSame(bigDecimal, absResult6.zero().getAmount());
-    assertSame(bigDecimal, absResult11.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.getAmount());
-    assertSame(bigDecimal, absResult15.zero().getAmount());
-    assertSame(bigDecimal, absResult19.zero().getAmount());
-    assertSame(bigDecimal, zeroResult17.getAmount());
-    assertSame(bigDecimal, zeroResult33.getAmount());
-    assertSame(bigDecimal, absResult22.zero().getAmount());
-    assertSame(bigDecimal, absResult25.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.getAmount());
-    assertSame(bigDecimal, absResult28.zero().getAmount());
-    assertSame(bigDecimal, absResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult9.getAmount());
-    assertSame(bigDecimal, zeroResult18.getAmount());
-    assertSame(bigDecimal, zeroResult35.getAmount());
-    assertSame(bigDecimal, absResult33.zero().getAmount());
-    assertSame(bigDecimal, absResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.getAmount());
-    assertSame(bigDecimal, absResult37.zero().getAmount());
-    assertSame(bigDecimal, absResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult19.getAmount());
-    assertSame(bigDecimal, zeroResult37.getAmount());
-    assertSame(bigDecimal, absResult41.zero().getAmount());
-    assertSame(bigDecimal, absResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.getAmount());
-    assertSame(bigDecimal, absResult45.zero().getAmount());
-    assertSame(bigDecimal, absResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult5.getAmount());
-    assertSame(bigDecimal, zeroResult10.getAmount());
-    assertSame(bigDecimal, zeroResult20.getAmount());
-    assertSame(bigDecimal, zeroResult39.getAmount());
-    assertSame(bigDecimal, absResult48.zero().getAmount());
-    assertSame(bigDecimal, absResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.getAmount());
-    assertSame(bigDecimal, absResult50.zero().getAmount());
-    assertSame(bigDecimal, absResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult21.getAmount());
-    assertSame(bigDecimal, zeroResult41.getAmount());
-    assertSame(bigDecimal, absResult52.zero().getAmount());
-    assertSame(bigDecimal, absResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.getAmount());
-    assertSame(bigDecimal, absResult54.zero().getAmount());
-    assertSame(bigDecimal, absResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult11.getAmount());
-    assertSame(bigDecimal, zeroResult22.getAmount());
-    assertSame(bigDecimal, zeroResult43.getAmount());
-    assertSame(bigDecimal, absResult56.zero().getAmount());
-    assertSame(bigDecimal, absResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.getAmount());
-    assertSame(bigDecimal, absResult58.zero().getAmount());
-    assertSame(bigDecimal, absResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult23.getAmount());
-    assertSame(bigDecimal, zeroResult45.getAmount());
-    assertSame(bigDecimal, absResult60.zero().getAmount());
-    assertSame(bigDecimal, absResult61.zero().getAmount());
-    assertSame(bigDecimal, absResult46.zero().getAmount());
-    assertSame(bigDecimal, absResult62.zero().getAmount());
+    assertSame(bigDecimal, absResult2.zero().getAmount());
+    assertSame(bigDecimal, absResult3.zero().getAmount());
     assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult6.getAmount());
-    assertSame(bigDecimal, zeroResult12.getAmount());
-    assertSame(bigDecimal, zeroResult24.getAmount());
-    assertSame(bigDecimal, zeroResult46.getAmount());
-    assertSame(bigDecimal, zeroResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.getAmount());
-    assertSame(bigDecimal, zeroResult33.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.zero().getAmount());
-    assertSame(bigDecimal, zeroResult25.getAmount());
-    assertSame(bigDecimal, zeroResult48.getAmount());
-    assertSame(bigDecimal, zeroResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.getAmount());
-    assertSame(bigDecimal, zeroResult37.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.zero().getAmount());
-    assertSame(bigDecimal, zeroResult13.getAmount());
-    assertSame(bigDecimal, zeroResult26.getAmount());
-    assertSame(bigDecimal, zeroResult50.getAmount());
-    assertSame(bigDecimal, zeroResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.getAmount());
-    assertSame(bigDecimal, zeroResult41.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.zero().getAmount());
-    assertSame(bigDecimal, zeroResult27.getAmount());
-    assertSame(bigDecimal, zeroResult52.getAmount());
-    assertSame(bigDecimal, zeroResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.getAmount());
-    assertSame(bigDecimal, zeroResult45.zero().getAmount());
-    assertSame(bigDecimal, zeroResult7.getAmount());
-    assertSame(bigDecimal, zeroResult14.getAmount());
-    assertSame(bigDecimal, zeroResult28.getAmount());
-    assertSame(bigDecimal, zeroResult54.getAmount());
-    assertSame(bigDecimal, zeroResult46.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.getAmount());
-    assertSame(bigDecimal, zeroResult48.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult29.getAmount());
-    assertSame(bigDecimal, zeroResult56.getAmount());
-    assertSame(bigDecimal, zeroResult50.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.getAmount());
-    assertSame(bigDecimal, zeroResult52.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult15.getAmount());
-    assertSame(bigDecimal, zeroResult30.getAmount());
-    assertSame(bigDecimal, zeroResult58.getAmount());
-    assertSame(bigDecimal, zeroResult54.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.getAmount());
-    assertSame(bigDecimal, zeroResult56.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.getAmount());
-    assertSame(bigDecimal, zeroResult61.getAmount());
-    assertSame(bigDecimal, zeroResult58.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.zero().getAmount());
-    assertSame(bigDecimal, zeroResult61.zero().getAmount());
+    assertSame(bigDecimal, zeroResult2.zero().getAmount());
+    assertSame(bigDecimal, zeroResult3.zero().getAmount());
   }
 
   /**
    * Test {@link FulfillmentGroupImpl#setMerchandiseTotal(Money)}.
+   * <ul>
+   *   <li>Then {@link FulfillmentGroupImpl} (default constructor) {@link FulfillmentGroupImpl#merchandiseTotal} is {@code null}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link FulfillmentGroupImpl#setMerchandiseTotal(Money)}
    */
   @Test
-  public void testSetMerchandiseTotal2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(new AddressImpl());
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
-    Money fulfillmentPrice = new Money();
-    fulfillmentGroupImpl.setFulfillmentPrice(fulfillmentPrice);
-    fulfillmentGroupImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setOrder(NullOrderFactoryImpl.NULL_ORDER);
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-
-    // Act
-    fulfillmentGroupImpl.setMerchandiseTotal(null);
-
-    // Assert
-    assertNull(fulfillmentGroupImpl.merchandiseTotal);
-    assertNull(fulfillmentGroupImpl.getMerchandiseTotal());
-    Money fulfillmentGroupAdjustmentsValue = fulfillmentGroupImpl.getFulfillmentGroupAdjustmentsValue();
-    Money absResult = fulfillmentGroupAdjustmentsValue.abs();
-    Money absResult2 = absResult.abs();
-    Money absResult3 = absResult2.abs();
-    Money absResult4 = absResult3.abs();
-    assertEquals(fulfillmentPrice, absResult4.abs());
-    Money zeroResult = fulfillmentGroupAdjustmentsValue.zero();
-    Money absResult5 = zeroResult.abs();
-    Money absResult6 = absResult5.abs();
-    Money absResult7 = absResult6.abs();
-    assertEquals(fulfillmentPrice, absResult7.abs());
-    Money zeroResult2 = absResult.zero();
-    Money absResult8 = zeroResult2.abs();
-    Money absResult9 = absResult8.abs();
-    assertEquals(fulfillmentPrice, absResult9.abs());
-    assertEquals(fulfillmentPrice, zeroResult.zero().abs().abs().abs());
-    Money zeroResult3 = absResult2.zero();
-    Money absResult10 = zeroResult3.abs();
-    assertEquals(fulfillmentPrice, absResult10.abs());
-    Money zeroResult4 = absResult5.zero();
-    Money absResult11 = zeroResult4.abs();
-    assertEquals(fulfillmentPrice, absResult11.abs());
-    Money zeroResult5 = zeroResult2.zero();
-    Money absResult12 = zeroResult5.abs();
-    assertEquals(fulfillmentPrice, absResult12.abs());
-    Money zeroResult6 = fulfillmentGroupImpl.getTotalTax().zero();
-    Money zeroResult7 = zeroResult6.zero();
-    Money absResult13 = zeroResult7.abs();
-    assertEquals(fulfillmentPrice, absResult13.abs());
-    Money zeroResult8 = absResult3.zero();
-    assertEquals(fulfillmentPrice, zeroResult8.abs());
-    Money zeroResult9 = absResult6.zero();
-    assertEquals(fulfillmentPrice, zeroResult9.abs());
-    Money zeroResult10 = absResult8.zero();
-    assertEquals(fulfillmentPrice, zeroResult10.abs());
-    Money zeroResult11 = zeroResult3.zero();
-    assertEquals(fulfillmentPrice, zeroResult11.abs());
-    Money zeroResult12 = zeroResult4.zero();
-    assertEquals(fulfillmentPrice, zeroResult12.abs());
-    Money zeroResult13 = zeroResult5.zero();
-    assertEquals(fulfillmentPrice, zeroResult13.abs());
-    Money zeroResult14 = zeroResult7.zero();
-    assertEquals(fulfillmentPrice, zeroResult14.abs());
-    assertEquals(fulfillmentPrice, absResult4.zero());
-    assertEquals(fulfillmentPrice, absResult7.zero());
-    assertEquals(fulfillmentPrice, absResult9.zero());
-    assertEquals(fulfillmentPrice, absResult10.zero());
-    assertEquals(fulfillmentPrice, absResult11.zero());
-    assertEquals(fulfillmentPrice, absResult12.zero());
-    assertEquals(fulfillmentPrice, absResult13.zero());
-    assertEquals(fulfillmentPrice, zeroResult8.zero());
-    assertEquals(fulfillmentPrice, zeroResult9.zero());
-    assertEquals(fulfillmentPrice, zeroResult10.zero());
-    Money zeroResult15 = zeroResult6.abs().zero();
-    assertEquals(fulfillmentPrice, zeroResult15.zero());
-    assertEquals(fulfillmentPrice, zeroResult11.zero());
-    assertEquals(fulfillmentPrice, zeroResult12.zero());
-    assertEquals(fulfillmentPrice, zeroResult13.zero());
-    assertEquals(fulfillmentPrice, zeroResult14.zero());
-    BigDecimal bigDecimal = fulfillmentGroupImpl.totalTax;
-    assertSame(bigDecimal, absResult4.getAmount());
-    assertSame(bigDecimal, absResult7.getAmount());
-    assertSame(bigDecimal, absResult9.getAmount());
-    assertSame(bigDecimal, absResult10.getAmount());
-    assertSame(bigDecimal, absResult11.getAmount());
-    assertSame(bigDecimal, absResult12.getAmount());
-    assertSame(bigDecimal, absResult13.getAmount());
-    assertSame(bigDecimal, zeroResult8.getAmount());
-    assertSame(bigDecimal, zeroResult9.getAmount());
-    assertSame(bigDecimal, zeroResult10.getAmount());
-    assertSame(bigDecimal, zeroResult15.getAmount());
-    assertSame(bigDecimal, zeroResult11.getAmount());
-    assertSame(bigDecimal, zeroResult12.getAmount());
-    assertSame(bigDecimal, zeroResult13.getAmount());
-    assertSame(bigDecimal, zeroResult14.getAmount());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#setMerchandiseTotal(Money)}.
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#setMerchandiseTotal(Money)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetMerchandiseTotal3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1122 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupImpl.setMerchandiseTotal(Money)"})
+  public void testSetMerchandiseTotal_thenFulfillmentGroupImplMerchandiseTotalIsNull() {
     // Arrange
     FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
-
-    // Act
+    fulfillmentGroupImpl2.setAddress(new AddressImpl());
+    fulfillmentGroupImpl2.setCandidateFulfillmentGroupOffer(new ArrayList<>());
+    fulfillmentGroupImpl2.setDeliveryInstruction("Delivery Instruction");
+    fulfillmentGroupImpl2.setFulfillmentGroupAdjustments(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupFees(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupItems(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentOption(new FulfillmentOptionImpl());
+    Money fulfillmentPrice = new Money();
+    fulfillmentGroupImpl2.setFulfillmentPrice(fulfillmentPrice);
+    fulfillmentGroupImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupImpl2.setIsShippingPriceTaxable(true);
     fulfillmentGroupImpl2.setMerchandiseTotal(new Money());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#setMerchandiseTotal(Money)}.
-   * <ul>
-   *   <li>When {@link Money}.</li>
-   *   <li>Then {@link FulfillmentGroupImpl} (default constructor)
-   * {@link FulfillmentGroupImpl#merchandiseTotal} is {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#setMerchandiseTotal(Money)}
-   */
-  @Test
-  public void testSetMerchandiseTotal_whenMoney_thenFulfillmentGroupImplMerchandiseTotalIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl2.setMethod("Fulfillment Method");
+    fulfillmentGroupImpl2.setOrder(NullOrderFactoryImpl.NULL_ORDER);
+    fulfillmentGroupImpl2.setPersonalMessage(new PersonalMessageImpl());
+    fulfillmentGroupImpl2.setPhone(new PhoneImpl());
+    fulfillmentGroupImpl2.setPrimary(true);
+    fulfillmentGroupImpl2.setReferenceNumber("42");
+    fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSequence(1);
+    fulfillmentGroupImpl2.setService("Service");
+    fulfillmentGroupImpl2.setShippingOverride(true);
+    fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupImpl2.setTaxes(new ArrayList<>());
+    fulfillmentGroupImpl2.setTotal(new Money());
+    fulfillmentGroupImpl2.setTotalFeeTax(new Money());
+    fulfillmentGroupImpl2.setTotalFulfillmentGroupTax(new Money());
+    fulfillmentGroupImpl2.setTotalItemTax(new Money());
+    fulfillmentGroupImpl2.setTotalTax(new Money());
+    fulfillmentGroupImpl2.setType(FulfillmentType.DIGITAL);
 
     // Act
-    fulfillmentGroupImpl.setMerchandiseTotal(mock(Money.class));
+    fulfillmentGroupImpl2.setMerchandiseTotal(null);
 
     // Assert
-    assertNull(fulfillmentGroupImpl.merchandiseTotal);
-    assertNull(fulfillmentGroupImpl.getMerchandiseTotal());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#getTotal()}.
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#getTotal()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetTotal() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass822 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new FulfillmentGroupImpl()).getTotal();
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#getTotal()}.
-   * <ul>
-   *   <li>Given {@link FulfillmentGroupImpl} (default constructor) Total is
-   * {@link Money}.</li>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#getTotal()}
-   */
-  @Test
-  public void testGetTotal_givenFulfillmentGroupImplTotalIsMoney_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setTotal(mock(Money.class));
-
-    // Act and Assert
-    assertNull(fulfillmentGroupImpl.getTotal());
+    assertNull(fulfillmentGroupImpl2.merchandiseTotal);
+    assertNull(fulfillmentGroupImpl2.getMerchandiseTotal());
+    Money zeroResult = fulfillmentGroupImpl2.getTotalTax().zero();
+    Money zeroResult2 = zeroResult.zero();
+    Money absResult = zeroResult2.abs();
+    assertEquals(fulfillmentPrice, absResult.abs());
+    Money zeroResult3 = zeroResult2.zero();
+    assertEquals(fulfillmentPrice, zeroResult3.abs());
+    assertEquals(fulfillmentPrice, absResult.zero());
+    Money zeroResult4 = zeroResult.abs().zero();
+    assertEquals(fulfillmentPrice, zeroResult4.zero());
+    assertEquals(fulfillmentPrice, zeroResult3.zero());
+    BigDecimal bigDecimal = fulfillmentGroupImpl2.totalTax;
+    assertSame(bigDecimal, absResult.getAmount());
+    assertSame(bigDecimal, zeroResult4.getAmount());
+    assertSame(bigDecimal, zeroResult3.getAmount());
   }
 
   /**
@@ -10479,9 +3358,9 @@ public class FulfillmentGroupImplDiffblueTest {
    * Method under test: {@link FulfillmentGroupImpl#getTotal()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money FulfillmentGroupImpl.getTotal()"})
   public void testGetTotal_givenFulfillmentGroupImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new FulfillmentGroupImpl()).getTotal());
   }
@@ -10489,17 +3368,16 @@ public class FulfillmentGroupImplDiffblueTest {
   /**
    * Test {@link FulfillmentGroupImpl#getTotal()}.
    * <ul>
-   *   <li>Given {@link OrderImpl} (default constructor) Currency is
-   * {@code null}.</li>
+   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@code null}.</li>
    *   <li>Then return {@link Money#Money()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link FulfillmentGroupImpl#getTotal()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money FulfillmentGroupImpl.getTotal()"})
   public void testGetTotal_givenOrderImplCurrencyIsNull_thenReturnMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
@@ -10529,632 +3407,156 @@ public class FulfillmentGroupImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setCurrency(null);
 
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(new AddressImpl());
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl2.setAddress(new AddressImpl());
+    fulfillmentGroupImpl2.setCandidateFulfillmentGroupOffer(new ArrayList<>());
+    fulfillmentGroupImpl2.setDeliveryInstruction("Delivery Instruction");
+    fulfillmentGroupImpl2.setFulfillmentGroupAdjustments(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupFees(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupItems(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentOption(new FulfillmentOptionImpl());
     Money fulfillmentPrice = new Money();
-    fulfillmentGroupImpl.setFulfillmentPrice(fulfillmentPrice);
-    fulfillmentGroupImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setOrder(order);
+    fulfillmentGroupImpl2.setFulfillmentPrice(fulfillmentPrice);
+    fulfillmentGroupImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupImpl2.setIsShippingPriceTaxable(true);
+    fulfillmentGroupImpl2.setMerchandiseTotal(new Money());
+    fulfillmentGroupImpl2.setMethod("Fulfillment Method");
+    fulfillmentGroupImpl2.setPersonalMessage(new PersonalMessageImpl());
+    fulfillmentGroupImpl2.setPhone(new PhoneImpl());
+    fulfillmentGroupImpl2.setPrimary(true);
+    fulfillmentGroupImpl2.setReferenceNumber("42");
+    fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSequence(1);
+    fulfillmentGroupImpl2.setService("Service");
+    fulfillmentGroupImpl2.setShippingOverride(true);
+    fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupImpl2.setTaxes(new ArrayList<>());
+    fulfillmentGroupImpl2.setTotalFeeTax(new Money());
+    fulfillmentGroupImpl2.setTotalFulfillmentGroupTax(new Money());
+    fulfillmentGroupImpl2.setTotalItemTax(new Money());
+    fulfillmentGroupImpl2.setTotalTax(new Money());
+    fulfillmentGroupImpl2.setType(FulfillmentType.DIGITAL);
+    fulfillmentGroupImpl2.setTotal(new Money());
+    fulfillmentGroupImpl2.setOrder(order);
 
     // Act and Assert
-    assertEquals(fulfillmentPrice, fulfillmentGroupImpl.getTotal());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#setTotal(Money)}.
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#setTotal(Money)}
-   */
-  @Test
-  public void testSetTotal() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(new AddressImpl());
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
-    Money fulfillmentPrice = new Money();
-    fulfillmentGroupImpl.setFulfillmentPrice(fulfillmentPrice);
-    fulfillmentGroupImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setOrder(NullOrderFactoryImpl.NULL_ORDER);
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-
-    // Act
-    fulfillmentGroupImpl.setTotal(null);
-
-    // Assert
-    assertNull(fulfillmentGroupImpl.total);
-    assertNull(fulfillmentGroupImpl.getTotal());
-    Money fulfillmentGroupAdjustmentsValue = fulfillmentGroupImpl.getFulfillmentGroupAdjustmentsValue();
-    Money absResult = fulfillmentGroupAdjustmentsValue.abs();
-    Money absResult2 = absResult.abs();
-    Money absResult3 = absResult2.abs();
-    Money absResult4 = absResult3.abs();
-    assertEquals(fulfillmentPrice, absResult4.abs());
-    Money zeroResult = fulfillmentGroupAdjustmentsValue.zero();
-    Money absResult5 = zeroResult.abs();
-    Money absResult6 = absResult5.abs();
-    Money absResult7 = absResult6.abs();
-    assertEquals(fulfillmentPrice, absResult7.abs());
-    Money zeroResult2 = absResult.zero();
-    Money absResult8 = zeroResult2.abs();
-    Money absResult9 = absResult8.abs();
-    assertEquals(fulfillmentPrice, absResult9.abs());
-    assertEquals(fulfillmentPrice, zeroResult.zero().abs().abs().abs());
-    Money zeroResult3 = absResult2.zero();
-    Money absResult10 = zeroResult3.abs();
-    assertEquals(fulfillmentPrice, absResult10.abs());
-    Money zeroResult4 = absResult5.zero();
-    Money absResult11 = zeroResult4.abs();
-    assertEquals(fulfillmentPrice, absResult11.abs());
-    Money zeroResult5 = zeroResult2.zero();
-    Money absResult12 = zeroResult5.abs();
-    assertEquals(fulfillmentPrice, absResult12.abs());
-    Money zeroResult6 = fulfillmentGroupImpl.getTotalTax().zero();
-    Money zeroResult7 = zeroResult6.zero();
-    Money absResult13 = zeroResult7.abs();
-    assertEquals(fulfillmentPrice, absResult13.abs());
-    Money zeroResult8 = absResult3.zero();
-    assertEquals(fulfillmentPrice, zeroResult8.abs());
-    Money zeroResult9 = absResult6.zero();
-    assertEquals(fulfillmentPrice, zeroResult9.abs());
-    Money zeroResult10 = absResult8.zero();
-    assertEquals(fulfillmentPrice, zeroResult10.abs());
-    Money zeroResult11 = zeroResult3.zero();
-    assertEquals(fulfillmentPrice, zeroResult11.abs());
-    Money zeroResult12 = zeroResult4.zero();
-    assertEquals(fulfillmentPrice, zeroResult12.abs());
-    Money zeroResult13 = zeroResult5.zero();
-    assertEquals(fulfillmentPrice, zeroResult13.abs());
-    Money zeroResult14 = zeroResult7.zero();
-    assertEquals(fulfillmentPrice, zeroResult14.abs());
-    assertEquals(fulfillmentPrice, absResult4.zero());
-    assertEquals(fulfillmentPrice, absResult7.zero());
-    assertEquals(fulfillmentPrice, absResult9.zero());
-    assertEquals(fulfillmentPrice, absResult10.zero());
-    assertEquals(fulfillmentPrice, absResult11.zero());
-    assertEquals(fulfillmentPrice, absResult12.zero());
-    assertEquals(fulfillmentPrice, absResult13.zero());
-    assertEquals(fulfillmentPrice, zeroResult8.zero());
-    assertEquals(fulfillmentPrice, zeroResult9.zero());
-    assertEquals(fulfillmentPrice, zeroResult10.zero());
-    Money zeroResult15 = zeroResult6.abs().zero();
-    assertEquals(fulfillmentPrice, zeroResult15.zero());
-    assertEquals(fulfillmentPrice, zeroResult11.zero());
-    assertEquals(fulfillmentPrice, zeroResult12.zero());
-    assertEquals(fulfillmentPrice, zeroResult13.zero());
-    assertEquals(fulfillmentPrice, zeroResult14.zero());
-    BigDecimal bigDecimal = fulfillmentGroupImpl.totalTax;
-    assertSame(bigDecimal, absResult4.getAmount());
-    assertSame(bigDecimal, absResult7.getAmount());
-    assertSame(bigDecimal, absResult9.getAmount());
-    assertSame(bigDecimal, absResult10.getAmount());
-    assertSame(bigDecimal, absResult11.getAmount());
-    assertSame(bigDecimal, absResult12.getAmount());
-    assertSame(bigDecimal, absResult13.getAmount());
-    assertSame(bigDecimal, zeroResult8.getAmount());
-    assertSame(bigDecimal, zeroResult9.getAmount());
-    assertSame(bigDecimal, zeroResult10.getAmount());
-    assertSame(bigDecimal, zeroResult15.getAmount());
-    assertSame(bigDecimal, zeroResult11.getAmount());
-    assertSame(bigDecimal, zeroResult12.getAmount());
-    assertSame(bigDecimal, zeroResult13.getAmount());
-    assertSame(bigDecimal, zeroResult14.getAmount());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#setTotal(Money)}.
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#setTotal(Money)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetTotal2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1332 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
-
-    // Act
-    fulfillmentGroupImpl2.setTotal(new Money());
+    assertEquals(fulfillmentPrice, fulfillmentGroupImpl2.getTotal());
   }
 
   /**
    * Test {@link FulfillmentGroupImpl#setTotal(Money)}.
    * <ul>
-   *   <li>When {@link Money#Money()}.</li>
-   *   <li>Then {@link FulfillmentGroupImpl} (default constructor)
-   * {@link FulfillmentGroupImpl#total} is {@link BigDecimal#BigDecimal(String)}
-   * with {@code 0.00}.</li>
+   *   <li>Then {@link FulfillmentGroupImpl} (default constructor) {@link FulfillmentGroupImpl#total} is {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
    * </ul>
    * <p>
    * Method under test: {@link FulfillmentGroupImpl#setTotal(Money)}
    */
   @Test
-  public void testSetTotal_whenMoney_thenFulfillmentGroupImplTotalIsBigDecimalWith000() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupImpl.setTotal(Money)"})
+  public void testSetTotal_thenFulfillmentGroupImplTotalIsBigDecimalWith000() {
     // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
     Money orderTotal = new Money();
 
     // Act
-    fulfillmentGroupImpl.setTotal(orderTotal);
+    fulfillmentGroupImpl2.setTotal(orderTotal);
 
     // Assert
-    assertEquals(new BigDecimal("0.00"), fulfillmentGroupImpl.total);
-    BigDecimal bigDecimal = fulfillmentGroupImpl.total;
+    assertEquals(new BigDecimal("0.00"), fulfillmentGroupImpl2.total);
+    BigDecimal bigDecimal = fulfillmentGroupImpl2.total;
     Money absResult = orderTotal.abs();
     assertSame(bigDecimal, absResult.getAmount());
     Money absResult2 = absResult.abs();
     assertSame(bigDecimal, absResult2.getAmount());
-    Money absResult3 = absResult2.abs();
-    assertSame(bigDecimal, absResult3.getAmount());
-    Money absResult4 = absResult3.abs();
-    assertSame(bigDecimal, absResult4.getAmount());
-    Money absResult5 = absResult4.abs();
-    assertSame(bigDecimal, absResult5.getAmount());
-    Money absResult6 = absResult5.abs();
-    assertSame(bigDecimal, absResult6.getAmount());
-    assertSame(bigDecimal, absResult6.abs().getAmount());
+    assertSame(bigDecimal, absResult2.abs().getAmount());
     Money zeroResult = orderTotal.zero();
-    Money absResult7 = zeroResult.abs();
-    Money absResult8 = absResult7.abs();
-    Money absResult9 = absResult8.abs();
-    Money absResult10 = absResult9.abs();
-    Money absResult11 = absResult10.abs();
-    assertSame(bigDecimal, absResult11.abs().getAmount());
-    assertSame(bigDecimal, absResult11.getAmount());
+    Money absResult3 = zeroResult.abs();
+    assertSame(bigDecimal, absResult3.abs().getAmount());
+    assertSame(bigDecimal, absResult3.getAmount());
     Money zeroResult2 = absResult.zero();
-    Money absResult12 = zeroResult2.abs();
-    Money absResult13 = absResult12.abs();
-    Money absResult14 = absResult13.abs();
-    Money absResult15 = absResult14.abs();
-    assertSame(bigDecimal, absResult15.abs().getAmount());
+    assertSame(bigDecimal, zeroResult2.abs().getAmount());
     Money zeroResult3 = zeroResult.zero();
-    Money absResult16 = zeroResult3.abs();
-    Money absResult17 = absResult16.abs();
-    Money absResult18 = absResult17.abs();
-    Money absResult19 = absResult18.abs();
-    assertSame(bigDecimal, absResult19.abs().getAmount());
-    assertSame(bigDecimal, absResult10.getAmount());
-    assertSame(bigDecimal, absResult15.getAmount());
-    Money zeroResult4 = absResult2.zero();
-    Money absResult20 = zeroResult4.abs();
-    Money absResult21 = absResult20.abs();
-    Money absResult22 = absResult21.abs();
-    assertSame(bigDecimal, absResult22.abs().getAmount());
-    Money zeroResult5 = absResult7.zero();
-    Money absResult23 = zeroResult5.abs();
-    Money absResult24 = absResult23.abs();
-    Money absResult25 = absResult24.abs();
-    assertSame(bigDecimal, absResult25.abs().getAmount());
-    assertSame(bigDecimal, absResult19.getAmount());
-    Money zeroResult6 = zeroResult2.zero();
-    Money absResult26 = zeroResult6.abs();
-    Money absResult27 = absResult26.abs();
-    Money absResult28 = absResult27.abs();
-    assertSame(bigDecimal, absResult28.abs().getAmount());
-    Money zeroResult7 = zeroResult3.zero();
-    Money absResult29 = zeroResult7.abs();
-    Money absResult30 = absResult29.abs();
-    Money absResult31 = absResult30.abs();
-    assertSame(bigDecimal, absResult31.abs().getAmount());
-    assertSame(bigDecimal, absResult9.getAmount());
-    assertSame(bigDecimal, absResult14.getAmount());
-    assertSame(bigDecimal, absResult22.getAmount());
-    Money zeroResult8 = absResult3.zero();
-    Money absResult32 = zeroResult8.abs();
-    Money absResult33 = absResult32.abs();
-    assertSame(bigDecimal, absResult33.abs().getAmount());
-    Money zeroResult9 = absResult8.zero();
-    Money absResult34 = zeroResult9.abs();
-    Money absResult35 = absResult34.abs();
-    assertSame(bigDecimal, absResult35.abs().getAmount());
-    assertSame(bigDecimal, absResult25.getAmount());
-    Money zeroResult10 = absResult12.zero();
-    Money absResult36 = zeroResult10.abs();
-    Money absResult37 = absResult36.abs();
-    assertSame(bigDecimal, absResult37.abs().getAmount());
-    Money zeroResult11 = absResult16.zero();
-    Money absResult38 = zeroResult11.abs();
-    Money absResult39 = absResult38.abs();
-    assertSame(bigDecimal, absResult39.abs().getAmount());
-    assertSame(bigDecimal, absResult18.getAmount());
-    assertSame(bigDecimal, absResult28.getAmount());
-    Money zeroResult12 = zeroResult4.zero();
-    Money absResult40 = zeroResult12.abs();
-    Money absResult41 = absResult40.abs();
-    assertSame(bigDecimal, absResult41.abs().getAmount());
-    Money zeroResult13 = zeroResult5.zero();
-    Money absResult42 = zeroResult13.abs();
-    Money absResult43 = absResult42.abs();
-    assertSame(bigDecimal, absResult43.abs().getAmount());
-    assertSame(bigDecimal, absResult31.getAmount());
-    Money zeroResult14 = zeroResult6.zero();
-    Money absResult44 = zeroResult14.abs();
-    Money absResult45 = absResult44.abs();
-    assertSame(bigDecimal, absResult45.abs().getAmount());
-    Money zeroResult15 = zeroResult7.zero();
-    Money absResult46 = zeroResult15.abs();
-    Money absResult47 = absResult46.abs();
-    assertSame(bigDecimal, absResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult8.getAmount());
-    assertSame(bigDecimal, absResult13.getAmount());
-    assertSame(bigDecimal, absResult21.getAmount());
-    assertSame(bigDecimal, absResult33.getAmount());
-    Money zeroResult16 = absResult4.zero();
-    Money absResult48 = zeroResult16.abs();
-    assertSame(bigDecimal, absResult48.abs().getAmount());
-    Money zeroResult17 = absResult9.zero();
-    Money absResult49 = zeroResult17.abs();
-    assertSame(bigDecimal, absResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult35.getAmount());
-    Money zeroResult18 = absResult13.zero();
-    Money absResult50 = zeroResult18.abs();
-    assertSame(bigDecimal, absResult50.abs().getAmount());
-    Money zeroResult19 = absResult17.zero();
-    Money absResult51 = zeroResult19.abs();
-    assertSame(bigDecimal, absResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult24.getAmount());
-    assertSame(bigDecimal, absResult37.getAmount());
-    Money zeroResult20 = absResult20.zero();
-    Money absResult52 = zeroResult20.abs();
-    assertSame(bigDecimal, absResult52.abs().getAmount());
-    Money zeroResult21 = absResult23.zero();
-    Money absResult53 = zeroResult21.abs();
-    assertSame(bigDecimal, absResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult39.getAmount());
-    Money zeroResult22 = absResult26.zero();
-    Money absResult54 = zeroResult22.abs();
-    assertSame(bigDecimal, absResult54.abs().getAmount());
-    Money zeroResult23 = absResult29.zero();
-    Money absResult55 = zeroResult23.abs();
-    assertSame(bigDecimal, absResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult17.getAmount());
-    assertSame(bigDecimal, absResult27.getAmount());
-    assertSame(bigDecimal, absResult41.getAmount());
-    Money zeroResult24 = zeroResult8.zero();
-    Money absResult56 = zeroResult24.abs();
-    assertSame(bigDecimal, absResult56.abs().getAmount());
-    Money zeroResult25 = zeroResult9.zero();
-    Money absResult57 = zeroResult25.abs();
-    assertSame(bigDecimal, absResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult43.getAmount());
-    Money zeroResult26 = zeroResult10.zero();
-    Money absResult58 = zeroResult26.abs();
-    assertSame(bigDecimal, absResult58.abs().getAmount());
-    Money zeroResult27 = zeroResult11.zero();
-    Money absResult59 = zeroResult27.abs();
-    assertSame(bigDecimal, absResult59.abs().getAmount());
-    assertSame(bigDecimal, absResult30.getAmount());
-    assertSame(bigDecimal, absResult45.getAmount());
-    Money zeroResult28 = zeroResult12.zero();
-    Money absResult60 = zeroResult28.abs();
-    assertSame(bigDecimal, absResult60.abs().getAmount());
-    Money zeroResult29 = zeroResult13.zero();
-    Money absResult61 = zeroResult29.abs();
-    assertSame(bigDecimal, absResult61.abs().getAmount());
-    assertSame(bigDecimal, absResult47.getAmount());
-    Money zeroResult30 = zeroResult14.zero();
-    Money absResult62 = zeroResult30.abs();
-    assertSame(bigDecimal, absResult62.abs().getAmount());
-    assertSame(bigDecimal, absResult7.getAmount());
-    assertSame(bigDecimal, absResult12.getAmount());
-    assertSame(bigDecimal, absResult20.getAmount());
-    assertSame(bigDecimal, absResult32.getAmount());
-    assertSame(bigDecimal, absResult48.getAmount());
-    Money zeroResult31 = absResult5.zero();
-    assertSame(bigDecimal, zeroResult31.abs().getAmount());
-    Money zeroResult32 = absResult10.zero();
-    assertSame(bigDecimal, zeroResult32.abs().getAmount());
-    assertSame(bigDecimal, absResult49.getAmount());
-    Money zeroResult33 = absResult14.zero();
-    assertSame(bigDecimal, zeroResult33.abs().getAmount());
-    Money zeroResult34 = absResult18.zero();
-    assertSame(bigDecimal, zeroResult34.abs().getAmount());
-    assertSame(bigDecimal, absResult34.getAmount());
-    assertSame(bigDecimal, absResult50.getAmount());
-    Money zeroResult35 = absResult21.zero();
-    assertSame(bigDecimal, zeroResult35.abs().getAmount());
-    Money zeroResult36 = absResult24.zero();
-    assertSame(bigDecimal, zeroResult36.abs().getAmount());
-    assertSame(bigDecimal, absResult51.getAmount());
-    Money zeroResult37 = absResult27.zero();
-    assertSame(bigDecimal, zeroResult37.abs().getAmount());
-    Money zeroResult38 = absResult30.zero();
-    assertSame(bigDecimal, zeroResult38.abs().getAmount());
-    assertSame(bigDecimal, absResult23.getAmount());
-    assertSame(bigDecimal, absResult36.getAmount());
-    assertSame(bigDecimal, absResult52.getAmount());
-    Money zeroResult39 = absResult32.zero();
-    assertSame(bigDecimal, zeroResult39.abs().getAmount());
-    Money zeroResult40 = absResult34.zero();
-    assertSame(bigDecimal, zeroResult40.abs().getAmount());
-    assertSame(bigDecimal, absResult53.getAmount());
-    Money zeroResult41 = absResult36.zero();
-    assertSame(bigDecimal, zeroResult41.abs().getAmount());
-    Money zeroResult42 = absResult38.zero();
-    assertSame(bigDecimal, zeroResult42.abs().getAmount());
-    assertSame(bigDecimal, absResult38.getAmount());
-    assertSame(bigDecimal, absResult54.getAmount());
-    Money zeroResult43 = absResult40.zero();
-    assertSame(bigDecimal, zeroResult43.abs().getAmount());
-    Money zeroResult44 = absResult42.zero();
-    assertSame(bigDecimal, zeroResult44.abs().getAmount());
-    assertSame(bigDecimal, absResult55.getAmount());
-    Money zeroResult45 = absResult44.zero();
-    assertSame(bigDecimal, zeroResult45.abs().getAmount());
-    assertSame(bigDecimal, absResult16.getAmount());
-    assertSame(bigDecimal, absResult26.getAmount());
-    assertSame(bigDecimal, absResult40.getAmount());
-    assertSame(bigDecimal, absResult56.getAmount());
-    Money zeroResult46 = zeroResult16.zero();
-    assertSame(bigDecimal, zeroResult46.abs().getAmount());
-    Money zeroResult47 = zeroResult17.zero();
-    assertSame(bigDecimal, zeroResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult57.getAmount());
-    Money zeroResult48 = zeroResult18.zero();
-    assertSame(bigDecimal, zeroResult48.abs().getAmount());
-    Money zeroResult49 = zeroResult19.zero();
-    assertSame(bigDecimal, zeroResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult42.getAmount());
-    assertSame(bigDecimal, absResult58.getAmount());
-    Money zeroResult50 = zeroResult20.zero();
-    assertSame(bigDecimal, zeroResult50.abs().getAmount());
-    Money zeroResult51 = zeroResult21.zero();
-    assertSame(bigDecimal, zeroResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult59.getAmount());
-    Money zeroResult52 = zeroResult22.zero();
-    assertSame(bigDecimal, zeroResult52.abs().getAmount());
-    Money zeroResult53 = zeroResult23.zero();
-    assertSame(bigDecimal, zeroResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult29.getAmount());
-    assertSame(bigDecimal, absResult44.getAmount());
-    assertSame(bigDecimal, absResult60.getAmount());
-    Money zeroResult54 = zeroResult24.zero();
-    assertSame(bigDecimal, zeroResult54.abs().getAmount());
-    Money zeroResult55 = zeroResult25.zero();
-    assertSame(bigDecimal, zeroResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult61.getAmount());
-    Money zeroResult56 = zeroResult26.zero();
-    assertSame(bigDecimal, zeroResult56.abs().getAmount());
-    Money zeroResult57 = zeroResult27.zero();
-    assertSame(bigDecimal, zeroResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult46.getAmount());
-    assertSame(bigDecimal, absResult62.getAmount());
-    Money zeroResult58 = zeroResult28.zero();
-    assertSame(bigDecimal, zeroResult58.abs().getAmount());
-    Money zeroResult59 = zeroResult29.zero();
-    assertSame(bigDecimal, zeroResult59.abs().getAmount());
-    Money zeroResult60 = zeroResult15.zero();
-    assertSame(bigDecimal, zeroResult60.abs().getAmount());
-    Money zeroResult61 = zeroResult30.zero();
-    assertSame(bigDecimal, zeroResult61.abs().getAmount());
+    assertSame(bigDecimal, zeroResult3.abs().getAmount());
     assertSame(bigDecimal, zeroResult.getAmount());
     assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, zeroResult4.getAmount());
-    assertSame(bigDecimal, zeroResult8.getAmount());
-    assertSame(bigDecimal, zeroResult16.getAmount());
-    assertSame(bigDecimal, zeroResult31.getAmount());
-    assertSame(bigDecimal, absResult6.zero().getAmount());
-    assertSame(bigDecimal, absResult11.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.getAmount());
-    assertSame(bigDecimal, absResult15.zero().getAmount());
-    assertSame(bigDecimal, absResult19.zero().getAmount());
-    assertSame(bigDecimal, zeroResult17.getAmount());
-    assertSame(bigDecimal, zeroResult33.getAmount());
-    assertSame(bigDecimal, absResult22.zero().getAmount());
-    assertSame(bigDecimal, absResult25.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.getAmount());
-    assertSame(bigDecimal, absResult28.zero().getAmount());
-    assertSame(bigDecimal, absResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult9.getAmount());
-    assertSame(bigDecimal, zeroResult18.getAmount());
-    assertSame(bigDecimal, zeroResult35.getAmount());
-    assertSame(bigDecimal, absResult33.zero().getAmount());
-    assertSame(bigDecimal, absResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.getAmount());
-    assertSame(bigDecimal, absResult37.zero().getAmount());
-    assertSame(bigDecimal, absResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult19.getAmount());
-    assertSame(bigDecimal, zeroResult37.getAmount());
-    assertSame(bigDecimal, absResult41.zero().getAmount());
-    assertSame(bigDecimal, absResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.getAmount());
-    assertSame(bigDecimal, absResult45.zero().getAmount());
-    assertSame(bigDecimal, absResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult5.getAmount());
-    assertSame(bigDecimal, zeroResult10.getAmount());
-    assertSame(bigDecimal, zeroResult20.getAmount());
-    assertSame(bigDecimal, zeroResult39.getAmount());
-    assertSame(bigDecimal, absResult48.zero().getAmount());
-    assertSame(bigDecimal, absResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.getAmount());
-    assertSame(bigDecimal, absResult50.zero().getAmount());
-    assertSame(bigDecimal, absResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult21.getAmount());
-    assertSame(bigDecimal, zeroResult41.getAmount());
-    assertSame(bigDecimal, absResult52.zero().getAmount());
-    assertSame(bigDecimal, absResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.getAmount());
-    assertSame(bigDecimal, absResult54.zero().getAmount());
-    assertSame(bigDecimal, absResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult11.getAmount());
-    assertSame(bigDecimal, zeroResult22.getAmount());
-    assertSame(bigDecimal, zeroResult43.getAmount());
-    assertSame(bigDecimal, absResult56.zero().getAmount());
-    assertSame(bigDecimal, absResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.getAmount());
-    assertSame(bigDecimal, absResult58.zero().getAmount());
-    assertSame(bigDecimal, absResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult23.getAmount());
-    assertSame(bigDecimal, zeroResult45.getAmount());
-    assertSame(bigDecimal, absResult60.zero().getAmount());
-    assertSame(bigDecimal, absResult61.zero().getAmount());
-    assertSame(bigDecimal, absResult46.zero().getAmount());
-    assertSame(bigDecimal, absResult62.zero().getAmount());
+    assertSame(bigDecimal, absResult2.zero().getAmount());
+    assertSame(bigDecimal, absResult3.zero().getAmount());
     assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult6.getAmount());
-    assertSame(bigDecimal, zeroResult12.getAmount());
-    assertSame(bigDecimal, zeroResult24.getAmount());
-    assertSame(bigDecimal, zeroResult46.getAmount());
-    assertSame(bigDecimal, zeroResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.getAmount());
-    assertSame(bigDecimal, zeroResult33.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.zero().getAmount());
-    assertSame(bigDecimal, zeroResult25.getAmount());
-    assertSame(bigDecimal, zeroResult48.getAmount());
-    assertSame(bigDecimal, zeroResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.getAmount());
-    assertSame(bigDecimal, zeroResult37.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.zero().getAmount());
-    assertSame(bigDecimal, zeroResult13.getAmount());
-    assertSame(bigDecimal, zeroResult26.getAmount());
-    assertSame(bigDecimal, zeroResult50.getAmount());
-    assertSame(bigDecimal, zeroResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.getAmount());
-    assertSame(bigDecimal, zeroResult41.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.zero().getAmount());
-    assertSame(bigDecimal, zeroResult27.getAmount());
-    assertSame(bigDecimal, zeroResult52.getAmount());
-    assertSame(bigDecimal, zeroResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.getAmount());
-    assertSame(bigDecimal, zeroResult45.zero().getAmount());
-    assertSame(bigDecimal, zeroResult7.getAmount());
-    assertSame(bigDecimal, zeroResult14.getAmount());
-    assertSame(bigDecimal, zeroResult28.getAmount());
-    assertSame(bigDecimal, zeroResult54.getAmount());
-    assertSame(bigDecimal, zeroResult46.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.getAmount());
-    assertSame(bigDecimal, zeroResult48.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult29.getAmount());
-    assertSame(bigDecimal, zeroResult56.getAmount());
-    assertSame(bigDecimal, zeroResult50.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.getAmount());
-    assertSame(bigDecimal, zeroResult52.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult15.getAmount());
-    assertSame(bigDecimal, zeroResult30.getAmount());
-    assertSame(bigDecimal, zeroResult58.getAmount());
-    assertSame(bigDecimal, zeroResult54.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.getAmount());
-    assertSame(bigDecimal, zeroResult56.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.getAmount());
-    assertSame(bigDecimal, zeroResult61.getAmount());
-    assertSame(bigDecimal, zeroResult58.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.zero().getAmount());
-    assertSame(bigDecimal, zeroResult61.zero().getAmount());
+    assertSame(bigDecimal, zeroResult2.zero().getAmount());
+    assertSame(bigDecimal, zeroResult3.zero().getAmount());
   }
 
   /**
    * Test {@link FulfillmentGroupImpl#setTotal(Money)}.
    * <ul>
-   *   <li>When {@link Money}.</li>
-   *   <li>Then {@link FulfillmentGroupImpl} (default constructor)
-   * {@link FulfillmentGroupImpl#total} is {@code null}.</li>
+   *   <li>Then {@link FulfillmentGroupImpl} (default constructor) {@link FulfillmentGroupImpl#total} is {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link FulfillmentGroupImpl#setTotal(Money)}
    */
   @Test
-  public void testSetTotal_whenMoney_thenFulfillmentGroupImplTotalIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupImpl.setTotal(Money)"})
+  public void testSetTotal_thenFulfillmentGroupImplTotalIsNull() {
     // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl2.setAddress(new AddressImpl());
+    fulfillmentGroupImpl2.setCandidateFulfillmentGroupOffer(new ArrayList<>());
+    fulfillmentGroupImpl2.setDeliveryInstruction("Delivery Instruction");
+    fulfillmentGroupImpl2.setFulfillmentGroupAdjustments(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupFees(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupItems(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentOption(new FulfillmentOptionImpl());
+    Money fulfillmentPrice = new Money();
+    fulfillmentGroupImpl2.setFulfillmentPrice(fulfillmentPrice);
+    fulfillmentGroupImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupImpl2.setIsShippingPriceTaxable(true);
+    fulfillmentGroupImpl2.setMerchandiseTotal(new Money());
+    fulfillmentGroupImpl2.setMethod("Fulfillment Method");
+    fulfillmentGroupImpl2.setOrder(NullOrderFactoryImpl.NULL_ORDER);
+    fulfillmentGroupImpl2.setPersonalMessage(new PersonalMessageImpl());
+    fulfillmentGroupImpl2.setPhone(new PhoneImpl());
+    fulfillmentGroupImpl2.setPrimary(true);
+    fulfillmentGroupImpl2.setReferenceNumber("42");
+    fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSequence(1);
+    fulfillmentGroupImpl2.setService("Service");
+    fulfillmentGroupImpl2.setShippingOverride(true);
+    fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupImpl2.setTaxes(new ArrayList<>());
+    fulfillmentGroupImpl2.setTotal(new Money());
+    fulfillmentGroupImpl2.setTotalFeeTax(new Money());
+    fulfillmentGroupImpl2.setTotalFulfillmentGroupTax(new Money());
+    fulfillmentGroupImpl2.setTotalItemTax(new Money());
+    fulfillmentGroupImpl2.setTotalTax(new Money());
+    fulfillmentGroupImpl2.setType(FulfillmentType.DIGITAL);
 
     // Act
-    fulfillmentGroupImpl.setTotal(mock(Money.class));
+    fulfillmentGroupImpl2.setTotal(null);
 
     // Assert
-    assertNull(fulfillmentGroupImpl.total);
-    assertNull(fulfillmentGroupImpl.getTotal());
+    assertNull(fulfillmentGroupImpl2.total);
+    assertNull(fulfillmentGroupImpl2.getTotal());
+    Money zeroResult = fulfillmentGroupImpl2.getTotalTax().zero();
+    Money zeroResult2 = zeroResult.zero();
+    Money absResult = zeroResult2.abs();
+    assertEquals(fulfillmentPrice, absResult.abs());
+    Money zeroResult3 = zeroResult2.zero();
+    assertEquals(fulfillmentPrice, zeroResult3.abs());
+    assertEquals(fulfillmentPrice, absResult.zero());
+    Money zeroResult4 = zeroResult.abs().zero();
+    assertEquals(fulfillmentPrice, zeroResult4.zero());
+    assertEquals(fulfillmentPrice, zeroResult3.zero());
+    BigDecimal bigDecimal = fulfillmentGroupImpl2.totalTax;
+    assertSame(bigDecimal, absResult.getAmount());
+    assertSame(bigDecimal, zeroResult4.getAmount());
+    assertSame(bigDecimal, zeroResult3.getAmount());
   }
 
   /**
@@ -11163,453 +3565,132 @@ public class FulfillmentGroupImplDiffblueTest {
    * Method under test: {@link FulfillmentGroupImpl#getStatus()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FulfillmentGroupStatusType FulfillmentGroupImpl.getStatus()"})
   public void testGetStatus() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.addFulfillmentGroupItem(mock(FulfillmentGroupItemImpl.class));
-
-    // Act and Assert
-    assertNull(fulfillmentGroupImpl.getStatus());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#getStatus()}.
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#getStatus()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetStatus2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass792 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new FulfillmentGroupImpl()).getStatus();
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#getStatus()}.
-   * <ul>
-   *   <li>Given {@link FulfillmentGroupImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#getStatus()}
-   */
-  @Test
-  public void testGetStatus_givenFulfillmentGroupImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new FulfillmentGroupImpl()).getStatus());
   }
 
   /**
    * Test {@link FulfillmentGroupImpl#setStatus(FulfillmentGroupStatusType)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#setStatus(FulfillmentGroupStatusType)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetStatus() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1302 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new FulfillmentGroupImpl()).setStatus(FulfillmentGroupStatusType.CANCELLED);
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#setStatus(FulfillmentGroupStatusType)}.
-   * <ul>
-   *   <li>Given {@code Type}.</li>
-   *   <li>Then {@link FulfillmentGroupImpl} (default constructor) Status
-   * FriendlyType is {@code Friendly Type}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#setStatus(FulfillmentGroupStatusType)}
-   */
-  @Test
-  public void testSetStatus_givenType_thenFulfillmentGroupImplStatusFriendlyTypeIsFriendlyType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    FulfillmentGroupStatusType status = mock(FulfillmentGroupStatusType.class);
-    when(status.getType()).thenReturn("Type");
-
-    // Act
-    fulfillmentGroupImpl.setStatus(status);
-
-    // Assert
-    verify(status).getType();
-    FulfillmentGroupStatusType status2 = fulfillmentGroupImpl.getStatus();
-    assertEquals("Friendly Type", status2.getFriendlyType());
-    assertEquals("Type", status2.getType());
-    assertEquals("Type", fulfillmentGroupImpl.status);
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#setStatus(FulfillmentGroupStatusType)}.
    * <ul>
    *   <li>When {@link FulfillmentGroupStatusType#CANCELLED}.</li>
-   *   <li>Then {@link FulfillmentGroupImpl} (default constructor)
-   * {@link FulfillmentGroupImpl#status} is {@code CANCELLED}.</li>
+   *   <li>Then {@link FulfillmentGroupImpl} (default constructor) {@link FulfillmentGroupImpl#status} is {@code CANCELLED}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#setStatus(FulfillmentGroupStatusType)}
+   * Method under test: {@link FulfillmentGroupImpl#setStatus(FulfillmentGroupStatusType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType)"})
   public void testSetStatus_whenCancelled_thenFulfillmentGroupImplStatusIsCancelled() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
     FulfillmentGroupStatusType status = FulfillmentGroupStatusType.CANCELLED;
 
     // Act
-    fulfillmentGroupImpl.setStatus(status);
+    fulfillmentGroupImpl2.setStatus(status);
 
     // Assert
-    assertEquals("CANCELLED", fulfillmentGroupImpl.status);
+    assertEquals("CANCELLED", fulfillmentGroupImpl2.status);
     FulfillmentGroupStatusType expectedStatus = status.CANCELLED;
-    assertSame(expectedStatus, fulfillmentGroupImpl.getStatus());
+    assertSame(expectedStatus, fulfillmentGroupImpl2.getStatus());
   }
 
   /**
-   * Test
-   * {@link FulfillmentGroupImpl#addFulfillmentGroupFee(FulfillmentGroupFee)}.
+   * Test {@link FulfillmentGroupImpl#addFulfillmentGroupFee(FulfillmentGroupFee)}.
+   * <ul>
+   *   <li>Given {@link FulfillmentGroupImpl} (default constructor).</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#addFulfillmentGroupFee(FulfillmentGroupFee)}
+   * Method under test: {@link FulfillmentGroupImpl#addFulfillmentGroupFee(FulfillmentGroupFee)}
    */
   @Test
-  public void testAddFulfillmentGroupFee() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    FulfillmentGroupFeeImpl fulfillmentGroupFee = new FulfillmentGroupFeeImpl();
-
-    // Act
-    fulfillmentGroupImpl.addFulfillmentGroupFee(fulfillmentGroupFee);
-
-    // Assert
-    List<FulfillmentGroupFee> fulfillmentGroupFees = fulfillmentGroupImpl.getFulfillmentGroupFees();
-    assertEquals(1, fulfillmentGroupFees.size());
-    assertSame(fulfillmentGroupFee, fulfillmentGroupFees.get(0));
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupImpl#addFulfillmentGroupFee(FulfillmentGroupFee)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#addFulfillmentGroupFee(FulfillmentGroupFee)}
-   */
-  @Test
-  public void testAddFulfillmentGroupFee2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    FulfillmentGroupFeeImpl fulfillmentGroupFee = mock(FulfillmentGroupFeeImpl.class);
-
-    // Act
-    fulfillmentGroupImpl.addFulfillmentGroupFee(fulfillmentGroupFee);
-
-    // Assert
-    List<FulfillmentGroupFee> fulfillmentGroupFees = fulfillmentGroupImpl.getFulfillmentGroupFees();
-    assertEquals(1, fulfillmentGroupFees.size());
-    assertSame(fulfillmentGroupFee, fulfillmentGroupFees.get(0));
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupImpl#addFulfillmentGroupFee(FulfillmentGroupFee)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#addFulfillmentGroupFee(FulfillmentGroupFee)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddFulfillmentGroupFee3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass282 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupImpl.addFulfillmentGroupFee(FulfillmentGroupFee)"})
+  public void testAddFulfillmentGroupFee_givenFulfillmentGroupImpl() {
     // Arrange
     FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
-
-    // Act
-    fulfillmentGroupImpl2.addFulfillmentGroupFee(new FulfillmentGroupFeeImpl());
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupImpl#addFulfillmentGroupFee(FulfillmentGroupFee)}.
-   * <ul>
-   *   <li>Given {@link FulfillmentGroupImpl} (default constructor) Address is
-   * {@link AddressImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#addFulfillmentGroupFee(FulfillmentGroupFee)}
-   */
-  @Test
-  public void testAddFulfillmentGroupFee_givenFulfillmentGroupImplAddressIsAddressImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(new AddressImpl());
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroupImpl.setFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setOrder(NullOrderFactoryImpl.NULL_ORDER);
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroupImpl.setFulfillmentGroupFees(null);
     FulfillmentGroupFeeImpl fulfillmentGroupFee = new FulfillmentGroupFeeImpl();
 
     // Act
-    fulfillmentGroupImpl.addFulfillmentGroupFee(fulfillmentGroupFee);
+    fulfillmentGroupImpl2.addFulfillmentGroupFee(fulfillmentGroupFee);
 
     // Assert
-    List<FulfillmentGroupFee> fulfillmentGroupFees = fulfillmentGroupImpl.getFulfillmentGroupFees();
+    List<FulfillmentGroupFee> fulfillmentGroupFees = fulfillmentGroupImpl2.getFulfillmentGroupFees();
     assertEquals(1, fulfillmentGroupFees.size());
     assertSame(fulfillmentGroupFee, fulfillmentGroupFees.get(0));
   }
 
   /**
-   * Test {@link FulfillmentGroupImpl#removeAllFulfillmentGroupFees()}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#removeAllFulfillmentGroupFees()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testRemoveAllFulfillmentGroupFees() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1062 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new FulfillmentGroupImpl()).removeAllFulfillmentGroupFees();
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#getCurrencyCode()}.
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#getCurrencyCode()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetCurrencyCode() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass402 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new FulfillmentGroupImpl()).getCurrencyCode();
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#getCurrencyCode()}.
+   * Test {@link FulfillmentGroupImpl#addFulfillmentGroupFee(FulfillmentGroupFee)}.
    * <ul>
-   *   <li>Given {@link FulfillmentGroupImpl} (default constructor) Address is
-   * {@link AddressImpl}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given {@link FulfillmentGroupImpl} (default constructor) Address is {@link AddressImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test: {@link FulfillmentGroupImpl#getCurrencyCode()}
+   * Method under test: {@link FulfillmentGroupImpl#addFulfillmentGroupFee(FulfillmentGroupFee)}
    */
   @Test
-  public void testGetCurrencyCode_givenFulfillmentGroupImplAddressIsAddressImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupImpl.addFulfillmentGroupFee(FulfillmentGroupFee)"})
+  public void testAddFulfillmentGroupFee_givenFulfillmentGroupImplAddressIsAddressImpl() {
     // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl2.setAddress(new AddressImpl());
+    fulfillmentGroupImpl2.setCandidateFulfillmentGroupOffer(new ArrayList<>());
+    fulfillmentGroupImpl2.setDeliveryInstruction("Delivery Instruction");
+    fulfillmentGroupImpl2.setFulfillmentGroupAdjustments(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupItems(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentOption(new FulfillmentOptionImpl());
+    fulfillmentGroupImpl2.setFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupImpl2.setIsShippingPriceTaxable(true);
+    fulfillmentGroupImpl2.setMerchandiseTotal(new Money());
+    fulfillmentGroupImpl2.setMethod("Fulfillment Method");
+    fulfillmentGroupImpl2.setOrder(NullOrderFactoryImpl.NULL_ORDER);
+    fulfillmentGroupImpl2.setPersonalMessage(new PersonalMessageImpl());
+    fulfillmentGroupImpl2.setPhone(new PhoneImpl());
+    fulfillmentGroupImpl2.setPrimary(true);
+    fulfillmentGroupImpl2.setReferenceNumber("42");
+    fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSequence(1);
+    fulfillmentGroupImpl2.setService("Service");
+    fulfillmentGroupImpl2.setShippingOverride(true);
+    fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupImpl2.setTaxes(new ArrayList<>());
+    fulfillmentGroupImpl2.setTotal(new Money());
+    fulfillmentGroupImpl2.setTotalFeeTax(new Money());
+    fulfillmentGroupImpl2.setTotalFulfillmentGroupTax(new Money());
+    fulfillmentGroupImpl2.setTotalItemTax(new Money());
+    fulfillmentGroupImpl2.setTotalTax(new Money());
+    fulfillmentGroupImpl2.setType(FulfillmentType.DIGITAL);
+    fulfillmentGroupImpl2.setFulfillmentGroupFees(null);
+    FulfillmentGroupFeeImpl fulfillmentGroupFee = new FulfillmentGroupFeeImpl();
 
-    OrderImpl order = new OrderImpl();
-    order.setAdditionalOfferInformation(new HashMap<>());
-    order.setAuditable(auditable);
-    order.setCandidateOrderOffers(new ArrayList<>());
-    order.setCustomer(new CustomerImpl());
-    order.setEmailAddress("42 Main St");
-    order.setFulfillmentGroups(new ArrayList<>());
-    order.setId(OrderItemQualifierImpl.serialVersionUID);
-    order.setLocale(new LocaleImpl());
-    order.setName("Name");
-    order.setOrderAdjustments(new ArrayList<>());
-    order.setOrderAttributes(new HashMap<>());
-    order.setOrderItems(new ArrayList<>());
-    order.setOrderMessages(new ArrayList<>());
-    order.setOrderNumber("42");
-    order.setPayments(new ArrayList<>());
-    order.setStatus(OrderStatus.ARCHIVED);
-    order.setSubTotal(new Money());
-    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    order.setTaxOverride(true);
-    order.setTotal(new Money());
-    order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
-    order.setTotalTax(new Money());
-    order.setCurrency(null);
+    // Act
+    fulfillmentGroupImpl2.addFulfillmentGroupFee(fulfillmentGroupFee);
 
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(mock(AddressImpl.class));
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroupImpl.setFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroupImpl.setOrder(order);
-
-    // Act and Assert
-    assertNull(fulfillmentGroupImpl.getCurrencyCode());
+    // Assert
+    List<FulfillmentGroupFee> fulfillmentGroupFees = fulfillmentGroupImpl2.getFulfillmentGroupFees();
+    assertEquals(1, fulfillmentGroupFees.size());
+    assertSame(fulfillmentGroupFee, fulfillmentGroupFees.get(0));
   }
 
   /**
    * Test {@link FulfillmentGroupImpl#getCurrencyCode()}.
    * <ul>
-   *   <li>Given {@link OrderImpl} (default constructor) Currency is
-   * {@link BroadleafCurrencyImpl} (default constructor).</li>
+   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@link BroadleafCurrencyImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link FulfillmentGroupImpl#getCurrencyCode()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String FulfillmentGroupImpl.getCurrencyCode()"})
   public void testGetCurrencyCode_givenOrderImplCurrencyIsBroadleafCurrencyImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
@@ -11639,63 +3720,58 @@ public class FulfillmentGroupImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setCurrency(new BroadleafCurrencyImpl());
 
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(new AddressImpl());
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroupImpl.setFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroupImpl.setOrder(order);
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl2.setAddress(new AddressImpl());
+    fulfillmentGroupImpl2.setCandidateFulfillmentGroupOffer(new ArrayList<>());
+    fulfillmentGroupImpl2.setDeliveryInstruction("Delivery Instruction");
+    fulfillmentGroupImpl2.setFulfillmentGroupAdjustments(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupFees(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupItems(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentOption(new FulfillmentOptionImpl());
+    fulfillmentGroupImpl2.setFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupImpl2.setIsShippingPriceTaxable(true);
+    fulfillmentGroupImpl2.setMerchandiseTotal(new Money());
+    fulfillmentGroupImpl2.setMethod("Fulfillment Method");
+    fulfillmentGroupImpl2.setPersonalMessage(new PersonalMessageImpl());
+    fulfillmentGroupImpl2.setPhone(new PhoneImpl());
+    fulfillmentGroupImpl2.setPrimary(true);
+    fulfillmentGroupImpl2.setReferenceNumber("42");
+    fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSequence(1);
+    fulfillmentGroupImpl2.setService("Service");
+    fulfillmentGroupImpl2.setShippingOverride(true);
+    fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupImpl2.setTaxes(new ArrayList<>());
+    fulfillmentGroupImpl2.setTotal(new Money());
+    fulfillmentGroupImpl2.setTotalFeeTax(new Money());
+    fulfillmentGroupImpl2.setTotalFulfillmentGroupTax(new Money());
+    fulfillmentGroupImpl2.setTotalItemTax(new Money());
+    fulfillmentGroupImpl2.setTotalTax(new Money());
+    fulfillmentGroupImpl2.setType(FulfillmentType.DIGITAL);
+    fulfillmentGroupImpl2.setOrder(order);
 
     // Act and Assert
-    assertNull(fulfillmentGroupImpl.getCurrencyCode());
+    assertNull(fulfillmentGroupImpl2.getCurrencyCode());
   }
 
   /**
    * Test {@link FulfillmentGroupImpl#getCurrencyCode()}.
    * <ul>
-   *   <li>Given {@link OrderImpl} (default constructor) Currency is
-   * {@code null}.</li>
+   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@code null}.</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link FulfillmentGroupImpl#getCurrencyCode()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String FulfillmentGroupImpl.getCurrencyCode()"})
   public void testGetCurrencyCode_givenOrderImplCurrencyIsNull_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
@@ -11725,182 +3801,43 @@ public class FulfillmentGroupImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setCurrency(null);
 
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(new AddressImpl());
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroupImpl.setFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroupImpl.setOrder(order);
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl2.setAddress(new AddressImpl());
+    fulfillmentGroupImpl2.setCandidateFulfillmentGroupOffer(new ArrayList<>());
+    fulfillmentGroupImpl2.setDeliveryInstruction("Delivery Instruction");
+    fulfillmentGroupImpl2.setFulfillmentGroupAdjustments(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupFees(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupItems(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentOption(new FulfillmentOptionImpl());
+    fulfillmentGroupImpl2.setFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupImpl2.setIsShippingPriceTaxable(true);
+    fulfillmentGroupImpl2.setMerchandiseTotal(new Money());
+    fulfillmentGroupImpl2.setMethod("Fulfillment Method");
+    fulfillmentGroupImpl2.setPersonalMessage(new PersonalMessageImpl());
+    fulfillmentGroupImpl2.setPhone(new PhoneImpl());
+    fulfillmentGroupImpl2.setPrimary(true);
+    fulfillmentGroupImpl2.setReferenceNumber("42");
+    fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSequence(1);
+    fulfillmentGroupImpl2.setService("Service");
+    fulfillmentGroupImpl2.setShippingOverride(true);
+    fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupImpl2.setTaxes(new ArrayList<>());
+    fulfillmentGroupImpl2.setTotal(new Money());
+    fulfillmentGroupImpl2.setTotalFeeTax(new Money());
+    fulfillmentGroupImpl2.setTotalFulfillmentGroupTax(new Money());
+    fulfillmentGroupImpl2.setTotalItemTax(new Money());
+    fulfillmentGroupImpl2.setTotalTax(new Money());
+    fulfillmentGroupImpl2.setType(FulfillmentType.DIGITAL);
+    fulfillmentGroupImpl2.setOrder(order);
 
     // Act and Assert
-    assertNull(fulfillmentGroupImpl.getCurrencyCode());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#getShippingOverride()}.
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#getShippingOverride()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetShippingOverride() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass732 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new FulfillmentGroupImpl()).getShippingOverride();
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#getShippingOverride()}.
-   * <ul>
-   *   <li>Given {@link FulfillmentGroupImpl} (default constructor) Address is
-   * {@link AddressImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#getShippingOverride()}
-   */
-  @Test
-  public void testGetShippingOverride_givenFulfillmentGroupImplAddressIsAddressImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(new AddressImpl());
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroupImpl.setFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setOrder(NullOrderFactoryImpl.NULL_ORDER);
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroupImpl.setShippingOverride(true);
-
-    // Act and Assert
-    assertTrue(fulfillmentGroupImpl.getShippingOverride());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#getShippingOverride()}.
-   * <ul>
-   *   <li>Given {@link FulfillmentGroupImpl} (default constructor) Address is
-   * {@link AddressImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#getShippingOverride()}
-   */
-  @Test
-  public void testGetShippingOverride_givenFulfillmentGroupImplAddressIsAddressImpl2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(mock(AddressImpl.class));
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroupImpl.setFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setOrder(NullOrderFactoryImpl.NULL_ORDER);
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroupImpl.setShippingOverride(true);
-
-    // Act and Assert
-    assertTrue(fulfillmentGroupImpl.getShippingOverride());
+    assertNull(fulfillmentGroupImpl2.getCurrencyCode());
   }
 
   /**
@@ -11913,33 +3850,80 @@ public class FulfillmentGroupImplDiffblueTest {
    * Method under test: {@link FulfillmentGroupImpl#getShippingOverride()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean FulfillmentGroupImpl.getShippingOverride()"})
   public void testGetShippingOverride_givenFulfillmentGroupImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertFalse((new FulfillmentGroupImpl()).getShippingOverride());
   }
 
   /**
-   * Test
-   * {@link FulfillmentGroupImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * Test {@link FulfillmentGroupImpl#getShippingOverride()}.
+   * <ul>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link FulfillmentGroupImpl#getShippingOverride()}
    */
   @Test
-  public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean FulfillmentGroupImpl.getShippingOverride()"})
+  public void testGetShippingOverride_thenReturnTrue() {
     // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl2.setAddress(new AddressImpl());
+    fulfillmentGroupImpl2.setCandidateFulfillmentGroupOffer(new ArrayList<>());
+    fulfillmentGroupImpl2.setDeliveryInstruction("Delivery Instruction");
+    fulfillmentGroupImpl2.setFulfillmentGroupAdjustments(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupFees(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupItems(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentOption(new FulfillmentOptionImpl());
+    fulfillmentGroupImpl2.setFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupImpl2.setIsShippingPriceTaxable(true);
+    fulfillmentGroupImpl2.setMerchandiseTotal(new Money());
+    fulfillmentGroupImpl2.setMethod("Fulfillment Method");
+    fulfillmentGroupImpl2.setOrder(NullOrderFactoryImpl.NULL_ORDER);
+    fulfillmentGroupImpl2.setPersonalMessage(new PersonalMessageImpl());
+    fulfillmentGroupImpl2.setPhone(new PhoneImpl());
+    fulfillmentGroupImpl2.setPrimary(true);
+    fulfillmentGroupImpl2.setReferenceNumber("42");
+    fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSequence(1);
+    fulfillmentGroupImpl2.setService("Service");
+    fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupImpl2.setTaxes(new ArrayList<>());
+    fulfillmentGroupImpl2.setTotal(new Money());
+    fulfillmentGroupImpl2.setTotalFeeTax(new Money());
+    fulfillmentGroupImpl2.setTotalFulfillmentGroupTax(new Money());
+    fulfillmentGroupImpl2.setTotalItemTax(new Money());
+    fulfillmentGroupImpl2.setTotalTax(new Money());
+    fulfillmentGroupImpl2.setType(FulfillmentType.DIGITAL);
+    fulfillmentGroupImpl2.setShippingOverride(true);
+
+    // Act and Assert
+    assertTrue(fulfillmentGroupImpl2.getShippingOverride());
+  }
+
+  /**
+   * Test {@link FulfillmentGroupImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * <p>
+   * Method under test: {@link FulfillmentGroupImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse FulfillmentGroupImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
+  public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
+    // Arrange
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
     CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
 
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<FulfillmentGroup> actualCreateOrRetrieveCopyInstanceResult = fulfillmentGroupImpl
+    CreateResponse<FulfillmentGroup> actualCreateOrRetrieveCopyInstanceResult = fulfillmentGroupImpl2
         .createOrRetrieveCopyInstance(context);
 
     // Assert
@@ -11948,61 +3932,19 @@ public class FulfillmentGroupImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentGroupImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass372 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
-    CatalogImpl fromCatalog = new CatalogImpl();
-    CatalogImpl toCatalog = new CatalogImpl();
-    SiteImpl fromSite = new SiteImpl();
-    SiteImpl toSite = new SiteImpl();
-    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
-
-    // Act
-    fulfillmentGroupImpl2.createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite,
-        toSite, genericEntityService, new MultiTenantCopierExtensionManager()));
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * Test {@link FulfillmentGroupImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <ul>
    *   <li>Then Clone return {@link FulfillmentGroupImpl}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link FulfillmentGroupImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse FulfillmentGroupImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance_thenCloneReturnFulfillmentGroupImpl() throws CloneNotSupportedException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
     GenericEntityService genericEntityService = mock(GenericEntityService.class);
     when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
     Class<Object> forNameResult = Object.class;
@@ -12013,7 +3955,7 @@ public class FulfillmentGroupImplDiffblueTest {
     SiteImpl toSite = new SiteImpl();
 
     // Act
-    CreateResponse<FulfillmentGroup> actualCreateOrRetrieveCopyInstanceResult = fulfillmentGroupImpl
+    CreateResponse<FulfillmentGroup> actualCreateOrRetrieveCopyInstanceResult = fulfillmentGroupImpl2
         .createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
             genericEntityService, new MultiTenantCopierExtensionManager()));
 
@@ -12024,65 +3966,21 @@ public class FulfillmentGroupImplDiffblueTest {
     FulfillmentGroup clone = actualCreateOrRetrieveCopyInstanceResult.getClone();
     assertTrue(clone instanceof FulfillmentGroupImpl);
     assertFalse(actualCreateOrRetrieveCopyInstanceResult.isAlreadyPopulated());
-    assertEquals(fulfillmentGroupImpl, clone);
+    assertEquals(fulfillmentGroupImpl2, clone);
   }
 
   /**
-   * Test
-   * {@link FulfillmentGroupImpl#cloneTaxDetails(MultiTenantCopyContext, FulfillmentGroup)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#cloneTaxDetails(MultiTenantCopyContext, FulfillmentGroup)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCloneTaxDetails() throws CloneNotSupportedException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass342 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
-    CatalogImpl fromCatalog = new CatalogImpl();
-    CatalogImpl toCatalog = new CatalogImpl();
-    SiteImpl fromSite = new SiteImpl();
-    SiteImpl toSite = new SiteImpl();
-    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
-    MultiTenantCopyContext context = new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
-        genericEntityService, new MultiTenantCopierExtensionManager());
-
-    // Act
-    fulfillmentGroupImpl2.cloneTaxDetails(context, new FulfillmentGroupImpl());
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupImpl#cloneTaxDetails(MultiTenantCopyContext, FulfillmentGroup)}.
+   * Test {@link FulfillmentGroupImpl#cloneTaxDetails(MultiTenantCopyContext, FulfillmentGroup)}.
    * <ul>
-   *   <li>Then {@link FulfillmentGroupImpl} (default constructor) Taxes size is
-   * one.</li>
+   *   <li>Then {@link FulfillmentGroupImpl} (default constructor) Taxes size is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupImpl#cloneTaxDetails(MultiTenantCopyContext, FulfillmentGroup)}
+   * Method under test: {@link FulfillmentGroupImpl#cloneTaxDetails(MultiTenantCopyContext, FulfillmentGroup)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupImpl.cloneTaxDetails(MultiTenantCopyContext, FulfillmentGroup)"})
   public void testCloneTaxDetails_thenFulfillmentGroupImplTaxesSizeIsOne() throws CloneNotSupportedException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     TaxDetailImpl taxDetailImpl = mock(TaxDetailImpl.class);
     TaxDetailImpl taxDetailImpl2 = new TaxDetailImpl();
@@ -12092,40 +3990,37 @@ public class FulfillmentGroupImplDiffblueTest {
     ArrayList<TaxDetail> taxes = new ArrayList<>();
     taxes.add(taxDetailImpl);
 
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(new AddressImpl());
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroupImpl.setFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setOrder(NullOrderFactoryImpl.NULL_ORDER);
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroupImpl.setTaxes(taxes);
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+    fulfillmentGroupImpl2.setAddress(new AddressImpl());
+    fulfillmentGroupImpl2.setCandidateFulfillmentGroupOffer(new ArrayList<>());
+    fulfillmentGroupImpl2.setDeliveryInstruction("Delivery Instruction");
+    fulfillmentGroupImpl2.setFulfillmentGroupAdjustments(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupFees(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentGroupItems(new ArrayList<>());
+    fulfillmentGroupImpl2.setFulfillmentOption(new FulfillmentOptionImpl());
+    fulfillmentGroupImpl2.setFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupImpl2.setIsShippingPriceTaxable(true);
+    fulfillmentGroupImpl2.setMerchandiseTotal(new Money());
+    fulfillmentGroupImpl2.setMethod("Fulfillment Method");
+    fulfillmentGroupImpl2.setOrder(NullOrderFactoryImpl.NULL_ORDER);
+    fulfillmentGroupImpl2.setPersonalMessage(new PersonalMessageImpl());
+    fulfillmentGroupImpl2.setPhone(new PhoneImpl());
+    fulfillmentGroupImpl2.setPrimary(true);
+    fulfillmentGroupImpl2.setReferenceNumber("42");
+    fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroupImpl2.setSequence(1);
+    fulfillmentGroupImpl2.setService("Service");
+    fulfillmentGroupImpl2.setShippingOverride(true);
+    fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupImpl2.setTotal(new Money());
+    fulfillmentGroupImpl2.setTotalFeeTax(new Money());
+    fulfillmentGroupImpl2.setTotalFulfillmentGroupTax(new Money());
+    fulfillmentGroupImpl2.setTotalItemTax(new Money());
+    fulfillmentGroupImpl2.setTotalTax(new Money());
+    fulfillmentGroupImpl2.setType(FulfillmentType.DIGITAL);
+    fulfillmentGroupImpl2.setTaxes(taxes);
     CatalogImpl fromCatalog = new CatalogImpl();
     CatalogImpl toCatalog = new CatalogImpl();
     SiteImpl fromSite = new SiteImpl();
@@ -12137,7 +4032,7 @@ public class FulfillmentGroupImplDiffblueTest {
     FulfillmentGroupImpl cloned = new FulfillmentGroupImpl();
 
     // Act
-    fulfillmentGroupImpl.cloneTaxDetails(context, cloned);
+    fulfillmentGroupImpl2.cloneTaxDetails(context, cloned);
 
     // Assert
     verify(taxDetailImpl).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
@@ -12147,8 +4042,7 @@ public class FulfillmentGroupImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupImpl#equals(Object)}, and
-   * {@link FulfillmentGroupImpl#hashCode()}.
+   * Test {@link FulfillmentGroupImpl#equals(Object)}, and {@link FulfillmentGroupImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -12161,6 +4055,8 @@ public class FulfillmentGroupImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean FulfillmentGroupImpl.equals(Object)", "int FulfillmentGroupImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
@@ -12182,13 +4078,10 @@ public class FulfillmentGroupImplDiffblueTest {
     fulfillmentGroupImpl.setPrimary(true);
     fulfillmentGroupImpl.setReferenceNumber("42");
     fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
     fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
     fulfillmentGroupImpl.setSequence(1);
     fulfillmentGroupImpl.setService("Service");
     fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
     fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
     fulfillmentGroupImpl.setTaxes(new ArrayList<>());
     fulfillmentGroupImpl.setTotal(new Money());
@@ -12217,13 +4110,10 @@ public class FulfillmentGroupImplDiffblueTest {
     fulfillmentGroupImpl2.setPrimary(true);
     fulfillmentGroupImpl2.setReferenceNumber("42");
     fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl2.setRetailShippingPrice(new Money());
     fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl2.setSaleShippingPrice(new Money());
     fulfillmentGroupImpl2.setSequence(1);
     fulfillmentGroupImpl2.setService("Service");
     fulfillmentGroupImpl2.setShippingOverride(true);
-    fulfillmentGroupImpl2.setShippingPrice(new Money());
     fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
     fulfillmentGroupImpl2.setTaxes(new ArrayList<>());
     fulfillmentGroupImpl2.setTotal(new Money());
@@ -12240,8 +4130,7 @@ public class FulfillmentGroupImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupImpl#equals(Object)}, and
-   * {@link FulfillmentGroupImpl#hashCode()}.
+   * Test {@link FulfillmentGroupImpl#equals(Object)}, and {@link FulfillmentGroupImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -12254,100 +4143,9 @@ public class FulfillmentGroupImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean FulfillmentGroupImpl.equals(Object)", "int FulfillmentGroupImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(mock(Address.class));
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroupImpl.setFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setOrder(NullOrderFactoryImpl.NULL_ORDER);
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-
-    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl2.setAddress(new AddressImpl());
-    fulfillmentGroupImpl2.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl2.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl2.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl2.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl2.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl2.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroupImpl2.setFulfillmentPrice(new Money());
-    fulfillmentGroupImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl2.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl2.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl2.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl2.setOrder(NullOrderFactoryImpl.NULL_ORDER);
-    fulfillmentGroupImpl2.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl2.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl2.setPrimary(true);
-    fulfillmentGroupImpl2.setReferenceNumber("42");
-    fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl2.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl2.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl2.setSequence(1);
-    fulfillmentGroupImpl2.setService("Service");
-    fulfillmentGroupImpl2.setShippingOverride(true);
-    fulfillmentGroupImpl2.setShippingPrice(new Money());
-    fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl2.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl2.setTotal(new Money());
-    fulfillmentGroupImpl2.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl2.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl2.setTotalItemTax(new Money());
-    fulfillmentGroupImpl2.setTotalTax(new Money());
-    fulfillmentGroupImpl2.setType(FulfillmentType.DIGITAL);
-
-    // Act and Assert
-    assertEquals(fulfillmentGroupImpl, fulfillmentGroupImpl2);
-    int notExpectedHashCodeResult = fulfillmentGroupImpl.hashCode();
-    assertNotEquals(notExpectedHashCodeResult, fulfillmentGroupImpl2.hashCode());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#equals(Object)}, and
-   * {@link FulfillmentGroupImpl#hashCode()}.
-   * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
-   * </ul>
-   * <p>
-   * Methods under test:
-   * <ul>
-   *   <li>{@link FulfillmentGroupImpl#equals(Object)}
-   *   <li>{@link FulfillmentGroupImpl#hashCode()}
-   * </ul>
-   */
-  @Test
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
     fulfillmentGroupImpl.setAddress(new AddressImpl());
@@ -12368,13 +4166,10 @@ public class FulfillmentGroupImplDiffblueTest {
     fulfillmentGroupImpl.setPrimary(true);
     fulfillmentGroupImpl.setReferenceNumber("42");
     fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
     fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
     fulfillmentGroupImpl.setSequence(1);
     fulfillmentGroupImpl.setService("Service");
     fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
     fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
     fulfillmentGroupImpl.setTaxes(new ArrayList<>());
     fulfillmentGroupImpl.setTotal(new Money());
@@ -12403,13 +4198,10 @@ public class FulfillmentGroupImplDiffblueTest {
     fulfillmentGroupImpl2.setPrimary(true);
     fulfillmentGroupImpl2.setReferenceNumber("42");
     fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl2.setRetailShippingPrice(new Money());
     fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl2.setSaleShippingPrice(new Money());
     fulfillmentGroupImpl2.setSequence(1);
     fulfillmentGroupImpl2.setService("Service");
     fulfillmentGroupImpl2.setShippingOverride(true);
-    fulfillmentGroupImpl2.setShippingPrice(new Money());
     fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
     fulfillmentGroupImpl2.setTaxes(new ArrayList<>());
     fulfillmentGroupImpl2.setTotal(new Money());
@@ -12426,8 +4218,7 @@ public class FulfillmentGroupImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupImpl#equals(Object)}, and
-   * {@link FulfillmentGroupImpl#hashCode()}.
+   * Test {@link FulfillmentGroupImpl#equals(Object)}, and {@link FulfillmentGroupImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -12440,7 +4231,9 @@ public class FulfillmentGroupImplDiffblueTest {
    * </ul>
    */
   @Test
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean FulfillmentGroupImpl.equals(Object)", "int FulfillmentGroupImpl.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
     fulfillmentGroupImpl.setAddress(new AddressImpl());
@@ -12461,13 +4254,10 @@ public class FulfillmentGroupImplDiffblueTest {
     fulfillmentGroupImpl.setPrimary(true);
     fulfillmentGroupImpl.setReferenceNumber("42");
     fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
     fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
     fulfillmentGroupImpl.setSequence(1);
     fulfillmentGroupImpl.setService("Service");
     fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
     fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
     fulfillmentGroupImpl.setTaxes(new ArrayList<>());
     fulfillmentGroupImpl.setTotal(new Money());
@@ -12496,13 +4286,10 @@ public class FulfillmentGroupImplDiffblueTest {
     fulfillmentGroupImpl2.setPrimary(true);
     fulfillmentGroupImpl2.setReferenceNumber("42");
     fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl2.setRetailShippingPrice(new Money());
     fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl2.setSaleShippingPrice(new Money());
     fulfillmentGroupImpl2.setSequence(1);
     fulfillmentGroupImpl2.setService("Service");
     fulfillmentGroupImpl2.setShippingOverride(true);
-    fulfillmentGroupImpl2.setShippingPrice(new Money());
     fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
     fulfillmentGroupImpl2.setTaxes(new ArrayList<>());
     fulfillmentGroupImpl2.setTotal(new Money());
@@ -12519,8 +4306,7 @@ public class FulfillmentGroupImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupImpl#equals(Object)}, and
-   * {@link FulfillmentGroupImpl#hashCode()}.
+   * Test {@link FulfillmentGroupImpl#equals(Object)}, and {@link FulfillmentGroupImpl#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -12533,6 +4319,8 @@ public class FulfillmentGroupImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean FulfillmentGroupImpl.equals(Object)", "int FulfillmentGroupImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
@@ -12554,13 +4342,10 @@ public class FulfillmentGroupImplDiffblueTest {
     fulfillmentGroupImpl.setPrimary(true);
     fulfillmentGroupImpl.setReferenceNumber("42");
     fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
     fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
     fulfillmentGroupImpl.setSequence(1);
     fulfillmentGroupImpl.setService("Service");
     fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
     fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
     fulfillmentGroupImpl.setTaxes(new ArrayList<>());
     fulfillmentGroupImpl.setTotal(new Money());
@@ -12586,6 +4371,8 @@ public class FulfillmentGroupImplDiffblueTest {
    * Method under test: {@link FulfillmentGroupImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean FulfillmentGroupImpl.equals(Object)", "int FulfillmentGroupImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
@@ -12607,13 +4394,10 @@ public class FulfillmentGroupImplDiffblueTest {
     fulfillmentGroupImpl.setPrimary(true);
     fulfillmentGroupImpl.setReferenceNumber("42");
     fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
     fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
     fulfillmentGroupImpl.setSequence(1);
     fulfillmentGroupImpl.setService("Service");
     fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
     fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
     fulfillmentGroupImpl.setTaxes(new ArrayList<>());
     fulfillmentGroupImpl.setTotal(new Money());
@@ -12642,99 +4426,10 @@ public class FulfillmentGroupImplDiffblueTest {
     fulfillmentGroupImpl2.setPrimary(true);
     fulfillmentGroupImpl2.setReferenceNumber("42");
     fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl2.setRetailShippingPrice(new Money());
     fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl2.setSaleShippingPrice(new Money());
     fulfillmentGroupImpl2.setSequence(1);
     fulfillmentGroupImpl2.setService("Service");
     fulfillmentGroupImpl2.setShippingOverride(true);
-    fulfillmentGroupImpl2.setShippingPrice(new Money());
-    fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl2.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl2.setTotal(new Money());
-    fulfillmentGroupImpl2.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl2.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl2.setTotalItemTax(new Money());
-    fulfillmentGroupImpl2.setTotalTax(new Money());
-    fulfillmentGroupImpl2.setType(FulfillmentType.DIGITAL);
-
-    // Act and Assert
-    assertNotEquals(fulfillmentGroupImpl, fulfillmentGroupImpl2);
-  }
-
-  /**
-   * Test {@link FulfillmentGroupImpl#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link FulfillmentGroupImpl#equals(Object)}
-   */
-  @Test
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setAddress(mock(Address.class));
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroupImpl.setFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setId(null);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setOrder(NullOrderFactoryImpl.NULL_ORDER);
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-
-    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl2.setAddress(new AddressImpl());
-    fulfillmentGroupImpl2.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl2.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl2.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl2.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroupImpl2.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroupImpl2.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroupImpl2.setFulfillmentPrice(new Money());
-    fulfillmentGroupImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupImpl2.setIsShippingPriceTaxable(true);
-    fulfillmentGroupImpl2.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl2.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl2.setOrder(NullOrderFactoryImpl.NULL_ORDER);
-    fulfillmentGroupImpl2.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl2.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl2.setPrimary(true);
-    fulfillmentGroupImpl2.setReferenceNumber("42");
-    fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl2.setRetailShippingPrice(new Money());
-    fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl2.setSaleShippingPrice(new Money());
-    fulfillmentGroupImpl2.setSequence(1);
-    fulfillmentGroupImpl2.setService("Service");
-    fulfillmentGroupImpl2.setShippingOverride(true);
-    fulfillmentGroupImpl2.setShippingPrice(new Money());
     fulfillmentGroupImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
     fulfillmentGroupImpl2.setTaxes(new ArrayList<>());
     fulfillmentGroupImpl2.setTotal(new Money());
@@ -12758,6 +4453,8 @@ public class FulfillmentGroupImplDiffblueTest {
    * Method under test: {@link FulfillmentGroupImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean FulfillmentGroupImpl.equals(Object)", "int FulfillmentGroupImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
@@ -12779,13 +4476,10 @@ public class FulfillmentGroupImplDiffblueTest {
     fulfillmentGroupImpl.setPrimary(true);
     fulfillmentGroupImpl.setReferenceNumber("42");
     fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
     fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
     fulfillmentGroupImpl.setSequence(1);
     fulfillmentGroupImpl.setService("Service");
     fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
     fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
     fulfillmentGroupImpl.setTaxes(new ArrayList<>());
     fulfillmentGroupImpl.setTotal(new Money());
@@ -12809,6 +4503,8 @@ public class FulfillmentGroupImplDiffblueTest {
    * Method under test: {@link FulfillmentGroupImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean FulfillmentGroupImpl.equals(Object)", "int FulfillmentGroupImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
@@ -12830,13 +4526,10 @@ public class FulfillmentGroupImplDiffblueTest {
     fulfillmentGroupImpl.setPrimary(true);
     fulfillmentGroupImpl.setReferenceNumber("42");
     fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
     fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
     fulfillmentGroupImpl.setSequence(1);
     fulfillmentGroupImpl.setService("Service");
     fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setShippingPrice(new Money());
     fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
     fulfillmentGroupImpl.setTaxes(new ArrayList<>());
     fulfillmentGroupImpl.setTotal(new Money());
@@ -12853,13 +4546,12 @@ public class FulfillmentGroupImplDiffblueTest {
   /**
    * Test new {@link FulfillmentGroupImpl} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link FulfillmentGroupImpl}
+   * Method under test: default or parameterless constructor of {@link FulfillmentGroupImpl}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupImpl.<init>()"})
   public void testNewFulfillmentGroupImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange and Act
     FulfillmentGroupImpl actualFulfillmentGroupImpl = new FulfillmentGroupImpl();
 
@@ -12911,35 +4603,5 @@ public class FulfillmentGroupImplDiffblueTest {
     assertTrue(actualFulfillmentGroupImpl.getFulfillmentGroupItems().isEmpty());
     assertTrue(actualFulfillmentGroupImpl.getFutureCreditFulfillmentGroupAdjustments().isEmpty());
     assertTrue(actualFulfillmentGroupImpl.getTaxes().isEmpty());
-  }
-
-  /**
-   * Test new {@link FulfillmentGroupImpl} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link FulfillmentGroupImpl}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testNewFulfillmentGroupImpl2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass251 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    new FulfillmentGroupImpl();
   }
 }

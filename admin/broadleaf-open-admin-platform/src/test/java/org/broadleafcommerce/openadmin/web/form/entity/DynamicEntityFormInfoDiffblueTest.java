@@ -1,18 +1,39 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.web.form.entity;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {DynamicEntityFormInfo.class})
 @RunWith(SpringJUnit4ClassRunner.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class DynamicEntityFormInfoDiffblueTest {
   @Autowired
   private DynamicEntityFormInfo dynamicEntityFormInfo;
@@ -23,6 +44,8 @@ public class DynamicEntityFormInfoDiffblueTest {
    * Method under test: {@link DynamicEntityFormInfo#withCriteriaName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"DynamicEntityFormInfo DynamicEntityFormInfo.withCriteriaName(String)"})
   public void testWithCriteriaName() {
     // Arrange and Act
     DynamicEntityFormInfo actualWithCriteriaNameResult = dynamicEntityFormInfo.withCriteriaName("Criteria Name");
@@ -38,6 +61,8 @@ public class DynamicEntityFormInfoDiffblueTest {
    * Method under test: {@link DynamicEntityFormInfo#withPropertyName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"DynamicEntityFormInfo DynamicEntityFormInfo.withPropertyName(String)"})
   public void testWithPropertyName() {
     // Arrange and Act
     DynamicEntityFormInfo actualWithPropertyNameResult = dynamicEntityFormInfo.withPropertyName("Property Name");
@@ -53,6 +78,8 @@ public class DynamicEntityFormInfoDiffblueTest {
    * Method under test: {@link DynamicEntityFormInfo#withPropertyValue(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"DynamicEntityFormInfo DynamicEntityFormInfo.withPropertyValue(String)"})
   public void testWithPropertyValue() {
     // Arrange and Act
     DynamicEntityFormInfo actualWithPropertyValueResult = dynamicEntityFormInfo.withPropertyValue("42");
@@ -68,6 +95,8 @@ public class DynamicEntityFormInfoDiffblueTest {
    * Method under test: {@link DynamicEntityFormInfo#withCeilingClassName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"DynamicEntityFormInfo DynamicEntityFormInfo.withCeilingClassName(String)"})
   public void testWithCeilingClassName() {
     // Arrange and Act
     DynamicEntityFormInfo actualWithCeilingClassNameResult = dynamicEntityFormInfo
@@ -81,10 +110,11 @@ public class DynamicEntityFormInfoDiffblueTest {
   /**
    * Test {@link DynamicEntityFormInfo#withSecurityCeilingClassName(String)}.
    * <p>
-   * Method under test:
-   * {@link DynamicEntityFormInfo#withSecurityCeilingClassName(String)}
+   * Method under test: {@link DynamicEntityFormInfo#withSecurityCeilingClassName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"DynamicEntityFormInfo DynamicEntityFormInfo.withSecurityCeilingClassName(String)"})
   public void testWithSecurityCeilingClassName() {
     // Arrange and Act
     DynamicEntityFormInfo actualWithSecurityCeilingClassNameResult = dynamicEntityFormInfo
@@ -98,10 +128,11 @@ public class DynamicEntityFormInfoDiffblueTest {
   /**
    * Test {@link DynamicEntityFormInfo#withCustomCriteriaOverride(String[])}.
    * <p>
-   * Method under test:
-   * {@link DynamicEntityFormInfo#withCustomCriteriaOverride(String[])}
+   * Method under test: {@link DynamicEntityFormInfo#withCustomCriteriaOverride(String[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"DynamicEntityFormInfo DynamicEntityFormInfo.withCustomCriteriaOverride(String[])"})
   public void testWithCustomCriteriaOverride() {
     // Arrange
     DynamicEntityFormInfo dynamicEntityFormInfo = new DynamicEntityFormInfo();
@@ -133,6 +164,15 @@ public class DynamicEntityFormInfoDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DynamicEntityFormInfo.<init>()", "String DynamicEntityFormInfo.getCeilingClassName()",
+      "String DynamicEntityFormInfo.getCriteriaName()", "String[] DynamicEntityFormInfo.getCustomCriteriaOverride()",
+      "String DynamicEntityFormInfo.getPropertyName()", "String DynamicEntityFormInfo.getPropertyValue()",
+      "String DynamicEntityFormInfo.getSecurityCeilingClassName()",
+      "void DynamicEntityFormInfo.setCeilingClassName(String)", "void DynamicEntityFormInfo.setCriteriaName(String)",
+      "void DynamicEntityFormInfo.setCustomCriteriaOverride(String[])",
+      "void DynamicEntityFormInfo.setPropertyName(String)", "void DynamicEntityFormInfo.setPropertyValue(String)",
+      "void DynamicEntityFormInfo.setSecurityCeilingClassName(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     DynamicEntityFormInfo actualDynamicEntityFormInfo = new DynamicEntityFormInfo();
@@ -149,7 +189,7 @@ public class DynamicEntityFormInfoDiffblueTest {
     String actualPropertyName = actualDynamicEntityFormInfo.getPropertyName();
     String actualPropertyValue = actualDynamicEntityFormInfo.getPropertyValue();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("42", actualPropertyValue);
     assertEquals("Ceiling Class Name", actualCeilingClassName);
     assertEquals("Criteria Name", actualCriteriaName);

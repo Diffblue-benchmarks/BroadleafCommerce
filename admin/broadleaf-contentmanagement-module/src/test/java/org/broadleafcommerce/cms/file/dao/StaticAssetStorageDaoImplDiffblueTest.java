@@ -1,31 +1,47 @@
+/*-
+ * #%L
+ * BroadleafCommerce CMS Module
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.cms.file.dao;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import static org.junit.Assert.assertSame;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.sql.Blob;
 import org.broadleafcommerce.cms.file.domain.StaticAssetStorage;
 import org.broadleafcommerce.cms.file.domain.StaticAssetStorageImpl;
-import org.junit.Ignore;
+import org.broadleafcommerce.common.persistence.EntityConfiguration;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml",
-    "/applicationContext-servlet-cms-contentCreator.xml", "/bl-cms-applicationContext-entity.xml",
-    "/bl-cms-contentClient-applicationContext.xml", "/bl-cms-contentCreator-applicationContext.xml",
-    "/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-cms-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-cms-applicationContext-servlet.xml",
-    "/blc-config/site/framework/bl-cms-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
-@Transactional
+@RunWith(MockitoJUnitRunner.class)
 public class StaticAssetStorageDaoImplDiffblueTest {
-  @Autowired
+  @Mock
+  private EntityConfiguration entityConfiguration;
+
+  @InjectMocks
   private StaticAssetStorageDaoImpl staticAssetStorageDaoImpl;
 
   /**
@@ -34,228 +50,21 @@ public class StaticAssetStorageDaoImplDiffblueTest {
    * Method under test: {@link StaticAssetStorageDaoImpl#create()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"StaticAssetStorage StaticAssetStorageDaoImpl.create()"})
   public void testCreate() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.file.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5463 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.file.dao.StaticAssetStorageDaoImpl staticAssetStorageDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new StaticAssetStorageDaoImpl()).create();
-  }
-
-  /**
-   * Test {@link StaticAssetStorageDaoImpl#createBlob(MultipartFile)} with
-   * {@code uploadedFile}.
-   * <p>
-   * Method under test:
-   * {@link StaticAssetStorageDaoImpl#createBlob(MultipartFile)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateBlobWithUploadedFile() throws IOException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.file.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5539 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.file.dao.StaticAssetStorageDaoImpl staticAssetStorageDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    StaticAssetStorageDaoImpl staticAssetStorageDaoImpl2 = new StaticAssetStorageDaoImpl();
+    StaticAssetStorageImpl staticAssetStorageImpl = new StaticAssetStorageImpl();
+    staticAssetStorageImpl.setFileData(mock(Blob.class));
+    staticAssetStorageImpl.setId(1L);
+    staticAssetStorageImpl.setStaticAssetId(1L);
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any())).thenReturn(staticAssetStorageImpl);
 
     // Act
-    staticAssetStorageDaoImpl2
-        .createBlob(new MockMultipartFile("Name", new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"))));
-  }
+    StaticAssetStorage actualCreateResult = staticAssetStorageDaoImpl.create();
 
-  /**
-   * Test {@link StaticAssetStorageDaoImpl#createBlob(InputStream, long)} with
-   * {@code uploadedFileInputStream}, {@code fileSize}.
-   * <p>
-   * Method under test:
-   * {@link StaticAssetStorageDaoImpl#createBlob(InputStream, long)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateBlobWithUploadedFileInputStreamFileSize() throws IOException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.file.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5464 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.file.dao.StaticAssetStorageDaoImpl staticAssetStorageDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    StaticAssetStorageDaoImpl staticAssetStorageDaoImpl2 = new StaticAssetStorageDaoImpl();
-
-    // Act
-    staticAssetStorageDaoImpl2.createBlob(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), 3L);
-  }
-
-  /**
-   * Test {@link StaticAssetStorageDaoImpl#readStaticAssetStorageById(Long)}.
-   * <p>
-   * Method under test:
-   * {@link StaticAssetStorageDaoImpl#readStaticAssetStorageById(Long)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testReadStaticAssetStorageById() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.file.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5628 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.file.dao.StaticAssetStorageDaoImpl staticAssetStorageDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new StaticAssetStorageDaoImpl()).readStaticAssetStorageById(1L);
-  }
-
-  /**
-   * Test
-   * {@link StaticAssetStorageDaoImpl#readStaticAssetStorageByStaticAssetId(Long)}.
-   * <p>
-   * Method under test:
-   * {@link StaticAssetStorageDaoImpl#readStaticAssetStorageByStaticAssetId(Long)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testReadStaticAssetStorageByStaticAssetId() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.file.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5643 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.file.dao.StaticAssetStorageDaoImpl staticAssetStorageDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new StaticAssetStorageDaoImpl()).readStaticAssetStorageByStaticAssetId(1L);
-  }
-
-  /**
-   * Test {@link StaticAssetStorageDaoImpl#save(StaticAssetStorage)}.
-   * <p>
-   * Method under test: {@link StaticAssetStorageDaoImpl#save(StaticAssetStorage)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSave() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.file.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5658 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.file.dao.StaticAssetStorageDaoImpl staticAssetStorageDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    StaticAssetStorageDaoImpl staticAssetStorageDaoImpl2 = new StaticAssetStorageDaoImpl();
-
-    // Act
-    staticAssetStorageDaoImpl2.save(new StaticAssetStorageImpl());
-  }
-
-  /**
-   * Test {@link StaticAssetStorageDaoImpl#delete(StaticAssetStorage)}.
-   * <p>
-   * Method under test:
-   * {@link StaticAssetStorageDaoImpl#delete(StaticAssetStorage)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testDelete() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.file.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5620 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.file.dao.StaticAssetStorageDaoImpl staticAssetStorageDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    StaticAssetStorageDaoImpl staticAssetStorageDaoImpl2 = new StaticAssetStorageDaoImpl();
-
-    // Act
-    staticAssetStorageDaoImpl2.delete(new StaticAssetStorageImpl());
+    // Assert
+    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.cms.file.domain.StaticAssetStorage"));
+    assertSame(staticAssetStorageImpl, actualCreateResult);
   }
 }

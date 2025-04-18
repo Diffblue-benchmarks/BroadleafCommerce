@@ -1,10 +1,29 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.catalog.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import static org.mockito.Mockito.mock;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.sitemap.domain.SiteMapConfigurationImpl;
 import org.broadleafcommerce.common.sitemap.service.type.SiteMapChangeFreqType;
 import org.broadleafcommerce.common.sitemap.service.type.SiteMapGeneratorType;
@@ -13,8 +32,7 @@ import org.junit.Test;
 
 public class CategorySiteMapGeneratorConfigurationImplDiffblueTest {
   /**
-   * Test {@link CategorySiteMapGeneratorConfigurationImpl#equals(Object)}, and
-   * {@link CategorySiteMapGeneratorConfigurationImpl#hashCode()}.
+   * Test {@link CategorySiteMapGeneratorConfigurationImpl#equals(Object)}, and {@link CategorySiteMapGeneratorConfigurationImpl#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -27,6 +45,9 @@ public class CategorySiteMapGeneratorConfigurationImplDiffblueTest {
    * </ul>
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategorySiteMapGeneratorConfigurationImpl.equals(Object)",
+      "int CategorySiteMapGeneratorConfigurationImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     CategorySiteMapGeneratorConfigurationImpl categorySiteMapGeneratorConfigurationImpl = new CategorySiteMapGeneratorConfigurationImpl();
@@ -54,10 +75,12 @@ public class CategorySiteMapGeneratorConfigurationImplDiffblueTest {
    *   <li>Then return not equal.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CategorySiteMapGeneratorConfigurationImpl#equals(Object)}
+   * Method under test: {@link CategorySiteMapGeneratorConfigurationImpl#equals(Object)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategorySiteMapGeneratorConfigurationImpl.equals(Object)",
+      "int CategorySiteMapGeneratorConfigurationImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     CategorySiteMapGeneratorConfigurationImpl categorySiteMapGeneratorConfigurationImpl = new CategorySiteMapGeneratorConfigurationImpl();
@@ -91,55 +114,16 @@ public class CategorySiteMapGeneratorConfigurationImplDiffblueTest {
   /**
    * Test {@link CategorySiteMapGeneratorConfigurationImpl#equals(Object)}.
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link CategorySiteMapGeneratorConfigurationImpl#equals(Object)}
-   */
-  @Test
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
-    // Arrange
-    CategorySiteMapGeneratorConfigurationImpl categorySiteMapGeneratorConfigurationImpl = new CategorySiteMapGeneratorConfigurationImpl();
-    categorySiteMapGeneratorConfigurationImpl.setDisabled(true);
-    categorySiteMapGeneratorConfigurationImpl.setEndingDepth(2);
-    categorySiteMapGeneratorConfigurationImpl.setId(1L);
-    categorySiteMapGeneratorConfigurationImpl.setRootCategory(mock(Category.class));
-    categorySiteMapGeneratorConfigurationImpl.setSiteMapChangeFreq(new SiteMapChangeFreqType("Type", "Friendly Type"));
-    categorySiteMapGeneratorConfigurationImpl.setSiteMapConfiguration(new SiteMapConfigurationImpl());
-    categorySiteMapGeneratorConfigurationImpl
-        .setSiteMapGeneratorType(new SiteMapGeneratorType("Type", "Friendly Type"));
-    categorySiteMapGeneratorConfigurationImpl.setSiteMapPriority(new SiteMapPriorityType("Type", "Friendly Type"));
-    categorySiteMapGeneratorConfigurationImpl.setStartingDepth(2);
-
-    CategorySiteMapGeneratorConfigurationImpl categorySiteMapGeneratorConfigurationImpl2 = new CategorySiteMapGeneratorConfigurationImpl();
-    categorySiteMapGeneratorConfigurationImpl2.setDisabled(true);
-    categorySiteMapGeneratorConfigurationImpl2.setEndingDepth(2);
-    categorySiteMapGeneratorConfigurationImpl2.setId(1L);
-    categorySiteMapGeneratorConfigurationImpl2.setRootCategory(new CategoryImpl());
-    categorySiteMapGeneratorConfigurationImpl2.setSiteMapChangeFreq(new SiteMapChangeFreqType("Type", "Friendly Type"));
-    categorySiteMapGeneratorConfigurationImpl2.setSiteMapConfiguration(new SiteMapConfigurationImpl());
-    categorySiteMapGeneratorConfigurationImpl2
-        .setSiteMapGeneratorType(new SiteMapGeneratorType("Type", "Friendly Type"));
-    categorySiteMapGeneratorConfigurationImpl2.setSiteMapPriority(new SiteMapPriorityType("Type", "Friendly Type"));
-    categorySiteMapGeneratorConfigurationImpl2.setStartingDepth(2);
-
-    // Act and Assert
-    assertNotEquals(categorySiteMapGeneratorConfigurationImpl, categorySiteMapGeneratorConfigurationImpl2);
-  }
-
-  /**
-   * Test {@link CategorySiteMapGeneratorConfigurationImpl#equals(Object)}.
-   * <ul>
    *   <li>When other is {@code null}.</li>
    *   <li>Then return not equal.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CategorySiteMapGeneratorConfigurationImpl#equals(Object)}
+   * Method under test: {@link CategorySiteMapGeneratorConfigurationImpl#equals(Object)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategorySiteMapGeneratorConfigurationImpl.equals(Object)",
+      "int CategorySiteMapGeneratorConfigurationImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     CategorySiteMapGeneratorConfigurationImpl categorySiteMapGeneratorConfigurationImpl = new CategorySiteMapGeneratorConfigurationImpl();
@@ -165,10 +149,12 @@ public class CategorySiteMapGeneratorConfigurationImplDiffblueTest {
    *   <li>Then return not equal.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CategorySiteMapGeneratorConfigurationImpl#equals(Object)}
+   * Method under test: {@link CategorySiteMapGeneratorConfigurationImpl#equals(Object)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategorySiteMapGeneratorConfigurationImpl.equals(Object)",
+      "int CategorySiteMapGeneratorConfigurationImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     CategorySiteMapGeneratorConfigurationImpl categorySiteMapGeneratorConfigurationImpl = new CategorySiteMapGeneratorConfigurationImpl();
@@ -193,11 +179,9 @@ public class CategorySiteMapGeneratorConfigurationImplDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>default or parameterless constructor of
-   * {@link CategorySiteMapGeneratorConfigurationImpl}
+   *   <li>default or parameterless constructor of {@link CategorySiteMapGeneratorConfigurationImpl}
    *   <li>{@link CategorySiteMapGeneratorConfigurationImpl#setEndingDepth(int)}
-   *   <li>
-   * {@link CategorySiteMapGeneratorConfigurationImpl#setRootCategory(Category)}
+   *   <li>{@link CategorySiteMapGeneratorConfigurationImpl#setRootCategory(Category)}
    *   <li>{@link CategorySiteMapGeneratorConfigurationImpl#setStartingDepth(int)}
    *   <li>{@link CategorySiteMapGeneratorConfigurationImpl#getEndingDepth()}
    *   <li>{@link CategorySiteMapGeneratorConfigurationImpl#getRootCategory()}
@@ -205,6 +189,14 @@ public class CategorySiteMapGeneratorConfigurationImplDiffblueTest {
    * </ul>
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategorySiteMapGeneratorConfigurationImpl.<init>()",
+      "int CategorySiteMapGeneratorConfigurationImpl.getEndingDepth()",
+      "Category CategorySiteMapGeneratorConfigurationImpl.getRootCategory()",
+      "int CategorySiteMapGeneratorConfigurationImpl.getStartingDepth()",
+      "void CategorySiteMapGeneratorConfigurationImpl.setEndingDepth(int)",
+      "void CategorySiteMapGeneratorConfigurationImpl.setRootCategory(Category)",
+      "void CategorySiteMapGeneratorConfigurationImpl.setStartingDepth(int)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     CategorySiteMapGeneratorConfigurationImpl actualCategorySiteMapGeneratorConfigurationImpl = new CategorySiteMapGeneratorConfigurationImpl();
@@ -214,10 +206,13 @@ public class CategorySiteMapGeneratorConfigurationImplDiffblueTest {
     actualCategorySiteMapGeneratorConfigurationImpl.setStartingDepth(2);
     int actualEndingDepth = actualCategorySiteMapGeneratorConfigurationImpl.getEndingDepth();
     Category actualRootCategory = actualCategorySiteMapGeneratorConfigurationImpl.getRootCategory();
+    int actualStartingDepth = actualCategorySiteMapGeneratorConfigurationImpl.getStartingDepth();
 
-    // Assert that nothing has changed
+    // Assert
+    assertNull(actualCategorySiteMapGeneratorConfigurationImpl.getId());
+    assertNull(actualCategorySiteMapGeneratorConfigurationImpl.getSiteMapConfiguration());
     assertEquals(2, actualEndingDepth);
-    assertEquals(2, actualCategorySiteMapGeneratorConfigurationImpl.getStartingDepth());
+    assertEquals(2, actualStartingDepth);
     assertFalse(actualCategorySiteMapGeneratorConfigurationImpl.isDisabled());
     assertSame(rootCategory, actualRootCategory);
   }

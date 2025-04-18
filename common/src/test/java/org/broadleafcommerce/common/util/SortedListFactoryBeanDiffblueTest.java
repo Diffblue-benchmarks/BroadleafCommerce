@@ -19,9 +19,12 @@ package org.broadleafcommerce.common.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class SortedListFactoryBeanDiffblueTest {
   /**
@@ -33,6 +36,8 @@ public class SortedListFactoryBeanDiffblueTest {
    * Method under test: {@link SortedListFactoryBean#createInstance()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List SortedListFactoryBean.createInstance()"})
   public void testCreateInstance_thenReturnEmpty() {
     // Arrange
     SortedListFactoryBean sortedListFactoryBean = new SortedListFactoryBean();
@@ -45,10 +50,11 @@ public class SortedListFactoryBeanDiffblueTest {
   /**
    * Test new {@link SortedListFactoryBean} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link SortedListFactoryBean}
+   * Method under test: default or parameterless constructor of {@link SortedListFactoryBean}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SortedListFactoryBean.<init>()"})
   public void testNewSortedListFactoryBean() {
     // Arrange and Act
     SortedListFactoryBean actualSortedListFactoryBean = new SortedListFactoryBean();

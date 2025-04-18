@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce CMS Module
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.cms.structure.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -11,6 +28,8 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.copy.CreateResponse;
 import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
@@ -18,6 +37,7 @@ import org.broadleafcommerce.common.service.GenericEntityService;
 import org.broadleafcommerce.common.site.domain.CatalogImpl;
 import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.mockito.Mockito;
 
 public class StructuredContentFieldXrefImplDiffblueTest {
@@ -29,10 +49,8 @@ public class StructuredContentFieldXrefImplDiffblueTest {
    *   <li>{@link StructuredContentFieldXrefImpl#StructuredContentFieldXrefImpl()}
    *   <li>{@link StructuredContentFieldXrefImpl#setId(Long)}
    *   <li>{@link StructuredContentFieldXrefImpl#setKey(String)}
-   *   <li>
-   * {@link StructuredContentFieldXrefImpl#setStructuredContent(StructuredContent)}
-   *   <li>
-   * {@link StructuredContentFieldXrefImpl#setStrucuturedContentField(StructuredContentField)}
+   *   <li>{@link StructuredContentFieldXrefImpl#setStructuredContent(StructuredContent)}
+   *   <li>{@link StructuredContentFieldXrefImpl#setStrucuturedContentField(StructuredContentField)}
    *   <li>{@link StructuredContentFieldXrefImpl#getId()}
    *   <li>{@link StructuredContentFieldXrefImpl#getKey()}
    *   <li>{@link StructuredContentFieldXrefImpl#getStructuredContent()}
@@ -40,6 +58,15 @@ public class StructuredContentFieldXrefImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StructuredContentFieldXrefImpl.<init>()",
+      "void StructuredContentFieldXrefImpl.<init>(StructuredContent, StructuredContentField, String)",
+      "Long StructuredContentFieldXrefImpl.getId()", "String StructuredContentFieldXrefImpl.getKey()",
+      "StructuredContent StructuredContentFieldXrefImpl.getStructuredContent()",
+      "StructuredContentField StructuredContentFieldXrefImpl.getStructuredContentField()",
+      "void StructuredContentFieldXrefImpl.setId(Long)", "void StructuredContentFieldXrefImpl.setKey(String)",
+      "void StructuredContentFieldXrefImpl.setStructuredContent(StructuredContent)",
+      "void StructuredContentFieldXrefImpl.setStrucuturedContentField(StructuredContentField)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     StructuredContentFieldXrefImpl actualStructuredContentFieldXrefImpl = new StructuredContentFieldXrefImpl();
@@ -55,7 +82,7 @@ public class StructuredContentFieldXrefImplDiffblueTest {
     StructuredContentField actualStructuredContentField = actualStructuredContentFieldXrefImpl
         .getStructuredContentField();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Key", actualKey);
     assertEquals(StructuredContentItemCriteriaImpl.serialVersionUID, actualId.longValue());
     assertSame(scField, actualStructuredContentField);
@@ -70,14 +97,11 @@ public class StructuredContentFieldXrefImplDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>
-   * {@link StructuredContentFieldXrefImpl#StructuredContentFieldXrefImpl(StructuredContent, StructuredContentField, String)}
+   *   <li>{@link StructuredContentFieldXrefImpl#StructuredContentFieldXrefImpl(StructuredContent, StructuredContentField, String)}
    *   <li>{@link StructuredContentFieldXrefImpl#setId(Long)}
    *   <li>{@link StructuredContentFieldXrefImpl#setKey(String)}
-   *   <li>
-   * {@link StructuredContentFieldXrefImpl#setStructuredContent(StructuredContent)}
-   *   <li>
-   * {@link StructuredContentFieldXrefImpl#setStrucuturedContentField(StructuredContentField)}
+   *   <li>{@link StructuredContentFieldXrefImpl#setStructuredContent(StructuredContent)}
+   *   <li>{@link StructuredContentFieldXrefImpl#setStrucuturedContentField(StructuredContentField)}
    *   <li>{@link StructuredContentFieldXrefImpl#getId()}
    *   <li>{@link StructuredContentFieldXrefImpl#getKey()}
    *   <li>{@link StructuredContentFieldXrefImpl#getStructuredContent()}
@@ -85,6 +109,15 @@ public class StructuredContentFieldXrefImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StructuredContentFieldXrefImpl.<init>()",
+      "void StructuredContentFieldXrefImpl.<init>(StructuredContent, StructuredContentField, String)",
+      "Long StructuredContentFieldXrefImpl.getId()", "String StructuredContentFieldXrefImpl.getKey()",
+      "StructuredContent StructuredContentFieldXrefImpl.getStructuredContent()",
+      "StructuredContentField StructuredContentFieldXrefImpl.getStructuredContentField()",
+      "void StructuredContentFieldXrefImpl.setId(Long)", "void StructuredContentFieldXrefImpl.setKey(String)",
+      "void StructuredContentFieldXrefImpl.setStructuredContent(StructuredContent)",
+      "void StructuredContentFieldXrefImpl.setStrucuturedContentField(StructuredContentField)"})
   public void testGettersAndSetters_whenStructuredContentImpl() {
     // Arrange
     StructuredContentImpl sc = new StructuredContentImpl();
@@ -104,7 +137,7 @@ public class StructuredContentFieldXrefImplDiffblueTest {
     StructuredContentField actualStructuredContentField = actualStructuredContentFieldXrefImpl
         .getStructuredContentField();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Key", actualKey);
     assertEquals(StructuredContentItemCriteriaImpl.serialVersionUID, actualId.longValue());
     assertSame(scField, actualStructuredContentField);
@@ -112,13 +145,14 @@ public class StructuredContentFieldXrefImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link StructuredContentFieldXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * Test {@link StructuredContentFieldXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <p>
-   * Method under test:
-   * {@link StructuredContentFieldXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link StructuredContentFieldXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "CreateResponse StructuredContentFieldXrefImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
     // Arrange
     StructuredContentFieldXrefImpl structuredContentFieldXrefImpl = new StructuredContentFieldXrefImpl();
@@ -137,13 +171,14 @@ public class StructuredContentFieldXrefImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link StructuredContentFieldXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * Test {@link StructuredContentFieldXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <p>
-   * Method under test:
-   * {@link StructuredContentFieldXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link StructuredContentFieldXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "CreateResponse StructuredContentFieldXrefImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
     // Arrange
     CreateResponse<StructuredContent> createResponse = mock(CreateResponse.class);
@@ -176,13 +211,14 @@ public class StructuredContentFieldXrefImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link StructuredContentFieldXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * Test {@link StructuredContentFieldXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <p>
-   * Method under test:
-   * {@link StructuredContentFieldXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link StructuredContentFieldXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "CreateResponse StructuredContentFieldXrefImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance3() throws CloneNotSupportedException {
     // Arrange
     CreateResponse<StructuredContent> createResponse = mock(CreateResponse.class);
@@ -219,13 +255,14 @@ public class StructuredContentFieldXrefImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link StructuredContentFieldXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * Test {@link StructuredContentFieldXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <p>
-   * Method under test:
-   * {@link StructuredContentFieldXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link StructuredContentFieldXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "CreateResponse StructuredContentFieldXrefImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance4() throws CloneNotSupportedException {
     // Arrange
     CreateResponse<StructuredContent> createResponse = mock(CreateResponse.class);
@@ -261,17 +298,17 @@ public class StructuredContentFieldXrefImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link StructuredContentFieldXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * Test {@link StructuredContentFieldXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <ul>
-   *   <li>Then calls
-   * {@link StructuredContentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.</li>
+   *   <li>Then calls {@link StructuredContentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link StructuredContentFieldXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link StructuredContentFieldXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "CreateResponse StructuredContentFieldXrefImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance_thenCallsCreateOrRetrieveCopyInstance()
       throws CloneNotSupportedException {
     // Arrange
@@ -306,16 +343,17 @@ public class StructuredContentFieldXrefImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link StructuredContentFieldXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * Test {@link StructuredContentFieldXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <ul>
    *   <li>Then Clone return {@link StructuredContentFieldXrefImpl}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link StructuredContentFieldXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link StructuredContentFieldXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "CreateResponse StructuredContentFieldXrefImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance_thenCloneReturnStructuredContentFieldXrefImpl()
       throws CloneNotSupportedException {
     // Arrange

@@ -1,13 +1,32 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.dto;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class SectionCrumbDiffblueTest {
   /**
-   * Test {@link SectionCrumb#equals(Object)}, and
-   * {@link SectionCrumb#hashCode()}.
+   * Test {@link SectionCrumb#equals(Object)}, and {@link SectionCrumb#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -20,6 +39,8 @@ public class SectionCrumbDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SectionCrumb.equals(Object)", "int SectionCrumb.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     SectionCrumb sectionCrumb = new SectionCrumb();
@@ -39,8 +60,7 @@ public class SectionCrumbDiffblueTest {
   }
 
   /**
-   * Test {@link SectionCrumb#equals(Object)}, and
-   * {@link SectionCrumb#hashCode()}.
+   * Test {@link SectionCrumb#equals(Object)}, and {@link SectionCrumb#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -53,6 +73,8 @@ public class SectionCrumbDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SectionCrumb.equals(Object)", "int SectionCrumb.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     SectionCrumb sectionCrumb = new SectionCrumb();
@@ -72,8 +94,7 @@ public class SectionCrumbDiffblueTest {
   }
 
   /**
-   * Test {@link SectionCrumb#equals(Object)}, and
-   * {@link SectionCrumb#hashCode()}.
+   * Test {@link SectionCrumb#equals(Object)}, and {@link SectionCrumb#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -86,6 +107,8 @@ public class SectionCrumbDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SectionCrumb.equals(Object)", "int SectionCrumb.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     SectionCrumb sectionCrumb = new SectionCrumb();
@@ -105,8 +128,7 @@ public class SectionCrumbDiffblueTest {
   }
 
   /**
-   * Test {@link SectionCrumb#equals(Object)}, and
-   * {@link SectionCrumb#hashCode()}.
+   * Test {@link SectionCrumb#equals(Object)}, and {@link SectionCrumb#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -119,6 +141,8 @@ public class SectionCrumbDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SectionCrumb.equals(Object)", "int SectionCrumb.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     SectionCrumb sectionCrumb = new SectionCrumb();
@@ -142,6 +166,8 @@ public class SectionCrumbDiffblueTest {
    * Method under test: {@link SectionCrumb#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SectionCrumb.equals(Object)", "int SectionCrumb.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     SectionCrumb sectionCrumb = new SectionCrumb();
@@ -168,6 +194,8 @@ public class SectionCrumbDiffblueTest {
    * Method under test: {@link SectionCrumb#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SectionCrumb.equals(Object)", "int SectionCrumb.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     SectionCrumb sectionCrumb = new SectionCrumb();
@@ -194,6 +222,8 @@ public class SectionCrumbDiffblueTest {
    * Method under test: {@link SectionCrumb#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SectionCrumb.equals(Object)", "int SectionCrumb.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     SectionCrumb sectionCrumb = new SectionCrumb();
@@ -220,6 +250,8 @@ public class SectionCrumbDiffblueTest {
    * Method under test: {@link SectionCrumb#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SectionCrumb.equals(Object)", "int SectionCrumb.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     SectionCrumb sectionCrumb = new SectionCrumb();
@@ -246,6 +278,8 @@ public class SectionCrumbDiffblueTest {
    * Method under test: {@link SectionCrumb#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SectionCrumb.equals(Object)", "int SectionCrumb.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     SectionCrumb sectionCrumb = new SectionCrumb();
@@ -267,6 +301,8 @@ public class SectionCrumbDiffblueTest {
    * Method under test: {@link SectionCrumb#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SectionCrumb.equals(Object)", "int SectionCrumb.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     SectionCrumb sectionCrumb = new SectionCrumb();
@@ -294,6 +330,11 @@ public class SectionCrumbDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SectionCrumb.<init>()", "String SectionCrumb.getOriginalSectionIdentifier()",
+      "String SectionCrumb.getSectionId()", "String SectionCrumb.getSectionIdentifier()",
+      "void SectionCrumb.setOriginalSectionIdentifier(String)", "void SectionCrumb.setSectionId(String)",
+      "void SectionCrumb.setSectionIdentifier(String)", "String SectionCrumb.toString()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     SectionCrumb actualSectionCrumb = new SectionCrumb();
@@ -304,7 +345,7 @@ public class SectionCrumbDiffblueTest {
     String actualOriginalSectionIdentifier = actualSectionCrumb.getOriginalSectionIdentifier();
     String actualSectionId = actualSectionCrumb.getSectionId();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("42", actualOriginalSectionIdentifier);
     assertEquals("42", actualSectionId);
     assertEquals("42", actualSectionCrumb.getSectionIdentifier());

@@ -21,22 +21,26 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class FilterDefinitionDiffblueTest {
   /**
    * Test {@link FilterDefinition#copy()}.
    * <ul>
-   *   <li>Given {@link FilterDefinition} (default constructor) Params is
-   * {@code null}.</li>
+   *   <li>Given {@link FilterDefinition} (default constructor) Params is {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link FilterDefinition#copy()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FilterDefinition FilterDefinition.copy()"})
   public void testCopy_givenFilterDefinitionParamsIsNull() {
     // Arrange
     FilterDefinition filterDefinition = new FilterDefinition();
@@ -61,6 +65,8 @@ public class FilterDefinitionDiffblueTest {
    * Method under test: {@link FilterDefinition#copy()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FilterDefinition FilterDefinition.copy()"})
   public void testCopy_givenFilterDefinition_thenReturnEntityImplementationClassNameIsNull() {
     // Arrange and Act
     FilterDefinition actualCopyResult = (new FilterDefinition()).copy();
@@ -74,14 +80,15 @@ public class FilterDefinitionDiffblueTest {
   /**
    * Test {@link FilterDefinition#copy()}.
    * <ul>
-   *   <li>Given {@link FilterParameter} (default constructor) Name is
-   * {@code Name}.</li>
+   *   <li>Given {@link FilterParameter} (default constructor) Name is {@code Name}.</li>
    *   <li>Then return Params is {@link LinkedList#LinkedList()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link FilterDefinition#copy()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FilterDefinition FilterDefinition.copy()"})
   public void testCopy_givenFilterParameterNameIsName_thenReturnParamsIsLinkedList() {
     // Arrange
     FilterParameter filterParameter = new FilterParameter();
@@ -113,6 +120,11 @@ public class FilterDefinitionDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FilterDefinition.<init>()", "String FilterDefinition.getEntityImplementationClassName()",
+      "String FilterDefinition.getName()", "List FilterDefinition.getParams()",
+      "void FilterDefinition.setEntityImplementationClassName(String)", "void FilterDefinition.setName(String)",
+      "void FilterDefinition.setParams(List)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     FilterDefinition actualFilterDefinition = new FilterDefinition();
@@ -124,7 +136,7 @@ public class FilterDefinitionDiffblueTest {
     String actualName = actualFilterDefinition.getName();
     List<FilterParameter> actualParams = actualFilterDefinition.getParams();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Entity Implementation Class Name", actualEntityImplementationClassName);
     assertEquals("Name", actualName);
     assertTrue(actualParams.isEmpty());

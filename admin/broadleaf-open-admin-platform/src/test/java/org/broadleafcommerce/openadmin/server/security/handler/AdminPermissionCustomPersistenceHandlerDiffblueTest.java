@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.server.security.handler;
 
 import static org.junit.Assert.assertEquals;
@@ -13,6 +30,8 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,38 +50,30 @@ import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDao;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.RecordHelper;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
-    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
-    "/bl-open-admin-contentCreator-applicationContext.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+@ContextConfiguration(classes = {AdminPermissionCustomPersistenceHandler.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class AdminPermissionCustomPersistenceHandlerDiffblueTest {
   @Autowired
   private AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler;
 
   /**
-   * Test
-   * {@link AdminPermissionCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
+   * Test {@link AdminPermissionCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
    * <p>
-   * Method under test:
-   * {@link AdminPermissionCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean AdminPermissionCustomPersistenceHandler.canHandleAdd(PersistencePackage)"})
   public void testCanHandleAdd() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler = new AdminPermissionCustomPersistenceHandler();
     Entity entity = new Entity();
 
     // Act and Assert
@@ -71,191 +82,87 @@ public class AdminPermissionCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminPermissionCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
+   * Test {@link AdminPermissionCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
    * <p>
-   * Method under test:
-   * {@link AdminPermissionCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean AdminPermissionCustomPersistenceHandler.canHandleAdd(PersistencePackage)"})
   public void testCanHandleAdd2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass97 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.handler.AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler2 = new AdminPermissionCustomPersistenceHandler();
+    Entity entity = new Entity();
 
-    // Act
-    adminPermissionCustomPersistenceHandler2.canHandleAdd(new PersistencePackage());
+    // Act and Assert
+    assertFalse(adminPermissionCustomPersistenceHandler.canHandleAdd(new PersistencePackage("Dr Jane Doe", entity,
+        new PersistencePerspective(), new String[]{"createNewPermission"}, "ABC123")));
   }
 
   /**
-   * Test
-   * {@link AdminPermissionCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
-   * <ul>
-   *   <li>Given array of {@link String} with {@code createNewPermission}.</li>
-   * </ul>
+   * Test {@link AdminPermissionCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
    * <p>
-   * Method under test:
-   * {@link AdminPermissionCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
    */
   @Test
-  public void testCanHandleAdd_givenArrayOfStringWithCreateNewPermission() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean AdminPermissionCustomPersistenceHandler.canHandleAdd(PersistencePackage)"})
+  public void testCanHandleAdd3() {
     // Arrange
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler = new AdminPermissionCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{"createNewPermission"});
+    Entity entity = new Entity();
 
-    // Act
-    Boolean actualCanHandleAddResult = adminPermissionCustomPersistenceHandler.canHandleAdd(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getCustomCriteria();
-    assertFalse(actualCanHandleAddResult);
+    // Act and Assert
+    assertFalse(adminPermissionCustomPersistenceHandler.canHandleAdd(
+        new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(), new String[]{}, "ABC123")));
   }
 
   /**
-   * Test
-   * {@link AdminPermissionCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
-   * <ul>
-   *   <li>Given array of {@link String} with {@code Custom Criteria}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link AdminPermissionCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
-   */
-  @Test
-  public void testCanHandleAdd_givenArrayOfStringWithCustomCriteria() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler = new AdminPermissionCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{"Custom Criteria"});
-
-    // Act
-    Boolean actualCanHandleAddResult = adminPermissionCustomPersistenceHandler.canHandleAdd(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getCustomCriteria();
-    assertFalse(actualCanHandleAddResult);
-  }
-
-  /**
-   * Test
-   * {@link AdminPermissionCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
-   * <ul>
-   *   <li>Given empty array of {@link String}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link AdminPermissionCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
-   */
-  @Test
-  public void testCanHandleAdd_givenEmptyArrayOfString() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler = new AdminPermissionCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{});
-
-    // Act
-    Boolean actualCanHandleAddResult = adminPermissionCustomPersistenceHandler.canHandleAdd(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getCustomCriteria();
-    assertFalse(actualCanHandleAddResult);
-  }
-
-  /**
-   * Test
-   * {@link AdminPermissionCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
+   * Test {@link AdminPermissionCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
    * <ul>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminPermissionCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean AdminPermissionCustomPersistenceHandler.canHandleAdd(PersistencePackage)"})
   public void testCanHandleAdd_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler = new AdminPermissionCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname())
-        .thenReturn("org.broadleafcommerce.openadmin.server.security.domain.AdminPermission");
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{"createNewPermission"});
+    Entity entity = new Entity();
 
-    // Act
-    Boolean actualCanHandleAddResult = adminPermissionCustomPersistenceHandler.canHandleAdd(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getCustomCriteria();
-    assertTrue(actualCanHandleAddResult);
+    // Act and Assert
+    assertTrue(adminPermissionCustomPersistenceHandler
+        .canHandleAdd(new PersistencePackage("org.broadleafcommerce.openadmin.server.security.domain.AdminPermission",
+            entity, new PersistencePerspective(), new String[]{"createNewPermission"}, "ABC123")));
   }
 
   /**
-   * Test
-   * {@link AdminPermissionCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
+   * Test {@link AdminPermissionCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
    * <ul>
    *   <li>When {@link PersistencePackage#PersistencePackage()}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminPermissionCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean AdminPermissionCustomPersistenceHandler.canHandleAdd(PersistencePackage)"})
   public void testCanHandleAdd_whenPersistencePackage_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler = new AdminPermissionCustomPersistenceHandler();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertFalse(adminPermissionCustomPersistenceHandler.canHandleAdd(new PersistencePackage()));
   }
 
   /**
-   * Test
-   * {@link AdminPermissionCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
+   * Test {@link AdminPermissionCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
    * <p>
-   * Method under test:
-   * {@link AdminPermissionCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean AdminPermissionCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"})
   public void testCanHandleUpdate() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler = new AdminPermissionCustomPersistenceHandler();
     Entity entity = new Entity();
 
     // Act and Assert
@@ -264,786 +171,400 @@ public class AdminPermissionCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminPermissionCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
+   * Test {@link AdminPermissionCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
    * <p>
-   * Method under test:
-   * {@link AdminPermissionCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean AdminPermissionCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"})
   public void testCanHandleUpdate2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass149 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.handler.AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler2 = new AdminPermissionCustomPersistenceHandler();
+    Entity entity = new Entity();
 
-    // Act
-    adminPermissionCustomPersistenceHandler2.canHandleUpdate(new PersistencePackage());
+    // Act and Assert
+    assertFalse(adminPermissionCustomPersistenceHandler.canHandleUpdate(new PersistencePackage("Dr Jane Doe", entity,
+        new PersistencePerspective(), new String[]{"createNewPermission"}, "ABC123")));
   }
 
   /**
-   * Test
-   * {@link AdminPermissionCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
-   * <ul>
-   *   <li>Given array of {@link String} with {@code createNewPermission}.</li>
-   * </ul>
+   * Test {@link AdminPermissionCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
    * <p>
-   * Method under test:
-   * {@link AdminPermissionCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
    */
   @Test
-  public void testCanHandleUpdate_givenArrayOfStringWithCreateNewPermission() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean AdminPermissionCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"})
+  public void testCanHandleUpdate3() {
     // Arrange
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler = new AdminPermissionCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{"createNewPermission"});
+    Entity entity = new Entity();
 
-    // Act
-    Boolean actualCanHandleUpdateResult = adminPermissionCustomPersistenceHandler.canHandleUpdate(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getCustomCriteria();
-    assertFalse(actualCanHandleUpdateResult);
+    // Act and Assert
+    assertFalse(adminPermissionCustomPersistenceHandler.canHandleUpdate(
+        new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(), new String[]{}, "ABC123")));
   }
 
   /**
-   * Test
-   * {@link AdminPermissionCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
-   * <ul>
-   *   <li>Given array of {@link String} with {@code Custom Criteria}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link AdminPermissionCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
-   */
-  @Test
-  public void testCanHandleUpdate_givenArrayOfStringWithCustomCriteria() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler = new AdminPermissionCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{"Custom Criteria"});
-
-    // Act
-    Boolean actualCanHandleUpdateResult = adminPermissionCustomPersistenceHandler.canHandleUpdate(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getCustomCriteria();
-    assertFalse(actualCanHandleUpdateResult);
-  }
-
-  /**
-   * Test
-   * {@link AdminPermissionCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
-   * <ul>
-   *   <li>Given empty array of {@link String}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link AdminPermissionCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
-   */
-  @Test
-  public void testCanHandleUpdate_givenEmptyArrayOfString() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler = new AdminPermissionCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{});
-
-    // Act
-    Boolean actualCanHandleUpdateResult = adminPermissionCustomPersistenceHandler.canHandleUpdate(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getCustomCriteria();
-    assertFalse(actualCanHandleUpdateResult);
-  }
-
-  /**
-   * Test
-   * {@link AdminPermissionCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
+   * Test {@link AdminPermissionCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
    * <ul>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminPermissionCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean AdminPermissionCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"})
   public void testCanHandleUpdate_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler = new AdminPermissionCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname())
-        .thenReturn("org.broadleafcommerce.openadmin.server.security.domain.AdminPermission");
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{"createNewPermission"});
+    Entity entity = new Entity();
 
-    // Act
-    Boolean actualCanHandleUpdateResult = adminPermissionCustomPersistenceHandler.canHandleUpdate(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getCustomCriteria();
-    assertTrue(actualCanHandleUpdateResult);
+    // Act and Assert
+    assertTrue(adminPermissionCustomPersistenceHandler.canHandleUpdate(
+        new PersistencePackage("org.broadleafcommerce.openadmin.server.security.domain.AdminPermission", entity,
+            new PersistencePerspective(), new String[]{"createNewPermission"}, "ABC123")));
   }
 
   /**
-   * Test
-   * {@link AdminPermissionCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
+   * Test {@link AdminPermissionCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
    * <ul>
    *   <li>When {@link PersistencePackage#PersistencePackage()}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminPermissionCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean AdminPermissionCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"})
   public void testCanHandleUpdate_whenPersistencePackage_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler = new AdminPermissionCustomPersistenceHandler();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertFalse(adminPermissionCustomPersistenceHandler.canHandleUpdate(new PersistencePackage()));
   }
 
   /**
-   * Test
-   * {@link AdminPermissionCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
-   * <p>
-   * Method under test:
-   * {@link AdminPermissionCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCanHandleFetch() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass123 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.handler.AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler2 = new AdminPermissionCustomPersistenceHandler();
-
-    // Act
-    adminPermissionCustomPersistenceHandler2.canHandleFetch(new PersistencePackage());
-  }
-
-  /**
-   * Test
-   * {@link AdminPermissionCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
-   * <ul>
-   *   <li>Given {@code Dr Jane Doe}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link AdminPermissionCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
-   */
-  @Test
-  public void testCanHandleFetch_givenDrJaneDoe() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler = new AdminPermissionCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-
-    // Act
-    Boolean actualCanHandleFetchResult = adminPermissionCustomPersistenceHandler.canHandleFetch(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    assertFalse(actualCanHandleFetchResult);
-  }
-
-  /**
-   * Test
-   * {@link AdminPermissionCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
-   * <ul>
-   *   <li>Then return {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link AdminPermissionCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
-   */
-  @Test
-  public void testCanHandleFetch_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler = new AdminPermissionCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname())
-        .thenReturn("org.broadleafcommerce.openadmin.server.security.domain.AdminPermissionImpl");
-
-    // Act
-    Boolean actualCanHandleFetchResult = adminPermissionCustomPersistenceHandler.canHandleFetch(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    assertTrue(actualCanHandleFetchResult);
-  }
-
-  /**
-   * Test
-   * {@link AdminPermissionCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
+   * Test {@link AdminPermissionCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
    * <ul>
    *   <li>When {@link PersistencePackage#PersistencePackage()}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminPermissionCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean AdminPermissionCustomPersistenceHandler.canHandleFetch(PersistencePackage)"})
   public void testCanHandleFetch_whenPersistencePackage_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler = new AdminPermissionCustomPersistenceHandler();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertFalse(adminPermissionCustomPersistenceHandler.canHandleFetch(new PersistencePackage()));
   }
 
   /**
-   * Test
-   * {@link AdminPermissionCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
-   * <p>
-   * Method under test:
-   * {@link AdminPermissionCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAdd() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.handler.AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler2 = new AdminPermissionCustomPersistenceHandler();
-    PersistencePackage persistencePackage = new PersistencePackage();
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    // Act
-    adminPermissionCustomPersistenceHandler2.add(persistencePackage, dynamicEntityDao,
-        new AdornedTargetListPersistenceModule());
-  }
-
-  /**
-   * Test
-   * {@link AdminPermissionCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
+   * Test {@link AdminPermissionCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
    * <ul>
-   *   <li>Given {@link Property} {@link Property#getValue()} return
-   * {@code 42}.</li>
+   *   <li>Given {@link Property} {@link Property#getValue()} return {@code 42}.</li>
    *   <li>Then calls {@link Property#getValue()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminPermissionCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Entity AdminPermissionCustomPersistenceHandler.add(PersistencePackage, DynamicEntityDao, RecordHelper)"})
   public void testAdd_givenPropertyGetValueReturn42_thenCallsGetValue() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler = new AdminPermissionCustomPersistenceHandler();
     Property property = mock(Property.class);
     when(property.getValue()).thenReturn("42");
     Entity entity = mock(Entity.class);
     when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getEntity()).thenReturn(entity);
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"id"}, "ABC123");
+
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
 
     // Act and Assert
     assertThrows(ServiceException.class, () -> adminPermissionCustomPersistenceHandler.add(persistencePackage,
         dynamicEntityDao, new AdornedTargetListPersistenceModule()));
     verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
-    verify(persistencePackage, atLeast(1)).getEntity();
     verify(property, atLeast(1)).getValue();
   }
 
   /**
-   * Test
-   * {@link AdminPermissionCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
+   * Test {@link AdminPermissionCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
    * <ul>
-   *   <li>Given {@link Property} {@link Property#getValue()} return empty
-   * string.</li>
+   *   <li>Given {@link Property} {@link Property#getValue()} return empty string.</li>
    *   <li>Then calls {@link Property#getValue()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminPermissionCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Entity AdminPermissionCustomPersistenceHandler.add(PersistencePackage, DynamicEntityDao, RecordHelper)"})
   public void testAdd_givenPropertyGetValueReturnEmptyString_thenCallsGetValue() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler = new AdminPermissionCustomPersistenceHandler();
     Property property = mock(Property.class);
     when(property.getValue()).thenReturn("");
     Entity entity = mock(Entity.class);
     when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getEntity()).thenReturn(entity);
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"id"}, "ABC123");
+
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
 
     // Act and Assert
     assertThrows(ServiceException.class, () -> adminPermissionCustomPersistenceHandler.add(persistencePackage,
         dynamicEntityDao, new AdornedTargetListPersistenceModule()));
     verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
-    verify(persistencePackage, atLeast(1)).getEntity();
     verify(property, atLeast(1)).getValue();
   }
 
   /**
-   * Test
-   * {@link AdminPermissionCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
+   * Test {@link AdminPermissionCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
    * <ul>
-   *   <li>Given {@link Property} {@link Property#getValue()} return
-   * {@code PERMISSION_}.</li>
+   *   <li>Given {@link Property} {@link Property#getValue()} return {@code PERMISSION_}.</li>
    *   <li>Then calls {@link Property#getValue()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminPermissionCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Entity AdminPermissionCustomPersistenceHandler.add(PersistencePackage, DynamicEntityDao, RecordHelper)"})
   public void testAdd_givenPropertyGetValueReturnPermission_thenCallsGetValue() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler = new AdminPermissionCustomPersistenceHandler();
     Property property = mock(Property.class);
     when(property.getValue()).thenReturn("PERMISSION_");
     Entity entity = mock(Entity.class);
     when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getEntity()).thenReturn(entity);
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"id"}, "ABC123");
+
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
 
     // Act and Assert
     assertThrows(ServiceException.class, () -> adminPermissionCustomPersistenceHandler.add(persistencePackage,
         dynamicEntityDao, new AdornedTargetListPersistenceModule()));
     verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
-    verify(persistencePackage, atLeast(1)).getEntity();
     verify(property, atLeast(1)).getValue();
   }
 
   /**
-   * Test
-   * {@link AdminPermissionCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
+   * Test {@link AdminPermissionCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
    * <ul>
    *   <li>Given {@link Property#Property()} Value is {@code 42}.</li>
-   *   <li>Then throw {@link ServiceException}.</li>
+   *   <li>When {@link Entity} {@link Entity#findProperty(String)} return {@link Property#Property()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminPermissionCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  public void testAdd_givenPropertyValueIs42_thenThrowServiceException() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Entity AdminPermissionCustomPersistenceHandler.add(PersistencePackage, DynamicEntityDao, RecordHelper)"})
+  public void testAdd_givenPropertyValueIs42_whenEntityFindPropertyReturnProperty() throws ServiceException {
     // Arrange
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler = new AdminPermissionCustomPersistenceHandler();
-
     Property property = new Property();
     property.setValue("42");
     Entity entity = mock(Entity.class);
     when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getEntity()).thenReturn(entity);
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"id"}, "ABC123");
+
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
 
     // Act and Assert
     assertThrows(ServiceException.class, () -> adminPermissionCustomPersistenceHandler.add(persistencePackage,
         dynamicEntityDao, new AdornedTargetListPersistenceModule()));
     verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
-    verify(persistencePackage, atLeast(1)).getEntity();
   }
 
   /**
-   * Test
-   * {@link AdminPermissionCustomPersistenceHandler#checkPermissionName(PersistencePackage)}.
-   * <p>
-   * Method under test:
-   * {@link AdminPermissionCustomPersistenceHandler#checkPermissionName(PersistencePackage)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCheckPermissionName() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass175 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.handler.AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler2 = new AdminPermissionCustomPersistenceHandler();
-
-    // Act
-    adminPermissionCustomPersistenceHandler2.checkPermissionName(new PersistencePackage());
-  }
-
-  /**
-   * Test
-   * {@link AdminPermissionCustomPersistenceHandler#checkPermissionName(PersistencePackage)}.
+   * Test {@link AdminPermissionCustomPersistenceHandler#checkPermissionName(PersistencePackage)}.
    * <ul>
-   *   <li>Given {@link Property} {@link Property#getValue()} return
-   * {@code 42}.</li>
+   *   <li>Given {@link Property} {@link Property#getValue()} return {@code 42}.</li>
    *   <li>Then calls {@link Property#getValue()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminPermissionCustomPersistenceHandler#checkPermissionName(PersistencePackage)}
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#checkPermissionName(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Entity AdminPermissionCustomPersistenceHandler.checkPermissionName(PersistencePackage)"})
   public void testCheckPermissionName_givenPropertyGetValueReturn42_thenCallsGetValue() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler = new AdminPermissionCustomPersistenceHandler();
     Property property = mock(Property.class);
     when(property.getValue()).thenReturn("42");
     Entity entity = mock(Entity.class);
     when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getEntity()).thenReturn(entity);
 
     // Act and Assert
-    assertThrows(ServiceException.class,
-        () -> adminPermissionCustomPersistenceHandler.checkPermissionName(persistencePackage));
+    assertThrows(ServiceException.class, () -> adminPermissionCustomPersistenceHandler.checkPermissionName(
+        new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(), new String[]{"name"}, "ABC123")));
     verify(entity).findProperty(eq("name"));
-    verify(persistencePackage).getEntity();
     verify(property).getValue();
   }
 
   /**
-   * Test
-   * {@link AdminPermissionCustomPersistenceHandler#checkPermissionName(PersistencePackage)}.
+   * Test {@link AdminPermissionCustomPersistenceHandler#checkPermissionName(PersistencePackage)}.
    * <ul>
-   *   <li>Given {@link Property} {@link Property#getValue()} return
-   * {@code PERMISSION_}.</li>
+   *   <li>Given {@link Property} {@link Property#getValue()} return {@code PERMISSION_}.</li>
    *   <li>Then calls {@link Property#getValue()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminPermissionCustomPersistenceHandler#checkPermissionName(PersistencePackage)}
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#checkPermissionName(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Entity AdminPermissionCustomPersistenceHandler.checkPermissionName(PersistencePackage)"})
   public void testCheckPermissionName_givenPropertyGetValueReturnPermission_thenCallsGetValue()
       throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler = new AdminPermissionCustomPersistenceHandler();
     Property property = mock(Property.class);
     when(property.getValue()).thenReturn("PERMISSION_");
     Entity entity = mock(Entity.class);
     when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getEntity()).thenReturn(entity);
 
     // Act and Assert
-    assertThrows(ServiceException.class,
-        () -> adminPermissionCustomPersistenceHandler.checkPermissionName(persistencePackage));
+    assertThrows(ServiceException.class, () -> adminPermissionCustomPersistenceHandler.checkPermissionName(
+        new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(), new String[]{"name"}, "ABC123")));
     verify(entity).findProperty(eq("name"));
-    verify(persistencePackage).getEntity();
     verify(property).getValue();
   }
 
   /**
-   * Test
-   * {@link AdminPermissionCustomPersistenceHandler#checkPermissionName(PersistencePackage)}.
+   * Test {@link AdminPermissionCustomPersistenceHandler#checkPermissionName(PersistencePackage)}.
    * <ul>
    *   <li>Given {@link Property#Property()} Value is {@code 42}.</li>
-   *   <li>Then throw {@link ServiceException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminPermissionCustomPersistenceHandler#checkPermissionName(PersistencePackage)}
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#checkPermissionName(PersistencePackage)}
    */
   @Test
-  public void testCheckPermissionName_givenPropertyValueIs42_thenThrowServiceException() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Entity AdminPermissionCustomPersistenceHandler.checkPermissionName(PersistencePackage)"})
+  public void testCheckPermissionName_givenPropertyValueIs42() throws ServiceException {
     // Arrange
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler = new AdminPermissionCustomPersistenceHandler();
-
     Property property = new Property();
     property.setValue("42");
     Entity entity = mock(Entity.class);
     when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getEntity()).thenReturn(entity);
 
     // Act and Assert
-    assertThrows(ServiceException.class,
-        () -> adminPermissionCustomPersistenceHandler.checkPermissionName(persistencePackage));
+    assertThrows(ServiceException.class, () -> adminPermissionCustomPersistenceHandler.checkPermissionName(
+        new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(), new String[]{"name"}, "ABC123")));
     verify(entity).findProperty(eq("name"));
-    verify(persistencePackage).getEntity();
   }
 
   /**
-   * Test
-   * {@link AdminPermissionCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}.
-   * <p>
-   * Method under test:
-   * {@link AdminPermissionCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testUpdate() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass272 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.handler.AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler2 = new AdminPermissionCustomPersistenceHandler();
-    PersistencePackage persistencePackage = new PersistencePackage();
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    // Act
-    adminPermissionCustomPersistenceHandler2.update(persistencePackage, dynamicEntityDao,
-        new AdornedTargetListPersistenceModule());
-  }
-
-  /**
-   * Test
-   * {@link AdminPermissionCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}.
+   * Test {@link AdminPermissionCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}.
    * <ul>
-   *   <li>Given {@link Property} {@link Property#getValue()} return
-   * {@code 42}.</li>
+   *   <li>Given {@link Property} {@link Property#getValue()} return {@code 42}.</li>
    *   <li>Then calls {@link Property#getValue()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminPermissionCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Entity AdminPermissionCustomPersistenceHandler.update(PersistencePackage, DynamicEntityDao, RecordHelper)"})
   public void testUpdate_givenPropertyGetValueReturn42_thenCallsGetValue() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler = new AdminPermissionCustomPersistenceHandler();
     Property property = mock(Property.class);
     when(property.getValue()).thenReturn("42");
     Entity entity = mock(Entity.class);
     when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getEntity()).thenReturn(entity);
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"name"}, "ABC123");
+
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
 
     // Act and Assert
     assertThrows(ServiceException.class, () -> adminPermissionCustomPersistenceHandler.update(persistencePackage,
         dynamicEntityDao, new AdornedTargetListPersistenceModule()));
     verify(entity).findProperty(eq("name"));
-    verify(persistencePackage).getEntity();
     verify(property).getValue();
   }
 
   /**
-   * Test
-   * {@link AdminPermissionCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}.
+   * Test {@link AdminPermissionCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}.
    * <ul>
-   *   <li>Given {@link Property} {@link Property#getValue()} return
-   * {@code PERMISSION_}.</li>
+   *   <li>Given {@link Property} {@link Property#getValue()} return {@code PERMISSION_}.</li>
    *   <li>Then calls {@link Property#getValue()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminPermissionCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Entity AdminPermissionCustomPersistenceHandler.update(PersistencePackage, DynamicEntityDao, RecordHelper)"})
   public void testUpdate_givenPropertyGetValueReturnPermission_thenCallsGetValue() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler = new AdminPermissionCustomPersistenceHandler();
     Property property = mock(Property.class);
     when(property.getValue()).thenReturn("PERMISSION_");
     Entity entity = mock(Entity.class);
     when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getEntity()).thenReturn(entity);
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"name"}, "ABC123");
+
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
 
     // Act and Assert
     assertThrows(ServiceException.class, () -> adminPermissionCustomPersistenceHandler.update(persistencePackage,
         dynamicEntityDao, new AdornedTargetListPersistenceModule()));
     verify(entity).findProperty(eq("name"));
-    verify(persistencePackage).getEntity();
     verify(property).getValue();
   }
 
   /**
-   * Test
-   * {@link AdminPermissionCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}.
+   * Test {@link AdminPermissionCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}.
    * <ul>
    *   <li>Given {@link Property#Property()} Value is {@code 42}.</li>
-   *   <li>Then throw {@link ServiceException}.</li>
+   *   <li>When {@link Entity} {@link Entity#findProperty(String)} return {@link Property#Property()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminPermissionCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  public void testUpdate_givenPropertyValueIs42_thenThrowServiceException() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Entity AdminPermissionCustomPersistenceHandler.update(PersistencePackage, DynamicEntityDao, RecordHelper)"})
+  public void testUpdate_givenPropertyValueIs42_whenEntityFindPropertyReturnProperty() throws ServiceException {
     // Arrange
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler = new AdminPermissionCustomPersistenceHandler();
-
     Property property = new Property();
     property.setValue("42");
     Entity entity = mock(Entity.class);
     when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getEntity()).thenReturn(entity);
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"name"}, "ABC123");
+
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
 
     // Act and Assert
     assertThrows(ServiceException.class, () -> adminPermissionCustomPersistenceHandler.update(persistencePackage,
         dynamicEntityDao, new AdornedTargetListPersistenceModule()));
     verify(entity).findProperty(eq("name"));
-    verify(persistencePackage).getEntity();
   }
 
   /**
-   * Test
-   * {@link AdminPermissionCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
-   * <p>
-   * Method under test:
-   * {@link AdminPermissionCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFetch() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass201 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.handler.AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler2 = new AdminPermissionCustomPersistenceHandler();
-    PersistencePackage persistencePackage = new PersistencePackage();
-    CriteriaTransferObject cto = new CriteriaTransferObject();
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    // Act
-    adminPermissionCustomPersistenceHandler2.fetch(persistencePackage, cto, dynamicEntityDao,
-        new AdornedTargetListPersistenceModule());
-  }
-
-  /**
-   * Test
-   * {@link AdminPermissionCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
+   * Test {@link AdminPermissionCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
    * <ul>
    *   <li>Then return {@link DynamicResultSet#DynamicResultSet()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminPermissionCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DynamicResultSet AdminPermissionCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"})
   public void testFetch_thenReturnDynamicResultSet() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler = new AdminPermissionCustomPersistenceHandler();
     PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
     when(persistencePerspective.getOperationTypes()).thenReturn(new OperationTypes());
 
@@ -1075,57 +596,19 @@ public class AdminPermissionCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminPermissionCustomPersistenceHandler#addFriendlyRestriction(CriteriaTransferObject)}.
-   * <p>
-   * Method under test:
-   * {@link AdminPermissionCustomPersistenceHandler#addFriendlyRestriction(CriteriaTransferObject)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddFriendlyRestriction() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass77 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.handler.AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler2 = new AdminPermissionCustomPersistenceHandler();
-
-    // Act
-    adminPermissionCustomPersistenceHandler2.addFriendlyRestriction(new CriteriaTransferObject());
-  }
-
-  /**
-   * Test
-   * {@link AdminPermissionCustomPersistenceHandler#addFriendlyRestriction(CriteriaTransferObject)}.
+   * Test {@link AdminPermissionCustomPersistenceHandler#addFriendlyRestriction(CriteriaTransferObject)}.
    * <ul>
    *   <li>Given {@link HashMap#HashMap()}.</li>
-   *   <li>Then calls
-   * {@link CriteriaTransferObject#add(FilterAndSortCriteria)}.</li>
+   *   <li>Then calls {@link CriteriaTransferObject#add(FilterAndSortCriteria)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminPermissionCustomPersistenceHandler#addFriendlyRestriction(CriteriaTransferObject)}
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#addFriendlyRestriction(CriteriaTransferObject)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminPermissionCustomPersistenceHandler.addFriendlyRestriction(CriteriaTransferObject)"})
   public void testAddFriendlyRestriction_givenHashMap_thenCallsAdd() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler = new AdminPermissionCustomPersistenceHandler();
     CriteriaTransferObject cto = mock(CriteriaTransferObject.class);
     when(cto.getCriteriaMap()).thenReturn(new HashMap<>());
     doNothing().when(cto).add(Mockito.<FilterAndSortCriteria>any());
@@ -1139,22 +622,18 @@ public class AdminPermissionCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminPermissionCustomPersistenceHandler#addFriendlyRestriction(CriteriaTransferObject)}.
+   * Test {@link AdminPermissionCustomPersistenceHandler#addFriendlyRestriction(CriteriaTransferObject)}.
    * <ul>
-   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap
-   * size is one.</li>
+   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap size is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminPermissionCustomPersistenceHandler#addFriendlyRestriction(CriteriaTransferObject)}
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#addFriendlyRestriction(CriteriaTransferObject)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminPermissionCustomPersistenceHandler.addFriendlyRestriction(CriteriaTransferObject)"})
   public void testAddFriendlyRestriction_thenCriteriaTransferObjectCriteriaMapSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler = new AdminPermissionCustomPersistenceHandler();
     CriteriaTransferObject cto = new CriteriaTransferObject();
 
     // Act
@@ -1177,57 +656,18 @@ public class AdminPermissionCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminPermissionCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}.
-   * <p>
-   * Method under test:
-   * {@link AdminPermissionCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddDefaultSort() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass57 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.handler.AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler2 = new AdminPermissionCustomPersistenceHandler();
-
-    // Act
-    adminPermissionCustomPersistenceHandler2.addDefaultSort(new CriteriaTransferObject());
-  }
-
-  /**
-   * Test
-   * {@link AdminPermissionCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}.
+   * Test {@link AdminPermissionCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}.
    * <ul>
-   *   <li>Given {@link FilterAndSortCriteria}
-   * {@link FilterAndSortCriteria#getSortDirection()} return
-   * {@code ASCENDING}.</li>
+   *   <li>Given {@link FilterAndSortCriteria} {@link FilterAndSortCriteria#getSortDirection()} return {@code ASCENDING}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminPermissionCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminPermissionCustomPersistenceHandler.addDefaultSort(CriteriaTransferObject)"})
   public void testAddDefaultSort_givenFilterAndSortCriteriaGetSortDirectionReturnAscending() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler = new AdminPermissionCustomPersistenceHandler();
     FilterAndSortCriteria filterAndSortCriteria = mock(FilterAndSortCriteria.class);
     when(filterAndSortCriteria.getSortDirection()).thenReturn(SortDirection.ASCENDING);
 
@@ -1245,23 +685,19 @@ public class AdminPermissionCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminPermissionCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}.
+   * Test {@link AdminPermissionCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}.
    * <ul>
    *   <li>Given {@link HashMap#HashMap()}.</li>
-   *   <li>Then calls
-   * {@link CriteriaTransferObject#add(FilterAndSortCriteria)}.</li>
+   *   <li>Then calls {@link CriteriaTransferObject#add(FilterAndSortCriteria)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminPermissionCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminPermissionCustomPersistenceHandler.addDefaultSort(CriteriaTransferObject)"})
   public void testAddDefaultSort_givenHashMap_thenCallsAdd() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler = new AdminPermissionCustomPersistenceHandler();
     CriteriaTransferObject cto = mock(CriteriaTransferObject.class);
     when(cto.getCriteriaMap()).thenReturn(new HashMap<>());
     doNothing().when(cto).add(Mockito.<FilterAndSortCriteria>any());
@@ -1275,21 +711,18 @@ public class AdminPermissionCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminPermissionCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}.
+   * Test {@link AdminPermissionCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}.
    * <ul>
    *   <li>Then calls {@link FilterAndSortCriteria#setSortAscending(Boolean)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminPermissionCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminPermissionCustomPersistenceHandler.addDefaultSort(CriteriaTransferObject)"})
   public void testAddDefaultSort_thenCallsSetSortAscending() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler = new AdminPermissionCustomPersistenceHandler();
     FilterAndSortCriteria filterAndSortCriteria = mock(FilterAndSortCriteria.class);
     when(filterAndSortCriteria.getSortDirection()).thenReturn(null);
     doNothing().when(filterAndSortCriteria).setSortAscending(Mockito.<Boolean>any());
@@ -1309,23 +742,18 @@ public class AdminPermissionCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminPermissionCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}.
+   * Test {@link AdminPermissionCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}.
    * <ul>
-   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap is
-   * {@link HashMap#HashMap()}.</li>
+   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap is {@link HashMap#HashMap()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminPermissionCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminPermissionCustomPersistenceHandler.addDefaultSort(CriteriaTransferObject)"})
   public void testAddDefaultSort_thenCriteriaTransferObjectCriteriaMapIsHashMap() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler = new AdminPermissionCustomPersistenceHandler();
-
     HashMap<String, FilterAndSortCriteria> criteriaMap = new HashMap<>();
     criteriaMap.put("description", new FilterAndSortCriteria("42"));
 
@@ -1340,22 +768,18 @@ public class AdminPermissionCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminPermissionCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}.
+   * Test {@link AdminPermissionCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}.
    * <ul>
-   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap
-   * size is one.</li>
+   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap size is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminPermissionCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminPermissionCustomPersistenceHandler.addDefaultSort(CriteriaTransferObject)"})
   public void testAddDefaultSort_thenCriteriaTransferObjectCriteriaMapSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler = new AdminPermissionCustomPersistenceHandler();
     CriteriaTransferObject cto = new CriteriaTransferObject();
 
     // Act

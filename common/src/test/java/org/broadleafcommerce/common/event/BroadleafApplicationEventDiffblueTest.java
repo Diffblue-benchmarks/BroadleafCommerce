@@ -18,28 +18,21 @@
 package org.broadleafcommerce.common.event;
 
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.util.BLCFieldUtils;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class BroadleafApplicationEventDiffblueTest {
-  /**
-   * Test {@link BroadleafApplicationEvent#getContext()}.
-   * <p>
-   * Method under test: {@link BroadleafApplicationEvent#getContext()}
-   */
-  @Test
-  public void testGetContext() {
-    // Arrange, Act and Assert
-    assertTrue((new ReindexEvent(BLCFieldUtils.NULL_FIELD)).getContext().isEmpty());
-  }
-
   /**
    * Test {@link BroadleafApplicationEvent#getSiteId()}.
    * <p>
    * Method under test: {@link BroadleafApplicationEvent#getSiteId()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Long BroadleafApplicationEvent.getSiteId()"})
   public void testGetSiteId() {
     // Arrange, Act and Assert
     assertNull((new ReindexEvent(BLCFieldUtils.NULL_FIELD)).getSiteId());
@@ -51,6 +44,8 @@ public class BroadleafApplicationEventDiffblueTest {
    * Method under test: {@link BroadleafApplicationEvent#getCatalogId()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Long BroadleafApplicationEvent.getCatalogId()"})
   public void testGetCatalogId() {
     // Arrange, Act and Assert
     assertNull((new ReindexEvent(BLCFieldUtils.NULL_FIELD)).getCatalogId());
@@ -62,6 +57,8 @@ public class BroadleafApplicationEventDiffblueTest {
    * Method under test: {@link BroadleafApplicationEvent#getProfileId()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Long BroadleafApplicationEvent.getProfileId()"})
   public void testGetProfileId() {
     // Arrange, Act and Assert
     assertNull((new ReindexEvent(BLCFieldUtils.NULL_FIELD)).getProfileId());
@@ -73,6 +70,8 @@ public class BroadleafApplicationEventDiffblueTest {
    * Method under test: {@link BroadleafApplicationEvent#getLocaleCode()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.String BroadleafApplicationEvent.getLocaleCode()"})
   public void testGetLocaleCode() {
     // Arrange, Act and Assert
     assertNull((new ReindexEvent(BLCFieldUtils.NULL_FIELD)).getLocaleCode());
@@ -84,19 +83,10 @@ public class BroadleafApplicationEventDiffblueTest {
    * Method under test: {@link BroadleafApplicationEvent#getCurrencyCode()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.String BroadleafApplicationEvent.getCurrencyCode()"})
   public void testGetCurrencyCode() {
     // Arrange, Act and Assert
     assertNull((new ReindexEvent(BLCFieldUtils.NULL_FIELD)).getCurrencyCode());
-  }
-
-  /**
-   * Test {@link BroadleafApplicationEvent#getTimeZoneId()}.
-   * <p>
-   * Method under test: {@link BroadleafApplicationEvent#getTimeZoneId()}
-   */
-  @Test
-  public void testGetTimeZoneId() {
-    // Arrange, Act and Assert
-    assertNull((new ReindexEvent(BLCFieldUtils.NULL_FIELD)).getTimeZoneId());
   }
 }

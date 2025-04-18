@@ -17,249 +17,293 @@
  */
 package org.broadleafcommerce.common.resource.service;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import org.broadleafcommerce.common.resource.GeneratedResource;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.PropertyResolver;
 import org.springframework.core.io.AbstractResource;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.InputStreamSource;
 import org.springframework.core.io.Resource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-common-applicationContext-entity.xml",
-    "/bl-common-applicationContext-mbeans.xml", "/bl-common-applicationContext-persistence.xml",
-    "/bl-common-applicationContext-servlet.xml", "/bl-common-applicationContext-wrapper.xml",
-    "/bl-common-applicationContext.xml", "/bl-fake-applicationContext-ant.xml",
-    "/blc-config/admin/framework/bl-common-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-common-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-common-applicationContext-servlet.xml",
-    "/blc-config/site/framework/bl-common-applicationContext.xml",
-    "/override-contexts/admin-root-autoconfiguration-overrides.xml",
-    "/override-contexts/admin-servlet-autoconfiguration-overrides.xml",
-    "/override-contexts/autoconfiguration-overrides.xml", "/override-contexts/autoconfiguration-servlet-overrides.xml",
-    "/override-contexts/site-root-autoconfiguration-overrides.xml",
-    "/override-contexts/site-servlet-autoconfiguration-overrides.xml",
-    "/blc-config/admin/bl-admin-test-applicationContext.xml", "/blc-config/bl-test-applicationContext.xml",
-    "/blc-config/site/bl-site-test-applicationContext.xml", "/context/config/client-override.xml",
-    "/context/config/xml-import-override.xml", "/context/crossmodule/early-applicationContext.xml",
-    "/context/crossmodule/early-xml-applicationContext.xml", "/context/crossmodule/late-applicationContext.xml",
-    "/context/entityconfig/import-framework.xml", "/context/entityconfig/import-local.xml",
-    "/context/importer/applicationContext.xml", "/context/importer/merge/applicationContext-servlet.xml",
-    "/context/importer/merge/applicationContext.xml", "/context/merge/bl-framework.xml", "/context/merge/bl-module.xml",
-    "/context/merge/local.xml", "/context/reader/bean-override-early-test-applicationContext.xml",
-    "/context/reader/bean-override-framework-test-applicationContext.xml",
-    "/context/reader/bean-override-local-test-applicationContext.xml", "/context/reader/merge/testbeans.xml",
-    "/context/reader/merge/testbeans2.xml", "/context/reader/merge/testbeans3.xml"})
+@ContextConfiguration(classes = {ResourceMinificationServiceImpl.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ResourceMinificationServiceImplDiffblueTest {
+  @MockBean
+  private CssMinificationService cssMinificationService;
+
+  @MockBean
+  private Environment environment;
+
+  @MockBean
+  private JavascriptMinificationService javascriptMinificationService;
+
   @Autowired
   private ResourceMinificationServiceImpl resourceMinificationServiceImpl;
 
   /**
    * Test {@link ResourceMinificationServiceImpl#getEnabled()}.
+   * <ul>
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class)} return {@code false}.</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link ResourceMinificationServiceImpl#getEnabled()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetEnabled() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.BeanInstantiationException: Could not instantiate bean: messageSource defined in bl-common-applicationContext.xml
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageSource' defined in class path resource [bl-common-applicationContext.xml]: Initialization of bean failed; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:628)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:600)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.propertyeditors.CustomBooleanEditor.setAsText(CustomBooleanEditor.java:154)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
-    //       at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:590)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   See https://diff.blue/R026 to resolve this issue.
-
-    // Arrange and Act
-    (new ResourceMinificationServiceImpl()).getEnabled();
-  }
-
-  /**
-   * Test {@link ResourceMinificationServiceImpl#minify(String, byte[])} with
-   * {@code filename}, {@code bytes}.
-   * <p>
-   * Method under test:
-   * {@link ResourceMinificationServiceImpl#minify(String, byte[])}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testMinifyWithFilenameBytes() throws UnsupportedEncodingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.BeanInstantiationException: Could not instantiate bean: messageSource defined in bl-common-applicationContext.xml
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageSource' defined in class path resource [bl-common-applicationContext.xml]: Initialization of bean failed; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:628)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:600)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.propertyeditors.CustomBooleanEditor.setAsText(CustomBooleanEditor.java:154)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
-    //       at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:590)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   See https://diff.blue/R026 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ResourceMinificationServiceImpl.getEnabled()"})
+  public void testGetEnabled_givenEnvironmentGetPropertyReturnFalse_thenReturnFalse() {
     // Arrange
-    ResourceMinificationServiceImpl resourceMinificationServiceImpl2 = new ResourceMinificationServiceImpl();
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(false);
 
     // Act
-    resourceMinificationServiceImpl2.minify("foo.txt", "AXAXAXAX".getBytes("UTF-8"));
+    boolean actualEnabled = resourceMinificationServiceImpl.getEnabled();
+
+    // Assert
+    verify(environment).getProperty(eq("minify.enabled"), isA(Class.class));
+    assertFalse(actualEnabled);
   }
 
   /**
-   * Test
-   * {@link ResourceMinificationServiceImpl#minify(BufferedReader, BufferedWriter, String, String)}
-   * with {@code in}, {@code out}, {@code filename}, {@code type}.
+   * Test {@link ResourceMinificationServiceImpl#getEnabled()}.
+   * <ul>
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class)} return {@code true}.</li>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link ResourceMinificationServiceImpl#minify(BufferedReader, BufferedWriter, String, String)}
+   * Method under test: {@link ResourceMinificationServiceImpl#getEnabled()}
    */
   @Test
-  public void testMinifyWithInOutFilenameType() throws IOException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ResourceMinificationServiceImpl.getEnabled()"})
+  public void testGetEnabled_givenEnvironmentGetPropertyReturnTrue_thenReturnTrue() {
     // Arrange
-    ResourceMinificationServiceImpl resourceMinificationServiceImpl = new ResourceMinificationServiceImpl();
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(true);
+
+    // Act
+    boolean actualEnabled = resourceMinificationServiceImpl.getEnabled();
+
+    // Assert
+    verify(environment).getProperty(eq("minify.enabled"), isA(Class.class));
+    assertTrue(actualEnabled);
+  }
+
+  /**
+   * Test {@link ResourceMinificationServiceImpl#minify(String, byte[])} with {@code filename}, {@code bytes}.
+   * <p>
+   * Method under test: {@link ResourceMinificationServiceImpl#minify(String, byte[])}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"byte[] ResourceMinificationServiceImpl.minify(String, byte[])"})
+  public void testMinifyWithFilenameBytes() throws UnsupportedEncodingException, ResourceMinificationException {
+    // Arrange
+    doThrow(new ResourceMinificationException("An error occurred")).when(cssMinificationService)
+        .minifyCss(Mockito.<String>any(), Mockito.<Reader>any(), Mockito.<Writer>any());
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(true);
+
+    // Act
+    byte[] actualMinifyResult = resourceMinificationServiceImpl.minify(".css", "AXAXAXAX".getBytes("UTF-8"));
+
+    // Assert
+    verify(cssMinificationService).minifyCss(eq(".css"), isA(Reader.class), isA(Writer.class));
+    verify(environment, atLeast(1)).getProperty(eq("minify.enabled"), isA(Class.class));
+    assertArrayEquals("AXAXAXAX".getBytes("UTF-8"), actualMinifyResult);
+  }
+
+  /**
+   * Test {@link ResourceMinificationServiceImpl#minify(String, byte[])} with {@code filename}, {@code bytes}.
+   * <ul>
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class)} return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourceMinificationServiceImpl#minify(String, byte[])}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"byte[] ResourceMinificationServiceImpl.minify(String, byte[])"})
+  public void testMinifyWithFilenameBytes_givenEnvironmentGetPropertyReturnFalse() throws UnsupportedEncodingException {
+    // Arrange
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(false);
+
+    // Act
+    byte[] actualMinifyResult = resourceMinificationServiceImpl.minify("foo.txt", "AXAXAXAX".getBytes("UTF-8"));
+
+    // Assert
+    verify(environment).getProperty(eq("minify.enabled"), isA(Class.class));
+    assertArrayEquals("AXAXAXAX".getBytes("UTF-8"), actualMinifyResult);
+  }
+
+  /**
+   * Test {@link ResourceMinificationServiceImpl#minify(String, byte[])} with {@code filename}, {@code bytes}.
+   * <ul>
+   *   <li>Then return empty array of {@code byte}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourceMinificationServiceImpl#minify(String, byte[])}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"byte[] ResourceMinificationServiceImpl.minify(String, byte[])"})
+  public void testMinifyWithFilenameBytes_thenReturnEmptyArrayOfByte()
+      throws UnsupportedEncodingException, ResourceMinificationException {
+    // Arrange
+    doNothing().when(cssMinificationService)
+        .minifyCss(Mockito.<String>any(), Mockito.<Reader>any(), Mockito.<Writer>any());
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(true);
+
+    // Act
+    byte[] actualMinifyResult = resourceMinificationServiceImpl.minify(".css", "AXAXAXAX".getBytes("UTF-8"));
+
+    // Assert
+    verify(cssMinificationService).minifyCss(eq(".css"), isA(Reader.class), isA(Writer.class));
+    verify(environment, atLeast(1)).getProperty(eq("minify.enabled"), isA(Class.class));
+    assertArrayEquals(new byte[]{}, actualMinifyResult);
+  }
+
+  /**
+   * Test {@link ResourceMinificationServiceImpl#minify(String, byte[])} with {@code filename}, {@code bytes}.
+   * <ul>
+   *   <li>When {@code foo.txt}.</li>
+   *   <li>Then return {@code AXAXAXAX} Bytes is {@code UTF-8}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourceMinificationServiceImpl#minify(String, byte[])}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"byte[] ResourceMinificationServiceImpl.minify(String, byte[])"})
+  public void testMinifyWithFilenameBytes_whenFooTxt_thenReturnAxaxaxaxBytesIsUtf8()
+      throws UnsupportedEncodingException {
+    // Arrange
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(true);
+
+    // Act
+    byte[] actualMinifyResult = resourceMinificationServiceImpl.minify("foo.txt", "AXAXAXAX".getBytes("UTF-8"));
+
+    // Assert
+    verify(environment, atLeast(1)).getProperty(eq("minify.enabled"), isA(Class.class));
+    assertArrayEquals("AXAXAXAX".getBytes("UTF-8"), actualMinifyResult);
+  }
+
+  /**
+   * Test {@link ResourceMinificationServiceImpl#minify(String, byte[])} with {@code filename}, {@code bytes}.
+   * <ul>
+   *   <li>When {@code .js}.</li>
+   *   <li>Then calls {@link JavascriptMinificationService#minifyJs(String, Reader, Writer)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourceMinificationServiceImpl#minify(String, byte[])}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"byte[] ResourceMinificationServiceImpl.minify(String, byte[])"})
+  public void testMinifyWithFilenameBytes_whenJs_thenCallsMinifyJs()
+      throws UnsupportedEncodingException, ResourceMinificationException {
+    // Arrange
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(true);
+    doNothing().when(javascriptMinificationService)
+        .minifyJs(Mockito.<String>any(), Mockito.<Reader>any(), Mockito.<Writer>any());
+
+    // Act
+    byte[] actualMinifyResult = resourceMinificationServiceImpl.minify(".js", "AXAXAXAX".getBytes("UTF-8"));
+
+    // Assert
+    verify(javascriptMinificationService).minifyJs(eq(".js"), isA(Reader.class), isA(Writer.class));
+    verify(environment, atLeast(1)).getProperty(eq("minify.enabled"), isA(Class.class));
+    assertArrayEquals(new byte[]{}, actualMinifyResult);
+  }
+
+  /**
+   * Test {@link ResourceMinificationServiceImpl#minify(BufferedReader, BufferedWriter, String, String)} with {@code in}, {@code out}, {@code filename}, {@code type}.
+   * <p>
+   * Method under test: {@link ResourceMinificationServiceImpl#minify(BufferedReader, BufferedWriter, String, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourceMinificationServiceImpl.minify(BufferedReader, BufferedWriter, String, String)"})
+  public void testMinifyWithInOutFilenameType() throws IOException, ResourceMinificationException {
+    // Arrange
+    doNothing().when(javascriptMinificationService)
+        .minifyJs(Mockito.<String>any(), Mockito.<Reader>any(), Mockito.<Writer>any());
+    BufferedReader in = new BufferedReader(new StringReader("foo"), 1);
+
+    // Act
+    resourceMinificationServiceImpl.minify(in, new BufferedWriter(new StringWriter(), 1), "foo.txt", "js");
+
+    // Assert
+    verify(javascriptMinificationService).minifyJs(eq("foo.txt"), isA(Reader.class), isA(Writer.class));
+  }
+
+  /**
+   * Test {@link ResourceMinificationServiceImpl#minify(BufferedReader, BufferedWriter, String, String)} with {@code in}, {@code out}, {@code filename}, {@code type}.
+   * <p>
+   * Method under test: {@link ResourceMinificationServiceImpl#minify(BufferedReader, BufferedWriter, String, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourceMinificationServiceImpl.minify(BufferedReader, BufferedWriter, String, String)"})
+  public void testMinifyWithInOutFilenameType2() throws IOException, ResourceMinificationException {
+    // Arrange
+    doThrow(new ResourceMinificationException("An error occurred")).when(javascriptMinificationService)
+        .minifyJs(Mockito.<String>any(), Mockito.<Reader>any(), Mockito.<Writer>any());
+    BufferedReader in = new BufferedReader(new StringReader("foo"), 1);
+
+    // Act and Assert
+    assertThrows(IOException.class,
+        () -> resourceMinificationServiceImpl.minify(in, new BufferedWriter(new StringWriter(), 1), "foo.txt", "js"));
+    verify(javascriptMinificationService).minifyJs(eq("foo.txt"), isA(Reader.class), isA(Writer.class));
+  }
+
+  /**
+   * Test {@link ResourceMinificationServiceImpl#minify(BufferedReader, BufferedWriter, String, String)} with {@code in}, {@code out}, {@code filename}, {@code type}.
+   * <ul>
+   *   <li>Given {@link JavascriptMinificationService}.</li>
+   *   <li>When {@code Type}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourceMinificationServiceImpl#minify(BufferedReader, BufferedWriter, String, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourceMinificationServiceImpl.minify(BufferedReader, BufferedWriter, String, String)"})
+  public void testMinifyWithInOutFilenameType_givenJavascriptMinificationService_whenType() throws IOException {
+    // Arrange
     BufferedReader in = new BufferedReader(new StringReader("foo"), 1);
 
     // Act and Assert
@@ -268,381 +312,475 @@ public class ResourceMinificationServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ResourceMinificationServiceImpl#minify(BufferedReader, BufferedWriter, String, String)}
-   * with {@code in}, {@code out}, {@code filename}, {@code type}.
-   * <p>
-   * Method under test:
-   * {@link ResourceMinificationServiceImpl#minify(BufferedReader, BufferedWriter, String, String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testMinifyWithInOutFilenameType2() throws IOException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.BeanInstantiationException: Could not instantiate bean: messageSource defined in bl-common-applicationContext.xml
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageSource' defined in class path resource [bl-common-applicationContext.xml]: Initialization of bean failed; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:628)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:600)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.propertyeditors.CustomBooleanEditor.setAsText(CustomBooleanEditor.java:154)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
-    //       at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:590)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   See https://diff.blue/R026 to resolve this issue.
-
-    // Arrange
-    ResourceMinificationServiceImpl resourceMinificationServiceImpl2 = new ResourceMinificationServiceImpl();
-    BufferedReader in = new BufferedReader(new StringReader("foo"), 1);
-
-    // Act
-    resourceMinificationServiceImpl2.minify(in, new BufferedWriter(new StringWriter(), 1), "foo.txt", "Type");
-  }
-
-  /**
-   * Test {@link ResourceMinificationServiceImpl#minify(Resource)} with
-   * {@code originalResource}.
+   * Test {@link ResourceMinificationServiceImpl#minify(Resource)} with {@code originalResource}.
    * <p>
    * Method under test: {@link ResourceMinificationServiceImpl#minify(Resource)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testMinifyWithOriginalResource() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.BeanInstantiationException: Could not instantiate bean: messageSource defined in bl-common-applicationContext.xml
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageSource' defined in class path resource [bl-common-applicationContext.xml]: Initialization of bean failed; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:628)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:600)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.propertyeditors.CustomBooleanEditor.setAsText(CustomBooleanEditor.java:154)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
-    //       at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:590)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   See https://diff.blue/R026 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Resource ResourceMinificationServiceImpl.minify(Resource)"})
+  public void testMinifyWithOriginalResource() throws UnsupportedEncodingException {
     // Arrange
-    ResourceMinificationServiceImpl resourceMinificationServiceImpl2 = new ResourceMinificationServiceImpl();
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(true);
+    GeneratedResource originalResource = new GeneratedResource("A\bA\bA\bA\b".getBytes("UTF-8"),
+        "The characteristics of someone or something");
 
     // Act
-    resourceMinificationServiceImpl2.minify(new GeneratedResource());
+    Resource actualMinifyResult = resourceMinificationServiceImpl.minify(originalResource);
+
+    // Assert
+    verify(environment, atLeast(1)).getProperty(eq("minify.enabled"), isA(Class.class));
+    assertSame(originalResource, actualMinifyResult);
   }
 
   /**
-   * Test {@link ResourceMinificationServiceImpl#minify(Resource, String)} with
-   * {@code originalResource}, {@code filename}.
+   * Test {@link ResourceMinificationServiceImpl#minify(Resource)} with {@code originalResource}.
    * <p>
-   * Method under test:
-   * {@link ResourceMinificationServiceImpl#minify(Resource, String)}
+   * Method under test: {@link ResourceMinificationServiceImpl#minify(Resource)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testMinifyWithOriginalResourceFilename() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.BeanInstantiationException: Could not instantiate bean: messageSource defined in bl-common-applicationContext.xml
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageSource' defined in class path resource [bl-common-applicationContext.xml]: Initialization of bean failed; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:628)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:600)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.propertyeditors.CustomBooleanEditor.setAsText(CustomBooleanEditor.java:154)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
-    //       at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:590)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   See https://diff.blue/R026 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Resource ResourceMinificationServiceImpl.minify(Resource)"})
+  public void testMinifyWithOriginalResource2() throws UnsupportedEncodingException {
     // Arrange
-    ResourceMinificationServiceImpl resourceMinificationServiceImpl2 = new ResourceMinificationServiceImpl();
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(true);
+    ByteArrayResource originalResource = new ByteArrayResource("A\bA\bA\bA\b".getBytes("UTF-8"));
 
     // Act
-    resourceMinificationServiceImpl2.minify(new GeneratedResource(), "foo.txt");
+    Resource actualMinifyResult = resourceMinificationServiceImpl.minify(originalResource);
+
+    // Assert
+    verify(environment).getProperty(eq("minify.enabled"), isA(Class.class));
+    assertSame(originalResource, actualMinifyResult);
   }
 
   /**
-   * Test {@link ResourceMinificationServiceImpl#getFileType(Resource, String)}.
+   * Test {@link ResourceMinificationServiceImpl#minify(Resource)} with {@code originalResource}.
    * <p>
-   * Method under test:
-   * {@link ResourceMinificationServiceImpl#getFileType(Resource, String)}
+   * Method under test: {@link ResourceMinificationServiceImpl#minify(Resource)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetFileType() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.BeanInstantiationException: Could not instantiate bean: messageSource defined in bl-common-applicationContext.xml
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageSource' defined in class path resource [bl-common-applicationContext.xml]: Initialization of bean failed; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:628)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:600)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.propertyeditors.CustomBooleanEditor.setAsText(CustomBooleanEditor.java:154)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
-    //       at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:590)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   See https://diff.blue/R026 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Resource ResourceMinificationServiceImpl.minify(Resource)"})
+  public void testMinifyWithOriginalResource3() throws IOException, ResourceMinificationException {
     // Arrange
-    ResourceMinificationServiceImpl resourceMinificationServiceImpl2 = new ResourceMinificationServiceImpl();
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(true);
+    doThrow(new ResourceMinificationException("An error occurred")).when(javascriptMinificationService)
+        .minifyJs(Mockito.<String>any(), Mockito.<Reader>any(), Mockito.<Writer>any());
+    Resource originalResource = mock(Resource.class);
+    when(originalResource.getInputStream()).thenReturn(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")));
+    when(originalResource.getFilename()).thenReturn(".js");
 
     // Act
-    resourceMinificationServiceImpl2.getFileType(new GeneratedResource(), "foo.txt");
+    Resource actualMinifyResult = resourceMinificationServiceImpl.minify(originalResource);
+
+    // Assert
+    verify(javascriptMinificationService).minifyJs(eq(".js"), isA(Reader.class), isA(Writer.class));
+    verify(environment, atLeast(1)).getProperty(eq("minify.enabled"), isA(Class.class));
+    verify(originalResource).getInputStream();
+    verify(originalResource, atLeast(1)).getFilename();
+    assertSame(originalResource, actualMinifyResult);
   }
 
   /**
-   * Test {@link ResourceMinificationServiceImpl#getFileType(Resource, String)}.
+   * Test {@link ResourceMinificationServiceImpl#minify(Resource, String)} with {@code originalResource}, {@code filename}.
+   * <p>
+   * Method under test: {@link ResourceMinificationServiceImpl#minify(Resource, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Resource ResourceMinificationServiceImpl.minify(Resource, String)"})
+  public void testMinifyWithOriginalResourceFilename()
+      throws UnsupportedEncodingException, ResourceMinificationException {
+    // Arrange
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(true);
+    doNothing().when(javascriptMinificationService)
+        .minifyJs(Mockito.<String>any(), Mockito.<Reader>any(), Mockito.<Writer>any());
+
+    // Act
+    Resource actualMinifyResult = resourceMinificationServiceImpl.minify(
+        new GeneratedResource("A\bA\bA\bA\b".getBytes("UTF-8"), "The characteristics of someone or something"), ".js");
+
+    // Assert
+    verify(javascriptMinificationService).minifyJs(eq(".js"), isA(Reader.class), isA(Writer.class));
+    verify(environment).getProperty(eq("minify.enabled"), isA(Class.class));
+    assertTrue(actualMinifyResult instanceof GeneratedResource);
+    assertEquals(".js", actualMinifyResult.getDescription());
+    assertEquals(".js", actualMinifyResult.getFilename());
+    assertArrayEquals(new byte[]{}, ((GeneratedResource) actualMinifyResult).getBytes());
+  }
+
+  /**
+   * Test {@link ResourceMinificationServiceImpl#minify(Resource, String)} with {@code originalResource}, {@code filename}.
+   * <p>
+   * Method under test: {@link ResourceMinificationServiceImpl#minify(Resource, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Resource ResourceMinificationServiceImpl.minify(Resource, String)"})
+  public void testMinifyWithOriginalResourceFilename2()
+      throws UnsupportedEncodingException, ResourceMinificationException {
+    // Arrange
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(true);
+    doNothing().when(javascriptMinificationService)
+        .minifyJs(Mockito.<String>any(), Mockito.<Reader>any(), Mockito.<Writer>any());
+
+    // Act
+    Resource actualMinifyResult = resourceMinificationServiceImpl
+        .minify(new ByteArrayResource("A\bA\bA\bA\b".getBytes("UTF-8")), ".js");
+
+    // Assert
+    verify(javascriptMinificationService).minifyJs(eq(".js"), isA(Reader.class), isA(Writer.class));
+    verify(environment).getProperty(eq("minify.enabled"), isA(Class.class));
+    assertTrue(actualMinifyResult instanceof GeneratedResource);
+    assertEquals(".js", actualMinifyResult.getDescription());
+    assertEquals(".js", actualMinifyResult.getFilename());
+    assertArrayEquals(new byte[]{}, ((GeneratedResource) actualMinifyResult).getBytes());
+  }
+
+  /**
+   * Test {@link ResourceMinificationServiceImpl#minify(Resource, String)} with {@code originalResource}, {@code filename}.
+   * <p>
+   * Method under test: {@link ResourceMinificationServiceImpl#minify(Resource, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Resource ResourceMinificationServiceImpl.minify(Resource, String)"})
+  public void testMinifyWithOriginalResourceFilename3() throws IOException, ResourceMinificationException {
+    // Arrange
+    doThrow(new ResourceMinificationException("An error occurred")).when(cssMinificationService)
+        .minifyCss(Mockito.<String>any(), Mockito.<Reader>any(), Mockito.<Writer>any());
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(true);
+    Resource originalResource = mock(Resource.class);
+    when(originalResource.getInputStream()).thenReturn(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")));
+    when(originalResource.getFilename()).thenReturn("foo.txt");
+
+    // Act
+    Resource actualMinifyResult = resourceMinificationServiceImpl.minify(originalResource, ".css");
+
+    // Assert
+    verify(cssMinificationService).minifyCss(eq(".css"), isA(Reader.class), isA(Writer.class));
+    verify(environment).getProperty(eq("minify.enabled"), isA(Class.class));
+    verify(originalResource).getInputStream();
+    verify(originalResource).getFilename();
+    assertSame(originalResource, actualMinifyResult);
+  }
+
+  /**
+   * Test {@link ResourceMinificationServiceImpl#minify(Resource, String)} with {@code originalResource}, {@code filename}.
    * <ul>
-   *   <li>When {@link ByteArrayResource}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class)} return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ResourceMinificationServiceImpl#getFileType(Resource, String)}
+   * Method under test: {@link ResourceMinificationServiceImpl#minify(Resource, String)}
    */
   @Test
-  public void testGetFileType_whenByteArrayResource_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Resource ResourceMinificationServiceImpl.minify(Resource, String)"})
+  public void testMinifyWithOriginalResourceFilename_givenEnvironmentGetPropertyReturnFalse() {
+    // Arrange
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(false);
+    GeneratedResource originalResource = new GeneratedResource();
 
-    // Arrange, Act and Assert
-    assertNull((new ResourceMinificationServiceImpl()).getFileType(mock(ByteArrayResource.class), "foo.txt"));
+    // Act
+    Resource actualMinifyResult = resourceMinificationServiceImpl.minify(originalResource, "foo.txt");
+
+    // Assert
+    verify(environment).getProperty(eq("minify.enabled"), isA(Class.class));
+    assertSame(originalResource, actualMinifyResult);
+  }
+
+  /**
+   * Test {@link ResourceMinificationServiceImpl#minify(Resource, String)} with {@code originalResource}, {@code filename}.
+   * <ul>
+   *   <li>Given {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourceMinificationServiceImpl#minify(Resource, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Resource ResourceMinificationServiceImpl.minify(Resource, String)"})
+  public void testMinifyWithOriginalResourceFilename_givenNull() throws IOException {
+    // Arrange
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(true);
+    Resource originalResource = mock(Resource.class);
+    when(originalResource.getInputStream()).thenReturn(null);
+    when(originalResource.getFilename()).thenReturn("foo.txt");
+
+    // Act
+    Resource actualMinifyResult = resourceMinificationServiceImpl.minify(originalResource, ".js");
+
+    // Assert
+    verify(environment).getProperty(eq("minify.enabled"), isA(Class.class));
+    verify(originalResource).getInputStream();
+    verify(originalResource).getFilename();
+    assertSame(originalResource, actualMinifyResult);
+  }
+
+  /**
+   * Test {@link ResourceMinificationServiceImpl#minify(Resource, String)} with {@code originalResource}, {@code filename}.
+   * <ul>
+   *   <li>Then return Description is {@code .css}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourceMinificationServiceImpl#minify(Resource, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Resource ResourceMinificationServiceImpl.minify(Resource, String)"})
+  public void testMinifyWithOriginalResourceFilename_thenReturnDescriptionIsCss()
+      throws IOException, ResourceMinificationException {
+    // Arrange
+    doNothing().when(cssMinificationService)
+        .minifyCss(Mockito.<String>any(), Mockito.<Reader>any(), Mockito.<Writer>any());
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(true);
+    Resource originalResource = mock(Resource.class);
+    when(originalResource.getInputStream()).thenReturn(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")));
+    when(originalResource.getFilename()).thenReturn("foo.txt");
+
+    // Act
+    Resource actualMinifyResult = resourceMinificationServiceImpl.minify(originalResource, ".css");
+
+    // Assert
+    verify(cssMinificationService).minifyCss(eq(".css"), isA(Reader.class), isA(Writer.class));
+    verify(environment).getProperty(eq("minify.enabled"), isA(Class.class));
+    verify(originalResource).getInputStream();
+    verify(originalResource).getFilename();
+    assertTrue(actualMinifyResult instanceof GeneratedResource);
+    assertEquals(".css", actualMinifyResult.getDescription());
+    assertEquals(".css", actualMinifyResult.getFilename());
+    assertArrayEquals(new byte[]{}, ((GeneratedResource) actualMinifyResult).getBytes());
+  }
+
+  /**
+   * Test {@link ResourceMinificationServiceImpl#minify(Resource, String)} with {@code originalResource}, {@code filename}.
+   * <ul>
+   *   <li>Then return Description is {@code .js}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourceMinificationServiceImpl#minify(Resource, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Resource ResourceMinificationServiceImpl.minify(Resource, String)"})
+  public void testMinifyWithOriginalResourceFilename_thenReturnDescriptionIsJs()
+      throws IOException, ResourceMinificationException {
+    // Arrange
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(true);
+    doNothing().when(javascriptMinificationService)
+        .minifyJs(Mockito.<String>any(), Mockito.<Reader>any(), Mockito.<Writer>any());
+    Resource originalResource = mock(Resource.class);
+    when(originalResource.getInputStream()).thenReturn(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")));
+    when(originalResource.getFilename()).thenReturn("foo.txt");
+
+    // Act
+    Resource actualMinifyResult = resourceMinificationServiceImpl.minify(originalResource, ".js");
+
+    // Assert
+    verify(javascriptMinificationService).minifyJs(eq(".js"), isA(Reader.class), isA(Writer.class));
+    verify(environment).getProperty(eq("minify.enabled"), isA(Class.class));
+    verify(originalResource).getInputStream();
+    verify(originalResource).getFilename();
+    assertTrue(actualMinifyResult instanceof GeneratedResource);
+    assertEquals(".js", actualMinifyResult.getDescription());
+    assertEquals(".js", actualMinifyResult.getFilename());
+    assertArrayEquals(new byte[]{}, ((GeneratedResource) actualMinifyResult).getBytes());
+  }
+
+  /**
+   * Test {@link ResourceMinificationServiceImpl#minify(Resource, String)} with {@code originalResource}, {@code filename}.
+   * <ul>
+   *   <li>Then return {@link GeneratedResource#GeneratedResource()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourceMinificationServiceImpl#minify(Resource, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Resource ResourceMinificationServiceImpl.minify(Resource, String)"})
+  public void testMinifyWithOriginalResourceFilename_thenReturnGeneratedResource()
+      throws ResourceMinificationException {
+    // Arrange
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(true);
+    doNothing().when(javascriptMinificationService)
+        .minifyJs(Mockito.<String>any(), Mockito.<Reader>any(), Mockito.<Writer>any());
+    GeneratedResource originalResource = new GeneratedResource();
+
+    // Act
+    Resource actualMinifyResult = resourceMinificationServiceImpl.minify(originalResource, ".js");
+
+    // Assert
+    verify(javascriptMinificationService).minifyJs(eq(".js"), isA(Reader.class), isA(Writer.class));
+    verify(environment).getProperty(eq("minify.enabled"), isA(Class.class));
+    assertTrue(actualMinifyResult instanceof GeneratedResource);
+    assertEquals(originalResource, actualMinifyResult);
+  }
+
+  /**
+   * Test {@link ResourceMinificationServiceImpl#minify(Resource, String)} with {@code originalResource}, {@code filename}.
+   * <ul>
+   *   <li>When {@code foo.txt}.</li>
+   *   <li>Then return {@link GeneratedResource#GeneratedResource()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourceMinificationServiceImpl#minify(Resource, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Resource ResourceMinificationServiceImpl.minify(Resource, String)"})
+  public void testMinifyWithOriginalResourceFilename_whenFooTxt_thenReturnGeneratedResource() {
+    // Arrange
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(true);
+    GeneratedResource originalResource = new GeneratedResource();
+
+    // Act
+    Resource actualMinifyResult = resourceMinificationServiceImpl.minify(originalResource, "foo.txt");
+
+    // Assert
+    verify(environment).getProperty(eq("minify.enabled"), isA(Class.class));
+    assertSame(originalResource, actualMinifyResult);
+  }
+
+  /**
+   * Test {@link ResourceMinificationServiceImpl#minify(Resource)} with {@code originalResource}.
+   * <ul>
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class)} return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourceMinificationServiceImpl#minify(Resource)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Resource ResourceMinificationServiceImpl.minify(Resource)"})
+  public void testMinifyWithOriginalResource_givenEnvironmentGetPropertyReturnFalse() {
+    // Arrange
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(false);
+    GeneratedResource originalResource = new GeneratedResource();
+
+    // Act
+    Resource actualMinifyResult = resourceMinificationServiceImpl.minify(originalResource);
+
+    // Assert
+    verify(environment).getProperty(eq("minify.enabled"), isA(Class.class));
+    assertSame(originalResource, actualMinifyResult);
+  }
+
+  /**
+   * Test {@link ResourceMinificationServiceImpl#minify(Resource)} with {@code originalResource}.
+   * <ul>
+   *   <li>Given {@code foo.txt}.</li>
+   *   <li>When {@link Resource} {@link Resource#getFilename()} return {@code foo.txt}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourceMinificationServiceImpl#minify(Resource)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Resource ResourceMinificationServiceImpl.minify(Resource)"})
+  public void testMinifyWithOriginalResource_givenFooTxt_whenResourceGetFilenameReturnFooTxt() {
+    // Arrange
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(true);
+    Resource originalResource = mock(Resource.class);
+    when(originalResource.getFilename()).thenReturn("foo.txt");
+
+    // Act
+    Resource actualMinifyResult = resourceMinificationServiceImpl.minify(originalResource);
+
+    // Assert
+    verify(environment, atLeast(1)).getProperty(eq("minify.enabled"), isA(Class.class));
+    verify(originalResource, atLeast(1)).getFilename();
+    assertSame(originalResource, actualMinifyResult);
+  }
+
+  /**
+   * Test {@link ResourceMinificationServiceImpl#minify(Resource)} with {@code originalResource}.
+   * <ul>
+   *   <li>Given {@code null}.</li>
+   *   <li>When {@link Resource} {@link InputStreamSource#getInputStream()} return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourceMinificationServiceImpl#minify(Resource)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Resource ResourceMinificationServiceImpl.minify(Resource)"})
+  public void testMinifyWithOriginalResource_givenNull_whenResourceGetInputStreamReturnNull() throws IOException {
+    // Arrange
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(true);
+    Resource originalResource = mock(Resource.class);
+    when(originalResource.getInputStream()).thenReturn(null);
+    when(originalResource.getFilename()).thenReturn(".js");
+
+    // Act
+    Resource actualMinifyResult = resourceMinificationServiceImpl.minify(originalResource);
+
+    // Assert
+    verify(environment, atLeast(1)).getProperty(eq("minify.enabled"), isA(Class.class));
+    verify(originalResource).getInputStream();
+    verify(originalResource, atLeast(1)).getFilename();
+    assertSame(originalResource, actualMinifyResult);
+  }
+
+  /**
+   * Test {@link ResourceMinificationServiceImpl#minify(Resource)} with {@code originalResource}.
+   * <ul>
+   *   <li>Then return {@link GeneratedResource}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourceMinificationServiceImpl#minify(Resource)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Resource ResourceMinificationServiceImpl.minify(Resource)"})
+  public void testMinifyWithOriginalResource_thenReturnGeneratedResource()
+      throws IOException, ResourceMinificationException {
+    // Arrange
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(true);
+    doNothing().when(javascriptMinificationService)
+        .minifyJs(Mockito.<String>any(), Mockito.<Reader>any(), Mockito.<Writer>any());
+    Resource originalResource = mock(Resource.class);
+    when(originalResource.getInputStream()).thenReturn(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")));
+    when(originalResource.getFilename()).thenReturn(".js");
+
+    // Act
+    Resource actualMinifyResult = resourceMinificationServiceImpl.minify(originalResource);
+
+    // Assert
+    verify(javascriptMinificationService).minifyJs(eq(".js"), isA(Reader.class), isA(Writer.class));
+    verify(environment, atLeast(1)).getProperty(eq("minify.enabled"), isA(Class.class));
+    verify(originalResource).getInputStream();
+    verify(originalResource, atLeast(1)).getFilename();
+    assertTrue(actualMinifyResult instanceof GeneratedResource);
+    assertEquals(".js", actualMinifyResult.getDescription());
+    assertEquals(".js", actualMinifyResult.getFilename());
+    assertEquals(-1, actualMinifyResult.getInputStream().read(new byte[]{}));
+    assertArrayEquals(new byte[]{}, ((GeneratedResource) actualMinifyResult).getBytes());
+  }
+
+  /**
+   * Test {@link ResourceMinificationServiceImpl#minify(Resource)} with {@code originalResource}.
+   * <ul>
+   *   <li>When {@link GeneratedResource#GeneratedResource()}.</li>
+   *   <li>Then return {@link GeneratedResource#GeneratedResource()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourceMinificationServiceImpl#minify(Resource)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Resource ResourceMinificationServiceImpl.minify(Resource)"})
+  public void testMinifyWithOriginalResource_whenGeneratedResource_thenReturnGeneratedResource() {
+    // Arrange
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(true);
+    GeneratedResource originalResource = new GeneratedResource();
+
+    // Act
+    Resource actualMinifyResult = resourceMinificationServiceImpl.minify(originalResource);
+
+    // Assert
+    verify(environment).getProperty(eq("minify.enabled"), isA(Class.class));
+    assertSame(originalResource, actualMinifyResult);
   }
 
   /**
@@ -652,17 +790,13 @@ public class ResourceMinificationServiceImplDiffblueTest {
    *   <li>Then return {@code css}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ResourceMinificationServiceImpl#getFileType(Resource, String)}
+   * Method under test: {@link ResourceMinificationServiceImpl#getFileType(Resource, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String ResourceMinificationServiceImpl.getFileType(Resource, String)"})
   public void testGetFileType_whenCss_thenReturnCss() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ResourceMinificationServiceImpl resourceMinificationServiceImpl = new ResourceMinificationServiceImpl();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertEquals("css", resourceMinificationServiceImpl.getFileType(new GeneratedResource(), ".css"));
   }
 
@@ -673,17 +807,13 @@ public class ResourceMinificationServiceImplDiffblueTest {
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ResourceMinificationServiceImpl#getFileType(Resource, String)}
+   * Method under test: {@link ResourceMinificationServiceImpl#getFileType(Resource, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String ResourceMinificationServiceImpl.getFileType(Resource, String)"})
   public void testGetFileType_whenFooTxt_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ResourceMinificationServiceImpl resourceMinificationServiceImpl = new ResourceMinificationServiceImpl();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertNull(resourceMinificationServiceImpl.getFileType(new GeneratedResource(), "foo.txt"));
   }
 
@@ -694,146 +824,44 @@ public class ResourceMinificationServiceImplDiffblueTest {
    *   <li>Then return {@code js}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ResourceMinificationServiceImpl#getFileType(Resource, String)}
+   * Method under test: {@link ResourceMinificationServiceImpl#getFileType(Resource, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String ResourceMinificationServiceImpl.getFileType(Resource, String)"})
   public void testGetFileType_whenJs_thenReturnJs() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ResourceMinificationServiceImpl resourceMinificationServiceImpl = new ResourceMinificationServiceImpl();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertEquals("js", resourceMinificationServiceImpl.getFileType(new GeneratedResource(), ".js"));
   }
 
   /**
-   * Test
-   * {@link ResourceMinificationServiceImpl#isPreviouslyMinifiedFile(Resource)}.
+   * Test {@link ResourceMinificationServiceImpl#isPreviouslyMinifiedFile(Resource)}.
    * <p>
-   * Method under test:
-   * {@link ResourceMinificationServiceImpl#isPreviouslyMinifiedFile(Resource)}
+   * Method under test: {@link ResourceMinificationServiceImpl#isPreviouslyMinifiedFile(Resource)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ResourceMinificationServiceImpl.isPreviouslyMinifiedFile(Resource)"})
   public void testIsPreviouslyMinifiedFile() throws UnsupportedEncodingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ResourceMinificationServiceImpl resourceMinificationServiceImpl = new ResourceMinificationServiceImpl();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertFalse(
         resourceMinificationServiceImpl.isPreviouslyMinifiedFile(new ByteArrayResource("AXAXAXAX".getBytes("UTF-8"))));
   }
 
   /**
-   * Test
-   * {@link ResourceMinificationServiceImpl#isPreviouslyMinifiedFile(Resource)}.
-   * <p>
-   * Method under test:
-   * {@link ResourceMinificationServiceImpl#isPreviouslyMinifiedFile(Resource)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsPreviouslyMinifiedFile2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.BeanInstantiationException: Could not instantiate bean: messageSource defined in bl-common-applicationContext.xml
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageSource' defined in class path resource [bl-common-applicationContext.xml]: Initialization of bean failed; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:628)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:600)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.propertyeditors.CustomBooleanEditor.setAsText(CustomBooleanEditor.java:154)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
-    //       at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:590)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   See https://diff.blue/R026 to resolve this issue.
-
-    // Arrange
-    ResourceMinificationServiceImpl resourceMinificationServiceImpl2 = new ResourceMinificationServiceImpl();
-
-    // Act
-    resourceMinificationServiceImpl2.isPreviouslyMinifiedFile(new GeneratedResource());
-  }
-
-  /**
-   * Test
-   * {@link ResourceMinificationServiceImpl#isPreviouslyMinifiedFile(Resource)}.
+   * Test {@link ResourceMinificationServiceImpl#isPreviouslyMinifiedFile(Resource)}.
    * <ul>
    *   <li>Given {@code foo.txt}.</li>
    *   <li>Then calls {@link AbstractResource#getFilename()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ResourceMinificationServiceImpl#isPreviouslyMinifiedFile(Resource)}
+   * Method under test: {@link ResourceMinificationServiceImpl#isPreviouslyMinifiedFile(Resource)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ResourceMinificationServiceImpl.isPreviouslyMinifiedFile(Resource)"})
   public void testIsPreviouslyMinifiedFile_givenFooTxt_thenCallsGetFilename() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ResourceMinificationServiceImpl resourceMinificationServiceImpl = new ResourceMinificationServiceImpl();
     ByteArrayResource originalResource = mock(ByteArrayResource.class);
     when(originalResource.getFilename()).thenReturn("foo.txt");
 
@@ -847,47 +875,36 @@ public class ResourceMinificationServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ResourceMinificationServiceImpl#isPreviouslyMinifiedFile(Resource)}.
+   * Test {@link ResourceMinificationServiceImpl#isPreviouslyMinifiedFile(Resource)}.
    * <ul>
-   *   <li>When {@link ClassPathResource#ClassPathResource(String)} with
-   * {@code Path}.</li>
+   *   <li>When {@link ClassPathResource#ClassPathResource(String)} with {@code Path}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ResourceMinificationServiceImpl#isPreviouslyMinifiedFile(Resource)}
+   * Method under test: {@link ResourceMinificationServiceImpl#isPreviouslyMinifiedFile(Resource)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ResourceMinificationServiceImpl.isPreviouslyMinifiedFile(Resource)"})
   public void testIsPreviouslyMinifiedFile_whenClassPathResourceWithPath_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ResourceMinificationServiceImpl resourceMinificationServiceImpl = new ResourceMinificationServiceImpl();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertFalse(resourceMinificationServiceImpl.isPreviouslyMinifiedFile(new ClassPathResource("Path")));
   }
 
   /**
-   * Test
-   * {@link ResourceMinificationServiceImpl#isPreviouslyMinifiedFile(Resource)}.
+   * Test {@link ResourceMinificationServiceImpl#isPreviouslyMinifiedFile(Resource)}.
    * <ul>
    *   <li>When {@link GeneratedResource#GeneratedResource()}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ResourceMinificationServiceImpl#isPreviouslyMinifiedFile(Resource)}
+   * Method under test: {@link ResourceMinificationServiceImpl#isPreviouslyMinifiedFile(Resource)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ResourceMinificationServiceImpl.isPreviouslyMinifiedFile(Resource)"})
   public void testIsPreviouslyMinifiedFile_whenGeneratedResource_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ResourceMinificationServiceImpl resourceMinificationServiceImpl = new ResourceMinificationServiceImpl();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertFalse(resourceMinificationServiceImpl.isPreviouslyMinifiedFile(new GeneratedResource()));
   }
 }

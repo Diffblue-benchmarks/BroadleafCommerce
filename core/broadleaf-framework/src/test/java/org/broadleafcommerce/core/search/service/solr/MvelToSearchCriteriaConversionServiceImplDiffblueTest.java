@@ -1,109 +1,445 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.search.service.solr;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import org.broadleafcommerce.common.locale.domain.Locale;
+import org.broadleafcommerce.common.locale.domain.LocaleImpl;
+import org.broadleafcommerce.common.locale.service.LocaleService;
+import org.broadleafcommerce.core.catalog.service.CatalogService;
+import org.broadleafcommerce.core.search.dao.IndexFieldDao;
+import org.broadleafcommerce.core.search.domain.FieldImpl;
+import org.broadleafcommerce.core.search.domain.IndexFieldImpl;
 import org.broadleafcommerce.core.search.domain.IndexFieldType;
 import org.broadleafcommerce.core.search.domain.IndexFieldTypeImpl;
-import org.junit.Ignore;
+import org.broadleafcommerce.core.search.domain.SearchCriteria;
+import org.broadleafcommerce.core.search.domain.solr.FieldType;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
-  @Autowired
+  @Mock
+  private CatalogService catalogService;
+
+  @Mock
+  private IndexFieldDao indexFieldDao;
+
+  @Mock
+  private LocaleService localeService;
+
+  @InjectMocks
   private MvelToSearchCriteriaConversionServiceImpl mvelToSearchCriteriaConversionServiceImpl;
+
+  @Mock
+  private SolrHelperService solrHelperService;
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}.
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"SearchCriteria MvelToSearchCriteriaConversionServiceImpl.convert(String)"})
   public void testConvert() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.search.service.solr;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass14073 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.MvelToSearchCriteriaConversionServiceImpl mvelToSearchCriteriaConversionServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    when(indexFieldDao.getIndexFieldTypesByAbbreviationOrPropertyName(Mockito.<String>any()))
+        .thenThrow(new UnsupportedOperationException(
+            "CollectionUtils.intersection(product.?allParentCategoryIds,[\"9,\"9\",\"9\"\"]).size()>0"));
 
-    // Arrange and Act
-    (new MvelToSearchCriteriaConversionServiceImpl()).convert("Mvel Rule");
+    // Act and Assert
+    assertThrows(UnsupportedOperationException.class,
+        () -> mvelToSearchCriteriaConversionServiceImpl.convert("product."));
+    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName(eq(""));
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}.
+   * <p>
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"SearchCriteria MvelToSearchCriteriaConversionServiceImpl.convert(String)"})
+  public void testConvert2() {
+    // Arrange
+    IndexFieldImpl indexFieldImpl = mock(IndexFieldImpl.class);
+    when(indexFieldImpl.getField()).thenReturn(new FieldImpl());
+    IndexFieldTypeImpl indexFieldTypeImpl = mock(IndexFieldTypeImpl.class);
+    when(indexFieldTypeImpl.getFieldType()).thenThrow(new UnsupportedOperationException(
+        "CollectionUtils.intersection(product.?allParentCategoryIds,[\"9,\"9\",\"9\"\"]).size()>0"));
+    when(indexFieldTypeImpl.getIndexField()).thenReturn(indexFieldImpl);
+
+    ArrayList<IndexFieldType> indexFieldTypeList = new ArrayList<>();
+    indexFieldTypeList.add(indexFieldTypeImpl);
+    when(indexFieldDao.getIndexFieldTypesByAbbreviationOrPropertyName(Mockito.<String>any()))
+        .thenReturn(indexFieldTypeList);
+
+    // Act and Assert
+    assertThrows(UnsupportedOperationException.class,
+        () -> mvelToSearchCriteriaConversionServiceImpl.convert("product."));
+    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName(eq(""));
+    verify(indexFieldImpl, atLeast(1)).getField();
+    verify(indexFieldTypeImpl).getFieldType();
+    verify(indexFieldTypeImpl, atLeast(1)).getIndexField();
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}.
+   * <p>
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"SearchCriteria MvelToSearchCriteriaConversionServiceImpl.convert(String)"})
+  public void testConvert3() {
+    // Arrange
+    FieldImpl fieldImpl = mock(FieldImpl.class);
+    when(fieldImpl.getTranslatable()).thenReturn(true);
+    IndexFieldImpl indexFieldImpl = mock(IndexFieldImpl.class);
+    when(indexFieldImpl.getField()).thenReturn(fieldImpl);
+    IndexFieldTypeImpl indexFieldTypeImpl = mock(IndexFieldTypeImpl.class);
+    when(indexFieldTypeImpl.getIndexField()).thenReturn(indexFieldImpl);
+
+    ArrayList<IndexFieldType> indexFieldTypeList = new ArrayList<>();
+    indexFieldTypeList.add(indexFieldTypeImpl);
+    when(indexFieldDao.getIndexFieldTypesByAbbreviationOrPropertyName(Mockito.<String>any()))
+        .thenReturn(indexFieldTypeList);
+    when(localeService.findAllLocales()).thenThrow(new UnsupportedOperationException(
+        "CollectionUtils.intersection(product.?allParentCategoryIds,[\"9,\"9\",\"9\"\"]).size()>0"));
+
+    // Act and Assert
+    assertThrows(UnsupportedOperationException.class,
+        () -> mvelToSearchCriteriaConversionServiceImpl.convert("product."));
+    verify(localeService).findAllLocales();
+    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName(eq(""));
+    verify(fieldImpl).getTranslatable();
+    verify(indexFieldImpl).getField();
+    verify(indexFieldTypeImpl).getIndexField();
   }
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}.
    * <ul>
-   *   <li>When {@code Mvel Rule}.</li>
-   *   <li>Then throw {@link UnsupportedOperationException}.</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link LocaleImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}
    */
   @Test
-  public void testConvert_whenMvelRule_thenThrowUnsupportedOperationException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"SearchCriteria MvelToSearchCriteriaConversionServiceImpl.convert(String)"})
+  public void testConvert_givenArrayListAddLocaleImpl() {
+    // Arrange
+    FieldImpl fieldImpl = mock(FieldImpl.class);
+    when(fieldImpl.getTranslatable()).thenReturn(true);
+    when(fieldImpl.getAbbreviation()).thenReturn("Abbreviation");
+    IndexFieldImpl indexFieldImpl = mock(IndexFieldImpl.class);
+    when(indexFieldImpl.getField()).thenReturn(fieldImpl);
+    IndexFieldTypeImpl indexFieldTypeImpl = mock(IndexFieldTypeImpl.class);
+    when(indexFieldTypeImpl.getFieldType()).thenReturn(FieldType.BOOLEAN);
+    when(indexFieldTypeImpl.getIndexField()).thenReturn(indexFieldImpl);
 
-    // Arrange, Act and Assert
-    assertThrows(UnsupportedOperationException.class,
-        () -> (new MvelToSearchCriteriaConversionServiceImpl()).convert("Mvel Rule"));
+    ArrayList<IndexFieldType> indexFieldTypeList = new ArrayList<>();
+    indexFieldTypeList.add(indexFieldTypeImpl);
+    when(indexFieldDao.getIndexFieldTypesByAbbreviationOrPropertyName(Mockito.<String>any()))
+        .thenReturn(indexFieldTypeList);
+
+    ArrayList<Locale> localeList = new ArrayList<>();
+    localeList.add(new LocaleImpl());
+    when(localeService.findAllLocales()).thenReturn(localeList);
+
+    // Act
+    SearchCriteria actualConvertResult = mvelToSearchCriteriaConversionServiceImpl.convert("product.");
+
+    // Assert
+    verify(localeService).findAllLocales();
+    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName(eq(""));
+    verify(fieldImpl).getAbbreviation();
+    verify(fieldImpl).getTranslatable();
+    verify(indexFieldImpl, atLeast(1)).getField();
+    verify(indexFieldTypeImpl).getFieldType();
+    verify(indexFieldTypeImpl, atLeast(1)).getIndexField();
+    Collection<String> filterQueries = actualConvertResult.getFilterQueries();
+    assertEquals(1, filterQueries.size());
+    assertTrue(filterQueries instanceof List);
+    assertEquals("(Abbreviation_b:\"\")", ((List<String>) filterQueries).get(0));
+    assertNull(actualConvertResult.getStartIndex());
+    assertNull(actualConvertResult.getQuery());
+    assertNull(actualConvertResult.getRequestHandler());
+    assertNull(actualConvertResult.getSortQuery());
+    assertNull(actualConvertResult.getCategory());
+    assertEquals(1, actualConvertResult.getPage().intValue());
+    assertFalse(actualConvertResult.getSearchExplicitCategory());
+    assertTrue(actualConvertResult.getFilterCriteria().isEmpty());
+    assertEquals(Integer.MAX_VALUE, actualConvertResult.getPageSize().intValue());
   }
 
   /**
-   * Test {@link MvelToSearchCriteriaConversionServiceImpl#isProductRule(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}.
+   * <ul>
+   *   <li>Given {@link FieldImpl} {@link FieldImpl#getTranslatable()} return {@code null}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#isProductRule(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsProductRule() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.search.service.solr;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass14318 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.MvelToSearchCriteriaConversionServiceImpl mvelToSearchCriteriaConversionServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"SearchCriteria MvelToSearchCriteriaConversionServiceImpl.convert(String)"})
+  public void testConvert_givenFieldImplGetTranslatableReturnNull() {
+    // Arrange
+    FieldImpl fieldImpl = mock(FieldImpl.class);
+    when(fieldImpl.getTranslatable()).thenReturn(null);
+    when(fieldImpl.getAbbreviation()).thenReturn("Abbreviation");
+    IndexFieldImpl indexFieldImpl = mock(IndexFieldImpl.class);
+    when(indexFieldImpl.getField()).thenReturn(fieldImpl);
+    IndexFieldTypeImpl indexFieldTypeImpl = mock(IndexFieldTypeImpl.class);
+    when(indexFieldTypeImpl.getFieldType()).thenReturn(FieldType.BOOLEAN);
+    when(indexFieldTypeImpl.getIndexField()).thenReturn(indexFieldImpl);
 
-    // Arrange and Act
-    (new MvelToSearchCriteriaConversionServiceImpl()).isProductRule("Rule");
+    ArrayList<IndexFieldType> indexFieldTypeList = new ArrayList<>();
+    indexFieldTypeList.add(indexFieldTypeImpl);
+    when(indexFieldDao.getIndexFieldTypesByAbbreviationOrPropertyName(Mockito.<String>any()))
+        .thenReturn(indexFieldTypeList);
+
+    // Act
+    SearchCriteria actualConvertResult = mvelToSearchCriteriaConversionServiceImpl.convert("product.");
+
+    // Assert
+    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName(eq(""));
+    verify(fieldImpl).getAbbreviation();
+    verify(fieldImpl).getTranslatable();
+    verify(indexFieldImpl, atLeast(1)).getField();
+    verify(indexFieldTypeImpl).getFieldType();
+    verify(indexFieldTypeImpl, atLeast(1)).getIndexField();
+    Collection<String> filterQueries = actualConvertResult.getFilterQueries();
+    assertEquals(1, filterQueries.size());
+    assertTrue(filterQueries instanceof List);
+    assertEquals("(Abbreviation_b:\"\")", ((List<String>) filterQueries).get(0));
+    assertNull(actualConvertResult.getStartIndex());
+    assertNull(actualConvertResult.getQuery());
+    assertNull(actualConvertResult.getRequestHandler());
+    assertNull(actualConvertResult.getSortQuery());
+    assertNull(actualConvertResult.getCategory());
+    assertEquals(1, actualConvertResult.getPage().intValue());
+    assertFalse(actualConvertResult.getSearchExplicitCategory());
+    assertTrue(actualConvertResult.getFilterCriteria().isEmpty());
+    assertEquals(Integer.MAX_VALUE, actualConvertResult.getPageSize().intValue());
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}.
+   * <ul>
+   *   <li>Given {@link IndexFieldDao}.</li>
+   *   <li>When {@code Mvel Rule}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"SearchCriteria MvelToSearchCriteriaConversionServiceImpl.convert(String)"})
+  public void testConvert_givenIndexFieldDao_whenMvelRule() {
+    // Arrange, Act and Assert
+    assertThrows(UnsupportedOperationException.class,
+        () -> mvelToSearchCriteriaConversionServiceImpl.convert("Mvel Rule"));
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}.
+   * <ul>
+   *   <li>Given {@link SolrHelperService}.</li>
+   *   <li>When a string.</li>
+   *   <li>Then return FilterQueries Empty.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"SearchCriteria MvelToSearchCriteriaConversionServiceImpl.convert(String)"})
+  public void testConvert_givenSolrHelperService_whenAString_thenReturnFilterQueriesEmpty() {
+    // Arrange
+    when(indexFieldDao.getIndexFieldTypesByAbbreviationOrPropertyName(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+
+    // Act
+    SearchCriteria actualConvertResult = mvelToSearchCriteriaConversionServiceImpl.convert(
+        "CollectionUtils.intersection(product.?allParentCategoryIds,[\"9,\"9\",\"9\"\"]).size()>0CollectionUtils"
+            + ".intersection(product.?allParentCategoryIds,[\"9,\"9\",\"9\"\"]).size()>0");
+
+    // Assert
+    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName(eq("allParentCategoryIds"));
+    Collection<String> filterQueries = actualConvertResult.getFilterQueries();
+    assertTrue(filterQueries instanceof List);
+    assertNull(actualConvertResult.getStartIndex());
+    assertNull(actualConvertResult.getQuery());
+    assertNull(actualConvertResult.getRequestHandler());
+    assertNull(actualConvertResult.getSortQuery());
+    assertNull(actualConvertResult.getCategory());
+    assertEquals(1, actualConvertResult.getPage().intValue());
+    assertFalse(actualConvertResult.getSearchExplicitCategory());
+    assertTrue(filterQueries.isEmpty());
+    assertTrue(actualConvertResult.getFilterCriteria().isEmpty());
+    assertEquals(Integer.MAX_VALUE, actualConvertResult.getPageSize().intValue());
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}.
+   * <ul>
+   *   <li>Given {@link SolrHelperService}.</li>
+   *   <li>When {@code product.}.</li>
+   *   <li>Then return FilterQueries Empty.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"SearchCriteria MvelToSearchCriteriaConversionServiceImpl.convert(String)"})
+  public void testConvert_givenSolrHelperService_whenProduct_thenReturnFilterQueriesEmpty() {
+    // Arrange
+    when(indexFieldDao.getIndexFieldTypesByAbbreviationOrPropertyName(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+
+    // Act
+    SearchCriteria actualConvertResult = mvelToSearchCriteriaConversionServiceImpl.convert("product.");
+
+    // Assert
+    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName(eq(""));
+    Collection<String> filterQueries = actualConvertResult.getFilterQueries();
+    assertTrue(filterQueries instanceof List);
+    assertNull(actualConvertResult.getStartIndex());
+    assertNull(actualConvertResult.getQuery());
+    assertNull(actualConvertResult.getRequestHandler());
+    assertNull(actualConvertResult.getSortQuery());
+    assertNull(actualConvertResult.getCategory());
+    assertEquals(1, actualConvertResult.getPage().intValue());
+    assertFalse(actualConvertResult.getSearchExplicitCategory());
+    assertTrue(filterQueries.isEmpty());
+    assertTrue(actualConvertResult.getFilterCriteria().isEmpty());
+    assertEquals(Integer.MAX_VALUE, actualConvertResult.getPageSize().intValue());
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}.
+   * <ul>
+   *   <li>Then return FilterQueries first is {@code Explicit Category Field Name:("1,1,1")}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"SearchCriteria MvelToSearchCriteriaConversionServiceImpl.convert(String)"})
+  public void testConvert_thenReturnFilterQueriesFirstIsExplicitCategoryFieldName111() {
+    // Arrange
+    when(solrHelperService.getCategoryId(Mockito.<Long>any())).thenReturn(1L);
+    when(solrHelperService.getExplicitCategoryFieldName()).thenReturn("Explicit Category Field Name");
+
+    // Act
+    SearchCriteria actualConvertResult = mvelToSearchCriteriaConversionServiceImpl
+        .convert("CollectionUtils.intersection(product.?allParentCategoryIds,[\"9,\"9\",\"9\"\"]).size()>0");
+
+    // Assert
+    verify(solrHelperService, atLeast(1)).getCategoryId(eq(9L));
+    verify(solrHelperService).getExplicitCategoryFieldName();
+    Collection<String> filterQueries = actualConvertResult.getFilterQueries();
+    assertEquals(1, filterQueries.size());
+    assertTrue(filterQueries instanceof List);
+    assertEquals("Explicit Category Field Name:(\"1,1,1\")", ((List<String>) filterQueries).get(0));
+    assertNull(actualConvertResult.getStartIndex());
+    assertNull(actualConvertResult.getQuery());
+    assertNull(actualConvertResult.getRequestHandler());
+    assertNull(actualConvertResult.getSortQuery());
+    assertNull(actualConvertResult.getCategory());
+    assertEquals(1, actualConvertResult.getPage().intValue());
+    assertFalse(actualConvertResult.getSearchExplicitCategory());
+    assertTrue(actualConvertResult.getFilterCriteria().isEmpty());
+    assertEquals(Integer.MAX_VALUE, actualConvertResult.getPageSize().intValue());
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}.
+   * <ul>
+   *   <li>Then return FilterQueries first is {@code (null_b:"")}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"SearchCriteria MvelToSearchCriteriaConversionServiceImpl.convert(String)"})
+  public void testConvert_thenReturnFilterQueriesFirstIsNullB() {
+    // Arrange
+    IndexFieldImpl indexFieldImpl = mock(IndexFieldImpl.class);
+    when(indexFieldImpl.getField()).thenReturn(new FieldImpl());
+    IndexFieldTypeImpl indexFieldTypeImpl = mock(IndexFieldTypeImpl.class);
+    when(indexFieldTypeImpl.getFieldType()).thenReturn(FieldType.BOOLEAN);
+    when(indexFieldTypeImpl.getIndexField()).thenReturn(indexFieldImpl);
+
+    ArrayList<IndexFieldType> indexFieldTypeList = new ArrayList<>();
+    indexFieldTypeList.add(indexFieldTypeImpl);
+    when(indexFieldDao.getIndexFieldTypesByAbbreviationOrPropertyName(Mockito.<String>any()))
+        .thenReturn(indexFieldTypeList);
+
+    // Act
+    SearchCriteria actualConvertResult = mvelToSearchCriteriaConversionServiceImpl.convert("product.");
+
+    // Assert
+    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName(eq(""));
+    verify(indexFieldImpl, atLeast(1)).getField();
+    verify(indexFieldTypeImpl).getFieldType();
+    verify(indexFieldTypeImpl, atLeast(1)).getIndexField();
+    Collection<String> filterQueries = actualConvertResult.getFilterQueries();
+    assertEquals(1, filterQueries.size());
+    assertTrue(filterQueries instanceof List);
+    assertEquals("(null_b:\"\")", ((List<String>) filterQueries).get(0));
+    assertNull(actualConvertResult.getStartIndex());
+    assertNull(actualConvertResult.getQuery());
+    assertNull(actualConvertResult.getRequestHandler());
+    assertNull(actualConvertResult.getSortQuery());
+    assertNull(actualConvertResult.getCategory());
+    assertEquals(1, actualConvertResult.getPage().intValue());
+    assertFalse(actualConvertResult.getSearchExplicitCategory());
+    assertTrue(actualConvertResult.getFilterCriteria().isEmpty());
+    assertEquals(Integer.MAX_VALUE, actualConvertResult.getPageSize().intValue());
   }
 
   /**
@@ -113,15 +449,14 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#isProductRule(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#isProductRule(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MvelToSearchCriteriaConversionServiceImpl.isProductRule(String)"})
   public void testIsProductRule_whenProduct_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertTrue((new MvelToSearchCriteriaConversionServiceImpl()).isProductRule("product."));
+    assertTrue(mvelToSearchCriteriaConversionServiceImpl.isProductRule("product."));
   }
 
   /**
@@ -131,68 +466,30 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#isProductRule(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#isProductRule(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MvelToSearchCriteriaConversionServiceImpl.isProductRule(String)"})
   public void testIsProductRule_whenRule_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertFalse((new MvelToSearchCriteriaConversionServiceImpl()).isProductRule("Rule"));
+    assertFalse(mvelToSearchCriteriaConversionServiceImpl.isProductRule("Rule"));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#isCustomFieldIndexed(List)}.
-   * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#isCustomFieldIndexed(List)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsCustomFieldIndexed() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.search.service.solr;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass14313 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.MvelToSearchCriteriaConversionServiceImpl mvelToSearchCriteriaConversionServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    MvelToSearchCriteriaConversionServiceImpl mvelToSearchCriteriaConversionServiceImpl2 = new MvelToSearchCriteriaConversionServiceImpl();
-
-    // Act
-    mvelToSearchCriteriaConversionServiceImpl2.isCustomFieldIndexed(new ArrayList<>());
-  }
-
-  /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#isCustomFieldIndexed(List)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#isCustomFieldIndexed(List)}.
    * <ul>
    *   <li>Given {@link IndexFieldTypeImpl} (default constructor).</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#isCustomFieldIndexed(List)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#isCustomFieldIndexed(List)}
    */
   @Test
-  public void testIsCustomFieldIndexed_givenIndexFieldTypeImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MvelToSearchCriteriaConversionServiceImpl.isCustomFieldIndexed(List)"})
+  public void testIsCustomFieldIndexed_givenIndexFieldTypeImpl_thenReturnTrue() {
     // Arrange
-    MvelToSearchCriteriaConversionServiceImpl mvelToSearchCriteriaConversionServiceImpl = new MvelToSearchCriteriaConversionServiceImpl();
-
     ArrayList<IndexFieldType> indexFieldTypes = new ArrayList<>();
     indexFieldTypes.add(new IndexFieldTypeImpl());
 
@@ -201,22 +498,19 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#isCustomFieldIndexed(List)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#isCustomFieldIndexed(List)}.
    * <ul>
    *   <li>Given {@link IndexFieldTypeImpl} (default constructor).</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#isCustomFieldIndexed(List)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#isCustomFieldIndexed(List)}
    */
   @Test
-  public void testIsCustomFieldIndexed_givenIndexFieldTypeImpl2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MvelToSearchCriteriaConversionServiceImpl.isCustomFieldIndexed(List)"})
+  public void testIsCustomFieldIndexed_givenIndexFieldTypeImpl_thenReturnTrue2() {
     // Arrange
-    MvelToSearchCriteriaConversionServiceImpl mvelToSearchCriteriaConversionServiceImpl = new MvelToSearchCriteriaConversionServiceImpl();
-
     ArrayList<IndexFieldType> indexFieldTypes = new ArrayList<>();
     indexFieldTypes.add(new IndexFieldTypeImpl());
     indexFieldTypes.add(new IndexFieldTypeImpl());
@@ -226,261 +520,132 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#isCustomFieldIndexed(List)}.
-   * <ul>
-   *   <li>Given {@link IndexFieldTypeImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#isCustomFieldIndexed(List)}
-   */
-  @Test
-  public void testIsCustomFieldIndexed_givenIndexFieldTypeImpl3() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    MvelToSearchCriteriaConversionServiceImpl mvelToSearchCriteriaConversionServiceImpl = new MvelToSearchCriteriaConversionServiceImpl();
-
-    ArrayList<IndexFieldType> indexFieldTypes = new ArrayList<>();
-    indexFieldTypes.add(mock(IndexFieldTypeImpl.class));
-
-    // Act and Assert
-    assertTrue(mvelToSearchCriteriaConversionServiceImpl.isCustomFieldIndexed(indexFieldTypes));
-  }
-
-  /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#isCustomFieldIndexed(List)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#isCustomFieldIndexed(List)}.
    * <ul>
    *   <li>When {@link ArrayList#ArrayList()}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#isCustomFieldIndexed(List)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#isCustomFieldIndexed(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MvelToSearchCriteriaConversionServiceImpl.isCustomFieldIndexed(List)"})
   public void testIsCustomFieldIndexed_whenArrayList_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    MvelToSearchCriteriaConversionServiceImpl mvelToSearchCriteriaConversionServiceImpl = new MvelToSearchCriteriaConversionServiceImpl();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertFalse(mvelToSearchCriteriaConversionServiceImpl.isCustomFieldIndexed(new ArrayList<>()));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#isCustomFieldIndexed(List)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#isCustomFieldIndexed(List)}.
    * <ul>
    *   <li>When {@code null}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#isCustomFieldIndexed(List)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#isCustomFieldIndexed(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MvelToSearchCriteriaConversionServiceImpl.isCustomFieldIndexed(List)"})
   public void testIsCustomFieldIndexed_whenNull_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertFalse((new MvelToSearchCriteriaConversionServiceImpl()).isCustomFieldIndexed(null));
+    assertFalse(mvelToSearchCriteriaConversionServiceImpl.isCustomFieldIndexed(null));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#isCategoryTargetingRule(String)}.
-   * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#isCategoryTargetingRule(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsCategoryTargetingRule() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.search.service.solr;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass14283 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.MvelToSearchCriteriaConversionServiceImpl mvelToSearchCriteriaConversionServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new MvelToSearchCriteriaConversionServiceImpl()).isCategoryTargetingRule("Mvel Rule");
-  }
-
-  /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#isCategoryTargetingRule(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#isCategoryTargetingRule(String)}.
    * <ul>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#isCategoryTargetingRule(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#isCategoryTargetingRule(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MvelToSearchCriteriaConversionServiceImpl.isCategoryTargetingRule(String)"})
   public void testIsCategoryTargetingRule_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertTrue((new MvelToSearchCriteriaConversionServiceImpl()).isCategoryTargetingRule(
+    assertTrue(mvelToSearchCriteriaConversionServiceImpl.isCategoryTargetingRule(
         "CollectionUtils.intersection(product.?allParentCategoryIds,[\"9,\"9\",\"9\"\"]).size()>0"));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#isCategoryTargetingRule(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#isCategoryTargetingRule(String)}.
    * <ul>
    *   <li>When {@code Mvel Rule}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#isCategoryTargetingRule(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#isCategoryTargetingRule(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MvelToSearchCriteriaConversionServiceImpl.isCategoryTargetingRule(String)"})
   public void testIsCategoryTargetingRule_whenMvelRule_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertFalse((new MvelToSearchCriteriaConversionServiceImpl()).isCategoryTargetingRule("Mvel Rule"));
+    assertFalse(mvelToSearchCriteriaConversionServiceImpl.isCategoryTargetingRule("Mvel Rule"));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getCategoryIds(String)}.
-   * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getCategoryIds(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetCategoryIds() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.search.service.solr;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass14163 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.MvelToSearchCriteriaConversionServiceImpl mvelToSearchCriteriaConversionServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new MvelToSearchCriteriaConversionServiceImpl()).getCategoryIds("Mvel Rule");
-  }
-
-  /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getCategoryIds(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#getCategoryIds(String)}.
    * <ul>
    *   <li>When {@code 42"]}.</li>
    *   <li>Then return array of {@link Long} with two.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getCategoryIds(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#getCategoryIds(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long[] MvelToSearchCriteriaConversionServiceImpl.getCategoryIds(String)"})
   public void testGetCategoryIds_when42_thenReturnArrayOfLongWithTwo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertArrayEquals(new Long[]{2L}, (new MvelToSearchCriteriaConversionServiceImpl()).getCategoryIds("42\"]"));
+    assertArrayEquals(new Long[]{2L}, mvelToSearchCriteriaConversionServiceImpl.getCategoryIds("42\"]"));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}.
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Collection MvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(String)"})
   public void testConvertRuleToFilters() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.search.service.solr;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass14133 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.MvelToSearchCriteriaConversionServiceImpl mvelToSearchCriteriaConversionServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    when(solrHelperService.getCategoryId(Mockito.<Long>any())).thenReturn(1L);
+    when(solrHelperService.getExplicitCategoryFieldName()).thenReturn("Explicit Category Field Name");
 
-    // Arrange and Act
-    (new MvelToSearchCriteriaConversionServiceImpl()).convertRuleToFilters("Match Rule");
-  }
-
-  /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}.
-   * <ul>
-   *   <li>When {@code &&}.</li>
-   *   <li>Then return Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}
-   */
-  @Test
-  public void testConvertRuleToFilters_whenAmpersandAmpersand_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange and Act
-    Collection<String> actualConvertRuleToFiltersResult = (new MvelToSearchCriteriaConversionServiceImpl())
-        .convertRuleToFilters("&&");
+    // Act
+    Collection<String> actualConvertRuleToFiltersResult = mvelToSearchCriteriaConversionServiceImpl
+        .convertRuleToFilters(
+            "CollectionUtils.intersection(product.?allParentCategoryIds,[\"9,\"9\",\"9\"\"]).size()>0||");
 
     // Assert
+    verify(solrHelperService, atLeast(1)).getCategoryId(eq(9L));
+    verify(solrHelperService).getExplicitCategoryFieldName();
     assertTrue(actualConvertRuleToFiltersResult instanceof List);
-    assertTrue(actualConvertRuleToFiltersResult.isEmpty());
+    assertEquals(1, actualConvertRuleToFiltersResult.size());
+    assertEquals("Explicit Category Field Name:(\"1,1,1\")", ((List<String>) actualConvertRuleToFiltersResult).get(0));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}.
    * <ul>
+   *   <li>Given {@link IndexFieldDao}.</li>
    *   <li>When empty string.</li>
    *   <li>Then return Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}
    */
   @Test
-  public void testConvertRuleToFilters_whenEmptyString_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Collection MvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(String)"})
+  public void testConvertRuleToFilters_givenIndexFieldDao_whenEmptyString_thenReturnEmpty() {
     // Arrange and Act
-    Collection<String> actualConvertRuleToFiltersResult = (new MvelToSearchCriteriaConversionServiceImpl())
+    Collection<String> actualConvertRuleToFiltersResult = mvelToSearchCriteriaConversionServiceImpl
         .convertRuleToFilters("");
 
     // Assert
@@ -489,22 +654,19 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}.
    * <ul>
-   *   <li>When {@code ||}.</li>
-   *   <li>Then return size is one.</li>
+   *   <li>Then return first is empty string.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}
    */
   @Test
-  public void testConvertRuleToFilters_whenVerticalLineVerticalLine_thenReturnSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Collection MvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(String)"})
+  public void testConvertRuleToFilters_thenReturnFirstIsEmptyString() {
     // Arrange and Act
-    Collection<String> actualConvertRuleToFiltersResult = (new MvelToSearchCriteriaConversionServiceImpl())
+    Collection<String> actualConvertRuleToFiltersResult = mvelToSearchCriteriaConversionServiceImpl
         .convertRuleToFilters("||");
 
     // Assert
@@ -514,982 +676,1098 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
-   * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
-   */
-  @Test
-  public void testConvertFieldName() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\"))", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("?\"))"));
-    assertEquals("\\\"))", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("\\?\"))"));
-    assertEquals("\"))", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("\"))?"));
-    assertEquals("\"))\\", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("\"))\\?"));
-  }
-
-  /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
-   * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testConvertFieldName2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.search.service.solr;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass14103 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.MvelToSearchCriteriaConversionServiceImpl mvelToSearchCriteriaConversionServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("Field Name");
-  }
-
-  /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}.
    * <ul>
-   *   <li>Then return {@code *\}.</li>
+   *   <li>Then return first is {@code Explicit Category Field Name:("1,1,1")}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}
    */
   @Test
-  public void testConvertFieldName_thenReturnAsteriskBackslash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Collection MvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(String)"})
+  public void testConvertRuleToFilters_thenReturnFirstIsExplicitCategoryFieldName111() {
+    // Arrange
+    when(solrHelperService.getCategoryId(Mockito.<Long>any())).thenReturn(1L);
+    when(solrHelperService.getExplicitCategoryFieldName()).thenReturn("Explicit Category Field Name");
 
-    // Arrange, Act and Assert
-    assertEquals("*\\", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("*\\?"));
+    // Act
+    Collection<String> actualConvertRuleToFiltersResult = mvelToSearchCriteriaConversionServiceImpl
+        .convertRuleToFilters(
+            "CollectionUtils.intersection(product.?allParentCategoryIds,[\"9,\"9\",\"9\"\"]).size()>0");
+
+    // Assert
+    verify(solrHelperService, atLeast(1)).getCategoryId(eq(9L));
+    verify(solrHelperService).getExplicitCategoryFieldName();
+    assertTrue(actualConvertRuleToFiltersResult instanceof List);
+    assertEquals(1, actualConvertRuleToFiltersResult.size());
+    assertEquals("Explicit Category Field Name:(\"1,1,1\")", ((List<String>) actualConvertRuleToFiltersResult).get(0));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}.
+   * <ul>
+   *   <li>Then throw {@link UnsupportedOperationException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Collection MvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(String)"})
+  public void testConvertRuleToFilters_thenThrowUnsupportedOperationException() {
+    // Arrange
+    when(solrHelperService.getExplicitCategoryFieldName()).thenThrow(new UnsupportedOperationException(
+        "CollectionUtils.intersection(product.?allParentCategoryIds,[\"9,\"9\",\"9\"\"]).size()>0"));
+
+    // Act and Assert
+    assertThrows(UnsupportedOperationException.class,
+        () -> mvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(
+            "CollectionUtils.intersection(product.?allParentCategoryIds,[\"9,\"9\",\"9\"\"]).size()>0"));
+    verify(solrHelperService).getExplicitCategoryFieldName();
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}.
+   * <ul>
+   *   <li>When a string.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Collection MvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(String)"})
+  public void testConvertRuleToFilters_whenAString() {
+    // Arrange
+    when(indexFieldDao.getIndexFieldTypesByAbbreviationOrPropertyName(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+
+    // Act
+    Collection<String> actualConvertRuleToFiltersResult = mvelToSearchCriteriaConversionServiceImpl
+        .convertRuleToFilters(
+            "CollectionUtils.intersection(product.?allParentCategoryIds,[\"9,\"9\",\"9\"\"]).size()>0CollectionUtils"
+                + ".intersection(product.?allParentCategoryIds,[\"9,\"9\",\"9\"\"]).size()>0");
+
+    // Assert
+    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName(eq("allParentCategoryIds"));
+    assertTrue(actualConvertRuleToFiltersResult instanceof List);
+    assertTrue(actualConvertRuleToFiltersResult.isEmpty());
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}.
+   * <ul>
+   *   <li>When {@link MvelToSearchCriteriaConversionServiceImpl#CATEGORY_FORMAT_REGEX}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Collection MvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(String)"})
+  public void testConvertRuleToFilters_whenCategory_format_regex() {
+    // Arrange
+    when(indexFieldDao.getIndexFieldTypesByAbbreviationOrPropertyName(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+
+    // Act
+    Collection<String> actualConvertRuleToFiltersResult = mvelToSearchCriteriaConversionServiceImpl
+        .convertRuleToFilters(MvelToSearchCriteriaConversionServiceImpl.CATEGORY_FORMAT_REGEX);
+
+    // Assert
+    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName(eq("product\\.\\allParentCategoryIds"));
+    assertTrue(actualConvertRuleToFiltersResult instanceof List);
+    assertTrue(actualConvertRuleToFiltersResult.isEmpty());
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}.
+   * <ul>
+   *   <li>When {@code :("}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Collection MvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(String)"})
+  public void testConvertRuleToFilters_whenColonLeftParenthesisQuotationMark() {
+    // Arrange
+    when(indexFieldDao.getIndexFieldTypesByAbbreviationOrPropertyName(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+
+    // Act
+    Collection<String> actualConvertRuleToFiltersResult = mvelToSearchCriteriaConversionServiceImpl
+        .convertRuleToFilters(":(\"");
+
+    // Assert
+    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName(eq(":(\""));
+    assertTrue(actualConvertRuleToFiltersResult instanceof List);
+    assertTrue(actualConvertRuleToFiltersResult.isEmpty());
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}.
+   * <ul>
+   *   <li>When {@code !}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Collection MvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(String)"})
+  public void testConvertRuleToFilters_whenExclamationMark() {
+    // Arrange
+    when(indexFieldDao.getIndexFieldTypesByAbbreviationOrPropertyName(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+
+    // Act
+    Collection<String> actualConvertRuleToFiltersResult = mvelToSearchCriteriaConversionServiceImpl
+        .convertRuleToFilters("!");
+
+    // Assert
+    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName(eq("!"));
+    assertTrue(actualConvertRuleToFiltersResult instanceof List);
+    assertTrue(actualConvertRuleToFiltersResult.isEmpty());
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}.
+   * <ul>
+   *   <li>When {@code !=}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Collection MvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(String)"})
+  public void testConvertRuleToFilters_whenExclamationMarkEqualsSign() {
+    // Arrange
+    when(indexFieldDao.getIndexFieldTypesByAbbreviationOrPropertyName(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+
+    // Act
+    Collection<String> actualConvertRuleToFiltersResult = mvelToSearchCriteriaConversionServiceImpl
+        .convertRuleToFilters("!=");
+
+    // Assert
+    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName(eq("!"));
+    assertTrue(actualConvertRuleToFiltersResult instanceof List);
+    assertTrue(actualConvertRuleToFiltersResult.isEmpty());
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}.
+   * <ul>
+   *   <li>When {@code !="}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Collection MvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(String)"})
+  public void testConvertRuleToFilters_whenExclamationMarkEqualsSignQuotationMark() {
+    // Arrange
+    when(indexFieldDao.getIndexFieldTypesByAbbreviationOrPropertyName(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+
+    // Act
+    Collection<String> actualConvertRuleToFiltersResult = mvelToSearchCriteriaConversionServiceImpl
+        .convertRuleToFilters("!=\"");
+
+    // Assert
+    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName(eq("!"));
+    assertTrue(actualConvertRuleToFiltersResult instanceof List);
+    assertTrue(actualConvertRuleToFiltersResult.isEmpty());
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}.
+   * <ul>
+   *   <li>When {@code Match Rule}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Collection MvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(String)"})
+  public void testConvertRuleToFilters_whenMatchRule() {
+    // Arrange
+    when(indexFieldDao.getIndexFieldTypesByAbbreviationOrPropertyName(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+
+    // Act
+    Collection<String> actualConvertRuleToFiltersResult = mvelToSearchCriteriaConversionServiceImpl
+        .convertRuleToFilters("Match Rule");
+
+    // Assert
+    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName(eq("Match Rule"));
+    assertTrue(actualConvertRuleToFiltersResult instanceof List);
+    assertTrue(actualConvertRuleToFiltersResult.isEmpty());
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * <p>
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
+  public void testConvertFieldName() {
+    // Arrange, Act and Assert
+    assertEquals("\\\"))", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("\\?\"))"));
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
    * <ul>
    *   <li>Then return {@code \*}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_thenReturnBackslashAsterisk() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("\\*", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("\\?*"));
+    assertEquals("\\*", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("\\?*"));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
    * <ul>
    *   <li>Then return {@code \\}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_thenReturnBackslashBackslash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("\\\\", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("\\?\\?"));
+    assertEquals("\\\\", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("\\?\\?"));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
    * <ul>
    *   <li>Then return {@code \:("}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_thenReturnBackslashColonLeftParenthesisQuotationMark() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("\\:(\"", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("\\?:(\""));
+    assertEquals("\\:(\"", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("\\?:(\""));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
    * <ul>
    *   <li>Then return {@code \=}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_thenReturnBackslashEqualsSign() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("\\=", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("\\?="));
+    assertEquals("\\=", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("\\?="));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
    * <ul>
    *   <li>Then return {@code \!}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_thenReturnBackslashExclamationMark() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("\\!", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("\\?!"));
+    assertEquals("\\!", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("\\?!"));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
    * <ul>
    *   <li>Then return {@code \!=}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_thenReturnBackslashExclamationMarkEqualsSign() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("\\!=", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("\\?!="));
+    assertEquals("\\!=", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("\\?!="));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
    * <ul>
    *   <li>Then return {@code \!="}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_thenReturnBackslashExclamationMarkEqualsSignQuotationMark() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("\\!=\"", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("\\?!=\""));
+    assertEquals("\\!=\"", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("\\?!=\""));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
    * <ul>
    *   <li>Then return {@code \"}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_thenReturnBackslashQuotationMark() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("\\\"", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("\\?\""));
+    assertEquals("\\\"", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("\\?\""));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
    * <ul>
    *   <li>Then return {@code \","}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_thenReturnBackslashQuotationMarkCommaQuotationMark() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("\\\",\"", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("\\?\",\""));
+    assertEquals("\\\",\"", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("\\?\",\""));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
    * <ul>
    *   <li>Then return {@code \")}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_thenReturnBackslashQuotationMarkRightParenthesis() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("\\\")", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("\\?\")"));
+    assertEquals("\\\")", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("\\?\")"));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
    * <ul>
    *   <li>Then return {@code :("}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_thenReturnColonLeftParenthesisQuotationMark() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals(":(\"", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("?:(\""));
+    assertEquals(":(\"", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("?:(\""));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
    * <ul>
    *   <li>Then return {@code !\}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_thenReturnExclamationMarkBackslash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("!\\", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("!\\?"));
+    assertEquals("!\\", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("!\\?"));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
    * <ul>
    *   <li>Then return {@code !=\}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_thenReturnExclamationMarkEqualsSignBackslash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("!=\\", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("!=\\?"));
+    assertEquals("!=\\", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("!=\\?"));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
    * <ul>
-   *   <li>Then return {@code !="\}.</li>
+   *   <li>Then return {@code !="}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  public void testConvertFieldName_thenReturnExclamationMarkEqualsSignQuotationMarkBackslash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
+  public void testConvertFieldName_thenReturnExclamationMarkEqualsSignQuotationMark() {
     // Arrange, Act and Assert
-    assertEquals("!=\"\\", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("!=\"\\?"));
+    assertEquals("!=\"", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("?!=\""));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
    * <ul>
    *   <li>Then return {@code ()\}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_thenReturnLeftParenthesisRightParenthesisBackslash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("()\\", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("()\\?"));
+    assertEquals("()\\", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("()\\?"));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
    * <ul>
-   *   <li>Then return {@code "\}.</li>
+   *   <li>Then return {@code ","}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  public void testConvertFieldName_thenReturnQuotationMarkBackslash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
+  public void testConvertFieldName_thenReturnQuotationMarkCommaQuotationMark() {
     // Arrange, Act and Assert
-    assertEquals("\"\\", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("\"\\?"));
+    assertEquals("\",\"", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("?\",\""));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
    * <ul>
-   *   <li>Then return {@code ","\}.</li>
+   *   <li>Then return {@code ")}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  public void testConvertFieldName_thenReturnQuotationMarkCommaQuotationMarkBackslash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
+  public void testConvertFieldName_thenReturnQuotationMarkRightParenthesis() {
     // Arrange, Act and Assert
-    assertEquals("\",\"\\", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("\",\"\\?"));
+    assertEquals("\")", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("?\")"));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
    * <ul>
-   *   <li>Then return {@code ")\}.</li>
+   *   <li>Then return {@code "))}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  public void testConvertFieldName_thenReturnQuotationMarkRightParenthesisBackslash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
+  public void testConvertFieldName_thenReturnQuotationMarkRightParenthesisRightParenthesis() {
     // Arrange, Act and Assert
-    assertEquals("\")\\", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("\")\\?"));
+    assertEquals("\"))", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("?\"))"));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
    * <ul>
    *   <li>When {@code ?42}.</li>
    *   <li>Then return {@code 42}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_when42_thenReturn42() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("42", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("?42"));
-    assertEquals("\\42", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("\\?42"));
-    assertEquals("42", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("42?"));
-    assertEquals("42\\", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("42\\?"));
+    assertEquals("42", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("?42"));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
    * <ul>
-   *   <li>When {@code *?}.</li>
-   *   <li>Then return {@code *}.</li>
+   *   <li>When {@code \?42}.</li>
+   *   <li>Then return {@code \42}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  public void testConvertFieldName_whenAsteriskQuestionMark_thenReturnAsterisk() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
+  public void testConvertFieldName_when42_thenReturn422() {
     // Arrange, Act and Assert
-    assertEquals("*", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("*?"));
+    assertEquals("\\42", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("\\?42"));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * <ul>
+   *   <li>When {@code 42?}.</li>
+   *   <li>Then return {@code 42}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
+  public void testConvertFieldName_when42_thenReturn423() {
+    // Arrange, Act and Assert
+    assertEquals("42", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("42?"));
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * <ul>
+   *   <li>When {@code 42\?}.</li>
+   *   <li>Then return {@code 42\}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
+  public void testConvertFieldName_when42_thenReturn424() {
+    // Arrange, Act and Assert
+    assertEquals("42\\", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("42\\?"));
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
    * <ul>
    *   <li>When {@code \?()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenBackslashQuestionMarkLeftParenthesisRightParenthesis() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("\\", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("\\?()"));
+    assertEquals("\\", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("\\?()"));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
    * <ul>
    *   <li>When {@code \??}.</li>
    *   <li>Then return {@code \}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenBackslashQuestionMarkQuestionMark_thenReturnBackslash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("\\", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("\\??"));
+    assertEquals("\\", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("\\??"));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
    * <ul>
    *   <li>When {@code \?}.</li>
    *   <li>Then return {@code \}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenBackslashQuestionMark_thenReturnBackslash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("\\", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("\\?"));
+    assertEquals("\\", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("\\?"));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
    * <ul>
    *   <li>When {@code ?.contains}.</li>
    *   <li>Then return {@code .contains}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenContains_thenReturnContains() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals(".contains", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("?.contains"));
-    assertEquals("\\.contains", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("\\?.contains"));
-    assertEquals(".contains", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName(".contains?"));
-    assertEquals(".contains\\", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName(".contains\\?"));
+    assertEquals(".contains", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("?.contains"));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * <ul>
+   *   <li>When {@code \?.contains}.</li>
+   *   <li>Then return {@code \.contains}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
+  public void testConvertFieldName_whenContains_thenReturnContains2() {
+    // Arrange, Act and Assert
+    assertEquals("\\.contains", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("\\?.contains"));
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
    * <ul>
    *   <li>When {@code ?.endsWith}.</li>
    *   <li>Then return {@code .endsWith}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenEndsWith_thenReturnEndsWith() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals(".endsWith", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("?.endsWith"));
-    assertEquals("\\.endsWith", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("\\?.endsWith"));
-    assertEquals(".endsWith", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName(".endsWith?"));
-    assertEquals(".endsWith\\", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName(".endsWith\\?"));
+    assertEquals(".endsWith", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("?.endsWith"));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * <ul>
+   *   <li>When {@code \?.endsWith}.</li>
+   *   <li>Then return {@code \.endsWith}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
+  public void testConvertFieldName_whenEndsWith_thenReturnEndsWith2() {
+    // Arrange, Act and Assert
+    assertEquals("\\.endsWith", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("\\?.endsWith"));
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
    * <ul>
    *   <li>When {@code !=?}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenExclamationMarkEqualsSignQuestionMark() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("!=", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("!=?"));
+    assertEquals("!=", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("!=?"));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
-   * <ul>
-   *   <li>When {@code !="?}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
-   */
-  @Test
-  public void testConvertFieldName_whenExclamationMarkEqualsSignQuotationMarkQuestionMark() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("!=\"", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("!=\"?"));
-  }
-
-  /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
    * <ul>
    *   <li>When {@code !?}.</li>
    *   <li>Then return {@code !}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenExclamationMarkQuestionMark_thenReturnExclamationMark() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("!", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("!?"));
+    assertEquals("!", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("!?"));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
    * <ul>
    *   <li>When {@code Field Name}.</li>
    *   <li>Then return {@code Field Name}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenFieldName_thenReturnFieldName() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("Field Name", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("Field Name"));
-    assertEquals("Field Name", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("?Field Name"));
-    assertEquals("\\Field Name", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("\\?Field Name"));
-    assertEquals("Field Name", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("Field Name?"));
-    assertEquals("Field Name\\", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("Field Name\\?"));
+    assertEquals("Field Name", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("Field Name"));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * <ul>
+   *   <li>When {@code ?Field Name}.</li>
+   *   <li>Then return {@code Field Name}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
+  public void testConvertFieldName_whenFieldName_thenReturnFieldName2() {
+    // Arrange, Act and Assert
+    assertEquals("Field Name", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("?Field Name"));
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * <ul>
+   *   <li>When {@code \?Field Name}.</li>
+   *   <li>Then return {@code \Field Name}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
+  public void testConvertFieldName_whenFieldName_thenReturnFieldName3() {
+    // Arrange, Act and Assert
+    assertEquals("\\Field Name", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("\\?Field Name"));
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * <ul>
+   *   <li>When {@code Field Name?}.</li>
+   *   <li>Then return {@code Field Name}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
+  public void testConvertFieldName_whenFieldName_thenReturnFieldName4() {
+    // Arrange, Act and Assert
+    assertEquals("Field Name", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("Field Name?"));
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * <ul>
+   *   <li>When {@code Field Name\?}.</li>
+   *   <li>Then return {@code Field Name\}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
+  public void testConvertFieldName_whenFieldName_thenReturnFieldName5() {
+    // Arrange, Act and Assert
+    assertEquals("Field Name\\", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("Field Name\\?"));
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
    * <ul>
    *   <li>When {@code product.\?}.</li>
    *   <li>Then return {@code \}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenProduct_thenReturnBackslash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("\\", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("product.\\?"));
+    assertEquals("\\", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("product.\\?"));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
    * <ul>
    *   <li>When {@code product.}.</li>
    *   <li>Then return empty string.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenProduct_thenReturnEmptyString() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("product."));
-    assertEquals("", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("?product."));
-    assertEquals("", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("product.?"));
+    assertEquals("", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("product."));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * <ul>
+   *   <li>When {@code ?product.}.</li>
+   *   <li>Then return empty string.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
+  public void testConvertFieldName_whenProduct_thenReturnEmptyString2() {
+    // Arrange, Act and Assert
+    assertEquals("", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("?product."));
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * <ul>
+   *   <li>When {@code product.?}.</li>
+   *   <li>Then return empty string.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
+  public void testConvertFieldName_whenProduct_thenReturnEmptyString3() {
+    // Arrange, Act and Assert
+    assertEquals("", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("product.?"));
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
    * <ul>
    *   <li>When {@code \?product.}.</li>
    *   <li>Then return {@code \product.}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenProduct_thenReturnProduct() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("\\product.", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("\\?product."));
+    assertEquals("\\product.", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("\\?product."));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
    * <ul>
    *   <li>When {@code ?*}.</li>
    *   <li>Then return {@code *}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenQuestionMarkAsterisk_thenReturnAsterisk() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("*", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("?*"));
+    assertEquals("*", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("?*"));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
    * <ul>
    *   <li>When {@code ?\?}.</li>
    *   <li>Then return {@code \}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenQuestionMarkBackslashQuestionMark_thenReturnBackslash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("\\", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("?\\?"));
+    assertEquals("\\", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("?\\?"));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
    * <ul>
    *   <li>When {@code ?=}.</li>
    *   <li>Then return {@code =}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenQuestionMarkEqualsSign_thenReturnEqualsSign() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("=", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("?="));
+    assertEquals("=", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("?="));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
    * <ul>
    *   <li>When {@code ?!=}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenQuestionMarkExclamationMarkEqualsSign() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("!=", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("?!="));
+    assertEquals("!=", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("?!="));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
-   * <ul>
-   *   <li>When {@code ?!="}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
-   */
-  @Test
-  public void testConvertFieldName_whenQuestionMarkExclamationMarkEqualsSignQuotationMark() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("!=\"", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("?!=\""));
-  }
-
-  /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
    * <ul>
    *   <li>When {@code ?!}.</li>
    *   <li>Then return {@code !}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenQuestionMarkExclamationMark_thenReturnExclamationMark() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("!", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("?!"));
+    assertEquals("!", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("?!"));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
    * <ul>
    *   <li>When {@code ??}.</li>
    *   <li>Then return empty string.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenQuestionMarkQuestionMark_thenReturnEmptyString() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("??"));
+    assertEquals("", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("??"));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
-   * <ul>
-   *   <li>When {@code ?","}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
-   */
-  @Test
-  public void testConvertFieldName_whenQuestionMarkQuotationMarkCommaQuotationMark() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\",\"", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("?\",\""));
-  }
-
-  /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
-   * <ul>
-   *   <li>When {@code ?")}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
-   */
-  @Test
-  public void testConvertFieldName_whenQuestionMarkQuotationMarkRightParenthesis() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\")", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("?\")"));
-  }
-
-  /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
    * <ul>
    *   <li>When {@code ?"}.</li>
    *   <li>Then return {@code "}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenQuestionMarkQuotationMark_thenReturnQuotationMark() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("\"", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("?\""));
+    assertEquals("\"", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("?\""));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
    * <ul>
    *   <li>When {@code ?}.</li>
    *   <li>Then return empty string.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenQuestionMark_thenReturnEmptyString() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("?"));
+    assertEquals("", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("?"));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
-   * <ul>
-   *   <li>When {@code ","?}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
-   */
-  @Test
-  public void testConvertFieldName_whenQuotationMarkCommaQuotationMarkQuestionMark() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\",\"", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("\",\"?"));
-  }
-
-  /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
-   * <ul>
-   *   <li>When {@code "?}.</li>
-   *   <li>Then return {@code "}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
-   */
-  @Test
-  public void testConvertFieldName_whenQuotationMarkQuestionMark_thenReturnQuotationMark() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\"", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("\"?"));
-  }
-
-  /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
-   * <ul>
-   *   <li>When {@code ")?}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
-   */
-  @Test
-  public void testConvertFieldName_whenQuotationMarkRightParenthesisQuestionMark() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\")", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("\")?"));
-  }
-
-  /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
    * <ul>
    *   <li>When {@code ?.startsWith}.</li>
    *   <li>Then return {@code .startsWith}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenStartsWith_thenReturnStartsWith() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals(".startsWith", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("?.startsWith"));
-    assertEquals("\\.startsWith", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("\\?.startsWith"));
+    assertEquals(".startsWith", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("?.startsWith"));
   }
 
   /**
-   * Test {@link MvelToSearchCriteriaConversionServiceImpl#parseMethod(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * <ul>
+   *   <li>When {@code \?.startsWith}.</li>
+   *   <li>Then return {@code \.startsWith}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#parseMethod(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testParseMethod() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.search.service.solr;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass14378 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.MvelToSearchCriteriaConversionServiceImpl mvelToSearchCriteriaConversionServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new MvelToSearchCriteriaConversionServiceImpl()).parseMethod("Field Name");
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
+  public void testConvertFieldName_whenStartsWith_thenReturnStartsWith2() {
+    // Arrange, Act and Assert
+    assertEquals("\\.startsWith", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("\\?.startsWith"));
   }
 
   /**
@@ -1499,15 +1777,14 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
    *   <li>Then return {@code field Na}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#parseMethod(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#parseMethod(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.parseMethod(String)"})
   public void testParseMethod_whenFieldName_thenReturnFieldNa() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("field Na", (new MvelToSearchCriteriaConversionServiceImpl()).parseMethod("Field Name"));
+    assertEquals("field Na", mvelToSearchCriteriaConversionServiceImpl.parseMethod("Field Name"));
   }
 
   /**
@@ -1517,15 +1794,14 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
    *   <li>Then return {@code field Na}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#parseMethod(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#parseMethod(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.parseMethod(String)"})
   public void testParseMethod_whenGetFieldName_thenReturnFieldNa() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("field Na", (new MvelToSearchCriteriaConversionServiceImpl()).parseMethod("getField Name"));
+    assertEquals("field Na", mvelToSearchCriteriaConversionServiceImpl.parseMethod("getField Name"));
   }
 
   /**
@@ -1535,15 +1811,14 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
    *   <li>Then return {@code (^ge}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#parseMethod(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#parseMethod(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.parseMethod(String)"})
   public void testParseMethod_whenGetGet_thenReturnGe() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("(^ge", (new MvelToSearchCriteriaConversionServiceImpl()).parseMethod("get(^get)"));
+    assertEquals("(^ge", mvelToSearchCriteriaConversionServiceImpl.parseMethod("get(^get)"));
   }
 
   /**
@@ -1553,15 +1828,14 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
    *   <li>Then return {@code :}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#parseMethod(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#parseMethod(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.parseMethod(String)"})
   public void testParseMethod_whenGet_thenReturnColon() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals(":", (new MvelToSearchCriteriaConversionServiceImpl()).parseMethod("get:(\""));
+    assertEquals(":", mvelToSearchCriteriaConversionServiceImpl.parseMethod("get:(\""));
   }
 
   /**
@@ -1571,15 +1845,14 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
    *   <li>Then return {@code !}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#parseMethod(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#parseMethod(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.parseMethod(String)"})
   public void testParseMethod_whenGet_thenReturnExclamationMark() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("!", (new MvelToSearchCriteriaConversionServiceImpl()).parseMethod("get!=\""));
+    assertEquals("!", mvelToSearchCriteriaConversionServiceImpl.parseMethod("get!=\""));
   }
 
   /**
@@ -1589,16 +1862,31 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
    *   <li>Then return {@code "}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#parseMethod(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#parseMethod(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.parseMethod(String)"})
   public void testParseMethod_whenGet_thenReturnQuotationMark() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("\"", (new MvelToSearchCriteriaConversionServiceImpl()).parseMethod("get\"))"));
-    assertEquals("\"", (new MvelToSearchCriteriaConversionServiceImpl()).parseMethod("get\",\""));
+    assertEquals("\"", mvelToSearchCriteriaConversionServiceImpl.parseMethod("get\"))"));
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#parseMethod(String)}.
+   * <ul>
+   *   <li>When {@code get","}.</li>
+   *   <li>Then return {@code "}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#parseMethod(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.parseMethod(String)"})
+  public void testParseMethod_whenGet_thenReturnQuotationMark2() {
+    // Arrange, Act and Assert
+    assertEquals("\"", mvelToSearchCriteriaConversionServiceImpl.parseMethod("get\",\""));
   }
 
   /**
@@ -1608,548 +1896,345 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
    *   <li>Then return {@code g}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#parseMethod(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#parseMethod(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.parseMethod(String)"})
   public void testParseMethod_whenGetget_thenReturnG() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("g", (new MvelToSearchCriteriaConversionServiceImpl()).parseMethod("getget"));
+    assertEquals("g", mvelToSearchCriteriaConversionServiceImpl.parseMethod("getget"));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#isWildCardSearch(String)}.
-   * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#isWildCardSearch(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsWildCardSearch() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.search.service.solr;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass14348 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.MvelToSearchCriteriaConversionServiceImpl mvelToSearchCriteriaConversionServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new MvelToSearchCriteriaConversionServiceImpl()).isWildCardSearch("42");
-  }
-
-  /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#isWildCardSearch(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#isWildCardSearch(String)}.
    * <ul>
    *   <li>When {@code 42}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#isWildCardSearch(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#isWildCardSearch(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MvelToSearchCriteriaConversionServiceImpl.isWildCardSearch(String)"})
   public void testIsWildCardSearch_when42_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertFalse((new MvelToSearchCriteriaConversionServiceImpl()).isWildCardSearch("42"));
+    assertFalse(mvelToSearchCriteriaConversionServiceImpl.isWildCardSearch("42"));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#isWildCardSearch(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#isWildCardSearch(String)}.
    * <ul>
    *   <li>When {@code 42*}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#isWildCardSearch(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#isWildCardSearch(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MvelToSearchCriteriaConversionServiceImpl.isWildCardSearch(String)"})
   public void testIsWildCardSearch_when42_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertTrue((new MvelToSearchCriteriaConversionServiceImpl()).isWildCardSearch("42*"));
+    assertTrue(mvelToSearchCriteriaConversionServiceImpl.isWildCardSearch("42*"));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#isWildCardSearch(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#isWildCardSearch(String)}.
    * <ul>
    *   <li>When {@code *}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#isWildCardSearch(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#isWildCardSearch(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MvelToSearchCriteriaConversionServiceImpl.isWildCardSearch(String)"})
   public void testIsWildCardSearch_whenAsterisk_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertTrue((new MvelToSearchCriteriaConversionServiceImpl()).isWildCardSearch("*"));
+    assertTrue(mvelToSearchCriteriaConversionServiceImpl.isWildCardSearch("*"));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}.
-   * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}
-   */
-  @Test
-  public void testGetCustomFieldPropertyName() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("org.apache.commons.lang3.StringUtils.contains", (new MvelToSearchCriteriaConversionServiceImpl())
-        .getCustomFieldPropertyName("org.apache.commons.lang3.StringUtils.contains,"));
-  }
-
-  /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}.
-   * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetCustomFieldPropertyName2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.search.service.solr;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass14193 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.MvelToSearchCriteriaConversionServiceImpl mvelToSearchCriteriaConversionServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new MvelToSearchCriteriaConversionServiceImpl()).getCustomFieldPropertyName("Mvel Rule");
-  }
-
-  /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}.
    * <ul>
    *   <li>Then return {@code !}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.getCustomFieldPropertyName(String)"})
   public void testGetCustomFieldPropertyName_thenReturnExclamationMark() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("!", (new MvelToSearchCriteriaConversionServiceImpl()).getCustomFieldPropertyName("!="));
+    assertEquals("!", mvelToSearchCriteriaConversionServiceImpl.getCustomFieldPropertyName("!="));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}.
    * <ul>
    *   <li>Then return {@code ()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.getCustomFieldPropertyName(String)"})
   public void testGetCustomFieldPropertyName_thenReturnLeftParenthesisRightParenthesis() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("()", (new MvelToSearchCriteriaConversionServiceImpl()).getCustomFieldPropertyName("()"));
+    assertEquals("()", mvelToSearchCriteriaConversionServiceImpl.getCustomFieldPropertyName("()"));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}.
    * <ul>
    *   <li>Then return {@code ["}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.getCustomFieldPropertyName(String)"})
   public void testGetCustomFieldPropertyName_thenReturnLeftSquareBracketQuotationMark() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("[\"", (new MvelToSearchCriteriaConversionServiceImpl()).getCustomFieldPropertyName("[\"!"));
+    assertEquals("[\"", mvelToSearchCriteriaConversionServiceImpl.getCustomFieldPropertyName("[\"!"));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}.
    * <ul>
    *   <li>Then return {@code "}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.getCustomFieldPropertyName(String)"})
   public void testGetCustomFieldPropertyName_thenReturnQuotationMark() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("\"", (new MvelToSearchCriteriaConversionServiceImpl()).getCustomFieldPropertyName("(\")"));
+    assertEquals("\"", mvelToSearchCriteriaConversionServiceImpl.getCustomFieldPropertyName("(\")"));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}.
    * <ul>
    *   <li>When {@code CollectionUtils,}.</li>
    *   <li>Then return {@code CollectionUtils}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.getCustomFieldPropertyName(String)"})
   public void testGetCustomFieldPropertyName_whenCollectionUtils_thenReturnCollectionUtils() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertEquals("CollectionUtils",
-        (new MvelToSearchCriteriaConversionServiceImpl()).getCustomFieldPropertyName("CollectionUtils,"));
+        mvelToSearchCriteriaConversionServiceImpl.getCustomFieldPropertyName("CollectionUtils,"));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}.
    * <ul>
    *   <li>When {@code (}.</li>
    *   <li>Then return {@code (}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.getCustomFieldPropertyName(String)"})
   public void testGetCustomFieldPropertyName_whenLeftParenthesis_thenReturnLeftParenthesis() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("(", (new MvelToSearchCriteriaConversionServiceImpl()).getCustomFieldPropertyName("("));
+    assertEquals("(", mvelToSearchCriteriaConversionServiceImpl.getCustomFieldPropertyName("("));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}.
    * <ul>
    *   <li>When {@code Mvel Rule}.</li>
    *   <li>Then return {@code Mvel Rule}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.getCustomFieldPropertyName(String)"})
   public void testGetCustomFieldPropertyName_whenMvelRule_thenReturnMvelRule() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("Mvel Rule",
-        (new MvelToSearchCriteriaConversionServiceImpl()).getCustomFieldPropertyName("Mvel Rule"));
+    assertEquals("Mvel Rule", mvelToSearchCriteriaConversionServiceImpl.getCustomFieldPropertyName("Mvel Rule"));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getRuleOrPropertyFromFunction(String)}.
-   * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getRuleOrPropertyFromFunction(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetRuleOrPropertyFromFunction() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.search.service.solr;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass14253 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.MvelToSearchCriteriaConversionServiceImpl mvelToSearchCriteriaConversionServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new MvelToSearchCriteriaConversionServiceImpl()).getRuleOrPropertyFromFunction("Mvel Rule");
-  }
-
-  /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getRuleOrPropertyFromFunction(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#getRuleOrPropertyFromFunction(String)}.
    * <ul>
    *   <li>Then return {@code =}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getRuleOrPropertyFromFunction(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#getRuleOrPropertyFromFunction(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.getRuleOrPropertyFromFunction(String)"})
   public void testGetRuleOrPropertyFromFunction_thenReturnEqualsSign() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("=", (new MvelToSearchCriteriaConversionServiceImpl()).getRuleOrPropertyFromFunction("=!"));
+    assertEquals("=", mvelToSearchCriteriaConversionServiceImpl.getRuleOrPropertyFromFunction("=!"));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getRuleOrPropertyFromFunction(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#getRuleOrPropertyFromFunction(String)}.
    * <ul>
    *   <li>Then return {@code !}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getRuleOrPropertyFromFunction(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#getRuleOrPropertyFromFunction(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.getRuleOrPropertyFromFunction(String)"})
   public void testGetRuleOrPropertyFromFunction_thenReturnExclamationMark() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("!", (new MvelToSearchCriteriaConversionServiceImpl()).getRuleOrPropertyFromFunction("!="));
+    assertEquals("!", mvelToSearchCriteriaConversionServiceImpl.getRuleOrPropertyFromFunction("!="));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getRuleOrPropertyFromFunction(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#getRuleOrPropertyFromFunction(String)}.
    * <ul>
    *   <li>Then return {@code ()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getRuleOrPropertyFromFunction(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#getRuleOrPropertyFromFunction(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.getRuleOrPropertyFromFunction(String)"})
   public void testGetRuleOrPropertyFromFunction_thenReturnLeftParenthesisRightParenthesis() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("()", (new MvelToSearchCriteriaConversionServiceImpl()).getRuleOrPropertyFromFunction("()"));
+    assertEquals("()", mvelToSearchCriteriaConversionServiceImpl.getRuleOrPropertyFromFunction("()"));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getRuleOrPropertyFromFunction(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#getRuleOrPropertyFromFunction(String)}.
    * <ul>
    *   <li>Then return {@code ")}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getRuleOrPropertyFromFunction(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#getRuleOrPropertyFromFunction(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.getRuleOrPropertyFromFunction(String)"})
   public void testGetRuleOrPropertyFromFunction_thenReturnQuotationMarkRightParenthesis() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("\")", (new MvelToSearchCriteriaConversionServiceImpl()).getRuleOrPropertyFromFunction("\")"));
+    assertEquals("\")", mvelToSearchCriteriaConversionServiceImpl.getRuleOrPropertyFromFunction("\")"));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getRuleOrPropertyFromFunction(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#getRuleOrPropertyFromFunction(String)}.
    * <ul>
    *   <li>When {@code Mvel Rule}.</li>
    *   <li>Then return {@code Mvel Rule}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getRuleOrPropertyFromFunction(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#getRuleOrPropertyFromFunction(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.getRuleOrPropertyFromFunction(String)"})
   public void testGetRuleOrPropertyFromFunction_whenMvelRule_thenReturnMvelRule() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("Mvel Rule",
-        (new MvelToSearchCriteriaConversionServiceImpl()).getRuleOrPropertyFromFunction("Mvel Rule"));
+    assertEquals("Mvel Rule", mvelToSearchCriteriaConversionServiceImpl.getRuleOrPropertyFromFunction("Mvel Rule"));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}.
-   * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetCustomFieldValue() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.search.service.solr;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass14223 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.MvelToSearchCriteriaConversionServiceImpl mvelToSearchCriteriaConversionServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new MvelToSearchCriteriaConversionServiceImpl()).getCustomFieldValue("Mvel Rule");
-  }
-
-  /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}.
-   * <ul>
-   *   <li>When {@code "))CollectionUtils}.</li>
-   *   <li>Then return {@code "}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}
-   */
-  @Test
-  public void testGetCustomFieldValue_whenCollectionUtils_thenReturnQuotationMark() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\"", (new MvelToSearchCriteriaConversionServiceImpl()).getCustomFieldValue("\"))CollectionUtils"));
-  }
-
-  /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}.
    * <ul>
    *   <li>When {@code .contains"))}.</li>
    *   <li>Then return {@code contains}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.getCustomFieldValue(String)"})
   public void testGetCustomFieldValue_whenContains_thenReturnContains() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("contains", (new MvelToSearchCriteriaConversionServiceImpl()).getCustomFieldValue(".contains\"))"));
+    assertEquals("contains", mvelToSearchCriteriaConversionServiceImpl.getCustomFieldValue(".contains\"))"));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}.
    * <ul>
    *   <li>When {@code ==}.</li>
    *   <li>Then return {@code =}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.getCustomFieldValue(String)"})
   public void testGetCustomFieldValue_whenEqualsSignEqualsSign_thenReturnEqualsSign() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("=", (new MvelToSearchCriteriaConversionServiceImpl()).getCustomFieldValue("=="));
+    assertEquals("=", mvelToSearchCriteriaConversionServiceImpl.getCustomFieldValue("=="));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}.
    * <ul>
    *   <li>When {@code !="}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.getCustomFieldValue(String)"})
   public void testGetCustomFieldValue_whenExclamationMarkEqualsSignQuotationMark() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("", (new MvelToSearchCriteriaConversionServiceImpl()).getCustomFieldValue("!=\""));
+    assertEquals("", mvelToSearchCriteriaConversionServiceImpl.getCustomFieldValue("!=\""));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}.
    * <ul>
    *   <li>When {@code !=}.</li>
    *   <li>Then return empty string.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.getCustomFieldValue(String)"})
   public void testGetCustomFieldValue_whenExclamationMarkEqualsSign_thenReturnEmptyString() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("", (new MvelToSearchCriteriaConversionServiceImpl()).getCustomFieldValue("!="));
+    assertEquals("", mvelToSearchCriteriaConversionServiceImpl.getCustomFieldValue("!="));
   }
 
   /**
-   * Test
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}.
    * <ul>
    *   <li>When {@code Mvel Rule}.</li>
    *   <li>Then return empty string.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}
+   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.getCustomFieldValue(String)"})
   public void testGetCustomFieldValue_whenMvelRule_thenReturnEmptyString() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("", (new MvelToSearchCriteriaConversionServiceImpl()).getCustomFieldValue("Mvel Rule"));
-    assertEquals("", (new MvelToSearchCriteriaConversionServiceImpl()).getCustomFieldValue("Mvel Rule=="));
+    assertEquals("", mvelToSearchCriteriaConversionServiceImpl.getCustomFieldValue("Mvel Rule"));
   }
 }

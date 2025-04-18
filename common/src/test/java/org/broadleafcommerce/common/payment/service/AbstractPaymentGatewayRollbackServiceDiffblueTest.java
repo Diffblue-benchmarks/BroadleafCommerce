@@ -18,19 +18,23 @@
 package org.broadleafcommerce.common.payment.service;
 
 import static org.junit.Assert.assertThrows;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.payment.dto.PaymentRequestDTO;
 import org.broadleafcommerce.common.vendor.service.exception.PaymentException;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class AbstractPaymentGatewayRollbackServiceDiffblueTest {
   /**
-   * Test
-   * {@link AbstractPaymentGatewayRollbackService#rollbackAuthorize(PaymentRequestDTO)}.
+   * Test {@link AbstractPaymentGatewayRollbackService#rollbackAuthorize(PaymentRequestDTO)}.
    * <p>
-   * Method under test:
-   * {@link AbstractPaymentGatewayRollbackService#rollbackAuthorize(PaymentRequestDTO)}
+   * Method under test: {@link AbstractPaymentGatewayRollbackService#rollbackAuthorize(PaymentRequestDTO)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.common.payment.dto.PaymentResponseDTO AbstractPaymentGatewayRollbackService.rollbackAuthorize(PaymentRequestDTO)"})
   public void testRollbackAuthorize() throws PaymentException {
     // Arrange
     AbstractPaymentGatewayRollbackService abstractPaymentGatewayRollbackService = new AbstractPaymentGatewayRollbackService();
@@ -41,13 +45,14 @@ public class AbstractPaymentGatewayRollbackServiceDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AbstractPaymentGatewayRollbackService#rollbackCapture(PaymentRequestDTO)}.
+   * Test {@link AbstractPaymentGatewayRollbackService#rollbackCapture(PaymentRequestDTO)}.
    * <p>
-   * Method under test:
-   * {@link AbstractPaymentGatewayRollbackService#rollbackCapture(PaymentRequestDTO)}
+   * Method under test: {@link AbstractPaymentGatewayRollbackService#rollbackCapture(PaymentRequestDTO)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.common.payment.dto.PaymentResponseDTO AbstractPaymentGatewayRollbackService.rollbackCapture(PaymentRequestDTO)"})
   public void testRollbackCapture() throws PaymentException {
     // Arrange
     AbstractPaymentGatewayRollbackService abstractPaymentGatewayRollbackService = new AbstractPaymentGatewayRollbackService();
@@ -58,13 +63,14 @@ public class AbstractPaymentGatewayRollbackServiceDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AbstractPaymentGatewayRollbackService#rollbackAuthorizeAndCapture(PaymentRequestDTO)}.
+   * Test {@link AbstractPaymentGatewayRollbackService#rollbackAuthorizeAndCapture(PaymentRequestDTO)}.
    * <p>
-   * Method under test:
-   * {@link AbstractPaymentGatewayRollbackService#rollbackAuthorizeAndCapture(PaymentRequestDTO)}
+   * Method under test: {@link AbstractPaymentGatewayRollbackService#rollbackAuthorizeAndCapture(PaymentRequestDTO)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.common.payment.dto.PaymentResponseDTO AbstractPaymentGatewayRollbackService.rollbackAuthorizeAndCapture(PaymentRequestDTO)"})
   public void testRollbackAuthorizeAndCapture() throws PaymentException {
     // Arrange
     AbstractPaymentGatewayRollbackService abstractPaymentGatewayRollbackService = new AbstractPaymentGatewayRollbackService();
@@ -75,13 +81,14 @@ public class AbstractPaymentGatewayRollbackServiceDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AbstractPaymentGatewayRollbackService#rollbackRefund(PaymentRequestDTO)}.
+   * Test {@link AbstractPaymentGatewayRollbackService#rollbackRefund(PaymentRequestDTO)}.
    * <p>
-   * Method under test:
-   * {@link AbstractPaymentGatewayRollbackService#rollbackRefund(PaymentRequestDTO)}
+   * Method under test: {@link AbstractPaymentGatewayRollbackService#rollbackRefund(PaymentRequestDTO)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.common.payment.dto.PaymentResponseDTO AbstractPaymentGatewayRollbackService.rollbackRefund(PaymentRequestDTO)"})
   public void testRollbackRefund() throws PaymentException {
     // Arrange
     AbstractPaymentGatewayRollbackService abstractPaymentGatewayRollbackService = new AbstractPaymentGatewayRollbackService();
@@ -89,22 +96,5 @@ public class AbstractPaymentGatewayRollbackServiceDiffblueTest {
     // Act and Assert
     assertThrows(UnsupportedOperationException.class,
         () -> abstractPaymentGatewayRollbackService.rollbackRefund(new PaymentRequestDTO()));
-  }
-
-  /**
-   * Test new {@link AbstractPaymentGatewayRollbackService} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link AbstractPaymentGatewayRollbackService}
-   */
-  @Test
-  public void testNewAbstractPaymentGatewayRollbackService() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing observers.
-    //   Diffblue Cover was unable to create an assertion.
-    //   There are no fields that could be asserted on.
-
-    // Arrange and Act
-    new AbstractPaymentGatewayRollbackService();
   }
 }

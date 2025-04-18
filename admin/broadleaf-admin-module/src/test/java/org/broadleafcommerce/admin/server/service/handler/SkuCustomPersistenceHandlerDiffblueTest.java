@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Admin Module
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.admin.server.service.handler;
 
 import static org.junit.Assert.assertEquals;
@@ -14,17 +31,21 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiFunction;
 import javax.persistence.EntityManager;
+import org.broadleafcommerce.admin.server.service.SkuMetadataCacheService;
 import org.broadleafcommerce.common.exception.ServiceException;
 import org.broadleafcommerce.common.presentation.client.OperationType;
 import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
+import org.broadleafcommerce.common.presentation.client.VisibilityEnum;
+import org.broadleafcommerce.common.sandbox.SandBoxHelper;
 import org.broadleafcommerce.core.catalog.domain.Product;
 import org.broadleafcommerce.core.catalog.domain.ProductBundleImpl;
 import org.broadleafcommerce.core.catalog.domain.ProductOption;
@@ -33,13 +54,20 @@ import org.broadleafcommerce.core.catalog.domain.ProductOptionValue;
 import org.broadleafcommerce.core.catalog.domain.ProductOptionValueImpl;
 import org.broadleafcommerce.core.catalog.domain.Sku;
 import org.broadleafcommerce.core.catalog.domain.SkuImpl;
+import org.broadleafcommerce.core.catalog.service.CatalogService;
+import org.broadleafcommerce.core.catalog.service.type.ProductOptionType;
+import org.broadleafcommerce.core.catalog.service.type.ProductOptionValidationStrategyType;
+import org.broadleafcommerce.core.catalog.service.type.ProductOptionValidationType;
 import org.broadleafcommerce.openadmin.dto.AdornedTargetCollectionMetadata;
 import org.broadleafcommerce.openadmin.dto.BasicFieldMetadata;
+import org.broadleafcommerce.openadmin.dto.ClassMetadata;
+import org.broadleafcommerce.openadmin.dto.ClassTree;
 import org.broadleafcommerce.openadmin.dto.CriteriaTransferObject;
 import org.broadleafcommerce.openadmin.dto.DynamicResultSet;
 import org.broadleafcommerce.openadmin.dto.Entity;
 import org.broadleafcommerce.openadmin.dto.FieldMetadata;
 import org.broadleafcommerce.openadmin.dto.FilterAndSortCriteria;
+import org.broadleafcommerce.openadmin.dto.MergedPropertyType;
 import org.broadleafcommerce.openadmin.dto.OperationTypes;
 import org.broadleafcommerce.openadmin.dto.PersistencePackage;
 import org.broadleafcommerce.openadmin.dto.PersistencePerspective;
@@ -47,84 +75,59 @@ import org.broadleafcommerce.openadmin.dto.Property;
 import org.broadleafcommerce.openadmin.dto.SectionCrumb;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDao;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl;
+import org.broadleafcommerce.openadmin.server.service.persistence.PersistenceManager;
 import org.broadleafcommerce.openadmin.server.service.persistence.PersistenceManagerImpl;
-import org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.InspectHelper;
+import org.broadleafcommerce.openadmin.server.service.persistence.module.PersistenceModule;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.RecordHelper;
+import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.CriteriaTranslator;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.FieldPath;
-import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.FieldPathBuilder;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.FilterMapping;
-import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.Restriction;
-import org.hibernate.engine.spi.SessionDelegatorBaseImpl;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml", "/bl-admin-applicationContext.xml",
-    "/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class SkuCustomPersistenceHandlerDiffblueTest {
-  @Autowired
+  @Mock
+  private CatalogService catalogService;
+
+  @Mock
+  private CriteriaTranslator criteriaTranslator;
+
+  @Mock
+  private PersistenceModule persistenceModule;
+
+  @Mock
+  private SandBoxHelper sandBoxHelper;
+
+  @InjectMocks
   private SkuCustomPersistenceHandler skuCustomPersistenceHandler;
 
-  /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#canHandleInspect(PersistencePackage)}.
-   * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCanHandleInspect() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6011 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler skuCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler2 = new SkuCustomPersistenceHandler();
-
-    // Act
-    skuCustomPersistenceHandler2.canHandleInspect(new PersistencePackage());
-  }
+  @Mock
+  private SkuMetadataCacheService skuMetadataCacheService;
 
   /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#canHandleInspect(PersistencePackage)}.
+   * Test {@link SkuCustomPersistenceHandler#canHandleInspect(PersistencePackage)}.
    * <ul>
    *   <li>Given {@code Dr Jane Doe}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
+   * Method under test: {@link SkuCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuCustomPersistenceHandler.canHandleInspect(PersistencePackage)"})
   public void testCanHandleInspect_givenDrJaneDoe_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     PersistencePackage persistencePackage = mock(PersistencePackage.class);
     when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
     when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
@@ -142,53 +145,18 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#canHandleInspect(PersistencePackage)}.
-   * <ul>
-   *   <li>Given {@link NumberFormatException#NumberFormatException(String)} with
-   * {@code foo}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
-   */
-  @Test
-  public void testCanHandleInspect_givenNumberFormatExceptionWithFoo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenThrow(new NumberFormatException("foo"));
-    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
-    doNothing().when(persistencePackage).setPersistencePerspective(Mockito.<PersistencePerspective>any());
-    persistencePackage.setPersistencePerspective(mock(PersistencePerspective.class));
-
-    // Act
-    skuCustomPersistenceHandler.canHandleInspect(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getPersistencePerspective();
-    verify(persistencePackage).setPersistencePerspective(isA(PersistencePerspective.class));
-  }
-
-  /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#canHandleInspect(PersistencePackage)}.
+   * Test {@link SkuCustomPersistenceHandler#canHandleInspect(PersistencePackage)}.
    * <ul>
    *   <li>Then calls {@link PersistencePerspective#getOperationTypes()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
+   * Method under test: {@link SkuCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuCustomPersistenceHandler.canHandleInspect(PersistencePackage)"})
   public void testCanHandleInspect_thenCallsGetOperationTypes() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
     when(persistencePerspective.getOperationTypes()).thenReturn(new OperationTypes());
     Entity entity = new Entity();
@@ -207,53 +175,18 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link SkuCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
-   * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCanHandleFetch() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5986 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler skuCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler2 = new SkuCustomPersistenceHandler();
-
-    // Act
-    skuCustomPersistenceHandler2.canHandleFetch(new PersistencePackage());
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
    * <ul>
    *   <li>Given {@code Dr Jane Doe}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
+   * Method under test: {@link SkuCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuCustomPersistenceHandler.canHandleFetch(PersistencePackage)"})
   public void testCanHandleFetch_givenDrJaneDoe_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     PersistencePackage persistencePackage = mock(PersistencePackage.class);
     when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
     when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
@@ -273,49 +206,16 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
   /**
    * Test {@link SkuCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
    * <ul>
-   *   <li>Given {@link NumberFormatException#NumberFormatException(String)} with
-   * {@code foo}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
-   */
-  @Test
-  public void testCanHandleFetch_givenNumberFormatExceptionWithFoo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenThrow(new NumberFormatException("foo"));
-    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
-    doNothing().when(persistencePackage).setPersistencePerspective(Mockito.<PersistencePerspective>any());
-    persistencePackage.setPersistencePerspective(mock(PersistencePerspective.class));
-
-    // Act
-    skuCustomPersistenceHandler.canHandleFetch(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getPersistencePerspective();
-    verify(persistencePackage).setPersistencePerspective(isA(PersistencePerspective.class));
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
-   * <ul>
    *   <li>Then calls {@link PersistencePerspective#getOperationTypes()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
+   * Method under test: {@link SkuCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuCustomPersistenceHandler.canHandleFetch(PersistencePackage)"})
   public void testCanHandleFetch_thenCallsGetOperationTypes() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
     when(persistencePerspective.getOperationTypes()).thenReturn(new OperationTypes());
     Entity entity = new Entity();
@@ -334,53 +234,18 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link SkuCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
-   * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCanHandleAdd() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5961 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler skuCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler2 = new SkuCustomPersistenceHandler();
-
-    // Act
-    skuCustomPersistenceHandler2.canHandleAdd(new PersistencePackage());
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
    * <ul>
    *   <li>Given {@code Dr Jane Doe}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
+   * Method under test: {@link SkuCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuCustomPersistenceHandler.canHandleAdd(PersistencePackage)"})
   public void testCanHandleAdd_givenDrJaneDoe_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     PersistencePackage persistencePackage = mock(PersistencePackage.class);
     when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
     when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
@@ -400,49 +265,16 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
   /**
    * Test {@link SkuCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
    * <ul>
-   *   <li>Given {@link NumberFormatException#NumberFormatException(String)} with
-   * {@code foo}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
-   */
-  @Test
-  public void testCanHandleAdd_givenNumberFormatExceptionWithFoo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenThrow(new NumberFormatException("foo"));
-    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
-    doNothing().when(persistencePackage).setPersistencePerspective(Mockito.<PersistencePerspective>any());
-    persistencePackage.setPersistencePerspective(mock(PersistencePerspective.class));
-
-    // Act
-    skuCustomPersistenceHandler.canHandleAdd(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getPersistencePerspective();
-    verify(persistencePackage).setPersistencePerspective(isA(PersistencePerspective.class));
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
-   * <ul>
    *   <li>Then calls {@link PersistencePerspective#getOperationTypes()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
+   * Method under test: {@link SkuCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuCustomPersistenceHandler.canHandleAdd(PersistencePackage)"})
   public void testCanHandleAdd_thenCallsGetOperationTypes() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
     when(persistencePerspective.getOperationTypes()).thenReturn(new OperationTypes());
     Entity entity = new Entity();
@@ -457,39 +289,6 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
     // Assert
     verify(persistencePerspective).getOperationTypes();
     assertFalse(actualCanHandleAddResult);
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
-   * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCanHandleUpdate() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6036 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler skuCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler2 = new SkuCustomPersistenceHandler();
-
-    // Act
-    skuCustomPersistenceHandler2.canHandleUpdate(new PersistencePackage());
   }
 
   /**
@@ -499,15 +298,13 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
+   * Method under test: {@link SkuCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"})
   public void testCanHandleUpdate_givenDrJaneDoe_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     PersistencePackage persistencePackage = mock(PersistencePackage.class);
     when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
     when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
@@ -527,49 +324,16 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
   /**
    * Test {@link SkuCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
    * <ul>
-   *   <li>Given {@link NumberFormatException#NumberFormatException(String)} with
-   * {@code foo}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
-   */
-  @Test
-  public void testCanHandleUpdate_givenNumberFormatExceptionWithFoo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenThrow(new NumberFormatException("foo"));
-    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
-    doNothing().when(persistencePackage).setPersistencePerspective(Mockito.<PersistencePerspective>any());
-    persistencePackage.setPersistencePerspective(mock(PersistencePerspective.class));
-
-    // Act
-    skuCustomPersistenceHandler.canHandleUpdate(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getPersistencePerspective();
-    verify(persistencePackage).setPersistencePerspective(isA(PersistencePerspective.class));
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
-   * <ul>
    *   <li>Then calls {@link PersistencePerspective#getOperationTypes()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
+   * Method under test: {@link SkuCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"})
   public void testCanHandleUpdate_thenCallsGetOperationTypes() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
     when(persistencePerspective.getOperationTypes()).thenReturn(new OperationTypes());
     Entity entity = new Entity();
@@ -587,18 +351,15 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#canHandle(PersistencePackage, OperationType)}.
+   * Test {@link SkuCustomPersistenceHandler#canHandle(PersistencePackage, OperationType)}.
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#canHandle(PersistencePackage, OperationType)}
+   * Method under test: {@link SkuCustomPersistenceHandler#canHandle(PersistencePackage, OperationType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuCustomPersistenceHandler.canHandle(PersistencePackage, OperationType)"})
   public void testCanHandle() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     Entity entity = new Entity();
 
     // Act and Assert
@@ -607,57 +368,19 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#canHandle(PersistencePackage, OperationType)}.
-   * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#canHandle(PersistencePackage, OperationType)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCanHandle2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5933 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler skuCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler2 = new SkuCustomPersistenceHandler();
-
-    // Act
-    skuCustomPersistenceHandler2.canHandle(new PersistencePackage(), OperationType.NONDESTRUCTIVEREMOVE);
-  }
-
-  /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#canHandle(PersistencePackage, OperationType)}.
+   * Test {@link SkuCustomPersistenceHandler#canHandle(PersistencePackage, OperationType)}.
    * <ul>
    *   <li>Given {@code Dr Jane Doe}.</li>
-   *   <li>Then calls
-   * {@link PersistencePackage#getCeilingEntityFullyQualifiedClassname()}.</li>
+   *   <li>Then calls {@link PersistencePackage#getCeilingEntityFullyQualifiedClassname()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#canHandle(PersistencePackage, OperationType)}
+   * Method under test: {@link SkuCustomPersistenceHandler#canHandle(PersistencePackage, OperationType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuCustomPersistenceHandler.canHandle(PersistencePackage, OperationType)"})
   public void testCanHandle_givenDrJaneDoe_thenCallsGetCeilingEntityFullyQualifiedClassname() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     PersistencePackage persistencePackage = mock(PersistencePackage.class);
     when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
 
@@ -671,113 +394,565 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao, InspectHelper)}.
+   * Test {@link SkuCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao, InspectHelper)}.
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao, InspectHelper)}
+   * Method under test: {@link SkuCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao, InspectHelper)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DynamicResultSet SkuCustomPersistenceHandler.inspect(PersistencePackage, DynamicEntityDao, InspectHelper)"})
   public void testInspect() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6937 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler skuCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler2 = new SkuCustomPersistenceHandler();
+    when(skuMetadataCacheService.getFromCache(Mockito.<String>any())).thenThrow(new NumberFormatException("USD"));
+    when(skuMetadataCacheService.useCache()).thenReturn(true);
+    when(skuMetadataCacheService.buildCacheKey(Mockito.<String>any())).thenReturn("Build Cache Key");
     PersistencePackage persistencePackage = new PersistencePackage();
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
 
-    // Act
-    skuCustomPersistenceHandler2.inspect(persistencePackage, dynamicEntityDao, new PersistenceManagerImpl());
+    // Act and Assert
+    assertThrows(ServiceException.class,
+        () -> skuCustomPersistenceHandler.inspect(persistencePackage, dynamicEntityDao, new PersistenceManagerImpl()));
+    verify(skuMetadataCacheService).buildCacheKey(isNull());
+    verify(skuMetadataCacheService).getFromCache(eq("Build Cache Key"));
+    verify(skuMetadataCacheService).useCache();
   }
 
   /**
-   * Test {@link SkuCustomPersistenceHandler#getOwningProductId(SectionCrumb[])}.
+   * Test {@link SkuCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao, InspectHelper)}.
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#getOwningProductId(SectionCrumb[])}
+   * Method under test: {@link SkuCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao, InspectHelper)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetOwningProductId() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6548 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler skuCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DynamicResultSet SkuCustomPersistenceHandler.inspect(PersistencePackage, DynamicEntityDao, InspectHelper)"})
+  public void testInspect2() throws ServiceException {
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler2 = new SkuCustomPersistenceHandler();
+    doNothing().when(persistenceModule).setPersistenceManager(Mockito.<PersistenceManager>any());
+    doNothing().when(persistenceModule)
+        .updateMergedProperties(Mockito.<PersistencePackage>any(),
+            Mockito.<Map<MergedPropertyType, Map<String, FieldMetadata>>>any());
+    when(skuMetadataCacheService.useCache()).thenReturn(false);
+    when(skuMetadataCacheService.buildCacheKey(Mockito.<String>any())).thenReturn("Build Cache Key");
+
+    SectionCrumb sectionCrumb = new SectionCrumb();
+    sectionCrumb.setOriginalSectionIdentifier("42");
+    sectionCrumb.setSectionId("org.broadleafcommerce.core.catalog.domain.ProductImpl");
+    sectionCrumb.setSectionIdentifier("org.broadleafcommerce.core.catalog.domain.ProductImpl");
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
+    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[]{sectionCrumb});
+    DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>[]>when(dynamicEntityDao.getAllPolymorphicEntitiesFromCeiling(Mockito.<Class<Object>>any()))
+        .thenReturn(new Class[]{forNameResult});
+
+    ClassMetadata classMetadata = new ClassMetadata();
+    classMetadata.setCeilingType("Type");
+    classMetadata.setCurrencyCode("GBP");
+    classMetadata.setPolymorphicEntities(new ClassTree());
+    classMetadata.setProperties(new Property[]{new Property()});
+    classMetadata.setSecurityCeilingType("Security Ceiling Type");
+    classMetadata.setTabAndGroupMetadata(new HashMap<>());
+    PersistenceManagerImpl helper = mock(PersistenceManagerImpl.class);
+    when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
+        .thenReturn(new HashMap<>());
+    when(helper.buildClassMetadata(Mockito.<Class<Object>[]>any(), Mockito.<PersistencePackage>any(),
+        Mockito.<Map<MergedPropertyType, Map<String, FieldMetadata>>>any())).thenReturn(classMetadata);
+
+    // Act
+    DynamicResultSet actualInspectResult = skuCustomPersistenceHandler.inspect(persistencePackage, dynamicEntityDao,
+        helper);
+
+    // Assert
+    verify(skuMetadataCacheService).buildCacheKey(eq("org.broadleafcommerce.core.catalog.domain.ProductImpl"));
+    verify(skuMetadataCacheService, atLeast(1)).useCache();
+    verify(persistencePackage).getPersistencePerspective();
+    verify(persistencePackage).getSectionCrumbs();
+    verify(dynamicEntityDao).getAllPolymorphicEntitiesFromCeiling(isA(Class.class));
+    verify(helper).buildClassMetadata(isA(Class[].class), isA(PersistencePackage.class), isA(Map.class));
+    verify(helper).getSimpleMergedProperties(eq("org.broadleafcommerce.core.catalog.domain.SkuImpl"),
+        isA(PersistencePerspective.class));
+    verify(persistenceModule).setPersistenceManager(isA(PersistenceManager.class));
+    verify(persistenceModule).updateMergedProperties(isA(PersistencePackage.class), isA(Map.class));
+    assertNull(actualInspectResult.getPromptSearch());
+    assertNull(actualInspectResult.getTotalCountLessThanPageSize());
+    assertNull(actualInspectResult.getBatchId());
+    assertNull(actualInspectResult.getLowerCount());
+    assertNull(actualInspectResult.getUpperCount());
+    assertNull(actualInspectResult.getFirstId());
+    assertNull(actualInspectResult.getLastId());
+    assertNull(actualInspectResult.getFetchType());
+    assertEquals(0, actualInspectResult.getPageSize().intValue());
+    assertEquals(0, actualInspectResult.getStartIndex().intValue());
+    assertEquals(0, actualInspectResult.getTotalRecords().intValue());
+    assertEquals(0, actualInspectResult.getRecords().length);
+    assertTrue(actualInspectResult.getUnselectedTabMetadata().isEmpty());
+    assertSame(classMetadata, actualInspectResult.getClassMetaData());
+  }
+
+  /**
+   * Test {@link SkuCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao, InspectHelper)}.
+   * <ul>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link ProductOptionImpl} (default constructor).</li>
+   *   <li>Then calls {@link CatalogService#readAllProductOptions()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao, InspectHelper)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DynamicResultSet SkuCustomPersistenceHandler.inspect(PersistencePackage, DynamicEntityDao, InspectHelper)"})
+  public void testInspect_givenArrayListAddProductOptionImpl_thenCallsReadAllProductOptions() throws ServiceException {
+    // Arrange
+    doNothing().when(persistenceModule).setPersistenceManager(Mockito.<PersistenceManager>any());
+    doNothing().when(persistenceModule)
+        .updateMergedProperties(Mockito.<PersistencePackage>any(),
+            Mockito.<Map<MergedPropertyType, Map<String, FieldMetadata>>>any());
+
+    ArrayList<ProductOption> productOptionList = new ArrayList<>();
+    productOptionList.add(new ProductOptionImpl());
+    when(catalogService.readAllProductOptions()).thenReturn(productOptionList);
+    when(skuMetadataCacheService.useCache()).thenReturn(false);
+    when(skuMetadataCacheService.buildCacheKey(Mockito.<String>any())).thenReturn("Build Cache Key");
 
     SectionCrumb sectionCrumb = new SectionCrumb();
     sectionCrumb.setOriginalSectionIdentifier("42");
     sectionCrumb.setSectionId("42");
     sectionCrumb.setSectionIdentifier("42");
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
+    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[]{sectionCrumb});
+    DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>[]>when(dynamicEntityDao.getAllPolymorphicEntitiesFromCeiling(Mockito.<Class<Object>>any()))
+        .thenReturn(new Class[]{forNameResult});
+
+    ClassMetadata classMetadata = new ClassMetadata();
+    classMetadata.setCeilingType("Type");
+    classMetadata.setCurrencyCode("GBP");
+    classMetadata.setPolymorphicEntities(new ClassTree());
+    classMetadata.setProperties(new Property[]{new Property()});
+    classMetadata.setSecurityCeilingType("Security Ceiling Type");
+    classMetadata.setTabAndGroupMetadata(new HashMap<>());
+    PersistenceManagerImpl helper = mock(PersistenceManagerImpl.class);
+    when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
+        .thenReturn(new HashMap<>());
+    when(helper.buildClassMetadata(Mockito.<Class<Object>[]>any(), Mockito.<PersistencePackage>any(),
+        Mockito.<Map<MergedPropertyType, Map<String, FieldMetadata>>>any())).thenReturn(classMetadata);
 
     // Act
-    skuCustomPersistenceHandler2.getOwningProductId(new SectionCrumb[]{sectionCrumb});
+    DynamicResultSet actualInspectResult = skuCustomPersistenceHandler.inspect(persistencePackage, dynamicEntityDao,
+        helper);
+
+    // Assert
+    verify(skuMetadataCacheService).buildCacheKey(isNull());
+    verify(skuMetadataCacheService, atLeast(1)).useCache();
+    verify(catalogService).readAllProductOptions();
+    verify(persistencePackage).getPersistencePerspective();
+    verify(persistencePackage).getSectionCrumbs();
+    verify(dynamicEntityDao).getAllPolymorphicEntitiesFromCeiling(isA(Class.class));
+    verify(helper).buildClassMetadata(isA(Class[].class), isA(PersistencePackage.class), isA(Map.class));
+    verify(helper).getSimpleMergedProperties(eq("org.broadleafcommerce.core.catalog.domain.SkuImpl"),
+        isA(PersistencePerspective.class));
+    verify(persistenceModule).setPersistenceManager(isA(PersistenceManager.class));
+    verify(persistenceModule).updateMergedProperties(isA(PersistencePackage.class), isA(Map.class));
+    assertNull(actualInspectResult.getPromptSearch());
+    assertNull(actualInspectResult.getTotalCountLessThanPageSize());
+    assertNull(actualInspectResult.getBatchId());
+    assertNull(actualInspectResult.getLowerCount());
+    assertNull(actualInspectResult.getUpperCount());
+    assertNull(actualInspectResult.getFirstId());
+    assertNull(actualInspectResult.getLastId());
+    assertNull(actualInspectResult.getFetchType());
+    assertEquals(0, actualInspectResult.getPageSize().intValue());
+    assertEquals(0, actualInspectResult.getStartIndex().intValue());
+    assertEquals(0, actualInspectResult.getTotalRecords().intValue());
+    assertEquals(0, actualInspectResult.getRecords().length);
+    assertTrue(actualInspectResult.getUnselectedTabMetadata().isEmpty());
+    assertSame(classMetadata, actualInspectResult.getClassMetaData());
+  }
+
+  /**
+   * Test {@link SkuCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao, InspectHelper)}.
+   * <ul>
+   *   <li>Given {@link CatalogService} {@link CatalogService#findProductById(Long)} return {@link ProductBundleImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao, InspectHelper)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DynamicResultSet SkuCustomPersistenceHandler.inspect(PersistencePackage, DynamicEntityDao, InspectHelper)"})
+  public void testInspect_givenCatalogServiceFindProductByIdReturnProductBundleImpl() throws ServiceException {
+    // Arrange
+    doNothing().when(persistenceModule).setPersistenceManager(Mockito.<PersistenceManager>any());
+    doNothing().when(persistenceModule)
+        .updateMergedProperties(Mockito.<PersistencePackage>any(),
+            Mockito.<Map<MergedPropertyType, Map<String, FieldMetadata>>>any());
+    when(catalogService.findProductById(Mockito.<Long>any())).thenReturn(new ProductBundleImpl());
+    when(skuMetadataCacheService.useCache()).thenReturn(false);
+    when(skuMetadataCacheService.buildCacheKey(Mockito.<String>any())).thenReturn("Build Cache Key");
+
+    SectionCrumb sectionCrumb = new SectionCrumb();
+    sectionCrumb.setOriginalSectionIdentifier("42");
+    sectionCrumb.setSectionId("42");
+    sectionCrumb.setSectionIdentifier("org.broadleafcommerce.core.catalog.domain.ProductImpl");
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
+    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[]{sectionCrumb});
+    DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>[]>when(dynamicEntityDao.getAllPolymorphicEntitiesFromCeiling(Mockito.<Class<Object>>any()))
+        .thenReturn(new Class[]{forNameResult});
+
+    ClassMetadata classMetadata = new ClassMetadata();
+    classMetadata.setCeilingType("Type");
+    classMetadata.setCurrencyCode("GBP");
+    classMetadata.setPolymorphicEntities(new ClassTree());
+    classMetadata.setProperties(new Property[]{new Property()});
+    classMetadata.setSecurityCeilingType("Security Ceiling Type");
+    classMetadata.setTabAndGroupMetadata(new HashMap<>());
+    PersistenceManagerImpl helper = mock(PersistenceManagerImpl.class);
+    when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
+        .thenReturn(new HashMap<>());
+    when(helper.buildClassMetadata(Mockito.<Class<Object>[]>any(), Mockito.<PersistencePackage>any(),
+        Mockito.<Map<MergedPropertyType, Map<String, FieldMetadata>>>any())).thenReturn(classMetadata);
+
+    // Act
+    DynamicResultSet actualInspectResult = skuCustomPersistenceHandler.inspect(persistencePackage, dynamicEntityDao,
+        helper);
+
+    // Assert
+    verify(skuMetadataCacheService).buildCacheKey(eq("42"));
+    verify(skuMetadataCacheService, atLeast(1)).useCache();
+    verify(catalogService).findProductById(eq(42L));
+    verify(persistencePackage).getPersistencePerspective();
+    verify(persistencePackage).getSectionCrumbs();
+    verify(dynamicEntityDao).getAllPolymorphicEntitiesFromCeiling(isA(Class.class));
+    verify(helper).buildClassMetadata(isA(Class[].class), isA(PersistencePackage.class), isA(Map.class));
+    verify(helper).getSimpleMergedProperties(eq("org.broadleafcommerce.core.catalog.domain.SkuImpl"),
+        isA(PersistencePerspective.class));
+    verify(persistenceModule).setPersistenceManager(isA(PersistenceManager.class));
+    verify(persistenceModule).updateMergedProperties(isA(PersistencePackage.class), isA(Map.class));
+    assertNull(actualInspectResult.getPromptSearch());
+    assertNull(actualInspectResult.getTotalCountLessThanPageSize());
+    assertNull(actualInspectResult.getBatchId());
+    assertNull(actualInspectResult.getLowerCount());
+    assertNull(actualInspectResult.getUpperCount());
+    assertNull(actualInspectResult.getFirstId());
+    assertNull(actualInspectResult.getLastId());
+    assertNull(actualInspectResult.getFetchType());
+    assertEquals(0, actualInspectResult.getPageSize().intValue());
+    assertEquals(0, actualInspectResult.getStartIndex().intValue());
+    assertEquals(0, actualInspectResult.getTotalRecords().intValue());
+    assertEquals(0, actualInspectResult.getRecords().length);
+    assertTrue(actualInspectResult.getUnselectedTabMetadata().isEmpty());
+    assertSame(classMetadata, actualInspectResult.getClassMetaData());
+  }
+
+  /**
+   * Test {@link SkuCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao, InspectHelper)}.
+   * <ul>
+   *   <li>Given {@link SectionCrumb} (default constructor) SectionIdentifier is {@code 42}.</li>
+   *   <li>Then calls {@link SkuMetadataCacheService#getFromCache(String)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao, InspectHelper)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DynamicResultSet SkuCustomPersistenceHandler.inspect(PersistencePackage, DynamicEntityDao, InspectHelper)"})
+  public void testInspect_givenSectionCrumbSectionIdentifierIs42_thenCallsGetFromCache() throws ServiceException {
+    // Arrange
+    doNothing().when(persistenceModule).setPersistenceManager(Mockito.<PersistenceManager>any());
+    doNothing().when(persistenceModule)
+        .updateMergedProperties(Mockito.<PersistencePackage>any(),
+            Mockito.<Map<MergedPropertyType, Map<String, FieldMetadata>>>any());
+    when(skuMetadataCacheService.getFromCache(Mockito.<String>any())).thenReturn(new HashMap<>());
+    when(skuMetadataCacheService.useCache()).thenReturn(true);
+    when(skuMetadataCacheService.buildCacheKey(Mockito.<String>any())).thenReturn("Build Cache Key");
+
+    SectionCrumb sectionCrumb = new SectionCrumb();
+    sectionCrumb.setOriginalSectionIdentifier("42");
+    sectionCrumb.setSectionId("42");
+    sectionCrumb.setSectionIdentifier("42");
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
+    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[]{sectionCrumb});
+    DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>[]>when(dynamicEntityDao.getAllPolymorphicEntitiesFromCeiling(Mockito.<Class<Object>>any()))
+        .thenReturn(new Class[]{forNameResult});
+
+    ClassMetadata classMetadata = new ClassMetadata();
+    classMetadata.setCeilingType("Type");
+    classMetadata.setCurrencyCode("GBP");
+    classMetadata.setPolymorphicEntities(new ClassTree());
+    classMetadata.setProperties(new Property[]{new Property()});
+    classMetadata.setSecurityCeilingType("Security Ceiling Type");
+    classMetadata.setTabAndGroupMetadata(new HashMap<>());
+    PersistenceManagerImpl helper = mock(PersistenceManagerImpl.class);
+    when(helper.buildClassMetadata(Mockito.<Class<Object>[]>any(), Mockito.<PersistencePackage>any(),
+        Mockito.<Map<MergedPropertyType, Map<String, FieldMetadata>>>any())).thenReturn(classMetadata);
+
+    // Act
+    DynamicResultSet actualInspectResult = skuCustomPersistenceHandler.inspect(persistencePackage, dynamicEntityDao,
+        helper);
+
+    // Assert
+    verify(skuMetadataCacheService).buildCacheKey(isNull());
+    verify(skuMetadataCacheService).getFromCache(eq("Build Cache Key"));
+    verify(skuMetadataCacheService).useCache();
+    verify(persistencePackage).getPersistencePerspective();
+    verify(persistencePackage).getSectionCrumbs();
+    verify(dynamicEntityDao).getAllPolymorphicEntitiesFromCeiling(isA(Class.class));
+    verify(helper).buildClassMetadata(isA(Class[].class), isA(PersistencePackage.class), isA(Map.class));
+    verify(persistenceModule).setPersistenceManager(isA(PersistenceManager.class));
+    verify(persistenceModule).updateMergedProperties(isA(PersistencePackage.class), isA(Map.class));
+    assertNull(actualInspectResult.getPromptSearch());
+    assertNull(actualInspectResult.getTotalCountLessThanPageSize());
+    assertNull(actualInspectResult.getBatchId());
+    assertNull(actualInspectResult.getLowerCount());
+    assertNull(actualInspectResult.getUpperCount());
+    assertNull(actualInspectResult.getFirstId());
+    assertNull(actualInspectResult.getLastId());
+    assertNull(actualInspectResult.getFetchType());
+    assertEquals(0, actualInspectResult.getPageSize().intValue());
+    assertEquals(0, actualInspectResult.getStartIndex().intValue());
+    assertEquals(0, actualInspectResult.getTotalRecords().intValue());
+    assertEquals(0, actualInspectResult.getRecords().length);
+    assertTrue(actualInspectResult.getUnselectedTabMetadata().isEmpty());
+    assertSame(classMetadata, actualInspectResult.getClassMetaData());
+  }
+
+  /**
+   * Test {@link SkuCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao, InspectHelper)}.
+   * <ul>
+   *   <li>Then calls {@link PersistencePackage#getCeilingEntityFullyQualifiedClassname()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao, InspectHelper)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DynamicResultSet SkuCustomPersistenceHandler.inspect(PersistencePackage, DynamicEntityDao, InspectHelper)"})
+  public void testInspect_thenCallsGetCeilingEntityFullyQualifiedClassname() throws ServiceException {
+    // Arrange
+    when(skuMetadataCacheService.useCache()).thenReturn(false);
+    when(skuMetadataCacheService.buildCacheKey(Mockito.<String>any())).thenReturn("Build Cache Key");
+
+    SectionCrumb sectionCrumb = new SectionCrumb();
+    sectionCrumb.setOriginalSectionIdentifier("42");
+    sectionCrumb.setSectionId("42");
+    sectionCrumb.setSectionIdentifier("42");
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
+    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
+    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[]{sectionCrumb});
+    DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
+    PersistenceManagerImpl helper = mock(PersistenceManagerImpl.class);
+    when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
+        .thenThrow(new NumberFormatException("org.broadleafcommerce.core.catalog.domain.ProductImpl"));
+
+    // Act and Assert
+    assertThrows(ServiceException.class,
+        () -> skuCustomPersistenceHandler.inspect(persistencePackage, dynamicEntityDao, helper));
+    verify(skuMetadataCacheService).buildCacheKey(isNull());
+    verify(skuMetadataCacheService).useCache();
+    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
+    verify(persistencePackage).getPersistencePerspective();
+    verify(persistencePackage).getSectionCrumbs();
+    verify(helper).getSimpleMergedProperties(eq("org.broadleafcommerce.core.catalog.domain.SkuImpl"),
+        isA(PersistencePerspective.class));
+  }
+
+  /**
+   * Test {@link SkuCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao, InspectHelper)}.
+   * <ul>
+   *   <li>Then calls {@link Product#getProductOptions()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao, InspectHelper)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DynamicResultSet SkuCustomPersistenceHandler.inspect(PersistencePackage, DynamicEntityDao, InspectHelper)"})
+  public void testInspect_thenCallsGetProductOptions() throws ServiceException {
+    // Arrange
+    doNothing().when(persistenceModule).setPersistenceManager(Mockito.<PersistenceManager>any());
+    doNothing().when(persistenceModule)
+        .updateMergedProperties(Mockito.<PersistencePackage>any(),
+            Mockito.<Map<MergedPropertyType, Map<String, FieldMetadata>>>any());
+    Product product = mock(Product.class);
+    when(product.getProductOptions()).thenThrow(new NumberFormatException("foo"));
+    when(catalogService.findProductById(Mockito.<Long>any())).thenReturn(product);
+    when(skuMetadataCacheService.useCache()).thenReturn(false);
+    when(skuMetadataCacheService.buildCacheKey(Mockito.<String>any())).thenReturn("Build Cache Key");
+
+    SectionCrumb sectionCrumb = new SectionCrumb();
+    sectionCrumb.setOriginalSectionIdentifier("42");
+    sectionCrumb.setSectionId("42");
+    sectionCrumb.setSectionIdentifier("org.broadleafcommerce.core.catalog.domain.ProductImpl");
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
+    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[]{sectionCrumb});
+    DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>[]>when(dynamicEntityDao.getAllPolymorphicEntitiesFromCeiling(Mockito.<Class<Object>>any()))
+        .thenReturn(new Class[]{forNameResult});
+
+    ClassMetadata classMetadata = new ClassMetadata();
+    classMetadata.setCeilingType("Type");
+    classMetadata.setCurrencyCode("GBP");
+    classMetadata.setPolymorphicEntities(new ClassTree());
+    classMetadata.setProperties(new Property[]{new Property()});
+    classMetadata.setSecurityCeilingType("Security Ceiling Type");
+    classMetadata.setTabAndGroupMetadata(new HashMap<>());
+    PersistenceManagerImpl helper = mock(PersistenceManagerImpl.class);
+    when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
+        .thenReturn(new HashMap<>());
+    when(helper.buildClassMetadata(Mockito.<Class<Object>[]>any(), Mockito.<PersistencePackage>any(),
+        Mockito.<Map<MergedPropertyType, Map<String, FieldMetadata>>>any())).thenReturn(classMetadata);
+
+    // Act
+    DynamicResultSet actualInspectResult = skuCustomPersistenceHandler.inspect(persistencePackage, dynamicEntityDao,
+        helper);
+
+    // Assert
+    verify(skuMetadataCacheService).buildCacheKey(eq("42"));
+    verify(skuMetadataCacheService, atLeast(1)).useCache();
+    verify(product).getProductOptions();
+    verify(catalogService).findProductById(eq(42L));
+    verify(persistencePackage).getPersistencePerspective();
+    verify(persistencePackage).getSectionCrumbs();
+    verify(dynamicEntityDao).getAllPolymorphicEntitiesFromCeiling(isA(Class.class));
+    verify(helper).buildClassMetadata(isA(Class[].class), isA(PersistencePackage.class), isA(Map.class));
+    verify(helper).getSimpleMergedProperties(eq("org.broadleafcommerce.core.catalog.domain.SkuImpl"),
+        isA(PersistencePerspective.class));
+    verify(persistenceModule).setPersistenceManager(isA(PersistenceManager.class));
+    verify(persistenceModule).updateMergedProperties(isA(PersistencePackage.class), isA(Map.class));
+    assertNull(actualInspectResult.getPromptSearch());
+    assertNull(actualInspectResult.getTotalCountLessThanPageSize());
+    assertNull(actualInspectResult.getBatchId());
+    assertNull(actualInspectResult.getLowerCount());
+    assertNull(actualInspectResult.getUpperCount());
+    assertNull(actualInspectResult.getFirstId());
+    assertNull(actualInspectResult.getLastId());
+    assertNull(actualInspectResult.getFetchType());
+    assertEquals(0, actualInspectResult.getPageSize().intValue());
+    assertEquals(0, actualInspectResult.getStartIndex().intValue());
+    assertEquals(0, actualInspectResult.getTotalRecords().intValue());
+    assertEquals(0, actualInspectResult.getRecords().length);
+    assertTrue(actualInspectResult.getUnselectedTabMetadata().isEmpty());
+    assertSame(classMetadata, actualInspectResult.getClassMetaData());
+  }
+
+  /**
+   * Test {@link SkuCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao, InspectHelper)}.
+   * <ul>
+   *   <li>Then calls {@link CatalogService#readAllProductOptions()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao, InspectHelper)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DynamicResultSet SkuCustomPersistenceHandler.inspect(PersistencePackage, DynamicEntityDao, InspectHelper)"})
+  public void testInspect_thenCallsReadAllProductOptions() throws ServiceException {
+    // Arrange
+    doNothing().when(persistenceModule).setPersistenceManager(Mockito.<PersistenceManager>any());
+    doNothing().when(persistenceModule)
+        .updateMergedProperties(Mockito.<PersistencePackage>any(),
+            Mockito.<Map<MergedPropertyType, Map<String, FieldMetadata>>>any());
+    when(catalogService.readAllProductOptions()).thenReturn(new ArrayList<>());
+    when(skuMetadataCacheService.useCache()).thenReturn(false);
+    when(skuMetadataCacheService.buildCacheKey(Mockito.<String>any())).thenReturn("Build Cache Key");
+
+    SectionCrumb sectionCrumb = new SectionCrumb();
+    sectionCrumb.setOriginalSectionIdentifier("42");
+    sectionCrumb.setSectionId("42");
+    sectionCrumb.setSectionIdentifier("42");
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
+    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[]{sectionCrumb});
+    DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>[]>when(dynamicEntityDao.getAllPolymorphicEntitiesFromCeiling(Mockito.<Class<Object>>any()))
+        .thenReturn(new Class[]{forNameResult});
+
+    ClassMetadata classMetadata = new ClassMetadata();
+    classMetadata.setCeilingType("Type");
+    classMetadata.setCurrencyCode("GBP");
+    classMetadata.setPolymorphicEntities(new ClassTree());
+    classMetadata.setProperties(new Property[]{new Property()});
+    classMetadata.setSecurityCeilingType("Security Ceiling Type");
+    classMetadata.setTabAndGroupMetadata(new HashMap<>());
+    PersistenceManagerImpl helper = mock(PersistenceManagerImpl.class);
+    when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
+        .thenReturn(new HashMap<>());
+    when(helper.buildClassMetadata(Mockito.<Class<Object>[]>any(), Mockito.<PersistencePackage>any(),
+        Mockito.<Map<MergedPropertyType, Map<String, FieldMetadata>>>any())).thenReturn(classMetadata);
+
+    // Act
+    DynamicResultSet actualInspectResult = skuCustomPersistenceHandler.inspect(persistencePackage, dynamicEntityDao,
+        helper);
+
+    // Assert
+    verify(skuMetadataCacheService).buildCacheKey(isNull());
+    verify(skuMetadataCacheService, atLeast(1)).useCache();
+    verify(catalogService).readAllProductOptions();
+    verify(persistencePackage).getPersistencePerspective();
+    verify(persistencePackage).getSectionCrumbs();
+    verify(dynamicEntityDao).getAllPolymorphicEntitiesFromCeiling(isA(Class.class));
+    verify(helper).buildClassMetadata(isA(Class[].class), isA(PersistencePackage.class), isA(Map.class));
+    verify(helper).getSimpleMergedProperties(eq("org.broadleafcommerce.core.catalog.domain.SkuImpl"),
+        isA(PersistencePerspective.class));
+    verify(persistenceModule).setPersistenceManager(isA(PersistenceManager.class));
+    verify(persistenceModule).updateMergedProperties(isA(PersistencePackage.class), isA(Map.class));
+    assertNull(actualInspectResult.getPromptSearch());
+    assertNull(actualInspectResult.getTotalCountLessThanPageSize());
+    assertNull(actualInspectResult.getBatchId());
+    assertNull(actualInspectResult.getLowerCount());
+    assertNull(actualInspectResult.getUpperCount());
+    assertNull(actualInspectResult.getFirstId());
+    assertNull(actualInspectResult.getLastId());
+    assertNull(actualInspectResult.getFetchType());
+    assertEquals(0, actualInspectResult.getPageSize().intValue());
+    assertEquals(0, actualInspectResult.getStartIndex().intValue());
+    assertEquals(0, actualInspectResult.getTotalRecords().intValue());
+    assertEquals(0, actualInspectResult.getRecords().length);
+    assertTrue(actualInspectResult.getUnselectedTabMetadata().isEmpty());
+    assertSame(classMetadata, actualInspectResult.getClassMetaData());
   }
 
   /**
    * Test {@link SkuCustomPersistenceHandler#getOwningProductId(SectionCrumb[])}.
    * <ul>
-   *   <li>Then throw {@link NumberFormatException}.</li>
+   *   <li>Then return {@code 42}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#getOwningProductId(SectionCrumb[])}
+   * Method under test: {@link SkuCustomPersistenceHandler#getOwningProductId(SectionCrumb[])}
    */
   @Test
-  public void testGetOwningProductId_thenThrowNumberFormatException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuCustomPersistenceHandler.getOwningProductId(SectionCrumb[])"})
+  public void testGetOwningProductId_thenReturn42() {
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
-    SectionCrumb sectionCrumb = mock(SectionCrumb.class);
-    when(sectionCrumb.getSectionId())
-        .thenThrow(new NumberFormatException("org.broadleafcommerce.core.catalog.domain.ProductImpl"));
-    when(sectionCrumb.getSectionIdentifier()).thenReturn("org.broadleafcommerce.core.catalog.domain.ProductImpl");
-    doNothing().when(sectionCrumb).setOriginalSectionIdentifier(Mockito.<String>any());
-    doNothing().when(sectionCrumb).setSectionId(Mockito.<String>any());
-    doNothing().when(sectionCrumb).setSectionIdentifier(Mockito.<String>any());
+    SectionCrumb sectionCrumb = new SectionCrumb();
     sectionCrumb.setOriginalSectionIdentifier("42");
     sectionCrumb.setSectionId("42");
-    sectionCrumb.setSectionIdentifier("42");
+    sectionCrumb.setSectionIdentifier("org.broadleafcommerce.core.catalog.domain.ProductImpl");
 
     // Act and Assert
-    assertThrows(NumberFormatException.class,
-        () -> skuCustomPersistenceHandler.getOwningProductId(new SectionCrumb[]{sectionCrumb}));
-    verify(sectionCrumb).getSectionId();
-    verify(sectionCrumb).getSectionIdentifier();
-    verify(sectionCrumb).setOriginalSectionIdentifier(eq("42"));
-    verify(sectionCrumb).setSectionId(eq("42"));
-    verify(sectionCrumb).setSectionIdentifier(eq("42"));
+    assertEquals("42", skuCustomPersistenceHandler.getOwningProductId(new SectionCrumb[]{sectionCrumb}));
   }
 
   /**
@@ -787,109 +962,30 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#getOwningProductId(SectionCrumb[])}
+   * Method under test: {@link SkuCustomPersistenceHandler#getOwningProductId(SectionCrumb[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuCustomPersistenceHandler.getOwningProductId(SectionCrumb[])"})
   public void testGetOwningProductId_whenEmptyArrayOfSectionCrumb_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertNull((new SkuCustomPersistenceHandler()).getOwningProductId(new SectionCrumb[]{}));
+    assertNull(skuCustomPersistenceHandler.getOwningProductId(new SectionCrumb[]{}));
   }
 
   /**
    * Test {@link SkuCustomPersistenceHandler#getOwningProductId(SectionCrumb[])}.
    * <ul>
-   *   <li>When {@link SectionCrumb} {@link SectionCrumb#getSectionId()} return
-   * {@code 42}.</li>
-   *   <li>Then return {@code 42}.</li>
+   *   <li>When {@link SectionCrumb} (default constructor) SectionIdentifier is {@code 42}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#getOwningProductId(SectionCrumb[])}
+   * Method under test: {@link SkuCustomPersistenceHandler#getOwningProductId(SectionCrumb[])}
    */
   @Test
-  public void testGetOwningProductId_whenSectionCrumbGetSectionIdReturn42_thenReturn42() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuCustomPersistenceHandler.getOwningProductId(SectionCrumb[])"})
+  public void testGetOwningProductId_whenSectionCrumbSectionIdentifierIs42_thenReturnNull() {
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
-    SectionCrumb sectionCrumb = mock(SectionCrumb.class);
-    when(sectionCrumb.getSectionId()).thenReturn("42");
-    when(sectionCrumb.getSectionIdentifier()).thenReturn("org.broadleafcommerce.core.catalog.domain.ProductImpl");
-    doNothing().when(sectionCrumb).setOriginalSectionIdentifier(Mockito.<String>any());
-    doNothing().when(sectionCrumb).setSectionId(Mockito.<String>any());
-    doNothing().when(sectionCrumb).setSectionIdentifier(Mockito.<String>any());
-    sectionCrumb.setOriginalSectionIdentifier("42");
-    sectionCrumb.setSectionId("42");
-    sectionCrumb.setSectionIdentifier("42");
-
-    // Act
-    String actualOwningProductId = skuCustomPersistenceHandler.getOwningProductId(new SectionCrumb[]{sectionCrumb});
-
-    // Assert
-    verify(sectionCrumb).getSectionId();
-    verify(sectionCrumb).getSectionIdentifier();
-    verify(sectionCrumb).setOriginalSectionIdentifier(eq("42"));
-    verify(sectionCrumb).setSectionId(eq("42"));
-    verify(sectionCrumb).setSectionIdentifier(eq("42"));
-    assertEquals("42", actualOwningProductId);
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#getOwningProductId(SectionCrumb[])}.
-   * <ul>
-   *   <li>When {@link SectionCrumb} {@link SectionCrumb#getSectionIdentifier()}
-   * return {@code 42}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#getOwningProductId(SectionCrumb[])}
-   */
-  @Test
-  public void testGetOwningProductId_whenSectionCrumbGetSectionIdentifierReturn42() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
-    SectionCrumb sectionCrumb = mock(SectionCrumb.class);
-    when(sectionCrumb.getSectionIdentifier()).thenReturn("42");
-    doNothing().when(sectionCrumb).setOriginalSectionIdentifier(Mockito.<String>any());
-    doNothing().when(sectionCrumb).setSectionId(Mockito.<String>any());
-    doNothing().when(sectionCrumb).setSectionIdentifier(Mockito.<String>any());
-    sectionCrumb.setOriginalSectionIdentifier("42");
-    sectionCrumb.setSectionId("42");
-    sectionCrumb.setSectionIdentifier("42");
-
-    // Act
-    String actualOwningProductId = skuCustomPersistenceHandler.getOwningProductId(new SectionCrumb[]{sectionCrumb});
-
-    // Assert
-    verify(sectionCrumb).getSectionIdentifier();
-    verify(sectionCrumb).setOriginalSectionIdentifier(eq("42"));
-    verify(sectionCrumb).setSectionId(eq("42"));
-    verify(sectionCrumb).setSectionIdentifier(eq("42"));
-    assertNull(actualOwningProductId);
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#getOwningProductId(SectionCrumb[])}.
-   * <ul>
-   *   <li>When {@link SectionCrumb} (default constructor) OriginalSectionIdentifier
-   * is {@code 42}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#getOwningProductId(SectionCrumb[])}
-   */
-  @Test
-  public void testGetOwningProductId_whenSectionCrumbOriginalSectionIdentifierIs42() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
-
     SectionCrumb sectionCrumb = new SectionCrumb();
     sectionCrumb.setOriginalSectionIdentifier("42");
     sectionCrumb.setSectionId("42");
@@ -901,17 +997,17 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link SkuCustomPersistenceHandler#filterOutProductMetadata(Map)}.
+   * <ul>
+   *   <li>Given {@code defaultProduct.}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#filterOutProductMetadata(Map)}
+   * Method under test: {@link SkuCustomPersistenceHandler#filterOutProductMetadata(Map)}
    */
   @Test
-  public void testFilterOutProductMetadata() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuCustomPersistenceHandler.filterOutProductMetadata(Map)"})
+  public void testFilterOutProductMetadata_givenDefaultProduct() {
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
-
     HashMap<String, FieldMetadata> map = new HashMap<>();
     map.put("defaultProduct.", new AdornedTargetCollectionMetadata());
 
@@ -924,82 +1020,18 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link SkuCustomPersistenceHandler#filterOutProductMetadata(Map)}.
-   * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#filterOutProductMetadata(Map)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFilterOutProductMetadata2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6528 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler skuCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler2 = new SkuCustomPersistenceHandler();
-
-    // Act
-    skuCustomPersistenceHandler2.filterOutProductMetadata(new HashMap<>());
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#filterOutProductMetadata(Map)}.
-   * <ul>
-   *   <li>Given {@link BiFunction}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#filterOutProductMetadata(Map)}
-   */
-  @Test
-  public void testFilterOutProductMetadata_givenBiFunction() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
-
-    HashMap<String, FieldMetadata> map = new HashMap<>();
-    map.computeIfPresent("defaultProduct.", mock(BiFunction.class));
-    map.put("foo", new AdornedTargetCollectionMetadata());
-
-    // Act
-    skuCustomPersistenceHandler.filterOutProductMetadata(map);
-
-    // Assert that nothing has changed
-    assertEquals(1, map.size());
-    assertTrue(map.containsKey("foo"));
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#filterOutProductMetadata(Map)}.
    * <ul>
    *   <li>Given {@code foo}.</li>
    *   <li>Then {@link HashMap#HashMap()} size is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#filterOutProductMetadata(Map)}
+   * Method under test: {@link SkuCustomPersistenceHandler#filterOutProductMetadata(Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuCustomPersistenceHandler.filterOutProductMetadata(Map)"})
   public void testFilterOutProductMetadata_givenFoo_thenHashMapSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
-
     HashMap<String, FieldMetadata> map = new HashMap<>();
     map.put("foo", new AdornedTargetCollectionMetadata());
 
@@ -1017,16 +1049,13 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
    *   <li>Given {@code product.}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#filterOutProductMetadata(Map)}
+   * Method under test: {@link SkuCustomPersistenceHandler#filterOutProductMetadata(Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuCustomPersistenceHandler.filterOutProductMetadata(Map)"})
   public void testFilterOutProductMetadata_givenProduct() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
-
     HashMap<String, FieldMetadata> map = new HashMap<>();
     map.put("product.", new AdornedTargetCollectionMetadata());
     map.put("foo", new AdornedTargetCollectionMetadata());
@@ -1046,15 +1075,13 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
    *   <li>Then {@link HashMap#HashMap()} Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#filterOutProductMetadata(Map)}
+   * Method under test: {@link SkuCustomPersistenceHandler#filterOutProductMetadata(Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuCustomPersistenceHandler.filterOutProductMetadata(Map)"})
   public void testFilterOutProductMetadata_whenHashMap_thenHashMapEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     HashMap<String, FieldMetadata> map = new HashMap<>();
 
     // Act
@@ -1065,219 +1092,277 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#createConsolidatedOptionField(Class)}.
+   * Test {@link SkuCustomPersistenceHandler#createConsolidatedOptionField(Class)}.
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#createConsolidatedOptionField(Class)}
+   * Method under test: {@link SkuCustomPersistenceHandler#createConsolidatedOptionField(Class)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FieldMetadata SkuCustomPersistenceHandler.createConsolidatedOptionField(Class)"})
   public void testCreateConsolidatedOptionField() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6061 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler skuCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler2 = new SkuCustomPersistenceHandler();
+    when(skuMetadataCacheService.useCache()).thenReturn(false);
     Class<Object> inheritedFromType = Object.class;
 
     // Act
-    skuCustomPersistenceHandler2.createConsolidatedOptionField(inheritedFromType);
-  }
-
-  /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#getConsolidatedOptionProperty(Collection)}.
-   * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#getConsolidatedOptionProperty(Collection)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetConsolidatedOptionProperty() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6541 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler skuCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler2 = new SkuCustomPersistenceHandler();
-
-    // Act
-    skuCustomPersistenceHandler2.getConsolidatedOptionProperty(new ArrayList<>());
-  }
-
-  /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#getConsolidatedOptionProperty(Collection)}.
-   * <ul>
-   *   <li>Then return RawValue is {@code 42}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#getConsolidatedOptionProperty(Collection)}
-   */
-  @Test
-  public void testGetConsolidatedOptionProperty_thenReturnRawValueIs42() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
-    ProductOptionValueImpl productOptionValueImpl = mock(ProductOptionValueImpl.class);
-    when(productOptionValueImpl.getAttributeValue()).thenReturn("42");
-
-    ArrayList<ProductOptionValue> values = new ArrayList<>();
-    values.add(productOptionValueImpl);
-
-    // Act
-    Property actualConsolidatedOptionProperty = skuCustomPersistenceHandler.getConsolidatedOptionProperty(values);
+    FieldMetadata actualCreateConsolidatedOptionFieldResult = skuCustomPersistenceHandler
+        .createConsolidatedOptionField(inheritedFromType);
 
     // Assert
-    verify(productOptionValueImpl).getAttributeValue();
-    FieldMetadata metadata = actualConsolidatedOptionProperty.getMetadata();
-    assertTrue(metadata instanceof BasicFieldMetadata);
-    assertEquals("42", actualConsolidatedOptionProperty.getRawValue());
-    assertEquals("42", actualConsolidatedOptionProperty.getUnHtmlEncodedValue());
-    assertEquals("42", actualConsolidatedOptionProperty.getValue());
-    assertEquals("consolidatedProductOptions", actualConsolidatedOptionProperty.getName());
-    assertNull(((BasicFieldMetadata) metadata).getCustomCriteria());
-    assertNull(metadata.getAvailableToTypes());
-    assertNull(((BasicFieldMetadata) metadata).getEnumerationValues());
-    assertNull(((BasicFieldMetadata) metadata).getOptionFilterParams());
-    assertNull(((BasicFieldMetadata) metadata).getCanLinkToExternalEntity());
-    assertNull(((BasicFieldMetadata) metadata).getEnableTypeaheadLookup());
-    assertNull(((BasicFieldMetadata) metadata).getForcePopulateChildProperties());
-    assertNull(((BasicFieldMetadata) metadata).getGroupCollapsed());
-    assertNull(((BasicFieldMetadata) metadata).getHideEnumerationIfEmpty());
-    assertNull(((BasicFieldMetadata) metadata).getIsDerived());
-    assertNull(((BasicFieldMetadata) metadata).getIsFilter());
-    assertNull(((BasicFieldMetadata) metadata).getMutable());
-    assertNull(((BasicFieldMetadata) metadata).getOptionCanEditValues());
-    assertNull(((BasicFieldMetadata) metadata).getOptionHideIfEmpty());
-    assertNull(((BasicFieldMetadata) metadata).getReadOnly());
-    assertNull(((BasicFieldMetadata) metadata).getRequiredOverride());
-    assertNull(((BasicFieldMetadata) metadata).getSearchable());
-    assertNull(((BasicFieldMetadata) metadata).getToOneLookupCreatedViaAnnotation());
-    assertNull(((BasicFieldMetadata) metadata).getTranslatable());
-    assertNull(((BasicFieldMetadata) metadata).getUnique());
-    assertNull(((BasicFieldMetadata) metadata).getUseServerSideInspectionCache());
-    assertNull(((BasicFieldMetadata) metadata).isLargeEntry());
-    assertNull(((BasicFieldMetadata) metadata).isProminent());
-    assertNull(metadata.getChildrenExcluded());
-    assertNull(metadata.getExcluded());
-    assertNull(metadata.getLazyFetch());
-    assertNull(((BasicFieldMetadata) metadata).getGridOrder());
-    assertNull(((BasicFieldMetadata) metadata).getLength());
-    assertNull(((BasicFieldMetadata) metadata).getPrecision());
-    assertNull(((BasicFieldMetadata) metadata).getScale());
-    assertNull(metadata.getGroupOrder());
-    assertNull(metadata.getOrder());
-    assertNull(metadata.getTabOrder());
-    assertNull(((BasicFieldMetadata) metadata).getAssociatedFieldName());
-    assertNull(((BasicFieldMetadata) metadata).getBroadleafEnumeration());
-    assertNull(((BasicFieldMetadata) metadata).getColumnWidth());
-    assertNull(((BasicFieldMetadata) metadata).getDefaultValue());
-    assertNull(((BasicFieldMetadata) metadata).getEnumerationClass());
-    assertNull(((BasicFieldMetadata) metadata).getFieldComponentRendererTemplate());
-    assertNull(((BasicFieldMetadata) metadata).getForeignKeyClass());
-    assertNull(((BasicFieldMetadata) metadata).getForeignKeyDisplayValueProperty());
-    assertNull(((BasicFieldMetadata) metadata).getForeignKeyProperty());
-    assertNull(((BasicFieldMetadata) metadata).getGridFieldComponentRendererTemplate());
-    assertNull(((BasicFieldMetadata) metadata).getHelpText());
-    assertNull(((BasicFieldMetadata) metadata).getHint());
-    assertNull(((BasicFieldMetadata) metadata).getLookupDisplayProperty());
-    assertNull(((BasicFieldMetadata) metadata).getManyToField());
-    assertNull(((BasicFieldMetadata) metadata).getMapFieldValueClass());
-    assertNull(((BasicFieldMetadata) metadata).getMapKeyValueProperty());
-    assertNull(((BasicFieldMetadata) metadata).getName());
-    assertNull(((BasicFieldMetadata) metadata).getOptionDisplayFieldName());
-    assertNull(((BasicFieldMetadata) metadata).getOptionListEntity());
-    assertNull(((BasicFieldMetadata) metadata).getOptionValueFieldName());
-    assertNull(((BasicFieldMetadata) metadata).getRuleIdentifier());
-    assertNull(((BasicFieldMetadata) metadata).getToOneParentProperty());
-    assertNull(((BasicFieldMetadata) metadata).getToOneTargetProperty());
-    assertNull(((BasicFieldMetadata) metadata).getTooltip());
-    assertNull(metadata.getAddFriendlyName());
-    assertNull(metadata.getCurrencyCodeField());
-    assertNull(metadata.getFieldName());
-    assertNull(metadata.getFriendlyName());
-    assertNull(metadata.getGroup());
-    assertNull(metadata.getInheritedFromType());
-    assertNull(metadata.getOwningClass());
-    assertNull(metadata.getOwningClassFriendlyName());
-    assertNull(metadata.getPrefix());
-    assertNull(metadata.getSecurityLevel());
-    assertNull(metadata.getShowIfProperty());
-    assertNull(metadata.getTab());
-    assertNull(metadata.getTargetClass());
-    assertNull(actualConsolidatedOptionProperty.getDisplayValue());
-    assertNull(actualConsolidatedOptionProperty.getOriginalDisplayValue());
-    assertNull(actualConsolidatedOptionProperty.getOriginalValue());
-    assertNull(actualConsolidatedOptionProperty.getDeployDate());
-    assertNull(metadata.getShowIfFieldEquals());
-    assertNull(((BasicFieldMetadata) metadata).getLookupType());
-    assertNull(((BasicFieldMetadata) metadata).getDisplayType());
-    assertNull(((BasicFieldMetadata) metadata).getExplicitFieldType());
-    assertNull(((BasicFieldMetadata) metadata).getFieldComponentRenderer());
-    assertNull(((BasicFieldMetadata) metadata).getFieldType());
-    assertNull(((BasicFieldMetadata) metadata).getGridFieldComponentRenderer());
-    assertNull(((BasicFieldMetadata) metadata).getVisibility());
-    assertNull(((BasicFieldMetadata) metadata).getMergedPropertyType());
-    assertEquals(SupportedFieldType.INTEGER, ((BasicFieldMetadata) metadata).getSecondaryType());
-    assertFalse(((BasicFieldMetadata) metadata).getForeignKeyCollection());
-    assertFalse(((BasicFieldMetadata) metadata).getRequired());
-    assertFalse(metadata.getManualFetch());
-    assertFalse(actualConsolidatedOptionProperty.getIsDirty());
-    assertFalse(actualConsolidatedOptionProperty.isAdvancedCollection());
-    assertTrue(((BasicFieldMetadata) metadata).getValidationConfigurations().isEmpty());
-    assertTrue(metadata.getAdditionalMetadata().isEmpty());
-    assertTrue(((BasicFieldMetadata) metadata).getAllowNoValueEnumOption());
-    assertTrue(actualConsolidatedOptionProperty.getEnabled());
+    verify(skuMetadataCacheService).useCache();
+    assertTrue(actualCreateConsolidatedOptionFieldResult instanceof BasicFieldMetadata);
+    assertEquals("", ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getBroadleafEnumeration());
+    assertEquals("", actualCreateConsolidatedOptionFieldResult.getGroup());
+    assertEquals("consolidatedProductOptions",
+        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getName());
+    assertEquals("consolidatedProductOptions", actualCreateConsolidatedOptionFieldResult.getFriendlyName());
+    assertEquals("java.lang.Object", actualCreateConsolidatedOptionFieldResult.getInheritedFromType());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getCanLinkToExternalEntity());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getEnableTypeaheadLookup());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getForcePopulateChildProperties());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getGroupCollapsed());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getHideEnumerationIfEmpty());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getIsDerived());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getIsFilter());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getOptionCanEditValues());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getOptionHideIfEmpty());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getSearchable());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getToOneLookupCreatedViaAnnotation());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getTranslatable());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getUnique());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getUseServerSideInspectionCache());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).isLargeEntry());
+    assertNull(actualCreateConsolidatedOptionFieldResult.getChildrenExcluded());
+    assertNull(actualCreateConsolidatedOptionFieldResult.getExcluded());
+    assertNull(actualCreateConsolidatedOptionFieldResult.getLazyFetch());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getLength());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getPrecision());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getScale());
+    assertNull(actualCreateConsolidatedOptionFieldResult.getGroupOrder());
+    assertNull(actualCreateConsolidatedOptionFieldResult.getOrder());
+    assertNull(actualCreateConsolidatedOptionFieldResult.getTabOrder());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getAssociatedFieldName());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getColumnWidth());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getDefaultValue());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getEnumerationClass());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getFieldComponentRendererTemplate());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getForeignKeyClass());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getForeignKeyDisplayValueProperty());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getForeignKeyProperty());
+    assertNull(
+        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getGridFieldComponentRendererTemplate());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getHelpText());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getHint());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getLookupDisplayProperty());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getManyToField());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getMapFieldValueClass());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getMapKeyValueProperty());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getOptionDisplayFieldName());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getOptionListEntity());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getOptionValueFieldName());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getRuleIdentifier());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getToOneParentProperty());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getToOneTargetProperty());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getTooltip());
+    assertNull(actualCreateConsolidatedOptionFieldResult.getAddFriendlyName());
+    assertNull(actualCreateConsolidatedOptionFieldResult.getCurrencyCodeField());
+    assertNull(actualCreateConsolidatedOptionFieldResult.getFieldName());
+    assertNull(actualCreateConsolidatedOptionFieldResult.getOwningClass());
+    assertNull(actualCreateConsolidatedOptionFieldResult.getOwningClassFriendlyName());
+    assertNull(actualCreateConsolidatedOptionFieldResult.getPrefix());
+    assertNull(actualCreateConsolidatedOptionFieldResult.getSecurityLevel());
+    assertNull(actualCreateConsolidatedOptionFieldResult.getShowIfProperty());
+    assertNull(actualCreateConsolidatedOptionFieldResult.getTab());
+    assertNull(actualCreateConsolidatedOptionFieldResult.getTargetClass());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getCustomCriteria());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getEnumerationValues());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getOptionFilterParams());
+    assertNull(actualCreateConsolidatedOptionFieldResult.getShowIfFieldEquals());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getLookupType());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getDisplayType());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getFieldComponentRenderer());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getGridFieldComponentRenderer());
+    assertEquals(0, actualCreateConsolidatedOptionFieldResult.getAvailableToTypes().length);
+    assertEquals(SupportedFieldType.INTEGER,
+        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getSecondaryType());
+    assertEquals(SupportedFieldType.STRING,
+        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getFieldType());
+    assertEquals(SupportedFieldType.UNKNOWN,
+        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getExplicitFieldType());
+    assertEquals(VisibilityEnum.FORM_HIDDEN,
+        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getVisibility());
+    assertEquals(MergedPropertyType.PRIMARY,
+        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getMergedPropertyType());
+    assertFalse(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getForeignKeyCollection());
+    assertFalse(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getMutable());
+    assertFalse(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getRequired());
+    assertFalse(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getRequiredOverride());
+    assertFalse(actualCreateConsolidatedOptionFieldResult.getManualFetch());
+    assertTrue(
+        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getValidationConfigurations().isEmpty());
+    assertTrue(actualCreateConsolidatedOptionFieldResult.getAdditionalMetadata().isEmpty());
+    assertTrue(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getAllowNoValueEnumOption());
+    assertTrue(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getReadOnly());
+    assertTrue(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).isProminent());
+    assertEquals(SkuCustomPersistenceHandlerExtensionHandler.DEFAULT_PRIORITY,
+        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getGridOrder().intValue());
   }
 
   /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#getConsolidatedOptionProperty(Collection)}.
+   * Test {@link SkuCustomPersistenceHandler#createConsolidatedOptionField(Class)}.
+   * <ul>
+   *   <li>Then return {@link BasicFieldMetadata}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuCustomPersistenceHandler#createConsolidatedOptionField(Class)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FieldMetadata SkuCustomPersistenceHandler.createConsolidatedOptionField(Class)"})
+  public void testCreateConsolidatedOptionField_thenReturnBasicFieldMetadata() {
+    // Arrange
+    when(skuMetadataCacheService.useCache()).thenReturn(true);
+    Class<Object> inheritedFromType = Object.class;
+
+    // Act
+    FieldMetadata actualCreateConsolidatedOptionFieldResult = skuCustomPersistenceHandler
+        .createConsolidatedOptionField(inheritedFromType);
+
+    // Assert
+    verify(skuMetadataCacheService).useCache();
+    assertTrue(actualCreateConsolidatedOptionFieldResult instanceof BasicFieldMetadata);
+    assertEquals("", ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getBroadleafEnumeration());
+    assertEquals("", actualCreateConsolidatedOptionFieldResult.getGroup());
+    assertEquals("consolidatedProductOptions",
+        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getName());
+    assertEquals("consolidatedProductOptions", actualCreateConsolidatedOptionFieldResult.getFriendlyName());
+    assertEquals("java.lang.Object", actualCreateConsolidatedOptionFieldResult.getInheritedFromType());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getCanLinkToExternalEntity());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getEnableTypeaheadLookup());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getForcePopulateChildProperties());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getGroupCollapsed());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getHideEnumerationIfEmpty());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getIsDerived());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getIsFilter());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getOptionCanEditValues());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getOptionHideIfEmpty());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getSearchable());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getToOneLookupCreatedViaAnnotation());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getTranslatable());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getUnique());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getUseServerSideInspectionCache());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).isLargeEntry());
+    assertNull(actualCreateConsolidatedOptionFieldResult.getChildrenExcluded());
+    assertNull(actualCreateConsolidatedOptionFieldResult.getExcluded());
+    assertNull(actualCreateConsolidatedOptionFieldResult.getLazyFetch());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getLength());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getPrecision());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getScale());
+    assertNull(actualCreateConsolidatedOptionFieldResult.getGroupOrder());
+    assertNull(actualCreateConsolidatedOptionFieldResult.getOrder());
+    assertNull(actualCreateConsolidatedOptionFieldResult.getTabOrder());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getAssociatedFieldName());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getColumnWidth());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getDefaultValue());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getEnumerationClass());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getFieldComponentRendererTemplate());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getForeignKeyClass());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getForeignKeyDisplayValueProperty());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getForeignKeyProperty());
+    assertNull(
+        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getGridFieldComponentRendererTemplate());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getHelpText());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getHint());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getLookupDisplayProperty());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getManyToField());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getMapFieldValueClass());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getMapKeyValueProperty());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getOptionDisplayFieldName());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getOptionListEntity());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getOptionValueFieldName());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getRuleIdentifier());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getToOneParentProperty());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getToOneTargetProperty());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getTooltip());
+    assertNull(actualCreateConsolidatedOptionFieldResult.getAddFriendlyName());
+    assertNull(actualCreateConsolidatedOptionFieldResult.getCurrencyCodeField());
+    assertNull(actualCreateConsolidatedOptionFieldResult.getFieldName());
+    assertNull(actualCreateConsolidatedOptionFieldResult.getOwningClass());
+    assertNull(actualCreateConsolidatedOptionFieldResult.getOwningClassFriendlyName());
+    assertNull(actualCreateConsolidatedOptionFieldResult.getPrefix());
+    assertNull(actualCreateConsolidatedOptionFieldResult.getSecurityLevel());
+    assertNull(actualCreateConsolidatedOptionFieldResult.getShowIfProperty());
+    assertNull(actualCreateConsolidatedOptionFieldResult.getTab());
+    assertNull(actualCreateConsolidatedOptionFieldResult.getTargetClass());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getCustomCriteria());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getEnumerationValues());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getOptionFilterParams());
+    assertNull(actualCreateConsolidatedOptionFieldResult.getShowIfFieldEquals());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getLookupType());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getDisplayType());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getFieldComponentRenderer());
+    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getGridFieldComponentRenderer());
+    assertEquals(0, actualCreateConsolidatedOptionFieldResult.getAvailableToTypes().length);
+    assertEquals(SupportedFieldType.INTEGER,
+        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getSecondaryType());
+    assertEquals(SupportedFieldType.STRING,
+        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getFieldType());
+    assertEquals(SupportedFieldType.UNKNOWN,
+        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getExplicitFieldType());
+    assertEquals(VisibilityEnum.FORM_HIDDEN,
+        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getVisibility());
+    assertEquals(MergedPropertyType.PRIMARY,
+        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getMergedPropertyType());
+    assertFalse(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getForeignKeyCollection());
+    assertFalse(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getMutable());
+    assertFalse(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getRequired());
+    assertFalse(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getRequiredOverride());
+    assertFalse(actualCreateConsolidatedOptionFieldResult.getManualFetch());
+    assertTrue(
+        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getValidationConfigurations().isEmpty());
+    assertTrue(actualCreateConsolidatedOptionFieldResult.getAdditionalMetadata().isEmpty());
+    assertTrue(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getAllowNoValueEnumOption());
+    assertTrue(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getReadOnly());
+    assertTrue(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).isProminent());
+    assertEquals(SkuCustomPersistenceHandlerExtensionHandler.DEFAULT_PRIORITY,
+        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getGridOrder().intValue());
+  }
+
+  /**
+   * Test {@link SkuCustomPersistenceHandler#createConsolidatedOptionField(Class)}.
+   * <ul>
+   *   <li>Then throw {@link NumberFormatException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuCustomPersistenceHandler#createConsolidatedOptionField(Class)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FieldMetadata SkuCustomPersistenceHandler.createConsolidatedOptionField(Class)"})
+  public void testCreateConsolidatedOptionField_thenThrowNumberFormatException() {
+    // Arrange
+    when(skuMetadataCacheService.useCache()).thenThrow(new NumberFormatException("foo"));
+    Class<Object> inheritedFromType = Object.class;
+
+    // Act and Assert
+    assertThrows(NumberFormatException.class,
+        () -> skuCustomPersistenceHandler.createConsolidatedOptionField(inheritedFromType));
+    verify(skuMetadataCacheService).useCache();
+  }
+
+  /**
+   * Test {@link SkuCustomPersistenceHandler#getConsolidatedOptionProperty(Collection)}.
    * <ul>
    *   <li>Then return RawValue is empty string.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#getConsolidatedOptionProperty(Collection)}
+   * Method under test: {@link SkuCustomPersistenceHandler#getConsolidatedOptionProperty(Collection)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Property SkuCustomPersistenceHandler.getConsolidatedOptionProperty(Collection)"})
   public void testGetConsolidatedOptionProperty_thenReturnRawValueIsEmptyString() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
-
     ArrayList<ProductOptionValue> values = new ArrayList<>();
     values.add(new ProductOptionValueImpl());
 
@@ -1285,124 +1370,33 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
     Property actualConsolidatedOptionProperty = skuCustomPersistenceHandler.getConsolidatedOptionProperty(values);
 
     // Assert
-    FieldMetadata metadata = actualConsolidatedOptionProperty.getMetadata();
-    assertTrue(metadata instanceof BasicFieldMetadata);
+    assertTrue(actualConsolidatedOptionProperty.getMetadata() instanceof BasicFieldMetadata);
     assertEquals("", actualConsolidatedOptionProperty.getRawValue());
     assertEquals("", actualConsolidatedOptionProperty.getUnHtmlEncodedValue());
     assertEquals("", actualConsolidatedOptionProperty.getValue());
     assertEquals("consolidatedProductOptions", actualConsolidatedOptionProperty.getName());
-    assertNull(((BasicFieldMetadata) metadata).getCustomCriteria());
-    assertNull(metadata.getAvailableToTypes());
-    assertNull(((BasicFieldMetadata) metadata).getEnumerationValues());
-    assertNull(((BasicFieldMetadata) metadata).getOptionFilterParams());
-    assertNull(((BasicFieldMetadata) metadata).getCanLinkToExternalEntity());
-    assertNull(((BasicFieldMetadata) metadata).getEnableTypeaheadLookup());
-    assertNull(((BasicFieldMetadata) metadata).getForcePopulateChildProperties());
-    assertNull(((BasicFieldMetadata) metadata).getGroupCollapsed());
-    assertNull(((BasicFieldMetadata) metadata).getHideEnumerationIfEmpty());
-    assertNull(((BasicFieldMetadata) metadata).getIsDerived());
-    assertNull(((BasicFieldMetadata) metadata).getIsFilter());
-    assertNull(((BasicFieldMetadata) metadata).getMutable());
-    assertNull(((BasicFieldMetadata) metadata).getOptionCanEditValues());
-    assertNull(((BasicFieldMetadata) metadata).getOptionHideIfEmpty());
-    assertNull(((BasicFieldMetadata) metadata).getReadOnly());
-    assertNull(((BasicFieldMetadata) metadata).getRequiredOverride());
-    assertNull(((BasicFieldMetadata) metadata).getSearchable());
-    assertNull(((BasicFieldMetadata) metadata).getToOneLookupCreatedViaAnnotation());
-    assertNull(((BasicFieldMetadata) metadata).getTranslatable());
-    assertNull(((BasicFieldMetadata) metadata).getUnique());
-    assertNull(((BasicFieldMetadata) metadata).getUseServerSideInspectionCache());
-    assertNull(((BasicFieldMetadata) metadata).isLargeEntry());
-    assertNull(((BasicFieldMetadata) metadata).isProminent());
-    assertNull(metadata.getChildrenExcluded());
-    assertNull(metadata.getExcluded());
-    assertNull(metadata.getLazyFetch());
-    assertNull(((BasicFieldMetadata) metadata).getGridOrder());
-    assertNull(((BasicFieldMetadata) metadata).getLength());
-    assertNull(((BasicFieldMetadata) metadata).getPrecision());
-    assertNull(((BasicFieldMetadata) metadata).getScale());
-    assertNull(metadata.getGroupOrder());
-    assertNull(metadata.getOrder());
-    assertNull(metadata.getTabOrder());
-    assertNull(((BasicFieldMetadata) metadata).getAssociatedFieldName());
-    assertNull(((BasicFieldMetadata) metadata).getBroadleafEnumeration());
-    assertNull(((BasicFieldMetadata) metadata).getColumnWidth());
-    assertNull(((BasicFieldMetadata) metadata).getDefaultValue());
-    assertNull(((BasicFieldMetadata) metadata).getEnumerationClass());
-    assertNull(((BasicFieldMetadata) metadata).getFieldComponentRendererTemplate());
-    assertNull(((BasicFieldMetadata) metadata).getForeignKeyClass());
-    assertNull(((BasicFieldMetadata) metadata).getForeignKeyDisplayValueProperty());
-    assertNull(((BasicFieldMetadata) metadata).getForeignKeyProperty());
-    assertNull(((BasicFieldMetadata) metadata).getGridFieldComponentRendererTemplate());
-    assertNull(((BasicFieldMetadata) metadata).getHelpText());
-    assertNull(((BasicFieldMetadata) metadata).getHint());
-    assertNull(((BasicFieldMetadata) metadata).getLookupDisplayProperty());
-    assertNull(((BasicFieldMetadata) metadata).getManyToField());
-    assertNull(((BasicFieldMetadata) metadata).getMapFieldValueClass());
-    assertNull(((BasicFieldMetadata) metadata).getMapKeyValueProperty());
-    assertNull(((BasicFieldMetadata) metadata).getName());
-    assertNull(((BasicFieldMetadata) metadata).getOptionDisplayFieldName());
-    assertNull(((BasicFieldMetadata) metadata).getOptionListEntity());
-    assertNull(((BasicFieldMetadata) metadata).getOptionValueFieldName());
-    assertNull(((BasicFieldMetadata) metadata).getRuleIdentifier());
-    assertNull(((BasicFieldMetadata) metadata).getToOneParentProperty());
-    assertNull(((BasicFieldMetadata) metadata).getToOneTargetProperty());
-    assertNull(((BasicFieldMetadata) metadata).getTooltip());
-    assertNull(metadata.getAddFriendlyName());
-    assertNull(metadata.getCurrencyCodeField());
-    assertNull(metadata.getFieldName());
-    assertNull(metadata.getFriendlyName());
-    assertNull(metadata.getGroup());
-    assertNull(metadata.getInheritedFromType());
-    assertNull(metadata.getOwningClass());
-    assertNull(metadata.getOwningClassFriendlyName());
-    assertNull(metadata.getPrefix());
-    assertNull(metadata.getSecurityLevel());
-    assertNull(metadata.getShowIfProperty());
-    assertNull(metadata.getTab());
-    assertNull(metadata.getTargetClass());
     assertNull(actualConsolidatedOptionProperty.getDisplayValue());
     assertNull(actualConsolidatedOptionProperty.getOriginalDisplayValue());
     assertNull(actualConsolidatedOptionProperty.getOriginalValue());
     assertNull(actualConsolidatedOptionProperty.getDeployDate());
-    assertNull(metadata.getShowIfFieldEquals());
-    assertNull(((BasicFieldMetadata) metadata).getLookupType());
-    assertNull(((BasicFieldMetadata) metadata).getDisplayType());
-    assertNull(((BasicFieldMetadata) metadata).getExplicitFieldType());
-    assertNull(((BasicFieldMetadata) metadata).getFieldComponentRenderer());
-    assertNull(((BasicFieldMetadata) metadata).getFieldType());
-    assertNull(((BasicFieldMetadata) metadata).getGridFieldComponentRenderer());
-    assertNull(((BasicFieldMetadata) metadata).getVisibility());
-    assertNull(((BasicFieldMetadata) metadata).getMergedPropertyType());
-    assertEquals(SupportedFieldType.INTEGER, ((BasicFieldMetadata) metadata).getSecondaryType());
-    assertFalse(((BasicFieldMetadata) metadata).getForeignKeyCollection());
-    assertFalse(((BasicFieldMetadata) metadata).getRequired());
-    assertFalse(metadata.getManualFetch());
     assertFalse(actualConsolidatedOptionProperty.getIsDirty());
     assertFalse(actualConsolidatedOptionProperty.isAdvancedCollection());
-    assertTrue(((BasicFieldMetadata) metadata).getValidationConfigurations().isEmpty());
-    assertTrue(metadata.getAdditionalMetadata().isEmpty());
-    assertTrue(((BasicFieldMetadata) metadata).getAllowNoValueEnumOption());
     assertTrue(actualConsolidatedOptionProperty.getEnabled());
   }
 
   /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#getConsolidatedOptionProperty(Collection)}.
+   * Test {@link SkuCustomPersistenceHandler#getConsolidatedOptionProperty(Collection)}.
    * <ul>
    *   <li>Then return RawValue is {@code ;}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#getConsolidatedOptionProperty(Collection)}
+   * Method under test: {@link SkuCustomPersistenceHandler#getConsolidatedOptionProperty(Collection)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Property SkuCustomPersistenceHandler.getConsolidatedOptionProperty(Collection)"})
   public void testGetConsolidatedOptionProperty_thenReturnRawValueIsSemicolon() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
-
     ArrayList<ProductOptionValue> values = new ArrayList<>();
     values.add(new ProductOptionValueImpl());
     values.add(new ProductOptionValueImpl());
@@ -1411,595 +1405,566 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
     Property actualConsolidatedOptionProperty = skuCustomPersistenceHandler.getConsolidatedOptionProperty(values);
 
     // Assert
-    FieldMetadata metadata = actualConsolidatedOptionProperty.getMetadata();
-    assertTrue(metadata instanceof BasicFieldMetadata);
+    assertTrue(actualConsolidatedOptionProperty.getMetadata() instanceof BasicFieldMetadata);
     assertEquals("; ", actualConsolidatedOptionProperty.getRawValue());
     assertEquals("; ", actualConsolidatedOptionProperty.getUnHtmlEncodedValue());
     assertEquals("; ", actualConsolidatedOptionProperty.getValue());
     assertEquals("consolidatedProductOptions", actualConsolidatedOptionProperty.getName());
-    assertNull(((BasicFieldMetadata) metadata).getCustomCriteria());
-    assertNull(metadata.getAvailableToTypes());
-    assertNull(((BasicFieldMetadata) metadata).getEnumerationValues());
-    assertNull(((BasicFieldMetadata) metadata).getOptionFilterParams());
-    assertNull(((BasicFieldMetadata) metadata).getCanLinkToExternalEntity());
-    assertNull(((BasicFieldMetadata) metadata).getEnableTypeaheadLookup());
-    assertNull(((BasicFieldMetadata) metadata).getForcePopulateChildProperties());
-    assertNull(((BasicFieldMetadata) metadata).getGroupCollapsed());
-    assertNull(((BasicFieldMetadata) metadata).getHideEnumerationIfEmpty());
-    assertNull(((BasicFieldMetadata) metadata).getIsDerived());
-    assertNull(((BasicFieldMetadata) metadata).getIsFilter());
-    assertNull(((BasicFieldMetadata) metadata).getMutable());
-    assertNull(((BasicFieldMetadata) metadata).getOptionCanEditValues());
-    assertNull(((BasicFieldMetadata) metadata).getOptionHideIfEmpty());
-    assertNull(((BasicFieldMetadata) metadata).getReadOnly());
-    assertNull(((BasicFieldMetadata) metadata).getRequiredOverride());
-    assertNull(((BasicFieldMetadata) metadata).getSearchable());
-    assertNull(((BasicFieldMetadata) metadata).getToOneLookupCreatedViaAnnotation());
-    assertNull(((BasicFieldMetadata) metadata).getTranslatable());
-    assertNull(((BasicFieldMetadata) metadata).getUnique());
-    assertNull(((BasicFieldMetadata) metadata).getUseServerSideInspectionCache());
-    assertNull(((BasicFieldMetadata) metadata).isLargeEntry());
-    assertNull(((BasicFieldMetadata) metadata).isProminent());
-    assertNull(metadata.getChildrenExcluded());
-    assertNull(metadata.getExcluded());
-    assertNull(metadata.getLazyFetch());
-    assertNull(((BasicFieldMetadata) metadata).getGridOrder());
-    assertNull(((BasicFieldMetadata) metadata).getLength());
-    assertNull(((BasicFieldMetadata) metadata).getPrecision());
-    assertNull(((BasicFieldMetadata) metadata).getScale());
-    assertNull(metadata.getGroupOrder());
-    assertNull(metadata.getOrder());
-    assertNull(metadata.getTabOrder());
-    assertNull(((BasicFieldMetadata) metadata).getAssociatedFieldName());
-    assertNull(((BasicFieldMetadata) metadata).getBroadleafEnumeration());
-    assertNull(((BasicFieldMetadata) metadata).getColumnWidth());
-    assertNull(((BasicFieldMetadata) metadata).getDefaultValue());
-    assertNull(((BasicFieldMetadata) metadata).getEnumerationClass());
-    assertNull(((BasicFieldMetadata) metadata).getFieldComponentRendererTemplate());
-    assertNull(((BasicFieldMetadata) metadata).getForeignKeyClass());
-    assertNull(((BasicFieldMetadata) metadata).getForeignKeyDisplayValueProperty());
-    assertNull(((BasicFieldMetadata) metadata).getForeignKeyProperty());
-    assertNull(((BasicFieldMetadata) metadata).getGridFieldComponentRendererTemplate());
-    assertNull(((BasicFieldMetadata) metadata).getHelpText());
-    assertNull(((BasicFieldMetadata) metadata).getHint());
-    assertNull(((BasicFieldMetadata) metadata).getLookupDisplayProperty());
-    assertNull(((BasicFieldMetadata) metadata).getManyToField());
-    assertNull(((BasicFieldMetadata) metadata).getMapFieldValueClass());
-    assertNull(((BasicFieldMetadata) metadata).getMapKeyValueProperty());
-    assertNull(((BasicFieldMetadata) metadata).getName());
-    assertNull(((BasicFieldMetadata) metadata).getOptionDisplayFieldName());
-    assertNull(((BasicFieldMetadata) metadata).getOptionListEntity());
-    assertNull(((BasicFieldMetadata) metadata).getOptionValueFieldName());
-    assertNull(((BasicFieldMetadata) metadata).getRuleIdentifier());
-    assertNull(((BasicFieldMetadata) metadata).getToOneParentProperty());
-    assertNull(((BasicFieldMetadata) metadata).getToOneTargetProperty());
-    assertNull(((BasicFieldMetadata) metadata).getTooltip());
-    assertNull(metadata.getAddFriendlyName());
-    assertNull(metadata.getCurrencyCodeField());
-    assertNull(metadata.getFieldName());
-    assertNull(metadata.getFriendlyName());
-    assertNull(metadata.getGroup());
-    assertNull(metadata.getInheritedFromType());
-    assertNull(metadata.getOwningClass());
-    assertNull(metadata.getOwningClassFriendlyName());
-    assertNull(metadata.getPrefix());
-    assertNull(metadata.getSecurityLevel());
-    assertNull(metadata.getShowIfProperty());
-    assertNull(metadata.getTab());
-    assertNull(metadata.getTargetClass());
     assertNull(actualConsolidatedOptionProperty.getDisplayValue());
     assertNull(actualConsolidatedOptionProperty.getOriginalDisplayValue());
     assertNull(actualConsolidatedOptionProperty.getOriginalValue());
     assertNull(actualConsolidatedOptionProperty.getDeployDate());
-    assertNull(metadata.getShowIfFieldEquals());
-    assertNull(((BasicFieldMetadata) metadata).getLookupType());
-    assertNull(((BasicFieldMetadata) metadata).getDisplayType());
-    assertNull(((BasicFieldMetadata) metadata).getExplicitFieldType());
-    assertNull(((BasicFieldMetadata) metadata).getFieldComponentRenderer());
-    assertNull(((BasicFieldMetadata) metadata).getFieldType());
-    assertNull(((BasicFieldMetadata) metadata).getGridFieldComponentRenderer());
-    assertNull(((BasicFieldMetadata) metadata).getVisibility());
-    assertNull(((BasicFieldMetadata) metadata).getMergedPropertyType());
-    assertEquals(SupportedFieldType.INTEGER, ((BasicFieldMetadata) metadata).getSecondaryType());
-    assertFalse(((BasicFieldMetadata) metadata).getForeignKeyCollection());
-    assertFalse(((BasicFieldMetadata) metadata).getRequired());
-    assertFalse(metadata.getManualFetch());
     assertFalse(actualConsolidatedOptionProperty.getIsDirty());
     assertFalse(actualConsolidatedOptionProperty.isAdvancedCollection());
-    assertTrue(((BasicFieldMetadata) metadata).getValidationConfigurations().isEmpty());
-    assertTrue(metadata.getAdditionalMetadata().isEmpty());
-    assertTrue(((BasicFieldMetadata) metadata).getAllowNoValueEnumOption());
     assertTrue(actualConsolidatedOptionProperty.getEnabled());
   }
 
   /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#getConsolidatedOptionProperty(Collection)}.
+   * Test {@link SkuCustomPersistenceHandler#getConsolidatedOptionProperty(Collection)}.
    * <ul>
    *   <li>When {@link ArrayList#ArrayList()}.</li>
    *   <li>Then return RawValue is empty string.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#getConsolidatedOptionProperty(Collection)}
+   * Method under test: {@link SkuCustomPersistenceHandler#getConsolidatedOptionProperty(Collection)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Property SkuCustomPersistenceHandler.getConsolidatedOptionProperty(Collection)"})
   public void testGetConsolidatedOptionProperty_whenArrayList_thenReturnRawValueIsEmptyString() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
-
-    // Act
+    // Arrange and Act
     Property actualConsolidatedOptionProperty = skuCustomPersistenceHandler
         .getConsolidatedOptionProperty(new ArrayList<>());
 
     // Assert
-    FieldMetadata metadata = actualConsolidatedOptionProperty.getMetadata();
-    assertTrue(metadata instanceof BasicFieldMetadata);
+    assertTrue(actualConsolidatedOptionProperty.getMetadata() instanceof BasicFieldMetadata);
     assertEquals("", actualConsolidatedOptionProperty.getRawValue());
     assertEquals("", actualConsolidatedOptionProperty.getUnHtmlEncodedValue());
     assertEquals("", actualConsolidatedOptionProperty.getValue());
     assertEquals("consolidatedProductOptions", actualConsolidatedOptionProperty.getName());
-    assertNull(((BasicFieldMetadata) metadata).getCustomCriteria());
-    assertNull(metadata.getAvailableToTypes());
-    assertNull(((BasicFieldMetadata) metadata).getEnumerationValues());
-    assertNull(((BasicFieldMetadata) metadata).getOptionFilterParams());
-    assertNull(((BasicFieldMetadata) metadata).getCanLinkToExternalEntity());
-    assertNull(((BasicFieldMetadata) metadata).getEnableTypeaheadLookup());
-    assertNull(((BasicFieldMetadata) metadata).getForcePopulateChildProperties());
-    assertNull(((BasicFieldMetadata) metadata).getGroupCollapsed());
-    assertNull(((BasicFieldMetadata) metadata).getHideEnumerationIfEmpty());
-    assertNull(((BasicFieldMetadata) metadata).getIsDerived());
-    assertNull(((BasicFieldMetadata) metadata).getIsFilter());
-    assertNull(((BasicFieldMetadata) metadata).getMutable());
-    assertNull(((BasicFieldMetadata) metadata).getOptionCanEditValues());
-    assertNull(((BasicFieldMetadata) metadata).getOptionHideIfEmpty());
-    assertNull(((BasicFieldMetadata) metadata).getReadOnly());
-    assertNull(((BasicFieldMetadata) metadata).getRequiredOverride());
-    assertNull(((BasicFieldMetadata) metadata).getSearchable());
-    assertNull(((BasicFieldMetadata) metadata).getToOneLookupCreatedViaAnnotation());
-    assertNull(((BasicFieldMetadata) metadata).getTranslatable());
-    assertNull(((BasicFieldMetadata) metadata).getUnique());
-    assertNull(((BasicFieldMetadata) metadata).getUseServerSideInspectionCache());
-    assertNull(((BasicFieldMetadata) metadata).isLargeEntry());
-    assertNull(((BasicFieldMetadata) metadata).isProminent());
-    assertNull(metadata.getChildrenExcluded());
-    assertNull(metadata.getExcluded());
-    assertNull(metadata.getLazyFetch());
-    assertNull(((BasicFieldMetadata) metadata).getGridOrder());
-    assertNull(((BasicFieldMetadata) metadata).getLength());
-    assertNull(((BasicFieldMetadata) metadata).getPrecision());
-    assertNull(((BasicFieldMetadata) metadata).getScale());
-    assertNull(metadata.getGroupOrder());
-    assertNull(metadata.getOrder());
-    assertNull(metadata.getTabOrder());
-    assertNull(((BasicFieldMetadata) metadata).getAssociatedFieldName());
-    assertNull(((BasicFieldMetadata) metadata).getBroadleafEnumeration());
-    assertNull(((BasicFieldMetadata) metadata).getColumnWidth());
-    assertNull(((BasicFieldMetadata) metadata).getDefaultValue());
-    assertNull(((BasicFieldMetadata) metadata).getEnumerationClass());
-    assertNull(((BasicFieldMetadata) metadata).getFieldComponentRendererTemplate());
-    assertNull(((BasicFieldMetadata) metadata).getForeignKeyClass());
-    assertNull(((BasicFieldMetadata) metadata).getForeignKeyDisplayValueProperty());
-    assertNull(((BasicFieldMetadata) metadata).getForeignKeyProperty());
-    assertNull(((BasicFieldMetadata) metadata).getGridFieldComponentRendererTemplate());
-    assertNull(((BasicFieldMetadata) metadata).getHelpText());
-    assertNull(((BasicFieldMetadata) metadata).getHint());
-    assertNull(((BasicFieldMetadata) metadata).getLookupDisplayProperty());
-    assertNull(((BasicFieldMetadata) metadata).getManyToField());
-    assertNull(((BasicFieldMetadata) metadata).getMapFieldValueClass());
-    assertNull(((BasicFieldMetadata) metadata).getMapKeyValueProperty());
-    assertNull(((BasicFieldMetadata) metadata).getName());
-    assertNull(((BasicFieldMetadata) metadata).getOptionDisplayFieldName());
-    assertNull(((BasicFieldMetadata) metadata).getOptionListEntity());
-    assertNull(((BasicFieldMetadata) metadata).getOptionValueFieldName());
-    assertNull(((BasicFieldMetadata) metadata).getRuleIdentifier());
-    assertNull(((BasicFieldMetadata) metadata).getToOneParentProperty());
-    assertNull(((BasicFieldMetadata) metadata).getToOneTargetProperty());
-    assertNull(((BasicFieldMetadata) metadata).getTooltip());
-    assertNull(metadata.getAddFriendlyName());
-    assertNull(metadata.getCurrencyCodeField());
-    assertNull(metadata.getFieldName());
-    assertNull(metadata.getFriendlyName());
-    assertNull(metadata.getGroup());
-    assertNull(metadata.getInheritedFromType());
-    assertNull(metadata.getOwningClass());
-    assertNull(metadata.getOwningClassFriendlyName());
-    assertNull(metadata.getPrefix());
-    assertNull(metadata.getSecurityLevel());
-    assertNull(metadata.getShowIfProperty());
-    assertNull(metadata.getTab());
-    assertNull(metadata.getTargetClass());
     assertNull(actualConsolidatedOptionProperty.getDisplayValue());
     assertNull(actualConsolidatedOptionProperty.getOriginalDisplayValue());
     assertNull(actualConsolidatedOptionProperty.getOriginalValue());
     assertNull(actualConsolidatedOptionProperty.getDeployDate());
-    assertNull(metadata.getShowIfFieldEquals());
-    assertNull(((BasicFieldMetadata) metadata).getLookupType());
-    assertNull(((BasicFieldMetadata) metadata).getDisplayType());
-    assertNull(((BasicFieldMetadata) metadata).getExplicitFieldType());
-    assertNull(((BasicFieldMetadata) metadata).getFieldComponentRenderer());
-    assertNull(((BasicFieldMetadata) metadata).getFieldType());
-    assertNull(((BasicFieldMetadata) metadata).getGridFieldComponentRenderer());
-    assertNull(((BasicFieldMetadata) metadata).getVisibility());
-    assertNull(((BasicFieldMetadata) metadata).getMergedPropertyType());
-    assertEquals(SupportedFieldType.INTEGER, ((BasicFieldMetadata) metadata).getSecondaryType());
-    assertFalse(((BasicFieldMetadata) metadata).getForeignKeyCollection());
-    assertFalse(((BasicFieldMetadata) metadata).getRequired());
-    assertFalse(metadata.getManualFetch());
     assertFalse(actualConsolidatedOptionProperty.getIsDirty());
     assertFalse(actualConsolidatedOptionProperty.isAdvancedCollection());
-    assertTrue(((BasicFieldMetadata) metadata).getValidationConfigurations().isEmpty());
-    assertTrue(metadata.getAdditionalMetadata().isEmpty());
-    assertTrue(((BasicFieldMetadata) metadata).getAllowNoValueEnumOption());
     assertTrue(actualConsolidatedOptionProperty.getEnabled());
   }
 
   /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#getBlankConsolidatedOptionProperty()}.
+   * Test {@link SkuCustomPersistenceHandler#getBlankConsolidatedOptionProperty()}.
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#getBlankConsolidatedOptionProperty()}
+   * Method under test: {@link SkuCustomPersistenceHandler#getBlankConsolidatedOptionProperty()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Property SkuCustomPersistenceHandler.getBlankConsolidatedOptionProperty()"})
   public void testGetBlankConsolidatedOptionProperty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange and Act
-    Property actualBlankConsolidatedOptionProperty = (new SkuCustomPersistenceHandler())
-        .getBlankConsolidatedOptionProperty();
+    Property actualBlankConsolidatedOptionProperty = skuCustomPersistenceHandler.getBlankConsolidatedOptionProperty();
 
     // Assert
-    FieldMetadata metadata = actualBlankConsolidatedOptionProperty.getMetadata();
-    assertTrue(metadata instanceof BasicFieldMetadata);
+    assertTrue(actualBlankConsolidatedOptionProperty.getMetadata() instanceof BasicFieldMetadata);
     assertEquals("", actualBlankConsolidatedOptionProperty.getRawValue());
     assertEquals("", actualBlankConsolidatedOptionProperty.getUnHtmlEncodedValue());
     assertEquals("", actualBlankConsolidatedOptionProperty.getValue());
     assertEquals("consolidatedProductOptions", actualBlankConsolidatedOptionProperty.getName());
-    assertNull(((BasicFieldMetadata) metadata).getCustomCriteria());
-    assertNull(metadata.getAvailableToTypes());
-    assertNull(((BasicFieldMetadata) metadata).getEnumerationValues());
-    assertNull(((BasicFieldMetadata) metadata).getOptionFilterParams());
-    assertNull(((BasicFieldMetadata) metadata).getCanLinkToExternalEntity());
-    assertNull(((BasicFieldMetadata) metadata).getEnableTypeaheadLookup());
-    assertNull(((BasicFieldMetadata) metadata).getForcePopulateChildProperties());
-    assertNull(((BasicFieldMetadata) metadata).getGroupCollapsed());
-    assertNull(((BasicFieldMetadata) metadata).getHideEnumerationIfEmpty());
-    assertNull(((BasicFieldMetadata) metadata).getIsDerived());
-    assertNull(((BasicFieldMetadata) metadata).getIsFilter());
-    assertNull(((BasicFieldMetadata) metadata).getMutable());
-    assertNull(((BasicFieldMetadata) metadata).getOptionCanEditValues());
-    assertNull(((BasicFieldMetadata) metadata).getOptionHideIfEmpty());
-    assertNull(((BasicFieldMetadata) metadata).getReadOnly());
-    assertNull(((BasicFieldMetadata) metadata).getRequiredOverride());
-    assertNull(((BasicFieldMetadata) metadata).getSearchable());
-    assertNull(((BasicFieldMetadata) metadata).getToOneLookupCreatedViaAnnotation());
-    assertNull(((BasicFieldMetadata) metadata).getTranslatable());
-    assertNull(((BasicFieldMetadata) metadata).getUnique());
-    assertNull(((BasicFieldMetadata) metadata).getUseServerSideInspectionCache());
-    assertNull(((BasicFieldMetadata) metadata).isLargeEntry());
-    assertNull(((BasicFieldMetadata) metadata).isProminent());
-    assertNull(metadata.getChildrenExcluded());
-    assertNull(metadata.getExcluded());
-    assertNull(metadata.getLazyFetch());
-    assertNull(((BasicFieldMetadata) metadata).getGridOrder());
-    assertNull(((BasicFieldMetadata) metadata).getLength());
-    assertNull(((BasicFieldMetadata) metadata).getPrecision());
-    assertNull(((BasicFieldMetadata) metadata).getScale());
-    assertNull(metadata.getGroupOrder());
-    assertNull(metadata.getOrder());
-    assertNull(metadata.getTabOrder());
-    assertNull(((BasicFieldMetadata) metadata).getAssociatedFieldName());
-    assertNull(((BasicFieldMetadata) metadata).getBroadleafEnumeration());
-    assertNull(((BasicFieldMetadata) metadata).getColumnWidth());
-    assertNull(((BasicFieldMetadata) metadata).getDefaultValue());
-    assertNull(((BasicFieldMetadata) metadata).getEnumerationClass());
-    assertNull(((BasicFieldMetadata) metadata).getFieldComponentRendererTemplate());
-    assertNull(((BasicFieldMetadata) metadata).getForeignKeyClass());
-    assertNull(((BasicFieldMetadata) metadata).getForeignKeyDisplayValueProperty());
-    assertNull(((BasicFieldMetadata) metadata).getForeignKeyProperty());
-    assertNull(((BasicFieldMetadata) metadata).getGridFieldComponentRendererTemplate());
-    assertNull(((BasicFieldMetadata) metadata).getHelpText());
-    assertNull(((BasicFieldMetadata) metadata).getHint());
-    assertNull(((BasicFieldMetadata) metadata).getLookupDisplayProperty());
-    assertNull(((BasicFieldMetadata) metadata).getManyToField());
-    assertNull(((BasicFieldMetadata) metadata).getMapFieldValueClass());
-    assertNull(((BasicFieldMetadata) metadata).getMapKeyValueProperty());
-    assertNull(((BasicFieldMetadata) metadata).getName());
-    assertNull(((BasicFieldMetadata) metadata).getOptionDisplayFieldName());
-    assertNull(((BasicFieldMetadata) metadata).getOptionListEntity());
-    assertNull(((BasicFieldMetadata) metadata).getOptionValueFieldName());
-    assertNull(((BasicFieldMetadata) metadata).getRuleIdentifier());
-    assertNull(((BasicFieldMetadata) metadata).getToOneParentProperty());
-    assertNull(((BasicFieldMetadata) metadata).getToOneTargetProperty());
-    assertNull(((BasicFieldMetadata) metadata).getTooltip());
-    assertNull(metadata.getAddFriendlyName());
-    assertNull(metadata.getCurrencyCodeField());
-    assertNull(metadata.getFieldName());
-    assertNull(metadata.getFriendlyName());
-    assertNull(metadata.getGroup());
-    assertNull(metadata.getInheritedFromType());
-    assertNull(metadata.getOwningClass());
-    assertNull(metadata.getOwningClassFriendlyName());
-    assertNull(metadata.getPrefix());
-    assertNull(metadata.getSecurityLevel());
-    assertNull(metadata.getShowIfProperty());
-    assertNull(metadata.getTab());
-    assertNull(metadata.getTargetClass());
     assertNull(actualBlankConsolidatedOptionProperty.getDisplayValue());
     assertNull(actualBlankConsolidatedOptionProperty.getOriginalDisplayValue());
     assertNull(actualBlankConsolidatedOptionProperty.getOriginalValue());
     assertNull(actualBlankConsolidatedOptionProperty.getDeployDate());
-    assertNull(metadata.getShowIfFieldEquals());
-    assertNull(((BasicFieldMetadata) metadata).getLookupType());
-    assertNull(((BasicFieldMetadata) metadata).getDisplayType());
-    assertNull(((BasicFieldMetadata) metadata).getExplicitFieldType());
-    assertNull(((BasicFieldMetadata) metadata).getFieldComponentRenderer());
-    assertNull(((BasicFieldMetadata) metadata).getFieldType());
-    assertNull(((BasicFieldMetadata) metadata).getGridFieldComponentRenderer());
-    assertNull(((BasicFieldMetadata) metadata).getVisibility());
-    assertNull(((BasicFieldMetadata) metadata).getMergedPropertyType());
-    assertEquals(SupportedFieldType.INTEGER, ((BasicFieldMetadata) metadata).getSecondaryType());
-    assertFalse(((BasicFieldMetadata) metadata).getForeignKeyCollection());
-    assertFalse(((BasicFieldMetadata) metadata).getRequired());
-    assertFalse(metadata.getManualFetch());
     assertFalse(actualBlankConsolidatedOptionProperty.getIsDirty());
     assertFalse(actualBlankConsolidatedOptionProperty.isAdvancedCollection());
-    assertTrue(((BasicFieldMetadata) metadata).getValidationConfigurations().isEmpty());
-    assertTrue(metadata.getAdditionalMetadata().isEmpty());
-    assertTrue(((BasicFieldMetadata) metadata).getAllowNoValueEnumOption());
     assertTrue(actualBlankConsolidatedOptionProperty.getEnabled());
   }
 
   /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#getBlankConsolidatedOptionProperty()}.
-   * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#getBlankConsolidatedOptionProperty()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetBlankConsolidatedOptionProperty2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6538 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler skuCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuCustomPersistenceHandler()).getBlankConsolidatedOptionProperty();
-  }
-
-  /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#createIndividualOptionField(ProductOption, int)}.
-   * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#createIndividualOptionField(ProductOption, int)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateIndividualOptionField() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6408 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler skuCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler2 = new SkuCustomPersistenceHandler();
-
-    // Act
-    skuCustomPersistenceHandler2.createIndividualOptionField(new ProductOptionImpl(), 1);
-  }
-
-  /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#createIndividualOptionField(ProductOption, int)}.
+   * Test {@link SkuCustomPersistenceHandler#createIndividualOptionField(ProductOption, int)}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then calls {@link ProductOptionImpl#getAllowedValues()}.</li>
+   *   <li>Given {@link SkuMetadataCacheService} {@link SkuMetadataCacheService#useCache()} return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#createIndividualOptionField(ProductOption, int)}
+   * Method under test: {@link SkuCustomPersistenceHandler#createIndividualOptionField(ProductOption, int)}
    */
   @Test
-  public void testCreateIndividualOptionField_givenArrayList_thenCallsGetAllowedValues() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FieldMetadata SkuCustomPersistenceHandler.createIndividualOptionField(ProductOption, int)"})
+  public void testCreateIndividualOptionField_givenSkuMetadataCacheServiceUseCacheReturnFalse() {
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
-    ProductOptionImpl option = mock(ProductOptionImpl.class);
-    when(option.getAllowedValues()).thenReturn(new ArrayList<>());
+    when(skuMetadataCacheService.useCache()).thenReturn(false);
+    ProductOptionValueImpl productOptionValueImpl = mock(ProductOptionValueImpl.class);
+    when(productOptionValueImpl.getId()).thenReturn(1L);
+    when(productOptionValueImpl.getAttributeValue()).thenReturn("42");
+
+    ArrayList<ProductOptionValue> allowedValues = new ArrayList<>();
+    allowedValues.add(productOptionValueImpl);
+
+    ProductOptionImpl option = new ProductOptionImpl();
+    option.setAllowedValues(allowedValues);
 
     // Act
     FieldMetadata actualCreateIndividualOptionFieldResult = skuCustomPersistenceHandler
         .createIndividualOptionField(option, 1);
 
     // Assert
-    verify(option).getAllowedValues();
-    assertNull(actualCreateIndividualOptionFieldResult);
+    verify(skuMetadataCacheService).useCache();
+    verify(productOptionValueImpl).getAttributeValue();
+    verify(productOptionValueImpl).getId();
+    assertTrue(actualCreateIndividualOptionFieldResult instanceof BasicFieldMetadata);
+    assertEquals("", ((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getBroadleafEnumeration());
+    assertEquals("org.broadleafcommerce.core.catalog.domain.SkuImpl",
+        actualCreateIndividualOptionFieldResult.getInheritedFromType());
+    assertEquals("productOption_group", actualCreateIndividualOptionFieldResult.getGroup());
+    assertEquals("productOptionnull", ((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getName());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getCanLinkToExternalEntity());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getEnableTypeaheadLookup());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getForcePopulateChildProperties());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getGroupCollapsed());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getHideEnumerationIfEmpty());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getIsDerived());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getIsFilter());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getOptionCanEditValues());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getOptionHideIfEmpty());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getSearchable());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getToOneLookupCreatedViaAnnotation());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getTranslatable());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getUnique());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getUseServerSideInspectionCache());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).isLargeEntry());
+    assertNull(actualCreateIndividualOptionFieldResult.getChildrenExcluded());
+    assertNull(actualCreateIndividualOptionFieldResult.getExcluded());
+    assertNull(actualCreateIndividualOptionFieldResult.getLazyFetch());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getGridOrder());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getLength());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getPrecision());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getScale());
+    assertNull(actualCreateIndividualOptionFieldResult.getTabOrder());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getAssociatedFieldName());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getColumnWidth());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getDefaultValue());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getEnumerationClass());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getFieldComponentRendererTemplate());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getForeignKeyClass());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getForeignKeyDisplayValueProperty());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getForeignKeyProperty());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getGridFieldComponentRendererTemplate());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getHelpText());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getHint());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getLookupDisplayProperty());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getManyToField());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getMapFieldValueClass());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getMapKeyValueProperty());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getOptionDisplayFieldName());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getOptionListEntity());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getOptionValueFieldName());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getRuleIdentifier());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getToOneParentProperty());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getToOneTargetProperty());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getTooltip());
+    assertNull(actualCreateIndividualOptionFieldResult.getAddFriendlyName());
+    assertNull(actualCreateIndividualOptionFieldResult.getCurrencyCodeField());
+    assertNull(actualCreateIndividualOptionFieldResult.getFieldName());
+    assertNull(actualCreateIndividualOptionFieldResult.getFriendlyName());
+    assertNull(actualCreateIndividualOptionFieldResult.getOwningClass());
+    assertNull(actualCreateIndividualOptionFieldResult.getOwningClassFriendlyName());
+    assertNull(actualCreateIndividualOptionFieldResult.getPrefix());
+    assertNull(actualCreateIndividualOptionFieldResult.getSecurityLevel());
+    assertNull(actualCreateIndividualOptionFieldResult.getShowIfProperty());
+    assertNull(actualCreateIndividualOptionFieldResult.getTab());
+    assertNull(actualCreateIndividualOptionFieldResult.getTargetClass());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getCustomCriteria());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getOptionFilterParams());
+    assertNull(actualCreateIndividualOptionFieldResult.getShowIfFieldEquals());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getLookupType());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getDisplayType());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getFieldComponentRenderer());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getGridFieldComponentRenderer());
+    assertEquals(-1, actualCreateIndividualOptionFieldResult.getGroupOrder().intValue());
+    assertEquals(0, actualCreateIndividualOptionFieldResult.getAvailableToTypes().length);
+    assertEquals(1, actualCreateIndividualOptionFieldResult.getOrder().intValue());
+    assertEquals(1, ((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getEnumerationValues().length);
+    assertEquals(SupportedFieldType.EXPLICIT_ENUMERATION,
+        ((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getFieldType());
+    assertEquals(SupportedFieldType.INTEGER,
+        ((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getSecondaryType());
+    assertEquals(SupportedFieldType.UNKNOWN,
+        ((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getExplicitFieldType());
+    assertEquals(VisibilityEnum.FORM_EXPLICITLY_SHOWN,
+        ((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getVisibility());
+    assertEquals(MergedPropertyType.PRIMARY,
+        ((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getMergedPropertyType());
+    assertFalse(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getForeignKeyCollection());
+    assertFalse(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getReadOnly());
+    assertFalse(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getRequired());
+    assertFalse(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getRequiredOverride());
+    assertFalse(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).isProminent());
+    assertFalse(actualCreateIndividualOptionFieldResult.getManualFetch());
+    assertTrue(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getValidationConfigurations().isEmpty());
+    assertTrue(actualCreateIndividualOptionFieldResult.getAdditionalMetadata().isEmpty());
+    assertTrue(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getAllowNoValueEnumOption());
+    assertTrue(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getMutable());
   }
 
   /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#createIndividualOptionField(ProductOption, int)}.
+   * Test {@link SkuCustomPersistenceHandler#createIndividualOptionField(ProductOption, int)}.
+   * <ul>
+   *   <li>Given {@code true}.</li>
+   *   <li>When {@link ProductOptionImpl} (default constructor) Required is {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuCustomPersistenceHandler#createIndividualOptionField(ProductOption, int)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FieldMetadata SkuCustomPersistenceHandler.createIndividualOptionField(ProductOption, int)"})
+  public void testCreateIndividualOptionField_givenTrue_whenProductOptionImplRequiredIsTrue() {
+    // Arrange
+    when(skuMetadataCacheService.useCache()).thenReturn(true);
+    ProductOptionValueImpl productOptionValueImpl = mock(ProductOptionValueImpl.class);
+    when(productOptionValueImpl.getId()).thenReturn(1L);
+    when(productOptionValueImpl.getAttributeValue()).thenReturn("42");
+
+    ArrayList<ProductOptionValue> allowedValues = new ArrayList<>();
+    allowedValues.add(productOptionValueImpl);
+
+    ProductOptionImpl option = new ProductOptionImpl();
+    option.setRequired(true);
+    option.setAllowedValues(allowedValues);
+
+    // Act
+    FieldMetadata actualCreateIndividualOptionFieldResult = skuCustomPersistenceHandler
+        .createIndividualOptionField(option, 1);
+
+    // Assert
+    verify(skuMetadataCacheService).useCache();
+    verify(productOptionValueImpl).getAttributeValue();
+    verify(productOptionValueImpl).getId();
+    assertTrue(actualCreateIndividualOptionFieldResult instanceof BasicFieldMetadata);
+    assertEquals("", ((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getBroadleafEnumeration());
+    assertEquals("org.broadleafcommerce.core.catalog.domain.SkuImpl",
+        actualCreateIndividualOptionFieldResult.getInheritedFromType());
+    assertEquals("productOption_group", actualCreateIndividualOptionFieldResult.getGroup());
+    assertEquals("productOptionnull", ((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getName());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getCanLinkToExternalEntity());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getEnableTypeaheadLookup());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getForcePopulateChildProperties());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getGroupCollapsed());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getHideEnumerationIfEmpty());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getIsDerived());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getIsFilter());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getOptionCanEditValues());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getOptionHideIfEmpty());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getSearchable());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getToOneLookupCreatedViaAnnotation());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getTranslatable());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getUnique());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getUseServerSideInspectionCache());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).isLargeEntry());
+    assertNull(actualCreateIndividualOptionFieldResult.getChildrenExcluded());
+    assertNull(actualCreateIndividualOptionFieldResult.getExcluded());
+    assertNull(actualCreateIndividualOptionFieldResult.getLazyFetch());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getGridOrder());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getLength());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getPrecision());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getScale());
+    assertNull(actualCreateIndividualOptionFieldResult.getTabOrder());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getAssociatedFieldName());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getColumnWidth());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getDefaultValue());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getEnumerationClass());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getFieldComponentRendererTemplate());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getForeignKeyClass());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getForeignKeyDisplayValueProperty());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getForeignKeyProperty());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getGridFieldComponentRendererTemplate());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getHelpText());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getHint());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getLookupDisplayProperty());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getManyToField());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getMapFieldValueClass());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getMapKeyValueProperty());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getOptionDisplayFieldName());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getOptionListEntity());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getOptionValueFieldName());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getRuleIdentifier());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getToOneParentProperty());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getToOneTargetProperty());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getTooltip());
+    assertNull(actualCreateIndividualOptionFieldResult.getAddFriendlyName());
+    assertNull(actualCreateIndividualOptionFieldResult.getCurrencyCodeField());
+    assertNull(actualCreateIndividualOptionFieldResult.getFieldName());
+    assertNull(actualCreateIndividualOptionFieldResult.getFriendlyName());
+    assertNull(actualCreateIndividualOptionFieldResult.getOwningClass());
+    assertNull(actualCreateIndividualOptionFieldResult.getOwningClassFriendlyName());
+    assertNull(actualCreateIndividualOptionFieldResult.getPrefix());
+    assertNull(actualCreateIndividualOptionFieldResult.getSecurityLevel());
+    assertNull(actualCreateIndividualOptionFieldResult.getShowIfProperty());
+    assertNull(actualCreateIndividualOptionFieldResult.getTab());
+    assertNull(actualCreateIndividualOptionFieldResult.getTargetClass());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getCustomCriteria());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getOptionFilterParams());
+    assertNull(actualCreateIndividualOptionFieldResult.getShowIfFieldEquals());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getLookupType());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getDisplayType());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getFieldComponentRenderer());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getGridFieldComponentRenderer());
+    assertEquals(-1, actualCreateIndividualOptionFieldResult.getGroupOrder().intValue());
+    assertEquals(0, actualCreateIndividualOptionFieldResult.getAvailableToTypes().length);
+    assertEquals(1, actualCreateIndividualOptionFieldResult.getOrder().intValue());
+    assertEquals(1, ((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getEnumerationValues().length);
+    assertEquals(SupportedFieldType.EXPLICIT_ENUMERATION,
+        ((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getFieldType());
+    assertEquals(SupportedFieldType.INTEGER,
+        ((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getSecondaryType());
+    assertEquals(SupportedFieldType.UNKNOWN,
+        ((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getExplicitFieldType());
+    assertEquals(VisibilityEnum.FORM_EXPLICITLY_SHOWN,
+        ((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getVisibility());
+    assertEquals(MergedPropertyType.PRIMARY,
+        ((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getMergedPropertyType());
+    assertFalse(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getForeignKeyCollection());
+    assertFalse(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getReadOnly());
+    assertFalse(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getRequired());
+    assertFalse(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getRequiredOverride());
+    assertFalse(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).isProminent());
+    assertFalse(actualCreateIndividualOptionFieldResult.getManualFetch());
+    assertTrue(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getValidationConfigurations().isEmpty());
+    assertTrue(actualCreateIndividualOptionFieldResult.getAdditionalMetadata().isEmpty());
+    assertTrue(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getAllowNoValueEnumOption());
+    assertTrue(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getMutable());
+  }
+
+  /**
+   * Test {@link SkuCustomPersistenceHandler#createIndividualOptionField(ProductOption, int)}.
+   * <ul>
+   *   <li>Then return {@link BasicFieldMetadata}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuCustomPersistenceHandler#createIndividualOptionField(ProductOption, int)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FieldMetadata SkuCustomPersistenceHandler.createIndividualOptionField(ProductOption, int)"})
+  public void testCreateIndividualOptionField_thenReturnBasicFieldMetadata() {
+    // Arrange
+    when(skuMetadataCacheService.useCache()).thenReturn(true);
+    ProductOptionValueImpl productOptionValueImpl = mock(ProductOptionValueImpl.class);
+    when(productOptionValueImpl.getId()).thenReturn(1L);
+    when(productOptionValueImpl.getAttributeValue()).thenReturn("42");
+
+    ArrayList<ProductOptionValue> allowedValues = new ArrayList<>();
+    allowedValues.add(productOptionValueImpl);
+
+    ProductOptionImpl option = new ProductOptionImpl();
+    option.setAllowedValues(allowedValues);
+
+    // Act
+    FieldMetadata actualCreateIndividualOptionFieldResult = skuCustomPersistenceHandler
+        .createIndividualOptionField(option, 1);
+
+    // Assert
+    verify(skuMetadataCacheService).useCache();
+    verify(productOptionValueImpl).getAttributeValue();
+    verify(productOptionValueImpl).getId();
+    assertTrue(actualCreateIndividualOptionFieldResult instanceof BasicFieldMetadata);
+    assertEquals("", ((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getBroadleafEnumeration());
+    assertEquals("org.broadleafcommerce.core.catalog.domain.SkuImpl",
+        actualCreateIndividualOptionFieldResult.getInheritedFromType());
+    assertEquals("productOption_group", actualCreateIndividualOptionFieldResult.getGroup());
+    assertEquals("productOptionnull", ((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getName());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getCanLinkToExternalEntity());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getEnableTypeaheadLookup());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getForcePopulateChildProperties());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getGroupCollapsed());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getHideEnumerationIfEmpty());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getIsDerived());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getIsFilter());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getOptionCanEditValues());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getOptionHideIfEmpty());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getSearchable());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getToOneLookupCreatedViaAnnotation());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getTranslatable());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getUnique());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getUseServerSideInspectionCache());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).isLargeEntry());
+    assertNull(actualCreateIndividualOptionFieldResult.getChildrenExcluded());
+    assertNull(actualCreateIndividualOptionFieldResult.getExcluded());
+    assertNull(actualCreateIndividualOptionFieldResult.getLazyFetch());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getGridOrder());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getLength());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getPrecision());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getScale());
+    assertNull(actualCreateIndividualOptionFieldResult.getTabOrder());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getAssociatedFieldName());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getColumnWidth());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getDefaultValue());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getEnumerationClass());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getFieldComponentRendererTemplate());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getForeignKeyClass());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getForeignKeyDisplayValueProperty());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getForeignKeyProperty());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getGridFieldComponentRendererTemplate());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getHelpText());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getHint());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getLookupDisplayProperty());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getManyToField());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getMapFieldValueClass());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getMapKeyValueProperty());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getOptionDisplayFieldName());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getOptionListEntity());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getOptionValueFieldName());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getRuleIdentifier());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getToOneParentProperty());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getToOneTargetProperty());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getTooltip());
+    assertNull(actualCreateIndividualOptionFieldResult.getAddFriendlyName());
+    assertNull(actualCreateIndividualOptionFieldResult.getCurrencyCodeField());
+    assertNull(actualCreateIndividualOptionFieldResult.getFieldName());
+    assertNull(actualCreateIndividualOptionFieldResult.getFriendlyName());
+    assertNull(actualCreateIndividualOptionFieldResult.getOwningClass());
+    assertNull(actualCreateIndividualOptionFieldResult.getOwningClassFriendlyName());
+    assertNull(actualCreateIndividualOptionFieldResult.getPrefix());
+    assertNull(actualCreateIndividualOptionFieldResult.getSecurityLevel());
+    assertNull(actualCreateIndividualOptionFieldResult.getShowIfProperty());
+    assertNull(actualCreateIndividualOptionFieldResult.getTab());
+    assertNull(actualCreateIndividualOptionFieldResult.getTargetClass());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getCustomCriteria());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getOptionFilterParams());
+    assertNull(actualCreateIndividualOptionFieldResult.getShowIfFieldEquals());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getLookupType());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getDisplayType());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getFieldComponentRenderer());
+    assertNull(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getGridFieldComponentRenderer());
+    assertEquals(-1, actualCreateIndividualOptionFieldResult.getGroupOrder().intValue());
+    assertEquals(0, actualCreateIndividualOptionFieldResult.getAvailableToTypes().length);
+    assertEquals(1, actualCreateIndividualOptionFieldResult.getOrder().intValue());
+    assertEquals(1, ((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getEnumerationValues().length);
+    assertEquals(SupportedFieldType.EXPLICIT_ENUMERATION,
+        ((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getFieldType());
+    assertEquals(SupportedFieldType.INTEGER,
+        ((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getSecondaryType());
+    assertEquals(SupportedFieldType.UNKNOWN,
+        ((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getExplicitFieldType());
+    assertEquals(VisibilityEnum.FORM_EXPLICITLY_SHOWN,
+        ((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getVisibility());
+    assertEquals(MergedPropertyType.PRIMARY,
+        ((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getMergedPropertyType());
+    assertFalse(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getForeignKeyCollection());
+    assertFalse(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getReadOnly());
+    assertFalse(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getRequired());
+    assertFalse(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getRequiredOverride());
+    assertFalse(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).isProminent());
+    assertFalse(actualCreateIndividualOptionFieldResult.getManualFetch());
+    assertTrue(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getValidationConfigurations().isEmpty());
+    assertTrue(actualCreateIndividualOptionFieldResult.getAdditionalMetadata().isEmpty());
+    assertTrue(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getAllowNoValueEnumOption());
+    assertTrue(((BasicFieldMetadata) actualCreateIndividualOptionFieldResult).getMutable());
+  }
+
+  /**
+   * Test {@link SkuCustomPersistenceHandler#createIndividualOptionField(ProductOption, int)}.
    * <ul>
    *   <li>When {@link ProductOptionImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#createIndividualOptionField(ProductOption, int)}
+   * Method under test: {@link SkuCustomPersistenceHandler#createIndividualOptionField(ProductOption, int)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FieldMetadata SkuCustomPersistenceHandler.createIndividualOptionField(ProductOption, int)"})
   public void testCreateIndividualOptionField_whenProductOptionImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertNull(skuCustomPersistenceHandler.createIndividualOptionField(new ProductOptionImpl(), 1));
   }
 
   /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#createExplicitEnumerationIndividualOptionField(ProductOption, int)}.
+   * Test {@link SkuCustomPersistenceHandler#createExplicitEnumerationIndividualOptionField(ProductOption, int)}.
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#createExplicitEnumerationIndividualOptionField(ProductOption, int)}
+   * Method under test: {@link SkuCustomPersistenceHandler#createExplicitEnumerationIndividualOptionField(ProductOption, int)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FieldMetadata SkuCustomPersistenceHandler.createExplicitEnumerationIndividualOptionField(ProductOption, int)"})
   public void testCreateExplicitEnumerationIndividualOptionField() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6383 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler skuCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler2 = new SkuCustomPersistenceHandler();
+    when(skuMetadataCacheService.useCache()).thenReturn(false);
+    ProductOptionValueImpl productOptionValueImpl = mock(ProductOptionValueImpl.class);
+    when(productOptionValueImpl.getId()).thenThrow(new NumberFormatException("foo"));
 
-    // Act
-    skuCustomPersistenceHandler2.createExplicitEnumerationIndividualOptionField(new ProductOptionImpl(), 1);
-  }
+    ArrayList<ProductOptionValue> allowedValues = new ArrayList<>();
+    allowedValues.add(productOptionValueImpl);
+    allowedValues.add(new ProductOptionValueImpl());
+    allowedValues.add(new ProductOptionValueImpl());
+    allowedValues.add(new ProductOptionValueImpl());
+    allowedValues.add(new ProductOptionValueImpl());
+    allowedValues.add(new ProductOptionValueImpl());
+    allowedValues.add(new ProductOptionValueImpl());
+    allowedValues.add(new ProductOptionValueImpl());
+    allowedValues.add(new ProductOptionValueImpl());
+    allowedValues.add(new ProductOptionValueImpl());
+    allowedValues.add(new ProductOptionValueImpl());
+    allowedValues.add(new ProductOptionValueImpl());
+    allowedValues.add(new ProductOptionValueImpl());
+    allowedValues.add(new ProductOptionValueImpl());
+    allowedValues.add(new ProductOptionValueImpl());
+    allowedValues.add(new ProductOptionValueImpl());
+    allowedValues.add(new ProductOptionValueImpl());
+    allowedValues.add(new ProductOptionValueImpl());
 
-  /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#createExplicitEnumerationIndividualOptionField(ProductOption, int)}.
-   * <ul>
-   *   <li>Then calls {@link ProductOptionImpl#getAllowedValues()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#createExplicitEnumerationIndividualOptionField(ProductOption, int)}
-   */
-  @Test
-  public void testCreateExplicitEnumerationIndividualOptionField_thenCallsGetAllowedValues() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
-    ProductOptionImpl option = mock(ProductOptionImpl.class);
-    when(option.getAllowedValues()).thenReturn(new ArrayList<>());
-
-    // Act
-    FieldMetadata actualCreateExplicitEnumerationIndividualOptionFieldResult = skuCustomPersistenceHandler
-        .createExplicitEnumerationIndividualOptionField(option, 1);
-
-    // Assert
-    verify(option).getAllowedValues();
-    assertNull(actualCreateExplicitEnumerationIndividualOptionFieldResult);
-  }
-
-  /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#createExplicitEnumerationIndividualOptionField(ProductOption, int)}.
-   * <ul>
-   *   <li>When {@link ProductOptionImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#createExplicitEnumerationIndividualOptionField(ProductOption, int)}
-   */
-  @Test
-  public void testCreateExplicitEnumerationIndividualOptionField_whenProductOptionImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
+    ProductOptionImpl option = new ProductOptionImpl();
+    option.setAttributeName("Attribute Name");
+    option.setDisplayOrder(1);
+    option.setErrorCode("An error occurred");
+    option.setErrorMessage("An error occurred");
+    option.setId(1L);
+    option.setLabel("Label");
+    option.setName("Name");
+    option.setProductOptionValidationStrategyType(new ProductOptionValidationStrategyType());
+    option.setProductOptionValidationType(new ProductOptionValidationType("Type", "Friendly Type"));
+    option.setProductXrefs(new ArrayList<>());
+    option.setRequired(true);
+    option.setType(new ProductOptionType("Type", "Friendly Type"));
+    option.setUseInSkuGeneration(true);
+    option.setValidationString("Validation String");
+    option.setAllowedValues(allowedValues);
 
     // Act and Assert
+    assertThrows(NumberFormatException.class,
+        () -> skuCustomPersistenceHandler.createExplicitEnumerationIndividualOptionField(option, 1));
+    verify(skuMetadataCacheService).useCache();
+    verify(productOptionValueImpl).getId();
+  }
+
+  /**
+   * Test {@link SkuCustomPersistenceHandler#createExplicitEnumerationIndividualOptionField(ProductOption, int)}.
+   * <ul>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuCustomPersistenceHandler#createExplicitEnumerationIndividualOptionField(ProductOption, int)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FieldMetadata SkuCustomPersistenceHandler.createExplicitEnumerationIndividualOptionField(ProductOption, int)"})
+  public void testCreateExplicitEnumerationIndividualOptionField_thenReturnNull() {
+    // Arrange, Act and Assert
     assertNull(skuCustomPersistenceHandler.createExplicitEnumerationIndividualOptionField(new ProductOptionImpl(), 1));
   }
 
   /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#createToOneIndividualOptionField(ProductOption, int)}.
+   * Test {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#createToOneIndividualOptionField(ProductOption, int)}
+   * Method under test: {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateToOneIndividualOptionField() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6433 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler skuCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler2 = new SkuCustomPersistenceHandler();
-
-    // Act
-    skuCustomPersistenceHandler2.createToOneIndividualOptionField(new ProductOptionImpl(), 1);
-  }
-
-  /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
-   * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DynamicResultSet SkuCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"})
   public void testFetch() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
-
     SectionCrumb sectionCrumb = new SectionCrumb();
     sectionCrumb.setOriginalSectionIdentifier("42");
     sectionCrumb.setSectionId("42");
@@ -2056,19 +2021,16 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
+   * Test {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   * Method under test: {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DynamicResultSet SkuCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"})
   public void testFetch2() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
-
     SectionCrumb sectionCrumb = new SectionCrumb();
     sectionCrumb.setOriginalSectionIdentifier("42");
     sectionCrumb.setSectionId("42");
@@ -2093,9 +2055,8 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
         Mockito.<Integer>any())).thenReturn(new ArrayList<>());
     when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
         .thenReturn(new HashMap<>());
-    Entity entity = new Entity();
     when(helper.getRecords(Mockito.<Map<String, FieldMetadata>>any(), Mockito.<List<Serializable>>any()))
-        .thenReturn(new Entity[]{entity});
+        .thenReturn(new Entity[]{new Entity()});
 
     // Act
     DynamicResultSet actualFetchResult = skuCustomPersistenceHandler.fetch(persistencePackage, cto, dynamicEntityDao,
@@ -2130,246 +2091,23 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
     assertEquals(0, actualFetchResult.getPageSize().intValue());
     assertEquals(0, actualFetchResult.getStartIndex().intValue());
     assertEquals(1, actualFetchResult.getTotalRecords().intValue());
-    Entity[] records = actualFetchResult.getRecords();
-    assertEquals(1, records.length);
     assertTrue(actualFetchResult.getUnselectedTabMetadata().isEmpty());
-    assertSame(entity, records[0]);
   }
 
   /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
-   * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  public void testFetch3() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
-
-    SectionCrumb sectionCrumb = new SectionCrumb();
-    sectionCrumb.setOriginalSectionIdentifier("42");
-    sectionCrumb.setSectionId("42");
-    sectionCrumb.setSectionIdentifier("42");
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.containsCriteria(Mockito.<String>any())).thenReturn(true);
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{"Custom Criteria"});
-    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[]{sectionCrumb});
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
-
-    ArrayList<String> stringList = new ArrayList<>();
-    stringList.add("owningClass=org.broadleafcommerce.core.catalog.domain.SkuBundleItemImpl");
-    FilterAndSortCriteria filterAndSortCriteria = mock(FilterAndSortCriteria.class);
-    when(filterAndSortCriteria.getFilterValues()).thenReturn(stringList);
-    CriteriaTransferObject cto = mock(CriteriaTransferObject.class);
-    when(cto.getFirstResult()).thenReturn(1);
-    when(cto.getMaxResults()).thenReturn(3);
-    when(cto.getCriteriaMap()).thenReturn(new HashMap<>());
-    when(cto.get(Mockito.<String>any())).thenReturn(filterAndSortCriteria);
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-    RecordHelper helper = mock(RecordHelper.class);
-    when(helper.getTotalRecords(Mockito.<String>any(), Mockito.<List<FilterMapping>>any())).thenReturn(1);
-    when(helper.getFilterMappings(Mockito.<PersistencePerspective>any(), Mockito.<CriteriaTransferObject>any(),
-        Mockito.<String>any(), Mockito.<Map<String, FieldMetadata>>any())).thenReturn(new ArrayList<>());
-    when(helper.getPersistentRecords(Mockito.<String>any(), Mockito.<List<FilterMapping>>any(), Mockito.<Integer>any(),
-        Mockito.<Integer>any())).thenReturn(new ArrayList<>());
-    when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
-        .thenReturn(new HashMap<>());
-    Entity entity = new Entity();
-    when(helper.getRecords(Mockito.<Map<String, FieldMetadata>>any(), Mockito.<List<Serializable>>any()))
-        .thenReturn(new Entity[]{entity});
-
-    // Act
-    DynamicResultSet actualFetchResult = skuCustomPersistenceHandler.fetch(persistencePackage, cto, dynamicEntityDao,
-        helper);
-
-    // Assert
-    verify(cto).get(eq("consolidatedProductOptions"));
-    verify(cto).getCriteriaMap();
-    verify(cto).getFirstResult();
-    verify(cto).getMaxResults();
-    verify(filterAndSortCriteria, atLeast(1)).getFilterValues();
-    verify(persistencePackage, atLeast(1)).containsCriteria(Mockito.<String>any());
-    verify(persistencePackage, atLeast(1)).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage, atLeast(1)).getCustomCriteria();
-    verify(persistencePackage).getPersistencePerspective();
-    verify(persistencePackage).getSectionCrumbs();
-    verify(helper).getFilterMappings(isA(PersistencePerspective.class), isA(CriteriaTransferObject.class),
-        eq("Dr Jane Doe"), isA(Map.class));
-    verify(helper).getPersistentRecords(eq("Dr Jane Doe"), isA(List.class), eq(1), eq(3));
-    verify(helper).getRecords(isA(Map.class), isA(List.class));
-    verify(helper).getSimpleMergedProperties(eq("org.broadleafcommerce.core.catalog.domain.Sku"),
-        isA(PersistencePerspective.class));
-    verify(helper).getTotalRecords(eq("Dr Jane Doe"), isA(List.class));
-    assertNull(actualFetchResult.getPromptSearch());
-    assertNull(actualFetchResult.getTotalCountLessThanPageSize());
-    assertNull(actualFetchResult.getBatchId());
-    assertNull(actualFetchResult.getLowerCount());
-    assertNull(actualFetchResult.getUpperCount());
-    assertNull(actualFetchResult.getFirstId());
-    assertNull(actualFetchResult.getLastId());
-    assertNull(actualFetchResult.getClassMetaData());
-    assertNull(actualFetchResult.getFetchType());
-    assertEquals(0, actualFetchResult.getPageSize().intValue());
-    assertEquals(0, actualFetchResult.getStartIndex().intValue());
-    assertEquals(1, actualFetchResult.getTotalRecords().intValue());
-    Entity[] records = actualFetchResult.getRecords();
-    assertEquals(1, records.length);
-    assertTrue(actualFetchResult.getUnselectedTabMetadata().isEmpty());
-    assertSame(entity, records[0]);
-  }
-
-  /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
-   * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFetch4() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6458 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler skuCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler2 = new SkuCustomPersistenceHandler();
-    PersistencePackage persistencePackage = new PersistencePackage();
-    CriteriaTransferObject cto = new CriteriaTransferObject();
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    // Act
-    skuCustomPersistenceHandler2.fetch(persistencePackage, cto, dynamicEntityDao,
-        new AdornedTargetListPersistenceModule());
-  }
-
-  /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@code Custom Criteria}.</li>
-   *   <li>Then calls {@link FilterAndSortCriteria#getFilterValues()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  public void testFetch_givenArrayListAddCustomCriteria_thenCallsGetFilterValues() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
-
-    SectionCrumb sectionCrumb = new SectionCrumb();
-    sectionCrumb.setOriginalSectionIdentifier("42");
-    sectionCrumb.setSectionId("42");
-    sectionCrumb.setSectionIdentifier("42");
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.containsCriteria(Mockito.<String>any())).thenReturn(true);
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{"Custom Criteria"});
-    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[]{sectionCrumb});
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
-
-    ArrayList<String> stringList = new ArrayList<>();
-    stringList.add("Custom Criteria");
-    stringList.add("owningClass=org.broadleafcommerce.core.catalog.domain.SkuBundleItemImpl");
-    FilterAndSortCriteria filterAndSortCriteria = mock(FilterAndSortCriteria.class);
-    when(filterAndSortCriteria.getFilterValues()).thenReturn(stringList);
-    CriteriaTransferObject cto = mock(CriteriaTransferObject.class);
-    when(cto.getFirstResult()).thenReturn(1);
-    when(cto.getMaxResults()).thenReturn(3);
-    when(cto.getCriteriaMap()).thenReturn(new HashMap<>());
-    when(cto.get(Mockito.<String>any())).thenReturn(filterAndSortCriteria);
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-    RecordHelper helper = mock(RecordHelper.class);
-    when(helper.getTotalRecords(Mockito.<String>any(), Mockito.<List<FilterMapping>>any())).thenReturn(1);
-    when(helper.getFilterMappings(Mockito.<PersistencePerspective>any(), Mockito.<CriteriaTransferObject>any(),
-        Mockito.<String>any(), Mockito.<Map<String, FieldMetadata>>any())).thenReturn(new ArrayList<>());
-    when(helper.getPersistentRecords(Mockito.<String>any(), Mockito.<List<FilterMapping>>any(), Mockito.<Integer>any(),
-        Mockito.<Integer>any())).thenReturn(new ArrayList<>());
-    when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
-        .thenReturn(new HashMap<>());
-    Entity entity = new Entity();
-    when(helper.getRecords(Mockito.<Map<String, FieldMetadata>>any(), Mockito.<List<Serializable>>any()))
-        .thenReturn(new Entity[]{entity});
-
-    // Act
-    DynamicResultSet actualFetchResult = skuCustomPersistenceHandler.fetch(persistencePackage, cto, dynamicEntityDao,
-        helper);
-
-    // Assert
-    verify(cto).get(eq("consolidatedProductOptions"));
-    verify(cto).getCriteriaMap();
-    verify(cto).getFirstResult();
-    verify(cto).getMaxResults();
-    verify(filterAndSortCriteria, atLeast(1)).getFilterValues();
-    verify(persistencePackage, atLeast(1)).containsCriteria(Mockito.<String>any());
-    verify(persistencePackage, atLeast(1)).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage, atLeast(1)).getCustomCriteria();
-    verify(persistencePackage).getPersistencePerspective();
-    verify(persistencePackage).getSectionCrumbs();
-    verify(helper).getFilterMappings(isA(PersistencePerspective.class), isA(CriteriaTransferObject.class),
-        eq("Dr Jane Doe"), isA(Map.class));
-    verify(helper).getPersistentRecords(eq("Dr Jane Doe"), isA(List.class), eq(1), eq(3));
-    verify(helper).getRecords(isA(Map.class), isA(List.class));
-    verify(helper).getSimpleMergedProperties(eq("org.broadleafcommerce.core.catalog.domain.Sku"),
-        isA(PersistencePerspective.class));
-    verify(helper).getTotalRecords(eq("Dr Jane Doe"), isA(List.class));
-    assertNull(actualFetchResult.getPromptSearch());
-    assertNull(actualFetchResult.getTotalCountLessThanPageSize());
-    assertNull(actualFetchResult.getBatchId());
-    assertNull(actualFetchResult.getLowerCount());
-    assertNull(actualFetchResult.getUpperCount());
-    assertNull(actualFetchResult.getFirstId());
-    assertNull(actualFetchResult.getLastId());
-    assertNull(actualFetchResult.getClassMetaData());
-    assertNull(actualFetchResult.getFetchType());
-    assertEquals(0, actualFetchResult.getPageSize().intValue());
-    assertEquals(0, actualFetchResult.getStartIndex().intValue());
-    assertEquals(1, actualFetchResult.getTotalRecords().intValue());
-    Entity[] records = actualFetchResult.getRecords();
-    assertEquals(1, records.length);
-    assertTrue(actualFetchResult.getUnselectedTabMetadata().isEmpty());
-    assertSame(entity, records[0]);
-  }
-
-  /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
+   * Test {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
    * <ul>
    *   <li>Given array of {@link String} with {@code requestingField=sku}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   * Method under test: {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DynamicResultSet SkuCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"})
   public void testFetch_givenArrayOfStringWithRequestingFieldSku() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
-
     SectionCrumb sectionCrumb = new SectionCrumb();
     sectionCrumb.setOriginalSectionIdentifier("42");
     sectionCrumb.setSectionId("42");
@@ -2425,25 +2163,20 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
+   * Test {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
    * <ul>
    *   <li>Given {@code false}.</li>
-   *   <li>When {@link PersistencePackage}
-   * {@link PersistencePackage#containsCriteria(String)} return
-   * {@code false}.</li>
+   *   <li>When {@link PersistencePackage} {@link PersistencePackage#containsCriteria(String)} return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   * Method under test: {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DynamicResultSet SkuCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"})
   public void testFetch_givenFalse_whenPersistencePackageContainsCriteriaReturnFalse() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
-
     SectionCrumb sectionCrumb = new SectionCrumb();
     sectionCrumb.setOriginalSectionIdentifier("42");
     sectionCrumb.setSectionId("42");
@@ -2500,23 +2233,19 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
+   * Test {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
    * <ul>
-   *   <li>Given {@link FilterAndSortCriteria#FilterAndSortCriteria(String, String)}
-   * with propertyId is {@code 42} and filterValue is {@code 42}.</li>
+   *   <li>Given {@link FilterAndSortCriteria#FilterAndSortCriteria(String, String)} with propertyId is {@code 42} and filterValue is {@code 42}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   * Method under test: {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DynamicResultSet SkuCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"})
   public void testFetch_givenFilterAndSortCriteriaWithPropertyIdIs42AndFilterValueIs42() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
-
     SectionCrumb sectionCrumb = new SectionCrumb();
     sectionCrumb.setOriginalSectionIdentifier("42");
     sectionCrumb.setSectionId("42");
@@ -2541,9 +2270,8 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
         Mockito.<Integer>any())).thenReturn(new ArrayList<>());
     when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
         .thenReturn(new HashMap<>());
-    Entity entity = new Entity();
     when(helper.getRecords(Mockito.<Map<String, FieldMetadata>>any(), Mockito.<List<Serializable>>any()))
-        .thenReturn(new Entity[]{entity});
+        .thenReturn(new Entity[]{new Entity()});
 
     // Act
     DynamicResultSet actualFetchResult = skuCustomPersistenceHandler.fetch(persistencePackage, cto, dynamicEntityDao,
@@ -2578,31 +2306,24 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
     assertEquals(0, actualFetchResult.getPageSize().intValue());
     assertEquals(0, actualFetchResult.getStartIndex().intValue());
     assertEquals(1, actualFetchResult.getTotalRecords().intValue());
-    Entity[] records = actualFetchResult.getRecords();
-    assertEquals(1, records.length);
     assertTrue(actualFetchResult.getUnselectedTabMetadata().isEmpty());
-    assertSame(entity, records[0]);
   }
 
   /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
+   * Test {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
    * <ul>
    *   <li>Given {@code null}.</li>
-   *   <li>When {@link PersistencePackage}
-   * {@link PersistencePackage#getCustomCriteria()} return {@code null}.</li>
+   *   <li>When {@link PersistencePackage} {@link PersistencePackage#getCustomCriteria()} return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   * Method under test: {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DynamicResultSet SkuCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"})
   public void testFetch_givenNull_whenPersistencePackageGetCustomCriteriaReturnNull() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
-
     SectionCrumb sectionCrumb = new SectionCrumb();
     sectionCrumb.setOriginalSectionIdentifier("42");
     sectionCrumb.setSectionId("42");
@@ -2658,23 +2379,20 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
+   * Test {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
    * <ul>
    *   <li>Given {@code null}.</li>
-   *   <li>When {@link PersistencePackage}
-   * {@link PersistencePackage#getSectionCrumbs()} return {@code null}.</li>
+   *   <li>When {@link PersistencePackage} {@link PersistencePackage#getSectionCrumbs()} return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   * Method under test: {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DynamicResultSet SkuCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"})
   public void testFetch_givenNull_whenPersistencePackageGetSectionCrumbsReturnNull() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     PersistencePackage persistencePackage = mock(PersistencePackage.class);
     when(persistencePackage.containsCriteria(Mockito.<String>any())).thenReturn(true);
     when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{"Custom Criteria"});
@@ -2726,22 +2444,19 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
+   * Test {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
    * <ul>
    *   <li>Then calls {@link FilterAndSortCriteria#getFilterValues()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   * Method under test: {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DynamicResultSet SkuCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"})
   public void testFetch_thenCallsGetFilterValues() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
-
     SectionCrumb sectionCrumb = new SectionCrumb();
     sectionCrumb.setOriginalSectionIdentifier("42");
     sectionCrumb.setSectionId("42");
@@ -2768,9 +2483,8 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
         Mockito.<Integer>any())).thenReturn(new ArrayList<>());
     when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
         .thenReturn(new HashMap<>());
-    Entity entity = new Entity();
     when(helper.getRecords(Mockito.<Map<String, FieldMetadata>>any(), Mockito.<List<Serializable>>any()))
-        .thenReturn(new Entity[]{entity});
+        .thenReturn(new Entity[]{new Entity()});
 
     // Act
     DynamicResultSet actualFetchResult = skuCustomPersistenceHandler.fetch(persistencePackage, cto, dynamicEntityDao,
@@ -2806,30 +2520,23 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
     assertEquals(0, actualFetchResult.getPageSize().intValue());
     assertEquals(0, actualFetchResult.getStartIndex().intValue());
     assertEquals(1, actualFetchResult.getTotalRecords().intValue());
-    Entity[] records = actualFetchResult.getRecords();
-    assertEquals(1, records.length);
     assertTrue(actualFetchResult.getUnselectedTabMetadata().isEmpty());
-    assertSame(entity, records[0]);
   }
 
   /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
+   * Test {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
    * <ul>
-   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap
-   * size is one.</li>
+   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap size is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   * Method under test: {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DynamicResultSet SkuCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"})
   public void testFetch_thenCriteriaTransferObjectCriteriaMapSizeIsOne() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
-
     SectionCrumb sectionCrumb = new SectionCrumb();
     sectionCrumb.setOriginalSectionIdentifier("42");
     sectionCrumb.setSectionId("42");
@@ -2885,23 +2592,19 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
+   * Test {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
    * <ul>
-   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap
-   * size is two.</li>
+   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap size is two.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   * Method under test: {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DynamicResultSet SkuCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"})
   public void testFetch_thenCriteriaTransferObjectCriteriaMapSizeIsTwo() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
-
     SectionCrumb sectionCrumb = new SectionCrumb();
     sectionCrumb.setOriginalSectionIdentifier("42");
     sectionCrumb.setSectionId("42");
@@ -2960,22 +2663,19 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
+   * Test {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
    * <ul>
    *   <li>Then throw {@link ServiceException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   * Method under test: {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DynamicResultSet SkuCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"})
   public void testFetch_thenThrowServiceException() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
-
     SectionCrumb sectionCrumb = new SectionCrumb();
     sectionCrumb.setOriginalSectionIdentifier("42");
     sectionCrumb.setSectionId("42");
@@ -3016,58 +2716,20 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#applyInventoryRestictions(List, CriteriaTransferObject, PersistencePackage)}.
-   * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#applyInventoryRestictions(List, CriteriaTransferObject, PersistencePackage)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testApplyInventoryRestictions() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5756 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler skuCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler2 = new SkuCustomPersistenceHandler();
-    ArrayList<FilterMapping> filterMappings = new ArrayList<>();
-    CriteriaTransferObject cto = new CriteriaTransferObject();
-
-    // Act
-    skuCustomPersistenceHandler2.applyInventoryRestictions(filterMappings, cto, new PersistencePackage());
-  }
-
-  /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#applyInventoryRestictions(List, CriteriaTransferObject, PersistencePackage)}.
+   * Test {@link SkuCustomPersistenceHandler#applyInventoryRestictions(List, CriteriaTransferObject, PersistencePackage)}.
    * <ul>
    *   <li>Given {@code true}.</li>
    *   <li>Then calls {@link PersistencePackage#containsCriteria(String)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#applyInventoryRestictions(List, CriteriaTransferObject, PersistencePackage)}
+   * Method under test: {@link SkuCustomPersistenceHandler#applyInventoryRestictions(List, CriteriaTransferObject, PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void SkuCustomPersistenceHandler.applyInventoryRestictions(List, CriteriaTransferObject, PersistencePackage)"})
   public void testApplyInventoryRestictions_givenTrue_thenCallsContainsCriteria() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     ArrayList<FilterMapping> filterMappings = new ArrayList<>();
     CriteriaTransferObject cto = new CriteriaTransferObject();
     PersistencePackage persistencePackage = mock(PersistencePackage.class);
@@ -3081,53 +2743,16 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#updateProductOptionFieldsForFetch(List, Entity[])}.
+   * Test {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}.
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#updateProductOptionFieldsForFetch(List, Entity[])}
+   * Method under test: {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testUpdateProductOptionFieldsForFetch() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass7039 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler skuCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler2 = new SkuCustomPersistenceHandler();
-    ArrayList<Serializable> records = new ArrayList<>();
-
-    // Act
-    skuCustomPersistenceHandler2.updateProductOptionFieldsForFetch(records, new Entity[]{new Entity()});
-  }
-
-  /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}.
-   * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void SkuCustomPersistenceHandler.applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)"})
   public void testApplyProductOptionValueCriteria() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     ArrayList<FilterMapping> filterMappings = new ArrayList<>();
     CriteriaTransferObject cto = new CriteriaTransferObject();
 
@@ -3150,18 +2775,16 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}.
+   * Test {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}.
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}
+   * Method under test: {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void SkuCustomPersistenceHandler.applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)"})
   public void testApplyProductOptionValueCriteria2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     ArrayList<FilterMapping> filterMappings = new ArrayList<>();
 
     HashMap<String, FilterAndSortCriteria> criteriaMap = new HashMap<>();
@@ -3174,26 +2797,24 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
     cto.setCriteriaMap(criteriaMap);
 
     // Act
-    skuCustomPersistenceHandler.applyProductOptionValueCriteria(filterMappings, cto, new PersistencePackage(), null);
+    skuCustomPersistenceHandler.applyProductOptionValueCriteria(filterMappings, cto, new PersistencePackage(), "");
 
-    // Assert
+    // Assert that nothing has changed
     assertTrue(filterMappings.isEmpty());
     assertSame(criteriaMap, cto.getCriteriaMap());
   }
 
   /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}.
+   * Test {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}.
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}
+   * Method under test: {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void SkuCustomPersistenceHandler.applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)"})
   public void testApplyProductOptionValueCriteria3() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     ArrayList<FilterMapping> filterMappings = new ArrayList<>();
     CriteriaTransferObject cto = mock(CriteriaTransferObject.class);
     when(cto.getCriteriaMap()).thenReturn(new HashMap<>());
@@ -3217,12 +2838,8 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
     assertNull(getResult.getInheritedFromClass());
     assertNull(getResult.getOrder());
     assertNull(getResult.getFullPropertyName());
-    Restriction restriction = getResult.getRestriction();
-    FieldPathBuilder fieldPathBuilder = restriction.getFieldPathBuilder();
-    assertNull(fieldPathBuilder.getRestrictions());
-    assertNull(fieldPathBuilder.getCriteria());
     assertNull(getResult.getSortDirection());
-    assertNull(restriction.getFilterValueConverter());
+    assertNull(getResult.getRestriction().getFilterValueConverter());
     assertTrue(fieldPath.getAssociationPath().isEmpty());
     assertTrue(fieldPath.getTargetPropertyPieces().isEmpty());
     assertTrue(getResult.getFilterValues().isEmpty());
@@ -3230,18 +2847,16 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}.
+   * Test {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}.
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}
+   * Method under test: {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void SkuCustomPersistenceHandler.applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)"})
   public void testApplyProductOptionValueCriteria4() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     ArrayList<FilterMapping> filterMappings = new ArrayList<>();
 
     ArrayList<String> stringList = new ArrayList<>();
@@ -3271,12 +2886,8 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
     assertNull(getResult.getInheritedFromClass());
     assertNull(getResult.getOrder());
     assertNull(getResult.getFullPropertyName());
-    Restriction restriction = getResult.getRestriction();
-    FieldPathBuilder fieldPathBuilder = restriction.getFieldPathBuilder();
-    assertNull(fieldPathBuilder.getRestrictions());
-    assertNull(fieldPathBuilder.getCriteria());
     assertNull(getResult.getSortDirection());
-    assertNull(restriction.getFilterValueConverter());
+    assertNull(getResult.getRestriction().getFilterValueConverter());
     assertTrue(fieldPath.getAssociationPath().isEmpty());
     assertTrue(fieldPath.getTargetPropertyPieces().isEmpty());
     assertTrue(getResult.getFilterValues().isEmpty());
@@ -3284,18 +2895,16 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}.
+   * Test {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}.
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}
+   * Method under test: {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void SkuCustomPersistenceHandler.applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)"})
   public void testApplyProductOptionValueCriteria5() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     ArrayList<FilterMapping> filterMappings = new ArrayList<>();
 
     ArrayList<String> stringList = new ArrayList<>();
@@ -3323,12 +2932,8 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
     assertNull(getResult.getInheritedFromClass());
     assertNull(getResult.getOrder());
     assertNull(getResult.getFullPropertyName());
-    Restriction restriction = getResult.getRestriction();
-    FieldPathBuilder fieldPathBuilder = restriction.getFieldPathBuilder();
-    assertNull(fieldPathBuilder.getRestrictions());
-    assertNull(fieldPathBuilder.getCriteria());
     assertNull(getResult.getSortDirection());
-    assertNull(restriction.getFilterValueConverter());
+    assertNull(getResult.getRestriction().getFilterValueConverter());
     assertTrue(fieldPath.getAssociationPath().isEmpty());
     assertTrue(fieldPath.getTargetPropertyPieces().isEmpty());
     assertTrue(getResult.getFilterValues().isEmpty());
@@ -3336,59 +2941,20 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}.
-   * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testApplyProductOptionValueCriteria6() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5801 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler skuCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler2 = new SkuCustomPersistenceHandler();
-    ArrayList<FilterMapping> filterMappings = new ArrayList<>();
-    CriteriaTransferObject cto = new CriteriaTransferObject();
-
-    // Act
-    skuCustomPersistenceHandler2.applyProductOptionValueCriteria(filterMappings, cto, new PersistencePackage(),
-        "Sku Property Prefix");
-  }
-
-  /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}.
+   * Test {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}.
    * <ul>
    *   <li>Given {@link ArrayList#ArrayList()} add empty string.</li>
    *   <li>When empty string.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}
+   * Method under test: {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void SkuCustomPersistenceHandler.applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)"})
   public void testApplyProductOptionValueCriteria_givenArrayListAddEmptyString_whenEmptyString() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     ArrayList<FilterMapping> filterMappings = new ArrayList<>();
 
     ArrayList<String> stringList = new ArrayList<>();
@@ -3402,7 +2968,7 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
     // Act
     skuCustomPersistenceHandler.applyProductOptionValueCriteria(filterMappings, cto, new PersistencePackage(), "");
 
-    // Assert
+    // Assert that nothing has changed
     verify(cto).get(eq("consolidatedProductOptions"));
     verify(cto).getCriteriaMap();
     verify(filterAndSortCriteria, atLeast(1)).getFilterValues();
@@ -3410,22 +2976,19 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}.
+   * Test {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}.
    * <ul>
-   *   <li>Given {@link FilterAndSortCriteria#FilterAndSortCriteria(String)} with
-   * propertyId is {@code 42}.</li>
+   *   <li>Given {@link FilterAndSortCriteria#FilterAndSortCriteria(String)} with propertyId is {@code 42}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}
+   * Method under test: {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void SkuCustomPersistenceHandler.applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)"})
   public void testApplyProductOptionValueCriteria_givenFilterAndSortCriteriaWithPropertyIdIs42() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     ArrayList<FilterMapping> filterMappings = new ArrayList<>();
     CriteriaTransferObject cto = mock(CriteriaTransferObject.class);
     when(cto.getCriteriaMap()).thenReturn(new HashMap<>());
@@ -3435,29 +2998,26 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
     skuCustomPersistenceHandler.applyProductOptionValueCriteria(filterMappings, cto, new PersistencePackage(),
         "Sku Property Prefix");
 
-    // Assert
+    // Assert that nothing has changed
     verify(cto).get(eq("consolidatedProductOptions"));
     verify(cto).getCriteriaMap();
     assertTrue(filterMappings.isEmpty());
   }
 
   /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}.
+   * Test {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}.
    * <ul>
    *   <li>Given {@link FilterMapping} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}
+   * Method under test: {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void SkuCustomPersistenceHandler.applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)"})
   public void testApplyProductOptionValueCriteria_givenFilterMapping() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
-
     ArrayList<FilterMapping> filterMappings = new ArrayList<>();
     filterMappings.add(new FilterMapping());
     CriteriaTransferObject cto = new CriteriaTransferObject();
@@ -3481,22 +3041,19 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}.
+   * Test {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}.
    * <ul>
    *   <li>Given {@link FilterMapping} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}
+   * Method under test: {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void SkuCustomPersistenceHandler.applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)"})
   public void testApplyProductOptionValueCriteria_givenFilterMapping2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
-
     ArrayList<FilterMapping> filterMappings = new ArrayList<>();
     filterMappings.add(new FilterMapping());
     filterMappings.add(new FilterMapping());
@@ -3521,21 +3078,19 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}.
+   * Test {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}.
    * <ul>
    *   <li>Then {@link ArrayList#ArrayList()} Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}
+   * Method under test: {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void SkuCustomPersistenceHandler.applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)"})
   public void testApplyProductOptionValueCriteria_thenArrayListEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     ArrayList<FilterMapping> filterMappings = new ArrayList<>();
     FilterAndSortCriteria filterAndSortCriteria = mock(FilterAndSortCriteria.class);
     when(filterAndSortCriteria.getFilterValues()).thenReturn(new ArrayList<>());
@@ -3547,7 +3102,7 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
     skuCustomPersistenceHandler.applyProductOptionValueCriteria(filterMappings, cto, new PersistencePackage(),
         "Sku Property Prefix");
 
-    // Assert
+    // Assert that nothing has changed
     verify(cto).get(eq("consolidatedProductOptions"));
     verify(cto).getCriteriaMap();
     verify(filterAndSortCriteria).getFilterValues();
@@ -3555,163 +3110,76 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#applyAdditionalFetchCriteria(List, CriteriaTransferObject, PersistencePackage)}.
+   * Test {@link SkuCustomPersistenceHandler#getPolymorphicClasses(Class, EntityManager, boolean)}.
+   * <ul>
+   *   <li>When {@code false}.</li>
+   *   <li>Then return array length is zero.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#applyAdditionalFetchCriteria(List, CriteriaTransferObject, PersistencePackage)}
+   * Method under test: {@link SkuCustomPersistenceHandler#getPolymorphicClasses(Class, EntityManager, boolean)}
    */
   @Test
-  public void testApplyAdditionalFetchCriteria() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing observers.
-    //   Diffblue Cover was unable to create an assertion.
-    //   Add getters for the following fields or make them package-private:
-    //     SkuCustomPersistenceHandler.CONSOLIDATED_PRODUCT_OPTIONS_DELIMETER
-    //     SkuCustomPersistenceHandler.CONSOLIDATED_PRODUCT_OPTIONS_FIELD_NAME
-    //     SkuCustomPersistenceHandler.INVENTORY_ONLY_CRITERIA
-    //     SkuCustomPersistenceHandler.PRODUCT_OPTION_FIELD_PREFIX
-    //     SkuCustomPersistenceHandler.adornedPersistenceModule
-    //     SkuCustomPersistenceHandler.catalogService
-    //     SkuCustomPersistenceHandler.criteriaTranslator
-    //     SkuCustomPersistenceHandler.em
-    //     SkuCustomPersistenceHandler.enableUseDefaultSkuInventory
-    //     SkuCustomPersistenceHandler.extensionManager
-    //     SkuCustomPersistenceHandler.sandBoxHelper
-    //     SkuCustomPersistenceHandler.skuMetadataCacheService
-    //     SkuCustomPersistenceHandler.useToOneLookupSkuProductOptionValue
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String[] SkuCustomPersistenceHandler.getPolymorphicClasses(Class, EntityManager, boolean)"})
+  public void testGetPolymorphicClasses_whenFalse_thenReturnArrayLengthIsZero() {
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
-    ArrayList<FilterMapping> filterMappings = new ArrayList<>();
-    CriteriaTransferObject cto = new CriteriaTransferObject();
-
-    // Act
-    skuCustomPersistenceHandler.applyAdditionalFetchCriteria(filterMappings, cto, new PersistencePackage());
-  }
-
-  /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
-   * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAdd() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5702 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler skuCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler2 = new SkuCustomPersistenceHandler();
-    PersistencePackage persistencePackage = new PersistencePackage();
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    // Act
-    skuCustomPersistenceHandler2.add(persistencePackage, dynamicEntityDao, new AdornedTargetListPersistenceModule());
-  }
-
-  /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}.
-   * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testUpdate() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6985 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler skuCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler2 = new SkuCustomPersistenceHandler();
-    PersistencePackage persistencePackage = new PersistencePackage();
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    // Act
-    skuCustomPersistenceHandler2.update(persistencePackage, dynamicEntityDao, new AdornedTargetListPersistenceModule());
-  }
-
-  /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#getPolymorphicClasses(Class, EntityManager, boolean)}.
-   * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#getPolymorphicClasses(Class, EntityManager, boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetPolymorphicClasses() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6598 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler skuCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler2 = new SkuCustomPersistenceHandler();
     Class<Object> clazz = Object.class;
-    SessionDelegatorBaseImpl delegate = new SessionDelegatorBaseImpl(null);
 
-    // Act
-    skuCustomPersistenceHandler2.getPolymorphicClasses(clazz,
-        new SessionDelegatorBaseImpl(delegate, new SessionDelegatorBaseImpl(null)), true);
+    // Act and Assert
+    assertEquals(0, skuCustomPersistenceHandler.getPolymorphicClasses(clazz, null, false).length);
   }
 
   /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#associateProductOptionValuesToSku(Entity, Sku, DynamicEntityDao)}.
+   * Test {@link SkuCustomPersistenceHandler#getPolymorphicClasses(Class, EntityManager, boolean)}.
+   * <ul>
+   *   <li>When {@code null}.</li>
+   *   <li>Then return array length is zero.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#associateProductOptionValuesToSku(Entity, Sku, DynamicEntityDao)}
+   * Method under test: {@link SkuCustomPersistenceHandler#getPolymorphicClasses(Class, EntityManager, boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String[] SkuCustomPersistenceHandler.getPolymorphicClasses(Class, EntityManager, boolean)"})
+  public void testGetPolymorphicClasses_whenNull_thenReturnArrayLengthIsZero() {
+    // Arrange
+    Class<Object> clazz = Object.class;
+
+    // Act and Assert
+    assertEquals(0, skuCustomPersistenceHandler.getPolymorphicClasses(clazz, null, true).length);
+  }
+
+  /**
+   * Test {@link SkuCustomPersistenceHandler#getPolymorphicClasses(Class, EntityManager, boolean)}.
+   * <ul>
+   *   <li>When {@code null}.</li>
+   *   <li>Then return array length is zero.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuCustomPersistenceHandler#getPolymorphicClasses(Class, EntityManager, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String[] SkuCustomPersistenceHandler.getPolymorphicClasses(Class, EntityManager, boolean)"})
+  public void testGetPolymorphicClasses_whenNull_thenReturnArrayLengthIsZero2() {
+    // Arrange
+    Class<Object> clazz = Object.class;
+
+    // Act and Assert
+    assertEquals(0, skuCustomPersistenceHandler.getPolymorphicClasses(clazz, null, true).length);
+  }
+
+  /**
+   * Test {@link SkuCustomPersistenceHandler#associateProductOptionValuesToSku(Entity, Sku, DynamicEntityDao)}.
+   * <p>
+   * Method under test: {@link SkuCustomPersistenceHandler#associateProductOptionValuesToSku(Entity, Sku, DynamicEntityDao)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void SkuCustomPersistenceHandler.associateProductOptionValuesToSku(Entity, Sku, DynamicEntityDao)"})
   public void testAssociateProductOptionValuesToSku() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     Entity entity = mock(Entity.class);
     when(entity.getProperties()).thenReturn(new Property[]{new Property("Name", "42")});
     SkuImpl adminInstance = new SkuImpl();
@@ -3724,57 +3192,19 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#associateProductOptionValuesToSku(Entity, Sku, DynamicEntityDao)}.
-   * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#associateProductOptionValuesToSku(Entity, Sku, DynamicEntityDao)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAssociateProductOptionValuesToSku2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5863 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler skuCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler2 = new SkuCustomPersistenceHandler();
-    Entity entity = new Entity();
-    SkuImpl adminInstance = new SkuImpl();
-
-    // Act
-    skuCustomPersistenceHandler2.associateProductOptionValuesToSku(entity, adminInstance, new DynamicEntityDaoImpl());
-  }
-
-  /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#associateProductOptionValuesToSku(Entity, Sku, DynamicEntityDao)}.
+   * Test {@link SkuCustomPersistenceHandler#associateProductOptionValuesToSku(Entity, Sku, DynamicEntityDao)}.
    * <ul>
    *   <li>Then calls {@link Property#getName()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#associateProductOptionValuesToSku(Entity, Sku, DynamicEntityDao)}
+   * Method under test: {@link SkuCustomPersistenceHandler#associateProductOptionValuesToSku(Entity, Sku, DynamicEntityDao)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void SkuCustomPersistenceHandler.associateProductOptionValuesToSku(Entity, Sku, DynamicEntityDao)"})
   public void testAssociateProductOptionValuesToSku_thenCallsGetName() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     Property property = mock(Property.class);
     when(property.getName()).thenReturn("Name");
     Entity entity = mock(Entity.class);
@@ -3792,15 +3222,13 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
   /**
    * Test {@link SkuCustomPersistenceHandler#getProductOptionProperties(Entity)}.
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#getProductOptionProperties(Entity)}
+   * Method under test: {@link SkuCustomPersistenceHandler#getProductOptionProperties(Entity)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List SkuCustomPersistenceHandler.getProductOptionProperties(Entity)"})
   public void testGetProductOptionProperties() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     Entity entity = mock(Entity.class);
     when(entity.getProperties()).thenReturn(new Property[]{new Property("Name", "42")});
 
@@ -3814,54 +3242,18 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link SkuCustomPersistenceHandler#getProductOptionProperties(Entity)}.
-   * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#getProductOptionProperties(Entity)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetProductOptionProperties2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6915 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler skuCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler2 = new SkuCustomPersistenceHandler();
-
-    // Act
-    skuCustomPersistenceHandler2.getProductOptionProperties(new Entity());
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#getProductOptionProperties(Entity)}.
    * <ul>
-   *   <li>Given {@link Property} {@link Property#getName()} return
-   * {@code Name}.</li>
+   *   <li>Given {@link Property} {@link Property#getName()} return {@code Name}.</li>
    *   <li>Then calls {@link Property#getName()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#getProductOptionProperties(Entity)}
+   * Method under test: {@link SkuCustomPersistenceHandler#getProductOptionProperties(Entity)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List SkuCustomPersistenceHandler.getProductOptionProperties(Entity)"})
   public void testGetProductOptionProperties_givenPropertyGetNameReturnName_thenCallsGetName() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     Property property = mock(Property.class);
     when(property.getName()).thenReturn("Name");
     Entity entity = mock(Entity.class);
@@ -3877,18 +3269,16 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#validateUniqueProductOptionValueCombination(Product, List, Sku)}.
+   * Test {@link SkuCustomPersistenceHandler#validateUniqueProductOptionValueCombination(Product, List, Sku)}.
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#validateUniqueProductOptionValueCombination(Product, List, Sku)}
+   * Method under test: {@link SkuCustomPersistenceHandler#validateUniqueProductOptionValueCombination(Product, List, Sku)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Entity SkuCustomPersistenceHandler.validateUniqueProductOptionValueCombination(Product, List, Sku)"})
   public void testValidateUniqueProductOptionValueCombination() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     ProductBundleImpl product = new ProductBundleImpl();
 
     ArrayList<Property> productOptionProperties = new ArrayList<>();
@@ -3900,58 +3290,19 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#validateUniqueProductOptionValueCombination(Product, List, Sku)}.
-   * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#validateUniqueProductOptionValueCombination(Product, List, Sku)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testValidateUniqueProductOptionValueCombination2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass7068 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler skuCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler2 = new SkuCustomPersistenceHandler();
-    ProductBundleImpl product = new ProductBundleImpl();
-    ArrayList<Property> productOptionProperties = new ArrayList<>();
-
-    // Act
-    skuCustomPersistenceHandler2.validateUniqueProductOptionValueCombination(product, productOptionProperties,
-        new SkuImpl());
-  }
-
-  /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#validateUniqueProductOptionValueCombination(Product, List, Sku)}.
+   * Test {@link SkuCustomPersistenceHandler#validateUniqueProductOptionValueCombination(Product, List, Sku)}.
    * <ul>
    *   <li>Then calls {@link Property#getValue()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#validateUniqueProductOptionValueCombination(Product, List, Sku)}
+   * Method under test: {@link SkuCustomPersistenceHandler#validateUniqueProductOptionValueCombination(Product, List, Sku)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Entity SkuCustomPersistenceHandler.validateUniqueProductOptionValueCombination(Product, List, Sku)"})
   public void testValidateUniqueProductOptionValueCombination_thenCallsGetValue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     ProductBundleImpl product = new ProductBundleImpl();
     Property property = mock(Property.class);
     when(property.getValue()).thenReturn("42");
@@ -3969,47 +3320,21 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#validateUniqueProductOptionValueCombination(Product, List, Sku)}.
+   * Test {@link SkuCustomPersistenceHandler#validateUniqueProductOptionValueCombination(Product, List, Sku)}.
    * <ul>
    *   <li>When {@link ArrayList#ArrayList()}.</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#validateUniqueProductOptionValueCombination(Product, List, Sku)}
+   * Method under test: {@link SkuCustomPersistenceHandler#validateUniqueProductOptionValueCombination(Product, List, Sku)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Entity SkuCustomPersistenceHandler.validateUniqueProductOptionValueCombination(Product, List, Sku)"})
   public void testValidateUniqueProductOptionValueCombination_whenArrayList_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     ProductBundleImpl product = new ProductBundleImpl();
-    ArrayList<Property> productOptionProperties = new ArrayList<>();
-
-    // Act and Assert
-    assertNull(skuCustomPersistenceHandler.validateUniqueProductOptionValueCombination(product, productOptionProperties,
-        new SkuImpl()));
-  }
-
-  /**
-   * Test
-   * {@link SkuCustomPersistenceHandler#validateUniqueProductOptionValueCombination(Product, List, Sku)}.
-   * <ul>
-   *   <li>When {@link ProductBundleImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SkuCustomPersistenceHandler#validateUniqueProductOptionValueCombination(Product, List, Sku)}
-   */
-  @Test
-  public void testValidateUniqueProductOptionValueCombination_whenProductBundleImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
     ArrayList<Property> productOptionProperties = new ArrayList<>();
 
     // Act and Assert

@@ -21,99 +21,45 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
-import javax.naming.NamingException;
 import org.broadleafcommerce.common.security.BroadleafExternalAuthenticationUserDetails;
-import org.broadleafcommerce.common.util.BLCFieldUtils;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ldap.core.DirContextAdapter;
 import org.springframework.ldap.core.DirContextOperations;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {BroadleafActiveDirectoryUserDetailsMapper.class})
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class BroadleafActiveDirectoryUserDetailsMapperDiffblueTest {
   @Autowired
   private BroadleafActiveDirectoryUserDetailsMapper broadleafActiveDirectoryUserDetailsMapper;
 
   /**
-   * Test
-   * {@link BroadleafActiveDirectoryUserDetailsMapper#mapUserFromContext(DirContextOperations, String, Collection)}.
+   * Test {@link BroadleafActiveDirectoryUserDetailsMapper#mapUserFromContext(DirContextOperations, String, Collection)}.
    * <ul>
-   *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.</li>
-   *   <li>Then calls
-   * {@link DirContextAdapter#addAttributeValue(String, Object)}.</li>
+   *   <li>Then return Authorities Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafActiveDirectoryUserDetailsMapper#mapUserFromContext(DirContextOperations, String, Collection)}
+   * Method under test: {@link BroadleafActiveDirectoryUserDetailsMapper#mapUserFromContext(DirContextOperations, String, Collection)}
    */
   @Test
-  public void testMapUserFromContext_givenNull_field_thenCallsAddAttributeValue() throws NamingException {
-    // Arrange
-    DirContextAdapter ctx = mock(DirContextAdapter.class);
-    when(ctx.addToEnvironment(Mockito.<String>any(), Mockito.<Object>any())).thenReturn(BLCFieldUtils.NULL_FIELD);
-    when(ctx.getObjectAttribute(Mockito.<String>any())).thenReturn(null);
-    when(ctx.getNameInNamespace()).thenReturn("Name In Namespace");
-    doNothing().when(ctx).addAttributeValue(Mockito.<String>any(), Mockito.<Object>any());
-    ctx.addToEnvironment("Prop Name", BLCFieldUtils.NULL_FIELD);
-    ctx.addAttributeValue("mail", BLCFieldUtils.NULL_FIELD);
-
-    // Act
-    UserDetails actualMapUserFromContextResult = broadleafActiveDirectoryUserDetailsMapper.mapUserFromContext(ctx,
-        "janedoe", new ArrayList<>());
-
-    // Assert
-    verify(ctx).addAttributeValue(eq("mail"), isA(Object.class));
-    verify(ctx).addToEnvironment(eq("Prop Name"), isA(Object.class));
-    verify(ctx).getNameInNamespace();
-    verify(ctx, atLeast(1)).getObjectAttribute(Mockito.<String>any());
-    Collection<? extends GrantedAuthority> authorities = actualMapUserFromContextResult.getAuthorities();
-    assertTrue(authorities instanceof Set);
-    assertTrue(actualMapUserFromContextResult instanceof BroadleafExternalAuthenticationUserDetails);
-    assertEquals("janedoe", actualMapUserFromContextResult.getPassword());
-    assertEquals("janedoe", actualMapUserFromContextResult.getUsername());
-    assertNull(((BroadleafExternalAuthenticationUserDetails) actualMapUserFromContextResult).getEmail());
-    assertNull(((BroadleafExternalAuthenticationUserDetails) actualMapUserFromContextResult).getFirstName());
-    assertNull(((BroadleafExternalAuthenticationUserDetails) actualMapUserFromContextResult).getLastName());
-    assertNull(((BroadleafExternalAuthenticationUserDetails) actualMapUserFromContextResult).getSite());
-    assertTrue(authorities.isEmpty());
-    assertTrue(actualMapUserFromContextResult.isAccountNonExpired());
-    assertTrue(actualMapUserFromContextResult.isAccountNonLocked());
-    assertTrue(actualMapUserFromContextResult.isCredentialsNonExpired());
-    assertTrue(actualMapUserFromContextResult.isEnabled());
-  }
-
-  /**
-   * Test
-   * {@link BroadleafActiveDirectoryUserDetailsMapper#mapUserFromContext(DirContextOperations, String, Collection)}.
-   * <ul>
-   *   <li>When {@link DirContextAdapter#DirContextAdapter()}.</li>
-   *   <li>Then Authorities return {@link Set}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link BroadleafActiveDirectoryUserDetailsMapper#mapUserFromContext(DirContextOperations, String, Collection)}
-   */
-  @Test
-  public void testMapUserFromContext_whenDirContextAdapter_thenAuthoritiesReturnSet() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "UserDetails BroadleafActiveDirectoryUserDetailsMapper.mapUserFromContext(DirContextOperations, String, Collection)"})
+  public void testMapUserFromContext_thenReturnAuthoritiesEmpty() {
     // Arrange
     DirContextAdapter ctx = new DirContextAdapter();
 
@@ -139,50 +85,13 @@ public class BroadleafActiveDirectoryUserDetailsMapperDiffblueTest {
   }
 
   /**
-   * Test getters and setters.
+   * Test new {@link BroadleafActiveDirectoryUserDetailsMapper} (default constructor).
    * <p>
-   * Methods under test:
-   * <ul>
-   *   <li>
-   * {@link BroadleafActiveDirectoryUserDetailsMapper#setAdditiveRoleNameSubstitutions(boolean)}
-   *   <li>
-   * {@link BroadleafActiveDirectoryUserDetailsMapper#setRoleNameSubstitutions(Map)}
-   *   <li>
-   * {@link BroadleafActiveDirectoryUserDetailsMapper#setUseEmailAddressAsUsername(boolean)}
-   * </ul>
+   * Method under test: default or parameterless constructor of {@link BroadleafActiveDirectoryUserDetailsMapper}
    */
   @Test
-  public void testGettersAndSetters() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing observers.
-    //   Diffblue Cover was unable to create an assertion.
-    //   Add getters for the following fields or make them package-private:
-    //     BroadleafActiveDirectoryUserDetailsMapper.additiveRoleNameSubstitutions
-    //     BroadleafActiveDirectoryUserDetailsMapper.roleNameSubstitutions
-    //     BroadleafActiveDirectoryUserDetailsMapper.useEmailAddressAsUsername
-    //     LdapUserDetailsMapper.convertToUpperCase
-    //     LdapUserDetailsMapper.logger
-    //     LdapUserDetailsMapper.passwordAttributeName
-    //     LdapUserDetailsMapper.roleAttributes
-    //     LdapUserDetailsMapper.rolePrefix
-
-    // Arrange
-    BroadleafActiveDirectoryUserDetailsMapper broadleafActiveDirectoryUserDetailsMapper = new BroadleafActiveDirectoryUserDetailsMapper();
-
-    // Act
-    broadleafActiveDirectoryUserDetailsMapper.setAdditiveRoleNameSubstitutions(true);
-    broadleafActiveDirectoryUserDetailsMapper.setRoleNameSubstitutions(new HashMap<>());
-    broadleafActiveDirectoryUserDetailsMapper.setUseEmailAddressAsUsername(true);
-  }
-
-  /**
-   * Test new {@link BroadleafActiveDirectoryUserDetailsMapper} (default
-   * constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link BroadleafActiveDirectoryUserDetailsMapper}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BroadleafActiveDirectoryUserDetailsMapper.<init>()"})
   public void testNewBroadleafActiveDirectoryUserDetailsMapper() {
     // Arrange and Act
     BroadleafActiveDirectoryUserDetailsMapper actualBroadleafActiveDirectoryUserDetailsMapper = new BroadleafActiveDirectoryUserDetailsMapper();

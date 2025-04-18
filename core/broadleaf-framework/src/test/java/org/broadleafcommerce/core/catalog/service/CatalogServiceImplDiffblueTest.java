@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.catalog.service;
 
 import static org.junit.Assert.assertEquals;
@@ -6,11 +23,14 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -18,92 +38,73 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.broadleafcommerce.common.extension.ExtensionResultHolder;
+import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
 import org.broadleafcommerce.core.catalog.dao.CategoryDao;
 import org.broadleafcommerce.core.catalog.dao.CategoryDaoImpl;
 import org.broadleafcommerce.core.catalog.dao.ProductDao;
 import org.broadleafcommerce.core.catalog.dao.ProductDaoImpl;
+import org.broadleafcommerce.core.catalog.dao.ProductOptionDao;
 import org.broadleafcommerce.core.catalog.dao.SkuDao;
 import org.broadleafcommerce.core.catalog.dao.SkuDaoImpl;
-import org.broadleafcommerce.core.catalog.domain.Category;
 import org.broadleafcommerce.core.catalog.domain.CategoryImpl;
 import org.broadleafcommerce.core.catalog.domain.Product;
 import org.broadleafcommerce.core.catalog.domain.ProductBundle;
 import org.broadleafcommerce.core.catalog.domain.ProductBundleImpl;
 import org.broadleafcommerce.core.catalog.domain.ProductOption;
 import org.broadleafcommerce.core.catalog.domain.ProductOptionImpl;
+import org.broadleafcommerce.core.catalog.domain.ProductOptionValue;
+import org.broadleafcommerce.core.catalog.domain.ProductOptionValueImpl;
 import org.broadleafcommerce.core.catalog.domain.Sku;
 import org.broadleafcommerce.core.catalog.domain.SkuFee;
 import org.broadleafcommerce.core.catalog.domain.SkuFeeImpl;
 import org.broadleafcommerce.core.catalog.domain.SkuImpl;
+import org.broadleafcommerce.core.catalog.domain.dto.AssignedProductOptionDTO;
 import org.broadleafcommerce.core.catalog.service.type.ProductType;
-import org.broadleafcommerce.core.order.domain.OrderItemAttribute;
-import org.broadleafcommerce.core.order.domain.OrderItemAttributeImpl;
 import org.broadleafcommerce.core.search.domain.SearchCriteria;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class CatalogServiceImplDiffblueTest {
-  @Autowired
+  @Mock
+  private CatalogServiceExtensionManager catalogServiceExtensionManager;
+
+  @InjectMocks
   private CatalogServiceImpl catalogServiceImpl;
 
+  @Mock
+  private CategoryDao categoryDao;
+
+  @Mock
+  private ProductDao productDao;
+
+  @Mock
+  private ProductOptionDao productOptionDao;
+
+  @Mock
+  private SkuDao skuDao;
+
   /**
    * Test {@link CatalogServiceImpl#findProductById(Long)}.
    * <p>
    * Method under test: {@link CatalogServiceImpl#findProductById(Long)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Product CatalogServiceImpl.findProductById(Long)"})
   public void testFindProductById() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4715 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CatalogServiceImpl()).findProductById(1L);
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#findProductById(Long)}.
-   * <ul>
-   *   <li>Then return {@link ProductBundleImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CatalogServiceImpl#findProductById(Long)}
-   */
-  @Test
-  public void testFindProductById_thenReturnProductBundleImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductDaoImpl productDao = mock(ProductDaoImpl.class);
     ProductBundleImpl productBundleImpl = new ProductBundleImpl();
     when(productDao.readProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setProductDao(productDao);
 
     // Act
     Product actualFindProductByIdResult = catalogServiceImpl.findProductById(1L);
@@ -119,48 +120,12 @@ public class CatalogServiceImplDiffblueTest {
    * Method under test: {@link CatalogServiceImpl#findProductByExternalId(String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Product CatalogServiceImpl.findProductByExternalId(String)"})
   public void testFindProductByExternalId() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4685 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CatalogServiceImpl()).findProductByExternalId("42");
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#findProductByExternalId(String)}.
-   * <ul>
-   *   <li>Then return {@link ProductBundleImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CatalogServiceImpl#findProductByExternalId(String)}
-   */
-  @Test
-  public void testFindProductByExternalId_thenReturnProductBundleImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductDaoImpl productDao = mock(ProductDaoImpl.class);
     ProductBundleImpl productBundleImpl = new ProductBundleImpl();
     when(productDao.readProductByExternalId(Mockito.<String>any())).thenReturn(productBundleImpl);
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setProductDao(productDao);
 
     // Act
     Product actualFindProductByExternalIdResult = catalogServiceImpl.findProductByExternalId("42");
@@ -171,114 +136,16 @@ public class CatalogServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link CatalogServiceImpl#findProductsByName(String)} with
-   * {@code searchName}.
+   * Test {@link CatalogServiceImpl#findProductsByName(String)} with {@code searchName}.
    * <p>
    * Method under test: {@link CatalogServiceImpl#findProductsByName(String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CatalogServiceImpl.findProductsByName(String)"})
   public void testFindProductsByNameWithSearchName() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4825 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CatalogServiceImpl()).findProductsByName("Search Name");
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#findProductsByName(String, int, int)} with
-   * {@code searchName}, {@code limit}, {@code offset}.
-   * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#findProductsByName(String, int, int)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindProductsByNameWithSearchNameLimitOffset() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4855 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CatalogServiceImpl()).findProductsByName("Search Name", 1, 2);
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#findProductsByName(String, int, int)} with
-   * {@code searchName}, {@code limit}, {@code offset}.
-   * <ul>
-   *   <li>Then return Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#findProductsByName(String, int, int)}
-   */
-  @Test
-  public void testFindProductsByNameWithSearchNameLimitOffset_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductDaoImpl productDao = mock(ProductDaoImpl.class);
-    when(productDao.readProductsByName(Mockito.<String>any(), anyInt(), anyInt())).thenReturn(new ArrayList<>());
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setProductDao(productDao);
-
-    // Act
-    List<Product> actualFindProductsByNameResult = catalogServiceImpl.findProductsByName("Search Name", 1, 2);
-
-    // Assert
-    verify(productDao).readProductsByName(eq("Search Name"), eq(1), eq(2));
-    assertTrue(actualFindProductsByNameResult.isEmpty());
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#findProductsByName(String)} with
-   * {@code searchName}.
-   * <ul>
-   *   <li>Then return Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CatalogServiceImpl#findProductsByName(String)}
-   */
-  @Test
-  public void testFindProductsByNameWithSearchName_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProductDaoImpl productDao = mock(ProductDaoImpl.class);
     when(productDao.readProductsByName(Mockito.<String>any())).thenReturn(new ArrayList<>());
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setProductDao(productDao);
 
     // Act
     List<Product> actualFindProductsByNameResult = catalogServiceImpl.findProductsByName("Search Name");
@@ -289,301 +156,142 @@ public class CatalogServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link CatalogServiceImpl#findActiveProductsByCategory(Category)} with
-   * {@code category}.
+   * Test {@link CatalogServiceImpl#findProductsByName(String, int, int)} with {@code searchName}, {@code limit}, {@code offset}.
    * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#findActiveProductsByCategory(Category)}
+   * Method under test: {@link CatalogServiceImpl#findProductsByName(String, int, int)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindActiveProductsByCategoryWithCategory() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4020 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CatalogServiceImpl.findProductsByName(String, int, int)"})
+  public void testFindProductsByNameWithSearchNameLimitOffset() {
     // Arrange
-    CatalogServiceImpl catalogServiceImpl2 = new CatalogServiceImpl();
+    when(productDao.readProductsByName(Mockito.<String>any(), anyInt(), anyInt())).thenReturn(new ArrayList<>());
 
     // Act
-    catalogServiceImpl2.findActiveProductsByCategory(new CategoryImpl());
+    List<Product> actualFindProductsByNameResult = catalogServiceImpl.findProductsByName("Search Name", 1, 2);
+
+    // Assert
+    verify(productDao).readProductsByName(eq("Search Name"), eq(1), eq(2));
+    assertTrue(actualFindProductsByNameResult.isEmpty());
   }
 
   /**
-   * Test {@link CatalogServiceImpl#findActiveProductsByCategory(Category, Date)}
-   * with {@code category}, {@code currentDate}.
+   * Test {@link CatalogServiceImpl#findActiveProductsByCategory(Category, Date, int, int)} with {@code category}, {@code currentDate}, {@code limit}, {@code offset}.
    * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#findActiveProductsByCategory(Category, Date)}
+   * Method under test: {@link CatalogServiceImpl#findActiveProductsByCategory(org.broadleafcommerce.core.catalog.domain.Category, Date, int, int)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindActiveProductsByCategoryWithCategoryCurrentDate() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4080 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CatalogServiceImpl catalogServiceImpl2 = new CatalogServiceImpl();
-    CategoryImpl category = new CategoryImpl();
-
-    // Act
-    catalogServiceImpl2.findActiveProductsByCategory(category,
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-  }
-
-  /**
-   * Test
-   * {@link CatalogServiceImpl#findActiveProductsByCategory(Category, Date, int, int)}
-   * with {@code category}, {@code currentDate}, {@code limit}, {@code offset}.
-   * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#findActiveProductsByCategory(Category, Date, int, int)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "List CatalogServiceImpl.findActiveProductsByCategory(org.broadleafcommerce.core.catalog.domain.Category, Date, int, int)"})
   public void testFindActiveProductsByCategoryWithCategoryCurrentDateLimitOffset() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductDaoImpl productDao = mock(ProductDaoImpl.class);
     when(productDao.readActiveProductsByCategory(Mockito.<Long>any(), Mockito.<Date>any(), anyInt(), anyInt()))
         .thenReturn(new ArrayList<>());
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setProductDao(productDao);
-    CategoryImpl category = mock(CategoryImpl.class);
-    when(category.getId()).thenReturn(1L);
+    CategoryImpl category = new CategoryImpl();
 
     // Act
     List<Product> actualFindActiveProductsByCategoryResult = catalogServiceImpl.findActiveProductsByCategory(category,
         Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()), 1, 2);
 
     // Assert
-    verify(productDao).readActiveProductsByCategory(eq(1L), isA(Date.class), eq(1), eq(2));
-    verify(category).getId();
+    verify(productDao).readActiveProductsByCategory(isNull(), isA(Date.class), eq(1), eq(2));
     assertTrue(actualFindActiveProductsByCategoryResult.isEmpty());
   }
 
   /**
-   * Test
-   * {@link CatalogServiceImpl#findActiveProductsByCategory(Category, Date, int, int)}
-   * with {@code category}, {@code currentDate}, {@code limit}, {@code offset}.
-   * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#findActiveProductsByCategory(Category, Date, int, int)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindActiveProductsByCategoryWithCategoryCurrentDateLimitOffset2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4110 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CatalogServiceImpl catalogServiceImpl2 = new CatalogServiceImpl();
-    CategoryImpl category = new CategoryImpl();
-
-    // Act
-    catalogServiceImpl2.findActiveProductsByCategory(category,
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()), 1, 2);
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#findActiveProductsByCategory(Category, Date)}
-   * with {@code category}, {@code currentDate}.
+   * Test {@link CatalogServiceImpl#findActiveProductsByCategory(Category, Date)} with {@code category}, {@code currentDate}.
    * <ul>
    *   <li>Then return Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#findActiveProductsByCategory(Category, Date)}
+   * Method under test: {@link CatalogServiceImpl#findActiveProductsByCategory(org.broadleafcommerce.core.catalog.domain.Category, Date)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "List CatalogServiceImpl.findActiveProductsByCategory(org.broadleafcommerce.core.catalog.domain.Category, Date)"})
   public void testFindActiveProductsByCategoryWithCategoryCurrentDate_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductDaoImpl productDao = mock(ProductDaoImpl.class);
     when(productDao.readActiveProductsByCategory(Mockito.<Long>any(), Mockito.<Date>any()))
         .thenReturn(new ArrayList<>());
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setProductDao(productDao);
-    CategoryImpl category = mock(CategoryImpl.class);
-    when(category.getId()).thenReturn(1L);
+    CategoryImpl category = new CategoryImpl();
 
     // Act
     List<Product> actualFindActiveProductsByCategoryResult = catalogServiceImpl.findActiveProductsByCategory(category,
         Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
 
     // Assert
-    verify(productDao).readActiveProductsByCategory(eq(1L), isA(Date.class));
-    verify(category).getId();
+    verify(productDao).readActiveProductsByCategory(isNull(), isA(Date.class));
     assertTrue(actualFindActiveProductsByCategoryResult.isEmpty());
   }
 
   /**
-   * Test
-   * {@link CatalogServiceImpl#findActiveProductsByCategory(Category, int, int)}
-   * with {@code category}, {@code limit}, {@code offset}.
-   * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#findActiveProductsByCategory(Category, int, int)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindActiveProductsByCategoryWithCategoryLimitOffset() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4050 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CatalogServiceImpl catalogServiceImpl2 = new CatalogServiceImpl();
-
-    // Act
-    catalogServiceImpl2.findActiveProductsByCategory(new CategoryImpl(), 1, 2);
-  }
-
-  /**
-   * Test
-   * {@link CatalogServiceImpl#findActiveProductsByCategory(Category, int, int)}
-   * with {@code category}, {@code limit}, {@code offset}.
+   * Test {@link CatalogServiceImpl#findActiveProductsByCategory(Category, int, int)} with {@code category}, {@code limit}, {@code offset}.
    * <ul>
    *   <li>Then return Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#findActiveProductsByCategory(Category, int, int)}
+   * Method under test: {@link CatalogServiceImpl#findActiveProductsByCategory(org.broadleafcommerce.core.catalog.domain.Category, int, int)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "List CatalogServiceImpl.findActiveProductsByCategory(org.broadleafcommerce.core.catalog.domain.Category, int, int)"})
   public void testFindActiveProductsByCategoryWithCategoryLimitOffset_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductDaoImpl productDao = mock(ProductDaoImpl.class);
     when(productDao.readActiveProductsByCategory(Mockito.<Long>any(), anyInt(), anyInt()))
         .thenReturn(new ArrayList<>());
 
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setProductDao(productDao);
-    CategoryImpl category = mock(CategoryImpl.class);
-    when(category.getId()).thenReturn(1L);
-
     // Act
-    List<Product> actualFindActiveProductsByCategoryResult = catalogServiceImpl.findActiveProductsByCategory(category,
-        1, 2);
+    List<Product> actualFindActiveProductsByCategoryResult = catalogServiceImpl
+        .findActiveProductsByCategory(new CategoryImpl(), 1, 2);
 
     // Assert
-    verify(productDao).readActiveProductsByCategory(eq(1L), eq(1), eq(2));
-    verify(category).getId();
+    verify(productDao).readActiveProductsByCategory(isNull(), eq(1), eq(2));
     assertTrue(actualFindActiveProductsByCategoryResult.isEmpty());
   }
 
   /**
-   * Test {@link CatalogServiceImpl#findActiveProductsByCategory(Category)} with
-   * {@code category}.
+   * Test {@link CatalogServiceImpl#findActiveProductsByCategory(Category)} with {@code category}.
    * <ul>
+   *   <li>When {@link CategoryImpl} (default constructor).</li>
    *   <li>Then return Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#findActiveProductsByCategory(Category)}
+   * Method under test: {@link CatalogServiceImpl#findActiveProductsByCategory(org.broadleafcommerce.core.catalog.domain.Category)}
    */
   @Test
-  public void testFindActiveProductsByCategoryWithCategory_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "List CatalogServiceImpl.findActiveProductsByCategory(org.broadleafcommerce.core.catalog.domain.Category)"})
+  public void testFindActiveProductsByCategoryWithCategory_whenCategoryImpl_thenReturnEmpty() {
     // Arrange
-    ProductDaoImpl productDao = mock(ProductDaoImpl.class);
     when(productDao.readActiveProductsByCategory(Mockito.<Long>any())).thenReturn(new ArrayList<>());
 
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setProductDao(productDao);
-    CategoryImpl category = mock(CategoryImpl.class);
-    when(category.getId()).thenReturn(1L);
-
     // Act
-    List<Product> actualFindActiveProductsByCategoryResult = catalogServiceImpl.findActiveProductsByCategory(category);
+    List<Product> actualFindActiveProductsByCategoryResult = catalogServiceImpl
+        .findActiveProductsByCategory(new CategoryImpl());
 
     // Assert
-    verify(productDao).readActiveProductsByCategory(eq(1L));
-    verify(category).getId();
+    verify(productDao).readActiveProductsByCategory(isNull());
     assertTrue(actualFindActiveProductsByCategoryResult.isEmpty());
   }
 
   /**
-   * Test
-   * {@link CatalogServiceImpl#findFilteredActiveProductsByCategory(Category, Date, SearchCriteria)}
-   * with {@code category}, {@code currentDate}, {@code searchCriteria}.
+   * Test {@link CatalogServiceImpl#findFilteredActiveProductsByCategory(Category, Date, SearchCriteria)} with {@code category}, {@code currentDate}, {@code searchCriteria}.
    * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#findFilteredActiveProductsByCategory(Category, Date, SearchCriteria)}
+   * Method under test: {@link CatalogServiceImpl#findFilteredActiveProductsByCategory(org.broadleafcommerce.core.catalog.domain.Category, Date, SearchCriteria)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "List CatalogServiceImpl.findFilteredActiveProductsByCategory(org.broadleafcommerce.core.catalog.domain.Category, Date, SearchCriteria)"})
   public void testFindFilteredActiveProductsByCategoryWithCategoryCurrentDateSearchCriteria() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductDaoImpl productDao = mock(ProductDaoImpl.class);
     when(productDao.readFilteredActiveProductsByCategory(Mockito.<Long>any(), Mockito.<Date>any(),
         Mockito.<SearchCriteria>any())).thenReturn(new ArrayList<>());
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setProductDao(productDao);
-    CategoryImpl category = mock(CategoryImpl.class);
-    when(category.getId()).thenReturn(1L);
+    CategoryImpl category = new CategoryImpl();
     Date currentDate = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
 
     // Act
@@ -591,135 +299,46 @@ public class CatalogServiceImplDiffblueTest {
         .findFilteredActiveProductsByCategory(category, currentDate, new SearchCriteria());
 
     // Assert
-    verify(productDao).readFilteredActiveProductsByCategory(eq(1L), isA(Date.class), isA(SearchCriteria.class));
-    verify(category).getId();
+    verify(productDao).readFilteredActiveProductsByCategory(isNull(), isA(Date.class), isA(SearchCriteria.class));
     assertTrue(actualFindFilteredActiveProductsByCategoryResult.isEmpty());
   }
 
   /**
-   * Test
-   * {@link CatalogServiceImpl#findFilteredActiveProductsByCategory(Category, Date, SearchCriteria)}
-   * with {@code category}, {@code currentDate}, {@code searchCriteria}.
+   * Test {@link CatalogServiceImpl#findFilteredActiveProductsByCategory(Category, SearchCriteria)} with {@code category}, {@code searchCriteria}.
    * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#findFilteredActiveProductsByCategory(Category, Date, SearchCriteria)}
+   * Method under test: {@link CatalogServiceImpl#findFilteredActiveProductsByCategory(org.broadleafcommerce.core.catalog.domain.Category, SearchCriteria)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindFilteredActiveProductsByCategoryWithCategoryCurrentDateSearchCriteria2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4512 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CatalogServiceImpl catalogServiceImpl2 = new CatalogServiceImpl();
-    CategoryImpl category = new CategoryImpl();
-    Date currentDate = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
-
-    // Act
-    catalogServiceImpl2.findFilteredActiveProductsByCategory(category, currentDate, new SearchCriteria());
-  }
-
-  /**
-   * Test
-   * {@link CatalogServiceImpl#findFilteredActiveProductsByCategory(Category, SearchCriteria)}
-   * with {@code category}, {@code searchCriteria}.
-   * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#findFilteredActiveProductsByCategory(Category, SearchCriteria)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "List CatalogServiceImpl.findFilteredActiveProductsByCategory(org.broadleafcommerce.core.catalog.domain.Category, SearchCriteria)"})
   public void testFindFilteredActiveProductsByCategoryWithCategorySearchCriteria() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductDaoImpl productDao = mock(ProductDaoImpl.class);
     when(productDao.readFilteredActiveProductsByCategory(Mockito.<Long>any(), Mockito.<SearchCriteria>any()))
         .thenReturn(new ArrayList<>());
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setProductDao(productDao);
-    CategoryImpl category = mock(CategoryImpl.class);
-    when(category.getId()).thenReturn(1L);
+    CategoryImpl category = new CategoryImpl();
 
     // Act
     List<Product> actualFindFilteredActiveProductsByCategoryResult = catalogServiceImpl
         .findFilteredActiveProductsByCategory(category, new SearchCriteria());
 
     // Assert
-    verify(productDao).readFilteredActiveProductsByCategory(eq(1L), isA(SearchCriteria.class));
-    verify(category).getId();
+    verify(productDao).readFilteredActiveProductsByCategory(isNull(), isA(SearchCriteria.class));
     assertTrue(actualFindFilteredActiveProductsByCategoryResult.isEmpty());
   }
 
   /**
-   * Test
-   * {@link CatalogServiceImpl#findFilteredActiveProductsByCategory(Category, SearchCriteria)}
-   * with {@code category}, {@code searchCriteria}.
+   * Test {@link CatalogServiceImpl#findFilteredActiveProductsByQuery(String, Date, SearchCriteria)} with {@code query}, {@code currentDate}, {@code searchCriteria}.
    * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#findFilteredActiveProductsByCategory(Category, SearchCriteria)}
+   * Method under test: {@link CatalogServiceImpl#findFilteredActiveProductsByQuery(String, Date, SearchCriteria)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindFilteredActiveProductsByCategoryWithCategorySearchCriteria2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4542 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CatalogServiceImpl catalogServiceImpl2 = new CatalogServiceImpl();
-    CategoryImpl category = new CategoryImpl();
-
-    // Act
-    catalogServiceImpl2.findFilteredActiveProductsByCategory(category, new SearchCriteria());
-  }
-
-  /**
-   * Test
-   * {@link CatalogServiceImpl#findFilteredActiveProductsByQuery(String, Date, SearchCriteria)}
-   * with {@code query}, {@code currentDate}, {@code searchCriteria}.
-   * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#findFilteredActiveProductsByQuery(String, Date, SearchCriteria)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CatalogServiceImpl.findFilteredActiveProductsByQuery(String, Date, SearchCriteria)"})
   public void testFindFilteredActiveProductsByQueryWithQueryCurrentDateSearchCriteria() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductDaoImpl productDao = mock(ProductDaoImpl.class);
     when(productDao.readFilteredActiveProductsByQuery(Mockito.<String>any(), Mockito.<Date>any(),
         Mockito.<SearchCriteria>any())).thenReturn(new ArrayList<>());
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setProductDao(productDao);
     Date currentDate = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
 
     // Act
@@ -732,98 +351,17 @@ public class CatalogServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CatalogServiceImpl#findFilteredActiveProductsByQuery(String, Date, SearchCriteria)}
-   * with {@code query}, {@code currentDate}, {@code searchCriteria}.
+   * Test {@link CatalogServiceImpl#findFilteredActiveProductsByQuery(String, SearchCriteria)} with {@code query}, {@code searchCriteria}.
    * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#findFilteredActiveProductsByQuery(String, Date, SearchCriteria)}
+   * Method under test: {@link CatalogServiceImpl#findFilteredActiveProductsByQuery(String, SearchCriteria)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindFilteredActiveProductsByQueryWithQueryCurrentDateSearchCriteria2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4572 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CatalogServiceImpl catalogServiceImpl2 = new CatalogServiceImpl();
-    Date currentDate = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
-
-    // Act
-    catalogServiceImpl2.findFilteredActiveProductsByQuery("Query", currentDate, new SearchCriteria());
-  }
-
-  /**
-   * Test
-   * {@link CatalogServiceImpl#findFilteredActiveProductsByQuery(String, SearchCriteria)}
-   * with {@code query}, {@code searchCriteria}.
-   * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#findFilteredActiveProductsByQuery(String, SearchCriteria)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CatalogServiceImpl.findFilteredActiveProductsByQuery(String, SearchCriteria)"})
   public void testFindFilteredActiveProductsByQueryWithQuerySearchCriteria() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4602 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    CatalogServiceImpl catalogServiceImpl2 = new CatalogServiceImpl();
-
-    // Act
-    catalogServiceImpl2.findFilteredActiveProductsByQuery("Query", new SearchCriteria());
-  }
-
-  /**
-   * Test
-   * {@link CatalogServiceImpl#findFilteredActiveProductsByQuery(String, SearchCriteria)}
-   * with {@code query}, {@code searchCriteria}.
-   * <ul>
-   *   <li>Then return Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#findFilteredActiveProductsByQuery(String, SearchCriteria)}
-   */
-  @Test
-  public void testFindFilteredActiveProductsByQueryWithQuerySearchCriteria_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProductDaoImpl productDao = mock(ProductDaoImpl.class);
     when(productDao.readFilteredActiveProductsByQuery(Mockito.<String>any(), Mockito.<SearchCriteria>any()))
         .thenReturn(new ArrayList<>());
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setProductDao(productDao);
 
     // Act
     List<Product> actualFindFilteredActiveProductsByQueryResult = catalogServiceImpl
@@ -836,35 +374,6 @@ public class CatalogServiceImplDiffblueTest {
 
   /**
    * Test {@link CatalogServiceImpl#findAutomaticProductBundles()}.
-   * <p>
-   * Method under test: {@link CatalogServiceImpl#findAutomaticProductBundles()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindAutomaticProductBundles() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4353 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CatalogServiceImpl()).findAutomaticProductBundles();
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#findAutomaticProductBundles()}.
    * <ul>
    *   <li>Then return {@link ArrayList#ArrayList()}.</li>
    * </ul>
@@ -872,18 +381,14 @@ public class CatalogServiceImplDiffblueTest {
    * Method under test: {@link CatalogServiceImpl#findAutomaticProductBundles()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CatalogServiceImpl.findAutomaticProductBundles()"})
   public void testFindAutomaticProductBundles_thenReturnArrayList() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ArrayList<ProductBundle> productBundleList = new ArrayList<>();
     productBundleList.add(new ProductBundleImpl());
     productBundleList.add(new ProductBundleImpl());
-    ProductDaoImpl productDao = mock(ProductDaoImpl.class);
     when(productDao.readAutomaticProductBundles()).thenReturn(productBundleList);
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setProductDao(productDao);
 
     // Act
     List<ProductBundle> actualFindAutomaticProductBundlesResult = catalogServiceImpl.findAutomaticProductBundles();
@@ -902,15 +407,11 @@ public class CatalogServiceImplDiffblueTest {
    * Method under test: {@link CatalogServiceImpl#findAutomaticProductBundles()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CatalogServiceImpl.findAutomaticProductBundles()"})
   public void testFindAutomaticProductBundles_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductDaoImpl productDao = mock(ProductDaoImpl.class);
     when(productDao.readAutomaticProductBundles()).thenReturn(new ArrayList<>());
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setProductDao(productDao);
 
     // Act
     List<ProductBundle> actualFindAutomaticProductBundlesResult = catalogServiceImpl.findAutomaticProductBundles();
@@ -926,51 +427,12 @@ public class CatalogServiceImplDiffblueTest {
    * Method under test: {@link CatalogServiceImpl#saveProduct(Product)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Product CatalogServiceImpl.saveProduct(Product)"})
   public void testSaveProduct() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5194 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    CatalogServiceImpl catalogServiceImpl2 = new CatalogServiceImpl();
-
-    // Act
-    catalogServiceImpl2.saveProduct(new ProductBundleImpl());
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#saveProduct(Product)}.
-   * <ul>
-   *   <li>Then return {@link ProductBundleImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CatalogServiceImpl#saveProduct(Product)}
-   */
-  @Test
-  public void testSaveProduct_thenReturnProductBundleImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProductDaoImpl productDao = mock(ProductDaoImpl.class);
     ProductBundleImpl productBundleImpl = new ProductBundleImpl();
     when(productDao.save(Mockito.<Product>any())).thenReturn(productBundleImpl);
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setProductDao(productDao);
 
     // Act
     Product actualSaveProductResult = catalogServiceImpl.saveProduct(new ProductBundleImpl());
@@ -986,51 +448,16 @@ public class CatalogServiceImplDiffblueTest {
    * Method under test: {@link CatalogServiceImpl#findCategoryById(Long)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"org.broadleafcommerce.core.catalog.domain.Category CatalogServiceImpl.findCategoryById(Long)"})
   public void testFindCategoryById() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4434 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CatalogServiceImpl()).findCategoryById(1L);
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#findCategoryById(Long)}.
-   * <ul>
-   *   <li>Then return {@link CategoryImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CatalogServiceImpl#findCategoryById(Long)}
-   */
-  @Test
-  public void testFindCategoryById_thenReturnCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryDaoImpl categoryDao = mock(CategoryDaoImpl.class);
     CategoryImpl categoryImpl = new CategoryImpl();
     when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(categoryImpl);
 
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setCategoryDao(categoryDao);
-
     // Act
-    Category actualFindCategoryByIdResult = catalogServiceImpl.findCategoryById(1L);
+    org.broadleafcommerce.core.catalog.domain.Category actualFindCategoryByIdResult = catalogServiceImpl
+        .findCategoryById(1L);
 
     // Assert
     verify(categoryDao).readCategoryById(eq(1L));
@@ -1040,56 +467,20 @@ public class CatalogServiceImplDiffblueTest {
   /**
    * Test {@link CatalogServiceImpl#findCategoryByExternalId(String)}.
    * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#findCategoryByExternalId(String)}
+   * Method under test: {@link CatalogServiceImpl#findCategoryByExternalId(String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.core.catalog.domain.Category CatalogServiceImpl.findCategoryByExternalId(String)"})
   public void testFindCategoryByExternalId() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4404 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CatalogServiceImpl()).findCategoryByExternalId("42");
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#findCategoryByExternalId(String)}.
-   * <ul>
-   *   <li>Then return {@link CategoryImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#findCategoryByExternalId(String)}
-   */
-  @Test
-  public void testFindCategoryByExternalId_thenReturnCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryDaoImpl categoryDao = mock(CategoryDaoImpl.class);
     CategoryImpl categoryImpl = new CategoryImpl();
     when(categoryDao.readCategoryByExternalId(Mockito.<String>any())).thenReturn(categoryImpl);
 
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setCategoryDao(categoryDao);
-
     // Act
-    Category actualFindCategoryByExternalIdResult = catalogServiceImpl.findCategoryByExternalId("42");
+    org.broadleafcommerce.core.catalog.domain.Category actualFindCategoryByExternalIdResult = catalogServiceImpl
+        .findCategoryByExternalId("42");
 
     // Assert
     verify(categoryDao).readCategoryByExternalId(eq("42"));
@@ -1102,51 +493,17 @@ public class CatalogServiceImplDiffblueTest {
    * Method under test: {@link CatalogServiceImpl#findCategoryByName(String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.core.catalog.domain.Category CatalogServiceImpl.findCategoryByName(String)"})
   public void testFindCategoryByName() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4452 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CatalogServiceImpl()).findCategoryByName("Category Name");
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#findCategoryByName(String)}.
-   * <ul>
-   *   <li>Then return {@link CategoryImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CatalogServiceImpl#findCategoryByName(String)}
-   */
-  @Test
-  public void testFindCategoryByName_thenReturnCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryDaoImpl categoryDao = mock(CategoryDaoImpl.class);
     CategoryImpl categoryImpl = new CategoryImpl();
     when(categoryDao.readCategoryByName(Mockito.<String>any())).thenReturn(categoryImpl);
 
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setCategoryDao(categoryDao);
-
     // Act
-    Category actualFindCategoryByNameResult = catalogServiceImpl.findCategoryByName("Category Name");
+    org.broadleafcommerce.core.catalog.domain.Category actualFindCategoryByNameResult = catalogServiceImpl
+        .findCategoryByName("Category Name");
 
     // Assert
     verify(categoryDao).readCategoryByName(eq("Category Name"));
@@ -1154,117 +511,20 @@ public class CatalogServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link CatalogServiceImpl#findCategoriesByName(String)} with
-   * {@code categoryName}.
+   * Test {@link CatalogServiceImpl#findCategoriesByName(String)} with {@code categoryName}.
    * <p>
    * Method under test: {@link CatalogServiceImpl#findCategoriesByName(String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CatalogServiceImpl.findCategoriesByName(String)"})
   public void testFindCategoriesByNameWithCategoryName() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4357 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CatalogServiceImpl()).findCategoriesByName("Category Name");
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#findCategoriesByName(String, int, int)} with
-   * {@code categoryName}, {@code limit}, {@code offset}.
-   * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#findCategoriesByName(String, int, int)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindCategoriesByNameWithCategoryNameLimitOffset() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4387 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CatalogServiceImpl()).findCategoriesByName("Category Name", 1, 2);
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#findCategoriesByName(String, int, int)} with
-   * {@code categoryName}, {@code limit}, {@code offset}.
-   * <ul>
-   *   <li>Then return Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#findCategoriesByName(String, int, int)}
-   */
-  @Test
-  public void testFindCategoriesByNameWithCategoryNameLimitOffset_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryDaoImpl categoryDao = mock(CategoryDaoImpl.class);
-    when(categoryDao.readCategoriesByName(Mockito.<String>any(), anyInt(), anyInt())).thenReturn(new ArrayList<>());
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setCategoryDao(categoryDao);
-
-    // Act
-    List<Category> actualFindCategoriesByNameResult = catalogServiceImpl.findCategoriesByName("Category Name", 1, 2);
-
-    // Assert
-    verify(categoryDao).readCategoriesByName(eq("Category Name"), eq(1), eq(2));
-    assertTrue(actualFindCategoriesByNameResult.isEmpty());
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#findCategoriesByName(String)} with
-   * {@code categoryName}.
-   * <ul>
-   *   <li>Then return Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CatalogServiceImpl#findCategoriesByName(String)}
-   */
-  @Test
-  public void testFindCategoriesByNameWithCategoryName_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryDaoImpl categoryDao = mock(CategoryDaoImpl.class);
     when(categoryDao.readCategoriesByName(Mockito.<String>any())).thenReturn(new ArrayList<>());
 
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setCategoryDao(categoryDao);
-
     // Act
-    List<Category> actualFindCategoriesByNameResult = catalogServiceImpl.findCategoriesByName("Category Name");
+    List<org.broadleafcommerce.core.catalog.domain.Category> actualFindCategoriesByNameResult = catalogServiceImpl
+        .findCategoriesByName("Category Name");
 
     // Assert
     verify(categoryDao).readCategoriesByName(eq("Category Name"));
@@ -1272,123 +532,66 @@ public class CatalogServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link CatalogServiceImpl#saveCategory(Category)}.
+   * Test {@link CatalogServiceImpl#findCategoriesByName(String, int, int)} with {@code categoryName}, {@code limit}, {@code offset}.
    * <p>
-   * Method under test: {@link CatalogServiceImpl#saveCategory(Category)}
+   * Method under test: {@link CatalogServiceImpl#findCategoriesByName(String, int, int)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testSaveCategory() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5164 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CatalogServiceImpl.findCategoriesByName(String, int, int)"})
+  public void testFindCategoriesByNameWithCategoryNameLimitOffset() {
     // Arrange
-    CatalogServiceImpl catalogServiceImpl2 = new CatalogServiceImpl();
+    when(categoryDao.readCategoriesByName(Mockito.<String>any(), anyInt(), anyInt())).thenReturn(new ArrayList<>());
 
     // Act
-    catalogServiceImpl2.saveCategory(new CategoryImpl());
+    List<org.broadleafcommerce.core.catalog.domain.Category> actualFindCategoriesByNameResult = catalogServiceImpl
+        .findCategoriesByName("Category Name", 1, 2);
+
+    // Assert
+    verify(categoryDao).readCategoriesByName(eq("Category Name"), eq(1), eq(2));
+    assertTrue(actualFindCategoriesByNameResult.isEmpty());
   }
 
   /**
    * Test {@link CatalogServiceImpl#saveCategory(Category)}.
-   * <ul>
-   *   <li>Then return {@link CategoryImpl} (default constructor).</li>
-   * </ul>
    * <p>
-   * Method under test: {@link CatalogServiceImpl#saveCategory(Category)}
+   * Method under test: {@link CatalogServiceImpl#saveCategory(org.broadleafcommerce.core.catalog.domain.Category)}
    */
   @Test
-  public void testSaveCategory_thenReturnCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.core.catalog.domain.Category CatalogServiceImpl.saveCategory(org.broadleafcommerce.core.catalog.domain.Category)"})
+  public void testSaveCategory() {
     // Arrange
-    CategoryDaoImpl categoryDao = mock(CategoryDaoImpl.class);
     CategoryImpl categoryImpl = new CategoryImpl();
-    when(categoryDao.save(Mockito.<Category>any())).thenReturn(categoryImpl);
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setCategoryDao(categoryDao);
+    when(categoryDao.save(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any())).thenReturn(categoryImpl);
 
     // Act
-    Category actualSaveCategoryResult = catalogServiceImpl.saveCategory(new CategoryImpl());
+    org.broadleafcommerce.core.catalog.domain.Category actualSaveCategoryResult = catalogServiceImpl
+        .saveCategory(new CategoryImpl());
 
     // Assert
-    verify(categoryDao).save(isA(Category.class));
+    verify(categoryDao).save(isA(org.broadleafcommerce.core.catalog.domain.Category.class));
     assertSame(categoryImpl, actualSaveCategoryResult);
   }
 
   /**
    * Test {@link CatalogServiceImpl#removeCategory(Category)}.
    * <p>
-   * Method under test: {@link CatalogServiceImpl#removeCategory(Category)}
+   * Method under test: {@link CatalogServiceImpl#removeCategory(org.broadleafcommerce.core.catalog.domain.Category)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CatalogServiceImpl.removeCategory(org.broadleafcommerce.core.catalog.domain.Category)"})
   public void testRemoveCategory() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5074 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    CatalogServiceImpl catalogServiceImpl2 = new CatalogServiceImpl();
-
-    // Act
-    catalogServiceImpl2.removeCategory(new CategoryImpl());
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#removeCategory(Category)}.
-   * <ul>
-   *   <li>Given {@link CategoryDaoImpl} {@link CategoryDaoImpl#delete(Category)}
-   * does nothing.</li>
-   *   <li>Then calls {@link CategoryDaoImpl#delete(Category)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CatalogServiceImpl#removeCategory(Category)}
-   */
-  @Test
-  public void testRemoveCategory_givenCategoryDaoImplDeleteDoesNothing_thenCallsDelete() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryDaoImpl categoryDao = mock(CategoryDaoImpl.class);
-    doNothing().when(categoryDao).delete(Mockito.<Category>any());
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setCategoryDao(categoryDao);
+    doNothing().when(categoryDao).delete(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
 
     // Act
     catalogServiceImpl.removeCategory(new CategoryImpl());
 
     // Assert
-    verify(categoryDao).delete(isA(Category.class));
+    verify(categoryDao).delete(isA(org.broadleafcommerce.core.catalog.domain.Category.class));
   }
 
   /**
@@ -1397,53 +600,11 @@ public class CatalogServiceImplDiffblueTest {
    * Method under test: {@link CatalogServiceImpl#removeSku(Sku)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CatalogServiceImpl.removeSku(Sku)"})
   public void testRemoveSku() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5134 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    CatalogServiceImpl catalogServiceImpl2 = new CatalogServiceImpl();
-
-    // Act
-    catalogServiceImpl2.removeSku(new SkuImpl());
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#removeSku(Sku)}.
-   * <ul>
-   *   <li>Given {@link SkuDaoImpl} {@link SkuDaoImpl#delete(Sku)} does
-   * nothing.</li>
-   *   <li>When {@link SkuImpl} (default constructor).</li>
-   *   <li>Then calls {@link SkuDaoImpl#delete(Sku)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CatalogServiceImpl#removeSku(Sku)}
-   */
-  @Test
-  public void testRemoveSku_givenSkuDaoImplDeleteDoesNothing_whenSkuImpl_thenCallsDelete() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuDaoImpl skuDao = mock(SkuDaoImpl.class);
     doNothing().when(skuDao).delete(Mockito.<Sku>any());
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setSkuDao(skuDao);
 
     // Act
     catalogServiceImpl.removeSku(new SkuImpl());
@@ -1458,52 +619,11 @@ public class CatalogServiceImplDiffblueTest {
    * Method under test: {@link CatalogServiceImpl#removeProduct(Product)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CatalogServiceImpl.removeProduct(Product)"})
   public void testRemoveProduct() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5104 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    CatalogServiceImpl catalogServiceImpl2 = new CatalogServiceImpl();
-
-    // Act
-    catalogServiceImpl2.removeProduct(new ProductBundleImpl());
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#removeProduct(Product)}.
-   * <ul>
-   *   <li>Given {@link ProductDaoImpl} {@link ProductDaoImpl#delete(Product)} does
-   * nothing.</li>
-   *   <li>Then calls {@link ProductDaoImpl#delete(Product)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CatalogServiceImpl#removeProduct(Product)}
-   */
-  @Test
-  public void testRemoveProduct_givenProductDaoImplDeleteDoesNothing_thenCallsDelete() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProductDaoImpl productDao = mock(ProductDaoImpl.class);
     doNothing().when(productDao).delete(Mockito.<Product>any());
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setProductDao(productDao);
 
     // Act
     catalogServiceImpl.removeProduct(new ProductBundleImpl());
@@ -1518,108 +638,15 @@ public class CatalogServiceImplDiffblueTest {
    * Method under test: {@link CatalogServiceImpl#findAllCategories()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CatalogServiceImpl.findAllCategories()"})
   public void testFindAllCategories() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4200 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CatalogServiceImpl()).findAllCategories();
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#findAllCategories(int, int)} with {@code int},
-   * {@code int}.
-   * <p>
-   * Method under test: {@link CatalogServiceImpl#findAllCategories(int, int)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindAllCategoriesWithIntInt() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4204 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CatalogServiceImpl()).findAllCategories(1, 2);
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#findAllCategories(int, int)} with {@code int},
-   * {@code int}.
-   * <ul>
-   *   <li>Then return Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CatalogServiceImpl#findAllCategories(int, int)}
-   */
-  @Test
-  public void testFindAllCategoriesWithIntInt_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryDaoImpl categoryDao = mock(CategoryDaoImpl.class);
-    when(categoryDao.readAllCategories(anyInt(), anyInt())).thenReturn(new ArrayList<>());
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setCategoryDao(categoryDao);
-
-    // Act
-    List<Category> actualFindAllCategoriesResult = catalogServiceImpl.findAllCategories(1, 2);
-
-    // Assert
-    verify(categoryDao).readAllCategories(eq(1), eq(2));
-    assertTrue(actualFindAllCategoriesResult.isEmpty());
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#findAllCategories()}.
-   * <ul>
-   *   <li>Then return Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CatalogServiceImpl#findAllCategories()}
-   */
-  @Test
-  public void testFindAllCategories_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryDaoImpl categoryDao = mock(CategoryDaoImpl.class);
     when(categoryDao.readAllCategories()).thenReturn(new ArrayList<>());
 
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setCategoryDao(categoryDao);
-
     // Act
-    List<Category> actualFindAllCategoriesResult = catalogServiceImpl.findAllCategories();
+    List<org.broadleafcommerce.core.catalog.domain.Category> actualFindAllCategoriesResult = catalogServiceImpl
+        .findAllCategories();
 
     // Assert
     verify(categoryDao).readAllCategories();
@@ -1627,52 +654,37 @@ public class CatalogServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link CatalogServiceImpl#findTotalCategoryCount()}.
+   * Test {@link CatalogServiceImpl#findAllCategories(int, int)} with {@code int}, {@code int}.
    * <p>
-   * Method under test: {@link CatalogServiceImpl#findTotalCategoryCount()}
+   * Method under test: {@link CatalogServiceImpl#findAllCategories(int, int)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindTotalCategoryCount() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5048 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CatalogServiceImpl.findAllCategories(int, int)"})
+  public void testFindAllCategoriesWithIntInt() {
+    // Arrange
+    when(categoryDao.readAllCategories(anyInt(), anyInt())).thenReturn(new ArrayList<>());
 
-    // Arrange and Act
-    (new CatalogServiceImpl()).findTotalCategoryCount();
+    // Act
+    List<org.broadleafcommerce.core.catalog.domain.Category> actualFindAllCategoriesResult = catalogServiceImpl
+        .findAllCategories(1, 2);
+
+    // Assert
+    verify(categoryDao).readAllCategories(eq(1), eq(2));
+    assertTrue(actualFindAllCategoriesResult.isEmpty());
   }
 
   /**
    * Test {@link CatalogServiceImpl#findTotalCategoryCount()}.
-   * <ul>
-   *   <li>Then return longValue is three.</li>
-   * </ul>
    * <p>
    * Method under test: {@link CatalogServiceImpl#findTotalCategoryCount()}
    */
   @Test
-  public void testFindTotalCategoryCount_thenReturnLongValueIsThree() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long CatalogServiceImpl.findTotalCategoryCount()"})
+  public void testFindTotalCategoryCount() {
     // Arrange
-    CategoryDaoImpl categoryDao = mock(CategoryDaoImpl.class);
     when(categoryDao.readTotalCategoryCount()).thenReturn(3L);
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setCategoryDao(categoryDao);
 
     // Act
     Long actualFindTotalCategoryCountResult = catalogServiceImpl.findTotalCategoryCount();
@@ -1683,257 +695,99 @@ public class CatalogServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link CatalogServiceImpl#findAllSubCategories(Category)} with
-   * {@code category}.
+   * Test {@link CatalogServiceImpl#findAllSubCategories(Category)} with {@code category}.
    * <p>
-   * Method under test: {@link CatalogServiceImpl#findAllSubCategories(Category)}
+   * Method under test: {@link CatalogServiceImpl#findAllSubCategories(org.broadleafcommerce.core.catalog.domain.Category)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "List CatalogServiceImpl.findAllSubCategories(org.broadleafcommerce.core.catalog.domain.Category)"})
   public void testFindAllSubCategoriesWithCategory() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4245 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    CatalogServiceImpl catalogServiceImpl2 = new CatalogServiceImpl();
-
-    // Act
-    catalogServiceImpl2.findAllSubCategories(new CategoryImpl());
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#findAllSubCategories(Category, int, int)} with
-   * {@code category}, {@code limit}, {@code offset}.
-   * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#findAllSubCategories(Category, int, int)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindAllSubCategoriesWithCategoryLimitOffset() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4275 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CatalogServiceImpl catalogServiceImpl2 = new CatalogServiceImpl();
-
-    // Act
-    catalogServiceImpl2.findAllSubCategories(new CategoryImpl(), 1, 2);
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#findAllSubCategories(Category, int, int)} with
-   * {@code category}, {@code limit}, {@code offset}.
-   * <ul>
-   *   <li>Then return Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#findAllSubCategories(Category, int, int)}
-   */
-  @Test
-  public void testFindAllSubCategoriesWithCategoryLimitOffset_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryDaoImpl categoryDao = mock(CategoryDaoImpl.class);
-    when(categoryDao.readAllSubCategories(Mockito.<Category>any(), anyInt(), anyInt())).thenReturn(new ArrayList<>());
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setCategoryDao(categoryDao);
-
-    // Act
-    List<Category> actualFindAllSubCategoriesResult = catalogServiceImpl.findAllSubCategories(new CategoryImpl(), 1, 2);
-
-    // Assert
-    verify(categoryDao).readAllSubCategories(isA(Category.class), eq(1), eq(2));
-    assertTrue(actualFindAllSubCategoriesResult.isEmpty());
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#findAllSubCategories(Category)} with
-   * {@code category}.
-   * <ul>
-   *   <li>Then return Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CatalogServiceImpl#findAllSubCategories(Category)}
-   */
-  @Test
-  public void testFindAllSubCategoriesWithCategory_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryDaoImpl categoryDao = mock(CategoryDaoImpl.class);
-    when(categoryDao.readAllSubCategories(Mockito.<Category>any())).thenReturn(new ArrayList<>());
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setCategoryDao(categoryDao);
-
-    // Act
-    List<Category> actualFindAllSubCategoriesResult = catalogServiceImpl.findAllSubCategories(new CategoryImpl());
-
-    // Assert
-    verify(categoryDao).readAllSubCategories(isA(Category.class));
-    assertTrue(actualFindAllSubCategoriesResult.isEmpty());
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#findActiveSubCategoriesByCategory(Category)}
-   * with {@code category}.
-   * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#findActiveSubCategoriesByCategory(Category)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindActiveSubCategoriesByCategoryWithCategory() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4140 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CatalogServiceImpl catalogServiceImpl2 = new CatalogServiceImpl();
-
-    // Act
-    catalogServiceImpl2.findActiveSubCategoriesByCategory(new CategoryImpl());
-  }
-
-  /**
-   * Test
-   * {@link CatalogServiceImpl#findActiveSubCategoriesByCategory(Category, int, int)}
-   * with {@code category}, {@code limit}, {@code offset}.
-   * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#findActiveSubCategoriesByCategory(Category, int, int)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindActiveSubCategoriesByCategoryWithCategoryLimitOffset() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4170 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CatalogServiceImpl catalogServiceImpl2 = new CatalogServiceImpl();
-
-    // Act
-    catalogServiceImpl2.findActiveSubCategoriesByCategory(new CategoryImpl(), 1, 2);
-  }
-
-  /**
-   * Test
-   * {@link CatalogServiceImpl#findActiveSubCategoriesByCategory(Category, int, int)}
-   * with {@code category}, {@code limit}, {@code offset}.
-   * <ul>
-   *   <li>Then return Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#findActiveSubCategoriesByCategory(Category, int, int)}
-   */
-  @Test
-  public void testFindActiveSubCategoriesByCategoryWithCategoryLimitOffset_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryDaoImpl categoryDao = mock(CategoryDaoImpl.class);
-    when(categoryDao.readActiveSubCategoriesByCategory(Mockito.<Category>any(), anyInt(), anyInt()))
+    when(categoryDao.readAllSubCategories(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any()))
         .thenReturn(new ArrayList<>());
 
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setCategoryDao(categoryDao);
-
     // Act
-    List<Category> actualFindActiveSubCategoriesByCategoryResult = catalogServiceImpl
-        .findActiveSubCategoriesByCategory(new CategoryImpl(), 1, 2);
+    List<org.broadleafcommerce.core.catalog.domain.Category> actualFindAllSubCategoriesResult = catalogServiceImpl
+        .findAllSubCategories(new CategoryImpl());
 
     // Assert
-    verify(categoryDao).readActiveSubCategoriesByCategory(isA(Category.class), eq(1), eq(2));
-    assertTrue(actualFindActiveSubCategoriesByCategoryResult.isEmpty());
+    verify(categoryDao).readAllSubCategories(isA(org.broadleafcommerce.core.catalog.domain.Category.class));
+    assertTrue(actualFindAllSubCategoriesResult.isEmpty());
   }
 
   /**
-   * Test {@link CatalogServiceImpl#findActiveSubCategoriesByCategory(Category)}
-   * with {@code category}.
-   * <ul>
-   *   <li>Then return Empty.</li>
-   * </ul>
+   * Test {@link CatalogServiceImpl#findAllSubCategories(Category, int, int)} with {@code category}, {@code limit}, {@code offset}.
    * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#findActiveSubCategoriesByCategory(Category)}
+   * Method under test: {@link CatalogServiceImpl#findAllSubCategories(org.broadleafcommerce.core.catalog.domain.Category, int, int)}
    */
   @Test
-  public void testFindActiveSubCategoriesByCategoryWithCategory_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "List CatalogServiceImpl.findAllSubCategories(org.broadleafcommerce.core.catalog.domain.Category, int, int)"})
+  public void testFindAllSubCategoriesWithCategoryLimitOffset() {
     // Arrange
-    CategoryDaoImpl categoryDao = mock(CategoryDaoImpl.class);
-    when(categoryDao.readActiveSubCategoriesByCategory(Mockito.<Category>any())).thenReturn(new ArrayList<>());
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setCategoryDao(categoryDao);
+    when(categoryDao.readAllSubCategories(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any(), anyInt(),
+        anyInt())).thenReturn(new ArrayList<>());
 
     // Act
-    List<Category> actualFindActiveSubCategoriesByCategoryResult = catalogServiceImpl
+    List<org.broadleafcommerce.core.catalog.domain.Category> actualFindAllSubCategoriesResult = catalogServiceImpl
+        .findAllSubCategories(new CategoryImpl(), 1, 2);
+
+    // Assert
+    verify(categoryDao).readAllSubCategories(isA(org.broadleafcommerce.core.catalog.domain.Category.class), eq(1),
+        eq(2));
+    assertTrue(actualFindAllSubCategoriesResult.isEmpty());
+  }
+
+  /**
+   * Test {@link CatalogServiceImpl#findActiveSubCategoriesByCategory(Category)} with {@code category}.
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findActiveSubCategoriesByCategory(org.broadleafcommerce.core.catalog.domain.Category)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "List CatalogServiceImpl.findActiveSubCategoriesByCategory(org.broadleafcommerce.core.catalog.domain.Category)"})
+  public void testFindActiveSubCategoriesByCategoryWithCategory() {
+    // Arrange
+    when(categoryDao
+        .readActiveSubCategoriesByCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any()))
+        .thenReturn(new ArrayList<>());
+
+    // Act
+    List<org.broadleafcommerce.core.catalog.domain.Category> actualFindActiveSubCategoriesByCategoryResult = catalogServiceImpl
         .findActiveSubCategoriesByCategory(new CategoryImpl());
 
     // Assert
-    verify(categoryDao).readActiveSubCategoriesByCategory(isA(Category.class));
+    verify(categoryDao)
+        .readActiveSubCategoriesByCategory(isA(org.broadleafcommerce.core.catalog.domain.Category.class));
+    assertTrue(actualFindActiveSubCategoriesByCategoryResult.isEmpty());
+  }
+
+  /**
+   * Test {@link CatalogServiceImpl#findActiveSubCategoriesByCategory(Category, int, int)} with {@code category}, {@code limit}, {@code offset}.
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findActiveSubCategoriesByCategory(org.broadleafcommerce.core.catalog.domain.Category, int, int)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "List CatalogServiceImpl.findActiveSubCategoriesByCategory(org.broadleafcommerce.core.catalog.domain.Category, int, int)"})
+  public void testFindActiveSubCategoriesByCategoryWithCategoryLimitOffset() {
+    // Arrange
+    when(categoryDao.readActiveSubCategoriesByCategory(
+        Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any(), anyInt(), anyInt()))
+        .thenReturn(new ArrayList<>());
+
+    // Act
+    List<org.broadleafcommerce.core.catalog.domain.Category> actualFindActiveSubCategoriesByCategoryResult = catalogServiceImpl
+        .findActiveSubCategoriesByCategory(new CategoryImpl(), 1, 2);
+
+    // Assert
+    verify(categoryDao).readActiveSubCategoriesByCategory(isA(org.broadleafcommerce.core.catalog.domain.Category.class),
+        eq(1), eq(2));
     assertTrue(actualFindActiveSubCategoriesByCategoryResult.isEmpty());
   }
 
@@ -1943,105 +797,11 @@ public class CatalogServiceImplDiffblueTest {
    * Method under test: {@link CatalogServiceImpl#findAllProducts()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CatalogServiceImpl.findAllProducts()"})
   public void testFindAllProducts() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4215 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CatalogServiceImpl()).findAllProducts();
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#findAllProducts(int, int)} with {@code int},
-   * {@code int}.
-   * <p>
-   * Method under test: {@link CatalogServiceImpl#findAllProducts(int, int)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindAllProductsWithIntInt() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4219 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CatalogServiceImpl()).findAllProducts(1, 2);
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#findAllProducts(int, int)} with {@code int},
-   * {@code int}.
-   * <ul>
-   *   <li>Then return Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CatalogServiceImpl#findAllProducts(int, int)}
-   */
-  @Test
-  public void testFindAllProductsWithIntInt_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryDaoImpl categoryDao = mock(CategoryDaoImpl.class);
-    when(categoryDao.readAllProducts(anyInt(), anyInt())).thenReturn(new ArrayList<>());
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setCategoryDao(categoryDao);
-
-    // Act
-    List<Product> actualFindAllProductsResult = catalogServiceImpl.findAllProducts(1, 2);
-
-    // Assert
-    verify(categoryDao).readAllProducts(eq(1), eq(2));
-    assertTrue(actualFindAllProductsResult.isEmpty());
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#findAllProducts()}.
-   * <ul>
-   *   <li>Then return Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CatalogServiceImpl#findAllProducts()}
-   */
-  @Test
-  public void testFindAllProducts_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryDaoImpl categoryDao = mock(CategoryDaoImpl.class);
     when(categoryDao.readAllProducts()).thenReturn(new ArrayList<>());
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setCategoryDao(categoryDao);
 
     // Act
     List<Product> actualFindAllProductsResult = catalogServiceImpl.findAllProducts();
@@ -2052,112 +812,36 @@ public class CatalogServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link CatalogServiceImpl#findAllSkus()}.
+   * Test {@link CatalogServiceImpl#findAllProducts(int, int)} with {@code int}, {@code int}.
    * <p>
-   * Method under test: {@link CatalogServiceImpl#findAllSkus()}
+   * Method under test: {@link CatalogServiceImpl#findAllProducts(int, int)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindAllSkus() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4230 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CatalogServiceImpl()).findAllSkus();
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#findAllSkus(int, int)} with {@code int},
-   * {@code int}.
-   * <p>
-   * Method under test: {@link CatalogServiceImpl#findAllSkus(int, int)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindAllSkusWithIntInt() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4234 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CatalogServiceImpl()).findAllSkus(2, 1);
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#findAllSkus(int, int)} with {@code int},
-   * {@code int}.
-   * <ul>
-   *   <li>Then return Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CatalogServiceImpl#findAllSkus(int, int)}
-   */
-  @Test
-  public void testFindAllSkusWithIntInt_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CatalogServiceImpl.findAllProducts(int, int)"})
+  public void testFindAllProductsWithIntInt() {
     // Arrange
-    SkuDaoImpl skuDao = mock(SkuDaoImpl.class);
-    when(skuDao.readAllSkus(anyInt(), anyInt())).thenReturn(new ArrayList<>());
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setSkuDao(skuDao);
+    when(categoryDao.readAllProducts(anyInt(), anyInt())).thenReturn(new ArrayList<>());
 
     // Act
-    List<Sku> actualFindAllSkusResult = catalogServiceImpl.findAllSkus(2, 1);
+    List<Product> actualFindAllProductsResult = catalogServiceImpl.findAllProducts(1, 2);
 
     // Assert
-    verify(skuDao).readAllSkus(eq(2), eq(1));
-    assertTrue(actualFindAllSkusResult.isEmpty());
+    verify(categoryDao).readAllProducts(eq(1), eq(2));
+    assertTrue(actualFindAllProductsResult.isEmpty());
   }
 
   /**
    * Test {@link CatalogServiceImpl#findAllSkus()}.
-   * <ul>
-   *   <li>Given {@link SkuDaoImpl} {@link SkuDaoImpl#readAllSkus()} return
-   * {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return Empty.</li>
-   * </ul>
    * <p>
    * Method under test: {@link CatalogServiceImpl#findAllSkus()}
    */
   @Test
-  public void testFindAllSkus_givenSkuDaoImplReadAllSkusReturnArrayList_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CatalogServiceImpl.findAllSkus()"})
+  public void testFindAllSkus() {
     // Arrange
-    SkuDaoImpl skuDao = mock(SkuDaoImpl.class);
     when(skuDao.readAllSkus()).thenReturn(new ArrayList<>());
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setSkuDao(skuDao);
 
     // Act
     List<Sku> actualFindAllSkusResult = catalogServiceImpl.findAllSkus();
@@ -2168,55 +852,37 @@ public class CatalogServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link CatalogServiceImpl#findSkuById(Long)}.
+   * Test {@link CatalogServiceImpl#findAllSkus(int, int)} with {@code int}, {@code int}.
    * <p>
-   * Method under test: {@link CatalogServiceImpl#findSkuById(Long)}
+   * Method under test: {@link CatalogServiceImpl#findAllSkus(int, int)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindSkuById() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4962 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CatalogServiceImpl.findAllSkus(int, int)"})
+  public void testFindAllSkusWithIntInt() {
+    // Arrange
+    when(skuDao.readAllSkus(anyInt(), anyInt())).thenReturn(new ArrayList<>());
 
-    // Arrange and Act
-    (new CatalogServiceImpl()).findSkuById(1L);
+    // Act
+    List<Sku> actualFindAllSkusResult = catalogServiceImpl.findAllSkus(2, 1);
+
+    // Assert
+    verify(skuDao).readAllSkus(eq(2), eq(1));
+    assertTrue(actualFindAllSkusResult.isEmpty());
   }
 
   /**
    * Test {@link CatalogServiceImpl#findSkuById(Long)}.
-   * <ul>
-   *   <li>Given {@link SkuDaoImpl} {@link SkuDaoImpl#readSkuById(Long)} return
-   * {@link SkuImpl} (default constructor).</li>
-   *   <li>Then return {@link SkuImpl} (default constructor).</li>
-   * </ul>
    * <p>
    * Method under test: {@link CatalogServiceImpl#findSkuById(Long)}
    */
   @Test
-  public void testFindSkuById_givenSkuDaoImplReadSkuByIdReturnSkuImpl_thenReturnSkuImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Sku CatalogServiceImpl.findSkuById(Long)"})
+  public void testFindSkuById() {
     // Arrange
-    SkuDaoImpl skuDao = mock(SkuDaoImpl.class);
     SkuImpl skuImpl = new SkuImpl();
     when(skuDao.readSkuById(Mockito.<Long>any())).thenReturn(skuImpl);
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setSkuDao(skuDao);
 
     // Act
     Sku actualFindSkuByIdResult = catalogServiceImpl.findSkuById(1L);
@@ -2232,48 +898,12 @@ public class CatalogServiceImplDiffblueTest {
    * Method under test: {@link CatalogServiceImpl#findSkuByExternalId(String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Sku CatalogServiceImpl.findSkuByExternalId(String)"})
   public void testFindSkuByExternalId() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4932 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CatalogServiceImpl()).findSkuByExternalId("42");
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#findSkuByExternalId(String)}.
-   * <ul>
-   *   <li>Then return {@link SkuImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CatalogServiceImpl#findSkuByExternalId(String)}
-   */
-  @Test
-  public void testFindSkuByExternalId_thenReturnSkuImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuDaoImpl skuDao = mock(SkuDaoImpl.class);
     SkuImpl skuImpl = new SkuImpl();
     when(skuDao.readSkuByExternalId(Mockito.<String>any())).thenReturn(skuImpl);
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setSkuDao(skuDao);
 
     // Act
     Sku actualFindSkuByExternalIdResult = catalogServiceImpl.findSkuByExternalId("42");
@@ -2289,50 +919,12 @@ public class CatalogServiceImplDiffblueTest {
    * Method under test: {@link CatalogServiceImpl#findSkuByUpc(String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Sku CatalogServiceImpl.findSkuByUpc(String)"})
   public void testFindSkuByUpc() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5010 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CatalogServiceImpl()).findSkuByUpc("Upc");
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#findSkuByUpc(String)}.
-   * <ul>
-   *   <li>Given {@link SkuDaoImpl} {@link SkuDaoImpl#readSkuByUpc(String)} return
-   * {@link SkuImpl} (default constructor).</li>
-   *   <li>Then return {@link SkuImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CatalogServiceImpl#findSkuByUpc(String)}
-   */
-  @Test
-  public void testFindSkuByUpc_givenSkuDaoImplReadSkuByUpcReturnSkuImpl_thenReturnSkuImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuDaoImpl skuDao = mock(SkuDaoImpl.class);
     SkuImpl skuImpl = new SkuImpl();
     when(skuDao.readSkuByUpc(Mockito.<String>any())).thenReturn(skuImpl);
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setSkuDao(skuDao);
 
     // Act
     Sku actualFindSkuByUpcResult = catalogServiceImpl.findSkuByUpc("Upc");
@@ -2348,54 +940,12 @@ public class CatalogServiceImplDiffblueTest {
    * Method under test: {@link CatalogServiceImpl#saveSku(Sku)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Sku CatalogServiceImpl.saveSku(Sku)"})
   public void testSaveSku() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5248 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    CatalogServiceImpl catalogServiceImpl2 = new CatalogServiceImpl();
-
-    // Act
-    catalogServiceImpl2.saveSku(new SkuImpl());
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#saveSku(Sku)}.
-   * <ul>
-   *   <li>Given {@link SkuDaoImpl} {@link SkuDaoImpl#save(Sku)} return
-   * {@link SkuImpl} (default constructor).</li>
-   *   <li>When {@link SkuImpl} (default constructor).</li>
-   *   <li>Then return {@link SkuImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CatalogServiceImpl#saveSku(Sku)}
-   */
-  @Test
-  public void testSaveSku_givenSkuDaoImplSaveReturnSkuImpl_whenSkuImpl_thenReturnSkuImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuDaoImpl skuDao = mock(SkuDaoImpl.class);
     SkuImpl skuImpl = new SkuImpl();
     when(skuDao.save(Mockito.<Sku>any())).thenReturn(skuImpl);
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setSkuDao(skuDao);
 
     // Act
     Sku actualSaveSkuResult = catalogServiceImpl.saveSku(new SkuImpl());
@@ -2411,53 +961,12 @@ public class CatalogServiceImplDiffblueTest {
    * Method under test: {@link CatalogServiceImpl#saveSkuFee(SkuFee)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"SkuFee CatalogServiceImpl.saveSkuFee(SkuFee)"})
   public void testSaveSkuFee() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5278 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    CatalogServiceImpl catalogServiceImpl2 = new CatalogServiceImpl();
-
-    // Act
-    catalogServiceImpl2.saveSkuFee(new SkuFeeImpl());
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#saveSkuFee(SkuFee)}.
-   * <ul>
-   *   <li>Given {@link SkuDaoImpl} {@link SkuDaoImpl#saveSkuFee(SkuFee)} return
-   * {@link SkuFeeImpl} (default constructor).</li>
-   *   <li>Then return {@link SkuFeeImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CatalogServiceImpl#saveSkuFee(SkuFee)}
-   */
-  @Test
-  public void testSaveSkuFee_givenSkuDaoImplSaveSkuFeeReturnSkuFeeImpl_thenReturnSkuFeeImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuDaoImpl skuDao = mock(SkuDaoImpl.class);
     SkuFeeImpl skuFeeImpl = new SkuFeeImpl();
     when(skuDao.saveSkuFee(Mockito.<SkuFee>any())).thenReturn(skuFeeImpl);
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setSkuDao(skuDao);
 
     // Act
     SkuFee actualSaveSkuFeeResult = catalogServiceImpl.saveSkuFee(new SkuFeeImpl());
@@ -2469,78 +978,73 @@ public class CatalogServiceImplDiffblueTest {
 
   /**
    * Test {@link CatalogServiceImpl#findSkusByIds(List)}.
-   * <p>
-   * Method under test: {@link CatalogServiceImpl#findSkusByIds(List)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindSkusByIds() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5040 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CatalogServiceImpl catalogServiceImpl2 = new CatalogServiceImpl();
-
-    // Act
-    catalogServiceImpl2.findSkusByIds(new ArrayList<>());
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#findSkusByIds(List)}.
    * <ul>
-   *   <li>Given {@link CatalogServiceImpl} (default constructor) SkuDao is
-   * {@link SkuDaoImpl} (default constructor).</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given one.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add one.</li>
    * </ul>
    * <p>
    * Method under test: {@link CatalogServiceImpl#findSkusByIds(List)}
    */
   @Test
-  public void testFindSkusByIds_givenCatalogServiceImplSkuDaoIsSkuDaoImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CatalogServiceImpl.findSkusByIds(List)"})
+  public void testFindSkusByIds_givenOne_whenArrayListAddOne() {
     // Arrange
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setSkuDao(new SkuDaoImpl());
-
-    // Act and Assert
-    assertNull(catalogServiceImpl.findSkusByIds(new ArrayList<>()));
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#findSkusByIds(List)}.
-   * <ul>
-   *   <li>Given {@link SkuDaoImpl} {@link SkuDaoImpl#readSkusByIds(List)} return
-   * {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CatalogServiceImpl#findSkusByIds(List)}
-   */
-  @Test
-  public void testFindSkusByIds_givenSkuDaoImplReadSkusByIdsReturnArrayList_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuDaoImpl skuDao = mock(SkuDaoImpl.class);
     when(skuDao.readSkusByIds(Mockito.<List<Long>>any())).thenReturn(new ArrayList<>());
 
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setSkuDao(skuDao);
+    ArrayList<Long> ids = new ArrayList<>();
+    ids.add(1L);
+
+    // Act
+    List<Sku> actualFindSkusByIdsResult = catalogServiceImpl.findSkusByIds(ids);
+
+    // Assert
+    verify(skuDao).readSkusByIds(isA(List.class));
+    assertTrue(actualFindSkusByIdsResult.isEmpty());
+  }
+
+  /**
+   * Test {@link CatalogServiceImpl#findSkusByIds(List)}.
+   * <ul>
+   *   <li>Given zero.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add zero.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findSkusByIds(List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CatalogServiceImpl.findSkusByIds(List)"})
+  public void testFindSkusByIds_givenZero_whenArrayListAddZero() {
+    // Arrange
+    when(skuDao.readSkusByIds(Mockito.<List<Long>>any())).thenReturn(new ArrayList<>());
+
+    ArrayList<Long> ids = new ArrayList<>();
+    ids.add(0L);
+    ids.add(1L);
+
+    // Act
+    List<Sku> actualFindSkusByIdsResult = catalogServiceImpl.findSkusByIds(ids);
+
+    // Assert
+    verify(skuDao).readSkusByIds(isA(List.class));
+    assertTrue(actualFindSkusByIdsResult.isEmpty());
+  }
+
+  /**
+   * Test {@link CatalogServiceImpl#findSkusByIds(List)}.
+   * <ul>
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findSkusByIds(List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CatalogServiceImpl.findSkusByIds(List)"})
+  public void testFindSkusByIds_whenArrayList() {
+    // Arrange
+    when(skuDao.readSkusByIds(Mockito.<List<Long>>any())).thenReturn(new ArrayList<>());
 
     // Act
     List<Sku> actualFindSkusByIdsResult = catalogServiceImpl.findSkusByIds(new ArrayList<>());
@@ -2551,196 +1055,53 @@ public class CatalogServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link CatalogServiceImpl#findProductsForCategory(Category)} with
-   * {@code category}.
-   * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#findProductsForCategory(Category)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindProductsForCategoryWithCategory() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4872 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CatalogServiceImpl catalogServiceImpl2 = new CatalogServiceImpl();
-
-    // Act
-    catalogServiceImpl2.findProductsForCategory(new CategoryImpl());
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#findProductsForCategory(Category, int, int)}
-   * with {@code category}, {@code limit}, {@code offset}.
-   * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#findProductsForCategory(Category, int, int)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindProductsForCategoryWithCategoryLimitOffset() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4902 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CatalogServiceImpl catalogServiceImpl2 = new CatalogServiceImpl();
-
-    // Act
-    catalogServiceImpl2.findProductsForCategory(new CategoryImpl(), 1, 2);
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#findProductsForCategory(Category, int, int)}
-   * with {@code category}, {@code limit}, {@code offset}.
+   * Test {@link CatalogServiceImpl#findProductsForCategory(Category, int, int)} with {@code category}, {@code limit}, {@code offset}.
    * <ul>
    *   <li>Then return Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#findProductsForCategory(Category, int, int)}
+   * Method under test: {@link CatalogServiceImpl#findProductsForCategory(org.broadleafcommerce.core.catalog.domain.Category, int, int)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "List CatalogServiceImpl.findProductsForCategory(org.broadleafcommerce.core.catalog.domain.Category, int, int)"})
   public void testFindProductsForCategoryWithCategoryLimitOffset_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductDaoImpl productDao = mock(ProductDaoImpl.class);
     when(productDao.readProductsByCategory(Mockito.<Long>any(), anyInt(), anyInt())).thenReturn(new ArrayList<>());
 
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setProductDao(productDao);
-    CategoryImpl category = mock(CategoryImpl.class);
-    when(category.getId()).thenReturn(1L);
-
     // Act
-    List<Product> actualFindProductsForCategoryResult = catalogServiceImpl.findProductsForCategory(category, 1, 2);
+    List<Product> actualFindProductsForCategoryResult = catalogServiceImpl.findProductsForCategory(new CategoryImpl(),
+        1, 2);
 
     // Assert
-    verify(productDao).readProductsByCategory(eq(1L), eq(1), eq(2));
-    verify(category).getId();
+    verify(productDao).readProductsByCategory(isNull(), eq(1), eq(2));
     assertTrue(actualFindProductsForCategoryResult.isEmpty());
   }
 
   /**
-   * Test {@link CatalogServiceImpl#findProductsForCategory(Category)} with
-   * {@code category}.
+   * Test {@link CatalogServiceImpl#findProductsForCategory(Category)} with {@code category}.
    * <ul>
+   *   <li>When {@link CategoryImpl} (default constructor).</li>
    *   <li>Then return Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#findProductsForCategory(Category)}
+   * Method under test: {@link CatalogServiceImpl#findProductsForCategory(org.broadleafcommerce.core.catalog.domain.Category)}
    */
   @Test
-  public void testFindProductsForCategoryWithCategory_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "List CatalogServiceImpl.findProductsForCategory(org.broadleafcommerce.core.catalog.domain.Category)"})
+  public void testFindProductsForCategoryWithCategory_whenCategoryImpl_thenReturnEmpty() {
     // Arrange
-    ProductDaoImpl productDao = mock(ProductDaoImpl.class);
     when(productDao.readProductsByCategory(Mockito.<Long>any())).thenReturn(new ArrayList<>());
 
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setProductDao(productDao);
-    CategoryImpl category = mock(CategoryImpl.class);
-    when(category.getId()).thenReturn(1L);
-
     // Act
-    List<Product> actualFindProductsForCategoryResult = catalogServiceImpl.findProductsForCategory(category);
+    List<Product> actualFindProductsForCategoryResult = catalogServiceImpl.findProductsForCategory(new CategoryImpl());
 
     // Assert
-    verify(productDao).readProductsByCategory(eq(1L));
-    verify(category).getId();
+    verify(productDao).readProductsByCategory(isNull());
     assertTrue(actualFindProductsForCategoryResult.isEmpty());
-  }
-
-  /**
-   * Test getters and setters.
-   * <p>
-   * Methods under test:
-   * <ul>
-   *   <li>{@link CatalogServiceImpl#setCategoryDao(CategoryDao)}
-   *   <li>{@link CatalogServiceImpl#setProductDao(ProductDao)}
-   *   <li>{@link CatalogServiceImpl#setSkuDao(SkuDao)}
-   * </ul>
-   */
-  @Test
-  public void testGettersAndSetters() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing observers.
-    //   Diffblue Cover was unable to create an assertion.
-    //   Add getters for the following fields or make them package-private:
-    //     CatalogServiceImpl.categoryDao
-    //     CatalogServiceImpl.extensionManager
-    //     CatalogServiceImpl.productDao
-    //     CatalogServiceImpl.productOptionDao
-    //     CatalogServiceImpl.skuDao
-
-    // Arrange
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-
-    // Act
-    catalogServiceImpl.setCategoryDao(new CategoryDaoImpl());
-    catalogServiceImpl.setProductDao(new ProductDaoImpl());
-    catalogServiceImpl.setSkuDao(new SkuDaoImpl());
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#getChildCategoryURLMapByCategoryId(Long)}.
-   * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#getChildCategoryURLMapByCategoryId(Long)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetChildCategoryURLMapByCategoryId() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5052 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CatalogServiceImpl()).getChildCategoryURLMapByCategoryId(1L);
   }
 
   /**
@@ -2749,21 +1110,16 @@ public class CatalogServiceImplDiffblueTest {
    *   <li>Then return Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#getChildCategoryURLMapByCategoryId(Long)}
+   * Method under test: {@link CatalogServiceImpl#getChildCategoryURLMapByCategoryId(Long)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map CatalogServiceImpl.getChildCategoryURLMapByCategoryId(Long)"})
   public void testGetChildCategoryURLMapByCategoryId_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     CategoryImpl categoryImpl = mock(CategoryImpl.class);
     when(categoryImpl.getChildCategoryURLMap()).thenReturn(new HashMap<>());
-    CategoryDaoImpl categoryDao = mock(CategoryDaoImpl.class);
     when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(categoryImpl);
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setCategoryDao(categoryDao);
 
     // Act
     Map<String, List<Long>> actualChildCategoryURLMapByCategoryId = catalogServiceImpl
@@ -2781,19 +1137,14 @@ public class CatalogServiceImplDiffblueTest {
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#getChildCategoryURLMapByCategoryId(Long)}
+   * Method under test: {@link CatalogServiceImpl#getChildCategoryURLMapByCategoryId(Long)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map CatalogServiceImpl.getChildCategoryURLMapByCategoryId(Long)"})
   public void testGetChildCategoryURLMapByCategoryId_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryDaoImpl categoryDao = mock(CategoryDaoImpl.class);
     when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(null);
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setCategoryDao(categoryDao);
 
     // Act
     Map<String, List<Long>> actualChildCategoryURLMapByCategoryId = catalogServiceImpl
@@ -2810,51 +1161,15 @@ public class CatalogServiceImplDiffblueTest {
    * Method under test: {@link CatalogServiceImpl#createCategory()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"org.broadleafcommerce.core.catalog.domain.Category CatalogServiceImpl.createCategory()"})
   public void testCreateCategory() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4003 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CatalogServiceImpl()).createCategory();
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#createCategory()}.
-   * <ul>
-   *   <li>Then return {@link CategoryImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CatalogServiceImpl#createCategory()}
-   */
-  @Test
-  public void testCreateCategory_thenReturnCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryDaoImpl categoryDao = mock(CategoryDaoImpl.class);
     CategoryImpl categoryImpl = new CategoryImpl();
     when(categoryDao.create()).thenReturn(categoryImpl);
 
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setCategoryDao(categoryDao);
-
     // Act
-    Category actualCreateCategoryResult = catalogServiceImpl.createCategory();
+    org.broadleafcommerce.core.catalog.domain.Category actualCreateCategoryResult = catalogServiceImpl.createCategory();
 
     // Assert
     verify(categoryDao).create();
@@ -2867,50 +1182,12 @@ public class CatalogServiceImplDiffblueTest {
    * Method under test: {@link CatalogServiceImpl#createSku()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Sku CatalogServiceImpl.createSku()"})
   public void testCreateSku() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4016 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CatalogServiceImpl()).createSku();
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#createSku()}.
-   * <ul>
-   *   <li>Given {@link SkuDaoImpl} {@link SkuDaoImpl#create()} return
-   * {@link SkuImpl} (default constructor).</li>
-   *   <li>Then return {@link SkuImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CatalogServiceImpl#createSku()}
-   */
-  @Test
-  public void testCreateSku_givenSkuDaoImplCreateReturnSkuImpl_thenReturnSkuImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SkuDaoImpl skuDao = mock(SkuDaoImpl.class);
     SkuImpl skuImpl = new SkuImpl();
     when(skuDao.create()).thenReturn(skuImpl);
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setSkuDao(skuDao);
 
     // Act
     Sku actualCreateSkuResult = catalogServiceImpl.createSku();
@@ -2926,48 +1203,12 @@ public class CatalogServiceImplDiffblueTest {
    * Method under test: {@link CatalogServiceImpl#createProduct(ProductType)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Product CatalogServiceImpl.createProduct(ProductType)"})
   public void testCreateProduct() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4007 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CatalogServiceImpl()).createProduct(ProductType.BUNDLE);
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#createProduct(ProductType)}.
-   * <ul>
-   *   <li>Then return {@link ProductBundleImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CatalogServiceImpl#createProduct(ProductType)}
-   */
-  @Test
-  public void testCreateProduct_thenReturnProductBundleImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductDaoImpl productDao = mock(ProductDaoImpl.class);
     ProductBundleImpl productBundleImpl = new ProductBundleImpl();
     when(productDao.create(Mockito.<ProductType>any())).thenReturn(productBundleImpl);
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setProductDao(productDao);
 
     // Act
     Product actualCreateProductResult = catalogServiceImpl.createProduct(ProductType.BUNDLE);
@@ -2983,60 +1224,39 @@ public class CatalogServiceImplDiffblueTest {
    * Method under test: {@link CatalogServiceImpl#readAllProductOptions()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CatalogServiceImpl.readAllProductOptions()"})
   public void testReadAllProductOptions() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5070 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    when(productOptionDao.readAllProductOptions()).thenReturn(new ArrayList<>());
 
-    // Arrange and Act
-    (new CatalogServiceImpl()).readAllProductOptions();
+    // Act
+    List<ProductOption> actualReadAllProductOptionsResult = catalogServiceImpl.readAllProductOptions();
+
+    // Assert
+    verify(productOptionDao).readAllProductOptions();
+    assertTrue(actualReadAllProductOptionsResult.isEmpty());
   }
 
   /**
    * Test {@link CatalogServiceImpl#saveProductOption(ProductOption)}.
    * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#saveProductOption(ProductOption)}
+   * Method under test: {@link CatalogServiceImpl#saveProductOption(ProductOption)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ProductOption CatalogServiceImpl.saveProductOption(ProductOption)"})
   public void testSaveProductOption() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5224 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    CatalogServiceImpl catalogServiceImpl2 = new CatalogServiceImpl();
+    ProductOptionImpl productOptionImpl = new ProductOptionImpl();
+    when(productOptionDao.saveProductOption(Mockito.<ProductOption>any())).thenReturn(productOptionImpl);
 
     // Act
-    catalogServiceImpl2.saveProductOption(new ProductOptionImpl());
+    ProductOption actualSaveProductOptionResult = catalogServiceImpl.saveProductOption(new ProductOptionImpl());
+
+    // Assert
+    verify(productOptionDao).saveProductOption(isA(ProductOption.class));
+    assertSame(productOptionImpl, actualSaveProductOptionResult);
   }
 
   /**
@@ -3045,166 +1265,129 @@ public class CatalogServiceImplDiffblueTest {
    * Method under test: {@link CatalogServiceImpl#findProductOptionById(Long)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ProductOption CatalogServiceImpl.findProductOptionById(Long)"})
   public void testFindProductOptionById() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4788 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    ProductOptionImpl productOptionImpl = new ProductOptionImpl();
+    when(productOptionDao.readProductOptionById(Mockito.<Long>any())).thenReturn(productOptionImpl);
 
-    // Arrange and Act
-    (new CatalogServiceImpl()).findProductOptionById(1L);
+    // Act
+    ProductOption actualFindProductOptionByIdResult = catalogServiceImpl.findProductOptionById(1L);
+
+    // Assert
+    verify(productOptionDao).readProductOptionById(eq(1L));
+    assertSame(productOptionImpl, actualFindProductOptionByIdResult);
   }
 
   /**
    * Test {@link CatalogServiceImpl#findProductOptionValueById(Long)}.
    * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#findProductOptionValueById(Long)}
+   * Method under test: {@link CatalogServiceImpl#findProductOptionValueById(Long)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ProductOptionValue CatalogServiceImpl.findProductOptionValueById(Long)"})
   public void testFindProductOptionValueById() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4806 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CatalogServiceImpl()).findProductOptionValueById(1L);
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#createCatalogContextDTO()}.
-   * <p>
-   * Method under test: {@link CatalogServiceImpl#createCatalogContextDTO()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateCatalogContextDTO() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3999 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CatalogServiceImpl()).createCatalogContextDTO();
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#createCatalogContextDTO()}.
-   * <ul>
-   *   <li>Given {@link CatalogServiceImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CatalogServiceImpl#createCatalogContextDTO()}
-   */
-  @Test
-  public void testCreateCatalogContextDTO_givenCatalogServiceImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertTrue((new CatalogServiceImpl()).createCatalogContextDTO().getAttributes().isEmpty());
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#createCatalogContextDTO()}.
-   * <ul>
-   *   <li>Given {@link CatalogServiceImpl} (default constructor) ProductDao is
-   * {@link ProductDaoImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CatalogServiceImpl#createCatalogContextDTO()}
-   */
-  @Test
-  public void testCreateCatalogContextDTO_givenCatalogServiceImplProductDaoIsProductDaoImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setProductDao(mock(ProductDaoImpl.class));
+    ProductOptionValueImpl productOptionValueImpl = new ProductOptionValueImpl();
+    when(productOptionDao.readProductOptionValueById(Mockito.<Long>any())).thenReturn(productOptionValueImpl);
 
-    // Act and Assert
+    // Act
+    ProductOptionValue actualFindProductOptionValueByIdResult = catalogServiceImpl.findProductOptionValueById(1L);
+
+    // Assert
+    verify(productOptionDao).readProductOptionValueById(eq(1L));
+    assertSame(productOptionValueImpl, actualFindProductOptionValueByIdResult);
+  }
+
+  /**
+   * Test {@link CatalogServiceImpl#createCatalogContextDTO()}.
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#createCatalogContextDTO()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CatalogContextDTO CatalogServiceImpl.createCatalogContextDTO()"})
+  public void testCreateCatalogContextDTO() {
+    // Arrange, Act and Assert
     assertTrue(catalogServiceImpl.createCatalogContextDTO().getAttributes().isEmpty());
   }
 
   /**
    * Test {@link CatalogServiceImpl#findCategoryByURI(String)}.
-   * <p>
-   * Method under test: {@link CatalogServiceImpl#findCategoryByURI(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindCategoryByURI() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4482 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CatalogServiceImpl()).findCategoryByURI("Uri");
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#findCategoryByURI(String)}.
    * <ul>
-   *   <li>Then return {@link CategoryImpl} (default constructor).</li>
+   *   <li>Given {@link CategoryDao}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CatalogServiceImpl#findCategoryByURI(String)}
    */
   @Test
-  public void testFindCategoryByURI_thenReturnCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"org.broadleafcommerce.core.catalog.domain.Category CatalogServiceImpl.findCategoryByURI(String)"})
+  public void testFindCategoryByURI_givenCategoryDao_thenReturnNull() {
+    // Arrange
+    CatalogServiceExtensionHandler catalogServiceExtensionHandler = mock(CatalogServiceExtensionHandler.class);
+    when(catalogServiceExtensionHandler.findCategoryByURI(Mockito.<CatalogContextDTO>any(), Mockito.<String>any(),
+        Mockito.<ExtensionResultHolder<Object>>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(catalogServiceExtensionManager.getProxy()).thenReturn(catalogServiceExtensionHandler);
 
+    // Act
+    org.broadleafcommerce.core.catalog.domain.Category actualFindCategoryByURIResult = catalogServiceImpl
+        .findCategoryByURI("Uri");
+
+    // Assert
+    verify(catalogServiceExtensionManager).getProxy();
+    verify(catalogServiceExtensionHandler).findCategoryByURI(isA(CatalogContextDTO.class), eq("Uri"),
+        isA(ExtensionResultHolder.class));
+    assertNull(actualFindCategoryByURIResult);
+  }
+
+  /**
+   * Test {@link CatalogServiceImpl#findCategoryByURI(String)}.
+   * <ul>
+   *   <li>Then calls {@link CategoryDao#findCategoryByURI(String)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findCategoryByURI(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"org.broadleafcommerce.core.catalog.domain.Category CatalogServiceImpl.findCategoryByURI(String)"})
+  public void testFindCategoryByURI_thenCallsFindCategoryByURI() {
+    // Arrange
+    CategoryImpl categoryImpl = new CategoryImpl();
+    when(categoryDao.findCategoryByURI(Mockito.<String>any())).thenReturn(categoryImpl);
+    CatalogServiceExtensionHandler catalogServiceExtensionHandler = mock(CatalogServiceExtensionHandler.class);
+    when(catalogServiceExtensionHandler.findCategoryByURI(Mockito.<CatalogContextDTO>any(), Mockito.<String>any(),
+        Mockito.<ExtensionResultHolder<Object>>any())).thenReturn(null);
+    when(catalogServiceExtensionManager.getProxy()).thenReturn(catalogServiceExtensionHandler);
+
+    // Act
+    org.broadleafcommerce.core.catalog.domain.Category actualFindCategoryByURIResult = catalogServiceImpl
+        .findCategoryByURI("Uri");
+
+    // Assert
+    verify(catalogServiceExtensionManager).getProxy();
+    verify(categoryDao).findCategoryByURI(eq("Uri"));
+    verify(catalogServiceExtensionHandler).findCategoryByURI(isA(CatalogContextDTO.class), eq("Uri"),
+        isA(ExtensionResultHolder.class));
+    assertSame(categoryImpl, actualFindCategoryByURIResult);
+  }
+
+  /**
+   * Test {@link CatalogServiceImpl#findCategoryByURI(String)}.
+   * <ul>
+   *   <li>Then calls {@link CategoryDaoImpl#findCategoryByURI(String)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findCategoryByURI(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"org.broadleafcommerce.core.catalog.domain.Category CatalogServiceImpl.findCategoryByURI(String)"})
+  public void testFindCategoryByURI_thenCallsFindCategoryByURI2() {
     // Arrange
     CategoryDaoImpl categoryDao = mock(CategoryDaoImpl.class);
     CategoryImpl categoryImpl = new CategoryImpl();
@@ -3214,7 +1397,8 @@ public class CatalogServiceImplDiffblueTest {
     catalogServiceImpl.setCategoryDao(categoryDao);
 
     // Act
-    Category actualFindCategoryByURIResult = catalogServiceImpl.findCategoryByURI("Uri");
+    org.broadleafcommerce.core.catalog.domain.Category actualFindCategoryByURIResult = catalogServiceImpl
+        .findCategoryByURI("Uri");
 
     // Assert
     verify(categoryDao).findCategoryByURI(eq("Uri"));
@@ -3224,56 +1408,20 @@ public class CatalogServiceImplDiffblueTest {
   /**
    * Test {@link CatalogServiceImpl#findOriginalCategoryByURI(String)}.
    * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#findOriginalCategoryByURI(String)}
+   * Method under test: {@link CatalogServiceImpl#findOriginalCategoryByURI(String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.core.catalog.domain.Category CatalogServiceImpl.findOriginalCategoryByURI(String)"})
   public void testFindOriginalCategoryByURI() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4625 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CatalogServiceImpl()).findOriginalCategoryByURI("Uri");
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#findOriginalCategoryByURI(String)}.
-   * <ul>
-   *   <li>Then return {@link CategoryImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#findOriginalCategoryByURI(String)}
-   */
-  @Test
-  public void testFindOriginalCategoryByURI_thenReturnCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryDaoImpl categoryDao = mock(CategoryDaoImpl.class);
     CategoryImpl categoryImpl = new CategoryImpl();
     when(categoryDao.findCategoryByURI(Mockito.<String>any())).thenReturn(categoryImpl);
 
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setCategoryDao(categoryDao);
-
     // Act
-    Category actualFindOriginalCategoryByURIResult = catalogServiceImpl.findOriginalCategoryByURI("Uri");
+    org.broadleafcommerce.core.catalog.domain.Category actualFindOriginalCategoryByURIResult = catalogServiceImpl
+        .findOriginalCategoryByURI("Uri");
 
     // Assert
     verify(categoryDao).findCategoryByURI(eq("Uri"));
@@ -3286,41 +1434,37 @@ public class CatalogServiceImplDiffblueTest {
    * Method under test: {@link CatalogServiceImpl#findProductByURI(String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Product CatalogServiceImpl.findProductByURI(String)"})
   public void testFindProductByURI() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4733 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    CatalogServiceExtensionHandler catalogServiceExtensionHandler = mock(CatalogServiceExtensionHandler.class);
+    when(catalogServiceExtensionHandler.findProductByURI(Mockito.<CatalogContextDTO>any(), Mockito.<String>any(),
+        Mockito.<ExtensionResultHolder<Object>>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(catalogServiceExtensionManager.getProxy()).thenReturn(catalogServiceExtensionHandler);
 
-    // Arrange and Act
-    (new CatalogServiceImpl()).findProductByURI("Uri");
+    // Act
+    Product actualFindProductByURIResult = catalogServiceImpl.findProductByURI("Uri");
+
+    // Assert
+    verify(catalogServiceExtensionManager).getProxy();
+    verify(catalogServiceExtensionHandler).findProductByURI(isA(CatalogContextDTO.class), eq("Uri"),
+        isA(ExtensionResultHolder.class));
+    assertNull(actualFindProductByURIResult);
   }
 
   /**
    * Test {@link CatalogServiceImpl#findProductByURI(String)}.
    * <ul>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Then calls {@link ProductDaoImpl#findProductByURI(String)}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CatalogServiceImpl#findProductByURI(String)}
    */
   @Test
-  public void testFindProductByURI_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Product CatalogServiceImpl.findProductByURI(String)"})
+  public void testFindProductByURI_thenCallsFindProductByURI() {
     // Arrange
     ProductDaoImpl productDao = mock(ProductDaoImpl.class);
     when(productDao.findProductByURI(Mockito.<String>any())).thenReturn(new ArrayList<>());
@@ -3339,30 +1483,64 @@ public class CatalogServiceImplDiffblueTest {
   /**
    * Test {@link CatalogServiceImpl#findProductByURI(String)}.
    * <ul>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findProductByURI(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Product CatalogServiceImpl.findProductByURI(String)"})
+  public void testFindProductByURI_thenReturnNull() {
+    // Arrange
+    CatalogServiceExtensionHandler catalogServiceExtensionHandler = mock(CatalogServiceExtensionHandler.class);
+    when(catalogServiceExtensionHandler.findProductByURI(Mockito.<CatalogContextDTO>any(), Mockito.<String>any(),
+        Mockito.<ExtensionResultHolder<Object>>any())).thenReturn(ExtensionResultStatusType.HANDLED_CONTINUE);
+    when(catalogServiceExtensionManager.getProxy()).thenReturn(catalogServiceExtensionHandler);
+    when(productDao.findProductByURI(Mockito.<String>any())).thenReturn(new ArrayList<>());
+
+    // Act
+    Product actualFindProductByURIResult = catalogServiceImpl.findProductByURI("Uri");
+
+    // Assert
+    verify(catalogServiceExtensionManager).getProxy();
+    verify(productDao).findProductByURI(eq("Uri"));
+    verify(catalogServiceExtensionHandler).findProductByURI(isA(CatalogContextDTO.class), eq("Uri"),
+        isA(ExtensionResultHolder.class));
+    assertNull(actualFindProductByURIResult);
+  }
+
+  /**
+   * Test {@link CatalogServiceImpl#findProductByURI(String)}.
+   * <ul>
    *   <li>Then return {@link ProductBundleImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link CatalogServiceImpl#findProductByURI(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Product CatalogServiceImpl.findProductByURI(String)"})
   public void testFindProductByURI_thenReturnProductBundleImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
+    CatalogServiceExtensionHandler catalogServiceExtensionHandler = mock(CatalogServiceExtensionHandler.class);
+    when(catalogServiceExtensionHandler.findProductByURI(Mockito.<CatalogContextDTO>any(), Mockito.<String>any(),
+        Mockito.<ExtensionResultHolder<Object>>any())).thenReturn(ExtensionResultStatusType.HANDLED_CONTINUE);
+    when(catalogServiceExtensionManager.getProxy()).thenReturn(catalogServiceExtensionHandler);
+
     ArrayList<Product> productList = new ArrayList<>();
     ProductBundleImpl productBundleImpl = new ProductBundleImpl();
     productList.add(productBundleImpl);
-    ProductDaoImpl productDao = mock(ProductDaoImpl.class);
     when(productDao.findProductByURI(Mockito.<String>any())).thenReturn(productList);
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setProductDao(productDao);
 
     // Act
     Product actualFindProductByURIResult = catalogServiceImpl.findProductByURI("Uri");
 
     // Assert
+    verify(catalogServiceExtensionManager).getProxy();
     verify(productDao).findProductByURI(eq("Uri"));
+    verify(catalogServiceExtensionHandler).findProductByURI(isA(CatalogContextDTO.class), eq("Uri"),
+        isA(ExtensionResultHolder.class));
     assertSame(productBundleImpl, actualFindProductByURIResult);
   }
 
@@ -3375,77 +1553,100 @@ public class CatalogServiceImplDiffblueTest {
    * Method under test: {@link CatalogServiceImpl#findProductByURI(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Product CatalogServiceImpl.findProductByURI(String)"})
   public void testFindProductByURI_thenReturnProductBundleImpl2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
+    CatalogServiceExtensionHandler catalogServiceExtensionHandler = mock(CatalogServiceExtensionHandler.class);
+    when(catalogServiceExtensionHandler.findProductByURI(Mockito.<CatalogContextDTO>any(), Mockito.<String>any(),
+        Mockito.<ExtensionResultHolder<Object>>any())).thenReturn(ExtensionResultStatusType.HANDLED_CONTINUE);
+    when(catalogServiceExtensionManager.getProxy()).thenReturn(catalogServiceExtensionHandler);
+
     ArrayList<Product> productList = new ArrayList<>();
     ProductBundleImpl productBundleImpl = new ProductBundleImpl();
     productList.add(productBundleImpl);
     productList.add(new ProductBundleImpl());
-    ProductDaoImpl productDao = mock(ProductDaoImpl.class);
     when(productDao.findProductByURI(Mockito.<String>any())).thenReturn(productList);
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setProductDao(productDao);
 
     // Act
     Product actualFindProductByURIResult = catalogServiceImpl.findProductByURI("Uri");
 
     // Assert
+    verify(catalogServiceExtensionManager).getProxy();
     verify(productDao).findProductByURI(eq("Uri"));
+    verify(catalogServiceExtensionHandler).findProductByURI(isA(CatalogContextDTO.class), eq("Uri"),
+        isA(ExtensionResultHolder.class));
     assertSame(productBundleImpl, actualFindProductByURIResult);
   }
 
   /**
    * Test {@link CatalogServiceImpl#findOriginalProductByURI(String)}.
+   * <ul>
+   *   <li>Then return {@link ProductBundleImpl} (default constructor).</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#findOriginalProductByURI(String)}
+   * Method under test: {@link CatalogServiceImpl#findOriginalProductByURI(String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindOriginalProductByURI() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4655 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Product CatalogServiceImpl.findOriginalProductByURI(String)"})
+  public void testFindOriginalProductByURI_thenReturnProductBundleImpl() {
+    // Arrange
+    ArrayList<Product> productList = new ArrayList<>();
+    ProductBundleImpl productBundleImpl = new ProductBundleImpl();
+    productList.add(productBundleImpl);
+    when(productDao.findProductByURI(Mockito.<String>any())).thenReturn(productList);
 
-    // Arrange and Act
-    (new CatalogServiceImpl()).findOriginalProductByURI("Uri");
+    // Act
+    Product actualFindOriginalProductByURIResult = catalogServiceImpl.findOriginalProductByURI("Uri");
+
+    // Assert
+    verify(productDao).findProductByURI(eq("Uri"));
+    assertSame(productBundleImpl, actualFindOriginalProductByURIResult);
   }
 
   /**
    * Test {@link CatalogServiceImpl#findOriginalProductByURI(String)}.
    * <ul>
+   *   <li>Then return {@link ProductBundleImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findOriginalProductByURI(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Product CatalogServiceImpl.findOriginalProductByURI(String)"})
+  public void testFindOriginalProductByURI_thenReturnProductBundleImpl2() {
+    // Arrange
+    ArrayList<Product> productList = new ArrayList<>();
+    ProductBundleImpl productBundleImpl = new ProductBundleImpl();
+    productList.add(productBundleImpl);
+    productList.add(new ProductBundleImpl());
+    when(productDao.findProductByURI(Mockito.<String>any())).thenReturn(productList);
+
+    // Act
+    Product actualFindOriginalProductByURIResult = catalogServiceImpl.findOriginalProductByURI("Uri");
+
+    // Assert
+    verify(productDao).findProductByURI(eq("Uri"));
+    assertSame(productBundleImpl, actualFindOriginalProductByURIResult);
+  }
+
+  /**
+   * Test {@link CatalogServiceImpl#findOriginalProductByURI(String)}.
+   * <ul>
+   *   <li>When {@code Uri}.</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#findOriginalProductByURI(String)}
+   * Method under test: {@link CatalogServiceImpl#findOriginalProductByURI(String)}
    */
   @Test
-  public void testFindOriginalProductByURI_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Product CatalogServiceImpl.findOriginalProductByURI(String)"})
+  public void testFindOriginalProductByURI_whenUri_thenReturnNull() {
     // Arrange
-    ProductDaoImpl productDao = mock(ProductDaoImpl.class);
     when(productDao.findProductByURI(Mockito.<String>any())).thenReturn(new ArrayList<>());
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setProductDao(productDao);
 
     // Act
     Product actualFindOriginalProductByURIResult = catalogServiceImpl.findOriginalProductByURI("Uri");
@@ -3456,102 +1657,9 @@ public class CatalogServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link CatalogServiceImpl#findOriginalProductByURI(String)}.
-   * <ul>
-   *   <li>Then return {@link ProductBundleImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#findOriginalProductByURI(String)}
-   */
-  @Test
-  public void testFindOriginalProductByURI_thenReturnProductBundleImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ArrayList<Product> productList = new ArrayList<>();
-    ProductBundleImpl productBundleImpl = new ProductBundleImpl();
-    productList.add(productBundleImpl);
-    ProductDaoImpl productDao = mock(ProductDaoImpl.class);
-    when(productDao.findProductByURI(Mockito.<String>any())).thenReturn(productList);
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setProductDao(productDao);
-
-    // Act
-    Product actualFindOriginalProductByURIResult = catalogServiceImpl.findOriginalProductByURI("Uri");
-
-    // Assert
-    verify(productDao).findProductByURI(eq("Uri"));
-    assertSame(productBundleImpl, actualFindOriginalProductByURIResult);
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#findOriginalProductByURI(String)}.
-   * <ul>
-   *   <li>Then return {@link ProductBundleImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#findOriginalProductByURI(String)}
-   */
-  @Test
-  public void testFindOriginalProductByURI_thenReturnProductBundleImpl2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ArrayList<Product> productList = new ArrayList<>();
-    ProductBundleImpl productBundleImpl = new ProductBundleImpl();
-    productList.add(productBundleImpl);
-    productList.add(new ProductBundleImpl());
-    ProductDaoImpl productDao = mock(ProductDaoImpl.class);
-    when(productDao.findProductByURI(Mockito.<String>any())).thenReturn(productList);
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setProductDao(productDao);
-
-    // Act
-    Product actualFindOriginalProductByURIResult = catalogServiceImpl.findOriginalProductByURI("Uri");
-
-    // Assert
-    verify(productDao).findProductByURI(eq("Uri"));
-    assertSame(productBundleImpl, actualFindOriginalProductByURIResult);
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#findSkuByURI(String)}.
-   * <p>
-   * Method under test: {@link CatalogServiceImpl#findSkuByURI(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindSkuByURI() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4980 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CatalogServiceImpl()).findSkuByURI("Uri");
-  }
-
-  /**
    * Test {@link CatalogServiceImpl#findSkuByURI(String)}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link SkuImpl} (default
-   * constructor).</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link SkuImpl} (default constructor).</li>
    *   <li>When {@code Uri}.</li>
    *   <li>Then return {@link SkuImpl} (default constructor).</li>
    * </ul>
@@ -3559,41 +1667,71 @@ public class CatalogServiceImplDiffblueTest {
    * Method under test: {@link CatalogServiceImpl#findSkuByURI(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Sku CatalogServiceImpl.findSkuByURI(String)"})
   public void testFindSkuByURI_givenArrayListAddSkuImpl_whenUri_thenReturnSkuImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
+    CatalogServiceExtensionHandler catalogServiceExtensionHandler = mock(CatalogServiceExtensionHandler.class);
+    when(catalogServiceExtensionHandler.findSkuByURI(Mockito.<CatalogContextDTO>any(), Mockito.<String>any(),
+        Mockito.<ExtensionResultHolder<Object>>any())).thenReturn(ExtensionResultStatusType.HANDLED_CONTINUE);
+    when(catalogServiceExtensionManager.getProxy()).thenReturn(catalogServiceExtensionHandler);
+
     ArrayList<Sku> skuList = new ArrayList<>();
     SkuImpl skuImpl = new SkuImpl();
     skuList.add(skuImpl);
-    SkuDaoImpl skuDao = mock(SkuDaoImpl.class);
     when(skuDao.findSkuByURI(Mockito.<String>any())).thenReturn(skuList);
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setSkuDao(skuDao);
 
     // Act
     Sku actualFindSkuByURIResult = catalogServiceImpl.findSkuByURI("Uri");
 
     // Assert
+    verify(catalogServiceExtensionManager).getProxy();
     verify(skuDao).findSkuByURI(eq("Uri"));
+    verify(catalogServiceExtensionHandler).findSkuByURI(isA(CatalogContextDTO.class), eq("Uri"),
+        isA(ExtensionResultHolder.class));
     assertSame(skuImpl, actualFindSkuByURIResult);
   }
 
   /**
    * Test {@link CatalogServiceImpl#findSkuByURI(String)}.
    * <ul>
-   *   <li>Given {@link SkuDaoImpl} {@link SkuDaoImpl#findSkuByURI(String)} return
-   * {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given {@link CatalogServiceExtensionHandler} {@link CatalogServiceExtensionHandler#findSkuByURI(CatalogContextDTO, String, ExtensionResultHolder)} return {@code HANDLED}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CatalogServiceImpl#findSkuByURI(String)}
    */
   @Test
-  public void testFindSkuByURI_givenSkuDaoImplFindSkuByURIReturnArrayList_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Sku CatalogServiceImpl.findSkuByURI(String)"})
+  public void testFindSkuByURI_givenCatalogServiceExtensionHandlerFindSkuByURIReturnHandled() {
+    // Arrange
+    CatalogServiceExtensionHandler catalogServiceExtensionHandler = mock(CatalogServiceExtensionHandler.class);
+    when(catalogServiceExtensionHandler.findSkuByURI(Mockito.<CatalogContextDTO>any(), Mockito.<String>any(),
+        Mockito.<ExtensionResultHolder<Object>>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(catalogServiceExtensionManager.getProxy()).thenReturn(catalogServiceExtensionHandler);
 
+    // Act
+    Sku actualFindSkuByURIResult = catalogServiceImpl.findSkuByURI("Uri");
+
+    // Assert
+    verify(catalogServiceExtensionManager).getProxy();
+    verify(catalogServiceExtensionHandler).findSkuByURI(isA(CatalogContextDTO.class), eq("Uri"),
+        isA(ExtensionResultHolder.class));
+    assertNull(actualFindSkuByURIResult);
+  }
+
+  /**
+   * Test {@link CatalogServiceImpl#findSkuByURI(String)}.
+   * <ul>
+   *   <li>Then calls {@link SkuDaoImpl#findSkuByURI(String)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findSkuByURI(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Sku CatalogServiceImpl.findSkuByURI(String)"})
+  public void testFindSkuByURI_thenCallsFindSkuByURI() {
     // Arrange
     SkuDaoImpl skuDao = mock(SkuDaoImpl.class);
     when(skuDao.findSkuByURI(Mockito.<String>any())).thenReturn(new ArrayList<>());
@@ -3618,10 +1756,14 @@ public class CatalogServiceImplDiffblueTest {
    * Method under test: {@link CatalogServiceImpl#findSkuByURI(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Sku CatalogServiceImpl.findSkuByURI(String)"})
   public void testFindSkuByURI_thenCallsGetProduct() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
+    CatalogServiceExtensionHandler catalogServiceExtensionHandler = mock(CatalogServiceExtensionHandler.class);
+    when(catalogServiceExtensionHandler.findSkuByURI(Mockito.<CatalogContextDTO>any(), Mockito.<String>any(),
+        Mockito.<ExtensionResultHolder<Object>>any())).thenReturn(ExtensionResultStatusType.HANDLED_CONTINUE);
+    when(catalogServiceExtensionManager.getProxy()).thenReturn(catalogServiceExtensionHandler);
     SkuImpl skuImpl = mock(SkuImpl.class);
     when(skuImpl.getUrlKey()).thenReturn("https://example.org/example");
     when(skuImpl.getProduct()).thenReturn(new ProductBundleImpl());
@@ -3632,21 +1774,50 @@ public class CatalogServiceImplDiffblueTest {
     ArrayList<Sku> skuList = new ArrayList<>();
     skuList.add(skuImpl2);
     skuList.add(skuImpl);
-    SkuDaoImpl skuDao = mock(SkuDaoImpl.class);
     when(skuDao.findSkuByURI(Mockito.<String>any())).thenReturn(skuList);
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setSkuDao(skuDao);
 
     // Act
     catalogServiceImpl.findSkuByURI("Uri");
 
     // Assert
+    verify(catalogServiceExtensionManager).getProxy();
     verify(skuDao).findSkuByURI(eq("Uri"));
     verify(skuImpl2).getProduct();
     verify(skuImpl).getProduct();
     verify(skuImpl2).getUrlKey();
     verify(skuImpl).getUrlKey();
+    verify(catalogServiceExtensionHandler).findSkuByURI(isA(CatalogContextDTO.class), eq("Uri"),
+        isA(ExtensionResultHolder.class));
+  }
+
+  /**
+   * Test {@link CatalogServiceImpl#findSkuByURI(String)}.
+   * <ul>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findSkuByURI(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Sku CatalogServiceImpl.findSkuByURI(String)"})
+  public void testFindSkuByURI_thenReturnNull() {
+    // Arrange
+    CatalogServiceExtensionHandler catalogServiceExtensionHandler = mock(CatalogServiceExtensionHandler.class);
+    when(catalogServiceExtensionHandler.findSkuByURI(Mockito.<CatalogContextDTO>any(), Mockito.<String>any(),
+        Mockito.<ExtensionResultHolder<Object>>any())).thenReturn(ExtensionResultStatusType.HANDLED_CONTINUE);
+    when(catalogServiceExtensionManager.getProxy()).thenReturn(catalogServiceExtensionHandler);
+    when(skuDao.findSkuByURI(Mockito.<String>any())).thenReturn(new ArrayList<>());
+
+    // Act
+    Sku actualFindSkuByURIResult = catalogServiceImpl.findSkuByURI("Uri");
+
+    // Assert
+    verify(catalogServiceExtensionManager).getProxy();
+    verify(skuDao).findSkuByURI(eq("Uri"));
+    verify(catalogServiceExtensionHandler).findSkuByURI(isA(CatalogContextDTO.class), eq("Uri"),
+        isA(ExtensionResultHolder.class));
+    assertNull(actualFindSkuByURIResult);
   }
 
   /**
@@ -3659,191 +1830,116 @@ public class CatalogServiceImplDiffblueTest {
    * Method under test: {@link CatalogServiceImpl#findSkuByURI(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Sku CatalogServiceImpl.findSkuByURI(String)"})
   public void testFindSkuByURI_whenNullhttpsExampleOrgExample_thenCallsGetProduct() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
+    CatalogServiceExtensionHandler catalogServiceExtensionHandler = mock(CatalogServiceExtensionHandler.class);
+    when(catalogServiceExtensionHandler.findSkuByURI(Mockito.<CatalogContextDTO>any(), Mockito.<String>any(),
+        Mockito.<ExtensionResultHolder<Object>>any())).thenReturn(ExtensionResultStatusType.HANDLED_CONTINUE);
+    when(catalogServiceExtensionManager.getProxy()).thenReturn(catalogServiceExtensionHandler);
     SkuImpl skuImpl = mock(SkuImpl.class);
     when(skuImpl.getUrlKey()).thenReturn("https://example.org/example");
     when(skuImpl.getProduct()).thenReturn(new ProductBundleImpl());
-    SkuImpl skuImpl2 = mock(SkuImpl.class);
-    when(skuImpl2.getUrlKey()).thenReturn("https://example.org/example");
-    when(skuImpl2.getProduct()).thenReturn(new ProductBundleImpl());
 
     ArrayList<Sku> skuList = new ArrayList<>();
-    skuList.add(skuImpl2);
     skuList.add(skuImpl);
-    SkuDaoImpl skuDao = mock(SkuDaoImpl.class);
+    skuList.add(mock(SkuImpl.class));
     when(skuDao.findSkuByURI(Mockito.<String>any())).thenReturn(skuList);
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setSkuDao(skuDao);
 
     // Act
     catalogServiceImpl.findSkuByURI("nullhttps://example.org/example");
 
     // Assert
+    verify(catalogServiceExtensionManager).getProxy();
     verify(skuDao).findSkuByURI(eq("nullhttps://example.org/example"));
-    verify(skuImpl2).getProduct();
-    verify(skuImpl2).getUrlKey();
+    verify(skuImpl).getProduct();
+    verify(skuImpl).getUrlKey();
+    verify(catalogServiceExtensionHandler).findSkuByURI(isA(CatalogContextDTO.class),
+        eq("nullhttps://example.org/example"), isA(ExtensionResultHolder.class));
   }
 
   /**
    * Test {@link CatalogServiceImpl#findAssignedProductOptionsByProductId(Long)}.
    * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#findAssignedProductOptionsByProductId(Long)}
+   * Method under test: {@link CatalogServiceImpl#findAssignedProductOptionsByProductId(Long)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CatalogServiceImpl.findAssignedProductOptionsByProductId(Long)"})
   public void testFindAssignedProductOptionsByProductId() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4335 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    when(productOptionDao.findAssignedProductOptionsByProductId(Mockito.<Long>any())).thenReturn(new ArrayList<>());
 
-    // Arrange and Act
-    (new CatalogServiceImpl()).findAssignedProductOptionsByProductId(1L);
+    // Act
+    List<AssignedProductOptionDTO> actualFindAssignedProductOptionsByProductIdResult = catalogServiceImpl
+        .findAssignedProductOptionsByProductId(1L);
+
+    // Assert
+    verify(productOptionDao).findAssignedProductOptionsByProductId(eq(1L));
+    assertTrue(actualFindAssignedProductOptionsByProductIdResult.isEmpty());
   }
 
   /**
    * Test {@link CatalogServiceImpl#findAssignedProductOptionsByProduct(Product)}.
    * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#findAssignedProductOptionsByProduct(Product)}
+   * Method under test: {@link CatalogServiceImpl#findAssignedProductOptionsByProduct(Product)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CatalogServiceImpl.findAssignedProductOptionsByProduct(Product)"})
   public void testFindAssignedProductOptionsByProduct() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4305 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    CatalogServiceImpl catalogServiceImpl2 = new CatalogServiceImpl();
+    when(productOptionDao.findAssignedProductOptionsByProduct(Mockito.<Product>any())).thenReturn(new ArrayList<>());
 
     // Act
-    catalogServiceImpl2.findAssignedProductOptionsByProduct(new ProductBundleImpl());
+    List<AssignedProductOptionDTO> actualFindAssignedProductOptionsByProductResult = catalogServiceImpl
+        .findAssignedProductOptionsByProduct(new ProductBundleImpl());
+
+    // Assert
+    verify(productOptionDao).findAssignedProductOptionsByProduct(isA(Product.class));
+    assertTrue(actualFindAssignedProductOptionsByProductResult.isEmpty());
   }
 
   /**
    * Test {@link CatalogServiceImpl#countProductsUsingProductOptionById(Long)}.
    * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#countProductsUsingProductOptionById(Long)}
+   * Method under test: {@link CatalogServiceImpl#countProductsUsingProductOptionById(Long)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long CatalogServiceImpl.countProductsUsingProductOptionById(Long)"})
   public void testCountProductsUsingProductOptionById() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3981 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CatalogServiceImpl()).countProductsUsingProductOptionById(1L);
-  }
-
-  /**
-   * Test
-   * {@link CatalogServiceImpl#findProductIdsUsingProductOptionById(Long, int, int)}.
-   * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#findProductIdsUsingProductOptionById(Long, int, int)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindProductIdsUsingProductOptionById() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4763 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CatalogServiceImpl()).findProductIdsUsingProductOptionById(1L, 1, 3);
-  }
-
-  /**
-   * Test
-   * {@link CatalogServiceImpl#translateItemAttributeValue(OrderItemAttribute, ProductOption)}.
-   * <p>
-   * Method under test:
-   * {@link CatalogServiceImpl#translateItemAttributeValue(OrderItemAttribute, ProductOption)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testTranslateItemAttributeValue() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5295 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.CatalogServiceImpl catalogServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    CatalogServiceImpl catalogServiceImpl2 = new CatalogServiceImpl();
-    OrderItemAttributeImpl itemAttribute = new OrderItemAttributeImpl();
+    when(productOptionDao.countProductsUsingProductOptionById(Mockito.<Long>any())).thenReturn(1L);
 
     // Act
-    catalogServiceImpl2.translateItemAttributeValue(itemAttribute, new ProductOptionImpl());
+    Long actualCountProductsUsingProductOptionByIdResult = catalogServiceImpl.countProductsUsingProductOptionById(1L);
+
+    // Assert
+    verify(productOptionDao).countProductsUsingProductOptionById(eq(1L));
+    assertEquals(1L, actualCountProductsUsingProductOptionByIdResult.longValue());
+  }
+
+  /**
+   * Test {@link CatalogServiceImpl#findProductIdsUsingProductOptionById(Long, int, int)}.
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findProductIdsUsingProductOptionById(Long, int, int)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CatalogServiceImpl.findProductIdsUsingProductOptionById(Long, int, int)"})
+  public void testFindProductIdsUsingProductOptionById() {
+    // Arrange
+    when(productOptionDao.findProductIdsUsingProductOptionById(Mockito.<Long>any(), anyInt(), anyInt()))
+        .thenReturn(new ArrayList<>());
+
+    // Act
+    List<Long> actualFindProductIdsUsingProductOptionByIdResult = catalogServiceImpl
+        .findProductIdsUsingProductOptionById(1L, 1, 3);
+
+    // Assert
+    verify(productOptionDao).findProductIdsUsingProductOptionById(eq(1L), eq(1), eq(3));
+    assertTrue(actualFindProductIdsUsingProductOptionByIdResult.isEmpty());
   }
 }

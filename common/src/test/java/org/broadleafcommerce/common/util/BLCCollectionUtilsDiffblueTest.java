@@ -25,10 +25,13 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.mockito.Mockito;
 
 public class BLCCollectionUtilsDiffblueTest {
@@ -36,15 +39,15 @@ public class BLCCollectionUtilsDiffblueTest {
    * Test {@link BLCCollectionUtils#collect(Collection, TypedTransformer)}.
    * <ul>
    *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add
-   * {@link BLCFieldUtils#NULL_FIELD}.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link BLCFieldUtils#NULL_FIELD}.</li>
    *   <li>Then calls {@link TypedTransformer#transform(Object)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BLCCollectionUtils#collect(Collection, TypedTransformer)}
+   * Method under test: {@link BLCCollectionUtils#collect(Collection, TypedTransformer)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Collection BLCCollectionUtils.collect(Collection, TypedTransformer)"})
   public void testCollect_givenNull_field_whenArrayListAddNull_field_thenCallsTransform() {
     // Arrange
     ArrayList<Object> inputCollection = new ArrayList<>();
@@ -64,15 +67,15 @@ public class BLCCollectionUtilsDiffblueTest {
    * Test {@link BLCCollectionUtils#collect(Collection, TypedTransformer)}.
    * <ul>
    *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add
-   * {@link BLCFieldUtils#NULL_FIELD}.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link BLCFieldUtils#NULL_FIELD}.</li>
    *   <li>Then calls {@link TypedTransformer#transform(Object)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BLCCollectionUtils#collect(Collection, TypedTransformer)}
+   * Method under test: {@link BLCCollectionUtils#collect(Collection, TypedTransformer)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Collection BLCCollectionUtils.collect(Collection, TypedTransformer)"})
   public void testCollect_givenNull_field_whenArrayListAddNull_field_thenCallsTransform2() {
     // Arrange
     ArrayList<Object> inputCollection = new ArrayList<>();
@@ -96,10 +99,11 @@ public class BLCCollectionUtilsDiffblueTest {
    *   <li>Then return {@link ArrayList#ArrayList()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BLCCollectionUtils#collect(Collection, TypedTransformer)}
+   * Method under test: {@link BLCCollectionUtils#collect(Collection, TypedTransformer)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Collection BLCCollectionUtils.collect(Collection, TypedTransformer)"})
   public void testCollect_whenArrayList_thenReturnArrayList() {
     // Arrange
     ArrayList<Object> inputCollection = new ArrayList<>();
@@ -118,10 +122,11 @@ public class BLCCollectionUtilsDiffblueTest {
    *   <li>Then return {@link ArrayList#ArrayList()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BLCCollectionUtils#collect(Collection, TypedTransformer)}
+   * Method under test: {@link BLCCollectionUtils#collect(Collection, TypedTransformer)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Collection BLCCollectionUtils.collect(Collection, TypedTransformer)"})
   public void testCollect_whenTypedTransformer_thenReturnArrayList() {
     // Arrange
     ArrayList<Object> inputCollection = new ArrayList<>();
@@ -138,15 +143,15 @@ public class BLCCollectionUtilsDiffblueTest {
    * Test {@link BLCCollectionUtils#collectList(Collection, TypedTransformer)}.
    * <ul>
    *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add
-   * {@link BLCFieldUtils#NULL_FIELD}.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link BLCFieldUtils#NULL_FIELD}.</li>
    *   <li>Then return {@link ArrayList#ArrayList()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BLCCollectionUtils#collectList(Collection, TypedTransformer)}
+   * Method under test: {@link BLCCollectionUtils#collectList(Collection, TypedTransformer)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List BLCCollectionUtils.collectList(Collection, TypedTransformer)"})
   public void testCollectList_givenNull_field_whenArrayListAddNull_field_thenReturnArrayList() {
     // Arrange
     ArrayList<Object> inputCollection = new ArrayList<>();
@@ -166,15 +171,15 @@ public class BLCCollectionUtilsDiffblueTest {
    * Test {@link BLCCollectionUtils#collectList(Collection, TypedTransformer)}.
    * <ul>
    *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add
-   * {@link BLCFieldUtils#NULL_FIELD}.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link BLCFieldUtils#NULL_FIELD}.</li>
    *   <li>Then return {@link ArrayList#ArrayList()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BLCCollectionUtils#collectList(Collection, TypedTransformer)}
+   * Method under test: {@link BLCCollectionUtils#collectList(Collection, TypedTransformer)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List BLCCollectionUtils.collectList(Collection, TypedTransformer)"})
   public void testCollectList_givenNull_field_whenArrayListAddNull_field_thenReturnArrayList2() {
     // Arrange
     ArrayList<Object> inputCollection = new ArrayList<>();
@@ -198,10 +203,11 @@ public class BLCCollectionUtilsDiffblueTest {
    *   <li>Then return Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BLCCollectionUtils#collectList(Collection, TypedTransformer)}
+   * Method under test: {@link BLCCollectionUtils#collectList(Collection, TypedTransformer)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List BLCCollectionUtils.collectList(Collection, TypedTransformer)"})
   public void testCollectList_whenArrayList_thenReturnEmpty() {
     // Arrange and Act
     List<Object> actualCollectListResult = BLCCollectionUtils.<Object>collectList(new ArrayList<>(),
@@ -212,18 +218,18 @@ public class BLCCollectionUtilsDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BLCCollectionUtils#collectArray(Collection, TypedTransformer, Class)}.
+   * Test {@link BLCCollectionUtils#collectArray(Collection, TypedTransformer, Class)}.
    * <ul>
    *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.</li>
-   *   <li>When {@code java.lang.Object}.</li>
+   *   <li>When {@code Object}.</li>
    *   <li>Then return array length is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BLCCollectionUtils#collectArray(Collection, TypedTransformer, Class)}
+   * Method under test: {@link BLCCollectionUtils#collectArray(Collection, TypedTransformer, Class)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object[] BLCCollectionUtils.collectArray(Collection, TypedTransformer, Class)"})
   public void testCollectArray_givenNull_field_whenJavaLangObject_thenReturnArrayLengthIsOne() {
     // Arrange
     ArrayList<Object> inputCollection = new ArrayList<>();
@@ -241,18 +247,18 @@ public class BLCCollectionUtilsDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BLCCollectionUtils#collectArray(Collection, TypedTransformer, Class)}.
+   * Test {@link BLCCollectionUtils#collectArray(Collection, TypedTransformer, Class)}.
    * <ul>
    *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.</li>
-   *   <li>When {@code java.lang.Object}.</li>
+   *   <li>When {@code Object}.</li>
    *   <li>Then return array length is two.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BLCCollectionUtils#collectArray(Collection, TypedTransformer, Class)}
+   * Method under test: {@link BLCCollectionUtils#collectArray(Collection, TypedTransformer, Class)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object[] BLCCollectionUtils.collectArray(Collection, TypedTransformer, Class)"})
   public void testCollectArray_givenNull_field_whenJavaLangObject_thenReturnArrayLengthIsTwo() {
     // Arrange
     ArrayList<Object> inputCollection = new ArrayList<>();
@@ -272,17 +278,17 @@ public class BLCCollectionUtilsDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BLCCollectionUtils#collectArray(Collection, TypedTransformer, Class)}.
+   * Test {@link BLCCollectionUtils#collectArray(Collection, TypedTransformer, Class)}.
    * <ul>
    *   <li>When {@link ArrayList#ArrayList()}.</li>
    *   <li>Then return array length is zero.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BLCCollectionUtils#collectArray(Collection, TypedTransformer, Class)}
+   * Method under test: {@link BLCCollectionUtils#collectArray(Collection, TypedTransformer, Class)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object[] BLCCollectionUtils.collectArray(Collection, TypedTransformer, Class)"})
   public void testCollectArray_whenArrayList_thenReturnArrayLengthIsZero() {
     // Arrange
     ArrayList<Object> inputCollection = new ArrayList<>();
@@ -297,15 +303,15 @@ public class BLCCollectionUtilsDiffblueTest {
    * Test {@link BLCCollectionUtils#selectList(Collection, TypedPredicate)}.
    * <ul>
    *   <li>Given {@code false}.</li>
-   *   <li>When {@link TypedPredicate} {@link TypedPredicate#evaluate(Object)}
-   * return {@code false}.</li>
+   *   <li>When {@link TypedPredicate} {@link TypedPredicate#evaluate(Object)} return {@code false}.</li>
    *   <li>Then return Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BLCCollectionUtils#selectList(Collection, TypedPredicate)}
+   * Method under test: {@link BLCCollectionUtils#selectList(Collection, TypedPredicate)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List BLCCollectionUtils.selectList(Collection, TypedPredicate)"})
   public void testSelectList_givenFalse_whenTypedPredicateEvaluateReturnFalse_thenReturnEmpty() {
     // Arrange
     ArrayList<Object> inputCollection = new ArrayList<>();
@@ -328,10 +334,11 @@ public class BLCCollectionUtilsDiffblueTest {
    *   <li>Then return {@link ArrayList#ArrayList()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BLCCollectionUtils#selectList(Collection, TypedPredicate)}
+   * Method under test: {@link BLCCollectionUtils#selectList(Collection, TypedPredicate)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List BLCCollectionUtils.selectList(Collection, TypedPredicate)"})
   public void testSelectList_givenTrue_thenReturnArrayList() {
     // Arrange
     ArrayList<Object> inputCollection = new ArrayList<>();
@@ -354,10 +361,11 @@ public class BLCCollectionUtilsDiffblueTest {
    *   <li>Then return {@link ArrayList#ArrayList()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BLCCollectionUtils#selectList(Collection, TypedPredicate)}
+   * Method under test: {@link BLCCollectionUtils#selectList(Collection, TypedPredicate)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List BLCCollectionUtils.selectList(Collection, TypedPredicate)"})
   public void testSelectList_givenTrue_thenReturnArrayList2() {
     // Arrange
     ArrayList<Object> inputCollection = new ArrayList<>();
@@ -381,10 +389,11 @@ public class BLCCollectionUtilsDiffblueTest {
    *   <li>Then return Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BLCCollectionUtils#selectList(Collection, TypedPredicate)}
+   * Method under test: {@link BLCCollectionUtils#selectList(Collection, TypedPredicate)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List BLCCollectionUtils.selectList(Collection, TypedPredicate)"})
   public void testSelectList_whenArrayList_thenReturnEmpty() {
     // Arrange and Act
     List<Object> actualSelectListResult = BLCCollectionUtils.selectList(new ArrayList<>(), null);
@@ -400,10 +409,11 @@ public class BLCCollectionUtilsDiffblueTest {
    *   <li>Then return Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BLCCollectionUtils#selectList(Collection, TypedPredicate)}
+   * Method under test: {@link BLCCollectionUtils#selectList(Collection, TypedPredicate)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List BLCCollectionUtils.selectList(Collection, TypedPredicate)"})
   public void testSelectList_whenTypedPredicate_thenReturnEmpty() {
     // Arrange and Act
     List<Object> actualSelectListResult = BLCCollectionUtils.selectList(new ArrayList<>(), mock(TypedPredicate.class));
@@ -416,14 +426,15 @@ public class BLCCollectionUtilsDiffblueTest {
    * Test {@link BLCCollectionUtils#createIfNull(List)}.
    * <ul>
    *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add
-   * {@link BLCFieldUtils#NULL_FIELD}.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link BLCFieldUtils#NULL_FIELD}.</li>
    *   <li>Then return size is one.</li>
    * </ul>
    * <p>
    * Method under test: {@link BLCCollectionUtils#createIfNull(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List BLCCollectionUtils.createIfNull(List)"})
   public void testCreateIfNull_givenNull_field_whenArrayListAddNull_field_thenReturnSizeIsOne() {
     // Arrange
     ArrayList<Object> list = new ArrayList<>();
@@ -440,14 +451,15 @@ public class BLCCollectionUtilsDiffblueTest {
    * Test {@link BLCCollectionUtils#createIfNull(List)}.
    * <ul>
    *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add
-   * {@link BLCFieldUtils#NULL_FIELD}.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link BLCFieldUtils#NULL_FIELD}.</li>
    *   <li>Then return size is two.</li>
    * </ul>
    * <p>
    * Method under test: {@link BLCCollectionUtils#createIfNull(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List BLCCollectionUtils.createIfNull(List)"})
   public void testCreateIfNull_givenNull_field_whenArrayListAddNull_field_thenReturnSizeIsTwo() {
     // Arrange
     ArrayList<Object> list = new ArrayList<>();
@@ -472,6 +484,8 @@ public class BLCCollectionUtilsDiffblueTest {
    * Method under test: {@link BLCCollectionUtils#createIfNull(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List BLCCollectionUtils.createIfNull(List)"})
   public void testCreateIfNull_whenArrayList_thenReturnEmpty() {
     // Arrange and Act
     List<Object> actualCreateIfNullResult = BLCCollectionUtils.createIfNull(new ArrayList<>());
@@ -481,18 +495,37 @@ public class BLCCollectionUtilsDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BLCCollectionUtils#createChangeAwareCollection(WorkOnChange, Collection)}.
+   * Test {@link BLCCollectionUtils#createIfNull(List)}.
    * <ul>
-   *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add
-   * {@link BLCFieldUtils#NULL_FIELD}.</li>
+   *   <li>When {@code null}.</li>
+   *   <li>Then return Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BLCCollectionUtils#createChangeAwareCollection(WorkOnChange, Collection)}
+   * Method under test: {@link BLCCollectionUtils#createIfNull(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List BLCCollectionUtils.createIfNull(List)"})
+  public void testCreateIfNull_whenNull_thenReturnEmpty() {
+    // Arrange and Act
+    List<Object> actualCreateIfNullResult = BLCCollectionUtils.createIfNull(null);
+
+    // Assert
+    assertTrue(actualCreateIfNullResult.isEmpty());
+  }
+
+  /**
+   * Test {@link BLCCollectionUtils#createChangeAwareCollection(WorkOnChange, Collection)}.
+   * <ul>
+   *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link BLCFieldUtils#NULL_FIELD}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BLCCollectionUtils#createChangeAwareCollection(WorkOnChange, Collection)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Collection BLCCollectionUtils.createChangeAwareCollection(WorkOnChange, Collection)"})
   public void testCreateChangeAwareCollection_givenNull_field_whenArrayListAddNull_field() {
     // Arrange
     WorkOnChange work = mock(WorkOnChange.class);
@@ -505,18 +538,17 @@ public class BLCCollectionUtilsDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BLCCollectionUtils#createChangeAwareCollection(WorkOnChange, Collection)}.
+   * Test {@link BLCCollectionUtils#createChangeAwareCollection(WorkOnChange, Collection)}.
    * <ul>
    *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add
-   * {@link BLCFieldUtils#NULL_FIELD}.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link BLCFieldUtils#NULL_FIELD}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BLCCollectionUtils#createChangeAwareCollection(WorkOnChange, Collection)}
+   * Method under test: {@link BLCCollectionUtils#createChangeAwareCollection(WorkOnChange, Collection)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Collection BLCCollectionUtils.createChangeAwareCollection(WorkOnChange, Collection)"})
   public void testCreateChangeAwareCollection_givenNull_field_whenArrayListAddNull_field2() {
     // Arrange
     WorkOnChange work = mock(WorkOnChange.class);
@@ -530,16 +562,16 @@ public class BLCCollectionUtilsDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BLCCollectionUtils#createChangeAwareCollection(WorkOnChange, Collection)}.
+   * Test {@link BLCCollectionUtils#createChangeAwareCollection(WorkOnChange, Collection)}.
    * <ul>
    *   <li>When {@link ArrayList#ArrayList()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BLCCollectionUtils#createChangeAwareCollection(WorkOnChange, Collection)}
+   * Method under test: {@link BLCCollectionUtils#createChangeAwareCollection(WorkOnChange, Collection)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Collection BLCCollectionUtils.createChangeAwareCollection(WorkOnChange, Collection)"})
   public void testCreateChangeAwareCollection_whenArrayList() {
     // Arrange
     WorkOnChange work = mock(WorkOnChange.class);

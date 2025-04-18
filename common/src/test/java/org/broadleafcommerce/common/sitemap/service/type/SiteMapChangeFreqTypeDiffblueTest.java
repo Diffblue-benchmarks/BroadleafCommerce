@@ -20,7 +20,10 @@ package org.broadleafcommerce.common.sitemap.service.type;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -38,6 +41,8 @@ public class SiteMapChangeFreqTypeDiffblueTest {
    * Method under test: {@link SiteMapChangeFreqType#getInstance(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"SiteMapChangeFreqType SiteMapChangeFreqType.getInstance(String)"})
   public void testGetInstance() {
     // Arrange and Act
     SiteMapChangeFreqType actualInstance = SiteMapChangeFreqType.getInstance("Type");
@@ -58,6 +63,9 @@ public class SiteMapChangeFreqTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SiteMapChangeFreqType.<init>()", "String SiteMapChangeFreqType.getFriendlyType()",
+      "String SiteMapChangeFreqType.getType()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     SiteMapChangeFreqType actualSiteMapChangeFreqType = new SiteMapChangeFreqType();
@@ -75,10 +83,11 @@ public class SiteMapChangeFreqTypeDiffblueTest {
    *   <li>Then return Type is {@code always}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SiteMapChangeFreqType#SiteMapChangeFreqType(String, String)}
+   * Method under test: {@link SiteMapChangeFreqType#SiteMapChangeFreqType(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SiteMapChangeFreqType.<init>(String, String)"})
   public void testNewSiteMapChangeFreqType_whenAlways_thenReturnTypeIsAlways() {
     // Arrange and Act
     SiteMapChangeFreqType actualSiteMapChangeFreqType = new SiteMapChangeFreqType("always", "Friendly Type");
@@ -95,10 +104,11 @@ public class SiteMapChangeFreqTypeDiffblueTest {
    *   <li>Then return {@code Type}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SiteMapChangeFreqType#SiteMapChangeFreqType(String, String)}
+   * Method under test: {@link SiteMapChangeFreqType#SiteMapChangeFreqType(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SiteMapChangeFreqType.<init>(String, String)"})
   public void testNewSiteMapChangeFreqType_whenType_thenReturnType() {
     // Arrange and Act
     SiteMapChangeFreqType actualSiteMapChangeFreqType = new SiteMapChangeFreqType("Type", "Friendly Type");
@@ -109,8 +119,7 @@ public class SiteMapChangeFreqTypeDiffblueTest {
   }
 
   /**
-   * Test {@link SiteMapChangeFreqType#equals(Object)}, and
-   * {@link SiteMapChangeFreqType#hashCode()}.
+   * Test {@link SiteMapChangeFreqType#equals(Object)}, and {@link SiteMapChangeFreqType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -123,6 +132,8 @@ public class SiteMapChangeFreqTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SiteMapChangeFreqType.equals(Object)", "int SiteMapChangeFreqType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     SiteMapChangeFreqType siteMapChangeFreqType = SiteMapChangeFreqType.ALWAYS;
@@ -135,8 +146,7 @@ public class SiteMapChangeFreqTypeDiffblueTest {
   }
 
   /**
-   * Test {@link SiteMapChangeFreqType#equals(Object)}, and
-   * {@link SiteMapChangeFreqType#hashCode()}.
+   * Test {@link SiteMapChangeFreqType#equals(Object)}, and {@link SiteMapChangeFreqType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -149,6 +159,8 @@ public class SiteMapChangeFreqTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SiteMapChangeFreqType.equals(Object)", "int SiteMapChangeFreqType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     SiteMapChangeFreqType siteMapChangeFreqType = new SiteMapChangeFreqType();
@@ -161,8 +173,7 @@ public class SiteMapChangeFreqTypeDiffblueTest {
   }
 
   /**
-   * Test {@link SiteMapChangeFreqType#equals(Object)}, and
-   * {@link SiteMapChangeFreqType#hashCode()}.
+   * Test {@link SiteMapChangeFreqType#equals(Object)}, and {@link SiteMapChangeFreqType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -175,6 +186,8 @@ public class SiteMapChangeFreqTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SiteMapChangeFreqType.equals(Object)", "int SiteMapChangeFreqType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     SiteMapChangeFreqType siteMapChangeFreqType = new SiteMapChangeFreqType("ALWAYS", "Friendly Type");
@@ -187,8 +200,7 @@ public class SiteMapChangeFreqTypeDiffblueTest {
   }
 
   /**
-   * Test {@link SiteMapChangeFreqType#equals(Object)}, and
-   * {@link SiteMapChangeFreqType#hashCode()}.
+   * Test {@link SiteMapChangeFreqType#equals(Object)}, and {@link SiteMapChangeFreqType#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -201,6 +213,8 @@ public class SiteMapChangeFreqTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SiteMapChangeFreqType.equals(Object)", "int SiteMapChangeFreqType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     SiteMapChangeFreqType siteMapChangeFreqType = SiteMapChangeFreqType.ALWAYS;
@@ -221,9 +235,27 @@ public class SiteMapChangeFreqTypeDiffblueTest {
    * Method under test: {@link SiteMapChangeFreqType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SiteMapChangeFreqType.equals(Object)", "int SiteMapChangeFreqType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(SiteMapChangeFreqType.DAILY, SiteMapChangeFreqType.ALWAYS);
+  }
+
+  /**
+   * Test {@link SiteMapChangeFreqType#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SiteMapChangeFreqType#equals(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SiteMapChangeFreqType.equals(Object)", "int SiteMapChangeFreqType.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange, Act and Assert
     assertNotEquals(new SiteMapChangeFreqType(), SiteMapChangeFreqType.ALWAYS);
   }
 
@@ -237,6 +269,8 @@ public class SiteMapChangeFreqTypeDiffblueTest {
    * Method under test: {@link SiteMapChangeFreqType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SiteMapChangeFreqType.equals(Object)", "int SiteMapChangeFreqType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(SiteMapChangeFreqType.ALWAYS, null);
@@ -252,6 +286,8 @@ public class SiteMapChangeFreqTypeDiffblueTest {
    * Method under test: {@link SiteMapChangeFreqType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SiteMapChangeFreqType.equals(Object)", "int SiteMapChangeFreqType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(SiteMapChangeFreqType.ALWAYS, "Different type to SiteMapChangeFreqType");

@@ -22,18 +22,22 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Map;
 import org.broadleafcommerce.common.util.BLCFieldUtils;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {GatewayCustomerDTO.class})
 @RunWith(SpringJUnit4ClassRunner.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class GatewayCustomerDTODiffblueTest {
   @Autowired
   private GatewayCustomerDTO<Object> gatewayCustomerDTO;
@@ -66,6 +70,18 @@ public class GatewayCustomerDTODiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void GatewayCustomerDTO.<init>()", "void GatewayCustomerDTO.<init>(Object)",
+      "GatewayCustomerDTO GatewayCustomerDTO.companyName(String)",
+      "GatewayCustomerDTO GatewayCustomerDTO.customerId(String)", "GatewayCustomerDTO GatewayCustomerDTO.email(String)",
+      "GatewayCustomerDTO GatewayCustomerDTO.fax(String)", "GatewayCustomerDTO GatewayCustomerDTO.firstName(String)",
+      "Map GatewayCustomerDTO.getAdditionalFields()", "String GatewayCustomerDTO.getCompanyName()",
+      "String GatewayCustomerDTO.getCustomerId()", "String GatewayCustomerDTO.getEmail()",
+      "String GatewayCustomerDTO.getFax()", "String GatewayCustomerDTO.getFirstName()",
+      "String GatewayCustomerDTO.getLastName()", "String GatewayCustomerDTO.getMobile()",
+      "String GatewayCustomerDTO.getPhone()", "String GatewayCustomerDTO.getWebsite()",
+      "GatewayCustomerDTO GatewayCustomerDTO.lastName(String)", "GatewayCustomerDTO GatewayCustomerDTO.mobile(String)",
+      "GatewayCustomerDTO GatewayCustomerDTO.phone(String)", "GatewayCustomerDTO GatewayCustomerDTO.website(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     GatewayCustomerDTO<Object> actualGatewayCustomerDTO = new GatewayCustomerDTO<>();
@@ -141,6 +157,18 @@ public class GatewayCustomerDTODiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void GatewayCustomerDTO.<init>()", "void GatewayCustomerDTO.<init>(Object)",
+      "GatewayCustomerDTO GatewayCustomerDTO.companyName(String)",
+      "GatewayCustomerDTO GatewayCustomerDTO.customerId(String)", "GatewayCustomerDTO GatewayCustomerDTO.email(String)",
+      "GatewayCustomerDTO GatewayCustomerDTO.fax(String)", "GatewayCustomerDTO GatewayCustomerDTO.firstName(String)",
+      "Map GatewayCustomerDTO.getAdditionalFields()", "String GatewayCustomerDTO.getCompanyName()",
+      "String GatewayCustomerDTO.getCustomerId()", "String GatewayCustomerDTO.getEmail()",
+      "String GatewayCustomerDTO.getFax()", "String GatewayCustomerDTO.getFirstName()",
+      "String GatewayCustomerDTO.getLastName()", "String GatewayCustomerDTO.getMobile()",
+      "String GatewayCustomerDTO.getPhone()", "String GatewayCustomerDTO.getWebsite()",
+      "GatewayCustomerDTO GatewayCustomerDTO.lastName(String)", "GatewayCustomerDTO GatewayCustomerDTO.mobile(String)",
+      "GatewayCustomerDTO GatewayCustomerDTO.phone(String)", "GatewayCustomerDTO GatewayCustomerDTO.website(String)"})
   public void testGettersAndSetters_whenNull_field() {
     // Arrange and Act
     GatewayCustomerDTO<Object> actualGatewayCustomerDTO = new GatewayCustomerDTO<>(BLCFieldUtils.NULL_FIELD);
@@ -191,6 +219,8 @@ public class GatewayCustomerDTODiffblueTest {
    * Method under test: {@link GatewayCustomerDTO#done()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object GatewayCustomerDTO.done()"})
   public void testDone() {
     // Arrange
     GatewayCustomerDTO<Object> gatewayCustomerDTO = new GatewayCustomerDTO<>();
@@ -202,10 +232,11 @@ public class GatewayCustomerDTODiffblueTest {
   /**
    * Test {@link GatewayCustomerDTO#additionalFields(String, Object)}.
    * <p>
-   * Method under test:
-   * {@link GatewayCustomerDTO#additionalFields(String, Object)}
+   * Method under test: {@link GatewayCustomerDTO#additionalFields(String, Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"GatewayCustomerDTO GatewayCustomerDTO.additionalFields(String, Object)"})
   public void testAdditionalFields() {
     // Arrange, Act and Assert
     assertSame(gatewayCustomerDTO, gatewayCustomerDTO.additionalFields("Key", BLCFieldUtils.NULL_FIELD));
@@ -214,13 +245,14 @@ public class GatewayCustomerDTODiffblueTest {
   /**
    * Test {@link GatewayCustomerDTO#customerPopulated()}.
    * <ul>
-   *   <li>Given {@link GatewayCustomerDTO#GatewayCustomerDTO()} additionalFields
-   * {@code Key} and {@link BLCFieldUtils#NULL_FIELD}.</li>
+   *   <li>Given {@link GatewayCustomerDTO#GatewayCustomerDTO()} additionalFields {@code Key} and {@link BLCFieldUtils#NULL_FIELD}.</li>
    * </ul>
    * <p>
    * Method under test: {@link GatewayCustomerDTO#customerPopulated()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean GatewayCustomerDTO.customerPopulated()"})
   public void testCustomerPopulated_givenGatewayCustomerDTOAdditionalFieldsKeyAndNull_field() {
     // Arrange
     GatewayCustomerDTO<Object> gatewayCustomerDTO = new GatewayCustomerDTO<>();
@@ -233,13 +265,14 @@ public class GatewayCustomerDTODiffblueTest {
   /**
    * Test {@link GatewayCustomerDTO#customerPopulated()}.
    * <ul>
-   *   <li>Given {@link GatewayCustomerDTO#GatewayCustomerDTO()} companyName
-   * {@code Company Name}.</li>
+   *   <li>Given {@link GatewayCustomerDTO#GatewayCustomerDTO()} companyName {@code Company Name}.</li>
    * </ul>
    * <p>
    * Method under test: {@link GatewayCustomerDTO#customerPopulated()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean GatewayCustomerDTO.customerPopulated()"})
   public void testCustomerPopulated_givenGatewayCustomerDTOCompanyNameCompanyName() {
     // Arrange
     GatewayCustomerDTO<Object> gatewayCustomerDTO = new GatewayCustomerDTO<>();
@@ -252,14 +285,15 @@ public class GatewayCustomerDTODiffblueTest {
   /**
    * Test {@link GatewayCustomerDTO#customerPopulated()}.
    * <ul>
-   *   <li>Given {@link GatewayCustomerDTO#GatewayCustomerDTO()} customerId
-   * {@code 42}.</li>
+   *   <li>Given {@link GatewayCustomerDTO#GatewayCustomerDTO()} customerId {@code 42}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link GatewayCustomerDTO#customerPopulated()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean GatewayCustomerDTO.customerPopulated()"})
   public void testCustomerPopulated_givenGatewayCustomerDTOCustomerId42_thenReturnTrue() {
     // Arrange
     GatewayCustomerDTO<Object> gatewayCustomerDTO = new GatewayCustomerDTO<>();
@@ -272,13 +306,14 @@ public class GatewayCustomerDTODiffblueTest {
   /**
    * Test {@link GatewayCustomerDTO#customerPopulated()}.
    * <ul>
-   *   <li>Given {@link GatewayCustomerDTO#GatewayCustomerDTO()} email
-   * {@code jane.doe@example.org}.</li>
+   *   <li>Given {@link GatewayCustomerDTO#GatewayCustomerDTO()} email {@code jane.doe@example.org}.</li>
    * </ul>
    * <p>
    * Method under test: {@link GatewayCustomerDTO#customerPopulated()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean GatewayCustomerDTO.customerPopulated()"})
   public void testCustomerPopulated_givenGatewayCustomerDTOEmailJaneDoeExampleOrg() {
     // Arrange
     GatewayCustomerDTO<Object> gatewayCustomerDTO = new GatewayCustomerDTO<>();
@@ -291,14 +326,15 @@ public class GatewayCustomerDTODiffblueTest {
   /**
    * Test {@link GatewayCustomerDTO#customerPopulated()}.
    * <ul>
-   *   <li>Given {@link GatewayCustomerDTO#GatewayCustomerDTO()} fax
-   * {@code Fax}.</li>
+   *   <li>Given {@link GatewayCustomerDTO#GatewayCustomerDTO()} fax {@code Fax}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link GatewayCustomerDTO#customerPopulated()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean GatewayCustomerDTO.customerPopulated()"})
   public void testCustomerPopulated_givenGatewayCustomerDTOFaxFax_thenReturnTrue() {
     // Arrange
     GatewayCustomerDTO<Object> gatewayCustomerDTO = new GatewayCustomerDTO<>();
@@ -311,14 +347,15 @@ public class GatewayCustomerDTODiffblueTest {
   /**
    * Test {@link GatewayCustomerDTO#customerPopulated()}.
    * <ul>
-   *   <li>Given {@link GatewayCustomerDTO#GatewayCustomerDTO()} firstName
-   * {@code Jane}.</li>
+   *   <li>Given {@link GatewayCustomerDTO#GatewayCustomerDTO()} firstName {@code Jane}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link GatewayCustomerDTO#customerPopulated()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean GatewayCustomerDTO.customerPopulated()"})
   public void testCustomerPopulated_givenGatewayCustomerDTOFirstNameJane_thenReturnTrue() {
     // Arrange
     GatewayCustomerDTO<Object> gatewayCustomerDTO = new GatewayCustomerDTO<>();
@@ -331,14 +368,15 @@ public class GatewayCustomerDTODiffblueTest {
   /**
    * Test {@link GatewayCustomerDTO#customerPopulated()}.
    * <ul>
-   *   <li>Given {@link GatewayCustomerDTO#GatewayCustomerDTO()} lastName
-   * {@code Doe}.</li>
+   *   <li>Given {@link GatewayCustomerDTO#GatewayCustomerDTO()} lastName {@code Doe}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link GatewayCustomerDTO#customerPopulated()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean GatewayCustomerDTO.customerPopulated()"})
   public void testCustomerPopulated_givenGatewayCustomerDTOLastNameDoe_thenReturnTrue() {
     // Arrange
     GatewayCustomerDTO<Object> gatewayCustomerDTO = new GatewayCustomerDTO<>();
@@ -351,14 +389,15 @@ public class GatewayCustomerDTODiffblueTest {
   /**
    * Test {@link GatewayCustomerDTO#customerPopulated()}.
    * <ul>
-   *   <li>Given {@link GatewayCustomerDTO#GatewayCustomerDTO()} mobile
-   * {@code Mobile}.</li>
+   *   <li>Given {@link GatewayCustomerDTO#GatewayCustomerDTO()} mobile {@code Mobile}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link GatewayCustomerDTO#customerPopulated()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean GatewayCustomerDTO.customerPopulated()"})
   public void testCustomerPopulated_givenGatewayCustomerDTOMobileMobile_thenReturnTrue() {
     // Arrange
     GatewayCustomerDTO<Object> gatewayCustomerDTO = new GatewayCustomerDTO<>();
@@ -371,14 +410,15 @@ public class GatewayCustomerDTODiffblueTest {
   /**
    * Test {@link GatewayCustomerDTO#customerPopulated()}.
    * <ul>
-   *   <li>Given {@link GatewayCustomerDTO#GatewayCustomerDTO()} phone
-   * {@code 6625550144}.</li>
+   *   <li>Given {@link GatewayCustomerDTO#GatewayCustomerDTO()} phone {@code 6625550144}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link GatewayCustomerDTO#customerPopulated()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean GatewayCustomerDTO.customerPopulated()"})
   public void testCustomerPopulated_givenGatewayCustomerDTOPhone6625550144_thenReturnTrue() {
     // Arrange
     GatewayCustomerDTO<Object> gatewayCustomerDTO = new GatewayCustomerDTO<>();
@@ -391,14 +431,15 @@ public class GatewayCustomerDTODiffblueTest {
   /**
    * Test {@link GatewayCustomerDTO#customerPopulated()}.
    * <ul>
-   *   <li>Given {@link GatewayCustomerDTO#GatewayCustomerDTO()} website
-   * {@code Website}.</li>
+   *   <li>Given {@link GatewayCustomerDTO#GatewayCustomerDTO()} website {@code Website}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link GatewayCustomerDTO#customerPopulated()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean GatewayCustomerDTO.customerPopulated()"})
   public void testCustomerPopulated_givenGatewayCustomerDTOWebsiteWebsite_thenReturnTrue() {
     // Arrange
     GatewayCustomerDTO<Object> gatewayCustomerDTO = new GatewayCustomerDTO<>();
@@ -418,6 +459,8 @@ public class GatewayCustomerDTODiffblueTest {
    * Method under test: {@link GatewayCustomerDTO#customerPopulated()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean GatewayCustomerDTO.customerPopulated()"})
   public void testCustomerPopulated_givenGatewayCustomerDTO_thenReturnFalse() {
     // Arrange
     GatewayCustomerDTO<Object> gatewayCustomerDTO = new GatewayCustomerDTO<>();

@@ -22,8 +22,11 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.ConditionContext;
 import org.springframework.core.type.AnnotatedTypeMetadata;
@@ -31,18 +34,17 @@ import org.springframework.util.LinkedMultiValueMap;
 
 public class OnBroadleafModuleConditionDiffblueTest {
   /**
-   * Test
-   * {@link OnBroadleafModuleCondition#matches(ConditionContext, AnnotatedTypeMetadata)}.
+   * Test {@link OnBroadleafModuleCondition#matches(ConditionContext, AnnotatedTypeMetadata)}.
    * <ul>
-   *   <li>Given {@link LinkedMultiValueMap#LinkedMultiValueMap()} addAll
-   * {@code value} and {@link ArrayList#ArrayList()}.</li>
+   *   <li>Given {@link LinkedMultiValueMap#LinkedMultiValueMap()} addAll {@code value} and {@link ArrayList#ArrayList()}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OnBroadleafModuleCondition#matches(ConditionContext, AnnotatedTypeMetadata)}
+   * Method under test: {@link OnBroadleafModuleCondition#matches(ConditionContext, AnnotatedTypeMetadata)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OnBroadleafModuleCondition.matches(ConditionContext, AnnotatedTypeMetadata)"})
   public void testMatches_givenLinkedMultiValueMapAddAllValueAndArrayList_thenReturnTrue() {
     // Arrange
     OnBroadleafModuleCondition onBroadleafModuleCondition = new OnBroadleafModuleCondition();
@@ -60,22 +62,5 @@ public class OnBroadleafModuleConditionDiffblueTest {
     verify(metadata)
         .getAllAnnotationAttributes(eq("org.broadleafcommerce.common.condition.ConditionalOnBroadleafModule"));
     assertTrue(actualMatchesResult);
-  }
-
-  /**
-   * Test new {@link OnBroadleafModuleCondition} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link OnBroadleafModuleCondition}
-   */
-  @Test
-  public void testNewOnBroadleafModuleCondition() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing observers.
-    //   Diffblue Cover was unable to create an assertion.
-    //   There are no fields that could be asserted on.
-
-    // Arrange and Act
-    new OnBroadleafModuleCondition();
   }
 }

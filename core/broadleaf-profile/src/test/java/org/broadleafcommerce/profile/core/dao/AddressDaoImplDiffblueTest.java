@@ -1,87 +1,50 @@
+/*-
+ * #%L
+ * BroadleafCommerce Profile
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.profile.core.dao;
 
+import static org.junit.Assert.assertSame;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import org.broadleafcommerce.common.i18n.domain.ISOCountryImpl;
+import org.broadleafcommerce.common.persistence.EntityConfiguration;
 import org.broadleafcommerce.profile.core.domain.Address;
 import org.broadleafcommerce.profile.core.domain.AddressImpl;
-import org.junit.Ignore;
+import org.broadleafcommerce.profile.core.domain.CountryImpl;
+import org.broadleafcommerce.profile.core.domain.PhoneImpl;
+import org.broadleafcommerce.profile.core.domain.StateImpl;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml",
-    "/bl-profile-applicationContext-persistence.xml", "/bl-profile-applicationContext.xml",
-    "/blc-config/admin/framework/bl-profile-applicationContext.xml",
-    "/blc-config/site/framework/bl-profile-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
-@Transactional
+@RunWith(MockitoJUnitRunner.class)
 public class AddressDaoImplDiffblueTest {
-  @Autowired
+  @InjectMocks
   private AddressDaoImpl addressDaoImpl;
 
-  /**
-   * Test {@link AddressDaoImpl#save(Address)}.
-   * <p>
-   * Method under test: {@link AddressDaoImpl#save(Address)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSave() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass54 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.dao.AddressDaoImpl addressDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    AddressDaoImpl addressDaoImpl2 = new AddressDaoImpl();
-
-    // Act
-    addressDaoImpl2.save(new AddressImpl());
-  }
-
-  /**
-   * Test {@link AddressDaoImpl#readAddressById(Long)}.
-   * <p>
-   * Method under test: {@link AddressDaoImpl#readAddressById(Long)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testReadAddressById() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass39 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.dao.AddressDaoImpl addressDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new AddressDaoImpl()).readAddressById(1L);
-  }
+  @Mock
+  private EntityConfiguration entityConfiguration;
 
   /**
    * Test {@link AddressDaoImpl#create()}.
@@ -89,60 +52,50 @@ public class AddressDaoImplDiffblueTest {
    * Method under test: {@link AddressDaoImpl#create()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Address AddressDaoImpl.create()"})
   public void testCreate() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass0 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.dao.AddressDaoImpl addressDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new AddressDaoImpl()).create();
-  }
-
-  /**
-   * Test {@link AddressDaoImpl#delete(Address)}.
-   * <p>
-   * Method under test: {@link AddressDaoImpl#delete(Address)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testDelete() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.dao.AddressDaoImpl addressDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    AddressDaoImpl addressDaoImpl2 = new AddressDaoImpl();
+    AddressImpl addressImpl = new AddressImpl();
+    addressImpl.setActive(true);
+    addressImpl.setAddressLine1("42 Main St");
+    addressImpl.setAddressLine2("42 Main St");
+    addressImpl.setAddressLine3("42 Main St");
+    addressImpl.setBusiness(true);
+    addressImpl.setCity("Oxford");
+    addressImpl.setCompanyName("Company Name");
+    addressImpl.setCountry(new CountryImpl());
+    addressImpl.setCounty("3");
+    addressImpl.setDefault(true);
+    addressImpl.setEmailAddress("42 Main St");
+    addressImpl.setFax("Fax");
+    addressImpl.setFirstName("Jane");
+    addressImpl.setFullName("Dr Jane Doe");
+    addressImpl.setId(1L);
+    addressImpl.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl.setIsoCountrySubdivision("GB");
+    addressImpl.setLastName("Doe");
+    addressImpl.setMailing(true);
+    addressImpl.setPhoneFax(new PhoneImpl());
+    addressImpl.setPhonePrimary(new PhoneImpl());
+    addressImpl.setPhoneSecondary(new PhoneImpl());
+    addressImpl.setPostalCode("Postal Code");
+    addressImpl.setPrimaryPhone("6625550144");
+    addressImpl.setSecondaryPhone("6625550144");
+    addressImpl.setStandardized(true);
+    addressImpl.setState(new StateImpl());
+    addressImpl.setStateProvinceRegion("us-east-2");
+    addressImpl.setStreet(true);
+    addressImpl.setTokenizedAddress("42 Main St");
+    addressImpl.setVerificationLevel("Verification Level");
+    addressImpl.setZipFour("21654");
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any())).thenReturn(addressImpl);
 
     // Act
-    addressDaoImpl2.delete(new AddressImpl());
+    Address actualCreateResult = addressDaoImpl.create();
+
+    // Assert
+    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.profile.core.domain.Address"));
+    assertSame(addressImpl, actualCreateResult);
   }
 }

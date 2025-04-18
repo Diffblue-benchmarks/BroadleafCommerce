@@ -20,10 +20,13 @@ package org.broadleafcommerce.openadmin.server.dao.provider.metadata.request;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.lang.reflect.Field;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDao;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class AddFieldMetadataRequestDiffblueTest {
   /**
@@ -31,12 +34,14 @@ public class AddFieldMetadataRequestDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>
-   * {@link AddFieldMetadataRequest#AddFieldMetadataRequest(Field, Class, Class, DynamicEntityDao, String)}
+   *   <li>{@link AddFieldMetadataRequest#AddFieldMetadataRequest(Field, Class, Class, DynamicEntityDao, String)}
    *   <li>{@link AddFieldMetadataRequest#getRequestedField()}
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AddFieldMetadataRequest.<init>(Field, Class, Class, DynamicEntityDao, String)",
+      "Field AddFieldMetadataRequest.getRequestedField()"})
   public void testGettersAndSetters() {
     // Arrange
     Class<Object> parentClass = Object.class;

@@ -1,27 +1,42 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.rating.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.Date;
 import org.broadleafcommerce.core.rating.service.type.ReviewStatusType;
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ReviewDetailImplDiffblueTest {
   @Autowired
@@ -45,105 +60,46 @@ public class ReviewDetailImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ReviewDetailImpl.<init>()", "Customer ReviewDetailImpl.getCustomer()",
+      "Long ReviewDetailImpl.getId()", "RatingDetail ReviewDetailImpl.getRatingDetail()",
+      "RatingSummary ReviewDetailImpl.getRatingSummary()", "Date ReviewDetailImpl.getReviewSubmittedDate()",
+      "String ReviewDetailImpl.getReviewText()", "Integer ReviewDetailImpl.helpfulCount()",
+      "Integer ReviewDetailImpl.notHelpfulCount()", "void ReviewDetailImpl.setReviewText(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     ReviewDetailImpl actualReviewDetailImpl = new ReviewDetailImpl();
     actualReviewDetailImpl.setReviewText("Review Text");
-    actualReviewDetailImpl.getCustomer();
-    actualReviewDetailImpl.getId();
-    actualReviewDetailImpl.getRatingDetail();
-    actualReviewDetailImpl.getRatingSummary();
-    actualReviewDetailImpl.getReviewSubmittedDate();
+    Customer actualCustomer = actualReviewDetailImpl.getCustomer();
+    Long actualId = actualReviewDetailImpl.getId();
+    RatingDetail actualRatingDetail = actualReviewDetailImpl.getRatingDetail();
+    RatingSummary actualRatingSummary = actualReviewDetailImpl.getRatingSummary();
+    Date actualReviewSubmittedDate = actualReviewDetailImpl.getReviewSubmittedDate();
     String actualReviewText = actualReviewDetailImpl.getReviewText();
-    actualReviewDetailImpl.helpfulCount();
-    actualReviewDetailImpl.notHelpfulCount();
-
-    // Assert that nothing has changed
-    assertEquals("Review Text", actualReviewText);
-  }
-
-  /**
-   * Test
-   * {@link ReviewDetailImpl#ReviewDetailImpl(Customer, Date, RatingDetail, String, RatingSummary)}.
-   * <p>
-   * Method under test:
-   * {@link ReviewDetailImpl#ReviewDetailImpl(Customer, Date, RatingDetail, String, RatingSummary)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testNewReviewDetailImpl() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.rating.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3954 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.rating.domain.ReviewDetailImpl reviewDetailImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CustomerImpl customer = new CustomerImpl();
-    Date reivewSubmittedDate = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
-    RatingDetailImpl ratingDetail = new RatingDetailImpl();
-
-    // Act
-    new ReviewDetailImpl(customer, reivewSubmittedDate, ratingDetail, "Review Text", new RatingSummaryImpl());
-
-  }
-
-  /**
-   * Test
-   * {@link ReviewDetailImpl#ReviewDetailImpl(Customer, Date, RatingDetail, String, RatingSummary)}.
-   * <ul>
-   *   <li>Then RatingSummary return {@link RatingSummaryImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link ReviewDetailImpl#ReviewDetailImpl(Customer, Date, RatingDetail, String, RatingSummary)}
-   */
-  @Test
-  public void testNewReviewDetailImpl_thenRatingSummaryReturnRatingSummaryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CustomerImpl customer = new CustomerImpl();
-    Date reivewSubmittedDate = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
-    RatingDetailImpl ratingDetail = new RatingDetailImpl();
-
-    // Act
-    ReviewDetailImpl actualReviewDetailImpl = new ReviewDetailImpl(customer, reivewSubmittedDate, ratingDetail,
-        "Review Text", new RatingSummaryImpl());
+    Integer actualHelpfulCountResult = actualReviewDetailImpl.helpfulCount();
 
     // Assert
-    assertTrue(actualReviewDetailImpl.getRatingSummary() instanceof RatingSummaryImpl);
-    assertSame(customer, actualReviewDetailImpl.getCustomer());
+    assertEquals("Review Text", actualReviewText);
+    assertNull(actualHelpfulCountResult);
+    assertNull(actualReviewDetailImpl.notHelpfulCount());
+    assertNull(actualId);
+    assertNull(actualReviewSubmittedDate);
+    assertNull(actualRatingDetail);
+    assertNull(actualRatingSummary);
+    assertNull(actualCustomer);
   }
 
   /**
-   * Test
-   * {@link ReviewDetailImpl#ReviewDetailImpl(Customer, Date, RatingDetail, String, RatingSummary)}.
-   * <ul>
-   *   <li>When {@link CustomerImpl}.</li>
-   *   <li>Then return Status FriendlyType is {@code PENDING}.</li>
-   * </ul>
+   * Test {@link ReviewDetailImpl#ReviewDetailImpl(Customer, Date, RatingDetail, String, RatingSummary)}.
    * <p>
-   * Method under test:
-   * {@link ReviewDetailImpl#ReviewDetailImpl(Customer, Date, RatingDetail, String, RatingSummary)}
+   * Method under test: {@link ReviewDetailImpl#ReviewDetailImpl(Customer, Date, RatingDetail, String, RatingSummary)}
    */
   @Test
-  public void testNewReviewDetailImpl_whenCustomerImpl_thenReturnStatusFriendlyTypeIsPending() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ReviewDetailImpl.<init>(Customer, Date, RatingDetail, String, RatingSummary)"})
+  public void testNewReviewDetailImpl() {
     // Arrange
-    CustomerImpl customer = mock(CustomerImpl.class);
+    CustomerImpl customer = new CustomerImpl();
     Date reivewSubmittedDate = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
     RatingDetailImpl ratingDetail = new RatingDetailImpl();
     RatingSummaryImpl ratingSummary = new RatingSummaryImpl();
@@ -153,9 +109,12 @@ public class ReviewDetailImplDiffblueTest {
         "Review Text", ratingSummary);
 
     // Assert
-    ReviewStatusType status = actualReviewDetailImpl.getStatus();
-    assertEquals("PENDING", status.getFriendlyType());
-    assertEquals("PENDING", status.getType());
+    RatingDetail ratingDetail2 = actualReviewDetailImpl.getRatingDetail();
+    assertTrue(ratingDetail2 instanceof RatingDetailImpl);
+    RatingSummary ratingSummary2 = actualReviewDetailImpl.getRatingSummary();
+    assertTrue(ratingSummary2 instanceof RatingSummaryImpl);
+    Customer customer2 = actualReviewDetailImpl.getCustomer();
+    assertTrue(customer2 instanceof CustomerImpl);
     assertEquals("PENDING", actualReviewDetailImpl.reviewStatus);
     assertEquals("Review Text", actualReviewDetailImpl.getReviewText());
     assertNull(actualReviewDetailImpl.getId());
@@ -165,9 +124,9 @@ public class ReviewDetailImplDiffblueTest {
     assertEquals(0, actualReviewDetailImpl.notHelpfulCount.intValue());
     assertTrue(actualReviewDetailImpl.getReviewFeedback().isEmpty());
     assertTrue(actualReviewDetailImpl.reviewFeedback.isEmpty());
-    assertSame(ratingDetail, actualReviewDetailImpl.getRatingDetail());
-    assertSame(ratingSummary, actualReviewDetailImpl.getRatingSummary());
-    assertSame(customer, actualReviewDetailImpl.getCustomer());
+    assertSame(ratingDetail, ratingDetail2);
+    assertSame(ratingSummary, ratingSummary2);
+    assertSame(customer, customer2);
   }
 
   /**
@@ -176,42 +135,9 @@ public class ReviewDetailImplDiffblueTest {
    * Method under test: {@link ReviewDetailImpl#getStatus()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ReviewStatusType ReviewDetailImpl.getStatus()"})
   public void testGetStatus() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.rating.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3988 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.rating.domain.ReviewDetailImpl reviewDetailImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new ReviewDetailImpl()).getStatus();
-  }
-
-  /**
-   * Test {@link ReviewDetailImpl#getStatus()}.
-   * <ul>
-   *   <li>Given {@link ReviewDetailImpl#ReviewDetailImpl()}.</li>
-   *   <li>Then return FriendlyType is {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ReviewDetailImpl#getStatus()}
-   */
-  @Test
-  public void testGetStatus_givenReviewDetailImpl_thenReturnFriendlyTypeIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange and Act
     ReviewStatusType actualStatus = (new ReviewDetailImpl()).getStatus();
 
@@ -221,39 +147,14 @@ public class ReviewDetailImplDiffblueTest {
   }
 
   /**
-   * Test {@link ReviewDetailImpl#getStatus()}.
-   * <ul>
-   *   <li>Then return {@link ReviewStatusType#PENDING}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ReviewDetailImpl#getStatus()}
-   */
-  @Test
-  public void testGetStatus_thenReturnPending() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CustomerImpl customer = mock(CustomerImpl.class);
-    Date reivewSubmittedDate = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
-    RatingDetailImpl ratingDetail = new RatingDetailImpl();
-
-    // Act
-    ReviewStatusType actualStatus = (new ReviewDetailImpl(customer, reivewSubmittedDate, ratingDetail, "Review Text",
-        new RatingSummaryImpl())).getStatus();
-
-    // Assert
-    assertEquals(actualStatus.PENDING, actualStatus);
-  }
-
-  /**
    * Test {@link ReviewDetailImpl#getReviewFeedback()}.
    * <p>
    * Method under test: {@link ReviewDetailImpl#getReviewFeedback()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.util.List ReviewDetailImpl.getReviewFeedback()"})
   public void testGetReviewFeedback() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     CustomerImpl customer = new CustomerImpl();
     Date reivewSubmittedDate = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
@@ -268,56 +169,6 @@ public class ReviewDetailImplDiffblueTest {
 
   /**
    * Test {@link ReviewDetailImpl#getReviewFeedback()}.
-   * <p>
-   * Method under test: {@link ReviewDetailImpl#getReviewFeedback()}
-   */
-  @Test
-  public void testGetReviewFeedback2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CustomerImpl customer = mock(CustomerImpl.class);
-    Date reivewSubmittedDate = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
-    RatingDetailImpl ratingDetail = new RatingDetailImpl();
-
-    // Act and Assert
-    assertTrue(
-        (new ReviewDetailImpl(customer, reivewSubmittedDate, ratingDetail, "Review Text", new RatingSummaryImpl()))
-            .getReviewFeedback()
-            .isEmpty());
-  }
-
-  /**
-   * Test {@link ReviewDetailImpl#getReviewFeedback()}.
-   * <p>
-   * Method under test: {@link ReviewDetailImpl#getReviewFeedback()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetReviewFeedback3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.rating.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3984 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.rating.domain.ReviewDetailImpl reviewDetailImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new ReviewDetailImpl()).getReviewFeedback();
-  }
-
-  /**
-   * Test {@link ReviewDetailImpl#getReviewFeedback()}.
    * <ul>
    *   <li>Given {@link ReviewDetailImpl#ReviewDetailImpl()}.</li>
    * </ul>
@@ -325,9 +176,9 @@ public class ReviewDetailImplDiffblueTest {
    * Method under test: {@link ReviewDetailImpl#getReviewFeedback()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.util.List ReviewDetailImpl.getReviewFeedback()"})
   public void testGetReviewFeedback_givenReviewDetailImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertTrue((new ReviewDetailImpl()).getReviewFeedback().isEmpty());
   }

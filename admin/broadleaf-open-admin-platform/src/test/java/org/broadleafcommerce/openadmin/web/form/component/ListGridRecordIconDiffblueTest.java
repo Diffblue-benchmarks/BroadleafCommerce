@@ -1,18 +1,39 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.web.form.component;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {ListGridRecordIcon.class})
 @RunWith(SpringJUnit4ClassRunner.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class ListGridRecordIconDiffblueTest {
   @Autowired
   private ListGridRecordIcon listGridRecordIcon;
@@ -23,6 +44,8 @@ public class ListGridRecordIconDiffblueTest {
    * Method under test: {@link ListGridRecordIcon#withCssClass(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ListGridRecordIcon ListGridRecordIcon.withCssClass(String)"})
   public void testWithCssClass() {
     // Arrange and Act
     ListGridRecordIcon actualWithCssClassResult = listGridRecordIcon.withCssClass("Css Class");
@@ -38,6 +61,8 @@ public class ListGridRecordIconDiffblueTest {
    * Method under test: {@link ListGridRecordIcon#withMessage(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ListGridRecordIcon ListGridRecordIcon.withMessage(String)"})
   public void testWithMessage() {
     // Arrange and Act
     ListGridRecordIcon actualWithMessageResult = listGridRecordIcon.withMessage("Not all who wander are lost");
@@ -53,6 +78,8 @@ public class ListGridRecordIconDiffblueTest {
    * Method under test: {@link ListGridRecordIcon#withHasDetails(Boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ListGridRecordIcon ListGridRecordIcon.withHasDetails(Boolean)"})
   public void testWithHasDetails() {
     // Arrange
     ListGridRecordIcon listGridRecordIcon = new ListGridRecordIcon();
@@ -80,6 +107,11 @@ public class ListGridRecordIconDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ListGridRecordIcon.<init>()", "String ListGridRecordIcon.getCssClass()",
+      "Boolean ListGridRecordIcon.getHasDetails()", "String ListGridRecordIcon.getMessage()",
+      "void ListGridRecordIcon.setCssClass(String)", "void ListGridRecordIcon.setHasDetails(Boolean)",
+      "void ListGridRecordIcon.setMessage(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     ListGridRecordIcon actualListGridRecordIcon = new ListGridRecordIcon();
@@ -89,7 +121,7 @@ public class ListGridRecordIconDiffblueTest {
     String actualCssClass = actualListGridRecordIcon.getCssClass();
     Boolean actualHasDetails = actualListGridRecordIcon.getHasDetails();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Css Class", actualCssClass);
     assertEquals("Not all who wander are lost", actualListGridRecordIcon.getMessage());
     assertTrue(actualHasDetails);

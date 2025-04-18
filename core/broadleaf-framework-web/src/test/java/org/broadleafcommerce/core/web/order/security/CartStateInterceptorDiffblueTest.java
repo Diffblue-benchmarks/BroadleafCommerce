@@ -1,10 +1,28 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework Web
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.web.order.security;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.core.web.search.SearchRequestWrapper;
 import org.broadleafcommerce.core.web.security.XssRequestWrapper;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.web.reactive.context.StandardReactiveWebEnvironment;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -13,32 +31,6 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 
 class CartStateInterceptorDiffblueTest {
-  /**
-   * Test {@link CartStateInterceptor#preHandle(WebRequest)}.
-   * <p>
-   * Method under test: {@link CartStateInterceptor#preHandle(WebRequest)}
-   */
-  @Test
-  @DisplayName("Test preHandle(WebRequest)")
-  @Disabled("TODO: Complete this test")
-  void testPreHandle() throws Exception {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.broadleafcommerce.core.web.order.security.CartStateInterceptor.preHandle(CartStateInterceptor.java:47)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    CartStateInterceptor cartStateInterceptor = new CartStateInterceptor();
-    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
-
-    // Act
-    cartStateInterceptor.preHandle(new ServletWebRequest(new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
-        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}))));
-  }
-
   /**
    * Test getters and setters.
    * <p>
@@ -51,6 +43,10 @@ class CartStateInterceptorDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void CartStateInterceptor.<init>()",
+      "void CartStateInterceptor.afterCompletion(WebRequest, Exception)",
+      "void CartStateInterceptor.postHandle(WebRequest, ModelMap)"})
   void testGettersAndSetters() throws Exception {
     // Arrange and Act
     CartStateInterceptor actualCartStateInterceptor = new CartStateInterceptor();
@@ -63,7 +59,7 @@ class CartStateInterceptorDiffblueTest {
         new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"})));
     actualCartStateInterceptor.postHandle(request2, new ModelMap());
 
-    // Assert that nothing has changed
+    // Assert
     assertNull(actualCartStateInterceptor.cartStateProcessor);
   }
 }

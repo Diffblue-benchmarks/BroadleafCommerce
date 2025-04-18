@@ -19,7 +19,10 @@ package org.broadleafcommerce.common.jmx;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class ExplicitNameFactoryBeanDiffblueTest {
   /**
@@ -33,6 +36,9 @@ public class ExplicitNameFactoryBeanDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ExplicitNameFactoryBean.<init>(String, String)",
+      "Class ExplicitNameFactoryBean.getObjectType()", "boolean ExplicitNameFactoryBean.isSingleton()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     ExplicitNameFactoryBean actualExplicitNameFactoryBean = new ExplicitNameFactoryBean("Name", "Suffix");
@@ -50,6 +56,8 @@ public class ExplicitNameFactoryBeanDiffblueTest {
    * Method under test: {@link ExplicitNameFactoryBean#getObject()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Object ExplicitNameFactoryBean.getObject()"})
   public void testGetObject() throws Exception {
     // Arrange, Act and Assert
     assertEquals("Name-Suffix", (new ExplicitNameFactoryBean("Name", "Suffix")).getObject());

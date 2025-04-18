@@ -18,25 +18,28 @@
 package org.broadleafcommerce.common.web.controller;
 
 import static org.junit.Assert.assertFalse;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import javax.servlet.http.HttpServletRequest;
 import org.broadleafcommerce.common.web.filter.SessionlessHttpServletRequestWrapper;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 
 public class BroadleafControllerUtilityDiffblueTest {
   /**
-   * Test {@link BroadleafControllerUtility#isAjaxRequest(HttpServletRequest)}
-   * with {@code HttpServletRequest}.
+   * Test {@link BroadleafControllerUtility#isAjaxRequest(HttpServletRequest)} with {@code HttpServletRequest}.
    * <ul>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafControllerUtility#isAjaxRequest(HttpServletRequest)}
+   * Method under test: {@link BroadleafControllerUtility#isAjaxRequest(HttpServletRequest)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BroadleafControllerUtility.isAjaxRequest(HttpServletRequest)"})
   public void testIsAjaxRequestWithHttpServletRequest_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse(BroadleafControllerUtility
@@ -44,16 +47,16 @@ public class BroadleafControllerUtilityDiffblueTest {
   }
 
   /**
-   * Test {@link BroadleafControllerUtility#isAjaxRequest(WebRequest)} with
-   * {@code WebRequest}.
+   * Test {@link BroadleafControllerUtility#isAjaxRequest(WebRequest)} with {@code WebRequest}.
    * <ul>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafControllerUtility#isAjaxRequest(WebRequest)}
+   * Method under test: {@link BroadleafControllerUtility#isAjaxRequest(WebRequest)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BroadleafControllerUtility.isAjaxRequest(WebRequest)"})
   public void testIsAjaxRequestWithWebRequest_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse(BroadleafControllerUtility

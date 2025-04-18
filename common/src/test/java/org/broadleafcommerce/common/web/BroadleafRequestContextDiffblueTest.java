@@ -26,8 +26,8 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -37,9 +37,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
-import java.util.Set;
 import java.util.TimeZone;
-import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.broadleafcommerce.common.RequestDTO;
@@ -59,227 +57,23 @@ import org.broadleafcommerce.common.util.BroadleafMergeResourceBundleMessageSour
 import org.broadleafcommerce.common.web.filter.SessionlessHttpServletRequestWrapper;
 import org.broadleafcommerce.common.web.util.FileSystemResponseWrapper;
 import org.broadleafcommerce.common.web.util.StatusExposingServletResponse;
-import org.hibernate.engine.spi.SessionDelegatorBaseImpl;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.experimental.categories.Category;
 import org.springframework.context.MessageSource;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 
-@ContextConfiguration(classes = {BroadleafRequestContext.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class BroadleafRequestContextDiffblueTest {
-  @Autowired
-  private BroadleafRequestContext broadleafRequestContext;
-
-  /**
-   * Test {@link BroadleafRequestContext#getBroadleafRequestContext()}.
-   * <p>
-   * Method under test:
-   * {@link BroadleafRequestContext#getBroadleafRequestContext()}
-   */
-  @Test
-  public void testGetBroadleafRequestContext() throws MissingResourceException {
-    // Arrange and Act
-    BroadleafRequestContext actualBroadleafRequestContext = BroadleafRequestContext.getBroadleafRequestContext();
-
-    // Assert
-    java.util.Locale javaLocale = actualBroadleafRequestContext.getJavaLocale();
-    assertEquals("", javaLocale.getDisplayScript());
-    assertEquals("", javaLocale.getDisplayVariant());
-    assertEquals("", javaLocale.getScript());
-    assertEquals("", javaLocale.getVariant());
-    Currency javaCurrency = actualBroadleafRequestContext.getJavaCurrency();
-    assertEquals("British Pound", javaCurrency.getDisplayName());
-    assertEquals("English (United Kingdom)", javaLocale.getDisplayName());
-    assertEquals("English", javaLocale.getDisplayLanguage());
-    assertEquals("GB", javaLocale.getCountry());
-    assertEquals("GBP", javaCurrency.getCurrencyCode());
-    assertEquals("GBP", javaCurrency.toString());
-    assertEquals("GBR", javaLocale.getISO3Country());
-    assertEquals("United Kingdom", javaLocale.getDisplayCountry());
-    assertEquals("£", javaCurrency.getSymbol());
-    assertEquals("en", javaLocale.getLanguage());
-    assertEquals("eng", javaLocale.getISO3Language());
-    assertNull(actualBroadleafRequestContext.getAdminUserId());
-    assertNull(actualBroadleafRequestContext.getSandBoxId());
-    assertNull(actualBroadleafRequestContext.getRequestURIWithoutContext());
-    assertNull(actualBroadleafRequestContext.getTimeZone());
-    assertNull(actualBroadleafRequestContext.getRequest());
-    assertNull(actualBroadleafRequestContext.getResponse());
-    assertNull(actualBroadleafRequestContext.getRequestDTO());
-    assertNull(actualBroadleafRequestContext.getBroadleafCurrency());
-    assertNull(actualBroadleafRequestContext.getRequestedBroadleafCurrency());
-    assertNull(actualBroadleafRequestContext.getLocale());
-    assertNull(actualBroadleafRequestContext.getSandBox());
-    assertNull(actualBroadleafRequestContext.getCurrentCatalog());
-    assertNull(actualBroadleafRequestContext.getCurrentProfile());
-    assertNull(actualBroadleafRequestContext.getNonPersistentSite());
-    assertNull(actualBroadleafRequestContext.getSite());
-    assertNull(actualBroadleafRequestContext.getTheme());
-    assertNull(actualBroadleafRequestContext.getMessageSource());
-    assertNull(actualBroadleafRequestContext.getWebRequest());
-    assertEquals(2, javaCurrency.getDefaultFractionDigits());
-    assertEquals(826, javaCurrency.getNumericCode());
-    assertEquals(DeployBehavior.UNDEFINED, actualBroadleafRequestContext.getDeployBehavior());
-    assertEquals(DeployState.UNDEFINED, actualBroadleafRequestContext.getDeployState());
-    assertEquals(EnforceEnterpriseCollectionBehaviorState.UNDEFINED,
-        actualBroadleafRequestContext.getEnforceEnterpriseCollectionBehaviorState());
-    assertEquals(ValidateProductionChangesState.UNDEFINED,
-        actualBroadleafRequestContext.getValidateProductionChangesState());
-    assertFalse(javaLocale.hasExtensions());
-    assertFalse(actualBroadleafRequestContext.getAdmin());
-    assertFalse(actualBroadleafRequestContext.getIgnoreSite());
-    assertFalse(actualBroadleafRequestContext.getInternalIgnoreFilters());
-    assertFalse(actualBroadleafRequestContext.getInternalValidateFind());
-    assertFalse(actualBroadleafRequestContext.ignoreSite);
-    assertFalse(actualBroadleafRequestContext.isAdmin);
-    assertTrue(actualBroadleafRequestContext.getExplicitCatalogs().isEmpty());
-    assertTrue(actualBroadleafRequestContext.explicitCatalogs.isEmpty());
-    assertTrue(actualBroadleafRequestContext.getAdditionalProperties().isEmpty());
-    Set<Character> extensionKeys = javaLocale.getExtensionKeys();
-    assertTrue(extensionKeys.isEmpty());
-    assertTrue(actualBroadleafRequestContext.isProductionSandBox());
-    assertSame(extensionKeys, javaLocale.getUnicodeLocaleAttributes());
-    assertSame(extensionKeys, javaLocale.getUnicodeLocaleKeys());
-    assertSame(javaCurrency, actualBroadleafRequestContext.javaCurrency);
-    assertSame(javaLocale, actualBroadleafRequestContext.javaLocale);
-  }
-
-  /**
-   * Test {@link BroadleafRequestContext#getBroadleafRequestContext(boolean)} with
-   * {@code boolean}.
-   * <p>
-   * Method under test:
-   * {@link BroadleafRequestContext#getBroadleafRequestContext(boolean)}
-   */
-  @Test
-  public void testGetBroadleafRequestContextWithBoolean() throws MissingResourceException {
-    // Arrange and Act
-    BroadleafRequestContext actualBroadleafRequestContext = BroadleafRequestContext.getBroadleafRequestContext(true);
-
-    // Assert
-    java.util.Locale javaLocale = actualBroadleafRequestContext.getJavaLocale();
-    assertEquals("", javaLocale.getDisplayScript());
-    assertEquals("", javaLocale.getDisplayVariant());
-    assertEquals("", javaLocale.getScript());
-    assertEquals("", javaLocale.getVariant());
-    Currency javaCurrency = actualBroadleafRequestContext.getJavaCurrency();
-    assertEquals("British Pound", javaCurrency.getDisplayName());
-    assertEquals("English (United Kingdom)", javaLocale.getDisplayName());
-    assertEquals("English", javaLocale.getDisplayLanguage());
-    assertEquals("GB", javaLocale.getCountry());
-    assertEquals("GBP", javaCurrency.getCurrencyCode());
-    assertEquals("GBP", javaCurrency.toString());
-    assertEquals("GBR", javaLocale.getISO3Country());
-    assertEquals("United Kingdom", javaLocale.getDisplayCountry());
-    assertEquals("£", javaCurrency.getSymbol());
-    assertEquals("en", javaLocale.getLanguage());
-    assertEquals("eng", javaLocale.getISO3Language());
-    assertNull(actualBroadleafRequestContext.getAdminUserId());
-    assertNull(actualBroadleafRequestContext.getSandBoxId());
-    assertNull(actualBroadleafRequestContext.getRequestURIWithoutContext());
-    assertNull(actualBroadleafRequestContext.getTimeZone());
-    assertNull(actualBroadleafRequestContext.getRequest());
-    assertNull(actualBroadleafRequestContext.getResponse());
-    assertNull(actualBroadleafRequestContext.getRequestDTO());
-    assertNull(actualBroadleafRequestContext.getBroadleafCurrency());
-    assertNull(actualBroadleafRequestContext.getRequestedBroadleafCurrency());
-    assertNull(actualBroadleafRequestContext.getLocale());
-    assertNull(actualBroadleafRequestContext.getSandBox());
-    assertNull(actualBroadleafRequestContext.getCurrentCatalog());
-    assertNull(actualBroadleafRequestContext.getCurrentProfile());
-    assertNull(actualBroadleafRequestContext.getNonPersistentSite());
-    assertNull(actualBroadleafRequestContext.getSite());
-    assertNull(actualBroadleafRequestContext.getTheme());
-    assertNull(actualBroadleafRequestContext.getMessageSource());
-    assertNull(actualBroadleafRequestContext.getWebRequest());
-    assertEquals(2, javaCurrency.getDefaultFractionDigits());
-    assertEquals(826, javaCurrency.getNumericCode());
-    assertEquals(DeployBehavior.UNDEFINED, actualBroadleafRequestContext.getDeployBehavior());
-    assertEquals(DeployState.UNDEFINED, actualBroadleafRequestContext.getDeployState());
-    assertEquals(EnforceEnterpriseCollectionBehaviorState.UNDEFINED,
-        actualBroadleafRequestContext.getEnforceEnterpriseCollectionBehaviorState());
-    assertEquals(ValidateProductionChangesState.UNDEFINED,
-        actualBroadleafRequestContext.getValidateProductionChangesState());
-    assertFalse(javaLocale.hasExtensions());
-    assertFalse(actualBroadleafRequestContext.getAdmin());
-    assertFalse(actualBroadleafRequestContext.getIgnoreSite());
-    assertFalse(actualBroadleafRequestContext.getInternalIgnoreFilters());
-    assertFalse(actualBroadleafRequestContext.getInternalValidateFind());
-    assertFalse(actualBroadleafRequestContext.ignoreSite);
-    assertFalse(actualBroadleafRequestContext.isAdmin);
-    assertTrue(actualBroadleafRequestContext.getExplicitCatalogs().isEmpty());
-    assertTrue(actualBroadleafRequestContext.explicitCatalogs.isEmpty());
-    assertTrue(actualBroadleafRequestContext.getAdditionalProperties().isEmpty());
-    Set<Character> extensionKeys = javaLocale.getExtensionKeys();
-    assertTrue(extensionKeys.isEmpty());
-    assertTrue(actualBroadleafRequestContext.isProductionSandBox());
-    assertSame(extensionKeys, javaLocale.getUnicodeLocaleAttributes());
-    assertSame(extensionKeys, javaLocale.getUnicodeLocaleKeys());
-    assertSame(javaCurrency, actualBroadleafRequestContext.javaCurrency);
-    assertSame(javaLocale, actualBroadleafRequestContext.javaLocale);
-  }
-
-  /**
-   * Test {@link BroadleafRequestContext#getBroadleafRequestContext(boolean)} with
-   * {@code boolean}.
-   * <ul>
-   *   <li>When {@code false}.</li>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link BroadleafRequestContext#getBroadleafRequestContext(boolean)}
-   */
-  @Test
-  public void testGetBroadleafRequestContextWithBoolean_whenFalse_thenReturnNull() {
-    // Arrange, Act and Assert
-    assertNull(BroadleafRequestContext.getBroadleafRequestContext(false));
-  }
-
-  /**
-   * Test
-   * {@link BroadleafRequestContext#setBroadleafRequestContext(BroadleafRequestContext)}.
-   * <ul>
-   *   <li>When {@link BroadleafRequestContext} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link BroadleafRequestContext#setBroadleafRequestContext(BroadleafRequestContext)}
-   */
-  @Test
-  public void testSetBroadleafRequestContext_whenBroadleafRequestContext() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange and Act
-    BroadleafRequestContext.setBroadleafRequestContext(new BroadleafRequestContext());
-  }
-
-  /**
-   * Test {@link BroadleafRequestContext#isContextInitialized()}.
-   * <p>
-   * Method under test: {@link BroadleafRequestContext#isContextInitialized()}
-   */
-  @Test
-  public void testIsContextInitialized() {
-    // Arrange, Act and Assert
-    assertFalse(BroadleafRequestContext.isContextInitialized());
-  }
-
   /**
    * Test {@link BroadleafRequestContext#hasLocale()}.
    * <p>
    * Method under test: {@link BroadleafRequestContext#hasLocale()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BroadleafRequestContext.hasLocale()"})
   public void testHasLocale() {
     // Arrange, Act and Assert
     assertFalse(BroadleafRequestContext.hasLocale());
@@ -291,6 +85,8 @@ public class BroadleafRequestContextDiffblueTest {
    * Method under test: {@link BroadleafRequestContext#hasCurrency()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BroadleafRequestContext.hasCurrency()"})
   public void testHasCurrency() {
     // Arrange, Act and Assert
     assertFalse(BroadleafRequestContext.hasCurrency());
@@ -302,61 +98,24 @@ public class BroadleafRequestContextDiffblueTest {
    * Method under test: {@link BroadleafRequestContext#getCurrency()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BroadleafCurrency BroadleafRequestContext.getCurrency()"})
   public void testGetCurrency() {
     // Arrange, Act and Assert
     assertNull(BroadleafRequestContext.getCurrency());
   }
 
   /**
-   * Test {@link BroadleafRequestContext#getRequestAttribute(String)}.
-   * <p>
-   * Method under test:
-   * {@link BroadleafRequestContext#getRequestAttribute(String)}
-   */
-  @Test
-  public void testGetRequestAttribute() throws MissingResourceException {
-    // Arrange and Act
-    Object actualRequestAttribute = broadleafRequestContext.getRequestAttribute("Name");
-
-    // Assert
-    Locale locale = broadleafRequestContext.javaLocale;
-    assertEquals("", locale.getDisplayScript());
-    assertEquals("", locale.getDisplayVariant());
-    assertEquals("", locale.getScript());
-    assertEquals("", locale.getVariant());
-    Currency currency = broadleafRequestContext.javaCurrency;
-    assertEquals("British Pound", currency.getDisplayName());
-    assertEquals("English (United Kingdom)", locale.getDisplayName());
-    assertEquals("English", locale.getDisplayLanguage());
-    assertEquals("GB", locale.getCountry());
-    assertEquals("GBP", currency.getCurrencyCode());
-    assertEquals("GBP", currency.toString());
-    assertEquals("GBR", locale.getISO3Country());
-    assertEquals("United Kingdom", locale.getDisplayCountry());
-    assertEquals("£", currency.getSymbol());
-    assertEquals("en", locale.getLanguage());
-    assertEquals("eng", locale.getISO3Language());
-    assertNull(actualRequestAttribute);
-    assertEquals(2, currency.getDefaultFractionDigits());
-    assertEquals(826, currency.getNumericCode());
-    assertFalse(locale.hasExtensions());
-    Currency expectedJavaCurrency = broadleafRequestContext.javaCurrency;
-    assertSame(expectedJavaCurrency, broadleafRequestContext.getJavaCurrency());
-    Locale expectedJavaLocale = broadleafRequestContext.javaLocale;
-    assertSame(expectedJavaLocale, broadleafRequestContext.getJavaLocale());
-  }
-
-  /**
    * Test {@link BroadleafRequestContext#setRequest(HttpServletRequest)}.
    * <ul>
-   *   <li>Then {@link BroadleafRequestContext} (default constructor) WebRequest
-   * {@link ServletWebRequest}.</li>
+   *   <li>Then {@link BroadleafRequestContext} (default constructor) WebRequest {@link ServletWebRequest}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafRequestContext#setRequest(HttpServletRequest)}
+   * Method under test: {@link BroadleafRequestContext#setRequest(HttpServletRequest)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BroadleafRequestContext.setRequest(HttpServletRequest)"})
   public void testSetRequest_thenBroadleafRequestContextWebRequestServletWebRequest() {
     // Arrange
     BroadleafRequestContext broadleafRequestContext = new BroadleafRequestContext();
@@ -392,6 +151,8 @@ public class BroadleafRequestContextDiffblueTest {
    * Method under test: {@link BroadleafRequestContext#setWebRequest(WebRequest)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BroadleafRequestContext.setWebRequest(WebRequest)"})
   public void testSetWebRequest() {
     // Arrange
     BroadleafRequestContext broadleafRequestContext = new BroadleafRequestContext();
@@ -409,11 +170,37 @@ public class BroadleafRequestContextDiffblueTest {
   }
 
   /**
+   * Test {@link BroadleafRequestContext#setWebRequest(WebRequest)}.
+   * <ul>
+   *   <li>Then {@link BroadleafRequestContext} (default constructor) RequestURIWithoutContext is {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BroadleafRequestContext#setWebRequest(WebRequest)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BroadleafRequestContext.setWebRequest(WebRequest)"})
+  public void testSetWebRequest_thenBroadleafRequestContextRequestURIWithoutContextIsNull() {
+    // Arrange
+    BroadleafRequestContext broadleafRequestContext = new BroadleafRequestContext();
+
+    // Act
+    broadleafRequestContext.setWebRequest(null);
+
+    // Assert that nothing has changed
+    assertNull(broadleafRequestContext.getRequestURIWithoutContext());
+    assertNull(broadleafRequestContext.getRequest());
+    assertNull(broadleafRequestContext.getWebRequest());
+  }
+
+  /**
    * Test {@link BroadleafRequestContext#getSite()}.
    * <p>
    * Method under test: {@link BroadleafRequestContext#getSite()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Site BroadleafRequestContext.getSite()"})
   public void testGetSite() {
     // Arrange, Act and Assert
     assertNull((new BroadleafRequestContext()).getSite());
@@ -425,6 +212,8 @@ public class BroadleafRequestContextDiffblueTest {
    * Method under test: {@link BroadleafRequestContext#setSite(Site)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BroadleafRequestContext.setSite(Site)"})
   public void testSetSite() {
     // Arrange
     BroadleafRequestContext broadleafRequestContext = new BroadleafRequestContext();
@@ -447,6 +236,8 @@ public class BroadleafRequestContextDiffblueTest {
    * Method under test: {@link BroadleafRequestContext#getSandBoxId()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long BroadleafRequestContext.getSandBoxId()"})
   public void testGetSandBoxId_givenBroadleafRequestContext() {
     // Arrange, Act and Assert
     assertNull((new BroadleafRequestContext()).getSandBoxId());
@@ -455,13 +246,14 @@ public class BroadleafRequestContextDiffblueTest {
   /**
    * Test {@link BroadleafRequestContext#getSandBoxId()}.
    * <ul>
-   *   <li>Given {@link BroadleafRequestContext} (default constructor) SandBox is
-   * {@link SandBoxImpl} (default constructor).</li>
+   *   <li>Given {@link BroadleafRequestContext} (default constructor) SandBox is {@link SandBoxImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link BroadleafRequestContext#getSandBoxId()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long BroadleafRequestContext.getSandBoxId()"})
   public void testGetSandBoxId_givenBroadleafRequestContextSandBoxIsSandBoxImpl() {
     // Arrange
     BroadleafRequestContext broadleafRequestContext = new BroadleafRequestContext();
@@ -481,6 +273,8 @@ public class BroadleafRequestContextDiffblueTest {
    * Method under test: {@link BroadleafRequestContext#isProductionSandBox()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BroadleafRequestContext.isProductionSandBox()"})
   public void testIsProductionSandBox_givenBroadleafRequestContext_thenReturnTrue() {
     // Arrange, Act and Assert
     assertTrue((new BroadleafRequestContext()).isProductionSandBox());
@@ -495,6 +289,8 @@ public class BroadleafRequestContextDiffblueTest {
    * Method under test: {@link BroadleafRequestContext#isProductionSandBox()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BroadleafRequestContext.isProductionSandBox()"})
   public void testIsProductionSandBox_thenReturnFalse() {
     // Arrange
     BroadleafRequestContext broadleafRequestContext = new BroadleafRequestContext();
@@ -510,6 +306,8 @@ public class BroadleafRequestContextDiffblueTest {
    * Method under test: {@link BroadleafRequestContext#getJavaLocale()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Locale BroadleafRequestContext.getJavaLocale()"})
   public void testGetJavaLocale() {
     // Arrange and Act
     Locale actualJavaLocale = (new BroadleafRequestContext()).getJavaLocale();
@@ -524,12 +322,15 @@ public class BroadleafRequestContextDiffblueTest {
    * Method under test: {@link BroadleafRequestContext#getJavaCurrency()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Currency BroadleafRequestContext.getJavaCurrency()"})
   public void testGetJavaCurrency() throws MissingResourceException {
     // Arrange
     BroadleafRequestContext broadleafRequestContext = new BroadleafRequestContext();
+    broadleafRequestContext.setBroadleafCurrency(new BroadleafCurrencyImpl());
 
     // Act
-    Currency actualJavaCurrency = broadleafRequestContext.getJavaCurrency();
+    broadleafRequestContext.getJavaCurrency();
 
     // Assert
     Locale locale = broadleafRequestContext.javaLocale;
@@ -545,19 +346,189 @@ public class BroadleafRequestContextDiffblueTest {
     assertEquals("en", locale.getLanguage());
     assertEquals("eng", locale.getISO3Language());
     assertFalse(locale.hasExtensions());
-    assertSame(broadleafRequestContext.javaCurrency, actualJavaCurrency);
     Locale expectedJavaLocale = broadleafRequestContext.javaLocale;
     assertSame(expectedJavaLocale, broadleafRequestContext.getJavaLocale());
   }
 
   /**
-   * Test {@link BroadleafRequestContext#setLocale(Locale)}.
+   * Test {@link BroadleafRequestContext#getJavaCurrency()}.
+   * <ul>
+   *   <li>Given {@link BroadleafRequestContext} (default constructor).</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafRequestContext#setLocale(org.broadleafcommerce.common.locale.domain.Locale)}
+   * Method under test: {@link BroadleafRequestContext#getJavaCurrency()}
    */
   @Test
-  public void testSetLocale() throws MissingResourceException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Currency BroadleafRequestContext.getJavaCurrency()"})
+  public void testGetJavaCurrency_givenBroadleafRequestContext() throws MissingResourceException {
+    // Arrange
+    BroadleafRequestContext broadleafRequestContext = new BroadleafRequestContext();
+
+    // Act
+    broadleafRequestContext.getJavaCurrency();
+
+    // Assert
+    Locale locale = broadleafRequestContext.javaLocale;
+    assertEquals("", locale.getDisplayScript());
+    assertEquals("", locale.getDisplayVariant());
+    assertEquals("", locale.getScript());
+    assertEquals("", locale.getVariant());
+    assertEquals("English (United Kingdom)", locale.getDisplayName());
+    assertEquals("English", locale.getDisplayLanguage());
+    assertEquals("GB", locale.getCountry());
+    assertEquals("GBR", locale.getISO3Country());
+    assertEquals("United Kingdom", locale.getDisplayCountry());
+    assertEquals("en", locale.getLanguage());
+    assertEquals("eng", locale.getISO3Language());
+    assertFalse(locale.hasExtensions());
+    Locale expectedJavaLocale = broadleafRequestContext.javaLocale;
+    assertSame(expectedJavaLocale, broadleafRequestContext.getJavaLocale());
+  }
+
+  /**
+   * Test {@link BroadleafRequestContext#getJavaCurrency()}.
+   * <ul>
+   *   <li>Then return {@link BroadleafRequestContext} (default constructor) {@link BroadleafRequestContext#javaCurrency}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BroadleafRequestContext#getJavaCurrency()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Currency BroadleafRequestContext.getJavaCurrency()"})
+  public void testGetJavaCurrency_thenReturnBroadleafRequestContextJavaCurrency() {
+    // Arrange
+    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
+    when(broadleafCurrency.getJavaCurrency()).thenThrow(new IllegalArgumentException("foo"));
+    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
+
+    BroadleafRequestContext broadleafRequestContext = new BroadleafRequestContext();
+    broadleafRequestContext.setBroadleafCurrency(broadleafCurrency);
+
+    // Act
+    Currency actualJavaCurrency = broadleafRequestContext.getJavaCurrency();
+
+    // Assert
+    verify(broadleafCurrency).getCurrencyCode();
+    verify(broadleafCurrency).getJavaCurrency();
+    assertSame(broadleafRequestContext.javaCurrency, actualJavaCurrency);
+  }
+
+  /**
+   * Test {@link BroadleafRequestContext#getJavaCurrency()}.
+   * <ul>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BroadleafRequestContext#getJavaCurrency()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Currency BroadleafRequestContext.getJavaCurrency()"})
+  public void testGetJavaCurrency_thenReturnNull() {
+    // Arrange
+    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
+    when(broadleafCurrency.getJavaCurrency()).thenReturn(null);
+    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
+
+    BroadleafRequestContext broadleafRequestContext = new BroadleafRequestContext();
+    broadleafRequestContext.setBroadleafCurrency(broadleafCurrency);
+
+    // Act
+    Currency actualJavaCurrency = broadleafRequestContext.getJavaCurrency();
+
+    // Assert
+    verify(broadleafCurrency).getCurrencyCode();
+    verify(broadleafCurrency).getJavaCurrency();
+    assertNull(actualJavaCurrency);
+  }
+
+  /**
+   * Test {@link BroadleafRequestContext#setLocale(Locale)}.
+   * <ul>
+   *   <li>Given Default.</li>
+   *   <li>Then {@link BroadleafRequestContext} (default constructor) JavaLocale is Default {@link Locale#UK}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BroadleafRequestContext#setLocale(org.broadleafcommerce.common.locale.domain.Locale)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BroadleafRequestContext.setLocale(org.broadleafcommerce.common.locale.domain.Locale)"})
+  public void testSetLocale_givenDefault_thenBroadleafRequestContextJavaLocaleIsDefaultUk()
+      throws MissingResourceException {
+    // Arrange
+    BroadleafRequestContext broadleafRequestContext = new BroadleafRequestContext();
+    org.broadleafcommerce.common.locale.domain.Locale locale = mock(
+        org.broadleafcommerce.common.locale.domain.Locale.class);
+    Locale resultDefault = Locale.getDefault();
+    when(locale.getJavaLocale()).thenReturn(resultDefault);
+    when(locale.getLocaleCode()).thenReturn("en");
+
+    // Act
+    broadleafRequestContext.setLocale(locale);
+
+    // Assert
+    verify(locale).getJavaLocale();
+    verify(locale).getLocaleCode();
+    Locale locale2 = broadleafRequestContext.javaLocale;
+    assertEquals("", locale2.getDisplayScript());
+    assertEquals("", locale2.getDisplayVariant());
+    assertEquals("", locale2.getScript());
+    assertEquals("", locale2.getVariant());
+    assertEquals("English (United Kingdom)", locale2.getDisplayName());
+    assertEquals("English", locale2.getDisplayLanguage());
+    assertEquals("GB", locale2.getCountry());
+    assertEquals("GBR", locale2.getISO3Country());
+    assertEquals("United Kingdom", locale2.getDisplayCountry());
+    assertEquals("en", locale2.getLanguage());
+    assertEquals("eng", locale2.getISO3Language());
+    assertFalse(locale2.hasExtensions());
+    Locale expectedJavaLocale = resultDefault.UK;
+    assertSame(expectedJavaLocale, broadleafRequestContext.getJavaLocale());
+    assertSame(locale, broadleafRequestContext.getLocale());
+  }
+
+  /**
+   * Test {@link BroadleafRequestContext#setLocale(Locale)}.
+   * <ul>
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BroadleafRequestContext#setLocale(org.broadleafcommerce.common.locale.domain.Locale)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BroadleafRequestContext.setLocale(org.broadleafcommerce.common.locale.domain.Locale)"})
+  public void testSetLocale_thenThrowIllegalArgumentException() {
+    // Arrange
+    BroadleafRequestContext broadleafRequestContext = new BroadleafRequestContext();
+    org.broadleafcommerce.common.locale.domain.Locale locale = mock(
+        org.broadleafcommerce.common.locale.domain.Locale.class);
+    when(locale.getJavaLocale()).thenThrow(new IllegalArgumentException("foo"));
+    when(locale.getLocaleCode()).thenReturn("en");
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> broadleafRequestContext.setLocale(locale));
+    verify(locale).getJavaLocale();
+    verify(locale).getLocaleCode();
+  }
+
+  /**
+   * Test {@link BroadleafRequestContext#setLocale(Locale)}.
+   * <ul>
+   *   <li>When {@link LocaleImpl} (default constructor).</li>
+   *   <li>Then {@link BroadleafRequestContext} (default constructor) Locale is {@link LocaleImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BroadleafRequestContext#setLocale(org.broadleafcommerce.common.locale.domain.Locale)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BroadleafRequestContext.setLocale(org.broadleafcommerce.common.locale.domain.Locale)"})
+  public void testSetLocale_whenLocaleImpl_thenBroadleafRequestContextLocaleIsLocaleImpl()
+      throws MissingResourceException {
     // Arrange
     BroadleafRequestContext broadleafRequestContext = new BroadleafRequestContext();
     LocaleImpl locale = new LocaleImpl();
@@ -566,7 +537,7 @@ public class BroadleafRequestContextDiffblueTest {
     broadleafRequestContext.setLocale(locale);
 
     // Assert
-    java.util.Locale locale2 = broadleafRequestContext.javaLocale;
+    Locale locale2 = broadleafRequestContext.javaLocale;
     assertEquals("", locale2.getDisplayScript());
     assertEquals("", locale2.getDisplayVariant());
     assertEquals("", locale2.getScript());
@@ -580,17 +551,56 @@ public class BroadleafRequestContextDiffblueTest {
     assertEquals("eng", locale2.getISO3Language());
     assertFalse(locale2.hasExtensions());
     assertSame(locale, broadleafRequestContext.getLocale());
-    java.util.Locale expectedJavaLocale = broadleafRequestContext.javaLocale;
+    Locale expectedJavaLocale = broadleafRequestContext.javaLocale;
+    assertSame(expectedJavaLocale, broadleafRequestContext.getJavaLocale());
+  }
+
+  /**
+   * Test {@link BroadleafRequestContext#setLocale(Locale)}.
+   * <ul>
+   *   <li>When {@code null}.</li>
+   *   <li>Then {@link BroadleafRequestContext} (default constructor) Locale is {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BroadleafRequestContext#setLocale(org.broadleafcommerce.common.locale.domain.Locale)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BroadleafRequestContext.setLocale(org.broadleafcommerce.common.locale.domain.Locale)"})
+  public void testSetLocale_whenNull_thenBroadleafRequestContextLocaleIsNull() throws MissingResourceException {
+    // Arrange
+    BroadleafRequestContext broadleafRequestContext = new BroadleafRequestContext();
+
+    // Act
+    broadleafRequestContext.setLocale(null);
+
+    // Assert
+    Locale locale = broadleafRequestContext.javaLocale;
+    assertEquals("", locale.getDisplayScript());
+    assertEquals("", locale.getDisplayVariant());
+    assertEquals("", locale.getScript());
+    assertEquals("", locale.getVariant());
+    assertEquals("English (United Kingdom)", locale.getDisplayName());
+    assertEquals("English", locale.getDisplayLanguage());
+    assertEquals("GB", locale.getCountry());
+    assertEquals("GBR", locale.getISO3Country());
+    assertEquals("United Kingdom", locale.getDisplayCountry());
+    assertEquals("en", locale.getLanguage());
+    assertEquals("eng", locale.getISO3Language());
+    assertNull(broadleafRequestContext.getLocale());
+    assertFalse(locale.hasExtensions());
+    Locale expectedJavaLocale = broadleafRequestContext.javaLocale;
     assertSame(expectedJavaLocale, broadleafRequestContext.getJavaLocale());
   }
 
   /**
    * Test {@link BroadleafRequestContext#getRequestURIWithoutContext()}.
    * <p>
-   * Method under test:
-   * {@link BroadleafRequestContext#getRequestURIWithoutContext()}
+   * Method under test: {@link BroadleafRequestContext#getRequestURIWithoutContext()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BroadleafRequestContext.getRequestURIWithoutContext()"})
   public void testGetRequestURIWithoutContext() {
     // Arrange, Act and Assert
     assertNull((new BroadleafRequestContext()).getRequestURIWithoutContext());
@@ -599,10 +609,11 @@ public class BroadleafRequestContextDiffblueTest {
   /**
    * Test {@link BroadleafRequestContext#convertLocaleToJavaLocale()}.
    * <p>
-   * Method under test:
-   * {@link BroadleafRequestContext#convertLocaleToJavaLocale()}
+   * Method under test: {@link BroadleafRequestContext#convertLocaleToJavaLocale()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Locale BroadleafRequestContext.convertLocaleToJavaLocale()"})
   public void testConvertLocaleToJavaLocale() {
     // Arrange
     BroadleafRequestContext broadleafRequestContext = new BroadleafRequestContext();
@@ -618,58 +629,17 @@ public class BroadleafRequestContextDiffblueTest {
   }
 
   /**
-   * Test {@link BroadleafRequestContext#convertLocaleToJavaLocale(Locale)} with
-   * {@code Locale}.
-   * <ul>
-   *   <li>Then return DisplayScript is empty string.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link BroadleafRequestContext#convertLocaleToJavaLocale(org.broadleafcommerce.common.locale.domain.Locale)}
-   */
-  @Test
-  public void testConvertLocaleToJavaLocaleWithLocale_thenReturnDisplayScriptIsEmptyString()
-      throws MissingResourceException {
-    // Arrange
-    org.broadleafcommerce.common.locale.domain.Locale broadleafLocale = mock(
-        org.broadleafcommerce.common.locale.domain.Locale.class);
-    when(broadleafLocale.getJavaLocale()).thenReturn(java.util.Locale.getDefault());
-
-    // Act
-    java.util.Locale actualConvertLocaleToJavaLocaleResult = BroadleafRequestContext
-        .convertLocaleToJavaLocale(broadleafLocale);
-
-    // Assert
-    verify(broadleafLocale).getJavaLocale();
-    assertEquals("", actualConvertLocaleToJavaLocaleResult.getDisplayScript());
-    assertEquals("", actualConvertLocaleToJavaLocaleResult.getDisplayVariant());
-    assertEquals("", actualConvertLocaleToJavaLocaleResult.getScript());
-    assertEquals("", actualConvertLocaleToJavaLocaleResult.getVariant());
-    assertEquals("English (United Kingdom)", actualConvertLocaleToJavaLocaleResult.getDisplayName());
-    assertEquals("English", actualConvertLocaleToJavaLocaleResult.getDisplayLanguage());
-    assertEquals("GB", actualConvertLocaleToJavaLocaleResult.getCountry());
-    assertEquals("GBR", actualConvertLocaleToJavaLocaleResult.getISO3Country());
-    assertEquals("United Kingdom", actualConvertLocaleToJavaLocaleResult.getDisplayCountry());
-    assertEquals("en", actualConvertLocaleToJavaLocaleResult.getLanguage());
-    assertEquals("eng", actualConvertLocaleToJavaLocaleResult.getISO3Language());
-    assertFalse(actualConvertLocaleToJavaLocaleResult.hasExtensions());
-    Set<Character> extensionKeys = actualConvertLocaleToJavaLocaleResult.getExtensionKeys();
-    assertTrue(extensionKeys.isEmpty());
-    assertSame(extensionKeys, actualConvertLocaleToJavaLocaleResult.getUnicodeLocaleAttributes());
-    assertSame(extensionKeys, actualConvertLocaleToJavaLocaleResult.getUnicodeLocaleKeys());
-  }
-
-  /**
-   * Test {@link BroadleafRequestContext#convertLocaleToJavaLocale(Locale)} with
-   * {@code Locale}.
+   * Test {@link BroadleafRequestContext#convertLocaleToJavaLocale(Locale)} with {@code Locale}.
    * <ul>
    *   <li>Then throw {@link IllegalArgumentException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafRequestContext#convertLocaleToJavaLocale(org.broadleafcommerce.common.locale.domain.Locale)}
+   * Method under test: {@link BroadleafRequestContext#convertLocaleToJavaLocale(org.broadleafcommerce.common.locale.domain.Locale)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Locale BroadleafRequestContext.convertLocaleToJavaLocale(org.broadleafcommerce.common.locale.domain.Locale)"})
   public void testConvertLocaleToJavaLocaleWithLocale_thenThrowIllegalArgumentException() {
     // Arrange
     org.broadleafcommerce.common.locale.domain.Locale broadleafLocale = mock(
@@ -683,34 +653,36 @@ public class BroadleafRequestContextDiffblueTest {
   }
 
   /**
-   * Test {@link BroadleafRequestContext#convertLocaleToJavaLocale(Locale)} with
-   * {@code Locale}.
+   * Test {@link BroadleafRequestContext#convertLocaleToJavaLocale(Locale)} with {@code Locale}.
    * <ul>
    *   <li>When {@link LocaleImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafRequestContext#convertLocaleToJavaLocale(org.broadleafcommerce.common.locale.domain.Locale)}
+   * Method under test: {@link BroadleafRequestContext#convertLocaleToJavaLocale(org.broadleafcommerce.common.locale.domain.Locale)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Locale BroadleafRequestContext.convertLocaleToJavaLocale(org.broadleafcommerce.common.locale.domain.Locale)"})
   public void testConvertLocaleToJavaLocaleWithLocale_whenLocaleImpl_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull(BroadleafRequestContext.convertLocaleToJavaLocale(new LocaleImpl()));
   }
 
   /**
-   * Test {@link BroadleafRequestContext#convertLocaleToJavaLocale(Locale)} with
-   * {@code Locale}.
+   * Test {@link BroadleafRequestContext#convertLocaleToJavaLocale(Locale)} with {@code Locale}.
    * <ul>
    *   <li>When {@code null}.</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafRequestContext#convertLocaleToJavaLocale(org.broadleafcommerce.common.locale.domain.Locale)}
+   * Method under test: {@link BroadleafRequestContext#convertLocaleToJavaLocale(org.broadleafcommerce.common.locale.domain.Locale)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Locale BroadleafRequestContext.convertLocaleToJavaLocale(org.broadleafcommerce.common.locale.domain.Locale)"})
   public void testConvertLocaleToJavaLocaleWithLocale_whenNull_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull(BroadleafRequestContext.convertLocaleToJavaLocale(null));
@@ -722,6 +694,8 @@ public class BroadleafRequestContextDiffblueTest {
    * Method under test: {@link BroadleafRequestContext#isSecure()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BroadleafRequestContext.isSecure()"})
   public void testIsSecure() {
     // Arrange, Act and Assert
     assertFalse((new BroadleafRequestContext()).isSecure());
@@ -736,6 +710,8 @@ public class BroadleafRequestContextDiffblueTest {
    * Method under test: {@link BroadleafRequestContext#getExplicitCatalogs()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List BroadleafRequestContext.getExplicitCatalogs()"})
   public void testGetExplicitCatalogs_givenBroadleafRequestContext() {
     // Arrange, Act and Assert
     assertTrue((new BroadleafRequestContext()).getExplicitCatalogs().isEmpty());
@@ -744,13 +720,14 @@ public class BroadleafRequestContextDiffblueTest {
   /**
    * Test {@link BroadleafRequestContext#getExplicitCatalogs()}.
    * <ul>
-   *   <li>Given {@link BroadleafRequestContext} (default constructor)
-   * ExplicitCatalogs is {@code null}.</li>
+   *   <li>Given {@link BroadleafRequestContext} (default constructor) ExplicitCatalogs is {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link BroadleafRequestContext#getExplicitCatalogs()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List BroadleafRequestContext.getExplicitCatalogs()"})
   public void testGetExplicitCatalogs_givenBroadleafRequestContextExplicitCatalogsIsNull() {
     // Arrange
     BroadleafRequestContext broadleafRequestContext = new BroadleafRequestContext();
@@ -761,36 +738,17 @@ public class BroadleafRequestContextDiffblueTest {
   }
 
   /**
-   * Test {@link BroadleafRequestContext#getRequestParameterMap()}.
-   * <p>
-   * Method under test: {@link BroadleafRequestContext#getRequestParameterMap()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetRequestParameterMap() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.broadleafcommerce.common.web.BroadleafRequestContext.getRequestParameterMap(BroadleafRequestContext.java:442)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange and Act
-    BroadleafRequestContext.getRequestParameterMap();
-  }
-
-  /**
    * Test {@link BroadleafRequestContext#getIgnoreSite()}.
    * <ul>
-   *   <li>Given {@link BroadleafRequestContext} (default constructor) IgnoreSite is
-   * {@code null}.</li>
+   *   <li>Given {@link BroadleafRequestContext} (default constructor) IgnoreSite is {@code null}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link BroadleafRequestContext#getIgnoreSite()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean BroadleafRequestContext.getIgnoreSite()"})
   public void testGetIgnoreSite_givenBroadleafRequestContextIgnoreSiteIsNull_thenReturnFalse() {
     // Arrange
     BroadleafRequestContext broadleafRequestContext = new BroadleafRequestContext();
@@ -803,14 +761,15 @@ public class BroadleafRequestContextDiffblueTest {
   /**
    * Test {@link BroadleafRequestContext#getIgnoreSite()}.
    * <ul>
-   *   <li>Given {@link BroadleafRequestContext} (default constructor) IgnoreSite is
-   * {@code true}.</li>
+   *   <li>Given {@link BroadleafRequestContext} (default constructor) IgnoreSite is {@code true}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link BroadleafRequestContext#getIgnoreSite()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean BroadleafRequestContext.getIgnoreSite()"})
   public void testGetIgnoreSite_givenBroadleafRequestContextIgnoreSiteIsTrue_thenReturnTrue() {
     // Arrange
     BroadleafRequestContext broadleafRequestContext = new BroadleafRequestContext();
@@ -830,6 +789,8 @@ public class BroadleafRequestContextDiffblueTest {
    * Method under test: {@link BroadleafRequestContext#getIgnoreSite()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean BroadleafRequestContext.getIgnoreSite()"})
   public void testGetIgnoreSite_givenBroadleafRequestContext_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse((new BroadleafRequestContext()).getIgnoreSite());
@@ -848,8 +809,7 @@ public class BroadleafRequestContextDiffblueTest {
    *   <li>{@link BroadleafRequestContext#setCurrentProfile(Site)}
    *   <li>{@link BroadleafRequestContext#setDeployBehavior(DeployBehavior)}
    *   <li>{@link BroadleafRequestContext#setDeployState(DeployState)}
-   *   <li>
-   * {@link BroadleafRequestContext#setEnforceEnterpriseCollectionBehaviorState(EnforceEnterpriseCollectionBehaviorState)}
+   *   <li>{@link BroadleafRequestContext#setEnforceEnterpriseCollectionBehaviorState(EnforceEnterpriseCollectionBehaviorState)}
    *   <li>{@link BroadleafRequestContext#setExplicitCatalogs(List)}
    *   <li>{@link BroadleafRequestContext#setIgnoreSite(Boolean)}
    *   <li>{@link BroadleafRequestContext#setInternalIgnoreFilters(Boolean)}
@@ -857,14 +817,12 @@ public class BroadleafRequestContextDiffblueTest {
    *   <li>{@link BroadleafRequestContext#setMessageSource(MessageSource)}
    *   <li>{@link BroadleafRequestContext#setNonPersistentSite(Site)}
    *   <li>{@link BroadleafRequestContext#setRequestDTO(RequestDTO)}
-   *   <li>
-   * {@link BroadleafRequestContext#setRequestedBroadleafCurrency(BroadleafCurrency)}
+   *   <li>{@link BroadleafRequestContext#setRequestedBroadleafCurrency(BroadleafCurrency)}
    *   <li>{@link BroadleafRequestContext#setResponse(HttpServletResponse)}
    *   <li>{@link BroadleafRequestContext#setSandBox(SandBox)}
    *   <li>{@link BroadleafRequestContext#setTheme(Theme)}
    *   <li>{@link BroadleafRequestContext#setTimeZone(TimeZone)}
-   *   <li>
-   * {@link BroadleafRequestContext#setValidateProductionChangesState(ValidateProductionChangesState)}
+   *   <li>{@link BroadleafRequestContext#setValidateProductionChangesState(ValidateProductionChangesState)}
    *   <li>{@link BroadleafRequestContext#getAdditionalProperties()}
    *   <li>{@link BroadleafRequestContext#getAdminUserId()}
    *   <li>{@link BroadleafRequestContext#getBroadleafCurrency()}
@@ -872,8 +830,7 @@ public class BroadleafRequestContextDiffblueTest {
    *   <li>{@link BroadleafRequestContext#getCurrentProfile()}
    *   <li>{@link BroadleafRequestContext#getDeployBehavior()}
    *   <li>{@link BroadleafRequestContext#getDeployState()}
-   *   <li>
-   * {@link BroadleafRequestContext#getEnforceEnterpriseCollectionBehaviorState()}
+   *   <li>{@link BroadleafRequestContext#getEnforceEnterpriseCollectionBehaviorState()}
    *   <li>{@link BroadleafRequestContext#getInternalIgnoreFilters()}
    *   <li>{@link BroadleafRequestContext#getInternalValidateFind()}
    *   <li>{@link BroadleafRequestContext#getLocale()}
@@ -891,6 +848,41 @@ public class BroadleafRequestContextDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map BroadleafRequestContext.getAdditionalProperties()",
+      "Long BroadleafRequestContext.getAdminUserId()",
+      "BroadleafCurrency BroadleafRequestContext.getBroadleafCurrency()",
+      "Catalog BroadleafRequestContext.getCurrentCatalog()", "Site BroadleafRequestContext.getCurrentProfile()",
+      "DeployBehavior BroadleafRequestContext.getDeployBehavior()",
+      "DeployState BroadleafRequestContext.getDeployState()",
+      "EnforceEnterpriseCollectionBehaviorState BroadleafRequestContext.getEnforceEnterpriseCollectionBehaviorState()",
+      "Boolean BroadleafRequestContext.getInternalIgnoreFilters()",
+      "Boolean BroadleafRequestContext.getInternalValidateFind()",
+      "org.broadleafcommerce.common.locale.domain.Locale BroadleafRequestContext.getLocale()",
+      "MessageSource BroadleafRequestContext.getMessageSource()", "Site BroadleafRequestContext.getNonPersistentSite()",
+      "HttpServletRequest BroadleafRequestContext.getRequest()", "RequestDTO BroadleafRequestContext.getRequestDTO()",
+      "BroadleafCurrency BroadleafRequestContext.getRequestedBroadleafCurrency()",
+      "HttpServletResponse BroadleafRequestContext.getResponse()", "SandBox BroadleafRequestContext.getSandBox()",
+      "Theme BroadleafRequestContext.getTheme()", "TimeZone BroadleafRequestContext.getTimeZone()",
+      "ValidateProductionChangesState BroadleafRequestContext.getValidateProductionChangesState()",
+      "WebRequest BroadleafRequestContext.getWebRequest()", "void BroadleafRequestContext.setAdditionalProperties(Map)",
+      "void BroadleafRequestContext.setAdmin(Boolean)", "void BroadleafRequestContext.setAdminUserId(Long)",
+      "void BroadleafRequestContext.setBroadleafCurrency(BroadleafCurrency)",
+      "void BroadleafRequestContext.setCurrentCatalog(Catalog)", "void BroadleafRequestContext.setCurrentProfile(Site)",
+      "void BroadleafRequestContext.setDeployBehavior(DeployBehavior)",
+      "void BroadleafRequestContext.setDeployState(DeployState)",
+      "void BroadleafRequestContext.setEnforceEnterpriseCollectionBehaviorState(EnforceEnterpriseCollectionBehaviorState)",
+      "void BroadleafRequestContext.setExplicitCatalogs(List)", "void BroadleafRequestContext.setIgnoreSite(Boolean)",
+      "void BroadleafRequestContext.setInternalIgnoreFilters(Boolean)",
+      "void BroadleafRequestContext.setInternalValidateFind(Boolean)",
+      "void BroadleafRequestContext.setMessageSource(MessageSource)",
+      "void BroadleafRequestContext.setNonPersistentSite(Site)",
+      "void BroadleafRequestContext.setRequestDTO(RequestDTO)",
+      "void BroadleafRequestContext.setRequestedBroadleafCurrency(BroadleafCurrency)",
+      "void BroadleafRequestContext.setResponse(HttpServletResponse)",
+      "void BroadleafRequestContext.setSandBox(SandBox)", "void BroadleafRequestContext.setTheme(Theme)",
+      "void BroadleafRequestContext.setTimeZone(TimeZone)",
+      "void BroadleafRequestContext.setValidateProductionChangesState(ValidateProductionChangesState)"})
   public void testGettersAndSetters() throws IOException {
     // Arrange
     BroadleafRequestContext broadleafRequestContext = new BroadleafRequestContext();
@@ -944,10 +936,10 @@ public class BroadleafRequestContextDiffblueTest {
         .getEnforceEnterpriseCollectionBehaviorState();
     Boolean actualInternalIgnoreFilters = broadleafRequestContext.getInternalIgnoreFilters();
     Boolean actualInternalValidateFind = broadleafRequestContext.getInternalValidateFind();
-    broadleafRequestContext.getLocale();
+    org.broadleafcommerce.common.locale.domain.Locale actualLocale = broadleafRequestContext.getLocale();
     MessageSource actualMessageSource = broadleafRequestContext.getMessageSource();
     Site actualNonPersistentSite = broadleafRequestContext.getNonPersistentSite();
-    broadleafRequestContext.getRequest();
+    HttpServletRequest actualRequest = broadleafRequestContext.getRequest();
     RequestDTO actualRequestDTO = broadleafRequestContext.getRequestDTO();
     BroadleafCurrency actualRequestedBroadleafCurrency = broadleafRequestContext.getRequestedBroadleafCurrency();
     HttpServletResponse actualResponse = broadleafRequestContext.getResponse();
@@ -956,9 +948,11 @@ public class BroadleafRequestContextDiffblueTest {
     TimeZone actualTimeZone = broadleafRequestContext.getTimeZone();
     ValidateProductionChangesState actualValidateProductionChangesState = broadleafRequestContext
         .getValidateProductionChangesState();
-    broadleafRequestContext.getWebRequest();
 
-    // Assert that nothing has changed
+    // Assert
+    assertNull(actualRequest);
+    assertNull(actualLocale);
+    assertNull(broadleafRequestContext.getWebRequest());
     assertEquals(1L, actualAdminUserId.longValue());
     assertEquals(DeployBehavior.CLONE_PARENT, actualDeployBehavior);
     assertEquals(DeployState.SANDBOX, actualDeployState);
@@ -984,14 +978,15 @@ public class BroadleafRequestContextDiffblueTest {
   /**
    * Test {@link BroadleafRequestContext#getAdmin()}.
    * <ul>
-   *   <li>Given {@link BroadleafRequestContext} (default constructor) Admin is
-   * {@code null}.</li>
+   *   <li>Given {@link BroadleafRequestContext} (default constructor) Admin is {@code null}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link BroadleafRequestContext#getAdmin()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean BroadleafRequestContext.getAdmin()"})
   public void testGetAdmin_givenBroadleafRequestContextAdminIsNull_thenReturnFalse() {
     // Arrange
     BroadleafRequestContext broadleafRequestContext = new BroadleafRequestContext();
@@ -1004,14 +999,15 @@ public class BroadleafRequestContextDiffblueTest {
   /**
    * Test {@link BroadleafRequestContext#getAdmin()}.
    * <ul>
-   *   <li>Given {@link BroadleafRequestContext} (default constructor) Admin is
-   * {@code true}.</li>
+   *   <li>Given {@link BroadleafRequestContext} (default constructor) Admin is {@code true}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link BroadleafRequestContext#getAdmin()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean BroadleafRequestContext.getAdmin()"})
   public void testGetAdmin_givenBroadleafRequestContextAdminIsTrue_thenReturnTrue() {
     // Arrange
     BroadleafRequestContext broadleafRequestContext = new BroadleafRequestContext();
@@ -1031,6 +1027,8 @@ public class BroadleafRequestContextDiffblueTest {
    * Method under test: {@link BroadleafRequestContext#getAdmin()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean BroadleafRequestContext.getAdmin()"})
   public void testGetAdmin_givenBroadleafRequestContext_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse((new BroadleafRequestContext()).getAdmin());
@@ -1042,7 +1040,9 @@ public class BroadleafRequestContextDiffblueTest {
    * Method under test: {@link BroadleafRequestContext#createLightWeightClone()}
    */
   @Test
-  public void testCreateLightWeightClone() throws MissingResourceException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BroadleafRequestContext BroadleafRequestContext.createLightWeightClone()"})
+  public void testCreateLightWeightClone() {
     // Arrange
     BroadleafRequestContext broadleafRequestContext = new BroadleafRequestContext();
 
@@ -1050,23 +1050,6 @@ public class BroadleafRequestContextDiffblueTest {
     BroadleafRequestContext actualCreateLightWeightCloneResult = broadleafRequestContext.createLightWeightClone();
 
     // Assert
-    java.util.Locale locale = actualCreateLightWeightCloneResult.javaLocale;
-    assertEquals("", locale.getDisplayScript());
-    assertEquals("", locale.getDisplayVariant());
-    assertEquals("", locale.getScript());
-    assertEquals("", locale.getVariant());
-    Currency javaCurrency = actualCreateLightWeightCloneResult.getJavaCurrency();
-    assertEquals("British Pound", javaCurrency.getDisplayName());
-    assertEquals("English (United Kingdom)", locale.getDisplayName());
-    assertEquals("English", locale.getDisplayLanguage());
-    assertEquals("GB", locale.getCountry());
-    assertEquals("GBP", javaCurrency.getCurrencyCode());
-    assertEquals("GBP", javaCurrency.toString());
-    assertEquals("GBR", locale.getISO3Country());
-    assertEquals("United Kingdom", locale.getDisplayCountry());
-    assertEquals("£", javaCurrency.getSymbol());
-    assertEquals("en", locale.getLanguage());
-    assertEquals("eng", locale.getISO3Language());
     assertNull(actualCreateLightWeightCloneResult.getAdminUserId());
     assertNull(actualCreateLightWeightCloneResult.getSandBoxId());
     assertNull(actualCreateLightWeightCloneResult.getRequestURIWithoutContext());
@@ -1085,15 +1068,12 @@ public class BroadleafRequestContextDiffblueTest {
     assertNull(actualCreateLightWeightCloneResult.getTheme());
     assertNull(actualCreateLightWeightCloneResult.getMessageSource());
     assertNull(actualCreateLightWeightCloneResult.getWebRequest());
-    assertEquals(2, javaCurrency.getDefaultFractionDigits());
-    assertEquals(826, javaCurrency.getNumericCode());
     assertEquals(DeployBehavior.UNDEFINED, actualCreateLightWeightCloneResult.getDeployBehavior());
     assertEquals(DeployState.UNDEFINED, actualCreateLightWeightCloneResult.getDeployState());
     assertEquals(EnforceEnterpriseCollectionBehaviorState.UNDEFINED,
         actualCreateLightWeightCloneResult.getEnforceEnterpriseCollectionBehaviorState());
     assertEquals(ValidateProductionChangesState.UNDEFINED,
         actualCreateLightWeightCloneResult.getValidateProductionChangesState());
-    assertFalse(locale.hasExtensions());
     assertFalse(actualCreateLightWeightCloneResult.getAdmin());
     assertFalse(actualCreateLightWeightCloneResult.getIgnoreSite());
     assertFalse(actualCreateLightWeightCloneResult.getInternalIgnoreFilters());
@@ -1104,21 +1084,186 @@ public class BroadleafRequestContextDiffblueTest {
     assertTrue(actualCreateLightWeightCloneResult.explicitCatalogs.isEmpty());
     assertTrue(actualCreateLightWeightCloneResult.getAdditionalProperties().isEmpty());
     assertTrue(actualCreateLightWeightCloneResult.isProductionSandBox());
-    assertSame(javaCurrency, actualCreateLightWeightCloneResult.javaCurrency);
-    java.util.Locale locale2 = actualCreateLightWeightCloneResult.javaLocale;
-    assertSame(locale2, broadleafRequestContext.getJavaLocale());
-    assertSame(locale2, actualCreateLightWeightCloneResult.getJavaLocale());
-    assertSame(locale2, broadleafRequestContext.javaLocale);
+    Locale locale = actualCreateLightWeightCloneResult.javaLocale;
+    assertSame(locale, broadleafRequestContext.getJavaLocale());
+    assertSame(locale, actualCreateLightWeightCloneResult.getJavaLocale());
+    assertSame(locale, broadleafRequestContext.javaLocale);
   }
 
   /**
    * Test {@link BroadleafRequestContext#createLightWeightCloneJson()}.
    * <p>
-   * Method under test:
-   * {@link BroadleafRequestContext#createLightWeightCloneJson()}
+   * Method under test: {@link BroadleafRequestContext#createLightWeightCloneJson()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BroadleafRequestContext.createLightWeightCloneJson()"})
   public void testCreateLightWeightCloneJson() {
+    // Arrange
+    BroadleafRequestContext broadleafRequestContext = new BroadleafRequestContext();
+    broadleafRequestContext.setNonPersistentSite(new SiteImpl());
+
+    // Act and Assert
+    assertEquals(
+        "{\"ignoreSite\":\"false\",\"sandBox\":\"null\",\"nonPersistentSite\":\"null\",\"enforceEnterpriseCollectionBehaviorState"
+            + "\":\"UNDEFINED\",\"admin\":\"false\",\"adminUserId\":\"null\",\"broadleafCurrency\":\"null\",\"currentCatalog\":\"null"
+            + "\",\"currentProfile\":\"null\",\"deployBehavior\":\"UNDEFINED\",\"deployState\":\"UNDEFINED\",\"internalIgnoreFilters"
+            + "\":\"false\",\"locale\":\"null\",\"validateProductionChangesState\":\"UNDEFINED\",\"timeZone\":\"null\"}",
+        broadleafRequestContext.createLightWeightCloneJson());
+  }
+
+  /**
+   * Test {@link BroadleafRequestContext#createLightWeightCloneJson()}.
+   * <p>
+   * Method under test: {@link BroadleafRequestContext#createLightWeightCloneJson()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BroadleafRequestContext.createLightWeightCloneJson()"})
+  public void testCreateLightWeightCloneJson2() {
+    // Arrange
+    BroadleafRequestContext broadleafRequestContext = new BroadleafRequestContext();
+    broadleafRequestContext.setBroadleafCurrency(new BroadleafCurrencyImpl());
+
+    // Act and Assert
+    assertEquals(
+        "{\"ignoreSite\":\"false\",\"sandBox\":\"null\",\"nonPersistentSite\":\"null\",\"enforceEnterpriseCollectionBehaviorState"
+            + "\":\"UNDEFINED\",\"admin\":\"false\",\"adminUserId\":\"null\",\"broadleafCurrency\":\"null\",\"currentCatalog\":\"null"
+            + "\",\"currentProfile\":\"null\",\"deployBehavior\":\"UNDEFINED\",\"deployState\":\"UNDEFINED\",\"internalIgnoreFilters"
+            + "\":\"false\",\"locale\":\"null\",\"validateProductionChangesState\":\"UNDEFINED\",\"timeZone\":\"null\"}",
+        broadleafRequestContext.createLightWeightCloneJson());
+  }
+
+  /**
+   * Test {@link BroadleafRequestContext#createLightWeightCloneJson()}.
+   * <p>
+   * Method under test: {@link BroadleafRequestContext#createLightWeightCloneJson()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BroadleafRequestContext.createLightWeightCloneJson()"})
+  public void testCreateLightWeightCloneJson3() {
+    // Arrange
+    BroadleafRequestContext broadleafRequestContext = new BroadleafRequestContext();
+    broadleafRequestContext.setCurrentCatalog(new CatalogImpl());
+
+    // Act and Assert
+    assertEquals(
+        "{\"ignoreSite\":\"false\",\"sandBox\":\"null\",\"nonPersistentSite\":\"null\",\"enforceEnterpriseCollectionBehaviorState"
+            + "\":\"UNDEFINED\",\"admin\":\"false\",\"adminUserId\":\"null\",\"broadleafCurrency\":\"null\",\"currentCatalog\":\"null"
+            + "\",\"currentProfile\":\"null\",\"deployBehavior\":\"UNDEFINED\",\"deployState\":\"UNDEFINED\",\"internalIgnoreFilters"
+            + "\":\"false\",\"locale\":\"null\",\"validateProductionChangesState\":\"UNDEFINED\",\"timeZone\":\"null\"}",
+        broadleafRequestContext.createLightWeightCloneJson());
+  }
+
+  /**
+   * Test {@link BroadleafRequestContext#createLightWeightCloneJson()}.
+   * <p>
+   * Method under test: {@link BroadleafRequestContext#createLightWeightCloneJson()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BroadleafRequestContext.createLightWeightCloneJson()"})
+  public void testCreateLightWeightCloneJson4() {
+    // Arrange
+    BroadleafRequestContext broadleafRequestContext = new BroadleafRequestContext();
+    broadleafRequestContext.setCurrentProfile(new SiteImpl());
+
+    // Act and Assert
+    assertEquals(
+        "{\"ignoreSite\":\"false\",\"sandBox\":\"null\",\"nonPersistentSite\":\"null\",\"enforceEnterpriseCollectionBehaviorState"
+            + "\":\"UNDEFINED\",\"admin\":\"false\",\"adminUserId\":\"null\",\"broadleafCurrency\":\"null\",\"currentCatalog\":\"null"
+            + "\",\"currentProfile\":\"null\",\"deployBehavior\":\"UNDEFINED\",\"deployState\":\"UNDEFINED\",\"internalIgnoreFilters"
+            + "\":\"false\",\"locale\":\"null\",\"validateProductionChangesState\":\"UNDEFINED\",\"timeZone\":\"null\"}",
+        broadleafRequestContext.createLightWeightCloneJson());
+  }
+
+  /**
+   * Test {@link BroadleafRequestContext#createLightWeightCloneJson()}.
+   * <p>
+   * Method under test: {@link BroadleafRequestContext#createLightWeightCloneJson()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BroadleafRequestContext.createLightWeightCloneJson()"})
+  public void testCreateLightWeightCloneJson5() {
+    // Arrange
+    BroadleafRequestContext broadleafRequestContext = new BroadleafRequestContext();
+    broadleafRequestContext.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
+
+    // Act and Assert
+    assertEquals(
+        "{\"ignoreSite\":\"false\",\"sandBox\":\"null\",\"nonPersistentSite\":\"null\",\"enforceEnterpriseCollectionBehaviorState"
+            + "\":\"UNDEFINED\",\"admin\":\"false\",\"adminUserId\":\"null\",\"broadleafCurrency\":\"null\",\"currentCatalog\":\"null"
+            + "\",\"currentProfile\":\"null\",\"deployBehavior\":\"UNDEFINED\",\"deployState\":\"UNDEFINED\",\"internalIgnoreFilters"
+            + "\":\"false\",\"locale\":\"null\",\"validateProductionChangesState\":\"UNDEFINED\",\"timeZone\":\"America/Los_Angeles"
+            + "\"}",
+        broadleafRequestContext.createLightWeightCloneJson());
+  }
+
+  /**
+   * Test {@link BroadleafRequestContext#createLightWeightCloneJson()}.
+   * <ul>
+   *   <li>Given {@link BroadleafRequestContext} (default constructor) AdminUserId is one.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BroadleafRequestContext#createLightWeightCloneJson()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BroadleafRequestContext.createLightWeightCloneJson()"})
+  public void testCreateLightWeightCloneJson_givenBroadleafRequestContextAdminUserIdIsOne() {
+    // Arrange
+    BroadleafRequestContext broadleafRequestContext = new BroadleafRequestContext();
+    broadleafRequestContext.setAdminUserId(1L);
+
+    // Act and Assert
+    assertEquals(
+        "{\"ignoreSite\":\"false\",\"sandBox\":\"null\",\"nonPersistentSite\":\"null\",\"enforceEnterpriseCollectionBehaviorState"
+            + "\":\"UNDEFINED\",\"admin\":\"false\",\"adminUserId\":\"1\",\"broadleafCurrency\":\"null\",\"currentCatalog\":\"null\","
+            + "\"currentProfile\":\"null\",\"deployBehavior\":\"UNDEFINED\",\"deployState\":\"UNDEFINED\",\"internalIgnoreFilters"
+            + "\":\"false\",\"locale\":\"null\",\"validateProductionChangesState\":\"UNDEFINED\",\"timeZone\":\"null\"}",
+        broadleafRequestContext.createLightWeightCloneJson());
+  }
+
+  /**
+   * Test {@link BroadleafRequestContext#createLightWeightCloneJson()}.
+   * <ul>
+   *   <li>Given {@link BroadleafRequestContext} (default constructor) SandBox is {@link SandBoxImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BroadleafRequestContext#createLightWeightCloneJson()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BroadleafRequestContext.createLightWeightCloneJson()"})
+  public void testCreateLightWeightCloneJson_givenBroadleafRequestContextSandBoxIsSandBoxImpl() {
+    // Arrange
+    BroadleafRequestContext broadleafRequestContext = new BroadleafRequestContext();
+    broadleafRequestContext.setSandBox(new SandBoxImpl());
+
+    // Act and Assert
+    assertEquals(
+        "{\"ignoreSite\":\"false\",\"sandBox\":\"null\",\"nonPersistentSite\":\"null\",\"enforceEnterpriseCollectionBehaviorState"
+            + "\":\"UNDEFINED\",\"admin\":\"false\",\"adminUserId\":\"null\",\"broadleafCurrency\":\"null\",\"currentCatalog\":\"null"
+            + "\",\"currentProfile\":\"null\",\"deployBehavior\":\"UNDEFINED\",\"deployState\":\"UNDEFINED\",\"internalIgnoreFilters"
+            + "\":\"false\",\"locale\":\"null\",\"validateProductionChangesState\":\"UNDEFINED\",\"timeZone\":\"null\"}",
+        broadleafRequestContext.createLightWeightCloneJson());
+  }
+
+  /**
+   * Test {@link BroadleafRequestContext#createLightWeightCloneJson()}.
+   * <ul>
+   *   <li>Given {@link BroadleafRequestContext} (default constructor).</li>
+   *   <li>Then return a string.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BroadleafRequestContext#createLightWeightCloneJson()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BroadleafRequestContext.createLightWeightCloneJson()"})
+  public void testCreateLightWeightCloneJson_givenBroadleafRequestContext_thenReturnAString() {
     // Arrange, Act and Assert
     assertEquals(
         "{\"ignoreSite\":\"false\",\"sandBox\":\"null\",\"nonPersistentSite\":\"null\",\"enforceEnterpriseCollectionBehaviorState"
@@ -1129,63 +1274,42 @@ public class BroadleafRequestContextDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BroadleafRequestContext#createLightWeightCloneFromJson(String, EntityManager)}.
+   * Test {@link BroadleafRequestContext#createLightWeightCloneJson()}.
+   * <ul>
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafRequestContext#createLightWeightCloneFromJson(String, EntityManager)}
+   * Method under test: {@link BroadleafRequestContext#createLightWeightCloneJson()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateLightWeightCloneFromJson() throws JsonProcessingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.IllegalArgumentException: Unable to create a SessionDelegatorBaseImpl from a null delegate object
-    //       at org.hibernate.engine.spi.SessionDelegatorBaseImpl.<init>(SessionDelegatorBaseImpl.java:94)
-    //       at org.hibernate.engine.spi.SessionDelegatorBaseImpl.<init>(SessionDelegatorBaseImpl.java:107)
-    //   See https://diff.blue/R013 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BroadleafRequestContext.createLightWeightCloneJson()"})
+  public void testCreateLightWeightCloneJson_thenThrowIllegalArgumentException() {
     // Arrange
-    ObjectMapper objectMapper = new ObjectMapper();
-    String Json = objectMapper.writeValueAsString(new HashMap());
-    SessionDelegatorBaseImpl delegate = new SessionDelegatorBaseImpl(null);
+    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
+    when(broadleafCurrency.getCurrencyCode()).thenThrow(new IllegalArgumentException("foo"));
 
-    // Act
-    BroadleafRequestContext.createLightWeightCloneFromJson(Json,
-        new SessionDelegatorBaseImpl(delegate, new SessionDelegatorBaseImpl(null)));
+    BroadleafRequestContext broadleafRequestContext = new BroadleafRequestContext();
+    broadleafRequestContext.setBroadleafCurrency(broadleafCurrency);
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> broadleafRequestContext.createLightWeightCloneJson());
+    verify(broadleafCurrency).getCurrencyCode();
   }
 
   /**
    * Test new {@link BroadleafRequestContext} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link BroadleafRequestContext}
+   * Method under test: default or parameterless constructor of {@link BroadleafRequestContext}
    */
   @Test
-  public void testNewBroadleafRequestContext() throws MissingResourceException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BroadleafRequestContext.<init>()"})
+  public void testNewBroadleafRequestContext() {
     // Arrange and Act
     BroadleafRequestContext actualBroadleafRequestContext = new BroadleafRequestContext();
 
     // Assert
-    java.util.Locale javaLocale = actualBroadleafRequestContext.getJavaLocale();
-    assertEquals("", javaLocale.getDisplayScript());
-    assertEquals("", javaLocale.getDisplayVariant());
-    assertEquals("", javaLocale.getScript());
-    assertEquals("", javaLocale.getVariant());
-    Currency javaCurrency = actualBroadleafRequestContext.getJavaCurrency();
-    assertEquals("British Pound", javaCurrency.getDisplayName());
-    assertEquals("English (United Kingdom)", javaLocale.getDisplayName());
-    assertEquals("English", javaLocale.getDisplayLanguage());
-    assertEquals("GB", javaLocale.getCountry());
-    assertEquals("GBP", javaCurrency.getCurrencyCode());
-    assertEquals("GBP", javaCurrency.toString());
-    assertEquals("GBR", javaLocale.getISO3Country());
-    assertEquals("United Kingdom", javaLocale.getDisplayCountry());
-    assertEquals("£", javaCurrency.getSymbol());
-    assertEquals("en", javaLocale.getLanguage());
-    assertEquals("eng", javaLocale.getISO3Language());
     assertNull(actualBroadleafRequestContext.getAdminUserId());
     assertNull(actualBroadleafRequestContext.getSandBoxId());
     assertNull(actualBroadleafRequestContext.getRequestURIWithoutContext());
@@ -1204,15 +1328,12 @@ public class BroadleafRequestContextDiffblueTest {
     assertNull(actualBroadleafRequestContext.getTheme());
     assertNull(actualBroadleafRequestContext.getMessageSource());
     assertNull(actualBroadleafRequestContext.getWebRequest());
-    assertEquals(2, javaCurrency.getDefaultFractionDigits());
-    assertEquals(826, javaCurrency.getNumericCode());
     assertEquals(DeployBehavior.UNDEFINED, actualBroadleafRequestContext.getDeployBehavior());
     assertEquals(DeployState.UNDEFINED, actualBroadleafRequestContext.getDeployState());
     assertEquals(EnforceEnterpriseCollectionBehaviorState.UNDEFINED,
         actualBroadleafRequestContext.getEnforceEnterpriseCollectionBehaviorState());
     assertEquals(ValidateProductionChangesState.UNDEFINED,
         actualBroadleafRequestContext.getValidateProductionChangesState());
-    assertFalse(javaLocale.hasExtensions());
     assertFalse(actualBroadleafRequestContext.getAdmin());
     assertFalse(actualBroadleafRequestContext.getIgnoreSite());
     assertFalse(actualBroadleafRequestContext.getInternalIgnoreFilters());
@@ -1222,12 +1343,6 @@ public class BroadleafRequestContextDiffblueTest {
     assertTrue(actualBroadleafRequestContext.getExplicitCatalogs().isEmpty());
     assertTrue(actualBroadleafRequestContext.explicitCatalogs.isEmpty());
     assertTrue(actualBroadleafRequestContext.getAdditionalProperties().isEmpty());
-    Set<Character> extensionKeys = javaLocale.getExtensionKeys();
-    assertTrue(extensionKeys.isEmpty());
     assertTrue(actualBroadleafRequestContext.isProductionSandBox());
-    assertSame(extensionKeys, javaLocale.getUnicodeLocaleAttributes());
-    assertSame(extensionKeys, javaLocale.getUnicodeLocaleKeys());
-    assertSame(javaCurrency, actualBroadleafRequestContext.javaCurrency);
-    assertSame(javaLocale, actualBroadleafRequestContext.javaLocale);
   }
 }

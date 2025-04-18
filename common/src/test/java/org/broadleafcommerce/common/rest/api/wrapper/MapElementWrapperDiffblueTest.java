@@ -18,7 +18,10 @@
 package org.broadleafcommerce.common.rest.api.wrapper;
 
 import static org.junit.Assert.assertEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class MapElementWrapperDiffblueTest {
   /**
@@ -34,6 +37,10 @@ public class MapElementWrapperDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void MapElementWrapper.<init>()", "String MapElementWrapper.getKey()",
+      "String MapElementWrapper.getValue()", "void MapElementWrapper.setKey(String)",
+      "void MapElementWrapper.setValue(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     MapElementWrapper actualMapElementWrapper = new MapElementWrapper();
@@ -41,7 +48,7 @@ public class MapElementWrapperDiffblueTest {
     actualMapElementWrapper.setValue("42");
     String actualKey = actualMapElementWrapper.getKey();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("42", actualMapElementWrapper.getValue());
     assertEquals("Key", actualKey);
   }

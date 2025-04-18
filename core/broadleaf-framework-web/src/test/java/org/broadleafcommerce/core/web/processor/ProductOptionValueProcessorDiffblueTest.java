@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework Web
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.web.processor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -8,31 +25,22 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.core.catalog.domain.ProductOptionImpl;
 import org.broadleafcommerce.core.catalog.domain.ProductOptionValueImpl;
+import org.broadleafcommerce.core.web.processor.ProductOptionValueProcessor.ProductOptionValueDTO;
 import org.broadleafcommerce.presentation.model.BroadleafAttributeModifier;
 import org.broadleafcommerce.presentation.model.BroadleafTemplateContext;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml",
-    "/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-@ExtendWith(SpringExtension.class)
 class ProductOptionValueProcessorDiffblueTest {
-  @Autowired
-  private ProductOptionValueProcessor productOptionValueProcessor;
-
   /**
    * Test {@link ProductOptionValueProcessor#getName()}.
    * <p>
@@ -40,6 +48,8 @@ class ProductOptionValueProcessorDiffblueTest {
    */
   @Test
   @DisplayName("Test getName()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String ProductOptionValueProcessor.getName()"})
   void testGetName() {
     // Arrange, Act and Assert
     assertEquals("product_option_value", (new ProductOptionValueProcessor()).getName());
@@ -52,55 +62,24 @@ class ProductOptionValueProcessorDiffblueTest {
    */
   @Test
   @DisplayName("Test getPrecedence()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"int ProductOptionValueProcessor.getPrecedence()"})
   void testGetPrecedence() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertEquals(10000, (new ProductOptionValueProcessor()).getPrecedence());
   }
 
   /**
-   * Test {@link ProductOptionValueProcessor#getPrecedence()}.
+   * Test {@link ProductOptionValueProcessor#getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)}.
    * <p>
-   * Method under test: {@link ProductOptionValueProcessor#getPrecedence()}
-   */
-  @Test
-  @DisplayName("Test getPrecedence()")
-  @Disabled("TODO: Complete this test")
-  void testGetPrecedence2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass11377 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.ProductOptionValueProcessor productOptionValueProcessor;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new ProductOptionValueProcessor()).getPrecedence();
-  }
-
-  /**
-   * Test
-   * {@link ProductOptionValueProcessor#getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)}.
-   * <p>
-   * Method under test:
-   * {@link ProductOptionValueProcessor#getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)}
+   * Method under test: {@link ProductOptionValueProcessor#getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)}
    */
   @Test
   @DisplayName("Test getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "BroadleafAttributeModifier ProductOptionValueProcessor.getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)"})
   void testGetModifiedAttributes() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ProductOptionValueProcessor productOptionValueProcessor = new ProductOptionValueProcessor();
     HashMap<String, String> tagAttributes = new HashMap<>();
@@ -132,17 +111,16 @@ class ProductOptionValueProcessorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ProductOptionValueProcessor#getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)}.
+   * Test {@link ProductOptionValueProcessor#getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)}.
    * <p>
-   * Method under test:
-   * {@link ProductOptionValueProcessor#getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)}
+   * Method under test: {@link ProductOptionValueProcessor#getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)}
    */
   @Test
   @DisplayName("Test getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "BroadleafAttributeModifier ProductOptionValueProcessor.getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)"})
   void testGetModifiedAttributes2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ProductOptionValueProcessor productOptionValueProcessor = new ProductOptionValueProcessor();
     HashMap<String, String> tagAttributes = new HashMap<>();
@@ -174,17 +152,16 @@ class ProductOptionValueProcessorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ProductOptionValueProcessor#getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)}.
+   * Test {@link ProductOptionValueProcessor#getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)}.
    * <p>
-   * Method under test:
-   * {@link ProductOptionValueProcessor#getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)}
+   * Method under test: {@link ProductOptionValueProcessor#getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)}
    */
   @Test
   @DisplayName("Test getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "BroadleafAttributeModifier ProductOptionValueProcessor.getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)"})
   void testGetModifiedAttributes3() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ProductOptionValueProcessor productOptionValueProcessor = new ProductOptionValueProcessor();
     HashMap<String, String> tagAttributes = new HashMap<>();
@@ -216,57 +193,19 @@ class ProductOptionValueProcessorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ProductOptionValueProcessor#getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)}.
-   * <p>
-   * Method under test:
-   * {@link ProductOptionValueProcessor#getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)}
-   */
-  @Test
-  @DisplayName("Test getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)")
-  @Disabled("TODO: Complete this test")
-  void testGetModifiedAttributes4() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass11357 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.ProductOptionValueProcessor productOptionValueProcessor;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    ProductOptionValueProcessor productOptionValueProcessor2 = new ProductOptionValueProcessor();
-
-    // Act
-    productOptionValueProcessor2.getModifiedAttributes("Tag Name", new HashMap<>(), "Attribute Name", "42",
-        mock(BroadleafTemplateContext.class));
-  }
-
-  /**
-   * Test
-   * {@link ProductOptionValueProcessor#getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)}.
+   * Test {@link ProductOptionValueProcessor#getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)}.
    * <ul>
-   *   <li>Given {@link ProductOptionValueImpl} (default constructor) AttributeValue
-   * is {@code 42}.</li>
+   *   <li>Given {@link ProductOptionValueImpl} (default constructor) AttributeValue is {@code 42}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductOptionValueProcessor#getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)}
+   * Method under test: {@link ProductOptionValueProcessor#getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)}
    */
   @Test
   @DisplayName("Test getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext); given ProductOptionValueImpl (default constructor) AttributeValue is '42'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "BroadleafAttributeModifier ProductOptionValueProcessor.getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)"})
   void testGetModifiedAttributes_givenProductOptionValueImplAttributeValueIs42() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ProductOptionValueProcessor productOptionValueProcessor = new ProductOptionValueProcessor();
     HashMap<String, String> tagAttributes = new HashMap<>();
@@ -298,31 +237,31 @@ class ProductOptionValueProcessorDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>
-   * {@link ProductOptionValueProcessor.ProductOptionValueDTO#ProductOptionValueDTO(ProductOptionValueProcessor)}
-   *   <li>
-   * {@link ProductOptionValueProcessor.ProductOptionValueDTO#setOptionId(Long)}
-   *   <li>
-   * {@link ProductOptionValueProcessor.ProductOptionValueDTO#setPriceAdjustment(BigDecimal)}
-   *   <li>
-   * {@link ProductOptionValueProcessor.ProductOptionValueDTO#setRawValue(String)}
-   *   <li>
-   * {@link ProductOptionValueProcessor.ProductOptionValueDTO#setValueId(Long)}
-   *   <li>
-   * {@link ProductOptionValueProcessor.ProductOptionValueDTO#setValueName(String)}
-   *   <li>{@link ProductOptionValueProcessor.ProductOptionValueDTO#getOptionId()}
-   *   <li>
-   * {@link ProductOptionValueProcessor.ProductOptionValueDTO#getPriceAdjustment()}
-   *   <li>{@link ProductOptionValueProcessor.ProductOptionValueDTO#getRawValue()}
-   *   <li>{@link ProductOptionValueProcessor.ProductOptionValueDTO#getValueId()}
-   *   <li>{@link ProductOptionValueProcessor.ProductOptionValueDTO#getValueName()}
+   *   <li>{@link ProductOptionValueDTO#ProductOptionValueDTO(ProductOptionValueProcessor)}
+   *   <li>{@link ProductOptionValueDTO#setOptionId(Long)}
+   *   <li>{@link ProductOptionValueDTO#setPriceAdjustment(BigDecimal)}
+   *   <li>{@link ProductOptionValueDTO#setRawValue(String)}
+   *   <li>{@link ProductOptionValueDTO#setValueId(Long)}
+   *   <li>{@link ProductOptionValueDTO#setValueName(String)}
+   *   <li>{@link ProductOptionValueDTO#getOptionId()}
+   *   <li>{@link ProductOptionValueDTO#getPriceAdjustment()}
+   *   <li>{@link ProductOptionValueDTO#getRawValue()}
+   *   <li>{@link ProductOptionValueDTO#getValueId()}
+   *   <li>{@link ProductOptionValueDTO#getValueName()}
    * </ul>
    */
   @Test
   @DisplayName("Test ProductOptionValueDTO getters and setters")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void ProductOptionValueDTO.<init>(ProductOptionValueProcessor)",
+      "Long ProductOptionValueDTO.getOptionId()", "BigDecimal ProductOptionValueDTO.getPriceAdjustment()",
+      "String ProductOptionValueDTO.getRawValue()", "Long ProductOptionValueDTO.getValueId()",
+      "String ProductOptionValueDTO.getValueName()", "void ProductOptionValueDTO.setOptionId(Long)",
+      "void ProductOptionValueDTO.setPriceAdjustment(BigDecimal)", "void ProductOptionValueDTO.setRawValue(String)",
+      "void ProductOptionValueDTO.setValueId(Long)", "void ProductOptionValueDTO.setValueName(String)"})
   void testProductOptionValueDTOGettersAndSetters() {
     // Arrange and Act
-    ProductOptionValueProcessor.ProductOptionValueDTO actualProductOptionValueDTO = (new ProductOptionValueProcessor()).new ProductOptionValueDTO();
+    ProductOptionValueDTO actualProductOptionValueDTO = (new ProductOptionValueProcessor()).new ProductOptionValueDTO();
     actualProductOptionValueDTO.setOptionId(1L);
     BigDecimal priceAdjustment = new BigDecimal("2.3");
     actualProductOptionValueDTO.setPriceAdjustment(priceAdjustment);
@@ -334,7 +273,7 @@ class ProductOptionValueProcessorDiffblueTest {
     String actualRawValue = actualProductOptionValueDTO.getRawValue();
     Long actualValueId = actualProductOptionValueDTO.getValueId();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("42", actualRawValue);
     assertEquals("42", actualProductOptionValueDTO.getValueName());
     assertEquals(1L, actualOptionId.longValue());
@@ -350,40 +289,10 @@ class ProductOptionValueProcessorDiffblueTest {
    */
   @Test
   @DisplayName("Test useSingleQuotes()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean ProductOptionValueProcessor.useSingleQuotes()"})
   void testUseSingleQuotes() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertTrue((new ProductOptionValueProcessor()).useSingleQuotes());
-  }
-
-  /**
-   * Test {@link ProductOptionValueProcessor#useSingleQuotes()}.
-   * <p>
-   * Method under test: {@link ProductOptionValueProcessor#useSingleQuotes()}
-   */
-  @Test
-  @DisplayName("Test useSingleQuotes()")
-  @Disabled("TODO: Complete this test")
-  void testUseSingleQuotes2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass11378 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.ProductOptionValueProcessor productOptionValueProcessor;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new ProductOptionValueProcessor()).useSingleQuotes();
   }
 }

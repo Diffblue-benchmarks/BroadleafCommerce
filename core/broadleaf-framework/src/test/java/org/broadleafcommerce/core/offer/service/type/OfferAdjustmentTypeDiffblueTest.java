@@ -1,18 +1,39 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.offer.service.type;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @ContextConfiguration(classes = {OfferAdjustmentType.class})
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class OfferAdjustmentTypeDiffblueTest {
   @Autowired
   private OfferAdjustmentType offerAdjustmentType;
@@ -23,6 +44,8 @@ public class OfferAdjustmentTypeDiffblueTest {
    * Method under test: {@link OfferAdjustmentType#getInstance(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OfferAdjustmentType OfferAdjustmentType.getInstance(String)"})
   public void testGetInstance() {
     // Arrange and Act
     OfferAdjustmentType actualInstance = OfferAdjustmentType.getInstance("Type");
@@ -43,6 +66,9 @@ public class OfferAdjustmentTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OfferAdjustmentType.<init>()", "String OfferAdjustmentType.getFriendlyType()",
+      "String OfferAdjustmentType.getType()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     OfferAdjustmentType actualOfferAdjustmentType = new OfferAdjustmentType();
@@ -56,10 +82,11 @@ public class OfferAdjustmentTypeDiffblueTest {
   /**
    * Test {@link OfferAdjustmentType#OfferAdjustmentType(String, String)}.
    * <p>
-   * Method under test:
-   * {@link OfferAdjustmentType#OfferAdjustmentType(String, String)}
+   * Method under test: {@link OfferAdjustmentType#OfferAdjustmentType(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OfferAdjustmentType.<init>(String, String)"})
   public void testNewOfferAdjustmentType() {
     // Arrange and Act
     OfferAdjustmentType actualOfferAdjustmentType = new OfferAdjustmentType("Type", "Friendly Type");
@@ -73,13 +100,14 @@ public class OfferAdjustmentTypeDiffblueTest {
    * Test {@link OfferAdjustmentType#setType(String)}.
    * <ul>
    *   <li>When {@code TypeType}.</li>
-   *   <li>Then {@link OfferAdjustmentType#FUTURE_CREDIT} Type is
-   * {@code TypeType}.</li>
+   *   <li>Then {@link OfferAdjustmentType#FUTURE_CREDIT} Type is {@code TypeType}.</li>
    * </ul>
    * <p>
    * Method under test: {@link OfferAdjustmentType#setType(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OfferAdjustmentType.setType(String)"})
   public void testSetType_whenTypeType_thenFuture_creditTypeIsTypeType() {
     // Arrange
     OfferAdjustmentType offerAdjustmentType2 = OfferAdjustmentType.FUTURE_CREDIT;
@@ -101,6 +129,8 @@ public class OfferAdjustmentTypeDiffblueTest {
    * Method under test: {@link OfferAdjustmentType#setType(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OfferAdjustmentType.setType(String)"})
   public void testSetType_whenType_thenFuture_creditTypeIsType() {
     // Arrange
     OfferAdjustmentType offerAdjustmentType2 = OfferAdjustmentType.FUTURE_CREDIT;
@@ -113,8 +143,7 @@ public class OfferAdjustmentTypeDiffblueTest {
   }
 
   /**
-   * Test {@link OfferAdjustmentType#equals(Object)}, and
-   * {@link OfferAdjustmentType#hashCode()}.
+   * Test {@link OfferAdjustmentType#equals(Object)}, and {@link OfferAdjustmentType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -127,6 +156,8 @@ public class OfferAdjustmentTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferAdjustmentType.equals(Object)", "int OfferAdjustmentType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     OfferAdjustmentType offerAdjustmentType = OfferAdjustmentType.FUTURE_CREDIT;
@@ -139,8 +170,7 @@ public class OfferAdjustmentTypeDiffblueTest {
   }
 
   /**
-   * Test {@link OfferAdjustmentType#equals(Object)}, and
-   * {@link OfferAdjustmentType#hashCode()}.
+   * Test {@link OfferAdjustmentType#equals(Object)}, and {@link OfferAdjustmentType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -153,6 +183,8 @@ public class OfferAdjustmentTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferAdjustmentType.equals(Object)", "int OfferAdjustmentType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     OfferAdjustmentType offerAdjustmentType = new OfferAdjustmentType();
@@ -165,34 +197,7 @@ public class OfferAdjustmentTypeDiffblueTest {
   }
 
   /**
-   * Test {@link OfferAdjustmentType#equals(Object)}, and
-   * {@link OfferAdjustmentType#hashCode()}.
-   * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
-   * </ul>
-   * <p>
-   * Methods under test:
-   * <ul>
-   *   <li>{@link OfferAdjustmentType#equals(Object)}
-   *   <li>{@link OfferAdjustmentType#hashCode()}
-   * </ul>
-   */
-  @Test
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
-    // Arrange
-    OfferAdjustmentType offerAdjustmentType = new OfferAdjustmentType("FUTURE_CREDIT", "Friendly Type");
-    OfferAdjustmentType offerAdjustmentType2 = OfferAdjustmentType.FUTURE_CREDIT;
-
-    // Act and Assert
-    assertEquals(offerAdjustmentType, offerAdjustmentType2);
-    int expectedHashCodeResult = offerAdjustmentType.hashCode();
-    assertEquals(expectedHashCodeResult, offerAdjustmentType2.hashCode());
-  }
-
-  /**
-   * Test {@link OfferAdjustmentType#equals(Object)}, and
-   * {@link OfferAdjustmentType#hashCode()}.
+   * Test {@link OfferAdjustmentType#equals(Object)}, and {@link OfferAdjustmentType#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -205,6 +210,8 @@ public class OfferAdjustmentTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferAdjustmentType.equals(Object)", "int OfferAdjustmentType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     OfferAdjustmentType offerAdjustmentType = OfferAdjustmentType.FUTURE_CREDIT;
@@ -225,9 +232,27 @@ public class OfferAdjustmentTypeDiffblueTest {
    * Method under test: {@link OfferAdjustmentType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferAdjustmentType.equals(Object)", "int OfferAdjustmentType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(OfferAdjustmentType.ORDER_DISCOUNT, OfferAdjustmentType.FUTURE_CREDIT);
+  }
+
+  /**
+   * Test {@link OfferAdjustmentType#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferAdjustmentType#equals(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferAdjustmentType.equals(Object)", "int OfferAdjustmentType.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange, Act and Assert
     assertNotEquals(new OfferAdjustmentType(), OfferAdjustmentType.FUTURE_CREDIT);
   }
 
@@ -241,6 +266,8 @@ public class OfferAdjustmentTypeDiffblueTest {
    * Method under test: {@link OfferAdjustmentType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferAdjustmentType.equals(Object)", "int OfferAdjustmentType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(OfferAdjustmentType.FUTURE_CREDIT, null);
@@ -256,6 +283,8 @@ public class OfferAdjustmentTypeDiffblueTest {
    * Method under test: {@link OfferAdjustmentType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferAdjustmentType.equals(Object)", "int OfferAdjustmentType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(OfferAdjustmentType.FUTURE_CREDIT, "Different type to OfferAdjustmentType");

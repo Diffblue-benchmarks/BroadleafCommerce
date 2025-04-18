@@ -22,7 +22,10 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class ResourceTagAttributesDiffblueTest {
   /**
@@ -52,6 +55,21 @@ public class ResourceTagAttributesDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourceTagAttributes.<init>()", "boolean ResourceTagAttributes.async()",
+      "ResourceTagAttributes ResourceTagAttributes.async(boolean)",
+      "String ResourceTagAttributes.bundleCompletedEvent()",
+      "ResourceTagAttributes ResourceTagAttributes.bundleCompletedEvent(String)",
+      "String ResourceTagAttributes.bundleDependencyEvent()",
+      "ResourceTagAttributes ResourceTagAttributes.bundleDependencyEvent(String)",
+      "boolean ResourceTagAttributes.defer()", "ResourceTagAttributes ResourceTagAttributes.defer(boolean)",
+      "String ResourceTagAttributes.files()", "ResourceTagAttributes ResourceTagAttributes.files(String)",
+      "boolean ResourceTagAttributes.includeAsyncDeferUnbundled()",
+      "ResourceTagAttributes ResourceTagAttributes.includeAsyncDeferUnbundled(boolean)",
+      "String ResourceTagAttributes.mappingPrefix()",
+      "ResourceTagAttributes ResourceTagAttributes.mappingPrefix(String)", "String ResourceTagAttributes.name()",
+      "ResourceTagAttributes ResourceTagAttributes.name(String)", "String ResourceTagAttributes.src()",
+      "ResourceTagAttributes ResourceTagAttributes.src(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     ResourceTagAttributes actualResourceTagAttributes = new ResourceTagAttributes();
@@ -98,16 +116,16 @@ public class ResourceTagAttributesDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ResourceTagAttributes#ResourceTagAttributes(ResourceTagAttributes)}.
+   * Test {@link ResourceTagAttributes#ResourceTagAttributes(ResourceTagAttributes)}.
    * <ul>
    *   <li>Then return bundleCompletedEvent is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ResourceTagAttributes#ResourceTagAttributes(ResourceTagAttributes)}
+   * Method under test: {@link ResourceTagAttributes#ResourceTagAttributes(ResourceTagAttributes)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourceTagAttributes.<init>(ResourceTagAttributes)"})
   public void testNewResourceTagAttributes_thenReturnBundleCompletedEventIsNull() {
     // Arrange and Act
     ResourceTagAttributes actualResourceTagAttributes = new ResourceTagAttributes(new ResourceTagAttributes());

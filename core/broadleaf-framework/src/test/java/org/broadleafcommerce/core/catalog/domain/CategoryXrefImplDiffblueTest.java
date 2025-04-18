@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.catalog.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -11,6 +28,8 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import org.broadleafcommerce.common.copy.CreateResponse;
 import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
@@ -40,6 +59,12 @@ public class CategoryXrefImplDiffblueTest {
    * </ul>
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Category CategoryXrefImpl.getCategory()", "Boolean CategoryXrefImpl.getDefaultReference()",
+      "BigDecimal CategoryXrefImpl.getDisplayOrder()", "Long CategoryXrefImpl.getId()",
+      "Category CategoryXrefImpl.getSubCategory()", "void CategoryXrefImpl.setCategory(Category)",
+      "void CategoryXrefImpl.setDefaultReference(Boolean)", "void CategoryXrefImpl.setDisplayOrder(BigDecimal)",
+      "void CategoryXrefImpl.setId(Long)", "void CategoryXrefImpl.setSubCategory(Category)"})
   public void testGettersAndSetters() {
     // Arrange
     CategoryXrefImpl categoryXrefImpl = new CategoryXrefImpl();
@@ -59,7 +84,7 @@ public class CategoryXrefImplDiffblueTest {
     Long actualId = categoryXrefImpl.getId();
     Category actualSubCategory = categoryXrefImpl.getSubCategory();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals(1L, actualId.longValue());
     assertTrue(actualDefaultReference);
     assertEquals(new BigDecimal("2.3"), actualDisplayOrder);
@@ -69,8 +94,7 @@ public class CategoryXrefImplDiffblueTest {
   }
 
   /**
-   * Test {@link CategoryXrefImpl#equals(Object)}, and
-   * {@link CategoryXrefImpl#hashCode()}.
+   * Test {@link CategoryXrefImpl#equals(Object)}, and {@link CategoryXrefImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -83,6 +107,8 @@ public class CategoryXrefImplDiffblueTest {
    * </ul>
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryXrefImpl.equals(Object)", "int CategoryXrefImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     CategoryXrefImpl categoryXrefImpl = new CategoryXrefImpl();
@@ -106,8 +132,7 @@ public class CategoryXrefImplDiffblueTest {
   }
 
   /**
-   * Test {@link CategoryXrefImpl#equals(Object)}, and
-   * {@link CategoryXrefImpl#hashCode()}.
+   * Test {@link CategoryXrefImpl#equals(Object)}, and {@link CategoryXrefImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -120,6 +145,8 @@ public class CategoryXrefImplDiffblueTest {
    * </ul>
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryXrefImpl.equals(Object)", "int CategoryXrefImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     CategoryXrefImpl categoryXrefImpl = new CategoryXrefImpl();
@@ -143,8 +170,7 @@ public class CategoryXrefImplDiffblueTest {
   }
 
   /**
-   * Test {@link CategoryXrefImpl#equals(Object)}, and
-   * {@link CategoryXrefImpl#hashCode()}.
+   * Test {@link CategoryXrefImpl#equals(Object)}, and {@link CategoryXrefImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -157,6 +183,8 @@ public class CategoryXrefImplDiffblueTest {
    * </ul>
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryXrefImpl.equals(Object)", "int CategoryXrefImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     CategoryXrefImpl categoryXrefImpl = new CategoryXrefImpl();
@@ -180,8 +208,7 @@ public class CategoryXrefImplDiffblueTest {
   }
 
   /**
-   * Test {@link CategoryXrefImpl#equals(Object)}, and
-   * {@link CategoryXrefImpl#hashCode()}.
+   * Test {@link CategoryXrefImpl#equals(Object)}, and {@link CategoryXrefImpl#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -194,6 +221,8 @@ public class CategoryXrefImplDiffblueTest {
    * </ul>
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryXrefImpl.equals(Object)", "int CategoryXrefImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     CategoryXrefImpl categoryXrefImpl = new CategoryXrefImpl();
@@ -219,6 +248,8 @@ public class CategoryXrefImplDiffblueTest {
    * Method under test: {@link CategoryXrefImpl#equals(Object)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryXrefImpl.equals(Object)", "int CategoryXrefImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     CategoryXrefImpl categoryXrefImpl = new CategoryXrefImpl();
@@ -249,6 +280,8 @@ public class CategoryXrefImplDiffblueTest {
    * Method under test: {@link CategoryXrefImpl#equals(Object)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryXrefImpl.equals(Object)", "int CategoryXrefImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     CategoryXrefImpl categoryXrefImpl = new CategoryXrefImpl();
@@ -279,6 +312,8 @@ public class CategoryXrefImplDiffblueTest {
    * Method under test: {@link CategoryXrefImpl#equals(Object)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryXrefImpl.equals(Object)", "int CategoryXrefImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     CategoryXrefImpl categoryXrefImpl = new CategoryXrefImpl();
@@ -309,6 +344,8 @@ public class CategoryXrefImplDiffblueTest {
    * Method under test: {@link CategoryXrefImpl#equals(Object)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryXrefImpl.equals(Object)", "int CategoryXrefImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     CategoryXrefImpl categoryXrefImpl = new CategoryXrefImpl();
@@ -339,6 +376,8 @@ public class CategoryXrefImplDiffblueTest {
    * Method under test: {@link CategoryXrefImpl#equals(Object)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryXrefImpl.equals(Object)", "int CategoryXrefImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     CategoryXrefImpl categoryXrefImpl = new CategoryXrefImpl();
@@ -362,6 +401,8 @@ public class CategoryXrefImplDiffblueTest {
    * Method under test: {@link CategoryXrefImpl#equals(Object)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryXrefImpl.equals(Object)", "int CategoryXrefImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     CategoryXrefImpl categoryXrefImpl = new CategoryXrefImpl();
@@ -376,13 +417,13 @@ public class CategoryXrefImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CategoryXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * Test {@link CategoryXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <p>
-   * Method under test:
-   * {@link CategoryXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link CategoryXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse CategoryXrefImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
     // Arrange
     CategoryXrefImpl categoryXrefImpl = new CategoryXrefImpl();
@@ -401,54 +442,17 @@ public class CategoryXrefImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CategoryXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * Test {@link CategoryXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <ul>
    *   <li>Then Clone return {@link CategoryXrefImpl}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CategoryXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link CategoryXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse CategoryXrefImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance_thenCloneReturnCategoryXrefImpl() throws CloneNotSupportedException {
-    // Arrange
-    CategoryXrefImpl categoryXrefImpl = new CategoryXrefImpl();
-    GenericEntityService genericEntityService = mock(GenericEntityService.class);
-    when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
-    Class<Object> forNameResult = Object.class;
-    Mockito.<Class<?>>when(genericEntityService.getCeilingImplClass(Mockito.<String>any())).thenReturn(forNameResult);
-    CatalogImpl fromCatalog = new CatalogImpl();
-    CatalogImpl toCatalog = new CatalogImpl();
-    SiteImpl fromSite = new SiteImpl();
-    SiteImpl toSite = new SiteImpl();
-
-    // Act
-    CreateResponse<CategoryXref> actualCreateOrRetrieveCopyInstanceResult = categoryXrefImpl
-        .createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
-            genericEntityService, new MultiTenantCopierExtensionManager()));
-
-    // Assert
-    verify(genericEntityService, atLeast(1)).getCeilingImplClass(Mockito.<String>any());
-    verify(genericEntityService, atLeast(1)).getIdentifier(Mockito.<Object>any());
-    CategoryXref clone = actualCreateOrRetrieveCopyInstanceResult.getClone();
-    assertTrue(clone instanceof CategoryXrefImpl);
-    assertFalse(actualCreateOrRetrieveCopyInstanceResult.isAlreadyPopulated());
-    assertEquals(categoryXrefImpl, clone);
-  }
-
-  /**
-   * Test
-   * {@link CategoryXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <ul>
-   *   <li>Then Clone return {@link CategoryXrefImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link CategoryXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  public void testCreateOrRetrieveCopyInstance_thenCloneReturnCategoryXrefImpl2() throws CloneNotSupportedException {
     // Arrange
     CategoryXrefImpl categoryXrefImpl = new CategoryXrefImpl();
     GenericEntityService genericEntityService = mock(GenericEntityService.class);
@@ -477,10 +481,11 @@ public class CategoryXrefImplDiffblueTest {
   /**
    * Test new {@link CategoryXrefImpl} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link CategoryXrefImpl}
+   * Method under test: default or parameterless constructor of {@link CategoryXrefImpl}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryXrefImpl.<init>()"})
   public void testNewCategoryXrefImpl() {
     // Arrange and Act
     CategoryXrefImpl actualCategoryXrefImpl = new CategoryXrefImpl();
@@ -490,82 +495,9 @@ public class CategoryXrefImplDiffblueTest {
     assertTrue(category instanceof CategoryImpl);
     Category subCategory = actualCategoryXrefImpl.getSubCategory();
     assertTrue(subCategory instanceof CategoryImpl);
-    assertEquals("null", category.getGeneratedUrl());
-    assertEquals('N', ((CategoryImpl) category).archiveStatus.getArchived().charValue());
-    assertEquals('N', ((CategoryImpl) category).getArchived().charValue());
     assertNull(actualCategoryXrefImpl.getDefaultReference());
-    assertNull(category.getId());
     assertNull(actualCategoryXrefImpl.getId());
-    assertNull(category.getDescription());
-    assertNull(category.getDisplayTemplate());
-    assertNull(category.getExternalId());
-    assertNull(category.getLongDescription());
-    assertNull(category.getMetaDescription());
-    assertNull(category.getMetaTitle());
-    assertNull(category.getName());
-    assertNull(category.getProductDescriptionPatternOverride());
-    assertNull(category.getProductTitlePatternOverride());
-    assertNull(category.getTaxCode());
-    assertNull(category.getUrl());
-    assertNull(category.getUrlKey());
-    assertNull(((CategoryImpl) category).getLocation());
-    assertNull(((CategoryImpl) category).getMainEntityName());
-    assertNull(((CategoryImpl) category).description);
-    assertNull(((CategoryImpl) category).fulfillmentType);
-    assertNull(((CategoryImpl) category).inventoryType);
-    assertNull(((CategoryImpl) category).longDescription);
-    assertNull(((CategoryImpl) category).name);
-    assertNull(((CategoryImpl) category).url);
-    assertNull(((CategoryImpl) category).urlKey);
-    assertNull(category.getRootDisplayOrder());
     assertNull(actualCategoryXrefImpl.getDisplayOrder());
-    assertNull(category.getActiveEndDate());
-    assertNull(category.getActiveStartDate());
-    assertNull(((CategoryImpl) category).activeStartDate);
-    assertNull(((CategoryImpl) category).childCategoryIds);
-    assertNull(((CategoryImpl) category).filteredFeaturedProducts);
-    assertNull(((CategoryImpl) category).filteredCrossSales);
-    assertNull(((CategoryImpl) category).filteredUpSales);
-    assertNull(((CategoryImpl) category).childCategoryURLMap);
-    assertNull(category.getDefaultParentCategory());
-    assertNull(category.getParentCategory());
-    assertNull(((CategoryImpl) category).defaultParentCategory);
-    assertNull(category.getParentCategoryXref());
-    assertNull(category.getInventoryType());
-    assertNull(category.getFulfillmentType());
-    assertFalse(category.getOverrideGeneratedUrl());
-    assertFalse(category.hasAllChildCategories());
-    assertFalse(category.hasChildCategories());
-    assertFalse(((CategoryImpl) category).overrideGeneratedUrl);
-    assertTrue(category.getActiveProductXrefs().isEmpty());
-    assertTrue(category.getActiveProducts().isEmpty());
-    assertTrue(category.getAllChildCategories().isEmpty());
-    assertTrue(category.getAllChildCategoryXrefs().isEmpty());
-    assertTrue(category.getAllParentCategories().isEmpty());
-    assertTrue(category.getAllParentCategoryXrefs().isEmpty());
-    assertTrue(category.getAllProductXrefs().isEmpty());
-    assertTrue(category.getAllProducts().isEmpty());
-    assertTrue(category.getCategoryAttributes().isEmpty());
-    assertTrue(category.getChildCategories().isEmpty());
-    assertTrue(category.getChildCategoryXrefs().isEmpty());
-    assertTrue(category.getCrossSaleProducts().isEmpty());
-    assertTrue(category.getCumulativeCrossSaleProducts().isEmpty());
-    assertTrue(category.getCumulativeFeaturedProducts().isEmpty());
-    assertTrue(category.getCumulativeSearchFacets().isEmpty());
-    assertTrue(category.getCumulativeUpSaleProducts().isEmpty());
-    assertTrue(category.getExcludedSearchFacets().isEmpty());
-    assertTrue(category.getFeaturedProducts().isEmpty());
-    assertTrue(category.getSearchFacets().isEmpty());
-    assertTrue(category.getUpSaleProducts().isEmpty());
-    assertTrue(((CategoryImpl) category).allLegacyChildCategories.isEmpty());
-    assertTrue(((CategoryImpl) category).childCategoryXrefs.isEmpty());
-    assertTrue(((CategoryImpl) category).legacyChildCategories.isEmpty());
-    assertTrue(category.getCategoryAttributesMap().isEmpty());
-    assertTrue(category.getCategoryMedia().isEmpty());
-    assertTrue(category.getCategoryMediaXref().isEmpty());
-    assertTrue(category.getMappedCategoryAttributes().isEmpty());
-    assertTrue(category.getMultiValueCategoryAttributes().isEmpty());
-    assertTrue(((CategoryImpl) category).legacyCategoryMedia.isEmpty());
     assertEquals(category, subCategory);
   }
 }

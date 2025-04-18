@@ -20,7 +20,10 @@ package org.broadleafcommerce.common.exception;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class SiteNotFoundExceptionDiffblueTest {
   /**
@@ -29,10 +32,12 @@ public class SiteNotFoundExceptionDiffblueTest {
    *   <li>Then return Message is {@code An error occurred}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SiteNotFoundException#SiteNotFoundException(String)}
+   * Method under test: {@link SiteNotFoundException#SiteNotFoundException(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SiteNotFoundException.<init>()", "void SiteNotFoundException.<init>(String)",
+      "void SiteNotFoundException.<init>(String, Throwable)", "void SiteNotFoundException.<init>(Throwable)"})
   public void testNewSiteNotFoundException_thenReturnMessageIsAnErrorOccurred() {
     // Arrange and Act
     SiteNotFoundException actualSiteNotFoundException = new SiteNotFoundException("An error occurred");
@@ -49,10 +54,12 @@ public class SiteNotFoundExceptionDiffblueTest {
    *   <li>Then return Message is {@code An error occurred}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SiteNotFoundException#SiteNotFoundException(String, Throwable)}
+   * Method under test: {@link SiteNotFoundException#SiteNotFoundException(String, Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SiteNotFoundException.<init>()", "void SiteNotFoundException.<init>(String)",
+      "void SiteNotFoundException.<init>(String, Throwable)", "void SiteNotFoundException.<init>(Throwable)"})
   public void testNewSiteNotFoundException_thenReturnMessageIsAnErrorOccurred2() {
     // Arrange
     Throwable cause = new Throwable();
@@ -75,6 +82,9 @@ public class SiteNotFoundExceptionDiffblueTest {
    * Method under test: {@link SiteNotFoundException#SiteNotFoundException()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SiteNotFoundException.<init>()", "void SiteNotFoundException.<init>(String)",
+      "void SiteNotFoundException.<init>(String, Throwable)", "void SiteNotFoundException.<init>(Throwable)"})
   public void testNewSiteNotFoundException_thenReturnMessageIsNull() {
     // Arrange and Act
     SiteNotFoundException actualSiteNotFoundException = new SiteNotFoundException();
@@ -89,13 +99,15 @@ public class SiteNotFoundExceptionDiffblueTest {
    * Test {@link SiteNotFoundException#SiteNotFoundException(Throwable)}.
    * <ul>
    *   <li>When {@link Throwable#Throwable()}.</li>
-   *   <li>Then return Message is {@code java.lang.Throwable}.</li>
+   *   <li>Then return Message is {@code Throwable}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SiteNotFoundException#SiteNotFoundException(Throwable)}
+   * Method under test: {@link SiteNotFoundException#SiteNotFoundException(Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SiteNotFoundException.<init>()", "void SiteNotFoundException.<init>(String)",
+      "void SiteNotFoundException.<init>(String, Throwable)", "void SiteNotFoundException.<init>(Throwable)"})
   public void testNewSiteNotFoundException_whenThrowable_thenReturnMessageIsJavaLangThrowable() {
     // Arrange
     Throwable cause = new Throwable();

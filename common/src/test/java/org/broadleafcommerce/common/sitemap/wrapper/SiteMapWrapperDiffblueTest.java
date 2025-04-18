@@ -18,7 +18,10 @@
 package org.broadleafcommerce.common.sitemap.wrapper;
 
 import static org.junit.Assert.assertEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class SiteMapWrapperDiffblueTest {
   /**
@@ -34,6 +37,9 @@ public class SiteMapWrapperDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SiteMapWrapper.<init>()", "String SiteMapWrapper.getLastmod()",
+      "String SiteMapWrapper.getLoc()", "void SiteMapWrapper.setLastmod(String)", "void SiteMapWrapper.setLoc(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     SiteMapWrapper actualSiteMapWrapper = new SiteMapWrapper();
@@ -41,7 +47,7 @@ public class SiteMapWrapperDiffblueTest {
     actualSiteMapWrapper.setLoc("Loc");
     String actualLastmod = actualSiteMapWrapper.getLastmod();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Lastmod", actualLastmod);
     assertEquals("Loc", actualSiteMapWrapper.getLoc());
   }

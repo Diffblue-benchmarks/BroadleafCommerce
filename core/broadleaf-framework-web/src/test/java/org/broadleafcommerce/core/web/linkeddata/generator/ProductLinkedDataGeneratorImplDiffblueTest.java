@@ -1,76 +1,96 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework Web
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.web.linkeddata.generator;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
+import org.broadleafcommerce.common.breadcrumbs.service.BreadcrumbService;
+import org.broadleafcommerce.common.media.domain.Media;
+import org.broadleafcommerce.common.media.domain.MediaDto;
+import org.broadleafcommerce.common.money.Money;
+import org.broadleafcommerce.common.web.BaseUrlResolver;
+import org.broadleafcommerce.core.catalog.domain.CategoryImpl;
 import org.broadleafcommerce.core.catalog.domain.Product;
 import org.broadleafcommerce.core.catalog.domain.ProductBundleImpl;
+import org.broadleafcommerce.core.catalog.domain.ProductImpl;
 import org.broadleafcommerce.core.catalog.domain.Sku;
 import org.broadleafcommerce.core.catalog.domain.SkuImpl;
+import org.broadleafcommerce.core.catalog.service.CatalogService;
+import org.broadleafcommerce.core.inventory.service.type.InventoryType;
+import org.broadleafcommerce.core.rating.domain.RatingSummaryImpl;
+import org.broadleafcommerce.core.rating.service.RatingService;
+import org.broadleafcommerce.core.rating.service.type.RatingType;
 import org.broadleafcommerce.core.web.search.SearchRequestWrapper;
 import org.broadleafcommerce.core.web.security.XssRequestWrapper;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.web.reactive.context.StandardReactiveWebEnvironment;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.PropertyResolver;
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
 
-@ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml",
-    "/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 class ProductLinkedDataGeneratorImplDiffblueTest {
-  @Autowired
+  @Mock
+  private BaseUrlResolver baseUrlResolver;
+
+  @Mock
+  private BreadcrumbService breadcrumbService;
+
+  @Mock
+  private CatalogService catalogService;
+
+  @Mock
+  private Environment environment;
+
+  @Mock
+  private LinkedDataGeneratorExtensionManager linkedDataGeneratorExtensionManager;
+
+  @InjectMocks
   private ProductLinkedDataGeneratorImpl productLinkedDataGeneratorImpl;
 
-  /**
-   * Test {@link ProductLinkedDataGeneratorImpl#canHandle(HttpServletRequest)}.
-   * <p>
-   * Method under test:
-   * {@link ProductLinkedDataGeneratorImpl#canHandle(HttpServletRequest)}
-   */
-  @Test
-  @DisplayName("Test canHandle(HttpServletRequest)")
-  @Disabled("TODO: Complete this test")
-  void testCanHandle() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.linkeddata.generator;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6397 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.linkeddata.generator.ProductLinkedDataGeneratorImpl productLinkedDataGeneratorImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    ProductLinkedDataGeneratorImpl productLinkedDataGeneratorImpl2 = new ProductLinkedDataGeneratorImpl();
-    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
-
-    // Act
-    productLinkedDataGeneratorImpl2.canHandle(new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
-        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"})));
-  }
+  @Mock
+  private RatingService ratingService;
 
   /**
    * Test {@link ProductLinkedDataGeneratorImpl#canHandle(HttpServletRequest)}.
@@ -79,23 +99,20 @@ class ProductLinkedDataGeneratorImplDiffblueTest {
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductLinkedDataGeneratorImpl#canHandle(HttpServletRequest)}
+   * Method under test: {@link ProductLinkedDataGeneratorImpl#canHandle(HttpServletRequest)}
    */
   @Test
   @DisplayName("Test canHandle(HttpServletRequest); given 'Attribute'; then return 'true'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean ProductLinkedDataGeneratorImpl.canHandle(HttpServletRequest)"})
   void testCanHandle_givenAttribute_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductLinkedDataGeneratorImpl productLinkedDataGeneratorImpl = new ProductLinkedDataGeneratorImpl();
     DefaultMultipartHttpServletRequest servletRequest = mock(DefaultMultipartHttpServletRequest.class);
     when(servletRequest.getAttribute(Mockito.<String>any())).thenReturn("Attribute");
 
     // Act
-    boolean actualCanHandleResult = productLinkedDataGeneratorImpl
-        .canHandle(new SearchRequestWrapper(new XssRequestWrapper(servletRequest, new StandardReactiveWebEnvironment(),
-            new String[]{"White List Param Names"})));
+    boolean actualCanHandleResult = productLinkedDataGeneratorImpl.canHandle(new SearchRequestWrapper(
+        new XssRequestWrapper(servletRequest, environment, new String[]{"White List Param Names"})));
 
     // Assert
     verify(servletRequest).getAttribute(eq("currentProduct"));
@@ -108,340 +125,1261 @@ class ProductLinkedDataGeneratorImplDiffblueTest {
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductLinkedDataGeneratorImpl#canHandle(HttpServletRequest)}
+   * Method under test: {@link ProductLinkedDataGeneratorImpl#canHandle(HttpServletRequest)}
    */
   @Test
   @DisplayName("Test canHandle(HttpServletRequest); then return 'false'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean ProductLinkedDataGeneratorImpl.canHandle(HttpServletRequest)"})
   void testCanHandle_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProductLinkedDataGeneratorImpl productLinkedDataGeneratorImpl = new ProductLinkedDataGeneratorImpl();
-    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
-
-    // Act and Assert
-    assertFalse(productLinkedDataGeneratorImpl.canHandle(new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
-        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}))));
+    // Arrange, Act and Assert
+    assertFalse(productLinkedDataGeneratorImpl.canHandle(new SearchRequestWrapper(
+        new XssRequestWrapper(new MockHttpServletRequest(), environment, new String[]{"White List Param Names"}))));
   }
 
   /**
-   * Test
-   * {@link ProductLinkedDataGeneratorImpl#getLinkedDataJsonInternal(String, HttpServletRequest, JSONArray)}.
+   * Test {@link ProductLinkedDataGeneratorImpl#getLinkedDataJsonInternal(String, HttpServletRequest, JSONArray)}.
    * <p>
-   * Method under test:
-   * {@link ProductLinkedDataGeneratorImpl#getLinkedDataJsonInternal(String, HttpServletRequest, JSONArray)}
+   * Method under test: {@link ProductLinkedDataGeneratorImpl#getLinkedDataJsonInternal(String, HttpServletRequest, JSONArray)}
    */
   @Test
   @DisplayName("Test getLinkedDataJsonInternal(String, HttpServletRequest, JSONArray)")
-  @Disabled("TODO: Complete this test")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "JSONArray ProductLinkedDataGeneratorImpl.getLinkedDataJsonInternal(String, HttpServletRequest, JSONArray)"})
   void testGetLinkedDataJsonInternal() throws JSONException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.linkeddata.generator;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6609 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.linkeddata.generator.ProductLinkedDataGeneratorImpl productLinkedDataGeneratorImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    ProductLinkedDataGeneratorImpl productLinkedDataGeneratorImpl2 = new ProductLinkedDataGeneratorImpl();
-    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
-    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
-        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
+    when(linkedDataGeneratorExtensionManager.getProxy()).thenReturn(new DefaultLinkedDataGeneratorExtensionHandler());
+
+    ArrayList<Sku> skuList = new ArrayList<>();
+    skuList.add(new SkuImpl());
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getPrice()).thenReturn(new Money(10.0d));
+    when(productBundleImpl.getId()).thenReturn(1L);
+    when(productBundleImpl.getAllSellableSkus()).thenReturn(skuList);
+    when(productBundleImpl.getRetailPrice()).thenReturn(new Money());
+    when(productBundleImpl.getCategory()).thenReturn(new CategoryImpl());
+    when(productBundleImpl.getLongDescription()).thenReturn("Long Description");
+    when(productBundleImpl.getManufacturer()).thenReturn("Manufacturer");
+    when(productBundleImpl.getName()).thenReturn("Name");
+    when(productBundleImpl.getMedia()).thenReturn(new HashMap<>());
+    when(productBundleImpl.getDefaultSku()).thenReturn(new SkuImpl());
+    when(catalogService.findProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(ratingService.readRatingSummary(Mockito.<String>any(), Mockito.<RatingType>any()))
+        .thenReturn(new RatingSummaryImpl());
+    ProductBundleImpl productBundleImpl2 = mock(ProductBundleImpl.class);
+    when(productBundleImpl2.getId()).thenReturn(1L);
+    MockHttpServletRequest servletRequest = mock(MockHttpServletRequest.class);
+    when(servletRequest.getAttribute(Mockito.<String>any())).thenReturn(productBundleImpl2);
+    doNothing().when(servletRequest).addParameter(Mockito.<String>any(), Mockito.<String>any());
+    doNothing().when(servletRequest).setAttribute(Mockito.<String>any(), Mockito.<Object>any());
+    servletRequest.addParameter("currentProduct", "42");
+
+    XssRequestWrapper servletRequest2 = new XssRequestWrapper(servletRequest, environment,
+        new String[]{"White List Param Names"});
+    servletRequest2.setAttribute("currentProduct", "42");
+    SearchRequestWrapper request = new SearchRequestWrapper(servletRequest2);
+    JSONArray schemaObjects = new JSONArray(3);
 
     // Act
-    productLinkedDataGeneratorImpl2.getLinkedDataJsonInternal("https://example.org/example", request, new JSONArray(3));
+    JSONArray actualLinkedDataJsonInternal = productLinkedDataGeneratorImpl
+        .getLinkedDataJsonInternal("https://example.org/example", request, schemaObjects);
+
+    // Assert
+    verify(linkedDataGeneratorExtensionManager, atLeast(1)).getProxy();
+    verify(productBundleImpl).getRetailPrice();
+    verify(productBundleImpl).getAllSellableSkus();
+    verify(productBundleImpl, atLeast(1)).getCategory();
+    verify(productBundleImpl).getDefaultSku();
+    verify(productBundleImpl).getId();
+    verify(productBundleImpl2).getId();
+    verify(productBundleImpl).getLongDescription();
+    verify(productBundleImpl).getManufacturer();
+    verify(productBundleImpl).getMedia();
+    verify(productBundleImpl).getName();
+    verify(productBundleImpl).getPrice();
+    verify(catalogService).findProductById(eq(1L));
+    verify(ratingService).readRatingSummary(eq("1"), isA(RatingType.class));
+    verify(servletRequest).addParameter(eq("currentProduct"), eq("42"));
+    verify(servletRequest).getAttribute(eq("currentProduct"));
+    verify(servletRequest).setAttribute(eq("currentProduct"), isA(Object.class));
+    assertEquals(1, schemaObjects.length());
+    assertSame(schemaObjects, actualLinkedDataJsonInternal);
+  }
+
+  /**
+   * Test {@link ProductLinkedDataGeneratorImpl#getLinkedDataJsonInternal(String, HttpServletRequest, JSONArray)}.
+   * <ul>
+   *   <li>Given {@link Money} {@link Money#lessThan(BigDecimal)} return {@code false}.</li>
+   *   <li>Then calls {@link Money#lessThan(BigDecimal)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ProductLinkedDataGeneratorImpl#getLinkedDataJsonInternal(String, HttpServletRequest, JSONArray)}
+   */
+  @Test
+  @DisplayName("Test getLinkedDataJsonInternal(String, HttpServletRequest, JSONArray); given Money lessThan(BigDecimal) return 'false'; then calls lessThan(BigDecimal)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "JSONArray ProductLinkedDataGeneratorImpl.getLinkedDataJsonInternal(String, HttpServletRequest, JSONArray)"})
+  void testGetLinkedDataJsonInternal_givenMoneyLessThanReturnFalse_thenCallsLessThan() throws JSONException {
+    // Arrange
+    when(linkedDataGeneratorExtensionManager.getProxy()).thenReturn(new DefaultLinkedDataGeneratorExtensionHandler());
+
+    ArrayList<Sku> skuList = new ArrayList<>();
+    skuList.add(new SkuImpl());
+    skuList.add(new SkuImpl());
+    Money money = mock(Money.class);
+    when(money.lessThan(Mockito.<BigDecimal>any())).thenReturn(false);
+    when(money.greaterThan(Mockito.<BigDecimal>any())).thenReturn(true);
+    when(money.getAmount()).thenReturn(new BigDecimal("2.3"));
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getPrice()).thenReturn(money);
+    when(productBundleImpl.getId()).thenReturn(1L);
+    when(productBundleImpl.getAllSellableSkus()).thenReturn(skuList);
+    when(productBundleImpl.getRetailPrice()).thenReturn(new Money());
+    when(productBundleImpl.getCategory()).thenReturn(new CategoryImpl());
+    when(productBundleImpl.getLongDescription()).thenReturn("Long Description");
+    when(productBundleImpl.getManufacturer()).thenReturn("Manufacturer");
+    when(productBundleImpl.getName()).thenReturn("Name");
+    when(productBundleImpl.getMedia()).thenReturn(new HashMap<>());
+    when(productBundleImpl.getDefaultSku()).thenReturn(new SkuImpl());
+    when(catalogService.findProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(ratingService.readRatingSummary(Mockito.<String>any(), Mockito.<RatingType>any()))
+        .thenReturn(new RatingSummaryImpl());
+    ProductBundleImpl productBundleImpl2 = mock(ProductBundleImpl.class);
+    when(productBundleImpl2.getId()).thenReturn(1L);
+    MockHttpServletRequest servletRequest = mock(MockHttpServletRequest.class);
+    when(servletRequest.getAttribute(Mockito.<String>any())).thenReturn(productBundleImpl2);
+    doNothing().when(servletRequest).addParameter(Mockito.<String>any(), Mockito.<String>any());
+    doNothing().when(servletRequest).setAttribute(Mockito.<String>any(), Mockito.<Object>any());
+    servletRequest.addParameter("currentProduct", "42");
+
+    XssRequestWrapper servletRequest2 = new XssRequestWrapper(servletRequest, environment,
+        new String[]{"White List Param Names"});
+    servletRequest2.setAttribute("currentProduct", "42");
+    SearchRequestWrapper request = new SearchRequestWrapper(servletRequest2);
+    JSONArray schemaObjects = new JSONArray(3);
+
+    // Act
+    JSONArray actualLinkedDataJsonInternal = productLinkedDataGeneratorImpl
+        .getLinkedDataJsonInternal("https://example.org/example", request, schemaObjects);
+
+    // Assert
+    verify(linkedDataGeneratorExtensionManager, atLeast(1)).getProxy();
+    verify(money, atLeast(1)).getAmount();
+    verify(money, atLeast(1)).greaterThan(Mockito.<BigDecimal>any());
+    verify(money).lessThan(isA(BigDecimal.class));
+    verify(productBundleImpl).getRetailPrice();
+    verify(productBundleImpl).getAllSellableSkus();
+    verify(productBundleImpl, atLeast(1)).getCategory();
+    verify(productBundleImpl).getDefaultSku();
+    verify(productBundleImpl).getId();
+    verify(productBundleImpl2).getId();
+    verify(productBundleImpl).getLongDescription();
+    verify(productBundleImpl).getManufacturer();
+    verify(productBundleImpl).getMedia();
+    verify(productBundleImpl).getName();
+    verify(productBundleImpl, atLeast(1)).getPrice();
+    verify(catalogService).findProductById(eq(1L));
+    verify(ratingService).readRatingSummary(eq("1"), isA(RatingType.class));
+    verify(servletRequest).addParameter(eq("currentProduct"), eq("42"));
+    verify(servletRequest).getAttribute(eq("currentProduct"));
+    verify(servletRequest).setAttribute(eq("currentProduct"), isA(Object.class));
+    assertEquals(1, schemaObjects.length());
+    assertSame(schemaObjects, actualLinkedDataJsonInternal);
+  }
+
+  /**
+   * Test {@link ProductLinkedDataGeneratorImpl#getLinkedDataJsonInternal(String, HttpServletRequest, JSONArray)}.
+   * <ul>
+   *   <li>Given {@link Money} {@link Money#lessThan(BigDecimal)} return {@code true}.</li>
+   *   <li>Then calls {@link Money#lessThan(BigDecimal)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ProductLinkedDataGeneratorImpl#getLinkedDataJsonInternal(String, HttpServletRequest, JSONArray)}
+   */
+  @Test
+  @DisplayName("Test getLinkedDataJsonInternal(String, HttpServletRequest, JSONArray); given Money lessThan(BigDecimal) return 'true'; then calls lessThan(BigDecimal)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "JSONArray ProductLinkedDataGeneratorImpl.getLinkedDataJsonInternal(String, HttpServletRequest, JSONArray)"})
+  void testGetLinkedDataJsonInternal_givenMoneyLessThanReturnTrue_thenCallsLessThan() throws JSONException {
+    // Arrange
+    when(linkedDataGeneratorExtensionManager.getProxy()).thenReturn(new DefaultLinkedDataGeneratorExtensionHandler());
+
+    ArrayList<Sku> skuList = new ArrayList<>();
+    skuList.add(new SkuImpl());
+    skuList.add(new SkuImpl());
+    Money money = mock(Money.class);
+    when(money.lessThan(Mockito.<BigDecimal>any())).thenReturn(true);
+    when(money.greaterThan(Mockito.<BigDecimal>any())).thenReturn(true);
+    when(money.getAmount()).thenReturn(new BigDecimal("2.3"));
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getPrice()).thenReturn(money);
+    when(productBundleImpl.getId()).thenReturn(1L);
+    when(productBundleImpl.getAllSellableSkus()).thenReturn(skuList);
+    when(productBundleImpl.getRetailPrice()).thenReturn(new Money());
+    when(productBundleImpl.getCategory()).thenReturn(new CategoryImpl());
+    when(productBundleImpl.getLongDescription()).thenReturn("Long Description");
+    when(productBundleImpl.getManufacturer()).thenReturn("Manufacturer");
+    when(productBundleImpl.getName()).thenReturn("Name");
+    when(productBundleImpl.getMedia()).thenReturn(new HashMap<>());
+    when(productBundleImpl.getDefaultSku()).thenReturn(new SkuImpl());
+    when(catalogService.findProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(ratingService.readRatingSummary(Mockito.<String>any(), Mockito.<RatingType>any()))
+        .thenReturn(new RatingSummaryImpl());
+    ProductBundleImpl productBundleImpl2 = mock(ProductBundleImpl.class);
+    when(productBundleImpl2.getId()).thenReturn(1L);
+    MockHttpServletRequest servletRequest = mock(MockHttpServletRequest.class);
+    when(servletRequest.getAttribute(Mockito.<String>any())).thenReturn(productBundleImpl2);
+    doNothing().when(servletRequest).addParameter(Mockito.<String>any(), Mockito.<String>any());
+    doNothing().when(servletRequest).setAttribute(Mockito.<String>any(), Mockito.<Object>any());
+    servletRequest.addParameter("currentProduct", "42");
+
+    XssRequestWrapper servletRequest2 = new XssRequestWrapper(servletRequest, environment,
+        new String[]{"White List Param Names"});
+    servletRequest2.setAttribute("currentProduct", "42");
+    SearchRequestWrapper request = new SearchRequestWrapper(servletRequest2);
+    JSONArray schemaObjects = new JSONArray(3);
+
+    // Act
+    JSONArray actualLinkedDataJsonInternal = productLinkedDataGeneratorImpl
+        .getLinkedDataJsonInternal("https://example.org/example", request, schemaObjects);
+
+    // Assert
+    verify(linkedDataGeneratorExtensionManager, atLeast(1)).getProxy();
+    verify(money, atLeast(1)).getAmount();
+    verify(money, atLeast(1)).greaterThan(Mockito.<BigDecimal>any());
+    verify(money).lessThan(isA(BigDecimal.class));
+    verify(productBundleImpl).getRetailPrice();
+    verify(productBundleImpl).getAllSellableSkus();
+    verify(productBundleImpl, atLeast(1)).getCategory();
+    verify(productBundleImpl).getDefaultSku();
+    verify(productBundleImpl).getId();
+    verify(productBundleImpl2).getId();
+    verify(productBundleImpl).getLongDescription();
+    verify(productBundleImpl).getManufacturer();
+    verify(productBundleImpl).getMedia();
+    verify(productBundleImpl).getName();
+    verify(productBundleImpl, atLeast(1)).getPrice();
+    verify(catalogService).findProductById(eq(1L));
+    verify(ratingService).readRatingSummary(eq("1"), isA(RatingType.class));
+    verify(servletRequest).addParameter(eq("currentProduct"), eq("42"));
+    verify(servletRequest).getAttribute(eq("currentProduct"));
+    verify(servletRequest).setAttribute(eq("currentProduct"), isA(Object.class));
+    assertEquals(1, schemaObjects.length());
+    assertSame(schemaObjects, actualLinkedDataJsonInternal);
+  }
+
+  /**
+   * Test {@link ProductLinkedDataGeneratorImpl#getLinkedDataJsonInternal(String, HttpServletRequest, JSONArray)}.
+   * <ul>
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getPrice()} return {@link Money#Money()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ProductLinkedDataGeneratorImpl#getLinkedDataJsonInternal(String, HttpServletRequest, JSONArray)}
+   */
+  @Test
+  @DisplayName("Test getLinkedDataJsonInternal(String, HttpServletRequest, JSONArray); given ProductBundleImpl getPrice() return Money()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "JSONArray ProductLinkedDataGeneratorImpl.getLinkedDataJsonInternal(String, HttpServletRequest, JSONArray)"})
+  void testGetLinkedDataJsonInternal_givenProductBundleImplGetPriceReturnMoney() throws JSONException {
+    // Arrange
+    when(linkedDataGeneratorExtensionManager.getProxy()).thenReturn(new DefaultLinkedDataGeneratorExtensionHandler());
+
+    ArrayList<Sku> skuList = new ArrayList<>();
+    skuList.add(new SkuImpl());
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getPrice()).thenReturn(new Money());
+    when(productBundleImpl.getId()).thenReturn(1L);
+    when(productBundleImpl.getAllSellableSkus()).thenReturn(skuList);
+    when(productBundleImpl.getRetailPrice()).thenReturn(new Money());
+    when(productBundleImpl.getCategory()).thenReturn(new CategoryImpl());
+    when(productBundleImpl.getLongDescription()).thenReturn("Long Description");
+    when(productBundleImpl.getManufacturer()).thenReturn("Manufacturer");
+    when(productBundleImpl.getName()).thenReturn("Name");
+    when(productBundleImpl.getMedia()).thenReturn(new HashMap<>());
+    when(productBundleImpl.getDefaultSku()).thenReturn(new SkuImpl());
+    when(catalogService.findProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(ratingService.readRatingSummary(Mockito.<String>any(), Mockito.<RatingType>any()))
+        .thenReturn(new RatingSummaryImpl());
+    ProductBundleImpl productBundleImpl2 = mock(ProductBundleImpl.class);
+    when(productBundleImpl2.getId()).thenReturn(1L);
+    MockHttpServletRequest servletRequest = mock(MockHttpServletRequest.class);
+    when(servletRequest.getAttribute(Mockito.<String>any())).thenReturn(productBundleImpl2);
+    doNothing().when(servletRequest).addParameter(Mockito.<String>any(), Mockito.<String>any());
+    doNothing().when(servletRequest).setAttribute(Mockito.<String>any(), Mockito.<Object>any());
+    servletRequest.addParameter("currentProduct", "42");
+
+    XssRequestWrapper servletRequest2 = new XssRequestWrapper(servletRequest, environment,
+        new String[]{"White List Param Names"});
+    servletRequest2.setAttribute("currentProduct", "42");
+    SearchRequestWrapper request = new SearchRequestWrapper(servletRequest2);
+    JSONArray schemaObjects = new JSONArray(3);
+
+    // Act
+    JSONArray actualLinkedDataJsonInternal = productLinkedDataGeneratorImpl
+        .getLinkedDataJsonInternal("https://example.org/example", request, schemaObjects);
+
+    // Assert
+    verify(linkedDataGeneratorExtensionManager, atLeast(1)).getProxy();
+    verify(productBundleImpl).getRetailPrice();
+    verify(productBundleImpl).getAllSellableSkus();
+    verify(productBundleImpl, atLeast(1)).getCategory();
+    verify(productBundleImpl).getDefaultSku();
+    verify(productBundleImpl).getId();
+    verify(productBundleImpl2).getId();
+    verify(productBundleImpl).getLongDescription();
+    verify(productBundleImpl).getManufacturer();
+    verify(productBundleImpl).getMedia();
+    verify(productBundleImpl).getName();
+    verify(productBundleImpl).getPrice();
+    verify(catalogService).findProductById(eq(1L));
+    verify(ratingService).readRatingSummary(eq("1"), isA(RatingType.class));
+    verify(servletRequest).addParameter(eq("currentProduct"), eq("42"));
+    verify(servletRequest).getAttribute(eq("currentProduct"));
+    verify(servletRequest).setAttribute(eq("currentProduct"), isA(Object.class));
+    assertEquals(1, schemaObjects.length());
+    assertSame(schemaObjects, actualLinkedDataJsonInternal);
+  }
+
+  /**
+   * Test {@link ProductLinkedDataGeneratorImpl#getLinkedDataJsonInternal(String, HttpServletRequest, JSONArray)}.
+   * <ul>
+   *   <li>Then calls {@link Money#getAmount()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ProductLinkedDataGeneratorImpl#getLinkedDataJsonInternal(String, HttpServletRequest, JSONArray)}
+   */
+  @Test
+  @DisplayName("Test getLinkedDataJsonInternal(String, HttpServletRequest, JSONArray); then calls getAmount()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "JSONArray ProductLinkedDataGeneratorImpl.getLinkedDataJsonInternal(String, HttpServletRequest, JSONArray)"})
+  void testGetLinkedDataJsonInternal_thenCallsGetAmount() throws JSONException {
+    // Arrange
+    when(linkedDataGeneratorExtensionManager.getProxy()).thenReturn(new DefaultLinkedDataGeneratorExtensionHandler());
+
+    ArrayList<Sku> skuList = new ArrayList<>();
+    skuList.add(new SkuImpl());
+    Money money = mock(Money.class);
+    when(money.greaterThan(Mockito.<BigDecimal>any())).thenReturn(true);
+    when(money.getAmount()).thenReturn(new BigDecimal("2.3"));
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getPrice()).thenReturn(money);
+    when(productBundleImpl.getId()).thenReturn(1L);
+    when(productBundleImpl.getAllSellableSkus()).thenReturn(skuList);
+    when(productBundleImpl.getRetailPrice()).thenReturn(new Money());
+    when(productBundleImpl.getCategory()).thenReturn(new CategoryImpl());
+    when(productBundleImpl.getLongDescription()).thenReturn("Long Description");
+    when(productBundleImpl.getManufacturer()).thenReturn("Manufacturer");
+    when(productBundleImpl.getName()).thenReturn("Name");
+    when(productBundleImpl.getMedia()).thenReturn(new HashMap<>());
+    when(productBundleImpl.getDefaultSku()).thenReturn(new SkuImpl());
+    when(catalogService.findProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(ratingService.readRatingSummary(Mockito.<String>any(), Mockito.<RatingType>any()))
+        .thenReturn(new RatingSummaryImpl());
+    ProductBundleImpl productBundleImpl2 = mock(ProductBundleImpl.class);
+    when(productBundleImpl2.getId()).thenReturn(1L);
+    MockHttpServletRequest servletRequest = mock(MockHttpServletRequest.class);
+    when(servletRequest.getAttribute(Mockito.<String>any())).thenReturn(productBundleImpl2);
+    doNothing().when(servletRequest).addParameter(Mockito.<String>any(), Mockito.<String>any());
+    doNothing().when(servletRequest).setAttribute(Mockito.<String>any(), Mockito.<Object>any());
+    servletRequest.addParameter("currentProduct", "42");
+
+    XssRequestWrapper servletRequest2 = new XssRequestWrapper(servletRequest, environment,
+        new String[]{"White List Param Names"});
+    servletRequest2.setAttribute("currentProduct", "42");
+    SearchRequestWrapper request = new SearchRequestWrapper(servletRequest2);
+    JSONArray schemaObjects = new JSONArray(3);
+
+    // Act
+    JSONArray actualLinkedDataJsonInternal = productLinkedDataGeneratorImpl
+        .getLinkedDataJsonInternal("https://example.org/example", request, schemaObjects);
+
+    // Assert
+    verify(linkedDataGeneratorExtensionManager, atLeast(1)).getProxy();
+    verify(money, atLeast(1)).getAmount();
+    verify(money).greaterThan(isA(BigDecimal.class));
+    verify(productBundleImpl).getRetailPrice();
+    verify(productBundleImpl).getAllSellableSkus();
+    verify(productBundleImpl, atLeast(1)).getCategory();
+    verify(productBundleImpl).getDefaultSku();
+    verify(productBundleImpl).getId();
+    verify(productBundleImpl2).getId();
+    verify(productBundleImpl).getLongDescription();
+    verify(productBundleImpl).getManufacturer();
+    verify(productBundleImpl).getMedia();
+    verify(productBundleImpl).getName();
+    verify(productBundleImpl).getPrice();
+    verify(catalogService).findProductById(eq(1L));
+    verify(ratingService).readRatingSummary(eq("1"), isA(RatingType.class));
+    verify(servletRequest).addParameter(eq("currentProduct"), eq("42"));
+    verify(servletRequest).getAttribute(eq("currentProduct"));
+    verify(servletRequest).setAttribute(eq("currentProduct"), isA(Object.class));
+    assertEquals(1, schemaObjects.length());
+    assertSame(schemaObjects, actualLinkedDataJsonInternal);
+  }
+
+  /**
+   * Test {@link ProductLinkedDataGeneratorImpl#getLinkedDataJsonInternal(String, HttpServletRequest, JSONArray)}.
+   * <ul>
+   *   <li>Then {@link JSONArray#JSONArray(int)} with capacity is three length is one.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ProductLinkedDataGeneratorImpl#getLinkedDataJsonInternal(String, HttpServletRequest, JSONArray)}
+   */
+  @Test
+  @DisplayName("Test getLinkedDataJsonInternal(String, HttpServletRequest, JSONArray); then JSONArray(int) with capacity is three length is one")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "JSONArray ProductLinkedDataGeneratorImpl.getLinkedDataJsonInternal(String, HttpServletRequest, JSONArray)"})
+  void testGetLinkedDataJsonInternal_thenJSONArrayWithCapacityIsThreeLengthIsOne() throws JSONException {
+    // Arrange
+    when(linkedDataGeneratorExtensionManager.getProxy()).thenReturn(new DefaultLinkedDataGeneratorExtensionHandler());
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getId()).thenReturn(1L);
+    when(productBundleImpl.getAllSellableSkus()).thenReturn(new ArrayList<>());
+    when(productBundleImpl.getRetailPrice()).thenReturn(new Money());
+    when(productBundleImpl.getCategory()).thenReturn(new CategoryImpl());
+    when(productBundleImpl.getLongDescription()).thenReturn("Long Description");
+    when(productBundleImpl.getManufacturer()).thenReturn("Manufacturer");
+    when(productBundleImpl.getName()).thenReturn("Name");
+    when(productBundleImpl.getMedia()).thenReturn(new HashMap<>());
+    when(productBundleImpl.getDefaultSku()).thenReturn(new SkuImpl());
+    when(catalogService.findProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    when(ratingService.readRatingSummary(Mockito.<String>any(), Mockito.<RatingType>any()))
+        .thenReturn(new RatingSummaryImpl());
+    ProductBundleImpl productBundleImpl2 = mock(ProductBundleImpl.class);
+    when(productBundleImpl2.getId()).thenReturn(1L);
+    MockHttpServletRequest servletRequest = mock(MockHttpServletRequest.class);
+    when(servletRequest.getAttribute(Mockito.<String>any())).thenReturn(productBundleImpl2);
+    doNothing().when(servletRequest).addParameter(Mockito.<String>any(), Mockito.<String>any());
+    doNothing().when(servletRequest).setAttribute(Mockito.<String>any(), Mockito.<Object>any());
+    servletRequest.addParameter("currentProduct", "42");
+
+    XssRequestWrapper servletRequest2 = new XssRequestWrapper(servletRequest, environment,
+        new String[]{"White List Param Names"});
+    servletRequest2.setAttribute("currentProduct", "42");
+    SearchRequestWrapper request = new SearchRequestWrapper(servletRequest2);
+    JSONArray schemaObjects = new JSONArray(3);
+
+    // Act
+    JSONArray actualLinkedDataJsonInternal = productLinkedDataGeneratorImpl
+        .getLinkedDataJsonInternal("https://example.org/example", request, schemaObjects);
+
+    // Assert
+    verify(linkedDataGeneratorExtensionManager).getProxy();
+    verify(productBundleImpl).getRetailPrice();
+    verify(productBundleImpl).getAllSellableSkus();
+    verify(productBundleImpl).getCategory();
+    verify(productBundleImpl).getDefaultSku();
+    verify(productBundleImpl).getId();
+    verify(productBundleImpl2).getId();
+    verify(productBundleImpl).getLongDescription();
+    verify(productBundleImpl).getManufacturer();
+    verify(productBundleImpl).getMedia();
+    verify(productBundleImpl).getName();
+    verify(catalogService).findProductById(eq(1L));
+    verify(ratingService).readRatingSummary(eq("1"), isA(RatingType.class));
+    verify(servletRequest).addParameter(eq("currentProduct"), eq("42"));
+    verify(servletRequest).getAttribute(eq("currentProduct"));
+    verify(servletRequest).setAttribute(eq("currentProduct"), isA(Object.class));
+    assertEquals(1, schemaObjects.length());
+    assertSame(schemaObjects, actualLinkedDataJsonInternal);
+  }
+
+  /**
+   * Test {@link ProductLinkedDataGeneratorImpl#getLinkedDataJsonInternal(String, HttpServletRequest, JSONArray)}.
+   * <ul>
+   *   <li>Then {@link JSONArray#JSONArray(int)} with capacity is three length is zero.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ProductLinkedDataGeneratorImpl#getLinkedDataJsonInternal(String, HttpServletRequest, JSONArray)}
+   */
+  @Test
+  @DisplayName("Test getLinkedDataJsonInternal(String, HttpServletRequest, JSONArray); then JSONArray(int) with capacity is three length is zero")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "JSONArray ProductLinkedDataGeneratorImpl.getLinkedDataJsonInternal(String, HttpServletRequest, JSONArray)"})
+  void testGetLinkedDataJsonInternal_thenJSONArrayWithCapacityIsThreeLengthIsZero() throws JSONException {
+    // Arrange
+    when(catalogService.findProductById(Mockito.<Long>any())).thenReturn(null);
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getId()).thenReturn(1L);
+    MockHttpServletRequest servletRequest = mock(MockHttpServletRequest.class);
+    when(servletRequest.getAttribute(Mockito.<String>any())).thenReturn(productBundleImpl);
+    doNothing().when(servletRequest).addParameter(Mockito.<String>any(), Mockito.<String>any());
+    doNothing().when(servletRequest).setAttribute(Mockito.<String>any(), Mockito.<Object>any());
+    servletRequest.addParameter("currentProduct", "42");
+
+    XssRequestWrapper servletRequest2 = new XssRequestWrapper(servletRequest, environment,
+        new String[]{"White List Param Names"});
+    servletRequest2.setAttribute("currentProduct", "42");
+    SearchRequestWrapper request = new SearchRequestWrapper(servletRequest2);
+    JSONArray schemaObjects = new JSONArray(3);
+
+    // Act
+    JSONArray actualLinkedDataJsonInternal = productLinkedDataGeneratorImpl
+        .getLinkedDataJsonInternal("https://example.org/example", request, schemaObjects);
+
+    // Assert
+    verify(productBundleImpl).getId();
+    verify(catalogService).findProductById(eq(1L));
+    verify(servletRequest).addParameter(eq("currentProduct"), eq("42"));
+    verify(servletRequest).getAttribute(eq("currentProduct"));
+    verify(servletRequest).setAttribute(eq("currentProduct"), isA(Object.class));
+    assertEquals(0, schemaObjects.length());
+    assertSame(schemaObjects, actualLinkedDataJsonInternal);
   }
 
   /**
    * Test {@link ProductLinkedDataGeneratorImpl#getProduct(HttpServletRequest)}.
+   * <ul>
+   *   <li>Then return {@link ProductBundleImpl} (default constructor).</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductLinkedDataGeneratorImpl#getProduct(HttpServletRequest)}
+   * Method under test: {@link ProductLinkedDataGeneratorImpl#getProduct(HttpServletRequest)}
    */
   @Test
-  @DisplayName("Test getProduct(HttpServletRequest)")
-  @Disabled("TODO: Complete this test")
-  void testGetProduct() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.linkeddata.generator;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6808 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.linkeddata.generator.ProductLinkedDataGeneratorImpl productLinkedDataGeneratorImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @DisplayName("Test getProduct(HttpServletRequest); then return ProductBundleImpl (default constructor)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Product ProductLinkedDataGeneratorImpl.getProduct(HttpServletRequest)"})
+  void testGetProduct_thenReturnProductBundleImpl() {
     // Arrange
-    ProductLinkedDataGeneratorImpl productLinkedDataGeneratorImpl2 = new ProductLinkedDataGeneratorImpl();
-    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    ProductBundleImpl productBundleImpl = new ProductBundleImpl();
+    when(catalogService.findProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+    ProductBundleImpl productBundleImpl2 = mock(ProductBundleImpl.class);
+    when(productBundleImpl2.getId()).thenReturn(1L);
+    MockHttpServletRequest servletRequest = mock(MockHttpServletRequest.class);
+    when(servletRequest.getAttribute(Mockito.<String>any())).thenReturn(productBundleImpl2);
+    doNothing().when(servletRequest).addParameter(Mockito.<String>any(), Mockito.<String>any());
+    doNothing().when(servletRequest).setAttribute(Mockito.<String>any(), Mockito.<Object>any());
+    servletRequest.addParameter("currentProduct", "42");
+
+    XssRequestWrapper servletRequest2 = new XssRequestWrapper(servletRequest, environment,
+        new String[]{"White List Param Names"});
+    servletRequest2.setAttribute("currentProduct", "42");
 
     // Act
-    productLinkedDataGeneratorImpl2.getProduct(new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
-        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"})));
+    Product actualProduct = productLinkedDataGeneratorImpl.getProduct(new SearchRequestWrapper(servletRequest2));
+
+    // Assert
+    verify(productBundleImpl2).getId();
+    verify(catalogService).findProductById(eq(1L));
+    verify(servletRequest).addParameter(eq("currentProduct"), eq("42"));
+    verify(servletRequest).getAttribute(eq("currentProduct"));
+    verify(servletRequest).setAttribute(eq("currentProduct"), isA(Object.class));
+    assertSame(productBundleImpl, actualProduct);
   }
 
   /**
-   * Test
-   * {@link ProductLinkedDataGeneratorImpl#addProductData(HttpServletRequest, Product, String)}.
+   * Test {@link ProductLinkedDataGeneratorImpl#addProductData(HttpServletRequest, Product, String)}.
+   * <ul>
+   *   <li>Given {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then return RecursionDepthLimit is five hundred.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductLinkedDataGeneratorImpl#addProductData(HttpServletRequest, Product, String)}
+   * Method under test: {@link ProductLinkedDataGeneratorImpl#addProductData(HttpServletRequest, Product, String)}
    */
   @Test
-  @DisplayName("Test addProductData(HttpServletRequest, Product, String)")
-  @Disabled("TODO: Complete this test")
-  void testAddProductData() throws JSONException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.linkeddata.generator;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5734 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.linkeddata.generator.ProductLinkedDataGeneratorImpl productLinkedDataGeneratorImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @DisplayName("Test addProductData(HttpServletRequest, Product, String); given ArrayList(); then return RecursionDepthLimit is five hundred")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"JSONObject ProductLinkedDataGeneratorImpl.addProductData(HttpServletRequest, Product, String)"})
+  void testAddProductData_givenArrayList_thenReturnRecursionDepthLimitIsFiveHundred() throws JSONException {
     // Arrange
-    ProductLinkedDataGeneratorImpl productLinkedDataGeneratorImpl2 = new ProductLinkedDataGeneratorImpl();
-    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
-    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
-        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
+    when(linkedDataGeneratorExtensionManager.getProxy()).thenReturn(new DefaultLinkedDataGeneratorExtensionHandler());
+    SearchRequestWrapper request = new SearchRequestWrapper(
+        new XssRequestWrapper(new MockHttpServletRequest(), environment, new String[]{"White List Param Names"}));
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getAllSellableSkus()).thenReturn(new ArrayList<>());
+    when(product.getRetailPrice()).thenReturn(new Money());
+    when(product.getCategory()).thenReturn(new CategoryImpl());
+    when(product.getLongDescription()).thenReturn("Long Description");
+    when(product.getManufacturer()).thenReturn("Manufacturer");
+    when(product.getName()).thenReturn("Name");
+    when(product.getMedia()).thenReturn(new HashMap<>());
+    when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
     // Act
-    productLinkedDataGeneratorImpl2.addProductData(request, new ProductBundleImpl(), "https://example.org/example");
+    JSONObject actualAddProductDataResult = productLinkedDataGeneratorImpl.addProductData(request, product,
+        "https://example.org/example");
+
+    // Assert
+    verify(linkedDataGeneratorExtensionManager).getProxy();
+    verify(product).getRetailPrice();
+    verify(product).getAllSellableSkus();
+    verify(product).getCategory();
+    verify(product).getDefaultSku();
+    verify(product).getLongDescription();
+    verify(product).getManufacturer();
+    verify(product).getMedia();
+    verify(product).getName();
+    assertEquals(500, actualAddProductDataResult.getRecursionDepthLimit());
+    assertEquals(7, actualAddProductDataResult.length());
+    assertTrue(actualAddProductDataResult.isEscapeForwardSlashAlways());
+  }
+
+  /**
+   * Test {@link ProductLinkedDataGeneratorImpl#addProductData(HttpServletRequest, Product, String)}.
+   * <ul>
+   *   <li>Given {@link Money} {@link Money#greaterThan(BigDecimal)} return {@code true}.</li>
+   *   <li>Then calls {@link Money#getAmount()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ProductLinkedDataGeneratorImpl#addProductData(HttpServletRequest, Product, String)}
+   */
+  @Test
+  @DisplayName("Test addProductData(HttpServletRequest, Product, String); given Money greaterThan(BigDecimal) return 'true'; then calls getAmount()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"JSONObject ProductLinkedDataGeneratorImpl.addProductData(HttpServletRequest, Product, String)"})
+  void testAddProductData_givenMoneyGreaterThanReturnTrue_thenCallsGetAmount() throws JSONException {
+    // Arrange
+    when(linkedDataGeneratorExtensionManager.getProxy()).thenReturn(new DefaultLinkedDataGeneratorExtensionHandler());
+    SearchRequestWrapper request = new SearchRequestWrapper(
+        new XssRequestWrapper(new MockHttpServletRequest(), environment, new String[]{"White List Param Names"}));
+
+    ArrayList<Sku> skuList = new ArrayList<>();
+    skuList.add(new SkuImpl());
+    Money money = mock(Money.class);
+    when(money.greaterThan(Mockito.<BigDecimal>any())).thenReturn(true);
+    when(money.getAmount()).thenReturn(new BigDecimal("2.3"));
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getPrice()).thenReturn(money);
+    when(product.getAllSellableSkus()).thenReturn(skuList);
+    when(product.getRetailPrice()).thenReturn(new Money());
+    when(product.getCategory()).thenReturn(new CategoryImpl());
+    when(product.getLongDescription()).thenReturn("Long Description");
+    when(product.getManufacturer()).thenReturn("Manufacturer");
+    when(product.getName()).thenReturn("Name");
+    when(product.getMedia()).thenReturn(new HashMap<>());
+    when(product.getDefaultSku()).thenReturn(new SkuImpl());
+
+    // Act
+    JSONObject actualAddProductDataResult = productLinkedDataGeneratorImpl.addProductData(request, product,
+        "https://example.org/example");
+
+    // Assert
+    verify(linkedDataGeneratorExtensionManager, atLeast(1)).getProxy();
+    verify(money, atLeast(1)).getAmount();
+    verify(money).greaterThan(isA(BigDecimal.class));
+    verify(product).getRetailPrice();
+    verify(product).getAllSellableSkus();
+    verify(product, atLeast(1)).getCategory();
+    verify(product).getDefaultSku();
+    verify(product).getLongDescription();
+    verify(product).getManufacturer();
+    verify(product).getMedia();
+    verify(product).getName();
+    verify(product).getPrice();
+    assertEquals(500, actualAddProductDataResult.getRecursionDepthLimit());
+    assertEquals(7, actualAddProductDataResult.length());
+    assertTrue(actualAddProductDataResult.isEscapeForwardSlashAlways());
+  }
+
+  /**
+   * Test {@link ProductLinkedDataGeneratorImpl#addProductData(HttpServletRequest, Product, String)}.
+   * <ul>
+   *   <li>Given {@link Money} {@link Money#lessThan(BigDecimal)} return {@code true}.</li>
+   *   <li>Then calls {@link Money#lessThan(BigDecimal)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ProductLinkedDataGeneratorImpl#addProductData(HttpServletRequest, Product, String)}
+   */
+  @Test
+  @DisplayName("Test addProductData(HttpServletRequest, Product, String); given Money lessThan(BigDecimal) return 'true'; then calls lessThan(BigDecimal)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"JSONObject ProductLinkedDataGeneratorImpl.addProductData(HttpServletRequest, Product, String)"})
+  void testAddProductData_givenMoneyLessThanReturnTrue_thenCallsLessThan() throws JSONException {
+    // Arrange
+    when(linkedDataGeneratorExtensionManager.getProxy()).thenReturn(new DefaultLinkedDataGeneratorExtensionHandler());
+    SearchRequestWrapper request = new SearchRequestWrapper(
+        new XssRequestWrapper(new MockHttpServletRequest(), environment, new String[]{"White List Param Names"}));
+
+    ArrayList<Sku> skuList = new ArrayList<>();
+    skuList.add(new SkuImpl());
+    skuList.add(new SkuImpl());
+    Money money = mock(Money.class);
+    when(money.lessThan(Mockito.<BigDecimal>any())).thenReturn(true);
+    when(money.greaterThan(Mockito.<BigDecimal>any())).thenReturn(true);
+    when(money.getAmount()).thenReturn(new BigDecimal("2.3"));
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getPrice()).thenReturn(money);
+    when(product.getAllSellableSkus()).thenReturn(skuList);
+    when(product.getRetailPrice()).thenReturn(new Money());
+    when(product.getCategory()).thenReturn(new CategoryImpl());
+    when(product.getLongDescription()).thenReturn("Long Description");
+    when(product.getManufacturer()).thenReturn("Manufacturer");
+    when(product.getName()).thenReturn("Name");
+    when(product.getMedia()).thenReturn(new HashMap<>());
+    when(product.getDefaultSku()).thenReturn(new SkuImpl());
+
+    // Act
+    JSONObject actualAddProductDataResult = productLinkedDataGeneratorImpl.addProductData(request, product,
+        "https://example.org/example");
+
+    // Assert
+    verify(linkedDataGeneratorExtensionManager, atLeast(1)).getProxy();
+    verify(money, atLeast(1)).getAmount();
+    verify(money, atLeast(1)).greaterThan(Mockito.<BigDecimal>any());
+    verify(money).lessThan(isA(BigDecimal.class));
+    verify(product).getRetailPrice();
+    verify(product).getAllSellableSkus();
+    verify(product, atLeast(1)).getCategory();
+    verify(product).getDefaultSku();
+    verify(product).getLongDescription();
+    verify(product).getManufacturer();
+    verify(product).getMedia();
+    verify(product).getName();
+    verify(product, atLeast(1)).getPrice();
+    assertEquals(500, actualAddProductDataResult.getRecursionDepthLimit());
+    assertEquals(7, actualAddProductDataResult.length());
+    assertTrue(actualAddProductDataResult.isEscapeForwardSlashAlways());
+  }
+
+  /**
+   * Test {@link ProductLinkedDataGeneratorImpl#addProductData(HttpServletRequest, Product, String)}.
+   * <ul>
+   *   <li>Given {@link Money#Money(double)} with amount is ten.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ProductLinkedDataGeneratorImpl#addProductData(HttpServletRequest, Product, String)}
+   */
+  @Test
+  @DisplayName("Test addProductData(HttpServletRequest, Product, String); given Money(double) with amount is ten")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"JSONObject ProductLinkedDataGeneratorImpl.addProductData(HttpServletRequest, Product, String)"})
+  void testAddProductData_givenMoneyWithAmountIsTen() throws JSONException {
+    // Arrange
+    when(linkedDataGeneratorExtensionManager.getProxy()).thenReturn(new DefaultLinkedDataGeneratorExtensionHandler());
+    SearchRequestWrapper request = new SearchRequestWrapper(
+        new XssRequestWrapper(new MockHttpServletRequest(), environment, new String[]{"White List Param Names"}));
+
+    ArrayList<Sku> skuList = new ArrayList<>();
+    skuList.add(new SkuImpl());
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getPrice()).thenReturn(new Money(10.0d));
+    when(product.getAllSellableSkus()).thenReturn(skuList);
+    when(product.getRetailPrice()).thenReturn(new Money());
+    when(product.getCategory()).thenReturn(new CategoryImpl());
+    when(product.getLongDescription()).thenReturn("Long Description");
+    when(product.getManufacturer()).thenReturn("Manufacturer");
+    when(product.getName()).thenReturn("Name");
+    when(product.getMedia()).thenReturn(new HashMap<>());
+    when(product.getDefaultSku()).thenReturn(new SkuImpl());
+
+    // Act
+    JSONObject actualAddProductDataResult = productLinkedDataGeneratorImpl.addProductData(request, product,
+        "https://example.org/example");
+
+    // Assert
+    verify(linkedDataGeneratorExtensionManager, atLeast(1)).getProxy();
+    verify(product).getRetailPrice();
+    verify(product).getAllSellableSkus();
+    verify(product, atLeast(1)).getCategory();
+    verify(product).getDefaultSku();
+    verify(product).getLongDescription();
+    verify(product).getManufacturer();
+    verify(product).getMedia();
+    verify(product).getName();
+    verify(product).getPrice();
+    assertEquals(500, actualAddProductDataResult.getRecursionDepthLimit());
+    assertEquals(7, actualAddProductDataResult.length());
+    assertTrue(actualAddProductDataResult.isEscapeForwardSlashAlways());
+  }
+
+  /**
+   * Test {@link ProductLinkedDataGeneratorImpl#addProductData(HttpServletRequest, Product, String)}.
+   * <ul>
+   *   <li>When {@link ProductBundleImpl} {@link ProductImpl#getPrice()} return {@link Money#Money()}.</li>
+   *   <li>Then calls {@link ProductImpl#getPrice()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ProductLinkedDataGeneratorImpl#addProductData(HttpServletRequest, Product, String)}
+   */
+  @Test
+  @DisplayName("Test addProductData(HttpServletRequest, Product, String); when ProductBundleImpl getPrice() return Money(); then calls getPrice()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"JSONObject ProductLinkedDataGeneratorImpl.addProductData(HttpServletRequest, Product, String)"})
+  void testAddProductData_whenProductBundleImplGetPriceReturnMoney_thenCallsGetPrice() throws JSONException {
+    // Arrange
+    when(linkedDataGeneratorExtensionManager.getProxy()).thenReturn(new DefaultLinkedDataGeneratorExtensionHandler());
+    SearchRequestWrapper request = new SearchRequestWrapper(
+        new XssRequestWrapper(new MockHttpServletRequest(), environment, new String[]{"White List Param Names"}));
+
+    ArrayList<Sku> skuList = new ArrayList<>();
+    skuList.add(new SkuImpl());
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getPrice()).thenReturn(new Money());
+    when(product.getAllSellableSkus()).thenReturn(skuList);
+    when(product.getRetailPrice()).thenReturn(new Money());
+    when(product.getCategory()).thenReturn(new CategoryImpl());
+    when(product.getLongDescription()).thenReturn("Long Description");
+    when(product.getManufacturer()).thenReturn("Manufacturer");
+    when(product.getName()).thenReturn("Name");
+    when(product.getMedia()).thenReturn(new HashMap<>());
+    when(product.getDefaultSku()).thenReturn(new SkuImpl());
+
+    // Act
+    JSONObject actualAddProductDataResult = productLinkedDataGeneratorImpl.addProductData(request, product,
+        "https://example.org/example");
+
+    // Assert
+    verify(linkedDataGeneratorExtensionManager, atLeast(1)).getProxy();
+    verify(product).getRetailPrice();
+    verify(product).getAllSellableSkus();
+    verify(product, atLeast(1)).getCategory();
+    verify(product).getDefaultSku();
+    verify(product).getLongDescription();
+    verify(product).getManufacturer();
+    verify(product).getMedia();
+    verify(product).getName();
+    verify(product).getPrice();
+    assertEquals(500, actualAddProductDataResult.getRecursionDepthLimit());
+    assertEquals(7, actualAddProductDataResult.length());
+    assertTrue(actualAddProductDataResult.isEscapeForwardSlashAlways());
   }
 
   /**
    * Test {@link ProductLinkedDataGeneratorImpl#addImageUrl(Product, JSONObject)}.
+   * <ul>
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String)} return {@code /cmsstatic/}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductLinkedDataGeneratorImpl#addImageUrl(Product, JSONObject)}
+   * Method under test: {@link ProductLinkedDataGeneratorImpl#addImageUrl(Product, JSONObject)}
    */
   @Test
-  @DisplayName("Test addImageUrl(Product, JSONObject)")
-  @Disabled("TODO: Complete this test")
-  void testAddImageUrl() throws JSONException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.linkeddata.generator;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5669 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.linkeddata.generator.ProductLinkedDataGeneratorImpl productLinkedDataGeneratorImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @DisplayName("Test addImageUrl(Product, JSONObject); given Environment getProperty(String) return '/cmsstatic/'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void ProductLinkedDataGeneratorImpl.addImageUrl(Product, JSONObject)"})
+  void testAddImageUrl_givenEnvironmentGetPropertyReturnCmsstatic() throws JSONException {
     // Arrange
-    ProductLinkedDataGeneratorImpl productLinkedDataGeneratorImpl2 = new ProductLinkedDataGeneratorImpl();
-    ProductBundleImpl product = new ProductBundleImpl();
+    when(environment.getProperty(Mockito.<String>any())).thenReturn("/cmsstatic/");
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+        .thenReturn(true);
+
+    HashMap<String, Media> stringMediaMap = new HashMap<>();
+    stringMediaMap.put("foo", new MediaDto());
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getMedia()).thenReturn(stringMediaMap);
+    JSONObject productData = new JSONObject();
 
     // Act
-    productLinkedDataGeneratorImpl2.addImageUrl(product, new JSONObject("String"));
+    productLinkedDataGeneratorImpl.addImageUrl(product, productData);
+
+    // Assert
+    verify(product).getMedia();
+    verify(environment).getProperty(eq("asset.server.url.prefix.secure"));
+    verify(environment).getProperty(eq("site.baseurl.secure"), isA(Class.class), isA(Object.class));
+    assertEquals(1, productData.length());
+  }
+
+  /**
+   * Test {@link ProductLinkedDataGeneratorImpl#addImageUrl(Product, JSONObject)}.
+   * <ul>
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class, Object)} return {@code false}.</li>
+   *   <li>Then {@link JSONObject#JSONObject()} length is one.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ProductLinkedDataGeneratorImpl#addImageUrl(Product, JSONObject)}
+   */
+  @Test
+  @DisplayName("Test addImageUrl(Product, JSONObject); given Environment getProperty(String, Class, Object) return 'false'; then JSONObject() length is one")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void ProductLinkedDataGeneratorImpl.addImageUrl(Product, JSONObject)"})
+  void testAddImageUrl_givenEnvironmentGetPropertyReturnFalse_thenJSONObjectLengthIsOne() throws JSONException {
+    // Arrange
+    when(environment.getProperty(Mockito.<String>any())).thenReturn("Property");
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+        .thenReturn(false);
+
+    HashMap<String, Media> stringMediaMap = new HashMap<>();
+    stringMediaMap.put("foo", new MediaDto());
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getMedia()).thenReturn(stringMediaMap);
+    JSONObject productData = new JSONObject();
+
+    // Act
+    productLinkedDataGeneratorImpl.addImageUrl(product, productData);
+
+    // Assert
+    verify(product).getMedia();
+    verify(environment).getProperty(eq("asset.server.url.prefix"));
+    verify(environment).getProperty(eq("site.baseurl.secure"), isA(Class.class), isA(Object.class));
+    assertEquals(1, productData.length());
+  }
+
+  /**
+   * Test {@link ProductLinkedDataGeneratorImpl#addImageUrl(Product, JSONObject)}.
+   * <ul>
+   *   <li>Given {@link HashMap#HashMap()} {@code primary} is {@link MediaDto} (default constructor).</li>
+   *   <li>Then {@link JSONObject#JSONObject()} length is one.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ProductLinkedDataGeneratorImpl#addImageUrl(Product, JSONObject)}
+   */
+  @Test
+  @DisplayName("Test addImageUrl(Product, JSONObject); given HashMap() 'primary' is MediaDto (default constructor); then JSONObject() length is one")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void ProductLinkedDataGeneratorImpl.addImageUrl(Product, JSONObject)"})
+  void testAddImageUrl_givenHashMapPrimaryIsMediaDto_thenJSONObjectLengthIsOne() throws JSONException {
+    // Arrange
+    when(environment.getProperty(Mockito.<String>any())).thenReturn("Property");
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+        .thenReturn(true);
+
+    HashMap<String, Media> stringMediaMap = new HashMap<>();
+    stringMediaMap.put("primary", new MediaDto());
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getMedia()).thenReturn(stringMediaMap);
+    JSONObject productData = new JSONObject();
+
+    // Act
+    productLinkedDataGeneratorImpl.addImageUrl(product, productData);
+
+    // Assert
+    verify(product).getMedia();
+    verify(environment).getProperty(eq("asset.server.url.prefix.secure"));
+    verify(environment).getProperty(eq("site.baseurl.secure"), isA(Class.class), isA(Object.class));
+    assertEquals(1, productData.length());
+  }
+
+  /**
+   * Test {@link ProductLinkedDataGeneratorImpl#addImageUrl(Product, JSONObject)}.
+   * <ul>
+   *   <li>Given {@link HashMap#HashMap()}.</li>
+   *   <li>Then {@link JSONObject#JSONObject()} length is zero.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ProductLinkedDataGeneratorImpl#addImageUrl(Product, JSONObject)}
+   */
+  @Test
+  @DisplayName("Test addImageUrl(Product, JSONObject); given HashMap(); then JSONObject() length is zero")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void ProductLinkedDataGeneratorImpl.addImageUrl(Product, JSONObject)"})
+  void testAddImageUrl_givenHashMap_thenJSONObjectLengthIsZero() throws JSONException {
+    // Arrange
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getMedia()).thenReturn(new HashMap<>());
+    JSONObject productData = new JSONObject();
+
+    // Act
+    productLinkedDataGeneratorImpl.addImageUrl(product, productData);
+
+    // Assert that nothing has changed
+    verify(product).getMedia();
+    assertEquals(0, productData.length());
+  }
+
+  /**
+   * Test {@link ProductLinkedDataGeneratorImpl#addImageUrl(Product, JSONObject)}.
+   * <ul>
+   *   <li>Then {@link JSONObject#JSONObject()} length is one.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ProductLinkedDataGeneratorImpl#addImageUrl(Product, JSONObject)}
+   */
+  @Test
+  @DisplayName("Test addImageUrl(Product, JSONObject); then JSONObject() length is one")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void ProductLinkedDataGeneratorImpl.addImageUrl(Product, JSONObject)"})
+  void testAddImageUrl_thenJSONObjectLengthIsOne() throws JSONException {
+    // Arrange
+    when(environment.getProperty(Mockito.<String>any())).thenReturn("Property");
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+        .thenReturn(true);
+
+    HashMap<String, Media> stringMediaMap = new HashMap<>();
+    stringMediaMap.put("foo", new MediaDto());
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getMedia()).thenReturn(stringMediaMap);
+    JSONObject productData = new JSONObject();
+
+    // Act
+    productLinkedDataGeneratorImpl.addImageUrl(product, productData);
+
+    // Assert
+    verify(product).getMedia();
+    verify(environment).getProperty(eq("asset.server.url.prefix.secure"));
+    verify(environment).getProperty(eq("site.baseurl.secure"), isA(Class.class), isA(Object.class));
+    assertEquals(1, productData.length());
   }
 
   /**
    * Test {@link ProductLinkedDataGeneratorImpl#getImageUrlPrefix()}.
+   * <ul>
+   *   <li>Given {@link BaseUrlResolver}.</li>
+   *   <li>Then return {@code Property}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link ProductLinkedDataGeneratorImpl#getImageUrlPrefix()}
    */
   @Test
-  @DisplayName("Test getImageUrlPrefix()")
-  @Disabled("TODO: Complete this test")
-  void testGetImageUrlPrefix() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.linkeddata.generator;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6604 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.linkeddata.generator.ProductLinkedDataGeneratorImpl productLinkedDataGeneratorImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @DisplayName("Test getImageUrlPrefix(); given BaseUrlResolver; then return 'Property'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String ProductLinkedDataGeneratorImpl.getImageUrlPrefix()"})
+  void testGetImageUrlPrefix_givenBaseUrlResolver_thenReturnProperty() {
+    // Arrange
+    when(environment.getProperty(Mockito.<String>any())).thenReturn("Property");
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+        .thenReturn(true);
 
-    // Arrange and Act
-    (new ProductLinkedDataGeneratorImpl()).getImageUrlPrefix();
+    // Act
+    String actualImageUrlPrefix = productLinkedDataGeneratorImpl.getImageUrlPrefix();
+
+    // Assert
+    verify(environment).getProperty(eq("asset.server.url.prefix.secure"));
+    verify(environment).getProperty(eq("site.baseurl.secure"), isA(Class.class), isA(Object.class));
+    assertEquals("Property", actualImageUrlPrefix);
+  }
+
+  /**
+   * Test {@link ProductLinkedDataGeneratorImpl#getImageUrlPrefix()}.
+   * <ul>
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class, Object)} return {@code false}.</li>
+   *   <li>Then return {@code Property}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ProductLinkedDataGeneratorImpl#getImageUrlPrefix()}
+   */
+  @Test
+  @DisplayName("Test getImageUrlPrefix(); given Environment getProperty(String, Class, Object) return 'false'; then return 'Property'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String ProductLinkedDataGeneratorImpl.getImageUrlPrefix()"})
+  void testGetImageUrlPrefix_givenEnvironmentGetPropertyReturnFalse_thenReturnProperty() {
+    // Arrange
+    when(environment.getProperty(Mockito.<String>any())).thenReturn("Property");
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+        .thenReturn(false);
+
+    // Act
+    String actualImageUrlPrefix = productLinkedDataGeneratorImpl.getImageUrlPrefix();
+
+    // Assert
+    verify(environment).getProperty(eq("asset.server.url.prefix"));
+    verify(environment).getProperty(eq("site.baseurl.secure"), isA(Class.class), isA(Object.class));
+    assertEquals("Property", actualImageUrlPrefix);
+  }
+
+  /**
+   * Test {@link ProductLinkedDataGeneratorImpl#getImageUrlPrefix()}.
+   * <ul>
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String)} return {@code null}.</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ProductLinkedDataGeneratorImpl#getImageUrlPrefix()}
+   */
+  @Test
+  @DisplayName("Test getImageUrlPrefix(); given Environment getProperty(String) return 'null'; then return 'null'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String ProductLinkedDataGeneratorImpl.getImageUrlPrefix()"})
+  void testGetImageUrlPrefix_givenEnvironmentGetPropertyReturnNull_thenReturnNull() {
+    // Arrange
+    when(baseUrlResolver.getSiteBaseUrl()).thenReturn("https://example.org/example");
+    when(environment.getProperty(Mockito.<String>any())).thenReturn(null);
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+        .thenReturn(true);
+
+    // Act
+    String actualImageUrlPrefix = productLinkedDataGeneratorImpl.getImageUrlPrefix();
+
+    // Assert
+    verify(baseUrlResolver).getSiteBaseUrl();
+    verify(environment).getProperty(eq("asset.server.url.prefix.secure"));
+    verify(environment).getProperty(eq("site.baseurl.secure"), isA(Class.class), isA(Object.class));
+    assertNull(actualImageUrlPrefix);
   }
 
   /**
    * Test {@link ProductLinkedDataGeneratorImpl#getAssetServerUrlPrefix()}.
+   * <ul>
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class, Object)} return {@code false}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductLinkedDataGeneratorImpl#getAssetServerUrlPrefix()}
+   * Method under test: {@link ProductLinkedDataGeneratorImpl#getAssetServerUrlPrefix()}
    */
   @Test
-  @DisplayName("Test getAssetServerUrlPrefix()")
-  @Disabled("TODO: Complete this test")
-  void testGetAssetServerUrlPrefix() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.linkeddata.generator;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6599 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.linkeddata.generator.ProductLinkedDataGeneratorImpl productLinkedDataGeneratorImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @DisplayName("Test getAssetServerUrlPrefix(); given Environment getProperty(String, Class, Object) return 'false'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String ProductLinkedDataGeneratorImpl.getAssetServerUrlPrefix()"})
+  void testGetAssetServerUrlPrefix_givenEnvironmentGetPropertyReturnFalse() {
+    // Arrange
+    when(environment.getProperty(Mockito.<String>any())).thenReturn("Property");
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+        .thenReturn(false);
 
-    // Arrange and Act
-    (new ProductLinkedDataGeneratorImpl()).getAssetServerUrlPrefix();
+    // Act
+    String actualAssetServerUrlPrefix = productLinkedDataGeneratorImpl.getAssetServerUrlPrefix();
+
+    // Assert
+    verify(environment).getProperty(eq("asset.server.url.prefix"));
+    verify(environment).getProperty(eq("site.baseurl.secure"), isA(Class.class), isA(Object.class));
+    assertEquals("Property", actualAssetServerUrlPrefix);
   }
 
   /**
-   * Test
-   * {@link ProductLinkedDataGeneratorImpl#addSkus(HttpServletRequest, Product, JSONObject, String)}.
+   * Test {@link ProductLinkedDataGeneratorImpl#getAssetServerUrlPrefix()}.
+   * <ul>
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class, Object)} return {@code true}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductLinkedDataGeneratorImpl#addSkus(HttpServletRequest, Product, JSONObject, String)}
+   * Method under test: {@link ProductLinkedDataGeneratorImpl#getAssetServerUrlPrefix()}
    */
   @Test
-  @DisplayName("Test addSkus(HttpServletRequest, Product, JSONObject, String)")
-  @Disabled("TODO: Complete this test")
-  void testAddSkus() throws JSONException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.linkeddata.generator;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6161 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.linkeddata.generator.ProductLinkedDataGeneratorImpl productLinkedDataGeneratorImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @DisplayName("Test getAssetServerUrlPrefix(); given Environment getProperty(String, Class, Object) return 'true'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String ProductLinkedDataGeneratorImpl.getAssetServerUrlPrefix()"})
+  void testGetAssetServerUrlPrefix_givenEnvironmentGetPropertyReturnTrue() {
+    // Arrange
+    when(environment.getProperty(Mockito.<String>any())).thenReturn("Property");
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+        .thenReturn(true);
+
+    // Act
+    String actualAssetServerUrlPrefix = productLinkedDataGeneratorImpl.getAssetServerUrlPrefix();
+
+    // Assert
+    verify(environment).getProperty(eq("asset.server.url.prefix.secure"));
+    verify(environment).getProperty(eq("site.baseurl.secure"), isA(Class.class), isA(Object.class));
+    assertEquals("Property", actualAssetServerUrlPrefix);
+  }
+
+  /**
+   * Test {@link ProductLinkedDataGeneratorImpl#addSkus(HttpServletRequest, Product, JSONObject, String)}.
+   * <ul>
+   *   <li>Given {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then {@link JSONObject#JSONObject()} length is one.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ProductLinkedDataGeneratorImpl#addSkus(HttpServletRequest, Product, JSONObject, String)}
+   */
+  @Test
+  @DisplayName("Test addSkus(HttpServletRequest, Product, JSONObject, String); given ArrayList(); then JSONObject() length is one")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void ProductLinkedDataGeneratorImpl.addSkus(HttpServletRequest, Product, JSONObject, String)"})
+  void testAddSkus_givenArrayList_thenJSONObjectLengthIsOne() throws JSONException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
-    ProductLinkedDataGeneratorImpl productLinkedDataGeneratorImpl2 = new ProductLinkedDataGeneratorImpl();
+    ProductLinkedDataGeneratorImpl productLinkedDataGeneratorImpl = new ProductLinkedDataGeneratorImpl();
     MockHttpServletRequest servletRequest = new MockHttpServletRequest();
     SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
         new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
-    ProductBundleImpl product = new ProductBundleImpl();
+    Product product = mock(Product.class);
+    when(product.getAllSellableSkus()).thenReturn(new ArrayList<>());
+    when(product.getRetailPrice()).thenReturn(new Money());
+    JSONObject productData = new JSONObject();
 
     // Act
-    productLinkedDataGeneratorImpl2.addSkus(request, product, new JSONObject("String"), "https://example.org/example");
+    productLinkedDataGeneratorImpl.addSkus(request, product, productData, "https://example.org/example");
+
+    // Assert
+    verify(product).getAllSellableSkus();
+    verify(product).getRetailPrice();
+    assertEquals(1, productData.length());
   }
 
   /**
    * Test {@link ProductLinkedDataGeneratorImpl#determineAvailability(Sku)}.
+   * <ul>
+   *   <li>Given {@link InventoryType#InventoryType()}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductLinkedDataGeneratorImpl#determineAvailability(Sku)}
+   * Method under test: {@link ProductLinkedDataGeneratorImpl#determineAvailability(Sku)}
    */
   @Test
-  @DisplayName("Test determineAvailability(Sku)")
-  @Disabled("TODO: Complete this test")
-  void testDetermineAvailability() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.linkeddata.generator;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6556 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.linkeddata.generator.ProductLinkedDataGeneratorImpl productLinkedDataGeneratorImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @DisplayName("Test determineAvailability(Sku); given InventoryType()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String ProductLinkedDataGeneratorImpl.determineAvailability(Sku)"})
+  void testDetermineAvailability_givenInventoryType() {
     // Arrange
-    ProductLinkedDataGeneratorImpl productLinkedDataGeneratorImpl2 = new ProductLinkedDataGeneratorImpl();
+    Sku sku = mock(Sku.class);
+    when(sku.getInventoryType()).thenReturn(new InventoryType());
+    when(sku.isActive()).thenReturn(true);
 
     // Act
-    productLinkedDataGeneratorImpl2.determineAvailability(new SkuImpl());
+    String actualDetermineAvailabilityResult = productLinkedDataGeneratorImpl.determineAvailability(sku);
+
+    // Assert
+    verify(sku, atLeast(1)).getInventoryType();
+    verify(sku).isActive();
+    assertEquals("OutOfStock", actualDetermineAvailabilityResult);
   }
 
   /**
-   * Test
-   * {@link ProductLinkedDataGeneratorImpl#addReviewData(HttpServletRequest, Product, JSONObject)}.
+   * Test {@link ProductLinkedDataGeneratorImpl#determineAvailability(Sku)}.
+   * <ul>
+   *   <li>Given {@link InventoryType}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductLinkedDataGeneratorImpl#addReviewData(HttpServletRequest, Product, JSONObject)}
+   * Method under test: {@link ProductLinkedDataGeneratorImpl#determineAvailability(Sku)}
    */
   @Test
-  @DisplayName("Test addReviewData(HttpServletRequest, Product, JSONObject)")
-  @Disabled("TODO: Complete this test")
-  void testAddReviewData() throws JSONException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.linkeddata.generator;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5942 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.linkeddata.generator.ProductLinkedDataGeneratorImpl productLinkedDataGeneratorImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @DisplayName("Test determineAvailability(Sku); given InventoryType")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String ProductLinkedDataGeneratorImpl.determineAvailability(Sku)"})
+  void testDetermineAvailability_givenInventoryType2() {
     // Arrange
-    ProductLinkedDataGeneratorImpl productLinkedDataGeneratorImpl2 = new ProductLinkedDataGeneratorImpl();
-    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
-    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
-        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
-    ProductBundleImpl product = new ProductBundleImpl();
+    Sku sku = mock(Sku.class);
+    when(sku.getInventoryType()).thenReturn(mock(InventoryType.class));
+    when(sku.isActive()).thenReturn(true);
 
     // Act
-    productLinkedDataGeneratorImpl2.addReviewData(request, product, new JSONObject("String"));
+    String actualDetermineAvailabilityResult = productLinkedDataGeneratorImpl.determineAvailability(sku);
+
+    // Assert
+    verify(sku, atLeast(1)).getInventoryType();
+    verify(sku).isActive();
+    assertEquals("OutOfStock", actualDetermineAvailabilityResult);
+  }
+
+  /**
+   * Test {@link ProductLinkedDataGeneratorImpl#determineAvailability(Sku)}.
+   * <ul>
+   *   <li>Given {@code null}.</li>
+   *   <li>Then return {@code InStock}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ProductLinkedDataGeneratorImpl#determineAvailability(Sku)}
+   */
+  @Test
+  @DisplayName("Test determineAvailability(Sku); given 'null'; then return 'InStock'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String ProductLinkedDataGeneratorImpl.determineAvailability(Sku)"})
+  void testDetermineAvailability_givenNull_thenReturnInStock() {
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getInventoryType()).thenReturn(null);
+    when(sku.isActive()).thenReturn(true);
+
+    // Act
+    String actualDetermineAvailabilityResult = productLinkedDataGeneratorImpl.determineAvailability(sku);
+
+    // Assert
+    verify(sku).getInventoryType();
+    verify(sku).isActive();
+    assertEquals("InStock", actualDetermineAvailabilityResult);
+  }
+
+  /**
+   * Test {@link ProductLinkedDataGeneratorImpl#determineAvailability(Sku)}.
+   * <ul>
+   *   <li>When {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code OutOfStock}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ProductLinkedDataGeneratorImpl#determineAvailability(Sku)}
+   */
+  @Test
+  @DisplayName("Test determineAvailability(Sku); when SkuImpl (default constructor); then return 'OutOfStock'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String ProductLinkedDataGeneratorImpl.determineAvailability(Sku)"})
+  void testDetermineAvailability_whenSkuImpl_thenReturnOutOfStock() {
+    // Arrange, Act and Assert
+    assertEquals("OutOfStock", productLinkedDataGeneratorImpl.determineAvailability(new SkuImpl()));
   }
 }

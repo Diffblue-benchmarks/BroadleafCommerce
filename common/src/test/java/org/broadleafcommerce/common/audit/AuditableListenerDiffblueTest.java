@@ -18,75 +18,20 @@
 package org.broadleafcommerce.common.audit;
 
 import static org.junit.Assert.assertEquals;
-import java.lang.reflect.Field;
-import org.broadleafcommerce.common.util.BLCFieldUtils;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.junit.experimental.categories.Category;
 
-@ContextConfiguration(classes = {AuditableListener.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class AuditableListenerDiffblueTest {
-  @Autowired
-  private AuditableListener auditableListener;
-
-  /**
-   * Test {@link AuditableListener#setAuditCreationAndUpdateData(Object)}.
-   * <p>
-   * Method under test:
-   * {@link AuditableListener#setAuditCreationAndUpdateData(Object)}
-   */
-  @Test
-  public void testSetAuditCreationAndUpdateData() throws Exception {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange and Act
-    (new AuditableListener()).setAuditCreationAndUpdateData(BLCFieldUtils.NULL_FIELD);
-  }
-
-  /**
-   * Test {@link AuditableListener#setAuditUpdateData(Object)} with
-   * {@code entity}.
-   * <p>
-   * Method under test: {@link AuditableListener#setAuditUpdateData(Object)}
-   */
-  @Test
-  public void testSetAuditUpdateDataWithEntity() throws Exception {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange and Act
-    (new AuditableListener()).setAuditUpdateData(BLCFieldUtils.NULL_FIELD);
-  }
-
-  /**
-   * Test {@link AuditableListener#setAuditValueAgent(Field, Object)}.
-   * <ul>
-   *   <li>When {@link BLCFieldUtils#NULL_FIELD}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link AuditableListener#setAuditValueAgent(Field, Object)}
-   */
-  @Test
-  public void testSetAuditValueAgent_whenNull_field() throws IllegalAccessException, IllegalArgumentException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange and Act
-    (new AuditableListener()).setAuditValueAgent(null, BLCFieldUtils.NULL_FIELD);
-  }
-
   /**
    * Test new {@link AuditableListener} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link AuditableListener}
+   * Method under test: default or parameterless constructor of {@link AuditableListener}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AuditableListener.<init>()"})
   public void testNewAuditableListener() {
     // Arrange, Act and Assert
     assertEquals("auditable", (new AuditableListener()).getAuditableFieldName());

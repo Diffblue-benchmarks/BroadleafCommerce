@@ -1,53 +1,41 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.search.domain;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import org.junit.Ignore;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class SearchSynonymImplDiffblueTest {
   @Autowired
   private SearchSynonymImpl searchSynonymImpl;
-
-  /**
-   * Test {@link SearchSynonymImpl#getSynonyms()}.
-   * <p>
-   * Method under test: {@link SearchSynonymImpl#getSynonyms()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetSynonyms() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.search.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1268 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.domain.SearchSynonymImpl searchSynonymImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SearchSynonymImpl()).getSynonyms();
-  }
 
   /**
    * Test {@link SearchSynonymImpl#getSynonyms()}.
@@ -58,115 +46,83 @@ public class SearchSynonymImplDiffblueTest {
    * Method under test: {@link SearchSynonymImpl#getSynonyms()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String[] SearchSynonymImpl.getSynonyms()"})
   public void testGetSynonyms_thenReturnArrayOfStringWithSynonyms() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SearchSynonymImpl searchSynonymImpl = new SearchSynonymImpl();
-    searchSynonymImpl.setId(1L);
-    searchSynonymImpl.setSynonyms(new String[]{"Synonyms"});
-    searchSynonymImpl.setTerm("Term");
+    SearchSynonymImpl searchSynonymImpl2 = new SearchSynonymImpl();
+    searchSynonymImpl2.setId(1L);
+    searchSynonymImpl2.setSynonyms(new String[]{"Synonyms"});
+    searchSynonymImpl2.setTerm("Term");
 
     // Act and Assert
-    assertArrayEquals(new String[]{"Synonyms"}, searchSynonymImpl.getSynonyms());
-  }
-
-  /**
-   * Test {@link SearchSynonymImpl#setSynonyms(String[])}.
-   * <p>
-   * Method under test: {@link SearchSynonymImpl#setSynonyms(String[])}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetSynonyms() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.search.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1273 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.domain.SearchSynonymImpl searchSynonymImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SearchSynonymImpl()).setSynonyms(new String[]{"Synonyms"});
+    assertArrayEquals(new String[]{"Synonyms"}, searchSynonymImpl2.getSynonyms());
   }
 
   /**
    * Test {@link SearchSynonymImpl#setSynonyms(String[])}.
    * <ul>
-   *   <li>Then {@link SearchSynonymImpl} (default constructor) Synonyms is array of
-   * {@link String} with empty string and {@code 42}.</li>
+   *   <li>Then {@link SearchSynonymImpl} (default constructor) Synonyms is array of {@link String} with empty string and {@code 42}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SearchSynonymImpl#setSynonyms(String[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SearchSynonymImpl.setSynonyms(String[])"})
   public void testSetSynonyms_thenSearchSynonymImplSynonymsIsArrayOfStringWithEmptyStringAnd42() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SearchSynonymImpl searchSynonymImpl = new SearchSynonymImpl();
+    SearchSynonymImpl searchSynonymImpl2 = new SearchSynonymImpl();
 
     // Act
-    searchSynonymImpl.setSynonyms(new String[]{"", "42"});
+    searchSynonymImpl2.setSynonyms(new String[]{"", "42"});
 
     // Assert
-    assertArrayEquals(new String[]{"", "42"}, searchSynonymImpl.getSynonyms());
+    assertArrayEquals(new String[]{"", "42"}, searchSynonymImpl2.getSynonyms());
   }
 
   /**
    * Test {@link SearchSynonymImpl#setSynonyms(String[])}.
    * <ul>
-   *   <li>Then {@link SearchSynonymImpl} (default constructor) Synonyms is array of
-   * {@link String} with {@code Synonyms}.</li>
+   *   <li>Then {@link SearchSynonymImpl} (default constructor) Synonyms is array of {@link String} with {@code Synonyms}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SearchSynonymImpl#setSynonyms(String[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SearchSynonymImpl.setSynonyms(String[])"})
   public void testSetSynonyms_thenSearchSynonymImplSynonymsIsArrayOfStringWithSynonyms() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SearchSynonymImpl searchSynonymImpl = new SearchSynonymImpl();
+    SearchSynonymImpl searchSynonymImpl2 = new SearchSynonymImpl();
 
     // Act
-    searchSynonymImpl.setSynonyms(new String[]{"Synonyms"});
+    searchSynonymImpl2.setSynonyms(new String[]{"Synonyms"});
 
     // Assert
-    assertArrayEquals(new String[]{"Synonyms"}, searchSynonymImpl.getSynonyms());
+    assertArrayEquals(new String[]{"Synonyms"}, searchSynonymImpl2.getSynonyms());
   }
 
   /**
    * Test {@link SearchSynonymImpl#setSynonyms(String[])}.
    * <ul>
-   *   <li>Then {@link SearchSynonymImpl} (default constructor) Synonyms is array of
-   * {@link String} with {@code Synonyms} and {@code 42}.</li>
+   *   <li>Then {@link SearchSynonymImpl} (default constructor) Synonyms is array of {@link String} with {@code Synonyms} and {@code 42}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SearchSynonymImpl#setSynonyms(String[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SearchSynonymImpl.setSynonyms(String[])"})
   public void testSetSynonyms_thenSearchSynonymImplSynonymsIsArrayOfStringWithSynonymsAnd42() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SearchSynonymImpl searchSynonymImpl = new SearchSynonymImpl();
+    SearchSynonymImpl searchSynonymImpl2 = new SearchSynonymImpl();
 
     // Act
-    searchSynonymImpl.setSynonyms(new String[]{"Synonyms", "42"});
+    searchSynonymImpl2.setSynonyms(new String[]{"Synonyms", "42"});
 
     // Assert
-    assertArrayEquals(new String[]{"Synonyms", "42"}, searchSynonymImpl.getSynonyms());
+    assertArrayEquals(new String[]{"Synonyms", "42"}, searchSynonymImpl2.getSynonyms());
   }
 
   /**
@@ -178,17 +134,17 @@ public class SearchSynonymImplDiffblueTest {
    * Method under test: {@link SearchSynonymImpl#setSynonyms(String[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SearchSynonymImpl.setSynonyms(String[])"})
   public void testSetSynonyms_whenArrayOfStringWithEmptyString() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SearchSynonymImpl searchSynonymImpl = new SearchSynonymImpl();
+    SearchSynonymImpl searchSynonymImpl2 = new SearchSynonymImpl();
 
     // Act
-    searchSynonymImpl.setSynonyms(new String[]{""});
+    searchSynonymImpl2.setSynonyms(new String[]{""});
 
     // Assert
-    assertArrayEquals(new String[]{""}, searchSynonymImpl.getSynonyms());
+    assertArrayEquals(new String[]{""}, searchSynonymImpl2.getSynonyms());
   }
 
   /**
@@ -200,17 +156,17 @@ public class SearchSynonymImplDiffblueTest {
    * Method under test: {@link SearchSynonymImpl#setSynonyms(String[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SearchSynonymImpl.setSynonyms(String[])"})
   public void testSetSynonyms_whenEmptyArrayOfString() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SearchSynonymImpl searchSynonymImpl = new SearchSynonymImpl();
+    SearchSynonymImpl searchSynonymImpl2 = new SearchSynonymImpl();
 
     // Act
-    searchSynonymImpl.setSynonyms(new String[]{});
+    searchSynonymImpl2.setSynonyms(new String[]{});
 
     // Assert
-    assertArrayEquals(new String[]{""}, searchSynonymImpl.getSynonyms());
+    assertArrayEquals(new String[]{""}, searchSynonymImpl2.getSynonyms());
   }
 
   /**
@@ -226,6 +182,10 @@ public class SearchSynonymImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SearchSynonymImpl.<init>()", "Long SearchSynonymImpl.getId()",
+      "String SearchSynonymImpl.getTerm()", "void SearchSynonymImpl.setId(Long)",
+      "void SearchSynonymImpl.setTerm(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     SearchSynonymImpl actualSearchSynonymImpl = new SearchSynonymImpl();
@@ -233,7 +193,7 @@ public class SearchSynonymImplDiffblueTest {
     actualSearchSynonymImpl.setTerm("Term");
     Long actualId = actualSearchSynonymImpl.getId();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Term", actualSearchSynonymImpl.getTerm());
     assertEquals(1L, actualId.longValue());
   }

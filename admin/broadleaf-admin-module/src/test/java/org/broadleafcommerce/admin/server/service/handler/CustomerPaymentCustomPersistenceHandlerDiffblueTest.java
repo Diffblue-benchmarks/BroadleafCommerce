@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Admin Module
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.admin.server.service.handler;
 
 import static org.junit.Assert.assertEquals;
@@ -7,9 +24,13 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
 import org.broadleafcommerce.common.exception.ServiceException;
@@ -22,7 +43,6 @@ import org.broadleafcommerce.openadmin.dto.CriteriaTransferObject;
 import org.broadleafcommerce.openadmin.dto.DynamicResultSet;
 import org.broadleafcommerce.openadmin.dto.Entity;
 import org.broadleafcommerce.openadmin.dto.FieldMetadata;
-import org.broadleafcommerce.openadmin.dto.ForeignKey;
 import org.broadleafcommerce.openadmin.dto.MergedPropertyType;
 import org.broadleafcommerce.openadmin.dto.OperationTypes;
 import org.broadleafcommerce.openadmin.dto.PersistencePackage;
@@ -38,371 +58,73 @@ import org.broadleafcommerce.profile.core.domain.AddressImpl;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
 import org.broadleafcommerce.profile.core.domain.CustomerPayment;
 import org.broadleafcommerce.profile.core.domain.CustomerPaymentImpl;
-import org.junit.Ignore;
+import org.broadleafcommerce.profile.core.service.CustomerPaymentService;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml", "/bl-admin-applicationContext.xml",
-    "/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class CustomerPaymentCustomPersistenceHandlerDiffblueTest {
-  @Autowired
+  @InjectMocks
   private CustomerPaymentCustomPersistenceHandler customerPaymentCustomPersistenceHandler;
 
-  /**
-   * Test
-   * {@link CustomerPaymentCustomPersistenceHandler#canHandleInspect(PersistencePackage)}.
-   * <p>
-   * Method under test:
-   * {@link CustomerPaymentCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
-   */
-  @Test
-  public void testCanHandleInspect() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CustomerPaymentCustomPersistenceHandler customerPaymentCustomPersistenceHandler = new CustomerPaymentCustomPersistenceHandler();
-    PersistencePackage pkg = mock(PersistencePackage.class);
-    OperationTypes operationTypes = new OperationTypes(OperationType.NONDESTRUCTIVEREMOVE,
-        OperationType.NONDESTRUCTIVEREMOVE, OperationType.NONDESTRUCTIVEREMOVE, OperationType.NONDESTRUCTIVEREMOVE,
-        OperationType.NONDESTRUCTIVEREMOVE);
-
-    when(pkg.getPersistencePerspective()).thenReturn(new PersistencePerspective(operationTypes,
-        new String[]{"Additional Non Persistent Properties"}, new ForeignKey[]{new ForeignKey()}));
-    when(pkg.getCeilingEntityFullyQualifiedClassname())
-        .thenReturn("org.broadleafcommerce.profile.core.domain.CustomerPayment");
-
-    // Act
-    Boolean actualCanHandleInspectResult = customerPaymentCustomPersistenceHandler.canHandleInspect(pkg);
-
-    // Assert
-    verify(pkg).getCeilingEntityFullyQualifiedClassname();
-    verify(pkg).getPersistencePerspective();
-    assertFalse(actualCanHandleInspectResult);
-  }
+  @Mock
+  private CustomerPaymentService customerPaymentService;
 
   /**
-   * Test
-   * {@link CustomerPaymentCustomPersistenceHandler#canHandleInspect(PersistencePackage)}.
-   * <p>
-   * Method under test:
-   * {@link CustomerPaymentCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCanHandleInspect2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2328 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.CustomerPaymentCustomPersistenceHandler customerPaymentCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CustomerPaymentCustomPersistenceHandler customerPaymentCustomPersistenceHandler2 = new CustomerPaymentCustomPersistenceHandler();
-
-    // Act
-    customerPaymentCustomPersistenceHandler2.canHandleInspect(new PersistencePackage());
-  }
-
-  /**
-   * Test
-   * {@link CustomerPaymentCustomPersistenceHandler#canHandleInspect(PersistencePackage)}.
-   * <ul>
-   *   <li>Given {@code Dr Jane Doe}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link CustomerPaymentCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
-   */
-  @Test
-  public void testCanHandleInspect_givenDrJaneDoe() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CustomerPaymentCustomPersistenceHandler customerPaymentCustomPersistenceHandler = new CustomerPaymentCustomPersistenceHandler();
-    PersistencePackage pkg = mock(PersistencePackage.class);
-    when(pkg.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-
-    // Act
-    Boolean actualCanHandleInspectResult = customerPaymentCustomPersistenceHandler.canHandleInspect(pkg);
-
-    // Assert
-    verify(pkg).getCeilingEntityFullyQualifiedClassname();
-    assertFalse(actualCanHandleInspectResult);
-  }
-
-  /**
-   * Test
-   * {@link CustomerPaymentCustomPersistenceHandler#canHandleInspect(PersistencePackage)}.
-   * <ul>
-   *   <li>Given {@link PersistencePerspective#PersistencePerspective()}.</li>
-   *   <li>Then return {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link CustomerPaymentCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
-   */
-  @Test
-  public void testCanHandleInspect_givenPersistencePerspective_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CustomerPaymentCustomPersistenceHandler customerPaymentCustomPersistenceHandler = new CustomerPaymentCustomPersistenceHandler();
-    PersistencePackage pkg = mock(PersistencePackage.class);
-    when(pkg.getPersistencePerspective()).thenReturn(new PersistencePerspective());
-    when(pkg.getCeilingEntityFullyQualifiedClassname())
-        .thenReturn("org.broadleafcommerce.profile.core.domain.CustomerPayment");
-
-    // Act
-    Boolean actualCanHandleInspectResult = customerPaymentCustomPersistenceHandler.canHandleInspect(pkg);
-
-    // Assert
-    verify(pkg).getCeilingEntityFullyQualifiedClassname();
-    verify(pkg).getPersistencePerspective();
-    assertTrue(actualCanHandleInspectResult);
-  }
-
-  /**
-   * Test
-   * {@link CustomerPaymentCustomPersistenceHandler#canHandleInspect(PersistencePackage)}.
+   * Test {@link CustomerPaymentCustomPersistenceHandler#canHandleInspect(PersistencePackage)}.
    * <ul>
    *   <li>When {@link PersistencePackage#PersistencePackage()}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomerPaymentCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
+   * Method under test: {@link CustomerPaymentCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean CustomerPaymentCustomPersistenceHandler.canHandleInspect(PersistencePackage)"})
   public void testCanHandleInspect_whenPersistencePackage_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CustomerPaymentCustomPersistenceHandler customerPaymentCustomPersistenceHandler = new CustomerPaymentCustomPersistenceHandler();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertFalse(customerPaymentCustomPersistenceHandler.canHandleInspect(new PersistencePackage()));
   }
 
   /**
-   * Test
-   * {@link CustomerPaymentCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
-   * <p>
-   * Method under test:
-   * {@link CustomerPaymentCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
-   */
-  @Test
-  public void testCanHandleFetch() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CustomerPaymentCustomPersistenceHandler customerPaymentCustomPersistenceHandler = new CustomerPaymentCustomPersistenceHandler();
-    PersistencePackage pkg = mock(PersistencePackage.class);
-    OperationTypes operationTypes = new OperationTypes(OperationType.NONDESTRUCTIVEREMOVE,
-        OperationType.NONDESTRUCTIVEREMOVE, OperationType.NONDESTRUCTIVEREMOVE, OperationType.NONDESTRUCTIVEREMOVE,
-        OperationType.NONDESTRUCTIVEREMOVE);
-
-    when(pkg.getPersistencePerspective()).thenReturn(new PersistencePerspective(operationTypes,
-        new String[]{"Additional Non Persistent Properties"}, new ForeignKey[]{new ForeignKey()}));
-    when(pkg.getCeilingEntityFullyQualifiedClassname())
-        .thenReturn("org.broadleafcommerce.profile.core.domain.CustomerPayment");
-
-    // Act
-    Boolean actualCanHandleFetchResult = customerPaymentCustomPersistenceHandler.canHandleFetch(pkg);
-
-    // Assert
-    verify(pkg).getCeilingEntityFullyQualifiedClassname();
-    verify(pkg).getPersistencePerspective();
-    assertFalse(actualCanHandleFetchResult);
-  }
-
-  /**
-   * Test
-   * {@link CustomerPaymentCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
-   * <p>
-   * Method under test:
-   * {@link CustomerPaymentCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCanHandleFetch2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2304 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.CustomerPaymentCustomPersistenceHandler customerPaymentCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CustomerPaymentCustomPersistenceHandler customerPaymentCustomPersistenceHandler2 = new CustomerPaymentCustomPersistenceHandler();
-
-    // Act
-    customerPaymentCustomPersistenceHandler2.canHandleFetch(new PersistencePackage());
-  }
-
-  /**
-   * Test
-   * {@link CustomerPaymentCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
-   * <ul>
-   *   <li>Given {@code Dr Jane Doe}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link CustomerPaymentCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
-   */
-  @Test
-  public void testCanHandleFetch_givenDrJaneDoe() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CustomerPaymentCustomPersistenceHandler customerPaymentCustomPersistenceHandler = new CustomerPaymentCustomPersistenceHandler();
-    PersistencePackage pkg = mock(PersistencePackage.class);
-    when(pkg.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-
-    // Act
-    Boolean actualCanHandleFetchResult = customerPaymentCustomPersistenceHandler.canHandleFetch(pkg);
-
-    // Assert
-    verify(pkg).getCeilingEntityFullyQualifiedClassname();
-    assertFalse(actualCanHandleFetchResult);
-  }
-
-  /**
-   * Test
-   * {@link CustomerPaymentCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
-   * <ul>
-   *   <li>Given {@link PersistencePerspective#PersistencePerspective()}.</li>
-   *   <li>Then return {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link CustomerPaymentCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
-   */
-  @Test
-  public void testCanHandleFetch_givenPersistencePerspective_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CustomerPaymentCustomPersistenceHandler customerPaymentCustomPersistenceHandler = new CustomerPaymentCustomPersistenceHandler();
-    PersistencePackage pkg = mock(PersistencePackage.class);
-    when(pkg.getPersistencePerspective()).thenReturn(new PersistencePerspective());
-    when(pkg.getCeilingEntityFullyQualifiedClassname())
-        .thenReturn("org.broadleafcommerce.profile.core.domain.CustomerPayment");
-
-    // Act
-    Boolean actualCanHandleFetchResult = customerPaymentCustomPersistenceHandler.canHandleFetch(pkg);
-
-    // Assert
-    verify(pkg).getCeilingEntityFullyQualifiedClassname();
-    verify(pkg).getPersistencePerspective();
-    assertTrue(actualCanHandleFetchResult);
-  }
-
-  /**
-   * Test
-   * {@link CustomerPaymentCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
+   * Test {@link CustomerPaymentCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
    * <ul>
    *   <li>When {@link PersistencePackage#PersistencePackage()}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomerPaymentCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
+   * Method under test: {@link CustomerPaymentCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean CustomerPaymentCustomPersistenceHandler.canHandleFetch(PersistencePackage)"})
   public void testCanHandleFetch_whenPersistencePackage_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CustomerPaymentCustomPersistenceHandler customerPaymentCustomPersistenceHandler = new CustomerPaymentCustomPersistenceHandler();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertFalse(customerPaymentCustomPersistenceHandler.canHandleFetch(new PersistencePackage()));
   }
 
   /**
-   * Test
-   * {@link CustomerPaymentCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao, InspectHelper)}.
-   * <p>
-   * Method under test:
-   * {@link CustomerPaymentCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao, InspectHelper)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testInspect() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2421 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.CustomerPaymentCustomPersistenceHandler customerPaymentCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CustomerPaymentCustomPersistenceHandler customerPaymentCustomPersistenceHandler2 = new CustomerPaymentCustomPersistenceHandler();
-    PersistencePackage persistencePackage = new PersistencePackage();
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    // Act
-    customerPaymentCustomPersistenceHandler2.inspect(persistencePackage, dynamicEntityDao,
-        new PersistenceManagerImpl());
-  }
-
-  /**
-   * Test
-   * {@link CustomerPaymentCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao, InspectHelper)}.
+   * Test {@link CustomerPaymentCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao, InspectHelper)}.
    * <ul>
-   *   <li>Given {@link ClassMetadata} (default constructor) CeilingType is
-   * {@code Type}.</li>
+   *   <li>Given {@link ClassMetadata} (default constructor) CeilingType is {@code Type}.</li>
    *   <li>Then return PromptSearch is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomerPaymentCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao, InspectHelper)}
+   * Method under test: {@link CustomerPaymentCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao, InspectHelper)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DynamicResultSet CustomerPaymentCustomPersistenceHandler.inspect(PersistencePackage, DynamicEntityDao, InspectHelper)"})
   public void testInspect_givenClassMetadataCeilingTypeIsType_thenReturnPromptSearchIsNull() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CustomerPaymentCustomPersistenceHandler customerPaymentCustomPersistenceHandler = new CustomerPaymentCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
+    PersistencePackage persistencePackage = new PersistencePackage();
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
 
     ClassMetadata classMetadata = new ClassMetadata();
@@ -412,7 +134,7 @@ public class CustomerPaymentCustomPersistenceHandlerDiffblueTest {
     classMetadata.setProperties(new Property[]{new Property()});
     classMetadata.setSecurityCeilingType("Security Ceiling Type");
     classMetadata.setTabAndGroupMetadata(new HashMap<>());
-    InspectHelper helper = mock(InspectHelper.class);
+    PersistenceManagerImpl helper = mock(PersistenceManagerImpl.class);
     when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
         .thenReturn(new HashMap<>());
     when(helper.buildClassMetadata(Mockito.<Class<Object>[]>any(), Mockito.<PersistencePackage>any(),
@@ -423,10 +145,8 @@ public class CustomerPaymentCustomPersistenceHandlerDiffblueTest {
         dynamicEntityDao, helper);
 
     // Assert
-    verify(persistencePackage).getPersistencePerspective();
     verify(helper).buildClassMetadata(isA(Class[].class), isA(PersistencePackage.class), isA(Map.class));
-    verify(helper).getSimpleMergedProperties(eq("org.broadleafcommerce.profile.core.domain.CustomerPayment"),
-        isA(PersistencePerspective.class));
+    verify(helper).getSimpleMergedProperties(eq("org.broadleafcommerce.profile.core.domain.CustomerPayment"), isNull());
     assertNull(actualInspectResult.getPromptSearch());
     assertNull(actualInspectResult.getTotalCountLessThanPageSize());
     assertNull(actualInspectResult.getBatchId());
@@ -444,18 +164,16 @@ public class CustomerPaymentCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomerPaymentCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
+   * Test {@link CustomerPaymentCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
    * <p>
-   * Method under test:
-   * {@link CustomerPaymentCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   * Method under test: {@link CustomerPaymentCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DynamicResultSet CustomerPaymentCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"})
   public void testFetch() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CustomerPaymentCustomPersistenceHandler customerPaymentCustomPersistenceHandler = new CustomerPaymentCustomPersistenceHandler();
     PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
     when(persistencePerspective.getOperationTypes()).thenReturn(new OperationTypes());
 
@@ -469,7 +187,7 @@ public class CustomerPaymentCustomPersistenceHandlerDiffblueTest {
 
     when(adornedTargetListPersistenceModule.fetch(Mockito.<PersistencePackage>any(),
         Mockito.<CriteriaTransferObject>any())).thenReturn(dynamicResultSet);
-    RecordHelper helper = mock(RecordHelper.class);
+    AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
     when(helper.getCompatibleModule(Mockito.<OperationType>any())).thenReturn(adornedTargetListPersistenceModule);
 
     // Act
@@ -484,59 +202,163 @@ public class CustomerPaymentCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomerPaymentCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
+   * Test {@link CustomerPaymentCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
+   * <ul>
+   *   <li>Given {@link CustomerPaymentService} {@link CustomerPaymentService#readCustomerPaymentById(Long)} return {@code null}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomerPaymentCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   * Method under test: {@link CustomerPaymentCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testFetch2() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2352 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.CustomerPaymentCustomPersistenceHandler customerPaymentCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DynamicResultSet CustomerPaymentCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"})
+  public void testFetch_givenCustomerPaymentServiceReadCustomerPaymentByIdReturnNull() throws ServiceException {
     // Arrange
-    CustomerPaymentCustomPersistenceHandler customerPaymentCustomPersistenceHandler2 = new CustomerPaymentCustomPersistenceHandler();
+    when(customerPaymentService.readCustomerPaymentById(Mockito.<Long>any())).thenReturn(null);
+    PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
+    when(persistencePerspective.getOperationTypes()).thenReturn(new OperationTypes());
+
     PersistencePackage persistencePackage = new PersistencePackage();
+    persistencePackage.setPersistencePerspective(persistencePerspective);
     CriteriaTransferObject cto = new CriteriaTransferObject();
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+    Entity entity = mock(Entity.class);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property("id", "42"));
+    DynamicResultSet dynamicResultSet = mock(DynamicResultSet.class);
+    when(dynamicResultSet.getRecords()).thenReturn(new Entity[]{entity});
+    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = mock(
+        AdornedTargetListPersistenceModule.class);
+    when(adornedTargetListPersistenceModule.fetch(Mockito.<PersistencePackage>any(),
+        Mockito.<CriteriaTransferObject>any())).thenReturn(dynamicResultSet);
+    AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
+    when(helper.getCompatibleModule(Mockito.<OperationType>any())).thenReturn(adornedTargetListPersistenceModule);
 
     // Act
-    customerPaymentCustomPersistenceHandler2.fetch(persistencePackage, cto, dynamicEntityDao,
-        new AdornedTargetListPersistenceModule());
+    customerPaymentCustomPersistenceHandler.fetch(persistencePackage, cto, dynamicEntityDao, helper);
+
+    // Assert
+    verify(dynamicResultSet).getRecords();
+    verify(entity).findProperty(eq("id"));
+    verify(persistencePerspective).getOperationTypes();
+    verify(adornedTargetListPersistenceModule).fetch(isA(PersistencePackage.class), isA(CriteriaTransferObject.class));
+    verify(helper).getCompatibleModule(eq(OperationType.BASIC));
+    verify(customerPaymentService).readCustomerPaymentById(eq(42L));
   }
 
   /**
-   * Test
-   * {@link CustomerPaymentCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
+   * Test {@link CustomerPaymentCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
+   * <ul>
+   *   <li>Given {@link Entity} {@link Entity#addProperty(Property)} does nothing.</li>
+   *   <li>Then calls {@link Entity#addProperty(Property)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CustomerPaymentCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DynamicResultSet CustomerPaymentCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"})
+  public void testFetch_givenEntityAddPropertyDoesNothing_thenCallsAddProperty() throws ServiceException {
+    // Arrange
+    when(customerPaymentService.readCustomerPaymentById(Mockito.<Long>any())).thenReturn(new CustomerPaymentImpl());
+    PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
+    when(persistencePerspective.getOperationTypes()).thenReturn(new OperationTypes());
+
+    PersistencePackage persistencePackage = new PersistencePackage();
+    persistencePackage.setPersistencePerspective(persistencePerspective);
+    CriteriaTransferObject cto = new CriteriaTransferObject();
+    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+    Entity entity = mock(Entity.class);
+    doNothing().when(entity).addProperty(Mockito.<Property>any());
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property("id", "42"));
+    DynamicResultSet dynamicResultSet = mock(DynamicResultSet.class);
+    when(dynamicResultSet.getRecords()).thenReturn(new Entity[]{entity});
+    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = mock(
+        AdornedTargetListPersistenceModule.class);
+    when(adornedTargetListPersistenceModule.fetch(Mockito.<PersistencePackage>any(),
+        Mockito.<CriteriaTransferObject>any())).thenReturn(dynamicResultSet);
+    AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
+    when(helper.getCompatibleModule(Mockito.<OperationType>any())).thenReturn(adornedTargetListPersistenceModule);
+
+    // Act
+    customerPaymentCustomPersistenceHandler.fetch(persistencePackage, cto, dynamicEntityDao, helper);
+
+    // Assert
+    verify(dynamicResultSet).getRecords();
+    verify(entity).addProperty(isA(Property.class));
+    verify(entity).findProperty(eq("id"));
+    verify(persistencePerspective).getOperationTypes();
+    verify(adornedTargetListPersistenceModule).fetch(isA(PersistencePackage.class), isA(CriteriaTransferObject.class));
+    verify(helper).getCompatibleModule(eq(OperationType.BASIC));
+    verify(customerPaymentService).readCustomerPaymentById(eq(42L));
+  }
+
+  /**
+   * Test {@link CustomerPaymentCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
+   * <ul>
+   *   <li>Given {@link Property} {@link Property#getValue()} return {@code 42}.</li>
+   *   <li>Then calls {@link Property#getValue()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CustomerPaymentCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DynamicResultSet CustomerPaymentCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"})
+  public void testFetch_givenPropertyGetValueReturn42_thenCallsGetValue() throws ServiceException {
+    // Arrange
+    when(customerPaymentService.readCustomerPaymentById(Mockito.<Long>any())).thenReturn(new CustomerPaymentImpl());
+    PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
+    when(persistencePerspective.getOperationTypes()).thenReturn(new OperationTypes());
+
+    PersistencePackage persistencePackage = new PersistencePackage();
+    persistencePackage.setPersistencePerspective(persistencePerspective);
+    CriteriaTransferObject cto = new CriteriaTransferObject();
+    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+    Property property = mock(Property.class);
+    when(property.getValue()).thenReturn("42");
+    Entity entity = mock(Entity.class);
+    doNothing().when(entity).addProperty(Mockito.<Property>any());
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
+    DynamicResultSet dynamicResultSet = mock(DynamicResultSet.class);
+    when(dynamicResultSet.getRecords()).thenReturn(new Entity[]{entity});
+    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = mock(
+        AdornedTargetListPersistenceModule.class);
+    when(adornedTargetListPersistenceModule.fetch(Mockito.<PersistencePackage>any(),
+        Mockito.<CriteriaTransferObject>any())).thenReturn(dynamicResultSet);
+    AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
+    when(helper.getCompatibleModule(Mockito.<OperationType>any())).thenReturn(adornedTargetListPersistenceModule);
+
+    // Act
+    customerPaymentCustomPersistenceHandler.fetch(persistencePackage, cto, dynamicEntityDao, helper);
+
+    // Assert
+    verify(dynamicResultSet).getRecords();
+    verify(entity).addProperty(isA(Property.class));
+    verify(entity).findProperty(eq("id"));
+    verify(persistencePerspective).getOperationTypes();
+    verify(property).getValue();
+    verify(adornedTargetListPersistenceModule).fetch(isA(PersistencePackage.class), isA(CriteriaTransferObject.class));
+    verify(helper).getCompatibleModule(eq(OperationType.BASIC));
+    verify(customerPaymentService).readCustomerPaymentById(eq(42L));
+  }
+
+  /**
+   * Test {@link CustomerPaymentCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
    * <ul>
    *   <li>Then return {@link DynamicResultSet#DynamicResultSet()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomerPaymentCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   * Method under test: {@link CustomerPaymentCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DynamicResultSet CustomerPaymentCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"})
   public void testFetch_thenReturnDynamicResultSet() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CustomerPaymentCustomPersistenceHandler customerPaymentCustomPersistenceHandler = new CustomerPaymentCustomPersistenceHandler();
     PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
     when(persistencePerspective.getOperationTypes()).thenReturn(new OperationTypes());
 
@@ -549,7 +371,7 @@ public class CustomerPaymentCustomPersistenceHandlerDiffblueTest {
     DynamicResultSet dynamicResultSet = new DynamicResultSet();
     when(adornedTargetListPersistenceModule.fetch(Mockito.<PersistencePackage>any(),
         Mockito.<CriteriaTransferObject>any())).thenReturn(dynamicResultSet);
-    RecordHelper helper = mock(RecordHelper.class);
+    AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
     when(helper.getCompatibleModule(Mockito.<OperationType>any())).thenReturn(adornedTargetListPersistenceModule);
 
     // Act
@@ -564,56 +386,18 @@ public class CustomerPaymentCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomerPaymentCustomPersistenceHandler#buildSavedPaymentDisplayValue(CustomerPayment)}.
-   * <p>
-   * Method under test:
-   * {@link CustomerPaymentCustomPersistenceHandler#buildSavedPaymentDisplayValue(CustomerPayment)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testBuildSavedPaymentDisplayValue() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2290 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.CustomerPaymentCustomPersistenceHandler customerPaymentCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CustomerPaymentCustomPersistenceHandler customerPaymentCustomPersistenceHandler2 = new CustomerPaymentCustomPersistenceHandler();
-
-    // Act
-    customerPaymentCustomPersistenceHandler2.buildSavedPaymentDisplayValue(new CustomerPaymentImpl());
-  }
-
-  /**
-   * Test
-   * {@link CustomerPaymentCustomPersistenceHandler#buildSavedPaymentDisplayValue(CustomerPayment)}.
+   * Test {@link CustomerPaymentCustomPersistenceHandler#buildSavedPaymentDisplayValue(CustomerPayment)}.
    * <ul>
    *   <li>Given {@link AddressImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomerPaymentCustomPersistenceHandler#buildSavedPaymentDisplayValue(CustomerPayment)}
+   * Method under test: {@link CustomerPaymentCustomPersistenceHandler#buildSavedPaymentDisplayValue(CustomerPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CustomerPaymentCustomPersistenceHandler.buildSavedPaymentDisplayValue(CustomerPayment)"})
   public void testBuildSavedPaymentDisplayValue_givenAddressImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CustomerPaymentCustomPersistenceHandler customerPaymentCustomPersistenceHandler = new CustomerPaymentCustomPersistenceHandler();
-
     CustomerPaymentImpl customerPayment = new CustomerPaymentImpl();
     customerPayment.setBillingAddress(new AddressImpl());
     customerPayment.setCustomer(new CustomerImpl());
@@ -629,173 +413,110 @@ public class CustomerPaymentCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomerPaymentCustomPersistenceHandler#buildSavedPaymentDisplayValue(CustomerPayment)}.
+   * Test {@link CustomerPaymentCustomPersistenceHandler#buildSavedPaymentDisplayValue(CustomerPayment)}.
    * <ul>
    *   <li>Given {@link HashMap#HashMap()} {@code foo} is {@code foo}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomerPaymentCustomPersistenceHandler#buildSavedPaymentDisplayValue(CustomerPayment)}
+   * Method under test: {@link CustomerPaymentCustomPersistenceHandler#buildSavedPaymentDisplayValue(CustomerPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CustomerPaymentCustomPersistenceHandler.buildSavedPaymentDisplayValue(CustomerPayment)"})
   public void testBuildSavedPaymentDisplayValue_givenHashMapFooIsFoo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CustomerPaymentCustomPersistenceHandler customerPaymentCustomPersistenceHandler = new CustomerPaymentCustomPersistenceHandler();
+    HashMap<String, String> additionalFields = new HashMap<>();
+    additionalFields.put("foo", "foo");
 
-    HashMap<String, String> stringStringMap = new HashMap<>();
-    stringStringMap.put("foo", "foo");
-    CustomerPaymentImpl customerPayment = mock(CustomerPaymentImpl.class);
-    when(customerPayment.getAdditionalFields()).thenReturn(stringStringMap);
+    CustomerPaymentImpl customerPayment = new CustomerPaymentImpl();
+    customerPayment.setAdditionalFields(additionalFields);
 
-    // Act
-    String actualBuildSavedPaymentDisplayValueResult = customerPaymentCustomPersistenceHandler
-        .buildSavedPaymentDisplayValue(customerPayment);
-
-    // Assert
-    verify(customerPayment).getAdditionalFields();
-    assertEquals("", actualBuildSavedPaymentDisplayValueResult);
+    // Act and Assert
+    assertEquals("", customerPaymentCustomPersistenceHandler.buildSavedPaymentDisplayValue(customerPayment));
   }
 
   /**
-   * Test
-   * {@link CustomerPaymentCustomPersistenceHandler#buildSavedPaymentDisplayValue(CustomerPayment)}.
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()}.</li>
-   *   <li>Then calls {@link CustomerPaymentImpl#getAdditionalFields()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link CustomerPaymentCustomPersistenceHandler#buildSavedPaymentDisplayValue(CustomerPayment)}
-   */
-  @Test
-  public void testBuildSavedPaymentDisplayValue_givenHashMap_thenCallsGetAdditionalFields() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CustomerPaymentCustomPersistenceHandler customerPaymentCustomPersistenceHandler = new CustomerPaymentCustomPersistenceHandler();
-    CustomerPaymentImpl customerPayment = mock(CustomerPaymentImpl.class);
-    when(customerPayment.getAdditionalFields()).thenReturn(new HashMap<>());
-
-    // Act
-    String actualBuildSavedPaymentDisplayValueResult = customerPaymentCustomPersistenceHandler
-        .buildSavedPaymentDisplayValue(customerPayment);
-
-    // Assert
-    verify(customerPayment).getAdditionalFields();
-    assertEquals("", actualBuildSavedPaymentDisplayValueResult);
-  }
-
-  /**
-   * Test
-   * {@link CustomerPaymentCustomPersistenceHandler#buildSavedPaymentDisplayValue(CustomerPayment)}.
+   * Test {@link CustomerPaymentCustomPersistenceHandler#buildSavedPaymentDisplayValue(CustomerPayment)}.
    * <ul>
    *   <li>When {@link CustomerPaymentImpl} (default constructor).</li>
    *   <li>Then return empty string.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomerPaymentCustomPersistenceHandler#buildSavedPaymentDisplayValue(CustomerPayment)}
+   * Method under test: {@link CustomerPaymentCustomPersistenceHandler#buildSavedPaymentDisplayValue(CustomerPayment)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CustomerPaymentCustomPersistenceHandler.buildSavedPaymentDisplayValue(CustomerPayment)"})
   public void testBuildSavedPaymentDisplayValue_whenCustomerPaymentImpl_thenReturnEmptyString() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CustomerPaymentCustomPersistenceHandler customerPaymentCustomPersistenceHandler = new CustomerPaymentCustomPersistenceHandler();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertEquals("", customerPaymentCustomPersistenceHandler.buildSavedPaymentDisplayValue(new CustomerPaymentImpl()));
   }
 
   /**
-   * Test
-   * {@link CustomerPaymentCustomPersistenceHandler#buildPropertyValueIfAvailable(String, String)}.
-   * <p>
-   * Method under test:
-   * {@link CustomerPaymentCustomPersistenceHandler#buildPropertyValueIfAvailable(String, String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testBuildPropertyValueIfAvailable() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2272 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.CustomerPaymentCustomPersistenceHandler customerPaymentCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CustomerPaymentCustomPersistenceHandler()).buildPropertyValueIfAvailable("42", "42");
-  }
-
-  /**
-   * Test
-   * {@link CustomerPaymentCustomPersistenceHandler#buildPropertyValueIfAvailable(String, String)}.
+   * Test {@link CustomerPaymentCustomPersistenceHandler#buildPropertyValueIfAvailable(String, String)}.
    * <ul>
    *   <li>When {@code 42}.</li>
    *   <li>Then return {@code | 42}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomerPaymentCustomPersistenceHandler#buildPropertyValueIfAvailable(String, String)}
+   * Method under test: {@link CustomerPaymentCustomPersistenceHandler#buildPropertyValueIfAvailable(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CustomerPaymentCustomPersistenceHandler.buildPropertyValueIfAvailable(String, String)"})
   public void testBuildPropertyValueIfAvailable_when42_thenReturn42() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("\t|\t42", (new CustomerPaymentCustomPersistenceHandler()).buildPropertyValueIfAvailable("42", "42"));
+    assertEquals("\t|\t42", customerPaymentCustomPersistenceHandler.buildPropertyValueIfAvailable("42", "42"));
   }
 
   /**
-   * Test
-   * {@link CustomerPaymentCustomPersistenceHandler#buildPropertyValueIfAvailable(String, String)}.
+   * Test {@link CustomerPaymentCustomPersistenceHandler#buildPropertyValueIfAvailable(String, String)}.
    * <ul>
    *   <li>When empty string.</li>
    *   <li>Then return {@code 42}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomerPaymentCustomPersistenceHandler#buildPropertyValueIfAvailable(String, String)}
+   * Method under test: {@link CustomerPaymentCustomPersistenceHandler#buildPropertyValueIfAvailable(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CustomerPaymentCustomPersistenceHandler.buildPropertyValueIfAvailable(String, String)"})
   public void testBuildPropertyValueIfAvailable_whenEmptyString_thenReturn42() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("42", (new CustomerPaymentCustomPersistenceHandler()).buildPropertyValueIfAvailable("", "42"));
+    assertEquals("42", customerPaymentCustomPersistenceHandler.buildPropertyValueIfAvailable("", "42"));
   }
 
   /**
-   * Test
-   * {@link CustomerPaymentCustomPersistenceHandler#buildPropertyValueIfAvailable(String, String)}.
+   * Test {@link CustomerPaymentCustomPersistenceHandler#buildPropertyValueIfAvailable(String, String)}.
    * <ul>
    *   <li>When {@code null}.</li>
    *   <li>Then return empty string.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomerPaymentCustomPersistenceHandler#buildPropertyValueIfAvailable(String, String)}
+   * Method under test: {@link CustomerPaymentCustomPersistenceHandler#buildPropertyValueIfAvailable(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CustomerPaymentCustomPersistenceHandler.buildPropertyValueIfAvailable(String, String)"})
   public void testBuildPropertyValueIfAvailable_whenNull_thenReturnEmptyString() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("", (new CustomerPaymentCustomPersistenceHandler()).buildPropertyValueIfAvailable("", null));
-    assertEquals("", (new CustomerPaymentCustomPersistenceHandler()).buildPropertyValueIfAvailable("", "****null"));
+    assertEquals("", customerPaymentCustomPersistenceHandler.buildPropertyValueIfAvailable("", null));
+  }
+
+  /**
+   * Test {@link CustomerPaymentCustomPersistenceHandler#buildPropertyValueIfAvailable(String, String)}.
+   * <ul>
+   *   <li>When {@code ****null}.</li>
+   *   <li>Then return empty string.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CustomerPaymentCustomPersistenceHandler#buildPropertyValueIfAvailable(String, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CustomerPaymentCustomPersistenceHandler.buildPropertyValueIfAvailable(String, String)"})
+  public void testBuildPropertyValueIfAvailable_whenNull_thenReturnEmptyString2() {
+    // Arrange, Act and Assert
+    assertEquals("", customerPaymentCustomPersistenceHandler.buildPropertyValueIfAvailable("", "****null"));
   }
 }

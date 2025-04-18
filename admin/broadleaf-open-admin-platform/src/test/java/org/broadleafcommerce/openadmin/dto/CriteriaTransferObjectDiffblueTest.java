@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.dto;
 
 import static org.junit.Assert.assertEquals;
@@ -5,25 +22,27 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiFunction;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.FilterMapping;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {CriteriaTransferObject.class})
 @RunWith(SpringJUnit4ClassRunner.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class CriteriaTransferObjectDiffblueTest {
   @Autowired
   private CriteriaTransferObject criteriaTransferObject;
@@ -31,13 +50,14 @@ public class CriteriaTransferObjectDiffblueTest {
   /**
    * Test {@link CriteriaTransferObject#add(FilterAndSortCriteria)}.
    * <ul>
-   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap
-   * size is one.</li>
+   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap size is one.</li>
    * </ul>
    * <p>
    * Method under test: {@link CriteriaTransferObject#add(FilterAndSortCriteria)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CriteriaTransferObject.add(FilterAndSortCriteria)"})
   public void testAdd_thenCriteriaTransferObjectCriteriaMapSizeIsOne() {
     // Arrange
     CriteriaTransferObject criteriaTransferObject = new CriteriaTransferObject();
@@ -58,6 +78,8 @@ public class CriteriaTransferObjectDiffblueTest {
    * Method under test: {@link CriteriaTransferObject#addAll(Collection)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CriteriaTransferObject.addAll(Collection)"})
   public void testAddAll() {
     // Arrange
     CriteriaTransferObject criteriaTransferObject = new CriteriaTransferObject();
@@ -79,13 +101,14 @@ public class CriteriaTransferObjectDiffblueTest {
   /**
    * Test {@link CriteriaTransferObject#addAll(Collection)}.
    * <ul>
-   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap
-   * {@code 42} PropertyId is {@code 42}.</li>
+   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap {@code 42} PropertyId is {@code 42}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CriteriaTransferObject#addAll(Collection)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CriteriaTransferObject.addAll(Collection)"})
   public void testAddAll_thenCriteriaTransferObjectCriteriaMap42PropertyIdIs42() {
     // Arrange
     CriteriaTransferObject criteriaTransferObject = new CriteriaTransferObject();
@@ -115,13 +138,14 @@ public class CriteriaTransferObjectDiffblueTest {
    * Test {@link CriteriaTransferObject#addAll(Collection)}.
    * <ul>
    *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap
-   * Empty.</li>
+   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap Empty.</li>
    * </ul>
    * <p>
    * Method under test: {@link CriteriaTransferObject#addAll(Collection)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CriteriaTransferObject.addAll(Collection)"})
   public void testAddAll_whenArrayList_thenCriteriaTransferObjectCriteriaMapEmpty() {
     // Arrange
     CriteriaTransferObject criteriaTransferObject = new CriteriaTransferObject();
@@ -135,33 +159,8 @@ public class CriteriaTransferObjectDiffblueTest {
 
   /**
    * Test {@link CriteriaTransferObject#get(String)}.
-   * <p>
-   * Method under test: {@link CriteriaTransferObject#get(String)}
-   */
-  @Test
-  public void testGet() {
-    // Arrange and Act
-    FilterAndSortCriteria actualGetResult = criteriaTransferObject
-        .get("org.broadleafcommerce.openadmin.dto.FilterAndSortCriteria");
-
-    // Assert
-    assertEquals("org.broadleafcommerce.openadmin.dto.FilterAndSortCriteria", actualGetResult.getPropertyId());
-    assertNull(actualGetResult.getSortAscending());
-    assertNull(actualGetResult.getOrder());
-    assertNull(actualGetResult.getSortDirection());
-    assertNull(actualGetResult.getRestrictionType());
-    Map<String, FilterAndSortCriteria> criteriaMap = criteriaTransferObject.getCriteriaMap();
-    assertEquals(1, criteriaMap.size());
-    assertTrue(actualGetResult.getFilterValues().isEmpty());
-    assertTrue(actualGetResult.getSpecialFilterValues().isEmpty());
-    assertTrue(actualGetResult.filterValues.isEmpty());
-    assertTrue(criteriaMap.containsKey("org.broadleafcommerce.openadmin.dto.FilterAndSortCriteria"));
-    assertTrue(actualGetResult.isNullsLast());
-  }
-
-  /**
-   * Test {@link CriteriaTransferObject#get(String)}.
    * <ul>
+   *   <li>Given {@link CriteriaTransferObject}.</li>
    *   <li>When {@code Name}.</li>
    *   <li>Then return PropertyId is {@code Name}.</li>
    * </ul>
@@ -169,7 +168,9 @@ public class CriteriaTransferObjectDiffblueTest {
    * Method under test: {@link CriteriaTransferObject#get(String)}
    */
   @Test
-  public void testGet_whenName_thenReturnPropertyIdIsName() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FilterAndSortCriteria CriteriaTransferObject.get(String)"})
+  public void testGet_givenCriteriaTransferObject_whenName_thenReturnPropertyIdIsName() {
     // Arrange and Act
     FilterAndSortCriteria actualGetResult = criteriaTransferObject.get("Name");
 
@@ -189,13 +190,75 @@ public class CriteriaTransferObjectDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CriteriaTransferObject#defaultSortDirectionForFieldIfUnset(String, SortDirection)}.
+   * Test {@link CriteriaTransferObject#get(String)}.
+   * <ul>
+   *   <li>Then {@link CriteriaTransferObject} CriteriaMap is {@link HashMap#HashMap()}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link CriteriaTransferObject#defaultSortDirectionForFieldIfUnset(String, SortDirection)}
+   * Method under test: {@link CriteriaTransferObject#get(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FilterAndSortCriteria CriteriaTransferObject.get(String)"})
+  public void testGet_thenCriteriaTransferObjectCriteriaMapIsHashMap() {
+    // Arrange
+    HashMap<String, FilterAndSortCriteria> criteriaMap = new HashMap<>();
+    criteriaTransferObject.setCriteriaMap(criteriaMap);
+
+    // Act
+    FilterAndSortCriteria actualGetResult = criteriaTransferObject.get("Name");
+
+    // Assert
+    assertEquals("Name", actualGetResult.getPropertyId());
+    assertNull(actualGetResult.getSortAscending());
+    assertNull(actualGetResult.getOrder());
+    assertNull(actualGetResult.getSortDirection());
+    assertNull(actualGetResult.getRestrictionType());
+    Map<String, FilterAndSortCriteria> criteriaMap2 = criteriaTransferObject.getCriteriaMap();
+    assertEquals(1, criteriaMap2.size());
+    assertTrue(actualGetResult.getFilterValues().isEmpty());
+    assertTrue(actualGetResult.getSpecialFilterValues().isEmpty());
+    assertTrue(actualGetResult.filterValues.isEmpty());
+    assertTrue(criteriaMap2.containsKey("Name"));
+    assertTrue(actualGetResult.isNullsLast());
+    assertSame(criteriaMap, criteriaMap2);
+  }
+
+  /**
+   * Test {@link CriteriaTransferObject#get(String)}.
+   * <ul>
+   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap size is one.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CriteriaTransferObject#get(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FilterAndSortCriteria CriteriaTransferObject.get(String)"})
+  public void testGet_thenCriteriaTransferObjectCriteriaMapSizeIsOne() {
+    // Arrange
+    CriteriaTransferObject criteriaTransferObject = new CriteriaTransferObject();
+    FilterAndSortCriteria criteria = new FilterAndSortCriteria("42");
+    criteriaTransferObject.add(criteria);
+
+    // Act
+    FilterAndSortCriteria actualGetResult = criteriaTransferObject.get("42");
+
+    // Assert
+    Map<String, FilterAndSortCriteria> criteriaMap = criteriaTransferObject.getCriteriaMap();
+    assertEquals(1, criteriaMap.size());
+    assertTrue(criteriaMap.containsKey("42"));
+    assertSame(criteria, actualGetResult);
+  }
+
+  /**
+   * Test {@link CriteriaTransferObject#defaultSortDirectionForFieldIfUnset(String, SortDirection)}.
+   * <p>
+   * Method under test: {@link CriteriaTransferObject#defaultSortDirectionForFieldIfUnset(String, SortDirection)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CriteriaTransferObject.defaultSortDirectionForFieldIfUnset(String, SortDirection)"})
   public void testDefaultSortDirectionForFieldIfUnset() {
     // Arrange and Act
     criteriaTransferObject.defaultSortDirectionForFieldIfUnset("Name", SortDirection.ASCENDING);
@@ -216,44 +279,17 @@ public class CriteriaTransferObjectDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CriteriaTransferObject#defaultSortDirectionForFieldIfUnset(String, SortDirection)}.
-   * <ul>
-   *   <li>When {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link CriteriaTransferObject#defaultSortDirectionForFieldIfUnset(String, SortDirection)}
-   */
-  @Test
-  public void testDefaultSortDirectionForFieldIfUnset_whenNull() {
-    // Arrange and Act
-    criteriaTransferObject.defaultSortDirectionForFieldIfUnset("Name", null);
-
-    // Assert that nothing has changed
-    Map<String, FilterAndSortCriteria> criteriaMap = criteriaTransferObject.getCriteriaMap();
-    assertEquals(1, criteriaMap.size());
-    FilterAndSortCriteria getResult = criteriaMap.get("Name");
-    assertEquals("Name", getResult.getPropertyId());
-    assertEquals(SortDirection.ASCENDING, getResult.getSortDirection());
-    assertTrue(getResult.getFilterValues().isEmpty());
-    assertTrue(getResult.getSpecialFilterValues().isEmpty());
-    assertTrue(getResult.filterValues.isEmpty());
-    assertTrue(getResult.getSortAscending());
-    assertTrue(getResult.isNullsLast());
-  }
-
-  /**
    * Test {@link CriteriaTransferObject#isFolderLookup()}.
    * <ul>
-   *   <li>Given {@link CriteriaTransferObject} (default constructor) FolderLookup
-   * is {@code true}.</li>
+   *   <li>Given {@link CriteriaTransferObject} (default constructor) FolderLookup is {@code true}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CriteriaTransferObject#isFolderLookup()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CriteriaTransferObject.isFolderLookup()"})
   public void testIsFolderLookup_givenCriteriaTransferObjectFolderLookupIsTrue_thenReturnTrue() {
     // Arrange
     CriteriaTransferObject criteriaTransferObject = new CriteriaTransferObject();
@@ -273,32 +309,11 @@ public class CriteriaTransferObjectDiffblueTest {
    * Method under test: {@link CriteriaTransferObject#isFolderLookup()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CriteriaTransferObject.isFolderLookup()"})
   public void testIsFolderLookup_givenCriteriaTransferObject_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse((new CriteriaTransferObject()).isFolderLookup());
-  }
-
-  /**
-   * Test {@link CriteriaTransferObject#isFolderLookup()}.
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} computeIfPresent {@code foo} and
-   * {@link BiFunction}.</li>
-   *   <li>Then return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CriteriaTransferObject#isFolderLookup()}
-   */
-  @Test
-  public void testIsFolderLookup_givenHashMapComputeIfPresentFooAndBiFunction_thenReturnFalse() {
-    // Arrange
-    HashMap<String, FilterAndSortCriteria> criteriaMap = new HashMap<>();
-    criteriaMap.computeIfPresent("foo", mock(BiFunction.class));
-
-    CriteriaTransferObject criteriaTransferObject = new CriteriaTransferObject();
-    criteriaTransferObject.setCriteriaMap(criteriaMap);
-
-    // Act and Assert
-    assertFalse(criteriaTransferObject.isFolderLookup());
   }
 
   /**
@@ -333,6 +348,22 @@ public class CriteriaTransferObjectDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CriteriaTransferObject.<init>()",
+      "List CriteriaTransferObject.getAdditionalFilterMappings()", "Map CriteriaTransferObject.getCriteriaMap()",
+      "Long CriteriaTransferObject.getFirstId()", "Integer CriteriaTransferObject.getFirstResult()",
+      "Long CriteriaTransferObject.getFolderId()", "Long CriteriaTransferObject.getLastId()",
+      "Integer CriteriaTransferObject.getLowerCount()", "Integer CriteriaTransferObject.getMaxResults()",
+      "List CriteriaTransferObject.getNonCountAdditionalFilterMappings()",
+      "Boolean CriteriaTransferObject.getPresentationFetch()", "Integer CriteriaTransferObject.getUpperCount()",
+      "void CriteriaTransferObject.setAdditionalFilterMappings(List)",
+      "void CriteriaTransferObject.setCriteriaMap(Map)", "void CriteriaTransferObject.setFirstId(Long)",
+      "void CriteriaTransferObject.setFirstResult(Integer)", "void CriteriaTransferObject.setFolderId(Long)",
+      "void CriteriaTransferObject.setFolderLookup(Boolean)", "void CriteriaTransferObject.setLastId(Long)",
+      "void CriteriaTransferObject.setLowerCount(Integer)", "void CriteriaTransferObject.setMaxResults(Integer)",
+      "void CriteriaTransferObject.setNonCountAdditionalFilterMappings(List)",
+      "void CriteriaTransferObject.setPresentationFetch(Boolean)",
+      "void CriteriaTransferObject.setUpperCount(Integer)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     CriteriaTransferObject actualCriteriaTransferObject = new CriteriaTransferObject();
@@ -364,7 +395,7 @@ public class CriteriaTransferObjectDiffblueTest {
     Boolean actualPresentationFetch = actualCriteriaTransferObject.getPresentationFetch();
     Integer actualUpperCount = actualCriteriaTransferObject.getUpperCount();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals(1, actualFirstResult.intValue());
     assertEquals(1L, actualFirstId.longValue());
     assertEquals(1L, actualFolderId.longValue());

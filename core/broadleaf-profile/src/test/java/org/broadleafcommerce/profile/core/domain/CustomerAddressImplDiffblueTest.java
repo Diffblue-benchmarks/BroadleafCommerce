@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Profile
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.profile.core.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -10,27 +27,23 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.copy.CreateResponse;
-import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
-import org.broadleafcommerce.common.service.GenericEntityServiceImpl;
-import org.broadleafcommerce.common.site.domain.CatalogImpl;
-import org.broadleafcommerce.common.site.domain.SiteImpl;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml",
-    "/bl-profile-applicationContext-persistence.xml", "/bl-profile-applicationContext.xml",
-    "/blc-config/admin/framework/bl-profile-applicationContext.xml",
-    "/blc-config/site/framework/bl-profile-applicationContext.xml"})
+@ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class CustomerAddressImplDiffblueTest {
   @Autowired
   private CustomerAddressImpl customerAddressImpl;
@@ -51,6 +64,11 @@ public class CustomerAddressImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Address CustomerAddressImpl.getAddress()", "String CustomerAddressImpl.getAddressName()",
+      "Customer CustomerAddressImpl.getCustomer()", "Long CustomerAddressImpl.getId()",
+      "void CustomerAddressImpl.setAddress(Address)", "void CustomerAddressImpl.setAddressName(String)",
+      "void CustomerAddressImpl.setCustomer(Customer)", "void CustomerAddressImpl.setId(Long)"})
   public void testGettersAndSetters() {
     // Arrange
     CustomerAddressImpl customerAddressImpl = new CustomerAddressImpl();
@@ -66,7 +84,7 @@ public class CustomerAddressImplDiffblueTest {
     String actualAddressName = customerAddressImpl.getAddressName();
     Customer actualCustomer = customerAddressImpl.getCustomer();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("42 Main St", actualAddressName);
     assertEquals(1L, customerAddressImpl.getId().longValue());
     assertSame(address, actualAddress);
@@ -75,113 +93,50 @@ public class CustomerAddressImplDiffblueTest {
 
   /**
    * Test {@link CustomerAddressImpl#toString()}.
-   * <p>
-   * Method under test: {@link CustomerAddressImpl#toString()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testToString() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3437 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.domain.CustomerAddressImpl customerAddressImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CustomerAddressImpl()).toString();
-  }
-
-  /**
-   * Test {@link CustomerAddressImpl#toString()}.
    * <ul>
-   *   <li>Given {@link CustomerAddressImpl} (default constructor) Address is
-   * {@link AddressImpl} (default constructor).</li>
-   *   <li>Then return {@code null - null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CustomerAddressImpl#toString()}
-   */
-  @Test
-  public void testToString_givenCustomerAddressImplAddressIsAddressImpl_thenReturnNullNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CustomerAddressImpl customerAddressImpl = new CustomerAddressImpl();
-    customerAddressImpl.setAddress(new AddressImpl());
-    customerAddressImpl.setCustomer(new CustomerImpl());
-    customerAddressImpl.setId(1L);
-    customerAddressImpl.setAddressName(null);
-
-    // Act and Assert
-    assertEquals("null - null", customerAddressImpl.toString());
-  }
-
-  /**
-   * Test {@link CustomerAddressImpl#toString()}.
-   * <ul>
-   *   <li>Given {@link CustomerAddressImpl} (default constructor) AddressName is
-   * {@code foo}.</li>
+   *   <li>Given {@link CustomerAddressImpl} (default constructor) AddressName is {@code foo}.</li>
    *   <li>Then return {@code foo}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CustomerAddressImpl#toString()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CustomerAddressImpl.toString()"})
   public void testToString_givenCustomerAddressImplAddressNameIsFoo_thenReturnFoo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CustomerAddressImpl customerAddressImpl = new CustomerAddressImpl();
-    customerAddressImpl.setAddress(new AddressImpl());
-    customerAddressImpl.setCustomer(new CustomerImpl());
-    customerAddressImpl.setId(1L);
-    customerAddressImpl.setAddressName("foo");
+    CustomerAddressImpl customerAddressImpl2 = new CustomerAddressImpl();
+    customerAddressImpl2.setAddress(new AddressImpl());
+    customerAddressImpl2.setCustomer(new CustomerImpl());
+    customerAddressImpl2.setId(1L);
+    customerAddressImpl2.setAddressName("foo");
 
     // Act and Assert
-    assertEquals("foo", customerAddressImpl.toString());
+    assertEquals("foo", customerAddressImpl2.toString());
   }
 
   /**
    * Test {@link CustomerAddressImpl#toString()}.
    * <ul>
-   *   <li>Then return {@code Jane - 42 Main St}.</li>
+   *   <li>Given {@link CustomerAddressImpl} (default constructor) AddressName is {@code null}.</li>
+   *   <li>Then return {@code null - null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CustomerAddressImpl#toString()}
    */
   @Test
-  public void testToString_thenReturnJane42MainSt() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CustomerAddressImpl.toString()"})
+  public void testToString_givenCustomerAddressImplAddressNameIsNull_thenReturnNullNull() {
     // Arrange
-    AddressImpl address = mock(AddressImpl.class);
-    when(address.getAddressLine1()).thenReturn("42 Main St");
-    when(address.getFirstName()).thenReturn("Jane");
+    CustomerAddressImpl customerAddressImpl2 = new CustomerAddressImpl();
+    customerAddressImpl2.setAddress(new AddressImpl());
+    customerAddressImpl2.setCustomer(new CustomerImpl());
+    customerAddressImpl2.setId(1L);
+    customerAddressImpl2.setAddressName(null);
 
-    CustomerAddressImpl customerAddressImpl = new CustomerAddressImpl();
-    customerAddressImpl.setAddress(address);
-    customerAddressImpl.setCustomer(new CustomerImpl());
-    customerAddressImpl.setId(1L);
-    customerAddressImpl.setAddressName(null);
-
-    // Act
-    String actualToStringResult = customerAddressImpl.toString();
-
-    // Assert
-    verify(address).getAddressLine1();
-    verify(address).getFirstName();
-    assertEquals("Jane - 42 Main St", actualToStringResult);
+    // Act and Assert
+    assertEquals("null - null", customerAddressImpl2.toString());
   }
 
   /**
@@ -190,192 +145,52 @@ public class CustomerAddressImplDiffblueTest {
    * Method under test: {@link CustomerAddressImpl#getArchived()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Character CustomerAddressImpl.getArchived()"})
   public void testGetArchived() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3408 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.domain.CustomerAddressImpl customerAddressImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CustomerAddressImpl()).getArchived();
-  }
-
-  /**
-   * Test {@link CustomerAddressImpl#getArchived()}.
-   * <ul>
-   *   <li>Given {@link CustomerAddressImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CustomerAddressImpl#getArchived()}
-   */
-  @Test
-  public void testGetArchived_givenCustomerAddressImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertEquals('N', (new CustomerAddressImpl()).getArchived().charValue());
   }
 
   /**
-   * Test {@link CustomerAddressImpl#getArchived()}.
-   * <ul>
-   *   <li>Given {@link CustomerAddressImpl} (default constructor) Customer is
-   * {@link CustomerImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CustomerAddressImpl#getArchived()}
-   */
-  @Test
-  public void testGetArchived_givenCustomerAddressImplCustomerIsCustomerImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CustomerAddressImpl customerAddressImpl = new CustomerAddressImpl();
-    customerAddressImpl.setCustomer(mock(CustomerImpl.class));
-
-    // Act and Assert
-    assertEquals('N', customerAddressImpl.getArchived().charValue());
-  }
-
-  /**
    * Test {@link CustomerAddressImpl#setArchived(Character)}.
    * <p>
    * Method under test: {@link CustomerAddressImpl#setArchived(Character)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CustomerAddressImpl.setArchived(Character)"})
   public void testSetArchived() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3422 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.domain.CustomerAddressImpl customerAddressImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CustomerAddressImpl()).setArchived('A');
-  }
-
-  /**
-   * Test {@link CustomerAddressImpl#setArchived(Character)}.
-   * <ul>
-   *   <li>Given {@link CustomerAddressImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CustomerAddressImpl#setArchived(Character)}
-   */
-  @Test
-  public void testSetArchived_givenCustomerAddressImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CustomerAddressImpl customerAddressImpl = new CustomerAddressImpl();
+    CustomerAddressImpl customerAddressImpl2 = new CustomerAddressImpl();
 
     // Act
-    customerAddressImpl.setArchived('A');
+    customerAddressImpl2.setArchived('A');
 
     // Assert
-    assertEquals('A', customerAddressImpl.archiveStatus.getArchived().charValue());
-    assertEquals('A', customerAddressImpl.getArchived().charValue());
-  }
-
-  /**
-   * Test {@link CustomerAddressImpl#setArchived(Character)}.
-   * <ul>
-   *   <li>Given {@link CustomerAddressImpl} (default constructor) Customer is
-   * {@link CustomerImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CustomerAddressImpl#setArchived(Character)}
-   */
-  @Test
-  public void testSetArchived_givenCustomerAddressImplCustomerIsCustomerImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CustomerAddressImpl customerAddressImpl = new CustomerAddressImpl();
-    customerAddressImpl.setCustomer(mock(CustomerImpl.class));
-
-    // Act
-    customerAddressImpl.setArchived('A');
-
-    // Assert
-    assertEquals('A', customerAddressImpl.archiveStatus.getArchived().charValue());
-    assertEquals('A', customerAddressImpl.getArchived().charValue());
-  }
-
-  /**
-   * Test {@link CustomerAddressImpl#isActive()}.
-   * <p>
-   * Method under test: {@link CustomerAddressImpl#isActive()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsActive() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3415 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.domain.CustomerAddressImpl customerAddressImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CustomerAddressImpl()).isActive();
+    assertEquals('A', customerAddressImpl2.archiveStatus.getArchived().charValue());
+    assertEquals('A', customerAddressImpl2.getArchived().charValue());
   }
 
   /**
    * Test {@link CustomerAddressImpl#isActive()}.
    * <ul>
-   *   <li>Given {@link CustomerAddressImpl} (default constructor) Archived is
-   * {@code Y}.</li>
+   *   <li>Given {@link CustomerAddressImpl} (default constructor) Archived is {@code Y}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CustomerAddressImpl#isActive()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerAddressImpl.isActive()"})
   public void testIsActive_givenCustomerAddressImplArchivedIsY_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CustomerAddressImpl customerAddressImpl = new CustomerAddressImpl();
-    customerAddressImpl.setArchived('Y');
+    CustomerAddressImpl customerAddressImpl2 = new CustomerAddressImpl();
+    customerAddressImpl2.setArchived('Y');
 
     // Act and Assert
-    assertFalse(customerAddressImpl.isActive());
+    assertFalse(customerAddressImpl2.isActive());
   }
 
   /**
@@ -388,16 +203,15 @@ public class CustomerAddressImplDiffblueTest {
    * Method under test: {@link CustomerAddressImpl#isActive()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerAddressImpl.isActive()"})
   public void testIsActive_givenCustomerAddressImpl_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertTrue((new CustomerAddressImpl()).isActive());
   }
 
   /**
-   * Test {@link CustomerAddressImpl#equals(Object)}, and
-   * {@link CustomerAddressImpl#hashCode()}.
+   * Test {@link CustomerAddressImpl#equals(Object)}, and {@link CustomerAddressImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -410,6 +224,8 @@ public class CustomerAddressImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerAddressImpl.equals(Object)", "int CustomerAddressImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     CustomerAddressImpl customerAddressImpl = new CustomerAddressImpl();
@@ -431,8 +247,7 @@ public class CustomerAddressImplDiffblueTest {
   }
 
   /**
-   * Test {@link CustomerAddressImpl#equals(Object)}, and
-   * {@link CustomerAddressImpl#hashCode()}.
+   * Test {@link CustomerAddressImpl#equals(Object)}, and {@link CustomerAddressImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -445,42 +260,9 @@ public class CustomerAddressImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerAddressImpl.equals(Object)", "int CustomerAddressImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
-    // Arrange
-    CustomerAddressImpl customerAddressImpl = new CustomerAddressImpl();
-    customerAddressImpl.setAddress(mock(Address.class));
-    customerAddressImpl.setAddressName("42 Main St");
-    customerAddressImpl.setCustomer(new CustomerImpl());
-    customerAddressImpl.setId(1L);
-
-    CustomerAddressImpl customerAddressImpl2 = new CustomerAddressImpl();
-    customerAddressImpl2.setAddress(new AddressImpl());
-    customerAddressImpl2.setAddressName("42 Main St");
-    customerAddressImpl2.setCustomer(new CustomerImpl());
-    customerAddressImpl2.setId(1L);
-
-    // Act and Assert
-    assertEquals(customerAddressImpl, customerAddressImpl2);
-    int notExpectedHashCodeResult = customerAddressImpl.hashCode();
-    assertNotEquals(notExpectedHashCodeResult, customerAddressImpl2.hashCode());
-  }
-
-  /**
-   * Test {@link CustomerAddressImpl#equals(Object)}, and
-   * {@link CustomerAddressImpl#hashCode()}.
-   * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
-   * </ul>
-   * <p>
-   * Methods under test:
-   * <ul>
-   *   <li>{@link CustomerAddressImpl#equals(Object)}
-   *   <li>{@link CustomerAddressImpl#hashCode()}
-   * </ul>
-   */
-  @Test
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     CustomerAddressImpl customerAddressImpl = new CustomerAddressImpl();
     customerAddressImpl.setAddress(new AddressImpl());
@@ -501,8 +283,7 @@ public class CustomerAddressImplDiffblueTest {
   }
 
   /**
-   * Test {@link CustomerAddressImpl#equals(Object)}, and
-   * {@link CustomerAddressImpl#hashCode()}.
+   * Test {@link CustomerAddressImpl#equals(Object)}, and {@link CustomerAddressImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -515,7 +296,9 @@ public class CustomerAddressImplDiffblueTest {
    * </ul>
    */
   @Test
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerAddressImpl.equals(Object)", "int CustomerAddressImpl.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     CustomerAddressImpl customerAddressImpl = new CustomerAddressImpl();
     customerAddressImpl.setAddress(new AddressImpl());
@@ -536,8 +319,115 @@ public class CustomerAddressImplDiffblueTest {
   }
 
   /**
-   * Test {@link CustomerAddressImpl#equals(Object)}, and
-   * {@link CustomerAddressImpl#hashCode()}.
+   * Test {@link CustomerAddressImpl#equals(Object)}, and {@link CustomerAddressImpl#hashCode()}.
+   * <ul>
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
+   * </ul>
+   * <p>
+   * Methods under test:
+   * <ul>
+   *   <li>{@link CustomerAddressImpl#equals(Object)}
+   *   <li>{@link CustomerAddressImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerAddressImpl.equals(Object)", "int CustomerAddressImpl.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
+    // Arrange
+    CustomerAddressImpl customerAddressImpl = new CustomerAddressImpl();
+    customerAddressImpl.setAddress(null);
+    customerAddressImpl.setAddressName("42 Main St");
+    customerAddressImpl.setCustomer(new CustomerImpl());
+    customerAddressImpl.setId(null);
+
+    CustomerAddressImpl customerAddressImpl2 = new CustomerAddressImpl();
+    customerAddressImpl2.setAddress(null);
+    customerAddressImpl2.setAddressName("42 Main St");
+    customerAddressImpl2.setCustomer(new CustomerImpl());
+    customerAddressImpl2.setId(1L);
+
+    // Act and Assert
+    assertEquals(customerAddressImpl, customerAddressImpl2);
+    int expectedHashCodeResult = customerAddressImpl.hashCode();
+    assertEquals(expectedHashCodeResult, customerAddressImpl2.hashCode());
+  }
+
+  /**
+   * Test {@link CustomerAddressImpl#equals(Object)}, and {@link CustomerAddressImpl#hashCode()}.
+   * <ul>
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
+   * </ul>
+   * <p>
+   * Methods under test:
+   * <ul>
+   *   <li>{@link CustomerAddressImpl#equals(Object)}
+   *   <li>{@link CustomerAddressImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerAddressImpl.equals(Object)", "int CustomerAddressImpl.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual5() {
+    // Arrange
+    CustomerAddressImpl customerAddressImpl = new CustomerAddressImpl();
+    customerAddressImpl.setAddress(new AddressImpl());
+    customerAddressImpl.setAddressName(null);
+    customerAddressImpl.setCustomer(new CustomerImpl());
+    customerAddressImpl.setId(null);
+
+    CustomerAddressImpl customerAddressImpl2 = new CustomerAddressImpl();
+    customerAddressImpl2.setAddress(new AddressImpl());
+    customerAddressImpl2.setAddressName(null);
+    customerAddressImpl2.setCustomer(new CustomerImpl());
+    customerAddressImpl2.setId(1L);
+
+    // Act and Assert
+    assertEquals(customerAddressImpl, customerAddressImpl2);
+    int expectedHashCodeResult = customerAddressImpl.hashCode();
+    assertEquals(expectedHashCodeResult, customerAddressImpl2.hashCode());
+  }
+
+  /**
+   * Test {@link CustomerAddressImpl#equals(Object)}, and {@link CustomerAddressImpl#hashCode()}.
+   * <ul>
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
+   * </ul>
+   * <p>
+   * Methods under test:
+   * <ul>
+   *   <li>{@link CustomerAddressImpl#equals(Object)}
+   *   <li>{@link CustomerAddressImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerAddressImpl.equals(Object)", "int CustomerAddressImpl.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual6() {
+    // Arrange
+    CustomerAddressImpl customerAddressImpl = new CustomerAddressImpl();
+    customerAddressImpl.setAddress(new AddressImpl());
+    customerAddressImpl.setAddressName("42 Main St");
+    customerAddressImpl.setCustomer(null);
+    customerAddressImpl.setId(null);
+
+    CustomerAddressImpl customerAddressImpl2 = new CustomerAddressImpl();
+    customerAddressImpl2.setAddress(new AddressImpl());
+    customerAddressImpl2.setAddressName("42 Main St");
+    customerAddressImpl2.setCustomer(null);
+    customerAddressImpl2.setId(1L);
+
+    // Act and Assert
+    assertEquals(customerAddressImpl, customerAddressImpl2);
+    int expectedHashCodeResult = customerAddressImpl.hashCode();
+    assertEquals(expectedHashCodeResult, customerAddressImpl2.hashCode());
+  }
+
+  /**
+   * Test {@link CustomerAddressImpl#equals(Object)}, and {@link CustomerAddressImpl#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -550,6 +440,8 @@ public class CustomerAddressImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerAddressImpl.equals(Object)", "int CustomerAddressImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     CustomerAddressImpl customerAddressImpl = new CustomerAddressImpl();
@@ -574,6 +466,8 @@ public class CustomerAddressImplDiffblueTest {
    * Method under test: {@link CustomerAddressImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerAddressImpl.equals(Object)", "int CustomerAddressImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     CustomerAddressImpl customerAddressImpl = new CustomerAddressImpl();
@@ -602,35 +496,9 @@ public class CustomerAddressImplDiffblueTest {
    * Method under test: {@link CustomerAddressImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerAddressImpl.equals(Object)", "int CustomerAddressImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
-    // Arrange
-    CustomerAddressImpl customerAddressImpl = new CustomerAddressImpl();
-    customerAddressImpl.setAddress(mock(Address.class));
-    customerAddressImpl.setAddressName("42 Main St");
-    customerAddressImpl.setCustomer(new CustomerImpl());
-    customerAddressImpl.setId(null);
-
-    CustomerAddressImpl customerAddressImpl2 = new CustomerAddressImpl();
-    customerAddressImpl2.setAddress(new AddressImpl());
-    customerAddressImpl2.setAddressName("42 Main St");
-    customerAddressImpl2.setCustomer(new CustomerImpl());
-    customerAddressImpl2.setId(1L);
-
-    // Act and Assert
-    assertNotEquals(customerAddressImpl, customerAddressImpl2);
-  }
-
-  /**
-   * Test {@link CustomerAddressImpl#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CustomerAddressImpl#equals(Object)}
-   */
-  @Test
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     CustomerAddressImpl customerAddressImpl = new CustomerAddressImpl();
     customerAddressImpl.setAddress(null);
@@ -658,6 +526,38 @@ public class CustomerAddressImplDiffblueTest {
    * Method under test: {@link CustomerAddressImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerAddressImpl.equals(Object)", "int CustomerAddressImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
+    // Arrange
+    CustomerAddressImpl customerAddressImpl = new CustomerAddressImpl();
+    customerAddressImpl.setAddress(mock(AddressImpl.class));
+    customerAddressImpl.setAddressName("42 Main St");
+    customerAddressImpl.setCustomer(new CustomerImpl());
+    customerAddressImpl.setId(null);
+
+    CustomerAddressImpl customerAddressImpl2 = new CustomerAddressImpl();
+    customerAddressImpl2.setAddress(new AddressImpl());
+    customerAddressImpl2.setAddressName("42 Main St");
+    customerAddressImpl2.setCustomer(new CustomerImpl());
+    customerAddressImpl2.setId(1L);
+
+    // Act and Assert
+    assertNotEquals(customerAddressImpl, customerAddressImpl2);
+  }
+
+  /**
+   * Test {@link CustomerAddressImpl#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CustomerAddressImpl#equals(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerAddressImpl.equals(Object)", "int CustomerAddressImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     CustomerAddressImpl customerAddressImpl = new CustomerAddressImpl();
@@ -686,6 +586,8 @@ public class CustomerAddressImplDiffblueTest {
    * Method under test: {@link CustomerAddressImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerAddressImpl.equals(Object)", "int CustomerAddressImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
     CustomerAddressImpl customerAddressImpl = new CustomerAddressImpl();
@@ -714,6 +616,8 @@ public class CustomerAddressImplDiffblueTest {
    * Method under test: {@link CustomerAddressImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerAddressImpl.equals(Object)", "int CustomerAddressImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
     CustomerAddressImpl customerAddressImpl = new CustomerAddressImpl();
@@ -742,6 +646,8 @@ public class CustomerAddressImplDiffblueTest {
    * Method under test: {@link CustomerAddressImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerAddressImpl.equals(Object)", "int CustomerAddressImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
     // Arrange
     CustomerAddressImpl customerAddressImpl = new CustomerAddressImpl();
@@ -770,6 +676,8 @@ public class CustomerAddressImplDiffblueTest {
    * Method under test: {@link CustomerAddressImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerAddressImpl.equals(Object)", "int CustomerAddressImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     CustomerAddressImpl customerAddressImpl = new CustomerAddressImpl();
@@ -792,6 +700,8 @@ public class CustomerAddressImplDiffblueTest {
    * Method under test: {@link CustomerAddressImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerAddressImpl.equals(Object)", "int CustomerAddressImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     CustomerAddressImpl customerAddressImpl = new CustomerAddressImpl();
@@ -805,25 +715,23 @@ public class CustomerAddressImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomerAddressImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * Test {@link CustomerAddressImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <p>
-   * Method under test:
-   * {@link CustomerAddressImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link CustomerAddressImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse CustomerAddressImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CustomerAddressImpl customerAddressImpl = new CustomerAddressImpl();
+    CustomerAddressImpl customerAddressImpl2 = new CustomerAddressImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
     CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
 
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<CustomerAddress> actualCreateOrRetrieveCopyInstanceResult = customerAddressImpl
+    CreateResponse<CustomerAddress> actualCreateOrRetrieveCopyInstanceResult = customerAddressImpl2
         .createOrRetrieveCopyInstance(context);
 
     // Assert
@@ -832,55 +740,14 @@ public class CustomerAddressImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomerAddressImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <p>
-   * Method under test:
-   * {@link CustomerAddressImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3343 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.domain.CustomerAddressImpl customerAddressImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CustomerAddressImpl customerAddressImpl2 = new CustomerAddressImpl();
-    CatalogImpl fromCatalog = new CatalogImpl();
-    CatalogImpl toCatalog = new CatalogImpl();
-    SiteImpl fromSite = new SiteImpl();
-    SiteImpl toSite = new SiteImpl();
-    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
-
-    // Act
-    customerAddressImpl2.createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite,
-        toSite, genericEntityService, new MultiTenantCopierExtensionManager()));
-  }
-
-  /**
    * Test new {@link CustomerAddressImpl} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link CustomerAddressImpl}
+   * Method under test: default or parameterless constructor of {@link CustomerAddressImpl}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CustomerAddressImpl.<init>()"})
   public void testNewCustomerAddressImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange and Act
     CustomerAddressImpl actualCustomerAddressImpl = new CustomerAddressImpl();
 
@@ -891,35 +758,5 @@ public class CustomerAddressImplDiffblueTest {
     assertNull(actualCustomerAddressImpl.getAddressName());
     assertNull(actualCustomerAddressImpl.getAddress());
     assertNull(actualCustomerAddressImpl.getCustomer());
-  }
-
-  /**
-   * Test new {@link CustomerAddressImpl} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link CustomerAddressImpl}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testNewCustomerAddressImpl2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3342 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.domain.CustomerAddressImpl customerAddressImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    new CustomerAddressImpl();
   }
 }

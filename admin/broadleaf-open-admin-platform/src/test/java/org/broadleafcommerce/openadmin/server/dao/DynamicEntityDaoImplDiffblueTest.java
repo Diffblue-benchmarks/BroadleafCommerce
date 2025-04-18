@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.server.dao;
 
 import static org.junit.Assert.assertEquals;
@@ -9,12 +26,15 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.anyBoolean;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -23,7 +43,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiFunction;
 import javax.persistence.EntityManager;
 import org.broadleafcommerce.common.persistence.EntityConfiguration;
 import org.broadleafcommerce.common.presentation.client.PersistencePerspectiveItemType;
@@ -38,351 +57,53 @@ import org.broadleafcommerce.openadmin.dto.ClassTree;
 import org.broadleafcommerce.openadmin.dto.FieldMetadata;
 import org.broadleafcommerce.openadmin.dto.ForeignKey;
 import org.broadleafcommerce.openadmin.dto.MergedPropertyType;
+import org.broadleafcommerce.openadmin.dto.OperationTypes;
 import org.broadleafcommerce.openadmin.dto.PersistencePerspective;
 import org.broadleafcommerce.openadmin.dto.PersistencePerspectiveItem;
+import org.broadleafcommerce.openadmin.dto.TabMetadata;
 import org.broadleafcommerce.openadmin.server.dao.provider.metadata.AdornedTargetCollectionFieldMetadataProvider;
 import org.broadleafcommerce.openadmin.server.dao.provider.metadata.FieldMetadataProvider;
+import org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.AddMetadataFromFieldTypeRequest;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.FieldManager;
-import org.hibernate.engine.spi.SessionDelegatorBaseImpl;
+import org.broadleafcommerce.openadmin.server.service.type.MetadataProviderResponse;
 import org.hibernate.mapping.Property;
 import org.hibernate.type.BigDecimalType;
 import org.hibernate.type.Type;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.FactoryBeanNotInitializedException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.reactive.context.AnnotationConfigReactiveWebApplicationContext;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationEvent;
-import org.springframework.context.ApplicationListener;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
-    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
-    "/bl-open-admin-contentCreator-applicationContext.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class DynamicEntityDaoImplDiffblueTest {
-  @Autowired
+  @InjectMocks
   private DynamicEntityDaoImpl dynamicEntityDaoImpl;
 
-  /**
-   * Test {@link DynamicEntityDaoImpl#createCriteria(Class)}.
-   * <p>
-   * Method under test: {@link DynamicEntityDaoImpl#createCriteria(Class)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateCriteria() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3294 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Mock
+  private EntityConfiguration entityConfiguration;
 
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
-    Class<Object> entityClass = Object.class;
+  @Mock
+  private FieldMetadataProvider fieldMetadataProvider;
 
-    // Act
-    dynamicEntityDaoImpl2.createCriteria(entityClass);
-  }
+  @Mock
+  private List<FieldMetadataProvider> list;
 
-  /**
-   * Test {@link DynamicEntityDaoImpl#persist(Object)}.
-   * <p>
-   * Method under test: {@link DynamicEntityDaoImpl#persist(Object)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testPersist() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass11783 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Mock
+  private Map<String, String> map;
 
-    // Arrange and Act
-    (new DynamicEntityDaoImpl()).persist("Entity");
-  }
-
-  /**
-   * Test {@link DynamicEntityDaoImpl#find(Class, Object)}.
-   * <p>
-   * Method under test: {@link DynamicEntityDaoImpl#find(Class, Object)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFind() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4040 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
-    Class<Object> entityClass = Object.class;
-
-    // Act
-    dynamicEntityDaoImpl2.find(entityClass, "Key");
-  }
-
-  /**
-   * Test {@link DynamicEntityDaoImpl#merge(Object)}.
-   * <p>
-   * Method under test: {@link DynamicEntityDaoImpl#merge(Object)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testMerge() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass11694 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new DynamicEntityDaoImpl()).merge("Entity");
-  }
-
-  /**
-   * Test {@link DynamicEntityDaoImpl#flush()}.
-   * <p>
-   * Method under test: {@link DynamicEntityDaoImpl#flush()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFlush() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4430 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new DynamicEntityDaoImpl()).flush();
-  }
-
-  /**
-   * Test {@link DynamicEntityDaoImpl#detach(Serializable)}.
-   * <p>
-   * Method under test: {@link DynamicEntityDaoImpl#detach(Serializable)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testDetach() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3622 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
-
-    // Act
-    dynamicEntityDaoImpl2.detach(new SimpleDateFormat("yyyy/mm/dd"));
-  }
-
-  /**
-   * Test {@link DynamicEntityDaoImpl#refresh(Serializable)}.
-   * <p>
-   * Method under test: {@link DynamicEntityDaoImpl#refresh(Serializable)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testRefresh() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass11951 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
-
-    // Act
-    dynamicEntityDaoImpl2.refresh(new SimpleDateFormat("yyyy/mm/dd"));
-  }
-
-  /**
-   * Test {@link DynamicEntityDaoImpl#retrieve(Class, Object)}.
-   * <p>
-   * Method under test: {@link DynamicEntityDaoImpl#retrieve(Class, Object)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testRetrieve() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass12229 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
-    Class<Object> entityClass = Object.class;
-
-    // Act
-    dynamicEntityDaoImpl2.retrieve(entityClass, "Primary Key");
-  }
-
-  /**
-   * Test {@link DynamicEntityDaoImpl#remove(Serializable)}.
-   * <p>
-   * Method under test: {@link DynamicEntityDaoImpl#remove(Serializable)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testRemove() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass12138 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
-
-    // Act
-    dynamicEntityDaoImpl2.remove(new SimpleDateFormat("yyyy/mm/dd"));
-  }
-
-  /**
-   * Test {@link DynamicEntityDaoImpl#clear()}.
-   * <p>
-   * Method under test: {@link DynamicEntityDaoImpl#clear()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testClear() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2957 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new DynamicEntityDaoImpl()).clear();
-  }
+  @Mock
+  private Metadata metadata;
 
   /**
    * Test {@link DynamicEntityDaoImpl#getPersistentClass(String)}.
@@ -390,40 +111,11 @@ public class DynamicEntityDaoImplDiffblueTest {
    * Method under test: {@link DynamicEntityDaoImpl#getPersistentClass(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"org.hibernate.mapping.PersistentClass DynamicEntityDaoImpl.getPersistentClass(String)"})
   public void testGetPersistentClass() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertNull((new DynamicEntityDaoImpl()).getPersistentClass("Target Class Name"));
-  }
-
-  /**
-   * Test {@link DynamicEntityDaoImpl#getPersistentClass(String)}.
-   * <p>
-   * Method under test: {@link DynamicEntityDaoImpl#getPersistentClass(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetPersistentClass2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass8695 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new DynamicEntityDaoImpl()).getPersistentClass("Target Class Name");
+    assertNull(dynamicEntityDaoImpl.getPersistentClass("Target Class Name"));
   }
 
   /**
@@ -432,91 +124,23 @@ public class DynamicEntityDaoImplDiffblueTest {
    * Method under test: {@link DynamicEntityDaoImpl#useCache()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean DynamicEntityDaoImpl.useCache()"})
   public void testUseCache() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertFalse((new DynamicEntityDaoImpl()).useCache());
+    assertFalse(dynamicEntityDaoImpl.useCache());
   }
 
   /**
-   * Test {@link DynamicEntityDaoImpl#useCache()}.
+   * Test {@link DynamicEntityDaoImpl#getAllPolymorphicEntitiesFromCeiling(Class, boolean)} with {@code ceilingClass}, {@code includeUnqualifiedPolymorphicEntities}.
    * <p>
-   * Method under test: {@link DynamicEntityDaoImpl#useCache()}
+   * Method under test: {@link DynamicEntityDaoImpl#getAllPolymorphicEntitiesFromCeiling(Class, boolean)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testUseCache2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass13945 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new DynamicEntityDaoImpl()).useCache();
-  }
-
-  /**
-   * Test {@link DynamicEntityDaoImpl#getAllPolymorphicEntitiesFromCeiling(Class)}
-   * with {@code ceilingClass}.
-   * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#getAllPolymorphicEntitiesFromCeiling(Class)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetAllPolymorphicEntitiesFromCeilingWithCeilingClass() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4766 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
-    Class<Object> ceilingClass = Object.class;
-
-    // Act
-    dynamicEntityDaoImpl2.getAllPolymorphicEntitiesFromCeiling(ceilingClass);
-  }
-
-  /**
-   * Test
-   * {@link DynamicEntityDaoImpl#getAllPolymorphicEntitiesFromCeiling(Class, boolean)}
-   * with {@code ceilingClass}, {@code includeUnqualifiedPolymorphicEntities}.
-   * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#getAllPolymorphicEntitiesFromCeiling(Class, boolean)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class[] DynamicEntityDaoImpl.getAllPolymorphicEntitiesFromCeiling(Class, boolean)"})
   public void testGetAllPolymorphicEntitiesFromCeilingWithCeilingClassIncludeUnqualifiedPolymorphicEntities() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
     Class<Object> ceilingClass = Object.class;
 
     // Act and Assert
@@ -524,19 +148,15 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#getAllPolymorphicEntitiesFromCeiling(Class, boolean)}
-   * with {@code ceilingClass}, {@code includeUnqualifiedPolymorphicEntities}.
+   * Test {@link DynamicEntityDaoImpl#getAllPolymorphicEntitiesFromCeiling(Class, boolean)} with {@code ceilingClass}, {@code includeUnqualifiedPolymorphicEntities}.
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#getAllPolymorphicEntitiesFromCeiling(Class, boolean)}
+   * Method under test: {@link DynamicEntityDaoImpl#getAllPolymorphicEntitiesFromCeiling(Class, boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class[] DynamicEntityDaoImpl.getAllPolymorphicEntitiesFromCeiling(Class, boolean)"})
   public void testGetAllPolymorphicEntitiesFromCeilingWithCeilingClassIncludeUnqualifiedPolymorphicEntities2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
     Class<Object> ceilingClass = Object.class;
 
     // Act and Assert
@@ -544,126 +164,34 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#getAllPolymorphicEntitiesFromCeiling(Class, boolean)}
-   * with {@code ceilingClass}, {@code includeUnqualifiedPolymorphicEntities}.
+   * Test {@link DynamicEntityDaoImpl#getAllPolymorphicEntitiesFromCeiling(Class, boolean)} with {@code ceilingClass}, {@code includeUnqualifiedPolymorphicEntities}.
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#getAllPolymorphicEntitiesFromCeiling(Class, boolean)}
+   * Method under test: {@link DynamicEntityDaoImpl#getAllPolymorphicEntitiesFromCeiling(Class, boolean)}
    */
   @Test
-  public void testGetAllPolymorphicEntitiesFromCeilingWithCeilingClassIncludeUnqualifiedPolymorphicEntities3()
-      throws BeansException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class[] DynamicEntityDaoImpl.getAllPolymorphicEntitiesFromCeiling(Class, boolean)"})
+  public void testGetAllPolymorphicEntitiesFromCeilingWithCeilingClassIncludeUnqualifiedPolymorphicEntities3() {
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-    dynamicEntityDaoImpl.setApplicationContext(new AnnotationConfigReactiveWebApplicationContext());
-    Class<Object> ceilingClass = Object.class;
+    Class<Boolean> ceilingClass = Boolean.class;
 
     // Act and Assert
     assertEquals(0, dynamicEntityDaoImpl.getAllPolymorphicEntitiesFromCeiling(ceilingClass, true).length);
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#getAllPolymorphicEntitiesFromCeiling(Class, boolean)}
-   * with {@code ceilingClass}, {@code includeUnqualifiedPolymorphicEntities}.
-   * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#getAllPolymorphicEntitiesFromCeiling(Class, boolean)}
-   */
-  @Test
-  public void testGetAllPolymorphicEntitiesFromCeilingWithCeilingClassIncludeUnqualifiedPolymorphicEntities4()
-      throws BeansException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AnnotationConfigReactiveWebApplicationContext applicationContext = new AnnotationConfigReactiveWebApplicationContext();
-    applicationContext.addApplicationListener(mock(ApplicationListener.class));
-
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-    dynamicEntityDaoImpl.setApplicationContext(applicationContext);
-    Class<Object> ceilingClass = Object.class;
-
-    // Act and Assert
-    assertEquals(0, dynamicEntityDaoImpl.getAllPolymorphicEntitiesFromCeiling(ceilingClass, true).length);
-  }
-
-  /**
-   * Test
-   * {@link DynamicEntityDaoImpl#getAllPolymorphicEntitiesFromCeiling(Class, boolean)}
-   * with {@code ceilingClass}, {@code includeUnqualifiedPolymorphicEntities}.
-   * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#getAllPolymorphicEntitiesFromCeiling(Class, boolean)}
-   */
-  @Test
-  public void testGetAllPolymorphicEntitiesFromCeilingWithCeilingClassIncludeUnqualifiedPolymorphicEntities5()
-      throws BeansException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-    dynamicEntityDaoImpl.setApplicationContext(new AnnotationConfigReactiveWebApplicationContext());
-    Class<Object> ceilingClass = Object.class;
-
-    // Act and Assert
-    assertEquals(0, dynamicEntityDaoImpl.getAllPolymorphicEntitiesFromCeiling(ceilingClass, false).length);
-  }
-
-  /**
-   * Test
-   * {@link DynamicEntityDaoImpl#getAllPolymorphicEntitiesFromCeiling(Class, boolean)}
-   * with {@code ceilingClass}, {@code includeUnqualifiedPolymorphicEntities}.
-   * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#getAllPolymorphicEntitiesFromCeiling(Class, boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetAllPolymorphicEntitiesFromCeilingWithCeilingClassIncludeUnqualifiedPolymorphicEntities6() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5094 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
-    Class<Object> ceilingClass = Object.class;
-
-    // Act
-    dynamicEntityDaoImpl2.getAllPolymorphicEntitiesFromCeiling(ceilingClass, true);
-  }
-
-  /**
-   * Test {@link DynamicEntityDaoImpl#getAllPolymorphicEntitiesFromCeiling(Class)}
-   * with {@code ceilingClass}.
+   * Test {@link DynamicEntityDaoImpl#getAllPolymorphicEntitiesFromCeiling(Class)} with {@code ceilingClass}.
    * <ul>
-   *   <li>When {@code java.lang.Boolean}.</li>
+   *   <li>When {@code Boolean}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#getAllPolymorphicEntitiesFromCeiling(Class)}
+   * Method under test: {@link DynamicEntityDaoImpl#getAllPolymorphicEntitiesFromCeiling(Class)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class[] DynamicEntityDaoImpl.getAllPolymorphicEntitiesFromCeiling(Class)"})
   public void testGetAllPolymorphicEntitiesFromCeilingWithCeilingClass_whenJavaLangBoolean() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
     Class<Boolean> ceilingClass = Boolean.class;
 
     // Act and Assert
@@ -671,97 +199,22 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
-   * Test {@link DynamicEntityDaoImpl#getAllPolymorphicEntitiesFromCeiling(Class)}
-   * with {@code ceilingClass}.
+   * Test {@link DynamicEntityDaoImpl#getAllPolymorphicEntitiesFromCeiling(Class)} with {@code ceilingClass}.
    * <ul>
-   *   <li>When {@code java.lang.Object}.</li>
+   *   <li>When {@code Object}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#getAllPolymorphicEntitiesFromCeiling(Class)}
+   * Method under test: {@link DynamicEntityDaoImpl#getAllPolymorphicEntitiesFromCeiling(Class)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class[] DynamicEntityDaoImpl.getAllPolymorphicEntitiesFromCeiling(Class)"})
   public void testGetAllPolymorphicEntitiesFromCeilingWithCeilingClass_whenJavaLangObject() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
     Class<Object> ceilingClass = Object.class;
 
     // Act and Assert
     assertEquals(0, dynamicEntityDaoImpl.getAllPolymorphicEntitiesFromCeiling(ceilingClass).length);
-  }
-
-  /**
-   * Test {@link DynamicEntityDaoImpl#getUpDownInheritance(Class)}.
-   * <p>
-   * Method under test: {@link DynamicEntityDaoImpl#getUpDownInheritance(Class)}
-   */
-  @Test
-  public void testGetUpDownInheritance() throws BeansException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-    dynamicEntityDaoImpl.setApplicationContext(new AnnotationConfigReactiveWebApplicationContext());
-    Class<Object> testClass = Object.class;
-
-    // Act and Assert
-    assertEquals(0, dynamicEntityDaoImpl.getUpDownInheritance(testClass).length);
-  }
-
-  /**
-   * Test {@link DynamicEntityDaoImpl#getUpDownInheritance(Class)}.
-   * <p>
-   * Method under test: {@link DynamicEntityDaoImpl#getUpDownInheritance(Class)}
-   */
-  @Test
-  public void testGetUpDownInheritance2() throws BeansException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AnnotationConfigReactiveWebApplicationContext applicationContext = new AnnotationConfigReactiveWebApplicationContext();
-    applicationContext.addApplicationListener(mock(ApplicationListener.class));
-
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-    dynamicEntityDaoImpl.setApplicationContext(applicationContext);
-    Class<Object> testClass = Object.class;
-
-    // Act and Assert
-    assertEquals(0, dynamicEntityDaoImpl.getUpDownInheritance(testClass).length);
-  }
-
-  /**
-   * Test {@link DynamicEntityDaoImpl#getUpDownInheritance(Class)}.
-   * <p>
-   * Method under test: {@link DynamicEntityDaoImpl#getUpDownInheritance(Class)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetUpDownInheritance3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass10983 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
-    Class<Object> testClass = Object.class;
-
-    // Act
-    dynamicEntityDaoImpl2.getUpDownInheritance(testClass);
   }
 
   /**
@@ -774,9 +227,9 @@ public class DynamicEntityDaoImplDiffblueTest {
    * Method under test: {@link DynamicEntityDaoImpl#getUpDownInheritance(Class)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class[] DynamicEntityDaoImpl.getUpDownInheritance(Class)"})
   public void testGetUpDownInheritance_givenDynamicEntityDaoImpl_thenReturnArrayLengthIsZero() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
     Class<Object> testClass = Object.class;
@@ -786,54 +239,72 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
-   * Test {@link DynamicEntityDaoImpl#getImplClass(String)}.
+   * Test {@link DynamicEntityDaoImpl#getUpDownInheritance(Class)}.
+   * <ul>
+   *   <li>Given {@link FieldMetadataProvider}.</li>
+   *   <li>Then return array length is zero.</li>
+   * </ul>
    * <p>
-   * Method under test: {@link DynamicEntityDaoImpl#getImplClass(String)}
+   * Method under test: {@link DynamicEntityDaoImpl#getUpDownInheritance(Class)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetImplClass() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass7432 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class[] DynamicEntityDaoImpl.getUpDownInheritance(Class)"})
+  public void testGetUpDownInheritance_givenFieldMetadataProvider_thenReturnArrayLengthIsZero() {
+    // Arrange
+    Class<Object> testClass = Object.class;
 
-    // Arrange and Act
-    (new DynamicEntityDaoImpl()).getImplClass("Class Name");
+    // Act and Assert
+    assertEquals(0, dynamicEntityDaoImpl.getUpDownInheritance(testClass).length);
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#getUpDownInheritance(Class)}.
+   * <ul>
+   *   <li>Given {@code Object}.</li>
+   *   <li>Then return array length is one.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#getUpDownInheritance(Class)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class[] DynamicEntityDaoImpl.getUpDownInheritance(Class)"})
+  public void testGetUpDownInheritance_givenJavaLangObject_thenReturnArrayLengthIsOne() {
+    // Arrange
+    DynamicDaoHelperImpl dynamicDaoHelper = mock(DynamicDaoHelperImpl.class);
+    Class<Object> forNameResult = Object.class;
+    Mockito
+        .<Class<?>[]>when(
+            dynamicDaoHelper.getUpDownInheritance(Mockito.<Class<Object>>any(), anyBoolean(), anyBoolean()))
+        .thenReturn(new Class[]{forNameResult});
+
+    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
+    dynamicEntityDaoImpl.setDynamicDaoHelper(dynamicDaoHelper);
+    Class<Object> testClass = Object.class;
+
+    // Act
+    Class<?>[] actualUpDownInheritance = dynamicEntityDaoImpl.getUpDownInheritance(testClass);
+
+    // Assert
+    verify(dynamicDaoHelper).getUpDownInheritance(isA(Class.class), eq(true), eq(false));
+    assertEquals(1, actualUpDownInheritance.length);
+    Class<Object> expectedResultClass = Object.class;
+    assertEquals(expectedResultClass, actualUpDownInheritance[0]);
   }
 
   /**
    * Test {@link DynamicEntityDaoImpl#getImplClass(String)}.
-   * <ul>
-   *   <li>Given {@link EntityConfiguration}
-   * {@link EntityConfiguration#lookupEntityClass(String)} return
-   * {@code null}.</li>
-   * </ul>
    * <p>
    * Method under test: {@link DynamicEntityDaoImpl#getImplClass(String)}
    */
   @Test
-  public void testGetImplClass_givenEntityConfigurationLookupEntityClassReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class DynamicEntityDaoImpl.getImplClass(String)"})
+  public void testGetImplClass() {
     // Arrange
-    EntityConfiguration entityConfiguration = mock(EntityConfiguration.class);
-    Mockito.<Class<?>>when(entityConfiguration.lookupEntityClass(Mockito.<String>any())).thenReturn(null);
-
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-    dynamicEntityDaoImpl.setEntityConfiguration(entityConfiguration);
+    Mockito.<Class<?>>when(entityConfiguration.lookupEntityClass(Mockito.<String>any()))
+        .thenThrow(new RuntimeException("foo"));
 
     // Act and Assert
     assertThrows(RuntimeException.class, () -> dynamicEntityDaoImpl.getImplClass("Class Name"));
@@ -843,7 +314,27 @@ public class DynamicEntityDaoImplDiffblueTest {
   /**
    * Test {@link DynamicEntityDaoImpl#getImplClass(String)}.
    * <ul>
-   *   <li>Given {@code java.lang.Object}.</li>
+   *   <li>Given Bean Name{blEntityConfiguration} {@link EntityConfiguration#lookupEntityClass(String)} return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#getImplClass(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class DynamicEntityDaoImpl.getImplClass(String)"})
+  public void testGetImplClass_givenBeanNameBlEntityConfigurationLookupEntityClassReturnNull() {
+    // Arrange
+    Mockito.<Class<?>>when(entityConfiguration.lookupEntityClass(Mockito.<String>any())).thenReturn(null);
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> dynamicEntityDaoImpl.getImplClass("Class Name"));
+    verify(entityConfiguration).lookupEntityClass(eq("Class Name"));
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#getImplClass(String)}.
+   * <ul>
+   *   <li>Given {@code Object}.</li>
    *   <li>When {@code Class Name}.</li>
    *   <li>Then return {@link Object}.</li>
    * </ul>
@@ -851,16 +342,12 @@ public class DynamicEntityDaoImplDiffblueTest {
    * Method under test: {@link DynamicEntityDaoImpl#getImplClass(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class DynamicEntityDaoImpl.getImplClass(String)"})
   public void testGetImplClass_givenJavaLangObject_whenClassName_thenReturnObject() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    EntityConfiguration entityConfiguration = mock(EntityConfiguration.class);
     Class<Object> forNameResult = Object.class;
     Mockito.<Class<?>>when(entityConfiguration.lookupEntityClass(Mockito.<String>any())).thenReturn(forNameResult);
-
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-    dynamicEntityDaoImpl.setEntityConfiguration(entityConfiguration);
 
     // Act
     Class<?> actualImplClass = dynamicEntityDaoImpl.getImplClass("Class Name");
@@ -880,16 +367,12 @@ public class DynamicEntityDaoImplDiffblueTest {
    * Method under test: {@link DynamicEntityDaoImpl#getImplClass(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class DynamicEntityDaoImpl.getImplClass(String)"})
   public void testGetImplClass_thenThrowRuntimeException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    EntityConfiguration entityConfiguration = mock(EntityConfiguration.class);
     Mockito.<Class<?>>when(entityConfiguration.lookupEntityClass(Mockito.<String>any()))
         .thenThrow(new NoSuchBeanDefinitionException("Name"));
-
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-    dynamicEntityDaoImpl.setEntityConfiguration(entityConfiguration);
 
     // Act and Assert
     assertThrows(RuntimeException.class, () -> dynamicEntityDaoImpl.getImplClass("Class Name"));
@@ -899,23 +382,19 @@ public class DynamicEntityDaoImplDiffblueTest {
   /**
    * Test {@link DynamicEntityDaoImpl#getImplClass(String)}.
    * <ul>
-   *   <li>When {@code java.lang.Boolean}.</li>
+   *   <li>When {@code Boolean}.</li>
    *   <li>Then return {@link Boolean}.</li>
    * </ul>
    * <p>
    * Method under test: {@link DynamicEntityDaoImpl#getImplClass(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class DynamicEntityDaoImpl.getImplClass(String)"})
   public void testGetImplClass_whenJavaLangBoolean_thenReturnBoolean() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    EntityConfiguration entityConfiguration = mock(EntityConfiguration.class);
     Mockito.<Class<?>>when(entityConfiguration.lookupEntityClass(Mockito.<String>any()))
         .thenThrow(new NoSuchBeanDefinitionException("Name"));
-
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-    dynamicEntityDaoImpl.setEntityConfiguration(entityConfiguration);
 
     // Act
     Class<?> actualImplClass = dynamicEntityDaoImpl.getImplClass("java.lang.Boolean");
@@ -928,35 +407,6 @@ public class DynamicEntityDaoImplDiffblueTest {
 
   /**
    * Test {@link DynamicEntityDaoImpl#getCeilingImplClass(String)}.
-   * <p>
-   * Method under test: {@link DynamicEntityDaoImpl#getCeilingImplClass(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetCeilingImplClass() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5736 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new DynamicEntityDaoImpl()).getCeilingImplClass("Class Name");
-  }
-
-  /**
-   * Test {@link DynamicEntityDaoImpl#getCeilingImplClass(String)}.
    * <ul>
    *   <li>When {@code Class Name}.</li>
    *   <li>Then throw {@link RuntimeException}.</li>
@@ -965,188 +415,118 @@ public class DynamicEntityDaoImplDiffblueTest {
    * Method under test: {@link DynamicEntityDaoImpl#getCeilingImplClass(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class DynamicEntityDaoImpl.getCeilingImplClass(String)"})
   public void testGetCeilingImplClass_whenClassName_thenThrowRuntimeException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertThrows(RuntimeException.class, () -> (new DynamicEntityDaoImpl()).getCeilingImplClass("Class Name"));
+    assertThrows(RuntimeException.class, () -> dynamicEntityDaoImpl.getCeilingImplClass("Class Name"));
   }
 
   /**
    * Test {@link DynamicEntityDaoImpl#getCeilingImplClass(String)}.
    * <ul>
-   *   <li>When {@code java.lang.Boolean}.</li>
+   *   <li>When {@code Boolean}.</li>
    *   <li>Then throw {@link IllegalArgumentException}.</li>
    * </ul>
    * <p>
    * Method under test: {@link DynamicEntityDaoImpl#getCeilingImplClass(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class DynamicEntityDaoImpl.getCeilingImplClass(String)"})
   public void testGetCeilingImplClass_whenJavaLangBoolean_thenThrowIllegalArgumentException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertThrows(IllegalArgumentException.class,
-        () -> (new DynamicEntityDaoImpl()).getCeilingImplClass("java.lang.Boolean"));
+    assertThrows(IllegalArgumentException.class, () -> dynamicEntityDaoImpl.getCeilingImplClass("java.lang.Boolean"));
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#readOtherEntitiesWithPropertyValue(Serializable, String, String)}.
+   * Test {@link DynamicEntityDaoImpl#getIdentifier(Object)}.
+   * <ul>
+   *   <li>Given {@link FieldMetadataProvider}.</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#readOtherEntitiesWithPropertyValue(Serializable, String, String)}
+   * Method under test: {@link DynamicEntityDaoImpl#getIdentifier(Object)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testReadOtherEntitiesWithPropertyValue() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass11822 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Serializable DynamicEntityDaoImpl.getIdentifier(Object)"})
+  public void testGetIdentifier_givenFieldMetadataProvider_thenReturnNull() {
+    // Arrange, Act and Assert
+    assertNull(dynamicEntityDaoImpl.getIdentifier("Entity"));
+  }
 
+  /**
+   * Test {@link DynamicEntityDaoImpl#getIdentifier(Object)}.
+   * <ul>
+   *   <li>Then return {@link SimpleDateFormat#SimpleDateFormat(String)} with {@code yyyy/mm/dd}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#getIdentifier(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Serializable DynamicEntityDaoImpl.getIdentifier(Object)"})
+  public void testGetIdentifier_thenReturnSimpleDateFormatWithYyyyMmDd() {
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    DynamicDaoHelperImpl dynamicDaoHelper = mock(DynamicDaoHelperImpl.class);
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/mm/dd");
+    when(dynamicDaoHelper.getIdentifier(Mockito.<Object>any())).thenReturn(simpleDateFormat);
+
+    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
+    dynamicEntityDaoImpl.setDynamicDaoHelper(dynamicDaoHelper);
 
     // Act
-    dynamicEntityDaoImpl2.readOtherEntitiesWithPropertyValue(new SimpleDateFormat("yyyy/mm/dd"), "Property Name", "42");
-  }
+    Serializable actualIdentifier = dynamicEntityDaoImpl.getIdentifier("Entity");
 
-  /**
-   * Test {@link DynamicEntityDaoImpl#getIdentifier(Object)}.
-   * <p>
-   * Method under test: {@link DynamicEntityDaoImpl#getIdentifier(Object)}
-   */
-  @Test
-  public void testGetIdentifier() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertNull((new DynamicEntityDaoImpl()).getIdentifier("Entity"));
-  }
-
-  /**
-   * Test {@link DynamicEntityDaoImpl#getIdentifier(Object)}.
-   * <p>
-   * Method under test: {@link DynamicEntityDaoImpl#getIdentifier(Object)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetIdentifier2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass7393 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new DynamicEntityDaoImpl()).getIdentifier("Entity");
+    // Assert
+    verify(dynamicDaoHelper).getIdentifier(isA(Object.class));
+    assertSame(simpleDateFormat, actualIdentifier);
   }
 
   /**
    * Test {@link DynamicEntityDaoImpl#getIdField(Class)}.
+   * <ul>
+   *   <li>Given {@link DynamicDaoHelperImpl} {@link DynamicDaoHelperImpl#getIdField(Class)} return {@code null}.</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link DynamicEntityDaoImpl#getIdField(Class)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetIdField() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6737 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Field DynamicEntityDaoImpl.getIdField(Class)"})
+  public void testGetIdField_givenDynamicDaoHelperImplGetIdFieldReturnNull_thenReturnNull() {
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    DynamicDaoHelperImpl dynamicDaoHelper = mock(DynamicDaoHelperImpl.class);
+    when(dynamicDaoHelper.getIdField(Mockito.<Class<Object>>any())).thenReturn(null);
+
+    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
+    dynamicEntityDaoImpl.setDynamicDaoHelper(dynamicDaoHelper);
     Class<Object> clazz = Object.class;
 
     // Act
-    dynamicEntityDaoImpl2.getIdField(clazz);
-  }
+    Field actualIdField = dynamicEntityDaoImpl.getIdField(clazz);
 
-  /**
-   * Test {@link DynamicEntityDaoImpl#sortEntities(Class, List)}.
-   * <p>
-   * Method under test: {@link DynamicEntityDaoImpl#sortEntities(Class, List)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSortEntities() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass12796 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
-    Class<Object> ceilingClass = Object.class;
-
-    // Act
-    dynamicEntityDaoImpl2.sortEntities(ceilingClass, new ArrayList<>());
+    // Assert
+    verify(dynamicDaoHelper).getIdField(isA(Class.class));
+    assertNull(actualIdField);
   }
 
   /**
    * Test {@link DynamicEntityDaoImpl#sortEntities(Class, List)}.
    * <ul>
-   *   <li>Given {@code java.lang.Boolean}.</li>
+   *   <li>Given {@code Boolean}.</li>
    *   <li>Then return first element is {@link Boolean}.</li>
    * </ul>
    * <p>
    * Method under test: {@link DynamicEntityDaoImpl#sortEntities(Class, List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class[] DynamicEntityDaoImpl.sortEntities(Class, List)"})
   public void testSortEntities_givenJavaLangBoolean_thenReturnFirstElementIsBoolean() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
     Class<Object> ceilingClass = Object.class;
 
     ArrayList<Class<?>> entities = new ArrayList<>();
@@ -1170,18 +550,17 @@ public class DynamicEntityDaoImplDiffblueTest {
   /**
    * Test {@link DynamicEntityDaoImpl#sortEntities(Class, List)}.
    * <ul>
-   *   <li>Given {@code java.lang.Object}.</li>
+   *   <li>Given {@code Object}.</li>
    *   <li>Then return array length is one.</li>
    * </ul>
    * <p>
    * Method under test: {@link DynamicEntityDaoImpl#sortEntities(Class, List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class[] DynamicEntityDaoImpl.sortEntities(Class, List)"})
   public void testSortEntities_givenJavaLangObject_thenReturnArrayLengthIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
     Class<Object> ceilingClass = Object.class;
 
     ArrayList<Class<?>> entities = new ArrayList<>();
@@ -1201,18 +580,17 @@ public class DynamicEntityDaoImplDiffblueTest {
   /**
    * Test {@link DynamicEntityDaoImpl#sortEntities(Class, List)}.
    * <ul>
-   *   <li>Given {@code java.lang.Object}.</li>
+   *   <li>Given {@code Object}.</li>
    *   <li>Then return array length is two.</li>
    * </ul>
    * <p>
    * Method under test: {@link DynamicEntityDaoImpl#sortEntities(Class, List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class[] DynamicEntityDaoImpl.sortEntities(Class, List)"})
   public void testSortEntities_givenJavaLangObject_thenReturnArrayLengthIsTwo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
     Class<Object> ceilingClass = Object.class;
 
     ArrayList<Class<?>> entities = new ArrayList<>();
@@ -1241,11 +619,10 @@ public class DynamicEntityDaoImplDiffblueTest {
    * Method under test: {@link DynamicEntityDaoImpl#sortEntities(Class, List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class[] DynamicEntityDaoImpl.sortEntities(Class, List)"})
   public void testSortEntities_whenArrayList_thenReturnArrayLengthIsZero() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
     Class<Object> ceilingClass = Object.class;
     ArrayList<Class<?>> entities = new ArrayList<>();
 
@@ -1256,54 +633,18 @@ public class DynamicEntityDaoImplDiffblueTest {
 
   /**
    * Test {@link DynamicEntityDaoImpl#addClassToTree(Class, ClassTree)}.
-   * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#addClassToTree(Class, ClassTree)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddClassToTree() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1034 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
-    Class<Object> clazz = Object.class;
-
-    // Act
-    dynamicEntityDaoImpl2.addClassToTree(clazz, new ClassTree());
-  }
-
-  /**
-   * Test {@link DynamicEntityDaoImpl#addClassToTree(Class, ClassTree)}.
    * <ul>
    *   <li>Given {@code Dr Jane Doe}.</li>
    *   <li>Then calls {@link ClassTree#getFullyQualifiedClassname()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#addClassToTree(Class, ClassTree)}
+   * Method under test: {@link DynamicEntityDaoImpl#addClassToTree(Class, ClassTree)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DynamicEntityDaoImpl.addClassToTree(Class, ClassTree)"})
   public void testAddClassToTree_givenDrJaneDoe_thenCallsGetFullyQualifiedClassname() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
     Class<Object> clazz = Object.class;
     ClassTree tree = mock(ClassTree.class);
     when(tree.getFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
@@ -1316,19 +657,16 @@ public class DynamicEntityDaoImplDiffblueTest {
   /**
    * Test {@link DynamicEntityDaoImpl#addClassToTree(Class, ClassTree)}.
    * <ul>
-   *   <li>When {@link ClassTree#ClassTree(String)} with fullyQualifiedClassname is
-   * {@code Dr Jane Doe}.</li>
+   *   <li>When {@link ClassTree#ClassTree(String)} with fullyQualifiedClassname is {@code Dr Jane Doe}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#addClassToTree(Class, ClassTree)}
+   * Method under test: {@link DynamicEntityDaoImpl#addClassToTree(Class, ClassTree)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DynamicEntityDaoImpl.addClassToTree(Class, ClassTree)"})
   public void testAddClassToTree_whenClassTreeWithFullyQualifiedClassnameIsDrJaneDoe() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
     Class<Object> clazz = Object.class;
 
     // Act and Assert
@@ -1337,71 +675,30 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#createClassTreeFromAnnotation(Class, ClassTree)}.
-   * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#createClassTreeFromAnnotation(Class, ClassTree)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateClassTreeFromAnnotation() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2965 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
-    Class<Object> clazz = Object.class;
-
-    // Act
-    dynamicEntityDaoImpl2.createClassTreeFromAnnotation(clazz, new ClassTree());
-  }
-
-  /**
    * Test {@link DynamicEntityDaoImpl#getClassTree(Class[])}.
+   * <ul>
+   *   <li>Then return CollapsedClassTrees size is one.</li>
+   * </ul>
    * <p>
    * Method under test: {@link DynamicEntityDaoImpl#getClassTree(Class[])}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetClassTree() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6063 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ClassTree DynamicEntityDaoImpl.getClassTree(Class[])"})
+  public void testGetClassTree_thenReturnCollapsedClassTreesSizeIsOne() {
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
     Class<Object> forNameResult = Object.class;
 
     // Act
-    dynamicEntityDaoImpl2.getClassTree(new Class[]{forNameResult});
+    ClassTree actualClassTree = dynamicEntityDaoImpl.getClassTree(new Class[]{forNameResult});
+
+    // Assert
+    assertEquals(0, actualClassTree.getChildren().length);
+    List<ClassTree> collapsedClassTrees = actualClassTree.getCollapsedClassTrees();
+    assertEquals(1, collapsedClassTrees.size());
+    assertEquals(2, actualClassTree.getRight());
+    assertFalse(actualClassTree.hasChildren());
+    assertSame(actualClassTree, collapsedClassTrees.get(0));
   }
 
   /**
@@ -1414,120 +711,51 @@ public class DynamicEntityDaoImplDiffblueTest {
    * Method under test: {@link DynamicEntityDaoImpl#getClassTree(Class[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ClassTree DynamicEntityDaoImpl.getClassTree(Class[])"})
   public void testGetClassTree_whenEmptyArrayOfClass_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertNull((new DynamicEntityDaoImpl()).getClassTree(new Class[]{}));
+    assertNull(dynamicEntityDaoImpl.getClassTree(new Class[]{}));
   }
 
   /**
    * Test {@link DynamicEntityDaoImpl#getClassTree(Class[])}.
    * <ul>
-   *   <li>When {@code java.lang.Object}.</li>
-   *   <li>Then return FriendlyName is {@code Object}.</li>
+   *   <li>When {@code Boolean}.</li>
+   *   <li>Then return first element FriendlyName is {@code Boolean}.</li>
    * </ul>
    * <p>
    * Method under test: {@link DynamicEntityDaoImpl#getClassTree(Class[])}
    */
   @Test
-  public void testGetClassTree_whenJavaLangObject_thenReturnFriendlyNameIsObject() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ClassTree DynamicEntityDaoImpl.getClassTree(Class[])"})
+  public void testGetClassTree_whenJavaLangBoolean_thenReturnFirstElementFriendlyNameIsBoolean() {
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-    Class<Object> forNameResult = Object.class;
+    Class<Boolean> forNameResult = Boolean.class;
+    Class<Object> forNameResult2 = Object.class;
 
     // Act
-    ClassTree actualClassTree = dynamicEntityDaoImpl.getClassTree(new Class[]{forNameResult});
+    ClassTree actualClassTree = dynamicEntityDaoImpl.getClassTree(new Class[]{forNameResult, forNameResult2});
 
     // Assert
-    assertEquals("Object", actualClassTree.getFriendlyName());
-    assertEquals("Object", actualClassTree.getName());
-    assertEquals("java.lang.Object", actualClassTree.getFullyQualifiedClassname());
-    assertEquals(0, actualClassTree.getChildren().length);
+    ClassTree[] children = actualClassTree.getChildren();
+    ClassTree classTree = children[0];
+    assertEquals("Boolean", classTree.getFriendlyName());
+    assertEquals("Boolean", classTree.getName());
+    assertEquals("java.lang.Boolean", classTree.getFullyQualifiedClassname());
+    assertEquals(0, classTree.getChildren().length);
+    assertEquals(1, classTree.getCollapsedClassTrees().size());
+    assertEquals(1, children.length);
     List<ClassTree> collapsedClassTrees = actualClassTree.getCollapsedClassTrees();
-    assertEquals(1, collapsedClassTrees.size());
-    assertEquals(1, actualClassTree.getLeft());
-    assertEquals(2, actualClassTree.getRight());
-    assertFalse(actualClassTree.hasChildren());
-    assertFalse(actualClassTree.isExcludeFromPolymorphism());
+    assertEquals(2, collapsedClassTrees.size());
+    assertEquals(2, classTree.getLeft());
+    assertEquals(3, classTree.getRight());
+    assertEquals(4, actualClassTree.getRight());
+    assertFalse(classTree.hasChildren());
+    assertFalse(classTree.isExcludeFromPolymorphism());
+    assertTrue(actualClassTree.hasChildren());
     assertSame(actualClassTree, collapsedClassTrees.get(0));
-  }
-
-  /**
-   * Test {@link DynamicEntityDaoImpl#getClassTreeFromCeiling(Class)}.
-   * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#getClassTreeFromCeiling(Class)}
-   */
-  @Test
-  public void testGetClassTreeFromCeiling() throws BeansException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-    dynamicEntityDaoImpl.setApplicationContext(new AnnotationConfigReactiveWebApplicationContext());
-    Class<Object> ceilingClass = Object.class;
-
-    // Act and Assert
-    assertNull(dynamicEntityDaoImpl.getClassTreeFromCeiling(ceilingClass));
-  }
-
-  /**
-   * Test {@link DynamicEntityDaoImpl#getClassTreeFromCeiling(Class)}.
-   * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#getClassTreeFromCeiling(Class)}
-   */
-  @Test
-  public void testGetClassTreeFromCeiling2() throws BeansException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AnnotationConfigReactiveWebApplicationContext applicationContext = new AnnotationConfigReactiveWebApplicationContext();
-    applicationContext.addApplicationListener(mock(ApplicationListener.class));
-
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-    dynamicEntityDaoImpl.setApplicationContext(applicationContext);
-    Class<Object> ceilingClass = Object.class;
-
-    // Act and Assert
-    assertNull(dynamicEntityDaoImpl.getClassTreeFromCeiling(ceilingClass));
-  }
-
-  /**
-   * Test {@link DynamicEntityDaoImpl#getClassTreeFromCeiling(Class)}.
-   * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#getClassTreeFromCeiling(Class)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetClassTreeFromCeiling3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6392 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
-    Class<Object> ceilingClass = Object.class;
-
-    // Act
-    dynamicEntityDaoImpl2.getClassTreeFromCeiling(ceilingClass);
   }
 
   /**
@@ -1537,13 +765,12 @@ public class DynamicEntityDaoImplDiffblueTest {
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#getClassTreeFromCeiling(Class)}
+   * Method under test: {@link DynamicEntityDaoImpl#getClassTreeFromCeiling(Class)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ClassTree DynamicEntityDaoImpl.getClassTreeFromCeiling(Class)"})
   public void testGetClassTreeFromCeiling_givenDynamicEntityDaoImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
     Class<Object> ceilingClass = Object.class;
@@ -1553,83 +780,204 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#getSimpleMergedProperties(String, PersistencePerspective)}.
+   * Test {@link DynamicEntityDaoImpl#getClassTreeFromCeiling(Class)}.
+   * <ul>
+   *   <li>Given {@link FieldMetadataProvider}.</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#getSimpleMergedProperties(String, PersistencePerspective)}
+   * Method under test: {@link DynamicEntityDaoImpl#getClassTreeFromCeiling(Class)}
    */
   @Test
-  public void testGetSimpleMergedProperties() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ClassTree DynamicEntityDaoImpl.getClassTreeFromCeiling(Class)"})
+  public void testGetClassTreeFromCeiling_givenFieldMetadataProvider_thenReturnNull() {
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
+    Class<Object> ceilingClass = Object.class;
 
     // Act and Assert
+    assertNull(dynamicEntityDaoImpl.getClassTreeFromCeiling(ceilingClass));
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#getClassTreeFromCeiling(Class)}.
+   * <ul>
+   *   <li>Then return FriendlyName is {@code Object}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#getClassTreeFromCeiling(Class)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ClassTree DynamicEntityDaoImpl.getClassTreeFromCeiling(Class)"})
+  public void testGetClassTreeFromCeiling_thenReturnFriendlyNameIsObject() {
+    // Arrange
+    DynamicDaoHelperImpl dynamicDaoHelper = mock(DynamicDaoHelperImpl.class);
+    when(dynamicDaoHelper.isExcludeClassFromPolymorphism(Mockito.<Class<Object>>any())).thenReturn(true);
+    Class<Object> forNameResult = Object.class;
+    Mockito
+        .<Class<?>[]>when(dynamicDaoHelper.getAllPolymorphicEntitiesFromCeiling(Mockito.<Class<Object>>any(),
+            anyBoolean(), anyBoolean()))
+        .thenReturn(new Class[]{forNameResult});
+
+    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
+    dynamicEntityDaoImpl.setDynamicDaoHelper(dynamicDaoHelper);
+    Class<Object> ceilingClass = Object.class;
+
+    // Act
+    ClassTree actualClassTreeFromCeiling = dynamicEntityDaoImpl.getClassTreeFromCeiling(ceilingClass);
+
+    // Assert
+    verify(dynamicDaoHelper).getAllPolymorphicEntitiesFromCeiling(isA(Class.class), eq(true), eq(false));
+    verify(dynamicDaoHelper).isExcludeClassFromPolymorphism(isA(Class.class));
+    assertEquals("Object", actualClassTreeFromCeiling.getFriendlyName());
+    assertEquals("Object", actualClassTreeFromCeiling.getName());
+    assertEquals("java.lang.Object", actualClassTreeFromCeiling.getFullyQualifiedClassname());
+    assertEquals(0, actualClassTreeFromCeiling.getChildren().length);
+    assertEquals(1, actualClassTreeFromCeiling.getLeft());
+    assertEquals(2, actualClassTreeFromCeiling.getRight());
+    assertFalse(actualClassTreeFromCeiling.hasChildren());
+    assertTrue(actualClassTreeFromCeiling.getCollapsedClassTrees().isEmpty());
+    assertTrue(actualClassTreeFromCeiling.isExcludeFromPolymorphism());
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#getSimpleMergedProperties(String, PersistencePerspective)}.
+   * <ul>
+   *   <li>Then calls {@link FieldMetadata#getExcluded()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#getSimpleMergedProperties(String, PersistencePerspective)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map DynamicEntityDaoImpl.getSimpleMergedProperties(String, PersistencePerspective)"})
+  public void testGetSimpleMergedProperties_thenCallsGetExcluded() {
+    // Arrange
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = mock(AdornedTargetCollectionMetadata.class);
+    when(adornedTargetCollectionMetadata.getExcluded()).thenReturn(true);
+
+    HashMap<String, FieldMetadata> stringFieldMetadataMap = new HashMap<>();
+    stringFieldMetadataMap.put("foo", adornedTargetCollectionMetadata);
+    when(metadata.getFieldMetadataForTargetClass(Mockito.<Class<Object>>any(), Mockito.<Class<Object>>any(),
+        Mockito.<DynamicEntityDao>any(), Mockito.<String>any())).thenReturn(stringFieldMetadataMap);
+
+    // Act
+    Map<String, FieldMetadata> actualSimpleMergedProperties = dynamicEntityDaoImpl
+        .getSimpleMergedProperties("java.lang.Boolean", new PersistencePerspective());
+
+    // Assert
+    verify(adornedTargetCollectionMetadata).getExcluded();
+    verify(metadata).getFieldMetadataForTargetClass(isNull(), isA(Class.class), isA(DynamicEntityDao.class), eq(""));
+    assertTrue(actualSimpleMergedProperties.isEmpty());
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#getSimpleMergedProperties(String, PersistencePerspective)}.
+   * <ul>
+   *   <li>Then return Empty.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#getSimpleMergedProperties(String, PersistencePerspective)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map DynamicEntityDaoImpl.getSimpleMergedProperties(String, PersistencePerspective)"})
+  public void testGetSimpleMergedProperties_thenReturnEmpty() {
+    // Arrange
+    when(metadata.getFieldMetadataForTargetClass(Mockito.<Class<Object>>any(), Mockito.<Class<Object>>any(),
+        Mockito.<DynamicEntityDao>any(), Mockito.<String>any())).thenReturn(new HashMap<>());
+
+    // Act
+    Map<String, FieldMetadata> actualSimpleMergedProperties = dynamicEntityDaoImpl
+        .getSimpleMergedProperties("java.lang.Boolean", new PersistencePerspective());
+
+    // Assert
+    verify(metadata).getFieldMetadataForTargetClass(isNull(), isA(Class.class), isA(DynamicEntityDao.class), eq(""));
+    assertTrue(actualSimpleMergedProperties.isEmpty());
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#getSimpleMergedProperties(String, PersistencePerspective)}.
+   * <ul>
+   *   <li>Then throw {@link NoSuchBeanDefinitionException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#getSimpleMergedProperties(String, PersistencePerspective)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map DynamicEntityDaoImpl.getSimpleMergedProperties(String, PersistencePerspective)"})
+  public void testGetSimpleMergedProperties_thenThrowNoSuchBeanDefinitionException() {
+    // Arrange
+    when(metadata.getFieldMetadataForTargetClass(Mockito.<Class<Object>>any(), Mockito.<Class<Object>>any(),
+        Mockito.<DynamicEntityDao>any(), Mockito.<String>any())).thenThrow(new NoSuchBeanDefinitionException("Name"));
+
+    // Act and Assert
+    assertThrows(NoSuchBeanDefinitionException.class,
+        () -> dynamicEntityDaoImpl.getSimpleMergedProperties("java.lang.Boolean", new PersistencePerspective()));
+    verify(metadata).getFieldMetadataForTargetClass(isNull(), isA(Class.class), isA(DynamicEntityDao.class), eq(""));
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#getSimpleMergedProperties(String, PersistencePerspective)}.
+   * <ul>
+   *   <li>When {@code Entity Name}.</li>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#getSimpleMergedProperties(String, PersistencePerspective)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map DynamicEntityDaoImpl.getSimpleMergedProperties(String, PersistencePerspective)"})
+  public void testGetSimpleMergedProperties_whenEntityName_thenThrowRuntimeException() {
+    // Arrange, Act and Assert
     assertThrows(RuntimeException.class,
         () -> dynamicEntityDaoImpl.getSimpleMergedProperties("Entity Name", new PersistencePerspective()));
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#getSimpleMergedProperties(String, PersistencePerspective)}.
+   * Test {@link DynamicEntityDaoImpl#getSimpleMergedProperties(String, PersistencePerspective)}.
+   * <ul>
+   *   <li>When {@code Byte}.</li>
+   *   <li>Then return Empty.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#getSimpleMergedProperties(String, PersistencePerspective)}
+   * Method under test: {@link DynamicEntityDaoImpl#getSimpleMergedProperties(String, PersistencePerspective)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetSimpleMergedProperties2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass10302 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map DynamicEntityDaoImpl.getSimpleMergedProperties(String, PersistencePerspective)"})
+  public void testGetSimpleMergedProperties_whenJavaLangByte_thenReturnEmpty() {
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    when(metadata.getFieldMetadataForTargetClass(Mockito.<Class<Object>>any(), Mockito.<Class<Object>>any(),
+        Mockito.<DynamicEntityDao>any(), Mockito.<String>any())).thenReturn(new HashMap<>());
 
     // Act
-    dynamicEntityDaoImpl2.getSimpleMergedProperties("Entity Name", new PersistencePerspective());
+    Map<String, FieldMetadata> actualSimpleMergedProperties = dynamicEntityDaoImpl
+        .getSimpleMergedProperties("java.lang.Byte", new PersistencePerspective());
+
+    // Assert
+    verify(metadata).getFieldMetadataForTargetClass(isNull(), isA(Class.class), isA(DynamicEntityDao.class), eq(""));
+    assertTrue(actualSimpleMergedProperties.isEmpty());
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#getMergedProperties(String, Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, String)}
-   * with {@code ceilingEntityFullyQualifiedClassname}, {@code entities},
-   * {@code foreignField}, {@code additionalNonPersistentProperties},
-   * {@code additionalForeignFields}, {@code mergedPropertyType},
-   * {@code populateManyToOneFields}, {@code includeFields},
-   * {@code excludeFields}, {@code configurationKey}, {@code prefix}.
+   * Test {@link DynamicEntityDaoImpl#getMergedProperties(String, Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, String)} with {@code ceilingEntityFullyQualifiedClassname}, {@code entities}, {@code foreignField}, {@code additionalNonPersistentProperties}, {@code additionalForeignFields}, {@code mergedPropertyType}, {@code populateManyToOneFields}, {@code includeFields}, {@code excludeFields}, {@code configurationKey}, {@code prefix}.
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#getMergedProperties(String, Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, String)}
+   * Method under test: {@link DynamicEntityDaoImpl#getMergedProperties(String, Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Map DynamicEntityDaoImpl.getMergedProperties(String, Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, String)"})
   public void testGetMergedPropertiesWithCeilingEntityFullyQualifiedClassnameEntitiesForeignFieldAdditionalNonPersistentPropertiesAdditionalForeignFieldsMergedPropertyTypePopulateManyToOneFieldsIncludeFieldsExcludeFieldsConfigurationKeyPrefix() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    Metadata metadata = mock(Metadata.class);
     when(
         metadata.overrideMetadata(Mockito.<Class<Object>[]>any(), Mockito.<PropertyBuilder>any(), Mockito.<String>any(),
             Mockito.<Boolean>any(), Mockito.<String>any(), Mockito.<String>any(), Mockito.<DynamicEntityDao>any()))
-                .thenReturn(new HashMap<>());
-
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-    dynamicEntityDaoImpl.setMetadata(metadata);
+        .thenReturn(new HashMap<>());
     Class<Object> forNameResult = Object.class;
     ForeignKey foreignField = new ForeignKey();
 
@@ -1646,30 +994,20 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#getMergedProperties(String, Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, String)}
-   * with {@code ceilingEntityFullyQualifiedClassname}, {@code entities},
-   * {@code foreignField}, {@code additionalNonPersistentProperties},
-   * {@code additionalForeignFields}, {@code mergedPropertyType},
-   * {@code populateManyToOneFields}, {@code includeFields},
-   * {@code excludeFields}, {@code configurationKey}, {@code prefix}.
+   * Test {@link DynamicEntityDaoImpl#getMergedProperties(String, Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, String)} with {@code ceilingEntityFullyQualifiedClassname}, {@code entities}, {@code foreignField}, {@code additionalNonPersistentProperties}, {@code additionalForeignFields}, {@code mergedPropertyType}, {@code populateManyToOneFields}, {@code includeFields}, {@code excludeFields}, {@code configurationKey}, {@code prefix}.
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#getMergedProperties(String, Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, String)}
+   * Method under test: {@link DynamicEntityDaoImpl#getMergedProperties(String, Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Map DynamicEntityDaoImpl.getMergedProperties(String, Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, String)"})
   public void testGetMergedPropertiesWithCeilingEntityFullyQualifiedClassnameEntitiesForeignFieldAdditionalNonPersistentPropertiesAdditionalForeignFieldsMergedPropertyTypePopulateManyToOneFieldsIncludeFieldsExcludeFieldsConfigurationKeyPrefix2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    Metadata metadata = mock(Metadata.class);
     when(
         metadata.overrideMetadata(Mockito.<Class<Object>[]>any(), Mockito.<PropertyBuilder>any(), Mockito.<String>any(),
             Mockito.<Boolean>any(), Mockito.<String>any(), Mockito.<String>any(), Mockito.<DynamicEntityDao>any()))
-                .thenReturn(new HashMap<>());
-
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-    dynamicEntityDaoImpl.setMetadata(metadata);
+        .thenReturn(new HashMap<>());
     Class<Object> forNameResult = Object.class;
     ForeignKey foreignField = new ForeignKey();
 
@@ -1686,73 +1024,52 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#getMergedProperties(String, Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, String)}
-   * with {@code ceilingEntityFullyQualifiedClassname}, {@code entities},
-   * {@code foreignField}, {@code additionalNonPersistentProperties},
-   * {@code additionalForeignFields}, {@code mergedPropertyType},
-   * {@code populateManyToOneFields}, {@code includeFields},
-   * {@code excludeFields}, {@code configurationKey}, {@code prefix}.
+   * Test {@link DynamicEntityDaoImpl#getMergedProperties(String, Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, String)} with {@code ceilingEntityFullyQualifiedClassname}, {@code entities}, {@code foreignField}, {@code additionalNonPersistentProperties}, {@code additionalForeignFields}, {@code mergedPropertyType}, {@code populateManyToOneFields}, {@code includeFields}, {@code excludeFields}, {@code configurationKey}, {@code prefix}.
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#getMergedProperties(String, Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, String)}
+   * Method under test: {@link DynamicEntityDaoImpl#getMergedProperties(String, Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Map DynamicEntityDaoImpl.getMergedProperties(String, Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, String)"})
   public void testGetMergedPropertiesWithCeilingEntityFullyQualifiedClassnameEntitiesForeignFieldAdditionalNonPersistentPropertiesAdditionalForeignFieldsMergedPropertyTypePopulateManyToOneFieldsIncludeFieldsExcludeFieldsConfigurationKeyPrefix3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass8086 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    when(
+        metadata.overrideMetadata(Mockito.<Class<Object>[]>any(), Mockito.<PropertyBuilder>any(), Mockito.<String>any(),
+            Mockito.<Boolean>any(), Mockito.<String>any(), Mockito.<String>any(), Mockito.<DynamicEntityDao>any()))
+        .thenThrow(new NoSuchBeanDefinitionException("Name"));
     Class<Object> forNameResult = Object.class;
     ForeignKey foreignField = new ForeignKey();
 
-    // Act
-    dynamicEntityDaoImpl2.getMergedProperties("Dr Jane Doe", new Class[]{forNameResult}, foreignField,
-        new String[]{"Additional Non Persistent Properties"}, new ForeignKey[]{new ForeignKey()},
-        MergedPropertyType.PRIMARY, true, new String[]{"Include Fields"}, new String[]{"Exclude Fields"},
-        "Configuration Key", "Prefix");
+    // Act and Assert
+    assertThrows(NoSuchBeanDefinitionException.class,
+        () -> dynamicEntityDaoImpl.getMergedProperties("Dr Jane Doe", new Class[]{forNameResult}, foreignField,
+            new String[]{"Additional Non Persistent Properties"}, new ForeignKey[]{new ForeignKey()},
+            MergedPropertyType.PRIMARY, true, new String[]{"Include Fields"}, new String[]{"Exclude Fields"},
+            "Configuration Key", "Prefix"));
+    verify(metadata).overrideMetadata(isA(Class[].class), isA(PropertyBuilder.class), eq("Prefix"), eq(false),
+        eq("Dr Jane Doe"), eq("Configuration Key"), isA(DynamicEntityDao.class));
   }
 
   /**
-   * Test {@link DynamicEntityDaoImpl#getMergedProperties(Class)} with
-   * {@code cls}.
+   * Test {@link DynamicEntityDaoImpl#getMergedProperties(Class)} with {@code cls}.
    * <p>
    * Method under test: {@link DynamicEntityDaoImpl#getMergedProperties(Class)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map DynamicEntityDaoImpl.getMergedProperties(Class)"})
   public void testGetMergedPropertiesWithCls() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = mock(AdornedTargetCollectionMetadata.class);
     when(adornedTargetCollectionMetadata.getExcluded()).thenReturn(true);
 
     HashMap<String, FieldMetadata> stringFieldMetadataMap = new HashMap<>();
     stringFieldMetadataMap.put("foo", adornedTargetCollectionMetadata);
-    Metadata metadata = mock(Metadata.class);
     when(
         metadata.overrideMetadata(Mockito.<Class<Object>[]>any(), Mockito.<PropertyBuilder>any(), Mockito.<String>any(),
             Mockito.<Boolean>any(), Mockito.<String>any(), Mockito.<String>any(), Mockito.<DynamicEntityDao>any()))
-                .thenReturn(stringFieldMetadataMap);
-
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-    dynamicEntityDaoImpl.setMetadata(metadata);
+        .thenReturn(stringFieldMetadataMap);
     Class<Object> cls = Object.class;
 
     // Act
@@ -1766,42 +1083,41 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
-   * Test {@link DynamicEntityDaoImpl#getMergedProperties(Class)} with
-   * {@code cls}.
+   * Test {@link DynamicEntityDaoImpl#getMergedProperties(Class)} with {@code cls}.
+   * <ul>
+   *   <li>Then {@code foo} return {@link AdornedTargetCollectionMetadata}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link DynamicEntityDaoImpl#getMergedProperties(Class)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetMergedPropertiesWithCls2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass7759 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map DynamicEntityDaoImpl.getMergedProperties(Class)"})
+  public void testGetMergedPropertiesWithCls_thenFooReturnAdornedTargetCollectionMetadata() {
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    HashMap<String, FieldMetadata> stringFieldMetadataMap = new HashMap<>();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
+    stringFieldMetadataMap.put("foo", adornedTargetCollectionMetadata);
+    when(
+        metadata.overrideMetadata(Mockito.<Class<Object>[]>any(), Mockito.<PropertyBuilder>any(), Mockito.<String>any(),
+            Mockito.<Boolean>any(), Mockito.<String>any(), Mockito.<String>any(), Mockito.<DynamicEntityDao>any()))
+        .thenReturn(stringFieldMetadataMap);
     Class<Object> cls = Object.class;
 
     // Act
-    dynamicEntityDaoImpl2.getMergedProperties(cls);
+    Map<String, FieldMetadata> actualMergedProperties = dynamicEntityDaoImpl.getMergedProperties(cls);
+
+    // Assert
+    verify(metadata).overrideMetadata(isA(Class[].class), isA(PropertyBuilder.class), eq(""), eq(false),
+        eq("java.lang.Object"), isNull(), isA(DynamicEntityDao.class));
+    assertEquals(1, actualMergedProperties.size());
+    FieldMetadata getResult = actualMergedProperties.get("foo");
+    assertTrue(getResult instanceof AdornedTargetCollectionMetadata);
+    assertSame(adornedTargetCollectionMetadata, getResult);
   }
 
   /**
-   * Test {@link DynamicEntityDaoImpl#getMergedProperties(Class)} with
-   * {@code cls}.
+   * Test {@link DynamicEntityDaoImpl#getMergedProperties(Class)} with {@code cls}.
    * <ul>
    *   <li>Then return containsKey {@code foo}.</li>
    * </ul>
@@ -1809,23 +1125,19 @@ public class DynamicEntityDaoImplDiffblueTest {
    * Method under test: {@link DynamicEntityDaoImpl#getMergedProperties(Class)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map DynamicEntityDaoImpl.getMergedProperties(Class)"})
   public void testGetMergedPropertiesWithCls_thenReturnContainsKeyFoo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = mock(AdornedTargetCollectionMetadata.class);
     when(adornedTargetCollectionMetadata.getExcluded()).thenReturn(false);
 
     HashMap<String, FieldMetadata> stringFieldMetadataMap = new HashMap<>();
     stringFieldMetadataMap.put("foo", adornedTargetCollectionMetadata);
-    Metadata metadata = mock(Metadata.class);
     when(
         metadata.overrideMetadata(Mockito.<Class<Object>[]>any(), Mockito.<PropertyBuilder>any(), Mockito.<String>any(),
             Mockito.<Boolean>any(), Mockito.<String>any(), Mockito.<String>any(), Mockito.<DynamicEntityDao>any()))
-                .thenReturn(stringFieldMetadataMap);
-
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-    dynamicEntityDaoImpl.setMetadata(metadata);
+        .thenReturn(stringFieldMetadataMap);
     Class<Object> cls = Object.class;
 
     // Act
@@ -1841,8 +1153,7 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
-   * Test {@link DynamicEntityDaoImpl#getMergedProperties(Class)} with
-   * {@code cls}.
+   * Test {@link DynamicEntityDaoImpl#getMergedProperties(Class)} with {@code cls}.
    * <ul>
    *   <li>Then return Empty.</li>
    * </ul>
@@ -1850,18 +1161,14 @@ public class DynamicEntityDaoImplDiffblueTest {
    * Method under test: {@link DynamicEntityDaoImpl#getMergedProperties(Class)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map DynamicEntityDaoImpl.getMergedProperties(Class)"})
   public void testGetMergedPropertiesWithCls_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    Metadata metadata = mock(Metadata.class);
     when(
         metadata.overrideMetadata(Mockito.<Class<Object>[]>any(), Mockito.<PropertyBuilder>any(), Mockito.<String>any(),
             Mockito.<Boolean>any(), Mockito.<String>any(), Mockito.<String>any(), Mockito.<DynamicEntityDao>any()))
-                .thenReturn(new HashMap<>());
-
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-    dynamicEntityDaoImpl.setMetadata(metadata);
+        .thenReturn(new HashMap<>());
     Class<Object> cls = Object.class;
 
     // Act
@@ -1874,66 +1181,48 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
-   * Test {@link DynamicEntityDaoImpl#getMergedProperties(Class)} with
-   * {@code cls}.
+   * Test {@link DynamicEntityDaoImpl#getMergedProperties(Class)} with {@code cls}.
    * <ul>
-   *   <li>Then return {@code foo} is {@link AdornedTargetCollectionMetadata}
-   * (default constructor).</li>
+   *   <li>Then throw {@link NoSuchBeanDefinitionException}.</li>
    * </ul>
    * <p>
    * Method under test: {@link DynamicEntityDaoImpl#getMergedProperties(Class)}
    */
   @Test
-  public void testGetMergedPropertiesWithCls_thenReturnFooIsAdornedTargetCollectionMetadata() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map DynamicEntityDaoImpl.getMergedProperties(Class)"})
+  public void testGetMergedPropertiesWithCls_thenThrowNoSuchBeanDefinitionException() {
     // Arrange
-    HashMap<String, FieldMetadata> stringFieldMetadataMap = new HashMap<>();
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
-    stringFieldMetadataMap.put("foo", adornedTargetCollectionMetadata);
-    Metadata metadata = mock(Metadata.class);
     when(
         metadata.overrideMetadata(Mockito.<Class<Object>[]>any(), Mockito.<PropertyBuilder>any(), Mockito.<String>any(),
             Mockito.<Boolean>any(), Mockito.<String>any(), Mockito.<String>any(), Mockito.<DynamicEntityDao>any()))
-                .thenReturn(stringFieldMetadataMap);
-
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-    dynamicEntityDaoImpl.setMetadata(metadata);
+        .thenThrow(new NoSuchBeanDefinitionException("Name"));
     Class<Object> cls = Object.class;
 
-    // Act
-    Map<String, FieldMetadata> actualMergedProperties = dynamicEntityDaoImpl.getMergedProperties(cls);
-
-    // Assert
+    // Act and Assert
+    assertThrows(NoSuchBeanDefinitionException.class, () -> dynamicEntityDaoImpl.getMergedProperties(cls));
     verify(metadata).overrideMetadata(isA(Class[].class), isA(PropertyBuilder.class), eq(""), eq(false),
         eq("java.lang.Object"), isNull(), isA(DynamicEntityDao.class));
-    assertEquals(1, actualMergedProperties.size());
-    assertSame(adornedTargetCollectionMetadata, actualMergedProperties.get("foo"));
   }
 
   /**
-   * Test {@link DynamicEntityDaoImpl#getMergedProperties(Class)} with
-   * {@code cls}.
+   * Test {@link DynamicEntityDaoImpl#getMergedProperties(Class)} with {@code cls}.
    * <ul>
-   *   <li>When {@code java.lang.Boolean}.</li>
+   *   <li>When {@code Boolean}.</li>
    *   <li>Then return Empty.</li>
    * </ul>
    * <p>
    * Method under test: {@link DynamicEntityDaoImpl#getMergedProperties(Class)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map DynamicEntityDaoImpl.getMergedProperties(Class)"})
   public void testGetMergedPropertiesWithCls_whenJavaLangBoolean_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    Metadata metadata = mock(Metadata.class);
     when(
         metadata.overrideMetadata(Mockito.<Class<Object>[]>any(), Mockito.<PropertyBuilder>any(), Mockito.<String>any(),
             Mockito.<Boolean>any(), Mockito.<String>any(), Mockito.<String>any(), Mockito.<DynamicEntityDao>any()))
-                .thenReturn(new HashMap<>());
-
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-    dynamicEntityDaoImpl.setMetadata(metadata);
+        .thenReturn(new HashMap<>());
     Class<Boolean> cls = Boolean.class;
 
     // Act
@@ -1946,106 +1235,133 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
-   * Test {@link DynamicEntityDaoImpl#getMergedProperties(Class)} with
-   * {@code cls}.
+   * Test {@link DynamicEntityDaoImpl#getMergedPropertiesRecursively(String, Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, List, String, Boolean, String)}.
    * <ul>
-   *   <li>When {@code java.lang.Long}.</li>
+   *   <li>Given {@code Object}.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link Object}.</li>
    * </ul>
    * <p>
-   * Method under test: {@link DynamicEntityDaoImpl#getMergedProperties(Class)}
+   * Method under test: {@link DynamicEntityDaoImpl#getMergedPropertiesRecursively(String, Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, List, String, Boolean, String)}
    */
   @Test
-  public void testGetMergedPropertiesWithCls_whenJavaLangLong() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Map DynamicEntityDaoImpl.getMergedPropertiesRecursively(String, Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, List, String, Boolean, String)"})
+  public void testGetMergedPropertiesRecursively_givenJavaLangObject_whenArrayListAddObject() {
     // Arrange
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = mock(AdornedTargetCollectionMetadata.class);
-    when(adornedTargetCollectionMetadata.getExcluded()).thenReturn(true);
-
-    HashMap<String, FieldMetadata> stringFieldMetadataMap = new HashMap<>();
-    stringFieldMetadataMap.put("foo", adornedTargetCollectionMetadata);
-    Metadata metadata = mock(Metadata.class);
     when(
         metadata.overrideMetadata(Mockito.<Class<Object>[]>any(), Mockito.<PropertyBuilder>any(), Mockito.<String>any(),
             Mockito.<Boolean>any(), Mockito.<String>any(), Mockito.<String>any(), Mockito.<DynamicEntityDao>any()))
-                .thenReturn(stringFieldMetadataMap);
-
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-    dynamicEntityDaoImpl.setMetadata(metadata);
-    Class<Long> cls = Long.class;
-
-    // Act
-    Map<String, FieldMetadata> actualMergedProperties = dynamicEntityDaoImpl.getMergedProperties(cls);
-
-    // Assert
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getExcluded();
-    verify(metadata).overrideMetadata(isA(Class[].class), isA(PropertyBuilder.class), eq(""), eq(false),
-        eq("java.lang.Long"), isNull(), isA(DynamicEntityDao.class));
-    assertTrue(actualMergedProperties.isEmpty());
-  }
-
-  /**
-   * Test
-   * {@link DynamicEntityDaoImpl#getMergedPropertiesRecursively(String, Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, List, String, Boolean, String)}.
-   * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#getMergedPropertiesRecursively(String, Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, List, String, Boolean, String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetMergedPropertiesRecursively() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass8393 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+        .thenReturn(new HashMap<>());
     Class<Object> forNameResult = Object.class;
     ForeignKey foreignField = new ForeignKey();
 
+    ArrayList<Class<?>> parentClasses = new ArrayList<>();
+    Class<Object> forNameResult2 = Object.class;
+    parentClasses.add(forNameResult2);
+
     // Act
-    dynamicEntityDaoImpl2.getMergedPropertiesRecursively("Dr Jane Doe", new Class[]{forNameResult}, foreignField,
-        new String[]{"Additional Non Persistent Properties"}, new ForeignKey[]{new ForeignKey()},
-        MergedPropertyType.PRIMARY, true, new String[]{"Include Fields"}, new String[]{"Exclude Fields"},
-        "Configuration Key", new ArrayList<>(), "Prefix", true, "Parent Prefix");
+    Map<String, FieldMetadata> actualMergedPropertiesRecursively = dynamicEntityDaoImpl.getMergedPropertiesRecursively(
+        "Dr Jane Doe", new Class[]{forNameResult}, foreignField, new String[]{"Additional Non Persistent Properties"},
+        new ForeignKey[]{new ForeignKey()}, MergedPropertyType.PRIMARY, true, new String[]{"Include Fields"},
+        new String[]{"Exclude Fields"}, "Configuration Key", parentClasses, "Prefix", true, "Parent Prefix");
+
+    // Assert
+    verify(metadata).overrideMetadata(isA(Class[].class), isA(PropertyBuilder.class), eq("Prefix"), eq(true),
+        eq("Dr Jane Doe"), eq("Configuration Key"), isA(DynamicEntityDao.class));
+    assertTrue(actualMergedPropertiesRecursively.isEmpty());
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#getMergedPropertiesRecursively(String, Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, List, String, Boolean, String)}.
+   * Test {@link DynamicEntityDaoImpl#getMergedPropertiesRecursively(String, Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, List, String, Boolean, String)}.
    * <ul>
-   *   <li>Then return Empty.</li>
+   *   <li>Given {@code Object}.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link Object}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#getMergedPropertiesRecursively(String, Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, List, String, Boolean, String)}
+   * Method under test: {@link DynamicEntityDaoImpl#getMergedPropertiesRecursively(String, Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, List, String, Boolean, String)}
    */
   @Test
-  public void testGetMergedPropertiesRecursively_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Map DynamicEntityDaoImpl.getMergedPropertiesRecursively(String, Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, List, String, Boolean, String)"})
+  public void testGetMergedPropertiesRecursively_givenJavaLangObject_whenArrayListAddObject2() {
     // Arrange
-    Metadata metadata = mock(Metadata.class);
     when(
         metadata.overrideMetadata(Mockito.<Class<Object>[]>any(), Mockito.<PropertyBuilder>any(), Mockito.<String>any(),
             Mockito.<Boolean>any(), Mockito.<String>any(), Mockito.<String>any(), Mockito.<DynamicEntityDao>any()))
-                .thenReturn(new HashMap<>());
+        .thenReturn(new HashMap<>());
+    Class<Object> forNameResult = Object.class;
+    ForeignKey foreignField = new ForeignKey();
 
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-    dynamicEntityDaoImpl.setMetadata(metadata);
+    ArrayList<Class<?>> parentClasses = new ArrayList<>();
+    Class<Object> forNameResult2 = Object.class;
+    parentClasses.add(forNameResult2);
+    Class<Object> forNameResult3 = Object.class;
+    parentClasses.add(forNameResult3);
+
+    // Act
+    Map<String, FieldMetadata> actualMergedPropertiesRecursively = dynamicEntityDaoImpl.getMergedPropertiesRecursively(
+        "Dr Jane Doe", new Class[]{forNameResult}, foreignField, new String[]{"Additional Non Persistent Properties"},
+        new ForeignKey[]{new ForeignKey()}, MergedPropertyType.PRIMARY, true, new String[]{"Include Fields"},
+        new String[]{"Exclude Fields"}, "Configuration Key", parentClasses, "Prefix", true, "Parent Prefix");
+
+    // Assert
+    verify(metadata).overrideMetadata(isA(Class[].class), isA(PropertyBuilder.class), eq("Prefix"), eq(true),
+        eq("Dr Jane Doe"), eq("Configuration Key"), isA(DynamicEntityDao.class));
+    assertTrue(actualMergedPropertiesRecursively.isEmpty());
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#getMergedPropertiesRecursively(String, Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, List, String, Boolean, String)}.
+   * <ul>
+   *   <li>Then throw {@link NoSuchBeanDefinitionException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#getMergedPropertiesRecursively(String, Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, List, String, Boolean, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Map DynamicEntityDaoImpl.getMergedPropertiesRecursively(String, Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, List, String, Boolean, String)"})
+  public void testGetMergedPropertiesRecursively_thenThrowNoSuchBeanDefinitionException() {
+    // Arrange
+    when(
+        metadata.overrideMetadata(Mockito.<Class<Object>[]>any(), Mockito.<PropertyBuilder>any(), Mockito.<String>any(),
+            Mockito.<Boolean>any(), Mockito.<String>any(), Mockito.<String>any(), Mockito.<DynamicEntityDao>any()))
+        .thenThrow(new NoSuchBeanDefinitionException("Name"));
+    Class<Object> forNameResult = Object.class;
+    ForeignKey foreignField = new ForeignKey();
+
+    // Act and Assert
+    assertThrows(NoSuchBeanDefinitionException.class,
+        () -> dynamicEntityDaoImpl.getMergedPropertiesRecursively("Dr Jane Doe", new Class[]{forNameResult},
+            foreignField, new String[]{"Additional Non Persistent Properties"}, new ForeignKey[]{new ForeignKey()},
+            MergedPropertyType.PRIMARY, true, new String[]{"Include Fields"}, new String[]{"Exclude Fields"},
+            "Configuration Key", new ArrayList<>(), "Prefix", true, "Parent Prefix"));
+    verify(metadata).overrideMetadata(isA(Class[].class), isA(PropertyBuilder.class), eq("Prefix"), eq(true),
+        eq("Dr Jane Doe"), eq("Configuration Key"), isA(DynamicEntityDao.class));
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#getMergedPropertiesRecursively(String, Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, List, String, Boolean, String)}.
+   * <ul>
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then return Empty.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#getMergedPropertiesRecursively(String, Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, List, String, Boolean, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Map DynamicEntityDaoImpl.getMergedPropertiesRecursively(String, Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, List, String, Boolean, String)"})
+  public void testGetMergedPropertiesRecursively_whenArrayList_thenReturnEmpty() {
+    // Arrange
+    when(
+        metadata.overrideMetadata(Mockito.<Class<Object>[]>any(), Mockito.<PropertyBuilder>any(), Mockito.<String>any(),
+            Mockito.<Boolean>any(), Mockito.<String>any(), Mockito.<String>any(), Mockito.<DynamicEntityDao>any()))
+        .thenReturn(new HashMap<>());
     Class<Object> forNameResult = Object.class;
     ForeignKey foreignField = new ForeignKey();
 
@@ -2062,29 +1378,24 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#getMergedPropertiesRecursively(String, Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, List, String, Boolean, String)}.
+   * Test {@link DynamicEntityDaoImpl#getMergedPropertiesRecursively(String, Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, List, String, Boolean, String)}.
    * <ul>
    *   <li>When empty array of {@link String}.</li>
    *   <li>Then return Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#getMergedPropertiesRecursively(String, Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, List, String, Boolean, String)}
+   * Method under test: {@link DynamicEntityDaoImpl#getMergedPropertiesRecursively(String, Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, List, String, Boolean, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Map DynamicEntityDaoImpl.getMergedPropertiesRecursively(String, Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, List, String, Boolean, String)"})
   public void testGetMergedPropertiesRecursively_whenEmptyArrayOfString_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    Metadata metadata = mock(Metadata.class);
     when(
         metadata.overrideMetadata(Mockito.<Class<Object>[]>any(), Mockito.<PropertyBuilder>any(), Mockito.<String>any(),
             Mockito.<Boolean>any(), Mockito.<String>any(), Mockito.<String>any(), Mockito.<DynamicEntityDao>any()))
-                .thenReturn(new HashMap<>());
-
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-    dynamicEntityDaoImpl.setMetadata(metadata);
+        .thenReturn(new HashMap<>());
     Class<Object> forNameResult = Object.class;
     ForeignKey foreignField = new ForeignKey();
 
@@ -2101,297 +1412,169 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#applyForeignKeyPrecedence(ForeignKey, ForeignKey[], Map)}.
+   * Test {@link DynamicEntityDaoImpl#applyForeignKeyPrecedence(ForeignKey, ForeignKey[], Map)}.
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#applyForeignKeyPrecedence(ForeignKey, ForeignKey[], Map)}
+   * Method under test: {@link DynamicEntityDaoImpl#applyForeignKeyPrecedence(ForeignKey, ForeignKey[], Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DynamicEntityDaoImpl.applyForeignKeyPrecedence(ForeignKey, ForeignKey[], Map)"})
   public void testApplyForeignKeyPrecedence() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
     ForeignKey foreignField = mock(ForeignKey.class);
     when(foreignField.getManyToField()).thenReturn("Many To Field");
 
     HashMap<String, FieldMetadata> mergedProperties = new HashMap<>();
-    mergedProperties.put("", new AdornedTargetCollectionMetadata());
+    mergedProperties.put("foo", new AdornedTargetCollectionMetadata());
 
     // Act
     dynamicEntityDaoImpl.applyForeignKeyPrecedence(foreignField,
         new ForeignKey[]{new ForeignKey("Many To Field", "Foreign Key Class")}, mergedProperties);
 
-    // Assert
+    // Assert that nothing has changed
     verify(foreignField).getManyToField();
     assertEquals(1, mergedProperties.size());
-    FieldMetadata getResult = mergedProperties.get("");
-    assertTrue(getResult instanceof AdornedTargetCollectionMetadata);
-    assertNull(getResult.getExcluded());
+    assertTrue(mergedProperties.get("foo") instanceof AdornedTargetCollectionMetadata);
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#applyForeignKeyPrecedence(ForeignKey, ForeignKey[], Map)}.
-   * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#applyForeignKeyPrecedence(ForeignKey, ForeignKey[], Map)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testApplyForeignKeyPrecedence2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1363 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
-    ForeignKey foreignField = new ForeignKey();
-
-    // Act
-    dynamicEntityDaoImpl2.applyForeignKeyPrecedence(foreignField, new ForeignKey[]{new ForeignKey()}, new HashMap<>());
-  }
-
-  /**
-   * Test
-   * {@link DynamicEntityDaoImpl#applyForeignKeyPrecedence(ForeignKey, ForeignKey[], Map)}.
+   * Test {@link DynamicEntityDaoImpl#applyForeignKeyPrecedence(ForeignKey, ForeignKey[], Map)}.
    * <ul>
-   *   <li>Then {@link HashMap#HashMap()} empty string Excluded is
-   * {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#applyForeignKeyPrecedence(ForeignKey, ForeignKey[], Map)}
-   */
-  @Test
-  public void testApplyForeignKeyPrecedence_thenHashMapEmptyStringExcludedIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-    ForeignKey foreignField = mock(ForeignKey.class);
-    when(foreignField.getManyToField()).thenReturn("Many To Field");
-    ForeignKey foreignKey = mock(ForeignKey.class);
-    when(foreignKey.getManyToField()).thenReturn("Many To Field");
-
-    HashMap<String, FieldMetadata> mergedProperties = new HashMap<>();
-    mergedProperties.put("", new AdornedTargetCollectionMetadata());
-
-    // Act
-    dynamicEntityDaoImpl.applyForeignKeyPrecedence(foreignField, new ForeignKey[]{foreignKey}, mergedProperties);
-
-    // Assert
-    verify(foreignField).getManyToField();
-    verify(foreignKey).getManyToField();
-    assertEquals(1, mergedProperties.size());
-    FieldMetadata getResult = mergedProperties.get("");
-    assertTrue(getResult instanceof AdornedTargetCollectionMetadata);
-    assertNull(getResult.getExcluded());
-  }
-
-  /**
-   * Test
-   * {@link DynamicEntityDaoImpl#applyForeignKeyPrecedence(ForeignKey, ForeignKey[], Map)}.
-   * <ul>
-   *   <li>Then not {@link HashMap#HashMap()} empty string Excluded.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#applyForeignKeyPrecedence(ForeignKey, ForeignKey[], Map)}
-   */
-  @Test
-  public void testApplyForeignKeyPrecedence_thenNotHashMapEmptyStringExcluded() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-    ForeignKey foreignField = mock(ForeignKey.class);
-    when(foreignField.getManyToField()).thenReturn("");
-    ForeignKey foreignKey = mock(ForeignKey.class);
-    when(foreignKey.getManyToField()).thenReturn("Many To Field");
-
-    HashMap<String, FieldMetadata> mergedProperties = new HashMap<>();
-    mergedProperties.put("", new AdornedTargetCollectionMetadata());
-
-    // Act
-    dynamicEntityDaoImpl.applyForeignKeyPrecedence(foreignField, new ForeignKey[]{foreignKey}, mergedProperties);
-
-    // Assert
-    verify(foreignField).getManyToField();
-    assertEquals(1, mergedProperties.size());
-    FieldMetadata getResult = mergedProperties.get("");
-    assertTrue(getResult instanceof AdornedTargetCollectionMetadata);
-    assertFalse(getResult.getExcluded());
-  }
-
-  /**
-   * Test
-   * {@link DynamicEntityDaoImpl#applyForeignKeyPrecedence(ForeignKey, ForeignKey[], Map)}.
-   * <ul>
-   *   <li>Then not {@link HashMap#HashMap()} empty string Excluded.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#applyForeignKeyPrecedence(ForeignKey, ForeignKey[], Map)}
-   */
-  @Test
-  public void testApplyForeignKeyPrecedence_thenNotHashMapEmptyStringExcluded2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-    ForeignKey foreignField = mock(ForeignKey.class);
-    when(foreignField.getManyToField()).thenReturn("Many To Field");
-    ForeignKey foreignKey = mock(ForeignKey.class);
-    when(foreignKey.getManyToField()).thenReturn("");
-
-    HashMap<String, FieldMetadata> mergedProperties = new HashMap<>();
-    mergedProperties.put("", new AdornedTargetCollectionMetadata());
-
-    // Act
-    dynamicEntityDaoImpl.applyForeignKeyPrecedence(foreignField, new ForeignKey[]{foreignKey}, mergedProperties);
-
-    // Assert
-    verify(foreignField).getManyToField();
-    verify(foreignKey).getManyToField();
-    assertEquals(1, mergedProperties.size());
-    FieldMetadata getResult = mergedProperties.get("");
-    assertTrue(getResult instanceof AdornedTargetCollectionMetadata);
-    assertFalse(getResult.getExcluded());
-  }
-
-  /**
-   * Test
-   * {@link DynamicEntityDaoImpl#applyForeignKeyPrecedence(ForeignKey, ForeignKey[], Map)}.
-   * <ul>
+   *   <li>Given {@code Many To Field}.</li>
    *   <li>When {@code null}.</li>
-   *   <li>Then {@link HashMap#HashMap()} empty string Excluded is
-   * {@code null}.</li>
+   *   <li>Then {@link HashMap#HashMap()} size is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#applyForeignKeyPrecedence(ForeignKey, ForeignKey[], Map)}
+   * Method under test: {@link DynamicEntityDaoImpl#applyForeignKeyPrecedence(ForeignKey, ForeignKey[], Map)}
    */
   @Test
-  public void testApplyForeignKeyPrecedence_whenNull_thenHashMapEmptyStringExcludedIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DynamicEntityDaoImpl.applyForeignKeyPrecedence(ForeignKey, ForeignKey[], Map)"})
+  public void testApplyForeignKeyPrecedence_givenManyToField_whenNull_thenHashMapSizeIsOne() {
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
     ForeignKey foreignField = mock(ForeignKey.class);
     when(foreignField.getManyToField()).thenReturn("Many To Field");
 
     HashMap<String, FieldMetadata> mergedProperties = new HashMap<>();
-    mergedProperties.put("", new AdornedTargetCollectionMetadata());
+    mergedProperties.put("foo", new AdornedTargetCollectionMetadata());
 
     // Act
     dynamicEntityDaoImpl.applyForeignKeyPrecedence(foreignField, null, mergedProperties);
 
-    // Assert
+    // Assert that nothing has changed
     verify(foreignField).getManyToField();
     assertEquals(1, mergedProperties.size());
-    FieldMetadata getResult = mergedProperties.get("");
-    assertTrue(getResult instanceof AdornedTargetCollectionMetadata);
-    assertNull(getResult.getExcluded());
+    assertTrue(mergedProperties.get("foo") instanceof AdornedTargetCollectionMetadata);
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#applyIncludesAndExcludes(String[], String[], String, Boolean, Map)}.
-   * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#applyIncludesAndExcludes(String[], String[], String, Boolean, Map)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testApplyIncludesAndExcludes() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1409 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
-
-    // Act
-    dynamicEntityDaoImpl2.applyIncludesAndExcludes(new String[]{"Include Fields"}, new String[]{"Exclude Fields"},
-        "Prefix", true, new HashMap<>());
-  }
-
-  /**
-   * Test
-   * {@link DynamicEntityDaoImpl#applyIncludesAndExcludes(String[], String[], String, Boolean, Map)}.
+   * Test {@link DynamicEntityDaoImpl#applyForeignKeyPrecedence(ForeignKey, ForeignKey[], Map)}.
    * <ul>
-   *   <li>Given {@code .}.</li>
+   *   <li>Then not {@link HashMap#HashMap()} {@code foo} Excluded.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#applyIncludesAndExcludes(String[], String[], String, Boolean, Map)}
+   * Method under test: {@link DynamicEntityDaoImpl#applyForeignKeyPrecedence(ForeignKey, ForeignKey[], Map)}
    */
   @Test
-  public void testApplyIncludesAndExcludes_givenDot() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DynamicEntityDaoImpl.applyForeignKeyPrecedence(ForeignKey, ForeignKey[], Map)"})
+  public void testApplyForeignKeyPrecedence_thenNotHashMapFooExcluded() {
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
+    ForeignKey foreignField = mock(ForeignKey.class);
+    when(foreignField.getManyToField()).thenReturn("foo");
 
     HashMap<String, FieldMetadata> mergedProperties = new HashMap<>();
-    mergedProperties.computeIfPresent(".", mock(BiFunction.class));
     mergedProperties.put("foo", new AdornedTargetCollectionMetadata());
 
     // Act
-    dynamicEntityDaoImpl.applyIncludesAndExcludes(new String[]{"Include Fields"}, new String[]{"Exclude Fields"},
-        "Prefix", true, mergedProperties);
+    dynamicEntityDaoImpl.applyForeignKeyPrecedence(foreignField, new ForeignKey[]{mock(ForeignKey.class)},
+        mergedProperties);
 
     // Assert
+    verify(foreignField).getManyToField();
     assertEquals(1, mergedProperties.size());
     FieldMetadata getResult = mergedProperties.get("foo");
     assertTrue(getResult instanceof AdornedTargetCollectionMetadata);
-    assertTrue(getResult.getExcluded());
+    assertFalse(getResult.getExcluded());
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#applyIncludesAndExcludes(String[], String[], String, Boolean, Map)}.
+   * Test {@link DynamicEntityDaoImpl#applyForeignKeyPrecedence(ForeignKey, ForeignKey[], Map)}.
+   * <ul>
+   *   <li>Then not {@link HashMap#HashMap()} {@code foo} Excluded.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#applyForeignKeyPrecedence(ForeignKey, ForeignKey[], Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DynamicEntityDaoImpl.applyForeignKeyPrecedence(ForeignKey, ForeignKey[], Map)"})
+  public void testApplyForeignKeyPrecedence_thenNotHashMapFooExcluded2() {
+    // Arrange
+    ForeignKey foreignField = mock(ForeignKey.class);
+    when(foreignField.getManyToField()).thenReturn("Many To Field");
+    ForeignKey foreignKey = mock(ForeignKey.class);
+    when(foreignKey.getManyToField()).thenReturn("foo");
+
+    HashMap<String, FieldMetadata> mergedProperties = new HashMap<>();
+    mergedProperties.put("foo", new AdornedTargetCollectionMetadata());
+
+    // Act
+    dynamicEntityDaoImpl.applyForeignKeyPrecedence(foreignField, new ForeignKey[]{foreignKey}, mergedProperties);
+
+    // Assert
+    verify(foreignField).getManyToField();
+    verify(foreignKey).getManyToField();
+    assertEquals(1, mergedProperties.size());
+    FieldMetadata getResult = mergedProperties.get("foo");
+    assertTrue(getResult instanceof AdornedTargetCollectionMetadata);
+    assertFalse(getResult.getExcluded());
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#applyForeignKeyPrecedence(ForeignKey, ForeignKey[], Map)}.
+   * <ul>
+   *   <li>When array of {@link ForeignKey} with {@link ForeignKey}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#applyForeignKeyPrecedence(ForeignKey, ForeignKey[], Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DynamicEntityDaoImpl.applyForeignKeyPrecedence(ForeignKey, ForeignKey[], Map)"})
+  public void testApplyForeignKeyPrecedence_whenArrayOfForeignKeyWithForeignKey() {
+    // Arrange
+    ForeignKey foreignField = mock(ForeignKey.class);
+    when(foreignField.getManyToField()).thenReturn("Many To Field");
+    ForeignKey foreignKey = mock(ForeignKey.class);
+    when(foreignKey.getManyToField()).thenReturn("Many To Field");
+
+    HashMap<String, FieldMetadata> mergedProperties = new HashMap<>();
+    mergedProperties.put("foo", new AdornedTargetCollectionMetadata());
+
+    // Act
+    dynamicEntityDaoImpl.applyForeignKeyPrecedence(foreignField, new ForeignKey[]{foreignKey}, mergedProperties);
+
+    // Assert that nothing has changed
+    verify(foreignField).getManyToField();
+    verify(foreignKey).getManyToField();
+    assertEquals(1, mergedProperties.size());
+    assertTrue(mergedProperties.get("foo") instanceof AdornedTargetCollectionMetadata);
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#applyIncludesAndExcludes(String[], String[], String, Boolean, Map)}.
    * <ul>
    *   <li>Then calls {@link FieldMetadata#setExcluded(Boolean)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#applyIncludesAndExcludes(String[], String[], String, Boolean, Map)}
+   * Method under test: {@link DynamicEntityDaoImpl#applyIncludesAndExcludes(String[], String[], String, Boolean, Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DynamicEntityDaoImpl.applyIncludesAndExcludes(String[], String[], String, Boolean, Map)"})
   public void testApplyIncludesAndExcludes_thenCallsSetExcluded() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
     AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = mock(AdornedTargetCollectionMetadata.class);
     doNothing().when(adornedTargetCollectionMetadata).setExcluded(Mockito.<Boolean>any());
 
@@ -2407,22 +1590,18 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#applyIncludesAndExcludes(String[], String[], String, Boolean, Map)}.
+   * Test {@link DynamicEntityDaoImpl#applyIncludesAndExcludes(String[], String[], String, Boolean, Map)}.
    * <ul>
    *   <li>Then {@link HashMap#HashMap()} {@code foo} Excluded.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#applyIncludesAndExcludes(String[], String[], String, Boolean, Map)}
+   * Method under test: {@link DynamicEntityDaoImpl#applyIncludesAndExcludes(String[], String[], String, Boolean, Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DynamicEntityDaoImpl.applyIncludesAndExcludes(String[], String[], String, Boolean, Map)"})
   public void testApplyIncludesAndExcludes_thenHashMapFooExcluded() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-
     HashMap<String, FieldMetadata> mergedProperties = new HashMap<>();
     mergedProperties.put("foo", new AdornedTargetCollectionMetadata());
 
@@ -2438,22 +1617,19 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#applyIncludesAndExcludes(String[], String[], String, Boolean, Map)}.
+   * Test {@link DynamicEntityDaoImpl#applyIncludesAndExcludes(String[], String[], String, Boolean, Map)}.
    * <ul>
-   *   <li>Then {@link HashMap#HashMap()} {@code foo} Excluded is {@code null}.</li>
+   *   <li>When array of {@link String} with {@code Prefixfoo}.</li>
+   *   <li>Then {@link HashMap#HashMap()} size is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#applyIncludesAndExcludes(String[], String[], String, Boolean, Map)}
+   * Method under test: {@link DynamicEntityDaoImpl#applyIncludesAndExcludes(String[], String[], String, Boolean, Map)}
    */
   @Test
-  public void testApplyIncludesAndExcludes_thenHashMapFooExcludedIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DynamicEntityDaoImpl.applyIncludesAndExcludes(String[], String[], String, Boolean, Map)"})
+  public void testApplyIncludesAndExcludes_whenArrayOfStringWithPrefixfoo_thenHashMapSizeIsOne() {
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-
     HashMap<String, FieldMetadata> mergedProperties = new HashMap<>();
     mergedProperties.put("foo", new AdornedTargetCollectionMetadata());
 
@@ -2461,40 +1637,9 @@ public class DynamicEntityDaoImplDiffblueTest {
     dynamicEntityDaoImpl.applyIncludesAndExcludes(new String[]{"Prefixfoo"}, new String[]{"Exclude Fields"}, "Prefix",
         true, mergedProperties);
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals(1, mergedProperties.size());
-    FieldMetadata getResult = mergedProperties.get("foo");
-    assertTrue(getResult instanceof AdornedTargetCollectionMetadata);
-    assertNull(getResult.getExcluded());
-  }
-
-  /**
-   * Test {@link DynamicEntityDaoImpl#pad(String, int, char)}.
-   * <p>
-   * Method under test: {@link DynamicEntityDaoImpl#pad(String, int, char)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testPad() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass11733 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new DynamicEntityDaoImpl()).pad("foo", 3, 'A');
+    assertTrue(mergedProperties.get("foo") instanceof AdornedTargetCollectionMetadata);
   }
 
   /**
@@ -2507,11 +1652,11 @@ public class DynamicEntityDaoImplDiffblueTest {
    * Method under test: {@link DynamicEntityDaoImpl#pad(String, int, char)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String DynamicEntityDaoImpl.pad(String, int, char)"})
   public void testPad_whenEmptyString_thenReturnAaa() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("AAA", (new DynamicEntityDaoImpl()).pad("", 3, 'A'));
+    assertEquals("AAA", dynamicEntityDaoImpl.pad("", 3, 'A'));
   }
 
   /**
@@ -2524,66 +1669,27 @@ public class DynamicEntityDaoImplDiffblueTest {
    * Method under test: {@link DynamicEntityDaoImpl#pad(String, int, char)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String DynamicEntityDaoImpl.pad(String, int, char)"})
   public void testPad_whenFoo_thenReturnFoo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("foo", (new DynamicEntityDaoImpl()).pad("foo", 3, 'A'));
+    assertEquals("foo", dynamicEntityDaoImpl.pad("foo", 3, 'A'));
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#getCacheKey(String, ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, Class, String, Boolean)}.
-   * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#getCacheKey(String, ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, Class, String, Boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetCacheKey() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5422 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
-    ForeignKey foreignField = new ForeignKey();
-    Class<Object> clazz = Object.class;
-
-    // Act
-    dynamicEntityDaoImpl2.getCacheKey("Dr Jane Doe", foreignField, new String[]{"Additional Non Persistent Properties"},
-        new ForeignKey[]{new ForeignKey()}, MergedPropertyType.PRIMARY, true, clazz, "Configuration Key", true);
-  }
-
-  /**
-   * Test
-   * {@link DynamicEntityDaoImpl#getCacheKey(String, ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, Class, String, Boolean)}.
+   * Test {@link DynamicEntityDaoImpl#getCacheKey(String, ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, Class, String, Boolean)}.
    * <ul>
    *   <li>Then return {@code cfdfd72e475f900ae49ce08efe7d93fb}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#getCacheKey(String, ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, Class, String, Boolean)}
+   * Method under test: {@link DynamicEntityDaoImpl#getCacheKey(String, ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, Class, String, Boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "String DynamicEntityDaoImpl.getCacheKey(String, ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, Class, String, Boolean)"})
   public void testGetCacheKey_thenReturnCfdfd72e475f900ae49ce08efe7d93fb() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
     ForeignKey foreignField = new ForeignKey();
     Class<Object> clazz = Object.class;
 
@@ -2595,22 +1701,20 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#getCacheKey(String, ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, Class, String, Boolean)}.
+   * Test {@link DynamicEntityDaoImpl#getCacheKey(String, ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, Class, String, Boolean)}.
    * <ul>
    *   <li>When {@code null}.</li>
    *   <li>Then return {@code 83d7638ab51bce26f4ff6b4a29ddf077}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#getCacheKey(String, ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, Class, String, Boolean)}
+   * Method under test: {@link DynamicEntityDaoImpl#getCacheKey(String, ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, Class, String, Boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "String DynamicEntityDaoImpl.getCacheKey(String, ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, Class, String, Boolean)"})
   public void testGetCacheKey_whenNull_thenReturn83d7638ab51bce26f4ff6b4a29ddf077() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
     Class<Object> clazz = Object.class;
 
     // Act and Assert
@@ -2619,22 +1723,20 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#getCacheKey(String, ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, Class, String, Boolean)}.
+   * Test {@link DynamicEntityDaoImpl#getCacheKey(String, ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, Class, String, Boolean)}.
    * <ul>
    *   <li>When {@code , originatingField='}.</li>
    *   <li>Then return {@code 0cf062a6e41767af4e8c19ab846b1965}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#getCacheKey(String, ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, Class, String, Boolean)}
+   * Method under test: {@link DynamicEntityDaoImpl#getCacheKey(String, ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, Class, String, Boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "String DynamicEntityDaoImpl.getCacheKey(String, ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, Class, String, Boolean)"})
   public void testGetCacheKey_whenOriginatingField_thenReturn0cf062a6e41767af4e8c19ab846b1965() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
     ForeignKey foreignField = new ForeignKey();
     Class<Object> clazz = Object.class;
 
@@ -2646,95 +1748,18 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#buildPropertiesFromPolymorphicEntities(Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, String, Map, List, String, Boolean, String)}.
-   * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#buildPropertiesFromPolymorphicEntities(Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, String, Map, List, String, Boolean, String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testBuildPropertiesFromPolymorphicEntities() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2656 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
-    Class<Object> forNameResult = Object.class;
-    ForeignKey foreignField = new ForeignKey();
-    HashMap<String, FieldMetadata> mergedProperties = new HashMap<>();
-
-    // Act
-    dynamicEntityDaoImpl2.buildPropertiesFromPolymorphicEntities(new Class[]{forNameResult}, foreignField,
-        new String[]{"Additional Non Persistent Properties"}, new ForeignKey[]{new ForeignKey()},
-        MergedPropertyType.PRIMARY, true, new String[]{"Include Fields"}, new String[]{"Exclude Fields"},
-        "Configuration Key", "Dr Jane Doe", mergedProperties, new ArrayList<>(), "Prefix", true, "Parent Prefix");
-  }
-
-  /**
-   * Test
-   * {@link DynamicEntityDaoImpl#refreshDecimalDefaultValue(BasicFieldMetadata)}.
-   * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#refreshDecimalDefaultValue(BasicFieldMetadata)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testRefreshDecimalDefaultValue() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass12042 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
-
-    // Act
-    dynamicEntityDaoImpl2.refreshDecimalDefaultValue(new BasicFieldMetadata());
-  }
-
-  /**
-   * Test
-   * {@link DynamicEntityDaoImpl#refreshDecimalDefaultValue(BasicFieldMetadata)}.
+   * Test {@link DynamicEntityDaoImpl#refreshDecimalDefaultValue(BasicFieldMetadata)}.
    * <ul>
    *   <li>Given {@code 42}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#refreshDecimalDefaultValue(BasicFieldMetadata)}
+   * Method under test: {@link DynamicEntityDaoImpl#refreshDecimalDefaultValue(BasicFieldMetadata)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DynamicEntityDaoImpl.refreshDecimalDefaultValue(BasicFieldMetadata)"})
   public void testRefreshDecimalDefaultValue_given42() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
     BasicFieldMetadata value = mock(BasicFieldMetadata.class);
     when(value.getDefaultValue()).thenReturn("42");
 
@@ -2746,102 +1771,110 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#refreshDecimalDefaultValue(BasicFieldMetadata)}.
+   * Test {@link DynamicEntityDaoImpl#refreshDecimalDefaultValue(BasicFieldMetadata)}.
    * <ul>
    *   <li>Given {@code .}.</li>
-   *   <li>When {@link BasicFieldMetadata} (default constructor) DefaultValue is
-   * {@code .}.</li>
+   *   <li>When {@link BasicFieldMetadata} (default constructor) DefaultValue is {@code .}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#refreshDecimalDefaultValue(BasicFieldMetadata)}
+   * Method under test: {@link DynamicEntityDaoImpl#refreshDecimalDefaultValue(BasicFieldMetadata)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DynamicEntityDaoImpl.refreshDecimalDefaultValue(BasicFieldMetadata)"})
   public void testRefreshDecimalDefaultValue_givenDot_whenBasicFieldMetadataDefaultValueIsDot() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-
     BasicFieldMetadata value = new BasicFieldMetadata();
     value.setDefaultValue(".");
 
     // Act
     dynamicEntityDaoImpl.refreshDecimalDefaultValue(value);
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals(".", value.getDefaultValue());
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#refreshDecimalDefaultValue(BasicFieldMetadata)}.
+   * Test {@link DynamicEntityDaoImpl#refreshDecimalDefaultValue(BasicFieldMetadata)}.
    * <ul>
-   *   <li>Given empty string.</li>
+   *   <li>Then {@link BasicFieldMetadata} (default constructor) DefaultValue is empty string.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#refreshDecimalDefaultValue(BasicFieldMetadata)}
+   * Method under test: {@link DynamicEntityDaoImpl#refreshDecimalDefaultValue(BasicFieldMetadata)}
    */
   @Test
-  public void testRefreshDecimalDefaultValue_givenEmptyString() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DynamicEntityDaoImpl.refreshDecimalDefaultValue(BasicFieldMetadata)"})
+  public void testRefreshDecimalDefaultValue_thenBasicFieldMetadataDefaultValueIsEmptyString() {
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-    BasicFieldMetadata value = mock(BasicFieldMetadata.class);
-    when(value.getDefaultValue()).thenReturn("");
+    BasicFieldMetadata value = new BasicFieldMetadata();
+    value.setDefaultValue("");
 
     // Act
     dynamicEntityDaoImpl.refreshDecimalDefaultValue(value);
 
-    // Assert
-    verify(value, atLeast(1)).getDefaultValue();
+    // Assert that nothing has changed
+    assertEquals("", value.getDefaultValue());
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#refreshDecimalDefaultValue(BasicFieldMetadata)}.
+   * Test {@link DynamicEntityDaoImpl#refreshDecimalDefaultValue(BasicFieldMetadata)}.
    * <ul>
-   *   <li>Then {@link BasicFieldMetadata} (default constructor) DefaultValue is
-   * {@code null}.</li>
+   *   <li>Then {@link BasicFieldMetadata} (default constructor) DefaultValue is {@code not empty}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#refreshDecimalDefaultValue(BasicFieldMetadata)}
+   * Method under test: {@link DynamicEntityDaoImpl#refreshDecimalDefaultValue(BasicFieldMetadata)}
    */
   @Test
-  public void testRefreshDecimalDefaultValue_thenBasicFieldMetadataDefaultValueIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DynamicEntityDaoImpl.refreshDecimalDefaultValue(BasicFieldMetadata)"})
+  public void testRefreshDecimalDefaultValue_thenBasicFieldMetadataDefaultValueIsNotEmpty() {
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
+    BasicFieldMetadata value = new BasicFieldMetadata();
+    value.setDefaultValue("not empty");
+
+    // Act
+    dynamicEntityDaoImpl.refreshDecimalDefaultValue(value);
+
+    // Assert that nothing has changed
+    assertEquals("not empty", value.getDefaultValue());
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#refreshDecimalDefaultValue(BasicFieldMetadata)}.
+   * <ul>
+   *   <li>Then {@link BasicFieldMetadata} (default constructor) DefaultValue is {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#refreshDecimalDefaultValue(BasicFieldMetadata)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DynamicEntityDaoImpl.refreshDecimalDefaultValue(BasicFieldMetadata)"})
+  public void testRefreshDecimalDefaultValue_thenBasicFieldMetadataDefaultValueIsNull() {
+    // Arrange
     BasicFieldMetadata value = new BasicFieldMetadata();
 
     // Act
     dynamicEntityDaoImpl.refreshDecimalDefaultValue(value);
 
-    // Assert
+    // Assert that nothing has changed
     assertNull(value.getDefaultValue());
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#refreshDecimalDefaultValue(BasicFieldMetadata)}.
+   * Test {@link DynamicEntityDaoImpl#refreshDecimalDefaultValue(BasicFieldMetadata)}.
    * <ul>
    *   <li>Then throw {@link NoSuchBeanDefinitionException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#refreshDecimalDefaultValue(BasicFieldMetadata)}
+   * Method under test: {@link DynamicEntityDaoImpl#refreshDecimalDefaultValue(BasicFieldMetadata)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DynamicEntityDaoImpl.refreshDecimalDefaultValue(BasicFieldMetadata)"})
   public void testRefreshDecimalDefaultValue_thenThrowNoSuchBeanDefinitionException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
     BasicFieldMetadata value = mock(BasicFieldMetadata.class);
     doThrow(new NoSuchBeanDefinitionException("ThreadLocalManager.notify.orphans")).when(value)
         .setDefaultValue(Mockito.<String>any());
@@ -2854,23 +1887,18 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#refreshDecimalDefaultValue(BasicFieldMetadata)}.
+   * Test {@link DynamicEntityDaoImpl#refreshDecimalDefaultValue(BasicFieldMetadata)}.
    * <ul>
-   *   <li>When {@link BasicFieldMetadata} (default constructor) DefaultValue is
-   * {@code ,}.</li>
+   *   <li>When {@link BasicFieldMetadata} (default constructor) DefaultValue is {@code ,}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#refreshDecimalDefaultValue(BasicFieldMetadata)}
+   * Method under test: {@link DynamicEntityDaoImpl#refreshDecimalDefaultValue(BasicFieldMetadata)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DynamicEntityDaoImpl.refreshDecimalDefaultValue(BasicFieldMetadata)"})
   public void testRefreshDecimalDefaultValue_whenBasicFieldMetadataDefaultValueIsComma() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-
     BasicFieldMetadata value = new BasicFieldMetadata();
     value.setDefaultValue(",");
 
@@ -2882,22 +1910,18 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#refreshDecimalDefaultValue(BasicFieldMetadata)}.
+   * Test {@link DynamicEntityDaoImpl#refreshDecimalDefaultValue(BasicFieldMetadata)}.
    * <ul>
-   *   <li>When {@link BasicFieldMetadata}
-   * {@link BasicFieldMetadata#setDefaultValue(String)} does nothing.</li>
+   *   <li>When {@link BasicFieldMetadata} {@link BasicFieldMetadata#setDefaultValue(String)} does nothing.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#refreshDecimalDefaultValue(BasicFieldMetadata)}
+   * Method under test: {@link DynamicEntityDaoImpl#refreshDecimalDefaultValue(BasicFieldMetadata)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DynamicEntityDaoImpl.refreshDecimalDefaultValue(BasicFieldMetadata)"})
   public void testRefreshDecimalDefaultValue_whenBasicFieldMetadataSetDefaultValueDoesNothing() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
     BasicFieldMetadata value = mock(BasicFieldMetadata.class);
     doNothing().when(value).setDefaultValue(Mockito.<String>any());
     when(value.getDefaultValue()).thenReturn(",");
@@ -2912,52 +1936,18 @@ public class DynamicEntityDaoImplDiffblueTest {
 
   /**
    * Test {@link DynamicEntityDaoImpl#getAllFields(Class)}.
-   * <p>
-   * Method under test: {@link DynamicEntityDaoImpl#getAllFields(Class)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetAllFields() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4438 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
-    Class<Object> targetClass = Object.class;
-
-    // Act
-    dynamicEntityDaoImpl2.getAllFields(targetClass);
-  }
-
-  /**
-   * Test {@link DynamicEntityDaoImpl#getAllFields(Class)}.
    * <ul>
-   *   <li>When {@code java.lang.Boolean}.</li>
+   *   <li>When {@code Boolean}.</li>
    *   <li>Then return second element Name is {@code FALSE}.</li>
    * </ul>
    * <p>
    * Method under test: {@link DynamicEntityDaoImpl#getAllFields(Class)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Field[] DynamicEntityDaoImpl.getAllFields(Class)"})
   public void testGetAllFields_whenJavaLangBoolean_thenReturnSecondElementNameIsFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
     Class<Boolean> targetClass = Boolean.class;
 
     // Act
@@ -2970,7 +1960,6 @@ public class DynamicEntityDaoImplDiffblueTest {
     assertEquals("TRUE", field2.getName());
     Field field3 = actualAllFields[2];
     assertEquals("TYPE", field3.getName());
-    assertEquals("java.lang.Class<java.lang.Boolean>", field3.getGenericType().getTypeName());
     Field field4 = actualAllFields[3];
     assertEquals("private final boolean java.lang.Boolean.value", field4.toGenericString());
     Field field5 = actualAllFields[4];
@@ -3032,18 +2021,17 @@ public class DynamicEntityDaoImplDiffblueTest {
   /**
    * Test {@link DynamicEntityDaoImpl#getAllFields(Class)}.
    * <ul>
-   *   <li>When {@code java.lang.Object}.</li>
+   *   <li>When {@code Object}.</li>
    *   <li>Then return array length is zero.</li>
    * </ul>
    * <p>
    * Method under test: {@link DynamicEntityDaoImpl#getAllFields(Class)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Field[] DynamicEntityDaoImpl.getAllFields(Class)"})
   public void testGetAllFields_whenJavaLangObject_thenReturnArrayLengthIsZero() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
     Class<Object> targetClass = Object.class;
 
     // Act and Assert
@@ -3051,123 +2039,48 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#getPropertiesForPrimitiveClass(String, String, Class, Class, MergedPropertyType)}.
-   * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#getPropertiesForPrimitiveClass(String, String, Class, Class, MergedPropertyType)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetPropertiesForPrimitiveClass() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass9325 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
-    Class<Object> targetClass = Object.class;
-    Class<Object> parentClass = Object.class;
-
-    // Act
-    dynamicEntityDaoImpl2.getPropertiesForPrimitiveClass("Property Name", "Friendly Property Name", targetClass,
-        parentClass, MergedPropertyType.PRIMARY);
-  }
-
-  /**
    * Test {@link DynamicEntityDaoImpl#getIdMetadata(Class)}.
+   * <ul>
+   *   <li>Then return Empty.</li>
+   * </ul>
    * <p>
    * Method under test: {@link DynamicEntityDaoImpl#getIdMetadata(Class)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetIdMetadata() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass7065 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map DynamicEntityDaoImpl.getIdMetadata(Class)"})
+  public void testGetIdMetadata_thenReturnEmpty() {
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    DynamicDaoHelperImpl dynamicDaoHelper = mock(DynamicDaoHelperImpl.class);
+    when(dynamicDaoHelper.getIdMetadata(Mockito.<Class<Object>>any(), Mockito.<EntityManager>any()))
+        .thenReturn(new HashMap<>());
+
+    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
+    dynamicEntityDaoImpl.setDynamicDaoHelper(dynamicDaoHelper);
     Class<Object> entityClass = Object.class;
 
     // Act
-    dynamicEntityDaoImpl2.getIdMetadata(entityClass);
-  }
+    Map<String, Object> actualIdMetadata = dynamicEntityDaoImpl.getIdMetadata(entityClass);
 
-  /**
-   * Test {@link DynamicEntityDaoImpl#getPropertyNames(Class)}.
-   * <p>
-   * Method under test: {@link DynamicEntityDaoImpl#getPropertyNames(Class)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetPropertyNames() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass9646 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
-    Class<Object> entityClass = Object.class;
-
-    // Act
-    dynamicEntityDaoImpl2.getPropertyNames(entityClass);
+    // Assert
+    verify(dynamicDaoHelper).getIdMetadata(isA(Class.class), isNull());
+    assertTrue(actualIdMetadata.isEmpty());
   }
 
   /**
    * Test {@link DynamicEntityDaoImpl#getPropertyNames(Class)}.
    * <ul>
-   *   <li>When {@code java.lang.Object}.</li>
+   *   <li>Given {@link FieldMetadataProvider}.</li>
    *   <li>Then return Empty.</li>
    * </ul>
    * <p>
    * Method under test: {@link DynamicEntityDaoImpl#getPropertyNames(Class)}
    */
   @Test
-  public void testGetPropertyNames_whenJavaLangObject_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List DynamicEntityDaoImpl.getPropertyNames(Class)"})
+  public void testGetPropertyNames_givenFieldMetadataProvider_thenReturnEmpty() {
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
     Class<Object> entityClass = Object.class;
 
     // Act and Assert
@@ -3175,53 +2088,47 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
-   * Test {@link DynamicEntityDaoImpl#getPropertyTypes(Class)}.
+   * Test {@link DynamicEntityDaoImpl#getPropertyNames(Class)}.
+   * <ul>
+   *   <li>Then calls {@link DynamicDaoHelperImpl#getPropertyNames(Class)}.</li>
+   * </ul>
    * <p>
-   * Method under test: {@link DynamicEntityDaoImpl#getPropertyTypes(Class)}
+   * Method under test: {@link DynamicEntityDaoImpl#getPropertyNames(Class)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetPropertyTypes() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass9974 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List DynamicEntityDaoImpl.getPropertyNames(Class)"})
+  public void testGetPropertyNames_thenCallsGetPropertyNames() {
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    DynamicDaoHelperImpl dynamicDaoHelper = mock(DynamicDaoHelperImpl.class);
+    when(dynamicDaoHelper.getPropertyNames(Mockito.<Class<Object>>any())).thenReturn(new ArrayList<>());
+
+    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
+    dynamicEntityDaoImpl.setDynamicDaoHelper(dynamicDaoHelper);
     Class<Object> entityClass = Object.class;
 
     // Act
-    dynamicEntityDaoImpl2.getPropertyTypes(entityClass);
+    List<String> actualPropertyNames = dynamicEntityDaoImpl.getPropertyNames(entityClass);
+
+    // Assert
+    verify(dynamicDaoHelper).getPropertyNames(isA(Class.class));
+    assertTrue(actualPropertyNames.isEmpty());
   }
 
   /**
    * Test {@link DynamicEntityDaoImpl#getPropertyTypes(Class)}.
    * <ul>
-   *   <li>When {@code java.lang.Object}.</li>
+   *   <li>Given {@link FieldMetadataProvider}.</li>
    *   <li>Then return Empty.</li>
    * </ul>
    * <p>
    * Method under test: {@link DynamicEntityDaoImpl#getPropertyTypes(Class)}
    */
   @Test
-  public void testGetPropertyTypes_whenJavaLangObject_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List DynamicEntityDaoImpl.getPropertyTypes(Class)"})
+  public void testGetPropertyTypes_givenFieldMetadataProvider_thenReturnEmpty() {
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
     Class<Object> entityClass = Object.class;
 
     // Act and Assert
@@ -3229,35 +2136,84 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#getTabAndGroupMetadata(Class[], ClassMetadata)}.
+   * Test {@link DynamicEntityDaoImpl#getPropertyTypes(Class)}.
+   * <ul>
+   *   <li>Then calls {@link DynamicDaoHelperImpl#getPropertyTypes(Class)}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#getTabAndGroupMetadata(Class[], ClassMetadata)}
+   * Method under test: {@link DynamicEntityDaoImpl#getPropertyTypes(Class)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetTabAndGroupMetadata() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass10671 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List DynamicEntityDaoImpl.getPropertyTypes(Class)"})
+  public void testGetPropertyTypes_thenCallsGetPropertyTypes() {
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
-    Class<Object> forNameResult = Object.class;
+    DynamicDaoHelperImpl dynamicDaoHelper = mock(DynamicDaoHelperImpl.class);
+    when(dynamicDaoHelper.getPropertyTypes(Mockito.<Class<Object>>any())).thenReturn(new ArrayList<>());
+
+    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
+    dynamicEntityDaoImpl.setDynamicDaoHelper(dynamicDaoHelper);
+    Class<Object> entityClass = Object.class;
+
+    // Act
+    List<Type> actualPropertyTypes = dynamicEntityDaoImpl.getPropertyTypes(entityClass);
+
+    // Assert
+    verify(dynamicDaoHelper).getPropertyTypes(isA(Class.class));
+    assertTrue(actualPropertyTypes.isEmpty());
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#getTabAndGroupMetadata(Class[], ClassMetadata)}.
+   * <ul>
+   *   <li>Then throw {@link FactoryBeanNotInitializedException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#getTabAndGroupMetadata(Class[], ClassMetadata)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map DynamicEntityDaoImpl.getTabAndGroupMetadata(Class[], ClassMetadata)"})
+  public void testGetTabAndGroupMetadata_thenThrowFactoryBeanNotInitializedException() {
+    // Arrange
+    when(metadata.getBaseTabAndGroupMetadata(Mockito.<Class<Object>[]>any()))
+        .thenThrow(new FactoryBeanNotInitializedException("Msg"));
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(
+        new org.broadleafcommerce.openadmin.dto.Property[]{new org.broadleafcommerce.openadmin.dto.Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+
+    // Act and Assert
+    assertThrows(FactoryBeanNotInitializedException.class,
+        () -> dynamicEntityDaoImpl.getTabAndGroupMetadata(new Class[]{null}, cmd));
+    verify(metadata).getBaseTabAndGroupMetadata(isA(Class[].class));
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#getTabAndGroupMetadata(Class[], ClassMetadata)}.
+   * <ul>
+   *   <li>When array of {@link Class} with {@code null}.</li>
+   *   <li>Then return Empty.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#getTabAndGroupMetadata(Class[], ClassMetadata)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map DynamicEntityDaoImpl.getTabAndGroupMetadata(Class[], ClassMetadata)"})
+  public void testGetTabAndGroupMetadata_whenArrayOfClassWithNull_thenReturnEmpty() {
+    // Arrange
+    when(metadata.getBaseTabAndGroupMetadata(Mockito.<Class<Object>[]>any())).thenReturn(new HashMap<>());
+    doNothing().when(metadata)
+        .applyTabAndGroupMetadataOverrides(Mockito.<Class<Object>[]>any(), Mockito.<Map<String, TabMetadata>>any());
+    doNothing().when(metadata)
+        .buildAdditionalTabAndGroupMetadataFromCmdProperties(Mockito.<ClassMetadata>any(),
+            Mockito.<Map<String, TabMetadata>>any());
 
     ClassMetadata cmd = new ClassMetadata();
     cmd.setCeilingType("Type");
@@ -3269,40 +2225,66 @@ public class DynamicEntityDaoImplDiffblueTest {
     cmd.setTabAndGroupMetadata(new HashMap<>());
 
     // Act
-    dynamicEntityDaoImpl2.getTabAndGroupMetadata(new Class[]{forNameResult}, cmd);
+    Map<String, TabMetadata> actualTabAndGroupMetadata = dynamicEntityDaoImpl.getTabAndGroupMetadata(new Class[]{null},
+        cmd);
+
+    // Assert
+    verify(metadata).applyTabAndGroupMetadataOverrides(isA(Class[].class), isA(Map.class));
+    verify(metadata).buildAdditionalTabAndGroupMetadataFromCmdProperties(isA(ClassMetadata.class), isA(Map.class));
+    verify(metadata).getBaseTabAndGroupMetadata(isA(Class[].class));
+    assertTrue(actualTabAndGroupMetadata.isEmpty());
   }
 
   /**
    * Test {@link DynamicEntityDaoImpl#getSuperClassHierarchy(Class)}.
+   * <ul>
+   *   <li>When {@code Boolean}.</li>
+   *   <li>Then return array length is one.</li>
+   * </ul>
    * <p>
    * Method under test: {@link DynamicEntityDaoImpl#getSuperClassHierarchy(Class)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetSuperClassHierarchy() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass10343 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class[] DynamicEntityDaoImpl.getSuperClassHierarchy(Class)"})
+  public void testGetSuperClassHierarchy_whenJavaLangBoolean_thenReturnArrayLengthIsOne() {
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
-    Class<Object> ceilingEntity = Object.class;
+    Class<Boolean> ceilingEntity = Boolean.class;
 
     // Act
-    dynamicEntityDaoImpl2.getSuperClassHierarchy(ceilingEntity);
+    Class<?>[] actualSuperClassHierarchy = dynamicEntityDaoImpl.getSuperClassHierarchy(ceilingEntity);
+
+    // Assert
+    assertEquals(1, actualSuperClassHierarchy.length);
+    Class<Boolean> expectedResultClass = Boolean.class;
+    assertEquals(expectedResultClass, actualSuperClassHierarchy[0]);
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#getSuperClassHierarchy(Class)}.
+   * <ul>
+   *   <li>When {@code Byte}.</li>
+   *   <li>Then return array length is two.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#getSuperClassHierarchy(Class)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class[] DynamicEntityDaoImpl.getSuperClassHierarchy(Class)"})
+  public void testGetSuperClassHierarchy_whenJavaLangByte_thenReturnArrayLengthIsTwo() {
+    // Arrange
+    Class<Byte> ceilingEntity = Byte.class;
+
+    // Act
+    Class<?>[] actualSuperClassHierarchy = dynamicEntityDaoImpl.getSuperClassHierarchy(ceilingEntity);
+
+    // Assert
+    assertEquals(2, actualSuperClassHierarchy.length);
+    Class<Byte> expectedResultClass = Byte.class;
+    assertEquals(expectedResultClass, actualSuperClassHierarchy[0]);
+    Class<Number> expectedResultClass2 = Number.class;
+    assertEquals(expectedResultClass2, actualSuperClassHierarchy[1]);
   }
 
   /**
@@ -3315,114 +2297,56 @@ public class DynamicEntityDaoImplDiffblueTest {
    * Method under test: {@link DynamicEntityDaoImpl#getSuperClassHierarchy(Class)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class[] DynamicEntityDaoImpl.getSuperClassHierarchy(Class)"})
   public void testGetSuperClassHierarchy_whenNull_thenReturnArrayLengthIsZero() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals(0, (new DynamicEntityDaoImpl()).getSuperClassHierarchy(null).length);
+    assertEquals(0, dynamicEntityDaoImpl.getSuperClassHierarchy(null).length);
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#getPropertiesForEntityClass(Class, ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, String, List, String, Boolean, String)}.
-   * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#getPropertiesForEntityClass(Class, ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, String, List, String, Boolean, String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetPropertiesForEntityClass() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass9022 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
-    Class<Object> targetClass = Object.class;
-    ForeignKey foreignField = new ForeignKey();
-
-    // Act
-    dynamicEntityDaoImpl2.getPropertiesForEntityClass(targetClass, foreignField,
-        new String[]{"Additional Non Persistent Properties"}, new ForeignKey[]{new ForeignKey()},
-        MergedPropertyType.PRIMARY, true, new String[]{"Include Fields"}, new String[]{"Exclude Fields"},
-        "Configuration Key", "Dr Jane Doe", new ArrayList<>(), "Prefix", true, "Parent Prefix");
-  }
-
-  /**
-   * Test
-   * {@link DynamicEntityDaoImpl#buildProperties(Class, ForeignKey, ForeignKey[], String[], MergedPropertyType, Map, List, Map, List, List, String, Boolean, String[], String[], String, String, List, String, Boolean, Boolean, String)}.
-   * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#buildProperties(Class, ForeignKey, ForeignKey[], String[], MergedPropertyType, Map, List, Map, List, List, String, Boolean, String[], String[], String, String, List, String, Boolean, Boolean, String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testBuildProperties() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2362 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
-    Class<Object> targetClass = Object.class;
-    ForeignKey foreignField = new ForeignKey();
-    HashMap<String, FieldMetadata> presentationAttributes = new HashMap<>();
-    ArrayList<Property> componentProperties = new ArrayList<>();
-    HashMap<String, FieldMetadata> fields = new HashMap<>();
-    ArrayList<String> propertyNames = new ArrayList<>();
-    ArrayList<Type> propertyTypes = new ArrayList<>();
-
-    // Act
-    dynamicEntityDaoImpl2.buildProperties(targetClass, foreignField, new ForeignKey[]{new ForeignKey()},
-        new String[]{"Additional Non Persistent Properties"}, MergedPropertyType.PRIMARY, presentationAttributes,
-        componentProperties, fields, propertyNames, propertyTypes, "Id Property", true, new String[]{"Include Fields"},
-        new String[]{"Exclude Fields"}, "Configuration Key", "Dr Jane Doe", new ArrayList<>(), "Prefix", true, true,
-        "Parent Prefix");
-  }
-
-  /**
-   * Test
-   * {@link DynamicEntityDaoImpl#buildProperties(Class, ForeignKey, ForeignKey[], String[], MergedPropertyType, Map, List, Map, List, List, String, Boolean, String[], String[], String, String, List, String, Boolean, Boolean, String)}.
+   * Test {@link DynamicEntityDaoImpl#getPropertiesForEntityClass(Class, ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, String, List, String, Boolean, String)}.
    * <ul>
-   *   <li>Given {@code java.lang.Object}.</li>
+   *   <li>Then throw {@link NoSuchBeanDefinitionException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#getPropertiesForEntityClass(Class, ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, String, List, String, Boolean, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Map DynamicEntityDaoImpl.getPropertiesForEntityClass(Class, ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, String, List, String, Boolean, String)"})
+  public void testGetPropertiesForEntityClass_thenThrowNoSuchBeanDefinitionException() {
+    // Arrange
+    when(metadata.getFieldMetadataForTargetClass(Mockito.<Class<Object>>any(), Mockito.<Class<Object>>any(),
+        Mockito.<DynamicEntityDao>any(), Mockito.<String>any())).thenThrow(new NoSuchBeanDefinitionException("Name"));
+    Class<Object> targetClass = Object.class;
+    ForeignKey foreignField = new ForeignKey();
+
+    // Act and Assert
+    assertThrows(NoSuchBeanDefinitionException.class,
+        () -> dynamicEntityDaoImpl.getPropertiesForEntityClass(targetClass, foreignField,
+            new String[]{"Additional Non Persistent Properties"}, new ForeignKey[]{new ForeignKey()},
+            MergedPropertyType.PRIMARY, true, new String[]{"Include Fields"}, new String[]{"Exclude Fields"},
+            "Configuration Key", "Dr Jane Doe", new ArrayList<>(), "Prefix", true, "Parent Prefix"));
+    verify(metadata).getFieldMetadataForTargetClass(isNull(), isA(Class.class), isA(DynamicEntityDao.class), eq(""));
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#buildProperties(Class, ForeignKey, ForeignKey[], String[], MergedPropertyType, Map, List, Map, List, List, String, Boolean, String[], String[], String, String, List, String, Boolean, Boolean, String)}.
+   * <ul>
+   *   <li>Given {@code Object}.</li>
    *   <li>Then {@link ArrayList#ArrayList()} size is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#buildProperties(Class, ForeignKey, ForeignKey[], String[], MergedPropertyType, Map, List, Map, List, List, String, Boolean, String[], String[], String, String, List, String, Boolean, Boolean, String)}
+   * Method under test: {@link DynamicEntityDaoImpl#buildProperties(Class, ForeignKey, ForeignKey[], String[], MergedPropertyType, Map, List, Map, List, List, String, Boolean, String[], String[], String, String, List, String, Boolean, Boolean, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void DynamicEntityDaoImpl.buildProperties(Class, ForeignKey, ForeignKey[], String[], MergedPropertyType, Map, List, Map, List, List, String, Boolean, String[], String[], String, String, List, String, Boolean, Boolean, String)"})
   public void testBuildProperties_givenJavaLangObject_thenArrayListSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
     Class<Object> targetClass = Object.class;
     ForeignKey foreignField = new ForeignKey();
     HashMap<String, FieldMetadata> presentationAttributes = new HashMap<>();
@@ -3449,22 +2373,20 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#buildProperties(Class, ForeignKey, ForeignKey[], String[], MergedPropertyType, Map, List, Map, List, List, String, Boolean, String[], String[], String, String, List, String, Boolean, Boolean, String)}.
+   * Test {@link DynamicEntityDaoImpl#buildProperties(Class, ForeignKey, ForeignKey[], String[], MergedPropertyType, Map, List, Map, List, List, String, Boolean, String[], String[], String, String, List, String, Boolean, Boolean, String)}.
    * <ul>
-   *   <li>Given {@code java.lang.Object}.</li>
+   *   <li>Given {@code Object}.</li>
    *   <li>Then {@link ArrayList#ArrayList()} size is two.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#buildProperties(Class, ForeignKey, ForeignKey[], String[], MergedPropertyType, Map, List, Map, List, List, String, Boolean, String[], String[], String, String, List, String, Boolean, Boolean, String)}
+   * Method under test: {@link DynamicEntityDaoImpl#buildProperties(Class, ForeignKey, ForeignKey[], String[], MergedPropertyType, Map, List, Map, List, List, String, Boolean, String[], String[], String, String, List, String, Boolean, Boolean, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void DynamicEntityDaoImpl.buildProperties(Class, ForeignKey, ForeignKey[], String[], MergedPropertyType, Map, List, Map, List, List, String, Boolean, String[], String[], String, String, List, String, Boolean, Boolean, String)"})
   public void testBuildProperties_givenJavaLangObject_thenArrayListSizeIsTwo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
     Class<Object> targetClass = Object.class;
     ForeignKey foreignField = new ForeignKey();
     HashMap<String, FieldMetadata> presentationAttributes = new HashMap<>();
@@ -3496,16 +2418,16 @@ public class DynamicEntityDaoImplDiffblueTest {
   /**
    * Test {@link DynamicEntityDaoImpl#testPropertyInclusion(FieldMetadata)}.
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#testPropertyInclusion(FieldMetadata)}
+   * Method under test: {@link DynamicEntityDaoImpl#testPropertyInclusion(FieldMetadata)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean DynamicEntityDaoImpl.testPropertyInclusion(FieldMetadata)"})
   public void testTestPropertyInclusion() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
+    when(map.get(Mockito.<Object>any())).thenReturn("Get");
     AdornedTargetCollectionMetadata presentationAttribute = mock(AdornedTargetCollectionMetadata.class);
+    doNothing().when(presentationAttribute).setExcluded(Mockito.<Boolean>any());
     when(presentationAttribute.getExcluded()).thenReturn(true);
     when(presentationAttribute.getShowIfProperty()).thenReturn("Show If Property");
 
@@ -3513,24 +2435,26 @@ public class DynamicEntityDaoImplDiffblueTest {
     Boolean actualTestPropertyInclusionResult = dynamicEntityDaoImpl.testPropertyInclusion(presentationAttribute);
 
     // Assert
+    verify(map, atLeast(1)).get(isA(Object.class));
     verify(presentationAttribute, atLeast(1)).getExcluded();
     verify(presentationAttribute, atLeast(1)).getShowIfProperty();
+    verify(presentationAttribute).setExcluded(eq(true));
     assertFalse(actualTestPropertyInclusionResult);
   }
 
   /**
    * Test {@link DynamicEntityDaoImpl#testPropertyInclusion(FieldMetadata)}.
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#testPropertyInclusion(FieldMetadata)}
+   * Method under test: {@link DynamicEntityDaoImpl#testPropertyInclusion(FieldMetadata)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean DynamicEntityDaoImpl.testPropertyInclusion(FieldMetadata)"})
   public void testTestPropertyInclusion2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
+    when(map.get(Mockito.<Object>any())).thenReturn("Get");
     AdornedTargetCollectionMetadata presentationAttribute = mock(AdornedTargetCollectionMetadata.class);
+    doNothing().when(presentationAttribute).setExcluded(Mockito.<Boolean>any());
     when(presentationAttribute.getChildrenExcluded()).thenReturn(true);
     when(presentationAttribute.getExcluded()).thenReturn(false);
     when(presentationAttribute.getShowIfProperty()).thenReturn("Show If Property");
@@ -3539,25 +2463,27 @@ public class DynamicEntityDaoImplDiffblueTest {
     Boolean actualTestPropertyInclusionResult = dynamicEntityDaoImpl.testPropertyInclusion(presentationAttribute);
 
     // Assert
+    verify(map, atLeast(1)).get(isA(Object.class));
     verify(presentationAttribute, atLeast(1)).getChildrenExcluded();
     verify(presentationAttribute, atLeast(1)).getExcluded();
     verify(presentationAttribute, atLeast(1)).getShowIfProperty();
+    verify(presentationAttribute).setExcluded(eq(true));
     assertFalse(actualTestPropertyInclusionResult);
   }
 
   /**
    * Test {@link DynamicEntityDaoImpl#testPropertyInclusion(FieldMetadata)}.
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#testPropertyInclusion(FieldMetadata)}
+   * Method under test: {@link DynamicEntityDaoImpl#testPropertyInclusion(FieldMetadata)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean DynamicEntityDaoImpl.testPropertyInclusion(FieldMetadata)"})
   public void testTestPropertyInclusion3() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
+    when(map.get(Mockito.<Object>any())).thenReturn("Get");
     AdornedTargetCollectionMetadata presentationAttribute = mock(AdornedTargetCollectionMetadata.class);
+    doNothing().when(presentationAttribute).setExcluded(Mockito.<Boolean>any());
     when(presentationAttribute.getChildrenExcluded()).thenReturn(false);
     when(presentationAttribute.getExcluded()).thenReturn(false);
     when(presentationAttribute.getShowIfProperty()).thenReturn("Show If Property");
@@ -3566,43 +2492,12 @@ public class DynamicEntityDaoImplDiffblueTest {
     Boolean actualTestPropertyInclusionResult = dynamicEntityDaoImpl.testPropertyInclusion(presentationAttribute);
 
     // Assert
+    verify(map, atLeast(1)).get(isA(Object.class));
     verify(presentationAttribute, atLeast(1)).getChildrenExcluded();
     verify(presentationAttribute, atLeast(1)).getExcluded();
     verify(presentationAttribute, atLeast(1)).getShowIfProperty();
+    verify(presentationAttribute).setExcluded(eq(true));
     assertTrue(actualTestPropertyInclusionResult);
-  }
-
-  /**
-   * Test {@link DynamicEntityDaoImpl#testPropertyInclusion(FieldMetadata)}.
-   * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#testPropertyInclusion(FieldMetadata)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testTestPropertyInclusion4() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass13251 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
-
-    // Act
-    dynamicEntityDaoImpl2.testPropertyInclusion(new AdornedTargetCollectionMetadata());
   }
 
   /**
@@ -3611,15 +2506,13 @@ public class DynamicEntityDaoImplDiffblueTest {
    *   <li>Given empty string.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#testPropertyInclusion(FieldMetadata)}
+   * Method under test: {@link DynamicEntityDaoImpl#testPropertyInclusion(FieldMetadata)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean DynamicEntityDaoImpl.testPropertyInclusion(FieldMetadata)"})
   public void testTestPropertyInclusion_givenEmptyString() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
     AdornedTargetCollectionMetadata presentationAttribute = mock(AdornedTargetCollectionMetadata.class);
     when(presentationAttribute.getExcluded()).thenReturn(true);
     when(presentationAttribute.getShowIfProperty()).thenReturn("");
@@ -3636,28 +2529,73 @@ public class DynamicEntityDaoImplDiffblueTest {
   /**
    * Test {@link DynamicEntityDaoImpl#testPropertyInclusion(FieldMetadata)}.
    * <ul>
-   *   <li>Given
-   * {@link FactoryBeanNotInitializedException#FactoryBeanNotInitializedException(String)}
-   * with {@code Msg}.</li>
+   *   <li>Given {@link Map} {@link Map#get(Object)} return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#testPropertyInclusion(FieldMetadata)}
+   * Method under test: {@link DynamicEntityDaoImpl#testPropertyInclusion(FieldMetadata)}
    */
   @Test
-  public void testTestPropertyInclusion_givenFactoryBeanNotInitializedExceptionWithMsg() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean DynamicEntityDaoImpl.testPropertyInclusion(FieldMetadata)"})
+  public void testTestPropertyInclusion_givenMapGetReturnNull() {
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
+    when(map.get(Mockito.<Object>any())).thenReturn(null);
     AdornedTargetCollectionMetadata presentationAttribute = mock(AdornedTargetCollectionMetadata.class);
-    when(presentationAttribute.getShowIfProperty()).thenThrow(new FactoryBeanNotInitializedException("Msg"));
+    when(presentationAttribute.getExcluded()).thenReturn(true);
+    when(presentationAttribute.getShowIfProperty()).thenReturn("Show If Property");
 
     // Act
-    dynamicEntityDaoImpl.testPropertyInclusion(presentationAttribute);
+    Boolean actualTestPropertyInclusionResult = dynamicEntityDaoImpl.testPropertyInclusion(presentationAttribute);
 
     // Assert
-    verify(presentationAttribute).getShowIfProperty();
+    verify(map).get(isA(Object.class));
+    verify(presentationAttribute, atLeast(1)).getExcluded();
+    verify(presentationAttribute, atLeast(1)).getShowIfProperty();
+    assertFalse(actualTestPropertyInclusionResult);
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#testPropertyInclusion(FieldMetadata)}.
+   * <ul>
+   *   <li>Given {@link Map}.</li>
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#testPropertyInclusion(FieldMetadata)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean DynamicEntityDaoImpl.testPropertyInclusion(FieldMetadata)"})
+  public void testTestPropertyInclusion_givenMap_whenNull_thenReturnTrue() {
+    // Arrange, Act and Assert
+    assertTrue(dynamicEntityDaoImpl.testPropertyInclusion(null));
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#testPropertyInclusion(FieldMetadata)}.
+   * <ul>
+   *   <li>Then throw {@link NoSuchBeanDefinitionException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#testPropertyInclusion(FieldMetadata)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean DynamicEntityDaoImpl.testPropertyInclusion(FieldMetadata)"})
+  public void testTestPropertyInclusion_thenThrowNoSuchBeanDefinitionException() {
+    // Arrange
+    when(map.get(Mockito.<Object>any())).thenReturn("Get");
+    AdornedTargetCollectionMetadata presentationAttribute = mock(AdornedTargetCollectionMetadata.class);
+    doThrow(new NoSuchBeanDefinitionException("Name")).when(presentationAttribute).setExcluded(Mockito.<Boolean>any());
+    when(presentationAttribute.getShowIfProperty()).thenReturn("Show If Property");
+
+    // Act and Assert
+    assertThrows(NoSuchBeanDefinitionException.class,
+        () -> dynamicEntityDaoImpl.testPropertyInclusion(presentationAttribute));
+    verify(map, atLeast(1)).get(isA(Object.class));
+    verify(presentationAttribute, atLeast(1)).getShowIfProperty();
+    verify(presentationAttribute).setExcluded(eq(true));
   }
 
   /**
@@ -3667,88 +2605,53 @@ public class DynamicEntityDaoImplDiffblueTest {
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#testPropertyInclusion(FieldMetadata)}
+   * Method under test: {@link DynamicEntityDaoImpl#testPropertyInclusion(FieldMetadata)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean DynamicEntityDaoImpl.testPropertyInclusion(FieldMetadata)"})
   public void testTestPropertyInclusion_whenAdornedTargetCollectionMetadata_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertTrue(dynamicEntityDaoImpl.testPropertyInclusion(new AdornedTargetCollectionMetadata()));
   }
 
   /**
-   * Test {@link DynamicEntityDaoImpl#testPropertyInclusion(FieldMetadata)}.
-   * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return {@code true}.</li>
-   * </ul>
+   * Test {@link DynamicEntityDaoImpl#setExcludedBasedOnShowIfProperty(FieldMetadata)}.
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#testPropertyInclusion(FieldMetadata)}
+   * Method under test: {@link DynamicEntityDaoImpl#setExcludedBasedOnShowIfProperty(FieldMetadata)}
    */
   @Test
-  public void testTestPropertyInclusion_whenNull_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertTrue((new DynamicEntityDaoImpl()).testPropertyInclusion(null));
-  }
-
-  /**
-   * Test
-   * {@link DynamicEntityDaoImpl#setExcludedBasedOnShowIfProperty(FieldMetadata)}.
-   * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#setExcludedBasedOnShowIfProperty(FieldMetadata)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DynamicEntityDaoImpl.setExcludedBasedOnShowIfProperty(FieldMetadata)"})
   public void testSetExcludedBasedOnShowIfProperty() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass12556 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    when(map.get(Mockito.<Object>any())).thenReturn("Get");
+    AdornedTargetCollectionMetadata fieldMetadata = mock(AdornedTargetCollectionMetadata.class);
+    doNothing().when(fieldMetadata).setExcluded(Mockito.<Boolean>any());
+    when(fieldMetadata.getShowIfProperty()).thenReturn("Show If Property");
 
     // Act
-    dynamicEntityDaoImpl2.setExcludedBasedOnShowIfProperty(new AdornedTargetCollectionMetadata());
+    dynamicEntityDaoImpl.setExcludedBasedOnShowIfProperty(fieldMetadata);
+
+    // Assert
+    verify(map, atLeast(1)).get(isA(Object.class));
+    verify(fieldMetadata, atLeast(1)).getShowIfProperty();
+    verify(fieldMetadata).setExcluded(eq(true));
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#setExcludedBasedOnShowIfProperty(FieldMetadata)}.
+   * Test {@link DynamicEntityDaoImpl#setExcludedBasedOnShowIfProperty(FieldMetadata)}.
    * <ul>
    *   <li>Given empty string.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#setExcludedBasedOnShowIfProperty(FieldMetadata)}
+   * Method under test: {@link DynamicEntityDaoImpl#setExcludedBasedOnShowIfProperty(FieldMetadata)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DynamicEntityDaoImpl.setExcludedBasedOnShowIfProperty(FieldMetadata)"})
   public void testSetExcludedBasedOnShowIfProperty_givenEmptyString() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
     AdornedTargetCollectionMetadata fieldMetadata = mock(AdornedTargetCollectionMetadata.class);
     when(fieldMetadata.getShowIfProperty()).thenReturn("");
 
@@ -3760,49 +2663,20 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#setExcludedBasedOnShowIfProperty(FieldMetadata)}.
+   * Test {@link DynamicEntityDaoImpl#setExcludedBasedOnShowIfProperty(FieldMetadata)}.
    * <ul>
-   *   <li>Given
-   * {@link NoSuchBeanDefinitionException#NoSuchBeanDefinitionException(String)}
-   * with {@code Name}.</li>
+   *   <li>Given {@link Map} {@link Map#get(Object)} return {@code null}.</li>
+   *   <li>Then calls {@link Map#get(Object)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#setExcludedBasedOnShowIfProperty(FieldMetadata)}
+   * Method under test: {@link DynamicEntityDaoImpl#setExcludedBasedOnShowIfProperty(FieldMetadata)}
    */
   @Test
-  public void testSetExcludedBasedOnShowIfProperty_givenNoSuchBeanDefinitionExceptionWithName() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DynamicEntityDaoImpl.setExcludedBasedOnShowIfProperty(FieldMetadata)"})
+  public void testSetExcludedBasedOnShowIfProperty_givenMapGetReturnNull_thenCallsGet() {
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-    AdornedTargetCollectionMetadata fieldMetadata = mock(AdornedTargetCollectionMetadata.class);
-    when(fieldMetadata.getShowIfProperty()).thenThrow(new NoSuchBeanDefinitionException("Name"));
-
-    // Act
-    dynamicEntityDaoImpl.setExcludedBasedOnShowIfProperty(fieldMetadata);
-
-    // Assert
-    verify(fieldMetadata).getShowIfProperty();
-  }
-
-  /**
-   * Test
-   * {@link DynamicEntityDaoImpl#setExcludedBasedOnShowIfProperty(FieldMetadata)}.
-   * <ul>
-   *   <li>Given {@code Show If Property}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#setExcludedBasedOnShowIfProperty(FieldMetadata)}
-   */
-  @Test
-  public void testSetExcludedBasedOnShowIfProperty_givenShowIfProperty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
+    when(map.get(Mockito.<Object>any())).thenReturn(null);
     AdornedTargetCollectionMetadata fieldMetadata = mock(AdornedTargetCollectionMetadata.class);
     when(fieldMetadata.getShowIfProperty()).thenReturn("Show If Property");
 
@@ -3810,64 +2684,51 @@ public class DynamicEntityDaoImplDiffblueTest {
     dynamicEntityDaoImpl.setExcludedBasedOnShowIfProperty(fieldMetadata);
 
     // Assert
+    verify(map).get(isA(Object.class));
     verify(fieldMetadata, atLeast(1)).getShowIfProperty();
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#testPropertyRecursion(String, List, String, Class, String, Boolean, String)}.
+   * Test {@link DynamicEntityDaoImpl#setExcludedBasedOnShowIfProperty(FieldMetadata)}.
+   * <ul>
+   *   <li>Then throw {@link NoSuchBeanDefinitionException}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#testPropertyRecursion(String, List, String, Class, String, Boolean, String)}
+   * Method under test: {@link DynamicEntityDaoImpl#setExcludedBasedOnShowIfProperty(FieldMetadata)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testTestPropertyRecursion() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass13305 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DynamicEntityDaoImpl.setExcludedBasedOnShowIfProperty(FieldMetadata)"})
+  public void testSetExcludedBasedOnShowIfProperty_thenThrowNoSuchBeanDefinitionException() {
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
-    ArrayList<Class<?>> parentClasses = new ArrayList<>();
-    Class<Object> targetClass = Object.class;
+    when(map.get(Mockito.<Object>any())).thenReturn("Get");
+    AdornedTargetCollectionMetadata fieldMetadata = mock(AdornedTargetCollectionMetadata.class);
+    doThrow(new NoSuchBeanDefinitionException("Name")).when(fieldMetadata).setExcluded(Mockito.<Boolean>any());
+    when(fieldMetadata.getShowIfProperty()).thenReturn("Show If Property");
 
-    // Act
-    dynamicEntityDaoImpl2.testPropertyRecursion("Prefix", parentClasses, "Property Name", targetClass, "Dr Jane Doe",
-        true, "Parent Prefix");
+    // Act and Assert
+    assertThrows(NoSuchBeanDefinitionException.class,
+        () -> dynamicEntityDaoImpl.setExcludedBasedOnShowIfProperty(fieldMetadata));
+    verify(map, atLeast(1)).get(isA(Object.class));
+    verify(fieldMetadata, atLeast(1)).getShowIfProperty();
+    verify(fieldMetadata).setExcluded(eq(true));
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#testPropertyRecursion(String, List, String, Class, String, Boolean, String)}.
+   * Test {@link DynamicEntityDaoImpl#testPropertyRecursion(String, List, String, Class, String, Boolean, String)}.
    * <ul>
-   *   <li>Given {@code java.lang.Object}.</li>
+   *   <li>Given {@code Object}.</li>
    *   <li>When {@link ArrayList#ArrayList()} add {@link Object}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#testPropertyRecursion(String, List, String, Class, String, Boolean, String)}
+   * Method under test: {@link DynamicEntityDaoImpl#testPropertyRecursion(String, List, String, Class, String, Boolean, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Boolean DynamicEntityDaoImpl.testPropertyRecursion(String, List, String, Class, String, Boolean, String)"})
   public void testTestPropertyRecursion_givenJavaLangObject_whenArrayListAddObject() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-
     ArrayList<Class<?>> parentClasses = new ArrayList<>();
     Class<Object> forNameResult = Object.class;
     parentClasses.add(forNameResult);
@@ -3879,23 +2740,20 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#testPropertyRecursion(String, List, String, Class, String, Boolean, String)}.
+   * Test {@link DynamicEntityDaoImpl#testPropertyRecursion(String, List, String, Class, String, Boolean, String)}.
    * <ul>
-   *   <li>Given {@code java.lang.Object}.</li>
+   *   <li>Given {@code Object}.</li>
    *   <li>When {@link ArrayList#ArrayList()} add {@link Object}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#testPropertyRecursion(String, List, String, Class, String, Boolean, String)}
+   * Method under test: {@link DynamicEntityDaoImpl#testPropertyRecursion(String, List, String, Class, String, Boolean, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Boolean DynamicEntityDaoImpl.testPropertyRecursion(String, List, String, Class, String, Boolean, String)"})
   public void testTestPropertyRecursion_givenJavaLangObject_whenArrayListAddObject2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-
     ArrayList<Class<?>> parentClasses = new ArrayList<>();
     Class<Object> forNameResult = Object.class;
     parentClasses.add(forNameResult);
@@ -3909,22 +2767,20 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#testPropertyRecursion(String, List, String, Class, String, Boolean, String)}.
+   * Test {@link DynamicEntityDaoImpl#testPropertyRecursion(String, List, String, Class, String, Boolean, String)}.
    * <ul>
    *   <li>When empty string.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#testPropertyRecursion(String, List, String, Class, String, Boolean, String)}
+   * Method under test: {@link DynamicEntityDaoImpl#testPropertyRecursion(String, List, String, Class, String, Boolean, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Boolean DynamicEntityDaoImpl.testPropertyRecursion(String, List, String, Class, String, Boolean, String)"})
   public void testTestPropertyRecursion_whenEmptyString_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
     ArrayList<Class<?>> parentClasses = new ArrayList<>();
     Class<Object> targetClass = Object.class;
 
@@ -3934,22 +2790,20 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#testPropertyRecursion(String, List, String, Class, String, Boolean, String)}.
+   * Test {@link DynamicEntityDaoImpl#testPropertyRecursion(String, List, String, Class, String, Boolean, String)}.
    * <ul>
    *   <li>When empty string.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#testPropertyRecursion(String, List, String, Class, String, Boolean, String)}
+   * Method under test: {@link DynamicEntityDaoImpl#testPropertyRecursion(String, List, String, Class, String, Boolean, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Boolean DynamicEntityDaoImpl.testPropertyRecursion(String, List, String, Class, String, Boolean, String)"})
   public void testTestPropertyRecursion_whenEmptyString_thenReturnFalse2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
     ArrayList<Class<?>> parentClasses = new ArrayList<>();
     Class<Object> targetClass = Object.class;
 
@@ -3959,22 +2813,20 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#testPropertyRecursion(String, List, String, Class, String, Boolean, String)}.
+   * Test {@link DynamicEntityDaoImpl#testPropertyRecursion(String, List, String, Class, String, Boolean, String)}.
    * <ul>
    *   <li>When {@code Prefix}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#testPropertyRecursion(String, List, String, Class, String, Boolean, String)}
+   * Method under test: {@link DynamicEntityDaoImpl#testPropertyRecursion(String, List, String, Class, String, Boolean, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Boolean DynamicEntityDaoImpl.testPropertyRecursion(String, List, String, Class, String, Boolean, String)"})
   public void testTestPropertyRecursion_whenPrefix_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
     ArrayList<Class<?>> parentClasses = new ArrayList<>();
     Class<Object> targetClass = Object.class;
 
@@ -3984,129 +2836,54 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#testMultiLevelEmbeddableRecursion(String, Boolean, String, String)}.
-   * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#testMultiLevelEmbeddableRecursion(String, Boolean, String, String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testTestMultiLevelEmbeddableRecursion() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass13185 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new DynamicEntityDaoImpl()).testMultiLevelEmbeddableRecursion("Prefix", true, "Parent Prefix", "Property Name");
-  }
-
-  /**
-   * Test
-   * {@link DynamicEntityDaoImpl#testMultiLevelEmbeddableRecursion(String, Boolean, String, String)}.
+   * Test {@link DynamicEntityDaoImpl#testMultiLevelEmbeddableRecursion(String, Boolean, String, String)}.
    * <ul>
    *   <li>When {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#testMultiLevelEmbeddableRecursion(String, Boolean, String, String)}
+   * Method under test: {@link DynamicEntityDaoImpl#testMultiLevelEmbeddableRecursion(String, Boolean, String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean DynamicEntityDaoImpl.testMultiLevelEmbeddableRecursion(String, Boolean, String, String)"})
   public void testTestMultiLevelEmbeddableRecursion_whenFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertFalse((new DynamicEntityDaoImpl()).testMultiLevelEmbeddableRecursion("Prefix", false, "Parent Prefix",
-        "Property Name"));
+    assertFalse(
+        dynamicEntityDaoImpl.testMultiLevelEmbeddableRecursion("Prefix", false, "Parent Prefix", "Property Name"));
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#testMultiLevelEmbeddableRecursion(String, Boolean, String, String)}.
+   * Test {@link DynamicEntityDaoImpl#testMultiLevelEmbeddableRecursion(String, Boolean, String, String)}.
    * <ul>
    *   <li>When {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#testMultiLevelEmbeddableRecursion(String, Boolean, String, String)}
+   * Method under test: {@link DynamicEntityDaoImpl#testMultiLevelEmbeddableRecursion(String, Boolean, String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean DynamicEntityDaoImpl.testMultiLevelEmbeddableRecursion(String, Boolean, String, String)"})
   public void testTestMultiLevelEmbeddableRecursion_whenTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertFalse((new DynamicEntityDaoImpl()).testMultiLevelEmbeddableRecursion("Prefix", true, "Parent Prefix",
-        "Property Name"));
+    assertFalse(
+        dynamicEntityDaoImpl.testMultiLevelEmbeddableRecursion("Prefix", true, "Parent Prefix", "Property Name"));
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#testStandardPropertyRecursion(String, List, String, Class, String, Boolean)}.
-   * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#testStandardPropertyRecursion(String, List, String, Class, String, Boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testTestStandardPropertyRecursion() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass13624 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
-    ArrayList<Class<?>> parentClasses = new ArrayList<>();
-    Class<Object> targetClass = Object.class;
-
-    // Act
-    dynamicEntityDaoImpl2.testStandardPropertyRecursion("Prefix", parentClasses, "Property Name", targetClass,
-        "Dr Jane Doe", true);
-  }
-
-  /**
-   * Test
-   * {@link DynamicEntityDaoImpl#testStandardPropertyRecursion(String, List, String, Class, String, Boolean)}.
+   * Test {@link DynamicEntityDaoImpl#testStandardPropertyRecursion(String, List, String, Class, String, Boolean)}.
    * <ul>
-   *   <li>Given {@code java.lang.Object}.</li>
+   *   <li>Given {@code Object}.</li>
    *   <li>When {@link ArrayList#ArrayList()} add {@link Object}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#testStandardPropertyRecursion(String, List, String, Class, String, Boolean)}
+   * Method under test: {@link DynamicEntityDaoImpl#testStandardPropertyRecursion(String, List, String, Class, String, Boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Boolean DynamicEntityDaoImpl.testStandardPropertyRecursion(String, List, String, Class, String, Boolean)"})
   public void testTestStandardPropertyRecursion_givenJavaLangObject_whenArrayListAddObject() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-
     ArrayList<Class<?>> parentClasses = new ArrayList<>();
     Class<Object> forNameResult = Object.class;
     parentClasses.add(forNameResult);
@@ -4118,23 +2895,20 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#testStandardPropertyRecursion(String, List, String, Class, String, Boolean)}.
+   * Test {@link DynamicEntityDaoImpl#testStandardPropertyRecursion(String, List, String, Class, String, Boolean)}.
    * <ul>
-   *   <li>Given {@code java.lang.Object}.</li>
+   *   <li>Given {@code Object}.</li>
    *   <li>When {@link ArrayList#ArrayList()} add {@link Object}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#testStandardPropertyRecursion(String, List, String, Class, String, Boolean)}
+   * Method under test: {@link DynamicEntityDaoImpl#testStandardPropertyRecursion(String, List, String, Class, String, Boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Boolean DynamicEntityDaoImpl.testStandardPropertyRecursion(String, List, String, Class, String, Boolean)"})
   public void testTestStandardPropertyRecursion_givenJavaLangObject_whenArrayListAddObject2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-
     ArrayList<Class<?>> parentClasses = new ArrayList<>();
     Class<Object> forNameResult = Object.class;
     parentClasses.add(forNameResult);
@@ -4148,22 +2922,20 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#testStandardPropertyRecursion(String, List, String, Class, String, Boolean)}.
+   * Test {@link DynamicEntityDaoImpl#testStandardPropertyRecursion(String, List, String, Class, String, Boolean)}.
    * <ul>
    *   <li>When empty string.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#testStandardPropertyRecursion(String, List, String, Class, String, Boolean)}
+   * Method under test: {@link DynamicEntityDaoImpl#testStandardPropertyRecursion(String, List, String, Class, String, Boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Boolean DynamicEntityDaoImpl.testStandardPropertyRecursion(String, List, String, Class, String, Boolean)"})
   public void testTestStandardPropertyRecursion_whenEmptyString_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
     ArrayList<Class<?>> parentClasses = new ArrayList<>();
     Class<Object> targetClass = Object.class;
 
@@ -4173,22 +2945,20 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#testStandardPropertyRecursion(String, List, String, Class, String, Boolean)}.
+   * Test {@link DynamicEntityDaoImpl#testStandardPropertyRecursion(String, List, String, Class, String, Boolean)}.
    * <ul>
    *   <li>When {@code Prefix}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#testStandardPropertyRecursion(String, List, String, Class, String, Boolean)}
+   * Method under test: {@link DynamicEntityDaoImpl#testStandardPropertyRecursion(String, List, String, Class, String, Boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Boolean DynamicEntityDaoImpl.testStandardPropertyRecursion(String, List, String, Class, String, Boolean)"})
   public void testTestStandardPropertyRecursion_whenPrefix_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
     ArrayList<Class<?>> parentClasses = new ArrayList<>();
     Class<Object> targetClass = Object.class;
 
@@ -4198,59 +2968,19 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#determineExclusionForField(List, Class, Field)}.
-   * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#determineExclusionForField(List, Class, Field)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testDetermineExclusionForField() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3713 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
-    ArrayList<Class<?>> parentClasses = new ArrayList<>();
-    Class<Object> targetClass = Object.class;
-
-    // Act
-    dynamicEntityDaoImpl2.determineExclusionForField(parentClasses, targetClass, null);
-  }
-
-  /**
-   * Test
-   * {@link DynamicEntityDaoImpl#determineExclusionForField(List, Class, Field)}.
+   * Test {@link DynamicEntityDaoImpl#determineExclusionForField(List, Class, Field)}.
    * <ul>
-   *   <li>Given {@code java.lang.Object}.</li>
+   *   <li>Given {@code Object}.</li>
    *   <li>When {@link ArrayList#ArrayList()} add {@link Object}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#determineExclusionForField(List, Class, Field)}
+   * Method under test: {@link DynamicEntityDaoImpl#determineExclusionForField(List, Class, Field)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean DynamicEntityDaoImpl.determineExclusionForField(List, Class, Field)"})
   public void testDetermineExclusionForField_givenJavaLangObject_whenArrayListAddObject() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-
     ArrayList<Class<?>> parentClasses = new ArrayList<>();
     Class<Object> forNameResult = Object.class;
     parentClasses.add(forNameResult);
@@ -4261,21 +2991,18 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#determineExclusionForField(List, Class, Field)}.
+   * Test {@link DynamicEntityDaoImpl#determineExclusionForField(List, Class, Field)}.
    * <ul>
    *   <li>When {@link ArrayList#ArrayList()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#determineExclusionForField(List, Class, Field)}
+   * Method under test: {@link DynamicEntityDaoImpl#determineExclusionForField(List, Class, Field)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean DynamicEntityDaoImpl.determineExclusionForField(List, Class, Field)"})
   public void testDetermineExclusionForField_whenArrayList() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
     ArrayList<Class<?>> parentClasses = new ArrayList<>();
     Class<Object> targetClass = Object.class;
 
@@ -4284,34 +3011,107 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#buildBasicProperty(Field, Class, ForeignKey, ForeignKey[], String[], MergedPropertyType, Map, List, Map, String, Boolean, String[], String[], String, String, List, String, Boolean, String, Type, boolean, int, Boolean, String)}.
+   * Test {@link DynamicEntityDaoImpl#buildBasicProperty(Field, Class, ForeignKey, ForeignKey[], String[], MergedPropertyType, Map, List, Map, String, Boolean, String[], String[], String, String, List, String, Boolean, String, Type, boolean, int, Boolean, String)}.
+   * <ul>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link Object}.</li>
+   *   <li>Then {@link ArrayList#ArrayList()} size is one.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#buildBasicProperty(Field, Class, ForeignKey, ForeignKey[], String[], MergedPropertyType, Map, List, Map, String, Boolean, String[], String[], String, String, List, String, Boolean, String, Type, boolean, int, Boolean, String)}
+   * Method under test: {@link DynamicEntityDaoImpl#buildBasicProperty(Field, Class, ForeignKey, ForeignKey[], String[], MergedPropertyType, Map, List, Map, String, Boolean, String[], String[], String, String, List, String, Boolean, String, Type, boolean, int, Boolean, String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testBuildBasicProperty() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1488 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void DynamicEntityDaoImpl.buildBasicProperty(Field, Class, ForeignKey, ForeignKey[], String[], MergedPropertyType, Map, List, Map, String, Boolean, String[], String[], String, String, List, String, Boolean, String, Type, boolean, int, Boolean, String)"})
+  public void testBuildBasicProperty_whenArrayListAddObject_thenArrayListSizeIsOne() {
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    when(fieldMetadataProvider.addMetadataFromFieldType(Mockito.<AddMetadataFromFieldTypeRequest>any(),
+        Mockito.<Map<String, FieldMetadata>>any())).thenReturn(MetadataProviderResponse.HANDLED);
+    Class<Object> targetClass = Object.class;
+    ForeignKey foreignField = new ForeignKey();
+    HashMap<String, FieldMetadata> presentationAttributes = new HashMap<>();
+    ArrayList<Property> componentProperties = new ArrayList<>();
+    HashMap<String, FieldMetadata> fields = new HashMap<>();
+
+    ArrayList<Class<?>> parentClasses = new ArrayList<>();
+    Class<Object> forNameResult = Object.class;
+    parentClasses.add(forNameResult);
+
+    // Act
+    dynamicEntityDaoImpl.buildBasicProperty(null, targetClass, foreignField, new ForeignKey[]{new ForeignKey()},
+        new String[]{"Additional Non Persistent Properties"}, MergedPropertyType.PRIMARY, presentationAttributes,
+        componentProperties, fields, "Id Property", true, new String[]{"Include Fields"},
+        new String[]{"Exclude Fields"}, "Configuration Key", "Dr Jane Doe", parentClasses, "Prefix", true,
+        "Property Name", new BigDecimalType(), true, 1, true, "Parent Prefix");
+
+    // Assert
+    verify(fieldMetadataProvider).addMetadataFromFieldType(isA(AddMetadataFromFieldTypeRequest.class), isA(Map.class));
+    assertEquals(1, parentClasses.size());
+    Class<Object> expectedGetResult = Object.class;
+    assertEquals(expectedGetResult, parentClasses.get(0));
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#buildBasicProperty(Field, Class, ForeignKey, ForeignKey[], String[], MergedPropertyType, Map, List, Map, String, Boolean, String[], String[], String, String, List, String, Boolean, String, Type, boolean, int, Boolean, String)}.
+   * <ul>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link Object}.</li>
+   *   <li>Then {@link ArrayList#ArrayList()} size is two.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#buildBasicProperty(Field, Class, ForeignKey, ForeignKey[], String[], MergedPropertyType, Map, List, Map, String, Boolean, String[], String[], String, String, List, String, Boolean, String, Type, boolean, int, Boolean, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void DynamicEntityDaoImpl.buildBasicProperty(Field, Class, ForeignKey, ForeignKey[], String[], MergedPropertyType, Map, List, Map, String, Boolean, String[], String[], String, String, List, String, Boolean, String, Type, boolean, int, Boolean, String)"})
+  public void testBuildBasicProperty_whenArrayListAddObject_thenArrayListSizeIsTwo() {
+    // Arrange
+    when(fieldMetadataProvider.addMetadataFromFieldType(Mockito.<AddMetadataFromFieldTypeRequest>any(),
+        Mockito.<Map<String, FieldMetadata>>any())).thenReturn(MetadataProviderResponse.HANDLED);
+    Class<Object> targetClass = Object.class;
+    ForeignKey foreignField = new ForeignKey();
+    HashMap<String, FieldMetadata> presentationAttributes = new HashMap<>();
+    ArrayList<Property> componentProperties = new ArrayList<>();
+    HashMap<String, FieldMetadata> fields = new HashMap<>();
+
+    ArrayList<Class<?>> parentClasses = new ArrayList<>();
+    Class<Object> forNameResult = Object.class;
+    parentClasses.add(forNameResult);
+    Class<Object> forNameResult2 = Object.class;
+    parentClasses.add(forNameResult2);
+
+    // Act
+    dynamicEntityDaoImpl.buildBasicProperty(null, targetClass, foreignField, new ForeignKey[]{new ForeignKey()},
+        new String[]{"Additional Non Persistent Properties"}, MergedPropertyType.PRIMARY, presentationAttributes,
+        componentProperties, fields, "Id Property", true, new String[]{"Include Fields"},
+        new String[]{"Exclude Fields"}, "Configuration Key", "Dr Jane Doe", parentClasses, "Prefix", true,
+        "Property Name", new BigDecimalType(), true, 1, true, "Parent Prefix");
+
+    // Assert
+    verify(fieldMetadataProvider).addMetadataFromFieldType(isA(AddMetadataFromFieldTypeRequest.class), isA(Map.class));
+    assertEquals(2, parentClasses.size());
+    Class<Object> expectedGetResult = Object.class;
+    assertEquals(expectedGetResult, parentClasses.get(0));
+    assertSame(forNameResult2, parentClasses.get(1));
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#buildBasicProperty(Field, Class, ForeignKey, ForeignKey[], String[], MergedPropertyType, Map, List, Map, String, Boolean, String[], String[], String, String, List, String, Boolean, String, Type, boolean, int, Boolean, String)}.
+   * <ul>
+   *   <li>When {@link BigDecimalType} (default constructor).</li>
+   *   <li>Then calls {@link FieldMetadataProvider#addMetadataFromFieldType(AddMetadataFromFieldTypeRequest, Map)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#buildBasicProperty(Field, Class, ForeignKey, ForeignKey[], String[], MergedPropertyType, Map, List, Map, String, Boolean, String[], String[], String, String, List, String, Boolean, String, Type, boolean, int, Boolean, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void DynamicEntityDaoImpl.buildBasicProperty(Field, Class, ForeignKey, ForeignKey[], String[], MergedPropertyType, Map, List, Map, String, Boolean, String[], String[], String, String, List, String, Boolean, String, Type, boolean, int, Boolean, String)"})
+  public void testBuildBasicProperty_whenBigDecimalType_thenCallsAddMetadataFromFieldType() {
+    // Arrange
+    when(fieldMetadataProvider.addMetadataFromFieldType(Mockito.<AddMetadataFromFieldTypeRequest>any(),
+        Mockito.<Map<String, FieldMetadata>>any())).thenReturn(MetadataProviderResponse.HANDLED);
     Class<Object> targetClass = Object.class;
     ForeignKey foreignField = new ForeignKey();
     HashMap<String, FieldMetadata> presentationAttributes = new HashMap<>();
@@ -4320,86 +3120,134 @@ public class DynamicEntityDaoImplDiffblueTest {
     ArrayList<Class<?>> parentClasses = new ArrayList<>();
 
     // Act
-    dynamicEntityDaoImpl2.buildBasicProperty(null, targetClass, foreignField, new ForeignKey[]{new ForeignKey()},
+    dynamicEntityDaoImpl.buildBasicProperty(null, targetClass, foreignField, new ForeignKey[]{new ForeignKey()},
+        new String[]{"Additional Non Persistent Properties"}, MergedPropertyType.PRIMARY, presentationAttributes,
+        componentProperties, fields, "Id Property", true, new String[]{"Include Fields"},
+        new String[]{"Exclude Fields"}, "Configuration Key", "Dr Jane Doe", parentClasses, null, true, "Property Name",
+        new BigDecimalType(), true, 1, true, "Parent Prefix");
+
+    // Assert
+    verify(fieldMetadataProvider).addMetadataFromFieldType(isA(AddMetadataFromFieldTypeRequest.class), isA(Map.class));
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#buildBasicProperty(Field, Class, ForeignKey, ForeignKey[], String[], MergedPropertyType, Map, List, Map, String, Boolean, String[], String[], String, String, List, String, Boolean, String, Type, boolean, int, Boolean, String)}.
+   * <ul>
+   *   <li>When empty string.</li>
+   *   <li>Then calls {@link FieldMetadataProvider#addMetadataFromFieldType(AddMetadataFromFieldTypeRequest, Map)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#buildBasicProperty(Field, Class, ForeignKey, ForeignKey[], String[], MergedPropertyType, Map, List, Map, String, Boolean, String[], String[], String, String, List, String, Boolean, String, Type, boolean, int, Boolean, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void DynamicEntityDaoImpl.buildBasicProperty(Field, Class, ForeignKey, ForeignKey[], String[], MergedPropertyType, Map, List, Map, String, Boolean, String[], String[], String, String, List, String, Boolean, String, Type, boolean, int, Boolean, String)"})
+  public void testBuildBasicProperty_whenEmptyString_thenCallsAddMetadataFromFieldType() {
+    // Arrange
+    when(fieldMetadataProvider.addMetadataFromFieldType(Mockito.<AddMetadataFromFieldTypeRequest>any(),
+        Mockito.<Map<String, FieldMetadata>>any())).thenReturn(MetadataProviderResponse.HANDLED);
+    Class<Object> targetClass = Object.class;
+    ForeignKey foreignField = new ForeignKey();
+    HashMap<String, FieldMetadata> presentationAttributes = new HashMap<>();
+    ArrayList<Property> componentProperties = new ArrayList<>();
+    HashMap<String, FieldMetadata> fields = new HashMap<>();
+    ArrayList<Class<?>> parentClasses = new ArrayList<>();
+
+    // Act
+    dynamicEntityDaoImpl.buildBasicProperty(null, targetClass, foreignField, new ForeignKey[]{new ForeignKey()},
+        new String[]{"Additional Non Persistent Properties"}, MergedPropertyType.PRIMARY, presentationAttributes,
+        componentProperties, fields, "Id Property", true, new String[]{"Include Fields"},
+        new String[]{"Exclude Fields"}, "Configuration Key", "Dr Jane Doe", parentClasses, "", true, "Property Name",
+        new BigDecimalType(), true, 1, true, "Parent Prefix");
+
+    // Assert
+    verify(fieldMetadataProvider).addMetadataFromFieldType(isA(AddMetadataFromFieldTypeRequest.class), isA(Map.class));
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#buildBasicProperty(Field, Class, ForeignKey, ForeignKey[], String[], MergedPropertyType, Map, List, Map, String, Boolean, String[], String[], String, String, List, String, Boolean, String, Type, boolean, int, Boolean, String)}.
+   * <ul>
+   *   <li>When {@code false}.</li>
+   *   <li>Then calls {@link FieldMetadataProvider#addMetadataFromFieldType(AddMetadataFromFieldTypeRequest, Map)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#buildBasicProperty(Field, Class, ForeignKey, ForeignKey[], String[], MergedPropertyType, Map, List, Map, String, Boolean, String[], String[], String, String, List, String, Boolean, String, Type, boolean, int, Boolean, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void DynamicEntityDaoImpl.buildBasicProperty(Field, Class, ForeignKey, ForeignKey[], String[], MergedPropertyType, Map, List, Map, String, Boolean, String[], String[], String, String, List, String, Boolean, String, Type, boolean, int, Boolean, String)"})
+  public void testBuildBasicProperty_whenFalse_thenCallsAddMetadataFromFieldType() {
+    // Arrange
+    when(fieldMetadataProvider.addMetadataFromFieldType(Mockito.<AddMetadataFromFieldTypeRequest>any(),
+        Mockito.<Map<String, FieldMetadata>>any())).thenReturn(MetadataProviderResponse.HANDLED);
+    Class<Object> targetClass = Object.class;
+    ForeignKey foreignField = new ForeignKey();
+    HashMap<String, FieldMetadata> presentationAttributes = new HashMap<>();
+    ArrayList<Property> componentProperties = new ArrayList<>();
+    HashMap<String, FieldMetadata> fields = new HashMap<>();
+    ArrayList<Class<?>> parentClasses = new ArrayList<>();
+
+    // Act
+    dynamicEntityDaoImpl.buildBasicProperty(null, targetClass, foreignField, new ForeignKey[]{new ForeignKey()},
+        new String[]{"Additional Non Persistent Properties"}, MergedPropertyType.PRIMARY, presentationAttributes,
+        componentProperties, fields, "Id Property", true, new String[]{"Include Fields"},
+        new String[]{"Exclude Fields"}, "Configuration Key", "Dr Jane Doe", parentClasses, "Prefix", false,
+        "Property Name", new BigDecimalType(), true, 1, true, "Parent Prefix");
+
+    // Assert
+    verify(fieldMetadataProvider).addMetadataFromFieldType(isA(AddMetadataFromFieldTypeRequest.class), isA(Map.class));
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#buildBasicProperty(Field, Class, ForeignKey, ForeignKey[], String[], MergedPropertyType, Map, List, Map, String, Boolean, String[], String[], String, String, List, String, Boolean, String, Type, boolean, int, Boolean, String)}.
+   * <ul>
+   *   <li>When {@code Prefix}.</li>
+   *   <li>Then calls {@link FieldMetadataProvider#addMetadataFromFieldType(AddMetadataFromFieldTypeRequest, Map)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#buildBasicProperty(Field, Class, ForeignKey, ForeignKey[], String[], MergedPropertyType, Map, List, Map, String, Boolean, String[], String[], String, String, List, String, Boolean, String, Type, boolean, int, Boolean, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void DynamicEntityDaoImpl.buildBasicProperty(Field, Class, ForeignKey, ForeignKey[], String[], MergedPropertyType, Map, List, Map, String, Boolean, String[], String[], String, String, List, String, Boolean, String, Type, boolean, int, Boolean, String)"})
+  public void testBuildBasicProperty_whenPrefix_thenCallsAddMetadataFromFieldType() {
+    // Arrange
+    when(fieldMetadataProvider.addMetadataFromFieldType(Mockito.<AddMetadataFromFieldTypeRequest>any(),
+        Mockito.<Map<String, FieldMetadata>>any())).thenReturn(MetadataProviderResponse.HANDLED);
+    Class<Object> targetClass = Object.class;
+    ForeignKey foreignField = new ForeignKey();
+    HashMap<String, FieldMetadata> presentationAttributes = new HashMap<>();
+    ArrayList<Property> componentProperties = new ArrayList<>();
+    HashMap<String, FieldMetadata> fields = new HashMap<>();
+    ArrayList<Class<?>> parentClasses = new ArrayList<>();
+
+    // Act
+    dynamicEntityDaoImpl.buildBasicProperty(null, targetClass, foreignField, new ForeignKey[]{new ForeignKey()},
         new String[]{"Additional Non Persistent Properties"}, MergedPropertyType.PRIMARY, presentationAttributes,
         componentProperties, fields, "Id Property", true, new String[]{"Include Fields"},
         new String[]{"Exclude Fields"}, "Configuration Key", "Dr Jane Doe", parentClasses, "Prefix", true,
         "Property Name", new BigDecimalType(), true, 1, true, "Parent Prefix");
-  }
-
-  /**
-   * Test
-   * {@link DynamicEntityDaoImpl#testForeignProperty(ForeignKey, String, String)}.
-   * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#testForeignProperty(ForeignKey, String, String)}
-   */
-  @Test
-  public void testTestForeignProperty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-    ForeignKey foreignField = mock(ForeignKey.class);
-    when(foreignField.getManyToField()).thenThrow(new NoSuchBeanDefinitionException("PrefixProperty Name"));
-
-    // Act
-    dynamicEntityDaoImpl.testForeignProperty(foreignField, "Prefix", "Property Name");
 
     // Assert
-    verify(foreignField).getManyToField();
+    verify(fieldMetadataProvider).addMetadataFromFieldType(isA(AddMetadataFromFieldTypeRequest.class), isA(Map.class));
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#testForeignProperty(ForeignKey, String, String)}.
-   * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#testForeignProperty(ForeignKey, String, String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testTestForeignProperty2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass13125 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
-
-    // Act
-    dynamicEntityDaoImpl2.testForeignProperty(new ForeignKey(), "Prefix", "Property Name");
-  }
-
-  /**
-   * Test
-   * {@link DynamicEntityDaoImpl#testForeignProperty(ForeignKey, String, String)}.
+   * Test {@link DynamicEntityDaoImpl#testForeignProperty(ForeignKey, String, String)}.
    * <ul>
    *   <li>Given {@code Many To Field}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#testForeignProperty(ForeignKey, String, String)}
+   * Method under test: {@link DynamicEntityDaoImpl#testForeignProperty(ForeignKey, String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean DynamicEntityDaoImpl.testForeignProperty(ForeignKey, String, String)"})
   public void testTestForeignProperty_givenManyToField() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
     ForeignKey foreignField = mock(ForeignKey.class);
     when(foreignField.getManyToField()).thenReturn("Many To Field");
 
@@ -4413,116 +3261,67 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#testForeignProperty(ForeignKey, String, String)}.
+   * Test {@link DynamicEntityDaoImpl#testForeignProperty(ForeignKey, String, String)}.
    * <ul>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#testForeignProperty(ForeignKey, String, String)}
+   * Method under test: {@link DynamicEntityDaoImpl#testForeignProperty(ForeignKey, String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean DynamicEntityDaoImpl.testForeignProperty(ForeignKey, String, String)"})
   public void testTestForeignProperty_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertTrue(dynamicEntityDaoImpl.testForeignProperty(new ForeignKey("PrefixProperty Name", "PrefixProperty Name"),
         "Prefix", "Property Name"));
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#testForeignProperty(ForeignKey, String, String)}.
+   * Test {@link DynamicEntityDaoImpl#testForeignProperty(ForeignKey, String, String)}.
    * <ul>
    *   <li>When {@code null}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#testForeignProperty(ForeignKey, String, String)}
+   * Method under test: {@link DynamicEntityDaoImpl#testForeignProperty(ForeignKey, String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean DynamicEntityDaoImpl.testForeignProperty(ForeignKey, String, String)"})
   public void testTestForeignProperty_whenNull_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertFalse((new DynamicEntityDaoImpl()).testForeignProperty(null, "Prefix", "Property Name"));
+    assertFalse(dynamicEntityDaoImpl.testForeignProperty(null, "Prefix", "Property Name"));
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#findAdditionalForeignKeyIndex(ForeignKey[], String, String)}.
+   * Test {@link DynamicEntityDaoImpl#findAdditionalForeignKeyIndex(ForeignKey[], String, String)}.
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#findAdditionalForeignKeyIndex(ForeignKey[], String, String)}
+   * Method under test: {@link DynamicEntityDaoImpl#findAdditionalForeignKeyIndex(ForeignKey[], String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int DynamicEntityDaoImpl.findAdditionalForeignKeyIndex(ForeignKey[], String, String)"})
   public void testFindAdditionalForeignKeyIndex() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertEquals(-1, dynamicEntityDaoImpl
         .findAdditionalForeignKeyIndex(new ForeignKey[]{new ForeignKey("name", "name")}, "Prefix", "Property Name"));
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#findAdditionalForeignKeyIndex(ForeignKey[], String, String)}.
-   * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#findAdditionalForeignKeyIndex(ForeignKey[], String, String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindAdditionalForeignKeyIndex2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4367 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
-
-    // Act
-    dynamicEntityDaoImpl2.findAdditionalForeignKeyIndex(new ForeignKey[]{new ForeignKey()}, "Prefix", "Property Name");
-  }
-
-  /**
-   * Test
-   * {@link DynamicEntityDaoImpl#findAdditionalForeignKeyIndex(ForeignKey[], String, String)}.
+   * Test {@link DynamicEntityDaoImpl#findAdditionalForeignKeyIndex(ForeignKey[], String, String)}.
    * <ul>
    *   <li>Given {@code Many To Field}.</li>
    *   <li>Then return minus two.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#findAdditionalForeignKeyIndex(ForeignKey[], String, String)}
+   * Method under test: {@link DynamicEntityDaoImpl#findAdditionalForeignKeyIndex(ForeignKey[], String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int DynamicEntityDaoImpl.findAdditionalForeignKeyIndex(ForeignKey[], String, String)"})
   public void testFindAdditionalForeignKeyIndex_givenManyToField_thenReturnMinusTwo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
     ForeignKey foreignKey = mock(ForeignKey.class);
     when(foreignKey.getManyToField()).thenReturn("Many To Field");
 
@@ -4536,109 +3335,178 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#findAdditionalForeignKeyIndex(ForeignKey[], String, String)}.
+   * Test {@link DynamicEntityDaoImpl#findAdditionalForeignKeyIndex(ForeignKey[], String, String)}.
    * <ul>
    *   <li>When empty array of {@link ForeignKey}.</li>
    *   <li>Then return minus one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#findAdditionalForeignKeyIndex(ForeignKey[], String, String)}
+   * Method under test: {@link DynamicEntityDaoImpl#findAdditionalForeignKeyIndex(ForeignKey[], String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int DynamicEntityDaoImpl.findAdditionalForeignKeyIndex(ForeignKey[], String, String)"})
   public void testFindAdditionalForeignKeyIndex_whenEmptyArrayOfForeignKey_thenReturnMinusOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals(-1,
-        (new DynamicEntityDaoImpl()).findAdditionalForeignKeyIndex(new ForeignKey[]{}, "Prefix", "Property Name"));
+    assertEquals(-1, dynamicEntityDaoImpl.findAdditionalForeignKeyIndex(new ForeignKey[]{}, "Prefix", "Property Name"));
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#findAdditionalForeignKeyIndex(ForeignKey[], String, String)}.
+   * Test {@link DynamicEntityDaoImpl#findAdditionalForeignKeyIndex(ForeignKey[], String, String)}.
    * <ul>
    *   <li>When {@code null}.</li>
    *   <li>Then return minus one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#findAdditionalForeignKeyIndex(ForeignKey[], String, String)}
+   * Method under test: {@link DynamicEntityDaoImpl#findAdditionalForeignKeyIndex(ForeignKey[], String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int DynamicEntityDaoImpl.findAdditionalForeignKeyIndex(ForeignKey[], String, String)"})
   public void testFindAdditionalForeignKeyIndex_whenNull_thenReturnMinusOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals(-1, (new DynamicEntityDaoImpl()).findAdditionalForeignKeyIndex(null, "Prefix", "Property Name"));
+    assertEquals(-1, dynamicEntityDaoImpl.findAdditionalForeignKeyIndex(null, "Prefix", "Property Name"));
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#buildEntityProperties(Map, ForeignKey, ForeignKey[], String[], Boolean, String[], String[], String, String, String, Class, Class, List, String, Boolean, String)}.
+   * Test {@link DynamicEntityDaoImpl#buildEntityProperties(Map, ForeignKey, ForeignKey[], String[], Boolean, String[], String[], String, String, String, Class, Class, List, String, Boolean, String)}.
+   * <ul>
+   *   <li>Given {@code Object}.</li>
+   *   <li>Then {@link ArrayList#ArrayList()} size is one.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#buildEntityProperties(Map, ForeignKey, ForeignKey[], String[], Boolean, String[], String[], String, String, String, Class, Class, List, String, Boolean, String)}
+   * Method under test: {@link DynamicEntityDaoImpl#buildEntityProperties(Map, ForeignKey, ForeignKey[], String[], Boolean, String[], String[], String, String, String, Class, Class, List, String, Boolean, String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testBuildEntityProperties() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2063 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void DynamicEntityDaoImpl.buildEntityProperties(Map, ForeignKey, ForeignKey[], String[], Boolean, String[], String[], String, String, String, Class, Class, List, String, Boolean, String)"})
+  public void testBuildEntityProperties_givenJavaLangObject_thenArrayListSizeIsOne() {
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    when(
+        metadata.overrideMetadata(Mockito.<Class<Object>[]>any(), Mockito.<PropertyBuilder>any(), Mockito.<String>any(),
+            Mockito.<Boolean>any(), Mockito.<String>any(), Mockito.<String>any(), Mockito.<DynamicEntityDao>any()))
+        .thenReturn(new HashMap<>());
     HashMap<String, FieldMetadata> fields = new HashMap<>();
     ForeignKey foreignField = new ForeignKey();
     Class<Object> returnedClass = Object.class;
     Class<Object> targetClass = Object.class;
 
+    ArrayList<Class<?>> parentClasses = new ArrayList<>();
+    Class<Object> forNameResult = Object.class;
+    parentClasses.add(forNameResult);
+
     // Act
-    dynamicEntityDaoImpl2.buildEntityProperties(fields, foreignField, new ForeignKey[]{new ForeignKey()},
+    dynamicEntityDaoImpl.buildEntityProperties(fields, foreignField, new ForeignKey[]{new ForeignKey()},
         new String[]{"Additional Non Persistent Properties"}, true, new String[]{"Include Fields"},
         new String[]{"Exclude Fields"}, "Configuration Key", "Dr Jane Doe", "Property Name", returnedClass, targetClass,
-        new ArrayList<>(), "Prefix", true, "Parent Prefix");
+        parentClasses, "Prefix", true, "Parent Prefix");
+
+    // Assert
+    verify(metadata).overrideMetadata(isA(Class[].class), isA(PropertyBuilder.class), eq("PrefixProperty Name."),
+        eq(true), eq("Dr Jane Doe"), eq("Configuration Key"), isA(DynamicEntityDao.class));
+    assertEquals(1, parentClasses.size());
+    Class<Object> expectedGetResult = Object.class;
+    assertEquals(expectedGetResult, parentClasses.get(0));
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#buildEntityProperties(Map, ForeignKey, ForeignKey[], String[], Boolean, String[], String[], String, String, String, Class, Class, List, String, Boolean, String)}.
+   * Test {@link DynamicEntityDaoImpl#buildEntityProperties(Map, ForeignKey, ForeignKey[], String[], Boolean, String[], String[], String, String, String, Class, Class, List, String, Boolean, String)}.
    * <ul>
-   *   <li>Then calls
-   * {@link Metadata#overrideMetadata(Class[], PropertyBuilder, String, Boolean, String, String, DynamicEntityDao)}.</li>
+   *   <li>Given {@code Object}.</li>
+   *   <li>Then {@link ArrayList#ArrayList()} size is two.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#buildEntityProperties(Map, ForeignKey, ForeignKey[], String[], Boolean, String[], String[], String, String, String, Class, Class, List, String, Boolean, String)}
+   * Method under test: {@link DynamicEntityDaoImpl#buildEntityProperties(Map, ForeignKey, ForeignKey[], String[], Boolean, String[], String[], String, String, String, Class, Class, List, String, Boolean, String)}
    */
   @Test
-  public void testBuildEntityProperties_thenCallsOverrideMetadata() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void DynamicEntityDaoImpl.buildEntityProperties(Map, ForeignKey, ForeignKey[], String[], Boolean, String[], String[], String, String, String, Class, Class, List, String, Boolean, String)"})
+  public void testBuildEntityProperties_givenJavaLangObject_thenArrayListSizeIsTwo() {
     // Arrange
-    Metadata metadata = mock(Metadata.class);
     when(
         metadata.overrideMetadata(Mockito.<Class<Object>[]>any(), Mockito.<PropertyBuilder>any(), Mockito.<String>any(),
             Mockito.<Boolean>any(), Mockito.<String>any(), Mockito.<String>any(), Mockito.<DynamicEntityDao>any()))
-                .thenReturn(new HashMap<>());
+        .thenReturn(new HashMap<>());
+    HashMap<String, FieldMetadata> fields = new HashMap<>();
+    ForeignKey foreignField = new ForeignKey();
+    Class<Object> returnedClass = Object.class;
+    Class<Object> targetClass = Object.class;
 
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-    dynamicEntityDaoImpl.setMetadata(metadata);
+    ArrayList<Class<?>> parentClasses = new ArrayList<>();
+    Class<Object> forNameResult = Object.class;
+    parentClasses.add(forNameResult);
+    Class<Object> forNameResult2 = Object.class;
+    parentClasses.add(forNameResult2);
+
+    // Act
+    dynamicEntityDaoImpl.buildEntityProperties(fields, foreignField, new ForeignKey[]{new ForeignKey()},
+        new String[]{"Additional Non Persistent Properties"}, true, new String[]{"Include Fields"},
+        new String[]{"Exclude Fields"}, "Configuration Key", "Dr Jane Doe", "Property Name", returnedClass, targetClass,
+        parentClasses, "Prefix", true, "Parent Prefix");
+
+    // Assert
+    verify(metadata).overrideMetadata(isA(Class[].class), isA(PropertyBuilder.class), eq("PrefixProperty Name."),
+        eq(true), eq("Dr Jane Doe"), eq("Configuration Key"), isA(DynamicEntityDao.class));
+    assertEquals(2, parentClasses.size());
+    Class<Object> expectedGetResult = Object.class;
+    assertEquals(expectedGetResult, parentClasses.get(0));
+    assertSame(forNameResult2, parentClasses.get(1));
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#buildEntityProperties(Map, ForeignKey, ForeignKey[], String[], Boolean, String[], String[], String, String, String, Class, Class, List, String, Boolean, String)}.
+   * <ul>
+   *   <li>Then throw {@link NoSuchBeanDefinitionException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#buildEntityProperties(Map, ForeignKey, ForeignKey[], String[], Boolean, String[], String[], String, String, String, Class, Class, List, String, Boolean, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void DynamicEntityDaoImpl.buildEntityProperties(Map, ForeignKey, ForeignKey[], String[], Boolean, String[], String[], String, String, String, Class, Class, List, String, Boolean, String)"})
+  public void testBuildEntityProperties_thenThrowNoSuchBeanDefinitionException() {
+    // Arrange
+    when(
+        metadata.overrideMetadata(Mockito.<Class<Object>[]>any(), Mockito.<PropertyBuilder>any(), Mockito.<String>any(),
+            Mockito.<Boolean>any(), Mockito.<String>any(), Mockito.<String>any(), Mockito.<DynamicEntityDao>any()))
+        .thenThrow(new NoSuchBeanDefinitionException("Name"));
+    HashMap<String, FieldMetadata> fields = new HashMap<>();
+    ForeignKey foreignField = new ForeignKey();
+    Class<Object> returnedClass = Object.class;
+    Class<Object> targetClass = Object.class;
+
+    // Act and Assert
+    assertThrows(NoSuchBeanDefinitionException.class,
+        () -> dynamicEntityDaoImpl.buildEntityProperties(fields, foreignField, new ForeignKey[]{new ForeignKey()},
+            new String[]{"Additional Non Persistent Properties"}, true, new String[]{"Include Fields"},
+            new String[]{"Exclude Fields"}, "Configuration Key", "Dr Jane Doe", "Property Name", returnedClass,
+            targetClass, new ArrayList<>(), "Prefix", true, "Parent Prefix"));
+    verify(metadata).overrideMetadata(isA(Class[].class), isA(PropertyBuilder.class), eq("PrefixProperty Name."),
+        eq(true), eq("Dr Jane Doe"), eq("Configuration Key"), isA(DynamicEntityDao.class));
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#buildEntityProperties(Map, ForeignKey, ForeignKey[], String[], Boolean, String[], String[], String, String, String, Class, Class, List, String, Boolean, String)}.
+   * <ul>
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then calls {@link Metadata#overrideMetadata(Class[], PropertyBuilder, String, Boolean, String, String, DynamicEntityDao)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#buildEntityProperties(Map, ForeignKey, ForeignKey[], String[], Boolean, String[], String[], String, String, String, Class, Class, List, String, Boolean, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void DynamicEntityDaoImpl.buildEntityProperties(Map, ForeignKey, ForeignKey[], String[], Boolean, String[], String[], String, String, String, Class, Class, List, String, Boolean, String)"})
+  public void testBuildEntityProperties_whenArrayList_thenCallsOverrideMetadata() {
+    // Arrange
+    when(
+        metadata.overrideMetadata(Mockito.<Class<Object>[]>any(), Mockito.<PropertyBuilder>any(), Mockito.<String>any(),
+            Mockito.<Boolean>any(), Mockito.<String>any(), Mockito.<String>any(), Mockito.<DynamicEntityDao>any()))
+        .thenReturn(new HashMap<>());
     HashMap<String, FieldMetadata> fields = new HashMap<>();
     ForeignKey foreignField = new ForeignKey();
     Class<Object> returnedClass = Object.class;
@@ -4656,30 +3524,24 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#buildEntityProperties(Map, ForeignKey, ForeignKey[], String[], Boolean, String[], String[], String, String, String, Class, Class, List, String, Boolean, String)}.
+   * Test {@link DynamicEntityDaoImpl#buildEntityProperties(Map, ForeignKey, ForeignKey[], String[], Boolean, String[], String[], String, String, String, Class, Class, List, String, Boolean, String)}.
    * <ul>
    *   <li>When empty array of {@link String}.</li>
-   *   <li>Then calls
-   * {@link Metadata#overrideMetadata(Class[], PropertyBuilder, String, Boolean, String, String, DynamicEntityDao)}.</li>
+   *   <li>Then calls {@link Metadata#overrideMetadata(Class[], PropertyBuilder, String, Boolean, String, String, DynamicEntityDao)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#buildEntityProperties(Map, ForeignKey, ForeignKey[], String[], Boolean, String[], String[], String, String, String, Class, Class, List, String, Boolean, String)}
+   * Method under test: {@link DynamicEntityDaoImpl#buildEntityProperties(Map, ForeignKey, ForeignKey[], String[], Boolean, String[], String[], String, String, String, Class, Class, List, String, Boolean, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void DynamicEntityDaoImpl.buildEntityProperties(Map, ForeignKey, ForeignKey[], String[], Boolean, String[], String[], String, String, String, Class, Class, List, String, Boolean, String)"})
   public void testBuildEntityProperties_whenEmptyArrayOfString_thenCallsOverrideMetadata() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    Metadata metadata = mock(Metadata.class);
     when(
         metadata.overrideMetadata(Mockito.<Class<Object>[]>any(), Mockito.<PropertyBuilder>any(), Mockito.<String>any(),
             Mockito.<Boolean>any(), Mockito.<String>any(), Mockito.<String>any(), Mockito.<DynamicEntityDao>any()))
-                .thenReturn(new HashMap<>());
-
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-    dynamicEntityDaoImpl.setMetadata(metadata);
+        .thenReturn(new HashMap<>());
     HashMap<String, FieldMetadata> fields = new HashMap<>();
     ForeignKey foreignField = new ForeignKey();
     Class<Object> returnedClass = Object.class;
@@ -4702,15 +3564,15 @@ public class DynamicEntityDaoImplDiffblueTest {
    * Method under test: {@link DynamicEntityDaoImpl#isForeignKey(FieldMetadata)}
    */
   @Test
-  public void testIsForeignKey() throws BeansException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean DynamicEntityDaoImpl.isForeignKey(FieldMetadata)"})
+  public void testIsForeignKey() {
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-    dynamicEntityDaoImpl.setApplicationContext(new AnnotationConfigReactiveWebApplicationContext());
+    OperationTypes operationTypes = new OperationTypes();
 
-    PersistencePerspective persistencePerspective = new PersistencePerspective();
-    persistencePerspective.addPersistencePerspectiveItem(PersistencePerspectiveItemType.ADORNEDTARGETLIST,
+    PersistencePerspective persistencePerspective = new PersistencePerspective(operationTypes,
+        new String[]{"Additional Non Persistent Properties"}, new ForeignKey[]{new ForeignKey()});
+    persistencePerspective.addPersistencePerspectiveItem(PersistencePerspectiveItemType.MAPSTRUCTURE,
         new AdornedTargetList());
     BasicCollectionMetadata fieldMetadata = mock(BasicCollectionMetadata.class);
     when(fieldMetadata.getPersistencePerspective()).thenReturn(persistencePerspective);
@@ -4725,54 +3587,18 @@ public class DynamicEntityDaoImplDiffblueTest {
 
   /**
    * Test {@link DynamicEntityDaoImpl#isForeignKey(FieldMetadata)}.
-   * <p>
-   * Method under test: {@link DynamicEntityDaoImpl#isForeignKey(FieldMetadata)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsForeignKey2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass11639 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
-
-    // Act
-    dynamicEntityDaoImpl2.isForeignKey(new AdornedTargetCollectionMetadata());
-  }
-
-  /**
-   * Test {@link DynamicEntityDaoImpl#isForeignKey(FieldMetadata)}.
    * <ul>
-   *   <li>Given {@link HashMap#HashMap()}
-   * {@link PersistencePerspectiveItemType#FOREIGNKEY} is
-   * {@link AdornedTargetList#AdornedTargetList()}.</li>
+   *   <li>Given {@link HashMap#HashMap()} {@link PersistencePerspectiveItemType#FOREIGNKEY} is {@link AdornedTargetList#AdornedTargetList()}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link DynamicEntityDaoImpl#isForeignKey(FieldMetadata)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean DynamicEntityDaoImpl.isForeignKey(FieldMetadata)"})
   public void testIsForeignKey_givenHashMapForeignkeyIsAdornedTargetList_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-
     HashMap<PersistencePerspectiveItemType, PersistencePerspectiveItem> persistencePerspectiveItems = new HashMap<>();
     persistencePerspectiveItems.put(PersistencePerspectiveItemType.FOREIGNKEY, new AdornedTargetList());
 
@@ -4789,43 +3615,16 @@ public class DynamicEntityDaoImplDiffblueTest {
   /**
    * Test {@link DynamicEntityDaoImpl#isForeignKey(FieldMetadata)}.
    * <ul>
-   *   <li>Given
-   * {@link NoSuchBeanDefinitionException#NoSuchBeanDefinitionException(String)}
-   * with {@code Name}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link DynamicEntityDaoImpl#isForeignKey(FieldMetadata)}
-   */
-  @Test
-  public void testIsForeignKey_givenNoSuchBeanDefinitionExceptionWithName() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-    BasicCollectionMetadata fieldMetadata = mock(BasicCollectionMetadata.class);
-    when(fieldMetadata.getPersistencePerspective()).thenThrow(new NoSuchBeanDefinitionException("Name"));
-
-    // Act
-    dynamicEntityDaoImpl.isForeignKey(fieldMetadata);
-
-    // Assert
-    verify(fieldMetadata).getPersistencePerspective();
-  }
-
-  /**
-   * Test {@link DynamicEntityDaoImpl#isForeignKey(FieldMetadata)}.
-   * <ul>
    *   <li>Given {@link PersistencePerspective#PersistencePerspective()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link DynamicEntityDaoImpl#isForeignKey(FieldMetadata)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean DynamicEntityDaoImpl.isForeignKey(FieldMetadata)"})
   public void testIsForeignKey_givenPersistencePerspective() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
     BasicCollectionMetadata fieldMetadata = mock(BasicCollectionMetadata.class);
     when(fieldMetadata.getPersistencePerspective()).thenReturn(new PersistencePerspective());
 
@@ -4847,30 +3646,23 @@ public class DynamicEntityDaoImplDiffblueTest {
    * Method under test: {@link DynamicEntityDaoImpl#isForeignKey(FieldMetadata)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean DynamicEntityDaoImpl.isForeignKey(FieldMetadata)"})
   public void testIsForeignKey_whenAdornedTargetCollectionMetadata_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertFalse(dynamicEntityDaoImpl.isForeignKey(new AdornedTargetCollectionMetadata()));
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#setOriginatingFieldForForeignKey(String, String, FieldMetadata)}.
+   * Test {@link DynamicEntityDaoImpl#setOriginatingFieldForForeignKey(String, String, FieldMetadata)}.
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#setOriginatingFieldForForeignKey(String, String, FieldMetadata)}
+   * Method under test: {@link DynamicEntityDaoImpl#setOriginatingFieldForForeignKey(String, String, FieldMetadata)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DynamicEntityDaoImpl.setOriginatingFieldForForeignKey(String, String, FieldMetadata)"})
   public void testSetOriginatingFieldForForeignKey() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-
     HashMap<PersistencePerspectiveItemType, PersistencePerspectiveItem> persistencePerspectiveItems = new HashMap<>();
     persistencePerspectiveItems.put(PersistencePerspectiveItemType.FOREIGNKEY, new ForeignKey());
 
@@ -4894,218 +3686,42 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link DynamicEntityDaoImpl#setOriginatingFieldForForeignKey(String, String, FieldMetadata)}.
-   * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#setOriginatingFieldForForeignKey(String, String, FieldMetadata)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetOriginatingFieldForForeignKey2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass12610 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
-
-    // Act
-    dynamicEntityDaoImpl2.setOriginatingFieldForForeignKey("Property Name", "Key",
-        new AdornedTargetCollectionMetadata());
-  }
-
-  /**
-   * Test
-   * {@link DynamicEntityDaoImpl#buildComponentProperties(Class, ForeignKey, ForeignKey[], String[], MergedPropertyType, Map, String, Boolean, String[], String[], String, String, String, Type, Class, List, Boolean, String, String)}.
-   * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#buildComponentProperties(Class, ForeignKey, ForeignKey[], String[], MergedPropertyType, Map, String, Boolean, String[], String[], String, String, String, Type, Class, List, Boolean, String, String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testBuildComponentProperties() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1772 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
-    Class<Object> targetClass = Object.class;
-    ForeignKey foreignField = new ForeignKey();
-    HashMap<String, FieldMetadata> fields = new HashMap<>();
-    BigDecimalType type = new BigDecimalType();
-    Class<Object> returnedClass = Object.class;
-
-    // Act
-    dynamicEntityDaoImpl2.buildComponentProperties(targetClass, foreignField, new ForeignKey[]{new ForeignKey()},
-        new String[]{"Additional Non Persistent Properties"}, MergedPropertyType.PRIMARY, fields, "Id Property", true,
-        new String[]{"Include Fields"}, new String[]{"Exclude Fields"}, "Configuration Key", "Dr Jane Doe",
-        "Property Name", type, returnedClass, new ArrayList<>(), true, "Prefix", "Parent Prefix");
-  }
-
-  /**
    * Test {@link DynamicEntityDaoImpl#setStandardEntityManager(EntityManager)}.
+   * <ul>
+   *   <li>When {@code null}.</li>
+   *   <li>Then {@link DynamicEntityDaoImpl} {@link DynamicEntityDaoImpl#fieldManager}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#setStandardEntityManager(EntityManager)}
+   * Method under test: {@link DynamicEntityDaoImpl#setStandardEntityManager(EntityManager)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetStandardEntityManager() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass12703 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
-    SessionDelegatorBaseImpl delegate = new SessionDelegatorBaseImpl(null);
-
-    // Act
-    dynamicEntityDaoImpl2
-        .setStandardEntityManager(new SessionDelegatorBaseImpl(delegate, new SessionDelegatorBaseImpl(null)));
-  }
-
-  /**
-   * Test {@link DynamicEntityDaoImpl#getFieldManager()}.
-   * <p>
-   * Method under test: {@link DynamicEntityDaoImpl#getFieldManager()}
-   */
-  @Test
-  public void testGetFieldManager() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-
-    // Act
-    FieldManager actualFieldManager = dynamicEntityDaoImpl.getFieldManager();
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DynamicEntityDaoImpl.setStandardEntityManager(EntityManager)"})
+  public void testSetStandardEntityManager_whenNull_thenDynamicEntityDaoImplFieldManager() {
+    // Arrange and Act
+    dynamicEntityDaoImpl.setStandardEntityManager(null);
 
     // Assert
-    assertNull(actualFieldManager.getEntityConfiguration());
-    assertSame(dynamicEntityDaoImpl.fieldManager, actualFieldManager);
+    FieldManager expectedFieldManager = dynamicEntityDaoImpl.fieldManager;
+    assertSame(expectedFieldManager, dynamicEntityDaoImpl.getFieldManager());
   }
 
   /**
-   * Test {@link DynamicEntityDaoImpl#getFieldManager()}.
-   * <p>
-   * Method under test: {@link DynamicEntityDaoImpl#getFieldManager()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetFieldManager2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6720 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new DynamicEntityDaoImpl()).getFieldManager();
-  }
-
-  /**
-   * Test {@link DynamicEntityDaoImpl#getFieldManager(boolean)} with
-   * {@code boolean}.
+   * Test {@link DynamicEntityDaoImpl#getFieldManager(boolean)} with {@code boolean}.
    * <p>
    * Method under test: {@link DynamicEntityDaoImpl#getFieldManager(boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FieldManager DynamicEntityDaoImpl.getFieldManager(boolean)"})
   public void testGetFieldManagerWithBoolean() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
-
-    // Act
+    // Arrange and Act
     FieldManager actualFieldManager = dynamicEntityDaoImpl.getFieldManager(true);
 
     // Assert
-    assertNull(actualFieldManager.getEntityConfiguration());
-    assertNull(dynamicEntityDaoImpl.fieldManager.getEntityConfiguration());
     FieldManager fieldManager = dynamicEntityDaoImpl.fieldManager;
     assertSame(fieldManager, dynamicEntityDaoImpl.getFieldManager());
     assertSame(fieldManager, actualFieldManager);
-  }
-
-  /**
-   * Test {@link DynamicEntityDaoImpl#getFieldManager(boolean)} with
-   * {@code boolean}.
-   * <p>
-   * Method under test: {@link DynamicEntityDaoImpl#getFieldManager(boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetFieldManagerWithBoolean2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6728 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new DynamicEntityDaoImpl()).getFieldManager(true);
   }
 
   /**
@@ -5114,8 +3730,7 @@ public class DynamicEntityDaoImplDiffblueTest {
    * Methods under test:
    * <ul>
    *   <li>{@link DynamicEntityDaoImpl#setApplicationContext(ApplicationContext)}
-   *   <li>
-   * {@link DynamicEntityDaoImpl#setDefaultFieldMetadataProvider(FieldMetadataProvider)}
+   *   <li>{@link DynamicEntityDaoImpl#setDefaultFieldMetadataProvider(FieldMetadataProvider)}
    *   <li>{@link DynamicEntityDaoImpl#setDynamicDaoHelper(DynamicDaoHelper)}
    *   <li>{@link DynamicEntityDaoImpl#setEntityConfiguration(EntityConfiguration)}
    *   <li>{@link DynamicEntityDaoImpl#setFieldMetadataProviders(List)}
@@ -5129,6 +3744,17 @@ public class DynamicEntityDaoImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FieldMetadataProvider DynamicEntityDaoImpl.getDefaultFieldMetadataProvider()",
+      "DynamicDaoHelper DynamicEntityDaoImpl.getDynamicDaoHelper()",
+      "EntityConfiguration DynamicEntityDaoImpl.getEntityConfiguration()",
+      "List DynamicEntityDaoImpl.getFieldMetadataProviders()", "Metadata DynamicEntityDaoImpl.getMetadata()",
+      "EntityManager DynamicEntityDaoImpl.getStandardEntityManager()",
+      "void DynamicEntityDaoImpl.setApplicationContext(ApplicationContext)",
+      "void DynamicEntityDaoImpl.setDefaultFieldMetadataProvider(FieldMetadataProvider)",
+      "void DynamicEntityDaoImpl.setDynamicDaoHelper(DynamicDaoHelper)",
+      "void DynamicEntityDaoImpl.setEntityConfiguration(EntityConfiguration)",
+      "void DynamicEntityDaoImpl.setFieldMetadataProviders(List)", "void DynamicEntityDaoImpl.setMetadata(Metadata)"})
   public void testGettersAndSetters() throws BeansException {
     // Arrange
     DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
@@ -5150,11 +3776,12 @@ public class DynamicEntityDaoImplDiffblueTest {
     EntityConfiguration actualEntityConfiguration = dynamicEntityDaoImpl.getEntityConfiguration();
     List<FieldMetadataProvider> actualFieldMetadataProviders = dynamicEntityDaoImpl.getFieldMetadataProviders();
     Metadata actualMetadata = dynamicEntityDaoImpl.getMetadata();
-    dynamicEntityDaoImpl.getStandardEntityManager();
 
-    // Assert that nothing has changed
+    // Assert
     assertTrue(actualDynamicDaoHelper instanceof DynamicDaoHelperImpl);
     assertTrue(actualDefaultFieldMetadataProvider instanceof AdornedTargetCollectionFieldMetadataProvider);
+    assertNull(dynamicEntityDaoImpl.getStandardEntityManager());
+    assertNull(actualEntityConfiguration.getEntityContexts());
     assertTrue(actualFieldMetadataProviders.isEmpty());
     assertSame(fieldMetadataProviders, actualFieldMetadataProviders);
     assertSame(entityConfiguration, actualEntityConfiguration);
@@ -5165,57 +3792,49 @@ public class DynamicEntityDaoImplDiffblueTest {
 
   /**
    * Test {@link DynamicEntityDaoImpl#isExcludeClassFromPolymorphism(Class)}.
+   * <ul>
+   *   <li>Given {@link FieldMetadataProvider}.</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#isExcludeClassFromPolymorphism(Class)}
+   * Method under test: {@link DynamicEntityDaoImpl#isExcludeClassFromPolymorphism(Class)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsExcludeClassFromPolymorphism() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass11311 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean DynamicEntityDaoImpl.isExcludeClassFromPolymorphism(Class)"})
+  public void testIsExcludeClassFromPolymorphism_givenFieldMetadataProvider_thenReturnFalse() {
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
     Class<Object> clazz = Object.class;
 
-    // Act
-    dynamicEntityDaoImpl2.isExcludeClassFromPolymorphism(clazz);
+    // Act and Assert
+    assertFalse(dynamicEntityDaoImpl.isExcludeClassFromPolymorphism(clazz));
   }
 
   /**
    * Test {@link DynamicEntityDaoImpl#isExcludeClassFromPolymorphism(Class)}.
    * <ul>
-   *   <li>When {@code java.lang.Object}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicEntityDaoImpl#isExcludeClassFromPolymorphism(Class)}
+   * Method under test: {@link DynamicEntityDaoImpl#isExcludeClassFromPolymorphism(Class)}
    */
   @Test
-  public void testIsExcludeClassFromPolymorphism_whenJavaLangObject_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean DynamicEntityDaoImpl.isExcludeClassFromPolymorphism(Class)"})
+  public void testIsExcludeClassFromPolymorphism_thenReturnTrue() {
     // Arrange
+    DynamicDaoHelperImpl dynamicDaoHelper = mock(DynamicDaoHelperImpl.class);
+    when(dynamicDaoHelper.isExcludeClassFromPolymorphism(Mockito.<Class<Object>>any())).thenReturn(true);
+
     DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
+    dynamicEntityDaoImpl.setDynamicDaoHelper(dynamicDaoHelper);
     Class<Object> clazz = Object.class;
 
-    // Act and Assert
-    assertFalse(dynamicEntityDaoImpl.isExcludeClassFromPolymorphism(clazz));
+    // Act
+    boolean actualIsExcludeClassFromPolymorphismResult = dynamicEntityDaoImpl.isExcludeClassFromPolymorphism(clazz);
+
+    // Assert
+    verify(dynamicDaoHelper).isExcludeClassFromPolymorphism(isA(Class.class));
+    assertTrue(actualIsExcludeClassFromPolymorphismResult);
   }
 }

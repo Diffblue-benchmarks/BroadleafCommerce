@@ -1,28 +1,44 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.server.security.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.openadmin.dto.Entity;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminUser;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminUserImpl;
 import org.broadleafcommerce.openadmin.web.form.component.ListGrid;
 import org.broadleafcommerce.openadmin.web.form.entity.EntityForm;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {EntityFormModifierRequest.class})
 @RunWith(SpringJUnit4ClassRunner.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class EntityFormModifierRequestDiffblueTest {
   @Autowired
   private EntityFormModifierRequest entityFormModifierRequest;
@@ -30,10 +46,11 @@ public class EntityFormModifierRequestDiffblueTest {
   /**
    * Test {@link EntityFormModifierRequest#withEntityForm(EntityForm)}.
    * <p>
-   * Method under test:
-   * {@link EntityFormModifierRequest#withEntityForm(EntityForm)}
+   * Method under test: {@link EntityFormModifierRequest#withEntityForm(EntityForm)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"EntityFormModifierRequest EntityFormModifierRequest.withEntityForm(EntityForm)"})
   public void testWithEntityForm() {
     // Arrange
     EntityFormModifierRequest entityFormModifierRequest = new EntityFormModifierRequest();
@@ -50,6 +67,8 @@ public class EntityFormModifierRequestDiffblueTest {
    * Method under test: {@link EntityFormModifierRequest#withListGrid(ListGrid)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"EntityFormModifierRequest EntityFormModifierRequest.withListGrid(ListGrid)"})
   public void testWithListGrid() {
     // Arrange
     EntityFormModifierRequest entityFormModifierRequest = new EntityFormModifierRequest();
@@ -61,49 +80,37 @@ public class EntityFormModifierRequestDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link EntityFormModifierRequest#withConfiguration(EntityFormModifierData)}.
-   * <ul>
-   *   <li>Then calls {@link EntityFormModifierDataPoint#setKey(Object)}.</li>
-   * </ul>
+   * Test {@link EntityFormModifierRequest#withConfiguration(EntityFormModifierData)}.
    * <p>
-   * Method under test:
-   * {@link EntityFormModifierRequest#withConfiguration(EntityFormModifierData)}
+   * Method under test: {@link EntityFormModifierRequest#withConfiguration(EntityFormModifierData)}
    */
   @Test
-  public void testWithConfiguration_thenCallsSetKey() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"EntityFormModifierRequest EntityFormModifierRequest.withConfiguration(EntityFormModifierData)"})
+  public void testWithConfiguration() {
     // Arrange
-    EntityFormModifierDataPoint entityFormModifierDataPoint = mock(EntityFormModifierDataPoint.class);
-    doNothing().when(entityFormModifierDataPoint).setKey(Mockito.<Object>any());
-    doNothing().when(entityFormModifierDataPoint).setValue(Mockito.<Object>any());
-    entityFormModifierDataPoint.setKey("Key");
-    entityFormModifierDataPoint.setValue("Value");
-
     EntityFormModifierData<EntityFormModifierDataPoint> configuration = new EntityFormModifierData<>();
-    configuration.add(entityFormModifierDataPoint);
 
     // Act
     EntityFormModifierRequest actualWithConfigurationResult = entityFormModifierRequest
         .withConfiguration(configuration);
 
     // Assert
-    verify(entityFormModifierDataPoint).setKey(isA(Object.class));
-    verify(entityFormModifierDataPoint).setValue(isA(Object.class));
     assertSame(configuration, entityFormModifierRequest.getConfiguration());
     assertSame(entityFormModifierRequest, actualWithConfigurationResult);
   }
 
   /**
-   * Test
-   * {@link EntityFormModifierRequest#withConfiguration(EntityFormModifierData)}.
+   * Test {@link EntityFormModifierRequest#withConfiguration(EntityFormModifierData)}.
    * <ul>
    *   <li>Then return Configuration size is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link EntityFormModifierRequest#withConfiguration(EntityFormModifierData)}
+   * Method under test: {@link EntityFormModifierRequest#withConfiguration(EntityFormModifierData)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"EntityFormModifierRequest EntityFormModifierRequest.withConfiguration(EntityFormModifierData)"})
   public void testWithConfiguration_thenReturnConfigurationSizeIsOne() {
     // Arrange
     EntityFormModifierDataPoint entityFormModifierDataPoint = new EntityFormModifierDataPoint();
@@ -122,16 +129,16 @@ public class EntityFormModifierRequestDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link EntityFormModifierRequest#withConfiguration(EntityFormModifierData)}.
+   * Test {@link EntityFormModifierRequest#withConfiguration(EntityFormModifierData)}.
    * <ul>
    *   <li>Then return Configuration size is two.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link EntityFormModifierRequest#withConfiguration(EntityFormModifierData)}
+   * Method under test: {@link EntityFormModifierRequest#withConfiguration(EntityFormModifierData)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"EntityFormModifierRequest EntityFormModifierRequest.withConfiguration(EntityFormModifierData)"})
   public void testWithConfiguration_thenReturnConfigurationSizeIsTwo() {
     // Arrange
     EntityFormModifierDataPoint entityFormModifierDataPoint = new EntityFormModifierDataPoint();
@@ -155,41 +162,14 @@ public class EntityFormModifierRequestDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link EntityFormModifierRequest#withConfiguration(EntityFormModifierData)}.
-   * <ul>
-   *   <li>When {@link EntityFormModifierData#EntityFormModifierData()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link EntityFormModifierRequest#withConfiguration(EntityFormModifierData)}
-   */
-  @Test
-  public void testWithConfiguration_whenEntityFormModifierData() {
-    // Arrange
-    EntityFormModifierData<EntityFormModifierDataPoint> configuration = new EntityFormModifierData<>();
-
-    // Act
-    EntityFormModifierRequest actualWithConfigurationResult = entityFormModifierRequest
-        .withConfiguration(configuration);
-
-    // Assert
-    assertSame(configuration, entityFormModifierRequest.getConfiguration());
-    assertSame(entityFormModifierRequest, actualWithConfigurationResult);
-  }
-
-  /**
    * Test {@link EntityFormModifierRequest#withCurrentUser(AdminUser)}.
-   * <ul>
-   *   <li>Then {@link EntityFormModifierRequest} (default constructor) CurrentUser
-   * is {@link AdminUserImpl} (default constructor).</li>
-   * </ul>
    * <p>
-   * Method under test:
-   * {@link EntityFormModifierRequest#withCurrentUser(AdminUser)}
+   * Method under test: {@link EntityFormModifierRequest#withCurrentUser(AdminUser)}
    */
   @Test
-  public void testWithCurrentUser_thenEntityFormModifierRequestCurrentUserIsAdminUserImpl() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"EntityFormModifierRequest EntityFormModifierRequest.withCurrentUser(AdminUser)"})
+  public void testWithCurrentUser() {
     // Arrange
     EntityFormModifierRequest entityFormModifierRequest = new EntityFormModifierRequest();
     AdminUserImpl currentUser = new AdminUserImpl();
@@ -199,40 +179,18 @@ public class EntityFormModifierRequestDiffblueTest {
 
     // Assert
     assertSame(currentUser, entityFormModifierRequest.getCurrentUser());
-    assertSame(currentUser, actualWithCurrentUserResult.getCurrentUser());
-  }
-
-  /**
-   * Test {@link EntityFormModifierRequest#withCurrentUser(AdminUser)}.
-   * <ul>
-   *   <li>When {@link AdminUser}.</li>
-   *   <li>Then return {@link EntityFormModifierRequest} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link EntityFormModifierRequest#withCurrentUser(AdminUser)}
-   */
-  @Test
-  public void testWithCurrentUser_whenAdminUser_thenReturnEntityFormModifierRequest() {
-    // Arrange
-    EntityFormModifierRequest entityFormModifierRequest = new EntityFormModifierRequest();
-    AdminUser currentUser = mock(AdminUser.class);
-
-    // Act and Assert
-    assertSame(entityFormModifierRequest, entityFormModifierRequest.withCurrentUser(currentUser));
-    assertSame(currentUser, entityFormModifierRequest.getCurrentUser());
+    assertSame(entityFormModifierRequest, actualWithCurrentUserResult);
   }
 
   /**
    * Test {@link EntityFormModifierRequest#withEntity(Entity)}.
-   * <ul>
-   *   <li>Given {@link EntityFormModifierRequest} (default constructor).</li>
-   * </ul>
    * <p>
    * Method under test: {@link EntityFormModifierRequest#withEntity(Entity)}
    */
   @Test
-  public void testWithEntity_givenEntityFormModifierRequest() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"EntityFormModifierRequest EntityFormModifierRequest.withEntity(Entity)"})
+  public void testWithEntity() {
     // Arrange
     EntityFormModifierRequest entityFormModifierRequest = new EntityFormModifierRequest();
     Entity entity = new Entity();
@@ -246,37 +204,14 @@ public class EntityFormModifierRequestDiffblueTest {
   }
 
   /**
-   * Test {@link EntityFormModifierRequest#withEntity(Entity)}.
-   * <ul>
-   *   <li>Given {@link EntityFormModifierRequest} (default constructor) CurrentUser
-   * is {@link AdminUser}.</li>
-   * </ul>
+   * Test {@link EntityFormModifierRequest#withRowLevelSecurityService(RowLevelSecurityService)}.
    * <p>
-   * Method under test: {@link EntityFormModifierRequest#withEntity(Entity)}
+   * Method under test: {@link EntityFormModifierRequest#withRowLevelSecurityService(RowLevelSecurityService)}
    */
   @Test
-  public void testWithEntity_givenEntityFormModifierRequestCurrentUserIsAdminUser() {
-    // Arrange
-    EntityFormModifierRequest entityFormModifierRequest = new EntityFormModifierRequest();
-    entityFormModifierRequest.setCurrentUser(mock(AdminUser.class));
-    Entity entity = new Entity();
-
-    // Act
-    EntityFormModifierRequest actualWithEntityResult = entityFormModifierRequest.withEntity(entity);
-
-    // Assert
-    assertSame(entity, entityFormModifierRequest.getEntity());
-    assertSame(entityFormModifierRequest, actualWithEntityResult);
-  }
-
-  /**
-   * Test
-   * {@link EntityFormModifierRequest#withRowLevelSecurityService(RowLevelSecurityService)}.
-   * <p>
-   * Method under test:
-   * {@link EntityFormModifierRequest#withRowLevelSecurityService(RowLevelSecurityService)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "EntityFormModifierRequest EntityFormModifierRequest.withRowLevelSecurityService(RowLevelSecurityService)"})
   public void testWithRowLevelSecurityService() {
     // Arrange
     EntityFormModifierRequest entityFormModifierRequest = new EntityFormModifierRequest();
@@ -294,14 +229,12 @@ public class EntityFormModifierRequestDiffblueTest {
    * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link EntityFormModifierRequest}
-   *   <li>
-   * {@link EntityFormModifierRequest#setConfiguration(EntityFormModifierData)}
+   *   <li>{@link EntityFormModifierRequest#setConfiguration(EntityFormModifierData)}
    *   <li>{@link EntityFormModifierRequest#setCurrentUser(AdminUser)}
    *   <li>{@link EntityFormModifierRequest#setEntity(Entity)}
    *   <li>{@link EntityFormModifierRequest#setEntityForm(EntityForm)}
    *   <li>{@link EntityFormModifierRequest#setListGrid(ListGrid)}
-   *   <li>
-   * {@link EntityFormModifierRequest#setRowLevelSecurityService(RowLevelSecurityService)}
+   *   <li>{@link EntityFormModifierRequest#setRowLevelSecurityService(RowLevelSecurityService)}
    *   <li>{@link EntityFormModifierRequest#getConfiguration()}
    *   <li>{@link EntityFormModifierRequest#getCurrentUser()}
    *   <li>{@link EntityFormModifierRequest#getEntity()}
@@ -311,6 +244,17 @@ public class EntityFormModifierRequestDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void EntityFormModifierRequest.<init>()",
+      "EntityFormModifierData EntityFormModifierRequest.getConfiguration()",
+      "AdminUser EntityFormModifierRequest.getCurrentUser()", "Entity EntityFormModifierRequest.getEntity()",
+      "EntityForm EntityFormModifierRequest.getEntityForm()", "ListGrid EntityFormModifierRequest.getListGrid()",
+      "RowLevelSecurityService EntityFormModifierRequest.getRowLevelSecurityService()",
+      "void EntityFormModifierRequest.setConfiguration(EntityFormModifierData)",
+      "void EntityFormModifierRequest.setCurrentUser(AdminUser)", "void EntityFormModifierRequest.setEntity(Entity)",
+      "void EntityFormModifierRequest.setEntityForm(EntityForm)",
+      "void EntityFormModifierRequest.setListGrid(ListGrid)",
+      "void EntityFormModifierRequest.setRowLevelSecurityService(RowLevelSecurityService)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     EntityFormModifierRequest actualEntityFormModifierRequest = new EntityFormModifierRequest();
@@ -335,7 +279,7 @@ public class EntityFormModifierRequestDiffblueTest {
     RowLevelSecurityService actualRowLevelSecurityService = actualEntityFormModifierRequest
         .getRowLevelSecurityService();
 
-    // Assert that nothing has changed
+    // Assert
     assertTrue(actualRowLevelSecurityService instanceof RowLevelSecurityServiceImpl);
     assertSame(entity, actualEntity);
     assertSame(currentUser, actualCurrentUser);

@@ -18,67 +18,102 @@
 package org.broadleafcommerce.openadmin.server.security.dao;
 
 import static org.junit.Assert.assertThrows;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import org.broadleafcommerce.common.persistence.EntityConfiguration;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminUser;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminUserImpl;
 import org.broadleafcommerce.openadmin.server.security.service.type.PermissionType;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class AdminPermissionDaoImplDiffblueTest {
+  @InjectMocks
+  private AdminPermissionDaoImpl adminPermissionDaoImpl;
+
+  @Mock
+  private EntityConfiguration entityConfiguration;
+
   /**
-   * Test
-   * {@link AdminPermissionDaoImpl#isUserQualifiedForOperationOnCeilingEntity(AdminUser, PermissionType, String)}.
+   * Test {@link AdminPermissionDaoImpl#readAdminPermissionById(Long)}.
    * <ul>
    *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminPermissionDaoImpl#isUserQualifiedForOperationOnCeilingEntity(AdminUser, PermissionType, String)}
+   * Method under test: {@link AdminPermissionDaoImpl#readAdminPermissionById(Long)}
    */
   @Test
-  public void testIsUserQualifiedForOperationOnCeilingEntity_thenThrowRuntimeException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.openadmin.server.security.domain.AdminPermission AdminPermissionDaoImpl.readAdminPermissionById(Long)"})
+  public void testReadAdminPermissionById_thenThrowRuntimeException() {
     // Arrange
-    AdminPermissionDaoImpl adminPermissionDaoImpl = new AdminPermissionDaoImpl();
+    Mockito.<Class<?>>when(entityConfiguration.lookupEntityClass(Mockito.<String>any()))
+        .thenThrow(new RuntimeException("org.broadleafcommerce.openadmin.server.security.domain.AdminPermission"));
 
     // Act and Assert
+    assertThrows(RuntimeException.class, () -> adminPermissionDaoImpl.readAdminPermissionById(1L));
+    verify(entityConfiguration)
+        .lookupEntityClass(eq("org.broadleafcommerce.openadmin.server.security.domain.AdminPermission"));
+  }
+
+  /**
+   * Test {@link AdminPermissionDaoImpl#isUserQualifiedForOperationOnCeilingEntity(AdminUser, PermissionType, String)}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminPermissionDaoImpl#isUserQualifiedForOperationOnCeilingEntity(AdminUser, PermissionType, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "boolean AdminPermissionDaoImpl.isUserQualifiedForOperationOnCeilingEntity(AdminUser, PermissionType, String)"})
+  public void testIsUserQualifiedForOperationOnCeilingEntity_thenThrowRuntimeException() {
+    // Arrange, Act and Assert
     assertThrows(RuntimeException.class, () -> adminPermissionDaoImpl
         .isUserQualifiedForOperationOnCeilingEntity(new AdminUserImpl(), PermissionType.ALL, "Dr Jane Doe"));
   }
 
   /**
-   * Test
-   * {@link AdminPermissionDaoImpl#isUserQualifiedForOperationOnCeilingEntityViaDefaultPermissions(String)}.
+   * Test {@link AdminPermissionDaoImpl#isUserQualifiedForOperationOnCeilingEntityViaDefaultPermissions(String)}.
    * <p>
-   * Method under test:
-   * {@link AdminPermissionDaoImpl#isUserQualifiedForOperationOnCeilingEntityViaDefaultPermissions(String)}
+   * Method under test: {@link AdminPermissionDaoImpl#isUserQualifiedForOperationOnCeilingEntityViaDefaultPermissions(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "boolean AdminPermissionDaoImpl.isUserQualifiedForOperationOnCeilingEntityViaDefaultPermissions(String)"})
   public void testIsUserQualifiedForOperationOnCeilingEntityViaDefaultPermissions() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertThrows(RuntimeException.class, () -> (new AdminPermissionDaoImpl())
-        .isUserQualifiedForOperationOnCeilingEntityViaDefaultPermissions("Dr Jane Doe"));
+    assertThrows(RuntimeException.class,
+        () -> adminPermissionDaoImpl.isUserQualifiedForOperationOnCeilingEntityViaDefaultPermissions("Dr Jane Doe"));
   }
 
   /**
-   * Test
-   * {@link AdminPermissionDaoImpl#doesOperationExistForCeilingEntity(PermissionType, String)}.
+   * Test {@link AdminPermissionDaoImpl#doesOperationExistForCeilingEntity(PermissionType, String)}.
    * <ul>
-   *   <li>When {@link PermissionType#ALL}.</li>
+   *   <li>When {@code Dr Jane Doe}.</li>
    *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminPermissionDaoImpl#doesOperationExistForCeilingEntity(PermissionType, String)}
+   * Method under test: {@link AdminPermissionDaoImpl#doesOperationExistForCeilingEntity(PermissionType, String)}
    */
   @Test
-  public void testDoesOperationExistForCeilingEntity_whenAll_thenThrowRuntimeException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdminPermissionDaoImpl.doesOperationExistForCeilingEntity(PermissionType, String)"})
+  public void testDoesOperationExistForCeilingEntity_whenDrJaneDoe_thenThrowRuntimeException() {
     // Arrange, Act and Assert
     assertThrows(RuntimeException.class,
-        () -> (new AdminPermissionDaoImpl()).doesOperationExistForCeilingEntity(PermissionType.ALL, "Dr Jane Doe"));
+        () -> adminPermissionDaoImpl.doesOperationExistForCeilingEntity(PermissionType.ALL, "Dr Jane Doe"));
   }
 }

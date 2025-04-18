@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.catalog.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -13,8 +30,9 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -25,13 +43,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.BiFunction;
 import org.broadleafcommerce.common.copy.CreateResponse;
 import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
 import org.broadleafcommerce.common.media.domain.Media;
 import org.broadleafcommerce.common.service.GenericEntityService;
-import org.broadleafcommerce.common.service.GenericEntityServiceImpl;
 import org.broadleafcommerce.common.site.domain.CatalogImpl;
 import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.broadleafcommerce.core.inventory.service.type.InventoryType;
@@ -42,21 +58,18 @@ import org.broadleafcommerce.core.search.domain.CategorySearchFacetImpl;
 import org.broadleafcommerce.core.search.domain.FieldEntity;
 import org.broadleafcommerce.core.search.domain.SearchFacet;
 import org.broadleafcommerce.core.search.domain.SearchFacetImpl;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@ContextConfiguration(classes = {CategoryImpl.class})
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class CategoryImplDiffblueTest {
   @Autowired
   private CategoryImpl categoryImpl;
@@ -67,100 +80,11 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getName()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CategoryImpl.getName()"})
   public void testGetName() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3879 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryImpl()).getName();
-  }
-
-  /**
-   * Test {@link CategoryImpl#getName()}.
-   * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getName()}
-   */
-  @Test
-  public void testGetName_givenCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new CategoryImpl()).getName());
-  }
-
-  /**
-   * Test {@link CategoryImpl#getName()}.
-   * <ul>
-   *   <li>Given {@link Date} {@link java.util.Date#getTime()} return ten.</li>
-   *   <li>Then calls {@link java.util.Date#getTime()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getName()}
-   */
-  @Test
-  public void testGetName_givenDateGetTimeReturnTen_thenCallsGetTime() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    java.sql.Date activeStartDate = mock(java.sql.Date.class);
-    when(activeStartDate.getTime()).thenReturn(10L);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setActiveStartDate(activeStartDate);
-
-    // Act
-    String actualName = categoryImpl.getName();
-
-    // Assert
-    verify(activeStartDate).getTime();
-    assertNull(actualName);
-  }
-
-  /**
-   * Test {@link CategoryImpl#getUrl()}.
-   * <p>
-   * Method under test: {@link CategoryImpl#getUrl()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetUrl() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4089 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryImpl()).getUrl();
   }
 
   /**
@@ -173,95 +97,94 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getUrl()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CategoryImpl.getUrl()"})
   public void testGetUrl_givenCategoryImplUrlIsColon_thenReturnColon() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2
         .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl
+    categoryImpl2
         .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrlKey("https://example.org/example");
-    categoryImpl.setUrl(":");
+    categoryImpl2.setCategoryAttributes(new ArrayList<>());
+    categoryImpl2.setCategoryAttributesMap(new HashMap<>());
+    categoryImpl2.setCategoryMediaXref(new HashMap<>());
+    categoryImpl2.setChildCategoryIds(new ArrayList<>());
+    categoryImpl2.setChildCategoryURLMap(new HashMap<>());
+    categoryImpl2.setDefaultParentCategory(new CategoryImpl());
+    categoryImpl2.setDescription("The characteristics of someone or something");
+    categoryImpl2.setDisplayTemplate("Display Template");
+    categoryImpl2.setExcludedSearchFacets(new ArrayList<>());
+    categoryImpl2.setExternalId("42");
+    categoryImpl2.setFulfillmentType(FulfillmentType.DIGITAL);
+    categoryImpl2.setId(1L);
+    categoryImpl2.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
+    categoryImpl2.setLongDescription("Long Description");
+    categoryImpl2.setMetaDescription("Meta Description");
+    categoryImpl2.setMetaTitle("Dr");
+    categoryImpl2.setName("Name");
+    categoryImpl2.setOverrideGeneratedUrl(true);
+    categoryImpl2.setProductDescriptionPatternOverride("Product Description Pattern Override");
+    categoryImpl2.setProductTitlePatternOverride("Dr");
+    categoryImpl2.setRootDisplayOrder(new BigDecimal("2.3"));
+    categoryImpl2.setSearchFacets(new ArrayList<>());
+    categoryImpl2.setTaxCode("Tax Code");
+    categoryImpl2.setUpSaleProducts(new ArrayList<>());
+    categoryImpl2.setUrlKey("https://example.org/example");
+    categoryImpl2.setUrl(":");
 
     // Act and Assert
-    assertEquals(":", categoryImpl.getUrl());
+    assertEquals(":", categoryImpl2.getUrl());
   }
 
   /**
    * Test {@link CategoryImpl#getUrl()}.
    * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) Url is empty
-   * string.</li>
+   *   <li>Given {@link CategoryImpl} (default constructor) Url is empty string.</li>
    *   <li>Then return empty string.</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#getUrl()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CategoryImpl.getUrl()"})
   public void testGetUrl_givenCategoryImplUrlIsEmptyString_thenReturnEmptyString() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2
         .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl
+    categoryImpl2
         .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrlKey("https://example.org/example");
-    categoryImpl.setUrl("");
+    categoryImpl2.setCategoryAttributes(new ArrayList<>());
+    categoryImpl2.setCategoryAttributesMap(new HashMap<>());
+    categoryImpl2.setCategoryMediaXref(new HashMap<>());
+    categoryImpl2.setChildCategoryIds(new ArrayList<>());
+    categoryImpl2.setChildCategoryURLMap(new HashMap<>());
+    categoryImpl2.setDefaultParentCategory(new CategoryImpl());
+    categoryImpl2.setDescription("The characteristics of someone or something");
+    categoryImpl2.setDisplayTemplate("Display Template");
+    categoryImpl2.setExcludedSearchFacets(new ArrayList<>());
+    categoryImpl2.setExternalId("42");
+    categoryImpl2.setFulfillmentType(FulfillmentType.DIGITAL);
+    categoryImpl2.setId(1L);
+    categoryImpl2.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
+    categoryImpl2.setLongDescription("Long Description");
+    categoryImpl2.setMetaDescription("Meta Description");
+    categoryImpl2.setMetaTitle("Dr");
+    categoryImpl2.setName("Name");
+    categoryImpl2.setOverrideGeneratedUrl(true);
+    categoryImpl2.setProductDescriptionPatternOverride("Product Description Pattern Override");
+    categoryImpl2.setProductTitlePatternOverride("Dr");
+    categoryImpl2.setRootDisplayOrder(new BigDecimal("2.3"));
+    categoryImpl2.setSearchFacets(new ArrayList<>());
+    categoryImpl2.setTaxCode("Tax Code");
+    categoryImpl2.setUpSaleProducts(new ArrayList<>());
+    categoryImpl2.setUrlKey("https://example.org/example");
+    categoryImpl2.setUrl("");
 
     // Act and Assert
-    assertEquals("", categoryImpl.getUrl());
+    assertEquals("", categoryImpl2.getUrl());
   }
 
   /**
@@ -274,44 +197,44 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getUrl()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CategoryImpl.getUrl()"})
   public void testGetUrl_givenCategoryImplUrlIsFoo_thenReturnFoo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2
         .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl
+    categoryImpl2
         .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrlKey("https://example.org/example");
-    categoryImpl.setUrl("foo");
+    categoryImpl2.setCategoryAttributes(new ArrayList<>());
+    categoryImpl2.setCategoryAttributesMap(new HashMap<>());
+    categoryImpl2.setCategoryMediaXref(new HashMap<>());
+    categoryImpl2.setChildCategoryIds(new ArrayList<>());
+    categoryImpl2.setChildCategoryURLMap(new HashMap<>());
+    categoryImpl2.setDefaultParentCategory(new CategoryImpl());
+    categoryImpl2.setDescription("The characteristics of someone or something");
+    categoryImpl2.setDisplayTemplate("Display Template");
+    categoryImpl2.setExcludedSearchFacets(new ArrayList<>());
+    categoryImpl2.setExternalId("42");
+    categoryImpl2.setFulfillmentType(FulfillmentType.DIGITAL);
+    categoryImpl2.setId(1L);
+    categoryImpl2.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
+    categoryImpl2.setLongDescription("Long Description");
+    categoryImpl2.setMetaDescription("Meta Description");
+    categoryImpl2.setMetaTitle("Dr");
+    categoryImpl2.setName("Name");
+    categoryImpl2.setOverrideGeneratedUrl(true);
+    categoryImpl2.setProductDescriptionPatternOverride("Product Description Pattern Override");
+    categoryImpl2.setProductTitlePatternOverride("Dr");
+    categoryImpl2.setRootDisplayOrder(new BigDecimal("2.3"));
+    categoryImpl2.setSearchFacets(new ArrayList<>());
+    categoryImpl2.setTaxCode("Tax Code");
+    categoryImpl2.setUpSaleProducts(new ArrayList<>());
+    categoryImpl2.setUrlKey("https://example.org/example");
+    categoryImpl2.setUrl("foo");
 
     // Act and Assert
-    assertEquals("/foo", categoryImpl.getUrl());
+    assertEquals("/foo", categoryImpl2.getUrl());
   }
 
   /**
@@ -324,44 +247,44 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getUrl()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CategoryImpl.getUrl()"})
   public void testGetUrl_givenCategoryImplUrlIsQuestionMark_thenReturnQuestionMark() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2
         .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl
+    categoryImpl2
         .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrlKey("https://example.org/example");
-    categoryImpl.setUrl("?");
+    categoryImpl2.setCategoryAttributes(new ArrayList<>());
+    categoryImpl2.setCategoryAttributesMap(new HashMap<>());
+    categoryImpl2.setCategoryMediaXref(new HashMap<>());
+    categoryImpl2.setChildCategoryIds(new ArrayList<>());
+    categoryImpl2.setChildCategoryURLMap(new HashMap<>());
+    categoryImpl2.setDefaultParentCategory(new CategoryImpl());
+    categoryImpl2.setDescription("The characteristics of someone or something");
+    categoryImpl2.setDisplayTemplate("Display Template");
+    categoryImpl2.setExcludedSearchFacets(new ArrayList<>());
+    categoryImpl2.setExternalId("42");
+    categoryImpl2.setFulfillmentType(FulfillmentType.DIGITAL);
+    categoryImpl2.setId(1L);
+    categoryImpl2.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
+    categoryImpl2.setLongDescription("Long Description");
+    categoryImpl2.setMetaDescription("Meta Description");
+    categoryImpl2.setMetaTitle("Dr");
+    categoryImpl2.setName("Name");
+    categoryImpl2.setOverrideGeneratedUrl(true);
+    categoryImpl2.setProductDescriptionPatternOverride("Product Description Pattern Override");
+    categoryImpl2.setProductTitlePatternOverride("Dr");
+    categoryImpl2.setRootDisplayOrder(new BigDecimal("2.3"));
+    categoryImpl2.setSearchFacets(new ArrayList<>());
+    categoryImpl2.setTaxCode("Tax Code");
+    categoryImpl2.setUpSaleProducts(new ArrayList<>());
+    categoryImpl2.setUrlKey("https://example.org/example");
+    categoryImpl2.setUrl("?");
 
     // Act and Assert
-    assertEquals("?", categoryImpl.getUrl());
+    assertEquals("?", categoryImpl2.getUrl());
   }
 
   /**
@@ -374,44 +297,44 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getUrl()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CategoryImpl.getUrl()"})
   public void testGetUrl_givenCategoryImplUrlIsSlash_thenReturnSlash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2
         .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl
+    categoryImpl2
         .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrlKey("https://example.org/example");
-    categoryImpl.setUrl("/");
+    categoryImpl2.setCategoryAttributes(new ArrayList<>());
+    categoryImpl2.setCategoryAttributesMap(new HashMap<>());
+    categoryImpl2.setCategoryMediaXref(new HashMap<>());
+    categoryImpl2.setChildCategoryIds(new ArrayList<>());
+    categoryImpl2.setChildCategoryURLMap(new HashMap<>());
+    categoryImpl2.setDefaultParentCategory(new CategoryImpl());
+    categoryImpl2.setDescription("The characteristics of someone or something");
+    categoryImpl2.setDisplayTemplate("Display Template");
+    categoryImpl2.setExcludedSearchFacets(new ArrayList<>());
+    categoryImpl2.setExternalId("42");
+    categoryImpl2.setFulfillmentType(FulfillmentType.DIGITAL);
+    categoryImpl2.setId(1L);
+    categoryImpl2.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
+    categoryImpl2.setLongDescription("Long Description");
+    categoryImpl2.setMetaDescription("Meta Description");
+    categoryImpl2.setMetaTitle("Dr");
+    categoryImpl2.setName("Name");
+    categoryImpl2.setOverrideGeneratedUrl(true);
+    categoryImpl2.setProductDescriptionPatternOverride("Product Description Pattern Override");
+    categoryImpl2.setProductTitlePatternOverride("Dr");
+    categoryImpl2.setRootDisplayOrder(new BigDecimal("2.3"));
+    categoryImpl2.setSearchFacets(new ArrayList<>());
+    categoryImpl2.setTaxCode("Tax Code");
+    categoryImpl2.setUpSaleProducts(new ArrayList<>());
+    categoryImpl2.setUrlKey("https://example.org/example");
+    categoryImpl2.setUrl("/");
 
     // Act and Assert
-    assertEquals("/", categoryImpl.getUrl());
+    assertEquals("/", categoryImpl2.getUrl());
   }
 
   /**
@@ -424,143 +347,11 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getUrl()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CategoryImpl.getUrl()"})
   public void testGetUrl_givenCategoryImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new CategoryImpl()).getUrl());
-  }
-
-  /**
-   * Test {@link CategoryImpl#getUrl()}.
-   * <ul>
-   *   <li>Given {@link java.sql.Date} {@link java.util.Date#getTime()} return
-   * ten.</li>
-   *   <li>Then calls {@link java.util.Date#getTime()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getUrl()}
-   */
-  @Test
-  public void testGetUrl_givenDateGetTimeReturnTen_thenCallsGetTime() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    java.sql.Date activeEndDate = mock(java.sql.Date.class);
-    when(activeEndDate.getTime()).thenReturn(10L);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setActiveEndDate(activeEndDate);
-    categoryImpl.setActiveStartDate(
-        java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrlKey("https://example.org/example");
-    categoryImpl.setUrl("");
-
-    // Act
-    String actualUrl = categoryImpl.getUrl();
-
-    // Assert
-    verify(activeEndDate).getTime();
-    assertEquals("", actualUrl);
-  }
-
-  /**
-   * Test {@link CategoryImpl#getOverrideGeneratedUrl()}.
-   * <p>
-   * Method under test: {@link CategoryImpl#getOverrideGeneratedUrl()}
-   */
-  @Test
-  public void testGetOverrideGeneratedUrl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl
-        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl
-        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrl("https://example.org/example");
-    categoryImpl.setUrlKey("https://example.org/example");
-    categoryImpl.setOverrideGeneratedUrl(true);
-
-    // Act and Assert
-    assertTrue(categoryImpl.getOverrideGeneratedUrl());
-  }
-
-  /**
-   * Test {@link CategoryImpl#getOverrideGeneratedUrl()}.
-   * <p>
-   * Method under test: {@link CategoryImpl#getOverrideGeneratedUrl()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetOverrideGeneratedUrl2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3909 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryImpl()).getOverrideGeneratedUrl();
   }
 
   /**
@@ -573,9 +364,9 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getOverrideGeneratedUrl()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean CategoryImpl.getOverrideGeneratedUrl()"})
   public void testGetOverrideGeneratedUrl_givenCategoryImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertFalse((new CategoryImpl()).getOverrideGeneratedUrl());
   }
@@ -583,346 +374,268 @@ public class CategoryImplDiffblueTest {
   /**
    * Test {@link CategoryImpl#getOverrideGeneratedUrl()}.
    * <ul>
-   *   <li>Given {@link java.sql.Date} {@link java.util.Date#getTime()} return
-   * ten.</li>
-   *   <li>Then calls {@link java.util.Date#getTime()}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#getOverrideGeneratedUrl()}
    */
   @Test
-  public void testGetOverrideGeneratedUrl_givenDateGetTimeReturnTen_thenCallsGetTime() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean CategoryImpl.getOverrideGeneratedUrl()"})
+  public void testGetOverrideGeneratedUrl_thenReturnTrue() {
     // Arrange
-    java.sql.Date activeEndDate = mock(java.sql.Date.class);
-    when(activeEndDate.getTime()).thenReturn(10L);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setActiveEndDate(activeEndDate);
-    categoryImpl.setActiveStartDate(
-        java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrl("https://example.org/example");
-    categoryImpl.setUrlKey("https://example.org/example");
-    categoryImpl.setOverrideGeneratedUrl(true);
-
-    // Act
-    Boolean actualOverrideGeneratedUrl = categoryImpl.getOverrideGeneratedUrl();
-
-    // Assert
-    verify(activeEndDate).getTime();
-    assertTrue(actualOverrideGeneratedUrl);
-  }
-
-  /**
-   * Test {@link CategoryImpl#setOverrideGeneratedUrl(Boolean)}.
-   * <p>
-   * Method under test: {@link CategoryImpl#setOverrideGeneratedUrl(Boolean)}
-   */
-  @Test
-  public void testSetOverrideGeneratedUrl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2
         .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl
+    categoryImpl2
         .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrl("https://example.org/example");
-    categoryImpl.setUrlKey("https://example.org/example");
-
-    // Act
-    categoryImpl.setOverrideGeneratedUrl(null);
-
-    // Assert
-    assertFalse(categoryImpl.getOverrideGeneratedUrl());
-    assertFalse(categoryImpl.overrideGeneratedUrl);
-  }
-
-  /**
-   * Test {@link CategoryImpl#setOverrideGeneratedUrl(Boolean)}.
-   * <p>
-   * Method under test: {@link CategoryImpl#setOverrideGeneratedUrl(Boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetOverrideGeneratedUrl2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4768 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryImpl()).setOverrideGeneratedUrl(true);
-  }
-
-  /**
-   * Test {@link CategoryImpl#setOverrideGeneratedUrl(Boolean)}.
-   * <ul>
-   *   <li>Given {@link java.sql.Date} {@link java.util.Date#getTime()} return
-   * ten.</li>
-   *   <li>When {@code null}.</li>
-   *   <li>Then calls {@link java.util.Date#getTime()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#setOverrideGeneratedUrl(Boolean)}
-   */
-  @Test
-  public void testSetOverrideGeneratedUrl_givenDateGetTimeReturnTen_whenNull_thenCallsGetTime() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    java.sql.Date activeEndDate = mock(java.sql.Date.class);
-    when(activeEndDate.getTime()).thenReturn(10L);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setActiveEndDate(activeEndDate);
-    categoryImpl.setActiveStartDate(
-        java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrl("https://example.org/example");
-    categoryImpl.setUrlKey("https://example.org/example");
-
-    // Act
-    categoryImpl.setOverrideGeneratedUrl(null);
-
-    // Assert
-    verify(activeEndDate).getTime();
-    assertFalse(categoryImpl.getOverrideGeneratedUrl());
-    assertFalse(categoryImpl.overrideGeneratedUrl);
-  }
-
-  /**
-   * Test {@link CategoryImpl#setOverrideGeneratedUrl(Boolean)}.
-   * <ul>
-   *   <li>Then {@link CategoryImpl} (default constructor)
-   * OverrideGeneratedUrl.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#setOverrideGeneratedUrl(Boolean)}
-   */
-  @Test
-  public void testSetOverrideGeneratedUrl_thenCategoryImplOverrideGeneratedUrl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-
-    // Act
-    categoryImpl.setOverrideGeneratedUrl(true);
-
-    // Assert
-    assertTrue(categoryImpl.getOverrideGeneratedUrl());
-    assertTrue(categoryImpl.overrideGeneratedUrl);
-  }
-
-  /**
-   * Test {@link CategoryImpl#getUrlKey()}.
-   * <p>
-   * Method under test: {@link CategoryImpl#getUrlKey()}
-   */
-  @Test
-  public void testGetUrlKey() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl
-        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl
-        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrl("https://example.org/example");
-    categoryImpl.setUrlKey(null);
-    categoryImpl.setName("foo");
+    categoryImpl2.setCategoryAttributes(new ArrayList<>());
+    categoryImpl2.setCategoryAttributesMap(new HashMap<>());
+    categoryImpl2.setCategoryMediaXref(new HashMap<>());
+    categoryImpl2.setChildCategoryIds(new ArrayList<>());
+    categoryImpl2.setChildCategoryURLMap(new HashMap<>());
+    categoryImpl2.setDefaultParentCategory(new CategoryImpl());
+    categoryImpl2.setDescription("The characteristics of someone or something");
+    categoryImpl2.setDisplayTemplate("Display Template");
+    categoryImpl2.setExcludedSearchFacets(new ArrayList<>());
+    categoryImpl2.setExternalId("42");
+    categoryImpl2.setFulfillmentType(FulfillmentType.DIGITAL);
+    categoryImpl2.setId(1L);
+    categoryImpl2.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
+    categoryImpl2.setLongDescription("Long Description");
+    categoryImpl2.setMetaDescription("Meta Description");
+    categoryImpl2.setMetaTitle("Dr");
+    categoryImpl2.setName("Name");
+    categoryImpl2.setProductDescriptionPatternOverride("Product Description Pattern Override");
+    categoryImpl2.setProductTitlePatternOverride("Dr");
+    categoryImpl2.setRootDisplayOrder(new BigDecimal("2.3"));
+    categoryImpl2.setSearchFacets(new ArrayList<>());
+    categoryImpl2.setTaxCode("Tax Code");
+    categoryImpl2.setUpSaleProducts(new ArrayList<>());
+    categoryImpl2.setUrl("https://example.org/example");
+    categoryImpl2.setUrlKey("https://example.org/example");
+    categoryImpl2.setOverrideGeneratedUrl(true);
 
     // Act and Assert
-    assertEquals("foo", categoryImpl.getUrlKey());
+    assertTrue(categoryImpl2.getOverrideGeneratedUrl());
   }
 
   /**
-   * Test {@link CategoryImpl#getUrlKey()}.
+   * Test {@link CategoryImpl#setOverrideGeneratedUrl(Boolean)}.
+   * <ul>
+   *   <li>Then {@link CategoryImpl} (default constructor) OverrideGeneratedUrl.</li>
+   * </ul>
    * <p>
-   * Method under test: {@link CategoryImpl#getUrlKey()}
+   * Method under test: {@link CategoryImpl#setOverrideGeneratedUrl(Boolean)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetUrlKey2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4119 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.setOverrideGeneratedUrl(Boolean)"})
+  public void testSetOverrideGeneratedUrl_thenCategoryImplOverrideGeneratedUrl() {
+    // Arrange
+    CategoryImpl categoryImpl2 = new CategoryImpl();
 
-    // Arrange and Act
-    (new CategoryImpl()).getUrlKey();
+    // Act
+    categoryImpl2.setOverrideGeneratedUrl(true);
+
+    // Assert
+    assertTrue(categoryImpl2.getOverrideGeneratedUrl());
+    assertTrue(categoryImpl2.overrideGeneratedUrl);
+  }
+
+  /**
+   * Test {@link CategoryImpl#setOverrideGeneratedUrl(Boolean)}.
+   * <ul>
+   *   <li>Then not {@link CategoryImpl} (default constructor) OverrideGeneratedUrl.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CategoryImpl#setOverrideGeneratedUrl(Boolean)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.setOverrideGeneratedUrl(Boolean)"})
+  public void testSetOverrideGeneratedUrl_thenNotCategoryImplOverrideGeneratedUrl() {
+    // Arrange
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2
+        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    categoryImpl2
+        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    categoryImpl2.setCategoryAttributes(new ArrayList<>());
+    categoryImpl2.setCategoryAttributesMap(new HashMap<>());
+    categoryImpl2.setCategoryMediaXref(new HashMap<>());
+    categoryImpl2.setChildCategoryIds(new ArrayList<>());
+    categoryImpl2.setChildCategoryURLMap(new HashMap<>());
+    categoryImpl2.setDefaultParentCategory(new CategoryImpl());
+    categoryImpl2.setDescription("The characteristics of someone or something");
+    categoryImpl2.setDisplayTemplate("Display Template");
+    categoryImpl2.setExcludedSearchFacets(new ArrayList<>());
+    categoryImpl2.setExternalId("42");
+    categoryImpl2.setFulfillmentType(FulfillmentType.DIGITAL);
+    categoryImpl2.setId(1L);
+    categoryImpl2.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
+    categoryImpl2.setLongDescription("Long Description");
+    categoryImpl2.setMetaDescription("Meta Description");
+    categoryImpl2.setMetaTitle("Dr");
+    categoryImpl2.setName("Name");
+    categoryImpl2.setOverrideGeneratedUrl(true);
+    categoryImpl2.setProductDescriptionPatternOverride("Product Description Pattern Override");
+    categoryImpl2.setProductTitlePatternOverride("Dr");
+    categoryImpl2.setRootDisplayOrder(new BigDecimal("2.3"));
+    categoryImpl2.setSearchFacets(new ArrayList<>());
+    categoryImpl2.setTaxCode("Tax Code");
+    categoryImpl2.setUpSaleProducts(new ArrayList<>());
+    categoryImpl2.setUrl("https://example.org/example");
+    categoryImpl2.setUrlKey("https://example.org/example");
+
+    // Act
+    categoryImpl2.setOverrideGeneratedUrl(null);
+
+    // Assert
+    assertFalse(categoryImpl2.getOverrideGeneratedUrl());
+    assertFalse(categoryImpl2.overrideGeneratedUrl);
   }
 
   /**
    * Test {@link CategoryImpl#getUrlKey()}.
    * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) UrlKey is
-   * {@code foo}.</li>
+   *   <li>Given {@link CategoryImpl} (default constructor) Name is empty string.</li>
+   *   <li>Then return empty string.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CategoryImpl#getUrlKey()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CategoryImpl.getUrlKey()"})
+  public void testGetUrlKey_givenCategoryImplNameIsEmptyString_thenReturnEmptyString() {
+    // Arrange
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setName("");
+
+    // Act and Assert
+    assertEquals("", categoryImpl2.getUrlKey());
+  }
+
+  /**
+   * Test {@link CategoryImpl#getUrlKey()}.
+   * <ul>
+   *   <li>Given {@link CategoryImpl} (default constructor) Name is {@code /}.</li>
+   *   <li>Then return empty string.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CategoryImpl#getUrlKey()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CategoryImpl.getUrlKey()"})
+  public void testGetUrlKey_givenCategoryImplNameIsSlash_thenReturnEmptyString() {
+    // Arrange
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setName("/");
+
+    // Act and Assert
+    assertEquals("", categoryImpl2.getUrlKey());
+  }
+
+  /**
+   * Test {@link CategoryImpl#getUrlKey()}.
+   * <ul>
+   *   <li>Given {@link CategoryImpl} (default constructor) UrlKey is {@code foo}.</li>
    *   <li>Then return {@code foo}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#getUrlKey()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CategoryImpl.getUrlKey()"})
   public void testGetUrlKey_givenCategoryImplUrlKeyIsFoo_thenReturnFoo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2
         .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl
+    categoryImpl2
         .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrl("https://example.org/example");
-    categoryImpl.setUrlKey("foo");
-    categoryImpl.setName(null);
+    categoryImpl2.setCategoryAttributes(new ArrayList<>());
+    categoryImpl2.setCategoryAttributesMap(new HashMap<>());
+    categoryImpl2.setCategoryMediaXref(new HashMap<>());
+    categoryImpl2.setChildCategoryIds(new ArrayList<>());
+    categoryImpl2.setChildCategoryURLMap(new HashMap<>());
+    categoryImpl2.setDefaultParentCategory(new CategoryImpl());
+    categoryImpl2.setDescription("The characteristics of someone or something");
+    categoryImpl2.setDisplayTemplate("Display Template");
+    categoryImpl2.setExcludedSearchFacets(new ArrayList<>());
+    categoryImpl2.setExternalId("42");
+    categoryImpl2.setFulfillmentType(FulfillmentType.DIGITAL);
+    categoryImpl2.setId(1L);
+    categoryImpl2.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
+    categoryImpl2.setLongDescription("Long Description");
+    categoryImpl2.setMetaDescription("Meta Description");
+    categoryImpl2.setMetaTitle("Dr");
+    categoryImpl2.setOverrideGeneratedUrl(true);
+    categoryImpl2.setProductDescriptionPatternOverride("Product Description Pattern Override");
+    categoryImpl2.setProductTitlePatternOverride("Dr");
+    categoryImpl2.setRootDisplayOrder(new BigDecimal("2.3"));
+    categoryImpl2.setSearchFacets(new ArrayList<>());
+    categoryImpl2.setTaxCode("Tax Code");
+    categoryImpl2.setUpSaleProducts(new ArrayList<>());
+    categoryImpl2.setUrl("https://example.org/example");
+    categoryImpl2.setUrlKey("foo");
+    categoryImpl2.setName(null);
 
     // Act and Assert
-    assertEquals("foo", categoryImpl.getUrlKey());
+    assertEquals("foo", categoryImpl2.getUrlKey());
+  }
+
+  /**
+   * Test {@link CategoryImpl#getUrlKey()}.
+   * <ul>
+   *   <li>Given {@link CategoryImpl} (default constructor) UrlKey is {@code null}.</li>
+   *   <li>Then return {@code foo}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CategoryImpl#getUrlKey()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CategoryImpl.getUrlKey()"})
+  public void testGetUrlKey_givenCategoryImplUrlKeyIsNull_thenReturnFoo() {
+    // Arrange
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2
+        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    categoryImpl2
+        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    categoryImpl2.setCategoryAttributes(new ArrayList<>());
+    categoryImpl2.setCategoryAttributesMap(new HashMap<>());
+    categoryImpl2.setCategoryMediaXref(new HashMap<>());
+    categoryImpl2.setChildCategoryIds(new ArrayList<>());
+    categoryImpl2.setChildCategoryURLMap(new HashMap<>());
+    categoryImpl2.setDefaultParentCategory(new CategoryImpl());
+    categoryImpl2.setDescription("The characteristics of someone or something");
+    categoryImpl2.setDisplayTemplate("Display Template");
+    categoryImpl2.setExcludedSearchFacets(new ArrayList<>());
+    categoryImpl2.setExternalId("42");
+    categoryImpl2.setFulfillmentType(FulfillmentType.DIGITAL);
+    categoryImpl2.setId(1L);
+    categoryImpl2.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
+    categoryImpl2.setLongDescription("Long Description");
+    categoryImpl2.setMetaDescription("Meta Description");
+    categoryImpl2.setMetaTitle("Dr");
+    categoryImpl2.setOverrideGeneratedUrl(true);
+    categoryImpl2.setProductDescriptionPatternOverride("Product Description Pattern Override");
+    categoryImpl2.setProductTitlePatternOverride("Dr");
+    categoryImpl2.setRootDisplayOrder(new BigDecimal("2.3"));
+    categoryImpl2.setSearchFacets(new ArrayList<>());
+    categoryImpl2.setTaxCode("Tax Code");
+    categoryImpl2.setUpSaleProducts(new ArrayList<>());
+    categoryImpl2.setUrl("https://example.org/example");
+    categoryImpl2.setUrlKey(null);
+    categoryImpl2.setName("foo");
+
+    // Act and Assert
+    assertEquals("foo", categoryImpl2.getUrlKey());
   }
 
   /**
@@ -935,160 +648,11 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getUrlKey()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CategoryImpl.getUrlKey()"})
   public void testGetUrlKey_givenCategoryImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new CategoryImpl()).getUrlKey());
-  }
-
-  /**
-   * Test {@link CategoryImpl#getUrlKey()}.
-   * <ul>
-   *   <li>Given {@link java.sql.Date} {@link java.util.Date#getTime()} return
-   * ten.</li>
-   *   <li>Then calls {@link java.util.Date#getTime()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getUrlKey()}
-   */
-  @Test
-  public void testGetUrlKey_givenDateGetTimeReturnTen_thenCallsGetTime() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    java.sql.Date activeEndDate = mock(java.sql.Date.class);
-    when(activeEndDate.getTime()).thenReturn(10L);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setActiveEndDate(activeEndDate);
-    categoryImpl.setActiveStartDate(
-        java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrl("https://example.org/example");
-    categoryImpl.setUrlKey(null);
-    categoryImpl.setName("foo");
-
-    // Act
-    String actualUrlKey = categoryImpl.getUrlKey();
-
-    // Assert
-    verify(activeEndDate).getTime();
-    assertEquals("foo", actualUrlKey);
-  }
-
-  /**
-   * Test {@link CategoryImpl#getGeneratedUrl()}.
-   * <p>
-   * Method under test: {@link CategoryImpl#getGeneratedUrl()}
-   */
-  @Test
-  public void testGetGeneratedUrl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl
-        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl
-        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrl("https://example.org/example");
-    categoryImpl.setUrlKey("https://example.org/example");
-
-    // Act and Assert
-    assertEquals("https://example.org/example", categoryImpl.getGeneratedUrl());
-  }
-
-  /**
-   * Test {@link CategoryImpl#getGeneratedUrl()}.
-   * <p>
-   * Method under test: {@link CategoryImpl#getGeneratedUrl()}
-   */
-  @Test
-  public void testGetGeneratedUrl2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName("org.broadleafcommerce.core.catalog.domain.CategoryAttribute");
-
-    // Act and Assert
-    assertEquals("orgbroadleafcommercecorecatalogdomainCategoryAttribute", categoryImpl.getGeneratedUrl());
-  }
-
-  /**
-   * Test {@link CategoryImpl#getGeneratedUrl()}.
-   * <p>
-   * Method under test: {@link CategoryImpl#getGeneratedUrl()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetGeneratedUrl3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3669 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryImpl()).getGeneratedUrl();
   }
 
   /**
@@ -1101,81 +665,57 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getGeneratedUrl()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CategoryImpl.getGeneratedUrl()"})
   public void testGetGeneratedUrl_givenCategoryImplNameIsColon_thenReturnEmptyString() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName(":");
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setName(":");
 
     // Act and Assert
-    assertEquals("", categoryImpl.getGeneratedUrl());
+    assertEquals("", categoryImpl2.getGeneratedUrl());
   }
 
   /**
    * Test {@link CategoryImpl#getGeneratedUrl()}.
    * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) Name is empty
-   * string.</li>
+   *   <li>Given {@link CategoryImpl} (default constructor) Name is empty string.</li>
    *   <li>Then return empty string.</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#getGeneratedUrl()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CategoryImpl.getGeneratedUrl()"})
   public void testGetGeneratedUrl_givenCategoryImplNameIsEmptyString_thenReturnEmptyString() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName("");
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setName("");
 
     // Act and Assert
-    assertEquals("", categoryImpl.getGeneratedUrl());
+    assertEquals("", categoryImpl2.getGeneratedUrl());
   }
 
   /**
    * Test {@link CategoryImpl#getGeneratedUrl()}.
    * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) Name is
-   * {@code java.util.List}.</li>
-   *   <li>Then return {@code javautilList}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getGeneratedUrl()}
-   */
-  @Test
-  public void testGetGeneratedUrl_givenCategoryImplNameIsJavaUtilList_thenReturnJavautilList() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName("java.util.List");
-
-    // Act and Assert
-    assertEquals("javautilList", categoryImpl.getGeneratedUrl());
-  }
-
-  /**
-   * Test {@link CategoryImpl#getGeneratedUrl()}.
-   * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) Name is
-   * {@code Name}.</li>
+   *   <li>Given {@link CategoryImpl} (default constructor) Name is {@code Name}.</li>
    *   <li>Then return {@code name}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#getGeneratedUrl()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CategoryImpl.getGeneratedUrl()"})
   public void testGetGeneratedUrl_givenCategoryImplNameIsName_thenReturnName() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName("Name");
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setName("Name");
 
     // Act and Assert
-    assertEquals("name", categoryImpl.getGeneratedUrl());
+    assertEquals("name", categoryImpl2.getGeneratedUrl());
   }
 
   /**
@@ -1188,15 +728,15 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getGeneratedUrl()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CategoryImpl.getGeneratedUrl()"})
   public void testGetGeneratedUrl_givenCategoryImplNameIsQuestionMark_thenReturnEmptyString() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName("?");
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setName("?");
 
     // Act and Assert
-    assertEquals("", categoryImpl.getGeneratedUrl());
+    assertEquals("", categoryImpl2.getGeneratedUrl());
   }
 
   /**
@@ -1209,37 +749,15 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getGeneratedUrl()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CategoryImpl.getGeneratedUrl()"})
   public void testGetGeneratedUrl_givenCategoryImplNameIsSlash_thenReturnEmptyString() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName("/");
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setName("/");
 
     // Act and Assert
-    assertEquals("", categoryImpl.getGeneratedUrl());
-  }
-
-  /**
-   * Test {@link CategoryImpl#getGeneratedUrl()}.
-   * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) Name is space
-   * space.</li>
-   *   <li>Then return {@code --}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getGeneratedUrl()}
-   */
-  @Test
-  public void testGetGeneratedUrl_givenCategoryImplNameIsSpaceSpace_thenReturnDashDash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName("  ");
-
-    // Act and Assert
-    assertEquals("--", categoryImpl.getGeneratedUrl());
+    assertEquals("", categoryImpl2.getGeneratedUrl());
   }
 
   /**
@@ -1252,138 +770,57 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getGeneratedUrl()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CategoryImpl.getGeneratedUrl()"})
   public void testGetGeneratedUrl_givenCategoryImplNameIsSpace_thenReturnDash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName(" ");
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setName(" ");
 
     // Act and Assert
-    assertEquals("-", categoryImpl.getGeneratedUrl());
+    assertEquals("-", categoryImpl2.getGeneratedUrl());
   }
 
   /**
    * Test {@link CategoryImpl#getGeneratedUrl()}.
    * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) Name is
-   * {@code UU UU}.</li>
+   *   <li>Given {@link CategoryImpl} (default constructor) Name is {@code UU UU}.</li>
    *   <li>Then return {@code uU-UU}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#getGeneratedUrl()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CategoryImpl.getGeneratedUrl()"})
   public void testGetGeneratedUrl_givenCategoryImplNameIsUuUu_thenReturnUUUu() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName("UU UU");
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setName("UU UU");
 
     // Act and Assert
-    assertEquals("uU-UU", categoryImpl.getGeneratedUrl());
+    assertEquals("uU-UU", categoryImpl2.getGeneratedUrl());
   }
 
   /**
    * Test {@link CategoryImpl#getGeneratedUrl()}.
    * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) Name is
-   * {@code UU UU}.</li>
-   *   <li>Then return {@code -UU-UU}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getGeneratedUrl()}
-   */
-  @Test
-  public void testGetGeneratedUrl_givenCategoryImplNameIsUuUu_thenReturnUuUu() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName(" UU UU");
-
-    // Act and Assert
-    assertEquals("-UU-UU", categoryImpl.getGeneratedUrl());
-  }
-
-  /**
-   * Test {@link CategoryImpl#getGeneratedUrl()}.
-   * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) Name is
-   * {@code .*?\W.*?}.</li>
+   *   <li>Given {@link CategoryImpl} (default constructor) Name is {@code .*?\W.*?}.</li>
    *   <li>Then return {@code w}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#getGeneratedUrl()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CategoryImpl.getGeneratedUrl()"})
   public void testGetGeneratedUrl_givenCategoryImplNameIsW_thenReturnW() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName(".*?\\W.*?");
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setName(".*?\\W.*?");
 
     // Act and Assert
-    assertEquals("w", categoryImpl.getGeneratedUrl());
-  }
-
-  /**
-   * Test {@link CategoryImpl#getGeneratedUrl()}.
-   * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) UrlKey is empty
-   * string.</li>
-   *   <li>Then return {@code name}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getGeneratedUrl()}
-   */
-  @Test
-  public void testGetGeneratedUrl_givenCategoryImplUrlKeyIsEmptyString_thenReturnName() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    java.sql.Date activeEndDate = mock(java.sql.Date.class);
-    when(activeEndDate.getTime()).thenReturn(10L);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setActiveEndDate(activeEndDate);
-    categoryImpl.setActiveStartDate(
-        java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrl("https://example.org/example");
-    categoryImpl.setUrlKey("");
-
-    // Act
-    String actualGeneratedUrl = categoryImpl.getGeneratedUrl();
-
-    // Assert
-    verify(activeEndDate).getTime();
-    assertEquals("name", actualGeneratedUrl);
+    assertEquals("w", categoryImpl2.getGeneratedUrl());
   }
 
   /**
@@ -1396,9 +833,9 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getGeneratedUrl()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CategoryImpl.getGeneratedUrl()"})
   public void testGetGeneratedUrl_givenCategoryImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertEquals("null", (new CategoryImpl()).getGeneratedUrl());
   }
@@ -1406,138 +843,50 @@ public class CategoryImplDiffblueTest {
   /**
    * Test {@link CategoryImpl#getGeneratedUrl()}.
    * <ul>
-   *   <li>Given {@link java.sql.Date} {@link java.util.Date#getTime()} return
-   * ten.</li>
    *   <li>Then return {@code https://example.org/example}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#getGeneratedUrl()}
    */
   @Test
-  public void testGetGeneratedUrl_givenDateGetTimeReturnTen_thenReturnHttpsExampleOrgExample() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CategoryImpl.getGeneratedUrl()"})
+  public void testGetGeneratedUrl_thenReturnHttpsExampleOrgExample() {
     // Arrange
-    java.sql.Date activeEndDate = mock(java.sql.Date.class);
-    when(activeEndDate.getTime()).thenReturn(10L);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setActiveEndDate(activeEndDate);
-    categoryImpl.setActiveStartDate(
-        java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrl("https://example.org/example");
-    categoryImpl.setUrlKey("https://example.org/example");
-
-    // Act
-    String actualGeneratedUrl = categoryImpl.getGeneratedUrl();
-
-    // Assert
-    verify(activeEndDate).getTime();
-    assertEquals("https://example.org/example", actualGeneratedUrl);
-  }
-
-  /**
-   * Test {@link CategoryImpl#getGeneratedUrl()}.
-   * <ul>
-   *   <li>Then return {@code javalangString}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getGeneratedUrl()}
-   */
-  @Test
-  public void testGetGeneratedUrl_thenReturnJavalangString() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName("java.lang.String");
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2
+        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    categoryImpl2
+        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    categoryImpl2.setCategoryAttributes(new ArrayList<>());
+    categoryImpl2.setCategoryAttributesMap(new HashMap<>());
+    categoryImpl2.setCategoryMediaXref(new HashMap<>());
+    categoryImpl2.setChildCategoryIds(new ArrayList<>());
+    categoryImpl2.setChildCategoryURLMap(new HashMap<>());
+    categoryImpl2.setDefaultParentCategory(new CategoryImpl());
+    categoryImpl2.setDescription("The characteristics of someone or something");
+    categoryImpl2.setDisplayTemplate("Display Template");
+    categoryImpl2.setExcludedSearchFacets(new ArrayList<>());
+    categoryImpl2.setExternalId("42");
+    categoryImpl2.setFulfillmentType(FulfillmentType.DIGITAL);
+    categoryImpl2.setId(1L);
+    categoryImpl2.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
+    categoryImpl2.setLongDescription("Long Description");
+    categoryImpl2.setMetaDescription("Meta Description");
+    categoryImpl2.setMetaTitle("Dr");
+    categoryImpl2.setName("Name");
+    categoryImpl2.setOverrideGeneratedUrl(true);
+    categoryImpl2.setProductDescriptionPatternOverride("Product Description Pattern Override");
+    categoryImpl2.setProductTitlePatternOverride("Dr");
+    categoryImpl2.setRootDisplayOrder(new BigDecimal("2.3"));
+    categoryImpl2.setSearchFacets(new ArrayList<>());
+    categoryImpl2.setTaxCode("Tax Code");
+    categoryImpl2.setUpSaleProducts(new ArrayList<>());
+    categoryImpl2.setUrl("https://example.org/example");
+    categoryImpl2.setUrlKey("https://example.org/example");
 
     // Act and Assert
-    assertEquals("javalangString", categoryImpl.getGeneratedUrl());
-  }
-
-  /**
-   * Test {@link CategoryImpl#getGeneratedUrl()}.
-   * <ul>
-   *   <li>Then return {@code javautilMapEntry}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getGeneratedUrl()}
-   */
-  @Test
-  public void testGetGeneratedUrl_thenReturnJavautilMapEntry() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName("java.util.Map$Entry");
-
-    // Act and Assert
-    assertEquals("javautilMapEntry", categoryImpl.getGeneratedUrl());
-  }
-
-  /**
-   * Test {@link CategoryImpl#getGeneratedUrl()}.
-   * <ul>
-   *   <li>Then return {@code orgbroadleafcommercecommonmediadomainMedia}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getGeneratedUrl()}
-   */
-  @Test
-  public void testGetGeneratedUrl_thenReturnOrgbroadleafcommercecommonmediadomainMedia() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName("org.broadleafcommerce.common.media.domain.Media");
-
-    // Act and Assert
-    assertEquals("orgbroadleafcommercecommonmediadomainMedia", categoryImpl.getGeneratedUrl());
-  }
-
-  /**
-   * Test {@link CategoryImpl#getGeneratedUrl()}.
-   * <ul>
-   *   <li>Then return {@code orgbroadleafcommercecorecatalogdomainCategory}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getGeneratedUrl()}
-   */
-  @Test
-  public void testGetGeneratedUrl_thenReturnOrgbroadleafcommercecorecatalogdomainCategory() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName("org.broadleafcommerce.core.catalog.domain.Category");
-
-    // Act and Assert
-    assertEquals("orgbroadleafcommercecorecatalogdomainCategory", categoryImpl.getGeneratedUrl());
+    assertEquals("https://example.org/example", categoryImpl2.getGeneratedUrl());
   }
 
   /**
@@ -1546,122 +895,32 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getDescription()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CategoryImpl.getDescription()"})
   public void testGetDescription() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3609 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryImpl()).getDescription();
-  }
-
-  /**
-   * Test {@link CategoryImpl#getDescription()}.
-   * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getDescription()}
-   */
-  @Test
-  public void testGetDescription_givenCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new CategoryImpl()).getDescription());
   }
 
   /**
-   * Test {@link CategoryImpl#getDescription()}.
-   * <ul>
-   *   <li>Given {@link Date} {@link java.util.Date#getTime()} return ten.</li>
-   *   <li>Then calls {@link java.util.Date#getTime()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getDescription()}
-   */
-  @Test
-  public void testGetDescription_givenDateGetTimeReturnTen_thenCallsGetTime() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    java.sql.Date activeStartDate = mock(java.sql.Date.class);
-    when(activeStartDate.getTime()).thenReturn(10L);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setActiveStartDate(activeStartDate);
-
-    // Act
-    String actualDescription = categoryImpl.getDescription();
-
-    // Assert
-    verify(activeStartDate).getTime();
-    assertNull(actualDescription);
-  }
-
-  /**
-   * Test {@link CategoryImpl#getActiveStartDate()}.
-   * <p>
-   * Method under test: {@link CategoryImpl#getActiveStartDate()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetActiveStartDate() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3069 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryImpl()).getActiveStartDate();
-  }
-
-  /**
    * Test {@link CategoryImpl#getActiveStartDate()}.
    * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) Archived is
-   * {@code Y}.</li>
+   *   <li>Given {@link CategoryImpl} (default constructor) Archived is {@code Y}.</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#getActiveStartDate()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Date CategoryImpl.getActiveStartDate()"})
   public void testGetActiveStartDate_givenCategoryImplArchivedIsY_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setArchived('Y');
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setArchived('Y');
 
     // Act and Assert
-    assertNull(categoryImpl.getActiveStartDate());
+    assertNull(categoryImpl2.getActiveStartDate());
   }
 
   /**
@@ -1674,146 +933,64 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getActiveStartDate()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Date CategoryImpl.getActiveStartDate()"})
   public void testGetActiveStartDate_givenCategoryImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new CategoryImpl()).getActiveStartDate());
   }
 
   /**
    * Test {@link CategoryImpl#setActiveStartDate(Date)}.
-   * <p>
-   * Method under test: {@link CategoryImpl#setActiveStartDate(Date)}
-   */
-  @Test
-  public void testSetActiveStartDate() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl
-        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl
-        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrl("https://example.org/example");
-    categoryImpl.setUrlKey("https://example.org/example");
-
-    // Act
-    categoryImpl.setActiveStartDate(null);
-
-    // Assert
-    assertNull(categoryImpl.getActiveStartDate());
-    assertNull(categoryImpl.activeStartDate);
-  }
-
-  /**
-   * Test {@link CategoryImpl#setActiveStartDate(Date)}.
-   * <p>
-   * Method under test: {@link CategoryImpl#setActiveStartDate(java.util.Date)}
-   */
-  @Test
-  public void testSetActiveStartDate2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    java.sql.Date activeStartDate = mock(java.sql.Date.class);
-    when(activeStartDate.getTime()).thenReturn(10L);
-
-    // Act
-    categoryImpl.setActiveStartDate(activeStartDate);
-
-    // Assert
-    verify(activeStartDate).getTime();
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    assertEquals("1970-01-01", simpleDateFormat.format(categoryImpl.getActiveStartDate()));
-    assertEquals("1970-01-01", (new SimpleDateFormat("yyyy-MM-dd")).format(categoryImpl.activeStartDate));
-  }
-
-  /**
-   * Test {@link CategoryImpl#setActiveStartDate(Date)}.
-   * <p>
-   * Method under test: {@link CategoryImpl#setActiveStartDate(Date)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetActiveStartDate3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4269 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CategoryImpl categoryImpl2 = new CategoryImpl();
-
-    // Act
-    categoryImpl2
-        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-  }
-
-  /**
-   * Test {@link CategoryImpl#setActiveStartDate(Date)}.
    * <ul>
-   *   <li>Given
-   * {@link UnsupportedOperationException#UnsupportedOperationException(String)}
-   * with {@code foo}.</li>
+   *   <li>Then {@link CategoryImpl} (default constructor) ActiveStartDate is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test: {@link CategoryImpl#setActiveStartDate(java.util.Date)}
+   * Method under test: {@link CategoryImpl#setActiveStartDate(Date)}
    */
   @Test
-  public void testSetActiveStartDate_givenUnsupportedOperationExceptionWithFoo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.setActiveStartDate(Date)"})
+  public void testSetActiveStartDate_thenCategoryImplActiveStartDateIsNull() {
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    java.sql.Date activeStartDate = mock(java.sql.Date.class);
-    when(activeStartDate.getTime()).thenThrow(new UnsupportedOperationException("foo"));
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2
+        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    categoryImpl2
+        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    categoryImpl2.setCategoryAttributes(new ArrayList<>());
+    categoryImpl2.setCategoryAttributesMap(new HashMap<>());
+    categoryImpl2.setCategoryMediaXref(new HashMap<>());
+    categoryImpl2.setChildCategoryIds(new ArrayList<>());
+    categoryImpl2.setChildCategoryURLMap(new HashMap<>());
+    categoryImpl2.setDefaultParentCategory(new CategoryImpl());
+    categoryImpl2.setDescription("The characteristics of someone or something");
+    categoryImpl2.setDisplayTemplate("Display Template");
+    categoryImpl2.setExcludedSearchFacets(new ArrayList<>());
+    categoryImpl2.setExternalId("42");
+    categoryImpl2.setFulfillmentType(FulfillmentType.DIGITAL);
+    categoryImpl2.setId(1L);
+    categoryImpl2.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
+    categoryImpl2.setLongDescription("Long Description");
+    categoryImpl2.setMetaDescription("Meta Description");
+    categoryImpl2.setMetaTitle("Dr");
+    categoryImpl2.setName("Name");
+    categoryImpl2.setOverrideGeneratedUrl(true);
+    categoryImpl2.setProductDescriptionPatternOverride("Product Description Pattern Override");
+    categoryImpl2.setProductTitlePatternOverride("Dr");
+    categoryImpl2.setRootDisplayOrder(new BigDecimal("2.3"));
+    categoryImpl2.setSearchFacets(new ArrayList<>());
+    categoryImpl2.setTaxCode("Tax Code");
+    categoryImpl2.setUpSaleProducts(new ArrayList<>());
+    categoryImpl2.setUrl("https://example.org/example");
+    categoryImpl2.setUrlKey("https://example.org/example");
 
     // Act
-    categoryImpl.setActiveStartDate(activeStartDate);
+    categoryImpl2.setActiveStartDate(null);
 
     // Assert
-    verify(activeStartDate).getTime();
-    assertNull(categoryImpl.getActiveStartDate());
-    assertNull(categoryImpl.activeStartDate);
+    assertNull(categoryImpl2.getActiveStartDate());
+    assertNull(categoryImpl2.activeStartDate);
   }
 
   /**
@@ -1865,6 +1042,28 @@ public class CategoryImplDiffblueTest {
    * </ul>
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Date CategoryImpl.getActiveEndDate()", "List CategoryImpl.getAllChildCategoryXrefs()",
+      "List CategoryImpl.getAllParentCategoryXrefs()", "List CategoryImpl.getAllProductXrefs()",
+      "List CategoryImpl.getCategoryAttributes()", "Map CategoryImpl.getCategoryMediaXref()",
+      "List CategoryImpl.getCrossSaleProducts()", "String CategoryImpl.getDisplayTemplate()",
+      "List CategoryImpl.getExcludedSearchFacets()", "String CategoryImpl.getExternalId()",
+      "List CategoryImpl.getFeaturedProducts()", "Long CategoryImpl.getId()",
+      "String CategoryImpl.getMetaDescription()", "String CategoryImpl.getMetaTitle()",
+      "String CategoryImpl.getProductDescriptionPatternOverride()",
+      "String CategoryImpl.getProductTitlePatternOverride()", "BigDecimal CategoryImpl.getRootDisplayOrder()",
+      "List CategoryImpl.getSearchFacets()", "String CategoryImpl.getTaxCode()",
+      "List CategoryImpl.getUpSaleProducts()", "void CategoryImpl.setCategoryAttributes(List)",
+      "void CategoryImpl.setCategoryMediaXref(Map)", "void CategoryImpl.setChildCategoryIds(List)",
+      "void CategoryImpl.setChildCategoryURLMap(Map)", "void CategoryImpl.setDefaultParentCategory(Category)",
+      "void CategoryImpl.setDescription(String)", "void CategoryImpl.setDisplayTemplate(String)",
+      "void CategoryImpl.setExcludedSearchFacets(List)", "void CategoryImpl.setExternalId(String)",
+      "void CategoryImpl.setId(Long)", "void CategoryImpl.setLongDescription(String)",
+      "void CategoryImpl.setMetaDescription(String)", "void CategoryImpl.setMetaTitle(String)",
+      "void CategoryImpl.setName(String)", "void CategoryImpl.setProductDescriptionPatternOverride(String)",
+      "void CategoryImpl.setProductTitlePatternOverride(String)", "void CategoryImpl.setRootDisplayOrder(BigDecimal)",
+      "void CategoryImpl.setSearchFacets(List)", "void CategoryImpl.setTaxCode(String)",
+      "void CategoryImpl.setUrl(String)", "void CategoryImpl.setUrlKey(String)"})
   public void testGettersAndSetters() {
     // Arrange
     CategoryImpl categoryImpl = new CategoryImpl();
@@ -1896,7 +1095,7 @@ public class CategoryImplDiffblueTest {
     categoryImpl.setTaxCode("Tax Code");
     categoryImpl.setUrl("https://example.org/example");
     categoryImpl.setUrlKey("https://example.org/example");
-    categoryImpl.getActiveEndDate();
+    Date actualActiveEndDate = categoryImpl.getActiveEndDate();
     List<CategoryXref> actualAllChildCategoryXrefs = categoryImpl.getAllChildCategoryXrefs();
     List<CategoryXref> actualAllParentCategoryXrefs = categoryImpl.getAllParentCategoryXrefs();
     List<CategoryProductXref> actualAllProductXrefs = categoryImpl.getAllProductXrefs();
@@ -1917,7 +1116,7 @@ public class CategoryImplDiffblueTest {
     String actualTaxCode = categoryImpl.getTaxCode();
     List<RelatedProduct> actualUpSaleProducts = categoryImpl.getUpSaleProducts();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("42", actualExternalId);
     assertEquals("Display Template", actualDisplayTemplate);
     assertEquals("Dr", actualMetaTitle);
@@ -1925,6 +1124,7 @@ public class CategoryImplDiffblueTest {
     assertEquals("Meta Description", actualMetaDescription);
     assertEquals("Product Description Pattern Override", actualProductDescriptionPatternOverride);
     assertEquals("Tax Code", actualTaxCode);
+    assertNull(actualActiveEndDate);
     assertEquals(1L, actualId.longValue());
     assertTrue(actualAllChildCategoryXrefs.isEmpty());
     assertTrue(actualAllParentCategoryXrefs.isEmpty());
@@ -1945,161 +1145,50 @@ public class CategoryImplDiffblueTest {
   }
 
   /**
-   * Test {@link CategoryImpl#setActiveEndDate(Date)}.
+   * Test {@link CategoryImpl#isActive()}.
    * <p>
-   * Method under test: {@link CategoryImpl#setActiveEndDate(java.util.Date)}
+   * Method under test: {@link CategoryImpl#isActive()}
    */
   @Test
-  public void testSetActiveEndDate() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    java.sql.Date activeEndDate = mock(java.sql.Date.class);
-    when(activeEndDate.getTime()).thenReturn(10L);
-
-    // Act
-    categoryImpl.setActiveEndDate(activeEndDate);
-
-    // Assert
-    verify(activeEndDate).getTime();
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    assertEquals("1970-01-01", simpleDateFormat.format(categoryImpl.getActiveEndDate()));
-  }
-
-  /**
-   * Test {@link CategoryImpl#setActiveEndDate(Date)}.
-   * <p>
-   * Method under test: {@link CategoryImpl#setActiveEndDate(Date)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetActiveEndDate2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4239 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryImpl.isActive()"})
+  public void testIsActive() {
     // Arrange
     CategoryImpl categoryImpl2 = new CategoryImpl();
-
-    // Act
+    categoryImpl2.setCategoryAttributes(new ArrayList<>());
+    categoryImpl2.setCategoryAttributesMap(new HashMap<>());
+    categoryImpl2.setCategoryMediaXref(new HashMap<>());
+    categoryImpl2.setChildCategoryIds(new ArrayList<>());
+    categoryImpl2.setChildCategoryURLMap(new HashMap<>());
+    categoryImpl2.setDefaultParentCategory(new CategoryImpl());
+    categoryImpl2.setDescription("The characteristics of someone or something");
+    categoryImpl2.setDisplayTemplate("Display Template");
+    categoryImpl2.setExcludedSearchFacets(new ArrayList<>());
+    categoryImpl2.setExternalId("42");
+    categoryImpl2.setFulfillmentType(FulfillmentType.DIGITAL);
+    categoryImpl2.setId(1L);
+    categoryImpl2.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
+    categoryImpl2.setLongDescription("Long Description");
+    categoryImpl2.setMetaDescription("Meta Description");
+    categoryImpl2.setMetaTitle("Dr");
+    categoryImpl2.setName("Name");
+    categoryImpl2.setOverrideGeneratedUrl(true);
+    categoryImpl2.setProductDescriptionPatternOverride("Product Description Pattern Override");
+    categoryImpl2.setProductTitlePatternOverride("Dr");
+    categoryImpl2.setRootDisplayOrder(new BigDecimal("2.3"));
+    categoryImpl2.setSearchFacets(new ArrayList<>());
+    categoryImpl2.setTaxCode("Tax Code");
+    categoryImpl2.setUpSaleProducts(new ArrayList<>());
+    categoryImpl2.setUrl("https://example.org/example");
+    categoryImpl2.setUrlKey("https://example.org/example");
+    categoryImpl2
+        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     categoryImpl2
         .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-  }
-
-  /**
-   * Test {@link CategoryImpl#setActiveEndDate(Date)}.
-   * <ul>
-   *   <li>Then {@link CategoryImpl} (default constructor) ActiveEndDate is
-   * {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#setActiveEndDate(java.util.Date)}
-   */
-  @Test
-  public void testSetActiveEndDate_thenCategoryImplActiveEndDateIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    java.sql.Date activeEndDate = mock(java.sql.Date.class);
-    when(activeEndDate.getTime()).thenThrow(new UnsupportedOperationException("foo"));
-
-    // Act
-    categoryImpl.setActiveEndDate(activeEndDate);
-
-    // Assert
-    verify(activeEndDate).getTime();
-    assertNull(categoryImpl.getActiveEndDate());
-  }
-
-  /**
-   * Test {@link CategoryImpl#isActive()}.
-   * <p>
-   * Method under test: {@link CategoryImpl#isActive()}
-   */
-  @Test
-  public void testIsActive() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrl("https://example.org/example");
-    categoryImpl.setUrlKey("https://example.org/example");
-    categoryImpl
-        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl
-        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setArchived(null);
+    categoryImpl2.setArchived(null);
 
     // Act and Assert
-    assertFalse(categoryImpl.isActive());
-  }
-
-  /**
-   * Test {@link CategoryImpl#isActive()}.
-   * <p>
-   * Method under test: {@link CategoryImpl#isActive()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsActive2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4209 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryImpl()).isActive();
+    assertFalse(categoryImpl2.isActive());
   }
 
   /**
@@ -2112,9 +1201,9 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#isActive()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryImpl.isActive()"})
   public void testIsActive_givenCategoryImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertFalse((new CategoryImpl()).isActive());
   }
@@ -2125,100 +1214,11 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getLongDescription()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CategoryImpl.getLongDescription()"})
   public void testGetLongDescription() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3759 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryImpl()).getLongDescription();
-  }
-
-  /**
-   * Test {@link CategoryImpl#getLongDescription()}.
-   * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getLongDescription()}
-   */
-  @Test
-  public void testGetLongDescription_givenCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new CategoryImpl()).getLongDescription());
-  }
-
-  /**
-   * Test {@link CategoryImpl#getLongDescription()}.
-   * <ul>
-   *   <li>Given {@link Date} {@link java.util.Date#getTime()} return ten.</li>
-   *   <li>Then calls {@link java.util.Date#getTime()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getLongDescription()}
-   */
-  @Test
-  public void testGetLongDescription_givenDateGetTimeReturnTen_thenCallsGetTime() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    java.sql.Date activeStartDate = mock(java.sql.Date.class);
-    when(activeStartDate.getTime()).thenReturn(10L);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setActiveStartDate(activeStartDate);
-
-    // Act
-    String actualLongDescription = categoryImpl.getLongDescription();
-
-    // Assert
-    verify(activeStartDate).getTime();
-    assertNull(actualLongDescription);
-  }
-
-  /**
-   * Test {@link CategoryImpl#getDefaultParentCategory()}.
-   * <p>
-   * Method under test: {@link CategoryImpl#getDefaultParentCategory()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetDefaultParentCategory() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3579 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryImpl()).getDefaultParentCategory();
   }
 
   /**
@@ -2231,9 +1231,9 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getDefaultParentCategory()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Category CategoryImpl.getDefaultParentCategory()"})
   public void testGetDefaultParentCategory_givenCategoryImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new CategoryImpl()).getDefaultParentCategory());
   }
@@ -2241,58 +1241,22 @@ public class CategoryImplDiffblueTest {
   /**
    * Test {@link CategoryImpl#getDefaultParentCategory()}.
    * <ul>
-   *   <li>Then {@link CategoryImpl} (default constructor)
-   * {@link CategoryImpl#defaultParentCategory} {@link CategoryImpl}.</li>
+   *   <li>Then return {@link CategoryImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#getDefaultParentCategory()}
    */
   @Test
-  public void testGetDefaultParentCategory_thenCategoryImplDefaultParentCategoryCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Category CategoryImpl.getDefaultParentCategory()"})
+  public void testGetDefaultParentCategory_thenReturnCategoryImpl() {
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
+    CategoryImpl categoryImpl2 = new CategoryImpl();
     CategoryImpl defaultParentCategory = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
-
-    // Act
-    Category actualDefaultParentCategory = categoryImpl.getDefaultParentCategory();
-
-    // Assert
-    Category category = categoryImpl.defaultParentCategory;
-    assertTrue(category instanceof CategoryImpl);
-    assertSame(defaultParentCategory, actualDefaultParentCategory);
-    assertSame(((CategoryImpl) actualDefaultParentCategory).allLegacyChildCategories,
-        ((CategoryImpl) category).allLegacyChildCategories);
-    assertSame(((CategoryImpl) actualDefaultParentCategory).archiveStatus, ((CategoryImpl) category).archiveStatus);
-    assertSame(((CategoryImpl) actualDefaultParentCategory).childCategoryXrefs,
-        ((CategoryImpl) category).childCategoryXrefs);
-    assertSame(((CategoryImpl) actualDefaultParentCategory).legacyCategoryMedia,
-        ((CategoryImpl) category).legacyCategoryMedia);
-    assertSame(((CategoryImpl) actualDefaultParentCategory).legacyChildCategories,
-        ((CategoryImpl) category).legacyChildCategories);
-  }
-
-  /**
-   * Test {@link CategoryImpl#getDefaultParentCategory()}.
-   * <ul>
-   *   <li>Then return {@link CategoryImpl} (default constructor)
-   * {@link CategoryImpl#defaultParentCategory}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getDefaultParentCategory()}
-   */
-  @Test
-  public void testGetDefaultParentCategory_thenReturnCategoryImplDefaultParentCategory() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(mock(Category.class));
+    categoryImpl2.setDefaultParentCategory(defaultParentCategory);
 
     // Act and Assert
-    assertSame(categoryImpl.defaultParentCategory, categoryImpl.getDefaultParentCategory());
+    assertSame(defaultParentCategory, categoryImpl2.getDefaultParentCategory());
   }
 
   /**
@@ -2301,193 +1265,63 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getParentCategory()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Category CategoryImpl.getParentCategory()"})
   public void testGetParentCategory() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3939 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryImpl()).getParentCategory();
-  }
-
-  /**
-   * Test {@link CategoryImpl#getParentCategory()}.
-   * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getParentCategory()}
-   */
-  @Test
-  public void testGetParentCategory_givenCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new CategoryImpl()).getParentCategory());
   }
 
   /**
-   * Test {@link CategoryImpl#getParentCategory()}.
-   * <ul>
-   *   <li>Given {@link Date} {@link java.util.Date#getTime()} return ten.</li>
-   *   <li>Then calls {@link java.util.Date#getTime()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getParentCategory()}
-   */
-  @Test
-  public void testGetParentCategory_givenDateGetTimeReturnTen_thenCallsGetTime() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    java.sql.Date activeStartDate = mock(java.sql.Date.class);
-    when(activeStartDate.getTime()).thenReturn(10L);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setActiveStartDate(activeStartDate);
-
-    // Act
-    Category actualParentCategory = categoryImpl.getParentCategory();
-
-    // Assert
-    verify(activeStartDate).getTime();
-    assertNull(actualParentCategory);
-  }
-
-  /**
    * Test {@link CategoryImpl#getParentCategoryXref()}.
    * <p>
    * Method under test: {@link CategoryImpl#getParentCategoryXref()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CategoryXref CategoryImpl.getParentCategoryXref()"})
   public void testGetParentCategoryXref() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4029 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryImpl()).getParentCategoryXref();
-  }
-
-  /**
-   * Test {@link CategoryImpl#getParentCategoryXref()}.
-   * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getParentCategoryXref()}
-   */
-  @Test
-  public void testGetParentCategoryXref_givenCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new CategoryImpl()).getParentCategoryXref());
   }
 
   /**
-   * Test {@link CategoryImpl#getParentCategoryXref()}.
-   * <ul>
-   *   <li>Given {@link Date} {@link java.util.Date#getTime()} return ten.</li>
-   *   <li>Then calls {@link java.util.Date#getTime()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getParentCategoryXref()}
-   */
-  @Test
-  public void testGetParentCategoryXref_givenDateGetTimeReturnTen_thenCallsGetTime() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    java.sql.Date activeStartDate = mock(java.sql.Date.class);
-    when(activeStartDate.getTime()).thenReturn(10L);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setActiveStartDate(activeStartDate);
-
-    // Act
-    CategoryXref actualParentCategoryXref = categoryImpl.getParentCategoryXref();
-
-    // Assert
-    verify(activeStartDate).getTime();
-    assertNull(actualParentCategoryXref);
-  }
-
-  /**
    * Test {@link CategoryImpl#setParentCategory(Category)}.
+   * <ul>
+   *   <li>Given {@link CategoryImpl} (default constructor).</li>
+   *   <li>Then {@link CategoryImpl} (default constructor) AllParentCategories Empty.</li>
+   * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#setParentCategory(Category)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetParentCategory() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4799 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.setParentCategory(Category)"})
+  public void testSetParentCategory_givenCategoryImpl_thenCategoryImplAllParentCategoriesEmpty() {
     // Arrange
     CategoryImpl categoryImpl2 = new CategoryImpl();
 
     // Act
-    categoryImpl2.setParentCategory(new CategoryImpl());
+    categoryImpl2.setParentCategory(null);
+
+    // Assert that nothing has changed
+    assertTrue(categoryImpl2.getAllParentCategories().isEmpty());
+    assertTrue(categoryImpl2.getAllParentCategoryXrefs().isEmpty());
   }
 
   /**
    * Test {@link CategoryImpl#setParentCategory(Category)}.
    * <ul>
-   *   <li>Then {@link CategoryImpl} (default constructor) AllParentCategoryXrefs
-   * size is one.</li>
+   *   <li>Then {@link CategoryImpl} AllParentCategories first is {@link Category}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#setParentCategory(Category)}
    */
   @Test
-  public void testSetParentCategory_thenCategoryImplAllParentCategoryXrefsSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.setParentCategory(Category)"})
+  public void testSetParentCategory_thenCategoryImplAllParentCategoriesFirstIsCategory() {
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
     Category category = mock(Category.class);
 
     // Act
@@ -2511,303 +1345,161 @@ public class CategoryImplDiffblueTest {
   /**
    * Test {@link CategoryImpl#setParentCategory(Category)}.
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then {@link CategoryImpl} (default constructor) AllParentCategories
-   * Empty.</li>
+   *   <li>Then {@link CategoryImpl} AllParentCategories first is {@link CategoryImpl}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#setParentCategory(Category)}
    */
   @Test
-  public void testSetParentCategory_whenNull_thenCategoryImplAllParentCategoriesEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-
-    // Act
-    categoryImpl.setParentCategory(null);
-
-    // Assert that nothing has changed
-    assertTrue(categoryImpl.getAllParentCategories().isEmpty());
-    assertTrue(categoryImpl.getAllParentCategoryXrefs().isEmpty());
-  }
-
-  /**
-   * Test {@link CategoryImpl#getChildCategoryXrefs()}.
-   * <p>
-   * Method under test: {@link CategoryImpl#getChildCategoryXrefs()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetChildCategoryXrefs() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3399 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.setParentCategory(Category)"})
+  public void testSetParentCategory_thenCategoryImplAllParentCategoriesFirstIsCategoryImpl() {
     // Arrange and Act
-    (new CategoryImpl()).getChildCategoryXrefs();
+    categoryImpl.setParentCategory(categoryImpl);
+
+    // Assert
+    List<CategoryXref> allParentCategoryXrefs = categoryImpl.getAllParentCategoryXrefs();
+    assertEquals(1, allParentCategoryXrefs.size());
+    CategoryXref getResult = allParentCategoryXrefs.get(0);
+    assertTrue(getResult instanceof CategoryXrefImpl);
+    assertNull(getResult.getId());
+    assertNull(getResult.getDisplayOrder());
+    List<Category> allParentCategories = categoryImpl.getAllParentCategories();
+    assertEquals(1, allParentCategories.size());
+    assertTrue(getResult.getDefaultReference());
+    assertSame(categoryImpl, allParentCategories.get(0));
+    assertSame(categoryImpl, getResult.getCategory());
+    assertSame(categoryImpl, getResult.getSubCategory());
   }
 
   /**
    * Test {@link CategoryImpl#getChildCategoryXrefs()}.
-   * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor).</li>
-   * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#getChildCategoryXrefs()}
    */
   @Test
-  public void testGetChildCategoryXrefs_givenCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getChildCategoryXrefs()"})
+  public void testGetChildCategoryXrefs() {
     // Arrange, Act and Assert
     assertTrue((new CategoryImpl()).getChildCategoryXrefs().isEmpty());
   }
 
   /**
-   * Test {@link CategoryImpl#getChildCategoryXrefs()}.
+   * Test {@link CategoryImpl#setAllChildCategoryXrefs(List)}.
    * <ul>
-   *   <li>Given {@link Date} {@link java.util.Date#getTime()} return ten.</li>
-   *   <li>Then calls {@link java.util.Date#getTime()}.</li>
+   *   <li>Then {@link CategoryImpl} (default constructor) AllChildCategories size is one.</li>
    * </ul>
    * <p>
-   * Method under test: {@link CategoryImpl#getChildCategoryXrefs()}
+   * Method under test: {@link CategoryImpl#setAllChildCategoryXrefs(List)}
    */
   @Test
-  public void testGetChildCategoryXrefs_givenDateGetTimeReturnTen_thenCallsGetTime() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.setAllChildCategoryXrefs(List)"})
+  public void testSetAllChildCategoryXrefs_thenCategoryImplAllChildCategoriesSizeIsOne() {
     // Arrange
-    java.sql.Date activeStartDate = mock(java.sql.Date.class);
-    when(activeStartDate.getTime()).thenReturn(10L);
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2
+        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    categoryImpl2
+        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    categoryImpl2.setCategoryAttributes(new ArrayList<>());
+    categoryImpl2.setCategoryAttributesMap(new HashMap<>());
+    categoryImpl2.setCategoryMediaXref(new HashMap<>());
+    categoryImpl2.setChildCategoryIds(new ArrayList<>());
+    categoryImpl2.setChildCategoryURLMap(new HashMap<>());
+    categoryImpl2.setDefaultParentCategory(new CategoryImpl());
+    categoryImpl2.setDescription("The characteristics of someone or something");
+    categoryImpl2.setDisplayTemplate("Display Template");
+    categoryImpl2.setExcludedSearchFacets(new ArrayList<>());
+    categoryImpl2.setExternalId("42");
+    categoryImpl2.setFulfillmentType(FulfillmentType.DIGITAL);
+    categoryImpl2.setId(1L);
+    categoryImpl2.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
+    categoryImpl2.setLongDescription("Long Description");
+    categoryImpl2.setMetaDescription("Meta Description");
+    categoryImpl2.setMetaTitle("Dr");
+    categoryImpl2.setName("Name");
+    categoryImpl2.setOverrideGeneratedUrl(true);
+    categoryImpl2.setProductDescriptionPatternOverride("Product Description Pattern Override");
+    categoryImpl2.setProductTitlePatternOverride("Dr");
+    categoryImpl2.setRootDisplayOrder(new BigDecimal("2.3"));
+    categoryImpl2.setSearchFacets(new ArrayList<>());
+    categoryImpl2.setTaxCode("Tax Code");
+    categoryImpl2.setUpSaleProducts(new ArrayList<>());
+    categoryImpl2.setUrl("https://example.org/example");
+    categoryImpl2.setUrlKey("https://example.org/example");
 
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setActiveStartDate(activeStartDate);
+    ArrayList<CategoryXref> childCategories = new ArrayList<>();
+    CategoryXrefImpl categoryXrefImpl = new CategoryXrefImpl();
+    childCategories.add(categoryXrefImpl);
 
     // Act
-    List<CategoryXref> actualChildCategoryXrefs = categoryImpl.getChildCategoryXrefs();
+    categoryImpl2.setAllChildCategoryXrefs(childCategories);
 
     // Assert
-    verify(activeStartDate).getTime();
-    assertTrue(actualChildCategoryXrefs.isEmpty());
+    assertEquals(1, categoryImpl2.getAllChildCategories().size());
+    List<CategoryXref> allChildCategoryXrefs = categoryImpl2.getAllChildCategoryXrefs();
+    assertEquals(1, allChildCategoryXrefs.size());
+    assertEquals(1, categoryImpl2.allLegacyChildCategories.size());
+    assertTrue(categoryImpl2.hasAllChildCategories());
+    assertSame(categoryXrefImpl, allChildCategoryXrefs.get(0));
   }
 
   /**
-   * Test {@link CategoryImpl#setChildCategoryXrefs(List)}.
+   * Test {@link CategoryImpl#setAllChildCategoryXrefs(List)}.
+   * <ul>
+   *   <li>Then {@link CategoryImpl} (default constructor) AllChildCategories size is two.</li>
+   * </ul>
    * <p>
-   * Method under test: {@link CategoryImpl#setChildCategoryXrefs(List)}
+   * Method under test: {@link CategoryImpl#setAllChildCategoryXrefs(List)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetChildCategoryXrefs() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4599 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.setAllChildCategoryXrefs(List)"})
+  public void testSetAllChildCategoryXrefs_thenCategoryImplAllChildCategoriesSizeIsTwo() {
     // Arrange
     CategoryImpl categoryImpl2 = new CategoryImpl();
 
-    // Act
-    categoryImpl2.setChildCategoryXrefs(new ArrayList<>());
-  }
-
-  /**
-   * Test {@link CategoryImpl#setAllChildCategoryXrefs(List)}.
-   * <p>
-   * Method under test: {@link CategoryImpl#setAllChildCategoryXrefs(List)}
-   */
-  @Test
-  public void testSetAllChildCategoryXrefs() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl
-        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl
-        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrl("https://example.org/example");
-    categoryImpl.setUrlKey("https://example.org/example");
-
     ArrayList<CategoryXref> childCategories = new ArrayList<>();
     childCategories.add(new CategoryXrefImpl());
+    CategoryXrefImpl categoryXrefImpl = new CategoryXrefImpl();
+    childCategories.add(categoryXrefImpl);
 
     // Act
-    categoryImpl.setAllChildCategoryXrefs(childCategories);
+    categoryImpl2.setAllChildCategoryXrefs(childCategories);
 
     // Assert
-    assertEquals(1, categoryImpl.getAllChildCategories().size());
-    assertEquals(1, categoryImpl.allLegacyChildCategories.size());
-    assertTrue(categoryImpl.hasAllChildCategories());
-    assertEquals(childCategories, categoryImpl.getAllChildCategoryXrefs());
+    assertEquals(2, categoryImpl2.getAllChildCategories().size());
+    List<CategoryXref> allChildCategoryXrefs = categoryImpl2.getAllChildCategoryXrefs();
+    assertEquals(2, allChildCategoryXrefs.size());
+    assertEquals(2, categoryImpl2.allLegacyChildCategories.size());
+    assertSame(categoryXrefImpl, allChildCategoryXrefs.get(1));
   }
 
   /**
    * Test {@link CategoryImpl#setAllChildCategoryXrefs(List)}.
+   * <ul>
+   *   <li>Then not {@link CategoryImpl} (default constructor) hasAllChildCategories.</li>
+   * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#setAllChildCategoryXrefs(List)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetAllChildCategoryXrefs2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4329 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.setAllChildCategoryXrefs(List)"})
+  public void testSetAllChildCategoryXrefs_thenNotCategoryImplHasAllChildCategories() {
     // Arrange
     CategoryImpl categoryImpl2 = new CategoryImpl();
 
     // Act
     categoryImpl2.setAllChildCategoryXrefs(new ArrayList<>());
-  }
 
-  /**
-   * Test {@link CategoryImpl#setAllChildCategoryXrefs(List)}.
-   * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) DefaultParentCategory is
-   * {@link Category}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#setAllChildCategoryXrefs(List)}
-   */
-  @Test
-  public void testSetAllChildCategoryXrefs_givenCategoryImplDefaultParentCategoryIsCategory() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl
-        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl
-        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl.setDefaultParentCategory(mock(Category.class));
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrl("https://example.org/example");
-    categoryImpl.setUrlKey("https://example.org/example");
-
-    ArrayList<CategoryXref> childCategories = new ArrayList<>();
-    childCategories.add(new CategoryXrefImpl());
-
-    // Act
-    categoryImpl.setAllChildCategoryXrefs(childCategories);
-
-    // Assert
-    assertEquals(1, categoryImpl.getAllChildCategories().size());
-    assertEquals(1, categoryImpl.allLegacyChildCategories.size());
-    assertTrue(categoryImpl.hasAllChildCategories());
-    assertEquals(childCategories, categoryImpl.getAllChildCategoryXrefs());
-  }
-
-  /**
-   * Test {@link CategoryImpl#setAllChildCategoryXrefs(List)}.
-   * <ul>
-   *   <li>Then not {@link CategoryImpl} (default constructor)
-   * hasAllChildCategories.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#setAllChildCategoryXrefs(List)}
-   */
-  @Test
-  public void testSetAllChildCategoryXrefs_thenNotCategoryImplHasAllChildCategories() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-
-    // Act
-    categoryImpl.setAllChildCategoryXrefs(new ArrayList<>());
-
-    // Assert
-    assertFalse(categoryImpl.hasAllChildCategories());
-    assertTrue(categoryImpl.getAllChildCategories().isEmpty());
-    assertTrue(categoryImpl.getAllChildCategoryXrefs().isEmpty());
-    assertTrue(categoryImpl.allLegacyChildCategories.isEmpty());
+    // Assert that nothing has changed
+    assertFalse(categoryImpl2.hasAllChildCategories());
+    assertTrue(categoryImpl2.getAllChildCategories().isEmpty());
+    assertTrue(categoryImpl2.getAllChildCategoryXrefs().isEmpty());
+    assertTrue(categoryImpl2.allLegacyChildCategories.isEmpty());
   }
 
   /**
@@ -2816,179 +1508,27 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getAllChildCategories()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getAllChildCategories()"})
   public void testGetAllChildCategories() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3099 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryImpl()).getAllChildCategories();
-  }
-
-  /**
-   * Test {@link CategoryImpl#getAllChildCategories()}.
-   * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getAllChildCategories()}
-   */
-  @Test
-  public void testGetAllChildCategories_givenCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertTrue((new CategoryImpl()).getAllChildCategories().isEmpty());
   }
 
   /**
-   * Test {@link CategoryImpl#getAllChildCategories()}.
-   * <ul>
-   *   <li>Given {@link Date} {@link java.util.Date#getTime()} return ten.</li>
-   *   <li>Then calls {@link java.util.Date#getTime()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getAllChildCategories()}
-   */
-  @Test
-  public void testGetAllChildCategories_givenDateGetTimeReturnTen_thenCallsGetTime() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    java.sql.Date activeStartDate = mock(java.sql.Date.class);
-    when(activeStartDate.getTime()).thenReturn(10L);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setActiveStartDate(activeStartDate);
-
-    // Act
-    List<Category> actualAllChildCategories = categoryImpl.getAllChildCategories();
-
-    // Assert
-    verify(activeStartDate).getTime();
-    assertTrue(actualAllChildCategories.isEmpty());
-  }
-
-  /**
    * Test {@link CategoryImpl#hasAllChildCategories()}.
    * <p>
    * Method under test: {@link CategoryImpl#hasAllChildCategories()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryImpl.hasAllChildCategories()"})
   public void testHasAllChildCategories() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4149 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryImpl()).hasAllChildCategories();
-  }
-
-  /**
-   * Test {@link CategoryImpl#hasAllChildCategories()}.
-   * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#hasAllChildCategories()}
-   */
-  @Test
-  public void testHasAllChildCategories_givenCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertFalse((new CategoryImpl()).hasAllChildCategories());
   }
 
   /**
-   * Test {@link CategoryImpl#hasAllChildCategories()}.
-   * <ul>
-   *   <li>Given {@link Date} {@link java.util.Date#getTime()} return ten.</li>
-   *   <li>Then calls {@link java.util.Date#getTime()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#hasAllChildCategories()}
-   */
-  @Test
-  public void testHasAllChildCategories_givenDateGetTimeReturnTen_thenCallsGetTime() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    java.sql.Date activeStartDate = mock(java.sql.Date.class);
-    when(activeStartDate.getTime()).thenReturn(10L);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setActiveStartDate(activeStartDate);
-
-    // Act
-    boolean actualHasAllChildCategoriesResult = categoryImpl.hasAllChildCategories();
-
-    // Assert
-    verify(activeStartDate).getTime();
-    assertFalse(actualHasAllChildCategoriesResult);
-  }
-
-  /**
-   * Test {@link CategoryImpl#setAllChildCategories(List)}.
-   * <p>
-   * Method under test: {@link CategoryImpl#setAllChildCategories(List)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetAllChildCategories() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4299 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CategoryImpl categoryImpl2 = new CategoryImpl();
-
-    // Act
-    categoryImpl2.setAllChildCategories(new ArrayList<>());
-  }
-
-  /**
    * Test {@link CategoryImpl#setAllChildCategories(List)}.
    * <ul>
    *   <li>When {@link ArrayList#ArrayList()}.</li>
@@ -2997,61 +1537,59 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#setAllChildCategories(List)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.setAllChildCategories(List)"})
   public void testSetAllChildCategories_whenArrayList() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
+    CategoryImpl categoryImpl2 = new CategoryImpl();
 
     // Act and Assert
-    assertThrows(UnsupportedOperationException.class, () -> categoryImpl.setAllChildCategories(new ArrayList<>()));
+    assertThrows(UnsupportedOperationException.class, () -> categoryImpl2.setAllChildCategories(new ArrayList<>()));
   }
 
   /**
    * Test {@link CategoryImpl#setAllChildCategories(List)}.
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link CategoryImpl} (default
-   * constructor).</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link CategoryImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#setAllChildCategories(List)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.setAllChildCategories(List)"})
   public void testSetAllChildCategories_whenArrayListAddCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
+    CategoryImpl categoryImpl2 = new CategoryImpl();
 
     ArrayList<Category> childCategories = new ArrayList<>();
     childCategories.add(new CategoryImpl());
 
     // Act and Assert
-    assertThrows(UnsupportedOperationException.class, () -> categoryImpl.setAllChildCategories(childCategories));
+    assertThrows(UnsupportedOperationException.class, () -> categoryImpl2.setAllChildCategories(childCategories));
   }
 
   /**
    * Test {@link CategoryImpl#setAllChildCategories(List)}.
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link CategoryImpl} (default
-   * constructor).</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link CategoryImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#setAllChildCategories(List)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.setAllChildCategories(List)"})
   public void testSetAllChildCategories_whenArrayListAddCategoryImpl2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
+    CategoryImpl categoryImpl2 = new CategoryImpl();
 
     ArrayList<Category> childCategories = new ArrayList<>();
     childCategories.add(new CategoryImpl());
     childCategories.add(new CategoryImpl());
 
     // Act and Assert
-    assertThrows(UnsupportedOperationException.class, () -> categoryImpl.setAllChildCategories(childCategories));
+    assertThrows(UnsupportedOperationException.class, () -> categoryImpl2.setAllChildCategories(childCategories));
   }
 
   /**
@@ -3060,176 +1598,24 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getChildCategories()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getChildCategories()"})
   public void testGetChildCategories() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3309 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryImpl()).getChildCategories();
-  }
-
-  /**
-   * Test {@link CategoryImpl#getChildCategories()}.
-   * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getChildCategories()}
-   */
-  @Test
-  public void testGetChildCategories_givenCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertTrue((new CategoryImpl()).getChildCategories().isEmpty());
   }
 
   /**
-   * Test {@link CategoryImpl#getChildCategories()}.
-   * <ul>
-   *   <li>Given {@link Date} {@link java.util.Date#getTime()} return ten.</li>
-   *   <li>Then calls {@link java.util.Date#getTime()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getChildCategories()}
-   */
-  @Test
-  public void testGetChildCategories_givenDateGetTimeReturnTen_thenCallsGetTime() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    java.sql.Date activeStartDate = mock(java.sql.Date.class);
-    when(activeStartDate.getTime()).thenReturn(10L);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setActiveStartDate(activeStartDate);
-
-    // Act
-    List<Category> actualChildCategories = categoryImpl.getChildCategories();
-
-    // Assert
-    verify(activeStartDate).getTime();
-    assertTrue(actualChildCategories.isEmpty());
-  }
-
-  /**
    * Test {@link CategoryImpl#hasChildCategories()}.
    * <p>
    * Method under test: {@link CategoryImpl#hasChildCategories()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryImpl.hasChildCategories()"})
   public void testHasChildCategories() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4179 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryImpl()).hasChildCategories();
-  }
-
-  /**
-   * Test {@link CategoryImpl#hasChildCategories()}.
-   * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#hasChildCategories()}
-   */
-  @Test
-  public void testHasChildCategories_givenCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertFalse((new CategoryImpl()).hasChildCategories());
-  }
-
-  /**
-   * Test {@link CategoryImpl#hasChildCategories()}.
-   * <ul>
-   *   <li>Given {@link Date} {@link java.util.Date#getTime()} return ten.</li>
-   *   <li>Then calls {@link java.util.Date#getTime()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#hasChildCategories()}
-   */
-  @Test
-  public void testHasChildCategories_givenDateGetTimeReturnTen_thenCallsGetTime() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    java.sql.Date activeStartDate = mock(java.sql.Date.class);
-    when(activeStartDate.getTime()).thenReturn(10L);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setActiveStartDate(activeStartDate);
-
-    // Act
-    boolean actualHasChildCategoriesResult = categoryImpl.hasChildCategories();
-
-    // Assert
-    verify(activeStartDate).getTime();
-    assertFalse(actualHasChildCategoriesResult);
-  }
-
-  /**
-   * Test {@link CategoryImpl#setChildCategories(List)}.
-   * <p>
-   * Method under test: {@link CategoryImpl#setChildCategories(List)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetChildCategories() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4569 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CategoryImpl categoryImpl2 = new CategoryImpl();
-
-    // Act
-    categoryImpl2.setChildCategories(new ArrayList<>());
   }
 
   /**
@@ -3241,193 +1627,108 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#setChildCategories(List)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.setChildCategories(List)"})
   public void testSetChildCategories_whenArrayList() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
+    CategoryImpl categoryImpl2 = new CategoryImpl();
 
     // Act and Assert
-    assertThrows(UnsupportedOperationException.class, () -> categoryImpl.setChildCategories(new ArrayList<>()));
+    assertThrows(UnsupportedOperationException.class, () -> categoryImpl2.setChildCategories(new ArrayList<>()));
   }
 
   /**
    * Test {@link CategoryImpl#setChildCategories(List)}.
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link CategoryImpl} (default
-   * constructor).</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link CategoryImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#setChildCategories(List)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.setChildCategories(List)"})
   public void testSetChildCategories_whenArrayListAddCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
+    CategoryImpl categoryImpl2 = new CategoryImpl();
 
     ArrayList<Category> childCategories = new ArrayList<>();
     childCategories.add(new CategoryImpl());
 
     // Act and Assert
-    assertThrows(UnsupportedOperationException.class, () -> categoryImpl.setChildCategories(childCategories));
+    assertThrows(UnsupportedOperationException.class, () -> categoryImpl2.setChildCategories(childCategories));
   }
 
   /**
    * Test {@link CategoryImpl#setChildCategories(List)}.
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link CategoryImpl} (default
-   * constructor).</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link CategoryImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#setChildCategories(List)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.setChildCategories(List)"})
   public void testSetChildCategories_whenArrayListAddCategoryImpl2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
+    CategoryImpl categoryImpl2 = new CategoryImpl();
 
     ArrayList<Category> childCategories = new ArrayList<>();
     childCategories.add(new CategoryImpl());
     childCategories.add(new CategoryImpl());
 
     // Act and Assert
-    assertThrows(UnsupportedOperationException.class, () -> categoryImpl.setChildCategories(childCategories));
-  }
-
-  /**
-   * Test {@link CategoryImpl#getChildCategoryIds()}.
-   * <p>
-   * Method under test: {@link CategoryImpl#getChildCategoryIds()}
-   */
-  @Test
-  public void testGetChildCategoryIds() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl
-        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl
-        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrl("https://example.org/example");
-    categoryImpl.setUrlKey("https://example.org/example");
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-
-    // Act and Assert
-    assertTrue(categoryImpl.getChildCategoryIds().isEmpty());
-  }
-
-  /**
-   * Test {@link CategoryImpl#getChildCategoryIds()}.
-   * <p>
-   * Method under test: {@link CategoryImpl#getChildCategoryIds()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetChildCategoryIds2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3339 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryImpl()).getChildCategoryIds();
+    assertThrows(UnsupportedOperationException.class, () -> categoryImpl2.setChildCategories(childCategories));
   }
 
   /**
    * Test {@link CategoryImpl#getChildCategoryIds()}.
    * <ul>
-   *   <li>Given {@link java.sql.Date} {@link java.util.Date#getTime()} return
-   * ten.</li>
-   *   <li>Then calls {@link java.util.Date#getTime()}.</li>
+   *   <li>Then return Empty.</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#getChildCategoryIds()}
    */
   @Test
-  public void testGetChildCategoryIds_givenDateGetTimeReturnTen_thenCallsGetTime() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getChildCategoryIds()"})
+  public void testGetChildCategoryIds_thenReturnEmpty() {
     // Arrange
-    java.sql.Date activeEndDate = mock(java.sql.Date.class);
-    when(activeEndDate.getTime()).thenReturn(10L);
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2
+        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    categoryImpl2
+        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    categoryImpl2.setCategoryAttributes(new ArrayList<>());
+    categoryImpl2.setCategoryAttributesMap(new HashMap<>());
+    categoryImpl2.setCategoryMediaXref(new HashMap<>());
+    categoryImpl2.setChildCategoryURLMap(new HashMap<>());
+    categoryImpl2.setDefaultParentCategory(new CategoryImpl());
+    categoryImpl2.setDescription("The characteristics of someone or something");
+    categoryImpl2.setDisplayTemplate("Display Template");
+    categoryImpl2.setExcludedSearchFacets(new ArrayList<>());
+    categoryImpl2.setExternalId("42");
+    categoryImpl2.setFulfillmentType(FulfillmentType.DIGITAL);
+    categoryImpl2.setId(1L);
+    categoryImpl2.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
+    categoryImpl2.setLongDescription("Long Description");
+    categoryImpl2.setMetaDescription("Meta Description");
+    categoryImpl2.setMetaTitle("Dr");
+    categoryImpl2.setName("Name");
+    categoryImpl2.setOverrideGeneratedUrl(true);
+    categoryImpl2.setProductDescriptionPatternOverride("Product Description Pattern Override");
+    categoryImpl2.setProductTitlePatternOverride("Dr");
+    categoryImpl2.setRootDisplayOrder(new BigDecimal("2.3"));
+    categoryImpl2.setSearchFacets(new ArrayList<>());
+    categoryImpl2.setTaxCode("Tax Code");
+    categoryImpl2.setUpSaleProducts(new ArrayList<>());
+    categoryImpl2.setUrl("https://example.org/example");
+    categoryImpl2.setUrlKey("https://example.org/example");
+    categoryImpl2.setChildCategoryIds(new ArrayList<>());
 
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setActiveEndDate(activeEndDate);
-    categoryImpl.setActiveStartDate(
-        java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrl("https://example.org/example");
-    categoryImpl.setUrlKey("https://example.org/example");
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-
-    // Act
-    List<Long> actualChildCategoryIds = categoryImpl.getChildCategoryIds();
-
-    // Assert
-    verify(activeEndDate).getTime();
-    assertTrue(actualChildCategoryIds.isEmpty());
+    // Act and Assert
+    assertTrue(categoryImpl2.getChildCategoryIds().isEmpty());
   }
 
   /**
@@ -3436,80 +1737,17 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#createChildCategoryIds()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.createChildCategoryIds()"})
   public void testCreateChildCategoryIds() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2919 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryImpl()).createChildCategoryIds();
-  }
-
-  /**
-   * Test {@link CategoryImpl#createChildCategoryIds()}.
-   * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#createChildCategoryIds()}
-   */
-  @Test
-  public void testCreateChildCategoryIds_givenCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
+    CategoryImpl categoryImpl2 = new CategoryImpl();
 
     // Act and Assert
-    assertTrue(categoryImpl.createChildCategoryIds().isEmpty());
-    assertTrue(categoryImpl.childCategoryIds.isEmpty());
-    List<Long> expectedChildCategoryIds = categoryImpl.childCategoryIds;
-    assertSame(expectedChildCategoryIds, categoryImpl.getChildCategoryIds());
-  }
-
-  /**
-   * Test {@link CategoryImpl#createChildCategoryIds()}.
-   * <ul>
-   *   <li>Given {@link Date} {@link java.util.Date#getTime()} return ten.</li>
-   *   <li>Then calls {@link java.util.Date#getTime()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#createChildCategoryIds()}
-   */
-  @Test
-  public void testCreateChildCategoryIds_givenDateGetTimeReturnTen_thenCallsGetTime() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    java.sql.Date activeStartDate = mock(java.sql.Date.class);
-    when(activeStartDate.getTime()).thenReturn(10L);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setActiveStartDate(activeStartDate);
-
-    // Act
-    List<Long> actualCreateChildCategoryIdsResult = categoryImpl.createChildCategoryIds();
-
-    // Assert
-    verify(activeStartDate).getTime();
-    assertTrue(actualCreateChildCategoryIdsResult.isEmpty());
-    assertTrue(categoryImpl.childCategoryIds.isEmpty());
-    List<Long> expectedChildCategoryIds = categoryImpl.childCategoryIds;
-    assertSame(expectedChildCategoryIds, categoryImpl.getChildCategoryIds());
+    assertTrue(categoryImpl2.createChildCategoryIds().isEmpty());
+    assertTrue(categoryImpl2.childCategoryIds.isEmpty());
+    List<Long> expectedChildCategoryIds = categoryImpl2.childCategoryIds;
+    assertSame(expectedChildCategoryIds, categoryImpl2.getChildCategoryIds());
   }
 
   /**
@@ -3518,44 +1756,15 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getChildCategoryURLMap()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map CategoryImpl.getChildCategoryURLMap()"})
   public void testGetChildCategoryURLMap() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl
-        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl
-        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrl("https://example.org/example");
-    categoryImpl.setUrlKey("https://example.org/example");
-    categoryImpl.setChildCategoryURLMap(null);
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setName("Cannot create childCategoryURLMap - the urlKey for a category(");
 
     // Act and Assert
-    assertNull(categoryImpl.getChildCategoryURLMap());
+    assertNull(categoryImpl2.getChildCategoryURLMap());
   }
 
   /**
@@ -3564,61 +1773,64 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getChildCategoryURLMap()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map CategoryImpl.getChildCategoryURLMap()"})
   public void testGetChildCategoryURLMap2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName("Cannot create childCategoryURLMap - the urlKey for a category(");
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setName("cannot-create-childCategoryURLMap---the-urlKey-for-a-category");
 
     // Act and Assert
-    assertNull(categoryImpl.getChildCategoryURLMap());
+    assertNull(categoryImpl2.getChildCategoryURLMap());
   }
 
   /**
    * Test {@link CategoryImpl#getChildCategoryURLMap()}.
+   * <ul>
+   *   <li>Given {@link CategoryImpl} (default constructor) ChildCategoryURLMap is {@code null}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#getChildCategoryURLMap()}
    */
   @Test
-  public void testGetChildCategoryURLMap3() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map CategoryImpl.getChildCategoryURLMap()"})
+  public void testGetChildCategoryURLMap_givenCategoryImplChildCategoryURLMapIsNull() {
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName("cannot-create-childCategoryURLMap---the-urlKey-for-a-category");
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2
+        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    categoryImpl2
+        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    categoryImpl2.setCategoryAttributes(new ArrayList<>());
+    categoryImpl2.setCategoryAttributesMap(new HashMap<>());
+    categoryImpl2.setCategoryMediaXref(new HashMap<>());
+    categoryImpl2.setChildCategoryIds(new ArrayList<>());
+    categoryImpl2.setDefaultParentCategory(new CategoryImpl());
+    categoryImpl2.setDescription("The characteristics of someone or something");
+    categoryImpl2.setDisplayTemplate("Display Template");
+    categoryImpl2.setExcludedSearchFacets(new ArrayList<>());
+    categoryImpl2.setExternalId("42");
+    categoryImpl2.setFulfillmentType(FulfillmentType.DIGITAL);
+    categoryImpl2.setId(1L);
+    categoryImpl2.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
+    categoryImpl2.setLongDescription("Long Description");
+    categoryImpl2.setMetaDescription("Meta Description");
+    categoryImpl2.setMetaTitle("Dr");
+    categoryImpl2.setName("Name");
+    categoryImpl2.setOverrideGeneratedUrl(true);
+    categoryImpl2.setProductDescriptionPatternOverride("Product Description Pattern Override");
+    categoryImpl2.setProductTitlePatternOverride("Dr");
+    categoryImpl2.setRootDisplayOrder(new BigDecimal("2.3"));
+    categoryImpl2.setSearchFacets(new ArrayList<>());
+    categoryImpl2.setTaxCode("Tax Code");
+    categoryImpl2.setUpSaleProducts(new ArrayList<>());
+    categoryImpl2.setUrl("https://example.org/example");
+    categoryImpl2.setUrlKey("https://example.org/example");
+    categoryImpl2.setChildCategoryURLMap(null);
 
     // Act and Assert
-    assertNull(categoryImpl.getChildCategoryURLMap());
-  }
-
-  /**
-   * Test {@link CategoryImpl#getChildCategoryURLMap()}.
-   * <p>
-   * Method under test: {@link CategoryImpl#getChildCategoryURLMap()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetChildCategoryURLMap4() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3369 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryImpl()).getChildCategoryURLMap();
+    assertNull(categoryImpl2.getChildCategoryURLMap());
   }
 
   /**
@@ -3631,59 +1843,57 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getChildCategoryURLMap()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map CategoryImpl.getChildCategoryURLMap()"})
   public void testGetChildCategoryURLMap_givenCategoryImplNameIsColon_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName(":");
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setName(":");
 
     // Act and Assert
-    assertNull(categoryImpl.getChildCategoryURLMap());
+    assertNull(categoryImpl2.getChildCategoryURLMap());
   }
 
   /**
    * Test {@link CategoryImpl#getChildCategoryURLMap()}.
    * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) Name is empty
-   * string.</li>
+   *   <li>Given {@link CategoryImpl} (default constructor) Name is empty string.</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#getChildCategoryURLMap()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map CategoryImpl.getChildCategoryURLMap()"})
   public void testGetChildCategoryURLMap_givenCategoryImplNameIsEmptyString_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName("");
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setName("");
 
     // Act and Assert
-    assertNull(categoryImpl.getChildCategoryURLMap());
+    assertNull(categoryImpl2.getChildCategoryURLMap());
   }
 
   /**
    * Test {@link CategoryImpl#getChildCategoryURLMap()}.
    * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) Name is
-   * {@code Name}.</li>
+   *   <li>Given {@link CategoryImpl} (default constructor) Name is {@code Name}.</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#getChildCategoryURLMap()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map CategoryImpl.getChildCategoryURLMap()"})
   public void testGetChildCategoryURLMap_givenCategoryImplNameIsName_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName("Name");
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setName("Name");
 
     // Act and Assert
-    assertNull(categoryImpl.getChildCategoryURLMap());
+    assertNull(categoryImpl2.getChildCategoryURLMap());
   }
 
   /**
@@ -3696,15 +1906,15 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getChildCategoryURLMap()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map CategoryImpl.getChildCategoryURLMap()"})
   public void testGetChildCategoryURLMap_givenCategoryImplNameIsQuestionMark_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName("?");
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setName("?");
 
     // Act and Assert
-    assertNull(categoryImpl.getChildCategoryURLMap());
+    assertNull(categoryImpl2.getChildCategoryURLMap());
   }
 
   /**
@@ -3717,15 +1927,15 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getChildCategoryURLMap()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map CategoryImpl.getChildCategoryURLMap()"})
   public void testGetChildCategoryURLMap_givenCategoryImplNameIsSlash_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName("/");
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setName("/");
 
     // Act and Assert
-    assertNull(categoryImpl.getChildCategoryURLMap());
+    assertNull(categoryImpl2.getChildCategoryURLMap());
   }
 
   /**
@@ -3738,195 +1948,78 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getChildCategoryURLMap()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map CategoryImpl.getChildCategoryURLMap()"})
   public void testGetChildCategoryURLMap_givenCategoryImplNameIsSpace_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName(" ");
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setName(" ");
 
     // Act and Assert
-    assertNull(categoryImpl.getChildCategoryURLMap());
+    assertNull(categoryImpl2.getChildCategoryURLMap());
   }
 
   /**
    * Test {@link CategoryImpl#getChildCategoryURLMap()}.
    * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) Name is
-   * {@code UU UU}.</li>
+   *   <li>Given {@link CategoryImpl} (default constructor) Name is {@code UU UU}.</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#getChildCategoryURLMap()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map CategoryImpl.getChildCategoryURLMap()"})
   public void testGetChildCategoryURLMap_givenCategoryImplNameIsUuUu_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName("UU UU");
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setName("UU UU");
 
     // Act and Assert
-    assertNull(categoryImpl.getChildCategoryURLMap());
+    assertNull(categoryImpl2.getChildCategoryURLMap());
   }
 
   /**
    * Test {@link CategoryImpl#getChildCategoryURLMap()}.
    * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) Name is
-   * {@code .*?\W.*?}.</li>
+   *   <li>Given {@link CategoryImpl} (default constructor) Name is {@code .*?\W.*?}.</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#getChildCategoryURLMap()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map CategoryImpl.getChildCategoryURLMap()"})
   public void testGetChildCategoryURLMap_givenCategoryImplNameIsW_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName(".*?\\W.*?");
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setName(".*?\\W.*?");
 
     // Act and Assert
-    assertNull(categoryImpl.getChildCategoryURLMap());
+    assertNull(categoryImpl2.getChildCategoryURLMap());
   }
 
   /**
    * Test {@link CategoryImpl#getChildCategoryURLMap()}.
    * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) Name is
-   * {@code [^\w-]+}.</li>
+   *   <li>Given {@link CategoryImpl} (default constructor) Name is {@code [^\w-]+}.</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#getChildCategoryURLMap()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map CategoryImpl.getChildCategoryURLMap()"})
   public void testGetChildCategoryURLMap_givenCategoryImplNameIsW_thenReturnNull2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName("[^\\w-]+");
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setName("[^\\w-]+");
 
     // Act and Assert
-    assertNull(categoryImpl.getChildCategoryURLMap());
-  }
-
-  /**
-   * Test {@link CategoryImpl#getChildCategoryURLMap()}.
-   * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) UrlKey is empty
-   * string.</li>
-   *   <li>Then calls {@link java.util.Date#getTime()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getChildCategoryURLMap()}
-   */
-  @Test
-  public void testGetChildCategoryURLMap_givenCategoryImplUrlKeyIsEmptyString_thenCallsGetTime() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    java.sql.Date activeEndDate = mock(java.sql.Date.class);
-    when(activeEndDate.getTime()).thenReturn(10L);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setActiveEndDate(activeEndDate);
-    categoryImpl.setActiveStartDate(
-        java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrl("https://example.org/example");
-    categoryImpl.setUrlKey("");
-    categoryImpl.setChildCategoryURLMap(null);
-
-    // Act
-    Map<String, List<Long>> actualChildCategoryURLMap = categoryImpl.getChildCategoryURLMap();
-
-    // Assert
-    verify(activeEndDate).getTime();
-    assertNull(actualChildCategoryURLMap);
-  }
-
-  /**
-   * Test {@link CategoryImpl#getChildCategoryURLMap()}.
-   * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) UrlKey is
-   * {@code /}.</li>
-   *   <li>Then calls {@link java.util.Date#getTime()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getChildCategoryURLMap()}
-   */
-  @Test
-  public void testGetChildCategoryURLMap_givenCategoryImplUrlKeyIsSlash_thenCallsGetTime() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    java.sql.Date activeEndDate = mock(java.sql.Date.class);
-    when(activeEndDate.getTime()).thenReturn(10L);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setActiveEndDate(activeEndDate);
-    categoryImpl.setActiveStartDate(
-        java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrl("https://example.org/example");
-    categoryImpl.setUrlKey("/");
-    categoryImpl.setChildCategoryURLMap(null);
-
-    // Act
-    Map<String, List<Long>> actualChildCategoryURLMap = categoryImpl.getChildCategoryURLMap();
-
-    // Assert
-    verify(activeEndDate).getTime();
-    assertNull(actualChildCategoryURLMap);
+    assertNull(categoryImpl2.getChildCategoryURLMap());
   }
 
   /**
@@ -3939,68 +2032,11 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getChildCategoryURLMap()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map CategoryImpl.getChildCategoryURLMap()"})
   public void testGetChildCategoryURLMap_givenCategoryImpl_thenThrowRuntimeException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertThrows(RuntimeException.class, () -> (new CategoryImpl()).getChildCategoryURLMap());
-  }
-
-  /**
-   * Test {@link CategoryImpl#getChildCategoryURLMap()}.
-   * <ul>
-   *   <li>Given {@link java.sql.Date} {@link java.util.Date#getTime()} return
-   * ten.</li>
-   *   <li>Then calls {@link java.util.Date#getTime()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getChildCategoryURLMap()}
-   */
-  @Test
-  public void testGetChildCategoryURLMap_givenDateGetTimeReturnTen_thenCallsGetTime() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    java.sql.Date activeEndDate = mock(java.sql.Date.class);
-    when(activeEndDate.getTime()).thenReturn(10L);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setActiveEndDate(activeEndDate);
-    categoryImpl.setActiveStartDate(
-        java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrl("https://example.org/example");
-    categoryImpl.setUrlKey("https://example.org/example");
-    categoryImpl.setChildCategoryURLMap(null);
-
-    // Act
-    Map<String, List<Long>> actualChildCategoryURLMap = categoryImpl.getChildCategoryURLMap();
-
-    // Assert
-    verify(activeEndDate).getTime();
-    assertNull(actualChildCategoryURLMap);
   }
 
   /**
@@ -4012,44 +2048,44 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getChildCategoryURLMap()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map CategoryImpl.getChildCategoryURLMap()"})
   public void testGetChildCategoryURLMap_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2
         .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl
+    categoryImpl2
         .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrl("https://example.org/example");
-    categoryImpl.setUrlKey("https://example.org/example");
-    categoryImpl.setChildCategoryURLMap(new HashMap<>());
+    categoryImpl2.setCategoryAttributes(new ArrayList<>());
+    categoryImpl2.setCategoryAttributesMap(new HashMap<>());
+    categoryImpl2.setCategoryMediaXref(new HashMap<>());
+    categoryImpl2.setChildCategoryIds(new ArrayList<>());
+    categoryImpl2.setDefaultParentCategory(new CategoryImpl());
+    categoryImpl2.setDescription("The characteristics of someone or something");
+    categoryImpl2.setDisplayTemplate("Display Template");
+    categoryImpl2.setExcludedSearchFacets(new ArrayList<>());
+    categoryImpl2.setExternalId("42");
+    categoryImpl2.setFulfillmentType(FulfillmentType.DIGITAL);
+    categoryImpl2.setId(1L);
+    categoryImpl2.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
+    categoryImpl2.setLongDescription("Long Description");
+    categoryImpl2.setMetaDescription("Meta Description");
+    categoryImpl2.setMetaTitle("Dr");
+    categoryImpl2.setName("Name");
+    categoryImpl2.setOverrideGeneratedUrl(true);
+    categoryImpl2.setProductDescriptionPatternOverride("Product Description Pattern Override");
+    categoryImpl2.setProductTitlePatternOverride("Dr");
+    categoryImpl2.setRootDisplayOrder(new BigDecimal("2.3"));
+    categoryImpl2.setSearchFacets(new ArrayList<>());
+    categoryImpl2.setTaxCode("Tax Code");
+    categoryImpl2.setUpSaleProducts(new ArrayList<>());
+    categoryImpl2.setUrl("https://example.org/example");
+    categoryImpl2.setUrlKey("https://example.org/example");
+    categoryImpl2.setChildCategoryURLMap(new HashMap<>());
 
     // Act and Assert
-    assertTrue(categoryImpl.getChildCategoryURLMap().isEmpty());
+    assertTrue(categoryImpl2.getChildCategoryURLMap().isEmpty());
   }
 
   /**
@@ -4058,50 +2094,22 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#createChildCategoryURLMap()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map CategoryImpl.createChildCategoryURLMap()"})
   public void testCreateChildCategoryURLMap() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl
-        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl
-        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrl("https://example.org/example");
-    categoryImpl.setUrlKey("https://example.org/example");
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setName("Cannot create childCategoryURLMap - the urlKey for a category(");
 
     // Act
-    Map<String, List<Long>> actualCreateChildCategoryURLMapResult = categoryImpl.createChildCategoryURLMap();
+    Map<String, List<Long>> actualCreateChildCategoryURLMapResult = categoryImpl2.createChildCategoryURLMap();
 
     // Assert
     assertEquals(1, actualCreateChildCategoryURLMapResult.size());
-    List<Long> getResult = actualCreateChildCategoryURLMapResult.get("/https://example.org/example");
+    List<Long> getResult = actualCreateChildCategoryURLMapResult
+        .get("/cannot-create-childCategoryURLMap---the-urlKey-for-a-category");
     assertEquals(1, getResult.size());
-    assertEquals(1L, getResult.get(0).longValue());
+    assertNull(getResult.get(0));
   }
 
   /**
@@ -4110,15 +2118,15 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#createChildCategoryURLMap()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map CategoryImpl.createChildCategoryURLMap()"})
   public void testCreateChildCategoryURLMap2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName("Cannot create childCategoryURLMap - the urlKey for a category(");
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setName("cannot-create-childCategoryURLMap---the-urlKey-for-a-category");
 
     // Act
-    Map<String, List<Long>> actualCreateChildCategoryURLMapResult = categoryImpl.createChildCategoryURLMap();
+    Map<String, List<Long>> actualCreateChildCategoryURLMapResult = categoryImpl2.createChildCategoryURLMap();
 
     // Assert
     assertEquals(1, actualCreateChildCategoryURLMapResult.size());
@@ -4126,59 +2134,6 @@ public class CategoryImplDiffblueTest {
         .get("/cannot-create-childCategoryURLMap---the-urlKey-for-a-category");
     assertEquals(1, getResult.size());
     assertNull(getResult.get(0));
-  }
-
-  /**
-   * Test {@link CategoryImpl#createChildCategoryURLMap()}.
-   * <p>
-   * Method under test: {@link CategoryImpl#createChildCategoryURLMap()}
-   */
-  @Test
-  public void testCreateChildCategoryURLMap3() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName("cannot-create-childCategoryURLMap---the-urlKey-for-a-category");
-
-    // Act
-    Map<String, List<Long>> actualCreateChildCategoryURLMapResult = categoryImpl.createChildCategoryURLMap();
-
-    // Assert
-    assertEquals(1, actualCreateChildCategoryURLMapResult.size());
-    List<Long> getResult = actualCreateChildCategoryURLMapResult
-        .get("/cannot-create-childCategoryURLMap---the-urlKey-for-a-category");
-    assertEquals(1, getResult.size());
-    assertNull(getResult.get(0));
-  }
-
-  /**
-   * Test {@link CategoryImpl#createChildCategoryURLMap()}.
-   * <p>
-   * Method under test: {@link CategoryImpl#createChildCategoryURLMap()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateChildCategoryURLMap4() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2949 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryImpl()).createChildCategoryURLMap();
   }
 
   /**
@@ -4190,15 +2145,15 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#createChildCategoryURLMap()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map CategoryImpl.createChildCategoryURLMap()"})
   public void testCreateChildCategoryURLMap_givenCategoryImplNameIsColon() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName(":");
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setName(":");
 
     // Act
-    Map<String, List<Long>> actualCreateChildCategoryURLMapResult = categoryImpl.createChildCategoryURLMap();
+    Map<String, List<Long>> actualCreateChildCategoryURLMapResult = categoryImpl2.createChildCategoryURLMap();
 
     // Assert
     assertEquals(1, actualCreateChildCategoryURLMapResult.size());
@@ -4210,22 +2165,21 @@ public class CategoryImplDiffblueTest {
   /**
    * Test {@link CategoryImpl#createChildCategoryURLMap()}.
    * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) Name is empty
-   * string.</li>
+   *   <li>Given {@link CategoryImpl} (default constructor) Name is empty string.</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#createChildCategoryURLMap()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map CategoryImpl.createChildCategoryURLMap()"})
   public void testCreateChildCategoryURLMap_givenCategoryImplNameIsEmptyString() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName("");
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setName("");
 
     // Act
-    Map<String, List<Long>> actualCreateChildCategoryURLMapResult = categoryImpl.createChildCategoryURLMap();
+    Map<String, List<Long>> actualCreateChildCategoryURLMapResult = categoryImpl2.createChildCategoryURLMap();
 
     // Assert
     assertEquals(1, actualCreateChildCategoryURLMapResult.size());
@@ -4243,15 +2197,15 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#createChildCategoryURLMap()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map CategoryImpl.createChildCategoryURLMap()"})
   public void testCreateChildCategoryURLMap_givenCategoryImplNameIsQuestionMark() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName("?");
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setName("?");
 
     // Act
-    Map<String, List<Long>> actualCreateChildCategoryURLMapResult = categoryImpl.createChildCategoryURLMap();
+    Map<String, List<Long>> actualCreateChildCategoryURLMapResult = categoryImpl2.createChildCategoryURLMap();
 
     // Assert
     assertEquals(1, actualCreateChildCategoryURLMapResult.size());
@@ -4269,15 +2223,15 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#createChildCategoryURLMap()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map CategoryImpl.createChildCategoryURLMap()"})
   public void testCreateChildCategoryURLMap_givenCategoryImplNameIsSlash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName("/");
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setName("/");
 
     // Act
-    Map<String, List<Long>> actualCreateChildCategoryURLMapResult = categoryImpl.createChildCategoryURLMap();
+    Map<String, List<Long>> actualCreateChildCategoryURLMapResult = categoryImpl2.createChildCategoryURLMap();
 
     // Assert
     assertEquals(1, actualCreateChildCategoryURLMapResult.size());
@@ -4289,23 +2243,22 @@ public class CategoryImplDiffblueTest {
   /**
    * Test {@link CategoryImpl#createChildCategoryURLMap()}.
    * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) Name is
-   * {@code .*?\W.*?}.</li>
+   *   <li>Given {@link CategoryImpl} (default constructor) Name is {@code .*?\W.*?}.</li>
    *   <li>Then return {@code /w} size is one.</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#createChildCategoryURLMap()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map CategoryImpl.createChildCategoryURLMap()"})
   public void testCreateChildCategoryURLMap_givenCategoryImplNameIsW_thenReturnWSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName(".*?\\W.*?");
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setName(".*?\\W.*?");
 
     // Act
-    Map<String, List<Long>> actualCreateChildCategoryURLMapResult = categoryImpl.createChildCategoryURLMap();
+    Map<String, List<Long>> actualCreateChildCategoryURLMapResult = categoryImpl2.createChildCategoryURLMap();
 
     // Assert
     assertEquals(1, actualCreateChildCategoryURLMapResult.size());
@@ -4317,23 +2270,22 @@ public class CategoryImplDiffblueTest {
   /**
    * Test {@link CategoryImpl#createChildCategoryURLMap()}.
    * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) Name is
-   * {@code [^\w-]+}.</li>
+   *   <li>Given {@link CategoryImpl} (default constructor) Name is {@code [^\w-]+}.</li>
    *   <li>Then return {@code /w-} size is one.</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#createChildCategoryURLMap()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map CategoryImpl.createChildCategoryURLMap()"})
   public void testCreateChildCategoryURLMap_givenCategoryImplNameIsW_thenReturnWSizeIsOne2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName("[^\\w-]+");
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setName("[^\\w-]+");
 
     // Act
-    Map<String, List<Long>> actualCreateChildCategoryURLMapResult = categoryImpl.createChildCategoryURLMap();
+    Map<String, List<Long>> actualCreateChildCategoryURLMapResult = categoryImpl2.createChildCategoryURLMap();
 
     // Assert
     assertEquals(1, actualCreateChildCategoryURLMapResult.size());
@@ -4352,69 +2304,11 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#createChildCategoryURLMap()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map CategoryImpl.createChildCategoryURLMap()"})
   public void testCreateChildCategoryURLMap_givenCategoryImpl_thenThrowRuntimeException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertThrows(RuntimeException.class, () -> (new CategoryImpl()).createChildCategoryURLMap());
-  }
-
-  /**
-   * Test {@link CategoryImpl#createChildCategoryURLMap()}.
-   * <ul>
-   *   <li>Then return empty string size is one.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#createChildCategoryURLMap()}
-   */
-  @Test
-  public void testCreateChildCategoryURLMap_thenReturnEmptyStringSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    java.sql.Date activeEndDate = mock(java.sql.Date.class);
-    when(activeEndDate.getTime()).thenReturn(10L);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setActiveEndDate(activeEndDate);
-    categoryImpl.setActiveStartDate(
-        java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrl("https://example.org/example");
-    categoryImpl.setUrlKey("/");
-
-    // Act
-    Map<String, List<Long>> actualCreateChildCategoryURLMapResult = categoryImpl.createChildCategoryURLMap();
-
-    // Assert
-    verify(activeEndDate).getTime();
-    assertEquals(1, actualCreateChildCategoryURLMapResult.size());
-    List<Long> getResult = actualCreateChildCategoryURLMapResult.get("");
-    assertEquals(1, getResult.size());
-    assertEquals(1L, getResult.get(0).longValue());
   }
 
   /**
@@ -4426,49 +2320,46 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#createChildCategoryURLMap()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map CategoryImpl.createChildCategoryURLMap()"})
   public void testCreateChildCategoryURLMap_thenReturnHttpsExampleOrgExampleSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    java.sql.Date activeEndDate = mock(java.sql.Date.class);
-    when(activeEndDate.getTime()).thenReturn(10L);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setActiveEndDate(activeEndDate);
-    categoryImpl.setActiveStartDate(
-        java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrl("https://example.org/example");
-    categoryImpl.setUrlKey("https://example.org/example");
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2
+        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    categoryImpl2
+        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    categoryImpl2.setCategoryAttributes(new ArrayList<>());
+    categoryImpl2.setCategoryAttributesMap(new HashMap<>());
+    categoryImpl2.setCategoryMediaXref(new HashMap<>());
+    categoryImpl2.setChildCategoryIds(new ArrayList<>());
+    categoryImpl2.setChildCategoryURLMap(new HashMap<>());
+    categoryImpl2.setDefaultParentCategory(new CategoryImpl());
+    categoryImpl2.setDescription("The characteristics of someone or something");
+    categoryImpl2.setDisplayTemplate("Display Template");
+    categoryImpl2.setExcludedSearchFacets(new ArrayList<>());
+    categoryImpl2.setExternalId("42");
+    categoryImpl2.setFulfillmentType(FulfillmentType.DIGITAL);
+    categoryImpl2.setId(1L);
+    categoryImpl2.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
+    categoryImpl2.setLongDescription("Long Description");
+    categoryImpl2.setMetaDescription("Meta Description");
+    categoryImpl2.setMetaTitle("Dr");
+    categoryImpl2.setName("Name");
+    categoryImpl2.setOverrideGeneratedUrl(true);
+    categoryImpl2.setProductDescriptionPatternOverride("Product Description Pattern Override");
+    categoryImpl2.setProductTitlePatternOverride("Dr");
+    categoryImpl2.setRootDisplayOrder(new BigDecimal("2.3"));
+    categoryImpl2.setSearchFacets(new ArrayList<>());
+    categoryImpl2.setTaxCode("Tax Code");
+    categoryImpl2.setUpSaleProducts(new ArrayList<>());
+    categoryImpl2.setUrl("https://example.org/example");
+    categoryImpl2.setUrlKey("https://example.org/example");
 
     // Act
-    Map<String, List<Long>> actualCreateChildCategoryURLMapResult = categoryImpl.createChildCategoryURLMap();
+    Map<String, List<Long>> actualCreateChildCategoryURLMapResult = categoryImpl2.createChildCategoryURLMap();
 
     // Assert
-    verify(activeEndDate).getTime();
     assertEquals(1, actualCreateChildCategoryURLMapResult.size());
     List<Long> getResult = actualCreateChildCategoryURLMapResult.get("/https://example.org/example");
     assertEquals(1, getResult.size());
@@ -4478,21 +2369,21 @@ public class CategoryImplDiffblueTest {
   /**
    * Test {@link CategoryImpl#createChildCategoryURLMap()}.
    * <ul>
-   *   <li>Then return {@code /name} first is {@code null}.</li>
+   *   <li>Then return {@code /name} size is one.</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#createChildCategoryURLMap()}
    */
   @Test
-  public void testCreateChildCategoryURLMap_thenReturnNameFirstIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map CategoryImpl.createChildCategoryURLMap()"})
+  public void testCreateChildCategoryURLMap_thenReturnNameSizeIsOne() {
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName("Name");
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setName("Name");
 
     // Act
-    Map<String, List<Long>> actualCreateChildCategoryURLMapResult = categoryImpl.createChildCategoryURLMap();
+    Map<String, List<Long>> actualCreateChildCategoryURLMapResult = categoryImpl2.createChildCategoryURLMap();
 
     // Assert
     assertEquals(1, actualCreateChildCategoryURLMapResult.size());
@@ -4504,79 +2395,21 @@ public class CategoryImplDiffblueTest {
   /**
    * Test {@link CategoryImpl#createChildCategoryURLMap()}.
    * <ul>
-   *   <li>Then return {@code /name} first longValue is one.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#createChildCategoryURLMap()}
-   */
-  @Test
-  public void testCreateChildCategoryURLMap_thenReturnNameFirstLongValueIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    java.sql.Date activeEndDate = mock(java.sql.Date.class);
-    when(activeEndDate.getTime()).thenReturn(10L);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setActiveEndDate(activeEndDate);
-    categoryImpl.setActiveStartDate(
-        java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrl("https://example.org/example");
-    categoryImpl.setUrlKey("");
-
-    // Act
-    Map<String, List<Long>> actualCreateChildCategoryURLMapResult = categoryImpl.createChildCategoryURLMap();
-
-    // Assert
-    verify(activeEndDate).getTime();
-    assertEquals(1, actualCreateChildCategoryURLMapResult.size());
-    List<Long> getResult = actualCreateChildCategoryURLMapResult.get("/name");
-    assertEquals(1, getResult.size());
-    assertEquals(1L, getResult.get(0).longValue());
-  }
-
-  /**
-   * Test {@link CategoryImpl#createChildCategoryURLMap()}.
-   * <ul>
    *   <li>Then return {@code /-} size is one.</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#createChildCategoryURLMap()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map CategoryImpl.createChildCategoryURLMap()"})
   public void testCreateChildCategoryURLMap_thenReturnSlashDashSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName(" ");
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setName(" ");
 
     // Act
-    Map<String, List<Long>> actualCreateChildCategoryURLMapResult = categoryImpl.createChildCategoryURLMap();
+    Map<String, List<Long>> actualCreateChildCategoryURLMapResult = categoryImpl2.createChildCategoryURLMap();
 
     // Assert
     assertEquals(1, actualCreateChildCategoryURLMapResult.size());
@@ -4594,15 +2427,15 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#createChildCategoryURLMap()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map CategoryImpl.createChildCategoryURLMap()"})
   public void testCreateChildCategoryURLMap_thenReturnUUUuSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName("UU UU");
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setName("UU UU");
 
     // Act
-    Map<String, List<Long>> actualCreateChildCategoryURLMapResult = categoryImpl.createChildCategoryURLMap();
+    Map<String, List<Long>> actualCreateChildCategoryURLMapResult = categoryImpl2.createChildCategoryURLMap();
 
     // Assert
     assertEquals(1, actualCreateChildCategoryURLMapResult.size());
@@ -4612,256 +2445,184 @@ public class CategoryImplDiffblueTest {
   }
 
   /**
-   * Test {@link CategoryImpl#getParentCategoryHierarchy(List)} with
-   * {@code currentPath}.
+   * Test {@link CategoryImpl#getParentCategoryHierarchy(List)} with {@code currentPath}.
    * <p>
    * Method under test: {@link CategoryImpl#getParentCategoryHierarchy(List)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getParentCategoryHierarchy(List)"})
   public void testGetParentCategoryHierarchyWithCurrentPath() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Category defaultParentCategory = mock(Category.class);
     when(defaultParentCategory.getParentCategoryHierarchy(Mockito.<List<Category>>any(), Mockito.<Boolean>any()))
         .thenReturn(new ArrayList<>());
 
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setDefaultParentCategory(defaultParentCategory);
     ArrayList<Category> currentPath = new ArrayList<>();
 
     // Act
-    List<Category> actualParentCategoryHierarchy = categoryImpl.getParentCategoryHierarchy(currentPath);
+    List<Category> actualParentCategoryHierarchy = categoryImpl2.getParentCategoryHierarchy(currentPath);
 
     // Assert
     verify(defaultParentCategory).getParentCategoryHierarchy(isA(List.class), eq(false));
     assertEquals(1, currentPath.size());
     assertEquals(1, actualParentCategoryHierarchy.size());
-    Category category = categoryImpl.defaultParentCategory;
+    Category category = categoryImpl2.defaultParentCategory;
     assertSame(category, currentPath.get(0));
     assertSame(category, actualParentCategoryHierarchy.get(0));
   }
 
   /**
-   * Test {@link CategoryImpl#getParentCategoryHierarchy(List)} with
-   * {@code currentPath}.
+   * Test {@link CategoryImpl#getParentCategoryHierarchy(List)} with {@code currentPath}.
    * <p>
    * Method under test: {@link CategoryImpl#getParentCategoryHierarchy(List)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getParentCategoryHierarchy(List)"})
   public void testGetParentCategoryHierarchyWithCurrentPath2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Category defaultParentCategory = mock(Category.class);
     when(defaultParentCategory.getParentCategoryHierarchy(Mockito.<List<Category>>any(), Mockito.<Boolean>any()))
         .thenThrow(new UnsupportedOperationException("foo"));
 
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
-
-    // Act and Assert
-    assertThrows(UnsupportedOperationException.class, () -> categoryImpl.getParentCategoryHierarchy(new ArrayList<>()));
-    verify(defaultParentCategory).getParentCategoryHierarchy(isA(List.class), eq(false));
-  }
-
-  /**
-   * Test {@link CategoryImpl#getParentCategoryHierarchy(List)} with
-   * {@code currentPath}.
-   * <p>
-   * Method under test: {@link CategoryImpl#getParentCategoryHierarchy(List)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetParentCategoryHierarchyWithCurrentPath3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3969 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
     CategoryImpl categoryImpl2 = new CategoryImpl();
-
-    // Act
-    categoryImpl2.getParentCategoryHierarchy(new ArrayList<>());
-  }
-
-  /**
-   * Test {@link CategoryImpl#getParentCategoryHierarchy(List, Boolean)} with
-   * {@code currentPath}, {@code firstParent}.
-   * <p>
-   * Method under test:
-   * {@link CategoryImpl#getParentCategoryHierarchy(List, Boolean)}
-   */
-  @Test
-  public void testGetParentCategoryHierarchyWithCurrentPathFirstParent() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-
-    ArrayList<Category> currentPath = new ArrayList<>();
-    CategoryImpl categoryImpl2 = new CategoryImpl();
-    currentPath.add(categoryImpl2);
-
-    // Act
-    List<Category> actualParentCategoryHierarchy = categoryImpl.getParentCategoryHierarchy(currentPath, true);
-
-    // Assert
-    assertEquals(1, actualParentCategoryHierarchy.size());
-    assertSame(categoryImpl2, actualParentCategoryHierarchy.get(0));
-  }
-
-  /**
-   * Test {@link CategoryImpl#getParentCategoryHierarchy(List, Boolean)} with
-   * {@code currentPath}, {@code firstParent}.
-   * <p>
-   * Method under test:
-   * {@link CategoryImpl#getParentCategoryHierarchy(List, Boolean)}
-   */
-  @Test
-  public void testGetParentCategoryHierarchyWithCurrentPathFirstParent2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    CategoryImpl defaultParentCategory = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
-    ArrayList<Category> currentPath = new ArrayList<>();
-
-    // Act
-    List<Category> actualParentCategoryHierarchy = categoryImpl.getParentCategoryHierarchy(currentPath, true);
-
-    // Assert
-    assertEquals(1, currentPath.size());
-    assertEquals(1, actualParentCategoryHierarchy.size());
-    assertSame(defaultParentCategory, currentPath.get(0));
-    assertSame(defaultParentCategory, actualParentCategoryHierarchy.get(0));
-  }
-
-  /**
-   * Test {@link CategoryImpl#getParentCategoryHierarchy(List, Boolean)} with
-   * {@code currentPath}, {@code firstParent}.
-   * <p>
-   * Method under test:
-   * {@link CategoryImpl#getParentCategoryHierarchy(List, Boolean)}
-   */
-  @Test
-  public void testGetParentCategoryHierarchyWithCurrentPathFirstParent3() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Category defaultParentCategory = mock(Category.class);
-    when(defaultParentCategory.getParentCategoryHierarchy(Mockito.<List<Category>>any(), Mockito.<Boolean>any()))
-        .thenReturn(new ArrayList<>());
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
-    ArrayList<Category> currentPath = new ArrayList<>();
-
-    // Act
-    List<Category> actualParentCategoryHierarchy = categoryImpl.getParentCategoryHierarchy(currentPath, true);
-
-    // Assert
-    verify(defaultParentCategory).getParentCategoryHierarchy(isA(List.class), eq(true));
-    assertEquals(1, currentPath.size());
-    assertEquals(1, actualParentCategoryHierarchy.size());
-    Category category = categoryImpl.defaultParentCategory;
-    assertSame(category, currentPath.get(0));
-    assertSame(category, actualParentCategoryHierarchy.get(0));
-  }
-
-  /**
-   * Test {@link CategoryImpl#getParentCategoryHierarchy(List, Boolean)} with
-   * {@code currentPath}, {@code firstParent}.
-   * <p>
-   * Method under test:
-   * {@link CategoryImpl#getParentCategoryHierarchy(List, Boolean)}
-   */
-  @Test
-  public void testGetParentCategoryHierarchyWithCurrentPathFirstParent4() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Category defaultParentCategory = mock(Category.class);
-    when(defaultParentCategory.getParentCategoryHierarchy(Mockito.<List<Category>>any(), Mockito.<Boolean>any()))
-        .thenThrow(new UnsupportedOperationException("foo"));
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
+    categoryImpl2.setDefaultParentCategory(defaultParentCategory);
 
     // Act and Assert
     assertThrows(UnsupportedOperationException.class,
-        () -> categoryImpl.getParentCategoryHierarchy(new ArrayList<>(), true));
+        () -> categoryImpl2.getParentCategoryHierarchy(new ArrayList<>()));
+    verify(defaultParentCategory).getParentCategoryHierarchy(isA(List.class), eq(false));
+  }
+
+  /**
+   * Test {@link CategoryImpl#getParentCategoryHierarchy(List, Boolean)} with {@code currentPath}, {@code firstParent}.
+   * <p>
+   * Method under test: {@link CategoryImpl#getParentCategoryHierarchy(List, Boolean)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getParentCategoryHierarchy(List, Boolean)"})
+  public void testGetParentCategoryHierarchyWithCurrentPathFirstParent() {
+    // Arrange
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+
+    ArrayList<Category> currentPath = new ArrayList<>();
+    CategoryImpl categoryImpl3 = new CategoryImpl();
+    currentPath.add(categoryImpl3);
+
+    // Act
+    List<Category> actualParentCategoryHierarchy = categoryImpl2.getParentCategoryHierarchy(currentPath, true);
+
+    // Assert
+    assertEquals(1, actualParentCategoryHierarchy.size());
+    Category getResult = actualParentCategoryHierarchy.get(0);
+    assertTrue(getResult instanceof CategoryImpl);
+    assertEquals(categoryImpl2, getResult);
+    assertSame(categoryImpl3, getResult);
+  }
+
+  /**
+   * Test {@link CategoryImpl#getParentCategoryHierarchy(List, Boolean)} with {@code currentPath}, {@code firstParent}.
+   * <p>
+   * Method under test: {@link CategoryImpl#getParentCategoryHierarchy(List, Boolean)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getParentCategoryHierarchy(List, Boolean)"})
+  public void testGetParentCategoryHierarchyWithCurrentPathFirstParent2() {
+    // Arrange
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    CategoryImpl defaultParentCategory = new CategoryImpl();
+    categoryImpl2.setDefaultParentCategory(defaultParentCategory);
+    ArrayList<Category> currentPath = new ArrayList<>();
+
+    // Act
+    List<Category> actualParentCategoryHierarchy = categoryImpl2.getParentCategoryHierarchy(currentPath, true);
+
+    // Assert
+    assertEquals(1, currentPath.size());
+    assertEquals(1, actualParentCategoryHierarchy.size());
+    Category getResult = actualParentCategoryHierarchy.get(0);
+    assertTrue(getResult instanceof CategoryImpl);
+    assertEquals(categoryImpl2, getResult);
+    assertSame(defaultParentCategory, currentPath.get(0));
+    assertSame(defaultParentCategory, getResult);
+  }
+
+  /**
+   * Test {@link CategoryImpl#getParentCategoryHierarchy(List, Boolean)} with {@code currentPath}, {@code firstParent}.
+   * <p>
+   * Method under test: {@link CategoryImpl#getParentCategoryHierarchy(List, Boolean)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getParentCategoryHierarchy(List, Boolean)"})
+  public void testGetParentCategoryHierarchyWithCurrentPathFirstParent3() {
+    // Arrange
+    Category defaultParentCategory = mock(Category.class);
+    when(defaultParentCategory.getParentCategoryHierarchy(Mockito.<List<Category>>any(), Mockito.<Boolean>any()))
+        .thenReturn(new ArrayList<>());
+
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setDefaultParentCategory(defaultParentCategory);
+    ArrayList<Category> currentPath = new ArrayList<>();
+
+    // Act
+    List<Category> actualParentCategoryHierarchy = categoryImpl2.getParentCategoryHierarchy(currentPath, true);
+
+    // Assert
+    verify(defaultParentCategory).getParentCategoryHierarchy(isA(List.class), eq(true));
+    assertEquals(1, currentPath.size());
+    assertEquals(1, actualParentCategoryHierarchy.size());
+    Category category = categoryImpl2.defaultParentCategory;
+    assertSame(category, currentPath.get(0));
+    assertSame(category, actualParentCategoryHierarchy.get(0));
+  }
+
+  /**
+   * Test {@link CategoryImpl#getParentCategoryHierarchy(List, Boolean)} with {@code currentPath}, {@code firstParent}.
+   * <p>
+   * Method under test: {@link CategoryImpl#getParentCategoryHierarchy(List, Boolean)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getParentCategoryHierarchy(List, Boolean)"})
+  public void testGetParentCategoryHierarchyWithCurrentPathFirstParent4() {
+    // Arrange
+    Category defaultParentCategory = mock(Category.class);
+    when(defaultParentCategory.getParentCategoryHierarchy(Mockito.<List<Category>>any(), Mockito.<Boolean>any()))
+        .thenThrow(new UnsupportedOperationException("foo"));
+
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setDefaultParentCategory(defaultParentCategory);
+
+    // Act and Assert
+    assertThrows(UnsupportedOperationException.class,
+        () -> categoryImpl2.getParentCategoryHierarchy(new ArrayList<>(), true));
     verify(defaultParentCategory).getParentCategoryHierarchy(isA(List.class), eq(true));
   }
 
   /**
-   * Test {@link CategoryImpl#getParentCategoryHierarchy(List, Boolean)} with
-   * {@code currentPath}, {@code firstParent}.
-   * <p>
-   * Method under test:
-   * {@link CategoryImpl#getParentCategoryHierarchy(List, Boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetParentCategoryHierarchyWithCurrentPathFirstParent5() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3999 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CategoryImpl categoryImpl2 = new CategoryImpl();
-
-    // Act
-    categoryImpl2.getParentCategoryHierarchy(new ArrayList<>(), true);
-  }
-
-  /**
-   * Test {@link CategoryImpl#getParentCategoryHierarchy(List, Boolean)} with
-   * {@code currentPath}, {@code firstParent}.
+   * Test {@link CategoryImpl#getParentCategoryHierarchy(List, Boolean)} with {@code currentPath}, {@code firstParent}.
    * <ul>
    *   <li>Then {@link ArrayList#ArrayList()} Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CategoryImpl#getParentCategoryHierarchy(List, Boolean)}
+   * Method under test: {@link CategoryImpl#getParentCategoryHierarchy(List, Boolean)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getParentCategoryHierarchy(List, Boolean)"})
   public void testGetParentCategoryHierarchyWithCurrentPathFirstParent_thenArrayListEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
+    CategoryImpl categoryImpl2 = new CategoryImpl();
     ArrayList<Category> currentPath = new ArrayList<>();
 
     // Act
-    List<Category> actualParentCategoryHierarchy = categoryImpl.getParentCategoryHierarchy(currentPath, true);
+    List<Category> actualParentCategoryHierarchy = categoryImpl2.getParentCategoryHierarchy(currentPath, true);
 
     // Assert
     assertTrue(currentPath.isEmpty());
@@ -4869,118 +2630,87 @@ public class CategoryImplDiffblueTest {
   }
 
   /**
-   * Test {@link CategoryImpl#getParentCategoryHierarchy(List, Boolean)} with
-   * {@code currentPath}, {@code firstParent}.
-   * <ul>
-   *   <li>Then return {@link ArrayList#ArrayList()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link CategoryImpl#getParentCategoryHierarchy(List, Boolean)}
-   */
-  @Test
-  public void testGetParentCategoryHierarchyWithCurrentPathFirstParent_thenReturnArrayList() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-
-    ArrayList<Category> currentPath = new ArrayList<>();
-    currentPath.add(mock(Category.class));
-
-    // Act
-    List<Category> actualParentCategoryHierarchy = categoryImpl.getParentCategoryHierarchy(currentPath, true);
-
-    // Assert
-    assertEquals(1, currentPath.size());
-    assertSame(currentPath, actualParentCategoryHierarchy);
-  }
-
-  /**
-   * Test {@link CategoryImpl#getParentCategoryHierarchy(List, Boolean)} with
-   * {@code currentPath}, {@code firstParent}.
+   * Test {@link CategoryImpl#getParentCategoryHierarchy(List, Boolean)} with {@code currentPath}, {@code firstParent}.
    * <ul>
    *   <li>Then return size is two.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CategoryImpl#getParentCategoryHierarchy(List, Boolean)}
+   * Method under test: {@link CategoryImpl#getParentCategoryHierarchy(List, Boolean)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getParentCategoryHierarchy(List, Boolean)"})
   public void testGetParentCategoryHierarchyWithCurrentPathFirstParent_thenReturnSizeIsTwo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
+    CategoryImpl categoryImpl2 = new CategoryImpl();
 
     ArrayList<Category> currentPath = new ArrayList<>();
     currentPath.add(new CategoryImpl());
-    CategoryImpl categoryImpl2 = new CategoryImpl();
-    currentPath.add(categoryImpl2);
+    CategoryImpl categoryImpl3 = new CategoryImpl();
+    currentPath.add(categoryImpl3);
 
     // Act
-    List<Category> actualParentCategoryHierarchy = categoryImpl.getParentCategoryHierarchy(currentPath, true);
+    List<Category> actualParentCategoryHierarchy = categoryImpl2.getParentCategoryHierarchy(currentPath, true);
 
     // Assert
     assertEquals(2, actualParentCategoryHierarchy.size());
-    assertSame(categoryImpl2, actualParentCategoryHierarchy.get(1));
+    Category getResult = actualParentCategoryHierarchy.get(1);
+    assertTrue(getResult instanceof CategoryImpl);
+    assertEquals(categoryImpl2, getResult);
+    assertSame(categoryImpl3, getResult);
   }
 
   /**
-   * Test {@link CategoryImpl#getParentCategoryHierarchy(List, Boolean)} with
-   * {@code currentPath}, {@code firstParent}.
+   * Test {@link CategoryImpl#getParentCategoryHierarchy(List, Boolean)} with {@code currentPath}, {@code firstParent}.
    * <ul>
    *   <li>When {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CategoryImpl#getParentCategoryHierarchy(List, Boolean)}
+   * Method under test: {@link CategoryImpl#getParentCategoryHierarchy(List, Boolean)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getParentCategoryHierarchy(List, Boolean)"})
   public void testGetParentCategoryHierarchyWithCurrentPathFirstParent_whenFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Category defaultParentCategory = mock(Category.class);
     when(defaultParentCategory.getParentCategoryHierarchy(Mockito.<List<Category>>any(), Mockito.<Boolean>any()))
         .thenReturn(new ArrayList<>());
 
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setDefaultParentCategory(defaultParentCategory);
     ArrayList<Category> currentPath = new ArrayList<>();
 
     // Act
-    List<Category> actualParentCategoryHierarchy = categoryImpl.getParentCategoryHierarchy(currentPath, false);
+    List<Category> actualParentCategoryHierarchy = categoryImpl2.getParentCategoryHierarchy(currentPath, false);
 
     // Assert
     verify(defaultParentCategory).getParentCategoryHierarchy(isA(List.class), eq(false));
     assertEquals(1, currentPath.size());
     assertEquals(1, actualParentCategoryHierarchy.size());
-    Category category = categoryImpl.defaultParentCategory;
+    Category category = categoryImpl2.defaultParentCategory;
     assertSame(category, currentPath.get(0));
     assertSame(category, actualParentCategoryHierarchy.get(0));
   }
 
   /**
-   * Test {@link CategoryImpl#getParentCategoryHierarchy(List, Boolean)} with
-   * {@code currentPath}, {@code firstParent}.
+   * Test {@link CategoryImpl#getParentCategoryHierarchy(List, Boolean)} with {@code currentPath}, {@code firstParent}.
    * <ul>
    *   <li>When {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CategoryImpl#getParentCategoryHierarchy(List, Boolean)}
+   * Method under test: {@link CategoryImpl#getParentCategoryHierarchy(List, Boolean)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getParentCategoryHierarchy(List, Boolean)"})
   public void testGetParentCategoryHierarchyWithCurrentPathFirstParent_whenNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
+    CategoryImpl categoryImpl2 = new CategoryImpl();
     ArrayList<Category> currentPath = new ArrayList<>();
 
     // Act
-    List<Category> actualParentCategoryHierarchy = categoryImpl.getParentCategoryHierarchy(currentPath, null);
+    List<Category> actualParentCategoryHierarchy = categoryImpl2.getParentCategoryHierarchy(currentPath, null);
 
     // Assert
     assertTrue(currentPath.isEmpty());
@@ -4988,36 +2718,7 @@ public class CategoryImplDiffblueTest {
   }
 
   /**
-   * Test {@link CategoryImpl#getParentCategoryHierarchy(List)} with
-   * {@code currentPath}.
-   * <ul>
-   *   <li>Given {@link Category}.</li>
-   *   <li>Then return {@link ArrayList#ArrayList()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getParentCategoryHierarchy(List)}
-   */
-  @Test
-  public void testGetParentCategoryHierarchyWithCurrentPath_givenCategory_thenReturnArrayList() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-
-    ArrayList<Category> currentPath = new ArrayList<>();
-    currentPath.add(mock(Category.class));
-
-    // Act
-    List<Category> actualParentCategoryHierarchy = categoryImpl.getParentCategoryHierarchy(currentPath);
-
-    // Assert
-    assertEquals(1, currentPath.size());
-    assertSame(currentPath, actualParentCategoryHierarchy);
-  }
-
-  /**
-   * Test {@link CategoryImpl#getParentCategoryHierarchy(List)} with
-   * {@code currentPath}.
+   * Test {@link CategoryImpl#getParentCategoryHierarchy(List)} with {@code currentPath}.
    * <ul>
    *   <li>Then {@link ArrayList#ArrayList()} Empty.</li>
    * </ul>
@@ -5025,15 +2726,15 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getParentCategoryHierarchy(List)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getParentCategoryHierarchy(List)"})
   public void testGetParentCategoryHierarchyWithCurrentPath_thenArrayListEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
+    CategoryImpl categoryImpl2 = new CategoryImpl();
     ArrayList<Category> currentPath = new ArrayList<>();
 
     // Act
-    List<Category> actualParentCategoryHierarchy = categoryImpl.getParentCategoryHierarchy(currentPath);
+    List<Category> actualParentCategoryHierarchy = categoryImpl2.getParentCategoryHierarchy(currentPath);
 
     // Assert
     assertTrue(currentPath.isEmpty());
@@ -5041,66 +2742,66 @@ public class CategoryImplDiffblueTest {
   }
 
   /**
-   * Test {@link CategoryImpl#getParentCategoryHierarchy(List)} with
-   * {@code currentPath}.
+   * Test {@link CategoryImpl#getParentCategoryHierarchy(List)} with {@code currentPath}.
    * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} first is {@link CategoryImpl} (default
-   * constructor).</li>
+   *   <li>Then {@link ArrayList#ArrayList()} first is {@link CategoryImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#getParentCategoryHierarchy(List)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getParentCategoryHierarchy(List)"})
   public void testGetParentCategoryHierarchyWithCurrentPath_thenArrayListFirstIsCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
+    CategoryImpl categoryImpl2 = new CategoryImpl();
     CategoryImpl defaultParentCategory = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
+    categoryImpl2.setDefaultParentCategory(defaultParentCategory);
     ArrayList<Category> currentPath = new ArrayList<>();
 
     // Act
-    List<Category> actualParentCategoryHierarchy = categoryImpl.getParentCategoryHierarchy(currentPath);
+    List<Category> actualParentCategoryHierarchy = categoryImpl2.getParentCategoryHierarchy(currentPath);
 
     // Assert
     assertEquals(1, currentPath.size());
     assertEquals(1, actualParentCategoryHierarchy.size());
     assertSame(defaultParentCategory, currentPath.get(0));
-    assertSame(categoryImpl.defaultParentCategory, actualParentCategoryHierarchy.get(0));
+    assertSame(categoryImpl2.defaultParentCategory, actualParentCategoryHierarchy.get(0));
   }
 
   /**
-   * Test {@link CategoryImpl#getParentCategoryHierarchy(List)} with
-   * {@code currentPath}.
+   * Test {@link CategoryImpl#getParentCategoryHierarchy(List)} with {@code currentPath}.
    * <ul>
-   *   <li>Then return first is {@link CategoryImpl} (default constructor).</li>
+   *   <li>Then first return {@link CategoryImpl}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#getParentCategoryHierarchy(List)}
    */
   @Test
-  public void testGetParentCategoryHierarchyWithCurrentPath_thenReturnFirstIsCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getParentCategoryHierarchy(List)"})
+  public void testGetParentCategoryHierarchyWithCurrentPath_thenFirstReturnCategoryImpl() {
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
+    CategoryImpl categoryImpl2 = new CategoryImpl();
 
     ArrayList<Category> currentPath = new ArrayList<>();
-    CategoryImpl categoryImpl2 = new CategoryImpl();
-    currentPath.add(categoryImpl2);
+    CategoryImpl categoryImpl3 = new CategoryImpl();
+    currentPath.add(categoryImpl3);
 
     // Act
-    List<Category> actualParentCategoryHierarchy = categoryImpl.getParentCategoryHierarchy(currentPath);
+    List<Category> actualParentCategoryHierarchy = categoryImpl2.getParentCategoryHierarchy(currentPath);
 
     // Assert
+    assertEquals(1, currentPath.size());
     assertEquals(1, actualParentCategoryHierarchy.size());
-    assertSame(categoryImpl2, actualParentCategoryHierarchy.get(0));
+    Category getResult = actualParentCategoryHierarchy.get(0);
+    assertTrue(getResult instanceof CategoryImpl);
+    assertEquals(categoryImpl2, getResult);
+    assertSame(categoryImpl3, getResult);
   }
 
   /**
-   * Test {@link CategoryImpl#getParentCategoryHierarchy(List)} with
-   * {@code currentPath}.
+   * Test {@link CategoryImpl#getParentCategoryHierarchy(List)} with {@code currentPath}.
    * <ul>
    *   <li>Then return size is two.</li>
    * </ul>
@@ -5108,23 +2809,26 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getParentCategoryHierarchy(List)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getParentCategoryHierarchy(List)"})
   public void testGetParentCategoryHierarchyWithCurrentPath_thenReturnSizeIsTwo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
+    CategoryImpl categoryImpl2 = new CategoryImpl();
 
     ArrayList<Category> currentPath = new ArrayList<>();
     currentPath.add(new CategoryImpl());
-    CategoryImpl categoryImpl2 = new CategoryImpl();
-    currentPath.add(categoryImpl2);
+    CategoryImpl categoryImpl3 = new CategoryImpl();
+    currentPath.add(categoryImpl3);
 
     // Act
-    List<Category> actualParentCategoryHierarchy = categoryImpl.getParentCategoryHierarchy(currentPath);
+    List<Category> actualParentCategoryHierarchy = categoryImpl2.getParentCategoryHierarchy(currentPath);
 
     // Assert
     assertEquals(2, actualParentCategoryHierarchy.size());
-    assertSame(categoryImpl2, actualParentCategoryHierarchy.get(1));
+    Category getResult = actualParentCategoryHierarchy.get(1);
+    assertTrue(getResult instanceof CategoryImpl);
+    assertEquals(categoryImpl2, getResult);
+    assertSame(categoryImpl3, getResult);
   }
 
   /**
@@ -5133,61 +2837,29 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#buildDefaultParentCategoryPath(List)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.buildDefaultParentCategoryPath(List)"})
   public void testBuildDefaultParentCategoryPath() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Category defaultParentCategory = mock(Category.class);
     when(defaultParentCategory.buildDefaultParentCategoryPath(Mockito.<List<Category>>any()))
         .thenReturn(new ArrayList<>());
 
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setDefaultParentCategory(defaultParentCategory);
     ArrayList<Category> currentPath = new ArrayList<>();
 
     // Act
-    List<Category> actualBuildDefaultParentCategoryPathResult = categoryImpl
+    List<Category> actualBuildDefaultParentCategoryPathResult = categoryImpl2
         .buildDefaultParentCategoryPath(currentPath);
 
     // Assert
     verify(defaultParentCategory).buildDefaultParentCategoryPath(isA(List.class));
     assertEquals(1, currentPath.size());
     assertEquals(1, actualBuildDefaultParentCategoryPathResult.size());
-    Category category = categoryImpl.defaultParentCategory;
+    Category category = categoryImpl2.defaultParentCategory;
     assertSame(category, currentPath.get(0));
     assertSame(category, actualBuildDefaultParentCategoryPathResult.get(0));
-  }
-
-  /**
-   * Test {@link CategoryImpl#buildDefaultParentCategoryPath(List)}.
-   * <p>
-   * Method under test: {@link CategoryImpl#buildDefaultParentCategoryPath(List)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testBuildDefaultParentCategoryPath2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2889 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CategoryImpl categoryImpl2 = new CategoryImpl();
-
-    // Act
-    categoryImpl2.buildDefaultParentCategoryPath(new ArrayList<>());
   }
 
   /**
@@ -5200,15 +2872,15 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#buildDefaultParentCategoryPath(List)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.buildDefaultParentCategoryPath(List)"})
   public void testBuildDefaultParentCategoryPath_givenCategoryImpl_thenArrayListEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
+    CategoryImpl categoryImpl2 = new CategoryImpl();
     ArrayList<Category> currentPath = new ArrayList<>();
 
     // Act
-    List<Category> actualBuildDefaultParentCategoryPathResult = categoryImpl
+    List<Category> actualBuildDefaultParentCategoryPathResult = categoryImpl2
         .buildDefaultParentCategoryPath(currentPath);
 
     // Assert
@@ -5219,87 +2891,62 @@ public class CategoryImplDiffblueTest {
   /**
    * Test {@link CategoryImpl#buildDefaultParentCategoryPath(List)}.
    * <ul>
-   *   <li>Given {@link Category}.</li>
-   *   <li>Then return {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then {@link ArrayList#ArrayList()} first is {@link CategoryImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#buildDefaultParentCategoryPath(List)}
    */
   @Test
-  public void testBuildDefaultParentCategoryPath_givenCategory_thenReturnArrayList() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-
-    ArrayList<Category> currentPath = new ArrayList<>();
-    currentPath.add(mock(Category.class));
-
-    // Act
-    List<Category> actualBuildDefaultParentCategoryPathResult = categoryImpl
-        .buildDefaultParentCategoryPath(currentPath);
-
-    // Assert
-    assertEquals(1, currentPath.size());
-    assertSame(currentPath, actualBuildDefaultParentCategoryPathResult);
-  }
-
-  /**
-   * Test {@link CategoryImpl#buildDefaultParentCategoryPath(List)}.
-   * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} first is {@link CategoryImpl} (default
-   * constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#buildDefaultParentCategoryPath(List)}
-   */
-  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.buildDefaultParentCategoryPath(List)"})
   public void testBuildDefaultParentCategoryPath_thenArrayListFirstIsCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
+    CategoryImpl categoryImpl2 = new CategoryImpl();
     CategoryImpl defaultParentCategory = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
+    categoryImpl2.setDefaultParentCategory(defaultParentCategory);
     ArrayList<Category> currentPath = new ArrayList<>();
 
     // Act
-    List<Category> actualBuildDefaultParentCategoryPathResult = categoryImpl
+    List<Category> actualBuildDefaultParentCategoryPathResult = categoryImpl2
         .buildDefaultParentCategoryPath(currentPath);
 
     // Assert
     assertEquals(1, currentPath.size());
     assertEquals(1, actualBuildDefaultParentCategoryPathResult.size());
     assertSame(defaultParentCategory, currentPath.get(0));
-    assertSame(categoryImpl.defaultParentCategory, actualBuildDefaultParentCategoryPathResult.get(0));
+    assertSame(categoryImpl2.defaultParentCategory, actualBuildDefaultParentCategoryPathResult.get(0));
   }
 
   /**
    * Test {@link CategoryImpl#buildDefaultParentCategoryPath(List)}.
    * <ul>
-   *   <li>Then return first is {@link CategoryImpl} (default constructor).</li>
+   *   <li>Then first return {@link CategoryImpl}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#buildDefaultParentCategoryPath(List)}
    */
   @Test
-  public void testBuildDefaultParentCategoryPath_thenReturnFirstIsCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.buildDefaultParentCategoryPath(List)"})
+  public void testBuildDefaultParentCategoryPath_thenFirstReturnCategoryImpl() {
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
+    CategoryImpl categoryImpl2 = new CategoryImpl();
 
     ArrayList<Category> currentPath = new ArrayList<>();
-    CategoryImpl categoryImpl2 = new CategoryImpl();
-    currentPath.add(categoryImpl2);
+    CategoryImpl categoryImpl3 = new CategoryImpl();
+    currentPath.add(categoryImpl3);
 
     // Act
-    List<Category> actualBuildDefaultParentCategoryPathResult = categoryImpl
+    List<Category> actualBuildDefaultParentCategoryPathResult = categoryImpl2
         .buildDefaultParentCategoryPath(currentPath);
 
     // Assert
+    assertEquals(1, currentPath.size());
     assertEquals(1, actualBuildDefaultParentCategoryPathResult.size());
-    assertSame(categoryImpl2, actualBuildDefaultParentCategoryPathResult.get(0));
+    Category getResult = actualBuildDefaultParentCategoryPathResult.get(0);
+    assertTrue(getResult instanceof CategoryImpl);
+    assertEquals(categoryImpl2, getResult);
+    assertSame(categoryImpl3, getResult);
   }
 
   /**
@@ -5311,24 +2958,27 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#buildDefaultParentCategoryPath(List)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.buildDefaultParentCategoryPath(List)"})
   public void testBuildDefaultParentCategoryPath_thenReturnSizeIsTwo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
+    CategoryImpl categoryImpl2 = new CategoryImpl();
 
     ArrayList<Category> currentPath = new ArrayList<>();
     currentPath.add(new CategoryImpl());
-    CategoryImpl categoryImpl2 = new CategoryImpl();
-    currentPath.add(categoryImpl2);
+    CategoryImpl categoryImpl3 = new CategoryImpl();
+    currentPath.add(categoryImpl3);
 
     // Act
-    List<Category> actualBuildDefaultParentCategoryPathResult = categoryImpl
+    List<Category> actualBuildDefaultParentCategoryPathResult = categoryImpl2
         .buildDefaultParentCategoryPath(currentPath);
 
     // Assert
     assertEquals(2, actualBuildDefaultParentCategoryPathResult.size());
-    assertSame(categoryImpl2, actualBuildDefaultParentCategoryPathResult.get(1));
+    Category getResult = actualBuildDefaultParentCategoryPathResult.get(1);
+    assertTrue(getResult instanceof CategoryImpl);
+    assertEquals(categoryImpl2, getResult);
+    assertSame(categoryImpl3, getResult);
   }
 
   /**
@@ -5340,149 +2990,89 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#buildDefaultParentCategoryPath(List)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.buildDefaultParentCategoryPath(List)"})
   public void testBuildDefaultParentCategoryPath_thenThrowUnsupportedOperationException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Category defaultParentCategory = mock(Category.class);
     when(defaultParentCategory.buildDefaultParentCategoryPath(Mockito.<List<Category>>any()))
         .thenThrow(new UnsupportedOperationException("foo"));
 
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setDefaultParentCategory(defaultParentCategory);
 
     // Act and Assert
     assertThrows(UnsupportedOperationException.class,
-        () -> categoryImpl.buildDefaultParentCategoryPath(new ArrayList<>()));
+        () -> categoryImpl2.buildDefaultParentCategoryPath(new ArrayList<>()));
     verify(defaultParentCategory).buildDefaultParentCategoryPath(isA(List.class));
   }
 
   /**
    * Test {@link CategoryImpl#setAllParentCategoryXrefs(List)}.
+   * <ul>
+   *   <li>Then {@link CategoryImpl} (default constructor) AllParentCategories Empty.</li>
+   * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#setAllParentCategoryXrefs(List)}
    */
   @Test
-  public void testSetAllParentCategoryXrefs() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.setAllParentCategoryXrefs(List)"})
+  public void testSetAllParentCategoryXrefs_thenCategoryImplAllParentCategoriesEmpty() {
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+
+    // Act
+    categoryImpl2.setAllParentCategoryXrefs(new ArrayList<>());
+
+    // Assert that nothing has changed
+    assertTrue(categoryImpl2.getAllParentCategories().isEmpty());
+    assertTrue(categoryImpl2.getAllParentCategoryXrefs().isEmpty());
+  }
+
+  /**
+   * Test {@link CategoryImpl#setAllParentCategoryXrefs(List)}.
+   * <ul>
+   *   <li>Then {@link CategoryImpl} (default constructor) AllParentCategories size is one.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CategoryImpl#setAllParentCategoryXrefs(List)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.setAllParentCategoryXrefs(List)"})
+  public void testSetAllParentCategoryXrefs_thenCategoryImplAllParentCategoriesSizeIsOne() {
+    // Arrange
+    CategoryImpl categoryImpl2 = new CategoryImpl();
 
     ArrayList<CategoryXref> allParentCategories = new ArrayList<>();
     CategoryXrefImpl categoryXrefImpl = new CategoryXrefImpl();
     allParentCategories.add(categoryXrefImpl);
 
     // Act
-    categoryImpl.setAllParentCategoryXrefs(allParentCategories);
+    categoryImpl2.setAllParentCategoryXrefs(allParentCategories);
 
     // Assert
-    assertEquals(1, categoryImpl.getAllParentCategories().size());
-    List<CategoryXref> allParentCategoryXrefs = categoryImpl.getAllParentCategoryXrefs();
+    assertEquals(1, categoryImpl2.getAllParentCategories().size());
+    List<CategoryXref> allParentCategoryXrefs = categoryImpl2.getAllParentCategoryXrefs();
     assertEquals(1, allParentCategoryXrefs.size());
     assertSame(categoryXrefImpl, allParentCategoryXrefs.get(0));
   }
 
   /**
    * Test {@link CategoryImpl#setAllParentCategoryXrefs(List)}.
+   * <ul>
+   *   <li>Then {@link CategoryImpl} (default constructor) AllParentCategories size is two.</li>
+   * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#setAllParentCategoryXrefs(List)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetAllParentCategoryXrefs2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4389 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.setAllParentCategoryXrefs(List)"})
+  public void testSetAllParentCategoryXrefs_thenCategoryImplAllParentCategoriesSizeIsTwo() {
     // Arrange
     CategoryImpl categoryImpl2 = new CategoryImpl();
-
-    // Act
-    categoryImpl2.setAllParentCategoryXrefs(new ArrayList<>());
-  }
-
-  /**
-   * Test {@link CategoryImpl#setAllParentCategoryXrefs(List)}.
-   * <ul>
-   *   <li>Then {@link CategoryImpl} (default constructor) AllParentCategories
-   * Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#setAllParentCategoryXrefs(List)}
-   */
-  @Test
-  public void testSetAllParentCategoryXrefs_thenCategoryImplAllParentCategoriesEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-
-    // Act
-    categoryImpl.setAllParentCategoryXrefs(new ArrayList<>());
-
-    // Assert
-    assertTrue(categoryImpl.getAllParentCategories().isEmpty());
-    assertTrue(categoryImpl.getAllParentCategoryXrefs().isEmpty());
-  }
-
-  /**
-   * Test {@link CategoryImpl#setAllParentCategoryXrefs(List)}.
-   * <ul>
-   *   <li>Then {@link CategoryImpl} (default constructor) AllParentCategories first
-   * is {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#setAllParentCategoryXrefs(List)}
-   */
-  @Test
-  public void testSetAllParentCategoryXrefs_thenCategoryImplAllParentCategoriesFirstIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-
-    ArrayList<CategoryXref> allParentCategories = new ArrayList<>();
-    allParentCategories.add(mock(CategoryXrefImpl.class));
-
-    // Act
-    categoryImpl.setAllParentCategoryXrefs(allParentCategories);
-
-    // Assert
-    List<Category> allParentCategories2 = categoryImpl.getAllParentCategories();
-    assertEquals(1, allParentCategories2.size());
-    assertNull(allParentCategories2.get(0));
-    assertEquals(1, categoryImpl.getAllParentCategoryXrefs().size());
-  }
-
-  /**
-   * Test {@link CategoryImpl#setAllParentCategoryXrefs(List)}.
-   * <ul>
-   *   <li>Then {@link CategoryImpl} (default constructor) AllParentCategories size
-   * is two.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#setAllParentCategoryXrefs(List)}
-   */
-  @Test
-  public void testSetAllParentCategoryXrefs_thenCategoryImplAllParentCategoriesSizeIsTwo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
 
     ArrayList<CategoryXref> allParentCategories = new ArrayList<>();
     allParentCategories.add(new CategoryXrefImpl());
@@ -5490,11 +3080,11 @@ public class CategoryImplDiffblueTest {
     allParentCategories.add(categoryXrefImpl);
 
     // Act
-    categoryImpl.setAllParentCategoryXrefs(allParentCategories);
+    categoryImpl2.setAllParentCategoryXrefs(allParentCategories);
 
     // Assert
-    assertEquals(2, categoryImpl.getAllParentCategories().size());
-    List<CategoryXref> allParentCategoryXrefs = categoryImpl.getAllParentCategoryXrefs();
+    assertEquals(2, categoryImpl2.getAllParentCategories().size());
+    List<CategoryXref> allParentCategoryXrefs = categoryImpl2.getAllParentCategoryXrefs();
     assertEquals(2, allParentCategoryXrefs.size());
     assertSame(categoryXrefImpl, allParentCategoryXrefs.get(1));
   }
@@ -5505,103 +3095,11 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getAllParentCategories()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getAllParentCategories()"})
   public void testGetAllParentCategories() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3129 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryImpl()).getAllParentCategories();
-  }
-
-  /**
-   * Test {@link CategoryImpl#getAllParentCategories()}.
-   * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getAllParentCategories()}
-   */
-  @Test
-  public void testGetAllParentCategories_givenCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertTrue((new CategoryImpl()).getAllParentCategories().isEmpty());
-  }
-
-  /**
-   * Test {@link CategoryImpl#getAllParentCategories()}.
-   * <ul>
-   *   <li>Given {@link Date} {@link java.util.Date#getTime()} return ten.</li>
-   *   <li>Then calls {@link java.util.Date#getTime()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getAllParentCategories()}
-   */
-  @Test
-  public void testGetAllParentCategories_givenDateGetTimeReturnTen_thenCallsGetTime() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    java.sql.Date activeStartDate = mock(java.sql.Date.class);
-    when(activeStartDate.getTime()).thenReturn(10L);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setActiveStartDate(activeStartDate);
-
-    // Act
-    List<Category> actualAllParentCategories = categoryImpl.getAllParentCategories();
-
-    // Assert
-    verify(activeStartDate).getTime();
-    assertTrue(actualAllParentCategories.isEmpty());
-  }
-
-  /**
-   * Test {@link CategoryImpl#setAllParentCategories(List)}.
-   * <p>
-   * Method under test: {@link CategoryImpl#setAllParentCategories(List)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetAllParentCategories() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4359 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CategoryImpl categoryImpl2 = new CategoryImpl();
-
-    // Act
-    categoryImpl2.setAllParentCategories(new ArrayList<>());
   }
 
   /**
@@ -5613,401 +3111,288 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#setAllParentCategories(List)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.setAllParentCategories(List)"})
   public void testSetAllParentCategories_whenArrayList() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
+    CategoryImpl categoryImpl2 = new CategoryImpl();
 
     // Act and Assert
-    assertThrows(UnsupportedOperationException.class, () -> categoryImpl.setAllParentCategories(new ArrayList<>()));
+    assertThrows(UnsupportedOperationException.class, () -> categoryImpl2.setAllParentCategories(new ArrayList<>()));
   }
 
   /**
    * Test {@link CategoryImpl#setAllParentCategories(List)}.
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link CategoryImpl} (default
-   * constructor).</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link CategoryImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#setAllParentCategories(List)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.setAllParentCategories(List)"})
   public void testSetAllParentCategories_whenArrayListAddCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
+    CategoryImpl categoryImpl2 = new CategoryImpl();
 
     ArrayList<Category> allParentCategories = new ArrayList<>();
     allParentCategories.add(new CategoryImpl());
 
     // Act and Assert
-    assertThrows(UnsupportedOperationException.class, () -> categoryImpl.setAllParentCategories(allParentCategories));
+    assertThrows(UnsupportedOperationException.class, () -> categoryImpl2.setAllParentCategories(allParentCategories));
   }
 
   /**
    * Test {@link CategoryImpl#setAllParentCategories(List)}.
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link CategoryImpl} (default
-   * constructor).</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link CategoryImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#setAllParentCategories(List)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.setAllParentCategories(List)"})
   public void testSetAllParentCategories_whenArrayListAddCategoryImpl2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
+    CategoryImpl categoryImpl2 = new CategoryImpl();
 
     ArrayList<Category> allParentCategories = new ArrayList<>();
     allParentCategories.add(new CategoryImpl());
     allParentCategories.add(new CategoryImpl());
 
     // Act and Assert
-    assertThrows(UnsupportedOperationException.class, () -> categoryImpl.setAllParentCategories(allParentCategories));
+    assertThrows(UnsupportedOperationException.class, () -> categoryImpl2.setAllParentCategories(allParentCategories));
   }
 
   /**
    * Test {@link CategoryImpl#setFeaturedProducts(List)}.
+   * <ul>
+   *   <li>Then {@link CategoryImpl} (default constructor) CumulativeFeaturedProducts Empty.</li>
+   * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#setFeaturedProducts(List)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetFeaturedProducts() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4659 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.setFeaturedProducts(List)"})
+  public void testSetFeaturedProducts_thenCategoryImplCumulativeFeaturedProductsEmpty() {
     // Arrange
     CategoryImpl categoryImpl2 = new CategoryImpl();
 
     // Act
     categoryImpl2.setFeaturedProducts(new ArrayList<>());
+
+    // Assert that nothing has changed
+    assertTrue(categoryImpl2.getCumulativeFeaturedProducts().isEmpty());
+    assertTrue(categoryImpl2.getFeaturedProducts().isEmpty());
   }
 
   /**
    * Test {@link CategoryImpl#setFeaturedProducts(List)}.
    * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) DefaultParentCategory is
-   * {@link Category}.</li>
+   *   <li>Then {@link CategoryImpl} (default constructor) FeaturedProducts is {@link ArrayList#ArrayList()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#setFeaturedProducts(List)}
    */
   @Test
-  public void testSetFeaturedProducts_givenCategoryImplDefaultParentCategoryIsCategory() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.setFeaturedProducts(List)"})
+  public void testSetFeaturedProducts_thenCategoryImplFeaturedProductsIsArrayList() {
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl
-        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl
-        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl.setDefaultParentCategory(mock(Category.class));
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrl("https://example.org/example");
-    categoryImpl.setUrlKey("https://example.org/example");
+    CategoryImpl categoryImpl2 = new CategoryImpl();
 
     ArrayList<FeaturedProduct> featuredProducts = new ArrayList<>();
+    FeaturedProductImpl featuredProductImpl = new FeaturedProductImpl();
+    featuredProducts.add(featuredProductImpl);
     featuredProducts.add(new FeaturedProductImpl());
 
     // Act
-    categoryImpl.setFeaturedProducts(featuredProducts);
+    categoryImpl2.setFeaturedProducts(featuredProducts);
 
     // Assert
-    assertEquals(featuredProducts, categoryImpl.getCumulativeFeaturedProducts());
-    assertEquals(featuredProducts, categoryImpl.getFeaturedProducts());
+    List<FeaturedProduct> cumulativeFeaturedProducts = categoryImpl2.getCumulativeFeaturedProducts();
+    assertEquals(1, cumulativeFeaturedProducts.size());
+    assertEquals(featuredProducts, categoryImpl2.getFeaturedProducts());
+    assertSame(featuredProductImpl, cumulativeFeaturedProducts.get(0));
   }
 
   /**
    * Test {@link CategoryImpl#setFeaturedProducts(List)}.
    * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) DefaultParentCategory is
-   * {@link CategoryImpl} (default constructor).</li>
+   *   <li>Then {@link CategoryImpl} (default constructor) FeaturedProducts size is one.</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#setFeaturedProducts(List)}
    */
   @Test
-  public void testSetFeaturedProducts_givenCategoryImplDefaultParentCategoryIsCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.setFeaturedProducts(List)"})
+  public void testSetFeaturedProducts_thenCategoryImplFeaturedProductsSizeIsOne() {
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2
         .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl
+    categoryImpl2
         .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrl("https://example.org/example");
-    categoryImpl.setUrlKey("https://example.org/example");
+    categoryImpl2.setCategoryAttributes(new ArrayList<>());
+    categoryImpl2.setCategoryAttributesMap(new HashMap<>());
+    categoryImpl2.setCategoryMediaXref(new HashMap<>());
+    categoryImpl2.setChildCategoryIds(new ArrayList<>());
+    categoryImpl2.setChildCategoryURLMap(new HashMap<>());
+    categoryImpl2.setDefaultParentCategory(new CategoryImpl());
+    categoryImpl2.setDescription("The characteristics of someone or something");
+    categoryImpl2.setDisplayTemplate("Display Template");
+    categoryImpl2.setExcludedSearchFacets(new ArrayList<>());
+    categoryImpl2.setExternalId("42");
+    categoryImpl2.setFulfillmentType(FulfillmentType.DIGITAL);
+    categoryImpl2.setId(1L);
+    categoryImpl2.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
+    categoryImpl2.setLongDescription("Long Description");
+    categoryImpl2.setMetaDescription("Meta Description");
+    categoryImpl2.setMetaTitle("Dr");
+    categoryImpl2.setName("Name");
+    categoryImpl2.setOverrideGeneratedUrl(true);
+    categoryImpl2.setProductDescriptionPatternOverride("Product Description Pattern Override");
+    categoryImpl2.setProductTitlePatternOverride("Dr");
+    categoryImpl2.setRootDisplayOrder(new BigDecimal("2.3"));
+    categoryImpl2.setSearchFacets(new ArrayList<>());
+    categoryImpl2.setTaxCode("Tax Code");
+    categoryImpl2.setUpSaleProducts(new ArrayList<>());
+    categoryImpl2.setUrl("https://example.org/example");
+    categoryImpl2.setUrlKey("https://example.org/example");
 
     ArrayList<FeaturedProduct> featuredProducts = new ArrayList<>();
-    featuredProducts.add(new FeaturedProductImpl());
+    FeaturedProductImpl featuredProductImpl = new FeaturedProductImpl();
+    featuredProducts.add(featuredProductImpl);
 
     // Act
-    categoryImpl.setFeaturedProducts(featuredProducts);
+    categoryImpl2.setFeaturedProducts(featuredProducts);
 
     // Assert
-    assertEquals(featuredProducts, categoryImpl.getCumulativeFeaturedProducts());
-    assertEquals(featuredProducts, categoryImpl.getFeaturedProducts());
-  }
-
-  /**
-   * Test {@link CategoryImpl#setFeaturedProducts(List)}.
-   * <ul>
-   *   <li>Then {@link CategoryImpl} (default constructor)
-   * CumulativeFeaturedProducts Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#setFeaturedProducts(List)}
-   */
-  @Test
-  public void testSetFeaturedProducts_thenCategoryImplCumulativeFeaturedProductsEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-
-    // Act
-    categoryImpl.setFeaturedProducts(new ArrayList<>());
-
-    // Assert
-    assertTrue(categoryImpl.getCumulativeFeaturedProducts().isEmpty());
-    assertTrue(categoryImpl.getFeaturedProducts().isEmpty());
+    List<FeaturedProduct> cumulativeFeaturedProducts = categoryImpl2.getCumulativeFeaturedProducts();
+    assertEquals(1, cumulativeFeaturedProducts.size());
+    List<FeaturedProduct> featuredProducts2 = categoryImpl2.getFeaturedProducts();
+    assertEquals(1, featuredProducts2.size());
+    assertSame(featuredProductImpl, cumulativeFeaturedProducts.get(0));
+    assertSame(featuredProductImpl, featuredProducts2.get(0));
   }
 
   /**
    * Test {@link CategoryImpl#setCrossSaleProducts(List)}.
+   * <ul>
+   *   <li>Then {@link CategoryImpl} (default constructor) CrossSaleProducts is {@link ArrayList#ArrayList()}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#setCrossSaleProducts(List)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetCrossSaleProducts() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4629 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.setCrossSaleProducts(List)"})
+  public void testSetCrossSaleProducts_thenCategoryImplCrossSaleProductsIsArrayList() {
+    // Arrange
+    CategoryImpl categoryImpl2 = new CategoryImpl();
 
+    ArrayList<RelatedProduct> crossSaleProducts = new ArrayList<>();
+    CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
+    crossSaleProducts.add(crossSaleProductImpl);
+    crossSaleProducts.add(new CrossSaleProductImpl());
+
+    // Act
+    categoryImpl2.setCrossSaleProducts(crossSaleProducts);
+
+    // Assert
+    List<RelatedProduct> cumulativeCrossSaleProducts = categoryImpl2.getCumulativeCrossSaleProducts();
+    assertEquals(1, cumulativeCrossSaleProducts.size());
+    assertEquals(crossSaleProducts, categoryImpl2.getCrossSaleProducts());
+    assertSame(crossSaleProductImpl, cumulativeCrossSaleProducts.get(0));
+  }
+
+  /**
+   * Test {@link CategoryImpl#setCrossSaleProducts(List)}.
+   * <ul>
+   *   <li>Then {@link CategoryImpl} (default constructor) CrossSaleProducts size is one.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CategoryImpl#setCrossSaleProducts(List)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.setCrossSaleProducts(List)"})
+  public void testSetCrossSaleProducts_thenCategoryImplCrossSaleProductsSizeIsOne() {
+    // Arrange
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2
+        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    categoryImpl2
+        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    categoryImpl2.setCategoryAttributes(new ArrayList<>());
+    categoryImpl2.setCategoryAttributesMap(new HashMap<>());
+    categoryImpl2.setCategoryMediaXref(new HashMap<>());
+    categoryImpl2.setChildCategoryIds(new ArrayList<>());
+    categoryImpl2.setChildCategoryURLMap(new HashMap<>());
+    categoryImpl2.setDefaultParentCategory(new CategoryImpl());
+    categoryImpl2.setDescription("The characteristics of someone or something");
+    categoryImpl2.setDisplayTemplate("Display Template");
+    categoryImpl2.setExcludedSearchFacets(new ArrayList<>());
+    categoryImpl2.setExternalId("42");
+    categoryImpl2.setFulfillmentType(FulfillmentType.DIGITAL);
+    categoryImpl2.setId(1L);
+    categoryImpl2.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
+    categoryImpl2.setLongDescription("Long Description");
+    categoryImpl2.setMetaDescription("Meta Description");
+    categoryImpl2.setMetaTitle("Dr");
+    categoryImpl2.setName("Name");
+    categoryImpl2.setOverrideGeneratedUrl(true);
+    categoryImpl2.setProductDescriptionPatternOverride("Product Description Pattern Override");
+    categoryImpl2.setProductTitlePatternOverride("Dr");
+    categoryImpl2.setRootDisplayOrder(new BigDecimal("2.3"));
+    categoryImpl2.setSearchFacets(new ArrayList<>());
+    categoryImpl2.setTaxCode("Tax Code");
+    categoryImpl2.setUpSaleProducts(new ArrayList<>());
+    categoryImpl2.setUrl("https://example.org/example");
+    categoryImpl2.setUrlKey("https://example.org/example");
+
+    ArrayList<RelatedProduct> crossSaleProducts = new ArrayList<>();
+    CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
+    crossSaleProducts.add(crossSaleProductImpl);
+
+    // Act
+    categoryImpl2.setCrossSaleProducts(crossSaleProducts);
+
+    // Assert
+    List<RelatedProduct> crossSaleProducts2 = categoryImpl2.getCrossSaleProducts();
+    assertEquals(1, crossSaleProducts2.size());
+    List<RelatedProduct> cumulativeCrossSaleProducts = categoryImpl2.getCumulativeCrossSaleProducts();
+    assertEquals(1, cumulativeCrossSaleProducts.size());
+    assertSame(crossSaleProductImpl, crossSaleProducts2.get(0));
+    assertSame(crossSaleProductImpl, cumulativeCrossSaleProducts.get(0));
+  }
+
+  /**
+   * Test {@link CategoryImpl#setCrossSaleProducts(List)}.
+   * <ul>
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then {@link CategoryImpl} (default constructor) CrossSaleProducts Empty.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CategoryImpl#setCrossSaleProducts(List)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.setCrossSaleProducts(List)"})
+  public void testSetCrossSaleProducts_whenArrayList_thenCategoryImplCrossSaleProductsEmpty() {
     // Arrange
     CategoryImpl categoryImpl2 = new CategoryImpl();
 
     // Act
     categoryImpl2.setCrossSaleProducts(new ArrayList<>());
-  }
 
-  /**
-   * Test {@link CategoryImpl#setCrossSaleProducts(List)}.
-   * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) DefaultParentCategory is
-   * {@link Category}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#setCrossSaleProducts(List)}
-   */
-  @Test
-  public void testSetCrossSaleProducts_givenCategoryImplDefaultParentCategoryIsCategory() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl
-        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl
-        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl.setDefaultParentCategory(mock(Category.class));
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrl("https://example.org/example");
-    categoryImpl.setUrlKey("https://example.org/example");
-
-    ArrayList<RelatedProduct> crossSaleProducts = new ArrayList<>();
-    crossSaleProducts.add(new CrossSaleProductImpl());
-
-    // Act
-    categoryImpl.setCrossSaleProducts(crossSaleProducts);
-
-    // Assert
-    assertEquals(crossSaleProducts, categoryImpl.getCrossSaleProducts());
-    assertEquals(crossSaleProducts, categoryImpl.getCumulativeCrossSaleProducts());
-  }
-
-  /**
-   * Test {@link CategoryImpl#setCrossSaleProducts(List)}.
-   * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) DefaultParentCategory is
-   * {@link CategoryImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#setCrossSaleProducts(List)}
-   */
-  @Test
-  public void testSetCrossSaleProducts_givenCategoryImplDefaultParentCategoryIsCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl
-        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl
-        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrl("https://example.org/example");
-    categoryImpl.setUrlKey("https://example.org/example");
-
-    ArrayList<RelatedProduct> crossSaleProducts = new ArrayList<>();
-    crossSaleProducts.add(new CrossSaleProductImpl());
-
-    // Act
-    categoryImpl.setCrossSaleProducts(crossSaleProducts);
-
-    // Assert
-    assertEquals(crossSaleProducts, categoryImpl.getCrossSaleProducts());
-    assertEquals(crossSaleProducts, categoryImpl.getCumulativeCrossSaleProducts());
-  }
-
-  /**
-   * Test {@link CategoryImpl#setCrossSaleProducts(List)}.
-   * <ul>
-   *   <li>Then {@link CategoryImpl} (default constructor) CrossSaleProducts
-   * Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#setCrossSaleProducts(List)}
-   */
-  @Test
-  public void testSetCrossSaleProducts_thenCategoryImplCrossSaleProductsEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-
-    // Act
-    categoryImpl.setCrossSaleProducts(new ArrayList<>());
-
-    // Assert
-    assertTrue(categoryImpl.getCrossSaleProducts().isEmpty());
-    assertTrue(categoryImpl.getCumulativeCrossSaleProducts().isEmpty());
+    // Assert that nothing has changed
+    assertTrue(categoryImpl2.getCrossSaleProducts().isEmpty());
+    assertTrue(categoryImpl2.getCumulativeCrossSaleProducts().isEmpty());
   }
 
   /**
@@ -6016,15 +3401,15 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getCumulativeCrossSaleProducts()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getCumulativeCrossSaleProducts()"})
   public void testGetCumulativeCrossSaleProducts() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setDefaultParentCategory(new CategoryImpl());
 
     // Act and Assert
-    assertTrue(categoryImpl.getCumulativeCrossSaleProducts().isEmpty());
+    assertTrue(categoryImpl2.getCumulativeCrossSaleProducts().isEmpty());
   }
 
   /**
@@ -6033,137 +3418,9 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getCumulativeCrossSaleProducts()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getCumulativeCrossSaleProducts()"})
   public void testGetCumulativeCrossSaleProducts2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl category = new CategoryImpl();
-    category.setName("sequence");
-
-    UpSaleProductImpl upSaleProductImpl = new UpSaleProductImpl();
-    upSaleProductImpl.setCategory(category);
-    upSaleProductImpl.setId(1L);
-    upSaleProductImpl.setProduct(new ProductBundleImpl());
-    upSaleProductImpl.setPromotionMessage("Promotion Message");
-    upSaleProductImpl.setRelatedProduct(new ProductBundleImpl());
-    upSaleProductImpl.setSequence(new BigDecimal("2.3"));
-    RelatedProduct relatedProduct = mock(RelatedProduct.class);
-    when(relatedProduct.getSequence()).thenReturn(new BigDecimal("2.3"));
-
-    ArrayList<RelatedProduct> relatedProductList = new ArrayList<>();
-    relatedProductList.add(relatedProduct);
-    relatedProductList.add(upSaleProductImpl);
-    Category defaultParentCategory = mock(Category.class);
-    when(defaultParentCategory.buildDefaultParentCategoryPath(Mockito.<List<Category>>any()))
-        .thenReturn(new ArrayList<>());
-    when(defaultParentCategory.getCrossSaleProducts()).thenReturn(relatedProductList);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
-
-    // Act
-    List<RelatedProduct> actualCumulativeCrossSaleProducts = categoryImpl.getCumulativeCrossSaleProducts();
-
-    // Assert
-    verify(defaultParentCategory).buildDefaultParentCategoryPath(isA(List.class));
-    verify(defaultParentCategory).getCrossSaleProducts();
-    verify(relatedProduct).getSequence();
-    assertEquals(2, actualCumulativeCrossSaleProducts.size());
-    RelatedProduct getResult = actualCumulativeCrossSaleProducts.get(1);
-    Category category2 = getResult.getCategory();
-    assertTrue(category2 instanceof CategoryImpl);
-    assertTrue(getResult instanceof UpSaleProductImpl);
-    assertEquals("sequence", category2.getGeneratedUrl());
-    assertEquals("sequence", category2.getName());
-    assertEquals("sequence", category2.getUrlKey());
-    assertEquals("sequence", ((CategoryImpl) category2).getMainEntityName());
-    assertEquals("sequence", ((CategoryImpl) category2).name);
-    assertNull(category2.getChildCategoryURLMap());
-  }
-
-  /**
-   * Test {@link CategoryImpl#getCumulativeCrossSaleProducts()}.
-   * <p>
-   * Method under test: {@link CategoryImpl#getCumulativeCrossSaleProducts()}
-   */
-  @Test
-  public void testGetCumulativeCrossSaleProducts3() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl category = new CategoryImpl();
-    category.setUrl("https://example.org/example");
-
-    UpSaleProductImpl upSaleProductImpl = new UpSaleProductImpl();
-    upSaleProductImpl.setCategory(category);
-    upSaleProductImpl.setId(1L);
-    upSaleProductImpl.setProduct(new ProductBundleImpl());
-    upSaleProductImpl.setPromotionMessage("Promotion Message");
-    upSaleProductImpl.setRelatedProduct(new ProductBundleImpl());
-    upSaleProductImpl.setSequence(new BigDecimal("2.3"));
-    RelatedProduct relatedProduct = mock(RelatedProduct.class);
-    when(relatedProduct.getSequence()).thenReturn(new BigDecimal("2.3"));
-
-    ArrayList<RelatedProduct> relatedProductList = new ArrayList<>();
-    relatedProductList.add(relatedProduct);
-    relatedProductList.add(upSaleProductImpl);
-    Category defaultParentCategory = mock(Category.class);
-    when(defaultParentCategory.buildDefaultParentCategoryPath(Mockito.<List<Category>>any()))
-        .thenReturn(new ArrayList<>());
-    when(defaultParentCategory.getCrossSaleProducts()).thenReturn(relatedProductList);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
-
-    // Act
-    List<RelatedProduct> actualCumulativeCrossSaleProducts = categoryImpl.getCumulativeCrossSaleProducts();
-
-    // Assert
-    verify(defaultParentCategory).buildDefaultParentCategoryPath(isA(List.class));
-    verify(defaultParentCategory).getCrossSaleProducts();
-    verify(relatedProduct).getSequence();
-    assertEquals(2, actualCumulativeCrossSaleProducts.size());
-    RelatedProduct getResult = actualCumulativeCrossSaleProducts.get(1);
-    Category category2 = getResult.getCategory();
-    assertTrue(category2 instanceof CategoryImpl);
-    Product product = getResult.getProduct();
-    assertTrue(product instanceof ProductBundleImpl);
-    Product relatedProduct2 = getResult.getRelatedProduct();
-    assertTrue(relatedProduct2 instanceof ProductBundleImpl);
-    assertTrue(getResult instanceof UpSaleProductImpl);
-    FieldEntity fieldEntityType = product.getFieldEntityType();
-    List<String> allLookupTypes = fieldEntityType.getAllLookupTypes();
-    assertEquals(1, allLookupTypes.size());
-    assertEquals("PRODUCT", allLookupTypes.get(0));
-    assertEquals("PRODUCT", fieldEntityType.getType());
-    assertEquals("Product", fieldEntityType.getFriendlyType());
-    assertEquals("https://example.org/example", category2.getUrl());
-    assertEquals("https://example.org/example", ((CategoryImpl) category2).getLocation());
-    assertEquals("https://example.org/example", ((CategoryImpl) category2).url);
-    assertEquals("null", category2.getGeneratedUrl());
-    assertNull(category2.getName());
-    assertNull(category2.getUrlKey());
-    assertNull(((CategoryImpl) category2).getMainEntityName());
-    assertNull(((CategoryImpl) category2).name);
-    List<Sku> allSellableSkus = product.getAllSellableSkus();
-    assertEquals(1, allSellableSkus.size());
-    assertNull(allSellableSkus.get(0));
-    assertTrue(fieldEntityType.getAdditionalLookupTypes().isEmpty());
-    assertEquals(allSellableSkus, relatedProduct2.getAllSellableSkus());
-    assertEquals(allSellableSkus, product.getAllSkus());
-    assertEquals(allSellableSkus, relatedProduct2.getAllSkus());
-    assertSame(fieldEntityType, relatedProduct2.getFieldEntityType());
-  }
-
-  /**
-   * Test {@link CategoryImpl#getCumulativeCrossSaleProducts()}.
-   * <p>
-   * Method under test: {@link CategoryImpl#getCumulativeCrossSaleProducts()}
-   */
-  @Test
-  public void testGetCumulativeCrossSaleProducts4() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     UpSaleProductImpl upSaleProductImpl = new UpSaleProductImpl();
     upSaleProductImpl.setCategory(new CategoryImpl());
@@ -6172,81 +3429,30 @@ public class CategoryImplDiffblueTest {
     upSaleProductImpl.setPromotionMessage("Promotion Message");
     upSaleProductImpl.setRelatedProduct(new ProductBundleImpl());
     upSaleProductImpl.setSequence(new BigDecimal("2.3"));
-    RelatedProduct relatedProduct = mock(RelatedProduct.class);
-    when(relatedProduct.getSequence()).thenReturn(new BigDecimal("2.3"));
-    RelatedProduct relatedProduct2 = mock(RelatedProduct.class);
-    when(relatedProduct2.getSequence()).thenThrow(new UnsupportedOperationException("foo"));
 
     ArrayList<RelatedProduct> relatedProductList = new ArrayList<>();
-    relatedProductList.add(relatedProduct2);
-    relatedProductList.add(relatedProduct);
+    CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
+    relatedProductList.add(crossSaleProductImpl);
     relatedProductList.add(upSaleProductImpl);
     Category defaultParentCategory = mock(Category.class);
     when(defaultParentCategory.buildDefaultParentCategoryPath(Mockito.<List<Category>>any()))
         .thenReturn(new ArrayList<>());
     when(defaultParentCategory.getCrossSaleProducts()).thenReturn(relatedProductList);
 
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setDefaultParentCategory(defaultParentCategory);
 
     // Act
-    List<RelatedProduct> actualCumulativeCrossSaleProducts = categoryImpl.getCumulativeCrossSaleProducts();
+    List<RelatedProduct> actualCumulativeCrossSaleProducts = categoryImpl2.getCumulativeCrossSaleProducts();
 
     // Assert
     verify(defaultParentCategory).buildDefaultParentCategoryPath(isA(List.class));
     verify(defaultParentCategory).getCrossSaleProducts();
-    verify(relatedProduct2).getSequence();
-    verify(relatedProduct, atLeast(1)).getSequence();
-    assertEquals(3, actualCumulativeCrossSaleProducts.size());
-    RelatedProduct getResult = actualCumulativeCrossSaleProducts.get(2);
-    Product product = getResult.getProduct();
-    assertTrue(product instanceof ProductBundleImpl);
-    Product relatedProduct3 = getResult.getRelatedProduct();
-    assertTrue(relatedProduct3 instanceof ProductBundleImpl);
+    assertEquals(2, actualCumulativeCrossSaleProducts.size());
+    RelatedProduct getResult = actualCumulativeCrossSaleProducts.get(1);
+    assertTrue(getResult.getRelatedProduct() instanceof ProductBundleImpl);
     assertTrue(getResult instanceof UpSaleProductImpl);
-    FieldEntity fieldEntityType = product.getFieldEntityType();
-    List<String> allLookupTypes = fieldEntityType.getAllLookupTypes();
-    assertEquals(1, allLookupTypes.size());
-    assertEquals("PRODUCT", allLookupTypes.get(0));
-    assertEquals("PRODUCT", fieldEntityType.getType());
-    assertEquals("Product", fieldEntityType.getFriendlyType());
-    List<Sku> allSellableSkus = product.getAllSellableSkus();
-    assertEquals(1, allSellableSkus.size());
-    assertNull(allSellableSkus.get(0));
-    assertTrue(fieldEntityType.getAdditionalLookupTypes().isEmpty());
-    assertEquals(allSellableSkus, relatedProduct3.getAllSellableSkus());
-    assertEquals(allSellableSkus, product.getAllSkus());
-    assertEquals(allSellableSkus, relatedProduct3.getAllSkus());
-    assertSame(fieldEntityType, relatedProduct3.getFieldEntityType());
-  }
-
-  /**
-   * Test {@link CategoryImpl#getCumulativeCrossSaleProducts()}.
-   * <p>
-   * Method under test: {@link CategoryImpl#getCumulativeCrossSaleProducts()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetCumulativeCrossSaleProducts5() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3429 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryImpl()).getCumulativeCrossSaleProducts();
+    assertSame(crossSaleProductImpl, actualCumulativeCrossSaleProducts.get(0));
   }
 
   /**
@@ -6259,67 +3465,11 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getCumulativeCrossSaleProducts()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getCumulativeCrossSaleProducts()"})
   public void testGetCumulativeCrossSaleProducts_givenCategoryImpl_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertTrue((new CategoryImpl()).getCumulativeCrossSaleProducts().isEmpty());
-  }
-
-  /**
-   * Test {@link CategoryImpl#getCumulativeCrossSaleProducts()}.
-   * <ul>
-   *   <li>Then first return {@link CrossSaleProductImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getCumulativeCrossSaleProducts()}
-   */
-  @Test
-  public void testGetCumulativeCrossSaleProducts_thenFirstReturnCrossSaleProductImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    UpSaleProductImpl upSaleProductImpl = new UpSaleProductImpl();
-    upSaleProductImpl.setCategory(new CategoryImpl());
-    upSaleProductImpl.setId(1L);
-    upSaleProductImpl.setProduct(new ProductBundleImpl());
-    upSaleProductImpl.setPromotionMessage("Promotion Message");
-    upSaleProductImpl.setRelatedProduct(new ProductBundleImpl());
-    upSaleProductImpl.setSequence(new BigDecimal("2.3"));
-    RelatedProduct relatedProduct = mock(RelatedProduct.class);
-    when(relatedProduct.getSequence()).thenReturn(new BigDecimal("2.3"));
-    RelatedProduct relatedProduct2 = mock(RelatedProduct.class);
-    when(relatedProduct2.getSequence()).thenThrow(new UnsupportedOperationException("foo"));
-
-    CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
-    CategoryImpl category = new CategoryImpl();
-    crossSaleProductImpl.setCategory(category);
-
-    ArrayList<RelatedProduct> relatedProductList = new ArrayList<>();
-    relatedProductList.add(crossSaleProductImpl);
-    relatedProductList.add(relatedProduct2);
-    relatedProductList.add(relatedProduct);
-    relatedProductList.add(upSaleProductImpl);
-    Category defaultParentCategory = mock(Category.class);
-    when(defaultParentCategory.buildDefaultParentCategoryPath(Mockito.<List<Category>>any()))
-        .thenReturn(new ArrayList<>());
-    when(defaultParentCategory.getCrossSaleProducts()).thenReturn(relatedProductList);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
-
-    // Act
-    List<RelatedProduct> actualCumulativeCrossSaleProducts = categoryImpl.getCumulativeCrossSaleProducts();
-
-    // Assert
-    verify(defaultParentCategory).buildDefaultParentCategoryPath(isA(List.class));
-    verify(defaultParentCategory).getCrossSaleProducts();
-    verify(relatedProduct2, atLeast(1)).getSequence();
-    verify(relatedProduct, atLeast(1)).getSequence();
-    assertEquals(4, actualCumulativeCrossSaleProducts.size());
-    RelatedProduct getResult = actualCumulativeCrossSaleProducts.get(0);
-    assertTrue(getResult instanceof CrossSaleProductImpl);
-    assertSame(category, getResult.getCategory());
   }
 
   /**
@@ -6331,144 +3481,25 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getCumulativeCrossSaleProducts()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getCumulativeCrossSaleProducts()"})
   public void testGetCumulativeCrossSaleProducts_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Category defaultParentCategory = mock(Category.class);
     when(defaultParentCategory.buildDefaultParentCategoryPath(Mockito.<List<Category>>any()))
         .thenReturn(new ArrayList<>());
     when(defaultParentCategory.getCrossSaleProducts()).thenReturn(new ArrayList<>());
 
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setDefaultParentCategory(defaultParentCategory);
 
     // Act
-    List<RelatedProduct> actualCumulativeCrossSaleProducts = categoryImpl.getCumulativeCrossSaleProducts();
+    List<RelatedProduct> actualCumulativeCrossSaleProducts = categoryImpl2.getCumulativeCrossSaleProducts();
 
     // Assert
     verify(defaultParentCategory).buildDefaultParentCategoryPath(isA(List.class));
     verify(defaultParentCategory).getCrossSaleProducts();
     assertTrue(actualCumulativeCrossSaleProducts.isEmpty());
-  }
-
-  /**
-   * Test {@link CategoryImpl#getCumulativeCrossSaleProducts()}.
-   * <ul>
-   *   <li>Then return fourth is {@link UpSaleProductImpl} (default
-   * constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getCumulativeCrossSaleProducts()}
-   */
-  @Test
-  public void testGetCumulativeCrossSaleProducts_thenReturnFourthIsUpSaleProductImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    UpSaleProductImpl upSaleProductImpl = new UpSaleProductImpl();
-    upSaleProductImpl.setCategory(new CategoryImpl());
-    upSaleProductImpl.setId(1L);
-    upSaleProductImpl.setProduct(new ProductBundleImpl());
-    upSaleProductImpl.setPromotionMessage("Promotion Message");
-    upSaleProductImpl.setRelatedProduct(new ProductBundleImpl());
-    upSaleProductImpl.setSequence(new BigDecimal("2.3"));
-    RelatedProduct relatedProduct = mock(RelatedProduct.class);
-    when(relatedProduct.getSequence()).thenReturn(new BigDecimal("2.3"));
-    RelatedProduct relatedProduct2 = mock(RelatedProduct.class);
-    when(relatedProduct2.getSequence()).thenThrow(new UnsupportedOperationException("foo"));
-
-    ArrayList<RelatedProduct> relatedProductList = new ArrayList<>();
-    relatedProductList.add(new CrossSaleProductImpl());
-    relatedProductList.add(relatedProduct2);
-    relatedProductList.add(relatedProduct);
-    relatedProductList.add(upSaleProductImpl);
-    Category defaultParentCategory = mock(Category.class);
-    when(defaultParentCategory.buildDefaultParentCategoryPath(Mockito.<List<Category>>any()))
-        .thenReturn(new ArrayList<>());
-    when(defaultParentCategory.getCrossSaleProducts()).thenReturn(relatedProductList);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
-
-    // Act
-    List<RelatedProduct> actualCumulativeCrossSaleProducts = categoryImpl.getCumulativeCrossSaleProducts();
-
-    // Assert
-    verify(defaultParentCategory).buildDefaultParentCategoryPath(isA(List.class));
-    verify(defaultParentCategory).getCrossSaleProducts();
-    verify(relatedProduct2, atLeast(1)).getSequence();
-    verify(relatedProduct, atLeast(1)).getSequence();
-    assertEquals(4, actualCumulativeCrossSaleProducts.size());
-    assertSame(upSaleProductImpl, actualCumulativeCrossSaleProducts.get(3));
-  }
-
-  /**
-   * Test {@link CategoryImpl#getCumulativeCrossSaleProducts()}.
-   * <ul>
-   *   <li>Then return second Category is {@link CategoryImpl} (default
-   * constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getCumulativeCrossSaleProducts()}
-   */
-  @Test
-  public void testGetCumulativeCrossSaleProducts_thenReturnSecondCategoryIsCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    UpSaleProductImpl upSaleProductImpl = new UpSaleProductImpl();
-    upSaleProductImpl.setCategory(new CategoryImpl());
-    upSaleProductImpl.setId(1L);
-    upSaleProductImpl.setProduct(new ProductBundleImpl());
-    upSaleProductImpl.setPromotionMessage("Promotion Message");
-    upSaleProductImpl.setRelatedProduct(new ProductBundleImpl());
-    upSaleProductImpl.setSequence(new BigDecimal("2.3"));
-    RelatedProduct relatedProduct = mock(RelatedProduct.class);
-    when(relatedProduct.getSequence()).thenReturn(new BigDecimal("2.3"));
-
-    ArrayList<RelatedProduct> relatedProductList = new ArrayList<>();
-    relatedProductList.add(relatedProduct);
-    relatedProductList.add(upSaleProductImpl);
-    Category defaultParentCategory = mock(Category.class);
-    when(defaultParentCategory.buildDefaultParentCategoryPath(Mockito.<List<Category>>any()))
-        .thenReturn(new ArrayList<>());
-    when(defaultParentCategory.getCrossSaleProducts()).thenReturn(relatedProductList);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
-
-    // Act
-    List<RelatedProduct> actualCumulativeCrossSaleProducts = categoryImpl.getCumulativeCrossSaleProducts();
-
-    // Assert
-    verify(defaultParentCategory).buildDefaultParentCategoryPath(isA(List.class));
-    verify(defaultParentCategory).getCrossSaleProducts();
-    verify(relatedProduct).getSequence();
-    assertEquals(2, actualCumulativeCrossSaleProducts.size());
-    RelatedProduct getResult = actualCumulativeCrossSaleProducts.get(1);
-    Category category = getResult.getCategory();
-    assertTrue(category instanceof CategoryImpl);
-    Product product = getResult.getProduct();
-    assertTrue(product instanceof ProductBundleImpl);
-    Product relatedProduct2 = getResult.getRelatedProduct();
-    assertTrue(relatedProduct2 instanceof ProductBundleImpl);
-    assertTrue(getResult instanceof UpSaleProductImpl);
-    FieldEntity fieldEntityType = product.getFieldEntityType();
-    List<String> allLookupTypes = fieldEntityType.getAllLookupTypes();
-    assertEquals(1, allLookupTypes.size());
-    assertEquals("PRODUCT", allLookupTypes.get(0));
-    assertEquals("PRODUCT", fieldEntityType.getType());
-    assertEquals("Product", fieldEntityType.getFriendlyType());
-    List<Sku> allSellableSkus = product.getAllSellableSkus();
-    assertEquals(1, allSellableSkus.size());
-    assertNull(allSellableSkus.get(0));
-    assertTrue(fieldEntityType.getAdditionalLookupTypes().isEmpty());
-    assertEquals(categoryImpl, category);
-    assertEquals(allSellableSkus, relatedProduct2.getAllSellableSkus());
-    assertEquals(allSellableSkus, product.getAllSkus());
-    assertEquals(allSellableSkus, relatedProduct2.getAllSkus());
-    assertSame(fieldEntityType, relatedProduct2.getFieldEntityType());
   }
 
   /**
@@ -6480,9 +3511,9 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getCumulativeCrossSaleProducts()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getCumulativeCrossSaleProducts()"})
   public void testGetCumulativeCrossSaleProducts_thenReturnSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     UpSaleProductImpl upSaleProductImpl = new UpSaleProductImpl();
     upSaleProductImpl.setCategory(new CategoryImpl());
@@ -6499,11 +3530,11 @@ public class CategoryImplDiffblueTest {
         .thenReturn(new ArrayList<>());
     when(defaultParentCategory.getCrossSaleProducts()).thenReturn(relatedProductList);
 
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setDefaultParentCategory(defaultParentCategory);
 
     // Act
-    List<RelatedProduct> actualCumulativeCrossSaleProducts = categoryImpl.getCumulativeCrossSaleProducts();
+    List<RelatedProduct> actualCumulativeCrossSaleProducts = categoryImpl2.getCumulativeCrossSaleProducts();
 
     // Assert
     verify(defaultParentCategory).buildDefaultParentCategoryPath(isA(List.class));
@@ -6521,9 +3552,9 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getCumulativeCrossSaleProducts()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getCumulativeCrossSaleProducts()"})
   public void testGetCumulativeCrossSaleProducts_thenReturnSizeIsThree() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     UpSaleProductImpl upSaleProductImpl = new UpSaleProductImpl();
     upSaleProductImpl.setCategory(new CategoryImpl());
@@ -6555,10 +3586,7 @@ public class CategoryImplDiffblueTest {
     verify(defaultParentCategory).getCrossSaleProducts();
     verify(relatedProduct, atLeast(1)).getSequence();
     assertEquals(3, actualCumulativeCrossSaleProducts.size());
-    RelatedProduct getResult = actualCumulativeCrossSaleProducts.get(2);
-    assertTrue(getResult.getProduct() instanceof ProductBundleImpl);
-    assertTrue(getResult.getRelatedProduct() instanceof ProductBundleImpl);
-    assertTrue(getResult instanceof UpSaleProductImpl);
+    assertSame(upSaleProductImpl, actualCumulativeCrossSaleProducts.get(2));
   }
 
   /**
@@ -6570,9 +3598,9 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getCumulativeCrossSaleProducts()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getCumulativeCrossSaleProducts()"})
   public void testGetCumulativeCrossSaleProducts_thenSecondProductReturnProductBundleImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     UpSaleProductImpl upSaleProductImpl = new UpSaleProductImpl();
     upSaleProductImpl.setCategory(new CategoryImpl());
@@ -6581,29 +3609,43 @@ public class CategoryImplDiffblueTest {
     upSaleProductImpl.setPromotionMessage("Promotion Message");
     upSaleProductImpl.setRelatedProduct(new ProductBundleImpl());
     upSaleProductImpl.setSequence(new BigDecimal("2.3"));
+    RelatedProduct relatedProduct = mock(RelatedProduct.class);
+    when(relatedProduct.getSequence()).thenReturn(new BigDecimal("2.3"));
 
     ArrayList<RelatedProduct> relatedProductList = new ArrayList<>();
-    relatedProductList.add(new CrossSaleProductImpl());
+    relatedProductList.add(relatedProduct);
     relatedProductList.add(upSaleProductImpl);
     Category defaultParentCategory = mock(Category.class);
     when(defaultParentCategory.buildDefaultParentCategoryPath(Mockito.<List<Category>>any()))
         .thenReturn(new ArrayList<>());
     when(defaultParentCategory.getCrossSaleProducts()).thenReturn(relatedProductList);
 
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setDefaultParentCategory(defaultParentCategory);
 
     // Act
-    List<RelatedProduct> actualCumulativeCrossSaleProducts = categoryImpl.getCumulativeCrossSaleProducts();
+    List<RelatedProduct> actualCumulativeCrossSaleProducts = categoryImpl2.getCumulativeCrossSaleProducts();
 
     // Assert
     verify(defaultParentCategory).buildDefaultParentCategoryPath(isA(List.class));
     verify(defaultParentCategory).getCrossSaleProducts();
+    verify(relatedProduct).getSequence();
     assertEquals(2, actualCumulativeCrossSaleProducts.size());
     RelatedProduct getResult = actualCumulativeCrossSaleProducts.get(1);
-    assertTrue(getResult.getProduct() instanceof ProductBundleImpl);
-    assertTrue(getResult.getRelatedProduct() instanceof ProductBundleImpl);
+    Product product = getResult.getProduct();
+    assertTrue(product instanceof ProductBundleImpl);
     assertTrue(getResult instanceof UpSaleProductImpl);
+    FieldEntity fieldEntityType = product.getFieldEntityType();
+    List<String> allLookupTypes = fieldEntityType.getAllLookupTypes();
+    assertEquals(1, allLookupTypes.size());
+    assertEquals("PRODUCT", allLookupTypes.get(0));
+    assertEquals("PRODUCT", fieldEntityType.getType());
+    assertEquals("Product", fieldEntityType.getFriendlyType());
+    List<Sku> allSellableSkus = product.getAllSellableSkus();
+    assertEquals(1, allSellableSkus.size());
+    assertNull(allSellableSkus.get(0));
+    assertTrue(fieldEntityType.getAdditionalLookupTypes().isEmpty());
+    assertEquals(allSellableSkus, product.getAllSkus());
   }
 
   /**
@@ -6615,19 +3657,19 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getCumulativeCrossSaleProducts()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getCumulativeCrossSaleProducts()"})
   public void testGetCumulativeCrossSaleProducts_thenThrowRuntimeException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Category defaultParentCategory = mock(Category.class);
     when(defaultParentCategory.buildDefaultParentCategoryPath(Mockito.<List<Category>>any()))
         .thenThrow(new RuntimeException("foo"));
 
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setDefaultParentCategory(defaultParentCategory);
 
     // Act and Assert
-    assertThrows(RuntimeException.class, () -> categoryImpl.getCumulativeCrossSaleProducts());
+    assertThrows(RuntimeException.class, () -> categoryImpl2.getCumulativeCrossSaleProducts());
     verify(defaultParentCategory).buildDefaultParentCategoryPath(isA(List.class));
   }
 
@@ -6637,183 +3679,15 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getCumulativeUpSaleProducts()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getCumulativeUpSaleProducts()"})
   public void testGetCumulativeUpSaleProducts() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setDefaultParentCategory(new CategoryImpl());
 
     // Act and Assert
-    assertTrue(categoryImpl.getCumulativeUpSaleProducts().isEmpty());
-  }
-
-  /**
-   * Test {@link CategoryImpl#getCumulativeUpSaleProducts()}.
-   * <p>
-   * Method under test: {@link CategoryImpl#getCumulativeUpSaleProducts()}
-   */
-  @Test
-  public void testGetCumulativeUpSaleProducts2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl category = new CategoryImpl();
-    category.setUrl("https://example.org/example");
-
-    UpSaleProductImpl upSaleProductImpl = new UpSaleProductImpl();
-    upSaleProductImpl.setCategory(category);
-    upSaleProductImpl.setId(1L);
-    upSaleProductImpl.setProduct(new ProductBundleImpl());
-    upSaleProductImpl.setPromotionMessage("Promotion Message");
-    upSaleProductImpl.setRelatedProduct(new ProductBundleImpl());
-    upSaleProductImpl.setSequence(new BigDecimal("2.3"));
-    RelatedProduct relatedProduct = mock(RelatedProduct.class);
-    when(relatedProduct.getSequence()).thenReturn(new BigDecimal("2.3"));
-
-    ArrayList<RelatedProduct> relatedProductList = new ArrayList<>();
-    relatedProductList.add(relatedProduct);
-    relatedProductList.add(upSaleProductImpl);
-    Category defaultParentCategory = mock(Category.class);
-    when(defaultParentCategory.buildDefaultParentCategoryPath(Mockito.<List<Category>>any()))
-        .thenReturn(new ArrayList<>());
-    when(defaultParentCategory.getUpSaleProducts()).thenReturn(relatedProductList);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
-
-    // Act
-    List<RelatedProduct> actualCumulativeUpSaleProducts = categoryImpl.getCumulativeUpSaleProducts();
-
-    // Assert
-    verify(defaultParentCategory).buildDefaultParentCategoryPath(isA(List.class));
-    verify(defaultParentCategory).getUpSaleProducts();
-    verify(relatedProduct).getSequence();
-    assertEquals(2, actualCumulativeUpSaleProducts.size());
-    RelatedProduct getResult = actualCumulativeUpSaleProducts.get(1);
-    Category category2 = getResult.getCategory();
-    assertTrue(category2 instanceof CategoryImpl);
-    Product product = getResult.getProduct();
-    assertTrue(product instanceof ProductBundleImpl);
-    Product relatedProduct2 = getResult.getRelatedProduct();
-    assertTrue(relatedProduct2 instanceof ProductBundleImpl);
-    assertTrue(getResult instanceof UpSaleProductImpl);
-    FieldEntity fieldEntityType = product.getFieldEntityType();
-    List<String> allLookupTypes = fieldEntityType.getAllLookupTypes();
-    assertEquals(1, allLookupTypes.size());
-    assertEquals("PRODUCT", allLookupTypes.get(0));
-    assertEquals("PRODUCT", fieldEntityType.getType());
-    assertEquals("Product", fieldEntityType.getFriendlyType());
-    assertEquals("https://example.org/example", category2.getUrl());
-    assertEquals("https://example.org/example", ((CategoryImpl) category2).getLocation());
-    assertEquals("https://example.org/example", ((CategoryImpl) category2).url);
-    assertEquals("null", category2.getGeneratedUrl());
-    assertNull(category2.getName());
-    assertNull(category2.getUrlKey());
-    assertNull(((CategoryImpl) category2).getMainEntityName());
-    assertNull(((CategoryImpl) category2).name);
-    List<Sku> allSellableSkus = product.getAllSellableSkus();
-    assertEquals(1, allSellableSkus.size());
-    assertNull(allSellableSkus.get(0));
-    assertTrue(fieldEntityType.getAdditionalLookupTypes().isEmpty());
-    assertEquals(allSellableSkus, relatedProduct2.getAllSellableSkus());
-    assertEquals(allSellableSkus, product.getAllSkus());
-    assertEquals(allSellableSkus, relatedProduct2.getAllSkus());
-    assertSame(fieldEntityType, relatedProduct2.getFieldEntityType());
-  }
-
-  /**
-   * Test {@link CategoryImpl#getCumulativeUpSaleProducts()}.
-   * <p>
-   * Method under test: {@link CategoryImpl#getCumulativeUpSaleProducts()}
-   */
-  @Test
-  public void testGetCumulativeUpSaleProducts3() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    UpSaleProductImpl upSaleProductImpl = new UpSaleProductImpl();
-    upSaleProductImpl.setCategory(new CategoryImpl());
-    upSaleProductImpl.setId(1L);
-    upSaleProductImpl.setProduct(new ProductBundleImpl());
-    upSaleProductImpl.setPromotionMessage("Promotion Message");
-    upSaleProductImpl.setRelatedProduct(new ProductBundleImpl());
-    upSaleProductImpl.setSequence(new BigDecimal("2.3"));
-    RelatedProduct relatedProduct = mock(RelatedProduct.class);
-    when(relatedProduct.getSequence()).thenReturn(new BigDecimal("2.3"));
-    RelatedProduct relatedProduct2 = mock(RelatedProduct.class);
-    when(relatedProduct2.getSequence()).thenThrow(new UnsupportedOperationException("foo"));
-
-    ArrayList<RelatedProduct> relatedProductList = new ArrayList<>();
-    relatedProductList.add(relatedProduct2);
-    relatedProductList.add(relatedProduct);
-    relatedProductList.add(upSaleProductImpl);
-    Category defaultParentCategory = mock(Category.class);
-    when(defaultParentCategory.buildDefaultParentCategoryPath(Mockito.<List<Category>>any()))
-        .thenReturn(new ArrayList<>());
-    when(defaultParentCategory.getUpSaleProducts()).thenReturn(relatedProductList);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
-
-    // Act
-    List<RelatedProduct> actualCumulativeUpSaleProducts = categoryImpl.getCumulativeUpSaleProducts();
-
-    // Assert
-    verify(defaultParentCategory).buildDefaultParentCategoryPath(isA(List.class));
-    verify(defaultParentCategory).getUpSaleProducts();
-    verify(relatedProduct2).getSequence();
-    verify(relatedProduct, atLeast(1)).getSequence();
-    assertEquals(3, actualCumulativeUpSaleProducts.size());
-    RelatedProduct getResult = actualCumulativeUpSaleProducts.get(2);
-    Product product = getResult.getProduct();
-    assertTrue(product instanceof ProductBundleImpl);
-    Product relatedProduct3 = getResult.getRelatedProduct();
-    assertTrue(relatedProduct3 instanceof ProductBundleImpl);
-    assertTrue(getResult instanceof UpSaleProductImpl);
-    FieldEntity fieldEntityType = product.getFieldEntityType();
-    List<String> allLookupTypes = fieldEntityType.getAllLookupTypes();
-    assertEquals(1, allLookupTypes.size());
-    assertEquals("PRODUCT", allLookupTypes.get(0));
-    assertEquals("PRODUCT", fieldEntityType.getType());
-    assertEquals("Product", fieldEntityType.getFriendlyType());
-    List<Sku> allSellableSkus = product.getAllSellableSkus();
-    assertEquals(1, allSellableSkus.size());
-    assertNull(allSellableSkus.get(0));
-    assertTrue(fieldEntityType.getAdditionalLookupTypes().isEmpty());
-    assertEquals(allSellableSkus, relatedProduct3.getAllSellableSkus());
-    assertEquals(allSellableSkus, product.getAllSkus());
-    assertEquals(allSellableSkus, relatedProduct3.getAllSkus());
-    assertSame(fieldEntityType, relatedProduct3.getFieldEntityType());
-  }
-
-  /**
-   * Test {@link CategoryImpl#getCumulativeUpSaleProducts()}.
-   * <p>
-   * Method under test: {@link CategoryImpl#getCumulativeUpSaleProducts()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetCumulativeUpSaleProducts4() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3549 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryImpl()).getCumulativeUpSaleProducts();
+    assertTrue(categoryImpl2.getCumulativeUpSaleProducts().isEmpty());
   }
 
   /**
@@ -6826,67 +3700,11 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getCumulativeUpSaleProducts()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getCumulativeUpSaleProducts()"})
   public void testGetCumulativeUpSaleProducts_givenCategoryImpl_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertTrue((new CategoryImpl()).getCumulativeUpSaleProducts().isEmpty());
-  }
-
-  /**
-   * Test {@link CategoryImpl#getCumulativeUpSaleProducts()}.
-   * <ul>
-   *   <li>Then first return {@link CrossSaleProductImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getCumulativeUpSaleProducts()}
-   */
-  @Test
-  public void testGetCumulativeUpSaleProducts_thenFirstReturnCrossSaleProductImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    UpSaleProductImpl upSaleProductImpl = new UpSaleProductImpl();
-    upSaleProductImpl.setCategory(new CategoryImpl());
-    upSaleProductImpl.setId(1L);
-    upSaleProductImpl.setProduct(new ProductBundleImpl());
-    upSaleProductImpl.setPromotionMessage("Promotion Message");
-    upSaleProductImpl.setRelatedProduct(new ProductBundleImpl());
-    upSaleProductImpl.setSequence(new BigDecimal("2.3"));
-    RelatedProduct relatedProduct = mock(RelatedProduct.class);
-    when(relatedProduct.getSequence()).thenReturn(new BigDecimal("2.3"));
-    RelatedProduct relatedProduct2 = mock(RelatedProduct.class);
-    when(relatedProduct2.getSequence()).thenThrow(new UnsupportedOperationException("foo"));
-
-    CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
-    CategoryImpl category = new CategoryImpl();
-    crossSaleProductImpl.setCategory(category);
-
-    ArrayList<RelatedProduct> relatedProductList = new ArrayList<>();
-    relatedProductList.add(crossSaleProductImpl);
-    relatedProductList.add(relatedProduct2);
-    relatedProductList.add(relatedProduct);
-    relatedProductList.add(upSaleProductImpl);
-    Category defaultParentCategory = mock(Category.class);
-    when(defaultParentCategory.buildDefaultParentCategoryPath(Mockito.<List<Category>>any()))
-        .thenReturn(new ArrayList<>());
-    when(defaultParentCategory.getUpSaleProducts()).thenReturn(relatedProductList);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
-
-    // Act
-    List<RelatedProduct> actualCumulativeUpSaleProducts = categoryImpl.getCumulativeUpSaleProducts();
-
-    // Assert
-    verify(defaultParentCategory).buildDefaultParentCategoryPath(isA(List.class));
-    verify(defaultParentCategory).getUpSaleProducts();
-    verify(relatedProduct2, atLeast(1)).getSequence();
-    verify(relatedProduct, atLeast(1)).getSequence();
-    assertEquals(4, actualCumulativeUpSaleProducts.size());
-    RelatedProduct getResult = actualCumulativeUpSaleProducts.get(0);
-    assertTrue(getResult instanceof CrossSaleProductImpl);
-    assertSame(category, getResult.getCategory());
   }
 
   /**
@@ -6898,201 +3716,25 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getCumulativeUpSaleProducts()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getCumulativeUpSaleProducts()"})
   public void testGetCumulativeUpSaleProducts_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Category defaultParentCategory = mock(Category.class);
     when(defaultParentCategory.buildDefaultParentCategoryPath(Mockito.<List<Category>>any()))
         .thenReturn(new ArrayList<>());
     when(defaultParentCategory.getUpSaleProducts()).thenReturn(new ArrayList<>());
 
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setDefaultParentCategory(defaultParentCategory);
 
     // Act
-    List<RelatedProduct> actualCumulativeUpSaleProducts = categoryImpl.getCumulativeUpSaleProducts();
+    List<RelatedProduct> actualCumulativeUpSaleProducts = categoryImpl2.getCumulativeUpSaleProducts();
 
     // Assert
     verify(defaultParentCategory).buildDefaultParentCategoryPath(isA(List.class));
     verify(defaultParentCategory).getUpSaleProducts();
     assertTrue(actualCumulativeUpSaleProducts.isEmpty());
-  }
-
-  /**
-   * Test {@link CategoryImpl#getCumulativeUpSaleProducts()}.
-   * <ul>
-   *   <li>Then return fourth is {@link UpSaleProductImpl} (default
-   * constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getCumulativeUpSaleProducts()}
-   */
-  @Test
-  public void testGetCumulativeUpSaleProducts_thenReturnFourthIsUpSaleProductImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    UpSaleProductImpl upSaleProductImpl = new UpSaleProductImpl();
-    upSaleProductImpl.setCategory(new CategoryImpl());
-    upSaleProductImpl.setId(1L);
-    upSaleProductImpl.setProduct(new ProductBundleImpl());
-    upSaleProductImpl.setPromotionMessage("Promotion Message");
-    upSaleProductImpl.setRelatedProduct(new ProductBundleImpl());
-    upSaleProductImpl.setSequence(new BigDecimal("2.3"));
-    RelatedProduct relatedProduct = mock(RelatedProduct.class);
-    when(relatedProduct.getSequence()).thenReturn(new BigDecimal("2.3"));
-    RelatedProduct relatedProduct2 = mock(RelatedProduct.class);
-    when(relatedProduct2.getSequence()).thenThrow(new UnsupportedOperationException("foo"));
-
-    ArrayList<RelatedProduct> relatedProductList = new ArrayList<>();
-    relatedProductList.add(new CrossSaleProductImpl());
-    relatedProductList.add(relatedProduct2);
-    relatedProductList.add(relatedProduct);
-    relatedProductList.add(upSaleProductImpl);
-    Category defaultParentCategory = mock(Category.class);
-    when(defaultParentCategory.buildDefaultParentCategoryPath(Mockito.<List<Category>>any()))
-        .thenReturn(new ArrayList<>());
-    when(defaultParentCategory.getUpSaleProducts()).thenReturn(relatedProductList);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
-
-    // Act
-    List<RelatedProduct> actualCumulativeUpSaleProducts = categoryImpl.getCumulativeUpSaleProducts();
-
-    // Assert
-    verify(defaultParentCategory).buildDefaultParentCategoryPath(isA(List.class));
-    verify(defaultParentCategory).getUpSaleProducts();
-    verify(relatedProduct2, atLeast(1)).getSequence();
-    verify(relatedProduct, atLeast(1)).getSequence();
-    assertEquals(4, actualCumulativeUpSaleProducts.size());
-    assertSame(upSaleProductImpl, actualCumulativeUpSaleProducts.get(3));
-  }
-
-  /**
-   * Test {@link CategoryImpl#getCumulativeUpSaleProducts()}.
-   * <ul>
-   *   <li>Then return second Category GeneratedUrl is {@code sequence}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getCumulativeUpSaleProducts()}
-   */
-  @Test
-  public void testGetCumulativeUpSaleProducts_thenReturnSecondCategoryGeneratedUrlIsSequence() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl category = new CategoryImpl();
-    category.setName("sequence");
-
-    UpSaleProductImpl upSaleProductImpl = new UpSaleProductImpl();
-    upSaleProductImpl.setCategory(category);
-    upSaleProductImpl.setId(1L);
-    upSaleProductImpl.setProduct(new ProductBundleImpl());
-    upSaleProductImpl.setPromotionMessage("Promotion Message");
-    upSaleProductImpl.setRelatedProduct(new ProductBundleImpl());
-    upSaleProductImpl.setSequence(new BigDecimal("2.3"));
-    RelatedProduct relatedProduct = mock(RelatedProduct.class);
-    when(relatedProduct.getSequence()).thenReturn(new BigDecimal("2.3"));
-
-    ArrayList<RelatedProduct> relatedProductList = new ArrayList<>();
-    relatedProductList.add(relatedProduct);
-    relatedProductList.add(upSaleProductImpl);
-    Category defaultParentCategory = mock(Category.class);
-    when(defaultParentCategory.buildDefaultParentCategoryPath(Mockito.<List<Category>>any()))
-        .thenReturn(new ArrayList<>());
-    when(defaultParentCategory.getUpSaleProducts()).thenReturn(relatedProductList);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
-
-    // Act
-    List<RelatedProduct> actualCumulativeUpSaleProducts = categoryImpl.getCumulativeUpSaleProducts();
-
-    // Assert
-    verify(defaultParentCategory).buildDefaultParentCategoryPath(isA(List.class));
-    verify(defaultParentCategory).getUpSaleProducts();
-    verify(relatedProduct).getSequence();
-    assertEquals(2, actualCumulativeUpSaleProducts.size());
-    RelatedProduct getResult = actualCumulativeUpSaleProducts.get(1);
-    Category category2 = getResult.getCategory();
-    assertTrue(category2 instanceof CategoryImpl);
-    assertTrue(getResult instanceof UpSaleProductImpl);
-    assertEquals("sequence", category2.getGeneratedUrl());
-    assertEquals("sequence", category2.getName());
-    assertEquals("sequence", category2.getUrlKey());
-    assertEquals("sequence", ((CategoryImpl) category2).getMainEntityName());
-    assertEquals("sequence", ((CategoryImpl) category2).name);
-    assertNull(category2.getChildCategoryURLMap());
-  }
-
-  /**
-   * Test {@link CategoryImpl#getCumulativeUpSaleProducts()}.
-   * <ul>
-   *   <li>Then return second Category is {@link CategoryImpl} (default
-   * constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getCumulativeUpSaleProducts()}
-   */
-  @Test
-  public void testGetCumulativeUpSaleProducts_thenReturnSecondCategoryIsCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    UpSaleProductImpl upSaleProductImpl = new UpSaleProductImpl();
-    upSaleProductImpl.setCategory(new CategoryImpl());
-    upSaleProductImpl.setId(1L);
-    upSaleProductImpl.setProduct(new ProductBundleImpl());
-    upSaleProductImpl.setPromotionMessage("Promotion Message");
-    upSaleProductImpl.setRelatedProduct(new ProductBundleImpl());
-    upSaleProductImpl.setSequence(new BigDecimal("2.3"));
-    RelatedProduct relatedProduct = mock(RelatedProduct.class);
-    when(relatedProduct.getSequence()).thenReturn(new BigDecimal("2.3"));
-
-    ArrayList<RelatedProduct> relatedProductList = new ArrayList<>();
-    relatedProductList.add(relatedProduct);
-    relatedProductList.add(upSaleProductImpl);
-    Category defaultParentCategory = mock(Category.class);
-    when(defaultParentCategory.buildDefaultParentCategoryPath(Mockito.<List<Category>>any()))
-        .thenReturn(new ArrayList<>());
-    when(defaultParentCategory.getUpSaleProducts()).thenReturn(relatedProductList);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
-
-    // Act
-    List<RelatedProduct> actualCumulativeUpSaleProducts = categoryImpl.getCumulativeUpSaleProducts();
-
-    // Assert
-    verify(defaultParentCategory).buildDefaultParentCategoryPath(isA(List.class));
-    verify(defaultParentCategory).getUpSaleProducts();
-    verify(relatedProduct).getSequence();
-    assertEquals(2, actualCumulativeUpSaleProducts.size());
-    RelatedProduct getResult = actualCumulativeUpSaleProducts.get(1);
-    Category category = getResult.getCategory();
-    assertTrue(category instanceof CategoryImpl);
-    Product product = getResult.getProduct();
-    assertTrue(product instanceof ProductBundleImpl);
-    Product relatedProduct2 = getResult.getRelatedProduct();
-    assertTrue(relatedProduct2 instanceof ProductBundleImpl);
-    assertTrue(getResult instanceof UpSaleProductImpl);
-    FieldEntity fieldEntityType = product.getFieldEntityType();
-    List<String> allLookupTypes = fieldEntityType.getAllLookupTypes();
-    assertEquals(1, allLookupTypes.size());
-    assertEquals("PRODUCT", allLookupTypes.get(0));
-    assertEquals("PRODUCT", fieldEntityType.getType());
-    assertEquals("Product", fieldEntityType.getFriendlyType());
-    List<Sku> allSellableSkus = product.getAllSellableSkus();
-    assertEquals(1, allSellableSkus.size());
-    assertNull(allSellableSkus.get(0));
-    assertTrue(fieldEntityType.getAdditionalLookupTypes().isEmpty());
-    assertEquals(categoryImpl, category);
-    assertEquals(allSellableSkus, relatedProduct2.getAllSellableSkus());
-    assertEquals(allSellableSkus, product.getAllSkus());
-    assertEquals(allSellableSkus, relatedProduct2.getAllSkus());
-    assertSame(fieldEntityType, relatedProduct2.getFieldEntityType());
   }
 
   /**
@@ -7104,9 +3746,9 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getCumulativeUpSaleProducts()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getCumulativeUpSaleProducts()"})
   public void testGetCumulativeUpSaleProducts_thenReturnSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     UpSaleProductImpl upSaleProductImpl = new UpSaleProductImpl();
     upSaleProductImpl.setCategory(new CategoryImpl());
@@ -7123,11 +3765,11 @@ public class CategoryImplDiffblueTest {
         .thenReturn(new ArrayList<>());
     when(defaultParentCategory.getUpSaleProducts()).thenReturn(relatedProductList);
 
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setDefaultParentCategory(defaultParentCategory);
 
     // Act
-    List<RelatedProduct> actualCumulativeUpSaleProducts = categoryImpl.getCumulativeUpSaleProducts();
+    List<RelatedProduct> actualCumulativeUpSaleProducts = categoryImpl2.getCumulativeUpSaleProducts();
 
     // Assert
     verify(defaultParentCategory).buildDefaultParentCategoryPath(isA(List.class));
@@ -7145,9 +3787,9 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getCumulativeUpSaleProducts()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getCumulativeUpSaleProducts()"})
   public void testGetCumulativeUpSaleProducts_thenReturnSizeIsThree() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     UpSaleProductImpl upSaleProductImpl = new UpSaleProductImpl();
     upSaleProductImpl.setCategory(new CategoryImpl());
@@ -7179,10 +3821,7 @@ public class CategoryImplDiffblueTest {
     verify(defaultParentCategory).getUpSaleProducts();
     verify(relatedProduct, atLeast(1)).getSequence();
     assertEquals(3, actualCumulativeUpSaleProducts.size());
-    RelatedProduct getResult = actualCumulativeUpSaleProducts.get(2);
-    assertTrue(getResult.getProduct() instanceof ProductBundleImpl);
-    assertTrue(getResult.getRelatedProduct() instanceof ProductBundleImpl);
-    assertTrue(getResult instanceof UpSaleProductImpl);
+    assertSame(upSaleProductImpl, actualCumulativeUpSaleProducts.get(2));
   }
 
   /**
@@ -7194,9 +3833,68 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getCumulativeUpSaleProducts()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getCumulativeUpSaleProducts()"})
   public void testGetCumulativeUpSaleProducts_thenSecondProductReturnProductBundleImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    // Arrange
+    UpSaleProductImpl upSaleProductImpl = new UpSaleProductImpl();
+    upSaleProductImpl.setCategory(new CategoryImpl());
+    upSaleProductImpl.setId(1L);
+    upSaleProductImpl.setProduct(new ProductBundleImpl());
+    upSaleProductImpl.setPromotionMessage("Promotion Message");
+    upSaleProductImpl.setRelatedProduct(new ProductBundleImpl());
+    upSaleProductImpl.setSequence(new BigDecimal("2.3"));
+    RelatedProduct relatedProduct = mock(RelatedProduct.class);
+    when(relatedProduct.getSequence()).thenReturn(new BigDecimal("2.3"));
 
+    ArrayList<RelatedProduct> relatedProductList = new ArrayList<>();
+    relatedProductList.add(relatedProduct);
+    relatedProductList.add(upSaleProductImpl);
+    Category defaultParentCategory = mock(Category.class);
+    when(defaultParentCategory.buildDefaultParentCategoryPath(Mockito.<List<Category>>any()))
+        .thenReturn(new ArrayList<>());
+    when(defaultParentCategory.getUpSaleProducts()).thenReturn(relatedProductList);
+
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setDefaultParentCategory(defaultParentCategory);
+
+    // Act
+    List<RelatedProduct> actualCumulativeUpSaleProducts = categoryImpl2.getCumulativeUpSaleProducts();
+
+    // Assert
+    verify(defaultParentCategory).buildDefaultParentCategoryPath(isA(List.class));
+    verify(defaultParentCategory).getUpSaleProducts();
+    verify(relatedProduct).getSequence();
+    assertEquals(2, actualCumulativeUpSaleProducts.size());
+    RelatedProduct getResult = actualCumulativeUpSaleProducts.get(1);
+    Product product = getResult.getProduct();
+    assertTrue(product instanceof ProductBundleImpl);
+    assertTrue(getResult instanceof UpSaleProductImpl);
+    FieldEntity fieldEntityType = product.getFieldEntityType();
+    List<String> allLookupTypes = fieldEntityType.getAllLookupTypes();
+    assertEquals(1, allLookupTypes.size());
+    assertEquals("PRODUCT", allLookupTypes.get(0));
+    assertEquals("PRODUCT", fieldEntityType.getType());
+    assertEquals("Product", fieldEntityType.getFriendlyType());
+    List<Sku> allSellableSkus = product.getAllSellableSkus();
+    assertEquals(1, allSellableSkus.size());
+    assertNull(allSellableSkus.get(0));
+    assertTrue(fieldEntityType.getAdditionalLookupTypes().isEmpty());
+    assertEquals(allSellableSkus, product.getAllSkus());
+  }
+
+  /**
+   * Test {@link CategoryImpl#getCumulativeUpSaleProducts()}.
+   * <ul>
+   *   <li>Then second RelatedProduct return {@link ProductBundleImpl}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CategoryImpl#getCumulativeUpSaleProducts()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getCumulativeUpSaleProducts()"})
+  public void testGetCumulativeUpSaleProducts_thenSecondRelatedProductReturnProductBundleImpl() {
     // Arrange
     UpSaleProductImpl upSaleProductImpl = new UpSaleProductImpl();
     upSaleProductImpl.setCategory(new CategoryImpl());
@@ -7207,27 +3905,28 @@ public class CategoryImplDiffblueTest {
     upSaleProductImpl.setSequence(new BigDecimal("2.3"));
 
     ArrayList<RelatedProduct> relatedProductList = new ArrayList<>();
-    relatedProductList.add(new CrossSaleProductImpl());
+    CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
+    relatedProductList.add(crossSaleProductImpl);
     relatedProductList.add(upSaleProductImpl);
     Category defaultParentCategory = mock(Category.class);
     when(defaultParentCategory.buildDefaultParentCategoryPath(Mockito.<List<Category>>any()))
         .thenReturn(new ArrayList<>());
     when(defaultParentCategory.getUpSaleProducts()).thenReturn(relatedProductList);
 
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setDefaultParentCategory(defaultParentCategory);
 
     // Act
-    List<RelatedProduct> actualCumulativeUpSaleProducts = categoryImpl.getCumulativeUpSaleProducts();
+    List<RelatedProduct> actualCumulativeUpSaleProducts = categoryImpl2.getCumulativeUpSaleProducts();
 
     // Assert
     verify(defaultParentCategory).buildDefaultParentCategoryPath(isA(List.class));
     verify(defaultParentCategory).getUpSaleProducts();
     assertEquals(2, actualCumulativeUpSaleProducts.size());
     RelatedProduct getResult = actualCumulativeUpSaleProducts.get(1);
-    assertTrue(getResult.getProduct() instanceof ProductBundleImpl);
     assertTrue(getResult.getRelatedProduct() instanceof ProductBundleImpl);
     assertTrue(getResult instanceof UpSaleProductImpl);
+    assertSame(crossSaleProductImpl, actualCumulativeUpSaleProducts.get(0));
   }
 
   /**
@@ -7239,19 +3938,19 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getCumulativeUpSaleProducts()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getCumulativeUpSaleProducts()"})
   public void testGetCumulativeUpSaleProducts_thenThrowRuntimeException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Category defaultParentCategory = mock(Category.class);
     when(defaultParentCategory.buildDefaultParentCategoryPath(Mockito.<List<Category>>any()))
         .thenThrow(new RuntimeException("foo"));
 
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setDefaultParentCategory(defaultParentCategory);
 
     // Act and Assert
-    assertThrows(RuntimeException.class, () -> categoryImpl.getCumulativeUpSaleProducts());
+    assertThrows(RuntimeException.class, () -> categoryImpl2.getCumulativeUpSaleProducts());
     verify(defaultParentCategory).buildDefaultParentCategoryPath(isA(List.class));
   }
 
@@ -7261,44 +3960,15 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getCumulativeFeaturedProducts()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getCumulativeFeaturedProducts()"})
   public void testGetCumulativeFeaturedProducts() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setDefaultParentCategory(new CategoryImpl());
 
     // Act and Assert
-    assertTrue(categoryImpl.getCumulativeFeaturedProducts().isEmpty());
-  }
-
-  /**
-   * Test {@link CategoryImpl#getCumulativeFeaturedProducts()}.
-   * <p>
-   * Method under test: {@link CategoryImpl#getCumulativeFeaturedProducts()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetCumulativeFeaturedProducts2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3459 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryImpl()).getCumulativeFeaturedProducts();
+    assertTrue(categoryImpl2.getCumulativeFeaturedProducts().isEmpty());
   }
 
   /**
@@ -7311,9 +3981,9 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getCumulativeFeaturedProducts()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getCumulativeFeaturedProducts()"})
   public void testGetCumulativeFeaturedProducts_givenArrayListAddNull_thenReturnArrayList() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ArrayList<FeaturedProduct> featuredProductList = new ArrayList<>();
     featuredProductList.add(mock(FeaturedProductImpl.class));
@@ -7323,11 +3993,11 @@ public class CategoryImplDiffblueTest {
         .thenReturn(new ArrayList<>());
     when(defaultParentCategory.getFeaturedProducts()).thenReturn(featuredProductList);
 
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setDefaultParentCategory(defaultParentCategory);
 
     // Act
-    List<FeaturedProduct> actualCumulativeFeaturedProducts = categoryImpl.getCumulativeFeaturedProducts();
+    List<FeaturedProduct> actualCumulativeFeaturedProducts = categoryImpl2.getCumulativeFeaturedProducts();
 
     // Assert
     verify(defaultParentCategory).buildDefaultParentCategoryPath(isA(List.class));
@@ -7345,9 +4015,9 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getCumulativeFeaturedProducts()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getCumulativeFeaturedProducts()"})
   public void testGetCumulativeFeaturedProducts_givenArrayListAddNull_thenReturnFirstIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ArrayList<FeaturedProduct> featuredProductList = new ArrayList<>();
     featuredProductList.add(null);
@@ -7358,11 +4028,11 @@ public class CategoryImplDiffblueTest {
         .thenReturn(new ArrayList<>());
     when(defaultParentCategory.getFeaturedProducts()).thenReturn(featuredProductList);
 
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setDefaultParentCategory(defaultParentCategory);
 
     // Act
-    List<FeaturedProduct> actualCumulativeFeaturedProducts = categoryImpl.getCumulativeFeaturedProducts();
+    List<FeaturedProduct> actualCumulativeFeaturedProducts = categoryImpl2.getCumulativeFeaturedProducts();
 
     // Assert
     verify(defaultParentCategory).buildDefaultParentCategoryPath(isA(List.class));
@@ -7382,9 +4052,9 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getCumulativeFeaturedProducts()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getCumulativeFeaturedProducts()"})
   public void testGetCumulativeFeaturedProducts_givenCategoryImpl_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertTrue((new CategoryImpl()).getCumulativeFeaturedProducts().isEmpty());
   }
@@ -7398,9 +4068,9 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getCumulativeFeaturedProducts()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getCumulativeFeaturedProducts()"})
   public void testGetCumulativeFeaturedProducts_thenReturnArrayList() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     FeaturedProduct featuredProduct = mock(FeaturedProduct.class);
     when(featuredProduct.getSequence()).thenReturn(new BigDecimal("2.3"));
@@ -7415,11 +4085,11 @@ public class CategoryImplDiffblueTest {
         .thenReturn(new ArrayList<>());
     when(defaultParentCategory.getFeaturedProducts()).thenReturn(featuredProductList);
 
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setDefaultParentCategory(defaultParentCategory);
 
     // Act
-    List<FeaturedProduct> actualCumulativeFeaturedProducts = categoryImpl.getCumulativeFeaturedProducts();
+    List<FeaturedProduct> actualCumulativeFeaturedProducts = categoryImpl2.getCumulativeFeaturedProducts();
 
     // Assert
     verify(defaultParentCategory).buildDefaultParentCategoryPath(isA(List.class));
@@ -7438,20 +4108,20 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getCumulativeFeaturedProducts()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getCumulativeFeaturedProducts()"})
   public void testGetCumulativeFeaturedProducts_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Category defaultParentCategory = mock(Category.class);
     when(defaultParentCategory.buildDefaultParentCategoryPath(Mockito.<List<Category>>any()))
         .thenReturn(new ArrayList<>());
     when(defaultParentCategory.getFeaturedProducts()).thenReturn(new ArrayList<>());
 
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setDefaultParentCategory(defaultParentCategory);
 
     // Act
-    List<FeaturedProduct> actualCumulativeFeaturedProducts = categoryImpl.getCumulativeFeaturedProducts();
+    List<FeaturedProduct> actualCumulativeFeaturedProducts = categoryImpl2.getCumulativeFeaturedProducts();
 
     // Assert
     verify(defaultParentCategory).buildDefaultParentCategoryPath(isA(List.class));
@@ -7468,9 +4138,9 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getCumulativeFeaturedProducts()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getCumulativeFeaturedProducts()"})
   public void testGetCumulativeFeaturedProducts_thenReturnSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ArrayList<FeaturedProduct> featuredProductList = new ArrayList<>();
     FeaturedProductImpl featuredProductImpl = new FeaturedProductImpl();
@@ -7480,11 +4150,11 @@ public class CategoryImplDiffblueTest {
         .thenReturn(new ArrayList<>());
     when(defaultParentCategory.getFeaturedProducts()).thenReturn(featuredProductList);
 
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setDefaultParentCategory(defaultParentCategory);
 
     // Act
-    List<FeaturedProduct> actualCumulativeFeaturedProducts = categoryImpl.getCumulativeFeaturedProducts();
+    List<FeaturedProduct> actualCumulativeFeaturedProducts = categoryImpl2.getCumulativeFeaturedProducts();
 
     // Assert
     verify(defaultParentCategory).buildDefaultParentCategoryPath(isA(List.class));
@@ -7502,9 +4172,9 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getCumulativeFeaturedProducts()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getCumulativeFeaturedProducts()"})
   public void testGetCumulativeFeaturedProducts_thenReturnSizeIsOne2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ArrayList<FeaturedProduct> featuredProductList = new ArrayList<>();
     FeaturedProductImpl featuredProductImpl = new FeaturedProductImpl();
@@ -7515,11 +4185,11 @@ public class CategoryImplDiffblueTest {
         .thenReturn(new ArrayList<>());
     when(defaultParentCategory.getFeaturedProducts()).thenReturn(featuredProductList);
 
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setDefaultParentCategory(defaultParentCategory);
 
     // Act
-    List<FeaturedProduct> actualCumulativeFeaturedProducts = categoryImpl.getCumulativeFeaturedProducts();
+    List<FeaturedProduct> actualCumulativeFeaturedProducts = categoryImpl2.getCumulativeFeaturedProducts();
 
     // Assert
     verify(defaultParentCategory).buildDefaultParentCategoryPath(isA(List.class));
@@ -7537,9 +4207,9 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getCumulativeFeaturedProducts()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getCumulativeFeaturedProducts()"})
   public void testGetCumulativeFeaturedProducts_thenReturnSizeIsThree() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     FeaturedProduct featuredProduct = mock(FeaturedProduct.class);
     when(featuredProduct.getSequence()).thenReturn(new BigDecimal("2.3"));
@@ -7556,11 +4226,11 @@ public class CategoryImplDiffblueTest {
         .thenReturn(new ArrayList<>());
     when(defaultParentCategory.getFeaturedProducts()).thenReturn(featuredProductList);
 
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setDefaultParentCategory(defaultParentCategory);
 
     // Act
-    List<FeaturedProduct> actualCumulativeFeaturedProducts = categoryImpl.getCumulativeFeaturedProducts();
+    List<FeaturedProduct> actualCumulativeFeaturedProducts = categoryImpl2.getCumulativeFeaturedProducts();
 
     // Assert
     verify(defaultParentCategory).buildDefaultParentCategoryPath(isA(List.class));
@@ -7580,9 +4250,9 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getCumulativeFeaturedProducts()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getCumulativeFeaturedProducts()"})
   public void testGetCumulativeFeaturedProducts_thenReturnSizeIsTwo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     FeaturedProductImpl featuredProductImpl = mock(FeaturedProductImpl.class);
     when(featuredProductImpl.getSequence()).thenReturn(new BigDecimal("2.3"));
@@ -7596,11 +4266,11 @@ public class CategoryImplDiffblueTest {
         .thenReturn(new ArrayList<>());
     when(defaultParentCategory.getFeaturedProducts()).thenReturn(featuredProductList);
 
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setDefaultParentCategory(defaultParentCategory);
 
     // Act
-    List<FeaturedProduct> actualCumulativeFeaturedProducts = categoryImpl.getCumulativeFeaturedProducts();
+    List<FeaturedProduct> actualCumulativeFeaturedProducts = categoryImpl2.getCumulativeFeaturedProducts();
 
     // Assert
     verify(defaultParentCategory).buildDefaultParentCategoryPath(isA(List.class));
@@ -7619,170 +4289,52 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getCumulativeFeaturedProducts()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getCumulativeFeaturedProducts()"})
   public void testGetCumulativeFeaturedProducts_thenThrowRuntimeException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Category defaultParentCategory = mock(Category.class);
     when(defaultParentCategory.buildDefaultParentCategoryPath(Mockito.<List<Category>>any()))
         .thenThrow(new RuntimeException("foo"));
 
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setDefaultParentCategory(defaultParentCategory);
 
     // Act and Assert
-    assertThrows(RuntimeException.class, () -> categoryImpl.getCumulativeFeaturedProducts());
+    assertThrows(RuntimeException.class, () -> categoryImpl2.getCumulativeFeaturedProducts());
     verify(defaultParentCategory).buildDefaultParentCategoryPath(isA(List.class));
   }
 
   /**
    * Test {@link CategoryImpl#setUpSaleProducts(List)}.
+   * <ul>
+   *   <li>Given {@link CategoryImpl} (default constructor).</li>
+   *   <li>Then {@link ArrayList#ArrayList()} size is two.</li>
+   * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#setUpSaleProducts(List)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetUpSaleProducts() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4863 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.setUpSaleProducts(List)"})
+  public void testSetUpSaleProducts_givenCategoryImpl_thenArrayListSizeIsTwo() {
     // Arrange
     CategoryImpl categoryImpl2 = new CategoryImpl();
 
-    // Act
-    categoryImpl2.setUpSaleProducts(new ArrayList<>());
-  }
-
-  /**
-   * Test {@link CategoryImpl#setUpSaleProducts(List)}.
-   * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) DefaultParentCategory is
-   * {@link Category}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#setUpSaleProducts(List)}
-   */
-  @Test
-  public void testSetUpSaleProducts_givenCategoryImplDefaultParentCategoryIsCategory() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl
-        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl
-        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl.setDefaultParentCategory(mock(Category.class));
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
     ArrayList<RelatedProduct> upSaleProducts = new ArrayList<>();
-    categoryImpl.setUpSaleProducts(upSaleProducts);
-    categoryImpl.setUrl("https://example.org/example");
-    categoryImpl.setUrlKey("https://example.org/example");
-
-    ArrayList<RelatedProduct> upSaleProducts2 = new ArrayList<>();
-    upSaleProducts2.add(new CrossSaleProductImpl());
+    CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
+    upSaleProducts.add(crossSaleProductImpl);
+    upSaleProducts.add(new CrossSaleProductImpl());
 
     // Act
-    categoryImpl.setUpSaleProducts(upSaleProducts2);
+    categoryImpl2.setUpSaleProducts(upSaleProducts);
 
     // Assert
-    assertEquals(upSaleProducts, upSaleProducts2);
-    assertEquals(upSaleProducts, categoryImpl.getCumulativeUpSaleProducts());
-    assertSame(upSaleProducts2, categoryImpl.getUpSaleProducts());
-  }
-
-  /**
-   * Test {@link CategoryImpl#setUpSaleProducts(List)}.
-   * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) DefaultParentCategory is
-   * {@link CategoryImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#setUpSaleProducts(List)}
-   */
-  @Test
-  public void testSetUpSaleProducts_givenCategoryImplDefaultParentCategoryIsCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl
-        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl
-        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    ArrayList<RelatedProduct> upSaleProducts = new ArrayList<>();
-    categoryImpl.setUpSaleProducts(upSaleProducts);
-    categoryImpl.setUrl("https://example.org/example");
-    categoryImpl.setUrlKey("https://example.org/example");
-
-    ArrayList<RelatedProduct> upSaleProducts2 = new ArrayList<>();
-    upSaleProducts2.add(new CrossSaleProductImpl());
-
-    // Act
-    categoryImpl.setUpSaleProducts(upSaleProducts2);
-
-    // Assert
-    assertEquals(upSaleProducts, upSaleProducts2);
-    assertEquals(upSaleProducts, categoryImpl.getCumulativeUpSaleProducts());
-    assertSame(upSaleProducts2, categoryImpl.getUpSaleProducts());
+    List<RelatedProduct> cumulativeUpSaleProducts = categoryImpl2.getCumulativeUpSaleProducts();
+    assertEquals(1, cumulativeUpSaleProducts.size());
+    assertEquals(2, upSaleProducts.size());
+    assertSame(upSaleProducts, categoryImpl2.getUpSaleProducts());
+    assertSame(crossSaleProductImpl, cumulativeUpSaleProducts.get(0));
   }
 
   /**
@@ -7796,168 +4348,139 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#setUpSaleProducts(List)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.setUpSaleProducts(List)"})
   public void testSetUpSaleProducts_givenCategoryImpl_whenArrayList_thenArrayListEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
+    CategoryImpl categoryImpl2 = new CategoryImpl();
     ArrayList<RelatedProduct> upSaleProducts = new ArrayList<>();
 
     // Act
-    categoryImpl.setUpSaleProducts(upSaleProducts);
+    categoryImpl2.setUpSaleProducts(upSaleProducts);
 
     // Assert
     assertTrue(upSaleProducts.isEmpty());
-    assertTrue(categoryImpl.getCumulativeUpSaleProducts().isEmpty());
-    assertSame(upSaleProducts, categoryImpl.getUpSaleProducts());
+    assertTrue(categoryImpl2.getCumulativeUpSaleProducts().isEmpty());
+    assertSame(upSaleProducts, categoryImpl2.getUpSaleProducts());
   }
 
   /**
-   * Test {@link CategoryImpl#getActiveProductXrefs()}.
-   * <p>
-   * Method under test: {@link CategoryImpl#getActiveProductXrefs()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetActiveProductXrefs() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3009 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryImpl()).getActiveProductXrefs();
-  }
-
-  /**
-   * Test {@link CategoryImpl#getActiveProductXrefs()}.
+   * Test {@link CategoryImpl#setUpSaleProducts(List)}.
    * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor).</li>
+   *   <li>Then {@link ArrayList#ArrayList()}.</li>
    * </ul>
    * <p>
+   * Method under test: {@link CategoryImpl#setUpSaleProducts(List)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.setUpSaleProducts(List)"})
+  public void testSetUpSaleProducts_thenArrayList() {
+    // Arrange
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2
+        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    categoryImpl2
+        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    categoryImpl2.setCategoryAttributes(new ArrayList<>());
+    categoryImpl2.setCategoryAttributesMap(new HashMap<>());
+    categoryImpl2.setCategoryMediaXref(new HashMap<>());
+    categoryImpl2.setChildCategoryIds(new ArrayList<>());
+    categoryImpl2.setChildCategoryURLMap(new HashMap<>());
+    categoryImpl2.setDefaultParentCategory(new CategoryImpl());
+    categoryImpl2.setDescription("The characteristics of someone or something");
+    categoryImpl2.setDisplayTemplate("Display Template");
+    categoryImpl2.setExcludedSearchFacets(new ArrayList<>());
+    categoryImpl2.setExternalId("42");
+    categoryImpl2.setFulfillmentType(FulfillmentType.DIGITAL);
+    categoryImpl2.setId(1L);
+    categoryImpl2.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
+    categoryImpl2.setLongDescription("Long Description");
+    categoryImpl2.setMetaDescription("Meta Description");
+    categoryImpl2.setMetaTitle("Dr");
+    categoryImpl2.setName("Name");
+    categoryImpl2.setOverrideGeneratedUrl(true);
+    categoryImpl2.setProductDescriptionPatternOverride("Product Description Pattern Override");
+    categoryImpl2.setProductTitlePatternOverride("Dr");
+    categoryImpl2.setRootDisplayOrder(new BigDecimal("2.3"));
+    categoryImpl2.setSearchFacets(new ArrayList<>());
+    categoryImpl2.setTaxCode("Tax Code");
+    ArrayList<RelatedProduct> upSaleProducts = new ArrayList<>();
+    categoryImpl2.setUpSaleProducts(upSaleProducts);
+    categoryImpl2.setUrl("https://example.org/example");
+    categoryImpl2.setUrlKey("https://example.org/example");
+
+    ArrayList<RelatedProduct> upSaleProducts2 = new ArrayList<>();
+    CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
+    upSaleProducts2.add(crossSaleProductImpl);
+
+    // Act
+    categoryImpl2.setUpSaleProducts(upSaleProducts2);
+
+    // Assert
+    List<RelatedProduct> cumulativeUpSaleProducts = categoryImpl2.getCumulativeUpSaleProducts();
+    assertEquals(1, cumulativeUpSaleProducts.size());
+    assertEquals(upSaleProducts, upSaleProducts2);
+    assertSame(upSaleProducts2, categoryImpl2.getUpSaleProducts());
+    assertSame(crossSaleProductImpl, cumulativeUpSaleProducts.get(0));
+  }
+
+  /**
+   * Test {@link CategoryImpl#getActiveProductXrefs()}.
+   * <p>
    * Method under test: {@link CategoryImpl#getActiveProductXrefs()}
    */
   @Test
-  public void testGetActiveProductXrefs_givenCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getActiveProductXrefs()"})
+  public void testGetActiveProductXrefs() {
     // Arrange, Act and Assert
     assertTrue((new CategoryImpl()).getActiveProductXrefs().isEmpty());
   }
 
   /**
-   * Test {@link CategoryImpl#getActiveProductXrefs()}.
-   * <ul>
-   *   <li>Given {@link Date} {@link java.util.Date#getTime()} return ten.</li>
-   *   <li>Then calls {@link java.util.Date#getTime()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getActiveProductXrefs()}
-   */
-  @Test
-  public void testGetActiveProductXrefs_givenDateGetTimeReturnTen_thenCallsGetTime() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    java.sql.Date activeStartDate = mock(java.sql.Date.class);
-    when(activeStartDate.getTime()).thenReturn(10L);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setActiveStartDate(activeStartDate);
-
-    // Act
-    List<CategoryProductXref> actualActiveProductXrefs = categoryImpl.getActiveProductXrefs();
-
-    // Assert
-    verify(activeStartDate).getTime();
-    assertTrue(actualActiveProductXrefs.isEmpty());
-  }
-
-  /**
    * Test {@link CategoryImpl#setAllProductXrefs(List)}.
+   * <ul>
+   *   <li>Then {@link CategoryImpl} (default constructor) AllProductXrefs size is one.</li>
+   * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#setAllProductXrefs(List)}
    */
   @Test
-  public void testSetAllProductXrefs() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.setAllProductXrefs(List)"})
+  public void testSetAllProductXrefs_thenCategoryImplAllProductXrefsSizeIsOne() {
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
+    CategoryImpl categoryImpl2 = new CategoryImpl();
 
     ArrayList<CategoryProductXref> allProducts = new ArrayList<>();
     CategoryProductXrefImpl categoryProductXrefImpl = new CategoryProductXrefImpl();
     allProducts.add(categoryProductXrefImpl);
 
     // Act
-    categoryImpl.setAllProductXrefs(allProducts);
+    categoryImpl2.setAllProductXrefs(allProducts);
 
     // Assert
-    List<CategoryProductXref> allProductXrefs = categoryImpl.getAllProductXrefs();
+    List<CategoryProductXref> allProductXrefs = categoryImpl2.getAllProductXrefs();
     assertEquals(1, allProductXrefs.size());
-    assertEquals(1, categoryImpl.getAllProducts().size());
+    assertEquals(1, categoryImpl2.getAllProducts().size());
     assertSame(categoryProductXrefImpl, allProductXrefs.get(0));
   }
 
   /**
    * Test {@link CategoryImpl#setAllProductXrefs(List)}.
-   * <p>
-   * Method under test: {@link CategoryImpl#setAllProductXrefs(List)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetAllProductXrefs2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4419 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CategoryImpl categoryImpl2 = new CategoryImpl();
-
-    // Act
-    categoryImpl2.setAllProductXrefs(new ArrayList<>());
-  }
-
-  /**
-   * Test {@link CategoryImpl#setAllProductXrefs(List)}.
    * <ul>
-   *   <li>Then {@link CategoryImpl} (default constructor) AllProductXrefs size is
-   * two.</li>
+   *   <li>Then {@link CategoryImpl} (default constructor) AllProductXrefs size is two.</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#setAllProductXrefs(List)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.setAllProductXrefs(List)"})
   public void testSetAllProductXrefs_thenCategoryImplAllProductXrefsSizeIsTwo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
+    CategoryImpl categoryImpl2 = new CategoryImpl();
 
     ArrayList<CategoryProductXref> allProducts = new ArrayList<>();
     allProducts.add(new CategoryProductXrefImpl());
@@ -7965,67 +4488,37 @@ public class CategoryImplDiffblueTest {
     allProducts.add(categoryProductXrefImpl);
 
     // Act
-    categoryImpl.setAllProductXrefs(allProducts);
+    categoryImpl2.setAllProductXrefs(allProducts);
 
     // Assert
-    List<CategoryProductXref> allProductXrefs = categoryImpl.getAllProductXrefs();
+    List<CategoryProductXref> allProductXrefs = categoryImpl2.getAllProductXrefs();
     assertEquals(2, allProductXrefs.size());
-    assertEquals(2, categoryImpl.getAllProducts().size());
+    assertEquals(2, categoryImpl2.getAllProducts().size());
     assertSame(categoryProductXrefImpl, allProductXrefs.get(1));
   }
 
   /**
    * Test {@link CategoryImpl#setAllProductXrefs(List)}.
    * <ul>
-   *   <li>Then {@link CategoryImpl} (default constructor) AllProducts first is
-   * {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#setAllProductXrefs(List)}
-   */
-  @Test
-  public void testSetAllProductXrefs_thenCategoryImplAllProductsFirstIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-
-    ArrayList<CategoryProductXref> allProducts = new ArrayList<>();
-    allProducts.add(mock(CategoryProductXrefImpl.class));
-
-    // Act
-    categoryImpl.setAllProductXrefs(allProducts);
-
-    // Assert
-    List<Product> allProducts2 = categoryImpl.getAllProducts();
-    assertEquals(1, allProducts2.size());
-    assertNull(allProducts2.get(0));
-    assertEquals(1, categoryImpl.getAllProductXrefs().size());
-  }
-
-  /**
-   * Test {@link CategoryImpl#setAllProductXrefs(List)}.
-   * <ul>
    *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then {@link CategoryImpl} (default constructor) AllProductXrefs
-   * Empty.</li>
+   *   <li>Then {@link CategoryImpl} (default constructor) AllProductXrefs Empty.</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#setAllProductXrefs(List)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.setAllProductXrefs(List)"})
   public void testSetAllProductXrefs_whenArrayList_thenCategoryImplAllProductXrefsEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
+    CategoryImpl categoryImpl2 = new CategoryImpl();
 
     // Act
-    categoryImpl.setAllProductXrefs(new ArrayList<>());
+    categoryImpl2.setAllProductXrefs(new ArrayList<>());
 
-    // Assert
-    assertTrue(categoryImpl.getAllProductXrefs().isEmpty());
-    assertTrue(categoryImpl.getAllProducts().isEmpty());
+    // Assert that nothing has changed
+    assertTrue(categoryImpl2.getAllProductXrefs().isEmpty());
+    assertTrue(categoryImpl2.getAllProducts().isEmpty());
   }
 
   /**
@@ -8034,225 +4527,71 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getActiveProducts()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getActiveProducts()"})
   public void testGetActiveProducts() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3039 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryImpl()).getActiveProducts();
-  }
-
-  /**
-   * Test {@link CategoryImpl#getActiveProducts()}.
-   * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getActiveProducts()}
-   */
-  @Test
-  public void testGetActiveProducts_givenCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertTrue((new CategoryImpl()).getActiveProducts().isEmpty());
   }
 
   /**
-   * Test {@link CategoryImpl#getActiveProducts()}.
-   * <ul>
-   *   <li>Given {@link Date} {@link java.util.Date#getTime()} return ten.</li>
-   *   <li>Then calls {@link java.util.Date#getTime()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getActiveProducts()}
-   */
-  @Test
-  public void testGetActiveProducts_givenDateGetTimeReturnTen_thenCallsGetTime() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    java.sql.Date activeStartDate = mock(java.sql.Date.class);
-    when(activeStartDate.getTime()).thenReturn(10L);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setActiveStartDate(activeStartDate);
-
-    // Act
-    List<Product> actualActiveProducts = categoryImpl.getActiveProducts();
-
-    // Assert
-    verify(activeStartDate).getTime();
-    assertTrue(actualActiveProducts.isEmpty());
-  }
-
-  /**
    * Test {@link CategoryImpl#getAllProducts()}.
    * <p>
    * Method under test: {@link CategoryImpl#getAllProducts()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getAllProducts()"})
   public void testGetAllProducts() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3159 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryImpl()).getAllProducts();
-  }
-
-  /**
-   * Test {@link CategoryImpl#getAllProducts()}.
-   * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getAllProducts()}
-   */
-  @Test
-  public void testGetAllProducts_givenCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertTrue((new CategoryImpl()).getAllProducts().isEmpty());
   }
 
   /**
-   * Test {@link CategoryImpl#getAllProducts()}.
-   * <ul>
-   *   <li>Given {@link Date} {@link java.util.Date#getTime()} return ten.</li>
-   *   <li>Then calls {@link java.util.Date#getTime()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getAllProducts()}
-   */
-  @Test
-  public void testGetAllProducts_givenDateGetTimeReturnTen_thenCallsGetTime() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    java.sql.Date activeStartDate = mock(java.sql.Date.class);
-    when(activeStartDate.getTime()).thenReturn(10L);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setActiveStartDate(activeStartDate);
-
-    // Act
-    List<Product> actualAllProducts = categoryImpl.getAllProducts();
-
-    // Assert
-    verify(activeStartDate).getTime();
-    assertTrue(actualAllProducts.isEmpty());
-  }
-
-  /**
    * Test {@link CategoryImpl#setAllProducts(List)}.
+   * <ul>
+   *   <li>Given {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link ProductBundleImpl} (default constructor).</li>
+   * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#setAllProducts(List)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetAllProducts() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4449 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.setAllProducts(List)"})
+  public void testSetAllProducts_givenProductBundleImpl_whenArrayListAddProductBundleImpl() {
     // Arrange
     CategoryImpl categoryImpl2 = new CategoryImpl();
 
-    // Act
-    categoryImpl2.setAllProducts(new ArrayList<>());
-  }
-
-  /**
-   * Test {@link CategoryImpl#setAllProducts(List)}.
-   * <ul>
-   *   <li>Given {@link ProductBundleImpl} (default constructor).</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link ProductBundleImpl} (default
-   * constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#setAllProducts(List)}
-   */
-  @Test
-  public void testSetAllProducts_givenProductBundleImpl_whenArrayListAddProductBundleImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-
     ArrayList<Product> allProducts = new ArrayList<>();
     allProducts.add(new ProductBundleImpl());
 
     // Act and Assert
-    assertThrows(UnsupportedOperationException.class, () -> categoryImpl.setAllProducts(allProducts));
+    assertThrows(UnsupportedOperationException.class, () -> categoryImpl2.setAllProducts(allProducts));
   }
 
   /**
    * Test {@link CategoryImpl#setAllProducts(List)}.
    * <ul>
    *   <li>Given {@link ProductBundleImpl} (default constructor).</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link ProductBundleImpl} (default
-   * constructor).</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link ProductBundleImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#setAllProducts(List)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.setAllProducts(List)"})
   public void testSetAllProducts_givenProductBundleImpl_whenArrayListAddProductBundleImpl2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
+    CategoryImpl categoryImpl2 = new CategoryImpl();
 
     ArrayList<Product> allProducts = new ArrayList<>();
     allProducts.add(new ProductBundleImpl());
     allProducts.add(new ProductBundleImpl());
 
     // Act and Assert
-    assertThrows(UnsupportedOperationException.class, () -> categoryImpl.setAllProducts(allProducts));
+    assertThrows(UnsupportedOperationException.class, () -> categoryImpl2.setAllProducts(allProducts));
   }
 
   /**
@@ -8264,14 +4603,14 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#setAllProducts(List)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.setAllProducts(List)"})
   public void testSetAllProducts_whenArrayList() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
+    CategoryImpl categoryImpl2 = new CategoryImpl();
 
     // Act and Assert
-    assertThrows(UnsupportedOperationException.class, () -> categoryImpl.setAllProducts(new ArrayList<>()));
+    assertThrows(UnsupportedOperationException.class, () -> categoryImpl2.setAllProducts(new ArrayList<>()));
   }
 
   /**
@@ -8280,368 +4619,89 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getInventoryType()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"InventoryType CategoryImpl.getInventoryType()"})
   public void testGetInventoryType() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3699 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryImpl()).getInventoryType();
-  }
-
-  /**
-   * Test {@link CategoryImpl#getInventoryType()}.
-   * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getInventoryType()}
-   */
-  @Test
-  public void testGetInventoryType_givenCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new CategoryImpl()).getInventoryType());
   }
 
   /**
-   * Test {@link CategoryImpl#getInventoryType()}.
-   * <ul>
-   *   <li>Given {@link Date} {@link java.util.Date#getTime()} return ten.</li>
-   *   <li>Then calls {@link java.util.Date#getTime()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getInventoryType()}
-   */
-  @Test
-  public void testGetInventoryType_givenDateGetTimeReturnTen_thenCallsGetTime() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    java.sql.Date activeStartDate = mock(java.sql.Date.class);
-    when(activeStartDate.getTime()).thenReturn(10L);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setActiveStartDate(activeStartDate);
-
-    // Act
-    InventoryType actualInventoryType = categoryImpl.getInventoryType();
-
-    // Assert
-    verify(activeStartDate).getTime();
-    assertNull(actualInventoryType);
-  }
-
-  /**
-   * Test {@link CategoryImpl#setInventoryType(InventoryType)}.
-   * <p>
-   * Method under test: {@link CategoryImpl#setInventoryType(InventoryType)}
-   */
-  @Test
-  public void testSetInventoryType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl
-        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl
-        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrl("https://example.org/example");
-    categoryImpl.setUrlKey("https://example.org/example");
-
-    // Act
-    categoryImpl.setInventoryType(null);
-
-    // Assert
-    assertNull(categoryImpl.inventoryType);
-    assertNull(categoryImpl.getInventoryType());
-  }
-
-  /**
-   * Test {@link CategoryImpl#setInventoryType(InventoryType)}.
-   * <p>
-   * Method under test: {@link CategoryImpl#setInventoryType(InventoryType)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetInventoryType2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4732 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryImpl()).setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-  }
-
-  /**
    * Test {@link CategoryImpl#setInventoryType(InventoryType)}.
    * <ul>
-   *   <li>Given
-   * {@link UnsupportedOperationException#UnsupportedOperationException(String)}
-   * with {@code foo}.</li>
+   *   <li>Then {@link CategoryImpl} (default constructor) {@link CategoryImpl#inventoryType} is {@code ALWAYS_AVAILABLE}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#setInventoryType(InventoryType)}
    */
   @Test
-  public void testSetInventoryType_givenUnsupportedOperationExceptionWithFoo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    InventoryType inventoryType = mock(InventoryType.class);
-    when(inventoryType.getType()).thenThrow(new UnsupportedOperationException("foo"));
-
-    // Act
-    categoryImpl.setInventoryType(inventoryType);
-
-    // Assert
-    verify(inventoryType).getType();
-    assertNull(categoryImpl.inventoryType);
-    assertNull(categoryImpl.getInventoryType());
-  }
-
-  /**
-   * Test {@link CategoryImpl#setInventoryType(InventoryType)}.
-   * <ul>
-   *   <li>Then {@link CategoryImpl} (default constructor) InventoryType
-   * FriendlyType is {@code Friendly Type}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#setInventoryType(InventoryType)}
-   */
-  @Test
-  public void testSetInventoryType_thenCategoryImplInventoryTypeFriendlyTypeIsFriendlyType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    InventoryType inventoryType = mock(InventoryType.class);
-    when(inventoryType.getType()).thenReturn("Type");
-
-    // Act
-    categoryImpl.setInventoryType(inventoryType);
-
-    // Assert
-    verify(inventoryType).getType();
-    InventoryType inventoryType2 = categoryImpl.getInventoryType();
-    assertEquals("Friendly Type", inventoryType2.getFriendlyType());
-    assertEquals("Type", inventoryType2.getType());
-    assertEquals("Type", categoryImpl.inventoryType);
-  }
-
-  /**
-   * Test {@link CategoryImpl#setInventoryType(InventoryType)}.
-   * <ul>
-   *   <li>Then {@link CategoryImpl} (default constructor)
-   * {@link CategoryImpl#inventoryType} is {@code ALWAYS_AVAILABLE}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#setInventoryType(InventoryType)}
-   */
-  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.setInventoryType(InventoryType)"})
   public void testSetInventoryType_thenCategoryImplInventoryTypeIsAlwaysAvailable() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
+    CategoryImpl categoryImpl2 = new CategoryImpl();
     InventoryType inventoryType = InventoryType.ALWAYS_AVAILABLE;
 
     // Act
-    categoryImpl.setInventoryType(inventoryType);
+    categoryImpl2.setInventoryType(inventoryType);
 
     // Assert
-    assertEquals("ALWAYS_AVAILABLE", categoryImpl.inventoryType);
+    assertEquals("ALWAYS_AVAILABLE", categoryImpl2.inventoryType);
     InventoryType expectedInventoryType = inventoryType.ALWAYS_AVAILABLE;
-    assertSame(expectedInventoryType, categoryImpl.getInventoryType());
+    assertSame(expectedInventoryType, categoryImpl2.getInventoryType());
   }
 
   /**
-   * Test {@link CategoryImpl#getFulfillmentType()}.
-   * <p>
-   * Method under test: {@link CategoryImpl#getFulfillmentType()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetFulfillmentType() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3639 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryImpl()).getFulfillmentType();
-  }
-
-  /**
-   * Test {@link CategoryImpl#getFulfillmentType()}.
+   * Test {@link CategoryImpl#setInventoryType(InventoryType)}.
    * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) DefaultParentCategory is
-   * {@link Category}.</li>
+   *   <li>Then {@link CategoryImpl} (default constructor) {@link CategoryImpl#inventoryType} is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test: {@link CategoryImpl#getFulfillmentType()}
+   * Method under test: {@link CategoryImpl#setInventoryType(InventoryType)}
    */
   @Test
-  public void testGetFulfillmentType_givenCategoryImplDefaultParentCategoryIsCategory() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.setInventoryType(InventoryType)"})
+  public void testSetInventoryType_thenCategoryImplInventoryTypeIsNull() {
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2
         .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl
+    categoryImpl2
         .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl.setDefaultParentCategory(mock(Category.class));
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrl("https://example.org/example");
-    categoryImpl.setUrlKey("https://example.org/example");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
+    categoryImpl2.setCategoryAttributes(new ArrayList<>());
+    categoryImpl2.setCategoryAttributesMap(new HashMap<>());
+    categoryImpl2.setCategoryMediaXref(new HashMap<>());
+    categoryImpl2.setChildCategoryIds(new ArrayList<>());
+    categoryImpl2.setChildCategoryURLMap(new HashMap<>());
+    categoryImpl2.setDefaultParentCategory(new CategoryImpl());
+    categoryImpl2.setDescription("The characteristics of someone or something");
+    categoryImpl2.setDisplayTemplate("Display Template");
+    categoryImpl2.setExcludedSearchFacets(new ArrayList<>());
+    categoryImpl2.setExternalId("42");
+    categoryImpl2.setFulfillmentType(FulfillmentType.DIGITAL);
+    categoryImpl2.setId(1L);
+    categoryImpl2.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
+    categoryImpl2.setLongDescription("Long Description");
+    categoryImpl2.setMetaDescription("Meta Description");
+    categoryImpl2.setMetaTitle("Dr");
+    categoryImpl2.setName("Name");
+    categoryImpl2.setOverrideGeneratedUrl(true);
+    categoryImpl2.setProductDescriptionPatternOverride("Product Description Pattern Override");
+    categoryImpl2.setProductTitlePatternOverride("Dr");
+    categoryImpl2.setRootDisplayOrder(new BigDecimal("2.3"));
+    categoryImpl2.setSearchFacets(new ArrayList<>());
+    categoryImpl2.setTaxCode("Tax Code");
+    categoryImpl2.setUpSaleProducts(new ArrayList<>());
+    categoryImpl2.setUrl("https://example.org/example");
+    categoryImpl2.setUrlKey("https://example.org/example");
 
     // Act
-    FulfillmentType actualFulfillmentType = categoryImpl.getFulfillmentType();
+    categoryImpl2.setInventoryType(null);
 
     // Assert
-    assertSame(actualFulfillmentType.DIGITAL, actualFulfillmentType);
-  }
-
-  /**
-   * Test {@link CategoryImpl#getFulfillmentType()}.
-   * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) DefaultParentCategory is
-   * {@link CategoryImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getFulfillmentType()}
-   */
-  @Test
-  public void testGetFulfillmentType_givenCategoryImplDefaultParentCategoryIsCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl
-        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl
-        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrl("https://example.org/example");
-    categoryImpl.setUrlKey("https://example.org/example");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-
-    // Act
-    FulfillmentType actualFulfillmentType = categoryImpl.getFulfillmentType();
-
-    // Assert
-    assertSame(actualFulfillmentType.DIGITAL, actualFulfillmentType);
+    assertNull(categoryImpl2.inventoryType);
+    assertNull(categoryImpl2.getInventoryType());
   }
 
   /**
@@ -8654,278 +4714,189 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getFulfillmentType()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FulfillmentType CategoryImpl.getFulfillmentType()"})
   public void testGetFulfillmentType_givenCategoryImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new CategoryImpl()).getFulfillmentType());
   }
 
   /**
-   * Test {@link CategoryImpl#setFulfillmentType(FulfillmentType)}.
+   * Test {@link CategoryImpl#getFulfillmentType()}.
+   * <ul>
+   *   <li>Then return {@link FulfillmentType#DIGITAL}.</li>
+   * </ul>
    * <p>
-   * Method under test: {@link CategoryImpl#setFulfillmentType(FulfillmentType)}
+   * Method under test: {@link CategoryImpl#getFulfillmentType()}
    */
   @Test
-  public void testSetFulfillmentType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FulfillmentType CategoryImpl.getFulfillmentType()"})
+  public void testGetFulfillmentType_thenReturnDigital() {
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2
         .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl
+    categoryImpl2
         .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrl("https://example.org/example");
-    categoryImpl.setUrlKey("https://example.org/example");
+    categoryImpl2.setCategoryAttributes(new ArrayList<>());
+    categoryImpl2.setCategoryAttributesMap(new HashMap<>());
+    categoryImpl2.setCategoryMediaXref(new HashMap<>());
+    categoryImpl2.setChildCategoryIds(new ArrayList<>());
+    categoryImpl2.setChildCategoryURLMap(new HashMap<>());
+    categoryImpl2.setDefaultParentCategory(new CategoryImpl());
+    categoryImpl2.setDescription("The characteristics of someone or something");
+    categoryImpl2.setDisplayTemplate("Display Template");
+    categoryImpl2.setExcludedSearchFacets(new ArrayList<>());
+    categoryImpl2.setExternalId("42");
+    categoryImpl2.setId(1L);
+    categoryImpl2.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
+    categoryImpl2.setLongDescription("Long Description");
+    categoryImpl2.setMetaDescription("Meta Description");
+    categoryImpl2.setMetaTitle("Dr");
+    categoryImpl2.setName("Name");
+    categoryImpl2.setOverrideGeneratedUrl(true);
+    categoryImpl2.setProductDescriptionPatternOverride("Product Description Pattern Override");
+    categoryImpl2.setProductTitlePatternOverride("Dr");
+    categoryImpl2.setRootDisplayOrder(new BigDecimal("2.3"));
+    categoryImpl2.setSearchFacets(new ArrayList<>());
+    categoryImpl2.setTaxCode("Tax Code");
+    categoryImpl2.setUpSaleProducts(new ArrayList<>());
+    categoryImpl2.setUrl("https://example.org/example");
+    categoryImpl2.setUrlKey("https://example.org/example");
+    categoryImpl2.setFulfillmentType(FulfillmentType.DIGITAL);
 
     // Act
-    categoryImpl.setFulfillmentType(null);
+    FulfillmentType actualFulfillmentType = categoryImpl2.getFulfillmentType();
 
     // Assert
-    assertNull(categoryImpl.fulfillmentType);
-    assertNull(categoryImpl.getFulfillmentType());
-  }
-
-  /**
-   * Test {@link CategoryImpl#setFulfillmentType(FulfillmentType)}.
-   * <p>
-   * Method under test: {@link CategoryImpl#setFulfillmentType(FulfillmentType)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetFulfillmentType2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4694 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryImpl()).setFulfillmentType(FulfillmentType.DIGITAL);
+    assertSame(actualFulfillmentType.DIGITAL, actualFulfillmentType);
   }
 
   /**
    * Test {@link CategoryImpl#setFulfillmentType(FulfillmentType)}.
    * <ul>
-   *   <li>Given
-   * {@link UnsupportedOperationException#UnsupportedOperationException(String)}
-   * with {@code foo}.</li>
+   *   <li>Then {@link CategoryImpl} (default constructor) {@link CategoryImpl#fulfillmentType} is {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#setFulfillmentType(FulfillmentType)}
    */
   @Test
-  public void testSetFulfillmentType_givenUnsupportedOperationExceptionWithFoo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.setFulfillmentType(FulfillmentType)"})
+  public void testSetFulfillmentType_thenCategoryImplFulfillmentTypeIsNull() {
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    FulfillmentType fulfillmentType = mock(FulfillmentType.class);
-    when(fulfillmentType.getType()).thenThrow(new UnsupportedOperationException("foo"));
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2
+        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    categoryImpl2
+        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    categoryImpl2.setCategoryAttributes(new ArrayList<>());
+    categoryImpl2.setCategoryAttributesMap(new HashMap<>());
+    categoryImpl2.setCategoryMediaXref(new HashMap<>());
+    categoryImpl2.setChildCategoryIds(new ArrayList<>());
+    categoryImpl2.setChildCategoryURLMap(new HashMap<>());
+    categoryImpl2.setDefaultParentCategory(new CategoryImpl());
+    categoryImpl2.setDescription("The characteristics of someone or something");
+    categoryImpl2.setDisplayTemplate("Display Template");
+    categoryImpl2.setExcludedSearchFacets(new ArrayList<>());
+    categoryImpl2.setExternalId("42");
+    categoryImpl2.setFulfillmentType(FulfillmentType.DIGITAL);
+    categoryImpl2.setId(1L);
+    categoryImpl2.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
+    categoryImpl2.setLongDescription("Long Description");
+    categoryImpl2.setMetaDescription("Meta Description");
+    categoryImpl2.setMetaTitle("Dr");
+    categoryImpl2.setName("Name");
+    categoryImpl2.setOverrideGeneratedUrl(true);
+    categoryImpl2.setProductDescriptionPatternOverride("Product Description Pattern Override");
+    categoryImpl2.setProductTitlePatternOverride("Dr");
+    categoryImpl2.setRootDisplayOrder(new BigDecimal("2.3"));
+    categoryImpl2.setSearchFacets(new ArrayList<>());
+    categoryImpl2.setTaxCode("Tax Code");
+    categoryImpl2.setUpSaleProducts(new ArrayList<>());
+    categoryImpl2.setUrl("https://example.org/example");
+    categoryImpl2.setUrlKey("https://example.org/example");
 
     // Act
-    categoryImpl.setFulfillmentType(fulfillmentType);
+    categoryImpl2.setFulfillmentType(null);
 
     // Assert
-    verify(fulfillmentType).getType();
-    assertNull(categoryImpl.fulfillmentType);
-    assertNull(categoryImpl.getFulfillmentType());
-  }
-
-  /**
-   * Test {@link CategoryImpl#setFulfillmentType(FulfillmentType)}.
-   * <ul>
-   *   <li>Then {@link CategoryImpl} (default constructor) FulfillmentType
-   * FriendlyType is {@code Friendly Type}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#setFulfillmentType(FulfillmentType)}
-   */
-  @Test
-  public void testSetFulfillmentType_thenCategoryImplFulfillmentTypeFriendlyTypeIsFriendlyType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    FulfillmentType fulfillmentType = mock(FulfillmentType.class);
-    when(fulfillmentType.getType()).thenReturn("Type");
-
-    // Act
-    categoryImpl.setFulfillmentType(fulfillmentType);
-
-    // Assert
-    verify(fulfillmentType).getType();
-    FulfillmentType fulfillmentType2 = categoryImpl.getFulfillmentType();
-    assertEquals("Friendly Type", fulfillmentType2.getFriendlyType());
-    assertEquals("Type", fulfillmentType2.getType());
-    assertEquals("Type", categoryImpl.fulfillmentType);
+    assertNull(categoryImpl2.fulfillmentType);
+    assertNull(categoryImpl2.getFulfillmentType());
   }
 
   /**
    * Test {@link CategoryImpl#setFulfillmentType(FulfillmentType)}.
    * <ul>
    *   <li>When {@link FulfillmentType#DIGITAL}.</li>
-   *   <li>Then {@link CategoryImpl} (default constructor)
-   * {@link CategoryImpl#fulfillmentType} is {@code DIGITAL}.</li>
+   *   <li>Then {@link CategoryImpl} (default constructor) {@link CategoryImpl#fulfillmentType} is {@code DIGITAL}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#setFulfillmentType(FulfillmentType)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.setFulfillmentType(FulfillmentType)"})
   public void testSetFulfillmentType_whenDigital_thenCategoryImplFulfillmentTypeIsDigital() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
+    CategoryImpl categoryImpl2 = new CategoryImpl();
     FulfillmentType fulfillmentType = FulfillmentType.DIGITAL;
 
     // Act
-    categoryImpl.setFulfillmentType(fulfillmentType);
+    categoryImpl2.setFulfillmentType(fulfillmentType);
 
     // Assert
-    assertEquals("DIGITAL", categoryImpl.fulfillmentType);
+    assertEquals("DIGITAL", categoryImpl2.fulfillmentType);
     FulfillmentType expectedFulfillmentType = fulfillmentType.DIGITAL;
-    assertSame(expectedFulfillmentType, categoryImpl.getFulfillmentType());
+    assertSame(expectedFulfillmentType, categoryImpl2.getFulfillmentType());
   }
 
   /**
    * Test {@link CategoryImpl#getParentFacets(Collection)}.
+   * <ul>
+   *   <li>Given {@link SearchFacetImpl} (default constructor).</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link SearchFacetImpl} (default constructor).</li>
+   * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#getParentFacets(Collection)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetParentFacets() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4059 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getParentFacets(Collection)"})
+  public void testGetParentFacets_givenSearchFacetImpl_whenArrayListAddSearchFacetImpl() {
     // Arrange
     CategoryImpl categoryImpl2 = new CategoryImpl();
 
-    // Act
-    categoryImpl2.getParentFacets(new ArrayList<>());
-  }
-
-  /**
-   * Test {@link CategoryImpl#getParentFacets(Collection)}.
-   * <ul>
-   *   <li>Given {@link SearchFacetImpl} (default constructor).</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link SearchFacetImpl} (default
-   * constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getParentFacets(Collection)}
-   */
-  @Test
-  public void testGetParentFacets_givenSearchFacetImpl_whenArrayListAddSearchFacetImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-
     ArrayList<SearchFacet> facets = new ArrayList<>();
     facets.add(new SearchFacetImpl());
 
     // Act and Assert
-    assertNull(categoryImpl.getParentFacets(facets));
+    assertNull(categoryImpl2.getParentFacets(facets));
   }
 
   /**
    * Test {@link CategoryImpl#getParentFacets(Collection)}.
    * <ul>
    *   <li>Given {@link SearchFacetImpl} (default constructor).</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link SearchFacetImpl} (default
-   * constructor).</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link SearchFacetImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#getParentFacets(Collection)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getParentFacets(Collection)"})
   public void testGetParentFacets_givenSearchFacetImpl_whenArrayListAddSearchFacetImpl2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
+    CategoryImpl categoryImpl2 = new CategoryImpl();
 
     ArrayList<SearchFacet> facets = new ArrayList<>();
     facets.add(new SearchFacetImpl());
     facets.add(new SearchFacetImpl());
 
     // Act and Assert
-    assertNull(categoryImpl.getParentFacets(facets));
-  }
-
-  /**
-   * Test {@link CategoryImpl#getParentFacets(Collection)}.
-   * <ul>
-   *   <li>Given {@link SearchFacetImpl}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link SearchFacetImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getParentFacets(Collection)}
-   */
-  @Test
-  public void testGetParentFacets_givenSearchFacetImpl_whenArrayListAddSearchFacetImpl3() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-
-    ArrayList<SearchFacet> facets = new ArrayList<>();
-    facets.add(mock(SearchFacetImpl.class));
-
-    // Act and Assert
-    assertNull(categoryImpl.getParentFacets(facets));
+    assertNull(categoryImpl2.getParentFacets(facets));
   }
 
   /**
@@ -8937,14 +4908,14 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getParentFacets(Collection)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getParentFacets(Collection)"})
   public void testGetParentFacets_whenArrayList() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
+    CategoryImpl categoryImpl2 = new CategoryImpl();
 
     // Act and Assert
-    assertNull(categoryImpl.getParentFacets(new ArrayList<>()));
+    assertNull(categoryImpl2.getParentFacets(new ArrayList<>()));
   }
 
   /**
@@ -8953,44 +4924,15 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getCumulativeSearchFacets()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getCumulativeSearchFacets()"})
   public void testGetCumulativeSearchFacets() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setDefaultParentCategory(new CategoryImpl());
 
     // Act and Assert
-    assertTrue(categoryImpl.getCumulativeSearchFacets().isEmpty());
-  }
-
-  /**
-   * Test {@link CategoryImpl#getCumulativeSearchFacets()}.
-   * <p>
-   * Method under test: {@link CategoryImpl#getCumulativeSearchFacets()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetCumulativeSearchFacets2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3489 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryImpl()).getCumulativeSearchFacets();
+    assertTrue(categoryImpl2.getCumulativeSearchFacets().isEmpty());
   }
 
   /**
@@ -8999,16 +4941,16 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getCumulativeSearchFacets(Set)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getCumulativeSearchFacets(Set)"})
   public void testGetCumulativeSearchFacetsWithSet() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setUrl("https://example.org/example");
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setUrl("https://example.org/example");
     HashSet<Category> categoryHierarchy = new HashSet<>();
 
     // Act
-    List<CategorySearchFacet> actualCumulativeSearchFacets = categoryImpl.getCumulativeSearchFacets(categoryHierarchy);
+    List<CategorySearchFacet> actualCumulativeSearchFacets = categoryImpl2.getCumulativeSearchFacets(categoryHierarchy);
 
     // Assert
     assertEquals(1, categoryHierarchy.size());
@@ -9021,82 +4963,18 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getCumulativeSearchFacets(Set)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getCumulativeSearchFacets(Set)"})
   public void testGetCumulativeSearchFacetsWithSet2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
-    HashSet<Category> categoryHierarchy = new HashSet<>();
-
-    // Act
-    List<CategorySearchFacet> actualCumulativeSearchFacets = categoryImpl.getCumulativeSearchFacets(categoryHierarchy);
-
-    // Assert
-    assertEquals(1, categoryHierarchy.size());
-    assertTrue(actualCumulativeSearchFacets.isEmpty());
-  }
-
-  /**
-   * Test {@link CategoryImpl#getCumulativeSearchFacets(Set)} with {@code Set}.
-   * <p>
-   * Method under test: {@link CategoryImpl#getCumulativeSearchFacets(Set)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetCumulativeSearchFacetsWithSet3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3519 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
     CategoryImpl categoryImpl2 = new CategoryImpl();
-
-    // Act
-    categoryImpl2.getCumulativeSearchFacets(new HashSet<>());
-  }
-
-  /**
-   * Test {@link CategoryImpl#getCumulativeSearchFacets(Set)} with {@code Set}.
-   * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) Id is one.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getCumulativeSearchFacets(Set)}
-   */
-  @Test
-  public void testGetCumulativeSearchFacetsWithSet_givenCategoryImplIdIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Category defaultParentCategory = mock(Category.class);
-    when(defaultParentCategory.getCumulativeSearchFacets(Mockito.<Set<Category>>any())).thenReturn(new ArrayList<>());
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setId(1L);
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
-
+    categoryImpl2.setDefaultParentCategory(new CategoryImpl());
     HashSet<Category> categoryHierarchy = new HashSet<>();
-    categoryHierarchy.add(new CategoryImpl());
 
     // Act
-    List<CategorySearchFacet> actualCumulativeSearchFacets = categoryImpl.getCumulativeSearchFacets(categoryHierarchy);
+    List<CategorySearchFacet> actualCumulativeSearchFacets = categoryImpl2.getCumulativeSearchFacets(categoryHierarchy);
 
     // Assert
-    verify(defaultParentCategory).getCumulativeSearchFacets(isA(Set.class));
     assertEquals(1, categoryHierarchy.size());
     assertTrue(actualCumulativeSearchFacets.isEmpty());
   }
@@ -9104,58 +4982,22 @@ public class CategoryImplDiffblueTest {
   /**
    * Test {@link CategoryImpl#getCumulativeSearchFacets(Set)} with {@code Set}.
    * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) Id is one.</li>
+   *   <li>Given {@link CategoryImpl} (default constructor) Name is {@code Name}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#getCumulativeSearchFacets(Set)}
    */
   @Test
-  public void testGetCumulativeSearchFacetsWithSet_givenCategoryImplIdIsOne2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Category defaultParentCategory = mock(Category.class);
-    when(defaultParentCategory.getCumulativeSearchFacets(Mockito.<Set<Category>>any())).thenReturn(new ArrayList<>());
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setId(1L);
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
-
-    CategoryImpl categoryImpl2 = new CategoryImpl();
-    categoryImpl2.setId(1L);
-
-    HashSet<Category> categoryHierarchy = new HashSet<>();
-    categoryHierarchy.add(categoryImpl2);
-
-    // Act
-    List<CategorySearchFacet> actualCumulativeSearchFacets = categoryImpl.getCumulativeSearchFacets(categoryHierarchy);
-
-    // Assert
-    verify(defaultParentCategory).getCumulativeSearchFacets(isA(Set.class));
-    assertEquals(1, categoryHierarchy.size());
-    assertTrue(actualCumulativeSearchFacets.isEmpty());
-  }
-
-  /**
-   * Test {@link CategoryImpl#getCumulativeSearchFacets(Set)} with {@code Set}.
-   * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) Name is
-   * {@code Name}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getCumulativeSearchFacets(Set)}
-   */
-  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getCumulativeSearchFacets(Set)"})
   public void testGetCumulativeSearchFacetsWithSet_givenCategoryImplNameIsName() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName("Name");
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setName("Name");
     HashSet<Category> categoryHierarchy = new HashSet<>();
 
     // Act
-    List<CategorySearchFacet> actualCumulativeSearchFacets = categoryImpl.getCumulativeSearchFacets(categoryHierarchy);
+    List<CategorySearchFacet> actualCumulativeSearchFacets = categoryImpl2.getCumulativeSearchFacets(categoryHierarchy);
 
     // Assert
     assertEquals(1, categoryHierarchy.size());
@@ -9172,45 +5014,18 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getCumulativeSearchFacets(Set)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getCumulativeSearchFacets(Set)"})
   public void testGetCumulativeSearchFacetsWithSet_givenCategoryImpl_thenHashSetSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
+    CategoryImpl categoryImpl2 = new CategoryImpl();
     HashSet<Category> categoryHierarchy = new HashSet<>();
 
     // Act
-    List<CategorySearchFacet> actualCumulativeSearchFacets = categoryImpl.getCumulativeSearchFacets(categoryHierarchy);
+    List<CategorySearchFacet> actualCumulativeSearchFacets = categoryImpl2.getCumulativeSearchFacets(categoryHierarchy);
 
     // Assert
     assertEquals(1, categoryHierarchy.size());
-    assertTrue(actualCumulativeSearchFacets.isEmpty());
-  }
-
-  /**
-   * Test {@link CategoryImpl#getCumulativeSearchFacets(Set)} with {@code Set}.
-   * <ul>
-   *   <li>Given {@link Category}.</li>
-   *   <li>When {@link HashSet#HashSet()} add {@link Category}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getCumulativeSearchFacets(Set)}
-   */
-  @Test
-  public void testGetCumulativeSearchFacetsWithSet_givenCategory_whenHashSetAddCategory() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-
-    HashSet<Category> categoryHierarchy = new HashSet<>();
-    categoryHierarchy.add(mock(Category.class));
-
-    // Act
-    List<CategorySearchFacet> actualCumulativeSearchFacets = categoryImpl.getCumulativeSearchFacets(categoryHierarchy);
-
-    // Assert
-    assertEquals(2, categoryHierarchy.size());
     assertTrue(actualCumulativeSearchFacets.isEmpty());
   }
 
@@ -9223,19 +5038,19 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getCumulativeSearchFacets(Set)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getCumulativeSearchFacets(Set)"})
   public void testGetCumulativeSearchFacetsWithSet_thenCallsGetCumulativeSearchFacets() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Category defaultParentCategory = mock(Category.class);
     when(defaultParentCategory.getCumulativeSearchFacets(Mockito.<Set<Category>>any())).thenReturn(new ArrayList<>());
 
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setDefaultParentCategory(defaultParentCategory);
     HashSet<Category> categoryHierarchy = new HashSet<>();
 
     // Act
-    List<CategorySearchFacet> actualCumulativeSearchFacets = categoryImpl.getCumulativeSearchFacets(categoryHierarchy);
+    List<CategorySearchFacet> actualCumulativeSearchFacets = categoryImpl2.getCumulativeSearchFacets(categoryHierarchy);
 
     // Assert
     verify(defaultParentCategory).getCumulativeSearchFacets(isA(Set.class));
@@ -9252,9 +5067,9 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getCumulativeSearchFacets(Set)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getCumulativeSearchFacets(Set)"})
   public void testGetCumulativeSearchFacetsWithSet_thenReturnArrayList() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ArrayList<CategorySearchFacet> categorySearchFacetList = new ArrayList<>();
     categorySearchFacetList.add(new CategorySearchFacetImpl());
@@ -9262,80 +5077,15 @@ public class CategoryImplDiffblueTest {
     when(defaultParentCategory.getCumulativeSearchFacets(Mockito.<Set<Category>>any()))
         .thenReturn(categorySearchFacetList);
 
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setDefaultParentCategory(defaultParentCategory);
 
     // Act
-    List<CategorySearchFacet> actualCumulativeSearchFacets = categoryImpl.getCumulativeSearchFacets(new HashSet<>());
+    List<CategorySearchFacet> actualCumulativeSearchFacets = categoryImpl2.getCumulativeSearchFacets(new HashSet<>());
 
     // Assert
     verify(defaultParentCategory).getCumulativeSearchFacets(isA(Set.class));
     assertEquals(categorySearchFacetList, actualCumulativeSearchFacets);
-  }
-
-  /**
-   * Test {@link CategoryImpl#getCumulativeSearchFacets(Set)} with {@code Set}.
-   * <ul>
-   *   <li>Then return {@link ArrayList#ArrayList()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getCumulativeSearchFacets(Set)}
-   */
-  @Test
-  public void testGetCumulativeSearchFacetsWithSet_thenReturnArrayList2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Category defaultParentCategory = mock(Category.class);
-    when(defaultParentCategory.getCumulativeSearchFacets(Mockito.<Set<Category>>any())).thenReturn(new ArrayList<>());
-
-    ArrayList<CategorySearchFacet> searchFacets = new ArrayList<>();
-    searchFacets.add(new CategorySearchFacetImpl());
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setSearchFacets(searchFacets);
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
-
-    // Act
-    List<CategorySearchFacet> actualCumulativeSearchFacets = categoryImpl.getCumulativeSearchFacets(new HashSet<>());
-
-    // Assert
-    verify(defaultParentCategory).getCumulativeSearchFacets(isA(Set.class));
-    assertEquals(searchFacets, actualCumulativeSearchFacets);
-  }
-
-  /**
-   * Test {@link CategoryImpl#getCumulativeSearchFacets(Set)} with {@code Set}.
-   * <ul>
-   *   <li>Then return {@link ArrayList#ArrayList()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getCumulativeSearchFacets(Set)}
-   */
-  @Test
-  public void testGetCumulativeSearchFacetsWithSet_thenReturnArrayList3() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ArrayList<CategorySearchFacet> categorySearchFacetList = new ArrayList<>();
-    categorySearchFacetList.add(new CategorySearchFacetImpl());
-    Category defaultParentCategory = mock(Category.class);
-    when(defaultParentCategory.getCumulativeSearchFacets(Mockito.<Set<Category>>any()))
-        .thenReturn(categorySearchFacetList);
-
-    ArrayList<CategorySearchFacet> searchFacets = new ArrayList<>();
-    searchFacets.add(new CategorySearchFacetImpl());
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setSearchFacets(searchFacets);
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
-
-    // Act
-    List<CategorySearchFacet> actualCumulativeSearchFacets = categoryImpl.getCumulativeSearchFacets(new HashSet<>());
-
-    // Assert
-    verify(defaultParentCategory).getCumulativeSearchFacets(isA(Set.class));
-    assertEquals(searchFacets, actualCumulativeSearchFacets);
   }
 
   /**
@@ -9347,43 +5097,42 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getCumulativeSearchFacets(Set)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getCumulativeSearchFacets(Set)"})
   public void testGetCumulativeSearchFacetsWithSet_thenThrowUnsupportedOperationException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Category defaultParentCategory = mock(Category.class);
     when(defaultParentCategory.getCumulativeSearchFacets(Mockito.<Set<Category>>any()))
         .thenThrow(new UnsupportedOperationException("foo"));
 
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setDefaultParentCategory(defaultParentCategory);
 
     // Act and Assert
-    assertThrows(UnsupportedOperationException.class, () -> categoryImpl.getCumulativeSearchFacets(new HashSet<>()));
+    assertThrows(UnsupportedOperationException.class, () -> categoryImpl2.getCumulativeSearchFacets(new HashSet<>()));
     verify(defaultParentCategory).getCumulativeSearchFacets(isA(Set.class));
   }
 
   /**
    * Test {@link CategoryImpl#getCumulativeSearchFacets(Set)} with {@code Set}.
    * <ul>
-   *   <li>When {@link HashSet#HashSet()} add {@link CategoryImpl} (default
-   * constructor).</li>
+   *   <li>When {@link HashSet#HashSet()} add {@link CategoryImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#getCumulativeSearchFacets(Set)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getCumulativeSearchFacets(Set)"})
   public void testGetCumulativeSearchFacetsWithSet_whenHashSetAddCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
+    CategoryImpl categoryImpl2 = new CategoryImpl();
 
     HashSet<Category> categoryHierarchy = new HashSet<>();
     categoryHierarchy.add(new CategoryImpl());
 
     // Act
-    List<CategorySearchFacet> actualCumulativeSearchFacets = categoryImpl.getCumulativeSearchFacets(categoryHierarchy);
+    List<CategorySearchFacet> actualCumulativeSearchFacets = categoryImpl2.getCumulativeSearchFacets(categoryHierarchy);
 
     // Assert
     assertEquals(1, categoryHierarchy.size());
@@ -9400,17 +5149,17 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getCumulativeSearchFacets(Set)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getCumulativeSearchFacets(Set)"})
   public void testGetCumulativeSearchFacetsWithSet_whenHashSetAddNull_thenHashSetSizeIsTwo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
+    CategoryImpl categoryImpl2 = new CategoryImpl();
 
     HashSet<Category> categoryHierarchy = new HashSet<>();
     categoryHierarchy.add(null);
 
     // Act
-    List<CategorySearchFacet> actualCumulativeSearchFacets = categoryImpl.getCumulativeSearchFacets(categoryHierarchy);
+    List<CategorySearchFacet> actualCumulativeSearchFacets = categoryImpl2.getCumulativeSearchFacets(categoryHierarchy);
 
     // Assert
     assertEquals(2, categoryHierarchy.size());
@@ -9420,44 +5169,42 @@ public class CategoryImplDiffblueTest {
   /**
    * Test {@link CategoryImpl#getCumulativeSearchFacets()}.
    * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) Name is
-   * {@code Name}.</li>
+   *   <li>Given {@link CategoryImpl} (default constructor) Name is {@code Name}.</li>
    *   <li>Then return Empty.</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#getCumulativeSearchFacets()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getCumulativeSearchFacets()"})
   public void testGetCumulativeSearchFacets_givenCategoryImplNameIsName_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName("Name");
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setName("Name");
 
     // Act and Assert
-    assertTrue(categoryImpl.getCumulativeSearchFacets().isEmpty());
+    assertTrue(categoryImpl2.getCumulativeSearchFacets().isEmpty());
   }
 
   /**
    * Test {@link CategoryImpl#getCumulativeSearchFacets()}.
    * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) Url is
-   * {@code https://example.org/example}.</li>
+   *   <li>Given {@link CategoryImpl} (default constructor) Url is {@code https://example.org/example}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#getCumulativeSearchFacets()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getCumulativeSearchFacets()"})
   public void testGetCumulativeSearchFacets_givenCategoryImplUrlIsHttpsExampleOrgExample() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setUrl("https://example.org/example");
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setUrl("https://example.org/example");
 
     // Act and Assert
-    assertTrue(categoryImpl.getCumulativeSearchFacets().isEmpty());
+    assertTrue(categoryImpl2.getCumulativeSearchFacets().isEmpty());
   }
 
   /**
@@ -9470,9 +5217,9 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getCumulativeSearchFacets()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getCumulativeSearchFacets()"})
   public void testGetCumulativeSearchFacets_givenCategoryImpl_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertTrue((new CategoryImpl()).getCumulativeSearchFacets().isEmpty());
   }
@@ -9480,123 +5227,58 @@ public class CategoryImplDiffblueTest {
   /**
    * Test {@link CategoryImpl#getCumulativeSearchFacets()}.
    * <ul>
-   *   <li>Then return {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then calls {@link Category#getCumulativeSearchFacets(Set)}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#getCumulativeSearchFacets()}
    */
   @Test
-  public void testGetCumulativeSearchFacets_thenReturnArrayList() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ArrayList<CategorySearchFacet> categorySearchFacetList = new ArrayList<>();
-    categorySearchFacetList.add(new CategorySearchFacetImpl());
-    Category defaultParentCategory = mock(Category.class);
-    when(defaultParentCategory.getCumulativeSearchFacets(Mockito.<Set<Category>>any()))
-        .thenReturn(categorySearchFacetList);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
-
-    // Act
-    List<CategorySearchFacet> actualCumulativeSearchFacets = categoryImpl.getCumulativeSearchFacets();
-
-    // Assert
-    verify(defaultParentCategory).getCumulativeSearchFacets(isA(Set.class));
-    assertEquals(categorySearchFacetList, actualCumulativeSearchFacets);
-  }
-
-  /**
-   * Test {@link CategoryImpl#getCumulativeSearchFacets()}.
-   * <ul>
-   *   <li>Then return {@link ArrayList#ArrayList()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getCumulativeSearchFacets()}
-   */
-  @Test
-  public void testGetCumulativeSearchFacets_thenReturnArrayList2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getCumulativeSearchFacets()"})
+  public void testGetCumulativeSearchFacets_thenCallsGetCumulativeSearchFacets() {
     // Arrange
     Category defaultParentCategory = mock(Category.class);
     when(defaultParentCategory.getCumulativeSearchFacets(Mockito.<Set<Category>>any())).thenReturn(new ArrayList<>());
 
-    ArrayList<CategorySearchFacet> searchFacets = new ArrayList<>();
-    searchFacets.add(new CategorySearchFacetImpl());
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setSearchFacets(searchFacets);
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setDefaultParentCategory(defaultParentCategory);
 
     // Act
-    List<CategorySearchFacet> actualCumulativeSearchFacets = categoryImpl.getCumulativeSearchFacets();
-
-    // Assert
-    verify(defaultParentCategory).getCumulativeSearchFacets(isA(Set.class));
-    assertEquals(searchFacets, actualCumulativeSearchFacets);
-  }
-
-  /**
-   * Test {@link CategoryImpl#getCumulativeSearchFacets()}.
-   * <ul>
-   *   <li>Then return {@link ArrayList#ArrayList()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getCumulativeSearchFacets()}
-   */
-  @Test
-  public void testGetCumulativeSearchFacets_thenReturnArrayList3() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ArrayList<CategorySearchFacet> categorySearchFacetList = new ArrayList<>();
-    categorySearchFacetList.add(new CategorySearchFacetImpl());
-    Category defaultParentCategory = mock(Category.class);
-    when(defaultParentCategory.getCumulativeSearchFacets(Mockito.<Set<Category>>any()))
-        .thenReturn(categorySearchFacetList);
-
-    ArrayList<CategorySearchFacet> searchFacets = new ArrayList<>();
-    searchFacets.add(new CategorySearchFacetImpl());
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setSearchFacets(searchFacets);
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
-
-    // Act
-    List<CategorySearchFacet> actualCumulativeSearchFacets = categoryImpl.getCumulativeSearchFacets();
-
-    // Assert
-    verify(defaultParentCategory).getCumulativeSearchFacets(isA(Set.class));
-    assertEquals(searchFacets, actualCumulativeSearchFacets);
-  }
-
-  /**
-   * Test {@link CategoryImpl#getCumulativeSearchFacets()}.
-   * <ul>
-   *   <li>Then return Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getCumulativeSearchFacets()}
-   */
-  @Test
-  public void testGetCumulativeSearchFacets_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Category defaultParentCategory = mock(Category.class);
-    when(defaultParentCategory.getCumulativeSearchFacets(Mockito.<Set<Category>>any())).thenReturn(new ArrayList<>());
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
-
-    // Act
-    List<CategorySearchFacet> actualCumulativeSearchFacets = categoryImpl.getCumulativeSearchFacets();
+    List<CategorySearchFacet> actualCumulativeSearchFacets = categoryImpl2.getCumulativeSearchFacets();
 
     // Assert
     verify(defaultParentCategory).getCumulativeSearchFacets(isA(Set.class));
     assertTrue(actualCumulativeSearchFacets.isEmpty());
+  }
+
+  /**
+   * Test {@link CategoryImpl#getCumulativeSearchFacets()}.
+   * <ul>
+   *   <li>Then return {@link ArrayList#ArrayList()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CategoryImpl#getCumulativeSearchFacets()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getCumulativeSearchFacets()"})
+  public void testGetCumulativeSearchFacets_thenReturnArrayList() {
+    // Arrange
+    ArrayList<CategorySearchFacet> categorySearchFacetList = new ArrayList<>();
+    categorySearchFacetList.add(new CategorySearchFacetImpl());
+    Category defaultParentCategory = mock(Category.class);
+    when(defaultParentCategory.getCumulativeSearchFacets(Mockito.<Set<Category>>any()))
+        .thenReturn(categorySearchFacetList);
+
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setDefaultParentCategory(defaultParentCategory);
+
+    // Act
+    List<CategorySearchFacet> actualCumulativeSearchFacets = categoryImpl2.getCumulativeSearchFacets();
+
+    // Assert
+    verify(defaultParentCategory).getCumulativeSearchFacets(isA(Set.class));
+    assertEquals(categorySearchFacetList, actualCumulativeSearchFacets);
   }
 
   /**
@@ -9608,63 +5290,35 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getCumulativeSearchFacets()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CategoryImpl.getCumulativeSearchFacets()"})
   public void testGetCumulativeSearchFacets_thenThrowUnsupportedOperationException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Category defaultParentCategory = mock(Category.class);
     when(defaultParentCategory.getCumulativeSearchFacets(Mockito.<Set<Category>>any()))
         .thenThrow(new UnsupportedOperationException("foo"));
 
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(defaultParentCategory);
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setDefaultParentCategory(defaultParentCategory);
 
     // Act and Assert
-    assertThrows(UnsupportedOperationException.class, () -> categoryImpl.getCumulativeSearchFacets());
+    assertThrows(UnsupportedOperationException.class, () -> categoryImpl2.getCumulativeSearchFacets());
     verify(defaultParentCategory).getCumulativeSearchFacets(isA(Set.class));
-  }
-
-  /**
-   * Test {@link CategoryImpl#getCategoryMedia()}.
-   * <p>
-   * Method under test: {@link CategoryImpl#getCategoryMedia()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetCategoryMedia() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3279 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryImpl()).getCategoryMedia();
   }
 
   /**
    * Test {@link CategoryImpl#getCategoryMedia()}.
    * <ul>
    *   <li>Given {@link CategoryImpl} (default constructor).</li>
+   *   <li>Then return Empty.</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#getCategoryMedia()}
    */
   @Test
-  public void testGetCategoryMedia_givenCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map CategoryImpl.getCategoryMedia()"})
+  public void testGetCategoryMedia_givenCategoryImpl_thenReturnEmpty() {
     // Arrange, Act and Assert
     assertTrue((new CategoryImpl()).getCategoryMedia().isEmpty());
   }
@@ -9672,61 +5326,61 @@ public class CategoryImplDiffblueTest {
   /**
    * Test {@link CategoryImpl#getCategoryMedia()}.
    * <ul>
-   *   <li>Given {@link Date} {@link java.util.Date#getTime()} return ten.</li>
-   *   <li>Then calls {@link java.util.Date#getTime()}.</li>
+   *   <li>Given {@link HashMap#HashMap()} {@code foo} is {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()}.</li>
+   *   <li>Then return {@code foo} is {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#getCategoryMedia()}
    */
   @Test
-  public void testGetCategoryMedia_givenDateGetTimeReturnTen_thenCallsGetTime() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map CategoryImpl.getCategoryMedia()"})
+  public void testGetCategoryMedia_givenHashMapFooIsCategoryMediaXrefImpl_thenReturnFooIsNull() {
     // Arrange
-    java.sql.Date activeStartDate = mock(java.sql.Date.class);
-    when(activeStartDate.getTime()).thenReturn(10L);
+    HashMap<String, CategoryMediaXref> categoryMediaXref = new HashMap<>();
+    categoryMediaXref.put("foo", new CategoryMediaXrefImpl());
 
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setActiveStartDate(activeStartDate);
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setCategoryMediaXref(categoryMediaXref);
 
     // Act
-    Map<String, Media> actualCategoryMedia = categoryImpl.getCategoryMedia();
+    Map<String, Media> actualCategoryMedia = categoryImpl2.getCategoryMedia();
 
     // Assert
-    verify(activeStartDate).getTime();
-    assertTrue(actualCategoryMedia.isEmpty());
+    assertEquals(1, actualCategoryMedia.size());
+    assertNull(actualCategoryMedia.get("foo"));
   }
 
   /**
-   * Test {@link CategoryImpl#setCategoryMedia(Map)}.
+   * Test {@link CategoryImpl#getCategoryMedia()}.
+   * <ul>
+   *   <li>Then return {@code foo} is {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()}.</li>
+   * </ul>
    * <p>
-   * Method under test: {@link CategoryImpl#setCategoryMedia(Map)}
+   * Method under test: {@link CategoryImpl#getCategoryMedia()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetCategoryMedia() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4539 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map CategoryImpl.getCategoryMedia()"})
+  public void testGetCategoryMedia_thenReturnFooIsCategoryMediaXrefImpl() {
     // Arrange
+    CategoryMediaXrefImpl categoryMediaXrefImpl = mock(CategoryMediaXrefImpl.class);
+    CategoryMediaXrefImpl categoryMediaXrefImpl2 = new CategoryMediaXrefImpl();
+    when(categoryMediaXrefImpl.getMedia()).thenReturn(categoryMediaXrefImpl2);
+
+    HashMap<String, CategoryMediaXref> categoryMediaXref = new HashMap<>();
+    categoryMediaXref.put("foo", categoryMediaXrefImpl);
+
     CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setCategoryMediaXref(categoryMediaXref);
 
     // Act
-    categoryImpl2.setCategoryMedia(new HashMap<>());
+    Map<String, Media> actualCategoryMedia = categoryImpl2.getCategoryMedia();
+
+    // Assert
+    verify(categoryMediaXrefImpl).getMedia();
+    assertEquals(1, actualCategoryMedia.size());
+    assertSame(categoryMediaXrefImpl2, actualCategoryMedia.get("foo"));
   }
 
   /**
@@ -9739,21 +5393,21 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#setCategoryMedia(Map)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.setCategoryMedia(Map)"})
   public void testSetCategoryMedia_whenHashMap_thenHashMapEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
+    CategoryImpl categoryImpl2 = new CategoryImpl();
     HashMap<String, Media> categoryMedia = new HashMap<>();
 
     // Act
-    categoryImpl.setCategoryMedia(categoryMedia);
+    categoryImpl2.setCategoryMedia(categoryMedia);
 
-    // Assert
+    // Assert that nothing has changed
     assertTrue(categoryMedia.isEmpty());
-    assertTrue(categoryImpl.getCategoryMedia().isEmpty());
-    assertTrue(categoryImpl.getCategoryMediaXref().isEmpty());
-    assertTrue(categoryImpl.legacyCategoryMedia.isEmpty());
+    assertTrue(categoryImpl2.getCategoryMedia().isEmpty());
+    assertTrue(categoryImpl2.getCategoryMediaXref().isEmpty());
+    assertTrue(categoryImpl2.legacyCategoryMedia.isEmpty());
   }
 
   /**
@@ -9762,41 +5416,39 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getCategoryAttributesMap()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map CategoryImpl.getCategoryAttributesMap()"})
   public void testGetCategoryAttributesMap() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3249 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    HashMap<String, CategoryAttribute> categoryAttributes = new HashMap<>();
+    CategoryAttributeImpl categoryAttributeImpl = new CategoryAttributeImpl();
+    categoryAttributes.put("ThreadLocalManager.notify.orphans", categoryAttributeImpl);
+    categoryAttributes.put("foo", new CategoryAttributeImpl());
 
-    // Arrange and Act
-    (new CategoryImpl()).getCategoryAttributesMap();
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setCategoryAttributesMap(categoryAttributes);
+
+    // Act
+    Map<String, CategoryAttribute> actualCategoryAttributesMap = categoryImpl2.getCategoryAttributesMap();
+
+    // Assert
+    assertEquals(1, actualCategoryAttributesMap.size());
+    assertSame(categoryAttributeImpl, actualCategoryAttributesMap.get(null));
   }
 
   /**
    * Test {@link CategoryImpl#getCategoryAttributesMap()}.
    * <ul>
    *   <li>Given {@link CategoryImpl} (default constructor).</li>
+   *   <li>Then return Empty.</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#getCategoryAttributesMap()}
    */
   @Test
-  public void testGetCategoryAttributesMap_givenCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map CategoryImpl.getCategoryAttributesMap()"})
+  public void testGetCategoryAttributesMap_givenCategoryImpl_thenReturnEmpty() {
     // Arrange, Act and Assert
     assertTrue((new CategoryImpl()).getCategoryAttributesMap().isEmpty());
   }
@@ -9804,131 +5456,93 @@ public class CategoryImplDiffblueTest {
   /**
    * Test {@link CategoryImpl#getCategoryAttributesMap()}.
    * <ul>
-   *   <li>Given {@link Date} {@link java.util.Date#getTime()} return ten.</li>
-   *   <li>Then calls {@link java.util.Date#getTime()}.</li>
+   *   <li>Then return containsKey {@code Name}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#getCategoryAttributesMap()}
    */
   @Test
-  public void testGetCategoryAttributesMap_givenDateGetTimeReturnTen_thenCallsGetTime() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map CategoryImpl.getCategoryAttributesMap()"})
+  public void testGetCategoryAttributesMap_thenReturnContainsKeyName() {
     // Arrange
-    java.sql.Date activeStartDate = mock(java.sql.Date.class);
-    when(activeStartDate.getTime()).thenReturn(10L);
+    CategoryAttributeImpl categoryAttributeImpl = mock(CategoryAttributeImpl.class);
+    when(categoryAttributeImpl.getName()).thenReturn("Name");
 
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setActiveStartDate(activeStartDate);
+    HashMap<String, CategoryAttribute> categoryAttributes = new HashMap<>();
+    categoryAttributes.put("foo", categoryAttributeImpl);
+
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setCategoryAttributesMap(categoryAttributes);
 
     // Act
-    Map<String, CategoryAttribute> actualCategoryAttributesMap = categoryImpl.getCategoryAttributesMap();
+    Map<String, CategoryAttribute> actualCategoryAttributesMap = categoryImpl2.getCategoryAttributesMap();
 
     // Assert
-    verify(activeStartDate).getTime();
-    assertTrue(actualCategoryAttributesMap.isEmpty());
+    verify(categoryAttributeImpl).getName();
+    assertEquals(1, actualCategoryAttributesMap.size());
+    assertTrue(actualCategoryAttributesMap.containsKey("Name"));
+  }
+
+  /**
+   * Test {@link CategoryImpl#getCategoryAttributesMap()}.
+   * <ul>
+   *   <li>Then return {@code null} is {@link CategoryAttributeImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CategoryImpl#getCategoryAttributesMap()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map CategoryImpl.getCategoryAttributesMap()"})
+  public void testGetCategoryAttributesMap_thenReturnNullIsCategoryAttributeImpl() {
+    // Arrange
+    HashMap<String, CategoryAttribute> categoryAttributes = new HashMap<>();
+    CategoryAttributeImpl categoryAttributeImpl = new CategoryAttributeImpl();
+    categoryAttributes.put("foo", categoryAttributeImpl);
+
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setCategoryAttributesMap(categoryAttributes);
+
+    // Act
+    Map<String, CategoryAttribute> actualCategoryAttributesMap = categoryImpl2.getCategoryAttributesMap();
+
+    // Assert
+    assertEquals(1, actualCategoryAttributesMap.size());
+    assertSame(categoryAttributeImpl, actualCategoryAttributesMap.get(null));
   }
 
   /**
    * Test {@link CategoryImpl#setCategoryAttributesMap(Map)}.
+   * <ul>
+   *   <li>Then {@link CategoryImpl} (default constructor) CategoryAttributes size is one.</li>
+   * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#setCategoryAttributesMap(Map)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetCategoryAttributesMap() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4509 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.setCategoryAttributesMap(Map)"})
+  public void testSetCategoryAttributesMap_thenCategoryImplCategoryAttributesSizeIsOne() {
     // Arrange
     CategoryImpl categoryImpl2 = new CategoryImpl();
 
-    // Act
-    categoryImpl2.setCategoryAttributesMap(new HashMap<>());
-  }
-
-  /**
-   * Test {@link CategoryImpl#setCategoryAttributesMap(Map)}.
-   * <ul>
-   *   <li>Given {@link BiFunction}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#setCategoryAttributesMap(Map)}
-   */
-  @Test
-  public void testSetCategoryAttributesMap_givenBiFunction() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-
-    HashMap<String, CategoryAttribute> categoryAttributes = new HashMap<>();
-    categoryAttributes.computeIfPresent("foo", mock(BiFunction.class));
-    CategoryAttributeImpl categoryAttributeImpl = new CategoryAttributeImpl();
-    categoryAttributes.put("foo", categoryAttributeImpl);
-
-    // Act
-    categoryImpl.setCategoryAttributesMap(categoryAttributes);
-
-    // Assert
-    List<CategoryAttribute> categoryAttributes2 = categoryImpl.getCategoryAttributes();
-    assertEquals(1, categoryAttributes2.size());
-    Map<String, CategoryAttribute> categoryAttributesMap = categoryImpl.getCategoryAttributesMap();
-    assertEquals(1, categoryAttributesMap.size());
-    Map<String, CategoryAttribute> multiValueCategoryAttributes = categoryImpl.getMultiValueCategoryAttributes();
-    assertEquals(1, multiValueCategoryAttributes.size());
-    assertEquals(categoryAttributes2, multiValueCategoryAttributes.get(null));
-    assertEquals(categoryAttributesMap, categoryImpl.getMappedCategoryAttributes());
-    assertSame(categoryAttributeImpl, categoryAttributes2.get(0));
-    assertSame(categoryAttributeImpl, categoryAttributesMap.get(null));
-  }
-
-  /**
-   * Test {@link CategoryImpl#setCategoryAttributesMap(Map)}.
-   * <ul>
-   *   <li>Then {@link CategoryImpl} (default constructor) CategoryAttributes size
-   * is one.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#setCategoryAttributesMap(Map)}
-   */
-  @Test
-  public void testSetCategoryAttributesMap_thenCategoryImplCategoryAttributesSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-
     HashMap<String, CategoryAttribute> categoryAttributes = new HashMap<>();
     CategoryAttributeImpl categoryAttributeImpl = new CategoryAttributeImpl();
     categoryAttributes.put("foo", categoryAttributeImpl);
 
     // Act
-    categoryImpl.setCategoryAttributesMap(categoryAttributes);
+    categoryImpl2.setCategoryAttributesMap(categoryAttributes);
 
     // Assert
-    List<CategoryAttribute> categoryAttributes2 = categoryImpl.getCategoryAttributes();
+    List<CategoryAttribute> categoryAttributes2 = categoryImpl2.getCategoryAttributes();
     assertEquals(1, categoryAttributes2.size());
-    Map<String, CategoryAttribute> categoryAttributesMap = categoryImpl.getCategoryAttributesMap();
+    Map<String, CategoryAttribute> categoryAttributesMap = categoryImpl2.getCategoryAttributesMap();
     assertEquals(1, categoryAttributesMap.size());
-    Map<String, CategoryAttribute> multiValueCategoryAttributes = categoryImpl.getMultiValueCategoryAttributes();
+    Map<String, CategoryAttribute> multiValueCategoryAttributes = categoryImpl2.getMultiValueCategoryAttributes();
     assertEquals(1, multiValueCategoryAttributes.size());
     assertEquals(categoryAttributes2, multiValueCategoryAttributes.get(null));
-    assertEquals(categoryAttributesMap, categoryImpl.getMappedCategoryAttributes());
+    assertEquals(categoryAttributesMap, categoryImpl2.getMappedCategoryAttributes());
     assertSame(categoryAttributeImpl, categoryAttributes2.get(0));
     assertSame(categoryAttributeImpl, categoryAttributesMap.get(null));
   }
@@ -9937,27 +5551,26 @@ public class CategoryImplDiffblueTest {
    * Test {@link CategoryImpl#setCategoryAttributesMap(Map)}.
    * <ul>
    *   <li>When {@link HashMap#HashMap()}.</li>
-   *   <li>Then {@link CategoryImpl} (default constructor) CategoryAttributes
-   * Empty.</li>
+   *   <li>Then {@link CategoryImpl} (default constructor) CategoryAttributes Empty.</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#setCategoryAttributesMap(Map)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.setCategoryAttributesMap(Map)"})
   public void testSetCategoryAttributesMap_whenHashMap_thenCategoryImplCategoryAttributesEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
+    CategoryImpl categoryImpl2 = new CategoryImpl();
 
     // Act
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
+    categoryImpl2.setCategoryAttributesMap(new HashMap<>());
 
-    // Assert
-    assertTrue(categoryImpl.getCategoryAttributes().isEmpty());
-    assertTrue(categoryImpl.getCategoryAttributesMap().isEmpty());
-    assertTrue(categoryImpl.getMappedCategoryAttributes().isEmpty());
-    assertTrue(categoryImpl.getMultiValueCategoryAttributes().isEmpty());
+    // Assert that nothing has changed
+    assertTrue(categoryImpl2.getCategoryAttributes().isEmpty());
+    assertTrue(categoryImpl2.getCategoryAttributesMap().isEmpty());
+    assertTrue(categoryImpl2.getMappedCategoryAttributes().isEmpty());
+    assertTrue(categoryImpl2.getMultiValueCategoryAttributes().isEmpty());
   }
 
   /**
@@ -9966,114 +5579,52 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getCategoryAttributeByName(String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CategoryAttribute CategoryImpl.getCategoryAttributeByName(String)"})
   public void testGetCategoryAttributeByName() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3219 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryImpl()).getCategoryAttributeByName("Name");
-  }
-
-  /**
-   * Test {@link CategoryImpl#getCategoryAttributeByName(String)}.
-   * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getCategoryAttributeByName(String)}
-   */
-  @Test
-  public void testGetCategoryAttributeByName_givenCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new CategoryImpl()).getCategoryAttributeByName("Name"));
   }
 
   /**
-   * Test {@link CategoryImpl#getCategoryAttributeByName(String)}.
-   * <ul>
-   *   <li>Given {@link Date} {@link java.util.Date#getTime()} return ten.</li>
-   *   <li>Then calls {@link java.util.Date#getTime()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getCategoryAttributeByName(String)}
-   */
-  @Test
-  public void testGetCategoryAttributeByName_givenDateGetTimeReturnTen_thenCallsGetTime() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    java.sql.Date activeStartDate = mock(java.sql.Date.class);
-    when(activeStartDate.getTime()).thenReturn(10L);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setActiveStartDate(activeStartDate);
-
-    // Act
-    CategoryAttribute actualCategoryAttributeByName = categoryImpl.getCategoryAttributeByName("Name");
-
-    // Assert
-    verify(activeStartDate).getTime();
-    assertNull(actualCategoryAttributeByName);
-  }
-
-  /**
    * Test {@link CategoryImpl#getMappedCategoryAttributes()}.
    * <p>
    * Method under test: {@link CategoryImpl#getMappedCategoryAttributes()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map CategoryImpl.getMappedCategoryAttributes()"})
   public void testGetMappedCategoryAttributes() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3819 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    HashMap<String, CategoryAttribute> categoryAttributes = new HashMap<>();
+    CategoryAttributeImpl categoryAttributeImpl = new CategoryAttributeImpl();
+    categoryAttributes.put("ThreadLocalManager.notify.orphans", categoryAttributeImpl);
+    categoryAttributes.put("foo", new CategoryAttributeImpl());
 
-    // Arrange and Act
-    (new CategoryImpl()).getMappedCategoryAttributes();
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setCategoryAttributesMap(categoryAttributes);
+
+    // Act
+    Map<String, CategoryAttribute> actualMappedCategoryAttributes = categoryImpl2.getMappedCategoryAttributes();
+
+    // Assert
+    assertEquals(1, actualMappedCategoryAttributes.size());
+    assertSame(categoryAttributeImpl, actualMappedCategoryAttributes.get(null));
   }
 
   /**
    * Test {@link CategoryImpl#getMappedCategoryAttributes()}.
    * <ul>
    *   <li>Given {@link CategoryImpl} (default constructor).</li>
+   *   <li>Then return Empty.</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#getMappedCategoryAttributes()}
    */
   @Test
-  public void testGetMappedCategoryAttributes_givenCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map CategoryImpl.getMappedCategoryAttributes()"})
+  public void testGetMappedCategoryAttributes_givenCategoryImpl_thenReturnEmpty() {
     // Arrange, Act and Assert
     assertTrue((new CategoryImpl()).getMappedCategoryAttributes().isEmpty());
   }
@@ -10081,261 +5632,114 @@ public class CategoryImplDiffblueTest {
   /**
    * Test {@link CategoryImpl#getMappedCategoryAttributes()}.
    * <ul>
-   *   <li>Given {@link Date} {@link java.util.Date#getTime()} return ten.</li>
-   *   <li>Then calls {@link java.util.Date#getTime()}.</li>
+   *   <li>Then return containsKey {@code Name}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#getMappedCategoryAttributes()}
    */
   @Test
-  public void testGetMappedCategoryAttributes_givenDateGetTimeReturnTen_thenCallsGetTime() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map CategoryImpl.getMappedCategoryAttributes()"})
+  public void testGetMappedCategoryAttributes_thenReturnContainsKeyName() {
     // Arrange
-    java.sql.Date activeStartDate = mock(java.sql.Date.class);
-    when(activeStartDate.getTime()).thenReturn(10L);
+    CategoryAttributeImpl categoryAttributeImpl = mock(CategoryAttributeImpl.class);
+    when(categoryAttributeImpl.getName()).thenReturn("Name");
 
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setActiveStartDate(activeStartDate);
+    HashMap<String, CategoryAttribute> categoryAttributes = new HashMap<>();
+    categoryAttributes.put("foo", categoryAttributeImpl);
+
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setCategoryAttributesMap(categoryAttributes);
 
     // Act
-    Map<String, CategoryAttribute> actualMappedCategoryAttributes = categoryImpl.getMappedCategoryAttributes();
+    Map<String, CategoryAttribute> actualMappedCategoryAttributes = categoryImpl2.getMappedCategoryAttributes();
 
     // Assert
-    verify(activeStartDate).getTime();
-    assertTrue(actualMappedCategoryAttributes.isEmpty());
+    verify(categoryAttributeImpl).getName();
+    assertEquals(1, actualMappedCategoryAttributes.size());
+    assertTrue(actualMappedCategoryAttributes.containsKey("Name"));
   }
 
   /**
-   * Test {@link CategoryImpl#getMultiValueCategoryAttributes()}.
+   * Test {@link CategoryImpl#getMappedCategoryAttributes()}.
+   * <ul>
+   *   <li>Then return {@code null} is {@link CategoryAttributeImpl} (default constructor).</li>
+   * </ul>
    * <p>
-   * Method under test: {@link CategoryImpl#getMultiValueCategoryAttributes()}
+   * Method under test: {@link CategoryImpl#getMappedCategoryAttributes()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetMultiValueCategoryAttributes() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3849 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map CategoryImpl.getMappedCategoryAttributes()"})
+  public void testGetMappedCategoryAttributes_thenReturnNullIsCategoryAttributeImpl() {
+    // Arrange
+    HashMap<String, CategoryAttribute> categoryAttributes = new HashMap<>();
+    CategoryAttributeImpl categoryAttributeImpl = new CategoryAttributeImpl();
+    categoryAttributes.put("foo", categoryAttributeImpl);
 
-    // Arrange and Act
-    (new CategoryImpl()).getMultiValueCategoryAttributes();
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2.setCategoryAttributesMap(categoryAttributes);
+
+    // Act
+    Map<String, CategoryAttribute> actualMappedCategoryAttributes = categoryImpl2.getMappedCategoryAttributes();
+
+    // Assert
+    assertEquals(1, actualMappedCategoryAttributes.size());
+    assertSame(categoryAttributeImpl, actualMappedCategoryAttributes.get(null));
   }
 
   /**
    * Test {@link CategoryImpl#getMultiValueCategoryAttributes()}.
    * <ul>
    *   <li>Given {@link CategoryImpl} (default constructor).</li>
+   *   <li>Then return Empty.</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#getMultiValueCategoryAttributes()}
    */
   @Test
-  public void testGetMultiValueCategoryAttributes_givenCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map CategoryImpl.getMultiValueCategoryAttributes()"})
+  public void testGetMultiValueCategoryAttributes_givenCategoryImpl_thenReturnEmpty() {
     // Arrange, Act and Assert
     assertTrue((new CategoryImpl()).getMultiValueCategoryAttributes().isEmpty());
   }
 
   /**
-   * Test {@link CategoryImpl#getMultiValueCategoryAttributes()}.
-   * <ul>
-   *   <li>Given {@link Date} {@link java.util.Date#getTime()} return ten.</li>
-   *   <li>Then calls {@link java.util.Date#getTime()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getMultiValueCategoryAttributes()}
-   */
-  @Test
-  public void testGetMultiValueCategoryAttributes_givenDateGetTimeReturnTen_thenCallsGetTime() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    java.sql.Date activeStartDate = mock(java.sql.Date.class);
-    when(activeStartDate.getTime()).thenReturn(10L);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setActiveStartDate(activeStartDate);
-
-    // Act
-    Map<String, CategoryAttribute> actualMultiValueCategoryAttributes = categoryImpl.getMultiValueCategoryAttributes();
-
-    // Assert
-    verify(activeStartDate).getTime();
-    assertTrue(actualMultiValueCategoryAttributes.isEmpty());
-  }
-
-  /**
    * Test {@link CategoryImpl#getArchived()}.
    * <p>
    * Method under test: {@link CategoryImpl#getArchived()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Character CategoryImpl.getArchived()"})
   public void testGetArchived() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3189 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryImpl()).getArchived();
-  }
-
-  /**
-   * Test {@link CategoryImpl#getArchived()}.
-   * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getArchived()}
-   */
-  @Test
-  public void testGetArchived_givenCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertEquals('N', (new CategoryImpl()).getArchived().charValue());
   }
 
   /**
-   * Test {@link CategoryImpl#getArchived()}.
-   * <ul>
-   *   <li>Given {@link Date} {@link java.util.Date#getTime()} return ten.</li>
-   *   <li>Then calls {@link java.util.Date#getTime()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getArchived()}
-   */
-  @Test
-  public void testGetArchived_givenDateGetTimeReturnTen_thenCallsGetTime() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    java.sql.Date activeStartDate = mock(java.sql.Date.class);
-    when(activeStartDate.getTime()).thenReturn(10L);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setActiveStartDate(activeStartDate);
-
-    // Act
-    Character actualArchived = categoryImpl.getArchived();
-
-    // Assert
-    verify(activeStartDate).getTime();
-    assertEquals('N', actualArchived.charValue());
-  }
-
-  /**
    * Test {@link CategoryImpl#setArchived(Character)}.
    * <p>
    * Method under test: {@link CategoryImpl#setArchived(Character)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.setArchived(Character)"})
   public void testSetArchived() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4479 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryImpl()).setArchived('A');
-  }
-
-  /**
-   * Test {@link CategoryImpl#setArchived(Character)}.
-   * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#setArchived(Character)}
-   */
-  @Test
-  public void testSetArchived_givenCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
+    CategoryImpl categoryImpl2 = new CategoryImpl();
 
     // Act
-    categoryImpl.setArchived('A');
+    categoryImpl2.setArchived('A');
 
     // Assert
-    assertEquals('A', categoryImpl.archiveStatus.getArchived().charValue());
-    assertEquals('A', categoryImpl.getArchived().charValue());
+    assertEquals('A', categoryImpl2.archiveStatus.getArchived().charValue());
+    assertEquals('A', categoryImpl2.getArchived().charValue());
   }
 
   /**
-   * Test {@link CategoryImpl#setArchived(Character)}.
-   * <ul>
-   *   <li>Given {@link Date} {@link java.util.Date#getTime()} return ten.</li>
-   *   <li>Then calls {@link java.util.Date#getTime()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#setArchived(Character)}
-   */
-  @Test
-  public void testSetArchived_givenDateGetTimeReturnTen_thenCallsGetTime() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    java.sql.Date activeStartDate = mock(java.sql.Date.class);
-    when(activeStartDate.getTime()).thenReturn(10L);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setActiveStartDate(activeStartDate);
-
-    // Act
-    categoryImpl.setArchived('A');
-
-    // Assert
-    verify(activeStartDate).getTime();
-    assertEquals('A', categoryImpl.archiveStatus.getArchived().charValue());
-    assertEquals('A', categoryImpl.getArchived().charValue());
-  }
-
-  /**
-   * Test {@link CategoryImpl#equals(Object)}, and
-   * {@link CategoryImpl#hashCode()}.
+   * Test {@link CategoryImpl#equals(Object)}, and {@link CategoryImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -10348,6 +5752,8 @@ public class CategoryImplDiffblueTest {
    * </ul>
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryImpl.equals(Object)", "int CategoryImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     CategoryImpl categoryImpl = new CategoryImpl();
@@ -10421,8 +5827,7 @@ public class CategoryImplDiffblueTest {
   }
 
   /**
-   * Test {@link CategoryImpl#equals(Object)}, and
-   * {@link CategoryImpl#hashCode()}.
+   * Test {@link CategoryImpl#equals(Object)}, and {@link CategoryImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -10435,94 +5840,9 @@ public class CategoryImplDiffblueTest {
    * </ul>
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryImpl.equals(Object)", "int CategoryImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl
-        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl
-        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl.setDefaultParentCategory(mock(Category.class));
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrl("https://example.org/example");
-    categoryImpl.setUrlKey("https://example.org/example");
-
-    CategoryImpl categoryImpl2 = new CategoryImpl();
-    categoryImpl2
-        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl2
-        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl2.setCategoryAttributes(new ArrayList<>());
-    categoryImpl2.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl2.setCategoryMediaXref(new HashMap<>());
-    categoryImpl2.setChildCategoryIds(new ArrayList<>());
-    categoryImpl2.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl2.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl2.setDescription("The characteristics of someone or something");
-    categoryImpl2.setDisplayTemplate("Display Template");
-    categoryImpl2.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl2.setExternalId("42");
-    categoryImpl2.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl2.setId(1L);
-    categoryImpl2.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl2.setLongDescription("Long Description");
-    categoryImpl2.setMetaDescription("Meta Description");
-    categoryImpl2.setMetaTitle("Dr");
-    categoryImpl2.setName("Name");
-    categoryImpl2.setOverrideGeneratedUrl(true);
-    categoryImpl2.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl2.setProductTitlePatternOverride("Dr");
-    categoryImpl2.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl2.setSearchFacets(new ArrayList<>());
-    categoryImpl2.setTaxCode("Tax Code");
-    categoryImpl2.setUpSaleProducts(new ArrayList<>());
-    categoryImpl2.setUrl("https://example.org/example");
-    categoryImpl2.setUrlKey("https://example.org/example");
-
-    // Act and Assert
-    assertEquals(categoryImpl, categoryImpl2);
-    int expectedHashCodeResult = categoryImpl.hashCode();
-    assertEquals(expectedHashCodeResult, categoryImpl2.hashCode());
-  }
-
-  /**
-   * Test {@link CategoryImpl#equals(Object)}, and
-   * {@link CategoryImpl#hashCode()}.
-   * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
-   * </ul>
-   * <p>
-   * Methods under test:
-   * <ul>
-   *   <li>{@link CategoryImpl#equals(Object)}
-   *   <li>{@link CategoryImpl#hashCode()}
-   * </ul>
-   */
-  @Test
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     CategoryImpl categoryImpl = new CategoryImpl();
     categoryImpl
@@ -10595,8 +5915,7 @@ public class CategoryImplDiffblueTest {
   }
 
   /**
-   * Test {@link CategoryImpl#equals(Object)}, and
-   * {@link CategoryImpl#hashCode()}.
+   * Test {@link CategoryImpl#equals(Object)}, and {@link CategoryImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -10609,7 +5928,9 @@ public class CategoryImplDiffblueTest {
    * </ul>
    */
   @Test
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryImpl.equals(Object)", "int CategoryImpl.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     CategoryImpl categoryImpl = new CategoryImpl();
     categoryImpl
@@ -10682,8 +6003,7 @@ public class CategoryImplDiffblueTest {
   }
 
   /**
-   * Test {@link CategoryImpl#equals(Object)}, and
-   * {@link CategoryImpl#hashCode()}.
+   * Test {@link CategoryImpl#equals(Object)}, and {@link CategoryImpl#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -10696,6 +6016,8 @@ public class CategoryImplDiffblueTest {
    * </ul>
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryImpl.equals(Object)", "int CategoryImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     CategoryImpl categoryImpl = new CategoryImpl();
@@ -10746,6 +6068,8 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#equals(Object)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryImpl.equals(Object)", "int CategoryImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     CategoryImpl categoryImpl = new CategoryImpl();
@@ -10826,6 +6150,8 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#equals(Object)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryImpl.equals(Object)", "int CategoryImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     CategoryImpl categoryImpl = new CategoryImpl();
@@ -10874,6 +6200,8 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#equals(Object)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryImpl.equals(Object)", "int CategoryImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     CategoryImpl categoryImpl = new CategoryImpl();
@@ -10913,25 +6241,23 @@ public class CategoryImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CategoryImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * Test {@link CategoryImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <p>
-   * Method under test:
-   * {@link CategoryImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link CategoryImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse CategoryImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
+    CategoryImpl categoryImpl2 = new CategoryImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
     CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
 
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<Category> actualCreateOrRetrieveCopyInstanceResult = categoryImpl
+    CreateResponse<Category> actualCreateOrRetrieveCopyInstanceResult = categoryImpl2
         .createOrRetrieveCopyInstance(context);
 
     // Assert
@@ -10940,63 +6266,21 @@ public class CategoryImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CategoryImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <p>
-   * Method under test:
-   * {@link CategoryImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2979 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CategoryImpl categoryImpl2 = new CategoryImpl();
-    CatalogImpl fromCatalog = new CatalogImpl();
-    CatalogImpl toCatalog = new CatalogImpl();
-    SiteImpl fromSite = new SiteImpl();
-    SiteImpl toSite = new SiteImpl();
-    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
-
-    // Act
-    categoryImpl2.createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
-        genericEntityService, new MultiTenantCopierExtensionManager()));
-  }
-
-  /**
-   * Test
-   * {@link CategoryImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * Test {@link CategoryImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <ul>
-   *   <li>Given {@code java.lang.Object}.</li>
+   *   <li>Given {@code Object}.</li>
    *   <li>Then Clone return {@link CategoryImpl}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CategoryImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link CategoryImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse CategoryImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance_givenJavaLangObject_thenCloneReturnCategoryImpl()
       throws CloneNotSupportedException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
+    CategoryImpl categoryImpl2 = new CategoryImpl();
     GenericEntityService genericEntityService = mock(GenericEntityService.class);
     when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
     Class<Object> forNameResult = Object.class;
@@ -11007,7 +6291,7 @@ public class CategoryImplDiffblueTest {
     SiteImpl toSite = new SiteImpl();
 
     // Act
-    CreateResponse<Category> actualCreateOrRetrieveCopyInstanceResult = categoryImpl
+    CreateResponse<Category> actualCreateOrRetrieveCopyInstanceResult = categoryImpl2
         .createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
             genericEntityService, new MultiTenantCopierExtensionManager()));
 
@@ -11017,201 +6301,7 @@ public class CategoryImplDiffblueTest {
     Category clone = actualCreateOrRetrieveCopyInstanceResult.getClone();
     assertTrue(clone instanceof CategoryImpl);
     assertFalse(actualCreateOrRetrieveCopyInstanceResult.isAlreadyPopulated());
-    assertEquals(categoryImpl, clone);
-  }
-
-  /**
-   * Test
-   * {@link CategoryImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <ul>
-   *   <li>Then calls {@link CreateResponse#getClone()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link CategoryImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  public void testCreateOrRetrieveCopyInstance_thenCallsGetClone() throws CloneNotSupportedException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl
-        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-
-    CategoryImpl categoryImpl2 = new CategoryImpl();
-    categoryImpl2
-        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl2
-        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl2.setCategoryAttributes(new ArrayList<>());
-    categoryImpl2.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl2.setCategoryMediaXref(new HashMap<>());
-    categoryImpl2.setChildCategoryIds(new ArrayList<>());
-    categoryImpl2.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl2.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl2.setDescription("The characteristics of someone or something");
-    categoryImpl2.setDisplayTemplate("Display Template");
-    categoryImpl2.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl2.setExternalId("42");
-    categoryImpl2.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl2.setId(1L);
-    categoryImpl2.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl2.setLongDescription("Long Description");
-    categoryImpl2.setMetaDescription("Meta Description");
-    categoryImpl2.setMetaTitle("Dr");
-    categoryImpl2.setName("Name");
-    categoryImpl2.setOverrideGeneratedUrl(true);
-    categoryImpl2.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl2.setProductTitlePatternOverride("Dr");
-    categoryImpl2.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl2.setSearchFacets(new ArrayList<>());
-    categoryImpl2.setTaxCode("Tax Code");
-    categoryImpl2.setUpSaleProducts(new ArrayList<>());
-    categoryImpl2.setUrl("https://example.org/example");
-    categoryImpl2.setUrlKey("https://example.org/example");
-    CreateResponse<Object> createResponse = mock(CreateResponse.class);
-    when(createResponse.isAlreadyPopulated()).thenReturn(false);
-    when(createResponse.getClone()).thenReturn(categoryImpl2);
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    categoryImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(createResponse).getClone();
-    verify(createResponse).isAlreadyPopulated();
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-  }
-
-  /**
-   * Test
-   * {@link CategoryImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <ul>
-   *   <li>Then calls {@link CreateResponse#getClone()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link CategoryImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  public void testCreateOrRetrieveCopyInstance_thenCallsGetClone2() throws CloneNotSupportedException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl
-        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-
-    CategoryImpl categoryImpl2 = new CategoryImpl();
-    categoryImpl2
-        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl2
-        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl2.setCategoryAttributes(new ArrayList<>());
-    categoryImpl2.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl2.setCategoryMediaXref(new HashMap<>());
-    categoryImpl2.setChildCategoryIds(new ArrayList<>());
-    categoryImpl2.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl2.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl2.setDescription("The characteristics of someone or something");
-    categoryImpl2.setDisplayTemplate("Display Template");
-    categoryImpl2.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl2.setExternalId("42");
-    categoryImpl2.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl2.setId(1L);
-    categoryImpl2.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl2.setLongDescription("Long Description");
-    categoryImpl2.setMetaDescription("Meta Description");
-    categoryImpl2.setMetaTitle("Dr");
-    categoryImpl2.setName("Name");
-    categoryImpl2.setOverrideGeneratedUrl(true);
-    categoryImpl2.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl2.setProductTitlePatternOverride("Dr");
-    categoryImpl2.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl2.setSearchFacets(new ArrayList<>());
-    categoryImpl2.setTaxCode("Tax Code");
-    categoryImpl2.setUpSaleProducts(new ArrayList<>());
-    categoryImpl2.setUrl("https://example.org/example");
-    categoryImpl2.setUrlKey("https://example.org/example");
-    CreateResponse<Object> createResponse = mock(CreateResponse.class);
-    when(createResponse.isAlreadyPopulated()).thenReturn(false);
-    when(createResponse.getClone()).thenReturn(categoryImpl2);
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    categoryImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(createResponse).getClone();
-    verify(createResponse).isAlreadyPopulated();
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-  }
-
-  /**
-   * Test
-   * {@link CategoryImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <ul>
-   *   <li>Then calls {@link CreateResponse#getClone()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link CategoryImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  public void testCreateOrRetrieveCopyInstance_thenCallsGetClone3() throws CloneNotSupportedException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
-
-    CategoryImpl categoryImpl2 = new CategoryImpl();
-    categoryImpl2
-        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl2
-        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl2.setCategoryAttributes(new ArrayList<>());
-    categoryImpl2.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl2.setCategoryMediaXref(new HashMap<>());
-    categoryImpl2.setChildCategoryIds(new ArrayList<>());
-    categoryImpl2.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl2.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl2.setDescription("The characteristics of someone or something");
-    categoryImpl2.setDisplayTemplate("Display Template");
-    categoryImpl2.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl2.setExternalId("42");
-    categoryImpl2.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl2.setId(1L);
-    categoryImpl2.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl2.setLongDescription("Long Description");
-    categoryImpl2.setMetaDescription("Meta Description");
-    categoryImpl2.setMetaTitle("Dr");
-    categoryImpl2.setName("Name");
-    categoryImpl2.setOverrideGeneratedUrl(true);
-    categoryImpl2.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl2.setProductTitlePatternOverride("Dr");
-    categoryImpl2.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl2.setSearchFacets(new ArrayList<>());
-    categoryImpl2.setTaxCode("Tax Code");
-    categoryImpl2.setUpSaleProducts(new ArrayList<>());
-    categoryImpl2.setUrl("https://example.org/example");
-    categoryImpl2.setUrlKey("https://example.org/example");
-    CreateResponse<Object> createResponse = mock(CreateResponse.class);
-    when(createResponse.isAlreadyPopulated()).thenReturn(false);
-    when(createResponse.getClone()).thenReturn(categoryImpl2);
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    categoryImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(createResponse, atLeast(1)).getClone();
-    verify(createResponse, atLeast(1)).isAlreadyPopulated();
-    verify(context, atLeast(1)).createOrRetrieveCopyInstance(isA(Object.class));
+    assertEquals(categoryImpl2, clone);
   }
 
   /**
@@ -11220,100 +6310,11 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getMainEntityName()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CategoryImpl.getMainEntityName()"})
   public void testGetMainEntityName() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3789 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryImpl()).getMainEntityName();
-  }
-
-  /**
-   * Test {@link CategoryImpl#getMainEntityName()}.
-   * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getMainEntityName()}
-   */
-  @Test
-  public void testGetMainEntityName_givenCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new CategoryImpl()).getMainEntityName());
-  }
-
-  /**
-   * Test {@link CategoryImpl#getMainEntityName()}.
-   * <ul>
-   *   <li>Given {@link Date} {@link java.util.Date#getTime()} return ten.</li>
-   *   <li>Then calls {@link java.util.Date#getTime()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getMainEntityName()}
-   */
-  @Test
-  public void testGetMainEntityName_givenDateGetTimeReturnTen_thenCallsGetTime() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    java.sql.Date activeStartDate = mock(java.sql.Date.class);
-    when(activeStartDate.getTime()).thenReturn(10L);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setActiveStartDate(activeStartDate);
-
-    // Act
-    String actualMainEntityName = categoryImpl.getMainEntityName();
-
-    // Assert
-    verify(activeStartDate).getTime();
-    assertNull(actualMainEntityName);
-  }
-
-  /**
-   * Test {@link CategoryImpl#getLocation()}.
-   * <p>
-   * Method under test: {@link CategoryImpl#getLocation()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetLocation() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3729 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryImpl()).getLocation();
   }
 
   /**
@@ -11326,95 +6327,94 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getLocation()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CategoryImpl.getLocation()"})
   public void testGetLocation_givenCategoryImplUrlIsColon_thenReturnColon() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2
         .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl
+    categoryImpl2
         .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrlKey("https://example.org/example");
-    categoryImpl.setUrl(":");
+    categoryImpl2.setCategoryAttributes(new ArrayList<>());
+    categoryImpl2.setCategoryAttributesMap(new HashMap<>());
+    categoryImpl2.setCategoryMediaXref(new HashMap<>());
+    categoryImpl2.setChildCategoryIds(new ArrayList<>());
+    categoryImpl2.setChildCategoryURLMap(new HashMap<>());
+    categoryImpl2.setDefaultParentCategory(new CategoryImpl());
+    categoryImpl2.setDescription("The characteristics of someone or something");
+    categoryImpl2.setDisplayTemplate("Display Template");
+    categoryImpl2.setExcludedSearchFacets(new ArrayList<>());
+    categoryImpl2.setExternalId("42");
+    categoryImpl2.setFulfillmentType(FulfillmentType.DIGITAL);
+    categoryImpl2.setId(1L);
+    categoryImpl2.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
+    categoryImpl2.setLongDescription("Long Description");
+    categoryImpl2.setMetaDescription("Meta Description");
+    categoryImpl2.setMetaTitle("Dr");
+    categoryImpl2.setName("Name");
+    categoryImpl2.setOverrideGeneratedUrl(true);
+    categoryImpl2.setProductDescriptionPatternOverride("Product Description Pattern Override");
+    categoryImpl2.setProductTitlePatternOverride("Dr");
+    categoryImpl2.setRootDisplayOrder(new BigDecimal("2.3"));
+    categoryImpl2.setSearchFacets(new ArrayList<>());
+    categoryImpl2.setTaxCode("Tax Code");
+    categoryImpl2.setUpSaleProducts(new ArrayList<>());
+    categoryImpl2.setUrlKey("https://example.org/example");
+    categoryImpl2.setUrl(":");
 
     // Act and Assert
-    assertEquals(":", categoryImpl.getLocation());
+    assertEquals(":", categoryImpl2.getLocation());
   }
 
   /**
    * Test {@link CategoryImpl#getLocation()}.
    * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) Url is empty
-   * string.</li>
+   *   <li>Given {@link CategoryImpl} (default constructor) Url is empty string.</li>
    *   <li>Then return empty string.</li>
    * </ul>
    * <p>
    * Method under test: {@link CategoryImpl#getLocation()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CategoryImpl.getLocation()"})
   public void testGetLocation_givenCategoryImplUrlIsEmptyString_thenReturnEmptyString() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2
         .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl
+    categoryImpl2
         .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrlKey("https://example.org/example");
-    categoryImpl.setUrl("");
+    categoryImpl2.setCategoryAttributes(new ArrayList<>());
+    categoryImpl2.setCategoryAttributesMap(new HashMap<>());
+    categoryImpl2.setCategoryMediaXref(new HashMap<>());
+    categoryImpl2.setChildCategoryIds(new ArrayList<>());
+    categoryImpl2.setChildCategoryURLMap(new HashMap<>());
+    categoryImpl2.setDefaultParentCategory(new CategoryImpl());
+    categoryImpl2.setDescription("The characteristics of someone or something");
+    categoryImpl2.setDisplayTemplate("Display Template");
+    categoryImpl2.setExcludedSearchFacets(new ArrayList<>());
+    categoryImpl2.setExternalId("42");
+    categoryImpl2.setFulfillmentType(FulfillmentType.DIGITAL);
+    categoryImpl2.setId(1L);
+    categoryImpl2.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
+    categoryImpl2.setLongDescription("Long Description");
+    categoryImpl2.setMetaDescription("Meta Description");
+    categoryImpl2.setMetaTitle("Dr");
+    categoryImpl2.setName("Name");
+    categoryImpl2.setOverrideGeneratedUrl(true);
+    categoryImpl2.setProductDescriptionPatternOverride("Product Description Pattern Override");
+    categoryImpl2.setProductTitlePatternOverride("Dr");
+    categoryImpl2.setRootDisplayOrder(new BigDecimal("2.3"));
+    categoryImpl2.setSearchFacets(new ArrayList<>());
+    categoryImpl2.setTaxCode("Tax Code");
+    categoryImpl2.setUpSaleProducts(new ArrayList<>());
+    categoryImpl2.setUrlKey("https://example.org/example");
+    categoryImpl2.setUrl("");
 
     // Act and Assert
-    assertEquals("", categoryImpl.getLocation());
+    assertEquals("", categoryImpl2.getLocation());
   }
 
   /**
@@ -11427,44 +6427,44 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getLocation()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CategoryImpl.getLocation()"})
   public void testGetLocation_givenCategoryImplUrlIsFoo_thenReturnFoo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2
         .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl
+    categoryImpl2
         .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrlKey("https://example.org/example");
-    categoryImpl.setUrl("foo");
+    categoryImpl2.setCategoryAttributes(new ArrayList<>());
+    categoryImpl2.setCategoryAttributesMap(new HashMap<>());
+    categoryImpl2.setCategoryMediaXref(new HashMap<>());
+    categoryImpl2.setChildCategoryIds(new ArrayList<>());
+    categoryImpl2.setChildCategoryURLMap(new HashMap<>());
+    categoryImpl2.setDefaultParentCategory(new CategoryImpl());
+    categoryImpl2.setDescription("The characteristics of someone or something");
+    categoryImpl2.setDisplayTemplate("Display Template");
+    categoryImpl2.setExcludedSearchFacets(new ArrayList<>());
+    categoryImpl2.setExternalId("42");
+    categoryImpl2.setFulfillmentType(FulfillmentType.DIGITAL);
+    categoryImpl2.setId(1L);
+    categoryImpl2.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
+    categoryImpl2.setLongDescription("Long Description");
+    categoryImpl2.setMetaDescription("Meta Description");
+    categoryImpl2.setMetaTitle("Dr");
+    categoryImpl2.setName("Name");
+    categoryImpl2.setOverrideGeneratedUrl(true);
+    categoryImpl2.setProductDescriptionPatternOverride("Product Description Pattern Override");
+    categoryImpl2.setProductTitlePatternOverride("Dr");
+    categoryImpl2.setRootDisplayOrder(new BigDecimal("2.3"));
+    categoryImpl2.setSearchFacets(new ArrayList<>());
+    categoryImpl2.setTaxCode("Tax Code");
+    categoryImpl2.setUpSaleProducts(new ArrayList<>());
+    categoryImpl2.setUrlKey("https://example.org/example");
+    categoryImpl2.setUrl("foo");
 
     // Act and Assert
-    assertEquals("/foo", categoryImpl.getLocation());
+    assertEquals("/foo", categoryImpl2.getLocation());
   }
 
   /**
@@ -11477,44 +6477,44 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getLocation()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CategoryImpl.getLocation()"})
   public void testGetLocation_givenCategoryImplUrlIsQuestionMark_thenReturnQuestionMark() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2
         .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl
+    categoryImpl2
         .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrlKey("https://example.org/example");
-    categoryImpl.setUrl("?");
+    categoryImpl2.setCategoryAttributes(new ArrayList<>());
+    categoryImpl2.setCategoryAttributesMap(new HashMap<>());
+    categoryImpl2.setCategoryMediaXref(new HashMap<>());
+    categoryImpl2.setChildCategoryIds(new ArrayList<>());
+    categoryImpl2.setChildCategoryURLMap(new HashMap<>());
+    categoryImpl2.setDefaultParentCategory(new CategoryImpl());
+    categoryImpl2.setDescription("The characteristics of someone or something");
+    categoryImpl2.setDisplayTemplate("Display Template");
+    categoryImpl2.setExcludedSearchFacets(new ArrayList<>());
+    categoryImpl2.setExternalId("42");
+    categoryImpl2.setFulfillmentType(FulfillmentType.DIGITAL);
+    categoryImpl2.setId(1L);
+    categoryImpl2.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
+    categoryImpl2.setLongDescription("Long Description");
+    categoryImpl2.setMetaDescription("Meta Description");
+    categoryImpl2.setMetaTitle("Dr");
+    categoryImpl2.setName("Name");
+    categoryImpl2.setOverrideGeneratedUrl(true);
+    categoryImpl2.setProductDescriptionPatternOverride("Product Description Pattern Override");
+    categoryImpl2.setProductTitlePatternOverride("Dr");
+    categoryImpl2.setRootDisplayOrder(new BigDecimal("2.3"));
+    categoryImpl2.setSearchFacets(new ArrayList<>());
+    categoryImpl2.setTaxCode("Tax Code");
+    categoryImpl2.setUpSaleProducts(new ArrayList<>());
+    categoryImpl2.setUrlKey("https://example.org/example");
+    categoryImpl2.setUrl("?");
 
     // Act and Assert
-    assertEquals("?", categoryImpl.getLocation());
+    assertEquals("?", categoryImpl2.getLocation());
   }
 
   /**
@@ -11527,44 +6527,44 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getLocation()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CategoryImpl.getLocation()"})
   public void testGetLocation_givenCategoryImplUrlIsSlash_thenReturnSlash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl
+    CategoryImpl categoryImpl2 = new CategoryImpl();
+    categoryImpl2
         .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl
+    categoryImpl2
         .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrlKey("https://example.org/example");
-    categoryImpl.setUrl("/");
+    categoryImpl2.setCategoryAttributes(new ArrayList<>());
+    categoryImpl2.setCategoryAttributesMap(new HashMap<>());
+    categoryImpl2.setCategoryMediaXref(new HashMap<>());
+    categoryImpl2.setChildCategoryIds(new ArrayList<>());
+    categoryImpl2.setChildCategoryURLMap(new HashMap<>());
+    categoryImpl2.setDefaultParentCategory(new CategoryImpl());
+    categoryImpl2.setDescription("The characteristics of someone or something");
+    categoryImpl2.setDisplayTemplate("Display Template");
+    categoryImpl2.setExcludedSearchFacets(new ArrayList<>());
+    categoryImpl2.setExternalId("42");
+    categoryImpl2.setFulfillmentType(FulfillmentType.DIGITAL);
+    categoryImpl2.setId(1L);
+    categoryImpl2.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
+    categoryImpl2.setLongDescription("Long Description");
+    categoryImpl2.setMetaDescription("Meta Description");
+    categoryImpl2.setMetaTitle("Dr");
+    categoryImpl2.setName("Name");
+    categoryImpl2.setOverrideGeneratedUrl(true);
+    categoryImpl2.setProductDescriptionPatternOverride("Product Description Pattern Override");
+    categoryImpl2.setProductTitlePatternOverride("Dr");
+    categoryImpl2.setRootDisplayOrder(new BigDecimal("2.3"));
+    categoryImpl2.setSearchFacets(new ArrayList<>());
+    categoryImpl2.setTaxCode("Tax Code");
+    categoryImpl2.setUpSaleProducts(new ArrayList<>());
+    categoryImpl2.setUrlKey("https://example.org/example");
+    categoryImpl2.setUrl("/");
 
     // Act and Assert
-    assertEquals("/", categoryImpl.getLocation());
+    assertEquals("/", categoryImpl2.getLocation());
   }
 
   /**
@@ -11577,86 +6577,27 @@ public class CategoryImplDiffblueTest {
    * Method under test: {@link CategoryImpl#getLocation()}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CategoryImpl.getLocation()"})
   public void testGetLocation_givenCategoryImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new CategoryImpl()).getLocation());
   }
 
   /**
-   * Test {@link CategoryImpl#getLocation()}.
-   * <ul>
-   *   <li>Given {@link java.sql.Date} {@link java.util.Date#getTime()} return
-   * ten.</li>
-   *   <li>Then calls {@link java.util.Date#getTime()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryImpl#getLocation()}
-   */
-  @Test
-  public void testGetLocation_givenDateGetTimeReturnTen_thenCallsGetTime() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    java.sql.Date activeEndDate = mock(java.sql.Date.class);
-    when(activeEndDate.getTime()).thenReturn(10L);
-
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setActiveEndDate(activeEndDate);
-    categoryImpl.setActiveStartDate(
-        java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    categoryImpl.setCategoryAttributes(new ArrayList<>());
-    categoryImpl.setCategoryAttributesMap(new HashMap<>());
-    categoryImpl.setCategoryMediaXref(new HashMap<>());
-    categoryImpl.setChildCategoryIds(new ArrayList<>());
-    categoryImpl.setChildCategoryURLMap(new HashMap<>());
-    categoryImpl.setDefaultParentCategory(new CategoryImpl());
-    categoryImpl.setDescription("The characteristics of someone or something");
-    categoryImpl.setDisplayTemplate("Display Template");
-    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
-    categoryImpl.setExternalId("42");
-    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    categoryImpl.setId(1L);
-    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    categoryImpl.setLongDescription("Long Description");
-    categoryImpl.setMetaDescription("Meta Description");
-    categoryImpl.setMetaTitle("Dr");
-    categoryImpl.setName("Name");
-    categoryImpl.setOverrideGeneratedUrl(true);
-    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    categoryImpl.setProductTitlePatternOverride("Dr");
-    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
-    categoryImpl.setSearchFacets(new ArrayList<>());
-    categoryImpl.setTaxCode("Tax Code");
-    categoryImpl.setUpSaleProducts(new ArrayList<>());
-    categoryImpl.setUrlKey("https://example.org/example");
-    categoryImpl.setUrl("");
-
-    // Act
-    String actualLocation = categoryImpl.getLocation();
-
-    // Assert
-    verify(activeEndDate).getTime();
-    assertEquals("", actualLocation);
-  }
-
-  /**
    * Test new {@link CategoryImpl} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link CategoryImpl}
+   * Method under test: default or parameterless constructor of {@link CategoryImpl}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryImpl.<init>()"})
   public void testNewCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange and Act
     CategoryImpl actualCategoryImpl = new CategoryImpl();
 
     // Assert
     assertEquals("null", actualCategoryImpl.getGeneratedUrl());
-    assertEquals('N', actualCategoryImpl.archiveStatus.getArchived().charValue());
     assertEquals('N', actualCategoryImpl.getArchived().charValue());
     assertNull(actualCategoryImpl.getId());
     assertNull(actualCategoryImpl.getDescription());
@@ -11728,35 +6669,5 @@ public class CategoryImplDiffblueTest {
     assertTrue(actualCategoryImpl.getMappedCategoryAttributes().isEmpty());
     assertTrue(actualCategoryImpl.getMultiValueCategoryAttributes().isEmpty());
     assertTrue(actualCategoryImpl.legacyCategoryMedia.isEmpty());
-  }
-
-  /**
-   * Test new {@link CategoryImpl} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link CategoryImpl}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testNewCategoryImpl2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2888 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CategoryImpl categoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    new CategoryImpl();
   }
 }

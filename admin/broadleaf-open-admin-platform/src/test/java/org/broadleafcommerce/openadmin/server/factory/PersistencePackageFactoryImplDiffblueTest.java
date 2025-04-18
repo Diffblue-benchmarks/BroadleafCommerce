@@ -1,17 +1,36 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.server.factory;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
 import org.broadleafcommerce.common.presentation.client.OperationType;
@@ -19,119 +38,482 @@ import org.broadleafcommerce.common.presentation.client.PersistencePerspectiveIt
 import org.broadleafcommerce.openadmin.dto.AdornedTargetList;
 import org.broadleafcommerce.openadmin.dto.Entity;
 import org.broadleafcommerce.openadmin.dto.ForeignKey;
-import org.broadleafcommerce.openadmin.dto.MapStructure;
 import org.broadleafcommerce.openadmin.dto.OperationTypes;
 import org.broadleafcommerce.openadmin.dto.PersistencePackage;
 import org.broadleafcommerce.openadmin.dto.PersistencePerspective;
 import org.broadleafcommerce.openadmin.dto.PersistencePerspectiveItem;
 import org.broadleafcommerce.openadmin.dto.SectionCrumb;
 import org.broadleafcommerce.openadmin.server.domain.PersistencePackageRequest;
-import org.junit.Ignore;
+import org.broadleafcommerce.openadmin.server.domain.PersistencePackageRequest.Type;
+import org.broadleafcommerce.openadmin.server.security.domain.AdminSection;
+import org.broadleafcommerce.openadmin.server.security.domain.AdminSectionImpl;
+import org.broadleafcommerce.openadmin.server.security.service.navigation.AdminNavigationService;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
-    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
-    "/bl-open-admin-contentCreator-applicationContext.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class PersistencePackageFactoryImplDiffblueTest {
-  @Autowired
+  @Mock
+  private AdminNavigationService adminNavigationService;
+
+  @InjectMocks
   private PersistencePackageFactoryImpl persistencePackageFactoryImpl;
 
   /**
    * Test {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}.
    * <p>
-   * Method under test:
-   * {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}
+   * Method under test: {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePackage PersistencePackageFactoryImpl.create(PersistencePackageRequest)"})
   public void testCreate() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.factory;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass0 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.factory.PersistencePackageFactoryImpl persistencePackageFactoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    PersistencePackageFactoryImpl persistencePackageFactoryImpl2 = new PersistencePackageFactoryImpl();
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any())).thenReturn(new AdminSectionImpl());
+
+    SectionCrumb sectionCrumb = new SectionCrumb();
+    sectionCrumb.setOriginalSectionIdentifier("42");
+    sectionCrumb.setSectionId("42");
+    sectionCrumb.setSectionIdentifier("42");
+    PersistencePackageRequest request = mock(PersistencePackageRequest.class);
+    when(request.isAddOperationInspect()).thenReturn(true);
+    when(request.isTreeCollection()).thenReturn(true);
+    when(request.isValidateUnsubmittedProperties()).thenReturn(true);
+    when(request.getCeilingEntityClassname()).thenReturn("Ceiling Entity Classname");
+    when(request.getRequestingEntityName()).thenReturn("Requesting Entity Name");
+    when(request.getSectionEntityField()).thenReturn("Section Entity Field");
+    when(request.getSecurityCeilingEntityClassname()).thenReturn("Security Ceiling Entity Classname");
+    when(request.getCustomCriteria()).thenReturn(new String[]{"Custom Criteria"});
+    when(request.getSubRequests()).thenReturn(new HashMap<>());
+    when(request.getEntity()).thenReturn(new Entity());
+    when(request.getOperationTypesOverride()).thenReturn(new OperationTypes());
+    when(request.getSectionCrumbs()).thenReturn(new SectionCrumb[]{sectionCrumb});
+    when(request.getForeignKey()).thenReturn(new ForeignKey());
+    ForeignKey foreignKey = new ForeignKey();
+    when(request.getAdditionalForeignKeys()).thenReturn(new ForeignKey[]{foreignKey});
+    when(request.addAdditionalForeignKey(Mockito.<ForeignKey>any())).thenReturn(PersistencePackageRequest.adorned());
+    when(request.getType()).thenReturn(Type.STANDARD);
+    request.addAdditionalForeignKey(new ForeignKey());
 
     // Act
-    persistencePackageFactoryImpl2.create(PersistencePackageRequest.adorned());
+    PersistencePackage actualCreateResult = persistencePackageFactoryImpl.create(request);
+
+    // Assert
+    verify(request).addAdditionalForeignKey(isA(ForeignKey.class));
+    verify(request).getAdditionalForeignKeys();
+    verify(request, atLeast(1)).getCeilingEntityClassname();
+    verify(request).getCustomCriteria();
+    verify(request, atLeast(1)).getEntity();
+    verify(request, atLeast(1)).getForeignKey();
+    verify(request, atLeast(1)).getOperationTypesOverride();
+    verify(request).getRequestingEntityName();
+    verify(request, atLeast(1)).getSectionCrumbs();
+    verify(request).getSectionEntityField();
+    verify(request, atLeast(1)).getSecurityCeilingEntityClassname();
+    verify(request).getSubRequests();
+    verify(request).getType();
+    verify(request).isAddOperationInspect();
+    verify(request).isTreeCollection();
+    verify(request).isValidateUnsubmittedProperties();
+    verify(adminNavigationService).findAdminSectionByURI(eq("/42"));
+    assertEquals("Security Ceiling Entity Classname",
+        actualCreateResult.getSecurityCeilingEntityFullyQualifiedClassname());
+    Map<PersistencePerspectiveItemType, PersistencePerspectiveItem> persistencePerspectiveItems = actualCreateResult
+        .getPersistencePerspectiveItems();
+    assertEquals(1, persistencePerspectiveItems.size());
+    ForeignKey[] additionalForeignKeys = actualCreateResult.getPersistencePerspective().getAdditionalForeignKeys();
+    assertEquals(1, additionalForeignKeys.length);
+    assertTrue(persistencePerspectiveItems.containsKey(PersistencePerspectiveItemType.FOREIGNKEY));
+    assertSame(foreignKey, additionalForeignKeys[0]);
+  }
+
+  /**
+   * Test {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}.
+   * <p>
+   * Method under test: {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePackage PersistencePackageFactoryImpl.create(PersistencePackageRequest)"})
+  public void testCreate2() {
+    // Arrange
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any()))
+        .thenThrow(new IllegalArgumentException("/"));
+
+    SectionCrumb sectionCrumb = new SectionCrumb();
+    sectionCrumb.setOriginalSectionIdentifier("42");
+    sectionCrumb.setSectionId("42");
+    sectionCrumb.setSectionIdentifier("42");
+    PersistencePackageRequest request = mock(PersistencePackageRequest.class);
+    when(request.isAddOperationInspect()).thenReturn(true);
+    when(request.isTreeCollection()).thenReturn(true);
+    when(request.isValidateUnsubmittedProperties()).thenReturn(true);
+    when(request.getCeilingEntityClassname()).thenReturn("Ceiling Entity Classname");
+    when(request.getRequestingEntityName()).thenReturn("Requesting Entity Name");
+    when(request.getSectionEntityField()).thenReturn("Section Entity Field");
+    when(request.getSecurityCeilingEntityClassname()).thenReturn("Security Ceiling Entity Classname");
+    when(request.getCustomCriteria()).thenReturn(new String[]{"Custom Criteria"});
+    when(request.getSubRequests()).thenReturn(new HashMap<>());
+    when(request.getEntity()).thenReturn(new Entity());
+    when(request.getOperationTypesOverride()).thenReturn(new OperationTypes());
+    when(request.getSectionCrumbs()).thenReturn(new SectionCrumb[]{sectionCrumb});
+    when(request.getForeignKey()).thenReturn(new ForeignKey());
+    ForeignKey foreignKey = new ForeignKey();
+    when(request.getAdditionalForeignKeys()).thenReturn(new ForeignKey[]{foreignKey});
+    when(request.addAdditionalForeignKey(Mockito.<ForeignKey>any())).thenReturn(PersistencePackageRequest.adorned());
+    when(request.getType()).thenReturn(Type.STANDARD);
+    request.addAdditionalForeignKey(new ForeignKey());
+
+    // Act
+    PersistencePackage actualCreateResult = persistencePackageFactoryImpl.create(request);
+
+    // Assert
+    verify(request).addAdditionalForeignKey(isA(ForeignKey.class));
+    verify(request).getAdditionalForeignKeys();
+    verify(request, atLeast(1)).getCeilingEntityClassname();
+    verify(request).getCustomCriteria();
+    verify(request, atLeast(1)).getEntity();
+    verify(request, atLeast(1)).getForeignKey();
+    verify(request, atLeast(1)).getOperationTypesOverride();
+    verify(request).getRequestingEntityName();
+    verify(request, atLeast(1)).getSectionCrumbs();
+    verify(request).getSectionEntityField();
+    verify(request, atLeast(1)).getSecurityCeilingEntityClassname();
+    verify(request).getSubRequests();
+    verify(request).getType();
+    verify(request).isAddOperationInspect();
+    verify(request).isTreeCollection();
+    verify(request).isValidateUnsubmittedProperties();
+    verify(adminNavigationService).findAdminSectionByURI(eq("/42"));
+    assertEquals("Security Ceiling Entity Classname",
+        actualCreateResult.getSecurityCeilingEntityFullyQualifiedClassname());
+    Map<PersistencePerspectiveItemType, PersistencePerspectiveItem> persistencePerspectiveItems = actualCreateResult
+        .getPersistencePerspectiveItems();
+    assertEquals(1, persistencePerspectiveItems.size());
+    ForeignKey[] additionalForeignKeys = actualCreateResult.getPersistencePerspective().getAdditionalForeignKeys();
+    assertEquals(1, additionalForeignKeys.length);
+    assertTrue(persistencePerspectiveItems.containsKey(PersistencePerspectiveItemType.FOREIGNKEY));
+    assertSame(foreignKey, additionalForeignKeys[0]);
+  }
+
+  /**
+   * Test {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}.
+   * <p>
+   * Method under test: {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePackage PersistencePackageFactoryImpl.create(PersistencePackageRequest)"})
+  public void testCreate3() {
+    // Arrange
+    AdminSection adminSection = mock(AdminSection.class);
+    when(adminSection.getCeilingEntity()).thenReturn("Ceiling Entity");
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any())).thenReturn(adminSection);
+
+    SectionCrumb sectionCrumb = new SectionCrumb();
+    sectionCrumb.setOriginalSectionIdentifier("42");
+    sectionCrumb.setSectionId("42");
+    sectionCrumb.setSectionIdentifier("42");
+    PersistencePackageRequest request = mock(PersistencePackageRequest.class);
+    when(request.isAddOperationInspect()).thenReturn(true);
+    when(request.isTreeCollection()).thenReturn(true);
+    when(request.isValidateUnsubmittedProperties()).thenReturn(true);
+    when(request.getCeilingEntityClassname()).thenReturn("Ceiling Entity Classname");
+    when(request.getRequestingEntityName()).thenReturn("Requesting Entity Name");
+    when(request.getSectionEntityField()).thenReturn("Section Entity Field");
+    when(request.getSecurityCeilingEntityClassname()).thenReturn("Security Ceiling Entity Classname");
+    when(request.getCustomCriteria()).thenReturn(new String[]{"Custom Criteria"});
+    when(request.getSubRequests()).thenReturn(new HashMap<>());
+    when(request.getEntity()).thenReturn(new Entity());
+    when(request.getOperationTypesOverride()).thenReturn(new OperationTypes());
+    when(request.getSectionCrumbs()).thenReturn(new SectionCrumb[]{sectionCrumb});
+    when(request.getForeignKey()).thenReturn(new ForeignKey());
+    ForeignKey foreignKey = new ForeignKey();
+    when(request.getAdditionalForeignKeys()).thenReturn(new ForeignKey[]{foreignKey});
+    when(request.addAdditionalForeignKey(Mockito.<ForeignKey>any())).thenReturn(PersistencePackageRequest.adorned());
+    when(request.getType()).thenReturn(Type.STANDARD);
+    request.addAdditionalForeignKey(new ForeignKey());
+
+    // Act
+    PersistencePackage actualCreateResult = persistencePackageFactoryImpl.create(request);
+
+    // Assert
+    verify(request).addAdditionalForeignKey(isA(ForeignKey.class));
+    verify(request).getAdditionalForeignKeys();
+    verify(request, atLeast(1)).getCeilingEntityClassname();
+    verify(request).getCustomCriteria();
+    verify(request, atLeast(1)).getEntity();
+    verify(request, atLeast(1)).getForeignKey();
+    verify(request, atLeast(1)).getOperationTypesOverride();
+    verify(request).getRequestingEntityName();
+    verify(request, atLeast(1)).getSectionCrumbs();
+    verify(request).getSectionEntityField();
+    verify(request, atLeast(1)).getSecurityCeilingEntityClassname();
+    verify(request).getSubRequests();
+    verify(request).getType();
+    verify(request).isAddOperationInspect();
+    verify(request).isTreeCollection();
+    verify(request).isValidateUnsubmittedProperties();
+    verify(adminSection).getCeilingEntity();
+    verify(adminNavigationService).findAdminSectionByURI(eq("/42"));
+    assertEquals("Security Ceiling Entity Classname",
+        actualCreateResult.getSecurityCeilingEntityFullyQualifiedClassname());
+    Map<PersistencePerspectiveItemType, PersistencePerspectiveItem> persistencePerspectiveItems = actualCreateResult
+        .getPersistencePerspectiveItems();
+    assertEquals(1, persistencePerspectiveItems.size());
+    ForeignKey[] additionalForeignKeys = actualCreateResult.getPersistencePerspective().getAdditionalForeignKeys();
+    assertEquals(1, additionalForeignKeys.length);
+    assertTrue(persistencePerspectiveItems.containsKey(PersistencePerspectiveItemType.FOREIGNKEY));
+    assertSame(foreignKey, additionalForeignKeys[0]);
+  }
+
+  /**
+   * Test {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}.
+   * <p>
+   * Method under test: {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePackage PersistencePackageFactoryImpl.create(PersistencePackageRequest)"})
+  public void testCreate4() {
+    // Arrange
+    AdminSection adminSection = mock(AdminSection.class);
+    when(adminSection.getCeilingEntity()).thenReturn("Ceiling Entity");
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any())).thenReturn(adminSection);
+
+    SectionCrumb sectionCrumb = new SectionCrumb();
+    sectionCrumb.setOriginalSectionIdentifier("42");
+    sectionCrumb.setSectionId("42");
+    sectionCrumb.setSectionIdentifier("42");
+    PersistencePackageRequest request = mock(PersistencePackageRequest.class);
+    when(request.isAddOperationInspect()).thenReturn(true);
+    when(request.isTreeCollection()).thenReturn(true);
+    when(request.isValidateUnsubmittedProperties()).thenReturn(true);
+    when(request.getCeilingEntityClassname()).thenReturn("Ceiling Entity Classname");
+    when(request.getRequestingEntityName()).thenReturn("Requesting Entity Name");
+    when(request.getSectionEntityField()).thenReturn("Section Entity Field");
+    when(request.getSecurityCeilingEntityClassname()).thenReturn("");
+    when(request.getCustomCriteria()).thenReturn(new String[]{"Custom Criteria"});
+    when(request.getSubRequests()).thenReturn(new HashMap<>());
+    when(request.getEntity()).thenReturn(new Entity());
+    when(request.getOperationTypesOverride()).thenReturn(new OperationTypes());
+    when(request.getSectionCrumbs()).thenReturn(new SectionCrumb[]{sectionCrumb});
+    when(request.getForeignKey()).thenReturn(new ForeignKey());
+    when(request.getAdditionalForeignKeys()).thenReturn(new ForeignKey[]{new ForeignKey()});
+    when(request.addAdditionalForeignKey(Mockito.<ForeignKey>any())).thenReturn(PersistencePackageRequest.adorned());
+    when(request.getType()).thenReturn(Type.STANDARD);
+    request.addAdditionalForeignKey(new ForeignKey());
+
+    // Act
+    PersistencePackage actualCreateResult = persistencePackageFactoryImpl.create(request);
+
+    // Assert
+    verify(request).addAdditionalForeignKey(isA(ForeignKey.class));
+    verify(request).getAdditionalForeignKeys();
+    verify(request, atLeast(1)).getCeilingEntityClassname();
+    verify(request).getCustomCriteria();
+    verify(request, atLeast(1)).getEntity();
+    verify(request, atLeast(1)).getForeignKey();
+    verify(request, atLeast(1)).getOperationTypesOverride();
+    verify(request).getRequestingEntityName();
+    verify(request, atLeast(1)).getSectionCrumbs();
+    verify(request).getSectionEntityField();
+    verify(request).getSecurityCeilingEntityClassname();
+    verify(request).getSubRequests();
+    verify(request).getType();
+    verify(request).isAddOperationInspect();
+    verify(request).isTreeCollection();
+    verify(request).isValidateUnsubmittedProperties();
+    verify(adminSection).getCeilingEntity();
+    verify(adminNavigationService).findAdminSectionByURI(eq("/42"));
+    SectionCrumb bottomCrumb = actualCreateResult.getBottomCrumb();
+    assertEquals("42", bottomCrumb.getOriginalSectionIdentifier());
+    assertEquals("Ceiling Entity Classname", actualCreateResult.getCeilingEntityFullyQualifiedClassname());
+    assertEquals("Ceiling Entity Classname", actualCreateResult.getSecurityCeilingEntityFullyQualifiedClassname());
+    assertEquals("Ceiling Entity Classname", bottomCrumb.getSectionIdentifier());
+  }
+
+  /**
+   * Test {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}.
+   * <ul>
+   *   <li>Given {@code 42}.</li>
+   *   <li>Then return CeilingEntityFullyQualifiedClassname is {@code 42}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePackage PersistencePackageFactoryImpl.create(PersistencePackageRequest)"})
+  public void testCreate_given42_thenReturnCeilingEntityFullyQualifiedClassnameIs42() {
+    // Arrange
+    AdminSection adminSection = mock(AdminSection.class);
+    when(adminSection.getCeilingEntity()).thenReturn("Ceiling Entity");
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any())).thenReturn(adminSection);
+
+    SectionCrumb sectionCrumb = new SectionCrumb();
+    sectionCrumb.setOriginalSectionIdentifier("42");
+    sectionCrumb.setSectionId("42");
+    sectionCrumb.setSectionIdentifier("42");
+    PersistencePackageRequest request = mock(PersistencePackageRequest.class);
+    when(request.isAddOperationInspect()).thenReturn(true);
+    when(request.isTreeCollection()).thenReturn(true);
+    when(request.isValidateUnsubmittedProperties()).thenReturn(true);
+    when(request.getCeilingEntityClassname()).thenReturn("42");
+    when(request.getRequestingEntityName()).thenReturn("Requesting Entity Name");
+    when(request.getSectionEntityField()).thenReturn("Section Entity Field");
+    when(request.getSecurityCeilingEntityClassname()).thenReturn("Security Ceiling Entity Classname");
+    when(request.getCustomCriteria()).thenReturn(new String[]{"Custom Criteria"});
+    when(request.getSubRequests()).thenReturn(new HashMap<>());
+    when(request.getEntity()).thenReturn(new Entity());
+    when(request.getOperationTypesOverride()).thenReturn(new OperationTypes());
+    when(request.getSectionCrumbs()).thenReturn(new SectionCrumb[]{sectionCrumb});
+    when(request.getForeignKey()).thenReturn(new ForeignKey());
+    when(request.getAdditionalForeignKeys()).thenReturn(new ForeignKey[]{new ForeignKey()});
+    when(request.addAdditionalForeignKey(Mockito.<ForeignKey>any())).thenReturn(PersistencePackageRequest.adorned());
+    when(request.getType()).thenReturn(Type.STANDARD);
+    request.addAdditionalForeignKey(new ForeignKey());
+
+    // Act
+    PersistencePackage actualCreateResult = persistencePackageFactoryImpl.create(request);
+
+    // Assert
+    verify(request).addAdditionalForeignKey(isA(ForeignKey.class));
+    verify(request).getAdditionalForeignKeys();
+    verify(request, atLeast(1)).getCeilingEntityClassname();
+    verify(request).getCustomCriteria();
+    verify(request, atLeast(1)).getEntity();
+    verify(request, atLeast(1)).getForeignKey();
+    verify(request, atLeast(1)).getOperationTypesOverride();
+    verify(request).getRequestingEntityName();
+    verify(request, atLeast(1)).getSectionCrumbs();
+    verify(request).getSectionEntityField();
+    verify(request, atLeast(1)).getSecurityCeilingEntityClassname();
+    verify(request).getSubRequests();
+    verify(request).getType();
+    verify(request).isAddOperationInspect();
+    verify(request).isTreeCollection();
+    verify(request).isValidateUnsubmittedProperties();
+    verify(adminSection).getCeilingEntity();
+    verify(adminNavigationService).findAdminSectionByURI(eq("/42"));
+    assertEquals("42", actualCreateResult.getCeilingEntityFullyQualifiedClassname());
+    assertEquals(sectionCrumb, actualCreateResult.getBottomCrumb());
+  }
+
+  /**
+   * Test {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}.
+   * <ul>
+   *   <li>Given {@link AdminNavigationService}.</li>
+   *   <li>When map.</li>
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePackage PersistencePackageFactoryImpl.create(PersistencePackageRequest)"})
+  public void testCreate_givenAdminNavigationService_whenMap_thenThrowIllegalArgumentException() {
+    // Arrange, Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> persistencePackageFactoryImpl.create(PersistencePackageRequest.map()));
   }
 
   /**
    * Test {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}.
    * <ul>
    *   <li>Given {@link AdornedTargetList#AdornedTargetList()}.</li>
-   *   <li>Then calls {@link PersistencePackageRequest#getAdornedList()}.</li>
+   *   <li>Then return PersistencePerspectiveItems size is two.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}
+   * Method under test: {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}
    */
   @Test
-  public void testCreate_givenAdornedTargetList_thenCallsGetAdornedList() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePackage PersistencePackageFactoryImpl.create(PersistencePackageRequest)"})
+  public void testCreate_givenAdornedTargetList_thenReturnPersistencePerspectiveItemsSizeIsTwo() {
     // Arrange
-    PersistencePackageFactoryImpl persistencePackageFactoryImpl = new PersistencePackageFactoryImpl();
+    AdminSection adminSection = mock(AdminSection.class);
+    when(adminSection.getCeilingEntity()).thenReturn("Ceiling Entity");
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any())).thenReturn(adminSection);
+
+    SectionCrumb sectionCrumb = new SectionCrumb();
+    sectionCrumb.setOriginalSectionIdentifier("42");
+    sectionCrumb.setSectionId("42");
+    sectionCrumb.setSectionIdentifier("42");
     PersistencePackageRequest request = mock(PersistencePackageRequest.class);
-    when(request.getAdornedList()).thenReturn(new AdornedTargetList());
-    when(request.getOperationTypesOverride()).thenThrow(new RuntimeException("foo"));
+    AdornedTargetList adornedTargetList = new AdornedTargetList();
+    when(request.getAdornedList()).thenReturn(adornedTargetList);
+    when(request.isAddOperationInspect()).thenReturn(true);
+    when(request.isTreeCollection()).thenReturn(true);
+    when(request.isValidateUnsubmittedProperties()).thenReturn(true);
+    when(request.getCeilingEntityClassname()).thenReturn("Ceiling Entity Classname");
+    when(request.getRequestingEntityName()).thenReturn("Requesting Entity Name");
+    when(request.getSectionEntityField()).thenReturn("Section Entity Field");
+    when(request.getSecurityCeilingEntityClassname()).thenReturn("Security Ceiling Entity Classname");
+    when(request.getCustomCriteria()).thenReturn(new String[]{"Custom Criteria"});
+    when(request.getSubRequests()).thenReturn(new HashMap<>());
+    when(request.getEntity()).thenReturn(new Entity());
+    when(request.getOperationTypesOverride()).thenReturn(new OperationTypes());
+    when(request.getSectionCrumbs()).thenReturn(new SectionCrumb[]{sectionCrumb});
     when(request.getForeignKey()).thenReturn(new ForeignKey());
     when(request.getAdditionalForeignKeys()).thenReturn(new ForeignKey[]{new ForeignKey()});
     when(request.addAdditionalForeignKey(Mockito.<ForeignKey>any())).thenReturn(PersistencePackageRequest.adorned());
-    when(request.getType()).thenReturn(PersistencePackageRequest.Type.ADORNED);
+    when(request.getType()).thenReturn(Type.ADORNED);
     request.addAdditionalForeignKey(new ForeignKey());
 
     // Act
-    persistencePackageFactoryImpl.create(request);
+    PersistencePackage actualCreateResult = persistencePackageFactoryImpl.create(request);
 
     // Assert
     verify(request).addAdditionalForeignKey(isA(ForeignKey.class));
     verify(request).getAdditionalForeignKeys();
     verify(request, atLeast(1)).getAdornedList();
+    verify(request, atLeast(1)).getCeilingEntityClassname();
+    verify(request).getCustomCriteria();
+    verify(request, atLeast(1)).getEntity();
     verify(request, atLeast(1)).getForeignKey();
-    verify(request).getOperationTypesOverride();
+    verify(request, atLeast(1)).getOperationTypesOverride();
+    verify(request).getRequestingEntityName();
+    verify(request, atLeast(1)).getSectionCrumbs();
+    verify(request).getSectionEntityField();
+    verify(request, atLeast(1)).getSecurityCeilingEntityClassname();
+    verify(request).getSubRequests();
     verify(request).getType();
+    verify(request).isAddOperationInspect();
+    verify(request).isTreeCollection();
+    verify(request).isValidateUnsubmittedProperties();
+    verify(adminSection).getCeilingEntity();
+    verify(adminNavigationService).findAdminSectionByURI(eq("/42"));
+    Map<PersistencePerspectiveItemType, PersistencePerspectiveItem> persistencePerspectiveItems = actualCreateResult
+        .getPersistencePerspectiveItems();
+    assertEquals(2, persistencePerspectiveItems.size());
+    assertTrue(persistencePerspectiveItems.containsKey(PersistencePerspectiveItemType.FOREIGNKEY));
+    assertSame(adornedTargetList, persistencePerspectiveItems.get(PersistencePerspectiveItemType.ADORNEDTARGETLIST));
   }
 
   /**
    * Test {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}.
    * <ul>
    *   <li>Given {@link HashMap#HashMap()} {@code /} is adorned.</li>
-   *   <li>Then calls
-   * {@link PersistencePackageRequest#getCeilingEntityClassname()}.</li>
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}
+   * Method under test: {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}
    */
   @Test
-  public void testCreate_givenHashMapSlashIsAdorned_thenCallsGetCeilingEntityClassname() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePackage PersistencePackageFactoryImpl.create(PersistencePackageRequest)"})
+  public void testCreate_givenHashMapSlashIsAdorned_thenThrowIllegalArgumentException() {
     // Arrange
-    PersistencePackageFactoryImpl persistencePackageFactoryImpl = new PersistencePackageFactoryImpl();
+    AdminSection adminSection = mock(AdminSection.class);
+    when(adminSection.getCeilingEntity()).thenReturn("Ceiling Entity");
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any())).thenReturn(adminSection);
 
     HashMap<String, PersistencePackageRequest> stringPersistencePackageRequestMap = new HashMap<>();
     stringPersistencePackageRequestMap.put("/", PersistencePackageRequest.adorned());
@@ -156,7 +538,7 @@ public class PersistencePackageFactoryImplDiffblueTest {
     when(request.getForeignKey()).thenReturn(new ForeignKey());
     when(request.getAdditionalForeignKeys()).thenReturn(new ForeignKey[]{new ForeignKey()});
     when(request.addAdditionalForeignKey(Mockito.<ForeignKey>any())).thenReturn(PersistencePackageRequest.adorned());
-    when(request.getType()).thenReturn(PersistencePackageRequest.Type.STANDARD);
+    when(request.getType()).thenReturn(Type.STANDARD);
     request.addAdditionalForeignKey(new ForeignKey());
 
     // Act and Assert
@@ -177,24 +559,104 @@ public class PersistencePackageFactoryImplDiffblueTest {
     verify(request).isAddOperationInspect();
     verify(request).isTreeCollection();
     verify(request).isValidateUnsubmittedProperties();
+    verify(adminSection).getCeilingEntity();
+    verify(adminNavigationService).findAdminSectionByURI(eq("/42"));
   }
 
   /**
    * Test {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}.
    * <ul>
-   *   <li>Given {@link HashMap#HashMap()}.</li>
-   *   <li>Then return first element is {@link ForeignKey#ForeignKey()}.</li>
+   *   <li>Then return CeilingEntityFullyQualifiedClassname is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}
+   * Method under test: {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}
    */
   @Test
-  public void testCreate_givenHashMap_thenReturnFirstElementIsForeignKey() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePackage PersistencePackageFactoryImpl.create(PersistencePackageRequest)"})
+  public void testCreate_thenReturnCeilingEntityFullyQualifiedClassnameIsNull() {
     // Arrange
-    PersistencePackageFactoryImpl persistencePackageFactoryImpl = new PersistencePackageFactoryImpl();
+    AdminSection adminSection = mock(AdminSection.class);
+    when(adminSection.getCeilingEntity()).thenReturn("Ceiling Entity");
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any())).thenReturn(adminSection);
+
+    SectionCrumb sectionCrumb = new SectionCrumb();
+    sectionCrumb.setOriginalSectionIdentifier("42");
+    sectionCrumb.setSectionId("42");
+    sectionCrumb.setSectionIdentifier("42");
+    PersistencePackageRequest request = mock(PersistencePackageRequest.class);
+    when(request.isAddOperationInspect()).thenReturn(true);
+    when(request.isTreeCollection()).thenReturn(true);
+    when(request.isValidateUnsubmittedProperties()).thenReturn(true);
+    when(request.getCeilingEntityClassname()).thenReturn(null);
+    when(request.getRequestingEntityName()).thenReturn("Requesting Entity Name");
+    when(request.getSectionEntityField()).thenReturn("Section Entity Field");
+    when(request.getSecurityCeilingEntityClassname()).thenReturn("Security Ceiling Entity Classname");
+    when(request.getCustomCriteria()).thenReturn(new String[]{"Custom Criteria"});
+    when(request.getSubRequests()).thenReturn(new HashMap<>());
+    when(request.getEntity()).thenReturn(new Entity());
+    when(request.getOperationTypesOverride()).thenReturn(new OperationTypes());
+    when(request.getSectionCrumbs()).thenReturn(new SectionCrumb[]{sectionCrumb});
+    when(request.getForeignKey()).thenReturn(new ForeignKey());
+    ForeignKey foreignKey = new ForeignKey();
+    when(request.getAdditionalForeignKeys()).thenReturn(new ForeignKey[]{foreignKey});
+    when(request.addAdditionalForeignKey(Mockito.<ForeignKey>any())).thenReturn(PersistencePackageRequest.adorned());
+    when(request.getType()).thenReturn(Type.STANDARD);
+    request.addAdditionalForeignKey(new ForeignKey());
+
+    // Act
+    PersistencePackage actualCreateResult = persistencePackageFactoryImpl.create(request);
+
+    // Assert
+    verify(request).addAdditionalForeignKey(isA(ForeignKey.class));
+    verify(request).getAdditionalForeignKeys();
+    verify(request, atLeast(1)).getCeilingEntityClassname();
+    verify(request).getCustomCriteria();
+    verify(request, atLeast(1)).getEntity();
+    verify(request, atLeast(1)).getForeignKey();
+    verify(request, atLeast(1)).getOperationTypesOverride();
+    verify(request).getRequestingEntityName();
+    verify(request, atLeast(1)).getSectionCrumbs();
+    verify(request).getSectionEntityField();
+    verify(request, atLeast(1)).getSecurityCeilingEntityClassname();
+    verify(request).getSubRequests();
+    verify(request).getType();
+    verify(request).isAddOperationInspect();
+    verify(request).isTreeCollection();
+    verify(request).isValidateUnsubmittedProperties();
+    verify(adminSection).getCeilingEntity();
+    verify(adminNavigationService).findAdminSectionByURI(eq("/42"));
+    assertEquals("Security Ceiling Entity Classname",
+        actualCreateResult.getSecurityCeilingEntityFullyQualifiedClassname());
+    assertNull(actualCreateResult.getCeilingEntityFullyQualifiedClassname());
+    SectionCrumb bottomCrumb = actualCreateResult.getBottomCrumb();
+    assertNull(bottomCrumb.getOriginalSectionIdentifier());
+    assertNull(bottomCrumb.getSectionIdentifier());
+    Map<PersistencePerspectiveItemType, PersistencePerspectiveItem> persistencePerspectiveItems = actualCreateResult
+        .getPersistencePerspectiveItems();
+    assertEquals(1, persistencePerspectiveItems.size());
+    ForeignKey[] additionalForeignKeys = actualCreateResult.getPersistencePerspective().getAdditionalForeignKeys();
+    assertEquals(1, additionalForeignKeys.length);
+    assertTrue(persistencePerspectiveItems.containsKey(PersistencePerspectiveItemType.FOREIGNKEY));
+    assertSame(foreignKey, additionalForeignKeys[0]);
+  }
+
+  /**
+   * Test {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}.
+   * <ul>
+   *   <li>Then return PersistencePerspective AdditionalForeignKeys is {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePackage PersistencePackageFactoryImpl.create(PersistencePackageRequest)"})
+  public void testCreate_thenReturnPersistencePerspectiveAdditionalForeignKeysIsNull() {
+    // Arrange
+    AdminSection adminSection = mock(AdminSection.class);
+    when(adminSection.getCeilingEntity()).thenReturn("Ceiling Entity");
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any())).thenReturn(adminSection);
 
     SectionCrumb sectionCrumb = new SectionCrumb();
     sectionCrumb.setOriginalSectionIdentifier("42");
@@ -214,149 +676,9 @@ public class PersistencePackageFactoryImplDiffblueTest {
     when(request.getOperationTypesOverride()).thenReturn(new OperationTypes());
     when(request.getSectionCrumbs()).thenReturn(new SectionCrumb[]{sectionCrumb});
     when(request.getForeignKey()).thenReturn(new ForeignKey());
-    ForeignKey foreignKey = new ForeignKey();
-    when(request.getAdditionalForeignKeys()).thenReturn(new ForeignKey[]{foreignKey});
-    when(request.addAdditionalForeignKey(Mockito.<ForeignKey>any())).thenReturn(PersistencePackageRequest.adorned());
-    when(request.getType()).thenReturn(PersistencePackageRequest.Type.STANDARD);
-    request.addAdditionalForeignKey(new ForeignKey());
-
-    // Act
-    PersistencePackage actualCreateResult = persistencePackageFactoryImpl.create(request);
-
-    // Assert
-    verify(request).addAdditionalForeignKey(isA(ForeignKey.class));
-    verify(request).getAdditionalForeignKeys();
-    verify(request, atLeast(1)).getCeilingEntityClassname();
-    verify(request).getCustomCriteria();
-    verify(request, atLeast(1)).getEntity();
-    verify(request, atLeast(1)).getForeignKey();
-    verify(request, atLeast(1)).getOperationTypesOverride();
-    verify(request).getRequestingEntityName();
-    verify(request, atLeast(1)).getSectionCrumbs();
-    verify(request).getSectionEntityField();
-    verify(request, atLeast(1)).getSecurityCeilingEntityClassname();
-    verify(request).getSubRequests();
-    verify(request).getType();
-    verify(request).isAddOperationInspect();
-    verify(request).isTreeCollection();
-    verify(request).isValidateUnsubmittedProperties();
-    ForeignKey[] additionalForeignKeys = actualCreateResult.getPersistencePerspective().getAdditionalForeignKeys();
-    assertEquals(1, additionalForeignKeys.length);
-    assertSame(foreignKey, additionalForeignKeys[0]);
-  }
-
-  /**
-   * Test {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}.
-   * <ul>
-   *   <li>Given {@link MapStructure#MapStructure()}.</li>
-   *   <li>Then calls {@link PersistencePackageRequest#getMapStructure()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}
-   */
-  @Test
-  public void testCreate_givenMapStructure_thenCallsGetMapStructure() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PersistencePackageFactoryImpl persistencePackageFactoryImpl = new PersistencePackageFactoryImpl();
-    PersistencePackageRequest request = mock(PersistencePackageRequest.class);
-    when(request.getMapStructure()).thenReturn(new MapStructure());
-    when(request.getOperationTypesOverride()).thenThrow(new RuntimeException("foo"));
-    when(request.getForeignKey()).thenReturn(new ForeignKey());
-    when(request.getAdditionalForeignKeys()).thenReturn(new ForeignKey[]{new ForeignKey()});
-    when(request.addAdditionalForeignKey(Mockito.<ForeignKey>any())).thenReturn(PersistencePackageRequest.adorned());
-    when(request.getType()).thenReturn(PersistencePackageRequest.Type.MAP);
-    request.addAdditionalForeignKey(new ForeignKey());
-
-    // Act
-    persistencePackageFactoryImpl.create(request);
-
-    // Assert
-    verify(request).addAdditionalForeignKey(isA(ForeignKey.class));
-    verify(request).getAdditionalForeignKeys();
-    verify(request, atLeast(1)).getForeignKey();
-    verify(request, atLeast(1)).getMapStructure();
-    verify(request).getOperationTypesOverride();
-    verify(request).getType();
-  }
-
-  /**
-   * Test {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}.
-   * <ul>
-   *   <li>Given {@link RuntimeException#RuntimeException(String)} with
-   * {@code foo}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}
-   */
-  @Test
-  public void testCreate_givenRuntimeExceptionWithFoo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PersistencePackageFactoryImpl persistencePackageFactoryImpl = new PersistencePackageFactoryImpl();
-    PersistencePackageRequest request = mock(PersistencePackageRequest.class);
-    when(request.getOperationTypesOverride()).thenThrow(new RuntimeException("foo"));
-    when(request.getForeignKey()).thenReturn(new ForeignKey());
-    when(request.getAdditionalForeignKeys()).thenReturn(new ForeignKey[]{new ForeignKey()});
-    when(request.addAdditionalForeignKey(Mockito.<ForeignKey>any())).thenReturn(PersistencePackageRequest.adorned());
-    when(request.getType()).thenReturn(PersistencePackageRequest.Type.STANDARD);
-    request.addAdditionalForeignKey(new ForeignKey());
-
-    // Act
-    persistencePackageFactoryImpl.create(request);
-
-    // Assert
-    verify(request).addAdditionalForeignKey(isA(ForeignKey.class));
-    verify(request).getAdditionalForeignKeys();
-    verify(request, atLeast(1)).getForeignKey();
-    verify(request).getOperationTypesOverride();
-    verify(request).getType();
-  }
-
-  /**
-   * Test {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}.
-   * <ul>
-   *   <li>Then return BottomCrumb OriginalSectionIdentifier is {@code 42}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}
-   */
-  @Test
-  public void testCreate_thenReturnBottomCrumbOriginalSectionIdentifierIs42() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PersistencePackageFactoryImpl persistencePackageFactoryImpl = new PersistencePackageFactoryImpl();
-
-    SectionCrumb sectionCrumb = new SectionCrumb();
-    sectionCrumb.setOriginalSectionIdentifier("42");
-    sectionCrumb.setSectionId("42");
-    sectionCrumb.setSectionIdentifier("42");
-    PersistencePackageRequest request = mock(PersistencePackageRequest.class);
-    when(request.isAddOperationInspect()).thenReturn(true);
-    when(request.isTreeCollection()).thenReturn(true);
-    when(request.isValidateUnsubmittedProperties()).thenReturn(true);
-    when(request.getCeilingEntityClassname()).thenReturn("Ceiling Entity Classname");
-    when(request.getRequestingEntityName()).thenReturn("Requesting Entity Name");
-    when(request.getSectionEntityField()).thenReturn("Section Entity Field");
-    when(request.getSecurityCeilingEntityClassname()).thenReturn("Security Ceiling Entity Classname");
-    when(request.getCustomCriteria()).thenReturn(new String[]{"Custom Criteria"});
-    when(request.getSubRequests()).thenReturn(new HashMap<>());
-    Entity entity = new Entity();
-    when(request.getEntity()).thenReturn(entity);
-    OperationTypes operationTypes = new OperationTypes();
-    when(request.getOperationTypesOverride()).thenReturn(operationTypes);
-    when(request.getSectionCrumbs()).thenReturn(new SectionCrumb[]{sectionCrumb});
-    ForeignKey foreignKey = new ForeignKey();
-    when(request.getForeignKey()).thenReturn(foreignKey);
     when(request.getAdditionalForeignKeys()).thenReturn(null);
     when(request.addAdditionalForeignKey(Mockito.<ForeignKey>any())).thenReturn(PersistencePackageRequest.adorned());
-    when(request.getType()).thenReturn(PersistencePackageRequest.Type.STANDARD);
+    when(request.getType()).thenReturn(Type.STANDARD);
     request.addAdditionalForeignKey(new ForeignKey());
 
     // Act
@@ -379,51 +701,28 @@ public class PersistencePackageFactoryImplDiffblueTest {
     verify(request).isAddOperationInspect();
     verify(request).isTreeCollection();
     verify(request).isValidateUnsubmittedProperties();
+    verify(adminSection).getCeilingEntity();
+    verify(adminNavigationService).findAdminSectionByURI(eq("/42"));
     SectionCrumb bottomCrumb = actualCreateResult.getBottomCrumb();
     assertEquals("42", bottomCrumb.getOriginalSectionIdentifier());
-    assertEquals("42", bottomCrumb.getSectionId());
     assertEquals("Ceiling Entity Classname", actualCreateResult.getCeilingEntityFullyQualifiedClassname());
     assertEquals("Ceiling Entity Classname", bottomCrumb.getSectionIdentifier());
-    assertEquals("Requesting Entity Name", actualCreateResult.getRequestingEntityName());
-    assertEquals("Section Entity Field", actualCreateResult.getSectionEntityField());
-    assertEquals("Security Ceiling Entity Classname",
-        actualCreateResult.getSecurityCeilingEntityFullyQualifiedClassname());
-    PersistencePerspective persistencePerspective = actualCreateResult.getPersistencePerspective();
-    assertNull(persistencePerspective.getAdditionalForeignKeys());
-    assertNull(actualCreateResult.getProperties());
-    Map<PersistencePerspectiveItemType, PersistencePerspectiveItem> persistencePerspectiveItems = actualCreateResult
-        .getPersistencePerspectiveItems();
-    assertEquals(1, persistencePerspectiveItems.size());
-    SectionCrumb[] sectionCrumbs = actualCreateResult.getSectionCrumbs();
-    assertEquals(1, sectionCrumbs.length);
-    assertTrue(actualCreateResult.getPMap().isEmpty());
-    assertTrue(actualCreateResult.isAddOperationInspect());
-    assertTrue(actualCreateResult.isTreeCollection());
-    assertSame(entity, actualCreateResult.getEntity());
-    assertSame(foreignKey, persistencePerspectiveItems.get(PersistencePerspectiveItemType.FOREIGNKEY));
-    assertSame(operationTypes, persistencePerspective.getOperationTypes());
-    assertSame(bottomCrumb, actualCreateResult.getTopCrumb());
-    assertSame(bottomCrumb, sectionCrumbs[0]);
-    assertSame(persistencePerspectiveItems, persistencePerspective.getPersistencePerspectiveItems());
-    assertArrayEquals(new String[]{"Custom Criteria"}, actualCreateResult.getCustomCriteria());
+    assertNull(actualCreateResult.getPersistencePerspective().getAdditionalForeignKeys());
   }
 
   /**
    * Test {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}.
    * <ul>
-   *   <li>When adorned addAdditionalForeignKey
-   * {@link ForeignKey#ForeignKey()}.</li>
+   *   <li>When adorned addAdditionalForeignKey {@link ForeignKey#ForeignKey()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}
+   * Method under test: {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePackage PersistencePackageFactoryImpl.create(PersistencePackageRequest)"})
   public void testCreate_whenAdornedAddAdditionalForeignKeyForeignKey() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    PersistencePackageFactoryImpl persistencePackageFactoryImpl = new PersistencePackageFactoryImpl();
     PersistencePackageRequest request = PersistencePackageRequest.adorned();
     request.addAdditionalForeignKey(new ForeignKey());
 
@@ -438,17 +737,13 @@ public class PersistencePackageFactoryImplDiffblueTest {
    *   <li>Then throw {@link IllegalArgumentException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}
+   * Method under test: {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePackage PersistencePackageFactoryImpl.create(PersistencePackageRequest)"})
   public void testCreate_whenAdorned_thenThrowIllegalArgumentException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PersistencePackageFactoryImpl persistencePackageFactoryImpl = new PersistencePackageFactoryImpl();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertThrows(IllegalArgumentException.class,
         () -> persistencePackageFactoryImpl.create(PersistencePackageRequest.adorned()));
   }
@@ -456,54 +751,25 @@ public class PersistencePackageFactoryImplDiffblueTest {
   /**
    * Test {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}.
    * <ul>
-   *   <li>When map.</li>
-   *   <li>Then throw {@link IllegalArgumentException}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}
-   */
-  @Test
-  public void testCreate_whenMap_thenThrowIllegalArgumentException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PersistencePackageFactoryImpl persistencePackageFactoryImpl = new PersistencePackageFactoryImpl();
-
-    // Act and Assert
-    assertThrows(IllegalArgumentException.class,
-        () -> persistencePackageFactoryImpl.create(PersistencePackageRequest.map()));
-  }
-
-  /**
-   * Test {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}.
-   * <ul>
    *   <li>When standard.</li>
-   *   <li>Then return CeilingEntityFullyQualifiedClassname is {@code null}.</li>
+   *   <li>Then return RequestingEntityName is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}
+   * Method under test: {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}
    */
   @Test
-  public void testCreate_whenStandard_thenReturnCeilingEntityFullyQualifiedClassnameIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PersistencePackageFactoryImpl persistencePackageFactoryImpl = new PersistencePackageFactoryImpl();
-
-    // Act
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePackage PersistencePackageFactoryImpl.create(PersistencePackageRequest)"})
+  public void testCreate_whenStandard_thenReturnRequestingEntityNameIsNull() {
+    // Arrange and Act
     PersistencePackage actualCreateResult = persistencePackageFactoryImpl.create(PersistencePackageRequest.standard());
 
     // Assert
-    assertNull(actualCreateResult.getCeilingEntityFullyQualifiedClassname());
     assertNull(actualCreateResult.getRequestingEntityName());
     assertNull(actualCreateResult.getSectionEntityField());
     assertNull(actualCreateResult.getSecurityCeilingEntityFullyQualifiedClassname());
     SectionCrumb bottomCrumb = actualCreateResult.getBottomCrumb();
-    assertNull(bottomCrumb.getOriginalSectionIdentifier());
     assertNull(bottomCrumb.getSectionId());
-    assertNull(bottomCrumb.getSectionIdentifier());
     assertNull(actualCreateResult.getEntity());
     assertEquals(0, actualCreateResult.getCustomCriteria().length);
     assertEquals(0, actualCreateResult.getSectionCrumbs().length);
@@ -521,15 +787,14 @@ public class PersistencePackageFactoryImplDiffblueTest {
   /**
    * Test {@link PersistencePackageFactoryImpl#getDefaultOperationTypes()}.
    * <p>
-   * Method under test:
-   * {@link PersistencePackageFactoryImpl#getDefaultOperationTypes()}
+   * Method under test: {@link PersistencePackageFactoryImpl#getDefaultOperationTypes()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OperationTypes PersistencePackageFactoryImpl.getDefaultOperationTypes()"})
   public void testGetDefaultOperationTypes() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange and Act
-    OperationTypes actualDefaultOperationTypes = (new PersistencePackageFactoryImpl()).getDefaultOperationTypes();
+    OperationTypes actualDefaultOperationTypes = persistencePackageFactoryImpl.getDefaultOperationTypes();
 
     // Assert
     assertEquals(OperationType.BASIC, actualDefaultOperationTypes.getAddType());
@@ -540,47 +805,16 @@ public class PersistencePackageFactoryImplDiffblueTest {
   }
 
   /**
-   * Test {@link PersistencePackageFactoryImpl#getDefaultOperationTypes()}.
-   * <p>
-   * Method under test:
-   * {@link PersistencePackageFactoryImpl#getDefaultOperationTypes()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetDefaultOperationTypes2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.factory;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass60 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.factory.PersistencePackageFactoryImpl persistencePackageFactoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new PersistencePackageFactoryImpl()).getDefaultOperationTypes();
-  }
-
-  /**
    * Test {@link PersistencePackageFactoryImpl#getOperationTypes(OperationType)}.
    * <p>
-   * Method under test:
-   * {@link PersistencePackageFactoryImpl#getOperationTypes(OperationType)}
+   * Method under test: {@link PersistencePackageFactoryImpl#getOperationTypes(OperationType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OperationTypes PersistencePackageFactoryImpl.getOperationTypes(OperationType)"})
   public void testGetOperationTypes() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange and Act
-    OperationTypes actualOperationTypes = (new PersistencePackageFactoryImpl())
+    OperationTypes actualOperationTypes = persistencePackageFactoryImpl
         .getOperationTypes(OperationType.NONDESTRUCTIVEREMOVE);
 
     // Assert
@@ -592,92 +826,42 @@ public class PersistencePackageFactoryImplDiffblueTest {
   }
 
   /**
-   * Test {@link PersistencePackageFactoryImpl#getOperationTypes(OperationType)}.
+   * Test {@link PersistencePackageFactoryImpl#getClassNameForSection(String)}.
    * <p>
-   * Method under test:
-   * {@link PersistencePackageFactoryImpl#getOperationTypes(OperationType)}
+   * Method under test: {@link PersistencePackageFactoryImpl#getClassNameForSection(String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetOperationTypes2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.factory;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass76 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.factory.PersistencePackageFactoryImpl persistencePackageFactoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String PersistencePackageFactoryImpl.getClassNameForSection(String)"})
+  public void testGetClassNameForSection() {
+    // Arrange
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any())).thenReturn(new AdminSectionImpl());
 
-    // Arrange and Act
-    (new PersistencePackageFactoryImpl()).getOperationTypes(OperationType.NONDESTRUCTIVEREMOVE);
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> persistencePackageFactoryImpl.getClassNameForSection("Section Key"));
+    verify(adminNavigationService).findAdminSectionByURI(eq("/Section Key"));
   }
 
   /**
    * Test {@link PersistencePackageFactoryImpl#getClassNameForSection(String)}.
+   * <ul>
+   *   <li>Then calls {@link AdminSectionImpl#getCeilingEntity()}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link PersistencePackageFactoryImpl#getClassNameForSection(String)}
+   * Method under test: {@link PersistencePackageFactoryImpl#getClassNameForSection(String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetClassNameForSection() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.factory;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass45 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.factory.PersistencePackageFactoryImpl persistencePackageFactoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String PersistencePackageFactoryImpl.getClassNameForSection(String)"})
+  public void testGetClassNameForSection_thenCallsGetCeilingEntity() {
+    // Arrange
+    AdminSectionImpl adminSectionImpl = mock(AdminSectionImpl.class);
+    when(adminSectionImpl.getCeilingEntity()).thenThrow(new RuntimeException("foo"));
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any())).thenReturn(adminSectionImpl);
 
-    // Arrange and Act
-    (new PersistencePackageFactoryImpl()).getClassNameForSection("Section Key");
-  }
-
-  /**
-   * Test {@link PersistencePackageFactoryImpl#getEntityManager(String)}.
-   * <p>
-   * Method under test:
-   * {@link PersistencePackageFactoryImpl#getEntityManager(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetEntityManager() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.factory;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass61 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.factory.PersistencePackageFactoryImpl persistencePackageFactoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new PersistencePackageFactoryImpl()).getEntityManager("Class Name");
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> persistencePackageFactoryImpl.getClassNameForSection("Section Key"));
+    verify(adminSectionImpl).getCeilingEntity();
+    verify(adminNavigationService).findAdminSectionByURI(eq("/Section Key"));
   }
 }

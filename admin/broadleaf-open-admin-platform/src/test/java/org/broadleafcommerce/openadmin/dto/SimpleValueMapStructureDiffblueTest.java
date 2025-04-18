@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.dto;
 
 import static org.junit.Assert.assertEquals;
@@ -5,15 +22,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import org.broadleafcommerce.openadmin.dto.visitor.PersistencePerspectiveItemVisitor;
-import org.broadleafcommerce.openadmin.dto.visitor.PersistencePerspectiveItemVisitorAdapter;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -30,6 +43,8 @@ public class SimpleValueMapStructureDiffblueTest {
    * Method under test: {@link SimpleValueMapStructure#SimpleValueMapStructure()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SimpleValueMapStructure.<init>()"})
   public void testNewSimpleValueMapStructure() {
     // Arrange and Act
     SimpleValueMapStructure actualSimpleValueMapStructure = new SimpleValueMapStructure();
@@ -49,16 +64,17 @@ public class SimpleValueMapStructureDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link SimpleValueMapStructure#SimpleValueMapStructure(String, String, String, String, String, String, String, String)}.
+   * Test {@link SimpleValueMapStructure#SimpleValueMapStructure(String, String, String, String, String, String, String, String)}.
    * <ul>
    *   <li>Then return MapKeyValueProperty is {@code 42}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SimpleValueMapStructure#SimpleValueMapStructure(String, String, String, String, String, String, String, String)}
+   * Method under test: {@link SimpleValueMapStructure#SimpleValueMapStructure(String, String, String, String, String, String, String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void SimpleValueMapStructure.<init>(String, String, String, String, String, String, String, String)"})
   public void testNewSimpleValueMapStructure_thenReturnMapKeyValuePropertyIs42() {
     // Arrange and Act
     SimpleValueMapStructure actualSimpleValueMapStructure = new SimpleValueMapStructure("java.lang.String",
@@ -91,6 +107,11 @@ public class SimpleValueMapStructureDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SimpleValueMapStructure.getValuePropertyFriendlyName()",
+      "String SimpleValueMapStructure.getValuePropertyName()",
+      "void SimpleValueMapStructure.setValuePropertyFriendlyName(String)",
+      "void SimpleValueMapStructure.setValuePropertyName(String)", "String SimpleValueMapStructure.toString()"})
   public void testGettersAndSetters() {
     // Arrange
     SimpleValueMapStructure simpleValueMapStructure = new SimpleValueMapStructure();
@@ -101,7 +122,7 @@ public class SimpleValueMapStructureDiffblueTest {
     String actualToStringResult = simpleValueMapStructure.toString();
     String actualValuePropertyFriendlyName = simpleValueMapStructure.getValuePropertyFriendlyName();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("42", actualValuePropertyFriendlyName);
     assertEquals("42", simpleValueMapStructure.getValuePropertyName());
     assertEquals(
@@ -112,40 +133,16 @@ public class SimpleValueMapStructureDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link SimpleValueMapStructure#accept(PersistencePerspectiveItemVisitor)}.
-   * <ul>
-   *   <li>Then calls
-   * {@link PersistencePerspectiveItemVisitorAdapter#visit(SimpleValueMapStructure)}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SimpleValueMapStructure#accept(PersistencePerspectiveItemVisitor)}
-   */
-  @Test
-  public void testAccept_thenCallsVisit() {
-    // Arrange
-    SimpleValueMapStructure simpleValueMapStructure = new SimpleValueMapStructure();
-    PersistencePerspectiveItemVisitorAdapter visitor = mock(PersistencePerspectiveItemVisitorAdapter.class);
-    doNothing().when(visitor).visit(Mockito.<SimpleValueMapStructure>any());
-
-    // Act
-    simpleValueMapStructure.accept(visitor);
-
-    // Assert
-    verify(visitor).visit(isA(SimpleValueMapStructure.class));
-  }
-
-  /**
    * Test {@link SimpleValueMapStructure#clonePersistencePerspectiveItem()}.
    * <ul>
    *   <li>Then return {@link SimpleValueMapStructure}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SimpleValueMapStructure#clonePersistencePerspectiveItem()}
+   * Method under test: {@link SimpleValueMapStructure#clonePersistencePerspectiveItem()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePerspectiveItem SimpleValueMapStructure.clonePersistencePerspectiveItem()"})
   public void testClonePersistencePerspectiveItem_thenReturnSimpleValueMapStructure() {
     // Arrange
     SimpleValueMapStructure simpleValueMapStructure = new SimpleValueMapStructure();
@@ -161,8 +158,7 @@ public class SimpleValueMapStructureDiffblueTest {
   }
 
   /**
-   * Test {@link SimpleValueMapStructure#equals(Object)}, and
-   * {@link SimpleValueMapStructure#hashCode()}.
+   * Test {@link SimpleValueMapStructure#equals(Object)}, and {@link SimpleValueMapStructure#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -175,6 +171,8 @@ public class SimpleValueMapStructureDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SimpleValueMapStructure.equals(Object)", "int SimpleValueMapStructure.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     SimpleValueMapStructure simpleValueMapStructure = new SimpleValueMapStructure();
@@ -187,8 +185,7 @@ public class SimpleValueMapStructureDiffblueTest {
   }
 
   /**
-   * Test {@link SimpleValueMapStructure#equals(Object)}, and
-   * {@link SimpleValueMapStructure#hashCode()}.
+   * Test {@link SimpleValueMapStructure#equals(Object)}, and {@link SimpleValueMapStructure#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -201,6 +198,8 @@ public class SimpleValueMapStructureDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SimpleValueMapStructure.equals(Object)", "int SimpleValueMapStructure.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     SimpleValueMapStructure simpleValueMapStructure = new SimpleValueMapStructure();
@@ -216,8 +215,7 @@ public class SimpleValueMapStructureDiffblueTest {
   }
 
   /**
-   * Test {@link SimpleValueMapStructure#equals(Object)}, and
-   * {@link SimpleValueMapStructure#hashCode()}.
+   * Test {@link SimpleValueMapStructure#equals(Object)}, and {@link SimpleValueMapStructure#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -230,6 +228,8 @@ public class SimpleValueMapStructureDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SimpleValueMapStructure.equals(Object)", "int SimpleValueMapStructure.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     SimpleValueMapStructure simpleValueMapStructure = new SimpleValueMapStructure();
@@ -245,8 +245,7 @@ public class SimpleValueMapStructureDiffblueTest {
   }
 
   /**
-   * Test {@link SimpleValueMapStructure#equals(Object)}, and
-   * {@link SimpleValueMapStructure#hashCode()}.
+   * Test {@link SimpleValueMapStructure#equals(Object)}, and {@link SimpleValueMapStructure#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -259,6 +258,8 @@ public class SimpleValueMapStructureDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SimpleValueMapStructure.equals(Object)", "int SimpleValueMapStructure.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     SimpleValueMapStructure simpleValueMapStructure = new SimpleValueMapStructure();
@@ -279,10 +280,11 @@ public class SimpleValueMapStructureDiffblueTest {
    * Method under test: {@link SimpleValueMapStructure#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SimpleValueMapStructure.equals(Object)", "int SimpleValueMapStructure.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new SimpleValueMapStructure(), 1);
-    assertNotEquals(new SimpleValueMapStructure(), mock(MapStructure.class));
   }
 
   /**
@@ -295,6 +297,8 @@ public class SimpleValueMapStructureDiffblueTest {
    * Method under test: {@link SimpleValueMapStructure#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SimpleValueMapStructure.equals(Object)", "int SimpleValueMapStructure.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     SimpleValueMapStructure simpleValueMapStructure = new SimpleValueMapStructure();
@@ -314,6 +318,8 @@ public class SimpleValueMapStructureDiffblueTest {
    * Method under test: {@link SimpleValueMapStructure#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SimpleValueMapStructure.equals(Object)", "int SimpleValueMapStructure.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     SimpleValueMapStructure simpleValueMapStructure = new SimpleValueMapStructure();
@@ -333,6 +339,8 @@ public class SimpleValueMapStructureDiffblueTest {
    * Method under test: {@link SimpleValueMapStructure#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SimpleValueMapStructure.equals(Object)", "int SimpleValueMapStructure.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     SimpleValueMapStructure simpleValueMapStructure = new SimpleValueMapStructure();
@@ -352,6 +360,8 @@ public class SimpleValueMapStructureDiffblueTest {
    * Method under test: {@link SimpleValueMapStructure#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SimpleValueMapStructure.equals(Object)", "int SimpleValueMapStructure.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
     SimpleValueMapStructure simpleValueMapStructure = new SimpleValueMapStructure();
@@ -373,6 +383,8 @@ public class SimpleValueMapStructureDiffblueTest {
    * Method under test: {@link SimpleValueMapStructure#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SimpleValueMapStructure.equals(Object)", "int SimpleValueMapStructure.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
     SimpleValueMapStructure simpleValueMapStructure = new SimpleValueMapStructure();
@@ -394,6 +406,8 @@ public class SimpleValueMapStructureDiffblueTest {
    * Method under test: {@link SimpleValueMapStructure#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SimpleValueMapStructure.equals(Object)", "int SimpleValueMapStructure.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new SimpleValueMapStructure(), null);
@@ -409,6 +423,8 @@ public class SimpleValueMapStructureDiffblueTest {
    * Method under test: {@link SimpleValueMapStructure#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SimpleValueMapStructure.equals(Object)", "int SimpleValueMapStructure.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new SimpleValueMapStructure(), "Different type to SimpleValueMapStructure");

@@ -1,7 +1,26 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework Web
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.web.controller.account;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 class ResetPasswordFormDiffblueTest {
@@ -23,6 +42,12 @@ class ResetPasswordFormDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void ResetPasswordForm.<init>()", "String ResetPasswordForm.getPassword()",
+      "String ResetPasswordForm.getPasswordConfirm()", "String ResetPasswordForm.getToken()",
+      "String ResetPasswordForm.getUsername()", "void ResetPasswordForm.setPassword(String)",
+      "void ResetPasswordForm.setPasswordConfirm(String)", "void ResetPasswordForm.setToken(String)",
+      "void ResetPasswordForm.setUsername(String)"})
   void testGettersAndSetters() {
     // Arrange and Act
     ResetPasswordForm actualResetPasswordForm = new ResetPasswordForm();
@@ -34,7 +59,7 @@ class ResetPasswordFormDiffblueTest {
     String actualPasswordConfirm = actualResetPasswordForm.getPasswordConfirm();
     String actualToken = actualResetPasswordForm.getToken();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("ABC123", actualToken);
     assertEquals("Password Confirm", actualPasswordConfirm);
     assertEquals("iloveyou", actualPassword);

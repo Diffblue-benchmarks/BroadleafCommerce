@@ -18,7 +18,10 @@
 package org.broadleafcommerce.common.config;
 
 import static org.junit.Assert.assertEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class DefaultRuntimeEnvironmentProfileAwarePropertySourceDiffblueTest {
   /**
@@ -26,13 +29,14 @@ public class DefaultRuntimeEnvironmentProfileAwarePropertySourceDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>default or parameterless constructor of
-   * {@link DefaultRuntimeEnvironmentProfileAwarePropertySource}
-   *   <li>
-   * {@link DefaultRuntimeEnvironmentProfileAwarePropertySource#getClasspathFolder()}
+   *   <li>default or parameterless constructor of {@link DefaultRuntimeEnvironmentProfileAwarePropertySource}
+   *   <li>{@link DefaultRuntimeEnvironmentProfileAwarePropertySource#getClasspathFolder()}
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DefaultRuntimeEnvironmentProfileAwarePropertySource.<init>()",
+      "java.lang.String DefaultRuntimeEnvironmentProfileAwarePropertySource.getClasspathFolder()"})
   public void testGettersAndSetters() {
     // Arrange, Act and Assert
     assertEquals("runtime-properties",

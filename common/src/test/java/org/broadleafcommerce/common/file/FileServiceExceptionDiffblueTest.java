@@ -20,7 +20,10 @@ package org.broadleafcommerce.common.file;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class FileServiceExceptionDiffblueTest {
   /**
@@ -32,6 +35,9 @@ public class FileServiceExceptionDiffblueTest {
    * Method under test: {@link FileServiceException#FileServiceException(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FileServiceException.<init>()", "void FileServiceException.<init>(String)",
+      "void FileServiceException.<init>(String, Throwable)", "void FileServiceException.<init>(Throwable)"})
   public void testNewFileServiceException_thenReturnMessageIsAnErrorOccurred() {
     // Arrange and Act
     FileServiceException actualFileServiceException = new FileServiceException("An error occurred");
@@ -48,10 +54,12 @@ public class FileServiceExceptionDiffblueTest {
    *   <li>Then return Message is {@code An error occurred}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FileServiceException#FileServiceException(String, Throwable)}
+   * Method under test: {@link FileServiceException#FileServiceException(String, Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FileServiceException.<init>()", "void FileServiceException.<init>(String)",
+      "void FileServiceException.<init>(String, Throwable)", "void FileServiceException.<init>(Throwable)"})
   public void testNewFileServiceException_thenReturnMessageIsAnErrorOccurred2() {
     // Arrange
     Throwable cause = new Throwable();
@@ -74,6 +82,9 @@ public class FileServiceExceptionDiffblueTest {
    * Method under test: {@link FileServiceException#FileServiceException()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FileServiceException.<init>()", "void FileServiceException.<init>(String)",
+      "void FileServiceException.<init>(String, Throwable)", "void FileServiceException.<init>(Throwable)"})
   public void testNewFileServiceException_thenReturnMessageIsNull() {
     // Arrange and Act
     FileServiceException actualFileServiceException = new FileServiceException();
@@ -88,13 +99,15 @@ public class FileServiceExceptionDiffblueTest {
    * Test {@link FileServiceException#FileServiceException(Throwable)}.
    * <ul>
    *   <li>When {@link Throwable#Throwable()}.</li>
-   *   <li>Then return Message is {@code java.lang.Throwable}.</li>
+   *   <li>Then return Message is {@code Throwable}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FileServiceException#FileServiceException(Throwable)}
+   * Method under test: {@link FileServiceException#FileServiceException(Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FileServiceException.<init>()", "void FileServiceException.<init>(String)",
+      "void FileServiceException.<init>(String, Throwable)", "void FileServiceException.<init>(Throwable)"})
   public void testNewFileServiceException_whenThrowable_thenReturnMessageIsJavaLangThrowable() {
     // Arrange
     Throwable cause = new Throwable();

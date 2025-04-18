@@ -22,6 +22,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Map;
@@ -31,6 +33,7 @@ import org.broadleafcommerce.common.web.filter.SessionlessHttpServletRequestWrap
 import org.broadleafcommerce.common.web.util.FileSystemResponseWrapper;
 import org.broadleafcommerce.common.web.util.StatusExposingServletResponse;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.springframework.http.HttpStatus;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -39,13 +42,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 public class FileUploadExceptionAdviceDiffblueTest {
   /**
-   * Test
-   * {@link FileUploadExceptionAdvice#handleMaxSizeException(MaxUploadSizeExceededException, HttpServletRequest, HttpServletResponse)}.
+   * Test {@link FileUploadExceptionAdvice#handleMaxSizeException(MaxUploadSizeExceededException, HttpServletRequest, HttpServletResponse)}.
    * <p>
-   * Method under test:
-   * {@link FileUploadExceptionAdvice#handleMaxSizeException(MaxUploadSizeExceededException, HttpServletRequest, HttpServletResponse)}
+   * Method under test: {@link FileUploadExceptionAdvice#handleMaxSizeException(MaxUploadSizeExceededException, HttpServletRequest, HttpServletResponse)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "ModelAndView FileUploadExceptionAdvice.handleMaxSizeException(MaxUploadSizeExceededException, HttpServletRequest, HttpServletResponse)"})
   public void testHandleMaxSizeException() throws IOException {
     // Arrange
     FileUploadExceptionAdvice fileUploadExceptionAdvice = new FileUploadExceptionAdvice();
@@ -62,6 +66,8 @@ public class FileUploadExceptionAdviceDiffblueTest {
     // Assert
     Map<String, Object> model = actualHandleMaxSizeExceptionResult.getModel();
     assertEquals(2, model.size());
+    Object getResult = model.get("exception");
+    assertTrue(getResult instanceof MaxUploadSizeExceededException);
     assertEquals("File too large!", model.get("exceptionUUID"));
     assertEquals("utility/error", actualHandleMaxSizeExceptionResult.getViewName());
     assertNull(actualHandleMaxSizeExceptionResult.getView());
@@ -69,17 +75,18 @@ public class FileUploadExceptionAdviceDiffblueTest {
     assertFalse(actualHandleMaxSizeExceptionResult.isEmpty());
     assertTrue(actualHandleMaxSizeExceptionResult.hasView());
     assertTrue(actualHandleMaxSizeExceptionResult.isReference());
-    assertSame(exc, model.get("exception"));
+    assertSame(exc, getResult);
     assertSame(model, actualHandleMaxSizeExceptionResult.getModelMap());
   }
 
   /**
    * Test new {@link FileUploadExceptionAdvice} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link FileUploadExceptionAdvice}
+   * Method under test: default or parameterless constructor of {@link FileUploadExceptionAdvice}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FileUploadExceptionAdvice.<init>()"})
   public void testNewFileUploadExceptionAdvice() {
     // Arrange and Act
     FileUploadExceptionAdvice actualFileUploadExceptionAdvice = new FileUploadExceptionAdvice();

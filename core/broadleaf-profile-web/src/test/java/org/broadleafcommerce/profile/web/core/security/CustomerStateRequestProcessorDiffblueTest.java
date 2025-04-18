@@ -1,9 +1,27 @@
+/*-
+ * #%L
+ * BroadleafCommerce Profile Web
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.profile.web.core.security;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
@@ -13,81 +31,83 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import org.broadleafcommerce.common.extension.ExtensionManager;
+import org.broadleafcommerce.common.extension.ExtensionResultHolder;
+import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
-import org.junit.jupiter.api.Disabled;
+import org.broadleafcommerce.profile.core.service.CustomerService;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
 
-@ContextConfiguration(locations = {"/bl-profile-web-applicationContext.xml",
-    "/blc-config/admin/framework/bl-profile-web-applicationContext.xml",
-    "/blc-config/site/bl-profile-web-applicationContext-servlet.xml",
-    "/blc-config/site/framework/bl-profile-web-applicationContext.xml"})
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 class CustomerStateRequestProcessorDiffblueTest {
-  @Autowired
+  @Mock
+  private AnonymousCustomerExtensionManager anonymousCustomerExtensionManager;
+
+  @Mock
+  private CustomerMergeExtensionManager customerMergeExtensionManager;
+
+  @Mock
+  private CustomerService customerService;
+
+  @InjectMocks
   private CustomerStateRequestProcessor customerStateRequestProcessor;
 
   /**
    * Test {@link CustomerStateRequestProcessor#process(WebRequest)}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link CustomerStateRequestProcessor#process(WebRequest)}
    */
   @Test
-  @DisplayName("Test process(WebRequest)")
-  @Disabled("TODO: Complete this test")
-  void testProcess() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.web.core.security;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-web-applicationContext.xml","/blc-config/admin/framework/bl-profile-web-applicationContext.xml","/blc-config/site/bl-profile-web-applicationContext-servlet.xml","/blc-config/site/framework/bl-profile-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1246 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.web.core.security.CustomerStateRequestProcessor customerStateRequestProcessor;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @DisplayName("Test process(WebRequest); then throw RuntimeException")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void CustomerStateRequestProcessor.process(WebRequest)"})
+  void testProcess_thenThrowRuntimeException() {
     // Arrange
-    CustomerStateRequestProcessor customerStateRequestProcessor2 = new CustomerStateRequestProcessor();
+    when(anonymousCustomerExtensionManager.getProxy()).thenReturn(new AbstractAnonymousCustomerExtensionHandler());
+    when(customerService.createCustomerWithNullId())
+        .thenThrow(new RuntimeException(CustomerStateRequestProcessor.OVERRIDE_CUSTOMER_SESSION_ATTR_NAME));
 
-    // Act
-    customerStateRequestProcessor2.process(new ServletWebRequest(new MockHttpServletRequest()));
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> customerStateRequestProcessor.process(new ServletWebRequest(new MockHttpServletRequest())));
+    verify(anonymousCustomerExtensionManager).getProxy();
+    verify(customerService).createCustomerWithNullId();
   }
 
   /**
-   * Test
-   * {@link CustomerStateRequestProcessor#publishEvent(ApplicationEvent, WebRequest, String, String)}.
+   * Test {@link CustomerStateRequestProcessor#publishEvent(ApplicationEvent, WebRequest, String, String)}.
    * <p>
-   * Method under test:
-   * {@link CustomerStateRequestProcessor#publishEvent(ApplicationEvent, WebRequest, String, String)}
+   * Method under test: {@link CustomerStateRequestProcessor#publishEvent(ApplicationEvent, WebRequest, String, String)}
    */
   @Test
   @DisplayName("Test publishEvent(ApplicationEvent, WebRequest, String, String)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void CustomerStateRequestProcessor.publishEvent(ApplicationEvent, WebRequest, String, String)"})
   void testPublishEvent() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ApplicationEventPublisher eventPublisher = mock(ApplicationEventPublisher.class);
     doNothing().when(eventPublisher).publishEvent(Mockito.<ApplicationEvent>any());
@@ -110,60 +130,19 @@ class CustomerStateRequestProcessorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomerStateRequestProcessor#publishEvent(ApplicationEvent, WebRequest, String, String)}.
-   * <p>
-   * Method under test:
-   * {@link CustomerStateRequestProcessor#publishEvent(ApplicationEvent, WebRequest, String, String)}
-   */
-  @Test
-  @DisplayName("Test publishEvent(ApplicationEvent, WebRequest, String, String)")
-  @Disabled("TODO: Complete this test")
-  void testPublishEvent2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.web.core.security;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-web-applicationContext.xml","/blc-config/admin/framework/bl-profile-web-applicationContext.xml","/blc-config/site/bl-profile-web-applicationContext-servlet.xml","/blc-config/site/framework/bl-profile-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1329 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.web.core.security.CustomerStateRequestProcessor customerStateRequestProcessor;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CustomerStateRequestProcessor customerStateRequestProcessor2 = new CustomerStateRequestProcessor();
-    CustomerAuthenticatedFromCookieEvent event = new CustomerAuthenticatedFromCookieEvent(new CustomerImpl(), "Source");
-
-    // Act
-    customerStateRequestProcessor2.publishEvent(event, new ServletWebRequest(new MockHttpServletRequest()),
-        "Event Class", "janedoe");
-  }
-
-  /**
-   * Test
-   * {@link CustomerStateRequestProcessor#publishEvent(ApplicationEvent, WebRequest, String, String)}.
+   * Test {@link CustomerStateRequestProcessor#publishEvent(ApplicationEvent, WebRequest, String, String)}.
    * <ul>
    *   <li>Given {@code false}.</li>
-   *   <li>When {@link WebRequest}
-   * {@link RequestAttributes#getAttribute(String, int)} return
-   * {@code false}.</li>
+   *   <li>When {@link WebRequest} {@link RequestAttributes#getAttribute(String, int)} return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomerStateRequestProcessor#publishEvent(ApplicationEvent, WebRequest, String, String)}
+   * Method under test: {@link CustomerStateRequestProcessor#publishEvent(ApplicationEvent, WebRequest, String, String)}
    */
   @Test
   @DisplayName("Test publishEvent(ApplicationEvent, WebRequest, String, String); given 'false'; when WebRequest getAttribute(String, int) return 'false'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void CustomerStateRequestProcessor.publishEvent(ApplicationEvent, WebRequest, String, String)"})
   void testPublishEvent_givenFalse_whenWebRequestGetAttributeReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ApplicationEventPublisher eventPublisher = mock(ApplicationEventPublisher.class);
     doNothing().when(eventPublisher).publishEvent(Mockito.<ApplicationEvent>any());
@@ -184,22 +163,19 @@ class CustomerStateRequestProcessorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomerStateRequestProcessor#publishEvent(ApplicationEvent, WebRequest, String, String)}.
+   * Test {@link CustomerStateRequestProcessor#publishEvent(ApplicationEvent, WebRequest, String, String)}.
    * <ul>
    *   <li>Given {@code true}.</li>
-   *   <li>Then calls
-   * {@link RequestAttributes#setAttribute(String, Object, int)}.</li>
+   *   <li>Then calls {@link RequestAttributes#setAttribute(String, Object, int)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomerStateRequestProcessor#publishEvent(ApplicationEvent, WebRequest, String, String)}
+   * Method under test: {@link CustomerStateRequestProcessor#publishEvent(ApplicationEvent, WebRequest, String, String)}
    */
   @Test
   @DisplayName("Test publishEvent(ApplicationEvent, WebRequest, String, String); given 'true'; then calls setAttribute(String, Object, int)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void CustomerStateRequestProcessor.publishEvent(ApplicationEvent, WebRequest, String, String)"})
   void testPublishEvent_givenTrue_thenCallsSetAttribute() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     ApplicationEventPublisher eventPublisher = mock(ApplicationEventPublisher.class);
     doNothing().when(eventPublisher).publishEvent(Mockito.<ApplicationEvent>any());
@@ -222,87 +198,42 @@ class CustomerStateRequestProcessorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomerStateRequestProcessor#mergeCustomerIfRequired(WebRequest, Customer)}.
+   * Test {@link CustomerStateRequestProcessor#mergeCustomerIfRequired(WebRequest, Customer)}.
+   * <ul>
+   *   <li>Given {@link CustomerStateRequestProcessor} (default constructor).</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomerStateRequestProcessor#mergeCustomerIfRequired(WebRequest, Customer)}
+   * Method under test: {@link CustomerStateRequestProcessor#mergeCustomerIfRequired(WebRequest, Customer)}
    */
   @Test
-  @DisplayName("Test mergeCustomerIfRequired(WebRequest, Customer)")
-  void testMergeCustomerIfRequired() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @DisplayName("Test mergeCustomerIfRequired(WebRequest, Customer); given CustomerStateRequestProcessor (default constructor)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Customer CustomerStateRequestProcessor.mergeCustomerIfRequired(WebRequest, Customer)"})
+  void testMergeCustomerIfRequired_givenCustomerStateRequestProcessor() {
     // Arrange
     CustomerStateRequestProcessor customerStateRequestProcessor = new CustomerStateRequestProcessor();
     ServletWebRequest request = new ServletWebRequest(new MockHttpServletRequest());
+    CustomerImpl customer = new CustomerImpl();
 
-    // Act
-    customerStateRequestProcessor.mergeCustomerIfRequired(request, new CustomerImpl());
-
-    // Assert
-    Object sessionMutex = request.getSessionMutex();
-    assertTrue(sessionMutex instanceof MockHttpSession);
-    assertArrayEquals(new String[]{CustomerStateRequestProcessor.ANONYMOUS_CUSTOMER_MERGED_SESSION_ATTRIBUTE_NAME},
-        ((MockHttpSession) sessionMutex).getValueNames());
+    // Act and Assert
+    assertSame(customer, customerStateRequestProcessor.mergeCustomerIfRequired(request, customer));
   }
 
   /**
-   * Test
-   * {@link CustomerStateRequestProcessor#mergeCustomerIfRequired(WebRequest, Customer)}.
-   * <p>
-   * Method under test:
-   * {@link CustomerStateRequestProcessor#mergeCustomerIfRequired(WebRequest, Customer)}
-   */
-  @Test
-  @DisplayName("Test mergeCustomerIfRequired(WebRequest, Customer)")
-  @Disabled("TODO: Complete this test")
-  void testMergeCustomerIfRequired2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.web.core.security;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-web-applicationContext.xml","/blc-config/admin/framework/bl-profile-web-applicationContext.xml","/blc-config/site/bl-profile-web-applicationContext-servlet.xml","/blc-config/site/framework/bl-profile-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1137 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.web.core.security.CustomerStateRequestProcessor customerStateRequestProcessor;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CustomerStateRequestProcessor customerStateRequestProcessor2 = new CustomerStateRequestProcessor();
-    ServletWebRequest request = new ServletWebRequest(new MockHttpServletRequest());
-
-    // Act
-    customerStateRequestProcessor2.mergeCustomerIfRequired(request, new CustomerImpl());
-  }
-
-  /**
-   * Test
-   * {@link CustomerStateRequestProcessor#mergeCustomerIfRequired(WebRequest, Customer)}.
+   * Test {@link CustomerStateRequestProcessor#mergeCustomerIfRequired(WebRequest, Customer)}.
    * <ul>
    *   <li>Given {@code false}.</li>
-   *   <li>When {@link WebRequest}
-   * {@link RequestAttributes#getAttribute(String, int)} return
-   * {@code false}.</li>
+   *   <li>When {@link WebRequest} {@link RequestAttributes#getAttribute(String, int)} return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomerStateRequestProcessor#mergeCustomerIfRequired(WebRequest, Customer)}
+   * Method under test: {@link CustomerStateRequestProcessor#mergeCustomerIfRequired(WebRequest, Customer)}
    */
   @Test
   @DisplayName("Test mergeCustomerIfRequired(WebRequest, Customer); given 'false'; when WebRequest getAttribute(String, int) return 'false'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Customer CustomerStateRequestProcessor.mergeCustomerIfRequired(WebRequest, Customer)"})
   void testMergeCustomerIfRequired_givenFalse_whenWebRequestGetAttributeReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CustomerStateRequestProcessor customerStateRequestProcessor = new CustomerStateRequestProcessor();
     WebRequest request = mock(WebRequest.class);
     when(request.getAttribute(Mockito.<String>any(), anyInt())).thenReturn(false);
     CustomerImpl customer = new CustomerImpl();
@@ -317,24 +248,20 @@ class CustomerStateRequestProcessorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomerStateRequestProcessor#mergeCustomerIfRequired(WebRequest, Customer)}.
+   * Test {@link CustomerStateRequestProcessor#mergeCustomerIfRequired(WebRequest, Customer)}.
    * <ul>
    *   <li>Given {@code true}.</li>
-   *   <li>When {@link WebRequest}
-   * {@link RequestAttributes#getAttribute(String, int)} return {@code true}.</li>
+   *   <li>When {@link WebRequest} {@link RequestAttributes#getAttribute(String, int)} return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomerStateRequestProcessor#mergeCustomerIfRequired(WebRequest, Customer)}
+   * Method under test: {@link CustomerStateRequestProcessor#mergeCustomerIfRequired(WebRequest, Customer)}
    */
   @Test
   @DisplayName("Test mergeCustomerIfRequired(WebRequest, Customer); given 'true'; when WebRequest getAttribute(String, int) return 'true'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Customer CustomerStateRequestProcessor.mergeCustomerIfRequired(WebRequest, Customer)"})
   void testMergeCustomerIfRequired_givenTrue_whenWebRequestGetAttributeReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CustomerStateRequestProcessor customerStateRequestProcessor = new CustomerStateRequestProcessor();
     WebRequest request = mock(WebRequest.class);
     when(request.getAttribute(Mockito.<String>any(), anyInt())).thenReturn(true);
     CustomerImpl customer = new CustomerImpl();
@@ -349,214 +276,265 @@ class CustomerStateRequestProcessorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomerStateRequestProcessor#copyAnonymousCustomerInfoToCustomer(WebRequest, Customer, Customer)}.
+   * Test {@link CustomerStateRequestProcessor#mergeCustomerIfRequired(WebRequest, Customer)}.
+   * <ul>
+   *   <li>Then calls {@link ExtensionManager#getProxy()}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomerStateRequestProcessor#copyAnonymousCustomerInfoToCustomer(WebRequest, Customer, Customer)}
+   * Method under test: {@link CustomerStateRequestProcessor#mergeCustomerIfRequired(WebRequest, Customer)}
    */
   @Test
-  @DisplayName("Test copyAnonymousCustomerInfoToCustomer(WebRequest, Customer, Customer)")
-  void testCopyAnonymousCustomerInfoToCustomer() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @DisplayName("Test mergeCustomerIfRequired(WebRequest, Customer); then calls getProxy()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Customer CustomerStateRequestProcessor.mergeCustomerIfRequired(WebRequest, Customer)"})
+  void testMergeCustomerIfRequired_thenCallsGetProxy() {
     // Arrange
-    CustomerStateRequestProcessor customerStateRequestProcessor = new CustomerStateRequestProcessor();
+    when(anonymousCustomerExtensionManager.getProxy()).thenReturn(new AbstractAnonymousCustomerExtensionHandler());
+    when(customerMergeExtensionManager.getProxy()).thenReturn(new DefaultCustomerMergeExtensionHandler());
+    CustomerImpl customerImpl = new CustomerImpl();
+    when(customerService.saveCustomer(Mockito.<Customer>any())).thenReturn(customerImpl);
     ServletWebRequest request = new ServletWebRequest(new MockHttpServletRequest());
-    CustomerImpl anonymous = new CustomerImpl();
-    CustomerImpl customer = new CustomerImpl();
-
-    // Act and Assert
-    assertSame(customer,
-        customerStateRequestProcessor.copyAnonymousCustomerInfoToCustomer(request, anonymous, customer));
-  }
-
-  /**
-   * Test
-   * {@link CustomerStateRequestProcessor#copyAnonymousCustomerInfoToCustomer(WebRequest, Customer, Customer)}.
-   * <p>
-   * Method under test:
-   * {@link CustomerStateRequestProcessor#copyAnonymousCustomerInfoToCustomer(WebRequest, Customer, Customer)}
-   */
-  @Test
-  @DisplayName("Test copyAnonymousCustomerInfoToCustomer(WebRequest, Customer, Customer)")
-  void testCopyAnonymousCustomerInfoToCustomer2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CustomerStateRequestProcessor customerStateRequestProcessor = new CustomerStateRequestProcessor();
-    ServletWebRequest request = new ServletWebRequest(mock(DefaultMultipartHttpServletRequest.class));
-    CustomerImpl anonymous = new CustomerImpl();
-    CustomerImpl customer = new CustomerImpl();
-
-    // Act and Assert
-    assertSame(customer,
-        customerStateRequestProcessor.copyAnonymousCustomerInfoToCustomer(request, anonymous, customer));
-  }
-
-  /**
-   * Test
-   * {@link CustomerStateRequestProcessor#copyAnonymousCustomerInfoToCustomer(WebRequest, Customer, Customer)}.
-   * <p>
-   * Method under test:
-   * {@link CustomerStateRequestProcessor#copyAnonymousCustomerInfoToCustomer(WebRequest, Customer, Customer)}
-   */
-  @Test
-  @DisplayName("Test copyAnonymousCustomerInfoToCustomer(WebRequest, Customer, Customer)")
-  @Disabled("TODO: Complete this test")
-  void testCopyAnonymousCustomerInfoToCustomer3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.web.core.security;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-web-applicationContext.xml","/blc-config/admin/framework/bl-profile-web-applicationContext.xml","/blc-config/site/bl-profile-web-applicationContext-servlet.xml","/blc-config/site/framework/bl-profile-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass918 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.web.core.security.CustomerStateRequestProcessor customerStateRequestProcessor;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CustomerStateRequestProcessor customerStateRequestProcessor2 = new CustomerStateRequestProcessor();
-    ServletWebRequest request = new ServletWebRequest(new MockHttpServletRequest());
-    CustomerImpl anonymous = new CustomerImpl();
 
     // Act
-    customerStateRequestProcessor2.copyAnonymousCustomerInfoToCustomer(request, anonymous, new CustomerImpl());
+    Customer actualMergeCustomerIfRequiredResult = customerStateRequestProcessor.mergeCustomerIfRequired(request,
+        new CustomerImpl());
+
+    // Assert
+    verify(anonymousCustomerExtensionManager).getProxy();
+    verify(customerMergeExtensionManager).getProxy();
+    verify(customerService).saveCustomer(isA(Customer.class));
+    assertSame(customerImpl, actualMergeCustomerIfRequiredResult);
   }
 
   /**
-   * Test
-   * {@link CustomerStateRequestProcessor#resolveAuthenticatedCustomer(Authentication)}.
+   * Test {@link CustomerStateRequestProcessor#mergeCustomerIfRequired(WebRequest, Customer)}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomerStateRequestProcessor#resolveAuthenticatedCustomer(Authentication)}
+   * Method under test: {@link CustomerStateRequestProcessor#mergeCustomerIfRequired(WebRequest, Customer)}
    */
   @Test
-  @DisplayName("Test resolveAuthenticatedCustomer(Authentication)")
-  void testResolveAuthenticatedCustomer() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @DisplayName("Test mergeCustomerIfRequired(WebRequest, Customer); then throw RuntimeException")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Customer CustomerStateRequestProcessor.mergeCustomerIfRequired(WebRequest, Customer)"})
+  void testMergeCustomerIfRequired_thenThrowRuntimeException() {
     // Arrange
-    CustomerStateRequestProcessor customerStateRequestProcessor = new CustomerStateRequestProcessor();
-    customerStateRequestProcessor.setApplicationEventPublisher(mock(ApplicationEventPublisher.class));
+    when(anonymousCustomerExtensionManager.getProxy()).thenReturn(new AbstractAnonymousCustomerExtensionHandler());
+    when(customerMergeExtensionManager.getProxy()).thenReturn(new DefaultCustomerMergeExtensionHandler());
+    when(customerService.saveCustomer(Mockito.<Customer>any())).thenThrow(
+        new RuntimeException(CustomerStateRequestProcessor.ANONYMOUS_CUSTOMER_MERGED_SESSION_ATTRIBUTE_NAME));
+    ServletWebRequest request = new ServletWebRequest(new MockHttpServletRequest());
 
     // Act and Assert
-    assertNull(customerStateRequestProcessor
-        .resolveAuthenticatedCustomer(new TestingAuthenticationToken("Principal", "Credentials")));
+    assertThrows(RuntimeException.class,
+        () -> customerStateRequestProcessor.mergeCustomerIfRequired(request, new CustomerImpl()));
+    verify(anonymousCustomerExtensionManager).getProxy();
+    verify(customerMergeExtensionManager).getProxy();
+    verify(customerService).saveCustomer(isA(Customer.class));
   }
 
   /**
-   * Test
-   * {@link CustomerStateRequestProcessor#resolveAuthenticatedCustomer(Authentication)}.
-   * <p>
-   * Method under test:
-   * {@link CustomerStateRequestProcessor#resolveAuthenticatedCustomer(Authentication)}
-   */
-  @Test
-  @DisplayName("Test resolveAuthenticatedCustomer(Authentication)")
-  @Disabled("TODO: Complete this test")
-  void testResolveAuthenticatedCustomer2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.web.core.security;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-web-applicationContext.xml","/blc-config/admin/framework/bl-profile-web-applicationContext.xml","/blc-config/site/bl-profile-web-applicationContext-servlet.xml","/blc-config/site/framework/bl-profile-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1581 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.web.core.security.CustomerStateRequestProcessor customerStateRequestProcessor;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CustomerStateRequestProcessor customerStateRequestProcessor2 = new CustomerStateRequestProcessor();
-
-    // Act
-    customerStateRequestProcessor2
-        .resolveAuthenticatedCustomer(new TestingAuthenticationToken("Principal", "Credentials"));
-  }
-
-  /**
-   * Test
-   * {@link CustomerStateRequestProcessor#resolveAuthenticatedCustomer(Authentication)}.
+   * Test {@link CustomerStateRequestProcessor#copyAnonymousCustomerInfoToCustomer(WebRequest, Customer, Customer)}.
    * <ul>
    *   <li>Given {@link CustomerStateRequestProcessor} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomerStateRequestProcessor#resolveAuthenticatedCustomer(Authentication)}
+   * Method under test: {@link CustomerStateRequestProcessor#copyAnonymousCustomerInfoToCustomer(WebRequest, Customer, Customer)}
    */
   @Test
-  @DisplayName("Test resolveAuthenticatedCustomer(Authentication); given CustomerStateRequestProcessor (default constructor)")
-  void testResolveAuthenticatedCustomer_givenCustomerStateRequestProcessor() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @DisplayName("Test copyAnonymousCustomerInfoToCustomer(WebRequest, Customer, Customer); given CustomerStateRequestProcessor (default constructor)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "Customer CustomerStateRequestProcessor.copyAnonymousCustomerInfoToCustomer(WebRequest, Customer, Customer)"})
+  void testCopyAnonymousCustomerInfoToCustomer_givenCustomerStateRequestProcessor() {
     // Arrange
     CustomerStateRequestProcessor customerStateRequestProcessor = new CustomerStateRequestProcessor();
+    ServletWebRequest request = new ServletWebRequest(new MockHttpServletRequest());
+    CustomerImpl anonymous = new CustomerImpl();
+    CustomerImpl customer = new CustomerImpl();
 
     // Act and Assert
+    assertSame(customer,
+        customerStateRequestProcessor.copyAnonymousCustomerInfoToCustomer(request, anonymous, customer));
+  }
+
+  /**
+   * Test {@link CustomerStateRequestProcessor#copyAnonymousCustomerInfoToCustomer(WebRequest, Customer, Customer)}.
+   * <ul>
+   *   <li>Then return {@link CustomerImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CustomerStateRequestProcessor#copyAnonymousCustomerInfoToCustomer(WebRequest, Customer, Customer)}
+   */
+  @Test
+  @DisplayName("Test copyAnonymousCustomerInfoToCustomer(WebRequest, Customer, Customer); then return CustomerImpl (default constructor)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "Customer CustomerStateRequestProcessor.copyAnonymousCustomerInfoToCustomer(WebRequest, Customer, Customer)"})
+  void testCopyAnonymousCustomerInfoToCustomer_thenReturnCustomerImpl() {
+    // Arrange
+    when(customerMergeExtensionManager.getProxy()).thenReturn(new DefaultCustomerMergeExtensionHandler());
+    CustomerImpl customerImpl = new CustomerImpl();
+    when(customerService.saveCustomer(Mockito.<Customer>any())).thenReturn(customerImpl);
+    ServletWebRequest request = new ServletWebRequest(new MockHttpServletRequest());
+    CustomerImpl anonymous = new CustomerImpl();
+
+    // Act
+    Customer actualCopyAnonymousCustomerInfoToCustomerResult = customerStateRequestProcessor
+        .copyAnonymousCustomerInfoToCustomer(request, anonymous, new CustomerImpl());
+
+    // Assert
+    verify(customerMergeExtensionManager).getProxy();
+    verify(customerService).saveCustomer(isA(Customer.class));
+    assertSame(customerImpl, actualCopyAnonymousCustomerInfoToCustomerResult);
+  }
+
+  /**
+   * Test {@link CustomerStateRequestProcessor#copyAnonymousCustomerInfoToCustomer(WebRequest, Customer, Customer)}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CustomerStateRequestProcessor#copyAnonymousCustomerInfoToCustomer(WebRequest, Customer, Customer)}
+   */
+  @Test
+  @DisplayName("Test copyAnonymousCustomerInfoToCustomer(WebRequest, Customer, Customer); then throw RuntimeException")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "Customer CustomerStateRequestProcessor.copyAnonymousCustomerInfoToCustomer(WebRequest, Customer, Customer)"})
+  void testCopyAnonymousCustomerInfoToCustomer_thenThrowRuntimeException() {
+    // Arrange
+    when(customerMergeExtensionManager.getProxy()).thenReturn(new DefaultCustomerMergeExtensionHandler());
+    when(customerService.saveCustomer(Mockito.<Customer>any())).thenThrow(new RuntimeException("foo"));
+    ServletWebRequest request = new ServletWebRequest(new MockHttpServletRequest());
+    CustomerImpl anonymous = new CustomerImpl();
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> customerStateRequestProcessor
+        .copyAnonymousCustomerInfoToCustomer(request, anonymous, new CustomerImpl()));
+    verify(customerMergeExtensionManager).getProxy();
+    verify(customerService).saveCustomer(isA(Customer.class));
+  }
+
+  /**
+   * Test {@link CustomerStateRequestProcessor#resolveAuthenticatedCustomer(Authentication)}.
+   * <p>
+   * Method under test: {@link CustomerStateRequestProcessor#resolveAuthenticatedCustomer(Authentication)}
+   */
+  @Test
+  @DisplayName("Test resolveAuthenticatedCustomer(Authentication)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Customer CustomerStateRequestProcessor.resolveAuthenticatedCustomer(Authentication)"})
+  void testResolveAuthenticatedCustomer() {
+    // Arrange, Act and Assert
     assertNull(customerStateRequestProcessor
         .resolveAuthenticatedCustomer(new TestingAuthenticationToken("Principal", "Credentials")));
   }
 
   /**
-   * Test
-   * {@link CustomerStateRequestProcessor#resolveAnonymousCustomer(WebRequest)}.
+   * Test {@link CustomerStateRequestProcessor#resolveAnonymousCustomer(WebRequest)}.
+   * <ul>
+   *   <li>Then calls {@link AbstractAnonymousCustomerExtensionHandler#getAnonymousCustomer(ExtensionResultHolder, WebRequest)}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomerStateRequestProcessor#resolveAnonymousCustomer(WebRequest)}
+   * Method under test: {@link CustomerStateRequestProcessor#resolveAnonymousCustomer(WebRequest)}
    */
   @Test
-  @DisplayName("Test resolveAnonymousCustomer(WebRequest)")
-  @Disabled("TODO: Complete this test")
-  void testResolveAnonymousCustomer() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.web.core.security;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-web-applicationContext.xml","/blc-config/admin/framework/bl-profile-web-applicationContext.xml","/blc-config/site/bl-profile-web-applicationContext-servlet.xml","/blc-config/site/framework/bl-profile-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1498 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.web.core.security.CustomerStateRequestProcessor customerStateRequestProcessor;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @DisplayName("Test resolveAnonymousCustomer(WebRequest); then calls getAnonymousCustomer(ExtensionResultHolder, WebRequest)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Customer CustomerStateRequestProcessor.resolveAnonymousCustomer(WebRequest)"})
+  void testResolveAnonymousCustomer_thenCallsGetAnonymousCustomer() {
     // Arrange
-    CustomerStateRequestProcessor customerStateRequestProcessor2 = new CustomerStateRequestProcessor();
+    AbstractAnonymousCustomerExtensionHandler abstractAnonymousCustomerExtensionHandler = mock(
+        AbstractAnonymousCustomerExtensionHandler.class);
+    when(abstractAnonymousCustomerExtensionHandler.getAnonymousCustomer(Mockito.<ExtensionResultHolder<Customer>>any(),
+        Mockito.<WebRequest>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(anonymousCustomerExtensionManager.getProxy()).thenReturn(abstractAnonymousCustomerExtensionHandler);
+    CustomerImpl customerImpl = new CustomerImpl();
+    when(customerService.createCustomerWithNullId()).thenReturn(customerImpl);
+    WebRequest request = mock(WebRequest.class);
+    when(request.getAttribute(Mockito.<String>any(), anyInt())).thenReturn(false);
 
     // Act
-    customerStateRequestProcessor2.resolveAnonymousCustomer(new ServletWebRequest(new MockHttpServletRequest()));
+    Customer actualResolveAnonymousCustomerResult = customerStateRequestProcessor.resolveAnonymousCustomer(request);
+
+    // Assert
+    verify(anonymousCustomerExtensionManager).getProxy();
+    verify(customerService).createCustomerWithNullId();
+    verify(abstractAnonymousCustomerExtensionHandler).getAnonymousCustomer(isA(ExtensionResultHolder.class),
+        isA(WebRequest.class));
+    verify(request, atLeast(1)).getAttribute(eq("blOkToUseSession"), eq(0));
+    assertSame(customerImpl, actualResolveAnonymousCustomerResult);
+  }
+
+  /**
+   * Test {@link CustomerStateRequestProcessor#resolveAnonymousCustomer(WebRequest)}.
+   * <ul>
+   *   <li>Then return {@link CustomerImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CustomerStateRequestProcessor#resolveAnonymousCustomer(WebRequest)}
+   */
+  @Test
+  @DisplayName("Test resolveAnonymousCustomer(WebRequest); then return CustomerImpl (default constructor)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Customer CustomerStateRequestProcessor.resolveAnonymousCustomer(WebRequest)"})
+  void testResolveAnonymousCustomer_thenReturnCustomerImpl() {
+    // Arrange
+    when(anonymousCustomerExtensionManager.getProxy()).thenReturn(new AbstractAnonymousCustomerExtensionHandler());
+    CustomerImpl customerImpl = new CustomerImpl();
+    when(customerService.createCustomerWithNullId()).thenReturn(customerImpl);
+
+    // Act
+    Customer actualResolveAnonymousCustomerResult = customerStateRequestProcessor
+        .resolveAnonymousCustomer(new ServletWebRequest(new MockHttpServletRequest()));
+
+    // Assert
+    verify(anonymousCustomerExtensionManager).getProxy();
+    verify(customerService).createCustomerWithNullId();
+    assertSame(customerImpl, actualResolveAnonymousCustomerResult);
+  }
+
+  /**
+   * Test {@link CustomerStateRequestProcessor#resolveAnonymousCustomer(WebRequest)}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CustomerStateRequestProcessor#resolveAnonymousCustomer(WebRequest)}
+   */
+  @Test
+  @DisplayName("Test resolveAnonymousCustomer(WebRequest); then throw RuntimeException")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Customer CustomerStateRequestProcessor.resolveAnonymousCustomer(WebRequest)"})
+  void testResolveAnonymousCustomer_thenThrowRuntimeException() {
+    // Arrange
+    when(anonymousCustomerExtensionManager.getProxy()).thenReturn(new AbstractAnonymousCustomerExtensionHandler());
+    when(customerService.createCustomerWithNullId())
+        .thenThrow(new RuntimeException(CustomerStateRequestProcessor.ANONYMOUS_CUSTOMER_SESSION_ATTRIBUTE_NAME));
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> customerStateRequestProcessor
+        .resolveAnonymousCustomer(new ServletWebRequest(new MockHttpServletRequest())));
+    verify(anonymousCustomerExtensionManager).getProxy();
+    verify(customerService).createCustomerWithNullId();
   }
 
   /**
    * Test {@link CustomerStateRequestProcessor#getAnonymousCustomer(WebRequest)}.
+   * <ul>
+   *   <li>Given {@link CustomerStateRequestProcessor} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomerStateRequestProcessor#getAnonymousCustomer(WebRequest)}
+   * Method under test: {@link CustomerStateRequestProcessor#getAnonymousCustomer(WebRequest)}
    */
   @Test
-  @DisplayName("Test getAnonymousCustomer(WebRequest)")
-  void testGetAnonymousCustomer() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @DisplayName("Test getAnonymousCustomer(WebRequest); given CustomerStateRequestProcessor (default constructor); then return 'null'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Customer CustomerStateRequestProcessor.getAnonymousCustomer(WebRequest)"})
+  void testGetAnonymousCustomer_givenCustomerStateRequestProcessor_thenReturnNull() {
     // Arrange
     CustomerStateRequestProcessor customerStateRequestProcessor = new CustomerStateRequestProcessor();
 
@@ -566,55 +544,23 @@ class CustomerStateRequestProcessorDiffblueTest {
 
   /**
    * Test {@link CustomerStateRequestProcessor#getAnonymousCustomer(WebRequest)}.
-   * <p>
-   * Method under test:
-   * {@link CustomerStateRequestProcessor#getAnonymousCustomer(WebRequest)}
-   */
-  @Test
-  @DisplayName("Test getAnonymousCustomer(WebRequest)")
-  @Disabled("TODO: Complete this test")
-  void testGetAnonymousCustomer2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.web.core.security;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-web-applicationContext.xml","/blc-config/admin/framework/bl-profile-web-applicationContext.xml","/blc-config/site/bl-profile-web-applicationContext-servlet.xml","/blc-config/site/framework/bl-profile-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1053 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.web.core.security.CustomerStateRequestProcessor customerStateRequestProcessor;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CustomerStateRequestProcessor customerStateRequestProcessor2 = new CustomerStateRequestProcessor();
-
-    // Act
-    customerStateRequestProcessor2.getAnonymousCustomer(new ServletWebRequest(new MockHttpServletRequest()));
-  }
-
-  /**
-   * Test {@link CustomerStateRequestProcessor#getAnonymousCustomer(WebRequest)}.
    * <ul>
-   *   <li>Given {@code false}.</li>
-   *   <li>Then calls {@link RequestAttributes#getAttribute(String, int)}.</li>
+   *   <li>Then calls {@link AbstractAnonymousCustomerExtensionHandler#getAnonymousCustomer(ExtensionResultHolder, WebRequest)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomerStateRequestProcessor#getAnonymousCustomer(WebRequest)}
+   * Method under test: {@link CustomerStateRequestProcessor#getAnonymousCustomer(WebRequest)}
    */
   @Test
-  @DisplayName("Test getAnonymousCustomer(WebRequest); given 'false'; then calls getAttribute(String, int)")
-  void testGetAnonymousCustomer_givenFalse_thenCallsGetAttribute() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @DisplayName("Test getAnonymousCustomer(WebRequest); then calls getAnonymousCustomer(ExtensionResultHolder, WebRequest)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Customer CustomerStateRequestProcessor.getAnonymousCustomer(WebRequest)"})
+  void testGetAnonymousCustomer_thenCallsGetAnonymousCustomer() {
     // Arrange
-    CustomerStateRequestProcessor customerStateRequestProcessor = new CustomerStateRequestProcessor();
+    AbstractAnonymousCustomerExtensionHandler abstractAnonymousCustomerExtensionHandler = mock(
+        AbstractAnonymousCustomerExtensionHandler.class);
+    when(abstractAnonymousCustomerExtensionHandler.getAnonymousCustomer(Mockito.<ExtensionResultHolder<Customer>>any(),
+        Mockito.<WebRequest>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(anonymousCustomerExtensionManager.getProxy()).thenReturn(abstractAnonymousCustomerExtensionHandler);
     WebRequest request = mock(WebRequest.class);
     when(request.getAttribute(Mockito.<String>any(), anyInt())).thenReturn(false);
 
@@ -622,7 +568,35 @@ class CustomerStateRequestProcessorDiffblueTest {
     Customer actualAnonymousCustomer = customerStateRequestProcessor.getAnonymousCustomer(request);
 
     // Assert
+    verify(anonymousCustomerExtensionManager).getProxy();
+    verify(abstractAnonymousCustomerExtensionHandler).getAnonymousCustomer(isA(ExtensionResultHolder.class),
+        isA(WebRequest.class));
     verify(request).getAttribute(eq("blOkToUseSession"), eq(0));
+    assertNull(actualAnonymousCustomer);
+  }
+
+  /**
+   * Test {@link CustomerStateRequestProcessor#getAnonymousCustomer(WebRequest)}.
+   * <ul>
+   *   <li>Then calls {@link ExtensionManager#getProxy()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CustomerStateRequestProcessor#getAnonymousCustomer(WebRequest)}
+   */
+  @Test
+  @DisplayName("Test getAnonymousCustomer(WebRequest); then calls getProxy()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Customer CustomerStateRequestProcessor.getAnonymousCustomer(WebRequest)"})
+  void testGetAnonymousCustomer_thenCallsGetProxy() {
+    // Arrange
+    when(anonymousCustomerExtensionManager.getProxy()).thenReturn(new AbstractAnonymousCustomerExtensionHandler());
+
+    // Act
+    Customer actualAnonymousCustomer = customerStateRequestProcessor
+        .getAnonymousCustomer(new ServletWebRequest(new MockHttpServletRequest()));
+
+    // Assert
+    verify(anonymousCustomerExtensionManager).getProxy();
     assertNull(actualAnonymousCustomer);
   }
 
@@ -631,18 +605,19 @@ class CustomerStateRequestProcessorDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>
-   * {@link CustomerStateRequestProcessor#setApplicationEventPublisher(ApplicationEventPublisher)}
-   *   <li>
-   * {@link CustomerStateRequestProcessor#getAnonymousCustomerIdSessionAttributeName()}
-   *   <li>
-   * {@link CustomerStateRequestProcessor#getAnonymousCustomerMergedSessionAttributeName()}
-   *   <li>
-   * {@link CustomerStateRequestProcessor#getAnonymousCustomerSessionAttributeName()}
+   *   <li>{@link CustomerStateRequestProcessor#setApplicationEventPublisher(ApplicationEventPublisher)}
+   *   <li>{@link CustomerStateRequestProcessor#getAnonymousCustomerIdSessionAttributeName()}
+   *   <li>{@link CustomerStateRequestProcessor#getAnonymousCustomerMergedSessionAttributeName()}
+   *   <li>{@link CustomerStateRequestProcessor#getAnonymousCustomerSessionAttributeName()}
    * </ul>
    */
   @Test
   @DisplayName("Test getters and setters")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String CustomerStateRequestProcessor.getAnonymousCustomerIdSessionAttributeName()",
+      "String CustomerStateRequestProcessor.getAnonymousCustomerMergedSessionAttributeName()",
+      "String CustomerStateRequestProcessor.getAnonymousCustomerSessionAttributeName()",
+      "void CustomerStateRequestProcessor.setApplicationEventPublisher(ApplicationEventPublisher)"})
   void testGettersAndSetters() {
     // Arrange
     CustomerStateRequestProcessor customerStateRequestProcessor = new CustomerStateRequestProcessor();
@@ -654,35 +629,12 @@ class CustomerStateRequestProcessorDiffblueTest {
     String actualAnonymousCustomerMergedSessionAttributeName = customerStateRequestProcessor
         .getAnonymousCustomerMergedSessionAttributeName();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals(CustomerStateRequestProcessor.ANONYMOUS_CUSTOMER_ID_SESSION_ATTRIBUTE_NAME,
         actualAnonymousCustomerIdSessionAttributeName);
     assertEquals(CustomerStateRequestProcessor.ANONYMOUS_CUSTOMER_MERGED_SESSION_ATTRIBUTE_NAME,
         actualAnonymousCustomerMergedSessionAttributeName);
     assertEquals(CustomerStateRequestProcessor.ANONYMOUS_CUSTOMER_SESSION_ATTRIBUTE_NAME,
         customerStateRequestProcessor.getAnonymousCustomerSessionAttributeName());
-  }
-
-  /**
-   * Test {@link CustomerStateRequestProcessor#getCustomerRequestAttributeName()}.
-   * <p>
-   * Method under test:
-   * {@link CustomerStateRequestProcessor#getCustomerRequestAttributeName()}
-   */
-  @Test
-  @DisplayName("Test getCustomerRequestAttributeName()")
-  @Disabled("TODO: Complete this test")
-  void testGetCustomerRequestAttributeName() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.broadleafcommerce.common.web.BroadleafRequestCustomerResolverImpl.getRequestCustomerResolver(BroadleafRequestCustomerResolverImpl.java:79)
-    //       at org.broadleafcommerce.profile.web.core.security.CustomerStateRequestProcessor.getCustomerRequestAttributeName(CustomerStateRequestProcessor.java:366)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange and Act
-    CustomerStateRequestProcessor.getCustomerRequestAttributeName();
   }
 }

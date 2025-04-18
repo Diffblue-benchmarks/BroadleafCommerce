@@ -1,92 +1,71 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.pricing.service.workflow;
 
 import static org.junit.Assert.assertSame;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 import org.broadleafcommerce.common.audit.Auditable;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
 import org.broadleafcommerce.common.locale.domain.LocaleImpl;
 import org.broadleafcommerce.common.money.Money;
-import org.broadleafcommerce.core.order.domain.NullOrderImpl;
+import org.broadleafcommerce.core.offer.service.OfferService;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.domain.OrderImpl;
 import org.broadleafcommerce.core.order.service.type.OrderStatus;
 import org.broadleafcommerce.core.workflow.DefaultProcessContextImpl;
 import org.broadleafcommerce.core.workflow.ProcessContext;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class DetermineOfferChangeActivityDiffblueTest {
-  @Autowired
+  @InjectMocks
   private DetermineOfferChangeActivity determineOfferChangeActivity;
 
-  /**
-   * Test {@link DetermineOfferChangeActivity#execute(ProcessContext)}.
-   * <p>
-   * Method under test:
-   * {@link DetermineOfferChangeActivity#execute(ProcessContext)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testExecute() throws Exception {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.pricing.service.workflow;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass78 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.pricing.service.workflow.DetermineOfferChangeActivity determineOfferChangeActivity;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DetermineOfferChangeActivity determineOfferChangeActivity2 = new DetermineOfferChangeActivity();
-
-    // Act
-    determineOfferChangeActivity2.execute((ProcessContext<Order>) new DefaultProcessContextImpl<>());
-  }
+  @Mock
+  private OfferService offerService;
 
   /**
    * Test {@link DetermineOfferChangeActivity#execute(ProcessContext)}.
    * <ul>
    *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.</li>
+   *   <li>Then SeedData return {@link OrderImpl}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DetermineOfferChangeActivity#execute(ProcessContext)}
+   * Method under test: {@link DetermineOfferChangeActivity#execute(ProcessContext)}
    */
   @Test
-  public void testExecute_givenAuditableCreatedByIsOne() throws Exception {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ProcessContext DetermineOfferChangeActivity.execute(ProcessContext)"})
+  public void testExecute_givenAuditableCreatedByIsOne_thenSeedDataReturnOrderImpl() throws Exception {
     // Arrange
-    DetermineOfferChangeActivity determineOfferChangeActivity = new DetermineOfferChangeActivity();
-
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
     auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
@@ -103,7 +82,7 @@ public class DetermineOfferChangeActivityDiffblueTest {
     orderImpl.setFulfillmentGroups(new ArrayList<>());
     orderImpl.setId(1L);
     orderImpl.setLocale(new LocaleImpl());
-    orderImpl.setName("ThreadLocalManager.notify.orphans");
+    orderImpl.setName("Name");
     orderImpl.setOrderAttributes(new HashMap<>());
     orderImpl.setOrderItems(new ArrayList<>());
     orderImpl.setOrderMessages(new ArrayList<>());
@@ -115,45 +94,19 @@ public class DetermineOfferChangeActivityDiffblueTest {
     orderImpl.setTaxOverride(true);
     orderImpl.setTotal(new Money());
     orderImpl.setTotalFulfillmentCharges(new Money());
-    orderImpl.setTotalShipping(new Money());
     orderImpl.setTotalTax(new Money());
-    ProcessContext<Order> context = mock(ProcessContext.class);
-    when(context.getSeedData()).thenReturn(orderImpl);
+
+    DefaultProcessContextImpl<Order> context = new DefaultProcessContextImpl<>();
+    context.setSeedData(orderImpl);
 
     // Act
     ProcessContext<Order> actualExecuteResult = determineOfferChangeActivity.execute(context);
 
     // Assert
-    verify(context).getSeedData();
-    assertSame(context, actualExecuteResult);
-  }
-
-  /**
-   * Test {@link DetermineOfferChangeActivity#execute(ProcessContext)}.
-   * <ul>
-   *   <li>Given {@link NullOrderImpl} (default constructor).</li>
-   *   <li>When {@link ProcessContext} {@link ProcessContext#getSeedData()} return
-   * {@link NullOrderImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link DetermineOfferChangeActivity#execute(ProcessContext)}
-   */
-  @Test
-  public void testExecute_givenNullOrderImpl_whenProcessContextGetSeedDataReturnNullOrderImpl() throws Exception {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    DetermineOfferChangeActivity determineOfferChangeActivity = new DetermineOfferChangeActivity();
-    ProcessContext<Order> context = mock(ProcessContext.class);
-    when(context.getSeedData()).thenReturn(new NullOrderImpl());
-
-    // Act
-    ProcessContext<Order> actualExecuteResult = determineOfferChangeActivity.execute(context);
-
-    // Assert
-    verify(context).getSeedData();
-    assertSame(context, actualExecuteResult);
+    Order seedData = actualExecuteResult.getSeedData();
+    assertTrue(seedData instanceof OrderImpl);
+    assertTrue(actualExecuteResult instanceof DefaultProcessContextImpl);
+    assertSame(orderImpl, seedData);
   }
 
   /**
@@ -163,51 +116,16 @@ public class DetermineOfferChangeActivityDiffblueTest {
    *   <li>Then return {@link DefaultProcessContextImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DetermineOfferChangeActivity#execute(ProcessContext)}
+   * Method under test: {@link DetermineOfferChangeActivity#execute(ProcessContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ProcessContext DetermineOfferChangeActivity.execute(ProcessContext)"})
   public void testExecute_whenDefaultProcessContextImpl_thenReturnDefaultProcessContextImpl() throws Exception {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DetermineOfferChangeActivity determineOfferChangeActivity = new DetermineOfferChangeActivity();
     DefaultProcessContextImpl<Order> context = new DefaultProcessContextImpl<>();
 
     // Act and Assert
-    assertSame(context, determineOfferChangeActivity.execute((ProcessContext<Order>) context));
-  }
-
-  /**
-   * Test {@link DetermineOfferChangeActivity#convertOffersToIds(Set)}.
-   * <p>
-   * Method under test:
-   * {@link DetermineOfferChangeActivity#convertOffersToIds(Set)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testConvertOffersToIds() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.pricing.service.workflow;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass68 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.pricing.service.workflow.DetermineOfferChangeActivity determineOfferChangeActivity;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DetermineOfferChangeActivity determineOfferChangeActivity2 = new DetermineOfferChangeActivity();
-
-    // Act
-    determineOfferChangeActivity2.convertOffersToIds(new HashSet<>());
+    assertSame(context, determineOfferChangeActivity.execute(context));
   }
 }

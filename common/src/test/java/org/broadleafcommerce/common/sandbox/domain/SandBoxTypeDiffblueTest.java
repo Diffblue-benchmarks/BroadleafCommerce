@@ -20,35 +20,12 @@ package org.broadleafcommerce.common.sandbox.domain;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThrows;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.junit.experimental.categories.Category;
 
-@ContextConfiguration(classes = {SandBoxType.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class SandBoxTypeDiffblueTest {
-  @Autowired
-  private SandBoxType sandBoxType;
-
-  /**
-   * Test {@link SandBoxType#getInstance(String)}.
-   * <p>
-   * Method under test: {@link SandBoxType#getInstance(String)}
-   */
-  @Test
-  public void testGetInstance() {
-    // Arrange and Act
-    SandBoxType actualInstance = SandBoxType.getInstance("Type");
-
-    // Assert
-    assertEquals("Type", actualInstance.getType());
-    assertEquals("createSandBox", actualInstance.getFriendlyType());
-    assertEquals(3, actualInstance.getPriority().intValue());
-  }
-
   /**
    * Test getters and setters.
    * <p>
@@ -61,6 +38,9 @@ public class SandBoxTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SandBoxType.<init>()", "String SandBoxType.getFriendlyType()",
+      "Integer SandBoxType.getPriority()", "String SandBoxType.getType()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     SandBoxType actualSandBoxType = new SandBoxType();
@@ -71,36 +51,6 @@ public class SandBoxTypeDiffblueTest {
     assertNull(actualPriority);
     assertNull(actualFriendlyType);
     assertNull(actualSandBoxType.getType());
-  }
-
-  /**
-   * Test {@link SandBoxType#SandBoxType(String, String, Integer)}.
-   * <ul>
-   *   <li>When {@code Cannot add the type: (}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SandBoxType#SandBoxType(String, String, Integer)}
-   */
-  @Test
-  public void testNewSandBoxType_whenCannotAddTheType() {
-    // Arrange, Act and Assert
-    assertThrows(RuntimeException.class, () -> new SandBoxType("Cannot add the type: (", "Friendly Type", 1));
-
-  }
-
-  /**
-   * Test {@link SandBoxType#SandBoxType(String, String, Integer)}.
-   * <ul>
-   *   <li>When {@code Type}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SandBoxType#SandBoxType(String, String, Integer)}
-   */
-  @Test
-  public void testNewSandBoxType_whenType() {
-    // Arrange, Act and Assert
-    assertThrows(RuntimeException.class, () -> new SandBoxType("Type", "Friendly Type", 1));
-
   }
 
   /**
@@ -117,6 +67,8 @@ public class SandBoxTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SandBoxType.equals(Object)", "int SandBoxType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     SandBoxType sandBoxType = SandBoxType.APPROVAL;
@@ -142,6 +94,8 @@ public class SandBoxTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SandBoxType.equals(Object)", "int SandBoxType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     SandBoxType sandBoxType = new SandBoxType();
@@ -167,6 +121,8 @@ public class SandBoxTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SandBoxType.equals(Object)", "int SandBoxType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     SandBoxType sandBoxType = SandBoxType.APPROVAL;
@@ -187,9 +143,27 @@ public class SandBoxTypeDiffblueTest {
    * Method under test: {@link SandBoxType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SandBoxType.equals(Object)", "int SandBoxType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(SandBoxType.DEFAULT, SandBoxType.APPROVAL);
+  }
+
+  /**
+   * Test {@link SandBoxType#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SandBoxType#equals(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SandBoxType.equals(Object)", "int SandBoxType.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange, Act and Assert
     assertNotEquals(new SandBoxType(), SandBoxType.APPROVAL);
   }
 
@@ -203,6 +177,8 @@ public class SandBoxTypeDiffblueTest {
    * Method under test: {@link SandBoxType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SandBoxType.equals(Object)", "int SandBoxType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(SandBoxType.APPROVAL, null);
@@ -218,6 +194,8 @@ public class SandBoxTypeDiffblueTest {
    * Method under test: {@link SandBoxType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SandBoxType.equals(Object)", "int SandBoxType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(SandBoxType.APPROVAL, "Different type to SandBoxType");

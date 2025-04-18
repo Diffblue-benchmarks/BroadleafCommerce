@@ -19,39 +19,25 @@ package org.broadleafcommerce.common.extensibility.cache;
 
 import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.mock;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.springframework.context.annotation.ConditionContext;
 import org.springframework.core.type.AnnotatedTypeMetadata;
 
 public class OnEhCacheMissingConditionDiffblueTest {
   /**
-   * Test
-   * {@link OnEhCacheMissingCondition#matches(ConditionContext, AnnotatedTypeMetadata)}.
+   * Test {@link OnEhCacheMissingCondition#matches(ConditionContext, AnnotatedTypeMetadata)}.
    * <p>
-   * Method under test:
-   * {@link OnEhCacheMissingCondition#matches(ConditionContext, AnnotatedTypeMetadata)}
+   * Method under test: {@link OnEhCacheMissingCondition#matches(ConditionContext, AnnotatedTypeMetadata)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OnEhCacheMissingCondition.matches(ConditionContext, AnnotatedTypeMetadata)"})
   public void testMatches() {
     // Arrange, Act and Assert
     assertFalse(
         (new OnEhCacheMissingCondition()).matches(mock(ConditionContext.class), mock(AnnotatedTypeMetadata.class)));
-  }
-
-  /**
-   * Test new {@link OnEhCacheMissingCondition} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link OnEhCacheMissingCondition}
-   */
-  @Test
-  public void testNewOnEhCacheMissingCondition() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing observers.
-    //   Diffblue Cover was unable to create an assertion.
-    //   There are no fields that could be asserted on.
-
-    // Arrange and Act
-    new OnEhCacheMissingCondition();
   }
 }

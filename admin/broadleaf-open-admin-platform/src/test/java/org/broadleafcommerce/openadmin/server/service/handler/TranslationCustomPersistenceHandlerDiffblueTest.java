@@ -1,423 +1,125 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.server.service.handler;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import org.broadleafcommerce.common.config.service.SystemPropertiesService;
 import org.broadleafcommerce.common.exception.ServiceException;
+import org.broadleafcommerce.common.i18n.service.TranslationService;
+import org.broadleafcommerce.common.sandbox.SandBoxHelper;
 import org.broadleafcommerce.openadmin.dto.Entity;
 import org.broadleafcommerce.openadmin.dto.PersistencePackage;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDao;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.RecordHelper;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
-    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
-    "/bl-open-admin-contentCreator-applicationContext.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class TranslationCustomPersistenceHandlerDiffblueTest {
-  @Autowired
+  @Mock
+  private SandBoxHelper sandBoxHelper;
+
+  @Mock
+  private SystemPropertiesService systemPropertiesService;
+
+  @InjectMocks
   private TranslationCustomPersistenceHandler translationCustomPersistenceHandler;
 
-  /**
-   * Test
-   * {@link TranslationCustomPersistenceHandler#classMatches(PersistencePackage)}.
-   * <p>
-   * Method under test:
-   * {@link TranslationCustomPersistenceHandler#classMatches(PersistencePackage)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testClassMatches() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3471 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.handler.TranslationCustomPersistenceHandler translationCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    TranslationCustomPersistenceHandler translationCustomPersistenceHandler2 = new TranslationCustomPersistenceHandler();
-
-    // Act
-    translationCustomPersistenceHandler2.classMatches(new PersistencePackage());
-  }
+  @Mock
+  private TranslationService translationService;
 
   /**
-   * Test
-   * {@link TranslationCustomPersistenceHandler#classMatches(PersistencePackage)}.
-   * <ul>
-   *   <li>Given {@code Dr Jane Doe}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link TranslationCustomPersistenceHandler#classMatches(PersistencePackage)}
-   */
-  @Test
-  public void testClassMatches_givenDrJaneDoe() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    TranslationCustomPersistenceHandler translationCustomPersistenceHandler = new TranslationCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-
-    // Act
-    Boolean actualClassMatchesResult = translationCustomPersistenceHandler.classMatches(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    assertFalse(actualClassMatchesResult);
-  }
-
-  /**
-   * Test
-   * {@link TranslationCustomPersistenceHandler#classMatches(PersistencePackage)}.
-   * <ul>
-   *   <li>Then return {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link TranslationCustomPersistenceHandler#classMatches(PersistencePackage)}
-   */
-  @Test
-  public void testClassMatches_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    TranslationCustomPersistenceHandler translationCustomPersistenceHandler = new TranslationCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname())
-        .thenReturn("org.broadleafcommerce.common.i18n.domain.Translation");
-
-    // Act
-    Boolean actualClassMatchesResult = translationCustomPersistenceHandler.classMatches(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    assertTrue(actualClassMatchesResult);
-  }
-
-  /**
-   * Test
-   * {@link TranslationCustomPersistenceHandler#classMatches(PersistencePackage)}.
+   * Test {@link TranslationCustomPersistenceHandler#classMatches(PersistencePackage)}.
    * <ul>
    *   <li>When {@link PersistencePackage#PersistencePackage()}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link TranslationCustomPersistenceHandler#classMatches(PersistencePackage)}
+   * Method under test: {@link TranslationCustomPersistenceHandler#classMatches(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean TranslationCustomPersistenceHandler.classMatches(PersistencePackage)"})
   public void testClassMatches_whenPersistencePackage_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    TranslationCustomPersistenceHandler translationCustomPersistenceHandler = new TranslationCustomPersistenceHandler();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertFalse(translationCustomPersistenceHandler.classMatches(new PersistencePackage()));
   }
 
   /**
-   * Test
-   * {@link TranslationCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
-   * <p>
-   * Method under test:
-   * {@link TranslationCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCanHandleAdd() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3423 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.handler.TranslationCustomPersistenceHandler translationCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    TranslationCustomPersistenceHandler translationCustomPersistenceHandler2 = new TranslationCustomPersistenceHandler();
-
-    // Act
-    translationCustomPersistenceHandler2.canHandleAdd(new PersistencePackage());
-  }
-
-  /**
-   * Test
-   * {@link TranslationCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
-   * <ul>
-   *   <li>Given {@code Dr Jane Doe}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link TranslationCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
-   */
-  @Test
-  public void testCanHandleAdd_givenDrJaneDoe() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    TranslationCustomPersistenceHandler translationCustomPersistenceHandler = new TranslationCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-
-    // Act
-    Boolean actualCanHandleAddResult = translationCustomPersistenceHandler.canHandleAdd(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    assertFalse(actualCanHandleAddResult);
-  }
-
-  /**
-   * Test
-   * {@link TranslationCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
-   * <ul>
-   *   <li>Then return {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link TranslationCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
-   */
-  @Test
-  public void testCanHandleAdd_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    TranslationCustomPersistenceHandler translationCustomPersistenceHandler = new TranslationCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname())
-        .thenReturn("org.broadleafcommerce.common.i18n.domain.Translation");
-
-    // Act
-    Boolean actualCanHandleAddResult = translationCustomPersistenceHandler.canHandleAdd(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    assertTrue(actualCanHandleAddResult);
-  }
-
-  /**
-   * Test
-   * {@link TranslationCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
+   * Test {@link TranslationCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
    * <ul>
    *   <li>When {@link PersistencePackage#PersistencePackage()}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link TranslationCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
+   * Method under test: {@link TranslationCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean TranslationCustomPersistenceHandler.canHandleAdd(PersistencePackage)"})
   public void testCanHandleAdd_whenPersistencePackage_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    TranslationCustomPersistenceHandler translationCustomPersistenceHandler = new TranslationCustomPersistenceHandler();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertFalse(translationCustomPersistenceHandler.canHandleAdd(new PersistencePackage()));
   }
 
   /**
-   * Test
-   * {@link TranslationCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
-   * <p>
-   * Method under test:
-   * {@link TranslationCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCanHandleUpdate() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3447 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.handler.TranslationCustomPersistenceHandler translationCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    TranslationCustomPersistenceHandler translationCustomPersistenceHandler2 = new TranslationCustomPersistenceHandler();
-
-    // Act
-    translationCustomPersistenceHandler2.canHandleUpdate(new PersistencePackage());
-  }
-
-  /**
-   * Test
-   * {@link TranslationCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
-   * <ul>
-   *   <li>Given {@code Dr Jane Doe}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link TranslationCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
-   */
-  @Test
-  public void testCanHandleUpdate_givenDrJaneDoe() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    TranslationCustomPersistenceHandler translationCustomPersistenceHandler = new TranslationCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-
-    // Act
-    Boolean actualCanHandleUpdateResult = translationCustomPersistenceHandler.canHandleUpdate(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    assertFalse(actualCanHandleUpdateResult);
-  }
-
-  /**
-   * Test
-   * {@link TranslationCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
-   * <ul>
-   *   <li>Then return {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link TranslationCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
-   */
-  @Test
-  public void testCanHandleUpdate_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    TranslationCustomPersistenceHandler translationCustomPersistenceHandler = new TranslationCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname())
-        .thenReturn("org.broadleafcommerce.common.i18n.domain.Translation");
-
-    // Act
-    Boolean actualCanHandleUpdateResult = translationCustomPersistenceHandler.canHandleUpdate(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    assertTrue(actualCanHandleUpdateResult);
-  }
-
-  /**
-   * Test
-   * {@link TranslationCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
+   * Test {@link TranslationCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
    * <ul>
    *   <li>When {@link PersistencePackage#PersistencePackage()}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link TranslationCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
+   * Method under test: {@link TranslationCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean TranslationCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"})
   public void testCanHandleUpdate_whenPersistencePackage_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    TranslationCustomPersistenceHandler translationCustomPersistenceHandler = new TranslationCustomPersistenceHandler();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertFalse(translationCustomPersistenceHandler.canHandleUpdate(new PersistencePackage()));
   }
 
   /**
-   * Test
-   * {@link TranslationCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
-   * <p>
-   * Method under test:
-   * {@link TranslationCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAdd() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3370 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.handler.TranslationCustomPersistenceHandler translationCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    TranslationCustomPersistenceHandler translationCustomPersistenceHandler2 = new TranslationCustomPersistenceHandler();
-    PersistencePackage persistencePackage = new PersistencePackage();
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    // Act
-    translationCustomPersistenceHandler2.add(persistencePackage, dynamicEntityDao,
-        new AdornedTargetListPersistenceModule());
-  }
-
-  /**
-   * Test
-   * {@link TranslationCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
+   * Test {@link TranslationCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
    * <ul>
-   *   <li>Given {@link Entity} {@link Entity#getType()} return array of
-   * {@link String} with {@code java.util.List}.</li>
+   *   <li>Given {@link Entity} {@link Entity#getType()} return array of {@link String} with {@code java.util.List}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link TranslationCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
+   * Method under test: {@link TranslationCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Entity TranslationCustomPersistenceHandler.add(PersistencePackage, DynamicEntityDao, RecordHelper)"})
   public void testAdd_givenEntityGetTypeReturnArrayOfStringWithJavaUtilList() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    TranslationCustomPersistenceHandler translationCustomPersistenceHandler = new TranslationCustomPersistenceHandler();
     Entity entity = mock(Entity.class);
     when(entity.getType()).thenReturn(new String[]{"java.util.List"});
 
@@ -432,24 +134,21 @@ public class TranslationCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link TranslationCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
+   * Test {@link TranslationCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
    * <ul>
-   *   <li>Given {@link Entity} {@link Entity#getType()} return array of
-   * {@link String} with {@code Type}.</li>
+   *   <li>Given {@link Entity} {@link Entity#getType()} return array of {@link String} with {@code Type}.</li>
    *   <li>Then throw {@link ServiceException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link TranslationCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
+   * Method under test: {@link TranslationCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Entity TranslationCustomPersistenceHandler.add(PersistencePackage, DynamicEntityDao, RecordHelper)"})
   public void testAdd_givenEntityGetTypeReturnArrayOfStringWithType_thenThrowServiceException()
       throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    TranslationCustomPersistenceHandler translationCustomPersistenceHandler = new TranslationCustomPersistenceHandler();
     Entity entity = mock(Entity.class);
     when(entity.getType()).thenReturn(new String[]{"Type"});
 
@@ -464,59 +163,19 @@ public class TranslationCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link TranslationCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}.
-   * <p>
-   * Method under test:
-   * {@link TranslationCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testUpdate() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3495 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.handler.TranslationCustomPersistenceHandler translationCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    TranslationCustomPersistenceHandler translationCustomPersistenceHandler2 = new TranslationCustomPersistenceHandler();
-    PersistencePackage persistencePackage = new PersistencePackage();
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    // Act
-    translationCustomPersistenceHandler2.update(persistencePackage, dynamicEntityDao,
-        new AdornedTargetListPersistenceModule());
-  }
-
-  /**
-   * Test
-   * {@link TranslationCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}.
+   * Test {@link TranslationCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}.
    * <ul>
-   *   <li>Given {@link Entity} {@link Entity#getType()} return array of
-   * {@link String} with {@code java.util.List}.</li>
+   *   <li>Given {@link Entity} {@link Entity#getType()} return array of {@link String} with {@code java.util.List}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link TranslationCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}
+   * Method under test: {@link TranslationCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Entity TranslationCustomPersistenceHandler.update(PersistencePackage, DynamicEntityDao, RecordHelper)"})
   public void testUpdate_givenEntityGetTypeReturnArrayOfStringWithJavaUtilList() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    TranslationCustomPersistenceHandler translationCustomPersistenceHandler = new TranslationCustomPersistenceHandler();
     Entity entity = mock(Entity.class);
     when(entity.getType()).thenReturn(new String[]{"java.util.List"});
 
@@ -531,22 +190,19 @@ public class TranslationCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link TranslationCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}.
+   * Test {@link TranslationCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}.
    * <ul>
-   *   <li>Given {@link Entity} {@link Entity#getType()} return array of
-   * {@link String} with {@code Type}.</li>
+   *   <li>Given {@link Entity} {@link Entity#getType()} return array of {@link String} with {@code Type}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link TranslationCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}
+   * Method under test: {@link TranslationCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Entity TranslationCustomPersistenceHandler.update(PersistencePackage, DynamicEntityDao, RecordHelper)"})
   public void testUpdate_givenEntityGetTypeReturnArrayOfStringWithType() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    TranslationCustomPersistenceHandler translationCustomPersistenceHandler = new TranslationCustomPersistenceHandler();
     Entity entity = mock(Entity.class);
     when(entity.getType()).thenReturn(new String[]{"Type"});
 

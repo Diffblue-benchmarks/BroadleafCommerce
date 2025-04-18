@@ -1,9 +1,29 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.server.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class WorkflowRuntimeExceptionDiffblueTest {
   /**
@@ -12,10 +32,12 @@ public class WorkflowRuntimeExceptionDiffblueTest {
    *   <li>Then return Message is {@code An error occurred}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link WorkflowRuntimeException#WorkflowRuntimeException(String)}
+   * Method under test: {@link WorkflowRuntimeException#WorkflowRuntimeException(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void WorkflowRuntimeException.<init>()", "void WorkflowRuntimeException.<init>(String)",
+      "void WorkflowRuntimeException.<init>(String, Throwable)", "void WorkflowRuntimeException.<init>(Throwable)"})
   public void testNewWorkflowRuntimeException_thenReturnMessageIsAnErrorOccurred() {
     // Arrange and Act
     WorkflowRuntimeException actualWorkflowRuntimeException = new WorkflowRuntimeException("An error occurred");
@@ -27,16 +49,17 @@ public class WorkflowRuntimeExceptionDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link WorkflowRuntimeException#WorkflowRuntimeException(String, Throwable)}.
+   * Test {@link WorkflowRuntimeException#WorkflowRuntimeException(String, Throwable)}.
    * <ul>
    *   <li>Then return Message is {@code An error occurred}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link WorkflowRuntimeException#WorkflowRuntimeException(String, Throwable)}
+   * Method under test: {@link WorkflowRuntimeException#WorkflowRuntimeException(String, Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void WorkflowRuntimeException.<init>()", "void WorkflowRuntimeException.<init>(String)",
+      "void WorkflowRuntimeException.<init>(String, Throwable)", "void WorkflowRuntimeException.<init>(Throwable)"})
   public void testNewWorkflowRuntimeException_thenReturnMessageIsAnErrorOccurred2() {
     // Arrange
     Throwable cause = new Throwable();
@@ -53,13 +76,15 @@ public class WorkflowRuntimeExceptionDiffblueTest {
   /**
    * Test {@link WorkflowRuntimeException#WorkflowRuntimeException(Throwable)}.
    * <ul>
-   *   <li>Then return Message is {@code java.lang.Throwable}.</li>
+   *   <li>Then return Message is {@code Throwable}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link WorkflowRuntimeException#WorkflowRuntimeException(Throwable)}
+   * Method under test: {@link WorkflowRuntimeException#WorkflowRuntimeException(Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void WorkflowRuntimeException.<init>()", "void WorkflowRuntimeException.<init>(String)",
+      "void WorkflowRuntimeException.<init>(String, Throwable)", "void WorkflowRuntimeException.<init>(Throwable)"})
   public void testNewWorkflowRuntimeException_thenReturnMessageIsJavaLangThrowable() {
     // Arrange
     Throwable cause = new Throwable();
@@ -79,10 +104,12 @@ public class WorkflowRuntimeExceptionDiffblueTest {
    *   <li>Then return Message is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link WorkflowRuntimeException#WorkflowRuntimeException()}
+   * Method under test: {@link WorkflowRuntimeException#WorkflowRuntimeException()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void WorkflowRuntimeException.<init>()", "void WorkflowRuntimeException.<init>(String)",
+      "void WorkflowRuntimeException.<init>(String, Throwable)", "void WorkflowRuntimeException.<init>(Throwable)"})
   public void testNewWorkflowRuntimeException_thenReturnMessageIsNull() {
     // Arrange and Act
     WorkflowRuntimeException actualWorkflowRuntimeException = new WorkflowRuntimeException();

@@ -1,17 +1,36 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.audit;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.Date;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class AdminAuditableDiffblueTest {
   /**
-   * Test {@link AdminAuditable#equals(Object)}, and
-   * {@link AdminAuditable#hashCode()}.
+   * Test {@link AdminAuditable#equals(Object)}, and {@link AdminAuditable#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -24,6 +43,8 @@ public class AdminAuditableDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdminAuditable.equals(Object)", "int AdminAuditable.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     AdminAuditable adminAuditable = new AdminAuditable();
@@ -49,8 +70,7 @@ public class AdminAuditableDiffblueTest {
   }
 
   /**
-   * Test {@link AdminAuditable#equals(Object)}, and
-   * {@link AdminAuditable#hashCode()}.
+   * Test {@link AdminAuditable#equals(Object)}, and {@link AdminAuditable#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -63,6 +83,8 @@ public class AdminAuditableDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdminAuditable.equals(Object)", "int AdminAuditable.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     AdminAuditable adminAuditable = new AdminAuditable();
@@ -88,8 +110,7 @@ public class AdminAuditableDiffblueTest {
   }
 
   /**
-   * Test {@link AdminAuditable#equals(Object)}, and
-   * {@link AdminAuditable#hashCode()}.
+   * Test {@link AdminAuditable#equals(Object)}, and {@link AdminAuditable#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -102,6 +123,8 @@ public class AdminAuditableDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdminAuditable.equals(Object)", "int AdminAuditable.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     AdminAuditable adminAuditable = new AdminAuditable();
@@ -125,8 +148,7 @@ public class AdminAuditableDiffblueTest {
   }
 
   /**
-   * Test {@link AdminAuditable#equals(Object)}, and
-   * {@link AdminAuditable#hashCode()}.
+   * Test {@link AdminAuditable#equals(Object)}, and {@link AdminAuditable#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -139,6 +161,8 @@ public class AdminAuditableDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdminAuditable.equals(Object)", "int AdminAuditable.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
     // Arrange
     AdminAuditable adminAuditable = new AdminAuditable();
@@ -162,8 +186,7 @@ public class AdminAuditableDiffblueTest {
   }
 
   /**
-   * Test {@link AdminAuditable#equals(Object)}, and
-   * {@link AdminAuditable#hashCode()}.
+   * Test {@link AdminAuditable#equals(Object)}, and {@link AdminAuditable#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -176,6 +199,8 @@ public class AdminAuditableDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdminAuditable.equals(Object)", "int AdminAuditable.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual5() {
     // Arrange
     AdminAuditable adminAuditable = new AdminAuditable();
@@ -201,8 +226,7 @@ public class AdminAuditableDiffblueTest {
   }
 
   /**
-   * Test {@link AdminAuditable#equals(Object)}, and
-   * {@link AdminAuditable#hashCode()}.
+   * Test {@link AdminAuditable#equals(Object)}, and {@link AdminAuditable#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -215,6 +239,8 @@ public class AdminAuditableDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdminAuditable.equals(Object)", "int AdminAuditable.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     AdminAuditable adminAuditable = new AdminAuditable();
@@ -241,6 +267,8 @@ public class AdminAuditableDiffblueTest {
    * Method under test: {@link AdminAuditable#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdminAuditable.equals(Object)", "int AdminAuditable.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     AdminAuditable adminAuditable = new AdminAuditable();
@@ -273,6 +301,8 @@ public class AdminAuditableDiffblueTest {
    * Method under test: {@link AdminAuditable#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdminAuditable.equals(Object)", "int AdminAuditable.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     AdminAuditable adminAuditable = new AdminAuditable();
@@ -305,6 +335,8 @@ public class AdminAuditableDiffblueTest {
    * Method under test: {@link AdminAuditable#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdminAuditable.equals(Object)", "int AdminAuditable.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     AdminAuditable adminAuditable = new AdminAuditable();
@@ -336,6 +368,8 @@ public class AdminAuditableDiffblueTest {
    * Method under test: {@link AdminAuditable#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdminAuditable.equals(Object)", "int AdminAuditable.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     AdminAuditable adminAuditable = new AdminAuditable();
@@ -367,6 +401,8 @@ public class AdminAuditableDiffblueTest {
    * Method under test: {@link AdminAuditable#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdminAuditable.equals(Object)", "int AdminAuditable.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
     AdminAuditable adminAuditable = new AdminAuditable();
@@ -398,6 +434,8 @@ public class AdminAuditableDiffblueTest {
    * Method under test: {@link AdminAuditable#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdminAuditable.equals(Object)", "int AdminAuditable.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
     AdminAuditable adminAuditable = new AdminAuditable();
@@ -429,6 +467,8 @@ public class AdminAuditableDiffblueTest {
    * Method under test: {@link AdminAuditable#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdminAuditable.equals(Object)", "int AdminAuditable.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
     // Arrange
     AdminAuditable adminAuditable = new AdminAuditable();
@@ -461,6 +501,8 @@ public class AdminAuditableDiffblueTest {
    * Method under test: {@link AdminAuditable#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdminAuditable.equals(Object)", "int AdminAuditable.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual8() {
     // Arrange
     AdminAuditable adminAuditable = new AdminAuditable();
@@ -493,6 +535,8 @@ public class AdminAuditableDiffblueTest {
    * Method under test: {@link AdminAuditable#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdminAuditable.equals(Object)", "int AdminAuditable.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     AdminAuditable adminAuditable = new AdminAuditable();
@@ -517,6 +561,8 @@ public class AdminAuditableDiffblueTest {
    * Method under test: {@link AdminAuditable#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdminAuditable.equals(Object)", "int AdminAuditable.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     AdminAuditable adminAuditable = new AdminAuditable();
@@ -548,6 +594,12 @@ public class AdminAuditableDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminAuditable.<init>()", "Long AdminAuditable.getCreatedBy()",
+      "Date AdminAuditable.getDateCreated()", "Date AdminAuditable.getDateUpdated()",
+      "Long AdminAuditable.getUpdatedBy()", "void AdminAuditable.setCreatedBy(Long)",
+      "void AdminAuditable.setDateCreated(Date)", "void AdminAuditable.setDateUpdated(Date)",
+      "void AdminAuditable.setUpdatedBy(Long)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     AdminAuditable actualAdminAuditable = new AdminAuditable();
@@ -562,7 +614,7 @@ public class AdminAuditableDiffblueTest {
     Date actualDateUpdated = actualAdminAuditable.getDateUpdated();
     Long actualUpdatedBy = actualAdminAuditable.getUpdatedBy();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals(1L, actualCreatedBy.longValue());
     assertEquals(1L, actualUpdatedBy.longValue());
     assertSame(dateCreated, actualDateCreated);

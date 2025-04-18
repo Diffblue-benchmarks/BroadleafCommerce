@@ -24,31 +24,26 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.hibernate.engine.jdbc.internal.Formatter;
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.experimental.categories.Category;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(classes = {TransactionLifecycleAwareSqlStatementLogger.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class TransactionLifecycleAwareSqlStatementLoggerDiffblueTest {
-  @Autowired
-  private TransactionLifecycleAwareSqlStatementLogger transactionLifecycleAwareSqlStatementLogger;
-
   /**
-   * Test
-   * {@link TransactionLifecycleAwareSqlStatementLogger#TransactionLifecycleAwareSqlStatementLogger()}.
+   * Test {@link TransactionLifecycleAwareSqlStatementLogger#TransactionLifecycleAwareSqlStatementLogger()}.
    * <ul>
    *   <li>Then return not Format.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link TransactionLifecycleAwareSqlStatementLogger#TransactionLifecycleAwareSqlStatementLogger()}
+   * Method under test: {@link TransactionLifecycleAwareSqlStatementLogger#TransactionLifecycleAwareSqlStatementLogger()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TransactionLifecycleAwareSqlStatementLogger.<init>()",
+      "void TransactionLifecycleAwareSqlStatementLogger.<init>(boolean, boolean)"})
   public void testNewTransactionLifecycleAwareSqlStatementLogger_thenReturnNotFormat() {
     // Arrange and Act
     TransactionLifecycleAwareSqlStatementLogger actualTransactionLifecycleAwareSqlStatementLogger = new TransactionLifecycleAwareSqlStatementLogger();
@@ -60,17 +55,18 @@ public class TransactionLifecycleAwareSqlStatementLoggerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link TransactionLifecycleAwareSqlStatementLogger#TransactionLifecycleAwareSqlStatementLogger(boolean, boolean)}.
+   * Test {@link TransactionLifecycleAwareSqlStatementLogger#TransactionLifecycleAwareSqlStatementLogger(boolean, boolean)}.
    * <ul>
    *   <li>When {@code true}.</li>
    *   <li>Then return Format.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link TransactionLifecycleAwareSqlStatementLogger#TransactionLifecycleAwareSqlStatementLogger(boolean, boolean)}
+   * Method under test: {@link TransactionLifecycleAwareSqlStatementLogger#TransactionLifecycleAwareSqlStatementLogger(boolean, boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TransactionLifecycleAwareSqlStatementLogger.<init>()",
+      "void TransactionLifecycleAwareSqlStatementLogger.<init>(boolean, boolean)"})
   public void testNewTransactionLifecycleAwareSqlStatementLogger_whenTrue_thenReturnFormat() {
     // Arrange and Act
     TransactionLifecycleAwareSqlStatementLogger actualTransactionLifecycleAwareSqlStatementLogger = new TransactionLifecycleAwareSqlStatementLogger(
@@ -83,20 +79,17 @@ public class TransactionLifecycleAwareSqlStatementLoggerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link TransactionLifecycleAwareSqlStatementLogger#logStatement(String, Formatter)}
-   * with {@code statement}, {@code formatter}.
+   * Test {@link TransactionLifecycleAwareSqlStatementLogger#logStatement(String, Formatter)} with {@code statement}, {@code formatter}.
    * <ul>
    *   <li>Then calls {@link Formatter#format(String)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link TransactionLifecycleAwareSqlStatementLogger#logStatement(String, Formatter)}
+   * Method under test: {@link TransactionLifecycleAwareSqlStatementLogger#logStatement(String, Formatter)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TransactionLifecycleAwareSqlStatementLogger.logStatement(String, Formatter)"})
   public void testLogStatementWithStatementFormatter_thenCallsFormat() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     TransactionLifecycleAwareSqlStatementLogger transactionLifecycleAwareSqlStatementLogger = new TransactionLifecycleAwareSqlStatementLogger(
         true, true);
@@ -108,25 +101,5 @@ public class TransactionLifecycleAwareSqlStatementLoggerDiffblueTest {
 
     // Assert
     verify(formatter).format(eq("MD"));
-  }
-
-  /**
-   * Test
-   * {@link TransactionLifecycleAwareSqlStatementLogger#logStatement(String, Formatter)}
-   * with {@code statement}, {@code formatter}.
-   * <ul>
-   *   <li>When {@code MD}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link TransactionLifecycleAwareSqlStatementLogger#logStatement(String, Formatter)}
-   */
-  @Test
-  public void testLogStatementWithStatementFormatter_whenMd() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange and Act
-    transactionLifecycleAwareSqlStatementLogger.logStatement("MD", mock(Formatter.class));
   }
 }

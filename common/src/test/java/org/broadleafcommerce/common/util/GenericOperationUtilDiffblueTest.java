@@ -22,18 +22,20 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class GenericOperationUtilDiffblueTest {
   /**
-   * Test
-   * {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, Class[])}
-   * with {@code operation}, {@code noRetriesForException}.
+   * Test {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, Class[])} with {@code operation}, {@code noRetriesForException}.
    * <p>
-   * Method under test:
-   * {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, Class[])}
+   * Method under test: {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, Class[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object GenericOperationUtil.executeRetryableOperation(GenericOperation, Class[])"})
   public void testExecuteRetryableOperationWithOperationNoRetriesForException() throws Exception {
     // Arrange
     GenericOperation<Object> operation = mock(GenericOperation.class);
@@ -47,14 +49,13 @@ public class GenericOperationUtilDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, Class[])}
-   * with {@code operation}, {@code noRetriesForException}.
+   * Test {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, Class[])} with {@code operation}, {@code noRetriesForException}.
    * <p>
-   * Method under test:
-   * {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, Class[])}
+   * Method under test: {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, Class[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object GenericOperationUtil.executeRetryableOperation(GenericOperation, Class[])"})
   public void testExecuteRetryableOperationWithOperationNoRetriesForException2() throws Exception {
     // Arrange
     GenericOperation<Object> operation = mock(GenericOperation.class);
@@ -68,14 +69,13 @@ public class GenericOperationUtilDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, Class[])}
-   * with {@code operation}, {@code noRetriesForException}.
+   * Test {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, Class[])} with {@code operation}, {@code noRetriesForException}.
    * <p>
-   * Method under test:
-   * {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, Class[])}
+   * Method under test: {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, Class[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object GenericOperationUtil.executeRetryableOperation(GenericOperation, Class[])"})
   public void testExecuteRetryableOperationWithOperationNoRetriesForException3() throws Exception {
     // Arrange
     GenericOperation<Object> operation = mock(GenericOperation.class);
@@ -87,14 +87,13 @@ public class GenericOperationUtilDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, Class[])}
-   * with {@code operation}, {@code noRetriesForException}.
+   * Test {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, Class[])} with {@code operation}, {@code noRetriesForException}.
    * <p>
-   * Method under test:
-   * {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, Class[])}
+   * Method under test: {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, Class[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object GenericOperationUtil.executeRetryableOperation(GenericOperation, Class[])"})
   public void testExecuteRetryableOperationWithOperationNoRetriesForException4() throws Exception {
     // Arrange
     GenericOperation<Object> operation = mock(GenericOperation.class);
@@ -108,17 +107,16 @@ public class GenericOperationUtilDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, Class[])}
-   * with {@code operation}, {@code noRetriesForException}.
+   * Test {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, Class[])} with {@code operation}, {@code noRetriesForException}.
    * <ul>
    *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, Class[])}
+   * Method under test: {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, Class[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object GenericOperationUtil.executeRetryableOperation(GenericOperation, Class[])"})
   public void testExecuteRetryableOperationWithOperationNoRetriesForException_givenNull_field() throws Exception {
     // Arrange
     GenericOperation<Object> operation = mock(GenericOperation.class);
@@ -133,17 +131,16 @@ public class GenericOperationUtilDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, Class[])}
-   * with {@code operation}, {@code noRetriesForException}.
+   * Test {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, Class[])} with {@code operation}, {@code noRetriesForException}.
    * <ul>
    *   <li>When {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, Class[])}
+   * Method under test: {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, Class[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object GenericOperationUtil.executeRetryableOperation(GenericOperation, Class[])"})
   public void testExecuteRetryableOperationWithOperationNoRetriesForException_whenNull() throws Exception {
     // Arrange
     GenericOperation<Object> operation = mock(GenericOperation.class);
@@ -155,15 +152,14 @@ public class GenericOperationUtilDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, int, long, boolean, Class[])}
-   * with {@code operation}, {@code retries}, {@code waitTime},
-   * {@code isWaitTimesAdditive}, {@code noRetriesForException}.
+   * Test {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, int, long, boolean, Class[])} with {@code operation}, {@code retries}, {@code waitTime}, {@code isWaitTimesAdditive}, {@code noRetriesForException}.
    * <p>
-   * Method under test:
-   * {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, int, long, boolean, Class[])}
+   * Method under test: {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, int, long, boolean, Class[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Object GenericOperationUtil.executeRetryableOperation(GenericOperation, int, long, boolean, Class[])"})
   public void testExecuteRetryableOperationWithOperationRetriesWaitTimeIsWaitTimesAdditiveNoRetriesForException()
       throws Exception {
     // Arrange
@@ -179,15 +175,14 @@ public class GenericOperationUtilDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, int, long, boolean, Class[])}
-   * with {@code operation}, {@code retries}, {@code waitTime},
-   * {@code isWaitTimesAdditive}, {@code noRetriesForException}.
+   * Test {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, int, long, boolean, Class[])} with {@code operation}, {@code retries}, {@code waitTime}, {@code isWaitTimesAdditive}, {@code noRetriesForException}.
    * <p>
-   * Method under test:
-   * {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, int, long, boolean, Class[])}
+   * Method under test: {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, int, long, boolean, Class[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Object GenericOperationUtil.executeRetryableOperation(GenericOperation, int, long, boolean, Class[])"})
   public void testExecuteRetryableOperationWithOperationRetriesWaitTimeIsWaitTimesAdditiveNoRetriesForException2()
       throws Exception {
     // Arrange
@@ -202,15 +197,14 @@ public class GenericOperationUtilDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, int, long, boolean, Class[])}
-   * with {@code operation}, {@code retries}, {@code waitTime},
-   * {@code isWaitTimesAdditive}, {@code noRetriesForException}.
+   * Test {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, int, long, boolean, Class[])} with {@code operation}, {@code retries}, {@code waitTime}, {@code isWaitTimesAdditive}, {@code noRetriesForException}.
    * <p>
-   * Method under test:
-   * {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, int, long, boolean, Class[])}
+   * Method under test: {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, int, long, boolean, Class[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Object GenericOperationUtil.executeRetryableOperation(GenericOperation, int, long, boolean, Class[])"})
   public void testExecuteRetryableOperationWithOperationRetriesWaitTimeIsWaitTimesAdditiveNoRetriesForException3()
       throws Exception {
     // Arrange
@@ -225,15 +219,14 @@ public class GenericOperationUtilDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, int, long, boolean, Class[])}
-   * with {@code operation}, {@code retries}, {@code waitTime},
-   * {@code isWaitTimesAdditive}, {@code noRetriesForException}.
+   * Test {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, int, long, boolean, Class[])} with {@code operation}, {@code retries}, {@code waitTime}, {@code isWaitTimesAdditive}, {@code noRetriesForException}.
    * <p>
-   * Method under test:
-   * {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, int, long, boolean, Class[])}
+   * Method under test: {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, int, long, boolean, Class[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Object GenericOperationUtil.executeRetryableOperation(GenericOperation, int, long, boolean, Class[])"})
   public void testExecuteRetryableOperationWithOperationRetriesWaitTimeIsWaitTimesAdditiveNoRetriesForException4()
       throws Exception {
     // Arrange
@@ -248,15 +241,14 @@ public class GenericOperationUtilDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, int, long, boolean, Class[])}
-   * with {@code operation}, {@code retries}, {@code waitTime},
-   * {@code isWaitTimesAdditive}, {@code noRetriesForException}.
+   * Test {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, int, long, boolean, Class[])} with {@code operation}, {@code retries}, {@code waitTime}, {@code isWaitTimesAdditive}, {@code noRetriesForException}.
    * <p>
-   * Method under test:
-   * {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, int, long, boolean, Class[])}
+   * Method under test: {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, int, long, boolean, Class[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Object GenericOperationUtil.executeRetryableOperation(GenericOperation, int, long, boolean, Class[])"})
   public void testExecuteRetryableOperationWithOperationRetriesWaitTimeIsWaitTimesAdditiveNoRetriesForException5()
       throws Exception {
     // Arrange
@@ -269,15 +261,14 @@ public class GenericOperationUtilDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, int, long, boolean, Class[])}
-   * with {@code operation}, {@code retries}, {@code waitTime},
-   * {@code isWaitTimesAdditive}, {@code noRetriesForException}.
+   * Test {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, int, long, boolean, Class[])} with {@code operation}, {@code retries}, {@code waitTime}, {@code isWaitTimesAdditive}, {@code noRetriesForException}.
    * <p>
-   * Method under test:
-   * {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, int, long, boolean, Class[])}
+   * Method under test: {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, int, long, boolean, Class[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Object GenericOperationUtil.executeRetryableOperation(GenericOperation, int, long, boolean, Class[])"})
   public void testExecuteRetryableOperationWithOperationRetriesWaitTimeIsWaitTimesAdditiveNoRetriesForException6()
       throws Exception {
     // Arrange
@@ -291,15 +282,14 @@ public class GenericOperationUtilDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, int, long, boolean, Class[])}
-   * with {@code operation}, {@code retries}, {@code waitTime},
-   * {@code isWaitTimesAdditive}, {@code noRetriesForException}.
+   * Test {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, int, long, boolean, Class[])} with {@code operation}, {@code retries}, {@code waitTime}, {@code isWaitTimesAdditive}, {@code noRetriesForException}.
    * <p>
-   * Method under test:
-   * {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, int, long, boolean, Class[])}
+   * Method under test: {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, int, long, boolean, Class[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Object GenericOperationUtil.executeRetryableOperation(GenericOperation, int, long, boolean, Class[])"})
   public void testExecuteRetryableOperationWithOperationRetriesWaitTimeIsWaitTimesAdditiveNoRetriesForException7()
       throws Exception {
     // Arrange
@@ -314,15 +304,14 @@ public class GenericOperationUtilDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, int, long, boolean, Class[])}
-   * with {@code operation}, {@code retries}, {@code waitTime},
-   * {@code isWaitTimesAdditive}, {@code noRetriesForException}.
+   * Test {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, int, long, boolean, Class[])} with {@code operation}, {@code retries}, {@code waitTime}, {@code isWaitTimesAdditive}, {@code noRetriesForException}.
    * <p>
-   * Method under test:
-   * {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, int, long, boolean, Class[])}
+   * Method under test: {@link GenericOperationUtil#executeRetryableOperation(GenericOperation, int, long, boolean, Class[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Object GenericOperationUtil.executeRetryableOperation(GenericOperation, int, long, boolean, Class[])"})
   public void testExecuteRetryableOperationWithOperationRetriesWaitTimeIsWaitTimesAdditiveNoRetriesForException8()
       throws Exception {
     // Arrange
@@ -335,16 +324,16 @@ public class GenericOperationUtilDiffblueTest {
   }
 
   /**
-   * Test {@link GenericOperationUtil#executeRetryableOperation(GenericOperation)}
-   * with {@code operation}.
+   * Test {@link GenericOperationUtil#executeRetryableOperation(GenericOperation)} with {@code operation}.
    * <ul>
    *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link GenericOperationUtil#executeRetryableOperation(GenericOperation)}
+   * Method under test: {@link GenericOperationUtil#executeRetryableOperation(GenericOperation)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object GenericOperationUtil.executeRetryableOperation(GenericOperation)"})
   public void testExecuteRetryableOperationWithOperation_givenNull_field() throws Exception {
     // Arrange
     GenericOperation<Object> operation = mock(GenericOperation.class);
@@ -358,16 +347,16 @@ public class GenericOperationUtilDiffblueTest {
   }
 
   /**
-   * Test {@link GenericOperationUtil#executeRetryableOperation(GenericOperation)}
-   * with {@code operation}.
+   * Test {@link GenericOperationUtil#executeRetryableOperation(GenericOperation)} with {@code operation}.
    * <ul>
    *   <li>Then throw {@link Exception}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link GenericOperationUtil#executeRetryableOperation(GenericOperation)}
+   * Method under test: {@link GenericOperationUtil#executeRetryableOperation(GenericOperation)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object GenericOperationUtil.executeRetryableOperation(GenericOperation)"})
   public void testExecuteRetryableOperationWithOperation_thenThrowException() throws Exception {
     // Arrange
     GenericOperation<Object> operation = mock(GenericOperation.class);
@@ -379,16 +368,16 @@ public class GenericOperationUtilDiffblueTest {
   }
 
   /**
-   * Test {@link GenericOperationUtil#executeRetryableOperation(GenericOperation)}
-   * with {@code operation}.
+   * Test {@link GenericOperationUtil#executeRetryableOperation(GenericOperation)} with {@code operation}.
    * <ul>
    *   <li>Then throw {@link InterruptedException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link GenericOperationUtil#executeRetryableOperation(GenericOperation)}
+   * Method under test: {@link GenericOperationUtil#executeRetryableOperation(GenericOperation)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object GenericOperationUtil.executeRetryableOperation(GenericOperation)"})
   public void testExecuteRetryableOperationWithOperation_thenThrowInterruptedException() throws Exception {
     // Arrange
     GenericOperation<Object> operation = mock(GenericOperation.class);

@@ -1,124 +1,132 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.server.security.external;
 
 import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.mock;
+import static org.junit.Assert.assertSame;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.Collection;
+import org.broadleafcommerce.common.security.BroadleafExternalAuthenticationUserDetails;
 import org.broadleafcommerce.openadmin.server.security.service.AdminSecurityService;
+import org.broadleafcommerce.openadmin.server.security.service.user.AdminUserDetails;
 import org.broadleafcommerce.openadmin.server.security.service.user.AdminUserProvisioningService;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.ldap.core.DirContextAdapter;
 import org.springframework.ldap.core.DirContextOperations;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.security.core.userdetails.UserDetails;
 
-@ContextConfiguration(classes = {BroadleafAdminLdapUserDetailsMapper.class})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class BroadleafAdminLdapUserDetailsMapperDiffblueTest {
-  @MockBean
+  @Mock
   private AdminSecurityService adminSecurityService;
 
-  @MockBean
+  @Mock
   private AdminUserProvisioningService adminUserProvisioningService;
 
-  @Autowired
+  @InjectMocks
   private BroadleafAdminLdapUserDetailsMapper broadleafAdminLdapUserDetailsMapper;
 
   /**
-   * Test
-   * {@link BroadleafAdminLdapUserDetailsMapper#mapUserFromContext(DirContextOperations, String, Collection)}.
+   * Test {@link BroadleafAdminLdapUserDetailsMapper#mapUserFromContext(DirContextOperations, String, Collection)}.
    * <p>
-   * Method under test:
-   * {@link BroadleafAdminLdapUserDetailsMapper#mapUserFromContext(DirContextOperations, String, Collection)}
+   * Method under test: {@link BroadleafAdminLdapUserDetailsMapper#mapUserFromContext(DirContextOperations, String, Collection)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "UserDetails BroadleafAdminLdapUserDetailsMapper.mapUserFromContext(DirContextOperations, String, Collection)"})
   public void testMapUserFromContext() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.external;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.openadmin.server.security.external.BroadleafAdminLdapUserDetailsMapper.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.service.AdminSecurityService adminSecurityService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.service.user.AdminUserProvisioningService adminUserProvisioningService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.external.BroadleafAdminLdapUserDetailsMapper broadleafAdminLdapUserDetailsMapper;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
+    AdminUserDetails adminUserDetails = new AdminUserDetails(1L, "janedoe", "iloveyou", new ArrayList<>());
+
+    when(adminUserProvisioningService.provisionAdminUser(Mockito.<BroadleafExternalAuthenticationUserDetails>any()))
+        .thenReturn(adminUserDetails);
     DirContextAdapter ctx = new DirContextAdapter();
 
     // Act
-    broadleafAdminLdapUserDetailsMapper.mapUserFromContext(ctx, "janedoe", new ArrayList<>());
+    UserDetails actualMapUserFromContextResult = broadleafAdminLdapUserDetailsMapper.mapUserFromContext(ctx, "janedoe",
+        new ArrayList<>());
+
+    // Assert
+    verify(adminUserProvisioningService).provisionAdminUser(isA(BroadleafExternalAuthenticationUserDetails.class));
+    assertSame(adminUserDetails, actualMapUserFromContextResult);
   }
 
   /**
-   * Test
-   * {@link BroadleafAdminLdapUserDetailsMapper#determineSite(DirContextOperations, String, Collection)}.
-   * <p>
-   * Method under test:
-   * {@link BroadleafAdminLdapUserDetailsMapper#determineSite(DirContextOperations, String, Collection)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testDetermineSite() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.external;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.openadmin.server.security.external.BroadleafAdminLdapUserDetailsMapper.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass0 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.service.AdminSecurityService adminSecurityService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.service.user.AdminUserProvisioningService adminUserProvisioningService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.external.BroadleafAdminLdapUserDetailsMapper broadleafAdminLdapUserDetailsMapper;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DirContextAdapter ctx = new DirContextAdapter();
-
-    // Act
-    broadleafAdminLdapUserDetailsMapper.determineSite(ctx, "janedoe", new ArrayList<>());
-  }
-
-  /**
-   * Test
-   * {@link BroadleafAdminLdapUserDetailsMapper#determineSite(DirContextOperations, String, Collection)}.
+   * Test {@link BroadleafAdminLdapUserDetailsMapper#mapUserFromContext(DirContextOperations, String, Collection)}.
    * <ul>
-   *   <li>Given {@link SimpleGrantedAuthority#SimpleGrantedAuthority(String)} with
-   * {@code Role}.</li>
+   *   <li>Given {@link SimpleGrantedAuthority#SimpleGrantedAuthority(String)} with {@code Role}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafAdminLdapUserDetailsMapper#determineSite(DirContextOperations, String, Collection)}
+   * Method under test: {@link BroadleafAdminLdapUserDetailsMapper#mapUserFromContext(DirContextOperations, String, Collection)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "UserDetails BroadleafAdminLdapUserDetailsMapper.mapUserFromContext(DirContextOperations, String, Collection)"})
+  public void testMapUserFromContext_givenSimpleGrantedAuthorityWithRole() {
+    // Arrange
+    AdminUserDetails adminUserDetails = new AdminUserDetails(1L, "janedoe", "iloveyou", new ArrayList<>());
+
+    when(adminUserProvisioningService.provisionAdminUser(Mockito.<BroadleafExternalAuthenticationUserDetails>any()))
+        .thenReturn(adminUserDetails);
+    DirContextAdapter ctx = new DirContextAdapter();
+
+    ArrayList<GrantedAuthority> authorities = new ArrayList<>();
+    authorities.add(new SimpleGrantedAuthority("Role"));
+    authorities.add(new SimpleGrantedAuthority("mail"));
+
+    // Act
+    UserDetails actualMapUserFromContextResult = broadleafAdminLdapUserDetailsMapper.mapUserFromContext(ctx, "janedoe",
+        authorities);
+
+    // Assert
+    verify(adminUserProvisioningService).provisionAdminUser(isA(BroadleafExternalAuthenticationUserDetails.class));
+    assertSame(adminUserDetails, actualMapUserFromContextResult);
+  }
+
+  /**
+   * Test {@link BroadleafAdminLdapUserDetailsMapper#determineSite(DirContextOperations, String, Collection)}.
+   * <ul>
+   *   <li>Given {@link SimpleGrantedAuthority#SimpleGrantedAuthority(String)} with {@code Role}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BroadleafAdminLdapUserDetailsMapper#determineSite(DirContextOperations, String, Collection)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.common.site.domain.Site BroadleafAdminLdapUserDetailsMapper.determineSite(DirContextOperations, String, Collection)"})
   public void testDetermineSite_givenSimpleGrantedAuthorityWithRole() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    BroadleafAdminLdapUserDetailsMapper broadleafAdminLdapUserDetailsMapper = new BroadleafAdminLdapUserDetailsMapper();
     DirContextAdapter ctx = new DirContextAdapter();
 
     ArrayList<GrantedAuthority> authorities = new ArrayList<>();
@@ -129,22 +137,19 @@ public class BroadleafAdminLdapUserDetailsMapperDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BroadleafAdminLdapUserDetailsMapper#determineSite(DirContextOperations, String, Collection)}.
+   * Test {@link BroadleafAdminLdapUserDetailsMapper#determineSite(DirContextOperations, String, Collection)}.
    * <ul>
-   *   <li>Given {@link SimpleGrantedAuthority#SimpleGrantedAuthority(String)} with
-   * {@code Role}.</li>
+   *   <li>Given {@link SimpleGrantedAuthority#SimpleGrantedAuthority(String)} with {@code Role}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafAdminLdapUserDetailsMapper#determineSite(DirContextOperations, String, Collection)}
+   * Method under test: {@link BroadleafAdminLdapUserDetailsMapper#determineSite(DirContextOperations, String, Collection)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.common.site.domain.Site BroadleafAdminLdapUserDetailsMapper.determineSite(DirContextOperations, String, Collection)"})
   public void testDetermineSite_givenSimpleGrantedAuthorityWithRole2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    BroadleafAdminLdapUserDetailsMapper broadleafAdminLdapUserDetailsMapper = new BroadleafAdminLdapUserDetailsMapper();
     DirContextAdapter ctx = new DirContextAdapter();
 
     ArrayList<GrantedAuthority> authorities = new ArrayList<>();
@@ -156,44 +161,20 @@ public class BroadleafAdminLdapUserDetailsMapperDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BroadleafAdminLdapUserDetailsMapper#determineSite(DirContextOperations, String, Collection)}.
+   * Test {@link BroadleafAdminLdapUserDetailsMapper#determineSite(DirContextOperations, String, Collection)}.
    * <ul>
    *   <li>When {@link ArrayList#ArrayList()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafAdminLdapUserDetailsMapper#determineSite(DirContextOperations, String, Collection)}
+   * Method under test: {@link BroadleafAdminLdapUserDetailsMapper#determineSite(DirContextOperations, String, Collection)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.common.site.domain.Site BroadleafAdminLdapUserDetailsMapper.determineSite(DirContextOperations, String, Collection)"})
   public void testDetermineSite_whenArrayList() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    BroadleafAdminLdapUserDetailsMapper broadleafAdminLdapUserDetailsMapper = new BroadleafAdminLdapUserDetailsMapper();
     DirContextAdapter ctx = new DirContextAdapter();
-
-    // Act and Assert
-    assertNull(broadleafAdminLdapUserDetailsMapper.determineSite(ctx, "janedoe", new ArrayList<>()));
-  }
-
-  /**
-   * Test
-   * {@link BroadleafAdminLdapUserDetailsMapper#determineSite(DirContextOperations, String, Collection)}.
-   * <ul>
-   *   <li>When {@link DirContextAdapter}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link BroadleafAdminLdapUserDetailsMapper#determineSite(DirContextOperations, String, Collection)}
-   */
-  @Test
-  public void testDetermineSite_whenDirContextAdapter() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    BroadleafAdminLdapUserDetailsMapper broadleafAdminLdapUserDetailsMapper = new BroadleafAdminLdapUserDetailsMapper();
-    DirContextAdapter ctx = mock(DirContextAdapter.class);
 
     // Act and Assert
     assertNull(broadleafAdminLdapUserDetailsMapper.determineSite(ctx, "janedoe", new ArrayList<>()));
@@ -202,10 +183,11 @@ public class BroadleafAdminLdapUserDetailsMapperDiffblueTest {
   /**
    * Test new {@link BroadleafAdminLdapUserDetailsMapper} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link BroadleafAdminLdapUserDetailsMapper}
+   * Method under test: default or parameterless constructor of {@link BroadleafAdminLdapUserDetailsMapper}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BroadleafAdminLdapUserDetailsMapper.<init>()"})
   public void testNewBroadleafAdminLdapUserDetailsMapper() {
     // Arrange and Act
     BroadleafAdminLdapUserDetailsMapper actualBroadleafAdminLdapUserDetailsMapper = new BroadleafAdminLdapUserDetailsMapper();

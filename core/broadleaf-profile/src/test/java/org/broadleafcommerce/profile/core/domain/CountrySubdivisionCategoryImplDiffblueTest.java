@@ -1,18 +1,34 @@
+/*-
+ * #%L
+ * BroadleafCommerce Profile
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.profile.core.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import org.junit.Ignore;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml",
-    "/bl-profile-applicationContext-persistence.xml", "/bl-profile-applicationContext.xml",
-    "/blc-config/admin/framework/bl-profile-applicationContext.xml",
-    "/blc-config/site/framework/bl-profile-applicationContext.xml"})
+@ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class CountrySubdivisionCategoryImplDiffblueTest {
   @Autowired
@@ -24,82 +40,24 @@ public class CountrySubdivisionCategoryImplDiffblueTest {
    * Method under test: {@link CountrySubdivisionCategoryImpl#getName()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CountrySubdivisionCategoryImpl.getName()"})
   public void testGetName() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new CountrySubdivisionCategoryImpl()).getName());
   }
 
   /**
-   * Test {@link CountrySubdivisionCategoryImpl#getName()}.
-   * <p>
-   * Method under test: {@link CountrySubdivisionCategoryImpl#getName()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetName2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3324 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.domain.CountrySubdivisionCategoryImpl countrySubdivisionCategoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CountrySubdivisionCategoryImpl()).getName();
-  }
-
-  /**
    * Test {@link CountrySubdivisionCategoryImpl#getMainEntityName()}.
    * <p>
    * Method under test: {@link CountrySubdivisionCategoryImpl#getMainEntityName()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CountrySubdivisionCategoryImpl.getMainEntityName()"})
   public void testGetMainEntityName() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new CountrySubdivisionCategoryImpl()).getMainEntityName());
-  }
-
-  /**
-   * Test {@link CountrySubdivisionCategoryImpl#getMainEntityName()}.
-   * <p>
-   * Method under test: {@link CountrySubdivisionCategoryImpl#getMainEntityName()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetMainEntityName2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3320 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.domain.CountrySubdivisionCategoryImpl countrySubdivisionCategoryImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CountrySubdivisionCategoryImpl()).getMainEntityName();
   }
 
   /**
@@ -107,21 +65,23 @@ public class CountrySubdivisionCategoryImplDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>default or parameterless constructor of
-   * {@link CountrySubdivisionCategoryImpl}
+   *   <li>default or parameterless constructor of {@link CountrySubdivisionCategoryImpl}
    *   <li>{@link CountrySubdivisionCategoryImpl#setId(Long)}
    *   <li>{@link CountrySubdivisionCategoryImpl#setName(String)}
    *   <li>{@link CountrySubdivisionCategoryImpl#getId()}
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CountrySubdivisionCategoryImpl.<init>()", "Long CountrySubdivisionCategoryImpl.getId()",
+      "void CountrySubdivisionCategoryImpl.setId(Long)", "void CountrySubdivisionCategoryImpl.setName(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     CountrySubdivisionCategoryImpl actualCountrySubdivisionCategoryImpl = new CountrySubdivisionCategoryImpl();
     actualCountrySubdivisionCategoryImpl.setId(1L);
     actualCountrySubdivisionCategoryImpl.setName("Name");
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals(1L, actualCountrySubdivisionCategoryImpl.getId().longValue());
   }
 }

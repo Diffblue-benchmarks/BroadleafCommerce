@@ -1,446 +1,459 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.web.controller;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.anyBoolean;
 import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
+import org.broadleafcommerce.common.i18n.domain.TranslatedEntity;
+import org.broadleafcommerce.common.i18n.domain.Translation;
 import org.broadleafcommerce.common.i18n.service.TranslationService;
-import org.broadleafcommerce.common.persistence.EntityConfiguration;
 import org.broadleafcommerce.common.security.service.ExploitProtectionService;
+import org.broadleafcommerce.openadmin.dto.ClassMetadata;
+import org.broadleafcommerce.openadmin.dto.DynamicResultSet;
+import org.broadleafcommerce.openadmin.dto.SectionCrumb;
+import org.broadleafcommerce.openadmin.dto.TabMetadata;
 import org.broadleafcommerce.openadmin.security.ClassNameRequestParamValidationService;
+import org.broadleafcommerce.openadmin.server.domain.PersistencePackageRequest;
+import org.broadleafcommerce.openadmin.server.security.remote.EntityOperationType;
 import org.broadleafcommerce.openadmin.server.security.remote.SecurityVerifier;
 import org.broadleafcommerce.openadmin.server.security.service.navigation.AdminNavigationService;
 import org.broadleafcommerce.openadmin.server.service.AdminEntityService;
 import org.broadleafcommerce.openadmin.server.service.AdminSectionCustomCriteriaService;
-import org.broadleafcommerce.openadmin.server.service.extension.FilterProductTypePersistenceHandlerExtensionManager;
-import org.broadleafcommerce.openadmin.server.service.persistence.PersistenceThreadManager;
+import org.broadleafcommerce.openadmin.server.service.persistence.PersistenceResponse;
 import org.broadleafcommerce.openadmin.web.form.TranslationForm;
+import org.broadleafcommerce.openadmin.web.form.component.ListGrid;
 import org.broadleafcommerce.openadmin.web.form.entity.DefaultAdornedEntityFormActions;
 import org.broadleafcommerce.openadmin.web.form.entity.EntityForm;
-import org.broadleafcommerce.openadmin.web.form.entity.EntityFormValidator;
 import org.broadleafcommerce.openadmin.web.form.entity.Field;
-import org.broadleafcommerce.openadmin.web.service.FormBuilderExtensionManager;
 import org.broadleafcommerce.openadmin.web.service.FormBuilderService;
+import org.broadleafcommerce.openadmin.web.service.TranslationFormAction;
 import org.broadleafcommerce.openadmin.web.service.TranslationFormBuilderService;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
-@ContextConfiguration(classes = {AdminTranslationController.class})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class AdminTranslationControllerDiffblueTest {
-  @MockBean(name = "blAdminAbstractControllerExtensionManager")
-  private AdminAbstractControllerExtensionManager adminAbstractControllerExtensionManager;
-
-  @MockBean
+  @Mock
   private AdminEntityService adminEntityService;
 
-  @MockBean
+  @Mock
   private AdminNavigationService adminNavigationService;
 
-  @MockBean
+  @Mock
   private AdminSectionCustomCriteriaService adminSectionCustomCriteriaService;
 
-  @Autowired
+  @InjectMocks
   private AdminTranslationController adminTranslationController;
 
-  @MockBean(name = "blAdminTranslationControllerExtensionManager")
+  @Mock
   private AdminTranslationControllerExtensionManager adminTranslationControllerExtensionManager;
 
-  @MockBean
+  @Mock
   private ClassNameRequestParamValidationService classNameRequestParamValidationService;
 
-  @MockBean(name = "blEntityConfiguration")
-  private EntityConfiguration entityConfiguration;
-
-  @MockBean(name = "blEntityFormValidator")
-  private EntityFormValidator entityFormValidator;
-
-  @MockBean
+  @Mock
   private ExploitProtectionService exploitProtectionService;
 
-  @MockBean(name = "blFilterProductTypePersistenceHandlerExtensionManager")
-  private FilterProductTypePersistenceHandlerExtensionManager filterProductTypePersistenceHandlerExtensionManager;
-
-  @MockBean(name = "blFormBuilderExtensionManager")
-  private FormBuilderExtensionManager formBuilderExtensionManager;
-
-  @MockBean
+  @Mock
   private FormBuilderService formBuilderService;
 
-  @MockBean(name = "blPersistenceThreadManager")
-  private PersistenceThreadManager persistenceThreadManager;
-
-  @MockBean
+  @Mock
   private SecurityVerifier securityVerifier;
 
-  @MockBean
+  @Mock
   private TranslationFormBuilderService translationFormBuilderService;
 
-  @MockBean
+  @Mock
   private TranslationService translationService;
 
   /**
-   * Test
-   * {@link AdminTranslationController#viewTranslation(HttpServletRequest, HttpServletResponse, Model, TranslationForm, BindingResult)}.
+   * Test {@link AdminTranslationController#viewTranslation(HttpServletRequest, HttpServletResponse, Model, TranslationForm, BindingResult)}.
    * <p>
-   * Method under test:
-   * {@link AdminTranslationController#viewTranslation(HttpServletRequest, HttpServletResponse, Model, TranslationForm, BindingResult)}
+   * Method under test: {@link AdminTranslationController#viewTranslation(HttpServletRequest, HttpServletResponse, Model, TranslationForm, BindingResult)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "String AdminTranslationController.viewTranslation(HttpServletRequest, HttpServletResponse, Model, TranslationForm, BindingResult)"})
   public void testViewTranslation() throws Exception {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.web.controller;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.openadmin.web.controller.AdminTranslationController.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass8148 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blAdminAbstractControllerExtensionManager") org.broadleafcommerce.openadmin.web.controller.AdminAbstractControllerExtensionManager adminAbstractControllerExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminEntityService adminEntityService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.service.navigation.AdminNavigationService adminNavigationService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminSectionCustomCriteriaService adminSectionCustomCriteriaService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.controller.AdminTranslationController adminTranslationController;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blAdminTranslationControllerExtensionManager") org.broadleafcommerce.openadmin.web.controller.AdminTranslationControllerExtensionManager adminTranslationControllerExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.security.ClassNameRequestParamValidationService classNameRequestParamValidationService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityConfiguration") org.broadleafcommerce.common.persistence.EntityConfiguration entityConfiguration;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityFormValidator") org.broadleafcommerce.openadmin.web.form.entity.EntityFormValidator entityFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.security.service.ExploitProtectionService exploitProtectionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blFilterProductTypePersistenceHandlerExtensionManager") org.broadleafcommerce.openadmin.server.service.extension.FilterProductTypePersistenceHandlerExtensionManager filterProductTypePersistenceHandlerExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blFormBuilderExtensionManager") org.broadleafcommerce.openadmin.web.service.FormBuilderExtensionManager formBuilderExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.web.service.FormBuilderService formBuilderService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blPersistenceThreadManager") org.broadleafcommerce.openadmin.server.service.persistence.PersistenceThreadManager persistenceThreadManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.remote.SecurityVerifier securityVerifier;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.web.service.TranslationFormBuilderService translationFormBuilderService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.i18n.service.TranslationService translationService;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
+    doNothing().when(securityVerifier).securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    AdminTranslationControllerExtensionHandler adminTranslationControllerExtensionHandler = mock(
+        AdminTranslationControllerExtensionHandler.class);
+    when(adminTranslationControllerExtensionHandler.applyTransformation(Mockito.<TranslationForm>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(adminTranslationControllerExtensionManager.getProxy()).thenReturn(adminTranslationControllerExtensionHandler);
+    when(translationFormBuilderService.buildListGrid(Mockito.<List<Translation>>any(), anyBoolean()))
+        .thenReturn(new ListGrid());
+    when(translationService.getTranslations(Mockito.<String>any(), Mockito.<String>any(), Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
     MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/translation");
 
-    // Act
-    MockMvcBuilders.standaloneSetup(adminTranslationController).build().perform(requestBuilder);
+    // Act and Assert
+    MockMvcBuilders.standaloneSetup(adminTranslationController)
+        .build()
+        .perform(requestBuilder)
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.model().size(5))
+        .andExpect(MockMvcResultMatchers.model()
+            .attributeExists("currentUrl", "form", "listGrid", "modalHeaderType", "viewType"))
+        .andExpect(MockMvcResultMatchers.view().name(AdminAbstractController.MODAL_CONTAINER_VIEW))
+        .andExpect(MockMvcResultMatchers.forwardedUrl(AdminAbstractController.MODAL_CONTAINER_VIEW));
   }
 
   /**
-   * Test
-   * {@link AdminTranslationController#showAddTranslation(HttpServletRequest, HttpServletResponse, Model, Map, TranslationForm, BindingResult)}.
+   * Test {@link AdminTranslationController#showAddTranslation(HttpServletRequest, HttpServletResponse, Model, Map, TranslationForm, BindingResult)}.
    * <p>
-   * Method under test:
-   * {@link AdminTranslationController#showAddTranslation(HttpServletRequest, HttpServletResponse, Model, Map, TranslationForm, BindingResult)}
+   * Method under test: {@link AdminTranslationController#showAddTranslation(HttpServletRequest, HttpServletResponse, Model, Map, TranslationForm, BindingResult)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "String AdminTranslationController.showAddTranslation(HttpServletRequest, HttpServletResponse, Model, Map, TranslationForm, BindingResult)"})
   public void testShowAddTranslation() throws Exception {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.web.controller;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.openadmin.web.controller.AdminTranslationController.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass8145 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blAdminAbstractControllerExtensionManager") org.broadleafcommerce.openadmin.web.controller.AdminAbstractControllerExtensionManager adminAbstractControllerExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminEntityService adminEntityService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.service.navigation.AdminNavigationService adminNavigationService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminSectionCustomCriteriaService adminSectionCustomCriteriaService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.controller.AdminTranslationController adminTranslationController;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blAdminTranslationControllerExtensionManager") org.broadleafcommerce.openadmin.web.controller.AdminTranslationControllerExtensionManager adminTranslationControllerExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.security.ClassNameRequestParamValidationService classNameRequestParamValidationService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityConfiguration") org.broadleafcommerce.common.persistence.EntityConfiguration entityConfiguration;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityFormValidator") org.broadleafcommerce.openadmin.web.form.entity.EntityFormValidator entityFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.security.service.ExploitProtectionService exploitProtectionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blFilterProductTypePersistenceHandlerExtensionManager") org.broadleafcommerce.openadmin.server.service.extension.FilterProductTypePersistenceHandlerExtensionManager filterProductTypePersistenceHandlerExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blFormBuilderExtensionManager") org.broadleafcommerce.openadmin.web.service.FormBuilderExtensionManager formBuilderExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.web.service.FormBuilderService formBuilderService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blPersistenceThreadManager") org.broadleafcommerce.openadmin.server.service.persistence.PersistenceThreadManager persistenceThreadManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.remote.SecurityVerifier securityVerifier;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.web.service.TranslationFormBuilderService translationFormBuilderService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.i18n.service.TranslationService translationService;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
+    doNothing().when(securityVerifier).securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(Mockito.<String>any(), Mockito.<String[]>any()))
+        .thenReturn(new String[]{"Merge Section Custom Criteria"});
+
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    persistenceResponse.setDynamicResultSet(new DynamicResultSet());
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any())).thenReturn(persistenceResponse);
+    when(translationFormBuilderService.buildTranslationForm(Mockito.<ClassMetadata>any(),
+        Mockito.<TranslationForm>any(), Mockito.<TranslationFormAction>any())).thenReturn(new EntityForm());
     MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/translation/add");
 
-    // Act
-    MockMvcBuilders.standaloneSetup(adminTranslationController).build().perform(requestBuilder);
+    // Act and Assert
+    MockMvcBuilders.standaloneSetup(adminTranslationController)
+        .build()
+        .perform(requestBuilder)
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.model().size(5))
+        .andExpect(MockMvcResultMatchers.model()
+            .attributeExists("currentUrl", "entityForm", "form", "modalHeaderType", "viewType"))
+        .andExpect(MockMvcResultMatchers.view().name(AdminAbstractController.MODAL_CONTAINER_VIEW))
+        .andExpect(MockMvcResultMatchers.forwardedUrl(AdminAbstractController.MODAL_CONTAINER_VIEW));
   }
 
   /**
-   * Test
-   * {@link AdminTranslationController#addTranslation(HttpServletRequest, HttpServletResponse, Model, EntityForm, BindingResult)}.
+   * Test {@link AdminTranslationController#showAddTranslation(HttpServletRequest, HttpServletResponse, Model, Map, TranslationForm, BindingResult)}.
    * <p>
-   * Method under test:
-   * {@link AdminTranslationController#addTranslation(HttpServletRequest, HttpServletResponse, Model, EntityForm, BindingResult)}
+   * Method under test: {@link AdminTranslationController#showAddTranslation(HttpServletRequest, HttpServletResponse, Model, Map, TranslationForm, BindingResult)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddTranslation() throws Exception {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.web.controller;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.openadmin.web.controller.AdminTranslationController.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass8143 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blAdminAbstractControllerExtensionManager") org.broadleafcommerce.openadmin.web.controller.AdminAbstractControllerExtensionManager adminAbstractControllerExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminEntityService adminEntityService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.service.navigation.AdminNavigationService adminNavigationService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminSectionCustomCriteriaService adminSectionCustomCriteriaService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.controller.AdminTranslationController adminTranslationController;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blAdminTranslationControllerExtensionManager") org.broadleafcommerce.openadmin.web.controller.AdminTranslationControllerExtensionManager adminTranslationControllerExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.security.ClassNameRequestParamValidationService classNameRequestParamValidationService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityConfiguration") org.broadleafcommerce.common.persistence.EntityConfiguration entityConfiguration;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityFormValidator") org.broadleafcommerce.openadmin.web.form.entity.EntityFormValidator entityFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.security.service.ExploitProtectionService exploitProtectionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blFilterProductTypePersistenceHandlerExtensionManager") org.broadleafcommerce.openadmin.server.service.extension.FilterProductTypePersistenceHandlerExtensionManager filterProductTypePersistenceHandlerExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blFormBuilderExtensionManager") org.broadleafcommerce.openadmin.web.service.FormBuilderExtensionManager formBuilderExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.web.service.FormBuilderService formBuilderService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blPersistenceThreadManager") org.broadleafcommerce.openadmin.server.service.persistence.PersistenceThreadManager persistenceThreadManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.remote.SecurityVerifier securityVerifier;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.web.service.TranslationFormBuilderService translationFormBuilderService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.i18n.service.TranslationService translationService;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "String AdminTranslationController.showAddTranslation(HttpServletRequest, HttpServletResponse, Model, Map, TranslationForm, BindingResult)"})
+  public void testShowAddTranslation2() throws Exception {
     // Arrange
-    MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/translation/add");
+    doNothing().when(securityVerifier).securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(Mockito.<String>any(), Mockito.<String[]>any()))
+        .thenReturn(new String[]{});
 
-    // Act
-    MockMvcBuilders.standaloneSetup(adminTranslationController).build().perform(requestBuilder);
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    persistenceResponse.setDynamicResultSet(new DynamicResultSet());
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any())).thenReturn(persistenceResponse);
+    when(translationFormBuilderService.buildTranslationForm(Mockito.<ClassMetadata>any(),
+        Mockito.<TranslationForm>any(), Mockito.<TranslationFormAction>any())).thenReturn(new EntityForm());
+    MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/translation/add");
+
+    // Act and Assert
+    MockMvcBuilders.standaloneSetup(adminTranslationController)
+        .build()
+        .perform(requestBuilder)
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.model().size(5))
+        .andExpect(MockMvcResultMatchers.model()
+            .attributeExists("currentUrl", "entityForm", "form", "modalHeaderType", "viewType"))
+        .andExpect(MockMvcResultMatchers.view().name(AdminAbstractController.MODAL_CONTAINER_VIEW))
+        .andExpect(MockMvcResultMatchers.forwardedUrl(AdminAbstractController.MODAL_CONTAINER_VIEW));
   }
 
   /**
-   * Test
-   * {@link AdminTranslationController#showUpdateTranslation(HttpServletRequest, HttpServletResponse, Model, Map, TranslationForm, BindingResult)}.
+   * Test {@link AdminTranslationController#deleteTranslation(HttpServletRequest, HttpServletResponse, Model, Map, TranslationForm, BindingResult)}.
    * <p>
-   * Method under test:
-   * {@link AdminTranslationController#showUpdateTranslation(HttpServletRequest, HttpServletResponse, Model, Map, TranslationForm, BindingResult)}
+   * Method under test: {@link AdminTranslationController#deleteTranslation(HttpServletRequest, HttpServletResponse, Model, Map, TranslationForm, BindingResult)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testShowUpdateTranslation() throws Exception {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.web.controller;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.openadmin.web.controller.AdminTranslationController.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass8146 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blAdminAbstractControllerExtensionManager") org.broadleafcommerce.openadmin.web.controller.AdminAbstractControllerExtensionManager adminAbstractControllerExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminEntityService adminEntityService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.service.navigation.AdminNavigationService adminNavigationService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminSectionCustomCriteriaService adminSectionCustomCriteriaService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.controller.AdminTranslationController adminTranslationController;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blAdminTranslationControllerExtensionManager") org.broadleafcommerce.openadmin.web.controller.AdminTranslationControllerExtensionManager adminTranslationControllerExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.security.ClassNameRequestParamValidationService classNameRequestParamValidationService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityConfiguration") org.broadleafcommerce.common.persistence.EntityConfiguration entityConfiguration;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityFormValidator") org.broadleafcommerce.openadmin.web.form.entity.EntityFormValidator entityFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.security.service.ExploitProtectionService exploitProtectionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blFilterProductTypePersistenceHandlerExtensionManager") org.broadleafcommerce.openadmin.server.service.extension.FilterProductTypePersistenceHandlerExtensionManager filterProductTypePersistenceHandlerExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blFormBuilderExtensionManager") org.broadleafcommerce.openadmin.web.service.FormBuilderExtensionManager formBuilderExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.web.service.FormBuilderService formBuilderService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blPersistenceThreadManager") org.broadleafcommerce.openadmin.server.service.persistence.PersistenceThreadManager persistenceThreadManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.remote.SecurityVerifier securityVerifier;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.web.service.TranslationFormBuilderService translationFormBuilderService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.i18n.service.TranslationService translationService;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/translation/update");
-
-    // Act
-    MockMvcBuilders.standaloneSetup(adminTranslationController).build().perform(requestBuilder);
-  }
-
-  /**
-   * Test
-   * {@link AdminTranslationController#updateTranslation(HttpServletRequest, HttpServletResponse, Model, EntityForm, BindingResult)}.
-   * <p>
-   * Method under test:
-   * {@link AdminTranslationController#updateTranslation(HttpServletRequest, HttpServletResponse, Model, EntityForm, BindingResult)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testUpdateTranslation() throws Exception {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.web.controller;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.openadmin.web.controller.AdminTranslationController.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass8147 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blAdminAbstractControllerExtensionManager") org.broadleafcommerce.openadmin.web.controller.AdminAbstractControllerExtensionManager adminAbstractControllerExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminEntityService adminEntityService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.service.navigation.AdminNavigationService adminNavigationService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminSectionCustomCriteriaService adminSectionCustomCriteriaService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.controller.AdminTranslationController adminTranslationController;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blAdminTranslationControllerExtensionManager") org.broadleafcommerce.openadmin.web.controller.AdminTranslationControllerExtensionManager adminTranslationControllerExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.security.ClassNameRequestParamValidationService classNameRequestParamValidationService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityConfiguration") org.broadleafcommerce.common.persistence.EntityConfiguration entityConfiguration;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityFormValidator") org.broadleafcommerce.openadmin.web.form.entity.EntityFormValidator entityFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.security.service.ExploitProtectionService exploitProtectionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blFilterProductTypePersistenceHandlerExtensionManager") org.broadleafcommerce.openadmin.server.service.extension.FilterProductTypePersistenceHandlerExtensionManager filterProductTypePersistenceHandlerExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blFormBuilderExtensionManager") org.broadleafcommerce.openadmin.web.service.FormBuilderExtensionManager formBuilderExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.web.service.FormBuilderService formBuilderService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blPersistenceThreadManager") org.broadleafcommerce.openadmin.server.service.persistence.PersistenceThreadManager persistenceThreadManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.remote.SecurityVerifier securityVerifier;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.web.service.TranslationFormBuilderService translationFormBuilderService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.i18n.service.TranslationService translationService;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/translation/update");
-
-    // Act
-    MockMvcBuilders.standaloneSetup(adminTranslationController).build().perform(requestBuilder);
-  }
-
-  /**
-   * Test
-   * {@link AdminTranslationController#deleteTranslation(HttpServletRequest, HttpServletResponse, Model, Map, TranslationForm, BindingResult)}.
-   * <p>
-   * Method under test:
-   * {@link AdminTranslationController#deleteTranslation(HttpServletRequest, HttpServletResponse, Model, Map, TranslationForm, BindingResult)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "String AdminTranslationController.deleteTranslation(HttpServletRequest, HttpServletResponse, Model, Map, TranslationForm, BindingResult)"})
   public void testDeleteTranslation() throws Exception {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.web.controller;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.openadmin.web.controller.AdminTranslationController.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass8144 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blAdminAbstractControllerExtensionManager") org.broadleafcommerce.openadmin.web.controller.AdminAbstractControllerExtensionManager adminAbstractControllerExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminEntityService adminEntityService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.service.navigation.AdminNavigationService adminNavigationService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminSectionCustomCriteriaService adminSectionCustomCriteriaService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.controller.AdminTranslationController adminTranslationController;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blAdminTranslationControllerExtensionManager") org.broadleafcommerce.openadmin.web.controller.AdminTranslationControllerExtensionManager adminTranslationControllerExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.security.ClassNameRequestParamValidationService classNameRequestParamValidationService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityConfiguration") org.broadleafcommerce.common.persistence.EntityConfiguration entityConfiguration;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityFormValidator") org.broadleafcommerce.openadmin.web.form.entity.EntityFormValidator entityFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.security.service.ExploitProtectionService exploitProtectionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blFilterProductTypePersistenceHandlerExtensionManager") org.broadleafcommerce.openadmin.server.service.extension.FilterProductTypePersistenceHandlerExtensionManager filterProductTypePersistenceHandlerExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blFormBuilderExtensionManager") org.broadleafcommerce.openadmin.web.service.FormBuilderExtensionManager formBuilderExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.web.service.FormBuilderService formBuilderService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blPersistenceThreadManager") org.broadleafcommerce.openadmin.server.service.persistence.PersistenceThreadManager persistenceThreadManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.remote.SecurityVerifier securityVerifier;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.web.service.TranslationFormBuilderService translationFormBuilderService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.i18n.service.TranslationService translationService;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
+    doNothing().when(securityVerifier).securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(Mockito.<String>any(), Mockito.<String[]>any()))
+        .thenReturn(new String[]{"Merge Section Custom Criteria"});
+
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    persistenceResponse.setDynamicResultSet(new DynamicResultSet(new ClassMetadata()));
+    when(adminEntityService.removeEntity(Mockito.<EntityForm>any(), Mockito.<String[]>any(),
+        Mockito.<List<SectionCrumb>>any())).thenReturn(new PersistenceResponse());
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any())).thenReturn(persistenceResponse);
+    AdminTranslationControllerExtensionHandler adminTranslationControllerExtensionHandler = mock(
+        AdminTranslationControllerExtensionHandler.class);
+    when(adminTranslationControllerExtensionHandler.applyTransformation(Mockito.<TranslationForm>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(adminTranslationControllerExtensionManager.getProxy()).thenReturn(adminTranslationControllerExtensionHandler);
+    when(translationFormBuilderService.buildListGrid(Mockito.<List<Translation>>any(), anyBoolean()))
+        .thenReturn(new ListGrid());
+    when(translationFormBuilderService.buildTranslationForm(Mockito.<ClassMetadata>any(),
+        Mockito.<TranslationForm>any(), Mockito.<TranslationFormAction>any())).thenReturn(new EntityForm());
+    when(translationService.getTranslations(Mockito.<String>any(), Mockito.<String>any(), Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
     MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/translation/delete");
 
-    // Act
-    MockMvcBuilders.standaloneSetup(adminTranslationController).build().perform(requestBuilder);
+    // Act and Assert
+    MockMvcBuilders.standaloneSetup(adminTranslationController)
+        .build()
+        .perform(requestBuilder)
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.model().size(5))
+        .andExpect(MockMvcResultMatchers.model()
+            .attributeExists("currentUrl", "form", "listGrid", "modalHeaderType", "viewType"))
+        .andExpect(MockMvcResultMatchers.view().name(AdminAbstractController.MODAL_CONTAINER_VIEW))
+        .andExpect(MockMvcResultMatchers.forwardedUrl(AdminAbstractController.MODAL_CONTAINER_VIEW));
   }
 
   /**
-   * Test {@link AdminTranslationController#getTranslationForm(EntityForm)}.
+   * Test {@link AdminTranslationController#deleteTranslation(HttpServletRequest, HttpServletResponse, Model, Map, TranslationForm, BindingResult)}.
    * <p>
-   * Method under test:
-   * {@link AdminTranslationController#getTranslationForm(EntityForm)}
+   * Method under test: {@link AdminTranslationController#deleteTranslation(HttpServletRequest, HttpServletResponse, Model, Map, TranslationForm, BindingResult)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetTranslationForm() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.web.controller;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.openadmin.web.controller.AdminTranslationController.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass8150 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blAdminAbstractControllerExtensionManager") org.broadleafcommerce.openadmin.web.controller.AdminAbstractControllerExtensionManager adminAbstractControllerExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminEntityService adminEntityService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.service.navigation.AdminNavigationService adminNavigationService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminSectionCustomCriteriaService adminSectionCustomCriteriaService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.controller.AdminTranslationController adminTranslationController;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blAdminTranslationControllerExtensionManager") org.broadleafcommerce.openadmin.web.controller.AdminTranslationControllerExtensionManager adminTranslationControllerExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.security.ClassNameRequestParamValidationService classNameRequestParamValidationService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityConfiguration") org.broadleafcommerce.common.persistence.EntityConfiguration entityConfiguration;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityFormValidator") org.broadleafcommerce.openadmin.web.form.entity.EntityFormValidator entityFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.security.service.ExploitProtectionService exploitProtectionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blFilterProductTypePersistenceHandlerExtensionManager") org.broadleafcommerce.openadmin.server.service.extension.FilterProductTypePersistenceHandlerExtensionManager filterProductTypePersistenceHandlerExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blFormBuilderExtensionManager") org.broadleafcommerce.openadmin.web.service.FormBuilderExtensionManager formBuilderExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.web.service.FormBuilderService formBuilderService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blPersistenceThreadManager") org.broadleafcommerce.openadmin.server.service.persistence.PersistenceThreadManager persistenceThreadManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.remote.SecurityVerifier securityVerifier;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.web.service.TranslationFormBuilderService translationFormBuilderService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.i18n.service.TranslationService translationService;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "String AdminTranslationController.deleteTranslation(HttpServletRequest, HttpServletResponse, Model, Map, TranslationForm, BindingResult)"})
+  public void testDeleteTranslation2() throws Exception {
+    // Arrange
+    doNothing().when(securityVerifier).securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(Mockito.<String>any(), Mockito.<String[]>any()))
+        .thenReturn(null);
 
-    // Arrange and Act
-    adminTranslationController.getTranslationForm(new EntityForm());
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    persistenceResponse.setDynamicResultSet(new DynamicResultSet(new ClassMetadata()));
+    when(adminEntityService.removeEntity(Mockito.<EntityForm>any(), Mockito.<String[]>any(),
+        Mockito.<List<SectionCrumb>>any())).thenReturn(new PersistenceResponse());
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any())).thenReturn(persistenceResponse);
+    AdminTranslationControllerExtensionHandler adminTranslationControllerExtensionHandler = mock(
+        AdminTranslationControllerExtensionHandler.class);
+    when(adminTranslationControllerExtensionHandler.applyTransformation(Mockito.<TranslationForm>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(adminTranslationControllerExtensionManager.getProxy()).thenReturn(adminTranslationControllerExtensionHandler);
+    when(translationFormBuilderService.buildListGrid(Mockito.<List<Translation>>any(), anyBoolean()))
+        .thenReturn(new ListGrid());
+    when(translationFormBuilderService.buildTranslationForm(Mockito.<ClassMetadata>any(),
+        Mockito.<TranslationForm>any(), Mockito.<TranslationFormAction>any())).thenReturn(new EntityForm());
+    when(translationService.getTranslations(Mockito.<String>any(), Mockito.<String>any(), Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+    MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/translation/delete");
+
+    // Act and Assert
+    MockMvcBuilders.standaloneSetup(adminTranslationController)
+        .build()
+        .perform(requestBuilder)
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.model().size(5))
+        .andExpect(MockMvcResultMatchers.model()
+            .attributeExists("currentUrl", "form", "listGrid", "modalHeaderType", "viewType"))
+        .andExpect(MockMvcResultMatchers.view().name(AdminAbstractController.MODAL_CONTAINER_VIEW))
+        .andExpect(MockMvcResultMatchers.forwardedUrl(AdminAbstractController.MODAL_CONTAINER_VIEW));
+  }
+
+  /**
+   * Test {@link AdminTranslationController#deleteTranslation(HttpServletRequest, HttpServletResponse, Model, Map, TranslationForm, BindingResult)}.
+   * <ul>
+   *   <li>Given {@link EntityForm} (default constructor) addTabFromTabMetadata {@link TabMetadata} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminTranslationController#deleteTranslation(HttpServletRequest, HttpServletResponse, Model, Map, TranslationForm, BindingResult)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "String AdminTranslationController.deleteTranslation(HttpServletRequest, HttpServletResponse, Model, Map, TranslationForm, BindingResult)"})
+  public void testDeleteTranslation_givenEntityFormAddTabFromTabMetadataTabMetadata() throws Exception {
+    // Arrange
+    doNothing().when(securityVerifier).securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(Mockito.<String>any(), Mockito.<String[]>any()))
+        .thenReturn(new String[]{"Merge Section Custom Criteria"});
+
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    persistenceResponse.setDynamicResultSet(new DynamicResultSet(new ClassMetadata()));
+    when(adminEntityService.removeEntity(Mockito.<EntityForm>any(), Mockito.<String[]>any(),
+        Mockito.<List<SectionCrumb>>any())).thenReturn(new PersistenceResponse());
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any())).thenReturn(persistenceResponse);
+    AdminTranslationControllerExtensionHandler adminTranslationControllerExtensionHandler = mock(
+        AdminTranslationControllerExtensionHandler.class);
+    when(adminTranslationControllerExtensionHandler.applyTransformation(Mockito.<TranslationForm>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(adminTranslationControllerExtensionManager.getProxy()).thenReturn(adminTranslationControllerExtensionHandler);
+
+    EntityForm entityForm = new EntityForm();
+    entityForm.addTabFromTabMetadata(new TabMetadata());
+    when(translationFormBuilderService.buildListGrid(Mockito.<List<Translation>>any(), anyBoolean()))
+        .thenReturn(new ListGrid());
+    when(translationFormBuilderService.buildTranslationForm(Mockito.<ClassMetadata>any(),
+        Mockito.<TranslationForm>any(), Mockito.<TranslationFormAction>any())).thenReturn(entityForm);
+    when(translationService.getTranslations(Mockito.<String>any(), Mockito.<String>any(), Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+    MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/translation/delete");
+
+    // Act and Assert
+    MockMvcBuilders.standaloneSetup(adminTranslationController)
+        .build()
+        .perform(requestBuilder)
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.model().size(5))
+        .andExpect(MockMvcResultMatchers.model()
+            .attributeExists("currentUrl", "form", "listGrid", "modalHeaderType", "viewType"))
+        .andExpect(MockMvcResultMatchers.view().name(AdminAbstractController.MODAL_CONTAINER_VIEW))
+        .andExpect(MockMvcResultMatchers.forwardedUrl(AdminAbstractController.MODAL_CONTAINER_VIEW));
+  }
+
+  /**
+   * Test {@link AdminTranslationController#deleteTranslation(HttpServletRequest, HttpServletResponse, Model, Map, TranslationForm, BindingResult)}.
+   * <ul>
+   *   <li>Given {@link EntityForm} (default constructor) DynamicForm {@code ?} is {@link EntityForm} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminTranslationController#deleteTranslation(HttpServletRequest, HttpServletResponse, Model, Map, TranslationForm, BindingResult)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "String AdminTranslationController.deleteTranslation(HttpServletRequest, HttpServletResponse, Model, Map, TranslationForm, BindingResult)"})
+  public void testDeleteTranslation_givenEntityFormDynamicFormQuestionMarkIsEntityForm() throws Exception {
+    // Arrange
+    doNothing().when(securityVerifier).securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(Mockito.<String>any(), Mockito.<String[]>any()))
+        .thenReturn(new String[]{"Merge Section Custom Criteria"});
+
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    persistenceResponse.setDynamicResultSet(new DynamicResultSet(new ClassMetadata()));
+    when(adminEntityService.removeEntity(Mockito.<EntityForm>any(), Mockito.<String[]>any(),
+        Mockito.<List<SectionCrumb>>any())).thenReturn(new PersistenceResponse());
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any())).thenReturn(persistenceResponse);
+    AdminTranslationControllerExtensionHandler adminTranslationControllerExtensionHandler = mock(
+        AdminTranslationControllerExtensionHandler.class);
+    when(adminTranslationControllerExtensionHandler.applyTransformation(Mockito.<TranslationForm>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(adminTranslationControllerExtensionManager.getProxy()).thenReturn(adminTranslationControllerExtensionHandler);
+
+    EntityForm entityForm = new EntityForm();
+    entityForm.putDynamicForm("?", new EntityForm());
+    when(translationFormBuilderService.buildListGrid(Mockito.<List<Translation>>any(), anyBoolean()))
+        .thenReturn(new ListGrid());
+    when(translationFormBuilderService.buildTranslationForm(Mockito.<ClassMetadata>any(),
+        Mockito.<TranslationForm>any(), Mockito.<TranslationFormAction>any())).thenReturn(entityForm);
+    when(translationService.getTranslations(Mockito.<String>any(), Mockito.<String>any(), Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+    MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/translation/delete");
+
+    // Act and Assert
+    MockMvcBuilders.standaloneSetup(adminTranslationController)
+        .build()
+        .perform(requestBuilder)
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.model().size(5))
+        .andExpect(MockMvcResultMatchers.model()
+            .attributeExists("currentUrl", "form", "listGrid", "modalHeaderType", "viewType"))
+        .andExpect(MockMvcResultMatchers.view().name(AdminAbstractController.MODAL_CONTAINER_VIEW))
+        .andExpect(MockMvcResultMatchers.forwardedUrl(AdminAbstractController.MODAL_CONTAINER_VIEW));
+  }
+
+  /**
+   * Test {@link AdminTranslationController#deleteTranslation(HttpServletRequest, HttpServletResponse, Model, Map, TranslationForm, BindingResult)}.
+   * <ul>
+   *   <li>Given {@link EntityForm} (default constructor) ReadOnly is {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminTranslationController#deleteTranslation(HttpServletRequest, HttpServletResponse, Model, Map, TranslationForm, BindingResult)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "String AdminTranslationController.deleteTranslation(HttpServletRequest, HttpServletResponse, Model, Map, TranslationForm, BindingResult)"})
+  public void testDeleteTranslation_givenEntityFormReadOnlyIsTrue() throws Exception {
+    // Arrange
+    doNothing().when(securityVerifier).securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(Mockito.<String>any(), Mockito.<String[]>any()))
+        .thenReturn(new String[]{"Merge Section Custom Criteria"});
+
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    persistenceResponse.setDynamicResultSet(new DynamicResultSet(new ClassMetadata()));
+    when(adminEntityService.removeEntity(Mockito.<EntityForm>any(), Mockito.<String[]>any(),
+        Mockito.<List<SectionCrumb>>any())).thenReturn(new PersistenceResponse());
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any())).thenReturn(persistenceResponse);
+    AdminTranslationControllerExtensionHandler adminTranslationControllerExtensionHandler = mock(
+        AdminTranslationControllerExtensionHandler.class);
+    when(adminTranslationControllerExtensionHandler.applyTransformation(Mockito.<TranslationForm>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(adminTranslationControllerExtensionManager.getProxy()).thenReturn(adminTranslationControllerExtensionHandler);
+
+    EntityForm entityForm = new EntityForm();
+    entityForm.setReadOnly(true);
+    when(translationFormBuilderService.buildListGrid(Mockito.<List<Translation>>any(), anyBoolean()))
+        .thenReturn(new ListGrid());
+    when(translationFormBuilderService.buildTranslationForm(Mockito.<ClassMetadata>any(),
+        Mockito.<TranslationForm>any(), Mockito.<TranslationFormAction>any())).thenReturn(entityForm);
+    when(translationService.getTranslations(Mockito.<String>any(), Mockito.<String>any(), Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+    MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/translation/delete");
+
+    // Act and Assert
+    MockMvcBuilders.standaloneSetup(adminTranslationController)
+        .build()
+        .perform(requestBuilder)
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.model().size(5))
+        .andExpect(MockMvcResultMatchers.model()
+            .attributeExists("currentUrl", "form", "listGrid", "modalHeaderType", "viewType"))
+        .andExpect(MockMvcResultMatchers.view().name(AdminAbstractController.MODAL_CONTAINER_VIEW))
+        .andExpect(MockMvcResultMatchers.forwardedUrl(AdminAbstractController.MODAL_CONTAINER_VIEW));
   }
 
   /**
@@ -450,15 +463,13 @@ public class AdminTranslationControllerDiffblueTest {
    *   <li>Then return TranslationId longValue is forty-two.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminTranslationController#getTranslationForm(EntityForm)}
+   * Method under test: {@link AdminTranslationController#getTranslationForm(EntityForm)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"TranslationForm AdminTranslationController.getTranslationForm(EntityForm)"})
   public void testGetTranslationForm_given42_thenReturnTranslationIdLongValueIsFortyTwo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminTranslationController adminTranslationController = new AdminTranslationController();
     EntityForm entityForm = mock(EntityForm.class);
     when(entityForm.getId()).thenReturn("42");
     when(entityForm.findField(Mockito.<String>any())).thenReturn(new Field());
@@ -486,15 +497,13 @@ public class AdminTranslationControllerDiffblueTest {
    *   <li>Then return TranslationId is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminTranslationController#getTranslationForm(EntityForm)}
+   * Method under test: {@link AdminTranslationController#getTranslationForm(EntityForm)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"TranslationForm AdminTranslationController.getTranslationForm(EntityForm)"})
   public void testGetTranslationForm_givenEmptyString_thenReturnTranslationIdIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminTranslationController adminTranslationController = new AdminTranslationController();
     EntityForm entityForm = mock(EntityForm.class);
     when(entityForm.getId()).thenReturn("");
     when(entityForm.findField(Mockito.<String>any())).thenReturn(new Field());
@@ -518,108 +527,15 @@ public class AdminTranslationControllerDiffblueTest {
   /**
    * Test {@link AdminTranslationController#getClassNameForSection(String)}.
    * <p>
-   * Method under test:
-   * {@link AdminTranslationController#getClassNameForSection(String)}
+   * Method under test: {@link AdminTranslationController#getClassNameForSection(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String AdminTranslationController.getClassNameForSection(String)"})
   public void testGetClassNameForSection() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertEquals("org.broadleafcommerce.common.i18n.domain.Translation",
-        (new AdminTranslationController()).getClassNameForSection("Section Key"));
-  }
-
-  /**
-   * Test {@link AdminTranslationController#getClassNameForSection(String)}.
-   * <p>
-   * Method under test:
-   * {@link AdminTranslationController#getClassNameForSection(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetClassNameForSection2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.web.controller;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.openadmin.web.controller.AdminTranslationController.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass8149 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blAdminAbstractControllerExtensionManager") org.broadleafcommerce.openadmin.web.controller.AdminAbstractControllerExtensionManager adminAbstractControllerExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminEntityService adminEntityService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.service.navigation.AdminNavigationService adminNavigationService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminSectionCustomCriteriaService adminSectionCustomCriteriaService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.controller.AdminTranslationController adminTranslationController;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blAdminTranslationControllerExtensionManager") org.broadleafcommerce.openadmin.web.controller.AdminTranslationControllerExtensionManager adminTranslationControllerExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.security.ClassNameRequestParamValidationService classNameRequestParamValidationService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityConfiguration") org.broadleafcommerce.common.persistence.EntityConfiguration entityConfiguration;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityFormValidator") org.broadleafcommerce.openadmin.web.form.entity.EntityFormValidator entityFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.security.service.ExploitProtectionService exploitProtectionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blFilterProductTypePersistenceHandlerExtensionManager") org.broadleafcommerce.openadmin.server.service.extension.FilterProductTypePersistenceHandlerExtensionManager filterProductTypePersistenceHandlerExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blFormBuilderExtensionManager") org.broadleafcommerce.openadmin.web.service.FormBuilderExtensionManager formBuilderExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.web.service.FormBuilderService formBuilderService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blPersistenceThreadManager") org.broadleafcommerce.openadmin.server.service.persistence.PersistenceThreadManager persistenceThreadManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.remote.SecurityVerifier securityVerifier;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.web.service.TranslationFormBuilderService translationFormBuilderService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.i18n.service.TranslationService translationService;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    adminTranslationController.getClassNameForSection("Section Key");
-  }
-
-  /**
-   * Test {@link AdminTranslationController#modifyRevertButton(EntityForm)}.
-   * <p>
-   * Method under test:
-   * {@link AdminTranslationController#modifyRevertButton(EntityForm)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testModifyRevertButton() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.web.controller;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.openadmin.web.controller.AdminTranslationController.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass8151 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blAdminAbstractControllerExtensionManager") org.broadleafcommerce.openadmin.web.controller.AdminAbstractControllerExtensionManager adminAbstractControllerExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminEntityService adminEntityService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.service.navigation.AdminNavigationService adminNavigationService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminSectionCustomCriteriaService adminSectionCustomCriteriaService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.controller.AdminTranslationController adminTranslationController;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blAdminTranslationControllerExtensionManager") org.broadleafcommerce.openadmin.web.controller.AdminTranslationControllerExtensionManager adminTranslationControllerExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.security.ClassNameRequestParamValidationService classNameRequestParamValidationService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityConfiguration") org.broadleafcommerce.common.persistence.EntityConfiguration entityConfiguration;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityFormValidator") org.broadleafcommerce.openadmin.web.form.entity.EntityFormValidator entityFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.security.service.ExploitProtectionService exploitProtectionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blFilterProductTypePersistenceHandlerExtensionManager") org.broadleafcommerce.openadmin.server.service.extension.FilterProductTypePersistenceHandlerExtensionManager filterProductTypePersistenceHandlerExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blFormBuilderExtensionManager") org.broadleafcommerce.openadmin.web.service.FormBuilderExtensionManager formBuilderExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.web.service.FormBuilderService formBuilderService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blPersistenceThreadManager") org.broadleafcommerce.openadmin.server.service.persistence.PersistenceThreadManager persistenceThreadManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.remote.SecurityVerifier securityVerifier;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.web.service.TranslationFormBuilderService translationFormBuilderService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.i18n.service.TranslationService translationService;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    adminTranslationController.modifyRevertButton(new EntityForm());
+        adminTranslationController.getClassNameForSection("Section Key"));
   }
 
   /**
@@ -628,15 +544,13 @@ public class AdminTranslationControllerDiffblueTest {
    *   <li>Then calls {@link EntityForm#findActionById(String)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminTranslationController#modifyRevertButton(EntityForm)}
+   * Method under test: {@link AdminTranslationController#modifyRevertButton(EntityForm)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminTranslationController.modifyRevertButton(EntityForm)"})
   public void testModifyRevertButton_thenCallsFindActionById() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminTranslationController adminTranslationController = new AdminTranslationController();
     EntityForm entityForm = mock(EntityForm.class);
     when(entityForm.findActionById(Mockito.<String>any())).thenReturn(DefaultAdornedEntityFormActions.Add);
 
@@ -648,49 +562,17 @@ public class AdminTranslationControllerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminTranslationController#populateTranslationFields(EntityForm, TranslationForm)}.
+   * Test {@link AdminTranslationController#populateTranslationFields(EntityForm, TranslationForm)}.
    * <p>
-   * Method under test:
-   * {@link AdminTranslationController#populateTranslationFields(EntityForm, TranslationForm)}
+   * Method under test: {@link AdminTranslationController#populateTranslationFields(EntityForm, TranslationForm)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminTranslationController.populateTranslationFields(EntityForm, TranslationForm)"})
   public void testPopulateTranslationFields() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.web.controller;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.openadmin.web.controller.AdminTranslationController.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass8152 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blAdminAbstractControllerExtensionManager") org.broadleafcommerce.openadmin.web.controller.AdminAbstractControllerExtensionManager adminAbstractControllerExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminEntityService adminEntityService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.service.navigation.AdminNavigationService adminNavigationService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminSectionCustomCriteriaService adminSectionCustomCriteriaService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.controller.AdminTranslationController adminTranslationController;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blAdminTranslationControllerExtensionManager") org.broadleafcommerce.openadmin.web.controller.AdminTranslationControllerExtensionManager adminTranslationControllerExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.security.ClassNameRequestParamValidationService classNameRequestParamValidationService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityConfiguration") org.broadleafcommerce.common.persistence.EntityConfiguration entityConfiguration;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityFormValidator") org.broadleafcommerce.openadmin.web.form.entity.EntityFormValidator entityFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.security.service.ExploitProtectionService exploitProtectionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blFilterProductTypePersistenceHandlerExtensionManager") org.broadleafcommerce.openadmin.server.service.extension.FilterProductTypePersistenceHandlerExtensionManager filterProductTypePersistenceHandlerExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blFormBuilderExtensionManager") org.broadleafcommerce.openadmin.web.service.FormBuilderExtensionManager formBuilderExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.web.service.FormBuilderService formBuilderService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blPersistenceThreadManager") org.broadleafcommerce.openadmin.server.service.persistence.PersistenceThreadManager persistenceThreadManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.remote.SecurityVerifier securityVerifier;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.web.service.TranslationFormBuilderService translationFormBuilderService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.i18n.service.TranslationService translationService;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
+    when(translationService.getAssignableEntityType(Mockito.<String>any()))
+        .thenReturn(new TranslatedEntity("Type", "Friendly Type"));
     EntityForm entityForm = new EntityForm();
 
     TranslationForm translationForm = new TranslationForm();
@@ -705,5 +587,176 @@ public class AdminTranslationControllerDiffblueTest {
 
     // Act
     adminTranslationController.populateTranslationFields(entityForm, translationForm);
+
+    // Assert
+    verify(translationService).getAssignableEntityType(eq("Ceiling Entity"));
+    Map<String, Field> fields = entityForm.getFields();
+    assertEquals(2, fields.size());
+    assertTrue(fields.containsKey("entityType"));
+    assertTrue(fields.containsKey("fieldName"));
+  }
+
+  /**
+   * Test {@link AdminTranslationController#populateTranslationFields(EntityForm, TranslationForm)}.
+   * <ul>
+   *   <li>Given {@code entityType}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminTranslationController#populateTranslationFields(EntityForm, TranslationForm)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminTranslationController.populateTranslationFields(EntityForm, TranslationForm)"})
+  public void testPopulateTranslationFields_givenEntityType() {
+    // Arrange
+    TranslatedEntity translatedEntity = mock(TranslatedEntity.class);
+    when(translatedEntity.getFriendlyType()).thenReturn("Friendly Type");
+    when(translationService.getAssignableEntityType(Mockito.<String>any())).thenReturn(translatedEntity);
+
+    EntityForm entityForm = new EntityForm();
+    entityForm.putDynamicForm("entityType", new EntityForm());
+
+    TranslationForm translationForm = new TranslationForm();
+    translationForm.setCeilingEntity("Ceiling Entity");
+    translationForm.setEntityId("42");
+    translationForm.setFieldType("Field Type");
+    translationForm.setIsRte(true);
+    translationForm.setLocaleCode("en");
+    translationForm.setPropertyName("Property Name");
+    translationForm.setTranslatedValue("42");
+    translationForm.setTranslationId(1L);
+
+    // Act
+    adminTranslationController.populateTranslationFields(entityForm, translationForm);
+
+    // Assert
+    verify(translatedEntity).getFriendlyType();
+    verify(translationService).getAssignableEntityType(eq("Ceiling Entity"));
+    Map<String, Field> fields = entityForm.getFields();
+    assertEquals(2, fields.size());
+    assertTrue(fields.containsKey("entityType"));
+    assertTrue(fields.containsKey("fieldName"));
+  }
+
+  /**
+   * Test {@link AdminTranslationController#populateTranslationFields(EntityForm, TranslationForm)}.
+   * <ul>
+   *   <li>Given {@link HashMap#HashMap()}.</li>
+   *   <li>Then calls {@link EntityForm#getFields()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminTranslationController#populateTranslationFields(EntityForm, TranslationForm)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminTranslationController.populateTranslationFields(EntityForm, TranslationForm)"})
+  public void testPopulateTranslationFields_givenHashMap_thenCallsGetFields() {
+    // Arrange
+    TranslatedEntity translatedEntity = mock(TranslatedEntity.class);
+    when(translatedEntity.getFriendlyType()).thenReturn("Friendly Type");
+    when(translationService.getAssignableEntityType(Mockito.<String>any())).thenReturn(translatedEntity);
+    EntityForm entityForm = mock(EntityForm.class);
+    when(entityForm.getFields()).thenReturn(new HashMap<>());
+
+    TranslationForm translationForm = new TranslationForm();
+    translationForm.setCeilingEntity("Ceiling Entity");
+    translationForm.setEntityId("42");
+    translationForm.setFieldType("Field Type");
+    translationForm.setIsRte(true);
+    translationForm.setLocaleCode("en");
+    translationForm.setPropertyName("Property Name");
+    translationForm.setTranslatedValue("42");
+    translationForm.setTranslationId(1L);
+
+    // Act
+    adminTranslationController.populateTranslationFields(entityForm, translationForm);
+
+    // Assert
+    verify(translatedEntity).getFriendlyType();
+    verify(translationService).getAssignableEntityType(eq("Ceiling Entity"));
+    verify(entityForm, atLeast(1)).getFields();
+  }
+
+  /**
+   * Test {@link AdminTranslationController#populateTranslationFields(EntityForm, TranslationForm)}.
+   * <ul>
+   *   <li>Given {@link TabMetadata} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminTranslationController#populateTranslationFields(EntityForm, TranslationForm)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminTranslationController.populateTranslationFields(EntityForm, TranslationForm)"})
+  public void testPopulateTranslationFields_givenTabMetadata() {
+    // Arrange
+    TranslatedEntity translatedEntity = mock(TranslatedEntity.class);
+    when(translatedEntity.getFriendlyType()).thenReturn("Friendly Type");
+    when(translationService.getAssignableEntityType(Mockito.<String>any())).thenReturn(translatedEntity);
+
+    EntityForm entityForm = new EntityForm();
+    entityForm.addTabFromTabMetadata(new TabMetadata());
+
+    TranslationForm translationForm = new TranslationForm();
+    translationForm.setCeilingEntity("Ceiling Entity");
+    translationForm.setEntityId("42");
+    translationForm.setFieldType("Field Type");
+    translationForm.setIsRte(true);
+    translationForm.setLocaleCode("en");
+    translationForm.setPropertyName("Property Name");
+    translationForm.setTranslatedValue("42");
+    translationForm.setTranslationId(1L);
+
+    // Act
+    adminTranslationController.populateTranslationFields(entityForm, translationForm);
+
+    // Assert
+    verify(translatedEntity).getFriendlyType();
+    verify(translationService).getAssignableEntityType(eq("Ceiling Entity"));
+    Map<String, Field> fields = entityForm.getFields();
+    assertEquals(2, fields.size());
+    assertTrue(fields.containsKey("entityType"));
+    assertTrue(fields.containsKey("fieldName"));
+  }
+
+  /**
+   * Test {@link AdminTranslationController#populateTranslationFields(EntityForm, TranslationForm)}.
+   * <ul>
+   *   <li>When {@link EntityForm} (default constructor).</li>
+   *   <li>Then {@link EntityForm} (default constructor) Fields size is two.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminTranslationController#populateTranslationFields(EntityForm, TranslationForm)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminTranslationController.populateTranslationFields(EntityForm, TranslationForm)"})
+  public void testPopulateTranslationFields_whenEntityForm_thenEntityFormFieldsSizeIsTwo() {
+    // Arrange
+    TranslatedEntity translatedEntity = mock(TranslatedEntity.class);
+    when(translatedEntity.getFriendlyType()).thenReturn("Friendly Type");
+    when(translationService.getAssignableEntityType(Mockito.<String>any())).thenReturn(translatedEntity);
+    EntityForm entityForm = new EntityForm();
+
+    TranslationForm translationForm = new TranslationForm();
+    translationForm.setCeilingEntity("Ceiling Entity");
+    translationForm.setEntityId("42");
+    translationForm.setFieldType("Field Type");
+    translationForm.setIsRte(true);
+    translationForm.setLocaleCode("en");
+    translationForm.setPropertyName("Property Name");
+    translationForm.setTranslatedValue("42");
+    translationForm.setTranslationId(1L);
+
+    // Act
+    adminTranslationController.populateTranslationFields(entityForm, translationForm);
+
+    // Assert
+    verify(translatedEntity).getFriendlyType();
+    verify(translationService).getAssignableEntityType(eq("Ceiling Entity"));
+    Map<String, Field> fields = entityForm.getFields();
+    assertEquals(2, fields.size());
+    assertTrue(fields.containsKey("entityType"));
+    assertTrue(fields.containsKey("fieldName"));
   }
 }

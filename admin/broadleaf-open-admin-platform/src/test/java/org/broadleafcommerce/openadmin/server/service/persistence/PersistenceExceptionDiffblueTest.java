@@ -1,9 +1,29 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.server.service.persistence;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class PersistenceExceptionDiffblueTest {
   /**
@@ -15,6 +35,9 @@ public class PersistenceExceptionDiffblueTest {
    * Method under test: {@link PersistenceException#PersistenceException(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistenceException.<init>()", "void PersistenceException.<init>(String)",
+      "void PersistenceException.<init>(String, Throwable)", "void PersistenceException.<init>(Throwable)"})
   public void testNewPersistenceException_thenReturnMessageIsAnErrorOccurred() {
     // Arrange and Act
     PersistenceException actualPersistenceException = new PersistenceException("An error occurred");
@@ -31,10 +54,12 @@ public class PersistenceExceptionDiffblueTest {
    *   <li>Then return Message is {@code An error occurred}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PersistenceException#PersistenceException(String, Throwable)}
+   * Method under test: {@link PersistenceException#PersistenceException(String, Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistenceException.<init>()", "void PersistenceException.<init>(String)",
+      "void PersistenceException.<init>(String, Throwable)", "void PersistenceException.<init>(Throwable)"})
   public void testNewPersistenceException_thenReturnMessageIsAnErrorOccurred2() {
     // Arrange
     Throwable cause = new Throwable();
@@ -57,6 +82,9 @@ public class PersistenceExceptionDiffblueTest {
    * Method under test: {@link PersistenceException#PersistenceException()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistenceException.<init>()", "void PersistenceException.<init>(String)",
+      "void PersistenceException.<init>(String, Throwable)", "void PersistenceException.<init>(Throwable)"})
   public void testNewPersistenceException_thenReturnMessageIsNull() {
     // Arrange and Act
     PersistenceException actualPersistenceException = new PersistenceException();
@@ -71,13 +99,15 @@ public class PersistenceExceptionDiffblueTest {
    * Test {@link PersistenceException#PersistenceException(Throwable)}.
    * <ul>
    *   <li>When {@link Throwable#Throwable()}.</li>
-   *   <li>Then return Message is {@code java.lang.Throwable}.</li>
+   *   <li>Then return Message is {@code Throwable}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PersistenceException#PersistenceException(Throwable)}
+   * Method under test: {@link PersistenceException#PersistenceException(Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistenceException.<init>()", "void PersistenceException.<init>(String)",
+      "void PersistenceException.<init>(String, Throwable)", "void PersistenceException.<init>(Throwable)"})
   public void testNewPersistenceException_whenThrowable_thenReturnMessageIsJavaLangThrowable() {
     // Arrange
     Throwable cause = new Throwable();

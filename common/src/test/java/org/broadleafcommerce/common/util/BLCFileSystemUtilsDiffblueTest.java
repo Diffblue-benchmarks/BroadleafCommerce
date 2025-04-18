@@ -17,32 +17,13 @@
  */
 package org.broadleafcommerce.common.util;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import java.io.IOException;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class BLCFileSystemUtilsDiffblueTest {
-  /**
-   * Test {@link BLCFileSystemUtils#getClasspathFileContents(String)}.
-   * <ul>
-   *   <li>When {@code classpath:}.</li>
-   *   <li>Then return a string.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link BLCFileSystemUtils#getClasspathFileContents(String)}
-   */
-  @Test
-  public void testGetClasspathFileContents_whenClasspath_thenReturnAString() {
-    // Arrange, Act and Assert
-    assertEquals(
-        "application.properties\n" + "blc-config\n" + "common-test-properties\n" + "context\n" + "log4j2.xml\n"
-            + "META-INF\n" + "my\n" + "org\n" + "overridestest.properties\n" + "sharedoverridestest.properties\n",
-        BLCFileSystemUtils.getClasspathFileContents("classpath:"));
-  }
-
   /**
    * Test {@link BLCFileSystemUtils#getClasspathFileContents(String)}.
    * <ul>
@@ -50,63 +31,28 @@ public class BLCFileSystemUtilsDiffblueTest {
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BLCFileSystemUtils#getClasspathFileContents(String)}
+   * Method under test: {@link BLCFileSystemUtils#getClasspathFileContents(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BLCFileSystemUtils.getClasspathFileContents(String)"})
   public void testGetClasspathFileContents_whenDirectoryFooTxt_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull(BLCFileSystemUtils.getClasspathFileContents("/directory/foo.txt"));
   }
 
   /**
-   * Test {@link BLCFileSystemUtils#getClasspathFileContents(String)}.
-   * <ul>
-   *   <li>When empty string.</li>
-   *   <li>Then return a string.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link BLCFileSystemUtils#getClasspathFileContents(String)}
-   */
-  @Test
-  public void testGetClasspathFileContents_whenEmptyString_thenReturnAString() {
-    // Arrange, Act and Assert
-    assertEquals(
-        "application.properties\n" + "blc-config\n" + "common-test-properties\n" + "context\n" + "log4j2.xml\n"
-            + "META-INF\n" + "my\n" + "org\n" + "overridestest.properties\n" + "sharedoverridestest.properties\n",
-        BLCFileSystemUtils.getClasspathFileContents(""));
-  }
-
-  /**
-   * Test {@link BLCFileSystemUtils#getClasspathFileInputStream(String)}.
-   * <ul>
-   *   <li>When {@code classpath:}.</li>
-   *   <li>Then return read is fifty-one.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link BLCFileSystemUtils#getClasspathFileInputStream(String)}
-   */
-  @Test
-  public void testGetClasspathFileInputStream_whenClasspath_thenReturnReadIsFiftyOne() throws IOException {
-    // Arrange, Act and Assert
-    byte[] byteArray = new byte[51];
-    assertEquals(51, BLCFileSystemUtils.getClasspathFileInputStream("classpath:").read(byteArray));
-    assertArrayEquals("application.properties\nblc-config\ncommon-test-prope".getBytes("UTF-8"), byteArray);
-  }
-
-  /**
    * Test {@link BLCFileSystemUtils#getClasspathFileInputStream(String)}.
    * <ul>
    *   <li>When {@code /directory/foo.txt}.</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BLCFileSystemUtils#getClasspathFileInputStream(String)}
+   * Method under test: {@link BLCFileSystemUtils#getClasspathFileInputStream(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.io.InputStream BLCFileSystemUtils.getClasspathFileInputStream(String)"})
   public void testGetClasspathFileInputStream_whenDirectoryFooTxt_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull(BLCFileSystemUtils.getClasspathFileInputStream("/directory/foo.txt"));

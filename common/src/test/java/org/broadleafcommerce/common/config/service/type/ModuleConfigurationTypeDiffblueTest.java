@@ -20,7 +20,10 @@ package org.broadleafcommerce.common.config.service.type;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -33,21 +36,6 @@ public class ModuleConfigurationTypeDiffblueTest {
   private ModuleConfigurationType moduleConfigurationType;
 
   /**
-   * Test {@link ModuleConfigurationType#getInstance(String)}.
-   * <p>
-   * Method under test: {@link ModuleConfigurationType#getInstance(String)}
-   */
-  @Test
-  public void testGetInstance() {
-    // Arrange and Act
-    ModuleConfigurationType actualInstance = ModuleConfigurationType.getInstance("Type");
-
-    // Assert
-    assertEquals("BC_READ_ACTIVE_MODULE_CONFIG_BY_TYPE", actualInstance.getFriendlyType());
-    assertEquals("Type", actualInstance.getType());
-  }
-
-  /**
    * Test getters and setters.
    * <p>
    * Methods under test:
@@ -58,6 +46,9 @@ public class ModuleConfigurationTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ModuleConfigurationType.<init>()", "String ModuleConfigurationType.getFriendlyType()",
+      "String ModuleConfigurationType.getType()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     ModuleConfigurationType actualModuleConfigurationType = new ModuleConfigurationType();
@@ -71,10 +62,11 @@ public class ModuleConfigurationTypeDiffblueTest {
   /**
    * Test {@link ModuleConfigurationType#ModuleConfigurationType(String, String)}.
    * <p>
-   * Method under test:
-   * {@link ModuleConfigurationType#ModuleConfigurationType(String, String)}
+   * Method under test: {@link ModuleConfigurationType#ModuleConfigurationType(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ModuleConfigurationType.<init>(String, String)"})
   public void testNewModuleConfigurationType() {
     // Arrange and Act
     ModuleConfigurationType actualModuleConfigurationType = new ModuleConfigurationType("Type", "Friendly Type");
@@ -85,8 +77,7 @@ public class ModuleConfigurationTypeDiffblueTest {
   }
 
   /**
-   * Test {@link ModuleConfigurationType#equals(Object)}, and
-   * {@link ModuleConfigurationType#hashCode()}.
+   * Test {@link ModuleConfigurationType#equals(Object)}, and {@link ModuleConfigurationType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -99,6 +90,8 @@ public class ModuleConfigurationTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ModuleConfigurationType.equals(Object)", "int ModuleConfigurationType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     ModuleConfigurationType moduleConfigurationType = ModuleConfigurationType.ADDRESS_VERIFICATION;
@@ -111,8 +104,7 @@ public class ModuleConfigurationTypeDiffblueTest {
   }
 
   /**
-   * Test {@link ModuleConfigurationType#equals(Object)}, and
-   * {@link ModuleConfigurationType#hashCode()}.
+   * Test {@link ModuleConfigurationType#equals(Object)}, and {@link ModuleConfigurationType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -125,6 +117,8 @@ public class ModuleConfigurationTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ModuleConfigurationType.equals(Object)", "int ModuleConfigurationType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     ModuleConfigurationType moduleConfigurationType = new ModuleConfigurationType();
@@ -137,8 +131,7 @@ public class ModuleConfigurationTypeDiffblueTest {
   }
 
   /**
-   * Test {@link ModuleConfigurationType#equals(Object)}, and
-   * {@link ModuleConfigurationType#hashCode()}.
+   * Test {@link ModuleConfigurationType#equals(Object)}, and {@link ModuleConfigurationType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -151,6 +144,8 @@ public class ModuleConfigurationTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ModuleConfigurationType.equals(Object)", "int ModuleConfigurationType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     ModuleConfigurationType moduleConfigurationType = new ModuleConfigurationType("ADDRESS_VERIFICATION",
@@ -164,8 +159,7 @@ public class ModuleConfigurationTypeDiffblueTest {
   }
 
   /**
-   * Test {@link ModuleConfigurationType#equals(Object)}, and
-   * {@link ModuleConfigurationType#hashCode()}.
+   * Test {@link ModuleConfigurationType#equals(Object)}, and {@link ModuleConfigurationType#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -178,6 +172,8 @@ public class ModuleConfigurationTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ModuleConfigurationType.equals(Object)", "int ModuleConfigurationType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     ModuleConfigurationType moduleConfigurationType = ModuleConfigurationType.ADDRESS_VERIFICATION;
@@ -198,9 +194,27 @@ public class ModuleConfigurationTypeDiffblueTest {
    * Method under test: {@link ModuleConfigurationType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ModuleConfigurationType.equals(Object)", "int ModuleConfigurationType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(ModuleConfigurationType.CDN_PROVIDER, ModuleConfigurationType.ADDRESS_VERIFICATION);
+  }
+
+  /**
+   * Test {@link ModuleConfigurationType#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ModuleConfigurationType#equals(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ModuleConfigurationType.equals(Object)", "int ModuleConfigurationType.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange, Act and Assert
     assertNotEquals(new ModuleConfigurationType(), ModuleConfigurationType.ADDRESS_VERIFICATION);
   }
 
@@ -214,6 +228,8 @@ public class ModuleConfigurationTypeDiffblueTest {
    * Method under test: {@link ModuleConfigurationType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ModuleConfigurationType.equals(Object)", "int ModuleConfigurationType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(ModuleConfigurationType.ADDRESS_VERIFICATION, null);
@@ -229,6 +245,8 @@ public class ModuleConfigurationTypeDiffblueTest {
    * Method under test: {@link ModuleConfigurationType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ModuleConfigurationType.equals(Object)", "int ModuleConfigurationType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(ModuleConfigurationType.ADDRESS_VERIFICATION, "Different type to ModuleConfigurationType");

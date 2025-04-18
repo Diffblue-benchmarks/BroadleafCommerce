@@ -20,12 +20,13 @@ package org.broadleafcommerce.common.extensibility.context.merge.handlers;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.mock;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import javax.imageio.metadata.IIOMetadataNode;
-import org.broadleafcommerce.common.extensibility.context.merge.handlers.SchemaLocationMergeTest.DummyNode;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -39,17 +40,16 @@ public class NonEmptyNodeReplaceInsertDiffblueTest {
   private NonEmptyNodeReplaceInsert nonEmptyNodeReplaceInsert;
 
   /**
-   * Test
-   * {@link NonEmptyNodeReplaceInsert#replaceNode(Node[], Node, String, List)}.
+   * Test {@link NonEmptyNodeReplaceInsert#replaceNode(Node[], Node, String, List)}.
    * <ul>
-   *   <li>Given {@link IIOMetadataNode#IIOMetadataNode(String)} with
-   * {@code foo}.</li>
+   *   <li>Given {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link NonEmptyNodeReplaceInsert#replaceNode(Node[], Node, String, List)}
+   * Method under test: {@link NonEmptyNodeReplaceInsert#replaceNode(Node[], Node, String, List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean NonEmptyNodeReplaceInsert.replaceNode(Node[], Node, String, List)"})
   public void testReplaceNode_givenIIOMetadataNodeWithFoo() {
     // Arrange
     IIOMetadataNode testNode = new IIOMetadataNode("foo");
@@ -63,17 +63,16 @@ public class NonEmptyNodeReplaceInsertDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link NonEmptyNodeReplaceInsert#replaceNode(Node[], Node, String, List)}.
+   * Test {@link NonEmptyNodeReplaceInsert#replaceNode(Node[], Node, String, List)}.
    * <ul>
-   *   <li>Given {@link IIOMetadataNode#IIOMetadataNode(String)} with
-   * {@code foo}.</li>
+   *   <li>Given {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link NonEmptyNodeReplaceInsert#replaceNode(Node[], Node, String, List)}
+   * Method under test: {@link NonEmptyNodeReplaceInsert#replaceNode(Node[], Node, String, List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean NonEmptyNodeReplaceInsert.replaceNode(Node[], Node, String, List)"})
   public void testReplaceNode_givenIIOMetadataNodeWithFoo2() {
     // Arrange
     IIOMetadataNode testNode = new IIOMetadataNode("foo");
@@ -88,39 +87,17 @@ public class NonEmptyNodeReplaceInsertDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link NonEmptyNodeReplaceInsert#replaceNode(Node[], Node, String, List)}.
+   * Test {@link NonEmptyNodeReplaceInsert#replaceNode(Node[], Node, String, List)}.
    * <ul>
-   *   <li>When array of {@link Node} with {@link DummyNode}.</li>
+   *   <li>When {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link NonEmptyNodeReplaceInsert#replaceNode(Node[], Node, String, List)}
+   * Method under test: {@link NonEmptyNodeReplaceInsert#replaceNode(Node[], Node, String, List)}
    */
   @Test
-  public void testReplaceNode_whenArrayOfNodeWithDummyNode_thenReturnFalse() {
-    // Arrange
-    IIOMetadataNode testNode = new IIOMetadataNode("foo");
-
-    // Act and Assert
-    assertFalse(nonEmptyNodeReplaceInsert.replaceNode(new Node[]{mock(SchemaLocationMergeTest.DummyNode.class)},
-        testNode, "Attribute", new ArrayList<>()));
-  }
-
-  /**
-   * Test
-   * {@link NonEmptyNodeReplaceInsert#replaceNode(Node[], Node, String, List)}.
-   * <ul>
-   *   <li>When {@link IIOMetadataNode#IIOMetadataNode(String)} with
-   * {@code foo}.</li>
-   *   <li>Then return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link NonEmptyNodeReplaceInsert#replaceNode(Node[], Node, String, List)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean NonEmptyNodeReplaceInsert.replaceNode(Node[], Node, String, List)"})
   public void testReplaceNode_whenIIOMetadataNodeWithFoo_thenReturnFalse() {
     // Arrange
     IIOMetadataNode testNode = new IIOMetadataNode("foo");
@@ -133,10 +110,11 @@ public class NonEmptyNodeReplaceInsertDiffblueTest {
   /**
    * Test new {@link NonEmptyNodeReplaceInsert} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link NonEmptyNodeReplaceInsert}
+   * Method under test: default or parameterless constructor of {@link NonEmptyNodeReplaceInsert}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void NonEmptyNodeReplaceInsert.<init>()"})
   public void testNewNonEmptyNodeReplaceInsert() {
     // Arrange and Act
     NonEmptyNodeReplaceInsert actualNonEmptyNodeReplaceInsert = new NonEmptyNodeReplaceInsert();

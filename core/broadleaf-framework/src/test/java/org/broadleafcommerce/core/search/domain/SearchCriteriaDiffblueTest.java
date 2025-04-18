@@ -1,8 +1,27 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.search.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -14,12 +33,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {SearchCriteria.class})
 @RunWith(SpringJUnit4ClassRunner.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class SearchCriteriaDiffblueTest {
   @Autowired
   private SearchCriteria searchCriteria;
@@ -30,6 +50,8 @@ public class SearchCriteriaDiffblueTest {
    * Method under test: {@link SearchCriteria#addFilterQuery(String)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SearchCriteria.addFilterQuery(String)"})
   public void testAddFilterQuery() {
     // Arrange and Act
     searchCriteria.addFilterQuery("Query");
@@ -70,6 +92,17 @@ public class SearchCriteriaDiffblueTest {
    * </ul>
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SearchCriteria.<init>()", "Category SearchCriteria.getCategory()",
+      "Map SearchCriteria.getFilterCriteria()", "Collection SearchCriteria.getFilterQueries()",
+      "Integer SearchCriteria.getPage()", "Integer SearchCriteria.getPageSize()", "String SearchCriteria.getQuery()",
+      "String SearchCriteria.getRequestHandler()", "boolean SearchCriteria.getSearchExplicitCategory()",
+      "String SearchCriteria.getSortQuery()", "Integer SearchCriteria.getStartIndex()",
+      "void SearchCriteria.setCategory(Category)", "void SearchCriteria.setFilterCriteria(Map)",
+      "void SearchCriteria.setFilterQueries(Collection)", "void SearchCriteria.setPage(Integer)",
+      "void SearchCriteria.setPageSize(Integer)", "void SearchCriteria.setQuery(String)",
+      "void SearchCriteria.setRequestHandler(String)", "void SearchCriteria.setSearchExplicitCategory(boolean)",
+      "void SearchCriteria.setSortQuery(String)", "void SearchCriteria.setStartIndex(Integer)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     SearchCriteria actualSearchCriteria = new SearchCriteria();
@@ -97,7 +130,7 @@ public class SearchCriteriaDiffblueTest {
     String actualSortQuery = actualSearchCriteria.getSortQuery();
     Integer actualStartIndex = actualSearchCriteria.getStartIndex();
 
-    // Assert that nothing has changed
+    // Assert
     assertTrue(actualFilterQueries instanceof List);
     assertEquals("Query", actualQuery);
     assertEquals("Request Handler", actualRequestHandler);

@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.server.service.handler;
 
 import static org.junit.Assert.assertEquals;
@@ -5,11 +22,12 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
 import javax.persistence.EntityManager;
@@ -29,6 +47,7 @@ import org.broadleafcommerce.openadmin.server.service.persistence.module.Adorned
 import org.broadleafcommerce.openadmin.server.service.persistence.module.InspectHelper;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.RecordHelper;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,13 +61,13 @@ public class CustomPersistenceHandlerAdapterDiffblueTest {
   private CustomPersistenceHandlerAdapter customPersistenceHandlerAdapter;
 
   /**
-   * Test
-   * {@link CustomPersistenceHandlerAdapter#canHandleInspect(PersistencePackage)}.
+   * Test {@link CustomPersistenceHandlerAdapter#canHandleInspect(PersistencePackage)}.
    * <p>
-   * Method under test:
-   * {@link CustomPersistenceHandlerAdapter#canHandleInspect(PersistencePackage)}
+   * Method under test: {@link CustomPersistenceHandlerAdapter#canHandleInspect(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean CustomPersistenceHandlerAdapter.canHandleInspect(PersistencePackage)"})
   public void testCanHandleInspect() {
     // Arrange
     CustomPersistenceHandlerAdapter customPersistenceHandlerAdapter = new CustomPersistenceHandlerAdapter();
@@ -58,13 +77,13 @@ public class CustomPersistenceHandlerAdapterDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomPersistenceHandlerAdapter#canHandleFetch(PersistencePackage)}.
+   * Test {@link CustomPersistenceHandlerAdapter#canHandleFetch(PersistencePackage)}.
    * <p>
-   * Method under test:
-   * {@link CustomPersistenceHandlerAdapter#canHandleFetch(PersistencePackage)}
+   * Method under test: {@link CustomPersistenceHandlerAdapter#canHandleFetch(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean CustomPersistenceHandlerAdapter.canHandleFetch(PersistencePackage)"})
   public void testCanHandleFetch() {
     // Arrange
     CustomPersistenceHandlerAdapter customPersistenceHandlerAdapter = new CustomPersistenceHandlerAdapter();
@@ -74,13 +93,13 @@ public class CustomPersistenceHandlerAdapterDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomPersistenceHandlerAdapter#canHandleAdd(PersistencePackage)}.
+   * Test {@link CustomPersistenceHandlerAdapter#canHandleAdd(PersistencePackage)}.
    * <p>
-   * Method under test:
-   * {@link CustomPersistenceHandlerAdapter#canHandleAdd(PersistencePackage)}
+   * Method under test: {@link CustomPersistenceHandlerAdapter#canHandleAdd(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean CustomPersistenceHandlerAdapter.canHandleAdd(PersistencePackage)"})
   public void testCanHandleAdd() {
     // Arrange
     CustomPersistenceHandlerAdapter customPersistenceHandlerAdapter = new CustomPersistenceHandlerAdapter();
@@ -90,13 +109,13 @@ public class CustomPersistenceHandlerAdapterDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomPersistenceHandlerAdapter#canHandleRemove(PersistencePackage)}.
+   * Test {@link CustomPersistenceHandlerAdapter#canHandleRemove(PersistencePackage)}.
    * <p>
-   * Method under test:
-   * {@link CustomPersistenceHandlerAdapter#canHandleRemove(PersistencePackage)}
+   * Method under test: {@link CustomPersistenceHandlerAdapter#canHandleRemove(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean CustomPersistenceHandlerAdapter.canHandleRemove(PersistencePackage)"})
   public void testCanHandleRemove() {
     // Arrange
     CustomPersistenceHandlerAdapter customPersistenceHandlerAdapter = new CustomPersistenceHandlerAdapter();
@@ -106,13 +125,13 @@ public class CustomPersistenceHandlerAdapterDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomPersistenceHandlerAdapter#canHandleUpdate(PersistencePackage)}.
+   * Test {@link CustomPersistenceHandlerAdapter#canHandleUpdate(PersistencePackage)}.
    * <p>
-   * Method under test:
-   * {@link CustomPersistenceHandlerAdapter#canHandleUpdate(PersistencePackage)}
+   * Method under test: {@link CustomPersistenceHandlerAdapter#canHandleUpdate(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean CustomPersistenceHandlerAdapter.canHandleUpdate(PersistencePackage)"})
   public void testCanHandleUpdate() {
     // Arrange
     CustomPersistenceHandlerAdapter customPersistenceHandlerAdapter = new CustomPersistenceHandlerAdapter();
@@ -122,13 +141,14 @@ public class CustomPersistenceHandlerAdapterDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomPersistenceHandlerAdapter#inspect(PersistencePackage, DynamicEntityDao, InspectHelper)}.
+   * Test {@link CustomPersistenceHandlerAdapter#inspect(PersistencePackage, DynamicEntityDao, InspectHelper)}.
    * <p>
-   * Method under test:
-   * {@link CustomPersistenceHandlerAdapter#inspect(PersistencePackage, DynamicEntityDao, InspectHelper)}
+   * Method under test: {@link CustomPersistenceHandlerAdapter#inspect(PersistencePackage, DynamicEntityDao, InspectHelper)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DynamicResultSet CustomPersistenceHandlerAdapter.inspect(PersistencePackage, DynamicEntityDao, InspectHelper)"})
   public void testInspect() throws ServiceException {
     // Arrange
     CustomPersistenceHandlerAdapter customPersistenceHandlerAdapter = new CustomPersistenceHandlerAdapter();
@@ -141,18 +161,15 @@ public class CustomPersistenceHandlerAdapterDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomPersistenceHandlerAdapter#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
-   * <ul>
-   *   <li>Given {@link CustomPersistenceHandlerAdapter} (default constructor).</li>
-   *   <li>Then throw {@link ServiceException}.</li>
-   * </ul>
+   * Test {@link CustomPersistenceHandlerAdapter#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
    * <p>
-   * Method under test:
-   * {@link CustomPersistenceHandlerAdapter#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   * Method under test: {@link CustomPersistenceHandlerAdapter#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  public void testFetch_givenCustomPersistenceHandlerAdapter_thenThrowServiceException() throws ServiceException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DynamicResultSet CustomPersistenceHandlerAdapter.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"})
+  public void testFetch() throws ServiceException {
     // Arrange
     CustomPersistenceHandlerAdapter customPersistenceHandlerAdapter = new CustomPersistenceHandlerAdapter();
     PersistencePackage persistencePackage = new PersistencePackage();
@@ -165,18 +182,14 @@ public class CustomPersistenceHandlerAdapterDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomPersistenceHandlerAdapter#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
-   * <ul>
-   *   <li>Given {@link CustomPersistenceHandlerAdapter} (default constructor).</li>
-   *   <li>Then throw {@link ServiceException}.</li>
-   * </ul>
+   * Test {@link CustomPersistenceHandlerAdapter#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
    * <p>
-   * Method under test:
-   * {@link CustomPersistenceHandlerAdapter#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
+   * Method under test: {@link CustomPersistenceHandlerAdapter#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  public void testAdd_givenCustomPersistenceHandlerAdapter_thenThrowServiceException() throws ServiceException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Entity CustomPersistenceHandlerAdapter.add(PersistencePackage, DynamicEntityDao, RecordHelper)"})
+  public void testAdd() throws ServiceException {
     // Arrange
     CustomPersistenceHandlerAdapter customPersistenceHandlerAdapter = new CustomPersistenceHandlerAdapter();
     PersistencePackage persistencePackage = new PersistencePackage();
@@ -188,18 +201,14 @@ public class CustomPersistenceHandlerAdapterDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomPersistenceHandlerAdapter#remove(PersistencePackage, DynamicEntityDao, RecordHelper)}.
-   * <ul>
-   *   <li>Given {@link CustomPersistenceHandlerAdapter} (default constructor).</li>
-   *   <li>Then throw {@link ServiceException}.</li>
-   * </ul>
+   * Test {@link CustomPersistenceHandlerAdapter#remove(PersistencePackage, DynamicEntityDao, RecordHelper)}.
    * <p>
-   * Method under test:
-   * {@link CustomPersistenceHandlerAdapter#remove(PersistencePackage, DynamicEntityDao, RecordHelper)}
+   * Method under test: {@link CustomPersistenceHandlerAdapter#remove(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  public void testRemove_givenCustomPersistenceHandlerAdapter_thenThrowServiceException() throws ServiceException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CustomPersistenceHandlerAdapter.remove(PersistencePackage, DynamicEntityDao, RecordHelper)"})
+  public void testRemove() throws ServiceException {
     // Arrange
     CustomPersistenceHandlerAdapter customPersistenceHandlerAdapter = new CustomPersistenceHandlerAdapter();
     PersistencePackage persistencePackage = new PersistencePackage();
@@ -211,18 +220,15 @@ public class CustomPersistenceHandlerAdapterDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomPersistenceHandlerAdapter#update(PersistencePackage, DynamicEntityDao, RecordHelper)}.
-   * <ul>
-   *   <li>Given {@link CustomPersistenceHandlerAdapter} (default constructor).</li>
-   *   <li>Then throw {@link ServiceException}.</li>
-   * </ul>
+   * Test {@link CustomPersistenceHandlerAdapter#update(PersistencePackage, DynamicEntityDao, RecordHelper)}.
    * <p>
-   * Method under test:
-   * {@link CustomPersistenceHandlerAdapter#update(PersistencePackage, DynamicEntityDao, RecordHelper)}
+   * Method under test: {@link CustomPersistenceHandlerAdapter#update(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  public void testUpdate_givenCustomPersistenceHandlerAdapter_thenThrowServiceException() throws ServiceException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Entity CustomPersistenceHandlerAdapter.update(PersistencePackage, DynamicEntityDao, RecordHelper)"})
+  public void testUpdate() throws ServiceException {
     // Arrange
     CustomPersistenceHandlerAdapter customPersistenceHandlerAdapter = new CustomPersistenceHandlerAdapter();
     PersistencePackage persistencePackage = new PersistencePackage();
@@ -234,18 +240,17 @@ public class CustomPersistenceHandlerAdapterDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomPersistenceHandlerAdapter#willHandleSecurity(PersistencePackage)}.
+   * Test {@link CustomPersistenceHandlerAdapter#willHandleSecurity(PersistencePackage)}.
    * <ul>
-   *   <li>Given {@link AdminUserCustomPersistenceHandler} (default
-   * constructor).</li>
+   *   <li>Given {@link AdminUserCustomPersistenceHandler} (default constructor).</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomPersistenceHandlerAdapter#willHandleSecurity(PersistencePackage)}
+   * Method under test: {@link CustomPersistenceHandlerAdapter#willHandleSecurity(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean CustomPersistenceHandlerAdapter.willHandleSecurity(PersistencePackage)"})
   public void testWillHandleSecurity_givenAdminUserCustomPersistenceHandler_thenReturnTrue() {
     // Arrange
     AdminUserCustomPersistenceHandler adminUserCustomPersistenceHandler = new AdminUserCustomPersistenceHandler();
@@ -255,17 +260,17 @@ public class CustomPersistenceHandlerAdapterDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomPersistenceHandlerAdapter#willHandleSecurity(PersistencePackage)}.
+   * Test {@link CustomPersistenceHandlerAdapter#willHandleSecurity(PersistencePackage)}.
    * <ul>
    *   <li>Given {@link CustomPersistenceHandlerAdapter} (default constructor).</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomPersistenceHandlerAdapter#willHandleSecurity(PersistencePackage)}
+   * Method under test: {@link CustomPersistenceHandlerAdapter#willHandleSecurity(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean CustomPersistenceHandlerAdapter.willHandleSecurity(PersistencePackage)"})
   public void testWillHandleSecurity_givenCustomPersistenceHandlerAdapter_thenReturnFalse() {
     // Arrange
     CustomPersistenceHandlerAdapter customPersistenceHandlerAdapter = new CustomPersistenceHandlerAdapter();
@@ -275,24 +280,22 @@ public class CustomPersistenceHandlerAdapterDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomPersistenceHandlerAdapter#getMetadata(PersistencePackage, InspectHelper)}.
+   * Test {@link CustomPersistenceHandlerAdapter#getMetadata(PersistencePackage, InspectHelper)}.
    * <ul>
    *   <li>Given {@link HashMap#HashMap()}.</li>
    *   <li>Then return Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomPersistenceHandlerAdapter#getMetadata(PersistencePackage, InspectHelper)}
+   * Method under test: {@link CustomPersistenceHandlerAdapter#getMetadata(PersistencePackage, InspectHelper)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map CustomPersistenceHandlerAdapter.getMetadata(PersistencePackage, InspectHelper)"})
   public void testGetMetadata_givenHashMap_thenReturnEmpty() throws ServiceException {
     // Arrange
     CustomPersistenceHandlerAdapter customPersistenceHandlerAdapter = new CustomPersistenceHandlerAdapter();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
-    InspectHelper helper = mock(InspectHelper.class);
+    PersistencePackage persistencePackage = new PersistencePackage();
+    PersistenceManagerImpl helper = mock(PersistenceManagerImpl.class);
     when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
         .thenReturn(new HashMap<>());
 
@@ -300,24 +303,23 @@ public class CustomPersistenceHandlerAdapterDiffblueTest {
     Map<String, FieldMetadata> actualMetadata = customPersistenceHandlerAdapter.getMetadata(persistencePackage, helper);
 
     // Assert
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getPersistencePerspective();
-    verify(helper).getSimpleMergedProperties(eq("Dr Jane Doe"), isA(PersistencePerspective.class));
+    verify(helper).getSimpleMergedProperties(isNull(), isNull());
     assertTrue(actualMetadata.isEmpty());
   }
 
   /**
-   * Test
-   * {@link CustomPersistenceHandlerAdapter#getResultSet(PersistencePackage, InspectHelper, Map)}.
+   * Test {@link CustomPersistenceHandlerAdapter#getResultSet(PersistencePackage, InspectHelper, Map)}.
    * <ul>
    *   <li>Given {@code Dr Jane Doe}.</li>
    *   <li>Then throw {@link ServiceException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomPersistenceHandlerAdapter#getResultSet(PersistencePackage, InspectHelper, Map)}
+   * Method under test: {@link CustomPersistenceHandlerAdapter#getResultSet(PersistencePackage, InspectHelper, Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DynamicResultSet CustomPersistenceHandlerAdapter.getResultSet(PersistencePackage, InspectHelper, Map)"})
   public void testGetResultSet_givenDrJaneDoe_thenThrowServiceException() throws ServiceException {
     // Arrange
     CustomPersistenceHandlerAdapter customPersistenceHandlerAdapter = new CustomPersistenceHandlerAdapter();
@@ -332,18 +334,19 @@ public class CustomPersistenceHandlerAdapterDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomPersistenceHandlerAdapter#getResultSet(PersistencePackage, InspectHelper, Map)}.
+   * Test {@link CustomPersistenceHandlerAdapter#getResultSet(PersistencePackage, InspectHelper, Map)}.
    * <ul>
-   *   <li>When {@code null}.</li>
+   *   <li>When {@link PersistencePackage#PersistencePackage()}.</li>
    *   <li>Then return PromptSearch is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomPersistenceHandlerAdapter#getResultSet(PersistencePackage, InspectHelper, Map)}
+   * Method under test: {@link CustomPersistenceHandlerAdapter#getResultSet(PersistencePackage, InspectHelper, Map)}
    */
   @Test
-  public void testGetResultSet_whenNull_thenReturnPromptSearchIsNull() throws ServiceException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DynamicResultSet CustomPersistenceHandlerAdapter.getResultSet(PersistencePackage, InspectHelper, Map)"})
+  public void testGetResultSet_whenPersistencePackage_thenReturnPromptSearchIsNull() throws ServiceException {
     // Arrange
     CustomPersistenceHandlerAdapter customPersistenceHandlerAdapter = new CustomPersistenceHandlerAdapter();
     PersistencePackage persistencePackage = new PersistencePackage();
@@ -370,17 +373,17 @@ public class CustomPersistenceHandlerAdapterDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomPersistenceHandlerAdapter#getPolymorphicClasses(Class, EntityManager, boolean)}.
+   * Test {@link CustomPersistenceHandlerAdapter#getPolymorphicClasses(Class, EntityManager, boolean)}.
    * <ul>
    *   <li>When {@code false}.</li>
    *   <li>Then return array length is zero.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomPersistenceHandlerAdapter#getPolymorphicClasses(Class, EntityManager, boolean)}
+   * Method under test: {@link CustomPersistenceHandlerAdapter#getPolymorphicClasses(Class, EntityManager, boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String[] CustomPersistenceHandlerAdapter.getPolymorphicClasses(Class, EntityManager, boolean)"})
   public void testGetPolymorphicClasses_whenFalse_thenReturnArrayLengthIsZero() {
     // Arrange
     CustomPersistenceHandlerAdapter customPersistenceHandlerAdapter = new CustomPersistenceHandlerAdapter();
@@ -391,17 +394,17 @@ public class CustomPersistenceHandlerAdapterDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomPersistenceHandlerAdapter#getPolymorphicClasses(Class, EntityManager, boolean)}.
+   * Test {@link CustomPersistenceHandlerAdapter#getPolymorphicClasses(Class, EntityManager, boolean)}.
    * <ul>
    *   <li>When {@code null}.</li>
    *   <li>Then return array length is zero.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomPersistenceHandlerAdapter#getPolymorphicClasses(Class, EntityManager, boolean)}
+   * Method under test: {@link CustomPersistenceHandlerAdapter#getPolymorphicClasses(Class, EntityManager, boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String[] CustomPersistenceHandlerAdapter.getPolymorphicClasses(Class, EntityManager, boolean)"})
   public void testGetPolymorphicClasses_whenNull_thenReturnArrayLengthIsZero() {
     // Arrange
     CustomPersistenceHandlerAdapter customPersistenceHandlerAdapter = new CustomPersistenceHandlerAdapter();
@@ -412,17 +415,17 @@ public class CustomPersistenceHandlerAdapterDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomPersistenceHandlerAdapter#getPolymorphicClasses(Class, EntityManager, boolean)}.
+   * Test {@link CustomPersistenceHandlerAdapter#getPolymorphicClasses(Class, EntityManager, boolean)}.
    * <ul>
    *   <li>When {@code null}.</li>
    *   <li>Then return array length is zero.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomPersistenceHandlerAdapter#getPolymorphicClasses(Class, EntityManager, boolean)}
+   * Method under test: {@link CustomPersistenceHandlerAdapter#getPolymorphicClasses(Class, EntityManager, boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String[] CustomPersistenceHandlerAdapter.getPolymorphicClasses(Class, EntityManager, boolean)"})
   public void testGetPolymorphicClasses_whenNull_thenReturnArrayLengthIsZero2() {
     // Arrange
     CustomPersistenceHandlerAdapter customPersistenceHandlerAdapter = new CustomPersistenceHandlerAdapter();
@@ -438,10 +441,11 @@ public class CustomPersistenceHandlerAdapterDiffblueTest {
    *   <li>Then return {@link PersistenceManager}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomPersistenceHandlerAdapter#getClassForName(String)}
+   * Method under test: {@link CustomPersistenceHandlerAdapter#getClassForName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class CustomPersistenceHandlerAdapter.getClassForName(String)"})
   public void testGetClassForName_thenReturnPersistenceManager() {
     // Arrange and Act
     Class actualClassForName = customPersistenceHandlerAdapter
@@ -459,10 +463,11 @@ public class CustomPersistenceHandlerAdapterDiffblueTest {
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomPersistenceHandlerAdapter#getClassForName(String)}
+   * Method under test: {@link CustomPersistenceHandlerAdapter#getClassForName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class CustomPersistenceHandlerAdapter.getClassForName(String)"})
   public void testGetClassForName_whenDrJaneDoe_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull(customPersistenceHandlerAdapter.getClassForName("Dr Jane Doe"));
@@ -474,10 +479,11 @@ public class CustomPersistenceHandlerAdapterDiffblueTest {
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomPersistenceHandlerAdapter#isAssignableFrom(String, Class)}
+   * Method under test: {@link CustomPersistenceHandlerAdapter#isAssignableFrom(String, Class)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomPersistenceHandlerAdapter.isAssignableFrom(String, Class)"})
   public void testIsAssignableFrom_thenReturnTrue() {
     // Arrange
     Class<Object> targetClass = Object.class;
@@ -494,10 +500,11 @@ public class CustomPersistenceHandlerAdapterDiffblueTest {
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomPersistenceHandlerAdapter#isAssignableFrom(String, Class)}
+   * Method under test: {@link CustomPersistenceHandlerAdapter#isAssignableFrom(String, Class)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomPersistenceHandlerAdapter.isAssignableFrom(String, Class)"})
   public void testIsAssignableFrom_whenDrJaneDoe_thenReturnFalse() {
     // Arrange
     Class<Object> targetClass = Object.class;
@@ -507,13 +514,13 @@ public class CustomPersistenceHandlerAdapterDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomPersistenceHandlerAdapter#meetsCustomCriteria(PersistencePackage, String[])}.
+   * Test {@link CustomPersistenceHandlerAdapter#meetsCustomCriteria(PersistencePackage, String[])}.
    * <p>
-   * Method under test:
-   * {@link CustomPersistenceHandlerAdapter#meetsCustomCriteria(PersistencePackage, String[])}
+   * Method under test: {@link CustomPersistenceHandlerAdapter#meetsCustomCriteria(PersistencePackage, String[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomPersistenceHandlerAdapter.meetsCustomCriteria(PersistencePackage, String[])"})
   public void testMeetsCustomCriteria() {
     // Arrange
     CustomPersistenceHandlerAdapter customPersistenceHandlerAdapter = new CustomPersistenceHandlerAdapter();
@@ -526,16 +533,16 @@ public class CustomPersistenceHandlerAdapterDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomPersistenceHandlerAdapter#meetsCustomCriteria(PersistencePackage, String[])}.
+   * Test {@link CustomPersistenceHandlerAdapter#meetsCustomCriteria(PersistencePackage, String[])}.
    * <ul>
    *   <li>Given {@code Criteria}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomPersistenceHandlerAdapter#meetsCustomCriteria(PersistencePackage, String[])}
+   * Method under test: {@link CustomPersistenceHandlerAdapter#meetsCustomCriteria(PersistencePackage, String[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomPersistenceHandlerAdapter.meetsCustomCriteria(PersistencePackage, String[])"})
   public void testMeetsCustomCriteria_givenCriteria() {
     // Arrange
     CustomPersistenceHandlerAdapter customPersistenceHandlerAdapter = new CustomPersistenceHandlerAdapter();
@@ -548,16 +555,16 @@ public class CustomPersistenceHandlerAdapterDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomPersistenceHandlerAdapter#meetsCustomCriteria(PersistencePackage, String[])}.
+   * Test {@link CustomPersistenceHandlerAdapter#meetsCustomCriteria(PersistencePackage, String[])}.
    * <ul>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomPersistenceHandlerAdapter#meetsCustomCriteria(PersistencePackage, String[])}
+   * Method under test: {@link CustomPersistenceHandlerAdapter#meetsCustomCriteria(PersistencePackage, String[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomPersistenceHandlerAdapter.meetsCustomCriteria(PersistencePackage, String[])"})
   public void testMeetsCustomCriteria_thenReturnTrue() {
     // Arrange
     CustomPersistenceHandlerAdapter customPersistenceHandlerAdapter = new CustomPersistenceHandlerAdapter();
@@ -569,17 +576,17 @@ public class CustomPersistenceHandlerAdapterDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomPersistenceHandlerAdapter#meetsCustomCriteria(PersistencePackage, String[])}.
+   * Test {@link CustomPersistenceHandlerAdapter#meetsCustomCriteria(PersistencePackage, String[])}.
    * <ul>
    *   <li>When {@link PersistencePackage#PersistencePackage()}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomPersistenceHandlerAdapter#meetsCustomCriteria(PersistencePackage, String[])}
+   * Method under test: {@link CustomPersistenceHandlerAdapter#meetsCustomCriteria(PersistencePackage, String[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomPersistenceHandlerAdapter.meetsCustomCriteria(PersistencePackage, String[])"})
   public void testMeetsCustomCriteria_whenPersistencePackage_thenReturnFalse() {
     // Arrange
     CustomPersistenceHandlerAdapter customPersistenceHandlerAdapter = new CustomPersistenceHandlerAdapter();
@@ -590,17 +597,17 @@ public class CustomPersistenceHandlerAdapterDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomPersistenceHandlerAdapter#isBasicOperation(PersistencePackage)}.
+   * Test {@link CustomPersistenceHandlerAdapter#isBasicOperation(PersistencePackage)}.
    * <ul>
    *   <li>Given {@link PersistencePerspective#PersistencePerspective()}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomPersistenceHandlerAdapter#isBasicOperation(PersistencePackage)}
+   * Method under test: {@link CustomPersistenceHandlerAdapter#isBasicOperation(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomPersistenceHandlerAdapter.isBasicOperation(PersistencePackage)"})
   public void testIsBasicOperation_givenPersistencePerspective_thenReturnTrue() {
     // Arrange
     CustomPersistenceHandlerAdapter customPersistenceHandlerAdapter = new CustomPersistenceHandlerAdapter();
@@ -613,17 +620,17 @@ public class CustomPersistenceHandlerAdapterDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomPersistenceHandlerAdapter#isMapOperation(PersistencePackage)}.
+   * Test {@link CustomPersistenceHandlerAdapter#isMapOperation(PersistencePackage)}.
    * <ul>
    *   <li>Given {@link PersistencePerspective#PersistencePerspective()}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomPersistenceHandlerAdapter#isMapOperation(PersistencePackage)}
+   * Method under test: {@link CustomPersistenceHandlerAdapter#isMapOperation(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomPersistenceHandlerAdapter.isMapOperation(PersistencePackage)"})
   public void testIsMapOperation_givenPersistencePerspective_thenReturnFalse() {
     // Arrange
     CustomPersistenceHandlerAdapter customPersistenceHandlerAdapter = new CustomPersistenceHandlerAdapter();
@@ -636,17 +643,17 @@ public class CustomPersistenceHandlerAdapterDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomPersistenceHandlerAdapter#isAdornedListOperation(PersistencePackage)}.
+   * Test {@link CustomPersistenceHandlerAdapter#isAdornedListOperation(PersistencePackage)}.
    * <ul>
    *   <li>Given {@link PersistencePerspective#PersistencePerspective()}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomPersistenceHandlerAdapter#isAdornedListOperation(PersistencePackage)}
+   * Method under test: {@link CustomPersistenceHandlerAdapter#isAdornedListOperation(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomPersistenceHandlerAdapter.isAdornedListOperation(PersistencePackage)"})
   public void testIsAdornedListOperation_givenPersistencePerspective_thenReturnFalse() {
     // Arrange
     CustomPersistenceHandlerAdapter customPersistenceHandlerAdapter = new CustomPersistenceHandlerAdapter();
@@ -663,12 +670,13 @@ public class CustomPersistenceHandlerAdapterDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>default or parameterless constructor of
-   * {@link CustomPersistenceHandlerAdapter}
+   *   <li>default or parameterless constructor of {@link CustomPersistenceHandlerAdapter}
    *   <li>{@link CustomPersistenceHandlerAdapter#getOrder()}
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CustomPersistenceHandlerAdapter.<init>()", "int CustomPersistenceHandlerAdapter.getOrder()"})
   public void testGettersAndSetters() {
     // Arrange, Act and Assert
     assertEquals(CustomPersistenceHandler.DEFAULT_ORDER, (new CustomPersistenceHandlerAdapter()).getOrder());

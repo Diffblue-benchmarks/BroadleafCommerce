@@ -19,12 +19,15 @@ package org.broadleafcommerce.common.id.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class IdGenerationImplDiffblueTest {
   /**
-   * Test {@link IdGenerationImpl#equals(Object)}, and
-   * {@link IdGenerationImpl#hashCode()}.
+   * Test {@link IdGenerationImpl#equals(Object)}, and {@link IdGenerationImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -37,6 +40,8 @@ public class IdGenerationImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean IdGenerationImpl.equals(Object)", "int IdGenerationImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     IdGenerationImpl idGenerationImpl = new IdGenerationImpl();
@@ -60,8 +65,7 @@ public class IdGenerationImplDiffblueTest {
   }
 
   /**
-   * Test {@link IdGenerationImpl#equals(Object)}, and
-   * {@link IdGenerationImpl#hashCode()}.
+   * Test {@link IdGenerationImpl#equals(Object)}, and {@link IdGenerationImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -74,6 +78,8 @@ public class IdGenerationImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean IdGenerationImpl.equals(Object)", "int IdGenerationImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     IdGenerationImpl idGenerationImpl = new IdGenerationImpl();
@@ -97,8 +103,7 @@ public class IdGenerationImplDiffblueTest {
   }
 
   /**
-   * Test {@link IdGenerationImpl#equals(Object)}, and
-   * {@link IdGenerationImpl#hashCode()}.
+   * Test {@link IdGenerationImpl#equals(Object)}, and {@link IdGenerationImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -111,6 +116,8 @@ public class IdGenerationImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean IdGenerationImpl.equals(Object)", "int IdGenerationImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     IdGenerationImpl idGenerationImpl = new IdGenerationImpl();
@@ -134,8 +141,7 @@ public class IdGenerationImplDiffblueTest {
   }
 
   /**
-   * Test {@link IdGenerationImpl#equals(Object)}, and
-   * {@link IdGenerationImpl#hashCode()}.
+   * Test {@link IdGenerationImpl#equals(Object)}, and {@link IdGenerationImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -148,6 +154,8 @@ public class IdGenerationImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean IdGenerationImpl.equals(Object)", "int IdGenerationImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
     // Arrange
     IdGenerationImpl idGenerationImpl = new IdGenerationImpl();
@@ -171,8 +179,7 @@ public class IdGenerationImplDiffblueTest {
   }
 
   /**
-   * Test {@link IdGenerationImpl#equals(Object)}, and
-   * {@link IdGenerationImpl#hashCode()}.
+   * Test {@link IdGenerationImpl#equals(Object)}, and {@link IdGenerationImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -185,6 +192,8 @@ public class IdGenerationImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean IdGenerationImpl.equals(Object)", "int IdGenerationImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual5() {
     // Arrange
     IdGenerationImpl idGenerationImpl = new IdGenerationImpl();
@@ -208,8 +217,7 @@ public class IdGenerationImplDiffblueTest {
   }
 
   /**
-   * Test {@link IdGenerationImpl#equals(Object)}, and
-   * {@link IdGenerationImpl#hashCode()}.
+   * Test {@link IdGenerationImpl#equals(Object)}, and {@link IdGenerationImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -222,6 +230,8 @@ public class IdGenerationImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean IdGenerationImpl.equals(Object)", "int IdGenerationImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual6() {
     // Arrange
     IdGenerationImpl idGenerationImpl = new IdGenerationImpl();
@@ -245,8 +255,7 @@ public class IdGenerationImplDiffblueTest {
   }
 
   /**
-   * Test {@link IdGenerationImpl#equals(Object)}, and
-   * {@link IdGenerationImpl#hashCode()}.
+   * Test {@link IdGenerationImpl#equals(Object)}, and {@link IdGenerationImpl#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -259,6 +268,8 @@ public class IdGenerationImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean IdGenerationImpl.equals(Object)", "int IdGenerationImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     IdGenerationImpl idGenerationImpl = new IdGenerationImpl();
@@ -284,6 +295,8 @@ public class IdGenerationImplDiffblueTest {
    * Method under test: {@link IdGenerationImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean IdGenerationImpl.equals(Object)", "int IdGenerationImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     IdGenerationImpl idGenerationImpl = new IdGenerationImpl();
@@ -314,6 +327,8 @@ public class IdGenerationImplDiffblueTest {
    * Method under test: {@link IdGenerationImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean IdGenerationImpl.equals(Object)", "int IdGenerationImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     IdGenerationImpl idGenerationImpl = new IdGenerationImpl();
@@ -344,6 +359,8 @@ public class IdGenerationImplDiffblueTest {
    * Method under test: {@link IdGenerationImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean IdGenerationImpl.equals(Object)", "int IdGenerationImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     IdGenerationImpl idGenerationImpl = new IdGenerationImpl();
@@ -374,6 +391,8 @@ public class IdGenerationImplDiffblueTest {
    * Method under test: {@link IdGenerationImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean IdGenerationImpl.equals(Object)", "int IdGenerationImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     IdGenerationImpl idGenerationImpl = new IdGenerationImpl();
@@ -404,6 +423,8 @@ public class IdGenerationImplDiffblueTest {
    * Method under test: {@link IdGenerationImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean IdGenerationImpl.equals(Object)", "int IdGenerationImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
     IdGenerationImpl idGenerationImpl = new IdGenerationImpl();
@@ -434,6 +455,8 @@ public class IdGenerationImplDiffblueTest {
    * Method under test: {@link IdGenerationImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean IdGenerationImpl.equals(Object)", "int IdGenerationImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
     IdGenerationImpl idGenerationImpl = new IdGenerationImpl();
@@ -464,6 +487,8 @@ public class IdGenerationImplDiffblueTest {
    * Method under test: {@link IdGenerationImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean IdGenerationImpl.equals(Object)", "int IdGenerationImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
     // Arrange
     IdGenerationImpl idGenerationImpl = new IdGenerationImpl();
@@ -494,6 +519,8 @@ public class IdGenerationImplDiffblueTest {
    * Method under test: {@link IdGenerationImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean IdGenerationImpl.equals(Object)", "int IdGenerationImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual8() {
     // Arrange
     IdGenerationImpl idGenerationImpl = new IdGenerationImpl();
@@ -524,6 +551,8 @@ public class IdGenerationImplDiffblueTest {
    * Method under test: {@link IdGenerationImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean IdGenerationImpl.equals(Object)", "int IdGenerationImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual9() {
     // Arrange
     IdGenerationImpl idGenerationImpl = new IdGenerationImpl();
@@ -554,6 +583,8 @@ public class IdGenerationImplDiffblueTest {
    * Method under test: {@link IdGenerationImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean IdGenerationImpl.equals(Object)", "int IdGenerationImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual10() {
     // Arrange
     IdGenerationImpl idGenerationImpl = new IdGenerationImpl();
@@ -584,6 +615,8 @@ public class IdGenerationImplDiffblueTest {
    * Method under test: {@link IdGenerationImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean IdGenerationImpl.equals(Object)", "int IdGenerationImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     IdGenerationImpl idGenerationImpl = new IdGenerationImpl();
@@ -607,6 +640,8 @@ public class IdGenerationImplDiffblueTest {
    * Method under test: {@link IdGenerationImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean IdGenerationImpl.equals(Object)", "int IdGenerationImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     IdGenerationImpl idGenerationImpl = new IdGenerationImpl();
@@ -640,6 +675,13 @@ public class IdGenerationImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void IdGenerationImpl.<init>()", "Long IdGenerationImpl.getBatchSize()",
+      "Long IdGenerationImpl.getBatchStart()", "Long IdGenerationImpl.getBegin()", "Long IdGenerationImpl.getEnd()",
+      "String IdGenerationImpl.getType()", "java.lang.Integer IdGenerationImpl.getVersion()",
+      "void IdGenerationImpl.setBatchSize(Long)", "void IdGenerationImpl.setBatchStart(Long)",
+      "void IdGenerationImpl.setBegin(Long)", "void IdGenerationImpl.setEnd(Long)",
+      "void IdGenerationImpl.setType(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     IdGenerationImpl actualIdGenerationImpl = new IdGenerationImpl();
@@ -653,10 +695,10 @@ public class IdGenerationImplDiffblueTest {
     Long actualBegin = actualIdGenerationImpl.getBegin();
     Long actualEnd = actualIdGenerationImpl.getEnd();
     String actualType = actualIdGenerationImpl.getType();
-    actualIdGenerationImpl.getVersion();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Type", actualType);
+    assertNull(actualIdGenerationImpl.getVersion());
     assertEquals(1L, actualBatchStart.longValue());
     assertEquals(1L, actualBegin.longValue());
     assertEquals(1L, actualEnd.longValue());

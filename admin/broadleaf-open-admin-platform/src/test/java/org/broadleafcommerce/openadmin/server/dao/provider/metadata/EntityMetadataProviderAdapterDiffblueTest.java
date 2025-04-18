@@ -1,15 +1,33 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.BiFunction;
 import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
 import org.broadleafcommerce.openadmin.dto.ClassMetadata;
 import org.broadleafcommerce.openadmin.dto.ClassTree;
 import org.broadleafcommerce.openadmin.dto.MergedPropertyType;
+import org.broadleafcommerce.openadmin.dto.Property;
 import org.broadleafcommerce.openadmin.dto.TabMetadata;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl;
 import org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.AddMetadataFromMappingDataRequest;
@@ -18,52 +36,21 @@ import org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.Late
 import org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.OverrideViaAnnotationRequest;
 import org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.OverrideViaXmlRequest;
 import org.broadleafcommerce.openadmin.server.service.type.MetadataProviderResponse;
-import org.hibernate.mapping.Property;
 import org.hibernate.type.BigDecimalType;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class EntityMetadataProviderAdapterDiffblueTest {
   /**
-   * Test
-   * {@link EntityMetadataProviderAdapter#addTabAndGroupMetadata(AddMetadataRequest, Map)}.
-   * <ul>
-   *   <li>Given {@code foo}.</li>
-   *   <li>When {@link HashMap#HashMap()} computeIfPresent {@code foo} and
-   * {@link BiFunction}.</li>
-   * </ul>
+   * Test {@link EntityMetadataProviderAdapter#addTabAndGroupMetadata(AddMetadataRequest, Map)}.
    * <p>
-   * Method under test:
-   * {@link EntityMetadataProviderAdapter#addTabAndGroupMetadata(AddMetadataRequest, Map)}
+   * Method under test: {@link EntityMetadataProviderAdapter#addTabAndGroupMetadata(AddMetadataRequest, Map)}
    */
   @Test
-  public void testAddTabAndGroupMetadata_givenFoo_whenHashMapComputeIfPresentFooAndBiFunction() {
-    // Arrange
-    EntityMetadataProviderAdapter entityMetadataProviderAdapter = new EntityMetadataProviderAdapter();
-    Class<Object> parentClass = Object.class;
-    Class<Object> targetClass = Object.class;
-    AddMetadataRequest addMetadataRequest = new AddMetadataRequest(parentClass, targetClass, new DynamicEntityDaoImpl(),
-        "Prefix");
-
-    HashMap<String, TabMetadata> metadata = new HashMap<>();
-    metadata.computeIfPresent("foo", mock(BiFunction.class));
-
-    // Act and Assert
-    assertEquals(MetadataProviderResponse.NOT_HANDLED,
-        entityMetadataProviderAdapter.addTabAndGroupMetadata(addMetadataRequest, metadata));
-  }
-
-  /**
-   * Test
-   * {@link EntityMetadataProviderAdapter#addTabAndGroupMetadata(AddMetadataRequest, Map)}.
-   * <ul>
-   *   <li>When {@link HashMap#HashMap()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link EntityMetadataProviderAdapter#addTabAndGroupMetadata(AddMetadataRequest, Map)}
-   */
-  @Test
-  public void testAddTabAndGroupMetadata_whenHashMap() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "MetadataProviderResponse EntityMetadataProviderAdapter.addTabAndGroupMetadata(AddMetadataRequest, Map)"})
+  public void testAddTabAndGroupMetadata() {
     // Arrange
     EntityMetadataProviderAdapter entityMetadataProviderAdapter = new EntityMetadataProviderAdapter();
     Class<Object> parentClass = Object.class;
@@ -77,43 +64,15 @@ public class EntityMetadataProviderAdapterDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link EntityMetadataProviderAdapter#overrideMetadataViaAnnotation(OverrideViaAnnotationRequest, Map)}.
-   * <ul>
-   *   <li>Given {@code foo}.</li>
-   * </ul>
+   * Test {@link EntityMetadataProviderAdapter#overrideMetadataViaAnnotation(OverrideViaAnnotationRequest, Map)}.
    * <p>
-   * Method under test:
-   * {@link EntityMetadataProviderAdapter#overrideMetadataViaAnnotation(OverrideViaAnnotationRequest, Map)}
+   * Method under test: {@link EntityMetadataProviderAdapter#overrideMetadataViaAnnotation(OverrideViaAnnotationRequest, Map)}
    */
   @Test
-  public void testOverrideMetadataViaAnnotation_givenFoo() {
-    // Arrange
-    EntityMetadataProviderAdapter entityMetadataProviderAdapter = new EntityMetadataProviderAdapter();
-    Class<Object> requestedEntity = Object.class;
-    OverrideViaAnnotationRequest overrideViaAnnotationRequest = new OverrideViaAnnotationRequest(requestedEntity, true,
-        new DynamicEntityDaoImpl(), "Prefix");
-
-    HashMap<String, TabMetadata> metadata = new HashMap<>();
-    metadata.computeIfPresent("foo", mock(BiFunction.class));
-
-    // Act and Assert
-    assertEquals(MetadataProviderResponse.NOT_HANDLED,
-        entityMetadataProviderAdapter.overrideMetadataViaAnnotation(overrideViaAnnotationRequest, metadata));
-  }
-
-  /**
-   * Test
-   * {@link EntityMetadataProviderAdapter#overrideMetadataViaAnnotation(OverrideViaAnnotationRequest, Map)}.
-   * <ul>
-   *   <li>When {@link HashMap#HashMap()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link EntityMetadataProviderAdapter#overrideMetadataViaAnnotation(OverrideViaAnnotationRequest, Map)}
-   */
-  @Test
-  public void testOverrideMetadataViaAnnotation_whenHashMap() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "MetadataProviderResponse EntityMetadataProviderAdapter.overrideMetadataViaAnnotation(OverrideViaAnnotationRequest, Map)"})
+  public void testOverrideMetadataViaAnnotation() {
     // Arrange
     EntityMetadataProviderAdapter entityMetadataProviderAdapter = new EntityMetadataProviderAdapter();
     Class<Object> requestedEntity = Object.class;
@@ -126,44 +85,15 @@ public class EntityMetadataProviderAdapterDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link EntityMetadataProviderAdapter#overrideMetadataViaXml(OverrideViaXmlRequest, Map)}.
-   * <ul>
-   *   <li>Given {@code foo}.</li>
-   *   <li>When {@link HashMap#HashMap()} computeIfPresent {@code foo} and
-   * {@link BiFunction}.</li>
-   * </ul>
+   * Test {@link EntityMetadataProviderAdapter#overrideMetadataViaXml(OverrideViaXmlRequest, Map)}.
    * <p>
-   * Method under test:
-   * {@link EntityMetadataProviderAdapter#overrideMetadataViaXml(OverrideViaXmlRequest, Map)}
+   * Method under test: {@link EntityMetadataProviderAdapter#overrideMetadataViaXml(OverrideViaXmlRequest, Map)}
    */
   @Test
-  public void testOverrideMetadataViaXml_givenFoo_whenHashMapComputeIfPresentFooAndBiFunction() {
-    // Arrange
-    EntityMetadataProviderAdapter entityMetadataProviderAdapter = new EntityMetadataProviderAdapter();
-    OverrideViaXmlRequest overrideViaXmlRequest = new OverrideViaXmlRequest("Requested Config Key",
-        "Requested Ceiling Entity", "Prefix", true, new DynamicEntityDaoImpl());
-
-    HashMap<String, TabMetadata> metadata = new HashMap<>();
-    metadata.computeIfPresent("foo", mock(BiFunction.class));
-
-    // Act and Assert
-    assertEquals(MetadataProviderResponse.NOT_HANDLED,
-        entityMetadataProviderAdapter.overrideMetadataViaXml(overrideViaXmlRequest, metadata));
-  }
-
-  /**
-   * Test
-   * {@link EntityMetadataProviderAdapter#overrideMetadataViaXml(OverrideViaXmlRequest, Map)}.
-   * <ul>
-   *   <li>When {@link HashMap#HashMap()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link EntityMetadataProviderAdapter#overrideMetadataViaXml(OverrideViaXmlRequest, Map)}
-   */
-  @Test
-  public void testOverrideMetadataViaXml_whenHashMap() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "MetadataProviderResponse EntityMetadataProviderAdapter.overrideMetadataViaXml(OverrideViaXmlRequest, Map)"})
+  public void testOverrideMetadataViaXml() {
     // Arrange
     EntityMetadataProviderAdapter entityMetadataProviderAdapter = new EntityMetadataProviderAdapter();
     OverrideViaXmlRequest overrideViaXmlRequest = new OverrideViaXmlRequest("Requested Config Key",
@@ -175,55 +105,23 @@ public class EntityMetadataProviderAdapterDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link EntityMetadataProviderAdapter#addTabAndGroupMetadataFromCmdProperties(ClassMetadata, Map)}.
+   * Test {@link EntityMetadataProviderAdapter#addTabAndGroupMetadataFromCmdProperties(ClassMetadata, Map)}.
    * <p>
-   * Method under test:
-   * {@link EntityMetadataProviderAdapter#addTabAndGroupMetadataFromCmdProperties(ClassMetadata, Map)}
+   * Method under test: {@link EntityMetadataProviderAdapter#addTabAndGroupMetadataFromCmdProperties(ClassMetadata, Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "MetadataProviderResponse EntityMetadataProviderAdapter.addTabAndGroupMetadataFromCmdProperties(ClassMetadata, Map)"})
   public void testAddTabAndGroupMetadataFromCmdProperties() {
     // Arrange
     EntityMetadataProviderAdapter entityMetadataProviderAdapter = new EntityMetadataProviderAdapter();
 
-    HashMap<String, TabMetadata> tabAndGroupMetadata = new HashMap<>();
-    tabAndGroupMetadata.computeIfPresent("foo", mock(BiFunction.class));
-
     ClassMetadata cmd = new ClassMetadata();
     cmd.setCeilingType("Type");
     cmd.setCurrencyCode("GBP");
     cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(
-        new org.broadleafcommerce.openadmin.dto.Property[]{new org.broadleafcommerce.openadmin.dto.Property()});
-    cmd.setSecurityCeilingType("Security Ceiling Type");
-    cmd.setTabAndGroupMetadata(tabAndGroupMetadata);
-
-    // Act and Assert
-    assertEquals(MetadataProviderResponse.NOT_HANDLED,
-        entityMetadataProviderAdapter.addTabAndGroupMetadataFromCmdProperties(cmd, new HashMap<>()));
-  }
-
-  /**
-   * Test
-   * {@link EntityMetadataProviderAdapter#addTabAndGroupMetadataFromCmdProperties(ClassMetadata, Map)}.
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link EntityMetadataProviderAdapter#addTabAndGroupMetadataFromCmdProperties(ClassMetadata, Map)}
-   */
-  @Test
-  public void testAddTabAndGroupMetadataFromCmdProperties_givenHashMap() {
-    // Arrange
-    EntityMetadataProviderAdapter entityMetadataProviderAdapter = new EntityMetadataProviderAdapter();
-
-    ClassMetadata cmd = new ClassMetadata();
-    cmd.setCeilingType("Type");
-    cmd.setCurrencyCode("GBP");
-    cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(
-        new org.broadleafcommerce.openadmin.dto.Property[]{new org.broadleafcommerce.openadmin.dto.Property()});
+    cmd.setProperties(new Property[]{new Property()});
     cmd.setSecurityCeilingType("Security Ceiling Type");
     cmd.setTabAndGroupMetadata(new HashMap<>());
 
@@ -233,44 +131,15 @@ public class EntityMetadataProviderAdapterDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link EntityMetadataProviderAdapter#lateStageAddEntityMetadata(LateStageAddMetadataRequest, Map)}.
-   * <ul>
-   *   <li>Given {@code foo}.</li>
-   * </ul>
+   * Test {@link EntityMetadataProviderAdapter#lateStageAddEntityMetadata(LateStageAddMetadataRequest, Map)}.
    * <p>
-   * Method under test:
-   * {@link EntityMetadataProviderAdapter#lateStageAddEntityMetadata(LateStageAddMetadataRequest, Map)}
+   * Method under test: {@link EntityMetadataProviderAdapter#lateStageAddEntityMetadata(LateStageAddMetadataRequest, Map)}
    */
   @Test
-  public void testLateStageAddEntityMetadata_givenFoo() {
-    // Arrange
-    EntityMetadataProviderAdapter entityMetadataProviderAdapter = new EntityMetadataProviderAdapter();
-    Class<Object> parentClass = Object.class;
-    Class<Object> targetClass = Object.class;
-    LateStageAddMetadataRequest addMetadataRequest = new LateStageAddMetadataRequest("Field Name", parentClass,
-        targetClass, new DynamicEntityDaoImpl(), "Prefix");
-
-    HashMap<String, TabMetadata> metadata = new HashMap<>();
-    metadata.computeIfPresent("foo", mock(BiFunction.class));
-
-    // Act and Assert
-    assertEquals(MetadataProviderResponse.NOT_HANDLED,
-        entityMetadataProviderAdapter.lateStageAddEntityMetadata(addMetadataRequest, metadata));
-  }
-
-  /**
-   * Test
-   * {@link EntityMetadataProviderAdapter#lateStageAddEntityMetadata(LateStageAddMetadataRequest, Map)}.
-   * <ul>
-   *   <li>When {@link HashMap#HashMap()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link EntityMetadataProviderAdapter#lateStageAddEntityMetadata(LateStageAddMetadataRequest, Map)}
-   */
-  @Test
-  public void testLateStageAddEntityMetadata_whenHashMap() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "MetadataProviderResponse EntityMetadataProviderAdapter.lateStageAddEntityMetadata(LateStageAddMetadataRequest, Map)"})
+  public void testLateStageAddEntityMetadata() {
     // Arrange
     EntityMetadataProviderAdapter entityMetadataProviderAdapter = new EntityMetadataProviderAdapter();
     Class<Object> parentClass = Object.class;
@@ -284,17 +153,18 @@ public class EntityMetadataProviderAdapterDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link EntityMetadataProviderAdapter#addEntityMetadataFromMappingData(AddMetadataFromMappingDataRequest, TabMetadata)}.
+   * Test {@link EntityMetadataProviderAdapter#addEntityMetadataFromMappingData(AddMetadataFromMappingDataRequest, TabMetadata)}.
    * <p>
-   * Method under test:
-   * {@link EntityMetadataProviderAdapter#addEntityMetadataFromMappingData(AddMetadataFromMappingDataRequest, TabMetadata)}
+   * Method under test: {@link EntityMetadataProviderAdapter#addEntityMetadataFromMappingData(AddMetadataFromMappingDataRequest, TabMetadata)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "MetadataProviderResponse EntityMetadataProviderAdapter.addEntityMetadataFromMappingData(AddMetadataFromMappingDataRequest, TabMetadata)"})
   public void testAddEntityMetadataFromMappingData() {
     // Arrange
     EntityMetadataProviderAdapter entityMetadataProviderAdapter = new EntityMetadataProviderAdapter();
-    ArrayList<Property> componentProperties = new ArrayList<>();
+    ArrayList<org.hibernate.mapping.Property> componentProperties = new ArrayList<>();
     BigDecimalType requestedEntityType = new BigDecimalType();
     AddMetadataFromMappingDataRequest addMetadataFromMappingDataRequest = new AddMetadataFromMappingDataRequest(
         componentProperties, SupportedFieldType.UNKNOWN, SupportedFieldType.UNKNOWN, requestedEntityType,
@@ -310,12 +180,13 @@ public class EntityMetadataProviderAdapterDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>default or parameterless constructor of
-   * {@link EntityMetadataProviderAdapter}
+   *   <li>default or parameterless constructor of {@link EntityMetadataProviderAdapter}
    *   <li>{@link EntityMetadataProviderAdapter#getOrder()}
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void EntityMetadataProviderAdapter.<init>()", "int EntityMetadataProviderAdapter.getOrder()"})
   public void testGettersAndSetters() {
     // Arrange, Act and Assert
     assertEquals(FieldMetadataProvider.BASIC, (new EntityMetadataProviderAdapter()).getOrder());

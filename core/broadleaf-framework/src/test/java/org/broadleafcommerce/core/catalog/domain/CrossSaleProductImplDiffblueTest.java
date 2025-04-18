@@ -1,7 +1,23 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.catalog.domain;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
@@ -10,29 +26,20 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
-import java.util.List;
 import org.broadleafcommerce.common.copy.CreateResponse;
-import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
-import org.broadleafcommerce.common.service.GenericEntityServiceImpl;
-import org.broadleafcommerce.common.site.domain.CatalogImpl;
-import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.broadleafcommerce.core.catalog.service.type.ProductBundlePricingModelType;
-import org.broadleafcommerce.core.search.domain.FieldEntity;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.mvel2.util.InternalNumber;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class CrossSaleProductImplDiffblueTest {
   @Autowired
@@ -44,64 +51,11 @@ public class CrossSaleProductImplDiffblueTest {
    * Method under test: {@link CrossSaleProductImpl#getPromotionMessage()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CrossSaleProductImpl.getPromotionMessage()"})
   public void testGetPromotionMessage() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6208 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CrossSaleProductImpl crossSaleProductImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CrossSaleProductImpl()).getPromotionMessage();
-  }
-
-  /**
-   * Test {@link CrossSaleProductImpl#getPromotionMessage()}.
-   * <ul>
-   *   <li>Given {@link CrossSaleProductImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CrossSaleProductImpl#getPromotionMessage()}
-   */
-  @Test
-  public void testGetPromotionMessage_givenCrossSaleProductImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new CrossSaleProductImpl()).getPromotionMessage());
-  }
-
-  /**
-   * Test {@link CrossSaleProductImpl#getPromotionMessage()}.
-   * <ul>
-   *   <li>Given {@link CrossSaleProductImpl} (default constructor) Sequence is
-   * {@link InternalNumber}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CrossSaleProductImpl#getPromotionMessage()}
-   */
-  @Test
-  public void testGetPromotionMessage_givenCrossSaleProductImplSequenceIsInternalNumber() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
-    crossSaleProductImpl.setSequence(mock(InternalNumber.class));
-
-    // Act and Assert
-    assertNull(crossSaleProductImpl.getPromotionMessage());
   }
 
   /**
@@ -123,6 +77,13 @@ public class CrossSaleProductImplDiffblueTest {
    * </ul>
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Category CrossSaleProductImpl.getCategory()", "Long CrossSaleProductImpl.getId()",
+      "Product CrossSaleProductImpl.getProduct()", "Product CrossSaleProductImpl.getRelatedProduct()",
+      "BigDecimal CrossSaleProductImpl.getSequence()", "void CrossSaleProductImpl.setCategory(Category)",
+      "void CrossSaleProductImpl.setId(Long)", "void CrossSaleProductImpl.setProduct(Product)",
+      "void CrossSaleProductImpl.setPromotionMessage(String)", "void CrossSaleProductImpl.setRelatedProduct(Product)",
+      "void CrossSaleProductImpl.setSequence(BigDecimal)"})
   public void testGettersAndSetters() {
     // Arrange
     CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
@@ -144,7 +105,7 @@ public class CrossSaleProductImplDiffblueTest {
     Product actualRelatedProduct = crossSaleProductImpl.getRelatedProduct();
     BigDecimal actualSequence = crossSaleProductImpl.getSequence();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals(1L, actualId.longValue());
     assertEquals(new BigDecimal("2.3"), actualSequence);
     assertSame(sequence, actualSequence);
@@ -154,8 +115,7 @@ public class CrossSaleProductImplDiffblueTest {
   }
 
   /**
-   * Test {@link CrossSaleProductImpl#equals(Object)}, and
-   * {@link CrossSaleProductImpl#hashCode()}.
+   * Test {@link CrossSaleProductImpl#equals(Object)}, and {@link CrossSaleProductImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -168,6 +128,8 @@ public class CrossSaleProductImplDiffblueTest {
    * </ul>
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CrossSaleProductImpl.equals(Object)", "int CrossSaleProductImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
@@ -193,8 +155,7 @@ public class CrossSaleProductImplDiffblueTest {
   }
 
   /**
-   * Test {@link CrossSaleProductImpl#equals(Object)}, and
-   * {@link CrossSaleProductImpl#hashCode()}.
+   * Test {@link CrossSaleProductImpl#equals(Object)}, and {@link CrossSaleProductImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -207,6 +168,8 @@ public class CrossSaleProductImplDiffblueTest {
    * </ul>
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CrossSaleProductImpl.equals(Object)", "int CrossSaleProductImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
@@ -232,8 +195,7 @@ public class CrossSaleProductImplDiffblueTest {
   }
 
   /**
-   * Test {@link CrossSaleProductImpl#equals(Object)}, and
-   * {@link CrossSaleProductImpl#hashCode()}.
+   * Test {@link CrossSaleProductImpl#equals(Object)}, and {@link CrossSaleProductImpl#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -246,6 +208,8 @@ public class CrossSaleProductImplDiffblueTest {
    * </ul>
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CrossSaleProductImpl.equals(Object)", "int CrossSaleProductImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
@@ -272,6 +236,8 @@ public class CrossSaleProductImplDiffblueTest {
    * Method under test: {@link CrossSaleProductImpl#equals(Object)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CrossSaleProductImpl.equals(Object)", "int CrossSaleProductImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
@@ -304,6 +270,8 @@ public class CrossSaleProductImplDiffblueTest {
    * Method under test: {@link CrossSaleProductImpl#equals(Object)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CrossSaleProductImpl.equals(Object)", "int CrossSaleProductImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
@@ -336,6 +304,8 @@ public class CrossSaleProductImplDiffblueTest {
    * Method under test: {@link CrossSaleProductImpl#equals(Object)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CrossSaleProductImpl.equals(Object)", "int CrossSaleProductImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     ProductBundleImpl product = new ProductBundleImpl();
@@ -371,6 +341,8 @@ public class CrossSaleProductImplDiffblueTest {
    * Method under test: {@link CrossSaleProductImpl#equals(Object)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CrossSaleProductImpl.equals(Object)", "int CrossSaleProductImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
@@ -403,6 +375,8 @@ public class CrossSaleProductImplDiffblueTest {
    * Method under test: {@link CrossSaleProductImpl#equals(Object)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CrossSaleProductImpl.equals(Object)", "int CrossSaleProductImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
     CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
@@ -435,6 +409,8 @@ public class CrossSaleProductImplDiffblueTest {
    * Method under test: {@link CrossSaleProductImpl#equals(Object)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CrossSaleProductImpl.equals(Object)", "int CrossSaleProductImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
     CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
@@ -467,6 +443,8 @@ public class CrossSaleProductImplDiffblueTest {
    * Method under test: {@link CrossSaleProductImpl#equals(Object)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CrossSaleProductImpl.equals(Object)", "int CrossSaleProductImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
     // Arrange
     ProductBundleImpl relatedSaleProduct = new ProductBundleImpl();
@@ -502,6 +480,8 @@ public class CrossSaleProductImplDiffblueTest {
    * Method under test: {@link CrossSaleProductImpl#equals(Object)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CrossSaleProductImpl.equals(Object)", "int CrossSaleProductImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual8() {
     // Arrange
     CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
@@ -534,6 +514,8 @@ public class CrossSaleProductImplDiffblueTest {
    * Method under test: {@link CrossSaleProductImpl#equals(Object)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CrossSaleProductImpl.equals(Object)", "int CrossSaleProductImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual9() {
     // Arrange
     CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
@@ -566,6 +548,8 @@ public class CrossSaleProductImplDiffblueTest {
    * Method under test: {@link CrossSaleProductImpl#equals(Object)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CrossSaleProductImpl.equals(Object)", "int CrossSaleProductImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual10() {
     // Arrange
     CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
@@ -598,6 +582,8 @@ public class CrossSaleProductImplDiffblueTest {
    * Method under test: {@link CrossSaleProductImpl#equals(Object)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CrossSaleProductImpl.equals(Object)", "int CrossSaleProductImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
@@ -622,6 +608,8 @@ public class CrossSaleProductImplDiffblueTest {
    * Method under test: {@link CrossSaleProductImpl#equals(Object)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CrossSaleProductImpl.equals(Object)", "int CrossSaleProductImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
@@ -637,25 +625,23 @@ public class CrossSaleProductImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CrossSaleProductImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * Test {@link CrossSaleProductImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <p>
-   * Method under test:
-   * {@link CrossSaleProductImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link CrossSaleProductImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse CrossSaleProductImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
+    CrossSaleProductImpl crossSaleProductImpl2 = new CrossSaleProductImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
     CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
 
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<CrossSaleProductImpl> actualCreateOrRetrieveCopyInstanceResult = crossSaleProductImpl
+    CreateResponse<CrossSaleProductImpl> actualCreateOrRetrieveCopyInstanceResult = crossSaleProductImpl2
         .createOrRetrieveCopyInstance(context);
 
     // Assert
@@ -664,157 +650,24 @@ public class CrossSaleProductImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CrossSaleProductImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <p>
-   * Method under test:
-   * {@link CrossSaleProductImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6142 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CrossSaleProductImpl crossSaleProductImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CrossSaleProductImpl crossSaleProductImpl2 = new CrossSaleProductImpl();
-    CatalogImpl fromCatalog = new CatalogImpl();
-    CatalogImpl toCatalog = new CatalogImpl();
-    SiteImpl fromSite = new SiteImpl();
-    SiteImpl toSite = new SiteImpl();
-    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
-
-    // Act
-    crossSaleProductImpl2.createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite,
-        toSite, genericEntityService, new MultiTenantCopierExtensionManager()));
-  }
-
-  /**
    * Test new {@link CrossSaleProductImpl} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link CrossSaleProductImpl}
+   * Method under test: default or parameterless constructor of {@link CrossSaleProductImpl}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CrossSaleProductImpl.<init>()"})
   public void testNewCrossSaleProductImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange and Act
     CrossSaleProductImpl actualCrossSaleProductImpl = new CrossSaleProductImpl();
 
     // Assert
-    Product relatedProduct = actualCrossSaleProductImpl.getRelatedProduct();
-    assertTrue(relatedProduct instanceof ProductImpl);
-    FieldEntity fieldEntityType = relatedProduct.getFieldEntityType();
-    List<String> allLookupTypes = fieldEntityType.getAllLookupTypes();
-    assertEquals(1, allLookupTypes.size());
-    assertEquals("PRODUCT", allLookupTypes.get(0));
-    assertEquals("PRODUCT", fieldEntityType.getType());
-    assertEquals("Product", fieldEntityType.getFriendlyType());
-    assertEquals('N', ((ProductImpl) relatedProduct).archiveStatus.getArchived().charValue());
-    assertEquals('N', ((ProductImpl) relatedProduct).getArchived().charValue());
+    assertTrue(actualCrossSaleProductImpl.getRelatedProduct() instanceof ProductImpl);
     assertNull(actualCrossSaleProductImpl.getId());
-    assertNull(relatedProduct.getId());
     assertNull(actualCrossSaleProductImpl.getPromotionMessage());
-    assertNull(relatedProduct.getCanonicalUrl());
-    assertNull(relatedProduct.getDisplayTemplate());
-    assertNull(relatedProduct.getGeneratedUrl());
-    assertNull(relatedProduct.getManufacturer());
-    assertNull(relatedProduct.getMetaDescription());
-    assertNull(relatedProduct.getMetaTitle());
-    assertNull(relatedProduct.getModel());
-    assertNull(relatedProduct.getPromoMessage());
-    assertNull(relatedProduct.getUrl());
-    assertNull(((ProductImpl) relatedProduct).getLocation());
     assertNull(actualCrossSaleProductImpl.promotionMessage);
-    assertNull(((ProductImpl) relatedProduct).url);
-    assertNull(((ProductImpl) relatedProduct).urlKey);
     assertNull(actualCrossSaleProductImpl.getSequence());
-    assertNull(relatedProduct.getPrice());
-    assertNull(relatedProduct.getRetailPrice());
-    assertNull(relatedProduct.getSalePrice());
-    assertNull(((ProductImpl) relatedProduct).getRetailPriceInternal());
-    assertNull(((ProductImpl) relatedProduct).getSalePriceInternal());
     assertNull(actualCrossSaleProductImpl.getCategory());
-    assertNull(relatedProduct.getCategory());
-    assertNull(relatedProduct.getDefaultCategory());
-    assertNull(((ProductImpl) relatedProduct).defaultCategory);
     assertNull(actualCrossSaleProductImpl.getProduct());
-    List<Sku> allSellableSkus = relatedProduct.getAllSellableSkus();
-    assertEquals(1, allSellableSkus.size());
-    assertNull(allSellableSkus.get(0));
-    assertNull(relatedProduct.getDefaultSku());
-    assertFalse(relatedProduct.getCanSellWithoutOptions());
-    assertFalse(relatedProduct.getOverrideGeneratedUrl());
-    assertFalse(relatedProduct.hasRetailPrice());
-    assertFalse(((ProductImpl) relatedProduct).canSellWithoutOptions);
-    assertFalse(((ProductImpl) relatedProduct).isFeaturedProduct);
-    assertFalse(((ProductImpl) relatedProduct).overrideGeneratedUrl);
-    assertTrue(relatedProduct.getAdditionalSkus().isEmpty());
-    assertTrue(relatedProduct.getAllParentCategories().isEmpty());
-    assertTrue(relatedProduct.getAllParentCategoryIds().isEmpty());
-    assertTrue(relatedProduct.getAllParentCategoryXrefs().isEmpty());
-    List<RelatedProduct> crossSaleProducts = relatedProduct.getCrossSaleProducts();
-    assertTrue(crossSaleProducts.isEmpty());
-    List<RelatedProduct> cumulativeUpSaleProducts = relatedProduct.getCumulativeUpSaleProducts();
-    assertTrue(cumulativeUpSaleProducts.isEmpty());
-    assertTrue(relatedProduct.getParentCategoryHierarchyIds().isEmpty());
-    assertTrue(relatedProduct.getProductOptionXrefs().isEmpty());
-    assertTrue(relatedProduct.getProductOptions().isEmpty());
-    assertTrue(relatedProduct.getSkus().isEmpty());
-    assertTrue(fieldEntityType.getAdditionalLookupTypes().isEmpty());
-    assertTrue(((ProductImpl) relatedProduct).productAttributes.isEmpty());
-    assertTrue(((ProductImpl) relatedProduct).productOptions.isEmpty());
-    assertTrue(((ProductImpl) relatedProduct).skus.isEmpty());
-    assertTrue(relatedProduct.getMultiValueProductAttributes().isEmpty());
-    assertTrue(relatedProduct.getProductAttributes().isEmpty());
-    assertTrue(relatedProduct.getProductOptionValuesMap().isEmpty());
-    assertEquals(allSellableSkus, relatedProduct.getAllSkus());
-    assertSame(crossSaleProducts, relatedProduct.getCumulativeCrossSaleProducts());
-    assertSame(cumulativeUpSaleProducts, relatedProduct.getUpSaleProducts());
-  }
-
-  /**
-   * Test new {@link CrossSaleProductImpl} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link CrossSaleProductImpl}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testNewCrossSaleProductImpl2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6141 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.CrossSaleProductImpl crossSaleProductImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    new CrossSaleProductImpl();
   }
 }

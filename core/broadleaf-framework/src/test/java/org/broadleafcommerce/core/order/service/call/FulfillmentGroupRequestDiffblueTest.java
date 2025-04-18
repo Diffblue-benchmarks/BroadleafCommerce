@@ -1,8 +1,27 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.order.service.call;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import org.broadleafcommerce.core.order.domain.FulfillmentOption;
@@ -15,6 +34,7 @@ import org.broadleafcommerce.profile.core.domain.AddressImpl;
 import org.broadleafcommerce.profile.core.domain.Phone;
 import org.broadleafcommerce.profile.core.domain.PhoneImpl;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class FulfillmentGroupRequestDiffblueTest {
   /**
@@ -42,6 +62,18 @@ public class FulfillmentGroupRequestDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupRequest.<init>()", "Address FulfillmentGroupRequest.getAddress()",
+      "List FulfillmentGroupRequest.getFulfillmentGroupItemRequests()",
+      "FulfillmentType FulfillmentGroupRequest.getFulfillmentType()", "String FulfillmentGroupRequest.getMethod()",
+      "FulfillmentOption FulfillmentGroupRequest.getOption()", "Order FulfillmentGroupRequest.getOrder()",
+      "Phone FulfillmentGroupRequest.getPhone()", "String FulfillmentGroupRequest.getService()",
+      "void FulfillmentGroupRequest.setAddress(Address)",
+      "void FulfillmentGroupRequest.setFulfillmentGroupItemRequests(List)",
+      "void FulfillmentGroupRequest.setFulfillmentType(FulfillmentType)",
+      "void FulfillmentGroupRequest.setMethod(String)", "void FulfillmentGroupRequest.setOption(FulfillmentOption)",
+      "void FulfillmentGroupRequest.setOrder(Order)", "void FulfillmentGroupRequest.setPhone(Phone)",
+      "void FulfillmentGroupRequest.setService(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     FulfillmentGroupRequest actualFulfillmentGroupRequest = new FulfillmentGroupRequest();
@@ -67,7 +99,7 @@ public class FulfillmentGroupRequestDiffblueTest {
     Order actualOrder = actualFulfillmentGroupRequest.getOrder();
     Phone actualPhone = actualFulfillmentGroupRequest.getPhone();
 
-    // Assert that nothing has changed
+    // Assert
     assertTrue(actualPhone instanceof PhoneImpl);
     assertEquals("Method", actualMethod);
     assertEquals("Service", actualFulfillmentGroupRequest.getService());

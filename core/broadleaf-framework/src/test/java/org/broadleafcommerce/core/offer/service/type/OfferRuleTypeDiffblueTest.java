@@ -1,36 +1,42 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.offer.service.type;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @ContextConfiguration(classes = {OfferRuleType.class})
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class OfferRuleTypeDiffblueTest {
   @Autowired
   private OfferRuleType offerRuleType;
-
-  /**
-   * Test {@link OfferRuleType#getInstance(String)}.
-   * <p>
-   * Method under test: {@link OfferRuleType#getInstance(String)}
-   */
-  @Test
-  public void testGetInstance() {
-    // Arrange and Act
-    OfferRuleType actualInstance = OfferRuleType.getInstance("Type");
-
-    // Assert
-    assertEquals("Friendly Type", actualInstance.getFriendlyType());
-    assertEquals("Type", actualInstance.getType());
-  }
 
   /**
    * Test getters and setters.
@@ -43,6 +49,9 @@ public class OfferRuleTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OfferRuleType.<init>()", "String OfferRuleType.getFriendlyType()",
+      "String OfferRuleType.getType()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     OfferRuleType actualOfferRuleType = new OfferRuleType();
@@ -63,6 +72,8 @@ public class OfferRuleTypeDiffblueTest {
    * Method under test: {@link OfferRuleType#OfferRuleType(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OfferRuleType.<init>(String, String)"})
   public void testNewOfferRuleType_whenOrder_thenReturnTypeIsOrder() {
     // Arrange and Act
     OfferRuleType actualOfferRuleType = new OfferRuleType("Order", "Friendly Type");
@@ -82,6 +93,8 @@ public class OfferRuleTypeDiffblueTest {
    * Method under test: {@link OfferRuleType#OfferRuleType(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OfferRuleType.<init>(String, String)"})
   public void testNewOfferRuleType_whenType_thenReturnType() {
     // Arrange and Act
     OfferRuleType actualOfferRuleType = new OfferRuleType("Type", "Friendly Type");
@@ -101,6 +114,8 @@ public class OfferRuleTypeDiffblueTest {
    * Method under test: {@link OfferRuleType#setType(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OfferRuleType.setType(String)"})
   public void testSetType_whenTypeType_thenCustomerTypeIsTypeType() {
     // Arrange
     OfferRuleType offerRuleType2 = OfferRuleType.CUSTOMER;
@@ -122,6 +137,8 @@ public class OfferRuleTypeDiffblueTest {
    * Method under test: {@link OfferRuleType#setType(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OfferRuleType.setType(String)"})
   public void testSetType_whenType_thenCustomerTypeIsType() {
     // Arrange
     OfferRuleType offerRuleType2 = OfferRuleType.CUSTOMER;
@@ -134,8 +151,7 @@ public class OfferRuleTypeDiffblueTest {
   }
 
   /**
-   * Test {@link OfferRuleType#equals(Object)}, and
-   * {@link OfferRuleType#hashCode()}.
+   * Test {@link OfferRuleType#equals(Object)}, and {@link OfferRuleType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -148,6 +164,8 @@ public class OfferRuleTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferRuleType.equals(Object)", "int OfferRuleType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     OfferRuleType offerRuleType = OfferRuleType.CUSTOMER;
@@ -160,8 +178,7 @@ public class OfferRuleTypeDiffblueTest {
   }
 
   /**
-   * Test {@link OfferRuleType#equals(Object)}, and
-   * {@link OfferRuleType#hashCode()}.
+   * Test {@link OfferRuleType#equals(Object)}, and {@link OfferRuleType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -174,6 +191,8 @@ public class OfferRuleTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferRuleType.equals(Object)", "int OfferRuleType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     OfferRuleType offerRuleType = new OfferRuleType();
@@ -186,34 +205,7 @@ public class OfferRuleTypeDiffblueTest {
   }
 
   /**
-   * Test {@link OfferRuleType#equals(Object)}, and
-   * {@link OfferRuleType#hashCode()}.
-   * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
-   * </ul>
-   * <p>
-   * Methods under test:
-   * <ul>
-   *   <li>{@link OfferRuleType#equals(Object)}
-   *   <li>{@link OfferRuleType#hashCode()}
-   * </ul>
-   */
-  @Test
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
-    // Arrange
-    OfferRuleType offerRuleType = new OfferRuleType("CUSTOMER", "Friendly Type");
-    OfferRuleType offerRuleType2 = OfferRuleType.CUSTOMER;
-
-    // Act and Assert
-    assertEquals(offerRuleType, offerRuleType2);
-    int expectedHashCodeResult = offerRuleType.hashCode();
-    assertEquals(expectedHashCodeResult, offerRuleType2.hashCode());
-  }
-
-  /**
-   * Test {@link OfferRuleType#equals(Object)}, and
-   * {@link OfferRuleType#hashCode()}.
+   * Test {@link OfferRuleType#equals(Object)}, and {@link OfferRuleType#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -226,6 +218,8 @@ public class OfferRuleTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferRuleType.equals(Object)", "int OfferRuleType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     OfferRuleType offerRuleType = OfferRuleType.CUSTOMER;
@@ -246,9 +240,27 @@ public class OfferRuleTypeDiffblueTest {
    * Method under test: {@link OfferRuleType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferRuleType.equals(Object)", "int OfferRuleType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(OfferRuleType.FULFILLMENT_GROUP, OfferRuleType.CUSTOMER);
+  }
+
+  /**
+   * Test {@link OfferRuleType#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferRuleType#equals(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferRuleType.equals(Object)", "int OfferRuleType.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange, Act and Assert
     assertNotEquals(new OfferRuleType(), OfferRuleType.CUSTOMER);
   }
 
@@ -262,6 +274,8 @@ public class OfferRuleTypeDiffblueTest {
    * Method under test: {@link OfferRuleType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferRuleType.equals(Object)", "int OfferRuleType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(OfferRuleType.CUSTOMER, null);
@@ -277,6 +291,8 @@ public class OfferRuleTypeDiffblueTest {
    * Method under test: {@link OfferRuleType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferRuleType.equals(Object)", "int OfferRuleType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(OfferRuleType.CUSTOMER, "Different type to OfferRuleType");

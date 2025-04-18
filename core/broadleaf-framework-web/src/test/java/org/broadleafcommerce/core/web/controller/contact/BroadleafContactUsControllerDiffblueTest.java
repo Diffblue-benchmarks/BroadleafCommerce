@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework Web
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.web.controller.contact;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -5,10 +22,12 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.exception.ServiceException;
 import org.broadleafcommerce.common.notification.service.NotificationDispatcher;
 import org.broadleafcommerce.common.notification.service.type.Notification;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -27,17 +46,17 @@ class BroadleafContactUsControllerDiffblueTest {
   private NotificationDispatcher notificationDispatcher;
 
   /**
-   * Test
-   * {@link BroadleafContactUsController#sendConfirmationEmail(String, String, String)}.
+   * Test {@link BroadleafContactUsController#sendConfirmationEmail(String, String, String)}.
    * <ul>
    *   <li>Then return {@code contactus/success}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafContactUsController#sendConfirmationEmail(String, String, String)}
+   * Method under test: {@link BroadleafContactUsController#sendConfirmationEmail(String, String, String)}
    */
   @Test
   @DisplayName("Test sendConfirmationEmail(String, String, String); then return 'contactus/success'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String BroadleafContactUsController.sendConfirmationEmail(String, String, String)"})
   void testSendConfirmationEmail_thenReturnContactusSuccess() throws ServiceException {
     // Arrange
     doNothing().when(notificationDispatcher).dispatchNotification(Mockito.<Notification>any());
@@ -52,17 +71,17 @@ class BroadleafContactUsControllerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BroadleafContactUsController#sendConfirmationEmail(String, String, String)}.
+   * Test {@link BroadleafContactUsController#sendConfirmationEmail(String, String, String)}.
    * <ul>
    *   <li>Then return {@code redirect:/contactus}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafContactUsController#sendConfirmationEmail(String, String, String)}
+   * Method under test: {@link BroadleafContactUsController#sendConfirmationEmail(String, String, String)}
    */
   @Test
   @DisplayName("Test sendConfirmationEmail(String, String, String); then return 'redirect:/contactus'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String BroadleafContactUsController.sendConfirmationEmail(String, String, String)"})
   void testSendConfirmationEmail_thenReturnRedirectContactus() throws ServiceException {
     // Arrange
     doThrow(new ServiceException("An error occurred")).when(notificationDispatcher)
@@ -84,6 +103,8 @@ class BroadleafContactUsControllerDiffblueTest {
    */
   @Test
   @DisplayName("Test index()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String BroadleafContactUsController.index()"})
   void testIndex() {
     // Arrange, Act and Assert
     assertEquals("contactus/contactus", broadleafContactUsController.index());
@@ -94,8 +115,7 @@ class BroadleafContactUsControllerDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>default or parameterless constructor of
-   * {@link BroadleafContactUsController}
+   *   <li>default or parameterless constructor of {@link BroadleafContactUsController}
    *   <li>{@link BroadleafContactUsController#getPath()}
    *   <li>{@link BroadleafContactUsController#getSuccessView()}
    *   <li>{@link BroadleafContactUsController#getView()}
@@ -103,6 +123,9 @@ class BroadleafContactUsControllerDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void BroadleafContactUsController.<init>()", "String BroadleafContactUsController.getPath()",
+      "String BroadleafContactUsController.getSuccessView()", "String BroadleafContactUsController.getView()"})
   void testGettersAndSetters() {
     // Arrange and Act
     BroadleafContactUsController actualBroadleafContactUsController = new BroadleafContactUsController();

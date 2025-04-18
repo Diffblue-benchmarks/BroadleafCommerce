@@ -1,157 +1,69 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.server.security.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-open-admin-applicationContext-entity.xml",
-    "/applicationContext-servlet-open-admin.xml", "/bl-open-admin-contentClient-applicationContext.xml",
-    "/bl-open-admin-contentCreator-applicationContext.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+@ContextConfiguration(locations = {"/bl-open-admin-applicationContext-entity.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class AdminRoleImplDiffblueTest {
   @Autowired
   private AdminRoleImpl adminRoleImpl;
 
   /**
-   * Test {@link AdminRoleImpl#checkCloneable(AdminRole)}.
-   * <p>
-   * Method under test: {@link AdminRoleImpl#checkCloneable(AdminRole)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCheckCloneable() throws CloneNotSupportedException, NoSuchMethodException, SecurityException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-open-admin-applicationContext-entity.xml","/applicationContext-servlet-open-admin.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass0 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.domain.AdminRoleImpl adminRoleImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    AdminRoleImpl adminRoleImpl2 = new AdminRoleImpl();
-
-    // Act
-    adminRoleImpl2.checkCloneable(new AdminRoleImpl());
-  }
-
-  /**
-   * Test {@link AdminRoleImpl#clone()}.
-   * <p>
-   * Method under test: {@link AdminRoleImpl#clone()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testClone() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-open-admin-applicationContext-entity.xml","/applicationContext-servlet-open-admin.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass14 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.domain.AdminRoleImpl adminRoleImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new AdminRoleImpl()).clone();
-  }
-
-  /**
    * Test {@link AdminRoleImpl#clone()}.
    * <ul>
-   *   <li>Given {@link AdminPermissionImpl} {@link AdminPermissionImpl#clone()}
-   * return {@link AdminPermissionImpl} (default constructor).</li>
-   *   <li>Then calls {@link AdminPermissionImpl#clone()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AdminRoleImpl#clone()}
-   */
-  @Test
-  public void testClone_givenAdminPermissionImplCloneReturnAdminPermissionImpl_thenCallsClone() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdminPermissionImpl adminPermissionImpl = mock(AdminPermissionImpl.class);
-    when(adminPermissionImpl.clone()).thenReturn(new AdminPermissionImpl());
-
-    LinkedHashSet<AdminPermission> allPermissions = new LinkedHashSet<>();
-    allPermissions.add(adminPermissionImpl);
-
-    AdminRoleImpl adminRoleImpl = new AdminRoleImpl();
-    adminRoleImpl.setDescription("The characteristics of someone or something");
-    adminRoleImpl.setId(1L);
-    adminRoleImpl.setName("Name");
-    adminRoleImpl.setAllPermissions(allPermissions);
-
-    // Act
-    AdminRole actualCloneResult = adminRoleImpl.clone();
-
-    // Assert
-    verify(adminPermissionImpl).clone();
-    assertTrue(actualCloneResult instanceof AdminRoleImpl);
-    assertEquals("Name", actualCloneResult.getName());
-    assertEquals("Name", ((AdminRoleImpl) actualCloneResult).getMainEntityName());
-    assertEquals("The characteristics of someone or something", actualCloneResult.getDescription());
-    assertEquals(1, actualCloneResult.getAllPermissions().size());
-    assertEquals(1L, actualCloneResult.getId().longValue());
-  }
-
-  /**
-   * Test {@link AdminRoleImpl#clone()}.
-   * <ul>
-   *   <li>Given {@link AdminRoleImpl} (default constructor) AllPermissions is
-   * {@code null}.</li>
+   *   <li>Given {@link AdminRoleImpl} (default constructor) AllPermissions is {@code null}.</li>
    *   <li>Then return AllPermissions Empty.</li>
    * </ul>
    * <p>
    * Method under test: {@link AdminRoleImpl#clone()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"AdminRole AdminRoleImpl.clone()"})
   public void testClone_givenAdminRoleImplAllPermissionsIsNull_thenReturnAllPermissionsEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminRoleImpl adminRoleImpl = new AdminRoleImpl();
-    adminRoleImpl.setDescription("The characteristics of someone or something");
-    adminRoleImpl.setId(1L);
-    adminRoleImpl.setName("Name");
-    adminRoleImpl.setAllPermissions(null);
+    AdminRoleImpl adminRoleImpl2 = new AdminRoleImpl();
+    adminRoleImpl2.setDescription("The characteristics of someone or something");
+    adminRoleImpl2.setId(1L);
+    adminRoleImpl2.setName("Name");
+    adminRoleImpl2.setAllPermissions(null);
 
     // Act
-    AdminRole actualCloneResult = adminRoleImpl.clone();
+    AdminRole actualCloneResult = adminRoleImpl2.clone();
 
     // Assert
     assertTrue(actualCloneResult instanceof AdminRoleImpl);
@@ -172,9 +84,9 @@ public class AdminRoleImplDiffblueTest {
    * Method under test: {@link AdminRoleImpl#clone()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"AdminRole AdminRoleImpl.clone()"})
   public void testClone_givenAdminRoleImpl_thenReturnIdIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange and Act
     AdminRole actualCloneResult = (new AdminRoleImpl()).clone();
 
@@ -189,28 +101,27 @@ public class AdminRoleImplDiffblueTest {
   /**
    * Test {@link AdminRoleImpl#clone()}.
    * <ul>
-   *   <li>Given {@link LinkedHashSet#LinkedHashSet()} add
-   * {@link AdminPermissionImpl} (default constructor).</li>
+   *   <li>Then return AllPermissions size is one.</li>
    * </ul>
    * <p>
    * Method under test: {@link AdminRoleImpl#clone()}
    */
   @Test
-  public void testClone_givenLinkedHashSetAddAdminPermissionImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"AdminRole AdminRoleImpl.clone()"})
+  public void testClone_thenReturnAllPermissionsSizeIsOne() {
     // Arrange
     LinkedHashSet<AdminPermission> allPermissions = new LinkedHashSet<>();
     allPermissions.add(new AdminPermissionImpl());
 
-    AdminRoleImpl adminRoleImpl = new AdminRoleImpl();
-    adminRoleImpl.setDescription("The characteristics of someone or something");
-    adminRoleImpl.setId(1L);
-    adminRoleImpl.setName("Name");
-    adminRoleImpl.setAllPermissions(allPermissions);
+    AdminRoleImpl adminRoleImpl2 = new AdminRoleImpl();
+    adminRoleImpl2.setDescription("The characteristics of someone or something");
+    adminRoleImpl2.setId(1L);
+    adminRoleImpl2.setName("Name");
+    adminRoleImpl2.setAllPermissions(allPermissions);
 
     // Act
-    AdminRole actualCloneResult = adminRoleImpl.clone();
+    AdminRole actualCloneResult = adminRoleImpl2.clone();
 
     // Assert
     assertTrue(actualCloneResult instanceof AdminRoleImpl);
@@ -227,40 +138,11 @@ public class AdminRoleImplDiffblueTest {
    * Method under test: {@link AdminRoleImpl#getMainEntityName()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String AdminRoleImpl.getMainEntityName()"})
   public void testGetMainEntityName() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new AdminRoleImpl()).getMainEntityName());
-  }
-
-  /**
-   * Test {@link AdminRoleImpl#getMainEntityName()}.
-   * <p>
-   * Method under test: {@link AdminRoleImpl#getMainEntityName()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetMainEntityName2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-open-admin-applicationContext-entity.xml","/applicationContext-servlet-open-admin.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass20 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.domain.AdminRoleImpl adminRoleImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new AdminRoleImpl()).getMainEntityName();
   }
 
   /**
@@ -281,6 +163,12 @@ public class AdminRoleImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminRoleImpl.<init>()", "Set AdminRoleImpl.getAllPermissions()",
+      "Set AdminRoleImpl.getAllUsers()", "String AdminRoleImpl.getDescription()", "Long AdminRoleImpl.getId()",
+      "String AdminRoleImpl.getName()", "void AdminRoleImpl.setAllPermissions(Set)",
+      "void AdminRoleImpl.setDescription(String)", "void AdminRoleImpl.setId(Long)",
+      "void AdminRoleImpl.setName(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     AdminRoleImpl actualAdminRoleImpl = new AdminRoleImpl();
@@ -294,7 +182,7 @@ public class AdminRoleImplDiffblueTest {
     String actualDescription = actualAdminRoleImpl.getDescription();
     Long actualId = actualAdminRoleImpl.getId();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Name", actualAdminRoleImpl.getName());
     assertEquals("The characteristics of someone or something", actualDescription);
     assertEquals(1L, actualId.longValue());

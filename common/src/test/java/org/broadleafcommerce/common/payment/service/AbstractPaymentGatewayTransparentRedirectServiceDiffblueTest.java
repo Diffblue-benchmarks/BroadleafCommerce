@@ -18,22 +18,26 @@
 package org.broadleafcommerce.common.payment.service;
 
 import static org.junit.Assert.assertThrows;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.payment.PaymentGatewayType;
 import org.broadleafcommerce.common.payment.PaymentType;
 import org.broadleafcommerce.common.payment.dto.PaymentRequestDTO;
 import org.broadleafcommerce.common.payment.dto.PaymentResponseDTO;
 import org.broadleafcommerce.common.vendor.service.exception.PaymentException;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class AbstractPaymentGatewayTransparentRedirectServiceDiffblueTest {
   /**
-   * Test
-   * {@link AbstractPaymentGatewayTransparentRedirectService#createAuthorizeForm(PaymentRequestDTO)}.
+   * Test {@link AbstractPaymentGatewayTransparentRedirectService#createAuthorizeForm(PaymentRequestDTO)}.
    * <p>
-   * Method under test:
-   * {@link AbstractPaymentGatewayTransparentRedirectService#createAuthorizeForm(PaymentRequestDTO)}
+   * Method under test: {@link AbstractPaymentGatewayTransparentRedirectService#createAuthorizeForm(PaymentRequestDTO)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "PaymentResponseDTO AbstractPaymentGatewayTransparentRedirectService.createAuthorizeForm(PaymentRequestDTO)"})
   public void testCreateAuthorizeForm() throws PaymentException {
     // Arrange
     AbstractPaymentGatewayTransparentRedirectService abstractPaymentGatewayTransparentRedirectService = new AbstractPaymentGatewayTransparentRedirectService();
@@ -44,13 +48,14 @@ public class AbstractPaymentGatewayTransparentRedirectServiceDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AbstractPaymentGatewayTransparentRedirectService#createAuthorizeAndCaptureForm(PaymentRequestDTO)}.
+   * Test {@link AbstractPaymentGatewayTransparentRedirectService#createAuthorizeAndCaptureForm(PaymentRequestDTO)}.
    * <p>
-   * Method under test:
-   * {@link AbstractPaymentGatewayTransparentRedirectService#createAuthorizeAndCaptureForm(PaymentRequestDTO)}
+   * Method under test: {@link AbstractPaymentGatewayTransparentRedirectService#createAuthorizeAndCaptureForm(PaymentRequestDTO)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "PaymentResponseDTO AbstractPaymentGatewayTransparentRedirectService.createAuthorizeAndCaptureForm(PaymentRequestDTO)"})
   public void testCreateAuthorizeAndCaptureForm() throws PaymentException {
     // Arrange
     AbstractPaymentGatewayTransparentRedirectService abstractPaymentGatewayTransparentRedirectService = new AbstractPaymentGatewayTransparentRedirectService();
@@ -61,13 +66,14 @@ public class AbstractPaymentGatewayTransparentRedirectServiceDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AbstractPaymentGatewayTransparentRedirectService#createCustomerPaymentTokenForm(PaymentRequestDTO)}.
+   * Test {@link AbstractPaymentGatewayTransparentRedirectService#createCustomerPaymentTokenForm(PaymentRequestDTO)}.
    * <p>
-   * Method under test:
-   * {@link AbstractPaymentGatewayTransparentRedirectService#createCustomerPaymentTokenForm(PaymentRequestDTO)}
+   * Method under test: {@link AbstractPaymentGatewayTransparentRedirectService#createCustomerPaymentTokenForm(PaymentRequestDTO)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "PaymentResponseDTO AbstractPaymentGatewayTransparentRedirectService.createCustomerPaymentTokenForm(PaymentRequestDTO)"})
   public void testCreateCustomerPaymentTokenForm() throws PaymentException {
     // Arrange
     AbstractPaymentGatewayTransparentRedirectService abstractPaymentGatewayTransparentRedirectService = new AbstractPaymentGatewayTransparentRedirectService();
@@ -78,13 +84,14 @@ public class AbstractPaymentGatewayTransparentRedirectServiceDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AbstractPaymentGatewayTransparentRedirectService#updateCustomerPaymentTokenForm(PaymentRequestDTO)}.
+   * Test {@link AbstractPaymentGatewayTransparentRedirectService#updateCustomerPaymentTokenForm(PaymentRequestDTO)}.
    * <p>
-   * Method under test:
-   * {@link AbstractPaymentGatewayTransparentRedirectService#updateCustomerPaymentTokenForm(PaymentRequestDTO)}
+   * Method under test: {@link AbstractPaymentGatewayTransparentRedirectService#updateCustomerPaymentTokenForm(PaymentRequestDTO)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "PaymentResponseDTO AbstractPaymentGatewayTransparentRedirectService.updateCustomerPaymentTokenForm(PaymentRequestDTO)"})
   public void testUpdateCustomerPaymentTokenForm() throws PaymentException {
     // Arrange
     AbstractPaymentGatewayTransparentRedirectService abstractPaymentGatewayTransparentRedirectService = new AbstractPaymentGatewayTransparentRedirectService();
@@ -95,13 +102,14 @@ public class AbstractPaymentGatewayTransparentRedirectServiceDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AbstractPaymentGatewayTransparentRedirectService#getCreateCustomerPaymentTokenReturnURLFieldKey(PaymentResponseDTO)}.
+   * Test {@link AbstractPaymentGatewayTransparentRedirectService#getCreateCustomerPaymentTokenReturnURLFieldKey(PaymentResponseDTO)}.
    * <p>
-   * Method under test:
-   * {@link AbstractPaymentGatewayTransparentRedirectService#getCreateCustomerPaymentTokenReturnURLFieldKey(PaymentResponseDTO)}
+   * Method under test: {@link AbstractPaymentGatewayTransparentRedirectService#getCreateCustomerPaymentTokenReturnURLFieldKey(PaymentResponseDTO)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "java.lang.String AbstractPaymentGatewayTransparentRedirectService.getCreateCustomerPaymentTokenReturnURLFieldKey(PaymentResponseDTO)"})
   public void testGetCreateCustomerPaymentTokenReturnURLFieldKey() {
     // Arrange
     AbstractPaymentGatewayTransparentRedirectService abstractPaymentGatewayTransparentRedirectService = new AbstractPaymentGatewayTransparentRedirectService();
@@ -113,13 +121,14 @@ public class AbstractPaymentGatewayTransparentRedirectServiceDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AbstractPaymentGatewayTransparentRedirectService#getCreateCustomerPaymentTokenCancelURLFieldKey(PaymentResponseDTO)}.
+   * Test {@link AbstractPaymentGatewayTransparentRedirectService#getCreateCustomerPaymentTokenCancelURLFieldKey(PaymentResponseDTO)}.
    * <p>
-   * Method under test:
-   * {@link AbstractPaymentGatewayTransparentRedirectService#getCreateCustomerPaymentTokenCancelURLFieldKey(PaymentResponseDTO)}
+   * Method under test: {@link AbstractPaymentGatewayTransparentRedirectService#getCreateCustomerPaymentTokenCancelURLFieldKey(PaymentResponseDTO)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "java.lang.String AbstractPaymentGatewayTransparentRedirectService.getCreateCustomerPaymentTokenCancelURLFieldKey(PaymentResponseDTO)"})
   public void testGetCreateCustomerPaymentTokenCancelURLFieldKey() {
     // Arrange
     AbstractPaymentGatewayTransparentRedirectService abstractPaymentGatewayTransparentRedirectService = new AbstractPaymentGatewayTransparentRedirectService();
@@ -131,13 +140,14 @@ public class AbstractPaymentGatewayTransparentRedirectServiceDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AbstractPaymentGatewayTransparentRedirectService#getUpdateCustomerPaymentTokenReturnURLFieldKey(PaymentResponseDTO)}.
+   * Test {@link AbstractPaymentGatewayTransparentRedirectService#getUpdateCustomerPaymentTokenReturnURLFieldKey(PaymentResponseDTO)}.
    * <p>
-   * Method under test:
-   * {@link AbstractPaymentGatewayTransparentRedirectService#getUpdateCustomerPaymentTokenReturnURLFieldKey(PaymentResponseDTO)}
+   * Method under test: {@link AbstractPaymentGatewayTransparentRedirectService#getUpdateCustomerPaymentTokenReturnURLFieldKey(PaymentResponseDTO)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "java.lang.String AbstractPaymentGatewayTransparentRedirectService.getUpdateCustomerPaymentTokenReturnURLFieldKey(PaymentResponseDTO)"})
   public void testGetUpdateCustomerPaymentTokenReturnURLFieldKey() {
     // Arrange
     AbstractPaymentGatewayTransparentRedirectService abstractPaymentGatewayTransparentRedirectService = new AbstractPaymentGatewayTransparentRedirectService();
@@ -149,13 +159,14 @@ public class AbstractPaymentGatewayTransparentRedirectServiceDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AbstractPaymentGatewayTransparentRedirectService#getUpdateCustomerPaymentTokenCancelURLFieldKey(PaymentResponseDTO)}.
+   * Test {@link AbstractPaymentGatewayTransparentRedirectService#getUpdateCustomerPaymentTokenCancelURLFieldKey(PaymentResponseDTO)}.
    * <p>
-   * Method under test:
-   * {@link AbstractPaymentGatewayTransparentRedirectService#getUpdateCustomerPaymentTokenCancelURLFieldKey(PaymentResponseDTO)}
+   * Method under test: {@link AbstractPaymentGatewayTransparentRedirectService#getUpdateCustomerPaymentTokenCancelURLFieldKey(PaymentResponseDTO)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "java.lang.String AbstractPaymentGatewayTransparentRedirectService.getUpdateCustomerPaymentTokenCancelURLFieldKey(PaymentResponseDTO)"})
   public void testGetUpdateCustomerPaymentTokenCancelURLFieldKey() {
     // Arrange
     AbstractPaymentGatewayTransparentRedirectService abstractPaymentGatewayTransparentRedirectService = new AbstractPaymentGatewayTransparentRedirectService();
@@ -164,23 +175,5 @@ public class AbstractPaymentGatewayTransparentRedirectServiceDiffblueTest {
     assertThrows(UnsupportedOperationException.class,
         () -> abstractPaymentGatewayTransparentRedirectService.getUpdateCustomerPaymentTokenCancelURLFieldKey(
             new PaymentResponseDTO(PaymentType.APPLE_PAY, PaymentGatewayType.PASSTHROUGH)));
-  }
-
-  /**
-   * Test new {@link AbstractPaymentGatewayTransparentRedirectService} (default
-   * constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link AbstractPaymentGatewayTransparentRedirectService}
-   */
-  @Test
-  public void testNewAbstractPaymentGatewayTransparentRedirectService() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing observers.
-    //   Diffblue Cover was unable to create an assertion.
-    //   There are no fields that could be asserted on.
-
-    // Arrange and Act
-    new AbstractPaymentGatewayTransparentRedirectService();
   }
 }

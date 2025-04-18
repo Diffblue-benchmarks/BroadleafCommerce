@@ -19,7 +19,10 @@ package org.broadleafcommerce.common.security.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class PasswordResetDiffblueTest {
   /**
@@ -41,6 +44,13 @@ public class PasswordResetDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PasswordReset.<init>()", "void PasswordReset.<init>(String)",
+      "String PasswordReset.getEmail()", "boolean PasswordReset.getPasswordChangeRequired()",
+      "int PasswordReset.getPasswordLength()", "String PasswordReset.getUsername()",
+      "boolean PasswordReset.isSendResetEmailReliableAsync()", "void PasswordReset.setEmail(String)",
+      "void PasswordReset.setPasswordChangeRequired(boolean)", "void PasswordReset.setPasswordLength(int)",
+      "void PasswordReset.setSendResetEmailReliableAsync(boolean)", "void PasswordReset.setUsername(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     PasswordReset actualPasswordReset = new PasswordReset();
@@ -54,7 +64,7 @@ public class PasswordResetDiffblueTest {
     int actualPasswordLength = actualPasswordReset.getPasswordLength();
     String actualUsername = actualPasswordReset.getUsername();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("jane.doe@example.org", actualEmail);
     assertEquals("janedoe", actualUsername);
     assertEquals(3, actualPasswordLength);
@@ -84,6 +94,13 @@ public class PasswordResetDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PasswordReset.<init>()", "void PasswordReset.<init>(String)",
+      "String PasswordReset.getEmail()", "boolean PasswordReset.getPasswordChangeRequired()",
+      "int PasswordReset.getPasswordLength()", "String PasswordReset.getUsername()",
+      "boolean PasswordReset.isSendResetEmailReliableAsync()", "void PasswordReset.setEmail(String)",
+      "void PasswordReset.setPasswordChangeRequired(boolean)", "void PasswordReset.setPasswordLength(int)",
+      "void PasswordReset.setSendResetEmailReliableAsync(boolean)", "void PasswordReset.setUsername(String)"})
   public void testGettersAndSetters_whenJanedoe() {
     // Arrange and Act
     PasswordReset actualPasswordReset = new PasswordReset("janedoe");
@@ -97,7 +114,7 @@ public class PasswordResetDiffblueTest {
     int actualPasswordLength = actualPasswordReset.getPasswordLength();
     String actualUsername = actualPasswordReset.getUsername();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("jane.doe@example.org", actualEmail);
     assertEquals("janedoe", actualUsername);
     assertEquals(3, actualPasswordLength);

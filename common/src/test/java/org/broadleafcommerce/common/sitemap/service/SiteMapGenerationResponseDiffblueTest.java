@@ -20,9 +20,12 @@ package org.broadleafcommerce.common.sitemap.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class SiteMapGenerationResponseDiffblueTest {
   /**
@@ -42,6 +45,13 @@ public class SiteMapGenerationResponseDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SiteMapGenerationResponse.<init>()", "String SiteMapGenerationResponse.getErrorCode()",
+      "List SiteMapGenerationResponse.getSiteMapFilePaths()",
+      "String SiteMapGenerationResponse.getSitemapIndexFileName()", "boolean SiteMapGenerationResponse.isHasError()",
+      "void SiteMapGenerationResponse.setErrorCode(String)", "void SiteMapGenerationResponse.setHasError(boolean)",
+      "void SiteMapGenerationResponse.setSiteMapFilePaths(List)",
+      "void SiteMapGenerationResponse.setSitemapIndexFileName(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     SiteMapGenerationResponse actualSiteMapGenerationResponse = new SiteMapGenerationResponse();
@@ -55,7 +65,7 @@ public class SiteMapGenerationResponseDiffblueTest {
     String actualSitemapIndexFileName = actualSiteMapGenerationResponse.getSitemapIndexFileName();
     boolean actualIsHasErrorResult = actualSiteMapGenerationResponse.isHasError();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("An error occurred", actualErrorCode);
     assertEquals("foo.txt", actualSitemapIndexFileName);
     assertTrue(actualSiteMapFilePaths.isEmpty());

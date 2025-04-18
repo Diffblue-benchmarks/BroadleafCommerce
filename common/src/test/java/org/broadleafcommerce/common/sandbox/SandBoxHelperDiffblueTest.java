@@ -19,7 +19,11 @@ package org.broadleafcommerce.common.sandbox;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import org.broadleafcommerce.common.sandbox.SandBoxHelper.OriginalIdResponse;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class SandBoxHelperDiffblueTest {
   /**
@@ -27,24 +31,27 @@ public class SandBoxHelperDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>default or parameterless constructor of
-   * {@link SandBoxHelper.OriginalIdResponse}
-   *   <li>{@link SandBoxHelper.OriginalIdResponse#setOriginalId(Long)}
-   *   <li>{@link SandBoxHelper.OriginalIdResponse#setRecordFound(boolean)}
-   *   <li>{@link SandBoxHelper.OriginalIdResponse#getOriginalId()}
-   *   <li>{@link SandBoxHelper.OriginalIdResponse#isRecordFound()}
+   *   <li>default or parameterless constructor of {@link OriginalIdResponse}
+   *   <li>{@link OriginalIdResponse#setOriginalId(Long)}
+   *   <li>{@link OriginalIdResponse#setRecordFound(boolean)}
+   *   <li>{@link OriginalIdResponse#getOriginalId()}
+   *   <li>{@link OriginalIdResponse#isRecordFound()}
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OriginalIdResponse.<init>()", "Long OriginalIdResponse.getOriginalId()",
+      "boolean OriginalIdResponse.isRecordFound()", "void OriginalIdResponse.setOriginalId(Long)",
+      "void OriginalIdResponse.setRecordFound(boolean)"})
   public void testOriginalIdResponseGettersAndSetters() {
     // Arrange and Act
-    SandBoxHelper.OriginalIdResponse actualOriginalIdResponse = new SandBoxHelper.OriginalIdResponse();
+    OriginalIdResponse actualOriginalIdResponse = new OriginalIdResponse();
     actualOriginalIdResponse.setOriginalId(1L);
     actualOriginalIdResponse.setRecordFound(true);
     Long actualOriginalId = actualOriginalIdResponse.getOriginalId();
     boolean actualIsRecordFoundResult = actualOriginalIdResponse.isRecordFound();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals(1L, actualOriginalId.longValue());
     assertTrue(actualIsRecordFoundResult);
   }

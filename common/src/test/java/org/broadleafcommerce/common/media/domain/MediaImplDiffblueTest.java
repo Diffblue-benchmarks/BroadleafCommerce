@@ -28,6 +28,8 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.copy.CreateResponse;
 import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
@@ -37,6 +39,7 @@ import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.broadleafcommerce.common.util.BLCFieldUtils;
 import org.broadleafcommerce.common.util.UnknownUnwrapTypeException;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.mockito.Mockito;
 
 public class MediaImplDiffblueTest {
@@ -46,6 +49,8 @@ public class MediaImplDiffblueTest {
    * Method under test: {@link MediaImpl#getTitle()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MediaImpl.getTitle()"})
   public void testGetTitle() {
     // Arrange, Act and Assert
     assertNull((new MediaImpl()).getTitle());
@@ -57,6 +62,8 @@ public class MediaImplDiffblueTest {
    * Method under test: {@link MediaImpl#getAltText()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MediaImpl.getAltText()"})
   public void testGetAltText() {
     // Arrange, Act and Assert
     assertNull((new MediaImpl()).getAltText());
@@ -68,6 +75,8 @@ public class MediaImplDiffblueTest {
    * Method under test: {@link MediaImpl#isUnwrappableAs(Class)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MediaImpl.isUnwrappableAs(Class)"})
   public void testIsUnwrappableAs() {
     // Arrange
     MediaImpl mediaImpl = new MediaImpl();
@@ -80,13 +89,15 @@ public class MediaImplDiffblueTest {
   /**
    * Test {@link MediaImpl#unwrap(Class)}.
    * <ul>
-   *   <li>When {@code java.lang.Object}.</li>
+   *   <li>When {@code Object}.</li>
    *   <li>Then throw {@link UnknownUnwrapTypeException}.</li>
    * </ul>
    * <p>
    * Method under test: {@link MediaImpl#unwrap(Class)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object MediaImpl.unwrap(Class)"})
   public void testUnwrap_whenJavaLangObject_thenThrowUnknownUnwrapTypeException() {
     // Arrange
     MediaImpl mediaImpl = new MediaImpl();
@@ -110,6 +121,8 @@ public class MediaImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MediaImpl.equals(Object)", "int MediaImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     MediaImpl mediaImpl = new MediaImpl();
@@ -146,6 +159,8 @@ public class MediaImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MediaImpl.equals(Object)", "int MediaImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     MediaImpl mediaImpl = new MediaImpl();
@@ -182,6 +197,8 @@ public class MediaImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MediaImpl.equals(Object)", "int MediaImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     MediaImpl mediaImpl = new MediaImpl();
@@ -218,6 +235,8 @@ public class MediaImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MediaImpl.equals(Object)", "int MediaImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
     // Arrange
     MediaImpl mediaImpl = new MediaImpl();
@@ -254,6 +273,8 @@ public class MediaImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MediaImpl.equals(Object)", "int MediaImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual5() {
     // Arrange
     MediaImpl mediaImpl = new MediaImpl();
@@ -279,6 +300,44 @@ public class MediaImplDiffblueTest {
   /**
    * Test {@link MediaImpl#equals(Object)}, and {@link MediaImpl#hashCode()}.
    * <ul>
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
+   * </ul>
+   * <p>
+   * Methods under test:
+   * <ul>
+   *   <li>{@link MediaImpl#equals(Object)}
+   *   <li>{@link MediaImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MediaImpl.equals(Object)", "int MediaImpl.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual6() {
+    // Arrange
+    MediaImpl mediaImpl = new MediaImpl();
+    mediaImpl.setAltText("Alt Text");
+    mediaImpl.setId(null);
+    mediaImpl.setTags("Tags");
+    mediaImpl.setTitle(null);
+    mediaImpl.setUrl("https://example.org/example");
+
+    MediaImpl mediaImpl2 = new MediaImpl();
+    mediaImpl2.setAltText("Alt Text");
+    mediaImpl2.setId(1L);
+    mediaImpl2.setTags("Tags");
+    mediaImpl2.setTitle(null);
+    mediaImpl2.setUrl("https://example.org/example");
+
+    // Act and Assert
+    assertEquals(mediaImpl, mediaImpl2);
+    int expectedHashCodeResult = mediaImpl.hashCode();
+    assertEquals(expectedHashCodeResult, mediaImpl2.hashCode());
+  }
+
+  /**
+   * Test {@link MediaImpl#equals(Object)}, and {@link MediaImpl#hashCode()}.
+   * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
    * </ul>
@@ -290,6 +349,8 @@ public class MediaImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MediaImpl.equals(Object)", "int MediaImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     MediaImpl mediaImpl = new MediaImpl();
@@ -315,6 +376,8 @@ public class MediaImplDiffblueTest {
    * Method under test: {@link MediaImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MediaImpl.equals(Object)", "int MediaImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     MediaImpl mediaImpl = new MediaImpl();
@@ -345,6 +408,8 @@ public class MediaImplDiffblueTest {
    * Method under test: {@link MediaImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MediaImpl.equals(Object)", "int MediaImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     MediaImpl mediaImpl = new MediaImpl();
@@ -375,6 +440,8 @@ public class MediaImplDiffblueTest {
    * Method under test: {@link MediaImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MediaImpl.equals(Object)", "int MediaImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     MediaImpl mediaImpl = new MediaImpl();
@@ -405,6 +472,8 @@ public class MediaImplDiffblueTest {
    * Method under test: {@link MediaImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MediaImpl.equals(Object)", "int MediaImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     MediaImpl mediaImpl = new MediaImpl();
@@ -435,6 +504,8 @@ public class MediaImplDiffblueTest {
    * Method under test: {@link MediaImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MediaImpl.equals(Object)", "int MediaImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
     MediaImpl mediaImpl = new MediaImpl();
@@ -465,6 +536,8 @@ public class MediaImplDiffblueTest {
    * Method under test: {@link MediaImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MediaImpl.equals(Object)", "int MediaImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
     MediaImpl mediaImpl = new MediaImpl();
@@ -495,6 +568,8 @@ public class MediaImplDiffblueTest {
    * Method under test: {@link MediaImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MediaImpl.equals(Object)", "int MediaImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
     // Arrange
     MediaImpl mediaImpl = new MediaImpl();
@@ -525,6 +600,8 @@ public class MediaImplDiffblueTest {
    * Method under test: {@link MediaImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MediaImpl.equals(Object)", "int MediaImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual8() {
     // Arrange
     MediaImpl mediaImpl = new MediaImpl();
@@ -555,6 +632,8 @@ public class MediaImplDiffblueTest {
    * Method under test: {@link MediaImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MediaImpl.equals(Object)", "int MediaImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual9() {
     // Arrange
     MediaImpl mediaImpl = new MediaImpl();
@@ -585,6 +664,8 @@ public class MediaImplDiffblueTest {
    * Method under test: {@link MediaImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MediaImpl.equals(Object)", "int MediaImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     MediaImpl mediaImpl = new MediaImpl();
@@ -608,6 +689,8 @@ public class MediaImplDiffblueTest {
    * Method under test: {@link MediaImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MediaImpl.equals(Object)", "int MediaImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     MediaImpl mediaImpl = new MediaImpl();
@@ -624,10 +707,11 @@ public class MediaImplDiffblueTest {
   /**
    * Test {@link MediaImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <p>
-   * Method under test:
-   * {@link MediaImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link MediaImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse MediaImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
     // Arrange
     MediaImpl mediaImpl = new MediaImpl();
@@ -651,10 +735,11 @@ public class MediaImplDiffblueTest {
    *   <li>Then return not AlreadyPopulated.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MediaImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link MediaImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse MediaImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance_thenReturnNotAlreadyPopulated() throws CloneNotSupportedException {
     // Arrange
     MediaImpl mediaImpl = new MediaImpl();
@@ -696,6 +781,10 @@ public class MediaImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void MediaImpl.<init>()", "Long MediaImpl.getId()", "String MediaImpl.getTags()",
+      "String MediaImpl.getUrl()", "void MediaImpl.setAltText(String)", "void MediaImpl.setId(Long)",
+      "void MediaImpl.setTags(String)", "void MediaImpl.setTitle(String)", "void MediaImpl.setUrl(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     MediaImpl actualMediaImpl = new MediaImpl();
@@ -707,7 +796,7 @@ public class MediaImplDiffblueTest {
     Long actualId = actualMediaImpl.getId();
     String actualTags = actualMediaImpl.getTags();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Tags", actualTags);
     assertEquals("https://example.org/example", actualMediaImpl.getUrl());
     assertEquals(1L, actualId.longValue());

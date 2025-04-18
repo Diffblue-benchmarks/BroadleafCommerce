@@ -1,59 +1,57 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.inventory.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.Date;
 import org.broadleafcommerce.core.inventory.service.type.AvailabilityStatusType;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class SkuAvailabilityImplDiffblueTest {
   /**
    * Test {@link SkuAvailabilityImpl#getAvailabilityStatus()}.
-   * <ul>
-   *   <li>Given {@link SkuAvailabilityImpl} (default constructor).</li>
-   * </ul>
    * <p>
    * Method under test: {@link SkuAvailabilityImpl#getAvailabilityStatus()}
    */
   @Test
-  public void testGetAvailabilityStatus_givenSkuAvailabilityImpl() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"AvailabilityStatusType SkuAvailabilityImpl.getAvailabilityStatus()"})
+  public void testGetAvailabilityStatus() {
     // Arrange, Act and Assert
     assertNull((new SkuAvailabilityImpl()).getAvailabilityStatus());
   }
 
   /**
-   * Test {@link SkuAvailabilityImpl#getAvailabilityStatus()}.
-   * <ul>
-   *   <li>Given {@link SkuAvailabilityImpl} (default constructor) AvailabilityDate
-   * is {@link Date}.</li>
-   * </ul>
+   * Test {@link SkuAvailabilityImpl#setAvailabilityStatus(AvailabilityStatusType)}.
    * <p>
-   * Method under test: {@link SkuAvailabilityImpl#getAvailabilityStatus()}
+   * Method under test: {@link SkuAvailabilityImpl#setAvailabilityStatus(AvailabilityStatusType)}
    */
   @Test
-  public void testGetAvailabilityStatus_givenSkuAvailabilityImplAvailabilityDateIsDate() {
-    // Arrange
-    SkuAvailabilityImpl skuAvailabilityImpl = new SkuAvailabilityImpl();
-    skuAvailabilityImpl.setAvailabilityDate(mock(java.sql.Date.class));
-
-    // Act and Assert
-    assertNull(skuAvailabilityImpl.getAvailabilityStatus());
-  }
-
-  /**
-   * Test
-   * {@link SkuAvailabilityImpl#setAvailabilityStatus(AvailabilityStatusType)}.
-   * <p>
-   * Method under test:
-   * {@link SkuAvailabilityImpl#setAvailabilityStatus(AvailabilityStatusType)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuAvailabilityImpl.setAvailabilityStatus(AvailabilityStatusType)"})
   public void testSetAvailabilityStatus() {
     // Arrange
     SkuAvailabilityImpl skuAvailabilityImpl = new SkuAvailabilityImpl();
@@ -69,13 +67,13 @@ public class SkuAvailabilityImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link SkuAvailabilityImpl#setAvailabilityStatus(AvailabilityStatusType)}.
+   * Test {@link SkuAvailabilityImpl#setAvailabilityStatus(AvailabilityStatusType)}.
    * <p>
-   * Method under test:
-   * {@link SkuAvailabilityImpl#setAvailabilityStatus(AvailabilityStatusType)}
+   * Method under test: {@link SkuAvailabilityImpl#setAvailabilityStatus(AvailabilityStatusType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuAvailabilityImpl.setAvailabilityStatus(AvailabilityStatusType)"})
   public void testSetAvailabilityStatus2() {
     // Arrange
     SkuAvailabilityImpl skuAvailabilityImpl = new SkuAvailabilityImpl();
@@ -96,61 +94,6 @@ public class SkuAvailabilityImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link SkuAvailabilityImpl#setAvailabilityStatus(AvailabilityStatusType)}.
-   * <ul>
-   *   <li>Given {@link SkuAvailabilityImpl} (default constructor) AvailabilityDate
-   * is {@link Date}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SkuAvailabilityImpl#setAvailabilityStatus(AvailabilityStatusType)}
-   */
-  @Test
-  public void testSetAvailabilityStatus_givenSkuAvailabilityImplAvailabilityDateIsDate() {
-    // Arrange
-    SkuAvailabilityImpl skuAvailabilityImpl = new SkuAvailabilityImpl();
-    skuAvailabilityImpl.setAvailabilityDate(mock(java.sql.Date.class));
-    skuAvailabilityImpl.setAvailabilityStatus(AvailabilityStatusType.AVAILABLE);
-    skuAvailabilityImpl.setId(1L);
-    skuAvailabilityImpl.setLocationId(1L);
-    skuAvailabilityImpl.setQuantityOnHand(1);
-    skuAvailabilityImpl.setReserveQuantity(1);
-    skuAvailabilityImpl.setSkuId(1L);
-
-    // Act
-    skuAvailabilityImpl.setAvailabilityStatus(null);
-
-    // Assert that nothing has changed
-    assertEquals("AVAILABLE", skuAvailabilityImpl.availabilityStatus);
-  }
-
-  /**
-   * Test {@link SkuAvailabilityImpl#getAvailableQuantity()}.
-   * <ul>
-   *   <li>Given {@link SkuAvailabilityImpl} (default constructor) AvailabilityDate
-   * is {@link Date}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuAvailabilityImpl#getAvailableQuantity()}
-   */
-  @Test
-  public void testGetAvailableQuantity_givenSkuAvailabilityImplAvailabilityDateIsDate() {
-    // Arrange
-    SkuAvailabilityImpl skuAvailabilityImpl = new SkuAvailabilityImpl();
-    skuAvailabilityImpl.setAvailabilityDate(mock(java.sql.Date.class));
-    skuAvailabilityImpl.setAvailabilityStatus(AvailabilityStatusType.AVAILABLE);
-    skuAvailabilityImpl.setId(1L);
-    skuAvailabilityImpl.setLocationId(1L);
-    skuAvailabilityImpl.setSkuId(1L);
-    skuAvailabilityImpl.setQuantityOnHand(1);
-    skuAvailabilityImpl.setReserveQuantity(null);
-
-    // Act and Assert
-    assertEquals(1, skuAvailabilityImpl.getAvailableQuantity().intValue());
-  }
-
-  /**
    * Test {@link SkuAvailabilityImpl#getAvailableQuantity()}.
    * <ul>
    *   <li>Given {@link SkuAvailabilityImpl} (default constructor).</li>
@@ -160,6 +103,8 @@ public class SkuAvailabilityImplDiffblueTest {
    * Method under test: {@link SkuAvailabilityImpl#getAvailableQuantity()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Integer SkuAvailabilityImpl.getAvailableQuantity()"})
   public void testGetAvailableQuantity_givenSkuAvailabilityImpl_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull((new SkuAvailabilityImpl()).getAvailableQuantity());
@@ -174,6 +119,8 @@ public class SkuAvailabilityImplDiffblueTest {
    * Method under test: {@link SkuAvailabilityImpl#getAvailableQuantity()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Integer SkuAvailabilityImpl.getAvailableQuantity()"})
   public void testGetAvailableQuantity_thenReturnIntValueIsOne() {
     // Arrange
     SkuAvailabilityImpl skuAvailabilityImpl = new SkuAvailabilityImpl();
@@ -199,6 +146,8 @@ public class SkuAvailabilityImplDiffblueTest {
    * Method under test: {@link SkuAvailabilityImpl#getAvailableQuantity()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Integer SkuAvailabilityImpl.getAvailableQuantity()"})
   public void testGetAvailableQuantity_thenReturnIntValueIsZero() {
     // Arrange
     SkuAvailabilityImpl skuAvailabilityImpl = new SkuAvailabilityImpl();
@@ -216,8 +165,7 @@ public class SkuAvailabilityImplDiffblueTest {
   }
 
   /**
-   * Test {@link SkuAvailabilityImpl#equals(Object)}, and
-   * {@link SkuAvailabilityImpl#hashCode()}.
+   * Test {@link SkuAvailabilityImpl#equals(Object)}, and {@link SkuAvailabilityImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -230,6 +178,8 @@ public class SkuAvailabilityImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuAvailabilityImpl.equals(Object)", "int SkuAvailabilityImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     SkuAvailabilityImpl skuAvailabilityImpl = new SkuAvailabilityImpl();
@@ -259,8 +209,7 @@ public class SkuAvailabilityImplDiffblueTest {
   }
 
   /**
-   * Test {@link SkuAvailabilityImpl#equals(Object)}, and
-   * {@link SkuAvailabilityImpl#hashCode()}.
+   * Test {@link SkuAvailabilityImpl#equals(Object)}, and {@link SkuAvailabilityImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -273,61 +222,14 @@ public class SkuAvailabilityImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuAvailabilityImpl.equals(Object)", "int SkuAvailabilityImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
-    AvailabilityStatusType availabilityStatus = mock(AvailabilityStatusType.class);
-    when(availabilityStatus.getType()).thenReturn("Type");
-
     SkuAvailabilityImpl skuAvailabilityImpl = new SkuAvailabilityImpl();
     skuAvailabilityImpl
         .setAvailabilityDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    skuAvailabilityImpl.setAvailabilityStatus(availabilityStatus);
-    skuAvailabilityImpl.setId(1L);
-    skuAvailabilityImpl.setLocationId(1L);
-    skuAvailabilityImpl.setQuantityOnHand(1);
-    skuAvailabilityImpl.setReserveQuantity(1);
-    skuAvailabilityImpl.setSkuId(1L);
-
-    SkuAvailabilityImpl skuAvailabilityImpl2 = new SkuAvailabilityImpl();
-    skuAvailabilityImpl2
-        .setAvailabilityDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    skuAvailabilityImpl2.setAvailabilityStatus(AvailabilityStatusType.AVAILABLE);
-    skuAvailabilityImpl2.setId(1L);
-    skuAvailabilityImpl2.setLocationId(1L);
-    skuAvailabilityImpl2.setQuantityOnHand(1);
-    skuAvailabilityImpl2.setReserveQuantity(1);
-    skuAvailabilityImpl2.setSkuId(1L);
-
-    // Act and Assert
-    assertEquals(skuAvailabilityImpl, skuAvailabilityImpl2);
-    int expectedHashCodeResult = skuAvailabilityImpl.hashCode();
-    assertEquals(expectedHashCodeResult, skuAvailabilityImpl2.hashCode());
-  }
-
-  /**
-   * Test {@link SkuAvailabilityImpl#equals(Object)}, and
-   * {@link SkuAvailabilityImpl#hashCode()}.
-   * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
-   * </ul>
-   * <p>
-   * Methods under test:
-   * <ul>
-   *   <li>{@link SkuAvailabilityImpl#equals(Object)}
-   *   <li>{@link SkuAvailabilityImpl#hashCode()}
-   * </ul>
-   */
-  @Test
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
-    // Arrange
-    AvailabilityStatusType availabilityStatus = mock(AvailabilityStatusType.class);
-    when(availabilityStatus.getType()).thenReturn("Type");
-
-    SkuAvailabilityImpl skuAvailabilityImpl = new SkuAvailabilityImpl();
-    skuAvailabilityImpl
-        .setAvailabilityDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    skuAvailabilityImpl.setAvailabilityStatus(availabilityStatus);
+    skuAvailabilityImpl.setAvailabilityStatus(AvailabilityStatusType.AVAILABLE);
     skuAvailabilityImpl.setId(null);
     skuAvailabilityImpl.setLocationId(1L);
     skuAvailabilityImpl.setQuantityOnHand(1);
@@ -351,8 +253,7 @@ public class SkuAvailabilityImplDiffblueTest {
   }
 
   /**
-   * Test {@link SkuAvailabilityImpl#equals(Object)}, and
-   * {@link SkuAvailabilityImpl#hashCode()}.
+   * Test {@link SkuAvailabilityImpl#equals(Object)}, and {@link SkuAvailabilityImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -365,15 +266,14 @@ public class SkuAvailabilityImplDiffblueTest {
    * </ul>
    */
   @Test
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuAvailabilityImpl.equals(Object)", "int SkuAvailabilityImpl.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
-    AvailabilityStatusType availabilityStatus = mock(AvailabilityStatusType.class);
-    when(availabilityStatus.getType()).thenReturn("Type");
-
     SkuAvailabilityImpl skuAvailabilityImpl = new SkuAvailabilityImpl();
     skuAvailabilityImpl
         .setAvailabilityDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    skuAvailabilityImpl.setAvailabilityStatus(availabilityStatus);
+    skuAvailabilityImpl.setAvailabilityStatus(AvailabilityStatusType.AVAILABLE);
     skuAvailabilityImpl.setId(1L);
     skuAvailabilityImpl.setLocationId(1L);
     skuAvailabilityImpl.setQuantityOnHand(1);
@@ -397,8 +297,7 @@ public class SkuAvailabilityImplDiffblueTest {
   }
 
   /**
-   * Test {@link SkuAvailabilityImpl#equals(Object)}, and
-   * {@link SkuAvailabilityImpl#hashCode()}.
+   * Test {@link SkuAvailabilityImpl#equals(Object)}, and {@link SkuAvailabilityImpl#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -411,6 +310,8 @@ public class SkuAvailabilityImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuAvailabilityImpl.equals(Object)", "int SkuAvailabilityImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     SkuAvailabilityImpl skuAvailabilityImpl = new SkuAvailabilityImpl();
@@ -439,15 +340,14 @@ public class SkuAvailabilityImplDiffblueTest {
    * Method under test: {@link SkuAvailabilityImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuAvailabilityImpl.equals(Object)", "int SkuAvailabilityImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
-    AvailabilityStatusType availabilityStatus = mock(AvailabilityStatusType.class);
-    when(availabilityStatus.getType()).thenReturn("Type");
-
     SkuAvailabilityImpl skuAvailabilityImpl = new SkuAvailabilityImpl();
     skuAvailabilityImpl
         .setAvailabilityDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    skuAvailabilityImpl.setAvailabilityStatus(availabilityStatus);
+    skuAvailabilityImpl.setAvailabilityStatus(AvailabilityStatusType.AVAILABLE);
     skuAvailabilityImpl.setId(2L);
     skuAvailabilityImpl.setLocationId(1L);
     skuAvailabilityImpl.setQuantityOnHand(1);
@@ -478,15 +378,14 @@ public class SkuAvailabilityImplDiffblueTest {
    * Method under test: {@link SkuAvailabilityImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuAvailabilityImpl.equals(Object)", "int SkuAvailabilityImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
-    AvailabilityStatusType availabilityStatus = mock(AvailabilityStatusType.class);
-    when(availabilityStatus.getType()).thenReturn("Type");
-
     SkuAvailabilityImpl skuAvailabilityImpl = new SkuAvailabilityImpl();
     skuAvailabilityImpl
         .setAvailabilityDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    skuAvailabilityImpl.setAvailabilityStatus(availabilityStatus);
+    skuAvailabilityImpl.setAvailabilityStatus(AvailabilityStatusType.AVAILABLE);
     skuAvailabilityImpl.setId(null);
     skuAvailabilityImpl.setLocationId(2L);
     skuAvailabilityImpl.setQuantityOnHand(1);
@@ -517,15 +416,14 @@ public class SkuAvailabilityImplDiffblueTest {
    * Method under test: {@link SkuAvailabilityImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuAvailabilityImpl.equals(Object)", "int SkuAvailabilityImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
-    AvailabilityStatusType availabilityStatus = mock(AvailabilityStatusType.class);
-    when(availabilityStatus.getType()).thenReturn("Type");
-
     SkuAvailabilityImpl skuAvailabilityImpl = new SkuAvailabilityImpl();
     skuAvailabilityImpl
         .setAvailabilityDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    skuAvailabilityImpl.setAvailabilityStatus(availabilityStatus);
+    skuAvailabilityImpl.setAvailabilityStatus(AvailabilityStatusType.AVAILABLE);
     skuAvailabilityImpl.setId(null);
     skuAvailabilityImpl.setLocationId(null);
     skuAvailabilityImpl.setQuantityOnHand(1);
@@ -556,15 +454,14 @@ public class SkuAvailabilityImplDiffblueTest {
    * Method under test: {@link SkuAvailabilityImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuAvailabilityImpl.equals(Object)", "int SkuAvailabilityImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
-    AvailabilityStatusType availabilityStatus = mock(AvailabilityStatusType.class);
-    when(availabilityStatus.getType()).thenReturn("Type");
-
     SkuAvailabilityImpl skuAvailabilityImpl = new SkuAvailabilityImpl();
     skuAvailabilityImpl
         .setAvailabilityDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    skuAvailabilityImpl.setAvailabilityStatus(availabilityStatus);
+    skuAvailabilityImpl.setAvailabilityStatus(AvailabilityStatusType.AVAILABLE);
     skuAvailabilityImpl.setId(null);
     skuAvailabilityImpl.setLocationId(1L);
     skuAvailabilityImpl.setQuantityOnHand(1);
@@ -595,15 +492,14 @@ public class SkuAvailabilityImplDiffblueTest {
    * Method under test: {@link SkuAvailabilityImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuAvailabilityImpl.equals(Object)", "int SkuAvailabilityImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
-    AvailabilityStatusType availabilityStatus = mock(AvailabilityStatusType.class);
-    when(availabilityStatus.getType()).thenReturn("Type");
-
     SkuAvailabilityImpl skuAvailabilityImpl = new SkuAvailabilityImpl();
     skuAvailabilityImpl
         .setAvailabilityDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    skuAvailabilityImpl.setAvailabilityStatus(availabilityStatus);
+    skuAvailabilityImpl.setAvailabilityStatus(AvailabilityStatusType.AVAILABLE);
     skuAvailabilityImpl.setId(null);
     skuAvailabilityImpl.setLocationId(1L);
     skuAvailabilityImpl.setQuantityOnHand(1);
@@ -634,6 +530,8 @@ public class SkuAvailabilityImplDiffblueTest {
    * Method under test: {@link SkuAvailabilityImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuAvailabilityImpl.equals(Object)", "int SkuAvailabilityImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     SkuAvailabilityImpl skuAvailabilityImpl = new SkuAvailabilityImpl();
@@ -660,6 +558,8 @@ public class SkuAvailabilityImplDiffblueTest {
    * Method under test: {@link SkuAvailabilityImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuAvailabilityImpl.equals(Object)", "int SkuAvailabilityImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     SkuAvailabilityImpl skuAvailabilityImpl = new SkuAvailabilityImpl();
@@ -697,6 +597,14 @@ public class SkuAvailabilityImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuAvailabilityImpl.<init>()", "Date SkuAvailabilityImpl.getAvailabilityDate()",
+      "Long SkuAvailabilityImpl.getId()", "Long SkuAvailabilityImpl.getLocationId()",
+      "Integer SkuAvailabilityImpl.getQuantityOnHand()", "Integer SkuAvailabilityImpl.getReserveQuantity()",
+      "Long SkuAvailabilityImpl.getSkuId()", "void SkuAvailabilityImpl.setAvailabilityDate(Date)",
+      "void SkuAvailabilityImpl.setId(Long)", "void SkuAvailabilityImpl.setLocationId(Long)",
+      "void SkuAvailabilityImpl.setQuantityOnHand(Integer)", "void SkuAvailabilityImpl.setReserveQuantity(Integer)",
+      "void SkuAvailabilityImpl.setSkuId(Long)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     SkuAvailabilityImpl actualSkuAvailabilityImpl = new SkuAvailabilityImpl();
@@ -714,7 +622,7 @@ public class SkuAvailabilityImplDiffblueTest {
     Integer actualReserveQuantity = actualSkuAvailabilityImpl.getReserveQuantity();
     Long actualSkuId = actualSkuAvailabilityImpl.getSkuId();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals(1, actualQuantityOnHand.intValue());
     assertEquals(1, actualReserveQuantity.intValue());
     assertEquals(1L, actualId.longValue());

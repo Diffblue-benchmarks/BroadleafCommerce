@@ -18,7 +18,10 @@
 package org.broadleafcommerce.core.order.service.call;
 
 import static org.junit.Assert.assertEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class ActivityMessageDTODiffblueTest {
   /**
@@ -38,6 +41,12 @@ public class ActivityMessageDTODiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ActivityMessageDTO.<init>(String, Integer, String)",
+      "String ActivityMessageDTO.getErrorCode()", "String ActivityMessageDTO.getMessage()",
+      "Integer ActivityMessageDTO.getPriority()", "String ActivityMessageDTO.getType()",
+      "void ActivityMessageDTO.setErrorCode(String)", "void ActivityMessageDTO.setMessage(String)",
+      "void ActivityMessageDTO.setPriority(Integer)", "void ActivityMessageDTO.setType(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     ActivityMessageDTO actualActivityMessageDTO = new ActivityMessageDTO("Type", 1, "Not all who wander are lost");
@@ -49,7 +58,7 @@ public class ActivityMessageDTODiffblueTest {
     String actualMessage = actualActivityMessageDTO.getMessage();
     Integer actualPriority = actualActivityMessageDTO.getPriority();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("An error occurred", actualErrorCode);
     assertEquals("Not all who wander are lost", actualMessage);
     assertEquals("Type", actualActivityMessageDTO.getType());

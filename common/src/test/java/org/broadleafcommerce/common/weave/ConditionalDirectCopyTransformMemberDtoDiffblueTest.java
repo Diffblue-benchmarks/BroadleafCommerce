@@ -22,12 +22,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class ConditionalDirectCopyTransformMemberDtoDiffblueTest {
   /**
-   * Test {@link ConditionalDirectCopyTransformMemberDto#equals(Object)}, and
-   * {@link ConditionalDirectCopyTransformMemberDto#hashCode()}.
+   * Test {@link ConditionalDirectCopyTransformMemberDto#equals(Object)}, and {@link ConditionalDirectCopyTransformMemberDto#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -40,6 +42,9 @@ public class ConditionalDirectCopyTransformMemberDtoDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ConditionalDirectCopyTransformMemberDto.equals(Object)",
+      "int ConditionalDirectCopyTransformMemberDto.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     ConditionalDirectCopyTransformMemberDto conditionalDirectCopyTransformMemberDto = new ConditionalDirectCopyTransformMemberDto();
@@ -63,8 +68,7 @@ public class ConditionalDirectCopyTransformMemberDtoDiffblueTest {
   }
 
   /**
-   * Test {@link ConditionalDirectCopyTransformMemberDto#equals(Object)}, and
-   * {@link ConditionalDirectCopyTransformMemberDto#hashCode()}.
+   * Test {@link ConditionalDirectCopyTransformMemberDto#equals(Object)}, and {@link ConditionalDirectCopyTransformMemberDto#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -77,6 +81,9 @@ public class ConditionalDirectCopyTransformMemberDtoDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ConditionalDirectCopyTransformMemberDto.equals(Object)",
+      "int ConditionalDirectCopyTransformMemberDto.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     ConditionalDirectCopyTransformMemberDto conditionalDirectCopyTransformMemberDto = new ConditionalDirectCopyTransformMemberDto();
@@ -99,10 +106,12 @@ public class ConditionalDirectCopyTransformMemberDtoDiffblueTest {
    *   <li>Then return not equal.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ConditionalDirectCopyTransformMemberDto#equals(Object)}
+   * Method under test: {@link ConditionalDirectCopyTransformMemberDto#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ConditionalDirectCopyTransformMemberDto.equals(Object)",
+      "int ConditionalDirectCopyTransformMemberDto.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     ConditionalDirectCopyTransformMemberDto conditionalDirectCopyTransformMemberDto = new ConditionalDirectCopyTransformMemberDto();
@@ -130,10 +139,12 @@ public class ConditionalDirectCopyTransformMemberDtoDiffblueTest {
    *   <li>Then return not equal.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ConditionalDirectCopyTransformMemberDto#equals(Object)}
+   * Method under test: {@link ConditionalDirectCopyTransformMemberDto#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ConditionalDirectCopyTransformMemberDto.equals(Object)",
+      "int ConditionalDirectCopyTransformMemberDto.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     ConditionalDirectCopyTransformMemberDto conditionalDirectCopyTransformMemberDto = new ConditionalDirectCopyTransformMemberDto();
@@ -154,10 +165,12 @@ public class ConditionalDirectCopyTransformMemberDtoDiffblueTest {
    *   <li>Then return not equal.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ConditionalDirectCopyTransformMemberDto#equals(Object)}
+   * Method under test: {@link ConditionalDirectCopyTransformMemberDto#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ConditionalDirectCopyTransformMemberDto.equals(Object)",
+      "int ConditionalDirectCopyTransformMemberDto.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     ConditionalDirectCopyTransformMemberDto conditionalDirectCopyTransformMemberDto = new ConditionalDirectCopyTransformMemberDto();
@@ -177,17 +190,12 @@ public class ConditionalDirectCopyTransformMemberDtoDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>default or parameterless constructor of
-   * {@link ConditionalDirectCopyTransformMemberDto}
-   *   <li>
-   * {@link ConditionalDirectCopyTransformMemberDto#setConditionalProperty(String)}
-   *   <li>
-   * {@link ConditionalDirectCopyTransformMemberDto#setConditionalValue(Boolean)}
-   *   <li>
-   * {@link ConditionalDirectCopyTransformMemberDto#setRenameMethodOverlaps(boolean)}
+   *   <li>default or parameterless constructor of {@link ConditionalDirectCopyTransformMemberDto}
+   *   <li>{@link ConditionalDirectCopyTransformMemberDto#setConditionalProperty(String)}
+   *   <li>{@link ConditionalDirectCopyTransformMemberDto#setConditionalValue(Boolean)}
+   *   <li>{@link ConditionalDirectCopyTransformMemberDto#setRenameMethodOverlaps(boolean)}
    *   <li>{@link ConditionalDirectCopyTransformMemberDto#setSkipOverlaps(boolean)}
-   *   <li>
-   * {@link ConditionalDirectCopyTransformMemberDto#setTemplateTokens(String[])}
+   *   <li>{@link ConditionalDirectCopyTransformMemberDto#setTemplateTokens(String[])}
    *   <li>{@link ConditionalDirectCopyTransformMemberDto#getConditionalProperty()}
    *   <li>{@link ConditionalDirectCopyTransformMemberDto#getConditionalValue()}
    *   <li>{@link ConditionalDirectCopyTransformMemberDto#getTemplateTokens()}
@@ -196,6 +204,18 @@ public class ConditionalDirectCopyTransformMemberDtoDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ConditionalDirectCopyTransformMemberDto.<init>()",
+      "String ConditionalDirectCopyTransformMemberDto.getConditionalProperty()",
+      "Boolean ConditionalDirectCopyTransformMemberDto.getConditionalValue()",
+      "String[] ConditionalDirectCopyTransformMemberDto.getTemplateTokens()",
+      "boolean ConditionalDirectCopyTransformMemberDto.isRenameMethodOverlaps()",
+      "boolean ConditionalDirectCopyTransformMemberDto.isSkipOverlaps()",
+      "void ConditionalDirectCopyTransformMemberDto.setConditionalProperty(String)",
+      "void ConditionalDirectCopyTransformMemberDto.setConditionalValue(Boolean)",
+      "void ConditionalDirectCopyTransformMemberDto.setRenameMethodOverlaps(boolean)",
+      "void ConditionalDirectCopyTransformMemberDto.setSkipOverlaps(boolean)",
+      "void ConditionalDirectCopyTransformMemberDto.setTemplateTokens(String[])"})
   public void testGettersAndSetters() {
     // Arrange and Act
     ConditionalDirectCopyTransformMemberDto actualConditionalDirectCopyTransformMemberDto = new ConditionalDirectCopyTransformMemberDto();
@@ -210,7 +230,7 @@ public class ConditionalDirectCopyTransformMemberDtoDiffblueTest {
     String[] actualTemplateTokens = actualConditionalDirectCopyTransformMemberDto.getTemplateTokens();
     boolean actualIsRenameMethodOverlapsResult = actualConditionalDirectCopyTransformMemberDto.isRenameMethodOverlaps();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Conditional Property", actualConditionalProperty);
     assertTrue(actualConditionalValue);
     assertTrue(actualIsRenameMethodOverlapsResult);

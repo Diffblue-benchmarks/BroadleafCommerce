@@ -18,8 +18,12 @@
 package org.broadleafcommerce.common.security.service;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.owasp.validator.html.CleanResults;
 
 public class CleanStringExceptionDiffblueTest {
@@ -34,6 +38,9 @@ public class CleanStringExceptionDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CleanStringException.<init>(CleanResults)",
+      "CleanResults CleanStringException.getCleanResults()", "void CleanStringException.setCleanResults(CleanResults)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     CleanStringException actualCleanStringException = new CleanStringException(new CleanResults());
@@ -41,7 +48,9 @@ public class CleanStringExceptionDiffblueTest {
     actualCleanStringException.setCleanResults(cleanResults);
     CleanResults actualCleanResults = actualCleanStringException.getCleanResults();
 
-    // Assert that nothing has changed
+    // Assert
+    assertNull(actualCleanStringException.getMessage());
+    assertNull(actualCleanStringException.getCause());
     assertEquals(0, actualCleanStringException.getSuppressed().length);
     assertSame(cleanResults, actualCleanResults);
   }

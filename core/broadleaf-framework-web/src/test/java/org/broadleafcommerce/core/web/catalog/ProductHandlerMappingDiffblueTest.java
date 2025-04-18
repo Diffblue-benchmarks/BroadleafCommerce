@@ -1,218 +1,130 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework Web
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.web.catalog;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import java.io.UnsupportedEncodingException;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import javax.servlet.http.HttpServletRequest;
 import org.broadleafcommerce.core.catalog.service.CatalogService;
 import org.broadleafcommerce.core.web.search.SearchRequestWrapper;
 import org.broadleafcommerce.core.web.security.XssRequestWrapper;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.web.reactive.context.StandardReactiveWebEnvironment;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.env.Environment;
+import org.springframework.core.env.PropertyResolver;
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.cors.DefaultCorsProcessor;
 
-@ContextConfiguration(classes = {ProductHandlerMapping.class})
-@WebAppConfiguration
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 class ProductHandlerMappingDiffblueTest {
-  @MockBean
+  @Mock
   private CatalogService catalogService;
 
-  @MockBean
+  @Mock
   private Environment environment;
 
-  @Autowired
+  @InjectMocks
   private ProductHandlerMapping productHandlerMapping;
 
   /**
-   * Test {@link ProductHandlerMapping#getHandlerInternal(HttpServletRequest)}.
+   * Test {@link ProductHandlerMapping#shouldSkipExecution(HttpServletRequest)}.
+   * <ul>
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class, Object)} return {@code false}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductHandlerMapping#getHandlerInternal(HttpServletRequest)}
+   * Method under test: {@link ProductHandlerMapping#shouldSkipExecution(HttpServletRequest)}
    */
   @Test
-  @DisplayName("Test getHandlerInternal(HttpServletRequest)")
-  @Disabled("TODO: Complete this test")
-  void testGetHandlerInternal() throws Exception {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.catalog;
-    //   @org.springframework.test.context.web.WebAppConfiguration
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.web.catalog.ProductHandlerMapping.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2843 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.service.CatalogService catalogService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.core.env.Environment environment;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.catalog.ProductHandlerMapping productHandlerMapping;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @DisplayName("Test shouldSkipExecution(HttpServletRequest); given Environment getProperty(String, Class, Object) return 'false'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean ProductHandlerMapping.shouldSkipExecution(HttpServletRequest)"})
+  void testShouldSkipExecution_givenEnvironmentGetPropertyReturnFalse() throws ServletRequestBindingException {
     // Arrange
-    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+        .thenReturn(false);
 
     // Act
-    productHandlerMapping.getHandlerInternal(new SearchRequestWrapper(
-        new XssRequestWrapper(servletRequest, environment, new String[]{"White List Param Names"})));
+    boolean actualShouldSkipExecutionResult = productHandlerMapping.shouldSkipExecution(new SearchRequestWrapper(
+        new XssRequestWrapper(new MockHttpServletRequest(), environment, new String[]{"White List Param Names"})));
+
+    // Assert
+    verify(environment).getProperty(eq("allowCategoryResolutionUsingIdParam"), isA(Class.class), isA(Object.class));
+    assertFalse(actualShouldSkipExecutionResult);
   }
 
   /**
    * Test {@link ProductHandlerMapping#shouldSkipExecution(HttpServletRequest)}.
+   * <ul>
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class, Object)} return {@code true}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductHandlerMapping#shouldSkipExecution(HttpServletRequest)}
+   * Method under test: {@link ProductHandlerMapping#shouldSkipExecution(HttpServletRequest)}
    */
   @Test
-  @DisplayName("Test shouldSkipExecution(HttpServletRequest)")
-  @Disabled("TODO: Complete this test")
-  void testShouldSkipExecution() throws ServletRequestBindingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.catalog;
-    //   @org.springframework.test.context.web.WebAppConfiguration
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.web.catalog.ProductHandlerMapping.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2844 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.service.CatalogService catalogService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.core.env.Environment environment;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.catalog.ProductHandlerMapping productHandlerMapping;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @DisplayName("Test shouldSkipExecution(HttpServletRequest); given Environment getProperty(String, Class, Object) return 'true'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean ProductHandlerMapping.shouldSkipExecution(HttpServletRequest)"})
+  void testShouldSkipExecution_givenEnvironmentGetPropertyReturnTrue() throws ServletRequestBindingException {
     // Arrange
-    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+        .thenReturn(true);
 
     // Act
-    productHandlerMapping.shouldSkipExecution(new SearchRequestWrapper(
-        new XssRequestWrapper(servletRequest, environment, new String[]{"White List Param Names"})));
+    boolean actualShouldSkipExecutionResult = productHandlerMapping.shouldSkipExecution(new SearchRequestWrapper(
+        new XssRequestWrapper(new MockHttpServletRequest(), environment, new String[]{"White List Param Names"})));
+
+    // Assert
+    verify(environment).getProperty(eq("allowCategoryResolutionUsingIdParam"), isA(Class.class), isA(Object.class));
+    assertFalse(actualShouldSkipExecutionResult);
   }
 
   /**
-   * Test
-   * {@link ProductHandlerMapping#findProductUsingIdParam(HttpServletRequest)}.
-   * <p>
-   * Method under test:
-   * {@link ProductHandlerMapping#findProductUsingIdParam(HttpServletRequest)}
-   */
-  @Test
-  @DisplayName("Test findProductUsingIdParam(HttpServletRequest)")
-  @Disabled("TODO: Complete this test")
-  void testFindProductUsingIdParam() throws ServletRequestBindingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.catalog;
-    //   @org.springframework.test.context.web.WebAppConfiguration
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.web.catalog.ProductHandlerMapping.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2841 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.service.CatalogService catalogService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.core.env.Environment environment;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.catalog.ProductHandlerMapping productHandlerMapping;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
-
-    // Act
-    productHandlerMapping.findProductUsingIdParam(new SearchRequestWrapper(
-        new XssRequestWrapper(servletRequest, environment, new String[]{"White List Param Names"})));
-  }
-
-  /**
-   * Test
-   * {@link ProductHandlerMapping#findProductUsingIdParam(HttpServletRequest)}.
+   * Test {@link ProductHandlerMapping#findProductUsingIdParam(HttpServletRequest)}.
    * <ul>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductHandlerMapping#findProductUsingIdParam(HttpServletRequest)}
+   * Method under test: {@link ProductHandlerMapping#findProductUsingIdParam(HttpServletRequest)}
    */
   @Test
   @DisplayName("Test findProductUsingIdParam(HttpServletRequest); then return 'null'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "org.broadleafcommerce.core.catalog.domain.Product ProductHandlerMapping.findProductUsingIdParam(HttpServletRequest)"})
   void testFindProductUsingIdParam_thenReturnNull() throws ServletRequestBindingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProductHandlerMapping productHandlerMapping = new ProductHandlerMapping();
-    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
-
-    // Act and Assert
-    assertNull(
-        productHandlerMapping.findProductUsingIdParam(new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
-            new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}))));
-  }
-
-  /**
-   * Test {@link ProductHandlerMapping#findProductUsingUrl(HttpServletRequest)}.
-   * <p>
-   * Method under test:
-   * {@link ProductHandlerMapping#findProductUsingUrl(HttpServletRequest)}
-   */
-  @Test
-  @DisplayName("Test findProductUsingUrl(HttpServletRequest)")
-  @Disabled("TODO: Complete this test")
-  void testFindProductUsingUrl() throws UnsupportedEncodingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.catalog;
-    //   @org.springframework.test.context.web.WebAppConfiguration
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.web.catalog.ProductHandlerMapping.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2842 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.service.CatalogService catalogService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.core.env.Environment environment;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.catalog.ProductHandlerMapping productHandlerMapping;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
-
-    // Act
-    productHandlerMapping.findProductUsingUrl(new SearchRequestWrapper(
-        new XssRequestWrapper(servletRequest, environment, new String[]{"White List Param Names"})));
+    // Arrange, Act and Assert
+    assertNull(productHandlerMapping.findProductUsingIdParam(new SearchRequestWrapper(
+        new XssRequestWrapper(new MockHttpServletRequest(), environment, new String[]{"White List Param Names"}))));
   }
 
   /**
@@ -226,6 +138,9 @@ class ProductHandlerMappingDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String ProductHandlerMapping.getDefaultTemplateName()",
+      "void ProductHandlerMapping.setDefaultTemplateName(String)"})
   void testGettersAndSetters() {
     // Arrange
     ProductHandlerMapping productHandlerMapping = new ProductHandlerMapping();
@@ -233,21 +148,20 @@ class ProductHandlerMappingDiffblueTest {
     // Act
     productHandlerMapping.setDefaultTemplateName("Default Template Name");
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Default Template Name", productHandlerMapping.getDefaultTemplateName());
   }
 
   /**
    * Test new {@link ProductHandlerMapping} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link ProductHandlerMapping}
+   * Method under test: default or parameterless constructor of {@link ProductHandlerMapping}
    */
   @Test
   @DisplayName("Test new ProductHandlerMapping (default constructor)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void ProductHandlerMapping.<init>()"})
   void testNewProductHandlerMapping() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange and Act
     ProductHandlerMapping actualProductHandlerMapping = new ProductHandlerMapping();
 
@@ -263,39 +177,5 @@ class ProductHandlerMappingDiffblueTest {
     assertNull(actualProductHandlerMapping.getPatternParser());
     assertTrue(actualProductHandlerMapping.getUrlPathHelper().isUrlDecode());
     assertEquals(Integer.MAX_VALUE, actualProductHandlerMapping.getOrder());
-  }
-
-  /**
-   * Test new {@link ProductHandlerMapping} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link ProductHandlerMapping}
-   */
-  @Test
-  @DisplayName("Test new ProductHandlerMapping (default constructor)")
-  @Disabled("TODO: Complete this test")
-  void testNewProductHandlerMapping2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.catalog;
-    //   @org.springframework.test.context.web.WebAppConfiguration
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.web.catalog.ProductHandlerMapping.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2840 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.service.CatalogService catalogService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.core.env.Environment environment;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.catalog.ProductHandlerMapping productHandlerMapping;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    new ProductHandlerMapping();
   }
 }

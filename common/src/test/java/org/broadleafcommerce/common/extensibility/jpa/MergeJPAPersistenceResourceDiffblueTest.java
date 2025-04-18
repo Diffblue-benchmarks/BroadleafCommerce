@@ -18,22 +18,26 @@
 package org.broadleafcommerce.common.extensibility.jpa;
 
 import static org.junit.Assert.assertThrows;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 import org.broadleafcommerce.common.extensibility.context.merge.ResourceInputStream;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.FatalBeanException;
 
 public class MergeJPAPersistenceResourceDiffblueTest {
   /**
-   * Test
-   * {@link MergeJPAPersistenceResource#getMergedConfigResource(ResourceInputStream[])}.
+   * Test {@link MergeJPAPersistenceResource#getMergedConfigResource(ResourceInputStream[])}.
    * <p>
-   * Method under test:
-   * {@link MergeJPAPersistenceResource#getMergedConfigResource(ResourceInputStream[])}
+   * Method under test: {@link MergeJPAPersistenceResource#getMergedConfigResource(ResourceInputStream[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.springframework.core.io.Resource MergeJPAPersistenceResource.getMergedConfigResource(ResourceInputStream[])"})
   public void testGetMergedConfigResource() throws UnsupportedEncodingException, BeansException {
     // Arrange
     MergeJPAPersistenceResource mergeJPAPersistenceResource = new MergeJPAPersistenceResource();
@@ -42,23 +46,5 @@ public class MergeJPAPersistenceResourceDiffblueTest {
     assertThrows(FatalBeanException.class,
         () -> mergeJPAPersistenceResource.getMergedConfigResource(new ResourceInputStream[]{
             new ResourceInputStream(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "Name")}));
-  }
-
-  /**
-   * Test new {@link MergeJPAPersistenceResource} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link MergeJPAPersistenceResource}
-   */
-  @Test
-  public void testNewMergeJPAPersistenceResource() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing observers.
-    //   Diffblue Cover was unable to create an assertion.
-    //   Add getters for the following fields or make them package-private:
-    //     MergeJPAPersistenceResource.handler
-
-    // Arrange and Act
-    new MergeJPAPersistenceResource();
   }
 }

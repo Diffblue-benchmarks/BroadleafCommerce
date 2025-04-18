@@ -1,7 +1,27 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.geolocation;
 
 import static org.junit.Assert.assertEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class GeolocationDTODiffblueTest {
   /**
@@ -34,6 +54,18 @@ public class GeolocationDTODiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void GeolocationDTO.<init>()", "String GeolocationDTO.getCity()",
+      "String GeolocationDTO.getCountryCode()", "String GeolocationDTO.getCountryName()",
+      "String GeolocationDTO.getIpAddress()", "Double GeolocationDTO.getLatitude()",
+      "Double GeolocationDTO.getLongitude()", "String GeolocationDTO.getPostalCode()",
+      "String GeolocationDTO.getRegionCode()", "String GeolocationDTO.getRegionName()",
+      "String GeolocationDTO.getSource()", "void GeolocationDTO.setCity(String)",
+      "void GeolocationDTO.setCountryCode(String)", "void GeolocationDTO.setCountryName(String)",
+      "void GeolocationDTO.setIpAddress(String)", "void GeolocationDTO.setLatitude(Double)",
+      "void GeolocationDTO.setLongitude(Double)", "void GeolocationDTO.setPostalCode(String)",
+      "void GeolocationDTO.setRegionCode(String)", "void GeolocationDTO.setRegionName(String)",
+      "void GeolocationDTO.setSource(String)", "String GeolocationDTO.toString()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     GeolocationDTO actualGeolocationDTO = new GeolocationDTO();
@@ -58,7 +90,7 @@ public class GeolocationDTODiffblueTest {
     String actualRegionCode = actualGeolocationDTO.getRegionCode();
     String actualRegionName = actualGeolocationDTO.getRegionName();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("42 Main St", actualIpAddress);
     assertEquals("GB", actualCountryCode);
     assertEquals("GB", actualCountryName);

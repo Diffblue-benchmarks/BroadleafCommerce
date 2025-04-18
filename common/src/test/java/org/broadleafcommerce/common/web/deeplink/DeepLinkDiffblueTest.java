@@ -18,18 +18,23 @@
 package org.broadleafcommerce.common.web.deeplink;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.util.BLCFieldUtils;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {DeepLink.class})
 @RunWith(SpringJUnit4ClassRunner.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class DeepLinkDiffblueTest {
   @Autowired
   private DeepLink deepLink;
@@ -37,13 +42,14 @@ public class DeepLinkDiffblueTest {
   /**
    * Test {@link DeepLink#withAdminBaseUrl(String)}.
    * <ul>
-   *   <li>Then {@link DeepLink} AdminBaseUrl is
-   * {@code https://example.org/example}.</li>
+   *   <li>Then {@link DeepLink} AdminBaseUrl is {@code https://example.org/example}.</li>
    * </ul>
    * <p>
    * Method under test: {@link DeepLink#withAdminBaseUrl(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"DeepLink DeepLink.withAdminBaseUrl(String)"})
   public void testWithAdminBaseUrl_thenDeepLinkAdminBaseUrlIsHttpsExampleOrgExample() {
     // Arrange and Act
     DeepLink actualWithAdminBaseUrlResult = deepLink.withAdminBaseUrl("https://example.org/example");
@@ -57,13 +63,14 @@ public class DeepLinkDiffblueTest {
   /**
    * Test {@link DeepLink#withUrlFragment(String)}.
    * <ul>
-   *   <li>Then {@link DeepLink} UrlFragment is
-   * {@code https://example.org/example}.</li>
+   *   <li>Then {@link DeepLink} UrlFragment is {@code https://example.org/example}.</li>
    * </ul>
    * <p>
    * Method under test: {@link DeepLink#withUrlFragment(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"DeepLink DeepLink.withUrlFragment(String)"})
   public void testWithUrlFragment_thenDeepLinkUrlFragmentIsHttpsExampleOrgExample() {
     // Arrange and Act
     DeepLink actualWithUrlFragmentResult = deepLink.withUrlFragment("https://example.org/example");
@@ -80,6 +87,8 @@ public class DeepLinkDiffblueTest {
    * Method under test: {@link DeepLink#withDisplayText(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"DeepLink DeepLink.withDisplayText(String)"})
   public void testWithDisplayText() {
     // Arrange and Act
     DeepLink actualWithDisplayTextResult = deepLink.withDisplayText("Display Text");
@@ -95,6 +104,8 @@ public class DeepLinkDiffblueTest {
    * Method under test: {@link DeepLink#withSourceObject(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"DeepLink DeepLink.withSourceObject(Object)"})
   public void testWithSourceObject() {
     // Arrange
     Object object = BLCFieldUtils.NULL_FIELD;
@@ -107,13 +118,14 @@ public class DeepLinkDiffblueTest {
   /**
    * Test {@link DeepLink#setAdminBaseUrl(String)}.
    * <ul>
-   *   <li>Then {@link DeepLink} AdminBaseUrl is
-   * {@code https://example.org/example}.</li>
+   *   <li>Then {@link DeepLink} AdminBaseUrl is {@code https://example.org/example}.</li>
    * </ul>
    * <p>
    * Method under test: {@link DeepLink#setAdminBaseUrl(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DeepLink.setAdminBaseUrl(String)"})
   public void testSetAdminBaseUrl_thenDeepLinkAdminBaseUrlIsHttpsExampleOrgExample() {
     // Arrange and Act
     deepLink.setAdminBaseUrl("https://example.org/example");
@@ -126,13 +138,14 @@ public class DeepLinkDiffblueTest {
   /**
    * Test {@link DeepLink#setUrlFragment(String)}.
    * <ul>
-   *   <li>Then {@link DeepLink} UrlFragment is
-   * {@code https://example.org/example}.</li>
+   *   <li>Then {@link DeepLink} UrlFragment is {@code https://example.org/example}.</li>
    * </ul>
    * <p>
    * Method under test: {@link DeepLink#setUrlFragment(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DeepLink.setUrlFragment(String)"})
   public void testSetUrlFragment_thenDeepLinkUrlFragmentIsHttpsExampleOrgExample() {
     // Arrange and Act
     deepLink.setUrlFragment("https://example.org/example");
@@ -148,6 +161,8 @@ public class DeepLinkDiffblueTest {
    * Method under test: {@link DeepLink#getFullUrl()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String DeepLink.getFullUrl()"})
   public void testGetFullUrl() {
     // Arrange, Act and Assert
     assertEquals("null/null", (new DeepLink()).getFullUrl());
@@ -168,19 +183,24 @@ public class DeepLinkDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DeepLink.<init>()", "String DeepLink.getAdminBaseUrl()", "String DeepLink.getDisplayText()",
+      "Object DeepLink.getSourceObject()", "String DeepLink.getUrlFragment()", "void DeepLink.setDisplayText(String)",
+      "void DeepLink.setSourceObject(Object)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     DeepLink actualDeepLink = new DeepLink();
     actualDeepLink.setDisplayText("Display Text");
     Object object = BLCFieldUtils.NULL_FIELD;
     actualDeepLink.setSourceObject(object);
-    actualDeepLink.getAdminBaseUrl();
+    String actualAdminBaseUrl = actualDeepLink.getAdminBaseUrl();
     String actualDisplayText = actualDeepLink.getDisplayText();
     Object actualSourceObject = actualDeepLink.getSourceObject();
-    actualDeepLink.getUrlFragment();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Display Text", actualDisplayText);
+    assertNull(actualAdminBaseUrl);
+    assertNull(actualDeepLink.getUrlFragment());
     assertSame(object, actualSourceObject);
   }
 }

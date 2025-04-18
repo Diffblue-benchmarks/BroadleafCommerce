@@ -1,209 +1,209 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.web.filter;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.IOException;
-import javax.servlet.FilterChain;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.broadleafcommerce.common.exception.SiteNotFoundException;
+import org.broadleafcommerce.common.security.service.StaleStateProtectionService;
+import org.broadleafcommerce.common.web.BroadleafWebRequestProcessor;
+import org.broadleafcommerce.openadmin.security.ClassNameRequestParamValidationService;
+import org.broadleafcommerce.openadmin.server.service.persistence.PersistenceThreadManager;
 import org.broadleafcommerce.openadmin.web.compatibility.JSCompatibilityRequestWrapper;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.StandardEnvironment;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.web.context.request.WebRequest;
 
-@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
-    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
-    "/bl-open-admin-contentCreator-applicationContext.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+@ContextConfiguration(classes = {BroadleafAdminRequestFilter.class})
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
 public class BroadleafAdminRequestFilterDiffblueTest {
   @Autowired
   private BroadleafAdminRequestFilter broadleafAdminRequestFilter;
 
+  @MockBean(name = "blAdminRequestProcessor")
+  private BroadleafWebRequestProcessor broadleafWebRequestProcessor;
+
+  @MockBean(name = "blClassNameRequestParamValidationService")
+  private ClassNameRequestParamValidationService classNameRequestParamValidationService;
+
+  @MockBean(name = "blPersistenceThreadManager")
+  private PersistenceThreadManager persistenceThreadManager;
+
+  @MockBean(name = "blStaleStateProtectionService")
+  private StaleStateProtectionService staleStateProtectionService;
+
   /**
-   * Test
-   * {@link BroadleafAdminRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}.
+   * Test {@link BroadleafAdminRequestFilter#validateClassNameParams(HttpServletRequest)}.
+   * <ul>
+   *   <li>Given {@code /translations}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafAdminRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}
+   * Method under test: {@link BroadleafAdminRequestFilter#validateClassNameParams(HttpServletRequest)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testDoFilterInternalUnlessIgnored() throws IOException, ServletException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.web.filter;
-    //   @org.springframework.test.context.web.WebAppConfiguration
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1992 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.filter.BroadleafAdminRequestFilter broadleafAdminRequestFilter;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BroadleafAdminRequestFilter.validateClassNameParams(HttpServletRequest)"})
+  public void testValidateClassNameParams_givenTranslations() {
     // Arrange
-    BroadleafAdminRequestFilter broadleafAdminRequestFilter2 = new BroadleafAdminRequestFilter();
-    JSCompatibilityRequestWrapper request = new JSCompatibilityRequestWrapper(new MockHttpServletRequest());
+    when(classNameRequestParamValidationService.validateClassNameParams(Mockito.<Map<String, String>>any(),
+        Mockito.<String>any())).thenReturn(true);
+
+    MockHttpServletRequest request = new MockHttpServletRequest();
+    request.setServletPath("/translations");
 
     // Act
-    broadleafAdminRequestFilter2.doFilterInternalUnlessIgnored(request, new MockHttpServletResponse(),
-        mock(FilterChain.class));
+    boolean actualValidateClassNameParamsResult = broadleafAdminRequestFilter.validateClassNameParams(request);
+
+    // Assert
+    verify(classNameRequestParamValidationService).validateClassNameParams(isA(Map.class), eq("blPU"));
+    assertTrue(actualValidateClassNameParamsResult);
   }
 
   /**
-   * Test
-   * {@link BroadleafAdminRequestFilter#validateClassNameParams(HttpServletRequest)}.
+   * Test {@link BroadleafAdminRequestFilter#validateClassNameParams(HttpServletRequest)}.
+   * <ul>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafAdminRequestFilter#validateClassNameParams(HttpServletRequest)}
+   * Method under test: {@link BroadleafAdminRequestFilter#validateClassNameParams(HttpServletRequest)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testValidateClassNameParams() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.web.filter;
-    //   @org.springframework.test.context.web.WebAppConfiguration
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2298 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.filter.BroadleafAdminRequestFilter broadleafAdminRequestFilter;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BroadleafAdminRequestFilter.validateClassNameParams(HttpServletRequest)"})
+  public void testValidateClassNameParams_thenReturnFalse() {
     // Arrange
-    BroadleafAdminRequestFilter broadleafAdminRequestFilter2 = new BroadleafAdminRequestFilter();
+    when(classNameRequestParamValidationService.validateClassNameParams(Mockito.<Map<String, String>>any(),
+        Mockito.<String>any())).thenReturn(false);
 
     // Act
-    broadleafAdminRequestFilter2
+    boolean actualValidateClassNameParamsResult = broadleafAdminRequestFilter
         .validateClassNameParams(new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
+
+    // Assert
+    verify(classNameRequestParamValidationService).validateClassNameParams(isA(Map.class), eq("blPU"));
+    assertFalse(actualValidateClassNameParamsResult);
   }
 
   /**
-   * Test
-   * {@link BroadleafAdminRequestFilter#forwardToConflictDestination(HttpServletRequest, HttpServletResponse)}.
+   * Test {@link BroadleafAdminRequestFilter#validateClassNameParams(HttpServletRequest)}.
+   * <ul>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafAdminRequestFilter#forwardToConflictDestination(HttpServletRequest, HttpServletResponse)}
+   * Method under test: {@link BroadleafAdminRequestFilter#validateClassNameParams(HttpServletRequest)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testForwardToConflictDestination() throws IOException, ServletException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.web.filter;
-    //   @org.springframework.test.context.web.WebAppConfiguration
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2147 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.filter.BroadleafAdminRequestFilter broadleafAdminRequestFilter;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BroadleafAdminRequestFilter.validateClassNameParams(HttpServletRequest)"})
+  public void testValidateClassNameParams_thenReturnTrue() {
     // Arrange
-    BroadleafAdminRequestFilter broadleafAdminRequestFilter2 = new BroadleafAdminRequestFilter();
-    JSCompatibilityRequestWrapper request = new JSCompatibilityRequestWrapper(new MockHttpServletRequest());
+    when(classNameRequestParamValidationService.validateClassNameParams(Mockito.<Map<String, String>>any(),
+        Mockito.<String>any())).thenReturn(true);
 
     // Act
-    broadleafAdminRequestFilter2.forwardToConflictDestination(request, new MockHttpServletResponse());
+    boolean actualValidateClassNameParamsResult = broadleafAdminRequestFilter
+        .validateClassNameParams(new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
+
+    // Assert
+    verify(classNameRequestParamValidationService).validateClassNameParams(isA(Map.class), eq("blPU"));
+    assertTrue(actualValidateClassNameParamsResult);
   }
 
   /**
-   * Test {@link BroadleafAdminRequestFilter#getOrder()}.
-   * <p>
-   * Method under test: {@link BroadleafAdminRequestFilter#getOrder()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetOrder() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.web.filter;
-    //   @org.springframework.test.context.web.WebAppConfiguration
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2293 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.filter.BroadleafAdminRequestFilter broadleafAdminRequestFilter;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new BroadleafAdminRequestFilter()).getOrder();
-  }
-
-  /**
-   * Test {@link BroadleafAdminRequestFilter#getOrder()}.
+   * Test {@link BroadleafAdminRequestFilter#validateClassNameParams(HttpServletRequest)}.
    * <ul>
-   *   <li>Given {@link BroadleafAdminRequestFilter} (default constructor).</li>
+   *   <li>Then throw {@link SiteNotFoundException}.</li>
    * </ul>
    * <p>
-   * Method under test: {@link BroadleafAdminRequestFilter#getOrder()}
+   * Method under test: {@link BroadleafAdminRequestFilter#validateClassNameParams(HttpServletRequest)}
    */
   @Test
-  public void testGetOrder_givenBroadleafAdminRequestFilter() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals(10000, (new BroadleafAdminRequestFilter()).getOrder());
-  }
-
-  /**
-   * Test {@link BroadleafAdminRequestFilter#getOrder()}.
-   * <ul>
-   *   <li>Given {@link BroadleafAdminRequestFilter} (default constructor)
-   * Environment is {@link StandardEnvironment}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link BroadleafAdminRequestFilter#getOrder()}
-   */
-  @Test
-  public void testGetOrder_givenBroadleafAdminRequestFilterEnvironmentIsStandardEnvironment() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BroadleafAdminRequestFilter.validateClassNameParams(HttpServletRequest)"})
+  public void testValidateClassNameParams_thenThrowSiteNotFoundException() {
     // Arrange
-    BroadleafAdminRequestFilter broadleafAdminRequestFilter = new BroadleafAdminRequestFilter();
-    broadleafAdminRequestFilter.setEnvironment(mock(StandardEnvironment.class));
+    when(classNameRequestParamValidationService.validateClassNameParams(Mockito.<Map<String, String>>any(),
+        Mockito.<String>any())).thenThrow(new SiteNotFoundException("An error occurred"));
 
     // Act and Assert
+    assertThrows(SiteNotFoundException.class, () -> broadleafAdminRequestFilter
+        .validateClassNameParams(new JSCompatibilityRequestWrapper(new MockHttpServletRequest())));
+    verify(classNameRequestParamValidationService).validateClassNameParams(isA(Map.class), eq("blPU"));
+  }
+
+  /**
+   * Test {@link BroadleafAdminRequestFilter#forwardToConflictDestination(HttpServletRequest, HttpServletResponse)}.
+   * <p>
+   * Method under test: {@link BroadleafAdminRequestFilter#forwardToConflictDestination(HttpServletRequest, HttpServletResponse)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void BroadleafAdminRequestFilter.forwardToConflictDestination(HttpServletRequest, HttpServletResponse)"})
+  public void testForwardToConflictDestination() throws IOException, ServletException {
+    // Arrange
+    doNothing().when(broadleafWebRequestProcessor).process(Mockito.<WebRequest>any());
+    JSCompatibilityRequestWrapper request = new JSCompatibilityRequestWrapper(new MockHttpServletRequest());
+    MockHttpServletResponse response = new MockHttpServletResponse();
+
+    // Act
+    broadleafAdminRequestFilter.forwardToConflictDestination(request, response);
+
+    // Assert
+    verify(broadleafWebRequestProcessor).process(isA(WebRequest.class));
+    assertEquals("/sc_conflict", response.getForwardedUrl());
+    assertEquals(409, response.getStatus());
+  }
+
+  /**
+   * Test {@link BroadleafAdminRequestFilter#getOrder()}.
+   * <p>
+   * Method under test: {@link BroadleafAdminRequestFilter#getOrder()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int BroadleafAdminRequestFilter.getOrder()"})
+  public void testGetOrder() {
+    // Arrange, Act and Assert
     assertEquals(10000, broadleafAdminRequestFilter.getOrder());
   }
 }

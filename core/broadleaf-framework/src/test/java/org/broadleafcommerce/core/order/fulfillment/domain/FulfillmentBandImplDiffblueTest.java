@@ -1,89 +1,45 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.order.fulfillment.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import org.broadleafcommerce.core.order.service.type.FulfillmentBandResultAmountType;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mvel2.util.InternalNumber;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.junit.experimental.categories.Category;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class FulfillmentBandImplDiffblueTest {
-  @Autowired
-  private FulfillmentBandImpl fulfillmentBandImpl;
-
   /**
    * Test {@link FulfillmentBandImpl#getResultAmount()}.
    * <p>
    * Method under test: {@link FulfillmentBandImpl#getResultAmount()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal FulfillmentBandImpl.getResultAmount()"})
   public void testGetResultAmount() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentPriceBandImpl fulfillmentPriceBandImpl = new FulfillmentPriceBandImpl();
-    fulfillmentPriceBandImpl.setRetailPriceMinimumAmount(mock(InternalNumber.class));
-
-    // Act and Assert
-    assertNull(fulfillmentPriceBandImpl.getResultAmount());
-  }
-
-  /**
-   * Test {@link FulfillmentBandImpl#getResultAmount()}.
-   * <p>
-   * Method under test: {@link FulfillmentBandImpl#getResultAmount()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetResultAmount2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.fulfillment.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1392 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.fulfillment.domain.FulfillmentBandImpl fulfillmentBandImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    fulfillmentBandImpl.getResultAmount();
-  }
-
-  /**
-   * Test {@link FulfillmentBandImpl#getResultAmount()}.
-   * <ul>
-   *   <li>Given {@link FulfillmentPriceBandImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link FulfillmentBandImpl#getResultAmount()}
-   */
-  @Test
-  public void testGetResultAmount_givenFulfillmentPriceBandImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange, Act and Assert
     assertNull((new FulfillmentPriceBandImpl()).getResultAmount());
@@ -95,41 +51,12 @@ public class FulfillmentBandImplDiffblueTest {
    * Method under test: {@link FulfillmentBandImpl#setResultAmount(BigDecimal)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentBandImpl.setResultAmount(BigDecimal)"})
   public void testSetResultAmount() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.fulfillment.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1394 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.fulfillment.domain.FulfillmentBandImpl fulfillmentBandImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    fulfillmentBandImpl.setResultAmount(new BigDecimal("2.3"));
-  }
-
-  /**
-   * Test {@link FulfillmentBandImpl#setResultAmount(BigDecimal)}.
-   * <ul>
-   *   <li>Then {@link FulfillmentPriceBandImpl} (default constructor) ResultAmount
-   * is {@link BigDecimal#BigDecimal(String)} with {@code 2.3}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link FulfillmentBandImpl#setResultAmount(BigDecimal)}
-   */
-  @Test
-  public void testSetResultAmount_thenFulfillmentPriceBandImplResultAmountIsBigDecimalWith23() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     FulfillmentPriceBandImpl fulfillmentPriceBandImpl = new FulfillmentPriceBandImpl();
@@ -143,89 +70,17 @@ public class FulfillmentBandImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentBandImpl#setResultAmount(BigDecimal)}.
-   * <ul>
-   *   <li>Then {@link FulfillmentPriceBandImpl} (default constructor) ResultAmount
-   * is {@link InternalNumber}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link FulfillmentBandImpl#setResultAmount(BigDecimal)}
-   */
-  @Test
-  public void testSetResultAmount_thenFulfillmentPriceBandImplResultAmountIsInternalNumber() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentPriceBandImpl fulfillmentPriceBandImpl = new FulfillmentPriceBandImpl();
-    InternalNumber resultAmount = mock(InternalNumber.class);
-
-    // Act
-    fulfillmentPriceBandImpl.setResultAmount(resultAmount);
-
-    // Assert
-    assertSame(resultAmount, fulfillmentPriceBandImpl.getResultAmount());
-  }
-
-  /**
    * Test {@link FulfillmentBandImpl#getResultAmountType()}.
    * <p>
    * Method under test: {@link FulfillmentBandImpl#getResultAmountType()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FulfillmentBandResultAmountType FulfillmentBandImpl.getResultAmountType()"})
   public void testGetResultAmountType() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentPriceBandImpl fulfillmentPriceBandImpl = new FulfillmentPriceBandImpl();
-    fulfillmentPriceBandImpl.setRetailPriceMinimumAmount(mock(InternalNumber.class));
-
-    // Act
-    FulfillmentBandResultAmountType actualResultAmountType = fulfillmentPriceBandImpl.getResultAmountType();
-
-    // Assert
-    assertSame(actualResultAmountType.RATE, actualResultAmountType);
-  }
-
-  /**
-   * Test {@link FulfillmentBandImpl#getResultAmountType()}.
-   * <p>
-   * Method under test: {@link FulfillmentBandImpl#getResultAmountType()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetResultAmountType2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.fulfillment.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1393 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.fulfillment.domain.FulfillmentBandImpl fulfillmentBandImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    fulfillmentBandImpl.getResultAmountType();
-  }
-
-  /**
-   * Test {@link FulfillmentBandImpl#getResultAmountType()}.
-   * <ul>
-   *   <li>Given {@link FulfillmentPriceBandImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link FulfillmentBandImpl#getResultAmountType()}
-   */
-  @Test
-  public void testGetResultAmountType_givenFulfillmentPriceBandImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange and Act
     FulfillmentBandResultAmountType actualResultAmountType = (new FulfillmentPriceBandImpl()).getResultAmountType();
@@ -235,77 +90,20 @@ public class FulfillmentBandImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentBandImpl#setResultAmountType(FulfillmentBandResultAmountType)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentBandImpl#setResultAmountType(FulfillmentBandResultAmountType)}
-   */
-  @Test
-  public void testSetResultAmountType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentPriceBandImpl fulfillmentPriceBandImpl = new FulfillmentPriceBandImpl();
-    FulfillmentBandResultAmountType resultAmountType = mock(FulfillmentBandResultAmountType.class);
-    when(resultAmountType.getType()).thenReturn("Type");
-
-    // Act
-    fulfillmentPriceBandImpl.setResultAmountType(resultAmountType);
-
-    // Assert
-    verify(resultAmountType).getType();
-    FulfillmentBandResultAmountType resultAmountType2 = fulfillmentPriceBandImpl.getResultAmountType();
-    assertEquals("Friendly Type", resultAmountType2.getFriendlyType());
-    assertEquals("Type", resultAmountType2.getType());
-    assertEquals("Type", fulfillmentPriceBandImpl.resultAmountType);
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentBandImpl#setResultAmountType(FulfillmentBandResultAmountType)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentBandImpl#setResultAmountType(FulfillmentBandResultAmountType)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetResultAmountType2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.fulfillment.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1424 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.fulfillment.domain.FulfillmentBandImpl fulfillmentBandImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    fulfillmentBandImpl.setResultAmountType(FulfillmentBandResultAmountType.PERCENTAGE);
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentBandImpl#setResultAmountType(FulfillmentBandResultAmountType)}.
+   * Test {@link FulfillmentBandImpl#setResultAmountType(FulfillmentBandResultAmountType)}.
    * <ul>
-   *   <li>Then {@link FulfillmentPriceBandImpl} (default constructor)
-   * {@link FulfillmentBandImpl#resultAmountType} is {@code PERCENTAGE}.</li>
+   *   <li>Then {@link FulfillmentPriceBandImpl} (default constructor) {@link FulfillmentBandImpl#resultAmountType} is {@code PERCENTAGE}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentBandImpl#setResultAmountType(FulfillmentBandResultAmountType)}
+   * Method under test: {@link FulfillmentBandImpl#setResultAmountType(FulfillmentBandResultAmountType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentBandImpl.setResultAmountType(FulfillmentBandResultAmountType)"})
   public void testSetResultAmountType_thenFulfillmentPriceBandImplResultAmountTypeIsPercentage() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     FulfillmentPriceBandImpl fulfillmentPriceBandImpl = new FulfillmentPriceBandImpl();

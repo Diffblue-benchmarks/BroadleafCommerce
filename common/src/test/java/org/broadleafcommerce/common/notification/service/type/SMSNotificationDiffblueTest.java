@@ -21,12 +21,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -52,87 +52,30 @@ public class SMSNotificationDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SMSNotification.<init>()", "String SMSNotification.getPhoneNumber()",
+      "void SMSNotification.setPhoneNumber(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     SMSNotification actualSmsNotification = new SMSNotification();
     actualSmsNotification.setPhoneNumber("6625550144");
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("6625550144", actualSmsNotification.getPhoneNumber());
     assertTrue(actualSmsNotification.getContext().isEmpty());
   }
 
   /**
-   * Test
-   * {@link SMSNotification#SMSNotification(String, NotificationEventType, Map)}.
+   * Test {@link SMSNotification#SMSNotification(String, NotificationEventType, Map)}.
    * <ul>
-   *   <li>Given {@code Type}.</li>
-   *   <li>Then return Type Type is {@code Type}.</li>
+   *   <li>Then return {@link Notification#notificationType} is {@code ADMIN_FORGOT_PASSWORD}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SMSNotification#SMSNotification(String, NotificationEventType, Map)}
+   * Method under test: {@link SMSNotification#SMSNotification(String, NotificationEventType, Map)}
    */
   @Test
-  public void testNewSMSNotification_givenType_thenReturnTypeTypeIsType() {
-    // Arrange
-    NotificationEventType notificationEventType2 = mock(NotificationEventType.class);
-    when(notificationEventType2.getType()).thenReturn("Type");
-
-    // Act
-    SMSNotification actualSmsNotification = new SMSNotification("6625550144", notificationEventType2, new HashMap<>());
-
-    // Assert
-    verify(notificationEventType2).getType();
-    assertEquals("6625550144", actualSmsNotification.getPhoneNumber());
-    NotificationEventType type = actualSmsNotification.getType();
-    assertEquals("Type", type.getType());
-    assertEquals("Type", actualSmsNotification.notificationType);
-    assertEquals("Unable to find an EmailInfo that matched a notification of type ", type.getFriendlyType());
-    assertTrue(actualSmsNotification.getContext().isEmpty());
-  }
-
-  /**
-   * Test {@link SMSNotification#SMSNotification(NotificationEventType, Map)}.
-   * <ul>
-   *   <li>Given {@code Type}.</li>
-   *   <li>Then return Type Type is {@code Type}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SMSNotification#SMSNotification(NotificationEventType, Map)}
-   */
-  @Test
-  public void testNewSMSNotification_givenType_thenReturnTypeTypeIsType2() {
-    // Arrange
-    NotificationEventType notificationEventType2 = mock(NotificationEventType.class);
-    when(notificationEventType2.getType()).thenReturn("Type");
-
-    // Act
-    SMSNotification actualSmsNotification = new SMSNotification(notificationEventType2, new HashMap<>());
-
-    // Assert
-    verify(notificationEventType2).getType();
-    NotificationEventType type = actualSmsNotification.getType();
-    assertEquals("Type", type.getType());
-    assertEquals("Type", actualSmsNotification.notificationType);
-    assertEquals("Unable to find an EmailInfo that matched a notification of type ", type.getFriendlyType());
-    assertNull(actualSmsNotification.getPhoneNumber());
-    assertTrue(actualSmsNotification.getContext().isEmpty());
-  }
-
-  /**
-   * Test
-   * {@link SMSNotification#SMSNotification(String, NotificationEventType, Map)}.
-   * <ul>
-   *   <li>Then return {@link Notification#notificationType} is
-   * {@code ADMIN_FORGOT_PASSWORD}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SMSNotification#SMSNotification(String, NotificationEventType, Map)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SMSNotification.<init>(String, NotificationEventType, Map)"})
   public void testNewSMSNotification_thenReturnNotificationTypeIsAdminForgotPassword() {
     // Arrange
     NotificationEventType notificationEventType2 = NotificationEventType.ADMIN_FORGOT_PASSWORD;
@@ -151,14 +94,14 @@ public class SMSNotificationDiffblueTest {
   /**
    * Test {@link SMSNotification#SMSNotification(NotificationEventType, Map)}.
    * <ul>
-   *   <li>Then return {@link Notification#notificationType} is
-   * {@code ADMIN_FORGOT_PASSWORD}.</li>
+   *   <li>Then return {@link Notification#notificationType} is {@code ADMIN_FORGOT_PASSWORD}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SMSNotification#SMSNotification(NotificationEventType, Map)}
+   * Method under test: {@link SMSNotification#SMSNotification(NotificationEventType, Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SMSNotification.<init>(NotificationEventType, Map)"})
   public void testNewSMSNotification_thenReturnNotificationTypeIsAdminForgotPassword2() {
     // Arrange
     NotificationEventType notificationEventType2 = NotificationEventType.ADMIN_FORGOT_PASSWORD;

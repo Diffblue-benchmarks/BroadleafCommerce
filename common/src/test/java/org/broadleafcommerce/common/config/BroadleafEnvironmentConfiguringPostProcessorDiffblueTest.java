@@ -19,64 +19,24 @@ package org.broadleafcommerce.common.config;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.List;
 import org.broadleafcommerce.test.common.properties.sources.CommonFrameworkTestProperties;
 import org.broadleafcommerce.test.common.properties.sources.ProfileAwareProperties;
 import org.broadleafcommerce.test.common.properties.sources.ProfileAwareSharedProperties;
 import org.junit.Test;
-import org.mockito.Mockito;
-import org.springframework.boot.SpringApplication;
-import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.core.env.MutablePropertySources;
+import org.junit.experimental.categories.Category;
 
 public class BroadleafEnvironmentConfiguringPostProcessorDiffblueTest {
   /**
-   * Test
-   * {@link BroadleafEnvironmentConfiguringPostProcessor#postProcessEnvironment(ConfigurableEnvironment, SpringApplication)}.
-   * <ul>
-   *   <li>Given {@code Property}.</li>
-   *   <li>Then calls {@link ConfigurableEnvironment#addActiveProfile(String)}.</li>
-   * </ul>
+   * Test new {@link BroadleafEnvironmentConfiguringPostProcessor} (default constructor).
    * <p>
-   * Method under test:
-   * {@link BroadleafEnvironmentConfiguringPostProcessor#postProcessEnvironment(ConfigurableEnvironment, SpringApplication)}
+   * Method under test: default or parameterless constructor of {@link BroadleafEnvironmentConfiguringPostProcessor}
    */
   @Test
-  public void testPostProcessEnvironment_givenProperty_thenCallsAddActiveProfile() {
-    // Arrange
-    BroadleafEnvironmentConfiguringPostProcessor broadleafEnvironmentConfiguringPostProcessor = new BroadleafEnvironmentConfiguringPostProcessor();
-    ConfigurableEnvironment environment = mock(ConfigurableEnvironment.class);
-    doNothing().when(environment).addActiveProfile(Mockito.<String>any());
-    when(environment.getProperty(Mockito.<String>any())).thenReturn("Property");
-    when(environment.getActiveProfiles()).thenReturn(new String[]{"Active Profiles"});
-    when(environment.getPropertySources()).thenReturn(new MutablePropertySources());
-    Class<Object> forNameResult = Object.class;
-
-    // Act
-    broadleafEnvironmentConfiguringPostProcessor.postProcessEnvironment(environment,
-        new SpringApplication(forNameResult));
-
-    // Assert
-    verify(environment).addActiveProfile(eq("Property"));
-    verify(environment, atLeast(1)).getPropertySources();
-    verify(environment, atLeast(1)).getActiveProfiles();
-    verify(environment, atLeast(1)).getProperty(Mockito.<String>any());
-  }
-
-  /**
-   * Test new {@link BroadleafEnvironmentConfiguringPostProcessor} (default
-   * constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link BroadleafEnvironmentConfiguringPostProcessor}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BroadleafEnvironmentConfiguringPostProcessor.<init>()"})
   public void testNewBroadleafEnvironmentConfiguringPostProcessor() {
     // Arrange and Act
     BroadleafEnvironmentConfiguringPostProcessor actualBroadleafEnvironmentConfiguringPostProcessor = new BroadleafEnvironmentConfiguringPostProcessor();

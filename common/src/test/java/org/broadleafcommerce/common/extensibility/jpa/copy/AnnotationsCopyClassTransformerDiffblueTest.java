@@ -21,12 +21,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.yahoo.platform.yui.compressor.JarClassLoader;
 import java.io.UnsupportedEncodingException;
 import java.lang.instrument.IllegalClassFormatException;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.file.Paths;
 import java.security.CodeSigner;
 import java.security.CodeSource;
@@ -35,13 +35,9 @@ import java.security.ProtectionDomain;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import javassist.CannotCompileException;
-import javassist.ClassMap;
-import javassist.CtClass;
-import javassist.CtMethod;
 import org.broadleafcommerce.common.util.BLCFieldUtils;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -54,13 +50,13 @@ public class AnnotationsCopyClassTransformerDiffblueTest {
   private AnnotationsCopyClassTransformer annotationsCopyClassTransformer;
 
   /**
-   * Test
-   * {@link AnnotationsCopyClassTransformer#AnnotationsCopyClassTransformer(String)}.
+   * Test {@link AnnotationsCopyClassTransformer#AnnotationsCopyClassTransformer(String)}.
    * <p>
-   * Method under test:
-   * {@link AnnotationsCopyClassTransformer#AnnotationsCopyClassTransformer(String)}
+   * Method under test: {@link AnnotationsCopyClassTransformer#AnnotationsCopyClassTransformer(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AnnotationsCopyClassTransformer.<init>(String)"})
   public void testNewAnnotationsCopyClassTransformer() {
     // Arrange and Act
     AnnotationsCopyClassTransformer actualAnnotationsCopyClassTransformer = new AnnotationsCopyClassTransformer(
@@ -77,12 +73,15 @@ public class AnnotationsCopyClassTransformerDiffblueTest {
    * Methods under test:
    * <ul>
    *   <li>{@link AnnotationsCopyClassTransformer#setXformTemplates(Map)}
-   *   <li>
-   * {@link AnnotationsCopyClassTransformer#compileJPAProperties(Properties, Object)}
+   *   <li>{@link AnnotationsCopyClassTransformer#compileJPAProperties(Properties, Object)}
    *   <li>{@link AnnotationsCopyClassTransformer#getXformTemplates()}
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AnnotationsCopyClassTransformer.compileJPAProperties(Properties, Object)",
+      "Map AnnotationsCopyClassTransformer.getXformTemplates()",
+      "void AnnotationsCopyClassTransformer.setXformTemplates(Map)"})
   public void testGettersAndSetters() throws Exception {
     // Arrange
     AnnotationsCopyClassTransformer annotationsCopyClassTransformer = new AnnotationsCopyClassTransformer(
@@ -94,40 +93,65 @@ public class AnnotationsCopyClassTransformerDiffblueTest {
     annotationsCopyClassTransformer.compileJPAProperties(new Properties(), BLCFieldUtils.NULL_FIELD);
     Map<String, String> actualXformTemplates = annotationsCopyClassTransformer.getXformTemplates();
 
-    // Assert that nothing has changed
+    // Assert
     assertTrue(actualXformTemplates.isEmpty());
     assertSame(xformTemplates, actualXformTemplates);
   }
 
   /**
-   * Test
-   * {@link AnnotationsCopyClassTransformer#transform(ClassLoader, String, Class, ProtectionDomain, byte[])}.
+   * Test {@link AnnotationsCopyClassTransformer#transform(ClassLoader, String, Class, ProtectionDomain, byte[])}.
+   * <ul>
+   *   <li>When {@code Class Name}.</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link AnnotationsCopyClassTransformer#transform(ClassLoader, String, Class, ProtectionDomain, byte[])}
+   * Method under test: {@link AnnotationsCopyClassTransformer#transform(ClassLoader, String, Class, ProtectionDomain, byte[])}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testTransform() throws UnsupportedEncodingException, IllegalClassFormatException, MalformedURLException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at java.base/java.security.CodeSigner.<init>(CodeSigner.java:75)
-    //   See https://diff.blue/R013 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "byte[] AnnotationsCopyClassTransformer.transform(ClassLoader, String, Class, ProtectionDomain, byte[])"})
+  public void testTransform_whenClassName_thenReturnNull()
+      throws UnsupportedEncodingException, IllegalClassFormatException, MalformedURLException {
     // Arrange
     JarClassLoader loader = new JarClassLoader();
     Class<Object> classBeingRedefined = Object.class;
-    URL toURLResult = Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
-    CodeSource codeSource = new CodeSource(toURLResult, new CodeSigner[]{new CodeSigner(null, null)});
+    CodeSource codeSource = new CodeSource(Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL(),
+        new CodeSigner[]{null});
 
     ProtectionDomain protectionDomain = new ProtectionDomain(codeSource, new Permissions());
 
-    // Act
-    annotationsCopyClassTransformer.transform(loader, "Class Name", classBeingRedefined, protectionDomain,
-        "AXAXAXAX".getBytes("UTF-8"));
+    // Act and Assert
+    assertNull(annotationsCopyClassTransformer.transform(loader, "Class Name", classBeingRedefined, protectionDomain,
+        "AXAXAXAX".getBytes("UTF-8")));
+  }
+
+  /**
+   * Test {@link AnnotationsCopyClassTransformer#transform(ClassLoader, String, Class, ProtectionDomain, byte[])}.
+   * <ul>
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AnnotationsCopyClassTransformer#transform(ClassLoader, String, Class, ProtectionDomain, byte[])}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "byte[] AnnotationsCopyClassTransformer.transform(ClassLoader, String, Class, ProtectionDomain, byte[])"})
+  public void testTransform_whenNull_thenReturnNull()
+      throws UnsupportedEncodingException, IllegalClassFormatException, MalformedURLException {
+    // Arrange
+    JarClassLoader loader = new JarClassLoader();
+    Class<Object> classBeingRedefined = Object.class;
+    CodeSource codeSource = new CodeSource(Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL(),
+        new CodeSigner[]{null});
+
+    ProtectionDomain protectionDomain = new ProtectionDomain(codeSource, new Permissions());
+
+    // Act and Assert
+    assertNull(annotationsCopyClassTransformer.transform(loader, null, classBeingRedefined, protectionDomain,
+        "AXAXAXAX".getBytes("UTF-8")));
   }
 
   /**
@@ -137,10 +161,11 @@ public class AnnotationsCopyClassTransformerDiffblueTest {
    *   <li>Then return {@code Class Name}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AnnotationsCopyClassTransformer#getImplementationType(String)}
+   * Method under test: {@link AnnotationsCopyClassTransformer#getImplementationType(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String AnnotationsCopyClassTransformer.getImplementationType(String)"})
   public void testGetImplementationType_whenClassName_thenReturnClassName() {
     // Arrange, Act and Assert
     assertEquals("Class Name", annotationsCopyClassTransformer.getImplementationType("Class Name"));
@@ -153,10 +178,11 @@ public class AnnotationsCopyClassTransformerDiffblueTest {
    *   <li>Then return {@code java.util.ArrayList}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AnnotationsCopyClassTransformer#getImplementationType(String)}
+   * Method under test: {@link AnnotationsCopyClassTransformer#getImplementationType(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String AnnotationsCopyClassTransformer.getImplementationType(String)"})
   public void testGetImplementationType_whenJavaUtilList_thenReturnJavaUtilArrayList() {
     // Arrange, Act and Assert
     assertEquals("java.util.ArrayList", annotationsCopyClassTransformer.getImplementationType("java.util.List"));
@@ -165,14 +191,15 @@ public class AnnotationsCopyClassTransformerDiffblueTest {
   /**
    * Test {@link AnnotationsCopyClassTransformer#getImplementationType(String)}.
    * <ul>
-   *   <li>When {@code java.util.Map}.</li>
-   *   <li>Then return {@code java.util.HashMap}.</li>
+   *   <li>When {@code Map}.</li>
+   *   <li>Then return {@code HashMap}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AnnotationsCopyClassTransformer#getImplementationType(String)}
+   * Method under test: {@link AnnotationsCopyClassTransformer#getImplementationType(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String AnnotationsCopyClassTransformer.getImplementationType(String)"})
   public void testGetImplementationType_whenJavaUtilMap_thenReturnJavaUtilHashMap() {
     // Arrange, Act and Assert
     assertEquals("java.util.HashMap", annotationsCopyClassTransformer.getImplementationType("java.util.Map"));
@@ -185,10 +212,11 @@ public class AnnotationsCopyClassTransformerDiffblueTest {
    *   <li>Then return {@code java.util.HashSet}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AnnotationsCopyClassTransformer#getImplementationType(String)}
+   * Method under test: {@link AnnotationsCopyClassTransformer#getImplementationType(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String AnnotationsCopyClassTransformer.getImplementationType(String)"})
   public void testGetImplementationType_whenJavaUtilSet_thenReturnJavaUtilHashSet() {
     // Arrange, Act and Assert
     assertEquals("java.util.HashSet", annotationsCopyClassTransformer.getImplementationType("java.util.Set"));
@@ -201,40 +229,13 @@ public class AnnotationsCopyClassTransformerDiffblueTest {
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AnnotationsCopyClassTransformer#getImplementationType(String)}
+   * Method under test: {@link AnnotationsCopyClassTransformer#getImplementationType(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String AnnotationsCopyClassTransformer.getImplementationType(String)"})
   public void testGetImplementationType_whenLeftSquareBracket_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull(annotationsCopyClassTransformer.getImplementationType("["));
-  }
-
-  /**
-   * Test {@link AnnotationsCopyClassTransformer#methodDescription(CtMethod)}.
-   * <p>
-   * Method under test:
-   * {@link AnnotationsCopyClassTransformer#methodDescription(CtMethod)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testMethodDescription() throws CannotCompileException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at javassist.CtMethod.<init>(CtMethod.java:56)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    AnnotationsCopyClassTransformer annotationsCopyClassTransformer = new AnnotationsCopyClassTransformer(
-        "Module Name");
-    CtMethod src = new CtMethod(mock(CtClass.class), "Mname", new CtClass[]{mock(CtClass.class)}, mock(CtClass.class));
-
-    CtClass declaring = mock(CtClass.class);
-
-    // Act
-    annotationsCopyClassTransformer.methodDescription(new CtMethod(src, declaring, new ClassMap()));
   }
 }

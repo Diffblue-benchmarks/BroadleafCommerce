@@ -19,12 +19,13 @@ package org.broadleafcommerce.common.extensibility.context.merge.handlers;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.mock;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import javax.imageio.metadata.IIOMetadataNode;
-import org.broadleafcommerce.common.extensibility.context.merge.handlers.SchemaLocationMergeTest.DummyNode;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -40,35 +41,15 @@ public class MergeHandlerAdapterDiffblueTest {
   /**
    * Test {@link MergeHandlerAdapter#merge(List, List, List)}.
    * <ul>
-   *   <li>Given {@link DummyNode}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link DummyNode}.</li>
+   *   <li>Given {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
    * </ul>
    * <p>
    * Method under test: {@link MergeHandlerAdapter#merge(List, List, List)}
    */
   @Test
-  public void testMerge_givenDummyNode_whenArrayListAddDummyNode() {
-    // Arrange
-    ArrayList<Node> nodeList1 = new ArrayList<>();
-    nodeList1.add(mock(SchemaLocationMergeTest.DummyNode.class));
-    ArrayList<Node> nodeList2 = new ArrayList<>();
-
-    // Act and Assert
-    assertNull(mergeHandlerAdapter.merge(nodeList1, nodeList2, new ArrayList<>()));
-  }
-
-  /**
-   * Test {@link MergeHandlerAdapter#merge(List, List, List)}.
-   * <ul>
-   *   <li>Given {@link IIOMetadataNode#IIOMetadataNode(String)} with
-   * {@code foo}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add
-   * {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MergeHandlerAdapter#merge(List, List, List)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Node[] MergeHandlerAdapter.merge(List, List, List)"})
   public void testMerge_givenIIOMetadataNodeWithFoo_whenArrayListAddIIOMetadataNodeWithFoo() {
     // Arrange
     ArrayList<Node> nodeList1 = new ArrayList<>();
@@ -82,15 +63,15 @@ public class MergeHandlerAdapterDiffblueTest {
   /**
    * Test {@link MergeHandlerAdapter#merge(List, List, List)}.
    * <ul>
-   *   <li>Given {@link IIOMetadataNode#IIOMetadataNode(String)} with
-   * {@code foo}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add
-   * {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
+   *   <li>Given {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
    * </ul>
    * <p>
    * Method under test: {@link MergeHandlerAdapter#merge(List, List, List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Node[] MergeHandlerAdapter.merge(List, List, List)"})
   public void testMerge_givenIIOMetadataNodeWithFoo_whenArrayListAddIIOMetadataNodeWithFoo2() {
     // Arrange
     ArrayList<Node> nodeList1 = new ArrayList<>();
@@ -105,15 +86,15 @@ public class MergeHandlerAdapterDiffblueTest {
   /**
    * Test {@link MergeHandlerAdapter#merge(List, List, List)}.
    * <ul>
-   *   <li>Given {@link IIOMetadataNode#IIOMetadataNode(String)} with
-   * {@code foo}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add
-   * {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
+   *   <li>Given {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
    * </ul>
    * <p>
    * Method under test: {@link MergeHandlerAdapter#merge(List, List, List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Node[] MergeHandlerAdapter.merge(List, List, List)"})
   public void testMerge_givenIIOMetadataNodeWithFoo_whenArrayListAddIIOMetadataNodeWithFoo3() {
     // Arrange
     ArrayList<Node> nodeList1 = new ArrayList<>();
@@ -128,15 +109,15 @@ public class MergeHandlerAdapterDiffblueTest {
   /**
    * Test {@link MergeHandlerAdapter#merge(List, List, List)}.
    * <ul>
-   *   <li>Given {@link IIOMetadataNode#IIOMetadataNode(String)} with
-   * {@code foo}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add
-   * {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
+   *   <li>Given {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
    * </ul>
    * <p>
    * Method under test: {@link MergeHandlerAdapter#merge(List, List, List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Node[] MergeHandlerAdapter.merge(List, List, List)"})
   public void testMerge_givenIIOMetadataNodeWithFoo_whenArrayListAddIIOMetadataNodeWithFoo4() {
     // Arrange
     ArrayList<Node> nodeList1 = new ArrayList<>();
@@ -152,15 +133,15 @@ public class MergeHandlerAdapterDiffblueTest {
   /**
    * Test {@link MergeHandlerAdapter#merge(List, List, List)}.
    * <ul>
-   *   <li>Given {@link IIOMetadataNode#IIOMetadataNode(String)} with
-   * {@code foo}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add
-   * {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
+   *   <li>Given {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
    * </ul>
    * <p>
    * Method under test: {@link MergeHandlerAdapter#merge(List, List, List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Node[] MergeHandlerAdapter.merge(List, List, List)"})
   public void testMerge_givenIIOMetadataNodeWithFoo_whenArrayListAddIIOMetadataNodeWithFoo5() {
     // Arrange
     ArrayList<Node> nodeList1 = new ArrayList<>();
@@ -176,15 +157,15 @@ public class MergeHandlerAdapterDiffblueTest {
   /**
    * Test {@link MergeHandlerAdapter#merge(List, List, List)}.
    * <ul>
-   *   <li>Given {@link IIOMetadataNode#IIOMetadataNode(String)} with
-   * {@code foo}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add
-   * {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
+   *   <li>Given {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
    * </ul>
    * <p>
    * Method under test: {@link MergeHandlerAdapter#merge(List, List, List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Node[] MergeHandlerAdapter.merge(List, List, List)"})
   public void testMerge_givenIIOMetadataNodeWithFoo_whenArrayListAddIIOMetadataNodeWithFoo6() {
     // Arrange
     ArrayList<Node> nodeList1 = new ArrayList<>();
@@ -207,6 +188,8 @@ public class MergeHandlerAdapterDiffblueTest {
    * Method under test: {@link MergeHandlerAdapter#merge(List, List, List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Node[] MergeHandlerAdapter.merge(List, List, List)"})
   public void testMerge_whenArrayList() {
     // Arrange
     ArrayList<Node> nodeList1 = new ArrayList<>();
@@ -233,6 +216,12 @@ public class MergeHandlerAdapterDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void MergeHandlerAdapter.<init>()", "MergeHandler[] MergeHandlerAdapter.getChildren()",
+      "String MergeHandlerAdapter.getName()", "int MergeHandlerAdapter.getPriority()",
+      "String MergeHandlerAdapter.getXPath()", "void MergeHandlerAdapter.setChildren(MergeHandler[])",
+      "void MergeHandlerAdapter.setName(String)", "void MergeHandlerAdapter.setPriority(int)",
+      "void MergeHandlerAdapter.setXPath(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     MergeHandlerAdapter actualMergeHandlerAdapter = new MergeHandlerAdapter();
@@ -240,12 +229,14 @@ public class MergeHandlerAdapterDiffblueTest {
     actualMergeHandlerAdapter.setName("Name");
     actualMergeHandlerAdapter.setPriority(1);
     actualMergeHandlerAdapter.setXPath("Xpath");
-    actualMergeHandlerAdapter.getChildren();
-    actualMergeHandlerAdapter.getName();
+    MergeHandler[] actualChildren = actualMergeHandlerAdapter.getChildren();
+    String actualName = actualMergeHandlerAdapter.getName();
     int actualPriority = actualMergeHandlerAdapter.getPriority();
-    actualMergeHandlerAdapter.getXPath();
 
-    // Assert that nothing has changed
+    // Assert
+    assertNull(actualName);
+    assertNull(actualMergeHandlerAdapter.getXPath());
+    assertNull(actualChildren);
     assertEquals(0, actualPriority);
   }
 }

@@ -1,10 +1,24 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework Web
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.web.linkeddata.generator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import javax.servlet.http.HttpServletRequest;
 import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
 import org.broadleafcommerce.core.catalog.domain.Product;
@@ -14,1280 +28,441 @@ import org.broadleafcommerce.core.web.security.XssRequestWrapper;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.web.reactive.context.StandardReactiveWebEnvironment;
-import org.springframework.core.env.StandardEnvironment;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
 
-@ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml",
-    "/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+@ContextConfiguration(classes = {DefaultLinkedDataGeneratorExtensionHandler.class})
 @ExtendWith(SpringExtension.class)
 class AbstractLinkedDataGeneratorExtensionHandlerDiffblueTest {
   @Autowired
   private AbstractLinkedDataGeneratorExtensionHandler abstractLinkedDataGeneratorExtensionHandler;
 
+  @MockBean(name = "blLinkedDataGeneratorExtensionManager")
+  private LinkedDataGeneratorExtensionManager linkedDataGeneratorExtensionManager;
+
   /**
-   * Test
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addDefaultData(HttpServletRequest, JSONArray)}.
+   * Test {@link AbstractLinkedDataGeneratorExtensionHandler#addDefaultData(HttpServletRequest, JSONArray)}.
    * <p>
-   * Method under test:
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addDefaultData(HttpServletRequest, JSONArray)}
+   * Method under test: {@link AbstractLinkedDataGeneratorExtensionHandler#addDefaultData(HttpServletRequest, JSONArray)}
    */
   @Test
   @DisplayName("Test addDefaultData(HttpServletRequest, JSONArray)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AbstractLinkedDataGeneratorExtensionHandler.addDefaultData(HttpServletRequest, JSONArray)"})
   void testAddDefaultData() throws JSONException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DefaultLinkedDataGeneratorExtensionHandler defaultLinkedDataGeneratorExtensionHandler = new DefaultLinkedDataGeneratorExtensionHandler();
     MockHttpServletRequest servletRequest = new MockHttpServletRequest();
     SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
         new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
 
     // Act and Assert
     assertEquals(ExtensionResultStatusType.NOT_HANDLED,
-        defaultLinkedDataGeneratorExtensionHandler.addDefaultData(request, new JSONArray(3)));
+        abstractLinkedDataGeneratorExtensionHandler.addDefaultData(request, new JSONArray(3)));
   }
 
   /**
-   * Test
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addDefaultData(HttpServletRequest, JSONArray)}.
+   * Test {@link AbstractLinkedDataGeneratorExtensionHandler#addBreadcrumbData(HttpServletRequest, JSONObject)}.
+   * <ul>
+   *   <li>When {@link JSONObject#JSONObject()}.</li>
+   *   <li>Then return {@code NOT_HANDLED}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addDefaultData(HttpServletRequest, JSONArray)}
+   * Method under test: {@link AbstractLinkedDataGeneratorExtensionHandler#addBreadcrumbData(HttpServletRequest, JSONObject)}
    */
   @Test
-  @DisplayName("Test addDefaultData(HttpServletRequest, JSONArray)")
-  void testAddDefaultData2() throws JSONException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @DisplayName("Test addBreadcrumbData(HttpServletRequest, JSONObject); when JSONObject(); then return 'NOT_HANDLED'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AbstractLinkedDataGeneratorExtensionHandler.addBreadcrumbData(HttpServletRequest, JSONObject)"})
+  void testAddBreadcrumbData_whenJSONObject_thenReturnNotHandled() throws JSONException {
     // Arrange
-    DefaultLinkedDataGeneratorExtensionHandler defaultLinkedDataGeneratorExtensionHandler = new DefaultLinkedDataGeneratorExtensionHandler();
-    DefaultMultipartHttpServletRequest servletRequest = mock(DefaultMultipartHttpServletRequest.class);
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
     SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
         new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
 
     // Act and Assert
     assertEquals(ExtensionResultStatusType.NOT_HANDLED,
-        defaultLinkedDataGeneratorExtensionHandler.addDefaultData(request, new JSONArray(3)));
+        abstractLinkedDataGeneratorExtensionHandler.addBreadcrumbData(request, new JSONObject()));
   }
 
   /**
-   * Test
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addDefaultData(HttpServletRequest, JSONArray)}.
-   * <p>
-   * Method under test:
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addDefaultData(HttpServletRequest, JSONArray)}
-   */
-  @Test
-  @DisplayName("Test addDefaultData(HttpServletRequest, JSONArray)")
-  @Disabled("TODO: Complete this test")
-  void testAddDefaultData3() throws JSONException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.linkeddata.generator;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1544 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.linkeddata.generator.AbstractLinkedDataGeneratorExtensionHandler abstractLinkedDataGeneratorExtensionHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DefaultLinkedDataGeneratorExtensionHandler defaultLinkedDataGeneratorExtensionHandler = new DefaultLinkedDataGeneratorExtensionHandler();
-    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
-    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
-        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
-
-    // Act
-    defaultLinkedDataGeneratorExtensionHandler.addDefaultData(request, new JSONArray(3));
-  }
-
-  /**
-   * Test
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addBreadcrumbData(HttpServletRequest, JSONObject)}.
-   * <p>
-   * Method under test:
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addBreadcrumbData(HttpServletRequest, JSONObject)}
-   */
-  @Test
-  @DisplayName("Test addBreadcrumbData(HttpServletRequest, JSONObject)")
-  @Disabled("TODO: Complete this test")
-  void testAddBreadcrumbData() throws JSONException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.linkeddata.generator;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass434 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.linkeddata.generator.AbstractLinkedDataGeneratorExtensionHandler abstractLinkedDataGeneratorExtensionHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DefaultLinkedDataGeneratorExtensionHandler defaultLinkedDataGeneratorExtensionHandler = new DefaultLinkedDataGeneratorExtensionHandler();
-    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
-    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
-        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
-
-    // Act
-    defaultLinkedDataGeneratorExtensionHandler.addBreadcrumbData(request, new JSONObject("String"));
-  }
-
-  /**
-   * Test
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addBreadcrumbData(HttpServletRequest, JSONObject)}.
+   * Test {@link AbstractLinkedDataGeneratorExtensionHandler#addBreadcrumbListItemData(HttpServletRequest, JSONObject)}.
    * <ul>
-   *   <li>Given {@code Profile}.</li>
+   *   <li>When {@link JSONObject#JSONObject()}.</li>
    *   <li>Then return {@code NOT_HANDLED}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addBreadcrumbData(HttpServletRequest, JSONObject)}
+   * Method under test: {@link AbstractLinkedDataGeneratorExtensionHandler#addBreadcrumbListItemData(HttpServletRequest, JSONObject)}
    */
   @Test
-  @DisplayName("Test addBreadcrumbData(HttpServletRequest, JSONObject); given 'Profile'; then return 'NOT_HANDLED'")
-  void testAddBreadcrumbData_givenProfile_thenReturnNotHandled() throws JSONException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @DisplayName("Test addBreadcrumbListItemData(HttpServletRequest, JSONObject); when JSONObject(); then return 'NOT_HANDLED'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AbstractLinkedDataGeneratorExtensionHandler.addBreadcrumbListItemData(HttpServletRequest, JSONObject)"})
+  void testAddBreadcrumbListItemData_whenJSONObject_thenReturnNotHandled() throws JSONException {
     // Arrange
-    DefaultLinkedDataGeneratorExtensionHandler defaultLinkedDataGeneratorExtensionHandler = new DefaultLinkedDataGeneratorExtensionHandler();
-    StandardEnvironment environment = mock(StandardEnvironment.class);
-    doNothing().when(environment).addActiveProfile(Mockito.<String>any());
-    environment.addActiveProfile("Profile");
-    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(
-        mock(DefaultMultipartHttpServletRequest.class), environment, new String[]{"White List Param Names"}));
-
-    // Act
-    ExtensionResultStatusType actualAddBreadcrumbDataResult = defaultLinkedDataGeneratorExtensionHandler
-        .addBreadcrumbData(request, new JSONObject());
-
-    // Assert
-    verify(environment).addActiveProfile(eq("Profile"));
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED, actualAddBreadcrumbDataResult);
-  }
-
-  /**
-   * Test
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addBreadcrumbListItemData(HttpServletRequest, JSONObject)}.
-   * <p>
-   * Method under test:
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addBreadcrumbListItemData(HttpServletRequest, JSONObject)}
-   */
-  @Test
-  @DisplayName("Test addBreadcrumbListItemData(HttpServletRequest, JSONObject)")
-  @Disabled("TODO: Complete this test")
-  void testAddBreadcrumbListItemData() throws JSONException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.linkeddata.generator;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass804 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.linkeddata.generator.AbstractLinkedDataGeneratorExtensionHandler abstractLinkedDataGeneratorExtensionHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DefaultLinkedDataGeneratorExtensionHandler defaultLinkedDataGeneratorExtensionHandler = new DefaultLinkedDataGeneratorExtensionHandler();
     MockHttpServletRequest servletRequest = new MockHttpServletRequest();
     SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
         new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
 
-    // Act
-    defaultLinkedDataGeneratorExtensionHandler.addBreadcrumbListItemData(request, new JSONObject("String"));
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        abstractLinkedDataGeneratorExtensionHandler.addBreadcrumbListItemData(request, new JSONObject()));
   }
 
   /**
-   * Test
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addBreadcrumbListItemData(HttpServletRequest, JSONObject)}.
+   * Test {@link AbstractLinkedDataGeneratorExtensionHandler#addBreadcrumbItemData(HttpServletRequest, JSONObject)}.
    * <ul>
-   *   <li>Given {@code Profile}.</li>
+   *   <li>When {@link JSONObject#JSONObject()}.</li>
    *   <li>Then return {@code NOT_HANDLED}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addBreadcrumbListItemData(HttpServletRequest, JSONObject)}
+   * Method under test: {@link AbstractLinkedDataGeneratorExtensionHandler#addBreadcrumbItemData(HttpServletRequest, JSONObject)}
    */
   @Test
-  @DisplayName("Test addBreadcrumbListItemData(HttpServletRequest, JSONObject); given 'Profile'; then return 'NOT_HANDLED'")
-  void testAddBreadcrumbListItemData_givenProfile_thenReturnNotHandled() throws JSONException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @DisplayName("Test addBreadcrumbItemData(HttpServletRequest, JSONObject); when JSONObject(); then return 'NOT_HANDLED'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AbstractLinkedDataGeneratorExtensionHandler.addBreadcrumbItemData(HttpServletRequest, JSONObject)"})
+  void testAddBreadcrumbItemData_whenJSONObject_thenReturnNotHandled() throws JSONException {
     // Arrange
-    DefaultLinkedDataGeneratorExtensionHandler defaultLinkedDataGeneratorExtensionHandler = new DefaultLinkedDataGeneratorExtensionHandler();
-    StandardEnvironment environment = mock(StandardEnvironment.class);
-    doNothing().when(environment).addActiveProfile(Mockito.<String>any());
-    environment.addActiveProfile("Profile");
-    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(
-        mock(DefaultMultipartHttpServletRequest.class), environment, new String[]{"White List Param Names"}));
-
-    // Act
-    ExtensionResultStatusType actualAddBreadcrumbListItemDataResult = defaultLinkedDataGeneratorExtensionHandler
-        .addBreadcrumbListItemData(request, new JSONObject());
-
-    // Assert
-    verify(environment).addActiveProfile(eq("Profile"));
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED, actualAddBreadcrumbListItemDataResult);
-  }
-
-  /**
-   * Test
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addBreadcrumbItemData(HttpServletRequest, JSONObject)}.
-   * <p>
-   * Method under test:
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addBreadcrumbItemData(HttpServletRequest, JSONObject)}
-   */
-  @Test
-  @DisplayName("Test addBreadcrumbItemData(HttpServletRequest, JSONObject)")
-  @Disabled("TODO: Complete this test")
-  void testAddBreadcrumbItemData() throws JSONException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.linkeddata.generator;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass619 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.linkeddata.generator.AbstractLinkedDataGeneratorExtensionHandler abstractLinkedDataGeneratorExtensionHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DefaultLinkedDataGeneratorExtensionHandler defaultLinkedDataGeneratorExtensionHandler = new DefaultLinkedDataGeneratorExtensionHandler();
     MockHttpServletRequest servletRequest = new MockHttpServletRequest();
     SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
         new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
 
-    // Act
-    defaultLinkedDataGeneratorExtensionHandler.addBreadcrumbItemData(request, new JSONObject("String"));
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        abstractLinkedDataGeneratorExtensionHandler.addBreadcrumbItemData(request, new JSONObject()));
   }
 
   /**
-   * Test
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addBreadcrumbItemData(HttpServletRequest, JSONObject)}.
-   * <ul>
-   *   <li>Given {@code Profile}.</li>
-   *   <li>Then return {@code NOT_HANDLED}.</li>
-   * </ul>
+   * Test {@link AbstractLinkedDataGeneratorExtensionHandler#addHomepageData(HttpServletRequest, JSONArray)}.
    * <p>
-   * Method under test:
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addBreadcrumbItemData(HttpServletRequest, JSONObject)}
-   */
-  @Test
-  @DisplayName("Test addBreadcrumbItemData(HttpServletRequest, JSONObject); given 'Profile'; then return 'NOT_HANDLED'")
-  void testAddBreadcrumbItemData_givenProfile_thenReturnNotHandled() throws JSONException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    DefaultLinkedDataGeneratorExtensionHandler defaultLinkedDataGeneratorExtensionHandler = new DefaultLinkedDataGeneratorExtensionHandler();
-    StandardEnvironment environment = mock(StandardEnvironment.class);
-    doNothing().when(environment).addActiveProfile(Mockito.<String>any());
-    environment.addActiveProfile("Profile");
-    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(
-        mock(DefaultMultipartHttpServletRequest.class), environment, new String[]{"White List Param Names"}));
-
-    // Act
-    ExtensionResultStatusType actualAddBreadcrumbItemDataResult = defaultLinkedDataGeneratorExtensionHandler
-        .addBreadcrumbItemData(request, new JSONObject());
-
-    // Assert
-    verify(environment).addActiveProfile(eq("Profile"));
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED, actualAddBreadcrumbItemDataResult);
-  }
-
-  /**
-   * Test
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addHomepageData(HttpServletRequest, JSONArray)}.
-   * <p>
-   * Method under test:
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addHomepageData(HttpServletRequest, JSONArray)}
+   * Method under test: {@link AbstractLinkedDataGeneratorExtensionHandler#addHomepageData(HttpServletRequest, JSONArray)}
    */
   @Test
   @DisplayName("Test addHomepageData(HttpServletRequest, JSONArray)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AbstractLinkedDataGeneratorExtensionHandler.addHomepageData(HttpServletRequest, JSONArray)"})
   void testAddHomepageData() throws JSONException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DefaultLinkedDataGeneratorExtensionHandler defaultLinkedDataGeneratorExtensionHandler = new DefaultLinkedDataGeneratorExtensionHandler();
     MockHttpServletRequest servletRequest = new MockHttpServletRequest();
     SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
         new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
 
     // Act and Assert
     assertEquals(ExtensionResultStatusType.NOT_HANDLED,
-        defaultLinkedDataGeneratorExtensionHandler.addHomepageData(request, new JSONArray(3)));
+        abstractLinkedDataGeneratorExtensionHandler.addHomepageData(request, new JSONArray(3)));
   }
 
   /**
-   * Test
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addHomepageData(HttpServletRequest, JSONArray)}.
+   * Test {@link AbstractLinkedDataGeneratorExtensionHandler#addWebSiteData(HttpServletRequest, JSONObject)}.
+   * <ul>
+   *   <li>When {@link JSONObject#JSONObject()}.</li>
+   *   <li>Then return {@code NOT_HANDLED}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addHomepageData(HttpServletRequest, JSONArray)}
+   * Method under test: {@link AbstractLinkedDataGeneratorExtensionHandler#addWebSiteData(HttpServletRequest, JSONObject)}
    */
   @Test
-  @DisplayName("Test addHomepageData(HttpServletRequest, JSONArray)")
-  void testAddHomepageData2() throws JSONException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @DisplayName("Test addWebSiteData(HttpServletRequest, JSONObject); when JSONObject(); then return 'NOT_HANDLED'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AbstractLinkedDataGeneratorExtensionHandler.addWebSiteData(HttpServletRequest, JSONObject)"})
+  void testAddWebSiteData_whenJSONObject_thenReturnNotHandled() throws JSONException {
     // Arrange
-    DefaultLinkedDataGeneratorExtensionHandler defaultLinkedDataGeneratorExtensionHandler = new DefaultLinkedDataGeneratorExtensionHandler();
-    DefaultMultipartHttpServletRequest servletRequest = mock(DefaultMultipartHttpServletRequest.class);
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
     SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
         new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
 
     // Act and Assert
     assertEquals(ExtensionResultStatusType.NOT_HANDLED,
-        defaultLinkedDataGeneratorExtensionHandler.addHomepageData(request, new JSONArray(3)));
+        abstractLinkedDataGeneratorExtensionHandler.addWebSiteData(request, new JSONObject()));
   }
 
   /**
-   * Test
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addHomepageData(HttpServletRequest, JSONArray)}.
-   * <p>
-   * Method under test:
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addHomepageData(HttpServletRequest, JSONArray)}
-   */
-  @Test
-  @DisplayName("Test addHomepageData(HttpServletRequest, JSONArray)")
-  @Disabled("TODO: Complete this test")
-  void testAddHomepageData3() throws JSONException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.linkeddata.generator;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1724 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.linkeddata.generator.AbstractLinkedDataGeneratorExtensionHandler abstractLinkedDataGeneratorExtensionHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DefaultLinkedDataGeneratorExtensionHandler defaultLinkedDataGeneratorExtensionHandler = new DefaultLinkedDataGeneratorExtensionHandler();
-    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
-    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
-        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
-
-    // Act
-    defaultLinkedDataGeneratorExtensionHandler.addHomepageData(request, new JSONArray(3));
-  }
-
-  /**
-   * Test
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addWebSiteData(HttpServletRequest, JSONObject)}.
-   * <p>
-   * Method under test:
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addWebSiteData(HttpServletRequest, JSONObject)}
-   */
-  @Test
-  @DisplayName("Test addWebSiteData(HttpServletRequest, JSONObject)")
-  @Disabled("TODO: Complete this test")
-  void testAddWebSiteData() throws JSONException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.linkeddata.generator;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3105 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.linkeddata.generator.AbstractLinkedDataGeneratorExtensionHandler abstractLinkedDataGeneratorExtensionHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DefaultLinkedDataGeneratorExtensionHandler defaultLinkedDataGeneratorExtensionHandler = new DefaultLinkedDataGeneratorExtensionHandler();
-    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
-    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
-        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
-
-    // Act
-    defaultLinkedDataGeneratorExtensionHandler.addWebSiteData(request, new JSONObject("String"));
-  }
-
-  /**
-   * Test
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addWebSiteData(HttpServletRequest, JSONObject)}.
+   * Test {@link AbstractLinkedDataGeneratorExtensionHandler#addOrganizationData(HttpServletRequest, JSONObject)}.
    * <ul>
-   *   <li>Given {@code Profile}.</li>
+   *   <li>When {@link JSONObject#JSONObject()}.</li>
    *   <li>Then return {@code NOT_HANDLED}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addWebSiteData(HttpServletRequest, JSONObject)}
+   * Method under test: {@link AbstractLinkedDataGeneratorExtensionHandler#addOrganizationData(HttpServletRequest, JSONObject)}
    */
   @Test
-  @DisplayName("Test addWebSiteData(HttpServletRequest, JSONObject); given 'Profile'; then return 'NOT_HANDLED'")
-  void testAddWebSiteData_givenProfile_thenReturnNotHandled() throws JSONException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @DisplayName("Test addOrganizationData(HttpServletRequest, JSONObject); when JSONObject(); then return 'NOT_HANDLED'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AbstractLinkedDataGeneratorExtensionHandler.addOrganizationData(HttpServletRequest, JSONObject)"})
+  void testAddOrganizationData_whenJSONObject_thenReturnNotHandled() throws JSONException {
     // Arrange
-    DefaultLinkedDataGeneratorExtensionHandler defaultLinkedDataGeneratorExtensionHandler = new DefaultLinkedDataGeneratorExtensionHandler();
-    StandardEnvironment environment = mock(StandardEnvironment.class);
-    doNothing().when(environment).addActiveProfile(Mockito.<String>any());
-    environment.addActiveProfile("Profile");
-    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(
-        mock(DefaultMultipartHttpServletRequest.class), environment, new String[]{"White List Param Names"}));
-
-    // Act
-    ExtensionResultStatusType actualAddWebSiteDataResult = defaultLinkedDataGeneratorExtensionHandler
-        .addWebSiteData(request, new JSONObject());
-
-    // Assert
-    verify(environment).addActiveProfile(eq("Profile"));
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED, actualAddWebSiteDataResult);
-  }
-
-  /**
-   * Test
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addOrganizationData(HttpServletRequest, JSONObject)}.
-   * <p>
-   * Method under test:
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addOrganizationData(HttpServletRequest, JSONObject)}
-   */
-  @Test
-  @DisplayName("Test addOrganizationData(HttpServletRequest, JSONObject)")
-  @Disabled("TODO: Complete this test")
-  void testAddOrganizationData() throws JSONException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.linkeddata.generator;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1904 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.linkeddata.generator.AbstractLinkedDataGeneratorExtensionHandler abstractLinkedDataGeneratorExtensionHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DefaultLinkedDataGeneratorExtensionHandler defaultLinkedDataGeneratorExtensionHandler = new DefaultLinkedDataGeneratorExtensionHandler();
     MockHttpServletRequest servletRequest = new MockHttpServletRequest();
     SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
         new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
 
-    // Act
-    defaultLinkedDataGeneratorExtensionHandler.addOrganizationData(request, new JSONObject("String"));
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        abstractLinkedDataGeneratorExtensionHandler.addOrganizationData(request, new JSONObject()));
   }
 
   /**
-   * Test
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addOrganizationData(HttpServletRequest, JSONObject)}.
+   * Test {@link AbstractLinkedDataGeneratorExtensionHandler#addContactData(HttpServletRequest, JSONObject)}.
    * <ul>
-   *   <li>Given {@code Profile}.</li>
+   *   <li>When {@link JSONObject#JSONObject()}.</li>
    *   <li>Then return {@code NOT_HANDLED}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addOrganizationData(HttpServletRequest, JSONObject)}
+   * Method under test: {@link AbstractLinkedDataGeneratorExtensionHandler#addContactData(HttpServletRequest, JSONObject)}
    */
   @Test
-  @DisplayName("Test addOrganizationData(HttpServletRequest, JSONObject); given 'Profile'; then return 'NOT_HANDLED'")
-  void testAddOrganizationData_givenProfile_thenReturnNotHandled() throws JSONException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @DisplayName("Test addContactData(HttpServletRequest, JSONObject); when JSONObject(); then return 'NOT_HANDLED'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AbstractLinkedDataGeneratorExtensionHandler.addContactData(HttpServletRequest, JSONObject)"})
+  void testAddContactData_whenJSONObject_thenReturnNotHandled() throws JSONException {
     // Arrange
-    DefaultLinkedDataGeneratorExtensionHandler defaultLinkedDataGeneratorExtensionHandler = new DefaultLinkedDataGeneratorExtensionHandler();
-    StandardEnvironment environment = mock(StandardEnvironment.class);
-    doNothing().when(environment).addActiveProfile(Mockito.<String>any());
-    environment.addActiveProfile("Profile");
-    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(
-        mock(DefaultMultipartHttpServletRequest.class), environment, new String[]{"White List Param Names"}));
-
-    // Act
-    ExtensionResultStatusType actualAddOrganizationDataResult = defaultLinkedDataGeneratorExtensionHandler
-        .addOrganizationData(request, new JSONObject());
-
-    // Assert
-    verify(environment).addActiveProfile(eq("Profile"));
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED, actualAddOrganizationDataResult);
-  }
-
-  /**
-   * Test
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addContactData(HttpServletRequest, JSONObject)}.
-   * <p>
-   * Method under test:
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addContactData(HttpServletRequest, JSONObject)}
-   */
-  @Test
-  @DisplayName("Test addContactData(HttpServletRequest, JSONObject)")
-  @Disabled("TODO: Complete this test")
-  void testAddContactData() throws JSONException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.linkeddata.generator;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1359 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.linkeddata.generator.AbstractLinkedDataGeneratorExtensionHandler abstractLinkedDataGeneratorExtensionHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DefaultLinkedDataGeneratorExtensionHandler defaultLinkedDataGeneratorExtensionHandler = new DefaultLinkedDataGeneratorExtensionHandler();
     MockHttpServletRequest servletRequest = new MockHttpServletRequest();
     SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
         new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
 
-    // Act
-    defaultLinkedDataGeneratorExtensionHandler.addContactData(request, new JSONObject("String"));
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        abstractLinkedDataGeneratorExtensionHandler.addContactData(request, new JSONObject()));
   }
 
   /**
-   * Test
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addContactData(HttpServletRequest, JSONObject)}.
-   * <ul>
-   *   <li>Given {@code Profile}.</li>
-   *   <li>Then return {@code NOT_HANDLED}.</li>
-   * </ul>
+   * Test {@link AbstractLinkedDataGeneratorExtensionHandler#addSocialMediaData(HttpServletRequest, JSONArray)}.
    * <p>
-   * Method under test:
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addContactData(HttpServletRequest, JSONObject)}
-   */
-  @Test
-  @DisplayName("Test addContactData(HttpServletRequest, JSONObject); given 'Profile'; then return 'NOT_HANDLED'")
-  void testAddContactData_givenProfile_thenReturnNotHandled() throws JSONException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    DefaultLinkedDataGeneratorExtensionHandler defaultLinkedDataGeneratorExtensionHandler = new DefaultLinkedDataGeneratorExtensionHandler();
-    StandardEnvironment environment = mock(StandardEnvironment.class);
-    doNothing().when(environment).addActiveProfile(Mockito.<String>any());
-    environment.addActiveProfile("Profile");
-    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(
-        mock(DefaultMultipartHttpServletRequest.class), environment, new String[]{"White List Param Names"}));
-
-    // Act
-    ExtensionResultStatusType actualAddContactDataResult = defaultLinkedDataGeneratorExtensionHandler
-        .addContactData(request, new JSONObject());
-
-    // Assert
-    verify(environment).addActiveProfile(eq("Profile"));
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED, actualAddContactDataResult);
-  }
-
-  /**
-   * Test
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addSocialMediaData(HttpServletRequest, JSONArray)}.
-   * <p>
-   * Method under test:
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addSocialMediaData(HttpServletRequest, JSONArray)}
+   * Method under test: {@link AbstractLinkedDataGeneratorExtensionHandler#addSocialMediaData(HttpServletRequest, JSONArray)}
    */
   @Test
   @DisplayName("Test addSocialMediaData(HttpServletRequest, JSONArray)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AbstractLinkedDataGeneratorExtensionHandler.addSocialMediaData(HttpServletRequest, JSONArray)"})
   void testAddSocialMediaData() throws JSONException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DefaultLinkedDataGeneratorExtensionHandler defaultLinkedDataGeneratorExtensionHandler = new DefaultLinkedDataGeneratorExtensionHandler();
     MockHttpServletRequest servletRequest = new MockHttpServletRequest();
     SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
         new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
 
     // Act and Assert
     assertEquals(ExtensionResultStatusType.NOT_HANDLED,
-        defaultLinkedDataGeneratorExtensionHandler.addSocialMediaData(request, new JSONArray(3)));
+        abstractLinkedDataGeneratorExtensionHandler.addSocialMediaData(request, new JSONArray(3)));
   }
 
   /**
-   * Test
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addSocialMediaData(HttpServletRequest, JSONArray)}.
+   * Test {@link AbstractLinkedDataGeneratorExtensionHandler#addPotentialActionsData(HttpServletRequest, JSONObject)}.
+   * <ul>
+   *   <li>When {@link JSONObject#JSONObject()}.</li>
+   *   <li>Then return {@code NOT_HANDLED}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addSocialMediaData(HttpServletRequest, JSONArray)}
+   * Method under test: {@link AbstractLinkedDataGeneratorExtensionHandler#addPotentialActionsData(HttpServletRequest, JSONObject)}
    */
   @Test
-  @DisplayName("Test addSocialMediaData(HttpServletRequest, JSONArray)")
-  void testAddSocialMediaData2() throws JSONException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @DisplayName("Test addPotentialActionsData(HttpServletRequest, JSONObject); when JSONObject(); then return 'NOT_HANDLED'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AbstractLinkedDataGeneratorExtensionHandler.addPotentialActionsData(HttpServletRequest, JSONObject)"})
+  void testAddPotentialActionsData_whenJSONObject_thenReturnNotHandled() throws JSONException {
     // Arrange
-    DefaultLinkedDataGeneratorExtensionHandler defaultLinkedDataGeneratorExtensionHandler = new DefaultLinkedDataGeneratorExtensionHandler();
-    DefaultMultipartHttpServletRequest servletRequest = mock(DefaultMultipartHttpServletRequest.class);
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
     SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
         new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
 
     // Act and Assert
     assertEquals(ExtensionResultStatusType.NOT_HANDLED,
-        defaultLinkedDataGeneratorExtensionHandler.addSocialMediaData(request, new JSONArray(3)));
+        abstractLinkedDataGeneratorExtensionHandler.addPotentialActionsData(request, new JSONObject()));
   }
 
   /**
-   * Test
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addSocialMediaData(HttpServletRequest, JSONArray)}.
-   * <p>
-   * Method under test:
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addSocialMediaData(HttpServletRequest, JSONArray)}
-   */
-  @Test
-  @DisplayName("Test addSocialMediaData(HttpServletRequest, JSONArray)")
-  @Disabled("TODO: Complete this test")
-  void testAddSocialMediaData3() throws JSONException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.linkeddata.generator;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2925 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.linkeddata.generator.AbstractLinkedDataGeneratorExtensionHandler abstractLinkedDataGeneratorExtensionHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DefaultLinkedDataGeneratorExtensionHandler defaultLinkedDataGeneratorExtensionHandler = new DefaultLinkedDataGeneratorExtensionHandler();
-    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
-    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
-        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
-
-    // Act
-    defaultLinkedDataGeneratorExtensionHandler.addSocialMediaData(request, new JSONArray(3));
-  }
-
-  /**
-   * Test
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addPotentialActionsData(HttpServletRequest, JSONObject)}.
-   * <p>
-   * Method under test:
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addPotentialActionsData(HttpServletRequest, JSONObject)}
-   */
-  @Test
-  @DisplayName("Test addPotentialActionsData(HttpServletRequest, JSONObject)")
-  @Disabled("TODO: Complete this test")
-  void testAddPotentialActionsData() throws JSONException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.linkeddata.generator;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2089 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.linkeddata.generator.AbstractLinkedDataGeneratorExtensionHandler abstractLinkedDataGeneratorExtensionHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DefaultLinkedDataGeneratorExtensionHandler defaultLinkedDataGeneratorExtensionHandler = new DefaultLinkedDataGeneratorExtensionHandler();
-    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
-    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
-        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
-
-    // Act
-    defaultLinkedDataGeneratorExtensionHandler.addPotentialActionsData(request, new JSONObject("String"));
-  }
-
-  /**
-   * Test
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addPotentialActionsData(HttpServletRequest, JSONObject)}.
+   * Test {@link AbstractLinkedDataGeneratorExtensionHandler#addCategoryData(HttpServletRequest, JSONObject)}.
    * <ul>
-   *   <li>Given {@code Profile}.</li>
+   *   <li>When {@link JSONObject#JSONObject()}.</li>
    *   <li>Then return {@code NOT_HANDLED}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addPotentialActionsData(HttpServletRequest, JSONObject)}
+   * Method under test: {@link AbstractLinkedDataGeneratorExtensionHandler#addCategoryData(HttpServletRequest, JSONObject)}
    */
   @Test
-  @DisplayName("Test addPotentialActionsData(HttpServletRequest, JSONObject); given 'Profile'; then return 'NOT_HANDLED'")
-  void testAddPotentialActionsData_givenProfile_thenReturnNotHandled() throws JSONException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @DisplayName("Test addCategoryData(HttpServletRequest, JSONObject); when JSONObject(); then return 'NOT_HANDLED'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AbstractLinkedDataGeneratorExtensionHandler.addCategoryData(HttpServletRequest, JSONObject)"})
+  void testAddCategoryData_whenJSONObject_thenReturnNotHandled() throws JSONException {
     // Arrange
-    DefaultLinkedDataGeneratorExtensionHandler defaultLinkedDataGeneratorExtensionHandler = new DefaultLinkedDataGeneratorExtensionHandler();
-    StandardEnvironment environment = mock(StandardEnvironment.class);
-    doNothing().when(environment).addActiveProfile(Mockito.<String>any());
-    environment.addActiveProfile("Profile");
-    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(
-        mock(DefaultMultipartHttpServletRequest.class), environment, new String[]{"White List Param Names"}));
-
-    // Act
-    ExtensionResultStatusType actualAddPotentialActionsDataResult = defaultLinkedDataGeneratorExtensionHandler
-        .addPotentialActionsData(request, new JSONObject());
-
-    // Assert
-    verify(environment).addActiveProfile(eq("Profile"));
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED, actualAddPotentialActionsDataResult);
-  }
-
-  /**
-   * Test
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addCategoryData(HttpServletRequest, JSONObject)}.
-   * <p>
-   * Method under test:
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addCategoryData(HttpServletRequest, JSONObject)}
-   */
-  @Test
-  @DisplayName("Test addCategoryData(HttpServletRequest, JSONObject)")
-  @Disabled("TODO: Complete this test")
-  void testAddCategoryData() throws JSONException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.linkeddata.generator;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass989 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.linkeddata.generator.AbstractLinkedDataGeneratorExtensionHandler abstractLinkedDataGeneratorExtensionHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DefaultLinkedDataGeneratorExtensionHandler defaultLinkedDataGeneratorExtensionHandler = new DefaultLinkedDataGeneratorExtensionHandler();
     MockHttpServletRequest servletRequest = new MockHttpServletRequest();
     SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
         new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
 
-    // Act
-    defaultLinkedDataGeneratorExtensionHandler.addCategoryData(request, new JSONObject("String"));
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        abstractLinkedDataGeneratorExtensionHandler.addCategoryData(request, new JSONObject()));
   }
 
   /**
-   * Test
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addCategoryData(HttpServletRequest, JSONObject)}.
+   * Test {@link AbstractLinkedDataGeneratorExtensionHandler#addCategoryProductData(HttpServletRequest, JSONObject)}.
    * <ul>
-   *   <li>Given {@code Profile}.</li>
+   *   <li>When {@link JSONObject#JSONObject()}.</li>
    *   <li>Then return {@code NOT_HANDLED}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addCategoryData(HttpServletRequest, JSONObject)}
+   * Method under test: {@link AbstractLinkedDataGeneratorExtensionHandler#addCategoryProductData(HttpServletRequest, JSONObject)}
    */
   @Test
-  @DisplayName("Test addCategoryData(HttpServletRequest, JSONObject); given 'Profile'; then return 'NOT_HANDLED'")
-  void testAddCategoryData_givenProfile_thenReturnNotHandled() throws JSONException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @DisplayName("Test addCategoryProductData(HttpServletRequest, JSONObject); when JSONObject(); then return 'NOT_HANDLED'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AbstractLinkedDataGeneratorExtensionHandler.addCategoryProductData(HttpServletRequest, JSONObject)"})
+  void testAddCategoryProductData_whenJSONObject_thenReturnNotHandled() throws JSONException {
     // Arrange
-    DefaultLinkedDataGeneratorExtensionHandler defaultLinkedDataGeneratorExtensionHandler = new DefaultLinkedDataGeneratorExtensionHandler();
-    StandardEnvironment environment = mock(StandardEnvironment.class);
-    doNothing().when(environment).addActiveProfile(Mockito.<String>any());
-    environment.addActiveProfile("Profile");
-    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(
-        mock(DefaultMultipartHttpServletRequest.class), environment, new String[]{"White List Param Names"}));
-
-    // Act
-    ExtensionResultStatusType actualAddCategoryDataResult = defaultLinkedDataGeneratorExtensionHandler
-        .addCategoryData(request, new JSONObject());
-
-    // Assert
-    verify(environment).addActiveProfile(eq("Profile"));
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED, actualAddCategoryDataResult);
-  }
-
-  /**
-   * Test
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addCategoryProductData(HttpServletRequest, JSONObject)}.
-   * <p>
-   * Method under test:
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addCategoryProductData(HttpServletRequest, JSONObject)}
-   */
-  @Test
-  @DisplayName("Test addCategoryProductData(HttpServletRequest, JSONObject)")
-  @Disabled("TODO: Complete this test")
-  void testAddCategoryProductData() throws JSONException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.linkeddata.generator;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1174 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.linkeddata.generator.AbstractLinkedDataGeneratorExtensionHandler abstractLinkedDataGeneratorExtensionHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DefaultLinkedDataGeneratorExtensionHandler defaultLinkedDataGeneratorExtensionHandler = new DefaultLinkedDataGeneratorExtensionHandler();
     MockHttpServletRequest servletRequest = new MockHttpServletRequest();
     SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
         new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
 
-    // Act
-    defaultLinkedDataGeneratorExtensionHandler.addCategoryProductData(request, new JSONObject("String"));
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        abstractLinkedDataGeneratorExtensionHandler.addCategoryProductData(request, new JSONObject()));
   }
 
   /**
-   * Test
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addCategoryProductData(HttpServletRequest, JSONObject)}.
+   * Test {@link AbstractLinkedDataGeneratorExtensionHandler#addReviewData(HttpServletRequest, Product, JSONObject)}.
    * <ul>
-   *   <li>Given {@code Profile}.</li>
+   *   <li>When {@link JSONObject#JSONObject()}.</li>
    *   <li>Then return {@code NOT_HANDLED}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addCategoryProductData(HttpServletRequest, JSONObject)}
+   * Method under test: {@link AbstractLinkedDataGeneratorExtensionHandler#addReviewData(HttpServletRequest, Product, JSONObject)}
    */
   @Test
-  @DisplayName("Test addCategoryProductData(HttpServletRequest, JSONObject); given 'Profile'; then return 'NOT_HANDLED'")
-  void testAddCategoryProductData_givenProfile_thenReturnNotHandled() throws JSONException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @DisplayName("Test addReviewData(HttpServletRequest, Product, JSONObject); when JSONObject(); then return 'NOT_HANDLED'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AbstractLinkedDataGeneratorExtensionHandler.addReviewData(HttpServletRequest, Product, JSONObject)"})
+  void testAddReviewData_whenJSONObject_thenReturnNotHandled() throws JSONException {
     // Arrange
-    DefaultLinkedDataGeneratorExtensionHandler defaultLinkedDataGeneratorExtensionHandler = new DefaultLinkedDataGeneratorExtensionHandler();
-    StandardEnvironment environment = mock(StandardEnvironment.class);
-    doNothing().when(environment).addActiveProfile(Mockito.<String>any());
-    environment.addActiveProfile("Profile");
-    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(
-        mock(DefaultMultipartHttpServletRequest.class), environment, new String[]{"White List Param Names"}));
-
-    // Act
-    ExtensionResultStatusType actualAddCategoryProductDataResult = defaultLinkedDataGeneratorExtensionHandler
-        .addCategoryProductData(request, new JSONObject());
-
-    // Assert
-    verify(environment).addActiveProfile(eq("Profile"));
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED, actualAddCategoryProductDataResult);
-  }
-
-  /**
-   * Test
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addReviewData(HttpServletRequest, Product, JSONObject)}.
-   * <p>
-   * Method under test:
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addReviewData(HttpServletRequest, Product, JSONObject)}
-   */
-  @Test
-  @DisplayName("Test addReviewData(HttpServletRequest, Product, JSONObject)")
-  @Disabled("TODO: Complete this test")
-  void testAddReviewData() throws JSONException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.linkeddata.generator;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2491 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.linkeddata.generator.AbstractLinkedDataGeneratorExtensionHandler abstractLinkedDataGeneratorExtensionHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DefaultLinkedDataGeneratorExtensionHandler defaultLinkedDataGeneratorExtensionHandler = new DefaultLinkedDataGeneratorExtensionHandler();
     MockHttpServletRequest servletRequest = new MockHttpServletRequest();
     SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
         new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
     ProductBundleImpl product = new ProductBundleImpl();
 
-    // Act
-    defaultLinkedDataGeneratorExtensionHandler.addReviewData(request, product, new JSONObject("String"));
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        abstractLinkedDataGeneratorExtensionHandler.addReviewData(request, product, new JSONObject()));
   }
 
   /**
-   * Test
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addReviewData(HttpServletRequest, Product, JSONObject)}.
+   * Test {@link AbstractLinkedDataGeneratorExtensionHandler#addAggregateReviewData(HttpServletRequest, Product, JSONObject)}.
    * <ul>
-   *   <li>Given {@code Profile}.</li>
+   *   <li>When {@link JSONObject#JSONObject()}.</li>
    *   <li>Then return {@code NOT_HANDLED}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addReviewData(HttpServletRequest, Product, JSONObject)}
+   * Method under test: {@link AbstractLinkedDataGeneratorExtensionHandler#addAggregateReviewData(HttpServletRequest, Product, JSONObject)}
    */
   @Test
-  @DisplayName("Test addReviewData(HttpServletRequest, Product, JSONObject); given 'Profile'; then return 'NOT_HANDLED'")
-  void testAddReviewData_givenProfile_thenReturnNotHandled() throws JSONException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @DisplayName("Test addAggregateReviewData(HttpServletRequest, Product, JSONObject); when JSONObject(); then return 'NOT_HANDLED'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AbstractLinkedDataGeneratorExtensionHandler.addAggregateReviewData(HttpServletRequest, Product, JSONObject)"})
+  void testAddAggregateReviewData_whenJSONObject_thenReturnNotHandled() throws JSONException {
     // Arrange
-    DefaultLinkedDataGeneratorExtensionHandler defaultLinkedDataGeneratorExtensionHandler = new DefaultLinkedDataGeneratorExtensionHandler();
-    StandardEnvironment environment = mock(StandardEnvironment.class);
-    doNothing().when(environment).addActiveProfile(Mockito.<String>any());
-    environment.addActiveProfile("Profile");
-    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(
-        mock(DefaultMultipartHttpServletRequest.class), environment, new String[]{"White List Param Names"}));
-    ProductBundleImpl product = new ProductBundleImpl();
-
-    // Act
-    ExtensionResultStatusType actualAddReviewDataResult = defaultLinkedDataGeneratorExtensionHandler
-        .addReviewData(request, product, new JSONObject());
-
-    // Assert
-    verify(environment).addActiveProfile(eq("Profile"));
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED, actualAddReviewDataResult);
-  }
-
-  /**
-   * Test
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addAggregateReviewData(HttpServletRequest, Product, JSONObject)}.
-   * <p>
-   * Method under test:
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addAggregateReviewData(HttpServletRequest, Product, JSONObject)}
-   */
-  @Test
-  @DisplayName("Test addAggregateReviewData(HttpServletRequest, Product, JSONObject)")
-  @Disabled("TODO: Complete this test")
-  void testAddAggregateReviewData() throws JSONException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.linkeddata.generator;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass0 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.linkeddata.generator.AbstractLinkedDataGeneratorExtensionHandler abstractLinkedDataGeneratorExtensionHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DefaultLinkedDataGeneratorExtensionHandler defaultLinkedDataGeneratorExtensionHandler = new DefaultLinkedDataGeneratorExtensionHandler();
     MockHttpServletRequest servletRequest = new MockHttpServletRequest();
     SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
         new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
     ProductBundleImpl product = new ProductBundleImpl();
 
-    // Act
-    defaultLinkedDataGeneratorExtensionHandler.addAggregateReviewData(request, product, new JSONObject("String"));
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        abstractLinkedDataGeneratorExtensionHandler.addAggregateReviewData(request, product, new JSONObject()));
   }
 
   /**
-   * Test
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addAggregateReviewData(HttpServletRequest, Product, JSONObject)}.
+   * Test {@link AbstractLinkedDataGeneratorExtensionHandler#addProductData(HttpServletRequest, Product, JSONObject)}.
    * <ul>
-   *   <li>Given {@code Profile}.</li>
+   *   <li>When {@link JSONObject#JSONObject()}.</li>
    *   <li>Then return {@code NOT_HANDLED}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addAggregateReviewData(HttpServletRequest, Product, JSONObject)}
+   * Method under test: {@link AbstractLinkedDataGeneratorExtensionHandler#addProductData(HttpServletRequest, Product, JSONObject)}
    */
   @Test
-  @DisplayName("Test addAggregateReviewData(HttpServletRequest, Product, JSONObject); given 'Profile'; then return 'NOT_HANDLED'")
-  void testAddAggregateReviewData_givenProfile_thenReturnNotHandled() throws JSONException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @DisplayName("Test addProductData(HttpServletRequest, Product, JSONObject); when JSONObject(); then return 'NOT_HANDLED'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AbstractLinkedDataGeneratorExtensionHandler.addProductData(HttpServletRequest, Product, JSONObject)"})
+  void testAddProductData_whenJSONObject_thenReturnNotHandled() throws JSONException {
     // Arrange
-    DefaultLinkedDataGeneratorExtensionHandler defaultLinkedDataGeneratorExtensionHandler = new DefaultLinkedDataGeneratorExtensionHandler();
-    StandardEnvironment environment = mock(StandardEnvironment.class);
-    doNothing().when(environment).addActiveProfile(Mockito.<String>any());
-    environment.addActiveProfile("Profile");
-    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(
-        mock(DefaultMultipartHttpServletRequest.class), environment, new String[]{"White List Param Names"}));
-    ProductBundleImpl product = new ProductBundleImpl();
-
-    // Act
-    ExtensionResultStatusType actualAddAggregateReviewDataResult = defaultLinkedDataGeneratorExtensionHandler
-        .addAggregateReviewData(request, product, new JSONObject());
-
-    // Assert
-    verify(environment).addActiveProfile(eq("Profile"));
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED, actualAddAggregateReviewDataResult);
-  }
-
-  /**
-   * Test
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addProductData(HttpServletRequest, Product, JSONObject)}.
-   * <p>
-   * Method under test:
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addProductData(HttpServletRequest, Product, JSONObject)}
-   */
-  @Test
-  @DisplayName("Test addProductData(HttpServletRequest, Product, JSONObject)")
-  @Disabled("TODO: Complete this test")
-  void testAddProductData() throws JSONException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.linkeddata.generator;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2274 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.linkeddata.generator.AbstractLinkedDataGeneratorExtensionHandler abstractLinkedDataGeneratorExtensionHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DefaultLinkedDataGeneratorExtensionHandler defaultLinkedDataGeneratorExtensionHandler = new DefaultLinkedDataGeneratorExtensionHandler();
     MockHttpServletRequest servletRequest = new MockHttpServletRequest();
     SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
         new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
     ProductBundleImpl product = new ProductBundleImpl();
 
-    // Act
-    defaultLinkedDataGeneratorExtensionHandler.addProductData(request, product, new JSONObject("String"));
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        abstractLinkedDataGeneratorExtensionHandler.addProductData(request, product, new JSONObject()));
   }
 
   /**
-   * Test
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addProductData(HttpServletRequest, Product, JSONObject)}.
+   * Test {@link AbstractLinkedDataGeneratorExtensionHandler#addSkuData(HttpServletRequest, Product, JSONObject)}.
    * <ul>
-   *   <li>Given {@code Profile}.</li>
+   *   <li>When {@link JSONObject#JSONObject()}.</li>
    *   <li>Then return {@code NOT_HANDLED}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addProductData(HttpServletRequest, Product, JSONObject)}
+   * Method under test: {@link AbstractLinkedDataGeneratorExtensionHandler#addSkuData(HttpServletRequest, Product, JSONObject)}
    */
   @Test
-  @DisplayName("Test addProductData(HttpServletRequest, Product, JSONObject); given 'Profile'; then return 'NOT_HANDLED'")
-  void testAddProductData_givenProfile_thenReturnNotHandled() throws JSONException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @DisplayName("Test addSkuData(HttpServletRequest, Product, JSONObject); when JSONObject(); then return 'NOT_HANDLED'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AbstractLinkedDataGeneratorExtensionHandler.addSkuData(HttpServletRequest, Product, JSONObject)"})
+  void testAddSkuData_whenJSONObject_thenReturnNotHandled() throws JSONException {
     // Arrange
-    DefaultLinkedDataGeneratorExtensionHandler defaultLinkedDataGeneratorExtensionHandler = new DefaultLinkedDataGeneratorExtensionHandler();
-    StandardEnvironment environment = mock(StandardEnvironment.class);
-    doNothing().when(environment).addActiveProfile(Mockito.<String>any());
-    environment.addActiveProfile("Profile");
-    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(
-        mock(DefaultMultipartHttpServletRequest.class), environment, new String[]{"White List Param Names"}));
-    ProductBundleImpl product = new ProductBundleImpl();
-
-    // Act
-    ExtensionResultStatusType actualAddProductDataResult = defaultLinkedDataGeneratorExtensionHandler
-        .addProductData(request, product, new JSONObject());
-
-    // Assert
-    verify(environment).addActiveProfile(eq("Profile"));
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED, actualAddProductDataResult);
-  }
-
-  /**
-   * Test
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addSkuData(HttpServletRequest, Product, JSONObject)}.
-   * <p>
-   * Method under test:
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addSkuData(HttpServletRequest, Product, JSONObject)}
-   */
-  @Test
-  @DisplayName("Test addSkuData(HttpServletRequest, Product, JSONObject)")
-  @Disabled("TODO: Complete this test")
-  void testAddSkuData() throws JSONException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.linkeddata.generator;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2708 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.linkeddata.generator.AbstractLinkedDataGeneratorExtensionHandler abstractLinkedDataGeneratorExtensionHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DefaultLinkedDataGeneratorExtensionHandler defaultLinkedDataGeneratorExtensionHandler = new DefaultLinkedDataGeneratorExtensionHandler();
     MockHttpServletRequest servletRequest = new MockHttpServletRequest();
     SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
         new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
     ProductBundleImpl product = new ProductBundleImpl();
 
-    // Act
-    defaultLinkedDataGeneratorExtensionHandler.addSkuData(request, product, new JSONObject("String"));
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        abstractLinkedDataGeneratorExtensionHandler.addSkuData(request, product, new JSONObject()));
   }
 
   /**
-   * Test
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addSkuData(HttpServletRequest, Product, JSONObject)}.
+   * Test {@link AbstractLinkedDataGeneratorExtensionHandler#addAggregateSkuData(HttpServletRequest, Product, JSONObject)}.
    * <ul>
-   *   <li>Given {@code Profile}.</li>
+   *   <li>When {@link JSONObject#JSONObject()}.</li>
    *   <li>Then return {@code NOT_HANDLED}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addSkuData(HttpServletRequest, Product, JSONObject)}
+   * Method under test: {@link AbstractLinkedDataGeneratorExtensionHandler#addAggregateSkuData(HttpServletRequest, Product, JSONObject)}
    */
   @Test
-  @DisplayName("Test addSkuData(HttpServletRequest, Product, JSONObject); given 'Profile'; then return 'NOT_HANDLED'")
-  void testAddSkuData_givenProfile_thenReturnNotHandled() throws JSONException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @DisplayName("Test addAggregateSkuData(HttpServletRequest, Product, JSONObject); when JSONObject(); then return 'NOT_HANDLED'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AbstractLinkedDataGeneratorExtensionHandler.addAggregateSkuData(HttpServletRequest, Product, JSONObject)"})
+  void testAddAggregateSkuData_whenJSONObject_thenReturnNotHandled() throws JSONException {
     // Arrange
-    DefaultLinkedDataGeneratorExtensionHandler defaultLinkedDataGeneratorExtensionHandler = new DefaultLinkedDataGeneratorExtensionHandler();
-    StandardEnvironment environment = mock(StandardEnvironment.class);
-    doNothing().when(environment).addActiveProfile(Mockito.<String>any());
-    environment.addActiveProfile("Profile");
-    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(
-        mock(DefaultMultipartHttpServletRequest.class), environment, new String[]{"White List Param Names"}));
-    ProductBundleImpl product = new ProductBundleImpl();
-
-    // Act
-    ExtensionResultStatusType actualAddSkuDataResult = defaultLinkedDataGeneratorExtensionHandler.addSkuData(request,
-        product, new JSONObject());
-
-    // Assert
-    verify(environment).addActiveProfile(eq("Profile"));
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED, actualAddSkuDataResult);
-  }
-
-  /**
-   * Test
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addAggregateSkuData(HttpServletRequest, Product, JSONObject)}.
-   * <p>
-   * Method under test:
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addAggregateSkuData(HttpServletRequest, Product, JSONObject)}
-   */
-  @Test
-  @DisplayName("Test addAggregateSkuData(HttpServletRequest, Product, JSONObject)")
-  @Disabled("TODO: Complete this test")
-  void testAddAggregateSkuData() throws JSONException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.linkeddata.generator;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass217 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.linkeddata.generator.AbstractLinkedDataGeneratorExtensionHandler abstractLinkedDataGeneratorExtensionHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DefaultLinkedDataGeneratorExtensionHandler defaultLinkedDataGeneratorExtensionHandler = new DefaultLinkedDataGeneratorExtensionHandler();
     MockHttpServletRequest servletRequest = new MockHttpServletRequest();
     SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
         new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
     ProductBundleImpl product = new ProductBundleImpl();
 
-    // Act
-    defaultLinkedDataGeneratorExtensionHandler.addAggregateSkuData(request, product, new JSONObject("String"));
-  }
-
-  /**
-   * Test
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addAggregateSkuData(HttpServletRequest, Product, JSONObject)}.
-   * <ul>
-   *   <li>Given {@code Profile}.</li>
-   *   <li>Then return {@code NOT_HANDLED}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link AbstractLinkedDataGeneratorExtensionHandler#addAggregateSkuData(HttpServletRequest, Product, JSONObject)}
-   */
-  @Test
-  @DisplayName("Test addAggregateSkuData(HttpServletRequest, Product, JSONObject); given 'Profile'; then return 'NOT_HANDLED'")
-  void testAddAggregateSkuData_givenProfile_thenReturnNotHandled() throws JSONException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    DefaultLinkedDataGeneratorExtensionHandler defaultLinkedDataGeneratorExtensionHandler = new DefaultLinkedDataGeneratorExtensionHandler();
-    StandardEnvironment environment = mock(StandardEnvironment.class);
-    doNothing().when(environment).addActiveProfile(Mockito.<String>any());
-    environment.addActiveProfile("Profile");
-    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(
-        mock(DefaultMultipartHttpServletRequest.class), environment, new String[]{"White List Param Names"}));
-    ProductBundleImpl product = new ProductBundleImpl();
-
-    // Act
-    ExtensionResultStatusType actualAddAggregateSkuDataResult = defaultLinkedDataGeneratorExtensionHandler
-        .addAggregateSkuData(request, product, new JSONObject());
-
-    // Assert
-    verify(environment).addActiveProfile(eq("Profile"));
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED, actualAddAggregateSkuDataResult);
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        abstractLinkedDataGeneratorExtensionHandler.addAggregateSkuData(request, product, new JSONObject()));
   }
 }

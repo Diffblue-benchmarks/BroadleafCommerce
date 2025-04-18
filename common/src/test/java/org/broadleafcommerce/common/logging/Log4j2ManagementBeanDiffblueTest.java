@@ -18,7 +18,10 @@
 package org.broadleafcommerce.common.logging;
 
 import static org.junit.Assert.assertEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -31,132 +34,19 @@ public class Log4j2ManagementBeanDiffblueTest {
   private Log4j2ManagementBean log4j2ManagementBean;
 
   /**
-   * Test {@link Log4j2ManagementBean#activateInfo(String)}.
-   * <ul>
-   *   <li>When {@code Category}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Log4j2ManagementBean#activateInfo(String)}
-   */
-  @Test
-  public void testActivateInfo_whenCategory() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange and Act
-    log4j2ManagementBean.activateInfo("Category");
-  }
-
-  /**
-   * Test {@link Log4j2ManagementBean#activateDebug(String)}.
-   * <ul>
-   *   <li>When {@code Category}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Log4j2ManagementBean#activateDebug(String)}
-   */
-  @Test
-  public void testActivateDebug_whenCategory() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange and Act
-    log4j2ManagementBean.activateDebug("Category");
-  }
-
-  /**
-   * Test {@link Log4j2ManagementBean#activateWarn(String)}.
-   * <ul>
-   *   <li>When {@code Category}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Log4j2ManagementBean#activateWarn(String)}
-   */
-  @Test
-  public void testActivateWarn_whenCategory() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange and Act
-    log4j2ManagementBean.activateWarn("Category");
-  }
-
-  /**
-   * Test {@link Log4j2ManagementBean#activateError(String)}.
-   * <ul>
-   *   <li>When {@code Category}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Log4j2ManagementBean#activateError(String)}
-   */
-  @Test
-  public void testActivateError_whenCategory() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange and Act
-    log4j2ManagementBean.activateError("Category");
-  }
-
-  /**
-   * Test {@link Log4j2ManagementBean#activateFatal(String)}.
-   * <ul>
-   *   <li>When {@code Category}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Log4j2ManagementBean#activateFatal(String)}
-   */
-  @Test
-  public void testActivateFatal_whenCategory() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange and Act
-    log4j2ManagementBean.activateFatal("Category");
-  }
-
-  /**
    * Test {@link Log4j2ManagementBean#getLevel(String)}.
    * <ul>
-   *   <li>When {@code 42}.</li>
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@link AbstractSupportLoggerAdapter#INFO}.</li>
    * </ul>
    * <p>
    * Method under test: {@link Log4j2ManagementBean#getLevel(String)}
    */
   @Test
-  public void testGetLevel_when42() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String Log4j2ManagementBean.getLevel(String)"})
+  public void testGetLevel_whenNull_thenReturnInfo() {
     // Arrange, Act and Assert
-    assertEquals(AbstractSupportLoggerAdapter.WARN, log4j2ManagementBean.getLevel("42"));
-  }
-
-  /**
-   * Test {@link Log4j2ManagementBean#getLevel(String)}.
-   * <ul>
-   *   <li>When {@code Category}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Log4j2ManagementBean#getLevel(String)}
-   */
-  @Test
-  public void testGetLevel_whenCategory() {
-    // Arrange, Act and Assert
-    assertEquals(AbstractSupportLoggerAdapter.WARN, log4j2ManagementBean.getLevel("Category"));
-  }
-
-  /**
-   * Test new {@link Log4j2ManagementBean} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link Log4j2ManagementBean}
-   */
-  @Test
-  public void testNewLog4j2ManagementBean() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing observers.
-    //   Diffblue Cover was unable to create an assertion.
-    //   There are no fields that could be asserted on.
-
-    // Arrange and Act
-    new Log4j2ManagementBean();
+    assertEquals(AbstractSupportLoggerAdapter.INFO, log4j2ManagementBean.getLevel(null));
   }
 }

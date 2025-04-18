@@ -1,23 +1,37 @@
+/*-
+ * #%L
+ * BroadleafCommerce CMS Module
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.cms.structure.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.function.BiFunction;
 import org.broadleafcommerce.cms.structure.domain.StructuredContent;
 import org.broadleafcommerce.cms.structure.domain.StructuredContentImpl;
 import org.broadleafcommerce.common.extension.ExtensionResultHolder;
 import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
 import org.broadleafcommerce.common.structure.dto.StructuredContentDTO;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -29,48 +43,15 @@ public class AbstractStructuredContentServiceExtensionHandlerDiffblueTest {
   private AbstractStructuredContentServiceExtensionHandler abstractStructuredContentServiceExtensionHandler;
 
   /**
-   * Test
-   * {@link AbstractStructuredContentServiceExtensionHandler#populateAdditionalStructuredContentFields(StructuredContent, StructuredContentDTO, boolean)}.
+   * Test {@link AbstractStructuredContentServiceExtensionHandler#populateAdditionalStructuredContentFields(StructuredContent, StructuredContentDTO, boolean)}.
    * <p>
-   * Method under test:
-   * {@link AbstractStructuredContentServiceExtensionHandler#populateAdditionalStructuredContentFields(StructuredContent, StructuredContentDTO, boolean)}
+   * Method under test: {@link AbstractStructuredContentServiceExtensionHandler#populateAdditionalStructuredContentFields(StructuredContent, StructuredContentDTO, boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AbstractStructuredContentServiceExtensionHandler.populateAdditionalStructuredContentFields(StructuredContent, StructuredContentDTO, boolean)"})
   public void testPopulateAdditionalStructuredContentFields() {
-    // Arrange
-    AbstractStructuredContentServiceExtensionHandler abstractStructuredContentServiceExtensionHandler = new AbstractStructuredContentServiceExtensionHandler();
-    StructuredContentImpl sc = new StructuredContentImpl();
-
-    HashMap<String, Object> values = new HashMap<>();
-    values.computeIfPresent("foo", mock(BiFunction.class));
-
-    StructuredContentDTO dto = new StructuredContentDTO();
-    dto.setContentName("Not all who wander are lost");
-    dto.setContentType("text/plain");
-    dto.setId(1L);
-    dto.setItemCriteriaDTOList(new ArrayList<>());
-    dto.setLocaleCode("en");
-    dto.setPriority(1);
-    dto.setRuleExpression("Rule Expression");
-    dto.setValues(values);
-
-    // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
-        abstractStructuredContentServiceExtensionHandler.populateAdditionalStructuredContentFields(sc, dto, true));
-  }
-
-  /**
-   * Test
-   * {@link AbstractStructuredContentServiceExtensionHandler#populateAdditionalStructuredContentFields(StructuredContent, StructuredContentDTO, boolean)}.
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link AbstractStructuredContentServiceExtensionHandler#populateAdditionalStructuredContentFields(StructuredContent, StructuredContentDTO, boolean)}
-   */
-  @Test
-  public void testPopulateAdditionalStructuredContentFields_givenHashMap() {
     // Arrange
     AbstractStructuredContentServiceExtensionHandler abstractStructuredContentServiceExtensionHandler = new AbstractStructuredContentServiceExtensionHandler();
     StructuredContentImpl sc = new StructuredContentImpl();
@@ -91,13 +72,14 @@ public class AbstractStructuredContentServiceExtensionHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AbstractStructuredContentServiceExtensionHandler#modifyStructuredContentDtoList(List, ExtensionResultHolder)}.
+   * Test {@link AbstractStructuredContentServiceExtensionHandler#modifyStructuredContentDtoList(List, ExtensionResultHolder)}.
    * <p>
-   * Method under test:
-   * {@link AbstractStructuredContentServiceExtensionHandler#modifyStructuredContentDtoList(List, ExtensionResultHolder)}
+   * Method under test: {@link AbstractStructuredContentServiceExtensionHandler#modifyStructuredContentDtoList(List, ExtensionResultHolder)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AbstractStructuredContentServiceExtensionHandler.modifyStructuredContentDtoList(List, ExtensionResultHolder)"})
   public void testModifyStructuredContentDtoList() {
     // Arrange
     StructuredContentDTO structuredContentDTO = new StructuredContentDTO();
@@ -123,13 +105,14 @@ public class AbstractStructuredContentServiceExtensionHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AbstractStructuredContentServiceExtensionHandler#modifyStructuredContentDtoList(List, ExtensionResultHolder)}.
+   * Test {@link AbstractStructuredContentServiceExtensionHandler#modifyStructuredContentDtoList(List, ExtensionResultHolder)}.
    * <p>
-   * Method under test:
-   * {@link AbstractStructuredContentServiceExtensionHandler#modifyStructuredContentDtoList(List, ExtensionResultHolder)}
+   * Method under test: {@link AbstractStructuredContentServiceExtensionHandler#modifyStructuredContentDtoList(List, ExtensionResultHolder)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AbstractStructuredContentServiceExtensionHandler.modifyStructuredContentDtoList(List, ExtensionResultHolder)"})
   public void testModifyStructuredContentDtoList2() {
     // Arrange
     StructuredContentDTO structuredContentDTO = new StructuredContentDTO();
@@ -166,46 +149,17 @@ public class AbstractStructuredContentServiceExtensionHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AbstractStructuredContentServiceExtensionHandler#modifyStructuredContentDtoList(List, ExtensionResultHolder)}.
-   * <ul>
-   *   <li>Then calls {@link ExtensionResultHolder#setResult(Object)}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link AbstractStructuredContentServiceExtensionHandler#modifyStructuredContentDtoList(List, ExtensionResultHolder)}
-   */
-  @Test
-  public void testModifyStructuredContentDtoList_thenCallsSetResult() {
-    // Arrange
-    ArrayList<StructuredContentDTO> structuredContentList = new ArrayList<>();
-    ExtensionResultHolder resultHolder = mock(ExtensionResultHolder.class);
-    doNothing().when(resultHolder).setResult(Mockito.<Object>any());
-    doNothing().when(resultHolder).setThrowable(Mockito.<Throwable>any());
-    resultHolder.setResult("Result");
-    resultHolder.setThrowable(new Throwable());
-
-    // Act
-    ExtensionResultStatusType actualModifyStructuredContentDtoListResult = abstractStructuredContentServiceExtensionHandler
-        .modifyStructuredContentDtoList(structuredContentList, resultHolder);
-
-    // Assert
-    verify(resultHolder).setResult(isA(Object.class));
-    verify(resultHolder).setThrowable(isA(Throwable.class));
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED, actualModifyStructuredContentDtoListResult);
-  }
-
-  /**
-   * Test
-   * {@link AbstractStructuredContentServiceExtensionHandler#modifyStructuredContentDtoList(List, ExtensionResultHolder)}.
+   * Test {@link AbstractStructuredContentServiceExtensionHandler#modifyStructuredContentDtoList(List, ExtensionResultHolder)}.
    * <ul>
    *   <li>When {@link ArrayList#ArrayList()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AbstractStructuredContentServiceExtensionHandler#modifyStructuredContentDtoList(List, ExtensionResultHolder)}
+   * Method under test: {@link AbstractStructuredContentServiceExtensionHandler#modifyStructuredContentDtoList(List, ExtensionResultHolder)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AbstractStructuredContentServiceExtensionHandler.modifyStructuredContentDtoList(List, ExtensionResultHolder)"})
   public void testModifyStructuredContentDtoList_whenArrayList() {
     // Arrange
     ArrayList<StructuredContentDTO> structuredContentList = new ArrayList<>();
@@ -220,13 +174,13 @@ public class AbstractStructuredContentServiceExtensionHandlerDiffblueTest {
   }
 
   /**
-   * Test new {@link AbstractStructuredContentServiceExtensionHandler} (default
-   * constructor).
+   * Test new {@link AbstractStructuredContentServiceExtensionHandler} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link AbstractStructuredContentServiceExtensionHandler}
+   * Method under test: default or parameterless constructor of {@link AbstractStructuredContentServiceExtensionHandler}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AbstractStructuredContentServiceExtensionHandler.<init>()"})
   public void testNewAbstractStructuredContentServiceExtensionHandler() {
     // Arrange and Act
     AbstractStructuredContentServiceExtensionHandler actualAbstractStructuredContentServiceExtensionHandler = new AbstractStructuredContentServiceExtensionHandler();

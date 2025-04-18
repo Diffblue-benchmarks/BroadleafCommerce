@@ -24,16 +24,20 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.IOException;
 import java.nio.file.Paths;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequestWrapper;
 import org.broadleafcommerce.common.web.filter.SessionlessHttpServletRequestWrapper;
 import org.broadleafcommerce.common.web.util.FileSystemResponseWrapper;
 import org.broadleafcommerce.common.web.util.StatusExposingServletResponse;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,22 +55,22 @@ public class StatelessSessionFilterDiffblueTest {
   private StatelessSessionFilter statelessSessionFilter;
 
   /**
-   * Test
-   * {@link StatelessSessionFilter#doFilterUnlessIgnored(ServletRequest, ServletResponse, FilterChain)}.
+   * Test {@link StatelessSessionFilter#doFilterUnlessIgnored(ServletRequest, ServletResponse, FilterChain)}.
    * <ul>
    *   <li>Given {@link IOException#IOException(String)} with {@code foo}.</li>
    *   <li>Then throw {@link IOException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link StatelessSessionFilter#doFilterUnlessIgnored(ServletRequest, ServletResponse, FilterChain)}
+   * Method under test: {@link StatelessSessionFilter#doFilterUnlessIgnored(ServletRequest, ServletResponse, FilterChain)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StatelessSessionFilter.doFilterUnlessIgnored(ServletRequest, ServletResponse, FilterChain)"})
   public void testDoFilterUnlessIgnored_givenIOExceptionWithFoo_thenThrowIOException()
       throws IOException, ServletException {
     // Arrange
-    SessionlessHttpServletRequestWrapper request = new SessionlessHttpServletRequestWrapper(
-        new MockHttpServletRequest());
+    HttpServletRequestWrapper request = new HttpServletRequestWrapper(
+        new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
     MockHttpServletResponse response = new MockHttpServletResponse();
     StatusExposingServletResponse response2 = new StatusExposingServletResponse(
         new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
@@ -81,18 +85,19 @@ public class StatelessSessionFilterDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link StatelessSessionFilter#doFilterUnlessIgnored(ServletRequest, ServletResponse, FilterChain)}.
+   * Test {@link StatelessSessionFilter#doFilterUnlessIgnored(ServletRequest, ServletResponse, FilterChain)}.
    * <ul>
-   *   <li>Then calls
-   * {@link FilterChain#doFilter(ServletRequest, ServletResponse)}.</li>
+   *   <li>When {@link FilterChain} {@link FilterChain#doFilter(ServletRequest, ServletResponse)} does nothing.</li>
+   *   <li>Then calls {@link FilterChain#doFilter(ServletRequest, ServletResponse)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link StatelessSessionFilter#doFilterUnlessIgnored(ServletRequest, ServletResponse, FilterChain)}
+   * Method under test: {@link StatelessSessionFilter#doFilterUnlessIgnored(ServletRequest, ServletResponse, FilterChain)}
    */
   @Test
-  public void testDoFilterUnlessIgnored_thenCallsDoFilter() throws IOException, ServletException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StatelessSessionFilter.doFilterUnlessIgnored(ServletRequest, ServletResponse, FilterChain)"})
+  public void testDoFilterUnlessIgnored_whenFilterChainDoFilterDoesNothing_thenCallsDoFilter()
+      throws IOException, ServletException {
     // Arrange
     SessionlessHttpServletRequestWrapper request = new SessionlessHttpServletRequestWrapper(
         new MockHttpServletRequest());
@@ -115,7 +120,22 @@ public class StatelessSessionFilterDiffblueTest {
    * Method under test: {@link StatelessSessionFilter#getOrder()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int StatelessSessionFilter.getOrder()"})
   public void testGetOrder() {
+    // Arrange, Act and Assert
+    assertEquals(-1000000, (new StatelessSessionFilter()).getOrder());
+  }
+
+  /**
+   * Test {@link StatelessSessionFilter#getOrder()}.
+   * <p>
+   * Method under test: {@link StatelessSessionFilter#getOrder()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int StatelessSessionFilter.getOrder()"})
+  public void testGetOrder2() {
     // Arrange, Act and Assert
     assertEquals(-1000000, (new StatelessSessionFilter()).getOrder());
   }

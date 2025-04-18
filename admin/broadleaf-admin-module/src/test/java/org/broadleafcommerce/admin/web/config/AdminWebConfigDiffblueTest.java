@@ -1,66 +1,48 @@
+/*-
+ * #%L
+ * BroadleafCommerce Admin Module
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.admin.web.config;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import org.broadleafcommerce.admin.web.rulebuilder.service.extension.CookieFieldServiceExtensionHandler;
 import org.broadleafcommerce.openadmin.web.rulebuilder.service.RuleBuilderFieldServiceExtensionManager;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.junit.experimental.categories.Category;
 
-@ContextConfiguration(classes = {AdminWebConfig.class, RuleBuilderFieldServiceExtensionManager.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class AdminWebConfigDiffblueTest {
-  @Autowired
-  private AdminWebConfig adminWebConfig;
-
-  @Autowired
-  private RuleBuilderFieldServiceExtensionManager ruleBuilderFieldServiceExtensionManager;
-
   /**
-   * Test
-   * {@link AdminWebConfig#blCookieFieldServiceExtensionHandler(List, RuleBuilderFieldServiceExtensionManager)}.
-   * <p>
-   * Method under test:
-   * {@link AdminWebConfig#blCookieFieldServiceExtensionHandler(List, RuleBuilderFieldServiceExtensionManager)}
-   */
-  @Test
-  public void testBlCookieFieldServiceExtensionHandler() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdminWebConfig adminWebConfig = new AdminWebConfig();
-
-    // Act
-    CookieFieldServiceExtensionHandler actualBlCookieFieldServiceExtensionHandlerResult = adminWebConfig
-        .blCookieFieldServiceExtensionHandler(new ArrayList<>(), mock(RuleBuilderFieldServiceExtensionManager.class));
-
-    // Assert
-    assertEquals(0, actualBlCookieFieldServiceExtensionHandlerResult.getPriority());
-    assertTrue(actualBlCookieFieldServiceExtensionHandlerResult.isEnabled());
-  }
-
-  /**
-   * Test
-   * {@link AdminWebConfig#blCookieFieldServiceExtensionHandler(List, RuleBuilderFieldServiceExtensionManager)}.
+   * Test {@link AdminWebConfig#blCookieFieldServiceExtensionHandler(List, RuleBuilderFieldServiceExtensionManager)}.
    * <ul>
    *   <li>Given {@code 42}.</li>
    *   <li>When {@link ArrayList#ArrayList()} add {@code 42}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminWebConfig#blCookieFieldServiceExtensionHandler(List, RuleBuilderFieldServiceExtensionManager)}
+   * Method under test: {@link AdminWebConfig#blCookieFieldServiceExtensionHandler(List, RuleBuilderFieldServiceExtensionManager)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "CookieFieldServiceExtensionHandler AdminWebConfig.blCookieFieldServiceExtensionHandler(List, RuleBuilderFieldServiceExtensionManager)"})
   public void testBlCookieFieldServiceExtensionHandler_given42_whenArrayListAdd42() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     AdminWebConfig adminWebConfig = new AdminWebConfig();
 
@@ -77,20 +59,19 @@ public class AdminWebConfigDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminWebConfig#blCookieFieldServiceExtensionHandler(List, RuleBuilderFieldServiceExtensionManager)}.
+   * Test {@link AdminWebConfig#blCookieFieldServiceExtensionHandler(List, RuleBuilderFieldServiceExtensionManager)}.
    * <ul>
    *   <li>Given {@code 42}.</li>
    *   <li>When {@link ArrayList#ArrayList()} add {@code 42}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminWebConfig#blCookieFieldServiceExtensionHandler(List, RuleBuilderFieldServiceExtensionManager)}
+   * Method under test: {@link AdminWebConfig#blCookieFieldServiceExtensionHandler(List, RuleBuilderFieldServiceExtensionManager)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "CookieFieldServiceExtensionHandler AdminWebConfig.blCookieFieldServiceExtensionHandler(List, RuleBuilderFieldServiceExtensionManager)"})
   public void testBlCookieFieldServiceExtensionHandler_given42_whenArrayListAdd422() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     AdminWebConfig adminWebConfig = new AdminWebConfig();
 
@@ -108,19 +89,18 @@ public class AdminWebConfigDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminWebConfig#blCookieFieldServiceExtensionHandler(List, RuleBuilderFieldServiceExtensionManager)}.
+   * Test {@link AdminWebConfig#blCookieFieldServiceExtensionHandler(List, RuleBuilderFieldServiceExtensionManager)}.
    * <ul>
    *   <li>When {@link ArrayList#ArrayList()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminWebConfig#blCookieFieldServiceExtensionHandler(List, RuleBuilderFieldServiceExtensionManager)}
+   * Method under test: {@link AdminWebConfig#blCookieFieldServiceExtensionHandler(List, RuleBuilderFieldServiceExtensionManager)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "CookieFieldServiceExtensionHandler AdminWebConfig.blCookieFieldServiceExtensionHandler(List, RuleBuilderFieldServiceExtensionManager)"})
   public void testBlCookieFieldServiceExtensionHandler_whenArrayList() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     AdminWebConfig adminWebConfig = new AdminWebConfig();
     ArrayList<Object> configs = new ArrayList<>();
@@ -132,32 +112,5 @@ public class AdminWebConfigDiffblueTest {
     // Assert
     assertEquals(0, actualBlCookieFieldServiceExtensionHandlerResult.getPriority());
     assertTrue(actualBlCookieFieldServiceExtensionHandlerResult.isEnabled());
-  }
-
-  /**
-   * Test
-   * {@link AdminWebConfig#blCookieFieldServiceExtensionHandler(List, RuleBuilderFieldServiceExtensionManager)}.
-   * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link AdminWebConfig#blCookieFieldServiceExtensionHandler(List, RuleBuilderFieldServiceExtensionManager)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testBlCookieFieldServiceExtensionHandler_whenArrayList2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   org.springframework.beans.factory.NoSuchBeanDefinitionException: No bean named 'blCookieFieldServiceExtensionHandler' available
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    ArrayList<Object> configs = new ArrayList<>();
-
-    // Act
-    adminWebConfig.blCookieFieldServiceExtensionHandler(configs, ruleBuilderFieldServiceExtensionManager);
   }
 }

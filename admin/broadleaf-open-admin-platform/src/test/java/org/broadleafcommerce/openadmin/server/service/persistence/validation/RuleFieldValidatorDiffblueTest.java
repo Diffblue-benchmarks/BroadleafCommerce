@@ -1,13 +1,33 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.server.service.persistence.validation;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import org.broadleafcommerce.common.persistence.EntityConfiguration;
+import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
+import org.broadleafcommerce.common.sandbox.SandBoxHelper;
 import org.broadleafcommerce.openadmin.dto.BasicFieldMetadata;
 import org.broadleafcommerce.openadmin.dto.Entity;
 import org.broadleafcommerce.openadmin.dto.Property;
@@ -17,67 +37,20 @@ import org.broadleafcommerce.openadmin.server.service.persistence.module.FieldMa
 import org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.PopulateValueRequest;
 import org.broadleafcommerce.openadmin.web.rulebuilder.MVELTranslationException;
 import org.broadleafcommerce.openadmin.web.rulebuilder.dto.DataWrapper;
-import org.hibernate.engine.spi.SessionDelegatorBaseImpl;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
-    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
-    "/bl-open-admin-contentCreator-applicationContext.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class RuleFieldValidatorDiffblueTest {
-  @Autowired
+  @InjectMocks
   private RuleFieldValidator ruleFieldValidator;
 
-  /**
-   * Test {@link RuleFieldValidator#validate(PopulateValueRequest, Serializable)}.
-   * <p>
-   * Method under test:
-   * {@link RuleFieldValidator#validate(PopulateValueRequest, Serializable)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testValidate() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.validation;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3257 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.validation.RuleFieldValidator ruleFieldValidator;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    RuleFieldValidator ruleFieldValidator2 = new RuleFieldValidator();
-    EntityConfiguration entityConfiguration = new EntityConfiguration();
-    FieldManager fieldManager = new FieldManager(entityConfiguration, new SessionDelegatorBaseImpl(null, null));
-
-    Property property = new Property();
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    Class<Object> returnType = Object.class;
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
-    PopulateValueRequest populateValueRequest = new PopulateValueRequest(true, fieldManager, property, metadata,
-        returnType, "42", persistenceManager, dataFormatProvider, true, new Entity());
-
-    // Act
-    ruleFieldValidator2.validate(populateValueRequest, new SimpleDateFormat("yyyy/mm/dd"));
-  }
+  @Mock
+  private SandBoxHelper sandBoxHelper;
 
   /**
    * Test {@link RuleFieldValidator#validate(PopulateValueRequest, Serializable)}.
@@ -85,16 +58,14 @@ public class RuleFieldValidatorDiffblueTest {
    *   <li>Then return ErrorMessage is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link RuleFieldValidator#validate(PopulateValueRequest, Serializable)}
+   * Method under test: {@link RuleFieldValidator#validate(PopulateValueRequest, Serializable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PropertyValidationResult RuleFieldValidator.validate(PopulateValueRequest, Serializable)"})
   public void testValidate_thenReturnErrorMessageIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    RuleFieldValidator ruleFieldValidator = new RuleFieldValidator();
-    FieldManager fieldManager = new FieldManager(mock(EntityConfiguration.class), null);
+    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
 
     Property property = new Property();
     BasicFieldMetadata metadata = new BasicFieldMetadata();
@@ -116,77 +87,17 @@ public class RuleFieldValidatorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link RuleFieldValidator#getMvelParsingErrorMesage(DataWrapper, MVELTranslationException)}.
+   * Test {@link RuleFieldValidator#getMvelParsingErrorMesage(DataWrapper, MVELTranslationException)}.
    * <p>
-   * Method under test:
-   * {@link RuleFieldValidator#getMvelParsingErrorMesage(DataWrapper, MVELTranslationException)}
+   * Method under test: {@link RuleFieldValidator#getMvelParsingErrorMesage(DataWrapper, MVELTranslationException)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "java.lang.String RuleFieldValidator.getMvelParsingErrorMesage(DataWrapper, MVELTranslationException)"})
   public void testGetMvelParsingErrorMesage() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    RuleFieldValidator ruleFieldValidator = new RuleFieldValidator();
     DataWrapper dw = new DataWrapper();
-
-    // Act and Assert
-    assertEquals("Problem translating rule builder, error code 1: An error occurred",
-        ruleFieldValidator.getMvelParsingErrorMesage(dw, new MVELTranslationException(1, "An error occurred")));
-  }
-
-  /**
-   * Test
-   * {@link RuleFieldValidator#getMvelParsingErrorMesage(DataWrapper, MVELTranslationException)}.
-   * <p>
-   * Method under test:
-   * {@link RuleFieldValidator#getMvelParsingErrorMesage(DataWrapper, MVELTranslationException)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetMvelParsingErrorMesage2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.validation;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3239 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.validation.RuleFieldValidator ruleFieldValidator;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    RuleFieldValidator ruleFieldValidator2 = new RuleFieldValidator();
-    DataWrapper dw = new DataWrapper();
-
-    // Act
-    ruleFieldValidator2.getMvelParsingErrorMesage(dw, new MVELTranslationException(1, "An error occurred"));
-  }
-
-  /**
-   * Test
-   * {@link RuleFieldValidator#getMvelParsingErrorMesage(DataWrapper, MVELTranslationException)}.
-   * <ul>
-   *   <li>When {@link DataWrapper}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link RuleFieldValidator#getMvelParsingErrorMesage(DataWrapper, MVELTranslationException)}
-   */
-  @Test
-  public void testGetMvelParsingErrorMesage_whenDataWrapper() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    RuleFieldValidator ruleFieldValidator = new RuleFieldValidator();
-    DataWrapper dw = mock(DataWrapper.class);
 
     // Act and Assert
     assertEquals("Problem translating rule builder, error code 1: An error occurred",
@@ -195,44 +106,30 @@ public class RuleFieldValidatorDiffblueTest {
 
   /**
    * Test {@link RuleFieldValidator#canHandleValidation(PopulateValueRequest)}.
+   * <ul>
+   *   <li>Given {@link SupportedFieldType#RULE_WITH_QUANTITY}.</li>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link RuleFieldValidator#canHandleValidation(PopulateValueRequest)}
+   * Method under test: {@link RuleFieldValidator#canHandleValidation(PopulateValueRequest)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testCanHandleValidation() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.validation;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3011 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.validation.RuleFieldValidator ruleFieldValidator;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean RuleFieldValidator.canHandleValidation(PopulateValueRequest)"})
+  public void testCanHandleValidation_givenRule_with_quantity_thenReturnTrue() {
     // Arrange
-    RuleFieldValidator ruleFieldValidator2 = new RuleFieldValidator();
-    EntityConfiguration entityConfiguration = new EntityConfiguration();
-    FieldManager fieldManager = new FieldManager(entityConfiguration, new SessionDelegatorBaseImpl(null, null));
+    BasicFieldMetadata metadata = new BasicFieldMetadata();
+    metadata.setFieldType(SupportedFieldType.RULE_WITH_QUANTITY);
+    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
 
     Property property = new Property();
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
     Class<Object> returnType = Object.class;
     PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
     AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
 
-    // Act
-    ruleFieldValidator2.canHandleValidation(new PopulateValueRequest(true, fieldManager, property, metadata, returnType,
-        "42", persistenceManager, dataFormatProvider, true, new Entity()));
+    // Act and Assert
+    assertTrue(ruleFieldValidator.canHandleValidation(new PopulateValueRequest(true, fieldManager, property, metadata,
+        returnType, "42", persistenceManager, dataFormatProvider, true, new Entity())));
   }
 
   /**
@@ -241,16 +138,14 @@ public class RuleFieldValidatorDiffblueTest {
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link RuleFieldValidator#canHandleValidation(PopulateValueRequest)}
+   * Method under test: {@link RuleFieldValidator#canHandleValidation(PopulateValueRequest)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean RuleFieldValidator.canHandleValidation(PopulateValueRequest)"})
   public void testCanHandleValidation_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    RuleFieldValidator ruleFieldValidator = new RuleFieldValidator();
-    FieldManager fieldManager = new FieldManager(mock(EntityConfiguration.class), null);
+    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
 
     Property property = new Property();
     BasicFieldMetadata metadata = new BasicFieldMetadata();
@@ -269,6 +164,8 @@ public class RuleFieldValidatorDiffblueTest {
    * Method under test: {@link RuleFieldValidator#getOrder()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int RuleFieldValidator.getOrder()"})
   public void testGetOrder() {
     // Arrange, Act and Assert
     assertEquals(2147482647, (new RuleFieldValidator()).getOrder());

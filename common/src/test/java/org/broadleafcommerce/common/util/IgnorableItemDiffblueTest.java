@@ -18,20 +18,24 @@
 package org.broadleafcommerce.common.util;
 
 import static org.junit.Assert.assertEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class IgnorableItemDiffblueTest {
   /**
    * Test {@link IgnorableItem#getCompiled()}.
    * <ul>
-   *   <li>Given {@link IgnorableItem} (default constructor) Value is
-   * {@code 42}.</li>
+   *   <li>Given {@link IgnorableItem} (default constructor) Value is {@code 42}.</li>
    *   <li>Then return pattern is {@code 42}.</li>
    * </ul>
    * <p>
    * Method under test: {@link IgnorableItem#getCompiled()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.util.regex.Pattern IgnorableItem.getCompiled()"})
   public void testGetCompiled_givenIgnorableItemValueIs42_thenReturnPatternIs42() {
     // Arrange
     IgnorableItem ignorableItem = new IgnorableItem();
@@ -54,6 +58,9 @@ public class IgnorableItemDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void IgnorableItem.<init>()", "String IgnorableItem.getKey()", "String IgnorableItem.getValue()",
+      "void IgnorableItem.setKey(String)", "void IgnorableItem.setValue(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     IgnorableItem actualIgnorableItem = new IgnorableItem();
@@ -61,7 +68,7 @@ public class IgnorableItemDiffblueTest {
     actualIgnorableItem.setValue("42");
     String actualKey = actualIgnorableItem.getKey();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("42", actualIgnorableItem.getValue());
     assertEquals("Key", actualKey);
   }

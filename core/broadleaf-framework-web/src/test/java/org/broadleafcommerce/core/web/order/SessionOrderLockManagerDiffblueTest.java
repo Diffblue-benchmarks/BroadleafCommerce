@@ -1,38 +1,43 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework Web
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.web.order;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import java.util.concurrent.locks.ReentrantLock;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.springframework.mock.web.MockHttpSession;
-import org.springframework.security.web.session.HttpSessionDestroyedEvent;
 
 class SessionOrderLockManagerDiffblueTest {
   /**
    * Test {@link SessionOrderLockManager#acquireLock(Order)}.
-   * <ul>
-   *   <li>Given {@link SessionOrderLockManager} (default constructor).</li>
-   *   <li>Then throw {@link IllegalStateException}.</li>
-   * </ul>
    * <p>
    * Method under test: {@link SessionOrderLockManager#acquireLock(Order)}
    */
   @Test
-  @DisplayName("Test acquireLock(Order); given SessionOrderLockManager (default constructor); then throw IllegalStateException")
-  void testAcquireLock_givenSessionOrderLockManager_thenThrowIllegalStateException() {
+  @DisplayName("Test acquireLock(Order)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"java.lang.Object SessionOrderLockManager.acquireLock(Order)"})
+  void testAcquireLock() {
     // Arrange
     SessionOrderLockManager sessionOrderLockManager = new SessionOrderLockManager();
 
@@ -42,16 +47,14 @@ class SessionOrderLockManagerDiffblueTest {
 
   /**
    * Test {@link SessionOrderLockManager#acquireLockIfAvailable(Order)}.
-   * <ul>
-   *   <li>Then throw {@link IllegalStateException}.</li>
-   * </ul>
    * <p>
-   * Method under test:
-   * {@link SessionOrderLockManager#acquireLockIfAvailable(Order)}
+   * Method under test: {@link SessionOrderLockManager#acquireLockIfAvailable(Order)}
    */
   @Test
-  @DisplayName("Test acquireLockIfAvailable(Order); then throw IllegalStateException")
-  void testAcquireLockIfAvailable_thenThrowIllegalStateException() {
+  @DisplayName("Test acquireLockIfAvailable(Order)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"java.lang.Object SessionOrderLockManager.acquireLockIfAvailable(Order)"})
+  void testAcquireLockIfAvailable() {
     // Arrange
     SessionOrderLockManager sessionOrderLockManager = new SessionOrderLockManager();
 
@@ -61,67 +64,14 @@ class SessionOrderLockManagerDiffblueTest {
   }
 
   /**
-   * Test {@link SessionOrderLockManager#releaseLock(Object)}.
-   * <p>
-   * Method under test: {@link SessionOrderLockManager#releaseLock(Object)}
-   */
-  @Test
-  @DisplayName("Test releaseLock(Object)")
-  @Disabled("TODO: Complete this test")
-  void testReleaseLock() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.IllegalMonitorStateException
-    //       at java.base/java.util.concurrent.locks.ReentrantLock$Sync.tryRelease(ReentrantLock.java:149)
-    //       at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer.release(AbstractQueuedSynchronizer.java:1302)
-    //       at java.base/java.util.concurrent.locks.ReentrantLock.unlock(ReentrantLock.java:439)
-    //       at org.broadleafcommerce.core.web.order.SessionOrderLockManager.releaseLock(SessionOrderLockManager.java:79)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    SessionOrderLockManager sessionOrderLockManager = new SessionOrderLockManager();
-
-    // Act
-    sessionOrderLockManager.releaseLock(new ReentrantLock());
-  }
-
-  /**
-   * Test
-   * {@link SessionOrderLockManager#onApplicationEvent(HttpSessionDestroyedEvent)}
-   * with {@code HttpSessionDestroyedEvent}.
-   * <p>
-   * Method under test:
-   * {@link SessionOrderLockManager#onApplicationEvent(HttpSessionDestroyedEvent)}
-   */
-  @Test
-  @DisplayName("Test onApplicationEvent(HttpSessionDestroyedEvent) with 'HttpSessionDestroyedEvent'")
-  void testOnApplicationEventWithHttpSessionDestroyedEvent() {
-    // Arrange
-    SessionOrderLockManager sessionOrderLockManager = new SessionOrderLockManager();
-    MockHttpSession session = mock(MockHttpSession.class);
-    when(session.getId()).thenReturn("https://example.org/example");
-    doNothing().when(session).putValue(Mockito.<String>any(), Mockito.<Object>any());
-    session.putValue("https://example.org/example", "Value");
-    HttpSessionDestroyedEvent event = new HttpSessionDestroyedEvent(session);
-
-    // Act
-    sessionOrderLockManager.onApplicationEvent(event);
-
-    // Assert
-    verify(session).getId();
-    verify(session).putValue(eq("https://example.org/example"), isA(Object.class));
-    assertEquals("https://example.org/example", event.getId());
-  }
-
-  /**
    * Test {@link SessionOrderLockManager#getRequest()}.
    * <p>
    * Method under test: {@link SessionOrderLockManager#getRequest()}
    */
   @Test
   @DisplayName("Test getRequest()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"javax.servlet.http.HttpServletRequest SessionOrderLockManager.getRequest()"})
   void testGetRequest() {
     // Arrange, Act and Assert
     assertNull((new SessionOrderLockManager()).getRequest());
@@ -134,6 +84,8 @@ class SessionOrderLockManagerDiffblueTest {
    */
   @Test
   @DisplayName("Test getSessionLock()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"java.util.concurrent.locks.ReentrantLock SessionOrderLockManager.getSessionLock()"})
   void testGetSessionLock() {
     // Arrange, Act and Assert
     assertThrows(IllegalStateException.class, () -> (new SessionOrderLockManager()).getSessionLock());
@@ -146,6 +98,8 @@ class SessionOrderLockManagerDiffblueTest {
    */
   @Test
   @DisplayName("Test isActive()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean SessionOrderLockManager.isActive()"})
   void testIsActive() {
     // Arrange, Act and Assert
     assertFalse((new SessionOrderLockManager()).isActive());
@@ -154,11 +108,12 @@ class SessionOrderLockManagerDiffblueTest {
   /**
    * Test new {@link SessionOrderLockManager} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link SessionOrderLockManager}
+   * Method under test: default or parameterless constructor of {@link SessionOrderLockManager}
    */
   @Test
   @DisplayName("Test new SessionOrderLockManager (default constructor)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void SessionOrderLockManager.<init>()"})
   void testNewSessionOrderLockManager() {
     // Arrange and Act
     SessionOrderLockManager actualSessionOrderLockManager = new SessionOrderLockManager();

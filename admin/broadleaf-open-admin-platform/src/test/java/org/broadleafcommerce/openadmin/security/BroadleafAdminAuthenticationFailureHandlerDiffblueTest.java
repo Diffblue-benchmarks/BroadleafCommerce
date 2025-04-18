@@ -1,9 +1,28 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.security;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Set;
@@ -13,67 +32,23 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.broadleafcommerce.openadmin.web.compatibility.JSCompatibilityRequestWrapper;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.experimental.categories.Category;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(classes = {BroadleafAdminAuthenticationFailureHandler.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class BroadleafAdminAuthenticationFailureHandlerDiffblueTest {
-  @Autowired
-  private BroadleafAdminAuthenticationFailureHandler broadleafAdminAuthenticationFailureHandler;
-
   /**
-   * Test
-   * {@link BroadleafAdminAuthenticationFailureHandler#BroadleafAdminAuthenticationFailureHandler()}.
+   * Test {@link BroadleafAdminAuthenticationFailureHandler#onAuthenticationFailure(HttpServletRequest, HttpServletResponse, AuthenticationException)}.
    * <p>
-   * Method under test:
-   * {@link BroadleafAdminAuthenticationFailureHandler#BroadleafAdminAuthenticationFailureHandler()}
+   * Method under test: {@link BroadleafAdminAuthenticationFailureHandler#onAuthenticationFailure(HttpServletRequest, HttpServletResponse, AuthenticationException)}
    */
   @Test
-  public void testNewBroadleafAdminAuthenticationFailureHandler() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing observers.
-    //   Diffblue Cover was unable to create an assertion.
-    //   Add getters for the following fields or make them package-private:
-    //     BroadleafAdminAuthenticationFailureHandler.defaultFailureUrl
-    //     SimpleUrlAuthenticationFailureHandler.defaultFailureUrl
-    //     SimpleUrlAuthenticationFailureHandler.logger
-
-    // Arrange and Act
-    new BroadleafAdminAuthenticationFailureHandler();
-  }
-
-  /**
-   * Test
-   * {@link BroadleafAdminAuthenticationFailureHandler#BroadleafAdminAuthenticationFailureHandler(String)}.
-   * <p>
-   * Method under test:
-   * {@link BroadleafAdminAuthenticationFailureHandler#BroadleafAdminAuthenticationFailureHandler(String)}
-   */
-  @Test
-  public void testNewBroadleafAdminAuthenticationFailureHandler2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange and Act
-    new BroadleafAdminAuthenticationFailureHandler("https://example.org/example");
-  }
-
-  /**
-   * Test
-   * {@link BroadleafAdminAuthenticationFailureHandler#onAuthenticationFailure(HttpServletRequest, HttpServletResponse, AuthenticationException)}.
-   * <p>
-   * Method under test:
-   * {@link BroadleafAdminAuthenticationFailureHandler#onAuthenticationFailure(HttpServletRequest, HttpServletResponse, AuthenticationException)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void BroadleafAdminAuthenticationFailureHandler.onAuthenticationFailure(HttpServletRequest, HttpServletResponse, AuthenticationException)"})
   public void testOnAuthenticationFailure() throws IOException, ServletException {
     // Arrange
     BroadleafAdminAuthenticationFailureHandler broadleafAdminAuthenticationFailureHandler = new BroadleafAdminAuthenticationFailureHandler();
@@ -97,17 +72,17 @@ public class BroadleafAdminAuthenticationFailureHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BroadleafAdminAuthenticationFailureHandler#onAuthenticationFailure(HttpServletRequest, HttpServletResponse, AuthenticationException)}.
+   * Test {@link BroadleafAdminAuthenticationFailureHandler#onAuthenticationFailure(HttpServletRequest, HttpServletResponse, AuthenticationException)}.
    * <ul>
-   *   <li>Then {@link MockHttpServletResponse} (default constructor) HeaderNames
-   * size is one.</li>
+   *   <li>Then {@link MockHttpServletResponse} (default constructor) HeaderNames size is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafAdminAuthenticationFailureHandler#onAuthenticationFailure(HttpServletRequest, HttpServletResponse, AuthenticationException)}
+   * Method under test: {@link BroadleafAdminAuthenticationFailureHandler#onAuthenticationFailure(HttpServletRequest, HttpServletResponse, AuthenticationException)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void BroadleafAdminAuthenticationFailureHandler.onAuthenticationFailure(HttpServletRequest, HttpServletResponse, AuthenticationException)"})
   public void testOnAuthenticationFailure_thenMockHttpServletResponseHeaderNamesSizeIsOne()
       throws IOException, ServletException {
     // Arrange

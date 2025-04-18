@@ -1,74 +1,55 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.server.service.artifact.image.effects.chain.conversion;
 
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
 import org.broadleafcommerce.openadmin.server.service.artifact.image.effects.chain.ConverterNotFoundException;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
-    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
-    "/bl-open-admin-contentCreator-applicationContext.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+@ContextConfiguration(locations = {"/bl-open-admin-contentClient-applicationContext.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ConversionManagerDiffblueTest {
   @Autowired
   private ConversionManager conversionManager;
 
   /**
-   * Test
-   * {@link ConversionManager#convertParameter(String, String, Double, boolean)}.
+   * Test {@link ConversionManager#convertParameter(String, String, Double, boolean)}.
    * <p>
-   * Method under test:
-   * {@link ConversionManager#convertParameter(String, String, Double, boolean)}
+   * Method under test: {@link ConversionManager#convertParameter(String, String, Double, boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.openadmin.server.service.artifact.image.effects.chain.conversion.Parameter ConversionManager.convertParameter(String, String, Double, boolean)"})
   public void testConvertParameter() throws ConverterNotFoundException, ConversionException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertThrows(ConverterNotFoundException.class,
-        () -> (new ConversionManager()).convertParameter("42", "Type", 10.0d, true));
-  }
-
-  /**
-   * Test
-   * {@link ConversionManager#convertParameter(String, String, Double, boolean)}.
-   * <p>
-   * Method under test:
-   * {@link ConversionManager#convertParameter(String, String, Double, boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testConvertParameter2() throws ConverterNotFoundException, ConversionException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.artifact.image.effects.chain.conversion;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass0 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.artifact.image.effects.chain.conversion.ConversionManager conversionManager;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new ConversionManager()).convertParameter("42", "Type", 10.0d, true);
+    assertThrows(ConverterNotFoundException.class, () -> conversionManager.convertParameter("42", "Type", 10.0d, true));
   }
 
   /**
@@ -81,6 +62,8 @@ public class ConversionManagerDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map ConversionManager.getConverters()", "void ConversionManager.setConverters(Map)"})
   public void testGettersAndSetters() {
     // Arrange
     ConversionManager conversionManager = new ConversionManager();
@@ -90,7 +73,7 @@ public class ConversionManagerDiffblueTest {
     conversionManager.setConverters(converters);
     Map<String, ParameterConverter> actualConverters = conversionManager.getConverters();
 
-    // Assert that nothing has changed
+    // Assert
     assertTrue(actualConverters.isEmpty());
     assertSame(converters, actualConverters);
   }

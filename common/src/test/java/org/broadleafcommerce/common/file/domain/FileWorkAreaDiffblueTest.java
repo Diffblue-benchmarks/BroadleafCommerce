@@ -19,16 +19,20 @@ package org.broadleafcommerce.common.file.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {FileWorkArea.class})
 @RunWith(SpringJUnit4ClassRunner.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class FileWorkAreaDiffblueTest {
   @Autowired
   private FileWorkArea fileWorkArea;
@@ -36,14 +40,15 @@ public class FileWorkAreaDiffblueTest {
   /**
    * Test {@link FileWorkArea#getFilePathLocation()}.
    * <ul>
-   *   <li>Given {@link FileWorkArea} (default constructor) FilePathLocation is
-   * {@code foo}.</li>
+   *   <li>Given {@link FileWorkArea} (default constructor) FilePathLocation is {@code foo}.</li>
    *   <li>Then return {@code foo/}.</li>
    * </ul>
    * <p>
    * Method under test: {@link FileWorkArea#getFilePathLocation()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String FileWorkArea.getFilePathLocation()"})
   public void testGetFilePathLocation_givenFileWorkAreaFilePathLocationIsFoo_thenReturnFoo() {
     // Arrange
     FileWorkArea fileWorkArea = new FileWorkArea();
@@ -59,6 +64,8 @@ public class FileWorkAreaDiffblueTest {
    * Method under test: {@link FileWorkArea#setFilePathLocation(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FileWorkArea.setFilePathLocation(String)"})
   public void testSetFilePathLocation() {
     // Arrange
     FileWorkArea fileWorkArea2 = new FileWorkArea();
@@ -74,10 +81,11 @@ public class FileWorkAreaDiffblueTest {
   /**
    * Test new {@link FileWorkArea} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link FileWorkArea}
+   * Method under test: default or parameterless constructor of {@link FileWorkArea}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FileWorkArea.<init>()"})
   public void testNewFileWorkArea() {
     // Arrange, Act and Assert
     assertNull((new FileWorkArea()).filePathLocation);

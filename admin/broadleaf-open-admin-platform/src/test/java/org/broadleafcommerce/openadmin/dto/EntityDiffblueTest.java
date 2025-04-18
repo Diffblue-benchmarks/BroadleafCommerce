@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.dto;
 
 import static org.junit.Assert.assertEquals;
@@ -6,7 +23,8 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -14,18 +32,18 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiFunction;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {Entity.class})
 @RunWith(SpringJUnit4ClassRunner.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class EntityDiffblueTest {
   @Autowired
   private Entity entity;
@@ -34,13 +52,14 @@ public class EntityDiffblueTest {
    * Test {@link Entity#setType(String[])}.
    * <ul>
    *   <li>When array of {@link String} with {@code Type}.</li>
-   *   <li>Then {@link Entity} (default constructor) Type is array of {@link String}
-   * with {@code Type}.</li>
+   *   <li>Then {@link Entity} (default constructor) Type is array of {@link String} with {@code Type}.</li>
    * </ul>
    * <p>
    * Method under test: {@link Entity#setType(String[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Entity.setType(String[])"})
   public void testSetType_whenArrayOfStringWithType_thenEntityTypeIsArrayOfStringWithType() {
     // Arrange
     Entity entity = new Entity();
@@ -57,13 +76,14 @@ public class EntityDiffblueTest {
    * Test {@link Entity#setType(String[])}.
    * <ul>
    *   <li>When empty array of {@link String}.</li>
-   *   <li>Then {@link Entity} (default constructor) Type is empty array of
-   * {@link String}.</li>
+   *   <li>Then {@link Entity} (default constructor) Type is empty array of {@link String}.</li>
    * </ul>
    * <p>
    * Method under test: {@link Entity#setType(String[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Entity.setType(String[])"})
   public void testSetType_whenEmptyArrayOfString_thenEntityTypeIsEmptyArrayOfString() {
     // Arrange
     Entity entity = new Entity();
@@ -86,6 +106,8 @@ public class EntityDiffblueTest {
    * Method under test: {@link Entity#setType(String[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Entity.setType(String[])"})
   public void testSetType_whenNull_thenEntityTypeIsNull() {
     // Arrange
     Entity entity = new Entity();
@@ -93,53 +115,32 @@ public class EntityDiffblueTest {
     // Act
     entity.setType(null);
 
-    // Assert
+    // Assert that nothing has changed
     assertNull(entity.getType());
   }
 
   /**
    * Test {@link Entity#getPMap()}.
-   * <ul>
-   *   <li>Given {@link Entity} (default constructor).</li>
-   * </ul>
    * <p>
    * Method under test: {@link Entity#getPMap()}
    */
   @Test
-  public void testGetPMap_givenEntity() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map Entity.getPMap()"})
+  public void testGetPMap() {
     // Arrange, Act and Assert
     assertTrue((new Entity()).getPMap().isEmpty());
   }
 
   /**
-   * Test {@link Entity#getPMap()}.
-   * <ul>
-   *   <li>Given {@link Entity} (default constructor) DeployDate is
-   * {@link Date}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Entity#getPMap()}
-   */
-  @Test
-  public void testGetPMap_givenEntityDeployDateIsDate() {
-    // Arrange
-    Entity entity = new Entity();
-    entity.setDeployDate(mock(java.sql.Date.class));
-
-    // Act and Assert
-    assertTrue(entity.getPMap().isEmpty());
-  }
-
-  /**
    * Test {@link Entity#setProperties(Property[])}.
-   * <ul>
-   *   <li>Given {@link Entity} (default constructor).</li>
-   * </ul>
    * <p>
    * Method under test: {@link Entity#setProperties(Property[])}
    */
   @Test
-  public void testSetProperties_givenEntity() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Entity.setProperties(Property[])"})
+  public void testSetProperties() {
     // Arrange
     Entity entity = new Entity();
     Property property = new Property();
@@ -153,130 +154,6 @@ public class EntityDiffblueTest {
     assertEquals(1, pMap.size());
     assertSame(property, pMap.get(null));
     assertSame(properties, entity.getProperties());
-  }
-
-  /**
-   * Test {@link Entity#setProperties(Property[])}.
-   * <ul>
-   *   <li>Given {@link Entity} (default constructor) DeployDate is
-   * {@link Date}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Entity#setProperties(Property[])}
-   */
-  @Test
-  public void testSetProperties_givenEntityDeployDateIsDate() {
-    // Arrange
-    Entity entity = new Entity();
-    entity.setDeployDate(mock(java.sql.Date.class));
-    Property property = new Property();
-    Property[] properties = new Property[]{property};
-
-    // Act
-    entity.setProperties(properties);
-
-    // Assert
-    Map<String, Property> pMap = entity.getPMap();
-    assertEquals(1, pMap.size());
-    assertSame(property, pMap.get(null));
-    assertSame(properties, entity.getProperties());
-  }
-
-  /**
-   * Test {@link Entity#mergeProperties(String, Entity)}.
-   * <p>
-   * Method under test: {@link Entity#mergeProperties(String, Entity)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testMergeProperties() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.broadleafcommerce.openadmin.dto.Entity.mergeProperties(Entity.java:123)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange and Act
-    entity.mergeProperties("Prefix", entity);
-  }
-
-  /**
-   * Test {@link Entity#overridePropertyValues(Entity)}.
-   * <ul>
-   *   <li>When {@link Entity} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Entity#overridePropertyValues(Entity)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testOverridePropertyValues_whenEntity() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.broadleafcommerce.openadmin.dto.Entity.overridePropertyValues(Entity.java:142)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    Entity entity = new Entity();
-
-    // Act
-    entity.overridePropertyValues(new Entity());
-  }
-
-  /**
-   * Test {@link Entity#findProperty(String)}.
-   * <p>
-   * Method under test: {@link Entity#findProperty(String)}
-   */
-  @Test
-  public void testFindProperty() {
-    // Arrange, Act and Assert
-    assertNull(entity.findProperty("Name"));
-    assertTrue(entity.pMap.isEmpty());
-  }
-
-  /**
-   * Test {@link Entity#addProperty(Property)}.
-   * <ul>
-   *   <li>Given {@link Entity} (default constructor).</li>
-   *   <li>When {@link Property#Property()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Entity#addProperty(Property)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddProperty_givenEntity_whenProperty() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.broadleafcommerce.openadmin.dto.Entity.addProperty(Entity.java:194)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    Entity entity = new Entity();
-
-    // Act
-    entity.addProperty(new Property());
-  }
-
-  /**
-   * Test {@link Entity#removeProperty(String)}.
-   * <p>
-   * Method under test: {@link Entity#removeProperty(String)}
-   */
-  @Test
-  public void testRemoveProperty() {
-    // Arrange, Act and Assert
-    assertNull(entity.removeProperty("Name"));
-    assertTrue(entity.pMap.isEmpty());
   }
 
   /**
@@ -285,6 +162,8 @@ public class EntityDiffblueTest {
    * Method under test: {@link Entity#addValidationError(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Entity.addValidationError(String, String)"})
   public void testAddValidationError() {
     // Arrange and Act
     entity.addValidationError("Field Name", "An error occurred");
@@ -304,6 +183,8 @@ public class EntityDiffblueTest {
    * Method under test: {@link Entity#addValidationError(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Entity.addValidationError(String, String)"})
   public void testAddValidationError2() {
     // Arrange and Act
     entity.addValidationError("Field Name", "Error Or Error Key");
@@ -318,15 +199,45 @@ public class EntityDiffblueTest {
   }
 
   /**
+   * Test {@link Entity#addValidationError(String, String)}.
+   * <ul>
+   *   <li>Then {@link Entity} (default constructor) PropertyValidationErrors size is one.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link Entity#addValidationError(String, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Entity.addValidationError(String, String)"})
+  public void testAddValidationError_thenEntityPropertyValidationErrorsSizeIsOne() {
+    // Arrange
+    Entity entity = new Entity();
+    entity.addValidationError("Field Name", "An error occurred");
+
+    // Act
+    entity.addValidationError("Field Name", "An error occurred");
+
+    // Assert
+    Map<String, List<String>> propertyValidationErrors = entity.getPropertyValidationErrors();
+    assertEquals(1, propertyValidationErrors.size());
+    List<String> getResult = propertyValidationErrors.get("Field Name");
+    assertEquals(2, getResult.size());
+    assertEquals("An error occurred", getResult.get(0));
+    assertEquals("An error occurred", getResult.get(1));
+    assertTrue(entity.isValidationFailure);
+  }
+
+  /**
    * Test {@link Entity#isValidationFailure()}.
    * <ul>
-   *   <li>Given {@link Entity} (default constructor) addGlobalValidationError
-   * {@code An error occurred}.</li>
+   *   <li>Given {@link Entity} (default constructor) addGlobalValidationError {@code An error occurred}.</li>
    * </ul>
    * <p>
    * Method under test: {@link Entity#isValidationFailure()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Entity.isValidationFailure()"})
   public void testIsValidationFailure_givenEntityAddGlobalValidationErrorAnErrorOccurred() {
     // Arrange
     Entity entity = new Entity();
@@ -339,13 +250,14 @@ public class EntityDiffblueTest {
   /**
    * Test {@link Entity#isValidationFailure()}.
    * <ul>
-   *   <li>Given {@link Entity} (default constructor) addValidationError
-   * {@code Field Name} and {@code An error occurred}.</li>
+   *   <li>Given {@link Entity} (default constructor) addValidationError {@code Field Name} and {@code An error occurred}.</li>
    * </ul>
    * <p>
    * Method under test: {@link Entity#isValidationFailure()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Entity.isValidationFailure()"})
   public void testIsValidationFailure_givenEntityAddValidationErrorFieldNameAndAnErrorOccurred() {
     // Arrange
     Entity entity = new Entity();
@@ -358,13 +270,14 @@ public class EntityDiffblueTest {
   /**
    * Test {@link Entity#isValidationFailure()}.
    * <ul>
-   *   <li>Given {@link Entity} (default constructor) PropertyValidationErrors is
-   * {@code null}.</li>
+   *   <li>Given {@link Entity} (default constructor) PropertyValidationErrors is {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link Entity#isValidationFailure()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Entity.isValidationFailure()"})
   public void testIsValidationFailure_givenEntityPropertyValidationErrorsIsNull() {
     // Arrange
     Entity entity = new Entity();
@@ -385,6 +298,8 @@ public class EntityDiffblueTest {
    * Method under test: {@link Entity#isValidationFailure()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Entity.isValidationFailure()"})
   public void testIsValidationFailure_givenEntity_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse((new Entity()).isValidationFailure());
@@ -392,74 +307,29 @@ public class EntityDiffblueTest {
 
   /**
    * Test {@link Entity#getValidationErrors()}.
-   * <ul>
-   *   <li>Given {@link Entity} (default constructor).</li>
-   * </ul>
    * <p>
    * Method under test: {@link Entity#getValidationErrors()}
    */
   @Test
-  public void testGetValidationErrors_givenEntity() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map Entity.getValidationErrors()"})
+  public void testGetValidationErrors() {
     // Arrange, Act and Assert
     assertTrue((new Entity()).getValidationErrors().isEmpty());
-  }
-
-  /**
-   * Test {@link Entity#getValidationErrors()}.
-   * <ul>
-   *   <li>Given {@link Entity} (default constructor) DeployDate is
-   * {@link Date}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Entity#getValidationErrors()}
-   */
-  @Test
-  public void testGetValidationErrors_givenEntityDeployDateIsDate() {
-    // Arrange
-    Entity entity = new Entity();
-    entity.setDeployDate(mock(java.sql.Date.class));
-
-    // Act and Assert
-    assertTrue(entity.getValidationErrors().isEmpty());
-  }
-
-  /**
-   * Test {@link Entity#setValidationErrors(Map)}.
-   * <ul>
-   *   <li>Given {@link BiFunction}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Entity#setValidationErrors(Map)}
-   */
-  @Test
-  public void testSetValidationErrors_givenBiFunction() {
-    // Arrange
-    Entity entity = new Entity();
-
-    HashMap<String, List<String>> validationErrors = new HashMap<>();
-    validationErrors.computeIfPresent("foo", mock(BiFunction.class));
-    validationErrors.put("foo", new ArrayList<>());
-
-    // Act
-    entity.setValidationErrors(validationErrors);
-
-    // Assert
-    assertTrue(entity.isValidationFailure);
-    assertSame(validationErrors, entity.getPropertyValidationErrors());
-    assertSame(validationErrors, entity.getValidationErrors());
   }
 
   /**
    * Test {@link Entity#setValidationErrors(Map)}.
    * <ul>
    *   <li>Given {@code foo}.</li>
-   *   <li>Then {@link Entity} (default constructor)
-   * {@link Entity#isValidationFailure}.</li>
+   *   <li>Then {@link Entity} (default constructor) {@link Entity#isValidationFailure}.</li>
    * </ul>
    * <p>
    * Method under test: {@link Entity#setValidationErrors(Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Entity.setValidationErrors(Map)"})
   public void testSetValidationErrors_givenFoo_thenEntityIsValidationFailure() {
     // Arrange
     Entity entity = new Entity();
@@ -480,13 +350,14 @@ public class EntityDiffblueTest {
    * Test {@link Entity#setValidationErrors(Map)}.
    * <ul>
    *   <li>When {@link HashMap#HashMap()}.</li>
-   *   <li>Then not {@link Entity} (default constructor)
-   * {@link Entity#isValidationFailure}.</li>
+   *   <li>Then not {@link Entity} (default constructor) {@link Entity#isValidationFailure}.</li>
    * </ul>
    * <p>
    * Method under test: {@link Entity#setValidationErrors(Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Entity.setValidationErrors(Map)"})
   public void testSetValidationErrors_whenHashMap_thenNotEntityIsValidationFailure() {
     // Arrange
     Entity entity = new Entity();
@@ -505,13 +376,14 @@ public class EntityDiffblueTest {
    * Test {@link Entity#setValidationErrors(Map)}.
    * <ul>
    *   <li>When {@code null}.</li>
-   *   <li>Then {@link Entity} (default constructor) PropertyValidationErrors is
-   * {@code null}.</li>
+   *   <li>Then {@link Entity} (default constructor) PropertyValidationErrors is {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link Entity#setValidationErrors(Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Entity.setValidationErrors(Map)"})
   public void testSetValidationErrors_whenNull_thenEntityPropertyValidationErrorsIsNull() {
     // Arrange
     Entity entity = new Entity();
@@ -528,40 +400,15 @@ public class EntityDiffblueTest {
   /**
    * Test {@link Entity#setPropertyValidationErrors(Map)}.
    * <ul>
-   *   <li>Given {@link BiFunction}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Entity#setPropertyValidationErrors(Map)}
-   */
-  @Test
-  public void testSetPropertyValidationErrors_givenBiFunction() {
-    // Arrange
-    Entity entity = new Entity();
-
-    HashMap<String, List<String>> validationErrors = new HashMap<>();
-    validationErrors.computeIfPresent("foo", mock(BiFunction.class));
-    validationErrors.put("foo", new ArrayList<>());
-
-    // Act
-    entity.setPropertyValidationErrors(validationErrors);
-
-    // Assert
-    assertTrue(entity.isValidationFailure);
-    assertSame(validationErrors, entity.getPropertyValidationErrors());
-    assertSame(validationErrors, entity.getValidationErrors());
-  }
-
-  /**
-   * Test {@link Entity#setPropertyValidationErrors(Map)}.
-   * <ul>
    *   <li>Given {@code foo}.</li>
-   *   <li>Then {@link Entity} (default constructor)
-   * {@link Entity#isValidationFailure}.</li>
+   *   <li>Then {@link Entity} (default constructor) {@link Entity#isValidationFailure}.</li>
    * </ul>
    * <p>
    * Method under test: {@link Entity#setPropertyValidationErrors(Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Entity.setPropertyValidationErrors(Map)"})
   public void testSetPropertyValidationErrors_givenFoo_thenEntityIsValidationFailure() {
     // Arrange
     Entity entity = new Entity();
@@ -581,13 +428,14 @@ public class EntityDiffblueTest {
   /**
    * Test {@link Entity#setPropertyValidationErrors(Map)}.
    * <ul>
-   *   <li>Then {@link Entity} (default constructor) PropertyValidationErrors is
-   * {@code null}.</li>
+   *   <li>Then {@link Entity} (default constructor) PropertyValidationErrors is {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link Entity#setPropertyValidationErrors(Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Entity.setPropertyValidationErrors(Map)"})
   public void testSetPropertyValidationErrors_thenEntityPropertyValidationErrorsIsNull() {
     // Arrange
     Entity entity = new Entity();
@@ -605,13 +453,14 @@ public class EntityDiffblueTest {
    * Test {@link Entity#setPropertyValidationErrors(Map)}.
    * <ul>
    *   <li>When {@link HashMap#HashMap()}.</li>
-   *   <li>Then not {@link Entity} (default constructor)
-   * {@link Entity#isValidationFailure}.</li>
+   *   <li>Then not {@link Entity} (default constructor) {@link Entity#isValidationFailure}.</li>
    * </ul>
    * <p>
    * Method under test: {@link Entity#setPropertyValidationErrors(Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Entity.setPropertyValidationErrors(Map)"})
   public void testSetPropertyValidationErrors_whenHashMap_thenNotEntityIsValidationFailure() {
     // Arrange
     Entity entity = new Entity();
@@ -632,6 +481,8 @@ public class EntityDiffblueTest {
    * Method under test: {@link Entity#addGlobalValidationError(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Entity.addGlobalValidationError(String)"})
   public void testAddGlobalValidationError() {
     // Arrange and Act
     entity.addGlobalValidationError("An error occurred");
@@ -653,6 +504,8 @@ public class EntityDiffblueTest {
    * Method under test: {@link Entity#addGlobalValidationErrors(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Entity.addGlobalValidationErrors(List)"})
   public void testAddGlobalValidationErrors_given42_whenArrayListAdd42() {
     // Arrange
     ArrayList<String> errorOrErrorKeys = new ArrayList<>();
@@ -676,6 +529,8 @@ public class EntityDiffblueTest {
    * Method under test: {@link Entity#addGlobalValidationErrors(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Entity.addGlobalValidationErrors(List)"})
   public void testAddGlobalValidationErrors_thenEntityGlobalValidationErrorsEmpty() {
     // Arrange and Act
     entity.addGlobalValidationErrors(new ArrayList<>());
@@ -688,13 +543,14 @@ public class EntityDiffblueTest {
   /**
    * Test {@link Entity#addGlobalValidationErrors(List)}.
    * <ul>
-   *   <li>Then {@link Entity} GlobalValidationErrors is
-   * {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then {@link Entity} GlobalValidationErrors is {@link ArrayList#ArrayList()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link Entity#addGlobalValidationErrors(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Entity.addGlobalValidationErrors(List)"})
   public void testAddGlobalValidationErrors_thenEntityGlobalValidationErrorsIsArrayList() {
     // Arrange
     ArrayList<String> errorOrErrorKeys = new ArrayList<>();
@@ -722,6 +578,8 @@ public class EntityDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Entity.equals(Object)", "int Entity.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     Entity entity = new Entity();
@@ -747,6 +605,8 @@ public class EntityDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Entity.equals(Object)", "int Entity.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     Entity entity = new Entity();
@@ -775,6 +635,8 @@ public class EntityDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Entity.equals(Object)", "int Entity.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     Entity entity = new Entity();
@@ -795,6 +657,8 @@ public class EntityDiffblueTest {
    * Method under test: {@link Entity#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Entity.equals(Object)", "int Entity.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     Entity entity = new Entity();
@@ -814,6 +678,8 @@ public class EntityDiffblueTest {
    * Method under test: {@link Entity#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Entity.equals(Object)", "int Entity.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     Entity entity = new Entity();
@@ -834,6 +700,8 @@ public class EntityDiffblueTest {
    * Method under test: {@link Entity#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Entity.equals(Object)", "int Entity.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     Entity entity = new Entity();
@@ -853,6 +721,8 @@ public class EntityDiffblueTest {
    * Method under test: {@link Entity#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Entity.equals(Object)", "int Entity.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     Entity entity = new Entity();
@@ -872,6 +742,8 @@ public class EntityDiffblueTest {
    * Method under test: {@link Entity#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Entity.equals(Object)", "int Entity.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
     Entity entity = new Entity();
@@ -891,6 +763,8 @@ public class EntityDiffblueTest {
    * Method under test: {@link Entity#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Entity.equals(Object)", "int Entity.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
     Entity entity = new Entity();
@@ -910,6 +784,8 @@ public class EntityDiffblueTest {
    * Method under test: {@link Entity#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Entity.equals(Object)", "int Entity.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
     // Arrange
     Entity entity = new Entity();
@@ -929,6 +805,8 @@ public class EntityDiffblueTest {
    * Method under test: {@link Entity#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Entity.equals(Object)", "int Entity.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual8() {
     // Arrange
     Entity entity = new Entity();
@@ -948,6 +826,8 @@ public class EntityDiffblueTest {
    * Method under test: {@link Entity#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Entity.equals(Object)", "int Entity.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual9() {
     // Arrange
     Entity entity = new Entity();
@@ -970,6 +850,8 @@ public class EntityDiffblueTest {
    * Method under test: {@link Entity#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Entity.equals(Object)", "int Entity.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual10() {
     // Arrange
     Entity entity = new Entity();
@@ -993,6 +875,8 @@ public class EntityDiffblueTest {
    * Method under test: {@link Entity#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Entity.equals(Object)", "int Entity.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual11() {
     // Arrange
     Entity entity = new Entity();
@@ -1012,6 +896,8 @@ public class EntityDiffblueTest {
    * Method under test: {@link Entity#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Entity.equals(Object)", "int Entity.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual12() {
     // Arrange
     Entity entity = new Entity();
@@ -1031,6 +917,8 @@ public class EntityDiffblueTest {
    * Method under test: {@link Entity#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Entity.equals(Object)", "int Entity.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual13() {
     // Arrange
     Entity entity = new Entity();
@@ -1050,6 +938,8 @@ public class EntityDiffblueTest {
    * Method under test: {@link Entity#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Entity.equals(Object)", "int Entity.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new Entity(), null);
@@ -1065,6 +955,8 @@ public class EntityDiffblueTest {
    * Method under test: {@link Entity#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Entity.equals(Object)", "int Entity.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new Entity(), "Different type to Entity");
@@ -1100,6 +992,16 @@ public class EntityDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Entity.<init>()", "Boolean Entity.getActive()", "Boolean Entity.getDeleted()",
+      "Date Entity.getDeployDate()", "List Entity.getGlobalValidationErrors()", "Boolean Entity.getInactive()",
+      "Property[] Entity.getProperties()", "Map Entity.getPropertyValidationErrors()", "String[] Entity.getType()",
+      "boolean Entity.isDirty()", "boolean Entity.isMultiPartAvailableOnThread()", "boolean Entity.isPreAdd()",
+      "void Entity.setActive(Boolean)", "void Entity.setDeleted(Boolean)", "void Entity.setDeployDate(Date)",
+      "void Entity.setDirty(boolean)", "void Entity.setGlobalValidationErrors(List)",
+      "void Entity.setInactive(Boolean)", "void Entity.setIsPreAdd(boolean)",
+      "void Entity.setMultiPartAvailableOnThread(boolean)", "void Entity.setValidationFailure(boolean)",
+      "String Entity.toString()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     Entity actualEntity = new Entity();
@@ -1120,15 +1022,17 @@ public class EntityDiffblueTest {
     Date actualDeployDate = actualEntity.getDeployDate();
     List<String> actualGlobalValidationErrors = actualEntity.getGlobalValidationErrors();
     Boolean actualInactive = actualEntity.getInactive();
-    actualEntity.getProperties();
+    Property[] actualProperties = actualEntity.getProperties();
     Map<String, List<String>> actualPropertyValidationErrors = actualEntity.getPropertyValidationErrors();
-    actualEntity.getType();
+    String[] actualType = actualEntity.getType();
     boolean actualIsDirtyResult = actualEntity.isDirty();
     boolean actualIsMultiPartAvailableOnThreadResult = actualEntity.isMultiPartAvailableOnThread();
     boolean actualIsPreAddResult = actualEntity.isPreAdd();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Entity{isValidationFailure=true, isDirty=true, properties=null, type=null}", actualToStringResult);
+    assertNull(actualType);
+    assertNull(actualProperties);
     assertTrue(actualGlobalValidationErrors.isEmpty());
     assertTrue(actualActive);
     assertTrue(actualDeleted);

@@ -1,43 +1,34 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.checkout.service.workflow;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import org.broadleafcommerce.core.workflow.DefaultProcessContextImpl;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.core.workflow.EmptySequenceProcessor;
-import org.broadleafcommerce.core.workflow.ProcessContext;
 import org.broadleafcommerce.core.workflow.Processor;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class CompositeActivityDiffblueTest {
-  /**
-   * Test {@link CompositeActivity#execute(ProcessContext)}.
-   * <ul>
-   *   <li>Given {@link CompositeActivity} (default constructor).</li>
-   *   <li>When {@link DefaultProcessContextImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CompositeActivity#execute(ProcessContext)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testExecute_givenCompositeActivity_whenDefaultProcessContextImpl() throws Exception {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.broadleafcommerce.core.checkout.service.workflow.CompositeActivity.execute(CompositeActivity.java:33)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    CompositeActivity compositeActivity = new CompositeActivity();
-
-    // Act
-    compositeActivity.execute((ProcessContext<CheckoutSeed>) new DefaultProcessContextImpl<>());
-  }
-
   /**
    * Test getters and setters.
    * <p>
@@ -49,6 +40,9 @@ public class CompositeActivityDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CompositeActivity.<init>()", "Processor CompositeActivity.getWorkflow()",
+      "void CompositeActivity.setWorkflow(Processor)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     CompositeActivity actualCompositeActivity = new CompositeActivity();
@@ -56,7 +50,12 @@ public class CompositeActivityDiffblueTest {
     actualCompositeActivity.setWorkflow(workflow);
     Processor actualWorkflow = actualCompositeActivity.getWorkflow();
 
-    // Assert that nothing has changed
+    // Assert
+    assertNull(actualCompositeActivity.getBeanName());
+    assertNull(actualCompositeActivity.getRollbackRegion());
+    assertNull(actualCompositeActivity.getStateConfiguration());
+    assertNull(actualCompositeActivity.getErrorHandler());
+    assertNull(actualCompositeActivity.getRollbackHandler());
     assertFalse(actualCompositeActivity.getAutomaticallyRegisterRollbackHandler());
     assertEquals(Integer.MAX_VALUE, actualCompositeActivity.getOrder());
     assertSame(workflow, actualWorkflow);

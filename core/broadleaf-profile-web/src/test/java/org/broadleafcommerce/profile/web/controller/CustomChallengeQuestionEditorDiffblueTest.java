@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Profile Web
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.profile.web.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -8,23 +25,25 @@ import static org.mockito.Mockito.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.beans.PropertyChangeListener;
 import org.broadleafcommerce.profile.core.domain.ChallengeQuestionImpl;
 import org.broadleafcommerce.profile.core.service.ChallengeQuestionService;
 import org.broadleafcommerce.profile.core.service.ChallengeQuestionServiceImpl;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 class CustomChallengeQuestionEditorDiffblueTest {
   /**
-   * Test
-   * {@link CustomChallengeQuestionEditor#CustomChallengeQuestionEditor(ChallengeQuestionService)}.
+   * Test {@link CustomChallengeQuestionEditor#CustomChallengeQuestionEditor(ChallengeQuestionService)}.
    * <p>
-   * Method under test:
-   * {@link CustomChallengeQuestionEditor#CustomChallengeQuestionEditor(ChallengeQuestionService)}
+   * Method under test: {@link CustomChallengeQuestionEditor#CustomChallengeQuestionEditor(ChallengeQuestionService)}
    */
   @Test
   @DisplayName("Test new CustomChallengeQuestionEditor(ChallengeQuestionService)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void CustomChallengeQuestionEditor.<init>(ChallengeQuestionService)"})
   void testNewCustomChallengeQuestionEditor() {
     // Arrange and Act
     CustomChallengeQuestionEditor actualCustomChallengeQuestionEditor = new CustomChallengeQuestionEditor(
@@ -33,18 +52,6 @@ class CustomChallengeQuestionEditorDiffblueTest {
     // Assert
     assertNull(actualCustomChallengeQuestionEditor.getValue());
     assertSame(actualCustomChallengeQuestionEditor, actualCustomChallengeQuestionEditor.getSource());
-  }
-
-  /**
-   * Test {@link CustomChallengeQuestionEditor#getAsText()}.
-   * <p>
-   * Method under test: {@link CustomChallengeQuestionEditor#getAsText()}
-   */
-  @Test
-  @DisplayName("Test getAsText()")
-  void testGetAsText() {
-    // Arrange, Act and Assert
-    assertNull((new CustomChallengeQuestionEditor(new ChallengeQuestionServiceImpl())).getAsText());
   }
 
   /**
@@ -58,6 +65,8 @@ class CustomChallengeQuestionEditorDiffblueTest {
    */
   @Test
   @DisplayName("Test getAsText(); given ChallengeQuestionImpl (default constructor) Id is one; then return '1'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String CustomChallengeQuestionEditor.getAsText()"})
   void testGetAsText_givenChallengeQuestionImplIdIsOne_thenReturn1() {
     // Arrange
     ChallengeQuestionImpl challengeQuestionImpl = new ChallengeQuestionImpl();
@@ -83,14 +92,11 @@ class CustomChallengeQuestionEditorDiffblueTest {
    */
   @Test
   @DisplayName("Test getAsText(); then return 'null'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String CustomChallengeQuestionEditor.getAsText()"})
   void testGetAsText_thenReturnNull() {
-    // Arrange
-    CustomChallengeQuestionEditor customChallengeQuestionEditor = new CustomChallengeQuestionEditor(
-        new ChallengeQuestionServiceImpl());
-    customChallengeQuestionEditor.addPropertyChangeListener(mock(PropertyChangeListener.class));
-
-    // Act and Assert
-    assertNull(customChallengeQuestionEditor.getAsText());
+    // Arrange, Act and Assert
+    assertNull((new CustomChallengeQuestionEditor(new ChallengeQuestionServiceImpl())).getAsText());
   }
 
   /**
@@ -100,6 +106,8 @@ class CustomChallengeQuestionEditorDiffblueTest {
    */
   @Test
   @DisplayName("Test setAsText(String)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void CustomChallengeQuestionEditor.setAsText(String)"})
   void testSetAsText() throws IllegalArgumentException {
     // Arrange
     ChallengeQuestionServiceImpl challengeQuestionService = mock(ChallengeQuestionServiceImpl.class);

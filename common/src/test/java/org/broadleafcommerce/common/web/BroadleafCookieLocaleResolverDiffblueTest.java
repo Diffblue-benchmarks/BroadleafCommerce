@@ -22,101 +22,143 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Locale;
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
+import org.broadleafcommerce.common.locale.domain.LocaleImpl;
 import org.broadleafcommerce.common.locale.service.LocaleService;
 import org.broadleafcommerce.common.web.filter.SessionlessHttpServletRequestWrapper;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@ContextConfiguration(classes = {BroadleafCookieLocaleResolver.class})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class BroadleafCookieLocaleResolverDiffblueTest {
-  @Autowired
+  @InjectMocks
   private BroadleafCookieLocaleResolver broadleafCookieLocaleResolver;
 
-  @MockBean
+  @Mock
   private LocaleService localeService;
 
   /**
-   * Test
-   * {@link BroadleafCookieLocaleResolver#determineDefaultLocale(HttpServletRequest)}.
+   * Test {@link BroadleafCookieLocaleResolver#determineDefaultLocale(HttpServletRequest)}.
+   * <ul>
+   *   <li>Given {@link LocaleService}.</li>
+   *   <li>Then return {@link Locale#UK}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafCookieLocaleResolver#determineDefaultLocale(HttpServletRequest)}
+   * Method under test: {@link BroadleafCookieLocaleResolver#determineDefaultLocale(HttpServletRequest)}
    */
   @Test
-  public void testDetermineDefaultLocale() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Locale BroadleafCookieLocaleResolver.determineDefaultLocale(HttpServletRequest)"})
+  public void testDetermineDefaultLocale_givenLocaleService_thenReturnUk() {
     // Arrange
-    BroadleafCookieLocaleResolver broadleafCookieLocaleResolver = new BroadleafCookieLocaleResolver();
     broadleafCookieLocaleResolver.setDefaultLocale(Locale.getDefault());
-    SessionlessHttpServletRequestWrapper request = new SessionlessHttpServletRequestWrapper(
-        new MockHttpServletRequest());
 
     // Act
-    Locale actualDetermineDefaultLocaleResult = broadleafCookieLocaleResolver.determineDefaultLocale(request);
+    Locale actualDetermineDefaultLocaleResult = broadleafCookieLocaleResolver
+        .determineDefaultLocale(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
 
     // Assert
-    ServletRequest request2 = request.getRequest();
-    assertTrue(request2 instanceof MockHttpServletRequest);
-    Locale locale = actualDetermineDefaultLocaleResult.ENGLISH;
-    assertSame(locale, request2.getLocale());
-    assertSame(locale, request.getLocale());
     assertSame(actualDetermineDefaultLocaleResult.UK, actualDetermineDefaultLocaleResult);
   }
 
   /**
-   * Test
-   * {@link BroadleafCookieLocaleResolver#determineDefaultLocale(HttpServletRequest)}.
+   * Test {@link BroadleafCookieLocaleResolver#determineDefaultLocale(HttpServletRequest)}.
+   * <ul>
+   *   <li>Then calls {@link LocaleImpl#getJavaLocale()}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafCookieLocaleResolver#determineDefaultLocale(HttpServletRequest)}
+   * Method under test: {@link BroadleafCookieLocaleResolver#determineDefaultLocale(HttpServletRequest)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testDetermineDefaultLocale2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.common.web;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.common.web.BroadleafCookieLocaleResolver.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass35 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.common.web.BroadleafCookieLocaleResolver broadleafCookieLocaleResolver;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.locale.service.LocaleService localeService;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Locale BroadleafCookieLocaleResolver.determineDefaultLocale(HttpServletRequest)"})
+  public void testDetermineDefaultLocale_thenCallsGetJavaLocale() {
+    // Arrange
+    LocaleImpl localeImpl = mock(LocaleImpl.class);
+    when(localeImpl.getJavaLocale()).thenReturn(Locale.getDefault());
+    when(localeService.findDefaultLocale()).thenReturn(localeImpl);
 
-    // Arrange and Act
-    broadleafCookieLocaleResolver
+    // Act
+    Locale actualDetermineDefaultLocaleResult = broadleafCookieLocaleResolver
         .determineDefaultLocale(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
+
+    // Assert
+    verify(localeImpl).getJavaLocale();
+    verify(localeService).findDefaultLocale();
+    assertSame(actualDetermineDefaultLocaleResult.UK, actualDetermineDefaultLocaleResult);
+  }
+
+  /**
+   * Test {@link BroadleafCookieLocaleResolver#determineDefaultLocale(HttpServletRequest)}.
+   * <ul>
+   *   <li>Then return {@link Locale#ENGLISH}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BroadleafCookieLocaleResolver#determineDefaultLocale(HttpServletRequest)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Locale BroadleafCookieLocaleResolver.determineDefaultLocale(HttpServletRequest)"})
+  public void testDetermineDefaultLocale_thenReturnEnglish() {
+    // Arrange
+    when(localeService.findDefaultLocale()).thenReturn(null);
+
+    // Act
+    Locale actualDetermineDefaultLocaleResult = broadleafCookieLocaleResolver
+        .determineDefaultLocale(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
+
+    // Assert
+    verify(localeService).findDefaultLocale();
+    assertSame(actualDetermineDefaultLocaleResult.ENGLISH, actualDetermineDefaultLocaleResult);
+  }
+
+  /**
+   * Test {@link BroadleafCookieLocaleResolver#determineDefaultLocale(HttpServletRequest)}.
+   * <ul>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BroadleafCookieLocaleResolver#determineDefaultLocale(HttpServletRequest)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Locale BroadleafCookieLocaleResolver.determineDefaultLocale(HttpServletRequest)"})
+  public void testDetermineDefaultLocale_thenReturnNull() {
+    // Arrange
+    when(localeService.findDefaultLocale()).thenReturn(new LocaleImpl());
+
+    // Act
+    Locale actualDetermineDefaultLocaleResult = broadleafCookieLocaleResolver
+        .determineDefaultLocale(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
+
+    // Assert
+    verify(localeService).findDefaultLocale();
+    assertNull(actualDetermineDefaultLocaleResult);
   }
 
   /**
    * Test new {@link BroadleafCookieLocaleResolver} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link BroadleafCookieLocaleResolver}
+   * Method under test: default or parameterless constructor of {@link BroadleafCookieLocaleResolver}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BroadleafCookieLocaleResolver.<init>()"})
   public void testNewBroadleafCookieLocaleResolver() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange and Act
     BroadleafCookieLocaleResolver actualBroadleafCookieLocaleResolver = new BroadleafCookieLocaleResolver();
 
@@ -130,36 +172,5 @@ public class BroadleafCookieLocaleResolverDiffblueTest {
     assertFalse(actualBroadleafCookieLocaleResolver.isCookieSecure());
     assertTrue(actualBroadleafCookieLocaleResolver.isLanguageTagCompliant());
     assertTrue(actualBroadleafCookieLocaleResolver.isRejectInvalidCookies());
-  }
-
-  /**
-   * Test new {@link BroadleafCookieLocaleResolver} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link BroadleafCookieLocaleResolver}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testNewBroadleafCookieLocaleResolver2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.common.web;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.common.web.BroadleafCookieLocaleResolver.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass34 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.common.web.BroadleafCookieLocaleResolver broadleafCookieLocaleResolver;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.locale.service.LocaleService localeService;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    new BroadleafCookieLocaleResolver();
   }
 }

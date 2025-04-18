@@ -1,24 +1,41 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.server.service.persistence.validation;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.List;
 import org.junit.Test;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.experimental.categories.Category;
 
 public class PropertyValidationResultDiffblueTest {
-  @MockBean
-  private PropertyValidationResult propertyValidationResult;
-
   /**
    * Test {@link PropertyValidationResult#PropertyValidationResult(boolean)}.
    * <p>
-   * Method under test:
-   * {@link PropertyValidationResult#PropertyValidationResult(boolean)}
+   * Method under test: {@link PropertyValidationResult#PropertyValidationResult(boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PropertyValidationResult.<init>(boolean)"})
   public void testNewPropertyValidationResult() {
     // Arrange and Act
     PropertyValidationResult actualPropertyValidationResult = new PropertyValidationResult(true);
@@ -31,14 +48,17 @@ public class PropertyValidationResultDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link PropertyValidationResult#PropertyValidationResult(boolean, String)}.
+   * Test {@link PropertyValidationResult#PropertyValidationResult(boolean, String)}.
+   * <ul>
+   *   <li>Then return ErrorMessages size is one.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link PropertyValidationResult#PropertyValidationResult(boolean, String)}
+   * Method under test: {@link PropertyValidationResult#PropertyValidationResult(boolean, String)}
    */
   @Test
-  public void testNewPropertyValidationResult2() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PropertyValidationResult.<init>(boolean, String)"})
+  public void testNewPropertyValidationResult_thenReturnErrorMessagesSizeIsOne() {
     // Arrange and Act
     PropertyValidationResult actualPropertyValidationResult = new PropertyValidationResult(true, "An error occurred");
 

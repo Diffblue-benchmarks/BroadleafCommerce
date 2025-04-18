@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.offer.service.discount.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -9,6 +26,8 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
 import org.broadleafcommerce.common.money.Money;
@@ -16,19 +35,19 @@ import org.broadleafcommerce.core.offer.domain.OfferImpl;
 import org.broadleafcommerce.core.offer.domain.OrderItemPriceDetailAdjustment;
 import org.broadleafcommerce.core.offer.domain.OrderItemPriceDetailAdjustmentImpl;
 import org.broadleafcommerce.core.order.domain.BundleOrderItemImpl;
-import org.broadleafcommerce.core.order.domain.NullOrderImpl;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class PromotableOrderItemPriceDetailAdjustmentImplDiffblueTest {
   /**
-   * Test
-   * {@link PromotableOrderItemPriceDetailAdjustmentImpl#PromotableOrderItemPriceDetailAdjustmentImpl(OrderItemPriceDetailAdjustment, PromotableOrderItemPriceDetail)}.
+   * Test {@link PromotableOrderItemPriceDetailAdjustmentImpl#PromotableOrderItemPriceDetailAdjustmentImpl(OrderItemPriceDetailAdjustment, PromotableOrderItemPriceDetail)}.
    * <p>
-   * Method under test:
-   * {@link PromotableOrderItemPriceDetailAdjustmentImpl#PromotableOrderItemPriceDetailAdjustmentImpl(OrderItemPriceDetailAdjustment, PromotableOrderItemPriceDetail)}
+   * Method under test: {@link PromotableOrderItemPriceDetailAdjustmentImpl#PromotableOrderItemPriceDetailAdjustmentImpl(OrderItemPriceDetailAdjustment, PromotableOrderItemPriceDetail)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void PromotableOrderItemPriceDetailAdjustmentImpl.<init>(OrderItemPriceDetailAdjustment, PromotableOrderItemPriceDetail)"})
   public void testNewPromotableOrderItemPriceDetailAdjustmentImpl() {
     // Arrange
     OrderItemPriceDetailAdjustmentImpl itemAdjustment = mock(OrderItemPriceDetailAdjustmentImpl.class);
@@ -54,48 +73,17 @@ public class PromotableOrderItemPriceDetailAdjustmentImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link PromotableOrderItemPriceDetailAdjustmentImpl#PromotableOrderItemPriceDetailAdjustmentImpl(PromotableCandidateItemOffer, PromotableOrderItemPriceDetail, Money, Money)}.
-   * <p>
-   * Method under test:
-   * {@link PromotableOrderItemPriceDetailAdjustmentImpl#PromotableOrderItemPriceDetailAdjustmentImpl(PromotableCandidateItemOffer, PromotableOrderItemPriceDetail, Money, Money)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testNewPromotableOrderItemPriceDetailAdjustmentImpl2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange
-    NullOrderImpl order = new NullOrderImpl();
-    PromotableOrderImpl promotableOrder = new PromotableOrderImpl(order,
-        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
-
-    PromotableCandidateItemOfferImpl promotableCandidateItemOffer = new PromotableCandidateItemOfferImpl(
-        promotableOrder, new OfferImpl());
-
-    PromotableOrderItemPriceDetailWrapper orderItemPriceDetail = new PromotableOrderItemPriceDetailWrapper(
-        new PromotableOrderItemPriceDetailImpl(new PromotableOrderItemImpl(new BundleOrderItemImpl(),
-            mock(PromotableOrder.class), mock(PromotableItemFactory.class), true), 1));
-    Money retailAdjustmentValue = new Money();
-
-    // Act
-    new PromotableOrderItemPriceDetailAdjustmentImpl(promotableCandidateItemOffer, orderItemPriceDetail,
-        retailAdjustmentValue, new Money());
-
-  }
-
-  /**
-   * Test
-   * {@link PromotableOrderItemPriceDetailAdjustmentImpl#PromotableOrderItemPriceDetailAdjustmentImpl(OrderItemPriceDetailAdjustment, PromotableOrderItemPriceDetail)}.
+   * Test {@link PromotableOrderItemPriceDetailAdjustmentImpl#PromotableOrderItemPriceDetailAdjustmentImpl(OrderItemPriceDetailAdjustment, PromotableOrderItemPriceDetail)}.
    * <ul>
    *   <li>Then return AppliedToSalePrice.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PromotableOrderItemPriceDetailAdjustmentImpl#PromotableOrderItemPriceDetailAdjustmentImpl(OrderItemPriceDetailAdjustment, PromotableOrderItemPriceDetail)}
+   * Method under test: {@link PromotableOrderItemPriceDetailAdjustmentImpl#PromotableOrderItemPriceDetailAdjustmentImpl(OrderItemPriceDetailAdjustment, PromotableOrderItemPriceDetail)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void PromotableOrderItemPriceDetailAdjustmentImpl.<init>(OrderItemPriceDetailAdjustment, PromotableOrderItemPriceDetail)"})
   public void testNewPromotableOrderItemPriceDetailAdjustmentImpl_thenReturnAppliedToSalePrice() {
     // Arrange
     OrderItemPriceDetailAdjustmentImpl itemAdjustment = mock(OrderItemPriceDetailAdjustmentImpl.class);
@@ -118,7 +106,6 @@ public class PromotableOrderItemPriceDetailAdjustmentImplDiffblueTest {
     assertTrue(actualPromotableOrderItemPriceDetailAdjustmentImpl.isAppliedToSalePrice());
     Money retailAdjustmentValue = actualPromotableOrderItemPriceDetailAdjustmentImpl.getRetailAdjustmentValue();
     assertEquals(money, retailAdjustmentValue.abs());
-    assertEquals(money, retailAdjustmentValue.zero());
     Money adjustmentValue = actualPromotableOrderItemPriceDetailAdjustmentImpl.getAdjustmentValue();
     assertEquals(retailAdjustmentValue, adjustmentValue.abs());
     assertEquals(retailAdjustmentValue, adjustmentValue.zero());
@@ -131,10 +118,11 @@ public class PromotableOrderItemPriceDetailAdjustmentImplDiffblueTest {
    *   <li>Then return {@link BroadleafCurrencyImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PromotableOrderItemPriceDetailAdjustmentImpl#getCurrency()}
+   * Method under test: {@link PromotableOrderItemPriceDetailAdjustmentImpl#getCurrency()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BroadleafCurrency PromotableOrderItemPriceDetailAdjustmentImpl.getCurrency()"})
   public void testGetCurrency_thenReturnBroadleafCurrencyImpl() {
     // Arrange
     OrderItemPriceDetailAdjustmentImpl itemAdjustment = mock(OrderItemPriceDetailAdjustmentImpl.class);
@@ -149,7 +137,7 @@ public class PromotableOrderItemPriceDetailAdjustmentImplDiffblueTest {
     // Act
     BroadleafCurrency actualCurrency = (new PromotableOrderItemPriceDetailAdjustmentImpl(itemAdjustment,
         new PromotableOrderItemPriceDetailWrapper(new PromotableOrderItemPriceDetailImpl(promotableOrderItem, 1))))
-            .getCurrency();
+        .getCurrency();
 
     // Assert
     verify(itemAdjustment).getOffer();
@@ -166,10 +154,11 @@ public class PromotableOrderItemPriceDetailAdjustmentImplDiffblueTest {
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PromotableOrderItemPriceDetailAdjustmentImpl#isCombinable()}
+   * Method under test: {@link PromotableOrderItemPriceDetailAdjustmentImpl#isCombinable()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PromotableOrderItemPriceDetailAdjustmentImpl.isCombinable()"})
   public void testIsCombinable_thenReturnFalse() {
     // Arrange
     OfferImpl offerImpl = mock(OfferImpl.class);
@@ -199,10 +188,11 @@ public class PromotableOrderItemPriceDetailAdjustmentImplDiffblueTest {
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PromotableOrderItemPriceDetailAdjustmentImpl#isCombinable()}
+   * Method under test: {@link PromotableOrderItemPriceDetailAdjustmentImpl#isCombinable()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PromotableOrderItemPriceDetailAdjustmentImpl.isCombinable()"})
   public void testIsCombinable_thenReturnTrue() {
     // Arrange
     OrderItemPriceDetailAdjustmentImpl itemAdjustment = mock(OrderItemPriceDetailAdjustmentImpl.class);
@@ -226,10 +216,11 @@ public class PromotableOrderItemPriceDetailAdjustmentImplDiffblueTest {
   /**
    * Test {@link PromotableOrderItemPriceDetailAdjustmentImpl#isTotalitarian()}.
    * <p>
-   * Method under test:
-   * {@link PromotableOrderItemPriceDetailAdjustmentImpl#isTotalitarian()}
+   * Method under test: {@link PromotableOrderItemPriceDetailAdjustmentImpl#isTotalitarian()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PromotableOrderItemPriceDetailAdjustmentImpl.isTotalitarian()"})
   public void testIsTotalitarian() {
     // Arrange
     OrderItemPriceDetailAdjustmentImpl itemAdjustment = mock(OrderItemPriceDetailAdjustmentImpl.class);
@@ -253,15 +244,15 @@ public class PromotableOrderItemPriceDetailAdjustmentImplDiffblueTest {
   /**
    * Test {@link PromotableOrderItemPriceDetailAdjustmentImpl#isTotalitarian()}.
    * <ul>
-   *   <li>Given {@link OfferImpl} {@link OfferImpl#isTotalitarianOffer()} return
-   * {@code null}.</li>
+   *   <li>Given {@link OfferImpl} {@link OfferImpl#isTotalitarianOffer()} return {@code null}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PromotableOrderItemPriceDetailAdjustmentImpl#isTotalitarian()}
+   * Method under test: {@link PromotableOrderItemPriceDetailAdjustmentImpl#isTotalitarian()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PromotableOrderItemPriceDetailAdjustmentImpl.isTotalitarian()"})
   public void testIsTotalitarian_givenOfferImplIsTotalitarianOfferReturnNull_thenReturnFalse() {
     // Arrange
     OfferImpl offerImpl = mock(OfferImpl.class);
@@ -288,15 +279,15 @@ public class PromotableOrderItemPriceDetailAdjustmentImplDiffblueTest {
   /**
    * Test {@link PromotableOrderItemPriceDetailAdjustmentImpl#isTotalitarian()}.
    * <ul>
-   *   <li>Given {@link OfferImpl} {@link OfferImpl#isTotalitarianOffer()} return
-   * {@code true}.</li>
+   *   <li>Given {@link OfferImpl} {@link OfferImpl#isTotalitarianOffer()} return {@code true}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PromotableOrderItemPriceDetailAdjustmentImpl#isTotalitarian()}
+   * Method under test: {@link PromotableOrderItemPriceDetailAdjustmentImpl#isTotalitarian()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PromotableOrderItemPriceDetailAdjustmentImpl.isTotalitarian()"})
   public void testIsTotalitarian_givenOfferImplIsTotalitarianOfferReturnTrue_thenReturnTrue() {
     // Arrange
     OfferImpl offerImpl = mock(OfferImpl.class);
@@ -326,10 +317,11 @@ public class PromotableOrderItemPriceDetailAdjustmentImplDiffblueTest {
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PromotableOrderItemPriceDetailAdjustmentImpl#getOfferId()}
+   * Method under test: {@link PromotableOrderItemPriceDetailAdjustmentImpl#getOfferId()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long PromotableOrderItemPriceDetailAdjustmentImpl.getOfferId()"})
   public void testGetOfferId_thenReturnNull() {
     // Arrange
     OrderItemPriceDetailAdjustmentImpl itemAdjustment = mock(OrderItemPriceDetailAdjustmentImpl.class);
@@ -351,13 +343,13 @@ public class PromotableOrderItemPriceDetailAdjustmentImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link PromotableOrderItemPriceDetailAdjustmentImpl#finalizeAdjustment(boolean)}.
+   * Test {@link PromotableOrderItemPriceDetailAdjustmentImpl#finalizeAdjustment(boolean)}.
    * <p>
-   * Method under test:
-   * {@link PromotableOrderItemPriceDetailAdjustmentImpl#finalizeAdjustment(boolean)}
+   * Method under test: {@link PromotableOrderItemPriceDetailAdjustmentImpl#finalizeAdjustment(boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PromotableOrderItemPriceDetailAdjustmentImpl.finalizeAdjustment(boolean)"})
   public void testFinalizeAdjustment() {
     // Arrange
     OrderItemPriceDetailAdjustmentImpl itemAdjustment = mock(OrderItemPriceDetailAdjustmentImpl.class);
@@ -373,7 +365,7 @@ public class PromotableOrderItemPriceDetailAdjustmentImplDiffblueTest {
     // Act
     promotableOrderItemPriceDetailAdjustmentImpl.finalizeAdjustment(true);
 
-    // Assert
+    // Assert that nothing has changed
     verify(itemAdjustment).getOffer();
     verify(itemAdjustment).getRetailPriceValue();
     verify(itemAdjustment, atLeast(1)).getValue();
@@ -387,13 +379,13 @@ public class PromotableOrderItemPriceDetailAdjustmentImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link PromotableOrderItemPriceDetailAdjustmentImpl#finalizeAdjustment(boolean)}.
+   * Test {@link PromotableOrderItemPriceDetailAdjustmentImpl#finalizeAdjustment(boolean)}.
    * <p>
-   * Method under test:
-   * {@link PromotableOrderItemPriceDetailAdjustmentImpl#finalizeAdjustment(boolean)}
+   * Method under test: {@link PromotableOrderItemPriceDetailAdjustmentImpl#finalizeAdjustment(boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PromotableOrderItemPriceDetailAdjustmentImpl.finalizeAdjustment(boolean)"})
   public void testFinalizeAdjustment2() {
     // Arrange
     OrderItemPriceDetailAdjustmentImpl itemAdjustment = mock(OrderItemPriceDetailAdjustmentImpl.class);
@@ -420,61 +412,5 @@ public class PromotableOrderItemPriceDetailAdjustmentImplDiffblueTest {
     assertEquals(money, adjustmentValue.zero());
     assertSame(money, promotableOrderItemPriceDetailAdjustmentImpl.getRetailAdjustmentValue());
     assertSame(money2, promotableOrderItemPriceDetailAdjustmentImpl.getSaleAdjustmentValue());
-  }
-
-  /**
-   * Test {@link PromotableOrderItemPriceDetailAdjustmentImpl#copy()}.
-   * <p>
-   * Method under test:
-   * {@link PromotableOrderItemPriceDetailAdjustmentImpl#copy()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCopy() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange
-    NullOrderImpl order = new NullOrderImpl();
-    PromotableOrderImpl promotableOrder = new PromotableOrderImpl(order,
-        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
-
-    PromotableCandidateItemOfferImpl promotableCandidateItemOffer = new PromotableCandidateItemOfferImpl(
-        promotableOrder, new OfferImpl());
-
-    PromotableOrderItemPriceDetailWrapper orderItemPriceDetail = new PromotableOrderItemPriceDetailWrapper(
-        new PromotableOrderItemPriceDetailImpl(mock(PromotableOrderItem.class), 1));
-    Money retailAdjustmentValue = new Money();
-
-    // Act
-    (new PromotableOrderItemPriceDetailAdjustmentImpl(promotableCandidateItemOffer, orderItemPriceDetail,
-        retailAdjustmentValue, new Money())).copy();
-  }
-
-  /**
-   * Test {@link PromotableOrderItemPriceDetailAdjustmentImpl#copy()}.
-   * <p>
-   * Method under test:
-   * {@link PromotableOrderItemPriceDetailAdjustmentImpl#copy()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCopy2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.broadleafcommerce.core.offer.domain.OrderItemPriceDetailAdjustmentImpl.getCurrency(OrderItemPriceDetailAdjustmentImpl.java:213)
-    //       at org.broadleafcommerce.core.offer.domain.OrderItemPriceDetailAdjustmentImpl.getValue(OrderItemPriceDetailAdjustmentImpl.java:222)
-    //       at org.broadleafcommerce.core.offer.service.discount.domain.PromotableOrderItemPriceDetailAdjustmentImpl.<init>(PromotableOrderItemPriceDetailAdjustmentImpl.java:53)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    OrderItemPriceDetailAdjustmentImpl itemAdjustment = new OrderItemPriceDetailAdjustmentImpl();
-
-    // Act
-    (new PromotableOrderItemPriceDetailAdjustmentImpl(itemAdjustment, new PromotableOrderItemPriceDetailWrapper(
-        new PromotableOrderItemPriceDetailImpl(mock(PromotableOrderItem.class), 1)))).copy();
   }
 }

@@ -21,11 +21,11 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.ServletResponse;
@@ -36,6 +36,7 @@ import org.broadleafcommerce.common.web.filter.SessionlessHttpServletRequestWrap
 import org.broadleafcommerce.common.web.util.FileSystemResponseWrapper;
 import org.broadleafcommerce.common.web.util.StatusExposingServletResponse;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -53,44 +54,45 @@ public class BroadleafAuthenticationFailureHandlerDiffblueTest {
   private BroadleafAuthenticationFailureHandler broadleafAuthenticationFailureHandler;
 
   /**
-   * Test
-   * {@link BroadleafAuthenticationFailureHandler#BroadleafAuthenticationFailureHandler()}.
+   * Test {@link BroadleafAuthenticationFailureHandler#BroadleafAuthenticationFailureHandler()}.
    * <p>
-   * Method under test:
-   * {@link BroadleafAuthenticationFailureHandler#BroadleafAuthenticationFailureHandler()}
+   * Method under test: {@link BroadleafAuthenticationFailureHandler#BroadleafAuthenticationFailureHandler()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BroadleafAuthenticationFailureHandler.<init>()"})
   public void testNewBroadleafAuthenticationFailureHandler() {
     // Arrange, Act and Assert
     assertNull((new BroadleafAuthenticationFailureHandler()).validateUrlParam("https://example.org/example"));
+  }
+
+  /**
+   * Test {@link BroadleafAuthenticationFailureHandler#BroadleafAuthenticationFailureHandler(String)}.
+   * <p>
+   * Method under test: {@link BroadleafAuthenticationFailureHandler#BroadleafAuthenticationFailureHandler(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BroadleafAuthenticationFailureHandler.<init>(String)"})
+  public void testNewBroadleafAuthenticationFailureHandler2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
+    // Arrange, Act and Assert
     assertNull((new BroadleafAuthenticationFailureHandler("https://example.org/example"))
         .validateUrlParam("https://example.org/example"));
   }
 
   /**
-   * Test
-   * {@link BroadleafAuthenticationFailureHandler#BroadleafAuthenticationFailureHandler(String)}.
+   * Test {@link BroadleafAuthenticationFailureHandler#onAuthenticationFailure(HttpServletRequest, HttpServletResponse, AuthenticationException)}.
    * <p>
-   * Method under test:
-   * {@link BroadleafAuthenticationFailureHandler#BroadleafAuthenticationFailureHandler(String)}
+   * Method under test: {@link BroadleafAuthenticationFailureHandler#onAuthenticationFailure(HttpServletRequest, HttpServletResponse, AuthenticationException)}
    */
   @Test
-  public void testNewBroadleafAuthenticationFailureHandler2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange and Act
-    new BroadleafAuthenticationFailureHandler("https://example.org/example");
-  }
-
-  /**
-   * Test
-   * {@link BroadleafAuthenticationFailureHandler#onAuthenticationFailure(HttpServletRequest, HttpServletResponse, AuthenticationException)}.
-   * <p>
-   * Method under test:
-   * {@link BroadleafAuthenticationFailureHandler#onAuthenticationFailure(HttpServletRequest, HttpServletResponse, AuthenticationException)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void BroadleafAuthenticationFailureHandler.onAuthenticationFailure(HttpServletRequest, HttpServletResponse, AuthenticationException)"})
   public void testOnAuthenticationFailure() throws IOException, ServletException {
     // Arrange
     BroadleafAuthenticationFailureHandler broadleafAuthenticationFailureHandler = new BroadleafAuthenticationFailureHandler();
@@ -120,13 +122,14 @@ public class BroadleafAuthenticationFailureHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BroadleafAuthenticationFailureHandler#onAuthenticationFailure(HttpServletRequest, HttpServletResponse, AuthenticationException)}.
+   * Test {@link BroadleafAuthenticationFailureHandler#onAuthenticationFailure(HttpServletRequest, HttpServletResponse, AuthenticationException)}.
    * <p>
-   * Method under test:
-   * {@link BroadleafAuthenticationFailureHandler#onAuthenticationFailure(HttpServletRequest, HttpServletResponse, AuthenticationException)}
+   * Method under test: {@link BroadleafAuthenticationFailureHandler#onAuthenticationFailure(HttpServletRequest, HttpServletResponse, AuthenticationException)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void BroadleafAuthenticationFailureHandler.onAuthenticationFailure(HttpServletRequest, HttpServletResponse, AuthenticationException)"})
   public void testOnAuthenticationFailure2() throws IOException, ServletException {
     // Arrange
     BroadleafAuthenticationFailureHandler broadleafAuthenticationFailureHandler = new BroadleafAuthenticationFailureHandler(
@@ -166,10 +169,11 @@ public class BroadleafAuthenticationFailureHandlerDiffblueTest {
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafAuthenticationFailureHandler#validateUrlParam(String)}
+   * Method under test: {@link BroadleafAuthenticationFailureHandler#validateUrlParam(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BroadleafAuthenticationFailureHandler.validateUrlParam(String)"})
   public void testValidateUrlParam_whenDot_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull(broadleafAuthenticationFailureHandler.validateUrlParam("."));
@@ -182,10 +186,11 @@ public class BroadleafAuthenticationFailureHandlerDiffblueTest {
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafAuthenticationFailureHandler#validateUrlParam(String)}
+   * Method under test: {@link BroadleafAuthenticationFailureHandler#validateUrlParam(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BroadleafAuthenticationFailureHandler.validateUrlParam(String)"})
   public void testValidateUrlParam_whenHttpsExampleOrgExample_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull(broadleafAuthenticationFailureHandler.validateUrlParam("https://example.org/example"));
@@ -198,10 +203,11 @@ public class BroadleafAuthenticationFailureHandlerDiffblueTest {
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafAuthenticationFailureHandler#validateUrlParam(String)}
+   * Method under test: {@link BroadleafAuthenticationFailureHandler#validateUrlParam(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BroadleafAuthenticationFailureHandler.validateUrlParam(String)"})
   public void testValidateUrlParam_whenNull_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull(broadleafAuthenticationFailureHandler.validateUrlParam(null));
@@ -214,10 +220,11 @@ public class BroadleafAuthenticationFailureHandlerDiffblueTest {
    *   <li>Then return {@code Url}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafAuthenticationFailureHandler#validateUrlParam(String)}
+   * Method under test: {@link BroadleafAuthenticationFailureHandler#validateUrlParam(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BroadleafAuthenticationFailureHandler.validateUrlParam(String)"})
   public void testValidateUrlParam_whenUrl_thenReturnUrl() {
     // Arrange, Act and Assert
     assertEquals("Url", broadleafAuthenticationFailureHandler.validateUrlParam("Url"));
@@ -230,39 +237,13 @@ public class BroadleafAuthenticationFailureHandlerDiffblueTest {
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafAuthenticationFailureHandler#validateUrlParam(String)}
+   * Method under test: {@link BroadleafAuthenticationFailureHandler#validateUrlParam(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BroadleafAuthenticationFailureHandler.validateUrlParam(String)"})
   public void testValidateUrlParam_whenWww_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull(broadleafAuthenticationFailureHandler.validateUrlParam("www"));
-  }
-
-  /**
-   * Test {@link BroadleafAuthenticationFailureHandler#setExceptionMappings(Map)}.
-   * <ul>
-   *   <li>When {@link HashMap#HashMap()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link BroadleafAuthenticationFailureHandler#setExceptionMappings(Map)}
-   */
-  @Test
-  public void testSetExceptionMappings_whenHashMap() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing observers.
-    //   Diffblue Cover was unable to create an assertion.
-    //   Add getters for the following fields or make them package-private:
-    //     BroadleafAuthenticationFailureHandler.defaultFailureUrl
-    //     BroadleafAuthenticationFailureHandler.failureUrlMap
-    //     SimpleUrlAuthenticationFailureHandler.defaultFailureUrl
-    //     SimpleUrlAuthenticationFailureHandler.logger
-
-    // Arrange
-    BroadleafAuthenticationFailureHandler broadleafAuthenticationFailureHandler = new BroadleafAuthenticationFailureHandler();
-
-    // Act
-    broadleafAuthenticationFailureHandler.setExceptionMappings(new HashMap<>());
   }
 }

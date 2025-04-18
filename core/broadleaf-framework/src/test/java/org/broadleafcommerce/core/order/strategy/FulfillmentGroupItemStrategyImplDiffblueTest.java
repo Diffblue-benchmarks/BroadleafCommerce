@@ -1,19 +1,38 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.order.strategy;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.anyInt;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.anyBoolean;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -28,96 +47,65 @@ import org.broadleafcommerce.core.catalog.domain.CategoryImpl;
 import org.broadleafcommerce.core.catalog.domain.ProductBundleImpl;
 import org.broadleafcommerce.core.catalog.domain.Sku;
 import org.broadleafcommerce.core.catalog.domain.SkuImpl;
+import org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao;
 import org.broadleafcommerce.core.order.domain.BundleOrderItemImpl;
 import org.broadleafcommerce.core.order.domain.DiscreteOrderItem;
-import org.broadleafcommerce.core.order.domain.DiscreteOrderItemImpl;
 import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
 import org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl;
 import org.broadleafcommerce.core.order.domain.FulfillmentGroupItem;
-import org.broadleafcommerce.core.order.domain.FulfillmentGroupItemImpl;
-import org.broadleafcommerce.core.order.domain.GiftWrapOrderItemImpl;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.domain.OrderImpl;
 import org.broadleafcommerce.core.order.domain.OrderItem;
-import org.broadleafcommerce.core.order.domain.OrderItemImpl;
-import org.broadleafcommerce.core.order.domain.PersonalMessageImpl;
+import org.broadleafcommerce.core.order.service.FulfillmentGroupService;
+import org.broadleafcommerce.core.order.service.OrderItemService;
+import org.broadleafcommerce.core.order.service.OrderService;
+import org.broadleafcommerce.core.order.service.call.FulfillmentGroupItemRequest;
 import org.broadleafcommerce.core.order.service.call.OrderItemRequestDTO;
 import org.broadleafcommerce.core.order.service.type.FulfillmentType;
-import org.broadleafcommerce.core.order.service.type.OrderItemType;
 import org.broadleafcommerce.core.order.service.type.OrderStatus;
 import org.broadleafcommerce.core.order.service.workflow.CartOperationRequest;
 import org.broadleafcommerce.core.pricing.service.exception.PricingException;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class FulfillmentGroupItemStrategyImplDiffblueTest {
-  @Autowired
+  @Mock
+  private FulfillmentGroupItemDao fulfillmentGroupItemDao;
+
+  @InjectMocks
   private FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl;
 
-  /**
-   * Test
-   * {@link FulfillmentGroupItemStrategyImpl#onItemAdded(CartOperationRequest)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupItemStrategyImpl#onItemAdded(CartOperationRequest)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testOnItemAdded() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.strategy;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass268 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.strategy.FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Mock
+  private FulfillmentGroupService fulfillmentGroupService;
 
-    // Arrange
-    FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl2 = new FulfillmentGroupItemStrategyImpl();
-    NullOrderImpl order = new NullOrderImpl();
+  @Mock
+  private OrderItemService orderItemService;
 
-    // Act
-    fulfillmentGroupItemStrategyImpl2.onItemAdded(new CartOperationRequest(order, new OrderItemRequestDTO(), true));
-  }
+  @Mock
+  private OrderService orderService;
 
   /**
-   * Test
-   * {@link FulfillmentGroupItemStrategyImpl#onItemAdded(CartOperationRequest)}.
+   * Test {@link FulfillmentGroupItemStrategyImpl#onItemAdded(CartOperationRequest)}.
    * <ul>
    *   <li>Given {@link BundleOrderItemImpl} (default constructor).</li>
    *   <li>Then return {@link CartOperationRequest}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupItemStrategyImpl#onItemAdded(CartOperationRequest)}
+   * Method under test: {@link FulfillmentGroupItemStrategyImpl#onItemAdded(CartOperationRequest)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CartOperationRequest FulfillmentGroupItemStrategyImpl.onItemAdded(CartOperationRequest)"})
   public void testOnItemAdded_givenBundleOrderItemImpl_thenReturnCartOperationRequest() throws PricingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl = new FulfillmentGroupItemStrategyImpl();
     CartOperationRequest request = mock(CartOperationRequest.class);
     when(request.getOrder()).thenReturn(new NullOrderImpl());
     when(request.getOrderItem()).thenReturn(new BundleOrderItemImpl());
@@ -132,21 +120,18 @@ public class FulfillmentGroupItemStrategyImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentGroupItemStrategyImpl#onItemAdded(CartOperationRequest)}.
+   * Test {@link FulfillmentGroupItemStrategyImpl#onItemAdded(CartOperationRequest)}.
    * <ul>
    *   <li>Then throw {@link IllegalStateException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupItemStrategyImpl#onItemAdded(CartOperationRequest)}
+   * Method under test: {@link FulfillmentGroupItemStrategyImpl#onItemAdded(CartOperationRequest)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CartOperationRequest FulfillmentGroupItemStrategyImpl.onItemAdded(CartOperationRequest)"})
   public void testOnItemAdded_thenThrowIllegalStateException() throws PricingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl = new FulfillmentGroupItemStrategyImpl();
     BundleOrderItemImpl bundleOrderItemImpl = mock(BundleOrderItemImpl.class);
     when(bundleOrderItemImpl.getDiscreteOrderItems()).thenThrow(new IllegalStateException("foo"));
     CartOperationRequest request = mock(CartOperationRequest.class);
@@ -161,19 +146,15 @@ public class FulfillmentGroupItemStrategyImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentGroupItemStrategyImpl#resolveFulfillmentType(DiscreteOrderItem)}
-   * with {@code discreteOrderItem}.
+   * Test {@link FulfillmentGroupItemStrategyImpl#resolveFulfillmentType(DiscreteOrderItem)} with {@code discreteOrderItem}.
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupItemStrategyImpl#resolveFulfillmentType(DiscreteOrderItem)}
+   * Method under test: {@link FulfillmentGroupItemStrategyImpl#resolveFulfillmentType(DiscreteOrderItem)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FulfillmentType FulfillmentGroupItemStrategyImpl.resolveFulfillmentType(DiscreteOrderItem)"})
   public void testResolveFulfillmentTypeWithDiscreteOrderItem() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl = new FulfillmentGroupItemStrategyImpl();
     SkuImpl skuImpl = mock(SkuImpl.class);
     when(skuImpl.getDefaultProduct()).thenReturn(new ProductBundleImpl());
     when(skuImpl.getFulfillmentType()).thenReturn(null);
@@ -192,19 +173,15 @@ public class FulfillmentGroupItemStrategyImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentGroupItemStrategyImpl#resolveFulfillmentType(DiscreteOrderItem)}
-   * with {@code discreteOrderItem}.
+   * Test {@link FulfillmentGroupItemStrategyImpl#resolveFulfillmentType(DiscreteOrderItem)} with {@code discreteOrderItem}.
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupItemStrategyImpl#resolveFulfillmentType(DiscreteOrderItem)}
+   * Method under test: {@link FulfillmentGroupItemStrategyImpl#resolveFulfillmentType(DiscreteOrderItem)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FulfillmentType FulfillmentGroupItemStrategyImpl.resolveFulfillmentType(DiscreteOrderItem)"})
   public void testResolveFulfillmentTypeWithDiscreteOrderItem2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl = new FulfillmentGroupItemStrategyImpl();
     ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
     when(productBundleImpl.getDefaultCategory()).thenReturn(new CategoryImpl());
     SkuImpl skuImpl = mock(SkuImpl.class);
@@ -226,57 +203,18 @@ public class FulfillmentGroupItemStrategyImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentGroupItemStrategyImpl#resolveFulfillmentType(DiscreteOrderItem)}
-   * with {@code discreteOrderItem}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupItemStrategyImpl#resolveFulfillmentType(DiscreteOrderItem)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testResolveFulfillmentTypeWithDiscreteOrderItem3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.strategy;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass477 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.strategy.FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl2 = new FulfillmentGroupItemStrategyImpl();
-
-    // Act
-    fulfillmentGroupItemStrategyImpl2.resolveFulfillmentType(new DiscreteOrderItemImpl());
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupItemStrategyImpl#resolveFulfillmentType(DiscreteOrderItem)}
-   * with {@code discreteOrderItem}.
+   * Test {@link FulfillmentGroupItemStrategyImpl#resolveFulfillmentType(DiscreteOrderItem)} with {@code discreteOrderItem}.
    * <ul>
    *   <li>Given {@link SkuImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupItemStrategyImpl#resolveFulfillmentType(DiscreteOrderItem)}
+   * Method under test: {@link FulfillmentGroupItemStrategyImpl#resolveFulfillmentType(DiscreteOrderItem)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FulfillmentType FulfillmentGroupItemStrategyImpl.resolveFulfillmentType(DiscreteOrderItem)"})
   public void testResolveFulfillmentTypeWithDiscreteOrderItem_givenSkuImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl = new FulfillmentGroupItemStrategyImpl();
     DiscreteOrderItem discreteOrderItem = mock(DiscreteOrderItem.class);
     when(discreteOrderItem.getSku()).thenReturn(new SkuImpl());
 
@@ -290,22 +228,18 @@ public class FulfillmentGroupItemStrategyImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentGroupItemStrategyImpl#resolveFulfillmentType(DiscreteOrderItem)}
-   * with {@code discreteOrderItem}.
+   * Test {@link FulfillmentGroupItemStrategyImpl#resolveFulfillmentType(DiscreteOrderItem)} with {@code discreteOrderItem}.
    * <ul>
    *   <li>Then return {@link FulfillmentType#DIGITAL}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupItemStrategyImpl#resolveFulfillmentType(DiscreteOrderItem)}
+   * Method under test: {@link FulfillmentGroupItemStrategyImpl#resolveFulfillmentType(DiscreteOrderItem)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FulfillmentType FulfillmentGroupItemStrategyImpl.resolveFulfillmentType(DiscreteOrderItem)"})
   public void testResolveFulfillmentTypeWithDiscreteOrderItem_thenReturnDigital() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl = new FulfillmentGroupItemStrategyImpl();
     SkuImpl skuImpl = mock(SkuImpl.class);
     when(skuImpl.getFulfillmentType()).thenReturn(FulfillmentType.DIGITAL);
     DiscreteOrderItem discreteOrderItem = mock(DiscreteOrderItem.class);
@@ -322,22 +256,18 @@ public class FulfillmentGroupItemStrategyImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentGroupItemStrategyImpl#resolveFulfillmentType(DiscreteOrderItem)}
-   * with {@code discreteOrderItem}.
+   * Test {@link FulfillmentGroupItemStrategyImpl#resolveFulfillmentType(DiscreteOrderItem)} with {@code discreteOrderItem}.
    * <ul>
    *   <li>Then throw {@link IllegalStateException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupItemStrategyImpl#resolveFulfillmentType(DiscreteOrderItem)}
+   * Method under test: {@link FulfillmentGroupItemStrategyImpl#resolveFulfillmentType(DiscreteOrderItem)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FulfillmentType FulfillmentGroupItemStrategyImpl.resolveFulfillmentType(DiscreteOrderItem)"})
   public void testResolveFulfillmentTypeWithDiscreteOrderItem_thenThrowIllegalStateException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl = new FulfillmentGroupItemStrategyImpl();
     CategoryImpl categoryImpl = mock(CategoryImpl.class);
     when(categoryImpl.getFulfillmentType()).thenThrow(new IllegalStateException("foo"));
     ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
@@ -359,127 +289,245 @@ public class FulfillmentGroupItemStrategyImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupItemStrategyImpl#resolveFulfillmentType(Sku)}
-   * with {@code sku}.
+   * Test {@link FulfillmentGroupItemStrategyImpl#resolveFulfillmentType(Sku)} with {@code sku}.
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupItemStrategyImpl#resolveFulfillmentType(Sku)}
+   * Method under test: {@link FulfillmentGroupItemStrategyImpl#resolveFulfillmentType(Sku)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FulfillmentType FulfillmentGroupItemStrategyImpl.resolveFulfillmentType(Sku)"})
   public void testResolveFulfillmentTypeWithSku() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.strategy;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass433 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.strategy.FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl2 = new FulfillmentGroupItemStrategyImpl();
-
-    // Act
-    fulfillmentGroupItemStrategyImpl2.resolveFulfillmentType(new SkuImpl());
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupItemStrategyImpl#addItemToFulfillmentGroup(Order, OrderItem, FulfillmentGroup)}
-   * with {@code order}, {@code orderItem}, {@code fulfillmentGroup}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupItemStrategyImpl#addItemToFulfillmentGroup(Order, OrderItem, FulfillmentGroup)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddItemToFulfillmentGroupWithOrderOrderItemFulfillmentGroup() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.strategy;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass157 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.strategy.FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl2 = new FulfillmentGroupItemStrategyImpl();
-    NullOrderImpl order = new NullOrderImpl();
-    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
-
-    // Act
-    fulfillmentGroupItemStrategyImpl2.addItemToFulfillmentGroup(order, orderItem, new FulfillmentGroupImpl());
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupItemStrategyImpl#addItemToFulfillmentGroup(Order, OrderItem, int, FulfillmentGroup)}
-   * with {@code order}, {@code orderItem}, {@code quantity},
-   * {@code fulfillmentGroup}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupItemStrategyImpl#addItemToFulfillmentGroup(Order, OrderItem, int, FulfillmentGroup)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddItemToFulfillmentGroupWithOrderOrderItemQuantityFulfillmentGroup() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.strategy;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass42 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.strategy.FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl2 = new FulfillmentGroupItemStrategyImpl();
-    NullOrderImpl order = new NullOrderImpl();
-    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
-
-    // Act
-    fulfillmentGroupItemStrategyImpl2.addItemToFulfillmentGroup(order, orderItem, 2, new FulfillmentGroupImpl());
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupItemStrategyImpl#onItemUpdated(CartOperationRequest)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupItemStrategyImpl#onItemUpdated(CartOperationRequest)}
-   */
-  @Test
-  public void testOnItemUpdated() throws PricingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl = new FulfillmentGroupItemStrategyImpl();
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getDefaultCategory()).thenReturn(new CategoryImpl());
+    SkuImpl sku = mock(SkuImpl.class);
+    when(sku.getDefaultProduct()).thenReturn(productBundleImpl);
+    when(sku.getFulfillmentType()).thenReturn(null);
+
+    // Act
+    FulfillmentType actualResolveFulfillmentTypeResult = fulfillmentGroupItemStrategyImpl.resolveFulfillmentType(sku);
+
+    // Assert
+    verify(productBundleImpl, atLeast(1)).getDefaultCategory();
+    verify(sku, atLeast(1)).getDefaultProduct();
+    verify(sku).getFulfillmentType();
+    assertNull(actualResolveFulfillmentTypeResult);
+  }
+
+  /**
+   * Test {@link FulfillmentGroupItemStrategyImpl#resolveFulfillmentType(Sku)} with {@code sku}.
+   * <ul>
+   *   <li>Given {@link FulfillmentType#DIGITAL}.</li>
+   *   <li>Then return {@link FulfillmentType#DIGITAL}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link FulfillmentGroupItemStrategyImpl#resolveFulfillmentType(Sku)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FulfillmentType FulfillmentGroupItemStrategyImpl.resolveFulfillmentType(Sku)"})
+  public void testResolveFulfillmentTypeWithSku_givenDigital_thenReturnDigital() {
+    // Arrange
+    FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl = new FulfillmentGroupItemStrategyImpl();
+    SkuImpl sku = mock(SkuImpl.class);
+    when(sku.getFulfillmentType()).thenReturn(FulfillmentType.DIGITAL);
+
+    // Act
+    FulfillmentType actualResolveFulfillmentTypeResult = fulfillmentGroupItemStrategyImpl.resolveFulfillmentType(sku);
+
+    // Assert
+    verify(sku, atLeast(1)).getFulfillmentType();
+    assertSame(actualResolveFulfillmentTypeResult.DIGITAL, actualResolveFulfillmentTypeResult);
+  }
+
+  /**
+   * Test {@link FulfillmentGroupItemStrategyImpl#resolveFulfillmentType(Sku)} with {@code sku}.
+   * <ul>
+   *   <li>Given {@link ProductBundleImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link FulfillmentGroupItemStrategyImpl#resolveFulfillmentType(Sku)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FulfillmentType FulfillmentGroupItemStrategyImpl.resolveFulfillmentType(Sku)"})
+  public void testResolveFulfillmentTypeWithSku_givenProductBundleImpl() {
+    // Arrange
+    FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl = new FulfillmentGroupItemStrategyImpl();
+    SkuImpl sku = mock(SkuImpl.class);
+    when(sku.getDefaultProduct()).thenReturn(new ProductBundleImpl());
+    when(sku.getFulfillmentType()).thenReturn(null);
+
+    // Act
+    FulfillmentType actualResolveFulfillmentTypeResult = fulfillmentGroupItemStrategyImpl.resolveFulfillmentType(sku);
+
+    // Assert
+    verify(sku, atLeast(1)).getDefaultProduct();
+    verify(sku).getFulfillmentType();
+    assertNull(actualResolveFulfillmentTypeResult);
+  }
+
+  /**
+   * Test {@link FulfillmentGroupItemStrategyImpl#resolveFulfillmentType(Sku)} with {@code sku}.
+   * <ul>
+   *   <li>Then throw {@link IllegalStateException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link FulfillmentGroupItemStrategyImpl#resolveFulfillmentType(Sku)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FulfillmentType FulfillmentGroupItemStrategyImpl.resolveFulfillmentType(Sku)"})
+  public void testResolveFulfillmentTypeWithSku_thenThrowIllegalStateException() {
+    // Arrange
+    FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl = new FulfillmentGroupItemStrategyImpl();
+    CategoryImpl categoryImpl = mock(CategoryImpl.class);
+    when(categoryImpl.getFulfillmentType()).thenThrow(new IllegalStateException("foo"));
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getDefaultCategory()).thenReturn(categoryImpl);
+    SkuImpl sku = mock(SkuImpl.class);
+    when(sku.getDefaultProduct()).thenReturn(productBundleImpl);
+    when(sku.getFulfillmentType()).thenReturn(null);
+
+    // Act and Assert
+    assertThrows(IllegalStateException.class, () -> fulfillmentGroupItemStrategyImpl.resolveFulfillmentType(sku));
+    verify(categoryImpl).getFulfillmentType();
+    verify(productBundleImpl, atLeast(1)).getDefaultCategory();
+    verify(sku, atLeast(1)).getDefaultProduct();
+    verify(sku).getFulfillmentType();
+  }
+
+  /**
+   * Test {@link FulfillmentGroupItemStrategyImpl#resolveFulfillmentType(Sku)} with {@code sku}.
+   * <ul>
+   *   <li>When {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link FulfillmentGroupItemStrategyImpl#resolveFulfillmentType(Sku)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FulfillmentType FulfillmentGroupItemStrategyImpl.resolveFulfillmentType(Sku)"})
+  public void testResolveFulfillmentTypeWithSku_whenSkuImpl_thenReturnNull() {
+    // Arrange
+    FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl = new FulfillmentGroupItemStrategyImpl();
+
+    // Act and Assert
+    assertNull(fulfillmentGroupItemStrategyImpl.resolveFulfillmentType(new SkuImpl()));
+  }
+
+  /**
+   * Test {@link FulfillmentGroupItemStrategyImpl#addItemToFulfillmentGroup(Order, OrderItem, FulfillmentGroup)} with {@code order}, {@code orderItem}, {@code fulfillmentGroup}.
+   * <p>
+   * Method under test: {@link FulfillmentGroupItemStrategyImpl#addItemToFulfillmentGroup(Order, OrderItem, FulfillmentGroup)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FulfillmentGroup FulfillmentGroupItemStrategyImpl.addItemToFulfillmentGroup(Order, OrderItem, FulfillmentGroup)"})
+  public void testAddItemToFulfillmentGroupWithOrderOrderItemFulfillmentGroup() throws PricingException {
+    // Arrange
+    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
+    when(fulfillmentGroupService.addItemToFulfillmentGroup(Mockito.<FulfillmentGroupItemRequest>any(), anyBoolean(),
+        anyBoolean())).thenReturn(fulfillmentGroupImpl);
+    NullOrderImpl order = new NullOrderImpl();
+    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
+
+    // Act
+    FulfillmentGroup actualAddItemToFulfillmentGroupResult = fulfillmentGroupItemStrategyImpl
+        .addItemToFulfillmentGroup(order, orderItem, new FulfillmentGroupImpl());
+
+    // Assert
+    verify(fulfillmentGroupService).addItemToFulfillmentGroup(isA(FulfillmentGroupItemRequest.class), eq(false),
+        eq(false));
+    assertSame(fulfillmentGroupImpl, actualAddItemToFulfillmentGroupResult);
+  }
+
+  /**
+   * Test {@link FulfillmentGroupItemStrategyImpl#addItemToFulfillmentGroup(Order, OrderItem, FulfillmentGroup)} with {@code order}, {@code orderItem}, {@code fulfillmentGroup}.
+   * <p>
+   * Method under test: {@link FulfillmentGroupItemStrategyImpl#addItemToFulfillmentGroup(Order, OrderItem, FulfillmentGroup)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FulfillmentGroup FulfillmentGroupItemStrategyImpl.addItemToFulfillmentGroup(Order, OrderItem, FulfillmentGroup)"})
+  public void testAddItemToFulfillmentGroupWithOrderOrderItemFulfillmentGroup2() throws PricingException {
+    // Arrange
+    when(fulfillmentGroupService.addItemToFulfillmentGroup(Mockito.<FulfillmentGroupItemRequest>any(), anyBoolean(),
+        anyBoolean())).thenThrow(new IllegalStateException("foo"));
+    NullOrderImpl order = new NullOrderImpl();
+    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
+
+    // Act and Assert
+    assertThrows(IllegalStateException.class,
+        () -> fulfillmentGroupItemStrategyImpl.addItemToFulfillmentGroup(order, orderItem, new FulfillmentGroupImpl()));
+    verify(fulfillmentGroupService).addItemToFulfillmentGroup(isA(FulfillmentGroupItemRequest.class), eq(false),
+        eq(false));
+  }
+
+  /**
+   * Test {@link FulfillmentGroupItemStrategyImpl#addItemToFulfillmentGroup(Order, OrderItem, int, FulfillmentGroup)} with {@code order}, {@code orderItem}, {@code quantity}, {@code fulfillmentGroup}.
+   * <p>
+   * Method under test: {@link FulfillmentGroupItemStrategyImpl#addItemToFulfillmentGroup(Order, OrderItem, int, FulfillmentGroup)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FulfillmentGroup FulfillmentGroupItemStrategyImpl.addItemToFulfillmentGroup(Order, OrderItem, int, FulfillmentGroup)"})
+  public void testAddItemToFulfillmentGroupWithOrderOrderItemQuantityFulfillmentGroup() throws PricingException {
+    // Arrange
+    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
+    when(fulfillmentGroupService.addItemToFulfillmentGroup(Mockito.<FulfillmentGroupItemRequest>any(), anyBoolean(),
+        anyBoolean())).thenReturn(fulfillmentGroupImpl);
+    NullOrderImpl order = new NullOrderImpl();
+    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
+
+    // Act
+    FulfillmentGroup actualAddItemToFulfillmentGroupResult = fulfillmentGroupItemStrategyImpl
+        .addItemToFulfillmentGroup(order, orderItem, 2, new FulfillmentGroupImpl());
+
+    // Assert
+    verify(fulfillmentGroupService).addItemToFulfillmentGroup(isA(FulfillmentGroupItemRequest.class), eq(false),
+        eq(false));
+    assertSame(fulfillmentGroupImpl, actualAddItemToFulfillmentGroupResult);
+  }
+
+  /**
+   * Test {@link FulfillmentGroupItemStrategyImpl#addItemToFulfillmentGroup(Order, OrderItem, int, FulfillmentGroup)} with {@code order}, {@code orderItem}, {@code quantity}, {@code fulfillmentGroup}.
+   * <p>
+   * Method under test: {@link FulfillmentGroupItemStrategyImpl#addItemToFulfillmentGroup(Order, OrderItem, int, FulfillmentGroup)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FulfillmentGroup FulfillmentGroupItemStrategyImpl.addItemToFulfillmentGroup(Order, OrderItem, int, FulfillmentGroup)"})
+  public void testAddItemToFulfillmentGroupWithOrderOrderItemQuantityFulfillmentGroup2() throws PricingException {
+    // Arrange
+    when(fulfillmentGroupService.addItemToFulfillmentGroup(Mockito.<FulfillmentGroupItemRequest>any(), anyBoolean(),
+        anyBoolean())).thenThrow(new IllegalStateException("foo"));
+    NullOrderImpl order = new NullOrderImpl();
+    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
+
+    // Act and Assert
+    assertThrows(IllegalStateException.class, () -> fulfillmentGroupItemStrategyImpl.addItemToFulfillmentGroup(order,
+        orderItem, 2, new FulfillmentGroupImpl()));
+    verify(fulfillmentGroupService).addItemToFulfillmentGroup(isA(FulfillmentGroupItemRequest.class), eq(false),
+        eq(false));
+  }
+
+  /**
+   * Test {@link FulfillmentGroupItemStrategyImpl#onItemUpdated(CartOperationRequest)}.
+   * <p>
+   * Method under test: {@link FulfillmentGroupItemStrategyImpl#onItemUpdated(CartOperationRequest)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CartOperationRequest FulfillmentGroupItemStrategyImpl.onItemUpdated(CartOperationRequest)"})
+  public void testOnItemUpdated() throws PricingException {
+    // Arrange
     NullOrderImpl order = new NullOrderImpl();
 
     CartOperationRequest request = new CartOperationRequest(order, new OrderItemRequestDTO(), true);
@@ -490,57 +538,18 @@ public class FulfillmentGroupItemStrategyImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentGroupItemStrategyImpl#onItemUpdated(CartOperationRequest)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupItemStrategyImpl#onItemUpdated(CartOperationRequest)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testOnItemUpdated2() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.strategy;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass378 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.strategy.FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl2 = new FulfillmentGroupItemStrategyImpl();
-    NullOrderImpl order = new NullOrderImpl();
-
-    // Act
-    fulfillmentGroupItemStrategyImpl2.onItemUpdated(new CartOperationRequest(order, new OrderItemRequestDTO(), true));
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupItemStrategyImpl#onItemUpdated(CartOperationRequest)}.
+   * Test {@link FulfillmentGroupItemStrategyImpl#onItemUpdated(CartOperationRequest)}.
    * <ul>
-   *   <li>Given {@link IllegalStateException#IllegalStateException(String)} with
-   * {@code foo}.</li>
+   *   <li>Given {@link IllegalStateException#IllegalStateException(String)} with {@code foo}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupItemStrategyImpl#onItemUpdated(CartOperationRequest)}
+   * Method under test: {@link FulfillmentGroupItemStrategyImpl#onItemUpdated(CartOperationRequest)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CartOperationRequest FulfillmentGroupItemStrategyImpl.onItemUpdated(CartOperationRequest)"})
   public void testOnItemUpdated_givenIllegalStateExceptionWithFoo() throws PricingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl = new FulfillmentGroupItemStrategyImpl();
     CartOperationRequest request = mock(CartOperationRequest.class);
     doThrow(new IllegalStateException("foo")).when(request).setFgisToDelete(Mockito.<List<FulfillmentGroupItem>>any());
     when(request.getOrderItemQuantityDelta()).thenReturn(2);
@@ -559,21 +568,18 @@ public class FulfillmentGroupItemStrategyImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentGroupItemStrategyImpl#onItemUpdated(CartOperationRequest)}.
+   * Test {@link FulfillmentGroupItemStrategyImpl#onItemUpdated(CartOperationRequest)}.
    * <ul>
    *   <li>Then calls {@link BundleOrderItemImpl#getDiscreteOrderItems()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupItemStrategyImpl#onItemUpdated(CartOperationRequest)}
+   * Method under test: {@link FulfillmentGroupItemStrategyImpl#onItemUpdated(CartOperationRequest)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CartOperationRequest FulfillmentGroupItemStrategyImpl.onItemUpdated(CartOperationRequest)"})
   public void testOnItemUpdated_thenCallsGetDiscreteOrderItems() throws PricingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl = new FulfillmentGroupItemStrategyImpl();
     BundleOrderItemImpl bundleOrderItemImpl = mock(BundleOrderItemImpl.class);
     when(bundleOrderItemImpl.getDiscreteOrderItems()).thenThrow(new IllegalStateException("foo"));
     CartOperationRequest request = mock(CartOperationRequest.class);
@@ -593,21 +599,18 @@ public class FulfillmentGroupItemStrategyImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentGroupItemStrategyImpl#onItemUpdated(CartOperationRequest)}.
+   * Test {@link FulfillmentGroupItemStrategyImpl#onItemUpdated(CartOperationRequest)}.
    * <ul>
    *   <li>Then return {@link CartOperationRequest}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupItemStrategyImpl#onItemUpdated(CartOperationRequest)}
+   * Method under test: {@link FulfillmentGroupItemStrategyImpl#onItemUpdated(CartOperationRequest)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CartOperationRequest FulfillmentGroupItemStrategyImpl.onItemUpdated(CartOperationRequest)"})
   public void testOnItemUpdated_thenReturnCartOperationRequest() throws PricingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl = new FulfillmentGroupItemStrategyImpl();
     CartOperationRequest request = mock(CartOperationRequest.class);
     doNothing().when(request).setFgisToDelete(Mockito.<List<FulfillmentGroupItem>>any());
     when(request.getOrderItemQuantityDelta()).thenReturn(2);
@@ -629,174 +632,69 @@ public class FulfillmentGroupItemStrategyImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentGroupItemStrategyImpl#updateItemQuantity(Order, OrderItem, Integer)}.
+   * Test {@link FulfillmentGroupItemStrategyImpl#updateItemQuantity(Order, OrderItem, Integer)}.
+   * <ul>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link FulfillmentGroupImpl} (default constructor).</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupItemStrategyImpl#updateItemQuantity(Order, OrderItem, Integer)}
+   * Method under test: {@link FulfillmentGroupItemStrategyImpl#updateItemQuantity(Order, OrderItem, Integer)}
    */
   @Test
-  public void testUpdateItemQuantity() throws PricingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List FulfillmentGroupItemStrategyImpl.updateItemQuantity(Order, OrderItem, Integer)"})
+  public void testUpdateItemQuantity_givenArrayListAddFulfillmentGroupImpl() throws PricingException {
     // Arrange
-    FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl = new FulfillmentGroupItemStrategyImpl();
-    NullOrderImpl order = mock(NullOrderImpl.class);
-    when(order.getFulfillmentGroups()).thenThrow(
-        new IllegalStateException("Could not find matching fulfillment group item for the given order item"));
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(2L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(2L);
 
-    // Act
-    fulfillmentGroupItemStrategyImpl.updateItemQuantity(order, new BundleOrderItemImpl(), 0);
+    ArrayList<FulfillmentGroup> fulfillmentGroups = new ArrayList<>();
+    fulfillmentGroups.add(new FulfillmentGroupImpl());
 
-    // Assert
-    verify(order).getFulfillmentGroups();
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupItemStrategyImpl#updateItemQuantity(Order, OrderItem, Integer)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupItemStrategyImpl#updateItemQuantity(Order, OrderItem, Integer)}
-   */
-  @Test
-  public void testUpdateItemQuantity2() throws PricingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl = new FulfillmentGroupItemStrategyImpl();
-    FulfillmentGroupItemImpl fulfillmentGroupItem = mock(FulfillmentGroupItemImpl.class);
-    when(fulfillmentGroupItem.getQuantity()).thenThrow(new IllegalStateException("foo"));
-    when(fulfillmentGroupItem.getOrderItem()).thenReturn(new BundleOrderItemImpl());
-
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.addFulfillmentGroupItem(fulfillmentGroupItem);
-
-    ArrayList<FulfillmentGroup> fulfillmentGroupList = new ArrayList<>();
-    fulfillmentGroupList.add(fulfillmentGroupImpl);
-    NullOrderImpl order = mock(NullOrderImpl.class);
-    when(order.getFulfillmentGroups()).thenReturn(fulfillmentGroupList);
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(fulfillmentGroups);
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
 
     // Act and Assert
     assertThrows(IllegalStateException.class,
         () -> fulfillmentGroupItemStrategyImpl.updateItemQuantity(order, new BundleOrderItemImpl(), 2));
-    verify(fulfillmentGroupItem).getOrderItem();
-    verify(fulfillmentGroupItem).getQuantity();
-    verify(order).getFulfillmentGroups();
   }
 
   /**
-   * Test
-   * {@link FulfillmentGroupItemStrategyImpl#updateItemQuantity(Order, OrderItem, Integer)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupItemStrategyImpl#updateItemQuantity(Order, OrderItem, Integer)}
-   */
-  @Test
-  public void testUpdateItemQuantity3() throws PricingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl = new FulfillmentGroupItemStrategyImpl();
-    FulfillmentGroupItemImpl fulfillmentGroupItem = mock(FulfillmentGroupItemImpl.class);
-    when(fulfillmentGroupItem.getQuantity()).thenThrow(new IllegalStateException("foo"));
-    when(fulfillmentGroupItem.getOrderItem()).thenReturn(new BundleOrderItemImpl());
-
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.addFulfillmentGroupItem(fulfillmentGroupItem);
-
-    ArrayList<FulfillmentGroup> fulfillmentGroupList = new ArrayList<>();
-    fulfillmentGroupList.add(fulfillmentGroupImpl);
-    NullOrderImpl order = mock(NullOrderImpl.class);
-    when(order.getFulfillmentGroups()).thenReturn(fulfillmentGroupList);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class,
-        () -> fulfillmentGroupItemStrategyImpl.updateItemQuantity(order, new BundleOrderItemImpl(), 0));
-    verify(fulfillmentGroupItem).getOrderItem();
-    verify(fulfillmentGroupItem).getQuantity();
-    verify(order).getFulfillmentGroups();
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupItemStrategyImpl#updateItemQuantity(Order, OrderItem, Integer)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupItemStrategyImpl#updateItemQuantity(Order, OrderItem, Integer)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testUpdateItemQuantity4() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.strategy;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass532 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.strategy.FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl2 = new FulfillmentGroupItemStrategyImpl();
-    NullOrderImpl order = new NullOrderImpl();
-
-    // Act
-    fulfillmentGroupItemStrategyImpl2.updateItemQuantity(order, new BundleOrderItemImpl(), 2);
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupItemStrategyImpl#updateItemQuantity(Order, OrderItem, Integer)}.
+   * Test {@link FulfillmentGroupItemStrategyImpl#updateItemQuantity(Order, OrderItem, Integer)}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()}.</li>
-   *   <li>When zero.</li>
    *   <li>Then throw {@link IllegalStateException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupItemStrategyImpl#updateItemQuantity(Order, OrderItem, Integer)}
+   * Method under test: {@link FulfillmentGroupItemStrategyImpl#updateItemQuantity(Order, OrderItem, Integer)}
    */
   @Test
-  public void testUpdateItemQuantity_givenArrayList_whenZero_thenThrowIllegalStateException() throws PricingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List FulfillmentGroupItemStrategyImpl.updateItemQuantity(Order, OrderItem, Integer)"})
+  public void testUpdateItemQuantity_thenThrowIllegalStateException() throws PricingException {
     // Arrange
-    FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl = new FulfillmentGroupItemStrategyImpl();
-    NullOrderImpl order = mock(NullOrderImpl.class);
-    when(order.getFulfillmentGroups()).thenReturn(new ArrayList<>());
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class,
-        () -> fulfillmentGroupItemStrategyImpl.updateItemQuantity(order, new BundleOrderItemImpl(), 0));
-    verify(order).getFulfillmentGroups();
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupItemStrategyImpl#updateItemQuantity(Order, OrderItem, Integer)}.
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupItemStrategyImpl#updateItemQuantity(Order, OrderItem, Integer)}
-   */
-  @Test
-  public void testUpdateItemQuantity_givenHashMap() throws PricingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl = new FulfillmentGroupItemStrategyImpl();
-
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(2L);
     auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
@@ -825,7 +723,6 @@ public class FulfillmentGroupItemStrategyImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
 
     // Act and Assert
@@ -834,323 +731,115 @@ public class FulfillmentGroupItemStrategyImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentGroupItemStrategyImpl#updateItemQuantity(Order, OrderItem, Integer)}.
+   * Test {@link FulfillmentGroupItemStrategyImpl#updateItemQuantity(Order, OrderItem, Integer)}.
    * <ul>
-   *   <li>Given {@link OrderItemImpl} (default constructor) Auditable is
-   * {@link Auditable} (default constructor).</li>
+   *   <li>When zero.</li>
+   *   <li>Then throw {@link IllegalStateException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupItemStrategyImpl#updateItemQuantity(Order, OrderItem, Integer)}
+   * Method under test: {@link FulfillmentGroupItemStrategyImpl#updateItemQuantity(Order, OrderItem, Integer)}
    */
   @Test
-  public void testUpdateItemQuantity_givenOrderItemImplAuditableIsAuditable() throws PricingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List FulfillmentGroupItemStrategyImpl.updateItemQuantity(Order, OrderItem, Integer)"})
+  public void testUpdateItemQuantity_whenZero_thenThrowIllegalStateException() throws PricingException {
     // Arrange
-    FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl = new FulfillmentGroupItemStrategyImpl();
-
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(2L);
     auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(2L);
 
-    OrderItemImpl orderItemImpl = new OrderItemImpl();
-    orderItemImpl.setAuditable(auditable);
-    orderItemImpl.setCandidateItemOffers(new ArrayList<>());
-    orderItemImpl.setCartMessages(new ArrayList<>());
-    orderItemImpl.setChildOrderItems(new ArrayList<>());
-    orderItemImpl.setDiscountingAllowed(true);
-    orderItemImpl.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
-    orderItemImpl.setHasValidationError(true);
-    orderItemImpl.setId(1L);
-    orderItemImpl.setName("Name");
-    orderItemImpl.setOrder(new NullOrderImpl());
-    orderItemImpl.setOrderItemAdjustments(new ArrayList<>());
-    orderItemImpl.setOrderItemAttributes(new HashMap<>());
-    orderItemImpl.setOrderItemPriceDetails(new ArrayList<>());
-    orderItemImpl.setOrderItemQualifiers(new ArrayList<>());
-    orderItemImpl.setOrderItemType(OrderItemType.BASIC);
-    orderItemImpl.setParentOrderItem(new BundleOrderItemImpl());
-    orderItemImpl.setPersonalMessage(new PersonalMessageImpl());
-    orderItemImpl.setProratedOrderItemAdjustments(new ArrayList<>());
-    orderItemImpl.setQuantity(2);
-    orderItemImpl.setRetailPrice(new Money());
-    orderItemImpl.setRetailPriceOverride(true);
-    orderItemImpl.setSalePrice(new Money());
-    orderItemImpl.setSalePriceOverride(true);
-    orderItemImpl.setTaxable(true);
-    orderItemImpl.updateSaleAndRetailPrices();
-    FulfillmentGroupItemImpl fulfillmentGroupItem = mock(FulfillmentGroupItemImpl.class);
-    when(fulfillmentGroupItem.getOrderItem()).thenReturn(orderItemImpl);
-
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.addFulfillmentGroupItem(fulfillmentGroupItem);
-
-    ArrayList<FulfillmentGroup> fulfillmentGroupList = new ArrayList<>();
-    fulfillmentGroupList.add(fulfillmentGroupImpl);
-    NullOrderImpl order = mock(NullOrderImpl.class);
-    when(order.getFulfillmentGroups()).thenReturn(fulfillmentGroupList);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class,
-        () -> fulfillmentGroupItemStrategyImpl.updateItemQuantity(order, new BundleOrderItemImpl(), 2));
-    verify(fulfillmentGroupItem).getOrderItem();
-    verify(order).getFulfillmentGroups();
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupItemStrategyImpl#updateItemQuantity(Order, OrderItem, Integer)}.
-   * <ul>
-   *   <li>Then return Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupItemStrategyImpl#updateItemQuantity(Order, OrderItem, Integer)}
-   */
-  @Test
-  public void testUpdateItemQuantity_thenReturnEmpty() throws PricingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl = new FulfillmentGroupItemStrategyImpl();
-    FulfillmentGroupItemImpl fulfillmentGroupItem = mock(FulfillmentGroupItemImpl.class);
-    when(fulfillmentGroupItem.getQuantity()).thenReturn(1);
-    doNothing().when(fulfillmentGroupItem).setQuantity(anyInt());
-    when(fulfillmentGroupItem.getOrderItem()).thenReturn(new BundleOrderItemImpl());
-
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.addFulfillmentGroupItem(fulfillmentGroupItem);
-
-    ArrayList<FulfillmentGroup> fulfillmentGroupList = new ArrayList<>();
-    fulfillmentGroupList.add(fulfillmentGroupImpl);
-    NullOrderImpl order = mock(NullOrderImpl.class);
-    when(order.getFulfillmentGroups()).thenReturn(fulfillmentGroupList);
-
-    // Act
-    List<FulfillmentGroupItem> actualUpdateItemQuantityResult = fulfillmentGroupItemStrategyImpl
-        .updateItemQuantity(order, new BundleOrderItemImpl(), 2);
-
-    // Assert
-    verify(fulfillmentGroupItem).getOrderItem();
-    verify(fulfillmentGroupItem).getQuantity();
-    verify(fulfillmentGroupItem).setQuantity(eq(3));
-    verify(order).getFulfillmentGroups();
-    assertTrue(actualUpdateItemQuantityResult.isEmpty());
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupItemStrategyImpl#updateItemQuantity(Order, OrderItem, Integer)}.
-   * <ul>
-   *   <li>Then return Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupItemStrategyImpl#updateItemQuantity(Order, OrderItem, Integer)}
-   */
-  @Test
-  public void testUpdateItemQuantity_thenReturnEmpty2() throws PricingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl = new FulfillmentGroupItemStrategyImpl();
-    FulfillmentGroupItemImpl fulfillmentGroupItem = mock(FulfillmentGroupItemImpl.class);
-    when(fulfillmentGroupItem.getQuantity()).thenReturn(1);
-    doNothing().when(fulfillmentGroupItem).setQuantity(anyInt());
-    when(fulfillmentGroupItem.getOrderItem()).thenReturn(new BundleOrderItemImpl());
-
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.addFulfillmentGroupItem(fulfillmentGroupItem);
-
-    ArrayList<FulfillmentGroup> fulfillmentGroupList = new ArrayList<>();
-    fulfillmentGroupList.add(fulfillmentGroupImpl);
-    NullOrderImpl order = mock(NullOrderImpl.class);
-    when(order.getFulfillmentGroups()).thenReturn(fulfillmentGroupList);
-
-    // Act
-    List<FulfillmentGroupItem> actualUpdateItemQuantityResult = fulfillmentGroupItemStrategyImpl
-        .updateItemQuantity(order, new BundleOrderItemImpl(), 0);
-
-    // Assert
-    verify(fulfillmentGroupItem).getOrderItem();
-    verify(fulfillmentGroupItem, atLeast(1)).getQuantity();
-    verify(fulfillmentGroupItem).setQuantity(eq(1));
-    verify(order).getFulfillmentGroups();
-    assertTrue(actualUpdateItemQuantityResult.isEmpty());
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupItemStrategyImpl#updateItemQuantity(Order, OrderItem, Integer)}.
-   * <ul>
-   *   <li>Then throw {@link IllegalStateException}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupItemStrategyImpl#updateItemQuantity(Order, OrderItem, Integer)}
-   */
-  @Test
-  public void testUpdateItemQuantity_thenThrowIllegalStateException() throws PricingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl = new FulfillmentGroupItemStrategyImpl();
-
-    ArrayList<FulfillmentGroup> fulfillmentGroupList = new ArrayList<>();
-    fulfillmentGroupList.add(new FulfillmentGroupImpl());
-    NullOrderImpl order = mock(NullOrderImpl.class);
-    when(order.getFulfillmentGroups()).thenReturn(fulfillmentGroupList);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class,
-        () -> fulfillmentGroupItemStrategyImpl.updateItemQuantity(order, new BundleOrderItemImpl(), 2));
-    verify(order).getFulfillmentGroups();
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupItemStrategyImpl#updateItemQuantity(Order, OrderItem, Integer)}.
-   * <ul>
-   *   <li>When minus one.</li>
-   *   <li>Then return size is one.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupItemStrategyImpl#updateItemQuantity(Order, OrderItem, Integer)}
-   */
-  @Test
-  public void testUpdateItemQuantity_whenMinusOne_thenReturnSizeIsOne() throws PricingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl = new FulfillmentGroupItemStrategyImpl();
-    FulfillmentGroupItemImpl fulfillmentGroupItem = mock(FulfillmentGroupItemImpl.class);
-    when(fulfillmentGroupItem.getQuantity()).thenReturn(1);
-    when(fulfillmentGroupItem.getOrderItem()).thenReturn(new BundleOrderItemImpl());
-
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.addFulfillmentGroupItem(fulfillmentGroupItem);
-
-    ArrayList<FulfillmentGroup> fulfillmentGroupList = new ArrayList<>();
-    fulfillmentGroupList.add(fulfillmentGroupImpl);
-    NullOrderImpl order = mock(NullOrderImpl.class);
-    when(order.getFulfillmentGroups()).thenReturn(fulfillmentGroupList);
-
-    // Act
-    List<FulfillmentGroupItem> actualUpdateItemQuantityResult = fulfillmentGroupItemStrategyImpl
-        .updateItemQuantity(order, new BundleOrderItemImpl(), -1);
-
-    // Assert
-    verify(fulfillmentGroupItem).getOrderItem();
-    verify(fulfillmentGroupItem).getQuantity();
-    verify(order).getFulfillmentGroups();
-    assertEquals(1, actualUpdateItemQuantityResult.size());
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupItemStrategyImpl#updateItemQuantity(Order, OrderItem, Integer)}.
-   * <ul>
-   *   <li>When zero.</li>
-   *   <li>Then throw {@link IllegalStateException}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupItemStrategyImpl#updateItemQuantity(Order, OrderItem, Integer)}
-   */
-  @Test
-  public void testUpdateItemQuantity_whenZero_thenThrowIllegalStateException() throws PricingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl = new FulfillmentGroupItemStrategyImpl();
-
-    ArrayList<FulfillmentGroup> fulfillmentGroupList = new ArrayList<>();
-    fulfillmentGroupList.add(new FulfillmentGroupImpl());
-    NullOrderImpl order = mock(NullOrderImpl.class);
-    when(order.getFulfillmentGroups()).thenReturn(fulfillmentGroupList);
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
 
     // Act and Assert
     assertThrows(IllegalStateException.class,
         () -> fulfillmentGroupItemStrategyImpl.updateItemQuantity(order, new BundleOrderItemImpl(), 0));
-    verify(order).getFulfillmentGroups();
   }
 
   /**
-   * Test
-   * {@link FulfillmentGroupItemStrategyImpl#onItemRemoved(CartOperationRequest)}.
+   * Test {@link FulfillmentGroupItemStrategyImpl#onItemRemoved(CartOperationRequest)}.
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupItemStrategyImpl#onItemRemoved(CartOperationRequest)}
+   * Method under test: {@link FulfillmentGroupItemStrategyImpl#onItemRemoved(CartOperationRequest)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CartOperationRequest FulfillmentGroupItemStrategyImpl.onItemRemoved(CartOperationRequest)"})
   public void testOnItemRemoved() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl = new FulfillmentGroupItemStrategyImpl();
+    when(fulfillmentGroupService.getFulfillmentGroupItemsForOrderItem(Mockito.<Order>any(), Mockito.<OrderItem>any()))
+        .thenThrow(new IllegalStateException("foo"));
+    NullOrderImpl order = new NullOrderImpl();
+
+    // Act and Assert
+    assertThrows(IllegalStateException.class, () -> fulfillmentGroupItemStrategyImpl
+        .onItemRemoved(new CartOperationRequest(order, new OrderItemRequestDTO(), true)));
+    verify(fulfillmentGroupService).getFulfillmentGroupItemsForOrderItem(isA(Order.class), isNull());
+  }
+
+  /**
+   * Test {@link FulfillmentGroupItemStrategyImpl#onItemRemoved(CartOperationRequest)}.
+   * <ul>
+   *   <li>Then AddedOrderItem return {@link BundleOrderItemImpl}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link FulfillmentGroupItemStrategyImpl#onItemRemoved(CartOperationRequest)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CartOperationRequest FulfillmentGroupItemStrategyImpl.onItemRemoved(CartOperationRequest)"})
+  public void testOnItemRemoved_thenAddedOrderItemReturnBundleOrderItemImpl() {
+    // Arrange
     NullOrderImpl order = new NullOrderImpl();
 
     CartOperationRequest request = new CartOperationRequest(order, new OrderItemRequestDTO(), true);
-    request.setOrderItem(new BundleOrderItemImpl());
-
-    // Act and Assert
-    assertSame(request, fulfillmentGroupItemStrategyImpl.onItemRemoved(request));
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupItemStrategyImpl#onItemRemoved(CartOperationRequest)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupItemStrategyImpl#onItemRemoved(CartOperationRequest)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testOnItemRemoved2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.strategy;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass323 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.strategy.FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl2 = new FulfillmentGroupItemStrategyImpl();
-    NullOrderImpl order = new NullOrderImpl();
+    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
+    request.setOrderItem(orderItem);
 
     // Act
-    fulfillmentGroupItemStrategyImpl2.onItemRemoved(new CartOperationRequest(order, new OrderItemRequestDTO(), true));
+    CartOperationRequest actualOnItemRemovedResult = fulfillmentGroupItemStrategyImpl.onItemRemoved(request);
+
+    // Assert
+    OrderItem addedOrderItem = actualOnItemRemovedResult.getAddedOrderItem();
+    assertTrue(addedOrderItem instanceof BundleOrderItemImpl);
+    assertSame(orderItem, addedOrderItem);
+    assertSame(orderItem, actualOnItemRemovedResult.getOrderItem());
   }
 
   /**
-   * Test
-   * {@link FulfillmentGroupItemStrategyImpl#onItemRemoved(CartOperationRequest)}.
+   * Test {@link FulfillmentGroupItemStrategyImpl#onItemRemoved(CartOperationRequest)}.
    * <ul>
-   *   <li>Then throw {@link IllegalStateException}.</li>
+   *   <li>Then calls {@link BundleOrderItemImpl#getDiscreteOrderItems()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupItemStrategyImpl#onItemRemoved(CartOperationRequest)}
+   * Method under test: {@link FulfillmentGroupItemStrategyImpl#onItemRemoved(CartOperationRequest)}
    */
   @Test
-  public void testOnItemRemoved_thenThrowIllegalStateException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CartOperationRequest FulfillmentGroupItemStrategyImpl.onItemRemoved(CartOperationRequest)"})
+  public void testOnItemRemoved_thenCallsGetDiscreteOrderItems() {
     // Arrange
     FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl = new FulfillmentGroupItemStrategyImpl();
     BundleOrderItemImpl orderItem = mock(BundleOrderItemImpl.class);
@@ -1166,18 +855,43 @@ public class FulfillmentGroupItemStrategyImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupItemStrategyImpl#verify(CartOperationRequest)}.
+   * Test {@link FulfillmentGroupItemStrategyImpl#onItemRemoved(CartOperationRequest)}.
+   * <ul>
+   *   <li>Then Order return {@link NullOrderImpl}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupItemStrategyImpl#verify(CartOperationRequest)}
+   * Method under test: {@link FulfillmentGroupItemStrategyImpl#onItemRemoved(CartOperationRequest)}
    */
   @Test
-  public void testVerify() throws PricingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CartOperationRequest FulfillmentGroupItemStrategyImpl.onItemRemoved(CartOperationRequest)"})
+  public void testOnItemRemoved_thenOrderReturnNullOrderImpl() {
     // Arrange
-    FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl = new FulfillmentGroupItemStrategyImpl();
+    when(fulfillmentGroupService.getFulfillmentGroupItemsForOrderItem(Mockito.<Order>any(), Mockito.<OrderItem>any()))
+        .thenReturn(new ArrayList<>());
+    NullOrderImpl order = new NullOrderImpl();
 
+    // Act
+    CartOperationRequest actualOnItemRemovedResult = fulfillmentGroupItemStrategyImpl
+        .onItemRemoved(new CartOperationRequest(order, new OrderItemRequestDTO(), true));
+
+    // Assert
+    verify(fulfillmentGroupService).getFulfillmentGroupItemsForOrderItem(isA(Order.class), isNull());
+    assertTrue(actualOnItemRemovedResult.getOrder() instanceof NullOrderImpl);
+    assertNull(actualOnItemRemovedResult.getAddedOrderItem());
+    assertNull(actualOnItemRemovedResult.getOrderItem());
+  }
+
+  /**
+   * Test {@link FulfillmentGroupItemStrategyImpl#verify(CartOperationRequest)}.
+   * <p>
+   * Method under test: {@link FulfillmentGroupItemStrategyImpl#verify(CartOperationRequest)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CartOperationRequest FulfillmentGroupItemStrategyImpl.verify(CartOperationRequest)"})
+  public void testVerify() throws PricingException {
+    // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(3L);
     auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
@@ -1206,7 +920,6 @@ public class FulfillmentGroupItemStrategyImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     CartOperationRequest request = new CartOperationRequest(order, new OrderItemRequestDTO(), true);
 
@@ -1216,149 +929,75 @@ public class FulfillmentGroupItemStrategyImplDiffblueTest {
 
   /**
    * Test {@link FulfillmentGroupItemStrategyImpl#verify(CartOperationRequest)}.
+   * <ul>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link FulfillmentGroupImpl} (default constructor).</li>
+   *   <li>Then calls {@link FulfillmentGroupService#delete(FulfillmentGroup)}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupItemStrategyImpl#verify(CartOperationRequest)}
+   * Method under test: {@link FulfillmentGroupItemStrategyImpl#verify(CartOperationRequest)}
    */
   @Test
-  public void testVerify2() throws PricingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CartOperationRequest FulfillmentGroupItemStrategyImpl.verify(CartOperationRequest)"})
+  public void testVerify_givenArrayListAddFulfillmentGroupImpl_thenCallsDelete() throws PricingException {
     // Arrange
-    FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl = new FulfillmentGroupItemStrategyImpl();
-    NullOrderImpl order = mock(NullOrderImpl.class);
-    when(order.getFulfillmentGroups()).thenReturn(new ArrayList<>());
-    when(order.getOrderItems()).thenReturn(new ArrayList<>());
+    doNothing().when(fulfillmentGroupService).delete(Mockito.<FulfillmentGroup>any());
+
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(3L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(3L);
+
+    ArrayList<FulfillmentGroup> fulfillmentGroups = new ArrayList<>();
+    fulfillmentGroups.add(new FulfillmentGroupImpl());
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(fulfillmentGroups);
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
     CartOperationRequest request = new CartOperationRequest(order, new OrderItemRequestDTO(), true);
 
     // Act
     CartOperationRequest actualVerifyResult = fulfillmentGroupItemStrategyImpl.verify(request);
 
     // Assert
-    verify(order, atLeast(1)).getFulfillmentGroups();
-    verify(order).getOrderItems();
-    assertSame(request, actualVerifyResult);
-  }
-
-  /**
-   * Test {@link FulfillmentGroupItemStrategyImpl#verify(CartOperationRequest)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupItemStrategyImpl#verify(CartOperationRequest)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testVerify3() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.strategy;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass609 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.strategy.FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl2 = new FulfillmentGroupItemStrategyImpl();
-    NullOrderImpl order = new NullOrderImpl();
-
-    // Act
-    fulfillmentGroupItemStrategyImpl2.verify(new CartOperationRequest(order, new OrderItemRequestDTO(), true));
-  }
-
-  /**
-   * Test {@link FulfillmentGroupItemStrategyImpl#verify(CartOperationRequest)}.
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link BundleOrderItemImpl}
-   * (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupItemStrategyImpl#verify(CartOperationRequest)}
-   */
-  @Test
-  public void testVerify_givenArrayListAddBundleOrderItemImpl() throws PricingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl = new FulfillmentGroupItemStrategyImpl();
-
-    ArrayList<OrderItem> orderItemList = new ArrayList<>();
-    orderItemList.add(new BundleOrderItemImpl());
-    NullOrderImpl order = mock(NullOrderImpl.class);
-    when(order.getFulfillmentGroups()).thenReturn(new ArrayList<>());
-    when(order.getOrderItems()).thenReturn(orderItemList);
-    CartOperationRequest request = new CartOperationRequest(order, new OrderItemRequestDTO(), true);
-
-    // Act
-    CartOperationRequest actualVerifyResult = fulfillmentGroupItemStrategyImpl.verify(request);
-
-    // Assert
-    verify(order, atLeast(1)).getFulfillmentGroups();
-    verify(order).getOrderItems();
+    verify(fulfillmentGroupService).delete(isA(FulfillmentGroup.class));
     assertSame(request, actualVerifyResult);
   }
 
   /**
    * Test {@link FulfillmentGroupItemStrategyImpl#verify(CartOperationRequest)}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add
-   * {@link DiscreteOrderItemImpl}.</li>
-   *   <li>Then calls {@link BundleOrderItemImpl#getDiscreteOrderItems()}.</li>
+   *   <li>Given {@link FulfillmentGroupItemStrategyImpl} (default constructor).</li>
+   *   <li>Then Order return {@link OrderImpl}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupItemStrategyImpl#verify(CartOperationRequest)}
+   * Method under test: {@link FulfillmentGroupItemStrategyImpl#verify(CartOperationRequest)}
    */
   @Test
-  public void testVerify_givenArrayListAddDiscreteOrderItemImpl_thenCallsGetDiscreteOrderItems()
-      throws PricingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl = new FulfillmentGroupItemStrategyImpl();
-    BundleOrderItemImpl bundleOrderItemImpl = mock(BundleOrderItemImpl.class);
-    when(bundleOrderItemImpl.getDiscreteOrderItems()).thenThrow(new IllegalStateException("foo"));
-
-    ArrayList<OrderItem> orderItemList = new ArrayList<>();
-    orderItemList.add(mock(DiscreteOrderItemImpl.class));
-    orderItemList.add(bundleOrderItemImpl);
-    NullOrderImpl order = mock(NullOrderImpl.class);
-    when(order.getFulfillmentGroups()).thenReturn(new ArrayList<>());
-    when(order.getOrderItems()).thenReturn(orderItemList);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> fulfillmentGroupItemStrategyImpl
-        .verify(new CartOperationRequest(order, new OrderItemRequestDTO(), true)));
-    verify(bundleOrderItemImpl).getDiscreteOrderItems();
-    verify(order, atLeast(1)).getFulfillmentGroups();
-    verify(order).getOrderItems();
-  }
-
-  /**
-   * Test {@link FulfillmentGroupItemStrategyImpl#verify(CartOperationRequest)}.
-   * <ul>
-   *   <li>Given {@link OrderItemImpl} (default constructor) Auditable is
-   * {@link Auditable} (default constructor).</li>
-   *   <li>Then throw {@link IllegalStateException}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupItemStrategyImpl#verify(CartOperationRequest)}
-   */
-  @Test
-  public void testVerify_givenOrderItemImplAuditableIsAuditable_thenThrowIllegalStateException()
-      throws PricingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CartOperationRequest FulfillmentGroupItemStrategyImpl.verify(CartOperationRequest)"})
+  public void testVerify_givenFulfillmentGroupItemStrategyImpl_thenOrderReturnOrderImpl() throws PricingException {
     // Arrange
     FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl = new FulfillmentGroupItemStrategyImpl();
 
@@ -1368,76 +1007,39 @@ public class FulfillmentGroupItemStrategyImplDiffblueTest {
     auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(3L);
 
-    OrderItemImpl orderItemImpl = new OrderItemImpl();
-    orderItemImpl.setAuditable(auditable);
-    orderItemImpl.setCandidateItemOffers(new ArrayList<>());
-    orderItemImpl.setCartMessages(new ArrayList<>());
-    orderItemImpl.setChildOrderItems(new ArrayList<>());
-    orderItemImpl.setDiscountingAllowed(true);
-    orderItemImpl.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
-    orderItemImpl.setHasValidationError(true);
-    orderItemImpl.setId(1L);
-    orderItemImpl.setName("Name");
-    orderItemImpl.setOrder(new NullOrderImpl());
-    orderItemImpl.setOrderItemAdjustments(new ArrayList<>());
-    orderItemImpl.setOrderItemAttributes(new HashMap<>());
-    orderItemImpl.setOrderItemPriceDetails(new ArrayList<>());
-    orderItemImpl.setOrderItemQualifiers(new ArrayList<>());
-    orderItemImpl.setOrderItemType(OrderItemType.BASIC);
-    orderItemImpl.setParentOrderItem(new BundleOrderItemImpl());
-    orderItemImpl.setPersonalMessage(new PersonalMessageImpl());
-    orderItemImpl.setProratedOrderItemAdjustments(new ArrayList<>());
-    orderItemImpl.setQuantity(3);
-    orderItemImpl.setRetailPrice(new Money());
-    orderItemImpl.setRetailPriceOverride(true);
-    orderItemImpl.setSalePrice(new Money());
-    orderItemImpl.setSalePriceOverride(true);
-    orderItemImpl.setTaxable(true);
-    orderItemImpl.updateSaleAndRetailPrices();
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(new BundleOrderItemImpl());
 
-    ArrayList<OrderItem> orderItemList = new ArrayList<>();
-    orderItemList.add(orderItemImpl);
-    NullOrderImpl order = mock(NullOrderImpl.class);
-    when(order.getFulfillmentGroups()).thenReturn(new ArrayList<>());
-    when(order.getOrderItems()).thenReturn(orderItemList);
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(orderItems);
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> fulfillmentGroupItemStrategyImpl
-        .verify(new CartOperationRequest(order, new OrderItemRequestDTO(), true)));
-    verify(order, atLeast(1)).getFulfillmentGroups();
-    verify(order).getOrderItems();
-  }
-
-  /**
-   * Test {@link FulfillmentGroupItemStrategyImpl#verify(CartOperationRequest)}.
-   * <ul>
-   *   <li>Then calls {@link BundleOrderItemImpl#getDiscreteOrderItems()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupItemStrategyImpl#verify(CartOperationRequest)}
-   */
-  @Test
-  public void testVerify_thenCallsGetDiscreteOrderItems() throws PricingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl = new FulfillmentGroupItemStrategyImpl();
-    BundleOrderItemImpl bundleOrderItemImpl = mock(BundleOrderItemImpl.class);
-    when(bundleOrderItemImpl.getDiscreteOrderItems()).thenThrow(new IllegalStateException("foo"));
-
-    ArrayList<OrderItem> orderItemList = new ArrayList<>();
-    orderItemList.add(bundleOrderItemImpl);
-    NullOrderImpl order = mock(NullOrderImpl.class);
-    when(order.getFulfillmentGroups()).thenReturn(new ArrayList<>());
-    when(order.getOrderItems()).thenReturn(orderItemList);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> fulfillmentGroupItemStrategyImpl
-        .verify(new CartOperationRequest(order, new OrderItemRequestDTO(), true)));
-    verify(bundleOrderItemImpl).getDiscreteOrderItems();
-    verify(order, atLeast(1)).getFulfillmentGroups();
-    verify(order).getOrderItems();
+    Order order2 = fulfillmentGroupItemStrategyImpl
+        .verify(new CartOperationRequest(order, new OrderItemRequestDTO(), true))
+        .getOrder();
+    assertTrue(order2 instanceof OrderImpl);
+    assertSame(orderItems, order2.getOrderItems());
   }
 
   /**
@@ -1445,12 +1047,14 @@ public class FulfillmentGroupItemStrategyImplDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>
-   * {@link FulfillmentGroupItemStrategyImpl#setRemoveEmptyFulfillmentGroups(boolean)}
+   *   <li>{@link FulfillmentGroupItemStrategyImpl#setRemoveEmptyFulfillmentGroups(boolean)}
    *   <li>{@link FulfillmentGroupItemStrategyImpl#isRemoveEmptyFulfillmentGroups()}
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean FulfillmentGroupItemStrategyImpl.isRemoveEmptyFulfillmentGroups()",
+      "void FulfillmentGroupItemStrategyImpl.setRemoveEmptyFulfillmentGroups(boolean)"})
   public void testGettersAndSetters() {
     // Arrange
     FulfillmentGroupItemStrategyImpl fulfillmentGroupItemStrategyImpl = new FulfillmentGroupItemStrategyImpl();
@@ -1458,7 +1062,7 @@ public class FulfillmentGroupItemStrategyImplDiffblueTest {
     // Act
     fulfillmentGroupItemStrategyImpl.setRemoveEmptyFulfillmentGroups(true);
 
-    // Assert that nothing has changed
+    // Assert
     assertTrue(fulfillmentGroupItemStrategyImpl.isRemoveEmptyFulfillmentGroups());
   }
 }

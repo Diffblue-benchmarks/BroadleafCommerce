@@ -21,13 +21,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.broadleafcommerce.common.structure.dto.ItemCriteriaDTO;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -48,6 +50,8 @@ public class PageDTODiffblueTest {
    * Method under test: {@link PageDTO#getPropertyValue(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object PageDTO.getPropertyValue(String)"})
   public void testGetPropertyValue_when42() {
     // Arrange, Act and Assert
     assertNull(pageDTO.getPropertyValue("42"));
@@ -62,52 +66,11 @@ public class PageDTODiffblueTest {
    * Method under test: {@link PageDTO#getPropertyValue(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object PageDTO.getPropertyValue(String)"})
   public void testGetPropertyValue_whenPropertyName() {
     // Arrange, Act and Assert
     assertNull(pageDTO.getPropertyValue("Property Name"));
-  }
-
-  /**
-   * Test {@link PageDTO#copy(PageDTO)}.
-   * <ul>
-   *   <li>When {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PageDTO#copy(PageDTO)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCopy_whenNull() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.broadleafcommerce.common.page.dto.PageDTO.copy(PageDTO.java:160)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange and Act
-    (new PageDTO()).copy(null);
-  }
-
-  /**
-   * Test {@link PageDTO#copy(PageDTO)}.
-   * <ul>
-   *   <li>When {@link PageDTO} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PageDTO#copy(PageDTO)}
-   */
-  @Test
-  public void testCopy_whenPageDTO() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange
-    PageDTO pageDTO = new PageDTO();
-
-    // Act
-    pageDTO.copy(new PageDTO());
   }
 
   /**
@@ -141,6 +104,15 @@ public class PageDTODiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PageDTO.<init>()", "String PageDTO.getDescription()", "Map PageDTO.getForeignPageFields()",
+      "Long PageDTO.getId()", "List PageDTO.getItemCriteriaDTOList()", "String PageDTO.getLocaleCode()",
+      "Map PageDTO.getPageAttributes()", "Map PageDTO.getPageFields()", "Integer PageDTO.getPriority()",
+      "String PageDTO.getRuleExpression()", "String PageDTO.getTemplatePath()", "String PageDTO.getUrl()",
+      "void PageDTO.setDescription(String)", "void PageDTO.setForeignPageFields(Map)", "void PageDTO.setId(Long)",
+      "void PageDTO.setItemCriteriaDTOList(List)", "void PageDTO.setLocaleCode(String)",
+      "void PageDTO.setPageAttributes(Map)", "void PageDTO.setPageFields(Map)", "void PageDTO.setPriority(Integer)",
+      "void PageDTO.setRuleExpression(String)", "void PageDTO.setTemplatePath(String)", "void PageDTO.setUrl(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     PageDTO actualPageDTO = new PageDTO();
@@ -170,7 +142,7 @@ public class PageDTODiffblueTest {
     String actualRuleExpression = actualPageDTO.getRuleExpression();
     String actualTemplatePath = actualPageDTO.getTemplatePath();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Rule Expression", actualRuleExpression);
     assertEquals("Template Path", actualTemplatePath);
     assertEquals("The characteristics of someone or something", actualDescription);

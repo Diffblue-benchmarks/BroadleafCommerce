@@ -21,18 +21,22 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Map;
 import org.broadleafcommerce.common.util.BLCFieldUtils;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {CustomerCreditDTO.class})
 @RunWith(SpringJUnit4ClassRunner.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class CustomerCreditDTODiffblueTest {
   @Autowired
   private CustomerCreditDTO<Object> customerCreditDTO;
@@ -48,6 +52,10 @@ public class CustomerCreditDTODiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CustomerCreditDTO.<init>()", "void CustomerCreditDTO.<init>(Object)",
+      "CustomerCreditDTO CustomerCreditDTO.customerCreditAccountMasked(String)",
+      "CustomerCreditDTO CustomerCreditDTO.customerCreditAccountNum(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     CustomerCreditDTO<Object> actualCustomerCreditDTO = new CustomerCreditDTO<>();
@@ -76,6 +84,10 @@ public class CustomerCreditDTODiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CustomerCreditDTO.<init>()", "void CustomerCreditDTO.<init>(Object)",
+      "CustomerCreditDTO CustomerCreditDTO.customerCreditAccountMasked(String)",
+      "CustomerCreditDTO CustomerCreditDTO.customerCreditAccountNum(String)"})
   public void testGettersAndSetters_whenNull_field() {
     // Arrange and Act
     CustomerCreditDTO<Object> actualCustomerCreditDTO = new CustomerCreditDTO<>(BLCFieldUtils.NULL_FIELD);
@@ -96,6 +108,8 @@ public class CustomerCreditDTODiffblueTest {
    * Method under test: {@link CustomerCreditDTO#done()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object CustomerCreditDTO.done()"})
   public void testDone() {
     // Arrange
     CustomerCreditDTO<Object> customerCreditDTO = new CustomerCreditDTO<>();
@@ -110,6 +124,8 @@ public class CustomerCreditDTODiffblueTest {
    * Method under test: {@link CustomerCreditDTO#additionalFields(String, Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CustomerCreditDTO CustomerCreditDTO.additionalFields(String, Object)"})
   public void testAdditionalFields() {
     // Arrange
     Object object = BLCFieldUtils.NULL_FIELD;

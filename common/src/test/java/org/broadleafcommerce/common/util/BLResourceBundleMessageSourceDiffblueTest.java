@@ -20,21 +20,24 @@ package org.broadleafcommerce.common.util;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Set;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class BLResourceBundleMessageSourceDiffblueTest {
   /**
-   * Test
-   * {@link BLResourceBundleMessageSource#BLResourceBundleMessageSource(String[], ResourceBundleExtensionPoint)}.
+   * Test {@link BLResourceBundleMessageSource#BLResourceBundleMessageSource(String[], ResourceBundleExtensionPoint)}.
    * <ul>
    *   <li>Given {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BLResourceBundleMessageSource#BLResourceBundleMessageSource(String[], ResourceBundleExtensionPoint)}
+   * Method under test: {@link BLResourceBundleMessageSource#BLResourceBundleMessageSource(String[], ResourceBundleExtensionPoint)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BLResourceBundleMessageSource.<init>(String[], ResourceBundleExtensionPoint)"})
   public void testNewBLResourceBundleMessageSource_givenNull() {
     // Arrange
     ResourceBundleExtensionPoint resourceBundleExtensionPoint = new ResourceBundleExtensionPoint();
@@ -50,16 +53,16 @@ public class BLResourceBundleMessageSourceDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BLResourceBundleMessageSource#BLResourceBundleMessageSource(String[], ResourceBundleExtensionPoint)}.
+   * Test {@link BLResourceBundleMessageSource#BLResourceBundleMessageSource(String[], ResourceBundleExtensionPoint)}.
    * <ul>
    *   <li>Then return BasenameSet size is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BLResourceBundleMessageSource#BLResourceBundleMessageSource(String[], ResourceBundleExtensionPoint)}
+   * Method under test: {@link BLResourceBundleMessageSource#BLResourceBundleMessageSource(String[], ResourceBundleExtensionPoint)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BLResourceBundleMessageSource.<init>(String[], ResourceBundleExtensionPoint)"})
   public void testNewBLResourceBundleMessageSource_thenReturnBasenameSetSizeIsOne() {
     // Arrange
     ResourceBundleExtensionPoint resourceBundleExtensionPoint = new ResourceBundleExtensionPoint();
@@ -77,16 +80,16 @@ public class BLResourceBundleMessageSourceDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BLResourceBundleMessageSource#BLResourceBundleMessageSource(String[], ResourceBundleExtensionPoint)}.
+   * Test {@link BLResourceBundleMessageSource#BLResourceBundleMessageSource(String[], ResourceBundleExtensionPoint)}.
    * <ul>
    *   <li>Then return BasenameSet size is two.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BLResourceBundleMessageSource#BLResourceBundleMessageSource(String[], ResourceBundleExtensionPoint)}
+   * Method under test: {@link BLResourceBundleMessageSource#BLResourceBundleMessageSource(String[], ResourceBundleExtensionPoint)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BLResourceBundleMessageSource.<init>(String[], ResourceBundleExtensionPoint)"})
   public void testNewBLResourceBundleMessageSource_thenReturnBasenameSetSizeIsTwo() {
     // Arrange
     ResourceBundleExtensionPoint resourceBundleExtensionPoint = new ResourceBundleExtensionPoint();
@@ -105,17 +108,17 @@ public class BLResourceBundleMessageSourceDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BLResourceBundleMessageSource#BLResourceBundleMessageSource(String[], ResourceBundleExtensionPoint)}.
+   * Test {@link BLResourceBundleMessageSource#BLResourceBundleMessageSource(String[], ResourceBundleExtensionPoint)}.
    * <ul>
    *   <li>When {@code null}.</li>
    *   <li>Then return BasenameSet Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BLResourceBundleMessageSource#BLResourceBundleMessageSource(String[], ResourceBundleExtensionPoint)}
+   * Method under test: {@link BLResourceBundleMessageSource#BLResourceBundleMessageSource(String[], ResourceBundleExtensionPoint)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BLResourceBundleMessageSource.<init>(String[], ResourceBundleExtensionPoint)"})
   public void testNewBLResourceBundleMessageSource_whenNull_thenReturnBasenameSetEmpty() {
     // Arrange and Act
     BLResourceBundleMessageSource actualBlResourceBundleMessageSource = new BLResourceBundleMessageSource(null, null);

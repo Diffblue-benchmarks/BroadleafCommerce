@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Admin Module
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.admin.server.service.handler;
 
 import static org.junit.Assert.assertEquals;
@@ -12,10 +29,16 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.util.ArrayList;
 import org.broadleafcommerce.common.exception.ServiceException;
 import org.broadleafcommerce.common.presentation.client.OperationType;
-import org.broadleafcommerce.core.catalog.domain.Category;
+import org.broadleafcommerce.common.sandbox.SandBoxHelper;
+import org.broadleafcommerce.core.catalog.dao.CategoryDao;
 import org.broadleafcommerce.core.catalog.domain.CategoryImpl;
+import org.broadleafcommerce.core.catalog.domain.CategoryXref;
+import org.broadleafcommerce.core.catalog.domain.CategoryXrefImpl;
 import org.broadleafcommerce.openadmin.dto.Entity;
 import org.broadleafcommerce.openadmin.dto.PersistencePackage;
 import org.broadleafcommerce.openadmin.dto.Property;
@@ -24,190 +47,79 @@ import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl;
 import org.broadleafcommerce.openadmin.server.service.ValidationException;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.RecordHelper;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml", "/bl-admin-applicationContext.xml",
-    "/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class ChildCategoriesCustomPersistenceHandlerDiffblueTest {
-  @Autowired
+  @Mock
+  private CategoryDao categoryDao;
+
+  @InjectMocks
   private ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler;
 
-  /**
-   * Test
-   * {@link ChildCategoriesCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
-   * <p>
-   * Method under test:
-   * {@link ChildCategoriesCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCanHandleAdd() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1212 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler2 = new ChildCategoriesCustomPersistenceHandler();
-
-    // Act
-    childCategoriesCustomPersistenceHandler2.canHandleAdd(new PersistencePackage());
-  }
+  @Mock
+  private SandBoxHelper sandBoxHelper;
 
   /**
-   * Test
-   * {@link ChildCategoriesCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
+   * Test {@link ChildCategoriesCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
    * <ul>
    *   <li>Given {@code allChildCategoryXrefs}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ChildCategoriesCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ChildCategoriesCustomPersistenceHandler.canHandleAdd(PersistencePackage)"})
   public void testCanHandleAdd_givenAllChildCategoryXrefs_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler = new ChildCategoriesCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getSectionEntityField()).thenReturn("allChildCategoryXrefs");
+    PersistencePackage persistencePackage = new PersistencePackage();
+    persistencePackage.setSectionEntityField("allChildCategoryXrefs");
 
-    // Act
-    Boolean actualCanHandleAddResult = childCategoriesCustomPersistenceHandler.canHandleAdd(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getSectionEntityField();
-    assertTrue(actualCanHandleAddResult);
+    // Act and Assert
+    assertTrue(childCategoriesCustomPersistenceHandler.canHandleAdd(persistencePackage));
   }
 
   /**
-   * Test
-   * {@link ChildCategoriesCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
-   * <ul>
-   *   <li>Given {@code Section Entity Field}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link ChildCategoriesCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
-   */
-  @Test
-  public void testCanHandleAdd_givenSectionEntityField() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler = new ChildCategoriesCustomPersistenceHandler();
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getSectionEntityField()).thenReturn("Section Entity Field");
-
-    // Act
-    Boolean actualCanHandleAddResult = childCategoriesCustomPersistenceHandler.canHandleAdd(persistencePackage);
-
-    // Assert
-    verify(persistencePackage).getSectionEntityField();
-    assertFalse(actualCanHandleAddResult);
-  }
-
-  /**
-   * Test
-   * {@link ChildCategoriesCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
+   * Test {@link ChildCategoriesCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
    * <ul>
    *   <li>When {@link PersistencePackage#PersistencePackage()}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ChildCategoriesCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ChildCategoriesCustomPersistenceHandler.canHandleAdd(PersistencePackage)"})
   public void testCanHandleAdd_whenPersistencePackage_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler = new ChildCategoriesCustomPersistenceHandler();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertFalse(childCategoriesCustomPersistenceHandler.canHandleAdd(new PersistencePackage()));
   }
 
   /**
-   * Test
-   * {@link ChildCategoriesCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
-   * <p>
-   * Method under test:
-   * {@link ChildCategoriesCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAdd() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1104 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler2 = new ChildCategoriesCustomPersistenceHandler();
-    PersistencePackage persistencePackage = new PersistencePackage();
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    // Act
-    childCategoriesCustomPersistenceHandler2.add(persistencePackage, dynamicEntityDao,
-        new AdornedTargetListPersistenceModule());
-  }
-
-  /**
-   * Test
-   * {@link ChildCategoriesCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
+   * Test {@link ChildCategoriesCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
    * <ul>
-   *   <li>Given {@link AdornedTargetListPersistenceModule}
-   * {@link AdornedTargetListPersistenceModule#add(PersistencePackage)} return
-   * {@link Entity} (default constructor).</li>
+   *   <li>Given {@link AdornedTargetListPersistenceModule} {@link AdornedTargetListPersistenceModule#add(PersistencePackage)} return {@link Entity} (default constructor).</li>
    *   <li>Then return {@link Entity} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ChildCategoriesCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Entity ChildCategoriesCustomPersistenceHandler.add(PersistencePackage, DynamicEntityDao, RecordHelper)"})
   public void testAdd_givenAdornedTargetListPersistenceModuleAddReturnEntity_thenReturnEntity()
       throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler = new ChildCategoriesCustomPersistenceHandler();
     Property property = mock(Property.class);
     when(property.getValue()).thenReturn(null);
     Entity entity = mock(Entity.class);
@@ -235,23 +147,19 @@ public class ChildCategoriesCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ChildCategoriesCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
+   * Test {@link ChildCategoriesCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
    * <ul>
-   *   <li>Given {@link Entity} {@link Entity#findProperty(String)} return
-   * {@link Property#Property(String, String)} with name is {@code category.id}
-   * and value is {@code 42}.</li>
+   *   <li>Given {@link Entity} {@link Entity#findProperty(String)} return {@link Property#Property(String, String)} with name is {@code category.id} and value is {@code 42}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ChildCategoriesCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Entity ChildCategoriesCustomPersistenceHandler.add(PersistencePackage, DynamicEntityDao, RecordHelper)"})
   public void testAdd_givenEntityFindPropertyReturnPropertyWithNameIsCategoryIdAndValueIs42() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler = new ChildCategoriesCustomPersistenceHandler();
     Entity entity = mock(Entity.class);
     doNothing().when(entity).addGlobalValidationError(Mockito.<String>any());
     when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property("category.id", "42"));
@@ -268,23 +176,20 @@ public class ChildCategoriesCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ChildCategoriesCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
+   * Test {@link ChildCategoriesCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
    * <ul>
-   *   <li>Given {@link Property} {@link Property#getValue()} return
-   * {@code 42}.</li>
+   *   <li>Given {@link Property} {@link Property#getValue()} return {@code 42}.</li>
    *   <li>Then throw {@link ValidationException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ChildCategoriesCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Entity ChildCategoriesCustomPersistenceHandler.add(PersistencePackage, DynamicEntityDao, RecordHelper)"})
   public void testAdd_givenPropertyGetValueReturn42_thenThrowValidationException() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler = new ChildCategoriesCustomPersistenceHandler();
     Property property = mock(Property.class);
     when(property.getValue()).thenReturn("42");
     Entity entity = mock(Entity.class);
@@ -304,56 +209,18 @@ public class ChildCategoriesCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ChildCategoriesCustomPersistenceHandler#validateChildCategory(Entity)}.
-   * <p>
-   * Method under test:
-   * {@link ChildCategoriesCustomPersistenceHandler#validateChildCategory(Entity)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testValidateChildCategory() throws ValidationException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1350 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler2 = new ChildCategoriesCustomPersistenceHandler();
-
-    // Act
-    childCategoriesCustomPersistenceHandler2.validateChildCategory(new Entity());
-  }
-
-  /**
-   * Test
-   * {@link ChildCategoriesCustomPersistenceHandler#validateChildCategory(Entity)}.
+   * Test {@link ChildCategoriesCustomPersistenceHandler#validateChildCategory(Entity)}.
    * <ul>
-   *   <li>Given {@link Property} {@link Property#getValue()} return
-   * {@code 42}.</li>
+   *   <li>Given {@link Property} {@link Property#getValue()} return {@code 42}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ChildCategoriesCustomPersistenceHandler#validateChildCategory(Entity)}
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#validateChildCategory(Entity)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.validateChildCategory(Entity)"})
   public void testValidateChildCategory_givenPropertyGetValueReturn42() throws ValidationException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler = new ChildCategoriesCustomPersistenceHandler();
     Property property = mock(Property.class);
     when(property.getValue()).thenReturn("42");
     Entity entity = mock(Entity.class);
@@ -369,23 +236,19 @@ public class ChildCategoriesCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ChildCategoriesCustomPersistenceHandler#validateChildCategory(Entity)}.
+   * Test {@link ChildCategoriesCustomPersistenceHandler#validateChildCategory(Entity)}.
    * <ul>
-   *   <li>Given {@link Property} {@link Property#getValue()} return
-   * {@code null}.</li>
+   *   <li>Given {@link Property} {@link Property#getValue()} return {@code null}.</li>
    *   <li>Then calls {@link Property#getValue()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ChildCategoriesCustomPersistenceHandler#validateChildCategory(Entity)}
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#validateChildCategory(Entity)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.validateChildCategory(Entity)"})
   public void testValidateChildCategory_givenPropertyGetValueReturnNull_thenCallsGetValue() throws ValidationException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler = new ChildCategoriesCustomPersistenceHandler();
     Property property = mock(Property.class);
     when(property.getValue()).thenReturn(null);
     Entity entity = mock(Entity.class);
@@ -400,22 +263,18 @@ public class ChildCategoriesCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ChildCategoriesCustomPersistenceHandler#validateChildCategory(Entity)}.
+   * Test {@link ChildCategoriesCustomPersistenceHandler#validateChildCategory(Entity)}.
    * <ul>
-   *   <li>Given {@link Property#Property(String, String)} with name is
-   * {@code category.id} and value is {@code 42}.</li>
+   *   <li>Given {@link Property#Property(String, String)} with name is {@code category.id} and value is {@code 42}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ChildCategoriesCustomPersistenceHandler#validateChildCategory(Entity)}
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#validateChildCategory(Entity)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.validateChildCategory(Entity)"})
   public void testValidateChildCategory_givenPropertyWithNameIsCategoryIdAndValueIs42() throws ValidationException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler = new ChildCategoriesCustomPersistenceHandler();
     Entity entity = mock(Entity.class);
     doNothing().when(entity).addGlobalValidationError(Mockito.<String>any());
     when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property("category.id", "42"));
@@ -428,24 +287,20 @@ public class ChildCategoriesCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ChildCategoriesCustomPersistenceHandler#validateChildCategory(Entity)}.
+   * Test {@link ChildCategoriesCustomPersistenceHandler#validateChildCategory(Entity)}.
    * <ul>
    *   <li>Given {@link Property#Property()}.</li>
-   *   <li>When {@link Entity} {@link Entity#findProperty(String)} return
-   * {@link Property#Property()}.</li>
+   *   <li>When {@link Entity} {@link Entity#findProperty(String)} return {@link Property#Property()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ChildCategoriesCustomPersistenceHandler#validateChildCategory(Entity)}
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#validateChildCategory(Entity)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.validateChildCategory(Entity)"})
   public void testValidateChildCategory_givenProperty_whenEntityFindPropertyReturnProperty()
       throws ValidationException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler = new ChildCategoriesCustomPersistenceHandler();
     Entity entity = mock(Entity.class);
     when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property());
 
@@ -457,57 +312,19 @@ public class ChildCategoriesCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ChildCategoriesCustomPersistenceHandler#validateSelfLink(Entity)}.
-   * <p>
-   * Method under test:
-   * {@link ChildCategoriesCustomPersistenceHandler#validateSelfLink(Entity)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testValidateSelfLink() throws ValidationException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1416 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler2 = new ChildCategoriesCustomPersistenceHandler();
-
-    // Act
-    childCategoriesCustomPersistenceHandler2.validateSelfLink(new Entity());
-  }
-
-  /**
-   * Test
-   * {@link ChildCategoriesCustomPersistenceHandler#validateSelfLink(Entity)}.
+   * Test {@link ChildCategoriesCustomPersistenceHandler#validateSelfLink(Entity)}.
    * <ul>
-   *   <li>Given {@link Property} {@link Property#getValue()} return
-   * {@code 42}.</li>
+   *   <li>Given {@link Property} {@link Property#getValue()} return {@code 42}.</li>
    *   <li>Then calls {@link Property#getValue()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ChildCategoriesCustomPersistenceHandler#validateSelfLink(Entity)}
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#validateSelfLink(Entity)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.validateSelfLink(Entity)"})
   public void testValidateSelfLink_givenPropertyGetValueReturn42_thenCallsGetValue() throws ValidationException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler = new ChildCategoriesCustomPersistenceHandler();
     Property property = mock(Property.class);
     when(property.getValue()).thenReturn("42");
     Entity entity = mock(Entity.class);
@@ -522,22 +339,18 @@ public class ChildCategoriesCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ChildCategoriesCustomPersistenceHandler#validateSelfLink(Entity)}.
+   * Test {@link ChildCategoriesCustomPersistenceHandler#validateSelfLink(Entity)}.
    * <ul>
-   *   <li>Given {@link Property#Property(String, String)} with name is
-   * {@code category.id} and value is {@code 42}.</li>
+   *   <li>Given {@link Property#Property(String, String)} with name is {@code category.id} and value is {@code 42}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ChildCategoriesCustomPersistenceHandler#validateSelfLink(Entity)}
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#validateSelfLink(Entity)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.validateSelfLink(Entity)"})
   public void testValidateSelfLink_givenPropertyWithNameIsCategoryIdAndValueIs42() throws ValidationException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler = new ChildCategoriesCustomPersistenceHandler();
     Entity entity = mock(Entity.class);
     doNothing().when(entity).addGlobalValidationError(Mockito.<String>any());
     when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property("category.id", "42"));
@@ -549,23 +362,19 @@ public class ChildCategoriesCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ChildCategoriesCustomPersistenceHandler#validateSelfLink(Entity)}.
+   * Test {@link ChildCategoriesCustomPersistenceHandler#validateSelfLink(Entity)}.
    * <ul>
    *   <li>Given {@link Property#Property()}.</li>
-   *   <li>When {@link Entity} {@link Entity#findProperty(String)} return
-   * {@link Property#Property()}.</li>
+   *   <li>When {@link Entity} {@link Entity#findProperty(String)} return {@link Property#Property()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ChildCategoriesCustomPersistenceHandler#validateSelfLink(Entity)}
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#validateSelfLink(Entity)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.validateSelfLink(Entity)"})
   public void testValidateSelfLink_givenProperty_whenEntityFindPropertyReturnProperty() throws ValidationException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler = new ChildCategoriesCustomPersistenceHandler();
     Entity entity = mock(Entity.class);
     when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property());
 
@@ -577,56 +386,49 @@ public class ChildCategoriesCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ChildCategoriesCustomPersistenceHandler#validateDuplicateChild(Entity)}.
+   * Test {@link ChildCategoriesCustomPersistenceHandler#validateDuplicateChild(Entity)}.
+   * <ul>
+   *   <li>Given {@link Property} {@link Property#getValue()} return {@code 42}.</li>
+   *   <li>Then calls {@link Property#getValue()}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link ChildCategoriesCustomPersistenceHandler#validateDuplicateChild(Entity)}
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#validateDuplicateChild(Entity)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testValidateDuplicateChild() throws ValidationException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1372 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.validateDuplicateChild(Entity)"})
+  public void testValidateDuplicateChild_givenPropertyGetValueReturn42_thenCallsGetValue() throws ValidationException {
     // Arrange
-    ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler2 = new ChildCategoriesCustomPersistenceHandler();
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
+    Property property = mock(Property.class);
+    when(property.getValue()).thenReturn("42");
+    Entity entity = mock(Entity.class);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
 
     // Act
-    childCategoriesCustomPersistenceHandler2.validateDuplicateChild(new Entity());
+    childCategoriesCustomPersistenceHandler.validateDuplicateChild(entity);
+
+    // Assert
+    verify(categoryDao, atLeast(1)).readCategoryById(eq(42L));
+    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
+    verify(property, atLeast(1)).getValue();
   }
 
   /**
-   * Test
-   * {@link ChildCategoriesCustomPersistenceHandler#validateDuplicateChild(Entity)}.
+   * Test {@link ChildCategoriesCustomPersistenceHandler#validateDuplicateChild(Entity)}.
    * <ul>
    *   <li>Given {@link Property#Property()}.</li>
-   *   <li>Then calls {@link Entity#findProperty(String)}.</li>
+   *   <li>When {@link Entity} {@link Entity#findProperty(String)} return {@link Property#Property()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ChildCategoriesCustomPersistenceHandler#validateDuplicateChild(Entity)}
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#validateDuplicateChild(Entity)}
    */
   @Test
-  public void testValidateDuplicateChild_givenProperty_thenCallsFindProperty() throws ValidationException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.validateDuplicateChild(Entity)"})
+  public void testValidateDuplicateChild_givenProperty_whenEntityFindPropertyReturnProperty()
+      throws ValidationException {
     // Arrange
-    ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler = new ChildCategoriesCustomPersistenceHandler();
     Entity entity = mock(Entity.class);
     when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property());
 
@@ -638,56 +440,138 @@ public class ChildCategoriesCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ChildCategoriesCustomPersistenceHandler#validateRecursiveRelationship(Entity)}.
+   * Test {@link ChildCategoriesCustomPersistenceHandler#validateDuplicateChild(Entity)}.
+   * <ul>
+   *   <li>Then calls {@link CategoryDao#readCategoryById(Long)}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link ChildCategoriesCustomPersistenceHandler#validateRecursiveRelationship(Entity)}
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#validateDuplicateChild(Entity)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testValidateRecursiveRelationship() throws ValidationException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1394 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.validateDuplicateChild(Entity)"})
+  public void testValidateDuplicateChild_thenCallsReadCategoryById() throws ValidationException {
     // Arrange
-    ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler2 = new ChildCategoriesCustomPersistenceHandler();
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
+    Entity entity = mock(Entity.class);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property("category.id", "42"));
 
     // Act
-    childCategoriesCustomPersistenceHandler2.validateRecursiveRelationship(new Entity());
+    childCategoriesCustomPersistenceHandler.validateDuplicateChild(entity);
+
+    // Assert
+    verify(categoryDao, atLeast(1)).readCategoryById(eq(42L));
+    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
   }
 
   /**
-   * Test
-   * {@link ChildCategoriesCustomPersistenceHandler#validateRecursiveRelationship(Entity)}.
-   * <ul>
-   *   <li>Given {@link Property#Property()}.</li>
-   *   <li>Then calls {@link Entity#findProperty(String)}.</li>
-   * </ul>
+   * Test {@link ChildCategoriesCustomPersistenceHandler#validateRecursiveRelationship(Entity)}.
    * <p>
-   * Method under test:
-   * {@link ChildCategoriesCustomPersistenceHandler#validateRecursiveRelationship(Entity)}
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#validateRecursiveRelationship(Entity)}
    */
   @Test
-  public void testValidateRecursiveRelationship_givenProperty_thenCallsFindProperty() throws ValidationException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.validateRecursiveRelationship(Entity)"})
+  public void testValidateRecursiveRelationship() throws ValidationException {
     // Arrange
-    ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler = new ChildCategoriesCustomPersistenceHandler();
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
+    Entity entity = mock(Entity.class);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property("category.id", "42"));
+
+    // Act
+    childCategoriesCustomPersistenceHandler.validateRecursiveRelationship(entity);
+
+    // Assert
+    verify(categoryDao, atLeast(1)).readCategoryById(eq(42L));
+    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
+  }
+
+  /**
+   * Test {@link ChildCategoriesCustomPersistenceHandler#validateRecursiveRelationship(Entity)}.
+   * <ul>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link CategoryXrefImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#validateRecursiveRelationship(Entity)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.validateRecursiveRelationship(Entity)"})
+  public void testValidateRecursiveRelationship_givenArrayListAddCategoryXrefImpl() throws ValidationException {
+    // Arrange
+    ArrayList<CategoryXref> categoryXrefList = new ArrayList<>();
+    categoryXrefList.add(new CategoryXrefImpl());
+    org.broadleafcommerce.core.catalog.domain.Category category = mock(
+        org.broadleafcommerce.core.catalog.domain.Category.class);
+    when(category.getName()).thenReturn("Name");
+    when(category.getChildCategoryXrefs()).thenReturn(categoryXrefList);
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(category);
+    when(sandBoxHelper.getOriginalId(Mockito.<Object>any())).thenReturn(1L);
+    Entity entity = mock(Entity.class);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property("category.id", "42"));
+
+    // Act
+    childCategoriesCustomPersistenceHandler.validateRecursiveRelationship(entity);
+
+    // Assert
+    verify(sandBoxHelper).getOriginalId(isA(Object.class));
+    verify(categoryDao, atLeast(1)).readCategoryById(eq(42L));
+    verify(category).getChildCategoryXrefs();
+    verify(category, atLeast(1)).getName();
+    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
+  }
+
+  /**
+   * Test {@link ChildCategoriesCustomPersistenceHandler#validateRecursiveRelationship(Entity)}.
+   * <ul>
+   *   <li>Given {@link CategoryXrefImpl} {@link CategoryXrefImpl#getSubCategory()} return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#validateRecursiveRelationship(Entity)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.validateRecursiveRelationship(Entity)"})
+  public void testValidateRecursiveRelationship_givenCategoryXrefImplGetSubCategoryReturnNull()
+      throws ValidationException {
+    // Arrange
+    CategoryXrefImpl categoryXrefImpl = mock(CategoryXrefImpl.class);
+    when(categoryXrefImpl.getSubCategory()).thenReturn(null);
+
+    ArrayList<CategoryXref> categoryXrefList = new ArrayList<>();
+    categoryXrefList.add(categoryXrefImpl);
+    org.broadleafcommerce.core.catalog.domain.Category category = mock(
+        org.broadleafcommerce.core.catalog.domain.Category.class);
+    when(category.getName()).thenReturn("Name");
+    when(category.getChildCategoryXrefs()).thenReturn(categoryXrefList);
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(category);
+    Entity entity = mock(Entity.class);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property("category.id", "42"));
+
+    // Act
+    childCategoriesCustomPersistenceHandler.validateRecursiveRelationship(entity);
+
+    // Assert
+    verify(categoryDao, atLeast(1)).readCategoryById(eq(42L));
+    verify(category).getChildCategoryXrefs();
+    verify(category, atLeast(1)).getName();
+    verify(categoryXrefImpl).getSubCategory();
+    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
+  }
+
+  /**
+   * Test {@link ChildCategoriesCustomPersistenceHandler#validateRecursiveRelationship(Entity)}.
+   * <ul>
+   *   <li>Given {@link Property#Property()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#validateRecursiveRelationship(Entity)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.validateRecursiveRelationship(Entity)"})
+  public void testValidateRecursiveRelationship_givenProperty() throws ValidationException {
+    // Arrange
     Entity entity = mock(Entity.class);
     when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property());
 
@@ -699,92 +583,144 @@ public class ChildCategoriesCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ChildCategoriesCustomPersistenceHandler#validateChildCategories(Entity, Category, Long, StringBuilder)}.
-   * <p>
-   * Method under test:
-   * {@link ChildCategoriesCustomPersistenceHandler#validateChildCategories(Entity, Category, Long, StringBuilder)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testValidateChildCategories() throws ValidationException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1237 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler2 = new ChildCategoriesCustomPersistenceHandler();
-    Entity entity = new Entity();
-    CategoryImpl category = new CategoryImpl();
-
-    // Act
-    childCategoriesCustomPersistenceHandler2.validateChildCategories(entity, category, 1L, new StringBuilder("foo"));
-  }
-
-  /**
-   * Test
-   * {@link ChildCategoriesCustomPersistenceHandler#addCategoryLink(StringBuilder, String)}.
-   * <p>
-   * Method under test:
-   * {@link ChildCategoriesCustomPersistenceHandler#addCategoryLink(StringBuilder, String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddCategoryLink() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service.handler;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1158 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler2 = new ChildCategoriesCustomPersistenceHandler();
-
-    // Act
-    childCategoriesCustomPersistenceHandler2.addCategoryLink(new StringBuilder("foo"), "Category Name");
-  }
-
-  /**
-   * Test
-   * {@link ChildCategoriesCustomPersistenceHandler#addCategoryLink(StringBuilder, String)}.
+   * Test {@link ChildCategoriesCustomPersistenceHandler#validateRecursiveRelationship(Entity)}.
    * <ul>
-   *   <li>Then {@link StringBuilder#StringBuilder(String)} with {@code foo}
-   * toString is {@code fooCategory Name ->}.</li>
+   *   <li>Then calls {@link org.broadleafcommerce.core.catalog.domain.Category#getChildCategoryXrefs()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ChildCategoriesCustomPersistenceHandler#addCategoryLink(StringBuilder, String)}
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#validateRecursiveRelationship(Entity)}
    */
   @Test
-  public void testAddCategoryLink_thenStringBuilderWithFooToStringIsFooCategoryName() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.validateRecursiveRelationship(Entity)"})
+  public void testValidateRecursiveRelationship_thenCallsGetChildCategoryXrefs() throws ValidationException {
     // Arrange
-    ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler = new ChildCategoriesCustomPersistenceHandler();
+    org.broadleafcommerce.core.catalog.domain.Category category = mock(
+        org.broadleafcommerce.core.catalog.domain.Category.class);
+    when(category.getName()).thenReturn("Name");
+    when(category.getChildCategoryXrefs()).thenReturn(new ArrayList<>());
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(category);
+    Entity entity = mock(Entity.class);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property("category.id", "42"));
+
+    // Act
+    childCategoriesCustomPersistenceHandler.validateRecursiveRelationship(entity);
+
+    // Assert
+    verify(categoryDao, atLeast(1)).readCategoryById(eq(42L));
+    verify(category).getChildCategoryXrefs();
+    verify(category, atLeast(1)).getName();
+    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
+  }
+
+  /**
+   * Test {@link ChildCategoriesCustomPersistenceHandler#validateRecursiveRelationship(Entity)}.
+   * <ul>
+   *   <li>Then calls {@link CategoryImpl#getChildCategoryXrefs()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#validateRecursiveRelationship(Entity)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.validateRecursiveRelationship(Entity)"})
+  public void testValidateRecursiveRelationship_thenCallsGetChildCategoryXrefs2() throws ValidationException {
+    // Arrange
+    CategoryImpl categoryImpl = mock(CategoryImpl.class);
+    when(categoryImpl.getId()).thenReturn(1L);
+    when(categoryImpl.getName()).thenReturn("Name");
+    when(categoryImpl.getChildCategoryXrefs()).thenReturn(new ArrayList<>());
+    CategoryXrefImpl categoryXrefImpl = mock(CategoryXrefImpl.class);
+    when(categoryXrefImpl.getSubCategory()).thenReturn(categoryImpl);
+
+    ArrayList<CategoryXref> categoryXrefList = new ArrayList<>();
+    categoryXrefList.add(categoryXrefImpl);
+    org.broadleafcommerce.core.catalog.domain.Category category = mock(
+        org.broadleafcommerce.core.catalog.domain.Category.class);
+    when(category.getName()).thenReturn("Name");
+    when(category.getChildCategoryXrefs()).thenReturn(categoryXrefList);
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(category);
+    when(sandBoxHelper.getOriginalId(Mockito.<Object>any())).thenReturn(1L);
+    Entity entity = mock(Entity.class);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property("category.id", "42"));
+
+    // Act
+    childCategoriesCustomPersistenceHandler.validateRecursiveRelationship(entity);
+
+    // Assert
+    verify(sandBoxHelper).getOriginalId(isA(Object.class));
+    verify(categoryDao, atLeast(1)).readCategoryById(eq(42L));
+    verify(category).getChildCategoryXrefs();
+    verify(category, atLeast(1)).getName();
+    verify(categoryImpl).getChildCategoryXrefs();
+    verify(categoryImpl).getId();
+    verify(categoryImpl).getName();
+    verify(categoryXrefImpl).getSubCategory();
+    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
+  }
+
+  /**
+   * Test {@link ChildCategoriesCustomPersistenceHandler#validateRecursiveRelationship(Entity)}.
+   * <ul>
+   *   <li>Then calls {@link Property#getValue()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#validateRecursiveRelationship(Entity)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.validateRecursiveRelationship(Entity)"})
+  public void testValidateRecursiveRelationship_thenCallsGetValue() throws ValidationException {
+    // Arrange
+    CategoryImpl categoryImpl = mock(CategoryImpl.class);
+    when(categoryImpl.getId()).thenReturn(1L);
+    when(categoryImpl.getName()).thenReturn("Name");
+    when(categoryImpl.getChildCategoryXrefs()).thenReturn(new ArrayList<>());
+    CategoryXrefImpl categoryXrefImpl = mock(CategoryXrefImpl.class);
+    when(categoryXrefImpl.getSubCategory()).thenReturn(categoryImpl);
+
+    ArrayList<CategoryXref> categoryXrefList = new ArrayList<>();
+    categoryXrefList.add(categoryXrefImpl);
+    org.broadleafcommerce.core.catalog.domain.Category category = mock(
+        org.broadleafcommerce.core.catalog.domain.Category.class);
+    when(category.getName()).thenReturn("Name");
+    when(category.getChildCategoryXrefs()).thenReturn(categoryXrefList);
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(category);
+    when(sandBoxHelper.getOriginalId(Mockito.<Object>any())).thenReturn(1L);
+    Property property = mock(Property.class);
+    when(property.getValue()).thenReturn("42");
+    Entity entity = mock(Entity.class);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
+
+    // Act
+    childCategoriesCustomPersistenceHandler.validateRecursiveRelationship(entity);
+
+    // Assert
+    verify(sandBoxHelper).getOriginalId(isA(Object.class));
+    verify(categoryDao, atLeast(1)).readCategoryById(eq(42L));
+    verify(category).getChildCategoryXrefs();
+    verify(category, atLeast(1)).getName();
+    verify(categoryImpl).getChildCategoryXrefs();
+    verify(categoryImpl).getId();
+    verify(categoryImpl).getName();
+    verify(categoryXrefImpl).getSubCategory();
+    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
+    verify(property, atLeast(1)).getValue();
+  }
+
+  /**
+   * Test {@link ChildCategoriesCustomPersistenceHandler#addCategoryLink(StringBuilder, String)}.
+   * <ul>
+   *   <li>Then {@link StringBuilder#StringBuilder(String)} with {@code foo} toString is {@code fooCategory Name ->}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#addCategoryLink(StringBuilder, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.addCategoryLink(StringBuilder, String)"})
+  public void testAddCategoryLink_thenStringBuilderWithFooToStringIsFooCategoryName() {
+    // Arrange
     StringBuilder productLinks = new StringBuilder("foo");
 
     // Act

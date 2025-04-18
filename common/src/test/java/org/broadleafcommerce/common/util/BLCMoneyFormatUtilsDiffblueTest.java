@@ -18,36 +18,17 @@
 package org.broadleafcommerce.common.util;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.BiFunction;
 import org.broadleafcommerce.common.money.Money;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class BLCMoneyFormatUtilsDiffblueTest {
   /**
-   * Test {@link BLCMoneyFormatUtils#formatPrice(Money, Map)} with {@code price},
-   * {@code localeToChange}.
-   * <ul>
-   *   <li>Given {@code ThreadLocalManager.notify.orphans}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link BLCMoneyFormatUtils#formatPrice(Money, Map)}
-   */
-  @Test
-  public void testFormatPriceWithPriceLocaleToChange_givenThreadLocalManagerNotifyOrphans() {
-    // Arrange
-    HashMap<String, String> localeToChange = new HashMap<>();
-    localeToChange.computeIfPresent("ThreadLocalManager.notify.orphans", mock(BiFunction.class));
-
-    // Act and Assert
-    assertEquals("£0.00", BLCMoneyFormatUtils.formatPrice(Money.ZERO, localeToChange));
-  }
-
-  /**
-   * Test {@link BLCMoneyFormatUtils#formatPrice(Money, Map)} with {@code price},
-   * {@code localeToChange}.
+   * Test {@link BLCMoneyFormatUtils#formatPrice(Money, Map)} with {@code price}, {@code localeToChange}.
    * <ul>
    *   <li>When {@link Money#Money()}.</li>
    *   <li>Then return {@code £0.00}.</li>
@@ -56,6 +37,8 @@ public class BLCMoneyFormatUtilsDiffblueTest {
    * Method under test: {@link BLCMoneyFormatUtils#formatPrice(Money, Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.String BLCMoneyFormatUtils.formatPrice(Money, Map)"})
   public void testFormatPriceWithPriceLocaleToChange_whenMoney_thenReturn000() {
     // Arrange
     Money price = new Money();
@@ -65,8 +48,7 @@ public class BLCMoneyFormatUtilsDiffblueTest {
   }
 
   /**
-   * Test {@link BLCMoneyFormatUtils#formatPrice(Money, Map)} with {@code price},
-   * {@code localeToChange}.
+   * Test {@link BLCMoneyFormatUtils#formatPrice(Money, Map)} with {@code price}, {@code localeToChange}.
    * <ul>
    *   <li>When {@code null}.</li>
    *   <li>Then return {@code Not Available}.</li>
@@ -75,14 +57,15 @@ public class BLCMoneyFormatUtilsDiffblueTest {
    * Method under test: {@link BLCMoneyFormatUtils#formatPrice(Money, Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.String BLCMoneyFormatUtils.formatPrice(Money, Map)"})
   public void testFormatPriceWithPriceLocaleToChange_whenNull_thenReturnNotAvailable() {
     // Arrange, Act and Assert
     assertEquals("Not Available", BLCMoneyFormatUtils.formatPrice(null, new HashMap<>()));
   }
 
   /**
-   * Test {@link BLCMoneyFormatUtils#formatPrice(Money, Map)} with {@code price},
-   * {@code localeToChange}.
+   * Test {@link BLCMoneyFormatUtils#formatPrice(Money, Map)} with {@code price}, {@code localeToChange}.
    * <ul>
    *   <li>When {@link Money#ZERO}.</li>
    *   <li>Then return {@code £0.00}.</li>
@@ -91,6 +74,8 @@ public class BLCMoneyFormatUtilsDiffblueTest {
    * Method under test: {@link BLCMoneyFormatUtils#formatPrice(Money, Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.String BLCMoneyFormatUtils.formatPrice(Money, Map)"})
   public void testFormatPriceWithPriceLocaleToChange_whenZero_thenReturn000() {
     // Arrange, Act and Assert
     assertEquals("£0.00", BLCMoneyFormatUtils.formatPrice(Money.ZERO, new HashMap<>()));
@@ -106,6 +91,8 @@ public class BLCMoneyFormatUtilsDiffblueTest {
    * Method under test: {@link BLCMoneyFormatUtils#formatPrice(Money)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.String BLCMoneyFormatUtils.formatPrice(Money)"})
   public void testFormatPriceWithPrice_whenMoney_thenReturn000() {
     // Arrange, Act and Assert
     assertEquals("£0.00", BLCMoneyFormatUtils.formatPrice(new Money()));
@@ -121,6 +108,8 @@ public class BLCMoneyFormatUtilsDiffblueTest {
    * Method under test: {@link BLCMoneyFormatUtils#formatPrice(Money)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.String BLCMoneyFormatUtils.formatPrice(Money)"})
   public void testFormatPriceWithPrice_whenNull_thenReturnNotAvailable() {
     // Arrange, Act and Assert
     assertEquals("Not Available", BLCMoneyFormatUtils.formatPrice(null));
@@ -136,6 +125,8 @@ public class BLCMoneyFormatUtilsDiffblueTest {
    * Method under test: {@link BLCMoneyFormatUtils#formatPrice(Money)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.String BLCMoneyFormatUtils.formatPrice(Money)"})
   public void testFormatPriceWithPrice_whenZero_thenReturn000() {
     // Arrange, Act and Assert
     assertEquals("£0.00", BLCMoneyFormatUtils.formatPrice(Money.ZERO));

@@ -1,60 +1,92 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework Web
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.web.order;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import org.broadleafcommerce.common.audit.Auditable;
+import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
+import org.broadleafcommerce.common.locale.domain.LocaleImpl;
+import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
-import org.junit.jupiter.api.Disabled;
+import org.broadleafcommerce.core.order.domain.OrderImpl;
+import org.broadleafcommerce.core.order.service.OrderService;
+import org.broadleafcommerce.core.order.service.type.OrderStatus;
+import org.broadleafcommerce.profile.core.domain.CustomerImpl;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml",
-    "/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 class DatabaseOrderLockManagerDiffblueTest {
-  @Autowired
+  @InjectMocks
   private DatabaseOrderLockManager databaseOrderLockManager;
+
+  @Mock
+  private OrderService orderService;
 
   /**
    * Test {@link DatabaseOrderLockManager#acquireLock(Order)}.
+   * <ul>
+   *   <li>Given {@link OrderService} {@link OrderService#acquireLock(Order)} return {@code true}.</li>
+   *   <li>Then return {@link OrderImpl} (default constructor).</li>
+   * </ul>
    * <p>
    * Method under test: {@link DatabaseOrderLockManager#acquireLock(Order)}
    */
   @Test
-  @DisplayName("Test acquireLock(Order)")
-  @Disabled("TODO: Complete this test")
-  void testAcquireLock() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.order;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass7457 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.order.DatabaseOrderLockManager databaseOrderLockManager;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @DisplayName("Test acquireLock(Order); given OrderService acquireLock(Order) return 'true'; then return OrderImpl (default constructor)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Object DatabaseOrderLockManager.acquireLock(Order)"})
+  void testAcquireLock_givenOrderServiceAcquireLockReturnTrue_thenReturnOrderImpl() {
+    // Arrange
+    when(orderService.acquireLock(Mockito.<Order>any())).thenReturn(true);
+    OrderImpl order = new OrderImpl();
 
-    // Arrange and Act
-    databaseOrderLockManager.acquireLock(new NullOrderImpl());
+    // Act
+    Object actualAcquireLockResult = databaseOrderLockManager.acquireLock(order);
+
+    // Assert
+    verify(orderService).acquireLock(isA(Order.class));
+    assertSame(order, actualAcquireLockResult);
   }
 
   /**
    * Test {@link DatabaseOrderLockManager#acquireLock(Order)}.
    * <ul>
+   *   <li>Given {@link OrderService}.</li>
    *   <li>When {@link NullOrderImpl} (default constructor).</li>
    *   <li>Then return {@link NullOrderImpl} (default constructor).</li>
    * </ul>
@@ -62,12 +94,11 @@ class DatabaseOrderLockManagerDiffblueTest {
    * Method under test: {@link DatabaseOrderLockManager#acquireLock(Order)}
    */
   @Test
-  @DisplayName("Test acquireLock(Order); when NullOrderImpl (default constructor); then return NullOrderImpl (default constructor)")
-  void testAcquireLock_whenNullOrderImpl_thenReturnNullOrderImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @DisplayName("Test acquireLock(Order); given OrderService; when NullOrderImpl (default constructor); then return NullOrderImpl (default constructor)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Object DatabaseOrderLockManager.acquireLock(Order)"})
+  void testAcquireLock_givenOrderService_whenNullOrderImpl_thenReturnNullOrderImpl() {
     // Arrange
-    DatabaseOrderLockManager databaseOrderLockManager = new DatabaseOrderLockManager();
     NullOrderImpl order = new NullOrderImpl();
 
     // Act and Assert
@@ -77,27 +108,7 @@ class DatabaseOrderLockManagerDiffblueTest {
   /**
    * Test {@link DatabaseOrderLockManager#acquireLock(Order)}.
    * <ul>
-   *   <li>When {@link NullOrderImpl}.</li>
-   *   <li>Then return {@link NullOrderImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link DatabaseOrderLockManager#acquireLock(Order)}
-   */
-  @Test
-  @DisplayName("Test acquireLock(Order); when NullOrderImpl; then return NullOrderImpl")
-  void testAcquireLock_whenNullOrderImpl_thenReturnNullOrderImpl2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    NullOrderImpl order = mock(NullOrderImpl.class);
-
-    // Act and Assert
-    assertSame(order, (new DatabaseOrderLockManager()).acquireLock(order));
-  }
-
-  /**
-   * Test {@link DatabaseOrderLockManager#acquireLock(Order)}.
-   * <ul>
+   *   <li>Given {@link OrderService}.</li>
    *   <li>When {@code null}.</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
@@ -105,43 +116,101 @@ class DatabaseOrderLockManagerDiffblueTest {
    * Method under test: {@link DatabaseOrderLockManager#acquireLock(Order)}
    */
   @Test
-  @DisplayName("Test acquireLock(Order); when 'null'; then return 'null'")
-  void testAcquireLock_whenNull_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @DisplayName("Test acquireLock(Order); given OrderService; when 'null'; then return 'null'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Object DatabaseOrderLockManager.acquireLock(Order)"})
+  void testAcquireLock_givenOrderService_whenNull_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull((new DatabaseOrderLockManager()).acquireLock(null));
+    assertNull(databaseOrderLockManager.acquireLock(null));
   }
 
   /**
    * Test {@link DatabaseOrderLockManager#acquireLockIfAvailable(Order)}.
+   * <ul>
+   *   <li>Given {@link OrderService} {@link OrderService#acquireLock(Order)} return {@code false}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link DatabaseOrderLockManager#acquireLockIfAvailable(Order)}
+   * Method under test: {@link DatabaseOrderLockManager#acquireLockIfAvailable(Order)}
    */
   @Test
-  @DisplayName("Test acquireLockIfAvailable(Order)")
-  @Disabled("TODO: Complete this test")
-  void testAcquireLockIfAvailable() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.order;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass7469 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.order.DatabaseOrderLockManager databaseOrderLockManager;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @DisplayName("Test acquireLockIfAvailable(Order); given OrderService acquireLock(Order) return 'false'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Object DatabaseOrderLockManager.acquireLockIfAvailable(Order)"})
+  void testAcquireLockIfAvailable_givenOrderServiceAcquireLockReturnFalse() {
+    // Arrange
+    when(orderService.acquireLock(Mockito.<Order>any())).thenReturn(false);
 
-    // Arrange and Act
-    databaseOrderLockManager.acquireLockIfAvailable(new NullOrderImpl());
+    // Act
+    Object actualAcquireLockIfAvailableResult = databaseOrderLockManager.acquireLockIfAvailable(new OrderImpl());
+
+    // Assert
+    verify(orderService).acquireLock(isA(Order.class));
+    assertNull(actualAcquireLockIfAvailableResult);
+  }
+
+  /**
+   * Test {@link DatabaseOrderLockManager#acquireLockIfAvailable(Order)}.
+   * <ul>
+   *   <li>Given {@link OrderService}.</li>
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DatabaseOrderLockManager#acquireLockIfAvailable(Order)}
+   */
+  @Test
+  @DisplayName("Test acquireLockIfAvailable(Order); given OrderService; when 'null'; then return 'null'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Object DatabaseOrderLockManager.acquireLockIfAvailable(Order)"})
+  void testAcquireLockIfAvailable_givenOrderService_whenNull_thenReturnNull() {
+    // Arrange, Act and Assert
+    assertNull(databaseOrderLockManager.acquireLockIfAvailable(null));
+  }
+
+  /**
+   * Test {@link DatabaseOrderLockManager#acquireLockIfAvailable(Order)}.
+   * <ul>
+   *   <li>Then return {@link OrderImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DatabaseOrderLockManager#acquireLockIfAvailable(Order)}
+   */
+  @Test
+  @DisplayName("Test acquireLockIfAvailable(Order); then return OrderImpl (default constructor)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Object DatabaseOrderLockManager.acquireLockIfAvailable(Order)"})
+  void testAcquireLockIfAvailable_thenReturnOrderImpl() {
+    // Arrange
+    when(orderService.acquireLock(Mockito.<Order>any())).thenReturn(true);
+    OrderImpl order = new OrderImpl();
+
+    // Act
+    Object actualAcquireLockIfAvailableResult = databaseOrderLockManager.acquireLockIfAvailable(order);
+
+    // Assert
+    verify(orderService).acquireLock(isA(Order.class));
+    assertSame(order, actualAcquireLockIfAvailableResult);
+  }
+
+  /**
+   * Test {@link DatabaseOrderLockManager#acquireLockIfAvailable(Order)}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DatabaseOrderLockManager#acquireLockIfAvailable(Order)}
+   */
+  @Test
+  @DisplayName("Test acquireLockIfAvailable(Order); then throw RuntimeException")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Object DatabaseOrderLockManager.acquireLockIfAvailable(Order)"})
+  void testAcquireLockIfAvailable_thenThrowRuntimeException() {
+    // Arrange
+    when(orderService.acquireLock(Mockito.<Order>any())).thenThrow(new RuntimeException("foo"));
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> databaseOrderLockManager.acquireLockIfAvailable(new OrderImpl()));
+    verify(orderService).acquireLock(isA(Order.class));
   }
 
   /**
@@ -151,16 +220,14 @@ class DatabaseOrderLockManagerDiffblueTest {
    *   <li>Then return {@link NullOrderImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DatabaseOrderLockManager#acquireLockIfAvailable(Order)}
+   * Method under test: {@link DatabaseOrderLockManager#acquireLockIfAvailable(Order)}
    */
   @Test
   @DisplayName("Test acquireLockIfAvailable(Order); when NullOrderImpl (default constructor); then return NullOrderImpl (default constructor)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Object DatabaseOrderLockManager.acquireLockIfAvailable(Order)"})
   void testAcquireLockIfAvailable_whenNullOrderImpl_thenReturnNullOrderImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    DatabaseOrderLockManager databaseOrderLockManager = new DatabaseOrderLockManager();
     NullOrderImpl order = new NullOrderImpl();
 
     // Act and Assert
@@ -168,136 +235,57 @@ class DatabaseOrderLockManagerDiffblueTest {
   }
 
   /**
-   * Test {@link DatabaseOrderLockManager#acquireLockIfAvailable(Order)}.
-   * <ul>
-   *   <li>When {@link NullOrderImpl}.</li>
-   *   <li>Then return {@link NullOrderImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link DatabaseOrderLockManager#acquireLockIfAvailable(Order)}
-   */
-  @Test
-  @DisplayName("Test acquireLockIfAvailable(Order); when NullOrderImpl; then return NullOrderImpl")
-  void testAcquireLockIfAvailable_whenNullOrderImpl_thenReturnNullOrderImpl2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    NullOrderImpl order = mock(NullOrderImpl.class);
-
-    // Act and Assert
-    assertSame(order, (new DatabaseOrderLockManager()).acquireLockIfAvailable(order));
-  }
-
-  /**
-   * Test {@link DatabaseOrderLockManager#acquireLockIfAvailable(Order)}.
-   * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link DatabaseOrderLockManager#acquireLockIfAvailable(Order)}
-   */
-  @Test
-  @DisplayName("Test acquireLockIfAvailable(Order); when 'null'; then return 'null'")
-  void testAcquireLockIfAvailable_whenNull_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertNull((new DatabaseOrderLockManager()).acquireLockIfAvailable(null));
-  }
-
-  /**
    * Test {@link DatabaseOrderLockManager#releaseLock(Object)}.
+   * <ul>
+   *   <li>Given {@link OrderService} {@link OrderService#releaseLock(Order)} return {@code true}.</li>
+   *   <li>Then calls {@link OrderService#releaseLock(Order)}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link DatabaseOrderLockManager#releaseLock(Object)}
    */
   @Test
-  @DisplayName("Test releaseLock(Object)")
-  @Disabled("TODO: Complete this test")
-  void testReleaseLock() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.order;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass7483 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.order.DatabaseOrderLockManager databaseOrderLockManager;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @DisplayName("Test releaseLock(Object); given OrderService releaseLock(Order) return 'true'; then calls releaseLock(Order)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void DatabaseOrderLockManager.releaseLock(Object)"})
+  void testReleaseLock_givenOrderServiceReleaseLockReturnTrue_thenCallsReleaseLock() {
+    // Arrange
+    when(orderService.releaseLock(Mockito.<Order>any())).thenReturn(true);
 
-    // Arrange and Act
-    databaseOrderLockManager.releaseLock("Lock Object");
-  }
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
 
-  /**
-   * Test {@link DatabaseOrderLockManager#getDatabaseLockPollingIntervalMs()}.
-   * <p>
-   * Method under test:
-   * {@link DatabaseOrderLockManager#getDatabaseLockPollingIntervalMs()}
-   */
-  @Test
-  @DisplayName("Test getDatabaseLockPollingIntervalMs()")
-  @Disabled("TODO: Complete this test")
-  void testGetDatabaseLockPollingIntervalMs() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.order;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass7482 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.order.DatabaseOrderLockManager databaseOrderLockManager;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    OrderImpl orderImpl = new OrderImpl();
+    orderImpl.setAdditionalOfferInformation(new HashMap<>());
+    orderImpl.setAuditable(auditable);
+    orderImpl.setCandidateOrderOffers(new ArrayList<>());
+    orderImpl.setCurrency(new BroadleafCurrencyImpl());
+    orderImpl.setCustomer(new CustomerImpl());
+    orderImpl.setEmailAddress("42 Main St");
+    orderImpl.setFulfillmentGroups(new ArrayList<>());
+    orderImpl.setId(1L);
+    orderImpl.setLocale(new LocaleImpl());
+    orderImpl.setName("Name");
+    orderImpl.setOrderAttributes(new HashMap<>());
+    orderImpl.setOrderItems(new ArrayList<>());
+    orderImpl.setOrderMessages(new ArrayList<>());
+    orderImpl.setOrderNumber("42");
+    orderImpl.setPayments(new ArrayList<>());
+    orderImpl.setStatus(new OrderStatus("Type", "Friendly Type"));
+    orderImpl.setSubTotal(new Money());
+    orderImpl.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    orderImpl.setTaxOverride(true);
+    orderImpl.setTotal(new Money());
+    orderImpl.setTotalFulfillmentCharges(new Money());
+    orderImpl.setTotalTax(new Money());
 
-    // Arrange and Act
-    databaseOrderLockManager.getDatabaseLockPollingIntervalMs();
-  }
+    // Act
+    databaseOrderLockManager.releaseLock(orderImpl);
 
-  /**
-   * Test {@link DatabaseOrderLockManager#getDatabaseLockAcquisitionNumRetries()}.
-   * <p>
-   * Method under test:
-   * {@link DatabaseOrderLockManager#getDatabaseLockAcquisitionNumRetries()}
-   */
-  @Test
-  @DisplayName("Test getDatabaseLockAcquisitionNumRetries()")
-  @Disabled("TODO: Complete this test")
-  void testGetDatabaseLockAcquisitionNumRetries() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.order;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass7481 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.order.DatabaseOrderLockManager databaseOrderLockManager;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    databaseOrderLockManager.getDatabaseLockAcquisitionNumRetries();
+    // Assert
+    verify(orderService).releaseLock(isA(Order.class));
   }
 
   /**
@@ -311,6 +299,8 @@ class DatabaseOrderLockManagerDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void DatabaseOrderLockManager.<init>()", "boolean DatabaseOrderLockManager.isActive()"})
   void testGettersAndSetters() {
     // Arrange, Act and Assert
     assertTrue((new DatabaseOrderLockManager()).isActive());

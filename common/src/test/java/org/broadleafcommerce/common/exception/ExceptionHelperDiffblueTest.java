@@ -21,9 +21,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.lang.reflect.UndeclaredThrowableException;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class ExceptionHelperDiffblueTest {
   /**
@@ -35,6 +37,8 @@ public class ExceptionHelperDiffblueTest {
    * Method under test: {@link ExceptionHelper#refineException(Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"RuntimeException ExceptionHelper.refineException(Throwable)"})
   public void testRefineExceptionWithE_givenThrowableInitCauseNull() {
     // Arrange
     Throwable throwable = new Throwable();
@@ -61,6 +65,8 @@ public class ExceptionHelperDiffblueTest {
    * Method under test: {@link ExceptionHelper#refineException(Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"RuntimeException ExceptionHelper.refineException(Throwable)"})
   public void testRefineExceptionWithE_thenReturnLocalizedMessageIsFoo() {
     // Arrange and Act
     RuntimeException actualRefineExceptionResult = ExceptionHelper.refineException(new IllegalStateException("foo"));
@@ -81,6 +87,8 @@ public class ExceptionHelperDiffblueTest {
    * Method under test: {@link ExceptionHelper#refineException(Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"RuntimeException ExceptionHelper.refineException(Throwable)"})
   public void testRefineExceptionWithE_whenThrowable() {
     // Arrange
     Throwable e = new Throwable();
@@ -95,13 +103,13 @@ public class ExceptionHelperDiffblueTest {
   }
 
   /**
-   * Test {@link ExceptionHelper#refineException(Class, Class, Throwable)} with
-   * {@code refineType}, {@code wrapType}, {@code e}.
+   * Test {@link ExceptionHelper#refineException(Class, Class, Throwable)} with {@code refineType}, {@code wrapType}, {@code e}.
    * <p>
-   * Method under test:
-   * {@link ExceptionHelper#refineException(Class, Class, Throwable)}
+   * Method under test: {@link ExceptionHelper#refineException(Class, Class, Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"RuntimeException ExceptionHelper.refineException(Class, Class, Throwable)"})
   public void testRefineExceptionWithRefineTypeWrapTypeE() {
     // Arrange
     Class<Throwable> refineType = Throwable.class;
@@ -118,13 +126,13 @@ public class ExceptionHelperDiffblueTest {
   }
 
   /**
-   * Test {@link ExceptionHelper#refineException(Class, Class, Throwable)} with
-   * {@code refineType}, {@code wrapType}, {@code e}.
+   * Test {@link ExceptionHelper#refineException(Class, Class, Throwable)} with {@code refineType}, {@code wrapType}, {@code e}.
    * <p>
-   * Method under test:
-   * {@link ExceptionHelper#refineException(Class, Class, Throwable)}
+   * Method under test: {@link ExceptionHelper#refineException(Class, Class, Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"RuntimeException ExceptionHelper.refineException(Class, Class, Throwable)"})
   public void testRefineExceptionWithRefineTypeWrapTypeE2() {
     // Arrange
     Class<RuntimeException> refineType = RuntimeException.class;
@@ -141,16 +149,16 @@ public class ExceptionHelperDiffblueTest {
   }
 
   /**
-   * Test {@link ExceptionHelper#refineException(Class, Class, Throwable)} with
-   * {@code refineType}, {@code wrapType}, {@code e}.
+   * Test {@link ExceptionHelper#refineException(Class, Class, Throwable)} with {@code refineType}, {@code wrapType}, {@code e}.
    * <ul>
    *   <li>Then return LocalizedMessage is {@code foo}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ExceptionHelper#refineException(Class, Class, Throwable)}
+   * Method under test: {@link ExceptionHelper#refineException(Class, Class, Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"RuntimeException ExceptionHelper.refineException(Class, Class, Throwable)"})
   public void testRefineExceptionWithRefineTypeWrapTypeE_thenReturnLocalizedMessageIsFoo() {
     // Arrange
     Class<Throwable> refineType = Throwable.class;
@@ -168,57 +176,16 @@ public class ExceptionHelperDiffblueTest {
   }
 
   /**
-   * Test {@link ExceptionHelper#refineException(Class, Class, Throwable)} with
-   * {@code refineType}, {@code wrapType}, {@code e}.
+   * Test {@link ExceptionHelper#refineException(Class, Class, Throwable)} with {@code refineType}, {@code wrapType}, {@code e}.
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.</li>
+   *   <li>When {@link Throwable#Throwable(String, Throwable)} with {@code foo} and {@link Throwable#Throwable()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ExceptionHelper#refineException(Class, Class, Throwable)}
+   * Method under test: {@link ExceptionHelper#refineException(Class, Class, Throwable)}
    */
   @Test
-  public void testRefineExceptionWithRefineTypeWrapTypeE_thenThrowRuntimeException() {
-    // Arrange
-    Class<Throwable> refineType = Throwable.class;
-    Class<ExceptionHelper> wrapType = ExceptionHelper.class;
-
-    // Act and Assert
-    assertThrows(RuntimeException.class, () -> ExceptionHelper.refineException(refineType, wrapType, new Throwable()));
-  }
-
-  /**
-   * Test {@link ExceptionHelper#refineException(Class, Class, Throwable)} with
-   * {@code refineType}, {@code wrapType}, {@code e}.
-   * <ul>
-   *   <li>Then throw {@link RuntimeException}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link ExceptionHelper#refineException(Class, Class, Throwable)}
-   */
-  @Test
-  public void testRefineExceptionWithRefineTypeWrapTypeE_thenThrowRuntimeException2() {
-    // Arrange
-    Class<RuntimeException> refineType = RuntimeException.class;
-    Class<ExceptionHelper> wrapType = ExceptionHelper.class;
-
-    // Act and Assert
-    assertThrows(RuntimeException.class, () -> ExceptionHelper.refineException(refineType, wrapType, new Throwable()));
-  }
-
-  /**
-   * Test {@link ExceptionHelper#refineException(Class, Class, Throwable)} with
-   * {@code refineType}, {@code wrapType}, {@code e}.
-   * <ul>
-   *   <li>When {@link Throwable#Throwable(String, Throwable)} with {@code foo} and
-   * {@link Throwable#Throwable()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link ExceptionHelper#refineException(Class, Class, Throwable)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"RuntimeException ExceptionHelper.refineException(Class, Class, Throwable)"})
   public void testRefineExceptionWithRefineTypeWrapTypeE_whenThrowableWithFooAndThrowable() {
     // Arrange
     Class<RuntimeException> refineType = RuntimeException.class;
@@ -236,35 +203,13 @@ public class ExceptionHelperDiffblueTest {
   }
 
   /**
-   * Test {@link ExceptionHelper#refineException(Class, Class, Throwable)} with
-   * {@code refineType}, {@code wrapType}, {@code e}.
-   * <ul>
-   *   <li>When {@link Throwable#Throwable(String, Throwable)} with {@code foo} and
-   * {@link Throwable#Throwable()}.</li>
-   * </ul>
+   * Test {@link ExceptionHelper#refineException(Class, Class, String, Throwable)} with {@code refineType}, {@code wrapType}, {@code message}, {@code e}.
    * <p>
-   * Method under test:
-   * {@link ExceptionHelper#refineException(Class, Class, Throwable)}
+   * Method under test: {@link ExceptionHelper#refineException(Class, Class, String, Throwable)}
    */
   @Test
-  public void testRefineExceptionWithRefineTypeWrapTypeE_whenThrowableWithFooAndThrowable2() {
-    // Arrange
-    Class<RuntimeException> refineType = RuntimeException.class;
-    Class<ExceptionHelper> wrapType = ExceptionHelper.class;
-
-    // Act and Assert
-    assertThrows(RuntimeException.class,
-        () -> ExceptionHelper.refineException(refineType, wrapType, new Throwable("foo", new Throwable())));
-  }
-
-  /**
-   * Test {@link ExceptionHelper#refineException(Class, Class, String, Throwable)}
-   * with {@code refineType}, {@code wrapType}, {@code message}, {@code e}.
-   * <p>
-   * Method under test:
-   * {@link ExceptionHelper#refineException(Class, Class, String, Throwable)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"RuntimeException ExceptionHelper.refineException(Class, Class, String, Throwable)"})
   public void testRefineExceptionWithRefineTypeWrapTypeMessageE() {
     // Arrange
     Class<Throwable> refineType = Throwable.class;
@@ -282,13 +227,13 @@ public class ExceptionHelperDiffblueTest {
   }
 
   /**
-   * Test {@link ExceptionHelper#refineException(Class, Class, String, Throwable)}
-   * with {@code refineType}, {@code wrapType}, {@code message}, {@code e}.
+   * Test {@link ExceptionHelper#refineException(Class, Class, String, Throwable)} with {@code refineType}, {@code wrapType}, {@code message}, {@code e}.
    * <p>
-   * Method under test:
-   * {@link ExceptionHelper#refineException(Class, Class, String, Throwable)}
+   * Method under test: {@link ExceptionHelper#refineException(Class, Class, String, Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"RuntimeException ExceptionHelper.refineException(Class, Class, String, Throwable)"})
   public void testRefineExceptionWithRefineTypeWrapTypeMessageE2() {
     // Arrange
     Class<RuntimeException> refineType = RuntimeException.class;
@@ -306,13 +251,13 @@ public class ExceptionHelperDiffblueTest {
   }
 
   /**
-   * Test {@link ExceptionHelper#refineException(Class, Class, String, Throwable)}
-   * with {@code refineType}, {@code wrapType}, {@code message}, {@code e}.
+   * Test {@link ExceptionHelper#refineException(Class, Class, String, Throwable)} with {@code refineType}, {@code wrapType}, {@code message}, {@code e}.
    * <p>
-   * Method under test:
-   * {@link ExceptionHelper#refineException(Class, Class, String, Throwable)}
+   * Method under test: {@link ExceptionHelper#refineException(Class, Class, String, Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"RuntimeException ExceptionHelper.refineException(Class, Class, String, Throwable)"})
   public void testRefineExceptionWithRefineTypeWrapTypeMessageE3() {
     // Arrange
     Class<Throwable> refineType = Throwable.class;
@@ -324,13 +269,13 @@ public class ExceptionHelperDiffblueTest {
   }
 
   /**
-   * Test {@link ExceptionHelper#refineException(Class, Class, String, Throwable)}
-   * with {@code refineType}, {@code wrapType}, {@code message}, {@code e}.
+   * Test {@link ExceptionHelper#refineException(Class, Class, String, Throwable)} with {@code refineType}, {@code wrapType}, {@code message}, {@code e}.
    * <p>
-   * Method under test:
-   * {@link ExceptionHelper#refineException(Class, Class, String, Throwable)}
+   * Method under test: {@link ExceptionHelper#refineException(Class, Class, String, Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"RuntimeException ExceptionHelper.refineException(Class, Class, String, Throwable)"})
   public void testRefineExceptionWithRefineTypeWrapTypeMessageE4() {
     // Arrange
     Class<Throwable> refineType = Throwable.class;
@@ -347,13 +292,13 @@ public class ExceptionHelperDiffblueTest {
   }
 
   /**
-   * Test {@link ExceptionHelper#refineException(Class, Class, String, Throwable)}
-   * with {@code refineType}, {@code wrapType}, {@code message}, {@code e}.
+   * Test {@link ExceptionHelper#refineException(Class, Class, String, Throwable)} with {@code refineType}, {@code wrapType}, {@code message}, {@code e}.
    * <p>
-   * Method under test:
-   * {@link ExceptionHelper#refineException(Class, Class, String, Throwable)}
+   * Method under test: {@link ExceptionHelper#refineException(Class, Class, String, Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"RuntimeException ExceptionHelper.refineException(Class, Class, String, Throwable)"})
   public void testRefineExceptionWithRefineTypeWrapTypeMessageE5() {
     // Arrange
     Class<Throwable> refineType = Throwable.class;
@@ -371,13 +316,13 @@ public class ExceptionHelperDiffblueTest {
   }
 
   /**
-   * Test {@link ExceptionHelper#refineException(Class, Class, String, Throwable)}
-   * with {@code refineType}, {@code wrapType}, {@code message}, {@code e}.
+   * Test {@link ExceptionHelper#refineException(Class, Class, String, Throwable)} with {@code refineType}, {@code wrapType}, {@code message}, {@code e}.
    * <p>
-   * Method under test:
-   * {@link ExceptionHelper#refineException(Class, Class, String, Throwable)}
+   * Method under test: {@link ExceptionHelper#refineException(Class, Class, String, Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"RuntimeException ExceptionHelper.refineException(Class, Class, String, Throwable)"})
   public void testRefineExceptionWithRefineTypeWrapTypeMessageE6() {
     // Arrange
     Class<RuntimeException> refineType = RuntimeException.class;
@@ -389,37 +334,14 @@ public class ExceptionHelperDiffblueTest {
   }
 
   /**
-   * Test {@link ExceptionHelper#refineException(Class, Class, String, Throwable)}
-   * with {@code refineType}, {@code wrapType}, {@code message}, {@code e}.
+   * Test {@link ExceptionHelper#refineException(Class, Class, String, Throwable)} with {@code refineType}, {@code wrapType}, {@code message}, {@code e}.
    * <p>
-   * Method under test:
-   * {@link ExceptionHelper#refineException(Class, Class, String, Throwable)}
+   * Method under test: {@link ExceptionHelper#refineException(Class, Class, String, Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"RuntimeException ExceptionHelper.refineException(Class, Class, String, Throwable)"})
   public void testRefineExceptionWithRefineTypeWrapTypeMessageE7() {
-    // Arrange
-    Class<RuntimeException> refineType = RuntimeException.class;
-    Class<RuntimeException> wrapType = RuntimeException.class;
-    Throwable e = new Throwable();
-
-    // Act
-    RuntimeException actualRefineExceptionResult = ExceptionHelper.refineException(refineType, wrapType, null, e);
-
-    // Assert
-    assertEquals("java.lang.Throwable", actualRefineExceptionResult.getLocalizedMessage());
-    assertEquals("java.lang.Throwable", actualRefineExceptionResult.getMessage());
-    assertSame(e, actualRefineExceptionResult.getCause());
-  }
-
-  /**
-   * Test {@link ExceptionHelper#refineException(Class, Class, String, Throwable)}
-   * with {@code refineType}, {@code wrapType}, {@code message}, {@code e}.
-   * <p>
-   * Method under test:
-   * {@link ExceptionHelper#refineException(Class, Class, String, Throwable)}
-   */
-  @Test
-  public void testRefineExceptionWithRefineTypeWrapTypeMessageE8() {
     // Arrange
     Class<RuntimeException> refineType = RuntimeException.class;
     Class<RuntimeException> wrapType = RuntimeException.class;
@@ -436,32 +358,14 @@ public class ExceptionHelperDiffblueTest {
   }
 
   /**
-   * Test {@link ExceptionHelper#refineException(Class, Class, String, Throwable)}
-   * with {@code refineType}, {@code wrapType}, {@code message}, {@code e}.
+   * Test {@link ExceptionHelper#refineException(Class, Class, String, Throwable)} with {@code refineType}, {@code wrapType}, {@code message}, {@code e}.
    * <p>
-   * Method under test:
-   * {@link ExceptionHelper#refineException(Class, Class, String, Throwable)}
+   * Method under test: {@link ExceptionHelper#refineException(Class, Class, String, Throwable)}
    */
   @Test
-  public void testRefineExceptionWithRefineTypeWrapTypeMessageE9() {
-    // Arrange
-    Class<Throwable> refineType = Throwable.class;
-    Class<ExceptionHelper> wrapType = ExceptionHelper.class;
-
-    // Act and Assert
-    assertThrows(RuntimeException.class,
-        () -> ExceptionHelper.refineException(refineType, wrapType, "", new Throwable()));
-  }
-
-  /**
-   * Test {@link ExceptionHelper#refineException(Class, Class, String, Throwable)}
-   * with {@code refineType}, {@code wrapType}, {@code message}, {@code e}.
-   * <p>
-   * Method under test:
-   * {@link ExceptionHelper#refineException(Class, Class, String, Throwable)}
-   */
-  @Test
-  public void testRefineExceptionWithRefineTypeWrapTypeMessageE10() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"RuntimeException ExceptionHelper.refineException(Class, Class, String, Throwable)"})
+  public void testRefineExceptionWithRefineTypeWrapTypeMessageE8() {
     // Arrange
     Class<RuntimeException> refineType = RuntimeException.class;
     Class<UndeclaredThrowableException> wrapType = UndeclaredThrowableException.class;
@@ -472,8 +376,35 @@ public class ExceptionHelperDiffblueTest {
   }
 
   /**
-   * Test {@link ExceptionHelper#refineException(Class, Throwable)} with
-   * {@code wrapType}, {@code e}.
+   * Test {@link ExceptionHelper#refineException(Class, Class, String, Throwable)} with {@code refineType}, {@code wrapType}, {@code message}, {@code e}.
+   * <ul>
+   *   <li>Given {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ExceptionHelper#refineException(Class, Class, String, Throwable)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"RuntimeException ExceptionHelper.refineException(Class, Class, String, Throwable)"})
+  public void testRefineExceptionWithRefineTypeWrapTypeMessageE_givenNull() {
+    // Arrange
+    Class<Throwable> refineType = Throwable.class;
+    Class<RuntimeException> wrapType = RuntimeException.class;
+
+    Throwable e = new Throwable();
+    e.initCause(null);
+
+    // Act
+    RuntimeException actualRefineExceptionResult = ExceptionHelper.refineException(refineType, wrapType, null, e);
+
+    // Assert
+    assertEquals("java.lang.Throwable", actualRefineExceptionResult.getLocalizedMessage());
+    assertEquals("java.lang.Throwable", actualRefineExceptionResult.getMessage());
+    assertSame(e, actualRefineExceptionResult.getCause());
+  }
+
+  /**
+   * Test {@link ExceptionHelper#refineException(Class, Throwable)} with {@code wrapType}, {@code e}.
    * <ul>
    *   <li>Given {@link Throwable#Throwable()} initCause {@code null}.</li>
    * </ul>
@@ -481,6 +412,8 @@ public class ExceptionHelperDiffblueTest {
    * Method under test: {@link ExceptionHelper#refineException(Class, Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"RuntimeException ExceptionHelper.refineException(Class, Throwable)"})
   public void testRefineExceptionWithWrapTypeE_givenThrowableInitCauseNull() {
     // Arrange
     Class<RuntimeException> wrapType = RuntimeException.class;
@@ -504,8 +437,7 @@ public class ExceptionHelperDiffblueTest {
   }
 
   /**
-   * Test {@link ExceptionHelper#refineException(Class, Throwable)} with
-   * {@code wrapType}, {@code e}.
+   * Test {@link ExceptionHelper#refineException(Class, Throwable)} with {@code wrapType}, {@code e}.
    * <ul>
    *   <li>Then return LocalizedMessage is {@code foo}.</li>
    * </ul>
@@ -513,6 +445,8 @@ public class ExceptionHelperDiffblueTest {
    * Method under test: {@link ExceptionHelper#refineException(Class, Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"RuntimeException ExceptionHelper.refineException(Class, Throwable)"})
   public void testRefineExceptionWithWrapTypeE_thenReturnLocalizedMessageIsFoo() {
     // Arrange
     Class<RuntimeException> wrapType = RuntimeException.class;
@@ -529,15 +463,16 @@ public class ExceptionHelperDiffblueTest {
   }
 
   /**
-   * Test {@link ExceptionHelper#refineException(Class, Throwable)} with
-   * {@code wrapType}, {@code e}.
+   * Test {@link ExceptionHelper#refineException(Class, Throwable)} with {@code wrapType}, {@code e}.
    * <ul>
-   *   <li>Then return LocalizedMessage is {@code java.lang.Throwable}.</li>
+   *   <li>Then return LocalizedMessage is {@code Throwable}.</li>
    * </ul>
    * <p>
    * Method under test: {@link ExceptionHelper#refineException(Class, Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"RuntimeException ExceptionHelper.refineException(Class, Throwable)"})
   public void testRefineExceptionWithWrapTypeE_thenReturnLocalizedMessageIsJavaLangThrowable() {
     // Arrange
     Class<RuntimeException> wrapType = RuntimeException.class;
@@ -553,98 +488,13 @@ public class ExceptionHelperDiffblueTest {
   }
 
   /**
-   * Test {@link ExceptionHelper#refineException(Class, Throwable)} with
-   * {@code wrapType}, {@code e}.
-   * <ul>
-   *   <li>Then throw {@link RuntimeException}.</li>
-   * </ul>
+   * Test {@link ExceptionHelper#processException(Class, Class, String, Throwable)} with {@code refineType}, {@code wrapType}, {@code message}, {@code e}.
    * <p>
-   * Method under test: {@link ExceptionHelper#refineException(Class, Throwable)}
+   * Method under test: {@link ExceptionHelper#processException(Class, Class, String, Throwable)}
    */
   @Test
-  public void testRefineExceptionWithWrapTypeE_thenThrowRuntimeException() {
-    // Arrange
-    Class<ExceptionHelper> wrapType = ExceptionHelper.class;
-
-    // Act and Assert
-    assertThrows(RuntimeException.class, () -> ExceptionHelper.refineException(wrapType, new Throwable()));
-  }
-
-  /**
-   * Test {@link ExceptionHelper#refineException(Class, Throwable)} with
-   * {@code wrapType}, {@code e}.
-   * <ul>
-   *   <li>When {@link Throwable#Throwable(String, Throwable)} with {@code foo} and
-   * {@link Throwable#Throwable()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ExceptionHelper#refineException(Class, Throwable)}
-   */
-  @Test
-  public void testRefineExceptionWithWrapTypeE_whenThrowableWithFooAndThrowable() {
-    // Arrange
-    Class<ExceptionHelper> wrapType = ExceptionHelper.class;
-
-    // Act and Assert
-    assertThrows(RuntimeException.class,
-        () -> ExceptionHelper.refineException(wrapType, new Throwable("foo", new Throwable())));
-  }
-
-  /**
-   * Test {@link ExceptionHelper#processException(Throwable)} with {@code e}.
-   * <ul>
-   *   <li>When {@link Throwable#Throwable()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ExceptionHelper#processException(Throwable)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testProcessExceptionWithE_whenThrowable() throws Throwable {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.RuntimeException: java.lang.Throwable
-    //       at org.broadleafcommerce.common.exception.ExceptionHelper.wrapException(ExceptionHelper.java:96)
-    //       at org.broadleafcommerce.common.exception.ExceptionHelper.processException(ExceptionHelper.java:75)
-    //       at org.broadleafcommerce.common.exception.ExceptionHelper.processException(ExceptionHelper.java:87)
-    //   java.lang.Throwable
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange and Act
-    ExceptionHelper.processException(new Throwable());
-  }
-
-  /**
-   * Test {@link ExceptionHelper#processException(Class, Class, Throwable)} with
-   * {@code refineType}, {@code wrapType}, {@code e}.
-   * <ul>
-   *   <li>Then throw {@link RuntimeException}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link ExceptionHelper#processException(Class, Class, Throwable)}
-   */
-  @Test
-  public void testProcessExceptionWithRefineTypeWrapTypeE_thenThrowRuntimeException() throws Throwable {
-    // Arrange
-    Class<RuntimeException> refineType = RuntimeException.class;
-    Class<ExceptionHelper> wrapType = ExceptionHelper.class;
-
-    // Act and Assert
-    assertThrows(RuntimeException.class, () -> ExceptionHelper.processException(refineType, wrapType, new Throwable()));
-  }
-
-  /**
-   * Test
-   * {@link ExceptionHelper#processException(Class, Class, String, Throwable)}
-   * with {@code refineType}, {@code wrapType}, {@code message}, {@code e}.
-   * <p>
-   * Method under test:
-   * {@link ExceptionHelper#processException(Class, Class, String, Throwable)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ExceptionHelper.processException(Class, Class, String, Throwable)"})
   public void testProcessExceptionWithRefineTypeWrapTypeMessageE() throws Throwable {
     // Arrange
     Class<RuntimeException> refineType = RuntimeException.class;
@@ -653,42 +503,5 @@ public class ExceptionHelperDiffblueTest {
     // Act and Assert
     assertThrows(RuntimeException.class,
         () -> ExceptionHelper.processException(refineType, wrapType, "An error occurred", new Throwable()));
-  }
-
-  /**
-   * Test
-   * {@link ExceptionHelper#processException(Class, Class, String, Throwable)}
-   * with {@code refineType}, {@code wrapType}, {@code message}, {@code e}.
-   * <p>
-   * Method under test:
-   * {@link ExceptionHelper#processException(Class, Class, String, Throwable)}
-   */
-  @Test
-  public void testProcessExceptionWithRefineTypeWrapTypeMessageE2() throws Throwable {
-    // Arrange
-    Class<RuntimeException> refineType = RuntimeException.class;
-    Class<ExceptionHelper> wrapType = ExceptionHelper.class;
-
-    // Act and Assert
-    assertThrows(RuntimeException.class,
-        () -> ExceptionHelper.processException(refineType, wrapType, null, new Throwable()));
-  }
-
-  /**
-   * Test {@link ExceptionHelper#processException(Class, Throwable)} with
-   * {@code wrapType}, {@code e}.
-   * <ul>
-   *   <li>Then throw {@link RuntimeException}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ExceptionHelper#processException(Class, Throwable)}
-   */
-  @Test
-  public void testProcessExceptionWithWrapTypeE_thenThrowRuntimeException() throws Throwable {
-    // Arrange
-    Class<ExceptionHelper> wrapType = ExceptionHelper.class;
-
-    // Act and Assert
-    assertThrows(RuntimeException.class, () -> ExceptionHelper.processException(wrapType, new Throwable()));
   }
 }

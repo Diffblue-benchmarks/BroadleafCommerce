@@ -1,56 +1,72 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.pricing.service;
 
+import static org.junit.Assert.assertSame;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
+import org.broadleafcommerce.core.pricing.dao.ShippingRateDao;
 import org.broadleafcommerce.core.pricing.domain.ShippingRate;
 import org.broadleafcommerce.core.pricing.domain.ShippingRateImpl;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class ShippingRateServiceImplDiffblueTest {
-  @Autowired
+  @Mock
+  private ShippingRateDao shippingRateDao;
+
+  @InjectMocks
   private ShippingRateServiceImpl shippingRateServiceImpl;
 
   /**
-   * Test
-   * {@link ShippingRateServiceImpl#readShippingRateByFeeTypesUnityQty(String, String, BigDecimal)}.
+   * Test {@link ShippingRateServiceImpl#readShippingRateByFeeTypesUnityQty(String, String, BigDecimal)}.
    * <p>
-   * Method under test:
-   * {@link ShippingRateServiceImpl#readShippingRateByFeeTypesUnityQty(String, String, BigDecimal)}
+   * Method under test: {@link ShippingRateServiceImpl#readShippingRateByFeeTypesUnityQty(String, String, BigDecimal)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "ShippingRate ShippingRateServiceImpl.readShippingRateByFeeTypesUnityQty(String, String, BigDecimal)"})
   public void testReadShippingRateByFeeTypesUnityQty() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.pricing.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3504 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.pricing.service.ShippingRateServiceImpl shippingRateServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    ShippingRateServiceImpl shippingRateServiceImpl2 = new ShippingRateServiceImpl();
+    ShippingRateImpl shippingRateImpl = new ShippingRateImpl();
+    when(shippingRateDao.readShippingRateByFeeTypesUnityQty(Mockito.<String>any(), Mockito.<String>any(),
+        Mockito.<BigDecimal>any())).thenReturn(shippingRateImpl);
 
     // Act
-    shippingRateServiceImpl2.readShippingRateByFeeTypesUnityQty("Fee Type", "Fee Sub Type", new BigDecimal("2.3"));
+    ShippingRate actualReadShippingRateByFeeTypesUnityQtyResult = shippingRateServiceImpl
+        .readShippingRateByFeeTypesUnityQty("Fee Type", "Fee Sub Type", new BigDecimal("2.3"));
+
+    // Assert
+    verify(shippingRateDao).readShippingRateByFeeTypesUnityQty(eq("Fee Type"), eq("Fee Sub Type"),
+        isA(BigDecimal.class));
+    assertSame(shippingRateImpl, actualReadShippingRateByFeeTypesUnityQtyResult);
   }
 
   /**
@@ -59,27 +75,19 @@ public class ShippingRateServiceImplDiffblueTest {
    * Method under test: {@link ShippingRateServiceImpl#readShippingRateById(Long)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ShippingRate ShippingRateServiceImpl.readShippingRateById(Long)"})
   public void testReadShippingRateById() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.pricing.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3534 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.pricing.service.ShippingRateServiceImpl shippingRateServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    ShippingRateImpl shippingRateImpl = new ShippingRateImpl();
+    when(shippingRateDao.readShippingRateById(Mockito.<Long>any())).thenReturn(shippingRateImpl);
 
-    // Arrange and Act
-    (new ShippingRateServiceImpl()).readShippingRateById(1L);
+    // Act
+    ShippingRate actualReadShippingRateByIdResult = shippingRateServiceImpl.readShippingRateById(1L);
+
+    // Assert
+    verify(shippingRateDao).readShippingRateById(eq(1L));
+    assertSame(shippingRateImpl, actualReadShippingRateByIdResult);
   }
 
   /**
@@ -88,29 +96,18 @@ public class ShippingRateServiceImplDiffblueTest {
    * Method under test: {@link ShippingRateServiceImpl#save(ShippingRate)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ShippingRate ShippingRateServiceImpl.save(ShippingRate)"})
   public void testSave() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.pricing.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3549 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.pricing.service.ShippingRateServiceImpl shippingRateServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    ShippingRateServiceImpl shippingRateServiceImpl2 = new ShippingRateServiceImpl();
+    ShippingRateImpl shippingRateImpl = new ShippingRateImpl();
+    when(shippingRateDao.save(Mockito.<ShippingRate>any())).thenReturn(shippingRateImpl);
 
     // Act
-    shippingRateServiceImpl2.save(new ShippingRateImpl());
+    ShippingRate actualSaveResult = shippingRateServiceImpl.save(new ShippingRateImpl());
+
+    // Assert
+    verify(shippingRateDao).save(isA(ShippingRate.class));
+    assertSame(shippingRateImpl, actualSaveResult);
   }
 }

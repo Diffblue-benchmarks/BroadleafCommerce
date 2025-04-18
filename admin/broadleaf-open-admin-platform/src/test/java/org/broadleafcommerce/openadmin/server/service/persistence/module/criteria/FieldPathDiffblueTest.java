@@ -1,20 +1,41 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.server.service.persistence.module.criteria;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {FieldPath.class})
 @RunWith(SpringJUnit4ClassRunner.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class FieldPathDiffblueTest {
   @Autowired
   private FieldPath fieldPath;
@@ -29,6 +50,8 @@ public class FieldPathDiffblueTest {
    * Method under test: {@link FieldPath#withAssociationPath(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FieldPath FieldPath.withAssociationPath(List)"})
   public void testWithAssociationPath_given42_whenArrayListAdd42() {
     // Arrange
     ArrayList<String> associationPath = new ArrayList<>();
@@ -53,6 +76,8 @@ public class FieldPathDiffblueTest {
    * Method under test: {@link FieldPath#withAssociationPath(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FieldPath FieldPath.withAssociationPath(List)"})
   public void testWithAssociationPath_givenFoo_whenArrayListAddFoo() {
     // Arrange
     ArrayList<String> associationPath = new ArrayList<>();
@@ -75,6 +100,8 @@ public class FieldPathDiffblueTest {
    * Method under test: {@link FieldPath#withAssociationPath(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FieldPath FieldPath.withAssociationPath(List)"})
   public void testWithAssociationPath_whenArrayList() {
     // Arrange
     ArrayList<String> associationPath = new ArrayList<>();
@@ -97,6 +124,8 @@ public class FieldPathDiffblueTest {
    * Method under test: {@link FieldPath#withTargetPropertyPieces(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FieldPath FieldPath.withTargetPropertyPieces(List)"})
   public void testWithTargetPropertyPieces_given42_whenArrayListAdd42() {
     // Arrange
     ArrayList<String> targetPropertyPieces = new ArrayList<>();
@@ -121,6 +150,8 @@ public class FieldPathDiffblueTest {
    * Method under test: {@link FieldPath#withTargetPropertyPieces(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FieldPath FieldPath.withTargetPropertyPieces(List)"})
   public void testWithTargetPropertyPieces_givenFoo_whenArrayListAddFoo() {
     // Arrange
     ArrayList<String> targetPropertyPieces = new ArrayList<>();
@@ -143,6 +174,8 @@ public class FieldPathDiffblueTest {
    * Method under test: {@link FieldPath#withTargetPropertyPieces(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FieldPath FieldPath.withTargetPropertyPieces(List)"})
   public void testWithTargetPropertyPieces_whenArrayList() {
     // Arrange
     ArrayList<String> targetPropertyPieces = new ArrayList<>();
@@ -161,6 +194,8 @@ public class FieldPathDiffblueTest {
    * Method under test: {@link FieldPath#withTargetProperty(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FieldPath FieldPath.withTargetProperty(String)"})
   public void testWithTargetProperty() {
     // Arrange and Act
     FieldPath actualWithTargetPropertyResult = fieldPath.withTargetProperty("Target Property");
@@ -185,6 +220,11 @@ public class FieldPathDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FieldPath.<init>()", "List FieldPath.getAssociationPath()",
+      "String FieldPath.getTargetProperty()", "List FieldPath.getTargetPropertyPieces()",
+      "void FieldPath.setAssociationPath(List)", "void FieldPath.setTargetProperty(String)",
+      "void FieldPath.setTargetPropertyPieces(List)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     FieldPath actualFieldPath = new FieldPath();
@@ -197,7 +237,7 @@ public class FieldPathDiffblueTest {
     String actualTargetProperty = actualFieldPath.getTargetProperty();
     List<String> actualTargetPropertyPieces = actualFieldPath.getTargetPropertyPieces();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Target Property", actualTargetProperty);
     assertTrue(actualAssociationPath.isEmpty());
     assertTrue(actualTargetPropertyPieces.isEmpty());

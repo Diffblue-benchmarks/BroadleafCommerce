@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.order.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -5,21 +22,21 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.core.order.domain.OrderLockImpl.OrderLockPk;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class OrderLockImplDiffblueTest {
   @Autowired
   private OrderLockImpl orderLockImpl;
@@ -30,45 +47,15 @@ public class OrderLockImplDiffblueTest {
    * Method under test: {@link OrderLockImpl#getOrderId()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long OrderLockImpl.getOrderId()"})
   public void testGetOrderId() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new OrderLockImpl()).getOrderId());
   }
 
   /**
-   * Test {@link OrderLockImpl#getOrderId()}.
-   * <p>
-   * Method under test: {@link OrderLockImpl#getOrderId()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetOrderId2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass169 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.OrderLockImpl orderLockImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OrderLockImpl()).getOrderId();
-  }
-
-  /**
-   * Test OrderLockPk {@link OrderLockPk#equals(Object)}, and
-   * {@link OrderLockPk#hashCode()}.
+   * Test OrderLockPk {@link OrderLockPk#equals(Object)}, and {@link OrderLockPk#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -76,18 +63,20 @@ public class OrderLockImplDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>{@link OrderLockImpl.OrderLockPk#equals(Object)}
-   *   <li>{@link OrderLockImpl.OrderLockPk#hashCode()}
+   *   <li>{@link OrderLockPk#equals(Object)}
+   *   <li>{@link OrderLockPk#hashCode()}
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderLockPk.equals(Object)", "int OrderLockPk.hashCode()"})
   public void testOrderLockPkEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
-    OrderLockImpl.OrderLockPk orderLockPk = new OrderLockImpl.OrderLockPk();
+    OrderLockPk orderLockPk = new OrderLockPk();
     orderLockPk.setKey("Key");
     orderLockPk.setOrderId(OrderItemQualifierImpl.serialVersionUID);
 
-    OrderLockImpl.OrderLockPk orderLockPk2 = new OrderLockImpl.OrderLockPk();
+    OrderLockPk orderLockPk2 = new OrderLockPk();
     orderLockPk2.setKey("Key");
     orderLockPk2.setOrderId(OrderItemQualifierImpl.serialVersionUID);
 
@@ -98,8 +87,7 @@ public class OrderLockImplDiffblueTest {
   }
 
   /**
-   * Test OrderLockPk {@link OrderLockPk#equals(Object)}, and
-   * {@link OrderLockPk#hashCode()}.
+   * Test OrderLockPk {@link OrderLockPk#equals(Object)}, and {@link OrderLockPk#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -107,14 +95,16 @@ public class OrderLockImplDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>{@link OrderLockImpl.OrderLockPk#equals(Object)}
-   *   <li>{@link OrderLockImpl.OrderLockPk#hashCode()}
+   *   <li>{@link OrderLockPk#equals(Object)}
+   *   <li>{@link OrderLockPk#hashCode()}
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderLockPk.equals(Object)", "int OrderLockPk.hashCode()"})
   public void testOrderLockPkEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
-    OrderLockImpl.OrderLockPk orderLockPk = new OrderLockImpl.OrderLockPk();
+    OrderLockPk orderLockPk = new OrderLockPk();
     orderLockPk.setKey("Key");
     orderLockPk.setOrderId(OrderItemQualifierImpl.serialVersionUID);
 
@@ -131,16 +121,18 @@ public class OrderLockImplDiffblueTest {
    *   <li>Then return not equal.</li>
    * </ul>
    * <p>
-   * Method under test: {@link OrderLockImpl.OrderLockPk#equals(Object)}
+   * Method under test: {@link OrderLockPk#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderLockPk.equals(Object)", "int OrderLockPk.hashCode()"})
   public void testOrderLockPkEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
-    OrderLockImpl.OrderLockPk orderLockPk = new OrderLockImpl.OrderLockPk();
+    OrderLockPk orderLockPk = new OrderLockPk();
     orderLockPk.setKey(null);
     orderLockPk.setOrderId(OrderItemQualifierImpl.serialVersionUID);
 
-    OrderLockImpl.OrderLockPk orderLockPk2 = new OrderLockImpl.OrderLockPk();
+    OrderLockPk orderLockPk2 = new OrderLockPk();
     orderLockPk2.setKey("Key");
     orderLockPk2.setOrderId(OrderItemQualifierImpl.serialVersionUID);
 
@@ -155,12 +147,14 @@ public class OrderLockImplDiffblueTest {
    *   <li>Then return not equal.</li>
    * </ul>
    * <p>
-   * Method under test: {@link OrderLockImpl.OrderLockPk#equals(Object)}
+   * Method under test: {@link OrderLockPk#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderLockPk.equals(Object)", "int OrderLockPk.hashCode()"})
   public void testOrderLockPkEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
-    OrderLockImpl.OrderLockPk orderLockPk = new OrderLockImpl.OrderLockPk();
+    OrderLockPk orderLockPk = new OrderLockPk();
     orderLockPk.setKey("Key");
     orderLockPk.setOrderId(OrderItemQualifierImpl.serialVersionUID);
 
@@ -175,12 +169,14 @@ public class OrderLockImplDiffblueTest {
    *   <li>Then return not equal.</li>
    * </ul>
    * <p>
-   * Method under test: {@link OrderLockImpl.OrderLockPk#equals(Object)}
+   * Method under test: {@link OrderLockPk#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderLockPk.equals(Object)", "int OrderLockPk.hashCode()"})
   public void testOrderLockPkEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
-    OrderLockImpl.OrderLockPk orderLockPk = new OrderLockImpl.OrderLockPk();
+    OrderLockPk orderLockPk = new OrderLockPk();
     orderLockPk.setKey("Key");
     orderLockPk.setOrderId(OrderItemQualifierImpl.serialVersionUID);
 
@@ -193,22 +189,25 @@ public class OrderLockImplDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>default or parameterless constructor of {@link OrderLockImpl.OrderLockPk}
-   *   <li>{@link OrderLockImpl.OrderLockPk#setKey(String)}
-   *   <li>{@link OrderLockImpl.OrderLockPk#setOrderId(Long)}
-   *   <li>{@link OrderLockImpl.OrderLockPk#getKey()}
-   *   <li>{@link OrderLockImpl.OrderLockPk#getOrderId()}
+   *   <li>default or parameterless constructor of {@link OrderLockPk}
+   *   <li>{@link OrderLockPk#setKey(String)}
+   *   <li>{@link OrderLockPk#setOrderId(Long)}
+   *   <li>{@link OrderLockPk#getKey()}
+   *   <li>{@link OrderLockPk#getOrderId()}
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OrderLockPk.<init>()", "String OrderLockPk.getKey()", "Long OrderLockPk.getOrderId()",
+      "void OrderLockPk.setKey(String)", "void OrderLockPk.setOrderId(Long)"})
   public void testOrderLockPkGettersAndSetters() {
     // Arrange and Act
-    OrderLockImpl.OrderLockPk actualOrderLockPk = new OrderLockImpl.OrderLockPk();
+    OrderLockPk actualOrderLockPk = new OrderLockPk();
     actualOrderLockPk.setKey("Key");
     actualOrderLockPk.setOrderId(OrderItemQualifierImpl.serialVersionUID);
     String actualKey = actualOrderLockPk.getKey();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Key", actualKey);
     assertEquals(OrderItemQualifierImpl.serialVersionUID, actualOrderLockPk.getOrderId().longValue());
   }
@@ -219,101 +218,42 @@ public class OrderLockImplDiffblueTest {
    * Method under test: {@link OrderLockImpl#setOrderId(Long)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OrderLockImpl.setOrderId(Long)"})
   public void testSetOrderId() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderLockImpl orderLockImpl = new OrderLockImpl();
+    OrderLockImpl orderLockImpl2 = new OrderLockImpl();
 
     // Act
-    orderLockImpl.setOrderId(OrderItemQualifierImpl.serialVersionUID);
+    orderLockImpl2.setOrderId(OrderItemQualifierImpl.serialVersionUID);
 
     // Assert
-    assertEquals(OrderItemQualifierImpl.serialVersionUID, orderLockImpl.getOrderId().longValue());
-    assertEquals(OrderItemQualifierImpl.serialVersionUID, orderLockImpl.orderLockPK.getOrderId().longValue());
-  }
-
-  /**
-   * Test {@link OrderLockImpl#setOrderId(Long)}.
-   * <p>
-   * Method under test: {@link OrderLockImpl#setOrderId(Long)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetOrderId2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass200 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.OrderLockImpl orderLockImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OrderLockImpl()).setOrderId(OrderItemQualifierImpl.serialVersionUID);
-  }
-
-  /**
-   * Test {@link OrderLockImpl#getLocked()}.
-   * <p>
-   * Method under test: {@link OrderLockImpl#getLocked()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetLocked() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass163 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.OrderLockImpl orderLockImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OrderLockImpl()).getLocked();
+    assertEquals(OrderItemQualifierImpl.serialVersionUID, orderLockImpl2.getOrderId().longValue());
+    assertEquals(OrderItemQualifierImpl.serialVersionUID, orderLockImpl2.orderLockPK.getOrderId().longValue());
   }
 
   /**
    * Test {@link OrderLockImpl#getLocked()}.
    * <ul>
-   *   <li>Given {@link OrderLockImpl} (default constructor) Key is
-   * {@code Node Key}.</li>
+   *   <li>Given {@link OrderLockImpl} (default constructor) Key is {@code Node Key}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link OrderLockImpl#getLocked()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean OrderLockImpl.getLocked()"})
   public void testGetLocked_givenOrderLockImplKeyIsNodeKey_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderLockImpl orderLockImpl = new OrderLockImpl();
-    orderLockImpl.setKey("Node Key");
-    orderLockImpl.setLastUpdated(OrderItemQualifierImpl.serialVersionUID);
-    orderLockImpl.setOrderId(OrderItemQualifierImpl.serialVersionUID);
-    orderLockImpl.setLocked(true);
+    OrderLockImpl orderLockImpl2 = new OrderLockImpl();
+    orderLockImpl2.setKey("Node Key");
+    orderLockImpl2.setLastUpdated(OrderItemQualifierImpl.serialVersionUID);
+    orderLockImpl2.setOrderId(OrderItemQualifierImpl.serialVersionUID);
+    orderLockImpl2.setLocked(true);
 
     // Act and Assert
-    assertTrue(orderLockImpl.getLocked());
+    assertTrue(orderLockImpl2.getLocked());
   }
 
   /**
@@ -326,69 +266,39 @@ public class OrderLockImplDiffblueTest {
    * Method under test: {@link OrderLockImpl#getLocked()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean OrderLockImpl.getLocked()"})
   public void testGetLocked_givenOrderLockImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertFalse((new OrderLockImpl()).getLocked());
   }
 
   /**
    * Test {@link OrderLockImpl#setLocked(Boolean)}.
-   * <p>
-   * Method under test: {@link OrderLockImpl#setLocked(Boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetLocked() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass194 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.OrderLockImpl orderLockImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OrderLockImpl()).setLocked(true);
-  }
-
-  /**
-   * Test {@link OrderLockImpl#setLocked(Boolean)}.
    * <ul>
-   *   <li>Given {@link OrderLockImpl} (default constructor) Key is
-   * {@code Node Key}.</li>
+   *   <li>Given {@link OrderLockImpl} (default constructor) Key is {@code Node Key}.</li>
    *   <li>When {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link OrderLockImpl#setLocked(Boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OrderLockImpl.setLocked(Boolean)"})
   public void testSetLocked_givenOrderLockImplKeyIsNodeKey_whenNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderLockImpl orderLockImpl = new OrderLockImpl();
-    orderLockImpl.setKey("Node Key");
-    orderLockImpl.setLastUpdated(OrderItemQualifierImpl.serialVersionUID);
-    orderLockImpl.setLocked(true);
-    orderLockImpl.setOrderId(OrderItemQualifierImpl.serialVersionUID);
+    OrderLockImpl orderLockImpl2 = new OrderLockImpl();
+    orderLockImpl2.setKey("Node Key");
+    orderLockImpl2.setLastUpdated(OrderItemQualifierImpl.serialVersionUID);
+    orderLockImpl2.setLocked(true);
+    orderLockImpl2.setOrderId(OrderItemQualifierImpl.serialVersionUID);
 
     // Act
-    orderLockImpl.setLocked(null);
+    orderLockImpl2.setLocked(null);
 
     // Assert
-    assertEquals('N', orderLockImpl.locked.charValue());
-    assertFalse(orderLockImpl.getLocked());
+    assertEquals('N', orderLockImpl2.locked.charValue());
+    assertFalse(orderLockImpl2.getLocked());
   }
 
   /**
@@ -396,25 +306,24 @@ public class OrderLockImplDiffblueTest {
    * <ul>
    *   <li>Given {@link OrderLockImpl} (default constructor).</li>
    *   <li>When {@code false}.</li>
-   *   <li>Then {@link OrderLockImpl} (default constructor)
-   * {@link OrderLockImpl#locked} charValue is {@code N}.</li>
+   *   <li>Then {@link OrderLockImpl} (default constructor) {@link OrderLockImpl#locked} charValue is {@code N}.</li>
    * </ul>
    * <p>
    * Method under test: {@link OrderLockImpl#setLocked(Boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OrderLockImpl.setLocked(Boolean)"})
   public void testSetLocked_givenOrderLockImpl_whenFalse_thenOrderLockImplLockedCharValueIsN() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderLockImpl orderLockImpl = new OrderLockImpl();
+    OrderLockImpl orderLockImpl2 = new OrderLockImpl();
 
     // Act
-    orderLockImpl.setLocked(false);
+    orderLockImpl2.setLocked(false);
 
-    // Assert
-    assertEquals('N', orderLockImpl.locked.charValue());
-    assertFalse(orderLockImpl.getLocked());
+    // Assert that nothing has changed
+    assertEquals('N', orderLockImpl2.locked.charValue());
+    assertFalse(orderLockImpl2.getLocked());
   }
 
   /**
@@ -422,25 +331,24 @@ public class OrderLockImplDiffblueTest {
    * <ul>
    *   <li>Given {@link OrderLockImpl} (default constructor).</li>
    *   <li>When {@code true}.</li>
-   *   <li>Then {@link OrderLockImpl} (default constructor)
-   * {@link OrderLockImpl#locked} charValue is {@code Y}.</li>
+   *   <li>Then {@link OrderLockImpl} (default constructor) {@link OrderLockImpl#locked} charValue is {@code Y}.</li>
    * </ul>
    * <p>
    * Method under test: {@link OrderLockImpl#setLocked(Boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OrderLockImpl.setLocked(Boolean)"})
   public void testSetLocked_givenOrderLockImpl_whenTrue_thenOrderLockImplLockedCharValueIsY() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderLockImpl orderLockImpl = new OrderLockImpl();
+    OrderLockImpl orderLockImpl2 = new OrderLockImpl();
 
     // Act
-    orderLockImpl.setLocked(true);
+    orderLockImpl2.setLocked(true);
 
     // Assert
-    assertEquals('Y', orderLockImpl.locked.charValue());
-    assertTrue(orderLockImpl.getLocked());
+    assertEquals('Y', orderLockImpl2.locked.charValue());
+    assertTrue(orderLockImpl2.getLocked());
   }
 
   /**
@@ -453,6 +361,8 @@ public class OrderLockImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long OrderLockImpl.getLastUpdated()", "void OrderLockImpl.setLastUpdated(Long)"})
   public void testGettersAndSetters() {
     // Arrange
     OrderLockImpl orderLockImpl = new OrderLockImpl();
@@ -460,7 +370,7 @@ public class OrderLockImplDiffblueTest {
     // Act
     orderLockImpl.setLastUpdated(OrderItemQualifierImpl.serialVersionUID);
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals(OrderItemQualifierImpl.serialVersionUID, orderLockImpl.getLastUpdated().longValue());
   }
 
@@ -470,101 +380,42 @@ public class OrderLockImplDiffblueTest {
    * Method under test: {@link OrderLockImpl#getKey()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String OrderLockImpl.getKey()"})
   public void testGetKey() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new OrderLockImpl()).getKey());
   }
 
   /**
-   * Test {@link OrderLockImpl#getKey()}.
-   * <p>
-   * Method under test: {@link OrderLockImpl#getKey()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetKey2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass157 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.OrderLockImpl orderLockImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OrderLockImpl()).getKey();
-  }
-
-  /**
    * Test {@link OrderLockImpl#setKey(String)}.
    * <p>
    * Method under test: {@link OrderLockImpl#setKey(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OrderLockImpl.setKey(String)"})
   public void testSetKey() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderLockImpl orderLockImpl = new OrderLockImpl();
+    OrderLockImpl orderLockImpl2 = new OrderLockImpl();
 
     // Act
-    orderLockImpl.setKey("Node Key");
+    orderLockImpl2.setKey("Node Key");
 
     // Assert
-    assertEquals("Node Key", orderLockImpl.getKey());
-    assertEquals("Node Key", orderLockImpl.orderLockPK.getKey());
-  }
-
-  /**
-   * Test {@link OrderLockImpl#setKey(String)}.
-   * <p>
-   * Method under test: {@link OrderLockImpl#setKey(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetKey2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass175 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.OrderLockImpl orderLockImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OrderLockImpl()).setKey("Node Key");
+    assertEquals("Node Key", orderLockImpl2.getKey());
+    assertEquals("Node Key", orderLockImpl2.orderLockPK.getKey());
   }
 
   /**
    * Test new {@link OrderLockImpl} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link OrderLockImpl}
+   * Method under test: default or parameterless constructor of {@link OrderLockImpl}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OrderLockImpl.<init>()"})
   public void testNewOrderLockImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange and Act
     OrderLockImpl actualOrderLockImpl = new OrderLockImpl();
 
@@ -572,40 +423,10 @@ public class OrderLockImplDiffblueTest {
     assertEquals('N', actualOrderLockImpl.locked.charValue());
     assertNull(actualOrderLockImpl.getLastUpdated());
     assertNull(actualOrderLockImpl.getOrderId());
-    OrderLockImpl.OrderLockPk orderLockPk = actualOrderLockImpl.orderLockPK;
+    OrderLockPk orderLockPk = actualOrderLockImpl.orderLockPK;
     assertNull(orderLockPk.getOrderId());
     assertNull(actualOrderLockImpl.getKey());
     assertNull(orderLockPk.getKey());
     assertFalse(actualOrderLockImpl.getLocked());
-  }
-
-  /**
-   * Test new {@link OrderLockImpl} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link OrderLockImpl}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testNewOrderLockImpl2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass156 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.OrderLockImpl orderLockImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    new OrderLockImpl();
   }
 }

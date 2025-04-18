@@ -1,9 +1,29 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.server.service.type;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -21,6 +41,8 @@ public class ContextTypeDiffblueTest {
    * Method under test: {@link ContextType#getInstance(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ContextType ContextType.getInstance(String)"})
   public void testGetInstance() {
     // Arrange and Act
     ContextType actualInstance = ContextType.getInstance("Type");
@@ -41,6 +63,9 @@ public class ContextTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ContextType.<init>()", "String ContextType.getFriendlyType()",
+      "String ContextType.getType()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     ContextType actualContextType = new ContextType();
@@ -61,6 +86,8 @@ public class ContextTypeDiffblueTest {
    * Method under test: {@link ContextType#ContextType(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ContextType.<init>(String, String)"})
   public void testNewContextType_whenGlobal_thenReturnTypeIsGlobal() {
     // Arrange and Act
     ContextType actualContextType = new ContextType("Global", "Friendly Type");
@@ -80,6 +107,8 @@ public class ContextTypeDiffblueTest {
    * Method under test: {@link ContextType#ContextType(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ContextType.<init>(String, String)"})
   public void testNewContextType_whenType_thenReturnType() {
     // Arrange and Act
     ContextType actualContextType = new ContextType("Type", "Friendly Type");
@@ -103,6 +132,8 @@ public class ContextTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ContextType.equals(Object)", "int ContextType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     ContextType contextType = ContextType.CATALOG;
@@ -128,6 +159,8 @@ public class ContextTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ContextType.equals(Object)", "int ContextType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     ContextType contextType = new ContextType();
@@ -153,6 +186,8 @@ public class ContextTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ContextType.equals(Object)", "int ContextType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     ContextType contextType = new ContextType("CATALOG", "Friendly Type");
@@ -178,6 +213,8 @@ public class ContextTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ContextType.equals(Object)", "int ContextType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     ContextType contextType = ContextType.CATALOG;
@@ -198,9 +235,27 @@ public class ContextTypeDiffblueTest {
    * Method under test: {@link ContextType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ContextType.equals(Object)", "int ContextType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(ContextType.GLOBAL, ContextType.CATALOG);
+  }
+
+  /**
+   * Test {@link ContextType#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ContextType#equals(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ContextType.equals(Object)", "int ContextType.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange, Act and Assert
     assertNotEquals(new ContextType(), ContextType.CATALOG);
   }
 
@@ -214,6 +269,8 @@ public class ContextTypeDiffblueTest {
    * Method under test: {@link ContextType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ContextType.equals(Object)", "int ContextType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(ContextType.CATALOG, null);
@@ -229,6 +286,8 @@ public class ContextTypeDiffblueTest {
    * Method under test: {@link ContextType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ContextType.equals(Object)", "int ContextType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(ContextType.CATALOG, "Different type to ContextType");

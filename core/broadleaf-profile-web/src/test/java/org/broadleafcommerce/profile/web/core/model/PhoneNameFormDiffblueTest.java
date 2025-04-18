@@ -1,10 +1,29 @@
+/*-
+ * #%L
+ * BroadleafCommerce Profile Web
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.profile.web.core.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.profile.core.domain.Phone;
 import org.broadleafcommerce.profile.core.domain.PhoneImpl;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 class PhoneNameFormDiffblueTest {
@@ -22,6 +41,10 @@ class PhoneNameFormDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void PhoneNameForm.<init>()", "Phone PhoneNameForm.getPhone()",
+      "String PhoneNameForm.getPhoneName()", "void PhoneNameForm.setPhone(Phone)",
+      "void PhoneNameForm.setPhoneName(String)"})
   void testGettersAndSetters() {
     // Arrange and Act
     PhoneNameForm actualPhoneNameForm = new PhoneNameForm();
@@ -30,7 +53,7 @@ class PhoneNameFormDiffblueTest {
     actualPhoneNameForm.setPhoneName("6625550144");
     Phone actualPhone = actualPhoneNameForm.getPhone();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("6625550144", actualPhoneNameForm.getPhoneName());
     assertSame(phone, actualPhone);
   }

@@ -18,9 +18,11 @@
 package org.broadleafcommerce.common.money.util;
 
 import static org.junit.Assert.assertEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Currency;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -33,26 +35,6 @@ public class CurrencyAdapterDiffblueTest {
   private CurrencyAdapter currencyAdapter;
 
   /**
-   * Test {@link CurrencyAdapter#marshal(Currency)} with {@code Currency}.
-   * <p>
-   * Method under test: {@link CurrencyAdapter#marshal(Currency)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testMarshalWithCurrency() throws Exception {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.broadleafcommerce.common.money.util.CurrencyAdapter.marshal(CurrencyAdapter.java:36)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange and Act
-    (new CurrencyAdapter()).marshal(null);
-  }
-
-  /**
    * Test {@link CurrencyAdapter#unmarshal(String)} with {@code String}.
    * <ul>
    *   <li>When {@code GBP}.</li>
@@ -62,6 +44,8 @@ public class CurrencyAdapterDiffblueTest {
    * Method under test: {@link CurrencyAdapter#unmarshal(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Currency CurrencyAdapter.unmarshal(String)"})
   public void testUnmarshalWithString_whenGbp_thenReturnDisplayNameIsBritishPound() throws Exception {
     // Arrange and Act
     Currency actualUnmarshalResult = currencyAdapter.unmarshal("GBP");
@@ -73,22 +57,5 @@ public class CurrencyAdapterDiffblueTest {
     assertEquals("£", actualUnmarshalResult.getSymbol());
     assertEquals(2, actualUnmarshalResult.getDefaultFractionDigits());
     assertEquals(826, actualUnmarshalResult.getNumericCode());
-  }
-
-  /**
-   * Test new {@link CurrencyAdapter} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link CurrencyAdapter}
-   */
-  @Test
-  public void testNewCurrencyAdapter() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing observers.
-    //   Diffblue Cover was unable to create an assertion.
-    //   There are no fields that could be asserted on.
-
-    // Arrange and Act
-    new CurrencyAdapter();
   }
 }

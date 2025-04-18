@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework Web
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.web.checkout.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -5,11 +22,15 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.anyBoolean;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -20,14 +41,22 @@ import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
 import org.broadleafcommerce.common.i18n.domain.ISOCountryImpl;
 import org.broadleafcommerce.common.locale.domain.LocaleImpl;
 import org.broadleafcommerce.common.money.Money;
+import org.broadleafcommerce.common.payment.PaymentType;
+import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
+import org.broadleafcommerce.core.order.domain.FulfillmentOptionImpl;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.domain.OrderImpl;
+import org.broadleafcommerce.core.order.service.FulfillmentGroupService;
 import org.broadleafcommerce.core.order.service.type.OrderStatus;
+import org.broadleafcommerce.core.payment.domain.OrderPayment;
+import org.broadleafcommerce.core.payment.domain.OrderPaymentImpl;
+import org.broadleafcommerce.core.payment.service.OrderPaymentService;
 import org.broadleafcommerce.core.web.checkout.model.BillingInfoForm;
 import org.broadleafcommerce.core.web.checkout.model.OrderInfoForm;
 import org.broadleafcommerce.core.web.checkout.model.PaymentInfoForm;
 import org.broadleafcommerce.core.web.checkout.model.ShippingInfoForm;
+import org.broadleafcommerce.core.web.order.service.CartStateService;
 import org.broadleafcommerce.profile.core.domain.Address;
 import org.broadleafcommerce.profile.core.domain.AddressImpl;
 import org.broadleafcommerce.profile.core.domain.ChallengeQuestionImpl;
@@ -36,84 +65,59 @@ import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
 import org.broadleafcommerce.profile.core.domain.CustomerPayment;
 import org.broadleafcommerce.profile.core.domain.CustomerPaymentImpl;
+import org.broadleafcommerce.profile.core.domain.Phone;
 import org.broadleafcommerce.profile.core.domain.PhoneImpl;
 import org.broadleafcommerce.profile.core.domain.StateImpl;
-import org.junit.jupiter.api.Disabled;
+import org.broadleafcommerce.profile.core.service.CustomerAddressService;
+import org.broadleafcommerce.profile.core.service.CustomerPaymentService;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.ui.ConcurrentModel;
-import org.springframework.ui.Model;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.PropertyResolver;
 
-@ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml",
-    "/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 class CheckoutFormServiceImplDiffblueTest {
-  @Autowired
+  @Mock
+  private CartStateService cartStateService;
+
+  @InjectMocks
   private CheckoutFormServiceImpl checkoutFormServiceImpl;
 
-  /**
-   * Test
-   * {@link CheckoutFormServiceImpl#prePopulateOrderInfoForm(OrderInfoForm, Order)}.
-   * <p>
-   * Method under test:
-   * {@link CheckoutFormServiceImpl#prePopulateOrderInfoForm(OrderInfoForm, Order)}
-   */
-  @Test
-  @DisplayName("Test prePopulateOrderInfoForm(OrderInfoForm, Order)")
-  @Disabled("TODO: Complete this test")
-  void testPrePopulateOrderInfoForm() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.checkout.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3199 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.checkout.service.CheckoutFormServiceImpl checkoutFormServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Mock
+  private CustomerAddressService customerAddressService;
 
-    // Arrange
-    CheckoutFormServiceImpl checkoutFormServiceImpl2 = new CheckoutFormServiceImpl();
+  @Mock
+  private CustomerPaymentService customerPaymentService;
 
-    OrderInfoForm orderInfoForm = new OrderInfoForm();
-    orderInfoForm.setEmailAddress("42 Main St");
+  @Mock
+  private Environment environment;
 
-    // Act
-    checkoutFormServiceImpl2.prePopulateOrderInfoForm(orderInfoForm, new NullOrderImpl());
-  }
+  @Mock
+  private FulfillmentGroupService fulfillmentGroupService;
+
+  @Mock
+  private OrderPaymentService orderPaymentService;
 
   /**
-   * Test
-   * {@link CheckoutFormServiceImpl#prePopulateOrderInfoForm(OrderInfoForm, Order)}.
+   * Test {@link CheckoutFormServiceImpl#prePopulateOrderInfoForm(OrderInfoForm, Order)}.
    * <ul>
-   *   <li>Then {@link OrderInfoForm} (default constructor) EmailAddress is
-   * {@code null}.</li>
+   *   <li>Then {@link OrderInfoForm} (default constructor) EmailAddress is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CheckoutFormServiceImpl#prePopulateOrderInfoForm(OrderInfoForm, Order)}
+   * Method under test: {@link CheckoutFormServiceImpl#prePopulateOrderInfoForm(OrderInfoForm, Order)}
    */
   @Test
   @DisplayName("Test prePopulateOrderInfoForm(OrderInfoForm, Order); then OrderInfoForm (default constructor) EmailAddress is 'null'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"OrderInfoForm CheckoutFormServiceImpl.prePopulateOrderInfoForm(OrderInfoForm, Order)"})
   void testPrePopulateOrderInfoForm_thenOrderInfoFormEmailAddressIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CheckoutFormServiceImpl checkoutFormServiceImpl = new CheckoutFormServiceImpl();
-
     OrderInfoForm orderInfoForm = new OrderInfoForm();
     orderInfoForm.setEmailAddress("42 Main St");
 
@@ -127,101 +131,562 @@ class CheckoutFormServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CheckoutFormServiceImpl#prePopulateOrderInfoForm(OrderInfoForm, Order)}.
-   * <ul>
-   *   <li>Then return {@link OrderInfoForm}.</li>
-   * </ul>
+   * Test {@link CheckoutFormServiceImpl#prePopulateShippingInfoForm(ShippingInfoForm, Order)}.
    * <p>
-   * Method under test:
-   * {@link CheckoutFormServiceImpl#prePopulateOrderInfoForm(OrderInfoForm, Order)}
-   */
-  @Test
-  @DisplayName("Test prePopulateOrderInfoForm(OrderInfoForm, Order); then return OrderInfoForm")
-  void testPrePopulateOrderInfoForm_thenReturnOrderInfoForm() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CheckoutFormServiceImpl checkoutFormServiceImpl = new CheckoutFormServiceImpl();
-    OrderInfoForm orderInfoForm = mock(OrderInfoForm.class);
-    doNothing().when(orderInfoForm).setEmailAddress(Mockito.<String>any());
-    orderInfoForm.setEmailAddress("42 Main St");
-
-    // Act
-    OrderInfoForm actualPrePopulateOrderInfoFormResult = checkoutFormServiceImpl.prePopulateOrderInfoForm(orderInfoForm,
-        new NullOrderImpl());
-
-    // Assert
-    verify(orderInfoForm, atLeast(1)).setEmailAddress(Mockito.<String>any());
-    assertSame(orderInfoForm, actualPrePopulateOrderInfoFormResult);
-  }
-
-  /**
-   * Test
-   * {@link CheckoutFormServiceImpl#prePopulateShippingInfoForm(ShippingInfoForm, Order)}.
-   * <p>
-   * Method under test:
-   * {@link CheckoutFormServiceImpl#prePopulateShippingInfoForm(ShippingInfoForm, Order)}
+   * Method under test: {@link CheckoutFormServiceImpl#prePopulateShippingInfoForm(ShippingInfoForm, Order)}
    */
   @Test
   @DisplayName("Test prePopulateShippingInfoForm(ShippingInfoForm, Order)")
-  @Disabled("TODO: Complete this test")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"ShippingInfoForm CheckoutFormServiceImpl.prePopulateShippingInfoForm(ShippingInfoForm, Order)"})
   void testPrePopulateShippingInfoForm() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.checkout.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3556 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.checkout.service.CheckoutFormServiceImpl checkoutFormServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    CheckoutFormServiceImpl checkoutFormServiceImpl2 = new CheckoutFormServiceImpl();
+    FulfillmentGroup fulfillmentGroup = mock(FulfillmentGroup.class);
+    FulfillmentOptionImpl fulfillmentOptionImpl = new FulfillmentOptionImpl();
+    when(fulfillmentGroup.getFulfillmentOption()).thenReturn(fulfillmentOptionImpl);
+    when(fulfillmentGroup.getAddress()).thenReturn(new AddressImpl());
+    when(fulfillmentGroupService.getFirstShippableFulfillmentGroup(Mockito.<Order>any())).thenReturn(fulfillmentGroup);
     ShippingInfoForm shippingInfoForm = new ShippingInfoForm();
 
     // Act
-    checkoutFormServiceImpl2.prePopulateShippingInfoForm(shippingInfoForm, new NullOrderImpl());
+    ShippingInfoForm actualPrePopulateShippingInfoFormResult = checkoutFormServiceImpl
+        .prePopulateShippingInfoForm(shippingInfoForm, new NullOrderImpl());
+
+    // Assert
+    verify(fulfillmentGroup, atLeast(1)).getAddress();
+    verify(fulfillmentGroup).getFulfillmentOption();
+    verify(fulfillmentGroupService).getFirstShippableFulfillmentGroup(isA(Order.class));
+    assertSame(fulfillmentOptionImpl, shippingInfoForm.getFulfillmentOption());
+    assertSame(fulfillmentOptionImpl, actualPrePopulateShippingInfoFormResult.getFulfillmentOption());
   }
 
   /**
-   * Test
-   * {@link CheckoutFormServiceImpl#prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order)}.
+   * Test {@link CheckoutFormServiceImpl#prePopulateShippingInfoForm(ShippingInfoForm, Order)}.
    * <p>
-   * Method under test:
-   * {@link CheckoutFormServiceImpl#prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order)}
+   * Method under test: {@link CheckoutFormServiceImpl#prePopulateShippingInfoForm(ShippingInfoForm, Order)}
    */
   @Test
-  @DisplayName("Test prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order)")
-  @Disabled("TODO: Complete this test")
-  void testPrePopulateBillingInfoForm() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.checkout.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3072 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.checkout.service.CheckoutFormServiceImpl checkoutFormServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @DisplayName("Test prePopulateShippingInfoForm(ShippingInfoForm, Order)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"ShippingInfoForm CheckoutFormServiceImpl.prePopulateShippingInfoForm(ShippingInfoForm, Order)"})
+  void testPrePopulateShippingInfoForm2() {
     // Arrange
-    CheckoutFormServiceImpl checkoutFormServiceImpl2 = new CheckoutFormServiceImpl();
+    FulfillmentGroup fulfillmentGroup = mock(FulfillmentGroup.class);
+    when(fulfillmentGroup.getFulfillmentOption()).thenReturn(null);
+    when(fulfillmentGroup.getAddress()).thenReturn(new AddressImpl());
+    when(fulfillmentGroupService.getFirstShippableFulfillmentGroup(Mockito.<Order>any())).thenReturn(fulfillmentGroup);
+    ShippingInfoForm shippingInfoForm = new ShippingInfoForm();
+
+    // Act
+    checkoutFormServiceImpl.prePopulateShippingInfoForm(shippingInfoForm, new NullOrderImpl());
+
+    // Assert
+    verify(fulfillmentGroup, atLeast(1)).getAddress();
+    verify(fulfillmentGroup).getFulfillmentOption();
+    verify(fulfillmentGroupService).getFirstShippableFulfillmentGroup(isA(Order.class));
+  }
+
+  /**
+   * Test {@link CheckoutFormServiceImpl#prePopulateShippingInfoForm(ShippingInfoForm, Order)}.
+   * <ul>
+   *   <li>Then Address return {@link AddressImpl}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CheckoutFormServiceImpl#prePopulateShippingInfoForm(ShippingInfoForm, Order)}
+   */
+  @Test
+  @DisplayName("Test prePopulateShippingInfoForm(ShippingInfoForm, Order); then Address return AddressImpl")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"ShippingInfoForm CheckoutFormServiceImpl.prePopulateShippingInfoForm(ShippingInfoForm, Order)"})
+  void testPrePopulateShippingInfoForm_thenAddressReturnAddressImpl() {
+    // Arrange
+    when(fulfillmentGroupService.getFirstShippableFulfillmentGroup(Mockito.<Order>any())).thenReturn(null);
+    ShippingInfoForm shippingInfoForm = new ShippingInfoForm();
+
+    // Act
+    ShippingInfoForm actualPrePopulateShippingInfoFormResult = checkoutFormServiceImpl
+        .prePopulateShippingInfoForm(shippingInfoForm, new NullOrderImpl());
+
+    // Assert
+    verify(fulfillmentGroupService).getFirstShippableFulfillmentGroup(isA(Order.class));
+    Address address = actualPrePopulateShippingInfoFormResult.getAddress();
+    assertTrue(address instanceof AddressImpl);
+    Phone phoneFax = address.getPhoneFax();
+    assertTrue(phoneFax instanceof PhoneImpl);
+    Phone phonePrimary = address.getPhonePrimary();
+    assertTrue(phonePrimary instanceof PhoneImpl);
+    Phone phoneSecondary = address.getPhoneSecondary();
+    assertTrue(phoneSecondary instanceof PhoneImpl);
+    assertNull(phoneFax.getId());
+    assertNull(phoneFax.getCountryCode());
+    assertNull(phoneFax.getExtension());
+    assertNull(phoneFax.getPhoneNumber());
+    assertFalse(phoneFax.isDefault());
+    assertTrue(phoneFax.isActive());
+    assertEquals(phoneFax, phonePrimary);
+    assertEquals(phoneFax, phoneSecondary);
+  }
+
+  /**
+   * Test {@link CheckoutFormServiceImpl#prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order)}.
+   * <ul>
+   *   <li>Given {@link AddressImpl} (default constructor) AddressLine1 is {@code 42 Main St}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CheckoutFormServiceImpl#prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order)}
+   */
+  @Test
+  @DisplayName("Test prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order); given AddressImpl (default constructor) AddressLine1 is '42 Main St'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "BillingInfoForm CheckoutFormServiceImpl.prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order)"})
+  void testPrePopulateBillingInfoForm_givenAddressImplAddressLine1Is42MainSt() {
+    // Arrange
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(new ArrayList<>());
+
+    AddressImpl addressImpl = new AddressImpl();
+    addressImpl.setAddressLine1("42 Main St");
+    BillingInfoForm billingInfoForm = mock(BillingInfoForm.class);
+    when(billingInfoForm.getAddress()).thenReturn(addressImpl);
+    doNothing().when(billingInfoForm).setAddress(Mockito.<Address>any());
+    doNothing().when(billingInfoForm).setCustomerPayment(Mockito.<CustomerPayment>any());
+    doNothing().when(billingInfoForm).setCustomerPaymentId(Mockito.<Long>any());
+    doNothing().when(billingInfoForm).setPaymentName(Mockito.<String>any());
+    doNothing().when(billingInfoForm).setSaveNewPayment(Mockito.<Boolean>any());
+    doNothing().when(billingInfoForm).setUseCustomerPayment(Mockito.<Boolean>any());
+    doNothing().when(billingInfoForm).setUseShippingAddress(anyBoolean());
+    billingInfoForm.setAddress(new AddressImpl());
+    billingInfoForm.setCustomerPayment(new CustomerPaymentImpl());
+    billingInfoForm.setCustomerPaymentId(1L);
+    billingInfoForm.setPaymentName("Payment Name");
+    billingInfoForm.setSaveNewPayment(true);
+    billingInfoForm.setUseCustomerPayment(true);
+    billingInfoForm.setUseShippingAddress(true);
+    ShippingInfoForm shippingInfoForm = mock(ShippingInfoForm.class);
+    when(shippingInfoForm.getAddress()).thenReturn(new AddressImpl());
+
+    // Act
+    BillingInfoForm actualPrePopulateBillingInfoFormResult = checkoutFormServiceImpl
+        .prePopulateBillingInfoForm(billingInfoForm, shippingInfoForm, new NullOrderImpl());
+
+    // Assert
+    verify(orderPaymentService).readPaymentsForOrder(isA(Order.class));
+    verify(billingInfoForm).getAddress();
+    verify(billingInfoForm).setAddress(isA(Address.class));
+    verify(billingInfoForm).setCustomerPayment(isA(CustomerPayment.class));
+    verify(billingInfoForm).setCustomerPaymentId(eq(1L));
+    verify(billingInfoForm).setPaymentName(eq("Payment Name"));
+    verify(billingInfoForm).setSaveNewPayment(eq(true));
+    verify(billingInfoForm).setUseCustomerPayment(eq(true));
+    verify(billingInfoForm, atLeast(1)).setUseShippingAddress(anyBoolean());
+    verify(shippingInfoForm).getAddress();
+    assertSame(billingInfoForm, actualPrePopulateBillingInfoFormResult);
+  }
+
+  /**
+   * Test {@link CheckoutFormServiceImpl#prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order)}.
+   * <ul>
+   *   <li>Given {@link AddressImpl} (default constructor) AddressLine2 is {@code 42 Main St}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CheckoutFormServiceImpl#prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order)}
+   */
+  @Test
+  @DisplayName("Test prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order); given AddressImpl (default constructor) AddressLine2 is '42 Main St'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "BillingInfoForm CheckoutFormServiceImpl.prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order)"})
+  void testPrePopulateBillingInfoForm_givenAddressImplAddressLine2Is42MainSt() {
+    // Arrange
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(new ArrayList<>());
+
+    AddressImpl addressImpl = new AddressImpl();
+    addressImpl.setAddressLine2("42 Main St");
+    BillingInfoForm billingInfoForm = mock(BillingInfoForm.class);
+    when(billingInfoForm.getAddress()).thenReturn(addressImpl);
+    doNothing().when(billingInfoForm).setAddress(Mockito.<Address>any());
+    doNothing().when(billingInfoForm).setCustomerPayment(Mockito.<CustomerPayment>any());
+    doNothing().when(billingInfoForm).setCustomerPaymentId(Mockito.<Long>any());
+    doNothing().when(billingInfoForm).setPaymentName(Mockito.<String>any());
+    doNothing().when(billingInfoForm).setSaveNewPayment(Mockito.<Boolean>any());
+    doNothing().when(billingInfoForm).setUseCustomerPayment(Mockito.<Boolean>any());
+    doNothing().when(billingInfoForm).setUseShippingAddress(anyBoolean());
+    billingInfoForm.setAddress(new AddressImpl());
+    billingInfoForm.setCustomerPayment(new CustomerPaymentImpl());
+    billingInfoForm.setCustomerPaymentId(1L);
+    billingInfoForm.setPaymentName("Payment Name");
+    billingInfoForm.setSaveNewPayment(true);
+    billingInfoForm.setUseCustomerPayment(true);
+    billingInfoForm.setUseShippingAddress(true);
+    ShippingInfoForm shippingInfoForm = mock(ShippingInfoForm.class);
+    when(shippingInfoForm.getAddress()).thenReturn(new AddressImpl());
+
+    // Act
+    BillingInfoForm actualPrePopulateBillingInfoFormResult = checkoutFormServiceImpl
+        .prePopulateBillingInfoForm(billingInfoForm, shippingInfoForm, new NullOrderImpl());
+
+    // Assert
+    verify(orderPaymentService).readPaymentsForOrder(isA(Order.class));
+    verify(billingInfoForm).getAddress();
+    verify(billingInfoForm).setAddress(isA(Address.class));
+    verify(billingInfoForm).setCustomerPayment(isA(CustomerPayment.class));
+    verify(billingInfoForm).setCustomerPaymentId(eq(1L));
+    verify(billingInfoForm).setPaymentName(eq("Payment Name"));
+    verify(billingInfoForm).setSaveNewPayment(eq(true));
+    verify(billingInfoForm).setUseCustomerPayment(eq(true));
+    verify(billingInfoForm, atLeast(1)).setUseShippingAddress(anyBoolean());
+    verify(shippingInfoForm).getAddress();
+    assertSame(billingInfoForm, actualPrePopulateBillingInfoFormResult);
+  }
+
+  /**
+   * Test {@link CheckoutFormServiceImpl#prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order)}.
+   * <ul>
+   *   <li>Given {@link AddressImpl} (default constructor) City is {@code Oxford}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CheckoutFormServiceImpl#prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order)}
+   */
+  @Test
+  @DisplayName("Test prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order); given AddressImpl (default constructor) City is 'Oxford'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "BillingInfoForm CheckoutFormServiceImpl.prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order)"})
+  void testPrePopulateBillingInfoForm_givenAddressImplCityIsOxford() {
+    // Arrange
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(new ArrayList<>());
+
+    AddressImpl addressImpl = new AddressImpl();
+    addressImpl.setCity("Oxford");
+    BillingInfoForm billingInfoForm = mock(BillingInfoForm.class);
+    when(billingInfoForm.getAddress()).thenReturn(addressImpl);
+    doNothing().when(billingInfoForm).setAddress(Mockito.<Address>any());
+    doNothing().when(billingInfoForm).setCustomerPayment(Mockito.<CustomerPayment>any());
+    doNothing().when(billingInfoForm).setCustomerPaymentId(Mockito.<Long>any());
+    doNothing().when(billingInfoForm).setPaymentName(Mockito.<String>any());
+    doNothing().when(billingInfoForm).setSaveNewPayment(Mockito.<Boolean>any());
+    doNothing().when(billingInfoForm).setUseCustomerPayment(Mockito.<Boolean>any());
+    doNothing().when(billingInfoForm).setUseShippingAddress(anyBoolean());
+    billingInfoForm.setAddress(new AddressImpl());
+    billingInfoForm.setCustomerPayment(new CustomerPaymentImpl());
+    billingInfoForm.setCustomerPaymentId(1L);
+    billingInfoForm.setPaymentName("Payment Name");
+    billingInfoForm.setSaveNewPayment(true);
+    billingInfoForm.setUseCustomerPayment(true);
+    billingInfoForm.setUseShippingAddress(true);
+    ShippingInfoForm shippingInfoForm = mock(ShippingInfoForm.class);
+    when(shippingInfoForm.getAddress()).thenReturn(new AddressImpl());
+
+    // Act
+    BillingInfoForm actualPrePopulateBillingInfoFormResult = checkoutFormServiceImpl
+        .prePopulateBillingInfoForm(billingInfoForm, shippingInfoForm, new NullOrderImpl());
+
+    // Assert
+    verify(orderPaymentService).readPaymentsForOrder(isA(Order.class));
+    verify(billingInfoForm).getAddress();
+    verify(billingInfoForm).setAddress(isA(Address.class));
+    verify(billingInfoForm).setCustomerPayment(isA(CustomerPayment.class));
+    verify(billingInfoForm).setCustomerPaymentId(eq(1L));
+    verify(billingInfoForm).setPaymentName(eq("Payment Name"));
+    verify(billingInfoForm).setSaveNewPayment(eq(true));
+    verify(billingInfoForm).setUseCustomerPayment(eq(true));
+    verify(billingInfoForm, atLeast(1)).setUseShippingAddress(anyBoolean());
+    verify(shippingInfoForm).getAddress();
+    assertSame(billingInfoForm, actualPrePopulateBillingInfoFormResult);
+  }
+
+  /**
+   * Test {@link CheckoutFormServiceImpl#prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order)}.
+   * <ul>
+   *   <li>Given {@link AddressImpl} (default constructor) IsoCountryAlpha2 is {@link ISOCountryImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CheckoutFormServiceImpl#prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order)}
+   */
+  @Test
+  @DisplayName("Test prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order); given AddressImpl (default constructor) IsoCountryAlpha2 is ISOCountryImpl (default constructor)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "BillingInfoForm CheckoutFormServiceImpl.prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order)"})
+  void testPrePopulateBillingInfoForm_givenAddressImplIsoCountryAlpha2IsISOCountryImpl() {
+    // Arrange
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(new ArrayList<>());
+
+    AddressImpl addressImpl = new AddressImpl();
+    addressImpl.setIsoCountryAlpha2(new ISOCountryImpl());
+    BillingInfoForm billingInfoForm = mock(BillingInfoForm.class);
+    when(billingInfoForm.getAddress()).thenReturn(addressImpl);
+    doNothing().when(billingInfoForm).setAddress(Mockito.<Address>any());
+    doNothing().when(billingInfoForm).setCustomerPayment(Mockito.<CustomerPayment>any());
+    doNothing().when(billingInfoForm).setCustomerPaymentId(Mockito.<Long>any());
+    doNothing().when(billingInfoForm).setPaymentName(Mockito.<String>any());
+    doNothing().when(billingInfoForm).setSaveNewPayment(Mockito.<Boolean>any());
+    doNothing().when(billingInfoForm).setUseCustomerPayment(Mockito.<Boolean>any());
+    doNothing().when(billingInfoForm).setUseShippingAddress(anyBoolean());
+    billingInfoForm.setAddress(new AddressImpl());
+    billingInfoForm.setCustomerPayment(new CustomerPaymentImpl());
+    billingInfoForm.setCustomerPaymentId(1L);
+    billingInfoForm.setPaymentName("Payment Name");
+    billingInfoForm.setSaveNewPayment(true);
+    billingInfoForm.setUseCustomerPayment(true);
+    billingInfoForm.setUseShippingAddress(true);
+    ShippingInfoForm shippingInfoForm = mock(ShippingInfoForm.class);
+    when(shippingInfoForm.getAddress()).thenReturn(new AddressImpl());
+
+    // Act
+    BillingInfoForm actualPrePopulateBillingInfoFormResult = checkoutFormServiceImpl
+        .prePopulateBillingInfoForm(billingInfoForm, shippingInfoForm, new NullOrderImpl());
+
+    // Assert
+    verify(orderPaymentService).readPaymentsForOrder(isA(Order.class));
+    verify(billingInfoForm).getAddress();
+    verify(billingInfoForm).setAddress(isA(Address.class));
+    verify(billingInfoForm).setCustomerPayment(isA(CustomerPayment.class));
+    verify(billingInfoForm).setCustomerPaymentId(eq(1L));
+    verify(billingInfoForm).setPaymentName(eq("Payment Name"));
+    verify(billingInfoForm).setSaveNewPayment(eq(true));
+    verify(billingInfoForm).setUseCustomerPayment(eq(true));
+    verify(billingInfoForm, atLeast(1)).setUseShippingAddress(anyBoolean());
+    verify(shippingInfoForm).getAddress();
+    assertSame(billingInfoForm, actualPrePopulateBillingInfoFormResult);
+  }
+
+  /**
+   * Test {@link CheckoutFormServiceImpl#prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order)}.
+   * <ul>
+   *   <li>Given {@link AddressImpl} (default constructor) IsoCountrySubdivision is {@code GB}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CheckoutFormServiceImpl#prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order)}
+   */
+  @Test
+  @DisplayName("Test prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order); given AddressImpl (default constructor) IsoCountrySubdivision is 'GB'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "BillingInfoForm CheckoutFormServiceImpl.prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order)"})
+  void testPrePopulateBillingInfoForm_givenAddressImplIsoCountrySubdivisionIsGb() {
+    // Arrange
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(new ArrayList<>());
+
+    AddressImpl addressImpl = new AddressImpl();
+    addressImpl.setIsoCountrySubdivision("GB");
+    BillingInfoForm billingInfoForm = mock(BillingInfoForm.class);
+    when(billingInfoForm.getAddress()).thenReturn(addressImpl);
+    doNothing().when(billingInfoForm).setAddress(Mockito.<Address>any());
+    doNothing().when(billingInfoForm).setCustomerPayment(Mockito.<CustomerPayment>any());
+    doNothing().when(billingInfoForm).setCustomerPaymentId(Mockito.<Long>any());
+    doNothing().when(billingInfoForm).setPaymentName(Mockito.<String>any());
+    doNothing().when(billingInfoForm).setSaveNewPayment(Mockito.<Boolean>any());
+    doNothing().when(billingInfoForm).setUseCustomerPayment(Mockito.<Boolean>any());
+    doNothing().when(billingInfoForm).setUseShippingAddress(anyBoolean());
+    billingInfoForm.setAddress(new AddressImpl());
+    billingInfoForm.setCustomerPayment(new CustomerPaymentImpl());
+    billingInfoForm.setCustomerPaymentId(1L);
+    billingInfoForm.setPaymentName("Payment Name");
+    billingInfoForm.setSaveNewPayment(true);
+    billingInfoForm.setUseCustomerPayment(true);
+    billingInfoForm.setUseShippingAddress(true);
+    ShippingInfoForm shippingInfoForm = mock(ShippingInfoForm.class);
+    when(shippingInfoForm.getAddress()).thenReturn(new AddressImpl());
+
+    // Act
+    BillingInfoForm actualPrePopulateBillingInfoFormResult = checkoutFormServiceImpl
+        .prePopulateBillingInfoForm(billingInfoForm, shippingInfoForm, new NullOrderImpl());
+
+    // Assert
+    verify(orderPaymentService).readPaymentsForOrder(isA(Order.class));
+    verify(billingInfoForm).getAddress();
+    verify(billingInfoForm).setAddress(isA(Address.class));
+    verify(billingInfoForm).setCustomerPayment(isA(CustomerPayment.class));
+    verify(billingInfoForm).setCustomerPaymentId(eq(1L));
+    verify(billingInfoForm).setPaymentName(eq("Payment Name"));
+    verify(billingInfoForm).setSaveNewPayment(eq(true));
+    verify(billingInfoForm).setUseCustomerPayment(eq(true));
+    verify(billingInfoForm, atLeast(1)).setUseShippingAddress(anyBoolean());
+    verify(shippingInfoForm).getAddress();
+    assertSame(billingInfoForm, actualPrePopulateBillingInfoFormResult);
+  }
+
+  /**
+   * Test {@link CheckoutFormServiceImpl#prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order)}.
+   * <ul>
+   *   <li>Given {@link AddressImpl} (default constructor) PostalCode is {@code Postal Code}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CheckoutFormServiceImpl#prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order)}
+   */
+  @Test
+  @DisplayName("Test prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order); given AddressImpl (default constructor) PostalCode is 'Postal Code'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "BillingInfoForm CheckoutFormServiceImpl.prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order)"})
+  void testPrePopulateBillingInfoForm_givenAddressImplPostalCodeIsPostalCode() {
+    // Arrange
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(new ArrayList<>());
+
+    AddressImpl addressImpl = new AddressImpl();
+    addressImpl.setPostalCode("Postal Code");
+    BillingInfoForm billingInfoForm = mock(BillingInfoForm.class);
+    when(billingInfoForm.getAddress()).thenReturn(addressImpl);
+    doNothing().when(billingInfoForm).setAddress(Mockito.<Address>any());
+    doNothing().when(billingInfoForm).setCustomerPayment(Mockito.<CustomerPayment>any());
+    doNothing().when(billingInfoForm).setCustomerPaymentId(Mockito.<Long>any());
+    doNothing().when(billingInfoForm).setPaymentName(Mockito.<String>any());
+    doNothing().when(billingInfoForm).setSaveNewPayment(Mockito.<Boolean>any());
+    doNothing().when(billingInfoForm).setUseCustomerPayment(Mockito.<Boolean>any());
+    doNothing().when(billingInfoForm).setUseShippingAddress(anyBoolean());
+    billingInfoForm.setAddress(new AddressImpl());
+    billingInfoForm.setCustomerPayment(new CustomerPaymentImpl());
+    billingInfoForm.setCustomerPaymentId(1L);
+    billingInfoForm.setPaymentName("Payment Name");
+    billingInfoForm.setSaveNewPayment(true);
+    billingInfoForm.setUseCustomerPayment(true);
+    billingInfoForm.setUseShippingAddress(true);
+    ShippingInfoForm shippingInfoForm = mock(ShippingInfoForm.class);
+    when(shippingInfoForm.getAddress()).thenReturn(new AddressImpl());
+
+    // Act
+    BillingInfoForm actualPrePopulateBillingInfoFormResult = checkoutFormServiceImpl
+        .prePopulateBillingInfoForm(billingInfoForm, shippingInfoForm, new NullOrderImpl());
+
+    // Assert
+    verify(orderPaymentService).readPaymentsForOrder(isA(Order.class));
+    verify(billingInfoForm).getAddress();
+    verify(billingInfoForm).setAddress(isA(Address.class));
+    verify(billingInfoForm).setCustomerPayment(isA(CustomerPayment.class));
+    verify(billingInfoForm).setCustomerPaymentId(eq(1L));
+    verify(billingInfoForm).setPaymentName(eq("Payment Name"));
+    verify(billingInfoForm).setSaveNewPayment(eq(true));
+    verify(billingInfoForm).setUseCustomerPayment(eq(true));
+    verify(billingInfoForm, atLeast(1)).setUseShippingAddress(anyBoolean());
+    verify(shippingInfoForm).getAddress();
+    assertSame(billingInfoForm, actualPrePopulateBillingInfoFormResult);
+  }
+
+  /**
+   * Test {@link CheckoutFormServiceImpl#prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order)}.
+   * <ul>
+   *   <li>Given {@link AddressImpl} (default constructor) StateProvinceRegion is {@code us-east-2}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CheckoutFormServiceImpl#prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order)}
+   */
+  @Test
+  @DisplayName("Test prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order); given AddressImpl (default constructor) StateProvinceRegion is 'us-east-2'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "BillingInfoForm CheckoutFormServiceImpl.prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order)"})
+  void testPrePopulateBillingInfoForm_givenAddressImplStateProvinceRegionIsUsEast2() {
+    // Arrange
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(new ArrayList<>());
+
+    AddressImpl addressImpl = new AddressImpl();
+    addressImpl.setStateProvinceRegion("us-east-2");
+    BillingInfoForm billingInfoForm = mock(BillingInfoForm.class);
+    when(billingInfoForm.getAddress()).thenReturn(addressImpl);
+    doNothing().when(billingInfoForm).setAddress(Mockito.<Address>any());
+    doNothing().when(billingInfoForm).setCustomerPayment(Mockito.<CustomerPayment>any());
+    doNothing().when(billingInfoForm).setCustomerPaymentId(Mockito.<Long>any());
+    doNothing().when(billingInfoForm).setPaymentName(Mockito.<String>any());
+    doNothing().when(billingInfoForm).setSaveNewPayment(Mockito.<Boolean>any());
+    doNothing().when(billingInfoForm).setUseCustomerPayment(Mockito.<Boolean>any());
+    doNothing().when(billingInfoForm).setUseShippingAddress(anyBoolean());
+    billingInfoForm.setAddress(new AddressImpl());
+    billingInfoForm.setCustomerPayment(new CustomerPaymentImpl());
+    billingInfoForm.setCustomerPaymentId(1L);
+    billingInfoForm.setPaymentName("Payment Name");
+    billingInfoForm.setSaveNewPayment(true);
+    billingInfoForm.setUseCustomerPayment(true);
+    billingInfoForm.setUseShippingAddress(true);
+    ShippingInfoForm shippingInfoForm = mock(ShippingInfoForm.class);
+    when(shippingInfoForm.getAddress()).thenReturn(new AddressImpl());
+
+    // Act
+    BillingInfoForm actualPrePopulateBillingInfoFormResult = checkoutFormServiceImpl
+        .prePopulateBillingInfoForm(billingInfoForm, shippingInfoForm, new NullOrderImpl());
+
+    // Assert
+    verify(orderPaymentService).readPaymentsForOrder(isA(Order.class));
+    verify(billingInfoForm).getAddress();
+    verify(billingInfoForm).setAddress(isA(Address.class));
+    verify(billingInfoForm).setCustomerPayment(isA(CustomerPayment.class));
+    verify(billingInfoForm).setCustomerPaymentId(eq(1L));
+    verify(billingInfoForm).setPaymentName(eq("Payment Name"));
+    verify(billingInfoForm).setSaveNewPayment(eq(true));
+    verify(billingInfoForm).setUseCustomerPayment(eq(true));
+    verify(billingInfoForm, atLeast(1)).setUseShippingAddress(anyBoolean());
+    verify(shippingInfoForm).getAddress();
+    assertSame(billingInfoForm, actualPrePopulateBillingInfoFormResult);
+  }
+
+  /**
+   * Test {@link CheckoutFormServiceImpl#prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order)}.
+   * <ul>
+   *   <li>Given {@code null}.</li>
+   *   <li>When {@link BillingInfoForm} {@link BillingInfoForm#getAddress()} return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CheckoutFormServiceImpl#prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order)}
+   */
+  @Test
+  @DisplayName("Test prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order); given 'null'; when BillingInfoForm getAddress() return 'null'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "BillingInfoForm CheckoutFormServiceImpl.prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order)"})
+  void testPrePopulateBillingInfoForm_givenNull_whenBillingInfoFormGetAddressReturnNull() {
+    // Arrange
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(new ArrayList<>());
+    BillingInfoForm billingInfoForm = mock(BillingInfoForm.class);
+    when(billingInfoForm.getAddress()).thenReturn(null);
+    doNothing().when(billingInfoForm).setAddress(Mockito.<Address>any());
+    doNothing().when(billingInfoForm).setCustomerPayment(Mockito.<CustomerPayment>any());
+    doNothing().when(billingInfoForm).setCustomerPaymentId(Mockito.<Long>any());
+    doNothing().when(billingInfoForm).setPaymentName(Mockito.<String>any());
+    doNothing().when(billingInfoForm).setSaveNewPayment(Mockito.<Boolean>any());
+    doNothing().when(billingInfoForm).setUseCustomerPayment(Mockito.<Boolean>any());
+    doNothing().when(billingInfoForm).setUseShippingAddress(anyBoolean());
+    billingInfoForm.setAddress(new AddressImpl());
+    billingInfoForm.setCustomerPayment(new CustomerPaymentImpl());
+    billingInfoForm.setCustomerPaymentId(1L);
+    billingInfoForm.setPaymentName("Payment Name");
+    billingInfoForm.setSaveNewPayment(true);
+    billingInfoForm.setUseCustomerPayment(true);
+    billingInfoForm.setUseShippingAddress(true);
+    ShippingInfoForm shippingInfoForm = new ShippingInfoForm();
+
+    // Act
+    BillingInfoForm actualPrePopulateBillingInfoFormResult = checkoutFormServiceImpl
+        .prePopulateBillingInfoForm(billingInfoForm, shippingInfoForm, new NullOrderImpl());
+
+    // Assert
+    verify(orderPaymentService).readPaymentsForOrder(isA(Order.class));
+    verify(billingInfoForm).getAddress();
+    verify(billingInfoForm).setAddress(isA(Address.class));
+    verify(billingInfoForm).setCustomerPayment(isA(CustomerPayment.class));
+    verify(billingInfoForm).setCustomerPaymentId(eq(1L));
+    verify(billingInfoForm).setPaymentName(eq("Payment Name"));
+    verify(billingInfoForm).setSaveNewPayment(eq(true));
+    verify(billingInfoForm).setUseCustomerPayment(eq(true));
+    verify(billingInfoForm, atLeast(1)).setUseShippingAddress(anyBoolean());
+    assertSame(billingInfoForm, actualPrePopulateBillingInfoFormResult);
+  }
+
+  /**
+   * Test {@link CheckoutFormServiceImpl#prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order)}.
+   * <ul>
+   *   <li>Then return {@link BillingInfoForm} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CheckoutFormServiceImpl#prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order)}
+   */
+  @Test
+  @DisplayName("Test prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order); then return BillingInfoForm (default constructor)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "BillingInfoForm CheckoutFormServiceImpl.prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order)"})
+  void testPrePopulateBillingInfoForm_thenReturnBillingInfoForm() {
+    // Arrange
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(new ArrayList<>());
 
     BillingInfoForm billingInfoForm = new BillingInfoForm();
     billingInfoForm.setAddress(new AddressImpl());
@@ -234,107 +699,65 @@ class CheckoutFormServiceImplDiffblueTest {
     ShippingInfoForm shippingInfoForm = new ShippingInfoForm();
 
     // Act
-    checkoutFormServiceImpl2.prePopulateBillingInfoForm(billingInfoForm, shippingInfoForm, new NullOrderImpl());
-  }
-
-  /**
-   * Test
-   * {@link CheckoutFormServiceImpl#prePopulatePaymentInfoForm(PaymentInfoForm, ShippingInfoForm, Order)}.
-   * <p>
-   * Method under test:
-   * {@link CheckoutFormServiceImpl#prePopulatePaymentInfoForm(PaymentInfoForm, ShippingInfoForm, Order)}
-   */
-  @Test
-  @DisplayName("Test prePopulatePaymentInfoForm(PaymentInfoForm, ShippingInfoForm, Order)")
-  @Disabled("TODO: Complete this test")
-  void testPrePopulatePaymentInfoForm() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.checkout.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3522 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.checkout.service.CheckoutFormServiceImpl checkoutFormServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CheckoutFormServiceImpl checkoutFormServiceImpl2 = new CheckoutFormServiceImpl();
-    PaymentInfoForm paymentInfoForm = new PaymentInfoForm();
-    ShippingInfoForm shippingInfoForm = new ShippingInfoForm();
-
-    // Act
-    checkoutFormServiceImpl2.prePopulatePaymentInfoForm(paymentInfoForm, shippingInfoForm, new NullOrderImpl());
-  }
-
-  /**
-   * Test {@link CheckoutFormServiceImpl#getKnownEmailAddress(Order, Customer)}.
-   * <p>
-   * Method under test:
-   * {@link CheckoutFormServiceImpl#getKnownEmailAddress(Order, Customer)}
-   */
-  @Test
-  @DisplayName("Test getKnownEmailAddress(Order, Customer)")
-  @Disabled("TODO: Complete this test")
-  void testGetKnownEmailAddress() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.checkout.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2982 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.checkout.service.CheckoutFormServiceImpl checkoutFormServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CheckoutFormServiceImpl checkoutFormServiceImpl2 = new CheckoutFormServiceImpl();
-    NullOrderImpl cart = new NullOrderImpl();
-
-    // Act
-    checkoutFormServiceImpl2.getKnownEmailAddress(cart, new CustomerImpl());
-  }
-
-  /**
-   * Test {@link CheckoutFormServiceImpl#getKnownEmailAddress(Order, Customer)}.
-   * <ul>
-   *   <li>Given {@code 42 Main St}.</li>
-   *   <li>Then return {@code 42 Main St}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link CheckoutFormServiceImpl#getKnownEmailAddress(Order, Customer)}
-   */
-  @Test
-  @DisplayName("Test getKnownEmailAddress(Order, Customer); given '42 Main St'; then return '42 Main St'")
-  void testGetKnownEmailAddress_given42MainSt_thenReturn42MainSt() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CheckoutFormServiceImpl checkoutFormServiceImpl = new CheckoutFormServiceImpl();
-    NullOrderImpl cart = mock(NullOrderImpl.class);
-    when(cart.getEmailAddress()).thenReturn("42 Main St");
-
-    // Act
-    String actualKnownEmailAddress = checkoutFormServiceImpl.getKnownEmailAddress(cart, new CustomerImpl());
+    BillingInfoForm actualPrePopulateBillingInfoFormResult = checkoutFormServiceImpl
+        .prePopulateBillingInfoForm(billingInfoForm, shippingInfoForm, new NullOrderImpl());
 
     // Assert
-    verify(cart, atLeast(1)).getEmailAddress();
-    assertEquals("42 Main St", actualKnownEmailAddress);
+    verify(orderPaymentService).readPaymentsForOrder(isA(Order.class));
+    assertSame(billingInfoForm, actualPrePopulateBillingInfoFormResult);
+  }
+
+  /**
+   * Test {@link CheckoutFormServiceImpl#prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order)}.
+   * <ul>
+   *   <li>When {@link ShippingInfoForm} {@link ShippingInfoForm#getAddress()} return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CheckoutFormServiceImpl#prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order)}
+   */
+  @Test
+  @DisplayName("Test prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order); when ShippingInfoForm getAddress() return 'null'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "BillingInfoForm CheckoutFormServiceImpl.prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order)"})
+  void testPrePopulateBillingInfoForm_whenShippingInfoFormGetAddressReturnNull() {
+    // Arrange
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(new ArrayList<>());
+    BillingInfoForm billingInfoForm = mock(BillingInfoForm.class);
+    when(billingInfoForm.getAddress()).thenReturn(new AddressImpl());
+    doNothing().when(billingInfoForm).setAddress(Mockito.<Address>any());
+    doNothing().when(billingInfoForm).setCustomerPayment(Mockito.<CustomerPayment>any());
+    doNothing().when(billingInfoForm).setCustomerPaymentId(Mockito.<Long>any());
+    doNothing().when(billingInfoForm).setPaymentName(Mockito.<String>any());
+    doNothing().when(billingInfoForm).setSaveNewPayment(Mockito.<Boolean>any());
+    doNothing().when(billingInfoForm).setUseCustomerPayment(Mockito.<Boolean>any());
+    doNothing().when(billingInfoForm).setUseShippingAddress(anyBoolean());
+    billingInfoForm.setAddress(new AddressImpl());
+    billingInfoForm.setCustomerPayment(new CustomerPaymentImpl());
+    billingInfoForm.setCustomerPaymentId(1L);
+    billingInfoForm.setPaymentName("Payment Name");
+    billingInfoForm.setSaveNewPayment(true);
+    billingInfoForm.setUseCustomerPayment(true);
+    billingInfoForm.setUseShippingAddress(true);
+    ShippingInfoForm shippingInfoForm = mock(ShippingInfoForm.class);
+    when(shippingInfoForm.getAddress()).thenReturn(null);
+
+    // Act
+    BillingInfoForm actualPrePopulateBillingInfoFormResult = checkoutFormServiceImpl
+        .prePopulateBillingInfoForm(billingInfoForm, shippingInfoForm, new NullOrderImpl());
+
+    // Assert
+    verify(orderPaymentService).readPaymentsForOrder(isA(Order.class));
+    verify(billingInfoForm).getAddress();
+    verify(billingInfoForm).setAddress(isA(Address.class));
+    verify(billingInfoForm).setCustomerPayment(isA(CustomerPayment.class));
+    verify(billingInfoForm).setCustomerPaymentId(eq(1L));
+    verify(billingInfoForm).setPaymentName(eq("Payment Name"));
+    verify(billingInfoForm).setSaveNewPayment(eq(true));
+    verify(billingInfoForm).setUseCustomerPayment(eq(true));
+    verify(billingInfoForm, atLeast(1)).setUseShippingAddress(anyBoolean());
+    verify(shippingInfoForm).getAddress();
+    assertSame(billingInfoForm, actualPrePopulateBillingInfoFormResult);
   }
 
   /**
@@ -344,17 +767,14 @@ class CheckoutFormServiceImplDiffblueTest {
    *   <li>Then return {@code Cart}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CheckoutFormServiceImpl#getKnownEmailAddress(Order, Customer)}
+   * Method under test: {@link CheckoutFormServiceImpl#getKnownEmailAddress(Order, Customer)}
    */
   @Test
   @DisplayName("Test getKnownEmailAddress(Order, Customer); given 'Cart'; then return 'Cart'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String CheckoutFormServiceImpl.getKnownEmailAddress(Order, Customer)"})
   void testGetKnownEmailAddress_givenCart_thenReturnCart() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CheckoutFormServiceImpl checkoutFormServiceImpl = new CheckoutFormServiceImpl();
-
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
     auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
@@ -382,7 +802,6 @@ class CheckoutFormServiceImplDiffblueTest {
     cart.setTaxOverride(true);
     cart.setTotal(new Money());
     cart.setTotalFulfillmentCharges(new Money());
-    cart.setTotalShipping(new Money());
     cart.setTotalTax(new Money());
     cart.setEmailAddress("Cart");
 
@@ -397,17 +816,14 @@ class CheckoutFormServiceImplDiffblueTest {
    *   <li>Then return {@code Customer}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CheckoutFormServiceImpl#getKnownEmailAddress(Order, Customer)}
+   * Method under test: {@link CheckoutFormServiceImpl#getKnownEmailAddress(Order, Customer)}
    */
   @Test
   @DisplayName("Test getKnownEmailAddress(Order, Customer); given 'Challenge Answer'; then return 'Customer'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String CheckoutFormServiceImpl.getKnownEmailAddress(Order, Customer)"})
   void testGetKnownEmailAddress_givenChallengeAnswer_thenReturnCustomer() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CheckoutFormServiceImpl checkoutFormServiceImpl = new CheckoutFormServiceImpl();
-
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
     auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
@@ -435,7 +851,6 @@ class CheckoutFormServiceImplDiffblueTest {
     cart.setTaxOverride(true);
     cart.setTotal(new Money());
     cart.setTotalFulfillmentCharges(new Money());
-    cart.setTotalShipping(new Money());
     cart.setTotalTax(new Money());
     cart.setEmailAddress(null);
 
@@ -479,17 +894,14 @@ class CheckoutFormServiceImplDiffblueTest {
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CheckoutFormServiceImpl#getKnownEmailAddress(Order, Customer)}
+   * Method under test: {@link CheckoutFormServiceImpl#getKnownEmailAddress(Order, Customer)}
    */
   @Test
   @DisplayName("Test getKnownEmailAddress(Order, Customer); given 'null'; then return 'null'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String CheckoutFormServiceImpl.getKnownEmailAddress(Order, Customer)"})
   void testGetKnownEmailAddress_givenNull_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CheckoutFormServiceImpl checkoutFormServiceImpl = new CheckoutFormServiceImpl();
-
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
     auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
@@ -517,7 +929,6 @@ class CheckoutFormServiceImplDiffblueTest {
     cart.setTaxOverride(true);
     cart.setTotal(new Money());
     cart.setTotalFulfillmentCharges(new Money());
-    cart.setTotalShipping(new Money());
     cart.setTotalTax(new Money());
     cart.setEmailAddress(null);
 
@@ -532,16 +943,14 @@ class CheckoutFormServiceImplDiffblueTest {
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CheckoutFormServiceImpl#getKnownEmailAddress(Order, Customer)}
+   * Method under test: {@link CheckoutFormServiceImpl#getKnownEmailAddress(Order, Customer)}
    */
   @Test
   @DisplayName("Test getKnownEmailAddress(Order, Customer); when NullOrderImpl (default constructor); then return 'null'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String CheckoutFormServiceImpl.getKnownEmailAddress(Order, Customer)"})
   void testGetKnownEmailAddress_whenNullOrderImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CheckoutFormServiceImpl checkoutFormServiceImpl = new CheckoutFormServiceImpl();
     NullOrderImpl cart = new NullOrderImpl();
 
     // Act and Assert
@@ -555,208 +964,486 @@ class CheckoutFormServiceImplDiffblueTest {
    */
   @Test
   @DisplayName("Test getBillingAddress(Order)")
-  @Disabled("TODO: Complete this test")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Address CheckoutFormServiceImpl.getBillingAddress(Order)"})
   void testGetBillingAddress() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.checkout.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2967 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.checkout.service.CheckoutFormServiceImpl checkoutFormServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    CheckoutFormServiceImpl checkoutFormServiceImpl2 = new CheckoutFormServiceImpl();
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.isActive()).thenReturn(true);
+    when(orderPaymentImpl.getBillingAddress()).thenReturn(new AddressImpl());
+    when(orderPaymentImpl.getType()).thenReturn(new PaymentType("Type", "Friendly Type"));
+
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
 
     // Act
-    checkoutFormServiceImpl2.getBillingAddress(new NullOrderImpl());
+    Address actualBillingAddress = checkoutFormServiceImpl.getBillingAddress(new NullOrderImpl());
+
+    // Assert
+    verify(orderPaymentImpl).getBillingAddress();
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isA(Order.class));
+    assertNull(actualBillingAddress);
+  }
+
+  /**
+   * Test {@link CheckoutFormServiceImpl#getBillingAddress(Order)}.
+   * <ul>
+   *   <li>Given {@link OrderPaymentImpl} {@link OrderPaymentImpl#getBillingAddress()} return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CheckoutFormServiceImpl#getBillingAddress(Order)}
+   */
+  @Test
+  @DisplayName("Test getBillingAddress(Order); given OrderPaymentImpl getBillingAddress() return 'null'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Address CheckoutFormServiceImpl.getBillingAddress(Order)"})
+  void testGetBillingAddress_givenOrderPaymentImplGetBillingAddressReturnNull() {
+    // Arrange
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.isActive()).thenReturn(true);
+    when(orderPaymentImpl.getBillingAddress()).thenReturn(null);
+    when(orderPaymentImpl.getType()).thenReturn(new PaymentType("Type", "Friendly Type", true, true));
+
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    Address actualBillingAddress = checkoutFormServiceImpl.getBillingAddress(new NullOrderImpl());
+
+    // Assert
+    verify(orderPaymentImpl).getBillingAddress();
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isA(Order.class));
+    assertNull(actualBillingAddress);
+  }
+
+  /**
+   * Test {@link CheckoutFormServiceImpl#getBillingAddress(Order)}.
+   * <ul>
+   *   <li>Given {@link OrderPaymentImpl} {@link OrderPaymentImpl#isActive()} return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CheckoutFormServiceImpl#getBillingAddress(Order)}
+   */
+  @Test
+  @DisplayName("Test getBillingAddress(Order); given OrderPaymentImpl isActive() return 'false'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Address CheckoutFormServiceImpl.getBillingAddress(Order)"})
+  void testGetBillingAddress_givenOrderPaymentImplIsActiveReturnFalse() {
+    // Arrange
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.isActive()).thenReturn(false);
+    when(orderPaymentImpl.getBillingAddress()).thenReturn(new AddressImpl());
+    when(orderPaymentImpl.getType()).thenReturn(new PaymentType("Type", "Friendly Type"));
+
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    Address actualBillingAddress = checkoutFormServiceImpl.getBillingAddress(new NullOrderImpl());
+
+    // Assert
+    verify(orderPaymentImpl).getBillingAddress();
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isA(Order.class));
+    assertNull(actualBillingAddress);
+  }
+
+  /**
+   * Test {@link CheckoutFormServiceImpl#getBillingAddress(Order)}.
+   * <ul>
+   *   <li>Then return {@link AddressImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CheckoutFormServiceImpl#getBillingAddress(Order)}
+   */
+  @Test
+  @DisplayName("Test getBillingAddress(Order); then return AddressImpl (default constructor)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Address CheckoutFormServiceImpl.getBillingAddress(Order)"})
+  void testGetBillingAddress_thenReturnAddressImpl() {
+    // Arrange
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.isActive()).thenReturn(true);
+    AddressImpl addressImpl = new AddressImpl();
+    when(orderPaymentImpl.getBillingAddress()).thenReturn(addressImpl);
+    when(orderPaymentImpl.getType()).thenReturn(new PaymentType("Type", "Friendly Type", true, true));
+
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    Address actualBillingAddress = checkoutFormServiceImpl.getBillingAddress(new NullOrderImpl());
+
+    // Assert
+    verify(orderPaymentImpl, atLeast(1)).getBillingAddress();
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isA(Order.class));
+    assertSame(addressImpl, actualBillingAddress);
+  }
+
+  /**
+   * Test {@link CheckoutFormServiceImpl#getBillingAddress(Order)}.
+   * <ul>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CheckoutFormServiceImpl#getBillingAddress(Order)}
+   */
+  @Test
+  @DisplayName("Test getBillingAddress(Order); then return 'null'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Address CheckoutFormServiceImpl.getBillingAddress(Order)"})
+  void testGetBillingAddress_thenReturnNull() {
+    // Arrange
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(new ArrayList<>());
+
+    // Act
+    Address actualBillingAddress = checkoutFormServiceImpl.getBillingAddress(new NullOrderImpl());
+
+    // Assert
+    verify(orderPaymentService).readPaymentsForOrder(isA(Order.class));
+    assertNull(actualBillingAddress);
   }
 
   /**
    * Test {@link CheckoutFormServiceImpl#getAddressFromCCOrderPayment(Order)}.
    * <p>
-   * Method under test:
-   * {@link CheckoutFormServiceImpl#getAddressFromCCOrderPayment(Order)}
+   * Method under test: {@link CheckoutFormServiceImpl#getAddressFromCCOrderPayment(Order)}
    */
   @Test
   @DisplayName("Test getAddressFromCCOrderPayment(Order)")
-  @Disabled("TODO: Complete this test")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Address CheckoutFormServiceImpl.getAddressFromCCOrderPayment(Order)"})
   void testGetAddressFromCCOrderPayment() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.checkout.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2954 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.checkout.service.CheckoutFormServiceImpl checkoutFormServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    CheckoutFormServiceImpl checkoutFormServiceImpl2 = new CheckoutFormServiceImpl();
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.isActive()).thenReturn(true);
+    when(orderPaymentImpl.getBillingAddress()).thenReturn(new AddressImpl());
+    when(orderPaymentImpl.getType()).thenReturn(new PaymentType("Type", "Friendly Type"));
+
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
 
     // Act
-    checkoutFormServiceImpl2.getAddressFromCCOrderPayment(new NullOrderImpl());
+    Address actualAddressFromCCOrderPayment = checkoutFormServiceImpl.getAddressFromCCOrderPayment(new NullOrderImpl());
+
+    // Assert
+    verify(orderPaymentImpl).getBillingAddress();
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isA(Order.class));
+    assertNull(actualAddressFromCCOrderPayment);
   }
 
   /**
-   * Test {@link CheckoutFormServiceImpl#getCustomerPaymentUsedForOrder()}.
+   * Test {@link CheckoutFormServiceImpl#getAddressFromCCOrderPayment(Order)}.
    * <p>
-   * Method under test:
-   * {@link CheckoutFormServiceImpl#getCustomerPaymentUsedForOrder()}
+   * Method under test: {@link CheckoutFormServiceImpl#getAddressFromCCOrderPayment(Order)}
    */
   @Test
-  @DisplayName("Test getCustomerPaymentUsedForOrder()")
-  @Disabled("TODO: Complete this test")
-  void testGetCustomerPaymentUsedForOrder() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.checkout.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2980 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.checkout.service.CheckoutFormServiceImpl checkoutFormServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @DisplayName("Test getAddressFromCCOrderPayment(Order)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Address CheckoutFormServiceImpl.getAddressFromCCOrderPayment(Order)"})
+  void testGetAddressFromCCOrderPayment2() {
+    // Arrange
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.isActive()).thenReturn(true);
+    when(orderPaymentImpl.getBillingAddress()).thenReturn(null);
+    when(orderPaymentImpl.getType()).thenReturn(new PaymentType("Type", "Friendly Type"));
 
-    // Arrange and Act
-    (new CheckoutFormServiceImpl()).getCustomerPaymentUsedForOrder();
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    Address actualAddressFromCCOrderPayment = checkoutFormServiceImpl.getAddressFromCCOrderPayment(new NullOrderImpl());
+
+    // Assert
+    verify(orderPaymentImpl).getBillingAddress();
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isA(Order.class));
+    assertNull(actualAddressFromCCOrderPayment);
   }
 
   /**
-   * Test
-   * {@link CheckoutFormServiceImpl#getShouldUseCustomerPaymentDefaultValue(CustomerPayment)}.
+   * Test {@link CheckoutFormServiceImpl#getAddressFromCCOrderPayment(Order)}.
    * <p>
-   * Method under test:
-   * {@link CheckoutFormServiceImpl#getShouldUseCustomerPaymentDefaultValue(CustomerPayment)}
+   * Method under test: {@link CheckoutFormServiceImpl#getAddressFromCCOrderPayment(Order)}
    */
   @Test
-  @DisplayName("Test getShouldUseCustomerPaymentDefaultValue(CustomerPayment)")
-  @Disabled("TODO: Complete this test")
-  void testGetShouldUseCustomerPaymentDefaultValue() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.checkout.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3023 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.checkout.service.CheckoutFormServiceImpl checkoutFormServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @DisplayName("Test getAddressFromCCOrderPayment(Order)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Address CheckoutFormServiceImpl.getAddressFromCCOrderPayment(Order)"})
+  void testGetAddressFromCCOrderPayment3() {
     // Arrange
-    CheckoutFormServiceImpl checkoutFormServiceImpl2 = new CheckoutFormServiceImpl();
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.isActive()).thenReturn(true);
+    when(orderPaymentImpl.getBillingAddress()).thenReturn(null);
+    when(orderPaymentImpl.getType()).thenReturn(new PaymentType("Type", "Friendly Type", true, true));
+
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
 
     // Act
-    checkoutFormServiceImpl2.getShouldUseCustomerPaymentDefaultValue(new CustomerPaymentImpl());
+    Address actualAddressFromCCOrderPayment = checkoutFormServiceImpl.getAddressFromCCOrderPayment(new NullOrderImpl());
+
+    // Assert
+    verify(orderPaymentImpl).getBillingAddress();
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isA(Order.class));
+    assertNull(actualAddressFromCCOrderPayment);
+  }
+
+  /**
+   * Test {@link CheckoutFormServiceImpl#getAddressFromCCOrderPayment(Order)}.
+   * <ul>
+   *   <li>Given {@link OrderPaymentImpl} {@link OrderPaymentImpl#isActive()} return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CheckoutFormServiceImpl#getAddressFromCCOrderPayment(Order)}
+   */
+  @Test
+  @DisplayName("Test getAddressFromCCOrderPayment(Order); given OrderPaymentImpl isActive() return 'false'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Address CheckoutFormServiceImpl.getAddressFromCCOrderPayment(Order)"})
+  void testGetAddressFromCCOrderPayment_givenOrderPaymentImplIsActiveReturnFalse() {
+    // Arrange
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.isActive()).thenReturn(false);
+    when(orderPaymentImpl.getBillingAddress()).thenReturn(new AddressImpl());
+    when(orderPaymentImpl.getType()).thenReturn(new PaymentType("Type", "Friendly Type"));
+
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    Address actualAddressFromCCOrderPayment = checkoutFormServiceImpl.getAddressFromCCOrderPayment(new NullOrderImpl());
+
+    // Assert
+    verify(orderPaymentImpl).getBillingAddress();
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isA(Order.class));
+    assertNull(actualAddressFromCCOrderPayment);
+  }
+
+  /**
+   * Test {@link CheckoutFormServiceImpl#getAddressFromCCOrderPayment(Order)}.
+   * <ul>
+   *   <li>Then return {@link AddressImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CheckoutFormServiceImpl#getAddressFromCCOrderPayment(Order)}
+   */
+  @Test
+  @DisplayName("Test getAddressFromCCOrderPayment(Order); then return AddressImpl (default constructor)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Address CheckoutFormServiceImpl.getAddressFromCCOrderPayment(Order)"})
+  void testGetAddressFromCCOrderPayment_thenReturnAddressImpl() {
+    // Arrange
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.isActive()).thenReturn(true);
+    AddressImpl addressImpl = new AddressImpl();
+    when(orderPaymentImpl.getBillingAddress()).thenReturn(addressImpl);
+    when(orderPaymentImpl.getType()).thenReturn(new PaymentType("Type", "Friendly Type", true, true));
+
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    Address actualAddressFromCCOrderPayment = checkoutFormServiceImpl.getAddressFromCCOrderPayment(new NullOrderImpl());
+
+    // Assert
+    verify(orderPaymentImpl, atLeast(1)).getBillingAddress();
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isA(Order.class));
+    assertSame(addressImpl, actualAddressFromCCOrderPayment);
+  }
+
+  /**
+   * Test {@link CheckoutFormServiceImpl#getAddressFromCCOrderPayment(Order)}.
+   * <ul>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CheckoutFormServiceImpl#getAddressFromCCOrderPayment(Order)}
+   */
+  @Test
+  @DisplayName("Test getAddressFromCCOrderPayment(Order); then return 'null'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Address CheckoutFormServiceImpl.getAddressFromCCOrderPayment(Order)"})
+  void testGetAddressFromCCOrderPayment_thenReturnNull() {
+    // Arrange
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(new ArrayList<>());
+
+    // Act
+    Address actualAddressFromCCOrderPayment = checkoutFormServiceImpl.getAddressFromCCOrderPayment(new NullOrderImpl());
+
+    // Assert
+    verify(orderPaymentService).readPaymentsForOrder(isA(Order.class));
+    assertNull(actualAddressFromCCOrderPayment);
   }
 
   /**
    * Test {@link CheckoutFormServiceImpl#getShouldSaveNewPaymentDefaultValue()}.
+   * <ul>
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class, Object)} return {@code false}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link CheckoutFormServiceImpl#getShouldSaveNewPaymentDefaultValue()}
+   * Method under test: {@link CheckoutFormServiceImpl#getShouldSaveNewPaymentDefaultValue()}
    */
   @Test
-  @DisplayName("Test getShouldSaveNewPaymentDefaultValue()")
-  @Disabled("TODO: Complete this test")
-  void testGetShouldSaveNewPaymentDefaultValue() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.checkout.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3021 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.checkout.service.CheckoutFormServiceImpl checkoutFormServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @DisplayName("Test getShouldSaveNewPaymentDefaultValue(); given Environment getProperty(String, Class, Object) return 'false'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CheckoutFormServiceImpl.getShouldSaveNewPaymentDefaultValue()"})
+  void testGetShouldSaveNewPaymentDefaultValue_givenEnvironmentGetPropertyReturnFalse() {
+    // Arrange
+    when(cartStateService.cartHasTemporaryCreditCard()).thenReturn(true);
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+        .thenReturn(false);
 
-    // Arrange and Act
-    (new CheckoutFormServiceImpl()).getShouldSaveNewPaymentDefaultValue();
+    // Act
+    boolean actualShouldSaveNewPaymentDefaultValue = checkoutFormServiceImpl.getShouldSaveNewPaymentDefaultValue();
+
+    // Assert
+    verify(cartStateService).cartHasTemporaryCreditCard();
+    verify(environment).getProperty(eq("saved.customer.payments.enabled"), isA(Class.class), isA(Object.class));
+    assertFalse(actualShouldSaveNewPaymentDefaultValue);
+  }
+
+  /**
+   * Test {@link CheckoutFormServiceImpl#getShouldSaveNewPaymentDefaultValue()}.
+   * <ul>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CheckoutFormServiceImpl#getShouldSaveNewPaymentDefaultValue()}
+   */
+  @Test
+  @DisplayName("Test getShouldSaveNewPaymentDefaultValue(); then return 'false'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CheckoutFormServiceImpl.getShouldSaveNewPaymentDefaultValue()"})
+  void testGetShouldSaveNewPaymentDefaultValue_thenReturnFalse() {
+    // Arrange
+    when(cartStateService.cartHasTemporaryCreditCard()).thenReturn(true);
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+        .thenReturn(true);
+
+    // Act
+    boolean actualShouldSaveNewPaymentDefaultValue = checkoutFormServiceImpl.getShouldSaveNewPaymentDefaultValue();
+
+    // Assert
+    verify(cartStateService).cartHasTemporaryCreditCard();
+    verify(environment).getProperty(eq("saved.customer.payments.enabled"), isA(Class.class), isA(Object.class));
+    assertFalse(actualShouldSaveNewPaymentDefaultValue);
+  }
+
+  /**
+   * Test {@link CheckoutFormServiceImpl#getShouldSaveNewPaymentDefaultValue()}.
+   * <ul>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CheckoutFormServiceImpl#getShouldSaveNewPaymentDefaultValue()}
+   */
+  @Test
+  @DisplayName("Test getShouldSaveNewPaymentDefaultValue(); then return 'true'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CheckoutFormServiceImpl.getShouldSaveNewPaymentDefaultValue()"})
+  void testGetShouldSaveNewPaymentDefaultValue_thenReturnTrue() {
+    // Arrange
+    when(cartStateService.cartHasTemporaryCreditCard()).thenReturn(false);
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+        .thenReturn(true);
+
+    // Act
+    boolean actualShouldSaveNewPaymentDefaultValue = checkoutFormServiceImpl.getShouldSaveNewPaymentDefaultValue();
+
+    // Assert
+    verify(cartStateService).cartHasTemporaryCreditCard();
+    verify(environment).getProperty(eq("saved.customer.payments.enabled"), isA(Class.class), isA(Object.class));
+    assertTrue(actualShouldSaveNewPaymentDefaultValue);
   }
 
   /**
    * Test {@link CheckoutFormServiceImpl#areCustomerSavedPaymentsEnabled()}.
+   * <ul>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link CheckoutFormServiceImpl#areCustomerSavedPaymentsEnabled()}
+   * Method under test: {@link CheckoutFormServiceImpl#areCustomerSavedPaymentsEnabled()}
    */
   @Test
-  @DisplayName("Test areCustomerSavedPaymentsEnabled()")
-  @Disabled("TODO: Complete this test")
-  void testAreCustomerSavedPaymentsEnabled() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.checkout.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2921 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.checkout.service.CheckoutFormServiceImpl checkoutFormServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @DisplayName("Test areCustomerSavedPaymentsEnabled(); then return 'false'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CheckoutFormServiceImpl.areCustomerSavedPaymentsEnabled()"})
+  void testAreCustomerSavedPaymentsEnabled_thenReturnFalse() {
+    // Arrange
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+        .thenReturn(false);
 
-    // Arrange and Act
-    (new CheckoutFormServiceImpl()).areCustomerSavedPaymentsEnabled();
+    // Act
+    boolean actualAreCustomerSavedPaymentsEnabledResult = checkoutFormServiceImpl.areCustomerSavedPaymentsEnabled();
+
+    // Assert
+    verify(environment).getProperty(eq("saved.customer.payments.enabled"), isA(Class.class), isA(Object.class));
+    assertFalse(actualAreCustomerSavedPaymentsEnabledResult);
   }
 
   /**
-   * Test
-   * {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}.
+   * Test {@link CheckoutFormServiceImpl#areCustomerSavedPaymentsEnabled()}.
+   * <ul>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}
+   * Method under test: {@link CheckoutFormServiceImpl#areCustomerSavedPaymentsEnabled()}
+   */
+  @Test
+  @DisplayName("Test areCustomerSavedPaymentsEnabled(); then return 'true'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CheckoutFormServiceImpl.areCustomerSavedPaymentsEnabled()"})
+  void testAreCustomerSavedPaymentsEnabled_thenReturnTrue() {
+    // Arrange
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+        .thenReturn(true);
+
+    // Act
+    boolean actualAreCustomerSavedPaymentsEnabledResult = checkoutFormServiceImpl.areCustomerSavedPaymentsEnabled();
+
+    // Assert
+    verify(environment).getProperty(eq("saved.customer.payments.enabled"), isA(Class.class), isA(Object.class));
+    assertTrue(actualAreCustomerSavedPaymentsEnabledResult);
+  }
+
+  /**
+   * Test {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}.
+   * <p>
+   * Method under test: {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}
    */
   @Test
   @DisplayName("Test getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "boolean CheckoutFormServiceImpl.getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)"})
   void testGetShouldUseShippingAddressDefaultValue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CheckoutFormServiceImpl checkoutFormServiceImpl = new CheckoutFormServiceImpl();
     AddressImpl address = mock(AddressImpl.class);
     when(address.getIsoCountryAlpha2()).thenReturn(null);
     when(address.getPostalCode()).thenReturn("Postal Code");
@@ -820,19 +1507,17 @@ class CheckoutFormServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}.
+   * Test {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}.
    * <p>
-   * Method under test:
-   * {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}
+   * Method under test: {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}
    */
   @Test
   @DisplayName("Test getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "boolean CheckoutFormServiceImpl.getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)"})
   void testGetShouldUseShippingAddressDefaultValue2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CheckoutFormServiceImpl checkoutFormServiceImpl = new CheckoutFormServiceImpl();
     AddressImpl address = mock(AddressImpl.class);
     when(address.getPostalCode()).thenReturn("foo");
     when(address.getStateProvinceRegion()).thenReturn("us-east-2");
@@ -894,19 +1579,17 @@ class CheckoutFormServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}.
+   * Test {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}.
    * <p>
-   * Method under test:
-   * {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}
+   * Method under test: {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}
    */
   @Test
   @DisplayName("Test getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "boolean CheckoutFormServiceImpl.getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)"})
   void testGetShouldUseShippingAddressDefaultValue3() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CheckoutFormServiceImpl checkoutFormServiceImpl = new CheckoutFormServiceImpl();
     AddressImpl address = mock(AddressImpl.class);
     when(address.getStateProvinceRegion()).thenReturn("foo");
     when(address.getCity()).thenReturn("Oxford");
@@ -966,19 +1649,17 @@ class CheckoutFormServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}.
+   * Test {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}.
    * <p>
-   * Method under test:
-   * {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}
+   * Method under test: {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}
    */
   @Test
   @DisplayName("Test getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "boolean CheckoutFormServiceImpl.getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)"})
   void testGetShouldUseShippingAddressDefaultValue4() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CheckoutFormServiceImpl checkoutFormServiceImpl = new CheckoutFormServiceImpl();
     AddressImpl address = mock(AddressImpl.class);
     when(address.getAddressLine2()).thenReturn("foo");
     when(address.getAddressLine1()).thenReturn("42 Main St");
@@ -1034,61 +1715,20 @@ class CheckoutFormServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}.
-   * <p>
-   * Method under test:
-   * {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}
-   */
-  @Test
-  @DisplayName("Test getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)")
-  @Disabled("TODO: Complete this test")
-  void testGetShouldUseShippingAddressDefaultValue5() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.checkout.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3037 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.checkout.service.CheckoutFormServiceImpl checkoutFormServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CheckoutFormServiceImpl checkoutFormServiceImpl2 = new CheckoutFormServiceImpl();
-    CustomerPaymentImpl customerPaymentUsedForOrder = new CustomerPaymentImpl();
-    PaymentInfoForm paymentInfoForm = new PaymentInfoForm();
-
-    // Act
-    checkoutFormServiceImpl2.getShouldUseShippingAddressDefaultValue(customerPaymentUsedForOrder, paymentInfoForm,
-        new ShippingInfoForm());
-  }
-
-  /**
-   * Test
-   * {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}.
+   * Test {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}.
    * <ul>
    *   <li>Given {@link AddressImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}
+   * Method under test: {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}
    */
   @Test
   @DisplayName("Test getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm); given AddressImpl (default constructor)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "boolean CheckoutFormServiceImpl.getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)"})
   void testGetShouldUseShippingAddressDefaultValue_givenAddressImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CheckoutFormServiceImpl checkoutFormServiceImpl = new CheckoutFormServiceImpl();
-
     PaymentInfoForm paymentInfoForm = new PaymentInfoForm();
     paymentInfoForm.setAddress(new AddressImpl());
 
@@ -1135,23 +1775,20 @@ class CheckoutFormServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}.
+   * Test {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}.
    * <ul>
-   *   <li>Given {@link AddressImpl} {@link AddressImpl#getCity()} return
-   * {@code foo}.</li>
+   *   <li>Given {@link AddressImpl} {@link AddressImpl#getCity()} return {@code foo}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}
+   * Method under test: {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}
    */
   @Test
   @DisplayName("Test getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm); given AddressImpl getCity() return 'foo'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "boolean CheckoutFormServiceImpl.getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)"})
   void testGetShouldUseShippingAddressDefaultValue_givenAddressImplGetCityReturnFoo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CheckoutFormServiceImpl checkoutFormServiceImpl = new CheckoutFormServiceImpl();
     AddressImpl address = mock(AddressImpl.class);
     when(address.getCity()).thenReturn("foo");
     when(address.getAddressLine2()).thenReturn("42 Main St");
@@ -1209,24 +1846,21 @@ class CheckoutFormServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}.
+   * Test {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}.
    * <ul>
    *   <li>Given {@link AddressImpl} (default constructor).</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}
+   * Method under test: {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}
    */
   @Test
   @DisplayName("Test getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm); given AddressImpl (default constructor); then return 'true'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "boolean CheckoutFormServiceImpl.getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)"})
   void testGetShouldUseShippingAddressDefaultValue_givenAddressImpl_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CheckoutFormServiceImpl checkoutFormServiceImpl = new CheckoutFormServiceImpl();
-
     PaymentInfoForm paymentInfoForm = new PaymentInfoForm();
     paymentInfoForm.setAddress(new AddressImpl());
 
@@ -1239,23 +1873,20 @@ class CheckoutFormServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}.
+   * Test {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}.
    * <ul>
    *   <li>Given {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}
+   * Method under test: {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}
    */
   @Test
   @DisplayName("Test getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm); given 'null'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "boolean CheckoutFormServiceImpl.getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)"})
   void testGetShouldUseShippingAddressDefaultValue_givenNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CheckoutFormServiceImpl checkoutFormServiceImpl = new CheckoutFormServiceImpl();
-
     PaymentInfoForm paymentInfoForm = new PaymentInfoForm();
     paymentInfoForm.setAddress(new AddressImpl());
 
@@ -1268,22 +1899,20 @@ class CheckoutFormServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}.
+   * Test {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}.
    * <ul>
    *   <li>Then calls {@link AddressImpl#getIsoCountrySubdivision()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}
+   * Method under test: {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}
    */
   @Test
   @DisplayName("Test getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm); then calls getIsoCountrySubdivision()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "boolean CheckoutFormServiceImpl.getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)"})
   void testGetShouldUseShippingAddressDefaultValue_thenCallsGetIsoCountrySubdivision() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CheckoutFormServiceImpl checkoutFormServiceImpl = new CheckoutFormServiceImpl();
     AddressImpl address = mock(AddressImpl.class);
     when(address.getIsoCountrySubdivision()).thenReturn("foo");
     when(address.getIsoCountryAlpha2()).thenReturn(new ISOCountryImpl());
@@ -1349,74 +1978,20 @@ class CheckoutFormServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}.
+   * Test {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}.
    * <ul>
-   *   <li>When {@link CustomerPaymentImpl} (default constructor).</li>
+   *   <li>When {@link PaymentInfoForm} (default constructor) Address is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}
-   */
-  @Test
-  @DisplayName("Test getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm); when CustomerPaymentImpl (default constructor)")
-  void testGetShouldUseShippingAddressDefaultValue_whenCustomerPaymentImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CheckoutFormServiceImpl checkoutFormServiceImpl = new CheckoutFormServiceImpl();
-    CustomerPaymentImpl customerPaymentUsedForOrder = new CustomerPaymentImpl();
-    PaymentInfoForm paymentInfoForm = new PaymentInfoForm();
-
-    // Act and Assert
-    assertFalse(checkoutFormServiceImpl.getShouldUseShippingAddressDefaultValue(customerPaymentUsedForOrder,
-        paymentInfoForm, new ShippingInfoForm()));
-  }
-
-  /**
-   * Test
-   * {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}.
-   * <ul>
-   *   <li>When {@link CustomerPaymentImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}
-   */
-  @Test
-  @DisplayName("Test getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm); when CustomerPaymentImpl")
-  void testGetShouldUseShippingAddressDefaultValue_whenCustomerPaymentImpl2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CheckoutFormServiceImpl checkoutFormServiceImpl = new CheckoutFormServiceImpl();
-    CustomerPaymentImpl customerPaymentUsedForOrder = mock(CustomerPaymentImpl.class);
-    PaymentInfoForm paymentInfoForm = new PaymentInfoForm();
-
-    // Act and Assert
-    assertFalse(checkoutFormServiceImpl.getShouldUseShippingAddressDefaultValue(customerPaymentUsedForOrder,
-        paymentInfoForm, new ShippingInfoForm()));
-  }
-
-  /**
-   * Test
-   * {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}.
-   * <ul>
-   *   <li>When {@link PaymentInfoForm} (default constructor) Address is
-   * {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}
+   * Method under test: {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}
    */
   @Test
   @DisplayName("Test getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm); when PaymentInfoForm (default constructor) Address is 'null'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "boolean CheckoutFormServiceImpl.getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)"})
   void testGetShouldUseShippingAddressDefaultValue_whenPaymentInfoFormAddressIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CheckoutFormServiceImpl checkoutFormServiceImpl = new CheckoutFormServiceImpl();
-
     PaymentInfoForm paymentInfoForm = new PaymentInfoForm();
     paymentInfoForm.setAddress(null);
 
@@ -1429,173 +2004,44 @@ class CheckoutFormServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CheckoutFormServiceImpl#prePopulateInfoForms(ShippingInfoForm, PaymentInfoForm)}.
-   * <p>
-   * Method under test:
-   * {@link CheckoutFormServiceImpl#prePopulateInfoForms(ShippingInfoForm, PaymentInfoForm)}
-   */
-  @Test
-  @DisplayName("Test prePopulateInfoForms(ShippingInfoForm, PaymentInfoForm)")
-  @Disabled("TODO: Complete this test")
-  void testPrePopulateInfoForms() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.checkout.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3176 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.checkout.service.CheckoutFormServiceImpl checkoutFormServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CheckoutFormServiceImpl checkoutFormServiceImpl2 = new CheckoutFormServiceImpl();
-    ShippingInfoForm shippingInfoForm = new ShippingInfoForm();
-
-    // Act
-    checkoutFormServiceImpl2.prePopulateInfoForms(shippingInfoForm, new PaymentInfoForm());
-  }
-
-  /**
-   * Test
-   * {@link CheckoutFormServiceImpl#determineIfSavedAddressIsSelected(Model, ShippingInfoForm, PaymentInfoForm)}.
-   * <p>
-   * Method under test:
-   * {@link CheckoutFormServiceImpl#determineIfSavedAddressIsSelected(Model, ShippingInfoForm, PaymentInfoForm)}
-   */
-  @Test
-  @DisplayName("Test determineIfSavedAddressIsSelected(Model, ShippingInfoForm, PaymentInfoForm)")
-  @Disabled("TODO: Complete this test")
-  void testDetermineIfSavedAddressIsSelected() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.checkout.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2923 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.checkout.service.CheckoutFormServiceImpl checkoutFormServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CheckoutFormServiceImpl checkoutFormServiceImpl2 = new CheckoutFormServiceImpl();
-    ConcurrentModel model = new ConcurrentModel();
-    ShippingInfoForm shippingInfoForm = new ShippingInfoForm();
-
-    // Act
-    checkoutFormServiceImpl2.determineIfSavedAddressIsSelected(model, shippingInfoForm, new PaymentInfoForm());
-  }
-
-  /**
-   * Test
-   * {@link CheckoutFormServiceImpl#addressesContentsAreEqual(Address, Address)}.
-   * <p>
-   * Method under test:
-   * {@link CheckoutFormServiceImpl#addressesContentsAreEqual(Address, Address)}
-   */
-  @Test
-  @DisplayName("Test addressesContentsAreEqual(Address, Address)")
-  @Disabled("TODO: Complete this test")
-  void testAddressesContentsAreEqual() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.checkout.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2847 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.checkout.service.CheckoutFormServiceImpl checkoutFormServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CheckoutFormServiceImpl checkoutFormServiceImpl2 = new CheckoutFormServiceImpl();
-    AddressImpl address1 = new AddressImpl();
-
-    // Act
-    checkoutFormServiceImpl2.addressesContentsAreEqual(address1, new AddressImpl());
-  }
-
-  /**
-   * Test
-   * {@link CheckoutFormServiceImpl#addressesContentsAreEqual(Address, Address)}.
+   * Test {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}.
    * <ul>
-   *   <li>Given {@code GB}.</li>
-   *   <li>Then calls {@link AddressImpl#getIsoCountrySubdivision()}.</li>
+   *   <li>When {@link PaymentInfoForm} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CheckoutFormServiceImpl#addressesContentsAreEqual(Address, Address)}
+   * Method under test: {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}
    */
   @Test
-  @DisplayName("Test addressesContentsAreEqual(Address, Address); given 'GB'; then calls getIsoCountrySubdivision()")
-  void testAddressesContentsAreEqual_givenGb_thenCallsGetIsoCountrySubdivision() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @DisplayName("Test getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm); when PaymentInfoForm (default constructor); then return 'false'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "boolean CheckoutFormServiceImpl.getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)"})
+  void testGetShouldUseShippingAddressDefaultValue_whenPaymentInfoForm_thenReturnFalse() {
     // Arrange
-    CheckoutFormServiceImpl checkoutFormServiceImpl = new CheckoutFormServiceImpl();
-    AddressImpl address1 = mock(AddressImpl.class);
-    when(address1.getAddressLine1()).thenReturn(null);
-    when(address1.getAddressLine2()).thenReturn(null);
-    when(address1.getCity()).thenReturn(null);
-    when(address1.getIsoCountrySubdivision()).thenReturn("GB");
-    when(address1.getPostalCode()).thenReturn(null);
-    when(address1.getStateProvinceRegion()).thenReturn(null);
-    when(address1.getIsoCountryAlpha2()).thenReturn(null);
+    CustomerPaymentImpl customerPaymentUsedForOrder = new CustomerPaymentImpl();
+    PaymentInfoForm paymentInfoForm = new PaymentInfoForm();
 
-    // Act
-    boolean actualAddressesContentsAreEqualResult = checkoutFormServiceImpl.addressesContentsAreEqual(address1,
-        new AddressImpl());
-
-    // Assert
-    verify(address1).getAddressLine1();
-    verify(address1).getAddressLine2();
-    verify(address1).getCity();
-    verify(address1).getIsoCountryAlpha2();
-    verify(address1).getIsoCountrySubdivision();
-    verify(address1).getPostalCode();
-    verify(address1).getStateProvinceRegion();
-    assertFalse(actualAddressesContentsAreEqualResult);
+    // Act and Assert
+    assertFalse(checkoutFormServiceImpl.getShouldUseShippingAddressDefaultValue(customerPaymentUsedForOrder,
+        paymentInfoForm, new ShippingInfoForm()));
   }
 
   /**
-   * Test
-   * {@link CheckoutFormServiceImpl#addressesContentsAreEqual(Address, Address)}.
+   * Test {@link CheckoutFormServiceImpl#addressesContentsAreEqual(Address, Address)}.
    * <ul>
    *   <li>Given {@link ISOCountryImpl} (default constructor).</li>
+   *   <li>Then calls {@link AddressImpl#getIsoCountryAlpha2()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CheckoutFormServiceImpl#addressesContentsAreEqual(Address, Address)}
+   * Method under test: {@link CheckoutFormServiceImpl#addressesContentsAreEqual(Address, Address)}
    */
   @Test
-  @DisplayName("Test addressesContentsAreEqual(Address, Address); given ISOCountryImpl (default constructor)")
-  void testAddressesContentsAreEqual_givenISOCountryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @DisplayName("Test addressesContentsAreEqual(Address, Address); given ISOCountryImpl (default constructor); then calls getIsoCountryAlpha2()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CheckoutFormServiceImpl.addressesContentsAreEqual(Address, Address)"})
+  void testAddressesContentsAreEqual_givenISOCountryImpl_thenCallsGetIsoCountryAlpha2() {
     // Arrange
-    CheckoutFormServiceImpl checkoutFormServiceImpl = new CheckoutFormServiceImpl();
     AddressImpl address1 = mock(AddressImpl.class);
     when(address1.getAddressLine1()).thenReturn(null);
     when(address1.getAddressLine2()).thenReturn(null);
@@ -1619,24 +2065,20 @@ class CheckoutFormServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CheckoutFormServiceImpl#addressesContentsAreEqual(Address, Address)}.
+   * Test {@link CheckoutFormServiceImpl#addressesContentsAreEqual(Address, Address)}.
    * <ul>
    *   <li>Given {@code Oxford}.</li>
-   *   <li>When {@link AddressImpl} {@link AddressImpl#getCity()} return
-   * {@code Oxford}.</li>
+   *   <li>When {@link AddressImpl} {@link AddressImpl#getCity()} return {@code Oxford}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CheckoutFormServiceImpl#addressesContentsAreEqual(Address, Address)}
+   * Method under test: {@link CheckoutFormServiceImpl#addressesContentsAreEqual(Address, Address)}
    */
   @Test
   @DisplayName("Test addressesContentsAreEqual(Address, Address); given 'Oxford'; when AddressImpl getCity() return 'Oxford'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CheckoutFormServiceImpl.addressesContentsAreEqual(Address, Address)"})
   void testAddressesContentsAreEqual_givenOxford_whenAddressImplGetCityReturnOxford() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CheckoutFormServiceImpl checkoutFormServiceImpl = new CheckoutFormServiceImpl();
     AddressImpl address1 = mock(AddressImpl.class);
     when(address1.getAddressLine1()).thenReturn(null);
     when(address1.getAddressLine2()).thenReturn(null);
@@ -1654,22 +2096,19 @@ class CheckoutFormServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CheckoutFormServiceImpl#addressesContentsAreEqual(Address, Address)}.
+   * Test {@link CheckoutFormServiceImpl#addressesContentsAreEqual(Address, Address)}.
    * <ul>
    *   <li>Given {@code Postal Code}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CheckoutFormServiceImpl#addressesContentsAreEqual(Address, Address)}
+   * Method under test: {@link CheckoutFormServiceImpl#addressesContentsAreEqual(Address, Address)}
    */
   @Test
   @DisplayName("Test addressesContentsAreEqual(Address, Address); given 'Postal Code'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CheckoutFormServiceImpl.addressesContentsAreEqual(Address, Address)"})
   void testAddressesContentsAreEqual_givenPostalCode() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CheckoutFormServiceImpl checkoutFormServiceImpl = new CheckoutFormServiceImpl();
     AddressImpl address1 = mock(AddressImpl.class);
     when(address1.getAddressLine1()).thenReturn(null);
     when(address1.getAddressLine2()).thenReturn(null);
@@ -1691,22 +2130,19 @@ class CheckoutFormServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CheckoutFormServiceImpl#addressesContentsAreEqual(Address, Address)}.
+   * Test {@link CheckoutFormServiceImpl#addressesContentsAreEqual(Address, Address)}.
    * <ul>
    *   <li>Given {@code us-east-2}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CheckoutFormServiceImpl#addressesContentsAreEqual(Address, Address)}
+   * Method under test: {@link CheckoutFormServiceImpl#addressesContentsAreEqual(Address, Address)}
    */
   @Test
   @DisplayName("Test addressesContentsAreEqual(Address, Address); given 'us-east-2'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CheckoutFormServiceImpl.addressesContentsAreEqual(Address, Address)"})
   void testAddressesContentsAreEqual_givenUsEast2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CheckoutFormServiceImpl checkoutFormServiceImpl = new CheckoutFormServiceImpl();
     AddressImpl address1 = mock(AddressImpl.class);
     when(address1.getAddressLine1()).thenReturn(null);
     when(address1.getAddressLine2()).thenReturn(null);
@@ -1726,23 +2162,19 @@ class CheckoutFormServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CheckoutFormServiceImpl#addressesContentsAreEqual(Address, Address)}.
+   * Test {@link CheckoutFormServiceImpl#addressesContentsAreEqual(Address, Address)}.
    * <ul>
-   *   <li>When {@link AddressImpl} {@link AddressImpl#getAddressLine1()} return
-   * {@code 42 Main St}.</li>
+   *   <li>When {@link AddressImpl} {@link AddressImpl#getAddressLine1()} return {@code 42 Main St}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CheckoutFormServiceImpl#addressesContentsAreEqual(Address, Address)}
+   * Method under test: {@link CheckoutFormServiceImpl#addressesContentsAreEqual(Address, Address)}
    */
   @Test
   @DisplayName("Test addressesContentsAreEqual(Address, Address); when AddressImpl getAddressLine1() return '42 Main St'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CheckoutFormServiceImpl.addressesContentsAreEqual(Address, Address)"})
   void testAddressesContentsAreEqual_whenAddressImplGetAddressLine1Return42MainSt() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CheckoutFormServiceImpl checkoutFormServiceImpl = new CheckoutFormServiceImpl();
     AddressImpl address1 = mock(AddressImpl.class);
     when(address1.getAddressLine1()).thenReturn("42 Main St");
 
@@ -1756,23 +2188,19 @@ class CheckoutFormServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CheckoutFormServiceImpl#addressesContentsAreEqual(Address, Address)}.
+   * Test {@link CheckoutFormServiceImpl#addressesContentsAreEqual(Address, Address)}.
    * <ul>
-   *   <li>When {@link AddressImpl} {@link AddressImpl#getAddressLine2()} return
-   * {@code 42 Main St}.</li>
+   *   <li>When {@link AddressImpl} {@link AddressImpl#getAddressLine2()} return {@code 42 Main St}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CheckoutFormServiceImpl#addressesContentsAreEqual(Address, Address)}
+   * Method under test: {@link CheckoutFormServiceImpl#addressesContentsAreEqual(Address, Address)}
    */
   @Test
   @DisplayName("Test addressesContentsAreEqual(Address, Address); when AddressImpl getAddressLine2() return '42 Main St'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CheckoutFormServiceImpl.addressesContentsAreEqual(Address, Address)"})
   void testAddressesContentsAreEqual_whenAddressImplGetAddressLine2Return42MainSt() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CheckoutFormServiceImpl checkoutFormServiceImpl = new CheckoutFormServiceImpl();
     AddressImpl address1 = mock(AddressImpl.class);
     when(address1.getAddressLine1()).thenReturn(null);
     when(address1.getAddressLine2()).thenReturn("42 Main St");
@@ -1788,23 +2216,20 @@ class CheckoutFormServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CheckoutFormServiceImpl#addressesContentsAreEqual(Address, Address)}.
+   * Test {@link CheckoutFormServiceImpl#addressesContentsAreEqual(Address, Address)}.
    * <ul>
    *   <li>When {@link AddressImpl} (default constructor).</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CheckoutFormServiceImpl#addressesContentsAreEqual(Address, Address)}
+   * Method under test: {@link CheckoutFormServiceImpl#addressesContentsAreEqual(Address, Address)}
    */
   @Test
   @DisplayName("Test addressesContentsAreEqual(Address, Address); when AddressImpl (default constructor); then return 'true'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CheckoutFormServiceImpl.addressesContentsAreEqual(Address, Address)"})
   void testAddressesContentsAreEqual_whenAddressImpl_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CheckoutFormServiceImpl checkoutFormServiceImpl = new CheckoutFormServiceImpl();
     AddressImpl address1 = new AddressImpl();
 
     // Act and Assert
@@ -1812,45 +2237,38 @@ class CheckoutFormServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CheckoutFormServiceImpl#addressesContentsAreEqual(Address, Address)}.
+   * Test {@link CheckoutFormServiceImpl#addressesContentsAreEqual(Address, Address)}.
    * <ul>
    *   <li>When {@code null}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CheckoutFormServiceImpl#addressesContentsAreEqual(Address, Address)}
+   * Method under test: {@link CheckoutFormServiceImpl#addressesContentsAreEqual(Address, Address)}
    */
   @Test
   @DisplayName("Test addressesContentsAreEqual(Address, Address); when 'null'; then return 'false'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CheckoutFormServiceImpl.addressesContentsAreEqual(Address, Address)"})
   void testAddressesContentsAreEqual_whenNull_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertFalse((new CheckoutFormServiceImpl()).addressesContentsAreEqual(null, null));
+    assertFalse(checkoutFormServiceImpl.addressesContentsAreEqual(null, null));
   }
 
   /**
-   * Test
-   * {@link CheckoutFormServiceImpl#addressesContentsAreEqual(Address, Address)}.
+   * Test {@link CheckoutFormServiceImpl#addressesContentsAreEqual(Address, Address)}.
    * <ul>
    *   <li>When {@code null}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CheckoutFormServiceImpl#addressesContentsAreEqual(Address, Address)}
+   * Method under test: {@link CheckoutFormServiceImpl#addressesContentsAreEqual(Address, Address)}
    */
   @Test
   @DisplayName("Test addressesContentsAreEqual(Address, Address); when 'null'; then return 'false'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CheckoutFormServiceImpl.addressesContentsAreEqual(Address, Address)"})
   void testAddressesContentsAreEqual_whenNull_thenReturnFalse2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CheckoutFormServiceImpl checkoutFormServiceImpl = new CheckoutFormServiceImpl();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertFalse(checkoutFormServiceImpl.addressesContentsAreEqual(new AddressImpl(), null));
   }
 }

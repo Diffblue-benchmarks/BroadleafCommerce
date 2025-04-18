@@ -1,19 +1,39 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.fasterxml.classmate.types.TypePlaceHolder;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,466 +50,151 @@ import org.broadleafcommerce.common.presentation.client.UnspecifiedBooleanType;
 import org.broadleafcommerce.common.presentation.client.VisibilityEnum;
 import org.broadleafcommerce.common.presentation.override.AdminPresentationMergeEntry;
 import org.broadleafcommerce.common.presentation.override.AdminPresentationMergeOverride;
-import org.broadleafcommerce.openadmin.dto.AdornedTargetCollectionMetadata;
 import org.broadleafcommerce.openadmin.dto.FieldMetadata;
-import org.broadleafcommerce.openadmin.dto.ForeignKey;
 import org.broadleafcommerce.openadmin.dto.MergedPropertyType;
 import org.broadleafcommerce.openadmin.dto.override.FieldMetadataOverride;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDao;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl;
 import org.broadleafcommerce.openadmin.server.dao.FieldInfo;
-import org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.AddFieldMetadataRequest;
-import org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.AddMetadataFromFieldTypeRequest;
 import org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.OverrideViaAnnotationRequest;
 import org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.OverrideViaXmlRequest;
 import org.broadleafcommerce.openadmin.server.service.type.MetadataProviderResponse;
-import org.hibernate.mapping.Property;
-import org.hibernate.type.BigDecimalType;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
-    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
-    "/bl-open-admin-contentCreator-applicationContext.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class AdornedTargetCollectionFieldMetadataProviderDiffblueTest {
-  @Autowired
+  @InjectMocks
   private AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider;
 
-  /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#canHandleFieldForConfiguredMetadata(AddFieldMetadataRequest, Map)}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#canHandleFieldForConfiguredMetadata(AddFieldMetadataRequest, Map)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCanHandleFieldForConfiguredMetadata() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass17546 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.provider.metadata.AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider2 = new AdornedTargetCollectionFieldMetadataProvider();
-    Class<Object> parentClass = Object.class;
-    Class<Object> targetClass = Object.class;
-    AddFieldMetadataRequest addMetadataRequest = new AddFieldMetadataRequest(null, parentClass, targetClass,
-        new DynamicEntityDaoImpl(), "Prefix");
-
-    // Act
-    adornedTargetCollectionFieldMetadataProvider2.canHandleFieldForConfiguredMetadata(addMetadataRequest,
-        new HashMap<>());
-  }
+  @Mock
+  private Map map;
 
   /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#canHandleFieldForTypeMetadata(AddMetadataFromFieldTypeRequest, Map)}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#canHandleFieldForTypeMetadata(AddMetadataFromFieldTypeRequest, Map)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCanHandleFieldForTypeMetadata() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass17868 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.provider.metadata.AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider2 = new AdornedTargetCollectionFieldMetadataProvider();
-    Class<Object> targetClass = Object.class;
-    ForeignKey foreignField = new ForeignKey();
-    ArrayList<Property> componentProperties = new ArrayList<>();
-    BigDecimalType type = new BigDecimalType();
-    HashMap<String, FieldMetadata> presentationAttributes = new HashMap<>();
-    AdornedTargetCollectionMetadata presentationAttribute = new AdornedTargetCollectionMetadata();
-    Class<Object> returnedClass = Object.class;
-    AddMetadataFromFieldTypeRequest addMetadataFromFieldTypeRequest = new AddMetadataFromFieldTypeRequest(null,
-        targetClass, foreignField, new ForeignKey[]{new ForeignKey()}, MergedPropertyType.PRIMARY, componentProperties,
-        "Id Property", "Prefix", "Requested Property Name", type, true, 1, presentationAttributes,
-        presentationAttribute, SupportedFieldType.UNKNOWN, returnedClass, new DynamicEntityDaoImpl());
-
-    // Act
-    adornedTargetCollectionFieldMetadataProvider2.canHandleFieldForTypeMetadata(addMetadataFromFieldTypeRequest,
-        new HashMap<>());
-  }
-
-  /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#canHandleAnnotationOverride(OverrideViaAnnotationRequest, Map)}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#canHandleAnnotationOverride(OverrideViaAnnotationRequest, Map)}
-   */
-  @Test
-  public void testCanHandleAnnotationOverride() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider = new AdornedTargetCollectionFieldMetadataProvider();
-    Class<Object> requestedEntity = Object.class;
-    OverrideViaAnnotationRequest overrideViaAnnotationRequest = new OverrideViaAnnotationRequest(requestedEntity, true,
-        new DynamicEntityDaoImpl(), "Prefix");
-
-    // Act and Assert
-    assertFalse(adornedTargetCollectionFieldMetadataProvider.canHandleAnnotationOverride(overrideViaAnnotationRequest,
-        new HashMap<>()));
-  }
-
-  /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#canHandleAnnotationOverride(OverrideViaAnnotationRequest, Map)}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#canHandleAnnotationOverride(OverrideViaAnnotationRequest, Map)}
-   */
-  @Test
-  public void testCanHandleAnnotationOverride2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider = new AdornedTargetCollectionFieldMetadataProvider();
-    Class<Object> requestedEntity = Object.class;
-    OverrideViaAnnotationRequest overrideViaAnnotationRequest = new OverrideViaAnnotationRequest(requestedEntity, true,
-        mock(DynamicEntityDaoImpl.class), "Prefix");
-
-    // Act and Assert
-    assertFalse(adornedTargetCollectionFieldMetadataProvider.canHandleAnnotationOverride(overrideViaAnnotationRequest,
-        new HashMap<>()));
-  }
-
-  /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#canHandleAnnotationOverride(OverrideViaAnnotationRequest, Map)}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#canHandleAnnotationOverride(OverrideViaAnnotationRequest, Map)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCanHandleAnnotationOverride3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass17222 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.provider.metadata.AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider2 = new AdornedTargetCollectionFieldMetadataProvider();
-    Class<Object> requestedEntity = Object.class;
-    OverrideViaAnnotationRequest overrideViaAnnotationRequest = new OverrideViaAnnotationRequest(requestedEntity, true,
-        new DynamicEntityDaoImpl(), "Prefix");
-
-    // Act
-    adornedTargetCollectionFieldMetadataProvider2.canHandleAnnotationOverride(overrideViaAnnotationRequest,
-        new HashMap<>());
-  }
-
-  /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#addMetadata(AddFieldMetadataRequest, Map)}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#addMetadata(AddFieldMetadataRequest, Map)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddMetadata() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass16414 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.provider.metadata.AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider2 = new AdornedTargetCollectionFieldMetadataProvider();
-    Class<Object> parentClass = Object.class;
-    Class<Object> targetClass = Object.class;
-    AddFieldMetadataRequest addMetadataRequest = new AddFieldMetadataRequest(null, parentClass, targetClass,
-        new DynamicEntityDaoImpl(), "Prefix");
-
-    // Act
-    adornedTargetCollectionFieldMetadataProvider2.addMetadata(addMetadataRequest, new HashMap<>());
-  }
-
-  /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#overrideViaAnnotation(OverrideViaAnnotationRequest, Map)}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#overrideViaAnnotation(OverrideViaAnnotationRequest, Map)}
-   */
-  @Test
-  public void testOverrideViaAnnotation() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider = new AdornedTargetCollectionFieldMetadataProvider();
-    Class<Object> requestedEntity = Object.class;
-    OverrideViaAnnotationRequest overrideViaAnnotationRequest = new OverrideViaAnnotationRequest(requestedEntity, true,
-        new DynamicEntityDaoImpl(), "Prefix");
-
-    // Act and Assert
-    assertEquals(MetadataProviderResponse.NOT_HANDLED, adornedTargetCollectionFieldMetadataProvider
-        .overrideViaAnnotation(overrideViaAnnotationRequest, new HashMap<>()));
-  }
-
-  /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#overrideViaAnnotation(OverrideViaAnnotationRequest, Map)}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#overrideViaAnnotation(OverrideViaAnnotationRequest, Map)}
-   */
-  @Test
-  public void testOverrideViaAnnotation2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider = new AdornedTargetCollectionFieldMetadataProvider();
-    Class<Object> requestedEntity = Object.class;
-    OverrideViaAnnotationRequest overrideViaAnnotationRequest = new OverrideViaAnnotationRequest(requestedEntity, true,
-        mock(DynamicEntityDaoImpl.class), "Prefix");
-
-    // Act and Assert
-    assertEquals(MetadataProviderResponse.NOT_HANDLED, adornedTargetCollectionFieldMetadataProvider
-        .overrideViaAnnotation(overrideViaAnnotationRequest, new HashMap<>()));
-  }
-
-  /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#overrideViaAnnotation(OverrideViaAnnotationRequest, Map)}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#overrideViaAnnotation(OverrideViaAnnotationRequest, Map)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testOverrideViaAnnotation3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass18176 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.provider.metadata.AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider2 = new AdornedTargetCollectionFieldMetadataProvider();
-    Class<Object> requestedEntity = Object.class;
-    OverrideViaAnnotationRequest overrideViaAnnotationRequest = new OverrideViaAnnotationRequest(requestedEntity, true,
-        new DynamicEntityDaoImpl(), "Prefix");
-
-    // Act
-    adornedTargetCollectionFieldMetadataProvider2.overrideViaAnnotation(overrideViaAnnotationRequest, new HashMap<>());
-  }
-
-  /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#overrideViaXml(OverrideViaXmlRequest, Map)}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#overrideViaXml(OverrideViaXmlRequest, Map)}
-   */
-  @Test
-  public void testOverrideViaXml() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider = new AdornedTargetCollectionFieldMetadataProvider();
-    OverrideViaXmlRequest overrideViaXmlRequest = new OverrideViaXmlRequest("Requested Config Key",
-        "Requested Ceiling Entity", "Prefix", true, mock(DynamicEntityDaoImpl.class));
-
-    // Act and Assert
-    assertEquals(MetadataProviderResponse.HANDLED,
-        adornedTargetCollectionFieldMetadataProvider.overrideViaXml(overrideViaXmlRequest, new HashMap<>()));
-  }
-
-  /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#overrideViaXml(OverrideViaXmlRequest, Map)}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#overrideViaXml(OverrideViaXmlRequest, Map)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testOverrideViaXml2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass18500 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.provider.metadata.AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider2 = new AdornedTargetCollectionFieldMetadataProvider();
-    OverrideViaXmlRequest overrideViaXmlRequest = new OverrideViaXmlRequest("Requested Config Key",
-        "Requested Ceiling Entity", "Prefix", true, new DynamicEntityDaoImpl());
-
-    // Act
-    adornedTargetCollectionFieldMetadataProvider2.overrideViaXml(overrideViaXmlRequest, new HashMap<>());
-  }
-
-  /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#overrideViaXml(OverrideViaXmlRequest, Map)}.
+   * Test {@link AdornedTargetCollectionFieldMetadataProvider#canHandleAnnotationOverride(OverrideViaAnnotationRequest, Map)}.
    * <ul>
+   *   <li>When {@code Object}.</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdornedTargetCollectionFieldMetadataProvider#canHandleAnnotationOverride(OverrideViaAnnotationRequest, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "boolean AdornedTargetCollectionFieldMetadataProvider.canHandleAnnotationOverride(OverrideViaAnnotationRequest, Map)"})
+  public void testCanHandleAnnotationOverride_whenJavaLangObject_thenReturnFalse() {
+    // Arrange
+    Class<Object> requestedEntity = Object.class;
+    OverrideViaAnnotationRequest overrideViaAnnotationRequest = new OverrideViaAnnotationRequest(requestedEntity, true,
+        new DynamicEntityDaoImpl(), "Prefix");
+
+    // Act and Assert
+    assertFalse(adornedTargetCollectionFieldMetadataProvider.canHandleAnnotationOverride(overrideViaAnnotationRequest,
+        new HashMap<>()));
+  }
+
+  /**
+   * Test {@link AdornedTargetCollectionFieldMetadataProvider#overrideViaAnnotation(OverrideViaAnnotationRequest, Map)}.
+   * <ul>
+   *   <li>When {@code Object}.</li>
+   *   <li>Then return {@code NOT_HANDLED}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdornedTargetCollectionFieldMetadataProvider#overrideViaAnnotation(OverrideViaAnnotationRequest, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "MetadataProviderResponse AdornedTargetCollectionFieldMetadataProvider.overrideViaAnnotation(OverrideViaAnnotationRequest, Map)"})
+  public void testOverrideViaAnnotation_whenJavaLangObject_thenReturnNotHandled() {
+    // Arrange
+    Class<Object> requestedEntity = Object.class;
+    OverrideViaAnnotationRequest overrideViaAnnotationRequest = new OverrideViaAnnotationRequest(requestedEntity, true,
+        new DynamicEntityDaoImpl(), "Prefix");
+
+    // Act and Assert
+    assertEquals(MetadataProviderResponse.NOT_HANDLED, adornedTargetCollectionFieldMetadataProvider
+        .overrideViaAnnotation(overrideViaAnnotationRequest, new HashMap<>()));
+  }
+
+  /**
+   * Test {@link AdornedTargetCollectionFieldMetadataProvider#overrideViaXml(OverrideViaXmlRequest, Map)}.
+   * <ul>
+   *   <li>Given {@link Map} {@link Map#get(Object)} return {@link HashMap#HashMap()}.</li>
    *   <li>Then return {@code HANDLED}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#overrideViaXml(OverrideViaXmlRequest, Map)}
+   * Method under test: {@link AdornedTargetCollectionFieldMetadataProvider#overrideViaXml(OverrideViaXmlRequest, Map)}
    */
   @Test
-  public void testOverrideViaXml_thenReturnHandled() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "MetadataProviderResponse AdornedTargetCollectionFieldMetadataProvider.overrideViaXml(OverrideViaXmlRequest, Map)"})
+  public void testOverrideViaXml_givenMapGetReturnHashMap_thenReturnHandled() {
     // Arrange
-    AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider = new AdornedTargetCollectionFieldMetadataProvider();
+    when(map.get(Mockito.<Object>any())).thenReturn(new HashMap<>());
+    when(map.containsKey(Mockito.<Object>any())).thenReturn(true);
     OverrideViaXmlRequest overrideViaXmlRequest = new OverrideViaXmlRequest("Requested Config Key",
         "Requested Ceiling Entity", "Prefix", true, new DynamicEntityDaoImpl());
 
-    // Act and Assert
-    assertEquals(MetadataProviderResponse.HANDLED,
-        adornedTargetCollectionFieldMetadataProvider.overrideViaXml(overrideViaXmlRequest, new HashMap<>()));
+    // Act
+    MetadataProviderResponse actualOverrideViaXmlResult = adornedTargetCollectionFieldMetadataProvider
+        .overrideViaXml(overrideViaXmlRequest, new HashMap<>());
+
+    // Assert
+    verify(map).containsKey(isA(Object.class));
+    verify(map).get(isA(Object.class));
+    assertEquals(MetadataProviderResponse.HANDLED, actualOverrideViaXmlResult);
   }
 
   /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#addMetadataFromFieldType(AddMetadataFromFieldTypeRequest, Map)}.
+   * Test {@link AdornedTargetCollectionFieldMetadataProvider#overrideViaXml(OverrideViaXmlRequest, Map)}.
+   * <ul>
+   *   <li>Given {@link Map} {@link Map#get(Object)} return {@code null}.</li>
+   *   <li>Then return {@code HANDLED}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#addMetadataFromFieldType(AddMetadataFromFieldTypeRequest, Map)}
+   * Method under test: {@link AdornedTargetCollectionFieldMetadataProvider#overrideViaXml(OverrideViaXmlRequest, Map)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddMetadataFromFieldType() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass16736 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.provider.metadata.AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "MetadataProviderResponse AdornedTargetCollectionFieldMetadataProvider.overrideViaXml(OverrideViaXmlRequest, Map)"})
+  public void testOverrideViaXml_givenMapGetReturnNull_thenReturnHandled() {
     // Arrange
-    AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider2 = new AdornedTargetCollectionFieldMetadataProvider();
-    Class<Object> targetClass = Object.class;
-    ForeignKey foreignField = new ForeignKey();
-    ArrayList<Property> componentProperties = new ArrayList<>();
-    BigDecimalType type = new BigDecimalType();
-    HashMap<String, FieldMetadata> presentationAttributes = new HashMap<>();
-    AdornedTargetCollectionMetadata presentationAttribute = new AdornedTargetCollectionMetadata();
-    Class<Object> returnedClass = Object.class;
-    AddMetadataFromFieldTypeRequest addMetadataFromFieldTypeRequest = new AddMetadataFromFieldTypeRequest(null,
-        targetClass, foreignField, new ForeignKey[]{new ForeignKey()}, MergedPropertyType.PRIMARY, componentProperties,
-        "Id Property", "Prefix", "Requested Property Name", type, true, 1, presentationAttributes,
-        presentationAttribute, SupportedFieldType.UNKNOWN, returnedClass, new DynamicEntityDaoImpl());
+    when(map.get(Mockito.<Object>any())).thenReturn(null);
+    when(map.containsKey(Mockito.<Object>any())).thenReturn(true);
+    OverrideViaXmlRequest overrideViaXmlRequest = new OverrideViaXmlRequest("Requested Config Key",
+        "Requested Ceiling Entity", "Prefix", true, new DynamicEntityDaoImpl());
 
     // Act
-    adornedTargetCollectionFieldMetadataProvider2.addMetadataFromFieldType(addMetadataFromFieldTypeRequest,
-        new HashMap<>());
+    MetadataProviderResponse actualOverrideViaXmlResult = adornedTargetCollectionFieldMetadataProvider
+        .overrideViaXml(overrideViaXmlRequest, new HashMap<>());
+
+    // Assert
+    verify(map).containsKey(isA(Object.class));
+    verify(map).get(isA(Object.class));
+    assertEquals(MetadataProviderResponse.HANDLED, actualOverrideViaXmlResult);
   }
 
   /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#overrideAdornedTargetMergeMetadata(AdminPresentationMergeOverride)}.
+   * Test {@link AdornedTargetCollectionFieldMetadataProvider#overrideAdornedTargetMergeMetadata(AdminPresentationMergeOverride)}.
    * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#overrideAdornedTargetMergeMetadata(AdminPresentationMergeOverride)}
+   * Method under test: {@link AdornedTargetCollectionFieldMetadataProvider#overrideAdornedTargetMergeMetadata(AdminPresentationMergeOverride)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FieldMetadataOverride AdornedTargetCollectionFieldMetadataProvider.overrideAdornedTargetMergeMetadata(AdminPresentationMergeOverride)"})
   public void testOverrideAdornedTargetMergeMetadata() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider = new AdornedTargetCollectionFieldMetadataProvider();
     AdminPresentationMergeEntry adminPresentationMergeEntry = mock(AdminPresentationMergeEntry.class);
     when(adminPresentationMergeEntry.overrideValue()).thenReturn("42");
     when(adminPresentationMergeEntry.propertyType()).thenReturn("Property Type");
@@ -504,12 +209,7 @@ public class AdornedTargetCollectionFieldMetadataProviderDiffblueTest {
     verify(adminPresentationMergeEntry).overrideValue();
     verify(adminPresentationMergeEntry).propertyType();
     verify(merge).mergeEntries();
-    assertNull(actualOverrideAdornedTargetMergeMetadataResult.getCustomCriteria());
-    assertNull(actualOverrideAdornedTargetMergeMetadataResult.getGridVisibleFields());
-    assertNull(actualOverrideAdornedTargetMergeMetadataResult.getMaintainedAdornedTargetFields());
     assertNull(actualOverrideAdornedTargetMergeMetadataResult.getOptionFilterValues());
-    assertNull(actualOverrideAdornedTargetMergeMetadataResult.getEnumerationValues());
-    assertNull(actualOverrideAdornedTargetMergeMetadataResult.getKeys());
     assertNull(actualOverrideAdornedTargetMergeMetadataResult.getAllowNoValueEnumOption());
     assertNull(actualOverrideAdornedTargetMergeMetadataResult.getCanLinkToExternalEntity());
     assertNull(actualOverrideAdornedTargetMergeMetadataResult.getEnableTypeaheadLookup());
@@ -589,6 +289,11 @@ public class AdornedTargetCollectionFieldMetadataProviderDiffblueTest {
     assertNull(actualOverrideAdornedTargetMergeMetadataResult.getTooltip());
     assertNull(actualOverrideAdornedTargetMergeMetadataResult.getValueClass());
     assertNull(actualOverrideAdornedTargetMergeMetadataResult.getValuePropertyFriendlyName());
+    assertNull(actualOverrideAdornedTargetMergeMetadataResult.getCustomCriteria());
+    assertNull(actualOverrideAdornedTargetMergeMetadataResult.getGridVisibleFields());
+    assertNull(actualOverrideAdornedTargetMergeMetadataResult.getMaintainedAdornedTargetFields());
+    assertNull(actualOverrideAdornedTargetMergeMetadataResult.getEnumerationValues());
+    assertNull(actualOverrideAdornedTargetMergeMetadataResult.getKeys());
     assertNull(actualOverrideAdornedTargetMergeMetadataResult.getShowIfFieldEquals());
     assertNull(actualOverrideAdornedTargetMergeMetadataResult.getValidationConfigurations());
     assertNull(actualOverrideAdornedTargetMergeMetadataResult.getAddMethodType());
@@ -611,18 +316,19 @@ public class AdornedTargetCollectionFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#overrideAdornedTargetMergeMetadata(AdminPresentationMergeOverride)}.
+   * Test {@link AdornedTargetCollectionFieldMetadataProvider#overrideAdornedTargetMergeMetadata(AdminPresentationMergeOverride)}.
+   * <ul>
+   *   <li>Then return array length is one.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#overrideAdornedTargetMergeMetadata(AdminPresentationMergeOverride)}
+   * Method under test: {@link AdornedTargetCollectionFieldMetadataProvider#overrideAdornedTargetMergeMetadata(AdminPresentationMergeOverride)}
    */
   @Test
-  public void testOverrideAdornedTargetMergeMetadata2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FieldMetadataOverride AdornedTargetCollectionFieldMetadataProvider.overrideAdornedTargetMergeMetadata(AdminPresentationMergeOverride)"})
+  public void testOverrideAdornedTargetMergeMetadata_thenReturnArrayLengthIsOne() {
     // Arrange
-    AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider = new AdornedTargetCollectionFieldMetadataProvider();
     AdminPresentationMergeEntry adminPresentationMergeEntry = mock(AdminPresentationMergeEntry.class);
     when(adminPresentationMergeEntry.stringArrayOverrideValue()).thenReturn(new String[]{"42"});
     when(adminPresentationMergeEntry.overrideValue()).thenReturn("42");
@@ -639,11 +345,7 @@ public class AdornedTargetCollectionFieldMetadataProviderDiffblueTest {
     verify(adminPresentationMergeEntry).propertyType();
     verify(adminPresentationMergeEntry).stringArrayOverrideValue();
     verify(merge).mergeEntries();
-    assertNull(actualOverrideAdornedTargetMergeMetadataResult.getGridVisibleFields());
-    assertNull(actualOverrideAdornedTargetMergeMetadataResult.getMaintainedAdornedTargetFields());
     assertNull(actualOverrideAdornedTargetMergeMetadataResult.getOptionFilterValues());
-    assertNull(actualOverrideAdornedTargetMergeMetadataResult.getEnumerationValues());
-    assertNull(actualOverrideAdornedTargetMergeMetadataResult.getKeys());
     assertNull(actualOverrideAdornedTargetMergeMetadataResult.getAllowNoValueEnumOption());
     assertNull(actualOverrideAdornedTargetMergeMetadataResult.getCanLinkToExternalEntity());
     assertNull(actualOverrideAdornedTargetMergeMetadataResult.getEnableTypeaheadLookup());
@@ -723,6 +425,10 @@ public class AdornedTargetCollectionFieldMetadataProviderDiffblueTest {
     assertNull(actualOverrideAdornedTargetMergeMetadataResult.getTooltip());
     assertNull(actualOverrideAdornedTargetMergeMetadataResult.getValueClass());
     assertNull(actualOverrideAdornedTargetMergeMetadataResult.getValuePropertyFriendlyName());
+    assertNull(actualOverrideAdornedTargetMergeMetadataResult.getGridVisibleFields());
+    assertNull(actualOverrideAdornedTargetMergeMetadataResult.getMaintainedAdornedTargetFields());
+    assertNull(actualOverrideAdornedTargetMergeMetadataResult.getEnumerationValues());
+    assertNull(actualOverrideAdornedTargetMergeMetadataResult.getKeys());
     assertNull(actualOverrideAdornedTargetMergeMetadataResult.getShowIfFieldEquals());
     assertNull(actualOverrideAdornedTargetMergeMetadataResult.getValidationConfigurations());
     assertNull(actualOverrideAdornedTargetMergeMetadataResult.getAddMethodType());
@@ -741,58 +447,24 @@ public class AdornedTargetCollectionFieldMetadataProviderDiffblueTest {
     assertNull(actualOverrideAdornedTargetMergeMetadataResult.getSimpleValue());
     assertNull(actualOverrideAdornedTargetMergeMetadataResult.getVisibility());
     assertNull(actualOverrideAdornedTargetMergeMetadataResult.getMergedPropertyType());
+    assertEquals(1, actualOverrideAdornedTargetMergeMetadataResult.getCustomCriteria().length);
     assertEquals(SupportedFieldType.INTEGER, actualOverrideAdornedTargetMergeMetadataResult.getSecondaryType());
-    assertArrayEquals(new String[]{"42"}, actualOverrideAdornedTargetMergeMetadataResult.getCustomCriteria());
   }
 
   /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#overrideAdornedTargetMergeMetadata(AdminPresentationMergeOverride)}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#overrideAdornedTargetMergeMetadata(AdminPresentationMergeOverride)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testOverrideAdornedTargetMergeMetadata3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass18172 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.provider.metadata.AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new AdornedTargetCollectionFieldMetadataProvider())
-        .overrideAdornedTargetMergeMetadata(mock(AdminPresentationMergeOverride.class));
-  }
-
-  /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#overrideAdornedTargetMergeMetadata(AdminPresentationMergeOverride)}.
+   * Test {@link AdornedTargetCollectionFieldMetadataProvider#overrideAdornedTargetMergeMetadata(AdminPresentationMergeOverride)}.
    * <ul>
    *   <li>Then return CurrencyCodeField is {@code 42}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#overrideAdornedTargetMergeMetadata(AdminPresentationMergeOverride)}
+   * Method under test: {@link AdornedTargetCollectionFieldMetadataProvider#overrideAdornedTargetMergeMetadata(AdminPresentationMergeOverride)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FieldMetadataOverride AdornedTargetCollectionFieldMetadataProvider.overrideAdornedTargetMergeMetadata(AdminPresentationMergeOverride)"})
   public void testOverrideAdornedTargetMergeMetadata_thenReturnCurrencyCodeFieldIs42() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider = new AdornedTargetCollectionFieldMetadataProvider();
     AdminPresentationMergeEntry adminPresentationMergeEntry = mock(AdminPresentationMergeEntry.class);
     when(adminPresentationMergeEntry.overrideValue()).thenReturn("42");
     when(adminPresentationMergeEntry.propertyType()).thenReturn("currencyCodeField");
@@ -808,12 +480,7 @@ public class AdornedTargetCollectionFieldMetadataProviderDiffblueTest {
     verify(adminPresentationMergeEntry).propertyType();
     verify(merge).mergeEntries();
     assertEquals("42", actualOverrideAdornedTargetMergeMetadataResult.getCurrencyCodeField());
-    assertNull(actualOverrideAdornedTargetMergeMetadataResult.getCustomCriteria());
-    assertNull(actualOverrideAdornedTargetMergeMetadataResult.getGridVisibleFields());
-    assertNull(actualOverrideAdornedTargetMergeMetadataResult.getMaintainedAdornedTargetFields());
     assertNull(actualOverrideAdornedTargetMergeMetadataResult.getOptionFilterValues());
-    assertNull(actualOverrideAdornedTargetMergeMetadataResult.getEnumerationValues());
-    assertNull(actualOverrideAdornedTargetMergeMetadataResult.getKeys());
     assertNull(actualOverrideAdornedTargetMergeMetadataResult.getAllowNoValueEnumOption());
     assertNull(actualOverrideAdornedTargetMergeMetadataResult.getCanLinkToExternalEntity());
     assertNull(actualOverrideAdornedTargetMergeMetadataResult.getEnableTypeaheadLookup());
@@ -892,6 +559,11 @@ public class AdornedTargetCollectionFieldMetadataProviderDiffblueTest {
     assertNull(actualOverrideAdornedTargetMergeMetadataResult.getTooltip());
     assertNull(actualOverrideAdornedTargetMergeMetadataResult.getValueClass());
     assertNull(actualOverrideAdornedTargetMergeMetadataResult.getValuePropertyFriendlyName());
+    assertNull(actualOverrideAdornedTargetMergeMetadataResult.getCustomCriteria());
+    assertNull(actualOverrideAdornedTargetMergeMetadataResult.getGridVisibleFields());
+    assertNull(actualOverrideAdornedTargetMergeMetadataResult.getMaintainedAdornedTargetFields());
+    assertNull(actualOverrideAdornedTargetMergeMetadataResult.getEnumerationValues());
+    assertNull(actualOverrideAdornedTargetMergeMetadataResult.getKeys());
     assertNull(actualOverrideAdornedTargetMergeMetadataResult.getShowIfFieldEquals());
     assertNull(actualOverrideAdornedTargetMergeMetadataResult.getValidationConfigurations());
     assertNull(actualOverrideAdornedTargetMergeMetadataResult.getAddMethodType());
@@ -914,34 +586,31 @@ public class AdornedTargetCollectionFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#constructAdornedTargetCollectionMetadataOverride(AdminPresentationAdornedTargetCollection)}.
+   * Test {@link AdornedTargetCollectionFieldMetadataProvider#constructAdornedTargetCollectionMetadataOverride(AdminPresentationAdornedTargetCollection)}.
    * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#constructAdornedTargetCollectionMetadataOverride(AdminPresentationAdornedTargetCollection)}
+   * Method under test: {@link AdornedTargetCollectionFieldMetadataProvider#constructAdornedTargetCollectionMetadataOverride(AdminPresentationAdornedTargetCollection)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FieldMetadataOverride AdornedTargetCollectionFieldMetadataProvider.constructAdornedTargetCollectionMetadataOverride(AdminPresentationAdornedTargetCollection)"})
   public void testConstructAdornedTargetCollectionMetadataOverride() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertThrows(IllegalArgumentException.class, () -> (new AdornedTargetCollectionFieldMetadataProvider())
-        .constructAdornedTargetCollectionMetadataOverride(null));
+    assertThrows(IllegalArgumentException.class,
+        () -> adornedTargetCollectionFieldMetadataProvider.constructAdornedTargetCollectionMetadataOverride(null));
   }
 
   /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#constructAdornedTargetCollectionMetadataOverride(AdminPresentationAdornedTargetCollection)}.
+   * Test {@link AdornedTargetCollectionFieldMetadataProvider#constructAdornedTargetCollectionMetadataOverride(AdminPresentationAdornedTargetCollection)}.
    * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#constructAdornedTargetCollectionMetadataOverride(AdminPresentationAdornedTargetCollection)}
+   * Method under test: {@link AdornedTargetCollectionFieldMetadataProvider#constructAdornedTargetCollectionMetadataOverride(AdminPresentationAdornedTargetCollection)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FieldMetadataOverride AdornedTargetCollectionFieldMetadataProvider.constructAdornedTargetCollectionMetadataOverride(AdminPresentationAdornedTargetCollection)"})
   public void testConstructAdornedTargetCollectionMetadataOverride2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider = new AdornedTargetCollectionFieldMetadataProvider();
     AdminPresentationOperationTypes adminPresentationOperationTypes = mock(AdminPresentationOperationTypes.class);
     when(adminPresentationOperationTypes.addType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
     when(adminPresentationOperationTypes.fetchType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
@@ -1024,12 +693,6 @@ public class AdornedTargetCollectionFieldMetadataProviderDiffblueTest {
     verify(adminPresentationOperationTypes).updateType();
     verify(fieldValueConfiguration).fieldName();
     verify(fieldValueConfiguration).fieldValues();
-    Map<String, List<String>> showIfFieldEquals = actualConstructAdornedTargetCollectionMetadataOverrideResult
-        .getShowIfFieldEquals();
-    assertEquals(1, showIfFieldEquals.size());
-    List<String> getResult = showIfFieldEquals.get("Field Name");
-    assertEquals(1, getResult.size());
-    assertEquals("42", getResult.get(0));
     assertEquals("Friendly Name", actualConstructAdornedTargetCollectionMetadataOverrideResult.getFriendlyName());
     assertEquals("GBP", actualConstructAdornedTargetCollectionMetadataOverrideResult.getCurrencyCodeField());
     assertEquals("Group", actualConstructAdornedTargetCollectionMetadataOverrideResult.getGroup());
@@ -1050,8 +713,6 @@ public class AdornedTargetCollectionFieldMetadataProviderDiffblueTest {
     assertEquals("Target Object Property",
         actualConstructAdornedTargetCollectionMetadataOverrideResult.getTargetObjectProperty());
     assertNull(actualConstructAdornedTargetCollectionMetadataOverrideResult.getOptionFilterValues());
-    assertNull(actualConstructAdornedTargetCollectionMetadataOverrideResult.getEnumerationValues());
-    assertNull(actualConstructAdornedTargetCollectionMetadataOverrideResult.getKeys());
     assertNull(actualConstructAdornedTargetCollectionMetadataOverrideResult.getAllowNoValueEnumOption());
     assertNull(actualConstructAdornedTargetCollectionMetadataOverrideResult.getCanLinkToExternalEntity());
     assertNull(actualConstructAdornedTargetCollectionMetadataOverrideResult.getEnableTypeaheadLookup());
@@ -1109,6 +770,8 @@ public class AdornedTargetCollectionFieldMetadataProviderDiffblueTest {
     assertNull(actualConstructAdornedTargetCollectionMetadataOverrideResult.getTooltip());
     assertNull(actualConstructAdornedTargetCollectionMetadataOverrideResult.getValueClass());
     assertNull(actualConstructAdornedTargetCollectionMetadataOverrideResult.getValuePropertyFriendlyName());
+    assertNull(actualConstructAdornedTargetCollectionMetadataOverrideResult.getEnumerationValues());
+    assertNull(actualConstructAdornedTargetCollectionMetadataOverrideResult.getKeys());
     assertNull(actualConstructAdornedTargetCollectionMetadataOverrideResult.getValidationConfigurations());
     assertNull(actualConstructAdornedTargetCollectionMetadataOverrideResult.getAddMethodType());
     assertNull(actualConstructAdornedTargetCollectionMetadataOverrideResult.getLookupType());
@@ -1122,6 +785,13 @@ public class AdornedTargetCollectionFieldMetadataProviderDiffblueTest {
     assertNull(actualConstructAdornedTargetCollectionMetadataOverrideResult.getMergedPropertyType());
     assertEquals(1, actualConstructAdornedTargetCollectionMetadataOverrideResult.getTabOrder().intValue());
     assertEquals(1, actualConstructAdornedTargetCollectionMetadataOverrideResult.getOrder().intValue());
+    Map<String, List<String>> showIfFieldEquals = actualConstructAdornedTargetCollectionMetadataOverrideResult
+        .getShowIfFieldEquals();
+    assertEquals(1, showIfFieldEquals.size());
+    assertEquals(1, actualConstructAdornedTargetCollectionMetadataOverrideResult.getCustomCriteria().length);
+    assertEquals(1, actualConstructAdornedTargetCollectionMetadataOverrideResult.getGridVisibleFields().length);
+    assertEquals(1,
+        actualConstructAdornedTargetCollectionMetadataOverrideResult.getMaintainedAdornedTargetFields().length);
     assertEquals(AdornedTargetAddMethodType.LOOKUP,
         actualConstructAdornedTargetCollectionMetadataOverrideResult.getAdornedTargetAddMethodType());
     assertEquals(OperationType.NONDESTRUCTIVEREMOVE,
@@ -1136,6 +806,7 @@ public class AdornedTargetCollectionFieldMetadataProviderDiffblueTest {
         actualConstructAdornedTargetCollectionMetadataOverrideResult.getUpdateType());
     assertEquals(SupportedFieldType.INTEGER,
         actualConstructAdornedTargetCollectionMetadataOverrideResult.getSecondaryType());
+    assertTrue(showIfFieldEquals.containsKey("Field Name"));
     assertTrue(actualConstructAdornedTargetCollectionMetadataOverrideResult.getExcluded());
     assertTrue(actualConstructAdornedTargetCollectionMetadataOverrideResult.getLazyFetch());
     assertTrue(actualConstructAdornedTargetCollectionMetadataOverrideResult.getManualFetch());
@@ -1143,27 +814,19 @@ public class AdornedTargetCollectionFieldMetadataProviderDiffblueTest {
     assertTrue(actualConstructAdornedTargetCollectionMetadataOverrideResult.getUseServerSideInspectionCache());
     assertTrue(actualConstructAdornedTargetCollectionMetadataOverrideResult.isIgnoreAdornedProperties());
     assertTrue(actualConstructAdornedTargetCollectionMetadataOverrideResult.isSortAscending());
-    assertArrayEquals(new String[]{"Custom Criteria"},
-        actualConstructAdornedTargetCollectionMetadataOverrideResult.getCustomCriteria());
-    assertArrayEquals(new String[]{"Grid Visible Fields"},
-        actualConstructAdornedTargetCollectionMetadataOverrideResult.getGridVisibleFields());
-    assertArrayEquals(new String[]{"Maintained Adorned Target Fields"},
-        actualConstructAdornedTargetCollectionMetadataOverrideResult.getMaintainedAdornedTargetFields());
   }
 
   /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#constructAdornedTargetCollectionMetadataOverride(AdminPresentationAdornedTargetCollection)}.
+   * Test {@link AdornedTargetCollectionFieldMetadataProvider#constructAdornedTargetCollectionMetadataOverride(AdminPresentationAdornedTargetCollection)}.
    * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#constructAdornedTargetCollectionMetadataOverride(AdminPresentationAdornedTargetCollection)}
+   * Method under test: {@link AdornedTargetCollectionFieldMetadataProvider#constructAdornedTargetCollectionMetadataOverride(AdminPresentationAdornedTargetCollection)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FieldMetadataOverride AdornedTargetCollectionFieldMetadataProvider.constructAdornedTargetCollectionMetadataOverride(AdminPresentationAdornedTargetCollection)"})
   public void testConstructAdornedTargetCollectionMetadataOverride3() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider = new AdornedTargetCollectionFieldMetadataProvider();
     AdminPresentationOperationTypes adminPresentationOperationTypes = mock(AdminPresentationOperationTypes.class);
     when(adminPresentationOperationTypes.addType()).thenThrow(new NoSuchBeanDefinitionException("Name"));
     AdminPresentationAdornedTargetCollection adornedTargetCollection = mock(
@@ -1221,18 +884,16 @@ public class AdornedTargetCollectionFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#constructAdornedTargetCollectionMetadataOverride(AdminPresentationAdornedTargetCollection)}.
+   * Test {@link AdornedTargetCollectionFieldMetadataProvider#constructAdornedTargetCollectionMetadataOverride(AdminPresentationAdornedTargetCollection)}.
    * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#constructAdornedTargetCollectionMetadataOverride(AdminPresentationAdornedTargetCollection)}
+   * Method under test: {@link AdornedTargetCollectionFieldMetadataProvider#constructAdornedTargetCollectionMetadataOverride(AdminPresentationAdornedTargetCollection)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FieldMetadataOverride AdornedTargetCollectionFieldMetadataProvider.constructAdornedTargetCollectionMetadataOverride(AdminPresentationAdornedTargetCollection)"})
   public void testConstructAdornedTargetCollectionMetadataOverride4() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider = new AdornedTargetCollectionFieldMetadataProvider();
     AdminPresentationOperationTypes adminPresentationOperationTypes = mock(AdminPresentationOperationTypes.class);
     when(adminPresentationOperationTypes.addType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
     when(adminPresentationOperationTypes.fetchType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
@@ -1329,8 +990,6 @@ public class AdornedTargetCollectionFieldMetadataProviderDiffblueTest {
     assertEquals("Target Object Property",
         actualConstructAdornedTargetCollectionMetadataOverrideResult.getTargetObjectProperty());
     assertNull(actualConstructAdornedTargetCollectionMetadataOverrideResult.getOptionFilterValues());
-    assertNull(actualConstructAdornedTargetCollectionMetadataOverrideResult.getEnumerationValues());
-    assertNull(actualConstructAdornedTargetCollectionMetadataOverrideResult.getKeys());
     assertNull(actualConstructAdornedTargetCollectionMetadataOverrideResult.getAllowNoValueEnumOption());
     assertNull(actualConstructAdornedTargetCollectionMetadataOverrideResult.getCanLinkToExternalEntity());
     assertNull(actualConstructAdornedTargetCollectionMetadataOverrideResult.getEnableTypeaheadLookup());
@@ -1388,6 +1047,8 @@ public class AdornedTargetCollectionFieldMetadataProviderDiffblueTest {
     assertNull(actualConstructAdornedTargetCollectionMetadataOverrideResult.getTooltip());
     assertNull(actualConstructAdornedTargetCollectionMetadataOverrideResult.getValueClass());
     assertNull(actualConstructAdornedTargetCollectionMetadataOverrideResult.getValuePropertyFriendlyName());
+    assertNull(actualConstructAdornedTargetCollectionMetadataOverrideResult.getEnumerationValues());
+    assertNull(actualConstructAdornedTargetCollectionMetadataOverrideResult.getKeys());
     assertNull(actualConstructAdornedTargetCollectionMetadataOverrideResult.getShowIfFieldEquals());
     assertNull(actualConstructAdornedTargetCollectionMetadataOverrideResult.getValidationConfigurations());
     assertNull(actualConstructAdornedTargetCollectionMetadataOverrideResult.getAddMethodType());
@@ -1402,6 +1063,10 @@ public class AdornedTargetCollectionFieldMetadataProviderDiffblueTest {
     assertNull(actualConstructAdornedTargetCollectionMetadataOverrideResult.getMergedPropertyType());
     assertEquals(1, actualConstructAdornedTargetCollectionMetadataOverrideResult.getTabOrder().intValue());
     assertEquals(1, actualConstructAdornedTargetCollectionMetadataOverrideResult.getOrder().intValue());
+    assertEquals(1, actualConstructAdornedTargetCollectionMetadataOverrideResult.getCustomCriteria().length);
+    assertEquals(1, actualConstructAdornedTargetCollectionMetadataOverrideResult.getGridVisibleFields().length);
+    assertEquals(1,
+        actualConstructAdornedTargetCollectionMetadataOverrideResult.getMaintainedAdornedTargetFields().length);
     assertEquals(AdornedTargetAddMethodType.LOOKUP,
         actualConstructAdornedTargetCollectionMetadataOverrideResult.getAdornedTargetAddMethodType());
     assertEquals(OperationType.NONDESTRUCTIVEREMOVE,
@@ -1423,27 +1088,19 @@ public class AdornedTargetCollectionFieldMetadataProviderDiffblueTest {
     assertTrue(actualConstructAdornedTargetCollectionMetadataOverrideResult.getUseServerSideInspectionCache());
     assertTrue(actualConstructAdornedTargetCollectionMetadataOverrideResult.isIgnoreAdornedProperties());
     assertTrue(actualConstructAdornedTargetCollectionMetadataOverrideResult.isSortAscending());
-    assertArrayEquals(new String[]{"Custom Criteria"},
-        actualConstructAdornedTargetCollectionMetadataOverrideResult.getCustomCriteria());
-    assertArrayEquals(new String[]{"Grid Visible Fields"},
-        actualConstructAdornedTargetCollectionMetadataOverrideResult.getGridVisibleFields());
-    assertArrayEquals(new String[]{"Maintained Adorned Target Fields"},
-        actualConstructAdornedTargetCollectionMetadataOverrideResult.getMaintainedAdornedTargetFields());
   }
 
   /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#constructAdornedTargetCollectionMetadataOverride(AdminPresentationAdornedTargetCollection)}.
+   * Test {@link AdornedTargetCollectionFieldMetadataProvider#constructAdornedTargetCollectionMetadataOverride(AdminPresentationAdornedTargetCollection)}.
    * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#constructAdornedTargetCollectionMetadataOverride(AdminPresentationAdornedTargetCollection)}
+   * Method under test: {@link AdornedTargetCollectionFieldMetadataProvider#constructAdornedTargetCollectionMetadataOverride(AdminPresentationAdornedTargetCollection)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FieldMetadataOverride AdornedTargetCollectionFieldMetadataProvider.constructAdornedTargetCollectionMetadataOverride(AdminPresentationAdornedTargetCollection)"})
   public void testConstructAdornedTargetCollectionMetadataOverride5() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider = new AdornedTargetCollectionFieldMetadataProvider();
     AdminPresentationOperationTypes adminPresentationOperationTypes = mock(AdminPresentationOperationTypes.class);
     when(adminPresentationOperationTypes.addType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
     when(adminPresentationOperationTypes.fetchType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
@@ -1525,47 +1182,18 @@ public class AdornedTargetCollectionFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#constructAdornedTargetCollectionMetadataOverride(AdminPresentationAdornedTargetCollection)}.
+   * Test {@link AdornedTargetCollectionFieldMetadataProvider#buildAdornedTargetCollectionMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}.
    * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#constructAdornedTargetCollectionMetadataOverride(AdminPresentationAdornedTargetCollection)}
+   * Method under test: {@link AdornedTargetCollectionFieldMetadataProvider#buildAdornedTargetCollectionMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testConstructAdornedTargetCollectionMetadataOverride6() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass18164 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.provider.metadata.AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new AdornedTargetCollectionFieldMetadataProvider())
-        .constructAdornedTargetCollectionMetadataOverride(mock(AdminPresentationAdornedTargetCollection.class));
-  }
-
-  /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#buildAdornedTargetCollectionMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#buildAdornedTargetCollectionMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void AdornedTargetCollectionFieldMetadataProvider.buildAdornedTargetCollectionMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)"})
   public void testBuildAdornedTargetCollectionMetadata() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider = new AdornedTargetCollectionFieldMetadataProvider();
@@ -1615,902 +1243,21 @@ public class AdornedTargetCollectionFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#buildAdornedTargetCollectionMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#buildAdornedTargetCollectionMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}
-   */
-  @Test
-  public void testBuildAdornedTargetCollectionMetadata2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider = new AdornedTargetCollectionFieldMetadataProvider();
-    Class<Object> parentClass = Object.class;
-    Class<Object> targetClass = Object.class;
-    HashMap<String, FieldMetadata> attributes = new HashMap<>();
-    FieldInfo field = mock(FieldInfo.class);
-    when(field.getName()).thenReturn("Name");
-    FieldMetadataOverride adornedTargetCollectionMetadata = mock(FieldMetadataOverride.class);
-    when(adornedTargetCollectionMetadata.getJoinEntityClass()).thenThrow(new RuntimeException("foo"));
-    when(adornedTargetCollectionMetadata.getReadOnly()).thenReturn(null);
-    when(adornedTargetCollectionMetadata.getParentObjectIdProperty()).thenReturn("Parent Object Id Property");
-    when(adornedTargetCollectionMetadata.getParentObjectProperty()).thenReturn("Parent Object Property");
-    when(adornedTargetCollectionMetadata.getSelectizeVisibleField()).thenReturn("Selectize Visible Field");
-    when(adornedTargetCollectionMetadata.getShowIfProperty()).thenReturn("Show If Property");
-    when(adornedTargetCollectionMetadata.getSortProperty()).thenReturn("Sort Property");
-    when(adornedTargetCollectionMetadata.getTargetObjectProperty()).thenReturn("Target Object Property");
-    when(adornedTargetCollectionMetadata.getGridVisibleFields()).thenReturn(new String[]{"Grid Visible Fields"});
-    when(adornedTargetCollectionMetadata.getMaintainedAdornedTargetFields())
-        .thenReturn(new String[]{"Maintained Adorned Target Fields"});
-    when(adornedTargetCollectionMetadata.getShowIfFieldEquals()).thenReturn(new HashMap<>());
-    when(adornedTargetCollectionMetadata.getAddType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getFetchType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getInspectType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getRemoveType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getUpdateType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-
-    // Act
-    adornedTargetCollectionFieldMetadataProvider.buildAdornedTargetCollectionMetadata(parentClass, targetClass,
-        attributes, field, adornedTargetCollectionMetadata, mock(DynamicEntityDao.class));
-
-    // Assert
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getAddType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getFetchType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getGridVisibleFields();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getInspectType();
-    verify(adornedTargetCollectionMetadata).getJoinEntityClass();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getMaintainedAdornedTargetFields();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getParentObjectIdProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getParentObjectProperty();
-    verify(adornedTargetCollectionMetadata).getReadOnly();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getRemoveType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getSelectizeVisibleField();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getShowIfFieldEquals();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getShowIfProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getSortProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getTargetObjectProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getUpdateType();
-    verify(field, atLeast(1)).getName();
-  }
-
-  /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#buildAdornedTargetCollectionMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#buildAdornedTargetCollectionMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}
-   */
-  @Test
-  public void testBuildAdornedTargetCollectionMetadata3() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider = new AdornedTargetCollectionFieldMetadataProvider();
-    Class<Object> parentClass = Object.class;
-    Class<Object> targetClass = Object.class;
-    HashMap<String, FieldMetadata> attributes = new HashMap<>();
-    FieldInfo field = mock(FieldInfo.class);
-    when(field.getName()).thenReturn("Name");
-    FieldMetadataOverride adornedTargetCollectionMetadata = mock(FieldMetadataOverride.class);
-    when(adornedTargetCollectionMetadata.getJoinEntityClass()).thenThrow(new RuntimeException("foo"));
-    when(adornedTargetCollectionMetadata.getReadOnly()).thenReturn(true);
-    when(adornedTargetCollectionMetadata.getParentObjectIdProperty()).thenReturn("Parent Object Id Property");
-    when(adornedTargetCollectionMetadata.getParentObjectProperty()).thenReturn("Parent Object Property");
-    when(adornedTargetCollectionMetadata.getSelectizeVisibleField()).thenReturn(null);
-    when(adornedTargetCollectionMetadata.getShowIfProperty()).thenReturn("Show If Property");
-    when(adornedTargetCollectionMetadata.getSortProperty()).thenReturn("Sort Property");
-    when(adornedTargetCollectionMetadata.getTargetObjectProperty()).thenReturn("Target Object Property");
-    when(adornedTargetCollectionMetadata.getGridVisibleFields()).thenReturn(new String[]{"Grid Visible Fields"});
-    when(adornedTargetCollectionMetadata.getMaintainedAdornedTargetFields())
-        .thenReturn(new String[]{"Maintained Adorned Target Fields"});
-    when(adornedTargetCollectionMetadata.getShowIfFieldEquals()).thenReturn(new HashMap<>());
-    when(adornedTargetCollectionMetadata.getAddType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getFetchType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getInspectType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getRemoveType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getUpdateType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-
-    // Act
-    adornedTargetCollectionFieldMetadataProvider.buildAdornedTargetCollectionMetadata(parentClass, targetClass,
-        attributes, field, adornedTargetCollectionMetadata, mock(DynamicEntityDao.class));
-
-    // Assert
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getAddType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getFetchType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getGridVisibleFields();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getInspectType();
-    verify(adornedTargetCollectionMetadata).getJoinEntityClass();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getMaintainedAdornedTargetFields();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getParentObjectIdProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getParentObjectProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getReadOnly();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getRemoveType();
-    verify(adornedTargetCollectionMetadata).getSelectizeVisibleField();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getShowIfFieldEquals();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getShowIfProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getSortProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getTargetObjectProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getUpdateType();
-    verify(field, atLeast(1)).getName();
-  }
-
-  /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#buildAdornedTargetCollectionMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#buildAdornedTargetCollectionMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}
-   */
-  @Test
-  public void testBuildAdornedTargetCollectionMetadata4() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider = new AdornedTargetCollectionFieldMetadataProvider();
-    Class<Object> parentClass = Object.class;
-    Class<Object> targetClass = Object.class;
-    HashMap<String, FieldMetadata> attributes = new HashMap<>();
-    FieldInfo field = mock(FieldInfo.class);
-    when(field.getName()).thenReturn("Name");
-    FieldMetadataOverride adornedTargetCollectionMetadata = mock(FieldMetadataOverride.class);
-    when(adornedTargetCollectionMetadata.getJoinEntityClass()).thenThrow(new RuntimeException("foo"));
-    when(adornedTargetCollectionMetadata.getReadOnly()).thenReturn(true);
-    when(adornedTargetCollectionMetadata.getParentObjectIdProperty()).thenReturn("Parent Object Id Property");
-    when(adornedTargetCollectionMetadata.getParentObjectProperty()).thenReturn("Parent Object Property");
-    when(adornedTargetCollectionMetadata.getSelectizeVisibleField()).thenReturn("Selectize Visible Field");
-    when(adornedTargetCollectionMetadata.getShowIfProperty()).thenReturn(null);
-    when(adornedTargetCollectionMetadata.getSortProperty()).thenReturn("Sort Property");
-    when(adornedTargetCollectionMetadata.getTargetObjectProperty()).thenReturn("Target Object Property");
-    when(adornedTargetCollectionMetadata.getGridVisibleFields()).thenReturn(new String[]{"Grid Visible Fields"});
-    when(adornedTargetCollectionMetadata.getMaintainedAdornedTargetFields())
-        .thenReturn(new String[]{"Maintained Adorned Target Fields"});
-    when(adornedTargetCollectionMetadata.getShowIfFieldEquals()).thenReturn(new HashMap<>());
-    when(adornedTargetCollectionMetadata.getAddType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getFetchType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getInspectType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getRemoveType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getUpdateType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-
-    // Act
-    adornedTargetCollectionFieldMetadataProvider.buildAdornedTargetCollectionMetadata(parentClass, targetClass,
-        attributes, field, adornedTargetCollectionMetadata, mock(DynamicEntityDao.class));
-
-    // Assert
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getAddType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getFetchType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getGridVisibleFields();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getInspectType();
-    verify(adornedTargetCollectionMetadata).getJoinEntityClass();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getMaintainedAdornedTargetFields();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getParentObjectIdProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getParentObjectProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getReadOnly();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getRemoveType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getSelectizeVisibleField();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getShowIfFieldEquals();
-    verify(adornedTargetCollectionMetadata).getShowIfProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getSortProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getTargetObjectProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getUpdateType();
-    verify(field, atLeast(1)).getName();
-  }
-
-  /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#buildAdornedTargetCollectionMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#buildAdornedTargetCollectionMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}
-   */
-  @Test
-  public void testBuildAdornedTargetCollectionMetadata5() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider = new AdornedTargetCollectionFieldMetadataProvider();
-    Class<Object> parentClass = Object.class;
-    Class<Object> targetClass = Object.class;
-    HashMap<String, FieldMetadata> attributes = new HashMap<>();
-    FieldInfo field = mock(FieldInfo.class);
-    when(field.getName()).thenReturn("Name");
-    FieldMetadataOverride adornedTargetCollectionMetadata = mock(FieldMetadataOverride.class);
-    when(adornedTargetCollectionMetadata.getJoinEntityClass()).thenThrow(new RuntimeException("foo"));
-    when(adornedTargetCollectionMetadata.getReadOnly()).thenReturn(true);
-    when(adornedTargetCollectionMetadata.getParentObjectIdProperty()).thenReturn("Parent Object Id Property");
-    when(adornedTargetCollectionMetadata.getParentObjectProperty()).thenReturn("Parent Object Property");
-    when(adornedTargetCollectionMetadata.getSelectizeVisibleField()).thenReturn("Selectize Visible Field");
-    when(adornedTargetCollectionMetadata.getShowIfProperty()).thenReturn("Show If Property");
-    when(adornedTargetCollectionMetadata.getSortProperty()).thenReturn(null);
-    when(adornedTargetCollectionMetadata.getTargetObjectProperty()).thenReturn("Target Object Property");
-    when(adornedTargetCollectionMetadata.getGridVisibleFields()).thenReturn(new String[]{"Grid Visible Fields"});
-    when(adornedTargetCollectionMetadata.getMaintainedAdornedTargetFields())
-        .thenReturn(new String[]{"Maintained Adorned Target Fields"});
-    when(adornedTargetCollectionMetadata.getShowIfFieldEquals()).thenReturn(new HashMap<>());
-    when(adornedTargetCollectionMetadata.getAddType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getFetchType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getInspectType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getRemoveType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getUpdateType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-
-    // Act
-    adornedTargetCollectionFieldMetadataProvider.buildAdornedTargetCollectionMetadata(parentClass, targetClass,
-        attributes, field, adornedTargetCollectionMetadata, mock(DynamicEntityDao.class));
-
-    // Assert
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getAddType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getFetchType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getGridVisibleFields();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getInspectType();
-    verify(adornedTargetCollectionMetadata).getJoinEntityClass();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getMaintainedAdornedTargetFields();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getParentObjectIdProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getParentObjectProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getReadOnly();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getRemoveType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getSelectizeVisibleField();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getShowIfFieldEquals();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getShowIfProperty();
-    verify(adornedTargetCollectionMetadata).getSortProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getTargetObjectProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getUpdateType();
-    verify(field, atLeast(1)).getName();
-  }
-
-  /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#buildAdornedTargetCollectionMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#buildAdornedTargetCollectionMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}
-   */
-  @Test
-  public void testBuildAdornedTargetCollectionMetadata6() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider = new AdornedTargetCollectionFieldMetadataProvider();
-    Class<Object> parentClass = Object.class;
-    Class<Object> targetClass = Object.class;
-    HashMap<String, FieldMetadata> attributes = new HashMap<>();
-    FieldInfo field = mock(FieldInfo.class);
-    when(field.getName()).thenReturn("Name");
-    FieldMetadataOverride adornedTargetCollectionMetadata = mock(FieldMetadataOverride.class);
-    when(adornedTargetCollectionMetadata.getJoinEntityClass()).thenThrow(new RuntimeException("foo"));
-    when(adornedTargetCollectionMetadata.getReadOnly()).thenReturn(true);
-    when(adornedTargetCollectionMetadata.getParentObjectIdProperty()).thenReturn("Parent Object Id Property");
-    when(adornedTargetCollectionMetadata.getParentObjectProperty()).thenReturn("Parent Object Property");
-    when(adornedTargetCollectionMetadata.getSelectizeVisibleField()).thenReturn("Selectize Visible Field");
-    when(adornedTargetCollectionMetadata.getShowIfProperty()).thenReturn("Show If Property");
-    when(adornedTargetCollectionMetadata.getSortProperty()).thenReturn("Sort Property");
-    when(adornedTargetCollectionMetadata.getTargetObjectProperty()).thenReturn(null);
-    when(adornedTargetCollectionMetadata.getGridVisibleFields()).thenReturn(new String[]{"Grid Visible Fields"});
-    when(adornedTargetCollectionMetadata.getMaintainedAdornedTargetFields())
-        .thenReturn(new String[]{"Maintained Adorned Target Fields"});
-    when(adornedTargetCollectionMetadata.getShowIfFieldEquals()).thenReturn(new HashMap<>());
-    when(adornedTargetCollectionMetadata.getAddType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getFetchType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getInspectType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getRemoveType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getUpdateType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-
-    // Act
-    adornedTargetCollectionFieldMetadataProvider.buildAdornedTargetCollectionMetadata(parentClass, targetClass,
-        attributes, field, adornedTargetCollectionMetadata, mock(DynamicEntityDao.class));
-
-    // Assert
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getAddType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getFetchType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getGridVisibleFields();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getInspectType();
-    verify(adornedTargetCollectionMetadata).getJoinEntityClass();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getMaintainedAdornedTargetFields();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getParentObjectIdProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getParentObjectProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getReadOnly();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getRemoveType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getSelectizeVisibleField();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getShowIfFieldEquals();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getShowIfProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getSortProperty();
-    verify(adornedTargetCollectionMetadata).getTargetObjectProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getUpdateType();
-    verify(field, atLeast(1)).getName();
-  }
-
-  /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#buildAdornedTargetCollectionMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#buildAdornedTargetCollectionMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}
-   */
-  @Test
-  public void testBuildAdornedTargetCollectionMetadata7() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider = new AdornedTargetCollectionFieldMetadataProvider();
-    Class<Object> parentClass = Object.class;
-    Class<Object> targetClass = Object.class;
-    HashMap<String, FieldMetadata> attributes = new HashMap<>();
-    FieldInfo field = mock(FieldInfo.class);
-    when(field.getName()).thenReturn("Name");
-    FieldMetadataOverride adornedTargetCollectionMetadata = mock(FieldMetadataOverride.class);
-    when(adornedTargetCollectionMetadata.getJoinEntityClass()).thenThrow(new RuntimeException("foo"));
-    when(adornedTargetCollectionMetadata.getReadOnly()).thenReturn(true);
-    when(adornedTargetCollectionMetadata.getParentObjectIdProperty()).thenReturn("Parent Object Id Property");
-    when(adornedTargetCollectionMetadata.getParentObjectProperty()).thenReturn("Parent Object Property");
-    when(adornedTargetCollectionMetadata.getSelectizeVisibleField()).thenReturn("Selectize Visible Field");
-    when(adornedTargetCollectionMetadata.getShowIfProperty()).thenReturn("Show If Property");
-    when(adornedTargetCollectionMetadata.getSortProperty()).thenReturn("Sort Property");
-    when(adornedTargetCollectionMetadata.getTargetObjectProperty()).thenReturn("Target Object Property");
-    when(adornedTargetCollectionMetadata.getGridVisibleFields()).thenReturn(null);
-    when(adornedTargetCollectionMetadata.getMaintainedAdornedTargetFields())
-        .thenReturn(new String[]{"Maintained Adorned Target Fields"});
-    when(adornedTargetCollectionMetadata.getShowIfFieldEquals()).thenReturn(new HashMap<>());
-    when(adornedTargetCollectionMetadata.getAddType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getFetchType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getInspectType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getRemoveType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getUpdateType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-
-    // Act
-    adornedTargetCollectionFieldMetadataProvider.buildAdornedTargetCollectionMetadata(parentClass, targetClass,
-        attributes, field, adornedTargetCollectionMetadata, mock(DynamicEntityDao.class));
-
-    // Assert
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getAddType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getFetchType();
-    verify(adornedTargetCollectionMetadata).getGridVisibleFields();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getInspectType();
-    verify(adornedTargetCollectionMetadata).getJoinEntityClass();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getMaintainedAdornedTargetFields();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getParentObjectIdProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getParentObjectProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getReadOnly();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getRemoveType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getSelectizeVisibleField();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getShowIfFieldEquals();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getShowIfProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getSortProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getTargetObjectProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getUpdateType();
-    verify(field, atLeast(1)).getName();
-  }
-
-  /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#buildAdornedTargetCollectionMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#buildAdornedTargetCollectionMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}
-   */
-  @Test
-  public void testBuildAdornedTargetCollectionMetadata8() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider = new AdornedTargetCollectionFieldMetadataProvider();
-    Class<Object> parentClass = Object.class;
-    Class<Object> targetClass = Object.class;
-    HashMap<String, FieldMetadata> attributes = new HashMap<>();
-    FieldInfo field = mock(FieldInfo.class);
-    when(field.getName()).thenReturn("Name");
-    FieldMetadataOverride adornedTargetCollectionMetadata = mock(FieldMetadataOverride.class);
-    when(adornedTargetCollectionMetadata.getJoinEntityClass()).thenThrow(new RuntimeException("foo"));
-    when(adornedTargetCollectionMetadata.getReadOnly()).thenReturn(true);
-    when(adornedTargetCollectionMetadata.getParentObjectIdProperty()).thenReturn("Parent Object Id Property");
-    when(adornedTargetCollectionMetadata.getParentObjectProperty()).thenReturn("Parent Object Property");
-    when(adornedTargetCollectionMetadata.getSelectizeVisibleField()).thenReturn("Selectize Visible Field");
-    when(adornedTargetCollectionMetadata.getShowIfProperty()).thenReturn("Show If Property");
-    when(adornedTargetCollectionMetadata.getSortProperty()).thenReturn("Sort Property");
-    when(adornedTargetCollectionMetadata.getTargetObjectProperty()).thenReturn("Target Object Property");
-    when(adornedTargetCollectionMetadata.getGridVisibleFields()).thenReturn(new String[]{"Grid Visible Fields"});
-    when(adornedTargetCollectionMetadata.getMaintainedAdornedTargetFields()).thenReturn(null);
-    when(adornedTargetCollectionMetadata.getShowIfFieldEquals()).thenReturn(new HashMap<>());
-    when(adornedTargetCollectionMetadata.getAddType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getFetchType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getInspectType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getRemoveType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getUpdateType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-
-    // Act
-    adornedTargetCollectionFieldMetadataProvider.buildAdornedTargetCollectionMetadata(parentClass, targetClass,
-        attributes, field, adornedTargetCollectionMetadata, mock(DynamicEntityDao.class));
-
-    // Assert
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getAddType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getFetchType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getGridVisibleFields();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getInspectType();
-    verify(adornedTargetCollectionMetadata).getJoinEntityClass();
-    verify(adornedTargetCollectionMetadata).getMaintainedAdornedTargetFields();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getParentObjectIdProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getParentObjectProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getReadOnly();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getRemoveType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getSelectizeVisibleField();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getShowIfFieldEquals();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getShowIfProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getSortProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getTargetObjectProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getUpdateType();
-    verify(field, atLeast(1)).getName();
-  }
-
-  /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#buildAdornedTargetCollectionMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#buildAdornedTargetCollectionMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}
-   */
-  @Test
-  public void testBuildAdornedTargetCollectionMetadata9() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider = new AdornedTargetCollectionFieldMetadataProvider();
-    Class<Object> parentClass = Object.class;
-    Class<Object> targetClass = Object.class;
-    HashMap<String, FieldMetadata> attributes = new HashMap<>();
-    FieldInfo field = mock(FieldInfo.class);
-    when(field.getName()).thenReturn("Name");
-    FieldMetadataOverride adornedTargetCollectionMetadata = mock(FieldMetadataOverride.class);
-    when(adornedTargetCollectionMetadata.getJoinEntityClass()).thenThrow(new RuntimeException("foo"));
-    when(adornedTargetCollectionMetadata.getReadOnly()).thenReturn(true);
-    when(adornedTargetCollectionMetadata.getParentObjectIdProperty()).thenReturn("Parent Object Id Property");
-    when(adornedTargetCollectionMetadata.getParentObjectProperty()).thenReturn("Parent Object Property");
-    when(adornedTargetCollectionMetadata.getSelectizeVisibleField()).thenReturn("Selectize Visible Field");
-    when(adornedTargetCollectionMetadata.getShowIfProperty()).thenReturn("Show If Property");
-    when(adornedTargetCollectionMetadata.getSortProperty()).thenReturn("Sort Property");
-    when(adornedTargetCollectionMetadata.getTargetObjectProperty()).thenReturn("Target Object Property");
-    when(adornedTargetCollectionMetadata.getGridVisibleFields()).thenReturn(new String[]{"Grid Visible Fields"});
-    when(adornedTargetCollectionMetadata.getMaintainedAdornedTargetFields())
-        .thenReturn(new String[]{"Maintained Adorned Target Fields"});
-    when(adornedTargetCollectionMetadata.getShowIfFieldEquals()).thenReturn(new HashMap<>());
-    when(adornedTargetCollectionMetadata.getAddType()).thenReturn(null);
-    when(adornedTargetCollectionMetadata.getFetchType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getInspectType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getRemoveType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getUpdateType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-
-    // Act
-    adornedTargetCollectionFieldMetadataProvider.buildAdornedTargetCollectionMetadata(parentClass, targetClass,
-        attributes, field, adornedTargetCollectionMetadata, mock(DynamicEntityDao.class));
-
-    // Assert
-    verify(adornedTargetCollectionMetadata).getAddType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getFetchType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getGridVisibleFields();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getInspectType();
-    verify(adornedTargetCollectionMetadata).getJoinEntityClass();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getMaintainedAdornedTargetFields();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getParentObjectIdProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getParentObjectProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getReadOnly();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getRemoveType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getSelectizeVisibleField();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getShowIfFieldEquals();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getShowIfProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getSortProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getTargetObjectProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getUpdateType();
-    verify(field, atLeast(1)).getName();
-  }
-
-  /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#buildAdornedTargetCollectionMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#buildAdornedTargetCollectionMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}
-   */
-  @Test
-  public void testBuildAdornedTargetCollectionMetadata10() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider = new AdornedTargetCollectionFieldMetadataProvider();
-    Class<Object> parentClass = Object.class;
-    Class<Object> targetClass = Object.class;
-    HashMap<String, FieldMetadata> attributes = new HashMap<>();
-    FieldInfo field = mock(FieldInfo.class);
-    when(field.getName()).thenReturn("Name");
-    FieldMetadataOverride adornedTargetCollectionMetadata = mock(FieldMetadataOverride.class);
-    when(adornedTargetCollectionMetadata.getJoinEntityClass()).thenThrow(new RuntimeException("foo"));
-    when(adornedTargetCollectionMetadata.getReadOnly()).thenReturn(true);
-    when(adornedTargetCollectionMetadata.getParentObjectIdProperty()).thenReturn("Parent Object Id Property");
-    when(adornedTargetCollectionMetadata.getParentObjectProperty()).thenReturn("Parent Object Property");
-    when(adornedTargetCollectionMetadata.getSelectizeVisibleField()).thenReturn("Selectize Visible Field");
-    when(adornedTargetCollectionMetadata.getShowIfProperty()).thenReturn("Show If Property");
-    when(adornedTargetCollectionMetadata.getSortProperty()).thenReturn("Sort Property");
-    when(adornedTargetCollectionMetadata.getTargetObjectProperty()).thenReturn("Target Object Property");
-    when(adornedTargetCollectionMetadata.getGridVisibleFields()).thenReturn(new String[]{"Grid Visible Fields"});
-    when(adornedTargetCollectionMetadata.getMaintainedAdornedTargetFields())
-        .thenReturn(new String[]{"Maintained Adorned Target Fields"});
-    when(adornedTargetCollectionMetadata.getShowIfFieldEquals()).thenReturn(new HashMap<>());
-    when(adornedTargetCollectionMetadata.getAddType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getFetchType()).thenReturn(null);
-    when(adornedTargetCollectionMetadata.getInspectType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getRemoveType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getUpdateType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-
-    // Act
-    adornedTargetCollectionFieldMetadataProvider.buildAdornedTargetCollectionMetadata(parentClass, targetClass,
-        attributes, field, adornedTargetCollectionMetadata, mock(DynamicEntityDao.class));
-
-    // Assert
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getAddType();
-    verify(adornedTargetCollectionMetadata).getFetchType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getGridVisibleFields();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getInspectType();
-    verify(adornedTargetCollectionMetadata).getJoinEntityClass();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getMaintainedAdornedTargetFields();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getParentObjectIdProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getParentObjectProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getReadOnly();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getRemoveType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getSelectizeVisibleField();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getShowIfFieldEquals();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getShowIfProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getSortProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getTargetObjectProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getUpdateType();
-    verify(field, atLeast(1)).getName();
-  }
-
-  /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#buildAdornedTargetCollectionMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#buildAdornedTargetCollectionMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}
-   */
-  @Test
-  public void testBuildAdornedTargetCollectionMetadata11() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider = new AdornedTargetCollectionFieldMetadataProvider();
-    Class<Object> parentClass = Object.class;
-    Class<Object> targetClass = Object.class;
-    HashMap<String, FieldMetadata> attributes = new HashMap<>();
-    FieldInfo field = mock(FieldInfo.class);
-    when(field.getName()).thenReturn("Name");
-    FieldMetadataOverride adornedTargetCollectionMetadata = mock(FieldMetadataOverride.class);
-    when(adornedTargetCollectionMetadata.getJoinEntityClass()).thenThrow(new RuntimeException("foo"));
-    when(adornedTargetCollectionMetadata.getReadOnly()).thenReturn(true);
-    when(adornedTargetCollectionMetadata.getParentObjectIdProperty()).thenReturn("Parent Object Id Property");
-    when(adornedTargetCollectionMetadata.getParentObjectProperty()).thenReturn("Parent Object Property");
-    when(adornedTargetCollectionMetadata.getSelectizeVisibleField()).thenReturn("Selectize Visible Field");
-    when(adornedTargetCollectionMetadata.getShowIfProperty()).thenReturn("Show If Property");
-    when(adornedTargetCollectionMetadata.getSortProperty()).thenReturn("Sort Property");
-    when(adornedTargetCollectionMetadata.getTargetObjectProperty()).thenReturn("Target Object Property");
-    when(adornedTargetCollectionMetadata.getGridVisibleFields()).thenReturn(new String[]{"Grid Visible Fields"});
-    when(adornedTargetCollectionMetadata.getMaintainedAdornedTargetFields())
-        .thenReturn(new String[]{"Maintained Adorned Target Fields"});
-    when(adornedTargetCollectionMetadata.getShowIfFieldEquals()).thenReturn(new HashMap<>());
-    when(adornedTargetCollectionMetadata.getAddType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getFetchType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getInspectType()).thenReturn(null);
-    when(adornedTargetCollectionMetadata.getRemoveType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getUpdateType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-
-    // Act
-    adornedTargetCollectionFieldMetadataProvider.buildAdornedTargetCollectionMetadata(parentClass, targetClass,
-        attributes, field, adornedTargetCollectionMetadata, mock(DynamicEntityDao.class));
-
-    // Assert
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getAddType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getFetchType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getGridVisibleFields();
-    verify(adornedTargetCollectionMetadata).getInspectType();
-    verify(adornedTargetCollectionMetadata).getJoinEntityClass();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getMaintainedAdornedTargetFields();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getParentObjectIdProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getParentObjectProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getReadOnly();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getRemoveType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getSelectizeVisibleField();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getShowIfFieldEquals();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getShowIfProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getSortProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getTargetObjectProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getUpdateType();
-    verify(field, atLeast(1)).getName();
-  }
-
-  /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#buildAdornedTargetCollectionMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#buildAdornedTargetCollectionMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}
-   */
-  @Test
-  public void testBuildAdornedTargetCollectionMetadata12() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider = new AdornedTargetCollectionFieldMetadataProvider();
-    Class<Object> parentClass = Object.class;
-    Class<Object> targetClass = Object.class;
-    HashMap<String, FieldMetadata> attributes = new HashMap<>();
-    FieldInfo field = mock(FieldInfo.class);
-    when(field.getName()).thenReturn("Name");
-    FieldMetadataOverride adornedTargetCollectionMetadata = mock(FieldMetadataOverride.class);
-    when(adornedTargetCollectionMetadata.getJoinEntityClass()).thenThrow(new RuntimeException("foo"));
-    when(adornedTargetCollectionMetadata.getReadOnly()).thenReturn(true);
-    when(adornedTargetCollectionMetadata.getParentObjectIdProperty()).thenReturn("Parent Object Id Property");
-    when(adornedTargetCollectionMetadata.getParentObjectProperty()).thenReturn("Parent Object Property");
-    when(adornedTargetCollectionMetadata.getSelectizeVisibleField()).thenReturn("Selectize Visible Field");
-    when(adornedTargetCollectionMetadata.getShowIfProperty()).thenReturn("Show If Property");
-    when(adornedTargetCollectionMetadata.getSortProperty()).thenReturn("Sort Property");
-    when(adornedTargetCollectionMetadata.getTargetObjectProperty()).thenReturn("Target Object Property");
-    when(adornedTargetCollectionMetadata.getGridVisibleFields()).thenReturn(new String[]{"Grid Visible Fields"});
-    when(adornedTargetCollectionMetadata.getMaintainedAdornedTargetFields())
-        .thenReturn(new String[]{"Maintained Adorned Target Fields"});
-    when(adornedTargetCollectionMetadata.getShowIfFieldEquals()).thenReturn(new HashMap<>());
-    when(adornedTargetCollectionMetadata.getAddType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getFetchType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getInspectType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getRemoveType()).thenReturn(null);
-    when(adornedTargetCollectionMetadata.getUpdateType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-
-    // Act
-    adornedTargetCollectionFieldMetadataProvider.buildAdornedTargetCollectionMetadata(parentClass, targetClass,
-        attributes, field, adornedTargetCollectionMetadata, mock(DynamicEntityDao.class));
-
-    // Assert
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getAddType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getFetchType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getGridVisibleFields();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getInspectType();
-    verify(adornedTargetCollectionMetadata).getJoinEntityClass();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getMaintainedAdornedTargetFields();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getParentObjectIdProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getParentObjectProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getReadOnly();
-    verify(adornedTargetCollectionMetadata).getRemoveType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getSelectizeVisibleField();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getShowIfFieldEquals();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getShowIfProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getSortProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getTargetObjectProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getUpdateType();
-    verify(field, atLeast(1)).getName();
-  }
-
-  /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#buildAdornedTargetCollectionMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#buildAdornedTargetCollectionMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}
-   */
-  @Test
-  public void testBuildAdornedTargetCollectionMetadata13() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider = new AdornedTargetCollectionFieldMetadataProvider();
-    Class<Object> parentClass = Object.class;
-    Class<Object> targetClass = Object.class;
-    HashMap<String, FieldMetadata> attributes = new HashMap<>();
-    FieldInfo field = mock(FieldInfo.class);
-    when(field.getName()).thenReturn("Name");
-    FieldMetadataOverride adornedTargetCollectionMetadata = mock(FieldMetadataOverride.class);
-    when(adornedTargetCollectionMetadata.getJoinEntityClass()).thenThrow(new RuntimeException("foo"));
-    when(adornedTargetCollectionMetadata.getReadOnly()).thenReturn(true);
-    when(adornedTargetCollectionMetadata.getParentObjectIdProperty()).thenReturn("Parent Object Id Property");
-    when(adornedTargetCollectionMetadata.getParentObjectProperty()).thenReturn("Parent Object Property");
-    when(adornedTargetCollectionMetadata.getSelectizeVisibleField()).thenReturn("Selectize Visible Field");
-    when(adornedTargetCollectionMetadata.getShowIfProperty()).thenReturn("Show If Property");
-    when(adornedTargetCollectionMetadata.getSortProperty()).thenReturn("Sort Property");
-    when(adornedTargetCollectionMetadata.getTargetObjectProperty()).thenReturn("Target Object Property");
-    when(adornedTargetCollectionMetadata.getGridVisibleFields()).thenReturn(new String[]{"Grid Visible Fields"});
-    when(adornedTargetCollectionMetadata.getMaintainedAdornedTargetFields())
-        .thenReturn(new String[]{"Maintained Adorned Target Fields"});
-    when(adornedTargetCollectionMetadata.getShowIfFieldEquals()).thenReturn(new HashMap<>());
-    when(adornedTargetCollectionMetadata.getAddType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getFetchType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getInspectType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getRemoveType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getUpdateType()).thenReturn(null);
-
-    // Act
-    adornedTargetCollectionFieldMetadataProvider.buildAdornedTargetCollectionMetadata(parentClass, targetClass,
-        attributes, field, adornedTargetCollectionMetadata, mock(DynamicEntityDao.class));
-
-    // Assert
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getAddType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getFetchType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getGridVisibleFields();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getInspectType();
-    verify(adornedTargetCollectionMetadata).getJoinEntityClass();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getMaintainedAdornedTargetFields();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getParentObjectIdProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getParentObjectProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getReadOnly();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getRemoveType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getSelectizeVisibleField();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getShowIfFieldEquals();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getShowIfProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getSortProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getTargetObjectProperty();
-    verify(adornedTargetCollectionMetadata).getUpdateType();
-    verify(field, atLeast(1)).getName();
-  }
-
-  /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#buildAdornedTargetCollectionMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#buildAdornedTargetCollectionMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testBuildAdornedTargetCollectionMetadata14() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass17032 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.provider.metadata.AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider2 = new AdornedTargetCollectionFieldMetadataProvider();
-    Class<Object> parentClass = Object.class;
-    Class<Object> targetClass = Object.class;
-    HashMap<String, FieldMetadata> attributes = new HashMap<>();
-
-    FieldInfo field = new FieldInfo();
-    field.setGenericType(new TypePlaceHolder(1));
-    field.setManyToManyMappedBy("Many To Many Mapped By");
-    field.setManyToManyTargetEntity("Many To Many Target Entity");
-    field.setMapKey("Map Key");
-    field.setName("Name");
-    field.setOneToManyMappedBy("One To Many Mapped By");
-    field.setOneToManyTargetEntity("One To Many Target Entity");
-
-    FieldMetadataOverride adornedTargetCollectionMetadata = new FieldMetadataOverride();
-    adornedTargetCollectionMetadata.setAddFriendlyName("Add Friendly Name");
-    adornedTargetCollectionMetadata.setAddMethodType(AddMethodType.PERSIST);
-    adornedTargetCollectionMetadata.setAddType(OperationType.NONDESTRUCTIVEREMOVE);
-    adornedTargetCollectionMetadata.setAdornedTargetAddMethodType(AdornedTargetAddMethodType.LOOKUP);
-    adornedTargetCollectionMetadata.setAllowNoValueEnumOption(true);
-    adornedTargetCollectionMetadata.setAssociatedFieldName("Associated Field Name");
-    adornedTargetCollectionMetadata.setBroadleafEnumeration("Broadleaf Enumeration");
-    adornedTargetCollectionMetadata.setCanLinkToExternalEntity(true);
-    adornedTargetCollectionMetadata.setColumnWidth("Column Width");
-    adornedTargetCollectionMetadata.setCurrencyCodeField("GBP");
-    adornedTargetCollectionMetadata.setCustomCriteria(new String[]{"Custom Criteria"});
-    adornedTargetCollectionMetadata.setDeleteEntityUponRemove(true);
-    adornedTargetCollectionMetadata.setDerived(true);
-    adornedTargetCollectionMetadata.setDisplayType(RuleBuilderDisplayType.NORMAL);
-    adornedTargetCollectionMetadata.setEnableTypeaheadLookup(true);
-    adornedTargetCollectionMetadata.setEnumerationClass("Enumeration Class");
-    adornedTargetCollectionMetadata.setEnumerationValues(new String[][]{new String[]{"42"}});
-    adornedTargetCollectionMetadata.setExcluded(true);
-    adornedTargetCollectionMetadata.setExplicitFieldType(SupportedFieldType.UNKNOWN);
-    adornedTargetCollectionMetadata.setFetchType(OperationType.NONDESTRUCTIVEREMOVE);
-    adornedTargetCollectionMetadata.setFieldComponentRenderer(SupportedFieldType.UNKNOWN);
-    adornedTargetCollectionMetadata.setFieldComponentRendererTemplate("Field Component Renderer Template");
-    adornedTargetCollectionMetadata.setFieldType(SupportedFieldType.UNKNOWN);
-    adornedTargetCollectionMetadata.setForceFreeFormKeys(true);
-    adornedTargetCollectionMetadata.setForcePopulateChildProperties(true);
-    adornedTargetCollectionMetadata.setForeignKeyClass("Foreign Key Class");
-    adornedTargetCollectionMetadata.setForeignKeyCollection(true);
-    adornedTargetCollectionMetadata.setForeignKeyDisplayValueProperty("42");
-    adornedTargetCollectionMetadata.setForeignKeyProperty("Foreign Key Property");
-    adornedTargetCollectionMetadata.setFriendlyName("Friendly Name");
-    adornedTargetCollectionMetadata.setGridFieldComponentRenderer(SupportedFieldType.UNKNOWN);
-    adornedTargetCollectionMetadata.setGridFieldComponentRendererTemplate("Grid Field Component Renderer Template");
-    adornedTargetCollectionMetadata.setGridOrder(1);
-    adornedTargetCollectionMetadata.setGridVisibleFields(new String[]{"Grid Visible Fields"});
-    adornedTargetCollectionMetadata.setGroup("Group");
-    adornedTargetCollectionMetadata.setGroupCollapsed(true);
-    adornedTargetCollectionMetadata.setGroupOrder(1);
-    adornedTargetCollectionMetadata.setHelpText("Help Text");
-    adornedTargetCollectionMetadata.setHideEnumerationIfEmpty(true);
-    adornedTargetCollectionMetadata.setHint("Hint");
-    adornedTargetCollectionMetadata.setIgnoreAdornedProperties(true);
-    adornedTargetCollectionMetadata.setInspectType(OperationType.NONDESTRUCTIVEREMOVE);
-    adornedTargetCollectionMetadata.setJoinEntityClass("Join Entity Class");
-    adornedTargetCollectionMetadata.setKeyClass("Key Class");
-    adornedTargetCollectionMetadata.setKeyPropertyFriendlyName("Key Property Friendly Name");
-    adornedTargetCollectionMetadata.setKeys(new String[][]{new String[]{"Keys"}});
-    adornedTargetCollectionMetadata.setLargeEntry(true);
-    adornedTargetCollectionMetadata.setLazyFetch(true);
-    adornedTargetCollectionMetadata.setLength(3);
-    adornedTargetCollectionMetadata.setLookupDisplayProperty("Lookup Display Property");
-    adornedTargetCollectionMetadata.setLookupType(LookupType.STANDARD);
-    adornedTargetCollectionMetadata.setMaintainedAdornedTargetFields(new String[]{"Maintained Adorned Target Fields"});
-    adornedTargetCollectionMetadata.setManualFetch(true);
-    adornedTargetCollectionMetadata.setManyToField("Many To Field");
-    adornedTargetCollectionMetadata.setMapFieldValueClass("42");
-    adornedTargetCollectionMetadata.setMapKeyOptionEntityClass("Map Key Option Entity Class");
-    adornedTargetCollectionMetadata.setMapKeyOptionEntityDisplayField("Map Key Option Entity Display Field");
-    adornedTargetCollectionMetadata.setMapKeyOptionEntityValueField("42");
-    adornedTargetCollectionMetadata.setMapKeyValueProperty("42");
-    adornedTargetCollectionMetadata.setMediaField("Media Field");
-    adornedTargetCollectionMetadata.setMergedPropertyType(MergedPropertyType.PRIMARY);
-    adornedTargetCollectionMetadata.setName("Name");
-    adornedTargetCollectionMetadata.setOptionCanEditValues(true);
-    adornedTargetCollectionMetadata.setOptionDisplayFieldName("Option Display Field Name");
-    adornedTargetCollectionMetadata
-        .setOptionFilterValues(new Serializable[][]{new Serializable[]{new SimpleDateFormat("yyyy/mm/dd")}});
-    adornedTargetCollectionMetadata.setOptionListEntity("Option List Entity");
-    adornedTargetCollectionMetadata.setOptionValueFieldName("42");
-    adornedTargetCollectionMetadata.setOrder(1);
-    adornedTargetCollectionMetadata.setParentObjectIdProperty("Parent Object Id Property");
-    adornedTargetCollectionMetadata.setParentObjectProperty("Parent Object Property");
-    adornedTargetCollectionMetadata.setPrecision(1);
-    adornedTargetCollectionMetadata.setProminent(true);
-    adornedTargetCollectionMetadata.setReadOnly(true);
-    adornedTargetCollectionMetadata.setRemoveType(OperationType.NONDESTRUCTIVEREMOVE);
-    adornedTargetCollectionMetadata.setRequired(true);
-    adornedTargetCollectionMetadata.setRequiredOverride(true);
-    adornedTargetCollectionMetadata.setRuleIdentifier("42");
-    adornedTargetCollectionMetadata.setScale(1);
-    adornedTargetCollectionMetadata.setSearchable(true);
-    adornedTargetCollectionMetadata.setSecondaryType(SupportedFieldType.UNKNOWN);
-    adornedTargetCollectionMetadata.setSecurityLevel("Security Level");
-    adornedTargetCollectionMetadata.setSelectizeVisibleField("Selectize Visible Field");
-    adornedTargetCollectionMetadata.setShowIfFieldEquals(new HashMap<>());
-    adornedTargetCollectionMetadata.setShowIfProperty("Show If Property");
-    adornedTargetCollectionMetadata.setSimpleValue(UnspecifiedBooleanType.TRUE);
-    adornedTargetCollectionMetadata.setSortAscending(true);
-    adornedTargetCollectionMetadata.setSortProperty("Sort Property");
-    adornedTargetCollectionMetadata.setTab("Tab");
-    adornedTargetCollectionMetadata.setTabOrder(1);
-    adornedTargetCollectionMetadata.setTargetObjectIdProperty("Target Object Id Property");
-    adornedTargetCollectionMetadata.setTargetObjectProperty("Target Object Property");
-    adornedTargetCollectionMetadata.setToOneLookupCreatedViaAnnotation(true);
-    adornedTargetCollectionMetadata.setToOneParentProperty("To One Parent Property");
-    adornedTargetCollectionMetadata.setToOneTargetProperty("To One Target Property");
-    adornedTargetCollectionMetadata.setTooltip("127.0.0.1");
-    adornedTargetCollectionMetadata.setTranslatable(true);
-    adornedTargetCollectionMetadata.setUnique(true);
-    adornedTargetCollectionMetadata.setUpdateType(OperationType.NONDESTRUCTIVEREMOVE);
-    adornedTargetCollectionMetadata.setUseServerSideInspectionCache(true);
-    adornedTargetCollectionMetadata.setValidationConfigurations(new HashMap<>());
-    adornedTargetCollectionMetadata.setValueClass("42");
-    adornedTargetCollectionMetadata.setValuePropertyFriendlyName("42");
-    adornedTargetCollectionMetadata.setVisibility(VisibilityEnum.HIDDEN_ALL);
-
-    // Act
-    adornedTargetCollectionFieldMetadataProvider2.buildAdornedTargetCollectionMetadata(parentClass, targetClass,
-        attributes, field, adornedTargetCollectionMetadata, new DynamicEntityDaoImpl());
-  }
-
-  /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#buildAdornedTargetCollectionMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}.
+   * Test {@link AdornedTargetCollectionFieldMetadataProvider#buildAdornedTargetCollectionMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}.
    * <ul>
    *   <li>Given empty string.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#buildAdornedTargetCollectionMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}
+   * Method under test: {@link AdornedTargetCollectionFieldMetadataProvider#buildAdornedTargetCollectionMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void AdornedTargetCollectionFieldMetadataProvider.buildAdornedTargetCollectionMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)"})
   public void testBuildAdornedTargetCollectionMetadata_givenEmptyString() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider = new AdornedTargetCollectionFieldMetadataProvider();
@@ -2560,336 +1307,505 @@ public class AdornedTargetCollectionFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#buildAdornedTargetCollectionMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}.
-   * <ul>
-   *   <li>Given {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#buildAdornedTargetCollectionMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}
-   */
-  @Test
-  public void testBuildAdornedTargetCollectionMetadata_givenFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider = new AdornedTargetCollectionFieldMetadataProvider();
-    Class<Object> parentClass = Object.class;
-    Class<Object> targetClass = Object.class;
-    HashMap<String, FieldMetadata> attributes = new HashMap<>();
-    FieldInfo field = mock(FieldInfo.class);
-    when(field.getName()).thenReturn("Name");
-    FieldMetadataOverride adornedTargetCollectionMetadata = mock(FieldMetadataOverride.class);
-    when(adornedTargetCollectionMetadata.getJoinEntityClass()).thenThrow(new RuntimeException("foo"));
-    when(adornedTargetCollectionMetadata.getReadOnly()).thenReturn(false);
-    when(adornedTargetCollectionMetadata.getParentObjectIdProperty()).thenReturn("Parent Object Id Property");
-    when(adornedTargetCollectionMetadata.getParentObjectProperty()).thenReturn("Parent Object Property");
-    when(adornedTargetCollectionMetadata.getSelectizeVisibleField()).thenReturn("Selectize Visible Field");
-    when(adornedTargetCollectionMetadata.getShowIfProperty()).thenReturn("Show If Property");
-    when(adornedTargetCollectionMetadata.getSortProperty()).thenReturn("Sort Property");
-    when(adornedTargetCollectionMetadata.getTargetObjectProperty()).thenReturn("Target Object Property");
-    when(adornedTargetCollectionMetadata.getGridVisibleFields()).thenReturn(new String[]{"Grid Visible Fields"});
-    when(adornedTargetCollectionMetadata.getMaintainedAdornedTargetFields())
-        .thenReturn(new String[]{"Maintained Adorned Target Fields"});
-    when(adornedTargetCollectionMetadata.getShowIfFieldEquals()).thenReturn(new HashMap<>());
-    when(adornedTargetCollectionMetadata.getAddType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getFetchType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getInspectType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getRemoveType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getUpdateType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-
-    // Act
-    adornedTargetCollectionFieldMetadataProvider.buildAdornedTargetCollectionMetadata(parentClass, targetClass,
-        attributes, field, adornedTargetCollectionMetadata, mock(DynamicEntityDao.class));
-
-    // Assert
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getAddType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getFetchType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getGridVisibleFields();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getInspectType();
-    verify(adornedTargetCollectionMetadata).getJoinEntityClass();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getMaintainedAdornedTargetFields();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getParentObjectIdProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getParentObjectProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getReadOnly();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getRemoveType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getSelectizeVisibleField();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getShowIfFieldEquals();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getShowIfProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getSortProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getTargetObjectProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getUpdateType();
-    verify(field, atLeast(1)).getName();
-  }
-
-  /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#buildAdornedTargetCollectionMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}.
-   * <ul>
-   *   <li>Then calls {@link FieldMetadataOverride#getJoinEntityClass()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#buildAdornedTargetCollectionMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}
-   */
-  @Test
-  public void testBuildAdornedTargetCollectionMetadata_thenCallsGetJoinEntityClass() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider = new AdornedTargetCollectionFieldMetadataProvider();
-    Class<Object> parentClass = Object.class;
-    Class<Object> targetClass = Object.class;
-    HashMap<String, FieldMetadata> attributes = new HashMap<>();
-    FieldInfo field = mock(FieldInfo.class);
-    when(field.getName()).thenReturn("Name");
-    FieldMetadataOverride adornedTargetCollectionMetadata = mock(FieldMetadataOverride.class);
-    when(adornedTargetCollectionMetadata.getJoinEntityClass()).thenThrow(new RuntimeException("foo"));
-    when(adornedTargetCollectionMetadata.getReadOnly()).thenReturn(true);
-    when(adornedTargetCollectionMetadata.getParentObjectIdProperty()).thenReturn("Parent Object Id Property");
-    when(adornedTargetCollectionMetadata.getParentObjectProperty()).thenReturn("Parent Object Property");
-    when(adornedTargetCollectionMetadata.getSelectizeVisibleField()).thenReturn("Selectize Visible Field");
-    when(adornedTargetCollectionMetadata.getShowIfProperty()).thenReturn("Show If Property");
-    when(adornedTargetCollectionMetadata.getSortProperty()).thenReturn("Sort Property");
-    when(adornedTargetCollectionMetadata.getTargetObjectProperty()).thenReturn("Target Object Property");
-    when(adornedTargetCollectionMetadata.getGridVisibleFields()).thenReturn(new String[]{"Grid Visible Fields"});
-    when(adornedTargetCollectionMetadata.getMaintainedAdornedTargetFields())
-        .thenReturn(new String[]{"Maintained Adorned Target Fields"});
-    when(adornedTargetCollectionMetadata.getShowIfFieldEquals()).thenReturn(new HashMap<>());
-    when(adornedTargetCollectionMetadata.getAddType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getFetchType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getInspectType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getRemoveType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getUpdateType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-
-    // Act
-    adornedTargetCollectionFieldMetadataProvider.buildAdornedTargetCollectionMetadata(parentClass, targetClass,
-        attributes, field, adornedTargetCollectionMetadata, mock(DynamicEntityDao.class));
-
-    // Assert
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getAddType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getFetchType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getGridVisibleFields();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getInspectType();
-    verify(adornedTargetCollectionMetadata).getJoinEntityClass();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getMaintainedAdornedTargetFields();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getParentObjectIdProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getParentObjectProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getReadOnly();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getRemoveType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getSelectizeVisibleField();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getShowIfFieldEquals();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getShowIfProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getSortProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getTargetObjectProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getUpdateType();
-    verify(field, atLeast(1)).getName();
-  }
-
-  /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#buildAdornedTargetCollectionMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}.
-   * <ul>
-   *   <li>Then calls {@link FieldInfo#getOneToManyMappedBy()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#buildAdornedTargetCollectionMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}
-   */
-  @Test
-  public void testBuildAdornedTargetCollectionMetadata_thenCallsGetOneToManyMappedBy() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider = new AdornedTargetCollectionFieldMetadataProvider();
-    Class<Object> parentClass = Object.class;
-    Class<Object> targetClass = Object.class;
-    HashMap<String, FieldMetadata> attributes = new HashMap<>();
-    FieldInfo field = mock(FieldInfo.class);
-    when(field.getName()).thenReturn("Name");
-    when(field.getOneToManyMappedBy()).thenReturn("One To Many Mapped By");
-    FieldMetadataOverride adornedTargetCollectionMetadata = mock(FieldMetadataOverride.class);
-    when(adornedTargetCollectionMetadata.getJoinEntityClass()).thenThrow(new RuntimeException("foo"));
-    when(adornedTargetCollectionMetadata.getReadOnly()).thenReturn(true);
-    when(adornedTargetCollectionMetadata.getParentObjectIdProperty()).thenReturn("Parent Object Id Property");
-    when(adornedTargetCollectionMetadata.getParentObjectProperty()).thenReturn(null);
-    when(adornedTargetCollectionMetadata.getSelectizeVisibleField()).thenReturn("Selectize Visible Field");
-    when(adornedTargetCollectionMetadata.getShowIfProperty()).thenReturn("Show If Property");
-    when(adornedTargetCollectionMetadata.getSortProperty()).thenReturn("Sort Property");
-    when(adornedTargetCollectionMetadata.getTargetObjectProperty()).thenReturn("Target Object Property");
-    when(adornedTargetCollectionMetadata.getGridVisibleFields()).thenReturn(new String[]{"Grid Visible Fields"});
-    when(adornedTargetCollectionMetadata.getMaintainedAdornedTargetFields())
-        .thenReturn(new String[]{"Maintained Adorned Target Fields"});
-    when(adornedTargetCollectionMetadata.getShowIfFieldEquals()).thenReturn(new HashMap<>());
-    when(adornedTargetCollectionMetadata.getAddType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getFetchType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getInspectType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getRemoveType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getUpdateType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-
-    // Act
-    adornedTargetCollectionFieldMetadataProvider.buildAdornedTargetCollectionMetadata(parentClass, targetClass,
-        attributes, field, adornedTargetCollectionMetadata, mock(DynamicEntityDao.class));
-
-    // Assert
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getAddType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getFetchType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getGridVisibleFields();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getInspectType();
-    verify(adornedTargetCollectionMetadata).getJoinEntityClass();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getMaintainedAdornedTargetFields();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getParentObjectIdProperty();
-    verify(adornedTargetCollectionMetadata).getParentObjectProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getReadOnly();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getRemoveType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getSelectizeVisibleField();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getShowIfFieldEquals();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getShowIfProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getSortProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getTargetObjectProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getUpdateType();
-    verify(field, atLeast(1)).getName();
-    verify(field, atLeast(1)).getOneToManyMappedBy();
-  }
-
-  /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#buildAdornedTargetCollectionMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}.
-   * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then calls {@link FieldMetadataOverride#getJoinEntityClass()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#buildAdornedTargetCollectionMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}
-   */
-  @Test
-  public void testBuildAdornedTargetCollectionMetadata_whenNull_thenCallsGetJoinEntityClass() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider = new AdornedTargetCollectionFieldMetadataProvider();
-    Class<Object> targetClass = Object.class;
-    HashMap<String, FieldMetadata> attributes = new HashMap<>();
-    FieldInfo field = mock(FieldInfo.class);
-    when(field.getName()).thenReturn("Name");
-    FieldMetadataOverride adornedTargetCollectionMetadata = mock(FieldMetadataOverride.class);
-    when(adornedTargetCollectionMetadata.getJoinEntityClass()).thenThrow(new RuntimeException("foo"));
-    when(adornedTargetCollectionMetadata.getReadOnly()).thenReturn(true);
-    when(adornedTargetCollectionMetadata.getParentObjectIdProperty()).thenReturn("Parent Object Id Property");
-    when(adornedTargetCollectionMetadata.getParentObjectProperty()).thenReturn("Parent Object Property");
-    when(adornedTargetCollectionMetadata.getSelectizeVisibleField()).thenReturn("Selectize Visible Field");
-    when(adornedTargetCollectionMetadata.getShowIfProperty()).thenReturn("Show If Property");
-    when(adornedTargetCollectionMetadata.getSortProperty()).thenReturn("Sort Property");
-    when(adornedTargetCollectionMetadata.getTargetObjectProperty()).thenReturn("Target Object Property");
-    when(adornedTargetCollectionMetadata.getGridVisibleFields()).thenReturn(new String[]{"Grid Visible Fields"});
-    when(adornedTargetCollectionMetadata.getMaintainedAdornedTargetFields())
-        .thenReturn(new String[]{"Maintained Adorned Target Fields"});
-    when(adornedTargetCollectionMetadata.getShowIfFieldEquals()).thenReturn(new HashMap<>());
-    when(adornedTargetCollectionMetadata.getAddType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getFetchType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getInspectType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getRemoveType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(adornedTargetCollectionMetadata.getUpdateType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-
-    // Act
-    adornedTargetCollectionFieldMetadataProvider.buildAdornedTargetCollectionMetadata(null, targetClass, attributes,
-        field, adornedTargetCollectionMetadata, mock(DynamicEntityDao.class));
-
-    // Assert
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getAddType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getFetchType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getGridVisibleFields();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getInspectType();
-    verify(adornedTargetCollectionMetadata).getJoinEntityClass();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getMaintainedAdornedTargetFields();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getParentObjectIdProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getParentObjectProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getReadOnly();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getRemoveType();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getSelectizeVisibleField();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getShowIfFieldEquals();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getShowIfProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getSortProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getTargetObjectProperty();
-    verify(adornedTargetCollectionMetadata, atLeast(1)).getUpdateType();
-    verify(field, atLeast(1)).getName();
-  }
-
-  /**
    * Test {@link AdornedTargetCollectionFieldMetadataProvider#getOrder()}.
    * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#getOrder()}
+   * Method under test: {@link AdornedTargetCollectionFieldMetadataProvider#getOrder()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int AdornedTargetCollectionFieldMetadataProvider.getOrder()"})
   public void testGetOrder() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals(FieldMetadataProvider.ADORNED_TARGET, (new AdornedTargetCollectionFieldMetadataProvider()).getOrder());
+    assertEquals(FieldMetadataProvider.ADORNED_TARGET, adornedTargetCollectionFieldMetadataProvider.getOrder());
   }
 
   /**
-   * Test {@link AdornedTargetCollectionFieldMetadataProvider#getOrder()}.
+   * Test {@link AdornedTargetCollectionFieldMetadataProvider#processShowIfFieldEqualsAnnotations(FieldValueConfiguration[], FieldMetadataOverride)}.
    * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#getOrder()}
+   * Method under test: {@link AdornedTargetCollectionFieldMetadataProvider#processShowIfFieldEqualsAnnotations(FieldValueConfiguration[], FieldMetadataOverride)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetOrder2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass18168 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.provider.metadata.AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new AdornedTargetCollectionFieldMetadataProvider()).getOrder();
-  }
-
-  /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#processShowIfFieldEqualsAnnotations(FieldValueConfiguration[], FieldMetadataOverride)}.
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#processShowIfFieldEqualsAnnotations(FieldValueConfiguration[], FieldMetadataOverride)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void AdornedTargetCollectionFieldMetadataProvider.processShowIfFieldEqualsAnnotations(FieldValueConfiguration[], FieldMetadataOverride)"})
   public void testProcessShowIfFieldEqualsAnnotations() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass18530 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.provider.metadata.AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider2 = new AdornedTargetCollectionFieldMetadataProvider();
+    FieldValueConfiguration fieldValueConfiguration = mock(FieldValueConfiguration.class);
+    when(fieldValueConfiguration.fieldName()).thenReturn("Field Name");
+    when(fieldValueConfiguration.fieldValues()).thenReturn(new String[]{"42"});
+
+    FieldMetadataOverride override = new FieldMetadataOverride();
+    override.setAddFriendlyName("Add Friendly Name");
+    override.setAddMethodType(AddMethodType.PERSIST);
+    override.setAddType(OperationType.NONDESTRUCTIVEREMOVE);
+    override.setAdornedTargetAddMethodType(AdornedTargetAddMethodType.LOOKUP);
+    override.setAllowNoValueEnumOption(true);
+    override.setAssociatedFieldName("Associated Field Name");
+    override.setBroadleafEnumeration("Broadleaf Enumeration");
+    override.setCanLinkToExternalEntity(true);
+    override.setColumnWidth("Column Width");
+    override.setCurrencyCodeField("GBP");
+    override.setCustomCriteria(new String[]{"Custom Criteria"});
+    override.setDeleteEntityUponRemove(true);
+    override.setDerived(true);
+    override.setDisplayType(RuleBuilderDisplayType.NORMAL);
+    override.setEnableTypeaheadLookup(true);
+    override.setEnumerationClass("Enumeration Class");
+    override.setEnumerationValues(new String[][]{new String[]{"42"}});
+    override.setExcluded(true);
+    override.setExplicitFieldType(SupportedFieldType.UNKNOWN);
+    override.setFetchType(OperationType.NONDESTRUCTIVEREMOVE);
+    override.setFieldComponentRenderer(SupportedFieldType.UNKNOWN);
+    override.setFieldComponentRendererTemplate("Field Component Renderer Template");
+    override.setFieldType(SupportedFieldType.UNKNOWN);
+    override.setForceFreeFormKeys(true);
+    override.setForcePopulateChildProperties(true);
+    override.setForeignKeyClass("Foreign Key Class");
+    override.setForeignKeyCollection(true);
+    override.setForeignKeyDisplayValueProperty("42");
+    override.setForeignKeyProperty("Foreign Key Property");
+    override.setFriendlyName("Friendly Name");
+    override.setGridFieldComponentRenderer(SupportedFieldType.UNKNOWN);
+    override.setGridFieldComponentRendererTemplate("Grid Field Component Renderer Template");
+    override.setGridOrder(1);
+    override.setGridVisibleFields(new String[]{"Grid Visible Fields"});
+    override.setGroup("Group");
+    override.setGroupCollapsed(true);
+    override.setGroupOrder(1);
+    override.setHelpText("Help Text");
+    override.setHideEnumerationIfEmpty(true);
+    override.setHint("Hint");
+    override.setIgnoreAdornedProperties(true);
+    override.setInspectType(OperationType.NONDESTRUCTIVEREMOVE);
+    override.setJoinEntityClass("Join Entity Class");
+    override.setKeyClass("Key Class");
+    override.setKeyPropertyFriendlyName("Key Property Friendly Name");
+    override.setKeys(new String[][]{new String[]{"Keys"}});
+    override.setLargeEntry(true);
+    override.setLazyFetch(true);
+    override.setLength(3);
+    override.setLookupDisplayProperty("Lookup Display Property");
+    override.setLookupType(LookupType.STANDARD);
+    override.setMaintainedAdornedTargetFields(new String[]{"Maintained Adorned Target Fields"});
+    override.setManualFetch(true);
+    override.setManyToField("Many To Field");
+    override.setMapFieldValueClass("42");
+    override.setMapKeyOptionEntityClass("Map Key Option Entity Class");
+    override.setMapKeyOptionEntityDisplayField("Map Key Option Entity Display Field");
+    override.setMapKeyOptionEntityValueField("42");
+    override.setMapKeyValueProperty("42");
+    override.setMediaField("Media Field");
+    override.setMergedPropertyType(MergedPropertyType.PRIMARY);
+    override.setName("Name");
+    override.setOptionCanEditValues(true);
+    override.setOptionDisplayFieldName("Option Display Field Name");
+    override.setOptionFilterValues(new Serializable[][]{new Serializable[]{new SimpleDateFormat("yyyy/mm/dd")}});
+    override.setOptionListEntity("Option List Entity");
+    override.setOptionValueFieldName("42");
+    override.setOrder(1);
+    override.setParentObjectIdProperty("Parent Object Id Property");
+    override.setParentObjectProperty("Parent Object Property");
+    override.setPrecision(1);
+    override.setProminent(true);
+    override.setReadOnly(true);
+    override.setRemoveType(OperationType.NONDESTRUCTIVEREMOVE);
+    override.setRequired(true);
+    override.setRequiredOverride(true);
+    override.setRuleIdentifier("42");
+    override.setScale(1);
+    override.setSearchable(true);
+    override.setSecondaryType(SupportedFieldType.UNKNOWN);
+    override.setSecurityLevel("Security Level");
+    override.setSelectizeVisibleField("Selectize Visible Field");
+    HashMap<String, List<String>> showIfFieldEquals = new HashMap<>();
+    override.setShowIfFieldEquals(showIfFieldEquals);
+    override.setShowIfProperty("Show If Property");
+    override.setSimpleValue(UnspecifiedBooleanType.TRUE);
+    override.setSortAscending(true);
+    override.setSortProperty("Sort Property");
+    override.setTab("Tab");
+    override.setTabOrder(1);
+    override.setTargetObjectIdProperty("Target Object Id Property");
+    override.setTargetObjectProperty("Target Object Property");
+    override.setToOneLookupCreatedViaAnnotation(true);
+    override.setToOneParentProperty("To One Parent Property");
+    override.setToOneTargetProperty("To One Target Property");
+    override.setTooltip("127.0.0.1");
+    override.setTranslatable(true);
+    override.setUnique(true);
+    override.setUpdateType(OperationType.NONDESTRUCTIVEREMOVE);
+    override.setUseServerSideInspectionCache(true);
+    override.setValidationConfigurations(new HashMap<>());
+    override.setValueClass("42");
+    override.setValuePropertyFriendlyName("42");
+    override.setVisibility(VisibilityEnum.HIDDEN_ALL);
+
+    // Act
+    adornedTargetCollectionFieldMetadataProvider
+        .processShowIfFieldEqualsAnnotations(new FieldValueConfiguration[]{fieldValueConfiguration}, override);
+
+    // Assert
+    verify(fieldValueConfiguration).fieldName();
+    verify(fieldValueConfiguration).fieldValues();
+    Map<String, List<String>> showIfFieldEquals2 = override.getShowIfFieldEquals();
+    assertEquals(1, showIfFieldEquals2.size());
+    List<String> getResult = showIfFieldEquals2.get("Field Name");
+    assertEquals(1, getResult.size());
+    assertEquals("42", getResult.get(0));
+    assertSame(showIfFieldEquals, showIfFieldEquals2);
+  }
+
+  /**
+   * Test {@link AdornedTargetCollectionFieldMetadataProvider#processShowIfFieldEqualsAnnotations(FieldValueConfiguration[], FieldMetadataOverride)}.
+   * <ul>
+   *   <li>Then calls {@link FieldMetadataOverride#getShowIfFieldEquals()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdornedTargetCollectionFieldMetadataProvider#processShowIfFieldEqualsAnnotations(FieldValueConfiguration[], FieldMetadataOverride)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void AdornedTargetCollectionFieldMetadataProvider.processShowIfFieldEqualsAnnotations(FieldValueConfiguration[], FieldMetadataOverride)"})
+  public void testProcessShowIfFieldEqualsAnnotations_thenCallsGetShowIfFieldEquals() {
+    // Arrange
+    FieldValueConfiguration fieldValueConfiguration = mock(FieldValueConfiguration.class);
+    when(fieldValueConfiguration.fieldName()).thenThrow(new NoSuchBeanDefinitionException("Name"));
+    FieldMetadataOverride override = mock(FieldMetadataOverride.class);
+    when(override.getShowIfFieldEquals()).thenReturn(new HashMap<>());
+    doNothing().when(override).setAddFriendlyName(Mockito.<String>any());
+    doNothing().when(override).setAddMethodType(Mockito.<AddMethodType>any());
+    doNothing().when(override).setAddType(Mockito.<OperationType>any());
+    doNothing().when(override).setAdornedTargetAddMethodType(Mockito.<AdornedTargetAddMethodType>any());
+    doNothing().when(override).setAllowNoValueEnumOption(Mockito.<Boolean>any());
+    doNothing().when(override).setAssociatedFieldName(Mockito.<String>any());
+    doNothing().when(override).setBroadleafEnumeration(Mockito.<String>any());
+    doNothing().when(override).setCanLinkToExternalEntity(Mockito.<Boolean>any());
+    doNothing().when(override).setColumnWidth(Mockito.<String>any());
+    doNothing().when(override).setCurrencyCodeField(Mockito.<String>any());
+    doNothing().when(override).setCustomCriteria(Mockito.<String[]>any());
+    doNothing().when(override).setDeleteEntityUponRemove(Mockito.<Boolean>any());
+    doNothing().when(override).setDerived(Mockito.<Boolean>any());
+    doNothing().when(override).setDisplayType(Mockito.<RuleBuilderDisplayType>any());
+    doNothing().when(override).setEnableTypeaheadLookup(Mockito.<Boolean>any());
+    doNothing().when(override).setEnumerationClass(Mockito.<String>any());
+    doNothing().when(override).setEnumerationValues(Mockito.<String[][]>any());
+    doNothing().when(override).setExcluded(Mockito.<Boolean>any());
+    doNothing().when(override).setExplicitFieldType(Mockito.<SupportedFieldType>any());
+    doNothing().when(override).setFetchType(Mockito.<OperationType>any());
+    doNothing().when(override).setFieldComponentRenderer(Mockito.<SupportedFieldType>any());
+    doNothing().when(override).setFieldComponentRendererTemplate(Mockito.<String>any());
+    doNothing().when(override).setFieldType(Mockito.<SupportedFieldType>any());
+    doNothing().when(override).setForceFreeFormKeys(Mockito.<Boolean>any());
+    doNothing().when(override).setForcePopulateChildProperties(Mockito.<Boolean>any());
+    doNothing().when(override).setForeignKeyClass(Mockito.<String>any());
+    doNothing().when(override).setForeignKeyCollection(Mockito.<Boolean>any());
+    doNothing().when(override).setForeignKeyDisplayValueProperty(Mockito.<String>any());
+    doNothing().when(override).setForeignKeyProperty(Mockito.<String>any());
+    doNothing().when(override).setFriendlyName(Mockito.<String>any());
+    doNothing().when(override).setGridFieldComponentRenderer(Mockito.<SupportedFieldType>any());
+    doNothing().when(override).setGridFieldComponentRendererTemplate(Mockito.<String>any());
+    doNothing().when(override).setGridOrder(Mockito.<Integer>any());
+    doNothing().when(override).setGridVisibleFields(Mockito.<String[]>any());
+    doNothing().when(override).setGroup(Mockito.<String>any());
+    doNothing().when(override).setGroupCollapsed(Mockito.<Boolean>any());
+    doNothing().when(override).setGroupOrder(Mockito.<Integer>any());
+    doNothing().when(override).setHelpText(Mockito.<String>any());
+    doNothing().when(override).setHideEnumerationIfEmpty(Mockito.<Boolean>any());
+    doNothing().when(override).setHint(Mockito.<String>any());
+    doNothing().when(override).setIgnoreAdornedProperties(Mockito.<Boolean>any());
+    doNothing().when(override).setInspectType(Mockito.<OperationType>any());
+    doNothing().when(override).setJoinEntityClass(Mockito.<String>any());
+    doNothing().when(override).setKeyClass(Mockito.<String>any());
+    doNothing().when(override).setKeyPropertyFriendlyName(Mockito.<String>any());
+    doNothing().when(override).setKeys(Mockito.<String[][]>any());
+    doNothing().when(override).setLargeEntry(Mockito.<Boolean>any());
+    doNothing().when(override).setLazyFetch(Mockito.<Boolean>any());
+    doNothing().when(override).setLength(Mockito.<Integer>any());
+    doNothing().when(override).setLookupDisplayProperty(Mockito.<String>any());
+    doNothing().when(override).setLookupType(Mockito.<LookupType>any());
+    doNothing().when(override).setMaintainedAdornedTargetFields(Mockito.<String[]>any());
+    doNothing().when(override).setManualFetch(Mockito.<Boolean>any());
+    doNothing().when(override).setManyToField(Mockito.<String>any());
+    doNothing().when(override).setMapFieldValueClass(Mockito.<String>any());
+    doNothing().when(override).setMapKeyOptionEntityClass(Mockito.<String>any());
+    doNothing().when(override).setMapKeyOptionEntityDisplayField(Mockito.<String>any());
+    doNothing().when(override).setMapKeyOptionEntityValueField(Mockito.<String>any());
+    doNothing().when(override).setMapKeyValueProperty(Mockito.<String>any());
+    doNothing().when(override).setMediaField(Mockito.<String>any());
+    doNothing().when(override).setMergedPropertyType(Mockito.<MergedPropertyType>any());
+    doNothing().when(override).setName(Mockito.<String>any());
+    doNothing().when(override).setOptionCanEditValues(Mockito.<Boolean>any());
+    doNothing().when(override).setOptionDisplayFieldName(Mockito.<String>any());
+    doNothing().when(override).setOptionFilterValues(Mockito.<Serializable[][]>any());
+    doNothing().when(override).setOptionListEntity(Mockito.<String>any());
+    doNothing().when(override).setOptionValueFieldName(Mockito.<String>any());
+    doNothing().when(override).setParentObjectIdProperty(Mockito.<String>any());
+    doNothing().when(override).setParentObjectProperty(Mockito.<String>any());
+    doNothing().when(override).setPrecision(Mockito.<Integer>any());
+    doNothing().when(override).setProminent(Mockito.<Boolean>any());
+    doNothing().when(override).setReadOnly(Mockito.<Boolean>any());
+    doNothing().when(override).setRemoveType(Mockito.<OperationType>any());
+    doNothing().when(override).setRequired(Mockito.<Boolean>any());
+    doNothing().when(override).setRequiredOverride(Mockito.<Boolean>any());
+    doNothing().when(override).setRuleIdentifier(Mockito.<String>any());
+    doNothing().when(override).setScale(Mockito.<Integer>any());
+    doNothing().when(override).setSearchable(Mockito.<Boolean>any());
+    doNothing().when(override).setSecondaryType(Mockito.<SupportedFieldType>any());
+    doNothing().when(override).setSecurityLevel(Mockito.<String>any());
+    doNothing().when(override).setSelectizeVisibleField(Mockito.<String>any());
+    doNothing().when(override).setShowIfFieldEquals(Mockito.<Map<String, List<String>>>any());
+    doNothing().when(override).setShowIfProperty(Mockito.<String>any());
+    doNothing().when(override).setSimpleValue(Mockito.<UnspecifiedBooleanType>any());
+    doNothing().when(override).setSortAscending(Mockito.<Boolean>any());
+    doNothing().when(override).setSortProperty(Mockito.<String>any());
+    doNothing().when(override).setTab(Mockito.<String>any());
+    doNothing().when(override).setTabOrder(Mockito.<Integer>any());
+    doNothing().when(override).setTargetObjectIdProperty(Mockito.<String>any());
+    doNothing().when(override).setTargetObjectProperty(Mockito.<String>any());
+    doNothing().when(override).setToOneLookupCreatedViaAnnotation(Mockito.<Boolean>any());
+    doNothing().when(override).setToOneParentProperty(Mockito.<String>any());
+    doNothing().when(override).setToOneTargetProperty(Mockito.<String>any());
+    doNothing().when(override).setTooltip(Mockito.<String>any());
+    doNothing().when(override).setTranslatable(Mockito.<Boolean>any());
+    doNothing().when(override).setUnique(Mockito.<Boolean>any());
+    doNothing().when(override).setUpdateType(Mockito.<OperationType>any());
+    doNothing().when(override).setUseServerSideInspectionCache(Mockito.<Boolean>any());
+    doNothing().when(override).setValidationConfigurations(Mockito.<Map<String, List<Map<String, String>>>>any());
+    doNothing().when(override).setValueClass(Mockito.<String>any());
+    doNothing().when(override).setValuePropertyFriendlyName(Mockito.<String>any());
+    doNothing().when(override).setVisibility(Mockito.<VisibilityEnum>any());
+    doNothing().when(override).setOrder(Mockito.<Integer>any());
+    override.setAddFriendlyName("Add Friendly Name");
+    override.setAddMethodType(AddMethodType.PERSIST);
+    override.setAddType(OperationType.NONDESTRUCTIVEREMOVE);
+    override.setAdornedTargetAddMethodType(AdornedTargetAddMethodType.LOOKUP);
+    override.setAllowNoValueEnumOption(true);
+    override.setAssociatedFieldName("Associated Field Name");
+    override.setBroadleafEnumeration("Broadleaf Enumeration");
+    override.setCanLinkToExternalEntity(true);
+    override.setColumnWidth("Column Width");
+    override.setCurrencyCodeField("GBP");
+    override.setCustomCriteria(new String[]{"Custom Criteria"});
+    override.setDeleteEntityUponRemove(true);
+    override.setDerived(true);
+    override.setDisplayType(RuleBuilderDisplayType.NORMAL);
+    override.setEnableTypeaheadLookup(true);
+    override.setEnumerationClass("Enumeration Class");
+    override.setEnumerationValues(new String[][]{new String[]{"42"}});
+    override.setExcluded(true);
+    override.setExplicitFieldType(SupportedFieldType.UNKNOWN);
+    override.setFetchType(OperationType.NONDESTRUCTIVEREMOVE);
+    override.setFieldComponentRenderer(SupportedFieldType.UNKNOWN);
+    override.setFieldComponentRendererTemplate("Field Component Renderer Template");
+    override.setFieldType(SupportedFieldType.UNKNOWN);
+    override.setForceFreeFormKeys(true);
+    override.setForcePopulateChildProperties(true);
+    override.setForeignKeyClass("Foreign Key Class");
+    override.setForeignKeyCollection(true);
+    override.setForeignKeyDisplayValueProperty("42");
+    override.setForeignKeyProperty("Foreign Key Property");
+    override.setFriendlyName("Friendly Name");
+    override.setGridFieldComponentRenderer(SupportedFieldType.UNKNOWN);
+    override.setGridFieldComponentRendererTemplate("Grid Field Component Renderer Template");
+    override.setGridOrder(1);
+    override.setGridVisibleFields(new String[]{"Grid Visible Fields"});
+    override.setGroup("Group");
+    override.setGroupCollapsed(true);
+    override.setGroupOrder(1);
+    override.setHelpText("Help Text");
+    override.setHideEnumerationIfEmpty(true);
+    override.setHint("Hint");
+    override.setIgnoreAdornedProperties(true);
+    override.setInspectType(OperationType.NONDESTRUCTIVEREMOVE);
+    override.setJoinEntityClass("Join Entity Class");
+    override.setKeyClass("Key Class");
+    override.setKeyPropertyFriendlyName("Key Property Friendly Name");
+    override.setKeys(new String[][]{new String[]{"Keys"}});
+    override.setLargeEntry(true);
+    override.setLazyFetch(true);
+    override.setLength(3);
+    override.setLookupDisplayProperty("Lookup Display Property");
+    override.setLookupType(LookupType.STANDARD);
+    override.setMaintainedAdornedTargetFields(new String[]{"Maintained Adorned Target Fields"});
+    override.setManualFetch(true);
+    override.setManyToField("Many To Field");
+    override.setMapFieldValueClass("42");
+    override.setMapKeyOptionEntityClass("Map Key Option Entity Class");
+    override.setMapKeyOptionEntityDisplayField("Map Key Option Entity Display Field");
+    override.setMapKeyOptionEntityValueField("42");
+    override.setMapKeyValueProperty("42");
+    override.setMediaField("Media Field");
+    override.setMergedPropertyType(MergedPropertyType.PRIMARY);
+    override.setName("Name");
+    override.setOptionCanEditValues(true);
+    override.setOptionDisplayFieldName("Option Display Field Name");
+    override.setOptionFilterValues(new Serializable[][]{new Serializable[]{new SimpleDateFormat("yyyy/mm/dd")}});
+    override.setOptionListEntity("Option List Entity");
+    override.setOptionValueFieldName("42");
+    override.setOrder(1);
+    override.setParentObjectIdProperty("Parent Object Id Property");
+    override.setParentObjectProperty("Parent Object Property");
+    override.setPrecision(1);
+    override.setProminent(true);
+    override.setReadOnly(true);
+    override.setRemoveType(OperationType.NONDESTRUCTIVEREMOVE);
+    override.setRequired(true);
+    override.setRequiredOverride(true);
+    override.setRuleIdentifier("42");
+    override.setScale(1);
+    override.setSearchable(true);
+    override.setSecondaryType(SupportedFieldType.UNKNOWN);
+    override.setSecurityLevel("Security Level");
+    override.setSelectizeVisibleField("Selectize Visible Field");
+    override.setShowIfFieldEquals(new HashMap<>());
+    override.setShowIfProperty("Show If Property");
+    override.setSimpleValue(UnspecifiedBooleanType.TRUE);
+    override.setSortAscending(true);
+    override.setSortProperty("Sort Property");
+    override.setTab("Tab");
+    override.setTabOrder(1);
+    override.setTargetObjectIdProperty("Target Object Id Property");
+    override.setTargetObjectProperty("Target Object Property");
+    override.setToOneLookupCreatedViaAnnotation(true);
+    override.setToOneParentProperty("To One Parent Property");
+    override.setToOneTargetProperty("To One Target Property");
+    override.setTooltip("127.0.0.1");
+    override.setTranslatable(true);
+    override.setUnique(true);
+    override.setUpdateType(OperationType.NONDESTRUCTIVEREMOVE);
+    override.setUseServerSideInspectionCache(true);
+    override.setValidationConfigurations(new HashMap<>());
+    override.setValueClass("42");
+    override.setValuePropertyFriendlyName("42");
+    override.setVisibility(VisibilityEnum.HIDDEN_ALL);
+
+    // Act and Assert
+    assertThrows(NoSuchBeanDefinitionException.class,
+        () -> adornedTargetCollectionFieldMetadataProvider.processShowIfFieldEqualsAnnotations(
+            new FieldValueConfiguration[]{fieldValueConfiguration, mock(FieldValueConfiguration.class)}, override));
+    verify(fieldValueConfiguration).fieldName();
+    verify(override, atLeast(1)).getShowIfFieldEquals();
+    verify(override).setAddFriendlyName(eq("Add Friendly Name"));
+    verify(override).setAddMethodType(eq(AddMethodType.PERSIST));
+    verify(override).setAddType(eq(OperationType.NONDESTRUCTIVEREMOVE));
+    verify(override).setAdornedTargetAddMethodType(eq(AdornedTargetAddMethodType.LOOKUP));
+    verify(override).setAllowNoValueEnumOption(eq(true));
+    verify(override).setAssociatedFieldName(eq("Associated Field Name"));
+    verify(override).setBroadleafEnumeration(eq("Broadleaf Enumeration"));
+    verify(override).setCanLinkToExternalEntity(eq(true));
+    verify(override).setColumnWidth(eq("Column Width"));
+    verify(override).setCurrencyCodeField(eq("GBP"));
+    verify(override).setCustomCriteria(isA(String[].class));
+    verify(override).setDeleteEntityUponRemove(eq(true));
+    verify(override).setDerived(eq(true));
+    verify(override).setDisplayType(eq(RuleBuilderDisplayType.NORMAL));
+    verify(override).setEnableTypeaheadLookup(eq(true));
+    verify(override).setEnumerationClass(eq("Enumeration Class"));
+    verify(override).setEnumerationValues(isA(String[][].class));
+    verify(override).setExcluded(eq(true));
+    verify(override).setExplicitFieldType(eq(SupportedFieldType.UNKNOWN));
+    verify(override).setFetchType(eq(OperationType.NONDESTRUCTIVEREMOVE));
+    verify(override).setFieldComponentRenderer(eq(SupportedFieldType.UNKNOWN));
+    verify(override).setFieldComponentRendererTemplate(eq("Field Component Renderer Template"));
+    verify(override).setFieldType(eq(SupportedFieldType.UNKNOWN));
+    verify(override).setForceFreeFormKeys(eq(true));
+    verify(override).setForcePopulateChildProperties(eq(true));
+    verify(override).setForeignKeyClass(eq("Foreign Key Class"));
+    verify(override).setForeignKeyCollection(eq(true));
+    verify(override).setForeignKeyDisplayValueProperty(eq("42"));
+    verify(override).setForeignKeyProperty(eq("Foreign Key Property"));
+    verify(override).setFriendlyName(eq("Friendly Name"));
+    verify(override).setGridFieldComponentRenderer(eq(SupportedFieldType.UNKNOWN));
+    verify(override).setGridFieldComponentRendererTemplate(eq("Grid Field Component Renderer Template"));
+    verify(override).setGridOrder(eq(1));
+    verify(override).setGridVisibleFields(isA(String[].class));
+    verify(override).setGroup(eq("Group"));
+    verify(override).setGroupCollapsed(eq(true));
+    verify(override).setGroupOrder(eq(1));
+    verify(override).setHelpText(eq("Help Text"));
+    verify(override).setHideEnumerationIfEmpty(eq(true));
+    verify(override).setHint(eq("Hint"));
+    verify(override).setIgnoreAdornedProperties(eq(true));
+    verify(override).setInspectType(eq(OperationType.NONDESTRUCTIVEREMOVE));
+    verify(override).setJoinEntityClass(eq("Join Entity Class"));
+    verify(override).setKeyClass(eq("Key Class"));
+    verify(override).setKeyPropertyFriendlyName(eq("Key Property Friendly Name"));
+    verify(override).setKeys(isA(String[][].class));
+    verify(override).setLargeEntry(eq(true));
+    verify(override).setLazyFetch(eq(true));
+    verify(override).setLength(eq(3));
+    verify(override).setLookupDisplayProperty(eq("Lookup Display Property"));
+    verify(override).setLookupType(eq(LookupType.STANDARD));
+    verify(override).setMaintainedAdornedTargetFields(isA(String[].class));
+    verify(override).setManualFetch(eq(true));
+    verify(override).setManyToField(eq("Many To Field"));
+    verify(override).setMapFieldValueClass(eq("42"));
+    verify(override).setMapKeyOptionEntityClass(eq("Map Key Option Entity Class"));
+    verify(override).setMapKeyOptionEntityDisplayField(eq("Map Key Option Entity Display Field"));
+    verify(override).setMapKeyOptionEntityValueField(eq("42"));
+    verify(override).setMapKeyValueProperty(eq("42"));
+    verify(override).setMediaField(eq("Media Field"));
+    verify(override).setMergedPropertyType(eq(MergedPropertyType.PRIMARY));
+    verify(override).setName(eq("Name"));
+    verify(override).setOptionCanEditValues(eq(true));
+    verify(override).setOptionDisplayFieldName(eq("Option Display Field Name"));
+    verify(override).setOptionFilterValues(isA(Serializable[][].class));
+    verify(override).setOptionListEntity(eq("Option List Entity"));
+    verify(override).setOptionValueFieldName(eq("42"));
+    verify(override).setParentObjectIdProperty(eq("Parent Object Id Property"));
+    verify(override).setParentObjectProperty(eq("Parent Object Property"));
+    verify(override).setPrecision(eq(1));
+    verify(override).setProminent(eq(true));
+    verify(override).setReadOnly(eq(true));
+    verify(override).setRemoveType(eq(OperationType.NONDESTRUCTIVEREMOVE));
+    verify(override).setRequired(eq(true));
+    verify(override).setRequiredOverride(eq(true));
+    verify(override).setRuleIdentifier(eq("42"));
+    verify(override).setScale(eq(1));
+    verify(override).setSearchable(eq(true));
+    verify(override).setSecondaryType(eq(SupportedFieldType.UNKNOWN));
+    verify(override).setSecurityLevel(eq("Security Level"));
+    verify(override).setSelectizeVisibleField(eq("Selectize Visible Field"));
+    verify(override).setShowIfFieldEquals(isA(Map.class));
+    verify(override).setShowIfProperty(eq("Show If Property"));
+    verify(override).setSimpleValue(eq(UnspecifiedBooleanType.TRUE));
+    verify(override).setSortAscending(eq(true));
+    verify(override).setSortProperty(eq("Sort Property"));
+    verify(override).setTab(eq("Tab"));
+    verify(override).setTabOrder(eq(1));
+    verify(override).setTargetObjectIdProperty(eq("Target Object Id Property"));
+    verify(override).setTargetObjectProperty(eq("Target Object Property"));
+    verify(override).setToOneLookupCreatedViaAnnotation(eq(true));
+    verify(override).setToOneParentProperty(eq("To One Parent Property"));
+    verify(override).setToOneTargetProperty(eq("To One Target Property"));
+    verify(override).setTranslatable(eq(true));
+    verify(override).setUnique(eq(true));
+    verify(override).setUpdateType(eq(OperationType.NONDESTRUCTIVEREMOVE));
+    verify(override).setUseServerSideInspectionCache(eq(true));
+    verify(override).setValidationConfigurations(isA(Map.class));
+    verify(override).setValueClass(eq("42"));
+    verify(override).setValuePropertyFriendlyName(eq("42"));
+    verify(override).setVisibility(eq(VisibilityEnum.HIDDEN_ALL));
+    verify(override).setOrder(eq(1));
+  }
+
+  /**
+   * Test {@link AdornedTargetCollectionFieldMetadataProvider#processShowIfFieldEqualsAnnotations(FieldValueConfiguration[], FieldMetadataOverride)}.
+   * <ul>
+   *   <li>Then throw {@link NoSuchBeanDefinitionException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdornedTargetCollectionFieldMetadataProvider#processShowIfFieldEqualsAnnotations(FieldValueConfiguration[], FieldMetadataOverride)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void AdornedTargetCollectionFieldMetadataProvider.processShowIfFieldEqualsAnnotations(FieldValueConfiguration[], FieldMetadataOverride)"})
+  public void testProcessShowIfFieldEqualsAnnotations_thenThrowNoSuchBeanDefinitionException() {
+    // Arrange
+    FieldValueConfiguration fieldValueConfiguration = mock(FieldValueConfiguration.class);
+    when(fieldValueConfiguration.fieldName()).thenThrow(new NoSuchBeanDefinitionException("Name"));
 
     FieldMetadataOverride override = new FieldMetadataOverride();
     override.setAddFriendlyName("Add Friendly Name");
@@ -2996,97 +1912,10 @@ public class AdornedTargetCollectionFieldMetadataProviderDiffblueTest {
     override.setValuePropertyFriendlyName("42");
     override.setVisibility(VisibilityEnum.HIDDEN_ALL);
 
-    // Act
-    adornedTargetCollectionFieldMetadataProvider2.processShowIfFieldEqualsAnnotations(
-        new FieldValueConfiguration[]{mock(FieldValueConfiguration.class)}, override);
-  }
-
-  /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#processShowIfFieldEqualsAnnotations(FieldValueConfiguration[], FieldMetadataOverride)}.
-   * <ul>
-   *   <li>Given {@link RuntimeException#RuntimeException(String)} with
-   * {@code foo}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#processShowIfFieldEqualsAnnotations(FieldValueConfiguration[], FieldMetadataOverride)}
-   */
-  @Test
-  public void testProcessShowIfFieldEqualsAnnotations_givenRuntimeExceptionWithFoo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider = new AdornedTargetCollectionFieldMetadataProvider();
-    FieldMetadataOverride override = mock(FieldMetadataOverride.class);
-    when(override.getShowIfFieldEquals()).thenThrow(new RuntimeException("foo"));
-
-    // Act
-    adornedTargetCollectionFieldMetadataProvider.processShowIfFieldEqualsAnnotations(
-        new FieldValueConfiguration[]{mock(FieldValueConfiguration.class)}, override);
-
-    // Assert
-    verify(override).getShowIfFieldEquals();
-  }
-
-  /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#processShowIfFieldEqualsAnnotations(FieldValueConfiguration[], FieldMetadataOverride)}.
-   * <ul>
-   *   <li>Then calls {@link FieldValueConfiguration#fieldValues()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#processShowIfFieldEqualsAnnotations(FieldValueConfiguration[], FieldMetadataOverride)}
-   */
-  @Test
-  public void testProcessShowIfFieldEqualsAnnotations_thenCallsFieldValues() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider = new AdornedTargetCollectionFieldMetadataProvider();
-    FieldValueConfiguration fieldValueConfiguration = mock(FieldValueConfiguration.class);
-    when(fieldValueConfiguration.fieldName()).thenReturn("Field Name");
-    when(fieldValueConfiguration.fieldValues()).thenReturn(new String[]{"42"});
-    FieldMetadataOverride override = mock(FieldMetadataOverride.class);
-    when(override.getShowIfFieldEquals()).thenReturn(new HashMap<>());
-
-    // Act
-    adornedTargetCollectionFieldMetadataProvider
-        .processShowIfFieldEqualsAnnotations(new FieldValueConfiguration[]{fieldValueConfiguration}, override);
-
-    // Assert
-    verify(fieldValueConfiguration).fieldName();
-    verify(fieldValueConfiguration).fieldValues();
-    verify(override, atLeast(1)).getShowIfFieldEquals();
-  }
-
-  /**
-   * Test
-   * {@link AdornedTargetCollectionFieldMetadataProvider#processShowIfFieldEqualsAnnotations(FieldValueConfiguration[], FieldMetadataOverride)}.
-   * <ul>
-   *   <li>Then throw {@link NoSuchBeanDefinitionException}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link AdornedTargetCollectionFieldMetadataProvider#processShowIfFieldEqualsAnnotations(FieldValueConfiguration[], FieldMetadataOverride)}
-   */
-  @Test
-  public void testProcessShowIfFieldEqualsAnnotations_thenThrowNoSuchBeanDefinitionException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdornedTargetCollectionFieldMetadataProvider adornedTargetCollectionFieldMetadataProvider = new AdornedTargetCollectionFieldMetadataProvider();
-    FieldValueConfiguration fieldValueConfiguration = mock(FieldValueConfiguration.class);
-    when(fieldValueConfiguration.fieldName()).thenThrow(new NoSuchBeanDefinitionException("Name"));
-    FieldMetadataOverride override = mock(FieldMetadataOverride.class);
-    when(override.getShowIfFieldEquals()).thenReturn(new HashMap<>());
-
     // Act and Assert
     assertThrows(NoSuchBeanDefinitionException.class,
         () -> adornedTargetCollectionFieldMetadataProvider.processShowIfFieldEqualsAnnotations(
             new FieldValueConfiguration[]{fieldValueConfiguration, mock(FieldValueConfiguration.class)}, override));
     verify(fieldValueConfiguration).fieldName();
-    verify(override, atLeast(1)).getShowIfFieldEquals();
   }
 }

@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.dto;
 
 import static org.junit.Assert.assertEquals;
@@ -6,12 +23,14 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
 import org.broadleafcommerce.common.presentation.client.OperationType;
 import org.broadleafcommerce.common.presentation.client.PersistencePerspectiveItemType;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class PersistencePerspectiveDiffblueTest {
   /**
@@ -20,6 +39,8 @@ public class PersistencePerspectiveDiffblueTest {
    * Method under test: {@link PersistencePerspective#PersistencePerspective()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistencePerspective.<init>()"})
   public void testNewPersistencePerspective() {
     // Arrange and Act
     PersistencePerspective actualPersistencePerspective = new PersistencePerspective();
@@ -43,13 +64,13 @@ public class PersistencePerspectiveDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link PersistencePerspective#PersistencePerspective(OperationTypes, String[], ForeignKey[])}.
+   * Test {@link PersistencePerspective#PersistencePerspective(OperationTypes, String[], ForeignKey[])}.
    * <p>
-   * Method under test:
-   * {@link PersistencePerspective#PersistencePerspective(OperationTypes, String[], ForeignKey[])}
+   * Method under test: {@link PersistencePerspective#PersistencePerspective(OperationTypes, String[], ForeignKey[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistencePerspective.<init>(OperationTypes, String[], ForeignKey[])"})
   public void testNewPersistencePerspective2() {
     // Arrange
     OperationTypes operationTypes = new OperationTypes();
@@ -66,24 +87,23 @@ public class PersistencePerspectiveDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link PersistencePerspective#PersistencePerspective(OperationTypes, String[], ForeignKey[])}.
+   * Test {@link PersistencePerspective#PersistencePerspective(OperationTypes, String[], ForeignKey[])}.
    * <ul>
    *   <li>Then return ConfigurationKey is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PersistencePerspective#PersistencePerspective(OperationTypes, String[], ForeignKey[])}
+   * Method under test: {@link PersistencePerspective#PersistencePerspective(OperationTypes, String[], ForeignKey[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistencePerspective.<init>(OperationTypes, String[], ForeignKey[])"})
   public void testNewPersistencePerspective_thenReturnConfigurationKeyIsNull() {
     // Arrange
     OperationTypes operationTypes = new OperationTypes();
-    String[] additionalNonPersistentProperties = new String[]{"Additional Non Persistent Properties"};
 
     // Act
     PersistencePerspective actualPersistencePerspective = new PersistencePerspective(operationTypes,
-        additionalNonPersistentProperties, new ForeignKey[]{});
+        new String[]{"Additional Non Persistent Properties"}, new ForeignKey[]{});
 
     // Assert
     assertNull(actualPersistencePerspective.getConfigurationKey());
@@ -95,21 +115,20 @@ public class PersistencePerspectiveDiffblueTest {
     assertTrue(actualPersistencePerspective.getPersistencePerspectiveItems().isEmpty());
     assertTrue(actualPersistencePerspective.getUseServerSideInspectionCache());
     assertSame(operationTypes, actualPersistencePerspective.getOperationTypes());
-    assertSame(additionalNonPersistentProperties, actualPersistencePerspective.getAdditionalNonPersistentProperties());
   }
 
   /**
-   * Test
-   * {@link PersistencePerspective#PersistencePerspective(OperationTypes, String[], ForeignKey[])}.
+   * Test {@link PersistencePerspective#PersistencePerspective(OperationTypes, String[], ForeignKey[])}.
    * <ul>
    *   <li>When empty array of {@link String}.</li>
    *   <li>Then return array length is zero.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PersistencePerspective#PersistencePerspective(OperationTypes, String[], ForeignKey[])}
+   * Method under test: {@link PersistencePerspective#PersistencePerspective(OperationTypes, String[], ForeignKey[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistencePerspective.<init>(OperationTypes, String[], ForeignKey[])"})
   public void testNewPersistencePerspective_whenEmptyArrayOfString_thenReturnArrayLengthIsZero() {
     // Arrange
     OperationTypes operationTypes = new OperationTypes();
@@ -125,13 +144,13 @@ public class PersistencePerspectiveDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link PersistencePerspective#setAdditionalNonPersistentProperties(String[])}.
+   * Test {@link PersistencePerspective#setAdditionalNonPersistentProperties(String[])}.
    * <p>
-   * Method under test:
-   * {@link PersistencePerspective#setAdditionalNonPersistentProperties(String[])}
+   * Method under test: {@link PersistencePerspective#setAdditionalNonPersistentProperties(String[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistencePerspective.setAdditionalNonPersistentProperties(String[])"})
   public void testSetAdditionalNonPersistentProperties() {
     // Arrange
     PersistencePerspective persistencePerspective = new PersistencePerspective();
@@ -145,13 +164,13 @@ public class PersistencePerspectiveDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link PersistencePerspective#setAdditionalNonPersistentProperties(String[])}.
+   * Test {@link PersistencePerspective#setAdditionalNonPersistentProperties(String[])}.
    * <p>
-   * Method under test:
-   * {@link PersistencePerspective#setAdditionalNonPersistentProperties(String[])}
+   * Method under test: {@link PersistencePerspective#setAdditionalNonPersistentProperties(String[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistencePerspective.setAdditionalNonPersistentProperties(String[])"})
   public void testSetAdditionalNonPersistentProperties2() {
     // Arrange
     PersistencePerspective persistencePerspective = new PersistencePerspective();
@@ -189,6 +208,22 @@ public class PersistencePerspectiveDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ForeignKey[] PersistencePerspective.getAdditionalForeignKeys()",
+      "String[] PersistencePerspective.getAdditionalNonPersistentProperties()",
+      "String PersistencePerspective.getConfigurationKey()", "String[] PersistencePerspective.getExcludeFields()",
+      "String[] PersistencePerspective.getIncludeFields()", "OperationTypes PersistencePerspective.getOperationTypes()",
+      "Map PersistencePerspective.getPersistencePerspectiveItems()",
+      "Boolean PersistencePerspective.getPopulateToOneFields()",
+      "Boolean PersistencePerspective.getShowArchivedFields()",
+      "Boolean PersistencePerspective.getUseServerSideInspectionCache()",
+      "void PersistencePerspective.setConfigurationKey(String)",
+      "void PersistencePerspective.setOperationTypes(OperationTypes)",
+      "void PersistencePerspective.setPersistencePerspectiveItems(Map)",
+      "void PersistencePerspective.setPopulateToOneFields(Boolean)",
+      "void PersistencePerspective.setShowArchivedFields(Boolean)",
+      "void PersistencePerspective.setUseServerSideInspectionCache(Boolean)",
+      "String PersistencePerspective.toString()"})
   public void testGettersAndSetters() {
     // Arrange
     PersistencePerspective persistencePerspective = new PersistencePerspective();
@@ -215,7 +250,7 @@ public class PersistencePerspectiveDiffblueTest {
     Boolean actualShowArchivedFields = persistencePerspective.getShowArchivedFields();
     Boolean actualUseServerSideInspectionCache = persistencePerspective.getUseServerSideInspectionCache();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Configuration Key", actualConfigurationKey);
     assertEquals("PersistencePerspective{persistencePerspectiveItems={}, configurationKey='Configuration Key'}",
         actualToStringResult);
@@ -234,10 +269,11 @@ public class PersistencePerspectiveDiffblueTest {
   /**
    * Test {@link PersistencePerspective#setAdditionalForeignKeys(ForeignKey[])}.
    * <p>
-   * Method under test:
-   * {@link PersistencePerspective#setAdditionalForeignKeys(ForeignKey[])}
+   * Method under test: {@link PersistencePerspective#setAdditionalForeignKeys(ForeignKey[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistencePerspective.setAdditionalForeignKeys(ForeignKey[])"})
   public void testSetAdditionalForeignKeys() {
     // Arrange
     PersistencePerspective persistencePerspective = new PersistencePerspective();
@@ -253,10 +289,11 @@ public class PersistencePerspectiveDiffblueTest {
   /**
    * Test {@link PersistencePerspective#setAdditionalForeignKeys(ForeignKey[])}.
    * <p>
-   * Method under test:
-   * {@link PersistencePerspective#setAdditionalForeignKeys(ForeignKey[])}
+   * Method under test: {@link PersistencePerspective#setAdditionalForeignKeys(ForeignKey[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistencePerspective.setAdditionalForeignKeys(ForeignKey[])"})
   public void testSetAdditionalForeignKeys2() {
     // Arrange
     PersistencePerspective persistencePerspective = new PersistencePerspective();
@@ -270,13 +307,14 @@ public class PersistencePerspectiveDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link PersistencePerspective#addPersistencePerspectiveItem(PersistencePerspectiveItemType, PersistencePerspectiveItem)}.
+   * Test {@link PersistencePerspective#addPersistencePerspectiveItem(PersistencePerspectiveItemType, PersistencePerspectiveItem)}.
    * <p>
-   * Method under test:
-   * {@link PersistencePerspective#addPersistencePerspectiveItem(PersistencePerspectiveItemType, PersistencePerspectiveItem)}
+   * Method under test: {@link PersistencePerspective#addPersistencePerspectiveItem(PersistencePerspectiveItemType, PersistencePerspectiveItem)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void PersistencePerspective.addPersistencePerspectiveItem(PersistencePerspectiveItemType, PersistencePerspectiveItem)"})
   public void testAddPersistencePerspectiveItem() {
     // Arrange
     PersistencePerspective persistencePerspective = new PersistencePerspective();
@@ -298,6 +336,8 @@ public class PersistencePerspectiveDiffblueTest {
    * Method under test: {@link PersistencePerspective#setExcludeFields(String[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistencePerspective.setExcludeFields(String[])"})
   public void testSetExcludeFields() {
     // Arrange
     PersistencePerspective persistencePerspective = new PersistencePerspective();
@@ -313,13 +353,14 @@ public class PersistencePerspectiveDiffblueTest {
   /**
    * Test {@link PersistencePerspective#setExcludeFields(String[])}.
    * <ul>
-   *   <li>Then {@link PersistencePerspective#PersistencePerspective()}
-   * ExcludeFields is empty array of {@link String}.</li>
+   *   <li>Then {@link PersistencePerspective#PersistencePerspective()} ExcludeFields is empty array of {@link String}.</li>
    * </ul>
    * <p>
    * Method under test: {@link PersistencePerspective#setExcludeFields(String[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistencePerspective.setExcludeFields(String[])"})
   public void testSetExcludeFields_thenPersistencePerspectiveExcludeFieldsIsEmptyArrayOfString() {
     // Arrange
     PersistencePerspective persistencePerspective = new PersistencePerspective();
@@ -338,6 +379,8 @@ public class PersistencePerspectiveDiffblueTest {
    * Method under test: {@link PersistencePerspective#setIncludeFields(String[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistencePerspective.setIncludeFields(String[])"})
   public void testSetIncludeFields() {
     // Arrange
     PersistencePerspective persistencePerspective = new PersistencePerspective();
@@ -353,13 +396,14 @@ public class PersistencePerspectiveDiffblueTest {
   /**
    * Test {@link PersistencePerspective#setIncludeFields(String[])}.
    * <ul>
-   *   <li>Then {@link PersistencePerspective#PersistencePerspective()}
-   * IncludeFields is empty array of {@link String}.</li>
+   *   <li>Then {@link PersistencePerspective#PersistencePerspective()} IncludeFields is empty array of {@link String}.</li>
    * </ul>
    * <p>
    * Method under test: {@link PersistencePerspective#setIncludeFields(String[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistencePerspective.setIncludeFields(String[])"})
   public void testSetIncludeFields_thenPersistencePerspectiveIncludeFieldsIsEmptyArrayOfString() {
     // Arrange
     PersistencePerspective persistencePerspective = new PersistencePerspective();
@@ -375,52 +419,49 @@ public class PersistencePerspectiveDiffblueTest {
   /**
    * Test {@link PersistencePerspective#clonePersistencePerspective()}.
    * <p>
-   * Method under test:
-   * {@link PersistencePerspective#clonePersistencePerspective()}
+   * Method under test: {@link PersistencePerspective#clonePersistencePerspective()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePerspective PersistencePerspective.clonePersistencePerspective()"})
   public void testClonePersistencePerspective() {
     // Arrange
     PersistencePerspective persistencePerspective = new PersistencePerspective();
-    persistencePerspective.addPersistencePerspectiveItem(PersistencePerspectiveItemType.FOREIGNKEY,
-        new AdornedTargetList());
+    AdornedTargetList item = new AdornedTargetList();
+    persistencePerspective.addPersistencePerspectiveItem(PersistencePerspectiveItemType.FOREIGNKEY, item);
 
     // Act and Assert
-    assertEquals(persistencePerspective, persistencePerspective.clonePersistencePerspective());
+    Map<PersistencePerspectiveItemType, PersistencePerspectiveItem> persistencePerspectiveItems = persistencePerspective
+        .clonePersistencePerspective()
+        .getPersistencePerspectiveItems();
+    assertEquals(1, persistencePerspectiveItems.size());
+    PersistencePerspectiveItem getResult = persistencePerspectiveItems.get(PersistencePerspectiveItemType.FOREIGNKEY);
+    assertTrue(getResult instanceof AdornedTargetList);
+    assertEquals(item, getResult);
   }
 
   /**
    * Test {@link PersistencePerspective#clonePersistencePerspective()}.
    * <p>
-   * Method under test:
-   * {@link PersistencePerspective#clonePersistencePerspective()}
+   * Method under test: {@link PersistencePerspective#clonePersistencePerspective()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePerspective PersistencePerspective.clonePersistencePerspective()"})
   public void testClonePersistencePerspective2() {
     // Arrange
     PersistencePerspective persistencePerspective = new PersistencePerspective();
-    persistencePerspective.addPersistencePerspectiveItem(PersistencePerspectiveItemType.FOREIGNKEY, new ForeignKey());
+    ForeignKey item = new ForeignKey();
+    persistencePerspective.addPersistencePerspectiveItem(PersistencePerspectiveItemType.FOREIGNKEY, item);
 
     // Act and Assert
-    assertEquals(persistencePerspective, persistencePerspective.clonePersistencePerspective());
-  }
-
-  /**
-   * Test {@link PersistencePerspective#clonePersistencePerspective()}.
-   * <ul>
-   *   <li>Given {@link PersistencePerspective#PersistencePerspective()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link PersistencePerspective#clonePersistencePerspective()}
-   */
-  @Test
-  public void testClonePersistencePerspective_givenPersistencePerspective() {
-    // Arrange
-    PersistencePerspective persistencePerspective = new PersistencePerspective();
-
-    // Act and Assert
-    assertEquals(persistencePerspective, persistencePerspective.clonePersistencePerspective());
+    Map<PersistencePerspectiveItemType, PersistencePerspectiveItem> persistencePerspectiveItems = persistencePerspective
+        .clonePersistencePerspective()
+        .getPersistencePerspectiveItems();
+    assertEquals(1, persistencePerspectiveItems.size());
+    PersistencePerspectiveItem getResult = persistencePerspectiveItems.get(PersistencePerspectiveItemType.FOREIGNKEY);
+    assertTrue(getResult instanceof ForeignKey);
+    assertEquals(item, getResult);
   }
 
   /**
@@ -429,10 +470,11 @@ public class PersistencePerspectiveDiffblueTest {
    *   <li>Then return array length is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PersistencePerspective#clonePersistencePerspective()}
+   * Method under test: {@link PersistencePerspective#clonePersistencePerspective()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePerspective PersistencePerspective.clonePersistencePerspective()"})
   public void testClonePersistencePerspective_thenReturnArrayLengthIsOne() {
     // Arrange
     PersistencePerspective persistencePerspective = new PersistencePerspective();
@@ -456,10 +498,11 @@ public class PersistencePerspectiveDiffblueTest {
    *   <li>Then return ConfigurationKey is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PersistencePerspective#clonePersistencePerspective()}
+   * Method under test: {@link PersistencePerspective#clonePersistencePerspective()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePerspective PersistencePerspective.clonePersistencePerspective()"})
   public void testClonePersistencePerspective_thenReturnConfigurationKeyIsNull() {
     // Arrange
     PersistencePerspective persistencePerspective = new PersistencePerspective();
@@ -492,8 +535,26 @@ public class PersistencePerspectiveDiffblueTest {
   }
 
   /**
-   * Test {@link PersistencePerspective#equals(Object)}, and
-   * {@link PersistencePerspective#hashCode()}.
+   * Test {@link PersistencePerspective#clonePersistencePerspective()}.
+   * <ul>
+   *   <li>Then return {@link PersistencePerspective#PersistencePerspective()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PersistencePerspective#clonePersistencePerspective()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePerspective PersistencePerspective.clonePersistencePerspective()"})
+  public void testClonePersistencePerspective_thenReturnPersistencePerspective() {
+    // Arrange
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+
+    // Act and Assert
+    assertEquals(persistencePerspective, persistencePerspective.clonePersistencePerspective());
+  }
+
+  /**
+   * Test {@link PersistencePerspective#equals(Object)}, and {@link PersistencePerspective#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -506,6 +567,8 @@ public class PersistencePerspectiveDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PersistencePerspective.equals(Object)", "int PersistencePerspective.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     PersistencePerspective persistencePerspective = new PersistencePerspective();
@@ -518,8 +581,7 @@ public class PersistencePerspectiveDiffblueTest {
   }
 
   /**
-   * Test {@link PersistencePerspective#equals(Object)}, and
-   * {@link PersistencePerspective#hashCode()}.
+   * Test {@link PersistencePerspective#equals(Object)}, and {@link PersistencePerspective#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -532,6 +594,8 @@ public class PersistencePerspectiveDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PersistencePerspective.equals(Object)", "int PersistencePerspective.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     PersistencePerspective persistencePerspective = new PersistencePerspective();
@@ -552,6 +616,8 @@ public class PersistencePerspectiveDiffblueTest {
    * Method under test: {@link PersistencePerspective#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PersistencePerspective.equals(Object)", "int PersistencePerspective.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     OperationTypes operationTypes = new OperationTypes();
@@ -572,6 +638,8 @@ public class PersistencePerspectiveDiffblueTest {
    * Method under test: {@link PersistencePerspective#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PersistencePerspective.equals(Object)", "int PersistencePerspective.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     PersistencePerspective persistencePerspective = new PersistencePerspective();
@@ -592,6 +660,8 @@ public class PersistencePerspectiveDiffblueTest {
    * Method under test: {@link PersistencePerspective#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PersistencePerspective.equals(Object)", "int PersistencePerspective.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     PersistencePerspective persistencePerspective = new PersistencePerspective();
@@ -613,6 +683,8 @@ public class PersistencePerspectiveDiffblueTest {
    * Method under test: {@link PersistencePerspective#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PersistencePerspective.equals(Object)", "int PersistencePerspective.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     PersistencePerspective persistencePerspective = new PersistencePerspective();
@@ -634,6 +706,8 @@ public class PersistencePerspectiveDiffblueTest {
    * Method under test: {@link PersistencePerspective#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PersistencePerspective.equals(Object)", "int PersistencePerspective.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
     PersistencePerspective persistencePerspective = new PersistencePerspective();
@@ -655,6 +729,8 @@ public class PersistencePerspectiveDiffblueTest {
    * Method under test: {@link PersistencePerspective#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PersistencePerspective.equals(Object)", "int PersistencePerspective.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
     PersistencePerspective persistencePerspective = new PersistencePerspective();
@@ -676,22 +752,9 @@ public class PersistencePerspectiveDiffblueTest {
    * Method under test: {@link PersistencePerspective#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PersistencePerspective.equals(Object)", "int PersistencePerspective.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
-    // Arrange, Act and Assert
-    assertNotEquals(new PersistencePerspective(), mock(OperationTypes.class));
-  }
-
-  /**
-   * Test {@link PersistencePerspective#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PersistencePerspective#equals(Object)}
-   */
-  @Test
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual8() {
     // Arrange
     PersistencePerspective persistencePerspective = new PersistencePerspective();
     persistencePerspective.setPopulateToOneFields(true);
@@ -710,7 +773,9 @@ public class PersistencePerspectiveDiffblueTest {
    * Method under test: {@link PersistencePerspective#equals(Object)}
    */
   @Test
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual9() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PersistencePerspective.equals(Object)", "int PersistencePerspective.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual8() {
     // Arrange
     PersistencePerspective persistencePerspective = new PersistencePerspective();
     persistencePerspective.setShowArchivedFields(true);
@@ -729,7 +794,9 @@ public class PersistencePerspectiveDiffblueTest {
    * Method under test: {@link PersistencePerspective#equals(Object)}
    */
   @Test
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual10() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PersistencePerspective.equals(Object)", "int PersistencePerspective.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual9() {
     // Arrange
     PersistencePerspective persistencePerspective = new PersistencePerspective();
     persistencePerspective.setConfigurationKey("Configuration Key");
@@ -753,7 +820,9 @@ public class PersistencePerspectiveDiffblueTest {
    * Method under test: {@link PersistencePerspective#equals(Object)}
    */
   @Test
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual11() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PersistencePerspective.equals(Object)", "int PersistencePerspective.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual10() {
     // Arrange
     PersistencePerspective persistencePerspective = new PersistencePerspective();
 
@@ -774,7 +843,9 @@ public class PersistencePerspectiveDiffblueTest {
    * Method under test: {@link PersistencePerspective#equals(Object)}
    */
   @Test
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual12() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PersistencePerspective.equals(Object)", "int PersistencePerspective.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual11() {
     // Arrange
     PersistencePerspective persistencePerspective = new PersistencePerspective();
     persistencePerspective.setPopulateToOneFields(null);
@@ -793,7 +864,9 @@ public class PersistencePerspectiveDiffblueTest {
    * Method under test: {@link PersistencePerspective#equals(Object)}
    */
   @Test
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual13() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PersistencePerspective.equals(Object)", "int PersistencePerspective.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual12() {
     // Arrange
     PersistencePerspective persistencePerspective = new PersistencePerspective();
     persistencePerspective.setShowArchivedFields(null);
@@ -812,6 +885,8 @@ public class PersistencePerspectiveDiffblueTest {
    * Method under test: {@link PersistencePerspective#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PersistencePerspective.equals(Object)", "int PersistencePerspective.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new PersistencePerspective(), null);
@@ -827,6 +902,8 @@ public class PersistencePerspectiveDiffblueTest {
    * Method under test: {@link PersistencePerspective#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PersistencePerspective.equals(Object)", "int PersistencePerspective.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new PersistencePerspective(), "Different type to PersistencePerspective");

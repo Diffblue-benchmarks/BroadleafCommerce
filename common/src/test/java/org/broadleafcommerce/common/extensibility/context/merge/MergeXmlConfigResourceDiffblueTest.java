@@ -31,17 +31,18 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
-import java.io.UnsupportedEncodingException;
 import org.broadleafcommerce.common.extensibility.context.merge.exceptions.MergeException;
 import org.broadleafcommerce.common.extensibility.context.merge.exceptions.MergeManagerSetupException;
 import org.broadleafcommerce.common.resource.GeneratedResource;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.mockito.Mockito;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.FatalBeanException;
@@ -53,54 +54,54 @@ import org.springframework.core.io.Resource;
 
 public class MergeXmlConfigResourceDiffblueTest {
   /**
-   * Test
-   * {@link MergeXmlConfigResource#getMergedConfigResource(ResourceInputStream[])}.
+   * Test {@link MergeXmlConfigResource#getMergedConfigResource(ResourceInputStream[])}.
    * <p>
-   * Method under test:
-   * {@link MergeXmlConfigResource#getMergedConfigResource(ResourceInputStream[])}
+   * Method under test: {@link MergeXmlConfigResource#getMergedConfigResource(ResourceInputStream[])}
    */
   @Test
-  public void testGetMergedConfigResource() throws UnsupportedEncodingException, BeansException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Resource MergeXmlConfigResource.getMergedConfigResource(ResourceInputStream[])"})
+  public void testGetMergedConfigResource() throws BeansException {
     // Arrange
     MergeXmlConfigResource mergeXmlConfigResource = new MergeXmlConfigResource();
     ResourceInputStream resourceInputStream = new ResourceInputStream(
-        new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "Name");
+        new ByteArrayInputStream(new byte[]{'A', 1, 'A', 1, 'A', 1, 'A', 1}), "Name");
 
     // Act and Assert
     assertThrows(FatalBeanException.class,
         () -> mergeXmlConfigResource.getMergedConfigResource(new ResourceInputStream[]{resourceInputStream,
-            new ResourceInputStream(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "Name")}));
+            new ResourceInputStream(new ByteArrayInputStream(new byte[]{'A', 1, 'A', 1, 'A', 1, 'A', 1}), "Name")}));
   }
 
   /**
-   * Test
-   * {@link MergeXmlConfigResource#getMergedConfigResource(ResourceInputStream[])}.
+   * Test {@link MergeXmlConfigResource#getMergedConfigResource(ResourceInputStream[])}.
    * <p>
-   * Method under test:
-   * {@link MergeXmlConfigResource#getMergedConfigResource(ResourceInputStream[])}
+   * Method under test: {@link MergeXmlConfigResource#getMergedConfigResource(ResourceInputStream[])}
    */
   @Test
-  public void testGetMergedConfigResource2() throws UnsupportedEncodingException, BeansException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Resource MergeXmlConfigResource.getMergedConfigResource(ResourceInputStream[])"})
+  public void testGetMergedConfigResource2() throws BeansException {
     // Arrange
     MergeXmlConfigResource mergeXmlConfigResource = new MergeXmlConfigResource();
 
     // Act and Assert
     assertThrows(FatalBeanException.class,
         () -> mergeXmlConfigResource.getMergedConfigResource(new ResourceInputStream[]{null,
-            new ResourceInputStream(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "Name")}));
+            new ResourceInputStream(new ByteArrayInputStream(new byte[]{'A', 1, 'A', 1, 'A', 1, 'A', 1}), "Name")}));
   }
 
   /**
-   * Test
-   * {@link MergeXmlConfigResource#getMergedConfigResource(ResourceInputStream[])}.
+   * Test {@link MergeXmlConfigResource#getMergedConfigResource(ResourceInputStream[])}.
    * <ul>
    *   <li>Then return {@link ByteArrayResource}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MergeXmlConfigResource#getMergedConfigResource(ResourceInputStream[])}
+   * Method under test: {@link MergeXmlConfigResource#getMergedConfigResource(ResourceInputStream[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Resource MergeXmlConfigResource.getMergedConfigResource(ResourceInputStream[])"})
   public void testGetMergedConfigResource_thenReturnByteArrayResource() throws IOException, BeansException {
     // Arrange
     MergeXmlConfigResource mergeXmlConfigResource = new MergeXmlConfigResource();
@@ -128,15 +129,15 @@ public class MergeXmlConfigResourceDiffblueTest {
   /**
    * Test {@link MergeXmlConfigResource#merge(ResourceInputStream[])}.
    * <ul>
-   *   <li>When {@link ByteArrayInputStream#ByteArrayInputStream(byte[])} with
-   * {@code AXAXAXAX} Bytes is {@code UTF-8}.</li>
+   *   <li>When {@link ByteArrayInputStream#ByteArrayInputStream(byte[])} with {@code AXAXAXAX} Bytes is {@code UTF-8}.</li>
    *   <li>Then return read is eight.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MergeXmlConfigResource#merge(ResourceInputStream[])}
+   * Method under test: {@link MergeXmlConfigResource#merge(ResourceInputStream[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ResourceInputStream MergeXmlConfigResource.merge(ResourceInputStream[])"})
   public void testMerge_whenByteArrayInputStreamWithAxaxaxaxBytesIsUtf8_thenReturnReadIsEight()
       throws IOException, MergeException, MergeManagerSetupException {
     // Arrange
@@ -150,47 +151,6 @@ public class MergeXmlConfigResourceDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MergeXmlConfigResource#mergeItems(ResourceInputStream, ResourceInputStream)}.
-   * <ul>
-   *   <li>When {@link ResourceInputStream#ResourceInputStream(InputStream, String)}
-   * with is is {@link ByteArrayInputStream#ByteArrayInputStream(byte[])} and
-   * {@code Name}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link MergeXmlConfigResource#mergeItems(ResourceInputStream, ResourceInputStream)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testMergeItems_whenResourceInputStreamWithIsIsByteArrayInputStreamAndName()
-      throws UnsupportedEncodingException, MergeException, MergeManagerSetupException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   org.broadleafcommerce.common.extensibility.context.merge.exceptions.MergeException: org.xml.sax.SAXParseException; lineNumber: 1; columnNumber: 1; Content is not allowed in prolog.
-    //       at org.broadleafcommerce.common.extensibility.context.merge.MergeManager.merge(MergeManager.java:279)
-    //       at org.broadleafcommerce.common.extensibility.context.merge.MergeXmlConfigResource.mergeItems(MergeXmlConfigResource.java:109)
-    //   org.xml.sax.SAXParseException: Content is not allowed in prolog.
-    //       at org.apache.xerces.parsers.DOMParser.parse(Unknown Source)
-    //       at org.apache.xerces.jaxp.DocumentBuilderImpl.parse(Unknown Source)
-    //       at java.xml/javax.xml.parsers.DocumentBuilder.parse(DocumentBuilder.java:122)
-    //       at org.broadleafcommerce.common.extensibility.context.merge.MergeManager.merge(MergeManager.java:238)
-    //       at org.broadleafcommerce.common.extensibility.context.merge.MergeXmlConfigResource.mergeItems(MergeXmlConfigResource.java:109)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    MergeXmlConfigResource mergeXmlConfigResource = new MergeXmlConfigResource();
-    ResourceInputStream sourceLocationFirst = new ResourceInputStream(
-        new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "Name");
-
-    // Act
-    mergeXmlConfigResource.mergeItems(sourceLocationFirst,
-        new ResourceInputStream(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "Name"));
-  }
-
-  /**
    * Test {@link MergeXmlConfigResource#serialize(InputStream)} with {@code in}.
    * <ul>
    *   <li>Given zero.</li>
@@ -200,6 +160,8 @@ public class MergeXmlConfigResourceDiffblueTest {
    * Method under test: {@link MergeXmlConfigResource#serialize(InputStream)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MergeXmlConfigResource.serialize(InputStream)"})
   public void testSerializeWithIn_givenZero_thenReturnEmptyString() throws IOException {
     // Arrange
     MergeXmlConfigResource mergeXmlConfigResource = new MergeXmlConfigResource();
@@ -225,6 +187,8 @@ public class MergeXmlConfigResourceDiffblueTest {
    * Method under test: {@link MergeXmlConfigResource#serialize(InputStream)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MergeXmlConfigResource.serialize(InputStream)"})
   public void testSerializeWithIn_thenReturnAxaxaxax() throws IOException {
     // Arrange
     MergeXmlConfigResource mergeXmlConfigResource = new MergeXmlConfigResource();
@@ -236,12 +200,13 @@ public class MergeXmlConfigResourceDiffblueTest {
   }
 
   /**
-   * Test {@link MergeXmlConfigResource#serialize(Resource)} with
-   * {@code resource}.
+   * Test {@link MergeXmlConfigResource#serialize(Resource)} with {@code resource}.
    * <p>
    * Method under test: {@link MergeXmlConfigResource#serialize(Resource)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MergeXmlConfigResource.serialize(Resource)"})
   public void testSerializeWithResource() {
     // Arrange
     MergeXmlConfigResource mergeXmlConfigResource = new MergeXmlConfigResource();
@@ -252,17 +217,17 @@ public class MergeXmlConfigResourceDiffblueTest {
   }
 
   /**
-   * Test {@link MergeXmlConfigResource#serialize(Resource)} with
-   * {@code resource}.
+   * Test {@link MergeXmlConfigResource#serialize(Resource)} with {@code resource}.
    * <ul>
-   *   <li>When {@link ClassPathResource#ClassPathResource(String)} with
-   * {@code Path}.</li>
+   *   <li>When {@link ClassPathResource#ClassPathResource(String)} with {@code Path}.</li>
    *   <li>Then return empty string.</li>
    * </ul>
    * <p>
    * Method under test: {@link MergeXmlConfigResource#serialize(Resource)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MergeXmlConfigResource.serialize(Resource)"})
   public void testSerializeWithResource_whenClassPathResourceWithPath_thenReturnEmptyString() {
     // Arrange
     MergeXmlConfigResource mergeXmlConfigResource = new MergeXmlConfigResource();
@@ -272,16 +237,16 @@ public class MergeXmlConfigResourceDiffblueTest {
   }
 
   /**
-   * Test {@link MergeXmlConfigResource#serialize(Resource)} with
-   * {@code resource}.
+   * Test {@link MergeXmlConfigResource#serialize(Resource)} with {@code resource}.
    * <ul>
-   *   <li>When {@link FileSystemResource#FileSystemResource(String)} with path is
-   * empty string.</li>
+   *   <li>When {@link FileSystemResource#FileSystemResource(String)} with path is empty string.</li>
    * </ul>
    * <p>
    * Method under test: {@link MergeXmlConfigResource#serialize(Resource)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MergeXmlConfigResource.serialize(Resource)"})
   public void testSerializeWithResource_whenFileSystemResourceWithPathIsEmptyString() {
     // Arrange
     MergeXmlConfigResource mergeXmlConfigResource = new MergeXmlConfigResource();
@@ -291,8 +256,7 @@ public class MergeXmlConfigResourceDiffblueTest {
   }
 
   /**
-   * Test {@link MergeXmlConfigResource#serialize(Resource)} with
-   * {@code resource}.
+   * Test {@link MergeXmlConfigResource#serialize(Resource)} with {@code resource}.
    * <ul>
    *   <li>When {@link GeneratedResource#GeneratedResource()}.</li>
    *   <li>Then return empty string.</li>
@@ -301,6 +265,8 @@ public class MergeXmlConfigResourceDiffblueTest {
    * Method under test: {@link MergeXmlConfigResource#serialize(Resource)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MergeXmlConfigResource.serialize(Resource)"})
   public void testSerializeWithResource_whenGeneratedResource_thenReturnEmptyString() {
     // Arrange
     MergeXmlConfigResource mergeXmlConfigResource = new MergeXmlConfigResource();
@@ -312,10 +278,11 @@ public class MergeXmlConfigResourceDiffblueTest {
   /**
    * Test {@link MergeXmlConfigResource#buildArrayFromStream(InputStream)}.
    * <p>
-   * Method under test:
-   * {@link MergeXmlConfigResource#buildArrayFromStream(InputStream)}
+   * Method under test: {@link MergeXmlConfigResource#buildArrayFromStream(InputStream)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"byte[] MergeXmlConfigResource.buildArrayFromStream(InputStream)"})
   public void testBuildArrayFromStream() throws IOException {
     // Arrange
     MergeXmlConfigResource mergeXmlConfigResource = new MergeXmlConfigResource();
@@ -335,10 +302,11 @@ public class MergeXmlConfigResourceDiffblueTest {
    *   <li>Then throw {@link FactoryBeanNotInitializedException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MergeXmlConfigResource#buildArrayFromStream(InputStream)}
+   * Method under test: {@link MergeXmlConfigResource#buildArrayFromStream(InputStream)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"byte[] MergeXmlConfigResource.buildArrayFromStream(InputStream)"})
   public void testBuildArrayFromStream_thenThrowFactoryBeanNotInitializedException() throws IOException {
     // Arrange
     MergeXmlConfigResource mergeXmlConfigResource = new MergeXmlConfigResource();
@@ -350,22 +318,5 @@ public class MergeXmlConfigResourceDiffblueTest {
     assertThrows(FactoryBeanNotInitializedException.class, () -> mergeXmlConfigResource.buildArrayFromStream(source));
     verify(source).close();
     verify(source).read();
-  }
-
-  /**
-   * Test new {@link MergeXmlConfigResource} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link MergeXmlConfigResource}
-   */
-  @Test
-  public void testNewMergeXmlConfigResource() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing observers.
-    //   Diffblue Cover was unable to create an assertion.
-    //   There are no fields that could be asserted on.
-
-    // Arrange and Act
-    new MergeXmlConfigResource();
   }
 }

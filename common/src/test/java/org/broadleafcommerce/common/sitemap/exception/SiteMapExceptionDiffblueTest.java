@@ -20,7 +20,10 @@ package org.broadleafcommerce.common.sitemap.exception;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class SiteMapExceptionDiffblueTest {
   /**
@@ -32,6 +35,9 @@ public class SiteMapExceptionDiffblueTest {
    * Method under test: {@link SiteMapException#SiteMapException()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SiteMapException.<init>()", "void SiteMapException.<init>(String)",
+      "void SiteMapException.<init>(String, Throwable)", "void SiteMapException.<init>(Throwable)"})
   public void testNewSiteMapException_thenReturnMessageIsNull() {
     // Arrange and Act
     SiteMapException actualSiteMapException = new SiteMapException();
@@ -52,6 +58,9 @@ public class SiteMapExceptionDiffblueTest {
    * Method under test: {@link SiteMapException#SiteMapException(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SiteMapException.<init>()", "void SiteMapException.<init>(String)",
+      "void SiteMapException.<init>(String, Throwable)", "void SiteMapException.<init>(Throwable)"})
   public void testNewSiteMapException_whenAnErrorOccurred_thenReturnMessageIsAnErrorOccurred() {
     // Arrange and Act
     SiteMapException actualSiteMapException = new SiteMapException("An error occurred");
@@ -69,10 +78,12 @@ public class SiteMapExceptionDiffblueTest {
    *   <li>Then return Message is {@code An error occurred}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SiteMapException#SiteMapException(String, Throwable)}
+   * Method under test: {@link SiteMapException#SiteMapException(String, Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SiteMapException.<init>()", "void SiteMapException.<init>(String)",
+      "void SiteMapException.<init>(String, Throwable)", "void SiteMapException.<init>(Throwable)"})
   public void testNewSiteMapException_whenAnErrorOccurred_thenReturnMessageIsAnErrorOccurred2() {
     // Arrange
     Throwable cause = new Throwable();
@@ -90,12 +101,15 @@ public class SiteMapExceptionDiffblueTest {
    * Test {@link SiteMapException#SiteMapException(Throwable)}.
    * <ul>
    *   <li>When {@link Throwable#Throwable()}.</li>
-   *   <li>Then return Message is {@code java.lang.Throwable}.</li>
+   *   <li>Then return Message is {@code Throwable}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SiteMapException#SiteMapException(Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SiteMapException.<init>()", "void SiteMapException.<init>(String)",
+      "void SiteMapException.<init>(String, Throwable)", "void SiteMapException.<init>(Throwable)"})
   public void testNewSiteMapException_whenThrowable_thenReturnMessageIsJavaLangThrowable() {
     // Arrange
     Throwable cause = new Throwable();

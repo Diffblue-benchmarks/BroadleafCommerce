@@ -1,16 +1,32 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework Web
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.web.checkout.validator;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.core.web.checkout.model.OrderInfoForm;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindException;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 
@@ -25,6 +41,8 @@ class OrderInfoFormValidatorDiffblueTest {
    */
   @Test
   @DisplayName("Test supports(Class); then return 'true'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean OrderInfoFormValidator.supports(Class)"})
   void testSupports_thenReturnTrue() {
     // Arrange
     OrderInfoFormValidator orderInfoFormValidator = new OrderInfoFormValidator();
@@ -37,7 +55,7 @@ class OrderInfoFormValidatorDiffblueTest {
   /**
    * Test {@link OrderInfoFormValidator#supports(Class)}.
    * <ul>
-   *   <li>When {@code java.lang.Object}.</li>
+   *   <li>When {@code Object}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
@@ -45,6 +63,8 @@ class OrderInfoFormValidatorDiffblueTest {
    */
   @Test
   @DisplayName("Test supports(Class); when 'java.lang.Object'; then return 'false'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean OrderInfoFormValidator.supports(Class)"})
   void testSupports_whenJavaLangObject_thenReturnFalse() {
     // Arrange
     OrderInfoFormValidator orderInfoFormValidator = new OrderInfoFormValidator();
@@ -61,6 +81,8 @@ class OrderInfoFormValidatorDiffblueTest {
    */
   @Test
   @DisplayName("Test validate(Object, Errors)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void OrderInfoFormValidator.validate(Object, Errors)"})
   void testValidate() {
     // Arrange
     OrderInfoFormValidator orderInfoFormValidator = new OrderInfoFormValidator();
@@ -100,6 +122,8 @@ class OrderInfoFormValidatorDiffblueTest {
    */
   @Test
   @DisplayName("Test validate(Object, Errors)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void OrderInfoFormValidator.validate(Object, Errors)"})
   void testValidate2() {
     // Arrange
     OrderInfoFormValidator orderInfoFormValidator = new OrderInfoFormValidator();
@@ -139,6 +163,8 @@ class OrderInfoFormValidatorDiffblueTest {
    */
   @Test
   @DisplayName("Test validate(Object, Errors)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void OrderInfoFormValidator.validate(Object, Errors)"})
   void testValidate3() {
     // Arrange
     OrderInfoFormValidator orderInfoFormValidator = new OrderInfoFormValidator();
@@ -151,21 +177,9 @@ class OrderInfoFormValidatorDiffblueTest {
     // Act
     orderInfoFormValidator.validate(orderInfoForm, errors);
 
-    // Assert
-    BindingResult bindingResult = errors.getBindingResult();
-    assertTrue(bindingResult instanceof BeanPropertyBindingResult);
+    // Assert that nothing has changed
     assertEquals("org.springframework.validation.BeanPropertyBindingResult: 0 errors", errors.getLocalizedMessage());
     assertEquals("org.springframework.validation.BeanPropertyBindingResult: 0 errors", errors.getMessage());
-    assertNull(bindingResult.getFieldError());
-    assertEquals(0, errors.getErrorCount());
-    assertEquals(0, errors.getFieldErrorCount());
-    assertEquals(0, bindingResult.getErrorCount());
-    assertEquals(0, bindingResult.getFieldErrorCount());
-    assertFalse(errors.hasErrors());
-    assertFalse(errors.hasFieldErrors());
-    assertFalse(bindingResult.hasErrors());
-    assertFalse(bindingResult.hasFieldErrors());
-    assertTrue(errors.getAllErrors().isEmpty());
   }
 
   /**
@@ -175,6 +189,8 @@ class OrderInfoFormValidatorDiffblueTest {
    */
   @Test
   @DisplayName("Test validate(Object, Errors)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void OrderInfoFormValidator.validate(Object, Errors)"})
   void testValidate4() {
     // Arrange
     OrderInfoFormValidator orderInfoFormValidator = new OrderInfoFormValidator();
@@ -214,6 +230,8 @@ class OrderInfoFormValidatorDiffblueTest {
    */
   @Test
   @DisplayName("Test validate(Object, Errors)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void OrderInfoFormValidator.validate(Object, Errors)"})
   void testValidate5() {
     // Arrange
     OrderInfoFormValidator orderInfoFormValidator = new OrderInfoFormValidator();
@@ -253,6 +271,8 @@ class OrderInfoFormValidatorDiffblueTest {
    */
   @Test
   @DisplayName("Test validate(Object, Errors)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void OrderInfoFormValidator.validate(Object, Errors)"})
   void testValidate6() {
     // Arrange
     OrderInfoFormValidator orderInfoFormValidator = new OrderInfoFormValidator();

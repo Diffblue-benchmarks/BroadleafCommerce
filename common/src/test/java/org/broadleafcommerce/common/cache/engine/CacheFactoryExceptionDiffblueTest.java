@@ -20,7 +20,10 @@ package org.broadleafcommerce.common.cache.engine;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class CacheFactoryExceptionDiffblueTest {
   /**
@@ -29,10 +32,12 @@ public class CacheFactoryExceptionDiffblueTest {
    *   <li>Then return Message is {@code An error occurred}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CacheFactoryException#CacheFactoryException(String)}
+   * Method under test: {@link CacheFactoryException#CacheFactoryException(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CacheFactoryException.<init>()", "void CacheFactoryException.<init>(String)",
+      "void CacheFactoryException.<init>(String, Throwable)", "void CacheFactoryException.<init>(Throwable)"})
   public void testNewCacheFactoryException_thenReturnMessageIsAnErrorOccurred() {
     // Arrange and Act
     CacheFactoryException actualCacheFactoryException = new CacheFactoryException("An error occurred");
@@ -49,10 +54,12 @@ public class CacheFactoryExceptionDiffblueTest {
    *   <li>Then return Message is {@code An error occurred}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CacheFactoryException#CacheFactoryException(String, Throwable)}
+   * Method under test: {@link CacheFactoryException#CacheFactoryException(String, Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CacheFactoryException.<init>()", "void CacheFactoryException.<init>(String)",
+      "void CacheFactoryException.<init>(String, Throwable)", "void CacheFactoryException.<init>(Throwable)"})
   public void testNewCacheFactoryException_thenReturnMessageIsAnErrorOccurred2() {
     // Arrange
     Throwable cause = new Throwable();
@@ -75,6 +82,9 @@ public class CacheFactoryExceptionDiffblueTest {
    * Method under test: {@link CacheFactoryException#CacheFactoryException()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CacheFactoryException.<init>()", "void CacheFactoryException.<init>(String)",
+      "void CacheFactoryException.<init>(String, Throwable)", "void CacheFactoryException.<init>(Throwable)"})
   public void testNewCacheFactoryException_thenReturnMessageIsNull() {
     // Arrange and Act
     CacheFactoryException actualCacheFactoryException = new CacheFactoryException();
@@ -89,13 +99,15 @@ public class CacheFactoryExceptionDiffblueTest {
    * Test {@link CacheFactoryException#CacheFactoryException(Throwable)}.
    * <ul>
    *   <li>When {@link Throwable#Throwable()}.</li>
-   *   <li>Then return Message is {@code java.lang.Throwable}.</li>
+   *   <li>Then return Message is {@code Throwable}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CacheFactoryException#CacheFactoryException(Throwable)}
+   * Method under test: {@link CacheFactoryException#CacheFactoryException(Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CacheFactoryException.<init>()", "void CacheFactoryException.<init>(String)",
+      "void CacheFactoryException.<init>(String, Throwable)", "void CacheFactoryException.<init>(Throwable)"})
   public void testNewCacheFactoryException_whenThrowable_thenReturnMessageIsJavaLangThrowable() {
     // Arrange
     Throwable cause = new Throwable();

@@ -1,155 +1,153 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework Web
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.web.controller.account;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.broadleafcommerce.core.catalog.service.CatalogService;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.service.OrderService;
+import org.broadleafcommerce.core.order.service.type.OrderStatus;
 import org.broadleafcommerce.core.web.search.SearchRequestWrapper;
 import org.broadleafcommerce.core.web.security.XssRequestWrapper;
 import org.broadleafcommerce.core.web.service.OrderHistoryService;
-import org.junit.jupiter.api.Disabled;
+import org.broadleafcommerce.profile.core.domain.Customer;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.web.reactive.context.StandardReactiveWebEnvironment;
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.ui.ConcurrentModel;
 import org.springframework.ui.Model;
 
-@ContextConfiguration(classes = {BroadleafOrderHistoryController.class})
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 class BroadleafOrderHistoryControllerDiffblueTest {
-  @Autowired
+  @InjectMocks
   private BroadleafOrderHistoryController broadleafOrderHistoryController;
 
-  @MockBean
+  @Mock
   private CatalogService catalogService;
 
-  @MockBean
+  @Mock
   private OrderHistoryService orderHistoryService;
 
-  @MockBean
+  @Mock
   private OrderService orderService;
 
   /**
-   * Test
-   * {@link BroadleafOrderHistoryController#viewOrderHistory(HttpServletRequest, Model)}.
+   * Test {@link BroadleafOrderHistoryController#viewOrderHistory(HttpServletRequest, Model)}.
    * <p>
-   * Method under test:
-   * {@link BroadleafOrderHistoryController#viewOrderHistory(HttpServletRequest, Model)}
+   * Method under test: {@link BroadleafOrderHistoryController#viewOrderHistory(HttpServletRequest, Model)}
    */
   @Test
   @DisplayName("Test viewOrderHistory(HttpServletRequest, Model)")
-  @Disabled("TODO: Complete this test")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String BroadleafOrderHistoryController.viewOrderHistory(HttpServletRequest, Model)"})
   void testViewOrderHistory() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.controller.account;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.web.controller.account.BroadleafOrderHistoryController.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.controller.account.BroadleafOrderHistoryController broadleafOrderHistoryController;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.service.CatalogService catalogService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.web.service.OrderHistoryService orderHistoryService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderService orderService;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
+    ArrayList<Order> orderList = new ArrayList<>();
+    when(orderService.findOrdersForCustomer(Mockito.<Customer>any(), Mockito.<OrderStatus>any())).thenReturn(orderList);
     MockHttpServletRequest servletRequest = new MockHttpServletRequest();
     SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
         new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
+    ConcurrentModel model = new ConcurrentModel();
 
     // Act
-    broadleafOrderHistoryController.viewOrderHistory(request, new ConcurrentModel());
+    String actualViewOrderHistoryResult = broadleafOrderHistoryController.viewOrderHistory(request, model);
+
+    // Assert
+    verify(orderService).findOrdersForCustomer(isNull(), isA(OrderStatus.class));
+    assertEquals(1, model.size());
+    Object getResult = model.get("orders");
+    assertTrue(getResult instanceof List);
+    assertEquals("account/orderHistory", actualViewOrderHistoryResult);
+    assertTrue(((List<Object>) getResult).isEmpty());
+    assertSame(orderList, getResult);
   }
 
   /**
-   * Test
-   * {@link BroadleafOrderHistoryController#viewOrderDetails(HttpServletRequest, Model, String)}.
+   * Test {@link BroadleafOrderHistoryController#viewOrderDetails(HttpServletRequest, Model, String)}.
+   * <ul>
+   *   <li>Then {@link ConcurrentModel#ConcurrentModel()} size is one.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafOrderHistoryController#viewOrderDetails(HttpServletRequest, Model, String)}
+   * Method under test: {@link BroadleafOrderHistoryController#viewOrderDetails(HttpServletRequest, Model, String)}
    */
   @Test
-  @DisplayName("Test viewOrderDetails(HttpServletRequest, Model, String)")
-  @Disabled("TODO: Complete this test")
-  void testViewOrderDetails() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.controller.account;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.web.controller.account.BroadleafOrderHistoryController.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.controller.account.BroadleafOrderHistoryController broadleafOrderHistoryController;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.service.CatalogService catalogService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.web.service.OrderHistoryService orderHistoryService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderService orderService;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @DisplayName("Test viewOrderDetails(HttpServletRequest, Model, String); then ConcurrentModel() size is one")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String BroadleafOrderHistoryController.viewOrderDetails(HttpServletRequest, Model, String)"})
+  void testViewOrderDetails_thenConcurrentModelSizeIsOne() {
     // Arrange
+    NullOrderImpl nullOrderImpl = new NullOrderImpl();
+    when(orderHistoryService.getOrderDetails(Mockito.<String>any())).thenReturn(nullOrderImpl);
     MockHttpServletRequest servletRequest = new MockHttpServletRequest();
     SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
         new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
+    ConcurrentModel model = new ConcurrentModel();
 
     // Act
-    broadleafOrderHistoryController.viewOrderDetails(request, new ConcurrentModel(), "42");
+    String actualViewOrderDetailsResult = broadleafOrderHistoryController.viewOrderDetails(request, model, "42");
+
+    // Assert
+    verify(orderHistoryService).getOrderDetails(eq("42"));
+    assertEquals(1, model.size());
+    Object getResult = model.get("order");
+    assertTrue(getResult instanceof NullOrderImpl);
+    assertEquals("account/partials/orderDetails", actualViewOrderDetailsResult);
+    assertSame(nullOrderImpl, getResult);
   }
 
   /**
-   * Test
-   * {@link BroadleafOrderHistoryController#validateCustomerOwnedData(Order)}.
+   * Test {@link BroadleafOrderHistoryController#validateCustomerOwnedData(Order)}.
    * <p>
-   * Method under test:
-   * {@link BroadleafOrderHistoryController#validateCustomerOwnedData(Order)}
+   * Method under test: {@link BroadleafOrderHistoryController#validateCustomerOwnedData(Order)}
    */
   @Test
   @DisplayName("Test validateCustomerOwnedData(Order)")
-  @Disabled("TODO: Complete this test")
-  void testValidateCustomerOwnedData() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.controller.account;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.web.controller.account.BroadleafOrderHistoryController.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass0 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.controller.account.BroadleafOrderHistoryController broadleafOrderHistoryController;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.service.CatalogService catalogService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.web.service.OrderHistoryService orderHistoryService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderService orderService;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void BroadleafOrderHistoryController.validateCustomerOwnedData(Order)"})
+  void testValidateCustomerOwnedData() throws SecurityException {
+    // Arrange
+    doNothing().when(orderHistoryService).validateCustomerOwnedData(Mockito.<Order>any());
 
-    // Arrange and Act
+    // Act
     broadleafOrderHistoryController.validateCustomerOwnedData(new NullOrderImpl());
+
+    // Assert
+    verify(orderHistoryService).validateCustomerOwnedData(isA(Order.class));
   }
 
   /**
@@ -157,8 +155,7 @@ class BroadleafOrderHistoryControllerDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>default or parameterless constructor of
-   * {@link BroadleafOrderHistoryController}
+   *   <li>default or parameterless constructor of {@link BroadleafOrderHistoryController}
    *   <li>{@link BroadleafOrderHistoryController#getOrderDetailsRedirectView()}
    *   <li>{@link BroadleafOrderHistoryController#getOrderDetailsView()}
    *   <li>{@link BroadleafOrderHistoryController#getOrderHistoryView()}
@@ -166,6 +163,11 @@ class BroadleafOrderHistoryControllerDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void BroadleafOrderHistoryController.<init>()",
+      "String BroadleafOrderHistoryController.getOrderDetailsRedirectView()",
+      "String BroadleafOrderHistoryController.getOrderDetailsView()",
+      "String BroadleafOrderHistoryController.getOrderHistoryView()"})
   void testGettersAndSetters() {
     // Arrange and Act
     BroadleafOrderHistoryController actualBroadleafOrderHistoryController = new BroadleafOrderHistoryController();

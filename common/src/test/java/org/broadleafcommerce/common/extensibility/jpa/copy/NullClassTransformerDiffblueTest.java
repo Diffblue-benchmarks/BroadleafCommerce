@@ -17,20 +17,20 @@
  */
 package org.broadleafcommerce.common.extensibility.jpa.copy;
 
+import static org.junit.Assert.assertNull;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.yahoo.platform.yui.compressor.JarClassLoader;
 import java.io.UnsupportedEncodingException;
 import java.lang.instrument.IllegalClassFormatException;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.file.Paths;
 import java.security.CodeSigner;
 import java.security.CodeSource;
 import java.security.Permissions;
 import java.security.ProtectionDomain;
-import java.util.Properties;
-import org.broadleafcommerce.common.util.BLCFieldUtils;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -43,54 +43,28 @@ public class NullClassTransformerDiffblueTest {
   private NullClassTransformer nullClassTransformer;
 
   /**
-   * Test
-   * {@link NullClassTransformer#transform(ClassLoader, String, Class, ProtectionDomain, byte[])}.
+   * Test {@link NullClassTransformer#transform(ClassLoader, String, Class, ProtectionDomain, byte[])}.
+   * <ul>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link NullClassTransformer#transform(ClassLoader, String, Class, ProtectionDomain, byte[])}
+   * Method under test: {@link NullClassTransformer#transform(ClassLoader, String, Class, ProtectionDomain, byte[])}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testTransform() throws UnsupportedEncodingException, IllegalClassFormatException, MalformedURLException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at java.base/java.security.CodeSigner.<init>(CodeSigner.java:75)
-    //   See https://diff.blue/R013 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"byte[] NullClassTransformer.transform(ClassLoader, String, Class, ProtectionDomain, byte[])"})
+  public void testTransform_thenReturnNull()
+      throws UnsupportedEncodingException, IllegalClassFormatException, MalformedURLException {
     // Arrange
     JarClassLoader loader = new JarClassLoader();
     Class<Object> classBeingRedefined = Object.class;
-    URL toURLResult = Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
-    CodeSource codeSource = new CodeSource(toURLResult, new CodeSigner[]{new CodeSigner(null, null)});
+    CodeSource codeSource = new CodeSource(Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL(),
+        new CodeSigner[]{null});
 
     ProtectionDomain protectionDomain = new ProtectionDomain(codeSource, new Permissions());
 
-    // Act
-    nullClassTransformer.transform(loader, "Class Name", classBeingRedefined, protectionDomain,
-        "AXAXAXAX".getBytes("UTF-8"));
-  }
-
-  /**
-   * Test getters and setters.
-   * <p>
-   * Methods under test:
-   * <ul>
-   *   <li>default or parameterless constructor of {@link NullClassTransformer}
-   *   <li>{@link NullClassTransformer#compileJPAProperties(Properties, Object)}
-   * </ul>
-   */
-  @Test
-  public void testGettersAndSetters() throws Exception {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing observers.
-    //   Diffblue Cover was unable to create an assertion.
-    //   There are no fields that could be asserted on.
-
-    // Arrange and Act
-    NullClassTransformer actualNullClassTransformer = new NullClassTransformer();
-    actualNullClassTransformer.compileJPAProperties(new Properties(), BLCFieldUtils.NULL_FIELD);
+    // Act and Assert
+    assertNull(nullClassTransformer.transform(loader, "Class Name", classBeingRedefined, protectionDomain,
+        "AXAXAXAX".getBytes("UTF-8")));
   }
 }

@@ -18,23 +18,26 @@
 package org.broadleafcommerce.common.util;
 
 import static org.junit.Assert.assertEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import org.broadleafcommerce.common.money.BankersRounding;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class UnitOfMeasureUtilDiffblueTest {
   /**
    * Test {@link UnitOfMeasureUtil#convertKilogramsToPounds(BigDecimal)}.
    * <ul>
    *   <li>When {@link BankersRounding#ZERO}.</li>
-   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with
-   * {@code 0E-10}.</li>
+   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 0E-10}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link UnitOfMeasureUtil#convertKilogramsToPounds(BigDecimal)}
+   * Method under test: {@link UnitOfMeasureUtil#convertKilogramsToPounds(BigDecimal)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal UnitOfMeasureUtil.convertKilogramsToPounds(BigDecimal)"})
   public void testConvertKilogramsToPounds_whenZero_thenReturnBigDecimalWith0e10() {
     // Arrange and Act
     BigDecimal actualConvertKilogramsToPoundsResult = UnitOfMeasureUtil.convertKilogramsToPounds(BankersRounding.ZERO);
@@ -47,14 +50,14 @@ public class UnitOfMeasureUtilDiffblueTest {
    * Test {@link UnitOfMeasureUtil#convertPoundsToKilograms(BigDecimal)}.
    * <ul>
    *   <li>When {@link BankersRounding#ZERO}.</li>
-   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with
-   * {@code 0E-13}.</li>
+   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 0E-13}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link UnitOfMeasureUtil#convertPoundsToKilograms(BigDecimal)}
+   * Method under test: {@link UnitOfMeasureUtil#convertPoundsToKilograms(BigDecimal)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal UnitOfMeasureUtil.convertPoundsToKilograms(BigDecimal)"})
   public void testConvertPoundsToKilograms_whenZero_thenReturnBigDecimalWith0e13() {
     // Arrange and Act
     BigDecimal actualConvertPoundsToKilogramsResult = UnitOfMeasureUtil.convertPoundsToKilograms(BankersRounding.ZERO);
@@ -70,10 +73,11 @@ public class UnitOfMeasureUtilDiffblueTest {
    *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link UnitOfMeasureUtil#convertPoundsToOunces(BigDecimal)}
+   * Method under test: {@link UnitOfMeasureUtil#convertPoundsToOunces(BigDecimal)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal UnitOfMeasureUtil.convertPoundsToOunces(BigDecimal)"})
   public void testConvertPoundsToOunces_whenZero_thenReturnBigDecimalWith000() {
     // Arrange and Act
     BigDecimal actualConvertPoundsToOuncesResult = UnitOfMeasureUtil.convertPoundsToOunces(BankersRounding.ZERO);
@@ -86,14 +90,14 @@ public class UnitOfMeasureUtilDiffblueTest {
    * Test {@link UnitOfMeasureUtil#convertOuncesToPounds(BigDecimal)}.
    * <ul>
    *   <li>When {@link BankersRounding#ZERO}.</li>
-   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with
-   * {@code 0.000000}.</li>
+   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 0.000000}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link UnitOfMeasureUtil#convertOuncesToPounds(BigDecimal)}
+   * Method under test: {@link UnitOfMeasureUtil#convertOuncesToPounds(BigDecimal)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal UnitOfMeasureUtil.convertOuncesToPounds(BigDecimal)"})
   public void testConvertOuncesToPounds_whenZero_thenReturnBigDecimalWith0000000() {
     // Arrange and Act
     BigDecimal actualConvertOuncesToPoundsResult = UnitOfMeasureUtil.convertOuncesToPounds(BankersRounding.ZERO);
@@ -106,13 +110,14 @@ public class UnitOfMeasureUtilDiffblueTest {
    * Test {@link UnitOfMeasureUtil#convertFeetToMeters(BigDecimal)}.
    * <ul>
    *   <li>When {@link BankersRounding#ZERO}.</li>
-   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with
-   * {@code 0.000000}.</li>
+   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 0.000000}.</li>
    * </ul>
    * <p>
    * Method under test: {@link UnitOfMeasureUtil#convertFeetToMeters(BigDecimal)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal UnitOfMeasureUtil.convertFeetToMeters(BigDecimal)"})
   public void testConvertFeetToMeters_whenZero_thenReturnBigDecimalWith0000000() {
     // Arrange and Act
     BigDecimal actualConvertFeetToMetersResult = UnitOfMeasureUtil.convertFeetToMeters(BankersRounding.ZERO);
@@ -131,6 +136,8 @@ public class UnitOfMeasureUtilDiffblueTest {
    * Method under test: {@link UnitOfMeasureUtil#convertMetersToFeet(BigDecimal)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal UnitOfMeasureUtil.convertMetersToFeet(BigDecimal)"})
   public void testConvertMetersToFeet_whenZero_thenReturnBigDecimalWith0e7() {
     // Arrange and Act
     BigDecimal actualConvertMetersToFeetResult = UnitOfMeasureUtil.convertMetersToFeet(BankersRounding.ZERO);
@@ -149,6 +156,8 @@ public class UnitOfMeasureUtilDiffblueTest {
    * Method under test: {@link UnitOfMeasureUtil#convertInchesToFeet(BigDecimal)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal UnitOfMeasureUtil.convertInchesToFeet(BigDecimal)"})
   public void testConvertInchesToFeet_whenZero_thenReturnBigDecimalWith0e8() {
     // Arrange and Act
     BigDecimal actualConvertInchesToFeetResult = UnitOfMeasureUtil.convertInchesToFeet(BankersRounding.ZERO);
@@ -167,6 +176,8 @@ public class UnitOfMeasureUtilDiffblueTest {
    * Method under test: {@link UnitOfMeasureUtil#convertFeetToInches(BigDecimal)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal UnitOfMeasureUtil.convertFeetToInches(BigDecimal)"})
   public void testConvertFeetToInches_whenZero_thenReturnBigDecimalWith000() {
     // Arrange and Act
     BigDecimal actualConvertFeetToInchesResult = UnitOfMeasureUtil.convertFeetToInches(BankersRounding.ZERO);
@@ -176,13 +187,13 @@ public class UnitOfMeasureUtilDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link UnitOfMeasureUtil#findWholePounds(BigDecimal, WeightUnitOfMeasureType)}.
+   * Test {@link UnitOfMeasureUtil#findWholePounds(BigDecimal, WeightUnitOfMeasureType)}.
    * <p>
-   * Method under test:
-   * {@link UnitOfMeasureUtil#findWholePounds(BigDecimal, WeightUnitOfMeasureType)}
+   * Method under test: {@link UnitOfMeasureUtil#findWholePounds(BigDecimal, WeightUnitOfMeasureType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int UnitOfMeasureUtil.findWholePounds(BigDecimal, WeightUnitOfMeasureType)"})
   public void testFindWholePounds() {
     // Arrange, Act and Assert
     assertEquals(0, UnitOfMeasureUtil.findWholePounds(BankersRounding.ZERO,
@@ -190,69 +201,68 @@ public class UnitOfMeasureUtilDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link UnitOfMeasureUtil#findWholePounds(BigDecimal, WeightUnitOfMeasureType)}.
+   * Test {@link UnitOfMeasureUtil#findWholePounds(BigDecimal, WeightUnitOfMeasureType)}.
    * <ul>
    *   <li>When {@link WeightUnitOfMeasureType#KILOGRAMS}.</li>
    *   <li>Then return zero.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link UnitOfMeasureUtil#findWholePounds(BigDecimal, WeightUnitOfMeasureType)}
+   * Method under test: {@link UnitOfMeasureUtil#findWholePounds(BigDecimal, WeightUnitOfMeasureType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int UnitOfMeasureUtil.findWholePounds(BigDecimal, WeightUnitOfMeasureType)"})
   public void testFindWholePounds_whenKilograms_thenReturnZero() {
     // Arrange, Act and Assert
     assertEquals(0, UnitOfMeasureUtil.findWholePounds(BankersRounding.ZERO, WeightUnitOfMeasureType.KILOGRAMS));
   }
 
   /**
-   * Test
-   * {@link UnitOfMeasureUtil#findWholePounds(BigDecimal, WeightUnitOfMeasureType)}.
+   * Test {@link UnitOfMeasureUtil#findWholePounds(BigDecimal, WeightUnitOfMeasureType)}.
    * <ul>
    *   <li>When {@link WeightUnitOfMeasureType#POUNDS}.</li>
    *   <li>Then return zero.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link UnitOfMeasureUtil#findWholePounds(BigDecimal, WeightUnitOfMeasureType)}
+   * Method under test: {@link UnitOfMeasureUtil#findWholePounds(BigDecimal, WeightUnitOfMeasureType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int UnitOfMeasureUtil.findWholePounds(BigDecimal, WeightUnitOfMeasureType)"})
   public void testFindWholePounds_whenPounds_thenReturnZero() {
     // Arrange, Act and Assert
     assertEquals(0, UnitOfMeasureUtil.findWholePounds(BankersRounding.ZERO, WeightUnitOfMeasureType.POUNDS));
   }
 
   /**
-   * Test
-   * {@link UnitOfMeasureUtil#findWholePounds(BigDecimal, WeightUnitOfMeasureType)}.
+   * Test {@link UnitOfMeasureUtil#findWholePounds(BigDecimal, WeightUnitOfMeasureType)}.
    * <ul>
    *   <li>When {@link WeightUnitOfMeasureType#WeightUnitOfMeasureType()}.</li>
    *   <li>Then return zero.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link UnitOfMeasureUtil#findWholePounds(BigDecimal, WeightUnitOfMeasureType)}
+   * Method under test: {@link UnitOfMeasureUtil#findWholePounds(BigDecimal, WeightUnitOfMeasureType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int UnitOfMeasureUtil.findWholePounds(BigDecimal, WeightUnitOfMeasureType)"})
   public void testFindWholePounds_whenWeightUnitOfMeasureType_thenReturnZero() {
     // Arrange, Act and Assert
     assertEquals(0, UnitOfMeasureUtil.findWholePounds(BankersRounding.ZERO, new WeightUnitOfMeasureType()));
   }
 
   /**
-   * Test
-   * {@link UnitOfMeasureUtil#findPounds(BigDecimal, WeightUnitOfMeasureType)}.
+   * Test {@link UnitOfMeasureUtil#findPounds(BigDecimal, WeightUnitOfMeasureType)}.
    * <ul>
    *   <li>When {@link WeightUnitOfMeasureType#KILOGRAMS}.</li>
-   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with
-   * {@code 0E-10}.</li>
+   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 0E-10}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link UnitOfMeasureUtil#findPounds(BigDecimal, WeightUnitOfMeasureType)}
+   * Method under test: {@link UnitOfMeasureUtil#findPounds(BigDecimal, WeightUnitOfMeasureType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal UnitOfMeasureUtil.findPounds(BigDecimal, WeightUnitOfMeasureType)"})
   public void testFindPounds_whenKilograms_thenReturnBigDecimalWith0e10() {
     // Arrange and Act
     BigDecimal actualFindPoundsResult = UnitOfMeasureUtil.findPounds(BankersRounding.ZERO,
@@ -263,17 +273,17 @@ public class UnitOfMeasureUtilDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link UnitOfMeasureUtil#findPounds(BigDecimal, WeightUnitOfMeasureType)}.
+   * Test {@link UnitOfMeasureUtil#findPounds(BigDecimal, WeightUnitOfMeasureType)}.
    * <ul>
    *   <li>When {@link WeightUnitOfMeasureType#POUNDS}.</li>
    *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link UnitOfMeasureUtil#findPounds(BigDecimal, WeightUnitOfMeasureType)}
+   * Method under test: {@link UnitOfMeasureUtil#findPounds(BigDecimal, WeightUnitOfMeasureType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal UnitOfMeasureUtil.findPounds(BigDecimal, WeightUnitOfMeasureType)"})
   public void testFindPounds_whenPounds_thenReturnBigDecimalWith000() {
     // Arrange and Act
     BigDecimal actualFindPoundsResult = UnitOfMeasureUtil.findPounds(BankersRounding.ZERO,
@@ -284,18 +294,16 @@ public class UnitOfMeasureUtilDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link UnitOfMeasureUtil#findPounds(BigDecimal, WeightUnitOfMeasureType)}.
+   * Test {@link UnitOfMeasureUtil#findPounds(BigDecimal, WeightUnitOfMeasureType)}.
    * <ul>
-   *   <li>When
-   * {@link WeightUnitOfMeasureType#WeightUnitOfMeasureType(String, String)} with
-   * type is {@code KILOGRAMS} and {@code Friendly Type}.</li>
+   *   <li>When {@link WeightUnitOfMeasureType#WeightUnitOfMeasureType(String, String)} with type is {@code KILOGRAMS} and {@code Friendly Type}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link UnitOfMeasureUtil#findPounds(BigDecimal, WeightUnitOfMeasureType)}
+   * Method under test: {@link UnitOfMeasureUtil#findPounds(BigDecimal, WeightUnitOfMeasureType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal UnitOfMeasureUtil.findPounds(BigDecimal, WeightUnitOfMeasureType)"})
   public void testFindPounds_whenWeightUnitOfMeasureTypeWithTypeIsKilogramsAndFriendlyType() {
     // Arrange and Act
     BigDecimal actualFindPoundsResult = UnitOfMeasureUtil.findPounds(BankersRounding.ZERO,
@@ -306,17 +314,17 @@ public class UnitOfMeasureUtilDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link UnitOfMeasureUtil#findPounds(BigDecimal, WeightUnitOfMeasureType)}.
+   * Test {@link UnitOfMeasureUtil#findPounds(BigDecimal, WeightUnitOfMeasureType)}.
    * <ul>
    *   <li>When {@link WeightUnitOfMeasureType#WeightUnitOfMeasureType()}.</li>
    *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link UnitOfMeasureUtil#findPounds(BigDecimal, WeightUnitOfMeasureType)}
+   * Method under test: {@link UnitOfMeasureUtil#findPounds(BigDecimal, WeightUnitOfMeasureType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal UnitOfMeasureUtil.findPounds(BigDecimal, WeightUnitOfMeasureType)"})
   public void testFindPounds_whenWeightUnitOfMeasureType_thenReturnBigDecimalWith000() {
     // Arrange and Act
     BigDecimal actualFindPoundsResult = UnitOfMeasureUtil.findPounds(BankersRounding.ZERO,
@@ -327,13 +335,13 @@ public class UnitOfMeasureUtilDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link UnitOfMeasureUtil#findRemainingOunces(BigDecimal, WeightUnitOfMeasureType)}.
+   * Test {@link UnitOfMeasureUtil#findRemainingOunces(BigDecimal, WeightUnitOfMeasureType)}.
    * <p>
-   * Method under test:
-   * {@link UnitOfMeasureUtil#findRemainingOunces(BigDecimal, WeightUnitOfMeasureType)}
+   * Method under test: {@link UnitOfMeasureUtil#findRemainingOunces(BigDecimal, WeightUnitOfMeasureType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal UnitOfMeasureUtil.findRemainingOunces(BigDecimal, WeightUnitOfMeasureType)"})
   public void testFindRemainingOunces() {
     // Arrange and Act
     BigDecimal actualFindRemainingOuncesResult = UnitOfMeasureUtil.findRemainingOunces(BankersRounding.ZERO,
@@ -344,17 +352,17 @@ public class UnitOfMeasureUtilDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link UnitOfMeasureUtil#findRemainingOunces(BigDecimal, WeightUnitOfMeasureType)}.
+   * Test {@link UnitOfMeasureUtil#findRemainingOunces(BigDecimal, WeightUnitOfMeasureType)}.
    * <ul>
    *   <li>When {@link WeightUnitOfMeasureType#KILOGRAMS}.</li>
    *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 0.0}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link UnitOfMeasureUtil#findRemainingOunces(BigDecimal, WeightUnitOfMeasureType)}
+   * Method under test: {@link UnitOfMeasureUtil#findRemainingOunces(BigDecimal, WeightUnitOfMeasureType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal UnitOfMeasureUtil.findRemainingOunces(BigDecimal, WeightUnitOfMeasureType)"})
   public void testFindRemainingOunces_whenKilograms_thenReturnBigDecimalWith00() {
     // Arrange and Act
     BigDecimal actualFindRemainingOuncesResult = UnitOfMeasureUtil.findRemainingOunces(BankersRounding.ZERO,
@@ -365,17 +373,17 @@ public class UnitOfMeasureUtilDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link UnitOfMeasureUtil#findRemainingOunces(BigDecimal, WeightUnitOfMeasureType)}.
+   * Test {@link UnitOfMeasureUtil#findRemainingOunces(BigDecimal, WeightUnitOfMeasureType)}.
    * <ul>
    *   <li>When {@link WeightUnitOfMeasureType#POUNDS}.</li>
    *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 0.0}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link UnitOfMeasureUtil#findRemainingOunces(BigDecimal, WeightUnitOfMeasureType)}
+   * Method under test: {@link UnitOfMeasureUtil#findRemainingOunces(BigDecimal, WeightUnitOfMeasureType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal UnitOfMeasureUtil.findRemainingOunces(BigDecimal, WeightUnitOfMeasureType)"})
   public void testFindRemainingOunces_whenPounds_thenReturnBigDecimalWith00() {
     // Arrange and Act
     BigDecimal actualFindRemainingOuncesResult = UnitOfMeasureUtil.findRemainingOunces(BankersRounding.ZERO,
@@ -386,17 +394,17 @@ public class UnitOfMeasureUtilDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link UnitOfMeasureUtil#findRemainingOunces(BigDecimal, WeightUnitOfMeasureType)}.
+   * Test {@link UnitOfMeasureUtil#findRemainingOunces(BigDecimal, WeightUnitOfMeasureType)}.
    * <ul>
    *   <li>When {@link WeightUnitOfMeasureType#WeightUnitOfMeasureType()}.</li>
    *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 0.0}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link UnitOfMeasureUtil#findRemainingOunces(BigDecimal, WeightUnitOfMeasureType)}
+   * Method under test: {@link UnitOfMeasureUtil#findRemainingOunces(BigDecimal, WeightUnitOfMeasureType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal UnitOfMeasureUtil.findRemainingOunces(BigDecimal, WeightUnitOfMeasureType)"})
   public void testFindRemainingOunces_whenWeightUnitOfMeasureType_thenReturnBigDecimalWith00() {
     // Arrange and Act
     BigDecimal actualFindRemainingOuncesResult = UnitOfMeasureUtil.findRemainingOunces(BankersRounding.ZERO,
@@ -407,18 +415,17 @@ public class UnitOfMeasureUtilDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link UnitOfMeasureUtil#findOunces(BigDecimal, WeightUnitOfMeasureType)}.
+   * Test {@link UnitOfMeasureUtil#findOunces(BigDecimal, WeightUnitOfMeasureType)}.
    * <ul>
    *   <li>When {@link WeightUnitOfMeasureType#KILOGRAMS}.</li>
-   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with
-   * {@code 0E-10}.</li>
+   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 0E-10}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link UnitOfMeasureUtil#findOunces(BigDecimal, WeightUnitOfMeasureType)}
+   * Method under test: {@link UnitOfMeasureUtil#findOunces(BigDecimal, WeightUnitOfMeasureType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal UnitOfMeasureUtil.findOunces(BigDecimal, WeightUnitOfMeasureType)"})
   public void testFindOunces_whenKilograms_thenReturnBigDecimalWith0e10() {
     // Arrange and Act
     BigDecimal actualFindOuncesResult = UnitOfMeasureUtil.findOunces(BankersRounding.ZERO,
@@ -429,17 +436,17 @@ public class UnitOfMeasureUtilDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link UnitOfMeasureUtil#findOunces(BigDecimal, WeightUnitOfMeasureType)}.
+   * Test {@link UnitOfMeasureUtil#findOunces(BigDecimal, WeightUnitOfMeasureType)}.
    * <ul>
    *   <li>When {@link WeightUnitOfMeasureType#POUNDS}.</li>
    *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link UnitOfMeasureUtil#findOunces(BigDecimal, WeightUnitOfMeasureType)}
+   * Method under test: {@link UnitOfMeasureUtil#findOunces(BigDecimal, WeightUnitOfMeasureType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal UnitOfMeasureUtil.findOunces(BigDecimal, WeightUnitOfMeasureType)"})
   public void testFindOunces_whenPounds_thenReturnBigDecimalWith000() {
     // Arrange and Act
     BigDecimal actualFindOuncesResult = UnitOfMeasureUtil.findOunces(BankersRounding.ZERO,
@@ -450,18 +457,16 @@ public class UnitOfMeasureUtilDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link UnitOfMeasureUtil#findOunces(BigDecimal, WeightUnitOfMeasureType)}.
+   * Test {@link UnitOfMeasureUtil#findOunces(BigDecimal, WeightUnitOfMeasureType)}.
    * <ul>
-   *   <li>When
-   * {@link WeightUnitOfMeasureType#WeightUnitOfMeasureType(String, String)} with
-   * type is {@code KILOGRAMS} and {@code Friendly Type}.</li>
+   *   <li>When {@link WeightUnitOfMeasureType#WeightUnitOfMeasureType(String, String)} with type is {@code KILOGRAMS} and {@code Friendly Type}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link UnitOfMeasureUtil#findOunces(BigDecimal, WeightUnitOfMeasureType)}
+   * Method under test: {@link UnitOfMeasureUtil#findOunces(BigDecimal, WeightUnitOfMeasureType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal UnitOfMeasureUtil.findOunces(BigDecimal, WeightUnitOfMeasureType)"})
   public void testFindOunces_whenWeightUnitOfMeasureTypeWithTypeIsKilogramsAndFriendlyType() {
     // Arrange and Act
     BigDecimal actualFindOuncesResult = UnitOfMeasureUtil.findOunces(BankersRounding.ZERO,
@@ -472,17 +477,17 @@ public class UnitOfMeasureUtilDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link UnitOfMeasureUtil#findOunces(BigDecimal, WeightUnitOfMeasureType)}.
+   * Test {@link UnitOfMeasureUtil#findOunces(BigDecimal, WeightUnitOfMeasureType)}.
    * <ul>
    *   <li>When {@link WeightUnitOfMeasureType#WeightUnitOfMeasureType()}.</li>
    *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link UnitOfMeasureUtil#findOunces(BigDecimal, WeightUnitOfMeasureType)}
+   * Method under test: {@link UnitOfMeasureUtil#findOunces(BigDecimal, WeightUnitOfMeasureType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal UnitOfMeasureUtil.findOunces(BigDecimal, WeightUnitOfMeasureType)"})
   public void testFindOunces_whenWeightUnitOfMeasureType_thenReturnBigDecimalWith000() {
     // Arrange and Act
     BigDecimal actualFindOuncesResult = UnitOfMeasureUtil.findOunces(BankersRounding.ZERO,
@@ -493,13 +498,13 @@ public class UnitOfMeasureUtilDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link UnitOfMeasureUtil#findInches(BigDecimal, DimensionUnitOfMeasureType)}.
+   * Test {@link UnitOfMeasureUtil#findInches(BigDecimal, DimensionUnitOfMeasureType)}.
    * <p>
-   * Method under test:
-   * {@link UnitOfMeasureUtil#findInches(BigDecimal, DimensionUnitOfMeasureType)}
+   * Method under test: {@link UnitOfMeasureUtil#findInches(BigDecimal, DimensionUnitOfMeasureType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal UnitOfMeasureUtil.findInches(BigDecimal, DimensionUnitOfMeasureType)"})
   public void testFindInches() {
     // Arrange and Act
     BigDecimal actualFindInchesResult = UnitOfMeasureUtil.findInches(BankersRounding.ZERO,
@@ -510,17 +515,17 @@ public class UnitOfMeasureUtilDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link UnitOfMeasureUtil#findInches(BigDecimal, DimensionUnitOfMeasureType)}.
+   * Test {@link UnitOfMeasureUtil#findInches(BigDecimal, DimensionUnitOfMeasureType)}.
    * <ul>
    *   <li>When {@link DimensionUnitOfMeasureType#CENTIMETERS}.</li>
    *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 0E-9}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link UnitOfMeasureUtil#findInches(BigDecimal, DimensionUnitOfMeasureType)}
+   * Method under test: {@link UnitOfMeasureUtil#findInches(BigDecimal, DimensionUnitOfMeasureType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal UnitOfMeasureUtil.findInches(BigDecimal, DimensionUnitOfMeasureType)"})
   public void testFindInches_whenCentimeters_thenReturnBigDecimalWith0e9() {
     // Arrange and Act
     BigDecimal actualFindInchesResult = UnitOfMeasureUtil.findInches(BankersRounding.ZERO,
@@ -531,18 +536,17 @@ public class UnitOfMeasureUtilDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link UnitOfMeasureUtil#findInches(BigDecimal, DimensionUnitOfMeasureType)}.
+   * Test {@link UnitOfMeasureUtil#findInches(BigDecimal, DimensionUnitOfMeasureType)}.
    * <ul>
-   *   <li>When
-   * {@link DimensionUnitOfMeasureType#DimensionUnitOfMeasureType()}.</li>
+   *   <li>When {@link DimensionUnitOfMeasureType#DimensionUnitOfMeasureType()}.</li>
    *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link UnitOfMeasureUtil#findInches(BigDecimal, DimensionUnitOfMeasureType)}
+   * Method under test: {@link UnitOfMeasureUtil#findInches(BigDecimal, DimensionUnitOfMeasureType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal UnitOfMeasureUtil.findInches(BigDecimal, DimensionUnitOfMeasureType)"})
   public void testFindInches_whenDimensionUnitOfMeasureType_thenReturnBigDecimalWith000() {
     // Arrange and Act
     BigDecimal actualFindInchesResult = UnitOfMeasureUtil.findInches(BankersRounding.ZERO,
@@ -553,17 +557,17 @@ public class UnitOfMeasureUtilDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link UnitOfMeasureUtil#findInches(BigDecimal, DimensionUnitOfMeasureType)}.
+   * Test {@link UnitOfMeasureUtil#findInches(BigDecimal, DimensionUnitOfMeasureType)}.
    * <ul>
    *   <li>When {@link DimensionUnitOfMeasureType#FEET}.</li>
    *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link UnitOfMeasureUtil#findInches(BigDecimal, DimensionUnitOfMeasureType)}
+   * Method under test: {@link UnitOfMeasureUtil#findInches(BigDecimal, DimensionUnitOfMeasureType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal UnitOfMeasureUtil.findInches(BigDecimal, DimensionUnitOfMeasureType)"})
   public void testFindInches_whenFeet_thenReturnBigDecimalWith000() {
     // Arrange and Act
     BigDecimal actualFindInchesResult = UnitOfMeasureUtil.findInches(BankersRounding.ZERO,
@@ -574,17 +578,17 @@ public class UnitOfMeasureUtilDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link UnitOfMeasureUtil#findInches(BigDecimal, DimensionUnitOfMeasureType)}.
+   * Test {@link UnitOfMeasureUtil#findInches(BigDecimal, DimensionUnitOfMeasureType)}.
    * <ul>
    *   <li>When {@link DimensionUnitOfMeasureType#METERS}.</li>
    *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 0E-7}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link UnitOfMeasureUtil#findInches(BigDecimal, DimensionUnitOfMeasureType)}
+   * Method under test: {@link UnitOfMeasureUtil#findInches(BigDecimal, DimensionUnitOfMeasureType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal UnitOfMeasureUtil.findInches(BigDecimal, DimensionUnitOfMeasureType)"})
   public void testFindInches_whenMeters_thenReturnBigDecimalWith0e7() {
     // Arrange and Act
     BigDecimal actualFindInchesResult = UnitOfMeasureUtil.findInches(BankersRounding.ZERO,

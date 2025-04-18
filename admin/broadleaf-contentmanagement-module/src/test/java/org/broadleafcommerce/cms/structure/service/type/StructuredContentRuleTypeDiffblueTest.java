@@ -1,36 +1,42 @@
+/*-
+ * #%L
+ * BroadleafCommerce CMS Module
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.cms.structure.service.type;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @ContextConfiguration(classes = {StructuredContentRuleType.class})
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class StructuredContentRuleTypeDiffblueTest {
   @Autowired
   private StructuredContentRuleType structuredContentRuleType;
-
-  /**
-   * Test {@link StructuredContentRuleType#getInstance(String)}.
-   * <p>
-   * Method under test: {@link StructuredContentRuleType#getInstance(String)}
-   */
-  @Test
-  public void testGetInstance() {
-    // Arrange and Act
-    StructuredContentRuleType actualInstance = StructuredContentRuleType.getInstance("Type");
-
-    // Assert
-    assertEquals("Friendly Type", actualInstance.getFriendlyType());
-    assertEquals("Type", actualInstance.getType());
-  }
 
   /**
    * Test getters and setters.
@@ -43,6 +49,9 @@ public class StructuredContentRuleTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StructuredContentRuleType.<init>()", "String StructuredContentRuleType.getFriendlyType()",
+      "String StructuredContentRuleType.getType()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     StructuredContentRuleType actualStructuredContentRuleType = new StructuredContentRuleType();
@@ -54,17 +63,17 @@ public class StructuredContentRuleTypeDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link StructuredContentRuleType#StructuredContentRuleType(String, String)}.
+   * Test {@link StructuredContentRuleType#StructuredContentRuleType(String, String)}.
    * <ul>
    *   <li>When {@code Product}.</li>
    *   <li>Then return Type is {@code Product}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link StructuredContentRuleType#StructuredContentRuleType(String, String)}
+   * Method under test: {@link StructuredContentRuleType#StructuredContentRuleType(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StructuredContentRuleType.<init>(String, String)"})
   public void testNewStructuredContentRuleType_whenProduct_thenReturnTypeIsProduct() {
     // Arrange and Act
     StructuredContentRuleType actualStructuredContentRuleType = new StructuredContentRuleType("Product",
@@ -76,17 +85,17 @@ public class StructuredContentRuleTypeDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link StructuredContentRuleType#StructuredContentRuleType(String, String)}.
+   * Test {@link StructuredContentRuleType#StructuredContentRuleType(String, String)}.
    * <ul>
    *   <li>When {@code Type}.</li>
    *   <li>Then return {@code Type}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link StructuredContentRuleType#StructuredContentRuleType(String, String)}
+   * Method under test: {@link StructuredContentRuleType#StructuredContentRuleType(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StructuredContentRuleType.<init>(String, String)"})
   public void testNewStructuredContentRuleType_whenType_thenReturnType() {
     // Arrange and Act
     StructuredContentRuleType actualStructuredContentRuleType = new StructuredContentRuleType("Type", "Friendly Type");
@@ -100,13 +109,14 @@ public class StructuredContentRuleTypeDiffblueTest {
    * Test {@link StructuredContentRuleType#setType(String)}.
    * <ul>
    *   <li>When {@code TypeType}.</li>
-   *   <li>Then {@link StructuredContentRuleType#CUSTOMER} Type is
-   * {@code TypeType}.</li>
+   *   <li>Then {@link StructuredContentRuleType#CUSTOMER} Type is {@code TypeType}.</li>
    * </ul>
    * <p>
    * Method under test: {@link StructuredContentRuleType#setType(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StructuredContentRuleType.setType(String)"})
   public void testSetType_whenTypeType_thenCustomerTypeIsTypeType() {
     // Arrange
     StructuredContentRuleType structuredContentRuleType2 = StructuredContentRuleType.CUSTOMER;
@@ -122,13 +132,14 @@ public class StructuredContentRuleTypeDiffblueTest {
    * Test {@link StructuredContentRuleType#setType(String)}.
    * <ul>
    *   <li>When {@code Type}.</li>
-   *   <li>Then {@link StructuredContentRuleType#CUSTOMER} Type is
-   * {@code Type}.</li>
+   *   <li>Then {@link StructuredContentRuleType#CUSTOMER} Type is {@code Type}.</li>
    * </ul>
    * <p>
    * Method under test: {@link StructuredContentRuleType#setType(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StructuredContentRuleType.setType(String)"})
   public void testSetType_whenType_thenCustomerTypeIsType() {
     // Arrange
     StructuredContentRuleType structuredContentRuleType2 = StructuredContentRuleType.CUSTOMER;
@@ -141,8 +152,7 @@ public class StructuredContentRuleTypeDiffblueTest {
   }
 
   /**
-   * Test {@link StructuredContentRuleType#equals(Object)}, and
-   * {@link StructuredContentRuleType#hashCode()}.
+   * Test {@link StructuredContentRuleType#equals(Object)}, and {@link StructuredContentRuleType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -155,6 +165,8 @@ public class StructuredContentRuleTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StructuredContentRuleType.equals(Object)", "int StructuredContentRuleType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     StructuredContentRuleType structuredContentRuleType = StructuredContentRuleType.CUSTOMER;
@@ -167,8 +179,7 @@ public class StructuredContentRuleTypeDiffblueTest {
   }
 
   /**
-   * Test {@link StructuredContentRuleType#equals(Object)}, and
-   * {@link StructuredContentRuleType#hashCode()}.
+   * Test {@link StructuredContentRuleType#equals(Object)}, and {@link StructuredContentRuleType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -181,6 +192,8 @@ public class StructuredContentRuleTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StructuredContentRuleType.equals(Object)", "int StructuredContentRuleType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     StructuredContentRuleType structuredContentRuleType = new StructuredContentRuleType();
@@ -193,34 +206,7 @@ public class StructuredContentRuleTypeDiffblueTest {
   }
 
   /**
-   * Test {@link StructuredContentRuleType#equals(Object)}, and
-   * {@link StructuredContentRuleType#hashCode()}.
-   * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
-   * </ul>
-   * <p>
-   * Methods under test:
-   * <ul>
-   *   <li>{@link StructuredContentRuleType#equals(Object)}
-   *   <li>{@link StructuredContentRuleType#hashCode()}
-   * </ul>
-   */
-  @Test
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
-    // Arrange
-    StructuredContentRuleType structuredContentRuleType = new StructuredContentRuleType("CUSTOMER", "Friendly Type");
-    StructuredContentRuleType structuredContentRuleType2 = StructuredContentRuleType.CUSTOMER;
-
-    // Act and Assert
-    assertEquals(structuredContentRuleType, structuredContentRuleType2);
-    int expectedHashCodeResult = structuredContentRuleType.hashCode();
-    assertEquals(expectedHashCodeResult, structuredContentRuleType2.hashCode());
-  }
-
-  /**
-   * Test {@link StructuredContentRuleType#equals(Object)}, and
-   * {@link StructuredContentRuleType#hashCode()}.
+   * Test {@link StructuredContentRuleType#equals(Object)}, and {@link StructuredContentRuleType#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -233,6 +219,8 @@ public class StructuredContentRuleTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StructuredContentRuleType.equals(Object)", "int StructuredContentRuleType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     StructuredContentRuleType structuredContentRuleType = StructuredContentRuleType.CUSTOMER;
@@ -253,9 +241,27 @@ public class StructuredContentRuleTypeDiffblueTest {
    * Method under test: {@link StructuredContentRuleType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StructuredContentRuleType.equals(Object)", "int StructuredContentRuleType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(StructuredContentRuleType.PRODUCT, StructuredContentRuleType.CUSTOMER);
+  }
+
+  /**
+   * Test {@link StructuredContentRuleType#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StructuredContentRuleType#equals(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StructuredContentRuleType.equals(Object)", "int StructuredContentRuleType.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange, Act and Assert
     assertNotEquals(new StructuredContentRuleType(), StructuredContentRuleType.CUSTOMER);
   }
 
@@ -269,6 +275,8 @@ public class StructuredContentRuleTypeDiffblueTest {
    * Method under test: {@link StructuredContentRuleType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StructuredContentRuleType.equals(Object)", "int StructuredContentRuleType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(StructuredContentRuleType.CUSTOMER, null);
@@ -284,6 +292,8 @@ public class StructuredContentRuleTypeDiffblueTest {
    * Method under test: {@link StructuredContentRuleType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StructuredContentRuleType.equals(Object)", "int StructuredContentRuleType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(StructuredContentRuleType.CUSTOMER, "Different type to StructuredContentRuleType");

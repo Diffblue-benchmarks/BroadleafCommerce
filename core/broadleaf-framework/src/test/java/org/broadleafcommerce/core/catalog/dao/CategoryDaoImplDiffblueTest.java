@@ -1,632 +1,68 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.catalog.dao;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThrows;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.List;
-import org.broadleafcommerce.core.catalog.domain.Category;
+import java.util.Date;
+import java.util.HashMap;
+import javax.persistence.NoResultException;
+import org.broadleafcommerce.common.extension.ExtensionResultHolder;
+import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
+import org.broadleafcommerce.common.persistence.EntityConfiguration;
+import org.broadleafcommerce.common.sandbox.SandBoxHelper;
 import org.broadleafcommerce.core.catalog.domain.CategoryImpl;
-import org.junit.Ignore;
+import org.broadleafcommerce.core.inventory.service.type.InventoryType;
+import org.broadleafcommerce.core.order.service.type.FulfillmentType;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
-@Transactional
+@RunWith(MockitoJUnitRunner.class)
 public class CategoryDaoImplDiffblueTest {
-  @Autowired
+  @Mock
+  private CategoryDaoExtensionManager categoryDaoExtensionManager;
+
+  @InjectMocks
   private CategoryDaoImpl categoryDaoImpl;
 
-  /**
-   * Test {@link CategoryDaoImpl#getCurrentDateAfterFactoringInDateResolution()}.
-   * <p>
-   * Method under test:
-   * {@link CategoryDaoImpl#getCurrentDateAfterFactoringInDateResolution()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetCurrentDateAfterFactoringInDateResolution() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass78 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.dao.CategoryDaoImpl categoryDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Mock
+  private EntityConfiguration entityConfiguration;
 
-    // Arrange and Act
-    (new CategoryDaoImpl()).getCurrentDateAfterFactoringInDateResolution();
-  }
-
-  /**
-   * Test {@link CategoryDaoImpl#save(Category)}.
-   * <p>
-   * Method under test: {@link CategoryDaoImpl#save(Category)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSave() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass402 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.dao.CategoryDaoImpl categoryDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CategoryDaoImpl categoryDaoImpl2 = new CategoryDaoImpl();
-
-    // Act
-    categoryDaoImpl2.save(new CategoryImpl());
-  }
-
-  /**
-   * Test {@link CategoryDaoImpl#readCategoryById(Long)}.
-   * <p>
-   * Method under test: {@link CategoryDaoImpl#readCategoryById(Long)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testReadCategoryById() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass324 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.dao.CategoryDaoImpl categoryDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryDaoImpl()).readCategoryById(1L);
-  }
-
-  /**
-   * Test {@link CategoryDaoImpl#readCategoriesByIds(List)}.
-   * <p>
-   * Method under test: {@link CategoryDaoImpl#readCategoriesByIds(List)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testReadCategoriesByIds() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass238 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.dao.CategoryDaoImpl categoryDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CategoryDaoImpl categoryDaoImpl2 = new CategoryDaoImpl();
-
-    // Act
-    categoryDaoImpl2.readCategoriesByIds(new ArrayList<>());
-  }
-
-  /**
-   * Test {@link CategoryDaoImpl#readCategoryByExternalId(String)}.
-   * <p>
-   * Method under test: {@link CategoryDaoImpl#readCategoryByExternalId(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testReadCategoryByExternalId() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass294 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.dao.CategoryDaoImpl categoryDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryDaoImpl()).readCategoryByExternalId("42");
-  }
-
-  /**
-   * Test {@link CategoryDaoImpl#readCategoryByName(String)}.
-   * <p>
-   * Method under test: {@link CategoryDaoImpl#readCategoryByName(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testReadCategoryByName() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass340 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.dao.CategoryDaoImpl categoryDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryDaoImpl()).readCategoryByName("Category Name");
-  }
-
-  /**
-   * Test {@link CategoryDaoImpl#readCategoriesByName(String)} with
-   * {@code categoryName}.
-   * <p>
-   * Method under test: {@link CategoryDaoImpl#readCategoriesByName(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testReadCategoriesByNameWithCategoryName() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass244 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.dao.CategoryDaoImpl categoryDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryDaoImpl()).readCategoriesByName("Category Name");
-  }
-
-  /**
-   * Test {@link CategoryDaoImpl#readCategoriesByName(String, int, int)} with
-   * {@code categoryName}, {@code limit}, {@code offset}.
-   * <p>
-   * Method under test:
-   * {@link CategoryDaoImpl#readCategoriesByName(String, int, int)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testReadCategoriesByNameWithCategoryNameLimitOffset() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass274 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.dao.CategoryDaoImpl categoryDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryDaoImpl()).readCategoriesByName("Category Name", 1, 2);
-  }
-
-  /**
-   * Test {@link CategoryDaoImpl#readCategoriesByNames(List)}.
-   * <p>
-   * Method under test: {@link CategoryDaoImpl#readCategoriesByNames(List)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testReadCategoriesByNames() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass288 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.dao.CategoryDaoImpl categoryDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CategoryDaoImpl categoryDaoImpl2 = new CategoryDaoImpl();
-
-    // Act
-    categoryDaoImpl2.readCategoriesByNames(new ArrayList<>());
-  }
-
-  /**
-   * Test {@link CategoryDaoImpl#readAllCategories()}.
-   * <p>
-   * Method under test: {@link CategoryDaoImpl#readAllCategories()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testReadAllCategories() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass140 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.dao.CategoryDaoImpl categoryDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryDaoImpl()).readAllCategories();
-  }
-
-  /**
-   * Test {@link CategoryDaoImpl#readAllCategories(int, int)} with {@code int},
-   * {@code int}.
-   * <p>
-   * Method under test: {@link CategoryDaoImpl#readAllCategories(int, int)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testReadAllCategoriesWithIntInt() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass142 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.dao.CategoryDaoImpl categoryDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryDaoImpl()).readAllCategories(1, 2);
-  }
-
-  /**
-   * Test {@link CategoryDaoImpl#readTotalCategoryCount()}.
-   * <p>
-   * Method under test: {@link CategoryDaoImpl#readTotalCategoryCount()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testReadTotalCategoryCount() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass400 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.dao.CategoryDaoImpl categoryDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryDaoImpl()).readTotalCategoryCount();
-  }
-
-  /**
-   * Test {@link CategoryDaoImpl#readAllProducts()}.
-   * <p>
-   * Method under test: {@link CategoryDaoImpl#readAllProducts()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testReadAllProducts() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass151 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.dao.CategoryDaoImpl categoryDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryDaoImpl()).readAllProducts();
-  }
-
-  /**
-   * Test {@link CategoryDaoImpl#readAllProducts(int, int)} with {@code int},
-   * {@code int}.
-   * <p>
-   * Method under test: {@link CategoryDaoImpl#readAllProducts(int, int)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testReadAllProductsWithIntInt() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass153 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.dao.CategoryDaoImpl categoryDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryDaoImpl()).readAllProducts(1, 2);
-  }
-
-  /**
-   * Test {@link CategoryDaoImpl#readAllSubCategories(Category)} with
-   * {@code category}.
-   * <p>
-   * Method under test: {@link CategoryDaoImpl#readAllSubCategories(Category)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testReadAllSubCategoriesWithCategory() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass178 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.dao.CategoryDaoImpl categoryDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CategoryDaoImpl categoryDaoImpl2 = new CategoryDaoImpl();
-
-    // Act
-    categoryDaoImpl2.readAllSubCategories(new CategoryImpl());
-  }
-
-  /**
-   * Test {@link CategoryDaoImpl#readAllSubCategories(Category, int, int)} with
-   * {@code category}, {@code limit}, {@code offset}.
-   * <p>
-   * Method under test:
-   * {@link CategoryDaoImpl#readAllSubCategories(Category, int, int)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testReadAllSubCategoriesWithCategoryLimitOffset() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass208 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.dao.CategoryDaoImpl categoryDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CategoryDaoImpl categoryDaoImpl2 = new CategoryDaoImpl();
-
-    // Act
-    categoryDaoImpl2.readAllSubCategories(new CategoryImpl(), 1, 2);
-  }
-
-  /**
-   * Test {@link CategoryDaoImpl#readAllSubCategories(Long)} with {@code id}.
-   * <p>
-   * Method under test: {@link CategoryDaoImpl#readAllSubCategories(Long)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testReadAllSubCategoriesWithId() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass162 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.dao.CategoryDaoImpl categoryDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryDaoImpl()).readAllSubCategories(1L);
-  }
-
-  /**
-   * Test {@link CategoryDaoImpl#readActiveSubCategoriesByCategory(Category)} with
-   * {@code category}.
-   * <p>
-   * Method under test:
-   * {@link CategoryDaoImpl#readActiveSubCategoriesByCategory(Category)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testReadActiveSubCategoriesByCategoryWithCategory() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass80 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.dao.CategoryDaoImpl categoryDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CategoryDaoImpl categoryDaoImpl2 = new CategoryDaoImpl();
-
-    // Act
-    categoryDaoImpl2.readActiveSubCategoriesByCategory(new CategoryImpl());
-  }
-
-  /**
-   * Test
-   * {@link CategoryDaoImpl#readActiveSubCategoriesByCategory(Category, int, int)}
-   * with {@code category}, {@code limit}, {@code offset}.
-   * <p>
-   * Method under test:
-   * {@link CategoryDaoImpl#readActiveSubCategoriesByCategory(Category, int, int)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testReadActiveSubCategoriesByCategoryWithCategoryLimitOffset() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass110 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.dao.CategoryDaoImpl categoryDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CategoryDaoImpl categoryDaoImpl2 = new CategoryDaoImpl();
-
-    // Act
-    categoryDaoImpl2.readActiveSubCategoriesByCategory(new CategoryImpl(), 1, 2);
-  }
+  @Mock
+  private SandBoxHelper sandBoxHelper;
 
   /**
    * Test getters and setters.
@@ -638,6 +74,9 @@ public class CategoryDaoImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long CategoryDaoImpl.getCurrentDateResolution()",
+      "void CategoryDaoImpl.setCurrentDateResolution(Long)"})
   public void testGettersAndSetters() {
     // Arrange
     CategoryDaoImpl categoryDaoImpl = new CategoryDaoImpl();
@@ -645,165 +84,134 @@ public class CategoryDaoImplDiffblueTest {
     // Act
     categoryDaoImpl.setCurrentDateResolution(1L);
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals(1L, categoryDaoImpl.getCurrentDateResolution().longValue());
   }
 
   /**
-   * Test {@link CategoryDaoImpl#delete(Category)}.
-   * <p>
-   * Method under test: {@link CategoryDaoImpl#delete(Category)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testDelete() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.dao.CategoryDaoImpl categoryDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CategoryDaoImpl categoryDaoImpl2 = new CategoryDaoImpl();
-
-    // Act
-    categoryDaoImpl2.delete(new CategoryImpl());
-  }
-
-  /**
    * Test {@link CategoryDaoImpl#create()}.
+   * <ul>
+   *   <li>Then return {@link CategoryImpl} (default constructor).</li>
+   * </ul>
    * <p>
    * Method under test: {@link CategoryDaoImpl#create()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreate() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass0 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.dao.CategoryDaoImpl categoryDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"org.broadleafcommerce.core.catalog.domain.Category CategoryDaoImpl.create()"})
+  public void testCreate_thenReturnCategoryImpl() {
+    // Arrange
+    CategoryImpl categoryImpl = new CategoryImpl();
+    categoryImpl
+        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    categoryImpl
+        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    categoryImpl.setCategoryAttributes(new ArrayList<>());
+    categoryImpl.setCategoryAttributesMap(new HashMap<>());
+    categoryImpl.setCategoryMediaXref(new HashMap<>());
+    categoryImpl.setChildCategoryIds(new ArrayList<>());
+    categoryImpl.setChildCategoryURLMap(new HashMap<>());
+    categoryImpl.setDefaultParentCategory(new CategoryImpl());
+    categoryImpl.setDescription("The characteristics of someone or something");
+    categoryImpl.setDisplayTemplate("Display Template");
+    categoryImpl.setExcludedSearchFacets(new ArrayList<>());
+    categoryImpl.setExternalId("42");
+    categoryImpl.setFulfillmentType(FulfillmentType.DIGITAL);
+    categoryImpl.setId(1L);
+    categoryImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
+    categoryImpl.setLongDescription("Long Description");
+    categoryImpl.setMetaDescription("Meta Description");
+    categoryImpl.setMetaTitle("Dr");
+    categoryImpl.setName("Name");
+    categoryImpl.setOverrideGeneratedUrl(true);
+    categoryImpl.setProductDescriptionPatternOverride("Product Description Pattern Override");
+    categoryImpl.setProductTitlePatternOverride("Dr");
+    categoryImpl.setRootDisplayOrder(new BigDecimal("2.3"));
+    categoryImpl.setSearchFacets(new ArrayList<>());
+    categoryImpl.setTaxCode("Tax Code");
+    categoryImpl.setUpSaleProducts(new ArrayList<>());
+    categoryImpl.setUrl("https://example.org/example");
+    categoryImpl.setUrlKey("https://example.org/example");
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any())).thenReturn(categoryImpl);
 
-    // Arrange and Act
-    (new CategoryDaoImpl()).create();
+    // Act
+    org.broadleafcommerce.core.catalog.domain.Category actualCreateResult = categoryDaoImpl.create();
+
+    // Assert
+    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.core.catalog.domain.Category"));
+    assertSame(categoryImpl, actualCreateResult);
+  }
+
+  /**
+   * Test {@link CategoryDaoImpl#create()}.
+   * <ul>
+   *   <li>Then throw {@link NoResultException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CategoryDaoImpl#create()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"org.broadleafcommerce.core.catalog.domain.Category CategoryDaoImpl.create()"})
+  public void testCreate_thenThrowNoResultException() {
+    // Arrange
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any()))
+        .thenThrow(new NoResultException("An error occurred"));
+
+    // Act and Assert
+    assertThrows(NoResultException.class, () -> categoryDaoImpl.create());
+    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.core.catalog.domain.Category"));
   }
 
   /**
    * Test {@link CategoryDaoImpl#findCategoryByURI(String)}.
+   * <ul>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link CategoryDaoImpl#findCategoryByURI(String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindCategoryByURI() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass32 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.dao.CategoryDaoImpl categoryDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CategoryDaoImpl()).findCategoryByURI("Uri");
-  }
-
-  /**
-   * Test {@link CategoryDaoImpl#readCountAllActiveProductsByCategory(Category)}.
-   * <p>
-   * Method under test:
-   * {@link CategoryDaoImpl#readCountAllActiveProductsByCategory(Category)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testReadCountAllActiveProductsByCategory() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass370 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.dao.CategoryDaoImpl categoryDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"org.broadleafcommerce.core.catalog.domain.Category CategoryDaoImpl.findCategoryByURI(String)"})
+  public void testFindCategoryByURI_thenReturnNull() {
     // Arrange
-    CategoryDaoImpl categoryDaoImpl2 = new CategoryDaoImpl();
+    CategoryDaoExtensionHandler categoryDaoExtensionHandler = mock(CategoryDaoExtensionHandler.class);
+    when(categoryDaoExtensionHandler.findCategoryByURI(Mockito.<String>any(),
+        Mockito.<ExtensionResultHolder<Object>>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(categoryDaoExtensionManager.getProxy()).thenReturn(categoryDaoExtensionHandler);
 
     // Act
-    categoryDaoImpl2.readCountAllActiveProductsByCategory(new CategoryImpl());
+    org.broadleafcommerce.core.catalog.domain.Category actualFindCategoryByURIResult = categoryDaoImpl
+        .findCategoryByURI("Uri");
+
+    // Assert
+    verify(categoryDaoExtensionManager).getProxy();
+    verify(categoryDaoExtensionHandler).findCategoryByURI(eq("Uri"), isA(ExtensionResultHolder.class));
+    assertNull(actualFindCategoryByURIResult);
   }
 
   /**
-   * Test {@link CategoryDaoImpl#findXrefByCategoryWithDefaultReference(Long)}.
+   * Test {@link CategoryDaoImpl#findCategoryByURI(String)}.
+   * <ul>
+   *   <li>Then throw {@link NoResultException}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link CategoryDaoImpl#findXrefByCategoryWithDefaultReference(Long)}
+   * Method under test: {@link CategoryDaoImpl#findCategoryByURI(String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindXrefByCategoryWithDefaultReference() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.catalog.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass62 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.dao.CategoryDaoImpl categoryDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"org.broadleafcommerce.core.catalog.domain.Category CategoryDaoImpl.findCategoryByURI(String)"})
+  public void testFindCategoryByURI_thenThrowNoResultException() {
+    // Arrange
+    CategoryDaoExtensionHandler categoryDaoExtensionHandler = mock(CategoryDaoExtensionHandler.class);
+    when(categoryDaoExtensionHandler.findCategoryByURI(Mockito.<String>any(),
+        Mockito.<ExtensionResultHolder<Object>>any())).thenThrow(new NoResultException("An error occurred"));
+    when(categoryDaoExtensionManager.getProxy()).thenReturn(categoryDaoExtensionHandler);
 
-    // Arrange and Act
-    (new CategoryDaoImpl()).findXrefByCategoryWithDefaultReference(1L);
+    // Act and Assert
+    assertThrows(NoResultException.class, () -> categoryDaoImpl.findCategoryByURI("Uri"));
+    verify(categoryDaoExtensionManager).getProxy();
+    verify(categoryDaoExtensionHandler).findCategoryByURI(eq("Uri"), isA(ExtensionResultHolder.class));
   }
 }

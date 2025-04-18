@@ -1,353 +1,231 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.rating.dao;
 
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThrows;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import javax.persistence.NoResultException;
+import org.broadleafcommerce.common.persistence.EntityConfiguration;
+import org.broadleafcommerce.core.rating.domain.RatingDetail;
+import org.broadleafcommerce.core.rating.domain.RatingDetailImpl;
 import org.broadleafcommerce.core.rating.domain.RatingSummary;
 import org.broadleafcommerce.core.rating.domain.RatingSummaryImpl;
 import org.broadleafcommerce.core.rating.service.type.RatingType;
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
-@Transactional
+@RunWith(MockitoJUnitRunner.class)
 public class RatingSummaryDaoImplDiffblueTest {
-  @Autowired
+  @Mock
+  private EntityConfiguration entityConfiguration;
+
+  @InjectMocks
   private RatingSummaryDaoImpl ratingSummaryDaoImpl;
 
   /**
+   * Test {@link RatingSummaryDaoImpl#createSummary(String, RatingType)} with {@code String}, {@code RatingType}.
+   * <ul>
+   *   <li>Then return {@link RatingSummaryImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link RatingSummaryDaoImpl#createSummary(String, RatingType)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"RatingSummary RatingSummaryDaoImpl.createSummary(String, RatingType)"})
+  public void testCreateSummaryWithStringRatingType_thenReturnRatingSummaryImpl() {
+    // Arrange
+    RatingSummaryImpl ratingSummaryImpl = new RatingSummaryImpl();
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any(), Mockito.<Class<RatingSummary>>any()))
+        .thenReturn(ratingSummaryImpl);
+
+    // Act
+    RatingSummary actualCreateSummaryResult = ratingSummaryDaoImpl.createSummary("42", RatingType.PRODUCT);
+
+    // Assert
+    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.core.rating.domain.RatingSummary"),
+        isA(Class.class));
+    assertSame(ratingSummaryImpl, actualCreateSummaryResult);
+  }
+
+  /**
    * Test {@link RatingSummaryDaoImpl#createSummary()}.
+   * <ul>
+   *   <li>Then return {@link RatingSummaryImpl} (default constructor).</li>
+   * </ul>
    * <p>
    * Method under test: {@link RatingSummaryDaoImpl#createSummary()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateSummary() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.rating.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3731 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.rating.dao.RatingSummaryDaoImpl ratingSummaryDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new RatingSummaryDaoImpl()).createSummary();
-  }
-
-  /**
-   * Test {@link RatingSummaryDaoImpl#createSummary(String, RatingType)} with
-   * {@code String}, {@code RatingType}.
-   * <p>
-   * Method under test:
-   * {@link RatingSummaryDaoImpl#createSummary(String, RatingType)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateSummaryWithStringRatingType() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.rating.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3733 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.rating.dao.RatingSummaryDaoImpl ratingSummaryDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new RatingSummaryDaoImpl()).createSummary("42", RatingType.PRODUCT);
-  }
-
-  /**
-   * Test {@link RatingSummaryDaoImpl#createDetail()}.
-   * <p>
-   * Method under test: {@link RatingSummaryDaoImpl#createDetail()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateDetail() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.rating.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3699 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.rating.dao.RatingSummaryDaoImpl ratingSummaryDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new RatingSummaryDaoImpl()).createDetail();
-  }
-
-  /**
-   * Test
-   * {@link RatingSummaryDaoImpl#createDetail(RatingSummary, Double, Date, Customer)}
-   * with {@code RatingSummary}, {@code Double}, {@code Date}, {@code Customer}.
-   * <p>
-   * Method under test:
-   * {@link RatingSummaryDaoImpl#createDetail(RatingSummary, Double, Date, Customer)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateDetailWithRatingSummaryDoubleDateCustomer() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.rating.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3701 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.rating.dao.RatingSummaryDaoImpl ratingSummaryDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"RatingSummary RatingSummaryDaoImpl.createSummary()"})
+  public void testCreateSummary_thenReturnRatingSummaryImpl() {
     // Arrange
-    RatingSummaryDaoImpl ratingSummaryDaoImpl2 = new RatingSummaryDaoImpl();
+    RatingSummaryImpl ratingSummaryImpl = new RatingSummaryImpl();
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any(), Mockito.<Class<RatingSummary>>any()))
+        .thenReturn(ratingSummaryImpl);
+
+    // Act
+    RatingSummary actualCreateSummaryResult = ratingSummaryDaoImpl.createSummary();
+
+    // Assert
+    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.core.rating.domain.RatingSummary"),
+        isA(Class.class));
+    assertSame(ratingSummaryImpl, actualCreateSummaryResult);
+  }
+
+  /**
+   * Test {@link RatingSummaryDaoImpl#createSummary()}.
+   * <ul>
+   *   <li>Then throw {@link NoResultException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link RatingSummaryDaoImpl#createSummary()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"RatingSummary RatingSummaryDaoImpl.createSummary()"})
+  public void testCreateSummary_thenThrowNoResultException() {
+    // Arrange
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any(), Mockito.<Class<RatingSummary>>any()))
+        .thenThrow(new NoResultException("An error occurred"));
+
+    // Act and Assert
+    assertThrows(NoResultException.class, () -> ratingSummaryDaoImpl.createSummary());
+    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.core.rating.domain.RatingSummary"),
+        isA(Class.class));
+  }
+
+  /**
+   * Test {@link RatingSummaryDaoImpl#createDetail(RatingSummary, Double, Date, Customer)} with {@code RatingSummary}, {@code Double}, {@code Date}, {@code Customer}.
+   * <ul>
+   *   <li>Then return {@link RatingDetailImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link RatingSummaryDaoImpl#createDetail(RatingSummary, Double, Date, Customer)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"RatingDetail RatingSummaryDaoImpl.createDetail(RatingSummary, Double, Date, Customer)"})
+  public void testCreateDetailWithRatingSummaryDoubleDateCustomer_thenReturnRatingDetailImpl() {
+    // Arrange
+    RatingDetailImpl ratingDetailImpl = new RatingDetailImpl();
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any(), Mockito.<Class<RatingDetail>>any()))
+        .thenReturn(ratingDetailImpl);
     RatingSummaryImpl ratingSummary = new RatingSummaryImpl();
     Date submittedDate = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
 
     // Act
-    ratingSummaryDaoImpl2.createDetail(ratingSummary, 10.0d, submittedDate, new CustomerImpl());
+    RatingDetail actualCreateDetailResult = ratingSummaryDaoImpl.createDetail(ratingSummary, 10.0d, submittedDate,
+        new CustomerImpl());
+
+    // Assert
+    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.core.rating.domain.RatingDetail"),
+        isA(Class.class));
+    assertSame(ratingDetailImpl, actualCreateDetailResult);
   }
 
   /**
-   * Test {@link RatingSummaryDaoImpl#deleteRatingSummary(RatingSummary)}.
+   * Test {@link RatingSummaryDaoImpl#createDetail(RatingSummary, Double, Date, Customer)} with {@code RatingSummary}, {@code Double}, {@code Date}, {@code Customer}.
+   * <ul>
+   *   <li>Then throw {@link NoResultException}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link RatingSummaryDaoImpl#deleteRatingSummary(RatingSummary)}
+   * Method under test: {@link RatingSummaryDaoImpl#createDetail(RatingSummary, Double, Date, Customer)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testDeleteRatingSummary() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.rating.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3742 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.rating.dao.RatingSummaryDaoImpl ratingSummaryDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"RatingDetail RatingSummaryDaoImpl.createDetail(RatingSummary, Double, Date, Customer)"})
+  public void testCreateDetailWithRatingSummaryDoubleDateCustomer_thenThrowNoResultException() {
     // Arrange
-    RatingSummaryDaoImpl ratingSummaryDaoImpl2 = new RatingSummaryDaoImpl();
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any(), Mockito.<Class<RatingDetail>>any()))
+        .thenThrow(new NoResultException("An error occurred"));
+    RatingSummaryImpl ratingSummary = new RatingSummaryImpl();
+    Date submittedDate = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
+
+    // Act and Assert
+    assertThrows(NoResultException.class,
+        () -> ratingSummaryDaoImpl.createDetail(ratingSummary, 10.0d, submittedDate, new CustomerImpl()));
+    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.core.rating.domain.RatingDetail"),
+        isA(Class.class));
+  }
+
+  /**
+   * Test {@link RatingSummaryDaoImpl#createDetail()}.
+   * <ul>
+   *   <li>Then return {@link RatingDetailImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link RatingSummaryDaoImpl#createDetail()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"RatingDetail RatingSummaryDaoImpl.createDetail()"})
+  public void testCreateDetail_thenReturnRatingDetailImpl() {
+    // Arrange
+    RatingDetailImpl ratingDetailImpl = new RatingDetailImpl();
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any(), Mockito.<Class<RatingDetail>>any()))
+        .thenReturn(ratingDetailImpl);
 
     // Act
-    ratingSummaryDaoImpl2.deleteRatingSummary(new RatingSummaryImpl());
+    RatingDetail actualCreateDetailResult = ratingSummaryDaoImpl.createDetail();
+
+    // Assert
+    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.core.rating.domain.RatingDetail"),
+        isA(Class.class));
+    assertSame(ratingDetailImpl, actualCreateDetailResult);
   }
 
   /**
-   * Test {@link RatingSummaryDaoImpl#saveRatingSummary(RatingSummary)}.
+   * Test {@link RatingSummaryDaoImpl#createDetail()}.
+   * <ul>
+   *   <li>Then throw {@link NoResultException}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link RatingSummaryDaoImpl#saveRatingSummary(RatingSummary)}
+   * Method under test: {@link RatingSummaryDaoImpl#createDetail()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testSaveRatingSummary() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.rating.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3834 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.rating.dao.RatingSummaryDaoImpl ratingSummaryDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"RatingDetail RatingSummaryDaoImpl.createDetail()"})
+  public void testCreateDetail_thenThrowNoResultException() {
     // Arrange
-    RatingSummaryDaoImpl ratingSummaryDaoImpl2 = new RatingSummaryDaoImpl();
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any(), Mockito.<Class<RatingDetail>>any()))
+        .thenThrow(new NoResultException("An error occurred"));
 
-    // Act
-    ratingSummaryDaoImpl2.saveRatingSummary(new RatingSummaryImpl());
-  }
-
-  /**
-   * Test {@link RatingSummaryDaoImpl#readRatingSummaries(List, RatingType)}.
-   * <p>
-   * Method under test:
-   * {@link RatingSummaryDaoImpl#readRatingSummaries(List, RatingType)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testReadRatingSummaries() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.rating.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3784 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.rating.dao.RatingSummaryDaoImpl ratingSummaryDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    RatingSummaryDaoImpl ratingSummaryDaoImpl2 = new RatingSummaryDaoImpl();
-
-    // Act
-    ratingSummaryDaoImpl2.readRatingSummaries(new ArrayList<>(), RatingType.PRODUCT);
-  }
-
-  /**
-   * Test {@link RatingSummaryDaoImpl#readRatingSummary(String, RatingType)}.
-   * <p>
-   * Method under test:
-   * {@link RatingSummaryDaoImpl#readRatingSummary(String, RatingType)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testReadRatingSummary() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.rating.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3795 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.rating.dao.RatingSummaryDaoImpl ratingSummaryDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new RatingSummaryDaoImpl()).readRatingSummary("42", RatingType.PRODUCT);
-  }
-
-  /**
-   * Test {@link RatingSummaryDaoImpl#readRating(Long, Long)}.
-   * <p>
-   * Method under test: {@link RatingSummaryDaoImpl#readRating(Long, Long)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testReadRating() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.rating.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3754 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.rating.dao.RatingSummaryDaoImpl ratingSummaryDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new RatingSummaryDaoImpl()).readRating(1L, 1L);
-  }
-
-  /**
-   * Test {@link RatingSummaryDaoImpl#readReview(Long, Long)}.
-   * <p>
-   * Method under test: {@link RatingSummaryDaoImpl#readReview(Long, Long)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testReadReview() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.rating.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3804 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.rating.dao.RatingSummaryDaoImpl ratingSummaryDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new RatingSummaryDaoImpl()).readReview(1L, 1L);
+    // Act and Assert
+    assertThrows(NoResultException.class, () -> ratingSummaryDaoImpl.createDetail());
+    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.core.rating.domain.RatingDetail"),
+        isA(Class.class));
   }
 }

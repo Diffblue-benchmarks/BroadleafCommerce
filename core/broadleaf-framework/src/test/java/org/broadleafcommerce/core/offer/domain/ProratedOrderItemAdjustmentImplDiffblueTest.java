@@ -1,15 +1,31 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.offer.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -29,21 +45,18 @@ import org.broadleafcommerce.core.order.domain.PersonalMessageImpl;
 import org.broadleafcommerce.core.order.service.type.OrderItemType;
 import org.broadleafcommerce.core.order.service.type.OrderStatus;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class ProratedOrderItemAdjustmentImplDiffblueTest {
   @Autowired
   private ProratedOrderItemAdjustmentImpl proratedOrderItemAdjustmentImpl;
@@ -51,92 +64,24 @@ public class ProratedOrderItemAdjustmentImplDiffblueTest {
   /**
    * Test {@link ProratedOrderItemAdjustmentImpl#init(OrderItem, Offer, String)}.
    * <p>
-   * Method under test:
-   * {@link ProratedOrderItemAdjustmentImpl#init(OrderItem, Offer, String)}
+   * Method under test: {@link ProratedOrderItemAdjustmentImpl#init(OrderItem, Offer, String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProratedOrderItemAdjustmentImpl.init(OrderItem, Offer, String)"})
   public void testInit() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4830 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.ProratedOrderItemAdjustmentImpl proratedOrderItemAdjustmentImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
     ProratedOrderItemAdjustmentImpl proratedOrderItemAdjustmentImpl2 = new ProratedOrderItemAdjustmentImpl();
     BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
-
-    // Act
-    proratedOrderItemAdjustmentImpl2.init(orderItem, new OfferImpl(), "Just cause");
-  }
-
-  /**
-   * Test {@link ProratedOrderItemAdjustmentImpl#init(OrderItem, Offer, String)}.
-   * <ul>
-   *   <li>Then {@link ProratedOrderItemAdjustmentImpl} (default constructor)
-   * CurrencyCode is {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link ProratedOrderItemAdjustmentImpl#init(OrderItem, Offer, String)}
-   */
-  @Test
-  public void testInit_thenProratedOrderItemAdjustmentImplCurrencyCodeIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProratedOrderItemAdjustmentImpl proratedOrderItemAdjustmentImpl = new ProratedOrderItemAdjustmentImpl();
-    BundleOrderItemImpl orderItem = mock(BundleOrderItemImpl.class);
     OfferImpl offer = new OfferImpl();
 
     // Act
-    proratedOrderItemAdjustmentImpl.init(orderItem, offer, "Just cause");
+    proratedOrderItemAdjustmentImpl2.init(orderItem, offer, "Just cause");
 
     // Assert
-    assertEquals("Just cause", proratedOrderItemAdjustmentImpl.getReason());
-    assertNull(proratedOrderItemAdjustmentImpl.getCurrencyCode());
-    assertSame(offer, proratedOrderItemAdjustmentImpl.getOffer());
-    assertSame(orderItem, proratedOrderItemAdjustmentImpl.getOrderItem());
-  }
-
-  /**
-   * Test {@link ProratedOrderItemAdjustmentImpl#init(OrderItem, Offer, String)}.
-   * <ul>
-   *   <li>Then {@link ProratedOrderItemAdjustmentImpl} (default constructor)
-   * OrderItem is {@link BundleOrderItemImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link ProratedOrderItemAdjustmentImpl#init(OrderItem, Offer, String)}
-   */
-  @Test
-  public void testInit_thenProratedOrderItemAdjustmentImplOrderItemIsBundleOrderItemImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProratedOrderItemAdjustmentImpl proratedOrderItemAdjustmentImpl = new ProratedOrderItemAdjustmentImpl();
-    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
-    OfferImpl offer = new OfferImpl();
-
-    // Act
-    proratedOrderItemAdjustmentImpl.init(orderItem, offer, "Just cause");
-
-    // Assert
-    assertEquals("Just cause", proratedOrderItemAdjustmentImpl.getReason());
-    assertSame(offer, proratedOrderItemAdjustmentImpl.getOffer());
-    assertSame(orderItem, proratedOrderItemAdjustmentImpl.getOrderItem());
+    assertEquals("Just cause", proratedOrderItemAdjustmentImpl2.getReason());
+    assertSame(offer, proratedOrderItemAdjustmentImpl2.getOffer());
+    assertSame(orderItem, proratedOrderItemAdjustmentImpl2.getOrderItem());
   }
 
   /**
@@ -157,6 +102,14 @@ public class ProratedOrderItemAdjustmentImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long ProratedOrderItemAdjustmentImpl.getId()", "Offer ProratedOrderItemAdjustmentImpl.getOffer()",
+      "OrderItem ProratedOrderItemAdjustmentImpl.getOrderItem()", "int ProratedOrderItemAdjustmentImpl.getQuantity()",
+      "String ProratedOrderItemAdjustmentImpl.getReason()", "void ProratedOrderItemAdjustmentImpl.setId(Long)",
+      "void ProratedOrderItemAdjustmentImpl.setOffer(Offer)",
+      "void ProratedOrderItemAdjustmentImpl.setOrderItem(OrderItem)",
+      "void ProratedOrderItemAdjustmentImpl.setQuantity(int)",
+      "void ProratedOrderItemAdjustmentImpl.setReason(String)"})
   public void testGettersAndSetters() {
     // Arrange
     ProratedOrderItemAdjustmentImpl proratedOrderItemAdjustmentImpl = new ProratedOrderItemAdjustmentImpl();
@@ -174,70 +127,12 @@ public class ProratedOrderItemAdjustmentImplDiffblueTest {
     OrderItem actualOrderItem = proratedOrderItemAdjustmentImpl.getOrderItem();
     int actualQuantity = proratedOrderItemAdjustmentImpl.getQuantity();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Just cause", proratedOrderItemAdjustmentImpl.getReason());
     assertEquals(1, actualQuantity);
     assertEquals(ProratedOrderItemAdjustmentImpl.serialVersionUID, actualId.longValue());
     assertSame(offer, actualOffer);
     assertSame(orderItem, actualOrderItem);
-  }
-
-  /**
-   * Test {@link ProratedOrderItemAdjustmentImpl#getValue()}.
-   * <p>
-   * Method under test: {@link ProratedOrderItemAdjustmentImpl#getValue()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetValue() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4822 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.ProratedOrderItemAdjustmentImpl proratedOrderItemAdjustmentImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new ProratedOrderItemAdjustmentImpl()).getValue();
-  }
-
-  /**
-   * Test {@link ProratedOrderItemAdjustmentImpl#getValue()}.
-   * <ul>
-   *   <li>Given {@link BundleOrderItemImpl} {@link OrderItemImpl#getOrder()} return
-   * {@link NullOrderImpl} (default constructor).</li>
-   *   <li>Then return {@link Money#ZERO}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ProratedOrderItemAdjustmentImpl#getValue()}
-   */
-  @Test
-  public void testGetValue_givenBundleOrderItemImplGetOrderReturnNullOrderImpl_thenReturnZero() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    BundleOrderItemImpl orderItem = mock(BundleOrderItemImpl.class);
-    when(orderItem.getOrder()).thenReturn(new NullOrderImpl());
-
-    ProratedOrderItemAdjustmentImpl proratedOrderItemAdjustmentImpl = new ProratedOrderItemAdjustmentImpl();
-    proratedOrderItemAdjustmentImpl.setOrderItem(orderItem);
-
-    // Act
-    Money actualValue = proratedOrderItemAdjustmentImpl.getValue();
-
-    // Assert
-    verify(orderItem).getOrder();
-    assertEquals(actualValue.ZERO, actualValue);
   }
 
   /**
@@ -250,9 +145,9 @@ public class ProratedOrderItemAdjustmentImplDiffblueTest {
    * Method under test: {@link ProratedOrderItemAdjustmentImpl#getValue()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money ProratedOrderItemAdjustmentImpl.getValue()"})
   public void testGetValue_givenMoneyGetAmountReturnNull_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Money value = mock(Money.class);
     when(value.getAmount()).thenReturn(null);
@@ -290,7 +185,6 @@ public class ProratedOrderItemAdjustmentImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setCurrency(null);
 
@@ -315,6 +209,7 @@ public class ProratedOrderItemAdjustmentImplDiffblueTest {
     orderItem.setOrderItemType(OrderItemType.BASIC);
     orderItem.setParentOrderItem(new BundleOrderItemImpl());
     orderItem.setPersonalMessage(new PersonalMessageImpl());
+    orderItem.setPrice(new Money());
     orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
     orderItem.setQuantity(1);
     orderItem.setRetailPrice(new Money());
@@ -325,16 +220,16 @@ public class ProratedOrderItemAdjustmentImplDiffblueTest {
     orderItem.updateSaleAndRetailPrices();
     orderItem.setOrder(order);
 
-    ProratedOrderItemAdjustmentImpl proratedOrderItemAdjustmentImpl = new ProratedOrderItemAdjustmentImpl();
-    proratedOrderItemAdjustmentImpl.setId(ProratedOrderItemAdjustmentImpl.serialVersionUID);
-    proratedOrderItemAdjustmentImpl.setOffer(new OfferImpl());
-    proratedOrderItemAdjustmentImpl.setQuantity(1);
-    proratedOrderItemAdjustmentImpl.setReason("Just cause");
-    proratedOrderItemAdjustmentImpl.setValue(value);
-    proratedOrderItemAdjustmentImpl.setOrderItem(orderItem);
+    ProratedOrderItemAdjustmentImpl proratedOrderItemAdjustmentImpl2 = new ProratedOrderItemAdjustmentImpl();
+    proratedOrderItemAdjustmentImpl2.setId(ProratedOrderItemAdjustmentImpl.serialVersionUID);
+    proratedOrderItemAdjustmentImpl2.setOffer(new OfferImpl());
+    proratedOrderItemAdjustmentImpl2.setQuantity(1);
+    proratedOrderItemAdjustmentImpl2.setReason("Just cause");
+    proratedOrderItemAdjustmentImpl2.setValue(value);
+    proratedOrderItemAdjustmentImpl2.setOrderItem(orderItem);
 
     // Act
-    Money actualValue = proratedOrderItemAdjustmentImpl.getValue();
+    Money actualValue = proratedOrderItemAdjustmentImpl2.getValue();
 
     // Assert
     verify(value).getAmount();
@@ -344,17 +239,16 @@ public class ProratedOrderItemAdjustmentImplDiffblueTest {
   /**
    * Test {@link ProratedOrderItemAdjustmentImpl#getValue()}.
    * <ul>
-   *   <li>Given {@link OrderImpl} (default constructor) Currency is
-   * {@code null}.</li>
+   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@code null}.</li>
    *   <li>Then return {@link Money#Money()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link ProratedOrderItemAdjustmentImpl#getValue()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money ProratedOrderItemAdjustmentImpl.getValue()"})
   public void testGetValue_givenOrderImplCurrencyIsNull_thenReturnMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(ProratedOrderItemAdjustmentImpl.serialVersionUID);
@@ -389,7 +283,6 @@ public class ProratedOrderItemAdjustmentImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setCurrency(null);
 
@@ -414,6 +307,7 @@ public class ProratedOrderItemAdjustmentImplDiffblueTest {
     orderItem.setOrderItemType(OrderItemType.BASIC);
     orderItem.setParentOrderItem(new BundleOrderItemImpl());
     orderItem.setPersonalMessage(new PersonalMessageImpl());
+    orderItem.setPrice(new Money());
     orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
     orderItem.setQuantity(1);
     orderItem.setRetailPrice(new Money());
@@ -424,145 +318,79 @@ public class ProratedOrderItemAdjustmentImplDiffblueTest {
     orderItem.updateSaleAndRetailPrices();
     orderItem.setOrder(order);
 
-    ProratedOrderItemAdjustmentImpl proratedOrderItemAdjustmentImpl = new ProratedOrderItemAdjustmentImpl();
-    proratedOrderItemAdjustmentImpl.setId(ProratedOrderItemAdjustmentImpl.serialVersionUID);
-    proratedOrderItemAdjustmentImpl.setOffer(new OfferImpl());
-    proratedOrderItemAdjustmentImpl.setQuantity(1);
-    proratedOrderItemAdjustmentImpl.setReason("Just cause");
+    ProratedOrderItemAdjustmentImpl proratedOrderItemAdjustmentImpl2 = new ProratedOrderItemAdjustmentImpl();
+    proratedOrderItemAdjustmentImpl2.setId(ProratedOrderItemAdjustmentImpl.serialVersionUID);
+    proratedOrderItemAdjustmentImpl2.setOffer(new OfferImpl());
+    proratedOrderItemAdjustmentImpl2.setQuantity(1);
+    proratedOrderItemAdjustmentImpl2.setReason("Just cause");
     Money value = new Money();
-    proratedOrderItemAdjustmentImpl.setValue(value);
-    proratedOrderItemAdjustmentImpl.setOrderItem(orderItem);
+    proratedOrderItemAdjustmentImpl2.setValue(value);
+    proratedOrderItemAdjustmentImpl2.setOrderItem(orderItem);
 
     // Act and Assert
-    assertEquals(value, proratedOrderItemAdjustmentImpl.getValue());
+    assertEquals(value, proratedOrderItemAdjustmentImpl2.getValue());
   }
 
   /**
    * Test {@link ProratedOrderItemAdjustmentImpl#setValue(Money)}.
+   * <ul>
+   *   <li>Then {@link ProratedOrderItemAdjustmentImpl} (default constructor) {@link ProratedOrderItemAdjustmentImpl#value} is {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link ProratedOrderItemAdjustmentImpl#setValue(Money)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetValue() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4936 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.ProratedOrderItemAdjustmentImpl proratedOrderItemAdjustmentImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProratedOrderItemAdjustmentImpl.setValue(Money)"})
+  public void testSetValue_thenProratedOrderItemAdjustmentImplValueIsBigDecimalWith000() {
     // Arrange
     ProratedOrderItemAdjustmentImpl proratedOrderItemAdjustmentImpl2 = new ProratedOrderItemAdjustmentImpl();
 
     // Act
     proratedOrderItemAdjustmentImpl2.setValue(new Money());
+
+    // Assert that nothing has changed
+    assertEquals(new BigDecimal("0.00"), proratedOrderItemAdjustmentImpl2.value);
   }
 
   /**
    * Test {@link ProratedOrderItemAdjustmentImpl#setValue(Money)}.
    * <ul>
-   *   <li>Then {@link ProratedOrderItemAdjustmentImpl} (default constructor)
-   * {@link ProratedOrderItemAdjustmentImpl#value} is
-   * {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
+   *   <li>Then {@link ProratedOrderItemAdjustmentImpl} (default constructor) {@link ProratedOrderItemAdjustmentImpl#value} is {@link BigDecimal#BigDecimal(String)} with {@code 2.3}.</li>
    * </ul>
    * <p>
    * Method under test: {@link ProratedOrderItemAdjustmentImpl#setValue(Money)}
    */
   @Test
-  public void testSetValue_thenProratedOrderItemAdjustmentImplValueIsBigDecimalWith000() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProratedOrderItemAdjustmentImpl proratedOrderItemAdjustmentImpl = new ProratedOrderItemAdjustmentImpl();
-
-    // Act
-    proratedOrderItemAdjustmentImpl.setValue(new Money());
-
-    // Assert
-    assertEquals(new BigDecimal("0.00"), proratedOrderItemAdjustmentImpl.value);
-  }
-
-  /**
-   * Test {@link ProratedOrderItemAdjustmentImpl#setValue(Money)}.
-   * <ul>
-   *   <li>Then {@link ProratedOrderItemAdjustmentImpl} (default constructor)
-   * {@link ProratedOrderItemAdjustmentImpl#value} is
-   * {@link BigDecimal#BigDecimal(String)} with {@code 2.3}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ProratedOrderItemAdjustmentImpl#setValue(Money)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProratedOrderItemAdjustmentImpl.setValue(Money)"})
   public void testSetValue_thenProratedOrderItemAdjustmentImplValueIsBigDecimalWith23() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProratedOrderItemAdjustmentImpl proratedOrderItemAdjustmentImpl = new ProratedOrderItemAdjustmentImpl();
+    ProratedOrderItemAdjustmentImpl proratedOrderItemAdjustmentImpl2 = new ProratedOrderItemAdjustmentImpl();
     Money value = mock(Money.class);
     when(value.getAmount()).thenReturn(new BigDecimal("2.3"));
 
     // Act
-    proratedOrderItemAdjustmentImpl.setValue(value);
+    proratedOrderItemAdjustmentImpl2.setValue(value);
 
     // Assert
     verify(value).getAmount();
-    assertEquals(new BigDecimal("2.3"), proratedOrderItemAdjustmentImpl.value);
-  }
-
-  /**
-   * Test {@link ProratedOrderItemAdjustmentImpl#getCurrencyCode()}.
-   * <p>
-   * Method under test: {@link ProratedOrderItemAdjustmentImpl#getCurrencyCode()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetCurrencyCode() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4814 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.ProratedOrderItemAdjustmentImpl proratedOrderItemAdjustmentImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new ProratedOrderItemAdjustmentImpl()).getCurrencyCode();
+    assertEquals(new BigDecimal("2.3"), proratedOrderItemAdjustmentImpl2.value);
   }
 
   /**
    * Test {@link ProratedOrderItemAdjustmentImpl#getCurrencyCode()}.
    * <ul>
-   *   <li>Given {@link Auditable} (default constructor) CreatedBy is
-   * {@link ProratedOrderItemAdjustmentImpl#serialVersionUID}.</li>
+   *   <li>Given {@link Auditable} (default constructor) CreatedBy is {@link ProratedOrderItemAdjustmentImpl#serialVersionUID}.</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link ProratedOrderItemAdjustmentImpl#getCurrencyCode()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String ProratedOrderItemAdjustmentImpl.getCurrencyCode()"})
   public void testGetCurrencyCode_givenAuditableCreatedByIsSerialVersionUID_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(ProratedOrderItemAdjustmentImpl.serialVersionUID);
@@ -588,6 +416,7 @@ public class ProratedOrderItemAdjustmentImplDiffblueTest {
     orderItem.setOrderItemType(OrderItemType.BASIC);
     orderItem.setParentOrderItem(new BundleOrderItemImpl());
     orderItem.setPersonalMessage(new PersonalMessageImpl());
+    orderItem.setPrice(new Money());
     orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
     orderItem.setQuantity(1);
     orderItem.setRetailPrice(new Money());
@@ -597,82 +426,15 @@ public class ProratedOrderItemAdjustmentImplDiffblueTest {
     orderItem.setTaxable(true);
     orderItem.updateSaleAndRetailPrices();
 
-    ProratedOrderItemAdjustmentImpl proratedOrderItemAdjustmentImpl = new ProratedOrderItemAdjustmentImpl();
-    proratedOrderItemAdjustmentImpl.setOrderItem(orderItem);
+    ProratedOrderItemAdjustmentImpl proratedOrderItemAdjustmentImpl2 = new ProratedOrderItemAdjustmentImpl();
+    proratedOrderItemAdjustmentImpl2.setOrderItem(orderItem);
 
     // Act and Assert
-    assertNull(proratedOrderItemAdjustmentImpl.getCurrencyCode());
+    assertNull(proratedOrderItemAdjustmentImpl2.getCurrencyCode());
   }
 
   /**
-   * Test {@link ProratedOrderItemAdjustmentImpl#getCurrencyCode()}.
-   * <ul>
-   *   <li>Given {@link Auditable} {@link Auditable#setCreatedBy(Long)} does
-   * nothing.</li>
-   *   <li>Then calls {@link Auditable#setCreatedBy(Long)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ProratedOrderItemAdjustmentImpl#getCurrencyCode()}
-   */
-  @Test
-  public void testGetCurrencyCode_givenAuditableSetCreatedByDoesNothing_thenCallsSetCreatedBy() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Auditable auditable = mock(Auditable.class);
-    doNothing().when(auditable).setCreatedBy(Mockito.<Long>any());
-    doNothing().when(auditable).setDateCreated(Mockito.<Date>any());
-    doNothing().when(auditable).setDateUpdated(Mockito.<Date>any());
-    doNothing().when(auditable).setUpdatedBy(Mockito.<Long>any());
-    auditable.setCreatedBy(ProratedOrderItemAdjustmentImpl.serialVersionUID);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(ProratedOrderItemAdjustmentImpl.serialVersionUID);
-
-    OrderItemImpl orderItem = new OrderItemImpl();
-    orderItem.setAuditable(auditable);
-    orderItem.setCandidateItemOffers(new ArrayList<>());
-    orderItem.setCartMessages(new ArrayList<>());
-    orderItem.setChildOrderItems(new ArrayList<>());
-    orderItem.setDiscountingAllowed(true);
-    orderItem.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
-    orderItem.setHasValidationError(true);
-    orderItem.setId(ProratedOrderItemAdjustmentImpl.serialVersionUID);
-    orderItem.setName("Name");
-    orderItem.setOrder(new NullOrderImpl());
-    orderItem.setOrderItemAdjustments(new ArrayList<>());
-    orderItem.setOrderItemAttributes(new HashMap<>());
-    orderItem.setOrderItemPriceDetails(new ArrayList<>());
-    orderItem.setOrderItemQualifiers(new ArrayList<>());
-    orderItem.setOrderItemType(OrderItemType.BASIC);
-    orderItem.setParentOrderItem(new BundleOrderItemImpl());
-    orderItem.setPersonalMessage(new PersonalMessageImpl());
-    orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
-    orderItem.setQuantity(1);
-    orderItem.setRetailPrice(new Money());
-    orderItem.setRetailPriceOverride(true);
-    orderItem.setSalePrice(new Money());
-    orderItem.setSalePriceOverride(true);
-    orderItem.setTaxable(true);
-    orderItem.updateSaleAndRetailPrices();
-
-    ProratedOrderItemAdjustmentImpl proratedOrderItemAdjustmentImpl = new ProratedOrderItemAdjustmentImpl();
-    proratedOrderItemAdjustmentImpl.setOrderItem(orderItem);
-
-    // Act
-    String actualCurrencyCode = proratedOrderItemAdjustmentImpl.getCurrencyCode();
-
-    // Assert
-    verify(auditable).setCreatedBy(eq(1L));
-    verify(auditable).setDateCreated(isA(Date.class));
-    verify(auditable).setDateUpdated(isA(Date.class));
-    verify(auditable).setUpdatedBy(eq(1L));
-    assertNull(actualCurrencyCode);
-  }
-
-  /**
-   * Test {@link ProratedOrderItemAdjustmentImpl#equals(Object)}, and
-   * {@link ProratedOrderItemAdjustmentImpl#hashCode()}.
+   * Test {@link ProratedOrderItemAdjustmentImpl#equals(Object)}, and {@link ProratedOrderItemAdjustmentImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -685,6 +447,9 @@ public class ProratedOrderItemAdjustmentImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ProratedOrderItemAdjustmentImpl.equals(Object)",
+      "int ProratedOrderItemAdjustmentImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     ProratedOrderItemAdjustmentImpl proratedOrderItemAdjustmentImpl = new ProratedOrderItemAdjustmentImpl();
@@ -710,8 +475,7 @@ public class ProratedOrderItemAdjustmentImplDiffblueTest {
   }
 
   /**
-   * Test {@link ProratedOrderItemAdjustmentImpl#equals(Object)}, and
-   * {@link ProratedOrderItemAdjustmentImpl#hashCode()}.
+   * Test {@link ProratedOrderItemAdjustmentImpl#equals(Object)}, and {@link ProratedOrderItemAdjustmentImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -724,6 +488,9 @@ public class ProratedOrderItemAdjustmentImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ProratedOrderItemAdjustmentImpl.equals(Object)",
+      "int ProratedOrderItemAdjustmentImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     ProratedOrderItemAdjustmentImpl proratedOrderItemAdjustmentImpl = new ProratedOrderItemAdjustmentImpl();
@@ -749,8 +516,7 @@ public class ProratedOrderItemAdjustmentImplDiffblueTest {
   }
 
   /**
-   * Test {@link ProratedOrderItemAdjustmentImpl#equals(Object)}, and
-   * {@link ProratedOrderItemAdjustmentImpl#hashCode()}.
+   * Test {@link ProratedOrderItemAdjustmentImpl#equals(Object)}, and {@link ProratedOrderItemAdjustmentImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -763,46 +529,10 @@ public class ProratedOrderItemAdjustmentImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ProratedOrderItemAdjustmentImpl.equals(Object)",
+      "int ProratedOrderItemAdjustmentImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
-    // Arrange
-    ProratedOrderItemAdjustmentImpl proratedOrderItemAdjustmentImpl = new ProratedOrderItemAdjustmentImpl();
-    proratedOrderItemAdjustmentImpl.setId(ProratedOrderItemAdjustmentImpl.serialVersionUID);
-    proratedOrderItemAdjustmentImpl.setOffer(mock(Offer.class));
-    proratedOrderItemAdjustmentImpl.setOrderItem(new BundleOrderItemImpl());
-    proratedOrderItemAdjustmentImpl.setQuantity(1);
-    proratedOrderItemAdjustmentImpl.setReason("Just cause");
-    proratedOrderItemAdjustmentImpl.setValue(new Money());
-
-    ProratedOrderItemAdjustmentImpl proratedOrderItemAdjustmentImpl2 = new ProratedOrderItemAdjustmentImpl();
-    proratedOrderItemAdjustmentImpl2.setId(ProratedOrderItemAdjustmentImpl.serialVersionUID);
-    proratedOrderItemAdjustmentImpl2.setOffer(new OfferImpl());
-    proratedOrderItemAdjustmentImpl2.setOrderItem(new BundleOrderItemImpl());
-    proratedOrderItemAdjustmentImpl2.setQuantity(1);
-    proratedOrderItemAdjustmentImpl2.setReason("Just cause");
-    proratedOrderItemAdjustmentImpl2.setValue(new Money());
-
-    // Act and Assert
-    assertEquals(proratedOrderItemAdjustmentImpl, proratedOrderItemAdjustmentImpl2);
-    int notExpectedHashCodeResult = proratedOrderItemAdjustmentImpl.hashCode();
-    assertNotEquals(notExpectedHashCodeResult, proratedOrderItemAdjustmentImpl2.hashCode());
-  }
-
-  /**
-   * Test {@link ProratedOrderItemAdjustmentImpl#equals(Object)}, and
-   * {@link ProratedOrderItemAdjustmentImpl#hashCode()}.
-   * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
-   * </ul>
-   * <p>
-   * Methods under test:
-   * <ul>
-   *   <li>{@link ProratedOrderItemAdjustmentImpl#equals(Object)}
-   *   <li>{@link ProratedOrderItemAdjustmentImpl#hashCode()}
-   * </ul>
-   */
-  @Test
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
     // Arrange
     ProratedOrderItemAdjustmentImpl proratedOrderItemAdjustmentImpl = new ProratedOrderItemAdjustmentImpl();
     proratedOrderItemAdjustmentImpl.setId(ProratedOrderItemAdjustmentImpl.serialVersionUID);
@@ -827,8 +557,53 @@ public class ProratedOrderItemAdjustmentImplDiffblueTest {
   }
 
   /**
-   * Test {@link ProratedOrderItemAdjustmentImpl#equals(Object)}, and
-   * {@link ProratedOrderItemAdjustmentImpl#hashCode()}.
+   * Test {@link ProratedOrderItemAdjustmentImpl#equals(Object)}, and {@link ProratedOrderItemAdjustmentImpl#hashCode()}.
+   * <ul>
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
+   * </ul>
+   * <p>
+   * Methods under test:
+   * <ul>
+   *   <li>{@link ProratedOrderItemAdjustmentImpl#equals(Object)}
+   *   <li>{@link ProratedOrderItemAdjustmentImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ProratedOrderItemAdjustmentImpl.equals(Object)",
+      "int ProratedOrderItemAdjustmentImpl.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
+    // Arrange
+    Money value = mock(Money.class);
+    when(value.getAmount()).thenReturn(null);
+
+    ProratedOrderItemAdjustmentImpl proratedOrderItemAdjustmentImpl = new ProratedOrderItemAdjustmentImpl();
+    proratedOrderItemAdjustmentImpl.setId(null);
+    proratedOrderItemAdjustmentImpl.setOffer(new OfferImpl());
+    proratedOrderItemAdjustmentImpl.setOrderItem(new BundleOrderItemImpl());
+    proratedOrderItemAdjustmentImpl.setQuantity(1);
+    proratedOrderItemAdjustmentImpl.setReason("Just cause");
+    proratedOrderItemAdjustmentImpl.setValue(value);
+    Money value2 = mock(Money.class);
+    when(value2.getAmount()).thenReturn(null);
+
+    ProratedOrderItemAdjustmentImpl proratedOrderItemAdjustmentImpl2 = new ProratedOrderItemAdjustmentImpl();
+    proratedOrderItemAdjustmentImpl2.setId(ProratedOrderItemAdjustmentImpl.serialVersionUID);
+    proratedOrderItemAdjustmentImpl2.setOffer(new OfferImpl());
+    proratedOrderItemAdjustmentImpl2.setOrderItem(new BundleOrderItemImpl());
+    proratedOrderItemAdjustmentImpl2.setQuantity(1);
+    proratedOrderItemAdjustmentImpl2.setReason("Just cause");
+    proratedOrderItemAdjustmentImpl2.setValue(value2);
+
+    // Act and Assert
+    assertEquals(proratedOrderItemAdjustmentImpl, proratedOrderItemAdjustmentImpl2);
+    int expectedHashCodeResult = proratedOrderItemAdjustmentImpl.hashCode();
+    assertEquals(expectedHashCodeResult, proratedOrderItemAdjustmentImpl2.hashCode());
+  }
+
+  /**
+   * Test {@link ProratedOrderItemAdjustmentImpl#equals(Object)}, and {@link ProratedOrderItemAdjustmentImpl#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -841,6 +616,9 @@ public class ProratedOrderItemAdjustmentImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ProratedOrderItemAdjustmentImpl.equals(Object)",
+      "int ProratedOrderItemAdjustmentImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     ProratedOrderItemAdjustmentImpl proratedOrderItemAdjustmentImpl = new ProratedOrderItemAdjustmentImpl();
@@ -867,6 +645,9 @@ public class ProratedOrderItemAdjustmentImplDiffblueTest {
    * Method under test: {@link ProratedOrderItemAdjustmentImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ProratedOrderItemAdjustmentImpl.equals(Object)",
+      "int ProratedOrderItemAdjustmentImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     ProratedOrderItemAdjustmentImpl proratedOrderItemAdjustmentImpl = new ProratedOrderItemAdjustmentImpl();
@@ -899,6 +680,9 @@ public class ProratedOrderItemAdjustmentImplDiffblueTest {
    * Method under test: {@link ProratedOrderItemAdjustmentImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ProratedOrderItemAdjustmentImpl.equals(Object)",
+      "int ProratedOrderItemAdjustmentImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     OfferImpl offer = new OfferImpl();
@@ -934,6 +718,9 @@ public class ProratedOrderItemAdjustmentImplDiffblueTest {
    * Method under test: {@link ProratedOrderItemAdjustmentImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ProratedOrderItemAdjustmentImpl.equals(Object)",
+      "int ProratedOrderItemAdjustmentImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     ProratedOrderItemAdjustmentImpl proratedOrderItemAdjustmentImpl = new ProratedOrderItemAdjustmentImpl();
@@ -966,6 +753,9 @@ public class ProratedOrderItemAdjustmentImplDiffblueTest {
    * Method under test: {@link ProratedOrderItemAdjustmentImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ProratedOrderItemAdjustmentImpl.equals(Object)",
+      "int ProratedOrderItemAdjustmentImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     Auditable auditable = new Auditable();
@@ -992,6 +782,7 @@ public class ProratedOrderItemAdjustmentImplDiffblueTest {
     orderItem.setOrderItemType(OrderItemType.BASIC);
     orderItem.setParentOrderItem(new BundleOrderItemImpl());
     orderItem.setPersonalMessage(new PersonalMessageImpl());
+    orderItem.setPrice(new Money());
     orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
     orderItem.setQuantity(1);
     orderItem.setRetailPrice(new Money());
@@ -1031,6 +822,9 @@ public class ProratedOrderItemAdjustmentImplDiffblueTest {
    * Method under test: {@link ProratedOrderItemAdjustmentImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ProratedOrderItemAdjustmentImpl.equals(Object)",
+      "int ProratedOrderItemAdjustmentImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
     ProratedOrderItemAdjustmentImpl proratedOrderItemAdjustmentImpl = new ProratedOrderItemAdjustmentImpl();
@@ -1063,6 +857,9 @@ public class ProratedOrderItemAdjustmentImplDiffblueTest {
    * Method under test: {@link ProratedOrderItemAdjustmentImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ProratedOrderItemAdjustmentImpl.equals(Object)",
+      "int ProratedOrderItemAdjustmentImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
     ProratedOrderItemAdjustmentImpl proratedOrderItemAdjustmentImpl = new ProratedOrderItemAdjustmentImpl();
@@ -1095,6 +892,9 @@ public class ProratedOrderItemAdjustmentImplDiffblueTest {
    * Method under test: {@link ProratedOrderItemAdjustmentImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ProratedOrderItemAdjustmentImpl.equals(Object)",
+      "int ProratedOrderItemAdjustmentImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
     // Arrange
     ProratedOrderItemAdjustmentImpl proratedOrderItemAdjustmentImpl = new ProratedOrderItemAdjustmentImpl();
@@ -1127,6 +927,9 @@ public class ProratedOrderItemAdjustmentImplDiffblueTest {
    * Method under test: {@link ProratedOrderItemAdjustmentImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ProratedOrderItemAdjustmentImpl.equals(Object)",
+      "int ProratedOrderItemAdjustmentImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual8() {
     // Arrange
     ProratedOrderItemAdjustmentImpl proratedOrderItemAdjustmentImpl = new ProratedOrderItemAdjustmentImpl();
@@ -1159,6 +962,9 @@ public class ProratedOrderItemAdjustmentImplDiffblueTest {
    * Method under test: {@link ProratedOrderItemAdjustmentImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ProratedOrderItemAdjustmentImpl.equals(Object)",
+      "int ProratedOrderItemAdjustmentImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual9() {
     // Arrange
     Money value = mock(Money.class);
@@ -1194,6 +1000,9 @@ public class ProratedOrderItemAdjustmentImplDiffblueTest {
    * Method under test: {@link ProratedOrderItemAdjustmentImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ProratedOrderItemAdjustmentImpl.equals(Object)",
+      "int ProratedOrderItemAdjustmentImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     ProratedOrderItemAdjustmentImpl proratedOrderItemAdjustmentImpl = new ProratedOrderItemAdjustmentImpl();
@@ -1218,6 +1027,9 @@ public class ProratedOrderItemAdjustmentImplDiffblueTest {
    * Method under test: {@link ProratedOrderItemAdjustmentImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ProratedOrderItemAdjustmentImpl.equals(Object)",
+      "int ProratedOrderItemAdjustmentImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     ProratedOrderItemAdjustmentImpl proratedOrderItemAdjustmentImpl = new ProratedOrderItemAdjustmentImpl();
@@ -1235,13 +1047,12 @@ public class ProratedOrderItemAdjustmentImplDiffblueTest {
   /**
    * Test new {@link ProratedOrderItemAdjustmentImpl} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link ProratedOrderItemAdjustmentImpl}
+   * Method under test: default or parameterless constructor of {@link ProratedOrderItemAdjustmentImpl}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProratedOrderItemAdjustmentImpl.<init>()"})
   public void testNewProratedOrderItemAdjustmentImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange and Act
     ProratedOrderItemAdjustmentImpl actualProratedOrderItemAdjustmentImpl = new ProratedOrderItemAdjustmentImpl();
 
@@ -1252,35 +1063,5 @@ public class ProratedOrderItemAdjustmentImplDiffblueTest {
     assertNull(actualProratedOrderItemAdjustmentImpl.getOrderItem());
     assertEquals(0, actualProratedOrderItemAdjustmentImpl.getQuantity());
     assertEquals(new BigDecimal("0.00"), actualProratedOrderItemAdjustmentImpl.value);
-  }
-
-  /**
-   * Test new {@link ProratedOrderItemAdjustmentImpl} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link ProratedOrderItemAdjustmentImpl}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testNewProratedOrderItemAdjustmentImpl2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4813 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.ProratedOrderItemAdjustmentImpl proratedOrderItemAdjustmentImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    new ProratedOrderItemAdjustmentImpl();
   }
 }

@@ -1,89 +1,48 @@
+/*-
+ * #%L
+ * BroadleafCommerce Profile
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.profile.core.dao;
 
+import static org.junit.Assert.assertSame;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import org.broadleafcommerce.common.persistence.EntityConfiguration;
+import org.broadleafcommerce.profile.core.domain.AddressImpl;
 import org.broadleafcommerce.profile.core.domain.CustomerAddress;
 import org.broadleafcommerce.profile.core.domain.CustomerAddressImpl;
-import org.junit.Ignore;
+import org.broadleafcommerce.profile.core.domain.CustomerImpl;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml",
-    "/bl-profile-applicationContext-persistence.xml", "/bl-profile-applicationContext.xml",
-    "/blc-config/admin/framework/bl-profile-applicationContext.xml",
-    "/blc-config/site/framework/bl-profile-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
-@Transactional
+@RunWith(MockitoJUnitRunner.class)
 public class CustomerAddressDaoImplDiffblueTest {
-  @Autowired
+  @InjectMocks
   private CustomerAddressDaoImpl customerAddressDaoImpl;
 
-  /**
-   * Test
-   * {@link CustomerAddressDaoImpl#readActiveCustomerAddressesByCustomerId(Long)}.
-   * <p>
-   * Method under test:
-   * {@link CustomerAddressDaoImpl#readActiveCustomerAddressesByCustomerId(Long)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testReadActiveCustomerAddressesByCustomerId() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass677 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.dao.CustomerAddressDaoImpl customerAddressDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CustomerAddressDaoImpl()).readActiveCustomerAddressesByCustomerId(1L);
-  }
-
-  /**
-   * Test {@link CustomerAddressDaoImpl#save(CustomerAddress)}.
-   * <p>
-   * Method under test: {@link CustomerAddressDaoImpl#save(CustomerAddress)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSave() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass745 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.dao.CustomerAddressDaoImpl customerAddressDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CustomerAddressDaoImpl customerAddressDaoImpl2 = new CustomerAddressDaoImpl();
-
-    // Act
-    customerAddressDaoImpl2.save(new CustomerAddressImpl());
-  }
+  @Mock
+  private EntityConfiguration entityConfiguration;
 
   /**
    * Test {@link CustomerAddressDaoImpl#create()}.
@@ -91,307 +50,22 @@ public class CustomerAddressDaoImplDiffblueTest {
    * Method under test: {@link CustomerAddressDaoImpl#create()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CustomerAddress CustomerAddressDaoImpl.create()"})
   public void testCreate() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass602 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.dao.CustomerAddressDaoImpl customerAddressDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    CustomerAddressImpl customerAddressImpl = new CustomerAddressImpl();
+    customerAddressImpl.setAddress(new AddressImpl());
+    customerAddressImpl.setAddressName("42 Main St");
+    customerAddressImpl.setCustomer(new CustomerImpl());
+    customerAddressImpl.setId(1L);
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any())).thenReturn(customerAddressImpl);
 
-    // Arrange and Act
-    (new CustomerAddressDaoImpl()).create();
-  }
+    // Act
+    CustomerAddress actualCreateResult = customerAddressDaoImpl.create();
 
-  /**
-   * Test {@link CustomerAddressDaoImpl#readBatchCustomerAddresses(int, int)}.
-   * <p>
-   * Method under test:
-   * {@link CustomerAddressDaoImpl#readBatchCustomerAddresses(int, int)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testReadBatchCustomerAddresses() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass692 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.dao.CustomerAddressDaoImpl customerAddressDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CustomerAddressDaoImpl()).readBatchCustomerAddresses(1, 3);
-  }
-
-  /**
-   * Test {@link CustomerAddressDaoImpl#readNumberOfAddresses()}.
-   * <p>
-   * Method under test: {@link CustomerAddressDaoImpl#readNumberOfAddresses()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testReadNumberOfAddresses() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass744 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.dao.CustomerAddressDaoImpl customerAddressDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CustomerAddressDaoImpl()).readNumberOfAddresses();
-  }
-
-  /**
-   * Test {@link CustomerAddressDaoImpl#readCustomerAddressById(Long)}.
-   * <p>
-   * Method under test:
-   * {@link CustomerAddressDaoImpl#readCustomerAddressById(Long)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testReadCustomerAddressById() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass700 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.dao.CustomerAddressDaoImpl customerAddressDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CustomerAddressDaoImpl()).readCustomerAddressById(1L);
-  }
-
-  /**
-   * Test {@link CustomerAddressDaoImpl#makeCustomerAddressDefault(Long, Long)}.
-   * <p>
-   * Method under test:
-   * {@link CustomerAddressDaoImpl#makeCustomerAddressDefault(Long, Long)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testMakeCustomerAddressDefault() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass648 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.dao.CustomerAddressDaoImpl customerAddressDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CustomerAddressDaoImpl()).makeCustomerAddressDefault(1L, 1L);
-  }
-
-  /**
-   * Test
-   * {@link CustomerAddressDaoImpl#readCustomerAddressByIdAndCustomerId(Long, Long)}.
-   * <p>
-   * Method under test:
-   * {@link CustomerAddressDaoImpl#readCustomerAddressByIdAndCustomerId(Long, Long)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testReadCustomerAddressByIdAndCustomerId() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass715 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.dao.CustomerAddressDaoImpl customerAddressDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CustomerAddressDaoImpl()).readCustomerAddressByIdAndCustomerId(1L, 1L);
-  }
-
-  /**
-   * Test {@link CustomerAddressDaoImpl#clearDefaultAddressForCustomer(Long)}.
-   * <p>
-   * Method under test:
-   * {@link CustomerAddressDaoImpl#clearDefaultAddressForCustomer(Long)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testClearDefaultAddressForCustomer() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass587 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.dao.CustomerAddressDaoImpl customerAddressDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CustomerAddressDaoImpl()).clearDefaultAddressForCustomer(1L);
-  }
-
-  /**
-   * Test {@link CustomerAddressDaoImpl#deleteCustomerAddressById(Long)}.
-   * <p>
-   * Method under test:
-   * {@link CustomerAddressDaoImpl#deleteCustomerAddressById(Long)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testDeleteCustomerAddressById() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass603 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.dao.CustomerAddressDaoImpl customerAddressDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CustomerAddressDaoImpl()).deleteCustomerAddressById(1L);
-  }
-
-  /**
-   * Test {@link CustomerAddressDaoImpl#findDefaultCustomerAddress(Long)}.
-   * <p>
-   * Method under test:
-   * {@link CustomerAddressDaoImpl#findDefaultCustomerAddress(Long)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindDefaultCustomerAddress() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass618 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.dao.CustomerAddressDaoImpl customerAddressDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CustomerAddressDaoImpl()).findDefaultCustomerAddress(1L);
-  }
-
-  /**
-   * Test
-   * {@link CustomerAddressDaoImpl#hardDeleteCustomerAddressesForCustomer(Long)}.
-   * <p>
-   * Method under test:
-   * {@link CustomerAddressDaoImpl#hardDeleteCustomerAddressesForCustomer(Long)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testHardDeleteCustomerAddressesForCustomer() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass633 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.dao.CustomerAddressDaoImpl customerAddressDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CustomerAddressDaoImpl()).hardDeleteCustomerAddressesForCustomer(1L);
+    // Assert
+    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.profile.core.domain.CustomerAddress"));
+    assertSame(customerAddressImpl, actualCreateResult);
   }
 }

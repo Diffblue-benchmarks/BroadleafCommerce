@@ -1,25 +1,52 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework Web
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.web.processor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
+import org.broadleafcommerce.core.order.domain.NullOrderImpl;
+import org.broadleafcommerce.core.order.service.OrderService;
 import org.broadleafcommerce.presentation.model.BroadleafTemplateContext;
-import org.junit.jupiter.api.Disabled;
+import org.broadleafcommerce.profile.core.domain.Customer;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml",
-    "/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 class NamedOrderProcessorDiffblueTest {
-  @Autowired
+  @InjectMocks
   private NamedOrderProcessor namedOrderProcessor;
+
+  @Mock
+  private OrderService orderService;
 
   /**
    * Test {@link NamedOrderProcessor#getName()}.
@@ -28,6 +55,8 @@ class NamedOrderProcessorDiffblueTest {
    */
   @Test
   @DisplayName("Test getName()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String NamedOrderProcessor.getName()"})
   void testGetName() {
     // Arrange, Act and Assert
     assertEquals("named_order", (new NamedOrderProcessor()).getName());
@@ -40,75 +69,66 @@ class NamedOrderProcessorDiffblueTest {
    */
   @Test
   @DisplayName("Test getPrecedence()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"int NamedOrderProcessor.getPrecedence()"})
   void testGetPrecedence() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals(10000, (new NamedOrderProcessor()).getPrecedence());
+    assertEquals(10000, namedOrderProcessor.getPrecedence());
   }
 
   /**
-   * Test {@link NamedOrderProcessor#getPrecedence()}.
+   * Test {@link NamedOrderProcessor#populateModelVariables(String, Map, BroadleafTemplateContext)}.
+   * <ul>
+   *   <li>Given {@link OrderService} {@link OrderService#findNamedOrderForCustomer(String, Customer)} return {@code null}.</li>
+   * </ul>
    * <p>
-   * Method under test: {@link NamedOrderProcessor#getPrecedence()}
+   * Method under test: {@link NamedOrderProcessor#populateModelVariables(String, Map, BroadleafTemplateContext)}
    */
   @Test
-  @DisplayName("Test getPrecedence()")
-  @Disabled("TODO: Complete this test")
-  void testGetPrecedence2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass10858 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.NamedOrderProcessor namedOrderProcessor;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new NamedOrderProcessor()).getPrecedence();
-  }
-
-  /**
-   * Test
-   * {@link NamedOrderProcessor#populateModelVariables(String, Map, BroadleafTemplateContext)}.
-   * <p>
-   * Method under test:
-   * {@link NamedOrderProcessor#populateModelVariables(String, Map, BroadleafTemplateContext)}
-   */
-  @Test
-  @DisplayName("Test populateModelVariables(String, Map, BroadleafTemplateContext)")
-  @Disabled("TODO: Complete this test")
-  void testPopulateModelVariables() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass10859 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.NamedOrderProcessor namedOrderProcessor;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @DisplayName("Test populateModelVariables(String, Map, BroadleafTemplateContext); given OrderService findNamedOrderForCustomer(String, Customer) return 'null'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Map NamedOrderProcessor.populateModelVariables(String, Map, BroadleafTemplateContext)"})
+  void testPopulateModelVariables_givenOrderServiceFindNamedOrderForCustomerReturnNull() {
     // Arrange
-    NamedOrderProcessor namedOrderProcessor2 = new NamedOrderProcessor();
+    when(orderService.findNamedOrderForCustomer(Mockito.<String>any(), Mockito.<Customer>any())).thenReturn(null);
 
     // Act
-    namedOrderProcessor2.populateModelVariables("Tag Name", new HashMap<>(), mock(BroadleafTemplateContext.class));
+    Map<String, Object> actualPopulateModelVariablesResult = namedOrderProcessor.populateModelVariables("Tag Name",
+        new HashMap<>(), mock(BroadleafTemplateContext.class));
+
+    // Assert
+    verify(orderService).findNamedOrderForCustomer(isNull(), isNull());
+    assertEquals(1, actualPopulateModelVariablesResult.size());
+    assertTrue(actualPopulateModelVariablesResult.get(null) instanceof NullOrderImpl);
+  }
+
+  /**
+   * Test {@link NamedOrderProcessor#populateModelVariables(String, Map, BroadleafTemplateContext)}.
+   * <ul>
+   *   <li>Then return {@code null} is {@link NullOrderImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link NamedOrderProcessor#populateModelVariables(String, Map, BroadleafTemplateContext)}
+   */
+  @Test
+  @DisplayName("Test populateModelVariables(String, Map, BroadleafTemplateContext); then return 'null' is NullOrderImpl (default constructor)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Map NamedOrderProcessor.populateModelVariables(String, Map, BroadleafTemplateContext)"})
+  void testPopulateModelVariables_thenReturnNullIsNullOrderImpl() {
+    // Arrange
+    NullOrderImpl nullOrderImpl = new NullOrderImpl();
+    when(orderService.findNamedOrderForCustomer(Mockito.<String>any(), Mockito.<Customer>any()))
+        .thenReturn(nullOrderImpl);
+
+    // Act
+    Map<String, Object> actualPopulateModelVariablesResult = namedOrderProcessor.populateModelVariables("Tag Name",
+        new HashMap<>(), mock(BroadleafTemplateContext.class));
+
+    // Assert
+    verify(orderService).findNamedOrderForCustomer(isNull(), isNull());
+    assertEquals(1, actualPopulateModelVariablesResult.size());
+    Object getResult = actualPopulateModelVariablesResult.get(null);
+    assertTrue(getResult instanceof NullOrderImpl);
+    assertSame(nullOrderImpl, getResult);
   }
 }

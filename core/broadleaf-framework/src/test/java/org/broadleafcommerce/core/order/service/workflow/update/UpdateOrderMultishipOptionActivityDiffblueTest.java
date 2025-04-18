@@ -1,43 +1,63 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.order.service.workflow.update;
 
 import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.OrderItem;
+import org.broadleafcommerce.core.order.service.OrderItemService;
+import org.broadleafcommerce.core.order.service.OrderMultishipOptionService;
 import org.broadleafcommerce.core.order.service.call.OrderItemRequestDTO;
 import org.broadleafcommerce.core.order.service.workflow.CartOperationRequest;
-import org.broadleafcommerce.core.workflow.DefaultProcessContextImpl;
 import org.broadleafcommerce.core.workflow.ProcessContext;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class UpdateOrderMultishipOptionActivityDiffblueTest {
-  @Autowired
+  @Mock
+  private OrderItemService orderItemService;
+
+  @Mock
+  private OrderMultishipOptionService orderMultishipOptionService;
+
+  @InjectMocks
   private UpdateOrderMultishipOptionActivity updateOrderMultishipOptionActivity;
 
   /**
    * Test {@link UpdateOrderMultishipOptionActivity#execute(ProcessContext)}.
    * <p>
-   * Method under test:
-   * {@link UpdateOrderMultishipOptionActivity#execute(ProcessContext)}
+   * Method under test: {@link UpdateOrderMultishipOptionActivity#execute(ProcessContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ProcessContext UpdateOrderMultishipOptionActivity.execute(ProcessContext)"})
   public void testExecute() throws Exception {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    UpdateOrderMultishipOptionActivity updateOrderMultishipOptionActivity = new UpdateOrderMultishipOptionActivity();
     NullOrderImpl order = new NullOrderImpl();
 
     CartOperationRequest cartOperationRequest = new CartOperationRequest(order, new OrderItemRequestDTO(), true);
@@ -56,15 +76,13 @@ public class UpdateOrderMultishipOptionActivityDiffblueTest {
   /**
    * Test {@link UpdateOrderMultishipOptionActivity#execute(ProcessContext)}.
    * <p>
-   * Method under test:
-   * {@link UpdateOrderMultishipOptionActivity#execute(ProcessContext)}
+   * Method under test: {@link UpdateOrderMultishipOptionActivity#execute(ProcessContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ProcessContext UpdateOrderMultishipOptionActivity.execute(ProcessContext)"})
   public void testExecute2() throws Exception {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    UpdateOrderMultishipOptionActivity updateOrderMultishipOptionActivity = new UpdateOrderMultishipOptionActivity();
     OrderItem orderItem = mock(OrderItem.class);
     when(orderItem.getOrder()).thenReturn(new NullOrderImpl());
     NullOrderImpl order = new NullOrderImpl();
@@ -86,55 +104,18 @@ public class UpdateOrderMultishipOptionActivityDiffblueTest {
 
   /**
    * Test {@link UpdateOrderMultishipOptionActivity#execute(ProcessContext)}.
-   * <p>
-   * Method under test:
-   * {@link UpdateOrderMultishipOptionActivity#execute(ProcessContext)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testExecute3() throws Exception {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.service.workflow.update;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4581 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.workflow.update.UpdateOrderMultishipOptionActivity updateOrderMultishipOptionActivity;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    UpdateOrderMultishipOptionActivity updateOrderMultishipOptionActivity2 = new UpdateOrderMultishipOptionActivity();
-
-    // Act
-    updateOrderMultishipOptionActivity2
-        .execute((ProcessContext<CartOperationRequest>) new DefaultProcessContextImpl<>());
-  }
-
-  /**
-   * Test {@link UpdateOrderMultishipOptionActivity#execute(ProcessContext)}.
    * <ul>
-   *   <li>Given {@link OrderItem} {@link OrderItem#getOrder()} return
-   * {@link NullOrderImpl} (default constructor).</li>
+   *   <li>Given {@link OrderItem} {@link OrderItem#getOrder()} return {@link NullOrderImpl} (default constructor).</li>
    *   <li>Then calls {@link OrderItem#getOrder()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link UpdateOrderMultishipOptionActivity#execute(ProcessContext)}
+   * Method under test: {@link UpdateOrderMultishipOptionActivity#execute(ProcessContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ProcessContext UpdateOrderMultishipOptionActivity.execute(ProcessContext)"})
   public void testExecute_givenOrderItemGetOrderReturnNullOrderImpl_thenCallsGetOrder() throws Exception {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    UpdateOrderMultishipOptionActivity updateOrderMultishipOptionActivity = new UpdateOrderMultishipOptionActivity();
     OrderItem orderItem = mock(OrderItem.class);
     when(orderItem.getOrder()).thenReturn(new NullOrderImpl());
     NullOrderImpl order = new NullOrderImpl();

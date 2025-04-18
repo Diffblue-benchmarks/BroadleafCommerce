@@ -18,7 +18,10 @@
 package org.broadleafcommerce.common.file.service;
 
 import static org.junit.Assert.assertEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class BroadleafFileUtilsDiffblueTest {
   /**
@@ -31,6 +34,8 @@ public class BroadleafFileUtilsDiffblueTest {
    * Method under test: {@link BroadleafFileUtils#buildFilePath(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BroadleafFileUtils.buildFilePath(String, String)"})
   public void testBuildFilePath_whenDirectory_thenReturnDirectory() {
     // Arrange, Act and Assert
     assertEquals("/directory/", BroadleafFileUtils.buildFilePath("/directory", "/"));
@@ -46,6 +51,8 @@ public class BroadleafFileUtilsDiffblueTest {
    * Method under test: {@link BroadleafFileUtils#buildFilePath(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BroadleafFileUtils.buildFilePath(String, String)"})
   public void testBuildFilePath_whenDirectory_thenReturnDirectoryFooTxt() {
     // Arrange, Act and Assert
     assertEquals("/directory/foo.txt", BroadleafFileUtils.buildFilePath("/directory", "foo.txt"));
@@ -61,6 +68,8 @@ public class BroadleafFileUtilsDiffblueTest {
    * Method under test: {@link BroadleafFileUtils#buildFilePath(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BroadleafFileUtils.buildFilePath(String, String)"})
   public void testBuildFilePath_whenFooTxt_thenReturnFooTxt() {
     // Arrange, Act and Assert
     assertEquals("/foo.txt", BroadleafFileUtils.buildFilePath("/", "foo.txt"));
@@ -76,6 +85,8 @@ public class BroadleafFileUtilsDiffblueTest {
    * Method under test: {@link BroadleafFileUtils#buildFilePath(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BroadleafFileUtils.buildFilePath(String, String)"})
   public void testBuildFilePath_whenSlash_thenReturnSlash() {
     // Arrange, Act and Assert
     assertEquals("/", BroadleafFileUtils.buildFilePath("/", "/"));
@@ -91,6 +102,8 @@ public class BroadleafFileUtilsDiffblueTest {
    * Method under test: {@link BroadleafFileUtils#removeLeadingSlash(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BroadleafFileUtils.removeLeadingSlash(String)"})
   public void testRemoveLeadingSlash_whenFooTxt_thenReturnFooTxt() {
     // Arrange, Act and Assert
     assertEquals("foo.txt", BroadleafFileUtils.removeLeadingSlash("foo.txt"));
@@ -106,6 +119,8 @@ public class BroadleafFileUtilsDiffblueTest {
    * Method under test: {@link BroadleafFileUtils#removeLeadingSlash(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BroadleafFileUtils.removeLeadingSlash(String)"})
   public void testRemoveLeadingSlash_whenSlash_thenReturnEmptyString() {
     // Arrange, Act and Assert
     assertEquals("", BroadleafFileUtils.removeLeadingSlash("/"));
@@ -121,6 +136,8 @@ public class BroadleafFileUtilsDiffblueTest {
    * Method under test: {@link BroadleafFileUtils#addLeadingSlash(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BroadleafFileUtils.addLeadingSlash(String)"})
   public void testAddLeadingSlash_whenFooTxt_thenReturnFooTxt() {
     // Arrange, Act and Assert
     assertEquals("/foo.txt", BroadleafFileUtils.addLeadingSlash("foo.txt"));
@@ -136,6 +153,8 @@ public class BroadleafFileUtilsDiffblueTest {
    * Method under test: {@link BroadleafFileUtils#addLeadingSlash(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BroadleafFileUtils.addLeadingSlash(String)"})
   public void testAddLeadingSlash_whenSlash_thenReturnSlash() {
     // Arrange, Act and Assert
     assertEquals("/", BroadleafFileUtils.addLeadingSlash("/"));
@@ -151,6 +170,8 @@ public class BroadleafFileUtilsDiffblueTest {
    * Method under test: {@link BroadleafFileUtils#appendUnixPaths(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BroadleafFileUtils.appendUnixPaths(String, String)"})
   public void testAppendUnixPaths_whenDirectory_thenReturnDirectory() {
     // Arrange, Act and Assert
     assertEquals("/directory/", BroadleafFileUtils.appendUnixPaths("/directory", "/"));
@@ -166,6 +187,8 @@ public class BroadleafFileUtilsDiffblueTest {
    * Method under test: {@link BroadleafFileUtils#appendUnixPaths(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BroadleafFileUtils.appendUnixPaths(String, String)"})
   public void testAppendUnixPaths_whenDirectory_thenReturnDirectoryFooTxt() {
     // Arrange, Act and Assert
     assertEquals("/directory/foo.txt", BroadleafFileUtils.appendUnixPaths("/directory", "foo.txt"));
@@ -181,6 +204,8 @@ public class BroadleafFileUtilsDiffblueTest {
    * Method under test: {@link BroadleafFileUtils#appendUnixPaths(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BroadleafFileUtils.appendUnixPaths(String, String)"})
   public void testAppendUnixPaths_whenFooTxt_thenReturnFooTxt() {
     // Arrange, Act and Assert
     assertEquals("/foo.txt", BroadleafFileUtils.appendUnixPaths("/", "foo.txt"));
@@ -196,6 +221,8 @@ public class BroadleafFileUtilsDiffblueTest {
    * Method under test: {@link BroadleafFileUtils#appendUnixPaths(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BroadleafFileUtils.appendUnixPaths(String, String)"})
   public void testAppendUnixPaths_whenSlash_thenReturnSlash() {
     // Arrange, Act and Assert
     assertEquals("/", BroadleafFileUtils.appendUnixPaths("/", "/"));
@@ -211,6 +238,8 @@ public class BroadleafFileUtilsDiffblueTest {
    * Method under test: {@link BroadleafFileUtils#removeLeadingUnixSlash(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BroadleafFileUtils.removeLeadingUnixSlash(String)"})
   public void testRemoveLeadingUnixSlash_whenFooTxt_thenReturnFooTxt() {
     // Arrange, Act and Assert
     assertEquals("foo.txt", BroadleafFileUtils.removeLeadingUnixSlash("foo.txt"));
@@ -226,6 +255,8 @@ public class BroadleafFileUtilsDiffblueTest {
    * Method under test: {@link BroadleafFileUtils#removeLeadingUnixSlash(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BroadleafFileUtils.removeLeadingUnixSlash(String)"})
   public void testRemoveLeadingUnixSlash_whenSlash_thenReturnEmptyString() {
     // Arrange, Act and Assert
     assertEquals("", BroadleafFileUtils.removeLeadingUnixSlash("/"));
@@ -241,6 +272,8 @@ public class BroadleafFileUtilsDiffblueTest {
    * Method under test: {@link BroadleafFileUtils#addLeadingUnixSlash(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BroadleafFileUtils.addLeadingUnixSlash(String)"})
   public void testAddLeadingUnixSlash_whenFooTxt_thenReturnFooTxt() {
     // Arrange, Act and Assert
     assertEquals("/foo.txt", BroadleafFileUtils.addLeadingUnixSlash("foo.txt"));
@@ -256,6 +289,8 @@ public class BroadleafFileUtilsDiffblueTest {
    * Method under test: {@link BroadleafFileUtils#addLeadingUnixSlash(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BroadleafFileUtils.addLeadingUnixSlash(String)"})
   public void testAddLeadingUnixSlash_whenSlash_thenReturnSlash() {
     // Arrange, Act and Assert
     assertEquals("/", BroadleafFileUtils.addLeadingUnixSlash("/"));

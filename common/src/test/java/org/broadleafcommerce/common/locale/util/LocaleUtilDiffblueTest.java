@@ -19,27 +19,27 @@ package org.broadleafcommerce.common.locale.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
 import org.broadleafcommerce.common.locale.domain.Locale;
 import org.broadleafcommerce.common.locale.domain.LocaleImpl;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class LocaleUtilDiffblueTest {
   /**
    * Test {@link LocaleUtil#findLanguageCode(Locale)}.
    * <ul>
    *   <li>Given {@link BroadleafCurrencyImpl} (default constructor).</li>
-   *   <li>When {@link LocaleImpl} (default constructor) LocaleCode is
-   * {@code en}.</li>
+   *   <li>When {@link LocaleImpl} (default constructor) LocaleCode is {@code en}.</li>
    * </ul>
    * <p>
    * Method under test: {@link LocaleUtil#findLanguageCode(Locale)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.String LocaleUtil.findLanguageCode(Locale)"})
   public void testFindLanguageCode_givenBroadleafCurrencyImpl_whenLocaleImplLocaleCodeIsEn() {
     // Arrange
     LocaleImpl locale = new LocaleImpl();
@@ -57,14 +57,15 @@ public class LocaleUtilDiffblueTest {
    * Test {@link LocaleUtil#findLanguageCode(Locale)}.
    * <ul>
    *   <li>Given {@code en_}.</li>
-   *   <li>When {@link LocaleImpl} (default constructor) LocaleCode is
-   * {@code en_}.</li>
+   *   <li>When {@link LocaleImpl} (default constructor) LocaleCode is {@code en_}.</li>
    *   <li>Then return {@code en}.</li>
    * </ul>
    * <p>
    * Method under test: {@link LocaleUtil#findLanguageCode(Locale)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.String LocaleUtil.findLanguageCode(Locale)"})
   public void testFindLanguageCode_givenEn_whenLocaleImplLocaleCodeIsEn_thenReturnEn() {
     // Arrange
     LocaleImpl locale = new LocaleImpl();
@@ -81,30 +82,6 @@ public class LocaleUtilDiffblueTest {
   /**
    * Test {@link LocaleUtil#findLanguageCode(Locale)}.
    * <ul>
-   *   <li>When {@link Locale} {@link Locale#getLocaleCode()} return
-   * {@code en}.</li>
-   *   <li>Then calls {@link Locale#getLocaleCode()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link LocaleUtil#findLanguageCode(Locale)}
-   */
-  @Test
-  public void testFindLanguageCode_whenLocaleGetLocaleCodeReturnEn_thenCallsGetLocaleCode() {
-    // Arrange
-    Locale locale = mock(Locale.class);
-    when(locale.getLocaleCode()).thenReturn("en");
-
-    // Act
-    String actualFindLanguageCodeResult = LocaleUtil.findLanguageCode(locale);
-
-    // Assert
-    verify(locale, atLeast(1)).getLocaleCode();
-    assertNull(actualFindLanguageCodeResult);
-  }
-
-  /**
-   * Test {@link LocaleUtil#findLanguageCode(Locale)}.
-   * <ul>
    *   <li>When {@link LocaleImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
@@ -112,6 +89,8 @@ public class LocaleUtilDiffblueTest {
    * Method under test: {@link LocaleUtil#findLanguageCode(Locale)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.String LocaleUtil.findLanguageCode(Locale)"})
   public void testFindLanguageCode_whenLocaleImpl_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull(LocaleUtil.findLanguageCode(new LocaleImpl()));
@@ -127,6 +106,8 @@ public class LocaleUtilDiffblueTest {
    * Method under test: {@link LocaleUtil#findLanguageCode(Locale)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.String LocaleUtil.findLanguageCode(Locale)"})
   public void testFindLanguageCode_whenNull_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull(LocaleUtil.findLanguageCode(null));

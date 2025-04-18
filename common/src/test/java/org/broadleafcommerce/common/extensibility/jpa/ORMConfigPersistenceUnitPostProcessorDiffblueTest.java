@@ -22,9 +22,12 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -45,17 +48,17 @@ public class ORMConfigPersistenceUnitPostProcessorDiffblueTest {
   private ORMConfigPersistenceUnitPostProcessor oRMConfigPersistenceUnitPostProcessor;
 
   /**
-   * Test
-   * {@link ORMConfigPersistenceUnitPostProcessor#postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo)}.
+   * Test {@link ORMConfigPersistenceUnitPostProcessor#postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo)}.
    * <ul>
-   *   <li>Given {@link ORMConfigDto} {@link ORMConfigDto#getPuName()} return
-   * {@code Pu Name}.</li>
+   *   <li>Given {@link ORMConfigDto} {@link ORMConfigDto#getPuName()} return {@code Pu Name}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ORMConfigPersistenceUnitPostProcessor#postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo)}
+   * Method under test: {@link ORMConfigPersistenceUnitPostProcessor#postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void ORMConfigPersistenceUnitPostProcessor.postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo)"})
   public void testPostProcessPersistenceUnitInfo_givenORMConfigDtoGetPuNameReturnPuName() {
     // Arrange
     when(oRMConfigDto.getPuName()).thenReturn("Pu Name");
@@ -71,16 +74,17 @@ public class ORMConfigPersistenceUnitPostProcessorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ORMConfigPersistenceUnitPostProcessor#postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo)}.
+   * Test {@link ORMConfigPersistenceUnitPostProcessor#postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo)}.
    * <ul>
    *   <li>Then calls {@link ORMConfigDto#getClassNames()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ORMConfigPersistenceUnitPostProcessor#postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo)}
+   * Method under test: {@link ORMConfigPersistenceUnitPostProcessor#postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void ORMConfigPersistenceUnitPostProcessor.postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo)"})
   public void testPostProcessPersistenceUnitInfo_thenCallsGetClassNames() {
     // Arrange
     when(oRMConfigDto.getClassNames()).thenReturn(new ArrayList<>());
@@ -100,17 +104,17 @@ public class ORMConfigPersistenceUnitPostProcessorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ORMConfigPersistenceUnitPostProcessor#postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo)}.
+   * Test {@link ORMConfigPersistenceUnitPostProcessor#postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo)}.
    * <ul>
-   *   <li>Then calls
-   * {@link MutablePersistenceUnitInfo#getManagedClassNames()}.</li>
+   *   <li>Then calls {@link MutablePersistenceUnitInfo#getManagedClassNames()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ORMConfigPersistenceUnitPostProcessor#postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo)}
+   * Method under test: {@link ORMConfigPersistenceUnitPostProcessor#postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void ORMConfigPersistenceUnitPostProcessor.postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo)"})
   public void testPostProcessPersistenceUnitInfo_thenCallsGetManagedClassNames() {
     // Arrange
     ArrayList<String> stringList = new ArrayList<>();
@@ -134,16 +138,17 @@ public class ORMConfigPersistenceUnitPostProcessorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ORMConfigPersistenceUnitPostProcessor#postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo)}.
+   * Test {@link ORMConfigPersistenceUnitPostProcessor#postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo)}.
    * <ul>
    *   <li>Then calls {@link MutablePersistenceUnitInfo#getMappingFileNames()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ORMConfigPersistenceUnitPostProcessor#postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo)}
+   * Method under test: {@link ORMConfigPersistenceUnitPostProcessor#postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void ORMConfigPersistenceUnitPostProcessor.postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo)"})
   public void testPostProcessPersistenceUnitInfo_thenCallsGetMappingFileNames() {
     // Arrange
     ArrayList<String> stringList = new ArrayList<>();
@@ -174,10 +179,11 @@ public class ORMConfigPersistenceUnitPostProcessorDiffblueTest {
   /**
    * Test new {@link ORMConfigPersistenceUnitPostProcessor} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link ORMConfigPersistenceUnitPostProcessor}
+   * Method under test: default or parameterless constructor of {@link ORMConfigPersistenceUnitPostProcessor}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ORMConfigPersistenceUnitPostProcessor.<init>()"})
   public void testNewORMConfigPersistenceUnitPostProcessor() {
     // Arrange, Act and Assert
     assertTrue((new ORMConfigPersistenceUnitPostProcessor()).configs.isEmpty());

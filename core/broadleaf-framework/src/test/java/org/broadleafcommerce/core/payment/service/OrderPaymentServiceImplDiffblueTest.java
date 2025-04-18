@@ -1,30 +1,77 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.payment.service;
 
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.broadleafcommerce.common.money.Money;
+import org.broadleafcommerce.common.payment.PaymentGatewayType;
+import org.broadleafcommerce.common.payment.PaymentType;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
+import org.broadleafcommerce.core.payment.dao.OrderPaymentDao;
 import org.broadleafcommerce.core.payment.domain.OrderPayment;
 import org.broadleafcommerce.core.payment.domain.OrderPaymentImpl;
 import org.broadleafcommerce.core.payment.domain.PaymentLog;
 import org.broadleafcommerce.core.payment.domain.PaymentLogImpl;
 import org.broadleafcommerce.core.payment.domain.PaymentTransaction;
 import org.broadleafcommerce.core.payment.domain.PaymentTransactionImpl;
+import org.broadleafcommerce.profile.core.domain.Address;
+import org.broadleafcommerce.profile.core.domain.AddressImpl;
+import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerPayment;
 import org.broadleafcommerce.profile.core.domain.CustomerPaymentImpl;
-import org.junit.Ignore;
+import org.broadleafcommerce.profile.core.service.AddressService;
+import org.broadleafcommerce.profile.core.service.CustomerPaymentService;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class OrderPaymentServiceImplDiffblueTest {
-  @Autowired
+  @Mock
+  private AddressService addressService;
+
+  @Mock
+  private CustomerPaymentService customerPaymentService;
+
+  @Mock
+  private OrderPaymentDao orderPaymentDao;
+
+  @InjectMocks
   private OrderPaymentServiceImpl orderPaymentServiceImpl;
 
   /**
@@ -33,30 +80,19 @@ public class OrderPaymentServiceImplDiffblueTest {
    * Method under test: {@link OrderPaymentServiceImpl#save(PaymentLog)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PaymentLog OrderPaymentServiceImpl.save(PaymentLog)"})
   public void testSaveWithLog() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.payment.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2162 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.OrderPaymentServiceImpl orderPaymentServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    OrderPaymentServiceImpl orderPaymentServiceImpl2 = new OrderPaymentServiceImpl();
+    PaymentLogImpl paymentLogImpl = new PaymentLogImpl();
+    when(orderPaymentDao.save(Mockito.<PaymentLog>any())).thenReturn(paymentLogImpl);
 
     // Act
-    orderPaymentServiceImpl2.save(new PaymentLogImpl());
+    PaymentLog actualSaveResult = orderPaymentServiceImpl.save(new PaymentLogImpl());
+
+    // Assert
+    verify(orderPaymentDao).save(isA(PaymentLog.class));
+    assertSame(paymentLogImpl, actualSaveResult);
   }
 
   /**
@@ -65,63 +101,40 @@ public class OrderPaymentServiceImplDiffblueTest {
    * Method under test: {@link OrderPaymentServiceImpl#save(OrderPayment)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderPayment OrderPaymentServiceImpl.save(OrderPayment)"})
   public void testSaveWithPayment() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.payment.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2146 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.OrderPaymentServiceImpl orderPaymentServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    OrderPaymentServiceImpl orderPaymentServiceImpl2 = new OrderPaymentServiceImpl();
+    OrderPaymentImpl orderPaymentImpl = new OrderPaymentImpl();
+    when(orderPaymentDao.save(Mockito.<OrderPayment>any())).thenReturn(orderPaymentImpl);
 
     // Act
-    orderPaymentServiceImpl2.save(new OrderPaymentImpl());
+    OrderPayment actualSaveResult = orderPaymentServiceImpl.save(new OrderPaymentImpl());
+
+    // Assert
+    verify(orderPaymentDao).save(isA(OrderPayment.class));
+    assertSame(orderPaymentImpl, actualSaveResult);
   }
 
   /**
-   * Test {@link OrderPaymentServiceImpl#save(PaymentTransaction)} with
-   * {@code transaction}.
+   * Test {@link OrderPaymentServiceImpl#save(PaymentTransaction)} with {@code transaction}.
    * <p>
    * Method under test: {@link OrderPaymentServiceImpl#save(PaymentTransaction)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PaymentTransaction OrderPaymentServiceImpl.save(PaymentTransaction)"})
   public void testSaveWithTransaction() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.payment.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2179 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.OrderPaymentServiceImpl orderPaymentServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    OrderPaymentServiceImpl orderPaymentServiceImpl2 = new OrderPaymentServiceImpl();
+    PaymentTransactionImpl paymentTransactionImpl = new PaymentTransactionImpl();
+    when(orderPaymentDao.save(Mockito.<PaymentTransaction>any())).thenReturn(paymentTransactionImpl);
 
     // Act
-    orderPaymentServiceImpl2.save(new PaymentTransactionImpl());
+    PaymentTransaction actualSaveResult = orderPaymentServiceImpl.save(new PaymentTransactionImpl());
+
+    // Assert
+    verify(orderPaymentDao).save(isA(PaymentTransaction.class));
+    assertSame(paymentTransactionImpl, actualSaveResult);
   }
 
   /**
@@ -130,60 +143,40 @@ public class OrderPaymentServiceImplDiffblueTest {
    * Method under test: {@link OrderPaymentServiceImpl#readPaymentById(Long)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderPayment OrderPaymentServiceImpl.readPaymentById(Long)"})
   public void testReadPaymentById() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.payment.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2103 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.OrderPaymentServiceImpl orderPaymentServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    OrderPaymentImpl orderPaymentImpl = new OrderPaymentImpl();
+    when(orderPaymentDao.readPaymentById(Mockito.<Long>any())).thenReturn(orderPaymentImpl);
 
-    // Arrange and Act
-    (new OrderPaymentServiceImpl()).readPaymentById(1L);
+    // Act
+    OrderPayment actualReadPaymentByIdResult = orderPaymentServiceImpl.readPaymentById(1L);
+
+    // Assert
+    verify(orderPaymentDao).readPaymentById(eq(1L));
+    assertSame(orderPaymentImpl, actualReadPaymentByIdResult);
   }
 
   /**
    * Test {@link OrderPaymentServiceImpl#readPaymentsForOrder(Order)}.
    * <p>
-   * Method under test:
-   * {@link OrderPaymentServiceImpl#readPaymentsForOrder(Order)}
+   * Method under test: {@link OrderPaymentServiceImpl#readPaymentsForOrder(Order)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List OrderPaymentServiceImpl.readPaymentsForOrder(Order)"})
   public void testReadPaymentsForOrder() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.payment.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2118 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.OrderPaymentServiceImpl orderPaymentServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    OrderPaymentServiceImpl orderPaymentServiceImpl2 = new OrderPaymentServiceImpl();
+    when(orderPaymentDao.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(new ArrayList<>());
 
     // Act
-    orderPaymentServiceImpl2.readPaymentsForOrder(new NullOrderImpl());
+    List<OrderPayment> actualReadPaymentsForOrderResult = orderPaymentServiceImpl
+        .readPaymentsForOrder(new NullOrderImpl());
+
+    // Assert
+    verify(orderPaymentDao).readPaymentsForOrder(isA(Order.class));
+    assertTrue(actualReadPaymentsForOrderResult.isEmpty());
   }
 
   /**
@@ -192,27 +185,19 @@ public class OrderPaymentServiceImplDiffblueTest {
    * Method under test: {@link OrderPaymentServiceImpl#create()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderPayment OrderPaymentServiceImpl.create()"})
   public void testCreate() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.payment.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2005 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.OrderPaymentServiceImpl orderPaymentServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    OrderPaymentImpl orderPaymentImpl = new OrderPaymentImpl();
+    when(orderPaymentDao.create()).thenReturn(orderPaymentImpl);
 
-    // Arrange and Act
-    (new OrderPaymentServiceImpl()).create();
+    // Act
+    OrderPayment actualCreateResult = orderPaymentServiceImpl.create();
+
+    // Assert
+    verify(orderPaymentDao).create();
+    assertSame(orderPaymentImpl, actualCreateResult);
   }
 
   /**
@@ -221,30 +206,17 @@ public class OrderPaymentServiceImplDiffblueTest {
    * Method under test: {@link OrderPaymentServiceImpl#delete(OrderPayment)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OrderPaymentServiceImpl.delete(OrderPayment)"})
   public void testDelete() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.payment.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2057 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.OrderPaymentServiceImpl orderPaymentServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    OrderPaymentServiceImpl orderPaymentServiceImpl2 = new OrderPaymentServiceImpl();
+    doNothing().when(orderPaymentDao).delete(Mockito.<OrderPayment>any());
 
     // Act
-    orderPaymentServiceImpl2.delete(new OrderPaymentImpl());
+    orderPaymentServiceImpl.delete(new OrderPaymentImpl());
+
+    // Assert
+    verify(orderPaymentDao).delete(isA(OrderPayment.class));
   }
 
   /**
@@ -253,56 +225,43 @@ public class OrderPaymentServiceImplDiffblueTest {
    * Method under test: {@link OrderPaymentServiceImpl#createLog()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PaymentLog OrderPaymentServiceImpl.createLog()"})
   public void testCreateLog() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.payment.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2024 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.OrderPaymentServiceImpl orderPaymentServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    PaymentLogImpl paymentLogImpl = new PaymentLogImpl();
+    when(orderPaymentDao.createLog()).thenReturn(paymentLogImpl);
 
-    // Arrange and Act
-    (new OrderPaymentServiceImpl()).createLog();
+    // Act
+    PaymentLog actualCreateLogResult = orderPaymentServiceImpl.createLog();
+
+    // Assert
+    verify(orderPaymentDao).createLog();
+    assertSame(paymentLogImpl, actualCreateLogResult);
   }
 
   /**
    * Test {@link OrderPaymentServiceImpl#createTransaction()}.
+   * <ul>
+   *   <li>Then return {@link PaymentTransactionImpl} (default constructor).</li>
+   * </ul>
    * <p>
    * Method under test: {@link OrderPaymentServiceImpl#createTransaction()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateTransaction() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.payment.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2056 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.OrderPaymentServiceImpl orderPaymentServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PaymentTransaction OrderPaymentServiceImpl.createTransaction()"})
+  public void testCreateTransaction_thenReturnPaymentTransactionImpl() {
+    // Arrange
+    PaymentTransactionImpl paymentTransactionImpl = new PaymentTransactionImpl();
+    when(orderPaymentDao.createTransaction()).thenReturn(paymentTransactionImpl);
 
-    // Arrange and Act
-    (new OrderPaymentServiceImpl()).createTransaction();
+    // Act
+    PaymentTransaction actualCreateTransactionResult = orderPaymentServiceImpl.createTransaction();
+
+    // Assert
+    verify(orderPaymentDao).createTransaction();
+    assertSame(paymentTransactionImpl, actualCreateTransactionResult);
   }
 
   /**
@@ -311,131 +270,370 @@ public class OrderPaymentServiceImplDiffblueTest {
    * Method under test: {@link OrderPaymentServiceImpl#readTransactionById(Long)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PaymentTransaction OrderPaymentServiceImpl.readTransactionById(Long)"})
   public void testReadTransactionById() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.payment.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2131 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.OrderPaymentServiceImpl orderPaymentServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    PaymentTransactionImpl paymentTransactionImpl = new PaymentTransactionImpl();
+    when(orderPaymentDao.readTransactionById(Mockito.<Long>any())).thenReturn(paymentTransactionImpl);
 
-    // Arrange and Act
-    (new OrderPaymentServiceImpl()).readTransactionById(1L);
+    // Act
+    PaymentTransaction actualReadTransactionByIdResult = orderPaymentServiceImpl.readTransactionById(1L);
+
+    // Assert
+    verify(orderPaymentDao).readTransactionById(eq(1L));
+    assertSame(paymentTransactionImpl, actualReadTransactionByIdResult);
   }
 
   /**
-   * Test
-   * {@link OrderPaymentServiceImpl#createOrderPaymentFromCustomerPayment(Order, CustomerPayment, Money)}.
+   * Test {@link OrderPaymentServiceImpl#createOrderPaymentFromCustomerPayment(Order, CustomerPayment, Money)}.
    * <p>
-   * Method under test:
-   * {@link OrderPaymentServiceImpl#createOrderPaymentFromCustomerPayment(Order, CustomerPayment, Money)}
+   * Method under test: {@link OrderPaymentServiceImpl#createOrderPaymentFromCustomerPayment(Order, CustomerPayment, Money)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "OrderPayment OrderPaymentServiceImpl.createOrderPaymentFromCustomerPayment(Order, CustomerPayment, Money)"})
   public void testCreateOrderPaymentFromCustomerPayment() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.payment.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2025 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.OrderPaymentServiceImpl orderPaymentServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    OrderPaymentServiceImpl orderPaymentServiceImpl2 = new OrderPaymentServiceImpl();
+    when(addressService.copyAddress(Mockito.<Address>any())).thenReturn(new AddressImpl());
+    OrderPaymentImpl orderPaymentImpl = new OrderPaymentImpl();
+    when(orderPaymentDao.save(Mockito.<OrderPayment>any())).thenReturn(orderPaymentImpl);
+    when(orderPaymentDao.createTransaction()).thenReturn(new PaymentTransactionImpl());
+    when(orderPaymentDao.create()).thenReturn(new OrderPaymentImpl());
     NullOrderImpl order = new NullOrderImpl();
     CustomerPaymentImpl customerPayment = new CustomerPaymentImpl();
 
     // Act
-    orderPaymentServiceImpl2.createOrderPaymentFromCustomerPayment(order, customerPayment, new Money());
+    OrderPayment actualCreateOrderPaymentFromCustomerPaymentResult = orderPaymentServiceImpl
+        .createOrderPaymentFromCustomerPayment(order, customerPayment, new Money());
+
+    // Assert
+    verify(orderPaymentDao).create();
+    verify(orderPaymentDao).createTransaction();
+    verify(orderPaymentDao).save(isA(OrderPayment.class));
+    verify(addressService).copyAddress(isNull());
+    assertSame(orderPaymentImpl, actualCreateOrderPaymentFromCustomerPaymentResult);
   }
 
   /**
-   * Test
-   * {@link OrderPaymentServiceImpl#createCustomerPaymentFromPaymentTransaction(PaymentTransaction)}.
+   * Test {@link OrderPaymentServiceImpl#createOrderPaymentFromCustomerPayment(Order, CustomerPayment, Money)}.
    * <p>
-   * Method under test:
-   * {@link OrderPaymentServiceImpl#createCustomerPaymentFromPaymentTransaction(PaymentTransaction)}
+   * Method under test: {@link OrderPaymentServiceImpl#createOrderPaymentFromCustomerPayment(Order, CustomerPayment, Money)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateCustomerPaymentFromPaymentTransaction() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.payment.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2006 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.OrderPaymentServiceImpl orderPaymentServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "OrderPayment OrderPaymentServiceImpl.createOrderPaymentFromCustomerPayment(Order, CustomerPayment, Money)"})
+  public void testCreateOrderPaymentFromCustomerPayment2() {
     // Arrange
-    OrderPaymentServiceImpl orderPaymentServiceImpl2 = new OrderPaymentServiceImpl();
+    when(addressService.copyAddress(Mockito.<Address>any())).thenReturn(new AddressImpl());
+    OrderPayment orderPayment = mock(OrderPayment.class);
+    when(orderPayment.getTransactions()).thenReturn(new ArrayList<>());
+    doNothing().when(orderPayment).setAmount(Mockito.<Money>any());
+    doNothing().when(orderPayment).setBillingAddress(Mockito.<Address>any());
+    doNothing().when(orderPayment).setOrder(Mockito.<Order>any());
+    doNothing().when(orderPayment).setPaymentGatewayType(Mockito.<PaymentGatewayType>any());
+    doNothing().when(orderPayment).setType(Mockito.<PaymentType>any());
+    OrderPaymentImpl orderPaymentImpl = new OrderPaymentImpl();
+    when(orderPaymentDao.save(Mockito.<OrderPayment>any())).thenReturn(orderPaymentImpl);
+    when(orderPaymentDao.createTransaction()).thenReturn(new PaymentTransactionImpl());
+    when(orderPaymentDao.create()).thenReturn(orderPayment);
+    NullOrderImpl order = new NullOrderImpl();
+    CustomerPayment customerPayment = mock(CustomerPayment.class);
+    when(customerPayment.getPaymentToken()).thenReturn("ABC123");
+    when(customerPayment.getAdditionalFields()).thenReturn(new HashMap<>());
+    when(customerPayment.getPaymentGatewayType()).thenReturn(new PaymentGatewayType("Type", "Friendly Type"));
+    when(customerPayment.getPaymentType()).thenReturn(new PaymentType("Type", "Friendly Type"));
+    when(customerPayment.getBillingAddress()).thenReturn(new AddressImpl());
 
     // Act
-    orderPaymentServiceImpl2.createCustomerPaymentFromPaymentTransaction(new PaymentTransactionImpl());
+    OrderPayment actualCreateOrderPaymentFromCustomerPaymentResult = orderPaymentServiceImpl
+        .createOrderPaymentFromCustomerPayment(order, customerPayment, new Money());
+
+    // Assert
+    verify(orderPaymentDao).create();
+    verify(orderPaymentDao).createTransaction();
+    verify(orderPaymentDao).save(isA(OrderPayment.class));
+    verify(orderPayment).getTransactions();
+    verify(orderPayment).setAmount(isA(Money.class));
+    verify(orderPayment).setBillingAddress(isA(Address.class));
+    verify(orderPayment).setOrder(isA(Order.class));
+    verify(orderPayment).setPaymentGatewayType(isA(PaymentGatewayType.class));
+    verify(orderPayment).setType(isA(PaymentType.class));
+    verify(customerPayment, atLeast(1)).getAdditionalFields();
+    verify(customerPayment).getBillingAddress();
+    verify(customerPayment).getPaymentGatewayType();
+    verify(customerPayment).getPaymentToken();
+    verify(customerPayment).getPaymentType();
+    verify(addressService).copyAddress(isA(Address.class));
+    assertSame(orderPaymentImpl, actualCreateOrderPaymentFromCustomerPaymentResult);
   }
 
   /**
-   * Test
-   * {@link OrderPaymentServiceImpl#populateCustomerPaymentToken(CustomerPayment, PaymentTransaction)}.
+   * Test {@link OrderPaymentServiceImpl#createOrderPaymentFromCustomerPayment(Order, CustomerPayment, Money)}.
    * <p>
-   * Method under test:
-   * {@link OrderPaymentServiceImpl#populateCustomerPaymentToken(CustomerPayment, PaymentTransaction)}
+   * Method under test: {@link OrderPaymentServiceImpl#createOrderPaymentFromCustomerPayment(Order, CustomerPayment, Money)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testPopulateCustomerPaymentToken() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.payment.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2073 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.OrderPaymentServiceImpl orderPaymentServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "OrderPayment OrderPaymentServiceImpl.createOrderPaymentFromCustomerPayment(Order, CustomerPayment, Money)"})
+  public void testCreateOrderPaymentFromCustomerPayment3() {
     // Arrange
-    OrderPaymentServiceImpl orderPaymentServiceImpl2 = new OrderPaymentServiceImpl();
-    CustomerPaymentImpl customerPayment = new CustomerPaymentImpl();
+    when(addressService.copyAddress(Mockito.<Address>any())).thenReturn(new AddressImpl());
+    OrderPayment orderPayment = mock(OrderPayment.class);
+    when(orderPayment.getTransactions()).thenReturn(new ArrayList<>());
+    doNothing().when(orderPayment).setAmount(Mockito.<Money>any());
+    doNothing().when(orderPayment).setBillingAddress(Mockito.<Address>any());
+    doNothing().when(orderPayment).setOrder(Mockito.<Order>any());
+    doNothing().when(orderPayment).setPaymentGatewayType(Mockito.<PaymentGatewayType>any());
+    doNothing().when(orderPayment).setType(Mockito.<PaymentType>any());
+    OrderPaymentImpl orderPaymentImpl = new OrderPaymentImpl();
+    when(orderPaymentDao.save(Mockito.<OrderPayment>any())).thenReturn(orderPaymentImpl);
+    when(orderPaymentDao.createTransaction()).thenReturn(new PaymentTransactionImpl());
+    when(orderPaymentDao.create()).thenReturn(orderPayment);
+    NullOrderImpl order = new NullOrderImpl();
+    CustomerPayment customerPayment = mock(CustomerPayment.class);
+    when(customerPayment.getPaymentToken()).thenReturn("ABC123");
+    when(customerPayment.getAdditionalFields()).thenReturn(new HashMap<>());
+    when(customerPayment.getPaymentGatewayType()).thenReturn(null);
+    when(customerPayment.getPaymentType()).thenReturn(new PaymentType("Type", "Friendly Type"));
+    when(customerPayment.getBillingAddress()).thenReturn(new AddressImpl());
 
     // Act
-    orderPaymentServiceImpl2.populateCustomerPaymentToken(customerPayment, new PaymentTransactionImpl());
+    OrderPayment actualCreateOrderPaymentFromCustomerPaymentResult = orderPaymentServiceImpl
+        .createOrderPaymentFromCustomerPayment(order, customerPayment, new Money());
+
+    // Assert
+    verify(orderPaymentDao).create();
+    verify(orderPaymentDao).createTransaction();
+    verify(orderPaymentDao).save(isA(OrderPayment.class));
+    verify(orderPayment).getTransactions();
+    verify(orderPayment).setAmount(isA(Money.class));
+    verify(orderPayment).setBillingAddress(isA(Address.class));
+    verify(orderPayment).setOrder(isA(Order.class));
+    verify(orderPayment).setPaymentGatewayType(isNull());
+    verify(orderPayment).setType(isA(PaymentType.class));
+    verify(customerPayment, atLeast(1)).getAdditionalFields();
+    verify(customerPayment).getBillingAddress();
+    verify(customerPayment).getPaymentGatewayType();
+    verify(customerPayment).getPaymentToken();
+    verify(customerPayment).getPaymentType();
+    verify(addressService).copyAddress(isA(Address.class));
+    assertSame(orderPaymentImpl, actualCreateOrderPaymentFromCustomerPaymentResult);
+  }
+
+  /**
+   * Test {@link OrderPaymentServiceImpl#createOrderPaymentFromCustomerPayment(Order, CustomerPayment, Money)}.
+   * <p>
+   * Method under test: {@link OrderPaymentServiceImpl#createOrderPaymentFromCustomerPayment(Order, CustomerPayment, Money)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "OrderPayment OrderPaymentServiceImpl.createOrderPaymentFromCustomerPayment(Order, CustomerPayment, Money)"})
+  public void testCreateOrderPaymentFromCustomerPayment4() {
+    // Arrange
+    when(addressService.copyAddress(Mockito.<Address>any())).thenReturn(new AddressImpl());
+    OrderPayment orderPayment = mock(OrderPayment.class);
+    when(orderPayment.getTransactions()).thenReturn(new ArrayList<>());
+    doNothing().when(orderPayment).setAmount(Mockito.<Money>any());
+    doNothing().when(orderPayment).setBillingAddress(Mockito.<Address>any());
+    doNothing().when(orderPayment).setOrder(Mockito.<Order>any());
+    doNothing().when(orderPayment).setPaymentGatewayType(Mockito.<PaymentGatewayType>any());
+    doNothing().when(orderPayment).setType(Mockito.<PaymentType>any());
+    OrderPaymentImpl orderPaymentImpl = new OrderPaymentImpl();
+    when(orderPaymentDao.save(Mockito.<OrderPayment>any())).thenReturn(orderPaymentImpl);
+    when(orderPaymentDao.createTransaction()).thenReturn(new PaymentTransactionImpl());
+    when(orderPaymentDao.create()).thenReturn(orderPayment);
+    NullOrderImpl order = new NullOrderImpl();
+    CustomerPayment customerPayment = mock(CustomerPayment.class);
+    when(customerPayment.getPaymentToken()).thenReturn("ABC123");
+    when(customerPayment.getAdditionalFields()).thenReturn(new HashMap<>());
+    when(customerPayment.getPaymentGatewayType()).thenReturn(new PaymentGatewayType("Type", "Friendly Type"));
+    when(customerPayment.getPaymentType()).thenReturn(null);
+    when(customerPayment.getBillingAddress()).thenReturn(new AddressImpl());
+
+    // Act
+    OrderPayment actualCreateOrderPaymentFromCustomerPaymentResult = orderPaymentServiceImpl
+        .createOrderPaymentFromCustomerPayment(order, customerPayment, new Money());
+
+    // Assert
+    verify(orderPaymentDao).create();
+    verify(orderPaymentDao).createTransaction();
+    verify(orderPaymentDao).save(isA(OrderPayment.class));
+    verify(orderPayment).getTransactions();
+    verify(orderPayment).setAmount(isA(Money.class));
+    verify(orderPayment).setBillingAddress(isA(Address.class));
+    verify(orderPayment).setOrder(isA(Order.class));
+    verify(orderPayment).setPaymentGatewayType(isA(PaymentGatewayType.class));
+    verify(orderPayment).setType(isNull());
+    verify(customerPayment, atLeast(1)).getAdditionalFields();
+    verify(customerPayment).getBillingAddress();
+    verify(customerPayment).getPaymentGatewayType();
+    verify(customerPayment).getPaymentToken();
+    verify(customerPayment).getPaymentType();
+    verify(addressService).copyAddress(isA(Address.class));
+    assertSame(orderPaymentImpl, actualCreateOrderPaymentFromCustomerPaymentResult);
+  }
+
+  /**
+   * Test {@link OrderPaymentServiceImpl#createOrderPaymentFromCustomerPayment(Order, CustomerPayment, Money)}.
+   * <ul>
+   *   <li>Given {@link HashMap#HashMap()} {@code 42} is {@code 42}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OrderPaymentServiceImpl#createOrderPaymentFromCustomerPayment(Order, CustomerPayment, Money)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "OrderPayment OrderPaymentServiceImpl.createOrderPaymentFromCustomerPayment(Order, CustomerPayment, Money)"})
+  public void testCreateOrderPaymentFromCustomerPayment_givenHashMap42Is42() {
+    // Arrange
+    when(addressService.copyAddress(Mockito.<Address>any())).thenReturn(new AddressImpl());
+    OrderPayment orderPayment = mock(OrderPayment.class);
+    when(orderPayment.getTransactions()).thenReturn(new ArrayList<>());
+    doNothing().when(orderPayment).setAmount(Mockito.<Money>any());
+    doNothing().when(orderPayment).setBillingAddress(Mockito.<Address>any());
+    doNothing().when(orderPayment).setOrder(Mockito.<Order>any());
+    doNothing().when(orderPayment).setPaymentGatewayType(Mockito.<PaymentGatewayType>any());
+    doNothing().when(orderPayment).setType(Mockito.<PaymentType>any());
+    OrderPaymentImpl orderPaymentImpl = new OrderPaymentImpl();
+    when(orderPaymentDao.save(Mockito.<OrderPayment>any())).thenReturn(orderPaymentImpl);
+    when(orderPaymentDao.createTransaction()).thenReturn(new PaymentTransactionImpl());
+    when(orderPaymentDao.create()).thenReturn(orderPayment);
+    NullOrderImpl order = new NullOrderImpl();
+
+    HashMap<String, String> stringStringMap = new HashMap<>();
+    stringStringMap.put("42", "42");
+    CustomerPayment customerPayment = mock(CustomerPayment.class);
+    when(customerPayment.getPaymentToken()).thenReturn("ABC123");
+    when(customerPayment.getAdditionalFields()).thenReturn(stringStringMap);
+    when(customerPayment.getPaymentGatewayType()).thenReturn(null);
+    when(customerPayment.getPaymentType()).thenReturn(new PaymentType("Type", "Friendly Type"));
+    when(customerPayment.getBillingAddress()).thenReturn(new AddressImpl());
+
+    // Act
+    OrderPayment actualCreateOrderPaymentFromCustomerPaymentResult = orderPaymentServiceImpl
+        .createOrderPaymentFromCustomerPayment(order, customerPayment, new Money());
+
+    // Assert
+    verify(orderPaymentDao).create();
+    verify(orderPaymentDao).createTransaction();
+    verify(orderPaymentDao).save(isA(OrderPayment.class));
+    verify(orderPayment).getTransactions();
+    verify(orderPayment).setAmount(isA(Money.class));
+    verify(orderPayment).setBillingAddress(isA(Address.class));
+    verify(orderPayment).setOrder(isA(Order.class));
+    verify(orderPayment).setPaymentGatewayType(isNull());
+    verify(orderPayment).setType(isA(PaymentType.class));
+    verify(customerPayment, atLeast(1)).getAdditionalFields();
+    verify(customerPayment).getBillingAddress();
+    verify(customerPayment).getPaymentGatewayType();
+    verify(customerPayment).getPaymentToken();
+    verify(customerPayment).getPaymentType();
+    verify(addressService).copyAddress(isA(Address.class));
+    assertSame(orderPaymentImpl, actualCreateOrderPaymentFromCustomerPaymentResult);
+  }
+
+  /**
+   * Test {@link OrderPaymentServiceImpl#createCustomerPaymentFromPaymentTransaction(PaymentTransaction)}.
+   * <ul>
+   *   <li>Then calls {@link CustomerPayment#setAdditionalFields(Map)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OrderPaymentServiceImpl#createCustomerPaymentFromPaymentTransaction(PaymentTransaction)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "CustomerPayment OrderPaymentServiceImpl.createCustomerPaymentFromPaymentTransaction(PaymentTransaction)"})
+  public void testCreateCustomerPaymentFromPaymentTransaction_thenCallsSetAdditionalFields() {
+    // Arrange
+    when(addressService.copyAddress(Mockito.<Address>any())).thenReturn(new AddressImpl());
+    CustomerPayment customerPayment = mock(CustomerPayment.class);
+    doNothing().when(customerPayment).setAdditionalFields(Mockito.<Map<String, String>>any());
+    doNothing().when(customerPayment).setBillingAddress(Mockito.<Address>any());
+    doNothing().when(customerPayment).setCustomer(Mockito.<Customer>any());
+    doNothing().when(customerPayment).setPaymentGatewayType(Mockito.<PaymentGatewayType>any());
+    doNothing().when(customerPayment).setPaymentType(Mockito.<PaymentType>any());
+    CustomerPaymentImpl customerPaymentImpl = new CustomerPaymentImpl();
+    when(customerPaymentService.saveCustomerPayment(Mockito.<CustomerPayment>any())).thenReturn(customerPaymentImpl);
+    when(customerPaymentService.create()).thenReturn(customerPayment);
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.getGatewayType()).thenReturn(new PaymentGatewayType("Type", "Friendly Type"));
+    when(orderPaymentImpl.getType()).thenReturn(new PaymentType("Type", "Friendly Type"));
+    when(orderPaymentImpl.getBillingAddress()).thenReturn(new AddressImpl());
+    when(orderPaymentImpl.getOrder()).thenReturn(new NullOrderImpl());
+    PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
+    when(transaction.getAdditionalFields()).thenReturn(new HashMap<>());
+    when(transaction.getOrderPayment()).thenReturn(orderPaymentImpl);
+
+    // Act
+    CustomerPayment actualCreateCustomerPaymentFromPaymentTransactionResult = orderPaymentServiceImpl
+        .createCustomerPaymentFromPaymentTransaction(transaction);
+
+    // Assert
+    verify(orderPaymentImpl).getBillingAddress();
+    verify(orderPaymentImpl).getGatewayType();
+    verify(orderPaymentImpl).getOrder();
+    verify(orderPaymentImpl).getType();
+    verify(transaction, atLeast(1)).getAdditionalFields();
+    verify(transaction, atLeast(1)).getOrderPayment();
+    verify(customerPayment).setAdditionalFields(isA(Map.class));
+    verify(customerPayment).setBillingAddress(isA(Address.class));
+    verify(customerPayment).setCustomer(isNull());
+    verify(customerPayment).setPaymentGatewayType(isA(PaymentGatewayType.class));
+    verify(customerPayment).setPaymentType(isA(PaymentType.class));
+    verify(addressService).copyAddress(isA(Address.class));
+    verify(customerPaymentService).create();
+    verify(customerPaymentService).saveCustomerPayment(isA(CustomerPayment.class));
+    assertSame(customerPaymentImpl, actualCreateCustomerPaymentFromPaymentTransactionResult);
+  }
+
+  /**
+   * Test {@link OrderPaymentServiceImpl#createCustomerPaymentFromPaymentTransaction(PaymentTransaction)}.
+   * <ul>
+   *   <li>Then return {@link CustomerPaymentImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OrderPaymentServiceImpl#createCustomerPaymentFromPaymentTransaction(PaymentTransaction)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "CustomerPayment OrderPaymentServiceImpl.createCustomerPaymentFromPaymentTransaction(PaymentTransaction)"})
+  public void testCreateCustomerPaymentFromPaymentTransaction_thenReturnCustomerPaymentImpl() {
+    // Arrange
+    when(addressService.copyAddress(Mockito.<Address>any())).thenReturn(new AddressImpl());
+    CustomerPaymentImpl customerPaymentImpl = new CustomerPaymentImpl();
+    when(customerPaymentService.saveCustomerPayment(Mockito.<CustomerPayment>any())).thenReturn(customerPaymentImpl);
+    when(customerPaymentService.create()).thenReturn(new CustomerPaymentImpl());
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.getGatewayType()).thenReturn(new PaymentGatewayType("Type", "Friendly Type"));
+    when(orderPaymentImpl.getType()).thenReturn(new PaymentType("Type", "Friendly Type"));
+    when(orderPaymentImpl.getBillingAddress()).thenReturn(new AddressImpl());
+    when(orderPaymentImpl.getOrder()).thenReturn(new NullOrderImpl());
+    PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
+    when(transaction.getAdditionalFields()).thenReturn(new HashMap<>());
+    when(transaction.getOrderPayment()).thenReturn(orderPaymentImpl);
+
+    // Act
+    CustomerPayment actualCreateCustomerPaymentFromPaymentTransactionResult = orderPaymentServiceImpl
+        .createCustomerPaymentFromPaymentTransaction(transaction);
+
+    // Assert
+    verify(orderPaymentImpl).getBillingAddress();
+    verify(orderPaymentImpl).getGatewayType();
+    verify(orderPaymentImpl).getOrder();
+    verify(orderPaymentImpl).getType();
+    verify(transaction, atLeast(1)).getAdditionalFields();
+    verify(transaction, atLeast(1)).getOrderPayment();
+    verify(addressService).copyAddress(isA(Address.class));
+    verify(customerPaymentService).create();
+    verify(customerPaymentService).saveCustomerPayment(isA(CustomerPayment.class));
+    assertSame(customerPaymentImpl, actualCreateCustomerPaymentFromPaymentTransactionResult);
   }
 }

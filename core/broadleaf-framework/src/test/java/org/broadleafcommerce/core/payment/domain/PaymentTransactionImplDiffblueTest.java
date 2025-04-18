@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.payment.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -6,9 +23,12 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -16,133 +36,88 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import org.broadleafcommerce.common.copy.CreateResponse;
-import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
-import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
 import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.common.payment.PaymentTransactionType;
-import org.broadleafcommerce.common.service.GenericEntityServiceImpl;
-import org.broadleafcommerce.common.site.domain.CatalogImpl;
-import org.broadleafcommerce.common.site.domain.SiteImpl;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class PaymentTransactionImplDiffblueTest {
   @Autowired
   private PaymentTransactionImpl paymentTransactionImpl;
 
   /**
    * Test {@link PaymentTransactionImpl#getOrderPayment()}.
-   * <p>
-   * Method under test: {@link PaymentTransactionImpl#getOrderPayment()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetOrderPayment() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.payment.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1423 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.domain.PaymentTransactionImpl paymentTransactionImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new PaymentTransactionImpl()).getOrderPayment();
-  }
-
-  /**
-   * Test {@link PaymentTransactionImpl#getOrderPayment()}.
    * <ul>
-   *   <li>Given {@link Money} {@link Money#getAmount()} return
-   * {@link BigDecimal#BigDecimal(String)} with {@code 2.3}.</li>
-   *   <li>Then calls {@link Money#getAmount()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PaymentTransactionImpl#getOrderPayment()}
-   */
-  @Test
-  public void testGetOrderPayment_givenMoneyGetAmountReturnBigDecimalWith23_thenCallsGetAmount() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Money amount = mock(Money.class);
-    when(amount.getAmount()).thenReturn(new BigDecimal("2.3"));
-
-    PaymentTransactionImpl paymentTransactionImpl = new PaymentTransactionImpl();
-    paymentTransactionImpl.setAdditionalFields(new HashMap<>());
-    paymentTransactionImpl.setAmount(amount);
-    paymentTransactionImpl.setCustomerIpAddress("42 Main St");
-    paymentTransactionImpl
-        .setDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    paymentTransactionImpl.setId(1L);
-    paymentTransactionImpl.setRawResponse("Raw Response");
-    paymentTransactionImpl.setSaveToken(true);
-    paymentTransactionImpl.setSuccess(true);
-    paymentTransactionImpl.setType(new PaymentTransactionType("Type", "Friendly Type"));
-    paymentTransactionImpl.setOrderPayment(null);
-    paymentTransactionImpl.setParentTransaction(new PaymentTransactionImpl());
-
-    // Act
-    OrderPayment actualOrderPayment = paymentTransactionImpl.getOrderPayment();
-
-    // Assert
-    verify(amount).getAmount();
-    assertNull(actualOrderPayment);
-  }
-
-  /**
-   * Test {@link PaymentTransactionImpl#getOrderPayment()}.
-   * <ul>
-   *   <li>Given {@link PaymentTransactionImpl} (default constructor) Amount is
-   * {@link Money#Money()}.</li>
+   *   <li>Given {@link PaymentTransactionImpl} (default constructor) OrderPayment is {@code null}.</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link PaymentTransactionImpl#getOrderPayment()}
    */
   @Test
-  public void testGetOrderPayment_givenPaymentTransactionImplAmountIsMoney_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderPayment PaymentTransactionImpl.getOrderPayment()"})
+  public void testGetOrderPayment_givenPaymentTransactionImplOrderPaymentIsNull_thenReturnNull() {
     // Arrange
-    PaymentTransactionImpl paymentTransactionImpl = new PaymentTransactionImpl();
-    paymentTransactionImpl.setAdditionalFields(new HashMap<>());
-    paymentTransactionImpl.setAmount(new Money());
-    paymentTransactionImpl.setCustomerIpAddress("42 Main St");
-    paymentTransactionImpl
+    PaymentTransactionImpl paymentTransactionImpl2 = new PaymentTransactionImpl();
+    paymentTransactionImpl2.setAdditionalFields(new HashMap<>());
+    paymentTransactionImpl2.setAmount(new Money());
+    paymentTransactionImpl2.setCustomerIpAddress("42 Main St");
+    paymentTransactionImpl2
         .setDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    paymentTransactionImpl.setId(1L);
-    paymentTransactionImpl.setRawResponse("Raw Response");
-    paymentTransactionImpl.setSaveToken(true);
-    paymentTransactionImpl.setSuccess(true);
-    paymentTransactionImpl.setType(new PaymentTransactionType("Type", "Friendly Type"));
-    paymentTransactionImpl.setOrderPayment(null);
-    paymentTransactionImpl.setParentTransaction(new PaymentTransactionImpl());
+    paymentTransactionImpl2.setId(1L);
+    paymentTransactionImpl2.setRawResponse("Raw Response");
+    paymentTransactionImpl2.setSaveToken(true);
+    paymentTransactionImpl2.setSuccess(true);
+    paymentTransactionImpl2.setType(new PaymentTransactionType("Type", "Friendly Type"));
+    paymentTransactionImpl2.setOrderPayment(null);
+    paymentTransactionImpl2.setParentTransaction(new PaymentTransactionImpl());
 
     // Act and Assert
-    assertNull(paymentTransactionImpl.getOrderPayment());
+    assertNull(paymentTransactionImpl2.getOrderPayment());
+  }
+
+  /**
+   * Test {@link PaymentTransactionImpl#getOrderPayment()}.
+   * <ul>
+   *   <li>Given {@link PaymentTransactionImpl} (default constructor) OrderPayment is {@link OrderPaymentImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PaymentTransactionImpl#getOrderPayment()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderPayment PaymentTransactionImpl.getOrderPayment()"})
+  public void testGetOrderPayment_givenPaymentTransactionImplOrderPaymentIsOrderPaymentImpl() {
+    // Arrange
+    PaymentTransactionImpl paymentTransactionImpl2 = new PaymentTransactionImpl();
+    paymentTransactionImpl2.setAdditionalFields(new HashMap<>());
+    paymentTransactionImpl2.setAmount(new Money());
+    paymentTransactionImpl2.setCustomerIpAddress("42 Main St");
+    paymentTransactionImpl2
+        .setDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    paymentTransactionImpl2.setId(1L);
+    paymentTransactionImpl2.setRawResponse("Raw Response");
+    paymentTransactionImpl2.setSaveToken(true);
+    paymentTransactionImpl2.setSuccess(true);
+    paymentTransactionImpl2.setType(new PaymentTransactionType("Type", "Friendly Type"));
+    OrderPaymentImpl orderPayment = new OrderPaymentImpl();
+    paymentTransactionImpl2.setOrderPayment(orderPayment);
+    paymentTransactionImpl2.setParentTransaction(null);
+
+    // Act and Assert
+    assertSame(orderPayment, paymentTransactionImpl2.getOrderPayment());
   }
 
   /**
@@ -155,9 +130,9 @@ public class PaymentTransactionImplDiffblueTest {
    * Method under test: {@link PaymentTransactionImpl#getOrderPayment()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderPayment PaymentTransactionImpl.getOrderPayment()"})
   public void testGetOrderPayment_givenPaymentTransactionImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new PaymentTransactionImpl()).getOrderPayment());
   }
@@ -171,421 +146,139 @@ public class PaymentTransactionImplDiffblueTest {
    * Method under test: {@link PaymentTransactionImpl#getOrderPayment()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderPayment PaymentTransactionImpl.getOrderPayment()"})
   public void testGetOrderPayment_thenCallsGetOrderPayment() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    Money amount = mock(Money.class);
-    when(amount.getAmount()).thenReturn(new BigDecimal("2.3"));
     PaymentTransaction parentTransaction = mock(PaymentTransaction.class);
     OrderPaymentImpl orderPaymentImpl = new OrderPaymentImpl();
     when(parentTransaction.getOrderPayment()).thenReturn(orderPaymentImpl);
 
-    PaymentTransactionImpl paymentTransactionImpl = new PaymentTransactionImpl();
-    paymentTransactionImpl.setAdditionalFields(new HashMap<>());
-    paymentTransactionImpl.setAmount(amount);
-    paymentTransactionImpl.setCustomerIpAddress("42 Main St");
-    paymentTransactionImpl
-        .setDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    paymentTransactionImpl.setId(1L);
-    paymentTransactionImpl.setRawResponse("Raw Response");
-    paymentTransactionImpl.setSaveToken(true);
-    paymentTransactionImpl.setSuccess(true);
-    paymentTransactionImpl.setType(new PaymentTransactionType("Type", "Friendly Type"));
-    paymentTransactionImpl.setOrderPayment(null);
-    paymentTransactionImpl.setParentTransaction(parentTransaction);
+    PaymentTransactionImpl paymentTransactionImpl2 = new PaymentTransactionImpl();
+    paymentTransactionImpl2.setParentTransaction(parentTransaction);
 
     // Act
-    OrderPayment actualOrderPayment = paymentTransactionImpl.getOrderPayment();
+    OrderPayment actualOrderPayment = paymentTransactionImpl2.getOrderPayment();
 
     // Assert
-    verify(amount).getAmount();
     verify(parentTransaction).getOrderPayment();
     assertSame(orderPaymentImpl, actualOrderPayment);
   }
 
   /**
-   * Test {@link PaymentTransactionImpl#getOrderPayment()}.
-   * <ul>
-   *   <li>Then {@link PaymentTransactionImpl} (default constructor)
-   * {@link PaymentTransactionImpl#orderPayment} {@link OrderPaymentImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PaymentTransactionImpl#getOrderPayment()}
-   */
-  @Test
-  public void testGetOrderPayment_thenPaymentTransactionImplOrderPaymentOrderPaymentImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PaymentTransactionImpl paymentTransactionImpl = new PaymentTransactionImpl();
-    paymentTransactionImpl.setAdditionalFields(new HashMap<>());
-    paymentTransactionImpl.setAmount(new Money());
-    paymentTransactionImpl.setCustomerIpAddress("42 Main St");
-    paymentTransactionImpl
-        .setDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    paymentTransactionImpl.setId(1L);
-    paymentTransactionImpl.setRawResponse("Raw Response");
-    paymentTransactionImpl.setSaveToken(true);
-    paymentTransactionImpl.setSuccess(true);
-    paymentTransactionImpl.setType(new PaymentTransactionType("Type", "Friendly Type"));
-    OrderPaymentImpl orderPayment = new OrderPaymentImpl();
-    paymentTransactionImpl.setOrderPayment(orderPayment);
-    paymentTransactionImpl.setParentTransaction(null);
-
-    // Act
-    OrderPayment actualOrderPayment = paymentTransactionImpl.getOrderPayment();
-
-    // Assert
-    OrderPayment orderPayment2 = paymentTransactionImpl.orderPayment;
-    assertTrue(orderPayment2 instanceof OrderPaymentImpl);
-    assertSame(orderPayment, actualOrderPayment);
-    assertSame(((OrderPaymentImpl) actualOrderPayment).archiveStatus, ((OrderPaymentImpl) orderPayment2).archiveStatus);
-  }
-
-  /**
-   * Test {@link PaymentTransactionImpl#getType()}.
-   * <p>
-   * Method under test: {@link PaymentTransactionImpl#getType()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetType() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.payment.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1437 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.domain.PaymentTransactionImpl paymentTransactionImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new PaymentTransactionImpl()).getType();
-  }
-
-  /**
-   * Test {@link PaymentTransactionImpl#getType()}.
-   * <ul>
-   *   <li>Given {@link PaymentTransactionImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PaymentTransactionImpl#getType()}
-   */
-  @Test
-  public void testGetType_givenPaymentTransactionImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange and Act
-    PaymentTransactionType actualType = (new PaymentTransactionImpl()).getType();
-
-    // Assert
-    assertEquals("Friendly Type", actualType.getFriendlyType());
-    assertNull(actualType.getType());
-  }
-
-  /**
-   * Test {@link PaymentTransactionImpl#getType()}.
-   * <ul>
-   *   <li>Given {@link PaymentTransactionImpl} (default constructor) OrderPayment
-   * is {@link OrderPaymentImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PaymentTransactionImpl#getType()}
-   */
-  @Test
-  public void testGetType_givenPaymentTransactionImplOrderPaymentIsOrderPaymentImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PaymentTransactionImpl paymentTransactionImpl = new PaymentTransactionImpl();
-    paymentTransactionImpl.setOrderPayment(mock(OrderPaymentImpl.class));
-
-    // Act
-    PaymentTransactionType actualType = paymentTransactionImpl.getType();
-
-    // Assert
-    assertEquals("Friendly Type", actualType.getFriendlyType());
-    assertNull(actualType.getType());
-  }
-
-  /**
    * Test {@link PaymentTransactionImpl#setType(PaymentTransactionType)}.
    * <p>
-   * Method under test:
-   * {@link PaymentTransactionImpl#setType(PaymentTransactionType)}
+   * Method under test: {@link PaymentTransactionImpl#setType(PaymentTransactionType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PaymentTransactionImpl.setType(PaymentTransactionType)"})
   public void testSetType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    PaymentTransactionImpl paymentTransactionImpl = new PaymentTransactionImpl();
+    PaymentTransactionImpl paymentTransactionImpl2 = new PaymentTransactionImpl();
     PaymentTransactionType type = new PaymentTransactionType("Type", "Friendly Type");
 
     // Act
-    paymentTransactionImpl.setType(type);
+    paymentTransactionImpl2.setType(type);
 
     // Assert
-    assertEquals("Type", paymentTransactionImpl.type);
-    assertEquals(type, paymentTransactionImpl.getType());
-  }
-
-  /**
-   * Test {@link PaymentTransactionImpl#setType(PaymentTransactionType)}.
-   * <p>
-   * Method under test:
-   * {@link PaymentTransactionImpl#setType(PaymentTransactionType)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetType2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.payment.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1534 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.domain.PaymentTransactionImpl paymentTransactionImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    PaymentTransactionImpl paymentTransactionImpl2 = new PaymentTransactionImpl();
-
-    // Act
-    paymentTransactionImpl2.setType(new PaymentTransactionType("Type", "Friendly Type"));
+    assertEquals("Type", paymentTransactionImpl2.type);
+    assertEquals(type, paymentTransactionImpl2.getType());
   }
 
   /**
    * Test {@link PaymentTransactionImpl#setType(PaymentTransactionType)}.
    * <ul>
    *   <li>Given {@code Type}.</li>
-   *   <li>Then {@link PaymentTransactionImpl} (default constructor) Type Type is
-   * {@code Type}.</li>
+   *   <li>Then {@link PaymentTransactionImpl} (default constructor) Type Type is {@code Type}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PaymentTransactionImpl#setType(PaymentTransactionType)}
+   * Method under test: {@link PaymentTransactionImpl#setType(PaymentTransactionType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PaymentTransactionImpl.setType(PaymentTransactionType)"})
   public void testSetType_givenType_thenPaymentTransactionImplTypeTypeIsType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    PaymentTransactionImpl paymentTransactionImpl = new PaymentTransactionImpl();
+    PaymentTransactionImpl paymentTransactionImpl2 = new PaymentTransactionImpl();
     PaymentTransactionType type = mock(PaymentTransactionType.class);
     when(type.getType()).thenReturn("Type");
 
     // Act
-    paymentTransactionImpl.setType(type);
+    paymentTransactionImpl2.setType(type);
 
     // Assert
     verify(type).getType();
-    assertEquals("Type", paymentTransactionImpl.getType().getType());
-    assertEquals("Type", paymentTransactionImpl.type);
+    assertEquals("Type", paymentTransactionImpl2.getType().getType());
+    assertEquals("Type", paymentTransactionImpl2.type);
   }
 
   /**
-   * Test {@link PaymentTransactionImpl#setType(PaymentTransactionType)}.
+   * Test {@link PaymentTransactionImpl#getAmount()}.
    * <ul>
-   *   <li>Then {@link PaymentTransactionImpl} (default constructor)
-   * ParentTransaction {@link PaymentTransactionImpl}.</li>
+   *   <li>Given {@link PaymentTransactionImpl} (default constructor) Amount is {@link Money#Money()}.</li>
+   *   <li>Then return {@link Money#Money()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PaymentTransactionImpl#setType(PaymentTransactionType)}
+   * Method under test: {@link PaymentTransactionImpl#getAmount()}
    */
   @Test
-  public void testSetType_thenPaymentTransactionImplParentTransactionPaymentTransactionImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money PaymentTransactionImpl.getAmount()"})
+  public void testGetAmount_givenPaymentTransactionImplAmountIsMoney_thenReturnMoney() {
     // Arrange
-    PaymentTransactionImpl paymentTransactionImpl = new PaymentTransactionImpl();
-    paymentTransactionImpl.setAdditionalFields(new HashMap<>());
+    PaymentTransactionImpl paymentTransactionImpl2 = new PaymentTransactionImpl();
+    paymentTransactionImpl2.setAdditionalFields(new HashMap<>());
+    paymentTransactionImpl2.setCustomerIpAddress("42 Main St");
+    paymentTransactionImpl2
+        .setDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    paymentTransactionImpl2.setId(1L);
+    paymentTransactionImpl2.setRawResponse("Raw Response");
+    paymentTransactionImpl2.setSaveToken(true);
+    paymentTransactionImpl2.setSuccess(true);
+    paymentTransactionImpl2.setType(new PaymentTransactionType("Type", "Friendly Type"));
     Money amount = new Money();
-    paymentTransactionImpl.setAmount(amount);
-    paymentTransactionImpl.setCustomerIpAddress("42 Main St");
-    paymentTransactionImpl
-        .setDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    paymentTransactionImpl.setId(1L);
-    paymentTransactionImpl.setOrderPayment(new OrderPaymentImpl());
-    paymentTransactionImpl.setParentTransaction(new PaymentTransactionImpl());
-    paymentTransactionImpl.setRawResponse("Raw Response");
-    paymentTransactionImpl.setSaveToken(true);
-    paymentTransactionImpl.setSuccess(true);
-    paymentTransactionImpl.setType(new PaymentTransactionType("Type", "Friendly Type"));
+    paymentTransactionImpl2.setAmount(amount);
+    paymentTransactionImpl2.setOrderPayment(new OrderPaymentImpl());
+    paymentTransactionImpl2.setParentTransaction(null);
 
-    // Act
-    paymentTransactionImpl.setType(null);
-
-    // Assert
-    PaymentTransaction parentTransaction = paymentTransactionImpl.getParentTransaction();
-    assertTrue(parentTransaction instanceof PaymentTransactionImpl);
-    PaymentTransactionType type = paymentTransactionImpl.getType();
-    assertNull(type.getType());
-    assertNull(paymentTransactionImpl.type);
-    assertEquals(amount, paymentTransactionImpl.getAmount().zero().zero().abs().zero().abs().abs().abs().zero());
-    assertSame(type, parentTransaction.getType());
-  }
-
-  /**
-   * Test {@link PaymentTransactionImpl#getAmount()}.
-   * <p>
-   * Method under test: {@link PaymentTransactionImpl#getAmount()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetAmount() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.payment.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1395 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.domain.PaymentTransactionImpl paymentTransactionImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new PaymentTransactionImpl()).getAmount();
+    // Act and Assert
+    assertEquals(amount, paymentTransactionImpl2.getAmount());
   }
 
   /**
    * Test {@link PaymentTransactionImpl#getAmount()}.
    * <ul>
-   *   <li>Then calls {@link BroadleafCurrencyImpl#getCurrencyCode()}.</li>
+   *   <li>Then {@link PaymentTransactionImpl} (default constructor) {@link PaymentTransactionImpl#orderPayment} {@link OrderPaymentImpl}.</li>
    * </ul>
    * <p>
    * Method under test: {@link PaymentTransactionImpl#getAmount()}
    */
   @Test
-  public void testGetAmount_thenCallsGetCurrencyCode() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
-    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
-    OrderPaymentImpl orderPayment = mock(OrderPaymentImpl.class);
-    when(orderPayment.getCurrency()).thenReturn(broadleafCurrencyImpl);
-
-    PaymentTransactionImpl paymentTransactionImpl = new PaymentTransactionImpl();
-    paymentTransactionImpl.setAdditionalFields(new HashMap<>());
-    paymentTransactionImpl.setCustomerIpAddress("42 Main St");
-    paymentTransactionImpl
-        .setDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    paymentTransactionImpl.setId(1L);
-    paymentTransactionImpl.setRawResponse("Raw Response");
-    paymentTransactionImpl.setSaveToken(true);
-    paymentTransactionImpl.setSuccess(true);
-    paymentTransactionImpl.setType(new PaymentTransactionType("Type", "Friendly Type"));
-    paymentTransactionImpl.setAmount(null);
-    paymentTransactionImpl.setOrderPayment(orderPayment);
-    paymentTransactionImpl.setParentTransaction(mock(PaymentTransaction.class));
-
-    // Act
-    Money actualAmount = paymentTransactionImpl.getAmount();
-
-    // Assert
-    verify(broadleafCurrencyImpl).getCurrencyCode();
-    verify(orderPayment).getCurrency();
-    assertEquals(actualAmount.ZERO, actualAmount);
-  }
-
-  /**
-   * Test {@link PaymentTransactionImpl#getAmount()}.
-   * <ul>
-   *   <li>Then calls {@link PaymentTransaction#getOrderPayment()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PaymentTransactionImpl#getAmount()}
-   */
-  @Test
-  public void testGetAmount_thenCallsGetOrderPayment() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PaymentTransaction parentTransaction = mock(PaymentTransaction.class);
-    when(parentTransaction.getOrderPayment()).thenReturn(new OrderPaymentImpl());
-
-    PaymentTransactionImpl paymentTransactionImpl = new PaymentTransactionImpl();
-    paymentTransactionImpl.setAdditionalFields(new HashMap<>());
-    paymentTransactionImpl.setCustomerIpAddress("42 Main St");
-    paymentTransactionImpl
-        .setDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    paymentTransactionImpl.setId(1L);
-    paymentTransactionImpl.setRawResponse("Raw Response");
-    paymentTransactionImpl.setSaveToken(true);
-    paymentTransactionImpl.setSuccess(true);
-    paymentTransactionImpl.setType(new PaymentTransactionType("Type", "Friendly Type"));
-    paymentTransactionImpl.setAmount(null);
-    paymentTransactionImpl.setOrderPayment(null);
-    paymentTransactionImpl.setParentTransaction(parentTransaction);
-
-    // Act
-    Money actualAmount = paymentTransactionImpl.getAmount();
-
-    // Assert
-    verify(parentTransaction).getOrderPayment();
-    assertEquals(actualAmount.ZERO, actualAmount);
-  }
-
-  /**
-   * Test {@link PaymentTransactionImpl#getAmount()}.
-   * <ul>
-   *   <li>Then {@link PaymentTransactionImpl} (default constructor)
-   * {@link PaymentTransactionImpl#orderPayment} {@link OrderPaymentImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PaymentTransactionImpl#getAmount()}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money PaymentTransactionImpl.getAmount()"})
   public void testGetAmount_thenPaymentTransactionImplOrderPaymentOrderPaymentImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    PaymentTransactionImpl paymentTransactionImpl = new PaymentTransactionImpl();
-    paymentTransactionImpl.setAdditionalFields(new HashMap<>());
-    paymentTransactionImpl.setCustomerIpAddress("42 Main St");
-    paymentTransactionImpl
+    PaymentTransactionImpl paymentTransactionImpl2 = new PaymentTransactionImpl();
+    paymentTransactionImpl2.setAdditionalFields(new HashMap<>());
+    paymentTransactionImpl2.setCustomerIpAddress("42 Main St");
+    paymentTransactionImpl2
         .setDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    paymentTransactionImpl.setId(1L);
-    paymentTransactionImpl.setRawResponse("Raw Response");
-    paymentTransactionImpl.setSaveToken(true);
-    paymentTransactionImpl.setSuccess(true);
-    paymentTransactionImpl.setType(new PaymentTransactionType("Type", "Friendly Type"));
-    paymentTransactionImpl.setAmount(null);
+    paymentTransactionImpl2.setId(1L);
+    paymentTransactionImpl2.setRawResponse("Raw Response");
+    paymentTransactionImpl2.setSaveToken(true);
+    paymentTransactionImpl2.setSuccess(true);
+    paymentTransactionImpl2.setType(new PaymentTransactionType("Type", "Friendly Type"));
+    paymentTransactionImpl2.setAmount(null);
     OrderPaymentImpl orderPayment = new OrderPaymentImpl();
-    paymentTransactionImpl.setOrderPayment(orderPayment);
-    paymentTransactionImpl.setParentTransaction(null);
+    paymentTransactionImpl2.setOrderPayment(orderPayment);
+    paymentTransactionImpl2.setParentTransaction(null);
 
     // Act
-    Money actualAmount = paymentTransactionImpl.getAmount();
+    Money actualAmount = paymentTransactionImpl2.getAmount();
 
     // Assert
-    OrderPayment orderPayment2 = paymentTransactionImpl.orderPayment;
+    OrderPayment orderPayment2 = paymentTransactionImpl2.orderPayment;
     assertTrue(orderPayment2 instanceof OrderPaymentImpl);
     assertEquals(actualAmount.ZERO, actualAmount);
     assertSame(orderPayment.archiveStatus, ((OrderPaymentImpl) orderPayment2).archiveStatus);
@@ -594,525 +287,158 @@ public class PaymentTransactionImplDiffblueTest {
   /**
    * Test {@link PaymentTransactionImpl#getAmount()}.
    * <ul>
-   *   <li>Then return {@link Money#Money()}.</li>
+   *   <li>Then return abs abs abs is {@link Money#ZERO}.</li>
    * </ul>
    * <p>
    * Method under test: {@link PaymentTransactionImpl#getAmount()}
    */
   @Test
-  public void testGetAmount_thenReturnMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money PaymentTransactionImpl.getAmount()"})
+  public void testGetAmount_thenReturnAbsAbsAbsIsZero() {
     // Arrange
-    PaymentTransactionImpl paymentTransactionImpl = new PaymentTransactionImpl();
-    paymentTransactionImpl.setAdditionalFields(new HashMap<>());
-    paymentTransactionImpl.setCustomerIpAddress("42 Main St");
-    paymentTransactionImpl
-        .setDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    paymentTransactionImpl.setId(1L);
-    paymentTransactionImpl.setRawResponse("Raw Response");
-    paymentTransactionImpl.setSaveToken(true);
-    paymentTransactionImpl.setSuccess(true);
-    paymentTransactionImpl.setType(new PaymentTransactionType("Type", "Friendly Type"));
-    Money amount = new Money();
-    paymentTransactionImpl.setAmount(amount);
-    paymentTransactionImpl.setOrderPayment(new OrderPaymentImpl());
-    paymentTransactionImpl.setParentTransaction(null);
+    PaymentTransaction parentTransaction = mock(PaymentTransaction.class);
+    when(parentTransaction.getOrderPayment()).thenReturn(new OrderPaymentImpl());
 
-    // Act and Assert
-    assertEquals(amount, paymentTransactionImpl.getAmount());
-  }
-
-  /**
-   * Test {@link PaymentTransactionImpl#setAmount(Money)}.
-   * <p>
-   * Method under test: {@link PaymentTransactionImpl#setAmount(Money)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetAmount() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.payment.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1479 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.domain.PaymentTransactionImpl paymentTransactionImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
     PaymentTransactionImpl paymentTransactionImpl2 = new PaymentTransactionImpl();
+    paymentTransactionImpl2.setAdditionalFields(new HashMap<>());
+    paymentTransactionImpl2.setCustomerIpAddress("42 Main St");
+    paymentTransactionImpl2
+        .setDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    paymentTransactionImpl2.setId(1L);
+    paymentTransactionImpl2.setRawResponse("Raw Response");
+    paymentTransactionImpl2.setSaveToken(true);
+    paymentTransactionImpl2.setSuccess(true);
+    paymentTransactionImpl2.setType(new PaymentTransactionType("Type", "Friendly Type"));
+    paymentTransactionImpl2.setAmount(null);
+    paymentTransactionImpl2.setOrderPayment(null);
+    paymentTransactionImpl2.setParentTransaction(parentTransaction);
 
     // Act
-    paymentTransactionImpl2.setAmount(new Money());
+    Money actualAmount = paymentTransactionImpl2.getAmount();
+
+    // Assert
+    verify(parentTransaction).getOrderPayment();
+    Money money = actualAmount.ZERO;
+    Money absResult = actualAmount.abs();
+    Money absResult2 = absResult.abs();
+    assertEquals(money, absResult2.abs());
+    Money zeroResult = actualAmount.zero();
+    Money absResult3 = zeroResult.abs();
+    assertEquals(money, absResult3.abs());
+    Money zeroResult2 = absResult.zero();
+    assertEquals(money, zeroResult2.abs());
+    Money zeroResult3 = zeroResult.zero();
+    assertEquals(money, zeroResult3.abs());
+    assertEquals(money, absResult2.zero());
+    assertEquals(money, absResult3.zero());
+    assertEquals(money, zeroResult2.zero());
+    assertEquals(money, zeroResult3.zero());
   }
 
   /**
    * Test {@link PaymentTransactionImpl#setAmount(Money)}.
    * <ul>
-   *   <li>Given {@link PaymentTransactionImpl} (default constructor)
-   * AdditionalFields is {@link HashMap#HashMap()}.</li>
+   *   <li>Given {@link PaymentTransactionImpl} (default constructor) AdditionalFields is {@link HashMap#HashMap()}.</li>
    *   <li>When {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link PaymentTransactionImpl#setAmount(Money)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PaymentTransactionImpl.setAmount(Money)"})
   public void testSetAmount_givenPaymentTransactionImplAdditionalFieldsIsHashMap_whenNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    PaymentTransactionImpl paymentTransactionImpl = new PaymentTransactionImpl();
-    paymentTransactionImpl.setAdditionalFields(new HashMap<>());
-    paymentTransactionImpl.setAmount(new Money());
-    paymentTransactionImpl.setCustomerIpAddress("42 Main St");
-    paymentTransactionImpl
+    PaymentTransactionImpl paymentTransactionImpl2 = new PaymentTransactionImpl();
+    paymentTransactionImpl2.setAdditionalFields(new HashMap<>());
+    paymentTransactionImpl2.setAmount(new Money());
+    paymentTransactionImpl2.setCustomerIpAddress("42 Main St");
+    paymentTransactionImpl2
         .setDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    paymentTransactionImpl.setId(1L);
-    paymentTransactionImpl.setOrderPayment(new OrderPaymentImpl());
-    paymentTransactionImpl.setParentTransaction(new PaymentTransactionImpl());
-    paymentTransactionImpl.setRawResponse("Raw Response");
-    paymentTransactionImpl.setSaveToken(true);
-    paymentTransactionImpl.setSuccess(true);
-    paymentTransactionImpl.setType(new PaymentTransactionType("Type", "Friendly Type"));
+    paymentTransactionImpl2.setId(1L);
+    paymentTransactionImpl2.setOrderPayment(new OrderPaymentImpl());
+    paymentTransactionImpl2.setParentTransaction(new PaymentTransactionImpl());
+    paymentTransactionImpl2.setRawResponse("Raw Response");
+    paymentTransactionImpl2.setSaveToken(true);
+    paymentTransactionImpl2.setSuccess(true);
+    paymentTransactionImpl2.setType(new PaymentTransactionType("Type", "Friendly Type"));
 
     // Act
-    paymentTransactionImpl.setAmount(null);
+    paymentTransactionImpl2.setAmount(null);
 
     // Assert that nothing has changed
-    assertEquals(new BigDecimal("0.00"), paymentTransactionImpl.amount);
+    assertEquals(new BigDecimal("0.00"), paymentTransactionImpl2.amount);
   }
 
   /**
    * Test {@link PaymentTransactionImpl#setAmount(Money)}.
    * <ul>
-   *   <li>Then {@link PaymentTransactionImpl} (default constructor)
-   * {@link PaymentTransactionImpl#amount} is
-   * {@link BigDecimal#BigDecimal(String)} with {@code 2.3}.</li>
+   *   <li>Then {@link PaymentTransactionImpl} (default constructor) {@link PaymentTransactionImpl#amount} is {@link BigDecimal#BigDecimal(String)} with {@code 2.3}.</li>
    * </ul>
    * <p>
    * Method under test: {@link PaymentTransactionImpl#setAmount(Money)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PaymentTransactionImpl.setAmount(Money)"})
   public void testSetAmount_thenPaymentTransactionImplAmountIsBigDecimalWith23() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    PaymentTransactionImpl paymentTransactionImpl = new PaymentTransactionImpl();
+    PaymentTransactionImpl paymentTransactionImpl2 = new PaymentTransactionImpl();
     Money amount = mock(Money.class);
     when(amount.getAmount()).thenReturn(new BigDecimal("2.3"));
 
     // Act
-    paymentTransactionImpl.setAmount(amount);
+    paymentTransactionImpl2.setAmount(amount);
 
     // Assert
     verify(amount).getAmount();
-    assertEquals(new BigDecimal("2.3"), paymentTransactionImpl.amount);
+    assertEquals(new BigDecimal("2.3"), paymentTransactionImpl2.amount);
   }
 
   /**
    * Test {@link PaymentTransactionImpl#setAmount(Money)}.
    * <ul>
    *   <li>When {@link Money#Money()}.</li>
-   *   <li>Then {@link Money#Money()} abs Amount is {@link PaymentTransactionImpl}
-   * (default constructor) {@link PaymentTransactionImpl#amount}.</li>
+   *   <li>Then {@link Money#Money()} abs Amount is {@link PaymentTransactionImpl} (default constructor) {@link PaymentTransactionImpl#amount}.</li>
    * </ul>
    * <p>
    * Method under test: {@link PaymentTransactionImpl#setAmount(Money)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PaymentTransactionImpl.setAmount(Money)"})
   public void testSetAmount_whenMoney_thenMoneyAbsAmountIsPaymentTransactionImplAmount() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    PaymentTransactionImpl paymentTransactionImpl = new PaymentTransactionImpl();
+    PaymentTransactionImpl paymentTransactionImpl2 = new PaymentTransactionImpl();
     Money amount = new Money();
 
     // Act
-    paymentTransactionImpl.setAmount(amount);
+    paymentTransactionImpl2.setAmount(amount);
 
     // Assert
-    assertEquals(new BigDecimal("0.00"), paymentTransactionImpl.amount);
-    BigDecimal bigDecimal = paymentTransactionImpl.amount;
+    assertEquals(new BigDecimal("0.00"), paymentTransactionImpl2.amount);
+    BigDecimal bigDecimal = paymentTransactionImpl2.amount;
     Money absResult = amount.abs();
     assertSame(bigDecimal, absResult.getAmount());
     Money absResult2 = absResult.abs();
     assertSame(bigDecimal, absResult2.getAmount());
-    Money absResult3 = absResult2.abs();
-    assertSame(bigDecimal, absResult3.getAmount());
-    Money absResult4 = absResult3.abs();
-    assertSame(bigDecimal, absResult4.getAmount());
-    Money absResult5 = absResult4.abs();
-    assertSame(bigDecimal, absResult5.getAmount());
-    Money absResult6 = absResult5.abs();
-    assertSame(bigDecimal, absResult6.getAmount());
-    assertSame(bigDecimal, absResult6.abs().getAmount());
+    assertSame(bigDecimal, absResult2.abs().getAmount());
     Money zeroResult = amount.zero();
-    Money absResult7 = zeroResult.abs();
-    Money absResult8 = absResult7.abs();
-    Money absResult9 = absResult8.abs();
-    Money absResult10 = absResult9.abs();
-    Money absResult11 = absResult10.abs();
-    assertSame(bigDecimal, absResult11.abs().getAmount());
-    assertSame(bigDecimal, absResult11.getAmount());
+    Money absResult3 = zeroResult.abs();
+    assertSame(bigDecimal, absResult3.abs().getAmount());
+    assertSame(bigDecimal, absResult3.getAmount());
     Money zeroResult2 = absResult.zero();
-    Money absResult12 = zeroResult2.abs();
-    Money absResult13 = absResult12.abs();
-    Money absResult14 = absResult13.abs();
-    Money absResult15 = absResult14.abs();
-    assertSame(bigDecimal, absResult15.abs().getAmount());
+    assertSame(bigDecimal, zeroResult2.abs().getAmount());
     Money zeroResult3 = zeroResult.zero();
-    Money absResult16 = zeroResult3.abs();
-    Money absResult17 = absResult16.abs();
-    Money absResult18 = absResult17.abs();
-    Money absResult19 = absResult18.abs();
-    assertSame(bigDecimal, absResult19.abs().getAmount());
-    assertSame(bigDecimal, absResult10.getAmount());
-    assertSame(bigDecimal, absResult15.getAmount());
-    Money zeroResult4 = absResult2.zero();
-    Money absResult20 = zeroResult4.abs();
-    Money absResult21 = absResult20.abs();
-    Money absResult22 = absResult21.abs();
-    assertSame(bigDecimal, absResult22.abs().getAmount());
-    Money zeroResult5 = absResult7.zero();
-    Money absResult23 = zeroResult5.abs();
-    Money absResult24 = absResult23.abs();
-    Money absResult25 = absResult24.abs();
-    assertSame(bigDecimal, absResult25.abs().getAmount());
-    assertSame(bigDecimal, absResult19.getAmount());
-    Money zeroResult6 = zeroResult2.zero();
-    Money absResult26 = zeroResult6.abs();
-    Money absResult27 = absResult26.abs();
-    Money absResult28 = absResult27.abs();
-    assertSame(bigDecimal, absResult28.abs().getAmount());
-    Money zeroResult7 = zeroResult3.zero();
-    Money absResult29 = zeroResult7.abs();
-    Money absResult30 = absResult29.abs();
-    Money absResult31 = absResult30.abs();
-    assertSame(bigDecimal, absResult31.abs().getAmount());
-    assertSame(bigDecimal, absResult9.getAmount());
-    assertSame(bigDecimal, absResult14.getAmount());
-    assertSame(bigDecimal, absResult22.getAmount());
-    Money zeroResult8 = absResult3.zero();
-    Money absResult32 = zeroResult8.abs();
-    Money absResult33 = absResult32.abs();
-    assertSame(bigDecimal, absResult33.abs().getAmount());
-    Money zeroResult9 = absResult8.zero();
-    Money absResult34 = zeroResult9.abs();
-    Money absResult35 = absResult34.abs();
-    assertSame(bigDecimal, absResult35.abs().getAmount());
-    assertSame(bigDecimal, absResult25.getAmount());
-    Money zeroResult10 = absResult12.zero();
-    Money absResult36 = zeroResult10.abs();
-    Money absResult37 = absResult36.abs();
-    assertSame(bigDecimal, absResult37.abs().getAmount());
-    Money zeroResult11 = absResult16.zero();
-    Money absResult38 = zeroResult11.abs();
-    Money absResult39 = absResult38.abs();
-    assertSame(bigDecimal, absResult39.abs().getAmount());
-    assertSame(bigDecimal, absResult18.getAmount());
-    assertSame(bigDecimal, absResult28.getAmount());
-    Money zeroResult12 = zeroResult4.zero();
-    Money absResult40 = zeroResult12.abs();
-    Money absResult41 = absResult40.abs();
-    assertSame(bigDecimal, absResult41.abs().getAmount());
-    Money zeroResult13 = zeroResult5.zero();
-    Money absResult42 = zeroResult13.abs();
-    Money absResult43 = absResult42.abs();
-    assertSame(bigDecimal, absResult43.abs().getAmount());
-    assertSame(bigDecimal, absResult31.getAmount());
-    Money zeroResult14 = zeroResult6.zero();
-    Money absResult44 = zeroResult14.abs();
-    Money absResult45 = absResult44.abs();
-    assertSame(bigDecimal, absResult45.abs().getAmount());
-    Money zeroResult15 = zeroResult7.zero();
-    Money absResult46 = zeroResult15.abs();
-    Money absResult47 = absResult46.abs();
-    assertSame(bigDecimal, absResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult8.getAmount());
-    assertSame(bigDecimal, absResult13.getAmount());
-    assertSame(bigDecimal, absResult21.getAmount());
-    assertSame(bigDecimal, absResult33.getAmount());
-    Money zeroResult16 = absResult4.zero();
-    Money absResult48 = zeroResult16.abs();
-    assertSame(bigDecimal, absResult48.abs().getAmount());
-    Money zeroResult17 = absResult9.zero();
-    Money absResult49 = zeroResult17.abs();
-    assertSame(bigDecimal, absResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult35.getAmount());
-    Money zeroResult18 = absResult13.zero();
-    Money absResult50 = zeroResult18.abs();
-    assertSame(bigDecimal, absResult50.abs().getAmount());
-    Money zeroResult19 = absResult17.zero();
-    Money absResult51 = zeroResult19.abs();
-    assertSame(bigDecimal, absResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult24.getAmount());
-    assertSame(bigDecimal, absResult37.getAmount());
-    Money zeroResult20 = absResult20.zero();
-    Money absResult52 = zeroResult20.abs();
-    assertSame(bigDecimal, absResult52.abs().getAmount());
-    Money zeroResult21 = absResult23.zero();
-    Money absResult53 = zeroResult21.abs();
-    assertSame(bigDecimal, absResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult39.getAmount());
-    Money zeroResult22 = absResult26.zero();
-    Money absResult54 = zeroResult22.abs();
-    assertSame(bigDecimal, absResult54.abs().getAmount());
-    Money zeroResult23 = absResult29.zero();
-    Money absResult55 = zeroResult23.abs();
-    assertSame(bigDecimal, absResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult17.getAmount());
-    assertSame(bigDecimal, absResult27.getAmount());
-    assertSame(bigDecimal, absResult41.getAmount());
-    Money zeroResult24 = zeroResult8.zero();
-    Money absResult56 = zeroResult24.abs();
-    assertSame(bigDecimal, absResult56.abs().getAmount());
-    Money zeroResult25 = zeroResult9.zero();
-    Money absResult57 = zeroResult25.abs();
-    assertSame(bigDecimal, absResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult43.getAmount());
-    Money zeroResult26 = zeroResult10.zero();
-    Money absResult58 = zeroResult26.abs();
-    assertSame(bigDecimal, absResult58.abs().getAmount());
-    Money zeroResult27 = zeroResult11.zero();
-    Money absResult59 = zeroResult27.abs();
-    assertSame(bigDecimal, absResult59.abs().getAmount());
-    assertSame(bigDecimal, absResult30.getAmount());
-    assertSame(bigDecimal, absResult45.getAmount());
-    Money zeroResult28 = zeroResult12.zero();
-    Money absResult60 = zeroResult28.abs();
-    assertSame(bigDecimal, absResult60.abs().getAmount());
-    Money zeroResult29 = zeroResult13.zero();
-    Money absResult61 = zeroResult29.abs();
-    assertSame(bigDecimal, absResult61.abs().getAmount());
-    assertSame(bigDecimal, absResult47.getAmount());
-    Money zeroResult30 = zeroResult14.zero();
-    Money absResult62 = zeroResult30.abs();
-    assertSame(bigDecimal, absResult62.abs().getAmount());
-    assertSame(bigDecimal, absResult7.getAmount());
-    assertSame(bigDecimal, absResult12.getAmount());
-    assertSame(bigDecimal, absResult20.getAmount());
-    assertSame(bigDecimal, absResult32.getAmount());
-    assertSame(bigDecimal, absResult48.getAmount());
-    Money zeroResult31 = absResult5.zero();
-    assertSame(bigDecimal, zeroResult31.abs().getAmount());
-    Money zeroResult32 = absResult10.zero();
-    assertSame(bigDecimal, zeroResult32.abs().getAmount());
-    assertSame(bigDecimal, absResult49.getAmount());
-    Money zeroResult33 = absResult14.zero();
-    assertSame(bigDecimal, zeroResult33.abs().getAmount());
-    Money zeroResult34 = absResult18.zero();
-    assertSame(bigDecimal, zeroResult34.abs().getAmount());
-    assertSame(bigDecimal, absResult34.getAmount());
-    assertSame(bigDecimal, absResult50.getAmount());
-    Money zeroResult35 = absResult21.zero();
-    assertSame(bigDecimal, zeroResult35.abs().getAmount());
-    Money zeroResult36 = absResult24.zero();
-    assertSame(bigDecimal, zeroResult36.abs().getAmount());
-    assertSame(bigDecimal, absResult51.getAmount());
-    Money zeroResult37 = absResult27.zero();
-    assertSame(bigDecimal, zeroResult37.abs().getAmount());
-    Money zeroResult38 = absResult30.zero();
-    assertSame(bigDecimal, zeroResult38.abs().getAmount());
-    assertSame(bigDecimal, absResult23.getAmount());
-    assertSame(bigDecimal, absResult36.getAmount());
-    assertSame(bigDecimal, absResult52.getAmount());
-    Money zeroResult39 = absResult32.zero();
-    assertSame(bigDecimal, zeroResult39.abs().getAmount());
-    Money zeroResult40 = absResult34.zero();
-    assertSame(bigDecimal, zeroResult40.abs().getAmount());
-    assertSame(bigDecimal, absResult53.getAmount());
-    Money zeroResult41 = absResult36.zero();
-    assertSame(bigDecimal, zeroResult41.abs().getAmount());
-    Money zeroResult42 = absResult38.zero();
-    assertSame(bigDecimal, zeroResult42.abs().getAmount());
-    assertSame(bigDecimal, absResult38.getAmount());
-    assertSame(bigDecimal, absResult54.getAmount());
-    Money zeroResult43 = absResult40.zero();
-    assertSame(bigDecimal, zeroResult43.abs().getAmount());
-    Money zeroResult44 = absResult42.zero();
-    assertSame(bigDecimal, zeroResult44.abs().getAmount());
-    assertSame(bigDecimal, absResult55.getAmount());
-    Money zeroResult45 = absResult44.zero();
-    assertSame(bigDecimal, zeroResult45.abs().getAmount());
-    assertSame(bigDecimal, absResult16.getAmount());
-    assertSame(bigDecimal, absResult26.getAmount());
-    assertSame(bigDecimal, absResult40.getAmount());
-    assertSame(bigDecimal, absResult56.getAmount());
-    Money zeroResult46 = zeroResult16.zero();
-    assertSame(bigDecimal, zeroResult46.abs().getAmount());
-    Money zeroResult47 = zeroResult17.zero();
-    assertSame(bigDecimal, zeroResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult57.getAmount());
-    Money zeroResult48 = zeroResult18.zero();
-    assertSame(bigDecimal, zeroResult48.abs().getAmount());
-    Money zeroResult49 = zeroResult19.zero();
-    assertSame(bigDecimal, zeroResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult42.getAmount());
-    assertSame(bigDecimal, absResult58.getAmount());
-    Money zeroResult50 = zeroResult20.zero();
-    assertSame(bigDecimal, zeroResult50.abs().getAmount());
-    Money zeroResult51 = zeroResult21.zero();
-    assertSame(bigDecimal, zeroResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult59.getAmount());
-    Money zeroResult52 = zeroResult22.zero();
-    assertSame(bigDecimal, zeroResult52.abs().getAmount());
-    Money zeroResult53 = zeroResult23.zero();
-    assertSame(bigDecimal, zeroResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult29.getAmount());
-    assertSame(bigDecimal, absResult44.getAmount());
-    assertSame(bigDecimal, absResult60.getAmount());
-    Money zeroResult54 = zeroResult24.zero();
-    assertSame(bigDecimal, zeroResult54.abs().getAmount());
-    Money zeroResult55 = zeroResult25.zero();
-    assertSame(bigDecimal, zeroResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult61.getAmount());
-    Money zeroResult56 = zeroResult26.zero();
-    assertSame(bigDecimal, zeroResult56.abs().getAmount());
-    Money zeroResult57 = zeroResult27.zero();
-    assertSame(bigDecimal, zeroResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult46.getAmount());
-    assertSame(bigDecimal, absResult62.getAmount());
-    Money zeroResult58 = zeroResult28.zero();
-    assertSame(bigDecimal, zeroResult58.abs().getAmount());
-    Money zeroResult59 = zeroResult29.zero();
-    assertSame(bigDecimal, zeroResult59.abs().getAmount());
-    Money zeroResult60 = zeroResult15.zero();
-    assertSame(bigDecimal, zeroResult60.abs().getAmount());
-    Money zeroResult61 = zeroResult30.zero();
-    assertSame(bigDecimal, zeroResult61.abs().getAmount());
+    assertSame(bigDecimal, zeroResult3.abs().getAmount());
     assertSame(bigDecimal, zeroResult.getAmount());
     assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, zeroResult4.getAmount());
-    assertSame(bigDecimal, zeroResult8.getAmount());
-    assertSame(bigDecimal, zeroResult16.getAmount());
-    assertSame(bigDecimal, zeroResult31.getAmount());
-    assertSame(bigDecimal, absResult6.zero().getAmount());
-    assertSame(bigDecimal, absResult11.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.getAmount());
-    assertSame(bigDecimal, absResult15.zero().getAmount());
-    assertSame(bigDecimal, absResult19.zero().getAmount());
-    assertSame(bigDecimal, zeroResult17.getAmount());
-    assertSame(bigDecimal, zeroResult33.getAmount());
-    assertSame(bigDecimal, absResult22.zero().getAmount());
-    assertSame(bigDecimal, absResult25.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.getAmount());
-    assertSame(bigDecimal, absResult28.zero().getAmount());
-    assertSame(bigDecimal, absResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult9.getAmount());
-    assertSame(bigDecimal, zeroResult18.getAmount());
-    assertSame(bigDecimal, zeroResult35.getAmount());
-    assertSame(bigDecimal, absResult33.zero().getAmount());
-    assertSame(bigDecimal, absResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.getAmount());
-    assertSame(bigDecimal, absResult37.zero().getAmount());
-    assertSame(bigDecimal, absResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult19.getAmount());
-    assertSame(bigDecimal, zeroResult37.getAmount());
-    assertSame(bigDecimal, absResult41.zero().getAmount());
-    assertSame(bigDecimal, absResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.getAmount());
-    assertSame(bigDecimal, absResult45.zero().getAmount());
-    assertSame(bigDecimal, absResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult5.getAmount());
-    assertSame(bigDecimal, zeroResult10.getAmount());
-    assertSame(bigDecimal, zeroResult20.getAmount());
-    assertSame(bigDecimal, zeroResult39.getAmount());
-    assertSame(bigDecimal, absResult48.zero().getAmount());
-    assertSame(bigDecimal, absResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.getAmount());
-    assertSame(bigDecimal, absResult50.zero().getAmount());
-    assertSame(bigDecimal, absResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult21.getAmount());
-    assertSame(bigDecimal, zeroResult41.getAmount());
-    assertSame(bigDecimal, absResult52.zero().getAmount());
-    assertSame(bigDecimal, absResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.getAmount());
-    assertSame(bigDecimal, absResult54.zero().getAmount());
-    assertSame(bigDecimal, absResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult11.getAmount());
-    assertSame(bigDecimal, zeroResult22.getAmount());
-    assertSame(bigDecimal, zeroResult43.getAmount());
-    assertSame(bigDecimal, absResult56.zero().getAmount());
-    assertSame(bigDecimal, absResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.getAmount());
-    assertSame(bigDecimal, absResult58.zero().getAmount());
-    assertSame(bigDecimal, absResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult23.getAmount());
-    assertSame(bigDecimal, zeroResult45.getAmount());
-    assertSame(bigDecimal, absResult60.zero().getAmount());
-    assertSame(bigDecimal, absResult61.zero().getAmount());
-    assertSame(bigDecimal, absResult46.zero().getAmount());
-    assertSame(bigDecimal, absResult62.zero().getAmount());
+    assertSame(bigDecimal, absResult2.zero().getAmount());
+    assertSame(bigDecimal, absResult3.zero().getAmount());
     assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult6.getAmount());
-    assertSame(bigDecimal, zeroResult12.getAmount());
-    assertSame(bigDecimal, zeroResult24.getAmount());
-    assertSame(bigDecimal, zeroResult46.getAmount());
-    assertSame(bigDecimal, zeroResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.getAmount());
-    assertSame(bigDecimal, zeroResult33.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.zero().getAmount());
-    assertSame(bigDecimal, zeroResult25.getAmount());
-    assertSame(bigDecimal, zeroResult48.getAmount());
-    assertSame(bigDecimal, zeroResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.getAmount());
-    assertSame(bigDecimal, zeroResult37.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.zero().getAmount());
-    assertSame(bigDecimal, zeroResult13.getAmount());
-    assertSame(bigDecimal, zeroResult26.getAmount());
-    assertSame(bigDecimal, zeroResult50.getAmount());
-    assertSame(bigDecimal, zeroResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.getAmount());
-    assertSame(bigDecimal, zeroResult41.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.zero().getAmount());
-    assertSame(bigDecimal, zeroResult27.getAmount());
-    assertSame(bigDecimal, zeroResult52.getAmount());
-    assertSame(bigDecimal, zeroResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.getAmount());
-    assertSame(bigDecimal, zeroResult45.zero().getAmount());
-    assertSame(bigDecimal, zeroResult7.getAmount());
-    assertSame(bigDecimal, zeroResult14.getAmount());
-    assertSame(bigDecimal, zeroResult28.getAmount());
-    assertSame(bigDecimal, zeroResult54.getAmount());
-    assertSame(bigDecimal, zeroResult46.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.getAmount());
-    assertSame(bigDecimal, zeroResult48.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult29.getAmount());
-    assertSame(bigDecimal, zeroResult56.getAmount());
-    assertSame(bigDecimal, zeroResult50.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.getAmount());
-    assertSame(bigDecimal, zeroResult52.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult15.getAmount());
-    assertSame(bigDecimal, zeroResult30.getAmount());
-    assertSame(bigDecimal, zeroResult58.getAmount());
-    assertSame(bigDecimal, zeroResult54.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.getAmount());
-    assertSame(bigDecimal, zeroResult56.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.getAmount());
-    assertSame(bigDecimal, zeroResult61.getAmount());
-    assertSame(bigDecimal, zeroResult58.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.zero().getAmount());
-    assertSame(bigDecimal, zeroResult61.zero().getAmount());
+    assertSame(bigDecimal, zeroResult2.zero().getAmount());
+    assertSame(bigDecimal, zeroResult3.zero().getAmount());
   }
 
   /**
@@ -1138,6 +464,16 @@ public class PaymentTransactionImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map PaymentTransactionImpl.getAdditionalFields()",
+      "String PaymentTransactionImpl.getCustomerIpAddress()", "Date PaymentTransactionImpl.getDate()",
+      "Long PaymentTransactionImpl.getId()", "PaymentTransaction PaymentTransactionImpl.getParentTransaction()",
+      "String PaymentTransactionImpl.getRawResponse()", "Boolean PaymentTransactionImpl.getSuccess()",
+      "void PaymentTransactionImpl.setAdditionalFields(Map)",
+      "void PaymentTransactionImpl.setCustomerIpAddress(String)", "void PaymentTransactionImpl.setDate(Date)",
+      "void PaymentTransactionImpl.setId(Long)", "void PaymentTransactionImpl.setOrderPayment(OrderPayment)",
+      "void PaymentTransactionImpl.setParentTransaction(PaymentTransaction)",
+      "void PaymentTransactionImpl.setRawResponse(String)", "void PaymentTransactionImpl.setSuccess(Boolean)"})
   public void testGettersAndSetters() {
     // Arrange
     PaymentTransactionImpl paymentTransactionImpl = new PaymentTransactionImpl();
@@ -1162,7 +498,7 @@ public class PaymentTransactionImplDiffblueTest {
     String actualRawResponse = paymentTransactionImpl.getRawResponse();
     Boolean actualSuccess = paymentTransactionImpl.getSuccess();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("42 Main St", actualCustomerIpAddress);
     assertEquals("Raw Response", actualRawResponse);
     assertEquals(1L, actualId.longValue());
@@ -1175,108 +511,6 @@ public class PaymentTransactionImplDiffblueTest {
 
   /**
    * Test {@link PaymentTransactionImpl#isSaveToken()}.
-   * <p>
-   * Method under test: {@link PaymentTransactionImpl#isSaveToken()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsSaveToken() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.payment.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1465 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.domain.PaymentTransactionImpl paymentTransactionImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new PaymentTransactionImpl()).isSaveToken();
-  }
-
-  /**
-   * Test {@link PaymentTransactionImpl#isSaveToken()}.
-   * <ul>
-   *   <li>Given {@link Money} {@link Money#getAmount()} return
-   * {@link BigDecimal#BigDecimal(String)} with {@code 2.3}.</li>
-   *   <li>Then calls {@link Money#getAmount()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PaymentTransactionImpl#isSaveToken()}
-   */
-  @Test
-  public void testIsSaveToken_givenMoneyGetAmountReturnBigDecimalWith23_thenCallsGetAmount() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Money amount = mock(Money.class);
-    when(amount.getAmount()).thenReturn(new BigDecimal("2.3"));
-
-    PaymentTransactionImpl paymentTransactionImpl = new PaymentTransactionImpl();
-    paymentTransactionImpl.setAdditionalFields(new HashMap<>());
-    paymentTransactionImpl.setAmount(amount);
-    paymentTransactionImpl.setCustomerIpAddress("42 Main St");
-    paymentTransactionImpl
-        .setDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    paymentTransactionImpl.setId(1L);
-    paymentTransactionImpl.setOrderPayment(new OrderPaymentImpl());
-    paymentTransactionImpl.setParentTransaction(new PaymentTransactionImpl());
-    paymentTransactionImpl.setRawResponse("Raw Response");
-    paymentTransactionImpl.setSuccess(true);
-    paymentTransactionImpl.setType(new PaymentTransactionType("Type", "Friendly Type"));
-    paymentTransactionImpl.setSaveToken(true);
-
-    // Act
-    boolean actualIsSaveTokenResult = paymentTransactionImpl.isSaveToken();
-
-    // Assert
-    verify(amount).getAmount();
-    assertTrue(actualIsSaveTokenResult);
-  }
-
-  /**
-   * Test {@link PaymentTransactionImpl#isSaveToken()}.
-   * <ul>
-   *   <li>Given {@link PaymentTransactionImpl} (default constructor) Amount is
-   * {@link Money#Money()}.</li>
-   *   <li>Then return {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PaymentTransactionImpl#isSaveToken()}
-   */
-  @Test
-  public void testIsSaveToken_givenPaymentTransactionImplAmountIsMoney_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PaymentTransactionImpl paymentTransactionImpl = new PaymentTransactionImpl();
-    paymentTransactionImpl.setAdditionalFields(new HashMap<>());
-    paymentTransactionImpl.setAmount(new Money());
-    paymentTransactionImpl.setCustomerIpAddress("42 Main St");
-    paymentTransactionImpl
-        .setDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    paymentTransactionImpl.setId(1L);
-    paymentTransactionImpl.setOrderPayment(new OrderPaymentImpl());
-    paymentTransactionImpl.setParentTransaction(new PaymentTransactionImpl());
-    paymentTransactionImpl.setRawResponse("Raw Response");
-    paymentTransactionImpl.setSuccess(true);
-    paymentTransactionImpl.setType(new PaymentTransactionType("Type", "Friendly Type"));
-    paymentTransactionImpl.setSaveToken(true);
-
-    // Act and Assert
-    assertTrue(paymentTransactionImpl.isSaveToken());
-  }
-
-  /**
-   * Test {@link PaymentTransactionImpl#isSaveToken()}.
    * <ul>
    *   <li>Given {@link PaymentTransactionImpl} (default constructor).</li>
    *   <li>Then return {@code false}.</li>
@@ -1285,86 +519,61 @@ public class PaymentTransactionImplDiffblueTest {
    * Method under test: {@link PaymentTransactionImpl#isSaveToken()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PaymentTransactionImpl.isSaveToken()"})
   public void testIsSaveToken_givenPaymentTransactionImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertFalse((new PaymentTransactionImpl()).isSaveToken());
   }
 
   /**
+   * Test {@link PaymentTransactionImpl#isSaveToken()}.
+   * <ul>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PaymentTransactionImpl#isSaveToken()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PaymentTransactionImpl.isSaveToken()"})
+  public void testIsSaveToken_thenReturnTrue() {
+    // Arrange
+    PaymentTransactionImpl paymentTransactionImpl2 = new PaymentTransactionImpl();
+    paymentTransactionImpl2.setAdditionalFields(new HashMap<>());
+    paymentTransactionImpl2.setAmount(new Money());
+    paymentTransactionImpl2.setCustomerIpAddress("42 Main St");
+    paymentTransactionImpl2
+        .setDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    paymentTransactionImpl2.setId(1L);
+    paymentTransactionImpl2.setOrderPayment(new OrderPaymentImpl());
+    paymentTransactionImpl2.setParentTransaction(new PaymentTransactionImpl());
+    paymentTransactionImpl2.setRawResponse("Raw Response");
+    paymentTransactionImpl2.setSuccess(true);
+    paymentTransactionImpl2.setType(new PaymentTransactionType("Type", "Friendly Type"));
+    paymentTransactionImpl2.setSaveToken(true);
+
+    // Act and Assert
+    assertTrue(paymentTransactionImpl2.isSaveToken());
+  }
+
+  /**
    * Test {@link PaymentTransactionImpl#setSaveToken(boolean)}.
    * <p>
    * Method under test: {@link PaymentTransactionImpl#setSaveToken(boolean)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PaymentTransactionImpl.setSaveToken(boolean)"})
   public void testSetSaveToken() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.payment.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1520 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.domain.PaymentTransactionImpl paymentTransactionImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new PaymentTransactionImpl()).setSaveToken(true);
-  }
-
-  /**
-   * Test {@link PaymentTransactionImpl#setSaveToken(boolean)}.
-   * <ul>
-   *   <li>Given {@link PaymentTransactionImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PaymentTransactionImpl#setSaveToken(boolean)}
-   */
-  @Test
-  public void testSetSaveToken_givenPaymentTransactionImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    PaymentTransactionImpl paymentTransactionImpl = new PaymentTransactionImpl();
+    PaymentTransactionImpl paymentTransactionImpl2 = new PaymentTransactionImpl();
 
     // Act
-    paymentTransactionImpl.setSaveToken(true);
+    paymentTransactionImpl2.setSaveToken(true);
 
     // Assert
-    assertTrue(paymentTransactionImpl.saveToken);
-  }
-
-  /**
-   * Test {@link PaymentTransactionImpl#setSaveToken(boolean)}.
-   * <ul>
-   *   <li>Given {@link PaymentTransactionImpl} (default constructor) OrderPayment
-   * is {@link OrderPaymentImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PaymentTransactionImpl#setSaveToken(boolean)}
-   */
-  @Test
-  public void testSetSaveToken_givenPaymentTransactionImplOrderPaymentIsOrderPaymentImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PaymentTransactionImpl paymentTransactionImpl = new PaymentTransactionImpl();
-    paymentTransactionImpl.setOrderPayment(mock(OrderPaymentImpl.class));
-
-    // Act
-    paymentTransactionImpl.setSaveToken(true);
-
-    // Assert
-    assertTrue(paymentTransactionImpl.saveToken);
+    assertTrue(paymentTransactionImpl2.saveToken);
   }
 
   /**
@@ -1373,192 +582,52 @@ public class PaymentTransactionImplDiffblueTest {
    * Method under test: {@link PaymentTransactionImpl#getArchived()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Character PaymentTransactionImpl.getArchived()"})
   public void testGetArchived() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.payment.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1409 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.domain.PaymentTransactionImpl paymentTransactionImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new PaymentTransactionImpl()).getArchived();
-  }
-
-  /**
-   * Test {@link PaymentTransactionImpl#getArchived()}.
-   * <ul>
-   *   <li>Given {@link PaymentTransactionImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PaymentTransactionImpl#getArchived()}
-   */
-  @Test
-  public void testGetArchived_givenPaymentTransactionImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertEquals('N', (new PaymentTransactionImpl()).getArchived().charValue());
   }
 
   /**
-   * Test {@link PaymentTransactionImpl#getArchived()}.
-   * <ul>
-   *   <li>Given {@link PaymentTransactionImpl} (default constructor) OrderPayment
-   * is {@link OrderPaymentImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PaymentTransactionImpl#getArchived()}
-   */
-  @Test
-  public void testGetArchived_givenPaymentTransactionImplOrderPaymentIsOrderPaymentImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PaymentTransactionImpl paymentTransactionImpl = new PaymentTransactionImpl();
-    paymentTransactionImpl.setOrderPayment(mock(OrderPaymentImpl.class));
-
-    // Act and Assert
-    assertEquals('N', paymentTransactionImpl.getArchived().charValue());
-  }
-
-  /**
    * Test {@link PaymentTransactionImpl#setArchived(Character)}.
    * <p>
    * Method under test: {@link PaymentTransactionImpl#setArchived(Character)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PaymentTransactionImpl.setArchived(Character)"})
   public void testSetArchived() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.payment.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1498 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.domain.PaymentTransactionImpl paymentTransactionImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new PaymentTransactionImpl()).setArchived('A');
-  }
-
-  /**
-   * Test {@link PaymentTransactionImpl#setArchived(Character)}.
-   * <ul>
-   *   <li>Given {@link PaymentTransactionImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PaymentTransactionImpl#setArchived(Character)}
-   */
-  @Test
-  public void testSetArchived_givenPaymentTransactionImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    PaymentTransactionImpl paymentTransactionImpl = new PaymentTransactionImpl();
+    PaymentTransactionImpl paymentTransactionImpl2 = new PaymentTransactionImpl();
 
     // Act
-    paymentTransactionImpl.setArchived('A');
+    paymentTransactionImpl2.setArchived('A');
 
     // Assert
-    assertEquals('A', paymentTransactionImpl.archiveStatus.getArchived().charValue());
-    assertEquals('A', paymentTransactionImpl.getArchived().charValue());
-  }
-
-  /**
-   * Test {@link PaymentTransactionImpl#setArchived(Character)}.
-   * <ul>
-   *   <li>Given {@link PaymentTransactionImpl} (default constructor) OrderPayment
-   * is {@link OrderPaymentImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PaymentTransactionImpl#setArchived(Character)}
-   */
-  @Test
-  public void testSetArchived_givenPaymentTransactionImplOrderPaymentIsOrderPaymentImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PaymentTransactionImpl paymentTransactionImpl = new PaymentTransactionImpl();
-    paymentTransactionImpl.setOrderPayment(mock(OrderPaymentImpl.class));
-
-    // Act
-    paymentTransactionImpl.setArchived('A');
-
-    // Assert
-    assertEquals('A', paymentTransactionImpl.archiveStatus.getArchived().charValue());
-    assertEquals('A', paymentTransactionImpl.getArchived().charValue());
-  }
-
-  /**
-   * Test {@link PaymentTransactionImpl#isActive()}.
-   * <p>
-   * Method under test: {@link PaymentTransactionImpl#isActive()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsActive() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.payment.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1451 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.domain.PaymentTransactionImpl paymentTransactionImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new PaymentTransactionImpl()).isActive();
+    assertEquals('A', paymentTransactionImpl2.archiveStatus.getArchived().charValue());
+    assertEquals('A', paymentTransactionImpl2.getArchived().charValue());
   }
 
   /**
    * Test {@link PaymentTransactionImpl#isActive()}.
    * <ul>
-   *   <li>Given {@link PaymentTransactionImpl} (default constructor) Archived is
-   * {@code Y}.</li>
+   *   <li>Given {@link PaymentTransactionImpl} (default constructor) Archived is {@code Y}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link PaymentTransactionImpl#isActive()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PaymentTransactionImpl.isActive()"})
   public void testIsActive_givenPaymentTransactionImplArchivedIsY_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    PaymentTransactionImpl paymentTransactionImpl = new PaymentTransactionImpl();
-    paymentTransactionImpl.setArchived('Y');
+    PaymentTransactionImpl paymentTransactionImpl2 = new PaymentTransactionImpl();
+    paymentTransactionImpl2.setArchived('Y');
 
     // Act and Assert
-    assertFalse(paymentTransactionImpl.isActive());
+    assertFalse(paymentTransactionImpl2.isActive());
   }
 
   /**
@@ -1571,33 +640,31 @@ public class PaymentTransactionImplDiffblueTest {
    * Method under test: {@link PaymentTransactionImpl#isActive()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PaymentTransactionImpl.isActive()"})
   public void testIsActive_givenPaymentTransactionImpl_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertTrue((new PaymentTransactionImpl()).isActive());
   }
 
   /**
-   * Test
-   * {@link PaymentTransactionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * Test {@link PaymentTransactionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <p>
-   * Method under test:
-   * {@link PaymentTransactionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link PaymentTransactionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse PaymentTransactionImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    PaymentTransactionImpl paymentTransactionImpl = new PaymentTransactionImpl();
+    PaymentTransactionImpl paymentTransactionImpl2 = new PaymentTransactionImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
     CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
 
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<PaymentTransaction> actualCreateOrRetrieveCopyInstanceResult = paymentTransactionImpl
+    CreateResponse<PaymentTransaction> actualCreateOrRetrieveCopyInstanceResult = paymentTransactionImpl2
         .createOrRetrieveCopyInstance(context);
 
     // Assert
@@ -1606,65 +673,69 @@ public class PaymentTransactionImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link PaymentTransactionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * Test {@link PaymentTransactionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <p>
-   * Method under test:
-   * {@link PaymentTransactionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link PaymentTransactionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse PaymentTransactionImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.payment.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1323 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.domain.PaymentTransactionImpl paymentTransactionImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
+    OrderPaymentImpl orderPayment = mock(OrderPaymentImpl.class);
+    when(orderPayment.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
+        .thenReturn(new CreateResponse<>(new OrderPaymentImpl(), true));
+    doNothing().when(orderPayment).addTransaction(Mockito.<PaymentTransaction>any());
+    orderPayment.addTransaction(new PaymentTransactionImpl());
+
+    PaymentTransactionImpl paymentTransactionImpl = new PaymentTransactionImpl();
+    paymentTransactionImpl.setOrderPayment(orderPayment);
+
     PaymentTransactionImpl paymentTransactionImpl2 = new PaymentTransactionImpl();
-    CatalogImpl fromCatalog = new CatalogImpl();
-    CatalogImpl toCatalog = new CatalogImpl();
-    SiteImpl fromSite = new SiteImpl();
-    SiteImpl toSite = new SiteImpl();
-    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
+    paymentTransactionImpl2.setAdditionalFields(new HashMap<>());
+    paymentTransactionImpl2.setAmount(new Money());
+    paymentTransactionImpl2.setCustomerIpAddress("42 Main St");
+    paymentTransactionImpl2
+        .setDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    paymentTransactionImpl2.setId(1L);
+    paymentTransactionImpl2.setOrderPayment(new OrderPaymentImpl());
+    paymentTransactionImpl2.setParentTransaction(new PaymentTransactionImpl());
+    paymentTransactionImpl2.setRawResponse("Raw Response");
+    paymentTransactionImpl2.setSaveToken(true);
+    paymentTransactionImpl2.setSuccess(true);
+    paymentTransactionImpl2
+        .setType(new PaymentTransactionType("ThreadLocalManager.notify.orphans", "ThreadLocalManager.notify.orphans"));
+    CreateResponse<Object> createResponse = new CreateResponse<>(paymentTransactionImpl2, false);
+
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    paymentTransactionImpl2.createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite,
-        toSite, genericEntityService, new MultiTenantCopierExtensionManager()));
+    CreateResponse<PaymentTransaction> actualCreateOrRetrieveCopyInstanceResult = paymentTransactionImpl
+        .createOrRetrieveCopyInstance(context);
+
+    // Assert
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+    verify(orderPayment).addTransaction(isA(PaymentTransaction.class));
+    verify(orderPayment).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
+    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
   }
 
   /**
    * Test new {@link PaymentTransactionImpl} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link PaymentTransactionImpl}
+   * Method under test: default or parameterless constructor of {@link PaymentTransactionImpl}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PaymentTransactionImpl.<init>()"})
   public void testNewPaymentTransactionImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange and Act
     PaymentTransactionImpl actualPaymentTransactionImpl = new PaymentTransactionImpl();
 
     // Assert
-    PaymentTransactionType type = actualPaymentTransactionImpl.getType();
-    assertEquals("Friendly Type", type.getFriendlyType());
-    assertEquals('N', actualPaymentTransactionImpl.archiveStatus.getArchived().charValue());
     assertEquals('N', actualPaymentTransactionImpl.getArchived().charValue());
     assertNull(actualPaymentTransactionImpl.getId());
-    assertNull(type.getType());
     assertNull(actualPaymentTransactionImpl.getCustomerIpAddress());
     assertNull(actualPaymentTransactionImpl.getRawResponse());
     assertNull(actualPaymentTransactionImpl.type);
@@ -1676,35 +747,5 @@ public class PaymentTransactionImplDiffblueTest {
     assertFalse(actualPaymentTransactionImpl.saveToken);
     assertTrue(actualPaymentTransactionImpl.getAdditionalFields().isEmpty());
     assertTrue(actualPaymentTransactionImpl.getSuccess());
-  }
-
-  /**
-   * Test new {@link PaymentTransactionImpl} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link PaymentTransactionImpl}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testNewPaymentTransactionImpl2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.payment.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1322 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.domain.PaymentTransactionImpl paymentTransactionImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    new PaymentTransactionImpl();
   }
 }

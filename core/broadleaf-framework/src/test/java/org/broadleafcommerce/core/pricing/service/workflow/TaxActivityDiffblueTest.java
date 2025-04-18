@@ -1,65 +1,77 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.pricing.service.workflow;
 
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.pricing.service.TaxService;
-import org.broadleafcommerce.core.pricing.service.TaxServiceImpl;
 import org.broadleafcommerce.core.pricing.service.module.TaxModule;
 import org.broadleafcommerce.core.workflow.DefaultProcessContextImpl;
 import org.broadleafcommerce.core.workflow.ProcessContext;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class TaxActivityDiffblueTest {
-  @Autowired
+  @InjectMocks
   private TaxActivity taxActivity;
+
+  @Mock
+  private TaxService taxService;
 
   /**
    * Test {@link TaxActivity#execute(ProcessContext)}.
+   * <ul>
+   *   <li>Given {@link TaxActivity} TaxModule is {@code null}.</li>
+   *   <li>Then return {@link DefaultProcessContextImpl} (default constructor).</li>
+   * </ul>
    * <p>
    * Method under test: {@link TaxActivity#execute(ProcessContext)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testExecute() throws Exception {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.pricing.service.workflow;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass815 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.pricing.service.workflow.TaxActivity taxActivity;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ProcessContext TaxActivity.execute(ProcessContext)"})
+  public void testExecute_givenTaxActivityTaxModuleIsNull_thenReturnDefaultProcessContextImpl() throws Exception {
     // Arrange
-    TaxActivity taxActivity2 = new TaxActivity();
+    taxActivity.setTaxService(null);
+    taxActivity.setTaxModule(null);
 
-    // Act
-    taxActivity2.execute((ProcessContext<Order>) new DefaultProcessContextImpl<>());
+    DefaultProcessContextImpl<Order> context = new DefaultProcessContextImpl<>();
+    context.setSeedData(new NullOrderImpl());
+
+    // Act and Assert
+    assertSame(context, taxActivity.execute(context));
   }
 
   /**
@@ -71,15 +83,12 @@ public class TaxActivityDiffblueTest {
    * Method under test: {@link TaxActivity#execute(ProcessContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ProcessContext TaxActivity.execute(ProcessContext)"})
   public void testExecute_thenCallsCalculateTaxForOrder() throws Exception {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     TaxModule taxModule = mock(TaxModule.class);
-    NullOrderImpl nullOrderImpl = new NullOrderImpl();
-    when(taxModule.calculateTaxForOrder(Mockito.<Order>any())).thenReturn(nullOrderImpl);
-
-    TaxActivity taxActivity = new TaxActivity();
+    when(taxModule.calculateTaxForOrder(Mockito.<Order>any())).thenReturn(new NullOrderImpl());
     taxActivity.setTaxService(null);
     taxActivity.setTaxModule(taxModule);
 
@@ -87,98 +96,35 @@ public class TaxActivityDiffblueTest {
     context.setSeedData(new NullOrderImpl());
 
     // Act
-    ProcessContext<Order> actualExecuteResult = taxActivity.execute((ProcessContext<Order>) context);
+    ProcessContext<Order> actualExecuteResult = taxActivity.execute(context);
 
     // Assert
     verify(taxModule).calculateTaxForOrder(isA(Order.class));
-    assertTrue(actualExecuteResult instanceof DefaultProcessContextImpl);
-    assertSame(nullOrderImpl, actualExecuteResult.getSeedData());
-  }
-
-  /**
-   * Test {@link TaxActivity#execute(ProcessContext)}.
-   * <ul>
-   *   <li>Then calls {@link TaxService#calculateTaxForOrder(Order)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link TaxActivity#execute(ProcessContext)}
-   */
-  @Test
-  public void testExecute_thenCallsCalculateTaxForOrder2() throws Exception {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    TaxService taxService = mock(TaxService.class);
-    NullOrderImpl nullOrderImpl = new NullOrderImpl();
-    when(taxService.calculateTaxForOrder(Mockito.<Order>any())).thenReturn(nullOrderImpl);
-
-    TaxActivity taxActivity = new TaxActivity();
-    taxActivity.setTaxService(taxService);
-    taxActivity.setTaxModule(mock(TaxModule.class));
-
-    DefaultProcessContextImpl<Order> context = new DefaultProcessContextImpl<>();
-    context.setSeedData(new NullOrderImpl());
-
-    // Act
-    ProcessContext<Order> actualExecuteResult = taxActivity.execute((ProcessContext<Order>) context);
-
-    // Assert
-    verify(taxService).calculateTaxForOrder(isA(Order.class));
-    assertTrue(actualExecuteResult instanceof DefaultProcessContextImpl);
-    assertSame(nullOrderImpl, actualExecuteResult.getSeedData());
+    assertSame(context, actualExecuteResult);
   }
 
   /**
    * Test {@link TaxActivity#execute(ProcessContext)}.
    * <ul>
    *   <li>When {@link DefaultProcessContextImpl} (default constructor).</li>
-   *   <li>Then return {@link DefaultProcessContextImpl} (default constructor).</li>
+   *   <li>Then calls {@link TaxService#calculateTaxForOrder(Order)}.</li>
    * </ul>
    * <p>
    * Method under test: {@link TaxActivity#execute(ProcessContext)}
    */
   @Test
-  public void testExecute_whenDefaultProcessContextImpl_thenReturnDefaultProcessContextImpl() throws Exception {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ProcessContext TaxActivity.execute(ProcessContext)"})
+  public void testExecute_whenDefaultProcessContextImpl_thenCallsCalculateTaxForOrder() throws Exception {
     // Arrange
-    TaxActivity taxActivity = new TaxActivity();
+    when(taxService.calculateTaxForOrder(Mockito.<Order>any())).thenReturn(new NullOrderImpl());
     DefaultProcessContextImpl<Order> context = new DefaultProcessContextImpl<>();
 
-    // Act and Assert
-    assertSame(context, taxActivity.execute((ProcessContext<Order>) context));
-  }
-
-  /**
-   * Test getters and setters.
-   * <p>
-   * Methods under test:
-   * <ul>
-   *   <li>{@link TaxActivity#setTaxModule(TaxModule)}
-   *   <li>{@link TaxActivity#setTaxService(TaxService)}
-   * </ul>
-   */
-  @Test
-  public void testGettersAndSetters() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing observers.
-    //   Diffblue Cover was unable to create an assertion.
-    //   Add getters for the following fields or make them package-private:
-    //     TaxActivity.taxModule
-    //     TaxActivity.taxService
-    //     BaseActivity.automaticallyRegisterRollbackHandler
-    //     BaseActivity.beanName
-    //     BaseActivity.errorHandler
-    //     BaseActivity.order
-    //     BaseActivity.rollbackHandler
-    //     BaseActivity.rollbackRegion
-    //     BaseActivity.stateConfiguration
-
-    // Arrange
-    TaxActivity taxActivity = new TaxActivity();
-
     // Act
-    taxActivity.setTaxModule(mock(TaxModule.class));
-    taxActivity.setTaxService(new TaxServiceImpl());
+    ProcessContext<Order> actualExecuteResult = taxActivity.execute(context);
+
+    // Assert
+    verify(taxService).calculateTaxForOrder(isNull());
+    assertSame(context, actualExecuteResult);
   }
 }

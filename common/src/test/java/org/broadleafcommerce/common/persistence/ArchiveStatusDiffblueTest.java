@@ -19,12 +19,14 @@ package org.broadleafcommerce.common.persistence;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class ArchiveStatusDiffblueTest {
   /**
-   * Test {@link ArchiveStatus#equals(Object)}, and
-   * {@link ArchiveStatus#hashCode()}.
+   * Test {@link ArchiveStatus#equals(Object)}, and {@link ArchiveStatus#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -37,6 +39,8 @@ public class ArchiveStatusDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ArchiveStatus.equals(Object)", "int ArchiveStatus.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     ArchiveStatus archiveStatus = new ArchiveStatus();
@@ -52,8 +56,7 @@ public class ArchiveStatusDiffblueTest {
   }
 
   /**
-   * Test {@link ArchiveStatus#equals(Object)}, and
-   * {@link ArchiveStatus#hashCode()}.
+   * Test {@link ArchiveStatus#equals(Object)}, and {@link ArchiveStatus#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -66,6 +69,8 @@ public class ArchiveStatusDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ArchiveStatus.equals(Object)", "int ArchiveStatus.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     ArchiveStatus archiveStatus = new ArchiveStatus();
@@ -81,8 +86,7 @@ public class ArchiveStatusDiffblueTest {
   }
 
   /**
-   * Test {@link ArchiveStatus#equals(Object)}, and
-   * {@link ArchiveStatus#hashCode()}.
+   * Test {@link ArchiveStatus#equals(Object)}, and {@link ArchiveStatus#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -95,6 +99,8 @@ public class ArchiveStatusDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ArchiveStatus.equals(Object)", "int ArchiveStatus.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     ArchiveStatus archiveStatus = new ArchiveStatus();
@@ -116,6 +122,8 @@ public class ArchiveStatusDiffblueTest {
    * Method under test: {@link ArchiveStatus#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ArchiveStatus.equals(Object)", "int ArchiveStatus.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     ArchiveStatus archiveStatus = new ArchiveStatus();
@@ -138,6 +146,8 @@ public class ArchiveStatusDiffblueTest {
    * Method under test: {@link ArchiveStatus#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ArchiveStatus.equals(Object)", "int ArchiveStatus.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     ArchiveStatus archiveStatus = new ArchiveStatus();
@@ -160,6 +170,8 @@ public class ArchiveStatusDiffblueTest {
    * Method under test: {@link ArchiveStatus#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ArchiveStatus.equals(Object)", "int ArchiveStatus.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     ArchiveStatus archiveStatus = new ArchiveStatus();
@@ -179,6 +191,8 @@ public class ArchiveStatusDiffblueTest {
    * Method under test: {@link ArchiveStatus#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ArchiveStatus.equals(Object)", "int ArchiveStatus.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     ArchiveStatus archiveStatus = new ArchiveStatus();
@@ -199,12 +213,15 @@ public class ArchiveStatusDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ArchiveStatus.<init>()", "Character ArchiveStatus.getArchived()",
+      "void ArchiveStatus.setArchived(Character)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     ArchiveStatus actualArchiveStatus = new ArchiveStatus();
     actualArchiveStatus.setArchived('A');
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals('A', actualArchiveStatus.getArchived().charValue());
   }
 }

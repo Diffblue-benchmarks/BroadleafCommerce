@@ -1,144 +1,60 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework Web
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.web.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.anyBoolean;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+import org.broadleafcommerce.common.security.service.ExploitProtectionService;
 import org.broadleafcommerce.core.search.domain.FieldImpl;
 import org.broadleafcommerce.core.search.domain.SearchCriteria;
-import org.broadleafcommerce.core.search.domain.SearchFacet;
 import org.broadleafcommerce.core.search.domain.SearchFacetDTO;
 import org.broadleafcommerce.core.search.domain.SearchFacetImpl;
 import org.broadleafcommerce.core.search.domain.SearchFacetResultDTO;
 import org.broadleafcommerce.core.web.search.SearchRequestWrapper;
 import org.broadleafcommerce.core.web.security.XssRequestWrapper;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.web.reactive.context.StandardReactiveWebEnvironment;
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml",
-    "/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 class SearchFacetDTOServiceImplDiffblueTest {
-  @Autowired
+  @Mock
+  private ExploitProtectionService exploitProtectionService;
+
+  @InjectMocks
   private SearchFacetDTOServiceImpl searchFacetDTOServiceImpl;
-
-  /**
-   * Test {@link SearchFacetDTOServiceImpl#getDefaultPageSize()}.
-   * <p>
-   * Method under test: {@link SearchFacetDTOServiceImpl#getDefaultPageSize()}
-   */
-  @Test
-  @DisplayName("Test getDefaultPageSize()")
-  @Disabled("TODO: Complete this test")
-  void testGetDefaultPageSize() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3551 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.service.SearchFacetDTOServiceImpl searchFacetDTOServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SearchFacetDTOServiceImpl()).getDefaultPageSize();
-  }
-
-  /**
-   * Test {@link SearchFacetDTOServiceImpl#getMaxPageSize()}.
-   * <p>
-   * Method under test: {@link SearchFacetDTOServiceImpl#getMaxPageSize()}
-   */
-  @Test
-  @DisplayName("Test getMaxPageSize()")
-  @Disabled("TODO: Complete this test")
-  void testGetMaxPageSize() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3552 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.service.SearchFacetDTOServiceImpl searchFacetDTOServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SearchFacetDTOServiceImpl()).getMaxPageSize();
-  }
-
-  /**
-   * Test
-   * {@link SearchFacetDTOServiceImpl#buildSearchCriteria(HttpServletRequest)}.
-   * <p>
-   * Method under test:
-   * {@link SearchFacetDTOServiceImpl#buildSearchCriteria(HttpServletRequest)}
-   */
-  @Test
-  @DisplayName("Test buildSearchCriteria(HttpServletRequest)")
-  @Disabled("TODO: Complete this test")
-  void testBuildSearchCriteria() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3395 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.service.SearchFacetDTOServiceImpl searchFacetDTOServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    SearchFacetDTOServiceImpl searchFacetDTOServiceImpl2 = new SearchFacetDTOServiceImpl();
-    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
-
-    // Act
-    searchFacetDTOServiceImpl2.buildSearchCriteria(new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
-        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"})));
-  }
 
   /**
    * Test {@link SearchFacetDTOServiceImpl#createSearchCriteria()}.
@@ -147,11 +63,11 @@ class SearchFacetDTOServiceImplDiffblueTest {
    */
   @Test
   @DisplayName("Test createSearchCriteria()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"SearchCriteria SearchFacetDTOServiceImpl.createSearchCriteria()"})
   void testCreateSearchCriteria() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange and Act
-    SearchCriteria actualCreateSearchCriteriaResult = (new SearchFacetDTOServiceImpl()).createSearchCriteria();
+    SearchCriteria actualCreateSearchCriteriaResult = searchFacetDTOServiceImpl.createSearchCriteria();
 
     // Assert
     Collection<String> filterQueries = actualCreateSearchCriteriaResult.getFilterQueries();
@@ -169,92 +85,19 @@ class SearchFacetDTOServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link SearchFacetDTOServiceImpl#createSearchCriteria()}.
-   * <p>
-   * Method under test: {@link SearchFacetDTOServiceImpl#createSearchCriteria()}
-   */
-  @Test
-  @DisplayName("Test createSearchCriteria()")
-  @Disabled("TODO: Complete this test")
-  void testCreateSearchCriteria2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3550 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.service.SearchFacetDTOServiceImpl searchFacetDTOServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SearchFacetDTOServiceImpl()).createSearchCriteria();
-  }
-
-  /**
-   * Test
-   * {@link SearchFacetDTOServiceImpl#setActiveFacetResults(List, HttpServletRequest)}.
-   * <p>
-   * Method under test:
-   * {@link SearchFacetDTOServiceImpl#setActiveFacetResults(List, HttpServletRequest)}
-   */
-  @Test
-  @DisplayName("Test setActiveFacetResults(List, HttpServletRequest)")
-  @Disabled("TODO: Complete this test")
-  void testSetActiveFacetResults() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4509 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.service.SearchFacetDTOServiceImpl searchFacetDTOServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    SearchFacetDTOServiceImpl searchFacetDTOServiceImpl2 = new SearchFacetDTOServiceImpl();
-    ArrayList<SearchFacetDTO> facets = new ArrayList<>();
-    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
-
-    // Act
-    searchFacetDTOServiceImpl2.setActiveFacetResults(facets,
-        new SearchRequestWrapper(new XssRequestWrapper(servletRequest, new StandardReactiveWebEnvironment(),
-            new String[]{"White List Param Names"})));
-  }
-
-  /**
-   * Test
-   * {@link SearchFacetDTOServiceImpl#setActiveFacetResults(List, HttpServletRequest)}.
+   * Test {@link SearchFacetDTOServiceImpl#setActiveFacetResults(List, HttpServletRequest)}.
    * <ul>
    *   <li>Then {@link ArrayList#ArrayList()} size is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SearchFacetDTOServiceImpl#setActiveFacetResults(List, HttpServletRequest)}
+   * Method under test: {@link SearchFacetDTOServiceImpl#setActiveFacetResults(List, HttpServletRequest)}
    */
   @Test
   @DisplayName("Test setActiveFacetResults(List, HttpServletRequest); then ArrayList() size is one")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void SearchFacetDTOServiceImpl.setActiveFacetResults(List, HttpServletRequest)"})
   void testSetActiveFacetResults_thenArrayListSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SearchFacetDTOServiceImpl searchFacetDTOServiceImpl = new SearchFacetDTOServiceImpl();
-
     SearchFacetResultDTO searchFacetResultDTO = new SearchFacetResultDTO();
     searchFacetResultDTO.setActive(true);
     searchFacetResultDTO.setFacet(new SearchFacetImpl());
@@ -290,126 +133,19 @@ class SearchFacetDTOServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link SearchFacetDTOServiceImpl#isActive(SearchFacetResultDTO, HttpServletRequest)}.
-   * <p>
-   * Method under test:
-   * {@link SearchFacetDTOServiceImpl#isActive(SearchFacetResultDTO, HttpServletRequest)}
-   */
-  @Test
-  @DisplayName("Test isActive(SearchFacetResultDTO, HttpServletRequest)")
-  @Disabled("TODO: Complete this test")
-  void testIsActive() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4217 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.service.SearchFacetDTOServiceImpl searchFacetDTOServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    SearchFacetDTOServiceImpl searchFacetDTOServiceImpl2 = new SearchFacetDTOServiceImpl();
-
-    SearchFacetResultDTO result = new SearchFacetResultDTO();
-    result.setActive(true);
-    result.setFacet(new SearchFacetImpl());
-    result.setMaxValue(new BigDecimal("2.3"));
-    result.setMinValue(new BigDecimal("2.3"));
-    result.setQuantity(1);
-    result.setValue("42");
-    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
-
-    // Act
-    searchFacetDTOServiceImpl2.isActive(result, new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
-        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"})));
-  }
-
-  /**
-   * Test
-   * {@link SearchFacetDTOServiceImpl#isActive(SearchFacetResultDTO, HttpServletRequest)}.
+   * Test {@link SearchFacetDTOServiceImpl#isActive(SearchFacetResultDTO, HttpServletRequest)}.
    * <ul>
-   *   <li>Given {@link SearchFacetImpl} {@link SearchFacetImpl#getField()} return
-   * {@link FieldImpl} (default constructor).</li>
-   *   <li>Then calls {@link SearchFacetImpl#getField()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SearchFacetDTOServiceImpl#isActive(SearchFacetResultDTO, HttpServletRequest)}
-   */
-  @Test
-  @DisplayName("Test isActive(SearchFacetResultDTO, HttpServletRequest); given SearchFacetImpl getField() return FieldImpl (default constructor); then calls getField()")
-  void testIsActive_givenSearchFacetImplGetFieldReturnFieldImpl_thenCallsGetField() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SearchFacetDTOServiceImpl searchFacetDTOServiceImpl = new SearchFacetDTOServiceImpl();
-    SearchFacetImpl searchFacetImpl = mock(SearchFacetImpl.class);
-    when(searchFacetImpl.getField()).thenReturn(new FieldImpl());
-    SearchFacetResultDTO result = mock(SearchFacetResultDTO.class);
-    when(result.getFacet()).thenReturn(searchFacetImpl);
-    doNothing().when(result).setActive(anyBoolean());
-    doNothing().when(result).setFacet(Mockito.<SearchFacet>any());
-    doNothing().when(result).setMaxValue(Mockito.<BigDecimal>any());
-    doNothing().when(result).setMinValue(Mockito.<BigDecimal>any());
-    doNothing().when(result).setQuantity(Mockito.<Integer>any());
-    doNothing().when(result).setValue(Mockito.<String>any());
-    result.setActive(true);
-    result.setFacet(new SearchFacetImpl());
-    result.setMaxValue(new BigDecimal("2.3"));
-    result.setMinValue(new BigDecimal("2.3"));
-    result.setQuantity(1);
-    result.setValue("42");
-
-    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
-    servletRequest.addParameter("https://example.org/example", "https://example.org/example");
-
-    // Act
-    boolean actualIsActiveResult = searchFacetDTOServiceImpl.isActive(result,
-        new SearchRequestWrapper(new XssRequestWrapper(servletRequest, new StandardReactiveWebEnvironment(),
-            new String[]{"White List Param Names"})));
-
-    // Assert
-    verify(searchFacetImpl).getField();
-    verify(result).getFacet();
-    verify(result).setActive(eq(true));
-    verify(result).setFacet(isA(SearchFacet.class));
-    verify(result).setMaxValue(isA(BigDecimal.class));
-    verify(result).setMinValue(isA(BigDecimal.class));
-    verify(result).setQuantity(eq(1));
-    verify(result).setValue(eq("42"));
-    assertFalse(actualIsActiveResult);
-  }
-
-  /**
-   * Test
-   * {@link SearchFacetDTOServiceImpl#isActive(SearchFacetResultDTO, HttpServletRequest)}.
-   * <ul>
-   *   <li>When {@link SearchFacetResultDTO} (default constructor) Active is
-   * {@code true}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SearchFacetDTOServiceImpl#isActive(SearchFacetResultDTO, HttpServletRequest)}
+   * Method under test: {@link SearchFacetDTOServiceImpl#isActive(SearchFacetResultDTO, HttpServletRequest)}
    */
   @Test
-  @DisplayName("Test isActive(SearchFacetResultDTO, HttpServletRequest); when SearchFacetResultDTO (default constructor) Active is 'true'; then return 'false'")
-  void testIsActive_whenSearchFacetResultDTOActiveIsTrue_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @DisplayName("Test isActive(SearchFacetResultDTO, HttpServletRequest); then return 'false'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean SearchFacetDTOServiceImpl.isActive(SearchFacetResultDTO, HttpServletRequest)"})
+  void testIsActive_thenReturnFalse() {
     // Arrange
-    SearchFacetDTOServiceImpl searchFacetDTOServiceImpl = new SearchFacetDTOServiceImpl();
-
     SearchFacetResultDTO result = new SearchFacetResultDTO();
     result.setActive(true);
     result.setFacet(new SearchFacetImpl());
@@ -426,125 +162,26 @@ class SearchFacetDTOServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link SearchFacetDTOServiceImpl#isActive(SearchFacetResultDTO, HttpServletRequest)}.
+   * Test {@link SearchFacetDTOServiceImpl#getUrlKey(SearchFacetDTO)} with {@code SearchFacetDTO}.
    * <ul>
-   *   <li>When {@link SearchFacetResultDTO}
-   * {@link SearchFacetResultDTO#setActive(boolean)} does nothing.</li>
-   *   <li>Then calls {@link SearchFacetResultDTO#setActive(boolean)}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SearchFacetDTOServiceImpl#isActive(SearchFacetResultDTO, HttpServletRequest)}
+   * Method under test: {@link SearchFacetDTOServiceImpl#getUrlKey(SearchFacetDTO)}
    */
   @Test
-  @DisplayName("Test isActive(SearchFacetResultDTO, HttpServletRequest); when SearchFacetResultDTO setActive(boolean) does nothing; then calls setActive(boolean)")
-  void testIsActive_whenSearchFacetResultDTOSetActiveDoesNothing_thenCallsSetActive() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @DisplayName("Test getUrlKey(SearchFacetDTO) with 'SearchFacetDTO'; then return 'null'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String SearchFacetDTOServiceImpl.getUrlKey(SearchFacetDTO)"})
+  void testGetUrlKeyWithSearchFacetDTO_thenReturnNull() {
     // Arrange
-    SearchFacetDTOServiceImpl searchFacetDTOServiceImpl = new SearchFacetDTOServiceImpl();
-    SearchFacetResultDTO result = mock(SearchFacetResultDTO.class);
-    doNothing().when(result).setActive(anyBoolean());
-    doNothing().when(result).setFacet(Mockito.<SearchFacet>any());
-    doNothing().when(result).setMaxValue(Mockito.<BigDecimal>any());
-    doNothing().when(result).setMinValue(Mockito.<BigDecimal>any());
-    doNothing().when(result).setQuantity(Mockito.<Integer>any());
-    doNothing().when(result).setValue(Mockito.<String>any());
-    result.setActive(true);
-    result.setFacet(new SearchFacetImpl());
-    result.setMaxValue(new BigDecimal("2.3"));
-    result.setMinValue(new BigDecimal("2.3"));
-    result.setQuantity(1);
-    result.setValue("42");
-    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
-
-    // Act
-    boolean actualIsActiveResult = searchFacetDTOServiceImpl.isActive(result,
-        new SearchRequestWrapper(new XssRequestWrapper(servletRequest, new StandardReactiveWebEnvironment(),
-            new String[]{"White List Param Names"})));
-
-    // Assert
-    verify(result).setActive(eq(true));
-    verify(result).setFacet(isA(SearchFacet.class));
-    verify(result).setMaxValue(isA(BigDecimal.class));
-    verify(result).setMinValue(isA(BigDecimal.class));
-    verify(result).setQuantity(eq(1));
-    verify(result).setValue(eq("42"));
-    assertFalse(actualIsActiveResult);
-  }
-
-  /**
-   * Test {@link SearchFacetDTOServiceImpl#getUrlKey(SearchFacetDTO)} with
-   * {@code SearchFacetDTO}.
-   * <p>
-   * Method under test:
-   * {@link SearchFacetDTOServiceImpl#getUrlKey(SearchFacetDTO)}
-   */
-  @Test
-  @DisplayName("Test getUrlKey(SearchFacetDTO) with 'SearchFacetDTO'")
-  @Disabled("TODO: Complete this test")
-  void testGetUrlKeyWithSearchFacetDTO() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3553 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.service.SearchFacetDTOServiceImpl searchFacetDTOServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    SearchFacetDTOServiceImpl searchFacetDTOServiceImpl2 = new SearchFacetDTOServiceImpl();
+    SearchFacetImpl facet = mock(SearchFacetImpl.class);
+    when(facet.getField()).thenReturn(new FieldImpl());
 
     SearchFacetDTO result = new SearchFacetDTO();
     result.setAbbreviation("Abbreviation");
     result.setActive(true);
-    result.setFacet(new SearchFacetImpl());
-    result.setFacetValues(new ArrayList<>());
-    result.setShowQuantity(true);
-
-    // Act
-    searchFacetDTOServiceImpl2.getUrlKey(result);
-  }
-
-  /**
-   * Test {@link SearchFacetDTOServiceImpl#getUrlKey(SearchFacetDTO)} with
-   * {@code SearchFacetDTO}.
-   * <ul>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SearchFacetDTOServiceImpl#getUrlKey(SearchFacetDTO)}
-   */
-  @Test
-  @DisplayName("Test getUrlKey(SearchFacetDTO) with 'SearchFacetDTO'; then return 'null'")
-  void testGetUrlKeyWithSearchFacetDTO_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SearchFacetDTOServiceImpl searchFacetDTOServiceImpl = new SearchFacetDTOServiceImpl();
-    SearchFacetImpl searchFacetImpl = mock(SearchFacetImpl.class);
-    when(searchFacetImpl.getField()).thenReturn(new FieldImpl());
-    SearchFacetDTO result = mock(SearchFacetDTO.class);
-    when(result.getFacet()).thenReturn(searchFacetImpl);
-    doNothing().when(result).setAbbreviation(Mockito.<String>any());
-    doNothing().when(result).setActive(anyBoolean());
-    doNothing().when(result).setFacet(Mockito.<SearchFacet>any());
-    doNothing().when(result).setFacetValues(Mockito.<List<SearchFacetResultDTO>>any());
-    doNothing().when(result).setShowQuantity(anyBoolean());
-    result.setAbbreviation("Abbreviation");
-    result.setActive(true);
-    result.setFacet(new SearchFacetImpl());
+    result.setFacet(facet);
     result.setFacetValues(new ArrayList<>());
     result.setShowQuantity(true);
 
@@ -552,88 +189,30 @@ class SearchFacetDTOServiceImplDiffblueTest {
     String actualUrlKey = searchFacetDTOServiceImpl.getUrlKey(result);
 
     // Assert
-    verify(result).getFacet();
-    verify(result).setAbbreviation(eq("Abbreviation"));
-    verify(result).setActive(eq(true));
-    verify(result).setFacet(isA(SearchFacet.class));
-    verify(result).setFacetValues(isA(List.class));
-    verify(result).setShowQuantity(eq(true));
-    verify(searchFacetImpl).getField();
+    verify(facet).getField();
     assertNull(actualUrlKey);
   }
 
   /**
-   * Test {@link SearchFacetDTOServiceImpl#getUrlKey(SearchFacetResultDTO)} with
-   * {@code SearchFacetResultDTO}.
-   * <p>
-   * Method under test:
-   * {@link SearchFacetDTOServiceImpl#getUrlKey(SearchFacetResultDTO)}
-   */
-  @Test
-  @DisplayName("Test getUrlKey(SearchFacetResultDTO) with 'SearchFacetResultDTO'")
-  @Disabled("TODO: Complete this test")
-  void testGetUrlKeyWithSearchFacetResultDTO() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3591 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.service.SearchFacetDTOServiceImpl searchFacetDTOServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    SearchFacetDTOServiceImpl searchFacetDTOServiceImpl2 = new SearchFacetDTOServiceImpl();
-
-    SearchFacetResultDTO result = new SearchFacetResultDTO();
-    result.setActive(true);
-    result.setFacet(new SearchFacetImpl());
-    result.setMaxValue(new BigDecimal("2.3"));
-    result.setMinValue(new BigDecimal("2.3"));
-    result.setQuantity(1);
-    result.setValue("42");
-
-    // Act
-    searchFacetDTOServiceImpl2.getUrlKey(result);
-  }
-
-  /**
-   * Test {@link SearchFacetDTOServiceImpl#getUrlKey(SearchFacetResultDTO)} with
-   * {@code SearchFacetResultDTO}.
+   * Test {@link SearchFacetDTOServiceImpl#getUrlKey(SearchFacetResultDTO)} with {@code SearchFacetResultDTO}.
    * <ul>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SearchFacetDTOServiceImpl#getUrlKey(SearchFacetResultDTO)}
+   * Method under test: {@link SearchFacetDTOServiceImpl#getUrlKey(SearchFacetResultDTO)}
    */
   @Test
   @DisplayName("Test getUrlKey(SearchFacetResultDTO) with 'SearchFacetResultDTO'; then return 'null'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String SearchFacetDTOServiceImpl.getUrlKey(SearchFacetResultDTO)"})
   void testGetUrlKeyWithSearchFacetResultDTO_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SearchFacetDTOServiceImpl searchFacetDTOServiceImpl = new SearchFacetDTOServiceImpl();
-    SearchFacetImpl searchFacetImpl = mock(SearchFacetImpl.class);
-    when(searchFacetImpl.getField()).thenReturn(new FieldImpl());
-    SearchFacetResultDTO result = mock(SearchFacetResultDTO.class);
-    when(result.getFacet()).thenReturn(searchFacetImpl);
-    doNothing().when(result).setActive(anyBoolean());
-    doNothing().when(result).setFacet(Mockito.<SearchFacet>any());
-    doNothing().when(result).setMaxValue(Mockito.<BigDecimal>any());
-    doNothing().when(result).setMinValue(Mockito.<BigDecimal>any());
-    doNothing().when(result).setQuantity(Mockito.<Integer>any());
-    doNothing().when(result).setValue(Mockito.<String>any());
+    SearchFacetImpl facet = mock(SearchFacetImpl.class);
+    when(facet.getField()).thenReturn(new FieldImpl());
+
+    SearchFacetResultDTO result = new SearchFacetResultDTO();
     result.setActive(true);
-    result.setFacet(new SearchFacetImpl());
+    result.setFacet(facet);
     result.setMaxValue(new BigDecimal("2.3"));
     result.setMinValue(new BigDecimal("2.3"));
     result.setQuantity(1);
@@ -643,124 +222,21 @@ class SearchFacetDTOServiceImplDiffblueTest {
     String actualUrlKey = searchFacetDTOServiceImpl.getUrlKey(result);
 
     // Assert
-    verify(searchFacetImpl).getField();
-    verify(result).getFacet();
-    verify(result).setActive(eq(true));
-    verify(result).setFacet(isA(SearchFacet.class));
-    verify(result).setMaxValue(isA(BigDecimal.class));
-    verify(result).setMinValue(isA(BigDecimal.class));
-    verify(result).setQuantity(eq(1));
-    verify(result).setValue(eq("42"));
+    verify(facet).getField();
     assertNull(actualUrlKey);
   }
 
   /**
    * Test {@link SearchFacetDTOServiceImpl#getValue(SearchFacetResultDTO)}.
    * <p>
-   * Method under test:
-   * {@link SearchFacetDTOServiceImpl#getValue(SearchFacetResultDTO)}
+   * Method under test: {@link SearchFacetDTOServiceImpl#getValue(SearchFacetResultDTO)}
    */
   @Test
   @DisplayName("Test getValue(SearchFacetResultDTO)")
-  @Disabled("TODO: Complete this test")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String SearchFacetDTOServiceImpl.getValue(SearchFacetResultDTO)"})
   void testGetValue() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3904 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.service.SearchFacetDTOServiceImpl searchFacetDTOServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    SearchFacetDTOServiceImpl searchFacetDTOServiceImpl2 = new SearchFacetDTOServiceImpl();
-
-    SearchFacetResultDTO result = new SearchFacetResultDTO();
-    result.setActive(true);
-    result.setFacet(new SearchFacetImpl());
-    result.setMaxValue(new BigDecimal("2.3"));
-    result.setMinValue(new BigDecimal("2.3"));
-    result.setQuantity(1);
-    result.setValue("42");
-
-    // Act
-    searchFacetDTOServiceImpl2.getValue(result);
-  }
-
-  /**
-   * Test {@link SearchFacetDTOServiceImpl#getValue(SearchFacetResultDTO)}.
-   * <ul>
-   *   <li>Given {@code secret}.</li>
-   *   <li>Then return {@code secret}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SearchFacetDTOServiceImpl#getValue(SearchFacetResultDTO)}
-   */
-  @Test
-  @DisplayName("Test getValue(SearchFacetResultDTO); given 'secret'; then return 'secret'")
-  void testGetValue_givenSecret_thenReturnSecret() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SearchFacetDTOServiceImpl searchFacetDTOServiceImpl = new SearchFacetDTOServiceImpl();
-    SearchFacetResultDTO result = mock(SearchFacetResultDTO.class);
-    when(result.getUnencodedValueKey()).thenReturn("secret");
-    doNothing().when(result).setActive(anyBoolean());
-    doNothing().when(result).setFacet(Mockito.<SearchFacet>any());
-    doNothing().when(result).setMaxValue(Mockito.<BigDecimal>any());
-    doNothing().when(result).setMinValue(Mockito.<BigDecimal>any());
-    doNothing().when(result).setQuantity(Mockito.<Integer>any());
-    doNothing().when(result).setValue(Mockito.<String>any());
-    result.setActive(true);
-    result.setFacet(new SearchFacetImpl());
-    result.setMaxValue(new BigDecimal("2.3"));
-    result.setMinValue(new BigDecimal("2.3"));
-    result.setQuantity(1);
-    result.setValue("42");
-
-    // Act
-    String actualValue = searchFacetDTOServiceImpl.getValue(result);
-
-    // Assert
-    verify(result).getUnencodedValueKey();
-    verify(result).setActive(eq(true));
-    verify(result).setFacet(isA(SearchFacet.class));
-    verify(result).setMaxValue(isA(BigDecimal.class));
-    verify(result).setMinValue(isA(BigDecimal.class));
-    verify(result).setQuantity(eq(1));
-    verify(result).setValue(eq("42"));
-    assertEquals("secret", actualValue);
-  }
-
-  /**
-   * Test {@link SearchFacetDTOServiceImpl#getValue(SearchFacetResultDTO)}.
-   * <ul>
-   *   <li>When {@link SearchFacetResultDTO} (default constructor) Active is
-   * {@code true}.</li>
-   *   <li>Then return {@code 42}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SearchFacetDTOServiceImpl#getValue(SearchFacetResultDTO)}
-   */
-  @Test
-  @DisplayName("Test getValue(SearchFacetResultDTO); when SearchFacetResultDTO (default constructor) Active is 'true'; then return '42'")
-  void testGetValue_whenSearchFacetResultDTOActiveIsTrue_thenReturn42() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SearchFacetDTOServiceImpl searchFacetDTOServiceImpl = new SearchFacetDTOServiceImpl();
-
     SearchFacetResultDTO result = new SearchFacetResultDTO();
     result.setActive(true);
     result.setFacet(new SearchFacetImpl());

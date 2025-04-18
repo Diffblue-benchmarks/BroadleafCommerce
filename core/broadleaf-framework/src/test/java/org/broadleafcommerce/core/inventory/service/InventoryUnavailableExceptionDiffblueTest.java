@@ -1,8 +1,29 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.inventory.service;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class InventoryUnavailableExceptionDiffblueTest {
   /**
@@ -14,13 +35,18 @@ public class InventoryUnavailableExceptionDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>
-   * {@link InventoryUnavailableException#InventoryUnavailableException(String, Long, Integer, Integer)}
+   *   <li>{@link InventoryUnavailableException#InventoryUnavailableException(String, Long, Integer, Integer)}
    *   <li>{@link InventoryUnavailableException#setSkuId(Long)}
    *   <li>{@link InventoryUnavailableException#getSkuId()}
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void InventoryUnavailableException.<init>(Long, Integer, Integer)",
+      "void InventoryUnavailableException.<init>(String)",
+      "void InventoryUnavailableException.<init>(String, Long, Integer, Integer)",
+      "void InventoryUnavailableException.<init>(String, Throwable)", "Long InventoryUnavailableException.getSkuId()",
+      "void InventoryUnavailableException.setSkuId(Long)"})
   public void testGettersAndSetters_whenArg0_thenReturnMessageIsArg0() {
     // Arrange and Act
     InventoryUnavailableException actualInventoryUnavailableException = new InventoryUnavailableException("Arg0", 1L, 1,
@@ -28,8 +54,9 @@ public class InventoryUnavailableExceptionDiffblueTest {
     actualInventoryUnavailableException.setSkuId(1L);
     Long actualSkuId = actualInventoryUnavailableException.getSkuId();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Arg0", actualInventoryUnavailableException.getMessage());
+    assertNull(actualInventoryUnavailableException.getCause());
     assertEquals(0, actualInventoryUnavailableException.getSuppressed().length);
     assertEquals(1, actualInventoryUnavailableException.quantityAvailable.intValue());
     assertEquals(1, actualInventoryUnavailableException.quantityRequested.intValue());
@@ -45,21 +72,27 @@ public class InventoryUnavailableExceptionDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>
-   * {@link InventoryUnavailableException#InventoryUnavailableException(String)}
+   *   <li>{@link InventoryUnavailableException#InventoryUnavailableException(String)}
    *   <li>{@link InventoryUnavailableException#setSkuId(Long)}
    *   <li>{@link InventoryUnavailableException#getSkuId()}
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void InventoryUnavailableException.<init>(Long, Integer, Integer)",
+      "void InventoryUnavailableException.<init>(String)",
+      "void InventoryUnavailableException.<init>(String, Long, Integer, Integer)",
+      "void InventoryUnavailableException.<init>(String, Throwable)", "Long InventoryUnavailableException.getSkuId()",
+      "void InventoryUnavailableException.setSkuId(Long)"})
   public void testGettersAndSetters_whenMsg_thenReturnMessageIsMsg() {
     // Arrange and Act
     InventoryUnavailableException actualInventoryUnavailableException = new InventoryUnavailableException("Msg");
     actualInventoryUnavailableException.setSkuId(1L);
     Long actualSkuId = actualInventoryUnavailableException.getSkuId();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Msg", actualInventoryUnavailableException.getMessage());
+    assertNull(actualInventoryUnavailableException.getCause());
     assertEquals(0, actualInventoryUnavailableException.getSuppressed().length);
     assertEquals(1L, actualSkuId.longValue());
   }
@@ -68,26 +101,32 @@ public class InventoryUnavailableExceptionDiffblueTest {
    * Test getters and setters.
    * <ul>
    *   <li>When one.</li>
-   *   <li>Then return {@link InventoryUnavailableException#quantityAvailable}
-   * intValue is one.</li>
+   *   <li>Then return Message is {@code null}.</li>
    * </ul>
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>
-   * {@link InventoryUnavailableException#InventoryUnavailableException(Long, Integer, Integer)}
+   *   <li>{@link InventoryUnavailableException#InventoryUnavailableException(Long, Integer, Integer)}
    *   <li>{@link InventoryUnavailableException#setSkuId(Long)}
    *   <li>{@link InventoryUnavailableException#getSkuId()}
    * </ul>
    */
   @Test
-  public void testGettersAndSetters_whenOne_thenReturnQuantityAvailableIntValueIsOne() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void InventoryUnavailableException.<init>(Long, Integer, Integer)",
+      "void InventoryUnavailableException.<init>(String)",
+      "void InventoryUnavailableException.<init>(String, Long, Integer, Integer)",
+      "void InventoryUnavailableException.<init>(String, Throwable)", "Long InventoryUnavailableException.getSkuId()",
+      "void InventoryUnavailableException.setSkuId(Long)"})
+  public void testGettersAndSetters_whenOne_thenReturnMessageIsNull() {
     // Arrange and Act
     InventoryUnavailableException actualInventoryUnavailableException = new InventoryUnavailableException(1L, 1, 1);
     actualInventoryUnavailableException.setSkuId(1L);
     Long actualSkuId = actualInventoryUnavailableException.getSkuId();
 
-    // Assert that nothing has changed
+    // Assert
+    assertNull(actualInventoryUnavailableException.getMessage());
+    assertNull(actualInventoryUnavailableException.getCause());
     assertEquals(0, actualInventoryUnavailableException.getSuppressed().length);
     assertEquals(1, actualInventoryUnavailableException.quantityAvailable.intValue());
     assertEquals(1, actualInventoryUnavailableException.quantityRequested.intValue());
@@ -103,13 +142,18 @@ public class InventoryUnavailableExceptionDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>
-   * {@link InventoryUnavailableException#InventoryUnavailableException(String, Throwable)}
+   *   <li>{@link InventoryUnavailableException#InventoryUnavailableException(String, Throwable)}
    *   <li>{@link InventoryUnavailableException#setSkuId(Long)}
    *   <li>{@link InventoryUnavailableException#getSkuId()}
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void InventoryUnavailableException.<init>(Long, Integer, Integer)",
+      "void InventoryUnavailableException.<init>(String)",
+      "void InventoryUnavailableException.<init>(String, Long, Integer, Integer)",
+      "void InventoryUnavailableException.<init>(String, Throwable)", "Long InventoryUnavailableException.getSkuId()",
+      "void InventoryUnavailableException.setSkuId(Long)"})
   public void testGettersAndSetters_whenThrowable_thenReturnCauseIsThrowable() {
     // Arrange
     Throwable cause = new Throwable();
@@ -119,7 +163,7 @@ public class InventoryUnavailableExceptionDiffblueTest {
     actualInventoryUnavailableException.setSkuId(1L);
     Long actualSkuId = actualInventoryUnavailableException.getSkuId();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Msg", actualInventoryUnavailableException.getMessage());
     assertEquals(0, actualInventoryUnavailableException.getSuppressed().length);
     assertEquals(1L, actualSkuId.longValue());
@@ -132,10 +176,11 @@ public class InventoryUnavailableExceptionDiffblueTest {
    *   <li>Then return one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link InventoryUnavailableException#getQuantityRequested()}
+   * Method under test: {@link InventoryUnavailableException#getQuantityRequested()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int InventoryUnavailableException.getQuantityRequested()"})
   public void testGetQuantityRequested_thenReturnOne() {
     // Arrange
     InventoryUnavailableException inventoryUnavailableException = new InventoryUnavailableException("Msg");
@@ -148,10 +193,11 @@ public class InventoryUnavailableExceptionDiffblueTest {
   /**
    * Test {@link InventoryUnavailableException#setQuantityRequested(int)}.
    * <p>
-   * Method under test:
-   * {@link InventoryUnavailableException#setQuantityRequested(int)}
+   * Method under test: {@link InventoryUnavailableException#setQuantityRequested(int)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void InventoryUnavailableException.setQuantityRequested(int)"})
   public void testSetQuantityRequested() {
     // Arrange
     InventoryUnavailableException inventoryUnavailableException = new InventoryUnavailableException("Msg");
@@ -170,10 +216,11 @@ public class InventoryUnavailableExceptionDiffblueTest {
    *   <li>Then return one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link InventoryUnavailableException#getQuantityAvailable()}
+   * Method under test: {@link InventoryUnavailableException#getQuantityAvailable()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int InventoryUnavailableException.getQuantityAvailable()"})
   public void testGetQuantityAvailable_thenReturnOne() {
     // Arrange
     InventoryUnavailableException inventoryUnavailableException = new InventoryUnavailableException("Msg");
@@ -186,10 +233,11 @@ public class InventoryUnavailableExceptionDiffblueTest {
   /**
    * Test {@link InventoryUnavailableException#setQuantityAvailable(int)}.
    * <p>
-   * Method under test:
-   * {@link InventoryUnavailableException#setQuantityAvailable(int)}
+   * Method under test: {@link InventoryUnavailableException#setQuantityAvailable(int)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void InventoryUnavailableException.setQuantityAvailable(int)"})
   public void testSetQuantityAvailable() {
     // Arrange
     InventoryUnavailableException inventoryUnavailableException = new InventoryUnavailableException("Msg");

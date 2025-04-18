@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.pricing.service.workflow;
 
 import static org.junit.Assert.assertSame;
@@ -7,6 +24,8 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
@@ -22,20 +41,16 @@ import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.domain.TaxDetail;
 import org.broadleafcommerce.core.order.domain.TaxDetailImpl;
 import org.broadleafcommerce.core.order.domain.TaxType;
-import org.broadleafcommerce.core.workflow.DefaultProcessContextImpl;
 import org.broadleafcommerce.core.workflow.ProcessContext;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@ContextConfiguration(classes = {TotalActivity.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TotalActivityDiffblueTest {
   @Autowired
@@ -43,52 +58,18 @@ public class TotalActivityDiffblueTest {
 
   /**
    * Test {@link TotalActivity#execute(ProcessContext)}.
-   * <p>
-   * Method under test: {@link TotalActivity#execute(ProcessContext)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testExecute() throws Exception {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.pricing.service.workflow;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass831 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.pricing.service.workflow.TotalActivity totalActivity;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    TotalActivity totalActivity2 = new TotalActivity();
-
-    // Act
-    totalActivity2.execute((ProcessContext<Order>) new DefaultProcessContextImpl<>());
-  }
-
-  /**
-   * Test {@link TotalActivity#execute(ProcessContext)}.
    * <ul>
-   *   <li>Given {@link NullOrderImpl} {@link NullOrderImpl#getTotalTax()} return
-   * {@link Money#Money()}.</li>
+   *   <li>Given {@link NullOrderImpl} {@link NullOrderImpl#getTotalTax()} return {@link Money#Money()}.</li>
    *   <li>Then return {@link ProcessContext}.</li>
    * </ul>
    * <p>
    * Method under test: {@link TotalActivity#execute(ProcessContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ProcessContext TotalActivity.execute(ProcessContext)"})
   public void testExecute_givenNullOrderImplGetTotalTaxReturnMoney_thenReturnProcessContext() throws Exception {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    TotalActivity totalActivity = new TotalActivity();
     NullOrderImpl nullOrderImpl = mock(NullOrderImpl.class);
     when(nullOrderImpl.getTotalTax()).thenReturn(new Money());
     doNothing().when(nullOrderImpl).setTotal(Mockito.<Money>any());
@@ -124,19 +105,17 @@ public class TotalActivityDiffblueTest {
   /**
    * Test {@link TotalActivity#execute(ProcessContext)}.
    * <ul>
-   *   <li>Given {@link NullOrderImpl} {@link NullOrderImpl#getTotalTax()} return
-   * {@code null}.</li>
+   *   <li>Given {@link NullOrderImpl} {@link NullOrderImpl#getTotalTax()} return {@code null}.</li>
    *   <li>Then return {@link ProcessContext}.</li>
    * </ul>
    * <p>
    * Method under test: {@link TotalActivity#execute(ProcessContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ProcessContext TotalActivity.execute(ProcessContext)"})
   public void testExecute_givenNullOrderImplGetTotalTaxReturnNull_thenReturnProcessContext() throws Exception {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    TotalActivity totalActivity = new TotalActivity();
     NullOrderImpl nullOrderImpl = mock(NullOrderImpl.class);
     when(nullOrderImpl.getTotalTax()).thenReturn(null);
     doNothing().when(nullOrderImpl).setTotal(Mockito.<Money>any());
@@ -171,52 +150,17 @@ public class TotalActivityDiffblueTest {
 
   /**
    * Test {@link TotalActivity#setTaxSums(Order)}.
-   * <p>
-   * Method under test: {@link TotalActivity#setTaxSums(Order)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetTaxSums() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.pricing.service.workflow;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass845 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.pricing.service.workflow.TotalActivity totalActivity;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    TotalActivity totalActivity2 = new TotalActivity();
-
-    // Act
-    totalActivity2.setTaxSums(new NullOrderImpl());
-  }
-
-  /**
-   * Test {@link TotalActivity#setTaxSums(Order)}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link FulfillmentGroupFeeImpl}
-   * (default constructor).</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link FulfillmentGroupFeeImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link TotalActivity#setTaxSums(Order)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TotalActivity.setTaxSums(Order)"})
   public void testSetTaxSums_givenArrayListAddFulfillmentGroupFeeImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    TotalActivity totalActivity = new TotalActivity();
-
     ArrayList<FulfillmentGroupFee> fulfillmentGroupFeeList = new ArrayList<>();
     fulfillmentGroupFeeList.add(new FulfillmentGroupFeeImpl());
     FulfillmentGroupImpl fulfillmentGroupImpl = mock(FulfillmentGroupImpl.class);
@@ -259,19 +203,16 @@ public class TotalActivityDiffblueTest {
   /**
    * Test {@link TotalActivity#setTaxSums(Order)}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link FulfillmentGroupFeeImpl}
-   * (default constructor).</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link FulfillmentGroupFeeImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link TotalActivity#setTaxSums(Order)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TotalActivity.setTaxSums(Order)"})
   public void testSetTaxSums_givenArrayListAddFulfillmentGroupFeeImpl2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    TotalActivity totalActivity = new TotalActivity();
-
     ArrayList<FulfillmentGroupFee> fulfillmentGroupFeeList = new ArrayList<>();
     fulfillmentGroupFeeList.add(new FulfillmentGroupFeeImpl());
     FulfillmentGroupImpl fulfillmentGroupImpl = mock(FulfillmentGroupImpl.class);
@@ -314,19 +255,16 @@ public class TotalActivityDiffblueTest {
   /**
    * Test {@link TotalActivity#setTaxSums(Order)}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link FulfillmentGroupImpl}
-   * (default constructor).</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link FulfillmentGroupImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link TotalActivity#setTaxSums(Order)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TotalActivity.setTaxSums(Order)"})
   public void testSetTaxSums_givenArrayListAddFulfillmentGroupImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    TotalActivity totalActivity = new TotalActivity();
-
     ArrayList<FulfillmentGroup> fulfillmentGroupList = new ArrayList<>();
     fulfillmentGroupList.add(new FulfillmentGroupImpl());
     BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
@@ -351,20 +289,16 @@ public class TotalActivityDiffblueTest {
   /**
    * Test {@link TotalActivity#setTaxSums(Order)}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link FulfillmentGroupImpl}
-   * (default constructor).</li>
-   *   <li>Then calls {@link BroadleafCurrencyImpl#getCurrencyCode()}.</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link FulfillmentGroupImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link TotalActivity#setTaxSums(Order)}
    */
   @Test
-  public void testSetTaxSums_givenArrayListAddFulfillmentGroupImpl_thenCallsGetCurrencyCode() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TotalActivity.setTaxSums(Order)"})
+  public void testSetTaxSums_givenArrayListAddFulfillmentGroupImpl2() {
     // Arrange
-    TotalActivity totalActivity = new TotalActivity();
-
     ArrayList<FulfillmentGroup> fulfillmentGroupList = new ArrayList<>();
     fulfillmentGroupList.add(new FulfillmentGroupImpl());
     BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
@@ -389,19 +323,16 @@ public class TotalActivityDiffblueTest {
   /**
    * Test {@link TotalActivity#setTaxSums(Order)}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link FulfillmentGroupItemImpl}
-   * (default constructor).</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link FulfillmentGroupItemImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link TotalActivity#setTaxSums(Order)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TotalActivity.setTaxSums(Order)"})
   public void testSetTaxSums_givenArrayListAddFulfillmentGroupItemImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    TotalActivity totalActivity = new TotalActivity();
-
     ArrayList<FulfillmentGroupItem> fulfillmentGroupItemList = new ArrayList<>();
     fulfillmentGroupItemList.add(new FulfillmentGroupItemImpl());
     FulfillmentGroupImpl fulfillmentGroupImpl = mock(FulfillmentGroupImpl.class);
@@ -444,19 +375,16 @@ public class TotalActivityDiffblueTest {
   /**
    * Test {@link TotalActivity#setTaxSums(Order)}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link FulfillmentGroupItemImpl}
-   * (default constructor).</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link FulfillmentGroupItemImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link TotalActivity#setTaxSums(Order)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TotalActivity.setTaxSums(Order)"})
   public void testSetTaxSums_givenArrayListAddFulfillmentGroupItemImpl2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    TotalActivity totalActivity = new TotalActivity();
-
     ArrayList<FulfillmentGroupItem> fulfillmentGroupItemList = new ArrayList<>();
     fulfillmentGroupItemList.add(new FulfillmentGroupItemImpl());
     FulfillmentGroupImpl fulfillmentGroupImpl = mock(FulfillmentGroupImpl.class);
@@ -500,17 +428,16 @@ public class TotalActivityDiffblueTest {
    * Test {@link TotalActivity#setTaxSums(Order)}.
    * <ul>
    *   <li>Given {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then calls {@link BroadleafCurrencyImpl#getCurrencyCode()}.</li>
+   *   <li>When {@link Order} {@link Order#getTaxOverride()} return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link TotalActivity#setTaxSums(Order)}
    */
   @Test
-  public void testSetTaxSums_givenArrayList_thenCallsGetCurrencyCode() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TotalActivity.setTaxSums(Order)"})
+  public void testSetTaxSums_givenArrayList_whenOrderGetTaxOverrideReturnFalse() {
     // Arrange
-    TotalActivity totalActivity = new TotalActivity();
     BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
     when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
     Order order = mock(Order.class);
@@ -534,18 +461,16 @@ public class TotalActivityDiffblueTest {
    * Test {@link TotalActivity#setTaxSums(Order)}.
    * <ul>
    *   <li>Given {@link ArrayList#ArrayList()}.</li>
-   *   <li>When {@link Order} {@link Order#getTaxOverride()} return
-   * {@code true}.</li>
+   *   <li>When {@link Order} {@link Order#getTaxOverride()} return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link TotalActivity#setTaxSums(Order)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TotalActivity.setTaxSums(Order)"})
   public void testSetTaxSums_givenArrayList_whenOrderGetTaxOverrideReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    TotalActivity totalActivity = new TotalActivity();
     BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
     when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
     Order order = mock(Order.class);
@@ -575,12 +500,10 @@ public class TotalActivityDiffblueTest {
    * Method under test: {@link TotalActivity#setTaxSums(Order)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TotalActivity.setTaxSums(Order)"})
   public void testSetTaxSums_givenBigDecimalWith23_thenCallsGetTaxes() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    TotalActivity totalActivity = new TotalActivity();
-
     ArrayList<TaxDetail> taxDetailList = new ArrayList<>();
     Money amount = new Money();
     taxDetailList.add(new TaxDetailImpl(TaxType.CITY, amount, new BigDecimal("2.3")));
@@ -639,11 +562,10 @@ public class TotalActivityDiffblueTest {
    * Method under test: {@link TotalActivity#setTaxSums(Order)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TotalActivity.setTaxSums(Order)"})
   public void testSetTaxSums_givenFalse_thenCallsGetFulfillmentGroupFees() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    TotalActivity totalActivity = new TotalActivity();
     FulfillmentGroupImpl fulfillmentGroupImpl = mock(FulfillmentGroupImpl.class);
     when(fulfillmentGroupImpl.getFulfillmentGroupFees()).thenReturn(new ArrayList<>());
     when(fulfillmentGroupImpl.getFulfillmentGroupItems()).thenReturn(new ArrayList<>());
@@ -692,11 +614,10 @@ public class TotalActivityDiffblueTest {
    * Method under test: {@link TotalActivity#setTaxSums(Order)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TotalActivity.setTaxSums(Order)"})
   public void testSetTaxSums_givenNull_whenOrderGetCurrencyReturnNull_thenCallsGetCurrency() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    TotalActivity totalActivity = new TotalActivity();
     Order order = mock(Order.class);
     when(order.getTaxOverride()).thenReturn(true);
     when(order.getFulfillmentGroups()).thenReturn(new ArrayList<>());
@@ -716,19 +637,17 @@ public class TotalActivityDiffblueTest {
   /**
    * Test {@link TotalActivity#setTaxSums(Order)}.
    * <ul>
-   *   <li>Given {@link TaxDetailImpl} {@link TaxDetailImpl#getAmount()} return
-   * {@link Money#Money()}.</li>
+   *   <li>Given {@link TaxDetailImpl} {@link TaxDetailImpl#getAmount()} return {@link Money#Money()}.</li>
    *   <li>Then calls {@link TaxDetailImpl#getAmount()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link TotalActivity#setTaxSums(Order)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TotalActivity.setTaxSums(Order)"})
   public void testSetTaxSums_givenTaxDetailImplGetAmountReturnMoney_thenCallsGetAmount() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    TotalActivity totalActivity = new TotalActivity();
     TaxDetailImpl taxDetailImpl = mock(TaxDetailImpl.class);
     when(taxDetailImpl.getAmount()).thenReturn(new Money());
 
@@ -790,11 +709,10 @@ public class TotalActivityDiffblueTest {
    * Method under test: {@link TotalActivity#setTaxSums(Order)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TotalActivity.setTaxSums(Order)"})
   public void testSetTaxSums_givenTrue_thenCallsGetFulfillmentGroupFees() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    TotalActivity totalActivity = new TotalActivity();
     FulfillmentGroupImpl fulfillmentGroupImpl = mock(FulfillmentGroupImpl.class);
     when(fulfillmentGroupImpl.getFulfillmentGroupFees()).thenReturn(new ArrayList<>());
     when(fulfillmentGroupImpl.getFulfillmentGroupItems()).thenReturn(new ArrayList<>());
@@ -835,20 +753,16 @@ public class TotalActivityDiffblueTest {
   /**
    * Test {@link TotalActivity#setTaxSums(Order)}.
    * <ul>
-   *   <li>Given {@code true}.</li>
-   *   <li>When {@link Order} {@link Order#getTaxOverride()} return
-   * {@code true}.</li>
    *   <li>Then calls {@link FulfillmentGroupFeeImpl#getTaxes()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link TotalActivity#setTaxSums(Order)}
    */
   @Test
-  public void testSetTaxSums_givenTrue_whenOrderGetTaxOverrideReturnTrue_thenCallsGetTaxes() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TotalActivity.setTaxSums(Order)"})
+  public void testSetTaxSums_thenCallsGetTaxes() {
     // Arrange
-    TotalActivity totalActivity = new TotalActivity();
     FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = mock(FulfillmentGroupFeeImpl.class);
     when(fulfillmentGroupFeeImpl.getTaxes()).thenReturn(new ArrayList<>());
     doNothing().when(fulfillmentGroupFeeImpl).setTotalTax(Mockito.<Money>any());
@@ -903,11 +817,10 @@ public class TotalActivityDiffblueTest {
    * Method under test: {@link TotalActivity#setTaxSums(Order)}
    */
   @Test
-  public void testSetTaxSums_thenCallsGetTaxes() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TotalActivity.setTaxSums(Order)"})
+  public void testSetTaxSums_thenCallsGetTaxes2() {
     // Arrange
-    TotalActivity totalActivity = new TotalActivity();
     FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = mock(FulfillmentGroupFeeImpl.class);
     when(fulfillmentGroupFeeImpl.getTaxes()).thenReturn(new ArrayList<>());
     doNothing().when(fulfillmentGroupFeeImpl).setTotalTax(Mockito.<Money>any());

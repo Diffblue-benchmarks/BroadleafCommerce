@@ -21,12 +21,16 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.ArrayList;
 import java.util.List;
-import org.junit.Ignore;
+import org.broadleafcommerce.common.util.PomEvaluator.Category;
+import org.broadleafcommerce.common.util.PomEvaluator.Dependency;
+import org.broadleafcommerce.common.util.PomEvaluator.FrameworkType;
+import org.broadleafcommerce.common.util.PomEvaluator.LicenseType;
 import org.junit.Test;
 
 public class PomEvaluatorDiffblueTest {
@@ -35,16 +39,18 @@ public class PomEvaluatorDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>
-   * {@link PomEvaluator.Category#Category(String, PomEvaluator.LicenseType, PomEvaluator.FrameworkType)}
-   *   <li>{@link PomEvaluator.Category#toString()}
+   *   <li>{@link Category#Category(String, LicenseType, FrameworkType)}
+   *   <li>{@link Category#toString()}
    * </ul>
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Category.<init>(String, LicenseType, FrameworkType)",
+      "void Category.<init>(String, LicenseType, FrameworkType, Category[])", "String Category.toString()"})
   public void testCategoryGettersAndSetters() {
     // Arrange and Act
-    PomEvaluator.Category actualCategory = new PomEvaluator.Category("Category Name",
-        new PomEvaluator.LicenseType("Name", "https://example.org/example"), PomEvaluator.FrameworkType.PERSISTENCE);
+    Category actualCategory = new Category("Category Name", new LicenseType("Name", "https://example.org/example"),
+        FrameworkType.PERSISTENCE);
 
     // Assert
     assertEquals("Category Name : Category Name\rLicense Type : Name\rLicense URL : https://example.org/example",
@@ -57,23 +63,22 @@ public class PomEvaluatorDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>
-   * {@link PomEvaluator.Category#Category(String, PomEvaluator.LicenseType, PomEvaluator.FrameworkType, PomEvaluator.Category[])}
-   *   <li>
-   * {@link PomEvaluator.Category#Category(String, PomEvaluator.LicenseType, PomEvaluator.FrameworkType)}
-   *   <li>{@link PomEvaluator.Category#toString()}
+   *   <li>{@link Category#Category(String, LicenseType, FrameworkType, Category[])}
+   *   <li>{@link Category#Category(String, LicenseType, FrameworkType)}
+   *   <li>{@link Category#toString()}
    * </ul>
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Category.<init>(String, LicenseType, FrameworkType)",
+      "void Category.<init>(String, LicenseType, FrameworkType, Category[])", "String Category.toString()"})
   public void testCategoryGettersAndSetters2() {
     // Arrange
-    PomEvaluator.LicenseType type = new PomEvaluator.LicenseType("Name", "https://example.org/example");
+    LicenseType type = new LicenseType("Name", "https://example.org/example");
 
     // Act
-    PomEvaluator.Category actualCategory = new PomEvaluator.Category("Category Name", type,
-        PomEvaluator.FrameworkType.PERSISTENCE,
-        new PomEvaluator.Category("Category Name", new PomEvaluator.LicenseType("Name", "https://example.org/example"),
-            PomEvaluator.FrameworkType.PERSISTENCE));
+    Category actualCategory = new Category("Category Name", type, FrameworkType.PERSISTENCE, new Category(
+        "Category Name", new LicenseType("Name", "https://example.org/example"), FrameworkType.PERSISTENCE));
 
     // Assert
     assertEquals("Category Name : Category Name\rLicense Type : Name\rLicense URL : https://example.org/example",
@@ -86,14 +91,16 @@ public class PomEvaluatorDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>default or parameterless constructor of {@link PomEvaluator.Dependency}
-   *   <li>{@link PomEvaluator.Dependency#toString()}
+   *   <li>default or parameterless constructor of {@link Dependency}
+   *   <li>{@link Dependency#toString()}
    * </ul>
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Dependency.<init>()", "String Dependency.toString()"})
   public void testDependencyGettersAndSetters() {
     // Arrange and Act
-    PomEvaluator.Dependency actualDependency = new PomEvaluator.Dependency();
+    Dependency actualDependency = new Dependency();
 
     // Assert
     assertEquals("null.null.null  [null]", actualDependency.toString());
@@ -105,82 +112,39 @@ public class PomEvaluatorDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>{@link PomEvaluator.LicenseType#LicenseType(String, String)}
-   *   <li>{@link PomEvaluator.LicenseType#toString()}
+   *   <li>{@link LicenseType#LicenseType(String, String)}
+   *   <li>{@link LicenseType#toString()}
    * </ul>
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void LicenseType.<init>(String, String)", "String LicenseType.toString()"})
   public void testLicenseTypeGettersAndSetters() {
     // Arrange, Act and Assert
     assertEquals("Name:https://example.org/example",
-        (new PomEvaluator.LicenseType("Name", "https://example.org/example")).toString());
-  }
-
-  /**
-   * Test {@link PomEvaluator#printOutDependencies(Category, List)}.
-   * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link PomEvaluator#printOutDependencies(PomEvaluator.Category, List)}
-   */
-  @Test
-  public void testPrintOutDependencies_whenArrayList() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange
-    PomEvaluator.Category category = new PomEvaluator.Category("Category Name",
-        new PomEvaluator.LicenseType("Name", "https://example.org/example"), PomEvaluator.FrameworkType.PERSISTENCE);
-
-    // Act
-    PomEvaluator.printOutDependencies(category, new ArrayList<>());
-  }
-
-  /**
-   * Test {@link PomEvaluator#printOutDependencies(Category, List)}.
-   * <ul>
-   *   <li>When {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link PomEvaluator#printOutDependencies(PomEvaluator.Category, List)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testPrintOutDependencies_whenNull() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.broadleafcommerce.common.util.PomEvaluator.printOutDependencies(PomEvaluator.java:253)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange and Act
-    PomEvaluator.printOutDependencies(null, new ArrayList<>());
+        (new LicenseType("Name", "https://example.org/example")).toString());
   }
 
   /**
    * Test {@link PomEvaluator#populateDependencies(BufferedReader)}.
    * <ul>
-   *   <li>When {@link StringReader#StringReader(String)} with
-   * {@code <dependency}.</li>
+   *   <li>When {@link StringReader#StringReader(String)} with {@code <dependency}.</li>
    *   <li>Then return size is one.</li>
    * </ul>
    * <p>
    * Method under test: {@link PomEvaluator#populateDependencies(BufferedReader)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List PomEvaluator.populateDependencies(BufferedReader)"})
   public void testPopulateDependencies_whenStringReaderWithDependency_thenReturnSizeIsOne() throws IOException {
     // Arrange and Act
-    List<PomEvaluator.Dependency> actualPopulateDependenciesResult = PomEvaluator
+    List<Dependency> actualPopulateDependenciesResult = PomEvaluator
         .populateDependencies(new BufferedReader(new StringReader("<dependency"), 1));
 
     // Assert
     assertEquals(1, actualPopulateDependenciesResult.size());
-    PomEvaluator.Dependency getResult = actualPopulateDependenciesResult.get(0);
+    Dependency getResult = actualPopulateDependenciesResult.get(0);
     assertNull(getResult.artifactId);
     assertNull(getResult.groupId);
     assertNull(getResult.scope);
@@ -198,9 +162,11 @@ public class PomEvaluatorDiffblueTest {
    * Method under test: {@link PomEvaluator#populateDependencies(BufferedReader)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List PomEvaluator.populateDependencies(BufferedReader)"})
   public void testPopulateDependencies_whenStringReaderWithFoo_thenReturnEmpty() throws IOException {
     // Arrange and Act
-    List<PomEvaluator.Dependency> actualPopulateDependenciesResult = PomEvaluator
+    List<Dependency> actualPopulateDependenciesResult = PomEvaluator
         .populateDependencies(new BufferedReader(new StringReader("foo"), 1));
 
     // Assert
@@ -216,6 +182,8 @@ public class PomEvaluatorDiffblueTest {
    * Method under test: {@link PomEvaluator#getTagValue(String, String, String)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String PomEvaluator.getTagValue(String, String, String)"})
   public void testGetTagValue_whenEmptyString() {
     // Arrange, Act and Assert
     assertEquals("42", PomEvaluator.getTagValue("", "Line", "42"));
@@ -230,6 +198,8 @@ public class PomEvaluatorDiffblueTest {
    * Method under test: {@link PomEvaluator#getTagValue(String, String, String)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String PomEvaluator.getTagValue(String, String, String)"})
   public void testGetTagValue_whenTagName() {
     // Arrange, Act and Assert
     assertEquals("42", PomEvaluator.getTagValue("Tag Name", "Line", "42"));
@@ -245,6 +215,8 @@ public class PomEvaluatorDiffblueTest {
    * Method under test: {@link PomEvaluator#forwardToTag(String, BufferedReader)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PomEvaluator.forwardToTag(String, BufferedReader)"})
   public void testForwardToTag_whenEmptyString_thenReturnTrue() throws IOException {
     // Arrange, Act and Assert
     assertTrue(PomEvaluator.forwardToTag("", new BufferedReader(new StringReader("foo"), 1)));
@@ -260,6 +232,8 @@ public class PomEvaluatorDiffblueTest {
    * Method under test: {@link PomEvaluator#forwardToTag(String, BufferedReader)}
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PomEvaluator.forwardToTag(String, BufferedReader)"})
   public void testForwardToTag_whenTagName_thenReturnFalse() throws IOException {
     // Arrange, Act and Assert
     assertFalse(PomEvaluator.forwardToTag("Tag Name", new BufferedReader(new StringReader("foo"), 1)));

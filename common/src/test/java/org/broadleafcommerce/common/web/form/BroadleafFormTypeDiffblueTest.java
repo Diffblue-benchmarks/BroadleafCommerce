@@ -20,7 +20,10 @@ package org.broadleafcommerce.common.web.form;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -38,6 +41,8 @@ public class BroadleafFormTypeDiffblueTest {
    * Method under test: {@link BroadleafFormType#getInstance(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BroadleafFormType BroadleafFormType.getInstance(String)"})
   public void testGetInstance() {
     // Arrange and Act
     BroadleafFormType actualInstance = BroadleafFormType.getInstance("Type");
@@ -58,6 +63,9 @@ public class BroadleafFormTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BroadleafFormType.<init>()", "String BroadleafFormType.getFriendlyType()",
+      "String BroadleafFormType.getType()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     BroadleafFormType actualBroadleafFormType = new BroadleafFormType();
@@ -71,10 +79,11 @@ public class BroadleafFormTypeDiffblueTest {
   /**
    * Test {@link BroadleafFormType#BroadleafFormType(String, String)}.
    * <p>
-   * Method under test:
-   * {@link BroadleafFormType#BroadleafFormType(String, String)}
+   * Method under test: {@link BroadleafFormType#BroadleafFormType(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BroadleafFormType.<init>(String, String)"})
   public void testNewBroadleafFormType() {
     // Arrange and Act
     BroadleafFormType actualBroadleafFormType = new BroadleafFormType("Type", "Friendly Type");
@@ -85,8 +94,7 @@ public class BroadleafFormTypeDiffblueTest {
   }
 
   /**
-   * Test {@link BroadleafFormType#equals(Object)}, and
-   * {@link BroadleafFormType#hashCode()}.
+   * Test {@link BroadleafFormType#equals(Object)}, and {@link BroadleafFormType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -99,6 +107,8 @@ public class BroadleafFormTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BroadleafFormType.equals(Object)", "int BroadleafFormType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     BroadleafFormType broadleafFormType = BroadleafFormType.BILLING_FORM;
@@ -111,8 +121,7 @@ public class BroadleafFormTypeDiffblueTest {
   }
 
   /**
-   * Test {@link BroadleafFormType#equals(Object)}, and
-   * {@link BroadleafFormType#hashCode()}.
+   * Test {@link BroadleafFormType#equals(Object)}, and {@link BroadleafFormType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -125,6 +134,8 @@ public class BroadleafFormTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BroadleafFormType.equals(Object)", "int BroadleafFormType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     BroadleafFormType broadleafFormType = new BroadleafFormType();
@@ -137,8 +148,7 @@ public class BroadleafFormTypeDiffblueTest {
   }
 
   /**
-   * Test {@link BroadleafFormType#equals(Object)}, and
-   * {@link BroadleafFormType#hashCode()}.
+   * Test {@link BroadleafFormType#equals(Object)}, and {@link BroadleafFormType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -151,6 +161,8 @@ public class BroadleafFormTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BroadleafFormType.equals(Object)", "int BroadleafFormType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     BroadleafFormType broadleafFormType = new BroadleafFormType("BILLING_FORM", "Friendly Type");
@@ -163,8 +175,7 @@ public class BroadleafFormTypeDiffblueTest {
   }
 
   /**
-   * Test {@link BroadleafFormType#equals(Object)}, and
-   * {@link BroadleafFormType#hashCode()}.
+   * Test {@link BroadleafFormType#equals(Object)}, and {@link BroadleafFormType#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -177,6 +188,8 @@ public class BroadleafFormTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BroadleafFormType.equals(Object)", "int BroadleafFormType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     BroadleafFormType broadleafFormType = BroadleafFormType.BILLING_FORM;
@@ -197,9 +210,27 @@ public class BroadleafFormTypeDiffblueTest {
    * Method under test: {@link BroadleafFormType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BroadleafFormType.equals(Object)", "int BroadleafFormType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(BroadleafFormType.CUSTOMER_ADDRESS_FORM, BroadleafFormType.BILLING_FORM);
+  }
+
+  /**
+   * Test {@link BroadleafFormType#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BroadleafFormType#equals(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BroadleafFormType.equals(Object)", "int BroadleafFormType.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange, Act and Assert
     assertNotEquals(new BroadleafFormType(), BroadleafFormType.BILLING_FORM);
   }
 
@@ -213,6 +244,8 @@ public class BroadleafFormTypeDiffblueTest {
    * Method under test: {@link BroadleafFormType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BroadleafFormType.equals(Object)", "int BroadleafFormType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(BroadleafFormType.BILLING_FORM, null);
@@ -228,6 +261,8 @@ public class BroadleafFormTypeDiffblueTest {
    * Method under test: {@link BroadleafFormType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BroadleafFormType.equals(Object)", "int BroadleafFormType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(BroadleafFormType.BILLING_FORM, "Different type to BroadleafFormType");

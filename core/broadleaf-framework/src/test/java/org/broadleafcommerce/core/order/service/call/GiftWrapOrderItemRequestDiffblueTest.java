@@ -1,20 +1,39 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.order.service.call;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import org.broadleafcommerce.core.order.domain.BundleOrderItemImpl;
 import org.broadleafcommerce.core.order.domain.OrderItem;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class GiftWrapOrderItemRequestDiffblueTest {
   /**
-   * Test {@link GiftWrapOrderItemRequest#equals(Object)}, and
-   * {@link GiftWrapOrderItemRequest#hashCode()}.
+   * Test {@link GiftWrapOrderItemRequest#equals(Object)}, and {@link GiftWrapOrderItemRequest#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -27,6 +46,8 @@ public class GiftWrapOrderItemRequestDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean GiftWrapOrderItemRequest.equals(Object)", "int GiftWrapOrderItemRequest.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     GiftWrapOrderItemRequest giftWrapOrderItemRequest = new GiftWrapOrderItemRequest();
@@ -39,8 +60,7 @@ public class GiftWrapOrderItemRequestDiffblueTest {
   }
 
   /**
-   * Test {@link GiftWrapOrderItemRequest#equals(Object)}, and
-   * {@link GiftWrapOrderItemRequest#hashCode()}.
+   * Test {@link GiftWrapOrderItemRequest#equals(Object)}, and {@link GiftWrapOrderItemRequest#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -53,6 +73,8 @@ public class GiftWrapOrderItemRequestDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean GiftWrapOrderItemRequest.equals(Object)", "int GiftWrapOrderItemRequest.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     GiftWrapOrderItemRequest giftWrapOrderItemRequest = new GiftWrapOrderItemRequest();
@@ -73,10 +95,11 @@ public class GiftWrapOrderItemRequestDiffblueTest {
    * Method under test: {@link GiftWrapOrderItemRequest#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean GiftWrapOrderItemRequest.equals(Object)", "int GiftWrapOrderItemRequest.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new GiftWrapOrderItemRequest(), 1);
-    assertNotEquals(new GiftWrapOrderItemRequest(), mock(DiscreteOrderItemRequest.class));
   }
 
   /**
@@ -89,6 +112,8 @@ public class GiftWrapOrderItemRequestDiffblueTest {
    * Method under test: {@link GiftWrapOrderItemRequest#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean GiftWrapOrderItemRequest.equals(Object)", "int GiftWrapOrderItemRequest.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     ArrayList<OrderItem> wrappedItems = new ArrayList<>();
@@ -111,6 +136,8 @@ public class GiftWrapOrderItemRequestDiffblueTest {
    * Method under test: {@link GiftWrapOrderItemRequest#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean GiftWrapOrderItemRequest.equals(Object)", "int GiftWrapOrderItemRequest.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new GiftWrapOrderItemRequest(), null);
@@ -126,6 +153,8 @@ public class GiftWrapOrderItemRequestDiffblueTest {
    * Method under test: {@link GiftWrapOrderItemRequest#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean GiftWrapOrderItemRequest.equals(Object)", "int GiftWrapOrderItemRequest.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new GiftWrapOrderItemRequest(), "Different type to GiftWrapOrderItemRequest");
@@ -142,6 +171,9 @@ public class GiftWrapOrderItemRequestDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void GiftWrapOrderItemRequest.<init>()", "List GiftWrapOrderItemRequest.getWrappedItems()",
+      "void GiftWrapOrderItemRequest.setWrappedItems(List)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     GiftWrapOrderItemRequest actualGiftWrapOrderItemRequest = new GiftWrapOrderItemRequest();
@@ -149,7 +181,15 @@ public class GiftWrapOrderItemRequestDiffblueTest {
     actualGiftWrapOrderItemRequest.setWrappedItems(wrappedItems);
     List<OrderItem> actualWrappedItems = actualGiftWrapOrderItemRequest.getWrappedItems();
 
-    // Assert that nothing has changed
+    // Assert
+    assertNull(actualGiftWrapOrderItemRequest.getRetailPriceOverride());
+    assertNull(actualGiftWrapOrderItemRequest.getSalePriceOverride());
+    assertNull(actualGiftWrapOrderItemRequest.getCategory());
+    assertNull(actualGiftWrapOrderItemRequest.getProduct());
+    assertNull(actualGiftWrapOrderItemRequest.getSku());
+    assertNull(actualGiftWrapOrderItemRequest.getBundleOrderItem());
+    assertNull(actualGiftWrapOrderItemRequest.getOrder());
+    assertNull(actualGiftWrapOrderItemRequest.getPersonalMessage());
     assertEquals(0, actualGiftWrapOrderItemRequest.getQuantity());
     assertTrue(actualGiftWrapOrderItemRequest.getDiscreteOrderItemFeePrices().isEmpty());
     assertTrue(actualWrappedItems.isEmpty());

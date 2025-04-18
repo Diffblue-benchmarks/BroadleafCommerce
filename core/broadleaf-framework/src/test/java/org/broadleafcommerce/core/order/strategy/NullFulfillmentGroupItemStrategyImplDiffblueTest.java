@@ -1,55 +1,78 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.order.strategy;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import static org.mockito.Mockito.mock;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.util.ArrayList;
 import org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao;
 import org.broadleafcommerce.core.order.domain.BundleOrderItemImpl;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
+import org.broadleafcommerce.core.order.domain.Order;
+import org.broadleafcommerce.core.order.domain.OrderItem;
 import org.broadleafcommerce.core.order.service.FulfillmentGroupService;
 import org.broadleafcommerce.core.order.service.OrderItemService;
 import org.broadleafcommerce.core.order.service.OrderService;
 import org.broadleafcommerce.core.order.service.call.OrderItemRequestDTO;
 import org.broadleafcommerce.core.order.service.workflow.CartOperationRequest;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ContextConfiguration(classes = {NullFulfillmentGroupItemStrategyImpl.class})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class NullFulfillmentGroupItemStrategyImplDiffblueTest {
-  @MockBean
+  @Mock
   private FulfillmentGroupItemDao fulfillmentGroupItemDao;
 
-  @MockBean
+  @Mock
   private FulfillmentGroupService fulfillmentGroupService;
 
-  @Autowired
+  @InjectMocks
   private NullFulfillmentGroupItemStrategyImpl nullFulfillmentGroupItemStrategyImpl;
 
-  @MockBean
+  @Mock
   private OrderItemService orderItemService;
 
-  @MockBean
+  @Mock
   private OrderService orderService;
 
   /**
-   * Test
-   * {@link NullFulfillmentGroupItemStrategyImpl#onItemAdded(CartOperationRequest)}.
+   * Test {@link NullFulfillmentGroupItemStrategyImpl#onItemAdded(CartOperationRequest)}.
    * <p>
-   * Method under test:
-   * {@link NullFulfillmentGroupItemStrategyImpl#onItemAdded(CartOperationRequest)}
+   * Method under test: {@link NullFulfillmentGroupItemStrategyImpl#onItemAdded(CartOperationRequest)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CartOperationRequest NullFulfillmentGroupItemStrategyImpl.onItemAdded(CartOperationRequest)"})
   public void testOnItemAdded() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    NullFulfillmentGroupItemStrategyImpl nullFulfillmentGroupItemStrategyImpl = new NullFulfillmentGroupItemStrategyImpl();
     NullOrderImpl order = new NullOrderImpl();
     CartOperationRequest request = new CartOperationRequest(order, new OrderItemRequestDTO(), true);
 
@@ -58,76 +81,15 @@ public class NullFulfillmentGroupItemStrategyImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link NullFulfillmentGroupItemStrategyImpl#onItemAdded(CartOperationRequest)}.
+   * Test {@link NullFulfillmentGroupItemStrategyImpl#onItemUpdated(CartOperationRequest)}.
    * <p>
-   * Method under test:
-   * {@link NullFulfillmentGroupItemStrategyImpl#onItemAdded(CartOperationRequest)}
+   * Method under test: {@link NullFulfillmentGroupItemStrategyImpl#onItemUpdated(CartOperationRequest)}
    */
   @Test
-  public void testOnItemAdded2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    NullFulfillmentGroupItemStrategyImpl nullFulfillmentGroupItemStrategyImpl = new NullFulfillmentGroupItemStrategyImpl();
-    NullOrderImpl order = mock(NullOrderImpl.class);
-    CartOperationRequest request = new CartOperationRequest(order, new OrderItemRequestDTO(), true);
-
-    // Act and Assert
-    assertSame(request, nullFulfillmentGroupItemStrategyImpl.onItemAdded(request));
-  }
-
-  /**
-   * Test
-   * {@link NullFulfillmentGroupItemStrategyImpl#onItemAdded(CartOperationRequest)}.
-   * <p>
-   * Method under test:
-   * {@link NullFulfillmentGroupItemStrategyImpl#onItemAdded(CartOperationRequest)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testOnItemAdded3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.strategy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.strategy.NullFulfillmentGroupItemStrategyImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass664 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.strategy.NullFulfillmentGroupItemStrategyImpl nullFulfillmentGroupItemStrategyImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderService orderService;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    NullOrderImpl order = new NullOrderImpl();
-
-    // Act
-    nullFulfillmentGroupItemStrategyImpl.onItemAdded(new CartOperationRequest(order, new OrderItemRequestDTO(), true));
-  }
-
-  /**
-   * Test
-   * {@link NullFulfillmentGroupItemStrategyImpl#onItemUpdated(CartOperationRequest)}.
-   * <p>
-   * Method under test:
-   * {@link NullFulfillmentGroupItemStrategyImpl#onItemUpdated(CartOperationRequest)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CartOperationRequest NullFulfillmentGroupItemStrategyImpl.onItemUpdated(CartOperationRequest)"})
   public void testOnItemUpdated() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    NullFulfillmentGroupItemStrategyImpl nullFulfillmentGroupItemStrategyImpl = new NullFulfillmentGroupItemStrategyImpl();
     NullOrderImpl order = new NullOrderImpl();
     CartOperationRequest request = new CartOperationRequest(order, new OrderItemRequestDTO(), true);
 
@@ -136,201 +98,77 @@ public class NullFulfillmentGroupItemStrategyImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link NullFulfillmentGroupItemStrategyImpl#onItemUpdated(CartOperationRequest)}.
+   * Test {@link NullFulfillmentGroupItemStrategyImpl#onItemRemoved(CartOperationRequest)}.
+   * <ul>
+   *   <li>Then AddedOrderItem return {@link BundleOrderItemImpl}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link NullFulfillmentGroupItemStrategyImpl#onItemUpdated(CartOperationRequest)}
+   * Method under test: {@link NullFulfillmentGroupItemStrategyImpl#onItemRemoved(CartOperationRequest)}
    */
   @Test
-  public void testOnItemUpdated2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CartOperationRequest NullFulfillmentGroupItemStrategyImpl.onItemRemoved(CartOperationRequest)"})
+  public void testOnItemRemoved_thenAddedOrderItemReturnBundleOrderItemImpl() {
     // Arrange
-    NullFulfillmentGroupItemStrategyImpl nullFulfillmentGroupItemStrategyImpl = new NullFulfillmentGroupItemStrategyImpl();
-    NullOrderImpl order = mock(NullOrderImpl.class);
-    CartOperationRequest request = new CartOperationRequest(order, new OrderItemRequestDTO(), true);
-
-    // Act and Assert
-    assertSame(request, nullFulfillmentGroupItemStrategyImpl.onItemUpdated(request));
-  }
-
-  /**
-   * Test
-   * {@link NullFulfillmentGroupItemStrategyImpl#onItemUpdated(CartOperationRequest)}.
-   * <p>
-   * Method under test:
-   * {@link NullFulfillmentGroupItemStrategyImpl#onItemUpdated(CartOperationRequest)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testOnItemUpdated3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.strategy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.strategy.NullFulfillmentGroupItemStrategyImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass666 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.strategy.NullFulfillmentGroupItemStrategyImpl nullFulfillmentGroupItemStrategyImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderService orderService;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    NullOrderImpl order = new NullOrderImpl();
-
-    // Act
-    nullFulfillmentGroupItemStrategyImpl
-        .onItemUpdated(new CartOperationRequest(order, new OrderItemRequestDTO(), true));
-  }
-
-  /**
-   * Test
-   * {@link NullFulfillmentGroupItemStrategyImpl#onItemRemoved(CartOperationRequest)}.
-   * <p>
-   * Method under test:
-   * {@link NullFulfillmentGroupItemStrategyImpl#onItemRemoved(CartOperationRequest)}
-   */
-  @Test
-  public void testOnItemRemoved() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    NullFulfillmentGroupItemStrategyImpl nullFulfillmentGroupItemStrategyImpl = new NullFulfillmentGroupItemStrategyImpl();
     NullOrderImpl order = new NullOrderImpl();
 
     CartOperationRequest request = new CartOperationRequest(order, new OrderItemRequestDTO(), true);
-    request.setOrderItem(new BundleOrderItemImpl());
+    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
+    request.setOrderItem(orderItem);
 
-    // Act and Assert
-    assertSame(request, nullFulfillmentGroupItemStrategyImpl.onItemRemoved(request));
+    // Act
+    CartOperationRequest actualOnItemRemovedResult = nullFulfillmentGroupItemStrategyImpl.onItemRemoved(request);
+
+    // Assert
+    OrderItem addedOrderItem = actualOnItemRemovedResult.getAddedOrderItem();
+    assertTrue(addedOrderItem instanceof BundleOrderItemImpl);
+    assertSame(orderItem, addedOrderItem);
+    assertSame(orderItem, actualOnItemRemovedResult.getOrderItem());
   }
 
   /**
-   * Test
-   * {@link NullFulfillmentGroupItemStrategyImpl#onItemRemoved(CartOperationRequest)}.
+   * Test {@link NullFulfillmentGroupItemStrategyImpl#onItemRemoved(CartOperationRequest)}.
+   * <ul>
+   *   <li>Then Order return {@link NullOrderImpl}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link NullFulfillmentGroupItemStrategyImpl#onItemRemoved(CartOperationRequest)}
+   * Method under test: {@link NullFulfillmentGroupItemStrategyImpl#onItemRemoved(CartOperationRequest)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testOnItemRemoved2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.strategy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.strategy.NullFulfillmentGroupItemStrategyImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass665 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.strategy.NullFulfillmentGroupItemStrategyImpl nullFulfillmentGroupItemStrategyImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderService orderService;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CartOperationRequest NullFulfillmentGroupItemStrategyImpl.onItemRemoved(CartOperationRequest)"})
+  public void testOnItemRemoved_thenOrderReturnNullOrderImpl() {
     // Arrange
+    when(fulfillmentGroupService.getFulfillmentGroupItemsForOrderItem(Mockito.<Order>any(), Mockito.<OrderItem>any()))
+        .thenReturn(new ArrayList<>());
     NullOrderImpl order = new NullOrderImpl();
 
     // Act
-    nullFulfillmentGroupItemStrategyImpl
+    CartOperationRequest actualOnItemRemovedResult = nullFulfillmentGroupItemStrategyImpl
         .onItemRemoved(new CartOperationRequest(order, new OrderItemRequestDTO(), true));
+
+    // Assert
+    verify(fulfillmentGroupService).getFulfillmentGroupItemsForOrderItem(isA(Order.class), isNull());
+    assertTrue(actualOnItemRemovedResult.getOrder() instanceof NullOrderImpl);
+    assertNull(actualOnItemRemovedResult.getAddedOrderItem());
+    assertNull(actualOnItemRemovedResult.getOrderItem());
   }
 
   /**
-   * Test
-   * {@link NullFulfillmentGroupItemStrategyImpl#verify(CartOperationRequest)}.
+   * Test {@link NullFulfillmentGroupItemStrategyImpl#verify(CartOperationRequest)}.
    * <p>
-   * Method under test:
-   * {@link NullFulfillmentGroupItemStrategyImpl#verify(CartOperationRequest)}
+   * Method under test: {@link NullFulfillmentGroupItemStrategyImpl#verify(CartOperationRequest)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CartOperationRequest NullFulfillmentGroupItemStrategyImpl.verify(CartOperationRequest)"})
   public void testVerify() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    NullFulfillmentGroupItemStrategyImpl nullFulfillmentGroupItemStrategyImpl = new NullFulfillmentGroupItemStrategyImpl();
     NullOrderImpl order = new NullOrderImpl();
     CartOperationRequest request = new CartOperationRequest(order, new OrderItemRequestDTO(), true);
 
     // Act and Assert
     assertSame(request, nullFulfillmentGroupItemStrategyImpl.verify(request));
-  }
-
-  /**
-   * Test
-   * {@link NullFulfillmentGroupItemStrategyImpl#verify(CartOperationRequest)}.
-   * <p>
-   * Method under test:
-   * {@link NullFulfillmentGroupItemStrategyImpl#verify(CartOperationRequest)}
-   */
-  @Test
-  public void testVerify2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    NullFulfillmentGroupItemStrategyImpl nullFulfillmentGroupItemStrategyImpl = new NullFulfillmentGroupItemStrategyImpl();
-    NullOrderImpl order = mock(NullOrderImpl.class);
-    CartOperationRequest request = new CartOperationRequest(order, new OrderItemRequestDTO(), true);
-
-    // Act and Assert
-    assertSame(request, nullFulfillmentGroupItemStrategyImpl.verify(request));
-  }
-
-  /**
-   * Test
-   * {@link NullFulfillmentGroupItemStrategyImpl#verify(CartOperationRequest)}.
-   * <p>
-   * Method under test:
-   * {@link NullFulfillmentGroupItemStrategyImpl#verify(CartOperationRequest)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testVerify3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.strategy;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.order.strategy.NullFulfillmentGroupItemStrategyImpl.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass667 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.strategy.NullFulfillmentGroupItemStrategyImpl nullFulfillmentGroupItemStrategyImpl;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderItemService orderItemService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderService orderService;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    NullOrderImpl order = new NullOrderImpl();
-
-    // Act
-    nullFulfillmentGroupItemStrategyImpl.verify(new CartOperationRequest(order, new OrderItemRequestDTO(), true));
   }
 
   /**
@@ -338,13 +176,14 @@ public class NullFulfillmentGroupItemStrategyImplDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>default or parameterless constructor of
-   * {@link NullFulfillmentGroupItemStrategyImpl}
-   *   <li>
-   * {@link NullFulfillmentGroupItemStrategyImpl#isRemoveEmptyFulfillmentGroups()}
+   *   <li>default or parameterless constructor of {@link NullFulfillmentGroupItemStrategyImpl}
+   *   <li>{@link NullFulfillmentGroupItemStrategyImpl#isRemoveEmptyFulfillmentGroups()}
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void NullFulfillmentGroupItemStrategyImpl.<init>()",
+      "boolean NullFulfillmentGroupItemStrategyImpl.isRemoveEmptyFulfillmentGroups()"})
   public void testGettersAndSetters() {
     // Arrange, Act and Assert
     assertFalse((new NullFulfillmentGroupItemStrategyImpl()).isRemoveEmptyFulfillmentGroups());

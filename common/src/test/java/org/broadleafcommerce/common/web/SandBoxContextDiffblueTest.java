@@ -21,7 +21,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class SandBoxContextDiffblueTest {
   /**
@@ -30,6 +33,8 @@ public class SandBoxContextDiffblueTest {
    * Method under test: {@link SandBoxContext#getSandBoxContext()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"SandBoxContext SandBoxContext.getSandBoxContext()"})
   public void testGetSandBoxContext() {
     // Arrange and Act
     SandBoxContext actualSandBoxContext = SandBoxContext.getSandBoxContext();
@@ -40,25 +45,13 @@ public class SandBoxContextDiffblueTest {
   }
 
   /**
-   * Test {@link SandBoxContext#setSandBoxContext(SandBoxContext)}.
-   * <p>
-   * Method under test: {@link SandBoxContext#setSandBoxContext(SandBoxContext)}
-   */
-  @Test
-  public void testSetSandBoxContext() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange and Act
-    SandBoxContext.setSandBoxContext(new SandBoxContext());
-  }
-
-  /**
    * Test {@link SandBoxContext#clone()}.
    * <p>
    * Method under test: {@link SandBoxContext#clone()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"SandBoxContext SandBoxContext.clone()"})
   public void testClone() {
     // Arrange and Act
     SandBoxContext actualCloneResult = (new SandBoxContext()).clone();
@@ -81,6 +74,10 @@ public class SandBoxContextDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SandBoxContext.<init>()", "Boolean SandBoxContext.getPreviewMode()",
+      "Long SandBoxContext.getSandBoxId()", "void SandBoxContext.setPreviewMode(Boolean)",
+      "void SandBoxContext.setSandBoxId(Long)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     SandBoxContext actualSandBoxContext = new SandBoxContext();
@@ -88,7 +85,7 @@ public class SandBoxContextDiffblueTest {
     actualSandBoxContext.setSandBoxId(1L);
     Boolean actualPreviewMode = actualSandBoxContext.getPreviewMode();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals(1L, actualSandBoxContext.getSandBoxId().longValue());
     assertTrue(actualPreviewMode);
   }

@@ -1,36 +1,31 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.catalog.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThrows;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.junit.experimental.categories.Category;
 
-@ContextConfiguration(classes = {RelatedProductTypeEnum.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class RelatedProductTypeEnumDiffblueTest {
-  @Autowired
-  private RelatedProductTypeEnum relatedProductTypeEnum;
-
-  /**
-   * Test {@link RelatedProductTypeEnum#getInstance(String)}.
-   * <p>
-   * Method under test: {@link RelatedProductTypeEnum#getInstance(String)}
-   */
-  @Test
-  public void testGetInstance() {
-    // Arrange and Act
-    RelatedProductTypeEnum actualInstance = RelatedProductTypeEnum.getInstance("Type");
-
-    // Assert
-    assertEquals("Friendly Type", actualInstance.getFriendlyType());
-    assertEquals("Type", actualInstance.getType());
-  }
-
   /**
    * Test getters and setters.
    * <p>
@@ -42,6 +37,9 @@ public class RelatedProductTypeEnumDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void RelatedProductTypeEnum.<init>()", "String RelatedProductTypeEnum.getFriendlyType()",
+      "String RelatedProductTypeEnum.getType()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     RelatedProductTypeEnum actualRelatedProductTypeEnum = new RelatedProductTypeEnum();
@@ -53,40 +51,7 @@ public class RelatedProductTypeEnumDiffblueTest {
   }
 
   /**
-   * Test {@link RelatedProductTypeEnum#RelatedProductTypeEnum(String, String)}.
-   * <ul>
-   *   <li>When {@code Cannot add the type: (}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link RelatedProductTypeEnum#RelatedProductTypeEnum(String, String)}
-   */
-  @Test
-  public void testNewRelatedProductTypeEnum_whenCannotAddTheType() {
-    // Arrange, Act and Assert
-    assertThrows(RuntimeException.class, () -> new RelatedProductTypeEnum("Cannot add the type: (", "Friendly Type"));
-
-  }
-
-  /**
-   * Test {@link RelatedProductTypeEnum#RelatedProductTypeEnum(String, String)}.
-   * <ul>
-   *   <li>When {@code Type}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link RelatedProductTypeEnum#RelatedProductTypeEnum(String, String)}
-   */
-  @Test
-  public void testNewRelatedProductTypeEnum_whenType() {
-    // Arrange, Act and Assert
-    assertThrows(RuntimeException.class, () -> new RelatedProductTypeEnum("Type", "Friendly Type"));
-
-  }
-
-  /**
-   * Test {@link RelatedProductTypeEnum#equals(Object)}, and
-   * {@link RelatedProductTypeEnum#hashCode()}.
+   * Test {@link RelatedProductTypeEnum#equals(Object)}, and {@link RelatedProductTypeEnum#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -99,6 +64,8 @@ public class RelatedProductTypeEnumDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean RelatedProductTypeEnum.equals(Object)", "int RelatedProductTypeEnum.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     RelatedProductTypeEnum relatedProductTypeEnum = RelatedProductTypeEnum.CROSS_SALE;
@@ -111,8 +78,7 @@ public class RelatedProductTypeEnumDiffblueTest {
   }
 
   /**
-   * Test {@link RelatedProductTypeEnum#equals(Object)}, and
-   * {@link RelatedProductTypeEnum#hashCode()}.
+   * Test {@link RelatedProductTypeEnum#equals(Object)}, and {@link RelatedProductTypeEnum#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -125,6 +91,8 @@ public class RelatedProductTypeEnumDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean RelatedProductTypeEnum.equals(Object)", "int RelatedProductTypeEnum.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     RelatedProductTypeEnum relatedProductTypeEnum = new RelatedProductTypeEnum();
@@ -137,8 +105,7 @@ public class RelatedProductTypeEnumDiffblueTest {
   }
 
   /**
-   * Test {@link RelatedProductTypeEnum#equals(Object)}, and
-   * {@link RelatedProductTypeEnum#hashCode()}.
+   * Test {@link RelatedProductTypeEnum#equals(Object)}, and {@link RelatedProductTypeEnum#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -151,6 +118,8 @@ public class RelatedProductTypeEnumDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean RelatedProductTypeEnum.equals(Object)", "int RelatedProductTypeEnum.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     RelatedProductTypeEnum relatedProductTypeEnum = RelatedProductTypeEnum.CROSS_SALE;
@@ -171,9 +140,27 @@ public class RelatedProductTypeEnumDiffblueTest {
    * Method under test: {@link RelatedProductTypeEnum#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean RelatedProductTypeEnum.equals(Object)", "int RelatedProductTypeEnum.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(RelatedProductTypeEnum.FEATURED, RelatedProductTypeEnum.CROSS_SALE);
+  }
+
+  /**
+   * Test {@link RelatedProductTypeEnum#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link RelatedProductTypeEnum#equals(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean RelatedProductTypeEnum.equals(Object)", "int RelatedProductTypeEnum.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange, Act and Assert
     assertNotEquals(new RelatedProductTypeEnum(), RelatedProductTypeEnum.CROSS_SALE);
   }
 
@@ -187,6 +174,8 @@ public class RelatedProductTypeEnumDiffblueTest {
    * Method under test: {@link RelatedProductTypeEnum#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean RelatedProductTypeEnum.equals(Object)", "int RelatedProductTypeEnum.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(RelatedProductTypeEnum.CROSS_SALE, null);
@@ -202,6 +191,8 @@ public class RelatedProductTypeEnumDiffblueTest {
    * Method under test: {@link RelatedProductTypeEnum#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean RelatedProductTypeEnum.equals(Object)", "int RelatedProductTypeEnum.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(RelatedProductTypeEnum.CROSS_SALE, "Different type to RelatedProductTypeEnum");

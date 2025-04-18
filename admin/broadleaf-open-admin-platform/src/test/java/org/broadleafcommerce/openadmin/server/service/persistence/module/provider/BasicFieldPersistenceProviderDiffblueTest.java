@@ -1,130 +1,87 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.server.service.persistence.module.provider;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.Serializable;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import org.broadleafcommerce.common.persistence.EntityConfiguration;
-import org.broadleafcommerce.common.presentation.client.PersistencePerspectiveItemType;
 import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
 import org.broadleafcommerce.openadmin.dto.AdornedTargetCollectionMetadata;
-import org.broadleafcommerce.openadmin.dto.AdornedTargetList;
 import org.broadleafcommerce.openadmin.dto.BasicFieldMetadata;
 import org.broadleafcommerce.openadmin.dto.CriteriaTransferObject;
 import org.broadleafcommerce.openadmin.dto.Entity;
 import org.broadleafcommerce.openadmin.dto.FieldMetadata;
 import org.broadleafcommerce.openadmin.dto.PersistencePerspective;
-import org.broadleafcommerce.openadmin.dto.PersistencePerspectiveItem;
 import org.broadleafcommerce.openadmin.dto.Property;
 import org.broadleafcommerce.openadmin.server.service.persistence.PersistenceException;
 import org.broadleafcommerce.openadmin.server.service.persistence.PersistenceManagerImpl;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.FieldManager;
+import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.FilterMapping;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.RestrictionFactory;
+import org.broadleafcommerce.openadmin.server.service.persistence.module.provider.extension.BasicFieldPersistenceProviderExtensionManager;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.AddSearchMappingRequest;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.ExtractValueRequest;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.PopulateValueRequest;
 import org.broadleafcommerce.openadmin.server.service.type.MetadataProviderResponse;
-import org.hibernate.engine.spi.SessionDelegatorBaseImpl;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
-    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
-    "/bl-open-admin-contentCreator-applicationContext.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+@ContextConfiguration(classes = {BasicFieldPersistenceProvider.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class BasicFieldPersistenceProviderDiffblueTest {
   @Autowired
   private BasicFieldPersistenceProvider basicFieldPersistenceProvider;
 
-  /**
-   * Test
-   * {@link BasicFieldPersistenceProvider#canHandlePersistence(PopulateValueRequest, Serializable)}.
-   * <p>
-   * Method under test:
-   * {@link BasicFieldPersistenceProvider#canHandlePersistence(PopulateValueRequest, Serializable)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCanHandlePersistence() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module.provider;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass414 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.provider.BasicFieldPersistenceProvider basicFieldPersistenceProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    BasicFieldPersistenceProvider basicFieldPersistenceProvider2 = new BasicFieldPersistenceProvider();
-    EntityConfiguration entityConfiguration = new EntityConfiguration();
-    FieldManager fieldManager = new FieldManager(entityConfiguration, new SessionDelegatorBaseImpl(null, null));
-
-    Property property = new Property();
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    Class<Object> returnType = Object.class;
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
-    PopulateValueRequest populateValueRequest = new PopulateValueRequest(true, fieldManager, property, metadata,
-        returnType, "42", persistenceManager, dataFormatProvider, true, new Entity());
-
-    // Act
-    basicFieldPersistenceProvider2.canHandlePersistence(populateValueRequest, new SimpleDateFormat("yyyy/mm/dd"));
-  }
+  @MockBean(name = "blBasicFieldPersistenceProviderExtensionManager")
+  private BasicFieldPersistenceProviderExtensionManager basicFieldPersistenceProviderExtensionManager;
 
   /**
-   * Test
-   * {@link BasicFieldPersistenceProvider#canHandlePersistence(PopulateValueRequest, Serializable)}.
+   * Test {@link BasicFieldPersistenceProvider#canHandlePersistence(PopulateValueRequest, Serializable)}.
    * <ul>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BasicFieldPersistenceProvider#canHandlePersistence(PopulateValueRequest, Serializable)}
+   * Method under test: {@link BasicFieldPersistenceProvider#canHandlePersistence(PopulateValueRequest, Serializable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BasicFieldPersistenceProvider.canHandlePersistence(PopulateValueRequest, Serializable)"})
   public void testCanHandlePersistence_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AddSearchMappingRequest addSearchMappingRequest = mock(AddSearchMappingRequest.class);
-    when(addSearchMappingRequest.getPropertyName()).thenReturn("Property Name");
-    when(addSearchMappingRequest.getMergedProperties()).thenReturn(new HashMap<>());
-
-    BasicFieldPersistenceProvider basicFieldPersistenceProvider = new BasicFieldPersistenceProvider();
-    basicFieldPersistenceProvider.addSearchMapping(addSearchMappingRequest, new ArrayList<>());
     FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
 
     Property property = new Property();
@@ -135,68 +92,52 @@ public class BasicFieldPersistenceProviderDiffblueTest {
     PopulateValueRequest populateValueRequest = new PopulateValueRequest(true, fieldManager, property, metadata,
         returnType, "42", persistenceManager, dataFormatProvider, true, new Entity());
 
-    // Act
-    boolean actualCanHandlePersistenceResult = basicFieldPersistenceProvider.canHandlePersistence(populateValueRequest,
-        new SimpleDateFormat("yyyy/mm/dd"));
-
-    // Assert
-    verify(addSearchMappingRequest).getMergedProperties();
-    verify(addSearchMappingRequest).getPropertyName();
-    assertFalse(actualCanHandlePersistenceResult);
+    // Act and Assert
+    assertFalse(
+        basicFieldPersistenceProvider.canHandlePersistence(populateValueRequest, new SimpleDateFormat("yyyy/mm/dd")));
   }
 
   /**
-   * Test
-   * {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}.
+   * Test {@link BasicFieldPersistenceProvider#canHandlePersistence(PopulateValueRequest, Serializable)}.
+   * <ul>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}
+   * Method under test: {@link BasicFieldPersistenceProvider#canHandlePersistence(PopulateValueRequest, Serializable)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testDetectBasicType() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module.provider;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass927 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.provider.BasicFieldPersistenceProvider basicFieldPersistenceProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BasicFieldPersistenceProvider.canHandlePersistence(PopulateValueRequest, Serializable)"})
+  public void testCanHandlePersistence_thenReturnTrue() {
     // Arrange
-    BasicFieldPersistenceProvider basicFieldPersistenceProvider2 = new BasicFieldPersistenceProvider();
-    AdornedTargetCollectionMetadata md = new AdornedTargetCollectionMetadata();
+    BasicFieldMetadata metadata = new BasicFieldMetadata();
+    metadata.setFieldType(SupportedFieldType.MONEY);
+    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
 
-    // Act
-    basicFieldPersistenceProvider2.detectBasicType(md, new Property());
+    Class<Object> returnType = Object.class;
+    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
+    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
+    PopulateValueRequest populateValueRequest = new PopulateValueRequest(true, fieldManager, null, metadata, returnType,
+        "42", persistenceManager, dataFormatProvider, true, new Entity());
+
+    // Act and Assert
+    assertTrue(
+        basicFieldPersistenceProvider.canHandlePersistence(populateValueRequest, new SimpleDateFormat("yyyy/mm/dd")));
   }
 
   /**
-   * Test
-   * {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}.
+   * Test {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}.
    * <ul>
    *   <li>Given {@link SupportedFieldType#ADDITIONAL_FOREIGN_KEY}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}
+   * Method under test: {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BasicFieldPersistenceProvider.detectBasicType(FieldMetadata, Property)"})
   public void testDetectBasicType_givenAdditional_foreign_key() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    BasicFieldPersistenceProvider basicFieldPersistenceProvider = new BasicFieldPersistenceProvider();
-
     BasicFieldMetadata md = new BasicFieldMetadata();
     md.setFieldType(SupportedFieldType.ADDITIONAL_FOREIGN_KEY);
 
@@ -205,24 +146,19 @@ public class BasicFieldPersistenceProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}.
+   * Test {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}.
    * <ul>
    *   <li>Given {@link SupportedFieldType#ASSET_URL}.</li>
-   *   <li>When {@link BasicFieldMetadata} (default constructor) FieldType is
-   * {@link SupportedFieldType#ASSET_URL}.</li>
+   *   <li>When {@link BasicFieldMetadata} (default constructor) FieldType is {@link SupportedFieldType#ASSET_URL}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}
+   * Method under test: {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BasicFieldPersistenceProvider.detectBasicType(FieldMetadata, Property)"})
   public void testDetectBasicType_givenAsset_url_whenBasicFieldMetadataFieldTypeIsAsset_url() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    BasicFieldPersistenceProvider basicFieldPersistenceProvider = new BasicFieldPersistenceProvider();
-
     BasicFieldMetadata md = new BasicFieldMetadata();
     md.setFieldType(SupportedFieldType.ASSET_URL);
 
@@ -231,24 +167,19 @@ public class BasicFieldPersistenceProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}.
+   * Test {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}.
    * <ul>
    *   <li>Given {@link SupportedFieldType#BOOLEAN}.</li>
-   *   <li>When {@link BasicFieldMetadata} (default constructor) FieldType is
-   * {@link SupportedFieldType#BOOLEAN}.</li>
+   *   <li>When {@link BasicFieldMetadata} (default constructor) FieldType is {@link SupportedFieldType#BOOLEAN}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}
+   * Method under test: {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BasicFieldPersistenceProvider.detectBasicType(FieldMetadata, Property)"})
   public void testDetectBasicType_givenBoolean_whenBasicFieldMetadataFieldTypeIsBoolean() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    BasicFieldPersistenceProvider basicFieldPersistenceProvider = new BasicFieldPersistenceProvider();
-
     BasicFieldMetadata md = new BasicFieldMetadata();
     md.setFieldType(SupportedFieldType.BOOLEAN);
 
@@ -257,24 +188,41 @@ public class BasicFieldPersistenceProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}.
+   * Test {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}.
    * <ul>
-   *   <li>Given {@link SupportedFieldType#CODE}.</li>
-   *   <li>When {@link BasicFieldMetadata} (default constructor) FieldType is
-   * {@link SupportedFieldType#CODE}.</li>
+   *   <li>Given {@link SupportedFieldType#BOOLEAN}.</li>
+   *   <li>When {@link Property#Property(String, String)} with {@code Name} and value is {@code 42}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}
+   * Method under test: {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}
    */
   @Test
-  public void testDetectBasicType_givenCode_whenBasicFieldMetadataFieldTypeIsCode() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BasicFieldPersistenceProvider.detectBasicType(FieldMetadata, Property)"})
+  public void testDetectBasicType_givenBoolean_whenPropertyWithNameAndValueIs42_thenReturnTrue() {
     // Arrange
-    BasicFieldPersistenceProvider basicFieldPersistenceProvider = new BasicFieldPersistenceProvider();
+    BasicFieldMetadata md = new BasicFieldMetadata();
+    md.setFieldType(SupportedFieldType.BOOLEAN);
 
+    // Act and Assert
+    assertTrue(basicFieldPersistenceProvider.detectBasicType(md, new Property("Name", "42")));
+  }
+
+  /**
+   * Test {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}.
+   * <ul>
+   *   <li>Given {@link SupportedFieldType#CODE}.</li>
+   *   <li>When {@link BasicFieldMetadata} (default constructor) FieldType is {@link SupportedFieldType#CODE}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BasicFieldPersistenceProvider.detectBasicType(FieldMetadata, Property)"})
+  public void testDetectBasicType_givenCode_whenBasicFieldMetadataFieldTypeIsCode() {
+    // Arrange
     BasicFieldMetadata md = new BasicFieldMetadata();
     md.setFieldType(SupportedFieldType.CODE);
 
@@ -283,23 +231,19 @@ public class BasicFieldPersistenceProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}.
+   * Test {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}.
    * <ul>
    *   <li>Given {@code ---}.</li>
    *   <li>When {@link Property#Property()} Name is {@code ---}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}
+   * Method under test: {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BasicFieldPersistenceProvider.detectBasicType(FieldMetadata, Property)"})
   public void testDetectBasicType_givenDashDashDash_whenPropertyNameIsDashDashDash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    BasicFieldPersistenceProvider basicFieldPersistenceProvider = new BasicFieldPersistenceProvider();
-
     BasicFieldMetadata md = new BasicFieldMetadata();
     md.setFieldType(SupportedFieldType.BOOLEAN);
 
@@ -311,24 +255,19 @@ public class BasicFieldPersistenceProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}.
+   * Test {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}.
    * <ul>
    *   <li>Given {@link SupportedFieldType#DATE}.</li>
-   *   <li>When {@link BasicFieldMetadata} (default constructor) FieldType is
-   * {@link SupportedFieldType#DATE}.</li>
+   *   <li>When {@link BasicFieldMetadata} (default constructor) FieldType is {@link SupportedFieldType#DATE}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}
+   * Method under test: {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BasicFieldPersistenceProvider.detectBasicType(FieldMetadata, Property)"})
   public void testDetectBasicType_givenDate_whenBasicFieldMetadataFieldTypeIsDate() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    BasicFieldPersistenceProvider basicFieldPersistenceProvider = new BasicFieldPersistenceProvider();
-
     BasicFieldMetadata md = new BasicFieldMetadata();
     md.setFieldType(SupportedFieldType.DATE);
 
@@ -337,24 +276,19 @@ public class BasicFieldPersistenceProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}.
+   * Test {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}.
    * <ul>
    *   <li>Given {@link SupportedFieldType#DECIMAL}.</li>
-   *   <li>When {@link BasicFieldMetadata} (default constructor) FieldType is
-   * {@link SupportedFieldType#DECIMAL}.</li>
+   *   <li>When {@link BasicFieldMetadata} (default constructor) FieldType is {@link SupportedFieldType#DECIMAL}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}
+   * Method under test: {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BasicFieldPersistenceProvider.detectBasicType(FieldMetadata, Property)"})
   public void testDetectBasicType_givenDecimal_whenBasicFieldMetadataFieldTypeIsDecimal() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    BasicFieldPersistenceProvider basicFieldPersistenceProvider = new BasicFieldPersistenceProvider();
-
     BasicFieldMetadata md = new BasicFieldMetadata();
     md.setFieldType(SupportedFieldType.DECIMAL);
 
@@ -363,24 +297,19 @@ public class BasicFieldPersistenceProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}.
+   * Test {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}.
    * <ul>
    *   <li>Given {@link SupportedFieldType#EMAIL}.</li>
-   *   <li>When {@link BasicFieldMetadata} (default constructor) FieldType is
-   * {@link SupportedFieldType#EMAIL}.</li>
+   *   <li>When {@link BasicFieldMetadata} (default constructor) FieldType is {@link SupportedFieldType#EMAIL}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}
+   * Method under test: {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BasicFieldPersistenceProvider.detectBasicType(FieldMetadata, Property)"})
   public void testDetectBasicType_givenEmail_whenBasicFieldMetadataFieldTypeIsEmail() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    BasicFieldPersistenceProvider basicFieldPersistenceProvider = new BasicFieldPersistenceProvider();
-
     BasicFieldMetadata md = new BasicFieldMetadata();
     md.setFieldType(SupportedFieldType.EMAIL);
 
@@ -389,22 +318,18 @@ public class BasicFieldPersistenceProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}.
+   * Test {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}.
    * <ul>
    *   <li>Given {@link SupportedFieldType#FOREIGN_KEY}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}
+   * Method under test: {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BasicFieldPersistenceProvider.detectBasicType(FieldMetadata, Property)"})
   public void testDetectBasicType_givenForeign_key() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    BasicFieldPersistenceProvider basicFieldPersistenceProvider = new BasicFieldPersistenceProvider();
-
     BasicFieldMetadata md = new BasicFieldMetadata();
     md.setFieldType(SupportedFieldType.FOREIGN_KEY);
 
@@ -413,24 +338,19 @@ public class BasicFieldPersistenceProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}.
+   * Test {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}.
    * <ul>
    *   <li>Given {@link SupportedFieldType#HTML_BASIC}.</li>
-   *   <li>When {@link BasicFieldMetadata} (default constructor) FieldType is
-   * {@link SupportedFieldType#HTML_BASIC}.</li>
+   *   <li>When {@link BasicFieldMetadata} (default constructor) FieldType is {@link SupportedFieldType#HTML_BASIC}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}
+   * Method under test: {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BasicFieldPersistenceProvider.detectBasicType(FieldMetadata, Property)"})
   public void testDetectBasicType_givenHtml_basic_whenBasicFieldMetadataFieldTypeIsHtml_basic() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    BasicFieldPersistenceProvider basicFieldPersistenceProvider = new BasicFieldPersistenceProvider();
-
     BasicFieldMetadata md = new BasicFieldMetadata();
     md.setFieldType(SupportedFieldType.HTML_BASIC);
 
@@ -439,24 +359,19 @@ public class BasicFieldPersistenceProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}.
+   * Test {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}.
    * <ul>
    *   <li>Given {@link SupportedFieldType#HTML}.</li>
-   *   <li>When {@link BasicFieldMetadata} (default constructor) FieldType is
-   * {@link SupportedFieldType#HTML}.</li>
+   *   <li>When {@link BasicFieldMetadata} (default constructor) FieldType is {@link SupportedFieldType#HTML}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}
+   * Method under test: {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BasicFieldPersistenceProvider.detectBasicType(FieldMetadata, Property)"})
   public void testDetectBasicType_givenHtml_whenBasicFieldMetadataFieldTypeIsHtml() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    BasicFieldPersistenceProvider basicFieldPersistenceProvider = new BasicFieldPersistenceProvider();
-
     BasicFieldMetadata md = new BasicFieldMetadata();
     md.setFieldType(SupportedFieldType.HTML);
 
@@ -465,25 +380,20 @@ public class BasicFieldPersistenceProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}.
+   * Test {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}.
    * <ul>
    *   <li>Given {@link SupportedFieldType#ID}.</li>
-   *   <li>When {@link BasicFieldMetadata} (default constructor) FieldType is
-   * {@link SupportedFieldType#ID}.</li>
+   *   <li>When {@link BasicFieldMetadata} (default constructor) FieldType is {@link SupportedFieldType#ID}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}
+   * Method under test: {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BasicFieldPersistenceProvider.detectBasicType(FieldMetadata, Property)"})
   public void testDetectBasicType_givenId_whenBasicFieldMetadataFieldTypeIsId_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    BasicFieldPersistenceProvider basicFieldPersistenceProvider = new BasicFieldPersistenceProvider();
-
     BasicFieldMetadata md = new BasicFieldMetadata();
     md.setFieldType(SupportedFieldType.ID);
 
@@ -492,24 +402,19 @@ public class BasicFieldPersistenceProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}.
+   * Test {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}.
    * <ul>
    *   <li>Given {@link SupportedFieldType#INTEGER}.</li>
-   *   <li>When {@link BasicFieldMetadata} (default constructor) FieldType is
-   * {@link SupportedFieldType#INTEGER}.</li>
+   *   <li>When {@link BasicFieldMetadata} (default constructor) FieldType is {@link SupportedFieldType#INTEGER}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}
+   * Method under test: {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BasicFieldPersistenceProvider.detectBasicType(FieldMetadata, Property)"})
   public void testDetectBasicType_givenInteger_whenBasicFieldMetadataFieldTypeIsInteger() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    BasicFieldPersistenceProvider basicFieldPersistenceProvider = new BasicFieldPersistenceProvider();
-
     BasicFieldMetadata md = new BasicFieldMetadata();
     md.setFieldType(SupportedFieldType.INTEGER);
 
@@ -518,24 +423,19 @@ public class BasicFieldPersistenceProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}.
+   * Test {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}.
    * <ul>
    *   <li>Given {@link SupportedFieldType#MONEY}.</li>
-   *   <li>When {@link BasicFieldMetadata} (default constructor) FieldType is
-   * {@link SupportedFieldType#MONEY}.</li>
+   *   <li>When {@link BasicFieldMetadata} (default constructor) FieldType is {@link SupportedFieldType#MONEY}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}
+   * Method under test: {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BasicFieldPersistenceProvider.detectBasicType(FieldMetadata, Property)"})
   public void testDetectBasicType_givenMoney_whenBasicFieldMetadataFieldTypeIsMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    BasicFieldPersistenceProvider basicFieldPersistenceProvider = new BasicFieldPersistenceProvider();
-
     BasicFieldMetadata md = new BasicFieldMetadata();
     md.setFieldType(SupportedFieldType.MONEY);
 
@@ -544,24 +444,19 @@ public class BasicFieldPersistenceProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}.
+   * Test {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}.
    * <ul>
    *   <li>Given {@link SupportedFieldType#STRING}.</li>
-   *   <li>When {@link BasicFieldMetadata} (default constructor) FieldType is
-   * {@link SupportedFieldType#STRING}.</li>
+   *   <li>When {@link BasicFieldMetadata} (default constructor) FieldType is {@link SupportedFieldType#STRING}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}
+   * Method under test: {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BasicFieldPersistenceProvider.detectBasicType(FieldMetadata, Property)"})
   public void testDetectBasicType_givenString_whenBasicFieldMetadataFieldTypeIsString() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    BasicFieldPersistenceProvider basicFieldPersistenceProvider = new BasicFieldPersistenceProvider();
-
     BasicFieldMetadata md = new BasicFieldMetadata();
     md.setFieldType(SupportedFieldType.STRING);
 
@@ -570,22 +465,19 @@ public class BasicFieldPersistenceProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}.
+   * Test {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}.
    * <ul>
    *   <li>When {@link AdornedTargetCollectionMetadata} (default constructor).</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}
+   * Method under test: {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BasicFieldPersistenceProvider.detectBasicType(FieldMetadata, Property)"})
   public void testDetectBasicType_whenAdornedTargetCollectionMetadata_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    BasicFieldPersistenceProvider basicFieldPersistenceProvider = new BasicFieldPersistenceProvider();
     AdornedTargetCollectionMetadata md = new AdornedTargetCollectionMetadata();
 
     // Act and Assert
@@ -593,83 +485,39 @@ public class BasicFieldPersistenceProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BasicFieldPersistenceProvider#detectAdditionalSearchTypes(FieldMetadata, Property)}.
-   * <p>
-   * Method under test:
-   * {@link BasicFieldPersistenceProvider#detectAdditionalSearchTypes(FieldMetadata, Property)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testDetectAdditionalSearchTypes() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module.provider;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass863 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.provider.BasicFieldPersistenceProvider basicFieldPersistenceProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    BasicFieldPersistenceProvider basicFieldPersistenceProvider2 = new BasicFieldPersistenceProvider();
-    AdornedTargetCollectionMetadata md = new AdornedTargetCollectionMetadata();
-
-    // Act
-    basicFieldPersistenceProvider2.detectAdditionalSearchTypes(md, new Property());
-  }
-
-  /**
-   * Test
-   * {@link BasicFieldPersistenceProvider#detectAdditionalSearchTypes(FieldMetadata, Property)}.
+   * Test {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}.
    * <ul>
-   *   <li>Given {@link SupportedFieldType#BROADLEAF_ENUMERATION}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>When {@link BasicFieldMetadata} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BasicFieldPersistenceProvider#detectAdditionalSearchTypes(FieldMetadata, Property)}
+   * Method under test: {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}
    */
   @Test
-  public void testDetectAdditionalSearchTypes_givenBroadleaf_enumeration_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BasicFieldPersistenceProvider.detectBasicType(FieldMetadata, Property)"})
+  public void testDetectBasicType_whenBasicFieldMetadata_thenReturnFalse() {
     // Arrange
-    BasicFieldPersistenceProvider basicFieldPersistenceProvider = new BasicFieldPersistenceProvider();
-
     BasicFieldMetadata md = new BasicFieldMetadata();
-    md.setFieldType(SupportedFieldType.BROADLEAF_ENUMERATION);
 
     // Act and Assert
-    assertTrue(basicFieldPersistenceProvider.detectAdditionalSearchTypes(md, null));
+    assertFalse(basicFieldPersistenceProvider.detectBasicType(md, new Property()));
   }
 
   /**
-   * Test
-   * {@link BasicFieldPersistenceProvider#detectAdditionalSearchTypes(FieldMetadata, Property)}.
+   * Test {@link BasicFieldPersistenceProvider#detectAdditionalSearchTypes(FieldMetadata, Property)}.
    * <ul>
    *   <li>Given {@code ---}.</li>
    *   <li>When {@link Property#Property()} Name is {@code ---}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BasicFieldPersistenceProvider#detectAdditionalSearchTypes(FieldMetadata, Property)}
+   * Method under test: {@link BasicFieldPersistenceProvider#detectAdditionalSearchTypes(FieldMetadata, Property)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BasicFieldPersistenceProvider.detectAdditionalSearchTypes(FieldMetadata, Property)"})
   public void testDetectAdditionalSearchTypes_givenDashDashDash_whenPropertyNameIsDashDashDash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    BasicFieldPersistenceProvider basicFieldPersistenceProvider = new BasicFieldPersistenceProvider();
-
     BasicFieldMetadata md = new BasicFieldMetadata();
     md.setFieldType(SupportedFieldType.BROADLEAF_ENUMERATION);
 
@@ -681,22 +529,18 @@ public class BasicFieldPersistenceProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BasicFieldPersistenceProvider#detectAdditionalSearchTypes(FieldMetadata, Property)}.
+   * Test {@link BasicFieldPersistenceProvider#detectAdditionalSearchTypes(FieldMetadata, Property)}.
    * <ul>
    *   <li>Given {@link SupportedFieldType#DATA_DRIVEN_ENUMERATION}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BasicFieldPersistenceProvider#detectAdditionalSearchTypes(FieldMetadata, Property)}
+   * Method under test: {@link BasicFieldPersistenceProvider#detectAdditionalSearchTypes(FieldMetadata, Property)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BasicFieldPersistenceProvider.detectAdditionalSearchTypes(FieldMetadata, Property)"})
   public void testDetectAdditionalSearchTypes_givenData_driven_enumeration() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    BasicFieldPersistenceProvider basicFieldPersistenceProvider = new BasicFieldPersistenceProvider();
-
     BasicFieldMetadata md = new BasicFieldMetadata();
     md.setFieldType(SupportedFieldType.DATA_DRIVEN_ENUMERATION);
 
@@ -705,22 +549,18 @@ public class BasicFieldPersistenceProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BasicFieldPersistenceProvider#detectAdditionalSearchTypes(FieldMetadata, Property)}.
+   * Test {@link BasicFieldPersistenceProvider#detectAdditionalSearchTypes(FieldMetadata, Property)}.
    * <ul>
    *   <li>Given {@link SupportedFieldType#EXPLICIT_ENUMERATION}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BasicFieldPersistenceProvider#detectAdditionalSearchTypes(FieldMetadata, Property)}
+   * Method under test: {@link BasicFieldPersistenceProvider#detectAdditionalSearchTypes(FieldMetadata, Property)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BasicFieldPersistenceProvider.detectAdditionalSearchTypes(FieldMetadata, Property)"})
   public void testDetectAdditionalSearchTypes_givenExplicit_enumeration() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    BasicFieldPersistenceProvider basicFieldPersistenceProvider = new BasicFieldPersistenceProvider();
-
     BasicFieldMetadata md = new BasicFieldMetadata();
     md.setFieldType(SupportedFieldType.EXPLICIT_ENUMERATION);
 
@@ -729,21 +569,18 @@ public class BasicFieldPersistenceProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BasicFieldPersistenceProvider#detectAdditionalSearchTypes(FieldMetadata, Property)}.
+   * Test {@link BasicFieldPersistenceProvider#detectAdditionalSearchTypes(FieldMetadata, Property)}.
    * <ul>
    *   <li>When {@link AdornedTargetCollectionMetadata} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BasicFieldPersistenceProvider#detectAdditionalSearchTypes(FieldMetadata, Property)}
+   * Method under test: {@link BasicFieldPersistenceProvider#detectAdditionalSearchTypes(FieldMetadata, Property)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BasicFieldPersistenceProvider.detectAdditionalSearchTypes(FieldMetadata, Property)"})
   public void testDetectAdditionalSearchTypes_whenAdornedTargetCollectionMetadata() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    BasicFieldPersistenceProvider basicFieldPersistenceProvider = new BasicFieldPersistenceProvider();
     AdornedTargetCollectionMetadata md = new AdornedTargetCollectionMetadata();
 
     // Act and Assert
@@ -751,23 +588,80 @@ public class BasicFieldPersistenceProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BasicFieldPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}.
+   * Test {@link BasicFieldPersistenceProvider#detectAdditionalSearchTypes(FieldMetadata, Property)}.
+   * <ul>
+   *   <li>When {@link BasicFieldMetadata} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link BasicFieldPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}
+   * Method under test: {@link BasicFieldPersistenceProvider#detectAdditionalSearchTypes(FieldMetadata, Property)}
    */
   @Test
-  public void testCanHandleExtraction() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BasicFieldPersistenceProvider.detectAdditionalSearchTypes(FieldMetadata, Property)"})
+  public void testDetectAdditionalSearchTypes_whenBasicFieldMetadata_thenReturnFalse() {
     // Arrange
-    AddSearchMappingRequest addSearchMappingRequest = mock(AddSearchMappingRequest.class);
-    when(addSearchMappingRequest.getPropertyName()).thenReturn("Property Name");
-    when(addSearchMappingRequest.getMergedProperties()).thenReturn(new HashMap<>());
+    BasicFieldMetadata md = new BasicFieldMetadata();
 
-    BasicFieldPersistenceProvider basicFieldPersistenceProvider = new BasicFieldPersistenceProvider();
-    basicFieldPersistenceProvider.addSearchMapping(addSearchMappingRequest, new ArrayList<>());
+    // Act and Assert
+    assertFalse(basicFieldPersistenceProvider.detectAdditionalSearchTypes(md, new Property()));
+  }
+
+  /**
+   * Test {@link BasicFieldPersistenceProvider#detectAdditionalSearchTypes(FieldMetadata, Property)}.
+   * <ul>
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BasicFieldPersistenceProvider#detectAdditionalSearchTypes(FieldMetadata, Property)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BasicFieldPersistenceProvider.detectAdditionalSearchTypes(FieldMetadata, Property)"})
+  public void testDetectAdditionalSearchTypes_whenNull_thenReturnTrue() {
+    // Arrange
+    BasicFieldMetadata md = new BasicFieldMetadata();
+    md.setFieldType(SupportedFieldType.BROADLEAF_ENUMERATION);
+
+    // Act and Assert
+    assertTrue(basicFieldPersistenceProvider.detectAdditionalSearchTypes(md, null));
+  }
+
+  /**
+   * Test {@link BasicFieldPersistenceProvider#detectAdditionalSearchTypes(FieldMetadata, Property)}.
+   * <ul>
+   *   <li>When {@link Property#Property(String, String)} with {@code Name} and value is {@code 42}.</li>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BasicFieldPersistenceProvider#detectAdditionalSearchTypes(FieldMetadata, Property)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BasicFieldPersistenceProvider.detectAdditionalSearchTypes(FieldMetadata, Property)"})
+  public void testDetectAdditionalSearchTypes_whenPropertyWithNameAndValueIs42_thenReturnTrue() {
+    // Arrange
+    BasicFieldMetadata md = new BasicFieldMetadata();
+    md.setFieldType(SupportedFieldType.BROADLEAF_ENUMERATION);
+
+    // Act and Assert
+    assertTrue(basicFieldPersistenceProvider.detectAdditionalSearchTypes(md, new Property("Name", "42")));
+  }
+
+  /**
+   * Test {@link BasicFieldPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}.
+   * <ul>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BasicFieldPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BasicFieldPersistenceProvider.canHandleExtraction(ExtractValueRequest, Property)"})
+  public void testCanHandleExtraction_thenReturnFalse() {
+    // Arrange
     ArrayList<Property> props = new ArrayList<>();
     FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
 
@@ -778,161 +672,84 @@ public class BasicFieldPersistenceProviderDiffblueTest {
         "Display Val", persistenceManager, recordHelper, new SimpleDateFormat("yyyy/mm/dd"),
         new String[]{"Custom Criteria"});
 
-    // Act
-    basicFieldPersistenceProvider.canHandleExtraction(extractValueRequest, new Property());
-
-    // Assert
-    verify(addSearchMappingRequest).getMergedProperties();
-    verify(addSearchMappingRequest).getPropertyName();
+    // Act and Assert
+    assertFalse(basicFieldPersistenceProvider.canHandleExtraction(extractValueRequest, new Property()));
   }
 
   /**
-   * Test
-   * {@link BasicFieldPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}.
-   * <p>
-   * Method under test:
-   * {@link BasicFieldPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCanHandleExtraction2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module.provider;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass145 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.provider.BasicFieldPersistenceProvider basicFieldPersistenceProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    BasicFieldPersistenceProvider basicFieldPersistenceProvider2 = new BasicFieldPersistenceProvider();
-    ArrayList<Property> props = new ArrayList<>();
-    EntityConfiguration entityConfiguration = new EntityConfiguration();
-    FieldManager fieldManager = new FieldManager(entityConfiguration, new SessionDelegatorBaseImpl(null, null));
-
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    ExtractValueRequest extractValueRequest = new ExtractValueRequest(props, fieldManager, metadata, "Requested Value",
-        "Display Val", persistenceManager, recordHelper, new SimpleDateFormat("yyyy/mm/dd"),
-        new String[]{"Custom Criteria"});
-
-    // Act
-    basicFieldPersistenceProvider2.canHandleExtraction(extractValueRequest, new Property());
-  }
-
-  /**
-   * Test
-   * {@link BasicFieldPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}.
+   * Test {@link BasicFieldPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}.
    * <ul>
-   *   <li>Given {@code null}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BasicFieldPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}
+   * Method under test: {@link BasicFieldPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}
    */
   @Test
-  public void testCanHandleExtraction_givenNull_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BasicFieldPersistenceProvider.canHandleExtraction(ExtractValueRequest, Property)"})
+  public void testCanHandleExtraction_thenReturnTrue() {
     // Arrange
-    AddSearchMappingRequest addSearchMappingRequest = mock(AddSearchMappingRequest.class);
-    when(addSearchMappingRequest.getPropertyName()).thenReturn("Property Name");
-    when(addSearchMappingRequest.getMergedProperties()).thenReturn(new HashMap<>());
+    BasicFieldMetadata metadata = new BasicFieldMetadata();
+    metadata.setFieldType(SupportedFieldType.BOOLEAN);
+    ArrayList<Property> props = new ArrayList<>();
+    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
 
-    BasicFieldPersistenceProvider basicFieldPersistenceProvider = new BasicFieldPersistenceProvider();
-    basicFieldPersistenceProvider.addSearchMapping(addSearchMappingRequest, new ArrayList<>());
-    ExtractValueRequest extractValueRequest = mock(ExtractValueRequest.class);
-    when(extractValueRequest.getMetadata()).thenReturn(null);
+    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
+    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
 
-    // Act
-    boolean actualCanHandleExtractionResult = basicFieldPersistenceProvider.canHandleExtraction(extractValueRequest,
-        new Property());
-
-    // Assert
-    verify(addSearchMappingRequest).getMergedProperties();
-    verify(addSearchMappingRequest).getPropertyName();
-    verify(extractValueRequest).getMetadata();
-    assertFalse(actualCanHandleExtractionResult);
+    // Act and Assert
+    assertTrue(basicFieldPersistenceProvider.canHandleExtraction(
+        new ExtractValueRequest(props, fieldManager, metadata, "Requested Value", "Display Val", persistenceManager,
+            recordHelper, new SimpleDateFormat("yyyy/mm/dd"), new String[]{"Custom Criteria"}),
+        null));
   }
 
   /**
-   * Test
-   * {@link BasicFieldPersistenceProvider#canHandleSearchMapping(AddSearchMappingRequest, List)}.
+   * Test {@link BasicFieldPersistenceProvider#canHandleSearchMapping(AddSearchMappingRequest, List)}.
+   * <ul>
+   *   <li>Given {@link FilterMapping} (default constructor).</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link FilterMapping} (default constructor).</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link BasicFieldPersistenceProvider#canHandleSearchMapping(AddSearchMappingRequest, List)}
+   * Method under test: {@link BasicFieldPersistenceProvider#canHandleSearchMapping(AddSearchMappingRequest, List)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testCanHandleSearchMapping() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module.provider;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass718 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.provider.BasicFieldPersistenceProvider basicFieldPersistenceProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BasicFieldPersistenceProvider.canHandleSearchMapping(AddSearchMappingRequest, List)"})
+  public void testCanHandleSearchMapping_givenFilterMapping_whenArrayListAddFilterMapping() {
     // Arrange
-    BasicFieldPersistenceProvider basicFieldPersistenceProvider2 = new BasicFieldPersistenceProvider();
     PersistencePerspective persistencePerspective = new PersistencePerspective();
     CriteriaTransferObject requestedCto = new CriteriaTransferObject();
     HashMap<String, FieldMetadata> mergedProperties = new HashMap<>();
-    EntityConfiguration entityConfiguration = new EntityConfiguration();
-    FieldManager fieldManager = new FieldManager(entityConfiguration, new SessionDelegatorBaseImpl(null, null));
+    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
 
     AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
     AddSearchMappingRequest addSearchMappingRequest = new AddSearchMappingRequest(persistencePerspective, requestedCto,
         "Dr Jane Doe", mergedProperties, "Property Name", fieldManager, dataFormatProvider,
         new AdornedTargetListPersistenceModule(), mock(RestrictionFactory.class));
 
-    // Act
-    basicFieldPersistenceProvider2.canHandleSearchMapping(addSearchMappingRequest, new ArrayList<>());
+    ArrayList<FilterMapping> filterMappings = new ArrayList<>();
+    filterMappings.add(new FilterMapping());
+
+    // Act and Assert
+    assertFalse(basicFieldPersistenceProvider.canHandleSearchMapping(addSearchMappingRequest, filterMappings));
   }
 
   /**
-   * Test
-   * {@link BasicFieldPersistenceProvider#canHandleSearchMapping(AddSearchMappingRequest, List)}.
+   * Test {@link BasicFieldPersistenceProvider#canHandleSearchMapping(AddSearchMappingRequest, List)}.
    * <ul>
-   *   <li>Given {@code FOREIGNKEY}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link FilterMapping} (default constructor).</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link FilterMapping} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BasicFieldPersistenceProvider#canHandleSearchMapping(AddSearchMappingRequest, List)}
+   * Method under test: {@link BasicFieldPersistenceProvider#canHandleSearchMapping(AddSearchMappingRequest, List)}
    */
   @Test
-  public void testCanHandleSearchMapping_givenForeignkey_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BasicFieldPersistenceProvider.canHandleSearchMapping(AddSearchMappingRequest, List)"})
+  public void testCanHandleSearchMapping_givenFilterMapping_whenArrayListAddFilterMapping2() {
     // Arrange
-    BasicFieldPersistenceProvider basicFieldPersistenceProvider = new BasicFieldPersistenceProvider();
-    PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
-    doNothing().when(persistencePerspective)
-        .addPersistencePerspectiveItem(Mockito.<PersistencePerspectiveItemType>any(),
-            Mockito.<PersistencePerspectiveItem>any());
-    persistencePerspective.addPersistencePerspectiveItem(PersistencePerspectiveItemType.FOREIGNKEY,
-        new AdornedTargetList());
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
     CriteriaTransferObject requestedCto = new CriteriaTransferObject();
     HashMap<String, FieldMetadata> mergedProperties = new HashMap<>();
     FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
@@ -942,81 +759,56 @@ public class BasicFieldPersistenceProviderDiffblueTest {
         "Dr Jane Doe", mergedProperties, "Property Name", fieldManager, dataFormatProvider,
         new AdornedTargetListPersistenceModule(), mock(RestrictionFactory.class));
 
-    // Act
-    boolean actualCanHandleSearchMappingResult = basicFieldPersistenceProvider
-        .canHandleSearchMapping(addSearchMappingRequest, new ArrayList<>());
+    ArrayList<FilterMapping> filterMappings = new ArrayList<>();
+    filterMappings.add(new FilterMapping());
+    filterMappings.add(new FilterMapping());
 
-    // Assert
-    verify(persistencePerspective).addPersistencePerspectiveItem(eq(PersistencePerspectiveItemType.FOREIGNKEY),
-        isA(PersistencePerspectiveItem.class));
-    assertFalse(actualCanHandleSearchMappingResult);
+    // Act and Assert
+    assertFalse(basicFieldPersistenceProvider.canHandleSearchMapping(addSearchMappingRequest, filterMappings));
   }
 
   /**
-   * Test
-   * {@link BasicFieldPersistenceProvider#populateValue(PopulateValueRequest, Serializable)}.
+   * Test {@link BasicFieldPersistenceProvider#canHandleSearchMapping(AddSearchMappingRequest, List)}.
+   * <ul>
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link BasicFieldPersistenceProvider#populateValue(PopulateValueRequest, Serializable)}
+   * Method under test: {@link BasicFieldPersistenceProvider#canHandleSearchMapping(AddSearchMappingRequest, List)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testPopulateValue() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module.provider;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1818 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.provider.BasicFieldPersistenceProvider basicFieldPersistenceProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BasicFieldPersistenceProvider.canHandleSearchMapping(AddSearchMappingRequest, List)"})
+  public void testCanHandleSearchMapping_whenArrayList_thenReturnFalse() {
     // Arrange
-    BasicFieldPersistenceProvider basicFieldPersistenceProvider2 = new BasicFieldPersistenceProvider();
-    EntityConfiguration entityConfiguration = new EntityConfiguration();
-    FieldManager fieldManager = new FieldManager(entityConfiguration, new SessionDelegatorBaseImpl(null, null));
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    CriteriaTransferObject requestedCto = new CriteriaTransferObject();
+    HashMap<String, FieldMetadata> mergedProperties = new HashMap<>();
+    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
 
-    Property property = new Property();
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    Class<Object> returnType = Object.class;
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
     AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
-    PopulateValueRequest populateValueRequest = new PopulateValueRequest(true, fieldManager, property, metadata,
-        returnType, "42", persistenceManager, dataFormatProvider, true, new Entity());
+    AddSearchMappingRequest addSearchMappingRequest = new AddSearchMappingRequest(persistencePerspective, requestedCto,
+        "Dr Jane Doe", mergedProperties, "Property Name", fieldManager, dataFormatProvider,
+        new AdornedTargetListPersistenceModule(), mock(RestrictionFactory.class));
 
-    // Act
-    basicFieldPersistenceProvider2.populateValue(populateValueRequest, new SimpleDateFormat("yyyy/mm/dd"));
+    // Act and Assert
+    assertFalse(basicFieldPersistenceProvider.canHandleSearchMapping(addSearchMappingRequest, new ArrayList<>()));
   }
 
   /**
-   * Test
-   * {@link BasicFieldPersistenceProvider#populateValue(PopulateValueRequest, Serializable)}.
+   * Test {@link BasicFieldPersistenceProvider#populateValue(PopulateValueRequest, Serializable)}.
    * <ul>
    *   <li>Then return {@code NOT_HANDLED}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BasicFieldPersistenceProvider#populateValue(PopulateValueRequest, Serializable)}
+   * Method under test: {@link BasicFieldPersistenceProvider#populateValue(PopulateValueRequest, Serializable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "MetadataProviderResponse BasicFieldPersistenceProvider.populateValue(PopulateValueRequest, Serializable)"})
   public void testPopulateValue_thenReturnNotHandled() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AddSearchMappingRequest addSearchMappingRequest = mock(AddSearchMappingRequest.class);
-    when(addSearchMappingRequest.getPropertyName()).thenReturn("Property Name");
-    when(addSearchMappingRequest.getMergedProperties()).thenReturn(new HashMap<>());
-
-    BasicFieldPersistenceProvider basicFieldPersistenceProvider = new BasicFieldPersistenceProvider();
-    basicFieldPersistenceProvider.addSearchMapping(addSearchMappingRequest, new ArrayList<>());
     FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
 
     Property property = new Property();
@@ -1027,118 +819,26 @@ public class BasicFieldPersistenceProviderDiffblueTest {
     PopulateValueRequest populateValueRequest = new PopulateValueRequest(true, fieldManager, property, metadata,
         returnType, "42", persistenceManager, dataFormatProvider, true, new Entity());
 
-    // Act
-    MetadataProviderResponse actualPopulateValueResult = basicFieldPersistenceProvider
-        .populateValue(populateValueRequest, new SimpleDateFormat("yyyy/mm/dd"));
-
-    // Assert
-    verify(addSearchMappingRequest).getMergedProperties();
-    verify(addSearchMappingRequest).getPropertyName();
-    assertEquals(MetadataProviderResponse.NOT_HANDLED, actualPopulateValueResult);
+    // Act and Assert
+    assertEquals(MetadataProviderResponse.NOT_HANDLED,
+        basicFieldPersistenceProvider.populateValue(populateValueRequest, new SimpleDateFormat("yyyy/mm/dd")));
   }
 
   /**
-   * Test
-   * {@link BasicFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}.
-   * <p>
-   * Method under test:
-   * {@link BasicFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}
-   */
-  @Test
-  public void testExtractValue() throws PersistenceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AddSearchMappingRequest addSearchMappingRequest = mock(AddSearchMappingRequest.class);
-    when(addSearchMappingRequest.getPropertyName()).thenReturn("Property Name");
-    when(addSearchMappingRequest.getMergedProperties()).thenReturn(new HashMap<>());
-
-    BasicFieldPersistenceProvider basicFieldPersistenceProvider = new BasicFieldPersistenceProvider();
-    basicFieldPersistenceProvider.addSearchMapping(addSearchMappingRequest, new ArrayList<>());
-    ArrayList<Property> props = new ArrayList<>();
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    ExtractValueRequest extractValueRequest = new ExtractValueRequest(props, fieldManager, metadata, "Requested Value",
-        "Display Val", persistenceManager, recordHelper, new SimpleDateFormat("yyyy/mm/dd"),
-        new String[]{"Custom Criteria"});
-
-    // Act
-    basicFieldPersistenceProvider.extractValue(extractValueRequest, new Property());
-
-    // Assert
-    verify(addSearchMappingRequest).getMergedProperties();
-    verify(addSearchMappingRequest).getPropertyName();
-  }
-
-  /**
-   * Test
-   * {@link BasicFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}.
-   * <p>
-   * Method under test:
-   * {@link BasicFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testExtractValue2() throws PersistenceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module.provider;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass991 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.provider.BasicFieldPersistenceProvider basicFieldPersistenceProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    BasicFieldPersistenceProvider basicFieldPersistenceProvider2 = new BasicFieldPersistenceProvider();
-    ArrayList<Property> props = new ArrayList<>();
-    EntityConfiguration entityConfiguration = new EntityConfiguration();
-    FieldManager fieldManager = new FieldManager(entityConfiguration, new SessionDelegatorBaseImpl(null, null));
-
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    ExtractValueRequest extractValueRequest = new ExtractValueRequest(props, fieldManager, metadata, "Requested Value",
-        "Display Val", persistenceManager, recordHelper, new SimpleDateFormat("yyyy/mm/dd"),
-        new String[]{"Custom Criteria"});
-
-    // Act
-    basicFieldPersistenceProvider2.extractValue(extractValueRequest, new Property());
-  }
-
-  /**
-   * Test
-   * {@link BasicFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}.
+   * Test {@link BasicFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}.
    * <ul>
    *   <li>Given {@code null}.</li>
-   *   <li>Then return {@code NOT_HANDLED}.</li>
+   *   <li>Then calls {@link ExtractValueRequest#getMetadata()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BasicFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}
+   * Method under test: {@link BasicFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}
    */
   @Test
-  public void testExtractValue_givenNull_thenReturnNotHandled() throws PersistenceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "MetadataProviderResponse BasicFieldPersistenceProvider.extractValue(ExtractValueRequest, Property)"})
+  public void testExtractValue_givenNull_thenCallsGetMetadata() throws PersistenceException {
     // Arrange
-    AddSearchMappingRequest addSearchMappingRequest = mock(AddSearchMappingRequest.class);
-    when(addSearchMappingRequest.getPropertyName()).thenReturn("Property Name");
-    when(addSearchMappingRequest.getMergedProperties()).thenReturn(new HashMap<>());
-
-    BasicFieldPersistenceProvider basicFieldPersistenceProvider = new BasicFieldPersistenceProvider();
-    basicFieldPersistenceProvider.addSearchMapping(addSearchMappingRequest, new ArrayList<>());
     ExtractValueRequest extractValueRequest = mock(ExtractValueRequest.class);
     when(extractValueRequest.getMetadata()).thenReturn(null);
 
@@ -1147,79 +847,87 @@ public class BasicFieldPersistenceProviderDiffblueTest {
         new Property());
 
     // Assert
-    verify(addSearchMappingRequest).getMergedProperties();
-    verify(addSearchMappingRequest).getPropertyName();
     verify(extractValueRequest).getMetadata();
     assertEquals(MetadataProviderResponse.NOT_HANDLED, actualExtractValueResult);
   }
 
   /**
-   * Test
-   * {@link BasicFieldPersistenceProvider#addSearchMapping(AddSearchMappingRequest, List)}.
-   * <p>
-   * Method under test:
-   * {@link BasicFieldPersistenceProvider#addSearchMapping(AddSearchMappingRequest, List)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddSearchMapping() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module.provider;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass0 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.provider.BasicFieldPersistenceProvider basicFieldPersistenceProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    BasicFieldPersistenceProvider basicFieldPersistenceProvider2 = new BasicFieldPersistenceProvider();
-    PersistencePerspective persistencePerspective = new PersistencePerspective();
-    CriteriaTransferObject requestedCto = new CriteriaTransferObject();
-    HashMap<String, FieldMetadata> mergedProperties = new HashMap<>();
-    EntityConfiguration entityConfiguration = new EntityConfiguration();
-    FieldManager fieldManager = new FieldManager(entityConfiguration, new SessionDelegatorBaseImpl(null, null));
-
-    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
-    AddSearchMappingRequest addSearchMappingRequest = new AddSearchMappingRequest(persistencePerspective, requestedCto,
-        "Dr Jane Doe", mergedProperties, "Property Name", fieldManager, dataFormatProvider,
-        new AdornedTargetListPersistenceModule(), mock(RestrictionFactory.class));
-
-    // Act
-    basicFieldPersistenceProvider2.addSearchMapping(addSearchMappingRequest, new ArrayList<>());
-  }
-
-  /**
-   * Test
-   * {@link BasicFieldPersistenceProvider#addSearchMapping(AddSearchMappingRequest, List)}.
+   * Test {@link BasicFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}.
    * <ul>
-   *   <li>Given {@code FOREIGNKEY}.</li>
    *   <li>Then return {@code NOT_HANDLED}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BasicFieldPersistenceProvider#addSearchMapping(AddSearchMappingRequest, List)}
+   * Method under test: {@link BasicFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}
    */
   @Test
-  public void testAddSearchMapping_givenForeignkey_thenReturnNotHandled() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "MetadataProviderResponse BasicFieldPersistenceProvider.extractValue(ExtractValueRequest, Property)"})
+  public void testExtractValue_thenReturnNotHandled() throws PersistenceException {
+    // Arrange
+    ArrayList<Property> props = new ArrayList<>();
+    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
 
+    BasicFieldMetadata metadata = new BasicFieldMetadata();
+    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
+    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
+    ExtractValueRequest extractValueRequest = new ExtractValueRequest(props, fieldManager, metadata, "Requested Value",
+        "Display Val", persistenceManager, recordHelper, new SimpleDateFormat("yyyy/mm/dd"),
+        new String[]{"Custom Criteria"});
+
+    // Act and Assert
+    assertEquals(MetadataProviderResponse.NOT_HANDLED,
+        basicFieldPersistenceProvider.extractValue(extractValueRequest, new Property()));
+  }
+
+  /**
+   * Test {@link BasicFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}.
+   * <ul>
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BasicFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "MetadataProviderResponse BasicFieldPersistenceProvider.extractValue(ExtractValueRequest, Property)"})
+  public void testExtractValue_thenThrowIllegalArgumentException() throws PersistenceException {
     // Arrange
     BasicFieldPersistenceProvider basicFieldPersistenceProvider = new BasicFieldPersistenceProvider();
-    PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
-    doNothing().when(persistencePerspective)
-        .addPersistencePerspectiveItem(Mockito.<PersistencePerspectiveItemType>any(),
-            Mockito.<PersistencePerspectiveItem>any());
-    persistencePerspective.addPersistencePerspectiveItem(PersistencePerspectiveItemType.FOREIGNKEY,
-        new AdornedTargetList());
+    BasicFieldMetadata metadata = mock(BasicFieldMetadata.class);
+    when(metadata.getFieldType()).thenThrow(new IllegalArgumentException("foo"));
+    ArrayList<Property> props = new ArrayList<>();
+    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
+
+    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
+    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
+    ExtractValueRequest extractValueRequest = new ExtractValueRequest(props, fieldManager, metadata, "Requested Value",
+        "Display Val", persistenceManager, recordHelper, new SimpleDateFormat("yyyy/mm/dd"),
+        new String[]{"Custom Criteria"});
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> basicFieldPersistenceProvider.extractValue(extractValueRequest, new Property()));
+    verify(metadata).getFieldType();
+  }
+
+  /**
+   * Test {@link BasicFieldPersistenceProvider#addSearchMapping(AddSearchMappingRequest, List)}.
+   * <ul>
+   *   <li>Given {@link FilterMapping} (default constructor).</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link FilterMapping} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BasicFieldPersistenceProvider#addSearchMapping(AddSearchMappingRequest, List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "MetadataProviderResponse BasicFieldPersistenceProvider.addSearchMapping(AddSearchMappingRequest, List)"})
+  public void testAddSearchMapping_givenFilterMapping_whenArrayListAddFilterMapping() {
+    // Arrange
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
     CriteriaTransferObject requestedCto = new CriteriaTransferObject();
     HashMap<String, FieldMetadata> mergedProperties = new HashMap<>();
     FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
@@ -1229,129 +937,92 @@ public class BasicFieldPersistenceProviderDiffblueTest {
         "Dr Jane Doe", mergedProperties, "Property Name", fieldManager, dataFormatProvider,
         new AdornedTargetListPersistenceModule(), mock(RestrictionFactory.class));
 
-    // Act
-    MetadataProviderResponse actualAddSearchMappingResult = basicFieldPersistenceProvider
-        .addSearchMapping(addSearchMappingRequest, new ArrayList<>());
+    ArrayList<FilterMapping> filterMappings = new ArrayList<>();
+    filterMappings.add(new FilterMapping());
 
-    // Assert
-    verify(persistencePerspective).addPersistencePerspectiveItem(eq(PersistencePerspectiveItemType.FOREIGNKEY),
-        isA(PersistencePerspectiveItem.class));
-    assertEquals(MetadataProviderResponse.NOT_HANDLED, actualAddSearchMappingResult);
+    // Act and Assert
+    assertEquals(MetadataProviderResponse.NOT_HANDLED,
+        basicFieldPersistenceProvider.addSearchMapping(addSearchMappingRequest, filterMappings));
   }
 
   /**
-   * Test
-   * {@link BasicFieldPersistenceProvider#getDateFormatToPopulateValue(PopulateValueRequest, Serializable)}.
-   * <p>
-   * Method under test:
-   * {@link BasicFieldPersistenceProvider#getDateFormatToPopulateValue(PopulateValueRequest, Serializable)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetDateFormatToPopulateValue() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module.provider;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1514 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.provider.BasicFieldPersistenceProvider basicFieldPersistenceProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    BasicFieldPersistenceProvider basicFieldPersistenceProvider2 = new BasicFieldPersistenceProvider();
-    EntityConfiguration entityConfiguration = new EntityConfiguration();
-    FieldManager fieldManager = new FieldManager(entityConfiguration, new SessionDelegatorBaseImpl(null, null));
-
-    Property property = new Property();
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    Class<Object> returnType = Object.class;
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
-    PopulateValueRequest populateValueRequest = new PopulateValueRequest(true, fieldManager, property, metadata,
-        returnType, "42", persistenceManager, dataFormatProvider, true, new Entity());
-
-    // Act
-    basicFieldPersistenceProvider2.getDateFormatToPopulateValue(populateValueRequest,
-        new SimpleDateFormat("yyyy/mm/dd"));
-  }
-
-  /**
-   * Test
-   * {@link BasicFieldPersistenceProvider#getDateFormatToPopulateValue(PopulateValueRequest, Serializable)}.
+   * Test {@link BasicFieldPersistenceProvider#addSearchMapping(AddSearchMappingRequest, List)}.
    * <ul>
-   *   <li>Then NumberFormat return {@link DecimalFormat}.</li>
+   *   <li>Given {@link FilterMapping} (default constructor).</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link FilterMapping} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BasicFieldPersistenceProvider#getDateFormatToPopulateValue(PopulateValueRequest, Serializable)}
+   * Method under test: {@link BasicFieldPersistenceProvider#addSearchMapping(AddSearchMappingRequest, List)}
    */
   @Test
-  public void testGetDateFormatToPopulateValue_thenNumberFormatReturnDecimalFormat() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "MetadataProviderResponse BasicFieldPersistenceProvider.addSearchMapping(AddSearchMappingRequest, List)"})
+  public void testAddSearchMapping_givenFilterMapping_whenArrayListAddFilterMapping2() {
     // Arrange
-    AddSearchMappingRequest addSearchMappingRequest = mock(AddSearchMappingRequest.class);
-    when(addSearchMappingRequest.getPropertyName()).thenReturn("Property Name");
-    when(addSearchMappingRequest.getMergedProperties()).thenReturn(new HashMap<>());
-
-    BasicFieldPersistenceProvider basicFieldPersistenceProvider = new BasicFieldPersistenceProvider();
-    basicFieldPersistenceProvider.addSearchMapping(addSearchMappingRequest, new ArrayList<>());
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    CriteriaTransferObject requestedCto = new CriteriaTransferObject();
+    HashMap<String, FieldMetadata> mergedProperties = new HashMap<>();
     FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
 
-    Property property = new Property();
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    Class<Object> returnType = Object.class;
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
     AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
-    PopulateValueRequest populateValueRequest = new PopulateValueRequest(true, fieldManager, property, metadata,
-        returnType, "42", persistenceManager, dataFormatProvider, true, new Entity());
+    AddSearchMappingRequest addSearchMappingRequest = new AddSearchMappingRequest(persistencePerspective, requestedCto,
+        "Dr Jane Doe", mergedProperties, "Property Name", fieldManager, dataFormatProvider,
+        new AdornedTargetListPersistenceModule(), mock(RestrictionFactory.class));
 
-    // Act
-    SimpleDateFormat actualDateFormatToPopulateValue = basicFieldPersistenceProvider
-        .getDateFormatToPopulateValue(populateValueRequest, new SimpleDateFormat("yyyy/mm/dd"));
+    ArrayList<FilterMapping> filterMappings = new ArrayList<>();
+    filterMappings.add(new FilterMapping());
+    filterMappings.add(new FilterMapping());
 
-    // Assert
-    verify(addSearchMappingRequest).getMergedProperties();
-    verify(addSearchMappingRequest).getPropertyName();
-    assertTrue(actualDateFormatToPopulateValue.getNumberFormat() instanceof DecimalFormat);
-    Calendar calendar = actualDateFormatToPopulateValue.getCalendar();
-    assertTrue(calendar instanceof GregorianCalendar);
-    assertEquals("yyyy.MM.dd HH:mm:ss", actualDateFormatToPopulateValue.toPattern());
-    assertNull(actualDateFormatToPopulateValue.getTimeZone());
-    assertNull(calendar.getTimeZone());
+    // Act and Assert
+    assertEquals(MetadataProviderResponse.NOT_HANDLED,
+        basicFieldPersistenceProvider.addSearchMapping(addSearchMappingRequest, filterMappings));
   }
 
   /**
-   * Test
-   * {@link BasicFieldPersistenceProvider#getDateFormatToPopulateValue(PopulateValueRequest, Serializable)}.
+   * Test {@link BasicFieldPersistenceProvider#addSearchMapping(AddSearchMappingRequest, List)}.
    * <ul>
-   *   <li>Then return {@link SimpleDateFormat#SimpleDateFormat(String)} with
-   * {@code yyyy/mm/dd}.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then return {@code NOT_HANDLED}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BasicFieldPersistenceProvider#getDateFormatToPopulateValue(PopulateValueRequest, Serializable)}
+   * Method under test: {@link BasicFieldPersistenceProvider#addSearchMapping(AddSearchMappingRequest, List)}
    */
   @Test
-  public void testGetDateFormatToPopulateValue_thenReturnSimpleDateFormatWithYyyyMmDd() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "MetadataProviderResponse BasicFieldPersistenceProvider.addSearchMapping(AddSearchMappingRequest, List)"})
+  public void testAddSearchMapping_whenArrayList_thenReturnNotHandled() {
     // Arrange
-    AddSearchMappingRequest addSearchMappingRequest = mock(AddSearchMappingRequest.class);
-    when(addSearchMappingRequest.getPropertyName()).thenReturn("Property Name");
-    when(addSearchMappingRequest.getMergedProperties()).thenReturn(new HashMap<>());
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    CriteriaTransferObject requestedCto = new CriteriaTransferObject();
+    HashMap<String, FieldMetadata> mergedProperties = new HashMap<>();
+    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
 
-    BasicFieldPersistenceProvider basicFieldPersistenceProvider = new BasicFieldPersistenceProvider();
-    basicFieldPersistenceProvider.addSearchMapping(addSearchMappingRequest, new ArrayList<>());
+    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
+    AddSearchMappingRequest addSearchMappingRequest = new AddSearchMappingRequest(persistencePerspective, requestedCto,
+        "Dr Jane Doe", mergedProperties, "Property Name", fieldManager, dataFormatProvider,
+        new AdornedTargetListPersistenceModule(), mock(RestrictionFactory.class));
+
+    // Act and Assert
+    assertEquals(MetadataProviderResponse.NOT_HANDLED,
+        basicFieldPersistenceProvider.addSearchMapping(addSearchMappingRequest, new ArrayList<>()));
+  }
+
+  /**
+   * Test {@link BasicFieldPersistenceProvider#getDateFormatToPopulateValue(PopulateValueRequest, Serializable)}.
+   * <ul>
+   *   <li>Then return {@link SimpleDateFormat#SimpleDateFormat(String)} with {@code yyyy/mm/dd}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BasicFieldPersistenceProvider#getDateFormatToPopulateValue(PopulateValueRequest, Serializable)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "SimpleDateFormat BasicFieldPersistenceProvider.getDateFormatToPopulateValue(PopulateValueRequest, Serializable)"})
+  public void testGetDateFormatToPopulateValue_thenReturnSimpleDateFormatWithYyyyMmDd() {
+    // Arrange
     AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = mock(
         AdornedTargetListPersistenceModule.class);
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/mm/dd");
@@ -1365,121 +1036,23 @@ public class BasicFieldPersistenceProviderDiffblueTest {
 
     // Assert
     verify(adornedTargetListPersistenceModule).getSimpleDateFormatter();
-    verify(addSearchMappingRequest).getMergedProperties();
-    verify(addSearchMappingRequest).getPropertyName();
     verify(populateValueRequest).getDataFormatProvider();
     assertSame(simpleDateFormat, actualDateFormatToPopulateValue);
   }
 
   /**
-   * Test
-   * {@link BasicFieldPersistenceProvider#getDateFormatToExtractValue(ExtractValueRequest)}.
-   * <p>
-   * Method under test:
-   * {@link BasicFieldPersistenceProvider#getDateFormatToExtractValue(ExtractValueRequest)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetDateFormatToExtractValue() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module.provider;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1260 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.provider.BasicFieldPersistenceProvider basicFieldPersistenceProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    BasicFieldPersistenceProvider basicFieldPersistenceProvider2 = new BasicFieldPersistenceProvider();
-    ArrayList<Property> props = new ArrayList<>();
-    EntityConfiguration entityConfiguration = new EntityConfiguration();
-    FieldManager fieldManager = new FieldManager(entityConfiguration, new SessionDelegatorBaseImpl(null, null));
-
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-
-    // Act
-    basicFieldPersistenceProvider2.getDateFormatToExtractValue(
-        new ExtractValueRequest(props, fieldManager, metadata, "Requested Value", "Display Val", persistenceManager,
-            recordHelper, new SimpleDateFormat("yyyy/mm/dd"), new String[]{"Custom Criteria"}));
-  }
-
-  /**
-   * Test
-   * {@link BasicFieldPersistenceProvider#getDateFormatToExtractValue(ExtractValueRequest)}.
+   * Test {@link BasicFieldPersistenceProvider#getDateFormatToExtractValue(ExtractValueRequest)}.
    * <ul>
-   *   <li>Then NumberFormat return {@link DecimalFormat}.</li>
+   *   <li>Then return {@link SimpleDateFormat#SimpleDateFormat(String)} with {@code yyyy/mm/dd}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BasicFieldPersistenceProvider#getDateFormatToExtractValue(ExtractValueRequest)}
+   * Method under test: {@link BasicFieldPersistenceProvider#getDateFormatToExtractValue(ExtractValueRequest)}
    */
   @Test
-  public void testGetDateFormatToExtractValue_thenNumberFormatReturnDecimalFormat() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AddSearchMappingRequest addSearchMappingRequest = mock(AddSearchMappingRequest.class);
-    when(addSearchMappingRequest.getPropertyName()).thenReturn("Property Name");
-    when(addSearchMappingRequest.getMergedProperties()).thenReturn(new HashMap<>());
-
-    BasicFieldPersistenceProvider basicFieldPersistenceProvider = new BasicFieldPersistenceProvider();
-    basicFieldPersistenceProvider.addSearchMapping(addSearchMappingRequest, new ArrayList<>());
-    ArrayList<Property> props = new ArrayList<>();
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-
-    // Act
-    SimpleDateFormat actualDateFormatToExtractValue = basicFieldPersistenceProvider.getDateFormatToExtractValue(
-        new ExtractValueRequest(props, fieldManager, metadata, "Requested Value", "Display Val", persistenceManager,
-            recordHelper, new SimpleDateFormat("yyyy/mm/dd"), new String[]{"Custom Criteria"}));
-
-    // Assert
-    verify(addSearchMappingRequest).getMergedProperties();
-    verify(addSearchMappingRequest).getPropertyName();
-    assertTrue(actualDateFormatToExtractValue.getNumberFormat() instanceof DecimalFormat);
-    Calendar calendar = actualDateFormatToExtractValue.getCalendar();
-    assertTrue(calendar instanceof GregorianCalendar);
-    assertEquals("yyyy.MM.dd HH:mm:ss", actualDateFormatToExtractValue.toPattern());
-    assertNull(actualDateFormatToExtractValue.getTimeZone());
-    assertNull(calendar.getTimeZone());
-  }
-
-  /**
-   * Test
-   * {@link BasicFieldPersistenceProvider#getDateFormatToExtractValue(ExtractValueRequest)}.
-   * <ul>
-   *   <li>Then return {@link SimpleDateFormat#SimpleDateFormat(String)} with
-   * {@code yyyy/mm/dd}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link BasicFieldPersistenceProvider#getDateFormatToExtractValue(ExtractValueRequest)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"SimpleDateFormat BasicFieldPersistenceProvider.getDateFormatToExtractValue(ExtractValueRequest)"})
   public void testGetDateFormatToExtractValue_thenReturnSimpleDateFormatWithYyyyMmDd() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AddSearchMappingRequest addSearchMappingRequest = mock(AddSearchMappingRequest.class);
-    when(addSearchMappingRequest.getPropertyName()).thenReturn("Property Name");
-    when(addSearchMappingRequest.getMergedProperties()).thenReturn(new HashMap<>());
-
-    BasicFieldPersistenceProvider basicFieldPersistenceProvider = new BasicFieldPersistenceProvider();
-    basicFieldPersistenceProvider.addSearchMapping(addSearchMappingRequest, new ArrayList<>());
     AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = mock(
         AdornedTargetListPersistenceModule.class);
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/mm/dd");
@@ -1493,8 +1066,6 @@ public class BasicFieldPersistenceProviderDiffblueTest {
 
     // Assert
     verify(adornedTargetListPersistenceModule).getSimpleDateFormatter();
-    verify(addSearchMappingRequest).getMergedProperties();
-    verify(addSearchMappingRequest).getPropertyName();
     verify(extractValueRequest).getDataFormatProvider();
     assertSame(simpleDateFormat, actualDateFormatToExtractValue);
   }
@@ -1505,6 +1076,8 @@ public class BasicFieldPersistenceProviderDiffblueTest {
    * Method under test: {@link BasicFieldPersistenceProvider#getOrder()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int BasicFieldPersistenceProvider.getOrder()"})
   public void testGetOrder() {
     // Arrange, Act and Assert
     assertEquals(FieldPersistenceProvider.BASIC, (new BasicFieldPersistenceProvider()).getOrder());

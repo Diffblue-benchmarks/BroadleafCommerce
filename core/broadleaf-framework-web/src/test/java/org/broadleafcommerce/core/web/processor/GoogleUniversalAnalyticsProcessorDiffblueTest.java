@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework Web
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.web.processor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -8,12 +25,12 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 import org.broadleafcommerce.common.audit.Auditable;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
 import org.broadleafcommerce.common.locale.domain.LocaleImpl;
@@ -22,111 +39,44 @@ import org.broadleafcommerce.core.catalog.domain.CategoryImpl;
 import org.broadleafcommerce.core.order.domain.BundleOrderItemImpl;
 import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
 import org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl;
-import org.broadleafcommerce.core.order.domain.FulfillmentGroupItemImpl;
-import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.domain.OrderImpl;
 import org.broadleafcommerce.core.order.domain.OrderItem;
 import org.broadleafcommerce.core.order.domain.OrderItemAttribute;
 import org.broadleafcommerce.core.order.domain.OrderItemAttributeImpl;
+import org.broadleafcommerce.core.order.service.OrderService;
 import org.broadleafcommerce.core.order.service.type.OrderStatus;
-import org.broadleafcommerce.presentation.model.BroadleafTemplateContext;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml",
-    "/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 class GoogleUniversalAnalyticsProcessorDiffblueTest {
-  @Autowired
+  @InjectMocks
   private GoogleUniversalAnalyticsProcessor googleUniversalAnalyticsProcessor;
 
-  /**
-   * Test
-   * {@link GoogleUniversalAnalyticsProcessor#getReplacementModel(String, Map, BroadleafTemplateContext)}.
-   * <p>
-   * Method under test:
-   * {@link GoogleUniversalAnalyticsProcessor#getReplacementModel(String, Map, BroadleafTemplateContext)}
-   */
-  @Test
-  @DisplayName("Test getReplacementModel(String, Map, BroadleafTemplateContext)")
-  @Disabled("TODO: Complete this test")
-  void testGetReplacementModel() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass10745 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.GoogleUniversalAnalyticsProcessor googleUniversalAnalyticsProcessor;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    GoogleUniversalAnalyticsProcessor googleUniversalAnalyticsProcessor2 = new GoogleUniversalAnalyticsProcessor();
-
-    // Act
-    googleUniversalAnalyticsProcessor2.getReplacementModel("Tag Name", new HashMap<>(),
-        mock(BroadleafTemplateContext.class));
-  }
-
-  /**
-   * Test {@link GoogleUniversalAnalyticsProcessor#getTrackers()}.
-   * <p>
-   * Method under test: {@link GoogleUniversalAnalyticsProcessor#getTrackers()}
-   */
-  @Test
-  @DisplayName("Test getTrackers()")
-  @Disabled("TODO: Complete this test")
-  void testGetTrackers() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass10768 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.GoogleUniversalAnalyticsProcessor googleUniversalAnalyticsProcessor;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new GoogleUniversalAnalyticsProcessor()).getTrackers();
-  }
+  @Mock
+  private OrderService orderService;
 
   /**
    * Test {@link GoogleUniversalAnalyticsProcessor#shouldShowMasterTracker()}.
    * <p>
-   * Method under test:
-   * {@link GoogleUniversalAnalyticsProcessor#shouldShowMasterTracker()}
+   * Method under test: {@link GoogleUniversalAnalyticsProcessor#shouldShowMasterTracker()}
    */
   @Test
   @DisplayName("Test shouldShowMasterTracker()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean GoogleUniversalAnalyticsProcessor.shouldShowMasterTracker()"})
   void testShouldShowMasterTracker() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    GoogleUniversalAnalyticsProcessor googleUniversalAnalyticsProcessor = new GoogleUniversalAnalyticsProcessor();
     googleUniversalAnalyticsProcessor.setMasterWebPropertyId("UA-XXXXXXX-X");
 
     // Act and Assert
@@ -136,51 +86,35 @@ class GoogleUniversalAnalyticsProcessorDiffblueTest {
   /**
    * Test {@link GoogleUniversalAnalyticsProcessor#shouldShowMasterTracker()}.
    * <p>
-   * Method under test:
-   * {@link GoogleUniversalAnalyticsProcessor#shouldShowMasterTracker()}
+   * Method under test: {@link GoogleUniversalAnalyticsProcessor#shouldShowMasterTracker()}
    */
   @Test
   @DisplayName("Test shouldShowMasterTracker()")
-  @Disabled("TODO: Complete this test")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean GoogleUniversalAnalyticsProcessor.shouldShowMasterTracker()"})
   void testShouldShowMasterTracker2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass10856 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.GoogleUniversalAnalyticsProcessor googleUniversalAnalyticsProcessor;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    googleUniversalAnalyticsProcessor.setMasterWebPropertyId(" ");
 
-    // Arrange and Act
-    (new GoogleUniversalAnalyticsProcessor()).shouldShowMasterTracker();
+    // Act and Assert
+    assertFalse(googleUniversalAnalyticsProcessor.shouldShowMasterTracker());
   }
 
   /**
    * Test {@link GoogleUniversalAnalyticsProcessor#shouldShowMasterTracker()}.
    * <ul>
-   *   <li>Given {@link GoogleUniversalAnalyticsProcessor} (default
-   * constructor).</li>
+   *   <li>Given {@link GoogleUniversalAnalyticsProcessor}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link GoogleUniversalAnalyticsProcessor#shouldShowMasterTracker()}
+   * Method under test: {@link GoogleUniversalAnalyticsProcessor#shouldShowMasterTracker()}
    */
   @Test
-  @DisplayName("Test shouldShowMasterTracker(); given GoogleUniversalAnalyticsProcessor (default constructor)")
+  @DisplayName("Test shouldShowMasterTracker(); given GoogleUniversalAnalyticsProcessor")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean GoogleUniversalAnalyticsProcessor.shouldShowMasterTracker()"})
   void testShouldShowMasterTracker_givenGoogleUniversalAnalyticsProcessor() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertFalse((new GoogleUniversalAnalyticsProcessor()).shouldShowMasterTracker());
+    assertFalse(googleUniversalAnalyticsProcessor.shouldShowMasterTracker());
   }
 
   /**
@@ -189,17 +123,15 @@ class GoogleUniversalAnalyticsProcessorDiffblueTest {
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link GoogleUniversalAnalyticsProcessor#shouldShowMasterTracker()}
+   * Method under test: {@link GoogleUniversalAnalyticsProcessor#shouldShowMasterTracker()}
    */
   @Test
   @DisplayName("Test shouldShowMasterTracker(); then return 'true'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean GoogleUniversalAnalyticsProcessor.shouldShowMasterTracker()"})
   void testShouldShowMasterTracker_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    GoogleUniversalAnalyticsProcessor googleUniversalAnalyticsProcessor = new GoogleUniversalAnalyticsProcessor();
-    googleUniversalAnalyticsProcessor.setMasterWebPropertyId("foo");
+    googleUniversalAnalyticsProcessor.setMasterWebPropertyId("not blank");
 
     // Act and Assert
     assertTrue(googleUniversalAnalyticsProcessor.shouldShowMasterTracker());
@@ -208,243 +140,100 @@ class GoogleUniversalAnalyticsProcessorDiffblueTest {
   /**
    * Test {@link GoogleUniversalAnalyticsProcessor#getLinkAttributionJs(String)}.
    * <p>
-   * Method under test:
-   * {@link GoogleUniversalAnalyticsProcessor#getLinkAttributionJs(String)}
+   * Method under test: {@link GoogleUniversalAnalyticsProcessor#getLinkAttributionJs(String)}
    */
   @Test
   @DisplayName("Test getLinkAttributionJs(String)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String GoogleUniversalAnalyticsProcessor.getLinkAttributionJs(String)"})
   void testGetLinkAttributionJs() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertEquals("ga('Tracker Prefixrequire', 'linkid', 'linkid.js');",
-        (new GoogleUniversalAnalyticsProcessor()).getLinkAttributionJs("Tracker Prefix"));
+        googleUniversalAnalyticsProcessor.getLinkAttributionJs("Tracker Prefix"));
   }
 
   /**
-   * Test {@link GoogleUniversalAnalyticsProcessor#getLinkAttributionJs(String)}.
+   * Test {@link GoogleUniversalAnalyticsProcessor#getDisplayAdvertisingJs(String)}.
    * <p>
-   * Method under test:
-   * {@link GoogleUniversalAnalyticsProcessor#getLinkAttributionJs(String)}
-   */
-  @Test
-  @DisplayName("Test getLinkAttributionJs(String)")
-  @Disabled("TODO: Complete this test")
-  void testGetLinkAttributionJs2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass10429 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.GoogleUniversalAnalyticsProcessor googleUniversalAnalyticsProcessor;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new GoogleUniversalAnalyticsProcessor()).getLinkAttributionJs("Tracker Prefix");
-  }
-
-  /**
-   * Test
-   * {@link GoogleUniversalAnalyticsProcessor#getDisplayAdvertisingJs(String)}.
-   * <p>
-   * Method under test:
-   * {@link GoogleUniversalAnalyticsProcessor#getDisplayAdvertisingJs(String)}
+   * Method under test: {@link GoogleUniversalAnalyticsProcessor#getDisplayAdvertisingJs(String)}
    */
   @Test
   @DisplayName("Test getDisplayAdvertisingJs(String)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String GoogleUniversalAnalyticsProcessor.getDisplayAdvertisingJs(String)"})
   void testGetDisplayAdvertisingJs() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertEquals("ga('Tracker Prefixrequire', 'displayfeatures');",
-        (new GoogleUniversalAnalyticsProcessor()).getDisplayAdvertisingJs("Tracker Prefix"));
-  }
-
-  /**
-   * Test
-   * {@link GoogleUniversalAnalyticsProcessor#getDisplayAdvertisingJs(String)}.
-   * <p>
-   * Method under test:
-   * {@link GoogleUniversalAnalyticsProcessor#getDisplayAdvertisingJs(String)}
-   */
-  @Test
-  @DisplayName("Test getDisplayAdvertisingJs(String)")
-  @Disabled("TODO: Complete this test")
-  void testGetDisplayAdvertisingJs2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass10086 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.GoogleUniversalAnalyticsProcessor googleUniversalAnalyticsProcessor;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new GoogleUniversalAnalyticsProcessor()).getDisplayAdvertisingJs("Tracker Prefix");
-  }
-
-  /**
-   * Test
-   * {@link GoogleUniversalAnalyticsProcessor#getTransactionJs(Order, String)}.
-   * <p>
-   * Method under test:
-   * {@link GoogleUniversalAnalyticsProcessor#getTransactionJs(Order, String)}
-   */
-  @Test
-  @DisplayName("Test getTransactionJs(Order, String)")
-  @Disabled("TODO: Complete this test")
-  void testGetTransactionJs() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass10770 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.GoogleUniversalAnalyticsProcessor googleUniversalAnalyticsProcessor;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    GoogleUniversalAnalyticsProcessor googleUniversalAnalyticsProcessor2 = new GoogleUniversalAnalyticsProcessor();
-
-    // Act
-    googleUniversalAnalyticsProcessor2.getTransactionJs(new NullOrderImpl(), "Tracker Prefix");
-  }
-
-  /**
-   * Test {@link GoogleUniversalAnalyticsProcessor#getItemJs(Order, String)}.
-   * <p>
-   * Method under test:
-   * {@link GoogleUniversalAnalyticsProcessor#getItemJs(Order, String)}
-   */
-  @Test
-  @DisplayName("Test getItemJs(Order, String)")
-  void testGetItemJs() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    GoogleUniversalAnalyticsProcessor googleUniversalAnalyticsProcessor = new GoogleUniversalAnalyticsProcessor();
-
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.addFulfillmentGroupItem(new FulfillmentGroupItemImpl());
-
-    ArrayList<FulfillmentGroup> fulfillmentGroupList = new ArrayList<>();
-    fulfillmentGroupList.add(fulfillmentGroupImpl);
-    NullOrderImpl order = mock(NullOrderImpl.class);
-    when(order.getFulfillmentGroups()).thenReturn(fulfillmentGroupList);
-
-    // Act
-    String actualItemJs = googleUniversalAnalyticsProcessor.getItemJs(order, "Tracker Prefix");
-
-    // Assert
-    verify(order).getFulfillmentGroups();
-    assertEquals("", actualItemJs);
-  }
-
-  /**
-   * Test {@link GoogleUniversalAnalyticsProcessor#getItemJs(Order, String)}.
-   * <p>
-   * Method under test:
-   * {@link GoogleUniversalAnalyticsProcessor#getItemJs(Order, String)}
-   */
-  @Test
-  @DisplayName("Test getItemJs(Order, String)")
-  @Disabled("TODO: Complete this test")
-  void testGetItemJs2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass10402 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.GoogleUniversalAnalyticsProcessor googleUniversalAnalyticsProcessor;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    GoogleUniversalAnalyticsProcessor googleUniversalAnalyticsProcessor2 = new GoogleUniversalAnalyticsProcessor();
-
-    // Act
-    googleUniversalAnalyticsProcessor2.getItemJs(new NullOrderImpl(), "Tracker Prefix");
+        googleUniversalAnalyticsProcessor.getDisplayAdvertisingJs("Tracker Prefix"));
   }
 
   /**
    * Test {@link GoogleUniversalAnalyticsProcessor#getItemJs(Order, String)}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then calls {@link NullOrderImpl#getFulfillmentGroups()}.</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link FulfillmentGroupImpl} (default constructor).</li>
+   *   <li>Then return empty string.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link GoogleUniversalAnalyticsProcessor#getItemJs(Order, String)}
+   * Method under test: {@link GoogleUniversalAnalyticsProcessor#getItemJs(Order, String)}
    */
   @Test
-  @DisplayName("Test getItemJs(Order, String); given ArrayList(); then calls getFulfillmentGroups()")
-  void testGetItemJs_givenArrayList_thenCallsGetFulfillmentGroups() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @DisplayName("Test getItemJs(Order, String); given ArrayList() add FulfillmentGroupImpl (default constructor); then return empty string")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String GoogleUniversalAnalyticsProcessor.getItemJs(Order, String)"})
+  void testGetItemJs_givenArrayListAddFulfillmentGroupImpl_thenReturnEmptyString() {
     // Arrange
-    GoogleUniversalAnalyticsProcessor googleUniversalAnalyticsProcessor = new GoogleUniversalAnalyticsProcessor();
-    NullOrderImpl order = mock(NullOrderImpl.class);
-    when(order.getFulfillmentGroups()).thenReturn(new ArrayList<>());
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
 
-    // Act
-    String actualItemJs = googleUniversalAnalyticsProcessor.getItemJs(order, "Tracker Prefix");
+    ArrayList<FulfillmentGroup> fulfillmentGroups = new ArrayList<>();
+    fulfillmentGroups.add(new FulfillmentGroupImpl());
 
-    // Assert
-    verify(order).getFulfillmentGroups();
-    assertEquals("", actualItemJs);
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(fulfillmentGroups);
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(new OrderStatus("Type", "Friendly Type"));
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+
+    // Act and Assert
+    assertEquals("", googleUniversalAnalyticsProcessor.getItemJs(order, "Tracker Prefix"));
   }
 
   /**
    * Test {@link GoogleUniversalAnalyticsProcessor#getItemJs(Order, String)}.
    * <ul>
    *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.</li>
+   *   <li>Then return empty string.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link GoogleUniversalAnalyticsProcessor#getItemJs(Order, String)}
+   * Method under test: {@link GoogleUniversalAnalyticsProcessor#getItemJs(Order, String)}
    */
   @Test
-  @DisplayName("Test getItemJs(Order, String); given Auditable (default constructor) CreatedBy is one")
-  void testGetItemJs_givenAuditableCreatedByIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @DisplayName("Test getItemJs(Order, String); given Auditable (default constructor) CreatedBy is one; then return empty string")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String GoogleUniversalAnalyticsProcessor.getItemJs(Order, String)"})
+  void testGetItemJs_givenAuditableCreatedByIsOne_thenReturnEmptyString() {
     // Arrange
-    GoogleUniversalAnalyticsProcessor googleUniversalAnalyticsProcessor = new GoogleUniversalAnalyticsProcessor();
-
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
     auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
@@ -473,75 +262,10 @@ class GoogleUniversalAnalyticsProcessorDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
 
     // Act and Assert
     assertEquals("", googleUniversalAnalyticsProcessor.getItemJs(order, "Tracker Prefix"));
-  }
-
-  /**
-   * Test {@link GoogleUniversalAnalyticsProcessor#getItemJs(Order, String)}.
-   * <ul>
-   *   <li>Then calls {@link NullOrderImpl#getFulfillmentGroups()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link GoogleUniversalAnalyticsProcessor#getItemJs(Order, String)}
-   */
-  @Test
-  @DisplayName("Test getItemJs(Order, String); then calls getFulfillmentGroups()")
-  void testGetItemJs_thenCallsGetFulfillmentGroups() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    GoogleUniversalAnalyticsProcessor googleUniversalAnalyticsProcessor = new GoogleUniversalAnalyticsProcessor();
-
-    ArrayList<FulfillmentGroup> fulfillmentGroupList = new ArrayList<>();
-    fulfillmentGroupList.add(new FulfillmentGroupImpl());
-    NullOrderImpl order = mock(NullOrderImpl.class);
-    when(order.getFulfillmentGroups()).thenReturn(fulfillmentGroupList);
-
-    // Act
-    String actualItemJs = googleUniversalAnalyticsProcessor.getItemJs(order, "Tracker Prefix");
-
-    // Assert
-    verify(order).getFulfillmentGroups();
-    assertEquals("", actualItemJs);
-  }
-
-  /**
-   * Test {@link GoogleUniversalAnalyticsProcessor#getVariation(OrderItem)}.
-   * <p>
-   * Method under test:
-   * {@link GoogleUniversalAnalyticsProcessor#getVariation(OrderItem)}
-   */
-  @Test
-  @DisplayName("Test getVariation(OrderItem)")
-  @Disabled("TODO: Complete this test")
-  void testGetVariation() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass10797 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.GoogleUniversalAnalyticsProcessor googleUniversalAnalyticsProcessor;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    GoogleUniversalAnalyticsProcessor googleUniversalAnalyticsProcessor2 = new GoogleUniversalAnalyticsProcessor();
-
-    // Act
-    googleUniversalAnalyticsProcessor2.getVariation(new BundleOrderItemImpl());
   }
 
   /**
@@ -550,16 +274,14 @@ class GoogleUniversalAnalyticsProcessorDiffblueTest {
    *   <li>Given {@link CategoryImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link GoogleUniversalAnalyticsProcessor#getVariation(OrderItem)}
+   * Method under test: {@link GoogleUniversalAnalyticsProcessor#getVariation(OrderItem)}
    */
   @Test
   @DisplayName("Test getVariation(OrderItem); given CategoryImpl (default constructor)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String GoogleUniversalAnalyticsProcessor.getVariation(OrderItem)"})
   void testGetVariation_givenCategoryImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    GoogleUniversalAnalyticsProcessor googleUniversalAnalyticsProcessor = new GoogleUniversalAnalyticsProcessor();
     BundleOrderItemImpl item = mock(BundleOrderItemImpl.class);
     when(item.getOrderItemAttributes()).thenReturn(new HashMap<>());
     when(item.getCategory()).thenReturn(new CategoryImpl());
@@ -576,21 +298,18 @@ class GoogleUniversalAnalyticsProcessorDiffblueTest {
   /**
    * Test {@link GoogleUniversalAnalyticsProcessor#getVariation(OrderItem)}.
    * <ul>
-   *   <li>Given {@link CategoryImpl} {@link CategoryImpl#getName()} return
-   * {@code Name}.</li>
+   *   <li>Given {@link CategoryImpl} {@link CategoryImpl#getName()} return {@code Name}.</li>
    *   <li>Then return {@code Name}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link GoogleUniversalAnalyticsProcessor#getVariation(OrderItem)}
+   * Method under test: {@link GoogleUniversalAnalyticsProcessor#getVariation(OrderItem)}
    */
   @Test
   @DisplayName("Test getVariation(OrderItem); given CategoryImpl getName() return 'Name'; then return 'Name'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String GoogleUniversalAnalyticsProcessor.getVariation(OrderItem)"})
   void testGetVariation_givenCategoryImplGetNameReturnName_thenReturnName() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    GoogleUniversalAnalyticsProcessor googleUniversalAnalyticsProcessor = new GoogleUniversalAnalyticsProcessor();
     CategoryImpl categoryImpl = mock(CategoryImpl.class);
     when(categoryImpl.getName()).thenReturn("Name");
     BundleOrderItemImpl item = mock(BundleOrderItemImpl.class);
@@ -610,22 +329,18 @@ class GoogleUniversalAnalyticsProcessorDiffblueTest {
   /**
    * Test {@link GoogleUniversalAnalyticsProcessor#getVariation(OrderItem)}.
    * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code name} is
-   * {@link OrderItemAttributeImpl} (default constructor).</li>
+   *   <li>Given {@link HashMap#HashMap()} {@code name} is {@link OrderItemAttributeImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link GoogleUniversalAnalyticsProcessor#getVariation(OrderItem)}
+   * Method under test: {@link GoogleUniversalAnalyticsProcessor#getVariation(OrderItem)}
    */
   @Test
   @DisplayName("Test getVariation(OrderItem); given HashMap() 'name' is OrderItemAttributeImpl (default constructor); then return 'null'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String GoogleUniversalAnalyticsProcessor.getVariation(OrderItem)"})
   void testGetVariation_givenHashMapNameIsOrderItemAttributeImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    GoogleUniversalAnalyticsProcessor googleUniversalAnalyticsProcessor = new GoogleUniversalAnalyticsProcessor();
-
     HashMap<String, OrderItemAttribute> stringOrderItemAttributeMap = new HashMap<>();
     stringOrderItemAttributeMap.put("name", new OrderItemAttributeImpl());
     BundleOrderItemImpl item = mock(BundleOrderItemImpl.class);
@@ -646,18 +361,14 @@ class GoogleUniversalAnalyticsProcessorDiffblueTest {
    *   <li>Then return empty string.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link GoogleUniversalAnalyticsProcessor#getVariation(OrderItem)}
+   * Method under test: {@link GoogleUniversalAnalyticsProcessor#getVariation(OrderItem)}
    */
   @Test
   @DisplayName("Test getVariation(OrderItem); when BundleOrderItemImpl (default constructor); then return empty string")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String GoogleUniversalAnalyticsProcessor.getVariation(OrderItem)"})
   void testGetVariation_whenBundleOrderItemImpl_thenReturnEmptyString() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    GoogleUniversalAnalyticsProcessor googleUniversalAnalyticsProcessor = new GoogleUniversalAnalyticsProcessor();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertEquals("", googleUniversalAnalyticsProcessor.getVariation(new BundleOrderItemImpl()));
   }
 
@@ -674,6 +385,10 @@ class GoogleUniversalAnalyticsProcessorDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String GoogleUniversalAnalyticsProcessor.getMasterWebPropertyId()",
+      "String GoogleUniversalAnalyticsProcessor.getName()", "int GoogleUniversalAnalyticsProcessor.getPrecedence()",
+      "void GoogleUniversalAnalyticsProcessor.setMasterWebPropertyId(String)"})
   void testGettersAndSetters() {
     // Arrange
     GoogleUniversalAnalyticsProcessor googleUniversalAnalyticsProcessor = new GoogleUniversalAnalyticsProcessor();
@@ -683,132 +398,9 @@ class GoogleUniversalAnalyticsProcessorDiffblueTest {
     String actualMasterWebPropertyId = googleUniversalAnalyticsProcessor.getMasterWebPropertyId();
     String actualName = googleUniversalAnalyticsProcessor.getName();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("42", actualMasterWebPropertyId);
     assertEquals("google_universal_analytics", actualName);
     assertEquals(0, googleUniversalAnalyticsProcessor.getPrecedence());
-  }
-
-  /**
-   * Test {@link GoogleUniversalAnalyticsProcessor#getAffiliation()}.
-   * <p>
-   * Method under test: {@link GoogleUniversalAnalyticsProcessor#getAffiliation()}
-   */
-  @Test
-  @DisplayName("Test getAffiliation()")
-  @Disabled("TODO: Complete this test")
-  void testGetAffiliation() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass10084 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.GoogleUniversalAnalyticsProcessor googleUniversalAnalyticsProcessor;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new GoogleUniversalAnalyticsProcessor()).getAffiliation();
-  }
-
-  /**
-   * Test {@link GoogleUniversalAnalyticsProcessor#getWebPropertyId()}.
-   * <p>
-   * Method under test:
-   * {@link GoogleUniversalAnalyticsProcessor#getWebPropertyId()}
-   */
-  @Test
-  @DisplayName("Test getWebPropertyId()")
-  @Disabled("TODO: Complete this test")
-  void testGetWebPropertyId() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass10850 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.GoogleUniversalAnalyticsProcessor googleUniversalAnalyticsProcessor;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new GoogleUniversalAnalyticsProcessor()).getWebPropertyId();
-  }
-
-  /**
-   * Test {@link GoogleUniversalAnalyticsProcessor#isIncludeLinkAttribution()}.
-   * <p>
-   * Method under test:
-   * {@link GoogleUniversalAnalyticsProcessor#isIncludeLinkAttribution()}
-   */
-  @Test
-  @DisplayName("Test isIncludeLinkAttribution()")
-  @Disabled("TODO: Complete this test")
-  void testIsIncludeLinkAttribution() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass10854 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.GoogleUniversalAnalyticsProcessor googleUniversalAnalyticsProcessor;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new GoogleUniversalAnalyticsProcessor()).isIncludeLinkAttribution();
-  }
-
-  /**
-   * Test {@link GoogleUniversalAnalyticsProcessor#isIncludeDisplayAdvertising()}.
-   * <p>
-   * Method under test:
-   * {@link GoogleUniversalAnalyticsProcessor#isIncludeDisplayAdvertising()}
-   */
-  @Test
-  @DisplayName("Test isIncludeDisplayAdvertising()")
-  @Disabled("TODO: Complete this test")
-  void testIsIncludeDisplayAdvertising() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass10852 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.GoogleUniversalAnalyticsProcessor googleUniversalAnalyticsProcessor;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new GoogleUniversalAnalyticsProcessor()).isIncludeDisplayAdvertising();
   }
 }

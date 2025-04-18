@@ -1,120 +1,81 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.checkout.service.workflow;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import static org.mockito.Mockito.mock;
-import java.util.ArrayList;
-import java.util.List;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.payment.PaymentGatewayType;
 import org.broadleafcommerce.common.payment.PaymentType;
 import org.broadleafcommerce.common.payment.dto.PaymentResponseDTO;
+import org.broadleafcommerce.common.payment.service.PaymentGatewayCheckoutService;
+import org.broadleafcommerce.core.checkout.service.strategy.OrderPaymentConfirmationStrategy;
+import org.broadleafcommerce.core.checkout.service.workflow.ValidateAndConfirmPaymentActivity.ResponseTransactionPair;
 import org.broadleafcommerce.core.payment.domain.PaymentTransaction;
 import org.broadleafcommerce.core.payment.domain.PaymentTransactionImpl;
-import org.broadleafcommerce.core.workflow.DefaultProcessContextImpl;
-import org.broadleafcommerce.core.workflow.ProcessContext;
-import org.junit.Ignore;
+import org.broadleafcommerce.core.payment.service.OrderPaymentService;
+import org.broadleafcommerce.core.payment.service.OrderPaymentStatusService;
+import org.broadleafcommerce.core.payment.service.OrderToPaymentRequestDTOService;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class ValidateAndConfirmPaymentActivityDiffblueTest {
-  @Autowired
+  @Mock
+  private OrderPaymentConfirmationStrategy orderPaymentConfirmationStrategy;
+
+  @Mock
+  private OrderPaymentService orderPaymentService;
+
+  @Mock
+  private OrderPaymentStatusService orderPaymentStatusService;
+
+  @Mock
+  private OrderToPaymentRequestDTOService orderToPaymentRequestDTOService;
+
+  @Mock
+  private PaymentGatewayCheckoutService paymentGatewayCheckoutService;
+
+  @InjectMocks
   private ValidateAndConfirmPaymentActivity validateAndConfirmPaymentActivity;
-
-  /**
-   * Test {@link ValidateAndConfirmPaymentActivity#execute(ProcessContext)}.
-   * <p>
-   * Method under test:
-   * {@link ValidateAndConfirmPaymentActivity#execute(ProcessContext)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testExecute() throws Exception {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.checkout.service.workflow;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1479 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.checkout.service.workflow.ValidateAndConfirmPaymentActivity validateAndConfirmPaymentActivity;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    ValidateAndConfirmPaymentActivity validateAndConfirmPaymentActivity2 = new ValidateAndConfirmPaymentActivity(
-        new ConfirmPaymentsRollbackHandler());
-
-    // Act
-    validateAndConfirmPaymentActivity2.execute((ProcessContext<CheckoutSeed>) new DefaultProcessContextImpl<>());
-  }
-
-  /**
-   * Test
-   * {@link ValidateAndConfirmPaymentActivity#handleUnsuccessfulTransactions(List, ProcessContext)}.
-   * <p>
-   * Method under test:
-   * {@link ValidateAndConfirmPaymentActivity#handleUnsuccessfulTransactions(List, ProcessContext)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testHandleUnsuccessfulTransactions() throws Exception {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.checkout.service.workflow;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1495 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.checkout.service.workflow.ValidateAndConfirmPaymentActivity validateAndConfirmPaymentActivity;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    ValidateAndConfirmPaymentActivity validateAndConfirmPaymentActivity2 = new ValidateAndConfirmPaymentActivity(
-        new ConfirmPaymentsRollbackHandler());
-    ArrayList<ValidateAndConfirmPaymentActivity.ResponseTransactionPair> failedTransactions = new ArrayList<>();
-
-    // Act
-    validateAndConfirmPaymentActivity2.handleUnsuccessfulTransactions(failedTransactions,
-        new DefaultProcessContextImpl<>());
-  }
 
   /**
    * Test ResponseTransactionPair getters and setters.
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>
-   * {@link ValidateAndConfirmPaymentActivity.ResponseTransactionPair#ResponseTransactionPair(ValidateAndConfirmPaymentActivity, PaymentResponseDTO, Long)}
-   *   <li>
-   * {@link ValidateAndConfirmPaymentActivity.ResponseTransactionPair#getResponseDTO()}
-   *   <li>
-   * {@link ValidateAndConfirmPaymentActivity.ResponseTransactionPair#getTransactionId()}
+   *   <li>{@link ResponseTransactionPair#ResponseTransactionPair(ValidateAndConfirmPaymentActivity, PaymentResponseDTO, Long)}
+   *   <li>{@link ResponseTransactionPair#getResponseDTO()}
+   *   <li>{@link ResponseTransactionPair#getTransactionId()}
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResponseTransactionPair.<init>(ValidateAndConfirmPaymentActivity)",
+      "void ResponseTransactionPair.<init>(ValidateAndConfirmPaymentActivity, PaymentResponseDTO, Long)",
+      "PaymentResponseDTO ResponseTransactionPair.getResponseDTO()", "Long ResponseTransactionPair.getTransactionId()"})
   public void testResponseTransactionPairGettersAndSetters() {
     // Arrange
     ValidateAndConfirmPaymentActivity validateAndConfirmPaymentActivity = new ValidateAndConfirmPaymentActivity(
@@ -125,7 +86,7 @@ public class ValidateAndConfirmPaymentActivityDiffblueTest {
         new PaymentGatewayType("Type", "Friendly Type"));
 
     // Act
-    ValidateAndConfirmPaymentActivity.ResponseTransactionPair actualResponseTransactionPair = validateAndConfirmPaymentActivity.new ResponseTransactionPair(
+    ResponseTransactionPair actualResponseTransactionPair = validateAndConfirmPaymentActivity.new ResponseTransactionPair(
         responseDTO, 1L);
     PaymentResponseDTO actualResponseDTO = actualResponseTransactionPair.getResponseDTO();
 
@@ -142,18 +103,19 @@ public class ValidateAndConfirmPaymentActivityDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>
-   * {@link ValidateAndConfirmPaymentActivity.ResponseTransactionPair#ResponseTransactionPair(ValidateAndConfirmPaymentActivity)}
-   *   <li>
-   * {@link ValidateAndConfirmPaymentActivity.ResponseTransactionPair#getResponseDTO()}
-   *   <li>
-   * {@link ValidateAndConfirmPaymentActivity.ResponseTransactionPair#getTransactionId()}
+   *   <li>{@link ResponseTransactionPair#ResponseTransactionPair(ValidateAndConfirmPaymentActivity)}
+   *   <li>{@link ResponseTransactionPair#getResponseDTO()}
+   *   <li>{@link ResponseTransactionPair#getTransactionId()}
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResponseTransactionPair.<init>(ValidateAndConfirmPaymentActivity)",
+      "void ResponseTransactionPair.<init>(ValidateAndConfirmPaymentActivity, PaymentResponseDTO, Long)",
+      "PaymentResponseDTO ResponseTransactionPair.getResponseDTO()", "Long ResponseTransactionPair.getTransactionId()"})
   public void testResponseTransactionPairGettersAndSetters_thenReturnTransactionIdIsNull() {
     // Arrange and Act
-    ValidateAndConfirmPaymentActivity.ResponseTransactionPair actualResponseTransactionPair = (new ValidateAndConfirmPaymentActivity(
+    ResponseTransactionPair actualResponseTransactionPair = (new ValidateAndConfirmPaymentActivity(
         new ConfirmPaymentsRollbackHandler())).new ResponseTransactionPair();
     PaymentResponseDTO actualResponseDTO = actualResponseTransactionPair.getResponseDTO();
 
@@ -163,155 +125,35 @@ public class ValidateAndConfirmPaymentActivityDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ValidateAndConfirmPaymentActivity#shouldRollbackFailedTransaction(ResponseTransactionPair)}.
+   * Test {@link ValidateAndConfirmPaymentActivity#shouldRollbackFailedTransaction(ResponseTransactionPair)}.
    * <p>
-   * Method under test:
-   * {@link ValidateAndConfirmPaymentActivity#shouldRollbackFailedTransaction(ValidateAndConfirmPaymentActivity.ResponseTransactionPair)}
+   * Method under test: {@link ValidateAndConfirmPaymentActivity#shouldRollbackFailedTransaction(ResponseTransactionPair)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "boolean ValidateAndConfirmPaymentActivity.shouldRollbackFailedTransaction(ResponseTransactionPair)"})
   public void testShouldRollbackFailedTransaction() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ValidateAndConfirmPaymentActivity validateAndConfirmPaymentActivity = new ValidateAndConfirmPaymentActivity(
-        new ConfirmPaymentsRollbackHandler());
-
-    // Act and Assert
-    assertFalse(validateAndConfirmPaymentActivity.shouldRollbackFailedTransaction(
-        (new ValidateAndConfirmPaymentActivity(new ConfirmPaymentsRollbackHandler())).new ResponseTransactionPair()));
+    // Arrange, Act and Assert
+    assertFalse(validateAndConfirmPaymentActivity
+        .shouldRollbackFailedTransaction(validateAndConfirmPaymentActivity.new ResponseTransactionPair()));
   }
 
   /**
-   * Test
-   * {@link ValidateAndConfirmPaymentActivity#shouldRollbackFailedTransaction(ResponseTransactionPair)}.
-   * <p>
-   * Method under test:
-   * {@link ValidateAndConfirmPaymentActivity#shouldRollbackFailedTransaction(ValidateAndConfirmPaymentActivity.ResponseTransactionPair)}
-   */
-  @Test
-  public void testShouldRollbackFailedTransaction2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ValidateAndConfirmPaymentActivity validateAndConfirmPaymentActivity = new ValidateAndConfirmPaymentActivity(
-        mock(ConfirmPaymentsRollbackHandler.class));
-
-    // Act and Assert
-    assertFalse(validateAndConfirmPaymentActivity.shouldRollbackFailedTransaction(
-        (new ValidateAndConfirmPaymentActivity(new ConfirmPaymentsRollbackHandler())).new ResponseTransactionPair()));
-  }
-
-  /**
-   * Test
-   * {@link ValidateAndConfirmPaymentActivity#shouldRollbackFailedTransaction(ResponseTransactionPair)}.
-   * <p>
-   * Method under test:
-   * {@link ValidateAndConfirmPaymentActivity#shouldRollbackFailedTransaction(ValidateAndConfirmPaymentActivity.ResponseTransactionPair)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testShouldRollbackFailedTransaction3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.checkout.service.workflow;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1515 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.checkout.service.workflow.ValidateAndConfirmPaymentActivity validateAndConfirmPaymentActivity;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    ValidateAndConfirmPaymentActivity validateAndConfirmPaymentActivity2 = new ValidateAndConfirmPaymentActivity(
-        new ConfirmPaymentsRollbackHandler());
-
-    // Act
-    validateAndConfirmPaymentActivity2.shouldRollbackFailedTransaction(
-        (new ValidateAndConfirmPaymentActivity(new ConfirmPaymentsRollbackHandler())).new ResponseTransactionPair());
-  }
-
-  /**
-   * Test
-   * {@link ValidateAndConfirmPaymentActivity#createCustomerPaymentToken(PaymentTransaction)}.
-   * <p>
-   * Method under test:
-   * {@link ValidateAndConfirmPaymentActivity#createCustomerPaymentToken(PaymentTransaction)}
-   */
-  @Test
-  public void testCreateCustomerPaymentToken() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ValidateAndConfirmPaymentActivity validateAndConfirmPaymentActivity = new ValidateAndConfirmPaymentActivity(
-        mock(ConfirmPaymentsRollbackHandler.class));
-
-    // Act and Assert
-    assertNull(validateAndConfirmPaymentActivity.createCustomerPaymentToken(new PaymentTransactionImpl()));
-  }
-
-  /**
-   * Test
-   * {@link ValidateAndConfirmPaymentActivity#createCustomerPaymentToken(PaymentTransaction)}.
-   * <p>
-   * Method under test:
-   * {@link ValidateAndConfirmPaymentActivity#createCustomerPaymentToken(PaymentTransaction)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateCustomerPaymentToken2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.checkout.service.workflow;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1452 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.checkout.service.workflow.ValidateAndConfirmPaymentActivity validateAndConfirmPaymentActivity;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    ValidateAndConfirmPaymentActivity validateAndConfirmPaymentActivity2 = new ValidateAndConfirmPaymentActivity(
-        new ConfirmPaymentsRollbackHandler());
-
-    // Act
-    validateAndConfirmPaymentActivity2.createCustomerPaymentToken(new PaymentTransactionImpl());
-  }
-
-  /**
-   * Test
-   * {@link ValidateAndConfirmPaymentActivity#createCustomerPaymentToken(PaymentTransaction)}.
+   * Test {@link ValidateAndConfirmPaymentActivity#createCustomerPaymentToken(PaymentTransaction)}.
    * <ul>
    *   <li>When {@link PaymentTransactionImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ValidateAndConfirmPaymentActivity#createCustomerPaymentToken(PaymentTransaction)}
+   * Method under test: {@link ValidateAndConfirmPaymentActivity#createCustomerPaymentToken(PaymentTransaction)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.profile.core.domain.CustomerPayment ValidateAndConfirmPaymentActivity.createCustomerPaymentToken(PaymentTransaction)"})
   public void testCreateCustomerPaymentToken_whenPaymentTransactionImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ValidateAndConfirmPaymentActivity validateAndConfirmPaymentActivity = new ValidateAndConfirmPaymentActivity(
-        new ConfirmPaymentsRollbackHandler());
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertNull(validateAndConfirmPaymentActivity.createCustomerPaymentToken(new PaymentTransactionImpl()));
   }
 }

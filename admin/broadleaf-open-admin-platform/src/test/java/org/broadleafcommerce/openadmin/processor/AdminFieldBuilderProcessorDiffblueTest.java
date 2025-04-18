@@ -1,28 +1,60 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.processor;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
+import org.broadleafcommerce.openadmin.web.rulebuilder.dto.FieldWrapper;
+import org.broadleafcommerce.openadmin.web.rulebuilder.service.RuleBuilderFieldService;
+import org.broadleafcommerce.openadmin.web.rulebuilder.service.RuleBuilderFieldServiceFactory;
+import org.broadleafcommerce.openadmin.web.service.AbstractFieldBuilderProcessorExtensionHandler;
+import org.broadleafcommerce.openadmin.web.service.AdminFieldBuilderProcessorExtensionManager;
 import org.broadleafcommerce.presentation.model.BroadleafTemplateContext;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
-    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
-    "/bl-open-admin-contentCreator-applicationContext.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class AdminFieldBuilderProcessorDiffblueTest {
-  @Autowired
+  @InjectMocks
   private AdminFieldBuilderProcessor adminFieldBuilderProcessor;
+
+  @Mock
+  private AdminFieldBuilderProcessorExtensionManager adminFieldBuilderProcessorExtensionManager;
+
+  @Mock
+  private RuleBuilderFieldServiceFactory ruleBuilderFieldServiceFactory;
 
   /**
    * Test getters and setters.
@@ -34,6 +66,8 @@ public class AdminFieldBuilderProcessorDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String AdminFieldBuilderProcessor.getName()", "String AdminFieldBuilderProcessor.getPrefix()"})
   public void testGettersAndSetters() {
     // Arrange
     AdminFieldBuilderProcessor adminFieldBuilderProcessor = new AdminFieldBuilderProcessor();
@@ -52,75 +86,82 @@ public class AdminFieldBuilderProcessorDiffblueTest {
    * Method under test: {@link AdminFieldBuilderProcessor#getPrecedence()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int AdminFieldBuilderProcessor.getPrecedence()"})
   public void testGetPrecedence() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals(100, (new AdminFieldBuilderProcessor()).getPrecedence());
+    assertEquals(100, adminFieldBuilderProcessor.getPrecedence());
   }
 
   /**
-   * Test {@link AdminFieldBuilderProcessor#getPrecedence()}.
+   * Test {@link AdminFieldBuilderProcessor#populateModelVariables(String, Map, BroadleafTemplateContext)}.
+   * <ul>
+   *   <li>Given {@link RuleBuilderFieldServiceFactory}.</li>
+   * </ul>
    * <p>
-   * Method under test: {@link AdminFieldBuilderProcessor#getPrecedence()}
+   * Method under test: {@link AdminFieldBuilderProcessor#populateModelVariables(String, Map, BroadleafTemplateContext)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetPrecedence2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5962 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.processor.AdminFieldBuilderProcessor adminFieldBuilderProcessor;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new AdminFieldBuilderProcessor()).getPrecedence();
-  }
-
-  /**
-   * Test
-   * {@link AdminFieldBuilderProcessor#populateModelVariables(String, Map, BroadleafTemplateContext)}.
-   * <p>
-   * Method under test:
-   * {@link AdminFieldBuilderProcessor#populateModelVariables(String, Map, BroadleafTemplateContext)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testPopulateModelVariables() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5963 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.processor.AdminFieldBuilderProcessor adminFieldBuilderProcessor;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map AdminFieldBuilderProcessor.populateModelVariables(String, Map, BroadleafTemplateContext)"})
+  public void testPopulateModelVariables_givenRuleBuilderFieldServiceFactory() {
     // Arrange
-    AdminFieldBuilderProcessor adminFieldBuilderProcessor2 = new AdminFieldBuilderProcessor();
+    when(adminFieldBuilderProcessorExtensionManager.getProxy())
+        .thenReturn(new AbstractFieldBuilderProcessorExtensionHandler());
+    HashMap<String, String> tagAttributes = new HashMap<>();
+    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
+    when(context.parseExpression(Mockito.<String>any())).thenReturn(null);
 
     // Act
-    adminFieldBuilderProcessor2.populateModelVariables("Tag Name", new HashMap<>(),
-        mock(BroadleafTemplateContext.class));
+    Map<String, Object> actualPopulateModelVariablesResult = adminFieldBuilderProcessor
+        .populateModelVariables("Tag Name", tagAttributes, context);
+
+    // Assert
+    verify(adminFieldBuilderProcessorExtensionManager).getProxy();
+    verify(context, atLeast(1)).parseExpression(isNull());
+    assertEquals(1, actualPopulateModelVariablesResult.size());
+    Object getResult = actualPopulateModelVariablesResult.get("fieldWrapper");
+    assertTrue(getResult instanceof FieldWrapper);
+    assertTrue(((FieldWrapper) getResult).getFields().isEmpty());
+  }
+
+  /**
+   * Test {@link AdminFieldBuilderProcessor#populateModelVariables(String, Map, BroadleafTemplateContext)}.
+   * <ul>
+   *   <li>Then return {@code fieldWrapper} is {@link FieldWrapper} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminFieldBuilderProcessor#populateModelVariables(String, Map, BroadleafTemplateContext)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map AdminFieldBuilderProcessor.populateModelVariables(String, Map, BroadleafTemplateContext)"})
+  public void testPopulateModelVariables_thenReturnFieldWrapperIsFieldWrapper() {
+    // Arrange
+    when(adminFieldBuilderProcessorExtensionManager.getProxy())
+        .thenReturn(new AbstractFieldBuilderProcessorExtensionHandler());
+    RuleBuilderFieldService ruleBuilderFieldService = mock(RuleBuilderFieldService.class);
+    FieldWrapper fieldWrapper = new FieldWrapper();
+    when(ruleBuilderFieldService.buildFields()).thenReturn(fieldWrapper);
+    when(ruleBuilderFieldServiceFactory.createInstance(Mockito.<String>any())).thenReturn(ruleBuilderFieldService);
+    HashMap<String, String> tagAttributes = new HashMap<>();
+    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
+    when(context.parseExpression(Mockito.<String>any())).thenReturn("Parse Expression");
+
+    // Act
+    Map<String, Object> actualPopulateModelVariablesResult = adminFieldBuilderProcessor
+        .populateModelVariables("Tag Name", tagAttributes, context);
+
+    // Assert
+    verify(adminFieldBuilderProcessorExtensionManager).getProxy();
+    verify(ruleBuilderFieldService).buildFields();
+    verify(ruleBuilderFieldServiceFactory).createInstance(eq("Parse Expression"));
+    verify(context, atLeast(1)).parseExpression(isNull());
+    assertEquals(1, actualPopulateModelVariablesResult.size());
+    Object getResult = actualPopulateModelVariablesResult.get("fieldWrapper");
+    assertTrue(getResult instanceof FieldWrapper);
+    assertTrue(((FieldWrapper) getResult).getFields().isEmpty());
+    assertSame(fieldWrapper, getResult);
   }
 
   /**
@@ -129,39 +170,10 @@ public class AdminFieldBuilderProcessorDiffblueTest {
    * Method under test: {@link AdminFieldBuilderProcessor#useGlobalScope()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdminFieldBuilderProcessor.useGlobalScope()"})
   public void testUseGlobalScope() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertFalse((new AdminFieldBuilderProcessor()).useGlobalScope());
-  }
-
-  /**
-   * Test {@link AdminFieldBuilderProcessor#useGlobalScope()}.
-   * <p>
-   * Method under test: {@link AdminFieldBuilderProcessor#useGlobalScope()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testUseGlobalScope2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5973 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.processor.AdminFieldBuilderProcessor adminFieldBuilderProcessor;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new AdminFieldBuilderProcessor()).useGlobalScope();
+    assertFalse(adminFieldBuilderProcessor.useGlobalScope());
   }
 }

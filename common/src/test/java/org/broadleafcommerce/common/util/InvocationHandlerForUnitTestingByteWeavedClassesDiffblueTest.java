@@ -20,78 +20,28 @@ package org.broadleafcommerce.common.util;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.lang.reflect.Method;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class InvocationHandlerForUnitTestingByteWeavedClassesDiffblueTest {
-  /**
-   * Test
-   * {@link InvocationHandlerForUnitTestingByteWeavedClasses#createProxy(Class, Class[], Object[])}.
-   * <ul>
-   *   <li>When array of {@link Class} with {@link Object}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link InvocationHandlerForUnitTestingByteWeavedClasses#createProxy(Class, Class[], Object[])}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateProxy_whenArrayOfClassWithObject() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.IllegalArgumentException: java.lang.Object is not an interface
-    //       at org.broadleafcommerce.common.util.InvocationHandlerForUnitTestingByteWeavedClasses.createProxy(InvocationHandlerForUnitTestingByteWeavedClasses.java:43)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    Class<Object> proxyType = Object.class;
-    Class<Object> forNameResult = Object.class;
-
-    // Act
-    InvocationHandlerForUnitTestingByteWeavedClasses.createProxy(proxyType, new Class[]{forNameResult},
-        new Object[]{BLCFieldUtils.NULL_FIELD});
-  }
-
-  /**
-   * Test
-   * {@link InvocationHandlerForUnitTestingByteWeavedClasses#createProxy(Class, Class[], Object[])}.
-   * <ul>
-   *   <li>When empty array of {@link Class}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link InvocationHandlerForUnitTestingByteWeavedClasses#createProxy(Class, Class[], Object[])}
-   */
-  @Test
-  public void testCreateProxy_whenEmptyArrayOfClass() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange
-    Class<Object> proxyType = Object.class;
-
-    // Act
-    InvocationHandlerForUnitTestingByteWeavedClasses.createProxy(proxyType, new Class[]{},
-        new Object[]{BLCFieldUtils.NULL_FIELD});
-  }
-
   /**
    * Test getters and setters.
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>
-   * {@link InvocationHandlerForUnitTestingByteWeavedClasses#InvocationHandlerForUnitTestingByteWeavedClasses(Object[])}
-   *   <li>
-   * {@link InvocationHandlerForUnitTestingByteWeavedClasses#setObjectsForByteWeaving(Object[])}
-   *   <li>
-   * {@link InvocationHandlerForUnitTestingByteWeavedClasses#getObjectsForByteWeaving()}
+   *   <li>{@link InvocationHandlerForUnitTestingByteWeavedClasses#InvocationHandlerForUnitTestingByteWeavedClasses(Object[])}
+   *   <li>{@link InvocationHandlerForUnitTestingByteWeavedClasses#setObjectsForByteWeaving(Object[])}
+   *   <li>{@link InvocationHandlerForUnitTestingByteWeavedClasses#getObjectsForByteWeaving()}
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void InvocationHandlerForUnitTestingByteWeavedClasses.<init>(Object[])",
+      "Object[] InvocationHandlerForUnitTestingByteWeavedClasses.getObjectsForByteWeaving()",
+      "void InvocationHandlerForUnitTestingByteWeavedClasses.setObjectsForByteWeaving(Object[])"})
   public void testGettersAndSetters() {
     // Arrange and Act
     InvocationHandlerForUnitTestingByteWeavedClasses actualInvocationHandlerForUnitTestingByteWeavedClasses = new InvocationHandlerForUnitTestingByteWeavedClasses(
@@ -101,24 +51,26 @@ public class InvocationHandlerForUnitTestingByteWeavedClassesDiffblueTest {
     Object[] actualObjectsForByteWeaving = actualInvocationHandlerForUnitTestingByteWeavedClasses
         .getObjectsForByteWeaving();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals(1, actualObjectsForByteWeaving.length);
     assertSame(objects, actualObjectsForByteWeaving);
   }
 
   /**
-   * Test
-   * {@link InvocationHandlerForUnitTestingByteWeavedClasses#invoke(Object, Method, Object[])}.
+   * Test {@link InvocationHandlerForUnitTestingByteWeavedClasses#invoke(Object, Method, Object[])}.
    * <ul>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link InvocationHandlerForUnitTestingByteWeavedClasses#invoke(Object, Method, Object[])}
+   * Method under test: {@link InvocationHandlerForUnitTestingByteWeavedClasses#invoke(Object, Method, Object[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object InvocationHandlerForUnitTestingByteWeavedClasses.invoke(Object, Method, Object[])"})
   public void testInvoke_thenReturnNull() throws Throwable {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange, Act and Assert
     assertNull((new InvocationHandlerForUnitTestingByteWeavedClasses(new Object[]{})).invoke(BLCFieldUtils.NULL_FIELD,

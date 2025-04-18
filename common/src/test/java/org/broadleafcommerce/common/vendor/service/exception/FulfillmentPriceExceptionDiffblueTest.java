@@ -18,25 +18,36 @@
 package org.broadleafcommerce.common.vendor.service.exception;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.mock;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.vendor.service.message.FulfillmentPriceExceptionResponse;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class FulfillmentPriceExceptionDiffblueTest {
   /**
    * Test getters and setters.
+   * <ul>
+   *   <li>Then return Message is {@code null}.</li>
+   * </ul>
    * <p>
    * Methods under test:
    * <ul>
    *   <li>{@link FulfillmentPriceException#FulfillmentPriceException()}
-   *   <li>
-   * {@link FulfillmentPriceException#setFulfillmentPriceExceptionResponse(FulfillmentPriceExceptionResponse)}
+   *   <li>{@link FulfillmentPriceException#setFulfillmentPriceExceptionResponse(FulfillmentPriceExceptionResponse)}
    *   <li>{@link FulfillmentPriceException#getFulfillmentPriceExceptionResponse()}
    * </ul>
    */
   @Test
-  public void testGettersAndSetters() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentPriceException.<init>()", "void FulfillmentPriceException.<init>(String)",
+      "void FulfillmentPriceException.<init>(String, Throwable)", "void FulfillmentPriceException.<init>(Throwable)",
+      "FulfillmentPriceExceptionResponse FulfillmentPriceException.getFulfillmentPriceExceptionResponse()",
+      "void FulfillmentPriceException.setFulfillmentPriceExceptionResponse(FulfillmentPriceExceptionResponse)"})
+  public void testGettersAndSetters_thenReturnMessageIsNull() {
     // Arrange and Act
     FulfillmentPriceException actualFulfillmentPriceException = new FulfillmentPriceException();
     FulfillmentPriceExceptionResponse fulfillmentPriceExceptionResponse = mock(FulfillmentPriceExceptionResponse.class);
@@ -44,7 +55,9 @@ public class FulfillmentPriceExceptionDiffblueTest {
     FulfillmentPriceExceptionResponse actualFulfillmentPriceExceptionResponse = actualFulfillmentPriceException
         .getFulfillmentPriceExceptionResponse();
 
-    // Assert that nothing has changed
+    // Assert
+    assertNull(actualFulfillmentPriceException.getMessage());
+    assertNull(actualFulfillmentPriceException.getCause());
     assertEquals(0, actualFulfillmentPriceException.getSuppressed().length);
     assertSame(fulfillmentPriceExceptionResponse, actualFulfillmentPriceExceptionResponse);
   }
@@ -59,12 +72,16 @@ public class FulfillmentPriceExceptionDiffblueTest {
    * Methods under test:
    * <ul>
    *   <li>{@link FulfillmentPriceException#FulfillmentPriceException(String)}
-   *   <li>
-   * {@link FulfillmentPriceException#setFulfillmentPriceExceptionResponse(FulfillmentPriceExceptionResponse)}
+   *   <li>{@link FulfillmentPriceException#setFulfillmentPriceExceptionResponse(FulfillmentPriceExceptionResponse)}
    *   <li>{@link FulfillmentPriceException#getFulfillmentPriceExceptionResponse()}
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentPriceException.<init>()", "void FulfillmentPriceException.<init>(String)",
+      "void FulfillmentPriceException.<init>(String, Throwable)", "void FulfillmentPriceException.<init>(Throwable)",
+      "FulfillmentPriceExceptionResponse FulfillmentPriceException.getFulfillmentPriceExceptionResponse()",
+      "void FulfillmentPriceException.setFulfillmentPriceExceptionResponse(FulfillmentPriceExceptionResponse)"})
   public void testGettersAndSetters_whenAnErrorOccurred_thenReturnMessageIsAnErrorOccurred() {
     // Arrange and Act
     FulfillmentPriceException actualFulfillmentPriceException = new FulfillmentPriceException("An error occurred");
@@ -73,8 +90,9 @@ public class FulfillmentPriceExceptionDiffblueTest {
     FulfillmentPriceExceptionResponse actualFulfillmentPriceExceptionResponse = actualFulfillmentPriceException
         .getFulfillmentPriceExceptionResponse();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("An error occurred", actualFulfillmentPriceException.getMessage());
+    assertNull(actualFulfillmentPriceException.getCause());
     assertEquals(0, actualFulfillmentPriceException.getSuppressed().length);
     assertSame(fulfillmentPriceExceptionResponse, actualFulfillmentPriceExceptionResponse);
   }
@@ -88,14 +106,17 @@ public class FulfillmentPriceExceptionDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>
-   * {@link FulfillmentPriceException#FulfillmentPriceException(String, Throwable)}
-   *   <li>
-   * {@link FulfillmentPriceException#setFulfillmentPriceExceptionResponse(FulfillmentPriceExceptionResponse)}
+   *   <li>{@link FulfillmentPriceException#FulfillmentPriceException(String, Throwable)}
+   *   <li>{@link FulfillmentPriceException#setFulfillmentPriceExceptionResponse(FulfillmentPriceExceptionResponse)}
    *   <li>{@link FulfillmentPriceException#getFulfillmentPriceExceptionResponse()}
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentPriceException.<init>()", "void FulfillmentPriceException.<init>(String)",
+      "void FulfillmentPriceException.<init>(String, Throwable)", "void FulfillmentPriceException.<init>(Throwable)",
+      "FulfillmentPriceExceptionResponse FulfillmentPriceException.getFulfillmentPriceExceptionResponse()",
+      "void FulfillmentPriceException.setFulfillmentPriceExceptionResponse(FulfillmentPriceExceptionResponse)"})
   public void testGettersAndSetters_whenAnErrorOccurred_thenReturnMessageIsAnErrorOccurred2() {
     // Arrange
     Throwable cause = new Throwable();
@@ -108,7 +129,7 @@ public class FulfillmentPriceExceptionDiffblueTest {
     FulfillmentPriceExceptionResponse actualFulfillmentPriceExceptionResponse = actualFulfillmentPriceException
         .getFulfillmentPriceExceptionResponse();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("An error occurred", actualFulfillmentPriceException.getMessage());
     assertEquals(0, actualFulfillmentPriceException.getSuppressed().length);
     assertSame(cause, actualFulfillmentPriceException.getCause());
@@ -119,18 +140,22 @@ public class FulfillmentPriceExceptionDiffblueTest {
    * Test getters and setters.
    * <ul>
    *   <li>When {@link Throwable#Throwable()}.</li>
-   *   <li>Then return Message is {@code java.lang.Throwable}.</li>
+   *   <li>Then return Message is {@code Throwable}.</li>
    * </ul>
    * <p>
    * Methods under test:
    * <ul>
    *   <li>{@link FulfillmentPriceException#FulfillmentPriceException(Throwable)}
-   *   <li>
-   * {@link FulfillmentPriceException#setFulfillmentPriceExceptionResponse(FulfillmentPriceExceptionResponse)}
+   *   <li>{@link FulfillmentPriceException#setFulfillmentPriceExceptionResponse(FulfillmentPriceExceptionResponse)}
    *   <li>{@link FulfillmentPriceException#getFulfillmentPriceExceptionResponse()}
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentPriceException.<init>()", "void FulfillmentPriceException.<init>(String)",
+      "void FulfillmentPriceException.<init>(String, Throwable)", "void FulfillmentPriceException.<init>(Throwable)",
+      "FulfillmentPriceExceptionResponse FulfillmentPriceException.getFulfillmentPriceExceptionResponse()",
+      "void FulfillmentPriceException.setFulfillmentPriceExceptionResponse(FulfillmentPriceExceptionResponse)"})
   public void testGettersAndSetters_whenThrowable_thenReturnMessageIsJavaLangThrowable() {
     // Arrange
     Throwable cause = new Throwable();
@@ -142,7 +167,7 @@ public class FulfillmentPriceExceptionDiffblueTest {
     FulfillmentPriceExceptionResponse actualFulfillmentPriceExceptionResponse = actualFulfillmentPriceException
         .getFulfillmentPriceExceptionResponse();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("java.lang.Throwable", actualFulfillmentPriceException.getMessage());
     assertEquals(0, actualFulfillmentPriceException.getSuppressed().length);
     assertSame(cause, actualFulfillmentPriceException.getCause());

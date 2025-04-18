@@ -20,7 +20,10 @@ package org.broadleafcommerce.common.util;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class ResourceBundleExtensionPointDiffblueTest {
   /**
@@ -33,6 +36,9 @@ public class ResourceBundleExtensionPointDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String[] ResourceBundleExtensionPoint.getBasenameExtensions()",
+      "void ResourceBundleExtensionPoint.setBasenameExtensions(String[])"})
   public void testGettersAndSetters() {
     // Arrange
     ResourceBundleExtensionPoint resourceBundleExtensionPoint = new ResourceBundleExtensionPoint();
@@ -42,7 +48,7 @@ public class ResourceBundleExtensionPointDiffblueTest {
     resourceBundleExtensionPoint.setBasenameExtensions(basenameExtensions);
     String[] actualBasenameExtensions = resourceBundleExtensionPoint.getBasenameExtensions();
 
-    // Assert that nothing has changed
+    // Assert
     assertSame(basenameExtensions, actualBasenameExtensions);
     assertArrayEquals(new String[]{"Basename Extensions"}, actualBasenameExtensions);
   }
@@ -50,10 +56,11 @@ public class ResourceBundleExtensionPointDiffblueTest {
   /**
    * Test new {@link ResourceBundleExtensionPoint} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link ResourceBundleExtensionPoint}
+   * Method under test: default or parameterless constructor of {@link ResourceBundleExtensionPoint}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourceBundleExtensionPoint.<init>()"})
   public void testNewResourceBundleExtensionPoint() {
     // Arrange, Act and Assert
     assertEquals(0, (new ResourceBundleExtensionPoint()).getBasenameExtensions().length);

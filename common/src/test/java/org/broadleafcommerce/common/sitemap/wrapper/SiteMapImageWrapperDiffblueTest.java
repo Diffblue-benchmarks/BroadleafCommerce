@@ -18,7 +18,10 @@
 package org.broadleafcommerce.common.sitemap.wrapper;
 
 import static org.junit.Assert.assertEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class SiteMapImageWrapperDiffblueTest {
   /**
@@ -32,12 +35,15 @@ public class SiteMapImageWrapperDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SiteMapImageWrapper.<init>()", "String SiteMapImageWrapper.getLoc()",
+      "void SiteMapImageWrapper.setLoc(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     SiteMapImageWrapper actualSiteMapImageWrapper = new SiteMapImageWrapper();
     actualSiteMapImageWrapper.setLoc("Loc");
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Loc", actualSiteMapImageWrapper.getLoc());
   }
 }

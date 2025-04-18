@@ -1,12 +1,31 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework Web
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.web.checkout.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.core.order.domain.PersonalMessage;
 import org.broadleafcommerce.core.order.domain.PersonalMessageImpl;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 class MultiShipInstructionFormDiffblueTest {
@@ -25,6 +44,13 @@ class MultiShipInstructionFormDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String MultiShipInstructionForm.getDeliveryMessage()",
+      "Long MultiShipInstructionForm.getFulfillmentGroupId()",
+      "PersonalMessage MultiShipInstructionForm.getPersonalMessage()",
+      "void MultiShipInstructionForm.setDeliveryMessage(String)",
+      "void MultiShipInstructionForm.setFulfillmentGroupId(Long)",
+      "void MultiShipInstructionForm.setPersonalMessage(PersonalMessage)"})
   void testGettersAndSetters() {
     // Arrange
     MultiShipInstructionForm multiShipInstructionForm = new MultiShipInstructionForm();
@@ -38,7 +64,7 @@ class MultiShipInstructionFormDiffblueTest {
     Long actualFulfillmentGroupId = multiShipInstructionForm.getFulfillmentGroupId();
     PersonalMessage actualPersonalMessage = multiShipInstructionForm.getPersonalMessage();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Delivery Message", actualDeliveryMessage);
     assertEquals(1L, actualFulfillmentGroupId.longValue());
     assertSame(personalMessage, actualPersonalMessage);
@@ -47,11 +73,12 @@ class MultiShipInstructionFormDiffblueTest {
   /**
    * Test new {@link MultiShipInstructionForm} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link MultiShipInstructionForm}
+   * Method under test: default or parameterless constructor of {@link MultiShipInstructionForm}
    */
   @Test
   @DisplayName("Test new MultiShipInstructionForm (default constructor)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void MultiShipInstructionForm.<init>()"})
   void testNewMultiShipInstructionForm() {
     // Arrange and Act
     MultiShipInstructionForm actualMultiShipInstructionForm = new MultiShipInstructionForm();

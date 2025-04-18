@@ -22,7 +22,10 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -33,23 +36,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class PaymentTypeDiffblueTest {
   @Autowired
   private PaymentType paymentType;
-
-  /**
-   * Test {@link PaymentType#getInstance(String)}.
-   * <p>
-   * Method under test: {@link PaymentType#getInstance(String)}
-   */
-  @Test
-  public void testGetInstance() {
-    // Arrange and Act
-    PaymentType actualInstance = PaymentType.getInstance("Type");
-
-    // Assert
-    assertEquals("Friendly Type", actualInstance.getFriendlyType());
-    assertEquals("Type", actualInstance.getType());
-    assertFalse(actualInstance.getIsFinalPayment());
-    assertFalse(actualInstance.isCreditCardType());
-  }
 
   /**
    * Test getters and setters.
@@ -64,6 +50,10 @@ public class PaymentTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PaymentType.<init>()", "String PaymentType.getFriendlyType()",
+      "boolean PaymentType.getIsFinalPayment()", "String PaymentType.getType()",
+      "boolean PaymentType.isCreditCardType()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     PaymentType actualPaymentType = new PaymentType();
@@ -84,6 +74,8 @@ public class PaymentTypeDiffblueTest {
    * Method under test: {@link PaymentType#PaymentType(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PaymentType.<init>(String, String)"})
   public void testNewPaymentType() {
     // Arrange and Act
     PaymentType actualPaymentType = new PaymentType("Type", "Friendly Type");
@@ -101,6 +93,8 @@ public class PaymentTypeDiffblueTest {
    * Method under test: {@link PaymentType#PaymentType(String, String, boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PaymentType.<init>(String, String, boolean)"})
   public void testNewPaymentType2() {
     // Arrange and Act
     PaymentType actualPaymentType = new PaymentType("Type", "Friendly Type", true);
@@ -115,10 +109,11 @@ public class PaymentTypeDiffblueTest {
   /**
    * Test {@link PaymentType#PaymentType(String, String, boolean, boolean)}.
    * <p>
-   * Method under test:
-   * {@link PaymentType#PaymentType(String, String, boolean, boolean)}
+   * Method under test: {@link PaymentType#PaymentType(String, String, boolean, boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PaymentType.<init>(String, String, boolean, boolean)"})
   public void testNewPaymentType3() {
     // Arrange and Act
     PaymentType actualPaymentType = new PaymentType("Type", "Friendly Type", true, true);
@@ -144,6 +139,8 @@ public class PaymentTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PaymentType.equals(Object)", "int PaymentType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     PaymentType paymentType = PaymentType.APPLE_PAY;
@@ -169,6 +166,8 @@ public class PaymentTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PaymentType.equals(Object)", "int PaymentType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     PaymentType paymentType = PaymentType.BANK_ACCOUNT;
@@ -194,6 +193,8 @@ public class PaymentTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PaymentType.equals(Object)", "int PaymentType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     PaymentType paymentType = new PaymentType();
@@ -219,6 +220,8 @@ public class PaymentTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PaymentType.equals(Object)", "int PaymentType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     PaymentType paymentType = PaymentType.APPLE_PAY;
@@ -239,9 +242,27 @@ public class PaymentTypeDiffblueTest {
    * Method under test: {@link PaymentType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PaymentType.equals(Object)", "int PaymentType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(PaymentType.BANK_ACCOUNT, PaymentType.APPLE_PAY);
+  }
+
+  /**
+   * Test {@link PaymentType#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PaymentType#equals(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PaymentType.equals(Object)", "int PaymentType.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange, Act and Assert
     assertNotEquals(new PaymentType(), PaymentType.APPLE_PAY);
   }
 
@@ -255,6 +276,8 @@ public class PaymentTypeDiffblueTest {
    * Method under test: {@link PaymentType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PaymentType.equals(Object)", "int PaymentType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(PaymentType.APPLE_PAY, null);
@@ -270,6 +293,8 @@ public class PaymentTypeDiffblueTest {
    * Method under test: {@link PaymentType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PaymentType.equals(Object)", "int PaymentType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(PaymentType.APPLE_PAY, "Different type to PaymentType");

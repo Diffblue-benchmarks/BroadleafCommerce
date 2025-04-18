@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.offer.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -10,6 +27,8 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -22,32 +41,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.broadleafcommerce.common.copy.CreateResponse;
-import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
 import org.broadleafcommerce.common.money.Money;
-import org.broadleafcommerce.common.service.GenericEntityServiceImpl;
-import org.broadleafcommerce.common.site.domain.CatalogImpl;
-import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.broadleafcommerce.core.offer.service.type.CustomerMaxUsesStrategyType;
 import org.broadleafcommerce.core.offer.service.type.OfferAdjustmentType;
 import org.broadleafcommerce.core.offer.service.type.OfferDiscountType;
 import org.broadleafcommerce.core.offer.service.type.OfferItemRestrictionRuleType;
 import org.broadleafcommerce.core.offer.service.type.OfferType;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class OfferImplDiffblueTest {
   @Autowired
   private OfferImpl offerImpl;
@@ -89,6 +102,20 @@ public class OfferImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String OfferImpl.getDescription()", "Date OfferImpl.getEndDate()", "Long OfferImpl.getId()",
+      "Long OfferImpl.getMinimumDaysPerUsage()", "String OfferImpl.getName()", "List OfferImpl.getOfferCodes()",
+      "Map OfferImpl.getOfferMatchRulesXref()", "List OfferImpl.getOfferPriceData()",
+      "Set OfferImpl.getQualifyingItemCriteriaXref()", "String OfferImpl.getTargetSystem()",
+      "BigDecimal OfferImpl.getValue()", "void OfferImpl.setDescription(String)", "void OfferImpl.setEndDate(Date)",
+      "void OfferImpl.setId(Long)", "void OfferImpl.setMarketingMessage(String)",
+      "void OfferImpl.setMaxUsesPerCustomer(Long)", "void OfferImpl.setMinimumDaysPerUsage(Long)",
+      "void OfferImpl.setName(String)", "void OfferImpl.setOfferCodes(List)",
+      "void OfferImpl.setOfferMatchRulesXref(Map)", "void OfferImpl.setOfferPriceData(List)",
+      "void OfferImpl.setPriority(Integer)", "void OfferImpl.setQualifyingItemCriteriaXref(Set)",
+      "void OfferImpl.setRequiresRelatedTargetAndQualifiers(Boolean)", "void OfferImpl.setStartDate(Date)",
+      "void OfferImpl.setTargetItemCriteriaXref(Set)", "void OfferImpl.setTargetSystem(String)",
+      "void OfferImpl.setUseListForDiscounts(Boolean)", "void OfferImpl.setValue(BigDecimal)"})
   public void testGettersAndSetters() {
     // Arrange
     OfferImpl offerImpl = new OfferImpl();
@@ -130,7 +157,7 @@ public class OfferImplDiffblueTest {
     String actualTargetSystem = offerImpl.getTargetSystem();
     BigDecimal actualValue = offerImpl.getValue();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Name", actualName);
     assertEquals("Target System", actualTargetSystem);
     assertEquals("The characteristics of someone or something", actualDescription);
@@ -155,353 +182,27 @@ public class OfferImplDiffblueTest {
    * Method under test: {@link OfferImpl#getType()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OfferType OfferImpl.getType()"})
   public void testGetType() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1878 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferImpl()).getType();
-  }
-
-  /**
-   * Test {@link OfferImpl#getType()}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getType()}
-   */
-  @Test
-  public void testGetType_givenOfferImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new OfferImpl()).getType());
   }
 
   /**
-   * Test {@link OfferImpl#getType()}.
-   * <ul>
-   *   <li>Given {@link OfferType} {@link OfferType#getType()} return
-   * {@code Type}.</li>
-   *   <li>Then return {@code Friendly Type}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getType()}
-   */
-  @Test
-  public void testGetType_givenOfferTypeGetTypeReturnType_thenReturnFriendlyType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferType type = mock(OfferType.class);
-    when(type.getType()).thenReturn("Type");
-
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setType(type);
-
-    // Act
-    OfferType actualType = offerImpl.getType();
-
-    // Assert
-    verify(type).getType();
-    assertEquals("Friendly Type", actualType.getFriendlyType());
-    assertEquals("Type", actualType.getType());
-    assertEquals(1, actualType.getOrder());
-  }
-
-  /**
-   * Test {@link OfferImpl#setType(OfferType)}.
-   * <p>
-   * Method under test: {@link OfferImpl#setType(OfferType)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetType() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2868 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferImpl()).setType(OfferType.FULFILLMENT_GROUP);
-  }
-
-  /**
-   * Test {@link OfferImpl#setType(OfferType)}.
-   * <ul>
-   *   <li>Given {@code Type}.</li>
-   *   <li>Then {@link OfferImpl} (default constructor) Type FriendlyType is
-   * {@code Friendly Type}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#setType(OfferType)}
-   */
-  @Test
-  public void testSetType_givenType_thenOfferImplTypeFriendlyTypeIsFriendlyType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    OfferType type = mock(OfferType.class);
-    when(type.getType()).thenReturn("Type");
-
-    // Act
-    offerImpl.setType(type);
-
-    // Assert
-    verify(type).getType();
-    OfferType type2 = offerImpl.getType();
-    assertEquals("Friendly Type", type2.getFriendlyType());
-    assertEquals("Type", type2.getType());
-    assertEquals("Type", offerImpl.type);
-    assertEquals(1, type2.getOrder());
-  }
-
-  /**
-   * Test {@link OfferImpl#setType(OfferType)}.
-   * <ul>
-   *   <li>When {@link OfferType#FULFILLMENT_GROUP}.</li>
-   *   <li>Then {@link OfferImpl} (default constructor) {@link OfferImpl#type} is
-   * {@code FULFILLMENT_GROUP}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#setType(OfferType)}
-   */
-  @Test
-  public void testSetType_whenFulfillment_group_thenOfferImplTypeIsFulfillmentGroup() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    OfferType type = OfferType.FULFILLMENT_GROUP;
-
-    // Act
-    offerImpl.setType(type);
-
-    // Assert
-    assertEquals("FULFILLMENT_GROUP", offerImpl.type);
-    OfferType expectedType = type.FULFILLMENT_GROUP;
-    assertSame(expectedType, offerImpl.getType());
-  }
-
-  /**
    * Test {@link OfferImpl#getDiscountType()}.
    * <p>
    * Method under test: {@link OfferImpl#getDiscountType()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OfferDiscountType OfferImpl.getDiscountType()"})
   public void testGetDiscountType() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1338 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferImpl()).getDiscountType();
-  }
-
-  /**
-   * Test {@link OfferImpl#getDiscountType()}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getDiscountType()}
-   */
-  @Test
-  public void testGetDiscountType_givenOfferImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new OfferImpl()).getDiscountType());
   }
 
   /**
-   * Test {@link OfferImpl#getDiscountType()}.
-   * <ul>
-   *   <li>Given {@link OfferType} {@link OfferType#getType()} return
-   * {@code Type}.</li>
-   *   <li>Then calls {@link OfferType#getType()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getDiscountType()}
-   */
-  @Test
-  public void testGetDiscountType_givenOfferTypeGetTypeReturnType_thenCallsGetType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferType type = mock(OfferType.class);
-    when(type.getType()).thenReturn("Type");
-
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setType(type);
-
-    // Act
-    OfferDiscountType actualDiscountType = offerImpl.getDiscountType();
-
-    // Assert
-    verify(type).getType();
-    assertNull(actualDiscountType);
-  }
-
-  /**
-   * Test {@link OfferImpl#setDiscountType(OfferDiscountType)}.
-   * <p>
-   * Method under test: {@link OfferImpl#setDiscountType(OfferDiscountType)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetDiscountType() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2503 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferImpl()).setDiscountType(OfferDiscountType.AMOUNT_OFF);
-  }
-
-  /**
-   * Test {@link OfferImpl#setDiscountType(OfferDiscountType)}.
-   * <ul>
-   *   <li>Then {@link OfferImpl} (default constructor) DiscountType FriendlyType is
-   * {@code Friendly Type}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#setDiscountType(OfferDiscountType)}
-   */
-  @Test
-  public void testSetDiscountType_thenOfferImplDiscountTypeFriendlyTypeIsFriendlyType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    OfferDiscountType discountType = mock(OfferDiscountType.class);
-    when(discountType.getType()).thenReturn("Type");
-
-    // Act
-    offerImpl.setDiscountType(discountType);
-
-    // Assert
-    verify(discountType).getType();
-    OfferDiscountType discountType2 = offerImpl.getDiscountType();
-    assertEquals("Friendly Type", discountType2.getFriendlyType());
-    assertEquals("Type", discountType2.getType());
-    assertEquals("Type", offerImpl.discountType);
-  }
-
-  /**
-   * Test {@link OfferImpl#setDiscountType(OfferDiscountType)}.
-   * <ul>
-   *   <li>When {@link OfferDiscountType#AMOUNT_OFF}.</li>
-   *   <li>Then {@link OfferImpl} (default constructor)
-   * {@link OfferImpl#discountType} is {@code AMOUNT_OFF}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#setDiscountType(OfferDiscountType)}
-   */
-  @Test
-  public void testSetDiscountType_whenAmount_off_thenOfferImplDiscountTypeIsAmountOff() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    OfferDiscountType discountType = OfferDiscountType.AMOUNT_OFF;
-
-    // Act
-    offerImpl.setDiscountType(discountType);
-
-    // Assert
-    assertEquals("AMOUNT_OFF", offerImpl.discountType);
-    OfferDiscountType expectedDiscountType = discountType.AMOUNT_OFF;
-    assertSame(expectedDiscountType, offerImpl.getDiscountType());
-  }
-
-  /**
-   * Test {@link OfferImpl#getOfferItemQualifierRuleType()}.
-   * <p>
-   * Method under test: {@link OfferImpl#getOfferItemQualifierRuleType()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetOfferItemQualifierRuleType() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1554 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferImpl()).getOfferItemQualifierRuleType();
-  }
-
-  /**
    * Test {@link OfferImpl#getOfferItemQualifierRuleType()}.
    * <ul>
    *   <li>Given {@link OfferImpl} (default constructor).</li>
@@ -510,253 +211,76 @@ public class OfferImplDiffblueTest {
    * Method under test: {@link OfferImpl#getOfferItemQualifierRuleType()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OfferItemRestrictionRuleType OfferImpl.getOfferItemQualifierRuleType()"})
   public void testGetOfferItemQualifierRuleType_givenOfferImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OfferImpl offerImpl = new OfferImpl();
+    OfferImpl offerImpl2 = new OfferImpl();
 
     // Act
-    OfferItemRestrictionRuleType actualOfferItemQualifierRuleType = offerImpl.getOfferItemQualifierRuleType();
+    OfferItemRestrictionRuleType actualOfferItemQualifierRuleType = offerImpl2.getOfferItemQualifierRuleType();
 
     // Assert
     OfferItemRestrictionRuleType offerItemRestrictionRuleType = actualOfferItemQualifierRuleType.NONE;
     assertSame(offerItemRestrictionRuleType, actualOfferItemQualifierRuleType);
-    assertSame(offerItemRestrictionRuleType, offerImpl.getOfferItemTargetRuleType());
+    assertSame(offerItemRestrictionRuleType, offerImpl2.getOfferItemTargetRuleType());
   }
 
   /**
    * Test {@link OfferImpl#getOfferItemQualifierRuleType()}.
    * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor) AdjustmentType is
-   * {@link OfferAdjustmentType#FUTURE_CREDIT}.</li>
+   *   <li>Given {@link OfferImpl} (default constructor) AdjustmentType is {@link OfferAdjustmentType#FUTURE_CREDIT}.</li>
    * </ul>
    * <p>
    * Method under test: {@link OfferImpl#getOfferItemQualifierRuleType()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OfferItemRestrictionRuleType OfferImpl.getOfferItemQualifierRuleType()"})
   public void testGetOfferItemQualifierRuleType_givenOfferImplAdjustmentTypeIsFuture_credit() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl.setMaxUsesPerOrder(3);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    offerImpl.setOrderMinSubTotal(new Money());
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
+    OfferImpl offerImpl2 = new OfferImpl();
+    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
+    offerImpl2.setApplyDiscountToSalePrice(true);
+    offerImpl2.setApplyToChildItems(true);
+    offerImpl2.setAutomaticallyAdded(true);
+    offerImpl2.setCombinableWithOtherOffers(true);
+    offerImpl2.setDescription("The characteristics of someone or something");
+    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
+    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setId(OfferImpl.serialVersionUID);
+    offerImpl2.setMarketingMessage("Marketing Message");
+    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
+    offerImpl2.setMaxUsesPerOrder(3);
+    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
+    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
+    offerImpl2.setName("Name");
+    offerImpl2.setOfferCodes(new ArrayList<>());
+    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
+    offerImpl2.setOfferPriceData(new ArrayList<>());
+    offerImpl2.setOrderMinSubTotal(new Money());
+    offerImpl2.setPriority(1);
+    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
+    offerImpl2.setQualifyingItemSubTotal(new Money());
+    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
+    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
+    offerImpl2.setTargetMinSubTotal(new Money());
+    offerImpl2.setTargetSystem("Target System");
+    offerImpl2.setTotalitarianOffer(true);
+    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
+    offerImpl2.setUseListForDiscounts(true);
+    offerImpl2.setValue(new BigDecimal("2.3"));
 
     // Act
-    OfferItemRestrictionRuleType actualOfferItemQualifierRuleType = offerImpl.getOfferItemQualifierRuleType();
+    OfferItemRestrictionRuleType actualOfferItemQualifierRuleType = offerImpl2.getOfferItemQualifierRuleType();
 
     // Assert
     OfferItemRestrictionRuleType offerItemRestrictionRuleType = actualOfferItemQualifierRuleType.NONE;
     assertSame(offerItemRestrictionRuleType, actualOfferItemQualifierRuleType);
-    assertSame(offerItemRestrictionRuleType, offerImpl.getOfferItemTargetRuleType());
-  }
-
-  /**
-   * Test {@link OfferImpl#getOfferItemQualifierRuleType()}.
-   * <ul>
-   *   <li>Then calls {@link OfferAdjustmentType#getType()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getOfferItemQualifierRuleType()}
-   */
-  @Test
-  public void testGetOfferItemQualifierRuleType_thenCallsGetType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferAdjustmentType adjustmentType = mock(OfferAdjustmentType.class);
-    when(adjustmentType.getType()).thenReturn("Type");
-
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(adjustmentType);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl.setMaxUsesPerOrder(3);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    offerImpl.setOrderMinSubTotal(new Money());
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
-
-    // Act
-    OfferItemRestrictionRuleType actualOfferItemQualifierRuleType = offerImpl.getOfferItemQualifierRuleType();
-
-    // Assert
-    verify(adjustmentType).getType();
-    OfferItemRestrictionRuleType offerItemRestrictionRuleType = actualOfferItemQualifierRuleType.NONE;
-    assertSame(offerItemRestrictionRuleType, actualOfferItemQualifierRuleType);
-    assertSame(offerItemRestrictionRuleType, offerImpl.getOfferItemTargetRuleType());
-  }
-
-  /**
-   * Test
-   * {@link OfferImpl#setOfferItemQualifierRuleType(OfferItemRestrictionRuleType)}.
-   * <p>
-   * Method under test:
-   * {@link OfferImpl#setOfferItemQualifierRuleType(OfferItemRestrictionRuleType)}
-   */
-  @Test
-  public void testSetOfferItemQualifierRuleType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    OfferItemRestrictionRuleType restrictionRuleType = mock(OfferItemRestrictionRuleType.class);
-    when(restrictionRuleType.getType()).thenReturn("Type");
-
-    // Act
-    offerImpl.setOfferItemQualifierRuleType(restrictionRuleType);
-
-    // Assert
-    verify(restrictionRuleType).getType();
-    OfferItemRestrictionRuleType offerItemQualifierRuleType = offerImpl.getOfferItemQualifierRuleType();
-    assertEquals("Friendly Type", offerItemQualifierRuleType.getFriendlyType());
-    OfferItemRestrictionRuleType offerItemTargetRuleType = offerImpl.getOfferItemTargetRuleType();
-    assertEquals("NONE", offerItemTargetRuleType.getType());
-    assertEquals("None", offerItemTargetRuleType.getFriendlyType());
-    assertEquals("Type", offerItemQualifierRuleType.getType());
-    assertEquals("Type", offerImpl.offerItemQualifierRuleType);
-  }
-
-  /**
-   * Test
-   * {@link OfferImpl#setOfferItemQualifierRuleType(OfferItemRestrictionRuleType)}.
-   * <p>
-   * Method under test:
-   * {@link OfferImpl#setOfferItemQualifierRuleType(OfferItemRestrictionRuleType)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetOfferItemQualifierRuleType2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2625 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferImpl()).setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-  }
-
-  /**
-   * Test
-   * {@link OfferImpl#setOfferItemQualifierRuleType(OfferItemRestrictionRuleType)}.
-   * <ul>
-   *   <li>Then {@link OfferImpl} (default constructor)
-   * {@link OfferImpl#offerItemQualifierRuleType} is {@code NONE}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link OfferImpl#setOfferItemQualifierRuleType(OfferItemRestrictionRuleType)}
-   */
-  @Test
-  public void testSetOfferItemQualifierRuleType_thenOfferImplOfferItemQualifierRuleTypeIsNone() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-
-    // Act
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-
-    // Assert
-    assertEquals("NONE", offerImpl.offerItemQualifierRuleType);
-  }
-
-  /**
-   * Test {@link OfferImpl#getOfferItemTargetRuleType()}.
-   * <p>
-   * Method under test: {@link OfferImpl#getOfferItemTargetRuleType()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetOfferItemTargetRuleType() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1590 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferImpl()).getOfferItemTargetRuleType();
+    assertSame(offerItemRestrictionRuleType, offerImpl2.getOfferItemTargetRuleType());
   }
 
   /**
@@ -768,365 +292,129 @@ public class OfferImplDiffblueTest {
    * Method under test: {@link OfferImpl#getOfferItemTargetRuleType()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OfferItemRestrictionRuleType OfferImpl.getOfferItemTargetRuleType()"})
   public void testGetOfferItemTargetRuleType_givenOfferImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OfferImpl offerImpl = new OfferImpl();
+    OfferImpl offerImpl2 = new OfferImpl();
 
     // Act
-    OfferItemRestrictionRuleType actualOfferItemTargetRuleType = offerImpl.getOfferItemTargetRuleType();
+    OfferItemRestrictionRuleType actualOfferItemTargetRuleType = offerImpl2.getOfferItemTargetRuleType();
 
     // Assert
     OfferItemRestrictionRuleType offerItemRestrictionRuleType = actualOfferItemTargetRuleType.NONE;
-    assertSame(offerItemRestrictionRuleType, offerImpl.getOfferItemQualifierRuleType());
+    assertSame(offerItemRestrictionRuleType, offerImpl2.getOfferItemQualifierRuleType());
     assertSame(offerItemRestrictionRuleType, actualOfferItemTargetRuleType);
   }
 
   /**
    * Test {@link OfferImpl#getOfferItemTargetRuleType()}.
    * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor) AdjustmentType is
-   * {@link OfferAdjustmentType#FUTURE_CREDIT}.</li>
+   *   <li>Given {@link OfferImpl} (default constructor) AdjustmentType is {@link OfferAdjustmentType#FUTURE_CREDIT}.</li>
    * </ul>
    * <p>
    * Method under test: {@link OfferImpl#getOfferItemTargetRuleType()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OfferItemRestrictionRuleType OfferImpl.getOfferItemTargetRuleType()"})
   public void testGetOfferItemTargetRuleType_givenOfferImplAdjustmentTypeIsFuture_credit() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl.setMaxUsesPerOrder(3);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    offerImpl.setOrderMinSubTotal(new Money());
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
+    OfferImpl offerImpl2 = new OfferImpl();
+    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
+    offerImpl2.setApplyDiscountToSalePrice(true);
+    offerImpl2.setApplyToChildItems(true);
+    offerImpl2.setAutomaticallyAdded(true);
+    offerImpl2.setCombinableWithOtherOffers(true);
+    offerImpl2.setDescription("The characteristics of someone or something");
+    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
+    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setId(OfferImpl.serialVersionUID);
+    offerImpl2.setMarketingMessage("Marketing Message");
+    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
+    offerImpl2.setMaxUsesPerOrder(3);
+    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
+    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
+    offerImpl2.setName("Name");
+    offerImpl2.setOfferCodes(new ArrayList<>());
+    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
+    offerImpl2.setOfferPriceData(new ArrayList<>());
+    offerImpl2.setOrderMinSubTotal(new Money());
+    offerImpl2.setPriority(1);
+    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
+    offerImpl2.setQualifyingItemSubTotal(new Money());
+    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
+    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
+    offerImpl2.setTargetMinSubTotal(new Money());
+    offerImpl2.setTargetSystem("Target System");
+    offerImpl2.setTotalitarianOffer(true);
+    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
+    offerImpl2.setUseListForDiscounts(true);
+    offerImpl2.setValue(new BigDecimal("2.3"));
 
     // Act
-    OfferItemRestrictionRuleType actualOfferItemTargetRuleType = offerImpl.getOfferItemTargetRuleType();
+    OfferItemRestrictionRuleType actualOfferItemTargetRuleType = offerImpl2.getOfferItemTargetRuleType();
 
     // Assert
     OfferItemRestrictionRuleType offerItemRestrictionRuleType = actualOfferItemTargetRuleType.NONE;
-    assertSame(offerItemRestrictionRuleType, offerImpl.getOfferItemQualifierRuleType());
+    assertSame(offerItemRestrictionRuleType, offerImpl2.getOfferItemQualifierRuleType());
     assertSame(offerItemRestrictionRuleType, actualOfferItemTargetRuleType);
   }
 
   /**
-   * Test {@link OfferImpl#getOfferItemTargetRuleType()}.
-   * <ul>
-   *   <li>Then calls {@link OfferAdjustmentType#getType()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getOfferItemTargetRuleType()}
-   */
-  @Test
-  public void testGetOfferItemTargetRuleType_thenCallsGetType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferAdjustmentType adjustmentType = mock(OfferAdjustmentType.class);
-    when(adjustmentType.getType()).thenReturn("Type");
-
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(adjustmentType);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl.setMaxUsesPerOrder(3);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    offerImpl.setOrderMinSubTotal(new Money());
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
-
-    // Act
-    OfferItemRestrictionRuleType actualOfferItemTargetRuleType = offerImpl.getOfferItemTargetRuleType();
-
-    // Assert
-    verify(adjustmentType).getType();
-    OfferItemRestrictionRuleType offerItemRestrictionRuleType = actualOfferItemTargetRuleType.NONE;
-    assertSame(offerItemRestrictionRuleType, offerImpl.getOfferItemQualifierRuleType());
-    assertSame(offerItemRestrictionRuleType, actualOfferItemTargetRuleType);
-  }
-
-  /**
-   * Test
-   * {@link OfferImpl#setOfferItemTargetRuleType(OfferItemRestrictionRuleType)}.
-   * <p>
-   * Method under test:
-   * {@link OfferImpl#setOfferItemTargetRuleType(OfferItemRestrictionRuleType)}
-   */
-  @Test
-  public void testSetOfferItemTargetRuleType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    OfferItemRestrictionRuleType restrictionRuleType = mock(OfferItemRestrictionRuleType.class);
-    when(restrictionRuleType.getType()).thenReturn("Type");
-
-    // Act
-    offerImpl.setOfferItemTargetRuleType(restrictionRuleType);
-
-    // Assert
-    verify(restrictionRuleType).getType();
-    OfferItemRestrictionRuleType offerItemTargetRuleType = offerImpl.getOfferItemTargetRuleType();
-    assertEquals("Friendly Type", offerItemTargetRuleType.getFriendlyType());
-    assertEquals("Type", offerItemTargetRuleType.getType());
-    assertEquals("Type", offerImpl.offerItemTargetRuleType);
-  }
-
-  /**
-   * Test
-   * {@link OfferImpl#setOfferItemTargetRuleType(OfferItemRestrictionRuleType)}.
-   * <p>
-   * Method under test:
-   * {@link OfferImpl#setOfferItemTargetRuleType(OfferItemRestrictionRuleType)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetOfferItemTargetRuleType2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2667 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferImpl()).setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-  }
-
-  /**
-   * Test
-   * {@link OfferImpl#setOfferItemTargetRuleType(OfferItemRestrictionRuleType)}.
-   * <ul>
-   *   <li>Then {@link OfferImpl} (default constructor)
-   * {@link OfferImpl#offerItemTargetRuleType} is {@code NONE}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link OfferImpl#setOfferItemTargetRuleType(OfferItemRestrictionRuleType)}
-   */
-  @Test
-  public void testSetOfferItemTargetRuleType_thenOfferImplOfferItemTargetRuleTypeIsNone() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-
-    // Act
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-
-    // Assert
-    assertEquals("NONE", offerImpl.offerItemTargetRuleType);
-  }
-
-  /**
-   * Test {@link OfferImpl#getPriority()}.
-   * <p>
-   * Method under test: {@link OfferImpl#getPriority()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetPriority() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1662 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferImpl()).getPriority();
-  }
-
-  /**
    * Test {@link OfferImpl#getPriority()}.
    * <ul>
-   *   <li>Given {@link OfferAdjustmentType} {@link OfferAdjustmentType#getType()}
-   * return {@code Type}.</li>
-   *   <li>Then calls {@link OfferAdjustmentType#getType()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getPriority()}
-   */
-  @Test
-  public void testGetPriority_givenOfferAdjustmentTypeGetTypeReturnType_thenCallsGetType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferAdjustmentType adjustmentType = mock(OfferAdjustmentType.class);
-    when(adjustmentType.getType()).thenReturn("Type");
-
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(adjustmentType);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl.setMaxUsesPerOrder(3);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    offerImpl.setOrderMinSubTotal(new Money());
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
-    offerImpl.setPriority(1);
-
-    // Act
-    int actualPriority = offerImpl.getPriority();
-
-    // Assert
-    verify(adjustmentType).getType();
-    assertEquals(1, actualPriority);
-  }
-
-  /**
-   * Test {@link OfferImpl#getPriority()}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor) AdjustmentType is
-   * {@link OfferAdjustmentType#FUTURE_CREDIT}.</li>
+   *   <li>Given {@link OfferImpl} (default constructor) AdjustmentType is {@link OfferAdjustmentType#FUTURE_CREDIT}.</li>
    *   <li>Then return one.</li>
    * </ul>
    * <p>
    * Method under test: {@link OfferImpl#getPriority()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int OfferImpl.getPriority()"})
   public void testGetPriority_givenOfferImplAdjustmentTypeIsFuture_credit_thenReturnOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl.setMaxUsesPerOrder(3);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    offerImpl.setOrderMinSubTotal(new Money());
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
-    offerImpl.setPriority(1);
+    OfferImpl offerImpl2 = new OfferImpl();
+    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
+    offerImpl2.setApplyDiscountToSalePrice(true);
+    offerImpl2.setApplyToChildItems(true);
+    offerImpl2.setAutomaticallyAdded(true);
+    offerImpl2.setCombinableWithOtherOffers(true);
+    offerImpl2.setDescription("The characteristics of someone or something");
+    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
+    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setId(OfferImpl.serialVersionUID);
+    offerImpl2.setMarketingMessage("Marketing Message");
+    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
+    offerImpl2.setMaxUsesPerOrder(3);
+    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
+    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
+    offerImpl2.setName("Name");
+    offerImpl2.setOfferCodes(new ArrayList<>());
+    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
+    offerImpl2.setOfferPriceData(new ArrayList<>());
+    offerImpl2.setOrderMinSubTotal(new Money());
+    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
+    offerImpl2.setQualifyingItemSubTotal(new Money());
+    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
+    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
+    offerImpl2.setTargetMinSubTotal(new Money());
+    offerImpl2.setTargetSystem("Target System");
+    offerImpl2.setTotalitarianOffer(true);
+    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
+    offerImpl2.setUseListForDiscounts(true);
+    offerImpl2.setValue(new BigDecimal("2.3"));
+    offerImpl2.setPriority(1);
 
     // Act and Assert
-    assertEquals(1, offerImpl.getPriority());
+    assertEquals(1, offerImpl2.getPriority());
   }
 
   /**
@@ -1139,40 +427,11 @@ public class OfferImplDiffblueTest {
    * Method under test: {@link OfferImpl#getPriority()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int OfferImpl.getPriority()"})
   public void testGetPriority_givenOfferImpl_thenReturnMax_valueLessOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertEquals(2147483646, (new OfferImpl()).getPriority());
-  }
-
-  /**
-   * Test {@link OfferImpl#getStartDate()}.
-   * <p>
-   * Method under test: {@link OfferImpl#getStartDate()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetStartDate() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1770 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferImpl()).getStartDate();
   }
 
   /**
@@ -1185,15 +444,15 @@ public class OfferImplDiffblueTest {
    * Method under test: {@link OfferImpl#getStartDate()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Date OfferImpl.getStartDate()"})
   public void testGetStartDate_givenOfferImplArchivedIsY_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setArchived('Y');
+    OfferImpl offerImpl2 = new OfferImpl();
+    offerImpl2.setArchived('Y');
 
     // Act and Assert
-    assertNull(offerImpl.getStartDate());
+    assertNull(offerImpl2.getStartDate());
   }
 
   /**
@@ -1206,40 +465,11 @@ public class OfferImplDiffblueTest {
    * Method under test: {@link OfferImpl#getStartDate()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Date OfferImpl.getStartDate()"})
   public void testGetStartDate_givenOfferImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new OfferImpl()).getStartDate());
-  }
-
-  /**
-   * Test {@link OfferImpl#getApplyDiscountToSalePrice()}.
-   * <p>
-   * Method under test: {@link OfferImpl#getApplyDiscountToSalePrice()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetApplyDiscountToSalePrice() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1194 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferImpl()).getApplyDiscountToSalePrice();
   }
 
   /**
@@ -1252,9 +482,9 @@ public class OfferImplDiffblueTest {
    * Method under test: {@link OfferImpl#getApplyDiscountToSalePrice()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferImpl.getApplyDiscountToSalePrice()"})
   public void testGetApplyDiscountToSalePrice_givenOfferImpl_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertTrue((new OfferImpl()).getApplyDiscountToSalePrice());
   }
@@ -1262,197 +492,21 @@ public class OfferImplDiffblueTest {
   /**
    * Test {@link OfferImpl#getApplyDiscountToSalePrice()}.
    * <ul>
-   *   <li>Given {@link OfferType} {@link OfferType#getType()} return
-   * {@code Type}.</li>
-   *   <li>Then return {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getApplyDiscountToSalePrice()}
-   */
-  @Test
-  public void testGetApplyDiscountToSalePrice_givenOfferTypeGetTypeReturnType_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferType type = mock(OfferType.class);
-    when(type.getType()).thenReturn("Type");
-
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setType(type);
-
-    // Act
-    boolean actualApplyDiscountToSalePrice = offerImpl.getApplyDiscountToSalePrice();
-
-    // Assert
-    verify(type).getType();
-    assertTrue(actualApplyDiscountToSalePrice);
-  }
-
-  /**
-   * Test {@link OfferImpl#getApplyDiscountToSalePrice()}.
-   * <ul>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link OfferImpl#getApplyDiscountToSalePrice()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferImpl.getApplyDiscountToSalePrice()"})
   public void testGetApplyDiscountToSalePrice_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OfferType type = mock(OfferType.class);
-    when(type.getType()).thenReturn("Type");
-
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setApplyDiscountToSalePrice(false);
-    offerImpl.setType(type);
-
-    // Act
-    boolean actualApplyDiscountToSalePrice = offerImpl.getApplyDiscountToSalePrice();
-
-    // Assert
-    verify(type).getType();
-    assertFalse(actualApplyDiscountToSalePrice);
-  }
-
-  /**
-   * Test {@link OfferImpl#setApplyDiscountToSalePrice(boolean)}.
-   * <p>
-   * Method under test: {@link OfferImpl#setApplyDiscountToSalePrice(boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetApplyDiscountToSalePrice() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2314 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferImpl()).setApplyDiscountToSalePrice(true);
-  }
-
-  /**
-   * Test {@link OfferImpl#setApplyDiscountToSalePrice(boolean)}.
-   * <ul>
-   *   <li>Given {@link OfferType} {@link OfferType#getType()} return
-   * {@code Type}.</li>
-   *   <li>Then calls {@link OfferType#getType()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#setApplyDiscountToSalePrice(boolean)}
-   */
-  @Test
-  public void testSetApplyDiscountToSalePrice_givenOfferTypeGetTypeReturnType_thenCallsGetType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferType type = mock(OfferType.class);
-    when(type.getType()).thenReturn("Type");
-
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setType(type);
-
-    // Act
-    offerImpl.setApplyDiscountToSalePrice(true);
-
-    // Assert
-    verify(type).getType();
-  }
-
-  /**
-   * Test {@link OfferImpl#getApplyToChildItems()}.
-   * <p>
-   * Method under test: {@link OfferImpl#getApplyToChildItems()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetApplyToChildItems() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1230 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferImpl()).getApplyToChildItems();
-  }
-
-  /**
-   * Test {@link OfferImpl#getApplyToChildItems()}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor) AdjustmentType is
-   * {@link OfferAdjustmentType#FUTURE_CREDIT}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getApplyToChildItems()}
-   */
-  @Test
-  public void testGetApplyToChildItems_givenOfferImplAdjustmentTypeIsFuture_credit() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl.setMaxUsesPerOrder(3);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    offerImpl.setOrderMinSubTotal(new Money());
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
-    offerImpl.setApplyToChildItems(true);
+    OfferImpl offerImpl2 = new OfferImpl();
+    offerImpl2.setApplyDiscountToSalePrice(false);
 
     // Act and Assert
-    assertTrue(offerImpl.getApplyToChildItems());
+    assertFalse(offerImpl2.getApplyDiscountToSalePrice());
   }
 
   /**
@@ -1465,9 +519,9 @@ public class OfferImplDiffblueTest {
    * Method under test: {@link OfferImpl#getApplyToChildItems()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean OfferImpl.getApplyToChildItems()"})
   public void testGetApplyToChildItems_givenOfferImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertFalse((new OfferImpl()).getApplyToChildItems());
   }
@@ -1475,60 +529,53 @@ public class OfferImplDiffblueTest {
   /**
    * Test {@link OfferImpl#getApplyToChildItems()}.
    * <ul>
-   *   <li>Then calls {@link OfferAdjustmentType#getType()}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link OfferImpl#getApplyToChildItems()}
    */
   @Test
-  public void testGetApplyToChildItems_thenCallsGetType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean OfferImpl.getApplyToChildItems()"})
+  public void testGetApplyToChildItems_thenReturnTrue() {
     // Arrange
-    OfferAdjustmentType adjustmentType = mock(OfferAdjustmentType.class);
-    when(adjustmentType.getType()).thenReturn("Type");
+    OfferImpl offerImpl2 = new OfferImpl();
+    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
+    offerImpl2.setApplyDiscountToSalePrice(true);
+    offerImpl2.setAutomaticallyAdded(true);
+    offerImpl2.setCombinableWithOtherOffers(true);
+    offerImpl2.setDescription("The characteristics of someone or something");
+    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
+    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setId(OfferImpl.serialVersionUID);
+    offerImpl2.setMarketingMessage("Marketing Message");
+    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
+    offerImpl2.setMaxUsesPerOrder(3);
+    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
+    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
+    offerImpl2.setName("Name");
+    offerImpl2.setOfferCodes(new ArrayList<>());
+    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
+    offerImpl2.setOfferPriceData(new ArrayList<>());
+    offerImpl2.setOrderMinSubTotal(new Money());
+    offerImpl2.setPriority(1);
+    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
+    offerImpl2.setQualifyingItemSubTotal(new Money());
+    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
+    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
+    offerImpl2.setTargetMinSubTotal(new Money());
+    offerImpl2.setTargetSystem("Target System");
+    offerImpl2.setTotalitarianOffer(true);
+    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
+    offerImpl2.setUseListForDiscounts(true);
+    offerImpl2.setValue(new BigDecimal("2.3"));
+    offerImpl2.setApplyToChildItems(true);
 
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(adjustmentType);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl.setMaxUsesPerOrder(3);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    offerImpl.setOrderMinSubTotal(new Money());
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
-    offerImpl.setApplyToChildItems(true);
-
-    // Act
-    Boolean actualApplyToChildItems = offerImpl.getApplyToChildItems();
-
-    // Assert
-    verify(adjustmentType).getType();
-    assertTrue(actualApplyToChildItems);
+    // Act and Assert
+    assertTrue(offerImpl2.getApplyToChildItems());
   }
 
   /**
@@ -1537,109 +584,18 @@ public class OfferImplDiffblueTest {
    * Method under test: {@link OfferImpl#setApplyToChildItems(boolean)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OfferImpl.setApplyToChildItems(boolean)"})
   public void testSetApplyToChildItems() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2350 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferImpl()).setApplyToChildItems(true);
-  }
-
-  /**
-   * Test {@link OfferImpl#setApplyToChildItems(boolean)}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#setApplyToChildItems(boolean)}
-   */
-  @Test
-  public void testSetApplyToChildItems_givenOfferImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OfferImpl offerImpl = new OfferImpl();
+    OfferImpl offerImpl2 = new OfferImpl();
 
     // Act
-    offerImpl.setApplyToChildItems(true);
+    offerImpl2.setApplyToChildItems(true);
 
     // Assert
-    assertTrue(offerImpl.getApplyToChildItems());
-    assertTrue(offerImpl.applyToChildItems);
-  }
-
-  /**
-   * Test {@link OfferImpl#setApplyToChildItems(boolean)}.
-   * <ul>
-   *   <li>Given {@link OfferType} {@link OfferType#getType()} return
-   * {@code Type}.</li>
-   *   <li>Then calls {@link OfferType#getType()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#setApplyToChildItems(boolean)}
-   */
-  @Test
-  public void testSetApplyToChildItems_givenOfferTypeGetTypeReturnType_thenCallsGetType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferType type = mock(OfferType.class);
-    when(type.getType()).thenReturn("Type");
-
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setType(type);
-
-    // Act
-    offerImpl.setApplyToChildItems(true);
-
-    // Assert
-    verify(type).getType();
-    assertTrue(offerImpl.getApplyToChildItems());
-    assertTrue(offerImpl.applyToChildItems);
-  }
-
-  /**
-   * Test {@link OfferImpl#isCombinableWithOtherOffers()}.
-   * <p>
-   * Method under test: {@link OfferImpl#isCombinableWithOtherOffers()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsCombinableWithOtherOffers() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2022 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferImpl()).isCombinableWithOtherOffers();
+    assertTrue(offerImpl2.getApplyToChildItems());
+    assertTrue(offerImpl2.applyToChildItems);
   }
 
   /**
@@ -1652,9 +608,9 @@ public class OfferImplDiffblueTest {
    * Method under test: {@link OfferImpl#isCombinableWithOtherOffers()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferImpl.isCombinableWithOtherOffers()"})
   public void testIsCombinableWithOtherOffers_givenOfferImpl_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertTrue((new OfferImpl()).isCombinableWithOtherOffers());
   }
@@ -1662,142 +618,21 @@ public class OfferImplDiffblueTest {
   /**
    * Test {@link OfferImpl#isCombinableWithOtherOffers()}.
    * <ul>
-   *   <li>Given {@link OfferType} {@link OfferType#getType()} return
-   * {@code Type}.</li>
-   *   <li>Then return {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#isCombinableWithOtherOffers()}
-   */
-  @Test
-  public void testIsCombinableWithOtherOffers_givenOfferTypeGetTypeReturnType_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferType type = mock(OfferType.class);
-    when(type.getType()).thenReturn("Type");
-
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setType(type);
-
-    // Act
-    boolean actualIsCombinableWithOtherOffersResult = offerImpl.isCombinableWithOtherOffers();
-
-    // Assert
-    verify(type).getType();
-    assertTrue(actualIsCombinableWithOtherOffersResult);
-  }
-
-  /**
-   * Test {@link OfferImpl#isCombinableWithOtherOffers()}.
-   * <ul>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link OfferImpl#isCombinableWithOtherOffers()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferImpl.isCombinableWithOtherOffers()"})
   public void testIsCombinableWithOtherOffers_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OfferType type = mock(OfferType.class);
-    when(type.getType()).thenReturn("Type");
+    OfferImpl offerImpl2 = new OfferImpl();
+    offerImpl2.setCombinableWithOtherOffers(false);
 
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setCombinableWithOtherOffers(false);
-    offerImpl.setType(type);
-
-    // Act
-    boolean actualIsCombinableWithOtherOffersResult = offerImpl.isCombinableWithOtherOffers();
-
-    // Assert
-    verify(type).getType();
-    assertFalse(actualIsCombinableWithOtherOffersResult);
-  }
-
-  /**
-   * Test {@link OfferImpl#setCombinableWithOtherOffers(boolean)}.
-   * <p>
-   * Method under test: {@link OfferImpl#setCombinableWithOtherOffers(boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetCombinableWithOtherOffers() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2467 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferImpl()).setCombinableWithOtherOffers(true);
-  }
-
-  /**
-   * Test {@link OfferImpl#setCombinableWithOtherOffers(boolean)}.
-   * <ul>
-   *   <li>Then calls {@link OfferType#getType()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#setCombinableWithOtherOffers(boolean)}
-   */
-  @Test
-  public void testSetCombinableWithOtherOffers_thenCallsGetType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferType type = mock(OfferType.class);
-    when(type.getType()).thenReturn("Type");
-
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setType(type);
-
-    // Act
-    offerImpl.setCombinableWithOtherOffers(true);
-
-    // Assert
-    verify(type).getType();
-  }
-
-  /**
-   * Test {@link OfferImpl#getCombinableWithOtherOffers()}.
-   * <p>
-   * Method under test: {@link OfferImpl#getCombinableWithOtherOffers()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetCombinableWithOtherOffers() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1302 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferImpl()).getCombinableWithOtherOffers();
+    // Act and Assert
+    assertFalse(offerImpl2.isCombinableWithOtherOffers());
   }
 
   /**
@@ -1810,9 +645,9 @@ public class OfferImplDiffblueTest {
    * Method under test: {@link OfferImpl#getCombinableWithOtherOffers()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferImpl.getCombinableWithOtherOffers()"})
   public void testGetCombinableWithOtherOffers_givenOfferImpl_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertTrue((new OfferImpl()).getCombinableWithOtherOffers());
   }
@@ -1820,140 +655,21 @@ public class OfferImplDiffblueTest {
   /**
    * Test {@link OfferImpl#getCombinableWithOtherOffers()}.
    * <ul>
-   *   <li>Given {@link OfferType} {@link OfferType#getType()} return
-   * {@code Type}.</li>
-   *   <li>Then return {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getCombinableWithOtherOffers()}
-   */
-  @Test
-  public void testGetCombinableWithOtherOffers_givenOfferTypeGetTypeReturnType_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferType type = mock(OfferType.class);
-    when(type.getType()).thenReturn("Type");
-
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setType(type);
-
-    // Act
-    boolean actualCombinableWithOtherOffers = offerImpl.getCombinableWithOtherOffers();
-
-    // Assert
-    verify(type).getType();
-    assertTrue(actualCombinableWithOtherOffers);
-  }
-
-  /**
-   * Test {@link OfferImpl#getCombinableWithOtherOffers()}.
-   * <ul>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link OfferImpl#getCombinableWithOtherOffers()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferImpl.getCombinableWithOtherOffers()"})
   public void testGetCombinableWithOtherOffers_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OfferType type = mock(OfferType.class);
-    when(type.getType()).thenReturn("Type");
-
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setCombinableWithOtherOffers(false);
-    offerImpl.setType(type);
-
-    // Act
-    boolean actualCombinableWithOtherOffers = offerImpl.getCombinableWithOtherOffers();
-
-    // Assert
-    verify(type).getType();
-    assertFalse(actualCombinableWithOtherOffers);
-  }
-
-  /**
-   * Test {@link OfferImpl#isAutomaticallyAdded()}.
-   * <p>
-   * Method under test: {@link OfferImpl#isAutomaticallyAdded()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsAutomaticallyAdded() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1986 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferImpl()).isAutomaticallyAdded();
-  }
-
-  /**
-   * Test {@link OfferImpl#isAutomaticallyAdded()}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor) AdjustmentType is
-   * {@link OfferAdjustmentType#FUTURE_CREDIT}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#isAutomaticallyAdded()}
-   */
-  @Test
-  public void testIsAutomaticallyAdded_givenOfferImplAdjustmentTypeIsFuture_credit() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl.setMaxUsesPerOrder(3);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    offerImpl.setOrderMinSubTotal(new Money());
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
-    offerImpl.setAutomaticallyAdded(true);
+    OfferImpl offerImpl2 = new OfferImpl();
+    offerImpl2.setCombinableWithOtherOffers(false);
 
     // Act and Assert
-    assertTrue(offerImpl.isAutomaticallyAdded());
+    assertFalse(offerImpl2.getCombinableWithOtherOffers());
   }
 
   /**
@@ -1966,9 +682,9 @@ public class OfferImplDiffblueTest {
    * Method under test: {@link OfferImpl#isAutomaticallyAdded()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferImpl.isAutomaticallyAdded()"})
   public void testIsAutomaticallyAdded_givenOfferImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertFalse((new OfferImpl()).isAutomaticallyAdded());
   }
@@ -1976,222 +692,72 @@ public class OfferImplDiffblueTest {
   /**
    * Test {@link OfferImpl#isAutomaticallyAdded()}.
    * <ul>
-   *   <li>Then calls {@link OfferAdjustmentType#getType()}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link OfferImpl#isAutomaticallyAdded()}
    */
   @Test
-  public void testIsAutomaticallyAdded_thenCallsGetType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferImpl.isAutomaticallyAdded()"})
+  public void testIsAutomaticallyAdded_thenReturnTrue() {
     // Arrange
-    OfferAdjustmentType adjustmentType = mock(OfferAdjustmentType.class);
-    when(adjustmentType.getType()).thenReturn("Type");
-
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(adjustmentType);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl.setMaxUsesPerOrder(3);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    offerImpl.setOrderMinSubTotal(new Money());
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
-    offerImpl.setAutomaticallyAdded(true);
-
-    // Act
-    boolean actualIsAutomaticallyAddedResult = offerImpl.isAutomaticallyAdded();
-
-    // Assert
-    verify(adjustmentType).getType();
-    assertTrue(actualIsAutomaticallyAddedResult);
-  }
-
-  /**
-   * Test {@link OfferImpl#setAutomaticallyAdded(boolean)}.
-   * <p>
-   * Method under test: {@link OfferImpl#setAutomaticallyAdded(boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetAutomaticallyAdded() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2431 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferImpl()).setAutomaticallyAdded(true);
-  }
-
-  /**
-   * Test {@link OfferImpl#setAutomaticallyAdded(boolean)}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#setAutomaticallyAdded(boolean)}
-   */
-  @Test
-  public void testSetAutomaticallyAdded_givenOfferImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-
-    // Act
-    offerImpl.setAutomaticallyAdded(true);
-
-    // Assert
-    assertTrue(offerImpl.automaticallyAdded);
-  }
-
-  /**
-   * Test {@link OfferImpl#setAutomaticallyAdded(boolean)}.
-   * <ul>
-   *   <li>Given {@link OfferType} {@link OfferType#getType()} return
-   * {@code Type}.</li>
-   *   <li>Then calls {@link OfferType#getType()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#setAutomaticallyAdded(boolean)}
-   */
-  @Test
-  public void testSetAutomaticallyAdded_givenOfferTypeGetTypeReturnType_thenCallsGetType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferType type = mock(OfferType.class);
-    when(type.getType()).thenReturn("Type");
-
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setType(type);
-
-    // Act
-    offerImpl.setAutomaticallyAdded(true);
-
-    // Assert
-    verify(type).getType();
-    assertTrue(offerImpl.automaticallyAdded);
-  }
-
-  /**
-   * Test {@link OfferImpl#getMaxUsesPerCustomer()}.
-   * <p>
-   * Method under test: {@link OfferImpl#getMaxUsesPerCustomer()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetMaxUsesPerCustomer() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1446 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferImpl()).getMaxUsesPerCustomer();
-  }
-
-  /**
-   * Test {@link OfferImpl#getMaxUsesPerCustomer()}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor) AdjustmentType is
-   * {@link OfferAdjustmentType#FUTURE_CREDIT}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getMaxUsesPerCustomer()}
-   */
-  @Test
-  public void testGetMaxUsesPerCustomer_givenOfferImplAdjustmentTypeIsFuture_credit() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerOrder(3);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    offerImpl.setOrderMinSubTotal(new Money());
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
+    OfferImpl offerImpl2 = new OfferImpl();
+    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
+    offerImpl2.setApplyDiscountToSalePrice(true);
+    offerImpl2.setApplyToChildItems(true);
+    offerImpl2.setCombinableWithOtherOffers(true);
+    offerImpl2.setDescription("The characteristics of someone or something");
+    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
+    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setId(OfferImpl.serialVersionUID);
+    offerImpl2.setMarketingMessage("Marketing Message");
+    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
+    offerImpl2.setMaxUsesPerOrder(3);
+    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
+    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
+    offerImpl2.setName("Name");
+    offerImpl2.setOfferCodes(new ArrayList<>());
+    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
+    offerImpl2.setOfferPriceData(new ArrayList<>());
+    offerImpl2.setOrderMinSubTotal(new Money());
+    offerImpl2.setPriority(1);
+    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
+    offerImpl2.setQualifyingItemSubTotal(new Money());
+    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
+    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
+    offerImpl2.setTargetMinSubTotal(new Money());
+    offerImpl2.setTargetSystem("Target System");
+    offerImpl2.setTotalitarianOffer(true);
+    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
+    offerImpl2.setUseListForDiscounts(true);
+    offerImpl2.setValue(new BigDecimal("2.3"));
+    offerImpl2.setAutomaticallyAdded(true);
 
     // Act and Assert
-    assertEquals(OfferImpl.serialVersionUID, offerImpl.getMaxUsesPerCustomer().longValue());
+    assertTrue(offerImpl2.isAutomaticallyAdded());
+  }
+
+  /**
+   * Test {@link OfferImpl#setAutomaticallyAdded(boolean)}.
+   * <p>
+   * Method under test: {@link OfferImpl#setAutomaticallyAdded(boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OfferImpl.setAutomaticallyAdded(boolean)"})
+  public void testSetAutomaticallyAdded() {
+    // Arrange
+    OfferImpl offerImpl2 = new OfferImpl();
+
+    // Act
+    offerImpl2.setAutomaticallyAdded(true);
+
+    // Assert
+    assertTrue(offerImpl2.automaticallyAdded);
   }
 
   /**
@@ -2204,9 +770,9 @@ public class OfferImplDiffblueTest {
    * Method under test: {@link OfferImpl#getMaxUsesPerCustomer()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long OfferImpl.getMaxUsesPerCustomer()"})
   public void testGetMaxUsesPerCustomer_givenOfferImpl_thenReturnLongValueIsZero() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertEquals(0L, (new OfferImpl()).getMaxUsesPerCustomer().longValue());
   }
@@ -2214,300 +780,66 @@ public class OfferImplDiffblueTest {
   /**
    * Test {@link OfferImpl#getMaxUsesPerCustomer()}.
    * <ul>
-   *   <li>Then calls {@link OfferAdjustmentType#getType()}.</li>
+   *   <li>Then return longValue is {@link OfferImpl#serialVersionUID}.</li>
    * </ul>
    * <p>
    * Method under test: {@link OfferImpl#getMaxUsesPerCustomer()}
    */
   @Test
-  public void testGetMaxUsesPerCustomer_thenCallsGetType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long OfferImpl.getMaxUsesPerCustomer()"})
+  public void testGetMaxUsesPerCustomer_thenReturnLongValueIsSerialVersionUID() {
     // Arrange
-    OfferAdjustmentType adjustmentType = mock(OfferAdjustmentType.class);
-    when(adjustmentType.getType()).thenReturn("Type");
-
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(adjustmentType);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerOrder(3);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    offerImpl.setOrderMinSubTotal(new Money());
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-
-    // Act
-    Long actualMaxUsesPerCustomer = offerImpl.getMaxUsesPerCustomer();
-
-    // Assert
-    verify(adjustmentType).getType();
-    assertEquals(OfferImpl.serialVersionUID, actualMaxUsesPerCustomer.longValue());
-  }
-
-  /**
-   * Test {@link OfferImpl#getMaxUsesStrategyType()}.
-   * <p>
-   * Method under test: {@link OfferImpl#getMaxUsesStrategyType()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetMaxUsesStrategyType() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1518 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferImpl()).getMaxUsesStrategyType();
-  }
-
-  /**
-   * Test {@link OfferImpl#getMaxUsesStrategyType()}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getMaxUsesStrategyType()}
-   */
-  @Test
-  public void testGetMaxUsesStrategyType_givenOfferImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertNull((new OfferImpl()).getMaxUsesStrategyType());
-  }
-
-  /**
-   * Test {@link OfferImpl#getMaxUsesStrategyType()}.
-   * <ul>
-   *   <li>Given {@link OfferType} {@link OfferType#getType()} return
-   * {@code Type}.</li>
-   *   <li>Then calls {@link OfferType#getType()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getMaxUsesStrategyType()}
-   */
-  @Test
-  public void testGetMaxUsesStrategyType_givenOfferTypeGetTypeReturnType_thenCallsGetType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferType type = mock(OfferType.class);
-    when(type.getType()).thenReturn("Type");
-
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setType(type);
-
-    // Act
-    CustomerMaxUsesStrategyType actualMaxUsesStrategyType = offerImpl.getMaxUsesStrategyType();
-
-    // Assert
-    verify(type).getType();
-    assertNull(actualMaxUsesStrategyType);
-  }
-
-  /**
-   * Test {@link OfferImpl#setMaxUsesStrategyType(CustomerMaxUsesStrategyType)}.
-   * <p>
-   * Method under test:
-   * {@link OfferImpl#setMaxUsesStrategyType(CustomerMaxUsesStrategyType)}
-   */
-  @Test
-  public void testSetMaxUsesStrategyType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    CustomerMaxUsesStrategyType strategyType = mock(CustomerMaxUsesStrategyType.class);
-    when(strategyType.getType()).thenReturn("Type");
-
-    // Act
-    offerImpl.setMaxUsesStrategyType(strategyType);
-
-    // Assert
-    verify(strategyType).getType();
-    CustomerMaxUsesStrategyType maxUsesStrategyType = offerImpl.getMaxUsesStrategyType();
-    assertEquals("Friendly Type", maxUsesStrategyType.getFriendlyType());
-    assertEquals("Type", maxUsesStrategyType.getType());
-    assertEquals("Type", offerImpl.maxUsesStrategy);
-  }
-
-  /**
-   * Test {@link OfferImpl#setMaxUsesStrategyType(CustomerMaxUsesStrategyType)}.
-   * <p>
-   * Method under test:
-   * {@link OfferImpl#setMaxUsesStrategyType(CustomerMaxUsesStrategyType)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetMaxUsesStrategyType2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2585 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferImpl()).setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-  }
-
-  /**
-   * Test {@link OfferImpl#setMaxUsesStrategyType(CustomerMaxUsesStrategyType)}.
-   * <ul>
-   *   <li>When {@link CustomerMaxUsesStrategyType#ACCOUNT}.</li>
-   *   <li>Then {@link OfferImpl} (default constructor)
-   * {@link OfferImpl#maxUsesStrategy} is {@code ACCOUNT}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link OfferImpl#setMaxUsesStrategyType(CustomerMaxUsesStrategyType)}
-   */
-  @Test
-  public void testSetMaxUsesStrategyType_whenAccount_thenOfferImplMaxUsesStrategyIsAccount() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    CustomerMaxUsesStrategyType strategyType = CustomerMaxUsesStrategyType.ACCOUNT;
-
-    // Act
-    offerImpl.setMaxUsesStrategyType(strategyType);
-
-    // Assert
-    assertEquals("ACCOUNT", offerImpl.maxUsesStrategy);
-    CustomerMaxUsesStrategyType expectedMaxUsesStrategyType = strategyType.ACCOUNT;
-    assertSame(expectedMaxUsesStrategyType, offerImpl.getMaxUsesStrategyType());
-  }
-
-  /**
-   * Test {@link OfferImpl#isUnlimitedUsePerCustomer()}.
-   * <p>
-   * Method under test: {@link OfferImpl#isUnlimitedUsePerCustomer()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsUnlimitedUsePerCustomer() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2202 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferImpl()).isUnlimitedUsePerCustomer();
-  }
-
-  /**
-   * Test {@link OfferImpl#isUnlimitedUsePerCustomer()}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor) AdjustmentType is
-   * {@link OfferAdjustmentType#FUTURE_CREDIT}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#isUnlimitedUsePerCustomer()}
-   */
-  @Test
-  public void testIsUnlimitedUsePerCustomer_givenOfferImplAdjustmentTypeIsFuture_credit() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerOrder(3);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    offerImpl.setOrderMinSubTotal(new Money());
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
+    OfferImpl offerImpl2 = new OfferImpl();
+    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
+    offerImpl2.setApplyDiscountToSalePrice(true);
+    offerImpl2.setApplyToChildItems(true);
+    offerImpl2.setAutomaticallyAdded(true);
+    offerImpl2.setCombinableWithOtherOffers(true);
+    offerImpl2.setDescription("The characteristics of someone or something");
+    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
+    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setId(OfferImpl.serialVersionUID);
+    offerImpl2.setMarketingMessage("Marketing Message");
+    offerImpl2.setMaxUsesPerOrder(3);
+    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
+    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
+    offerImpl2.setName("Name");
+    offerImpl2.setOfferCodes(new ArrayList<>());
+    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
+    offerImpl2.setOfferPriceData(new ArrayList<>());
+    offerImpl2.setOrderMinSubTotal(new Money());
+    offerImpl2.setPriority(1);
+    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
+    offerImpl2.setQualifyingItemSubTotal(new Money());
+    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
+    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
+    offerImpl2.setTargetMinSubTotal(new Money());
+    offerImpl2.setTargetSystem("Target System");
+    offerImpl2.setTotalitarianOffer(true);
+    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
+    offerImpl2.setUseListForDiscounts(true);
+    offerImpl2.setValue(new BigDecimal("2.3"));
+    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
 
     // Act and Assert
-    assertFalse(offerImpl.isUnlimitedUsePerCustomer());
+    assertEquals(OfferImpl.serialVersionUID, offerImpl2.getMaxUsesPerCustomer().longValue());
+  }
+
+  /**
+   * Test {@link OfferImpl#getMaxUsesStrategyType()}.
+   * <p>
+   * Method under test: {@link OfferImpl#getMaxUsesStrategyType()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CustomerMaxUsesStrategyType OfferImpl.getMaxUsesStrategyType()"})
+  public void testGetMaxUsesStrategyType() {
+    // Arrange, Act and Assert
+    assertNull((new OfferImpl()).getMaxUsesStrategyType());
   }
 
   /**
@@ -2520,9 +852,9 @@ public class OfferImplDiffblueTest {
    * Method under test: {@link OfferImpl#isUnlimitedUsePerCustomer()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferImpl.isUnlimitedUsePerCustomer()"})
   public void testIsUnlimitedUsePerCustomer_givenOfferImpl_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertTrue((new OfferImpl()).isUnlimitedUsePerCustomer());
   }
@@ -2530,142 +862,53 @@ public class OfferImplDiffblueTest {
   /**
    * Test {@link OfferImpl#isUnlimitedUsePerCustomer()}.
    * <ul>
-   *   <li>Then calls {@link OfferAdjustmentType#getType()}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link OfferImpl#isUnlimitedUsePerCustomer()}
    */
   @Test
-  public void testIsUnlimitedUsePerCustomer_thenCallsGetType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferImpl.isUnlimitedUsePerCustomer()"})
+  public void testIsUnlimitedUsePerCustomer_thenReturnFalse() {
     // Arrange
-    OfferAdjustmentType adjustmentType = mock(OfferAdjustmentType.class);
-    when(adjustmentType.getType()).thenReturn("Type");
-
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(adjustmentType);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerOrder(3);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    offerImpl.setOrderMinSubTotal(new Money());
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-
-    // Act
-    boolean actualIsUnlimitedUsePerCustomerResult = offerImpl.isUnlimitedUsePerCustomer();
-
-    // Assert
-    verify(adjustmentType).getType();
-    assertFalse(actualIsUnlimitedUsePerCustomerResult);
-  }
-
-  /**
-   * Test {@link OfferImpl#isLimitedUsePerCustomer()}.
-   * <p>
-   * Method under test: {@link OfferImpl#isLimitedUsePerCustomer()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsLimitedUsePerCustomer() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2094 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferImpl()).isLimitedUsePerCustomer();
-  }
-
-  /**
-   * Test {@link OfferImpl#isLimitedUsePerCustomer()}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor) AdjustmentType is
-   * {@link OfferAdjustmentType#FUTURE_CREDIT}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#isLimitedUsePerCustomer()}
-   */
-  @Test
-  public void testIsLimitedUsePerCustomer_givenOfferImplAdjustmentTypeIsFuture_credit() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerOrder(3);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    offerImpl.setOrderMinSubTotal(new Money());
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
+    OfferImpl offerImpl2 = new OfferImpl();
+    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
+    offerImpl2.setApplyDiscountToSalePrice(true);
+    offerImpl2.setApplyToChildItems(true);
+    offerImpl2.setAutomaticallyAdded(true);
+    offerImpl2.setCombinableWithOtherOffers(true);
+    offerImpl2.setDescription("The characteristics of someone or something");
+    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
+    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setId(OfferImpl.serialVersionUID);
+    offerImpl2.setMarketingMessage("Marketing Message");
+    offerImpl2.setMaxUsesPerOrder(3);
+    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
+    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
+    offerImpl2.setName("Name");
+    offerImpl2.setOfferCodes(new ArrayList<>());
+    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
+    offerImpl2.setOfferPriceData(new ArrayList<>());
+    offerImpl2.setOrderMinSubTotal(new Money());
+    offerImpl2.setPriority(1);
+    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
+    offerImpl2.setQualifyingItemSubTotal(new Money());
+    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
+    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
+    offerImpl2.setTargetMinSubTotal(new Money());
+    offerImpl2.setTargetSystem("Target System");
+    offerImpl2.setTotalitarianOffer(true);
+    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
+    offerImpl2.setUseListForDiscounts(true);
+    offerImpl2.setValue(new BigDecimal("2.3"));
+    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
 
     // Act and Assert
-    assertTrue(offerImpl.isLimitedUsePerCustomer());
+    assertFalse(offerImpl2.isUnlimitedUsePerCustomer());
   }
 
   /**
@@ -2678,9 +921,9 @@ public class OfferImplDiffblueTest {
    * Method under test: {@link OfferImpl#isLimitedUsePerCustomer()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferImpl.isLimitedUsePerCustomer()"})
   public void testIsLimitedUsePerCustomer_givenOfferImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertFalse((new OfferImpl()).isLimitedUsePerCustomer());
   }
@@ -2688,143 +931,106 @@ public class OfferImplDiffblueTest {
   /**
    * Test {@link OfferImpl#isLimitedUsePerCustomer()}.
    * <ul>
-   *   <li>Then calls {@link OfferAdjustmentType#getType()}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link OfferImpl#isLimitedUsePerCustomer()}
    */
   @Test
-  public void testIsLimitedUsePerCustomer_thenCallsGetType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferImpl.isLimitedUsePerCustomer()"})
+  public void testIsLimitedUsePerCustomer_thenReturnTrue() {
     // Arrange
-    OfferAdjustmentType adjustmentType = mock(OfferAdjustmentType.class);
-    when(adjustmentType.getType()).thenReturn("Type");
+    OfferImpl offerImpl2 = new OfferImpl();
+    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
+    offerImpl2.setApplyDiscountToSalePrice(true);
+    offerImpl2.setApplyToChildItems(true);
+    offerImpl2.setAutomaticallyAdded(true);
+    offerImpl2.setCombinableWithOtherOffers(true);
+    offerImpl2.setDescription("The characteristics of someone or something");
+    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
+    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setId(OfferImpl.serialVersionUID);
+    offerImpl2.setMarketingMessage("Marketing Message");
+    offerImpl2.setMaxUsesPerOrder(3);
+    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
+    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
+    offerImpl2.setName("Name");
+    offerImpl2.setOfferCodes(new ArrayList<>());
+    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
+    offerImpl2.setOfferPriceData(new ArrayList<>());
+    offerImpl2.setOrderMinSubTotal(new Money());
+    offerImpl2.setPriority(1);
+    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
+    offerImpl2.setQualifyingItemSubTotal(new Money());
+    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
+    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
+    offerImpl2.setTargetMinSubTotal(new Money());
+    offerImpl2.setTargetSystem("Target System");
+    offerImpl2.setTotalitarianOffer(true);
+    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
+    offerImpl2.setUseListForDiscounts(true);
+    offerImpl2.setValue(new BigDecimal("2.3"));
+    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
 
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(adjustmentType);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerOrder(3);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    offerImpl.setOrderMinSubTotal(new Money());
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-
-    // Act
-    boolean actualIsLimitedUsePerCustomerResult = offerImpl.isLimitedUsePerCustomer();
-
-    // Assert
-    verify(adjustmentType).getType();
-    assertTrue(actualIsLimitedUsePerCustomerResult);
-  }
-
-  /**
-   * Test {@link OfferImpl#getMaxUsesPerOrder()}.
-   * <p>
-   * Method under test: {@link OfferImpl#getMaxUsesPerOrder()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetMaxUsesPerOrder() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1482 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferImpl()).getMaxUsesPerOrder();
+    // Act and Assert
+    assertTrue(offerImpl2.isLimitedUsePerCustomer());
   }
 
   /**
    * Test {@link OfferImpl#getMaxUsesPerOrder()}.
    * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor) AdjustmentType is
-   * {@link OfferAdjustmentType#FUTURE_CREDIT}.</li>
+   *   <li>Given {@link OfferImpl} (default constructor) AdjustmentType is {@link OfferAdjustmentType#FUTURE_CREDIT}.</li>
    *   <li>Then return one.</li>
    * </ul>
    * <p>
    * Method under test: {@link OfferImpl#getMaxUsesPerOrder()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int OfferImpl.getMaxUsesPerOrder()"})
   public void testGetMaxUsesPerOrder_givenOfferImplAdjustmentTypeIsFuture_credit_thenReturnOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    offerImpl.setOrderMinSubTotal(new Money());
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
-    offerImpl.setMaxUsesPerOrder(1);
+    OfferImpl offerImpl2 = new OfferImpl();
+    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
+    offerImpl2.setApplyDiscountToSalePrice(true);
+    offerImpl2.setApplyToChildItems(true);
+    offerImpl2.setAutomaticallyAdded(true);
+    offerImpl2.setCombinableWithOtherOffers(true);
+    offerImpl2.setDescription("The characteristics of someone or something");
+    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
+    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setId(OfferImpl.serialVersionUID);
+    offerImpl2.setMarketingMessage("Marketing Message");
+    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
+    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
+    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
+    offerImpl2.setName("Name");
+    offerImpl2.setOfferCodes(new ArrayList<>());
+    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
+    offerImpl2.setOfferPriceData(new ArrayList<>());
+    offerImpl2.setOrderMinSubTotal(new Money());
+    offerImpl2.setPriority(1);
+    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
+    offerImpl2.setQualifyingItemSubTotal(new Money());
+    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
+    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
+    offerImpl2.setTargetMinSubTotal(new Money());
+    offerImpl2.setTargetSystem("Target System");
+    offerImpl2.setTotalitarianOffer(true);
+    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
+    offerImpl2.setUseListForDiscounts(true);
+    offerImpl2.setValue(new BigDecimal("2.3"));
+    offerImpl2.setMaxUsesPerOrder(1);
 
     // Act and Assert
-    assertEquals(1, offerImpl.getMaxUsesPerOrder());
+    assertEquals(1, offerImpl2.getMaxUsesPerOrder());
   }
 
   /**
@@ -2837,292 +1043,139 @@ public class OfferImplDiffblueTest {
    * Method under test: {@link OfferImpl#getMaxUsesPerOrder()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int OfferImpl.getMaxUsesPerOrder()"})
   public void testGetMaxUsesPerOrder_givenOfferImpl_thenReturnZero() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertEquals(0, (new OfferImpl()).getMaxUsesPerOrder());
   }
 
   /**
-   * Test {@link OfferImpl#getMaxUsesPerOrder()}.
-   * <ul>
-   *   <li>Then calls {@link OfferAdjustmentType#getType()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getMaxUsesPerOrder()}
-   */
-  @Test
-  public void testGetMaxUsesPerOrder_thenCallsGetType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferAdjustmentType adjustmentType = mock(OfferAdjustmentType.class);
-    when(adjustmentType.getType()).thenReturn("Type");
-
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(adjustmentType);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    offerImpl.setOrderMinSubTotal(new Money());
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
-    offerImpl.setMaxUsesPerOrder(1);
-
-    // Act
-    int actualMaxUsesPerOrder = offerImpl.getMaxUsesPerOrder();
-
-    // Assert
-    verify(adjustmentType).getType();
-    assertEquals(1, actualMaxUsesPerOrder);
-  }
-
-  /**
    * Test {@link OfferImpl#setMaxUsesPerOrder(int)}.
    * <p>
    * Method under test: {@link OfferImpl#setMaxUsesPerOrder(int)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OfferImpl.setMaxUsesPerOrder(int)"})
   public void testSetMaxUsesPerOrder() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2544 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferImpl()).setMaxUsesPerOrder(3);
-  }
-
-  /**
-   * Test {@link OfferImpl#setMaxUsesPerOrder(int)}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#setMaxUsesPerOrder(int)}
-   */
-  @Test
-  public void testSetMaxUsesPerOrder_givenOfferImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OfferImpl offerImpl = new OfferImpl();
+    OfferImpl offerImpl2 = new OfferImpl();
 
     // Act
-    offerImpl.setMaxUsesPerOrder(3);
+    offerImpl2.setMaxUsesPerOrder(3);
 
     // Assert
-    assertEquals(3, offerImpl.maxUsesPerOrder.intValue());
-    assertEquals(3, offerImpl.getMaxUsesPerOrder());
-    assertFalse(offerImpl.isUnlimitedUsePerOrder());
-    assertTrue(offerImpl.isLimitedUsePerOrder());
-  }
-
-  /**
-   * Test {@link OfferImpl#setMaxUsesPerOrder(int)}.
-   * <ul>
-   *   <li>Given {@link OfferType} {@link OfferType#getType()} return
-   * {@code Type}.</li>
-   *   <li>Then calls {@link OfferType#getType()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#setMaxUsesPerOrder(int)}
-   */
-  @Test
-  public void testSetMaxUsesPerOrder_givenOfferTypeGetTypeReturnType_thenCallsGetType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferType type = mock(OfferType.class);
-    when(type.getType()).thenReturn("Type");
-
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setType(type);
-
-    // Act
-    offerImpl.setMaxUsesPerOrder(3);
-
-    // Assert
-    verify(type).getType();
-    assertEquals(3, offerImpl.maxUsesPerOrder.intValue());
-    assertEquals(3, offerImpl.getMaxUsesPerOrder());
-    assertFalse(offerImpl.isUnlimitedUsePerOrder());
-    assertTrue(offerImpl.isLimitedUsePerOrder());
-  }
-
-  /**
-   * Test {@link OfferImpl#isUnlimitedUsePerOrder()}.
-   * <p>
-   * Method under test: {@link OfferImpl#isUnlimitedUsePerOrder()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsUnlimitedUsePerOrder() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2238 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferImpl()).isUnlimitedUsePerOrder();
+    assertEquals(3, offerImpl2.maxUsesPerOrder.intValue());
+    assertEquals(3, offerImpl2.getMaxUsesPerOrder());
+    assertFalse(offerImpl2.isUnlimitedUsePerOrder());
+    assertTrue(offerImpl2.isLimitedUsePerOrder());
   }
 
   /**
    * Test {@link OfferImpl#isUnlimitedUsePerOrder()}.
    * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor) AdjustmentType is
-   * {@link OfferAdjustmentType#FUTURE_CREDIT}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#isUnlimitedUsePerOrder()}
-   */
-  @Test
-  public void testIsUnlimitedUsePerOrder_givenOfferImplAdjustmentTypeIsFuture_credit() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    offerImpl.setOrderMinSubTotal(new Money());
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
-    offerImpl.setMaxUsesPerOrder(0);
-
-    // Act and Assert
-    assertTrue(offerImpl.isUnlimitedUsePerOrder());
-  }
-
-  /**
-   * Test {@link OfferImpl#isUnlimitedUsePerOrder()}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor) MaxUsesPerOrder is
-   * one.</li>
+   *   <li>Given {@link OfferImpl} (default constructor) MaxUsesPerOrder is one.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
    * Method under test: {@link OfferImpl#isUnlimitedUsePerOrder()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferImpl.isUnlimitedUsePerOrder()"})
   public void testIsUnlimitedUsePerOrder_givenOfferImplMaxUsesPerOrderIsOne_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    offerImpl.setOrderMinSubTotal(new Money());
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
-    offerImpl.setMaxUsesPerOrder(1);
+    OfferImpl offerImpl2 = new OfferImpl();
+    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
+    offerImpl2.setApplyDiscountToSalePrice(true);
+    offerImpl2.setApplyToChildItems(true);
+    offerImpl2.setAutomaticallyAdded(true);
+    offerImpl2.setCombinableWithOtherOffers(true);
+    offerImpl2.setDescription("The characteristics of someone or something");
+    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
+    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setId(OfferImpl.serialVersionUID);
+    offerImpl2.setMarketingMessage("Marketing Message");
+    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
+    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
+    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
+    offerImpl2.setName("Name");
+    offerImpl2.setOfferCodes(new ArrayList<>());
+    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
+    offerImpl2.setOfferPriceData(new ArrayList<>());
+    offerImpl2.setOrderMinSubTotal(new Money());
+    offerImpl2.setPriority(1);
+    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
+    offerImpl2.setQualifyingItemSubTotal(new Money());
+    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
+    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
+    offerImpl2.setTargetMinSubTotal(new Money());
+    offerImpl2.setTargetSystem("Target System");
+    offerImpl2.setTotalitarianOffer(true);
+    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
+    offerImpl2.setUseListForDiscounts(true);
+    offerImpl2.setValue(new BigDecimal("2.3"));
+    offerImpl2.setMaxUsesPerOrder(1);
 
     // Act and Assert
-    assertFalse(offerImpl.isUnlimitedUsePerOrder());
+    assertFalse(offerImpl2.isUnlimitedUsePerOrder());
+  }
+
+  /**
+   * Test {@link OfferImpl#isUnlimitedUsePerOrder()}.
+   * <ul>
+   *   <li>Given {@link OfferImpl} (default constructor) MaxUsesPerOrder is zero.</li>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferImpl#isUnlimitedUsePerOrder()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferImpl.isUnlimitedUsePerOrder()"})
+  public void testIsUnlimitedUsePerOrder_givenOfferImplMaxUsesPerOrderIsZero_thenReturnTrue() {
+    // Arrange
+    OfferImpl offerImpl2 = new OfferImpl();
+    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
+    offerImpl2.setApplyDiscountToSalePrice(true);
+    offerImpl2.setApplyToChildItems(true);
+    offerImpl2.setAutomaticallyAdded(true);
+    offerImpl2.setCombinableWithOtherOffers(true);
+    offerImpl2.setDescription("The characteristics of someone or something");
+    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
+    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setId(OfferImpl.serialVersionUID);
+    offerImpl2.setMarketingMessage("Marketing Message");
+    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
+    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
+    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
+    offerImpl2.setName("Name");
+    offerImpl2.setOfferCodes(new ArrayList<>());
+    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
+    offerImpl2.setOfferPriceData(new ArrayList<>());
+    offerImpl2.setOrderMinSubTotal(new Money());
+    offerImpl2.setPriority(1);
+    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
+    offerImpl2.setQualifyingItemSubTotal(new Money());
+    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
+    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
+    offerImpl2.setTargetMinSubTotal(new Money());
+    offerImpl2.setTargetSystem("Target System");
+    offerImpl2.setTotalitarianOffer(true);
+    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
+    offerImpl2.setUseListForDiscounts(true);
+    offerImpl2.setValue(new BigDecimal("2.3"));
+    offerImpl2.setMaxUsesPerOrder(0);
+
+    // Act and Assert
+    assertTrue(offerImpl2.isUnlimitedUsePerOrder());
   }
 
   /**
@@ -3135,206 +1188,117 @@ public class OfferImplDiffblueTest {
    * Method under test: {@link OfferImpl#isUnlimitedUsePerOrder()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferImpl.isUnlimitedUsePerOrder()"})
   public void testIsUnlimitedUsePerOrder_givenOfferImpl_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertTrue((new OfferImpl()).isUnlimitedUsePerOrder());
   }
 
   /**
-   * Test {@link OfferImpl#isUnlimitedUsePerOrder()}.
-   * <ul>
-   *   <li>Then calls {@link OfferAdjustmentType#getType()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#isUnlimitedUsePerOrder()}
-   */
-  @Test
-  public void testIsUnlimitedUsePerOrder_thenCallsGetType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferAdjustmentType adjustmentType = mock(OfferAdjustmentType.class);
-    when(adjustmentType.getType()).thenReturn("Type");
-
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(adjustmentType);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    offerImpl.setOrderMinSubTotal(new Money());
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
-    offerImpl.setMaxUsesPerOrder(0);
-
-    // Act
-    boolean actualIsUnlimitedUsePerOrderResult = offerImpl.isUnlimitedUsePerOrder();
-
-    // Assert
-    verify(adjustmentType).getType();
-    assertTrue(actualIsUnlimitedUsePerOrderResult);
-  }
-
-  /**
-   * Test {@link OfferImpl#isLimitedUsePerOrder()}.
-   * <p>
-   * Method under test: {@link OfferImpl#isLimitedUsePerOrder()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsLimitedUsePerOrder() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2130 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferImpl()).isLimitedUsePerOrder();
-  }
-
-  /**
    * Test {@link OfferImpl#isLimitedUsePerOrder()}.
    * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor) AdjustmentType is
-   * {@link OfferAdjustmentType#FUTURE_CREDIT}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#isLimitedUsePerOrder()}
-   */
-  @Test
-  public void testIsLimitedUsePerOrder_givenOfferImplAdjustmentTypeIsFuture_credit() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    offerImpl.setOrderMinSubTotal(new Money());
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
-    offerImpl.setMaxUsesPerOrder(0);
-
-    // Act and Assert
-    assertFalse(offerImpl.isLimitedUsePerOrder());
-  }
-
-  /**
-   * Test {@link OfferImpl#isLimitedUsePerOrder()}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor) MaxUsesPerOrder is
-   * one.</li>
+   *   <li>Given {@link OfferImpl} (default constructor) MaxUsesPerOrder is one.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link OfferImpl#isLimitedUsePerOrder()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferImpl.isLimitedUsePerOrder()"})
   public void testIsLimitedUsePerOrder_givenOfferImplMaxUsesPerOrderIsOne_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    offerImpl.setOrderMinSubTotal(new Money());
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
-    offerImpl.setMaxUsesPerOrder(1);
+    OfferImpl offerImpl2 = new OfferImpl();
+    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
+    offerImpl2.setApplyDiscountToSalePrice(true);
+    offerImpl2.setApplyToChildItems(true);
+    offerImpl2.setAutomaticallyAdded(true);
+    offerImpl2.setCombinableWithOtherOffers(true);
+    offerImpl2.setDescription("The characteristics of someone or something");
+    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
+    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setId(OfferImpl.serialVersionUID);
+    offerImpl2.setMarketingMessage("Marketing Message");
+    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
+    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
+    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
+    offerImpl2.setName("Name");
+    offerImpl2.setOfferCodes(new ArrayList<>());
+    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
+    offerImpl2.setOfferPriceData(new ArrayList<>());
+    offerImpl2.setOrderMinSubTotal(new Money());
+    offerImpl2.setPriority(1);
+    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
+    offerImpl2.setQualifyingItemSubTotal(new Money());
+    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
+    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
+    offerImpl2.setTargetMinSubTotal(new Money());
+    offerImpl2.setTargetSystem("Target System");
+    offerImpl2.setTotalitarianOffer(true);
+    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
+    offerImpl2.setUseListForDiscounts(true);
+    offerImpl2.setValue(new BigDecimal("2.3"));
+    offerImpl2.setMaxUsesPerOrder(1);
 
     // Act and Assert
-    assertTrue(offerImpl.isLimitedUsePerOrder());
+    assertTrue(offerImpl2.isLimitedUsePerOrder());
+  }
+
+  /**
+   * Test {@link OfferImpl#isLimitedUsePerOrder()}.
+   * <ul>
+   *   <li>Given {@link OfferImpl} (default constructor) MaxUsesPerOrder is zero.</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferImpl#isLimitedUsePerOrder()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferImpl.isLimitedUsePerOrder()"})
+  public void testIsLimitedUsePerOrder_givenOfferImplMaxUsesPerOrderIsZero_thenReturnFalse() {
+    // Arrange
+    OfferImpl offerImpl2 = new OfferImpl();
+    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
+    offerImpl2.setApplyDiscountToSalePrice(true);
+    offerImpl2.setApplyToChildItems(true);
+    offerImpl2.setAutomaticallyAdded(true);
+    offerImpl2.setCombinableWithOtherOffers(true);
+    offerImpl2.setDescription("The characteristics of someone or something");
+    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
+    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setId(OfferImpl.serialVersionUID);
+    offerImpl2.setMarketingMessage("Marketing Message");
+    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
+    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
+    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
+    offerImpl2.setName("Name");
+    offerImpl2.setOfferCodes(new ArrayList<>());
+    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
+    offerImpl2.setOfferPriceData(new ArrayList<>());
+    offerImpl2.setOrderMinSubTotal(new Money());
+    offerImpl2.setPriority(1);
+    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
+    offerImpl2.setQualifyingItemSubTotal(new Money());
+    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
+    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
+    offerImpl2.setTargetMinSubTotal(new Money());
+    offerImpl2.setTargetSystem("Target System");
+    offerImpl2.setTotalitarianOffer(true);
+    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
+    offerImpl2.setUseListForDiscounts(true);
+    offerImpl2.setValue(new BigDecimal("2.3"));
+    offerImpl2.setMaxUsesPerOrder(0);
+
+    // Act and Assert
+    assertFalse(offerImpl2.isLimitedUsePerOrder());
   }
 
   /**
@@ -3347,152 +1311,11 @@ public class OfferImplDiffblueTest {
    * Method under test: {@link OfferImpl#isLimitedUsePerOrder()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferImpl.isLimitedUsePerOrder()"})
   public void testIsLimitedUsePerOrder_givenOfferImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertFalse((new OfferImpl()).isLimitedUsePerOrder());
-  }
-
-  /**
-   * Test {@link OfferImpl#isLimitedUsePerOrder()}.
-   * <ul>
-   *   <li>Then calls {@link OfferAdjustmentType#getType()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#isLimitedUsePerOrder()}
-   */
-  @Test
-  public void testIsLimitedUsePerOrder_thenCallsGetType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferAdjustmentType adjustmentType = mock(OfferAdjustmentType.class);
-    when(adjustmentType.getType()).thenReturn("Type");
-
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(adjustmentType);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    offerImpl.setOrderMinSubTotal(new Money());
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
-    offerImpl.setMaxUsesPerOrder(0);
-
-    // Act
-    boolean actualIsLimitedUsePerOrderResult = offerImpl.isLimitedUsePerOrder();
-
-    // Assert
-    verify(adjustmentType).getType();
-    assertFalse(actualIsLimitedUsePerOrderResult);
-  }
-
-  /**
-   * Test {@link OfferImpl#getMarketingMessage()}.
-   * <p>
-   * Method under test: {@link OfferImpl#getMarketingMessage()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetMarketingMessage() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1410 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferImpl()).getMarketingMessage();
-  }
-
-  /**
-   * Test {@link OfferImpl#getMarketingMessage()}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor) AdjustmentType is
-   * {@link OfferAdjustmentType#FUTURE_CREDIT}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getMarketingMessage()}
-   */
-  @Test
-  public void testGetMarketingMessage_givenOfferImplAdjustmentTypeIsFuture_credit() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl.setMaxUsesPerOrder(3);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    offerImpl.setOrderMinSubTotal(new Money());
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
-
-    // Act and Assert
-    assertEquals("Marketing Message", offerImpl.getMarketingMessage());
   }
 
   /**
@@ -3505,9 +1328,9 @@ public class OfferImplDiffblueTest {
    * Method under test: {@link OfferImpl#getMarketingMessage()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String OfferImpl.getMarketingMessage()"})
   public void testGetMarketingMessage_givenOfferImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new OfferImpl()).getMarketingMessage());
   }
@@ -3515,5137 +1338,16 @@ public class OfferImplDiffblueTest {
   /**
    * Test {@link OfferImpl#getMarketingMessage()}.
    * <ul>
-   *   <li>Then calls {@link OfferAdjustmentType#getType()}.</li>
+   *   <li>Then return {@code Marketing Message}.</li>
    * </ul>
    * <p>
    * Method under test: {@link OfferImpl#getMarketingMessage()}
    */
   @Test
-  public void testGetMarketingMessage_thenCallsGetType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String OfferImpl.getMarketingMessage()"})
+  public void testGetMarketingMessage_thenReturnMarketingMessage() {
     // Arrange
-    OfferAdjustmentType adjustmentType = mock(OfferAdjustmentType.class);
-    when(adjustmentType.getType()).thenReturn("Type");
-
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(adjustmentType);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl.setMaxUsesPerOrder(3);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    offerImpl.setOrderMinSubTotal(new Money());
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
-
-    // Act
-    String actualMarketingMessage = offerImpl.getMarketingMessage();
-
-    // Assert
-    verify(adjustmentType).getType();
-    assertEquals("Marketing Message", actualMarketingMessage);
-  }
-
-  /**
-   * Test {@link OfferImpl#getTargetItemCriteriaXref()}.
-   * <p>
-   * Method under test: {@link OfferImpl#getTargetItemCriteriaXref()}
-   */
-  @Test
-  public void testGetTargetItemCriteriaXref() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setType(new OfferType("ORDER_ITEM", "ORDER_ITEM", 1));
-
-    // Act and Assert
-    assertEquals(1, offerImpl.getTargetItemCriteriaXref().size());
-  }
-
-  /**
-   * Test {@link OfferImpl#getTargetItemCriteriaXref()}.
-   * <p>
-   * Method under test: {@link OfferImpl#getTargetItemCriteriaXref()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetTargetItemCriteriaXref2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1806 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferImpl()).getTargetItemCriteriaXref();
-  }
-
-  /**
-   * Test {@link OfferImpl#getTargetItemCriteriaXref()}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor) Type is
-   * {@link OfferType#FULFILLMENT_GROUP}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getTargetItemCriteriaXref()}
-   */
-  @Test
-  public void testGetTargetItemCriteriaXref_givenOfferImplTypeIsFulfillment_group() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-
-    // Act and Assert
-    assertTrue(offerImpl.getTargetItemCriteriaXref().isEmpty());
-  }
-
-  /**
-   * Test {@link OfferImpl#getTargetItemCriteriaXref()}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor) Type is
-   * {@link OfferType#ORDER_ITEM}.</li>
-   *   <li>Then return size is one.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getTargetItemCriteriaXref()}
-   */
-  @Test
-  public void testGetTargetItemCriteriaXref_givenOfferImplTypeIsOrder_item_thenReturnSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setType(OfferType.ORDER_ITEM);
-
-    // Act and Assert
-    assertEquals(1, offerImpl.getTargetItemCriteriaXref().size());
-  }
-
-  /**
-   * Test {@link OfferImpl#getTargetItemCriteriaXref()}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   *   <li>Then return Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getTargetItemCriteriaXref()}
-   */
-  @Test
-  public void testGetTargetItemCriteriaXref_givenOfferImpl_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertTrue((new OfferImpl()).getTargetItemCriteriaXref().isEmpty());
-  }
-
-  /**
-   * Test {@link OfferImpl#getTargetItemCriteriaXref()}.
-   * <ul>
-   *   <li>Given {@link OfferType} {@link OfferType#getType()} return
-   * {@code Type}.</li>
-   *   <li>Then calls {@link OfferType#getType()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getTargetItemCriteriaXref()}
-   */
-  @Test
-  public void testGetTargetItemCriteriaXref_givenOfferTypeGetTypeReturnType_thenCallsGetType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferType type = mock(OfferType.class);
-    when(type.getType()).thenReturn("Type");
-
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setType(type);
-
-    // Act
-    Set<OfferTargetCriteriaXref> actualTargetItemCriteriaXref = offerImpl.getTargetItemCriteriaXref();
-
-    // Assert
-    verify(type).getType();
-    assertTrue(actualTargetItemCriteriaXref.isEmpty());
-  }
-
-  /**
-   * Test {@link OfferImpl#isTotalitarianOffer()}.
-   * <p>
-   * Method under test: {@link OfferImpl#isTotalitarianOffer()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsTotalitarianOffer() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2166 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferImpl()).isTotalitarianOffer();
-  }
-
-  /**
-   * Test {@link OfferImpl#isTotalitarianOffer()}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor) AdjustmentType is
-   * {@link OfferAdjustmentType#FUTURE_CREDIT}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#isTotalitarianOffer()}
-   */
-  @Test
-  public void testIsTotalitarianOffer_givenOfferImplAdjustmentTypeIsFuture_credit() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl.setMaxUsesPerOrder(3);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    offerImpl.setOrderMinSubTotal(new Money());
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
-    offerImpl.setTotalitarianOffer(true);
-
-    // Act and Assert
-    assertTrue(offerImpl.isTotalitarianOffer());
-  }
-
-  /**
-   * Test {@link OfferImpl#isTotalitarianOffer()}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#isTotalitarianOffer()}
-   */
-  @Test
-  public void testIsTotalitarianOffer_givenOfferImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertFalse((new OfferImpl()).isTotalitarianOffer());
-  }
-
-  /**
-   * Test {@link OfferImpl#isTotalitarianOffer()}.
-   * <ul>
-   *   <li>Then calls {@link OfferAdjustmentType#getType()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#isTotalitarianOffer()}
-   */
-  @Test
-  public void testIsTotalitarianOffer_thenCallsGetType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferAdjustmentType adjustmentType = mock(OfferAdjustmentType.class);
-    when(adjustmentType.getType()).thenReturn("Type");
-
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(adjustmentType);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl.setMaxUsesPerOrder(3);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    offerImpl.setOrderMinSubTotal(new Money());
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
-    offerImpl.setTotalitarianOffer(true);
-
-    // Act
-    Boolean actualIsTotalitarianOfferResult = offerImpl.isTotalitarianOffer();
-
-    // Assert
-    verify(adjustmentType).getType();
-    assertTrue(actualIsTotalitarianOfferResult);
-  }
-
-  /**
-   * Test {@link OfferImpl#setTotalitarianOffer(Boolean)}.
-   * <p>
-   * Method under test: {@link OfferImpl#setTotalitarianOffer(Boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetTotalitarianOffer() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2832 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferImpl()).setTotalitarianOffer(true);
-  }
-
-  /**
-   * Test {@link OfferImpl#setTotalitarianOffer(Boolean)}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor) AdjustmentType is
-   * {@link OfferAdjustmentType#FUTURE_CREDIT}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#setTotalitarianOffer(Boolean)}
-   */
-  @Test
-  public void testSetTotalitarianOffer_givenOfferImplAdjustmentTypeIsFuture_credit() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl.setMaxUsesPerOrder(3);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    offerImpl.setOrderMinSubTotal(new Money());
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
-
-    // Act
-    offerImpl.setTotalitarianOffer(null);
-
-    // Assert
-    assertFalse(offerImpl.totalitarianOffer);
-  }
-
-  /**
-   * Test {@link OfferImpl#setTotalitarianOffer(Boolean)}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   *   <li>When {@code true}.</li>
-   *   <li>Then {@link OfferImpl} (default constructor)
-   * {@link OfferImpl#totalitarianOffer}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#setTotalitarianOffer(Boolean)}
-   */
-  @Test
-  public void testSetTotalitarianOffer_givenOfferImpl_whenTrue_thenOfferImplTotalitarianOffer() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-
-    // Act
-    offerImpl.setTotalitarianOffer(true);
-
-    // Assert
-    assertTrue(offerImpl.totalitarianOffer);
-  }
-
-  /**
-   * Test {@link OfferImpl#setTotalitarianOffer(Boolean)}.
-   * <ul>
-   *   <li>Then calls {@link OfferAdjustmentType#getType()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#setTotalitarianOffer(Boolean)}
-   */
-  @Test
-  public void testSetTotalitarianOffer_thenCallsGetType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferAdjustmentType adjustmentType = mock(OfferAdjustmentType.class);
-    when(adjustmentType.getType()).thenReturn("Type");
-
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(adjustmentType);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl.setMaxUsesPerOrder(3);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    offerImpl.setOrderMinSubTotal(new Money());
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
-
-    // Act
-    offerImpl.setTotalitarianOffer(null);
-
-    // Assert
-    verify(adjustmentType).getType();
-    assertFalse(offerImpl.totalitarianOffer);
-  }
-
-  /**
-   * Test {@link OfferImpl#getUseListForDiscounts()}.
-   * <p>
-   * Method under test: {@link OfferImpl#getUseListForDiscounts()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetUseListForDiscounts() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1914 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferImpl()).getUseListForDiscounts();
-  }
-
-  /**
-   * Test {@link OfferImpl#getUseListForDiscounts()}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor) AdjustmentType is
-   * {@link OfferAdjustmentType#FUTURE_CREDIT}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getUseListForDiscounts()}
-   */
-  @Test
-  public void testGetUseListForDiscounts_givenOfferImplAdjustmentTypeIsFuture_credit() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl.setMaxUsesPerOrder(3);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    offerImpl.setOrderMinSubTotal(new Money());
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setValue(new BigDecimal("2.3"));
-    offerImpl.setUseListForDiscounts(null);
-
-    // Act and Assert
-    assertFalse(offerImpl.getUseListForDiscounts());
-  }
-
-  /**
-   * Test {@link OfferImpl#getUseListForDiscounts()}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getUseListForDiscounts()}
-   */
-  @Test
-  public void testGetUseListForDiscounts_givenOfferImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertFalse((new OfferImpl()).getUseListForDiscounts());
-  }
-
-  /**
-   * Test {@link OfferImpl#getUseListForDiscounts()}.
-   * <ul>
-   *   <li>Then calls {@link OfferAdjustmentType#getType()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getUseListForDiscounts()}
-   */
-  @Test
-  public void testGetUseListForDiscounts_thenCallsGetType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferAdjustmentType adjustmentType = mock(OfferAdjustmentType.class);
-    when(adjustmentType.getType()).thenReturn("Type");
-
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(adjustmentType);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl.setMaxUsesPerOrder(3);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    offerImpl.setOrderMinSubTotal(new Money());
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setValue(new BigDecimal("2.3"));
-    offerImpl.setUseListForDiscounts(null);
-
-    // Act
-    Boolean actualUseListForDiscounts = offerImpl.getUseListForDiscounts();
-
-    // Assert
-    verify(adjustmentType).getType();
-    assertFalse(actualUseListForDiscounts);
-  }
-
-  /**
-   * Test {@link OfferImpl#getUseListForDiscounts()}.
-   * <ul>
-   *   <li>Then return {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getUseListForDiscounts()}
-   */
-  @Test
-  public void testGetUseListForDiscounts_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl.setMaxUsesPerOrder(3);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    offerImpl.setOrderMinSubTotal(new Money());
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setValue(new BigDecimal("2.3"));
-    offerImpl.setUseListForDiscounts(true);
-
-    // Act and Assert
-    assertTrue(offerImpl.getUseListForDiscounts());
-  }
-
-  /**
-   * Test {@link OfferImpl#getArchived()}.
-   * <p>
-   * Method under test: {@link OfferImpl#getArchived()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetArchived() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1266 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferImpl()).getArchived();
-  }
-
-  /**
-   * Test {@link OfferImpl#getArchived()}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getArchived()}
-   */
-  @Test
-  public void testGetArchived_givenOfferImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals('N', (new OfferImpl()).getArchived().charValue());
-  }
-
-  /**
-   * Test {@link OfferImpl#getArchived()}.
-   * <ul>
-   *   <li>Given {@link OfferType} {@link OfferType#getType()} return
-   * {@code Type}.</li>
-   *   <li>Then calls {@link OfferType#getType()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getArchived()}
-   */
-  @Test
-  public void testGetArchived_givenOfferTypeGetTypeReturnType_thenCallsGetType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferType type = mock(OfferType.class);
-    when(type.getType()).thenReturn("Type");
-
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setType(type);
-
-    // Act
-    Character actualArchived = offerImpl.getArchived();
-
-    // Assert
-    verify(type).getType();
-    assertEquals('N', actualArchived.charValue());
-  }
-
-  /**
-   * Test {@link OfferImpl#setArchived(Character)}.
-   * <p>
-   * Method under test: {@link OfferImpl#setArchived(Character)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetArchived() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2386 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferImpl()).setArchived('A');
-  }
-
-  /**
-   * Test {@link OfferImpl#setArchived(Character)}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#setArchived(Character)}
-   */
-  @Test
-  public void testSetArchived_givenOfferImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-
-    // Act
-    offerImpl.setArchived('A');
-
-    // Assert
-    assertEquals('A', offerImpl.archiveStatus.getArchived().charValue());
-    assertEquals('A', offerImpl.getArchived().charValue());
-  }
-
-  /**
-   * Test {@link OfferImpl#setArchived(Character)}.
-   * <ul>
-   *   <li>Given {@link OfferType} {@link OfferType#getType()} return
-   * {@code Type}.</li>
-   *   <li>Then calls {@link OfferType#getType()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#setArchived(Character)}
-   */
-  @Test
-  public void testSetArchived_givenOfferTypeGetTypeReturnType_thenCallsGetType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferType type = mock(OfferType.class);
-    when(type.getType()).thenReturn("Type");
-
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setType(type);
-
-    // Act
-    offerImpl.setArchived('A');
-
-    // Assert
-    verify(type).getType();
-    assertEquals('A', offerImpl.archiveStatus.getArchived().charValue());
-    assertEquals('A', offerImpl.getArchived().charValue());
-  }
-
-  /**
-   * Test {@link OfferImpl#isActive()}.
-   * <p>
-   * Method under test: {@link OfferImpl#isActive()}
-   */
-  @Test
-  public void testIsActive() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl.setMaxUsesPerOrder(3);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    offerImpl.setOrderMinSubTotal(new Money());
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setArchived(null);
-
-    // Act and Assert
-    assertFalse(offerImpl.isActive());
-  }
-
-  /**
-   * Test {@link OfferImpl#isActive()}.
-   * <p>
-   * Method under test: {@link OfferImpl#isActive()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsActive2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1950 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferImpl()).isActive();
-  }
-
-  /**
-   * Test {@link OfferImpl#isActive()}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#isActive()}
-   */
-  @Test
-  public void testIsActive_givenOfferImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertFalse((new OfferImpl()).isActive());
-  }
-
-  /**
-   * Test {@link OfferImpl#getQualifyingItemSubTotal()}.
-   * <p>
-   * Method under test: {@link OfferImpl#getQualifyingItemSubTotal()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetQualifyingItemSubTotal() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1698 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferImpl()).getQualifyingItemSubTotal();
-  }
-
-  /**
-   * Test {@link OfferImpl#getQualifyingItemSubTotal()}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor) AdjustmentType is
-   * {@link OfferAdjustmentType#FUTURE_CREDIT}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getQualifyingItemSubTotal()}
-   */
-  @Test
-  public void testGetQualifyingItemSubTotal_givenOfferImplAdjustmentTypeIsFuture_credit() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl.setMaxUsesPerOrder(3);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    Money orderMinSubTotal = new Money();
-    offerImpl.setOrderMinSubTotal(orderMinSubTotal);
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
-    offerImpl.setQualifyingItemSubTotal(new Money());
-
-    // Act and Assert
-    assertEquals(orderMinSubTotal, offerImpl.getQualifyingItemSubTotal());
-  }
-
-  /**
-   * Test {@link OfferImpl#getQualifyingItemSubTotal()}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getQualifyingItemSubTotal()}
-   */
-  @Test
-  public void testGetQualifyingItemSubTotal_givenOfferImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertNull((new OfferImpl()).getQualifyingItemSubTotal());
-  }
-
-  /**
-   * Test {@link OfferImpl#getQualifyingItemSubTotal()}.
-   * <ul>
-   *   <li>Then calls {@link OfferAdjustmentType#getType()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getQualifyingItemSubTotal()}
-   */
-  @Test
-  public void testGetQualifyingItemSubTotal_thenCallsGetType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferAdjustmentType adjustmentType = mock(OfferAdjustmentType.class);
-    when(adjustmentType.getType()).thenReturn("Type");
-
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(adjustmentType);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl.setMaxUsesPerOrder(3);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    Money orderMinSubTotal = new Money();
-    offerImpl.setOrderMinSubTotal(orderMinSubTotal);
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
-    offerImpl.setQualifyingItemSubTotal(new Money());
-
-    // Act
-    Money actualQualifyingItemSubTotal = offerImpl.getQualifyingItemSubTotal();
-
-    // Assert
-    verify(adjustmentType).getType();
-    assertEquals(orderMinSubTotal, actualQualifyingItemSubTotal);
-  }
-
-  /**
-   * Test {@link OfferImpl#setQualifyingItemSubTotal(Money)}.
-   * <p>
-   * Method under test: {@link OfferImpl#setQualifyingItemSubTotal(Money)}
-   */
-  @Test
-  public void testSetQualifyingItemSubTotal() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    Money qualifyingItemSubTotal = new Money();
-
-    // Act
-    offerImpl.setQualifyingItemSubTotal(qualifyingItemSubTotal);
-
-    // Assert
-    assertEquals(new BigDecimal("0.00"), offerImpl.qualifyingItemSubTotal);
-    BigDecimal bigDecimal = offerImpl.qualifyingItemSubTotal;
-    Money absResult = qualifyingItemSubTotal.abs();
-    assertSame(bigDecimal, absResult.getAmount());
-    Money absResult2 = absResult.abs();
-    assertSame(bigDecimal, absResult2.getAmount());
-    Money absResult3 = absResult2.abs();
-    assertSame(bigDecimal, absResult3.getAmount());
-    Money absResult4 = absResult3.abs();
-    assertSame(bigDecimal, absResult4.getAmount());
-    Money absResult5 = absResult4.abs();
-    assertSame(bigDecimal, absResult5.getAmount());
-    Money absResult6 = absResult5.abs();
-    assertSame(bigDecimal, absResult6.getAmount());
-    assertSame(bigDecimal, absResult6.abs().getAmount());
-    Money zeroResult = qualifyingItemSubTotal.zero();
-    Money absResult7 = zeroResult.abs();
-    Money absResult8 = absResult7.abs();
-    Money absResult9 = absResult8.abs();
-    Money absResult10 = absResult9.abs();
-    Money absResult11 = absResult10.abs();
-    assertSame(bigDecimal, absResult11.abs().getAmount());
-    assertSame(bigDecimal, absResult11.getAmount());
-    Money zeroResult2 = absResult.zero();
-    Money absResult12 = zeroResult2.abs();
-    Money absResult13 = absResult12.abs();
-    Money absResult14 = absResult13.abs();
-    Money absResult15 = absResult14.abs();
-    assertSame(bigDecimal, absResult15.abs().getAmount());
-    Money zeroResult3 = zeroResult.zero();
-    Money absResult16 = zeroResult3.abs();
-    Money absResult17 = absResult16.abs();
-    Money absResult18 = absResult17.abs();
-    Money absResult19 = absResult18.abs();
-    assertSame(bigDecimal, absResult19.abs().getAmount());
-    assertSame(bigDecimal, absResult10.getAmount());
-    assertSame(bigDecimal, absResult15.getAmount());
-    Money zeroResult4 = absResult2.zero();
-    Money absResult20 = zeroResult4.abs();
-    Money absResult21 = absResult20.abs();
-    Money absResult22 = absResult21.abs();
-    assertSame(bigDecimal, absResult22.abs().getAmount());
-    Money zeroResult5 = absResult7.zero();
-    Money absResult23 = zeroResult5.abs();
-    Money absResult24 = absResult23.abs();
-    Money absResult25 = absResult24.abs();
-    assertSame(bigDecimal, absResult25.abs().getAmount());
-    assertSame(bigDecimal, absResult19.getAmount());
-    Money zeroResult6 = zeroResult2.zero();
-    Money absResult26 = zeroResult6.abs();
-    Money absResult27 = absResult26.abs();
-    Money absResult28 = absResult27.abs();
-    assertSame(bigDecimal, absResult28.abs().getAmount());
-    Money zeroResult7 = zeroResult3.zero();
-    Money absResult29 = zeroResult7.abs();
-    Money absResult30 = absResult29.abs();
-    Money absResult31 = absResult30.abs();
-    assertSame(bigDecimal, absResult31.abs().getAmount());
-    assertSame(bigDecimal, absResult9.getAmount());
-    assertSame(bigDecimal, absResult14.getAmount());
-    assertSame(bigDecimal, absResult22.getAmount());
-    Money zeroResult8 = absResult3.zero();
-    Money absResult32 = zeroResult8.abs();
-    Money absResult33 = absResult32.abs();
-    assertSame(bigDecimal, absResult33.abs().getAmount());
-    Money zeroResult9 = absResult8.zero();
-    Money absResult34 = zeroResult9.abs();
-    Money absResult35 = absResult34.abs();
-    assertSame(bigDecimal, absResult35.abs().getAmount());
-    assertSame(bigDecimal, absResult25.getAmount());
-    Money zeroResult10 = absResult12.zero();
-    Money absResult36 = zeroResult10.abs();
-    Money absResult37 = absResult36.abs();
-    assertSame(bigDecimal, absResult37.abs().getAmount());
-    Money zeroResult11 = absResult16.zero();
-    Money absResult38 = zeroResult11.abs();
-    Money absResult39 = absResult38.abs();
-    assertSame(bigDecimal, absResult39.abs().getAmount());
-    assertSame(bigDecimal, absResult18.getAmount());
-    assertSame(bigDecimal, absResult28.getAmount());
-    Money zeroResult12 = zeroResult4.zero();
-    Money absResult40 = zeroResult12.abs();
-    Money absResult41 = absResult40.abs();
-    assertSame(bigDecimal, absResult41.abs().getAmount());
-    Money zeroResult13 = zeroResult5.zero();
-    Money absResult42 = zeroResult13.abs();
-    Money absResult43 = absResult42.abs();
-    assertSame(bigDecimal, absResult43.abs().getAmount());
-    assertSame(bigDecimal, absResult31.getAmount());
-    Money zeroResult14 = zeroResult6.zero();
-    Money absResult44 = zeroResult14.abs();
-    Money absResult45 = absResult44.abs();
-    assertSame(bigDecimal, absResult45.abs().getAmount());
-    Money zeroResult15 = zeroResult7.zero();
-    Money absResult46 = zeroResult15.abs();
-    Money absResult47 = absResult46.abs();
-    assertSame(bigDecimal, absResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult8.getAmount());
-    assertSame(bigDecimal, absResult13.getAmount());
-    assertSame(bigDecimal, absResult21.getAmount());
-    assertSame(bigDecimal, absResult33.getAmount());
-    Money zeroResult16 = absResult4.zero();
-    Money absResult48 = zeroResult16.abs();
-    assertSame(bigDecimal, absResult48.abs().getAmount());
-    Money zeroResult17 = absResult9.zero();
-    Money absResult49 = zeroResult17.abs();
-    assertSame(bigDecimal, absResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult35.getAmount());
-    Money zeroResult18 = absResult13.zero();
-    Money absResult50 = zeroResult18.abs();
-    assertSame(bigDecimal, absResult50.abs().getAmount());
-    Money zeroResult19 = absResult17.zero();
-    Money absResult51 = zeroResult19.abs();
-    assertSame(bigDecimal, absResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult24.getAmount());
-    assertSame(bigDecimal, absResult37.getAmount());
-    Money zeroResult20 = absResult20.zero();
-    Money absResult52 = zeroResult20.abs();
-    assertSame(bigDecimal, absResult52.abs().getAmount());
-    Money zeroResult21 = absResult23.zero();
-    Money absResult53 = zeroResult21.abs();
-    assertSame(bigDecimal, absResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult39.getAmount());
-    Money zeroResult22 = absResult26.zero();
-    Money absResult54 = zeroResult22.abs();
-    assertSame(bigDecimal, absResult54.abs().getAmount());
-    Money zeroResult23 = absResult29.zero();
-    Money absResult55 = zeroResult23.abs();
-    assertSame(bigDecimal, absResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult17.getAmount());
-    assertSame(bigDecimal, absResult27.getAmount());
-    assertSame(bigDecimal, absResult41.getAmount());
-    Money zeroResult24 = zeroResult8.zero();
-    Money absResult56 = zeroResult24.abs();
-    assertSame(bigDecimal, absResult56.abs().getAmount());
-    Money zeroResult25 = zeroResult9.zero();
-    Money absResult57 = zeroResult25.abs();
-    assertSame(bigDecimal, absResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult43.getAmount());
-    Money zeroResult26 = zeroResult10.zero();
-    Money absResult58 = zeroResult26.abs();
-    assertSame(bigDecimal, absResult58.abs().getAmount());
-    Money zeroResult27 = zeroResult11.zero();
-    Money absResult59 = zeroResult27.abs();
-    assertSame(bigDecimal, absResult59.abs().getAmount());
-    assertSame(bigDecimal, absResult30.getAmount());
-    assertSame(bigDecimal, absResult45.getAmount());
-    Money zeroResult28 = zeroResult12.zero();
-    Money absResult60 = zeroResult28.abs();
-    assertSame(bigDecimal, absResult60.abs().getAmount());
-    Money zeroResult29 = zeroResult13.zero();
-    Money absResult61 = zeroResult29.abs();
-    assertSame(bigDecimal, absResult61.abs().getAmount());
-    assertSame(bigDecimal, absResult47.getAmount());
-    Money zeroResult30 = zeroResult14.zero();
-    Money absResult62 = zeroResult30.abs();
-    assertSame(bigDecimal, absResult62.abs().getAmount());
-    assertSame(bigDecimal, absResult7.getAmount());
-    assertSame(bigDecimal, absResult12.getAmount());
-    assertSame(bigDecimal, absResult20.getAmount());
-    assertSame(bigDecimal, absResult32.getAmount());
-    assertSame(bigDecimal, absResult48.getAmount());
-    Money zeroResult31 = absResult5.zero();
-    assertSame(bigDecimal, zeroResult31.abs().getAmount());
-    Money zeroResult32 = absResult10.zero();
-    assertSame(bigDecimal, zeroResult32.abs().getAmount());
-    assertSame(bigDecimal, absResult49.getAmount());
-    Money zeroResult33 = absResult14.zero();
-    assertSame(bigDecimal, zeroResult33.abs().getAmount());
-    Money zeroResult34 = absResult18.zero();
-    assertSame(bigDecimal, zeroResult34.abs().getAmount());
-    assertSame(bigDecimal, absResult34.getAmount());
-    assertSame(bigDecimal, absResult50.getAmount());
-    Money zeroResult35 = absResult21.zero();
-    assertSame(bigDecimal, zeroResult35.abs().getAmount());
-    Money zeroResult36 = absResult24.zero();
-    assertSame(bigDecimal, zeroResult36.abs().getAmount());
-    assertSame(bigDecimal, absResult51.getAmount());
-    Money zeroResult37 = absResult27.zero();
-    assertSame(bigDecimal, zeroResult37.abs().getAmount());
-    Money zeroResult38 = absResult30.zero();
-    assertSame(bigDecimal, zeroResult38.abs().getAmount());
-    assertSame(bigDecimal, absResult23.getAmount());
-    assertSame(bigDecimal, absResult36.getAmount());
-    assertSame(bigDecimal, absResult52.getAmount());
-    Money zeroResult39 = absResult32.zero();
-    assertSame(bigDecimal, zeroResult39.abs().getAmount());
-    Money zeroResult40 = absResult34.zero();
-    assertSame(bigDecimal, zeroResult40.abs().getAmount());
-    assertSame(bigDecimal, absResult53.getAmount());
-    Money zeroResult41 = absResult36.zero();
-    assertSame(bigDecimal, zeroResult41.abs().getAmount());
-    Money zeroResult42 = absResult38.zero();
-    assertSame(bigDecimal, zeroResult42.abs().getAmount());
-    assertSame(bigDecimal, absResult38.getAmount());
-    assertSame(bigDecimal, absResult54.getAmount());
-    Money zeroResult43 = absResult40.zero();
-    assertSame(bigDecimal, zeroResult43.abs().getAmount());
-    Money zeroResult44 = absResult42.zero();
-    assertSame(bigDecimal, zeroResult44.abs().getAmount());
-    assertSame(bigDecimal, absResult55.getAmount());
-    Money zeroResult45 = absResult44.zero();
-    assertSame(bigDecimal, zeroResult45.abs().getAmount());
-    assertSame(bigDecimal, absResult16.getAmount());
-    assertSame(bigDecimal, absResult26.getAmount());
-    assertSame(bigDecimal, absResult40.getAmount());
-    assertSame(bigDecimal, absResult56.getAmount());
-    Money zeroResult46 = zeroResult16.zero();
-    assertSame(bigDecimal, zeroResult46.abs().getAmount());
-    Money zeroResult47 = zeroResult17.zero();
-    assertSame(bigDecimal, zeroResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult57.getAmount());
-    Money zeroResult48 = zeroResult18.zero();
-    assertSame(bigDecimal, zeroResult48.abs().getAmount());
-    Money zeroResult49 = zeroResult19.zero();
-    assertSame(bigDecimal, zeroResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult42.getAmount());
-    assertSame(bigDecimal, absResult58.getAmount());
-    Money zeroResult50 = zeroResult20.zero();
-    assertSame(bigDecimal, zeroResult50.abs().getAmount());
-    Money zeroResult51 = zeroResult21.zero();
-    assertSame(bigDecimal, zeroResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult59.getAmount());
-    Money zeroResult52 = zeroResult22.zero();
-    assertSame(bigDecimal, zeroResult52.abs().getAmount());
-    Money zeroResult53 = zeroResult23.zero();
-    assertSame(bigDecimal, zeroResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult29.getAmount());
-    assertSame(bigDecimal, absResult44.getAmount());
-    assertSame(bigDecimal, absResult60.getAmount());
-    Money zeroResult54 = zeroResult24.zero();
-    assertSame(bigDecimal, zeroResult54.abs().getAmount());
-    Money zeroResult55 = zeroResult25.zero();
-    assertSame(bigDecimal, zeroResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult61.getAmount());
-    Money zeroResult56 = zeroResult26.zero();
-    assertSame(bigDecimal, zeroResult56.abs().getAmount());
-    Money zeroResult57 = zeroResult27.zero();
-    assertSame(bigDecimal, zeroResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult46.getAmount());
-    assertSame(bigDecimal, absResult62.getAmount());
-    Money zeroResult58 = zeroResult28.zero();
-    assertSame(bigDecimal, zeroResult58.abs().getAmount());
-    Money zeroResult59 = zeroResult29.zero();
-    assertSame(bigDecimal, zeroResult59.abs().getAmount());
-    Money zeroResult60 = zeroResult15.zero();
-    assertSame(bigDecimal, zeroResult60.abs().getAmount());
-    Money zeroResult61 = zeroResult30.zero();
-    assertSame(bigDecimal, zeroResult61.abs().getAmount());
-    assertSame(bigDecimal, zeroResult.getAmount());
-    assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, zeroResult4.getAmount());
-    assertSame(bigDecimal, zeroResult8.getAmount());
-    assertSame(bigDecimal, zeroResult16.getAmount());
-    assertSame(bigDecimal, zeroResult31.getAmount());
-    assertSame(bigDecimal, absResult6.zero().getAmount());
-    assertSame(bigDecimal, absResult11.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.getAmount());
-    assertSame(bigDecimal, absResult15.zero().getAmount());
-    assertSame(bigDecimal, absResult19.zero().getAmount());
-    assertSame(bigDecimal, zeroResult17.getAmount());
-    assertSame(bigDecimal, zeroResult33.getAmount());
-    assertSame(bigDecimal, absResult22.zero().getAmount());
-    assertSame(bigDecimal, absResult25.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.getAmount());
-    assertSame(bigDecimal, absResult28.zero().getAmount());
-    assertSame(bigDecimal, absResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult9.getAmount());
-    assertSame(bigDecimal, zeroResult18.getAmount());
-    assertSame(bigDecimal, zeroResult35.getAmount());
-    assertSame(bigDecimal, absResult33.zero().getAmount());
-    assertSame(bigDecimal, absResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.getAmount());
-    assertSame(bigDecimal, absResult37.zero().getAmount());
-    assertSame(bigDecimal, absResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult19.getAmount());
-    assertSame(bigDecimal, zeroResult37.getAmount());
-    assertSame(bigDecimal, absResult41.zero().getAmount());
-    assertSame(bigDecimal, absResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.getAmount());
-    assertSame(bigDecimal, absResult45.zero().getAmount());
-    assertSame(bigDecimal, absResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult5.getAmount());
-    assertSame(bigDecimal, zeroResult10.getAmount());
-    assertSame(bigDecimal, zeroResult20.getAmount());
-    assertSame(bigDecimal, zeroResult39.getAmount());
-    assertSame(bigDecimal, absResult48.zero().getAmount());
-    assertSame(bigDecimal, absResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.getAmount());
-    assertSame(bigDecimal, absResult50.zero().getAmount());
-    assertSame(bigDecimal, absResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult21.getAmount());
-    assertSame(bigDecimal, zeroResult41.getAmount());
-    assertSame(bigDecimal, absResult52.zero().getAmount());
-    assertSame(bigDecimal, absResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.getAmount());
-    assertSame(bigDecimal, absResult54.zero().getAmount());
-    assertSame(bigDecimal, absResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult11.getAmount());
-    assertSame(bigDecimal, zeroResult22.getAmount());
-    assertSame(bigDecimal, zeroResult43.getAmount());
-    assertSame(bigDecimal, absResult56.zero().getAmount());
-    assertSame(bigDecimal, absResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.getAmount());
-    assertSame(bigDecimal, absResult58.zero().getAmount());
-    assertSame(bigDecimal, absResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult23.getAmount());
-    assertSame(bigDecimal, zeroResult45.getAmount());
-    assertSame(bigDecimal, absResult60.zero().getAmount());
-    assertSame(bigDecimal, absResult61.zero().getAmount());
-    assertSame(bigDecimal, absResult46.zero().getAmount());
-    assertSame(bigDecimal, absResult62.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult6.getAmount());
-    assertSame(bigDecimal, zeroResult12.getAmount());
-    assertSame(bigDecimal, zeroResult24.getAmount());
-    assertSame(bigDecimal, zeroResult46.getAmount());
-    assertSame(bigDecimal, zeroResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.getAmount());
-    assertSame(bigDecimal, zeroResult33.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.zero().getAmount());
-    assertSame(bigDecimal, zeroResult25.getAmount());
-    assertSame(bigDecimal, zeroResult48.getAmount());
-    assertSame(bigDecimal, zeroResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.getAmount());
-    assertSame(bigDecimal, zeroResult37.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.zero().getAmount());
-    assertSame(bigDecimal, zeroResult13.getAmount());
-    assertSame(bigDecimal, zeroResult26.getAmount());
-    assertSame(bigDecimal, zeroResult50.getAmount());
-    assertSame(bigDecimal, zeroResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.getAmount());
-    assertSame(bigDecimal, zeroResult41.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.zero().getAmount());
-    assertSame(bigDecimal, zeroResult27.getAmount());
-    assertSame(bigDecimal, zeroResult52.getAmount());
-    assertSame(bigDecimal, zeroResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.getAmount());
-    assertSame(bigDecimal, zeroResult45.zero().getAmount());
-    assertSame(bigDecimal, zeroResult7.getAmount());
-    assertSame(bigDecimal, zeroResult14.getAmount());
-    assertSame(bigDecimal, zeroResult28.getAmount());
-    assertSame(bigDecimal, zeroResult54.getAmount());
-    assertSame(bigDecimal, zeroResult46.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.getAmount());
-    assertSame(bigDecimal, zeroResult48.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult29.getAmount());
-    assertSame(bigDecimal, zeroResult56.getAmount());
-    assertSame(bigDecimal, zeroResult50.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.getAmount());
-    assertSame(bigDecimal, zeroResult52.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult15.getAmount());
-    assertSame(bigDecimal, zeroResult30.getAmount());
-    assertSame(bigDecimal, zeroResult58.getAmount());
-    assertSame(bigDecimal, zeroResult54.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.getAmount());
-    assertSame(bigDecimal, zeroResult56.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.getAmount());
-    assertSame(bigDecimal, zeroResult61.getAmount());
-    assertSame(bigDecimal, zeroResult58.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.zero().getAmount());
-    assertSame(bigDecimal, zeroResult61.zero().getAmount());
-  }
-
-  /**
-   * Test {@link OfferImpl#setQualifyingItemSubTotal(Money)}.
-   * <p>
-   * Method under test: {@link OfferImpl#setQualifyingItemSubTotal(Money)}
-   */
-  @Test
-  public void testSetQualifyingItemSubTotal2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl.setMaxUsesPerOrder(3);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    Money orderMinSubTotal = new Money();
-    offerImpl.setOrderMinSubTotal(orderMinSubTotal);
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
-
-    // Act
-    offerImpl.setQualifyingItemSubTotal(null);
-
-    // Assert
-    assertNull(offerImpl.qualifyingItemSubTotal);
-    assertNull(offerImpl.getQualifyingItemSubTotal());
-    Money targetMinSubTotal = offerImpl.getTargetMinSubTotal();
-    Money absResult = targetMinSubTotal.abs();
-    Money absResult2 = absResult.abs();
-    Money absResult3 = absResult2.abs();
-    Money absResult4 = absResult3.abs();
-    Money absResult5 = absResult4.abs();
-    Money absResult6 = absResult5.abs();
-    assertEquals(orderMinSubTotal, absResult6.abs());
-    Money absResult7 = targetMinSubTotal.zero().abs();
-    Money absResult8 = absResult7.abs();
-    Money absResult9 = absResult8.abs();
-    Money absResult10 = absResult9.abs();
-    Money absResult11 = absResult10.abs();
-    assertEquals(orderMinSubTotal, absResult11.abs());
-    Money zeroResult = absResult.zero();
-    Money absResult12 = zeroResult.abs();
-    Money absResult13 = absResult12.abs();
-    Money absResult14 = absResult13.abs();
-    Money absResult15 = absResult14.abs();
-    assertEquals(orderMinSubTotal, absResult15.abs());
-    Money zeroResult2 = offerImpl.getOrderMinSubTotal().zero();
-    Money zeroResult3 = zeroResult2.zero();
-    Money absResult16 = zeroResult3.abs();
-    Money absResult17 = absResult16.abs();
-    Money absResult18 = absResult17.abs();
-    Money absResult19 = absResult18.abs();
-    assertEquals(orderMinSubTotal, absResult19.abs());
-    Money zeroResult4 = absResult2.zero();
-    Money absResult20 = zeroResult4.abs();
-    Money absResult21 = absResult20.abs();
-    Money absResult22 = absResult21.abs();
-    assertEquals(orderMinSubTotal, absResult22.abs());
-    Money zeroResult5 = absResult7.zero();
-    Money absResult23 = zeroResult5.abs();
-    Money absResult24 = absResult23.abs();
-    Money absResult25 = absResult24.abs();
-    assertEquals(orderMinSubTotal, absResult25.abs());
-    Money zeroResult6 = zeroResult.zero();
-    Money absResult26 = zeroResult6.abs();
-    Money absResult27 = absResult26.abs();
-    Money absResult28 = absResult27.abs();
-    assertEquals(orderMinSubTotal, absResult28.abs());
-    Money zeroResult7 = zeroResult3.zero();
-    Money absResult29 = zeroResult7.abs();
-    Money absResult30 = absResult29.abs();
-    Money absResult31 = absResult30.abs();
-    assertEquals(orderMinSubTotal, absResult31.abs());
-    Money zeroResult8 = absResult3.zero();
-    Money absResult32 = zeroResult8.abs();
-    Money absResult33 = absResult32.abs();
-    assertEquals(orderMinSubTotal, absResult33.abs());
-    Money zeroResult9 = absResult8.zero();
-    Money absResult34 = zeroResult9.abs();
-    Money absResult35 = absResult34.abs();
-    assertEquals(orderMinSubTotal, absResult35.abs());
-    Money zeroResult10 = absResult12.zero();
-    Money absResult36 = zeroResult10.abs();
-    Money absResult37 = absResult36.abs();
-    assertEquals(orderMinSubTotal, absResult37.abs());
-    Money zeroResult11 = absResult16.zero();
-    Money absResult38 = zeroResult11.abs();
-    Money absResult39 = absResult38.abs();
-    assertEquals(orderMinSubTotal, absResult39.abs());
-    Money zeroResult12 = zeroResult4.zero();
-    Money absResult40 = zeroResult12.abs();
-    Money absResult41 = absResult40.abs();
-    assertEquals(orderMinSubTotal, absResult41.abs());
-    Money absResult42 = zeroResult5.zero().abs().abs();
-    assertEquals(orderMinSubTotal, absResult42.abs());
-    Money zeroResult13 = zeroResult6.zero();
-    Money absResult43 = zeroResult13.abs();
-    Money absResult44 = absResult43.abs();
-    assertEquals(orderMinSubTotal, absResult44.abs());
-    Money zeroResult14 = zeroResult7.zero();
-    Money absResult45 = zeroResult14.abs();
-    Money absResult46 = absResult45.abs();
-    assertEquals(orderMinSubTotal, absResult46.abs());
-    Money zeroResult15 = absResult4.zero();
-    Money absResult47 = zeroResult15.abs();
-    assertEquals(orderMinSubTotal, absResult47.abs());
-    Money zeroResult16 = absResult9.zero();
-    Money absResult48 = zeroResult16.abs();
-    assertEquals(orderMinSubTotal, absResult48.abs());
-    Money zeroResult17 = absResult13.zero();
-    Money absResult49 = zeroResult17.abs();
-    assertEquals(orderMinSubTotal, absResult49.abs());
-    Money zeroResult18 = absResult17.zero();
-    Money absResult50 = zeroResult18.abs();
-    assertEquals(orderMinSubTotal, absResult50.abs());
-    Money zeroResult19 = absResult20.zero();
-    Money absResult51 = zeroResult19.abs();
-    assertEquals(orderMinSubTotal, absResult51.abs());
-    Money zeroResult20 = absResult23.zero();
-    Money absResult52 = zeroResult20.abs();
-    assertEquals(orderMinSubTotal, absResult52.abs());
-    Money zeroResult21 = absResult26.zero();
-    Money absResult53 = zeroResult21.abs();
-    assertEquals(orderMinSubTotal, absResult53.abs());
-    Money zeroResult22 = absResult29.zero();
-    Money absResult54 = zeroResult22.abs();
-    assertEquals(orderMinSubTotal, absResult54.abs());
-    Money zeroResult23 = zeroResult8.zero();
-    Money absResult55 = zeroResult23.abs();
-    assertEquals(orderMinSubTotal, absResult55.abs());
-    Money zeroResult24 = zeroResult9.zero();
-    Money absResult56 = zeroResult24.abs();
-    assertEquals(orderMinSubTotal, absResult56.abs());
-    Money zeroResult25 = zeroResult10.zero();
-    Money absResult57 = zeroResult25.abs();
-    assertEquals(orderMinSubTotal, absResult57.abs());
-    Money zeroResult26 = zeroResult11.zero();
-    Money absResult58 = zeroResult26.abs();
-    assertEquals(orderMinSubTotal, absResult58.abs());
-    Money zeroResult27 = zeroResult12.zero();
-    Money absResult59 = zeroResult27.abs();
-    assertEquals(orderMinSubTotal, absResult59.abs());
-    Money zeroResult28 = zeroResult2.abs().zero().zero();
-    Money zeroResult29 = zeroResult28.zero();
-    Money absResult60 = zeroResult29.abs();
-    assertEquals(orderMinSubTotal, absResult60.abs());
-    Money zeroResult30 = zeroResult13.zero();
-    Money absResult61 = zeroResult30.abs();
-    assertEquals(orderMinSubTotal, absResult61.abs());
-    Money zeroResult31 = zeroResult14.zero();
-    Money absResult62 = zeroResult31.abs();
-    assertEquals(orderMinSubTotal, absResult62.abs());
-    Money zeroResult32 = absResult5.zero();
-    assertEquals(orderMinSubTotal, zeroResult32.abs());
-    Money zeroResult33 = absResult10.zero();
-    assertEquals(orderMinSubTotal, zeroResult33.abs());
-    Money zeroResult34 = absResult14.zero();
-    assertEquals(orderMinSubTotal, zeroResult34.abs());
-    Money zeroResult35 = absResult18.zero();
-    assertEquals(orderMinSubTotal, zeroResult35.abs());
-    Money zeroResult36 = absResult21.zero();
-    assertEquals(orderMinSubTotal, zeroResult36.abs());
-    Money zeroResult37 = absResult24.zero();
-    assertEquals(orderMinSubTotal, zeroResult37.abs());
-    Money zeroResult38 = absResult27.zero();
-    assertEquals(orderMinSubTotal, zeroResult38.abs());
-    Money zeroResult39 = absResult30.zero();
-    assertEquals(orderMinSubTotal, zeroResult39.abs());
-    Money zeroResult40 = absResult32.zero();
-    assertEquals(orderMinSubTotal, zeroResult40.abs());
-    Money zeroResult41 = absResult34.zero();
-    assertEquals(orderMinSubTotal, zeroResult41.abs());
-    Money zeroResult42 = absResult36.zero();
-    assertEquals(orderMinSubTotal, zeroResult42.abs());
-    Money zeroResult43 = absResult38.zero();
-    assertEquals(orderMinSubTotal, zeroResult43.abs());
-    Money zeroResult44 = absResult40.zero();
-    assertEquals(orderMinSubTotal, zeroResult44.abs());
-    Money zeroResult45 = absResult43.zero();
-    assertEquals(orderMinSubTotal, zeroResult45.abs());
-    Money zeroResult46 = absResult45.zero();
-    assertEquals(orderMinSubTotal, zeroResult46.abs());
-    Money zeroResult47 = zeroResult15.zero();
-    assertEquals(orderMinSubTotal, zeroResult47.abs());
-    Money zeroResult48 = zeroResult16.zero();
-    assertEquals(orderMinSubTotal, zeroResult48.abs());
-    Money zeroResult49 = zeroResult17.zero();
-    assertEquals(orderMinSubTotal, zeroResult49.abs());
-    Money zeroResult50 = zeroResult18.zero();
-    assertEquals(orderMinSubTotal, zeroResult50.abs());
-    Money zeroResult51 = zeroResult19.zero();
-    assertEquals(orderMinSubTotal, zeroResult51.abs());
-    Money zeroResult52 = zeroResult20.zero();
-    assertEquals(orderMinSubTotal, zeroResult52.abs());
-    Money zeroResult53 = zeroResult21.zero();
-    assertEquals(orderMinSubTotal, zeroResult53.abs());
-    Money zeroResult54 = zeroResult22.zero();
-    assertEquals(orderMinSubTotal, zeroResult54.abs());
-    Money zeroResult55 = zeroResult23.zero();
-    assertEquals(orderMinSubTotal, zeroResult55.abs());
-    Money zeroResult56 = zeroResult24.zero();
-    assertEquals(orderMinSubTotal, zeroResult56.abs());
-    Money zeroResult57 = zeroResult25.zero();
-    assertEquals(orderMinSubTotal, zeroResult57.abs());
-    Money zeroResult58 = zeroResult26.zero();
-    assertEquals(orderMinSubTotal, zeroResult58.abs());
-    Money zeroResult59 = zeroResult27.zero();
-    assertEquals(orderMinSubTotal, zeroResult59.abs());
-    Money zeroResult60 = zeroResult29.zero();
-    assertEquals(orderMinSubTotal, zeroResult60.abs());
-    Money zeroResult61 = zeroResult30.zero();
-    assertEquals(orderMinSubTotal, zeroResult61.abs());
-    Money zeroResult62 = zeroResult31.zero();
-    assertEquals(orderMinSubTotal, zeroResult62.abs());
-    assertEquals(orderMinSubTotal, absResult6.zero());
-    assertEquals(orderMinSubTotal, absResult11.zero());
-    assertEquals(orderMinSubTotal, absResult15.zero());
-    assertEquals(orderMinSubTotal, absResult19.zero());
-    assertEquals(orderMinSubTotal, absResult22.zero());
-    assertEquals(orderMinSubTotal, absResult25.zero());
-    assertEquals(orderMinSubTotal, absResult28.zero());
-    assertEquals(orderMinSubTotal, absResult31.zero());
-    assertEquals(orderMinSubTotal, absResult33.zero());
-    assertEquals(orderMinSubTotal, absResult35.zero());
-    assertEquals(orderMinSubTotal, absResult37.zero());
-    assertEquals(orderMinSubTotal, absResult39.zero());
-    assertEquals(orderMinSubTotal, absResult41.zero());
-    assertEquals(orderMinSubTotal, absResult44.zero());
-    assertEquals(orderMinSubTotal, absResult46.zero());
-    assertEquals(orderMinSubTotal, absResult47.zero());
-    assertEquals(orderMinSubTotal, absResult48.zero());
-    assertEquals(orderMinSubTotal, absResult49.zero());
-    assertEquals(orderMinSubTotal, absResult50.zero());
-    assertEquals(orderMinSubTotal, absResult51.zero());
-    assertEquals(orderMinSubTotal, absResult52.zero());
-    assertEquals(orderMinSubTotal, absResult53.zero());
-    assertEquals(orderMinSubTotal, absResult54.zero());
-    assertEquals(orderMinSubTotal, absResult55.zero());
-    assertEquals(orderMinSubTotal, absResult56.zero());
-    assertEquals(orderMinSubTotal, absResult57.zero());
-    assertEquals(orderMinSubTotal, absResult58.zero());
-    assertEquals(orderMinSubTotal, absResult59.zero());
-    assertEquals(orderMinSubTotal, absResult60.zero());
-    assertEquals(orderMinSubTotal, absResult61.zero());
-    assertEquals(orderMinSubTotal, absResult62.zero());
-    assertEquals(orderMinSubTotal, zeroResult32.zero());
-    assertEquals(orderMinSubTotal, zeroResult33.zero());
-    assertEquals(orderMinSubTotal, zeroResult34.zero());
-    assertEquals(orderMinSubTotal, zeroResult35.zero());
-    assertEquals(orderMinSubTotal, zeroResult36.zero());
-    assertEquals(orderMinSubTotal, zeroResult37.zero());
-    assertEquals(orderMinSubTotal, zeroResult38.zero());
-    assertEquals(orderMinSubTotal, zeroResult39.zero());
-    assertEquals(orderMinSubTotal, zeroResult40.zero());
-    assertEquals(orderMinSubTotal, zeroResult41.zero());
-    assertEquals(orderMinSubTotal, zeroResult42.zero());
-    assertEquals(orderMinSubTotal, zeroResult43.zero());
-    assertEquals(orderMinSubTotal, zeroResult44.zero());
-    assertEquals(orderMinSubTotal, zeroResult28.abs().zero().zero());
-    assertEquals(orderMinSubTotal, zeroResult45.zero());
-    assertEquals(orderMinSubTotal, zeroResult46.zero());
-    assertEquals(orderMinSubTotal, zeroResult47.zero());
-    assertEquals(orderMinSubTotal, zeroResult48.zero());
-    assertEquals(orderMinSubTotal, zeroResult49.zero());
-    assertEquals(orderMinSubTotal, zeroResult50.zero());
-    assertEquals(orderMinSubTotal, zeroResult51.zero());
-    assertEquals(orderMinSubTotal, zeroResult52.zero());
-    assertEquals(orderMinSubTotal, zeroResult53.zero());
-    assertEquals(orderMinSubTotal, zeroResult54.zero());
-    assertEquals(orderMinSubTotal, zeroResult55.zero());
-    assertEquals(orderMinSubTotal, zeroResult56.zero());
-    assertEquals(orderMinSubTotal, zeroResult57.zero());
-    assertEquals(orderMinSubTotal, zeroResult58.zero());
-    assertEquals(orderMinSubTotal, zeroResult59.zero());
-    assertEquals(orderMinSubTotal, zeroResult60.zero());
-    assertEquals(orderMinSubTotal, zeroResult61.zero());
-    assertEquals(orderMinSubTotal, zeroResult62.zero());
-    BigDecimal bigDecimal = offerImpl.targetMinSubTotal;
-    assertSame(bigDecimal, absResult6.getAmount());
-    assertSame(bigDecimal, absResult11.getAmount());
-    assertSame(bigDecimal, absResult15.getAmount());
-    assertSame(bigDecimal, absResult19.getAmount());
-    assertSame(bigDecimal, absResult22.getAmount());
-    assertSame(bigDecimal, absResult25.getAmount());
-    assertSame(bigDecimal, absResult28.getAmount());
-    assertSame(bigDecimal, absResult31.getAmount());
-    assertSame(bigDecimal, absResult33.getAmount());
-    assertSame(bigDecimal, absResult35.getAmount());
-    assertSame(bigDecimal, absResult37.getAmount());
-    assertSame(bigDecimal, absResult39.getAmount());
-    assertSame(bigDecimal, absResult41.getAmount());
-    assertSame(bigDecimal, absResult42.getAmount());
-    assertSame(bigDecimal, absResult44.getAmount());
-    assertSame(bigDecimal, absResult46.getAmount());
-    assertSame(bigDecimal, absResult47.getAmount());
-    assertSame(bigDecimal, absResult48.getAmount());
-    assertSame(bigDecimal, absResult49.getAmount());
-    assertSame(bigDecimal, absResult50.getAmount());
-    assertSame(bigDecimal, absResult51.getAmount());
-    assertSame(bigDecimal, absResult52.getAmount());
-    assertSame(bigDecimal, absResult53.getAmount());
-    assertSame(bigDecimal, absResult54.getAmount());
-    assertSame(bigDecimal, absResult55.getAmount());
-    assertSame(bigDecimal, absResult56.getAmount());
-    assertSame(bigDecimal, absResult57.getAmount());
-    assertSame(bigDecimal, absResult58.getAmount());
-    assertSame(bigDecimal, absResult59.getAmount());
-    assertSame(bigDecimal, absResult60.getAmount());
-    assertSame(bigDecimal, absResult61.getAmount());
-    assertSame(bigDecimal, absResult62.getAmount());
-    assertSame(bigDecimal, zeroResult32.getAmount());
-    assertSame(bigDecimal, zeroResult33.getAmount());
-    assertSame(bigDecimal, zeroResult34.getAmount());
-    assertSame(bigDecimal, zeroResult35.getAmount());
-    assertSame(bigDecimal, zeroResult36.getAmount());
-    assertSame(bigDecimal, zeroResult37.getAmount());
-    assertSame(bigDecimal, zeroResult38.getAmount());
-    assertSame(bigDecimal, zeroResult39.getAmount());
-    assertSame(bigDecimal, zeroResult40.getAmount());
-    assertSame(bigDecimal, zeroResult41.getAmount());
-    assertSame(bigDecimal, zeroResult42.getAmount());
-    assertSame(bigDecimal, zeroResult43.getAmount());
-    assertSame(bigDecimal, zeroResult44.getAmount());
-    assertSame(bigDecimal, zeroResult45.getAmount());
-    assertSame(bigDecimal, zeroResult46.getAmount());
-    assertSame(bigDecimal, zeroResult47.getAmount());
-    assertSame(bigDecimal, zeroResult48.getAmount());
-    assertSame(bigDecimal, zeroResult49.getAmount());
-    assertSame(bigDecimal, zeroResult50.getAmount());
-    assertSame(bigDecimal, zeroResult51.getAmount());
-    assertSame(bigDecimal, zeroResult52.getAmount());
-    assertSame(bigDecimal, zeroResult53.getAmount());
-    assertSame(bigDecimal, zeroResult54.getAmount());
-    assertSame(bigDecimal, zeroResult55.getAmount());
-    assertSame(bigDecimal, zeroResult56.getAmount());
-    assertSame(bigDecimal, zeroResult57.getAmount());
-    assertSame(bigDecimal, zeroResult58.getAmount());
-    assertSame(bigDecimal, zeroResult59.getAmount());
-    assertSame(bigDecimal, zeroResult60.getAmount());
-    assertSame(bigDecimal, zeroResult61.getAmount());
-    assertSame(bigDecimal, zeroResult62.getAmount());
-  }
-
-  /**
-   * Test {@link OfferImpl#setQualifyingItemSubTotal(Money)}.
-   * <p>
-   * Method under test: {@link OfferImpl#setQualifyingItemSubTotal(Money)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetQualifyingItemSubTotal3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2750 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-
-    // Act
-    offerImpl2.setQualifyingItemSubTotal(new Money());
-  }
-
-  /**
-   * Test {@link OfferImpl#setQualifyingItemSubTotal(Money)}.
-   * <ul>
-   *   <li>When {@link Money}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#setQualifyingItemSubTotal(Money)}
-   */
-  @Test
-  public void testSetQualifyingItemSubTotal_whenMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-
-    // Act
-    offerImpl.setQualifyingItemSubTotal(mock(Money.class));
-
-    // Assert
-    assertNull(offerImpl.qualifyingItemSubTotal);
-    assertNull(offerImpl.getQualifyingItemSubTotal());
-  }
-
-  /**
-   * Test {@link OfferImpl#getOrderMinSubTotal()}.
-   * <p>
-   * Method under test: {@link OfferImpl#getOrderMinSubTotal()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetOrderMinSubTotal() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1626 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferImpl()).getOrderMinSubTotal();
-  }
-
-  /**
-   * Test {@link OfferImpl#getOrderMinSubTotal()}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor) AdjustmentType is
-   * {@link OfferAdjustmentType#FUTURE_CREDIT}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getOrderMinSubTotal()}
-   */
-  @Test
-  public void testGetOrderMinSubTotal_givenOfferImplAdjustmentTypeIsFuture_credit() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl.setMaxUsesPerOrder(3);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    Money qualifyingItemSubTotal = new Money();
-    offerImpl.setQualifyingItemSubTotal(qualifyingItemSubTotal);
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
-    offerImpl.setOrderMinSubTotal(new Money());
-
-    // Act and Assert
-    assertEquals(qualifyingItemSubTotal, offerImpl.getOrderMinSubTotal());
-  }
-
-  /**
-   * Test {@link OfferImpl#getOrderMinSubTotal()}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getOrderMinSubTotal()}
-   */
-  @Test
-  public void testGetOrderMinSubTotal_givenOfferImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertNull((new OfferImpl()).getOrderMinSubTotal());
-  }
-
-  /**
-   * Test {@link OfferImpl#getOrderMinSubTotal()}.
-   * <ul>
-   *   <li>Then calls {@link OfferAdjustmentType#getType()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getOrderMinSubTotal()}
-   */
-  @Test
-  public void testGetOrderMinSubTotal_thenCallsGetType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferAdjustmentType adjustmentType = mock(OfferAdjustmentType.class);
-    when(adjustmentType.getType()).thenReturn("Type");
-
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(adjustmentType);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl.setMaxUsesPerOrder(3);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    Money qualifyingItemSubTotal = new Money();
-    offerImpl.setQualifyingItemSubTotal(qualifyingItemSubTotal);
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
-    offerImpl.setOrderMinSubTotal(new Money());
-
-    // Act
-    Money actualOrderMinSubTotal = offerImpl.getOrderMinSubTotal();
-
-    // Assert
-    verify(adjustmentType).getType();
-    assertEquals(qualifyingItemSubTotal, actualOrderMinSubTotal);
-  }
-
-  /**
-   * Test {@link OfferImpl#setOrderMinSubTotal(Money)}.
-   * <p>
-   * Method under test: {@link OfferImpl#setOrderMinSubTotal(Money)}
-   */
-  @Test
-  public void testSetOrderMinSubTotal() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl.setMaxUsesPerOrder(3);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    Money orderMinSubTotal = new Money();
-    offerImpl.setOrderMinSubTotal(orderMinSubTotal);
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
-
-    // Act
-    offerImpl.setOrderMinSubTotal(null);
-
-    // Assert
-    Money qualifyingItemSubTotal = offerImpl.getQualifyingItemSubTotal();
-    Currency currency = qualifyingItemSubTotal.getCurrency();
-    assertEquals("British Pound", currency.getDisplayName());
-    assertEquals("GBP", currency.getCurrencyCode());
-    assertEquals("GBP", currency.toString());
-    assertEquals("£", currency.getSymbol());
-    assertNull(offerImpl.orderMinSubTotal);
-    assertNull(offerImpl.getOrderMinSubTotal());
-    assertEquals(2, currency.getDefaultFractionDigits());
-    assertEquals(826, currency.getNumericCode());
-    Money absResult = qualifyingItemSubTotal.abs();
-    Money absResult2 = absResult.abs();
-    Money absResult3 = absResult2.abs();
-    Money absResult4 = absResult3.abs();
-    Money absResult5 = absResult4.abs();
-    Money absResult6 = absResult5.abs();
-    assertEquals(orderMinSubTotal, absResult6.abs());
-    Money targetMinSubTotal = offerImpl.getTargetMinSubTotal();
-    Money absResult7 = targetMinSubTotal.abs();
-    Money absResult8 = absResult7.abs();
-    Money absResult9 = absResult8.abs();
-    Money absResult10 = absResult9.abs();
-    Money absResult11 = absResult10.abs();
-    Money absResult12 = absResult11.abs();
-    assertEquals(orderMinSubTotal, absResult12.abs());
-    Money zeroResult = qualifyingItemSubTotal.zero();
-    Money absResult13 = zeroResult.abs();
-    Money absResult14 = absResult13.abs();
-    Money absResult15 = absResult14.abs();
-    Money absResult16 = absResult15.abs();
-    Money absResult17 = absResult16.abs();
-    assertEquals(orderMinSubTotal, absResult17.abs());
-    Money zeroResult2 = targetMinSubTotal.zero();
-    Money absResult18 = zeroResult2.abs();
-    Money absResult19 = absResult18.abs();
-    Money absResult20 = absResult19.abs();
-    Money absResult21 = absResult20.abs();
-    Money absResult22 = absResult21.abs();
-    assertEquals(orderMinSubTotal, absResult22.abs());
-    Money zeroResult3 = absResult.zero();
-    Money absResult23 = zeroResult3.abs();
-    Money absResult24 = absResult23.abs();
-    Money absResult25 = absResult24.abs();
-    Money absResult26 = absResult25.abs();
-    assertEquals(orderMinSubTotal, absResult26.abs());
-    Money zeroResult4 = absResult7.zero();
-    Money absResult27 = zeroResult4.abs();
-    Money absResult28 = absResult27.abs();
-    Money absResult29 = absResult28.abs();
-    Money absResult30 = absResult29.abs();
-    assertEquals(orderMinSubTotal, absResult30.abs());
-    Money zeroResult5 = zeroResult.zero();
-    Money absResult31 = zeroResult5.abs();
-    Money absResult32 = absResult31.abs();
-    Money absResult33 = absResult32.abs();
-    Money absResult34 = absResult33.abs();
-    assertEquals(orderMinSubTotal, absResult34.abs());
-    Money zeroResult6 = absResult2.zero();
-    Money absResult35 = zeroResult6.abs();
-    Money absResult36 = absResult35.abs();
-    Money absResult37 = absResult36.abs();
-    assertEquals(orderMinSubTotal, absResult37.abs());
-    Money zeroResult7 = absResult8.zero();
-    Money absResult38 = zeroResult7.abs();
-    Money absResult39 = absResult38.abs();
-    Money absResult40 = absResult39.abs();
-    assertEquals(orderMinSubTotal, absResult40.abs());
-    Money zeroResult8 = absResult13.zero();
-    Money absResult41 = zeroResult8.abs();
-    Money absResult42 = absResult41.abs();
-    Money absResult43 = absResult42.abs();
-    assertEquals(orderMinSubTotal, absResult43.abs());
-    Money zeroResult9 = absResult18.zero();
-    Money absResult44 = zeroResult9.abs();
-    Money absResult45 = absResult44.abs();
-    Money absResult46 = absResult45.abs();
-    assertEquals(orderMinSubTotal, absResult46.abs());
-    Money zeroResult10 = zeroResult3.zero();
-    Money absResult47 = zeroResult10.abs();
-    Money absResult48 = absResult47.abs();
-    Money absResult49 = absResult48.abs();
-    assertEquals(orderMinSubTotal, absResult49.abs());
-    Money zeroResult11 = zeroResult4.zero();
-    Money absResult50 = zeroResult11.abs();
-    Money absResult51 = absResult50.abs();
-    Money absResult52 = absResult51.abs();
-    assertEquals(orderMinSubTotal, absResult52.abs());
-    Money zeroResult12 = zeroResult5.zero();
-    Money absResult53 = zeroResult12.abs();
-    Money absResult54 = absResult53.abs();
-    Money absResult55 = absResult54.abs();
-    assertEquals(orderMinSubTotal, absResult55.abs());
-    Money zeroResult13 = absResult3.zero();
-    Money absResult56 = zeroResult13.abs();
-    Money absResult57 = absResult56.abs();
-    assertEquals(orderMinSubTotal, absResult57.abs());
-    Money zeroResult14 = absResult9.zero();
-    Money absResult58 = zeroResult14.abs();
-    Money absResult59 = absResult58.abs();
-    assertEquals(orderMinSubTotal, absResult59.abs());
-    Money zeroResult15 = absResult14.zero();
-    Money absResult60 = zeroResult15.abs();
-    Money absResult61 = absResult60.abs();
-    assertEquals(orderMinSubTotal, absResult61.abs());
-    Money zeroResult16 = absResult19.zero();
-    Money absResult62 = zeroResult16.abs();
-    Money absResult63 = absResult62.abs();
-    assertEquals(orderMinSubTotal, absResult63.abs());
-    Money zeroResult17 = absResult23.zero();
-    Money absResult64 = zeroResult17.abs();
-    Money absResult65 = absResult64.abs();
-    assertEquals(orderMinSubTotal, absResult65.abs());
-    Money zeroResult18 = absResult27.zero();
-    Money absResult66 = zeroResult18.abs();
-    Money absResult67 = absResult66.abs();
-    assertEquals(orderMinSubTotal, absResult67.abs());
-    Money zeroResult19 = absResult31.zero();
-    Money absResult68 = zeroResult19.abs();
-    Money absResult69 = absResult68.abs();
-    assertEquals(orderMinSubTotal, absResult69.abs());
-    Money zeroResult20 = zeroResult6.zero();
-    Money absResult70 = zeroResult20.abs();
-    Money absResult71 = absResult70.abs();
-    assertEquals(orderMinSubTotal, absResult71.abs());
-    Money zeroResult21 = zeroResult7.zero();
-    Money absResult72 = zeroResult21.abs();
-    Money absResult73 = absResult72.abs();
-    assertEquals(orderMinSubTotal, absResult73.abs());
-    Money zeroResult22 = zeroResult8.zero();
-    Money absResult74 = zeroResult22.abs();
-    Money absResult75 = absResult74.abs();
-    assertEquals(orderMinSubTotal, absResult75.abs());
-    Money zeroResult23 = zeroResult9.zero();
-    Money absResult76 = zeroResult23.abs();
-    Money absResult77 = absResult76.abs();
-    assertEquals(orderMinSubTotal, absResult77.abs());
-    Money zeroResult24 = zeroResult10.zero();
-    Money absResult78 = zeroResult24.abs();
-    Money absResult79 = absResult78.abs();
-    assertEquals(orderMinSubTotal, absResult79.abs());
-    Money zeroResult25 = zeroResult11.zero();
-    Money absResult80 = zeroResult25.abs();
-    Money absResult81 = absResult80.abs();
-    assertEquals(orderMinSubTotal, absResult81.abs());
-    Money zeroResult26 = zeroResult12.zero();
-    Money absResult82 = zeroResult26.abs();
-    Money absResult83 = absResult82.abs();
-    assertEquals(orderMinSubTotal, absResult83.abs());
-    Money zeroResult27 = absResult4.zero();
-    Money absResult84 = zeroResult27.abs();
-    assertEquals(orderMinSubTotal, absResult84.abs());
-    Money zeroResult28 = absResult10.zero();
-    Money absResult85 = zeroResult28.abs();
-    assertEquals(orderMinSubTotal, absResult85.abs());
-    Money zeroResult29 = absResult15.zero();
-    Money absResult86 = zeroResult29.abs();
-    assertEquals(orderMinSubTotal, absResult86.abs());
-    Money zeroResult30 = absResult20.zero();
-    Money absResult87 = zeroResult30.abs();
-    assertEquals(orderMinSubTotal, absResult87.abs());
-    Money zeroResult31 = absResult24.zero();
-    Money absResult88 = zeroResult31.abs();
-    assertEquals(orderMinSubTotal, absResult88.abs());
-    Money zeroResult32 = absResult28.zero();
-    Money absResult89 = zeroResult32.abs();
-    assertEquals(orderMinSubTotal, absResult89.abs());
-    Money zeroResult33 = absResult32.zero();
-    Money absResult90 = zeroResult33.abs();
-    assertEquals(orderMinSubTotal, absResult90.abs());
-    Money zeroResult34 = absResult35.zero();
-    Money absResult91 = zeroResult34.abs();
-    assertEquals(orderMinSubTotal, absResult91.abs());
-    Money zeroResult35 = absResult38.zero();
-    Money absResult92 = zeroResult35.abs();
-    assertEquals(orderMinSubTotal, absResult92.abs());
-    Money zeroResult36 = absResult41.zero();
-    Money absResult93 = zeroResult36.abs();
-    assertEquals(orderMinSubTotal, absResult93.abs());
-    Money zeroResult37 = absResult44.zero();
-    Money absResult94 = zeroResult37.abs();
-    assertEquals(orderMinSubTotal, absResult94.abs());
-    Money zeroResult38 = absResult47.zero();
-    Money absResult95 = zeroResult38.abs();
-    assertEquals(orderMinSubTotal, absResult95.abs());
-    Money zeroResult39 = absResult50.zero();
-    Money absResult96 = zeroResult39.abs();
-    assertEquals(orderMinSubTotal, absResult96.abs());
-    Money zeroResult40 = absResult53.zero();
-    Money absResult97 = zeroResult40.abs();
-    assertEquals(orderMinSubTotal, absResult97.abs());
-    Money zeroResult41 = zeroResult13.zero();
-    Money absResult98 = zeroResult41.abs();
-    assertEquals(orderMinSubTotal, absResult98.abs());
-    Money zeroResult42 = zeroResult14.zero();
-    Money absResult99 = zeroResult42.abs();
-    assertEquals(orderMinSubTotal, absResult99.abs());
-    Money zeroResult43 = zeroResult15.zero();
-    Money absResult100 = zeroResult43.abs();
-    assertEquals(orderMinSubTotal, absResult100.abs());
-    Money zeroResult44 = zeroResult16.zero();
-    Money absResult101 = zeroResult44.abs();
-    assertEquals(orderMinSubTotal, absResult101.abs());
-    Money zeroResult45 = zeroResult17.zero();
-    Money absResult102 = zeroResult45.abs();
-    assertEquals(orderMinSubTotal, absResult102.abs());
-    Money zeroResult46 = zeroResult18.zero();
-    Money absResult103 = zeroResult46.abs();
-    assertEquals(orderMinSubTotal, absResult103.abs());
-    Money zeroResult47 = zeroResult19.zero();
-    Money absResult104 = zeroResult47.abs();
-    assertEquals(orderMinSubTotal, absResult104.abs());
-    Money zeroResult48 = zeroResult20.zero();
-    Money absResult105 = zeroResult48.abs();
-    assertEquals(orderMinSubTotal, absResult105.abs());
-    Money zeroResult49 = zeroResult21.zero();
-    Money absResult106 = zeroResult49.abs();
-    assertEquals(orderMinSubTotal, absResult106.abs());
-    Money zeroResult50 = zeroResult22.zero();
-    Money absResult107 = zeroResult50.abs();
-    assertEquals(orderMinSubTotal, absResult107.abs());
-    Money zeroResult51 = zeroResult24.zero();
-    Money absResult108 = zeroResult51.abs();
-    assertEquals(orderMinSubTotal, absResult108.abs());
-    Money zeroResult52 = zeroResult25.zero();
-    Money absResult109 = zeroResult52.abs();
-    assertEquals(orderMinSubTotal, absResult109.abs());
-    Money zeroResult53 = zeroResult26.zero();
-    Money absResult110 = zeroResult53.abs();
-    assertEquals(orderMinSubTotal, absResult110.abs());
-    Money zeroResult54 = absResult5.zero();
-    assertEquals(orderMinSubTotal, zeroResult54.abs());
-    Money zeroResult55 = absResult11.zero();
-    assertEquals(orderMinSubTotal, zeroResult55.abs());
-    Money zeroResult56 = absResult16.zero();
-    assertEquals(orderMinSubTotal, zeroResult56.abs());
-    Money zeroResult57 = absResult21.zero();
-    assertEquals(orderMinSubTotal, zeroResult57.abs());
-    Money zeroResult58 = absResult25.zero();
-    assertEquals(orderMinSubTotal, zeroResult58.abs());
-    Money zeroResult59 = absResult29.zero();
-    assertEquals(orderMinSubTotal, zeroResult59.abs());
-    Money zeroResult60 = absResult33.zero();
-    assertEquals(orderMinSubTotal, zeroResult60.abs());
-    Money zeroResult61 = absResult36.zero();
-    assertEquals(orderMinSubTotal, zeroResult61.abs());
-    Money zeroResult62 = absResult39.zero();
-    assertEquals(orderMinSubTotal, zeroResult62.abs());
-    Money zeroResult63 = absResult42.zero();
-    assertEquals(orderMinSubTotal, zeroResult63.abs());
-    Money zeroResult64 = absResult45.zero();
-    assertEquals(orderMinSubTotal, zeroResult64.abs());
-    Money zeroResult65 = absResult48.zero();
-    assertEquals(orderMinSubTotal, zeroResult65.abs());
-    Money zeroResult66 = absResult51.zero();
-    assertEquals(orderMinSubTotal, zeroResult66.abs());
-    Money zeroResult67 = absResult54.zero();
-    assertEquals(orderMinSubTotal, zeroResult67.abs());
-    Money zeroResult68 = absResult56.zero();
-    assertEquals(orderMinSubTotal, zeroResult68.abs());
-    Money zeroResult69 = absResult58.zero();
-    assertEquals(orderMinSubTotal, zeroResult69.abs());
-    Money zeroResult70 = absResult60.zero();
-    assertEquals(orderMinSubTotal, zeroResult70.abs());
-    Money zeroResult71 = absResult62.zero();
-    assertEquals(orderMinSubTotal, zeroResult71.abs());
-    Money zeroResult72 = absResult64.zero();
-    assertEquals(orderMinSubTotal, zeroResult72.abs());
-    Money zeroResult73 = absResult66.zero();
-    assertEquals(orderMinSubTotal, zeroResult73.abs());
-    Money zeroResult74 = absResult68.zero();
-    assertEquals(orderMinSubTotal, zeroResult74.abs());
-    Money zeroResult75 = absResult70.zero();
-    assertEquals(orderMinSubTotal, zeroResult75.abs());
-    Money zeroResult76 = absResult72.zero();
-    assertEquals(orderMinSubTotal, zeroResult76.abs());
-    Money zeroResult77 = absResult74.zero();
-    assertEquals(orderMinSubTotal, zeroResult77.abs());
-    Money zeroResult78 = absResult78.zero();
-    assertEquals(orderMinSubTotal, zeroResult78.abs());
-    Money zeroResult79 = absResult80.zero();
-    assertEquals(orderMinSubTotal, zeroResult79.abs());
-    Money zeroResult80 = absResult82.zero();
-    assertEquals(orderMinSubTotal, zeroResult80.abs());
-    Money zeroResult81 = zeroResult27.zero();
-    assertEquals(orderMinSubTotal, zeroResult81.abs());
-    Money zeroResult82 = zeroResult28.zero();
-    assertEquals(orderMinSubTotal, zeroResult82.abs());
-    Money zeroResult83 = zeroResult29.zero();
-    assertEquals(orderMinSubTotal, zeroResult83.abs());
-    Money zeroResult84 = zeroResult30.zero();
-    assertEquals(orderMinSubTotal, zeroResult84.abs());
-    Money zeroResult85 = zeroResult31.zero();
-    assertEquals(orderMinSubTotal, zeroResult85.abs());
-    Money zeroResult86 = zeroResult32.zero();
-    assertEquals(orderMinSubTotal, zeroResult86.abs());
-    Money zeroResult87 = zeroResult33.zero();
-    assertEquals(orderMinSubTotal, zeroResult87.abs());
-    Money zeroResult88 = zeroResult34.zero();
-    assertEquals(orderMinSubTotal, zeroResult88.abs());
-    Money zeroResult89 = zeroResult35.zero();
-    assertEquals(orderMinSubTotal, zeroResult89.abs());
-    Money zeroResult90 = zeroResult36.zero();
-    assertEquals(orderMinSubTotal, zeroResult90.abs());
-    Money zeroResult91 = zeroResult37.zero();
-    assertEquals(orderMinSubTotal, zeroResult91.abs());
-    Money zeroResult92 = zeroResult38.zero();
-    assertEquals(orderMinSubTotal, zeroResult92.abs());
-    Money zeroResult93 = zeroResult39.zero();
-    assertEquals(orderMinSubTotal, zeroResult93.abs());
-    Money zeroResult94 = zeroResult40.zero();
-    assertEquals(orderMinSubTotal, zeroResult94.abs());
-    Money zeroResult95 = zeroResult41.zero();
-    assertEquals(orderMinSubTotal, zeroResult95.abs());
-    Money zeroResult96 = zeroResult42.zero();
-    assertEquals(orderMinSubTotal, zeroResult96.abs());
-    Money zeroResult97 = zeroResult43.zero();
-    assertEquals(orderMinSubTotal, zeroResult97.abs());
-    Money zeroResult98 = zeroResult44.zero();
-    assertEquals(orderMinSubTotal, zeroResult98.abs());
-    Money zeroResult99 = zeroResult45.zero();
-    assertEquals(orderMinSubTotal, zeroResult99.abs());
-    Money zeroResult100 = zeroResult46.zero();
-    assertEquals(orderMinSubTotal, zeroResult100.abs());
-    Money zeroResult101 = zeroResult47.zero();
-    assertEquals(orderMinSubTotal, zeroResult101.abs());
-    Money zeroResult102 = zeroResult48.zero();
-    assertEquals(orderMinSubTotal, zeroResult102.abs());
-    Money zeroResult103 = zeroResult49.zero();
-    assertEquals(orderMinSubTotal, zeroResult103.abs());
-    Money zeroResult104 = zeroResult50.zero();
-    assertEquals(orderMinSubTotal, zeroResult104.abs());
-    Money zeroResult105 = zeroResult51.zero();
-    assertEquals(orderMinSubTotal, zeroResult105.abs());
-    Money zeroResult106 = zeroResult52.zero();
-    assertEquals(orderMinSubTotal, zeroResult106.abs());
-    Money zeroResult107 = zeroResult53.zero();
-    assertEquals(orderMinSubTotal, zeroResult107.abs());
-    assertEquals(orderMinSubTotal, absResult6.zero());
-    assertEquals(orderMinSubTotal, absResult12.zero());
-    assertEquals(orderMinSubTotal, absResult17.zero());
-    assertEquals(orderMinSubTotal, absResult22.zero());
-    assertEquals(orderMinSubTotal, absResult26.zero());
-    assertEquals(orderMinSubTotal, absResult30.zero());
-    assertEquals(orderMinSubTotal, absResult34.zero());
-    assertEquals(orderMinSubTotal, absResult37.zero());
-    assertEquals(orderMinSubTotal, absResult40.zero());
-    assertEquals(orderMinSubTotal, absResult43.zero());
-    assertEquals(orderMinSubTotal, absResult46.zero());
-    assertEquals(orderMinSubTotal, absResult49.zero());
-    assertEquals(orderMinSubTotal, absResult52.zero());
-    assertEquals(orderMinSubTotal, absResult55.zero());
-    assertEquals(orderMinSubTotal, absResult57.zero());
-    assertEquals(orderMinSubTotal, absResult59.zero());
-    assertEquals(orderMinSubTotal, absResult61.zero());
-    assertEquals(orderMinSubTotal, absResult63.zero());
-    assertEquals(orderMinSubTotal, absResult65.zero());
-    assertEquals(orderMinSubTotal, absResult67.zero());
-    assertEquals(orderMinSubTotal, absResult69.zero());
-    assertEquals(orderMinSubTotal, absResult71.zero());
-    assertEquals(orderMinSubTotal, absResult73.zero());
-    assertEquals(orderMinSubTotal, absResult75.zero());
-    assertEquals(orderMinSubTotal, absResult79.zero());
-    assertEquals(orderMinSubTotal, absResult81.zero());
-    assertEquals(orderMinSubTotal, absResult83.zero());
-    assertEquals(orderMinSubTotal, absResult84.zero());
-    assertEquals(orderMinSubTotal, absResult85.zero());
-    assertEquals(orderMinSubTotal, absResult86.zero());
-    assertEquals(orderMinSubTotal, absResult87.zero());
-    assertEquals(orderMinSubTotal, absResult88.zero());
-    assertEquals(orderMinSubTotal, absResult89.zero());
-    assertEquals(orderMinSubTotal, absResult90.zero());
-    assertEquals(orderMinSubTotal, absResult91.zero());
-    assertEquals(orderMinSubTotal, absResult92.zero());
-    assertEquals(orderMinSubTotal, absResult93.zero());
-    assertEquals(orderMinSubTotal, absResult94.zero());
-    assertEquals(orderMinSubTotal, absResult95.zero());
-    assertEquals(orderMinSubTotal, absResult96.zero());
-    assertEquals(orderMinSubTotal, absResult97.zero());
-    assertEquals(orderMinSubTotal, absResult98.zero());
-    assertEquals(orderMinSubTotal, absResult99.zero());
-    assertEquals(orderMinSubTotal, absResult100.zero());
-    assertEquals(orderMinSubTotal, absResult101.zero());
-    assertEquals(orderMinSubTotal, absResult102.zero());
-    assertEquals(orderMinSubTotal, absResult103.zero());
-    assertEquals(orderMinSubTotal, absResult104.zero());
-    assertEquals(orderMinSubTotal, absResult105.zero());
-    assertEquals(orderMinSubTotal, absResult106.zero());
-    assertEquals(orderMinSubTotal, absResult107.zero());
-    assertEquals(orderMinSubTotal, absResult108.zero());
-    assertEquals(orderMinSubTotal, absResult109.zero());
-    assertEquals(orderMinSubTotal, absResult110.zero());
-    assertEquals(orderMinSubTotal, zeroResult54.zero());
-    assertEquals(orderMinSubTotal, zeroResult55.zero());
-    assertEquals(orderMinSubTotal, zeroResult56.zero());
-    assertEquals(orderMinSubTotal, zeroResult57.zero());
-    assertEquals(orderMinSubTotal, zeroResult58.zero());
-    assertEquals(orderMinSubTotal, zeroResult59.zero());
-    assertEquals(orderMinSubTotal, zeroResult60.zero());
-    assertEquals(orderMinSubTotal, zeroResult61.zero());
-    assertEquals(orderMinSubTotal, zeroResult62.zero());
-    assertEquals(orderMinSubTotal, zeroResult63.zero());
-    assertEquals(orderMinSubTotal, zeroResult64.zero());
-    assertEquals(orderMinSubTotal, zeroResult65.zero());
-    assertEquals(orderMinSubTotal, zeroResult66.zero());
-    assertEquals(orderMinSubTotal, zeroResult67.zero());
-    assertEquals(orderMinSubTotal, zeroResult68.zero());
-    assertEquals(orderMinSubTotal, zeroResult69.zero());
-    assertEquals(orderMinSubTotal, zeroResult70.zero());
-    assertEquals(orderMinSubTotal, zeroResult71.zero());
-    assertEquals(orderMinSubTotal, zeroResult72.zero());
-    assertEquals(orderMinSubTotal, zeroResult73.zero());
-    assertEquals(orderMinSubTotal, zeroResult74.zero());
-    assertEquals(orderMinSubTotal, zeroResult75.zero());
-    assertEquals(orderMinSubTotal, zeroResult76.zero());
-    assertEquals(orderMinSubTotal, zeroResult77.zero());
-    assertEquals(orderMinSubTotal, zeroResult78.zero());
-    assertEquals(orderMinSubTotal, zeroResult79.zero());
-    assertEquals(orderMinSubTotal, zeroResult80.zero());
-    assertEquals(orderMinSubTotal, zeroResult81.zero());
-    assertEquals(orderMinSubTotal, zeroResult82.zero());
-    assertEquals(orderMinSubTotal, zeroResult83.zero());
-    assertEquals(orderMinSubTotal, zeroResult84.zero());
-    assertEquals(orderMinSubTotal, zeroResult85.zero());
-    assertEquals(orderMinSubTotal, zeroResult86.zero());
-    assertEquals(orderMinSubTotal, zeroResult87.zero());
-    assertEquals(orderMinSubTotal, zeroResult88.zero());
-    assertEquals(orderMinSubTotal, zeroResult89.zero());
-    assertEquals(orderMinSubTotal, zeroResult90.zero());
-    assertEquals(orderMinSubTotal, zeroResult91.zero());
-    assertEquals(orderMinSubTotal, zeroResult92.zero());
-    assertEquals(orderMinSubTotal, zeroResult93.zero());
-    assertEquals(orderMinSubTotal, zeroResult94.zero());
-    assertEquals(orderMinSubTotal, zeroResult95.zero());
-    assertEquals(orderMinSubTotal, zeroResult96.zero());
-    assertEquals(orderMinSubTotal, zeroResult97.zero());
-    assertEquals(orderMinSubTotal, zeroResult98.zero());
-    assertEquals(orderMinSubTotal, zeroResult99.zero());
-    assertEquals(orderMinSubTotal, zeroResult100.zero());
-    assertEquals(orderMinSubTotal, zeroResult101.zero());
-    assertEquals(orderMinSubTotal, zeroResult102.zero());
-    assertEquals(orderMinSubTotal, zeroResult103.zero());
-    assertEquals(orderMinSubTotal, zeroResult104.zero());
-    assertEquals(orderMinSubTotal, zeroResult105.zero());
-    assertEquals(orderMinSubTotal, zeroResult106.zero());
-    assertEquals(orderMinSubTotal, zeroResult107.zero());
-    assertSame(currency, absResult6.getCurrency());
-    assertSame(currency, absResult12.getCurrency());
-    assertSame(currency, absResult17.getCurrency());
-    assertSame(currency, absResult22.getCurrency());
-    assertSame(currency, absResult5.getCurrency());
-    assertSame(currency, absResult11.getCurrency());
-    assertSame(currency, absResult26.getCurrency());
-    assertSame(currency, absResult30.getCurrency());
-    assertSame(currency, absResult34.getCurrency());
-    assertSame(currency, absResult16.getCurrency());
-    assertSame(currency, absResult21.getCurrency());
-    assertSame(currency, absResult4.getCurrency());
-    assertSame(currency, absResult10.getCurrency());
-    assertSame(currency, absResult37.getCurrency());
-    assertSame(currency, absResult40.getCurrency());
-    assertSame(currency, absResult43.getCurrency());
-    assertSame(currency, absResult46.getCurrency());
-    assertSame(currency, absResult25.getCurrency());
-    assertSame(currency, absResult29.getCurrency());
-    assertSame(currency, absResult49.getCurrency());
-    assertSame(currency, absResult52.getCurrency());
-    assertSame(currency, absResult55.getCurrency());
-    assertSame(currency, absResult33.getCurrency());
-    Money zeroResult108 = zeroResult2.zero();
-    Money absResult111 = zeroResult108.abs();
-    Money absResult112 = absResult111.abs();
-    assertSame(currency, absResult112.abs().getCurrency());
-    assertSame(currency, absResult15.getCurrency());
-    assertSame(currency, absResult20.getCurrency());
-    assertSame(currency, absResult3.getCurrency());
-    assertSame(currency, absResult9.getCurrency());
-    assertSame(currency, absResult57.getCurrency());
-    assertSame(currency, absResult59.getCurrency());
-    assertSame(currency, absResult61.getCurrency());
-    assertSame(currency, absResult63.getCurrency());
-    assertSame(currency, absResult36.getCurrency());
-    assertSame(currency, absResult39.getCurrency());
-    assertSame(currency, absResult65.getCurrency());
-    assertSame(currency, absResult67.getCurrency());
-    assertSame(currency, absResult69.getCurrency());
-    assertSame(currency, absResult42.getCurrency());
-    assertSame(currency, absResult45.getCurrency());
-    assertSame(currency, absResult24.getCurrency());
-    assertSame(currency, absResult28.getCurrency());
-    assertSame(currency, absResult71.getCurrency());
-    assertSame(currency, absResult73.getCurrency());
-    assertSame(currency, absResult75.getCurrency());
-    assertSame(currency, absResult48.getCurrency());
-    assertSame(currency, absResult51.getCurrency());
-    assertSame(currency, absResult79.getCurrency());
-    assertSame(currency, absResult81.getCurrency());
-    assertSame(currency, absResult83.getCurrency());
-    assertSame(currency, absResult54.getCurrency());
-    Money zeroResult109 = zeroResult108.zero();
-    Money absResult113 = zeroResult109.abs();
-    assertSame(currency, absResult113.abs().getCurrency());
-    assertSame(currency, absResult32.getCurrency());
-    assertSame(currency, absResult112.getCurrency());
-    assertSame(currency, absResult14.getCurrency());
-    assertSame(currency, absResult19.getCurrency());
-    assertSame(currency, absResult2.getCurrency());
-    assertSame(currency, absResult8.getCurrency());
-    assertSame(currency, absResult84.getCurrency());
-    assertSame(currency, absResult85.getCurrency());
-    assertSame(currency, absResult86.getCurrency());
-    assertSame(currency, absResult87.getCurrency());
-    assertSame(currency, absResult56.getCurrency());
-    assertSame(currency, absResult58.getCurrency());
-    assertSame(currency, absResult88.getCurrency());
-    assertSame(currency, absResult89.getCurrency());
-    assertSame(currency, absResult90.getCurrency());
-    assertSame(currency, absResult60.getCurrency());
-    assertSame(currency, absResult62.getCurrency());
-    assertSame(currency, absResult35.getCurrency());
-    assertSame(currency, absResult38.getCurrency());
-    assertSame(currency, absResult91.getCurrency());
-    assertSame(currency, absResult92.getCurrency());
-    assertSame(currency, absResult93.getCurrency());
-    assertSame(currency, absResult94.getCurrency());
-    assertSame(currency, absResult64.getCurrency());
-    assertSame(currency, absResult66.getCurrency());
-    assertSame(currency, absResult95.getCurrency());
-    assertSame(currency, absResult96.getCurrency());
-    assertSame(currency, absResult97.getCurrency());
-    assertSame(currency, absResult68.getCurrency());
-    Money zeroResult110 = absResult111.zero();
-    assertSame(currency, zeroResult110.abs().getCurrency());
-    assertSame(currency, absResult41.getCurrency());
-    assertSame(currency, absResult44.getCurrency());
-    assertSame(currency, absResult23.getCurrency());
-    assertSame(currency, absResult27.getCurrency());
-    assertSame(currency, absResult98.getCurrency());
-    assertSame(currency, absResult99.getCurrency());
-    assertSame(currency, absResult100.getCurrency());
-    assertSame(currency, absResult101.getCurrency());
-    assertSame(currency, absResult70.getCurrency());
-    assertSame(currency, absResult72.getCurrency());
-    assertSame(currency, absResult102.getCurrency());
-    assertSame(currency, absResult103.getCurrency());
-    assertSame(currency, absResult104.getCurrency());
-    assertSame(currency, absResult74.getCurrency());
-    assertSame(currency, absResult76.getCurrency());
-    assertSame(currency, absResult47.getCurrency());
-    assertSame(currency, absResult50.getCurrency());
-    assertSame(currency, absResult105.getCurrency());
-    assertSame(currency, absResult106.getCurrency());
-    assertSame(currency, absResult107.getCurrency());
-    assertSame(currency, absResult78.getCurrency());
-    assertSame(currency, absResult80.getCurrency());
-    assertSame(currency, absResult108.getCurrency());
-    assertSame(currency, absResult109.getCurrency());
-    assertSame(currency, absResult110.getCurrency());
-    assertSame(currency, absResult82.getCurrency());
-    Money zeroResult111 = zeroResult109.zero();
-    assertSame(currency, zeroResult111.abs().getCurrency());
-    assertSame(currency, absResult53.getCurrency());
-    assertSame(currency, absResult113.getCurrency());
-    assertSame(currency, absResult31.getCurrency());
-    assertSame(currency, absResult111.getCurrency());
-    assertSame(currency, absResult13.getCurrency());
-    assertSame(currency, absResult18.getCurrency());
-    assertSame(currency, absResult.getCurrency());
-    assertSame(currency, absResult7.getCurrency());
-    assertSame(currency, zeroResult54.getCurrency());
-    assertSame(currency, zeroResult55.getCurrency());
-    assertSame(currency, zeroResult56.getCurrency());
-    assertSame(currency, zeroResult57.getCurrency());
-    assertSame(currency, zeroResult27.getCurrency());
-    assertSame(currency, zeroResult28.getCurrency());
-    assertSame(currency, zeroResult58.getCurrency());
-    assertSame(currency, zeroResult59.getCurrency());
-    assertSame(currency, zeroResult60.getCurrency());
-    assertSame(currency, zeroResult29.getCurrency());
-    assertSame(currency, zeroResult30.getCurrency());
-    assertSame(currency, zeroResult13.getCurrency());
-    assertSame(currency, zeroResult14.getCurrency());
-    assertSame(currency, zeroResult61.getCurrency());
-    assertSame(currency, zeroResult62.getCurrency());
-    assertSame(currency, zeroResult63.getCurrency());
-    assertSame(currency, zeroResult64.getCurrency());
-    assertSame(currency, zeroResult31.getCurrency());
-    assertSame(currency, zeroResult32.getCurrency());
-    assertSame(currency, zeroResult65.getCurrency());
-    assertSame(currency, zeroResult66.getCurrency());
-    assertSame(currency, zeroResult67.getCurrency());
-    assertSame(currency, zeroResult33.getCurrency());
-    assertSame(currency, absResult112.zero().getCurrency());
-    assertSame(currency, zeroResult15.getCurrency());
-    assertSame(currency, zeroResult16.getCurrency());
-    assertSame(currency, zeroResult6.getCurrency());
-    assertSame(currency, zeroResult7.getCurrency());
-    assertSame(currency, zeroResult68.getCurrency());
-    assertSame(currency, zeroResult69.getCurrency());
-    assertSame(currency, zeroResult70.getCurrency());
-    assertSame(currency, zeroResult71.getCurrency());
-    assertSame(currency, zeroResult34.getCurrency());
-    assertSame(currency, zeroResult35.getCurrency());
-    assertSame(currency, zeroResult72.getCurrency());
-    assertSame(currency, zeroResult73.getCurrency());
-    assertSame(currency, zeroResult74.getCurrency());
-    assertSame(currency, zeroResult36.getCurrency());
-    assertSame(currency, zeroResult37.getCurrency());
-    assertSame(currency, zeroResult17.getCurrency());
-    assertSame(currency, zeroResult18.getCurrency());
-    assertSame(currency, zeroResult75.getCurrency());
-    assertSame(currency, zeroResult76.getCurrency());
-    assertSame(currency, zeroResult77.getCurrency());
-    assertSame(currency, zeroResult38.getCurrency());
-    assertSame(currency, zeroResult39.getCurrency());
-    assertSame(currency, zeroResult78.getCurrency());
-    assertSame(currency, zeroResult79.getCurrency());
-    assertSame(currency, zeroResult80.getCurrency());
-    assertSame(currency, zeroResult40.getCurrency());
-    assertSame(currency, absResult113.zero().getCurrency());
-    assertSame(currency, zeroResult19.getCurrency());
-    assertSame(currency, zeroResult110.getCurrency());
-    assertSame(currency, zeroResult8.getCurrency());
-    assertSame(currency, zeroResult9.getCurrency());
-    assertSame(currency, zeroResult3.getCurrency());
-    assertSame(currency, zeroResult4.getCurrency());
-    assertSame(currency, zeroResult81.getCurrency());
-    assertSame(currency, zeroResult82.getCurrency());
-    assertSame(currency, zeroResult83.getCurrency());
-    assertSame(currency, zeroResult84.getCurrency());
-    assertSame(currency, zeroResult41.getCurrency());
-    assertSame(currency, zeroResult42.getCurrency());
-    assertSame(currency, zeroResult85.getCurrency());
-    assertSame(currency, zeroResult86.getCurrency());
-    assertSame(currency, zeroResult87.getCurrency());
-    assertSame(currency, zeroResult43.getCurrency());
-    assertSame(currency, zeroResult44.getCurrency());
-    assertSame(currency, zeroResult20.getCurrency());
-    assertSame(currency, zeroResult21.getCurrency());
-    assertSame(currency, zeroResult88.getCurrency());
-    assertSame(currency, zeroResult89.getCurrency());
-    assertSame(currency, zeroResult90.getCurrency());
-    assertSame(currency, zeroResult91.getCurrency());
-    assertSame(currency, zeroResult45.getCurrency());
-    assertSame(currency, zeroResult46.getCurrency());
-    assertSame(currency, zeroResult92.getCurrency());
-    assertSame(currency, zeroResult93.getCurrency());
-    assertSame(currency, zeroResult94.getCurrency());
-    assertSame(currency, zeroResult47.getCurrency());
-    assertSame(currency, zeroResult110.zero().getCurrency());
-    assertSame(currency, zeroResult22.getCurrency());
-    assertSame(currency, zeroResult23.getCurrency());
-    assertSame(currency, zeroResult10.getCurrency());
-    assertSame(currency, zeroResult11.getCurrency());
-    assertSame(currency, zeroResult95.getCurrency());
-    assertSame(currency, zeroResult96.getCurrency());
-    assertSame(currency, zeroResult97.getCurrency());
-    assertSame(currency, zeroResult98.getCurrency());
-    assertSame(currency, zeroResult48.getCurrency());
-    assertSame(currency, zeroResult49.getCurrency());
-    assertSame(currency, zeroResult99.getCurrency());
-    assertSame(currency, zeroResult100.getCurrency());
-    assertSame(currency, zeroResult101.getCurrency());
-    assertSame(currency, zeroResult50.getCurrency());
-    assertSame(currency, zeroResult23.zero().getCurrency());
-    assertSame(currency, zeroResult24.getCurrency());
-    assertSame(currency, zeroResult25.getCurrency());
-    assertSame(currency, zeroResult102.getCurrency());
-    assertSame(currency, zeroResult103.getCurrency());
-    assertSame(currency, zeroResult104.getCurrency());
-    assertSame(currency, zeroResult51.getCurrency());
-    assertSame(currency, zeroResult52.getCurrency());
-    assertSame(currency, zeroResult105.getCurrency());
-    assertSame(currency, zeroResult106.getCurrency());
-    assertSame(currency, zeroResult107.getCurrency());
-    assertSame(currency, zeroResult53.getCurrency());
-    assertSame(currency, zeroResult111.zero().getCurrency());
-    assertSame(currency, zeroResult26.getCurrency());
-    assertSame(currency, zeroResult111.getCurrency());
-    assertSame(currency, zeroResult12.getCurrency());
-    assertSame(currency, zeroResult109.getCurrency());
-    assertSame(currency, zeroResult5.getCurrency());
-    assertSame(currency, zeroResult108.getCurrency());
-    assertSame(currency, zeroResult.getCurrency());
-    assertSame(currency, zeroResult2.getCurrency());
-    assertSame(currency, targetMinSubTotal.getCurrency());
-    BigDecimal bigDecimal = offerImpl.targetMinSubTotal;
-    assertSame(bigDecimal, absResult6.getAmount());
-    assertSame(bigDecimal, absResult12.getAmount());
-    assertSame(bigDecimal, absResult17.getAmount());
-    assertSame(bigDecimal, absResult22.getAmount());
-    assertSame(bigDecimal, absResult26.getAmount());
-    assertSame(bigDecimal, absResult30.getAmount());
-    assertSame(bigDecimal, absResult34.getAmount());
-    assertSame(bigDecimal, absResult37.getAmount());
-    assertSame(bigDecimal, absResult40.getAmount());
-    assertSame(bigDecimal, absResult43.getAmount());
-    assertSame(bigDecimal, absResult46.getAmount());
-    assertSame(bigDecimal, absResult49.getAmount());
-    assertSame(bigDecimal, absResult52.getAmount());
-    assertSame(bigDecimal, absResult55.getAmount());
-    assertSame(bigDecimal, absResult57.getAmount());
-    assertSame(bigDecimal, absResult59.getAmount());
-    assertSame(bigDecimal, absResult61.getAmount());
-    assertSame(bigDecimal, absResult63.getAmount());
-    assertSame(bigDecimal, absResult65.getAmount());
-    assertSame(bigDecimal, absResult67.getAmount());
-    assertSame(bigDecimal, absResult69.getAmount());
-    assertSame(bigDecimal, absResult71.getAmount());
-    assertSame(bigDecimal, absResult73.getAmount());
-    assertSame(bigDecimal, absResult75.getAmount());
-    assertSame(bigDecimal, absResult77.getAmount());
-    assertSame(bigDecimal, absResult79.getAmount());
-    assertSame(bigDecimal, absResult81.getAmount());
-    assertSame(bigDecimal, absResult83.getAmount());
-    assertSame(bigDecimal, absResult84.getAmount());
-    assertSame(bigDecimal, absResult85.getAmount());
-    assertSame(bigDecimal, absResult86.getAmount());
-    assertSame(bigDecimal, absResult87.getAmount());
-    assertSame(bigDecimal, absResult88.getAmount());
-    assertSame(bigDecimal, absResult89.getAmount());
-    assertSame(bigDecimal, absResult90.getAmount());
-    assertSame(bigDecimal, absResult91.getAmount());
-    assertSame(bigDecimal, absResult92.getAmount());
-    assertSame(bigDecimal, absResult93.getAmount());
-    assertSame(bigDecimal, absResult94.getAmount());
-    assertSame(bigDecimal, absResult95.getAmount());
-    assertSame(bigDecimal, absResult96.getAmount());
-    assertSame(bigDecimal, absResult97.getAmount());
-    assertSame(bigDecimal, absResult98.getAmount());
-    assertSame(bigDecimal, absResult99.getAmount());
-    assertSame(bigDecimal, absResult100.getAmount());
-    assertSame(bigDecimal, absResult101.getAmount());
-    assertSame(bigDecimal, absResult102.getAmount());
-    assertSame(bigDecimal, absResult103.getAmount());
-    assertSame(bigDecimal, absResult104.getAmount());
-    assertSame(bigDecimal, absResult105.getAmount());
-    assertSame(bigDecimal, absResult106.getAmount());
-    assertSame(bigDecimal, absResult107.getAmount());
-    assertSame(bigDecimal, absResult108.getAmount());
-    assertSame(bigDecimal, absResult109.getAmount());
-    assertSame(bigDecimal, absResult110.getAmount());
-    assertSame(bigDecimal, zeroResult54.getAmount());
-    assertSame(bigDecimal, zeroResult55.getAmount());
-    assertSame(bigDecimal, zeroResult56.getAmount());
-    assertSame(bigDecimal, zeroResult57.getAmount());
-    assertSame(bigDecimal, zeroResult58.getAmount());
-    assertSame(bigDecimal, zeroResult59.getAmount());
-    assertSame(bigDecimal, zeroResult60.getAmount());
-    assertSame(bigDecimal, zeroResult61.getAmount());
-    assertSame(bigDecimal, zeroResult62.getAmount());
-    assertSame(bigDecimal, zeroResult63.getAmount());
-    assertSame(bigDecimal, zeroResult64.getAmount());
-    assertSame(bigDecimal, zeroResult65.getAmount());
-    assertSame(bigDecimal, zeroResult66.getAmount());
-    assertSame(bigDecimal, zeroResult67.getAmount());
-    assertSame(bigDecimal, zeroResult68.getAmount());
-    assertSame(bigDecimal, zeroResult69.getAmount());
-    assertSame(bigDecimal, zeroResult70.getAmount());
-    assertSame(bigDecimal, zeroResult71.getAmount());
-    assertSame(bigDecimal, zeroResult72.getAmount());
-    assertSame(bigDecimal, zeroResult73.getAmount());
-    assertSame(bigDecimal, zeroResult74.getAmount());
-    assertSame(bigDecimal, zeroResult75.getAmount());
-    assertSame(bigDecimal, zeroResult76.getAmount());
-    assertSame(bigDecimal, zeroResult77.getAmount());
-    assertSame(bigDecimal, zeroResult78.getAmount());
-    assertSame(bigDecimal, zeroResult79.getAmount());
-    assertSame(bigDecimal, zeroResult80.getAmount());
-    assertSame(bigDecimal, zeroResult81.getAmount());
-    assertSame(bigDecimal, zeroResult82.getAmount());
-    assertSame(bigDecimal, zeroResult83.getAmount());
-    assertSame(bigDecimal, zeroResult84.getAmount());
-    assertSame(bigDecimal, zeroResult85.getAmount());
-    assertSame(bigDecimal, zeroResult86.getAmount());
-    assertSame(bigDecimal, zeroResult87.getAmount());
-    assertSame(bigDecimal, zeroResult88.getAmount());
-    assertSame(bigDecimal, zeroResult89.getAmount());
-    assertSame(bigDecimal, zeroResult90.getAmount());
-    assertSame(bigDecimal, zeroResult91.getAmount());
-    assertSame(bigDecimal, zeroResult92.getAmount());
-    assertSame(bigDecimal, zeroResult93.getAmount());
-    assertSame(bigDecimal, zeroResult94.getAmount());
-    assertSame(bigDecimal, zeroResult95.getAmount());
-    assertSame(bigDecimal, zeroResult96.getAmount());
-    assertSame(bigDecimal, zeroResult97.getAmount());
-    assertSame(bigDecimal, zeroResult98.getAmount());
-    assertSame(bigDecimal, zeroResult99.getAmount());
-    assertSame(bigDecimal, zeroResult100.getAmount());
-    assertSame(bigDecimal, zeroResult101.getAmount());
-    assertSame(bigDecimal, zeroResult102.getAmount());
-    assertSame(bigDecimal, zeroResult103.getAmount());
-    assertSame(bigDecimal, zeroResult104.getAmount());
-    assertSame(bigDecimal, zeroResult105.getAmount());
-    assertSame(bigDecimal, zeroResult106.getAmount());
-    assertSame(bigDecimal, zeroResult107.getAmount());
-  }
-
-  /**
-   * Test {@link OfferImpl#setOrderMinSubTotal(Money)}.
-   * <p>
-   * Method under test: {@link OfferImpl#setOrderMinSubTotal(Money)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetOrderMinSubTotal2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2709 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-
-    // Act
-    offerImpl2.setOrderMinSubTotal(new Money());
-  }
-
-  /**
-   * Test {@link OfferImpl#setOrderMinSubTotal(Money)}.
-   * <ul>
-   *   <li>Then {@link OfferImpl} (default constructor)
-   * {@link OfferImpl#orderMinSubTotal} is {@link BigDecimal#BigDecimal(String)}
-   * with {@code 0.00}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#setOrderMinSubTotal(Money)}
-   */
-  @Test
-  public void testSetOrderMinSubTotal_thenOfferImplOrderMinSubTotalIsBigDecimalWith000() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    Money orderMinSubTotal = new Money();
-
-    // Act
-    offerImpl.setOrderMinSubTotal(orderMinSubTotal);
-
-    // Assert
-    assertEquals(new BigDecimal("0.00"), offerImpl.orderMinSubTotal);
-    BigDecimal bigDecimal = offerImpl.orderMinSubTotal;
-    Money absResult = orderMinSubTotal.abs();
-    assertSame(bigDecimal, absResult.getAmount());
-    Money absResult2 = absResult.abs();
-    assertSame(bigDecimal, absResult2.getAmount());
-    Money absResult3 = absResult2.abs();
-    assertSame(bigDecimal, absResult3.getAmount());
-    Money absResult4 = absResult3.abs();
-    assertSame(bigDecimal, absResult4.getAmount());
-    Money absResult5 = absResult4.abs();
-    assertSame(bigDecimal, absResult5.getAmount());
-    Money absResult6 = absResult5.abs();
-    assertSame(bigDecimal, absResult6.getAmount());
-    assertSame(bigDecimal, absResult6.abs().getAmount());
-    Money zeroResult = orderMinSubTotal.zero();
-    Money absResult7 = zeroResult.abs();
-    Money absResult8 = absResult7.abs();
-    Money absResult9 = absResult8.abs();
-    Money absResult10 = absResult9.abs();
-    Money absResult11 = absResult10.abs();
-    assertSame(bigDecimal, absResult11.abs().getAmount());
-    assertSame(bigDecimal, absResult11.getAmount());
-    Money zeroResult2 = absResult.zero();
-    Money absResult12 = zeroResult2.abs();
-    Money absResult13 = absResult12.abs();
-    Money absResult14 = absResult13.abs();
-    Money absResult15 = absResult14.abs();
-    assertSame(bigDecimal, absResult15.abs().getAmount());
-    Money zeroResult3 = zeroResult.zero();
-    Money absResult16 = zeroResult3.abs();
-    Money absResult17 = absResult16.abs();
-    Money absResult18 = absResult17.abs();
-    Money absResult19 = absResult18.abs();
-    assertSame(bigDecimal, absResult19.abs().getAmount());
-    assertSame(bigDecimal, absResult10.getAmount());
-    assertSame(bigDecimal, absResult15.getAmount());
-    Money zeroResult4 = absResult2.zero();
-    Money absResult20 = zeroResult4.abs();
-    Money absResult21 = absResult20.abs();
-    Money absResult22 = absResult21.abs();
-    assertSame(bigDecimal, absResult22.abs().getAmount());
-    Money zeroResult5 = absResult7.zero();
-    Money absResult23 = zeroResult5.abs();
-    Money absResult24 = absResult23.abs();
-    Money absResult25 = absResult24.abs();
-    assertSame(bigDecimal, absResult25.abs().getAmount());
-    assertSame(bigDecimal, absResult19.getAmount());
-    Money zeroResult6 = zeroResult2.zero();
-    Money absResult26 = zeroResult6.abs();
-    Money absResult27 = absResult26.abs();
-    Money absResult28 = absResult27.abs();
-    assertSame(bigDecimal, absResult28.abs().getAmount());
-    Money zeroResult7 = zeroResult3.zero();
-    Money absResult29 = zeroResult7.abs();
-    Money absResult30 = absResult29.abs();
-    Money absResult31 = absResult30.abs();
-    assertSame(bigDecimal, absResult31.abs().getAmount());
-    assertSame(bigDecimal, absResult9.getAmount());
-    assertSame(bigDecimal, absResult14.getAmount());
-    assertSame(bigDecimal, absResult22.getAmount());
-    Money zeroResult8 = absResult3.zero();
-    Money absResult32 = zeroResult8.abs();
-    Money absResult33 = absResult32.abs();
-    assertSame(bigDecimal, absResult33.abs().getAmount());
-    Money zeroResult9 = absResult8.zero();
-    Money absResult34 = zeroResult9.abs();
-    Money absResult35 = absResult34.abs();
-    assertSame(bigDecimal, absResult35.abs().getAmount());
-    assertSame(bigDecimal, absResult25.getAmount());
-    Money zeroResult10 = absResult12.zero();
-    Money absResult36 = zeroResult10.abs();
-    Money absResult37 = absResult36.abs();
-    assertSame(bigDecimal, absResult37.abs().getAmount());
-    Money zeroResult11 = absResult16.zero();
-    Money absResult38 = zeroResult11.abs();
-    Money absResult39 = absResult38.abs();
-    assertSame(bigDecimal, absResult39.abs().getAmount());
-    assertSame(bigDecimal, absResult18.getAmount());
-    assertSame(bigDecimal, absResult28.getAmount());
-    Money zeroResult12 = zeroResult4.zero();
-    Money absResult40 = zeroResult12.abs();
-    Money absResult41 = absResult40.abs();
-    assertSame(bigDecimal, absResult41.abs().getAmount());
-    Money zeroResult13 = zeroResult5.zero();
-    Money absResult42 = zeroResult13.abs();
-    Money absResult43 = absResult42.abs();
-    assertSame(bigDecimal, absResult43.abs().getAmount());
-    assertSame(bigDecimal, absResult31.getAmount());
-    Money zeroResult14 = zeroResult6.zero();
-    Money absResult44 = zeroResult14.abs();
-    Money absResult45 = absResult44.abs();
-    assertSame(bigDecimal, absResult45.abs().getAmount());
-    Money zeroResult15 = zeroResult7.zero();
-    Money absResult46 = zeroResult15.abs();
-    Money absResult47 = absResult46.abs();
-    assertSame(bigDecimal, absResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult8.getAmount());
-    assertSame(bigDecimal, absResult13.getAmount());
-    assertSame(bigDecimal, absResult21.getAmount());
-    assertSame(bigDecimal, absResult33.getAmount());
-    Money zeroResult16 = absResult4.zero();
-    Money absResult48 = zeroResult16.abs();
-    assertSame(bigDecimal, absResult48.abs().getAmount());
-    Money zeroResult17 = absResult9.zero();
-    Money absResult49 = zeroResult17.abs();
-    assertSame(bigDecimal, absResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult35.getAmount());
-    Money zeroResult18 = absResult13.zero();
-    Money absResult50 = zeroResult18.abs();
-    assertSame(bigDecimal, absResult50.abs().getAmount());
-    Money zeroResult19 = absResult17.zero();
-    Money absResult51 = zeroResult19.abs();
-    assertSame(bigDecimal, absResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult24.getAmount());
-    assertSame(bigDecimal, absResult37.getAmount());
-    Money zeroResult20 = absResult20.zero();
-    Money absResult52 = zeroResult20.abs();
-    assertSame(bigDecimal, absResult52.abs().getAmount());
-    Money zeroResult21 = absResult23.zero();
-    Money absResult53 = zeroResult21.abs();
-    assertSame(bigDecimal, absResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult39.getAmount());
-    Money zeroResult22 = absResult26.zero();
-    Money absResult54 = zeroResult22.abs();
-    assertSame(bigDecimal, absResult54.abs().getAmount());
-    Money zeroResult23 = absResult29.zero();
-    Money absResult55 = zeroResult23.abs();
-    assertSame(bigDecimal, absResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult17.getAmount());
-    assertSame(bigDecimal, absResult27.getAmount());
-    assertSame(bigDecimal, absResult41.getAmount());
-    Money zeroResult24 = zeroResult8.zero();
-    Money absResult56 = zeroResult24.abs();
-    assertSame(bigDecimal, absResult56.abs().getAmount());
-    Money zeroResult25 = zeroResult9.zero();
-    Money absResult57 = zeroResult25.abs();
-    assertSame(bigDecimal, absResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult43.getAmount());
-    Money zeroResult26 = zeroResult10.zero();
-    Money absResult58 = zeroResult26.abs();
-    assertSame(bigDecimal, absResult58.abs().getAmount());
-    Money zeroResult27 = zeroResult11.zero();
-    Money absResult59 = zeroResult27.abs();
-    assertSame(bigDecimal, absResult59.abs().getAmount());
-    assertSame(bigDecimal, absResult30.getAmount());
-    assertSame(bigDecimal, absResult45.getAmount());
-    Money zeroResult28 = zeroResult12.zero();
-    Money absResult60 = zeroResult28.abs();
-    assertSame(bigDecimal, absResult60.abs().getAmount());
-    Money zeroResult29 = zeroResult13.zero();
-    Money absResult61 = zeroResult29.abs();
-    assertSame(bigDecimal, absResult61.abs().getAmount());
-    assertSame(bigDecimal, absResult47.getAmount());
-    Money zeroResult30 = zeroResult14.zero();
-    Money absResult62 = zeroResult30.abs();
-    assertSame(bigDecimal, absResult62.abs().getAmount());
-    assertSame(bigDecimal, absResult7.getAmount());
-    assertSame(bigDecimal, absResult12.getAmount());
-    assertSame(bigDecimal, absResult20.getAmount());
-    assertSame(bigDecimal, absResult32.getAmount());
-    assertSame(bigDecimal, absResult48.getAmount());
-    Money zeroResult31 = absResult5.zero();
-    assertSame(bigDecimal, zeroResult31.abs().getAmount());
-    Money zeroResult32 = absResult10.zero();
-    assertSame(bigDecimal, zeroResult32.abs().getAmount());
-    assertSame(bigDecimal, absResult49.getAmount());
-    Money zeroResult33 = absResult14.zero();
-    assertSame(bigDecimal, zeroResult33.abs().getAmount());
-    Money zeroResult34 = absResult18.zero();
-    assertSame(bigDecimal, zeroResult34.abs().getAmount());
-    assertSame(bigDecimal, absResult34.getAmount());
-    assertSame(bigDecimal, absResult50.getAmount());
-    Money zeroResult35 = absResult21.zero();
-    assertSame(bigDecimal, zeroResult35.abs().getAmount());
-    Money zeroResult36 = absResult24.zero();
-    assertSame(bigDecimal, zeroResult36.abs().getAmount());
-    assertSame(bigDecimal, absResult51.getAmount());
-    Money zeroResult37 = absResult27.zero();
-    assertSame(bigDecimal, zeroResult37.abs().getAmount());
-    Money zeroResult38 = absResult30.zero();
-    assertSame(bigDecimal, zeroResult38.abs().getAmount());
-    assertSame(bigDecimal, absResult23.getAmount());
-    assertSame(bigDecimal, absResult36.getAmount());
-    assertSame(bigDecimal, absResult52.getAmount());
-    Money zeroResult39 = absResult32.zero();
-    assertSame(bigDecimal, zeroResult39.abs().getAmount());
-    Money zeroResult40 = absResult34.zero();
-    assertSame(bigDecimal, zeroResult40.abs().getAmount());
-    assertSame(bigDecimal, absResult53.getAmount());
-    Money zeroResult41 = absResult36.zero();
-    assertSame(bigDecimal, zeroResult41.abs().getAmount());
-    Money zeroResult42 = absResult38.zero();
-    assertSame(bigDecimal, zeroResult42.abs().getAmount());
-    assertSame(bigDecimal, absResult38.getAmount());
-    assertSame(bigDecimal, absResult54.getAmount());
-    Money zeroResult43 = absResult40.zero();
-    assertSame(bigDecimal, zeroResult43.abs().getAmount());
-    Money zeroResult44 = absResult42.zero();
-    assertSame(bigDecimal, zeroResult44.abs().getAmount());
-    assertSame(bigDecimal, absResult55.getAmount());
-    Money zeroResult45 = absResult44.zero();
-    assertSame(bigDecimal, zeroResult45.abs().getAmount());
-    assertSame(bigDecimal, absResult16.getAmount());
-    assertSame(bigDecimal, absResult26.getAmount());
-    assertSame(bigDecimal, absResult40.getAmount());
-    assertSame(bigDecimal, absResult56.getAmount());
-    Money zeroResult46 = zeroResult16.zero();
-    assertSame(bigDecimal, zeroResult46.abs().getAmount());
-    Money zeroResult47 = zeroResult17.zero();
-    assertSame(bigDecimal, zeroResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult57.getAmount());
-    Money zeroResult48 = zeroResult18.zero();
-    assertSame(bigDecimal, zeroResult48.abs().getAmount());
-    Money zeroResult49 = zeroResult19.zero();
-    assertSame(bigDecimal, zeroResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult42.getAmount());
-    assertSame(bigDecimal, absResult58.getAmount());
-    Money zeroResult50 = zeroResult20.zero();
-    assertSame(bigDecimal, zeroResult50.abs().getAmount());
-    Money zeroResult51 = zeroResult21.zero();
-    assertSame(bigDecimal, zeroResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult59.getAmount());
-    Money zeroResult52 = zeroResult22.zero();
-    assertSame(bigDecimal, zeroResult52.abs().getAmount());
-    Money zeroResult53 = zeroResult23.zero();
-    assertSame(bigDecimal, zeroResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult29.getAmount());
-    assertSame(bigDecimal, absResult44.getAmount());
-    assertSame(bigDecimal, absResult60.getAmount());
-    Money zeroResult54 = zeroResult24.zero();
-    assertSame(bigDecimal, zeroResult54.abs().getAmount());
-    Money zeroResult55 = zeroResult25.zero();
-    assertSame(bigDecimal, zeroResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult61.getAmount());
-    Money zeroResult56 = zeroResult26.zero();
-    assertSame(bigDecimal, zeroResult56.abs().getAmount());
-    Money zeroResult57 = zeroResult27.zero();
-    assertSame(bigDecimal, zeroResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult46.getAmount());
-    assertSame(bigDecimal, absResult62.getAmount());
-    Money zeroResult58 = zeroResult28.zero();
-    assertSame(bigDecimal, zeroResult58.abs().getAmount());
-    Money zeroResult59 = zeroResult29.zero();
-    assertSame(bigDecimal, zeroResult59.abs().getAmount());
-    Money zeroResult60 = zeroResult15.zero();
-    assertSame(bigDecimal, zeroResult60.abs().getAmount());
-    Money zeroResult61 = zeroResult30.zero();
-    assertSame(bigDecimal, zeroResult61.abs().getAmount());
-    assertSame(bigDecimal, zeroResult.getAmount());
-    assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, zeroResult4.getAmount());
-    assertSame(bigDecimal, zeroResult8.getAmount());
-    assertSame(bigDecimal, zeroResult16.getAmount());
-    assertSame(bigDecimal, zeroResult31.getAmount());
-    assertSame(bigDecimal, absResult6.zero().getAmount());
-    assertSame(bigDecimal, absResult11.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.getAmount());
-    assertSame(bigDecimal, absResult15.zero().getAmount());
-    assertSame(bigDecimal, absResult19.zero().getAmount());
-    assertSame(bigDecimal, zeroResult17.getAmount());
-    assertSame(bigDecimal, zeroResult33.getAmount());
-    assertSame(bigDecimal, absResult22.zero().getAmount());
-    assertSame(bigDecimal, absResult25.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.getAmount());
-    assertSame(bigDecimal, absResult28.zero().getAmount());
-    assertSame(bigDecimal, absResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult9.getAmount());
-    assertSame(bigDecimal, zeroResult18.getAmount());
-    assertSame(bigDecimal, zeroResult35.getAmount());
-    assertSame(bigDecimal, absResult33.zero().getAmount());
-    assertSame(bigDecimal, absResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.getAmount());
-    assertSame(bigDecimal, absResult37.zero().getAmount());
-    assertSame(bigDecimal, absResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult19.getAmount());
-    assertSame(bigDecimal, zeroResult37.getAmount());
-    assertSame(bigDecimal, absResult41.zero().getAmount());
-    assertSame(bigDecimal, absResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.getAmount());
-    assertSame(bigDecimal, absResult45.zero().getAmount());
-    assertSame(bigDecimal, absResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult5.getAmount());
-    assertSame(bigDecimal, zeroResult10.getAmount());
-    assertSame(bigDecimal, zeroResult20.getAmount());
-    assertSame(bigDecimal, zeroResult39.getAmount());
-    assertSame(bigDecimal, absResult48.zero().getAmount());
-    assertSame(bigDecimal, absResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.getAmount());
-    assertSame(bigDecimal, absResult50.zero().getAmount());
-    assertSame(bigDecimal, absResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult21.getAmount());
-    assertSame(bigDecimal, zeroResult41.getAmount());
-    assertSame(bigDecimal, absResult52.zero().getAmount());
-    assertSame(bigDecimal, absResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.getAmount());
-    assertSame(bigDecimal, absResult54.zero().getAmount());
-    assertSame(bigDecimal, absResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult11.getAmount());
-    assertSame(bigDecimal, zeroResult22.getAmount());
-    assertSame(bigDecimal, zeroResult43.getAmount());
-    assertSame(bigDecimal, absResult56.zero().getAmount());
-    assertSame(bigDecimal, absResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.getAmount());
-    assertSame(bigDecimal, absResult58.zero().getAmount());
-    assertSame(bigDecimal, absResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult23.getAmount());
-    assertSame(bigDecimal, zeroResult45.getAmount());
-    assertSame(bigDecimal, absResult60.zero().getAmount());
-    assertSame(bigDecimal, absResult61.zero().getAmount());
-    assertSame(bigDecimal, absResult46.zero().getAmount());
-    assertSame(bigDecimal, absResult62.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult6.getAmount());
-    assertSame(bigDecimal, zeroResult12.getAmount());
-    assertSame(bigDecimal, zeroResult24.getAmount());
-    assertSame(bigDecimal, zeroResult46.getAmount());
-    assertSame(bigDecimal, zeroResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.getAmount());
-    assertSame(bigDecimal, zeroResult33.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.zero().getAmount());
-    assertSame(bigDecimal, zeroResult25.getAmount());
-    assertSame(bigDecimal, zeroResult48.getAmount());
-    assertSame(bigDecimal, zeroResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.getAmount());
-    assertSame(bigDecimal, zeroResult37.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.zero().getAmount());
-    assertSame(bigDecimal, zeroResult13.getAmount());
-    assertSame(bigDecimal, zeroResult26.getAmount());
-    assertSame(bigDecimal, zeroResult50.getAmount());
-    assertSame(bigDecimal, zeroResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.getAmount());
-    assertSame(bigDecimal, zeroResult41.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.zero().getAmount());
-    assertSame(bigDecimal, zeroResult27.getAmount());
-    assertSame(bigDecimal, zeroResult52.getAmount());
-    assertSame(bigDecimal, zeroResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.getAmount());
-    assertSame(bigDecimal, zeroResult45.zero().getAmount());
-    assertSame(bigDecimal, zeroResult7.getAmount());
-    assertSame(bigDecimal, zeroResult14.getAmount());
-    assertSame(bigDecimal, zeroResult28.getAmount());
-    assertSame(bigDecimal, zeroResult54.getAmount());
-    assertSame(bigDecimal, zeroResult46.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.getAmount());
-    assertSame(bigDecimal, zeroResult48.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult29.getAmount());
-    assertSame(bigDecimal, zeroResult56.getAmount());
-    assertSame(bigDecimal, zeroResult50.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.getAmount());
-    assertSame(bigDecimal, zeroResult52.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult15.getAmount());
-    assertSame(bigDecimal, zeroResult30.getAmount());
-    assertSame(bigDecimal, zeroResult58.getAmount());
-    assertSame(bigDecimal, zeroResult54.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.getAmount());
-    assertSame(bigDecimal, zeroResult56.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.getAmount());
-    assertSame(bigDecimal, zeroResult61.getAmount());
-    assertSame(bigDecimal, zeroResult58.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.zero().getAmount());
-    assertSame(bigDecimal, zeroResult61.zero().getAmount());
-  }
-
-  /**
-   * Test {@link OfferImpl#setOrderMinSubTotal(Money)}.
-   * <ul>
-   *   <li>When {@link Money}.</li>
-   *   <li>Then {@link OfferImpl} (default constructor)
-   * {@link OfferImpl#orderMinSubTotal} is {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#setOrderMinSubTotal(Money)}
-   */
-  @Test
-  public void testSetOrderMinSubTotal_whenMoney_thenOfferImplOrderMinSubTotalIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-
-    // Act
-    offerImpl.setOrderMinSubTotal(mock(Money.class));
-
-    // Assert
-    assertNull(offerImpl.orderMinSubTotal);
-    assertNull(offerImpl.getOrderMinSubTotal());
-  }
-
-  /**
-   * Test {@link OfferImpl#getTargetMinSubTotal()}.
-   * <p>
-   * Method under test: {@link OfferImpl#getTargetMinSubTotal()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetTargetMinSubTotal() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1842 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferImpl()).getTargetMinSubTotal();
-  }
-
-  /**
-   * Test {@link OfferImpl#getTargetMinSubTotal()}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor) AdjustmentType is
-   * {@link OfferAdjustmentType#FUTURE_CREDIT}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getTargetMinSubTotal()}
-   */
-  @Test
-  public void testGetTargetMinSubTotal_givenOfferImplAdjustmentTypeIsFuture_credit() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl.setMaxUsesPerOrder(3);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    Money orderMinSubTotal = new Money();
-    offerImpl.setOrderMinSubTotal(orderMinSubTotal);
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
-    offerImpl.setTargetMinSubTotal(new Money());
-
-    // Act and Assert
-    assertEquals(orderMinSubTotal, offerImpl.getTargetMinSubTotal());
-  }
-
-  /**
-   * Test {@link OfferImpl#getTargetMinSubTotal()}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getTargetMinSubTotal()}
-   */
-  @Test
-  public void testGetTargetMinSubTotal_givenOfferImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertNull((new OfferImpl()).getTargetMinSubTotal());
-  }
-
-  /**
-   * Test {@link OfferImpl#getTargetMinSubTotal()}.
-   * <ul>
-   *   <li>Then calls {@link OfferAdjustmentType#getType()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getTargetMinSubTotal()}
-   */
-  @Test
-  public void testGetTargetMinSubTotal_thenCallsGetType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferAdjustmentType adjustmentType = mock(OfferAdjustmentType.class);
-    when(adjustmentType.getType()).thenReturn("Type");
-
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(adjustmentType);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl.setMaxUsesPerOrder(3);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    Money orderMinSubTotal = new Money();
-    offerImpl.setOrderMinSubTotal(orderMinSubTotal);
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
-    offerImpl.setTargetMinSubTotal(new Money());
-
-    // Act
-    Money actualTargetMinSubTotal = offerImpl.getTargetMinSubTotal();
-
-    // Assert
-    verify(adjustmentType).getType();
-    assertEquals(orderMinSubTotal, actualTargetMinSubTotal);
-  }
-
-  /**
-   * Test {@link OfferImpl#setTargetMinSubTotal(Money)}.
-   * <p>
-   * Method under test: {@link OfferImpl#setTargetMinSubTotal(Money)}
-   */
-  @Test
-  public void testSetTargetMinSubTotal() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl.setMaxUsesPerOrder(3);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    Money orderMinSubTotal = new Money();
-    offerImpl.setOrderMinSubTotal(orderMinSubTotal);
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
-
-    // Act
-    offerImpl.setTargetMinSubTotal(null);
-
-    // Assert
-    assertNull(offerImpl.targetMinSubTotal);
-    assertNull(offerImpl.getTargetMinSubTotal());
-    Money qualifyingItemSubTotal = offerImpl.getQualifyingItemSubTotal();
-    Money absResult = qualifyingItemSubTotal.abs();
-    Money absResult2 = absResult.abs();
-    Money absResult3 = absResult2.abs();
-    Money absResult4 = absResult3.abs();
-    Money absResult5 = absResult4.abs();
-    Money absResult6 = absResult5.abs();
-    assertEquals(orderMinSubTotal, absResult6.abs());
-    Money absResult7 = qualifyingItemSubTotal.zero().abs();
-    Money absResult8 = absResult7.abs();
-    Money absResult9 = absResult8.abs();
-    Money absResult10 = absResult9.abs();
-    Money absResult11 = absResult10.abs();
-    assertEquals(orderMinSubTotal, absResult11.abs());
-    Money zeroResult = absResult.zero();
-    Money absResult12 = zeroResult.abs();
-    Money absResult13 = absResult12.abs();
-    Money absResult14 = absResult13.abs();
-    Money absResult15 = absResult14.abs();
-    assertEquals(orderMinSubTotal, absResult15.abs());
-    Money zeroResult2 = offerImpl.getOrderMinSubTotal().zero();
-    Money zeroResult3 = zeroResult2.zero();
-    Money absResult16 = zeroResult3.abs();
-    Money absResult17 = absResult16.abs();
-    Money absResult18 = absResult17.abs();
-    Money absResult19 = absResult18.abs();
-    assertEquals(orderMinSubTotal, absResult19.abs());
-    Money zeroResult4 = absResult2.zero();
-    Money absResult20 = zeroResult4.abs();
-    Money absResult21 = absResult20.abs();
-    Money absResult22 = absResult21.abs();
-    assertEquals(orderMinSubTotal, absResult22.abs());
-    Money zeroResult5 = absResult7.zero();
-    Money absResult23 = zeroResult5.abs();
-    Money absResult24 = absResult23.abs();
-    Money absResult25 = absResult24.abs();
-    assertEquals(orderMinSubTotal, absResult25.abs());
-    Money zeroResult6 = zeroResult.zero();
-    Money absResult26 = zeroResult6.abs();
-    Money absResult27 = absResult26.abs();
-    Money absResult28 = absResult27.abs();
-    assertEquals(orderMinSubTotal, absResult28.abs());
-    Money zeroResult7 = zeroResult3.zero();
-    Money absResult29 = zeroResult7.abs();
-    Money absResult30 = absResult29.abs();
-    Money absResult31 = absResult30.abs();
-    assertEquals(orderMinSubTotal, absResult31.abs());
-    Money zeroResult8 = absResult3.zero();
-    Money absResult32 = zeroResult8.abs();
-    Money absResult33 = absResult32.abs();
-    assertEquals(orderMinSubTotal, absResult33.abs());
-    Money zeroResult9 = absResult8.zero();
-    Money absResult34 = zeroResult9.abs();
-    Money absResult35 = absResult34.abs();
-    assertEquals(orderMinSubTotal, absResult35.abs());
-    Money zeroResult10 = absResult12.zero();
-    Money absResult36 = zeroResult10.abs();
-    Money absResult37 = absResult36.abs();
-    assertEquals(orderMinSubTotal, absResult37.abs());
-    Money zeroResult11 = absResult16.zero();
-    Money absResult38 = zeroResult11.abs();
-    Money absResult39 = absResult38.abs();
-    assertEquals(orderMinSubTotal, absResult39.abs());
-    Money zeroResult12 = zeroResult4.zero();
-    Money absResult40 = zeroResult12.abs();
-    Money absResult41 = absResult40.abs();
-    assertEquals(orderMinSubTotal, absResult41.abs());
-    Money absResult42 = zeroResult5.zero().abs().abs();
-    assertEquals(orderMinSubTotal, absResult42.abs());
-    Money zeroResult13 = zeroResult6.zero();
-    Money absResult43 = zeroResult13.abs();
-    Money absResult44 = absResult43.abs();
-    assertEquals(orderMinSubTotal, absResult44.abs());
-    Money zeroResult14 = zeroResult7.zero();
-    Money absResult45 = zeroResult14.abs();
-    Money absResult46 = absResult45.abs();
-    assertEquals(orderMinSubTotal, absResult46.abs());
-    Money zeroResult15 = absResult4.zero();
-    Money absResult47 = zeroResult15.abs();
-    assertEquals(orderMinSubTotal, absResult47.abs());
-    Money zeroResult16 = absResult9.zero();
-    Money absResult48 = zeroResult16.abs();
-    assertEquals(orderMinSubTotal, absResult48.abs());
-    Money zeroResult17 = absResult13.zero();
-    Money absResult49 = zeroResult17.abs();
-    assertEquals(orderMinSubTotal, absResult49.abs());
-    Money zeroResult18 = absResult17.zero();
-    Money absResult50 = zeroResult18.abs();
-    assertEquals(orderMinSubTotal, absResult50.abs());
-    Money zeroResult19 = absResult20.zero();
-    Money absResult51 = zeroResult19.abs();
-    assertEquals(orderMinSubTotal, absResult51.abs());
-    Money zeroResult20 = absResult23.zero();
-    Money absResult52 = zeroResult20.abs();
-    assertEquals(orderMinSubTotal, absResult52.abs());
-    Money zeroResult21 = absResult26.zero();
-    Money absResult53 = zeroResult21.abs();
-    assertEquals(orderMinSubTotal, absResult53.abs());
-    Money zeroResult22 = absResult29.zero();
-    Money absResult54 = zeroResult22.abs();
-    assertEquals(orderMinSubTotal, absResult54.abs());
-    Money zeroResult23 = zeroResult8.zero();
-    Money absResult55 = zeroResult23.abs();
-    assertEquals(orderMinSubTotal, absResult55.abs());
-    Money zeroResult24 = zeroResult9.zero();
-    Money absResult56 = zeroResult24.abs();
-    assertEquals(orderMinSubTotal, absResult56.abs());
-    Money zeroResult25 = zeroResult10.zero();
-    Money absResult57 = zeroResult25.abs();
-    assertEquals(orderMinSubTotal, absResult57.abs());
-    Money zeroResult26 = zeroResult11.zero();
-    Money absResult58 = zeroResult26.abs();
-    assertEquals(orderMinSubTotal, absResult58.abs());
-    Money zeroResult27 = zeroResult12.zero();
-    Money absResult59 = zeroResult27.abs();
-    assertEquals(orderMinSubTotal, absResult59.abs());
-    Money zeroResult28 = zeroResult2.abs().zero().zero();
-    Money zeroResult29 = zeroResult28.zero();
-    Money absResult60 = zeroResult29.abs();
-    assertEquals(orderMinSubTotal, absResult60.abs());
-    Money zeroResult30 = zeroResult13.zero();
-    Money absResult61 = zeroResult30.abs();
-    assertEquals(orderMinSubTotal, absResult61.abs());
-    Money zeroResult31 = zeroResult14.zero();
-    Money absResult62 = zeroResult31.abs();
-    assertEquals(orderMinSubTotal, absResult62.abs());
-    Money zeroResult32 = absResult5.zero();
-    assertEquals(orderMinSubTotal, zeroResult32.abs());
-    Money zeroResult33 = absResult10.zero();
-    assertEquals(orderMinSubTotal, zeroResult33.abs());
-    Money zeroResult34 = absResult14.zero();
-    assertEquals(orderMinSubTotal, zeroResult34.abs());
-    Money zeroResult35 = absResult18.zero();
-    assertEquals(orderMinSubTotal, zeroResult35.abs());
-    Money zeroResult36 = absResult21.zero();
-    assertEquals(orderMinSubTotal, zeroResult36.abs());
-    Money zeroResult37 = absResult24.zero();
-    assertEquals(orderMinSubTotal, zeroResult37.abs());
-    Money zeroResult38 = absResult27.zero();
-    assertEquals(orderMinSubTotal, zeroResult38.abs());
-    Money zeroResult39 = absResult30.zero();
-    assertEquals(orderMinSubTotal, zeroResult39.abs());
-    Money zeroResult40 = absResult32.zero();
-    assertEquals(orderMinSubTotal, zeroResult40.abs());
-    Money zeroResult41 = absResult34.zero();
-    assertEquals(orderMinSubTotal, zeroResult41.abs());
-    Money zeroResult42 = absResult36.zero();
-    assertEquals(orderMinSubTotal, zeroResult42.abs());
-    Money zeroResult43 = absResult38.zero();
-    assertEquals(orderMinSubTotal, zeroResult43.abs());
-    Money zeroResult44 = absResult40.zero();
-    assertEquals(orderMinSubTotal, zeroResult44.abs());
-    Money zeroResult45 = absResult43.zero();
-    assertEquals(orderMinSubTotal, zeroResult45.abs());
-    Money zeroResult46 = absResult45.zero();
-    assertEquals(orderMinSubTotal, zeroResult46.abs());
-    Money zeroResult47 = zeroResult15.zero();
-    assertEquals(orderMinSubTotal, zeroResult47.abs());
-    Money zeroResult48 = zeroResult16.zero();
-    assertEquals(orderMinSubTotal, zeroResult48.abs());
-    Money zeroResult49 = zeroResult17.zero();
-    assertEquals(orderMinSubTotal, zeroResult49.abs());
-    Money zeroResult50 = zeroResult18.zero();
-    assertEquals(orderMinSubTotal, zeroResult50.abs());
-    Money zeroResult51 = zeroResult19.zero();
-    assertEquals(orderMinSubTotal, zeroResult51.abs());
-    Money zeroResult52 = zeroResult20.zero();
-    assertEquals(orderMinSubTotal, zeroResult52.abs());
-    Money zeroResult53 = zeroResult21.zero();
-    assertEquals(orderMinSubTotal, zeroResult53.abs());
-    Money zeroResult54 = zeroResult22.zero();
-    assertEquals(orderMinSubTotal, zeroResult54.abs());
-    Money zeroResult55 = zeroResult23.zero();
-    assertEquals(orderMinSubTotal, zeroResult55.abs());
-    Money zeroResult56 = zeroResult24.zero();
-    assertEquals(orderMinSubTotal, zeroResult56.abs());
-    Money zeroResult57 = zeroResult25.zero();
-    assertEquals(orderMinSubTotal, zeroResult57.abs());
-    Money zeroResult58 = zeroResult26.zero();
-    assertEquals(orderMinSubTotal, zeroResult58.abs());
-    Money zeroResult59 = zeroResult27.zero();
-    assertEquals(orderMinSubTotal, zeroResult59.abs());
-    Money zeroResult60 = zeroResult29.zero();
-    assertEquals(orderMinSubTotal, zeroResult60.abs());
-    Money zeroResult61 = zeroResult30.zero();
-    assertEquals(orderMinSubTotal, zeroResult61.abs());
-    Money zeroResult62 = zeroResult31.zero();
-    assertEquals(orderMinSubTotal, zeroResult62.abs());
-    assertEquals(orderMinSubTotal, absResult6.zero());
-    assertEquals(orderMinSubTotal, absResult11.zero());
-    assertEquals(orderMinSubTotal, absResult15.zero());
-    assertEquals(orderMinSubTotal, absResult19.zero());
-    assertEquals(orderMinSubTotal, absResult22.zero());
-    assertEquals(orderMinSubTotal, absResult25.zero());
-    assertEquals(orderMinSubTotal, absResult28.zero());
-    assertEquals(orderMinSubTotal, absResult31.zero());
-    assertEquals(orderMinSubTotal, absResult33.zero());
-    assertEquals(orderMinSubTotal, absResult35.zero());
-    assertEquals(orderMinSubTotal, absResult37.zero());
-    assertEquals(orderMinSubTotal, absResult39.zero());
-    assertEquals(orderMinSubTotal, absResult41.zero());
-    assertEquals(orderMinSubTotal, absResult44.zero());
-    assertEquals(orderMinSubTotal, absResult46.zero());
-    assertEquals(orderMinSubTotal, absResult47.zero());
-    assertEquals(orderMinSubTotal, absResult48.zero());
-    assertEquals(orderMinSubTotal, absResult49.zero());
-    assertEquals(orderMinSubTotal, absResult50.zero());
-    assertEquals(orderMinSubTotal, absResult51.zero());
-    assertEquals(orderMinSubTotal, absResult52.zero());
-    assertEquals(orderMinSubTotal, absResult53.zero());
-    assertEquals(orderMinSubTotal, absResult54.zero());
-    assertEquals(orderMinSubTotal, absResult55.zero());
-    assertEquals(orderMinSubTotal, absResult56.zero());
-    assertEquals(orderMinSubTotal, absResult57.zero());
-    assertEquals(orderMinSubTotal, absResult58.zero());
-    assertEquals(orderMinSubTotal, absResult59.zero());
-    assertEquals(orderMinSubTotal, absResult60.zero());
-    assertEquals(orderMinSubTotal, absResult61.zero());
-    assertEquals(orderMinSubTotal, absResult62.zero());
-    assertEquals(orderMinSubTotal, zeroResult32.zero());
-    assertEquals(orderMinSubTotal, zeroResult33.zero());
-    assertEquals(orderMinSubTotal, zeroResult34.zero());
-    assertEquals(orderMinSubTotal, zeroResult35.zero());
-    assertEquals(orderMinSubTotal, zeroResult36.zero());
-    assertEquals(orderMinSubTotal, zeroResult37.zero());
-    assertEquals(orderMinSubTotal, zeroResult38.zero());
-    assertEquals(orderMinSubTotal, zeroResult39.zero());
-    assertEquals(orderMinSubTotal, zeroResult40.zero());
-    assertEquals(orderMinSubTotal, zeroResult41.zero());
-    assertEquals(orderMinSubTotal, zeroResult42.zero());
-    assertEquals(orderMinSubTotal, zeroResult43.zero());
-    assertEquals(orderMinSubTotal, zeroResult44.zero());
-    assertEquals(orderMinSubTotal, zeroResult28.abs().zero().zero());
-    assertEquals(orderMinSubTotal, zeroResult45.zero());
-    assertEquals(orderMinSubTotal, zeroResult46.zero());
-    assertEquals(orderMinSubTotal, zeroResult47.zero());
-    assertEquals(orderMinSubTotal, zeroResult48.zero());
-    assertEquals(orderMinSubTotal, zeroResult49.zero());
-    assertEquals(orderMinSubTotal, zeroResult50.zero());
-    assertEquals(orderMinSubTotal, zeroResult51.zero());
-    assertEquals(orderMinSubTotal, zeroResult52.zero());
-    assertEquals(orderMinSubTotal, zeroResult53.zero());
-    assertEquals(orderMinSubTotal, zeroResult54.zero());
-    assertEquals(orderMinSubTotal, zeroResult55.zero());
-    assertEquals(orderMinSubTotal, zeroResult56.zero());
-    assertEquals(orderMinSubTotal, zeroResult57.zero());
-    assertEquals(orderMinSubTotal, zeroResult58.zero());
-    assertEquals(orderMinSubTotal, zeroResult59.zero());
-    assertEquals(orderMinSubTotal, zeroResult60.zero());
-    assertEquals(orderMinSubTotal, zeroResult61.zero());
-    assertEquals(orderMinSubTotal, zeroResult62.zero());
-    BigDecimal bigDecimal = offerImpl.qualifyingItemSubTotal;
-    assertSame(bigDecimal, absResult6.getAmount());
-    assertSame(bigDecimal, absResult11.getAmount());
-    assertSame(bigDecimal, absResult15.getAmount());
-    assertSame(bigDecimal, absResult19.getAmount());
-    assertSame(bigDecimal, absResult22.getAmount());
-    assertSame(bigDecimal, absResult25.getAmount());
-    assertSame(bigDecimal, absResult28.getAmount());
-    assertSame(bigDecimal, absResult31.getAmount());
-    assertSame(bigDecimal, absResult33.getAmount());
-    assertSame(bigDecimal, absResult35.getAmount());
-    assertSame(bigDecimal, absResult37.getAmount());
-    assertSame(bigDecimal, absResult39.getAmount());
-    assertSame(bigDecimal, absResult41.getAmount());
-    assertSame(bigDecimal, absResult42.getAmount());
-    assertSame(bigDecimal, absResult44.getAmount());
-    assertSame(bigDecimal, absResult46.getAmount());
-    assertSame(bigDecimal, absResult47.getAmount());
-    assertSame(bigDecimal, absResult48.getAmount());
-    assertSame(bigDecimal, absResult49.getAmount());
-    assertSame(bigDecimal, absResult50.getAmount());
-    assertSame(bigDecimal, absResult51.getAmount());
-    assertSame(bigDecimal, absResult52.getAmount());
-    assertSame(bigDecimal, absResult53.getAmount());
-    assertSame(bigDecimal, absResult54.getAmount());
-    assertSame(bigDecimal, absResult55.getAmount());
-    assertSame(bigDecimal, absResult56.getAmount());
-    assertSame(bigDecimal, absResult57.getAmount());
-    assertSame(bigDecimal, absResult58.getAmount());
-    assertSame(bigDecimal, absResult59.getAmount());
-    assertSame(bigDecimal, absResult60.getAmount());
-    assertSame(bigDecimal, absResult61.getAmount());
-    assertSame(bigDecimal, absResult62.getAmount());
-    assertSame(bigDecimal, zeroResult32.getAmount());
-    assertSame(bigDecimal, zeroResult33.getAmount());
-    assertSame(bigDecimal, zeroResult34.getAmount());
-    assertSame(bigDecimal, zeroResult35.getAmount());
-    assertSame(bigDecimal, zeroResult36.getAmount());
-    assertSame(bigDecimal, zeroResult37.getAmount());
-    assertSame(bigDecimal, zeroResult38.getAmount());
-    assertSame(bigDecimal, zeroResult39.getAmount());
-    assertSame(bigDecimal, zeroResult40.getAmount());
-    assertSame(bigDecimal, zeroResult41.getAmount());
-    assertSame(bigDecimal, zeroResult42.getAmount());
-    assertSame(bigDecimal, zeroResult43.getAmount());
-    assertSame(bigDecimal, zeroResult44.getAmount());
-    assertSame(bigDecimal, zeroResult45.getAmount());
-    assertSame(bigDecimal, zeroResult46.getAmount());
-    assertSame(bigDecimal, zeroResult47.getAmount());
-    assertSame(bigDecimal, zeroResult48.getAmount());
-    assertSame(bigDecimal, zeroResult49.getAmount());
-    assertSame(bigDecimal, zeroResult50.getAmount());
-    assertSame(bigDecimal, zeroResult51.getAmount());
-    assertSame(bigDecimal, zeroResult52.getAmount());
-    assertSame(bigDecimal, zeroResult53.getAmount());
-    assertSame(bigDecimal, zeroResult54.getAmount());
-    assertSame(bigDecimal, zeroResult55.getAmount());
-    assertSame(bigDecimal, zeroResult56.getAmount());
-    assertSame(bigDecimal, zeroResult57.getAmount());
-    assertSame(bigDecimal, zeroResult58.getAmount());
-    assertSame(bigDecimal, zeroResult59.getAmount());
-    assertSame(bigDecimal, zeroResult60.getAmount());
-    assertSame(bigDecimal, zeroResult61.getAmount());
-    assertSame(bigDecimal, zeroResult62.getAmount());
-  }
-
-  /**
-   * Test {@link OfferImpl#setTargetMinSubTotal(Money)}.
-   * <p>
-   * Method under test: {@link OfferImpl#setTargetMinSubTotal(Money)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetTargetMinSubTotal2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2791 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-
-    // Act
-    offerImpl2.setTargetMinSubTotal(new Money());
-  }
-
-  /**
-   * Test {@link OfferImpl#setTargetMinSubTotal(Money)}.
-   * <ul>
-   *   <li>Then {@link OfferImpl} (default constructor)
-   * {@link OfferImpl#targetMinSubTotal} is {@link BigDecimal#BigDecimal(String)}
-   * with {@code 0.00}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#setTargetMinSubTotal(Money)}
-   */
-  @Test
-  public void testSetTargetMinSubTotal_thenOfferImplTargetMinSubTotalIsBigDecimalWith000() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    Money targetMinSubTotal = new Money();
-
-    // Act
-    offerImpl.setTargetMinSubTotal(targetMinSubTotal);
-
-    // Assert
-    assertEquals(new BigDecimal("0.00"), offerImpl.targetMinSubTotal);
-    BigDecimal bigDecimal = offerImpl.targetMinSubTotal;
-    Money absResult = targetMinSubTotal.abs();
-    assertSame(bigDecimal, absResult.getAmount());
-    Money absResult2 = absResult.abs();
-    assertSame(bigDecimal, absResult2.getAmount());
-    Money absResult3 = absResult2.abs();
-    assertSame(bigDecimal, absResult3.getAmount());
-    Money absResult4 = absResult3.abs();
-    assertSame(bigDecimal, absResult4.getAmount());
-    Money absResult5 = absResult4.abs();
-    assertSame(bigDecimal, absResult5.getAmount());
-    Money absResult6 = absResult5.abs();
-    assertSame(bigDecimal, absResult6.getAmount());
-    assertSame(bigDecimal, absResult6.abs().getAmount());
-    Money zeroResult = targetMinSubTotal.zero();
-    Money absResult7 = zeroResult.abs();
-    Money absResult8 = absResult7.abs();
-    Money absResult9 = absResult8.abs();
-    Money absResult10 = absResult9.abs();
-    Money absResult11 = absResult10.abs();
-    assertSame(bigDecimal, absResult11.abs().getAmount());
-    assertSame(bigDecimal, absResult11.getAmount());
-    Money zeroResult2 = absResult.zero();
-    Money absResult12 = zeroResult2.abs();
-    Money absResult13 = absResult12.abs();
-    Money absResult14 = absResult13.abs();
-    Money absResult15 = absResult14.abs();
-    assertSame(bigDecimal, absResult15.abs().getAmount());
-    Money zeroResult3 = zeroResult.zero();
-    Money absResult16 = zeroResult3.abs();
-    Money absResult17 = absResult16.abs();
-    Money absResult18 = absResult17.abs();
-    Money absResult19 = absResult18.abs();
-    assertSame(bigDecimal, absResult19.abs().getAmount());
-    assertSame(bigDecimal, absResult10.getAmount());
-    assertSame(bigDecimal, absResult15.getAmount());
-    Money zeroResult4 = absResult2.zero();
-    Money absResult20 = zeroResult4.abs();
-    Money absResult21 = absResult20.abs();
-    Money absResult22 = absResult21.abs();
-    assertSame(bigDecimal, absResult22.abs().getAmount());
-    Money zeroResult5 = absResult7.zero();
-    Money absResult23 = zeroResult5.abs();
-    Money absResult24 = absResult23.abs();
-    Money absResult25 = absResult24.abs();
-    assertSame(bigDecimal, absResult25.abs().getAmount());
-    assertSame(bigDecimal, absResult19.getAmount());
-    Money zeroResult6 = zeroResult2.zero();
-    Money absResult26 = zeroResult6.abs();
-    Money absResult27 = absResult26.abs();
-    Money absResult28 = absResult27.abs();
-    assertSame(bigDecimal, absResult28.abs().getAmount());
-    Money zeroResult7 = zeroResult3.zero();
-    Money absResult29 = zeroResult7.abs();
-    Money absResult30 = absResult29.abs();
-    Money absResult31 = absResult30.abs();
-    assertSame(bigDecimal, absResult31.abs().getAmount());
-    assertSame(bigDecimal, absResult9.getAmount());
-    assertSame(bigDecimal, absResult14.getAmount());
-    assertSame(bigDecimal, absResult22.getAmount());
-    Money zeroResult8 = absResult3.zero();
-    Money absResult32 = zeroResult8.abs();
-    Money absResult33 = absResult32.abs();
-    assertSame(bigDecimal, absResult33.abs().getAmount());
-    Money zeroResult9 = absResult8.zero();
-    Money absResult34 = zeroResult9.abs();
-    Money absResult35 = absResult34.abs();
-    assertSame(bigDecimal, absResult35.abs().getAmount());
-    assertSame(bigDecimal, absResult25.getAmount());
-    Money zeroResult10 = absResult12.zero();
-    Money absResult36 = zeroResult10.abs();
-    Money absResult37 = absResult36.abs();
-    assertSame(bigDecimal, absResult37.abs().getAmount());
-    Money zeroResult11 = absResult16.zero();
-    Money absResult38 = zeroResult11.abs();
-    Money absResult39 = absResult38.abs();
-    assertSame(bigDecimal, absResult39.abs().getAmount());
-    assertSame(bigDecimal, absResult18.getAmount());
-    assertSame(bigDecimal, absResult28.getAmount());
-    Money zeroResult12 = zeroResult4.zero();
-    Money absResult40 = zeroResult12.abs();
-    Money absResult41 = absResult40.abs();
-    assertSame(bigDecimal, absResult41.abs().getAmount());
-    Money zeroResult13 = zeroResult5.zero();
-    Money absResult42 = zeroResult13.abs();
-    Money absResult43 = absResult42.abs();
-    assertSame(bigDecimal, absResult43.abs().getAmount());
-    assertSame(bigDecimal, absResult31.getAmount());
-    Money zeroResult14 = zeroResult6.zero();
-    Money absResult44 = zeroResult14.abs();
-    Money absResult45 = absResult44.abs();
-    assertSame(bigDecimal, absResult45.abs().getAmount());
-    Money zeroResult15 = zeroResult7.zero();
-    Money absResult46 = zeroResult15.abs();
-    Money absResult47 = absResult46.abs();
-    assertSame(bigDecimal, absResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult8.getAmount());
-    assertSame(bigDecimal, absResult13.getAmount());
-    assertSame(bigDecimal, absResult21.getAmount());
-    assertSame(bigDecimal, absResult33.getAmount());
-    Money zeroResult16 = absResult4.zero();
-    Money absResult48 = zeroResult16.abs();
-    assertSame(bigDecimal, absResult48.abs().getAmount());
-    Money zeroResult17 = absResult9.zero();
-    Money absResult49 = zeroResult17.abs();
-    assertSame(bigDecimal, absResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult35.getAmount());
-    Money zeroResult18 = absResult13.zero();
-    Money absResult50 = zeroResult18.abs();
-    assertSame(bigDecimal, absResult50.abs().getAmount());
-    Money zeroResult19 = absResult17.zero();
-    Money absResult51 = zeroResult19.abs();
-    assertSame(bigDecimal, absResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult24.getAmount());
-    assertSame(bigDecimal, absResult37.getAmount());
-    Money zeroResult20 = absResult20.zero();
-    Money absResult52 = zeroResult20.abs();
-    assertSame(bigDecimal, absResult52.abs().getAmount());
-    Money zeroResult21 = absResult23.zero();
-    Money absResult53 = zeroResult21.abs();
-    assertSame(bigDecimal, absResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult39.getAmount());
-    Money zeroResult22 = absResult26.zero();
-    Money absResult54 = zeroResult22.abs();
-    assertSame(bigDecimal, absResult54.abs().getAmount());
-    Money zeroResult23 = absResult29.zero();
-    Money absResult55 = zeroResult23.abs();
-    assertSame(bigDecimal, absResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult17.getAmount());
-    assertSame(bigDecimal, absResult27.getAmount());
-    assertSame(bigDecimal, absResult41.getAmount());
-    Money zeroResult24 = zeroResult8.zero();
-    Money absResult56 = zeroResult24.abs();
-    assertSame(bigDecimal, absResult56.abs().getAmount());
-    Money zeroResult25 = zeroResult9.zero();
-    Money absResult57 = zeroResult25.abs();
-    assertSame(bigDecimal, absResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult43.getAmount());
-    Money zeroResult26 = zeroResult10.zero();
-    Money absResult58 = zeroResult26.abs();
-    assertSame(bigDecimal, absResult58.abs().getAmount());
-    Money zeroResult27 = zeroResult11.zero();
-    Money absResult59 = zeroResult27.abs();
-    assertSame(bigDecimal, absResult59.abs().getAmount());
-    assertSame(bigDecimal, absResult30.getAmount());
-    assertSame(bigDecimal, absResult45.getAmount());
-    Money zeroResult28 = zeroResult12.zero();
-    Money absResult60 = zeroResult28.abs();
-    assertSame(bigDecimal, absResult60.abs().getAmount());
-    Money zeroResult29 = zeroResult13.zero();
-    Money absResult61 = zeroResult29.abs();
-    assertSame(bigDecimal, absResult61.abs().getAmount());
-    assertSame(bigDecimal, absResult47.getAmount());
-    Money zeroResult30 = zeroResult14.zero();
-    Money absResult62 = zeroResult30.abs();
-    assertSame(bigDecimal, absResult62.abs().getAmount());
-    assertSame(bigDecimal, absResult7.getAmount());
-    assertSame(bigDecimal, absResult12.getAmount());
-    assertSame(bigDecimal, absResult20.getAmount());
-    assertSame(bigDecimal, absResult32.getAmount());
-    assertSame(bigDecimal, absResult48.getAmount());
-    Money zeroResult31 = absResult5.zero();
-    assertSame(bigDecimal, zeroResult31.abs().getAmount());
-    Money zeroResult32 = absResult10.zero();
-    assertSame(bigDecimal, zeroResult32.abs().getAmount());
-    assertSame(bigDecimal, absResult49.getAmount());
-    Money zeroResult33 = absResult14.zero();
-    assertSame(bigDecimal, zeroResult33.abs().getAmount());
-    Money zeroResult34 = absResult18.zero();
-    assertSame(bigDecimal, zeroResult34.abs().getAmount());
-    assertSame(bigDecimal, absResult34.getAmount());
-    assertSame(bigDecimal, absResult50.getAmount());
-    Money zeroResult35 = absResult21.zero();
-    assertSame(bigDecimal, zeroResult35.abs().getAmount());
-    Money zeroResult36 = absResult24.zero();
-    assertSame(bigDecimal, zeroResult36.abs().getAmount());
-    assertSame(bigDecimal, absResult51.getAmount());
-    Money zeroResult37 = absResult27.zero();
-    assertSame(bigDecimal, zeroResult37.abs().getAmount());
-    Money zeroResult38 = absResult30.zero();
-    assertSame(bigDecimal, zeroResult38.abs().getAmount());
-    assertSame(bigDecimal, absResult23.getAmount());
-    assertSame(bigDecimal, absResult36.getAmount());
-    assertSame(bigDecimal, absResult52.getAmount());
-    Money zeroResult39 = absResult32.zero();
-    assertSame(bigDecimal, zeroResult39.abs().getAmount());
-    Money zeroResult40 = absResult34.zero();
-    assertSame(bigDecimal, zeroResult40.abs().getAmount());
-    assertSame(bigDecimal, absResult53.getAmount());
-    Money zeroResult41 = absResult36.zero();
-    assertSame(bigDecimal, zeroResult41.abs().getAmount());
-    Money zeroResult42 = absResult38.zero();
-    assertSame(bigDecimal, zeroResult42.abs().getAmount());
-    assertSame(bigDecimal, absResult38.getAmount());
-    assertSame(bigDecimal, absResult54.getAmount());
-    Money zeroResult43 = absResult40.zero();
-    assertSame(bigDecimal, zeroResult43.abs().getAmount());
-    Money zeroResult44 = absResult42.zero();
-    assertSame(bigDecimal, zeroResult44.abs().getAmount());
-    assertSame(bigDecimal, absResult55.getAmount());
-    Money zeroResult45 = absResult44.zero();
-    assertSame(bigDecimal, zeroResult45.abs().getAmount());
-    assertSame(bigDecimal, absResult16.getAmount());
-    assertSame(bigDecimal, absResult26.getAmount());
-    assertSame(bigDecimal, absResult40.getAmount());
-    assertSame(bigDecimal, absResult56.getAmount());
-    Money zeroResult46 = zeroResult16.zero();
-    assertSame(bigDecimal, zeroResult46.abs().getAmount());
-    Money zeroResult47 = zeroResult17.zero();
-    assertSame(bigDecimal, zeroResult47.abs().getAmount());
-    assertSame(bigDecimal, absResult57.getAmount());
-    Money zeroResult48 = zeroResult18.zero();
-    assertSame(bigDecimal, zeroResult48.abs().getAmount());
-    Money zeroResult49 = zeroResult19.zero();
-    assertSame(bigDecimal, zeroResult49.abs().getAmount());
-    assertSame(bigDecimal, absResult42.getAmount());
-    assertSame(bigDecimal, absResult58.getAmount());
-    Money zeroResult50 = zeroResult20.zero();
-    assertSame(bigDecimal, zeroResult50.abs().getAmount());
-    Money zeroResult51 = zeroResult21.zero();
-    assertSame(bigDecimal, zeroResult51.abs().getAmount());
-    assertSame(bigDecimal, absResult59.getAmount());
-    Money zeroResult52 = zeroResult22.zero();
-    assertSame(bigDecimal, zeroResult52.abs().getAmount());
-    Money zeroResult53 = zeroResult23.zero();
-    assertSame(bigDecimal, zeroResult53.abs().getAmount());
-    assertSame(bigDecimal, absResult29.getAmount());
-    assertSame(bigDecimal, absResult44.getAmount());
-    assertSame(bigDecimal, absResult60.getAmount());
-    Money zeroResult54 = zeroResult24.zero();
-    assertSame(bigDecimal, zeroResult54.abs().getAmount());
-    Money zeroResult55 = zeroResult25.zero();
-    assertSame(bigDecimal, zeroResult55.abs().getAmount());
-    assertSame(bigDecimal, absResult61.getAmount());
-    Money zeroResult56 = zeroResult26.zero();
-    assertSame(bigDecimal, zeroResult56.abs().getAmount());
-    Money zeroResult57 = zeroResult27.zero();
-    assertSame(bigDecimal, zeroResult57.abs().getAmount());
-    assertSame(bigDecimal, absResult46.getAmount());
-    assertSame(bigDecimal, absResult62.getAmount());
-    Money zeroResult58 = zeroResult28.zero();
-    assertSame(bigDecimal, zeroResult58.abs().getAmount());
-    Money zeroResult59 = zeroResult29.zero();
-    assertSame(bigDecimal, zeroResult59.abs().getAmount());
-    Money zeroResult60 = zeroResult15.zero();
-    assertSame(bigDecimal, zeroResult60.abs().getAmount());
-    Money zeroResult61 = zeroResult30.zero();
-    assertSame(bigDecimal, zeroResult61.abs().getAmount());
-    assertSame(bigDecimal, zeroResult.getAmount());
-    assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, zeroResult4.getAmount());
-    assertSame(bigDecimal, zeroResult8.getAmount());
-    assertSame(bigDecimal, zeroResult16.getAmount());
-    assertSame(bigDecimal, zeroResult31.getAmount());
-    assertSame(bigDecimal, absResult6.zero().getAmount());
-    assertSame(bigDecimal, absResult11.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.getAmount());
-    assertSame(bigDecimal, absResult15.zero().getAmount());
-    assertSame(bigDecimal, absResult19.zero().getAmount());
-    assertSame(bigDecimal, zeroResult17.getAmount());
-    assertSame(bigDecimal, zeroResult33.getAmount());
-    assertSame(bigDecimal, absResult22.zero().getAmount());
-    assertSame(bigDecimal, absResult25.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.getAmount());
-    assertSame(bigDecimal, absResult28.zero().getAmount());
-    assertSame(bigDecimal, absResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult9.getAmount());
-    assertSame(bigDecimal, zeroResult18.getAmount());
-    assertSame(bigDecimal, zeroResult35.getAmount());
-    assertSame(bigDecimal, absResult33.zero().getAmount());
-    assertSame(bigDecimal, absResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.getAmount());
-    assertSame(bigDecimal, absResult37.zero().getAmount());
-    assertSame(bigDecimal, absResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult19.getAmount());
-    assertSame(bigDecimal, zeroResult37.getAmount());
-    assertSame(bigDecimal, absResult41.zero().getAmount());
-    assertSame(bigDecimal, absResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.getAmount());
-    assertSame(bigDecimal, absResult45.zero().getAmount());
-    assertSame(bigDecimal, absResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult5.getAmount());
-    assertSame(bigDecimal, zeroResult10.getAmount());
-    assertSame(bigDecimal, zeroResult20.getAmount());
-    assertSame(bigDecimal, zeroResult39.getAmount());
-    assertSame(bigDecimal, absResult48.zero().getAmount());
-    assertSame(bigDecimal, absResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.getAmount());
-    assertSame(bigDecimal, absResult50.zero().getAmount());
-    assertSame(bigDecimal, absResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult21.getAmount());
-    assertSame(bigDecimal, zeroResult41.getAmount());
-    assertSame(bigDecimal, absResult52.zero().getAmount());
-    assertSame(bigDecimal, absResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.getAmount());
-    assertSame(bigDecimal, absResult54.zero().getAmount());
-    assertSame(bigDecimal, absResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult11.getAmount());
-    assertSame(bigDecimal, zeroResult22.getAmount());
-    assertSame(bigDecimal, zeroResult43.getAmount());
-    assertSame(bigDecimal, absResult56.zero().getAmount());
-    assertSame(bigDecimal, absResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.getAmount());
-    assertSame(bigDecimal, absResult58.zero().getAmount());
-    assertSame(bigDecimal, absResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult23.getAmount());
-    assertSame(bigDecimal, zeroResult45.getAmount());
-    assertSame(bigDecimal, absResult60.zero().getAmount());
-    assertSame(bigDecimal, absResult61.zero().getAmount());
-    assertSame(bigDecimal, absResult46.zero().getAmount());
-    assertSame(bigDecimal, absResult62.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult6.getAmount());
-    assertSame(bigDecimal, zeroResult12.getAmount());
-    assertSame(bigDecimal, zeroResult24.getAmount());
-    assertSame(bigDecimal, zeroResult46.getAmount());
-    assertSame(bigDecimal, zeroResult31.zero().getAmount());
-    assertSame(bigDecimal, zeroResult32.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.getAmount());
-    assertSame(bigDecimal, zeroResult33.zero().getAmount());
-    assertSame(bigDecimal, zeroResult34.zero().getAmount());
-    assertSame(bigDecimal, zeroResult25.getAmount());
-    assertSame(bigDecimal, zeroResult48.getAmount());
-    assertSame(bigDecimal, zeroResult35.zero().getAmount());
-    assertSame(bigDecimal, zeroResult36.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.getAmount());
-    assertSame(bigDecimal, zeroResult37.zero().getAmount());
-    assertSame(bigDecimal, zeroResult38.zero().getAmount());
-    assertSame(bigDecimal, zeroResult13.getAmount());
-    assertSame(bigDecimal, zeroResult26.getAmount());
-    assertSame(bigDecimal, zeroResult50.getAmount());
-    assertSame(bigDecimal, zeroResult39.zero().getAmount());
-    assertSame(bigDecimal, zeroResult40.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.getAmount());
-    assertSame(bigDecimal, zeroResult41.zero().getAmount());
-    assertSame(bigDecimal, zeroResult42.zero().getAmount());
-    assertSame(bigDecimal, zeroResult27.getAmount());
-    assertSame(bigDecimal, zeroResult52.getAmount());
-    assertSame(bigDecimal, zeroResult43.zero().getAmount());
-    assertSame(bigDecimal, zeroResult44.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.getAmount());
-    assertSame(bigDecimal, zeroResult45.zero().getAmount());
-    assertSame(bigDecimal, zeroResult7.getAmount());
-    assertSame(bigDecimal, zeroResult14.getAmount());
-    assertSame(bigDecimal, zeroResult28.getAmount());
-    assertSame(bigDecimal, zeroResult54.getAmount());
-    assertSame(bigDecimal, zeroResult46.zero().getAmount());
-    assertSame(bigDecimal, zeroResult47.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.getAmount());
-    assertSame(bigDecimal, zeroResult48.zero().getAmount());
-    assertSame(bigDecimal, zeroResult49.zero().getAmount());
-    assertSame(bigDecimal, zeroResult29.getAmount());
-    assertSame(bigDecimal, zeroResult56.getAmount());
-    assertSame(bigDecimal, zeroResult50.zero().getAmount());
-    assertSame(bigDecimal, zeroResult51.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.getAmount());
-    assertSame(bigDecimal, zeroResult52.zero().getAmount());
-    assertSame(bigDecimal, zeroResult53.zero().getAmount());
-    assertSame(bigDecimal, zeroResult15.getAmount());
-    assertSame(bigDecimal, zeroResult30.getAmount());
-    assertSame(bigDecimal, zeroResult58.getAmount());
-    assertSame(bigDecimal, zeroResult54.zero().getAmount());
-    assertSame(bigDecimal, zeroResult55.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.getAmount());
-    assertSame(bigDecimal, zeroResult56.zero().getAmount());
-    assertSame(bigDecimal, zeroResult57.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.getAmount());
-    assertSame(bigDecimal, zeroResult61.getAmount());
-    assertSame(bigDecimal, zeroResult58.zero().getAmount());
-    assertSame(bigDecimal, zeroResult59.zero().getAmount());
-    assertSame(bigDecimal, zeroResult60.zero().getAmount());
-    assertSame(bigDecimal, zeroResult61.zero().getAmount());
-  }
-
-  /**
-   * Test {@link OfferImpl#setTargetMinSubTotal(Money)}.
-   * <ul>
-   *   <li>When {@link Money}.</li>
-   *   <li>Then {@link OfferImpl} (default constructor)
-   * {@link OfferImpl#targetMinSubTotal} is {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#setTargetMinSubTotal(Money)}
-   */
-  @Test
-  public void testSetTargetMinSubTotal_whenMoney_thenOfferImplTargetMinSubTotalIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-
-    // Act
-    offerImpl.setTargetMinSubTotal(mock(Money.class));
-
-    // Assert
-    assertNull(offerImpl.targetMinSubTotal);
-    assertNull(offerImpl.getTargetMinSubTotal());
-  }
-
-  /**
-   * Test {@link OfferImpl#getRequiresRelatedTargetAndQualifiers()}.
-   * <p>
-   * Method under test: {@link OfferImpl#getRequiresRelatedTargetAndQualifiers()}
-   */
-  @Test
-  public void testGetRequiresRelatedTargetAndQualifiers() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl.setMaxUsesPerOrder(3);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    offerImpl.setOrderMinSubTotal(new Money());
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
-    offerImpl.setRequiresRelatedTargetAndQualifiers(null);
-
-    // Act and Assert
-    assertFalse(offerImpl.getRequiresRelatedTargetAndQualifiers());
-  }
-
-  /**
-   * Test {@link OfferImpl#getRequiresRelatedTargetAndQualifiers()}.
-   * <p>
-   * Method under test: {@link OfferImpl#getRequiresRelatedTargetAndQualifiers()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetRequiresRelatedTargetAndQualifiers2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1734 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferImpl()).getRequiresRelatedTargetAndQualifiers();
-  }
-
-  /**
-   * Test {@link OfferImpl#getRequiresRelatedTargetAndQualifiers()}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getRequiresRelatedTargetAndQualifiers()}
-   */
-  @Test
-  public void testGetRequiresRelatedTargetAndQualifiers_givenOfferImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertFalse((new OfferImpl()).getRequiresRelatedTargetAndQualifiers());
-  }
-
-  /**
-   * Test {@link OfferImpl#getRequiresRelatedTargetAndQualifiers()}.
-   * <ul>
-   *   <li>Then calls {@link OfferAdjustmentType#getType()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getRequiresRelatedTargetAndQualifiers()}
-   */
-  @Test
-  public void testGetRequiresRelatedTargetAndQualifiers_thenCallsGetType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferAdjustmentType adjustmentType = mock(OfferAdjustmentType.class);
-    when(adjustmentType.getType()).thenReturn("Type");
-
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(adjustmentType);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl.setMaxUsesPerOrder(3);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    offerImpl.setOrderMinSubTotal(new Money());
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
-    offerImpl.setRequiresRelatedTargetAndQualifiers(null);
-
-    // Act
-    Boolean actualRequiresRelatedTargetAndQualifiers = offerImpl.getRequiresRelatedTargetAndQualifiers();
-
-    // Assert
-    verify(adjustmentType).getType();
-    assertFalse(actualRequiresRelatedTargetAndQualifiers);
-  }
-
-  /**
-   * Test {@link OfferImpl#getRequiresRelatedTargetAndQualifiers()}.
-   * <ul>
-   *   <li>Then return {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getRequiresRelatedTargetAndQualifiers()}
-   */
-  @Test
-  public void testGetRequiresRelatedTargetAndQualifiers_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl.setMaxUsesPerOrder(3);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    offerImpl.setOrderMinSubTotal(new Money());
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-
-    // Act and Assert
-    assertTrue(offerImpl.getRequiresRelatedTargetAndQualifiers());
-  }
-
-  /**
-   * Test {@link OfferImpl#getMainEntityName()}.
-   * <p>
-   * Method under test: {@link OfferImpl#getMainEntityName()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetMainEntityName() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1374 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferImpl()).getMainEntityName();
-  }
-
-  /**
-   * Test {@link OfferImpl#getMainEntityName()}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getMainEntityName()}
-   */
-  @Test
-  public void testGetMainEntityName_givenOfferImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertNull((new OfferImpl()).getMainEntityName());
-  }
-
-  /**
-   * Test {@link OfferImpl#getMainEntityName()}.
-   * <ul>
-   *   <li>Given {@link OfferType} {@link OfferType#getType()} return
-   * {@code Type}.</li>
-   *   <li>Then calls {@link OfferType#getType()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getMainEntityName()}
-   */
-  @Test
-  public void testGetMainEntityName_givenOfferTypeGetTypeReturnType_thenCallsGetType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferType type = mock(OfferType.class);
-    when(type.getType()).thenReturn("Type");
-
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setType(type);
-
-    // Act
-    String actualMainEntityName = offerImpl.getMainEntityName();
-
-    // Assert
-    verify(type).getType();
-    assertNull(actualMainEntityName);
-  }
-
-  /**
-   * Test {@link OfferImpl#getAdjustmentType()}.
-   * <p>
-   * Method under test: {@link OfferImpl#getAdjustmentType()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetAdjustmentType() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1158 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferImpl()).getAdjustmentType();
-  }
-
-  /**
-   * Test {@link OfferImpl#getAdjustmentType()}.
-   * <ul>
-   *   <li>Given {@link OfferDiscountType} {@link OfferDiscountType#getType()}
-   * return {@code Type}.</li>
-   *   <li>Then calls {@link OfferDiscountType#getType()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getAdjustmentType()}
-   */
-  @Test
-  public void testGetAdjustmentType_givenOfferDiscountTypeGetTypeReturnType_thenCallsGetType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferDiscountType discountType = mock(OfferDiscountType.class);
-    when(discountType.getType()).thenReturn("Type");
-
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(discountType);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl.setMaxUsesPerOrder(3);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    offerImpl.setOrderMinSubTotal(new Money());
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
-    offerImpl.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-
-    // Act
-    OfferAdjustmentType actualAdjustmentType = offerImpl.getAdjustmentType();
-
-    // Assert
-    verify(discountType).getType();
-    assertSame(actualAdjustmentType.FUTURE_CREDIT, actualAdjustmentType);
-  }
-
-  /**
-   * Test {@link OfferImpl#getAdjustmentType()}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor) DiscountType is
-   * {@link OfferDiscountType#AMOUNT_OFF}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getAdjustmentType()}
-   */
-  @Test
-  public void testGetAdjustmentType_givenOfferImplDiscountTypeIsAmount_off() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl.setMaxUsesPerOrder(3);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    offerImpl.setOrderMinSubTotal(new Money());
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
-    offerImpl.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-
-    // Act
-    OfferAdjustmentType actualAdjustmentType = offerImpl.getAdjustmentType();
-
-    // Assert
-    assertSame(actualAdjustmentType.FUTURE_CREDIT, actualAdjustmentType);
-  }
-
-  /**
-   * Test {@link OfferImpl#getAdjustmentType()}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   *   <li>Then return {@link OfferAdjustmentType#ORDER_DISCOUNT}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getAdjustmentType()}
-   */
-  @Test
-  public void testGetAdjustmentType_givenOfferImpl_thenReturnOrder_discount() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange and Act
-    OfferAdjustmentType actualAdjustmentType = (new OfferImpl()).getAdjustmentType();
-
-    // Assert
-    assertSame(actualAdjustmentType.ORDER_DISCOUNT, actualAdjustmentType);
-  }
-
-  /**
-   * Test {@link OfferImpl#setAdjustmentType(OfferAdjustmentType)}.
-   * <p>
-   * Method under test: {@link OfferImpl#setAdjustmentType(OfferAdjustmentType)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetAdjustmentType() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2274 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferImpl()).setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-  }
-
-  /**
-   * Test {@link OfferImpl#setAdjustmentType(OfferAdjustmentType)}.
-   * <ul>
-   *   <li>Then {@link OfferImpl} (default constructor) AdjustmentType FriendlyType
-   * is {@code Friendly Type}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#setAdjustmentType(OfferAdjustmentType)}
-   */
-  @Test
-  public void testSetAdjustmentType_thenOfferImplAdjustmentTypeFriendlyTypeIsFriendlyType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    OfferAdjustmentType adjustmentType = mock(OfferAdjustmentType.class);
-    when(adjustmentType.getType()).thenReturn("Type");
-
-    // Act
-    offerImpl.setAdjustmentType(adjustmentType);
-
-    // Assert
-    verify(adjustmentType).getType();
-    OfferAdjustmentType adjustmentType2 = offerImpl.getAdjustmentType();
-    assertEquals("Friendly Type", adjustmentType2.getFriendlyType());
-    assertEquals("Type", adjustmentType2.getType());
-    assertEquals("Type", offerImpl.adjustmentType);
-    assertFalse(offerImpl.isFutureCredit());
-  }
-
-  /**
-   * Test {@link OfferImpl#setAdjustmentType(OfferAdjustmentType)}.
-   * <ul>
-   *   <li>Then {@link OfferImpl} (default constructor)
-   * {@link OfferImpl#adjustmentType} is {@code FUTURE_CREDIT}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#setAdjustmentType(OfferAdjustmentType)}
-   */
-  @Test
-  public void testSetAdjustmentType_thenOfferImplAdjustmentTypeIsFutureCredit() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    OfferAdjustmentType adjustmentType = OfferAdjustmentType.FUTURE_CREDIT;
-
-    // Act
-    offerImpl.setAdjustmentType(adjustmentType);
-
-    // Assert
-    assertEquals("FUTURE_CREDIT", offerImpl.adjustmentType);
-    assertTrue(offerImpl.isFutureCredit());
-    OfferAdjustmentType expectedAdjustmentType = adjustmentType.FUTURE_CREDIT;
-    assertSame(expectedAdjustmentType, offerImpl.getAdjustmentType());
-  }
-
-  /**
-   * Test {@link OfferImpl#isFutureCredit()}.
-   * <p>
-   * Method under test: {@link OfferImpl#isFutureCredit()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsFutureCredit() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2058 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OfferImpl()).isFutureCredit();
-  }
-
-  /**
-   * Test {@link OfferImpl#isFutureCredit()}.
-   * <ul>
-   *   <li>Given {@link OfferAdjustmentType} {@link OfferAdjustmentType#getType()}
-   * return {@code foo}.</li>
-   *   <li>Then calls {@link OfferAdjustmentType#getType()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#isFutureCredit()}
-   */
-  @Test
-  public void testIsFutureCredit_givenOfferAdjustmentTypeGetTypeReturnFoo_thenCallsGetType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferAdjustmentType adjustmentType = mock(OfferAdjustmentType.class);
-    when(adjustmentType.getType()).thenReturn("foo");
-
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(adjustmentType);
-
-    // Act
-    boolean actualIsFutureCreditResult = offerImpl.isFutureCredit();
-
-    // Assert
-    verify(adjustmentType).getType();
-    assertFalse(actualIsFutureCreditResult);
-  }
-
-  /**
-   * Test {@link OfferImpl#isFutureCredit()}.
-   * <ul>
-   *   <li>Given {@link OfferAdjustmentType} {@link OfferAdjustmentType#getType()}
-   * return {@code Type}.</li>
-   *   <li>Then calls {@link OfferAdjustmentType#getType()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#isFutureCredit()}
-   */
-  @Test
-  public void testIsFutureCredit_givenOfferAdjustmentTypeGetTypeReturnType_thenCallsGetType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferAdjustmentType adjustmentType = mock(OfferAdjustmentType.class);
-    when(adjustmentType.getType()).thenReturn("Type");
-
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(adjustmentType);
-
-    // Act
-    boolean actualIsFutureCreditResult = offerImpl.isFutureCredit();
-
-    // Assert
-    verify(adjustmentType).getType();
-    assertFalse(actualIsFutureCreditResult);
-  }
-
-  /**
-   * Test {@link OfferImpl#isFutureCredit()}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor) AdjustmentType is
-   * {@link OfferAdjustmentType#FUTURE_CREDIT}.</li>
-   *   <li>Then return {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#isFutureCredit()}
-   */
-  @Test
-  public void testIsFutureCredit_givenOfferImplAdjustmentTypeIsFuture_credit_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-
-    // Act and Assert
-    assertTrue(offerImpl.isFutureCredit());
-  }
-
-  /**
-   * Test {@link OfferImpl#isFutureCredit()}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor) AdjustmentType is
-   * {@link OfferAdjustmentType#ORDER_DISCOUNT}.</li>
-   *   <li>Then return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#isFutureCredit()}
-   */
-  @Test
-  public void testIsFutureCredit_givenOfferImplAdjustmentTypeIsOrder_discount_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(OfferAdjustmentType.ORDER_DISCOUNT);
-
-    // Act and Assert
-    assertFalse(offerImpl.isFutureCredit());
-  }
-
-  /**
-   * Test {@link OfferImpl#isFutureCredit()}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#isFutureCredit()}
-   */
-  @Test
-  public void testIsFutureCredit_givenOfferImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertFalse((new OfferImpl()).isFutureCredit());
-  }
-
-  /**
-   * Test {@link OfferImpl#equals(Object)}, and {@link OfferImpl#hashCode()}.
-   * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
-   * </ul>
-   * <p>
-   * Methods under test:
-   * <ul>
-   *   <li>{@link OfferImpl#equals(Object)}
-   *   <li>{@link OfferImpl#hashCode()}
-   * </ul>
-   */
-  @Test
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
-    // Arrange
-    OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl.setApplyDiscountToSalePrice(true);
-    offerImpl.setApplyToChildItems(true);
-    offerImpl.setAutomaticallyAdded(true);
-    offerImpl.setCombinableWithOtherOffers(true);
-    offerImpl.setDescription("The characteristics of someone or something");
-    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setId(OfferImpl.serialVersionUID);
-    offerImpl.setMarketingMessage("Marketing Message");
-    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl.setMaxUsesPerOrder(3);
-    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl.setName("Name");
-    offerImpl.setOfferCodes(new ArrayList<>());
-    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl.setOfferPriceData(new ArrayList<>());
-    offerImpl.setOrderMinSubTotal(new Money());
-    offerImpl.setPriority(1);
-    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl.setQualifyingItemSubTotal(new Money());
-    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl.setTargetMinSubTotal(new Money());
-    offerImpl.setTargetSystem("Target System");
-    offerImpl.setTotalitarianOffer(true);
-    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl.setUseListForDiscounts(true);
-    offerImpl.setValue(new BigDecimal("2.3"));
-
     OfferImpl offerImpl2 = new OfferImpl();
     offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
     offerImpl2.setApplyDiscountToSalePrice(true);
@@ -8682,9 +1384,1179 @@ public class OfferImplDiffblueTest {
     offerImpl2.setValue(new BigDecimal("2.3"));
 
     // Act and Assert
-    assertEquals(offerImpl, offerImpl2);
-    int expectedHashCodeResult = offerImpl.hashCode();
-    assertEquals(expectedHashCodeResult, offerImpl2.hashCode());
+    assertEquals("Marketing Message", offerImpl2.getMarketingMessage());
+  }
+
+  /**
+   * Test {@link OfferImpl#getTargetItemCriteriaXref()}.
+   * <p>
+   * Method under test: {@link OfferImpl#getTargetItemCriteriaXref()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Set OfferImpl.getTargetItemCriteriaXref()"})
+  public void testGetTargetItemCriteriaXref() {
+    // Arrange
+    OfferImpl offerImpl2 = new OfferImpl();
+    offerImpl2.setType(new OfferType("ORDER_ITEM", "ORDER_ITEM", 1));
+
+    // Act and Assert
+    assertEquals(1, offerImpl2.getTargetItemCriteriaXref().size());
+  }
+
+  /**
+   * Test {@link OfferImpl#getTargetItemCriteriaXref()}.
+   * <ul>
+   *   <li>Given {@link OfferImpl} (default constructor) Type is {@link OfferType#FULFILLMENT_GROUP}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferImpl#getTargetItemCriteriaXref()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Set OfferImpl.getTargetItemCriteriaXref()"})
+  public void testGetTargetItemCriteriaXref_givenOfferImplTypeIsFulfillment_group() {
+    // Arrange
+    OfferImpl offerImpl2 = new OfferImpl();
+    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
+
+    // Act and Assert
+    assertTrue(offerImpl2.getTargetItemCriteriaXref().isEmpty());
+  }
+
+  /**
+   * Test {@link OfferImpl#getTargetItemCriteriaXref()}.
+   * <ul>
+   *   <li>Given {@link OfferImpl} (default constructor) Type is {@link OfferType#ORDER_ITEM}.</li>
+   *   <li>Then return size is one.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferImpl#getTargetItemCriteriaXref()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Set OfferImpl.getTargetItemCriteriaXref()"})
+  public void testGetTargetItemCriteriaXref_givenOfferImplTypeIsOrder_item_thenReturnSizeIsOne() {
+    // Arrange
+    OfferImpl offerImpl2 = new OfferImpl();
+    offerImpl2.setType(OfferType.ORDER_ITEM);
+
+    // Act and Assert
+    assertEquals(1, offerImpl2.getTargetItemCriteriaXref().size());
+  }
+
+  /**
+   * Test {@link OfferImpl#getTargetItemCriteriaXref()}.
+   * <ul>
+   *   <li>Given {@link OfferImpl} (default constructor).</li>
+   *   <li>Then return Empty.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferImpl#getTargetItemCriteriaXref()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Set OfferImpl.getTargetItemCriteriaXref()"})
+  public void testGetTargetItemCriteriaXref_givenOfferImpl_thenReturnEmpty() {
+    // Arrange, Act and Assert
+    assertTrue((new OfferImpl()).getTargetItemCriteriaXref().isEmpty());
+  }
+
+  /**
+   * Test {@link OfferImpl#isTotalitarianOffer()}.
+   * <ul>
+   *   <li>Given {@link OfferImpl} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferImpl#isTotalitarianOffer()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean OfferImpl.isTotalitarianOffer()"})
+  public void testIsTotalitarianOffer_givenOfferImpl_thenReturnFalse() {
+    // Arrange, Act and Assert
+    assertFalse((new OfferImpl()).isTotalitarianOffer());
+  }
+
+  /**
+   * Test {@link OfferImpl#isTotalitarianOffer()}.
+   * <ul>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferImpl#isTotalitarianOffer()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean OfferImpl.isTotalitarianOffer()"})
+  public void testIsTotalitarianOffer_thenReturnTrue() {
+    // Arrange
+    OfferImpl offerImpl2 = new OfferImpl();
+    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
+    offerImpl2.setApplyDiscountToSalePrice(true);
+    offerImpl2.setApplyToChildItems(true);
+    offerImpl2.setAutomaticallyAdded(true);
+    offerImpl2.setCombinableWithOtherOffers(true);
+    offerImpl2.setDescription("The characteristics of someone or something");
+    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
+    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setId(OfferImpl.serialVersionUID);
+    offerImpl2.setMarketingMessage("Marketing Message");
+    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
+    offerImpl2.setMaxUsesPerOrder(3);
+    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
+    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
+    offerImpl2.setName("Name");
+    offerImpl2.setOfferCodes(new ArrayList<>());
+    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
+    offerImpl2.setOfferPriceData(new ArrayList<>());
+    offerImpl2.setOrderMinSubTotal(new Money());
+    offerImpl2.setPriority(1);
+    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
+    offerImpl2.setQualifyingItemSubTotal(new Money());
+    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
+    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
+    offerImpl2.setTargetMinSubTotal(new Money());
+    offerImpl2.setTargetSystem("Target System");
+    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
+    offerImpl2.setUseListForDiscounts(true);
+    offerImpl2.setValue(new BigDecimal("2.3"));
+    offerImpl2.setTotalitarianOffer(true);
+
+    // Act and Assert
+    assertTrue(offerImpl2.isTotalitarianOffer());
+  }
+
+  /**
+   * Test {@link OfferImpl#setTotalitarianOffer(Boolean)}.
+   * <ul>
+   *   <li>Given {@link OfferImpl} (default constructor).</li>
+   *   <li>When {@code true}.</li>
+   *   <li>Then {@link OfferImpl} (default constructor) {@link OfferImpl#totalitarianOffer}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferImpl#setTotalitarianOffer(Boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OfferImpl.setTotalitarianOffer(Boolean)"})
+  public void testSetTotalitarianOffer_givenOfferImpl_whenTrue_thenOfferImplTotalitarianOffer() {
+    // Arrange
+    OfferImpl offerImpl2 = new OfferImpl();
+
+    // Act
+    offerImpl2.setTotalitarianOffer(true);
+
+    // Assert
+    assertTrue(offerImpl2.totalitarianOffer);
+  }
+
+  /**
+   * Test {@link OfferImpl#setTotalitarianOffer(Boolean)}.
+   * <ul>
+   *   <li>Then not {@link OfferImpl} (default constructor) {@link OfferImpl#totalitarianOffer}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferImpl#setTotalitarianOffer(Boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OfferImpl.setTotalitarianOffer(Boolean)"})
+  public void testSetTotalitarianOffer_thenNotOfferImplTotalitarianOffer() {
+    // Arrange
+    OfferImpl offerImpl2 = new OfferImpl();
+    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
+    offerImpl2.setApplyDiscountToSalePrice(true);
+    offerImpl2.setApplyToChildItems(true);
+    offerImpl2.setAutomaticallyAdded(true);
+    offerImpl2.setCombinableWithOtherOffers(true);
+    offerImpl2.setDescription("The characteristics of someone or something");
+    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
+    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setId(OfferImpl.serialVersionUID);
+    offerImpl2.setMarketingMessage("Marketing Message");
+    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
+    offerImpl2.setMaxUsesPerOrder(3);
+    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
+    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
+    offerImpl2.setName("Name");
+    offerImpl2.setOfferCodes(new ArrayList<>());
+    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
+    offerImpl2.setOfferPriceData(new ArrayList<>());
+    offerImpl2.setOrderMinSubTotal(new Money());
+    offerImpl2.setPriority(1);
+    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
+    offerImpl2.setQualifyingItemSubTotal(new Money());
+    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
+    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
+    offerImpl2.setTargetMinSubTotal(new Money());
+    offerImpl2.setTargetSystem("Target System");
+    offerImpl2.setTotalitarianOffer(true);
+    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
+    offerImpl2.setUseListForDiscounts(true);
+    offerImpl2.setValue(new BigDecimal("2.3"));
+
+    // Act
+    offerImpl2.setTotalitarianOffer(null);
+
+    // Assert
+    assertFalse(offerImpl2.totalitarianOffer);
+  }
+
+  /**
+   * Test {@link OfferImpl#getUseListForDiscounts()}.
+   * <ul>
+   *   <li>Given {@link OfferImpl} (default constructor) UseListForDiscounts is {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferImpl#getUseListForDiscounts()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean OfferImpl.getUseListForDiscounts()"})
+  public void testGetUseListForDiscounts_givenOfferImplUseListForDiscountsIsNull() {
+    // Arrange
+    OfferImpl offerImpl2 = new OfferImpl();
+    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
+    offerImpl2.setApplyDiscountToSalePrice(true);
+    offerImpl2.setApplyToChildItems(true);
+    offerImpl2.setAutomaticallyAdded(true);
+    offerImpl2.setCombinableWithOtherOffers(true);
+    offerImpl2.setDescription("The characteristics of someone or something");
+    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
+    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setId(OfferImpl.serialVersionUID);
+    offerImpl2.setMarketingMessage("Marketing Message");
+    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
+    offerImpl2.setMaxUsesPerOrder(3);
+    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
+    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
+    offerImpl2.setName("Name");
+    offerImpl2.setOfferCodes(new ArrayList<>());
+    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
+    offerImpl2.setOfferPriceData(new ArrayList<>());
+    offerImpl2.setOrderMinSubTotal(new Money());
+    offerImpl2.setPriority(1);
+    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
+    offerImpl2.setQualifyingItemSubTotal(new Money());
+    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
+    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
+    offerImpl2.setTargetMinSubTotal(new Money());
+    offerImpl2.setTargetSystem("Target System");
+    offerImpl2.setTotalitarianOffer(true);
+    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
+    offerImpl2.setValue(new BigDecimal("2.3"));
+    offerImpl2.setUseListForDiscounts(null);
+
+    // Act and Assert
+    assertFalse(offerImpl2.getUseListForDiscounts());
+  }
+
+  /**
+   * Test {@link OfferImpl#getUseListForDiscounts()}.
+   * <ul>
+   *   <li>Given {@link OfferImpl} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferImpl#getUseListForDiscounts()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean OfferImpl.getUseListForDiscounts()"})
+  public void testGetUseListForDiscounts_givenOfferImpl_thenReturnFalse() {
+    // Arrange, Act and Assert
+    assertFalse((new OfferImpl()).getUseListForDiscounts());
+  }
+
+  /**
+   * Test {@link OfferImpl#getUseListForDiscounts()}.
+   * <ul>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferImpl#getUseListForDiscounts()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean OfferImpl.getUseListForDiscounts()"})
+  public void testGetUseListForDiscounts_thenReturnTrue() {
+    // Arrange
+    OfferImpl offerImpl2 = new OfferImpl();
+    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
+    offerImpl2.setApplyDiscountToSalePrice(true);
+    offerImpl2.setApplyToChildItems(true);
+    offerImpl2.setAutomaticallyAdded(true);
+    offerImpl2.setCombinableWithOtherOffers(true);
+    offerImpl2.setDescription("The characteristics of someone or something");
+    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
+    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setId(OfferImpl.serialVersionUID);
+    offerImpl2.setMarketingMessage("Marketing Message");
+    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
+    offerImpl2.setMaxUsesPerOrder(3);
+    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
+    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
+    offerImpl2.setName("Name");
+    offerImpl2.setOfferCodes(new ArrayList<>());
+    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
+    offerImpl2.setOfferPriceData(new ArrayList<>());
+    offerImpl2.setOrderMinSubTotal(new Money());
+    offerImpl2.setPriority(1);
+    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
+    offerImpl2.setQualifyingItemSubTotal(new Money());
+    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
+    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
+    offerImpl2.setTargetMinSubTotal(new Money());
+    offerImpl2.setTargetSystem("Target System");
+    offerImpl2.setTotalitarianOffer(true);
+    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
+    offerImpl2.setValue(new BigDecimal("2.3"));
+    offerImpl2.setUseListForDiscounts(true);
+
+    // Act and Assert
+    assertTrue(offerImpl2.getUseListForDiscounts());
+  }
+
+  /**
+   * Test {@link OfferImpl#getArchived()}.
+   * <p>
+   * Method under test: {@link OfferImpl#getArchived()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Character OfferImpl.getArchived()"})
+  public void testGetArchived() {
+    // Arrange, Act and Assert
+    assertEquals('N', (new OfferImpl()).getArchived().charValue());
+  }
+
+  /**
+   * Test {@link OfferImpl#setArchived(Character)}.
+   * <p>
+   * Method under test: {@link OfferImpl#setArchived(Character)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OfferImpl.setArchived(Character)"})
+  public void testSetArchived() {
+    // Arrange
+    OfferImpl offerImpl2 = new OfferImpl();
+
+    // Act
+    offerImpl2.setArchived('A');
+
+    // Assert
+    assertEquals('A', offerImpl2.archiveStatus.getArchived().charValue());
+    assertEquals('A', offerImpl2.getArchived().charValue());
+  }
+
+  /**
+   * Test {@link OfferImpl#isActive()}.
+   * <p>
+   * Method under test: {@link OfferImpl#isActive()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferImpl.isActive()"})
+  public void testIsActive() {
+    // Arrange
+    OfferImpl offerImpl2 = new OfferImpl();
+    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
+    offerImpl2.setApplyDiscountToSalePrice(true);
+    offerImpl2.setApplyToChildItems(true);
+    offerImpl2.setAutomaticallyAdded(true);
+    offerImpl2.setCombinableWithOtherOffers(true);
+    offerImpl2.setDescription("The characteristics of someone or something");
+    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
+    offerImpl2.setId(OfferImpl.serialVersionUID);
+    offerImpl2.setMarketingMessage("Marketing Message");
+    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
+    offerImpl2.setMaxUsesPerOrder(3);
+    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
+    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
+    offerImpl2.setName("Name");
+    offerImpl2.setOfferCodes(new ArrayList<>());
+    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
+    offerImpl2.setOfferPriceData(new ArrayList<>());
+    offerImpl2.setOrderMinSubTotal(new Money());
+    offerImpl2.setPriority(1);
+    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
+    offerImpl2.setQualifyingItemSubTotal(new Money());
+    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
+    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
+    offerImpl2.setTargetMinSubTotal(new Money());
+    offerImpl2.setTargetSystem("Target System");
+    offerImpl2.setTotalitarianOffer(true);
+    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
+    offerImpl2.setUseListForDiscounts(true);
+    offerImpl2.setValue(new BigDecimal("2.3"));
+    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setArchived(null);
+
+    // Act and Assert
+    assertFalse(offerImpl2.isActive());
+  }
+
+  /**
+   * Test {@link OfferImpl#isActive()}.
+   * <ul>
+   *   <li>Given {@link OfferImpl} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferImpl#isActive()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferImpl.isActive()"})
+  public void testIsActive_givenOfferImpl_thenReturnFalse() {
+    // Arrange, Act and Assert
+    assertFalse((new OfferImpl()).isActive());
+  }
+
+  /**
+   * Test {@link OfferImpl#getQualifyingItemSubTotal()}.
+   * <ul>
+   *   <li>Given {@link OfferImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferImpl#getQualifyingItemSubTotal()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money OfferImpl.getQualifyingItemSubTotal()"})
+  public void testGetQualifyingItemSubTotal_givenOfferImpl_thenReturnNull() {
+    // Arrange, Act and Assert
+    assertNull((new OfferImpl()).getQualifyingItemSubTotal());
+  }
+
+  /**
+   * Test {@link OfferImpl#getQualifyingItemSubTotal()}.
+   * <ul>
+   *   <li>Then return {@link Money#Money()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferImpl#getQualifyingItemSubTotal()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money OfferImpl.getQualifyingItemSubTotal()"})
+  public void testGetQualifyingItemSubTotal_thenReturnMoney() {
+    // Arrange
+    OfferImpl offerImpl2 = new OfferImpl();
+    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
+    offerImpl2.setApplyDiscountToSalePrice(true);
+    offerImpl2.setApplyToChildItems(true);
+    offerImpl2.setAutomaticallyAdded(true);
+    offerImpl2.setCombinableWithOtherOffers(true);
+    offerImpl2.setDescription("The characteristics of someone or something");
+    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
+    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setId(OfferImpl.serialVersionUID);
+    offerImpl2.setMarketingMessage("Marketing Message");
+    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
+    offerImpl2.setMaxUsesPerOrder(3);
+    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
+    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
+    offerImpl2.setName("Name");
+    offerImpl2.setOfferCodes(new ArrayList<>());
+    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
+    offerImpl2.setOfferPriceData(new ArrayList<>());
+    Money orderMinSubTotal = new Money();
+    offerImpl2.setOrderMinSubTotal(orderMinSubTotal);
+    offerImpl2.setPriority(1);
+    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
+    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
+    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
+    offerImpl2.setTargetMinSubTotal(new Money());
+    offerImpl2.setTargetSystem("Target System");
+    offerImpl2.setTotalitarianOffer(true);
+    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
+    offerImpl2.setUseListForDiscounts(true);
+    offerImpl2.setValue(new BigDecimal("2.3"));
+    offerImpl2.setQualifyingItemSubTotal(new Money());
+
+    // Act and Assert
+    assertEquals(orderMinSubTotal, offerImpl2.getQualifyingItemSubTotal());
+  }
+
+  /**
+   * Test {@link OfferImpl#setQualifyingItemSubTotal(Money)}.
+   * <p>
+   * Method under test: {@link OfferImpl#setQualifyingItemSubTotal(Money)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OfferImpl.setQualifyingItemSubTotal(Money)"})
+  public void testSetQualifyingItemSubTotal() {
+    // Arrange
+    OfferImpl offerImpl2 = new OfferImpl();
+    Money qualifyingItemSubTotal = new Money();
+
+    // Act
+    offerImpl2.setQualifyingItemSubTotal(qualifyingItemSubTotal);
+
+    // Assert
+    assertEquals(new BigDecimal("0.00"), offerImpl2.qualifyingItemSubTotal);
+    BigDecimal bigDecimal = offerImpl2.qualifyingItemSubTotal;
+    Money absResult = qualifyingItemSubTotal.abs();
+    assertSame(bigDecimal, absResult.getAmount());
+    Money absResult2 = absResult.abs();
+    assertSame(bigDecimal, absResult2.getAmount());
+    assertSame(bigDecimal, absResult2.abs().getAmount());
+    Money zeroResult = qualifyingItemSubTotal.zero();
+    Money absResult3 = zeroResult.abs();
+    assertSame(bigDecimal, absResult3.abs().getAmount());
+    assertSame(bigDecimal, absResult3.getAmount());
+    Money zeroResult2 = absResult.zero();
+    assertSame(bigDecimal, zeroResult2.abs().getAmount());
+    Money zeroResult3 = zeroResult.zero();
+    assertSame(bigDecimal, zeroResult3.abs().getAmount());
+    assertSame(bigDecimal, zeroResult.getAmount());
+    assertSame(bigDecimal, zeroResult2.getAmount());
+    assertSame(bigDecimal, absResult2.zero().getAmount());
+    assertSame(bigDecimal, absResult3.zero().getAmount());
+    assertSame(bigDecimal, zeroResult3.getAmount());
+    assertSame(bigDecimal, zeroResult2.zero().getAmount());
+    assertSame(bigDecimal, zeroResult3.zero().getAmount());
+  }
+
+  /**
+   * Test {@link OfferImpl#setQualifyingItemSubTotal(Money)}.
+   * <ul>
+   *   <li>Then {@link OfferImpl} (default constructor) {@link OfferImpl#qualifyingItemSubTotal} is {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferImpl#setQualifyingItemSubTotal(Money)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OfferImpl.setQualifyingItemSubTotal(Money)"})
+  public void testSetQualifyingItemSubTotal_thenOfferImplQualifyingItemSubTotalIsNull() {
+    // Arrange
+    OfferImpl offerImpl2 = new OfferImpl();
+    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
+    offerImpl2.setApplyDiscountToSalePrice(true);
+    offerImpl2.setApplyToChildItems(true);
+    offerImpl2.setAutomaticallyAdded(true);
+    offerImpl2.setCombinableWithOtherOffers(true);
+    offerImpl2.setDescription("The characteristics of someone or something");
+    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
+    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setId(OfferImpl.serialVersionUID);
+    offerImpl2.setMarketingMessage("Marketing Message");
+    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
+    offerImpl2.setMaxUsesPerOrder(3);
+    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
+    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
+    offerImpl2.setName("Name");
+    offerImpl2.setOfferCodes(new ArrayList<>());
+    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
+    offerImpl2.setOfferPriceData(new ArrayList<>());
+    offerImpl2.setOrderMinSubTotal(new Money());
+    offerImpl2.setPriority(1);
+    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
+    offerImpl2.setQualifyingItemSubTotal(new Money());
+    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
+    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
+    offerImpl2.setTargetMinSubTotal(new Money());
+    offerImpl2.setTargetSystem("Target System");
+    offerImpl2.setTotalitarianOffer(true);
+    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
+    offerImpl2.setUseListForDiscounts(true);
+    offerImpl2.setValue(new BigDecimal("2.3"));
+
+    // Act
+    offerImpl2.setQualifyingItemSubTotal(null);
+
+    // Assert
+    assertNull(offerImpl2.qualifyingItemSubTotal);
+    assertNull(offerImpl2.getQualifyingItemSubTotal());
+  }
+
+  /**
+   * Test {@link OfferImpl#getOrderMinSubTotal()}.
+   * <ul>
+   *   <li>Given {@link OfferImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferImpl#getOrderMinSubTotal()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money OfferImpl.getOrderMinSubTotal()"})
+  public void testGetOrderMinSubTotal_givenOfferImpl_thenReturnNull() {
+    // Arrange, Act and Assert
+    assertNull((new OfferImpl()).getOrderMinSubTotal());
+  }
+
+  /**
+   * Test {@link OfferImpl#getOrderMinSubTotal()}.
+   * <ul>
+   *   <li>Then return {@link Money#Money()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferImpl#getOrderMinSubTotal()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money OfferImpl.getOrderMinSubTotal()"})
+  public void testGetOrderMinSubTotal_thenReturnMoney() {
+    // Arrange
+    OfferImpl offerImpl2 = new OfferImpl();
+    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
+    offerImpl2.setApplyDiscountToSalePrice(true);
+    offerImpl2.setApplyToChildItems(true);
+    offerImpl2.setAutomaticallyAdded(true);
+    offerImpl2.setCombinableWithOtherOffers(true);
+    offerImpl2.setDescription("The characteristics of someone or something");
+    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
+    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setId(OfferImpl.serialVersionUID);
+    offerImpl2.setMarketingMessage("Marketing Message");
+    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
+    offerImpl2.setMaxUsesPerOrder(3);
+    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
+    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
+    offerImpl2.setName("Name");
+    offerImpl2.setOfferCodes(new ArrayList<>());
+    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
+    offerImpl2.setOfferPriceData(new ArrayList<>());
+    offerImpl2.setPriority(1);
+    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
+    Money qualifyingItemSubTotal = new Money();
+    offerImpl2.setQualifyingItemSubTotal(qualifyingItemSubTotal);
+    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
+    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
+    offerImpl2.setTargetMinSubTotal(new Money());
+    offerImpl2.setTargetSystem("Target System");
+    offerImpl2.setTotalitarianOffer(true);
+    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
+    offerImpl2.setUseListForDiscounts(true);
+    offerImpl2.setValue(new BigDecimal("2.3"));
+    offerImpl2.setOrderMinSubTotal(new Money());
+
+    // Act and Assert
+    assertEquals(qualifyingItemSubTotal, offerImpl2.getOrderMinSubTotal());
+  }
+
+  /**
+   * Test {@link OfferImpl#setOrderMinSubTotal(Money)}.
+   * <p>
+   * Method under test: {@link OfferImpl#setOrderMinSubTotal(Money)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OfferImpl.setOrderMinSubTotal(Money)"})
+  public void testSetOrderMinSubTotal() {
+    // Arrange
+    OfferImpl offerImpl2 = new OfferImpl();
+    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
+    offerImpl2.setApplyDiscountToSalePrice(true);
+    offerImpl2.setApplyToChildItems(true);
+    offerImpl2.setAutomaticallyAdded(true);
+    offerImpl2.setCombinableWithOtherOffers(true);
+    offerImpl2.setDescription("The characteristics of someone or something");
+    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
+    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setId(OfferImpl.serialVersionUID);
+    offerImpl2.setMarketingMessage("Marketing Message");
+    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
+    offerImpl2.setMaxUsesPerOrder(3);
+    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
+    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
+    offerImpl2.setName("Name");
+    offerImpl2.setOfferCodes(new ArrayList<>());
+    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
+    offerImpl2.setOfferPriceData(new ArrayList<>());
+    offerImpl2.setOrderMinSubTotal(new Money());
+    offerImpl2.setPriority(1);
+    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
+    offerImpl2.setQualifyingItemSubTotal(new Money());
+    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
+    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
+    offerImpl2.setTargetMinSubTotal(new Money());
+    offerImpl2.setTargetSystem("Target System");
+    offerImpl2.setTotalitarianOffer(true);
+    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
+    offerImpl2.setUseListForDiscounts(true);
+    offerImpl2.setValue(new BigDecimal("2.3"));
+
+    // Act
+    offerImpl2.setOrderMinSubTotal(null);
+
+    // Assert
+    Money qualifyingItemSubTotal = offerImpl2.getQualifyingItemSubTotal();
+    Currency currency = qualifyingItemSubTotal.getCurrency();
+    assertEquals("British Pound", currency.getDisplayName());
+    assertEquals("GBP", currency.getCurrencyCode());
+    assertEquals("GBP", currency.toString());
+    assertEquals("£", currency.getSymbol());
+    assertNull(offerImpl2.orderMinSubTotal);
+    assertNull(offerImpl2.getOrderMinSubTotal());
+    assertEquals(2, currency.getDefaultFractionDigits());
+    assertEquals(826, currency.getNumericCode());
+    assertSame(currency, qualifyingItemSubTotal.abs().getCurrency());
+    Money targetMinSubTotal = offerImpl2.getTargetMinSubTotal();
+    assertSame(currency, targetMinSubTotal.abs().getCurrency());
+    assertSame(currency, qualifyingItemSubTotal.zero().getCurrency());
+    assertSame(currency, targetMinSubTotal.zero().getCurrency());
+    assertSame(currency, targetMinSubTotal.getCurrency());
+  }
+
+  /**
+   * Test {@link OfferImpl#setOrderMinSubTotal(Money)}.
+   * <ul>
+   *   <li>Then {@link OfferImpl} (default constructor) {@link OfferImpl#orderMinSubTotal} is {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferImpl#setOrderMinSubTotal(Money)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OfferImpl.setOrderMinSubTotal(Money)"})
+  public void testSetOrderMinSubTotal_thenOfferImplOrderMinSubTotalIsBigDecimalWith000() {
+    // Arrange
+    OfferImpl offerImpl2 = new OfferImpl();
+    Money orderMinSubTotal = new Money();
+
+    // Act
+    offerImpl2.setOrderMinSubTotal(orderMinSubTotal);
+
+    // Assert
+    assertEquals(new BigDecimal("0.00"), offerImpl2.orderMinSubTotal);
+    BigDecimal bigDecimal = offerImpl2.orderMinSubTotal;
+    Money absResult = orderMinSubTotal.abs();
+    assertSame(bigDecimal, absResult.getAmount());
+    Money absResult2 = absResult.abs();
+    assertSame(bigDecimal, absResult2.getAmount());
+    assertSame(bigDecimal, absResult2.abs().getAmount());
+    Money zeroResult = orderMinSubTotal.zero();
+    Money absResult3 = zeroResult.abs();
+    assertSame(bigDecimal, absResult3.abs().getAmount());
+    assertSame(bigDecimal, absResult3.getAmount());
+    Money zeroResult2 = absResult.zero();
+    assertSame(bigDecimal, zeroResult2.abs().getAmount());
+    Money zeroResult3 = zeroResult.zero();
+    assertSame(bigDecimal, zeroResult3.abs().getAmount());
+    assertSame(bigDecimal, zeroResult.getAmount());
+    assertSame(bigDecimal, zeroResult2.getAmount());
+    assertSame(bigDecimal, absResult2.zero().getAmount());
+    assertSame(bigDecimal, absResult3.zero().getAmount());
+    assertSame(bigDecimal, zeroResult3.getAmount());
+    assertSame(bigDecimal, zeroResult2.zero().getAmount());
+    assertSame(bigDecimal, zeroResult3.zero().getAmount());
+  }
+
+  /**
+   * Test {@link OfferImpl#getTargetMinSubTotal()}.
+   * <ul>
+   *   <li>Given {@link OfferImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferImpl#getTargetMinSubTotal()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money OfferImpl.getTargetMinSubTotal()"})
+  public void testGetTargetMinSubTotal_givenOfferImpl_thenReturnNull() {
+    // Arrange, Act and Assert
+    assertNull((new OfferImpl()).getTargetMinSubTotal());
+  }
+
+  /**
+   * Test {@link OfferImpl#getTargetMinSubTotal()}.
+   * <ul>
+   *   <li>Then return {@link Money#Money()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferImpl#getTargetMinSubTotal()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money OfferImpl.getTargetMinSubTotal()"})
+  public void testGetTargetMinSubTotal_thenReturnMoney() {
+    // Arrange
+    OfferImpl offerImpl2 = new OfferImpl();
+    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
+    offerImpl2.setApplyDiscountToSalePrice(true);
+    offerImpl2.setApplyToChildItems(true);
+    offerImpl2.setAutomaticallyAdded(true);
+    offerImpl2.setCombinableWithOtherOffers(true);
+    offerImpl2.setDescription("The characteristics of someone or something");
+    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
+    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setId(OfferImpl.serialVersionUID);
+    offerImpl2.setMarketingMessage("Marketing Message");
+    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
+    offerImpl2.setMaxUsesPerOrder(3);
+    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
+    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
+    offerImpl2.setName("Name");
+    offerImpl2.setOfferCodes(new ArrayList<>());
+    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
+    offerImpl2.setOfferPriceData(new ArrayList<>());
+    Money orderMinSubTotal = new Money();
+    offerImpl2.setOrderMinSubTotal(orderMinSubTotal);
+    offerImpl2.setPriority(1);
+    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
+    offerImpl2.setQualifyingItemSubTotal(new Money());
+    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
+    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
+    offerImpl2.setTargetSystem("Target System");
+    offerImpl2.setTotalitarianOffer(true);
+    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
+    offerImpl2.setUseListForDiscounts(true);
+    offerImpl2.setValue(new BigDecimal("2.3"));
+    offerImpl2.setTargetMinSubTotal(new Money());
+
+    // Act and Assert
+    assertEquals(orderMinSubTotal, offerImpl2.getTargetMinSubTotal());
+  }
+
+  /**
+   * Test {@link OfferImpl#setTargetMinSubTotal(Money)}.
+   * <ul>
+   *   <li>Then {@link OfferImpl} (default constructor) {@link OfferImpl#targetMinSubTotal} is {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferImpl#setTargetMinSubTotal(Money)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OfferImpl.setTargetMinSubTotal(Money)"})
+  public void testSetTargetMinSubTotal_thenOfferImplTargetMinSubTotalIsBigDecimalWith000() {
+    // Arrange
+    OfferImpl offerImpl2 = new OfferImpl();
+    Money targetMinSubTotal = new Money();
+
+    // Act
+    offerImpl2.setTargetMinSubTotal(targetMinSubTotal);
+
+    // Assert
+    assertEquals(new BigDecimal("0.00"), offerImpl2.targetMinSubTotal);
+    BigDecimal bigDecimal = offerImpl2.targetMinSubTotal;
+    Money absResult = targetMinSubTotal.abs();
+    assertSame(bigDecimal, absResult.getAmount());
+    Money absResult2 = absResult.abs();
+    assertSame(bigDecimal, absResult2.getAmount());
+    assertSame(bigDecimal, absResult2.abs().getAmount());
+    Money zeroResult = targetMinSubTotal.zero();
+    Money absResult3 = zeroResult.abs();
+    assertSame(bigDecimal, absResult3.abs().getAmount());
+    assertSame(bigDecimal, absResult3.getAmount());
+    Money zeroResult2 = absResult.zero();
+    assertSame(bigDecimal, zeroResult2.abs().getAmount());
+    Money zeroResult3 = zeroResult.zero();
+    assertSame(bigDecimal, zeroResult3.abs().getAmount());
+    assertSame(bigDecimal, zeroResult.getAmount());
+    assertSame(bigDecimal, zeroResult2.getAmount());
+    assertSame(bigDecimal, absResult2.zero().getAmount());
+    assertSame(bigDecimal, absResult3.zero().getAmount());
+    assertSame(bigDecimal, zeroResult3.getAmount());
+    assertSame(bigDecimal, zeroResult2.zero().getAmount());
+    assertSame(bigDecimal, zeroResult3.zero().getAmount());
+  }
+
+  /**
+   * Test {@link OfferImpl#setTargetMinSubTotal(Money)}.
+   * <ul>
+   *   <li>Then {@link OfferImpl} (default constructor) {@link OfferImpl#targetMinSubTotal} is {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferImpl#setTargetMinSubTotal(Money)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OfferImpl.setTargetMinSubTotal(Money)"})
+  public void testSetTargetMinSubTotal_thenOfferImplTargetMinSubTotalIsNull() {
+    // Arrange
+    OfferImpl offerImpl2 = new OfferImpl();
+    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
+    offerImpl2.setApplyDiscountToSalePrice(true);
+    offerImpl2.setApplyToChildItems(true);
+    offerImpl2.setAutomaticallyAdded(true);
+    offerImpl2.setCombinableWithOtherOffers(true);
+    offerImpl2.setDescription("The characteristics of someone or something");
+    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
+    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setId(OfferImpl.serialVersionUID);
+    offerImpl2.setMarketingMessage("Marketing Message");
+    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
+    offerImpl2.setMaxUsesPerOrder(3);
+    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
+    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
+    offerImpl2.setName("Name");
+    offerImpl2.setOfferCodes(new ArrayList<>());
+    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
+    offerImpl2.setOfferPriceData(new ArrayList<>());
+    offerImpl2.setOrderMinSubTotal(new Money());
+    offerImpl2.setPriority(1);
+    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
+    offerImpl2.setQualifyingItemSubTotal(new Money());
+    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
+    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
+    offerImpl2.setTargetMinSubTotal(new Money());
+    offerImpl2.setTargetSystem("Target System");
+    offerImpl2.setTotalitarianOffer(true);
+    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
+    offerImpl2.setUseListForDiscounts(true);
+    offerImpl2.setValue(new BigDecimal("2.3"));
+
+    // Act
+    offerImpl2.setTargetMinSubTotal(null);
+
+    // Assert
+    assertNull(offerImpl2.targetMinSubTotal);
+    assertNull(offerImpl2.getTargetMinSubTotal());
+  }
+
+  /**
+   * Test {@link OfferImpl#getRequiresRelatedTargetAndQualifiers()}.
+   * <p>
+   * Method under test: {@link OfferImpl#getRequiresRelatedTargetAndQualifiers()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean OfferImpl.getRequiresRelatedTargetAndQualifiers()"})
+  public void testGetRequiresRelatedTargetAndQualifiers() {
+    // Arrange
+    OfferImpl offerImpl2 = new OfferImpl();
+    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
+    offerImpl2.setApplyDiscountToSalePrice(true);
+    offerImpl2.setApplyToChildItems(true);
+    offerImpl2.setAutomaticallyAdded(true);
+    offerImpl2.setCombinableWithOtherOffers(true);
+    offerImpl2.setDescription("The characteristics of someone or something");
+    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
+    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setId(OfferImpl.serialVersionUID);
+    offerImpl2.setMarketingMessage("Marketing Message");
+    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
+    offerImpl2.setMaxUsesPerOrder(3);
+    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
+    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
+    offerImpl2.setName("Name");
+    offerImpl2.setOfferCodes(new ArrayList<>());
+    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
+    offerImpl2.setOfferPriceData(new ArrayList<>());
+    offerImpl2.setOrderMinSubTotal(new Money());
+    offerImpl2.setPriority(1);
+    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
+    offerImpl2.setQualifyingItemSubTotal(new Money());
+    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
+    offerImpl2.setTargetMinSubTotal(new Money());
+    offerImpl2.setTargetSystem("Target System");
+    offerImpl2.setTotalitarianOffer(true);
+    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
+    offerImpl2.setUseListForDiscounts(true);
+    offerImpl2.setValue(new BigDecimal("2.3"));
+    offerImpl2.setRequiresRelatedTargetAndQualifiers(null);
+
+    // Act and Assert
+    assertFalse(offerImpl2.getRequiresRelatedTargetAndQualifiers());
+  }
+
+  /**
+   * Test {@link OfferImpl#getRequiresRelatedTargetAndQualifiers()}.
+   * <ul>
+   *   <li>Given {@link OfferImpl} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferImpl#getRequiresRelatedTargetAndQualifiers()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean OfferImpl.getRequiresRelatedTargetAndQualifiers()"})
+  public void testGetRequiresRelatedTargetAndQualifiers_givenOfferImpl_thenReturnFalse() {
+    // Arrange, Act and Assert
+    assertFalse((new OfferImpl()).getRequiresRelatedTargetAndQualifiers());
+  }
+
+  /**
+   * Test {@link OfferImpl#getRequiresRelatedTargetAndQualifiers()}.
+   * <ul>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferImpl#getRequiresRelatedTargetAndQualifiers()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean OfferImpl.getRequiresRelatedTargetAndQualifiers()"})
+  public void testGetRequiresRelatedTargetAndQualifiers_thenReturnTrue() {
+    // Arrange
+    OfferImpl offerImpl2 = new OfferImpl();
+    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
+    offerImpl2.setApplyDiscountToSalePrice(true);
+    offerImpl2.setApplyToChildItems(true);
+    offerImpl2.setAutomaticallyAdded(true);
+    offerImpl2.setCombinableWithOtherOffers(true);
+    offerImpl2.setDescription("The characteristics of someone or something");
+    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
+    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setId(OfferImpl.serialVersionUID);
+    offerImpl2.setMarketingMessage("Marketing Message");
+    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
+    offerImpl2.setMaxUsesPerOrder(3);
+    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
+    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
+    offerImpl2.setName("Name");
+    offerImpl2.setOfferCodes(new ArrayList<>());
+    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
+    offerImpl2.setOfferPriceData(new ArrayList<>());
+    offerImpl2.setOrderMinSubTotal(new Money());
+    offerImpl2.setPriority(1);
+    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
+    offerImpl2.setQualifyingItemSubTotal(new Money());
+    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
+    offerImpl2.setTargetMinSubTotal(new Money());
+    offerImpl2.setTargetSystem("Target System");
+    offerImpl2.setTotalitarianOffer(true);
+    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
+    offerImpl2.setUseListForDiscounts(true);
+    offerImpl2.setValue(new BigDecimal("2.3"));
+    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
+
+    // Act and Assert
+    assertTrue(offerImpl2.getRequiresRelatedTargetAndQualifiers());
+  }
+
+  /**
+   * Test {@link OfferImpl#getMainEntityName()}.
+   * <p>
+   * Method under test: {@link OfferImpl#getMainEntityName()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String OfferImpl.getMainEntityName()"})
+  public void testGetMainEntityName() {
+    // Arrange, Act and Assert
+    assertNull((new OfferImpl()).getMainEntityName());
+  }
+
+  /**
+   * Test {@link OfferImpl#getAdjustmentType()}.
+   * <ul>
+   *   <li>Given {@link OfferImpl} (default constructor).</li>
+   *   <li>Then return {@link OfferAdjustmentType#ORDER_DISCOUNT}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferImpl#getAdjustmentType()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OfferAdjustmentType OfferImpl.getAdjustmentType()"})
+  public void testGetAdjustmentType_givenOfferImpl_thenReturnOrder_discount() {
+    // Arrange and Act
+    OfferAdjustmentType actualAdjustmentType = (new OfferImpl()).getAdjustmentType();
+
+    // Assert
+    assertSame(actualAdjustmentType.ORDER_DISCOUNT, actualAdjustmentType);
+  }
+
+  /**
+   * Test {@link OfferImpl#isFutureCredit()}.
+   * <ul>
+   *   <li>Given {@link OfferImpl} (default constructor) AdjustmentType is {@link OfferAdjustmentType#FUTURE_CREDIT}.</li>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferImpl#isFutureCredit()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferImpl.isFutureCredit()"})
+  public void testIsFutureCredit_givenOfferImplAdjustmentTypeIsFuture_credit_thenReturnTrue() {
+    // Arrange
+    OfferImpl offerImpl2 = new OfferImpl();
+    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
+
+    // Act and Assert
+    assertTrue(offerImpl2.isFutureCredit());
+  }
+
+  /**
+   * Test {@link OfferImpl#isFutureCredit()}.
+   * <ul>
+   *   <li>Given {@link OfferImpl} (default constructor) AdjustmentType is {@link OfferAdjustmentType#ORDER_DISCOUNT}.</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferImpl#isFutureCredit()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferImpl.isFutureCredit()"})
+  public void testIsFutureCredit_givenOfferImplAdjustmentTypeIsOrder_discount_thenReturnFalse() {
+    // Arrange
+    OfferImpl offerImpl2 = new OfferImpl();
+    offerImpl2.setAdjustmentType(OfferAdjustmentType.ORDER_DISCOUNT);
+
+    // Act and Assert
+    assertFalse(offerImpl2.isFutureCredit());
+  }
+
+  /**
+   * Test {@link OfferImpl#isFutureCredit()}.
+   * <ul>
+   *   <li>Given {@link OfferImpl} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferImpl#isFutureCredit()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferImpl.isFutureCredit()"})
+  public void testIsFutureCredit_givenOfferImpl_thenReturnFalse() {
+    // Arrange, Act and Assert
+    assertFalse((new OfferImpl()).isFutureCredit());
   }
 
   /**
@@ -8701,13 +2573,12 @@ public class OfferImplDiffblueTest {
    * </ul>
    */
   @Test
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferImpl.equals(Object)", "int OfferImpl.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
-    OfferAdjustmentType adjustmentType = mock(OfferAdjustmentType.class);
-    when(adjustmentType.getType()).thenReturn("Type");
-
     OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(adjustmentType);
+    offerImpl.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
     offerImpl.setApplyDiscountToSalePrice(true);
     offerImpl.setApplyToChildItems(true);
     offerImpl.setAutomaticallyAdded(true);
@@ -8796,6 +2667,8 @@ public class OfferImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferImpl.equals(Object)", "int OfferImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     OfferImpl offerImpl = new OfferImpl();
@@ -8849,13 +2722,12 @@ public class OfferImplDiffblueTest {
    * Method under test: {@link OfferImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferImpl.equals(Object)", "int OfferImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
-    OfferAdjustmentType adjustmentType = mock(OfferAdjustmentType.class);
-    when(adjustmentType.getType()).thenReturn("Type");
-
     OfferImpl offerImpl = new OfferImpl();
-    offerImpl.setAdjustmentType(adjustmentType);
+    offerImpl.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
     offerImpl.setApplyDiscountToSalePrice(true);
     offerImpl.setApplyToChildItems(true);
     offerImpl.setAutomaticallyAdded(true);
@@ -8938,6 +2810,8 @@ public class OfferImplDiffblueTest {
    * Method under test: {@link OfferImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferImpl.equals(Object)", "int OfferImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     OfferImpl offerImpl = new OfferImpl();
@@ -8989,6 +2863,8 @@ public class OfferImplDiffblueTest {
    * Method under test: {@link OfferImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferImpl.equals(Object)", "int OfferImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     OfferImpl offerImpl = new OfferImpl();
@@ -9033,65 +2909,25 @@ public class OfferImplDiffblueTest {
   /**
    * Test {@link OfferImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <p>
-   * Method under test:
-   * {@link OfferImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link OfferImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse OfferImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OfferImpl offerImpl = new OfferImpl();
+    OfferImpl offerImpl2 = new OfferImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
     CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
 
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<Offer> actualCreateOrRetrieveCopyInstanceResult = offerImpl.createOrRetrieveCopyInstance(context);
+    CreateResponse<Offer> actualCreateOrRetrieveCopyInstanceResult = offerImpl2.createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
     assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
-  }
-
-  /**
-   * Test {@link OfferImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <p>
-   * Method under test:
-   * {@link OfferImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1064 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-    CatalogImpl fromCatalog = new CatalogImpl();
-    CatalogImpl toCatalog = new CatalogImpl();
-    SiteImpl fromSite = new SiteImpl();
-    SiteImpl toSite = new SiteImpl();
-    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
-
-    // Act
-    offerImpl2.createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
-        genericEntityService, new MultiTenantCopierExtensionManager()));
   }
 
   /**
@@ -9100,20 +2936,13 @@ public class OfferImplDiffblueTest {
    * Method under test: default or parameterless constructor of {@link OfferImpl}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OfferImpl.<init>()"})
   public void testNewOfferImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange and Act
     OfferImpl actualOfferImpl = new OfferImpl();
 
     // Assert
-    OfferItemRestrictionRuleType offerItemQualifierRuleType = actualOfferImpl.getOfferItemQualifierRuleType();
-    assertEquals("NONE", offerItemQualifierRuleType.getType());
-    assertEquals("None", offerItemQualifierRuleType.getFriendlyType());
-    OfferAdjustmentType adjustmentType = actualOfferImpl.getAdjustmentType();
-    assertEquals("ORDER_DISCOUNT", adjustmentType.getType());
-    assertEquals("Order Discount", adjustmentType.getFriendlyType());
-    assertEquals('N', actualOfferImpl.archiveStatus.getArchived().charValue());
     assertEquals('N', actualOfferImpl.getArchived().charValue());
     assertNull(actualOfferImpl.maxUsesPerOrder);
     assertNull(actualOfferImpl.priority);
@@ -9171,35 +3000,5 @@ public class OfferImplDiffblueTest {
     assertTrue(actualOfferImpl.isUnlimitedUsePerOrder());
     assertTrue(actualOfferImpl.applyToSalePrice);
     assertTrue(actualOfferImpl.combinableWithOtherOffers);
-    assertSame(offerItemQualifierRuleType, actualOfferImpl.getOfferItemTargetRuleType());
-  }
-
-  /**
-   * Test new {@link OfferImpl} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link OfferImpl}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testNewOfferImpl2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1063 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OfferImpl offerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    new OfferImpl();
   }
 }

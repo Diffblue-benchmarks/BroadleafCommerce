@@ -1,158 +1,465 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.server.security.service.user;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import org.broadleafcommerce.common.sandbox.domain.SandBoxImpl;
+import org.broadleafcommerce.openadmin.server.security.dao.AdminUserDao;
+import org.broadleafcommerce.openadmin.server.security.domain.AdminPermission;
+import org.broadleafcommerce.openadmin.server.security.domain.AdminRole;
+import org.broadleafcommerce.openadmin.server.security.domain.AdminRoleImpl;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminUser;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminUserImpl;
-import org.junit.Ignore;
+import org.broadleafcommerce.openadmin.server.security.service.AdminSecurityHelper;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
-    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
-    "/bl-open-admin-contentCreator-applicationContext.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class AdminUserDetailsServiceImplDiffblueTest {
-  @Autowired
+  @Mock
+  private AdminSecurityHelper adminSecurityHelper;
+
+  @Mock
+  private AdminUserDao adminUserDao;
+
+  @InjectMocks
   private AdminUserDetailsServiceImpl adminUserDetailsServiceImpl;
 
   /**
    * Test {@link AdminUserDetailsServiceImpl#loadUserByUsername(String)}.
    * <p>
-   * Method under test:
-   * {@link AdminUserDetailsServiceImpl#loadUserByUsername(String)}
+   * Method under test: {@link AdminUserDetailsServiceImpl#loadUserByUsername(String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"UserDetails AdminUserDetailsServiceImpl.loadUserByUsername(String)"})
   public void testLoadUserByUsername() throws DataAccessException, UsernameNotFoundException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service.user;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1128 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.user.AdminUserDetailsServiceImpl adminUserDetailsServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    when(adminUserDao.readAdminUserByUserName(Mockito.<String>any())).thenReturn(new AdminUserImpl());
 
-    // Arrange and Act
-    (new AdminUserDetailsServiceImpl()).loadUserByUsername("janedoe");
+    // Act and Assert
+    assertThrows(UsernameNotFoundException.class, () -> adminUserDetailsServiceImpl.loadUserByUsername("janedoe"));
+    verify(adminUserDao).readAdminUserByUserName(eq("janedoe"));
+  }
+
+  /**
+   * Test {@link AdminUserDetailsServiceImpl#loadUserByUsername(String)}.
+   * <p>
+   * Method under test: {@link AdminUserDetailsServiceImpl#loadUserByUsername(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"UserDetails AdminUserDetailsServiceImpl.loadUserByUsername(String)"})
+  public void testLoadUserByUsername2() throws DataAccessException, UsernameNotFoundException {
+    // Arrange
+    AdminRoleImpl adminRoleImpl = mock(AdminRoleImpl.class);
+    when(adminRoleImpl.getAllPermissions())
+        .thenThrow(new UsernameNotFoundException(AdminUserDetailsServiceImpl.LEGACY_ROLE_PREFIX));
+    when(adminRoleImpl.getName()).thenReturn("Name");
+
+    HashSet<AdminRole> adminRoleSet = new HashSet<>();
+    adminRoleSet.add(adminRoleImpl);
+    AdminUserImpl adminUserImpl = mock(AdminUserImpl.class);
+    when(adminUserImpl.getAllRoles()).thenReturn(adminRoleSet);
+    when(adminUserImpl.getActiveStatusFlag()).thenReturn(true);
+    when(adminUserDao.readAdminUserByUserName(Mockito.<String>any())).thenReturn(adminUserImpl);
+
+    // Act and Assert
+    assertThrows(UsernameNotFoundException.class, () -> adminUserDetailsServiceImpl.loadUserByUsername("janedoe"));
+    verify(adminUserDao).readAdminUserByUserName(eq("janedoe"));
+    verify(adminRoleImpl).getAllPermissions();
+    verify(adminRoleImpl).getName();
+    verify(adminUserImpl, atLeast(1)).getActiveStatusFlag();
+    verify(adminUserImpl).getAllRoles();
+  }
+
+  /**
+   * Test {@link AdminUserDetailsServiceImpl#loadUserByUsername(String)}.
+   * <ul>
+   *   <li>Given {@link AdminUserDao} {@link AdminUserDao#readAdminUserByUserName(String)} return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminUserDetailsServiceImpl#loadUserByUsername(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"UserDetails AdminUserDetailsServiceImpl.loadUserByUsername(String)"})
+  public void testLoadUserByUsername_givenAdminUserDaoReadAdminUserByUserNameReturnNull()
+      throws DataAccessException, UsernameNotFoundException {
+    // Arrange
+    when(adminUserDao.readAdminUserByUserName(Mockito.<String>any())).thenReturn(null);
+
+    // Act and Assert
+    assertThrows(UsernameNotFoundException.class, () -> adminUserDetailsServiceImpl.loadUserByUsername("janedoe"));
+    verify(adminUserDao).readAdminUserByUserName(eq("janedoe"));
+  }
+
+  /**
+   * Test {@link AdminUserDetailsServiceImpl#loadUserByUsername(String)}.
+   * <ul>
+   *   <li>Given {@link AdminUserImpl} {@link AdminUserImpl#getActiveStatusFlag()} return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminUserDetailsServiceImpl#loadUserByUsername(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"UserDetails AdminUserDetailsServiceImpl.loadUserByUsername(String)"})
+  public void testLoadUserByUsername_givenAdminUserImplGetActiveStatusFlagReturnFalse()
+      throws DataAccessException, UsernameNotFoundException {
+    // Arrange
+    AdminUserImpl adminUserImpl = mock(AdminUserImpl.class);
+    when(adminUserImpl.getActiveStatusFlag()).thenReturn(false);
+    when(adminUserDao.readAdminUserByUserName(Mockito.<String>any())).thenReturn(adminUserImpl);
+
+    // Act and Assert
+    assertThrows(UsernameNotFoundException.class, () -> adminUserDetailsServiceImpl.loadUserByUsername("janedoe"));
+    verify(adminUserDao).readAdminUserByUserName(eq("janedoe"));
+    verify(adminUserImpl, atLeast(1)).getActiveStatusFlag();
+  }
+
+  /**
+   * Test {@link AdminUserDetailsServiceImpl#loadUserByUsername(String)}.
+   * <ul>
+   *   <li>Then return Authorities size is nine.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminUserDetailsServiceImpl#loadUserByUsername(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"UserDetails AdminUserDetailsServiceImpl.loadUserByUsername(String)"})
+  public void testLoadUserByUsername_thenReturnAuthoritiesSizeIsNine()
+      throws DataAccessException, UsernameNotFoundException {
+    // Arrange
+    doNothing().when(adminSecurityHelper)
+        .addAllPermissionsToAuthorities(Mockito.<List<SimpleGrantedAuthority>>any(),
+            Mockito.<Collection<AdminPermission>>any());
+    AdminRoleImpl adminRoleImpl = mock(AdminRoleImpl.class);
+    when(adminRoleImpl.getAllPermissions()).thenReturn(new HashSet<>());
+    when(adminRoleImpl.getName()).thenReturn(AdminUserDetailsServiceImpl.LEGACY_ROLE_PREFIX);
+
+    HashSet<AdminRole> adminRoleSet = new HashSet<>();
+    adminRoleSet.add(adminRoleImpl);
+    AdminUserImpl adminUserImpl = mock(AdminUserImpl.class);
+    when(adminUserImpl.getId()).thenReturn(1L);
+    when(adminUserImpl.getPassword()).thenReturn("iloveyou");
+    when(adminUserImpl.getAllPermissions()).thenReturn(new HashSet<>());
+    when(adminUserImpl.getAllRoles()).thenReturn(adminRoleSet);
+    when(adminUserImpl.getActiveStatusFlag()).thenReturn(true);
+    when(adminUserDao.readAdminUserByUserName(Mockito.<String>any())).thenReturn(adminUserImpl);
+
+    // Act
+    UserDetails actualLoadUserByUsernameResult = adminUserDetailsServiceImpl.loadUserByUsername("janedoe");
+
+    // Assert
+    verify(adminUserDao).readAdminUserByUserName(eq("janedoe"));
+    verify(adminRoleImpl).getAllPermissions();
+    verify(adminRoleImpl).getName();
+    verify(adminUserImpl, atLeast(1)).getActiveStatusFlag();
+    verify(adminUserImpl).getAllPermissions();
+    verify(adminUserImpl).getAllRoles();
+    verify(adminUserImpl).getId();
+    verify(adminUserImpl).getPassword();
+    verify(adminSecurityHelper, atLeast(1)).addAllPermissionsToAuthorities(isA(List.class), isA(Collection.class));
+    Collection<? extends GrantedAuthority> authorities = actualLoadUserByUsernameResult.getAuthorities();
+    assertEquals(9, authorities.size());
+    assertTrue(authorities instanceof Set);
+    assertTrue(actualLoadUserByUsernameResult instanceof AdminUserDetails);
+    assertEquals("iloveyou", actualLoadUserByUsernameResult.getPassword());
+    assertEquals("janedoe", actualLoadUserByUsernameResult.getUsername());
+    assertEquals(1L, ((AdminUserDetails) actualLoadUserByUsernameResult).getId().longValue());
+    assertTrue(actualLoadUserByUsernameResult.isAccountNonExpired());
+    assertTrue(actualLoadUserByUsernameResult.isAccountNonLocked());
+    assertTrue(actualLoadUserByUsernameResult.isCredentialsNonExpired());
+    assertTrue(actualLoadUserByUsernameResult.isEnabled());
+  }
+
+  /**
+   * Test {@link AdminUserDetailsServiceImpl#loadUserByUsername(String)}.
+   * <ul>
+   *   <li>Then return Authorities size is seven.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminUserDetailsServiceImpl#loadUserByUsername(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"UserDetails AdminUserDetailsServiceImpl.loadUserByUsername(String)"})
+  public void testLoadUserByUsername_thenReturnAuthoritiesSizeIsSeven()
+      throws DataAccessException, UsernameNotFoundException {
+    // Arrange
+    doNothing().when(adminSecurityHelper)
+        .addAllPermissionsToAuthorities(Mockito.<List<SimpleGrantedAuthority>>any(),
+            Mockito.<Collection<AdminPermission>>any());
+    AdminRoleImpl adminRoleImpl = mock(AdminRoleImpl.class);
+    when(adminRoleImpl.getAllPermissions()).thenReturn(new HashSet<>());
+    when(adminRoleImpl.getName()).thenReturn("Name");
+
+    HashSet<AdminRole> adminRoleSet = new HashSet<>();
+    adminRoleSet.add(adminRoleImpl);
+    AdminUserImpl adminUserImpl = mock(AdminUserImpl.class);
+    when(adminUserImpl.getId()).thenReturn(1L);
+    when(adminUserImpl.getPassword()).thenReturn("iloveyou");
+    when(adminUserImpl.getAllPermissions()).thenReturn(new HashSet<>());
+    when(adminUserImpl.getAllRoles()).thenReturn(adminRoleSet);
+    when(adminUserImpl.getActiveStatusFlag()).thenReturn(true);
+    when(adminUserDao.readAdminUserByUserName(Mockito.<String>any())).thenReturn(adminUserImpl);
+
+    // Act
+    UserDetails actualLoadUserByUsernameResult = adminUserDetailsServiceImpl.loadUserByUsername("janedoe");
+
+    // Assert
+    verify(adminUserDao).readAdminUserByUserName(eq("janedoe"));
+    verify(adminRoleImpl).getAllPermissions();
+    verify(adminRoleImpl).getName();
+    verify(adminUserImpl, atLeast(1)).getActiveStatusFlag();
+    verify(adminUserImpl).getAllPermissions();
+    verify(adminUserImpl).getAllRoles();
+    verify(adminUserImpl).getId();
+    verify(adminUserImpl).getPassword();
+    verify(adminSecurityHelper, atLeast(1)).addAllPermissionsToAuthorities(isA(List.class), isA(Collection.class));
+    Collection<? extends GrantedAuthority> authorities = actualLoadUserByUsernameResult.getAuthorities();
+    assertEquals(7, authorities.size());
+    assertTrue(authorities instanceof Set);
+    assertTrue(actualLoadUserByUsernameResult instanceof AdminUserDetails);
+    assertEquals("iloveyou", actualLoadUserByUsernameResult.getPassword());
+    assertEquals("janedoe", actualLoadUserByUsernameResult.getUsername());
+    assertEquals(1L, ((AdminUserDetails) actualLoadUserByUsernameResult).getId().longValue());
+    assertTrue(actualLoadUserByUsernameResult.isAccountNonExpired());
+    assertTrue(actualLoadUserByUsernameResult.isAccountNonLocked());
+    assertTrue(actualLoadUserByUsernameResult.isCredentialsNonExpired());
+    assertTrue(actualLoadUserByUsernameResult.isEnabled());
+  }
+
+  /**
+   * Test {@link AdminUserDetailsServiceImpl#loadUserByUsername(String)}.
+   * <ul>
+   *   <li>Then return Authorities size is six.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminUserDetailsServiceImpl#loadUserByUsername(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"UserDetails AdminUserDetailsServiceImpl.loadUserByUsername(String)"})
+  public void testLoadUserByUsername_thenReturnAuthoritiesSizeIsSix()
+      throws DataAccessException, UsernameNotFoundException {
+    // Arrange
+    doNothing().when(adminSecurityHelper)
+        .addAllPermissionsToAuthorities(Mockito.<List<SimpleGrantedAuthority>>any(),
+            Mockito.<Collection<AdminPermission>>any());
+    AdminUserImpl adminUserImpl = mock(AdminUserImpl.class);
+    when(adminUserImpl.getId()).thenReturn(1L);
+    when(adminUserImpl.getPassword()).thenReturn("iloveyou");
+    when(adminUserImpl.getAllPermissions()).thenReturn(new HashSet<>());
+    when(adminUserImpl.getAllRoles()).thenReturn(new HashSet<>());
+    when(adminUserImpl.getActiveStatusFlag()).thenReturn(true);
+    when(adminUserDao.readAdminUserByUserName(Mockito.<String>any())).thenReturn(adminUserImpl);
+
+    // Act
+    UserDetails actualLoadUserByUsernameResult = adminUserDetailsServiceImpl.loadUserByUsername("janedoe");
+
+    // Assert
+    verify(adminUserDao).readAdminUserByUserName(eq("janedoe"));
+    verify(adminUserImpl, atLeast(1)).getActiveStatusFlag();
+    verify(adminUserImpl).getAllPermissions();
+    verify(adminUserImpl).getAllRoles();
+    verify(adminUserImpl).getId();
+    verify(adminUserImpl).getPassword();
+    verify(adminSecurityHelper).addAllPermissionsToAuthorities(isA(List.class), isA(Collection.class));
+    Collection<? extends GrantedAuthority> authorities = actualLoadUserByUsernameResult.getAuthorities();
+    assertEquals(6, authorities.size());
+    assertTrue(authorities instanceof Set);
+    assertTrue(actualLoadUserByUsernameResult instanceof AdminUserDetails);
+    assertEquals("iloveyou", actualLoadUserByUsernameResult.getPassword());
+    assertEquals("janedoe", actualLoadUserByUsernameResult.getUsername());
+    assertEquals(1L, ((AdminUserDetails) actualLoadUserByUsernameResult).getId().longValue());
+    assertTrue(actualLoadUserByUsernameResult.isAccountNonExpired());
+    assertTrue(actualLoadUserByUsernameResult.isAccountNonLocked());
+    assertTrue(actualLoadUserByUsernameResult.isCredentialsNonExpired());
+    assertTrue(actualLoadUserByUsernameResult.isEnabled());
+  }
+
+  /**
+   * Test {@link AdminUserDetailsServiceImpl#loadUserByUsername(String)}.
+   * <ul>
+   *   <li>Then throw {@link EmptyResultDataAccessException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminUserDetailsServiceImpl#loadUserByUsername(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"UserDetails AdminUserDetailsServiceImpl.loadUserByUsername(String)"})
+  public void testLoadUserByUsername_thenThrowEmptyResultDataAccessException()
+      throws DataAccessException, UsernameNotFoundException {
+    // Arrange
+    AdminUserImpl adminUserImpl = mock(AdminUserImpl.class);
+    when(adminUserImpl.getAllRoles()).thenThrow(new EmptyResultDataAccessException(3));
+    when(adminUserImpl.getActiveStatusFlag()).thenReturn(true);
+    when(adminUserDao.readAdminUserByUserName(Mockito.<String>any())).thenReturn(adminUserImpl);
+
+    // Act and Assert
+    assertThrows(EmptyResultDataAccessException.class, () -> adminUserDetailsServiceImpl.loadUserByUsername("janedoe"));
+    verify(adminUserDao).readAdminUserByUserName(eq("janedoe"));
+    verify(adminUserImpl, atLeast(1)).getActiveStatusFlag();
+    verify(adminUserImpl).getAllRoles();
   }
 
   /**
    * Test {@link AdminUserDetailsServiceImpl#buildDetails(String, AdminUser)}.
+   * <ul>
+   *   <li>Given {@code iloveyou}.</li>
+   *   <li>Then return Authorities size is six.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminUserDetailsServiceImpl#buildDetails(String, AdminUser)}
+   * Method under test: {@link AdminUserDetailsServiceImpl#buildDetails(String, AdminUser)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testBuildDetails() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service.user;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1065 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.user.AdminUserDetailsServiceImpl adminUserDetailsServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"UserDetails AdminUserDetailsServiceImpl.buildDetails(String, AdminUser)"})
+  public void testBuildDetails_givenIloveyou_thenReturnAuthoritiesSizeIsSix() {
     // Arrange
-    AdminUserDetailsServiceImpl adminUserDetailsServiceImpl2 = new AdminUserDetailsServiceImpl();
+    doNothing().when(adminSecurityHelper)
+        .addAllPermissionsToAuthorities(Mockito.<List<SimpleGrantedAuthority>>any(),
+            Mockito.<Collection<AdminPermission>>any());
+    AdminUser adminUser = mock(AdminUser.class);
+    when(adminUser.getId()).thenReturn(1L);
+    when(adminUser.getPassword()).thenReturn("iloveyou");
+    when(adminUser.getAllPermissions()).thenReturn(new HashSet<>());
+    when(adminUser.getAllRoles()).thenReturn(new HashSet<>());
 
     // Act
-    adminUserDetailsServiceImpl2.buildDetails("janedoe", new AdminUserImpl());
+    UserDetails actualBuildDetailsResult = adminUserDetailsServiceImpl.buildDetails("janedoe", adminUser);
+
+    // Assert
+    verify(adminUser).getAllPermissions();
+    verify(adminUser).getAllRoles();
+    verify(adminUser).getId();
+    verify(adminUser).getPassword();
+    verify(adminSecurityHelper).addAllPermissionsToAuthorities(isA(List.class), isA(Collection.class));
+    Collection<? extends GrantedAuthority> authorities = actualBuildDetailsResult.getAuthorities();
+    assertEquals(6, authorities.size());
+    assertTrue(authorities instanceof Set);
+    assertTrue(actualBuildDetailsResult instanceof AdminUserDetails);
+    assertEquals("iloveyou", actualBuildDetailsResult.getPassword());
+    assertEquals("janedoe", actualBuildDetailsResult.getUsername());
+    assertEquals(1L, ((AdminUserDetails) actualBuildDetailsResult).getId().longValue());
+    assertTrue(actualBuildDetailsResult.isAccountNonExpired());
+    assertTrue(actualBuildDetailsResult.isAccountNonLocked());
+    assertTrue(actualBuildDetailsResult.isCredentialsNonExpired());
+    assertTrue(actualBuildDetailsResult.isEnabled());
   }
 
   /**
-   * Test {@link AdminUserDetailsServiceImpl#addRoles(AdminUser, List)}.
+   * Test {@link AdminUserDetailsServiceImpl#buildDetails(String, AdminUser)}.
+   * <ul>
+   *   <li>Then throw {@link EmptyResultDataAccessException}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminUserDetailsServiceImpl#addRoles(AdminUser, List)}
+   * Method under test: {@link AdminUserDetailsServiceImpl#buildDetails(String, AdminUser)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddRoles() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service.user;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1042 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.user.AdminUserDetailsServiceImpl adminUserDetailsServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"UserDetails AdminUserDetailsServiceImpl.buildDetails(String, AdminUser)"})
+  public void testBuildDetails_thenThrowEmptyResultDataAccessException() {
     // Arrange
-    AdminUserDetailsServiceImpl adminUserDetailsServiceImpl2 = new AdminUserDetailsServiceImpl();
-    AdminUserImpl adminUser = new AdminUserImpl();
+    AdminUser adminUser = mock(AdminUser.class);
+    when(adminUser.getAllRoles()).thenThrow(new EmptyResultDataAccessException(3));
 
-    // Act
-    adminUserDetailsServiceImpl2.addRoles(adminUser, new ArrayList<>());
+    // Act and Assert
+    assertThrows(EmptyResultDataAccessException.class,
+        () -> adminUserDetailsServiceImpl.buildDetails("janedoe", adminUser));
+    verify(adminUser).getAllRoles();
   }
 
   /**
    * Test {@link AdminUserDetailsServiceImpl#addRoles(AdminUser, List)}.
    * <ul>
-   *   <li>Given {@link SimpleGrantedAuthority#SimpleGrantedAuthority(String)} with
-   * {@code Role}.</li>
+   *   <li>Given {@link AdminSecurityHelper}.</li>
+   *   <li>When {@link AdminUserImpl} (default constructor).</li>
+   *   <li>Then {@link ArrayList#ArrayList()} Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminUserDetailsServiceImpl#addRoles(AdminUser, List)}
+   * Method under test: {@link AdminUserDetailsServiceImpl#addRoles(AdminUser, List)}
    */
   @Test
-  public void testAddRoles_givenSimpleGrantedAuthorityWithRole() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminUserDetailsServiceImpl.addRoles(AdminUser, List)"})
+  public void testAddRoles_givenAdminSecurityHelper_whenAdminUserImpl_thenArrayListEmpty() {
     // Arrange
-    AdminUserDetailsServiceImpl adminUserDetailsServiceImpl = new AdminUserDetailsServiceImpl();
-    AdminUserImpl adminUser = mock(AdminUserImpl.class);
-    when(adminUser.getAllRoles()).thenReturn(new HashSet<>());
+    AdminUserImpl adminUser = new AdminUserImpl();
+    ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<>();
+
+    // Act
+    adminUserDetailsServiceImpl.addRoles(adminUser, authorities);
+
+    // Assert that nothing has changed
+    assertTrue(authorities.isEmpty());
+  }
+
+  /**
+   * Test {@link AdminUserDetailsServiceImpl#addRoles(AdminUser, List)}.
+   * <ul>
+   *   <li>Given {@link SimpleGrantedAuthority#SimpleGrantedAuthority(String)} with {@code Role}.</li>
+   *   <li>Then {@link ArrayList#ArrayList()} size is two.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminUserDetailsServiceImpl#addRoles(AdminUser, List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminUserDetailsServiceImpl.addRoles(AdminUser, List)"})
+  public void testAddRoles_givenSimpleGrantedAuthorityWithRole_thenArrayListSizeIsTwo() {
+    // Arrange
+    AdminUserImpl adminUser = new AdminUserImpl();
 
     ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<>();
     authorities.add(new SimpleGrantedAuthority("Role"));
@@ -161,84 +468,159 @@ public class AdminUserDetailsServiceImplDiffblueTest {
     // Act
     adminUserDetailsServiceImpl.addRoles(adminUser, authorities);
 
-    // Assert
-    verify(adminUser).getAllRoles();
+    // Assert that nothing has changed
+    assertEquals(2, authorities.size());
+    SimpleGrantedAuthority getResult = authorities.get(0);
+    assertEquals("Role", getResult.getAuthority());
+    assertEquals("Role", getResult.toString());
   }
 
   /**
    * Test {@link AdminUserDetailsServiceImpl#addRoles(AdminUser, List)}.
    * <ul>
-   *   <li>When {@link AdminUserImpl} {@link AdminUserImpl#getAllRoles()} return
-   * {@link HashSet#HashSet()}.</li>
-   *   <li>Then calls {@link AdminUserImpl#getAllRoles()}.</li>
+   *   <li>Then {@link ArrayList#ArrayList()} size is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminUserDetailsServiceImpl#addRoles(AdminUser, List)}
+   * Method under test: {@link AdminUserDetailsServiceImpl#addRoles(AdminUser, List)}
    */
   @Test
-  public void testAddRoles_whenAdminUserImplGetAllRolesReturnHashSet_thenCallsGetAllRoles() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminUserDetailsServiceImpl.addRoles(AdminUser, List)"})
+  public void testAddRoles_thenArrayListSizeIsOne() {
     // Arrange
-    AdminUserDetailsServiceImpl adminUserDetailsServiceImpl = new AdminUserDetailsServiceImpl();
-    AdminUserImpl adminUser = mock(AdminUserImpl.class);
-    when(adminUser.getAllRoles()).thenReturn(new HashSet<>());
+    doNothing().when(adminSecurityHelper)
+        .addAllPermissionsToAuthorities(Mockito.<List<SimpleGrantedAuthority>>any(),
+            Mockito.<Collection<AdminPermission>>any());
+
+    AdminRoleImpl adminRoleImpl = new AdminRoleImpl();
+    adminRoleImpl.setAllPermissions(new HashSet<>());
+    adminRoleImpl.setDescription("The characteristics of someone or something");
+    adminRoleImpl.setId(1L);
+    adminRoleImpl.setName("Admin User");
+
+    LinkedHashSet<AdminRole> allRoles = new LinkedHashSet<>();
+    allRoles.add(adminRoleImpl);
+
+    AdminUserImpl adminUser = new AdminUserImpl();
+    adminUser.setActiveStatusFlag(true);
+    adminUser.setAdditionalFields(new HashMap<>());
+    adminUser.setAllPermissions(new HashSet<>());
+    adminUser.setEmail("jane.doe@example.org");
+    adminUser.setId(1L);
+    adminUser.setLogin("Login");
+    adminUser.setName("Name");
+    adminUser.setOverrideSandBox(new SandBoxImpl());
+    adminUser.setPassword("iloveyou");
+    adminUser.setPhoneNumber("6625550144");
+    adminUser.setUnencodedPassword("secret");
+    adminUser.setAllRoles(allRoles);
+    ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
     // Act
-    adminUserDetailsServiceImpl.addRoles(adminUser, new ArrayList<>());
+    adminUserDetailsServiceImpl.addRoles(adminUser, authorities);
 
     // Assert
-    verify(adminUser).getAllRoles();
+    verify(adminSecurityHelper).addAllPermissionsToAuthorities(isA(List.class), isA(Collection.class));
+    assertEquals(1, authorities.size());
+    SimpleGrantedAuthority getResult = authorities.get(0);
+    assertEquals("Admin User", getResult.getAuthority());
+    assertEquals("Admin User", getResult.toString());
   }
 
   /**
    * Test {@link AdminUserDetailsServiceImpl#addPermissions(AdminUser, List)}.
+   * <ul>
+   *   <li>Given {@link SimpleGrantedAuthority#SimpleGrantedAuthority(String)} with {@code Role}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminUserDetailsServiceImpl#addPermissions(AdminUser, List)}
+   * Method under test: {@link AdminUserDetailsServiceImpl#addPermissions(AdminUser, List)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddPermissions() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service.user;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1019 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.user.AdminUserDetailsServiceImpl adminUserDetailsServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminUserDetailsServiceImpl.addPermissions(AdminUser, List)"})
+  public void testAddPermissions_givenSimpleGrantedAuthorityWithRole() {
     // Arrange
-    AdminUserDetailsServiceImpl adminUserDetailsServiceImpl2 = new AdminUserDetailsServiceImpl();
+    doThrow(new UsernameNotFoundException("Msg")).when(adminSecurityHelper)
+        .addAllPermissionsToAuthorities(Mockito.<List<SimpleGrantedAuthority>>any(),
+            Mockito.<Collection<AdminPermission>>any());
     AdminUserImpl adminUser = new AdminUserImpl();
 
+    ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<>();
+    authorities.add(new SimpleGrantedAuthority("Role"));
+
+    // Act and Assert
+    assertThrows(UsernameNotFoundException.class,
+        () -> adminUserDetailsServiceImpl.addPermissions(adminUser, authorities));
+    verify(adminSecurityHelper).addAllPermissionsToAuthorities(isA(List.class), isA(Collection.class));
+  }
+
+  /**
+   * Test {@link AdminUserDetailsServiceImpl#addPermissions(AdminUser, List)}.
+   * <ul>
+   *   <li>Then {@link ArrayList#ArrayList()} size is two.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminUserDetailsServiceImpl#addPermissions(AdminUser, List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminUserDetailsServiceImpl.addPermissions(AdminUser, List)"})
+  public void testAddPermissions_thenArrayListSizeIsTwo() {
+    // Arrange
+    doNothing().when(adminSecurityHelper)
+        .addAllPermissionsToAuthorities(Mockito.<List<SimpleGrantedAuthority>>any(),
+            Mockito.<Collection<AdminPermission>>any());
+    AdminUserImpl adminUser = new AdminUserImpl();
+    ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<>();
+
     // Act
-    adminUserDetailsServiceImpl2.addPermissions(adminUser, new ArrayList<>());
+    adminUserDetailsServiceImpl.addPermissions(adminUser, authorities);
+
+    // Assert
+    verify(adminSecurityHelper).addAllPermissionsToAuthorities(isA(List.class), isA(Collection.class));
+    assertEquals(2, authorities.size());
+    SimpleGrantedAuthority getResult = authorities.get(1);
+    assertEquals("PERMISSION_ALL_USER_SANDBOX", getResult.getAuthority());
+    assertEquals("PERMISSION_ALL_USER_SANDBOX", getResult.toString());
+    SimpleGrantedAuthority getResult2 = authorities.get(0);
+    assertEquals("PERMISSION_OTHER_DEFAULT", getResult2.getAuthority());
+    assertEquals("PERMISSION_OTHER_DEFAULT", getResult2.toString());
+  }
+
+  /**
+   * Test {@link AdminUserDetailsServiceImpl#addPermissions(AdminUser, List)}.
+   * <ul>
+   *   <li>Then throw {@link UsernameNotFoundException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminUserDetailsServiceImpl#addPermissions(AdminUser, List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminUserDetailsServiceImpl.addPermissions(AdminUser, List)"})
+  public void testAddPermissions_thenThrowUsernameNotFoundException() {
+    // Arrange
+    doThrow(new UsernameNotFoundException("Msg")).when(adminSecurityHelper)
+        .addAllPermissionsToAuthorities(Mockito.<List<SimpleGrantedAuthority>>any(),
+            Mockito.<Collection<AdminPermission>>any());
+    AdminUserImpl adminUser = new AdminUserImpl();
+
+    // Act and Assert
+    assertThrows(UsernameNotFoundException.class,
+        () -> adminUserDetailsServiceImpl.addPermissions(adminUser, new ArrayList<>()));
+    verify(adminSecurityHelper).addAllPermissionsToAuthorities(isA(List.class), isA(Collection.class));
   }
 
   /**
    * Test {@link AdminUserDetailsServiceImpl#convertPermissionPrefixToRole(List)}.
    * <p>
-   * Method under test:
-   * {@link AdminUserDetailsServiceImpl#convertPermissionPrefixToRole(List)}
+   * Method under test: {@link AdminUserDetailsServiceImpl#convertPermissionPrefixToRole(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminUserDetailsServiceImpl.convertPermissionPrefixToRole(List)"})
   public void testConvertPermissionPrefixToRole() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminUserDetailsServiceImpl adminUserDetailsServiceImpl = new AdminUserDetailsServiceImpl();
-
     ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<>();
     authorities.add(new SimpleGrantedAuthority("PERMISSION_PERMISSION_"));
 
@@ -258,16 +640,13 @@ public class AdminUserDetailsServiceImplDiffblueTest {
   /**
    * Test {@link AdminUserDetailsServiceImpl#convertPermissionPrefixToRole(List)}.
    * <p>
-   * Method under test:
-   * {@link AdminUserDetailsServiceImpl#convertPermissionPrefixToRole(List)}
+   * Method under test: {@link AdminUserDetailsServiceImpl#convertPermissionPrefixToRole(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminUserDetailsServiceImpl.convertPermissionPrefixToRole(List)"})
   public void testConvertPermissionPrefixToRole2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminUserDetailsServiceImpl adminUserDetailsServiceImpl = new AdminUserDetailsServiceImpl();
-
     ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<>();
     authorities.add(new SimpleGrantedAuthority("PERMISSION_Role"));
 
@@ -287,16 +666,13 @@ public class AdminUserDetailsServiceImplDiffblueTest {
   /**
    * Test {@link AdminUserDetailsServiceImpl#convertPermissionPrefixToRole(List)}.
    * <p>
-   * Method under test:
-   * {@link AdminUserDetailsServiceImpl#convertPermissionPrefixToRole(List)}
+   * Method under test: {@link AdminUserDetailsServiceImpl#convertPermissionPrefixToRole(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminUserDetailsServiceImpl.convertPermissionPrefixToRole(List)"})
   public void testConvertPermissionPrefixToRole3() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminUserDetailsServiceImpl adminUserDetailsServiceImpl = new AdminUserDetailsServiceImpl();
-
     ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<>();
     authorities.add(new SimpleGrantedAuthority("PERMISSION_ROLE_"));
     SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority("Role");
@@ -310,92 +686,22 @@ public class AdminUserDetailsServiceImplDiffblueTest {
     SimpleGrantedAuthority getResult = authorities.get(1);
     assertEquals("ROLE_PERMISSION_ROLE_", getResult.getAuthority());
     assertEquals("ROLE_PERMISSION_ROLE_", getResult.toString());
-    SimpleGrantedAuthority getResult2 = authorities.get(2);
-    assertEquals("ROLE_ROLE_", getResult2.getAuthority());
-    assertEquals("ROLE_ROLE_", getResult2.toString());
     assertSame(simpleGrantedAuthority, authorities.get(3));
   }
 
   /**
    * Test {@link AdminUserDetailsServiceImpl#convertPermissionPrefixToRole(List)}.
-   * <p>
-   * Method under test:
-   * {@link AdminUserDetailsServiceImpl#convertPermissionPrefixToRole(List)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testConvertPermissionPrefixToRole4() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service.user;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1091 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.user.AdminUserDetailsServiceImpl adminUserDetailsServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    AdminUserDetailsServiceImpl adminUserDetailsServiceImpl2 = new AdminUserDetailsServiceImpl();
-
-    // Act
-    adminUserDetailsServiceImpl2.convertPermissionPrefixToRole(new ArrayList<>());
-  }
-
-  /**
-   * Test {@link AdminUserDetailsServiceImpl#convertPermissionPrefixToRole(List)}.
    * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then {@link ArrayList#ArrayList()} second Authority is {@code ROLE_PERMISSION_}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminUserDetailsServiceImpl#convertPermissionPrefixToRole(List)}
+   * Method under test: {@link AdminUserDetailsServiceImpl#convertPermissionPrefixToRole(List)}
    */
   @Test
-  public void testConvertPermissionPrefixToRole_thenArrayList() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdminUserImpl adminUser = mock(AdminUserImpl.class);
-    when(adminUser.getAllRoles()).thenReturn(new HashSet<>());
-
-    AdminUserDetailsServiceImpl adminUserDetailsServiceImpl = new AdminUserDetailsServiceImpl();
-    ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<>();
-    adminUserDetailsServiceImpl.addRoles(adminUser, authorities);
-    ArrayList<SimpleGrantedAuthority> authorities2 = new ArrayList<>();
-
-    // Act
-    adminUserDetailsServiceImpl.convertPermissionPrefixToRole(authorities2);
-
-    // Assert that nothing has changed
-    verify(adminUser).getAllRoles();
-    assertEquals(authorities, authorities2);
-  }
-
-  /**
-   * Test {@link AdminUserDetailsServiceImpl#convertPermissionPrefixToRole(List)}.
-   * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} second Authority is
-   * {@code ROLE_PERMISSION_}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link AdminUserDetailsServiceImpl#convertPermissionPrefixToRole(List)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminUserDetailsServiceImpl.convertPermissionPrefixToRole(List)"})
   public void testConvertPermissionPrefixToRole_thenArrayListSecondAuthorityIsRolePermission() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminUserDetailsServiceImpl adminUserDetailsServiceImpl = new AdminUserDetailsServiceImpl();
-
     ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<>();
     authorities.add(new SimpleGrantedAuthority(AdminUserDetailsServiceImpl.LEGACY_ROLE_PREFIX));
     authorities.add(new SimpleGrantedAuthority("Role"));
@@ -419,16 +725,13 @@ public class AdminUserDetailsServiceImplDiffblueTest {
    *   <li>Then {@link ArrayList#ArrayList()} size is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminUserDetailsServiceImpl#convertPermissionPrefixToRole(List)}
+   * Method under test: {@link AdminUserDetailsServiceImpl#convertPermissionPrefixToRole(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminUserDetailsServiceImpl.convertPermissionPrefixToRole(List)"})
   public void testConvertPermissionPrefixToRole_thenArrayListSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminUserDetailsServiceImpl adminUserDetailsServiceImpl = new AdminUserDetailsServiceImpl();
-
     ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<>();
     authorities.add(new SimpleGrantedAuthority("Role"));
 
@@ -445,16 +748,13 @@ public class AdminUserDetailsServiceImplDiffblueTest {
    *   <li>Then {@link ArrayList#ArrayList()} size is two.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminUserDetailsServiceImpl#convertPermissionPrefixToRole(List)}
+   * Method under test: {@link AdminUserDetailsServiceImpl#convertPermissionPrefixToRole(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminUserDetailsServiceImpl.convertPermissionPrefixToRole(List)"})
   public void testConvertPermissionPrefixToRole_thenArrayListSizeIsTwo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminUserDetailsServiceImpl adminUserDetailsServiceImpl = new AdminUserDetailsServiceImpl();
-
     ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<>();
     authorities.add(new SimpleGrantedAuthority(AdminUserDetailsServiceImpl.DEFAULT_SPRING_SECURITY_ROLE_PREFIX));
     authorities.add(new SimpleGrantedAuthority("Role"));
@@ -472,20 +772,16 @@ public class AdminUserDetailsServiceImplDiffblueTest {
   /**
    * Test {@link AdminUserDetailsServiceImpl#convertPermissionPrefixToRole(List)}.
    * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} third Authority is
-   * {@code ROLE_42}.</li>
+   *   <li>Then {@link ArrayList#ArrayList()} third Authority is {@code ROLE_42}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminUserDetailsServiceImpl#convertPermissionPrefixToRole(List)}
+   * Method under test: {@link AdminUserDetailsServiceImpl#convertPermissionPrefixToRole(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminUserDetailsServiceImpl.convertPermissionPrefixToRole(List)"})
   public void testConvertPermissionPrefixToRole_thenArrayListThirdAuthorityIsRole42() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminUserDetailsServiceImpl adminUserDetailsServiceImpl = new AdminUserDetailsServiceImpl();
-
     ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<>();
     authorities.add(new SimpleGrantedAuthority("PERMISSION_42"));
 
@@ -509,15 +805,13 @@ public class AdminUserDetailsServiceImplDiffblueTest {
    *   <li>Then {@link ArrayList#ArrayList()} Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminUserDetailsServiceImpl#convertPermissionPrefixToRole(List)}
+   * Method under test: {@link AdminUserDetailsServiceImpl#convertPermissionPrefixToRole(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminUserDetailsServiceImpl.convertPermissionPrefixToRole(List)"})
   public void testConvertPermissionPrefixToRole_whenArrayList_thenArrayListEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    AdminUserDetailsServiceImpl adminUserDetailsServiceImpl = new AdminUserDetailsServiceImpl();
     ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
     // Act
@@ -528,58 +822,19 @@ public class AdminUserDetailsServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AdminUserDetailsServiceImpl#createDetails(String, AdminUser, List)}.
-   * <p>
-   * Method under test:
-   * {@link AdminUserDetailsServiceImpl#createDetails(String, AdminUser, List)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateDetails() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.service.user;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1098 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.user.AdminUserDetailsServiceImpl adminUserDetailsServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    AdminUserDetailsServiceImpl adminUserDetailsServiceImpl2 = new AdminUserDetailsServiceImpl();
-    AdminUserImpl adminUser = new AdminUserImpl();
-
-    // Act
-    adminUserDetailsServiceImpl2.createDetails("janedoe", adminUser, new ArrayList<>());
-  }
-
-  /**
-   * Test
-   * {@link AdminUserDetailsServiceImpl#createDetails(String, AdminUser, List)}.
+   * Test {@link AdminUserDetailsServiceImpl#createDetails(String, AdminUser, List)}.
    * <ul>
    *   <li>Given {@code Admin User}.</li>
-   *   <li>Then return Password is {@code Admin User}.</li>
+   *   <li>Then return Authorities size is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link AdminUserDetailsServiceImpl#createDetails(String, AdminUser, List)}
+   * Method under test: {@link AdminUserDetailsServiceImpl#createDetails(String, AdminUser, List)}
    */
   @Test
-  public void testCreateDetails_givenAdminUser_thenReturnPasswordIsAdminUser() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"UserDetails AdminUserDetailsServiceImpl.createDetails(String, AdminUser, List)"})
+  public void testCreateDetails_givenAdminUser_thenReturnAuthoritiesSizeIsOne() {
     // Arrange
-    AdminUserDetailsServiceImpl adminUserDetailsServiceImpl = new AdminUserDetailsServiceImpl();
-
     AdminUserImpl adminUser = new AdminUserImpl();
     adminUser.setActiveStatusFlag(true);
     adminUser.setAdditionalFields(new HashMap<>());
@@ -607,92 +862,6 @@ public class AdminUserDetailsServiceImplDiffblueTest {
     assertTrue(authorities2 instanceof Set);
     assertTrue(actualCreateDetailsResult instanceof AdminUserDetails);
     assertEquals("Admin User", actualCreateDetailsResult.getPassword());
-    assertEquals("janedoe", actualCreateDetailsResult.getUsername());
-    assertEquals(1L, ((AdminUserDetails) actualCreateDetailsResult).getId().longValue());
-    assertTrue(actualCreateDetailsResult.isAccountNonExpired());
-    assertTrue(actualCreateDetailsResult.isAccountNonLocked());
-    assertTrue(actualCreateDetailsResult.isCredentialsNonExpired());
-    assertTrue(actualCreateDetailsResult.isEnabled());
-  }
-
-  /**
-   * Test
-   * {@link AdminUserDetailsServiceImpl#createDetails(String, AdminUser, List)}.
-   * <ul>
-   *   <li>Given {@code iloveyou}.</li>
-   *   <li>Then return Authorities Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link AdminUserDetailsServiceImpl#createDetails(String, AdminUser, List)}
-   */
-  @Test
-  public void testCreateDetails_givenIloveyou_thenReturnAuthoritiesEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdminUserDetailsServiceImpl adminUserDetailsServiceImpl = new AdminUserDetailsServiceImpl();
-    AdminUserImpl adminUser = mock(AdminUserImpl.class);
-    when(adminUser.getId()).thenReturn(1L);
-    when(adminUser.getPassword()).thenReturn("iloveyou");
-
-    // Act
-    UserDetails actualCreateDetailsResult = adminUserDetailsServiceImpl.createDetails("janedoe", adminUser,
-        new ArrayList<>());
-
-    // Assert
-    verify(adminUser).getId();
-    verify(adminUser).getPassword();
-    Collection<? extends GrantedAuthority> authorities = actualCreateDetailsResult.getAuthorities();
-    assertTrue(authorities instanceof Set);
-    assertTrue(actualCreateDetailsResult instanceof AdminUserDetails);
-    assertEquals("iloveyou", actualCreateDetailsResult.getPassword());
-    assertEquals("janedoe", actualCreateDetailsResult.getUsername());
-    assertEquals(1L, ((AdminUserDetails) actualCreateDetailsResult).getId().longValue());
-    assertTrue(authorities.isEmpty());
-    assertTrue(actualCreateDetailsResult.isAccountNonExpired());
-    assertTrue(actualCreateDetailsResult.isAccountNonLocked());
-    assertTrue(actualCreateDetailsResult.isCredentialsNonExpired());
-    assertTrue(actualCreateDetailsResult.isEnabled());
-  }
-
-  /**
-   * Test
-   * {@link AdminUserDetailsServiceImpl#createDetails(String, AdminUser, List)}.
-   * <ul>
-   *   <li>Given {@code iloveyou}.</li>
-   *   <li>Then return Authorities size is one.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link AdminUserDetailsServiceImpl#createDetails(String, AdminUser, List)}
-   */
-  @Test
-  public void testCreateDetails_givenIloveyou_thenReturnAuthoritiesSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdminUserDetailsServiceImpl adminUserDetailsServiceImpl = new AdminUserDetailsServiceImpl();
-    AdminUserImpl adminUser = mock(AdminUserImpl.class);
-    when(adminUser.getId()).thenReturn(1L);
-    when(adminUser.getPassword()).thenReturn("iloveyou");
-
-    ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<>();
-    authorities.add(new SimpleGrantedAuthority("Role"));
-    authorities.add(new SimpleGrantedAuthority("Role"));
-
-    // Act
-    UserDetails actualCreateDetailsResult = adminUserDetailsServiceImpl.createDetails("janedoe", adminUser,
-        authorities);
-
-    // Assert
-    verify(adminUser).getId();
-    verify(adminUser).getPassword();
-    Collection<? extends GrantedAuthority> authorities2 = actualCreateDetailsResult.getAuthorities();
-    assertEquals(1, authorities2.size());
-    assertTrue(authorities2 instanceof Set);
-    assertTrue(actualCreateDetailsResult instanceof AdminUserDetails);
-    assertEquals("iloveyou", actualCreateDetailsResult.getPassword());
     assertEquals("janedoe", actualCreateDetailsResult.getUsername());
     assertEquals(1L, ((AdminUserDetails) actualCreateDetailsResult).getId().longValue());
     assertTrue(actualCreateDetailsResult.isAccountNonExpired());

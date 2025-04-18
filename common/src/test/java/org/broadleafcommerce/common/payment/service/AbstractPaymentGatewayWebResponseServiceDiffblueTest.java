@@ -18,21 +18,25 @@
 package org.broadleafcommerce.common.payment.service;
 
 import static org.junit.Assert.assertThrows;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import javax.servlet.http.HttpServletRequest;
 import org.broadleafcommerce.common.vendor.service.exception.PaymentException;
 import org.broadleafcommerce.common.web.filter.SessionlessHttpServletRequestWrapper;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 public class AbstractPaymentGatewayWebResponseServiceDiffblueTest {
   /**
-   * Test
-   * {@link AbstractPaymentGatewayWebResponseService#translateWebResponse(HttpServletRequest)}.
+   * Test {@link AbstractPaymentGatewayWebResponseService#translateWebResponse(HttpServletRequest)}.
    * <p>
-   * Method under test:
-   * {@link AbstractPaymentGatewayWebResponseService#translateWebResponse(HttpServletRequest)}
+   * Method under test: {@link AbstractPaymentGatewayWebResponseService#translateWebResponse(HttpServletRequest)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.common.payment.dto.PaymentResponseDTO AbstractPaymentGatewayWebResponseService.translateWebResponse(HttpServletRequest)"})
   public void testTranslateWebResponse() throws PaymentException {
     // Arrange
     AbstractPaymentGatewayWebResponseService abstractPaymentGatewayWebResponseService = new AbstractPaymentGatewayWebResponseService();
@@ -40,23 +44,5 @@ public class AbstractPaymentGatewayWebResponseServiceDiffblueTest {
     // Act and Assert
     assertThrows(UnsupportedOperationException.class, () -> abstractPaymentGatewayWebResponseService
         .translateWebResponse(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest())));
-  }
-
-  /**
-   * Test new {@link AbstractPaymentGatewayWebResponseService} (default
-   * constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link AbstractPaymentGatewayWebResponseService}
-   */
-  @Test
-  public void testNewAbstractPaymentGatewayWebResponseService() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing observers.
-    //   Diffblue Cover was unable to create an assertion.
-    //   There are no fields that could be asserted on.
-
-    // Arrange and Act
-    new AbstractPaymentGatewayWebResponseService();
   }
 }

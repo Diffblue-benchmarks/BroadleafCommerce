@@ -1,12 +1,33 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.web.form.component;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.media.domain.Media;
 import org.broadleafcommerce.common.media.domain.MediaDto;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class MediaFieldDiffblueTest {
   /**
@@ -22,6 +43,9 @@ public class MediaFieldDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void MediaField.<init>()", "String MediaField.getHeight()", "Media MediaField.getMedia()",
+      "void MediaField.setHeight(String)", "void MediaField.setMedia(Media)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     MediaField actualMediaField = new MediaField();
@@ -31,8 +55,26 @@ public class MediaFieldDiffblueTest {
     String actualHeight = actualMediaField.getHeight();
     Media actualMedia = actualMediaField.getMedia();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Height", actualHeight);
+    assertNull(actualMediaField.getOrder());
+    assertNull(actualMediaField.getAssociatedFieldName());
+    assertNull(actualMediaField.getColumnWidth());
+    assertNull(actualMediaField.getConfirmEnabledText());
+    assertNull(actualMediaField.getDisplayType());
+    assertNull(actualMediaField.getFieldComponentRenderer());
+    assertNull(actualMediaField.getFieldType());
+    assertNull(actualMediaField.getForeignKeyClass());
+    assertNull(actualMediaField.getForeignKeyDisplayValueProperty());
+    assertNull(actualMediaField.getForeignKeySectionPath());
+    assertNull(actualMediaField.getFriendlyName());
+    assertNull(actualMediaField.getGridFieldComponentRenderer());
+    assertNull(actualMediaField.getIdOverride());
+    assertNull(actualMediaField.getName());
+    assertNull(actualMediaField.getOnChangeTrigger());
+    assertNull(actualMediaField.getOwningEntityClass());
+    assertNull(actualMediaField.getRawDisplayValue());
+    assertNull(actualMediaField.getValue());
     assertFalse(actualMediaField.getAllowNoValueEnumOption());
     assertTrue(actualMediaField.getAttributes().isEmpty());
     assertTrue(actualMediaField.getShouldRender());

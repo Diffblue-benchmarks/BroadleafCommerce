@@ -1,22 +1,43 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.web.form;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class TranslationFormDiffblueTest {
   /**
    * Test {@link TranslationForm#getIsRte()}.
    * <ul>
-   *   <li>Given {@link TranslationForm} (default constructor) IsRte is
-   * {@code true}.</li>
+   *   <li>Given {@link TranslationForm} (default constructor) IsRte is {@code true}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link TranslationForm#getIsRte()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean TranslationForm.getIsRte()"})
   public void testGetIsRte_givenTranslationFormIsRteIsTrue_thenReturnTrue() {
     // Arrange
     TranslationForm translationForm = new TranslationForm();
@@ -36,6 +57,8 @@ public class TranslationFormDiffblueTest {
    * Method under test: {@link TranslationForm#getIsRte()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean TranslationForm.getIsRte()"})
   public void testGetIsRte_givenTranslationForm_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse((new TranslationForm()).getIsRte());
@@ -65,6 +88,15 @@ public class TranslationFormDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TranslationForm.<init>()", "String TranslationForm.getCeilingEntity()",
+      "String TranslationForm.getEntityId()", "String TranslationForm.getFieldType()",
+      "String TranslationForm.getLocaleCode()", "String TranslationForm.getPropertyName()",
+      "String TranslationForm.getTranslatedValue()", "Long TranslationForm.getTranslationId()",
+      "void TranslationForm.setCeilingEntity(String)", "void TranslationForm.setEntityId(String)",
+      "void TranslationForm.setFieldType(String)", "void TranslationForm.setIsRte(Boolean)",
+      "void TranslationForm.setLocaleCode(String)", "void TranslationForm.setPropertyName(String)",
+      "void TranslationForm.setTranslatedValue(String)", "void TranslationForm.setTranslationId(Long)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     TranslationForm actualTranslationForm = new TranslationForm();
@@ -83,7 +115,7 @@ public class TranslationFormDiffblueTest {
     String actualPropertyName = actualTranslationForm.getPropertyName();
     String actualTranslatedValue = actualTranslationForm.getTranslatedValue();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("42", actualEntityId);
     assertEquals("42", actualTranslatedValue);
     assertEquals("Ceiling Entity", actualCeilingEntity);

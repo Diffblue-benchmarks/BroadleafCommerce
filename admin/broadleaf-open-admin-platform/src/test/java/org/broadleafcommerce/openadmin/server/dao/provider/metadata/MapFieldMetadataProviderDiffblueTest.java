@@ -1,20 +1,40 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.fasterxml.classmate.types.TypePlaceHolder;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,9 +53,7 @@ import org.broadleafcommerce.common.presentation.client.UnspecifiedBooleanType;
 import org.broadleafcommerce.common.presentation.client.VisibilityEnum;
 import org.broadleafcommerce.common.presentation.override.AdminPresentationMergeEntry;
 import org.broadleafcommerce.common.presentation.override.AdminPresentationMergeOverride;
-import org.broadleafcommerce.openadmin.dto.AdornedTargetCollectionMetadata;
 import org.broadleafcommerce.openadmin.dto.FieldMetadata;
-import org.broadleafcommerce.openadmin.dto.ForeignKey;
 import org.broadleafcommerce.openadmin.dto.MapMetadata;
 import org.broadleafcommerce.openadmin.dto.MapStructure;
 import org.broadleafcommerce.openadmin.dto.MergedPropertyType;
@@ -46,407 +64,140 @@ import org.broadleafcommerce.openadmin.dto.override.FieldMetadataOverride;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDao;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl;
 import org.broadleafcommerce.openadmin.server.dao.FieldInfo;
-import org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.AddFieldMetadataRequest;
-import org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.AddMetadataFromFieldTypeRequest;
 import org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.OverrideViaAnnotationRequest;
 import org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.OverrideViaXmlRequest;
 import org.broadleafcommerce.openadmin.server.service.type.MetadataProviderResponse;
-import org.hibernate.mapping.Property;
-import org.hibernate.type.BigDecimalType;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
-    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
-    "/bl-open-admin-contentCreator-applicationContext.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class MapFieldMetadataProviderDiffblueTest {
-  @Autowired
+  @Mock
+  private Map map;
+
+  @InjectMocks
   private MapFieldMetadataProvider mapFieldMetadataProvider;
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#canHandleFieldForConfiguredMetadata(AddFieldMetadataRequest, Map)}.
-   * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#canHandleFieldForConfiguredMetadata(AddFieldMetadataRequest, Map)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCanHandleFieldForConfiguredMetadata() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass26228 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.provider.metadata.MapFieldMetadataProvider mapFieldMetadataProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    MapFieldMetadataProvider mapFieldMetadataProvider2 = new MapFieldMetadataProvider();
-    Class<Object> parentClass = Object.class;
-    Class<Object> targetClass = Object.class;
-    AddFieldMetadataRequest addMetadataRequest = new AddFieldMetadataRequest(null, parentClass, targetClass,
-        new DynamicEntityDaoImpl(), "Prefix");
-
-    // Act
-    mapFieldMetadataProvider2.canHandleFieldForConfiguredMetadata(addMetadataRequest, new HashMap<>());
-  }
-
-  /**
-   * Test
-   * {@link MapFieldMetadataProvider#canHandleAnnotationOverride(OverrideViaAnnotationRequest, Map)}.
-   * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#canHandleAnnotationOverride(OverrideViaAnnotationRequest, Map)}
-   */
-  @Test
-  public void testCanHandleAnnotationOverride() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
-    Class<Object> requestedEntity = Object.class;
-    OverrideViaAnnotationRequest overrideViaAnnotationRequest = new OverrideViaAnnotationRequest(requestedEntity, true,
-        new DynamicEntityDaoImpl(), "Prefix");
-
-    // Act and Assert
-    assertFalse(mapFieldMetadataProvider.canHandleAnnotationOverride(overrideViaAnnotationRequest, new HashMap<>()));
-  }
-
-  /**
-   * Test
-   * {@link MapFieldMetadataProvider#canHandleAnnotationOverride(OverrideViaAnnotationRequest, Map)}.
-   * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#canHandleAnnotationOverride(OverrideViaAnnotationRequest, Map)}
-   */
-  @Test
-  public void testCanHandleAnnotationOverride2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
-    Class<Object> requestedEntity = Object.class;
-    OverrideViaAnnotationRequest overrideViaAnnotationRequest = new OverrideViaAnnotationRequest(requestedEntity, true,
-        mock(DynamicEntityDaoImpl.class), "Prefix");
-
-    // Act and Assert
-    assertFalse(mapFieldMetadataProvider.canHandleAnnotationOverride(overrideViaAnnotationRequest, new HashMap<>()));
-  }
-
-  /**
-   * Test
-   * {@link MapFieldMetadataProvider#canHandleAnnotationOverride(OverrideViaAnnotationRequest, Map)}.
-   * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#canHandleAnnotationOverride(OverrideViaAnnotationRequest, Map)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCanHandleAnnotationOverride3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass25904 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.provider.metadata.MapFieldMetadataProvider mapFieldMetadataProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    MapFieldMetadataProvider mapFieldMetadataProvider2 = new MapFieldMetadataProvider();
-    Class<Object> requestedEntity = Object.class;
-    OverrideViaAnnotationRequest overrideViaAnnotationRequest = new OverrideViaAnnotationRequest(requestedEntity, true,
-        new DynamicEntityDaoImpl(), "Prefix");
-
-    // Act
-    mapFieldMetadataProvider2.canHandleAnnotationOverride(overrideViaAnnotationRequest, new HashMap<>());
-  }
-
-  /**
-   * Test
-   * {@link MapFieldMetadataProvider#addMetadata(AddFieldMetadataRequest, Map)}.
-   * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#addMetadata(AddFieldMetadataRequest, Map)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddMetadata() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass25097 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.provider.metadata.MapFieldMetadataProvider mapFieldMetadataProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    MapFieldMetadataProvider mapFieldMetadataProvider2 = new MapFieldMetadataProvider();
-    Class<Object> parentClass = Object.class;
-    Class<Object> targetClass = Object.class;
-    AddFieldMetadataRequest addMetadataRequest = new AddFieldMetadataRequest(null, parentClass, targetClass,
-        new DynamicEntityDaoImpl(), "Prefix");
-
-    // Act
-    mapFieldMetadataProvider2.addMetadata(addMetadataRequest, new HashMap<>());
-  }
-
-  /**
-   * Test
-   * {@link MapFieldMetadataProvider#overrideViaAnnotation(OverrideViaAnnotationRequest, Map)}.
-   * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#overrideViaAnnotation(OverrideViaAnnotationRequest, Map)}
-   */
-  @Test
-  public void testOverrideViaAnnotation() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
-    Class<Object> requestedEntity = Object.class;
-    OverrideViaAnnotationRequest overrideViaAnnotationRequest = new OverrideViaAnnotationRequest(requestedEntity, true,
-        new DynamicEntityDaoImpl(), "Prefix");
-
-    // Act and Assert
-    assertEquals(MetadataProviderResponse.NOT_HANDLED,
-        mapFieldMetadataProvider.overrideViaAnnotation(overrideViaAnnotationRequest, new HashMap<>()));
-  }
-
-  /**
-   * Test
-   * {@link MapFieldMetadataProvider#overrideViaAnnotation(OverrideViaAnnotationRequest, Map)}.
-   * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#overrideViaAnnotation(OverrideViaAnnotationRequest, Map)}
-   */
-  @Test
-  public void testOverrideViaAnnotation2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
-    Class<Object> requestedEntity = Object.class;
-    OverrideViaAnnotationRequest overrideViaAnnotationRequest = new OverrideViaAnnotationRequest(requestedEntity, true,
-        mock(DynamicEntityDaoImpl.class), "Prefix");
-
-    // Act and Assert
-    assertEquals(MetadataProviderResponse.NOT_HANDLED,
-        mapFieldMetadataProvider.overrideViaAnnotation(overrideViaAnnotationRequest, new HashMap<>()));
-  }
-
-  /**
-   * Test
-   * {@link MapFieldMetadataProvider#overrideViaAnnotation(OverrideViaAnnotationRequest, Map)}.
-   * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#overrideViaAnnotation(OverrideViaAnnotationRequest, Map)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testOverrideViaAnnotation3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass26558 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.provider.metadata.MapFieldMetadataProvider mapFieldMetadataProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    MapFieldMetadataProvider mapFieldMetadataProvider2 = new MapFieldMetadataProvider();
-    Class<Object> requestedEntity = Object.class;
-    OverrideViaAnnotationRequest overrideViaAnnotationRequest = new OverrideViaAnnotationRequest(requestedEntity, true,
-        new DynamicEntityDaoImpl(), "Prefix");
-
-    // Act
-    mapFieldMetadataProvider2.overrideViaAnnotation(overrideViaAnnotationRequest, new HashMap<>());
-  }
-
-  /**
-   * Test
-   * {@link MapFieldMetadataProvider#overrideViaXml(OverrideViaXmlRequest, Map)}.
-   * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#overrideViaXml(OverrideViaXmlRequest, Map)}
-   */
-  @Test
-  public void testOverrideViaXml() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
-    OverrideViaXmlRequest overrideViaXmlRequest = new OverrideViaXmlRequest("Requested Config Key",
-        "Requested Ceiling Entity", "Prefix", true, mock(DynamicEntityDaoImpl.class));
-
-    // Act and Assert
-    assertEquals(MetadataProviderResponse.HANDLED,
-        mapFieldMetadataProvider.overrideViaXml(overrideViaXmlRequest, new HashMap<>()));
-  }
-
-  /**
-   * Test
-   * {@link MapFieldMetadataProvider#overrideViaXml(OverrideViaXmlRequest, Map)}.
-   * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#overrideViaXml(OverrideViaXmlRequest, Map)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testOverrideViaXml2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass26882 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.provider.metadata.MapFieldMetadataProvider mapFieldMetadataProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    MapFieldMetadataProvider mapFieldMetadataProvider2 = new MapFieldMetadataProvider();
-    OverrideViaXmlRequest overrideViaXmlRequest = new OverrideViaXmlRequest("Requested Config Key",
-        "Requested Ceiling Entity", "Prefix", true, new DynamicEntityDaoImpl());
-
-    // Act
-    mapFieldMetadataProvider2.overrideViaXml(overrideViaXmlRequest, new HashMap<>());
-  }
-
-  /**
-   * Test
-   * {@link MapFieldMetadataProvider#overrideViaXml(OverrideViaXmlRequest, Map)}.
+   * Test {@link MapFieldMetadataProvider#canHandleAnnotationOverride(OverrideViaAnnotationRequest, Map)}.
    * <ul>
+   *   <li>When {@code Object}.</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MapFieldMetadataProvider#canHandleAnnotationOverride(OverrideViaAnnotationRequest, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MapFieldMetadataProvider.canHandleAnnotationOverride(OverrideViaAnnotationRequest, Map)"})
+  public void testCanHandleAnnotationOverride_whenJavaLangObject_thenReturnFalse() {
+    // Arrange
+    Class<Object> requestedEntity = Object.class;
+    OverrideViaAnnotationRequest overrideViaAnnotationRequest = new OverrideViaAnnotationRequest(requestedEntity, true,
+        new DynamicEntityDaoImpl(), "Prefix");
+
+    // Act and Assert
+    assertFalse(mapFieldMetadataProvider.canHandleAnnotationOverride(overrideViaAnnotationRequest, new HashMap<>()));
+  }
+
+  /**
+   * Test {@link MapFieldMetadataProvider#overrideViaAnnotation(OverrideViaAnnotationRequest, Map)}.
+   * <ul>
+   *   <li>When {@code Object}.</li>
+   *   <li>Then return {@code NOT_HANDLED}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MapFieldMetadataProvider#overrideViaAnnotation(OverrideViaAnnotationRequest, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "MetadataProviderResponse MapFieldMetadataProvider.overrideViaAnnotation(OverrideViaAnnotationRequest, Map)"})
+  public void testOverrideViaAnnotation_whenJavaLangObject_thenReturnNotHandled() {
+    // Arrange
+    Class<Object> requestedEntity = Object.class;
+    OverrideViaAnnotationRequest overrideViaAnnotationRequest = new OverrideViaAnnotationRequest(requestedEntity, true,
+        new DynamicEntityDaoImpl(), "Prefix");
+
+    // Act and Assert
+    assertEquals(MetadataProviderResponse.NOT_HANDLED,
+        mapFieldMetadataProvider.overrideViaAnnotation(overrideViaAnnotationRequest, new HashMap<>()));
+  }
+
+  /**
+   * Test {@link MapFieldMetadataProvider#overrideViaXml(OverrideViaXmlRequest, Map)}.
+   * <ul>
+   *   <li>Given {@link Map} {@link Map#get(Object)} return {@link HashMap#HashMap()}.</li>
    *   <li>Then return {@code HANDLED}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#overrideViaXml(OverrideViaXmlRequest, Map)}
+   * Method under test: {@link MapFieldMetadataProvider#overrideViaXml(OverrideViaXmlRequest, Map)}
    */
   @Test
-  public void testOverrideViaXml_thenReturnHandled() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"MetadataProviderResponse MapFieldMetadataProvider.overrideViaXml(OverrideViaXmlRequest, Map)"})
+  public void testOverrideViaXml_givenMapGetReturnHashMap_thenReturnHandled() {
     // Arrange
-    MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
+    when(map.get(Mockito.<Object>any())).thenReturn(new HashMap<>());
+    when(map.containsKey(Mockito.<Object>any())).thenReturn(true);
     OverrideViaXmlRequest overrideViaXmlRequest = new OverrideViaXmlRequest("Requested Config Key",
         "Requested Ceiling Entity", "Prefix", true, new DynamicEntityDaoImpl());
 
-    // Act and Assert
-    assertEquals(MetadataProviderResponse.HANDLED,
-        mapFieldMetadataProvider.overrideViaXml(overrideViaXmlRequest, new HashMap<>()));
+    // Act
+    MetadataProviderResponse actualOverrideViaXmlResult = mapFieldMetadataProvider.overrideViaXml(overrideViaXmlRequest,
+        new HashMap<>());
+
+    // Assert
+    verify(map).containsKey(isA(Object.class));
+    verify(map).get(isA(Object.class));
+    assertEquals(MetadataProviderResponse.HANDLED, actualOverrideViaXmlResult);
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#addMetadataFromFieldType(AddMetadataFromFieldTypeRequest, Map)}.
+   * Test {@link MapFieldMetadataProvider#overrideViaXml(OverrideViaXmlRequest, Map)}.
+   * <ul>
+   *   <li>Given {@link Map} {@link Map#get(Object)} return {@code null}.</li>
+   *   <li>Then return {@code HANDLED}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#addMetadataFromFieldType(AddMetadataFromFieldTypeRequest, Map)}
+   * Method under test: {@link MapFieldMetadataProvider#overrideViaXml(OverrideViaXmlRequest, Map)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddMetadataFromFieldType() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass25419 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.provider.metadata.MapFieldMetadataProvider mapFieldMetadataProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"MetadataProviderResponse MapFieldMetadataProvider.overrideViaXml(OverrideViaXmlRequest, Map)"})
+  public void testOverrideViaXml_givenMapGetReturnNull_thenReturnHandled() {
     // Arrange
-    MapFieldMetadataProvider mapFieldMetadataProvider2 = new MapFieldMetadataProvider();
-    Class<Object> targetClass = Object.class;
-    ForeignKey foreignField = new ForeignKey();
-    ArrayList<Property> componentProperties = new ArrayList<>();
-    BigDecimalType type = new BigDecimalType();
-    HashMap<String, FieldMetadata> presentationAttributes = new HashMap<>();
-    AdornedTargetCollectionMetadata presentationAttribute = new AdornedTargetCollectionMetadata();
-    Class<Object> returnedClass = Object.class;
-    AddMetadataFromFieldTypeRequest addMetadataFromFieldTypeRequest = new AddMetadataFromFieldTypeRequest(null,
-        targetClass, foreignField, new ForeignKey[]{new ForeignKey()}, MergedPropertyType.PRIMARY, componentProperties,
-        "Id Property", "Prefix", "Requested Property Name", type, true, 1, presentationAttributes,
-        presentationAttribute, SupportedFieldType.UNKNOWN, returnedClass, new DynamicEntityDaoImpl());
+    when(map.get(Mockito.<Object>any())).thenReturn(null);
+    when(map.containsKey(Mockito.<Object>any())).thenReturn(true);
+    OverrideViaXmlRequest overrideViaXmlRequest = new OverrideViaXmlRequest("Requested Config Key",
+        "Requested Ceiling Entity", "Prefix", true, new DynamicEntityDaoImpl());
 
     // Act
-    mapFieldMetadataProvider2.addMetadataFromFieldType(addMetadataFromFieldTypeRequest, new HashMap<>());
+    MetadataProviderResponse actualOverrideViaXmlResult = mapFieldMetadataProvider.overrideViaXml(overrideViaXmlRequest,
+        new HashMap<>());
+
+    // Assert
+    verify(map).containsKey(isA(Object.class));
+    verify(map).get(isA(Object.class));
+    assertEquals(MetadataProviderResponse.HANDLED, actualOverrideViaXmlResult);
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#overrideMapMergeMetadata(AdminPresentationMergeOverride)}.
+   * Test {@link MapFieldMetadataProvider#overrideMapMergeMetadata(AdminPresentationMergeOverride)}.
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#overrideMapMergeMetadata(AdminPresentationMergeOverride)}
+   * Method under test: {@link MapFieldMetadataProvider#overrideMapMergeMetadata(AdminPresentationMergeOverride)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FieldMetadataOverride MapFieldMetadataProvider.overrideMapMergeMetadata(AdminPresentationMergeOverride)"})
   public void testOverrideMapMergeMetadata() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
     AdminPresentationMergeEntry adminPresentationMergeEntry = mock(AdminPresentationMergeEntry.class);
     when(adminPresentationMergeEntry.overrideValue()).thenReturn("42");
     when(adminPresentationMergeEntry.propertyType()).thenReturn("Property Type");
@@ -461,12 +212,7 @@ public class MapFieldMetadataProviderDiffblueTest {
     verify(adminPresentationMergeEntry).overrideValue();
     verify(adminPresentationMergeEntry).propertyType();
     verify(merge).mergeEntries();
-    assertNull(actualOverrideMapMergeMetadataResult.getCustomCriteria());
-    assertNull(actualOverrideMapMergeMetadataResult.getGridVisibleFields());
-    assertNull(actualOverrideMapMergeMetadataResult.getMaintainedAdornedTargetFields());
     assertNull(actualOverrideMapMergeMetadataResult.getOptionFilterValues());
-    assertNull(actualOverrideMapMergeMetadataResult.getEnumerationValues());
-    assertNull(actualOverrideMapMergeMetadataResult.getKeys());
     assertNull(actualOverrideMapMergeMetadataResult.getAllowNoValueEnumOption());
     assertNull(actualOverrideMapMergeMetadataResult.getCanLinkToExternalEntity());
     assertNull(actualOverrideMapMergeMetadataResult.getEnableTypeaheadLookup());
@@ -546,173 +292,11 @@ public class MapFieldMetadataProviderDiffblueTest {
     assertNull(actualOverrideMapMergeMetadataResult.getTooltip());
     assertNull(actualOverrideMapMergeMetadataResult.getValueClass());
     assertNull(actualOverrideMapMergeMetadataResult.getValuePropertyFriendlyName());
-    assertNull(actualOverrideMapMergeMetadataResult.getShowIfFieldEquals());
-    assertNull(actualOverrideMapMergeMetadataResult.getValidationConfigurations());
-    assertNull(actualOverrideMapMergeMetadataResult.getAddMethodType());
-    assertNull(actualOverrideMapMergeMetadataResult.getAdornedTargetAddMethodType());
-    assertNull(actualOverrideMapMergeMetadataResult.getLookupType());
-    assertNull(actualOverrideMapMergeMetadataResult.getAddType());
-    assertNull(actualOverrideMapMergeMetadataResult.getFetchType());
-    assertNull(actualOverrideMapMergeMetadataResult.getInspectType());
-    assertNull(actualOverrideMapMergeMetadataResult.getRemoveType());
-    assertNull(actualOverrideMapMergeMetadataResult.getUpdateType());
-    assertNull(actualOverrideMapMergeMetadataResult.getDisplayType());
-    assertNull(actualOverrideMapMergeMetadataResult.getExplicitFieldType());
-    assertNull(actualOverrideMapMergeMetadataResult.getFieldComponentRenderer());
-    assertNull(actualOverrideMapMergeMetadataResult.getFieldType());
-    assertNull(actualOverrideMapMergeMetadataResult.getGridFieldComponentRenderer());
-    assertNull(actualOverrideMapMergeMetadataResult.getSimpleValue());
-    assertNull(actualOverrideMapMergeMetadataResult.getVisibility());
-    assertNull(actualOverrideMapMergeMetadataResult.getMergedPropertyType());
-    assertEquals(SupportedFieldType.INTEGER, actualOverrideMapMergeMetadataResult.getSecondaryType());
-  }
-
-  /**
-   * Test
-   * {@link MapFieldMetadataProvider#overrideMapMergeMetadata(AdminPresentationMergeOverride)}.
-   * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#overrideMapMergeMetadata(AdminPresentationMergeOverride)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testOverrideMapMergeMetadata2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass26554 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.provider.metadata.MapFieldMetadataProvider mapFieldMetadataProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new MapFieldMetadataProvider()).overrideMapMergeMetadata(mock(AdminPresentationMergeOverride.class));
-  }
-
-  /**
-   * Test
-   * {@link MapFieldMetadataProvider#overrideMapMergeMetadata(AdminPresentationMergeOverride)}.
-   * <ul>
-   *   <li>Then return CurrencyCodeField is {@code 42}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#overrideMapMergeMetadata(AdminPresentationMergeOverride)}
-   */
-  @Test
-  public void testOverrideMapMergeMetadata_thenReturnCurrencyCodeFieldIs42() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
-    AdminPresentationMergeEntry adminPresentationMergeEntry = mock(AdminPresentationMergeEntry.class);
-    when(adminPresentationMergeEntry.overrideValue()).thenReturn("42");
-    when(adminPresentationMergeEntry.propertyType()).thenReturn("currencyCodeField");
-    AdminPresentationMergeOverride merge = mock(AdminPresentationMergeOverride.class);
-    when(merge.mergeEntries()).thenReturn(new AdminPresentationMergeEntry[]{adminPresentationMergeEntry});
-
-    // Act
-    FieldMetadataOverride actualOverrideMapMergeMetadataResult = mapFieldMetadataProvider
-        .overrideMapMergeMetadata(merge);
-
-    // Assert
-    verify(adminPresentationMergeEntry).overrideValue();
-    verify(adminPresentationMergeEntry).propertyType();
-    verify(merge).mergeEntries();
-    assertEquals("42", actualOverrideMapMergeMetadataResult.getCurrencyCodeField());
     assertNull(actualOverrideMapMergeMetadataResult.getCustomCriteria());
     assertNull(actualOverrideMapMergeMetadataResult.getGridVisibleFields());
     assertNull(actualOverrideMapMergeMetadataResult.getMaintainedAdornedTargetFields());
-    assertNull(actualOverrideMapMergeMetadataResult.getOptionFilterValues());
     assertNull(actualOverrideMapMergeMetadataResult.getEnumerationValues());
     assertNull(actualOverrideMapMergeMetadataResult.getKeys());
-    assertNull(actualOverrideMapMergeMetadataResult.getAllowNoValueEnumOption());
-    assertNull(actualOverrideMapMergeMetadataResult.getCanLinkToExternalEntity());
-    assertNull(actualOverrideMapMergeMetadataResult.getEnableTypeaheadLookup());
-    assertNull(actualOverrideMapMergeMetadataResult.getExcluded());
-    assertNull(actualOverrideMapMergeMetadataResult.getForceFreeFormKeys());
-    assertNull(actualOverrideMapMergeMetadataResult.getForcePopulateChildProperties());
-    assertNull(actualOverrideMapMergeMetadataResult.getForeignKeyCollection());
-    assertNull(actualOverrideMapMergeMetadataResult.getGroupCollapsed());
-    assertNull(actualOverrideMapMergeMetadataResult.getHideEnumerationIfEmpty());
-    assertNull(actualOverrideMapMergeMetadataResult.getIsDerived());
-    assertNull(actualOverrideMapMergeMetadataResult.getLazyFetch());
-    assertNull(actualOverrideMapMergeMetadataResult.getManualFetch());
-    assertNull(actualOverrideMapMergeMetadataResult.getOptionCanEditValues());
-    assertNull(actualOverrideMapMergeMetadataResult.getReadOnly());
-    assertNull(actualOverrideMapMergeMetadataResult.getRequired());
-    assertNull(actualOverrideMapMergeMetadataResult.getRequiredOverride());
-    assertNull(actualOverrideMapMergeMetadataResult.getSearchable());
-    assertNull(actualOverrideMapMergeMetadataResult.getToOneLookupCreatedViaAnnotation());
-    assertNull(actualOverrideMapMergeMetadataResult.getTranslatable());
-    assertNull(actualOverrideMapMergeMetadataResult.getUnique());
-    assertNull(actualOverrideMapMergeMetadataResult.getUseServerSideInspectionCache());
-    assertNull(actualOverrideMapMergeMetadataResult.isDeleteEntityUponRemove());
-    assertNull(actualOverrideMapMergeMetadataResult.isIgnoreAdornedProperties());
-    assertNull(actualOverrideMapMergeMetadataResult.isLargeEntry());
-    assertNull(actualOverrideMapMergeMetadataResult.isProminent());
-    assertNull(actualOverrideMapMergeMetadataResult.isSortAscending());
-    assertNull(actualOverrideMapMergeMetadataResult.getGridOrder());
-    assertNull(actualOverrideMapMergeMetadataResult.getGroupOrder());
-    assertNull(actualOverrideMapMergeMetadataResult.getLength());
-    assertNull(actualOverrideMapMergeMetadataResult.getPrecision());
-    assertNull(actualOverrideMapMergeMetadataResult.getScale());
-    assertNull(actualOverrideMapMergeMetadataResult.getTabOrder());
-    assertNull(actualOverrideMapMergeMetadataResult.getOrder());
-    assertNull(actualOverrideMapMergeMetadataResult.getAddFriendlyName());
-    assertNull(actualOverrideMapMergeMetadataResult.getAssociatedFieldName());
-    assertNull(actualOverrideMapMergeMetadataResult.getBroadleafEnumeration());
-    assertNull(actualOverrideMapMergeMetadataResult.getColumnWidth());
-    assertNull(actualOverrideMapMergeMetadataResult.getDefaultValue());
-    assertNull(actualOverrideMapMergeMetadataResult.getEnumerationClass());
-    assertNull(actualOverrideMapMergeMetadataResult.getFieldComponentRendererTemplate());
-    assertNull(actualOverrideMapMergeMetadataResult.getForeignKeyClass());
-    assertNull(actualOverrideMapMergeMetadataResult.getForeignKeyDisplayValueProperty());
-    assertNull(actualOverrideMapMergeMetadataResult.getForeignKeyProperty());
-    assertNull(actualOverrideMapMergeMetadataResult.getFriendlyName());
-    assertNull(actualOverrideMapMergeMetadataResult.getGridFieldComponentRendererTemplate());
-    assertNull(actualOverrideMapMergeMetadataResult.getGroup());
-    assertNull(actualOverrideMapMergeMetadataResult.getHelpText());
-    assertNull(actualOverrideMapMergeMetadataResult.getHint());
-    assertNull(actualOverrideMapMergeMetadataResult.getJoinEntityClass());
-    assertNull(actualOverrideMapMergeMetadataResult.getKeyClass());
-    assertNull(actualOverrideMapMergeMetadataResult.getKeyPropertyFriendlyName());
-    assertNull(actualOverrideMapMergeMetadataResult.getLookupDisplayProperty());
-    assertNull(actualOverrideMapMergeMetadataResult.getManyToField());
-    assertNull(actualOverrideMapMergeMetadataResult.getMapFieldValueClass());
-    assertNull(actualOverrideMapMergeMetadataResult.getMapKeyOptionEntityClass());
-    assertNull(actualOverrideMapMergeMetadataResult.getMapKeyOptionEntityDisplayField());
-    assertNull(actualOverrideMapMergeMetadataResult.getMapKeyOptionEntityValueField());
-    assertNull(actualOverrideMapMergeMetadataResult.getMapKeyValueProperty());
-    assertNull(actualOverrideMapMergeMetadataResult.getMediaField());
-    assertNull(actualOverrideMapMergeMetadataResult.getName());
-    assertNull(actualOverrideMapMergeMetadataResult.getOptionDisplayFieldName());
-    assertNull(actualOverrideMapMergeMetadataResult.getOptionListEntity());
-    assertNull(actualOverrideMapMergeMetadataResult.getOptionValueFieldName());
-    assertNull(actualOverrideMapMergeMetadataResult.getParentObjectIdProperty());
-    assertNull(actualOverrideMapMergeMetadataResult.getParentObjectProperty());
-    assertNull(actualOverrideMapMergeMetadataResult.getRuleIdentifier());
-    assertNull(actualOverrideMapMergeMetadataResult.getSecurityLevel());
-    assertNull(actualOverrideMapMergeMetadataResult.getSelectizeVisibleField());
-    assertNull(actualOverrideMapMergeMetadataResult.getShowIfProperty());
-    assertNull(actualOverrideMapMergeMetadataResult.getSortProperty());
-    assertNull(actualOverrideMapMergeMetadataResult.getTab());
-    assertNull(actualOverrideMapMergeMetadataResult.getTargetObjectIdProperty());
-    assertNull(actualOverrideMapMergeMetadataResult.getTargetObjectProperty());
-    assertNull(actualOverrideMapMergeMetadataResult.getToOneParentProperty());
-    assertNull(actualOverrideMapMergeMetadataResult.getToOneTargetProperty());
-    assertNull(actualOverrideMapMergeMetadataResult.getTooltip());
-    assertNull(actualOverrideMapMergeMetadataResult.getValueClass());
-    assertNull(actualOverrideMapMergeMetadataResult.getValuePropertyFriendlyName());
     assertNull(actualOverrideMapMergeMetadataResult.getShowIfFieldEquals());
     assertNull(actualOverrideMapMergeMetadataResult.getValidationConfigurations());
     assertNull(actualOverrideMapMergeMetadataResult.getAddMethodType());
@@ -735,22 +319,19 @@ public class MapFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#overrideMapMergeMetadata(AdminPresentationMergeOverride)}.
+   * Test {@link MapFieldMetadataProvider#overrideMapMergeMetadata(AdminPresentationMergeOverride)}.
    * <ul>
-   *   <li>Then return CustomCriteria is array of {@link String} with
-   * {@code 42}.</li>
+   *   <li>Then return array length is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#overrideMapMergeMetadata(AdminPresentationMergeOverride)}
+   * Method under test: {@link MapFieldMetadataProvider#overrideMapMergeMetadata(AdminPresentationMergeOverride)}
    */
   @Test
-  public void testOverrideMapMergeMetadata_thenReturnCustomCriteriaIsArrayOfStringWith42() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FieldMetadataOverride MapFieldMetadataProvider.overrideMapMergeMetadata(AdminPresentationMergeOverride)"})
+  public void testOverrideMapMergeMetadata_thenReturnArrayLengthIsOne() {
     // Arrange
-    MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
     AdminPresentationMergeEntry adminPresentationMergeEntry = mock(AdminPresentationMergeEntry.class);
     when(adminPresentationMergeEntry.stringArrayOverrideValue()).thenReturn(new String[]{"42"});
     when(adminPresentationMergeEntry.overrideValue()).thenReturn("42");
@@ -767,11 +348,7 @@ public class MapFieldMetadataProviderDiffblueTest {
     verify(adminPresentationMergeEntry).propertyType();
     verify(adminPresentationMergeEntry).stringArrayOverrideValue();
     verify(merge).mergeEntries();
-    assertNull(actualOverrideMapMergeMetadataResult.getGridVisibleFields());
-    assertNull(actualOverrideMapMergeMetadataResult.getMaintainedAdornedTargetFields());
     assertNull(actualOverrideMapMergeMetadataResult.getOptionFilterValues());
-    assertNull(actualOverrideMapMergeMetadataResult.getEnumerationValues());
-    assertNull(actualOverrideMapMergeMetadataResult.getKeys());
     assertNull(actualOverrideMapMergeMetadataResult.getAllowNoValueEnumOption());
     assertNull(actualOverrideMapMergeMetadataResult.getCanLinkToExternalEntity());
     assertNull(actualOverrideMapMergeMetadataResult.getEnableTypeaheadLookup());
@@ -851,6 +428,145 @@ public class MapFieldMetadataProviderDiffblueTest {
     assertNull(actualOverrideMapMergeMetadataResult.getTooltip());
     assertNull(actualOverrideMapMergeMetadataResult.getValueClass());
     assertNull(actualOverrideMapMergeMetadataResult.getValuePropertyFriendlyName());
+    assertNull(actualOverrideMapMergeMetadataResult.getGridVisibleFields());
+    assertNull(actualOverrideMapMergeMetadataResult.getMaintainedAdornedTargetFields());
+    assertNull(actualOverrideMapMergeMetadataResult.getEnumerationValues());
+    assertNull(actualOverrideMapMergeMetadataResult.getKeys());
+    assertNull(actualOverrideMapMergeMetadataResult.getShowIfFieldEquals());
+    assertNull(actualOverrideMapMergeMetadataResult.getValidationConfigurations());
+    assertNull(actualOverrideMapMergeMetadataResult.getAddMethodType());
+    assertNull(actualOverrideMapMergeMetadataResult.getAdornedTargetAddMethodType());
+    assertNull(actualOverrideMapMergeMetadataResult.getLookupType());
+    assertNull(actualOverrideMapMergeMetadataResult.getAddType());
+    assertNull(actualOverrideMapMergeMetadataResult.getFetchType());
+    assertNull(actualOverrideMapMergeMetadataResult.getInspectType());
+    assertNull(actualOverrideMapMergeMetadataResult.getRemoveType());
+    assertNull(actualOverrideMapMergeMetadataResult.getUpdateType());
+    assertNull(actualOverrideMapMergeMetadataResult.getDisplayType());
+    assertNull(actualOverrideMapMergeMetadataResult.getExplicitFieldType());
+    assertNull(actualOverrideMapMergeMetadataResult.getFieldComponentRenderer());
+    assertNull(actualOverrideMapMergeMetadataResult.getFieldType());
+    assertNull(actualOverrideMapMergeMetadataResult.getGridFieldComponentRenderer());
+    assertNull(actualOverrideMapMergeMetadataResult.getSimpleValue());
+    assertNull(actualOverrideMapMergeMetadataResult.getVisibility());
+    assertNull(actualOverrideMapMergeMetadataResult.getMergedPropertyType());
+    assertEquals(1, actualOverrideMapMergeMetadataResult.getCustomCriteria().length);
+    assertEquals(SupportedFieldType.INTEGER, actualOverrideMapMergeMetadataResult.getSecondaryType());
+  }
+
+  /**
+   * Test {@link MapFieldMetadataProvider#overrideMapMergeMetadata(AdminPresentationMergeOverride)}.
+   * <ul>
+   *   <li>Then return CurrencyCodeField is {@code 42}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MapFieldMetadataProvider#overrideMapMergeMetadata(AdminPresentationMergeOverride)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FieldMetadataOverride MapFieldMetadataProvider.overrideMapMergeMetadata(AdminPresentationMergeOverride)"})
+  public void testOverrideMapMergeMetadata_thenReturnCurrencyCodeFieldIs42() {
+    // Arrange
+    AdminPresentationMergeEntry adminPresentationMergeEntry = mock(AdminPresentationMergeEntry.class);
+    when(adminPresentationMergeEntry.overrideValue()).thenReturn("42");
+    when(adminPresentationMergeEntry.propertyType()).thenReturn("currencyCodeField");
+    AdminPresentationMergeOverride merge = mock(AdminPresentationMergeOverride.class);
+    when(merge.mergeEntries()).thenReturn(new AdminPresentationMergeEntry[]{adminPresentationMergeEntry});
+
+    // Act
+    FieldMetadataOverride actualOverrideMapMergeMetadataResult = mapFieldMetadataProvider
+        .overrideMapMergeMetadata(merge);
+
+    // Assert
+    verify(adminPresentationMergeEntry).overrideValue();
+    verify(adminPresentationMergeEntry).propertyType();
+    verify(merge).mergeEntries();
+    assertEquals("42", actualOverrideMapMergeMetadataResult.getCurrencyCodeField());
+    assertNull(actualOverrideMapMergeMetadataResult.getOptionFilterValues());
+    assertNull(actualOverrideMapMergeMetadataResult.getAllowNoValueEnumOption());
+    assertNull(actualOverrideMapMergeMetadataResult.getCanLinkToExternalEntity());
+    assertNull(actualOverrideMapMergeMetadataResult.getEnableTypeaheadLookup());
+    assertNull(actualOverrideMapMergeMetadataResult.getExcluded());
+    assertNull(actualOverrideMapMergeMetadataResult.getForceFreeFormKeys());
+    assertNull(actualOverrideMapMergeMetadataResult.getForcePopulateChildProperties());
+    assertNull(actualOverrideMapMergeMetadataResult.getForeignKeyCollection());
+    assertNull(actualOverrideMapMergeMetadataResult.getGroupCollapsed());
+    assertNull(actualOverrideMapMergeMetadataResult.getHideEnumerationIfEmpty());
+    assertNull(actualOverrideMapMergeMetadataResult.getIsDerived());
+    assertNull(actualOverrideMapMergeMetadataResult.getLazyFetch());
+    assertNull(actualOverrideMapMergeMetadataResult.getManualFetch());
+    assertNull(actualOverrideMapMergeMetadataResult.getOptionCanEditValues());
+    assertNull(actualOverrideMapMergeMetadataResult.getReadOnly());
+    assertNull(actualOverrideMapMergeMetadataResult.getRequired());
+    assertNull(actualOverrideMapMergeMetadataResult.getRequiredOverride());
+    assertNull(actualOverrideMapMergeMetadataResult.getSearchable());
+    assertNull(actualOverrideMapMergeMetadataResult.getToOneLookupCreatedViaAnnotation());
+    assertNull(actualOverrideMapMergeMetadataResult.getTranslatable());
+    assertNull(actualOverrideMapMergeMetadataResult.getUnique());
+    assertNull(actualOverrideMapMergeMetadataResult.getUseServerSideInspectionCache());
+    assertNull(actualOverrideMapMergeMetadataResult.isDeleteEntityUponRemove());
+    assertNull(actualOverrideMapMergeMetadataResult.isIgnoreAdornedProperties());
+    assertNull(actualOverrideMapMergeMetadataResult.isLargeEntry());
+    assertNull(actualOverrideMapMergeMetadataResult.isProminent());
+    assertNull(actualOverrideMapMergeMetadataResult.isSortAscending());
+    assertNull(actualOverrideMapMergeMetadataResult.getGridOrder());
+    assertNull(actualOverrideMapMergeMetadataResult.getGroupOrder());
+    assertNull(actualOverrideMapMergeMetadataResult.getLength());
+    assertNull(actualOverrideMapMergeMetadataResult.getPrecision());
+    assertNull(actualOverrideMapMergeMetadataResult.getScale());
+    assertNull(actualOverrideMapMergeMetadataResult.getTabOrder());
+    assertNull(actualOverrideMapMergeMetadataResult.getOrder());
+    assertNull(actualOverrideMapMergeMetadataResult.getAddFriendlyName());
+    assertNull(actualOverrideMapMergeMetadataResult.getAssociatedFieldName());
+    assertNull(actualOverrideMapMergeMetadataResult.getBroadleafEnumeration());
+    assertNull(actualOverrideMapMergeMetadataResult.getColumnWidth());
+    assertNull(actualOverrideMapMergeMetadataResult.getDefaultValue());
+    assertNull(actualOverrideMapMergeMetadataResult.getEnumerationClass());
+    assertNull(actualOverrideMapMergeMetadataResult.getFieldComponentRendererTemplate());
+    assertNull(actualOverrideMapMergeMetadataResult.getForeignKeyClass());
+    assertNull(actualOverrideMapMergeMetadataResult.getForeignKeyDisplayValueProperty());
+    assertNull(actualOverrideMapMergeMetadataResult.getForeignKeyProperty());
+    assertNull(actualOverrideMapMergeMetadataResult.getFriendlyName());
+    assertNull(actualOverrideMapMergeMetadataResult.getGridFieldComponentRendererTemplate());
+    assertNull(actualOverrideMapMergeMetadataResult.getGroup());
+    assertNull(actualOverrideMapMergeMetadataResult.getHelpText());
+    assertNull(actualOverrideMapMergeMetadataResult.getHint());
+    assertNull(actualOverrideMapMergeMetadataResult.getJoinEntityClass());
+    assertNull(actualOverrideMapMergeMetadataResult.getKeyClass());
+    assertNull(actualOverrideMapMergeMetadataResult.getKeyPropertyFriendlyName());
+    assertNull(actualOverrideMapMergeMetadataResult.getLookupDisplayProperty());
+    assertNull(actualOverrideMapMergeMetadataResult.getManyToField());
+    assertNull(actualOverrideMapMergeMetadataResult.getMapFieldValueClass());
+    assertNull(actualOverrideMapMergeMetadataResult.getMapKeyOptionEntityClass());
+    assertNull(actualOverrideMapMergeMetadataResult.getMapKeyOptionEntityDisplayField());
+    assertNull(actualOverrideMapMergeMetadataResult.getMapKeyOptionEntityValueField());
+    assertNull(actualOverrideMapMergeMetadataResult.getMapKeyValueProperty());
+    assertNull(actualOverrideMapMergeMetadataResult.getMediaField());
+    assertNull(actualOverrideMapMergeMetadataResult.getName());
+    assertNull(actualOverrideMapMergeMetadataResult.getOptionDisplayFieldName());
+    assertNull(actualOverrideMapMergeMetadataResult.getOptionListEntity());
+    assertNull(actualOverrideMapMergeMetadataResult.getOptionValueFieldName());
+    assertNull(actualOverrideMapMergeMetadataResult.getParentObjectIdProperty());
+    assertNull(actualOverrideMapMergeMetadataResult.getParentObjectProperty());
+    assertNull(actualOverrideMapMergeMetadataResult.getRuleIdentifier());
+    assertNull(actualOverrideMapMergeMetadataResult.getSecurityLevel());
+    assertNull(actualOverrideMapMergeMetadataResult.getSelectizeVisibleField());
+    assertNull(actualOverrideMapMergeMetadataResult.getShowIfProperty());
+    assertNull(actualOverrideMapMergeMetadataResult.getSortProperty());
+    assertNull(actualOverrideMapMergeMetadataResult.getTab());
+    assertNull(actualOverrideMapMergeMetadataResult.getTargetObjectIdProperty());
+    assertNull(actualOverrideMapMergeMetadataResult.getTargetObjectProperty());
+    assertNull(actualOverrideMapMergeMetadataResult.getToOneParentProperty());
+    assertNull(actualOverrideMapMergeMetadataResult.getToOneTargetProperty());
+    assertNull(actualOverrideMapMergeMetadataResult.getTooltip());
+    assertNull(actualOverrideMapMergeMetadataResult.getValueClass());
+    assertNull(actualOverrideMapMergeMetadataResult.getValuePropertyFriendlyName());
+    assertNull(actualOverrideMapMergeMetadataResult.getCustomCriteria());
+    assertNull(actualOverrideMapMergeMetadataResult.getGridVisibleFields());
+    assertNull(actualOverrideMapMergeMetadataResult.getMaintainedAdornedTargetFields());
+    assertNull(actualOverrideMapMergeMetadataResult.getEnumerationValues());
+    assertNull(actualOverrideMapMergeMetadataResult.getKeys());
     assertNull(actualOverrideMapMergeMetadataResult.getShowIfFieldEquals());
     assertNull(actualOverrideMapMergeMetadataResult.getValidationConfigurations());
     assertNull(actualOverrideMapMergeMetadataResult.getAddMethodType());
@@ -870,89 +586,53 @@ public class MapFieldMetadataProviderDiffblueTest {
     assertNull(actualOverrideMapMergeMetadataResult.getVisibility());
     assertNull(actualOverrideMapMergeMetadataResult.getMergedPropertyType());
     assertEquals(SupportedFieldType.INTEGER, actualOverrideMapMergeMetadataResult.getSecondaryType());
-    assertArrayEquals(new String[]{"42"}, actualOverrideMapMergeMetadataResult.getCustomCriteria());
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#constructMapMetadataOverride(AdminPresentationMap)}.
+   * Test {@link MapFieldMetadataProvider#constructMapMetadataOverride(AdminPresentationMap)}.
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#constructMapMetadataOverride(AdminPresentationMap)}
+   * Method under test: {@link MapFieldMetadataProvider#constructMapMetadataOverride(AdminPresentationMap)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FieldMetadataOverride MapFieldMetadataProvider.constructMapMetadataOverride(AdminPresentationMap)"})
   public void testConstructMapMetadataOverride() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
     AdminPresentationMapKey adminPresentationMapKey = mock(AdminPresentationMapKey.class);
     when(adminPresentationMapKey.keyName()).thenThrow(new IllegalArgumentException("foo"));
-    AdminPresentationMap map = mock(AdminPresentationMap.class);
-    when(map.keyPropertyFriendlyName()).thenReturn("Key Property Friendly Name");
-    when(map.mapKeyValueProperty()).thenReturn("42");
-    when(map.keys()).thenReturn(new AdminPresentationMapKey[]{adminPresentationMapKey});
-    when(map.deleteEntityUponRemove()).thenReturn(true);
+    AdminPresentationMap map2 = mock(AdminPresentationMap.class);
+    when(map2.keyPropertyFriendlyName()).thenReturn("Key Property Friendly Name");
+    when(map2.mapKeyValueProperty()).thenReturn("42");
+    when(map2.keys()).thenReturn(new AdminPresentationMapKey[]{adminPresentationMapKey});
+    when(map2.deleteEntityUponRemove()).thenReturn(true);
     Class<Object> forNameResult = Object.class;
-    Mockito.<Class<?>>when(map.keyClass()).thenReturn(forNameResult);
+    Mockito.<Class<?>>when(map2.keyClass()).thenReturn(forNameResult);
 
     // Act and Assert
-    assertThrows(IllegalArgumentException.class, () -> mapFieldMetadataProvider.constructMapMetadataOverride(map));
-    verify(map).deleteEntityUponRemove();
-    verify(map).keyClass();
-    verify(map).keyPropertyFriendlyName();
-    verify(map, atLeast(1)).keys();
-    verify(map).mapKeyValueProperty();
+    assertThrows(IllegalArgumentException.class, () -> mapFieldMetadataProvider.constructMapMetadataOverride(map2));
+    verify(map2).deleteEntityUponRemove();
+    verify(map2).keyClass();
+    verify(map2).keyPropertyFriendlyName();
+    verify(map2, atLeast(1)).keys();
+    verify(map2).mapKeyValueProperty();
     verify(adminPresentationMapKey).keyName();
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#constructMapMetadataOverride(AdminPresentationMap)}.
-   * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#constructMapMetadataOverride(AdminPresentationMap)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testConstructMapMetadataOverride2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass26550 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.provider.metadata.MapFieldMetadataProvider mapFieldMetadataProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new MapFieldMetadataProvider()).constructMapMetadataOverride(mock(AdminPresentationMap.class));
-  }
-
-  /**
-   * Test
-   * {@link MapFieldMetadataProvider#constructMapMetadataOverride(AdminPresentationMap)}.
+   * Test {@link MapFieldMetadataProvider#constructMapMetadataOverride(AdminPresentationMap)}.
    * <ul>
    *   <li>Given empty array of {@link AdminPresentationMapKey}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#constructMapMetadataOverride(AdminPresentationMap)}
+   * Method under test: {@link MapFieldMetadataProvider#constructMapMetadataOverride(AdminPresentationMap)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FieldMetadataOverride MapFieldMetadataProvider.constructMapMetadataOverride(AdminPresentationMap)"})
   public void testConstructMapMetadataOverride_givenEmptyArrayOfAdminPresentationMapKey() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
     AdminPresentationOperationTypes adminPresentationOperationTypes = mock(AdminPresentationOperationTypes.class);
     when(adminPresentationOperationTypes.addType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
     when(adminPresentationOperationTypes.fetchType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
@@ -961,66 +641,66 @@ public class MapFieldMetadataProviderDiffblueTest {
     when(adminPresentationOperationTypes.updateType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
     FieldValueConfiguration fieldValueConfiguration = mock(FieldValueConfiguration.class);
     when(fieldValueConfiguration.fieldName()).thenThrow(new IllegalArgumentException("foo"));
-    AdminPresentationMap map = mock(AdminPresentationMap.class);
-    when(map.showIfProperty()).thenReturn("Show If Property");
-    when(map.showIfFieldEquals())
+    AdminPresentationMap map2 = mock(AdminPresentationMap.class);
+    when(map2.showIfProperty()).thenReturn("Show If Property");
+    when(map2.showIfFieldEquals())
         .thenReturn(new FieldValueConfiguration[]{fieldValueConfiguration, mock(FieldValueConfiguration.class)});
-    when(map.excluded()).thenReturn(true);
-    when(map.readOnly()).thenReturn(true);
-    when(map.useServerSideInspectionCache()).thenReturn(true);
-    when(map.order()).thenReturn(1);
-    when(map.tabOrder()).thenReturn(1);
-    when(map.friendlyName()).thenReturn("Friendly Name");
-    when(map.group()).thenReturn("Group");
-    when(map.securityLevel()).thenReturn("Security Level");
-    when(map.tab()).thenReturn("Tab");
-    when(map.valuePropertyFriendlyName()).thenReturn("42");
-    when(map.customCriteria()).thenReturn(new String[]{"Custom Criteria"});
-    when(map.operationTypes()).thenReturn(adminPresentationOperationTypes);
+    when(map2.excluded()).thenReturn(true);
+    when(map2.readOnly()).thenReturn(true);
+    when(map2.useServerSideInspectionCache()).thenReturn(true);
+    when(map2.order()).thenReturn(1);
+    when(map2.tabOrder()).thenReturn(1);
+    when(map2.friendlyName()).thenReturn("Friendly Name");
+    when(map2.group()).thenReturn("Group");
+    when(map2.securityLevel()).thenReturn("Security Level");
+    when(map2.tab()).thenReturn("Tab");
+    when(map2.valuePropertyFriendlyName()).thenReturn("42");
+    when(map2.customCriteria()).thenReturn(new String[]{"Custom Criteria"});
+    when(map2.operationTypes()).thenReturn(adminPresentationOperationTypes);
     Class<Object> forNameResult = Object.class;
-    Mockito.<Class<?>>when(map.valueClass()).thenReturn(forNameResult);
-    when(map.mapKeyOptionEntityDisplayField()).thenReturn("Map Key Option Entity Display Field");
-    when(map.mapKeyOptionEntityValueField()).thenReturn("42");
-    when(map.mediaField()).thenReturn("Media Field");
-    when(map.toOneTargetProperty()).thenReturn("One Target Property");
-    when(map.isSimpleValue()).thenReturn(UnspecifiedBooleanType.TRUE);
+    Mockito.<Class<?>>when(map2.valueClass()).thenReturn(forNameResult);
+    when(map2.mapKeyOptionEntityDisplayField()).thenReturn("Map Key Option Entity Display Field");
+    when(map2.mapKeyOptionEntityValueField()).thenReturn("42");
+    when(map2.mediaField()).thenReturn("Media Field");
+    when(map2.toOneTargetProperty()).thenReturn("One Target Property");
+    when(map2.isSimpleValue()).thenReturn(UnspecifiedBooleanType.TRUE);
     Class<Object> forNameResult2 = Object.class;
-    Mockito.<Class<?>>when(map.mapKeyOptionEntityClass()).thenReturn(forNameResult2);
-    when(map.keyPropertyFriendlyName()).thenReturn("Key Property Friendly Name");
-    when(map.mapKeyValueProperty()).thenReturn("42");
-    when(map.keys()).thenReturn(new AdminPresentationMapKey[]{});
-    when(map.deleteEntityUponRemove()).thenReturn(true);
+    Mockito.<Class<?>>when(map2.mapKeyOptionEntityClass()).thenReturn(forNameResult2);
+    when(map2.keyPropertyFriendlyName()).thenReturn("Key Property Friendly Name");
+    when(map2.mapKeyValueProperty()).thenReturn("42");
+    when(map2.keys()).thenReturn(new AdminPresentationMapKey[]{});
+    when(map2.deleteEntityUponRemove()).thenReturn(true);
     Class<Object> forNameResult3 = Object.class;
-    Mockito.<Class<?>>when(map.keyClass()).thenReturn(forNameResult3);
+    Mockito.<Class<?>>when(map2.keyClass()).thenReturn(forNameResult3);
 
     // Act and Assert
-    assertThrows(IllegalArgumentException.class, () -> mapFieldMetadataProvider.constructMapMetadataOverride(map));
-    verify(map).customCriteria();
-    verify(map).deleteEntityUponRemove();
-    verify(map).excluded();
-    verify(map).friendlyName();
-    verify(map).group();
-    verify(map).isSimpleValue();
-    verify(map).keyClass();
-    verify(map).keyPropertyFriendlyName();
-    verify(map).keys();
-    verify(map).mapKeyOptionEntityClass();
-    verify(map).mapKeyOptionEntityDisplayField();
-    verify(map).mapKeyOptionEntityValueField();
-    verify(map).mapKeyValueProperty();
-    verify(map).mediaField();
-    verify(map, atLeast(1)).operationTypes();
-    verify(map).order();
-    verify(map).readOnly();
-    verify(map).securityLevel();
-    verify(map, atLeast(1)).showIfFieldEquals();
-    verify(map).showIfProperty();
-    verify(map).tab();
-    verify(map).tabOrder();
-    verify(map).toOneTargetProperty();
-    verify(map).useServerSideInspectionCache();
-    verify(map).valueClass();
-    verify(map).valuePropertyFriendlyName();
+    assertThrows(IllegalArgumentException.class, () -> mapFieldMetadataProvider.constructMapMetadataOverride(map2));
+    verify(map2).customCriteria();
+    verify(map2).deleteEntityUponRemove();
+    verify(map2).excluded();
+    verify(map2).friendlyName();
+    verify(map2).group();
+    verify(map2).isSimpleValue();
+    verify(map2).keyClass();
+    verify(map2).keyPropertyFriendlyName();
+    verify(map2).keys();
+    verify(map2).mapKeyOptionEntityClass();
+    verify(map2).mapKeyOptionEntityDisplayField();
+    verify(map2).mapKeyOptionEntityValueField();
+    verify(map2).mapKeyValueProperty();
+    verify(map2).mediaField();
+    verify(map2, atLeast(1)).operationTypes();
+    verify(map2).order();
+    verify(map2).readOnly();
+    verify(map2).securityLevel();
+    verify(map2, atLeast(1)).showIfFieldEquals();
+    verify(map2).showIfProperty();
+    verify(map2).tab();
+    verify(map2).tabOrder();
+    verify(map2).toOneTargetProperty();
+    verify(map2).useServerSideInspectionCache();
+    verify(map2).valueClass();
+    verify(map2).valuePropertyFriendlyName();
     verify(adminPresentationOperationTypes).addType();
     verify(adminPresentationOperationTypes).fetchType();
     verify(adminPresentationOperationTypes).inspectType();
@@ -1030,21 +710,19 @@ public class MapFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#constructMapMetadataOverride(AdminPresentationMap)}.
+   * Test {@link MapFieldMetadataProvider#constructMapMetadataOverride(AdminPresentationMap)}.
    * <ul>
    *   <li>Then calls {@link AdminPresentationMapKey#friendlyKeyName()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#constructMapMetadataOverride(AdminPresentationMap)}
+   * Method under test: {@link MapFieldMetadataProvider#constructMapMetadataOverride(AdminPresentationMap)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FieldMetadataOverride MapFieldMetadataProvider.constructMapMetadataOverride(AdminPresentationMap)"})
   public void testConstructMapMetadataOverride_thenCallsFriendlyKeyName() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
     AdminPresentationMapKey adminPresentationMapKey = mock(AdminPresentationMapKey.class);
     when(adminPresentationMapKey.friendlyKeyName()).thenReturn("Friendly Key Name");
     when(adminPresentationMapKey.keyName()).thenReturn("Key Name");
@@ -1056,66 +734,66 @@ public class MapFieldMetadataProviderDiffblueTest {
     when(adminPresentationOperationTypes.updateType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
     FieldValueConfiguration fieldValueConfiguration = mock(FieldValueConfiguration.class);
     when(fieldValueConfiguration.fieldName()).thenThrow(new IllegalArgumentException("foo"));
-    AdminPresentationMap map = mock(AdminPresentationMap.class);
-    when(map.showIfProperty()).thenReturn("Show If Property");
-    when(map.showIfFieldEquals())
+    AdminPresentationMap map2 = mock(AdminPresentationMap.class);
+    when(map2.showIfProperty()).thenReturn("Show If Property");
+    when(map2.showIfFieldEquals())
         .thenReturn(new FieldValueConfiguration[]{fieldValueConfiguration, mock(FieldValueConfiguration.class)});
-    when(map.excluded()).thenReturn(true);
-    when(map.readOnly()).thenReturn(true);
-    when(map.useServerSideInspectionCache()).thenReturn(true);
-    when(map.order()).thenReturn(1);
-    when(map.tabOrder()).thenReturn(1);
-    when(map.friendlyName()).thenReturn("Friendly Name");
-    when(map.group()).thenReturn("Group");
-    when(map.securityLevel()).thenReturn("Security Level");
-    when(map.tab()).thenReturn("Tab");
-    when(map.valuePropertyFriendlyName()).thenReturn("42");
-    when(map.customCriteria()).thenReturn(new String[]{"Custom Criteria"});
-    when(map.operationTypes()).thenReturn(adminPresentationOperationTypes);
+    when(map2.excluded()).thenReturn(true);
+    when(map2.readOnly()).thenReturn(true);
+    when(map2.useServerSideInspectionCache()).thenReturn(true);
+    when(map2.order()).thenReturn(1);
+    when(map2.tabOrder()).thenReturn(1);
+    when(map2.friendlyName()).thenReturn("Friendly Name");
+    when(map2.group()).thenReturn("Group");
+    when(map2.securityLevel()).thenReturn("Security Level");
+    when(map2.tab()).thenReturn("Tab");
+    when(map2.valuePropertyFriendlyName()).thenReturn("42");
+    when(map2.customCriteria()).thenReturn(new String[]{"Custom Criteria"});
+    when(map2.operationTypes()).thenReturn(adminPresentationOperationTypes);
     Class<Object> forNameResult = Object.class;
-    Mockito.<Class<?>>when(map.valueClass()).thenReturn(forNameResult);
-    when(map.mapKeyOptionEntityDisplayField()).thenReturn("Map Key Option Entity Display Field");
-    when(map.mapKeyOptionEntityValueField()).thenReturn("42");
-    when(map.mediaField()).thenReturn("Media Field");
-    when(map.toOneTargetProperty()).thenReturn("One Target Property");
-    when(map.isSimpleValue()).thenReturn(UnspecifiedBooleanType.TRUE);
+    Mockito.<Class<?>>when(map2.valueClass()).thenReturn(forNameResult);
+    when(map2.mapKeyOptionEntityDisplayField()).thenReturn("Map Key Option Entity Display Field");
+    when(map2.mapKeyOptionEntityValueField()).thenReturn("42");
+    when(map2.mediaField()).thenReturn("Media Field");
+    when(map2.toOneTargetProperty()).thenReturn("One Target Property");
+    when(map2.isSimpleValue()).thenReturn(UnspecifiedBooleanType.TRUE);
     Class<Object> forNameResult2 = Object.class;
-    Mockito.<Class<?>>when(map.mapKeyOptionEntityClass()).thenReturn(forNameResult2);
-    when(map.keyPropertyFriendlyName()).thenReturn("Key Property Friendly Name");
-    when(map.mapKeyValueProperty()).thenReturn("42");
-    when(map.keys()).thenReturn(new AdminPresentationMapKey[]{adminPresentationMapKey});
-    when(map.deleteEntityUponRemove()).thenReturn(true);
+    Mockito.<Class<?>>when(map2.mapKeyOptionEntityClass()).thenReturn(forNameResult2);
+    when(map2.keyPropertyFriendlyName()).thenReturn("Key Property Friendly Name");
+    when(map2.mapKeyValueProperty()).thenReturn("42");
+    when(map2.keys()).thenReturn(new AdminPresentationMapKey[]{adminPresentationMapKey});
+    when(map2.deleteEntityUponRemove()).thenReturn(true);
     Class<Object> forNameResult3 = Object.class;
-    Mockito.<Class<?>>when(map.keyClass()).thenReturn(forNameResult3);
+    Mockito.<Class<?>>when(map2.keyClass()).thenReturn(forNameResult3);
 
     // Act and Assert
-    assertThrows(IllegalArgumentException.class, () -> mapFieldMetadataProvider.constructMapMetadataOverride(map));
-    verify(map).customCriteria();
-    verify(map).deleteEntityUponRemove();
-    verify(map).excluded();
-    verify(map).friendlyName();
-    verify(map).group();
-    verify(map).isSimpleValue();
-    verify(map).keyClass();
-    verify(map).keyPropertyFriendlyName();
-    verify(map, atLeast(1)).keys();
-    verify(map).mapKeyOptionEntityClass();
-    verify(map).mapKeyOptionEntityDisplayField();
-    verify(map).mapKeyOptionEntityValueField();
-    verify(map).mapKeyValueProperty();
-    verify(map).mediaField();
-    verify(map, atLeast(1)).operationTypes();
-    verify(map).order();
-    verify(map).readOnly();
-    verify(map).securityLevel();
-    verify(map, atLeast(1)).showIfFieldEquals();
-    verify(map).showIfProperty();
-    verify(map).tab();
-    verify(map).tabOrder();
-    verify(map).toOneTargetProperty();
-    verify(map).useServerSideInspectionCache();
-    verify(map).valueClass();
-    verify(map).valuePropertyFriendlyName();
+    assertThrows(IllegalArgumentException.class, () -> mapFieldMetadataProvider.constructMapMetadataOverride(map2));
+    verify(map2).customCriteria();
+    verify(map2).deleteEntityUponRemove();
+    verify(map2).excluded();
+    verify(map2).friendlyName();
+    verify(map2).group();
+    verify(map2).isSimpleValue();
+    verify(map2).keyClass();
+    verify(map2).keyPropertyFriendlyName();
+    verify(map2, atLeast(1)).keys();
+    verify(map2).mapKeyOptionEntityClass();
+    verify(map2).mapKeyOptionEntityDisplayField();
+    verify(map2).mapKeyOptionEntityValueField();
+    verify(map2).mapKeyValueProperty();
+    verify(map2).mediaField();
+    verify(map2, atLeast(1)).operationTypes();
+    verify(map2).order();
+    verify(map2).readOnly();
+    verify(map2).securityLevel();
+    verify(map2, atLeast(1)).showIfFieldEquals();
+    verify(map2).showIfProperty();
+    verify(map2).tab();
+    verify(map2).tabOrder();
+    verify(map2).toOneTargetProperty();
+    verify(map2).useServerSideInspectionCache();
+    verify(map2).valueClass();
+    verify(map2).valuePropertyFriendlyName();
     verify(adminPresentationMapKey).friendlyKeyName();
     verify(adminPresentationMapKey).keyName();
     verify(adminPresentationOperationTypes).addType();
@@ -1127,21 +805,19 @@ public class MapFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#constructMapMetadataOverride(AdminPresentationMap)}.
+   * Test {@link MapFieldMetadataProvider#constructMapMetadataOverride(AdminPresentationMap)}.
    * <ul>
    *   <li>Then return ShowIfFieldEquals is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#constructMapMetadataOverride(AdminPresentationMap)}
+   * Method under test: {@link MapFieldMetadataProvider#constructMapMetadataOverride(AdminPresentationMap)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FieldMetadataOverride MapFieldMetadataProvider.constructMapMetadataOverride(AdminPresentationMap)"})
   public void testConstructMapMetadataOverride_thenReturnShowIfFieldEqualsIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
     AdminPresentationMapKey adminPresentationMapKey = mock(AdminPresentationMapKey.class);
     when(adminPresentationMapKey.friendlyKeyName()).thenReturn("Friendly Key Name");
     when(adminPresentationMapKey.keyName()).thenReturn("Key Name");
@@ -1151,78 +827,78 @@ public class MapFieldMetadataProviderDiffblueTest {
     when(adminPresentationOperationTypes.inspectType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
     when(adminPresentationOperationTypes.removeType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
     when(adminPresentationOperationTypes.updateType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    AdminPresentationMap map = mock(AdminPresentationMap.class);
-    when(map.forceFreeFormKeys()).thenReturn(true);
-    when(map.lazyFetch()).thenReturn(true);
-    when(map.manualFetch()).thenReturn(true);
-    when(map.currencyCodeField()).thenReturn("GBP");
-    when(map.manyToField()).thenReturn("Many To Field");
-    when(map.showIfProperty()).thenReturn("Show If Property");
-    when(map.showIfFieldEquals()).thenReturn(new FieldValueConfiguration[]{});
-    when(map.excluded()).thenReturn(true);
-    when(map.readOnly()).thenReturn(true);
-    when(map.useServerSideInspectionCache()).thenReturn(true);
-    when(map.order()).thenReturn(1);
-    when(map.tabOrder()).thenReturn(1);
-    when(map.friendlyName()).thenReturn("Friendly Name");
-    when(map.group()).thenReturn("Group");
-    when(map.securityLevel()).thenReturn("Security Level");
-    when(map.tab()).thenReturn("Tab");
-    when(map.valuePropertyFriendlyName()).thenReturn("42");
-    when(map.customCriteria()).thenReturn(new String[]{"Custom Criteria"});
-    when(map.operationTypes()).thenReturn(adminPresentationOperationTypes);
+    AdminPresentationMap map2 = mock(AdminPresentationMap.class);
+    when(map2.forceFreeFormKeys()).thenReturn(true);
+    when(map2.lazyFetch()).thenReturn(true);
+    when(map2.manualFetch()).thenReturn(true);
+    when(map2.currencyCodeField()).thenReturn("GBP");
+    when(map2.manyToField()).thenReturn("Many To Field");
+    when(map2.showIfProperty()).thenReturn("Show If Property");
+    when(map2.showIfFieldEquals()).thenReturn(new FieldValueConfiguration[]{});
+    when(map2.excluded()).thenReturn(true);
+    when(map2.readOnly()).thenReturn(true);
+    when(map2.useServerSideInspectionCache()).thenReturn(true);
+    when(map2.order()).thenReturn(1);
+    when(map2.tabOrder()).thenReturn(1);
+    when(map2.friendlyName()).thenReturn("Friendly Name");
+    when(map2.group()).thenReturn("Group");
+    when(map2.securityLevel()).thenReturn("Security Level");
+    when(map2.tab()).thenReturn("Tab");
+    when(map2.valuePropertyFriendlyName()).thenReturn("42");
+    when(map2.customCriteria()).thenReturn(new String[]{"Custom Criteria"});
+    when(map2.operationTypes()).thenReturn(adminPresentationOperationTypes);
     Class<Object> forNameResult = Object.class;
-    Mockito.<Class<?>>when(map.valueClass()).thenReturn(forNameResult);
-    when(map.mapKeyOptionEntityDisplayField()).thenReturn("Map Key Option Entity Display Field");
-    when(map.mapKeyOptionEntityValueField()).thenReturn("42");
-    when(map.mediaField()).thenReturn("Media Field");
-    when(map.toOneTargetProperty()).thenReturn("One Target Property");
-    when(map.isSimpleValue()).thenReturn(UnspecifiedBooleanType.TRUE);
+    Mockito.<Class<?>>when(map2.valueClass()).thenReturn(forNameResult);
+    when(map2.mapKeyOptionEntityDisplayField()).thenReturn("Map Key Option Entity Display Field");
+    when(map2.mapKeyOptionEntityValueField()).thenReturn("42");
+    when(map2.mediaField()).thenReturn("Media Field");
+    when(map2.toOneTargetProperty()).thenReturn("One Target Property");
+    when(map2.isSimpleValue()).thenReturn(UnspecifiedBooleanType.TRUE);
     Class<Object> forNameResult2 = Object.class;
-    Mockito.<Class<?>>when(map.mapKeyOptionEntityClass()).thenReturn(forNameResult2);
-    when(map.keyPropertyFriendlyName()).thenReturn("Key Property Friendly Name");
-    when(map.mapKeyValueProperty()).thenReturn("42");
-    when(map.keys()).thenReturn(new AdminPresentationMapKey[]{adminPresentationMapKey});
-    when(map.deleteEntityUponRemove()).thenReturn(true);
+    Mockito.<Class<?>>when(map2.mapKeyOptionEntityClass()).thenReturn(forNameResult2);
+    when(map2.keyPropertyFriendlyName()).thenReturn("Key Property Friendly Name");
+    when(map2.mapKeyValueProperty()).thenReturn("42");
+    when(map2.keys()).thenReturn(new AdminPresentationMapKey[]{adminPresentationMapKey});
+    when(map2.deleteEntityUponRemove()).thenReturn(true);
     Class<Object> forNameResult3 = Object.class;
-    Mockito.<Class<?>>when(map.keyClass()).thenReturn(forNameResult3);
+    Mockito.<Class<?>>when(map2.keyClass()).thenReturn(forNameResult3);
 
     // Act
     FieldMetadataOverride actualConstructMapMetadataOverrideResult = mapFieldMetadataProvider
-        .constructMapMetadataOverride(map);
+        .constructMapMetadataOverride(map2);
 
     // Assert
-    verify(map).currencyCodeField();
-    verify(map).customCriteria();
-    verify(map).deleteEntityUponRemove();
-    verify(map).excluded();
-    verify(map).forceFreeFormKeys();
-    verify(map).friendlyName();
-    verify(map).group();
-    verify(map).isSimpleValue();
-    verify(map).keyClass();
-    verify(map).keyPropertyFriendlyName();
-    verify(map, atLeast(1)).keys();
-    verify(map).lazyFetch();
-    verify(map).manualFetch();
-    verify(map).manyToField();
-    verify(map).mapKeyOptionEntityClass();
-    verify(map).mapKeyOptionEntityDisplayField();
-    verify(map).mapKeyOptionEntityValueField();
-    verify(map).mapKeyValueProperty();
-    verify(map).mediaField();
-    verify(map, atLeast(1)).operationTypes();
-    verify(map).order();
-    verify(map).readOnly();
-    verify(map).securityLevel();
-    verify(map).showIfFieldEquals();
-    verify(map).showIfProperty();
-    verify(map).tab();
-    verify(map).tabOrder();
-    verify(map).toOneTargetProperty();
-    verify(map).useServerSideInspectionCache();
-    verify(map).valueClass();
-    verify(map).valuePropertyFriendlyName();
+    verify(map2).currencyCodeField();
+    verify(map2).customCriteria();
+    verify(map2).deleteEntityUponRemove();
+    verify(map2).excluded();
+    verify(map2).forceFreeFormKeys();
+    verify(map2).friendlyName();
+    verify(map2).group();
+    verify(map2).isSimpleValue();
+    verify(map2).keyClass();
+    verify(map2).keyPropertyFriendlyName();
+    verify(map2, atLeast(1)).keys();
+    verify(map2).lazyFetch();
+    verify(map2).manualFetch();
+    verify(map2).manyToField();
+    verify(map2).mapKeyOptionEntityClass();
+    verify(map2).mapKeyOptionEntityDisplayField();
+    verify(map2).mapKeyOptionEntityValueField();
+    verify(map2).mapKeyValueProperty();
+    verify(map2).mediaField();
+    verify(map2, atLeast(1)).operationTypes();
+    verify(map2).order();
+    verify(map2).readOnly();
+    verify(map2).securityLevel();
+    verify(map2).showIfFieldEquals();
+    verify(map2).showIfProperty();
+    verify(map2).tab();
+    verify(map2).tabOrder();
+    verify(map2).toOneTargetProperty();
+    verify(map2).useServerSideInspectionCache();
+    verify(map2).valueClass();
+    verify(map2).valuePropertyFriendlyName();
     verify(adminPresentationMapKey).friendlyKeyName();
     verify(adminPresentationMapKey).keyName();
     verify(adminPresentationOperationTypes).addType();
@@ -1248,10 +924,7 @@ public class MapFieldMetadataProviderDiffblueTest {
     assertEquals("java.lang.Object", actualConstructMapMetadataOverrideResult.getKeyClass());
     assertEquals("java.lang.Object", actualConstructMapMetadataOverrideResult.getMapKeyOptionEntityClass());
     assertEquals("java.lang.Object", actualConstructMapMetadataOverrideResult.getValueClass());
-    assertNull(actualConstructMapMetadataOverrideResult.getGridVisibleFields());
-    assertNull(actualConstructMapMetadataOverrideResult.getMaintainedAdornedTargetFields());
     assertNull(actualConstructMapMetadataOverrideResult.getOptionFilterValues());
-    assertNull(actualConstructMapMetadataOverrideResult.getEnumerationValues());
     assertNull(actualConstructMapMetadataOverrideResult.getAllowNoValueEnumOption());
     assertNull(actualConstructMapMetadataOverrideResult.getCanLinkToExternalEntity());
     assertNull(actualConstructMapMetadataOverrideResult.getEnableTypeaheadLookup());
@@ -1305,6 +978,9 @@ public class MapFieldMetadataProviderDiffblueTest {
     assertNull(actualConstructMapMetadataOverrideResult.getTargetObjectProperty());
     assertNull(actualConstructMapMetadataOverrideResult.getToOneParentProperty());
     assertNull(actualConstructMapMetadataOverrideResult.getTooltip());
+    assertNull(actualConstructMapMetadataOverrideResult.getGridVisibleFields());
+    assertNull(actualConstructMapMetadataOverrideResult.getMaintainedAdornedTargetFields());
+    assertNull(actualConstructMapMetadataOverrideResult.getEnumerationValues());
     assertNull(actualConstructMapMetadataOverrideResult.getShowIfFieldEquals());
     assertNull(actualConstructMapMetadataOverrideResult.getValidationConfigurations());
     assertNull(actualConstructMapMetadataOverrideResult.getAddMethodType());
@@ -1319,8 +995,8 @@ public class MapFieldMetadataProviderDiffblueTest {
     assertNull(actualConstructMapMetadataOverrideResult.getMergedPropertyType());
     assertEquals(1, actualConstructMapMetadataOverrideResult.getTabOrder().intValue());
     assertEquals(1, actualConstructMapMetadataOverrideResult.getOrder().intValue());
-    String[][] keys = actualConstructMapMetadataOverrideResult.getKeys();
-    assertEquals(1, keys.length);
+    assertEquals(1, actualConstructMapMetadataOverrideResult.getCustomCriteria().length);
+    assertEquals(1, actualConstructMapMetadataOverrideResult.getKeys().length);
     assertEquals(OperationType.NONDESTRUCTIVEREMOVE, actualConstructMapMetadataOverrideResult.getAddType());
     assertEquals(OperationType.NONDESTRUCTIVEREMOVE, actualConstructMapMetadataOverrideResult.getFetchType());
     assertEquals(OperationType.NONDESTRUCTIVEREMOVE, actualConstructMapMetadataOverrideResult.getInspectType());
@@ -1335,26 +1011,22 @@ public class MapFieldMetadataProviderDiffblueTest {
     assertTrue(actualConstructMapMetadataOverrideResult.getReadOnly());
     assertTrue(actualConstructMapMetadataOverrideResult.getUseServerSideInspectionCache());
     assertTrue(actualConstructMapMetadataOverrideResult.isDeleteEntityUponRemove());
-    assertArrayEquals(new String[]{"Custom Criteria"}, actualConstructMapMetadataOverrideResult.getCustomCriteria());
-    assertArrayEquals(new String[]{"Key Name", "Friendly Key Name"}, keys[0]);
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#constructMapMetadataOverride(AdminPresentationMap)}.
+   * Test {@link MapFieldMetadataProvider#constructMapMetadataOverride(AdminPresentationMap)}.
    * <ul>
    *   <li>Then return ShowIfFieldEquals size is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#constructMapMetadataOverride(AdminPresentationMap)}
+   * Method under test: {@link MapFieldMetadataProvider#constructMapMetadataOverride(AdminPresentationMap)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FieldMetadataOverride MapFieldMetadataProvider.constructMapMetadataOverride(AdminPresentationMap)"})
   public void testConstructMapMetadataOverride_thenReturnShowIfFieldEqualsSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
     AdminPresentationMapKey adminPresentationMapKey = mock(AdminPresentationMapKey.class);
     when(adminPresentationMapKey.friendlyKeyName()).thenReturn("Friendly Key Name");
     when(adminPresentationMapKey.keyName()).thenReturn("Key Name");
@@ -1367,78 +1039,78 @@ public class MapFieldMetadataProviderDiffblueTest {
     FieldValueConfiguration fieldValueConfiguration = mock(FieldValueConfiguration.class);
     when(fieldValueConfiguration.fieldName()).thenReturn("Field Name");
     when(fieldValueConfiguration.fieldValues()).thenReturn(new String[]{"42"});
-    AdminPresentationMap map = mock(AdminPresentationMap.class);
-    when(map.forceFreeFormKeys()).thenReturn(true);
-    when(map.lazyFetch()).thenReturn(true);
-    when(map.manualFetch()).thenReturn(true);
-    when(map.currencyCodeField()).thenReturn("GBP");
-    when(map.manyToField()).thenReturn("Many To Field");
-    when(map.showIfProperty()).thenReturn("Show If Property");
-    when(map.showIfFieldEquals()).thenReturn(new FieldValueConfiguration[]{fieldValueConfiguration});
-    when(map.excluded()).thenReturn(true);
-    when(map.readOnly()).thenReturn(true);
-    when(map.useServerSideInspectionCache()).thenReturn(true);
-    when(map.order()).thenReturn(1);
-    when(map.tabOrder()).thenReturn(1);
-    when(map.friendlyName()).thenReturn("Friendly Name");
-    when(map.group()).thenReturn("Group");
-    when(map.securityLevel()).thenReturn("Security Level");
-    when(map.tab()).thenReturn("Tab");
-    when(map.valuePropertyFriendlyName()).thenReturn("42");
-    when(map.customCriteria()).thenReturn(new String[]{"Custom Criteria"});
-    when(map.operationTypes()).thenReturn(adminPresentationOperationTypes);
+    AdminPresentationMap map2 = mock(AdminPresentationMap.class);
+    when(map2.forceFreeFormKeys()).thenReturn(true);
+    when(map2.lazyFetch()).thenReturn(true);
+    when(map2.manualFetch()).thenReturn(true);
+    when(map2.currencyCodeField()).thenReturn("GBP");
+    when(map2.manyToField()).thenReturn("Many To Field");
+    when(map2.showIfProperty()).thenReturn("Show If Property");
+    when(map2.showIfFieldEquals()).thenReturn(new FieldValueConfiguration[]{fieldValueConfiguration});
+    when(map2.excluded()).thenReturn(true);
+    when(map2.readOnly()).thenReturn(true);
+    when(map2.useServerSideInspectionCache()).thenReturn(true);
+    when(map2.order()).thenReturn(1);
+    when(map2.tabOrder()).thenReturn(1);
+    when(map2.friendlyName()).thenReturn("Friendly Name");
+    when(map2.group()).thenReturn("Group");
+    when(map2.securityLevel()).thenReturn("Security Level");
+    when(map2.tab()).thenReturn("Tab");
+    when(map2.valuePropertyFriendlyName()).thenReturn("42");
+    when(map2.customCriteria()).thenReturn(new String[]{"Custom Criteria"});
+    when(map2.operationTypes()).thenReturn(adminPresentationOperationTypes);
     Class<Object> forNameResult = Object.class;
-    Mockito.<Class<?>>when(map.valueClass()).thenReturn(forNameResult);
-    when(map.mapKeyOptionEntityDisplayField()).thenReturn("Map Key Option Entity Display Field");
-    when(map.mapKeyOptionEntityValueField()).thenReturn("42");
-    when(map.mediaField()).thenReturn("Media Field");
-    when(map.toOneTargetProperty()).thenReturn("One Target Property");
-    when(map.isSimpleValue()).thenReturn(UnspecifiedBooleanType.TRUE);
+    Mockito.<Class<?>>when(map2.valueClass()).thenReturn(forNameResult);
+    when(map2.mapKeyOptionEntityDisplayField()).thenReturn("Map Key Option Entity Display Field");
+    when(map2.mapKeyOptionEntityValueField()).thenReturn("42");
+    when(map2.mediaField()).thenReturn("Media Field");
+    when(map2.toOneTargetProperty()).thenReturn("One Target Property");
+    when(map2.isSimpleValue()).thenReturn(UnspecifiedBooleanType.TRUE);
     Class<Object> forNameResult2 = Object.class;
-    Mockito.<Class<?>>when(map.mapKeyOptionEntityClass()).thenReturn(forNameResult2);
-    when(map.keyPropertyFriendlyName()).thenReturn("Key Property Friendly Name");
-    when(map.mapKeyValueProperty()).thenReturn("42");
-    when(map.keys()).thenReturn(new AdminPresentationMapKey[]{adminPresentationMapKey});
-    when(map.deleteEntityUponRemove()).thenReturn(true);
+    Mockito.<Class<?>>when(map2.mapKeyOptionEntityClass()).thenReturn(forNameResult2);
+    when(map2.keyPropertyFriendlyName()).thenReturn("Key Property Friendly Name");
+    when(map2.mapKeyValueProperty()).thenReturn("42");
+    when(map2.keys()).thenReturn(new AdminPresentationMapKey[]{adminPresentationMapKey});
+    when(map2.deleteEntityUponRemove()).thenReturn(true);
     Class<Object> forNameResult3 = Object.class;
-    Mockito.<Class<?>>when(map.keyClass()).thenReturn(forNameResult3);
+    Mockito.<Class<?>>when(map2.keyClass()).thenReturn(forNameResult3);
 
     // Act
     FieldMetadataOverride actualConstructMapMetadataOverrideResult = mapFieldMetadataProvider
-        .constructMapMetadataOverride(map);
+        .constructMapMetadataOverride(map2);
 
     // Assert
-    verify(map).currencyCodeField();
-    verify(map).customCriteria();
-    verify(map).deleteEntityUponRemove();
-    verify(map).excluded();
-    verify(map).forceFreeFormKeys();
-    verify(map).friendlyName();
-    verify(map).group();
-    verify(map).isSimpleValue();
-    verify(map).keyClass();
-    verify(map).keyPropertyFriendlyName();
-    verify(map, atLeast(1)).keys();
-    verify(map).lazyFetch();
-    verify(map).manualFetch();
-    verify(map).manyToField();
-    verify(map).mapKeyOptionEntityClass();
-    verify(map).mapKeyOptionEntityDisplayField();
-    verify(map).mapKeyOptionEntityValueField();
-    verify(map).mapKeyValueProperty();
-    verify(map).mediaField();
-    verify(map, atLeast(1)).operationTypes();
-    verify(map).order();
-    verify(map).readOnly();
-    verify(map).securityLevel();
-    verify(map, atLeast(1)).showIfFieldEquals();
-    verify(map).showIfProperty();
-    verify(map).tab();
-    verify(map).tabOrder();
-    verify(map).toOneTargetProperty();
-    verify(map).useServerSideInspectionCache();
-    verify(map).valueClass();
-    verify(map).valuePropertyFriendlyName();
+    verify(map2).currencyCodeField();
+    verify(map2).customCriteria();
+    verify(map2).deleteEntityUponRemove();
+    verify(map2).excluded();
+    verify(map2).forceFreeFormKeys();
+    verify(map2).friendlyName();
+    verify(map2).group();
+    verify(map2).isSimpleValue();
+    verify(map2).keyClass();
+    verify(map2).keyPropertyFriendlyName();
+    verify(map2, atLeast(1)).keys();
+    verify(map2).lazyFetch();
+    verify(map2).manualFetch();
+    verify(map2).manyToField();
+    verify(map2).mapKeyOptionEntityClass();
+    verify(map2).mapKeyOptionEntityDisplayField();
+    verify(map2).mapKeyOptionEntityValueField();
+    verify(map2).mapKeyValueProperty();
+    verify(map2).mediaField();
+    verify(map2, atLeast(1)).operationTypes();
+    verify(map2).order();
+    verify(map2).readOnly();
+    verify(map2).securityLevel();
+    verify(map2, atLeast(1)).showIfFieldEquals();
+    verify(map2).showIfProperty();
+    verify(map2).tab();
+    verify(map2).tabOrder();
+    verify(map2).toOneTargetProperty();
+    verify(map2).useServerSideInspectionCache();
+    verify(map2).valueClass();
+    verify(map2).valuePropertyFriendlyName();
     verify(adminPresentationMapKey).friendlyKeyName();
     verify(adminPresentationMapKey).keyName();
     verify(adminPresentationOperationTypes).addType();
@@ -1448,11 +1120,6 @@ public class MapFieldMetadataProviderDiffblueTest {
     verify(adminPresentationOperationTypes).updateType();
     verify(fieldValueConfiguration).fieldName();
     verify(fieldValueConfiguration).fieldValues();
-    Map<String, List<String>> showIfFieldEquals = actualConstructMapMetadataOverrideResult.getShowIfFieldEquals();
-    assertEquals(1, showIfFieldEquals.size());
-    List<String> getResult = showIfFieldEquals.get("Field Name");
-    assertEquals(1, getResult.size());
-    assertEquals("42", getResult.get(0));
     assertEquals("42", actualConstructMapMetadataOverrideResult.getMapKeyOptionEntityValueField());
     assertEquals("42", actualConstructMapMetadataOverrideResult.getMapKeyValueProperty());
     assertEquals("42", actualConstructMapMetadataOverrideResult.getValuePropertyFriendlyName());
@@ -1471,10 +1138,7 @@ public class MapFieldMetadataProviderDiffblueTest {
     assertEquals("java.lang.Object", actualConstructMapMetadataOverrideResult.getKeyClass());
     assertEquals("java.lang.Object", actualConstructMapMetadataOverrideResult.getMapKeyOptionEntityClass());
     assertEquals("java.lang.Object", actualConstructMapMetadataOverrideResult.getValueClass());
-    assertNull(actualConstructMapMetadataOverrideResult.getGridVisibleFields());
-    assertNull(actualConstructMapMetadataOverrideResult.getMaintainedAdornedTargetFields());
     assertNull(actualConstructMapMetadataOverrideResult.getOptionFilterValues());
-    assertNull(actualConstructMapMetadataOverrideResult.getEnumerationValues());
     assertNull(actualConstructMapMetadataOverrideResult.getAllowNoValueEnumOption());
     assertNull(actualConstructMapMetadataOverrideResult.getCanLinkToExternalEntity());
     assertNull(actualConstructMapMetadataOverrideResult.getEnableTypeaheadLookup());
@@ -1528,6 +1192,9 @@ public class MapFieldMetadataProviderDiffblueTest {
     assertNull(actualConstructMapMetadataOverrideResult.getTargetObjectProperty());
     assertNull(actualConstructMapMetadataOverrideResult.getToOneParentProperty());
     assertNull(actualConstructMapMetadataOverrideResult.getTooltip());
+    assertNull(actualConstructMapMetadataOverrideResult.getGridVisibleFields());
+    assertNull(actualConstructMapMetadataOverrideResult.getMaintainedAdornedTargetFields());
+    assertNull(actualConstructMapMetadataOverrideResult.getEnumerationValues());
     assertNull(actualConstructMapMetadataOverrideResult.getValidationConfigurations());
     assertNull(actualConstructMapMetadataOverrideResult.getAddMethodType());
     assertNull(actualConstructMapMetadataOverrideResult.getAdornedTargetAddMethodType());
@@ -1541,8 +1208,10 @@ public class MapFieldMetadataProviderDiffblueTest {
     assertNull(actualConstructMapMetadataOverrideResult.getMergedPropertyType());
     assertEquals(1, actualConstructMapMetadataOverrideResult.getTabOrder().intValue());
     assertEquals(1, actualConstructMapMetadataOverrideResult.getOrder().intValue());
-    String[][] keys = actualConstructMapMetadataOverrideResult.getKeys();
-    assertEquals(1, keys.length);
+    Map<String, List<String>> showIfFieldEquals = actualConstructMapMetadataOverrideResult.getShowIfFieldEquals();
+    assertEquals(1, showIfFieldEquals.size());
+    assertEquals(1, actualConstructMapMetadataOverrideResult.getCustomCriteria().length);
+    assertEquals(1, actualConstructMapMetadataOverrideResult.getKeys().length);
     assertEquals(OperationType.NONDESTRUCTIVEREMOVE, actualConstructMapMetadataOverrideResult.getAddType());
     assertEquals(OperationType.NONDESTRUCTIVEREMOVE, actualConstructMapMetadataOverrideResult.getFetchType());
     assertEquals(OperationType.NONDESTRUCTIVEREMOVE, actualConstructMapMetadataOverrideResult.getInspectType());
@@ -1550,6 +1219,7 @@ public class MapFieldMetadataProviderDiffblueTest {
     assertEquals(OperationType.NONDESTRUCTIVEREMOVE, actualConstructMapMetadataOverrideResult.getUpdateType());
     assertEquals(SupportedFieldType.INTEGER, actualConstructMapMetadataOverrideResult.getSecondaryType());
     assertEquals(UnspecifiedBooleanType.TRUE, actualConstructMapMetadataOverrideResult.getSimpleValue());
+    assertTrue(showIfFieldEquals.containsKey("Field Name"));
     assertTrue(actualConstructMapMetadataOverrideResult.getExcluded());
     assertTrue(actualConstructMapMetadataOverrideResult.getForceFreeFormKeys());
     assertTrue(actualConstructMapMetadataOverrideResult.getLazyFetch());
@@ -1557,27 +1227,22 @@ public class MapFieldMetadataProviderDiffblueTest {
     assertTrue(actualConstructMapMetadataOverrideResult.getReadOnly());
     assertTrue(actualConstructMapMetadataOverrideResult.getUseServerSideInspectionCache());
     assertTrue(actualConstructMapMetadataOverrideResult.isDeleteEntityUponRemove());
-    assertArrayEquals(new String[]{"Custom Criteria"}, actualConstructMapMetadataOverrideResult.getCustomCriteria());
-    assertArrayEquals(new String[]{"Key Name", "Friendly Key Name"}, keys[0]);
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#constructMapMetadataOverride(AdminPresentationMap)}.
+   * Test {@link MapFieldMetadataProvider#constructMapMetadataOverride(AdminPresentationMap)}.
    * <ul>
-   *   <li>When {@link AdminPresentationMap} {@link AdminPresentationMap#keys()}
-   * return {@code null}.</li>
+   *   <li>When {@link AdminPresentationMap} {@link AdminPresentationMap#keys()} return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#constructMapMetadataOverride(AdminPresentationMap)}
+   * Method under test: {@link MapFieldMetadataProvider#constructMapMetadataOverride(AdminPresentationMap)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FieldMetadataOverride MapFieldMetadataProvider.constructMapMetadataOverride(AdminPresentationMap)"})
   public void testConstructMapMetadataOverride_whenAdminPresentationMapKeysReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
     AdminPresentationOperationTypes adminPresentationOperationTypes = mock(AdminPresentationOperationTypes.class);
     when(adminPresentationOperationTypes.addType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
     when(adminPresentationOperationTypes.fetchType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
@@ -1586,66 +1251,66 @@ public class MapFieldMetadataProviderDiffblueTest {
     when(adminPresentationOperationTypes.updateType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
     FieldValueConfiguration fieldValueConfiguration = mock(FieldValueConfiguration.class);
     when(fieldValueConfiguration.fieldName()).thenThrow(new IllegalArgumentException("foo"));
-    AdminPresentationMap map = mock(AdminPresentationMap.class);
-    when(map.showIfProperty()).thenReturn("Show If Property");
-    when(map.showIfFieldEquals())
+    AdminPresentationMap map2 = mock(AdminPresentationMap.class);
+    when(map2.showIfProperty()).thenReturn("Show If Property");
+    when(map2.showIfFieldEquals())
         .thenReturn(new FieldValueConfiguration[]{fieldValueConfiguration, mock(FieldValueConfiguration.class)});
-    when(map.excluded()).thenReturn(true);
-    when(map.readOnly()).thenReturn(true);
-    when(map.useServerSideInspectionCache()).thenReturn(true);
-    when(map.order()).thenReturn(1);
-    when(map.tabOrder()).thenReturn(1);
-    when(map.friendlyName()).thenReturn("Friendly Name");
-    when(map.group()).thenReturn("Group");
-    when(map.securityLevel()).thenReturn("Security Level");
-    when(map.tab()).thenReturn("Tab");
-    when(map.valuePropertyFriendlyName()).thenReturn("42");
-    when(map.customCriteria()).thenReturn(new String[]{"Custom Criteria"});
-    when(map.operationTypes()).thenReturn(adminPresentationOperationTypes);
+    when(map2.excluded()).thenReturn(true);
+    when(map2.readOnly()).thenReturn(true);
+    when(map2.useServerSideInspectionCache()).thenReturn(true);
+    when(map2.order()).thenReturn(1);
+    when(map2.tabOrder()).thenReturn(1);
+    when(map2.friendlyName()).thenReturn("Friendly Name");
+    when(map2.group()).thenReturn("Group");
+    when(map2.securityLevel()).thenReturn("Security Level");
+    when(map2.tab()).thenReturn("Tab");
+    when(map2.valuePropertyFriendlyName()).thenReturn("42");
+    when(map2.customCriteria()).thenReturn(new String[]{"Custom Criteria"});
+    when(map2.operationTypes()).thenReturn(adminPresentationOperationTypes);
     Class<Object> forNameResult = Object.class;
-    Mockito.<Class<?>>when(map.valueClass()).thenReturn(forNameResult);
-    when(map.mapKeyOptionEntityDisplayField()).thenReturn("Map Key Option Entity Display Field");
-    when(map.mapKeyOptionEntityValueField()).thenReturn("42");
-    when(map.mediaField()).thenReturn("Media Field");
-    when(map.toOneTargetProperty()).thenReturn("One Target Property");
-    when(map.isSimpleValue()).thenReturn(UnspecifiedBooleanType.TRUE);
+    Mockito.<Class<?>>when(map2.valueClass()).thenReturn(forNameResult);
+    when(map2.mapKeyOptionEntityDisplayField()).thenReturn("Map Key Option Entity Display Field");
+    when(map2.mapKeyOptionEntityValueField()).thenReturn("42");
+    when(map2.mediaField()).thenReturn("Media Field");
+    when(map2.toOneTargetProperty()).thenReturn("One Target Property");
+    when(map2.isSimpleValue()).thenReturn(UnspecifiedBooleanType.TRUE);
     Class<Object> forNameResult2 = Object.class;
-    Mockito.<Class<?>>when(map.mapKeyOptionEntityClass()).thenReturn(forNameResult2);
-    when(map.keyPropertyFriendlyName()).thenReturn("Key Property Friendly Name");
-    when(map.mapKeyValueProperty()).thenReturn("42");
-    when(map.keys()).thenReturn(null);
-    when(map.deleteEntityUponRemove()).thenReturn(true);
+    Mockito.<Class<?>>when(map2.mapKeyOptionEntityClass()).thenReturn(forNameResult2);
+    when(map2.keyPropertyFriendlyName()).thenReturn("Key Property Friendly Name");
+    when(map2.mapKeyValueProperty()).thenReturn("42");
+    when(map2.keys()).thenReturn(null);
+    when(map2.deleteEntityUponRemove()).thenReturn(true);
     Class<Object> forNameResult3 = Object.class;
-    Mockito.<Class<?>>when(map.keyClass()).thenReturn(forNameResult3);
+    Mockito.<Class<?>>when(map2.keyClass()).thenReturn(forNameResult3);
 
     // Act and Assert
-    assertThrows(IllegalArgumentException.class, () -> mapFieldMetadataProvider.constructMapMetadataOverride(map));
-    verify(map).customCriteria();
-    verify(map).deleteEntityUponRemove();
-    verify(map).excluded();
-    verify(map).friendlyName();
-    verify(map).group();
-    verify(map).isSimpleValue();
-    verify(map).keyClass();
-    verify(map).keyPropertyFriendlyName();
-    verify(map).keys();
-    verify(map).mapKeyOptionEntityClass();
-    verify(map).mapKeyOptionEntityDisplayField();
-    verify(map).mapKeyOptionEntityValueField();
-    verify(map).mapKeyValueProperty();
-    verify(map).mediaField();
-    verify(map, atLeast(1)).operationTypes();
-    verify(map).order();
-    verify(map).readOnly();
-    verify(map).securityLevel();
-    verify(map, atLeast(1)).showIfFieldEquals();
-    verify(map).showIfProperty();
-    verify(map).tab();
-    verify(map).tabOrder();
-    verify(map).toOneTargetProperty();
-    verify(map).useServerSideInspectionCache();
-    verify(map).valueClass();
-    verify(map).valuePropertyFriendlyName();
+    assertThrows(IllegalArgumentException.class, () -> mapFieldMetadataProvider.constructMapMetadataOverride(map2));
+    verify(map2).customCriteria();
+    verify(map2).deleteEntityUponRemove();
+    verify(map2).excluded();
+    verify(map2).friendlyName();
+    verify(map2).group();
+    verify(map2).isSimpleValue();
+    verify(map2).keyClass();
+    verify(map2).keyPropertyFriendlyName();
+    verify(map2).keys();
+    verify(map2).mapKeyOptionEntityClass();
+    verify(map2).mapKeyOptionEntityDisplayField();
+    verify(map2).mapKeyOptionEntityValueField();
+    verify(map2).mapKeyValueProperty();
+    verify(map2).mediaField();
+    verify(map2, atLeast(1)).operationTypes();
+    verify(map2).order();
+    verify(map2).readOnly();
+    verify(map2).securityLevel();
+    verify(map2, atLeast(1)).showIfFieldEquals();
+    verify(map2).showIfProperty();
+    verify(map2).tab();
+    verify(map2).tabOrder();
+    verify(map2).toOneTargetProperty();
+    verify(map2).useServerSideInspectionCache();
+    verify(map2).valueClass();
+    verify(map2).valuePropertyFriendlyName();
     verify(adminPresentationOperationTypes).addType();
     verify(adminPresentationOperationTypes).fetchType();
     verify(adminPresentationOperationTypes).inspectType();
@@ -1655,35 +1320,36 @@ public class MapFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#constructMapMetadataOverride(AdminPresentationMap)}.
+   * Test {@link MapFieldMetadataProvider#constructMapMetadataOverride(AdminPresentationMap)}.
    * <ul>
    *   <li>When {@code null}.</li>
    *   <li>Then throw {@link IllegalArgumentException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#constructMapMetadataOverride(AdminPresentationMap)}
+   * Method under test: {@link MapFieldMetadataProvider#constructMapMetadataOverride(AdminPresentationMap)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FieldMetadataOverride MapFieldMetadataProvider.constructMapMetadataOverride(AdminPresentationMap)"})
   public void testConstructMapMetadataOverride_whenNull_thenThrowIllegalArgumentException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertThrows(IllegalArgumentException.class,
-        () -> (new MapFieldMetadataProvider()).constructMapMetadataOverride(null));
+    assertThrows(IllegalArgumentException.class, () -> mapFieldMetadataProvider.constructMapMetadataOverride(null));
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
+   * Test {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
+   * Method under test: {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MapFieldMetadataProvider.buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)"})
   public void testBuildMapMetadata() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
@@ -1797,15 +1463,18 @@ public class MapFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
+   * Test {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
+   * Method under test: {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MapFieldMetadataProvider.buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)"})
   public void testBuildMapMetadata2() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
@@ -1919,15 +1588,18 @@ public class MapFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
+   * Test {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
+   * Method under test: {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MapFieldMetadataProvider.buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)"})
   public void testBuildMapMetadata3() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
@@ -2042,15 +1714,18 @@ public class MapFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
+   * Test {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
+   * Method under test: {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MapFieldMetadataProvider.buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)"})
   public void testBuildMapMetadata4() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
@@ -2164,15 +1839,18 @@ public class MapFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
+   * Test {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
+   * Method under test: {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MapFieldMetadataProvider.buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)"})
   public void testBuildMapMetadata5() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
@@ -2287,15 +1965,18 @@ public class MapFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
+   * Test {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
+   * Method under test: {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MapFieldMetadataProvider.buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)"})
   public void testBuildMapMetadata6() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
@@ -2410,15 +2091,18 @@ public class MapFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
+   * Test {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
+   * Method under test: {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MapFieldMetadataProvider.buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)"})
   public void testBuildMapMetadata7() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
@@ -2533,15 +2217,18 @@ public class MapFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
+   * Test {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
+   * Method under test: {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MapFieldMetadataProvider.buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)"})
   public void testBuildMapMetadata8() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
@@ -2656,15 +2343,18 @@ public class MapFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
+   * Test {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
+   * Method under test: {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MapFieldMetadataProvider.buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)"})
   public void testBuildMapMetadata9() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
@@ -2779,170 +2469,21 @@ public class MapFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
-   * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testBuildMapMetadata10() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass25715 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.provider.metadata.MapFieldMetadataProvider mapFieldMetadataProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    MapFieldMetadataProvider mapFieldMetadataProvider2 = new MapFieldMetadataProvider();
-    Class<Object> parentClass = Object.class;
-    Class<Object> targetClass = Object.class;
-    HashMap<String, FieldMetadata> attributes = new HashMap<>();
-
-    FieldInfo field = new FieldInfo();
-    field.setGenericType(new TypePlaceHolder(1));
-    field.setManyToManyMappedBy("Many To Many Mapped By");
-    field.setManyToManyTargetEntity("Many To Many Target Entity");
-    field.setMapKey("Map Key");
-    field.setName("Name");
-    field.setOneToManyMappedBy("One To Many Mapped By");
-    field.setOneToManyTargetEntity("One To Many Target Entity");
-
-    FieldMetadataOverride map = new FieldMetadataOverride();
-    map.setAddFriendlyName("Add Friendly Name");
-    map.setAddMethodType(AddMethodType.PERSIST);
-    map.setAddType(OperationType.NONDESTRUCTIVEREMOVE);
-    map.setAdornedTargetAddMethodType(AdornedTargetAddMethodType.LOOKUP);
-    map.setAllowNoValueEnumOption(true);
-    map.setAssociatedFieldName("Associated Field Name");
-    map.setBroadleafEnumeration("Broadleaf Enumeration");
-    map.setCanLinkToExternalEntity(true);
-    map.setColumnWidth("Column Width");
-    map.setCurrencyCodeField("GBP");
-    map.setCustomCriteria(new String[]{"Custom Criteria"});
-    map.setDeleteEntityUponRemove(true);
-    map.setDerived(true);
-    map.setDisplayType(RuleBuilderDisplayType.NORMAL);
-    map.setEnableTypeaheadLookup(true);
-    map.setEnumerationClass("Enumeration Class");
-    map.setEnumerationValues(new String[][]{new String[]{"42"}});
-    map.setExcluded(true);
-    map.setExplicitFieldType(SupportedFieldType.UNKNOWN);
-    map.setFetchType(OperationType.NONDESTRUCTIVEREMOVE);
-    map.setFieldComponentRenderer(SupportedFieldType.UNKNOWN);
-    map.setFieldComponentRendererTemplate("Field Component Renderer Template");
-    map.setFieldType(SupportedFieldType.UNKNOWN);
-    map.setForceFreeFormKeys(true);
-    map.setForcePopulateChildProperties(true);
-    map.setForeignKeyClass("Foreign Key Class");
-    map.setForeignKeyCollection(true);
-    map.setForeignKeyDisplayValueProperty("42");
-    map.setForeignKeyProperty("Foreign Key Property");
-    map.setFriendlyName("Friendly Name");
-    map.setGridFieldComponentRenderer(SupportedFieldType.UNKNOWN);
-    map.setGridFieldComponentRendererTemplate("Grid Field Component Renderer Template");
-    map.setGridOrder(1);
-    map.setGridVisibleFields(new String[]{"Grid Visible Fields"});
-    map.setGroup("Group");
-    map.setGroupCollapsed(true);
-    map.setGroupOrder(1);
-    map.setHelpText("Help Text");
-    map.setHideEnumerationIfEmpty(true);
-    map.setHint("Hint");
-    map.setIgnoreAdornedProperties(true);
-    map.setInspectType(OperationType.NONDESTRUCTIVEREMOVE);
-    map.setJoinEntityClass("Join Entity Class");
-    map.setKeyClass("Key Class");
-    map.setKeyPropertyFriendlyName("Key Property Friendly Name");
-    map.setKeys(new String[][]{new String[]{"Keys"}});
-    map.setLargeEntry(true);
-    map.setLazyFetch(true);
-    map.setLength(3);
-    map.setLookupDisplayProperty("Lookup Display Property");
-    map.setLookupType(LookupType.STANDARD);
-    map.setMaintainedAdornedTargetFields(new String[]{"Maintained Adorned Target Fields"});
-    map.setManualFetch(true);
-    map.setManyToField("Many To Field");
-    map.setMapFieldValueClass("42");
-    map.setMapKeyOptionEntityClass("Map Key Option Entity Class");
-    map.setMapKeyOptionEntityDisplayField("Map Key Option Entity Display Field");
-    map.setMapKeyOptionEntityValueField("42");
-    map.setMapKeyValueProperty("42");
-    map.setMediaField("Media Field");
-    map.setMergedPropertyType(MergedPropertyType.PRIMARY);
-    map.setName("Name");
-    map.setOptionCanEditValues(true);
-    map.setOptionDisplayFieldName("Option Display Field Name");
-    map.setOptionFilterValues(new Serializable[][]{new Serializable[]{new SimpleDateFormat("yyyy/mm/dd")}});
-    map.setOptionListEntity("Option List Entity");
-    map.setOptionValueFieldName("42");
-    map.setOrder(1);
-    map.setParentObjectIdProperty("Parent Object Id Property");
-    map.setParentObjectProperty("Parent Object Property");
-    map.setPrecision(1);
-    map.setProminent(true);
-    map.setReadOnly(true);
-    map.setRemoveType(OperationType.NONDESTRUCTIVEREMOVE);
-    map.setRequired(true);
-    map.setRequiredOverride(true);
-    map.setRuleIdentifier("42");
-    map.setScale(1);
-    map.setSearchable(true);
-    map.setSecondaryType(SupportedFieldType.UNKNOWN);
-    map.setSecurityLevel("Security Level");
-    map.setSelectizeVisibleField("Selectize Visible Field");
-    map.setShowIfFieldEquals(new HashMap<>());
-    map.setShowIfProperty("Show If Property");
-    map.setSimpleValue(UnspecifiedBooleanType.TRUE);
-    map.setSortAscending(true);
-    map.setSortProperty("Sort Property");
-    map.setTab("Tab");
-    map.setTabOrder(1);
-    map.setTargetObjectIdProperty("Target Object Id Property");
-    map.setTargetObjectProperty("Target Object Property");
-    map.setToOneLookupCreatedViaAnnotation(true);
-    map.setToOneParentProperty("To One Parent Property");
-    map.setToOneTargetProperty("To One Target Property");
-    map.setTooltip("127.0.0.1");
-    map.setTranslatable(true);
-    map.setUnique(true);
-    map.setUpdateType(OperationType.NONDESTRUCTIVEREMOVE);
-    map.setUseServerSideInspectionCache(true);
-    map.setValidationConfigurations(new HashMap<>());
-    map.setValueClass("42");
-    map.setValuePropertyFriendlyName("42");
-    map.setVisibility(VisibilityEnum.HIDDEN_ALL);
-
-    // Act
-    mapFieldMetadataProvider2.buildMapMetadata(parentClass, targetClass, attributes, field, map,
-        new DynamicEntityDaoImpl(), "Prefix");
-  }
-
-  /**
-   * Test
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
+   * Test {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
    * <ul>
    *   <li>Given {@code FALSE}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
+   * Method under test: {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MapFieldMetadataProvider.buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)"})
   public void testBuildMapMetadata_givenFalse() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
@@ -3058,109 +2599,22 @@ public class MapFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
+   * Test {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
    * <ul>
-   *   <li>Given {@link IllegalArgumentException#IllegalArgumentException(String)}
-   * with {@code name}.</li>
-   *   <li>Then {@link HashMap#HashMap()} Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
-   */
-  @Test
-  public void testBuildMapMetadata_givenIllegalArgumentExceptionWithName_thenHashMapEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
-    Class<Object> parentClass = Object.class;
-    Class<Object> targetClass = Object.class;
-    HashMap<String, FieldMetadata> attributes = new HashMap<>();
-    FieldInfo field = mock(FieldInfo.class);
-    when(field.getMapKey()).thenReturn("Map Key");
-    when(field.getName()).thenReturn("Name");
-    when(field.getGenericType()).thenReturn(new TypePlaceHolder(1));
-    FieldMetadataOverride map = mock(FieldMetadataOverride.class);
-    when(map.getManyToField()).thenThrow(new IllegalArgumentException("name"));
-    when(map.getForceFreeFormKeys()).thenReturn(true);
-    when(map.getReadOnly()).thenReturn(true);
-    when(map.isDeleteEntityUponRemove()).thenReturn(true);
-    when(map.getKeyClass()).thenReturn("void");
-    when(map.getKeyPropertyFriendlyName()).thenReturn("Key Property Friendly Name");
-    when(map.getMapKeyOptionEntityClass()).thenReturn("Map Key Option Entity Class");
-    when(map.getMapKeyOptionEntityDisplayField()).thenReturn("Map Key Option Entity Display Field");
-    when(map.getMapKeyOptionEntityValueField()).thenReturn("42");
-    when(map.getMapKeyValueProperty()).thenReturn("42");
-    when(map.getMediaField()).thenReturn("Media Field");
-    when(map.getShowIfProperty()).thenReturn("Show If Property");
-    when(map.getToOneParentProperty()).thenReturn("To One Parent Property");
-    when(map.getToOneTargetProperty()).thenReturn("To One Target Property");
-    when(map.getValueClass()).thenReturn("42");
-    when(map.getValuePropertyFriendlyName()).thenReturn("42");
-    when(map.getKeys()).thenReturn(new String[][]{new String[]{"Keys"}});
-    when(map.getShowIfFieldEquals()).thenReturn(new HashMap<>());
-    when(map.getAddType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(map.getFetchType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(map.getInspectType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(map.getRemoveType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(map.getUpdateType()).thenReturn(OperationType.NONDESTRUCTIVEREMOVE);
-    when(map.getSimpleValue()).thenReturn(UnspecifiedBooleanType.TRUE);
-    DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
-    when(dynamicEntityDao.getIdMetadata(Mockito.<Class<Object>>any())).thenReturn(new HashMap<>());
-
-    // Act
-    mapFieldMetadataProvider.buildMapMetadata(parentClass, targetClass, attributes, field, map, dynamicEntityDao,
-        "Prefix");
-
-    // Assert
-    verify(map, atLeast(1)).getAddType();
-    verify(map, atLeast(1)).getFetchType();
-    verify(map, atLeast(1)).getForceFreeFormKeys();
-    verify(map, atLeast(1)).getInspectType();
-    verify(map, atLeast(1)).getKeyClass();
-    verify(map, atLeast(1)).getKeyPropertyFriendlyName();
-    verify(map, atLeast(1)).getKeys();
-    verify(map).getManyToField();
-    verify(map, atLeast(1)).getMapKeyOptionEntityClass();
-    verify(map, atLeast(1)).getMapKeyOptionEntityDisplayField();
-    verify(map, atLeast(1)).getMapKeyOptionEntityValueField();
-    verify(map, atLeast(1)).getMapKeyValueProperty();
-    verify(map, atLeast(1)).getMediaField();
-    verify(map, atLeast(1)).getReadOnly();
-    verify(map, atLeast(1)).getRemoveType();
-    verify(map, atLeast(1)).getShowIfFieldEquals();
-    verify(map, atLeast(1)).getShowIfProperty();
-    verify(map, atLeast(1)).getSimpleValue();
-    verify(map, atLeast(1)).getToOneParentProperty();
-    verify(map, atLeast(1)).getToOneTargetProperty();
-    verify(map, atLeast(1)).getUpdateType();
-    verify(map, atLeast(1)).getValueClass();
-    verify(map, atLeast(1)).getValuePropertyFriendlyName();
-    verify(map, atLeast(1)).isDeleteEntityUponRemove();
-    verify(dynamicEntityDao).getIdMetadata(isA(Class.class));
-    verify(field).getGenericType();
-    verify(field, atLeast(1)).getMapKey();
-    verify(field, atLeast(1)).getName();
-    assertTrue(attributes.isEmpty());
-  }
-
-  /**
-   * Test
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
-   * <ul>
-   *   <li>Given {@link RuntimeException#RuntimeException(String)} with
-   * {@code name}.</li>
+   *   <li>Given {@link RuntimeException#RuntimeException(String)} with {@code name}.</li>
    *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
+   * Method under test: {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MapFieldMetadataProvider.buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)"})
   public void testBuildMapMetadata_givenRuntimeExceptionWithName_thenThrowRuntimeException() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
@@ -3197,18 +2651,21 @@ public class MapFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
+   * Test {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
    * <ul>
    *   <li>Given {@code UNSPECIFIED}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
+   * Method under test: {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MapFieldMetadataProvider.buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)"})
   public void testBuildMapMetadata_givenUnspecified() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
@@ -3326,19 +2783,21 @@ public class MapFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
+   * Test {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
    * <ul>
-   *   <li>Then {@link HashMap#HashMap()} {@code Name} CurrencyCodeField is
-   * {@code null}.</li>
+   *   <li>Then {@link HashMap#HashMap()} {@code Name} CurrencyCodeField is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
+   * Method under test: {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MapFieldMetadataProvider.buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)"})
   public void testBuildMapMetadata_thenHashMapNameCurrencyCodeFieldIsNull() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
@@ -3453,19 +2912,21 @@ public class MapFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
+   * Test {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
    * <ul>
-   *   <li>Then {@link HashMap#HashMap()} {@code Name} CustomCriteria is
-   * {@code null}.</li>
+   *   <li>Then {@link HashMap#HashMap()} {@code Name} CustomCriteria is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
+   * Method under test: {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MapFieldMetadataProvider.buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)"})
   public void testBuildMapMetadata_thenHashMapNameCustomCriteriaIsNull() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
@@ -3580,19 +3041,21 @@ public class MapFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
+   * Test {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
    * <ul>
-   *   <li>Then {@link HashMap#HashMap()} {@code Name} Excluded is
-   * {@code null}.</li>
+   *   <li>Then {@link HashMap#HashMap()} {@code Name} Excluded is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
+   * Method under test: {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MapFieldMetadataProvider.buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)"})
   public void testBuildMapMetadata_thenHashMapNameExcludedIsNull() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
@@ -3707,19 +3170,21 @@ public class MapFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
+   * Test {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
    * <ul>
-   *   <li>Then {@link HashMap#HashMap()} {@code Name} ForceFreeFormKeys is
-   * {@code null}.</li>
+   *   <li>Then {@link HashMap#HashMap()} {@code Name} ForceFreeFormKeys is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
+   * Method under test: {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MapFieldMetadataProvider.buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)"})
   public void testBuildMapMetadata_thenHashMapNameForceFreeFormKeysIsNull() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
@@ -3834,19 +3299,21 @@ public class MapFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
+   * Test {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
    * <ul>
-   *   <li>Then {@link HashMap#HashMap()} {@code Name} FriendlyName is
-   * {@code null}.</li>
+   *   <li>Then {@link HashMap#HashMap()} {@code Name} FriendlyName is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
+   * Method under test: {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MapFieldMetadataProvider.buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)"})
   public void testBuildMapMetadata_thenHashMapNameFriendlyNameIsNull() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
@@ -3961,18 +3428,21 @@ public class MapFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
+   * Test {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
    * <ul>
    *   <li>Then {@link HashMap#HashMap()} {@code Name} Group is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
+   * Method under test: {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MapFieldMetadataProvider.buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)"})
   public void testBuildMapMetadata_thenHashMapNameGroupIsNull() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
@@ -4087,18 +3557,21 @@ public class MapFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
+   * Test {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
    * <ul>
    *   <li>Then {@link HashMap#HashMap()} {@code Name} Keys is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
+   * Method under test: {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MapFieldMetadataProvider.buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)"})
   public void testBuildMapMetadata_thenHashMapNameKeysIsNull() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
@@ -4213,19 +3686,21 @@ public class MapFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
+   * Test {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
    * <ul>
-   *   <li>Then {@link HashMap#HashMap()} {@code Name} LazyFetch is
-   * {@code null}.</li>
+   *   <li>Then {@link HashMap#HashMap()} {@code Name} LazyFetch is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
+   * Method under test: {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MapFieldMetadataProvider.buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)"})
   public void testBuildMapMetadata_thenHashMapNameLazyFetchIsNull() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
@@ -4340,19 +3815,21 @@ public class MapFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
+   * Test {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
    * <ul>
-   *   <li>Then {@link HashMap#HashMap()} {@code Name} MapKeyOptionEntityClass is
-   * empty string.</li>
+   *   <li>Then {@link HashMap#HashMap()} {@code Name} MapKeyOptionEntityClass is empty string.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
+   * Method under test: {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MapFieldMetadataProvider.buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)"})
   public void testBuildMapMetadata_thenHashMapNameMapKeyOptionEntityClassIsEmptyString() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
@@ -4467,19 +3944,21 @@ public class MapFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
+   * Test {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
    * <ul>
-   *   <li>Then {@link HashMap#HashMap()} {@code Name} MapKeyOptionEntityClass is
-   * {@code null}.</li>
+   *   <li>Then {@link HashMap#HashMap()} {@code Name} MapKeyOptionEntityClass is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
+   * Method under test: {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MapFieldMetadataProvider.buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)"})
   public void testBuildMapMetadata_thenHashMapNameMapKeyOptionEntityClassIsNull() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
@@ -4594,19 +4073,21 @@ public class MapFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
+   * Test {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
    * <ul>
-   *   <li>Then {@link HashMap#HashMap()} {@code Name}
-   * MapKeyOptionEntityDisplayField is {@code null}.</li>
+   *   <li>Then {@link HashMap#HashMap()} {@code Name} MapKeyOptionEntityDisplayField is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
+   * Method under test: {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MapFieldMetadataProvider.buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)"})
   public void testBuildMapMetadata_thenHashMapNameMapKeyOptionEntityDisplayFieldIsNull() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
@@ -4721,19 +4202,21 @@ public class MapFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
+   * Test {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
    * <ul>
-   *   <li>Then {@link HashMap#HashMap()} {@code Name} MapKeyOptionEntityValueField
-   * is {@code null}.</li>
+   *   <li>Then {@link HashMap#HashMap()} {@code Name} MapKeyOptionEntityValueField is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
+   * Method under test: {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MapFieldMetadataProvider.buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)"})
   public void testBuildMapMetadata_thenHashMapNameMapKeyOptionEntityValueFieldIsNull() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
@@ -4848,19 +4331,21 @@ public class MapFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
+   * Test {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
    * <ul>
-   *   <li>Then {@link HashMap#HashMap()} {@code Name} MapKeyValueProperty is
-   * {@code Map Key}.</li>
+   *   <li>Then {@link HashMap#HashMap()} {@code Name} MapKeyValueProperty is {@code Map Key}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
+   * Method under test: {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MapFieldMetadataProvider.buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)"})
   public void testBuildMapMetadata_thenHashMapNameMapKeyValuePropertyIsMapKey() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
@@ -4976,19 +4461,21 @@ public class MapFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
+   * Test {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
    * <ul>
-   *   <li>Then {@link HashMap#HashMap()} {@code Name} MediaField is
-   * {@code null}.</li>
+   *   <li>Then {@link HashMap#HashMap()} {@code Name} MediaField is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
+   * Method under test: {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MapFieldMetadataProvider.buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)"})
   public void testBuildMapMetadata_thenHashMapNameMediaFieldIsNull() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
@@ -5103,18 +4590,21 @@ public class MapFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
+   * Test {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
    * <ul>
    *   <li>Then {@link HashMap#HashMap()} {@code Name} Order is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
+   * Method under test: {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MapFieldMetadataProvider.buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)"})
   public void testBuildMapMetadata_thenHashMapNameOrderIsNull() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
@@ -5229,19 +4719,21 @@ public class MapFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
+   * Test {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
    * <ul>
-   *   <li>Then {@link HashMap#HashMap()} {@code Name} SecurityLevel is
-   * {@code null}.</li>
+   *   <li>Then {@link HashMap#HashMap()} {@code Name} SecurityLevel is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
+   * Method under test: {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MapFieldMetadataProvider.buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)"})
   public void testBuildMapMetadata_thenHashMapNameSecurityLevelIsNull() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
@@ -5356,19 +4848,21 @@ public class MapFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
+   * Test {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
    * <ul>
-   *   <li>Then {@link HashMap#HashMap()} {@code Name} ShowIfProperty is
-   * {@code null}.</li>
+   *   <li>Then {@link HashMap#HashMap()} {@code Name} ShowIfProperty is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
+   * Method under test: {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MapFieldMetadataProvider.buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)"})
   public void testBuildMapMetadata_thenHashMapNameShowIfPropertyIsNull() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
@@ -5483,18 +4977,21 @@ public class MapFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
+   * Test {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
    * <ul>
    *   <li>Then {@link HashMap#HashMap()} {@code Name} Tab is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
+   * Method under test: {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MapFieldMetadataProvider.buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)"})
   public void testBuildMapMetadata_thenHashMapNameTabIsNull() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
@@ -5609,19 +5106,21 @@ public class MapFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
+   * Test {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
    * <ul>
-   *   <li>Then {@link HashMap#HashMap()} {@code Name} TabOrder is
-   * {@code null}.</li>
+   *   <li>Then {@link HashMap#HashMap()} {@code Name} TabOrder is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
+   * Method under test: {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MapFieldMetadataProvider.buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)"})
   public void testBuildMapMetadata_thenHashMapNameTabOrderIsNull() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
@@ -5736,19 +5235,21 @@ public class MapFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
+   * Test {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
    * <ul>
-   *   <li>Then {@link HashMap#HashMap()} {@code Name} ToOneParentProperty is
-   * {@code null}.</li>
+   *   <li>Then {@link HashMap#HashMap()} {@code Name} ToOneParentProperty is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
+   * Method under test: {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MapFieldMetadataProvider.buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)"})
   public void testBuildMapMetadata_thenHashMapNameToOneParentPropertyIsNull() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
@@ -5863,19 +5364,21 @@ public class MapFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
+   * Test {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
    * <ul>
-   *   <li>Then {@link HashMap#HashMap()} {@code Name} ToOneTargetProperty is
-   * {@code null}.</li>
+   *   <li>Then {@link HashMap#HashMap()} {@code Name} ToOneTargetProperty is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
+   * Method under test: {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MapFieldMetadataProvider.buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)"})
   public void testBuildMapMetadata_thenHashMapNameToOneTargetPropertyIsNull() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
@@ -5990,18 +5493,21 @@ public class MapFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
+   * Test {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
    * <ul>
    *   <li>Then not {@link HashMap#HashMap()} {@code Name} ManualFetch.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
+   * Method under test: {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MapFieldMetadataProvider.buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)"})
   public void testBuildMapMetadata_thenNotHashMapNameManualFetch() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
@@ -6116,19 +5622,21 @@ public class MapFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
+   * Test {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
    * <ul>
-   *   <li>When {@link FieldMetadataOverride}
-   * {@link FieldMetadataOverride#getKeyClass()} return {@code null}.</li>
+   *   <li>When {@link FieldMetadataOverride} {@link FieldMetadataOverride#getKeyClass()} return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
+   * Method under test: {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MapFieldMetadataProvider.buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)"})
   public void testBuildMapMetadata_whenFieldMetadataOverrideGetKeyClassReturnNull() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
@@ -6242,19 +5750,21 @@ public class MapFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
+   * Test {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
    * <ul>
-   *   <li>When {@link FieldMetadataOverride}
-   * {@link FieldMetadataOverride#getManyToField()} return empty string.</li>
+   *   <li>When {@link FieldMetadataOverride} {@link FieldMetadataOverride#getManyToField()} return empty string.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
+   * Method under test: {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MapFieldMetadataProvider.buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)"})
   public void testBuildMapMetadata_whenFieldMetadataOverrideGetManyToFieldReturnEmptyString() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
@@ -6371,19 +5881,21 @@ public class MapFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
+   * Test {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
    * <ul>
-   *   <li>When {@link FieldMetadataOverride}
-   * {@link FieldMetadataOverride#getManyToField()} return {@code null}.</li>
+   *   <li>When {@link FieldMetadataOverride} {@link FieldMetadataOverride#getManyToField()} return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
+   * Method under test: {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MapFieldMetadataProvider.buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)"})
   public void testBuildMapMetadata_whenFieldMetadataOverrideGetManyToFieldReturnNull() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
@@ -6500,19 +6012,21 @@ public class MapFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
+   * Test {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
    * <ul>
-   *   <li>When {@link FieldMetadataOverride}
-   * {@link FieldMetadataOverride#getSimpleValue()} return {@code null}.</li>
+   *   <li>When {@link FieldMetadataOverride} {@link FieldMetadataOverride#getSimpleValue()} return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
+   * Method under test: {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MapFieldMetadataProvider.buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)"})
   public void testBuildMapMetadata_whenFieldMetadataOverrideGetSimpleValueReturnNull() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
@@ -6630,19 +6144,21 @@ public class MapFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
+   * Test {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
    * <ul>
-   *   <li>When {@link FieldMetadataOverride}
-   * {@link FieldMetadataOverride#getValueClass()} return {@code null}.</li>
+   *   <li>When {@link FieldMetadataOverride} {@link FieldMetadataOverride#getValueClass()} return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
+   * Method under test: {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MapFieldMetadataProvider.buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)"})
   public void testBuildMapMetadata_whenFieldMetadataOverrideGetValueClassReturnNull() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
@@ -6760,19 +6276,21 @@ public class MapFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
+   * Test {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}.
    * <ul>
-   *   <li>When {@link FieldMetadataOverride}
-   * {@link FieldMetadataOverride#getValueClass()} return {@code void}.</li>
+   *   <li>When {@link FieldMetadataOverride} {@link FieldMetadataOverride#getValueClass()} return {@code void}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
+   * Method under test: {@link MapFieldMetadataProvider#buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MapFieldMetadataProvider.buildMapMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao, String)"})
   public void testBuildMapMetadata_whenFieldMetadataOverrideGetValueClassReturnVoid() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
     MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
@@ -6890,34 +6408,491 @@ public class MapFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link MapFieldMetadataProvider#processShowIfFieldEqualsAnnotations(FieldValueConfiguration[], FieldMetadataOverride)}.
+   * Test {@link MapFieldMetadataProvider#processShowIfFieldEqualsAnnotations(FieldValueConfiguration[], FieldMetadataOverride)}.
    * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#processShowIfFieldEqualsAnnotations(FieldValueConfiguration[], FieldMetadataOverride)}
+   * Method under test: {@link MapFieldMetadataProvider#processShowIfFieldEqualsAnnotations(FieldValueConfiguration[], FieldMetadataOverride)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MapFieldMetadataProvider.processShowIfFieldEqualsAnnotations(FieldValueConfiguration[], FieldMetadataOverride)"})
   public void testProcessShowIfFieldEqualsAnnotations() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass26912 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.provider.metadata.MapFieldMetadataProvider mapFieldMetadataProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    MapFieldMetadataProvider mapFieldMetadataProvider2 = new MapFieldMetadataProvider();
+    FieldValueConfiguration fieldValueConfiguration = mock(FieldValueConfiguration.class);
+    when(fieldValueConfiguration.fieldName()).thenReturn("Field Name");
+    when(fieldValueConfiguration.fieldValues()).thenReturn(new String[]{"42"});
+
+    FieldMetadataOverride override = new FieldMetadataOverride();
+    override.setAddFriendlyName("Add Friendly Name");
+    override.setAddMethodType(AddMethodType.PERSIST);
+    override.setAddType(OperationType.NONDESTRUCTIVEREMOVE);
+    override.setAdornedTargetAddMethodType(AdornedTargetAddMethodType.LOOKUP);
+    override.setAllowNoValueEnumOption(true);
+    override.setAssociatedFieldName("Associated Field Name");
+    override.setBroadleafEnumeration("Broadleaf Enumeration");
+    override.setCanLinkToExternalEntity(true);
+    override.setColumnWidth("Column Width");
+    override.setCurrencyCodeField("GBP");
+    override.setCustomCriteria(new String[]{"Custom Criteria"});
+    override.setDeleteEntityUponRemove(true);
+    override.setDerived(true);
+    override.setDisplayType(RuleBuilderDisplayType.NORMAL);
+    override.setEnableTypeaheadLookup(true);
+    override.setEnumerationClass("Enumeration Class");
+    override.setEnumerationValues(new String[][]{new String[]{"42"}});
+    override.setExcluded(true);
+    override.setExplicitFieldType(SupportedFieldType.UNKNOWN);
+    override.setFetchType(OperationType.NONDESTRUCTIVEREMOVE);
+    override.setFieldComponentRenderer(SupportedFieldType.UNKNOWN);
+    override.setFieldComponentRendererTemplate("Field Component Renderer Template");
+    override.setFieldType(SupportedFieldType.UNKNOWN);
+    override.setForceFreeFormKeys(true);
+    override.setForcePopulateChildProperties(true);
+    override.setForeignKeyClass("Foreign Key Class");
+    override.setForeignKeyCollection(true);
+    override.setForeignKeyDisplayValueProperty("42");
+    override.setForeignKeyProperty("Foreign Key Property");
+    override.setFriendlyName("Friendly Name");
+    override.setGridFieldComponentRenderer(SupportedFieldType.UNKNOWN);
+    override.setGridFieldComponentRendererTemplate("Grid Field Component Renderer Template");
+    override.setGridOrder(1);
+    override.setGridVisibleFields(new String[]{"Grid Visible Fields"});
+    override.setGroup("Group");
+    override.setGroupCollapsed(true);
+    override.setGroupOrder(1);
+    override.setHelpText("Help Text");
+    override.setHideEnumerationIfEmpty(true);
+    override.setHint("Hint");
+    override.setIgnoreAdornedProperties(true);
+    override.setInspectType(OperationType.NONDESTRUCTIVEREMOVE);
+    override.setJoinEntityClass("Join Entity Class");
+    override.setKeyClass("Key Class");
+    override.setKeyPropertyFriendlyName("Key Property Friendly Name");
+    override.setKeys(new String[][]{new String[]{"Keys"}});
+    override.setLargeEntry(true);
+    override.setLazyFetch(true);
+    override.setLength(3);
+    override.setLookupDisplayProperty("Lookup Display Property");
+    override.setLookupType(LookupType.STANDARD);
+    override.setMaintainedAdornedTargetFields(new String[]{"Maintained Adorned Target Fields"});
+    override.setManualFetch(true);
+    override.setManyToField("Many To Field");
+    override.setMapFieldValueClass("42");
+    override.setMapKeyOptionEntityClass("Map Key Option Entity Class");
+    override.setMapKeyOptionEntityDisplayField("Map Key Option Entity Display Field");
+    override.setMapKeyOptionEntityValueField("42");
+    override.setMapKeyValueProperty("42");
+    override.setMediaField("Media Field");
+    override.setMergedPropertyType(MergedPropertyType.PRIMARY);
+    override.setName("Name");
+    override.setOptionCanEditValues(true);
+    override.setOptionDisplayFieldName("Option Display Field Name");
+    override.setOptionFilterValues(new Serializable[][]{new Serializable[]{new SimpleDateFormat("yyyy/mm/dd")}});
+    override.setOptionListEntity("Option List Entity");
+    override.setOptionValueFieldName("42");
+    override.setOrder(1);
+    override.setParentObjectIdProperty("Parent Object Id Property");
+    override.setParentObjectProperty("Parent Object Property");
+    override.setPrecision(1);
+    override.setProminent(true);
+    override.setReadOnly(true);
+    override.setRemoveType(OperationType.NONDESTRUCTIVEREMOVE);
+    override.setRequired(true);
+    override.setRequiredOverride(true);
+    override.setRuleIdentifier("42");
+    override.setScale(1);
+    override.setSearchable(true);
+    override.setSecondaryType(SupportedFieldType.UNKNOWN);
+    override.setSecurityLevel("Security Level");
+    override.setSelectizeVisibleField("Selectize Visible Field");
+    HashMap<String, List<String>> showIfFieldEquals = new HashMap<>();
+    override.setShowIfFieldEquals(showIfFieldEquals);
+    override.setShowIfProperty("Show If Property");
+    override.setSimpleValue(UnspecifiedBooleanType.TRUE);
+    override.setSortAscending(true);
+    override.setSortProperty("Sort Property");
+    override.setTab("Tab");
+    override.setTabOrder(1);
+    override.setTargetObjectIdProperty("Target Object Id Property");
+    override.setTargetObjectProperty("Target Object Property");
+    override.setToOneLookupCreatedViaAnnotation(true);
+    override.setToOneParentProperty("To One Parent Property");
+    override.setToOneTargetProperty("To One Target Property");
+    override.setTooltip("127.0.0.1");
+    override.setTranslatable(true);
+    override.setUnique(true);
+    override.setUpdateType(OperationType.NONDESTRUCTIVEREMOVE);
+    override.setUseServerSideInspectionCache(true);
+    override.setValidationConfigurations(new HashMap<>());
+    override.setValueClass("42");
+    override.setValuePropertyFriendlyName("42");
+    override.setVisibility(VisibilityEnum.HIDDEN_ALL);
+
+    // Act
+    mapFieldMetadataProvider.processShowIfFieldEqualsAnnotations(new FieldValueConfiguration[]{fieldValueConfiguration},
+        override);
+
+    // Assert
+    verify(fieldValueConfiguration).fieldName();
+    verify(fieldValueConfiguration).fieldValues();
+    Map<String, List<String>> showIfFieldEquals2 = override.getShowIfFieldEquals();
+    assertEquals(1, showIfFieldEquals2.size());
+    List<String> getResult = showIfFieldEquals2.get("Field Name");
+    assertEquals(1, getResult.size());
+    assertEquals("42", getResult.get(0));
+    assertSame(showIfFieldEquals, showIfFieldEquals2);
+  }
+
+  /**
+   * Test {@link MapFieldMetadataProvider#processShowIfFieldEqualsAnnotations(FieldValueConfiguration[], FieldMetadataOverride)}.
+   * <ul>
+   *   <li>Then calls {@link FieldMetadataOverride#getShowIfFieldEquals()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MapFieldMetadataProvider#processShowIfFieldEqualsAnnotations(FieldValueConfiguration[], FieldMetadataOverride)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MapFieldMetadataProvider.processShowIfFieldEqualsAnnotations(FieldValueConfiguration[], FieldMetadataOverride)"})
+  public void testProcessShowIfFieldEqualsAnnotations_thenCallsGetShowIfFieldEquals() {
+    // Arrange
+    FieldValueConfiguration fieldValueConfiguration = mock(FieldValueConfiguration.class);
+    when(fieldValueConfiguration.fieldName()).thenThrow(new IllegalArgumentException("foo"));
+    FieldMetadataOverride override = mock(FieldMetadataOverride.class);
+    when(override.getShowIfFieldEquals()).thenReturn(new HashMap<>());
+    doNothing().when(override).setAddFriendlyName(Mockito.<String>any());
+    doNothing().when(override).setAddMethodType(Mockito.<AddMethodType>any());
+    doNothing().when(override).setAddType(Mockito.<OperationType>any());
+    doNothing().when(override).setAdornedTargetAddMethodType(Mockito.<AdornedTargetAddMethodType>any());
+    doNothing().when(override).setAllowNoValueEnumOption(Mockito.<Boolean>any());
+    doNothing().when(override).setAssociatedFieldName(Mockito.<String>any());
+    doNothing().when(override).setBroadleafEnumeration(Mockito.<String>any());
+    doNothing().when(override).setCanLinkToExternalEntity(Mockito.<Boolean>any());
+    doNothing().when(override).setColumnWidth(Mockito.<String>any());
+    doNothing().when(override).setCurrencyCodeField(Mockito.<String>any());
+    doNothing().when(override).setCustomCriteria(Mockito.<String[]>any());
+    doNothing().when(override).setDeleteEntityUponRemove(Mockito.<Boolean>any());
+    doNothing().when(override).setDerived(Mockito.<Boolean>any());
+    doNothing().when(override).setDisplayType(Mockito.<RuleBuilderDisplayType>any());
+    doNothing().when(override).setEnableTypeaheadLookup(Mockito.<Boolean>any());
+    doNothing().when(override).setEnumerationClass(Mockito.<String>any());
+    doNothing().when(override).setEnumerationValues(Mockito.<String[][]>any());
+    doNothing().when(override).setExcluded(Mockito.<Boolean>any());
+    doNothing().when(override).setExplicitFieldType(Mockito.<SupportedFieldType>any());
+    doNothing().when(override).setFetchType(Mockito.<OperationType>any());
+    doNothing().when(override).setFieldComponentRenderer(Mockito.<SupportedFieldType>any());
+    doNothing().when(override).setFieldComponentRendererTemplate(Mockito.<String>any());
+    doNothing().when(override).setFieldType(Mockito.<SupportedFieldType>any());
+    doNothing().when(override).setForceFreeFormKeys(Mockito.<Boolean>any());
+    doNothing().when(override).setForcePopulateChildProperties(Mockito.<Boolean>any());
+    doNothing().when(override).setForeignKeyClass(Mockito.<String>any());
+    doNothing().when(override).setForeignKeyCollection(Mockito.<Boolean>any());
+    doNothing().when(override).setForeignKeyDisplayValueProperty(Mockito.<String>any());
+    doNothing().when(override).setForeignKeyProperty(Mockito.<String>any());
+    doNothing().when(override).setFriendlyName(Mockito.<String>any());
+    doNothing().when(override).setGridFieldComponentRenderer(Mockito.<SupportedFieldType>any());
+    doNothing().when(override).setGridFieldComponentRendererTemplate(Mockito.<String>any());
+    doNothing().when(override).setGridOrder(Mockito.<Integer>any());
+    doNothing().when(override).setGridVisibleFields(Mockito.<String[]>any());
+    doNothing().when(override).setGroup(Mockito.<String>any());
+    doNothing().when(override).setGroupCollapsed(Mockito.<Boolean>any());
+    doNothing().when(override).setGroupOrder(Mockito.<Integer>any());
+    doNothing().when(override).setHelpText(Mockito.<String>any());
+    doNothing().when(override).setHideEnumerationIfEmpty(Mockito.<Boolean>any());
+    doNothing().when(override).setHint(Mockito.<String>any());
+    doNothing().when(override).setIgnoreAdornedProperties(Mockito.<Boolean>any());
+    doNothing().when(override).setInspectType(Mockito.<OperationType>any());
+    doNothing().when(override).setJoinEntityClass(Mockito.<String>any());
+    doNothing().when(override).setKeyClass(Mockito.<String>any());
+    doNothing().when(override).setKeyPropertyFriendlyName(Mockito.<String>any());
+    doNothing().when(override).setKeys(Mockito.<String[][]>any());
+    doNothing().when(override).setLargeEntry(Mockito.<Boolean>any());
+    doNothing().when(override).setLazyFetch(Mockito.<Boolean>any());
+    doNothing().when(override).setLength(Mockito.<Integer>any());
+    doNothing().when(override).setLookupDisplayProperty(Mockito.<String>any());
+    doNothing().when(override).setLookupType(Mockito.<LookupType>any());
+    doNothing().when(override).setMaintainedAdornedTargetFields(Mockito.<String[]>any());
+    doNothing().when(override).setManualFetch(Mockito.<Boolean>any());
+    doNothing().when(override).setManyToField(Mockito.<String>any());
+    doNothing().when(override).setMapFieldValueClass(Mockito.<String>any());
+    doNothing().when(override).setMapKeyOptionEntityClass(Mockito.<String>any());
+    doNothing().when(override).setMapKeyOptionEntityDisplayField(Mockito.<String>any());
+    doNothing().when(override).setMapKeyOptionEntityValueField(Mockito.<String>any());
+    doNothing().when(override).setMapKeyValueProperty(Mockito.<String>any());
+    doNothing().when(override).setMediaField(Mockito.<String>any());
+    doNothing().when(override).setMergedPropertyType(Mockito.<MergedPropertyType>any());
+    doNothing().when(override).setName(Mockito.<String>any());
+    doNothing().when(override).setOptionCanEditValues(Mockito.<Boolean>any());
+    doNothing().when(override).setOptionDisplayFieldName(Mockito.<String>any());
+    doNothing().when(override).setOptionFilterValues(Mockito.<Serializable[][]>any());
+    doNothing().when(override).setOptionListEntity(Mockito.<String>any());
+    doNothing().when(override).setOptionValueFieldName(Mockito.<String>any());
+    doNothing().when(override).setParentObjectIdProperty(Mockito.<String>any());
+    doNothing().when(override).setParentObjectProperty(Mockito.<String>any());
+    doNothing().when(override).setPrecision(Mockito.<Integer>any());
+    doNothing().when(override).setProminent(Mockito.<Boolean>any());
+    doNothing().when(override).setReadOnly(Mockito.<Boolean>any());
+    doNothing().when(override).setRemoveType(Mockito.<OperationType>any());
+    doNothing().when(override).setRequired(Mockito.<Boolean>any());
+    doNothing().when(override).setRequiredOverride(Mockito.<Boolean>any());
+    doNothing().when(override).setRuleIdentifier(Mockito.<String>any());
+    doNothing().when(override).setScale(Mockito.<Integer>any());
+    doNothing().when(override).setSearchable(Mockito.<Boolean>any());
+    doNothing().when(override).setSecondaryType(Mockito.<SupportedFieldType>any());
+    doNothing().when(override).setSecurityLevel(Mockito.<String>any());
+    doNothing().when(override).setSelectizeVisibleField(Mockito.<String>any());
+    doNothing().when(override).setShowIfFieldEquals(Mockito.<Map<String, List<String>>>any());
+    doNothing().when(override).setShowIfProperty(Mockito.<String>any());
+    doNothing().when(override).setSimpleValue(Mockito.<UnspecifiedBooleanType>any());
+    doNothing().when(override).setSortAscending(Mockito.<Boolean>any());
+    doNothing().when(override).setSortProperty(Mockito.<String>any());
+    doNothing().when(override).setTab(Mockito.<String>any());
+    doNothing().when(override).setTabOrder(Mockito.<Integer>any());
+    doNothing().when(override).setTargetObjectIdProperty(Mockito.<String>any());
+    doNothing().when(override).setTargetObjectProperty(Mockito.<String>any());
+    doNothing().when(override).setToOneLookupCreatedViaAnnotation(Mockito.<Boolean>any());
+    doNothing().when(override).setToOneParentProperty(Mockito.<String>any());
+    doNothing().when(override).setToOneTargetProperty(Mockito.<String>any());
+    doNothing().when(override).setTooltip(Mockito.<String>any());
+    doNothing().when(override).setTranslatable(Mockito.<Boolean>any());
+    doNothing().when(override).setUnique(Mockito.<Boolean>any());
+    doNothing().when(override).setUpdateType(Mockito.<OperationType>any());
+    doNothing().when(override).setUseServerSideInspectionCache(Mockito.<Boolean>any());
+    doNothing().when(override).setValidationConfigurations(Mockito.<Map<String, List<Map<String, String>>>>any());
+    doNothing().when(override).setValueClass(Mockito.<String>any());
+    doNothing().when(override).setValuePropertyFriendlyName(Mockito.<String>any());
+    doNothing().when(override).setVisibility(Mockito.<VisibilityEnum>any());
+    doNothing().when(override).setOrder(Mockito.<Integer>any());
+    override.setAddFriendlyName("Add Friendly Name");
+    override.setAddMethodType(AddMethodType.PERSIST);
+    override.setAddType(OperationType.NONDESTRUCTIVEREMOVE);
+    override.setAdornedTargetAddMethodType(AdornedTargetAddMethodType.LOOKUP);
+    override.setAllowNoValueEnumOption(true);
+    override.setAssociatedFieldName("Associated Field Name");
+    override.setBroadleafEnumeration("Broadleaf Enumeration");
+    override.setCanLinkToExternalEntity(true);
+    override.setColumnWidth("Column Width");
+    override.setCurrencyCodeField("GBP");
+    override.setCustomCriteria(new String[]{"Custom Criteria"});
+    override.setDeleteEntityUponRemove(true);
+    override.setDerived(true);
+    override.setDisplayType(RuleBuilderDisplayType.NORMAL);
+    override.setEnableTypeaheadLookup(true);
+    override.setEnumerationClass("Enumeration Class");
+    override.setEnumerationValues(new String[][]{new String[]{"42"}});
+    override.setExcluded(true);
+    override.setExplicitFieldType(SupportedFieldType.UNKNOWN);
+    override.setFetchType(OperationType.NONDESTRUCTIVEREMOVE);
+    override.setFieldComponentRenderer(SupportedFieldType.UNKNOWN);
+    override.setFieldComponentRendererTemplate("Field Component Renderer Template");
+    override.setFieldType(SupportedFieldType.UNKNOWN);
+    override.setForceFreeFormKeys(true);
+    override.setForcePopulateChildProperties(true);
+    override.setForeignKeyClass("Foreign Key Class");
+    override.setForeignKeyCollection(true);
+    override.setForeignKeyDisplayValueProperty("42");
+    override.setForeignKeyProperty("Foreign Key Property");
+    override.setFriendlyName("Friendly Name");
+    override.setGridFieldComponentRenderer(SupportedFieldType.UNKNOWN);
+    override.setGridFieldComponentRendererTemplate("Grid Field Component Renderer Template");
+    override.setGridOrder(1);
+    override.setGridVisibleFields(new String[]{"Grid Visible Fields"});
+    override.setGroup("Group");
+    override.setGroupCollapsed(true);
+    override.setGroupOrder(1);
+    override.setHelpText("Help Text");
+    override.setHideEnumerationIfEmpty(true);
+    override.setHint("Hint");
+    override.setIgnoreAdornedProperties(true);
+    override.setInspectType(OperationType.NONDESTRUCTIVEREMOVE);
+    override.setJoinEntityClass("Join Entity Class");
+    override.setKeyClass("Key Class");
+    override.setKeyPropertyFriendlyName("Key Property Friendly Name");
+    override.setKeys(new String[][]{new String[]{"Keys"}});
+    override.setLargeEntry(true);
+    override.setLazyFetch(true);
+    override.setLength(3);
+    override.setLookupDisplayProperty("Lookup Display Property");
+    override.setLookupType(LookupType.STANDARD);
+    override.setMaintainedAdornedTargetFields(new String[]{"Maintained Adorned Target Fields"});
+    override.setManualFetch(true);
+    override.setManyToField("Many To Field");
+    override.setMapFieldValueClass("42");
+    override.setMapKeyOptionEntityClass("Map Key Option Entity Class");
+    override.setMapKeyOptionEntityDisplayField("Map Key Option Entity Display Field");
+    override.setMapKeyOptionEntityValueField("42");
+    override.setMapKeyValueProperty("42");
+    override.setMediaField("Media Field");
+    override.setMergedPropertyType(MergedPropertyType.PRIMARY);
+    override.setName("Name");
+    override.setOptionCanEditValues(true);
+    override.setOptionDisplayFieldName("Option Display Field Name");
+    override.setOptionFilterValues(new Serializable[][]{new Serializable[]{new SimpleDateFormat("yyyy/mm/dd")}});
+    override.setOptionListEntity("Option List Entity");
+    override.setOptionValueFieldName("42");
+    override.setOrder(1);
+    override.setParentObjectIdProperty("Parent Object Id Property");
+    override.setParentObjectProperty("Parent Object Property");
+    override.setPrecision(1);
+    override.setProminent(true);
+    override.setReadOnly(true);
+    override.setRemoveType(OperationType.NONDESTRUCTIVEREMOVE);
+    override.setRequired(true);
+    override.setRequiredOverride(true);
+    override.setRuleIdentifier("42");
+    override.setScale(1);
+    override.setSearchable(true);
+    override.setSecondaryType(SupportedFieldType.UNKNOWN);
+    override.setSecurityLevel("Security Level");
+    override.setSelectizeVisibleField("Selectize Visible Field");
+    override.setShowIfFieldEquals(new HashMap<>());
+    override.setShowIfProperty("Show If Property");
+    override.setSimpleValue(UnspecifiedBooleanType.TRUE);
+    override.setSortAscending(true);
+    override.setSortProperty("Sort Property");
+    override.setTab("Tab");
+    override.setTabOrder(1);
+    override.setTargetObjectIdProperty("Target Object Id Property");
+    override.setTargetObjectProperty("Target Object Property");
+    override.setToOneLookupCreatedViaAnnotation(true);
+    override.setToOneParentProperty("To One Parent Property");
+    override.setToOneTargetProperty("To One Target Property");
+    override.setTooltip("127.0.0.1");
+    override.setTranslatable(true);
+    override.setUnique(true);
+    override.setUpdateType(OperationType.NONDESTRUCTIVEREMOVE);
+    override.setUseServerSideInspectionCache(true);
+    override.setValidationConfigurations(new HashMap<>());
+    override.setValueClass("42");
+    override.setValuePropertyFriendlyName("42");
+    override.setVisibility(VisibilityEnum.HIDDEN_ALL);
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> mapFieldMetadataProvider.processShowIfFieldEqualsAnnotations(
+        new FieldValueConfiguration[]{fieldValueConfiguration, mock(FieldValueConfiguration.class)}, override));
+    verify(fieldValueConfiguration).fieldName();
+    verify(override, atLeast(1)).getShowIfFieldEquals();
+    verify(override).setAddFriendlyName(eq("Add Friendly Name"));
+    verify(override).setAddMethodType(eq(AddMethodType.PERSIST));
+    verify(override).setAddType(eq(OperationType.NONDESTRUCTIVEREMOVE));
+    verify(override).setAdornedTargetAddMethodType(eq(AdornedTargetAddMethodType.LOOKUP));
+    verify(override).setAllowNoValueEnumOption(eq(true));
+    verify(override).setAssociatedFieldName(eq("Associated Field Name"));
+    verify(override).setBroadleafEnumeration(eq("Broadleaf Enumeration"));
+    verify(override).setCanLinkToExternalEntity(eq(true));
+    verify(override).setColumnWidth(eq("Column Width"));
+    verify(override).setCurrencyCodeField(eq("GBP"));
+    verify(override).setCustomCriteria(isA(String[].class));
+    verify(override).setDeleteEntityUponRemove(eq(true));
+    verify(override).setDerived(eq(true));
+    verify(override).setDisplayType(eq(RuleBuilderDisplayType.NORMAL));
+    verify(override).setEnableTypeaheadLookup(eq(true));
+    verify(override).setEnumerationClass(eq("Enumeration Class"));
+    verify(override).setEnumerationValues(isA(String[][].class));
+    verify(override).setExcluded(eq(true));
+    verify(override).setExplicitFieldType(eq(SupportedFieldType.UNKNOWN));
+    verify(override).setFetchType(eq(OperationType.NONDESTRUCTIVEREMOVE));
+    verify(override).setFieldComponentRenderer(eq(SupportedFieldType.UNKNOWN));
+    verify(override).setFieldComponentRendererTemplate(eq("Field Component Renderer Template"));
+    verify(override).setFieldType(eq(SupportedFieldType.UNKNOWN));
+    verify(override).setForceFreeFormKeys(eq(true));
+    verify(override).setForcePopulateChildProperties(eq(true));
+    verify(override).setForeignKeyClass(eq("Foreign Key Class"));
+    verify(override).setForeignKeyCollection(eq(true));
+    verify(override).setForeignKeyDisplayValueProperty(eq("42"));
+    verify(override).setForeignKeyProperty(eq("Foreign Key Property"));
+    verify(override).setFriendlyName(eq("Friendly Name"));
+    verify(override).setGridFieldComponentRenderer(eq(SupportedFieldType.UNKNOWN));
+    verify(override).setGridFieldComponentRendererTemplate(eq("Grid Field Component Renderer Template"));
+    verify(override).setGridOrder(eq(1));
+    verify(override).setGridVisibleFields(isA(String[].class));
+    verify(override).setGroup(eq("Group"));
+    verify(override).setGroupCollapsed(eq(true));
+    verify(override).setGroupOrder(eq(1));
+    verify(override).setHelpText(eq("Help Text"));
+    verify(override).setHideEnumerationIfEmpty(eq(true));
+    verify(override).setHint(eq("Hint"));
+    verify(override).setIgnoreAdornedProperties(eq(true));
+    verify(override).setInspectType(eq(OperationType.NONDESTRUCTIVEREMOVE));
+    verify(override).setJoinEntityClass(eq("Join Entity Class"));
+    verify(override).setKeyClass(eq("Key Class"));
+    verify(override).setKeyPropertyFriendlyName(eq("Key Property Friendly Name"));
+    verify(override).setKeys(isA(String[][].class));
+    verify(override).setLargeEntry(eq(true));
+    verify(override).setLazyFetch(eq(true));
+    verify(override).setLength(eq(3));
+    verify(override).setLookupDisplayProperty(eq("Lookup Display Property"));
+    verify(override).setLookupType(eq(LookupType.STANDARD));
+    verify(override).setMaintainedAdornedTargetFields(isA(String[].class));
+    verify(override).setManualFetch(eq(true));
+    verify(override).setManyToField(eq("Many To Field"));
+    verify(override).setMapFieldValueClass(eq("42"));
+    verify(override).setMapKeyOptionEntityClass(eq("Map Key Option Entity Class"));
+    verify(override).setMapKeyOptionEntityDisplayField(eq("Map Key Option Entity Display Field"));
+    verify(override).setMapKeyOptionEntityValueField(eq("42"));
+    verify(override).setMapKeyValueProperty(eq("42"));
+    verify(override).setMediaField(eq("Media Field"));
+    verify(override).setMergedPropertyType(eq(MergedPropertyType.PRIMARY));
+    verify(override).setName(eq("Name"));
+    verify(override).setOptionCanEditValues(eq(true));
+    verify(override).setOptionDisplayFieldName(eq("Option Display Field Name"));
+    verify(override).setOptionFilterValues(isA(Serializable[][].class));
+    verify(override).setOptionListEntity(eq("Option List Entity"));
+    verify(override).setOptionValueFieldName(eq("42"));
+    verify(override).setParentObjectIdProperty(eq("Parent Object Id Property"));
+    verify(override).setParentObjectProperty(eq("Parent Object Property"));
+    verify(override).setPrecision(eq(1));
+    verify(override).setProminent(eq(true));
+    verify(override).setReadOnly(eq(true));
+    verify(override).setRemoveType(eq(OperationType.NONDESTRUCTIVEREMOVE));
+    verify(override).setRequired(eq(true));
+    verify(override).setRequiredOverride(eq(true));
+    verify(override).setRuleIdentifier(eq("42"));
+    verify(override).setScale(eq(1));
+    verify(override).setSearchable(eq(true));
+    verify(override).setSecondaryType(eq(SupportedFieldType.UNKNOWN));
+    verify(override).setSecurityLevel(eq("Security Level"));
+    verify(override).setSelectizeVisibleField(eq("Selectize Visible Field"));
+    verify(override).setShowIfFieldEquals(isA(Map.class));
+    verify(override).setShowIfProperty(eq("Show If Property"));
+    verify(override).setSimpleValue(eq(UnspecifiedBooleanType.TRUE));
+    verify(override).setSortAscending(eq(true));
+    verify(override).setSortProperty(eq("Sort Property"));
+    verify(override).setTab(eq("Tab"));
+    verify(override).setTabOrder(eq(1));
+    verify(override).setTargetObjectIdProperty(eq("Target Object Id Property"));
+    verify(override).setTargetObjectProperty(eq("Target Object Property"));
+    verify(override).setToOneLookupCreatedViaAnnotation(eq(true));
+    verify(override).setToOneParentProperty(eq("To One Parent Property"));
+    verify(override).setToOneTargetProperty(eq("To One Target Property"));
+    verify(override).setTranslatable(eq(true));
+    verify(override).setUnique(eq(true));
+    verify(override).setUpdateType(eq(OperationType.NONDESTRUCTIVEREMOVE));
+    verify(override).setUseServerSideInspectionCache(eq(true));
+    verify(override).setValidationConfigurations(isA(Map.class));
+    verify(override).setValueClass(eq("42"));
+    verify(override).setValuePropertyFriendlyName(eq("42"));
+    verify(override).setVisibility(eq(VisibilityEnum.HIDDEN_ALL));
+    verify(override).setOrder(eq(1));
+  }
+
+  /**
+   * Test {@link MapFieldMetadataProvider#processShowIfFieldEqualsAnnotations(FieldValueConfiguration[], FieldMetadataOverride)}.
+   * <ul>
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MapFieldMetadataProvider#processShowIfFieldEqualsAnnotations(FieldValueConfiguration[], FieldMetadataOverride)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MapFieldMetadataProvider.processShowIfFieldEqualsAnnotations(FieldValueConfiguration[], FieldMetadataOverride)"})
+  public void testProcessShowIfFieldEqualsAnnotations_thenThrowIllegalArgumentException() {
+    // Arrange
+    FieldValueConfiguration fieldValueConfiguration = mock(FieldValueConfiguration.class);
+    when(fieldValueConfiguration.fieldName()).thenThrow(new IllegalArgumentException("foo"));
 
     FieldMetadataOverride override = new FieldMetadataOverride();
     override.setAddFriendlyName("Add Friendly Name");
@@ -7024,97 +6999,10 @@ public class MapFieldMetadataProviderDiffblueTest {
     override.setValuePropertyFriendlyName("42");
     override.setVisibility(VisibilityEnum.HIDDEN_ALL);
 
-    // Act
-    mapFieldMetadataProvider2.processShowIfFieldEqualsAnnotations(
-        new FieldValueConfiguration[]{mock(FieldValueConfiguration.class)}, override);
-  }
-
-  /**
-   * Test
-   * {@link MapFieldMetadataProvider#processShowIfFieldEqualsAnnotations(FieldValueConfiguration[], FieldMetadataOverride)}.
-   * <ul>
-   *   <li>Given {@link RuntimeException#RuntimeException(String)} with
-   * {@code foo}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#processShowIfFieldEqualsAnnotations(FieldValueConfiguration[], FieldMetadataOverride)}
-   */
-  @Test
-  public void testProcessShowIfFieldEqualsAnnotations_givenRuntimeExceptionWithFoo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
-    FieldMetadataOverride override = mock(FieldMetadataOverride.class);
-    when(override.getShowIfFieldEquals()).thenThrow(new RuntimeException("foo"));
-
-    // Act
-    mapFieldMetadataProvider.processShowIfFieldEqualsAnnotations(
-        new FieldValueConfiguration[]{mock(FieldValueConfiguration.class)}, override);
-
-    // Assert
-    verify(override).getShowIfFieldEquals();
-  }
-
-  /**
-   * Test
-   * {@link MapFieldMetadataProvider#processShowIfFieldEqualsAnnotations(FieldValueConfiguration[], FieldMetadataOverride)}.
-   * <ul>
-   *   <li>Then calls {@link FieldValueConfiguration#fieldValues()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#processShowIfFieldEqualsAnnotations(FieldValueConfiguration[], FieldMetadataOverride)}
-   */
-  @Test
-  public void testProcessShowIfFieldEqualsAnnotations_thenCallsFieldValues() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
-    FieldValueConfiguration fieldValueConfiguration = mock(FieldValueConfiguration.class);
-    when(fieldValueConfiguration.fieldName()).thenReturn("Field Name");
-    when(fieldValueConfiguration.fieldValues()).thenReturn(new String[]{"42"});
-    FieldMetadataOverride override = mock(FieldMetadataOverride.class);
-    when(override.getShowIfFieldEquals()).thenReturn(new HashMap<>());
-
-    // Act
-    mapFieldMetadataProvider.processShowIfFieldEqualsAnnotations(new FieldValueConfiguration[]{fieldValueConfiguration},
-        override);
-
-    // Assert
-    verify(fieldValueConfiguration).fieldName();
-    verify(fieldValueConfiguration).fieldValues();
-    verify(override, atLeast(1)).getShowIfFieldEquals();
-  }
-
-  /**
-   * Test
-   * {@link MapFieldMetadataProvider#processShowIfFieldEqualsAnnotations(FieldValueConfiguration[], FieldMetadataOverride)}.
-   * <ul>
-   *   <li>Then throw {@link IllegalArgumentException}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link MapFieldMetadataProvider#processShowIfFieldEqualsAnnotations(FieldValueConfiguration[], FieldMetadataOverride)}
-   */
-  @Test
-  public void testProcessShowIfFieldEqualsAnnotations_thenThrowIllegalArgumentException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    MapFieldMetadataProvider mapFieldMetadataProvider = new MapFieldMetadataProvider();
-    FieldValueConfiguration fieldValueConfiguration = mock(FieldValueConfiguration.class);
-    when(fieldValueConfiguration.fieldName()).thenThrow(new IllegalArgumentException("foo"));
-    FieldMetadataOverride override = mock(FieldMetadataOverride.class);
-    when(override.getShowIfFieldEquals()).thenReturn(new HashMap<>());
-
     // Act and Assert
     assertThrows(IllegalArgumentException.class, () -> mapFieldMetadataProvider.processShowIfFieldEqualsAnnotations(
         new FieldValueConfiguration[]{fieldValueConfiguration, mock(FieldValueConfiguration.class)}, override));
     verify(fieldValueConfiguration).fieldName();
-    verify(override, atLeast(1)).getShowIfFieldEquals();
   }
 
   /**
@@ -7123,6 +7011,8 @@ public class MapFieldMetadataProviderDiffblueTest {
    * Method under test: {@link MapFieldMetadataProvider#getOrder()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int MapFieldMetadataProvider.getOrder()"})
   public void testGetOrder() {
     // Arrange, Act and Assert
     assertEquals(FieldMetadataProvider.MAP, (new MapFieldMetadataProvider()).getOrder());

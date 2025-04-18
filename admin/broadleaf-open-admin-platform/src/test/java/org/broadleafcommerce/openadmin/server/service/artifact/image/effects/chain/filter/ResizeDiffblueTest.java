@@ -1,26 +1,41 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.server.service.artifact.image.effects.chain.filter;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Rectangle;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.awt.RenderingHints;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBuffer;
-import java.awt.image.DataBufferInt;
-import java.awt.image.Raster;
-import java.awt.image.WritableRaster;
+import java.awt.image.ColorModel;
+import java.awt.image.DirectColorModel;
+import java.awt.image.SampleModel;
+import java.awt.image.SinglePixelPackedSampleModel;
 import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -38,6 +53,8 @@ public class ResizeDiffblueTest {
    * Method under test: {@link Resize#Resize()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Resize.<init>()"})
   public void testNewResize() {
     // Arrange and Act
     Resize actualResize = new Resize();
@@ -48,13 +65,13 @@ public class ResizeDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link Resize#Resize(int, int, boolean, boolean, boolean, boolean, RenderingHints)}.
+   * Test {@link Resize#Resize(int, int, boolean, boolean, boolean, boolean, RenderingHints)}.
    * <p>
-   * Method under test:
-   * {@link Resize#Resize(int, int, boolean, boolean, boolean, boolean, RenderingHints)}
+   * Method under test: {@link Resize#Resize(int, int, boolean, boolean, boolean, boolean, RenderingHints)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Resize.<init>(int, int, boolean, boolean, boolean, boolean, RenderingHints)"})
   public void testNewResize2() {
     // Arrange and Act
     Resize actualResize = new Resize(1, 1, true, true, true, true, null);
@@ -66,15 +83,14 @@ public class ResizeDiffblueTest {
 
   /**
    * Test {@link Resize#buildOperation(Map, InputStream, String)}.
-   * <ul>
-   *   <li>When {@link ByteArrayInputStream#ByteArrayInputStream(byte[])} with
-   * {@code AXAXAXAX} Bytes is {@code UTF-8}.</li>
-   * </ul>
    * <p>
    * Method under test: {@link Resize#buildOperation(Map, InputStream, String)}
    */
   @Test
-  public void testBuildOperation_whenByteArrayInputStreamWithAxaxaxaxBytesIsUtf8() throws UnsupportedEncodingException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.openadmin.server.service.artifact.image.Operation Resize.buildOperation(Map, InputStream, String)"})
+  public void testBuildOperation() throws UnsupportedEncodingException {
     // Arrange
     HashMap<String, String> parameterMap = new HashMap<>();
 
@@ -84,25 +100,13 @@ public class ResizeDiffblueTest {
   }
 
   /**
-   * Test {@link Resize#buildOperation(Map, InputStream, String)}.
-   * <ul>
-   *   <li>When {@link DataInputStream}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Resize#buildOperation(Map, InputStream, String)}
-   */
-  @Test
-  public void testBuildOperation_whenDataInputStream() {
-    // Arrange, Act and Assert
-    assertNull(resize.buildOperation(new HashMap<>(), mock(DataInputStream.class), "Mime Type"));
-  }
-
-  /**
    * Test {@link Resize#filter(BufferedImage, BufferedImage)}.
    * <p>
    * Method under test: {@link Resize#filter(BufferedImage, BufferedImage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BufferedImage Resize.filter(BufferedImage, BufferedImage)"})
   public void testFilter() {
     // Arrange
     Resize resize = new Resize(1, 1, true, true, true, true, null);
@@ -112,30 +116,18 @@ public class ResizeDiffblueTest {
     BufferedImage actualFilterResult = resize.filter(src, new BufferedImage(1, 1, 1));
 
     // Assert
-    Raster data = actualFilterResult.getData();
-    Rectangle bounds = data.getBounds();
-    Rectangle2D bounds2D = bounds.getBounds2D();
-    assertTrue(bounds2D instanceof Rectangle);
-    Rectangle2D frame = bounds.getFrame();
-    assertTrue(frame instanceof Rectangle2D.Double);
-    DataBuffer dataBuffer = data.getDataBuffer();
-    assertTrue(dataBuffer instanceof DataBufferInt);
-    WritableRaster raster = actualFilterResult.getRaster();
-    DataBuffer dataBuffer2 = raster.getDataBuffer();
-    assertTrue(dataBuffer2 instanceof DataBufferInt);
-    Point[] writableTileIndices = actualFilterResult.getWritableTileIndices();
-    assertEquals(1, writableTileIndices.length);
-    assertEquals(1, ((DataBufferInt) dataBuffer).getBankData().length);
-    assertEquals(1, ((DataBufferInt) dataBuffer2).getBankData().length);
-    Dimension size = bounds.getSize();
-    assertEquals(size, size.getSize());
-    assertEquals(bounds, bounds.getBounds());
-    assertEquals(bounds, raster.getBounds());
-    assertEquals(bounds, bounds2D);
-    assertEquals(bounds, frame);
-    Point point = writableTileIndices[0];
-    assertEquals(point, point.getLocation());
-    assertEquals(point, bounds.getLocation());
+    ColorModel colorModel = actualFilterResult.getColorModel();
+    assertTrue(colorModel instanceof DirectColorModel);
+    SampleModel sampleModel = actualFilterResult.getSampleModel();
+    assertTrue(sampleModel instanceof SinglePixelPackedSampleModel);
+    assertSame(sampleModel, actualFilterResult.getData().getSampleModel());
+    assertSame(sampleModel, actualFilterResult.getRaster().getSampleModel());
+    assertArrayEquals(new int[]{16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
+    assertArrayEquals(new int[]{16711680, 65280, 255}, ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
+    assertArrayEquals(new int[]{8, 8, 8}, colorModel.getComponentSize());
+    assertArrayEquals(new int[]{8, 8, 8}, sampleModel.getSampleSize());
+    assertArrayEquals(new int[]{GaussianBlur.NUM_KERNELS, 8, 0},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitOffsets());
   }
 
   /**
@@ -144,6 +136,8 @@ public class ResizeDiffblueTest {
    * Method under test: {@link Resize#filter(BufferedImage, BufferedImage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BufferedImage Resize.filter(BufferedImage, BufferedImage)"})
   public void testFilter2() {
     // Arrange
     Resize resize = new Resize(1, 1, true, true, false, true, null);
@@ -153,30 +147,18 @@ public class ResizeDiffblueTest {
     BufferedImage actualFilterResult = resize.filter(src, new BufferedImage(1, 1, 1));
 
     // Assert
-    Raster data = actualFilterResult.getData();
-    Rectangle bounds = data.getBounds();
-    Rectangle2D bounds2D = bounds.getBounds2D();
-    assertTrue(bounds2D instanceof Rectangle);
-    Rectangle2D frame = bounds.getFrame();
-    assertTrue(frame instanceof Rectangle2D.Double);
-    DataBuffer dataBuffer = data.getDataBuffer();
-    assertTrue(dataBuffer instanceof DataBufferInt);
-    WritableRaster raster = actualFilterResult.getRaster();
-    DataBuffer dataBuffer2 = raster.getDataBuffer();
-    assertTrue(dataBuffer2 instanceof DataBufferInt);
-    Point[] writableTileIndices = actualFilterResult.getWritableTileIndices();
-    assertEquals(1, writableTileIndices.length);
-    assertEquals(1, ((DataBufferInt) dataBuffer).getBankData().length);
-    assertEquals(1, ((DataBufferInt) dataBuffer2).getBankData().length);
-    Dimension size = bounds.getSize();
-    assertEquals(size, size.getSize());
-    assertEquals(bounds, bounds.getBounds());
-    assertEquals(bounds, raster.getBounds());
-    assertEquals(bounds, bounds2D);
-    assertEquals(bounds, frame);
-    Point point = writableTileIndices[0];
-    assertEquals(point, point.getLocation());
-    assertEquals(point, bounds.getLocation());
+    ColorModel colorModel = actualFilterResult.getColorModel();
+    assertTrue(colorModel instanceof DirectColorModel);
+    SampleModel sampleModel = actualFilterResult.getSampleModel();
+    assertTrue(sampleModel instanceof SinglePixelPackedSampleModel);
+    assertSame(sampleModel, actualFilterResult.getData().getSampleModel());
+    assertSame(sampleModel, actualFilterResult.getRaster().getSampleModel());
+    assertArrayEquals(new int[]{16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
+    assertArrayEquals(new int[]{16711680, 65280, 255}, ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
+    assertArrayEquals(new int[]{8, 8, 8}, colorModel.getComponentSize());
+    assertArrayEquals(new int[]{8, 8, 8}, sampleModel.getSampleSize());
+    assertArrayEquals(new int[]{GaussianBlur.NUM_KERNELS, 8, 0},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitOffsets());
   }
 
   /**
@@ -185,6 +167,8 @@ public class ResizeDiffblueTest {
    * Method under test: {@link Resize#filter(BufferedImage, BufferedImage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BufferedImage Resize.filter(BufferedImage, BufferedImage)"})
   public void testFilter3() {
     // Arrange
     Resize resize = new Resize(0, 1, true, true, true, false, null);
@@ -194,30 +178,18 @@ public class ResizeDiffblueTest {
     BufferedImage actualFilterResult = resize.filter(src, new BufferedImage(1, 1, 1));
 
     // Assert
-    Raster data = actualFilterResult.getData();
-    Rectangle bounds = data.getBounds();
-    Rectangle2D bounds2D = bounds.getBounds2D();
-    assertTrue(bounds2D instanceof Rectangle);
-    Rectangle2D frame = bounds.getFrame();
-    assertTrue(frame instanceof Rectangle2D.Double);
-    DataBuffer dataBuffer = data.getDataBuffer();
-    assertTrue(dataBuffer instanceof DataBufferInt);
-    WritableRaster raster = actualFilterResult.getRaster();
-    DataBuffer dataBuffer2 = raster.getDataBuffer();
-    assertTrue(dataBuffer2 instanceof DataBufferInt);
-    Point[] writableTileIndices = actualFilterResult.getWritableTileIndices();
-    assertEquals(1, writableTileIndices.length);
-    assertEquals(1, ((DataBufferInt) dataBuffer).getBankData().length);
-    assertEquals(1, ((DataBufferInt) dataBuffer2).getBankData().length);
-    Dimension size = bounds.getSize();
-    assertEquals(size, size.getSize());
-    assertEquals(bounds, bounds.getBounds());
-    assertEquals(bounds, raster.getBounds());
-    assertEquals(bounds, bounds2D);
-    assertEquals(bounds, frame);
-    Point point = writableTileIndices[0];
-    assertEquals(point, point.getLocation());
-    assertEquals(point, bounds.getLocation());
+    ColorModel colorModel = actualFilterResult.getColorModel();
+    assertTrue(colorModel instanceof DirectColorModel);
+    SampleModel sampleModel = actualFilterResult.getSampleModel();
+    assertTrue(sampleModel instanceof SinglePixelPackedSampleModel);
+    assertSame(sampleModel, actualFilterResult.getData().getSampleModel());
+    assertSame(sampleModel, actualFilterResult.getRaster().getSampleModel());
+    assertArrayEquals(new int[]{16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
+    assertArrayEquals(new int[]{16711680, 65280, 255}, ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
+    assertArrayEquals(new int[]{8, 8, 8}, colorModel.getComponentSize());
+    assertArrayEquals(new int[]{8, 8, 8}, sampleModel.getSampleSize());
+    assertArrayEquals(new int[]{GaussianBlur.NUM_KERNELS, 8, 0},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitOffsets());
   }
 
   /**
@@ -226,6 +198,8 @@ public class ResizeDiffblueTest {
    * Method under test: {@link Resize#filter(BufferedImage, BufferedImage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BufferedImage Resize.filter(BufferedImage, BufferedImage)"})
   public void testFilter4() {
     // Arrange
     Resize resize = new Resize(1, 0, true, true, true, false, null);
@@ -235,30 +209,18 @@ public class ResizeDiffblueTest {
     BufferedImage actualFilterResult = resize.filter(src, new BufferedImage(1, 1, 1));
 
     // Assert
-    Raster data = actualFilterResult.getData();
-    Rectangle bounds = data.getBounds();
-    Rectangle2D bounds2D = bounds.getBounds2D();
-    assertTrue(bounds2D instanceof Rectangle);
-    Rectangle2D frame = bounds.getFrame();
-    assertTrue(frame instanceof Rectangle2D.Double);
-    DataBuffer dataBuffer = data.getDataBuffer();
-    assertTrue(dataBuffer instanceof DataBufferInt);
-    WritableRaster raster = actualFilterResult.getRaster();
-    DataBuffer dataBuffer2 = raster.getDataBuffer();
-    assertTrue(dataBuffer2 instanceof DataBufferInt);
-    Point[] writableTileIndices = actualFilterResult.getWritableTileIndices();
-    assertEquals(1, writableTileIndices.length);
-    assertEquals(1, ((DataBufferInt) dataBuffer).getBankData().length);
-    assertEquals(1, ((DataBufferInt) dataBuffer2).getBankData().length);
-    Dimension size = bounds.getSize();
-    assertEquals(size, size.getSize());
-    assertEquals(bounds, bounds.getBounds());
-    assertEquals(bounds, raster.getBounds());
-    assertEquals(bounds, bounds2D);
-    assertEquals(bounds, frame);
-    Point point = writableTileIndices[0];
-    assertEquals(point, point.getLocation());
-    assertEquals(point, bounds.getLocation());
+    ColorModel colorModel = actualFilterResult.getColorModel();
+    assertTrue(colorModel instanceof DirectColorModel);
+    SampleModel sampleModel = actualFilterResult.getSampleModel();
+    assertTrue(sampleModel instanceof SinglePixelPackedSampleModel);
+    assertSame(sampleModel, actualFilterResult.getData().getSampleModel());
+    assertSame(sampleModel, actualFilterResult.getRaster().getSampleModel());
+    assertArrayEquals(new int[]{16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
+    assertArrayEquals(new int[]{16711680, 65280, 255}, ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
+    assertArrayEquals(new int[]{8, 8, 8}, colorModel.getComponentSize());
+    assertArrayEquals(new int[]{8, 8, 8}, sampleModel.getSampleSize());
+    assertArrayEquals(new int[]{GaussianBlur.NUM_KERNELS, 8, 0},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitOffsets());
   }
 
   /**
@@ -267,6 +229,8 @@ public class ResizeDiffblueTest {
    * Method under test: {@link Resize#filter(BufferedImage, BufferedImage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BufferedImage Resize.filter(BufferedImage, BufferedImage)"})
   public void testFilter5() {
     // Arrange
     Resize resize = new Resize(2, 0, true, true, true, false, null);
@@ -276,30 +240,18 @@ public class ResizeDiffblueTest {
     BufferedImage actualFilterResult = resize.filter(src, new BufferedImage(1, 1, 1));
 
     // Assert
-    Raster data = actualFilterResult.getData();
-    Rectangle bounds = data.getBounds();
-    Rectangle2D bounds2D = bounds.getBounds2D();
-    assertTrue(bounds2D instanceof Rectangle);
-    Rectangle2D frame = bounds.getFrame();
-    assertTrue(frame instanceof Rectangle2D.Double);
-    DataBuffer dataBuffer = data.getDataBuffer();
-    assertTrue(dataBuffer instanceof DataBufferInt);
-    WritableRaster raster = actualFilterResult.getRaster();
-    DataBuffer dataBuffer2 = raster.getDataBuffer();
-    assertTrue(dataBuffer2 instanceof DataBufferInt);
-    Point[] writableTileIndices = actualFilterResult.getWritableTileIndices();
-    assertEquals(1, writableTileIndices.length);
-    assertEquals(1, ((DataBufferInt) dataBuffer).getBankData().length);
-    assertEquals(1, ((DataBufferInt) dataBuffer2).getBankData().length);
-    Dimension size = bounds.getSize();
-    assertEquals(size, size.getSize());
-    assertEquals(bounds, bounds.getBounds());
-    assertEquals(bounds, raster.getBounds());
-    assertEquals(bounds, bounds2D);
-    assertEquals(bounds, frame);
-    Point point = writableTileIndices[0];
-    assertEquals(point, point.getLocation());
-    assertEquals(point, bounds.getLocation());
+    ColorModel colorModel = actualFilterResult.getColorModel();
+    assertTrue(colorModel instanceof DirectColorModel);
+    SampleModel sampleModel = actualFilterResult.getSampleModel();
+    assertTrue(sampleModel instanceof SinglePixelPackedSampleModel);
+    assertSame(sampleModel, actualFilterResult.getData().getSampleModel());
+    assertSame(sampleModel, actualFilterResult.getRaster().getSampleModel());
+    assertArrayEquals(new int[]{16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
+    assertArrayEquals(new int[]{16711680, 65280, 255}, ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
+    assertArrayEquals(new int[]{8, 8, 8}, colorModel.getComponentSize());
+    assertArrayEquals(new int[]{8, 8, 8}, sampleModel.getSampleSize());
+    assertArrayEquals(new int[]{GaussianBlur.NUM_KERNELS, 8, 0},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitOffsets());
   }
 
   /**
@@ -308,6 +260,8 @@ public class ResizeDiffblueTest {
    * Method under test: {@link Resize#filter(BufferedImage, BufferedImage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BufferedImage Resize.filter(BufferedImage, BufferedImage)"})
   public void testFilter6() {
     // Arrange
     Resize resize = new Resize(1, 1, true, true, false, true, null);
@@ -318,42 +272,29 @@ public class ResizeDiffblueTest {
     BufferedImage actualFilterResult = resize.filter(src, new BufferedImage(1, 1, 1));
 
     // Assert
-    Raster data = actualFilterResult.getData();
-    Rectangle bounds = data.getBounds();
-    Rectangle2D bounds2D = bounds.getBounds2D();
-    assertTrue(bounds2D instanceof Rectangle);
-    Rectangle2D frame = bounds.getFrame();
-    assertTrue(frame instanceof Rectangle2D.Double);
-    DataBuffer dataBuffer = data.getDataBuffer();
-    assertTrue(dataBuffer instanceof DataBufferInt);
-    WritableRaster raster = actualFilterResult.getRaster();
-    DataBuffer dataBuffer2 = raster.getDataBuffer();
-    assertTrue(dataBuffer2 instanceof DataBufferInt);
-    Point[] writableTileIndices = actualFilterResult.getWritableTileIndices();
-    assertEquals(1, writableTileIndices.length);
-    assertEquals(1, ((DataBufferInt) dataBuffer).getBankData().length);
-    assertEquals(1, ((DataBufferInt) dataBuffer2).getBankData().length);
-    Dimension size = bounds.getSize();
-    assertEquals(size, size.getSize());
-    assertEquals(bounds, bounds.getBounds());
-    assertEquals(bounds, raster.getBounds());
-    assertEquals(bounds, bounds2D);
-    assertEquals(bounds, frame);
-    Point point = writableTileIndices[0];
-    assertEquals(point, point.getLocation());
-    assertEquals(point, bounds.getLocation());
+    ColorModel colorModel = actualFilterResult.getColorModel();
+    assertTrue(colorModel instanceof DirectColorModel);
+    SampleModel sampleModel = actualFilterResult.getSampleModel();
+    assertTrue(sampleModel instanceof SinglePixelPackedSampleModel);
+    assertArrayEquals(new int[]{16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
+    assertArrayEquals(new int[]{16711680, 65280, 255}, ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
+    assertArrayEquals(new int[]{8, 8, 8}, colorModel.getComponentSize());
+    assertArrayEquals(new int[]{8, 8, 8}, sampleModel.getSampleSize());
+    assertArrayEquals(new int[]{GaussianBlur.NUM_KERNELS, 8, 0},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitOffsets());
   }
 
   /**
    * Test {@link Resize#filter(BufferedImage, BufferedImage)}.
    * <ul>
-   *   <li>When {@link BufferedImage#BufferedImage(int, int, int)} with one and one
-   * and four.</li>
+   *   <li>When {@link BufferedImage#BufferedImage(int, int, int)} with one and one and four.</li>
    * </ul>
    * <p>
    * Method under test: {@link Resize#filter(BufferedImage, BufferedImage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BufferedImage Resize.filter(BufferedImage, BufferedImage)"})
   public void testFilter_whenBufferedImageWithOneAndOneAndFour() {
     // Arrange
     Resize resize = new Resize(1, 1, true, true, false, true, null);
@@ -363,30 +304,16 @@ public class ResizeDiffblueTest {
     BufferedImage actualFilterResult = resize.filter(src, new BufferedImage(1, 1, 1));
 
     // Assert
-    Raster data = actualFilterResult.getData();
-    Rectangle bounds = data.getBounds();
-    Rectangle2D bounds2D = bounds.getBounds2D();
-    assertTrue(bounds2D instanceof Rectangle);
-    Rectangle2D frame = bounds.getFrame();
-    assertTrue(frame instanceof Rectangle2D.Double);
-    DataBuffer dataBuffer = data.getDataBuffer();
-    assertTrue(dataBuffer instanceof DataBufferInt);
-    WritableRaster raster = actualFilterResult.getRaster();
-    DataBuffer dataBuffer2 = raster.getDataBuffer();
-    assertTrue(dataBuffer2 instanceof DataBufferInt);
-    Point[] writableTileIndices = actualFilterResult.getWritableTileIndices();
-    assertEquals(1, writableTileIndices.length);
-    assertEquals(1, ((DataBufferInt) dataBuffer).getBankData().length);
-    assertEquals(1, ((DataBufferInt) dataBuffer2).getBankData().length);
-    Dimension size = bounds.getSize();
-    assertEquals(size, size.getSize());
-    assertEquals(bounds, bounds.getBounds());
-    assertEquals(bounds, raster.getBounds());
-    assertEquals(bounds, bounds2D);
-    assertEquals(bounds, frame);
-    Point point = writableTileIndices[0];
-    assertEquals(point, point.getLocation());
-    assertEquals(point, bounds.getLocation());
+    ColorModel colorModel = actualFilterResult.getColorModel();
+    assertTrue(colorModel instanceof DirectColorModel);
+    SampleModel sampleModel = actualFilterResult.getSampleModel();
+    assertTrue(sampleModel instanceof SinglePixelPackedSampleModel);
+    assertArrayEquals(new int[]{16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
+    assertArrayEquals(new int[]{16711680, 65280, 255}, ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
+    assertArrayEquals(new int[]{8, 8, 8}, colorModel.getComponentSize());
+    assertArrayEquals(new int[]{8, 8, 8}, sampleModel.getSampleSize());
+    assertArrayEquals(new int[]{GaussianBlur.NUM_KERNELS, 8, 0},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitOffsets());
   }
 
   /**
@@ -398,6 +325,8 @@ public class ResizeDiffblueTest {
    * Method under test: {@link Resize#filter(BufferedImage, BufferedImage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BufferedImage Resize.filter(BufferedImage, BufferedImage)"})
   public void testFilter_whenNull() {
     // Arrange
     Resize resize = new Resize(1, 1, true, true, false, true, null);
@@ -406,29 +335,17 @@ public class ResizeDiffblueTest {
     BufferedImage actualFilterResult = resize.filter(new BufferedImage(1, 1, 1), null);
 
     // Assert
-    Raster data = actualFilterResult.getData();
-    Rectangle bounds = data.getBounds();
-    Rectangle2D bounds2D = bounds.getBounds2D();
-    assertTrue(bounds2D instanceof Rectangle);
-    Rectangle2D frame = bounds.getFrame();
-    assertTrue(frame instanceof Rectangle2D.Double);
-    DataBuffer dataBuffer = data.getDataBuffer();
-    assertTrue(dataBuffer instanceof DataBufferInt);
-    WritableRaster raster = actualFilterResult.getRaster();
-    DataBuffer dataBuffer2 = raster.getDataBuffer();
-    assertTrue(dataBuffer2 instanceof DataBufferInt);
-    Point[] writableTileIndices = actualFilterResult.getWritableTileIndices();
-    assertEquals(1, writableTileIndices.length);
-    assertEquals(1, ((DataBufferInt) dataBuffer).getBankData().length);
-    assertEquals(1, ((DataBufferInt) dataBuffer2).getBankData().length);
-    Dimension size = bounds.getSize();
-    assertEquals(size, size.getSize());
-    assertEquals(bounds, bounds.getBounds());
-    assertEquals(bounds, raster.getBounds());
-    assertEquals(bounds, bounds2D);
-    assertEquals(bounds, frame);
-    Point point = writableTileIndices[0];
-    assertEquals(point, point.getLocation());
-    assertEquals(point, bounds.getLocation());
+    ColorModel colorModel = actualFilterResult.getColorModel();
+    assertTrue(colorModel instanceof DirectColorModel);
+    SampleModel sampleModel = actualFilterResult.getSampleModel();
+    assertTrue(sampleModel instanceof SinglePixelPackedSampleModel);
+    assertSame(sampleModel, actualFilterResult.getData().getSampleModel());
+    assertSame(sampleModel, actualFilterResult.getRaster().getSampleModel());
+    assertArrayEquals(new int[]{16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
+    assertArrayEquals(new int[]{16711680, 65280, 255}, ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
+    assertArrayEquals(new int[]{8, 8, 8}, colorModel.getComponentSize());
+    assertArrayEquals(new int[]{8, 8, 8}, sampleModel.getSampleSize());
+    assertArrayEquals(new int[]{GaussianBlur.NUM_KERNELS, 8, 0},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitOffsets());
   }
 }

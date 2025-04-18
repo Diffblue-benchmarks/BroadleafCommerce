@@ -1,7 +1,25 @@
+/*-
+ * #%L
+ * BroadleafCommerce Admin Module
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.admin.server.provider.metadata;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,20 +39,20 @@ import org.broadleafcommerce.openadmin.server.service.type.MetadataProviderRespo
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.hibernate.mapping.Property;
 import org.hibernate.type.BigDecimalType;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml", "/bl-admin-applicationContext.xml",
-    "/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class CustomerUsernameFieldMetadataProviderDiffblueTest {
-  @Autowired
+  @InjectMocks
   private CustomerUsernameFieldMetadataProvider customerUsernameFieldMetadataProvider;
+
+  @Mock
+  private Map map;
 
   /**
    * Test {@link CustomerUsernameFieldMetadataProvider#getOrder()}.
@@ -42,111 +60,27 @@ public class CustomerUsernameFieldMetadataProviderDiffblueTest {
    * Method under test: {@link CustomerUsernameFieldMetadataProvider#getOrder()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int CustomerUsernameFieldMetadataProvider.getOrder()"})
   public void testGetOrder() {
     // Arrange, Act and Assert
     assertEquals(Integer.MAX_VALUE, (new CustomerUsernameFieldMetadataProvider()).getOrder());
   }
 
   /**
-   * Test
-   * {@link CustomerUsernameFieldMetadataProvider#lateStageAddMetadata(LateStageAddMetadataRequest, Map)}.
-   * <p>
-   * Method under test:
-   * {@link CustomerUsernameFieldMetadataProvider#lateStageAddMetadata(LateStageAddMetadataRequest, Map)}
-   */
-  @Test
-  public void testLateStageAddMetadata() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CustomerUsernameFieldMetadataProvider customerUsernameFieldMetadataProvider = new CustomerUsernameFieldMetadataProvider();
-    Class<Object> parentClass = Object.class;
-    Class<Object> targetClass = Object.class;
-    LateStageAddMetadataRequest addMetadataRequest = new LateStageAddMetadataRequest("Field Name", parentClass,
-        targetClass, new DynamicEntityDaoImpl(), "Prefix");
-
-    // Act and Assert
-    assertEquals(MetadataProviderResponse.NOT_HANDLED,
-        customerUsernameFieldMetadataProvider.lateStageAddMetadata(addMetadataRequest, new HashMap<>()));
-  }
-
-  /**
-   * Test
-   * {@link CustomerUsernameFieldMetadataProvider#lateStageAddMetadata(LateStageAddMetadataRequest, Map)}.
-   * <p>
-   * Method under test:
-   * {@link CustomerUsernameFieldMetadataProvider#lateStageAddMetadata(LateStageAddMetadataRequest, Map)}
-   */
-  @Test
-  public void testLateStageAddMetadata2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CustomerUsernameFieldMetadataProvider customerUsernameFieldMetadataProvider = new CustomerUsernameFieldMetadataProvider();
-    Class<Object> parentClass = Object.class;
-    Class<Object> targetClass = Object.class;
-    LateStageAddMetadataRequest addMetadataRequest = new LateStageAddMetadataRequest("Field Name", parentClass,
-        targetClass, mock(DynamicEntityDaoImpl.class), "Prefix");
-
-    // Act and Assert
-    assertEquals(MetadataProviderResponse.NOT_HANDLED,
-        customerUsernameFieldMetadataProvider.lateStageAddMetadata(addMetadataRequest, new HashMap<>()));
-  }
-
-  /**
-   * Test
-   * {@link CustomerUsernameFieldMetadataProvider#lateStageAddMetadata(LateStageAddMetadataRequest, Map)}.
-   * <p>
-   * Method under test:
-   * {@link CustomerUsernameFieldMetadataProvider#lateStageAddMetadata(LateStageAddMetadataRequest, Map)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testLateStageAddMetadata3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.provider.metadata;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1445 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.provider.metadata.CustomerUsernameFieldMetadataProvider customerUsernameFieldMetadataProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CustomerUsernameFieldMetadataProvider customerUsernameFieldMetadataProvider2 = new CustomerUsernameFieldMetadataProvider();
-    Class<Object> parentClass = Object.class;
-    Class<Object> targetClass = Object.class;
-    LateStageAddMetadataRequest addMetadataRequest = new LateStageAddMetadataRequest("Field Name", parentClass,
-        targetClass, new DynamicEntityDaoImpl(), "Prefix");
-
-    // Act
-    customerUsernameFieldMetadataProvider2.lateStageAddMetadata(addMetadataRequest, new HashMap<>());
-  }
-
-  /**
-   * Test
-   * {@link CustomerUsernameFieldMetadataProvider#lateStageAddMetadata(LateStageAddMetadataRequest, Map)}.
+   * Test {@link CustomerUsernameFieldMetadataProvider#lateStageAddMetadata(LateStageAddMetadataRequest, Map)}.
    * <ul>
    *   <li>Then return {@code HANDLED}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomerUsernameFieldMetadataProvider#lateStageAddMetadata(LateStageAddMetadataRequest, Map)}
+   * Method under test: {@link CustomerUsernameFieldMetadataProvider#lateStageAddMetadata(LateStageAddMetadataRequest, Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "MetadataProviderResponse CustomerUsernameFieldMetadataProvider.lateStageAddMetadata(LateStageAddMetadataRequest, Map)"})
   public void testLateStageAddMetadata_thenReturnHandled() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CustomerUsernameFieldMetadataProvider customerUsernameFieldMetadataProvider = new CustomerUsernameFieldMetadataProvider();
     Class<Object> parentClass = Object.class;
     Class<Customer> targetClass = Customer.class;
     LateStageAddMetadataRequest addMetadataRequest = new LateStageAddMetadataRequest("Field Name", parentClass,
@@ -158,18 +92,40 @@ public class CustomerUsernameFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomerUsernameFieldMetadataProvider#addMetadataFromFieldType(AddMetadataFromFieldTypeRequest, Map)}.
+   * Test {@link CustomerUsernameFieldMetadataProvider#lateStageAddMetadata(LateStageAddMetadataRequest, Map)}.
+   * <ul>
+   *   <li>Then return {@code NOT_HANDLED}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomerUsernameFieldMetadataProvider#addMetadataFromFieldType(AddMetadataFromFieldTypeRequest, Map)}
+   * Method under test: {@link CustomerUsernameFieldMetadataProvider#lateStageAddMetadata(LateStageAddMetadataRequest, Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "MetadataProviderResponse CustomerUsernameFieldMetadataProvider.lateStageAddMetadata(LateStageAddMetadataRequest, Map)"})
+  public void testLateStageAddMetadata_thenReturnNotHandled() {
+    // Arrange
+    Class<Object> parentClass = Object.class;
+    Class<Object> targetClass = Object.class;
+    LateStageAddMetadataRequest addMetadataRequest = new LateStageAddMetadataRequest("Field Name", parentClass,
+        targetClass, new DynamicEntityDaoImpl(), "Prefix");
+
+    // Act and Assert
+    assertEquals(MetadataProviderResponse.NOT_HANDLED,
+        customerUsernameFieldMetadataProvider.lateStageAddMetadata(addMetadataRequest, new HashMap<>()));
+  }
+
+  /**
+   * Test {@link CustomerUsernameFieldMetadataProvider#addMetadataFromFieldType(AddMetadataFromFieldTypeRequest, Map)}.
+   * <p>
+   * Method under test: {@link CustomerUsernameFieldMetadataProvider#addMetadataFromFieldType(AddMetadataFromFieldTypeRequest, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "MetadataProviderResponse CustomerUsernameFieldMetadataProvider.addMetadataFromFieldType(AddMetadataFromFieldTypeRequest, Map)"})
   public void testAddMetadataFromFieldType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CustomerUsernameFieldMetadataProvider customerUsernameFieldMetadataProvider = new CustomerUsernameFieldMetadataProvider();
     Class<Object> targetClass = Object.class;
     ForeignKey foreignField = new ForeignKey();
     ArrayList<Property> componentProperties = new ArrayList<>();
@@ -188,93 +144,16 @@ public class CustomerUsernameFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomerUsernameFieldMetadataProvider#addMetadataFromFieldType(AddMetadataFromFieldTypeRequest, Map)}.
+   * Test {@link CustomerUsernameFieldMetadataProvider#addMetadata(AddFieldMetadataRequest, Map)}.
    * <p>
-   * Method under test:
-   * {@link CustomerUsernameFieldMetadataProvider#addMetadataFromFieldType(AddMetadataFromFieldTypeRequest, Map)}
+   * Method under test: {@link CustomerUsernameFieldMetadataProvider#addMetadata(AddFieldMetadataRequest, Map)}
    */
   @Test
-  public void testAddMetadataFromFieldType2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CustomerUsernameFieldMetadataProvider customerUsernameFieldMetadataProvider = new CustomerUsernameFieldMetadataProvider();
-    Class<Object> targetClass = Object.class;
-    ForeignKey foreignField = mock(ForeignKey.class);
-    ArrayList<Property> componentProperties = new ArrayList<>();
-    BigDecimalType type = new BigDecimalType();
-    HashMap<String, FieldMetadata> presentationAttributes = new HashMap<>();
-    AdornedTargetCollectionMetadata presentationAttribute = new AdornedTargetCollectionMetadata();
-    Class<Object> returnedClass = Object.class;
-    AddMetadataFromFieldTypeRequest addMetadataFromFieldTypeRequest = new AddMetadataFromFieldTypeRequest(null,
-        targetClass, foreignField, new ForeignKey[]{new ForeignKey()}, MergedPropertyType.PRIMARY, componentProperties,
-        "Id Property", "Prefix", "Requested Property Name", type, true, 1, presentationAttributes,
-        presentationAttribute, SupportedFieldType.UNKNOWN, returnedClass, new DynamicEntityDaoImpl());
-
-    // Act and Assert
-    assertEquals(MetadataProviderResponse.NOT_HANDLED, customerUsernameFieldMetadataProvider
-        .addMetadataFromFieldType(addMetadataFromFieldTypeRequest, new HashMap<>()));
-  }
-
-  /**
-   * Test
-   * {@link CustomerUsernameFieldMetadataProvider#addMetadataFromFieldType(AddMetadataFromFieldTypeRequest, Map)}.
-   * <p>
-   * Method under test:
-   * {@link CustomerUsernameFieldMetadataProvider#addMetadataFromFieldType(AddMetadataFromFieldTypeRequest, Map)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddMetadataFromFieldType3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.provider.metadata;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1033 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.provider.metadata.CustomerUsernameFieldMetadataProvider customerUsernameFieldMetadataProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CustomerUsernameFieldMetadataProvider customerUsernameFieldMetadataProvider2 = new CustomerUsernameFieldMetadataProvider();
-    Class<Object> targetClass = Object.class;
-    ForeignKey foreignField = new ForeignKey();
-    ArrayList<Property> componentProperties = new ArrayList<>();
-    BigDecimalType type = new BigDecimalType();
-    HashMap<String, FieldMetadata> presentationAttributes = new HashMap<>();
-    AdornedTargetCollectionMetadata presentationAttribute = new AdornedTargetCollectionMetadata();
-    Class<Object> returnedClass = Object.class;
-    AddMetadataFromFieldTypeRequest addMetadataFromFieldTypeRequest = new AddMetadataFromFieldTypeRequest(null,
-        targetClass, foreignField, new ForeignKey[]{new ForeignKey()}, MergedPropertyType.PRIMARY, componentProperties,
-        "Id Property", "Prefix", "Requested Property Name", type, true, 1, presentationAttributes,
-        presentationAttribute, SupportedFieldType.UNKNOWN, returnedClass, new DynamicEntityDaoImpl());
-
-    // Act
-    customerUsernameFieldMetadataProvider2.addMetadataFromFieldType(addMetadataFromFieldTypeRequest, new HashMap<>());
-  }
-
-  /**
-   * Test
-   * {@link CustomerUsernameFieldMetadataProvider#addMetadata(AddFieldMetadataRequest, Map)}.
-   * <p>
-   * Method under test:
-   * {@link CustomerUsernameFieldMetadataProvider#addMetadata(AddFieldMetadataRequest, Map)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "MetadataProviderResponse CustomerUsernameFieldMetadataProvider.addMetadata(AddFieldMetadataRequest, Map)"})
   public void testAddMetadata() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CustomerUsernameFieldMetadataProvider customerUsernameFieldMetadataProvider = new CustomerUsernameFieldMetadataProvider();
     Class<Object> parentClass = Object.class;
     Class<Object> targetClass = Object.class;
     AddFieldMetadataRequest addMetadataRequest = new AddFieldMetadataRequest(null, parentClass, targetClass,
@@ -286,79 +165,16 @@ public class CustomerUsernameFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomerUsernameFieldMetadataProvider#addMetadata(AddFieldMetadataRequest, Map)}.
+   * Test {@link CustomerUsernameFieldMetadataProvider#overrideViaAnnotation(OverrideViaAnnotationRequest, Map)}.
    * <p>
-   * Method under test:
-   * {@link CustomerUsernameFieldMetadataProvider#addMetadata(AddFieldMetadataRequest, Map)}
+   * Method under test: {@link CustomerUsernameFieldMetadataProvider#overrideViaAnnotation(OverrideViaAnnotationRequest, Map)}
    */
   @Test
-  public void testAddMetadata2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CustomerUsernameFieldMetadataProvider customerUsernameFieldMetadataProvider = new CustomerUsernameFieldMetadataProvider();
-    Class<Object> parentClass = Object.class;
-    Class<Object> targetClass = Object.class;
-    AddFieldMetadataRequest addMetadataRequest = new AddFieldMetadataRequest(null, parentClass, targetClass,
-        mock(DynamicEntityDaoImpl.class), "Prefix");
-
-    // Act and Assert
-    assertEquals(MetadataProviderResponse.NOT_HANDLED,
-        customerUsernameFieldMetadataProvider.addMetadata(addMetadataRequest, new HashMap<>()));
-  }
-
-  /**
-   * Test
-   * {@link CustomerUsernameFieldMetadataProvider#addMetadata(AddFieldMetadataRequest, Map)}.
-   * <p>
-   * Method under test:
-   * {@link CustomerUsernameFieldMetadataProvider#addMetadata(AddFieldMetadataRequest, Map)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddMetadata3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.provider.metadata;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass928 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.provider.metadata.CustomerUsernameFieldMetadataProvider customerUsernameFieldMetadataProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CustomerUsernameFieldMetadataProvider customerUsernameFieldMetadataProvider2 = new CustomerUsernameFieldMetadataProvider();
-    Class<Object> parentClass = Object.class;
-    Class<Object> targetClass = Object.class;
-    AddFieldMetadataRequest addMetadataRequest = new AddFieldMetadataRequest(null, parentClass, targetClass,
-        new DynamicEntityDaoImpl(), "Prefix");
-
-    // Act
-    customerUsernameFieldMetadataProvider2.addMetadata(addMetadataRequest, new HashMap<>());
-  }
-
-  /**
-   * Test
-   * {@link CustomerUsernameFieldMetadataProvider#overrideViaAnnotation(OverrideViaAnnotationRequest, Map)}.
-   * <p>
-   * Method under test:
-   * {@link CustomerUsernameFieldMetadataProvider#overrideViaAnnotation(OverrideViaAnnotationRequest, Map)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "MetadataProviderResponse CustomerUsernameFieldMetadataProvider.overrideViaAnnotation(OverrideViaAnnotationRequest, Map)"})
   public void testOverrideViaAnnotation() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CustomerUsernameFieldMetadataProvider customerUsernameFieldMetadataProvider = new CustomerUsernameFieldMetadataProvider();
     Class<Object> requestedEntity = Object.class;
     OverrideViaAnnotationRequest overrideViaAnnotationRequest = new OverrideViaAnnotationRequest(requestedEntity, true,
         new DynamicEntityDaoImpl(), "Prefix");
@@ -369,77 +185,16 @@ public class CustomerUsernameFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomerUsernameFieldMetadataProvider#overrideViaAnnotation(OverrideViaAnnotationRequest, Map)}.
+   * Test {@link CustomerUsernameFieldMetadataProvider#overrideViaXml(OverrideViaXmlRequest, Map)}.
    * <p>
-   * Method under test:
-   * {@link CustomerUsernameFieldMetadataProvider#overrideViaAnnotation(OverrideViaAnnotationRequest, Map)}
+   * Method under test: {@link CustomerUsernameFieldMetadataProvider#overrideViaXml(OverrideViaXmlRequest, Map)}
    */
   @Test
-  public void testOverrideViaAnnotation2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CustomerUsernameFieldMetadataProvider customerUsernameFieldMetadataProvider = new CustomerUsernameFieldMetadataProvider();
-    Class<Object> requestedEntity = Object.class;
-    OverrideViaAnnotationRequest overrideViaAnnotationRequest = new OverrideViaAnnotationRequest(requestedEntity, true,
-        mock(DynamicEntityDaoImpl.class), "Prefix");
-
-    // Act and Assert
-    assertEquals(MetadataProviderResponse.NOT_HANDLED,
-        customerUsernameFieldMetadataProvider.overrideViaAnnotation(overrideViaAnnotationRequest, new HashMap<>()));
-  }
-
-  /**
-   * Test
-   * {@link CustomerUsernameFieldMetadataProvider#overrideViaAnnotation(OverrideViaAnnotationRequest, Map)}.
-   * <p>
-   * Method under test:
-   * {@link CustomerUsernameFieldMetadataProvider#overrideViaAnnotation(OverrideViaAnnotationRequest, Map)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testOverrideViaAnnotation3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.provider.metadata;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1552 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.provider.metadata.CustomerUsernameFieldMetadataProvider customerUsernameFieldMetadataProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CustomerUsernameFieldMetadataProvider customerUsernameFieldMetadataProvider2 = new CustomerUsernameFieldMetadataProvider();
-    Class<Object> requestedEntity = Object.class;
-    OverrideViaAnnotationRequest overrideViaAnnotationRequest = new OverrideViaAnnotationRequest(requestedEntity, true,
-        new DynamicEntityDaoImpl(), "Prefix");
-
-    // Act
-    customerUsernameFieldMetadataProvider2.overrideViaAnnotation(overrideViaAnnotationRequest, new HashMap<>());
-  }
-
-  /**
-   * Test
-   * {@link CustomerUsernameFieldMetadataProvider#overrideViaXml(OverrideViaXmlRequest, Map)}.
-   * <p>
-   * Method under test:
-   * {@link CustomerUsernameFieldMetadataProvider#overrideViaXml(OverrideViaXmlRequest, Map)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "MetadataProviderResponse CustomerUsernameFieldMetadataProvider.overrideViaXml(OverrideViaXmlRequest, Map)"})
   public void testOverrideViaXml() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CustomerUsernameFieldMetadataProvider customerUsernameFieldMetadataProvider = new CustomerUsernameFieldMetadataProvider();
     OverrideViaXmlRequest overrideViaXmlRequest = new OverrideViaXmlRequest("Requested Config Key",
         "Requested Ceiling Entity", "Prefix", true, new DynamicEntityDaoImpl());
 
@@ -449,75 +204,16 @@ public class CustomerUsernameFieldMetadataProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomerUsernameFieldMetadataProvider#overrideViaXml(OverrideViaXmlRequest, Map)}.
+   * Test {@link CustomerUsernameFieldMetadataProvider#addMetadataFromMappingData(AddMetadataFromMappingDataRequest, FieldMetadata)}.
    * <p>
-   * Method under test:
-   * {@link CustomerUsernameFieldMetadataProvider#overrideViaXml(OverrideViaXmlRequest, Map)}
+   * Method under test: {@link CustomerUsernameFieldMetadataProvider#addMetadataFromMappingData(AddMetadataFromMappingDataRequest, FieldMetadata)}
    */
   @Test
-  public void testOverrideViaXml2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CustomerUsernameFieldMetadataProvider customerUsernameFieldMetadataProvider = new CustomerUsernameFieldMetadataProvider();
-    OverrideViaXmlRequest overrideViaXmlRequest = new OverrideViaXmlRequest("Requested Config Key",
-        "Requested Ceiling Entity", "Prefix", true, mock(DynamicEntityDaoImpl.class));
-
-    // Act and Assert
-    assertEquals(MetadataProviderResponse.NOT_HANDLED,
-        customerUsernameFieldMetadataProvider.overrideViaXml(overrideViaXmlRequest, new HashMap<>()));
-  }
-
-  /**
-   * Test
-   * {@link CustomerUsernameFieldMetadataProvider#overrideViaXml(OverrideViaXmlRequest, Map)}.
-   * <p>
-   * Method under test:
-   * {@link CustomerUsernameFieldMetadataProvider#overrideViaXml(OverrideViaXmlRequest, Map)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testOverrideViaXml3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.provider.metadata;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1617 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.provider.metadata.CustomerUsernameFieldMetadataProvider customerUsernameFieldMetadataProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CustomerUsernameFieldMetadataProvider customerUsernameFieldMetadataProvider2 = new CustomerUsernameFieldMetadataProvider();
-    OverrideViaXmlRequest overrideViaXmlRequest = new OverrideViaXmlRequest("Requested Config Key",
-        "Requested Ceiling Entity", "Prefix", true, new DynamicEntityDaoImpl());
-
-    // Act
-    customerUsernameFieldMetadataProvider2.overrideViaXml(overrideViaXmlRequest, new HashMap<>());
-  }
-
-  /**
-   * Test
-   * {@link CustomerUsernameFieldMetadataProvider#addMetadataFromMappingData(AddMetadataFromMappingDataRequest, FieldMetadata)}.
-   * <p>
-   * Method under test:
-   * {@link CustomerUsernameFieldMetadataProvider#addMetadataFromMappingData(AddMetadataFromMappingDataRequest, FieldMetadata)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "MetadataProviderResponse CustomerUsernameFieldMetadataProvider.addMetadataFromMappingData(AddMetadataFromMappingDataRequest, FieldMetadata)"})
   public void testAddMetadataFromMappingData() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CustomerUsernameFieldMetadataProvider customerUsernameFieldMetadataProvider = new CustomerUsernameFieldMetadataProvider();
     ArrayList<Property> componentProperties = new ArrayList<>();
     BigDecimalType requestedEntityType = new BigDecimalType();
     AddMetadataFromMappingDataRequest addMetadataFromMappingDataRequest = new AddMetadataFromMappingDataRequest(
@@ -527,45 +223,5 @@ public class CustomerUsernameFieldMetadataProviderDiffblueTest {
     // Act and Assert
     assertEquals(MetadataProviderResponse.NOT_HANDLED, customerUsernameFieldMetadataProvider
         .addMetadataFromMappingData(addMetadataFromMappingDataRequest, new AdornedTargetCollectionMetadata()));
-  }
-
-  /**
-   * Test
-   * {@link CustomerUsernameFieldMetadataProvider#addMetadataFromMappingData(AddMetadataFromMappingDataRequest, FieldMetadata)}.
-   * <p>
-   * Method under test:
-   * {@link CustomerUsernameFieldMetadataProvider#addMetadataFromMappingData(AddMetadataFromMappingDataRequest, FieldMetadata)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddMetadataFromMappingData2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.provider.metadata;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1297 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.provider.metadata.CustomerUsernameFieldMetadataProvider customerUsernameFieldMetadataProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CustomerUsernameFieldMetadataProvider customerUsernameFieldMetadataProvider2 = new CustomerUsernameFieldMetadataProvider();
-    ArrayList<Property> componentProperties = new ArrayList<>();
-    BigDecimalType requestedEntityType = new BigDecimalType();
-    AddMetadataFromMappingDataRequest addMetadataFromMappingDataRequest = new AddMetadataFromMappingDataRequest(
-        componentProperties, SupportedFieldType.UNKNOWN, SupportedFieldType.UNKNOWN, requestedEntityType,
-        "Property Name", MergedPropertyType.PRIMARY, new DynamicEntityDaoImpl());
-
-    // Act
-    customerUsernameFieldMetadataProvider2.addMetadataFromMappingData(addMetadataFromMappingDataRequest,
-        new AdornedTargetCollectionMetadata());
   }
 }

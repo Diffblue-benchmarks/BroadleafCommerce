@@ -19,16 +19,14 @@ package org.broadleafcommerce.common.web.resource;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.extension.ExtensionResultHolder;
 import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
 import org.broadleafcommerce.common.util.BLCFieldUtils;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -40,48 +38,15 @@ public class AbstractResourceRequestExtensionHandlerDiffblueTest {
   private AbstractResourceRequestExtensionHandler abstractResourceRequestExtensionHandler;
 
   /**
-   * Test
-   * {@link AbstractResourceRequestExtensionHandler#getModifiedResource(String, ExtensionResultHolder)}.
-   * <ul>
-   *   <li>Then calls {@link ExtensionResultHolder#setResult(Object)}.</li>
-   * </ul>
+   * Test {@link AbstractResourceRequestExtensionHandler#getModifiedResource(String, ExtensionResultHolder)}.
    * <p>
-   * Method under test:
-   * {@link AbstractResourceRequestExtensionHandler#getModifiedResource(String, ExtensionResultHolder)}
+   * Method under test: {@link AbstractResourceRequestExtensionHandler#getModifiedResource(String, ExtensionResultHolder)}
    */
   @Test
-  public void testGetModifiedResource_thenCallsSetResult() {
-    // Arrange
-    AbstractResourceRequestExtensionHandler abstractResourceRequestExtensionHandler2 = new AbstractResourceRequestExtensionHandler();
-    ExtensionResultHolder erh = mock(ExtensionResultHolder.class);
-    doNothing().when(erh).setResult(Mockito.<Object>any());
-    doNothing().when(erh).setThrowable(Mockito.<Throwable>any());
-    erh.setResult(BLCFieldUtils.NULL_FIELD);
-    erh.setThrowable(new Throwable());
-
-    // Act
-    ExtensionResultStatusType actualModifiedResource = abstractResourceRequestExtensionHandler2
-        .getModifiedResource("Path", erh);
-
-    // Assert
-    verify(erh).setResult(isA(Object.class));
-    verify(erh).setThrowable(isA(Throwable.class));
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED, actualModifiedResource);
-  }
-
-  /**
-   * Test
-   * {@link AbstractResourceRequestExtensionHandler#getModifiedResource(String, ExtensionResultHolder)}.
-   * <ul>
-   *   <li>When {@link ExtensionResultHolder} (default constructor) Result is
-   * {@link BLCFieldUtils#NULL_FIELD}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link AbstractResourceRequestExtensionHandler#getModifiedResource(String, ExtensionResultHolder)}
-   */
-  @Test
-  public void testGetModifiedResource_whenExtensionResultHolderResultIsNull_field() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AbstractResourceRequestExtensionHandler.getModifiedResource(String, ExtensionResultHolder)"})
+  public void testGetModifiedResource() {
     // Arrange
     AbstractResourceRequestExtensionHandler abstractResourceRequestExtensionHandler2 = new AbstractResourceRequestExtensionHandler();
 
@@ -95,48 +60,15 @@ public class AbstractResourceRequestExtensionHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AbstractResourceRequestExtensionHandler#getOverrideResource(String, ExtensionResultHolder)}.
-   * <ul>
-   *   <li>Then calls {@link ExtensionResultHolder#setResult(Object)}.</li>
-   * </ul>
+   * Test {@link AbstractResourceRequestExtensionHandler#getOverrideResource(String, ExtensionResultHolder)}.
    * <p>
-   * Method under test:
-   * {@link AbstractResourceRequestExtensionHandler#getOverrideResource(String, ExtensionResultHolder)}
+   * Method under test: {@link AbstractResourceRequestExtensionHandler#getOverrideResource(String, ExtensionResultHolder)}
    */
   @Test
-  public void testGetOverrideResource_thenCallsSetResult() {
-    // Arrange
-    AbstractResourceRequestExtensionHandler abstractResourceRequestExtensionHandler2 = new AbstractResourceRequestExtensionHandler();
-    ExtensionResultHolder erh = mock(ExtensionResultHolder.class);
-    doNothing().when(erh).setResult(Mockito.<Object>any());
-    doNothing().when(erh).setThrowable(Mockito.<Throwable>any());
-    erh.setResult(BLCFieldUtils.NULL_FIELD);
-    erh.setThrowable(new Throwable());
-
-    // Act
-    ExtensionResultStatusType actualOverrideResource = abstractResourceRequestExtensionHandler2
-        .getOverrideResource("Path", erh);
-
-    // Assert
-    verify(erh).setResult(isA(Object.class));
-    verify(erh).setThrowable(isA(Throwable.class));
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED, actualOverrideResource);
-  }
-
-  /**
-   * Test
-   * {@link AbstractResourceRequestExtensionHandler#getOverrideResource(String, ExtensionResultHolder)}.
-   * <ul>
-   *   <li>When {@link ExtensionResultHolder} (default constructor) Result is
-   * {@link BLCFieldUtils#NULL_FIELD}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link AbstractResourceRequestExtensionHandler#getOverrideResource(String, ExtensionResultHolder)}
-   */
-  @Test
-  public void testGetOverrideResource_whenExtensionResultHolderResultIsNull_field() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AbstractResourceRequestExtensionHandler.getOverrideResource(String, ExtensionResultHolder)"})
+  public void testGetOverrideResource() {
     // Arrange
     AbstractResourceRequestExtensionHandler abstractResourceRequestExtensionHandler2 = new AbstractResourceRequestExtensionHandler();
 
@@ -150,13 +82,13 @@ public class AbstractResourceRequestExtensionHandlerDiffblueTest {
   }
 
   /**
-   * Test new {@link AbstractResourceRequestExtensionHandler} (default
-   * constructor).
+   * Test new {@link AbstractResourceRequestExtensionHandler} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link AbstractResourceRequestExtensionHandler}
+   * Method under test: default or parameterless constructor of {@link AbstractResourceRequestExtensionHandler}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AbstractResourceRequestExtensionHandler.<init>()"})
   public void testNewAbstractResourceRequestExtensionHandler() {
     // Arrange and Act
     AbstractResourceRequestExtensionHandler actualAbstractResourceRequestExtensionHandler = new AbstractResourceRequestExtensionHandler();

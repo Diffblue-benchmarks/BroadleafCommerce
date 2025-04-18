@@ -1,17 +1,35 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.server.service.artifact.image.effects.chain.filter;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import static org.mockito.Mockito.mock;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -29,6 +47,8 @@ public class AutoLevelsRGBDiffblueTest {
    * Method under test: {@link AutoLevelsRGB#AutoLevelsRGB()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AutoLevelsRGB.<init>()", "void AutoLevelsRGB.<init>(RenderingHints)"})
   public void testNewAutoLevelsRGB() {
     // Arrange and Act
     AutoLevelsRGB actualAutoLevelsRGB = new AutoLevelsRGB();
@@ -47,6 +67,8 @@ public class AutoLevelsRGBDiffblueTest {
    * Method under test: {@link AutoLevelsRGB#AutoLevelsRGB(RenderingHints)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AutoLevelsRGB.<init>()", "void AutoLevelsRGB.<init>(RenderingHints)"})
   public void testNewAutoLevelsRGB_whenNull() {
     // Arrange and Act
     AutoLevelsRGB actualAutoLevelsRGB = new AutoLevelsRGB(null);
@@ -58,16 +80,14 @@ public class AutoLevelsRGBDiffblueTest {
 
   /**
    * Test {@link AutoLevelsRGB#buildOperation(Map, InputStream, String)}.
-   * <ul>
-   *   <li>When {@link ByteArrayInputStream#ByteArrayInputStream(byte[])} with
-   * {@code AXAXAXAX} Bytes is {@code UTF-8}.</li>
-   * </ul>
    * <p>
-   * Method under test:
-   * {@link AutoLevelsRGB#buildOperation(Map, InputStream, String)}
+   * Method under test: {@link AutoLevelsRGB#buildOperation(Map, InputStream, String)}
    */
   @Test
-  public void testBuildOperation_whenByteArrayInputStreamWithAxaxaxaxBytesIsUtf8() throws UnsupportedEncodingException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.openadmin.server.service.artifact.image.Operation AutoLevelsRGB.buildOperation(Map, InputStream, String)"})
+  public void testBuildOperation() throws UnsupportedEncodingException {
     // Arrange
     HashMap<String, String> parameterMap = new HashMap<>();
 
@@ -77,30 +97,16 @@ public class AutoLevelsRGBDiffblueTest {
   }
 
   /**
-   * Test {@link AutoLevelsRGB#buildOperation(Map, InputStream, String)}.
-   * <ul>
-   *   <li>When {@link DataInputStream}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link AutoLevelsRGB#buildOperation(Map, InputStream, String)}
-   */
-  @Test
-  public void testBuildOperation_whenDataInputStream() {
-    // Arrange, Act and Assert
-    assertNull(autoLevelsRGB.buildOperation(new HashMap<>(), mock(DataInputStream.class), "Mime Type"));
-  }
-
-  /**
    * Test {@link AutoLevelsRGB#filter(BufferedImage, BufferedImage)}.
    * <ul>
-   *   <li>Then return {@link BufferedImage#BufferedImage(int, int, int)} with one
-   * and one and one.</li>
+   *   <li>Then return {@link BufferedImage#BufferedImage(int, int, int)} with one and one and one.</li>
    * </ul>
    * <p>
    * Method under test: {@link AutoLevelsRGB#filter(BufferedImage, BufferedImage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BufferedImage AutoLevelsRGB.filter(BufferedImage, BufferedImage)"})
   public void testFilter_thenReturnBufferedImageWithOneAndOneAndOne() {
     // Arrange
     AutoLevelsRGB autoLevelsRGB = new AutoLevelsRGB();

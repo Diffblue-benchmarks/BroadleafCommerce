@@ -1,121 +1,54 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.search.redirect.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import static org.mockito.Mockito.mock;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.Date;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class SearchRedirectImplDiffblueTest {
   @Autowired
   private SearchRedirectImpl searchRedirectImpl;
 
   /**
-   * Test {@link SearchRedirectImpl#isActive()}.
-   * <p>
-   * Method under test: {@link SearchRedirectImpl#isActive()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsActive() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.search.redirect.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1877 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.redirect.domain.SearchRedirectImpl searchRedirectImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SearchRedirectImpl()).isActive();
-  }
-
-  /**
    * Test {@link SearchRedirectImpl#getMainEntityName()}.
    * <p>
    * Method under test: {@link SearchRedirectImpl#getMainEntityName()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SearchRedirectImpl.getMainEntityName()"})
   public void testGetMainEntityName() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.search.redirect.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1869 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.redirect.domain.SearchRedirectImpl searchRedirectImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SearchRedirectImpl()).getMainEntityName();
-  }
-
-  /**
-   * Test {@link SearchRedirectImpl#getMainEntityName()}.
-   * <ul>
-   *   <li>Given {@link SearchRedirectImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SearchRedirectImpl#getMainEntityName()}
-   */
-  @Test
-  public void testGetMainEntityName_givenSearchRedirectImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new SearchRedirectImpl()).getMainEntityName());
-  }
-
-  /**
-   * Test {@link SearchRedirectImpl#getMainEntityName()}.
-   * <ul>
-   *   <li>Given {@link SearchRedirectImpl} (default constructor) ActiveStartDate is
-   * {@link Date}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SearchRedirectImpl#getMainEntityName()}
-   */
-  @Test
-  public void testGetMainEntityName_givenSearchRedirectImplActiveStartDateIsDate() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SearchRedirectImpl searchRedirectImpl = new SearchRedirectImpl();
-    searchRedirectImpl.setActiveStartDate(mock(java.sql.Date.class));
-
-    // Act and Assert
-    assertNull(searchRedirectImpl.getMainEntityName());
   }
 
   /**
@@ -139,6 +72,14 @@ public class SearchRedirectImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SearchRedirectImpl.<init>()", "Date SearchRedirectImpl.getActiveEndDate()",
+      "Date SearchRedirectImpl.getActiveStartDate()", "Long SearchRedirectImpl.getId()",
+      "Integer SearchRedirectImpl.getSearchPriority()", "String SearchRedirectImpl.getSearchTerm()",
+      "String SearchRedirectImpl.getUrl()", "void SearchRedirectImpl.setActiveEndDate(Date)",
+      "void SearchRedirectImpl.setActiveStartDate(Date)", "void SearchRedirectImpl.setId(Long)",
+      "void SearchRedirectImpl.setSearchPriority(Integer)", "void SearchRedirectImpl.setSearchTerm(String)",
+      "void SearchRedirectImpl.setUrl(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     SearchRedirectImpl actualSearchRedirectImpl = new SearchRedirectImpl();
@@ -156,7 +97,7 @@ public class SearchRedirectImplDiffblueTest {
     Integer actualSearchPriority = actualSearchRedirectImpl.getSearchPriority();
     String actualSearchTerm = actualSearchRedirectImpl.getSearchTerm();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Search Term", actualSearchTerm);
     assertEquals("https://example.org/example", actualSearchRedirectImpl.getUrl());
     assertEquals(1, actualSearchPriority.intValue());

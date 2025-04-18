@@ -20,8 +20,11 @@ package org.broadleafcommerce.common.persistence;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Map;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -39,6 +42,8 @@ public class TargetModeTypeDiffblueTest {
    * Method under test: {@link TargetModeType#getInstance(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"TargetModeType TargetModeType.getInstance(String)"})
   public void testGetInstance() {
     // Arrange and Act
     TargetModeType actualInstance = TargetModeType.getInstance("Type");
@@ -60,6 +65,9 @@ public class TargetModeTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TargetModeType.<init>()", "String TargetModeType.getFriendlyType()",
+      "String TargetModeType.getType()", "Map TargetModeType.getTypes()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     TargetModeType actualTargetModeType = new TargetModeType();
@@ -78,6 +86,8 @@ public class TargetModeTypeDiffblueTest {
    * Method under test: {@link TargetModeType#TargetModeType(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TargetModeType.<init>(String, String)"})
   public void testNewTargetModeType() {
     // Arrange and Act
     TargetModeType actualTargetModeType = new TargetModeType("Type", "Friendly Type");
@@ -88,8 +98,7 @@ public class TargetModeTypeDiffblueTest {
   }
 
   /**
-   * Test {@link TargetModeType#equals(Object)}, and
-   * {@link TargetModeType#hashCode()}.
+   * Test {@link TargetModeType#equals(Object)}, and {@link TargetModeType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -102,6 +111,8 @@ public class TargetModeTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean TargetModeType.equals(Object)", "int TargetModeType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     TargetModeType targetModeType = TargetModeType.PRODUCTION;
@@ -114,8 +125,7 @@ public class TargetModeTypeDiffblueTest {
   }
 
   /**
-   * Test {@link TargetModeType#equals(Object)}, and
-   * {@link TargetModeType#hashCode()}.
+   * Test {@link TargetModeType#equals(Object)}, and {@link TargetModeType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -128,6 +138,8 @@ public class TargetModeTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean TargetModeType.equals(Object)", "int TargetModeType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     TargetModeType targetModeType = new TargetModeType();
@@ -140,8 +152,7 @@ public class TargetModeTypeDiffblueTest {
   }
 
   /**
-   * Test {@link TargetModeType#equals(Object)}, and
-   * {@link TargetModeType#hashCode()}.
+   * Test {@link TargetModeType#equals(Object)}, and {@link TargetModeType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -154,6 +165,8 @@ public class TargetModeTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean TargetModeType.equals(Object)", "int TargetModeType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     TargetModeType targetModeType = new TargetModeType("production", "Friendly Type");
@@ -166,8 +179,7 @@ public class TargetModeTypeDiffblueTest {
   }
 
   /**
-   * Test {@link TargetModeType#equals(Object)}, and
-   * {@link TargetModeType#hashCode()}.
+   * Test {@link TargetModeType#equals(Object)}, and {@link TargetModeType#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -180,6 +192,8 @@ public class TargetModeTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean TargetModeType.equals(Object)", "int TargetModeType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     TargetModeType targetModeType = TargetModeType.PRODUCTION;
@@ -200,9 +214,27 @@ public class TargetModeTypeDiffblueTest {
    * Method under test: {@link TargetModeType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean TargetModeType.equals(Object)", "int TargetModeType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(TargetModeType.SANDBOX, TargetModeType.PRODUCTION);
+  }
+
+  /**
+   * Test {@link TargetModeType#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link TargetModeType#equals(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean TargetModeType.equals(Object)", "int TargetModeType.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange, Act and Assert
     assertNotEquals(new TargetModeType(), TargetModeType.PRODUCTION);
   }
 
@@ -216,6 +248,8 @@ public class TargetModeTypeDiffblueTest {
    * Method under test: {@link TargetModeType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean TargetModeType.equals(Object)", "int TargetModeType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(TargetModeType.PRODUCTION, null);
@@ -231,6 +265,8 @@ public class TargetModeTypeDiffblueTest {
    * Method under test: {@link TargetModeType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean TargetModeType.equals(Object)", "int TargetModeType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(TargetModeType.PRODUCTION, "Different type to TargetModeType");

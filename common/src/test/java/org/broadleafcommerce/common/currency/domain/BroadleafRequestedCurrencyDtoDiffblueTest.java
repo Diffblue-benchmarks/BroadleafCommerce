@@ -18,7 +18,10 @@
 package org.broadleafcommerce.common.currency.domain;
 
 import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class BroadleafRequestedCurrencyDtoDiffblueTest {
   /**
@@ -26,13 +29,16 @@ public class BroadleafRequestedCurrencyDtoDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>
-   * {@link BroadleafRequestedCurrencyDto#BroadleafRequestedCurrencyDto(BroadleafCurrency, BroadleafCurrency)}
+   *   <li>{@link BroadleafRequestedCurrencyDto#BroadleafRequestedCurrencyDto(BroadleafCurrency, BroadleafCurrency)}
    *   <li>{@link BroadleafRequestedCurrencyDto#getCurrencyToUse()}
    *   <li>{@link BroadleafRequestedCurrencyDto#getRequestedCurrency()}
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BroadleafRequestedCurrencyDto.<init>(BroadleafCurrency, BroadleafCurrency)",
+      "BroadleafCurrency BroadleafRequestedCurrencyDto.getCurrencyToUse()",
+      "BroadleafCurrency BroadleafRequestedCurrencyDto.getRequestedCurrency()"})
   public void testGettersAndSetters() {
     // Arrange
     BroadleafCurrencyImpl currencyToUse = new BroadleafCurrencyImpl();

@@ -18,7 +18,10 @@
 package org.broadleafcommerce.common.filter;
 
 import static org.junit.Assert.assertEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class FilterParameterDiffblueTest {
   /**
@@ -34,6 +37,10 @@ public class FilterParameterDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FilterParameter.<init>()", "String FilterParameter.getName()",
+      "String FilterParameter.getType()", "void FilterParameter.setName(String)",
+      "void FilterParameter.setType(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     FilterParameter actualFilterParameter = new FilterParameter();
@@ -41,7 +48,7 @@ public class FilterParameterDiffblueTest {
     actualFilterParameter.setType("Type");
     String actualName = actualFilterParameter.getName();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Name", actualName);
     assertEquals("Type", actualFilterParameter.getType());
   }

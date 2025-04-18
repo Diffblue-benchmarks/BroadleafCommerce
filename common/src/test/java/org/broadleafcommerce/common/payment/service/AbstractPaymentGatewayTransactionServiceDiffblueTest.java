@@ -18,19 +18,23 @@
 package org.broadleafcommerce.common.payment.service;
 
 import static org.junit.Assert.assertThrows;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.payment.dto.PaymentRequestDTO;
 import org.broadleafcommerce.common.vendor.service.exception.PaymentException;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class AbstractPaymentGatewayTransactionServiceDiffblueTest {
   /**
-   * Test
-   * {@link AbstractPaymentGatewayTransactionService#authorize(PaymentRequestDTO)}.
+   * Test {@link AbstractPaymentGatewayTransactionService#authorize(PaymentRequestDTO)}.
    * <p>
-   * Method under test:
-   * {@link AbstractPaymentGatewayTransactionService#authorize(PaymentRequestDTO)}
+   * Method under test: {@link AbstractPaymentGatewayTransactionService#authorize(PaymentRequestDTO)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.common.payment.dto.PaymentResponseDTO AbstractPaymentGatewayTransactionService.authorize(PaymentRequestDTO)"})
   public void testAuthorize() throws PaymentException {
     // Arrange
     AbstractPaymentGatewayTransactionService abstractPaymentGatewayTransactionService = new AbstractPaymentGatewayTransactionService();
@@ -41,13 +45,14 @@ public class AbstractPaymentGatewayTransactionServiceDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AbstractPaymentGatewayTransactionService#capture(PaymentRequestDTO)}.
+   * Test {@link AbstractPaymentGatewayTransactionService#capture(PaymentRequestDTO)}.
    * <p>
-   * Method under test:
-   * {@link AbstractPaymentGatewayTransactionService#capture(PaymentRequestDTO)}
+   * Method under test: {@link AbstractPaymentGatewayTransactionService#capture(PaymentRequestDTO)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.common.payment.dto.PaymentResponseDTO AbstractPaymentGatewayTransactionService.capture(PaymentRequestDTO)"})
   public void testCapture() throws PaymentException {
     // Arrange
     AbstractPaymentGatewayTransactionService abstractPaymentGatewayTransactionService = new AbstractPaymentGatewayTransactionService();
@@ -58,13 +63,14 @@ public class AbstractPaymentGatewayTransactionServiceDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AbstractPaymentGatewayTransactionService#authorizeAndCapture(PaymentRequestDTO)}.
+   * Test {@link AbstractPaymentGatewayTransactionService#authorizeAndCapture(PaymentRequestDTO)}.
    * <p>
-   * Method under test:
-   * {@link AbstractPaymentGatewayTransactionService#authorizeAndCapture(PaymentRequestDTO)}
+   * Method under test: {@link AbstractPaymentGatewayTransactionService#authorizeAndCapture(PaymentRequestDTO)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.common.payment.dto.PaymentResponseDTO AbstractPaymentGatewayTransactionService.authorizeAndCapture(PaymentRequestDTO)"})
   public void testAuthorizeAndCapture() throws PaymentException {
     // Arrange
     AbstractPaymentGatewayTransactionService abstractPaymentGatewayTransactionService = new AbstractPaymentGatewayTransactionService();
@@ -75,13 +81,14 @@ public class AbstractPaymentGatewayTransactionServiceDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AbstractPaymentGatewayTransactionService#reverseAuthorize(PaymentRequestDTO)}.
+   * Test {@link AbstractPaymentGatewayTransactionService#reverseAuthorize(PaymentRequestDTO)}.
    * <p>
-   * Method under test:
-   * {@link AbstractPaymentGatewayTransactionService#reverseAuthorize(PaymentRequestDTO)}
+   * Method under test: {@link AbstractPaymentGatewayTransactionService#reverseAuthorize(PaymentRequestDTO)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.common.payment.dto.PaymentResponseDTO AbstractPaymentGatewayTransactionService.reverseAuthorize(PaymentRequestDTO)"})
   public void testReverseAuthorize() throws PaymentException {
     // Arrange
     AbstractPaymentGatewayTransactionService abstractPaymentGatewayTransactionService = new AbstractPaymentGatewayTransactionService();
@@ -92,13 +99,14 @@ public class AbstractPaymentGatewayTransactionServiceDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AbstractPaymentGatewayTransactionService#refund(PaymentRequestDTO)}.
+   * Test {@link AbstractPaymentGatewayTransactionService#refund(PaymentRequestDTO)}.
    * <p>
-   * Method under test:
-   * {@link AbstractPaymentGatewayTransactionService#refund(PaymentRequestDTO)}
+   * Method under test: {@link AbstractPaymentGatewayTransactionService#refund(PaymentRequestDTO)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.common.payment.dto.PaymentResponseDTO AbstractPaymentGatewayTransactionService.refund(PaymentRequestDTO)"})
   public void testRefund() throws PaymentException {
     // Arrange
     AbstractPaymentGatewayTransactionService abstractPaymentGatewayTransactionService = new AbstractPaymentGatewayTransactionService();
@@ -109,13 +117,14 @@ public class AbstractPaymentGatewayTransactionServiceDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AbstractPaymentGatewayTransactionService#voidPayment(PaymentRequestDTO)}.
+   * Test {@link AbstractPaymentGatewayTransactionService#voidPayment(PaymentRequestDTO)}.
    * <p>
-   * Method under test:
-   * {@link AbstractPaymentGatewayTransactionService#voidPayment(PaymentRequestDTO)}
+   * Method under test: {@link AbstractPaymentGatewayTransactionService#voidPayment(PaymentRequestDTO)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.common.payment.dto.PaymentResponseDTO AbstractPaymentGatewayTransactionService.voidPayment(PaymentRequestDTO)"})
   public void testVoidPayment() throws PaymentException {
     // Arrange
     AbstractPaymentGatewayTransactionService abstractPaymentGatewayTransactionService = new AbstractPaymentGatewayTransactionService();
@@ -123,23 +132,5 @@ public class AbstractPaymentGatewayTransactionServiceDiffblueTest {
     // Act and Assert
     assertThrows(UnsupportedOperationException.class,
         () -> abstractPaymentGatewayTransactionService.voidPayment(new PaymentRequestDTO()));
-  }
-
-  /**
-   * Test new {@link AbstractPaymentGatewayTransactionService} (default
-   * constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link AbstractPaymentGatewayTransactionService}
-   */
-  @Test
-  public void testNewAbstractPaymentGatewayTransactionService() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing observers.
-    //   Diffblue Cover was unable to create an assertion.
-    //   There are no fields that could be asserted on.
-
-    // Arrange and Act
-    new AbstractPaymentGatewayTransactionService();
   }
 }

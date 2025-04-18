@@ -23,34 +23,37 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.ehcache.event.CacheEvent;
 import org.ehcache.event.EventType;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class EhcacheHydratedCacheEventListenerDiffblueTest {
   /**
    * Test {@link EhcacheHydratedCacheEventListener#onEvent(CacheEvent)}.
    * <ul>
    *   <li>Given {@code CREATED}.</li>
-   *   <li>When {@link CacheEvent} {@link CacheEvent#getType()} return
-   * {@code CREATED}.</li>
+   *   <li>When {@link CacheEvent} {@link CacheEvent#getType()} return {@code CREATED}.</li>
    *   <li>Then calls {@link CacheEvent#getType()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link EhcacheHydratedCacheEventListener#onEvent(CacheEvent)}
+   * Method under test: {@link EhcacheHydratedCacheEventListener#onEvent(CacheEvent)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void EhcacheHydratedCacheEventListener.onEvent(CacheEvent)"})
   public void testOnEvent_givenCreated_whenCacheEventGetTypeReturnCreated_thenCallsGetType() {
     // Arrange
     EhcacheHydratedCacheEventListener ehcacheHydratedCacheEventListener = new EhcacheHydratedCacheEventListener();
-    CacheEvent cacheEvent = mock(CacheEvent.class);
+    CacheEvent<Object, Object> cacheEvent = mock(CacheEvent.class);
     when(cacheEvent.getType()).thenReturn(EventType.CREATED);
 
     // Act
     ehcacheHydratedCacheEventListener.onEvent(cacheEvent);
 
-    // Assert that nothing has changed
+    // Assert
     verify(cacheEvent, atLeast(1)).getType();
   }
 
@@ -58,19 +61,19 @@ public class EhcacheHydratedCacheEventListenerDiffblueTest {
    * Test {@link EhcacheHydratedCacheEventListener#onEvent(CacheEvent)}.
    * <ul>
    *   <li>Given {@code EVICTED}.</li>
-   *   <li>When {@link CacheEvent} {@link CacheEvent#getType()} return
-   * {@code EVICTED}.</li>
+   *   <li>When {@link CacheEvent} {@link CacheEvent#getType()} return {@code EVICTED}.</li>
    *   <li>Then calls {@link CacheEvent#getKey()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link EhcacheHydratedCacheEventListener#onEvent(CacheEvent)}
+   * Method under test: {@link EhcacheHydratedCacheEventListener#onEvent(CacheEvent)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void EhcacheHydratedCacheEventListener.onEvent(CacheEvent)"})
   public void testOnEvent_givenEvicted_whenCacheEventGetTypeReturnEvicted_thenCallsGetKey() {
     // Arrange
     EhcacheHydratedCacheEventListener ehcacheHydratedCacheEventListener = new EhcacheHydratedCacheEventListener();
-    CacheEvent cacheEvent = mock(CacheEvent.class);
+    CacheEvent<Object, Object> cacheEvent = mock(CacheEvent.class);
     when(cacheEvent.getKey()).thenReturn(1);
     when(cacheEvent.getType()).thenReturn(EventType.EVICTED);
 
@@ -86,19 +89,19 @@ public class EhcacheHydratedCacheEventListenerDiffblueTest {
    * Test {@link EhcacheHydratedCacheEventListener#onEvent(CacheEvent)}.
    * <ul>
    *   <li>Given {@code EXPIRED}.</li>
-   *   <li>When {@link CacheEvent} {@link CacheEvent#getType()} return
-   * {@code EXPIRED}.</li>
+   *   <li>When {@link CacheEvent} {@link CacheEvent#getType()} return {@code EXPIRED}.</li>
    *   <li>Then calls {@link CacheEvent#getKey()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link EhcacheHydratedCacheEventListener#onEvent(CacheEvent)}
+   * Method under test: {@link EhcacheHydratedCacheEventListener#onEvent(CacheEvent)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void EhcacheHydratedCacheEventListener.onEvent(CacheEvent)"})
   public void testOnEvent_givenExpired_whenCacheEventGetTypeReturnExpired_thenCallsGetKey() {
     // Arrange
     EhcacheHydratedCacheEventListener ehcacheHydratedCacheEventListener = new EhcacheHydratedCacheEventListener();
-    CacheEvent cacheEvent = mock(CacheEvent.class);
+    CacheEvent<Object, Object> cacheEvent = mock(CacheEvent.class);
     when(cacheEvent.getKey()).thenReturn(1);
     when(cacheEvent.getType()).thenReturn(EventType.EXPIRED);
 
@@ -114,19 +117,19 @@ public class EhcacheHydratedCacheEventListenerDiffblueTest {
    * Test {@link EhcacheHydratedCacheEventListener#onEvent(CacheEvent)}.
    * <ul>
    *   <li>Given {@code REMOVED}.</li>
-   *   <li>When {@link CacheEvent} {@link CacheEvent#getType()} return
-   * {@code REMOVED}.</li>
+   *   <li>When {@link CacheEvent} {@link CacheEvent#getType()} return {@code REMOVED}.</li>
    *   <li>Then calls {@link CacheEvent#getKey()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link EhcacheHydratedCacheEventListener#onEvent(CacheEvent)}
+   * Method under test: {@link EhcacheHydratedCacheEventListener#onEvent(CacheEvent)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void EhcacheHydratedCacheEventListener.onEvent(CacheEvent)"})
   public void testOnEvent_givenRemoved_whenCacheEventGetTypeReturnRemoved_thenCallsGetKey() {
     // Arrange
     EhcacheHydratedCacheEventListener ehcacheHydratedCacheEventListener = new EhcacheHydratedCacheEventListener();
-    CacheEvent cacheEvent = mock(CacheEvent.class);
+    CacheEvent<Object, Object> cacheEvent = mock(CacheEvent.class);
     when(cacheEvent.getKey()).thenReturn(1);
     when(cacheEvent.getType()).thenReturn(EventType.REMOVED);
 
@@ -142,19 +145,19 @@ public class EhcacheHydratedCacheEventListenerDiffblueTest {
    * Test {@link EhcacheHydratedCacheEventListener#onEvent(CacheEvent)}.
    * <ul>
    *   <li>Given {@code UPDATED}.</li>
-   *   <li>When {@link CacheEvent} {@link CacheEvent#getType()} return
-   * {@code UPDATED}.</li>
+   *   <li>When {@link CacheEvent} {@link CacheEvent#getType()} return {@code UPDATED}.</li>
    *   <li>Then calls {@link CacheEvent#getKey()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link EhcacheHydratedCacheEventListener#onEvent(CacheEvent)}
+   * Method under test: {@link EhcacheHydratedCacheEventListener#onEvent(CacheEvent)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void EhcacheHydratedCacheEventListener.onEvent(CacheEvent)"})
   public void testOnEvent_givenUpdated_whenCacheEventGetTypeReturnUpdated_thenCallsGetKey() {
     // Arrange
     EhcacheHydratedCacheEventListener ehcacheHydratedCacheEventListener = new EhcacheHydratedCacheEventListener();
-    CacheEvent cacheEvent = mock(CacheEvent.class);
+    CacheEvent<Object, Object> cacheEvent = mock(CacheEvent.class);
     when(cacheEvent.getKey()).thenReturn(1);
     when(cacheEvent.getType()).thenReturn(EventType.UPDATED);
 
@@ -169,10 +172,11 @@ public class EhcacheHydratedCacheEventListenerDiffblueTest {
   /**
    * Test {@link EhcacheHydratedCacheEventListener#useCacheRegionInKey()}.
    * <p>
-   * Method under test:
-   * {@link EhcacheHydratedCacheEventListener#useCacheRegionInKey()}
+   * Method under test: {@link EhcacheHydratedCacheEventListener#useCacheRegionInKey()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EhcacheHydratedCacheEventListener.useCacheRegionInKey()"})
   public void testUseCacheRegionInKey() {
     // Arrange, Act and Assert
     assertFalse((new EhcacheHydratedCacheEventListener()).useCacheRegionInKey());
@@ -181,10 +185,11 @@ public class EhcacheHydratedCacheEventListenerDiffblueTest {
   /**
    * Test new {@link EhcacheHydratedCacheEventListener} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link EhcacheHydratedCacheEventListener}
+   * Method under test: default or parameterless constructor of {@link EhcacheHydratedCacheEventListener}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void EhcacheHydratedCacheEventListener.<init>()"})
   public void testNewEhcacheHydratedCacheEventListener() {
     // Arrange, Act and Assert
     assertEquals(EhcacheHydratedCacheManagerImpl.HYDRATED_CACHE_NAME,

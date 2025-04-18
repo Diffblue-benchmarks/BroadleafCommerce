@@ -18,11 +18,12 @@
 package org.broadleafcommerce.common.i18n.service;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import org.broadleafcommerce.common.classloader.release.ThreadLocalManager;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.util.BLCFieldUtils;
 import org.broadleafcommerce.common.web.BroadleafRequestContext;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class DynamicTranslationProviderDiffblueTest {
   /**
@@ -31,10 +32,11 @@ public class DynamicTranslationProviderDiffblueTest {
    *   <li>When BroadleafRequestContext is {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicTranslationProvider#getValue(Object, String, String)}
+   * Method under test: {@link DynamicTranslationProvider#getValue(Object, String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String DynamicTranslationProvider.getValue(Object, String, String)"})
   public void testGetValue_whenBroadleafRequestContextIsTrue() {
     // Arrange, Act and Assert
     assertEquals("42",
@@ -47,10 +49,11 @@ public class DynamicTranslationProviderDiffblueTest {
    *   <li>When {@link BLCFieldUtils#NULL_FIELD}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicTranslationProvider#getValue(Object, String, String)}
+   * Method under test: {@link DynamicTranslationProvider#getValue(Object, String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String DynamicTranslationProvider.getValue(Object, String, String)"})
   public void testGetValue_whenNull_field() {
     // Arrange, Act and Assert
     assertEquals("42", DynamicTranslationProvider.getValue(BLCFieldUtils.NULL_FIELD, "Field", "42"));
@@ -59,28 +62,14 @@ public class DynamicTranslationProviderDiffblueTest {
   /**
    * Test {@link DynamicTranslationProvider#getValue(Object, String, String)}.
    * <ul>
-   *   <li>When {@link ThreadLocalManager}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link DynamicTranslationProvider#getValue(Object, String, String)}
-   */
-  @Test
-  public void testGetValue_whenThreadLocalManager() {
-    // Arrange, Act and Assert
-    assertEquals("42", DynamicTranslationProvider.getValue(mock(ThreadLocalManager.class), "Field", "42"));
-  }
-
-  /**
-   * Test {@link DynamicTranslationProvider#getValue(Object, String, String)}.
-   * <ul>
    *   <li>When {@link TranslationConsiderationContext} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link DynamicTranslationProvider#getValue(Object, String, String)}
+   * Method under test: {@link DynamicTranslationProvider#getValue(Object, String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String DynamicTranslationProvider.getValue(Object, String, String)"})
   public void testGetValue_whenTranslationConsiderationContext() {
     // Arrange, Act and Assert
     assertEquals("42", DynamicTranslationProvider.getValue(new TranslationConsiderationContext(), "Field", "42"));

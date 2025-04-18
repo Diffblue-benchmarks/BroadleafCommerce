@@ -19,7 +19,10 @@ package org.broadleafcommerce.common.payment;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class CreditCardTypeCheckDiffblueTest {
   /**
@@ -32,6 +35,8 @@ public class CreditCardTypeCheckDiffblueTest {
    * Method under test: {@link CreditCardTypeCheck#getCreditCardType(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreditCardType CreditCardTypeCheck.getCreditCardType(String)"})
   public void testGetCreditCardType_when201421490911_thenThrowRuntimeException() {
     // Arrange, Act and Assert
     assertThrows(RuntimeException.class, () -> CreditCardTypeCheck.getCreditCardType("(2014)?(2149)?[0-9]{11}"));
@@ -47,6 +52,8 @@ public class CreditCardTypeCheckDiffblueTest {
    * Method under test: {@link CreditCardTypeCheck#getCreditCardType(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreditCardType CreditCardTypeCheck.getCreditCardType(String)"})
   public void testGetCreditCardType_when4999999999999_thenReturnTypeIsVisa() {
     // Arrange and Act
     CreditCardType actualCreditCardType = CreditCardTypeCheck.getCreditCardType("4999999999999");
@@ -65,6 +72,8 @@ public class CreditCardTypeCheckDiffblueTest {
    * Method under test: {@link CreditCardTypeCheck#getCreditCardType(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreditCardType CreditCardTypeCheck.getCreditCardType(String)"})
   public void testGetCreditCardType_when3638999999999999() {
     // Arrange and Act
     CreditCardType actualCreditCardType = CreditCardTypeCheck.getCreditCardType("3638999999999999");
@@ -84,6 +93,8 @@ public class CreditCardTypeCheckDiffblueTest {
    * Method under test: {@link CreditCardTypeCheck#getCreditCardType(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreditCardType CreditCardTypeCheck.getCreditCardType(String)"})
   public void testGetCreditCardType_when3999999999999999_thenReturnFriendlyTypeIsJcb() {
     // Arrange and Act
     CreditCardType actualCreditCardType = CreditCardTypeCheck.getCreditCardType("3999999999999999");
@@ -103,6 +114,8 @@ public class CreditCardTypeCheckDiffblueTest {
    * Method under test: {@link CreditCardTypeCheck#getCreditCardType(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreditCardType CreditCardTypeCheck.getCreditCardType(String)"})
   public void testGetCreditCardType_when4999999999999999_thenReturnTypeIsVisa() {
     // Arrange and Act
     CreditCardType actualCreditCardType = CreditCardTypeCheck.getCreditCardType("4999999999999999");
@@ -122,6 +135,8 @@ public class CreditCardTypeCheckDiffblueTest {
    * Method under test: {@link CreditCardTypeCheck#getCreditCardType(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreditCardType CreditCardTypeCheck.getCreditCardType(String)"})
   public void testGetCreditCardType_when6011999999999999_thenReturnTypeIsDiscover() {
     // Arrange and Act
     CreditCardType actualCreditCardType = CreditCardTypeCheck.getCreditCardType("6011999999999999");
@@ -141,6 +156,8 @@ public class CreditCardTypeCheckDiffblueTest {
    * Method under test: {@link CreditCardTypeCheck#getCreditCardType(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreditCardType CreditCardTypeCheck.getCreditCardType(String)"})
   public void testGetCreditCardType_when34379999999999999_thenReturnTypeIsAmex() {
     // Arrange and Act
     CreditCardType actualCreditCardType = CreditCardTypeCheck.getCreditCardType("34379999999999999");
@@ -160,6 +177,8 @@ public class CreditCardTypeCheckDiffblueTest {
    * Method under test: {@link CreditCardTypeCheck#getCreditCardType(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreditCardType CreditCardTypeCheck.getCreditCardType(String)"})
   public void testGetCreditCardType_when2014214999999999999_thenReturnTypeIsEnroute() {
     // Arrange and Act
     CreditCardType actualCreditCardType = CreditCardTypeCheck.getCreditCardType("2014214999999999999");
@@ -179,6 +198,8 @@ public class CreditCardTypeCheckDiffblueTest {
    * Method under test: {@link CreditCardTypeCheck#getCreditCardType(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreditCardType CreditCardTypeCheck.getCreditCardType(String)"})
   public void testGetCreditCardType_when2131180099999999999_thenReturnFriendlyTypeIsJcb() {
     // Arrange and Act
     CreditCardType actualCreditCardType = CreditCardTypeCheck.getCreditCardType("2131180099999999999");
@@ -198,6 +219,8 @@ public class CreditCardTypeCheckDiffblueTest {
    * Method under test: {@link CreditCardTypeCheck#getCreditCardType(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreditCardType CreditCardTypeCheck.getCreditCardType(String)"})
   public void testGetCreditCardType_when515253545599999999999999_thenReturnTypeIsMastercard() {
     // Arrange and Act
     CreditCardType actualCreditCardType = CreditCardTypeCheck.getCreditCardType("515253545599999999999999");
@@ -216,6 +239,8 @@ public class CreditCardTypeCheckDiffblueTest {
    * Method under test: {@link CreditCardTypeCheck#getCreditCardType(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreditCardType CreditCardTypeCheck.getCreditCardType(String)"})
   public void testGetCreditCardType_when30030130230330430599999999999() {
     // Arrange and Act
     CreditCardType actualCreditCardType = CreditCardTypeCheck.getCreditCardType("30030130230330430599999999999");

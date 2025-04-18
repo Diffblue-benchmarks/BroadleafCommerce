@@ -18,7 +18,10 @@
 package org.broadleafcommerce.common.payment;
 
 import static org.junit.Assert.assertEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class UnmaskRangeDiffblueTest {
   /**
@@ -32,6 +35,9 @@ public class UnmaskRangeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void UnmaskRange.<init>(int, int)", "int UnmaskRange.getLength()",
+      "int UnmaskRange.getPositionType()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     UnmaskRange actualUnmaskRange = new UnmaskRange(1, 3);

@@ -1,35 +1,42 @@
+/*-
+ * #%L
+ * BroadleafCommerce Admin Module
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.admin.server.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.BiFunction;
-import org.broadleafcommerce.openadmin.dto.FieldMetadata;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.junit.experimental.categories.Category;
 
-@ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml", "/bl-admin-applicationContext.xml",
-    "/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class SkuMetadataCacheServiceImplDiffblueTest {
-  @Autowired
-  private SkuMetadataCacheServiceImpl skuMetadataCacheServiceImpl;
-
   /**
    * Test {@link SkuMetadataCacheServiceImpl#getEntireCache()}.
    * <p>
    * Method under test: {@link SkuMetadataCacheServiceImpl#getEntireCache()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map SkuMetadataCacheServiceImpl.getEntireCache()"})
   public void testGetEntireCache() {
     // Arrange, Act and Assert
     assertTrue((new SkuMetadataCacheServiceImpl()).getEntireCache().isEmpty());
@@ -41,65 +48,9 @@ public class SkuMetadataCacheServiceImplDiffblueTest {
    * Method under test: {@link SkuMetadataCacheServiceImpl#useCache()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuMetadataCacheServiceImpl.useCache()"})
   public void testUseCache() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass271 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.SkuMetadataCacheServiceImpl skuMetadataCacheServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuMetadataCacheServiceImpl()).useCache();
-  }
-
-  /**
-   * Test {@link SkuMetadataCacheServiceImpl#useCache()}.
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} computeIfPresent {@code foo} and
-   * {@link BiFunction}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuMetadataCacheServiceImpl#useCache()}
-   */
-  @Test
-  public void testUseCache_givenHashMapComputeIfPresentFooAndBiFunction() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    HashMap<String, FieldMetadata> metadata = new HashMap<>();
-    metadata.computeIfPresent("foo", mock(BiFunction.class));
-
-    SkuMetadataCacheServiceImpl skuMetadataCacheServiceImpl = new SkuMetadataCacheServiceImpl();
-    skuMetadataCacheServiceImpl.addToCache("Cache Key", metadata);
-
-    // Act and Assert
-    assertFalse(skuMetadataCacheServiceImpl.useCache());
-  }
-
-  /**
-   * Test {@link SkuMetadataCacheServiceImpl#useCache()}.
-   * <ul>
-   *   <li>Given {@link SkuMetadataCacheServiceImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuMetadataCacheServiceImpl#useCache()}
-   */
-  @Test
-  public void testUseCache_givenSkuMetadataCacheServiceImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertFalse((new SkuMetadataCacheServiceImpl()).useCache());
   }
@@ -110,65 +61,9 @@ public class SkuMetadataCacheServiceImplDiffblueTest {
    * Method under test: {@link SkuMetadataCacheServiceImpl#getFromCache(String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map SkuMetadataCacheServiceImpl.getFromCache(String)"})
   public void testGetFromCache() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass99 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.SkuMetadataCacheServiceImpl skuMetadataCacheServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuMetadataCacheServiceImpl()).getFromCache("Cache Key");
-  }
-
-  /**
-   * Test {@link SkuMetadataCacheServiceImpl#getFromCache(String)}.
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} computeIfPresent {@code foo} and
-   * {@link BiFunction}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuMetadataCacheServiceImpl#getFromCache(String)}
-   */
-  @Test
-  public void testGetFromCache_givenHashMapComputeIfPresentFooAndBiFunction() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    HashMap<String, FieldMetadata> metadata = new HashMap<>();
-    metadata.computeIfPresent("foo", mock(BiFunction.class));
-
-    SkuMetadataCacheServiceImpl skuMetadataCacheServiceImpl = new SkuMetadataCacheServiceImpl();
-    skuMetadataCacheServiceImpl.addToCache("Cache Key", metadata);
-
-    // Act and Assert
-    assertNull(skuMetadataCacheServiceImpl.getFromCache("Cache Key"));
-  }
-
-  /**
-   * Test {@link SkuMetadataCacheServiceImpl#getFromCache(String)}.
-   * <ul>
-   *   <li>Given {@link SkuMetadataCacheServiceImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuMetadataCacheServiceImpl#getFromCache(String)}
-   */
-  @Test
-  public void testGetFromCache_givenSkuMetadataCacheServiceImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new SkuMetadataCacheServiceImpl()).getFromCache("Cache Key"));
   }
@@ -176,74 +71,12 @@ public class SkuMetadataCacheServiceImplDiffblueTest {
   /**
    * Test {@link SkuMetadataCacheServiceImpl#addToCache(String, Map)}.
    * <p>
-   * Method under test:
-   * {@link SkuMetadataCacheServiceImpl#addToCache(String, Map)}
+   * Method under test: {@link SkuMetadataCacheServiceImpl#addToCache(String, Map)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuMetadataCacheServiceImpl.addToCache(String, Map)"})
   public void testAddToCache() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass0 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.SkuMetadataCacheServiceImpl skuMetadataCacheServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    SkuMetadataCacheServiceImpl skuMetadataCacheServiceImpl2 = new SkuMetadataCacheServiceImpl();
-
-    // Act
-    skuMetadataCacheServiceImpl2.addToCache("Cache Key", new HashMap<>());
-  }
-
-  /**
-   * Test {@link SkuMetadataCacheServiceImpl#addToCache(String, Map)}.
-   * <ul>
-   *   <li>Given {@code foo}.</li>
-   *   <li>When {@link HashMap#HashMap()} computeIfPresent {@code foo} and
-   * {@link BiFunction}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SkuMetadataCacheServiceImpl#addToCache(String, Map)}
-   */
-  @Test
-  public void testAddToCache_givenFoo_whenHashMapComputeIfPresentFooAndBiFunction() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SkuMetadataCacheServiceImpl skuMetadataCacheServiceImpl = new SkuMetadataCacheServiceImpl();
-
-    HashMap<String, FieldMetadata> metadata = new HashMap<>();
-    metadata.computeIfPresent("foo", mock(BiFunction.class));
-
-    // Act and Assert
-    assertFalse(skuMetadataCacheServiceImpl.addToCache("Cache Key", metadata));
-  }
-
-  /**
-   * Test {@link SkuMetadataCacheServiceImpl#addToCache(String, Map)}.
-   * <ul>
-   *   <li>When {@link HashMap#HashMap()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SkuMetadataCacheServiceImpl#addToCache(String, Map)}
-   */
-  @Test
-  public void testAddToCache_whenHashMap() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     SkuMetadataCacheServiceImpl skuMetadataCacheServiceImpl = new SkuMetadataCacheServiceImpl();
 
@@ -252,102 +85,17 @@ public class SkuMetadataCacheServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link SkuMetadataCacheServiceImpl#invalidateFromCache(String)}.
-   * <p>
-   * Method under test:
-   * {@link SkuMetadataCacheServiceImpl#invalidateFromCache(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testInvalidateFromCache() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass185 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.SkuMetadataCacheServiceImpl skuMetadataCacheServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuMetadataCacheServiceImpl()).invalidateFromCache("Cache Key");
-  }
-
-  /**
-   * Test {@link SkuMetadataCacheServiceImpl#buildCacheKey(String)}.
-   * <p>
-   * Method under test: {@link SkuMetadataCacheServiceImpl#buildCacheKey(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testBuildCacheKey() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.server.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass13 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.SkuMetadataCacheServiceImpl skuMetadataCacheServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new SkuMetadataCacheServiceImpl()).buildCacheKey("42");
-  }
-
-  /**
    * Test {@link SkuMetadataCacheServiceImpl#buildCacheKey(String)}.
    * <ul>
-   *   <li>Given {@link HashMap#HashMap()} computeIfPresent {@code foo} and
-   * {@link BiFunction}.</li>
+   *   <li>Then return {@code org.broadleafcommerce.core.catalog.domain.SkuImpl}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuMetadataCacheServiceImpl#buildCacheKey(String)}
    */
   @Test
-  public void testBuildCacheKey_givenHashMapComputeIfPresentFooAndBiFunction() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    HashMap<String, FieldMetadata> metadata = new HashMap<>();
-    metadata.computeIfPresent("foo", mock(BiFunction.class));
-
-    SkuMetadataCacheServiceImpl skuMetadataCacheServiceImpl = new SkuMetadataCacheServiceImpl();
-    skuMetadataCacheServiceImpl.addToCache("_", metadata);
-
-    // Act and Assert
-    assertEquals("org.broadleafcommerce.core.catalog.domain.SkuImpl_42",
-        skuMetadataCacheServiceImpl.buildCacheKey("42"));
-  }
-
-  /**
-   * Test {@link SkuMetadataCacheServiceImpl#buildCacheKey(String)}.
-   * <ul>
-   *   <li>Then return
-   * {@code org.broadleafcommerce.core.catalog.domain.SkuImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuMetadataCacheServiceImpl#buildCacheKey(String)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuMetadataCacheServiceImpl.buildCacheKey(String)"})
   public void testBuildCacheKey_thenReturnOrgBroadleafcommerceCoreCatalogDomainSkuImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertEquals("org.broadleafcommerce.core.catalog.domain.SkuImpl",
         (new SkuMetadataCacheServiceImpl()).buildCacheKey(null));
@@ -356,16 +104,15 @@ public class SkuMetadataCacheServiceImplDiffblueTest {
   /**
    * Test {@link SkuMetadataCacheServiceImpl#buildCacheKey(String)}.
    * <ul>
-   *   <li>Then return
-   * {@code org.broadleafcommerce.core.catalog.domain.SkuImpl_42}.</li>
+   *   <li>Then return {@code org.broadleafcommerce.core.catalog.domain.SkuImpl_42}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SkuMetadataCacheServiceImpl#buildCacheKey(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuMetadataCacheServiceImpl.buildCacheKey(String)"})
   public void testBuildCacheKey_thenReturnOrgBroadleafcommerceCoreCatalogDomainSkuImpl42() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertEquals("org.broadleafcommerce.core.catalog.domain.SkuImpl_42",
         (new SkuMetadataCacheServiceImpl()).buildCacheKey("42"));

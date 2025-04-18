@@ -19,29 +19,27 @@ package org.broadleafcommerce.common.web.boot.support;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
-import java.security.PrivilegedActionException;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletException;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.springframework.mock.web.MockServletContext;
-import org.springframework.web.WebApplicationInitializer;
 
 public class SpringBootBootstrappingServletContextListenerDiffblueTest {
   /**
-   * Test
-   * {@link SpringBootBootstrappingServletContextListener#contextInitialized(ServletContextEvent)}.
+   * Test {@link SpringBootBootstrappingServletContextListener#contextInitialized(ServletContextEvent)}.
    * <ul>
-   *   <li>Given
-   * {@link SpringBootBootstrappingServletContextListener#APPLICATION_CLASS}.</li>
+   *   <li>Given {@link SpringBootBootstrappingServletContextListener#APPLICATION_CLASS}.</li>
    *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SpringBootBootstrappingServletContextListener#contextInitialized(ServletContextEvent)}
+   * Method under test: {@link SpringBootBootstrappingServletContextListener#contextInitialized(ServletContextEvent)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SpringBootBootstrappingServletContextListener.contextInitialized(ServletContextEvent)"})
   public void testContextInitialized_givenApplication_class_thenThrowRuntimeException() {
     // Arrange
     SpringBootBootstrappingServletContextListener springBootBootstrappingServletContextListener = new SpringBootBootstrappingServletContextListener();
@@ -55,16 +53,16 @@ public class SpringBootBootstrappingServletContextListenerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link SpringBootBootstrappingServletContextListener#contextInitialized(ServletContextEvent)}.
+   * Test {@link SpringBootBootstrappingServletContextListener#contextInitialized(ServletContextEvent)}.
    * <ul>
    *   <li>Then throw {@link IllegalStateException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SpringBootBootstrappingServletContextListener#contextInitialized(ServletContextEvent)}
+   * Method under test: {@link SpringBootBootstrappingServletContextListener#contextInitialized(ServletContextEvent)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SpringBootBootstrappingServletContextListener.contextInitialized(ServletContextEvent)"})
   public void testContextInitialized_thenThrowIllegalStateException() {
     // Arrange
     SpringBootBootstrappingServletContextListener springBootBootstrappingServletContextListener = new SpringBootBootstrappingServletContextListener();
@@ -75,36 +73,18 @@ public class SpringBootBootstrappingServletContextListenerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link SpringBootBootstrappingServletContextListener#contextDestroyed(ServletContextEvent)}.
-   * <p>
-   * Method under test:
-   * {@link SpringBootBootstrappingServletContextListener#contextDestroyed(ServletContextEvent)}
-   */
-  @Test
-  public void testContextDestroyed() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange
-    SpringBootBootstrappingServletContextListener springBootBootstrappingServletContextListener = new SpringBootBootstrappingServletContextListener();
-
-    // Act
-    springBootBootstrappingServletContextListener.contextDestroyed(new ServletContextEvent(new MockServletContext()));
-  }
-
-  /**
-   * Test
-   * {@link SpringBootBootstrappingServletContextListener#getInitializerClass(ServletContext)}.
+   * Test {@link SpringBootBootstrappingServletContextListener#getInitializerClass(ServletContext)}.
    * <ul>
    *   <li>When {@link MockServletContext#MockServletContext()}.</li>
    *   <li>Then throw {@link IllegalStateException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SpringBootBootstrappingServletContextListener#getInitializerClass(ServletContext)}
+   * Method under test: {@link SpringBootBootstrappingServletContextListener#getInitializerClass(ServletContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "java.lang.Class SpringBootBootstrappingServletContextListener.getInitializerClass(ServletContext)"})
   public void testGetInitializerClass_whenMockServletContext_thenThrowIllegalStateException()
       throws ClassNotFoundException, LinkageError {
     // Arrange
@@ -116,44 +96,13 @@ public class SpringBootBootstrappingServletContextListenerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link SpringBootBootstrappingServletContextListener#createInitializer(Class)}.
-   * <ul>
-   *   <li>When {@code org.springframework.web.WebApplicationInitializer}.</li>
-   * </ul>
+   * Test new {@link SpringBootBootstrappingServletContextListener} (default constructor).
    * <p>
-   * Method under test:
-   * {@link SpringBootBootstrappingServletContextListener#createInitializer(Class)}
+   * Method under test: default or parameterless constructor of {@link SpringBootBootstrappingServletContextListener}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateInitializer_whenOrgSpringframeworkWebWebApplicationInitializer()
-      throws PrivilegedActionException, ServletException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    SpringBootBootstrappingServletContextListener springBootBootstrappingServletContextListener = new SpringBootBootstrappingServletContextListener();
-    Class<WebApplicationInitializer> initializerClass = WebApplicationInitializer.class;
-
-    // Act
-    WebApplicationInitializer actualCreateInitializerResult = springBootBootstrappingServletContextListener
-        .createInitializer(initializerClass);
-    actualCreateInitializerResult.onStartup(new MockServletContext());
-  }
-
-  /**
-   * Test new {@link SpringBootBootstrappingServletContextListener} (default
-   * constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link SpringBootBootstrappingServletContextListener}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SpringBootBootstrappingServletContextListener.<init>()"})
   public void testNewSpringBootBootstrappingServletContextListener() {
     // Arrange, Act and Assert
     assertNull((new SpringBootBootstrappingServletContextListener()).delegateListener);

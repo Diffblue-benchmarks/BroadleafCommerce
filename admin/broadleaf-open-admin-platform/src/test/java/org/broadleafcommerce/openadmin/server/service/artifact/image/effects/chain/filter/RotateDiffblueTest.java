@@ -1,27 +1,41 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.server.service.artifact.image.effects.chain.filter;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Rectangle;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.awt.RenderingHints;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBuffer;
-import java.awt.image.DataBufferInt;
-import java.awt.image.Raster;
-import java.awt.image.WritableRaster;
+import java.awt.image.ColorModel;
+import java.awt.image.DirectColorModel;
+import java.awt.image.SampleModel;
+import java.awt.image.SinglePixelPackedSampleModel;
 import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -39,6 +53,8 @@ public class RotateDiffblueTest {
    * Method under test: {@link Rotate#Rotate()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Rotate.<init>()"})
   public void testNewRotate() {
     // Arrange and Act
     Rotate actualRotate = new Rotate();
@@ -54,6 +70,8 @@ public class RotateDiffblueTest {
    * Method under test: {@link Rotate#Rotate(double, RenderingHints)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Rotate.<init>(double, RenderingHints)"})
   public void testNewRotate2() {
     // Arrange and Act
     Rotate actualRotate = new Rotate(10.0d, null);
@@ -65,15 +83,14 @@ public class RotateDiffblueTest {
 
   /**
    * Test {@link Rotate#buildOperation(Map, InputStream, String)}.
-   * <ul>
-   *   <li>When {@link ByteArrayInputStream#ByteArrayInputStream(byte[])} with
-   * {@code AXAXAXAX} Bytes is {@code UTF-8}.</li>
-   * </ul>
    * <p>
    * Method under test: {@link Rotate#buildOperation(Map, InputStream, String)}
    */
   @Test
-  public void testBuildOperation_whenByteArrayInputStreamWithAxaxaxaxBytesIsUtf8() throws UnsupportedEncodingException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.openadmin.server.service.artifact.image.Operation Rotate.buildOperation(Map, InputStream, String)"})
+  public void testBuildOperation() throws UnsupportedEncodingException {
     // Arrange
     HashMap<String, String> parameterMap = new HashMap<>();
 
@@ -83,29 +100,16 @@ public class RotateDiffblueTest {
   }
 
   /**
-   * Test {@link Rotate#buildOperation(Map, InputStream, String)}.
-   * <ul>
-   *   <li>When {@link DataInputStream}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Rotate#buildOperation(Map, InputStream, String)}
-   */
-  @Test
-  public void testBuildOperation_whenDataInputStream() {
-    // Arrange, Act and Assert
-    assertNull(rotate.buildOperation(new HashMap<>(), mock(DataInputStream.class), "Mime Type"));
-  }
-
-  /**
    * Test {@link Rotate#filter(BufferedImage, BufferedImage)}.
    * <ul>
-   *   <li>Then return {@link BufferedImage#BufferedImage(int, int, int)} with one
-   * and one and one.</li>
+   *   <li>Then return {@link BufferedImage#BufferedImage(int, int, int)} with one and one and one.</li>
    * </ul>
    * <p>
    * Method under test: {@link Rotate#filter(BufferedImage, BufferedImage)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BufferedImage Rotate.filter(BufferedImage, BufferedImage)"})
   public void testFilter_thenReturnBufferedImageWithOneAndOneAndOne() {
     // Arrange
     Rotate rotate = new Rotate();
@@ -121,13 +125,15 @@ public class RotateDiffblueTest {
    * Test {@link Rotate#filter(BufferedImage, BufferedImage)}.
    * <ul>
    *   <li>When {@code null}.</li>
-   *   <li>Then Data Bounds Bounds2D return {@link Rectangle}.</li>
+   *   <li>Then ColorModel return {@link DirectColorModel}.</li>
    * </ul>
    * <p>
    * Method under test: {@link Rotate#filter(BufferedImage, BufferedImage)}
    */
   @Test
-  public void testFilter_whenNull_thenDataBoundsBounds2DReturnRectangle() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BufferedImage Rotate.filter(BufferedImage, BufferedImage)"})
+  public void testFilter_whenNull_thenColorModelReturnDirectColorModel() {
     // Arrange
     Rotate rotate = new Rotate();
 
@@ -135,29 +141,17 @@ public class RotateDiffblueTest {
     BufferedImage actualFilterResult = rotate.filter(new BufferedImage(1, 1, 1), null);
 
     // Assert
-    Raster data = actualFilterResult.getData();
-    Rectangle bounds = data.getBounds();
-    Rectangle2D bounds2D = bounds.getBounds2D();
-    assertTrue(bounds2D instanceof Rectangle);
-    Rectangle2D frame = bounds.getFrame();
-    assertTrue(frame instanceof Rectangle2D.Double);
-    DataBuffer dataBuffer = data.getDataBuffer();
-    assertTrue(dataBuffer instanceof DataBufferInt);
-    WritableRaster raster = actualFilterResult.getRaster();
-    DataBuffer dataBuffer2 = raster.getDataBuffer();
-    assertTrue(dataBuffer2 instanceof DataBufferInt);
-    Point[] writableTileIndices = actualFilterResult.getWritableTileIndices();
-    assertEquals(1, writableTileIndices.length);
-    assertEquals(1, ((DataBufferInt) dataBuffer).getBankData().length);
-    assertEquals(1, ((DataBufferInt) dataBuffer2).getBankData().length);
-    Dimension size = bounds.getSize();
-    assertEquals(size, size.getSize());
-    assertEquals(bounds, bounds.getBounds());
-    assertEquals(bounds, raster.getBounds());
-    assertEquals(bounds, bounds2D);
-    assertEquals(bounds, frame);
-    Point point = writableTileIndices[0];
-    assertEquals(point, point.getLocation());
-    assertEquals(point, bounds.getLocation());
+    ColorModel colorModel = actualFilterResult.getColorModel();
+    assertTrue(colorModel instanceof DirectColorModel);
+    SampleModel sampleModel = actualFilterResult.getSampleModel();
+    assertTrue(sampleModel instanceof SinglePixelPackedSampleModel);
+    assertSame(sampleModel, actualFilterResult.getData().getSampleModel());
+    assertSame(sampleModel, actualFilterResult.getRaster().getSampleModel());
+    assertArrayEquals(new int[]{16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
+    assertArrayEquals(new int[]{16711680, 65280, 255}, ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
+    assertArrayEquals(new int[]{8, 8, 8}, colorModel.getComponentSize());
+    assertArrayEquals(new int[]{8, 8, 8}, sampleModel.getSampleSize());
+    assertArrayEquals(new int[]{GaussianBlur.NUM_KERNELS, 8, 0},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitOffsets());
   }
 }

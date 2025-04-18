@@ -1,121 +1,74 @@
+/*-
+ * #%L
+ * BroadleafCommerce Admin Module
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.admin.web.controller.extension;
 
-import org.broadleafcommerce.openadmin.web.form.TranslationForm;
-import org.junit.Ignore;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import org.broadleafcommerce.common.extension.ExtensionManager;
+import org.broadleafcommerce.core.catalog.service.CatalogService;
+import org.broadleafcommerce.openadmin.web.controller.AdminTranslationControllerExtensionHandler;
+import org.broadleafcommerce.openadmin.web.controller.AdminTranslationControllerExtensionManager;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml", "/bl-admin-applicationContext.xml",
-    "/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class AdminProductTranslationExtensionHandlerDiffblueTest {
-  @Autowired
+  @InjectMocks
   private AdminProductTranslationExtensionHandler adminProductTranslationExtensionHandler;
+
+  @Mock
+  private AdminTranslationControllerExtensionManager adminTranslationControllerExtensionManager;
+
+  @Mock
+  private CatalogService catalogService;
 
   /**
    * Test {@link AdminProductTranslationExtensionHandler#init()}.
+   * <ul>
+   *   <li>Then calls {@link ExtensionManager#registerHandler(ExtensionHandler)}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link AdminProductTranslationExtensionHandler#init()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testInit() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.web.controller.extension;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass525 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.web.controller.extension.AdminProductTranslationExtensionHandler adminProductTranslationExtensionHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new AdminProductTranslationExtensionHandler()).init();
-  }
-
-  /**
-   * Test {@link AdminProductTranslationExtensionHandler#getTranslationEnabled()}.
-   * <p>
-   * Method under test:
-   * {@link AdminProductTranslationExtensionHandler#getTranslationEnabled()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetTranslationEnabled() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.web.controller.extension;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass522 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.web.controller.extension.AdminProductTranslationExtensionHandler adminProductTranslationExtensionHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new AdminProductTranslationExtensionHandler()).getTranslationEnabled();
-  }
-
-  /**
-   * Test
-   * {@link AdminProductTranslationExtensionHandler#applyTransformation(TranslationForm)}.
-   * <p>
-   * Method under test:
-   * {@link AdminProductTranslationExtensionHandler#applyTransformation(TranslationForm)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testApplyTransformation() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.web.controller.extension;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass393 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.web.controller.extension.AdminProductTranslationExtensionHandler adminProductTranslationExtensionHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminProductTranslationExtensionHandler.init()"})
+  public void testInit_thenCallsRegisterHandler() {
     // Arrange
-    AdminProductTranslationExtensionHandler adminProductTranslationExtensionHandler2 = new AdminProductTranslationExtensionHandler();
-
-    TranslationForm form = new TranslationForm();
-    form.setCeilingEntity("Ceiling Entity");
-    form.setEntityId("42");
-    form.setFieldType("Field Type");
-    form.setIsRte(true);
-    form.setLocaleCode("en");
-    form.setPropertyName("Property Name");
-    form.setTranslatedValue("42");
-    form.setTranslationId(1L);
+    when(adminTranslationControllerExtensionManager
+        .registerHandler(Mockito.<AdminTranslationControllerExtensionHandler>any())).thenReturn(true);
 
     // Act
-    adminProductTranslationExtensionHandler2.applyTransformation(form);
+    adminProductTranslationExtensionHandler.init();
+
+    // Assert
+    verify(adminTranslationControllerExtensionManager)
+        .registerHandler(isA(AdminTranslationControllerExtensionHandler.class));
   }
 }

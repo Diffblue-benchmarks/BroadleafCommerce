@@ -18,7 +18,10 @@
 package org.broadleafcommerce.common.time;
 
 import static org.junit.Assert.assertEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class FixedTimeSourceDiffblueTest {
   /**
@@ -31,6 +34,8 @@ public class FixedTimeSourceDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FixedTimeSource.<init>(long)", "long FixedTimeSource.timeInMillis()"})
   public void testGettersAndSetters() {
     // Arrange, Act and Assert
     assertEquals(10L, (new FixedTimeSource(10L)).timeInMillis());

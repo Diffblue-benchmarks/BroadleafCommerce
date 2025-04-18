@@ -1,50 +1,122 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.web.service;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.util.HashMap;
 import org.broadleafcommerce.common.exception.ServiceException;
-import org.junit.Ignore;
+import org.broadleafcommerce.openadmin.dto.ClassMetadata;
+import org.broadleafcommerce.openadmin.dto.ClassTree;
+import org.broadleafcommerce.openadmin.dto.DynamicResultSet;
+import org.broadleafcommerce.openadmin.dto.Property;
+import org.broadleafcommerce.openadmin.server.domain.PersistencePackageRequest;
+import org.broadleafcommerce.openadmin.server.service.AdminEntityService;
+import org.broadleafcommerce.openadmin.server.service.persistence.PersistenceResponse;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
-    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
-    "/bl-open-admin-contentCreator-applicationContext.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class SearchFieldResolverImplDiffblueTest {
-  @Autowired
+  @Mock
+  private AdminEntityService adminEntityService;
+
+  @InjectMocks
   private SearchFieldResolverImpl searchFieldResolverImpl;
 
   /**
    * Test {@link SearchFieldResolverImpl#resolveField(String)}.
+   * <ul>
+   *   <li>Then return {@code id}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link SearchFieldResolverImpl#resolveField(String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testResolveField() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.web.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass16162 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.SearchFieldResolverImpl searchFieldResolverImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SearchFieldResolverImpl.resolveField(String)"})
+  public void testResolveField_thenReturnId() throws ServiceException {
+    // Arrange
+    ClassMetadata classMetaData = new ClassMetadata();
+    classMetaData.setCeilingType("Type");
+    classMetaData.setCurrencyCode("GBP");
+    classMetaData.setPolymorphicEntities(new ClassTree());
+    classMetaData.setProperties(new Property[]{new Property()});
+    classMetaData.setSecurityCeilingType("Security Ceiling Type");
+    classMetaData.setTabAndGroupMetadata(new HashMap<>());
 
-    // Arrange and Act
-    (new SearchFieldResolverImpl()).resolveField("Class Name");
+    DynamicResultSet dynamicResultSet = new DynamicResultSet();
+    dynamicResultSet.setClassMetaData(classMetaData);
+
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    persistenceResponse.setDynamicResultSet(dynamicResultSet);
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any())).thenReturn(persistenceResponse);
+
+    // Act
+    String actualResolveFieldResult = searchFieldResolverImpl.resolveField("Class Name");
+
+    // Assert
+    verify(adminEntityService).getClassMetadata(isA(PersistencePackageRequest.class));
+    assertEquals("id", actualResolveFieldResult);
+  }
+
+  /**
+   * Test {@link SearchFieldResolverImpl#resolveField(String)}.
+   * <ul>
+   *   <li>Then return {@code name}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SearchFieldResolverImpl#resolveField(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SearchFieldResolverImpl.resolveField(String)"})
+  public void testResolveField_thenReturnName() throws ServiceException {
+    // Arrange
+    ClassMetadata classMetaData = new ClassMetadata();
+    classMetaData.setCeilingType("Type");
+    classMetaData.setCurrencyCode("GBP");
+    classMetaData.setPolymorphicEntities(new ClassTree());
+    classMetaData.setProperties(new Property[]{new Property("name", "42")});
+    classMetaData.setSecurityCeilingType("Security Ceiling Type");
+    classMetaData.setTabAndGroupMetadata(new HashMap<>());
+
+    DynamicResultSet dynamicResultSet = new DynamicResultSet();
+    dynamicResultSet.setClassMetaData(classMetaData);
+
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    persistenceResponse.setDynamicResultSet(dynamicResultSet);
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any())).thenReturn(persistenceResponse);
+
+    // Act
+    String actualResolveFieldResult = searchFieldResolverImpl.resolveField("Class Name");
+
+    // Assert
+    verify(adminEntityService).getClassMetadata(isA(PersistencePackageRequest.class));
+    assertEquals("name", actualResolveFieldResult);
   }
 }

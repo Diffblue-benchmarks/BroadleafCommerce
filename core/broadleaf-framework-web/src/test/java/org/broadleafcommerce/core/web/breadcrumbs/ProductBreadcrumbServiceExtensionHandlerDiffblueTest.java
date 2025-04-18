@@ -1,199 +1,75 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework Web
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.web.breadcrumbs;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.broadleafcommerce.common.breadcrumbs.dto.BreadcrumbDTO;
+import org.broadleafcommerce.common.breadcrumbs.service.BreadcrumbServiceExtensionManager;
 import org.broadleafcommerce.common.extension.ExtensionResultHolder;
 import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
 import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.core.catalog.domain.Product;
 import org.broadleafcommerce.core.catalog.domain.ProductBundleImpl;
 import org.broadleafcommerce.core.catalog.domain.SkuImpl;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml",
-    "/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+@ContextConfiguration(classes = {ProductBreadcrumbServiceExtensionHandler.class})
 @ExtendWith(SpringExtension.class)
 class ProductBreadcrumbServiceExtensionHandlerDiffblueTest {
+  @MockBean(name = "blBreadcrumbServiceExtensionManager")
+  private BreadcrumbServiceExtensionManager breadcrumbServiceExtensionManager;
+
   @Autowired
   private ProductBreadcrumbServiceExtensionHandler productBreadcrumbServiceExtensionHandler;
 
   /**
-   * Test {@link ProductBreadcrumbServiceExtensionHandler#init()}.
-   * <p>
-   * Method under test: {@link ProductBreadcrumbServiceExtensionHandler#init()}
-   */
-  @Test
-  @DisplayName("Test init()")
-  @Disabled("TODO: Complete this test")
-  void testInit() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.breadcrumbs;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1597 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.breadcrumbs.ProductBreadcrumbServiceExtensionHandler productBreadcrumbServiceExtensionHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new ProductBreadcrumbServiceExtensionHandler()).init();
-  }
-
-  /**
-   * Test
-   * {@link ProductBreadcrumbServiceExtensionHandler#modifyBreadcrumbList(String, Map, ExtensionResultHolder)}.
-   * <p>
-   * Method under test:
-   * {@link ProductBreadcrumbServiceExtensionHandler#modifyBreadcrumbList(String, Map, ExtensionResultHolder)}
-   */
-  @Test
-  @DisplayName("Test modifyBreadcrumbList(String, Map, ExtensionResultHolder)")
-  @Disabled("TODO: Complete this test")
-  void testModifyBreadcrumbList() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.breadcrumbs;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1600 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.breadcrumbs.ProductBreadcrumbServiceExtensionHandler productBreadcrumbServiceExtensionHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    ProductBreadcrumbServiceExtensionHandler productBreadcrumbServiceExtensionHandler2 = new ProductBreadcrumbServiceExtensionHandler();
-    HashMap<String, String[]> params = new HashMap<>();
-
-    ExtensionResultHolder<List<BreadcrumbDTO>> holder = new ExtensionResultHolder<>();
-    holder.setResult(new ArrayList<>());
-    holder.setThrowable(new Throwable());
-
-    // Act
-    productBreadcrumbServiceExtensionHandler2.modifyBreadcrumbList("https://example.org/example", params, holder);
-  }
-
-  /**
-   * Test
-   * {@link ProductBreadcrumbServiceExtensionHandler#modifyBreadcrumbList(String, Map, ExtensionResultHolder)}.
+   * Test {@link ProductBreadcrumbServiceExtensionHandler#modifyBreadcrumbList(String, Map, ExtensionResultHolder)}.
    * <ul>
-   *   <li>Given {@link HashMap#HashMap()}.</li>
-   *   <li>Then calls {@link ExtensionResultHolder#getContextMap()}.</li>
+   *   <li>Then {@link ExtensionResultHolder} (default constructor) ContextMap size is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductBreadcrumbServiceExtensionHandler#modifyBreadcrumbList(String, Map, ExtensionResultHolder)}
-   */
-  @Test
-  @DisplayName("Test modifyBreadcrumbList(String, Map, ExtensionResultHolder); given HashMap(); then calls getContextMap()")
-  void testModifyBreadcrumbList_givenHashMap_thenCallsGetContextMap() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProductBreadcrumbServiceExtensionHandler productBreadcrumbServiceExtensionHandler = new ProductBreadcrumbServiceExtensionHandler();
-    HashMap<String, String[]> params = new HashMap<>();
-    ExtensionResultHolder<List<BreadcrumbDTO>> holder = mock(ExtensionResultHolder.class);
-    when(holder.getContextMap()).thenReturn(new HashMap<>());
-    doNothing().when(holder).setResult(Mockito.<List<BreadcrumbDTO>>any());
-    doNothing().when(holder).setThrowable(Mockito.<Throwable>any());
-    holder.setResult(new ArrayList<>());
-    holder.setThrowable(new Throwable());
-
-    // Act
-    ExtensionResultStatusType actualModifyBreadcrumbListResult = productBreadcrumbServiceExtensionHandler
-        .modifyBreadcrumbList("https://example.org/example", params, holder);
-
-    // Assert
-    verify(holder).getContextMap();
-    verify(holder).setResult(isA(List.class));
-    verify(holder).setThrowable(isA(Throwable.class));
-    assertEquals(ExtensionResultStatusType.HANDLED_CONTINUE, actualModifyBreadcrumbListResult);
-    assertTrue(params.isEmpty());
-  }
-
-  /**
-   * Test
-   * {@link ProductBreadcrumbServiceExtensionHandler#modifyBreadcrumbList(String, Map, ExtensionResultHolder)}.
-   * <ul>
-   *   <li>Then {@link ExtensionResultHolder} (default constructor) ContextMap
-   * Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link ProductBreadcrumbServiceExtensionHandler#modifyBreadcrumbList(String, Map, ExtensionResultHolder)}
-   */
-  @Test
-  @DisplayName("Test modifyBreadcrumbList(String, Map, ExtensionResultHolder); then ExtensionResultHolder (default constructor) ContextMap Empty")
-  void testModifyBreadcrumbList_thenExtensionResultHolderContextMapEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProductBreadcrumbServiceExtensionHandler productBreadcrumbServiceExtensionHandler = new ProductBreadcrumbServiceExtensionHandler();
-    HashMap<String, String[]> params = new HashMap<>();
-
-    ExtensionResultHolder<List<BreadcrumbDTO>> holder = new ExtensionResultHolder<>();
-    holder.setResult(new ArrayList<>());
-    holder.setThrowable(new Throwable());
-
-    // Act and Assert
-    assertEquals(ExtensionResultStatusType.HANDLED_CONTINUE, productBreadcrumbServiceExtensionHandler
-        .modifyBreadcrumbList("ThreadLocalManager.notify.orphans", params, holder));
-    assertTrue(params.isEmpty());
-    assertTrue(holder.getContextMap().isEmpty());
-  }
-
-  /**
-   * Test
-   * {@link ProductBreadcrumbServiceExtensionHandler#modifyBreadcrumbList(String, Map, ExtensionResultHolder)}.
-   * <ul>
-   *   <li>Then {@link ExtensionResultHolder} (default constructor) ContextMap size
-   * is one.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link ProductBreadcrumbServiceExtensionHandler#modifyBreadcrumbList(String, Map, ExtensionResultHolder)}
+   * Method under test: {@link ProductBreadcrumbServiceExtensionHandler#modifyBreadcrumbList(String, Map, ExtensionResultHolder)}
    */
   @Test
   @DisplayName("Test modifyBreadcrumbList(String, Map, ExtensionResultHolder); then ExtensionResultHolder (default constructor) ContextMap size is one")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "ExtensionResultStatusType ProductBreadcrumbServiceExtensionHandler.modifyBreadcrumbList(String, Map, ExtensionResultHolder)"})
   void testModifyBreadcrumbList_thenExtensionResultHolderContextMapSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductBreadcrumbServiceExtensionHandler productBreadcrumbServiceExtensionHandler = new ProductBreadcrumbServiceExtensionHandler();
     HashMap<String, String[]> params = new HashMap<>();
 
     ExtensionResultHolder<List<BreadcrumbDTO>> holder = new ExtensionResultHolder<>();
@@ -211,24 +87,20 @@ class ProductBreadcrumbServiceExtensionHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ProductBreadcrumbServiceExtensionHandler#modifyBreadcrumbList(String, Map, ExtensionResultHolder)}.
+   * Test {@link ProductBreadcrumbServiceExtensionHandler#modifyBreadcrumbList(String, Map, ExtensionResultHolder)}.
    * <ul>
-   *   <li>Then {@link ExtensionResultHolder} (default constructor) ContextMap size
-   * is two.</li>
+   *   <li>Then {@link ExtensionResultHolder} (default constructor) ContextMap size is two.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductBreadcrumbServiceExtensionHandler#modifyBreadcrumbList(String, Map, ExtensionResultHolder)}
+   * Method under test: {@link ProductBreadcrumbServiceExtensionHandler#modifyBreadcrumbList(String, Map, ExtensionResultHolder)}
    */
   @Test
   @DisplayName("Test modifyBreadcrumbList(String, Map, ExtensionResultHolder); then ExtensionResultHolder (default constructor) ContextMap size is two")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "ExtensionResultStatusType ProductBreadcrumbServiceExtensionHandler.modifyBreadcrumbList(String, Map, ExtensionResultHolder)"})
   void testModifyBreadcrumbList_thenExtensionResultHolderContextMapSizeIsTwo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductBreadcrumbServiceExtensionHandler productBreadcrumbServiceExtensionHandler = new ProductBreadcrumbServiceExtensionHandler();
-
     HashMap<String, String[]> params = new HashMap<>();
     params.put("productId", new String[]{"Params"});
 
@@ -248,24 +120,49 @@ class ProductBreadcrumbServiceExtensionHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ProductBreadcrumbServiceExtensionHandler#modifyBreadcrumbList(String, Map, ExtensionResultHolder)}.
+   * Test {@link ProductBreadcrumbServiceExtensionHandler#modifyBreadcrumbList(String, Map, ExtensionResultHolder)}.
+   * <ul>
+   *   <li>Then return {@code HANDLED_CONTINUE}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ProductBreadcrumbServiceExtensionHandler#modifyBreadcrumbList(String, Map, ExtensionResultHolder)}
+   */
+  @Test
+  @DisplayName("Test modifyBreadcrumbList(String, Map, ExtensionResultHolder); then return 'HANDLED_CONTINUE'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "ExtensionResultStatusType ProductBreadcrumbServiceExtensionHandler.modifyBreadcrumbList(String, Map, ExtensionResultHolder)"})
+  void testModifyBreadcrumbList_thenReturnHandledContinue() {
+    // Arrange
+    HashMap<String, String[]> params = new HashMap<>();
+
+    ExtensionResultHolder<List<BreadcrumbDTO>> holder = new ExtensionResultHolder<>();
+    holder.setResult(new ArrayList<>());
+    holder.setThrowable(new Throwable());
+
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.HANDLED_CONTINUE, productBreadcrumbServiceExtensionHandler
+        .modifyBreadcrumbList("ThreadLocalManager.notify.orphans", params, holder));
+    assertTrue(params.isEmpty());
+    assertTrue(holder.getContextMap().isEmpty());
+  }
+
+  /**
+   * Test {@link ProductBreadcrumbServiceExtensionHandler#modifyBreadcrumbList(String, Map, ExtensionResultHolder)}.
    * <ul>
    *   <li>When {@code null}.</li>
    *   <li>Then {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductBreadcrumbServiceExtensionHandler#modifyBreadcrumbList(String, Map, ExtensionResultHolder)}
+   * Method under test: {@link ProductBreadcrumbServiceExtensionHandler#modifyBreadcrumbList(String, Map, ExtensionResultHolder)}
    */
   @Test
   @DisplayName("Test modifyBreadcrumbList(String, Map, ExtensionResultHolder); when 'null'; then 'null'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "ExtensionResultStatusType ProductBreadcrumbServiceExtensionHandler.modifyBreadcrumbList(String, Map, ExtensionResultHolder)"})
   void testModifyBreadcrumbList_whenNull_thenNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductBreadcrumbServiceExtensionHandler productBreadcrumbServiceExtensionHandler = new ProductBreadcrumbServiceExtensionHandler();
-
     ExtensionResultHolder<List<BreadcrumbDTO>> holder = new ExtensionResultHolder<>();
     holder.setThrowable(new Throwable());
     holder.setResult(new ArrayList<>());
@@ -281,97 +178,17 @@ class ProductBreadcrumbServiceExtensionHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ProductBreadcrumbServiceExtensionHandler#determineProduct(String, Map, ExtensionResultHolder)}.
+   * Test {@link ProductBreadcrumbServiceExtensionHandler#determineProduct(String, Map, ExtensionResultHolder)}.
    * <p>
-   * Method under test:
-   * {@link ProductBreadcrumbServiceExtensionHandler#determineProduct(String, Map, ExtensionResultHolder)}
+   * Method under test: {@link ProductBreadcrumbServiceExtensionHandler#determineProduct(String, Map, ExtensionResultHolder)}
    */
   @Test
   @DisplayName("Test determineProduct(String, Map, ExtensionResultHolder)")
-  @Disabled("TODO: Complete this test")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "Product ProductBreadcrumbServiceExtensionHandler.determineProduct(String, Map, ExtensionResultHolder)"})
   void testDetermineProduct() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.breadcrumbs;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1500 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.breadcrumbs.ProductBreadcrumbServiceExtensionHandler productBreadcrumbServiceExtensionHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    ProductBreadcrumbServiceExtensionHandler productBreadcrumbServiceExtensionHandler2 = new ProductBreadcrumbServiceExtensionHandler();
-    HashMap<String, String[]> params = new HashMap<>();
-
-    ExtensionResultHolder<List<BreadcrumbDTO>> holder = new ExtensionResultHolder<>();
-    holder.setResult(new ArrayList<>());
-    holder.setThrowable(new Throwable());
-
-    // Act
-    productBreadcrumbServiceExtensionHandler2.determineProduct("https://example.org/example", params, holder);
-  }
-
-  /**
-   * Test
-   * {@link ProductBreadcrumbServiceExtensionHandler#determineProduct(String, Map, ExtensionResultHolder)}.
-   * <ul>
-   *   <li>Then calls {@link ExtensionResultHolder#setResult(Object)}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link ProductBreadcrumbServiceExtensionHandler#determineProduct(String, Map, ExtensionResultHolder)}
-   */
-  @Test
-  @DisplayName("Test determineProduct(String, Map, ExtensionResultHolder); then calls setResult(Object)")
-  void testDetermineProduct_thenCallsSetResult() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProductBreadcrumbServiceExtensionHandler productBreadcrumbServiceExtensionHandler = new ProductBreadcrumbServiceExtensionHandler();
-    HashMap<String, String[]> params = new HashMap<>();
-    ExtensionResultHolder<List<BreadcrumbDTO>> holder = mock(ExtensionResultHolder.class);
-    doNothing().when(holder).setResult(Mockito.<List<BreadcrumbDTO>>any());
-    doNothing().when(holder).setThrowable(Mockito.<Throwable>any());
-    holder.setResult(new ArrayList<>());
-    holder.setThrowable(new Throwable());
-
-    // Act
-    Product actualDetermineProductResult = productBreadcrumbServiceExtensionHandler
-        .determineProduct("https://example.org/example", params, holder);
-
-    // Assert
-    verify(holder).setResult(isA(List.class));
-    verify(holder).setThrowable(isA(Throwable.class));
-    assertNull(actualDetermineProductResult);
-  }
-
-  /**
-   * Test
-   * {@link ProductBreadcrumbServiceExtensionHandler#determineProduct(String, Map, ExtensionResultHolder)}.
-   * <ul>
-   *   <li>When {@link ExtensionResultHolder} (default constructor) Result is
-   * {@link ArrayList#ArrayList()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link ProductBreadcrumbServiceExtensionHandler#determineProduct(String, Map, ExtensionResultHolder)}
-   */
-  @Test
-  @DisplayName("Test determineProduct(String, Map, ExtensionResultHolder); when ExtensionResultHolder (default constructor) Result is ArrayList()")
-  void testDetermineProduct_whenExtensionResultHolderResultIsArrayList() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProductBreadcrumbServiceExtensionHandler productBreadcrumbServiceExtensionHandler = new ProductBreadcrumbServiceExtensionHandler();
     HashMap<String, String[]> params = new HashMap<>();
 
     ExtensionResultHolder<List<BreadcrumbDTO>> holder = new ExtensionResultHolder<>();
@@ -384,58 +201,20 @@ class ProductBreadcrumbServiceExtensionHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ProductBreadcrumbServiceExtensionHandler#getNameForProductLink(Product)}.
-   * <p>
-   * Method under test:
-   * {@link ProductBreadcrumbServiceExtensionHandler#getNameForProductLink(Product)}
-   */
-  @Test
-  @DisplayName("Test getNameForProductLink(Product)")
-  @Disabled("TODO: Complete this test")
-  void testGetNameForProductLink() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.breadcrumbs;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1562 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.breadcrumbs.ProductBreadcrumbServiceExtensionHandler productBreadcrumbServiceExtensionHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    ProductBreadcrumbServiceExtensionHandler productBreadcrumbServiceExtensionHandler2 = new ProductBreadcrumbServiceExtensionHandler();
-
-    // Act
-    productBreadcrumbServiceExtensionHandler2.getNameForProductLink(new ProductBundleImpl());
-  }
-
-  /**
-   * Test
-   * {@link ProductBreadcrumbServiceExtensionHandler#getNameForProductLink(Product)}.
+   * Test {@link ProductBreadcrumbServiceExtensionHandler#getNameForProductLink(Product)}.
    * <ul>
    *   <li>Given {@code Name}.</li>
    *   <li>Then return {@code Name}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductBreadcrumbServiceExtensionHandler#getNameForProductLink(Product)}
+   * Method under test: {@link ProductBreadcrumbServiceExtensionHandler#getNameForProductLink(Product)}
    */
   @Test
   @DisplayName("Test getNameForProductLink(Product); given 'Name'; then return 'Name'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String ProductBreadcrumbServiceExtensionHandler.getNameForProductLink(Product)"})
   void testGetNameForProductLink_givenName_thenReturnName() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductBreadcrumbServiceExtensionHandler productBreadcrumbServiceExtensionHandler = new ProductBreadcrumbServiceExtensionHandler();
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getName()).thenReturn("Name");
 
@@ -448,25 +227,20 @@ class ProductBreadcrumbServiceExtensionHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ProductBreadcrumbServiceExtensionHandler#getNameForProductLink(Product)}.
+   * Test {@link ProductBreadcrumbServiceExtensionHandler#getNameForProductLink(Product)}.
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is
-   * {@link Money#Money()}.</li>
+   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is {@link Money#Money()}.</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductBreadcrumbServiceExtensionHandler#getNameForProductLink(Product)}
+   * Method under test: {@link ProductBreadcrumbServiceExtensionHandler#getNameForProductLink(Product)}
    */
   @Test
   @DisplayName("Test getNameForProductLink(Product); given SkuImpl (default constructor) SalePrice is Money(); then return 'null'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String ProductBreadcrumbServiceExtensionHandler.getNameForProductLink(Product)"})
   void testGetNameForProductLink_givenSkuImplSalePriceIsMoney_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductBreadcrumbServiceExtensionHandler productBreadcrumbServiceExtensionHandler = new ProductBreadcrumbServiceExtensionHandler();
-
     SkuImpl defaultSku = new SkuImpl();
     defaultSku.setSalePrice(new Money());
 
@@ -478,24 +252,20 @@ class ProductBreadcrumbServiceExtensionHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ProductBreadcrumbServiceExtensionHandler#getNameForProductLink(Product)}.
+   * Test {@link ProductBreadcrumbServiceExtensionHandler#getNameForProductLink(Product)}.
    * <ul>
    *   <li>Given {@link SkuImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductBreadcrumbServiceExtensionHandler#getNameForProductLink(Product)}
+   * Method under test: {@link ProductBreadcrumbServiceExtensionHandler#getNameForProductLink(Product)}
    */
   @Test
   @DisplayName("Test getNameForProductLink(Product); given SkuImpl (default constructor); then return 'null'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String ProductBreadcrumbServiceExtensionHandler.getNameForProductLink(Product)"})
   void testGetNameForProductLink_givenSkuImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductBreadcrumbServiceExtensionHandler productBreadcrumbServiceExtensionHandler = new ProductBreadcrumbServiceExtensionHandler();
-
     ProductBundleImpl product = new ProductBundleImpl();
     product.setDefaultSku(new SkuImpl());
 
@@ -504,101 +274,21 @@ class ProductBreadcrumbServiceExtensionHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ProductBreadcrumbServiceExtensionHandler#updateContextMap(String, Map, ExtensionResultHolder)}.
-   * <p>
-   * Method under test:
-   * {@link ProductBreadcrumbServiceExtensionHandler#updateContextMap(String, Map, ExtensionResultHolder)}
-   */
-  @Test
-  @DisplayName("Test updateContextMap(String, Map, ExtensionResultHolder)")
-  @Disabled("TODO: Complete this test")
-  void testUpdateContextMap() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.breadcrumbs;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1659 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.breadcrumbs.ProductBreadcrumbServiceExtensionHandler productBreadcrumbServiceExtensionHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    ProductBreadcrumbServiceExtensionHandler productBreadcrumbServiceExtensionHandler2 = new ProductBreadcrumbServiceExtensionHandler();
-    HashMap<String, String[]> params = new HashMap<>();
-
-    ExtensionResultHolder<List<BreadcrumbDTO>> holder = new ExtensionResultHolder<>();
-    holder.setResult(new ArrayList<>());
-    holder.setThrowable(new Throwable());
-
-    // Act
-    productBreadcrumbServiceExtensionHandler2.updateContextMap("https://example.org/example", params, holder);
-  }
-
-  /**
-   * Test
-   * {@link ProductBreadcrumbServiceExtensionHandler#updateContextMap(String, Map, ExtensionResultHolder)}.
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()}.</li>
-   *   <li>Then calls {@link ExtensionResultHolder#getContextMap()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link ProductBreadcrumbServiceExtensionHandler#updateContextMap(String, Map, ExtensionResultHolder)}
-   */
-  @Test
-  @DisplayName("Test updateContextMap(String, Map, ExtensionResultHolder); given HashMap(); then calls getContextMap()")
-  void testUpdateContextMap_givenHashMap_thenCallsGetContextMap() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ProductBreadcrumbServiceExtensionHandler productBreadcrumbServiceExtensionHandler = new ProductBreadcrumbServiceExtensionHandler();
-    HashMap<String, String[]> params = new HashMap<>();
-    ExtensionResultHolder<List<BreadcrumbDTO>> holder = mock(ExtensionResultHolder.class);
-    when(holder.getContextMap()).thenReturn(new HashMap<>());
-    doNothing().when(holder).setResult(Mockito.<List<BreadcrumbDTO>>any());
-    doNothing().when(holder).setThrowable(Mockito.<Throwable>any());
-    holder.setResult(new ArrayList<>());
-    holder.setThrowable(new Throwable());
-
-    // Act
-    productBreadcrumbServiceExtensionHandler.updateContextMap("https://example.org/example", params, holder);
-
-    // Assert
-    verify(holder).getContextMap();
-    verify(holder).setResult(isA(List.class));
-    verify(holder).setThrowable(isA(Throwable.class));
-    assertTrue(params.isEmpty());
-  }
-
-  /**
-   * Test
-   * {@link ProductBreadcrumbServiceExtensionHandler#updateContextMap(String, Map, ExtensionResultHolder)}.
+   * Test {@link ProductBreadcrumbServiceExtensionHandler#updateContextMap(String, Map, ExtensionResultHolder)}.
    * <ul>
    *   <li>Given {@code productId}.</li>
-   *   <li>Then {@link ExtensionResultHolder} (default constructor) ContextMap size
-   * is two.</li>
+   *   <li>Then {@link ExtensionResultHolder} (default constructor) ContextMap size is two.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductBreadcrumbServiceExtensionHandler#updateContextMap(String, Map, ExtensionResultHolder)}
+   * Method under test: {@link ProductBreadcrumbServiceExtensionHandler#updateContextMap(String, Map, ExtensionResultHolder)}
    */
   @Test
   @DisplayName("Test updateContextMap(String, Map, ExtensionResultHolder); given 'productId'; then ExtensionResultHolder (default constructor) ContextMap size is two")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "void ProductBreadcrumbServiceExtensionHandler.updateContextMap(String, Map, ExtensionResultHolder)"})
   void testUpdateContextMap_givenProductId_thenExtensionResultHolderContextMapSizeIsTwo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductBreadcrumbServiceExtensionHandler productBreadcrumbServiceExtensionHandler = new ProductBreadcrumbServiceExtensionHandler();
-
     HashMap<String, String[]> params = new HashMap<>();
     params.put("productId", new String[]{"Params"});
 
@@ -618,23 +308,20 @@ class ProductBreadcrumbServiceExtensionHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ProductBreadcrumbServiceExtensionHandler#updateContextMap(String, Map, ExtensionResultHolder)}.
+   * Test {@link ProductBreadcrumbServiceExtensionHandler#updateContextMap(String, Map, ExtensionResultHolder)}.
    * <ul>
-   *   <li>Then {@link ExtensionResultHolder} (default constructor) ContextMap size
-   * is one.</li>
+   *   <li>Then {@link ExtensionResultHolder} (default constructor) ContextMap size is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductBreadcrumbServiceExtensionHandler#updateContextMap(String, Map, ExtensionResultHolder)}
+   * Method under test: {@link ProductBreadcrumbServiceExtensionHandler#updateContextMap(String, Map, ExtensionResultHolder)}
    */
   @Test
   @DisplayName("Test updateContextMap(String, Map, ExtensionResultHolder); then ExtensionResultHolder (default constructor) ContextMap size is one")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "void ProductBreadcrumbServiceExtensionHandler.updateContextMap(String, Map, ExtensionResultHolder)"})
   void testUpdateContextMap_thenExtensionResultHolderContextMapSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductBreadcrumbServiceExtensionHandler productBreadcrumbServiceExtensionHandler = new ProductBreadcrumbServiceExtensionHandler();
     HashMap<String, String[]> params = new HashMap<>();
 
     ExtensionResultHolder<List<BreadcrumbDTO>> holder = new ExtensionResultHolder<>();
@@ -652,24 +339,21 @@ class ProductBreadcrumbServiceExtensionHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ProductBreadcrumbServiceExtensionHandler#updateContextMap(String, Map, ExtensionResultHolder)}.
+   * Test {@link ProductBreadcrumbServiceExtensionHandler#updateContextMap(String, Map, ExtensionResultHolder)}.
    * <ul>
    *   <li>When {@code null}.</li>
    *   <li>Then {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductBreadcrumbServiceExtensionHandler#updateContextMap(String, Map, ExtensionResultHolder)}
+   * Method under test: {@link ProductBreadcrumbServiceExtensionHandler#updateContextMap(String, Map, ExtensionResultHolder)}
    */
   @Test
   @DisplayName("Test updateContextMap(String, Map, ExtensionResultHolder); when 'null'; then 'null'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "void ProductBreadcrumbServiceExtensionHandler.updateContextMap(String, Map, ExtensionResultHolder)"})
   void testUpdateContextMap_whenNull_thenNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductBreadcrumbServiceExtensionHandler productBreadcrumbServiceExtensionHandler = new ProductBreadcrumbServiceExtensionHandler();
-
     ExtensionResultHolder<List<BreadcrumbDTO>> holder = new ExtensionResultHolder<>();
     holder.setResult(new ArrayList<>());
     holder.setThrowable(new Throwable());
@@ -685,24 +369,21 @@ class ProductBreadcrumbServiceExtensionHandlerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ProductBreadcrumbServiceExtensionHandler#updateContextMap(String, Map, ExtensionResultHolder)}.
+   * Test {@link ProductBreadcrumbServiceExtensionHandler#updateContextMap(String, Map, ExtensionResultHolder)}.
    * <ul>
    *   <li>When {@code productId}.</li>
-   *   <li>Then {@link ExtensionResultHolder} (default constructor) ContextMap
-   * Empty.</li>
+   *   <li>Then {@link ExtensionResultHolder} (default constructor) ContextMap Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProductBreadcrumbServiceExtensionHandler#updateContextMap(String, Map, ExtensionResultHolder)}
+   * Method under test: {@link ProductBreadcrumbServiceExtensionHandler#updateContextMap(String, Map, ExtensionResultHolder)}
    */
   @Test
   @DisplayName("Test updateContextMap(String, Map, ExtensionResultHolder); when 'productId'; then ExtensionResultHolder (default constructor) ContextMap Empty")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "void ProductBreadcrumbServiceExtensionHandler.updateContextMap(String, Map, ExtensionResultHolder)"})
   void testUpdateContextMap_whenProductId_thenExtensionResultHolderContextMapEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    ProductBreadcrumbServiceExtensionHandler productBreadcrumbServiceExtensionHandler = new ProductBreadcrumbServiceExtensionHandler();
     HashMap<String, String[]> params = new HashMap<>();
 
     ExtensionResultHolder<List<BreadcrumbDTO>> holder = new ExtensionResultHolder<>();
@@ -720,11 +401,12 @@ class ProductBreadcrumbServiceExtensionHandlerDiffblueTest {
   /**
    * Test {@link ProductBreadcrumbServiceExtensionHandler#getProductIdParam()}.
    * <p>
-   * Method under test:
-   * {@link ProductBreadcrumbServiceExtensionHandler#getProductIdParam()}
+   * Method under test: {@link ProductBreadcrumbServiceExtensionHandler#getProductIdParam()}
    */
   @Test
   @DisplayName("Test getProductIdParam()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String ProductBreadcrumbServiceExtensionHandler.getProductIdParam()"})
   void testGetProductIdParam() {
     // Arrange, Act and Assert
     assertEquals("productId", (new ProductBreadcrumbServiceExtensionHandler()).getProductIdParam());
@@ -733,46 +415,14 @@ class ProductBreadcrumbServiceExtensionHandlerDiffblueTest {
   /**
    * Test {@link ProductBreadcrumbServiceExtensionHandler#getDefaultPriority()}.
    * <p>
-   * Method under test:
-   * {@link ProductBreadcrumbServiceExtensionHandler#getDefaultPriority()}
+   * Method under test: {@link ProductBreadcrumbServiceExtensionHandler#getDefaultPriority()}
    */
   @Test
   @DisplayName("Test getDefaultPriority()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"int ProductBreadcrumbServiceExtensionHandler.getDefaultPriority()"})
   void testGetDefaultPriority() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals(4000, (new ProductBreadcrumbServiceExtensionHandler()).getDefaultPriority());
-  }
-
-  /**
-   * Test {@link ProductBreadcrumbServiceExtensionHandler#getDefaultPriority()}.
-   * <p>
-   * Method under test:
-   * {@link ProductBreadcrumbServiceExtensionHandler#getDefaultPriority()}
-   */
-  @Test
-  @DisplayName("Test getDefaultPriority()")
-  @Disabled("TODO: Complete this test")
-  void testGetDefaultPriority2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.breadcrumbs;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1559 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.breadcrumbs.ProductBreadcrumbServiceExtensionHandler productBreadcrumbServiceExtensionHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new ProductBreadcrumbServiceExtensionHandler()).getDefaultPriority();
+    assertEquals(4000, productBreadcrumbServiceExtensionHandler.getDefaultPriority());
   }
 }

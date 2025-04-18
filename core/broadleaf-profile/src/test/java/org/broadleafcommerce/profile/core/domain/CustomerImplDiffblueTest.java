@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Profile
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.profile.core.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -8,10 +25,11 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -26,59 +44,27 @@ import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
 import org.broadleafcommerce.common.locale.domain.Locale;
 import org.broadleafcommerce.common.locale.domain.LocaleImpl;
 import org.broadleafcommerce.common.service.GenericEntityService;
-import org.broadleafcommerce.common.service.GenericEntityServiceImpl;
 import org.broadleafcommerce.common.site.domain.CatalogImpl;
 import org.broadleafcommerce.common.site.domain.SiteImpl;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml",
-    "/bl-profile-applicationContext-persistence.xml", "/bl-profile-applicationContext.xml",
-    "/blc-config/admin/framework/bl-profile-applicationContext.xml",
-    "/blc-config/site/framework/bl-profile-applicationContext.xml"})
+@ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class CustomerImplDiffblueTest {
   @Autowired
   private CustomerImpl customerImpl;
 
   /**
    * Test {@link CustomerImpl#isPasswordChangeRequired()}.
-   * <p>
-   * Method under test: {@link CustomerImpl#isPasswordChangeRequired()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsPasswordChangeRequired() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3675 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.domain.CustomerImpl customerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CustomerImpl()).isPasswordChangeRequired();
-  }
-
-  /**
-   * Test {@link CustomerImpl#isPasswordChangeRequired()}.
    * <ul>
    *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.</li>
    *   <li>Then return {@code true}.</li>
@@ -87,9 +73,9 @@ public class CustomerImplDiffblueTest {
    * Method under test: {@link CustomerImpl#isPasswordChangeRequired()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerImpl.isPasswordChangeRequired()"})
   public void testIsPasswordChangeRequired_givenAuditableCreatedByIsOne_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
@@ -97,31 +83,31 @@ public class CustomerImplDiffblueTest {
     auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
-    CustomerImpl customerImpl = new CustomerImpl();
-    customerImpl.setAuditable(auditable);
-    customerImpl.setChallengeAnswer("Challenge Answer");
-    customerImpl.setChallengeQuestion(new ChallengeQuestionImpl());
-    customerImpl.setCustomerAddresses(new ArrayList<>());
-    customerImpl.setCustomerAttributes(new HashMap<>());
-    customerImpl.setCustomerLocale(new LocaleImpl());
-    customerImpl.setCustomerPayments(new ArrayList<>());
-    customerImpl.setCustomerPhones(new ArrayList<>());
-    customerImpl.setDeactivated(true);
-    customerImpl.setEmailAddress("42 Main St");
-    customerImpl.setExternalId("42");
-    customerImpl.setFirstName("Jane");
-    customerImpl.setId(1L);
-    customerImpl.setLastName("Doe");
-    customerImpl.setPassword("iloveyou");
-    customerImpl.setReceiveEmail(true);
-    customerImpl.setRegistered(true);
-    customerImpl.setUnencodedChallengeAnswer("secret");
-    customerImpl.setUnencodedPassword("secret");
-    customerImpl.setUsername("janedoe");
-    customerImpl.setPasswordChangeRequired(true);
+    CustomerImpl customerImpl2 = new CustomerImpl();
+    customerImpl2.setAuditable(auditable);
+    customerImpl2.setChallengeAnswer("Challenge Answer");
+    customerImpl2.setChallengeQuestion(new ChallengeQuestionImpl());
+    customerImpl2.setCustomerAddresses(new ArrayList<>());
+    customerImpl2.setCustomerAttributes(new HashMap<>());
+    customerImpl2.setCustomerLocale(new LocaleImpl());
+    customerImpl2.setCustomerPayments(new ArrayList<>());
+    customerImpl2.setCustomerPhones(new ArrayList<>());
+    customerImpl2.setDeactivated(true);
+    customerImpl2.setEmailAddress("42 Main St");
+    customerImpl2.setExternalId("42");
+    customerImpl2.setFirstName("Jane");
+    customerImpl2.setId(1L);
+    customerImpl2.setLastName("Doe");
+    customerImpl2.setPassword("iloveyou");
+    customerImpl2.setReceiveEmail(true);
+    customerImpl2.setRegistered(true);
+    customerImpl2.setUnencodedChallengeAnswer("secret");
+    customerImpl2.setUnencodedPassword("secret");
+    customerImpl2.setUsername("janedoe");
+    customerImpl2.setPasswordChangeRequired(true);
 
     // Act and Assert
-    assertTrue(customerImpl.isPasswordChangeRequired());
+    assertTrue(customerImpl2.isPasswordChangeRequired());
   }
 
   /**
@@ -134,170 +120,31 @@ public class CustomerImplDiffblueTest {
    * Method under test: {@link CustomerImpl#isPasswordChangeRequired()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerImpl.isPasswordChangeRequired()"})
   public void testIsPasswordChangeRequired_givenCustomerImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertFalse((new CustomerImpl()).isPasswordChangeRequired());
   }
 
   /**
-   * Test {@link CustomerImpl#isPasswordChangeRequired()}.
-   * <ul>
-   *   <li>Then calls {@link Auditable#setCreatedBy(Long)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#isPasswordChangeRequired()}
-   */
-  @Test
-  public void testIsPasswordChangeRequired_thenCallsSetCreatedBy() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Auditable auditable = mock(Auditable.class);
-    doNothing().when(auditable).setCreatedBy(Mockito.<Long>any());
-    doNothing().when(auditable).setDateCreated(Mockito.<Date>any());
-    doNothing().when(auditable).setDateUpdated(Mockito.<Date>any());
-    doNothing().when(auditable).setUpdatedBy(Mockito.<Long>any());
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    CustomerImpl customerImpl = new CustomerImpl();
-    customerImpl.setAuditable(auditable);
-    customerImpl.setChallengeAnswer("Challenge Answer");
-    customerImpl.setChallengeQuestion(new ChallengeQuestionImpl());
-    customerImpl.setCustomerAddresses(new ArrayList<>());
-    customerImpl.setCustomerAttributes(new HashMap<>());
-    customerImpl.setCustomerLocale(new LocaleImpl());
-    customerImpl.setCustomerPayments(new ArrayList<>());
-    customerImpl.setCustomerPhones(new ArrayList<>());
-    customerImpl.setDeactivated(true);
-    customerImpl.setEmailAddress("42 Main St");
-    customerImpl.setExternalId("42");
-    customerImpl.setFirstName("Jane");
-    customerImpl.setId(1L);
-    customerImpl.setLastName("Doe");
-    customerImpl.setPassword("iloveyou");
-    customerImpl.setReceiveEmail(true);
-    customerImpl.setRegistered(true);
-    customerImpl.setUnencodedChallengeAnswer("secret");
-    customerImpl.setUnencodedPassword("secret");
-    customerImpl.setUsername("janedoe");
-    customerImpl.setPasswordChangeRequired(true);
-
-    // Act
-    boolean actualIsPasswordChangeRequiredResult = customerImpl.isPasswordChangeRequired();
-
-    // Assert
-    verify(auditable).setCreatedBy(eq(1L));
-    verify(auditable).setDateCreated(isA(Date.class));
-    verify(auditable).setDateUpdated(isA(Date.class));
-    verify(auditable).setUpdatedBy(eq(1L));
-    assertTrue(actualIsPasswordChangeRequiredResult);
-  }
-
-  /**
    * Test {@link CustomerImpl#setPasswordChangeRequired(boolean)}.
    * <p>
    * Method under test: {@link CustomerImpl#setPasswordChangeRequired(boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CustomerImpl.setPasswordChangeRequired(boolean)"})
   public void testSetPasswordChangeRequired() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CustomerImpl customerImpl = new CustomerImpl();
-    customerImpl.setChallengeQuestion(mock(ChallengeQuestionImpl.class));
+    CustomerImpl customerImpl2 = new CustomerImpl();
 
     // Act
-    customerImpl.setPasswordChangeRequired(true);
+    customerImpl2.setPasswordChangeRequired(true);
 
     // Assert
-    assertTrue(customerImpl.isPasswordChangeRequired());
-    assertTrue(customerImpl.passwordChangeRequired);
-  }
-
-  /**
-   * Test {@link CustomerImpl#setPasswordChangeRequired(boolean)}.
-   * <p>
-   * Method under test: {@link CustomerImpl#setPasswordChangeRequired(boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetPasswordChangeRequired2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3870 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.domain.CustomerImpl customerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CustomerImpl()).setPasswordChangeRequired(true);
-  }
-
-  /**
-   * Test {@link CustomerImpl#setPasswordChangeRequired(boolean)}.
-   * <ul>
-   *   <li>Given {@link CustomerImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#setPasswordChangeRequired(boolean)}
-   */
-  @Test
-  public void testSetPasswordChangeRequired_givenCustomerImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CustomerImpl customerImpl = new CustomerImpl();
-
-    // Act
-    customerImpl.setPasswordChangeRequired(true);
-
-    // Assert
-    assertTrue(customerImpl.isPasswordChangeRequired());
-    assertTrue(customerImpl.passwordChangeRequired);
-  }
-
-  /**
-   * Test {@link CustomerImpl#isReceiveEmail()}.
-   * <p>
-   * Method under test: {@link CustomerImpl#isReceiveEmail()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsReceiveEmail() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3699 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.domain.CustomerImpl customerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CustomerImpl()).isReceiveEmail();
+    assertTrue(customerImpl2.isPasswordChangeRequired());
+    assertTrue(customerImpl2.passwordChangeRequired);
   }
 
   /**
@@ -310,9 +157,9 @@ public class CustomerImplDiffblueTest {
    * Method under test: {@link CustomerImpl#isReceiveEmail()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerImpl.isReceiveEmail()"})
   public void testIsReceiveEmail_givenAuditableCreatedByIsOne_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
@@ -320,90 +167,31 @@ public class CustomerImplDiffblueTest {
     auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
-    CustomerImpl customerImpl = new CustomerImpl();
-    customerImpl.setAuditable(auditable);
-    customerImpl.setChallengeAnswer("Challenge Answer");
-    customerImpl.setChallengeQuestion(new ChallengeQuestionImpl());
-    customerImpl.setCustomerAddresses(new ArrayList<>());
-    customerImpl.setCustomerAttributes(new HashMap<>());
-    customerImpl.setCustomerLocale(new LocaleImpl());
-    customerImpl.setCustomerPayments(new ArrayList<>());
-    customerImpl.setCustomerPhones(new ArrayList<>());
-    customerImpl.setDeactivated(true);
-    customerImpl.setEmailAddress("42 Main St");
-    customerImpl.setExternalId("42");
-    customerImpl.setFirstName("Jane");
-    customerImpl.setId(1L);
-    customerImpl.setLastName("Doe");
-    customerImpl.setPassword("iloveyou");
-    customerImpl.setPasswordChangeRequired(true);
-    customerImpl.setRegistered(true);
-    customerImpl.setUnencodedChallengeAnswer("secret");
-    customerImpl.setUnencodedPassword("secret");
-    customerImpl.setUsername("janedoe");
-    customerImpl.setReceiveEmail(true);
+    CustomerImpl customerImpl2 = new CustomerImpl();
+    customerImpl2.setAuditable(auditable);
+    customerImpl2.setChallengeAnswer("Challenge Answer");
+    customerImpl2.setChallengeQuestion(new ChallengeQuestionImpl());
+    customerImpl2.setCustomerAddresses(new ArrayList<>());
+    customerImpl2.setCustomerAttributes(new HashMap<>());
+    customerImpl2.setCustomerLocale(new LocaleImpl());
+    customerImpl2.setCustomerPayments(new ArrayList<>());
+    customerImpl2.setCustomerPhones(new ArrayList<>());
+    customerImpl2.setDeactivated(true);
+    customerImpl2.setEmailAddress("42 Main St");
+    customerImpl2.setExternalId("42");
+    customerImpl2.setFirstName("Jane");
+    customerImpl2.setId(1L);
+    customerImpl2.setLastName("Doe");
+    customerImpl2.setPassword("iloveyou");
+    customerImpl2.setPasswordChangeRequired(true);
+    customerImpl2.setRegistered(true);
+    customerImpl2.setUnencodedChallengeAnswer("secret");
+    customerImpl2.setUnencodedPassword("secret");
+    customerImpl2.setUsername("janedoe");
+    customerImpl2.setReceiveEmail(true);
 
     // Act and Assert
-    assertTrue(customerImpl.isReceiveEmail());
-  }
-
-  /**
-   * Test {@link CustomerImpl#isReceiveEmail()}.
-   * <ul>
-   *   <li>Given {@link Auditable} {@link Auditable#setCreatedBy(Long)} does
-   * nothing.</li>
-   *   <li>Then calls {@link Auditable#setCreatedBy(Long)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#isReceiveEmail()}
-   */
-  @Test
-  public void testIsReceiveEmail_givenAuditableSetCreatedByDoesNothing_thenCallsSetCreatedBy() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Auditable auditable = mock(Auditable.class);
-    doNothing().when(auditable).setCreatedBy(Mockito.<Long>any());
-    doNothing().when(auditable).setDateCreated(Mockito.<Date>any());
-    doNothing().when(auditable).setDateUpdated(Mockito.<Date>any());
-    doNothing().when(auditable).setUpdatedBy(Mockito.<Long>any());
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    CustomerImpl customerImpl = new CustomerImpl();
-    customerImpl.setAuditable(auditable);
-    customerImpl.setChallengeAnswer("Challenge Answer");
-    customerImpl.setChallengeQuestion(new ChallengeQuestionImpl());
-    customerImpl.setCustomerAddresses(new ArrayList<>());
-    customerImpl.setCustomerAttributes(new HashMap<>());
-    customerImpl.setCustomerLocale(new LocaleImpl());
-    customerImpl.setCustomerPayments(new ArrayList<>());
-    customerImpl.setCustomerPhones(new ArrayList<>());
-    customerImpl.setDeactivated(true);
-    customerImpl.setEmailAddress("42 Main St");
-    customerImpl.setExternalId("42");
-    customerImpl.setFirstName("Jane");
-    customerImpl.setId(1L);
-    customerImpl.setLastName("Doe");
-    customerImpl.setPassword("iloveyou");
-    customerImpl.setPasswordChangeRequired(true);
-    customerImpl.setRegistered(true);
-    customerImpl.setUnencodedChallengeAnswer("secret");
-    customerImpl.setUnencodedPassword("secret");
-    customerImpl.setUsername("janedoe");
-    customerImpl.setReceiveEmail(true);
-
-    // Act
-    boolean actualIsReceiveEmailResult = customerImpl.isReceiveEmail();
-
-    // Assert
-    verify(auditable).setCreatedBy(eq(1L));
-    verify(auditable).setDateCreated(isA(Date.class));
-    verify(auditable).setDateUpdated(isA(Date.class));
-    verify(auditable).setUpdatedBy(eq(1L));
-    assertTrue(actualIsReceiveEmailResult);
+    assertTrue(customerImpl2.isReceiveEmail());
   }
 
   /**
@@ -416,9 +204,9 @@ public class CustomerImplDiffblueTest {
    * Method under test: {@link CustomerImpl#isReceiveEmail()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerImpl.isReceiveEmail()"})
   public void testIsReceiveEmail_givenCustomerImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertFalse((new CustomerImpl()).isReceiveEmail());
   }
@@ -429,104 +217,18 @@ public class CustomerImplDiffblueTest {
    * Method under test: {@link CustomerImpl#setReceiveEmail(boolean)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CustomerImpl.setReceiveEmail(boolean)"})
   public void testSetReceiveEmail() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3918 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.domain.CustomerImpl customerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CustomerImpl()).setReceiveEmail(true);
-  }
-
-  /**
-   * Test {@link CustomerImpl#setReceiveEmail(boolean)}.
-   * <ul>
-   *   <li>Given {@link CustomerImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#setReceiveEmail(boolean)}
-   */
-  @Test
-  public void testSetReceiveEmail_givenCustomerImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CustomerImpl customerImpl = new CustomerImpl();
+    CustomerImpl customerImpl2 = new CustomerImpl();
 
     // Act
-    customerImpl.setReceiveEmail(true);
+    customerImpl2.setReceiveEmail(true);
 
     // Assert
-    assertTrue(customerImpl.isReceiveEmail());
-    assertTrue(customerImpl.receiveEmail);
-  }
-
-  /**
-   * Test {@link CustomerImpl#setReceiveEmail(boolean)}.
-   * <ul>
-   *   <li>Given {@link CustomerImpl} (default constructor) ChallengeQuestion is
-   * {@link ChallengeQuestionImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#setReceiveEmail(boolean)}
-   */
-  @Test
-  public void testSetReceiveEmail_givenCustomerImplChallengeQuestionIsChallengeQuestionImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CustomerImpl customerImpl = new CustomerImpl();
-    customerImpl.setChallengeQuestion(mock(ChallengeQuestionImpl.class));
-
-    // Act
-    customerImpl.setReceiveEmail(true);
-
-    // Assert
-    assertTrue(customerImpl.isReceiveEmail());
-    assertTrue(customerImpl.receiveEmail);
-  }
-
-  /**
-   * Test {@link CustomerImpl#isRegistered()}.
-   * <p>
-   * Method under test: {@link CustomerImpl#isRegistered()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsRegistered() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3723 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.domain.CustomerImpl customerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CustomerImpl()).isRegistered();
+    assertTrue(customerImpl2.isReceiveEmail());
+    assertTrue(customerImpl2.receiveEmail);
   }
 
   /**
@@ -539,9 +241,9 @@ public class CustomerImplDiffblueTest {
    * Method under test: {@link CustomerImpl#isRegistered()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerImpl.isRegistered()"})
   public void testIsRegistered_givenAuditableCreatedByIsOne_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
@@ -549,90 +251,31 @@ public class CustomerImplDiffblueTest {
     auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
-    CustomerImpl customerImpl = new CustomerImpl();
-    customerImpl.setAuditable(auditable);
-    customerImpl.setChallengeAnswer("Challenge Answer");
-    customerImpl.setChallengeQuestion(new ChallengeQuestionImpl());
-    customerImpl.setCustomerAddresses(new ArrayList<>());
-    customerImpl.setCustomerAttributes(new HashMap<>());
-    customerImpl.setCustomerLocale(new LocaleImpl());
-    customerImpl.setCustomerPayments(new ArrayList<>());
-    customerImpl.setCustomerPhones(new ArrayList<>());
-    customerImpl.setDeactivated(true);
-    customerImpl.setEmailAddress("42 Main St");
-    customerImpl.setExternalId("42");
-    customerImpl.setFirstName("Jane");
-    customerImpl.setId(1L);
-    customerImpl.setLastName("Doe");
-    customerImpl.setPassword("iloveyou");
-    customerImpl.setPasswordChangeRequired(true);
-    customerImpl.setReceiveEmail(true);
-    customerImpl.setUnencodedChallengeAnswer("secret");
-    customerImpl.setUnencodedPassword("secret");
-    customerImpl.setUsername("janedoe");
-    customerImpl.setRegistered(true);
+    CustomerImpl customerImpl2 = new CustomerImpl();
+    customerImpl2.setAuditable(auditable);
+    customerImpl2.setChallengeAnswer("Challenge Answer");
+    customerImpl2.setChallengeQuestion(new ChallengeQuestionImpl());
+    customerImpl2.setCustomerAddresses(new ArrayList<>());
+    customerImpl2.setCustomerAttributes(new HashMap<>());
+    customerImpl2.setCustomerLocale(new LocaleImpl());
+    customerImpl2.setCustomerPayments(new ArrayList<>());
+    customerImpl2.setCustomerPhones(new ArrayList<>());
+    customerImpl2.setDeactivated(true);
+    customerImpl2.setEmailAddress("42 Main St");
+    customerImpl2.setExternalId("42");
+    customerImpl2.setFirstName("Jane");
+    customerImpl2.setId(1L);
+    customerImpl2.setLastName("Doe");
+    customerImpl2.setPassword("iloveyou");
+    customerImpl2.setPasswordChangeRequired(true);
+    customerImpl2.setReceiveEmail(true);
+    customerImpl2.setUnencodedChallengeAnswer("secret");
+    customerImpl2.setUnencodedPassword("secret");
+    customerImpl2.setUsername("janedoe");
+    customerImpl2.setRegistered(true);
 
     // Act and Assert
-    assertTrue(customerImpl.isRegistered());
-  }
-
-  /**
-   * Test {@link CustomerImpl#isRegistered()}.
-   * <ul>
-   *   <li>Given {@link Auditable} {@link Auditable#setCreatedBy(Long)} does
-   * nothing.</li>
-   *   <li>Then calls {@link Auditable#setCreatedBy(Long)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#isRegistered()}
-   */
-  @Test
-  public void testIsRegistered_givenAuditableSetCreatedByDoesNothing_thenCallsSetCreatedBy() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Auditable auditable = mock(Auditable.class);
-    doNothing().when(auditable).setCreatedBy(Mockito.<Long>any());
-    doNothing().when(auditable).setDateCreated(Mockito.<Date>any());
-    doNothing().when(auditable).setDateUpdated(Mockito.<Date>any());
-    doNothing().when(auditable).setUpdatedBy(Mockito.<Long>any());
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    CustomerImpl customerImpl = new CustomerImpl();
-    customerImpl.setAuditable(auditable);
-    customerImpl.setChallengeAnswer("Challenge Answer");
-    customerImpl.setChallengeQuestion(new ChallengeQuestionImpl());
-    customerImpl.setCustomerAddresses(new ArrayList<>());
-    customerImpl.setCustomerAttributes(new HashMap<>());
-    customerImpl.setCustomerLocale(new LocaleImpl());
-    customerImpl.setCustomerPayments(new ArrayList<>());
-    customerImpl.setCustomerPhones(new ArrayList<>());
-    customerImpl.setDeactivated(true);
-    customerImpl.setEmailAddress("42 Main St");
-    customerImpl.setExternalId("42");
-    customerImpl.setFirstName("Jane");
-    customerImpl.setId(1L);
-    customerImpl.setLastName("Doe");
-    customerImpl.setPassword("iloveyou");
-    customerImpl.setPasswordChangeRequired(true);
-    customerImpl.setReceiveEmail(true);
-    customerImpl.setUnencodedChallengeAnswer("secret");
-    customerImpl.setUnencodedPassword("secret");
-    customerImpl.setUsername("janedoe");
-    customerImpl.setRegistered(true);
-
-    // Act
-    boolean actualIsRegisteredResult = customerImpl.isRegistered();
-
-    // Assert
-    verify(auditable).setCreatedBy(eq(1L));
-    verify(auditable).setDateCreated(isA(Date.class));
-    verify(auditable).setDateUpdated(isA(Date.class));
-    verify(auditable).setUpdatedBy(eq(1L));
-    assertTrue(actualIsRegisteredResult);
+    assertTrue(customerImpl2.isRegistered());
   }
 
   /**
@@ -645,9 +288,9 @@ public class CustomerImplDiffblueTest {
    * Method under test: {@link CustomerImpl#isRegistered()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerImpl.isRegistered()"})
   public void testIsRegistered_givenCustomerImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertFalse((new CustomerImpl()).isRegistered());
   }
@@ -658,75 +301,18 @@ public class CustomerImplDiffblueTest {
    * Method under test: {@link CustomerImpl#setRegistered(boolean)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CustomerImpl.setRegistered(boolean)"})
   public void testSetRegistered() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3942 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.domain.CustomerImpl customerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CustomerImpl()).setRegistered(true);
-  }
-
-  /**
-   * Test {@link CustomerImpl#setRegistered(boolean)}.
-   * <ul>
-   *   <li>Given {@link CustomerImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#setRegistered(boolean)}
-   */
-  @Test
-  public void testSetRegistered_givenCustomerImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CustomerImpl customerImpl = new CustomerImpl();
+    CustomerImpl customerImpl2 = new CustomerImpl();
 
     // Act
-    customerImpl.setRegistered(true);
+    customerImpl2.setRegistered(true);
 
     // Assert
-    assertTrue(customerImpl.isRegistered());
-    assertTrue(customerImpl.registered);
-  }
-
-  /**
-   * Test {@link CustomerImpl#setRegistered(boolean)}.
-   * <ul>
-   *   <li>Given {@link CustomerImpl} (default constructor) ChallengeQuestion is
-   * {@link ChallengeQuestionImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#setRegistered(boolean)}
-   */
-  @Test
-  public void testSetRegistered_givenCustomerImplChallengeQuestionIsChallengeQuestionImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CustomerImpl customerImpl = new CustomerImpl();
-    customerImpl.setChallengeQuestion(mock(ChallengeQuestionImpl.class));
-
-    // Act
-    customerImpl.setRegistered(true);
-
-    // Assert
-    assertTrue(customerImpl.isRegistered());
-    assertTrue(customerImpl.registered);
+    assertTrue(customerImpl2.isRegistered());
+    assertTrue(customerImpl2.registered);
   }
 
   /**
@@ -776,6 +362,26 @@ public class CustomerImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Auditable CustomerImpl.getAuditable()", "String CustomerImpl.getChallengeAnswer()",
+      "ChallengeQuestion CustomerImpl.getChallengeQuestion()", "List CustomerImpl.getCustomerAddresses()",
+      "Map CustomerImpl.getCustomerAttributes()", "Locale CustomerImpl.getCustomerLocale()",
+      "List CustomerImpl.getCustomerPayments()", "List CustomerImpl.getCustomerPhones()",
+      "String CustomerImpl.getEmailAddress()", "String CustomerImpl.getExternalId()",
+      "String CustomerImpl.getFirstName()", "Long CustomerImpl.getId()", "String CustomerImpl.getLastName()",
+      "String CustomerImpl.getPassword()", "String CustomerImpl.getTaxExemptionCode()",
+      "Map CustomerImpl.getTransientProperties()", "String CustomerImpl.getUnencodedChallengeAnswer()",
+      "String CustomerImpl.getUnencodedPassword()", "String CustomerImpl.getUsername()",
+      "boolean CustomerImpl.isAnonymous()", "boolean CustomerImpl.isCookied()", "boolean CustomerImpl.isLoggedIn()",
+      "void CustomerImpl.setAuditable(Auditable)", "void CustomerImpl.setChallengeAnswer(String)",
+      "void CustomerImpl.setChallengeQuestion(ChallengeQuestion)", "void CustomerImpl.setCustomerAddresses(List)",
+      "void CustomerImpl.setCustomerAttributes(Map)", "void CustomerImpl.setCustomerLocale(Locale)",
+      "void CustomerImpl.setCustomerPayments(List)", "void CustomerImpl.setCustomerPhones(List)",
+      "void CustomerImpl.setEmailAddress(String)", "void CustomerImpl.setExternalId(String)",
+      "void CustomerImpl.setFirstName(String)", "void CustomerImpl.setId(Long)",
+      "void CustomerImpl.setLastName(String)", "void CustomerImpl.setPassword(String)",
+      "void CustomerImpl.setUnencodedChallengeAnswer(String)", "void CustomerImpl.setUnencodedPassword(String)",
+      "void CustomerImpl.setUsername(String)"})
   public void testGettersAndSetters() {
     // Arrange
     CustomerImpl customerImpl = new CustomerImpl();
@@ -824,7 +430,7 @@ public class CustomerImplDiffblueTest {
     Long actualId = customerImpl.getId();
     String actualLastName = customerImpl.getLastName();
     String actualPassword = customerImpl.getPassword();
-    customerImpl.getTaxExemptionCode();
+    String actualTaxExemptionCode = customerImpl.getTaxExemptionCode();
     Map<String, Object> actualTransientProperties = customerImpl.getTransientProperties();
     String actualUnencodedChallengeAnswer = customerImpl.getUnencodedChallengeAnswer();
     String actualUnencodedPassword = customerImpl.getUnencodedPassword();
@@ -833,7 +439,7 @@ public class CustomerImplDiffblueTest {
     boolean actualIsCookiedResult = customerImpl.isCookied();
     boolean actualIsLoggedInResult = customerImpl.isLoggedIn();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("42 Main St", actualEmailAddress);
     assertEquals("42", actualExternalId);
     assertEquals("Challenge Answer", actualChallengeAnswer);
@@ -843,6 +449,7 @@ public class CustomerImplDiffblueTest {
     assertEquals("janedoe", actualUsername);
     assertEquals("secret", actualUnencodedChallengeAnswer);
     assertEquals("secret", actualUnencodedPassword);
+    assertNull(actualTaxExemptionCode);
     assertEquals(1L, actualId.longValue());
     assertFalse(actualIsAnonymousResult);
     assertFalse(actualIsCookiedResult);
@@ -863,35 +470,6 @@ public class CustomerImplDiffblueTest {
 
   /**
    * Test {@link CustomerImpl#setAnonymous(boolean)}.
-   * <p>
-   * Method under test: {@link CustomerImpl#setAnonymous(boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetAnonymous() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3771 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.domain.CustomerImpl customerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CustomerImpl()).setAnonymous(true);
-  }
-
-  /**
-   * Test {@link CustomerImpl#setAnonymous(boolean)}.
    * <ul>
    *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.</li>
    *   <li>Then not {@link CustomerImpl} (default constructor) Anonymous.</li>
@@ -900,9 +478,9 @@ public class CustomerImplDiffblueTest {
    * Method under test: {@link CustomerImpl#setAnonymous(boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CustomerImpl.setAnonymous(boolean)"})
   public void testSetAnonymous_givenAuditableCreatedByIsOne_thenNotCustomerImplAnonymous() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
@@ -910,93 +488,34 @@ public class CustomerImplDiffblueTest {
     auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
-    CustomerImpl customerImpl = new CustomerImpl();
-    customerImpl.setAuditable(auditable);
-    customerImpl.setChallengeAnswer("Challenge Answer");
-    customerImpl.setChallengeQuestion(new ChallengeQuestionImpl());
-    customerImpl.setCustomerAddresses(new ArrayList<>());
-    customerImpl.setCustomerAttributes(new HashMap<>());
-    customerImpl.setCustomerLocale(new LocaleImpl());
-    customerImpl.setCustomerPayments(new ArrayList<>());
-    customerImpl.setCustomerPhones(new ArrayList<>());
-    customerImpl.setDeactivated(true);
-    customerImpl.setEmailAddress("42 Main St");
-    customerImpl.setExternalId("42");
-    customerImpl.setFirstName("Jane");
-    customerImpl.setId(1L);
-    customerImpl.setLastName("Doe");
-    customerImpl.setPassword("iloveyou");
-    customerImpl.setPasswordChangeRequired(true);
-    customerImpl.setReceiveEmail(true);
-    customerImpl.setRegistered(true);
-    customerImpl.setUnencodedChallengeAnswer("secret");
-    customerImpl.setUnencodedPassword("secret");
-    customerImpl.setUsername("janedoe");
+    CustomerImpl customerImpl2 = new CustomerImpl();
+    customerImpl2.setAuditable(auditable);
+    customerImpl2.setChallengeAnswer("Challenge Answer");
+    customerImpl2.setChallengeQuestion(new ChallengeQuestionImpl());
+    customerImpl2.setCustomerAddresses(new ArrayList<>());
+    customerImpl2.setCustomerAttributes(new HashMap<>());
+    customerImpl2.setCustomerLocale(new LocaleImpl());
+    customerImpl2.setCustomerPayments(new ArrayList<>());
+    customerImpl2.setCustomerPhones(new ArrayList<>());
+    customerImpl2.setDeactivated(true);
+    customerImpl2.setEmailAddress("42 Main St");
+    customerImpl2.setExternalId("42");
+    customerImpl2.setFirstName("Jane");
+    customerImpl2.setId(1L);
+    customerImpl2.setLastName("Doe");
+    customerImpl2.setPassword("iloveyou");
+    customerImpl2.setPasswordChangeRequired(true);
+    customerImpl2.setReceiveEmail(true);
+    customerImpl2.setRegistered(true);
+    customerImpl2.setUnencodedChallengeAnswer("secret");
+    customerImpl2.setUnencodedPassword("secret");
+    customerImpl2.setUsername("janedoe");
 
     // Act
-    customerImpl.setAnonymous(false);
+    customerImpl2.setAnonymous(false);
 
-    // Assert
-    assertFalse(customerImpl.isAnonymous());
-  }
-
-  /**
-   * Test {@link CustomerImpl#setAnonymous(boolean)}.
-   * <ul>
-   *   <li>Given {@link Auditable} {@link Auditable#setCreatedBy(Long)} does
-   * nothing.</li>
-   *   <li>Then calls {@link Auditable#setCreatedBy(Long)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#setAnonymous(boolean)}
-   */
-  @Test
-  public void testSetAnonymous_givenAuditableSetCreatedByDoesNothing_thenCallsSetCreatedBy() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Auditable auditable = mock(Auditable.class);
-    doNothing().when(auditable).setCreatedBy(Mockito.<Long>any());
-    doNothing().when(auditable).setDateCreated(Mockito.<Date>any());
-    doNothing().when(auditable).setDateUpdated(Mockito.<Date>any());
-    doNothing().when(auditable).setUpdatedBy(Mockito.<Long>any());
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    CustomerImpl customerImpl = new CustomerImpl();
-    customerImpl.setAuditable(auditable);
-    customerImpl.setChallengeAnswer("Challenge Answer");
-    customerImpl.setChallengeQuestion(new ChallengeQuestionImpl());
-    customerImpl.setCustomerAddresses(new ArrayList<>());
-    customerImpl.setCustomerAttributes(new HashMap<>());
-    customerImpl.setCustomerLocale(new LocaleImpl());
-    customerImpl.setCustomerPayments(new ArrayList<>());
-    customerImpl.setCustomerPhones(new ArrayList<>());
-    customerImpl.setDeactivated(true);
-    customerImpl.setEmailAddress("42 Main St");
-    customerImpl.setExternalId("42");
-    customerImpl.setFirstName("Jane");
-    customerImpl.setId(1L);
-    customerImpl.setLastName("Doe");
-    customerImpl.setPassword("iloveyou");
-    customerImpl.setPasswordChangeRequired(true);
-    customerImpl.setReceiveEmail(true);
-    customerImpl.setRegistered(true);
-    customerImpl.setUnencodedChallengeAnswer("secret");
-    customerImpl.setUnencodedPassword("secret");
-    customerImpl.setUsername("janedoe");
-
-    // Act
-    customerImpl.setAnonymous(false);
-
-    // Assert
-    verify(auditable).setCreatedBy(eq(1L));
-    verify(auditable).setDateCreated(isA(Date.class));
-    verify(auditable).setDateUpdated(isA(Date.class));
-    verify(auditable).setUpdatedBy(eq(1L));
-    assertFalse(customerImpl.isAnonymous());
+    // Assert that nothing has changed
+    assertFalse(customerImpl2.isAnonymous());
   }
 
   /**
@@ -1010,46 +529,17 @@ public class CustomerImplDiffblueTest {
    * Method under test: {@link CustomerImpl#setAnonymous(boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CustomerImpl.setAnonymous(boolean)"})
   public void testSetAnonymous_givenCustomerImpl_whenTrue_thenCustomerImplAnonymous() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CustomerImpl customerImpl = new CustomerImpl();
+    CustomerImpl customerImpl2 = new CustomerImpl();
 
     // Act
-    customerImpl.setAnonymous(true);
+    customerImpl2.setAnonymous(true);
 
     // Assert
-    assertTrue(customerImpl.isAnonymous());
-  }
-
-  /**
-   * Test {@link CustomerImpl#setCookied(boolean)}.
-   * <p>
-   * Method under test: {@link CustomerImpl#setCookied(boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetCookied() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3796 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.domain.CustomerImpl customerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CustomerImpl()).setCookied(true);
+    assertTrue(customerImpl2.isAnonymous());
   }
 
   /**
@@ -1063,9 +553,9 @@ public class CustomerImplDiffblueTest {
    * Method under test: {@link CustomerImpl#setCookied(boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CustomerImpl.setCookied(boolean)"})
   public void testSetCookied_givenAuditableCreatedByIsOne_whenFalse_thenNotCustomerImplCookied() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
@@ -1073,93 +563,34 @@ public class CustomerImplDiffblueTest {
     auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
-    CustomerImpl customerImpl = new CustomerImpl();
-    customerImpl.setAuditable(auditable);
-    customerImpl.setChallengeAnswer("Challenge Answer");
-    customerImpl.setChallengeQuestion(new ChallengeQuestionImpl());
-    customerImpl.setCustomerAddresses(new ArrayList<>());
-    customerImpl.setCustomerAttributes(new HashMap<>());
-    customerImpl.setCustomerLocale(new LocaleImpl());
-    customerImpl.setCustomerPayments(new ArrayList<>());
-    customerImpl.setCustomerPhones(new ArrayList<>());
-    customerImpl.setDeactivated(true);
-    customerImpl.setEmailAddress("42 Main St");
-    customerImpl.setExternalId("42");
-    customerImpl.setFirstName("Jane");
-    customerImpl.setId(1L);
-    customerImpl.setLastName("Doe");
-    customerImpl.setPassword("iloveyou");
-    customerImpl.setPasswordChangeRequired(true);
-    customerImpl.setReceiveEmail(true);
-    customerImpl.setRegistered(true);
-    customerImpl.setUnencodedChallengeAnswer("secret");
-    customerImpl.setUnencodedPassword("secret");
-    customerImpl.setUsername("janedoe");
+    CustomerImpl customerImpl2 = new CustomerImpl();
+    customerImpl2.setAuditable(auditable);
+    customerImpl2.setChallengeAnswer("Challenge Answer");
+    customerImpl2.setChallengeQuestion(new ChallengeQuestionImpl());
+    customerImpl2.setCustomerAddresses(new ArrayList<>());
+    customerImpl2.setCustomerAttributes(new HashMap<>());
+    customerImpl2.setCustomerLocale(new LocaleImpl());
+    customerImpl2.setCustomerPayments(new ArrayList<>());
+    customerImpl2.setCustomerPhones(new ArrayList<>());
+    customerImpl2.setDeactivated(true);
+    customerImpl2.setEmailAddress("42 Main St");
+    customerImpl2.setExternalId("42");
+    customerImpl2.setFirstName("Jane");
+    customerImpl2.setId(1L);
+    customerImpl2.setLastName("Doe");
+    customerImpl2.setPassword("iloveyou");
+    customerImpl2.setPasswordChangeRequired(true);
+    customerImpl2.setReceiveEmail(true);
+    customerImpl2.setRegistered(true);
+    customerImpl2.setUnencodedChallengeAnswer("secret");
+    customerImpl2.setUnencodedPassword("secret");
+    customerImpl2.setUsername("janedoe");
 
     // Act
-    customerImpl.setCookied(false);
+    customerImpl2.setCookied(false);
 
-    // Assert
-    assertFalse(customerImpl.isCookied());
-  }
-
-  /**
-   * Test {@link CustomerImpl#setCookied(boolean)}.
-   * <ul>
-   *   <li>Given {@link Auditable} {@link Auditable#setCreatedBy(Long)} does
-   * nothing.</li>
-   *   <li>Then calls {@link Auditable#setCreatedBy(Long)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#setCookied(boolean)}
-   */
-  @Test
-  public void testSetCookied_givenAuditableSetCreatedByDoesNothing_thenCallsSetCreatedBy() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Auditable auditable = mock(Auditable.class);
-    doNothing().when(auditable).setCreatedBy(Mockito.<Long>any());
-    doNothing().when(auditable).setDateCreated(Mockito.<Date>any());
-    doNothing().when(auditable).setDateUpdated(Mockito.<Date>any());
-    doNothing().when(auditable).setUpdatedBy(Mockito.<Long>any());
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    CustomerImpl customerImpl = new CustomerImpl();
-    customerImpl.setAuditable(auditable);
-    customerImpl.setChallengeAnswer("Challenge Answer");
-    customerImpl.setChallengeQuestion(new ChallengeQuestionImpl());
-    customerImpl.setCustomerAddresses(new ArrayList<>());
-    customerImpl.setCustomerAttributes(new HashMap<>());
-    customerImpl.setCustomerLocale(new LocaleImpl());
-    customerImpl.setCustomerPayments(new ArrayList<>());
-    customerImpl.setCustomerPhones(new ArrayList<>());
-    customerImpl.setDeactivated(true);
-    customerImpl.setEmailAddress("42 Main St");
-    customerImpl.setExternalId("42");
-    customerImpl.setFirstName("Jane");
-    customerImpl.setId(1L);
-    customerImpl.setLastName("Doe");
-    customerImpl.setPassword("iloveyou");
-    customerImpl.setPasswordChangeRequired(true);
-    customerImpl.setReceiveEmail(true);
-    customerImpl.setRegistered(true);
-    customerImpl.setUnencodedChallengeAnswer("secret");
-    customerImpl.setUnencodedPassword("secret");
-    customerImpl.setUsername("janedoe");
-
-    // Act
-    customerImpl.setCookied(false);
-
-    // Assert
-    verify(auditable).setCreatedBy(eq(1L));
-    verify(auditable).setDateCreated(isA(Date.class));
-    verify(auditable).setDateUpdated(isA(Date.class));
-    verify(auditable).setUpdatedBy(eq(1L));
-    assertFalse(customerImpl.isCookied());
+    // Assert that nothing has changed
+    assertFalse(customerImpl2.isCookied());
   }
 
   /**
@@ -1173,46 +604,17 @@ public class CustomerImplDiffblueTest {
    * Method under test: {@link CustomerImpl#setCookied(boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CustomerImpl.setCookied(boolean)"})
   public void testSetCookied_givenCustomerImpl_whenTrue_thenCustomerImplCookied() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CustomerImpl customerImpl = new CustomerImpl();
+    CustomerImpl customerImpl2 = new CustomerImpl();
 
     // Act
-    customerImpl.setCookied(true);
+    customerImpl2.setCookied(true);
 
     // Assert
-    assertTrue(customerImpl.isCookied());
-  }
-
-  /**
-   * Test {@link CustomerImpl#setLoggedIn(boolean)}.
-   * <p>
-   * Method under test: {@link CustomerImpl#setLoggedIn(boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetLoggedIn() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3845 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.domain.CustomerImpl customerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CustomerImpl()).setLoggedIn(true);
+    assertTrue(customerImpl2.isCookied());
   }
 
   /**
@@ -1225,9 +627,9 @@ public class CustomerImplDiffblueTest {
    * Method under test: {@link CustomerImpl#setLoggedIn(boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CustomerImpl.setLoggedIn(boolean)"})
   public void testSetLoggedIn_givenAuditableCreatedByIsOne_thenNotCustomerImplLoggedIn() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
@@ -1235,93 +637,34 @@ public class CustomerImplDiffblueTest {
     auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
-    CustomerImpl customerImpl = new CustomerImpl();
-    customerImpl.setAuditable(auditable);
-    customerImpl.setChallengeAnswer("Challenge Answer");
-    customerImpl.setChallengeQuestion(new ChallengeQuestionImpl());
-    customerImpl.setCustomerAddresses(new ArrayList<>());
-    customerImpl.setCustomerAttributes(new HashMap<>());
-    customerImpl.setCustomerLocale(new LocaleImpl());
-    customerImpl.setCustomerPayments(new ArrayList<>());
-    customerImpl.setCustomerPhones(new ArrayList<>());
-    customerImpl.setDeactivated(true);
-    customerImpl.setEmailAddress("42 Main St");
-    customerImpl.setExternalId("42");
-    customerImpl.setFirstName("Jane");
-    customerImpl.setId(1L);
-    customerImpl.setLastName("Doe");
-    customerImpl.setPassword("iloveyou");
-    customerImpl.setPasswordChangeRequired(true);
-    customerImpl.setReceiveEmail(true);
-    customerImpl.setRegistered(true);
-    customerImpl.setUnencodedChallengeAnswer("secret");
-    customerImpl.setUnencodedPassword("secret");
-    customerImpl.setUsername("janedoe");
+    CustomerImpl customerImpl2 = new CustomerImpl();
+    customerImpl2.setAuditable(auditable);
+    customerImpl2.setChallengeAnswer("Challenge Answer");
+    customerImpl2.setChallengeQuestion(new ChallengeQuestionImpl());
+    customerImpl2.setCustomerAddresses(new ArrayList<>());
+    customerImpl2.setCustomerAttributes(new HashMap<>());
+    customerImpl2.setCustomerLocale(new LocaleImpl());
+    customerImpl2.setCustomerPayments(new ArrayList<>());
+    customerImpl2.setCustomerPhones(new ArrayList<>());
+    customerImpl2.setDeactivated(true);
+    customerImpl2.setEmailAddress("42 Main St");
+    customerImpl2.setExternalId("42");
+    customerImpl2.setFirstName("Jane");
+    customerImpl2.setId(1L);
+    customerImpl2.setLastName("Doe");
+    customerImpl2.setPassword("iloveyou");
+    customerImpl2.setPasswordChangeRequired(true);
+    customerImpl2.setReceiveEmail(true);
+    customerImpl2.setRegistered(true);
+    customerImpl2.setUnencodedChallengeAnswer("secret");
+    customerImpl2.setUnencodedPassword("secret");
+    customerImpl2.setUsername("janedoe");
 
     // Act
-    customerImpl.setLoggedIn(false);
+    customerImpl2.setLoggedIn(false);
 
-    // Assert
-    assertFalse(customerImpl.isLoggedIn());
-  }
-
-  /**
-   * Test {@link CustomerImpl#setLoggedIn(boolean)}.
-   * <ul>
-   *   <li>Given {@link Auditable} {@link Auditable#setCreatedBy(Long)} does
-   * nothing.</li>
-   *   <li>Then calls {@link Auditable#setCreatedBy(Long)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#setLoggedIn(boolean)}
-   */
-  @Test
-  public void testSetLoggedIn_givenAuditableSetCreatedByDoesNothing_thenCallsSetCreatedBy() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Auditable auditable = mock(Auditable.class);
-    doNothing().when(auditable).setCreatedBy(Mockito.<Long>any());
-    doNothing().when(auditable).setDateCreated(Mockito.<Date>any());
-    doNothing().when(auditable).setDateUpdated(Mockito.<Date>any());
-    doNothing().when(auditable).setUpdatedBy(Mockito.<Long>any());
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    CustomerImpl customerImpl = new CustomerImpl();
-    customerImpl.setAuditable(auditable);
-    customerImpl.setChallengeAnswer("Challenge Answer");
-    customerImpl.setChallengeQuestion(new ChallengeQuestionImpl());
-    customerImpl.setCustomerAddresses(new ArrayList<>());
-    customerImpl.setCustomerAttributes(new HashMap<>());
-    customerImpl.setCustomerLocale(new LocaleImpl());
-    customerImpl.setCustomerPayments(new ArrayList<>());
-    customerImpl.setCustomerPhones(new ArrayList<>());
-    customerImpl.setDeactivated(true);
-    customerImpl.setEmailAddress("42 Main St");
-    customerImpl.setExternalId("42");
-    customerImpl.setFirstName("Jane");
-    customerImpl.setId(1L);
-    customerImpl.setLastName("Doe");
-    customerImpl.setPassword("iloveyou");
-    customerImpl.setPasswordChangeRequired(true);
-    customerImpl.setReceiveEmail(true);
-    customerImpl.setRegistered(true);
-    customerImpl.setUnencodedChallengeAnswer("secret");
-    customerImpl.setUnencodedPassword("secret");
-    customerImpl.setUsername("janedoe");
-
-    // Act
-    customerImpl.setLoggedIn(false);
-
-    // Assert
-    verify(auditable).setCreatedBy(eq(1L));
-    verify(auditable).setDateCreated(isA(Date.class));
-    verify(auditable).setDateUpdated(isA(Date.class));
-    verify(auditable).setUpdatedBy(eq(1L));
-    assertFalse(customerImpl.isLoggedIn());
+    // Assert that nothing has changed
+    assertFalse(customerImpl2.isLoggedIn());
   }
 
   /**
@@ -1335,46 +678,17 @@ public class CustomerImplDiffblueTest {
    * Method under test: {@link CustomerImpl#setLoggedIn(boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CustomerImpl.setLoggedIn(boolean)"})
   public void testSetLoggedIn_givenCustomerImpl_whenTrue_thenCustomerImplLoggedIn() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CustomerImpl customerImpl = new CustomerImpl();
+    CustomerImpl customerImpl2 = new CustomerImpl();
 
     // Act
-    customerImpl.setLoggedIn(true);
+    customerImpl2.setLoggedIn(true);
 
     // Assert
-    assertTrue(customerImpl.isLoggedIn());
-  }
-
-  /**
-   * Test {@link CustomerImpl#isDeactivated()}.
-   * <p>
-   * Method under test: {@link CustomerImpl#isDeactivated()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsDeactivated() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3651 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.domain.CustomerImpl customerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CustomerImpl()).isDeactivated();
+    assertTrue(customerImpl2.isLoggedIn());
   }
 
   /**
@@ -1387,9 +701,9 @@ public class CustomerImplDiffblueTest {
    * Method under test: {@link CustomerImpl#isDeactivated()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerImpl.isDeactivated()"})
   public void testIsDeactivated_givenAuditableCreatedByIsOne_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
@@ -1397,90 +711,31 @@ public class CustomerImplDiffblueTest {
     auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
-    CustomerImpl customerImpl = new CustomerImpl();
-    customerImpl.setAuditable(auditable);
-    customerImpl.setChallengeAnswer("Challenge Answer");
-    customerImpl.setChallengeQuestion(new ChallengeQuestionImpl());
-    customerImpl.setCustomerAddresses(new ArrayList<>());
-    customerImpl.setCustomerAttributes(new HashMap<>());
-    customerImpl.setCustomerLocale(new LocaleImpl());
-    customerImpl.setCustomerPayments(new ArrayList<>());
-    customerImpl.setCustomerPhones(new ArrayList<>());
-    customerImpl.setEmailAddress("42 Main St");
-    customerImpl.setExternalId("42");
-    customerImpl.setFirstName("Jane");
-    customerImpl.setId(1L);
-    customerImpl.setLastName("Doe");
-    customerImpl.setPassword("iloveyou");
-    customerImpl.setPasswordChangeRequired(true);
-    customerImpl.setReceiveEmail(true);
-    customerImpl.setRegistered(true);
-    customerImpl.setUnencodedChallengeAnswer("secret");
-    customerImpl.setUnencodedPassword("secret");
-    customerImpl.setUsername("janedoe");
-    customerImpl.setDeactivated(true);
+    CustomerImpl customerImpl2 = new CustomerImpl();
+    customerImpl2.setAuditable(auditable);
+    customerImpl2.setChallengeAnswer("Challenge Answer");
+    customerImpl2.setChallengeQuestion(new ChallengeQuestionImpl());
+    customerImpl2.setCustomerAddresses(new ArrayList<>());
+    customerImpl2.setCustomerAttributes(new HashMap<>());
+    customerImpl2.setCustomerLocale(new LocaleImpl());
+    customerImpl2.setCustomerPayments(new ArrayList<>());
+    customerImpl2.setCustomerPhones(new ArrayList<>());
+    customerImpl2.setEmailAddress("42 Main St");
+    customerImpl2.setExternalId("42");
+    customerImpl2.setFirstName("Jane");
+    customerImpl2.setId(1L);
+    customerImpl2.setLastName("Doe");
+    customerImpl2.setPassword("iloveyou");
+    customerImpl2.setPasswordChangeRequired(true);
+    customerImpl2.setReceiveEmail(true);
+    customerImpl2.setRegistered(true);
+    customerImpl2.setUnencodedChallengeAnswer("secret");
+    customerImpl2.setUnencodedPassword("secret");
+    customerImpl2.setUsername("janedoe");
+    customerImpl2.setDeactivated(true);
 
     // Act and Assert
-    assertTrue(customerImpl.isDeactivated());
-  }
-
-  /**
-   * Test {@link CustomerImpl#isDeactivated()}.
-   * <ul>
-   *   <li>Given {@link Auditable} {@link Auditable#setCreatedBy(Long)} does
-   * nothing.</li>
-   *   <li>Then calls {@link Auditable#setCreatedBy(Long)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#isDeactivated()}
-   */
-  @Test
-  public void testIsDeactivated_givenAuditableSetCreatedByDoesNothing_thenCallsSetCreatedBy() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Auditable auditable = mock(Auditable.class);
-    doNothing().when(auditable).setCreatedBy(Mockito.<Long>any());
-    doNothing().when(auditable).setDateCreated(Mockito.<Date>any());
-    doNothing().when(auditable).setDateUpdated(Mockito.<Date>any());
-    doNothing().when(auditable).setUpdatedBy(Mockito.<Long>any());
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    CustomerImpl customerImpl = new CustomerImpl();
-    customerImpl.setAuditable(auditable);
-    customerImpl.setChallengeAnswer("Challenge Answer");
-    customerImpl.setChallengeQuestion(new ChallengeQuestionImpl());
-    customerImpl.setCustomerAddresses(new ArrayList<>());
-    customerImpl.setCustomerAttributes(new HashMap<>());
-    customerImpl.setCustomerLocale(new LocaleImpl());
-    customerImpl.setCustomerPayments(new ArrayList<>());
-    customerImpl.setCustomerPhones(new ArrayList<>());
-    customerImpl.setEmailAddress("42 Main St");
-    customerImpl.setExternalId("42");
-    customerImpl.setFirstName("Jane");
-    customerImpl.setId(1L);
-    customerImpl.setLastName("Doe");
-    customerImpl.setPassword("iloveyou");
-    customerImpl.setPasswordChangeRequired(true);
-    customerImpl.setReceiveEmail(true);
-    customerImpl.setRegistered(true);
-    customerImpl.setUnencodedChallengeAnswer("secret");
-    customerImpl.setUnencodedPassword("secret");
-    customerImpl.setUsername("janedoe");
-    customerImpl.setDeactivated(true);
-
-    // Act
-    boolean actualIsDeactivatedResult = customerImpl.isDeactivated();
-
-    // Assert
-    verify(auditable).setCreatedBy(eq(1L));
-    verify(auditable).setDateCreated(isA(Date.class));
-    verify(auditable).setDateUpdated(isA(Date.class));
-    verify(auditable).setUpdatedBy(eq(1L));
-    assertTrue(actualIsDeactivatedResult);
+    assertTrue(customerImpl2.isDeactivated());
   }
 
   /**
@@ -1493,9 +748,9 @@ public class CustomerImplDiffblueTest {
    * Method under test: {@link CustomerImpl#isDeactivated()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerImpl.isDeactivated()"})
   public void testIsDeactivated_givenCustomerImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertFalse((new CustomerImpl()).isDeactivated());
   }
@@ -1506,119 +761,33 @@ public class CustomerImplDiffblueTest {
    * Method under test: {@link CustomerImpl#setDeactivated(boolean)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CustomerImpl.setDeactivated(boolean)"})
   public void testSetDeactivated() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3821 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.domain.CustomerImpl customerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CustomerImpl()).setDeactivated(true);
-  }
-
-  /**
-   * Test {@link CustomerImpl#setDeactivated(boolean)}.
-   * <ul>
-   *   <li>Given {@link CustomerImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#setDeactivated(boolean)}
-   */
-  @Test
-  public void testSetDeactivated_givenCustomerImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CustomerImpl customerImpl = new CustomerImpl();
+    CustomerImpl customerImpl2 = new CustomerImpl();
 
     // Act
-    customerImpl.setDeactivated(true);
+    customerImpl2.setDeactivated(true);
 
     // Assert
-    assertTrue(customerImpl.isDeactivated());
-    assertTrue(customerImpl.deactivated);
-  }
-
-  /**
-   * Test {@link CustomerImpl#setDeactivated(boolean)}.
-   * <ul>
-   *   <li>Given {@link CustomerImpl} (default constructor) ChallengeQuestion is
-   * {@link ChallengeQuestionImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#setDeactivated(boolean)}
-   */
-  @Test
-  public void testSetDeactivated_givenCustomerImplChallengeQuestionIsChallengeQuestionImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CustomerImpl customerImpl = new CustomerImpl();
-    customerImpl.setChallengeQuestion(mock(ChallengeQuestionImpl.class));
-
-    // Act
-    customerImpl.setDeactivated(true);
-
-    // Assert
-    assertTrue(customerImpl.isDeactivated());
-    assertTrue(customerImpl.deactivated);
-  }
-
-  /**
-   * Test {@link CustomerImpl#getMainEntityName()}.
-   * <p>
-   * Method under test: {@link CustomerImpl#getMainEntityName()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetMainEntityName() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3603 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.domain.CustomerImpl customerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CustomerImpl()).getMainEntityName();
+    assertTrue(customerImpl2.isDeactivated());
+    assertTrue(customerImpl2.deactivated);
   }
 
   /**
    * Test {@link CustomerImpl#getMainEntityName()}.
    * <ul>
-   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.</li>
+   *   <li>Given {@link CustomerImpl} (default constructor) FirstName is empty string.</li>
    *   <li>Then return {@code 1}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CustomerImpl#getMainEntityName()}
    */
   @Test
-  public void testGetMainEntityName_givenAuditableCreatedByIsOne_thenReturn1() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CustomerImpl.getMainEntityName()"})
+  public void testGetMainEntityName_givenCustomerImplFirstNameIsEmptyString_thenReturn1() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
@@ -1626,47 +795,93 @@ public class CustomerImplDiffblueTest {
     auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
-    CustomerImpl customerImpl = new CustomerImpl();
-    customerImpl.setAuditable(auditable);
-    customerImpl.setChallengeAnswer("Challenge Answer");
-    customerImpl.setChallengeQuestion(new ChallengeQuestionImpl());
-    customerImpl.setCustomerAddresses(new ArrayList<>());
-    customerImpl.setCustomerAttributes(new HashMap<>());
-    customerImpl.setCustomerLocale(new LocaleImpl());
-    customerImpl.setCustomerPayments(new ArrayList<>());
-    customerImpl.setCustomerPhones(new ArrayList<>());
-    customerImpl.setDeactivated(true);
-    customerImpl.setEmailAddress("42 Main St");
-    customerImpl.setExternalId("42");
-    customerImpl.setId(1L);
-    customerImpl.setPassword("iloveyou");
-    customerImpl.setPasswordChangeRequired(true);
-    customerImpl.setReceiveEmail(true);
-    customerImpl.setRegistered(true);
-    customerImpl.setUnencodedChallengeAnswer("secret");
-    customerImpl.setUnencodedPassword("secret");
-    customerImpl.setUsername(null);
-    customerImpl.setFirstName("foo");
-    customerImpl.setLastName(null);
+    CustomerImpl customerImpl2 = new CustomerImpl();
+    customerImpl2.setAuditable(auditable);
+    customerImpl2.setChallengeAnswer("Challenge Answer");
+    customerImpl2.setChallengeQuestion(new ChallengeQuestionImpl());
+    customerImpl2.setCustomerAddresses(new ArrayList<>());
+    customerImpl2.setCustomerAttributes(new HashMap<>());
+    customerImpl2.setCustomerLocale(new LocaleImpl());
+    customerImpl2.setCustomerPayments(new ArrayList<>());
+    customerImpl2.setCustomerPhones(new ArrayList<>());
+    customerImpl2.setDeactivated(true);
+    customerImpl2.setEmailAddress("42 Main St");
+    customerImpl2.setExternalId("42");
+    customerImpl2.setId(1L);
+    customerImpl2.setPassword("iloveyou");
+    customerImpl2.setPasswordChangeRequired(true);
+    customerImpl2.setReceiveEmail(true);
+    customerImpl2.setRegistered(true);
+    customerImpl2.setUnencodedChallengeAnswer("secret");
+    customerImpl2.setUnencodedPassword("secret");
+    customerImpl2.setFirstName("");
+    customerImpl2.setLastName("");
+    customerImpl2.setUsername("");
 
     // Act and Assert
-    assertEquals("1", customerImpl.getMainEntityName());
+    assertEquals("1", customerImpl2.getMainEntityName());
   }
 
   /**
    * Test {@link CustomerImpl#getMainEntityName()}.
    * <ul>
-   *   <li>Given {@link CustomerImpl} (default constructor) LastName is
-   * {@code foo}.</li>
+   *   <li>Given {@link CustomerImpl} (default constructor) FirstName is {@code foo}.</li>
+   *   <li>Then return {@code 1}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CustomerImpl#getMainEntityName()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CustomerImpl.getMainEntityName()"})
+  public void testGetMainEntityName_givenCustomerImplFirstNameIsFoo_thenReturn1() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    CustomerImpl customerImpl2 = new CustomerImpl();
+    customerImpl2.setAuditable(auditable);
+    customerImpl2.setChallengeAnswer("Challenge Answer");
+    customerImpl2.setChallengeQuestion(new ChallengeQuestionImpl());
+    customerImpl2.setCustomerAddresses(new ArrayList<>());
+    customerImpl2.setCustomerAttributes(new HashMap<>());
+    customerImpl2.setCustomerLocale(new LocaleImpl());
+    customerImpl2.setCustomerPayments(new ArrayList<>());
+    customerImpl2.setCustomerPhones(new ArrayList<>());
+    customerImpl2.setDeactivated(true);
+    customerImpl2.setEmailAddress("42 Main St");
+    customerImpl2.setExternalId("42");
+    customerImpl2.setId(1L);
+    customerImpl2.setPassword("iloveyou");
+    customerImpl2.setPasswordChangeRequired(true);
+    customerImpl2.setReceiveEmail(true);
+    customerImpl2.setRegistered(true);
+    customerImpl2.setUnencodedChallengeAnswer("secret");
+    customerImpl2.setUnencodedPassword("secret");
+    customerImpl2.setFirstName("foo");
+    customerImpl2.setLastName("");
+    customerImpl2.setUsername("");
+
+    // Act and Assert
+    assertEquals("1", customerImpl2.getMainEntityName());
+  }
+
+  /**
+   * Test {@link CustomerImpl#getMainEntityName()}.
+   * <ul>
+   *   <li>Given {@link CustomerImpl} (default constructor) LastName is {@code foo}.</li>
    *   <li>Then return {@code foo foo}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CustomerImpl#getMainEntityName()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CustomerImpl.getMainEntityName()"})
   public void testGetMainEntityName_givenCustomerImplLastNameIsFoo_thenReturnFooFoo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
@@ -1674,105 +889,46 @@ public class CustomerImplDiffblueTest {
     auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
-    CustomerImpl customerImpl = new CustomerImpl();
-    customerImpl.setAuditable(auditable);
-    customerImpl.setChallengeAnswer("Challenge Answer");
-    customerImpl.setChallengeQuestion(new ChallengeQuestionImpl());
-    customerImpl.setCustomerAddresses(new ArrayList<>());
-    customerImpl.setCustomerAttributes(new HashMap<>());
-    customerImpl.setCustomerLocale(new LocaleImpl());
-    customerImpl.setCustomerPayments(new ArrayList<>());
-    customerImpl.setCustomerPhones(new ArrayList<>());
-    customerImpl.setDeactivated(true);
-    customerImpl.setEmailAddress("42 Main St");
-    customerImpl.setExternalId("42");
-    customerImpl.setId(1L);
-    customerImpl.setPassword("iloveyou");
-    customerImpl.setPasswordChangeRequired(true);
-    customerImpl.setReceiveEmail(true);
-    customerImpl.setRegistered(true);
-    customerImpl.setUnencodedChallengeAnswer("secret");
-    customerImpl.setUnencodedPassword("secret");
-    customerImpl.setUsername(null);
-    customerImpl.setFirstName("foo");
-    customerImpl.setLastName("foo");
+    CustomerImpl customerImpl2 = new CustomerImpl();
+    customerImpl2.setAuditable(auditable);
+    customerImpl2.setChallengeAnswer("Challenge Answer");
+    customerImpl2.setChallengeQuestion(new ChallengeQuestionImpl());
+    customerImpl2.setCustomerAddresses(new ArrayList<>());
+    customerImpl2.setCustomerAttributes(new HashMap<>());
+    customerImpl2.setCustomerLocale(new LocaleImpl());
+    customerImpl2.setCustomerPayments(new ArrayList<>());
+    customerImpl2.setCustomerPhones(new ArrayList<>());
+    customerImpl2.setDeactivated(true);
+    customerImpl2.setEmailAddress("42 Main St");
+    customerImpl2.setExternalId("42");
+    customerImpl2.setId(1L);
+    customerImpl2.setPassword("iloveyou");
+    customerImpl2.setPasswordChangeRequired(true);
+    customerImpl2.setReceiveEmail(true);
+    customerImpl2.setRegistered(true);
+    customerImpl2.setUnencodedChallengeAnswer("secret");
+    customerImpl2.setUnencodedPassword("secret");
+    customerImpl2.setFirstName("foo");
+    customerImpl2.setLastName("foo");
+    customerImpl2.setUsername("");
 
     // Act and Assert
-    assertEquals("foo foo", customerImpl.getMainEntityName());
+    assertEquals("foo foo", customerImpl2.getMainEntityName());
   }
 
   /**
    * Test {@link CustomerImpl#getMainEntityName()}.
    * <ul>
-   *   <li>Given {@link CustomerImpl} (default constructor) Username is empty
-   * string.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#getMainEntityName()}
-   */
-  @Test
-  public void testGetMainEntityName_givenCustomerImplUsernameIsEmptyString() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Auditable auditable = mock(Auditable.class);
-    doNothing().when(auditable).setCreatedBy(Mockito.<Long>any());
-    doNothing().when(auditable).setDateCreated(Mockito.<Date>any());
-    doNothing().when(auditable).setDateUpdated(Mockito.<Date>any());
-    doNothing().when(auditable).setUpdatedBy(Mockito.<Long>any());
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    CustomerImpl customerImpl = new CustomerImpl();
-    customerImpl.setAuditable(auditable);
-    customerImpl.setChallengeAnswer("Challenge Answer");
-    customerImpl.setChallengeQuestion(new ChallengeQuestionImpl());
-    customerImpl.setCustomerAddresses(new ArrayList<>());
-    customerImpl.setCustomerAttributes(new HashMap<>());
-    customerImpl.setCustomerLocale(new LocaleImpl());
-    customerImpl.setCustomerPayments(new ArrayList<>());
-    customerImpl.setCustomerPhones(new ArrayList<>());
-    customerImpl.setDeactivated(true);
-    customerImpl.setEmailAddress("42 Main St");
-    customerImpl.setExternalId("42");
-    customerImpl.setId(1L);
-    customerImpl.setPassword("iloveyou");
-    customerImpl.setPasswordChangeRequired(true);
-    customerImpl.setReceiveEmail(true);
-    customerImpl.setRegistered(true);
-    customerImpl.setUnencodedChallengeAnswer("secret");
-    customerImpl.setUnencodedPassword("secret");
-    customerImpl.setUsername("");
-    customerImpl.setFirstName("foo");
-    customerImpl.setLastName(null);
-
-    // Act
-    String actualMainEntityName = customerImpl.getMainEntityName();
-
-    // Assert
-    verify(auditable).setCreatedBy(eq(1L));
-    verify(auditable).setDateCreated(isA(Date.class));
-    verify(auditable).setDateUpdated(isA(Date.class));
-    verify(auditable).setUpdatedBy(eq(1L));
-    assertEquals("1", actualMainEntityName);
-  }
-
-  /**
-   * Test {@link CustomerImpl#getMainEntityName()}.
-   * <ul>
-   *   <li>Given {@link CustomerImpl} (default constructor) Username is
-   * {@code foo}.</li>
+   *   <li>Given {@link CustomerImpl} (default constructor) Username is {@code foo}.</li>
    *   <li>Then return {@code foo}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CustomerImpl#getMainEntityName()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CustomerImpl.getMainEntityName()"})
   public void testGetMainEntityName_givenCustomerImplUsernameIsFoo_thenReturnFoo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
@@ -1780,31 +936,31 @@ public class CustomerImplDiffblueTest {
     auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
-    CustomerImpl customerImpl = new CustomerImpl();
-    customerImpl.setAuditable(auditable);
-    customerImpl.setChallengeAnswer("Challenge Answer");
-    customerImpl.setChallengeQuestion(new ChallengeQuestionImpl());
-    customerImpl.setCustomerAddresses(new ArrayList<>());
-    customerImpl.setCustomerAttributes(new HashMap<>());
-    customerImpl.setCustomerLocale(new LocaleImpl());
-    customerImpl.setCustomerPayments(new ArrayList<>());
-    customerImpl.setCustomerPhones(new ArrayList<>());
-    customerImpl.setDeactivated(true);
-    customerImpl.setEmailAddress("42 Main St");
-    customerImpl.setExternalId("42");
-    customerImpl.setId(1L);
-    customerImpl.setPassword("iloveyou");
-    customerImpl.setPasswordChangeRequired(true);
-    customerImpl.setReceiveEmail(true);
-    customerImpl.setRegistered(true);
-    customerImpl.setUnencodedChallengeAnswer("secret");
-    customerImpl.setUnencodedPassword("secret");
-    customerImpl.setUsername("foo");
-    customerImpl.setFirstName(null);
-    customerImpl.setLastName(null);
+    CustomerImpl customerImpl2 = new CustomerImpl();
+    customerImpl2.setAuditable(auditable);
+    customerImpl2.setChallengeAnswer("Challenge Answer");
+    customerImpl2.setChallengeQuestion(new ChallengeQuestionImpl());
+    customerImpl2.setCustomerAddresses(new ArrayList<>());
+    customerImpl2.setCustomerAttributes(new HashMap<>());
+    customerImpl2.setCustomerLocale(new LocaleImpl());
+    customerImpl2.setCustomerPayments(new ArrayList<>());
+    customerImpl2.setCustomerPhones(new ArrayList<>());
+    customerImpl2.setDeactivated(true);
+    customerImpl2.setEmailAddress("42 Main St");
+    customerImpl2.setExternalId("42");
+    customerImpl2.setId(1L);
+    customerImpl2.setPassword("iloveyou");
+    customerImpl2.setPasswordChangeRequired(true);
+    customerImpl2.setReceiveEmail(true);
+    customerImpl2.setRegistered(true);
+    customerImpl2.setUnencodedChallengeAnswer("secret");
+    customerImpl2.setUnencodedPassword("secret");
+    customerImpl2.setFirstName("");
+    customerImpl2.setLastName("");
+    customerImpl2.setUsername("foo");
 
     // Act and Assert
-    assertEquals("foo", customerImpl.getMainEntityName());
+    assertEquals("foo", customerImpl2.getMainEntityName());
   }
 
   /**
@@ -1817,97 +973,11 @@ public class CustomerImplDiffblueTest {
    * Method under test: {@link CustomerImpl#getMainEntityName()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CustomerImpl.getMainEntityName()"})
   public void testGetMainEntityName_givenCustomerImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertEquals("null", (new CustomerImpl()).getMainEntityName());
-  }
-
-  /**
-   * Test {@link CustomerImpl#getMainEntityName()}.
-   * <ul>
-   *   <li>Then calls {@link Auditable#setCreatedBy(Long)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#getMainEntityName()}
-   */
-  @Test
-  public void testGetMainEntityName_thenCallsSetCreatedBy() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Auditable auditable = mock(Auditable.class);
-    doNothing().when(auditable).setCreatedBy(Mockito.<Long>any());
-    doNothing().when(auditable).setDateCreated(Mockito.<Date>any());
-    doNothing().when(auditable).setDateUpdated(Mockito.<Date>any());
-    doNothing().when(auditable).setUpdatedBy(Mockito.<Long>any());
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    CustomerImpl customerImpl = new CustomerImpl();
-    customerImpl.setAuditable(auditable);
-    customerImpl.setChallengeAnswer("Challenge Answer");
-    customerImpl.setChallengeQuestion(new ChallengeQuestionImpl());
-    customerImpl.setCustomerAddresses(new ArrayList<>());
-    customerImpl.setCustomerAttributes(new HashMap<>());
-    customerImpl.setCustomerLocale(new LocaleImpl());
-    customerImpl.setCustomerPayments(new ArrayList<>());
-    customerImpl.setCustomerPhones(new ArrayList<>());
-    customerImpl.setDeactivated(true);
-    customerImpl.setEmailAddress("42 Main St");
-    customerImpl.setExternalId("42");
-    customerImpl.setId(1L);
-    customerImpl.setPassword("iloveyou");
-    customerImpl.setPasswordChangeRequired(true);
-    customerImpl.setReceiveEmail(true);
-    customerImpl.setRegistered(true);
-    customerImpl.setUnencodedChallengeAnswer("secret");
-    customerImpl.setUnencodedPassword("secret");
-    customerImpl.setUsername(null);
-    customerImpl.setFirstName("foo");
-    customerImpl.setLastName(null);
-
-    // Act
-    String actualMainEntityName = customerImpl.getMainEntityName();
-
-    // Assert
-    verify(auditable).setCreatedBy(eq(1L));
-    verify(auditable).setDateCreated(isA(Date.class));
-    verify(auditable).setDateUpdated(isA(Date.class));
-    verify(auditable).setUpdatedBy(eq(1L));
-    assertEquals("1", actualMainEntityName);
-  }
-
-  /**
-   * Test {@link CustomerImpl#getPreview()}.
-   * <p>
-   * Method under test: {@link CustomerImpl#getPreview()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetPreview() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3627 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.domain.CustomerImpl customerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CustomerImpl()).getPreview();
   }
 
   /**
@@ -1920,9 +990,9 @@ public class CustomerImplDiffblueTest {
    * Method under test: {@link CustomerImpl#getPreview()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean CustomerImpl.getPreview()"})
   public void testGetPreview_givenAuditableCreatedByIsOne_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
@@ -1930,152 +1000,32 @@ public class CustomerImplDiffblueTest {
     auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
-    CustomerImpl customerImpl = new CustomerImpl();
-    customerImpl.setAuditable(auditable);
-    customerImpl.setChallengeAnswer("Challenge Answer");
-    customerImpl.setChallengeQuestion(new ChallengeQuestionImpl());
-    customerImpl.setCustomerAddresses(new ArrayList<>());
-    customerImpl.setCustomerAttributes(new HashMap<>());
-    customerImpl.setCustomerLocale(new LocaleImpl());
-    customerImpl.setCustomerPayments(new ArrayList<>());
-    customerImpl.setCustomerPhones(new ArrayList<>());
-    customerImpl.setDeactivated(true);
-    customerImpl.setEmailAddress("42 Main St");
-    customerImpl.setExternalId("42");
-    customerImpl.setFirstName("Jane");
-    customerImpl.setId(1L);
-    customerImpl.setLastName("Doe");
-    customerImpl.setPassword("iloveyou");
-    customerImpl.setPasswordChangeRequired(true);
-    customerImpl.setReceiveEmail(true);
-    customerImpl.setRegistered(true);
-    customerImpl.setUnencodedChallengeAnswer("secret");
-    customerImpl.setUnencodedPassword("secret");
-    customerImpl.setUsername("janedoe");
-    customerImpl.setPreview(true);
+    CustomerImpl customerImpl2 = new CustomerImpl();
+    customerImpl2.setAuditable(auditable);
+    customerImpl2.setChallengeAnswer("Challenge Answer");
+    customerImpl2.setChallengeQuestion(new ChallengeQuestionImpl());
+    customerImpl2.setCustomerAddresses(new ArrayList<>());
+    customerImpl2.setCustomerAttributes(new HashMap<>());
+    customerImpl2.setCustomerLocale(new LocaleImpl());
+    customerImpl2.setCustomerPayments(new ArrayList<>());
+    customerImpl2.setCustomerPhones(new ArrayList<>());
+    customerImpl2.setDeactivated(true);
+    customerImpl2.setEmailAddress("42 Main St");
+    customerImpl2.setExternalId("42");
+    customerImpl2.setFirstName("Jane");
+    customerImpl2.setId(1L);
+    customerImpl2.setLastName("Doe");
+    customerImpl2.setPassword("iloveyou");
+    customerImpl2.setPasswordChangeRequired(true);
+    customerImpl2.setReceiveEmail(true);
+    customerImpl2.setRegistered(true);
+    customerImpl2.setUnencodedChallengeAnswer("secret");
+    customerImpl2.setUnencodedPassword("secret");
+    customerImpl2.setUsername("janedoe");
+    customerImpl2.setPreview(true);
 
     // Act and Assert
-    assertTrue(customerImpl.getPreview());
-  }
-
-  /**
-   * Test {@link CustomerImpl#getPreview()}.
-   * <ul>
-   *   <li>Given {@link Auditable} {@link Auditable#setCreatedBy(Long)} does
-   * nothing.</li>
-   *   <li>Then return {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#getPreview()}
-   */
-  @Test
-  public void testGetPreview_givenAuditableSetCreatedByDoesNothing_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Auditable auditable = mock(Auditable.class);
-    doNothing().when(auditable).setCreatedBy(Mockito.<Long>any());
-    doNothing().when(auditable).setDateCreated(Mockito.<Date>any());
-    doNothing().when(auditable).setDateUpdated(Mockito.<Date>any());
-    doNothing().when(auditable).setUpdatedBy(Mockito.<Long>any());
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    CustomerImpl customerImpl = new CustomerImpl();
-    customerImpl.setAuditable(auditable);
-    customerImpl.setChallengeAnswer("Challenge Answer");
-    customerImpl.setChallengeQuestion(new ChallengeQuestionImpl());
-    customerImpl.setCustomerAddresses(new ArrayList<>());
-    customerImpl.setCustomerAttributes(new HashMap<>());
-    customerImpl.setCustomerLocale(new LocaleImpl());
-    customerImpl.setCustomerPayments(new ArrayList<>());
-    customerImpl.setCustomerPhones(new ArrayList<>());
-    customerImpl.setDeactivated(true);
-    customerImpl.setEmailAddress("42 Main St");
-    customerImpl.setExternalId("42");
-    customerImpl.setFirstName("Jane");
-    customerImpl.setId(1L);
-    customerImpl.setLastName("Doe");
-    customerImpl.setPassword("iloveyou");
-    customerImpl.setPasswordChangeRequired(true);
-    customerImpl.setReceiveEmail(true);
-    customerImpl.setRegistered(true);
-    customerImpl.setUnencodedChallengeAnswer("secret");
-    customerImpl.setUnencodedPassword("secret");
-    customerImpl.setUsername("janedoe");
-    customerImpl.setPreview(true);
-
-    // Act
-    Boolean actualPreview = customerImpl.getPreview();
-
-    // Assert
-    verify(auditable).setCreatedBy(eq(1L));
-    verify(auditable).setDateCreated(isA(Date.class));
-    verify(auditable).setDateUpdated(isA(Date.class));
-    verify(auditable).setUpdatedBy(eq(1L));
-    assertTrue(actualPreview);
-  }
-
-  /**
-   * Test {@link CustomerImpl#getPreview()}.
-   * <ul>
-   *   <li>Given {@link CustomerImpl} (default constructor) Preview is
-   * {@code false}.</li>
-   *   <li>Then return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#getPreview()}
-   */
-  @Test
-  public void testGetPreview_givenCustomerImplPreviewIsFalse_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Auditable auditable = mock(Auditable.class);
-    doNothing().when(auditable).setCreatedBy(Mockito.<Long>any());
-    doNothing().when(auditable).setDateCreated(Mockito.<Date>any());
-    doNothing().when(auditable).setDateUpdated(Mockito.<Date>any());
-    doNothing().when(auditable).setUpdatedBy(Mockito.<Long>any());
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    CustomerImpl customerImpl = new CustomerImpl();
-    customerImpl.setAuditable(auditable);
-    customerImpl.setChallengeAnswer("Challenge Answer");
-    customerImpl.setChallengeQuestion(new ChallengeQuestionImpl());
-    customerImpl.setCustomerAddresses(new ArrayList<>());
-    customerImpl.setCustomerAttributes(new HashMap<>());
-    customerImpl.setCustomerLocale(new LocaleImpl());
-    customerImpl.setCustomerPayments(new ArrayList<>());
-    customerImpl.setCustomerPhones(new ArrayList<>());
-    customerImpl.setDeactivated(true);
-    customerImpl.setEmailAddress("42 Main St");
-    customerImpl.setExternalId("42");
-    customerImpl.setFirstName("Jane");
-    customerImpl.setId(1L);
-    customerImpl.setLastName("Doe");
-    customerImpl.setPassword("iloveyou");
-    customerImpl.setPasswordChangeRequired(true);
-    customerImpl.setReceiveEmail(true);
-    customerImpl.setRegistered(true);
-    customerImpl.setUnencodedChallengeAnswer("secret");
-    customerImpl.setUnencodedPassword("secret");
-    customerImpl.setUsername("janedoe");
-    customerImpl.setPreview(false);
-
-    // Act
-    Boolean actualPreview = customerImpl.getPreview();
-
-    // Assert
-    verify(auditable).setCreatedBy(eq(1L));
-    verify(auditable).setDateCreated(isA(Date.class));
-    verify(auditable).setDateUpdated(isA(Date.class));
-    verify(auditable).setUpdatedBy(eq(1L));
-    assertFalse(actualPreview);
+    assertTrue(customerImpl2.getPreview());
   }
 
   /**
@@ -2088,9 +1038,9 @@ public class CustomerImplDiffblueTest {
    * Method under test: {@link CustomerImpl#getPreview()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean CustomerImpl.getPreview()"})
   public void testGetPreview_givenCustomerImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new CustomerImpl()).getPreview());
   }
@@ -2101,80 +1051,22 @@ public class CustomerImplDiffblueTest {
    * Method under test: {@link CustomerImpl#setPreview(Boolean)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CustomerImpl.setPreview(Boolean)"})
   public void testSetPreview() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3894 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.domain.CustomerImpl customerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CustomerImpl()).setPreview(true);
-  }
-
-  /**
-   * Test {@link CustomerImpl#setPreview(Boolean)}.
-   * <ul>
-   *   <li>Given {@link CustomerImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#setPreview(Boolean)}
-   */
-  @Test
-  public void testSetPreview_givenCustomerImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CustomerImpl customerImpl = new CustomerImpl();
+    CustomerImpl customerImpl2 = new CustomerImpl();
 
     // Act
-    customerImpl.setPreview(true);
+    customerImpl2.setPreview(true);
 
     // Assert
-    assertTrue(customerImpl.previewable.getPreview());
-    assertTrue(customerImpl.getPreview());
+    assertTrue(customerImpl2.previewable.getPreview());
+    assertTrue(customerImpl2.getPreview());
   }
 
   /**
-   * Test {@link CustomerImpl#setPreview(Boolean)}.
-   * <ul>
-   *   <li>Given {@link CustomerImpl} (default constructor) ChallengeQuestion is
-   * {@link ChallengeQuestionImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#setPreview(Boolean)}
-   */
-  @Test
-  public void testSetPreview_givenCustomerImplChallengeQuestionIsChallengeQuestionImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CustomerImpl customerImpl = new CustomerImpl();
-    customerImpl.setChallengeQuestion(mock(ChallengeQuestionImpl.class));
-
-    // Act
-    customerImpl.setPreview(true);
-
-    // Assert
-    assertTrue(customerImpl.previewable.getPreview());
-    assertTrue(customerImpl.getPreview());
-  }
-
-  /**
-   * Test {@link CustomerImpl#equals(Object)}, and
-   * {@link CustomerImpl#hashCode()}.
+   * Test {@link CustomerImpl#equals(Object)}, and {@link CustomerImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -2187,6 +1079,8 @@ public class CustomerImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerImpl.equals(Object)", "int CustomerImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     Auditable auditable = new Auditable();
@@ -2254,8 +1148,7 @@ public class CustomerImplDiffblueTest {
   }
 
   /**
-   * Test {@link CustomerImpl#equals(Object)}, and
-   * {@link CustomerImpl#hashCode()}.
+   * Test {@link CustomerImpl#equals(Object)}, and {@link CustomerImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -2268,98 +1161,11 @@ public class CustomerImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerImpl.equals(Object)", "int CustomerImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
-    Auditable auditable = mock(Auditable.class);
-    doNothing().when(auditable).setCreatedBy(Mockito.<Long>any());
-    doNothing().when(auditable).setDateCreated(Mockito.<Date>any());
-    doNothing().when(auditable).setDateUpdated(Mockito.<Date>any());
-    doNothing().when(auditable).setUpdatedBy(Mockito.<Long>any());
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    CustomerImpl customerImpl = new CustomerImpl();
-    customerImpl.setAuditable(auditable);
-    customerImpl.setChallengeAnswer("Challenge Answer");
-    customerImpl.setChallengeQuestion(new ChallengeQuestionImpl());
-    customerImpl.setCustomerAddresses(new ArrayList<>());
-    customerImpl.setCustomerAttributes(new HashMap<>());
-    customerImpl.setCustomerLocale(new LocaleImpl());
-    customerImpl.setCustomerPayments(new ArrayList<>());
-    customerImpl.setCustomerPhones(new ArrayList<>());
-    customerImpl.setDeactivated(true);
-    customerImpl.setEmailAddress("42 Main St");
-    customerImpl.setExternalId("42");
-    customerImpl.setFirstName("Jane");
-    customerImpl.setId(1L);
-    customerImpl.setLastName("Doe");
-    customerImpl.setPassword("iloveyou");
-    customerImpl.setPasswordChangeRequired(true);
-    customerImpl.setReceiveEmail(true);
-    customerImpl.setRegistered(true);
-    customerImpl.setUnencodedChallengeAnswer("secret");
-    customerImpl.setUnencodedPassword("secret");
-    customerImpl.setUsername("janedoe");
-
-    Auditable auditable2 = new Auditable();
-    auditable2.setCreatedBy(1L);
-    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setUpdatedBy(1L);
-
-    CustomerImpl customerImpl2 = new CustomerImpl();
-    customerImpl2.setAuditable(auditable2);
-    customerImpl2.setChallengeAnswer("Challenge Answer");
-    customerImpl2.setChallengeQuestion(new ChallengeQuestionImpl());
-    customerImpl2.setCustomerAddresses(new ArrayList<>());
-    customerImpl2.setCustomerAttributes(new HashMap<>());
-    customerImpl2.setCustomerLocale(new LocaleImpl());
-    customerImpl2.setCustomerPayments(new ArrayList<>());
-    customerImpl2.setCustomerPhones(new ArrayList<>());
-    customerImpl2.setDeactivated(true);
-    customerImpl2.setEmailAddress("42 Main St");
-    customerImpl2.setExternalId("42");
-    customerImpl2.setFirstName("Jane");
-    customerImpl2.setId(1L);
-    customerImpl2.setLastName("Doe");
-    customerImpl2.setPassword("iloveyou");
-    customerImpl2.setPasswordChangeRequired(true);
-    customerImpl2.setReceiveEmail(true);
-    customerImpl2.setRegistered(true);
-    customerImpl2.setUnencodedChallengeAnswer("secret");
-    customerImpl2.setUnencodedPassword("secret");
-    customerImpl2.setUsername("janedoe");
-
-    // Act and Assert
-    assertEquals(customerImpl, customerImpl2);
-    int expectedHashCodeResult = customerImpl.hashCode();
-    assertEquals(expectedHashCodeResult, customerImpl2.hashCode());
-  }
-
-  /**
-   * Test {@link CustomerImpl#equals(Object)}, and
-   * {@link CustomerImpl#hashCode()}.
-   * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
-   * </ul>
-   * <p>
-   * Methods under test:
-   * <ul>
-   *   <li>{@link CustomerImpl#equals(Object)}
-   *   <li>{@link CustomerImpl#hashCode()}
-   * </ul>
-   */
-  @Test
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
-    // Arrange
-    Auditable auditable = mock(Auditable.class);
-    doNothing().when(auditable).setCreatedBy(Mockito.<Long>any());
-    doNothing().when(auditable).setDateCreated(Mockito.<Date>any());
-    doNothing().when(auditable).setDateUpdated(Mockito.<Date>any());
-    doNothing().when(auditable).setUpdatedBy(Mockito.<Long>any());
+    Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
     auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
@@ -2424,8 +1230,7 @@ public class CustomerImplDiffblueTest {
   }
 
   /**
-   * Test {@link CustomerImpl#equals(Object)}, and
-   * {@link CustomerImpl#hashCode()}.
+   * Test {@link CustomerImpl#equals(Object)}, and {@link CustomerImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -2438,13 +1243,11 @@ public class CustomerImplDiffblueTest {
    * </ul>
    */
   @Test
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerImpl.equals(Object)", "int CustomerImpl.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
-    Auditable auditable = mock(Auditable.class);
-    doNothing().when(auditable).setCreatedBy(Mockito.<Long>any());
-    doNothing().when(auditable).setDateCreated(Mockito.<Date>any());
-    doNothing().when(auditable).setDateUpdated(Mockito.<Date>any());
-    doNothing().when(auditable).setUpdatedBy(Mockito.<Long>any());
+    Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
     auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
@@ -2509,8 +1312,7 @@ public class CustomerImplDiffblueTest {
   }
 
   /**
-   * Test {@link CustomerImpl#equals(Object)}, and
-   * {@link CustomerImpl#hashCode()}.
+   * Test {@link CustomerImpl#equals(Object)}, and {@link CustomerImpl#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -2523,6 +1325,8 @@ public class CustomerImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerImpl.equals(Object)", "int CustomerImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     Auditable auditable = new Auditable();
@@ -2570,13 +1374,11 @@ public class CustomerImplDiffblueTest {
    * Method under test: {@link CustomerImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerImpl.equals(Object)", "int CustomerImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
-    Auditable auditable = mock(Auditable.class);
-    doNothing().when(auditable).setCreatedBy(Mockito.<Long>any());
-    doNothing().when(auditable).setDateCreated(Mockito.<Date>any());
-    doNothing().when(auditable).setDateUpdated(Mockito.<Date>any());
-    doNothing().when(auditable).setUpdatedBy(Mockito.<Long>any());
+    Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
     auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
@@ -2648,6 +1450,8 @@ public class CustomerImplDiffblueTest {
    * Method under test: {@link CustomerImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerImpl.equals(Object)", "int CustomerImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     Auditable auditable = new Auditable();
@@ -2693,6 +1497,8 @@ public class CustomerImplDiffblueTest {
    * Method under test: {@link CustomerImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerImpl.equals(Object)", "int CustomerImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     Auditable auditable = new Auditable();
@@ -2729,25 +1535,23 @@ public class CustomerImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomerImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * Test {@link CustomerImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <p>
-   * Method under test:
-   * {@link CustomerImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link CustomerImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse CustomerImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CustomerImpl customerImpl = new CustomerImpl();
+    CustomerImpl customerImpl2 = new CustomerImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
     CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
 
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<Customer> actualCreateOrRetrieveCopyInstanceResult = customerImpl
+    CreateResponse<Customer> actualCreateOrRetrieveCopyInstanceResult = customerImpl2
         .createOrRetrieveCopyInstance(context);
 
     // Assert
@@ -2756,63 +1560,21 @@ public class CustomerImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomerImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <p>
-   * Method under test:
-   * {@link CustomerImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3521 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.domain.CustomerImpl customerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CustomerImpl customerImpl2 = new CustomerImpl();
-    CatalogImpl fromCatalog = new CatalogImpl();
-    CatalogImpl toCatalog = new CatalogImpl();
-    SiteImpl fromSite = new SiteImpl();
-    SiteImpl toSite = new SiteImpl();
-    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
-
-    // Act
-    customerImpl2.createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
-        genericEntityService, new MultiTenantCopierExtensionManager()));
-  }
-
-  /**
-   * Test
-   * {@link CustomerImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * Test {@link CustomerImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <ul>
-   *   <li>Given {@code java.lang.Object}.</li>
+   *   <li>Given {@code Object}.</li>
    *   <li>Then Clone return {@link CustomerImpl}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomerImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link CustomerImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse CustomerImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance_givenJavaLangObject_thenCloneReturnCustomerImpl()
       throws CloneNotSupportedException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CustomerImpl customerImpl = new CustomerImpl();
+    CustomerImpl customerImpl2 = new CustomerImpl();
     GenericEntityService genericEntityService = mock(GenericEntityService.class);
     when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
     Class<Object> forNameResult = Object.class;
@@ -2823,7 +1585,7 @@ public class CustomerImplDiffblueTest {
     SiteImpl toSite = new SiteImpl();
 
     // Act
-    CreateResponse<Customer> actualCreateOrRetrieveCopyInstanceResult = customerImpl
+    CreateResponse<Customer> actualCreateOrRetrieveCopyInstanceResult = customerImpl2
         .createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
             genericEntityService, new MultiTenantCopierExtensionManager()));
 
@@ -2833,50 +1595,44 @@ public class CustomerImplDiffblueTest {
     Customer clone = actualCreateOrRetrieveCopyInstanceResult.getClone();
     assertTrue(clone instanceof CustomerImpl);
     assertFalse(actualCreateOrRetrieveCopyInstanceResult.isAlreadyPopulated());
-    assertEquals(customerImpl, clone);
-  }
-
-  /**
-   * Test {@link CustomerImpl#setTaxExemptionCode(String)}.
-   * <p>
-   * Method under test: {@link CustomerImpl#setTaxExemptionCode(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetTaxExemptionCode() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3966 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.domain.CustomerImpl customerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CustomerImpl()).setTaxExemptionCode("Exemption");
+    assertEquals(customerImpl2, clone);
   }
 
   /**
    * Test {@link CustomerImpl#setTaxExemptionCode(String)}.
    * <ul>
-   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.</li>
+   *   <li>Then {@link CustomerImpl} (default constructor) TaxExemptionCode is {@code Exemption}.</li>
    * </ul>
    * <p>
    * Method under test: {@link CustomerImpl#setTaxExemptionCode(String)}
    */
   @Test
-  public void testSetTaxExemptionCode_givenAuditableCreatedByIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CustomerImpl.setTaxExemptionCode(String)"})
+  public void testSetTaxExemptionCode_thenCustomerImplTaxExemptionCodeIsExemption() {
+    // Arrange
+    CustomerImpl customerImpl2 = new CustomerImpl();
 
+    // Act
+    customerImpl2.setTaxExemptionCode("Exemption");
+
+    // Assert
+    assertEquals("Exemption", customerImpl2.getTaxExemptionCode());
+    assertTrue(customerImpl2.isTaxExempt);
+  }
+
+  /**
+   * Test {@link CustomerImpl#setTaxExemptionCode(String)}.
+   * <ul>
+   *   <li>Then not {@link CustomerImpl} (default constructor) {@link CustomerImpl#isTaxExempt}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CustomerImpl#setTaxExemptionCode(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CustomerImpl.setTaxExemptionCode(String)"})
+  public void testSetTaxExemptionCode_thenNotCustomerImplIsTaxExempt() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
@@ -2884,117 +1640,34 @@ public class CustomerImplDiffblueTest {
     auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
-    CustomerImpl customerImpl = new CustomerImpl();
-    customerImpl.setAuditable(auditable);
-    customerImpl.setChallengeAnswer("Challenge Answer");
-    customerImpl.setChallengeQuestion(new ChallengeQuestionImpl());
-    customerImpl.setCustomerAddresses(new ArrayList<>());
-    customerImpl.setCustomerAttributes(new HashMap<>());
-    customerImpl.setCustomerLocale(new LocaleImpl());
-    customerImpl.setCustomerPayments(new ArrayList<>());
-    customerImpl.setCustomerPhones(new ArrayList<>());
-    customerImpl.setDeactivated(true);
-    customerImpl.setEmailAddress("42 Main St");
-    customerImpl.setExternalId("42");
-    customerImpl.setFirstName("Jane");
-    customerImpl.setId(1L);
-    customerImpl.setLastName("Doe");
-    customerImpl.setPassword("iloveyou");
-    customerImpl.setPasswordChangeRequired(true);
-    customerImpl.setReceiveEmail(true);
-    customerImpl.setRegistered(true);
-    customerImpl.setUnencodedChallengeAnswer("secret");
-    customerImpl.setUnencodedPassword("secret");
-    customerImpl.setUsername("janedoe");
+    CustomerImpl customerImpl2 = new CustomerImpl();
+    customerImpl2.setAuditable(auditable);
+    customerImpl2.setChallengeAnswer("Challenge Answer");
+    customerImpl2.setChallengeQuestion(new ChallengeQuestionImpl());
+    customerImpl2.setCustomerAddresses(new ArrayList<>());
+    customerImpl2.setCustomerAttributes(new HashMap<>());
+    customerImpl2.setCustomerLocale(new LocaleImpl());
+    customerImpl2.setCustomerPayments(new ArrayList<>());
+    customerImpl2.setCustomerPhones(new ArrayList<>());
+    customerImpl2.setDeactivated(true);
+    customerImpl2.setEmailAddress("42 Main St");
+    customerImpl2.setExternalId("42");
+    customerImpl2.setFirstName("Jane");
+    customerImpl2.setId(1L);
+    customerImpl2.setLastName("Doe");
+    customerImpl2.setPassword("iloveyou");
+    customerImpl2.setPasswordChangeRequired(true);
+    customerImpl2.setReceiveEmail(true);
+    customerImpl2.setRegistered(true);
+    customerImpl2.setUnencodedChallengeAnswer("secret");
+    customerImpl2.setUnencodedPassword("secret");
+    customerImpl2.setUsername("janedoe");
 
     // Act
-    customerImpl.setTaxExemptionCode(null);
+    customerImpl2.setTaxExemptionCode(null);
 
-    // Assert
-    assertNull(customerImpl.getTaxExemptionCode());
-    assertFalse(customerImpl.isTaxExempt);
-  }
-
-  /**
-   * Test {@link CustomerImpl#setTaxExemptionCode(String)}.
-   * <ul>
-   *   <li>Then calls {@link Auditable#setCreatedBy(Long)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#setTaxExemptionCode(String)}
-   */
-  @Test
-  public void testSetTaxExemptionCode_thenCallsSetCreatedBy() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Auditable auditable = mock(Auditable.class);
-    doNothing().when(auditable).setCreatedBy(Mockito.<Long>any());
-    doNothing().when(auditable).setDateCreated(Mockito.<Date>any());
-    doNothing().when(auditable).setDateUpdated(Mockito.<Date>any());
-    doNothing().when(auditable).setUpdatedBy(Mockito.<Long>any());
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    CustomerImpl customerImpl = new CustomerImpl();
-    customerImpl.setAuditable(auditable);
-    customerImpl.setChallengeAnswer("Challenge Answer");
-    customerImpl.setChallengeQuestion(new ChallengeQuestionImpl());
-    customerImpl.setCustomerAddresses(new ArrayList<>());
-    customerImpl.setCustomerAttributes(new HashMap<>());
-    customerImpl.setCustomerLocale(new LocaleImpl());
-    customerImpl.setCustomerPayments(new ArrayList<>());
-    customerImpl.setCustomerPhones(new ArrayList<>());
-    customerImpl.setDeactivated(true);
-    customerImpl.setEmailAddress("42 Main St");
-    customerImpl.setExternalId("42");
-    customerImpl.setFirstName("Jane");
-    customerImpl.setId(1L);
-    customerImpl.setLastName("Doe");
-    customerImpl.setPassword("iloveyou");
-    customerImpl.setPasswordChangeRequired(true);
-    customerImpl.setReceiveEmail(true);
-    customerImpl.setRegistered(true);
-    customerImpl.setUnencodedChallengeAnswer("secret");
-    customerImpl.setUnencodedPassword("secret");
-    customerImpl.setUsername("janedoe");
-
-    // Act
-    customerImpl.setTaxExemptionCode(null);
-
-    // Assert
-    verify(auditable).setCreatedBy(eq(1L));
-    verify(auditable).setDateCreated(isA(Date.class));
-    verify(auditable).setDateUpdated(isA(Date.class));
-    verify(auditable).setUpdatedBy(eq(1L));
-    assertNull(customerImpl.getTaxExemptionCode());
-    assertFalse(customerImpl.isTaxExempt);
-  }
-
-  /**
-   * Test {@link CustomerImpl#setTaxExemptionCode(String)}.
-   * <ul>
-   *   <li>Then {@link CustomerImpl} (default constructor) TaxExemptionCode is
-   * {@code Exemption}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#setTaxExemptionCode(String)}
-   */
-  @Test
-  public void testSetTaxExemptionCode_thenCustomerImplTaxExemptionCodeIsExemption() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CustomerImpl customerImpl = new CustomerImpl();
-
-    // Act
-    customerImpl.setTaxExemptionCode("Exemption");
-
-    // Assert
-    assertEquals("Exemption", customerImpl.getTaxExemptionCode());
-    assertTrue(customerImpl.isTaxExempt);
+    // Assert that nothing has changed
+    assertFalse(customerImpl2.isTaxExempt);
   }
 
   /**
@@ -3003,86 +1676,28 @@ public class CustomerImplDiffblueTest {
    * Method under test: {@link CustomerImpl#isTaxExempt()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerImpl.isTaxExempt()"})
   public void testIsTaxExempt() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3747 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.domain.CustomerImpl customerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new CustomerImpl()).isTaxExempt();
-  }
-
-  /**
-   * Test {@link CustomerImpl#isTaxExempt()}.
-   * <ul>
-   *   <li>Given {@link CustomerImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#isTaxExempt()}
-   */
-  @Test
-  public void testIsTaxExempt_givenCustomerImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertFalse((new CustomerImpl()).isTaxExempt());
   }
 
   /**
-   * Test {@link CustomerImpl#isTaxExempt()}.
-   * <ul>
-   *   <li>Given {@link CustomerImpl} (default constructor) ChallengeQuestion is
-   * {@link ChallengeQuestionImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#isTaxExempt()}
-   */
-  @Test
-  public void testIsTaxExempt_givenCustomerImplChallengeQuestionIsChallengeQuestionImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    CustomerImpl customerImpl = new CustomerImpl();
-    customerImpl.setChallengeQuestion(mock(ChallengeQuestionImpl.class));
-
-    // Act and Assert
-    assertFalse(customerImpl.isTaxExempt());
-  }
-
-  /**
    * Test new {@link CustomerImpl} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link CustomerImpl}
+   * Method under test: default or parameterless constructor of {@link CustomerImpl}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CustomerImpl.<init>()"})
   public void testNewCustomerImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange and Act
     CustomerImpl actualCustomerImpl = new CustomerImpl();
 
     // Assert
     assertEquals("null", actualCustomerImpl.getMainEntityName());
-    assertNull(actualCustomerImpl.previewable.getPreview());
     assertNull(actualCustomerImpl.getPreview());
-    Auditable auditable = actualCustomerImpl.getAuditable();
-    assertNull(auditable.getCreatedBy());
-    assertNull(auditable.getUpdatedBy());
     assertNull(actualCustomerImpl.getId());
     assertNull(actualCustomerImpl.getChallengeAnswer());
     assertNull(actualCustomerImpl.getEmailAddress());
@@ -3094,8 +1709,6 @@ public class CustomerImplDiffblueTest {
     assertNull(actualCustomerImpl.getUnencodedChallengeAnswer());
     assertNull(actualCustomerImpl.getUnencodedPassword());
     assertNull(actualCustomerImpl.getUsername());
-    assertNull(auditable.getDateCreated());
-    assertNull(auditable.getDateUpdated());
     assertNull(actualCustomerImpl.getCustomerLocale());
     assertNull(actualCustomerImpl.getChallengeQuestion());
     assertFalse(actualCustomerImpl.isAnonymous());
@@ -3115,35 +1728,5 @@ public class CustomerImplDiffblueTest {
     assertTrue(actualCustomerImpl.getCustomerPhones().isEmpty());
     assertTrue(actualCustomerImpl.getCustomerAttributes().isEmpty());
     assertTrue(actualCustomerImpl.getTransientProperties().isEmpty());
-  }
-
-  /**
-   * Test new {@link CustomerImpl} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link CustomerImpl}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testNewCustomerImpl2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3520 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.domain.CustomerImpl customerImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    new CustomerImpl();
   }
 }

@@ -18,14 +18,14 @@
 package org.broadleafcommerce.common.util;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiFunction;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class ValidationUtilDiffblueTest {
   /**
@@ -38,29 +38,11 @@ public class ValidationUtilDiffblueTest {
    * Method under test: {@link ValidationUtil#buildErrorMessage(Map, List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String ValidationUtil.buildErrorMessage(Map, List)"})
   public void testBuildErrorMessage_givenArrayList_thenReturnTheEntityHasFailedValidation() {
     // Arrange
     HashMap<String, List<String>> propertyErrors = new HashMap<>();
-    propertyErrors.put("The entity has failed validation -\n", new ArrayList<>());
-
-    // Act and Assert
-    assertEquals("The entity has failed validation -\n;\n",
-        ValidationUtil.buildErrorMessage(propertyErrors, new ArrayList<>()));
-  }
-
-  /**
-   * Test {@link ValidationUtil#buildErrorMessage(Map, List)}.
-   * <ul>
-   *   <li>Given {@code ;}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ValidationUtil#buildErrorMessage(Map, List)}
-   */
-  @Test
-  public void testBuildErrorMessage_givenSemicolon() {
-    // Arrange
-    HashMap<String, List<String>> propertyErrors = new HashMap<>();
-    propertyErrors.computeIfPresent(";\n", mock(BiFunction.class));
     propertyErrors.put("The entity has failed validation -\n", new ArrayList<>());
 
     // Act and Assert
@@ -78,6 +60,8 @@ public class ValidationUtilDiffblueTest {
    * Method under test: {@link ValidationUtil#buildErrorMessage(Map, List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String ValidationUtil.buildErrorMessage(Map, List)"})
   public void testBuildErrorMessage_whenHashMap_thenReturnTheEntityHasFailedValidation() {
     // Arrange
     HashMap<String, List<String>> propertyErrors = new HashMap<>();
@@ -85,28 +69,5 @@ public class ValidationUtilDiffblueTest {
     // Act and Assert
     assertEquals("The entity has failed validation -\n",
         ValidationUtil.buildErrorMessage(propertyErrors, new ArrayList<>()));
-  }
-
-  /**
-   * Test {@link ValidationUtil#processMessage(String)}.
-   * <p>
-   * Method under test: {@link ValidationUtil#processMessage(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testProcessMessage() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.broadleafcommerce.common.util.BLCMessageUtils.getMessageSource(BLCMessageUtils.java:67)
-    //       at org.broadleafcommerce.common.util.BLCMessageUtils.getMessage(BLCMessageUtils.java:60)
-    //       at org.broadleafcommerce.common.util.BLCMessageUtils.getMessage(BLCMessageUtils.java:48)
-    //       at org.broadleafcommerce.common.util.ValidationUtil.processMessage(ValidationUtil.java:56)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange and Act
-    ValidationUtil.processMessage("An error occurred");
   }
 }

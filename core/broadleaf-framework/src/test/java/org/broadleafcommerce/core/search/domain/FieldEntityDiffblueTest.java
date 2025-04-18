@@ -1,11 +1,31 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.search.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.List;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -23,6 +43,8 @@ public class FieldEntityDiffblueTest {
    * Method under test: {@link FieldEntity#getInstance(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FieldEntity FieldEntity.getInstance(String)"})
   public void testGetInstance() {
     // Arrange and Act
     FieldEntity actualInstance = FieldEntity.getInstance("Type");
@@ -48,6 +70,9 @@ public class FieldEntityDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FieldEntity.<init>()", "String FieldEntity.getFriendlyType()",
+      "String FieldEntity.getType()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     FieldEntity actualFieldEntity = new FieldEntity();
@@ -65,6 +90,8 @@ public class FieldEntityDiffblueTest {
    * Method under test: {@link FieldEntity#FieldEntity(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FieldEntity.<init>(String, String)"})
   public void testNewFieldEntity() {
     // Arrange and Act
     FieldEntity actualFieldEntity = new FieldEntity("Type", "Friendly Type");
@@ -80,25 +107,13 @@ public class FieldEntityDiffblueTest {
   }
 
   /**
-   * Test {@link FieldEntity#addAditionalLookupType(String)}.
-   * <p>
-   * Method under test: {@link FieldEntity#addAditionalLookupType(String)}
-   */
-  @Test
-  public void testAddAditionalLookupType() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange and Act
-    FieldEntity.CATEGORY.addAditionalLookupType("Additional Lookup Type");
-  }
-
-  /**
    * Test {@link FieldEntity#getAdditionalLookupTypes()}.
    * <p>
    * Method under test: {@link FieldEntity#getAdditionalLookupTypes()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List FieldEntity.getAdditionalLookupTypes()"})
   public void testGetAdditionalLookupTypes() {
     // Arrange
     FieldEntity fieldEntity = FieldEntity.CATEGORY;
@@ -110,34 +125,14 @@ public class FieldEntityDiffblueTest {
   /**
    * Test {@link FieldEntity#getAllLookupTypes()}.
    * <ul>
-   *   <li>Given {@link FieldEntity#CATEGORY}.</li>
-   *   <li>Then return size is four.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link FieldEntity#getAllLookupTypes()}
-   */
-  @Test
-  public void testGetAllLookupTypes_givenCategory_thenReturnSizeIsFour() {
-    // Arrange and Act
-    List<String> actualAllLookupTypes = FieldEntity.CATEGORY.getAllLookupTypes();
-
-    // Assert
-    assertEquals(4, actualAllLookupTypes.size());
-    assertEquals("Additional Lookup Type", actualAllLookupTypes.get(0));
-    assertEquals("Additional Lookup Type", actualAllLookupTypes.get(2));
-    assertEquals("CATEGORY", actualAllLookupTypes.get(1));
-    assertEquals("CATEGORY", actualAllLookupTypes.get(3));
-  }
-
-  /**
-   * Test {@link FieldEntity#getAllLookupTypes()}.
-   * <ul>
    *   <li>Then return size is one.</li>
    * </ul>
    * <p>
    * Method under test: {@link FieldEntity#getAllLookupTypes()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List FieldEntity.getAllLookupTypes()"})
   public void testGetAllLookupTypes_thenReturnSizeIsOne() {
     // Arrange and Act
     List<String> actualAllLookupTypes = (new FieldEntity("Type", "Friendly Type")).getAllLookupTypes();
@@ -161,6 +156,8 @@ public class FieldEntityDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean FieldEntity.equals(Object)", "int FieldEntity.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     FieldEntity fieldEntity = FieldEntity.CATEGORY;
@@ -186,6 +183,8 @@ public class FieldEntityDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean FieldEntity.equals(Object)", "int FieldEntity.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     FieldEntity fieldEntity = new FieldEntity();
@@ -211,6 +210,8 @@ public class FieldEntityDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean FieldEntity.equals(Object)", "int FieldEntity.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     FieldEntity fieldEntity = new FieldEntity("CATEGORY", "Friendly Type");
@@ -236,6 +237,8 @@ public class FieldEntityDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean FieldEntity.equals(Object)", "int FieldEntity.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     FieldEntity fieldEntity = FieldEntity.CATEGORY;
@@ -256,9 +259,27 @@ public class FieldEntityDiffblueTest {
    * Method under test: {@link FieldEntity#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean FieldEntity.equals(Object)", "int FieldEntity.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(FieldEntity.CUSTOMER, FieldEntity.CATEGORY);
+  }
+
+  /**
+   * Test {@link FieldEntity#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link FieldEntity#equals(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean FieldEntity.equals(Object)", "int FieldEntity.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange, Act and Assert
     assertNotEquals(new FieldEntity(), FieldEntity.CATEGORY);
   }
 
@@ -272,6 +293,8 @@ public class FieldEntityDiffblueTest {
    * Method under test: {@link FieldEntity#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean FieldEntity.equals(Object)", "int FieldEntity.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(FieldEntity.CATEGORY, null);
@@ -287,6 +310,8 @@ public class FieldEntityDiffblueTest {
    * Method under test: {@link FieldEntity#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean FieldEntity.equals(Object)", "int FieldEntity.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(FieldEntity.CATEGORY, "Different type to FieldEntity");

@@ -1,25 +1,30 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework Web
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.web.processor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import java.time.LocalDate;
-import java.time.ZoneOffset;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Date;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml",
-    "/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-@ExtendWith(SpringExtension.class)
 class DateProcessorDiffblueTest {
-  @Autowired
-  private DateProcessor dateProcessor;
-
   /**
    * Test {@link DateProcessor#getName()}.
    * <p>
@@ -27,6 +32,8 @@ class DateProcessorDiffblueTest {
    */
   @Test
   @DisplayName("Test getName()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"java.lang.String DateProcessor.getName()"})
   void testGetName() {
     // Arrange, Act and Assert
     assertEquals("date", (new DateProcessor()).getName());
@@ -39,75 +46,11 @@ class DateProcessorDiffblueTest {
    */
   @Test
   @DisplayName("Test getPrecedence()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"int DateProcessor.getPrecedence()"})
   void testGetPrecedence() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertEquals(10000, (new DateProcessor()).getPrecedence());
-  }
-
-  /**
-   * Test {@link DateProcessor#getPrecedence()}.
-   * <p>
-   * Method under test: {@link DateProcessor#getPrecedence()}
-   */
-  @Test
-  @DisplayName("Test getPrecedence()")
-  @Disabled("TODO: Complete this test")
-  void testGetPrecedence2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass9950 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.DateProcessor dateProcessor;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new DateProcessor()).getPrecedence();
-  }
-
-  /**
-   * Test {@link DateProcessor#renderWithContextTimeZone(Date)}.
-   * <p>
-   * Method under test: {@link DateProcessor#renderWithContextTimeZone(Date)}
-   */
-  @Test
-  @DisplayName("Test renderWithContextTimeZone(Date)")
-  @Disabled("TODO: Complete this test")
-  void testRenderWithContextTimeZone() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass9951 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.DateProcessor dateProcessor;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DateProcessor dateProcessor2 = new DateProcessor();
-
-    // Act
-    dateProcessor2.renderWithContextTimeZone(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
   }
 
   /**
@@ -121,9 +64,9 @@ class DateProcessorDiffblueTest {
    */
   @Test
   @DisplayName("Test renderWithContextTimeZone(Date); when 'null'; then return empty string")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"java.lang.String DateProcessor.renderWithContextTimeZone(Date)"})
   void testRenderWithContextTimeZone_whenNull_thenReturnEmptyString() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertEquals("", (new DateProcessor()).renderWithContextTimeZone(null));
   }

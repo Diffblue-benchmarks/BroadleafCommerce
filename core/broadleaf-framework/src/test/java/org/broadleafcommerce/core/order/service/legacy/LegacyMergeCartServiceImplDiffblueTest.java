@@ -1,17 +1,34 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.order.service.legacy;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.BiFunction;
 import org.broadleafcommerce.common.audit.Auditable;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
 import org.broadleafcommerce.common.locale.domain.LocaleImpl;
@@ -28,138 +45,19 @@ import org.broadleafcommerce.core.order.service.call.MergeCartResponse;
 import org.broadleafcommerce.core.order.service.type.OrderItemType;
 import org.broadleafcommerce.core.order.service.type.OrderStatus;
 import org.broadleafcommerce.core.pricing.service.exception.PricingException;
-import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class LegacyMergeCartServiceImplDiffblueTest {
   /**
-   * Test {@link LegacyMergeCartServiceImpl#mergeCart(Customer, Order, boolean)}
-   * with {@code customer}, {@code anonymousCart}, {@code priceOrder}.
-   * <ul>
-   *   <li>When {@link NullOrderImpl} (default constructor).</li>
-   * </ul>
+   * Test {@link LegacyMergeCartServiceImpl#mergeGiftWrapOrderItems(MergeCartResponse, Order, Map)}.
    * <p>
-   * Method under test:
-   * {@link LegacyMergeCartServiceImpl#mergeCart(Customer, Order, boolean)}
+   * Method under test: {@link LegacyMergeCartServiceImpl#mergeGiftWrapOrderItems(MergeCartResponse, Order, Map)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testMergeCartWithCustomerAnonymousCartPriceOrder_whenNullOrderImpl() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.broadleafcommerce.core.order.service.legacy.LegacyMergeCartServiceImpl.reconstructCart(LegacyMergeCartServiceImpl.java:131)
-    //       at org.broadleafcommerce.core.order.service.legacy.LegacyMergeCartServiceImpl.mergeCart(LegacyMergeCartServiceImpl.java:82)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    LegacyMergeCartServiceImpl legacyMergeCartServiceImpl = new LegacyMergeCartServiceImpl();
-    CustomerImpl customer = new CustomerImpl();
-
-    // Act
-    legacyMergeCartServiceImpl.mergeCart(customer, new NullOrderImpl(), true);
-  }
-
-  /**
-   * Test {@link LegacyMergeCartServiceImpl#mergeCart(Customer, Order)} with
-   * {@code customer}, {@code anonymousCart}.
-   * <ul>
-   *   <li>When {@link NullOrderImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link LegacyMergeCartServiceImpl#mergeCart(Customer, Order)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testMergeCartWithCustomerAnonymousCart_whenNullOrderImpl() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.broadleafcommerce.core.order.service.legacy.LegacyMergeCartServiceImpl.reconstructCart(LegacyMergeCartServiceImpl.java:131)
-    //       at org.broadleafcommerce.core.order.service.legacy.LegacyMergeCartServiceImpl.mergeCart(LegacyMergeCartServiceImpl.java:82)
-    //       at org.broadleafcommerce.core.order.service.legacy.LegacyMergeCartServiceImpl.mergeCart(LegacyMergeCartServiceImpl.java:70)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    LegacyMergeCartServiceImpl legacyMergeCartServiceImpl = new LegacyMergeCartServiceImpl();
-    CustomerImpl customer = new CustomerImpl();
-
-    // Act
-    legacyMergeCartServiceImpl.mergeCart(customer, new NullOrderImpl());
-  }
-
-  /**
-   * Test {@link LegacyMergeCartServiceImpl#reconstructCart(Customer, boolean)}
-   * with {@code customer}, {@code priceOrder}.
-   * <ul>
-   *   <li>When {@link CustomerImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link LegacyMergeCartServiceImpl#reconstructCart(Customer, boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testReconstructCartWithCustomerPriceOrder_whenCustomerImpl() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.broadleafcommerce.core.order.service.legacy.LegacyMergeCartServiceImpl.reconstructCart(LegacyMergeCartServiceImpl.java:131)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    LegacyMergeCartServiceImpl legacyMergeCartServiceImpl = new LegacyMergeCartServiceImpl();
-
-    // Act
-    legacyMergeCartServiceImpl.reconstructCart(new CustomerImpl(), true);
-  }
-
-  /**
-   * Test {@link LegacyMergeCartServiceImpl#reconstructCart(Customer)} with
-   * {@code customer}.
-   * <ul>
-   *   <li>When {@link CustomerImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link LegacyMergeCartServiceImpl#reconstructCart(Customer)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testReconstructCartWithCustomer_whenCustomerImpl() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.broadleafcommerce.core.order.service.legacy.LegacyMergeCartServiceImpl.reconstructCart(LegacyMergeCartServiceImpl.java:131)
-    //       at org.broadleafcommerce.core.order.service.legacy.LegacyMergeCartServiceImpl.reconstructCart(LegacyMergeCartServiceImpl.java:75)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    LegacyMergeCartServiceImpl legacyMergeCartServiceImpl = new LegacyMergeCartServiceImpl();
-
-    // Act
-    legacyMergeCartServiceImpl.reconstructCart(new CustomerImpl());
-  }
-
-  /**
-   * Test
-   * {@link LegacyMergeCartServiceImpl#mergeGiftWrapOrderItems(MergeCartResponse, Order, Map)}.
-   * <p>
-   * Method under test:
-   * {@link LegacyMergeCartServiceImpl#mergeGiftWrapOrderItems(MergeCartResponse, Order, Map)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyMergeCartServiceImpl.mergeGiftWrapOrderItems(MergeCartResponse, Order, Map)"})
   public void testMergeGiftWrapOrderItems() throws PricingException {
     // Arrange
     LegacyMergeCartServiceImpl legacyMergeCartServiceImpl = new LegacyMergeCartServiceImpl();
@@ -184,17 +82,16 @@ public class LegacyMergeCartServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link LegacyMergeCartServiceImpl#mergeGiftWrapOrderItems(MergeCartResponse, Order, Map)}.
+   * Test {@link LegacyMergeCartServiceImpl#mergeGiftWrapOrderItems(MergeCartResponse, Order, Map)}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link BundleOrderItemImpl}
-   * (default constructor).</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link BundleOrderItemImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link LegacyMergeCartServiceImpl#mergeGiftWrapOrderItems(MergeCartResponse, Order, Map)}
+   * Method under test: {@link LegacyMergeCartServiceImpl#mergeGiftWrapOrderItems(MergeCartResponse, Order, Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyMergeCartServiceImpl.mergeGiftWrapOrderItems(MergeCartResponse, Order, Map)"})
   public void testMergeGiftWrapOrderItems_givenArrayListAddBundleOrderItemImpl() throws PricingException {
     // Arrange
     LegacyMergeCartServiceImpl legacyMergeCartServiceImpl = new LegacyMergeCartServiceImpl();
@@ -222,17 +119,16 @@ public class LegacyMergeCartServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link LegacyMergeCartServiceImpl#mergeGiftWrapOrderItems(MergeCartResponse, Order, Map)}.
+   * Test {@link LegacyMergeCartServiceImpl#mergeGiftWrapOrderItems(MergeCartResponse, Order, Map)}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link GiftWrapOrderItemImpl}
-   * (default constructor).</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link GiftWrapOrderItemImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link LegacyMergeCartServiceImpl#mergeGiftWrapOrderItems(MergeCartResponse, Order, Map)}
+   * Method under test: {@link LegacyMergeCartServiceImpl#mergeGiftWrapOrderItems(MergeCartResponse, Order, Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyMergeCartServiceImpl.mergeGiftWrapOrderItems(MergeCartResponse, Order, Map)"})
   public void testMergeGiftWrapOrderItems_givenArrayListAddGiftWrapOrderItemImpl() throws PricingException {
     // Arrange
     LegacyMergeCartServiceImpl legacyMergeCartServiceImpl = new LegacyMergeCartServiceImpl();
@@ -260,53 +156,16 @@ public class LegacyMergeCartServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link LegacyMergeCartServiceImpl#mergeGiftWrapOrderItems(MergeCartResponse, Order, Map)}.
-   * <ul>
-   *   <li>Given {@link BundleOrderItemImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link LegacyMergeCartServiceImpl#mergeGiftWrapOrderItems(MergeCartResponse, Order, Map)}
-   */
-  @Test
-  public void testMergeGiftWrapOrderItems_givenBundleOrderItemImpl() throws PricingException {
-    // Arrange
-    LegacyMergeCartServiceImpl legacyMergeCartServiceImpl = new LegacyMergeCartServiceImpl();
-
-    MergeCartResponse mergeCartResponse = new MergeCartResponse();
-    mergeCartResponse.setAddedItems(new ArrayList<>());
-    mergeCartResponse.setMerged(true);
-    mergeCartResponse.setOrder(new NullOrderImpl());
-    mergeCartResponse.setRemovedItems(new ArrayList<>());
-    NullOrderImpl customerCart = new NullOrderImpl();
-
-    HashMap<OrderItem, OrderItem> oldNewItemMap = new HashMap<>();
-    oldNewItemMap.computeIfPresent(new BundleOrderItemImpl(), mock(BiFunction.class));
-
-    // Act
-    Order actualMergeGiftWrapOrderItemsResult = legacyMergeCartServiceImpl.mergeGiftWrapOrderItems(mergeCartResponse,
-        customerCart, oldNewItemMap);
-
-    // Assert
-    assertTrue(actualMergeGiftWrapOrderItemsResult instanceof NullOrderImpl);
-    Money orderAdjustmentsValue = actualMergeGiftWrapOrderItemsResult.getOrderAdjustmentsValue();
-    assertEquals(orderAdjustmentsValue, orderAdjustmentsValue.abs());
-    assertEquals(orderAdjustmentsValue, orderAdjustmentsValue.zero());
-    assertEquals(orderAdjustmentsValue, actualMergeGiftWrapOrderItemsResult.getSubTotal());
-  }
-
-  /**
-   * Test
-   * {@link LegacyMergeCartServiceImpl#mergeGiftWrapOrderItems(MergeCartResponse, Order, Map)}.
+   * Test {@link LegacyMergeCartServiceImpl#mergeGiftWrapOrderItems(MergeCartResponse, Order, Map)}.
    * <ul>
    *   <li>Then return SubTotal is {@link Money#Money()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link LegacyMergeCartServiceImpl#mergeGiftWrapOrderItems(MergeCartResponse, Order, Map)}
+   * Method under test: {@link LegacyMergeCartServiceImpl#mergeGiftWrapOrderItems(MergeCartResponse, Order, Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyMergeCartServiceImpl.mergeGiftWrapOrderItems(MergeCartResponse, Order, Map)"})
   public void testMergeGiftWrapOrderItems_thenReturnSubTotalIsMoney() throws PricingException {
     // Arrange
     LegacyMergeCartServiceImpl legacyMergeCartServiceImpl = new LegacyMergeCartServiceImpl();
@@ -335,10 +194,11 @@ public class LegacyMergeCartServiceImplDiffblueTest {
     orderItemImpl.setOrderItemType(OrderItemType.BASIC);
     orderItemImpl.setParentOrderItem(new BundleOrderItemImpl());
     orderItemImpl.setPersonalMessage(new PersonalMessageImpl());
+    Money finalPrice = new Money();
+    orderItemImpl.setPrice(finalPrice);
     orderItemImpl.setProratedOrderItemAdjustments(new ArrayList<>());
     orderItemImpl.setQuantity(1);
-    Money retailPrice = new Money();
-    orderItemImpl.setRetailPrice(retailPrice);
+    orderItemImpl.setRetailPrice(new Money());
     orderItemImpl.setRetailPriceOverride(true);
     Money salePrice = new Money();
     orderItemImpl.setSalePrice(salePrice);
@@ -362,23 +222,46 @@ public class LegacyMergeCartServiceImplDiffblueTest {
 
     // Assert
     assertTrue(actualMergeGiftWrapOrderItemsResult instanceof NullOrderImpl);
-    assertEquals(retailPrice, actualMergeGiftWrapOrderItemsResult.getSubTotal());
+    assertEquals(finalPrice, actualMergeGiftWrapOrderItemsResult.getSubTotal());
     Money expectedOrderAdjustmentsValue = salePrice.ZERO;
     assertSame(expectedOrderAdjustmentsValue, actualMergeGiftWrapOrderItemsResult.getOrderAdjustmentsValue());
   }
 
   /**
-   * Test
-   * {@link LegacyMergeCartServiceImpl#removeExpiredGiftWrapOrderItems(MergeCartResponse, Order, Map)}.
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link BundleOrderItemImpl}
-   * (default constructor).</li>
-   * </ul>
+   * Test {@link LegacyMergeCartServiceImpl#removeExpiredGiftWrapOrderItems(MergeCartResponse, Order, Map)}.
    * <p>
-   * Method under test:
-   * {@link LegacyMergeCartServiceImpl#removeExpiredGiftWrapOrderItems(MergeCartResponse, Order, Map)}
+   * Method under test: {@link LegacyMergeCartServiceImpl#removeExpiredGiftWrapOrderItems(MergeCartResponse, Order, Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyMergeCartServiceImpl.removeExpiredGiftWrapOrderItems(MergeCartResponse, Order, Map)"})
+  public void testRemoveExpiredGiftWrapOrderItems() throws PricingException {
+    // Arrange
+    LegacyMergeCartServiceImpl legacyMergeCartServiceImpl = new LegacyMergeCartServiceImpl();
+
+    MergeCartResponse mergeCartResponse = new MergeCartResponse();
+    mergeCartResponse.setAddedItems(new ArrayList<>());
+    mergeCartResponse.setMerged(true);
+    mergeCartResponse.setOrder(new NullOrderImpl());
+    mergeCartResponse.setRemovedItems(new ArrayList<>());
+    NullOrderImpl customerCart = new NullOrderImpl();
+
+    // Act and Assert
+    assertSame(customerCart,
+        legacyMergeCartServiceImpl.removeExpiredGiftWrapOrderItems(mergeCartResponse, customerCart, new HashMap<>()));
+  }
+
+  /**
+   * Test {@link LegacyMergeCartServiceImpl#removeExpiredGiftWrapOrderItems(MergeCartResponse, Order, Map)}.
+   * <ul>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link BundleOrderItemImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyMergeCartServiceImpl#removeExpiredGiftWrapOrderItems(MergeCartResponse, Order, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyMergeCartServiceImpl.removeExpiredGiftWrapOrderItems(MergeCartResponse, Order, Map)"})
   public void testRemoveExpiredGiftWrapOrderItems_givenArrayListAddBundleOrderItemImpl() throws PricingException {
     // Arrange
     LegacyMergeCartServiceImpl legacyMergeCartServiceImpl = new LegacyMergeCartServiceImpl();
@@ -399,17 +282,16 @@ public class LegacyMergeCartServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link LegacyMergeCartServiceImpl#removeExpiredGiftWrapOrderItems(MergeCartResponse, Order, Map)}.
+   * Test {@link LegacyMergeCartServiceImpl#removeExpiredGiftWrapOrderItems(MergeCartResponse, Order, Map)}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link GiftWrapOrderItemImpl}
-   * (default constructor).</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link GiftWrapOrderItemImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link LegacyMergeCartServiceImpl#removeExpiredGiftWrapOrderItems(MergeCartResponse, Order, Map)}
+   * Method under test: {@link LegacyMergeCartServiceImpl#removeExpiredGiftWrapOrderItems(MergeCartResponse, Order, Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyMergeCartServiceImpl.removeExpiredGiftWrapOrderItems(MergeCartResponse, Order, Map)"})
   public void testRemoveExpiredGiftWrapOrderItems_givenArrayListAddGiftWrapOrderItemImpl() throws PricingException {
     // Arrange
     LegacyMergeCartServiceImpl legacyMergeCartServiceImpl = new LegacyMergeCartServiceImpl();
@@ -430,73 +312,18 @@ public class LegacyMergeCartServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link LegacyMergeCartServiceImpl#removeExpiredGiftWrapOrderItems(MergeCartResponse, Order, Map)}.
-   * <ul>
-   *   <li>Given {@link BundleOrderItemImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link LegacyMergeCartServiceImpl#removeExpiredGiftWrapOrderItems(MergeCartResponse, Order, Map)}
-   */
-  @Test
-  public void testRemoveExpiredGiftWrapOrderItems_givenBundleOrderItemImpl() throws PricingException {
-    // Arrange
-    LegacyMergeCartServiceImpl legacyMergeCartServiceImpl = new LegacyMergeCartServiceImpl();
-
-    MergeCartResponse mergeCartResponse = new MergeCartResponse();
-    mergeCartResponse.setAddedItems(new ArrayList<>());
-    mergeCartResponse.setMerged(true);
-    mergeCartResponse.setOrder(new NullOrderImpl());
-    mergeCartResponse.setRemovedItems(new ArrayList<>());
-    NullOrderImpl customerCart = new NullOrderImpl();
-
-    HashMap<OrderItem, OrderItem> oldNewItemMap = new HashMap<>();
-    oldNewItemMap.computeIfPresent(new BundleOrderItemImpl(), mock(BiFunction.class));
-
-    // Act and Assert
-    assertSame(customerCart,
-        legacyMergeCartServiceImpl.removeExpiredGiftWrapOrderItems(mergeCartResponse, customerCart, oldNewItemMap));
-  }
-
-  /**
-   * Test
-   * {@link LegacyMergeCartServiceImpl#removeExpiredGiftWrapOrderItems(MergeCartResponse, Order, Map)}.
-   * <ul>
-   *   <li>When {@link HashMap#HashMap()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link LegacyMergeCartServiceImpl#removeExpiredGiftWrapOrderItems(MergeCartResponse, Order, Map)}
-   */
-  @Test
-  public void testRemoveExpiredGiftWrapOrderItems_whenHashMap() throws PricingException {
-    // Arrange
-    LegacyMergeCartServiceImpl legacyMergeCartServiceImpl = new LegacyMergeCartServiceImpl();
-
-    MergeCartResponse mergeCartResponse = new MergeCartResponse();
-    mergeCartResponse.setAddedItems(new ArrayList<>());
-    mergeCartResponse.setMerged(true);
-    mergeCartResponse.setOrder(new NullOrderImpl());
-    mergeCartResponse.setRemovedItems(new ArrayList<>());
-    NullOrderImpl customerCart = new NullOrderImpl();
-
-    // Act and Assert
-    assertSame(customerCart,
-        legacyMergeCartServiceImpl.removeExpiredGiftWrapOrderItems(mergeCartResponse, customerCart, new HashMap<>()));
-  }
-
-  /**
    * Test {@link LegacyMergeCartServiceImpl#mergeOfferCodes(Order, Order)}.
    * <ul>
+   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.</li>
    *   <li>Then return {@link OrderImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link LegacyMergeCartServiceImpl#mergeOfferCodes(Order, Order)}
+   * Method under test: {@link LegacyMergeCartServiceImpl#mergeOfferCodes(Order, Order)}
    */
   @Test
-  public void testMergeOfferCodes_thenReturnOrderImpl() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyMergeCartServiceImpl.mergeOfferCodes(Order, Order)"})
+  public void testMergeOfferCodes_givenAuditableCreatedByIsOne_thenReturnOrderImpl() {
     // Arrange
     LegacyMergeCartServiceImpl legacyMergeCartServiceImpl = new LegacyMergeCartServiceImpl();
 
@@ -528,7 +355,6 @@ public class LegacyMergeCartServiceImplDiffblueTest {
     anonymousCart.setTaxOverride(true);
     anonymousCart.setTotal(new Money());
     anonymousCart.setTotalFulfillmentCharges(new Money());
-    anonymousCart.setTotalShipping(new Money());
     anonymousCart.setTotalTax(new Money());
 
     Auditable auditable2 = new Auditable();
@@ -559,7 +385,6 @@ public class LegacyMergeCartServiceImplDiffblueTest {
     customerCart.setTaxOverride(true);
     customerCart.setTotal(new Money());
     customerCart.setTotalFulfillmentCharges(new Money());
-    customerCart.setTotalShipping(new Money());
     customerCart.setTotalTax(new Money());
 
     // Act and Assert
@@ -567,78 +392,19 @@ public class LegacyMergeCartServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link LegacyMergeCartServiceImpl#mergeRegularOrderItems(Order, MergeCartResponse, Order, Map)}.
+   * Test {@link LegacyMergeCartServiceImpl#mergeRegularOrderItems(Order, MergeCartResponse, Order, Map)}.
    * <ul>
-   *   <li>Given {@link Auditable} (default constructor) DateCreated is
-   * {@link java.sql.Date}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link LegacyMergeCartServiceImpl#mergeRegularOrderItems(Order, MergeCartResponse, Order, Map)}
-   */
-  @Test
-  public void testMergeRegularOrderItems_givenAuditableDateCreatedIsDate() throws PricingException {
-    // Arrange
-    LegacyMergeCartServiceImpl legacyMergeCartServiceImpl = new LegacyMergeCartServiceImpl();
-
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(mock(java.sql.Date.class));
-    auditable.setDateUpdated(
-        java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    OrderImpl anonymousCart = new OrderImpl();
-    anonymousCart.setAdditionalOfferInformation(new HashMap<>());
-    anonymousCart.setAuditable(auditable);
-    anonymousCart.setCandidateOrderOffers(new ArrayList<>());
-    anonymousCart.setCurrency(new BroadleafCurrencyImpl());
-    anonymousCart.setCustomer(new CustomerImpl());
-    anonymousCart.setEmailAddress("42 Main St");
-    anonymousCart.setFulfillmentGroups(new ArrayList<>());
-    anonymousCart.setId(1L);
-    anonymousCart.setLocale(new LocaleImpl());
-    anonymousCart.setName("Name");
-    anonymousCart.setOrderAttributes(new HashMap<>());
-    anonymousCart.setOrderItems(new ArrayList<>());
-    anonymousCart.setOrderMessages(new ArrayList<>());
-    anonymousCart.setOrderNumber("42");
-    anonymousCart.setPayments(new ArrayList<>());
-    anonymousCart.setStatus(OrderStatus.ARCHIVED);
-    anonymousCart.setSubTotal(new Money());
-    anonymousCart
-        .setSubmitDate(java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    anonymousCart.setTaxOverride(true);
-    anonymousCart.setTotal(new Money());
-    anonymousCart.setTotalFulfillmentCharges(new Money());
-    anonymousCart.setTotalShipping(new Money());
-    anonymousCart.setTotalTax(new Money());
-
-    MergeCartResponse mergeCartResponse = new MergeCartResponse();
-    mergeCartResponse.setAddedItems(new ArrayList<>());
-    mergeCartResponse.setMerged(true);
-    mergeCartResponse.setOrder(new NullOrderImpl());
-    mergeCartResponse.setRemovedItems(new ArrayList<>());
-    NullOrderImpl customerCart = new NullOrderImpl();
-
-    // Act and Assert
-    assertSame(customerCart, legacyMergeCartServiceImpl.mergeRegularOrderItems(anonymousCart, mergeCartResponse,
-        customerCart, new HashMap<>()));
-  }
-
-  /**
-   * Test
-   * {@link LegacyMergeCartServiceImpl#mergeRegularOrderItems(Order, MergeCartResponse, Order, Map)}.
-   * <ul>
+   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.</li>
    *   <li>Then return {@link NullOrderImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link LegacyMergeCartServiceImpl#mergeRegularOrderItems(Order, MergeCartResponse, Order, Map)}
+   * Method under test: {@link LegacyMergeCartServiceImpl#mergeRegularOrderItems(Order, MergeCartResponse, Order, Map)}
    */
   @Test
-  public void testMergeRegularOrderItems_thenReturnNullOrderImpl() throws PricingException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Order LegacyMergeCartServiceImpl.mergeRegularOrderItems(Order, MergeCartResponse, Order, Map)"})
+  public void testMergeRegularOrderItems_givenAuditableCreatedByIsOne_thenReturnNullOrderImpl()
+      throws PricingException {
     // Arrange
     LegacyMergeCartServiceImpl legacyMergeCartServiceImpl = new LegacyMergeCartServiceImpl();
 
@@ -670,7 +436,6 @@ public class LegacyMergeCartServiceImplDiffblueTest {
     anonymousCart.setTaxOverride(true);
     anonymousCart.setTotal(new Money());
     anonymousCart.setTotalFulfillmentCharges(new Money());
-    anonymousCart.setTotalShipping(new Money());
     anonymousCart.setTotalTax(new Money());
 
     MergeCartResponse mergeCartResponse = new MergeCartResponse();
@@ -686,70 +451,13 @@ public class LegacyMergeCartServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link LegacyMergeCartServiceImpl#addOrderItemToOrder(Order, OrderItem, Boolean)}.
-   * <ul>
-   *   <li>When {@link NullOrderImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link LegacyMergeCartServiceImpl#addOrderItemToOrder(Order, OrderItem, Boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddOrderItemToOrder_whenNullOrderImpl() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.broadleafcommerce.core.order.service.legacy.LegacyMergeCartServiceImpl.addOrderItemToOrder(LegacyMergeCartServiceImpl.java:411)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    LegacyMergeCartServiceImpl legacyMergeCartServiceImpl = new LegacyMergeCartServiceImpl();
-    NullOrderImpl order = new NullOrderImpl();
-
-    // Act
-    legacyMergeCartServiceImpl.addOrderItemToOrder(order, new BundleOrderItemImpl(), true);
-  }
-
-  /**
-   * Test
-   * {@link LegacyMergeCartServiceImpl#removeItemFromOrder(Order, OrderItem, boolean)}.
-   * <ul>
-   *   <li>When {@link NullOrderImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link LegacyMergeCartServiceImpl#removeItemFromOrder(Order, OrderItem, boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testRemoveItemFromOrder_whenNullOrderImpl() throws PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.broadleafcommerce.core.order.service.legacy.LegacyMergeCartServiceImpl.removeItemFromOrder(LegacyMergeCartServiceImpl.java:420)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    LegacyMergeCartServiceImpl legacyMergeCartServiceImpl = new LegacyMergeCartServiceImpl();
-    NullOrderImpl order = new NullOrderImpl();
-
-    // Act
-    legacyMergeCartServiceImpl.removeItemFromOrder(order, new BundleOrderItemImpl(), true);
-  }
-
-  /**
    * Test new {@link LegacyMergeCartServiceImpl} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link LegacyMergeCartServiceImpl}
+   * Method under test: default or parameterless constructor of {@link LegacyMergeCartServiceImpl}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void LegacyMergeCartServiceImpl.<init>()"})
   public void testNewLegacyMergeCartServiceImpl() {
     // Arrange, Act and Assert
     assertNull((new LegacyMergeCartServiceImpl()).fulfillmentGroupService);

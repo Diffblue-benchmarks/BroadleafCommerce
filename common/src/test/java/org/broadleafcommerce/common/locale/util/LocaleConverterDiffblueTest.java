@@ -19,8 +19,11 @@ package org.broadleafcommerce.common.locale.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Locale;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -42,6 +45,8 @@ public class LocaleConverterDiffblueTest {
    * Method under test: {@link LocaleConverter#convert(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Locale LocaleConverter.convert(String)"})
   public void testConvertWithString_whenEn_thenReturnCountryIsEn() {
     // Arrange and Act
     Locale actualConvertResult = localeConverter.convert("_en");
@@ -62,6 +67,8 @@ public class LocaleConverterDiffblueTest {
    * Method under test: {@link LocaleConverter#convert(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Locale LocaleConverter.convert(String)"})
   public void testConvertWithString_whenEn_thenReturnDisplayNameIsEn() {
     // Arrange and Act
     Locale actualConvertResult = localeConverter.convert("__en");
@@ -82,6 +89,8 @@ public class LocaleConverterDiffblueTest {
    * Method under test: {@link LocaleConverter#convert(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Locale LocaleConverter.convert(String)"})
   public void testConvertWithString_whenEn_thenReturnEnglish() {
     // Arrange and Act
     Locale actualConvertResult = localeConverter.convert("en");
@@ -100,6 +109,8 @@ public class LocaleConverterDiffblueTest {
    * Method under test: {@link LocaleConverter#convert(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Locale LocaleConverter.convert(String)"})
   public void testConvertWithString_whenNull_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull(localeConverter.convert(null));
@@ -115,25 +126,10 @@ public class LocaleConverterDiffblueTest {
    * Method under test: {@link LocaleConverter#convert(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Locale LocaleConverter.convert(String)"})
   public void testConvertWithString_whenUnderscore_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull(localeConverter.convert("_"));
-  }
-
-  /**
-   * Test new {@link LocaleConverter} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link LocaleConverter}
-   */
-  @Test
-  public void testNewLocaleConverter() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing observers.
-    //   Diffblue Cover was unable to create an assertion.
-    //   There are no fields that could be asserted on.
-
-    // Arrange and Act
-    new LocaleConverter();
   }
 }

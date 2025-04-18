@@ -18,30 +18,17 @@
 package org.broadleafcommerce.common.util.dao;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.List;
 import java.util.Map;
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
-import org.hibernate.engine.spi.SessionDelegatorBaseImpl;
-import org.hibernate.engine.spi.SessionImplementor;
-import org.hibernate.procedure.internal.ProcedureCallImpl;
-import org.junit.Ignore;
+import org.broadleafcommerce.common.util.dao.TQRestriction.Mode;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.junit.experimental.categories.Category;
 
-@ContextConfiguration(classes = {TypedQueryBuilder.class, String.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class TypedQueryBuilderDiffblueTest {
-  @Autowired
-  private TypedQueryBuilder<Object> typedQueryBuilder;
-
   /**
    * Test getters and setters.
    * <p>
@@ -52,6 +39,8 @@ public class TypedQueryBuilderDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TypedQueryBuilder.<init>(Class, String)", "Map TypedQueryBuilder.getParamMap()"})
   public void testGettersAndSetters() {
     // Arrange
     Class<Object> rootClass = Object.class;
@@ -68,153 +57,42 @@ public class TypedQueryBuilderDiffblueTest {
   }
 
   /**
-   * Test {@link TypedQueryBuilder#addRestriction(String, String, Object)} with
-   * {@code expression}, {@code operation}, {@code parameter}.
+   * Test {@link TypedQueryBuilder#addRestriction(String, String, Object)} with {@code expression}, {@code operation}, {@code parameter}.
    * <p>
-   * Method under test:
-   * {@link TypedQueryBuilder#addRestriction(String, String, Object)}
+   * Method under test: {@link TypedQueryBuilder#addRestriction(String, String, Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"TypedQueryBuilder TypedQueryBuilder.addRestriction(String, String, Object)"})
   public void testAddRestrictionWithExpressionOperationParameter() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Class<Object> rootClass = Object.class;
     TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
-    Object object = DynamicDaoHelperImpl.LOCK_OBJECT;
 
     // Act
     TypedQueryBuilder<Object> actualAddRestrictionResult = typedQueryBuilder.addRestriction("Expression", "Operation",
-        object);
+        DynamicDaoHelperImpl.LOCK_OBJECT);
 
     // Assert
-    List<TQRestriction> tqRestrictionList = actualAddRestrictionResult.restrictions;
-    assertEquals(1, tqRestrictionList.size());
-    TQRestriction getResult = tqRestrictionList.get(0);
-    assertEquals("Expression", getResult.expression);
     assertEquals("SELECT Root Alias FROM java.lang.Object Root Alias WHERE (Expression operation :p0)",
         typedQueryBuilder.toQueryString());
-    assertEquals("SELECT Root Alias FROM java.lang.Object Root Alias WHERE (Expression operation :p0)",
-        actualAddRestrictionResult.toQueryString());
-    assertEquals("operation", getResult.operation);
-    assertNull(getResult.joinMode);
     assertEquals(1, typedQueryBuilder.restrictions.size());
-    Map<String, Object> paramMap = actualAddRestrictionResult.getParamMap();
-    assertEquals(1, paramMap.size());
-    assertTrue(getResult.restrictions.isEmpty());
-    assertSame(object, paramMap.get("p0"));
-    assertSame(object, getResult.parameter);
+    assertSame(typedQueryBuilder, actualAddRestrictionResult);
   }
 
   /**
-   * Test {@link TypedQueryBuilder#addRestriction(String, String, Object)} with
-   * {@code expression}, {@code operation}, {@code parameter}.
-   * <p>
-   * Method under test:
-   * {@link TypedQueryBuilder#addRestriction(String, String, Object)}
-   */
-  @Test
-  public void testAddRestrictionWithExpressionOperationParameter2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    Class<Object> rootClass = Object.class;
-
-    TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
-    typedQueryBuilder.addRestriction(mock(TQRestriction.class));
-    Object object = DynamicDaoHelperImpl.LOCK_OBJECT;
-
-    // Act
-    TypedQueryBuilder<Object> actualAddRestrictionResult = typedQueryBuilder.addRestriction("Expression", "Operation",
-        object);
-
-    // Assert
-    List<TQRestriction> tqRestrictionList = actualAddRestrictionResult.restrictions;
-    assertEquals(2, tqRestrictionList.size());
-    TQRestriction getResult = tqRestrictionList.get(1);
-    assertEquals("Expression", getResult.expression);
-    assertEquals("SELECT Root Alias FROM java.lang.Object Root Alias WHERE null AND (Expression operation :p1)",
-        typedQueryBuilder.toQueryString());
-    assertEquals("SELECT Root Alias FROM java.lang.Object Root Alias WHERE null AND (Expression operation :p1)",
-        actualAddRestrictionResult.toQueryString());
-    assertEquals("operation", getResult.operation);
-    assertNull(getResult.joinMode);
-    Map<String, Object> paramMap = actualAddRestrictionResult.getParamMap();
-    assertEquals(1, paramMap.size());
-    assertEquals(2, typedQueryBuilder.restrictions.size());
-    assertTrue(getResult.restrictions.isEmpty());
-    assertSame(object, paramMap.get("p1"));
-    assertSame(object, getResult.parameter);
-  }
-
-  /**
-   * Test {@link TypedQueryBuilder#addRestriction(String, String, Object)} with
-   * {@code expression}, {@code operation}, {@code parameter}.
-   * <p>
-   * Method under test:
-   * {@link TypedQueryBuilder#addRestriction(String, String, Object)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddRestrictionWithExpressionOperationParameter3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //       at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:195)
-    //       at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1655)
-    //       at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:484)
-    //       at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:474)
-    //       at java.base/java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:913)
-    //       at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
-    //       at java.base/java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:578)
-    //   org.mockito.exceptions.base.MockitoException: 
-    //   Cannot mock/spy class java.lang.Class
-    //   Mockito cannot mock/spy because :
-    //    - final class
-    //       at org.springframework.boot.test.mock.mockito.MockDefinition.createMock(MockDefinition.java:158)
-    //       at org.springframework.boot.test.mock.mockito.MockitoPostProcessor.registerMock(MockitoPostProcessor.java:185)
-    //       at org.springframework.boot.test.mock.mockito.MockitoPostProcessor.register(MockitoPostProcessor.java:167)
-    //       at org.springframework.boot.test.mock.mockito.MockitoPostProcessor.postProcessBeanFactory(MockitoPostProcessor.java:141)
-    //       at org.springframework.boot.test.mock.mockito.MockitoPostProcessor.postProcessBeanFactory(MockitoPostProcessor.java:129)
-    //       at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(PostProcessorRegistrationDelegate.java:325)
-    //       at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(PostProcessorRegistrationDelegate.java:191)
-    //       at org.springframework.context.support.AbstractApplicationContext.invokeBeanFactoryPostProcessors(AbstractApplicationContext.java:756)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:573)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //       at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:195)
-    //       at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1655)
-    //       at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:484)
-    //       at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:474)
-    //       at java.base/java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:913)
-    //       at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
-    //       at java.base/java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:578)
-    //   See https://diff.blue/R026 to resolve this issue.
-
-    // Arrange and Act
-    typedQueryBuilder.addRestriction("Expression", "Operation", DynamicDaoHelperImpl.LOCK_OBJECT);
-  }
-
-  /**
-   * Test {@link TypedQueryBuilder#addRestriction(TQRestriction)} with
-   * {@code restriction}.
+   * Test {@link TypedQueryBuilder#addRestriction(TQRestriction)} with {@code restriction}.
    * <p>
    * Method under test: {@link TypedQueryBuilder#addRestriction(TQRestriction)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"TypedQueryBuilder TypedQueryBuilder.addRestriction(TQRestriction)"})
   public void testAddRestrictionWithRestriction() {
     // Arrange
     Class<Object> rootClass = Object.class;
     TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
-    TQRestriction restriction = new TQRestriction(TQRestriction.Mode.OR);
+    TQRestriction restriction = new TQRestriction(Mode.OR);
 
     // Act
     TypedQueryBuilder<Object> actualAddRestrictionResult = typedQueryBuilder.addRestriction(restriction);
@@ -233,6 +111,8 @@ public class TypedQueryBuilderDiffblueTest {
    * Method under test: {@link TypedQueryBuilder#addJoin(TQJoin)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"TypedQueryBuilder TypedQueryBuilder.addJoin(TQJoin)"})
   public void testAddJoin() {
     // Arrange
     Class<Object> rootClass = Object.class;
@@ -257,6 +137,8 @@ public class TypedQueryBuilderDiffblueTest {
    * Method under test: {@link TypedQueryBuilder#addOrder(TQOrder)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"TypedQueryBuilder TypedQueryBuilder.addOrder(TQOrder)"})
   public void testAddOrder() {
     // Arrange
     Class<Object> rootClass = Object.class;
@@ -281,6 +163,8 @@ public class TypedQueryBuilderDiffblueTest {
    * Method under test: {@link TypedQueryBuilder#toQueryString()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String TypedQueryBuilder.toQueryString()"})
   public void testToQueryString() {
     // Arrange
     Class<Object> rootClass = Object.class;
@@ -299,6 +183,8 @@ public class TypedQueryBuilderDiffblueTest {
    * Method under test: {@link TypedQueryBuilder#toQueryString()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String TypedQueryBuilder.toQueryString()"})
   public void testToQueryString2() {
     // Arrange
     Class<Object> rootClass = Object.class;
@@ -319,12 +205,14 @@ public class TypedQueryBuilderDiffblueTest {
    * Method under test: {@link TypedQueryBuilder#toQueryString()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String TypedQueryBuilder.toQueryString()"})
   public void testToQueryString3() {
     // Arrange
     Class<Object> rootClass = Object.class;
 
     TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
-    typedQueryBuilder.addRestriction(new TQRestriction(TQRestriction.Mode.OR));
+    typedQueryBuilder.addRestriction(new TQRestriction(Mode.OR));
     typedQueryBuilder.addRestriction("SELECT ", "SELECT ", DynamicDaoHelperImpl.LOCK_OBJECT);
 
     // Act and Assert
@@ -338,6 +226,8 @@ public class TypedQueryBuilderDiffblueTest {
    * Method under test: {@link TypedQueryBuilder#toQueryString()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String TypedQueryBuilder.toQueryString()"})
   public void testToQueryString4() {
     // Arrange
     Class<Object> rootClass = Object.class;
@@ -357,6 +247,8 @@ public class TypedQueryBuilderDiffblueTest {
    * Method under test: {@link TypedQueryBuilder#toQueryString()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String TypedQueryBuilder.toQueryString()"})
   public void testToQueryString5() {
     // Arrange
     Class<Object> rootClass = Object.class;
@@ -376,6 +268,8 @@ public class TypedQueryBuilderDiffblueTest {
    * Method under test: {@link TypedQueryBuilder#toQueryString()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String TypedQueryBuilder.toQueryString()"})
   public void testToQueryString6() {
     // Arrange
     Class<Object> rootClass = Object.class;
@@ -394,6 +288,8 @@ public class TypedQueryBuilderDiffblueTest {
    * Method under test: {@link TypedQueryBuilder#toQueryString()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String TypedQueryBuilder.toQueryString()"})
   public void testToQueryString7() {
     // Arrange
     Class<Object> rootClass = Object.class;
@@ -412,6 +308,8 @@ public class TypedQueryBuilderDiffblueTest {
    * Method under test: {@link TypedQueryBuilder#toQueryString()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String TypedQueryBuilder.toQueryString()"})
   public void testToQueryString8() {
     // Arrange
     Class<Object> rootClass = Object.class;
@@ -431,6 +329,8 @@ public class TypedQueryBuilderDiffblueTest {
    * Method under test: {@link TypedQueryBuilder#toQueryString()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String TypedQueryBuilder.toQueryString()"})
   public void testToQueryString9() {
     // Arrange
     Class<Object> rootClass = Object.class;
@@ -449,10 +349,12 @@ public class TypedQueryBuilderDiffblueTest {
    * Method under test: {@link TypedQueryBuilder#toQueryString()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String TypedQueryBuilder.toQueryString()"})
   public void testToQueryString10() {
     // Arrange
-    TQRestriction restriction = new TQRestriction(TQRestriction.Mode.OR);
-    restriction.addChildRestriction(new TQRestriction(TQRestriction.Mode.OR));
+    TQRestriction restriction = new TQRestriction(Mode.OR);
+    restriction.addChildRestriction(new TQRestriction(Mode.OR));
     Class<Object> rootClass = Object.class;
 
     TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
@@ -470,11 +372,13 @@ public class TypedQueryBuilderDiffblueTest {
    * Method under test: {@link TypedQueryBuilder#toQueryString()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String TypedQueryBuilder.toQueryString()"})
   public void testToQueryString11() {
     // Arrange
-    TQRestriction restriction = new TQRestriction(TQRestriction.Mode.OR);
-    restriction.addChildRestriction(new TQRestriction(TQRestriction.Mode.OR));
-    restriction.addChildRestriction(new TQRestriction(TQRestriction.Mode.OR));
+    TQRestriction restriction = new TQRestriction(Mode.OR);
+    restriction.addChildRestriction(new TQRestriction(Mode.OR));
+    restriction.addChildRestriction(new TQRestriction(Mode.OR));
     Class<Object> rootClass = Object.class;
 
     TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
@@ -492,11 +396,13 @@ public class TypedQueryBuilderDiffblueTest {
    * Method under test: {@link TypedQueryBuilder#toQueryString()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String TypedQueryBuilder.toQueryString()"})
   public void testToQueryString12() {
     // Arrange
     TQRestriction restriction = new TQRestriction("SELECT ", "SELECT ");
-    restriction.addChildRestriction(new TQRestriction(TQRestriction.Mode.OR));
-    restriction.addChildRestriction(new TQRestriction(TQRestriction.Mode.OR));
+    restriction.addChildRestriction(new TQRestriction(Mode.OR));
+    restriction.addChildRestriction(new TQRestriction(Mode.OR));
     Class<Object> rootClass = Object.class;
 
     TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
@@ -514,6 +420,8 @@ public class TypedQueryBuilderDiffblueTest {
    * Method under test: {@link TypedQueryBuilder#toQueryString(boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String TypedQueryBuilder.toQueryString(boolean)"})
   public void testToQueryStringWithBoolean() {
     // Arrange
     Class<Object> rootClass = Object.class;
@@ -532,6 +440,8 @@ public class TypedQueryBuilderDiffblueTest {
    * Method under test: {@link TypedQueryBuilder#toQueryString(boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String TypedQueryBuilder.toQueryString(boolean)"})
   public void testToQueryStringWithBoolean2() {
     // Arrange
     Class<Object> rootClass = Object.class;
@@ -552,12 +462,14 @@ public class TypedQueryBuilderDiffblueTest {
    * Method under test: {@link TypedQueryBuilder#toQueryString(boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String TypedQueryBuilder.toQueryString(boolean)"})
   public void testToQueryStringWithBoolean3() {
     // Arrange
     Class<Object> rootClass = Object.class;
 
     TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
-    typedQueryBuilder.addRestriction(new TQRestriction(TQRestriction.Mode.OR));
+    typedQueryBuilder.addRestriction(new TQRestriction(Mode.OR));
     typedQueryBuilder.addRestriction("SELECT ", "SELECT ", DynamicDaoHelperImpl.LOCK_OBJECT);
 
     // Act and Assert
@@ -571,6 +483,8 @@ public class TypedQueryBuilderDiffblueTest {
    * Method under test: {@link TypedQueryBuilder#toQueryString(boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String TypedQueryBuilder.toQueryString(boolean)"})
   public void testToQueryStringWithBoolean4() {
     // Arrange
     Class<Object> rootClass = Object.class;
@@ -590,6 +504,8 @@ public class TypedQueryBuilderDiffblueTest {
    * Method under test: {@link TypedQueryBuilder#toQueryString(boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String TypedQueryBuilder.toQueryString(boolean)"})
   public void testToQueryStringWithBoolean5() {
     // Arrange
     Class<Object> rootClass = Object.class;
@@ -609,6 +525,8 @@ public class TypedQueryBuilderDiffblueTest {
    * Method under test: {@link TypedQueryBuilder#toQueryString(boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String TypedQueryBuilder.toQueryString(boolean)"})
   public void testToQueryStringWithBoolean6() {
     // Arrange
     Class<Object> rootClass = Object.class;
@@ -627,6 +545,8 @@ public class TypedQueryBuilderDiffblueTest {
    * Method under test: {@link TypedQueryBuilder#toQueryString(boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String TypedQueryBuilder.toQueryString(boolean)"})
   public void testToQueryStringWithBoolean7() {
     // Arrange
     Class<Object> rootClass = Object.class;
@@ -647,6 +567,8 @@ public class TypedQueryBuilderDiffblueTest {
    * Method under test: {@link TypedQueryBuilder#toQueryString(boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String TypedQueryBuilder.toQueryString(boolean)"})
   public void testToQueryStringWithBoolean8() {
     // Arrange
     Class<Object> rootClass = Object.class;
@@ -666,6 +588,8 @@ public class TypedQueryBuilderDiffblueTest {
    * Method under test: {@link TypedQueryBuilder#toQueryString(boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String TypedQueryBuilder.toQueryString(boolean)"})
   public void testToQueryStringWithBoolean9() {
     // Arrange
     Class<Object> rootClass = Object.class;
@@ -684,6 +608,8 @@ public class TypedQueryBuilderDiffblueTest {
    * Method under test: {@link TypedQueryBuilder#toQueryString(boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String TypedQueryBuilder.toQueryString(boolean)"})
   public void testToQueryStringWithBoolean10() {
     // Arrange
     Class<Object> rootClass = Object.class;
@@ -699,6 +625,8 @@ public class TypedQueryBuilderDiffblueTest {
    * Method under test: {@link TypedQueryBuilder#toQueryString(boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String TypedQueryBuilder.toQueryString(boolean)"})
   public void testToQueryStringWithBoolean11() {
     // Arrange
     Class<Object> rootClass = Object.class;
@@ -717,10 +645,12 @@ public class TypedQueryBuilderDiffblueTest {
    * Method under test: {@link TypedQueryBuilder#toQueryString(boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String TypedQueryBuilder.toQueryString(boolean)"})
   public void testToQueryStringWithBoolean12() {
     // Arrange
-    TQRestriction restriction = new TQRestriction(TQRestriction.Mode.OR);
-    restriction.addChildRestriction(new TQRestriction(TQRestriction.Mode.OR));
+    TQRestriction restriction = new TQRestriction(Mode.OR);
+    restriction.addChildRestriction(new TQRestriction(Mode.OR));
     Class<Object> rootClass = Object.class;
 
     TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
@@ -738,11 +668,13 @@ public class TypedQueryBuilderDiffblueTest {
    * Method under test: {@link TypedQueryBuilder#toQueryString(boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String TypedQueryBuilder.toQueryString(boolean)"})
   public void testToQueryStringWithBoolean13() {
     // Arrange
-    TQRestriction restriction = new TQRestriction(TQRestriction.Mode.OR);
-    restriction.addChildRestriction(new TQRestriction(TQRestriction.Mode.OR));
-    restriction.addChildRestriction(new TQRestriction(TQRestriction.Mode.OR));
+    TQRestriction restriction = new TQRestriction(Mode.OR);
+    restriction.addChildRestriction(new TQRestriction(Mode.OR));
+    restriction.addChildRestriction(new TQRestriction(Mode.OR));
     Class<Object> rootClass = Object.class;
 
     TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
@@ -760,11 +692,13 @@ public class TypedQueryBuilderDiffblueTest {
    * Method under test: {@link TypedQueryBuilder#toQueryString(boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String TypedQueryBuilder.toQueryString(boolean)"})
   public void testToQueryStringWithBoolean14() {
     // Arrange
     TQRestriction restriction = new TQRestriction("SELECT ", "SELECT ");
-    restriction.addChildRestriction(new TQRestriction(TQRestriction.Mode.OR));
-    restriction.addChildRestriction(new TQRestriction(TQRestriction.Mode.OR));
+    restriction.addChildRestriction(new TQRestriction(Mode.OR));
+    restriction.addChildRestriction(new TQRestriction(Mode.OR));
     Class<Object> rootClass = Object.class;
 
     TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
@@ -779,13 +713,14 @@ public class TypedQueryBuilderDiffblueTest {
   /**
    * Test {@link TypedQueryBuilder#toQueryString(boolean)} with {@code boolean}.
    * <ul>
-   *   <li>Then return
-   * {@code SELECT COUNT(*) FROM java.lang.Object Root Alias}.</li>
+   *   <li>Then return {@code SELECT COUNT(*) FROM Object Root Alias}.</li>
    * </ul>
    * <p>
    * Method under test: {@link TypedQueryBuilder#toQueryString(boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String TypedQueryBuilder.toQueryString(boolean)"})
   public void testToQueryStringWithBoolean_thenReturnSelectCountFromJavaLangObjectRootAlias() {
     // Arrange
     Class<Object> rootClass = Object.class;
@@ -804,6 +739,8 @@ public class TypedQueryBuilderDiffblueTest {
    * Method under test: {@link TypedQueryBuilder#toQueryString()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String TypedQueryBuilder.toQueryString()"})
   public void testToQueryString_thenReturnAString() {
     // Arrange
     Class<Object> rootClass = Object.class;
@@ -821,13 +758,14 @@ public class TypedQueryBuilderDiffblueTest {
   /**
    * Test {@link TypedQueryBuilder#toQueryString()}.
    * <ul>
-   *   <li>Then return
-   * {@code SELECT Root Alias FROM java.lang.Object Root Alias}.</li>
+   *   <li>Then return {@code SELECT Root Alias FROM Object Root Alias}.</li>
    * </ul>
    * <p>
    * Method under test: {@link TypedQueryBuilder#toQueryString()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String TypedQueryBuilder.toQueryString()"})
   public void testToQueryString_thenReturnSelectRootAliasFromJavaLangObjectRootAlias() {
     // Arrange
     Class<Object> rootClass = Object.class;
@@ -840,14 +778,14 @@ public class TypedQueryBuilderDiffblueTest {
   /**
    * Test {@link TypedQueryBuilder#getSelectClause(StringBuilder, boolean)}.
    * <ul>
-   *   <li>Then {@link StringBuilder#StringBuilder(String)} with {@code foo}
-   * toString is {@code fooSELECT COUNT(*)}.</li>
+   *   <li>Then {@link StringBuilder#StringBuilder(String)} with {@code foo} toString is {@code fooSELECT COUNT(*)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link TypedQueryBuilder#getSelectClause(StringBuilder, boolean)}
+   * Method under test: {@link TypedQueryBuilder#getSelectClause(StringBuilder, boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"StringBuilder TypedQueryBuilder.getSelectClause(StringBuilder, boolean)"})
   public void testGetSelectClause_thenStringBuilderWithFooToStringIsFooSELECTCount() {
     // Arrange
     Class<Object> rootClass = Object.class;
@@ -865,14 +803,14 @@ public class TypedQueryBuilderDiffblueTest {
   /**
    * Test {@link TypedQueryBuilder#getSelectClause(StringBuilder, boolean)}.
    * <ul>
-   *   <li>Then {@link StringBuilder#StringBuilder(String)} with {@code foo}
-   * toString is {@code fooSELECT Root Alias}.</li>
+   *   <li>Then {@link StringBuilder#StringBuilder(String)} with {@code foo} toString is {@code fooSELECT Root Alias}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link TypedQueryBuilder#getSelectClause(StringBuilder, boolean)}
+   * Method under test: {@link TypedQueryBuilder#getSelectClause(StringBuilder, boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"StringBuilder TypedQueryBuilder.getSelectClause(StringBuilder, boolean)"})
   public void testGetSelectClause_thenStringBuilderWithFooToStringIsFooSELECTRootAlias() {
     // Arrange
     Class<Object> rootClass = Object.class;
@@ -885,115 +823,5 @@ public class TypedQueryBuilderDiffblueTest {
     // Assert
     assertEquals("fooSELECT Root Alias", sb.toString());
     assertSame(sb, actualSelectClause);
-  }
-
-  /**
-   * Test {@link TypedQueryBuilder#toQuery(EntityManager)}.
-   * <ul>
-   *   <li>When
-   * {@link SessionDelegatorBaseImpl#SessionDelegatorBaseImpl(SessionImplementor)}
-   * with delegate is {@link SessionImplementor}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link TypedQueryBuilder#toQuery(EntityManager)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testToQuery_whenSessionDelegatorBaseImplWithDelegateIsSessionImplementor() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.IllegalArgumentException: Unable to create a SessionDelegatorBaseImpl from different Session/SessionImplementor references
-    //       at org.hibernate.engine.spi.SessionDelegatorBaseImpl.<init>(SessionDelegatorBaseImpl.java:100)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    Class<Object> rootClass = Object.class;
-    TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
-    SessionDelegatorBaseImpl delegate = new SessionDelegatorBaseImpl(mock(SessionImplementor.class));
-
-    // Act
-    typedQueryBuilder
-        .toQuery(new SessionDelegatorBaseImpl(delegate, new SessionDelegatorBaseImpl(mock(SessionImplementor.class))));
-  }
-
-  /**
-   * Test {@link TypedQueryBuilder#toCountQuery(EntityManager)}.
-   * <ul>
-   *   <li>When
-   * {@link SessionDelegatorBaseImpl#SessionDelegatorBaseImpl(SessionImplementor)}
-   * with delegate is {@link SessionImplementor}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link TypedQueryBuilder#toCountQuery(EntityManager)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testToCountQuery_whenSessionDelegatorBaseImplWithDelegateIsSessionImplementor() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.IllegalArgumentException: Unable to create a SessionDelegatorBaseImpl from different Session/SessionImplementor references
-    //       at org.hibernate.engine.spi.SessionDelegatorBaseImpl.<init>(SessionDelegatorBaseImpl.java:100)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    Class<Object> rootClass = Object.class;
-    TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
-    SessionDelegatorBaseImpl delegate = new SessionDelegatorBaseImpl(mock(SessionImplementor.class));
-
-    // Act
-    typedQueryBuilder.toCountQuery(
-        new SessionDelegatorBaseImpl(delegate, new SessionDelegatorBaseImpl(mock(SessionImplementor.class))));
-  }
-
-  /**
-   * Test {@link TypedQueryBuilder#fillParameterMap(TypedQuery)}.
-   * <p>
-   * Method under test: {@link TypedQueryBuilder#fillParameterMap(TypedQuery)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFillParameterMap() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.IllegalArgumentException: Unable to create a SessionDelegatorBaseImpl from different Session/SessionImplementor references
-    //       at org.hibernate.engine.spi.SessionDelegatorBaseImpl.<init>(SessionDelegatorBaseImpl.java:100)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    Class<Object> rootClass = Object.class;
-    TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
-    SessionDelegatorBaseImpl delegate = new SessionDelegatorBaseImpl(mock(SessionImplementor.class));
-
-    // Act
-    typedQueryBuilder.fillParameterMap(new ProcedureCallImpl<>(
-        new SessionDelegatorBaseImpl(delegate, new SessionDelegatorBaseImpl(mock(SessionImplementor.class))),
-        "Procedure Name"));
-  }
-
-  /**
-   * Test {@link TypedQueryBuilder#fillParameterMap(TypedQuery)}.
-   * <ul>
-   *   <li>When {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link TypedQueryBuilder#fillParameterMap(TypedQuery)}
-   */
-  @Test
-  public void testFillParameterMap_whenNull() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange
-    Class<Object> rootClass = Object.class;
-    TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
-
-    // Act
-    typedQueryBuilder.fillParameterMap(null);
   }
 }

@@ -1,17 +1,31 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.web.rulebuilder.dto;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.anyBoolean;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.mockito.Mockito;
+import org.junit.experimental.categories.Category;
 
 public class DataDTODiffblueTest {
   /**
@@ -28,6 +42,8 @@ public class DataDTODiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean DataDTO.equals(Object)", "int DataDTO.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     DataDTO dataDTO = new DataDTO();
@@ -70,6 +86,8 @@ public class DataDTODiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean DataDTO.equals(Object)", "int DataDTO.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     DataDTO dataDTO = new DataDTO();
@@ -98,6 +116,8 @@ public class DataDTODiffblueTest {
    * Method under test: {@link DataDTO#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean DataDTO.equals(Object)", "int DataDTO.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     ExpressionDTO expressionDTO = new ExpressionDTO();
@@ -138,58 +158,6 @@ public class DataDTODiffblueTest {
   /**
    * Test {@link DataDTO#equals(Object)}.
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then throw exception.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link DataDTO#equals(Object)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testEquals_whenOtherIsDifferent_thenThrowException() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.broadleafcommerce.openadmin.web.rulebuilder.dto.DataDTO.equals(DataDTO.java:114)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    DataDTO dataDTO = new DataDTO();
-    dataDTO.setCondition("Condition");
-    dataDTO.setContainedPk(1L);
-    dataDTO.setCreatedFromSubGroup(true);
-    dataDTO.setPk(1L);
-    dataDTO.setPreviousContainedPk(1L);
-    dataDTO.setPreviousPk(1L);
-    dataDTO.setQuantity(1);
-    dataDTO.setRules(new ArrayList<>());
-    ExpressionDTO expressionDTO = mock(ExpressionDTO.class);
-    doNothing().when(expressionDTO).setCondition(Mockito.<String>any());
-    doNothing().when(expressionDTO).setContainedPk(Mockito.<Long>any());
-    doNothing().when(expressionDTO).setCreatedFromSubGroup(anyBoolean());
-    doNothing().when(expressionDTO).setPk(Mockito.<Long>any());
-    doNothing().when(expressionDTO).setPreviousContainedPk(Mockito.<Long>any());
-    doNothing().when(expressionDTO).setPreviousPk(Mockito.<Long>any());
-    doNothing().when(expressionDTO).setQuantity(Mockito.<Integer>any());
-    doNothing().when(expressionDTO).setRules(Mockito.<ArrayList<DataDTO>>any());
-    expressionDTO.setCondition("Condition");
-    expressionDTO.setContainedPk(1L);
-    expressionDTO.setCreatedFromSubGroup(true);
-    expressionDTO.setPk(1L);
-    expressionDTO.setPreviousContainedPk(1L);
-    expressionDTO.setPreviousPk(1L);
-    expressionDTO.setQuantity(1);
-    expressionDTO.setRules(new ArrayList<>());
-
-    // Act and Assert
-    assertThrows(NullPointerException.class, () -> dataDTO.equals(expressionDTO));
-  }
-
-  /**
-   * Test {@link DataDTO#equals(Object)}.
-   * <ul>
    *   <li>When other is {@code null}.</li>
    *   <li>Then return not equal.</li>
    * </ul>
@@ -197,6 +165,8 @@ public class DataDTODiffblueTest {
    * Method under test: {@link DataDTO#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean DataDTO.equals(Object)", "int DataDTO.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     DataDTO dataDTO = new DataDTO();
@@ -223,6 +193,8 @@ public class DataDTODiffblueTest {
    * Method under test: {@link DataDTO#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean DataDTO.equals(Object)", "int DataDTO.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     DataDTO dataDTO = new DataDTO();
@@ -264,6 +236,14 @@ public class DataDTODiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DataDTO.<init>()", "String DataDTO.getCondition()", "Long DataDTO.getContainedPk()",
+      "Long DataDTO.getPk()", "Long DataDTO.getPreviousContainedPk()", "Long DataDTO.getPreviousPk()",
+      "Integer DataDTO.getQuantity()", "ArrayList DataDTO.getRules()", "boolean DataDTO.isCreatedFromSubGroup()",
+      "void DataDTO.setCondition(String)", "void DataDTO.setContainedPk(Long)",
+      "void DataDTO.setCreatedFromSubGroup(boolean)", "void DataDTO.setPk(Long)",
+      "void DataDTO.setPreviousContainedPk(Long)", "void DataDTO.setPreviousPk(Long)",
+      "void DataDTO.setQuantity(Integer)", "void DataDTO.setRules(ArrayList)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     DataDTO actualDataDTO = new DataDTO();
@@ -285,7 +265,7 @@ public class DataDTODiffblueTest {
     ArrayList<DataDTO> actualRules = actualDataDTO.getRules();
     boolean actualIsCreatedFromSubGroupResult = actualDataDTO.isCreatedFromSubGroup();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Condition", actualCondition);
     assertEquals(1, actualQuantity.intValue());
     assertEquals(1L, actualContainedPk.longValue());

@@ -25,6 +25,8 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Paths;
@@ -37,29 +39,33 @@ import org.broadleafcommerce.common.web.filter.SessionlessHttpServletRequestWrap
 import org.broadleafcommerce.common.web.util.FileSystemResponseWrapper;
 import org.broadleafcommerce.common.web.util.StatusExposingServletResponse;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
 
 @ContextConfiguration(classes = {LocalRedirectStrategy.class})
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class LocalRedirectStrategyDiffblueTest {
   @Autowired
   private LocalRedirectStrategy localRedirectStrategy;
 
   /**
-   * Test
-   * {@link LocalRedirectStrategy#sendRedirect(HttpServletRequest, HttpServletResponse, String)}.
+   * Test {@link LocalRedirectStrategy#sendRedirect(HttpServletRequest, HttpServletResponse, String)}.
    * <p>
-   * Method under test:
-   * {@link LocalRedirectStrategy#sendRedirect(HttpServletRequest, HttpServletResponse, String)}
+   * Method under test: {@link LocalRedirectStrategy#sendRedirect(HttpServletRequest, HttpServletResponse, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void LocalRedirectStrategy.sendRedirect(HttpServletRequest, HttpServletResponse, String)"})
   public void testSendRedirect() throws IOException {
     // Arrange
     SessionlessHttpServletRequestWrapper request = new SessionlessHttpServletRequestWrapper(
@@ -89,13 +95,13 @@ public class LocalRedirectStrategyDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link LocalRedirectStrategy#sendRedirect(HttpServletRequest, HttpServletResponse, String)}.
+   * Test {@link LocalRedirectStrategy#sendRedirect(HttpServletRequest, HttpServletResponse, String)}.
    * <p>
-   * Method under test:
-   * {@link LocalRedirectStrategy#sendRedirect(HttpServletRequest, HttpServletResponse, String)}
+   * Method under test: {@link LocalRedirectStrategy#sendRedirect(HttpServletRequest, HttpServletResponse, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void LocalRedirectStrategy.sendRedirect(HttpServletRequest, HttpServletResponse, String)"})
   public void testSendRedirect2() throws IOException {
     // Arrange
     DefaultMultipartHttpServletRequest request = mock(DefaultMultipartHttpServletRequest.class);
@@ -127,13 +133,13 @@ public class LocalRedirectStrategyDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link LocalRedirectStrategy#sendRedirect(HttpServletRequest, HttpServletResponse, String)}.
+   * Test {@link LocalRedirectStrategy#sendRedirect(HttpServletRequest, HttpServletResponse, String)}.
    * <p>
-   * Method under test:
-   * {@link LocalRedirectStrategy#sendRedirect(HttpServletRequest, HttpServletResponse, String)}
+   * Method under test: {@link LocalRedirectStrategy#sendRedirect(HttpServletRequest, HttpServletResponse, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void LocalRedirectStrategy.sendRedirect(HttpServletRequest, HttpServletResponse, String)"})
   public void testSendRedirect3() throws IOException {
     // Arrange
     DefaultMultipartHttpServletRequest request = mock(DefaultMultipartHttpServletRequest.class);
@@ -167,17 +173,17 @@ public class LocalRedirectStrategyDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link LocalRedirectStrategy#sendRedirect(HttpServletRequest, HttpServletResponse, String)}.
+   * Test {@link LocalRedirectStrategy#sendRedirect(HttpServletRequest, HttpServletResponse, String)}.
    * <ul>
    *   <li>Given {@code 8080}.</li>
    *   <li>Then throw {@link MalformedURLException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link LocalRedirectStrategy#sendRedirect(HttpServletRequest, HttpServletResponse, String)}
+   * Method under test: {@link LocalRedirectStrategy#sendRedirect(HttpServletRequest, HttpServletResponse, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void LocalRedirectStrategy.sendRedirect(HttpServletRequest, HttpServletResponse, String)"})
   public void testSendRedirect_given8080_thenThrowMalformedURLException() throws IOException {
     // Arrange
     DefaultMultipartHttpServletRequest request = mock(DefaultMultipartHttpServletRequest.class);
@@ -204,13 +210,33 @@ public class LocalRedirectStrategyDiffblueTest {
   /**
    * Test {@link LocalRedirectStrategy#calculateRedirectUrl(String, String)}.
    * <ul>
+   *   <li>Then return {@code http://}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LocalRedirectStrategy#calculateRedirectUrl(String, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String LocalRedirectStrategy.calculateRedirectUrl(String, String)"})
+  public void testCalculateRedirectUrl_thenReturnHttp() {
+    // Arrange
+    localRedirectStrategy.setContextRelative(false);
+
+    // Act and Assert
+    assertEquals("http://", localRedirectStrategy.calculateRedirectUrl("https://example.org/example", "http://"));
+  }
+
+  /**
+   * Test {@link LocalRedirectStrategy#calculateRedirectUrl(String, String)}.
+   * <ul>
    *   <li>Then return {@code https://example.org/example}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link LocalRedirectStrategy#calculateRedirectUrl(String, String)}
+   * Method under test: {@link LocalRedirectStrategy#calculateRedirectUrl(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String LocalRedirectStrategy.calculateRedirectUrl(String, String)"})
   public void testCalculateRedirectUrl_thenReturnHttpsExampleOrgExample() {
     // Arrange, Act and Assert
     assertEquals("https://example.org/example",
@@ -220,17 +246,81 @@ public class LocalRedirectStrategyDiffblueTest {
   /**
    * Test {@link LocalRedirectStrategy#calculateRedirectUrl(String, String)}.
    * <ul>
-   *   <li>When {@code http://}.</li>
-   *   <li>Then return {@code http://}.</li>
+   *   <li>When {@code ://}.</li>
+   *   <li>Then return {@code ://}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link LocalRedirectStrategy#calculateRedirectUrl(String, String)}
+   * Method under test: {@link LocalRedirectStrategy#calculateRedirectUrl(String, String)}
    */
   @Test
-  public void testCalculateRedirectUrl_whenHttp_thenReturnHttp() {
-    // Arrange, Act and Assert
-    assertEquals("http://", localRedirectStrategy.calculateRedirectUrl("https://example.org/example", "http://"));
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String LocalRedirectStrategy.calculateRedirectUrl(String, String)"})
+  public void testCalculateRedirectUrl_whenColonSlashSlash_thenReturnColonSlashSlash() {
+    // Arrange
+    localRedirectStrategy.setContextRelative(true);
+
+    // Act and Assert
+    assertEquals("://", localRedirectStrategy.calculateRedirectUrl("https://example.org/example", "://"));
+  }
+
+  /**
+   * Test {@link LocalRedirectStrategy#calculateRedirectUrl(String, String)}.
+   * <ul>
+   *   <li>When {@code Context Path}.</li>
+   *   <li>Then return {@code example}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LocalRedirectStrategy#calculateRedirectUrl(String, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String LocalRedirectStrategy.calculateRedirectUrl(String, String)"})
+  public void testCalculateRedirectUrl_whenContextPath_thenReturnExample() {
+    // Arrange
+    localRedirectStrategy.setContextRelative(true);
+
+    // Act and Assert
+    assertEquals("example", localRedirectStrategy.calculateRedirectUrl("Context Path", "https://example.org/example"));
+  }
+
+  /**
+   * Test {@link LocalRedirectStrategy#calculateRedirectUrl(String, String)}.
+   * <ul>
+   *   <li>When {@code /}.</li>
+   *   <li>Then return empty string.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LocalRedirectStrategy#calculateRedirectUrl(String, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String LocalRedirectStrategy.calculateRedirectUrl(String, String)"})
+  public void testCalculateRedirectUrl_whenSlash_thenReturnEmptyString() {
+    // Arrange
+    localRedirectStrategy.setContextRelative(true);
+
+    // Act and Assert
+    assertEquals("", localRedirectStrategy.calculateRedirectUrl("/", "http://"));
+  }
+
+  /**
+   * Test {@link LocalRedirectStrategy#calculateRedirectUrl(String, String)}.
+   * <ul>
+   *   <li>When {@code /}.</li>
+   *   <li>Then return {@code example}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LocalRedirectStrategy#calculateRedirectUrl(String, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String LocalRedirectStrategy.calculateRedirectUrl(String, String)"})
+  public void testCalculateRedirectUrl_whenSlash_thenReturnExample() {
+    // Arrange
+    localRedirectStrategy.setContextRelative(true);
+
+    // Act and Assert
+    assertEquals("example", localRedirectStrategy.calculateRedirectUrl("/", "https://example.org/example"));
   }
 
   /**
@@ -240,38 +330,14 @@ public class LocalRedirectStrategyDiffblueTest {
    *   <li>Then return {@code https://example.org/exampleUrl}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link LocalRedirectStrategy#calculateRedirectUrl(String, String)}
+   * Method under test: {@link LocalRedirectStrategy#calculateRedirectUrl(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String LocalRedirectStrategy.calculateRedirectUrl(String, String)"})
   public void testCalculateRedirectUrl_whenUrl_thenReturnHttpsExampleOrgExampleUrl() {
     // Arrange, Act and Assert
     assertEquals("https://example.org/exampleUrl",
         localRedirectStrategy.calculateRedirectUrl("https://example.org/example", "Url"));
-  }
-
-  /**
-   * Test getters and setters.
-   * <p>
-   * Methods under test:
-   * <ul>
-   *   <li>default or parameterless constructor of {@link LocalRedirectStrategy}
-   *   <li>{@link LocalRedirectStrategy#setContextRelative(boolean)}
-   *   <li>{@link LocalRedirectStrategy#setEnforcePortMatch(boolean)}
-   * </ul>
-   */
-  @Test
-  public void testGettersAndSetters() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing observers.
-    //   Diffblue Cover was unable to create an assertion.
-    //   Add getters for the following fields or make them package-private:
-    //     LocalRedirectStrategy.contextRelative
-    //     LocalRedirectStrategy.enforcePortMatch
-
-    // Arrange and Act
-    LocalRedirectStrategy actualLocalRedirectStrategy = new LocalRedirectStrategy();
-    actualLocalRedirectStrategy.setContextRelative(true);
-    actualLocalRedirectStrategy.setEnforcePortMatch(true);
   }
 }

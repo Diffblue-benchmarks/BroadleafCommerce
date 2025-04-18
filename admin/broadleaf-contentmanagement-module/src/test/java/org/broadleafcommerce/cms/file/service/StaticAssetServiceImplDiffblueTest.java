@@ -1,163 +1,202 @@
+/*-
+ * #%L
+ * BroadleafCommerce CMS Module
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.cms.file.service;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.anyBoolean;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.function.BiFunction;
-import org.broadleafcommerce.cms.field.type.StorageType;
+import org.broadleafcommerce.cms.file.dao.StaticAssetDao;
 import org.broadleafcommerce.cms.file.domain.ImageStaticAssetImpl;
 import org.broadleafcommerce.cms.file.domain.StaticAsset;
 import org.broadleafcommerce.cms.file.domain.StaticAssetImpl;
-import org.junit.Ignore;
+import org.broadleafcommerce.common.file.service.StaticAssetPathService;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.web.multipart.MultipartFile;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml",
-    "/applicationContext-servlet-cms-contentCreator.xml", "/bl-cms-applicationContext-entity.xml",
-    "/bl-cms-contentClient-applicationContext.xml", "/bl-cms-contentCreator-applicationContext.xml",
-    "/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-cms-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-cms-applicationContext-servlet.xml",
-    "/blc-config/site/framework/bl-cms-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class StaticAssetServiceImplDiffblueTest {
-  @Autowired
+  @Mock
+  private StaticAssetDao staticAssetDao;
+
+  @Mock
+  private StaticAssetPathService staticAssetPathService;
+
+  @InjectMocks
   private StaticAssetServiceImpl staticAssetServiceImpl;
+
+  @Mock
+  private StaticAssetStorageService staticAssetStorageService;
 
   /**
    * Test {@link StaticAssetServiceImpl#findStaticAssetById(Long)}.
+   * <ul>
+   *   <li>Then return {@link ImageStaticAssetImpl} (default constructor).</li>
+   * </ul>
    * <p>
    * Method under test: {@link StaticAssetServiceImpl#findStaticAssetById(Long)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindStaticAssetById() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.file.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6511 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.file.service.StaticAssetServiceImpl staticAssetServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"StaticAsset StaticAssetServiceImpl.findStaticAssetById(Long)"})
+  public void testFindStaticAssetById_thenReturnImageStaticAssetImpl() {
+    // Arrange
+    ImageStaticAssetImpl imageStaticAssetImpl = new ImageStaticAssetImpl();
+    when(staticAssetDao.readStaticAssetById(Mockito.<Long>any())).thenReturn(imageStaticAssetImpl);
 
-    // Arrange and Act
-    (new StaticAssetServiceImpl()).findStaticAssetById(1L);
+    // Act
+    StaticAsset actualFindStaticAssetByIdResult = staticAssetServiceImpl.findStaticAssetById(1L);
+
+    // Assert
+    verify(staticAssetDao).readStaticAssetById(eq(1L));
+    assertSame(imageStaticAssetImpl, actualFindStaticAssetByIdResult);
+  }
+
+  /**
+   * Test {@link StaticAssetServiceImpl#findStaticAssetById(Long)}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StaticAssetServiceImpl#findStaticAssetById(Long)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"StaticAsset StaticAssetServiceImpl.findStaticAssetById(Long)"})
+  public void testFindStaticAssetById_thenThrowRuntimeException() {
+    // Arrange
+    when(staticAssetDao.readStaticAssetById(Mockito.<Long>any())).thenThrow(new RuntimeException("foo"));
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> staticAssetServiceImpl.findStaticAssetById(1L));
+    verify(staticAssetDao).readStaticAssetById(eq(1L));
   }
 
   /**
    * Test {@link StaticAssetServiceImpl#readAllStaticAssets()}.
+   * <ul>
+   *   <li>Then return Empty.</li>
+   * </ul>
    * <p>
    * Method under test: {@link StaticAssetServiceImpl#readAllStaticAssets()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testReadAllStaticAssets() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.file.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass7324 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.file.service.StaticAssetServiceImpl staticAssetServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List StaticAssetServiceImpl.readAllStaticAssets()"})
+  public void testReadAllStaticAssets_thenReturnEmpty() {
+    // Arrange
+    when(staticAssetDao.readAllStaticAssets()).thenReturn(new ArrayList<>());
 
-    // Arrange and Act
-    (new StaticAssetServiceImpl()).readAllStaticAssets();
+    // Act
+    List<StaticAsset> actualReadAllStaticAssetsResult = staticAssetServiceImpl.readAllStaticAssets();
+
+    // Assert
+    verify(staticAssetDao).readAllStaticAssets();
+    assertTrue(actualReadAllStaticAssetsResult.isEmpty());
+  }
+
+  /**
+   * Test {@link StaticAssetServiceImpl#readAllStaticAssets()}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StaticAssetServiceImpl#readAllStaticAssets()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List StaticAssetServiceImpl.readAllStaticAssets()"})
+  public void testReadAllStaticAssets_thenThrowRuntimeException() {
+    // Arrange
+    when(staticAssetDao.readAllStaticAssets()).thenThrow(new RuntimeException("foo"));
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> staticAssetServiceImpl.readAllStaticAssets());
+    verify(staticAssetDao).readAllStaticAssets();
   }
 
   /**
    * Test {@link StaticAssetServiceImpl#findTotalStaticAssetCount()}.
+   * <ul>
+   *   <li>Then return longValue is three.</li>
+   * </ul>
    * <p>
    * Method under test: {@link StaticAssetServiceImpl#findTotalStaticAssetCount()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindTotalStaticAssetCount() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.file.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6530 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.file.service.StaticAssetServiceImpl staticAssetServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long StaticAssetServiceImpl.findTotalStaticAssetCount()"})
+  public void testFindTotalStaticAssetCount_thenReturnLongValueIsThree() {
+    // Arrange
+    when(staticAssetDao.readTotalStaticAssetCount()).thenReturn(3L);
 
-    // Arrange and Act
-    (new StaticAssetServiceImpl()).findTotalStaticAssetCount();
+    // Act
+    Long actualFindTotalStaticAssetCountResult = staticAssetServiceImpl.findTotalStaticAssetCount();
+
+    // Assert
+    verify(staticAssetDao).readTotalStaticAssetCount();
+    assertEquals(3L, actualFindTotalStaticAssetCountResult.longValue());
   }
 
   /**
-   * Test {@link StaticAssetServiceImpl#getFileExtension(String)} with
-   * {@code fileName}.
+   * Test {@link StaticAssetServiceImpl#findTotalStaticAssetCount()}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
    * <p>
-   * Method under test: {@link StaticAssetServiceImpl#getFileExtension(String)}
+   * Method under test: {@link StaticAssetServiceImpl#findTotalStaticAssetCount()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetFileExtensionWithFileName() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.file.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6568 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.file.service.StaticAssetServiceImpl staticAssetServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long StaticAssetServiceImpl.findTotalStaticAssetCount()"})
+  public void testFindTotalStaticAssetCount_thenThrowRuntimeException() {
+    // Arrange
+    when(staticAssetDao.readTotalStaticAssetCount()).thenThrow(new RuntimeException("foo"));
 
-    // Arrange and Act
-    (new StaticAssetServiceImpl()).getFileExtension("foo.txt");
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> staticAssetServiceImpl.findTotalStaticAssetCount());
+    verify(staticAssetDao).readTotalStaticAssetCount();
   }
 
   /**
-   * Test {@link StaticAssetServiceImpl#getFileExtension(String)} with
-   * {@code fileName}.
+   * Test {@link StaticAssetServiceImpl#getFileExtension(String)} with {@code fileName}.
    * <ul>
    *   <li>When {@code .}.</li>
    *   <li>Then return {@code null}.</li>
@@ -166,34 +205,15 @@ public class StaticAssetServiceImplDiffblueTest {
    * Method under test: {@link StaticAssetServiceImpl#getFileExtension(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String StaticAssetServiceImpl.getFileExtension(String)"})
   public void testGetFileExtensionWithFileName_whenDot_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertNull((new StaticAssetServiceImpl()).getFileExtension("."));
+    assertNull(staticAssetServiceImpl.getFileExtension("."));
   }
 
   /**
-   * Test {@link StaticAssetServiceImpl#getFileExtension(String)} with
-   * {@code fileName}.
-   * <ul>
-   *   <li>When {@code File Name}.</li>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link StaticAssetServiceImpl#getFileExtension(String)}
-   */
-  @Test
-  public void testGetFileExtensionWithFileName_whenFileName_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertNull((new StaticAssetServiceImpl()).getFileExtension("File Name"));
-  }
-
-  /**
-   * Test {@link StaticAssetServiceImpl#getFileExtension(String)} with
-   * {@code fileName}.
+   * Test {@link StaticAssetServiceImpl#getFileExtension(String)} with {@code fileName}.
    * <ul>
    *   <li>When {@code foo.txt}.</li>
    *   <li>Then return {@code txt}.</li>
@@ -202,131 +222,11 @@ public class StaticAssetServiceImplDiffblueTest {
    * Method under test: {@link StaticAssetServiceImpl#getFileExtension(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String StaticAssetServiceImpl.getFileExtension(String)"})
   public void testGetFileExtensionWithFileName_whenFooTxt_thenReturnTxt() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("txt", (new StaticAssetServiceImpl()).getFileExtension("foo.txt"));
-  }
-
-  /**
-   * Test {@link StaticAssetServiceImpl#validateFileExtension(MultipartFile)}.
-   * <p>
-   * Method under test:
-   * {@link StaticAssetServiceImpl#validateFileExtension(MultipartFile)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testValidateFileExtension() throws IOException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.file.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass7355 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.file.service.StaticAssetServiceImpl staticAssetServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    StaticAssetServiceImpl staticAssetServiceImpl2 = new StaticAssetServiceImpl();
-
-    // Act
-    staticAssetServiceImpl2
-        .validateFileExtension(new MockMultipartFile("Name", new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"))));
-  }
-
-  /**
-   * Test {@link StaticAssetServiceImpl#generateFileName(int)}.
-   * <p>
-   * Method under test: {@link StaticAssetServiceImpl#generateFileName(int)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGenerateFileName() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.file.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6535 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.file.service.StaticAssetServiceImpl staticAssetServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new StaticAssetServiceImpl()).generateFileName(3);
-  }
-
-  /**
-   * Test {@link StaticAssetServiceImpl#buildAssetURL(Map, String)}.
-   * <p>
-   * Method under test: {@link StaticAssetServiceImpl#buildAssetURL(Map, String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testBuildAssetURL() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.file.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5832 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.file.service.StaticAssetServiceImpl staticAssetServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    StaticAssetServiceImpl staticAssetServiceImpl2 = new StaticAssetServiceImpl();
-
-    // Act
-    staticAssetServiceImpl2.buildAssetURL(new HashMap<>(), "https://example.org/example");
-  }
-
-  /**
-   * Test {@link StaticAssetServiceImpl#buildAssetURL(Map, String)}.
-   * <ul>
-   *   <li>Given {@link BiFunction}.</li>
-   *   <li>When {@link HashMap#HashMap()} computeIfPresent {@code /} and
-   * {@link BiFunction}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link StaticAssetServiceImpl#buildAssetURL(Map, String)}
-   */
-  @Test
-  public void testBuildAssetURL_givenBiFunction_whenHashMapComputeIfPresentSlashAndBiFunction() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    StaticAssetServiceImpl staticAssetServiceImpl = new StaticAssetServiceImpl();
-
-    HashMap<String, String> assetProperties = new HashMap<>();
-    assetProperties.computeIfPresent("/", mock(BiFunction.class));
-
-    // Act and Assert
-    assertEquals("/https://example.org/example",
-        staticAssetServiceImpl.buildAssetURL(assetProperties, "https://example.org/example"));
+    assertEquals("txt", staticAssetServiceImpl.getFileExtension("foo.txt"));
   }
 
   /**
@@ -340,12 +240,10 @@ public class StaticAssetServiceImplDiffblueTest {
    * Method under test: {@link StaticAssetServiceImpl#buildAssetURL(Map, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String StaticAssetServiceImpl.buildAssetURL(Map, String)"})
   public void testBuildAssetURL_givenSlash_whenHashMapFileNameIsSlash_thenReturnSlashSlash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    StaticAssetServiceImpl staticAssetServiceImpl = new StaticAssetServiceImpl();
-
     HashMap<String, String> assetProperties = new HashMap<>();
     assetProperties.put("entityType", null);
     assetProperties.put("entityId", null);
@@ -364,12 +262,10 @@ public class StaticAssetServiceImplDiffblueTest {
    * Method under test: {@link StaticAssetServiceImpl#buildAssetURL(Map, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String StaticAssetServiceImpl.buildAssetURL(Map, String)"})
   public void testBuildAssetURL_thenReturnExampleOrgExample() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    StaticAssetServiceImpl staticAssetServiceImpl = new StaticAssetServiceImpl();
-
     HashMap<String, String> assetProperties = new HashMap<>();
     assetProperties.put("entityType", null);
     assetProperties.put("entityId", null);
@@ -383,19 +279,16 @@ public class StaticAssetServiceImplDiffblueTest {
   /**
    * Test {@link StaticAssetServiceImpl#buildAssetURL(Map, String)}.
    * <ul>
-   *   <li>When {@link HashMap#HashMap()} {@code entityId} is
-   * {@code https://example.org/example}.</li>
+   *   <li>When {@link HashMap#HashMap()} {@code entityId} is {@code https://example.org/example}.</li>
    * </ul>
    * <p>
    * Method under test: {@link StaticAssetServiceImpl#buildAssetURL(Map, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String StaticAssetServiceImpl.buildAssetURL(Map, String)"})
   public void testBuildAssetURL_whenHashMapEntityIdIsHttpsExampleOrgExample() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    StaticAssetServiceImpl staticAssetServiceImpl = new StaticAssetServiceImpl();
-
     HashMap<String, String> assetProperties = new HashMap<>();
     assetProperties.put("entityType", null);
     assetProperties.put("entityId", "https://example.org/example");
@@ -409,19 +302,16 @@ public class StaticAssetServiceImplDiffblueTest {
   /**
    * Test {@link StaticAssetServiceImpl#buildAssetURL(Map, String)}.
    * <ul>
-   *   <li>When {@link HashMap#HashMap()} {@code entityType} is
-   * {@code https://example.org/example}.</li>
+   *   <li>When {@link HashMap#HashMap()} {@code entityType} is {@code https://example.org/example}.</li>
    * </ul>
    * <p>
    * Method under test: {@link StaticAssetServiceImpl#buildAssetURL(Map, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String StaticAssetServiceImpl.buildAssetURL(Map, String)"})
   public void testBuildAssetURL_whenHashMapEntityTypeIsHttpsExampleOrgExample() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    StaticAssetServiceImpl staticAssetServiceImpl = new StaticAssetServiceImpl();
-
     HashMap<String, String> assetProperties = new HashMap<>();
     assetProperties.put("entityType", "https://example.org/example");
     assetProperties.put("entityId", null);
@@ -442,12 +332,10 @@ public class StaticAssetServiceImplDiffblueTest {
    * Method under test: {@link StaticAssetServiceImpl#buildAssetURL(Map, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String StaticAssetServiceImpl.buildAssetURL(Map, String)"})
   public void testBuildAssetURL_whenHashMapFileNameIsNull_thenReturnHttpsExampleOrgExample() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    StaticAssetServiceImpl staticAssetServiceImpl = new StaticAssetServiceImpl();
-
     HashMap<String, String> assetProperties = new HashMap<>();
     assetProperties.put("entityType", null);
     assetProperties.put("entityId", "null");
@@ -468,12 +356,10 @@ public class StaticAssetServiceImplDiffblueTest {
    * Method under test: {@link StaticAssetServiceImpl#buildAssetURL(Map, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String StaticAssetServiceImpl.buildAssetURL(Map, String)"})
   public void testBuildAssetURL_whenHashMapFileNameIsNull_thenReturnHttpsExampleOrgExample2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    StaticAssetServiceImpl staticAssetServiceImpl = new StaticAssetServiceImpl();
-
     HashMap<String, String> assetProperties = new HashMap<>();
     assetProperties.put("entityType", "null");
     assetProperties.put("entityId", null);
@@ -494,201 +380,24 @@ public class StaticAssetServiceImplDiffblueTest {
    * Method under test: {@link StaticAssetServiceImpl#buildAssetURL(Map, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String StaticAssetServiceImpl.buildAssetURL(Map, String)"})
   public void testBuildAssetURL_whenHashMap_thenReturnHttpsExampleOrgExample() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    StaticAssetServiceImpl staticAssetServiceImpl = new StaticAssetServiceImpl();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertEquals("/https://example.org/example",
         staticAssetServiceImpl.buildAssetURL(new HashMap<>(), "https://example.org/example"));
   }
 
   /**
-   * Test
-   * {@link StaticAssetServiceImpl#createStaticAssetFromFile(MultipartFile, Map)}.
+   * Test {@link StaticAssetServiceImpl#createNonImageAsset(InputStream, String, Map)}.
    * <p>
-   * Method under test:
-   * {@link StaticAssetServiceImpl#createStaticAssetFromFile(MultipartFile, Map)}
+   * Method under test: {@link StaticAssetServiceImpl#createNonImageAsset(InputStream, String, Map)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateStaticAssetFromFile() throws IOException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.file.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6076 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.file.service.StaticAssetServiceImpl staticAssetServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    StaticAssetServiceImpl staticAssetServiceImpl2 = new StaticAssetServiceImpl();
-    MockMultipartFile file = new MockMultipartFile("Name", new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")));
-
-    // Act
-    staticAssetServiceImpl2.createStaticAssetFromFile(file, new HashMap<>());
-  }
-
-  /**
-   * Test {@link StaticAssetServiceImpl#validateFileName(String)}.
-   * <p>
-   * Method under test: {@link StaticAssetServiceImpl#validateFileName(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testValidateFileName() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.file.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass7440 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.file.service.StaticAssetServiceImpl staticAssetServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new StaticAssetServiceImpl()).validateFileName("foo.txt");
-  }
-
-  /**
-   * Test {@link StaticAssetServiceImpl#validateFileName(String)}.
-   * <ul>
-   *   <li>When empty string.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link StaticAssetServiceImpl#validateFileName(String)}
-   */
-  @Test
-  public void testValidateFileName_whenEmptyString() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertFalse((new StaticAssetServiceImpl()).validateFileName(""));
-  }
-
-  /**
-   * Test {@link StaticAssetServiceImpl#validateFileName(String)}.
-   * <ul>
-   *   <li>When {@code foo.txt}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link StaticAssetServiceImpl#validateFileName(String)}
-   */
-  @Test
-  public void testValidateFileName_whenFooTxt() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertFalse((new StaticAssetServiceImpl()).validateFileName("foo.txt"));
-  }
-
-  /**
-   * Test
-   * {@link StaticAssetServiceImpl#createStaticAsset(InputStream, String, long, Map)}.
-   * <p>
-   * Method under test:
-   * {@link StaticAssetServiceImpl#createStaticAsset(InputStream, String, long, Map)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateStaticAsset() throws UnsupportedEncodingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.file.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5978 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.file.service.StaticAssetServiceImpl staticAssetServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    StaticAssetServiceImpl staticAssetServiceImpl2 = new StaticAssetServiceImpl();
-    ByteArrayInputStream inputStream = new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"));
-
-    // Act
-    staticAssetServiceImpl2.createStaticAsset(inputStream, "foo.txt", 3L, new HashMap<>());
-  }
-
-  /**
-   * Test
-   * {@link StaticAssetServiceImpl#createNonImageAsset(InputStream, String, Map)}.
-   * <p>
-   * Method under test:
-   * {@link StaticAssetServiceImpl#createNonImageAsset(InputStream, String, Map)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"StaticAsset StaticAssetServiceImpl.createNonImageAsset(InputStream, String, Map)"})
   public void testCreateNonImageAsset() throws UnsupportedEncodingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.file.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5885 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.file.service.StaticAssetServiceImpl staticAssetServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    StaticAssetServiceImpl staticAssetServiceImpl2 = new StaticAssetServiceImpl();
-    ByteArrayInputStream inputStream = new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"));
-
-    // Act
-    staticAssetServiceImpl2.createNonImageAsset(inputStream, "foo.txt", new HashMap<>());
-  }
-
-  /**
-   * Test
-   * {@link StaticAssetServiceImpl#createNonImageAsset(InputStream, String, Map)}.
-   * <ul>
-   *   <li>When {@link ByteArrayInputStream#ByteArrayInputStream(byte[])} with
-   * {@code AXAXAXAX} Bytes is {@code UTF-8}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link StaticAssetServiceImpl#createNonImageAsset(InputStream, String, Map)}
-   */
-  @Test
-  public void testCreateNonImageAsset_whenByteArrayInputStreamWithAxaxaxaxBytesIsUtf8()
-      throws UnsupportedEncodingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    StaticAssetServiceImpl staticAssetServiceImpl = new StaticAssetServiceImpl();
     ByteArrayInputStream inputStream = new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"));
 
     // Act
@@ -697,9 +406,6 @@ public class StaticAssetServiceImplDiffblueTest {
 
     // Assert
     assertTrue(actualCreateNonImageAssetResult instanceof StaticAssetImpl);
-    StorageType storageType = actualCreateNonImageAssetResult.getStorageType();
-    assertEquals("DATABASE", storageType.getType());
-    assertEquals("Database", storageType.getFriendlyType());
     assertNull(actualCreateNonImageAssetResult.getFileSize());
     assertNull(actualCreateNonImageAssetResult.getId());
     assertNull(actualCreateNonImageAssetResult.getAltText());
@@ -710,75 +416,6 @@ public class StaticAssetServiceImplDiffblueTest {
     assertNull(actualCreateNonImageAssetResult.getTitle());
     assertNull(((StaticAssetImpl) actualCreateNonImageAssetResult).getMainEntityName());
     assertTrue(actualCreateNonImageAssetResult.getContentMessageValues().isEmpty());
-  }
-
-  /**
-   * Test
-   * {@link StaticAssetServiceImpl#createNonImageAsset(InputStream, String, Map)}.
-   * <ul>
-   *   <li>When {@link DataInputStream}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link StaticAssetServiceImpl#createNonImageAsset(InputStream, String, Map)}
-   */
-  @Test
-  public void testCreateNonImageAsset_whenDataInputStream() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    StaticAssetServiceImpl staticAssetServiceImpl = new StaticAssetServiceImpl();
-    DataInputStream inputStream = mock(DataInputStream.class);
-
-    // Act
-    StaticAsset actualCreateNonImageAssetResult = staticAssetServiceImpl.createNonImageAsset(inputStream, "foo.txt",
-        new HashMap<>());
-
-    // Assert
-    assertTrue(actualCreateNonImageAssetResult instanceof StaticAssetImpl);
-    StorageType storageType = actualCreateNonImageAssetResult.getStorageType();
-    assertEquals("DATABASE", storageType.getType());
-    assertEquals("Database", storageType.getFriendlyType());
-    assertNull(actualCreateNonImageAssetResult.getFileSize());
-    assertNull(actualCreateNonImageAssetResult.getId());
-    assertNull(actualCreateNonImageAssetResult.getAltText());
-    assertNull(actualCreateNonImageAssetResult.getFileExtension());
-    assertNull(actualCreateNonImageAssetResult.getFullUrl());
-    assertNull(actualCreateNonImageAssetResult.getMimeType());
-    assertNull(actualCreateNonImageAssetResult.getName());
-    assertNull(actualCreateNonImageAssetResult.getTitle());
-    assertNull(((StaticAssetImpl) actualCreateNonImageAssetResult).getMainEntityName());
-    assertTrue(actualCreateNonImageAssetResult.getContentMessageValues().isEmpty());
-  }
-
-  /**
-   * Test {@link StaticAssetServiceImpl#getCountUrl(String, int, boolean)}.
-   * <p>
-   * Method under test:
-   * {@link StaticAssetServiceImpl#getCountUrl(String, int, boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetCountUrl() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.file.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6545 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.file.service.StaticAssetServiceImpl staticAssetServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new StaticAssetServiceImpl()).getCountUrl("https://example.org/example", 3, true);
   }
 
   /**
@@ -788,16 +425,15 @@ public class StaticAssetServiceImplDiffblueTest {
    *   <li>Then return {@code https://example-3.org/example}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link StaticAssetServiceImpl#getCountUrl(String, int, boolean)}
+   * Method under test: {@link StaticAssetServiceImpl#getCountUrl(String, int, boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String StaticAssetServiceImpl.getCountUrl(String, int, boolean)"})
   public void testGetCountUrl_whenFalse_thenReturnHttpsExample3OrgExample() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertEquals("https://example-3.org/example",
-        (new StaticAssetServiceImpl()).getCountUrl("https://example.org/example", 3, false));
+        staticAssetServiceImpl.getCountUrl("https://example.org/example", 3, false));
   }
 
   /**
@@ -807,15 +443,14 @@ public class StaticAssetServiceImplDiffblueTest {
    *   <li>Then return {@code Full Url-3}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link StaticAssetServiceImpl#getCountUrl(String, int, boolean)}
+   * Method under test: {@link StaticAssetServiceImpl#getCountUrl(String, int, boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String StaticAssetServiceImpl.getCountUrl(String, int, boolean)"})
   public void testGetCountUrl_whenFullUrl_thenReturnFullUrl3() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("Full Url-3", (new StaticAssetServiceImpl()).getCountUrl("Full Url", 3, true));
+    assertEquals("Full Url-3", staticAssetServiceImpl.getCountUrl("Full Url", 3, true));
   }
 
   /**
@@ -825,97 +460,30 @@ public class StaticAssetServiceImplDiffblueTest {
    *   <li>Then return {@code https://example.org/example-3}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link StaticAssetServiceImpl#getCountUrl(String, int, boolean)}
+   * Method under test: {@link StaticAssetServiceImpl#getCountUrl(String, int, boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String StaticAssetServiceImpl.getCountUrl(String, int, boolean)"})
   public void testGetCountUrl_whenHttpsExampleOrgExample_thenReturnHttpsExampleOrgExample3() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertEquals("https://example.org/example-3",
-        (new StaticAssetServiceImpl()).getCountUrl("https://example.org/example", 3, true));
+        staticAssetServiceImpl.getCountUrl("https://example.org/example", 3, true));
   }
 
   /**
-   * Test
-   * {@link StaticAssetServiceImpl#getMimeType(InputStream, String, StaticAsset)}.
-   * <p>
-   * Method under test:
-   * {@link StaticAssetServiceImpl#getMimeType(InputStream, String, StaticAsset)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetMimeType() throws UnsupportedEncodingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.file.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6885 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.file.service.StaticAssetServiceImpl staticAssetServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    StaticAssetServiceImpl staticAssetServiceImpl2 = new StaticAssetServiceImpl();
-    ByteArrayInputStream inputStream = new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"));
-
-    // Act
-    staticAssetServiceImpl2.getMimeType(inputStream, "foo.txt", new ImageStaticAssetImpl());
-  }
-
-  /**
-   * Test
-   * {@link StaticAssetServiceImpl#getMimeType(InputStream, String, StaticAsset)}.
-   * <ul>
-   *   <li>When {@link DataInputStream}.</li>
-   *   <li>Then {@link ImageStaticAssetImpl} (default constructor) MimeType is
-   * {@code text/plain}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link StaticAssetServiceImpl#getMimeType(InputStream, String, StaticAsset)}
-   */
-  @Test
-  public void testGetMimeType_whenDataInputStream_thenImageStaticAssetImplMimeTypeIsTextPlain() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    StaticAssetServiceImpl staticAssetServiceImpl = new StaticAssetServiceImpl();
-    DataInputStream inputStream = mock(DataInputStream.class);
-    ImageStaticAssetImpl newAsset = new ImageStaticAssetImpl();
-
-    // Act
-    staticAssetServiceImpl.getMimeType(inputStream, "foo.txt", newAsset);
-
-    // Assert
-    assertEquals("text/plain", newAsset.getMimeType());
-  }
-
-  /**
-   * Test
-   * {@link StaticAssetServiceImpl#getMimeType(InputStream, String, StaticAsset)}.
+   * Test {@link StaticAssetServiceImpl#getMimeType(InputStream, String, StaticAsset)}.
    * <ul>
    *   <li>When {@code File Name}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link StaticAssetServiceImpl#getMimeType(InputStream, String, StaticAsset)}
+   * Method under test: {@link StaticAssetServiceImpl#getMimeType(InputStream, String, StaticAsset)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StaticAssetServiceImpl.getMimeType(InputStream, String, StaticAsset)"})
   public void testGetMimeType_whenFileName() throws UnsupportedEncodingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    StaticAssetServiceImpl staticAssetServiceImpl = new StaticAssetServiceImpl();
     ByteArrayInputStream inputStream = new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"));
     ImageStaticAssetImpl newAsset = new ImageStaticAssetImpl();
 
@@ -927,24 +495,20 @@ public class StaticAssetServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link StaticAssetServiceImpl#getMimeType(InputStream, String, StaticAsset)}.
+   * Test {@link StaticAssetServiceImpl#getMimeType(InputStream, String, StaticAsset)}.
    * <ul>
    *   <li>When {@code foo.txt}.</li>
-   *   <li>Then {@link ImageStaticAssetImpl} (default constructor) MimeType is
-   * {@code text/plain}.</li>
+   *   <li>Then {@link ImageStaticAssetImpl} (default constructor) MimeType is {@code text/plain}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link StaticAssetServiceImpl#getMimeType(InputStream, String, StaticAsset)}
+   * Method under test: {@link StaticAssetServiceImpl#getMimeType(InputStream, String, StaticAsset)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StaticAssetServiceImpl.getMimeType(InputStream, String, StaticAsset)"})
   public void testGetMimeType_whenFooTxt_thenImageStaticAssetImplMimeTypeIsTextPlain()
       throws UnsupportedEncodingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    StaticAssetServiceImpl staticAssetServiceImpl = new StaticAssetServiceImpl();
     ByteArrayInputStream inputStream = new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"));
     ImageStaticAssetImpl newAsset = new ImageStaticAssetImpl();
 
@@ -956,21 +520,18 @@ public class StaticAssetServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link StaticAssetServiceImpl#getMimeType(InputStream, String, StaticAsset)}.
+   * Test {@link StaticAssetServiceImpl#getMimeType(InputStream, String, StaticAsset)}.
    * <ul>
    *   <li>When {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link StaticAssetServiceImpl#getMimeType(InputStream, String, StaticAsset)}
+   * Method under test: {@link StaticAssetServiceImpl#getMimeType(InputStream, String, StaticAsset)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StaticAssetServiceImpl.getMimeType(InputStream, String, StaticAsset)"})
   public void testGetMimeType_whenNull() throws UnsupportedEncodingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    StaticAssetServiceImpl staticAssetServiceImpl = new StaticAssetServiceImpl();
     ByteArrayInputStream inputStream = new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"));
     ImageStaticAssetImpl newAsset = new ImageStaticAssetImpl();
 
@@ -982,21 +543,18 @@ public class StaticAssetServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link StaticAssetServiceImpl#getMimeType(InputStream, String, StaticAsset)}.
+   * Test {@link StaticAssetServiceImpl#getMimeType(InputStream, String, StaticAsset)}.
    * <ul>
    *   <li>When {@code /}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link StaticAssetServiceImpl#getMimeType(InputStream, String, StaticAsset)}
+   * Method under test: {@link StaticAssetServiceImpl#getMimeType(InputStream, String, StaticAsset)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StaticAssetServiceImpl.getMimeType(InputStream, String, StaticAsset)"})
   public void testGetMimeType_whenSlash() throws UnsupportedEncodingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    StaticAssetServiceImpl staticAssetServiceImpl = new StaticAssetServiceImpl();
     ByteArrayInputStream inputStream = new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"));
     ImageStaticAssetImpl newAsset = new ImageStaticAssetImpl();
 
@@ -1009,281 +567,551 @@ public class StaticAssetServiceImplDiffblueTest {
 
   /**
    * Test {@link StaticAssetServiceImpl#findStaticAssetByFullUrl(String)}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link StaticAssetServiceImpl#findStaticAssetByFullUrl(String)}
+   * Method under test: {@link StaticAssetServiceImpl#findStaticAssetByFullUrl(String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindStaticAssetByFullUrl() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.file.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6194 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.file.service.StaticAssetServiceImpl staticAssetServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"StaticAsset StaticAssetServiceImpl.findStaticAssetByFullUrl(String)"})
+  public void testFindStaticAssetByFullUrl_thenThrowRuntimeException() {
+    // Arrange
+    when(staticAssetDao.readStaticAssetByFullUrl(Mockito.<String>any()))
+        .thenThrow(new RuntimeException(";jsessionidUU=UU"));
 
-    // Arrange and Act
-    (new StaticAssetServiceImpl()).findStaticAssetByFullUrl("https://example.org/example");
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> staticAssetServiceImpl.findStaticAssetByFullUrl("https://example.org/example"));
+    verify(staticAssetDao).readStaticAssetByFullUrl(eq("https://example.org/example"));
+  }
+
+  /**
+   * Test {@link StaticAssetServiceImpl#findStaticAssetByFullUrl(String)}.
+   * <ul>
+   *   <li>When {@code https://example.org/example}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StaticAssetServiceImpl#findStaticAssetByFullUrl(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"StaticAsset StaticAssetServiceImpl.findStaticAssetByFullUrl(String)"})
+  public void testFindStaticAssetByFullUrl_whenHttpsExampleOrgExample() {
+    // Arrange
+    ImageStaticAssetImpl imageStaticAssetImpl = new ImageStaticAssetImpl();
+    when(staticAssetDao.readStaticAssetByFullUrl(Mockito.<String>any())).thenReturn(imageStaticAssetImpl);
+
+    // Act
+    StaticAsset actualFindStaticAssetByFullUrlResult = staticAssetServiceImpl
+        .findStaticAssetByFullUrl("https://example.org/example");
+
+    // Assert
+    verify(staticAssetDao).readStaticAssetByFullUrl(eq("https://example.org/example"));
+    assertSame(imageStaticAssetImpl, actualFindStaticAssetByFullUrlResult);
+  }
+
+  /**
+   * Test {@link StaticAssetServiceImpl#findStaticAssetByFullUrl(String)}.
+   * <ul>
+   *   <li>When {@code https://example.org/example(?i);jsessionid.*?=.*?(?=\?|$)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StaticAssetServiceImpl#findStaticAssetByFullUrl(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"StaticAsset StaticAssetServiceImpl.findStaticAssetByFullUrl(String)"})
+  public void testFindStaticAssetByFullUrl_whenHttpsExampleOrgExampleIJsessionid() {
+    // Arrange
+    ImageStaticAssetImpl imageStaticAssetImpl = new ImageStaticAssetImpl();
+    when(staticAssetDao.readStaticAssetByFullUrl(Mockito.<String>any())).thenReturn(imageStaticAssetImpl);
+
+    // Act
+    StaticAsset actualFindStaticAssetByFullUrlResult = staticAssetServiceImpl
+        .findStaticAssetByFullUrl("https://example.org/example(?i);jsessionid.*?=.*?(?=\\?|$)");
+
+    // Assert
+    verify(staticAssetDao).readStaticAssetByFullUrl(eq("https://example.org/example(?i)?(?=\\?|$)"));
+    assertSame(imageStaticAssetImpl, actualFindStaticAssetByFullUrlResult);
+  }
+
+  /**
+   * Test {@link StaticAssetServiceImpl#findStaticAssetByFullUrl(String)}.
+   * <ul>
+   *   <li>When {@code https://example.org/example;jsessionidUU=UU}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StaticAssetServiceImpl#findStaticAssetByFullUrl(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"StaticAsset StaticAssetServiceImpl.findStaticAssetByFullUrl(String)"})
+  public void testFindStaticAssetByFullUrl_whenHttpsExampleOrgExampleJsessionidUUUu() {
+    // Arrange
+    ImageStaticAssetImpl imageStaticAssetImpl = new ImageStaticAssetImpl();
+    when(staticAssetDao.readStaticAssetByFullUrl(Mockito.<String>any())).thenReturn(imageStaticAssetImpl);
+
+    // Act
+    StaticAsset actualFindStaticAssetByFullUrlResult = staticAssetServiceImpl
+        .findStaticAssetByFullUrl("https://example.org/example;jsessionidUU=UU");
+
+    // Assert
+    verify(staticAssetDao).readStaticAssetByFullUrl(eq("https://example.org/example"));
+    assertSame(imageStaticAssetImpl, actualFindStaticAssetByFullUrlResult);
+  }
+
+  /**
+   * Test {@link StaticAssetServiceImpl#findStaticAssetByFullUrl(String)}.
+   * <ul>
+   *   <li>When {@code (?i);jsessionid.*?=.*?(?=\?|$)}.</li>
+   *   <li>Then return {@link ImageStaticAssetImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StaticAssetServiceImpl#findStaticAssetByFullUrl(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"StaticAsset StaticAssetServiceImpl.findStaticAssetByFullUrl(String)"})
+  public void testFindStaticAssetByFullUrl_whenIJsessionid_thenReturnImageStaticAssetImpl() {
+    // Arrange
+    ImageStaticAssetImpl imageStaticAssetImpl = new ImageStaticAssetImpl();
+    when(staticAssetDao.readStaticAssetByFullUrl(Mockito.<String>any())).thenReturn(imageStaticAssetImpl);
+
+    // Act
+    StaticAsset actualFindStaticAssetByFullUrlResult = staticAssetServiceImpl
+        .findStaticAssetByFullUrl("(?i);jsessionid.*?=.*?(?=\\?|$)");
+
+    // Assert
+    verify(staticAssetDao).readStaticAssetByFullUrl(eq("(?i)?(?=\\?|$)"));
+    assertSame(imageStaticAssetImpl, actualFindStaticAssetByFullUrlResult);
+  }
+
+  /**
+   * Test {@link StaticAssetServiceImpl#findStaticAssetByFullUrl(String)}.
+   * <ul>
+   *   <li>When {@code ;jsessionidUU=UU}.</li>
+   *   <li>Then return {@link ImageStaticAssetImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StaticAssetServiceImpl#findStaticAssetByFullUrl(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"StaticAsset StaticAssetServiceImpl.findStaticAssetByFullUrl(String)"})
+  public void testFindStaticAssetByFullUrl_whenJsessionidUUUu_thenReturnImageStaticAssetImpl() {
+    // Arrange
+    ImageStaticAssetImpl imageStaticAssetImpl = new ImageStaticAssetImpl();
+    when(staticAssetDao.readStaticAssetByFullUrl(Mockito.<String>any())).thenReturn(imageStaticAssetImpl);
+
+    // Act
+    StaticAsset actualFindStaticAssetByFullUrlResult = staticAssetServiceImpl
+        .findStaticAssetByFullUrl(";jsessionidUU=UU");
+
+    // Assert
+    verify(staticAssetDao).readStaticAssetByFullUrl(eq(""));
+    assertSame(imageStaticAssetImpl, actualFindStaticAssetByFullUrlResult);
   }
 
   /**
    * Test {@link StaticAssetServiceImpl#addStaticAsset(StaticAsset)}.
+   * <ul>
+   *   <li>Then return {@link ImageStaticAssetImpl} (default constructor).</li>
+   * </ul>
    * <p>
    * Method under test: {@link StaticAssetServiceImpl#addStaticAsset(StaticAsset)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddStaticAsset() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.file.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5806 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.file.service.StaticAssetServiceImpl staticAssetServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"StaticAsset StaticAssetServiceImpl.addStaticAsset(StaticAsset)"})
+  public void testAddStaticAsset_thenReturnImageStaticAssetImpl() {
     // Arrange
-    StaticAssetServiceImpl staticAssetServiceImpl2 = new StaticAssetServiceImpl();
+    ImageStaticAssetImpl imageStaticAssetImpl = new ImageStaticAssetImpl();
+    when(staticAssetDao.addOrUpdateStaticAsset(Mockito.<StaticAsset>any(), anyBoolean()))
+        .thenReturn(imageStaticAssetImpl);
 
     // Act
-    staticAssetServiceImpl2.addStaticAsset(new ImageStaticAssetImpl());
+    StaticAsset actualAddStaticAssetResult = staticAssetServiceImpl.addStaticAsset(new ImageStaticAssetImpl());
+
+    // Assert
+    verify(staticAssetDao).addOrUpdateStaticAsset(isA(StaticAsset.class), eq(true));
+    assertSame(imageStaticAssetImpl, actualAddStaticAssetResult);
+  }
+
+  /**
+   * Test {@link StaticAssetServiceImpl#addStaticAsset(StaticAsset)}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StaticAssetServiceImpl#addStaticAsset(StaticAsset)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"StaticAsset StaticAssetServiceImpl.addStaticAsset(StaticAsset)"})
+  public void testAddStaticAsset_thenThrowRuntimeException() {
+    // Arrange
+    when(staticAssetDao.addOrUpdateStaticAsset(Mockito.<StaticAsset>any(), anyBoolean()))
+        .thenThrow(new RuntimeException("foo"));
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> staticAssetServiceImpl.addStaticAsset(new ImageStaticAssetImpl()));
+    verify(staticAssetDao).addOrUpdateStaticAsset(isA(StaticAsset.class), eq(true));
   }
 
   /**
    * Test {@link StaticAssetServiceImpl#updateStaticAsset(StaticAsset)}.
+   * <ul>
+   *   <li>Then return {@link ImageStaticAssetImpl} (default constructor).</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link StaticAssetServiceImpl#updateStaticAsset(StaticAsset)}
+   * Method under test: {@link StaticAssetServiceImpl#updateStaticAsset(StaticAsset)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testUpdateStaticAsset() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.file.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass7329 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.file.service.StaticAssetServiceImpl staticAssetServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"StaticAsset StaticAssetServiceImpl.updateStaticAsset(StaticAsset)"})
+  public void testUpdateStaticAsset_thenReturnImageStaticAssetImpl() {
     // Arrange
-    StaticAssetServiceImpl staticAssetServiceImpl2 = new StaticAssetServiceImpl();
+    ImageStaticAssetImpl imageStaticAssetImpl = new ImageStaticAssetImpl();
+    when(staticAssetDao.addOrUpdateStaticAsset(Mockito.<StaticAsset>any(), anyBoolean()))
+        .thenReturn(imageStaticAssetImpl);
 
     // Act
-    staticAssetServiceImpl2.updateStaticAsset(new ImageStaticAssetImpl());
+    StaticAsset actualUpdateStaticAssetResult = staticAssetServiceImpl.updateStaticAsset(new ImageStaticAssetImpl());
+
+    // Assert
+    verify(staticAssetDao).addOrUpdateStaticAsset(isA(StaticAsset.class), eq(true));
+    assertSame(imageStaticAssetImpl, actualUpdateStaticAssetResult);
+  }
+
+  /**
+   * Test {@link StaticAssetServiceImpl#updateStaticAsset(StaticAsset)}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StaticAssetServiceImpl#updateStaticAsset(StaticAsset)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"StaticAsset StaticAssetServiceImpl.updateStaticAsset(StaticAsset)"})
+  public void testUpdateStaticAsset_thenThrowRuntimeException() {
+    // Arrange
+    when(staticAssetDao.addOrUpdateStaticAsset(Mockito.<StaticAsset>any(), anyBoolean()))
+        .thenThrow(new RuntimeException("foo"));
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> staticAssetServiceImpl.updateStaticAsset(new ImageStaticAssetImpl()));
+    verify(staticAssetDao).addOrUpdateStaticAsset(isA(StaticAsset.class), eq(true));
   }
 
   /**
    * Test {@link StaticAssetServiceImpl#deleteStaticAsset(StaticAsset)}.
+   * <ul>
+   *   <li>Given {@link StaticAssetDao} {@link StaticAssetDao#delete(StaticAsset)} does nothing.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link StaticAssetServiceImpl#deleteStaticAsset(StaticAsset)}
+   * Method under test: {@link StaticAssetServiceImpl#deleteStaticAsset(StaticAsset)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testDeleteStaticAsset() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.file.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6168 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.file.service.StaticAssetServiceImpl staticAssetServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StaticAssetServiceImpl.deleteStaticAsset(StaticAsset)"})
+  public void testDeleteStaticAsset_givenStaticAssetDaoDeleteDoesNothing() {
     // Arrange
-    StaticAssetServiceImpl staticAssetServiceImpl2 = new StaticAssetServiceImpl();
+    doNothing().when(staticAssetDao).delete(Mockito.<StaticAsset>any());
 
     // Act
-    staticAssetServiceImpl2.deleteStaticAsset(new ImageStaticAssetImpl());
+    staticAssetServiceImpl.deleteStaticAsset(new ImageStaticAssetImpl());
+
+    // Assert
+    verify(staticAssetDao).delete(isA(StaticAsset.class));
+  }
+
+  /**
+   * Test {@link StaticAssetServiceImpl#deleteStaticAsset(StaticAsset)}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StaticAssetServiceImpl#deleteStaticAsset(StaticAsset)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StaticAssetServiceImpl.deleteStaticAsset(StaticAsset)"})
+  public void testDeleteStaticAsset_thenThrowRuntimeException() {
+    // Arrange
+    doThrow(new RuntimeException("foo")).when(staticAssetDao).delete(Mockito.<StaticAsset>any());
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> staticAssetServiceImpl.deleteStaticAsset(new ImageStaticAssetImpl()));
+    verify(staticAssetDao).delete(isA(StaticAsset.class));
   }
 
   /**
    * Test {@link StaticAssetServiceImpl#getStaticAssetUrlPrefix()}.
+   * <ul>
+   *   <li>Then return {@code https://example.org/example}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link StaticAssetServiceImpl#getStaticAssetUrlPrefix()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetStaticAssetUrlPrefix() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.file.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass7319 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.file.service.StaticAssetServiceImpl staticAssetServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String StaticAssetServiceImpl.getStaticAssetUrlPrefix()"})
+  public void testGetStaticAssetUrlPrefix_thenReturnHttpsExampleOrgExample() {
+    // Arrange
+    when(staticAssetPathService.getStaticAssetUrlPrefix()).thenReturn("https://example.org/example");
 
-    // Arrange and Act
-    (new StaticAssetServiceImpl()).getStaticAssetUrlPrefix();
+    // Act
+    String actualStaticAssetUrlPrefix = staticAssetServiceImpl.getStaticAssetUrlPrefix();
+
+    // Assert
+    verify(staticAssetPathService).getStaticAssetUrlPrefix();
+    assertEquals("https://example.org/example", actualStaticAssetUrlPrefix);
+  }
+
+  /**
+   * Test {@link StaticAssetServiceImpl#getStaticAssetUrlPrefix()}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StaticAssetServiceImpl#getStaticAssetUrlPrefix()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String StaticAssetServiceImpl.getStaticAssetUrlPrefix()"})
+  public void testGetStaticAssetUrlPrefix_thenThrowRuntimeException() {
+    // Arrange
+    when(staticAssetPathService.getStaticAssetUrlPrefix()).thenThrow(new RuntimeException("foo"));
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> staticAssetServiceImpl.getStaticAssetUrlPrefix());
+    verify(staticAssetPathService).getStaticAssetUrlPrefix();
   }
 
   /**
    * Test {@link StaticAssetServiceImpl#getPrefixedStaticAssetUrl(String)}.
    * <p>
-   * Method under test:
-   * {@link StaticAssetServiceImpl#getPrefixedStaticAssetUrl(String)}
+   * Method under test: {@link StaticAssetServiceImpl#getPrefixedStaticAssetUrl(String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String StaticAssetServiceImpl.getPrefixedStaticAssetUrl(String)"})
   public void testGetPrefixedStaticAssetUrl() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.file.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6992 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.file.service.StaticAssetServiceImpl staticAssetServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    when(staticAssetPathService.getStaticAssetUrlPrefix()).thenReturn("https://example.org/example");
 
-    // Arrange and Act
-    (new StaticAssetServiceImpl()).getPrefixedStaticAssetUrl("https://example.org/example");
+    // Act
+    String actualPrefixedStaticAssetUrl = staticAssetServiceImpl
+        .getPrefixedStaticAssetUrl("https://example.org/example");
+
+    // Assert
+    verify(staticAssetPathService).getStaticAssetUrlPrefix();
+    assertEquals("/https://example.org/examplehttps://example.org/example", actualPrefixedStaticAssetUrl);
+  }
+
+  /**
+   * Test {@link StaticAssetServiceImpl#getPrefixedStaticAssetUrl(String)}.
+   * <ul>
+   *   <li>Then return {@code /https://example.org/example}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StaticAssetServiceImpl#getPrefixedStaticAssetUrl(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String StaticAssetServiceImpl.getPrefixedStaticAssetUrl(String)"})
+  public void testGetPrefixedStaticAssetUrl_thenReturnHttpsExampleOrgExample() {
+    // Arrange
+    when(staticAssetPathService.getStaticAssetUrlPrefix()).thenReturn("/");
+
+    // Act
+    String actualPrefixedStaticAssetUrl = staticAssetServiceImpl
+        .getPrefixedStaticAssetUrl("https://example.org/example");
+
+    // Assert
+    verify(staticAssetPathService).getStaticAssetUrlPrefix();
+    assertEquals("/https://example.org/example", actualPrefixedStaticAssetUrl);
+  }
+
+  /**
+   * Test {@link StaticAssetServiceImpl#getPrefixedStaticAssetUrl(String)}.
+   * <ul>
+   *   <li>Then return {@code https://example.org/example}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StaticAssetServiceImpl#getPrefixedStaticAssetUrl(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String StaticAssetServiceImpl.getPrefixedStaticAssetUrl(String)"})
+  public void testGetPrefixedStaticAssetUrl_thenReturnHttpsExampleOrgExample2() {
+    // Arrange
+    when(staticAssetPathService.getStaticAssetUrlPrefix()).thenReturn(null);
+
+    // Act
+    String actualPrefixedStaticAssetUrl = staticAssetServiceImpl
+        .getPrefixedStaticAssetUrl("https://example.org/example");
+
+    // Assert
+    verify(staticAssetPathService).getStaticAssetUrlPrefix();
+    assertEquals("https://example.org/example", actualPrefixedStaticAssetUrl);
+  }
+
+  /**
+   * Test {@link StaticAssetServiceImpl#getPrefixedStaticAssetUrl(String)}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StaticAssetServiceImpl#getPrefixedStaticAssetUrl(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String StaticAssetServiceImpl.getPrefixedStaticAssetUrl(String)"})
+  public void testGetPrefixedStaticAssetUrl_thenThrowRuntimeException() {
+    // Arrange
+    when(staticAssetPathService.getStaticAssetUrlPrefix()).thenThrow(new RuntimeException("foo"));
+
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> staticAssetServiceImpl.getPrefixedStaticAssetUrl("https://example.org/example"));
+    verify(staticAssetPathService).getStaticAssetUrlPrefix();
   }
 
   /**
    * Test {@link StaticAssetServiceImpl#getStaticAssetEnvironmentUrlPrefix()}.
+   * <ul>
+   *   <li>Then return {@code https://example.org/example}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link StaticAssetServiceImpl#getStaticAssetEnvironmentUrlPrefix()}
+   * Method under test: {@link StaticAssetServiceImpl#getStaticAssetEnvironmentUrlPrefix()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetStaticAssetEnvironmentUrlPrefix() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.file.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass7314 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.file.service.StaticAssetServiceImpl staticAssetServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String StaticAssetServiceImpl.getStaticAssetEnvironmentUrlPrefix()"})
+  public void testGetStaticAssetEnvironmentUrlPrefix_thenReturnHttpsExampleOrgExample() {
+    // Arrange
+    when(staticAssetPathService.getStaticAssetEnvironmentUrlPrefix()).thenReturn("https://example.org/example");
 
-    // Arrange and Act
-    (new StaticAssetServiceImpl()).getStaticAssetEnvironmentUrlPrefix();
+    // Act
+    String actualStaticAssetEnvironmentUrlPrefix = staticAssetServiceImpl.getStaticAssetEnvironmentUrlPrefix();
+
+    // Assert
+    verify(staticAssetPathService).getStaticAssetEnvironmentUrlPrefix();
+    assertEquals("https://example.org/example", actualStaticAssetEnvironmentUrlPrefix);
   }
 
   /**
-   * Test
-   * {@link StaticAssetServiceImpl#getStaticAssetEnvironmentSecureUrlPrefix()}.
+   * Test {@link StaticAssetServiceImpl#getStaticAssetEnvironmentUrlPrefix()}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link StaticAssetServiceImpl#getStaticAssetEnvironmentSecureUrlPrefix()}
+   * Method under test: {@link StaticAssetServiceImpl#getStaticAssetEnvironmentUrlPrefix()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetStaticAssetEnvironmentSecureUrlPrefix() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.file.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass7309 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.file.service.StaticAssetServiceImpl staticAssetServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String StaticAssetServiceImpl.getStaticAssetEnvironmentUrlPrefix()"})
+  public void testGetStaticAssetEnvironmentUrlPrefix_thenThrowRuntimeException() {
+    // Arrange
+    when(staticAssetPathService.getStaticAssetEnvironmentUrlPrefix()).thenThrow(new RuntimeException("foo"));
 
-    // Arrange and Act
-    (new StaticAssetServiceImpl()).getStaticAssetEnvironmentSecureUrlPrefix();
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> staticAssetServiceImpl.getStaticAssetEnvironmentUrlPrefix());
+    verify(staticAssetPathService).getStaticAssetEnvironmentUrlPrefix();
   }
 
   /**
-   * Test
-   * {@link StaticAssetServiceImpl#convertAssetPath(String, String, boolean)}.
+   * Test {@link StaticAssetServiceImpl#getStaticAssetEnvironmentSecureUrlPrefix()}.
+   * <ul>
+   *   <li>Then return {@code https://example.org/example}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link StaticAssetServiceImpl#convertAssetPath(String, String, boolean)}
+   * Method under test: {@link StaticAssetServiceImpl#getStaticAssetEnvironmentSecureUrlPrefix()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testConvertAssetPath() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.file.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5857 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.file.service.StaticAssetServiceImpl staticAssetServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String StaticAssetServiceImpl.getStaticAssetEnvironmentSecureUrlPrefix()"})
+  public void testGetStaticAssetEnvironmentSecureUrlPrefix_thenReturnHttpsExampleOrgExample() {
+    // Arrange
+    when(staticAssetPathService.getStaticAssetEnvironmentSecureUrlPrefix()).thenReturn("https://example.org/example");
 
-    // Arrange and Act
-    (new StaticAssetServiceImpl()).convertAssetPath("Asset Path", "Context Path", true);
+    // Act
+    String actualStaticAssetEnvironmentSecureUrlPrefix = staticAssetServiceImpl
+        .getStaticAssetEnvironmentSecureUrlPrefix();
+
+    // Assert
+    verify(staticAssetPathService).getStaticAssetEnvironmentSecureUrlPrefix();
+    assertEquals("https://example.org/example", actualStaticAssetEnvironmentSecureUrlPrefix);
+  }
+
+  /**
+   * Test {@link StaticAssetServiceImpl#getStaticAssetEnvironmentSecureUrlPrefix()}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StaticAssetServiceImpl#getStaticAssetEnvironmentSecureUrlPrefix()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String StaticAssetServiceImpl.getStaticAssetEnvironmentSecureUrlPrefix()"})
+  public void testGetStaticAssetEnvironmentSecureUrlPrefix_thenThrowRuntimeException() {
+    // Arrange
+    when(staticAssetPathService.getStaticAssetEnvironmentSecureUrlPrefix()).thenThrow(new RuntimeException("foo"));
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> staticAssetServiceImpl.getStaticAssetEnvironmentSecureUrlPrefix());
+    verify(staticAssetPathService).getStaticAssetEnvironmentSecureUrlPrefix();
+  }
+
+  /**
+   * Test {@link StaticAssetServiceImpl#convertAssetPath(String, String, boolean)}.
+   * <ul>
+   *   <li>Then return {@code Convert Asset Path}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StaticAssetServiceImpl#convertAssetPath(String, String, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String StaticAssetServiceImpl.convertAssetPath(String, String, boolean)"})
+  public void testConvertAssetPath_thenReturnConvertAssetPath() {
+    // Arrange
+    when(staticAssetPathService.convertAssetPath(Mockito.<String>any(), Mockito.<String>any(), anyBoolean()))
+        .thenReturn("Convert Asset Path");
+
+    // Act
+    String actualConvertAssetPathResult = staticAssetServiceImpl.convertAssetPath("Asset Path", "Context Path", true);
+
+    // Assert
+    verify(staticAssetPathService).convertAssetPath(eq("Asset Path"), eq("Context Path"), eq(true));
+    assertEquals("Convert Asset Path", actualConvertAssetPathResult);
+  }
+
+  /**
+   * Test {@link StaticAssetServiceImpl#convertAssetPath(String, String, boolean)}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StaticAssetServiceImpl#convertAssetPath(String, String, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String StaticAssetServiceImpl.convertAssetPath(String, String, boolean)"})
+  public void testConvertAssetPath_thenThrowRuntimeException() {
+    // Arrange
+    when(staticAssetPathService.convertAssetPath(Mockito.<String>any(), Mockito.<String>any(), anyBoolean()))
+        .thenThrow(new RuntimeException("foo"));
+
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> staticAssetServiceImpl.convertAssetPath("Asset Path", "Context Path", true));
+    verify(staticAssetPathService).convertAssetPath(eq("Asset Path"), eq("Context Path"), eq(true));
   }
 
   /**
@@ -1300,6 +1128,13 @@ public class StaticAssetServiceImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String StaticAssetServiceImpl.getAllowedFileExtensions()",
+      "String StaticAssetServiceImpl.getDisabledFileExtensions()",
+      "boolean StaticAssetServiceImpl.getShouldAcceptNonImageAsset()",
+      "void StaticAssetServiceImpl.setAllowedFileExtensions(String)",
+      "void StaticAssetServiceImpl.setDisabledFileExtensions(String)",
+      "void StaticAssetServiceImpl.setShouldAcceptNonImageAsset(boolean)"})
   public void testGettersAndSetters() {
     // Arrange
     StaticAssetServiceImpl staticAssetServiceImpl = new StaticAssetServiceImpl();
@@ -1311,7 +1146,7 @@ public class StaticAssetServiceImplDiffblueTest {
     String actualAllowedFileExtensions = staticAssetServiceImpl.getAllowedFileExtensions();
     String actualDisabledFileExtensions = staticAssetServiceImpl.getDisabledFileExtensions();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Allowed File Extensions", actualAllowedFileExtensions);
     assertEquals("Disabled File Extensions", actualDisabledFileExtensions);
     assertTrue(staticAssetServiceImpl.getShouldAcceptNonImageAsset());

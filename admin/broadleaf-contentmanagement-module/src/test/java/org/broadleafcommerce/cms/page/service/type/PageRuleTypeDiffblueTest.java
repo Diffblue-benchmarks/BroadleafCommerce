@@ -1,18 +1,39 @@
+/*-
+ * #%L
+ * BroadleafCommerce CMS Module
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.cms.page.service.type;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @ContextConfiguration(classes = {PageRuleType.class})
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class PageRuleTypeDiffblueTest {
   @Autowired
   private PageRuleType pageRuleType;
@@ -23,6 +44,8 @@ public class PageRuleTypeDiffblueTest {
    * Method under test: {@link PageRuleType#getInstance(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PageRuleType PageRuleType.getInstance(String)"})
   public void testGetInstance() {
     // Arrange and Act
     PageRuleType actualInstance = PageRuleType.getInstance("Type");
@@ -43,6 +66,9 @@ public class PageRuleTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PageRuleType.<init>()", "String PageRuleType.getFriendlyType()",
+      "String PageRuleType.getType()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     PageRuleType actualPageRuleType = new PageRuleType();
@@ -63,6 +89,8 @@ public class PageRuleTypeDiffblueTest {
    * Method under test: {@link PageRuleType#PageRuleType(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PageRuleType.<init>(String, String)"})
   public void testNewPageRuleType_whenProduct_thenReturnTypeIsProduct() {
     // Arrange and Act
     PageRuleType actualPageRuleType = new PageRuleType("Product", "Friendly Type");
@@ -82,6 +110,8 @@ public class PageRuleTypeDiffblueTest {
    * Method under test: {@link PageRuleType#PageRuleType(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PageRuleType.<init>(String, String)"})
   public void testNewPageRuleType_whenType_thenReturnType() {
     // Arrange and Act
     PageRuleType actualPageRuleType = new PageRuleType("Type", "Friendly Type");
@@ -101,6 +131,8 @@ public class PageRuleTypeDiffblueTest {
    * Method under test: {@link PageRuleType#setType(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PageRuleType.setType(String)"})
   public void testSetType_whenTypeType_thenCustomerTypeIsTypeType() {
     // Arrange
     PageRuleType pageRuleType2 = PageRuleType.CUSTOMER;
@@ -122,6 +154,8 @@ public class PageRuleTypeDiffblueTest {
    * Method under test: {@link PageRuleType#setType(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PageRuleType.setType(String)"})
   public void testSetType_whenType_thenCustomerTypeIsType() {
     // Arrange
     PageRuleType pageRuleType2 = PageRuleType.CUSTOMER;
@@ -134,8 +168,7 @@ public class PageRuleTypeDiffblueTest {
   }
 
   /**
-   * Test {@link PageRuleType#equals(Object)}, and
-   * {@link PageRuleType#hashCode()}.
+   * Test {@link PageRuleType#equals(Object)}, and {@link PageRuleType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -148,6 +181,8 @@ public class PageRuleTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PageRuleType.equals(Object)", "int PageRuleType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     PageRuleType pageRuleType = PageRuleType.CUSTOMER;
@@ -160,8 +195,7 @@ public class PageRuleTypeDiffblueTest {
   }
 
   /**
-   * Test {@link PageRuleType#equals(Object)}, and
-   * {@link PageRuleType#hashCode()}.
+   * Test {@link PageRuleType#equals(Object)}, and {@link PageRuleType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -174,6 +208,8 @@ public class PageRuleTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PageRuleType.equals(Object)", "int PageRuleType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     PageRuleType pageRuleType = new PageRuleType();
@@ -186,34 +222,7 @@ public class PageRuleTypeDiffblueTest {
   }
 
   /**
-   * Test {@link PageRuleType#equals(Object)}, and
-   * {@link PageRuleType#hashCode()}.
-   * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
-   * </ul>
-   * <p>
-   * Methods under test:
-   * <ul>
-   *   <li>{@link PageRuleType#equals(Object)}
-   *   <li>{@link PageRuleType#hashCode()}
-   * </ul>
-   */
-  @Test
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
-    // Arrange
-    PageRuleType pageRuleType = new PageRuleType("CUSTOMER", "Friendly Type");
-    PageRuleType pageRuleType2 = PageRuleType.CUSTOMER;
-
-    // Act and Assert
-    assertEquals(pageRuleType, pageRuleType2);
-    int expectedHashCodeResult = pageRuleType.hashCode();
-    assertEquals(expectedHashCodeResult, pageRuleType2.hashCode());
-  }
-
-  /**
-   * Test {@link PageRuleType#equals(Object)}, and
-   * {@link PageRuleType#hashCode()}.
+   * Test {@link PageRuleType#equals(Object)}, and {@link PageRuleType#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -226,6 +235,8 @@ public class PageRuleTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PageRuleType.equals(Object)", "int PageRuleType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     PageRuleType pageRuleType = PageRuleType.CUSTOMER;
@@ -246,9 +257,27 @@ public class PageRuleTypeDiffblueTest {
    * Method under test: {@link PageRuleType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PageRuleType.equals(Object)", "int PageRuleType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(PageRuleType.PRODUCT, PageRuleType.CUSTOMER);
+  }
+
+  /**
+   * Test {@link PageRuleType#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PageRuleType#equals(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PageRuleType.equals(Object)", "int PageRuleType.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange, Act and Assert
     assertNotEquals(new PageRuleType(), PageRuleType.CUSTOMER);
   }
 
@@ -262,6 +291,8 @@ public class PageRuleTypeDiffblueTest {
    * Method under test: {@link PageRuleType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PageRuleType.equals(Object)", "int PageRuleType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(PageRuleType.CUSTOMER, null);
@@ -277,6 +308,8 @@ public class PageRuleTypeDiffblueTest {
    * Method under test: {@link PageRuleType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PageRuleType.equals(Object)", "int PageRuleType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(PageRuleType.CUSTOMER, "Different type to PageRuleType");

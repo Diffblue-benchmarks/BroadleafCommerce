@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce CMS Module
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.cms.structure.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -10,29 +27,27 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.copy.CreateResponse;
 import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
 import org.broadleafcommerce.common.service.GenericEntityService;
-import org.broadleafcommerce.common.service.GenericEntityServiceImpl;
 import org.broadleafcommerce.common.site.domain.CatalogImpl;
 import org.broadleafcommerce.common.site.domain.SiteImpl;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-cms-applicationContext-entity.xml",
-    "/applicationContext-servlet-cms-contentClient.xml", "/applicationContext-servlet-cms-contentCreator.xml",
-    "/bl-cms-contentClient-applicationContext.xml", "/bl-cms-contentCreator-applicationContext.xml",
-    "/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-cms-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-cms-applicationContext-servlet.xml",
-    "/blc-config/site/framework/bl-cms-applicationContext.xml"})
+@ContextConfiguration(locations = {"/bl-cms-applicationContext-entity.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class StructuredContentFieldImplDiffblueTest {
   @Autowired
   private StructuredContentFieldImpl structuredContentFieldImpl;
@@ -43,119 +58,59 @@ public class StructuredContentFieldImplDiffblueTest {
    * Method under test: {@link StructuredContentFieldImpl#getValue()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String StructuredContentFieldImpl.getValue()"})
   public void testGetValue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new StructuredContentFieldImpl()).getValue());
   }
 
   /**
-   * Test {@link StructuredContentFieldImpl#getValue()}.
-   * <p>
-   * Method under test: {@link StructuredContentFieldImpl#getValue()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetValue2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.structure.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-cms-applicationContext-entity.xml","/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3756 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.structure.domain.StructuredContentFieldImpl structuredContentFieldImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new StructuredContentFieldImpl()).getValue();
-  }
-
-  /**
-   * Test {@link StructuredContentFieldImpl#setValue(String)}.
-   * <p>
-   * Method under test: {@link StructuredContentFieldImpl#setValue(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetValue() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.structure.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-cms-applicationContext-entity.xml","/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3760 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.structure.domain.StructuredContentFieldImpl structuredContentFieldImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new StructuredContentFieldImpl()).setValue("42");
-  }
-
-  /**
    * Test {@link StructuredContentFieldImpl#setValue(String)}.
    * <ul>
-   *   <li>Then {@link StructuredContentFieldImpl} (default constructor) Value is
-   * {@code 42}.</li>
+   *   <li>Then {@link StructuredContentFieldImpl} (default constructor) Value is {@code 42}.</li>
    * </ul>
    * <p>
    * Method under test: {@link StructuredContentFieldImpl#setValue(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StructuredContentFieldImpl.setValue(String)"})
   public void testSetValue_thenStructuredContentFieldImplValueIs42() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    StructuredContentFieldImpl structuredContentFieldImpl = new StructuredContentFieldImpl();
+    StructuredContentFieldImpl structuredContentFieldImpl2 = new StructuredContentFieldImpl();
 
     // Act
-    structuredContentFieldImpl.setValue("42");
+    structuredContentFieldImpl2.setValue("42");
 
     // Assert
-    assertEquals("42", structuredContentFieldImpl.getValue());
-    assertEquals("42", structuredContentFieldImpl.stringValue);
+    assertEquals("42", structuredContentFieldImpl2.getValue());
+    assertEquals("42", structuredContentFieldImpl2.stringValue);
   }
 
   /**
    * Test {@link StructuredContentFieldImpl#setValue(String)}.
    * <ul>
-   *   <li>Then {@link StructuredContentFieldImpl} (default constructor) Value is
-   * {@code null}.</li>
+   *   <li>Then {@link StructuredContentFieldImpl} (default constructor) Value is {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link StructuredContentFieldImpl#setValue(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StructuredContentFieldImpl.setValue(String)"})
   public void testSetValue_thenStructuredContentFieldImplValueIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    StructuredContentFieldImpl structuredContentFieldImpl = new StructuredContentFieldImpl();
-    structuredContentFieldImpl.setFieldKey("Field Key");
-    structuredContentFieldImpl.setId(StructuredContentItemCriteriaImpl.serialVersionUID);
+    StructuredContentFieldImpl structuredContentFieldImpl2 = new StructuredContentFieldImpl();
+    structuredContentFieldImpl2.setFieldKey("Field Key");
+    structuredContentFieldImpl2.setId(StructuredContentItemCriteriaImpl.serialVersionUID);
 
     // Act
-    structuredContentFieldImpl.setValue(null);
+    structuredContentFieldImpl2.setValue(null);
 
-    // Assert
-    assertNull(structuredContentFieldImpl.getValue());
-    assertNull(structuredContentFieldImpl.stringValue);
+    // Assert that nothing has changed
+    assertNull(structuredContentFieldImpl2.getValue());
+    assertNull(structuredContentFieldImpl2.stringValue);
   }
 
   /**
@@ -164,9 +119,9 @@ public class StructuredContentFieldImplDiffblueTest {
    * Method under test: {@link StructuredContentFieldImpl#clone()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"StructuredContentField StructuredContentFieldImpl.clone()"})
   public void testClone() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange and Act
     StructuredContentField actualCloneResult = (new StructuredContentFieldImpl()).clone();
 
@@ -180,54 +135,23 @@ public class StructuredContentFieldImplDiffblueTest {
   }
 
   /**
-   * Test {@link StructuredContentFieldImpl#clone()}.
+   * Test {@link StructuredContentFieldImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <p>
-   * Method under test: {@link StructuredContentFieldImpl#clone()}
+   * Method under test: {@link StructuredContentFieldImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testClone2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.structure.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-cms-applicationContext-entity.xml","/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3690 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.structure.domain.StructuredContentFieldImpl structuredContentFieldImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new StructuredContentFieldImpl()).clone();
-  }
-
-  /**
-   * Test
-   * {@link StructuredContentFieldImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <p>
-   * Method under test:
-   * {@link StructuredContentFieldImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse StructuredContentFieldImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    StructuredContentFieldImpl structuredContentFieldImpl = new StructuredContentFieldImpl();
+    StructuredContentFieldImpl structuredContentFieldImpl2 = new StructuredContentFieldImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
     CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
 
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<StructuredContentField> actualCreateOrRetrieveCopyInstanceResult = structuredContentFieldImpl
+    CreateResponse<StructuredContentField> actualCreateOrRetrieveCopyInstanceResult = structuredContentFieldImpl2
         .createOrRetrieveCopyInstance(context);
 
     // Assert
@@ -236,62 +160,20 @@ public class StructuredContentFieldImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link StructuredContentFieldImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <p>
-   * Method under test:
-   * {@link StructuredContentFieldImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.structure.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-cms-applicationContext-entity.xml","/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3694 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.structure.domain.StructuredContentFieldImpl structuredContentFieldImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    StructuredContentFieldImpl structuredContentFieldImpl2 = new StructuredContentFieldImpl();
-    CatalogImpl fromCatalog = new CatalogImpl();
-    CatalogImpl toCatalog = new CatalogImpl();
-    SiteImpl fromSite = new SiteImpl();
-    SiteImpl toSite = new SiteImpl();
-    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
-
-    // Act
-    structuredContentFieldImpl2.createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog,
-        fromSite, toSite, genericEntityService, new MultiTenantCopierExtensionManager()));
-  }
-
-  /**
-   * Test
-   * {@link StructuredContentFieldImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * Test {@link StructuredContentFieldImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <ul>
    *   <li>Then Clone return {@link StructuredContentFieldImpl}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link StructuredContentFieldImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link StructuredContentFieldImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse StructuredContentFieldImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance_thenCloneReturnStructuredContentFieldImpl()
       throws CloneNotSupportedException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    StructuredContentFieldImpl structuredContentFieldImpl = new StructuredContentFieldImpl();
+    StructuredContentFieldImpl structuredContentFieldImpl2 = new StructuredContentFieldImpl();
     GenericEntityService genericEntityService = mock(GenericEntityService.class);
     when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
     Class<Object> forNameResult = Object.class;
@@ -302,7 +184,7 @@ public class StructuredContentFieldImplDiffblueTest {
     SiteImpl toSite = new SiteImpl();
 
     // Act
-    CreateResponse<StructuredContentField> actualCreateOrRetrieveCopyInstanceResult = structuredContentFieldImpl
+    CreateResponse<StructuredContentField> actualCreateOrRetrieveCopyInstanceResult = structuredContentFieldImpl2
         .createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
             genericEntityService, new MultiTenantCopierExtensionManager()));
 
@@ -325,8 +207,7 @@ public class StructuredContentFieldImplDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>default or parameterless constructor of
-   * {@link StructuredContentFieldImpl}
+   *   <li>default or parameterless constructor of {@link StructuredContentFieldImpl}
    *   <li>{@link StructuredContentFieldImpl#setFieldKey(String)}
    *   <li>{@link StructuredContentFieldImpl#setId(Long)}
    *   <li>{@link StructuredContentFieldImpl#getFieldKey()}
@@ -334,6 +215,10 @@ public class StructuredContentFieldImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StructuredContentFieldImpl.<init>()", "String StructuredContentFieldImpl.getFieldKey()",
+      "Long StructuredContentFieldImpl.getId()", "void StructuredContentFieldImpl.setFieldKey(String)",
+      "void StructuredContentFieldImpl.setId(Long)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     StructuredContentFieldImpl actualStructuredContentFieldImpl = new StructuredContentFieldImpl();
@@ -341,7 +226,7 @@ public class StructuredContentFieldImplDiffblueTest {
     actualStructuredContentFieldImpl.setId(StructuredContentItemCriteriaImpl.serialVersionUID);
     String actualFieldKey = actualStructuredContentFieldImpl.getFieldKey();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Field Key", actualFieldKey);
     assertEquals(StructuredContentItemCriteriaImpl.serialVersionUID,
         actualStructuredContentFieldImpl.getId().longValue());

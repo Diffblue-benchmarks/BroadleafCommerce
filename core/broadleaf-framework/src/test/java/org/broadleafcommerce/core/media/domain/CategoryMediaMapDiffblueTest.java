@@ -1,16 +1,34 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.media.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertNull;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.core.media.domain.CategoryMediaMap.CategoryMediaMapPK;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class CategoryMediaMapDiffblueTest {
   /**
-   * Test CategoryMediaMapPK {@link CategoryMediaMapPK#equals(Object)}, and
-   * {@link CategoryMediaMapPK#hashCode()}.
+   * Test CategoryMediaMapPK {@link CategoryMediaMapPK#equals(Object)}, and {@link CategoryMediaMapPK#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -18,18 +36,20 @@ public class CategoryMediaMapDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>{@link CategoryMediaMap.CategoryMediaMapPK#equals(Object)}
-   *   <li>{@link CategoryMediaMap.CategoryMediaMapPK#hashCode()}
+   *   <li>{@link CategoryMediaMapPK#equals(Object)}
+   *   <li>{@link CategoryMediaMapPK#hashCode()}
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryMediaMapPK.equals(Object)", "int CategoryMediaMapPK.hashCode()"})
   public void testCategoryMediaMapPKEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
-    CategoryMediaMap.CategoryMediaMapPK categoryMediaMapPK = new CategoryMediaMap.CategoryMediaMapPK();
+    CategoryMediaMapPK categoryMediaMapPK = new CategoryMediaMapPK();
     categoryMediaMapPK.setCategoryId(1L);
     categoryMediaMapPK.setMediaId(1L);
 
-    CategoryMediaMap.CategoryMediaMapPK categoryMediaMapPK2 = new CategoryMediaMap.CategoryMediaMapPK();
+    CategoryMediaMapPK categoryMediaMapPK2 = new CategoryMediaMapPK();
     categoryMediaMapPK2.setCategoryId(1L);
     categoryMediaMapPK2.setMediaId(1L);
 
@@ -40,8 +60,7 @@ public class CategoryMediaMapDiffblueTest {
   }
 
   /**
-   * Test CategoryMediaMapPK {@link CategoryMediaMapPK#equals(Object)}, and
-   * {@link CategoryMediaMapPK#hashCode()}.
+   * Test CategoryMediaMapPK {@link CategoryMediaMapPK#equals(Object)}, and {@link CategoryMediaMapPK#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -49,14 +68,16 @@ public class CategoryMediaMapDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>{@link CategoryMediaMap.CategoryMediaMapPK#equals(Object)}
-   *   <li>{@link CategoryMediaMap.CategoryMediaMapPK#hashCode()}
+   *   <li>{@link CategoryMediaMapPK#equals(Object)}
+   *   <li>{@link CategoryMediaMapPK#hashCode()}
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryMediaMapPK.equals(Object)", "int CategoryMediaMapPK.hashCode()"})
   public void testCategoryMediaMapPKEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
-    CategoryMediaMap.CategoryMediaMapPK categoryMediaMapPK = new CategoryMediaMap.CategoryMediaMapPK();
+    CategoryMediaMapPK categoryMediaMapPK = new CategoryMediaMapPK();
     categoryMediaMapPK.setCategoryId(1L);
     categoryMediaMapPK.setMediaId(1L);
 
@@ -73,16 +94,18 @@ public class CategoryMediaMapDiffblueTest {
    *   <li>Then return not equal.</li>
    * </ul>
    * <p>
-   * Method under test: {@link CategoryMediaMap.CategoryMediaMapPK#equals(Object)}
+   * Method under test: {@link CategoryMediaMapPK#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryMediaMapPK.equals(Object)", "int CategoryMediaMapPK.hashCode()"})
   public void testCategoryMediaMapPKEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
-    CategoryMediaMap.CategoryMediaMapPK categoryMediaMapPK = new CategoryMediaMap.CategoryMediaMapPK();
+    CategoryMediaMapPK categoryMediaMapPK = new CategoryMediaMapPK();
     categoryMediaMapPK.setCategoryId(2L);
     categoryMediaMapPK.setMediaId(1L);
 
-    CategoryMediaMap.CategoryMediaMapPK categoryMediaMapPK2 = new CategoryMediaMap.CategoryMediaMapPK();
+    CategoryMediaMapPK categoryMediaMapPK2 = new CategoryMediaMapPK();
     categoryMediaMapPK2.setCategoryId(1L);
     categoryMediaMapPK2.setMediaId(1L);
 
@@ -97,87 +120,23 @@ public class CategoryMediaMapDiffblueTest {
    *   <li>Then return not equal.</li>
    * </ul>
    * <p>
-   * Method under test: {@link CategoryMediaMap.CategoryMediaMapPK#equals(Object)}
+   * Method under test: {@link CategoryMediaMapPK#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryMediaMapPK.equals(Object)", "int CategoryMediaMapPK.hashCode()"})
   public void testCategoryMediaMapPKEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
-    CategoryMediaMap.CategoryMediaMapPK categoryMediaMapPK = new CategoryMediaMap.CategoryMediaMapPK();
+    CategoryMediaMapPK categoryMediaMapPK = new CategoryMediaMapPK();
     categoryMediaMapPK.setCategoryId(1L);
     categoryMediaMapPK.setMediaId(2L);
 
-    CategoryMediaMap.CategoryMediaMapPK categoryMediaMapPK2 = new CategoryMediaMap.CategoryMediaMapPK();
+    CategoryMediaMapPK categoryMediaMapPK2 = new CategoryMediaMapPK();
     categoryMediaMapPK2.setCategoryId(1L);
     categoryMediaMapPK2.setMediaId(1L);
 
     // Act and Assert
     assertNotEquals(categoryMediaMapPK, categoryMediaMapPK2);
-  }
-
-  /**
-   * Test CategoryMediaMapPK {@link CategoryMediaMapPK#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then throw exception.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryMediaMap.CategoryMediaMapPK#equals(Object)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCategoryMediaMapPKEquals_whenOtherIsDifferent_thenThrowException() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.broadleafcommerce.core.media.domain.CategoryMediaMap$CategoryMediaMapPK.equals(CategoryMediaMap.java:82)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    CategoryMediaMap.CategoryMediaMapPK categoryMediaMapPK = new CategoryMediaMap.CategoryMediaMapPK();
-    categoryMediaMapPK.setCategoryId(null);
-    categoryMediaMapPK.setMediaId(1L);
-
-    CategoryMediaMap.CategoryMediaMapPK categoryMediaMapPK2 = new CategoryMediaMap.CategoryMediaMapPK();
-    categoryMediaMapPK2.setCategoryId(1L);
-    categoryMediaMapPK2.setMediaId(1L);
-
-    // Act and Assert
-    assertThrows(NullPointerException.class, () -> categoryMediaMapPK.equals(categoryMediaMapPK2));
-  }
-
-  /**
-   * Test CategoryMediaMapPK {@link CategoryMediaMapPK#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then throw exception.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryMediaMap.CategoryMediaMapPK#equals(Object)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCategoryMediaMapPKEquals_whenOtherIsDifferent_thenThrowException2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.broadleafcommerce.core.media.domain.CategoryMediaMap$CategoryMediaMapPK.equals(CategoryMediaMap.java:83)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    CategoryMediaMap.CategoryMediaMapPK categoryMediaMapPK = new CategoryMediaMap.CategoryMediaMapPK();
-    categoryMediaMapPK.setCategoryId(1L);
-    categoryMediaMapPK.setMediaId(null);
-
-    CategoryMediaMap.CategoryMediaMapPK categoryMediaMapPK2 = new CategoryMediaMap.CategoryMediaMapPK();
-    categoryMediaMapPK2.setCategoryId(1L);
-    categoryMediaMapPK2.setMediaId(1L);
-
-    // Act and Assert
-    assertThrows(NullPointerException.class, () -> categoryMediaMapPK.equals(categoryMediaMapPK2));
   }
 
   /**
@@ -187,12 +146,14 @@ public class CategoryMediaMapDiffblueTest {
    *   <li>Then return not equal.</li>
    * </ul>
    * <p>
-   * Method under test: {@link CategoryMediaMap.CategoryMediaMapPK#equals(Object)}
+   * Method under test: {@link CategoryMediaMapPK#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryMediaMapPK.equals(Object)", "int CategoryMediaMapPK.hashCode()"})
   public void testCategoryMediaMapPKEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
-    CategoryMediaMap.CategoryMediaMapPK categoryMediaMapPK = new CategoryMediaMap.CategoryMediaMapPK();
+    CategoryMediaMapPK categoryMediaMapPK = new CategoryMediaMapPK();
     categoryMediaMapPK.setCategoryId(1L);
     categoryMediaMapPK.setMediaId(1L);
 
@@ -207,12 +168,14 @@ public class CategoryMediaMapDiffblueTest {
    *   <li>Then return not equal.</li>
    * </ul>
    * <p>
-   * Method under test: {@link CategoryMediaMap.CategoryMediaMapPK#equals(Object)}
+   * Method under test: {@link CategoryMediaMapPK#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryMediaMapPK.equals(Object)", "int CategoryMediaMapPK.hashCode()"})
   public void testCategoryMediaMapPKEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
-    CategoryMediaMap.CategoryMediaMapPK categoryMediaMapPK = new CategoryMediaMap.CategoryMediaMapPK();
+    CategoryMediaMapPK categoryMediaMapPK = new CategoryMediaMapPK();
     categoryMediaMapPK.setCategoryId(1L);
     categoryMediaMapPK.setMediaId(1L);
 
@@ -225,24 +188,27 @@ public class CategoryMediaMapDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>default or parameterless constructor of
-   * {@link CategoryMediaMap.CategoryMediaMapPK}
-   *   <li>{@link CategoryMediaMap.CategoryMediaMapPK#setCategoryId(Long)}
-   *   <li>{@link CategoryMediaMap.CategoryMediaMapPK#setMediaId(Long)}
-   *   <li>{@link CategoryMediaMap.CategoryMediaMapPK#getCategoryId()}
-   *   <li>{@link CategoryMediaMap.CategoryMediaMapPK#getMediaId()}
+   *   <li>default or parameterless constructor of {@link CategoryMediaMapPK}
+   *   <li>{@link CategoryMediaMapPK#setCategoryId(Long)}
+   *   <li>{@link CategoryMediaMapPK#setMediaId(Long)}
+   *   <li>{@link CategoryMediaMapPK#getCategoryId()}
+   *   <li>{@link CategoryMediaMapPK#getMediaId()}
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryMediaMapPK.<init>()", "Long CategoryMediaMapPK.getCategoryId()",
+      "Long CategoryMediaMapPK.getMediaId()", "void CategoryMediaMapPK.setCategoryId(Long)",
+      "void CategoryMediaMapPK.setMediaId(Long)"})
   public void testCategoryMediaMapPKGettersAndSetters() {
     // Arrange and Act
-    CategoryMediaMap.CategoryMediaMapPK actualCategoryMediaMapPK = new CategoryMediaMap.CategoryMediaMapPK();
+    CategoryMediaMapPK actualCategoryMediaMapPK = new CategoryMediaMapPK();
     actualCategoryMediaMapPK.setCategoryId(1L);
     actualCategoryMediaMapPK.setMediaId(1L);
     Long actualCategoryId = actualCategoryMediaMapPK.getCategoryId();
     Long actualMediaId = actualCategoryMediaMapPK.getMediaId();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals(1L, actualCategoryId.longValue());
     assertEquals(1L, actualMediaId.longValue());
   }
@@ -259,13 +225,17 @@ public class CategoryMediaMapDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryMediaMap.<init>()", "CategoryMediaMapPK CategoryMediaMap.getCategoryMediaMapPK()",
+      "String CategoryMediaMap.getKey()", "void CategoryMediaMap.setKey(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     CategoryMediaMap actualCategoryMediaMap = new CategoryMediaMap();
     actualCategoryMediaMap.setKey("Key");
-    actualCategoryMediaMap.getCategoryMediaMapPK();
+    CategoryMediaMapPK actualCategoryMediaMapPK = actualCategoryMediaMap.getCategoryMediaMapPK();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Key", actualCategoryMediaMap.getKey());
+    assertNull(actualCategoryMediaMapPK);
   }
 }

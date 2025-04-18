@@ -18,7 +18,11 @@
 package org.broadleafcommerce.common.currency.domain;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class NullBroadleafCurrencyDiffblueTest {
   /**
@@ -37,18 +41,26 @@ public class NullBroadleafCurrencyDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void NullBroadleafCurrency.<init>()", "String NullBroadleafCurrency.getCurrencyCode()",
+      "boolean NullBroadleafCurrency.getDefaultFlag()", "String NullBroadleafCurrency.getFriendlyName()",
+      "java.util.Currency NullBroadleafCurrency.getJavaCurrency()",
+      "void NullBroadleafCurrency.setCurrencyCode(String)", "void NullBroadleafCurrency.setDefaultFlag(boolean)",
+      "void NullBroadleafCurrency.setFriendlyName(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     NullBroadleafCurrency actualNullBroadleafCurrency = new NullBroadleafCurrency();
     actualNullBroadleafCurrency.setCurrencyCode("Code");
     actualNullBroadleafCurrency.setDefaultFlag(true);
     actualNullBroadleafCurrency.setFriendlyName("Friendly Name");
-    actualNullBroadleafCurrency.getCurrencyCode();
+    String actualCurrencyCode = actualNullBroadleafCurrency.getCurrencyCode();
     boolean actualDefaultFlag = actualNullBroadleafCurrency.getDefaultFlag();
-    actualNullBroadleafCurrency.getFriendlyName();
-    actualNullBroadleafCurrency.getJavaCurrency();
+    String actualFriendlyName = actualNullBroadleafCurrency.getFriendlyName();
 
-    // Assert that nothing has changed
+    // Assert
+    assertNull(actualCurrencyCode);
+    assertNull(actualFriendlyName);
+    assertNull(actualNullBroadleafCurrency.getJavaCurrency());
     assertFalse(actualDefaultFlag);
   }
 }

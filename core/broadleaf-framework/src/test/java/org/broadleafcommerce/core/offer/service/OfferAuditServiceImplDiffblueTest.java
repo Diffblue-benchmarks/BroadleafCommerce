@@ -1,23 +1,53 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.offer.service;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.util.ArrayList;
+import java.util.List;
+import org.broadleafcommerce.core.offer.dao.OfferAuditDao;
 import org.broadleafcommerce.core.offer.domain.OfferAudit;
 import org.broadleafcommerce.core.offer.domain.OfferAuditImpl;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class OfferAuditServiceImplDiffblueTest {
-  @Autowired
+  @Mock
+  private OfferAuditDao offerAuditDao;
+
+  @InjectMocks
   private OfferAuditServiceImpl offerAuditServiceImpl;
 
   /**
@@ -26,27 +56,19 @@ public class OfferAuditServiceImplDiffblueTest {
    * Method under test: {@link OfferAuditServiceImpl#readAuditById(Long)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OfferAudit OfferAuditServiceImpl.readAuditById(Long)"})
   public void testReadAuditById() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6352 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferAuditServiceImpl offerAuditServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    OfferAuditImpl offerAuditImpl = new OfferAuditImpl();
+    when(offerAuditDao.readAuditById(Mockito.<Long>any())).thenReturn(offerAuditImpl);
 
-    // Arrange and Act
-    (new OfferAuditServiceImpl()).readAuditById(1L);
+    // Act
+    OfferAudit actualReadAuditByIdResult = offerAuditServiceImpl.readAuditById(1L);
+
+    // Assert
+    verify(offerAuditDao).readAuditById(eq(1L));
+    assertSame(offerAuditImpl, actualReadAuditByIdResult);
   }
 
   /**
@@ -55,30 +77,19 @@ public class OfferAuditServiceImplDiffblueTest {
    * Method under test: {@link OfferAuditServiceImpl#save(OfferAudit)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OfferAudit OfferAuditServiceImpl.save(OfferAudit)"})
   public void testSave() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6382 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferAuditServiceImpl offerAuditServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    OfferAuditServiceImpl offerAuditServiceImpl2 = new OfferAuditServiceImpl();
+    OfferAuditImpl offerAuditImpl = new OfferAuditImpl();
+    when(offerAuditDao.save(Mockito.<OfferAudit>any())).thenReturn(offerAuditImpl);
 
     // Act
-    offerAuditServiceImpl2.save(new OfferAuditImpl());
+    OfferAudit actualSaveResult = offerAuditServiceImpl.save(new OfferAuditImpl());
+
+    // Assert
+    verify(offerAuditDao).save(isA(OfferAudit.class));
+    assertSame(offerAuditImpl, actualSaveResult);
   }
 
   /**
@@ -87,30 +98,17 @@ public class OfferAuditServiceImplDiffblueTest {
    * Method under test: {@link OfferAuditServiceImpl#delete(OfferAudit)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OfferAuditServiceImpl.delete(OfferAudit)"})
   public void testDelete() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6340 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferAuditServiceImpl offerAuditServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    OfferAuditServiceImpl offerAuditServiceImpl2 = new OfferAuditServiceImpl();
+    doNothing().when(offerAuditDao).delete(Mockito.<OfferAudit>any());
 
     // Act
-    offerAuditServiceImpl2.delete(new OfferAuditImpl());
+    offerAuditServiceImpl.delete(new OfferAuditImpl());
+
+    // Assert
+    verify(offerAuditDao).delete(isA(OfferAudit.class));
   }
 
   /**
@@ -119,255 +117,233 @@ public class OfferAuditServiceImplDiffblueTest {
    * Method under test: {@link OfferAuditServiceImpl#create()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OfferAudit OfferAuditServiceImpl.create()"})
   public void testCreate() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6339 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferAuditServiceImpl offerAuditServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    OfferAuditImpl offerAuditImpl = new OfferAuditImpl();
+    when(offerAuditDao.create()).thenReturn(offerAuditImpl);
 
-    // Arrange and Act
-    (new OfferAuditServiceImpl()).create();
+    // Act
+    OfferAudit actualCreateResult = offerAuditServiceImpl.create();
+
+    // Assert
+    verify(offerAuditDao).create();
+    assertSame(offerAuditImpl, actualCreateResult);
   }
 
   /**
-   * Test {@link OfferAuditServiceImpl#countUsesByCustomer(Long, Long)} with
-   * {@code customerId}, {@code offerId}.
+   * Test {@link OfferAuditServiceImpl#countUsesByCustomer(Long, Long)} with {@code customerId}, {@code offerId}.
+   * <ul>
+   *   <li>When four.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link OfferAuditServiceImpl#countUsesByCustomer(Long, Long)}
+   * Method under test: {@link OfferAuditServiceImpl#countUsesByCustomer(Long, Long)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testCountUsesByCustomerWithCustomerIdOfferId() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6223 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferAuditServiceImpl offerAuditServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long OfferAuditServiceImpl.countUsesByCustomer(Long, Long)"})
+  public void testCountUsesByCustomerWithCustomerIdOfferId_whenFour() {
+    // Arrange
+    when(offerAuditDao.countUsesByCustomer(Mockito.<Long>any(), Mockito.<Long>any())).thenReturn(3L);
 
-    // Arrange and Act
-    (new OfferAuditServiceImpl()).countUsesByCustomer(1L, 1L);
+    // Act
+    Long actualCountUsesByCustomerResult = offerAuditServiceImpl.countUsesByCustomer(4L, 1L);
+
+    // Assert
+    verify(offerAuditDao).countUsesByCustomer(eq(4L), eq(1L));
+    assertEquals(3L, actualCountUsesByCustomerResult.longValue());
   }
 
   /**
-   * Test {@link OfferAuditServiceImpl#countUsesByCustomer(Order, Long, Long)}
-   * with {@code order}, {@code customerId}, {@code offerId}.
+   * Test {@link OfferAuditServiceImpl#countUsesByCustomer(Long, Long)} with {@code customerId}, {@code offerId}.
+   * <ul>
+   *   <li>When one.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link OfferAuditServiceImpl#countUsesByCustomer(Order, Long, Long)}
+   * Method under test: {@link OfferAuditServiceImpl#countUsesByCustomer(Long, Long)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long OfferAuditServiceImpl.countUsesByCustomer(Long, Long)"})
+  public void testCountUsesByCustomerWithCustomerIdOfferId_whenOne() {
+    // Arrange
+    when(offerAuditDao.countUsesByCustomer(Mockito.<Long>any(), Mockito.<Long>any())).thenReturn(3L);
+
+    // Act
+    Long actualCountUsesByCustomerResult = offerAuditServiceImpl.countUsesByCustomer(1L, 1L);
+
+    // Assert
+    verify(offerAuditDao).countUsesByCustomer(eq(1L), eq(1L));
+    assertEquals(3L, actualCountUsesByCustomerResult.longValue());
+  }
+
+  /**
+   * Test {@link OfferAuditServiceImpl#countUsesByCustomer(Long, Long)} with {@code customerId}, {@code offerId}.
+   * <ul>
+   *   <li>When three.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferAuditServiceImpl#countUsesByCustomer(Long, Long)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long OfferAuditServiceImpl.countUsesByCustomer(Long, Long)"})
+  public void testCountUsesByCustomerWithCustomerIdOfferId_whenThree() {
+    // Arrange
+    when(offerAuditDao.countUsesByCustomer(Mockito.<Long>any(), Mockito.<Long>any())).thenReturn(3L);
+
+    // Act
+    Long actualCountUsesByCustomerResult = offerAuditServiceImpl.countUsesByCustomer(3L, 1L);
+
+    // Assert
+    verify(offerAuditDao).countUsesByCustomer(eq(3L), eq(1L));
+    assertEquals(3L, actualCountUsesByCustomerResult.longValue());
+  }
+
+  /**
+   * Test {@link OfferAuditServiceImpl#countUsesByCustomer(Long, Long)} with {@code customerId}, {@code offerId}.
+   * <ul>
+   *   <li>When two.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferAuditServiceImpl#countUsesByCustomer(Long, Long)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long OfferAuditServiceImpl.countUsesByCustomer(Long, Long)"})
+  public void testCountUsesByCustomerWithCustomerIdOfferId_whenTwo() {
+    // Arrange
+    when(offerAuditDao.countUsesByCustomer(Mockito.<Long>any(), Mockito.<Long>any())).thenReturn(3L);
+
+    // Act
+    Long actualCountUsesByCustomerResult = offerAuditServiceImpl.countUsesByCustomer(2L, 1L);
+
+    // Assert
+    verify(offerAuditDao).countUsesByCustomer(eq(2L), eq(1L));
+    assertEquals(3L, actualCountUsesByCustomerResult.longValue());
+  }
+
+  /**
+   * Test {@link OfferAuditServiceImpl#countUsesByCustomer(Order, Long, Long)} with {@code order}, {@code customerId}, {@code offerId}.
+   * <p>
+   * Method under test: {@link OfferAuditServiceImpl#countUsesByCustomer(Order, Long, Long)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long OfferAuditServiceImpl.countUsesByCustomer(Order, Long, Long)"})
   public void testCountUsesByCustomerWithOrderCustomerIdOfferId() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6252 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferAuditServiceImpl offerAuditServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    OfferAuditServiceImpl offerAuditServiceImpl2 = new OfferAuditServiceImpl();
+    when(offerAuditDao.countUsesByCustomer(Mockito.<Order>any(), Mockito.<Long>any(), Mockito.<Long>any()))
+        .thenReturn(3L);
 
     // Act
-    offerAuditServiceImpl2.countUsesByCustomer(new NullOrderImpl(), 1L, 1L);
+    Long actualCountUsesByCustomerResult = offerAuditServiceImpl.countUsesByCustomer(new NullOrderImpl(), 1L, 1L);
+
+    // Assert
+    verify(offerAuditDao).countUsesByCustomer(isA(Order.class), eq(1L), eq(1L));
+    assertEquals(3L, actualCountUsesByCustomerResult.longValue());
   }
 
   /**
-   * Test
-   * {@link OfferAuditServiceImpl#countUsesByCustomer(Order, Long, Long, Long)}
-   * with {@code order}, {@code customerId}, {@code offerId},
-   * {@code minimumDaysPerUsage}.
+   * Test {@link OfferAuditServiceImpl#countUsesByCustomer(Order, Long, Long, Long)} with {@code order}, {@code customerId}, {@code offerId}, {@code minimumDaysPerUsage}.
    * <p>
-   * Method under test:
-   * {@link OfferAuditServiceImpl#countUsesByCustomer(Order, Long, Long, Long)}
+   * Method under test: {@link OfferAuditServiceImpl#countUsesByCustomer(Order, Long, Long, Long)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long OfferAuditServiceImpl.countUsesByCustomer(Order, Long, Long, Long)"})
   public void testCountUsesByCustomerWithOrderCustomerIdOfferIdMinimumDaysPerUsage() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6293 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferAuditServiceImpl offerAuditServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    OfferAuditServiceImpl offerAuditServiceImpl2 = new OfferAuditServiceImpl();
+    when(offerAuditDao.countUsesByCustomer(Mockito.<Order>any(), Mockito.<Long>any(), Mockito.<Long>any(),
+        Mockito.<Long>any())).thenReturn(3L);
 
     // Act
-    offerAuditServiceImpl2.countUsesByCustomer(new NullOrderImpl(), 1L, 1L, 3L);
+    Long actualCountUsesByCustomerResult = offerAuditServiceImpl.countUsesByCustomer(new NullOrderImpl(), 1L, 1L, 3L);
+
+    // Assert
+    verify(offerAuditDao).countUsesByCustomer(isA(Order.class), eq(1L), eq(1L), eq(3L));
+    assertEquals(3L, actualCountUsesByCustomerResult.longValue());
   }
 
   /**
-   * Test
-   * {@link OfferAuditServiceImpl#countUsesByAccount(Order, Long, Long, Long)}.
+   * Test {@link OfferAuditServiceImpl#countUsesByAccount(Order, Long, Long, Long)}.
    * <p>
-   * Method under test:
-   * {@link OfferAuditServiceImpl#countUsesByAccount(Order, Long, Long, Long)}
+   * Method under test: {@link OfferAuditServiceImpl#countUsesByAccount(Order, Long, Long, Long)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long OfferAuditServiceImpl.countUsesByAccount(Order, Long, Long, Long)"})
   public void testCountUsesByAccount() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6176 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferAuditServiceImpl offerAuditServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    OfferAuditServiceImpl offerAuditServiceImpl2 = new OfferAuditServiceImpl();
+    when(offerAuditDao.countUsesByAccount(Mockito.<Order>any(), Mockito.<Long>any(), Mockito.<Long>any(),
+        Mockito.<Long>any())).thenReturn(3L);
 
     // Act
-    offerAuditServiceImpl2.countUsesByAccount(new NullOrderImpl(), 1L, 1L, 3L);
+    Long actualCountUsesByAccountResult = offerAuditServiceImpl.countUsesByAccount(new NullOrderImpl(), 1L, 1L, 3L);
+
+    // Assert
+    verify(offerAuditDao).countUsesByAccount(isA(Order.class), eq(1L), eq(1L), eq(3L));
+    assertEquals(3L, actualCountUsesByAccountResult.longValue());
   }
 
   /**
-   * Test {@link OfferAuditServiceImpl#countOfferCodeUses(Long)} with
-   * {@code offerCodeId}.
+   * Test {@link OfferAuditServiceImpl#countOfferCodeUses(Long)} with {@code offerCodeId}.
    * <p>
    * Method under test: {@link OfferAuditServiceImpl#countOfferCodeUses(Long)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long OfferAuditServiceImpl.countOfferCodeUses(Long)"})
   public void testCountOfferCodeUsesWithOfferCodeId() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6134 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferAuditServiceImpl offerAuditServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    when(offerAuditDao.countOfferCodeUses(Mockito.<Long>any())).thenReturn(3L);
 
-    // Arrange and Act
-    (new OfferAuditServiceImpl()).countOfferCodeUses(1L);
+    // Act
+    Long actualCountOfferCodeUsesResult = offerAuditServiceImpl.countOfferCodeUses(1L);
+
+    // Assert
+    verify(offerAuditDao).countOfferCodeUses(eq(1L));
+    assertEquals(3L, actualCountOfferCodeUsesResult.longValue());
   }
 
   /**
-   * Test {@link OfferAuditServiceImpl#countOfferCodeUses(Order, Long)} with
-   * {@code order}, {@code offerCodeId}.
+   * Test {@link OfferAuditServiceImpl#countOfferCodeUses(Order, Long)} with {@code order}, {@code offerCodeId}.
    * <p>
-   * Method under test:
-   * {@link OfferAuditServiceImpl#countOfferCodeUses(Order, Long)}
+   * Method under test: {@link OfferAuditServiceImpl#countOfferCodeUses(Order, Long)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long OfferAuditServiceImpl.countOfferCodeUses(Order, Long)"})
   public void testCountOfferCodeUsesWithOrderOfferCodeId() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6149 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferAuditServiceImpl offerAuditServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    OfferAuditServiceImpl offerAuditServiceImpl2 = new OfferAuditServiceImpl();
+    when(offerAuditDao.countOfferCodeUses(Mockito.<Order>any(), Mockito.<Long>any())).thenReturn(3L);
 
     // Act
-    offerAuditServiceImpl2.countOfferCodeUses(new NullOrderImpl(), 1L);
+    Long actualCountOfferCodeUsesResult = offerAuditServiceImpl.countOfferCodeUses(new NullOrderImpl(), 1L);
+
+    // Assert
+    verify(offerAuditDao).countOfferCodeUses(isA(Order.class), eq(1L));
+    assertEquals(3L, actualCountOfferCodeUsesResult.longValue());
   }
 
   /**
    * Test {@link OfferAuditServiceImpl#readOfferAuditsByOrderId(Long)}.
    * <p>
-   * Method under test:
-   * {@link OfferAuditServiceImpl#readOfferAuditsByOrderId(Long)}
+   * Method under test: {@link OfferAuditServiceImpl#readOfferAuditsByOrderId(Long)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List OfferAuditServiceImpl.readOfferAuditsByOrderId(Long)"})
   public void testReadOfferAuditsByOrderId() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass6367 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferAuditServiceImpl offerAuditServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    when(offerAuditDao.readOfferAuditsByOrderId(Mockito.<Long>any())).thenReturn(new ArrayList<>());
 
-    // Arrange and Act
-    (new OfferAuditServiceImpl()).readOfferAuditsByOrderId(1L);
+    // Act
+    List<OfferAudit> actualReadOfferAuditsByOrderIdResult = offerAuditServiceImpl.readOfferAuditsByOrderId(1L);
+
+    // Assert
+    verify(offerAuditDao).readOfferAuditsByOrderId(eq(1L));
+    assertTrue(actualReadOfferAuditsByOrderIdResult.isEmpty());
   }
 }

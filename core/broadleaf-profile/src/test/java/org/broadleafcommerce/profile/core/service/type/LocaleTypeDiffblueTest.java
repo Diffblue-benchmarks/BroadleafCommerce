@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Profile
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.profile.core.service.type;
 
 import static org.junit.Assert.assertEquals;
@@ -6,10 +23,13 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.Set;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class LocaleTypeDiffblueTest {
   /**
@@ -18,6 +38,8 @@ public class LocaleTypeDiffblueTest {
    * Method under test: {@link LocaleType#getInstance(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"LocaleType LocaleType.getInstance(String)"})
   public void testGetInstance() throws MissingResourceException {
     // Arrange and Act
     LocaleType actualInstance = LocaleType.getInstance("en");
@@ -56,6 +78,9 @@ public class LocaleTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void LocaleType.<init>()", "String LocaleType.getFriendlyType()", "Locale LocaleType.getLocale()",
+      "String LocaleType.getType()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     LocaleType actualLocaleType = new LocaleType();
@@ -78,6 +103,8 @@ public class LocaleTypeDiffblueTest {
    * Method under test: {@link LocaleType#LocaleType(String, String, Locale)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void LocaleType.<init>(String, String, Locale)"})
   public void testNewLocaleType_whenDefault_thenReturnTypeIsEn() {
     // Arrange
     Locale locale = Locale.getDefault();
@@ -102,6 +129,8 @@ public class LocaleTypeDiffblueTest {
    * Method under test: {@link LocaleType#LocaleType(String, String, Locale)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void LocaleType.<init>(String, String, Locale)"})
   public void testNewLocaleType_whenFr_thenReturnTypeIsFr() {
     // Arrange
     Locale locale = Locale.getDefault();
@@ -130,6 +159,8 @@ public class LocaleTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean LocaleType.equals(Object)", "int LocaleType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     LocaleType localeType = LocaleType.CANADA;
@@ -155,6 +186,8 @@ public class LocaleTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean LocaleType.equals(Object)", "int LocaleType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     LocaleType localeType = new LocaleType();
@@ -180,6 +213,8 @@ public class LocaleTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean LocaleType.equals(Object)", "int LocaleType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     LocaleType localeType = LocaleType.CANADA;
@@ -200,9 +235,27 @@ public class LocaleTypeDiffblueTest {
    * Method under test: {@link LocaleType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean LocaleType.equals(Object)", "int LocaleType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(LocaleType.CANADA_FRENCH, LocaleType.CANADA);
+  }
+
+  /**
+   * Test {@link LocaleType#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LocaleType#equals(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean LocaleType.equals(Object)", "int LocaleType.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange, Act and Assert
     assertNotEquals(new LocaleType(), LocaleType.CANADA);
   }
 
@@ -216,6 +269,8 @@ public class LocaleTypeDiffblueTest {
    * Method under test: {@link LocaleType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean LocaleType.equals(Object)", "int LocaleType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(LocaleType.CANADA, null);
@@ -231,6 +286,8 @@ public class LocaleTypeDiffblueTest {
    * Method under test: {@link LocaleType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean LocaleType.equals(Object)", "int LocaleType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(LocaleType.CANADA, "Different type to LocaleType");

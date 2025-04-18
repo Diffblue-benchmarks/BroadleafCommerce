@@ -1,212 +1,323 @@
+/*-
+ * #%L
+ * BroadleafCommerce Admin Module
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.admin.web.controller.entity;
 
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.broadleafcommerce.common.persistence.EntityConfiguration;
+import org.broadleafcommerce.admin.web.controller.extension.AdminOfferControllerExtensionHandler;
 import org.broadleafcommerce.common.persistence.EntityDuplicator;
 import org.broadleafcommerce.common.sandbox.SandBoxHelper;
 import org.broadleafcommerce.common.security.service.ExploitProtectionService;
 import org.broadleafcommerce.common.service.GenericEntityService;
 import org.broadleafcommerce.core.catalog.service.CatalogService;
+import org.broadleafcommerce.openadmin.dto.ClassMetadata;
+import org.broadleafcommerce.openadmin.dto.ClassTree;
+import org.broadleafcommerce.openadmin.dto.DynamicResultSet;
+import org.broadleafcommerce.openadmin.dto.Property;
+import org.broadleafcommerce.openadmin.dto.SectionCrumb;
 import org.broadleafcommerce.openadmin.security.ClassNameRequestParamValidationService;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDao;
+import org.broadleafcommerce.openadmin.server.domain.PersistencePackageRequest;
 import org.broadleafcommerce.openadmin.server.security.dao.AdminUserDao;
+import org.broadleafcommerce.openadmin.server.security.domain.AdminSectionImpl;
+import org.broadleafcommerce.openadmin.server.security.domain.AdminUser;
+import org.broadleafcommerce.openadmin.server.security.domain.AdminUserImpl;
+import org.broadleafcommerce.openadmin.server.security.remote.EntityOperationType;
 import org.broadleafcommerce.openadmin.server.security.remote.SecurityVerifier;
+import org.broadleafcommerce.openadmin.server.security.service.RowLevelSecurityProvider;
 import org.broadleafcommerce.openadmin.server.security.service.RowLevelSecurityService;
 import org.broadleafcommerce.openadmin.server.security.service.navigation.AdminNavigationService;
 import org.broadleafcommerce.openadmin.server.service.AdminEntityService;
 import org.broadleafcommerce.openadmin.server.service.AdminSectionCustomCriteriaService;
-import org.broadleafcommerce.openadmin.server.service.extension.FilterProductTypePersistenceHandlerExtensionManager;
-import org.broadleafcommerce.openadmin.server.service.persistence.extension.AdornedTargetAutoPopulateExtensionManager;
+import org.broadleafcommerce.openadmin.server.service.persistence.PersistenceResponse;
 import org.broadleafcommerce.openadmin.web.controller.AdminAbstractControllerExtensionManager;
-import org.broadleafcommerce.openadmin.web.dao.MultipleCatalogExtensionManager;
-import org.broadleafcommerce.openadmin.web.form.entity.EntityFormValidator;
+import org.broadleafcommerce.openadmin.web.form.component.ListGrid;
 import org.broadleafcommerce.openadmin.web.service.FormBuilderService;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
 
-@ContextConfiguration(classes = {AdminBaseProductController.class})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class AdminBaseProductControllerDiffblueTest {
-  @MockBean(name = "blAdminAbstractControllerExtensionManager")
+  @Mock
   private AdminAbstractControllerExtensionManager adminAbstractControllerExtensionManager;
 
-  @Autowired
+  @InjectMocks
   private AdminBaseProductController adminBaseProductController;
 
-  @MockBean
+  @Mock
   private AdminEntityService adminEntityService;
 
-  @MockBean
+  @Mock
   private AdminNavigationService adminNavigationService;
 
-  @MockBean
+  @Mock
   private AdminSectionCustomCriteriaService adminSectionCustomCriteriaService;
 
-  @MockBean
+  @Mock
   private AdminUserDao adminUserDao;
 
-  @MockBean(name = "blAdornedTargetAutoPopulateExtensionManager")
-  private AdornedTargetAutoPopulateExtensionManager adornedTargetAutoPopulateExtensionManager;
-
-  @MockBean
+  @Mock
   private CatalogService catalogService;
 
-  @MockBean
+  @Mock
   private ClassNameRequestParamValidationService classNameRequestParamValidationService;
 
-  @MockBean
+  @Mock
   private DynamicEntityDao dynamicEntityDao;
 
-  @MockBean(name = "blEntityConfiguration")
-  private EntityConfiguration entityConfiguration;
-
-  @MockBean
+  @Mock
   private EntityDuplicator entityDuplicator;
 
-  @MockBean(name = "blEntityFormValidator")
-  private EntityFormValidator entityFormValidator;
-
-  @MockBean
+  @Mock
   private ExploitProtectionService exploitProtectionService;
 
-  @MockBean(name = "blFilterProductTypePersistenceHandlerExtensionManager")
-  private FilterProductTypePersistenceHandlerExtensionManager filterProductTypePersistenceHandlerExtensionManager;
-
-  @MockBean
+  @Mock
   private FormBuilderService formBuilderService;
 
-  @MockBean
+  @Mock
   private GenericEntityService genericEntityService;
 
-  @MockBean(name = "blMultipleCatalogExtensionManager")
-  private MultipleCatalogExtensionManager multipleCatalogExtensionManager;
-
-  @MockBean
+  @Mock
   private RowLevelSecurityService rowLevelSecurityService;
 
-  @MockBean
+  @Mock
   private SandBoxHelper sandBoxHelper;
 
-  @MockBean
+  @Mock
   private SecurityVerifier securityVerifier;
 
   /**
-   * Test
-   * {@link AdminBaseProductController#viewEntityForm(HttpServletRequest, HttpServletResponse, Model, Map, String)}.
+   * Test {@link AdminBaseProductController#viewEntityList(HttpServletRequest, HttpServletResponse, Model, Map, MultiValueMap)}.
    * <p>
-   * Method under test:
-   * {@link AdminBaseProductController#viewEntityForm(HttpServletRequest, HttpServletResponse, Model, Map, String)}
+   * Method under test: {@link AdminBaseProductController#viewEntityList(HttpServletRequest, HttpServletResponse, Model, Map, MultiValueMap)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testViewEntityForm() throws Exception {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.web.controller.entity;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.admin.web.controller.entity.AdminBaseProductController.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass348 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blAdminAbstractControllerExtensionManager") org.broadleafcommerce.openadmin.web.controller.AdminAbstractControllerExtensionManager adminAbstractControllerExtensionManager;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.web.controller.entity.AdminBaseProductController adminBaseProductController;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminEntityService adminEntityService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.service.navigation.AdminNavigationService adminNavigationService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminSectionCustomCriteriaService adminSectionCustomCriteriaService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.dao.AdminUserDao adminUserDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blAdornedTargetAutoPopulateExtensionManager") org.broadleafcommerce.openadmin.server.service.persistence.extension.AdornedTargetAutoPopulateExtensionManager adornedTargetAutoPopulateExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.service.CatalogService catalogService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.security.ClassNameRequestParamValidationService classNameRequestParamValidationService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.dao.DynamicEntityDao dynamicEntityDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityConfiguration") org.broadleafcommerce.common.persistence.EntityConfiguration entityConfiguration;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.persistence.EntityDuplicator entityDuplicator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityFormValidator") org.broadleafcommerce.openadmin.web.form.entity.EntityFormValidator entityFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.security.service.ExploitProtectionService exploitProtectionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blFilterProductTypePersistenceHandlerExtensionManager") org.broadleafcommerce.openadmin.server.service.extension.FilterProductTypePersistenceHandlerExtensionManager filterProductTypePersistenceHandlerExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.web.service.FormBuilderService formBuilderService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.service.GenericEntityService genericEntityService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blMultipleCatalogExtensionManager") org.broadleafcommerce.openadmin.web.dao.MultipleCatalogExtensionManager multipleCatalogExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.service.RowLevelSecurityService rowLevelSecurityService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.sandbox.SandBoxHelper sandBoxHelper;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.remote.SecurityVerifier securityVerifier;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "String AdminBaseProductController.viewEntityList(HttpServletRequest, HttpServletResponse, Model, Map, MultiValueMap)"})
+  public void testViewEntityList() throws Exception {
     // Arrange
-    MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/product:product/{id}", "42");
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any())).thenReturn(new AdminSectionImpl());
+    when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
+    doNothing().when(securityVerifier).securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(Mockito.<String>any(), Mockito.<String[]>any()))
+        .thenReturn(new String[]{"Merge Section Custom Criteria"});
+    when(adminAbstractControllerExtensionManager.getProxy()).thenReturn(new AdminOfferControllerExtensionHandler());
+    when(formBuilderService.buildMainListGrid(Mockito.<DynamicResultSet>any(), Mockito.<ClassMetadata>any(),
+        Mockito.<String>any(), Mockito.<List<SectionCrumb>>any())).thenReturn(new ListGrid());
 
-    // Act
-    MockMvcBuilders.standaloneSetup(adminBaseProductController).build().perform(requestBuilder);
+    ClassMetadata classMetaData = new ClassMetadata();
+    classMetaData.setPolymorphicEntities(new ClassTree());
+    classMetaData.setProperties(new Property[]{new Property()});
+    DynamicResultSet dynamicResultSet = new DynamicResultSet(classMetaData);
+
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    persistenceResponse.setDynamicResultSet(dynamicResultSet);
+    when(adminEntityService.getRecords(Mockito.<PersistencePackageRequest>any())).thenReturn(new PersistenceResponse());
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any())).thenReturn(persistenceResponse);
+    when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
+        .thenReturn("Class Name For Section");
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any())).thenReturn(new ArrayList<>());
+    when(rowLevelSecurityService.canAdd(Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
+        .thenReturn(true);
+    MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/product:product");
+
+    // Act and Assert
+    MockMvcBuilders.standaloneSetup(adminBaseProductController)
+        .build()
+        .perform(requestBuilder)
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.model().size(11))
+        .andExpect(MockMvcResultMatchers.model()
+            .attributeExists("currentAdminSection", "currentUri", "currentUrl", "entityTypes", "isFilter", "listGrid",
+                "mainActions", "sectionKey", "viewType"))
+        .andExpect(MockMvcResultMatchers.view().name("modules/defaultContainer"))
+        .andExpect(MockMvcResultMatchers.forwardedUrl("modules/defaultContainer"));
   }
 
   /**
-   * Test
-   * {@link AdminBaseProductController#viewEntityList(HttpServletRequest, HttpServletResponse, Model, Map, MultiValueMap)}.
+   * Test {@link AdminBaseProductController#viewEntityList(HttpServletRequest, HttpServletResponse, Model, Map, MultiValueMap)}.
    * <p>
-   * Method under test:
-   * {@link AdminBaseProductController#viewEntityList(HttpServletRequest, HttpServletResponse, Model, Map, MultiValueMap)}
+   * Method under test: {@link AdminBaseProductController#viewEntityList(HttpServletRequest, HttpServletResponse, Model, Map, MultiValueMap)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testViewEntityList() throws Exception {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.admin.web.controller.entity;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.admin.web.controller.entity.AdminBaseProductController.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass349 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blAdminAbstractControllerExtensionManager") org.broadleafcommerce.openadmin.web.controller.AdminAbstractControllerExtensionManager adminAbstractControllerExtensionManager;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.web.controller.entity.AdminBaseProductController adminBaseProductController;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminEntityService adminEntityService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.service.navigation.AdminNavigationService adminNavigationService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminSectionCustomCriteriaService adminSectionCustomCriteriaService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.dao.AdminUserDao adminUserDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blAdornedTargetAutoPopulateExtensionManager") org.broadleafcommerce.openadmin.server.service.persistence.extension.AdornedTargetAutoPopulateExtensionManager adornedTargetAutoPopulateExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.catalog.service.CatalogService catalogService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.security.ClassNameRequestParamValidationService classNameRequestParamValidationService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.dao.DynamicEntityDao dynamicEntityDao;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityConfiguration") org.broadleafcommerce.common.persistence.EntityConfiguration entityConfiguration;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.persistence.EntityDuplicator entityDuplicator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityFormValidator") org.broadleafcommerce.openadmin.web.form.entity.EntityFormValidator entityFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.security.service.ExploitProtectionService exploitProtectionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blFilterProductTypePersistenceHandlerExtensionManager") org.broadleafcommerce.openadmin.server.service.extension.FilterProductTypePersistenceHandlerExtensionManager filterProductTypePersistenceHandlerExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.web.service.FormBuilderService formBuilderService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.service.GenericEntityService genericEntityService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blMultipleCatalogExtensionManager") org.broadleafcommerce.openadmin.web.dao.MultipleCatalogExtensionManager multipleCatalogExtensionManager;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.service.RowLevelSecurityService rowLevelSecurityService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.sandbox.SandBoxHelper sandBoxHelper;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.remote.SecurityVerifier securityVerifier;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "String AdminBaseProductController.viewEntityList(HttpServletRequest, HttpServletResponse, Model, Map, MultiValueMap)"})
+  public void testViewEntityList2() throws Exception {
     // Arrange
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any())).thenReturn(new AdminSectionImpl());
+    when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
+    doNothing().when(securityVerifier).securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(Mockito.<String>any(), Mockito.<String[]>any()))
+        .thenReturn(new String[]{});
+    when(adminAbstractControllerExtensionManager.getProxy()).thenReturn(new AdminOfferControllerExtensionHandler());
+    when(formBuilderService.buildMainListGrid(Mockito.<DynamicResultSet>any(), Mockito.<ClassMetadata>any(),
+        Mockito.<String>any(), Mockito.<List<SectionCrumb>>any())).thenReturn(new ListGrid());
+
+    ClassMetadata classMetaData = new ClassMetadata();
+    classMetaData.setPolymorphicEntities(new ClassTree());
+    classMetaData.setProperties(new Property[]{new Property()});
+    DynamicResultSet dynamicResultSet = new DynamicResultSet(classMetaData);
+
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    persistenceResponse.setDynamicResultSet(dynamicResultSet);
+    when(adminEntityService.getRecords(Mockito.<PersistencePackageRequest>any())).thenReturn(new PersistenceResponse());
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any())).thenReturn(persistenceResponse);
+    when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
+        .thenReturn("Class Name For Section");
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any())).thenReturn(new ArrayList<>());
+    when(rowLevelSecurityService.canAdd(Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
+        .thenReturn(true);
     MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/product:product");
 
-    // Act
-    MockMvcBuilders.standaloneSetup(adminBaseProductController).build().perform(requestBuilder);
+    // Act and Assert
+    MockMvcBuilders.standaloneSetup(adminBaseProductController)
+        .build()
+        .perform(requestBuilder)
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.model().size(11))
+        .andExpect(MockMvcResultMatchers.model()
+            .attributeExists("currentAdminSection", "currentUri", "currentUrl", "entityTypes", "isFilter", "listGrid",
+                "mainActions", "sectionKey", "viewType"))
+        .andExpect(MockMvcResultMatchers.view().name("modules/defaultContainer"))
+        .andExpect(MockMvcResultMatchers.forwardedUrl("modules/defaultContainer"));
+  }
+
+  /**
+   * Test {@link AdminBaseProductController#viewEntityList(HttpServletRequest, HttpServletResponse, Model, Map, MultiValueMap)}.
+   * <ul>
+   *   <li>Given {@link ClassMetadata} (default constructor) Properties is empty array of {@link Property}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminBaseProductController#viewEntityList(HttpServletRequest, HttpServletResponse, Model, Map, MultiValueMap)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "String AdminBaseProductController.viewEntityList(HttpServletRequest, HttpServletResponse, Model, Map, MultiValueMap)"})
+  public void testViewEntityList_givenClassMetadataPropertiesIsEmptyArrayOfProperty() throws Exception {
+    // Arrange
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any())).thenReturn(new AdminSectionImpl());
+    when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
+    doNothing().when(securityVerifier).securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(Mockito.<String>any(), Mockito.<String[]>any()))
+        .thenReturn(new String[]{"Merge Section Custom Criteria"});
+    when(adminAbstractControllerExtensionManager.getProxy()).thenReturn(new AdminOfferControllerExtensionHandler());
+    when(formBuilderService.buildMainListGrid(Mockito.<DynamicResultSet>any(), Mockito.<ClassMetadata>any(),
+        Mockito.<String>any(), Mockito.<List<SectionCrumb>>any())).thenReturn(new ListGrid());
+
+    ClassMetadata classMetaData = new ClassMetadata();
+    classMetaData.setPolymorphicEntities(new ClassTree());
+    classMetaData.setProperties(new Property[]{});
+    DynamicResultSet dynamicResultSet = new DynamicResultSet(classMetaData);
+
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    persistenceResponse.setDynamicResultSet(dynamicResultSet);
+    when(adminEntityService.getRecords(Mockito.<PersistencePackageRequest>any())).thenReturn(new PersistenceResponse());
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any())).thenReturn(persistenceResponse);
+    when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
+        .thenReturn("Class Name For Section");
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any())).thenReturn(new ArrayList<>());
+    when(rowLevelSecurityService.canAdd(Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
+        .thenReturn(true);
+    MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/product:product");
+
+    // Act and Assert
+    MockMvcBuilders.standaloneSetup(adminBaseProductController)
+        .build()
+        .perform(requestBuilder)
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.model().size(11))
+        .andExpect(MockMvcResultMatchers.model()
+            .attributeExists("currentAdminSection", "currentUri", "currentUrl", "entityTypes", "isFilter", "listGrid",
+                "mainActions", "sectionKey", "viewType"))
+        .andExpect(MockMvcResultMatchers.view().name("modules/defaultContainer"))
+        .andExpect(MockMvcResultMatchers.forwardedUrl("modules/defaultContainer"));
+  }
+
+  /**
+   * Test {@link AdminBaseProductController#viewEntityList(HttpServletRequest, HttpServletResponse, Model, Map, MultiValueMap)}.
+   * <ul>
+   *   <li>Given {@link RowLevelSecurityService} {@link RowLevelSecurityProvider#canAdd(AdminUser, String, ClassMetadata)} return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminBaseProductController#viewEntityList(HttpServletRequest, HttpServletResponse, Model, Map, MultiValueMap)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "String AdminBaseProductController.viewEntityList(HttpServletRequest, HttpServletResponse, Model, Map, MultiValueMap)"})
+  public void testViewEntityList_givenRowLevelSecurityServiceCanAddReturnFalse() throws Exception {
+    // Arrange
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any())).thenReturn(new AdminSectionImpl());
+    when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
+    doNothing().when(securityVerifier).securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(Mockito.<String>any(), Mockito.<String[]>any()))
+        .thenReturn(new String[]{"Merge Section Custom Criteria"});
+    when(adminAbstractControllerExtensionManager.getProxy()).thenReturn(new AdminOfferControllerExtensionHandler());
+    when(formBuilderService.buildMainListGrid(Mockito.<DynamicResultSet>any(), Mockito.<ClassMetadata>any(),
+        Mockito.<String>any(), Mockito.<List<SectionCrumb>>any())).thenReturn(new ListGrid());
+
+    ClassMetadata classMetaData = new ClassMetadata();
+    classMetaData.setPolymorphicEntities(new ClassTree());
+    classMetaData.setProperties(new Property[]{new Property()});
+    DynamicResultSet dynamicResultSet = new DynamicResultSet(classMetaData);
+
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    persistenceResponse.setDynamicResultSet(dynamicResultSet);
+    when(adminEntityService.getRecords(Mockito.<PersistencePackageRequest>any())).thenReturn(new PersistenceResponse());
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any())).thenReturn(persistenceResponse);
+    when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
+        .thenReturn("Class Name For Section");
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any())).thenReturn(new ArrayList<>());
+    when(rowLevelSecurityService.canAdd(Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
+        .thenReturn(false);
+    MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/product:product");
+
+    // Act and Assert
+    MockMvcBuilders.standaloneSetup(adminBaseProductController)
+        .build()
+        .perform(requestBuilder)
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.model().size(11))
+        .andExpect(MockMvcResultMatchers.model()
+            .attributeExists("currentAdminSection", "currentUri", "currentUrl", "entityTypes", "isFilter", "listGrid",
+                "mainActions", "sectionKey", "viewType"))
+        .andExpect(MockMvcResultMatchers.view().name("modules/defaultContainer"))
+        .andExpect(MockMvcResultMatchers.forwardedUrl("modules/defaultContainer"));
   }
 }

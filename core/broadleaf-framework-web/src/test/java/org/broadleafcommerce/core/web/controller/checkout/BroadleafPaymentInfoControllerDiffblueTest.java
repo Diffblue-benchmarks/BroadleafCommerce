@@ -1,34 +1,79 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework Web
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.web.controller.checkout;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.broadleafcommerce.common.audit.Auditable;
+import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
 import org.broadleafcommerce.common.exception.ServiceException;
 import org.broadleafcommerce.common.i18n.service.ISOService;
-import org.broadleafcommerce.common.payment.service.PaymentGatewayCheckoutService;
+import org.broadleafcommerce.common.locale.domain.LocaleImpl;
+import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.core.checkout.service.CheckoutService;
+import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
+import org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
+import org.broadleafcommerce.core.order.domain.OrderImpl;
 import org.broadleafcommerce.core.order.service.FulfillmentGroupService;
 import org.broadleafcommerce.core.order.service.FulfillmentOptionService;
 import org.broadleafcommerce.core.order.service.OrderMultishipOptionService;
 import org.broadleafcommerce.core.order.service.OrderService;
+import org.broadleafcommerce.core.order.service.type.OrderStatus;
+import org.broadleafcommerce.core.payment.domain.OrderPayment;
+import org.broadleafcommerce.core.payment.domain.OrderPaymentImpl;
 import org.broadleafcommerce.core.payment.service.OrderPaymentService;
 import org.broadleafcommerce.core.payment.service.OrderToPaymentRequestDTOService;
 import org.broadleafcommerce.core.pricing.service.exception.PricingException;
 import org.broadleafcommerce.core.web.checkout.model.PaymentInfoForm;
-import org.broadleafcommerce.core.web.checkout.validator.BillingInfoFormValidator;
 import org.broadleafcommerce.core.web.checkout.validator.CheckoutPaymentInfoFormValidator;
-import org.broadleafcommerce.core.web.checkout.validator.GiftCardInfoFormValidator;
-import org.broadleafcommerce.core.web.checkout.validator.MultishipAddAddressFormValidator;
-import org.broadleafcommerce.core.web.checkout.validator.OrderInfoFormValidator;
-import org.broadleafcommerce.core.web.checkout.validator.ShippingInfoFormValidator;
 import org.broadleafcommerce.core.web.order.service.CartStateService;
 import org.broadleafcommerce.core.web.payment.service.SavedPaymentService;
 import org.broadleafcommerce.core.web.search.SearchRequestWrapper;
 import org.broadleafcommerce.core.web.security.XssRequestWrapper;
 import org.broadleafcommerce.core.web.service.InitBinderService;
+import org.broadleafcommerce.profile.core.domain.Address;
+import org.broadleafcommerce.profile.core.domain.AddressImpl;
+import org.broadleafcommerce.profile.core.domain.Customer;
+import org.broadleafcommerce.profile.core.domain.CustomerImpl;
+import org.broadleafcommerce.profile.core.domain.CustomerPayment;
+import org.broadleafcommerce.profile.core.domain.CustomerPaymentImpl;
+import org.broadleafcommerce.profile.core.domain.Phone;
+import org.broadleafcommerce.profile.core.domain.PhoneImpl;
 import org.broadleafcommerce.profile.core.service.AddressService;
 import org.broadleafcommerce.profile.core.service.CountryService;
 import org.broadleafcommerce.profile.core.service.CountrySubdivisionService;
@@ -37,165 +82,170 @@ import org.broadleafcommerce.profile.core.service.CustomerPaymentService;
 import org.broadleafcommerce.profile.core.service.CustomerService;
 import org.broadleafcommerce.profile.core.service.PhoneService;
 import org.broadleafcommerce.profile.core.service.StateService;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.web.reactive.context.StandardReactiveWebEnvironment;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.ui.ConcurrentModel;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
+import org.springframework.validation.ObjectError;
 
-@ContextConfiguration(classes = {BroadleafPaymentInfoController.class})
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 class BroadleafPaymentInfoControllerDiffblueTest {
-  @MockBean
+  @Mock
   private AddressService addressService;
 
-  @MockBean(name = "blBillingInfoFormValidator")
-  private BillingInfoFormValidator billingInfoFormValidator;
-
-  @MockBean(name = "blCheckoutControllerExtensionManager")
-  private BroadleafCheckoutControllerExtensionManager broadleafCheckoutControllerExtensionManager;
-
-  @Autowired
+  @InjectMocks
   private BroadleafPaymentInfoController broadleafPaymentInfoController;
 
-  @MockBean
+  @Mock
   private CartStateService cartStateService;
 
-  @MockBean(name = "blCheckoutPaymentInfoFormValidator")
+  @Mock
   private CheckoutPaymentInfoFormValidator checkoutPaymentInfoFormValidator;
 
-  @MockBean
+  @Mock
   private CheckoutService checkoutService;
 
-  @MockBean
+  @Mock
   private CountryService countryService;
 
-  @MockBean
+  @Mock
   private CountrySubdivisionService countrySubdivisionService;
 
-  @MockBean
+  @Mock
   private CustomerAddressService customerAddressService;
 
-  @MockBean
+  @Mock
   private CustomerPaymentService customerPaymentService;
 
-  @MockBean
+  @Mock
   private CustomerService customerService;
 
-  @MockBean
+  @Mock
   private FulfillmentGroupService fulfillmentGroupService;
 
-  @MockBean
+  @Mock
   private FulfillmentOptionService fulfillmentOptionService;
 
-  @MockBean(name = "blGiftCardInfoFormValidator")
-  private GiftCardInfoFormValidator giftCardInfoFormValidator;
-
-  @MockBean
+  @Mock
   private ISOService iSOService;
 
-  @MockBean
+  @Mock
   private InitBinderService initBinderService;
 
-  @MockBean(name = "blMultishipAddAddressFormValidator")
-  private MultishipAddAddressFormValidator multishipAddAddressFormValidator;
-
-  @MockBean(name = "blOrderInfoFormValidator")
-  private OrderInfoFormValidator orderInfoFormValidator;
-
-  @MockBean
+  @Mock
   private OrderMultishipOptionService orderMultishipOptionService;
 
-  @MockBean
+  @Mock
   private OrderPaymentService orderPaymentService;
 
-  @MockBean
+  @Mock
   private OrderService orderService;
 
-  @MockBean
+  @Mock
   private OrderToPaymentRequestDTOService orderToPaymentRequestDTOService;
 
-  @MockBean(name = "blPaymentGatewayCheckoutService")
-  private PaymentGatewayCheckoutService paymentGatewayCheckoutService;
-
-  @MockBean
+  @Mock
   private PhoneService phoneService;
 
-  @MockBean
+  @Mock
   private SavedPaymentService savedPaymentService;
 
-  @MockBean(name = "blShippingInfoFormValidator")
-  private ShippingInfoFormValidator shippingInfoFormValidator;
-
-  @MockBean
+  @Mock
   private StateService stateService;
 
   /**
-   * Test
-   * {@link BroadleafPaymentInfoController#savePaymentInfo(HttpServletRequest, HttpServletResponse, Model, PaymentInfoForm, BindingResult)}.
+   * Test {@link BroadleafPaymentInfoController#savePaymentInfo(HttpServletRequest, HttpServletResponse, Model, PaymentInfoForm, BindingResult)}.
+   * <ul>
+   *   <li>Given {@link CartStateService}.</li>
+   *   <li>Then calls {@link FulfillmentGroup#getAddress()}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafPaymentInfoController#savePaymentInfo(HttpServletRequest, HttpServletResponse, Model, PaymentInfoForm, BindingResult)}
+   * Method under test: {@link BroadleafPaymentInfoController#savePaymentInfo(HttpServletRequest, HttpServletResponse, Model, PaymentInfoForm, BindingResult)}
    */
   @Test
-  @DisplayName("Test savePaymentInfo(HttpServletRequest, HttpServletResponse, Model, PaymentInfoForm, BindingResult)")
-  @Disabled("TODO: Complete this test")
-  void testSavePaymentInfo() throws ServiceException, PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.controller.checkout;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.web.controller.checkout.BroadleafPaymentInfoController.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass915 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.AddressService addressService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blBillingInfoFormValidator") org.broadleafcommerce.core.web.checkout.validator.BillingInfoFormValidator billingInfoFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blCheckoutControllerExtensionManager") org.broadleafcommerce.core.web.controller.checkout.BroadleafCheckoutControllerExtensionManager broadleafCheckoutControllerExtensionManager;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.controller.checkout.BroadleafPaymentInfoController broadleafPaymentInfoController;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.web.order.service.CartStateService cartStateService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blCheckoutPaymentInfoFormValidator") org.broadleafcommerce.core.web.checkout.validator.CheckoutPaymentInfoFormValidator checkoutPaymentInfoFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.checkout.service.CheckoutService checkoutService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CountryService countryService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CountrySubdivisionService countrySubdivisionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerAddressService customerAddressService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerPaymentService customerPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentOptionService fulfillmentOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blGiftCardInfoFormValidator") org.broadleafcommerce.core.web.checkout.validator.GiftCardInfoFormValidator giftCardInfoFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.i18n.service.ISOService iSOService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.web.service.InitBinderService initBinderService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blMultishipAddAddressFormValidator") org.broadleafcommerce.core.web.checkout.validator.MultishipAddAddressFormValidator multishipAddAddressFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderInfoFormValidator") org.broadleafcommerce.core.web.checkout.validator.OrderInfoFormValidator orderInfoFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.OrderPaymentService orderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderService orderService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.OrderToPaymentRequestDTOService orderToPaymentRequestDTOService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blPaymentGatewayCheckoutService") org.broadleafcommerce.common.payment.service.PaymentGatewayCheckoutService paymentGatewayCheckoutService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.PhoneService phoneService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.web.payment.service.SavedPaymentService savedPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blShippingInfoFormValidator") org.broadleafcommerce.core.web.checkout.validator.ShippingInfoFormValidator shippingInfoFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.StateService stateService;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @DisplayName("Test savePaymentInfo(HttpServletRequest, HttpServletResponse, Model, PaymentInfoForm, BindingResult); given CartStateService; then calls getAddress()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "String BroadleafPaymentInfoController.savePaymentInfo(HttpServletRequest, HttpServletResponse, Model, PaymentInfoForm, BindingResult)"})
+  void testSavePaymentInfo_givenCartStateService_thenCallsGetAddress() throws ServiceException, PricingException {
     // Arrange
+    when(addressService.copyAddress(Mockito.<Address>any())).thenReturn(new AddressImpl());
+    doNothing().when(addressService).populateAddressISOCountrySub(Mockito.<Address>any());
+    CustomerPayment customerPayment = mock(CustomerPayment.class);
+    when(customerPayment.getBillingAddress()).thenReturn(new AddressImpl());
+    when(customerPaymentService.readCustomerPaymentById(Mockito.<Long>any())).thenReturn(customerPayment);
+    FulfillmentGroup fulfillmentGroup = mock(FulfillmentGroup.class);
+    when(fulfillmentGroup.getAddress()).thenReturn(new AddressImpl());
+    when(fulfillmentGroupService.getFirstShippableFulfillmentGroup(Mockito.<Order>any())).thenReturn(fulfillmentGroup);
+    doNothing().when(checkoutPaymentInfoFormValidator).validate(Mockito.<Object>any(), Mockito.<Errors>any());
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    ConcurrentModel model = new ConcurrentModel();
+    PaymentInfoForm paymentForm = mock(PaymentInfoForm.class);
+    doNothing().when(paymentForm).setAddress(Mockito.<Address>any());
+    when(paymentForm.getCustomerPaymentId()).thenReturn(1L);
+    when(paymentForm.getShouldUseCustomerPayment()).thenReturn(true);
+    when(paymentForm.getShouldUseShippingAddress()).thenReturn(true);
+    when(paymentForm.getAddress()).thenReturn(new AddressImpl());
+
+    BindException result = new BindException("Target", "Object Name");
+    result.addError(new ObjectError("ThreadLocalManager.notify.orphans", "ThreadLocalManager.notify.orphans"));
+
+    // Act
+    String actualSavePaymentInfoResult = broadleafPaymentInfoController.savePaymentInfo(request, response, model,
+        paymentForm, result);
+
+    // Assert
+    verify(fulfillmentGroup).getAddress();
+    verify(fulfillmentGroupService, atLeast(1)).getFirstShippableFulfillmentGroup(isNull());
+    verify(paymentForm).getAddress();
+    verify(paymentForm, atLeast(1)).getCustomerPaymentId();
+    verify(paymentForm).getShouldUseCustomerPayment();
+    verify(paymentForm).getShouldUseShippingAddress();
+    verify(paymentForm, atLeast(1)).setAddress(isA(Address.class));
+    verify(checkoutPaymentInfoFormValidator).validate(isA(Object.class), isA(Errors.class));
+    verify(customerPayment).getBillingAddress();
+    verify(addressService, atLeast(1)).copyAddress(isA(Address.class));
+    verify(addressService).populateAddressISOCountrySub(isA(Address.class));
+    verify(customerPaymentService).readCustomerPaymentById(eq(1L));
+    assertEquals("redirect:/checkout", actualSavePaymentInfoResult);
+  }
+
+  /**
+   * Test {@link BroadleafPaymentInfoController#savePaymentInfo(HttpServletRequest, HttpServletResponse, Model, PaymentInfoForm, BindingResult)}.
+   * <ul>
+   *   <li>Then {@link PaymentInfoForm} (default constructor) CustomerPaymentId longValue is one.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BroadleafPaymentInfoController#savePaymentInfo(HttpServletRequest, HttpServletResponse, Model, PaymentInfoForm, BindingResult)}
+   */
+  @Test
+  @DisplayName("Test savePaymentInfo(HttpServletRequest, HttpServletResponse, Model, PaymentInfoForm, BindingResult); then PaymentInfoForm (default constructor) CustomerPaymentId longValue is one")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "String BroadleafPaymentInfoController.savePaymentInfo(HttpServletRequest, HttpServletResponse, Model, PaymentInfoForm, BindingResult)"})
+  void testSavePaymentInfo_thenPaymentInfoFormCustomerPaymentIdLongValueIsOne()
+      throws ServiceException, PricingException {
+    // Arrange
+    doNothing().when(addressService).populateAddressISOCountrySub(Mockito.<Address>any());
+    when(cartStateService.cartHasCreditCardPaymentWithSameToken(Mockito.<String>any())).thenReturn(true);
+    when(customerPaymentService.readCustomerPaymentById(Mockito.<Long>any())).thenReturn(new CustomerPaymentImpl());
+    doNothing().when(checkoutPaymentInfoFormValidator).validate(Mockito.<Object>any(), Mockito.<Errors>any());
+    when(savedPaymentService.addSavedPayment(Mockito.<Customer>any(), Mockito.<PaymentInfoForm>any())).thenReturn(1L);
     MockHttpServletRequest servletRequest = new MockHttpServletRequest();
     SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
         new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
@@ -204,331 +254,513 @@ class BroadleafPaymentInfoControllerDiffblueTest {
     PaymentInfoForm paymentForm = new PaymentInfoForm();
 
     // Act
-    broadleafPaymentInfoController.savePaymentInfo(request, response, model, paymentForm,
-        new BindException("Target", "Object Name"));
+    String actualSavePaymentInfoResult = broadleafPaymentInfoController.savePaymentInfo(request, response, model,
+        paymentForm, new BindException("Target", "Object Name"));
+
+    // Assert
+    verify(checkoutPaymentInfoFormValidator).validate(isA(Object.class), isA(Errors.class));
+    verify(cartStateService).cartHasCreditCardPaymentWithSameToken(isNull());
+    verify(savedPaymentService).addSavedPayment(isNull(), isA(PaymentInfoForm.class));
+    verify(addressService).populateAddressISOCountrySub(isA(Address.class));
+    verify(customerPaymentService).readCustomerPaymentById(eq(1L));
+    assertEquals("redirect:/checkout", actualSavePaymentInfoResult);
+    assertEquals(1L, paymentForm.getCustomerPaymentId().longValue());
+    assertTrue(paymentForm.getShouldUseCustomerPayment());
+    assertTrue(paymentForm.hasCustomerPaymentId());
   }
 
   /**
-   * Test
-   * {@link BroadleafPaymentInfoController#saveBillingAddress(HttpServletRequest, HttpServletResponse, Model, PaymentInfoForm, BindingResult)}.
+   * Test {@link BroadleafPaymentInfoController#preProcessBillingAddress(PaymentInfoForm, Order)}.
    * <p>
-   * Method under test:
-   * {@link BroadleafPaymentInfoController#saveBillingAddress(HttpServletRequest, HttpServletResponse, Model, PaymentInfoForm, BindingResult)}
-   */
-  @Test
-  @DisplayName("Test saveBillingAddress(HttpServletRequest, HttpServletResponse, Model, PaymentInfoForm, BindingResult)")
-  @Disabled("TODO: Complete this test")
-  void testSaveBillingAddress() throws ServiceException, PricingException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.controller.checkout;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.web.controller.checkout.BroadleafPaymentInfoController.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass914 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.AddressService addressService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blBillingInfoFormValidator") org.broadleafcommerce.core.web.checkout.validator.BillingInfoFormValidator billingInfoFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blCheckoutControllerExtensionManager") org.broadleafcommerce.core.web.controller.checkout.BroadleafCheckoutControllerExtensionManager broadleafCheckoutControllerExtensionManager;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.controller.checkout.BroadleafPaymentInfoController broadleafPaymentInfoController;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.web.order.service.CartStateService cartStateService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blCheckoutPaymentInfoFormValidator") org.broadleafcommerce.core.web.checkout.validator.CheckoutPaymentInfoFormValidator checkoutPaymentInfoFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.checkout.service.CheckoutService checkoutService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CountryService countryService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CountrySubdivisionService countrySubdivisionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerAddressService customerAddressService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerPaymentService customerPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentOptionService fulfillmentOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blGiftCardInfoFormValidator") org.broadleafcommerce.core.web.checkout.validator.GiftCardInfoFormValidator giftCardInfoFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.i18n.service.ISOService iSOService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.web.service.InitBinderService initBinderService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blMultishipAddAddressFormValidator") org.broadleafcommerce.core.web.checkout.validator.MultishipAddAddressFormValidator multishipAddAddressFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderInfoFormValidator") org.broadleafcommerce.core.web.checkout.validator.OrderInfoFormValidator orderInfoFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.OrderPaymentService orderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderService orderService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.OrderToPaymentRequestDTOService orderToPaymentRequestDTOService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blPaymentGatewayCheckoutService") org.broadleafcommerce.common.payment.service.PaymentGatewayCheckoutService paymentGatewayCheckoutService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.PhoneService phoneService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.web.payment.service.SavedPaymentService savedPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blShippingInfoFormValidator") org.broadleafcommerce.core.web.checkout.validator.ShippingInfoFormValidator shippingInfoFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.StateService stateService;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
-    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
-        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
-    MockHttpServletResponse response = new MockHttpServletResponse();
-    ConcurrentModel model = new ConcurrentModel();
-    PaymentInfoForm paymentForm = new PaymentInfoForm();
-
-    // Act
-    broadleafPaymentInfoController.saveBillingAddress(request, response, model, paymentForm,
-        new BindException("Target", "Object Name"));
-  }
-
-  /**
-   * Test
-   * {@link BroadleafPaymentInfoController#preProcessBillingAddress(PaymentInfoForm, Order)}.
-   * <p>
-   * Method under test:
-   * {@link BroadleafPaymentInfoController#preProcessBillingAddress(PaymentInfoForm, Order)}
+   * Method under test: {@link BroadleafPaymentInfoController#preProcessBillingAddress(PaymentInfoForm, Order)}
    */
   @Test
   @DisplayName("Test preProcessBillingAddress(PaymentInfoForm, Order)")
-  @Disabled("TODO: Complete this test")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void BroadleafPaymentInfoController.preProcessBillingAddress(PaymentInfoForm, Order)"})
   void testPreProcessBillingAddress() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.controller.checkout;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.web.controller.checkout.BroadleafPaymentInfoController.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass913 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.AddressService addressService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blBillingInfoFormValidator") org.broadleafcommerce.core.web.checkout.validator.BillingInfoFormValidator billingInfoFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blCheckoutControllerExtensionManager") org.broadleafcommerce.core.web.controller.checkout.BroadleafCheckoutControllerExtensionManager broadleafCheckoutControllerExtensionManager;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.controller.checkout.BroadleafPaymentInfoController broadleafPaymentInfoController;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.web.order.service.CartStateService cartStateService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blCheckoutPaymentInfoFormValidator") org.broadleafcommerce.core.web.checkout.validator.CheckoutPaymentInfoFormValidator checkoutPaymentInfoFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.checkout.service.CheckoutService checkoutService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CountryService countryService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CountrySubdivisionService countrySubdivisionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerAddressService customerAddressService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerPaymentService customerPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentOptionService fulfillmentOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blGiftCardInfoFormValidator") org.broadleafcommerce.core.web.checkout.validator.GiftCardInfoFormValidator giftCardInfoFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.i18n.service.ISOService iSOService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.web.service.InitBinderService initBinderService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blMultishipAddAddressFormValidator") org.broadleafcommerce.core.web.checkout.validator.MultishipAddAddressFormValidator multishipAddAddressFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderInfoFormValidator") org.broadleafcommerce.core.web.checkout.validator.OrderInfoFormValidator orderInfoFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.OrderPaymentService orderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderService orderService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.OrderToPaymentRequestDTOService orderToPaymentRequestDTOService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blPaymentGatewayCheckoutService") org.broadleafcommerce.common.payment.service.PaymentGatewayCheckoutService paymentGatewayCheckoutService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.PhoneService phoneService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.web.payment.service.SavedPaymentService savedPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blShippingInfoFormValidator") org.broadleafcommerce.core.web.checkout.validator.ShippingInfoFormValidator shippingInfoFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.StateService stateService;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
+    doNothing().when(addressService).populateAddressISOCountrySub(Mockito.<Address>any());
+    when(customerPaymentService.readCustomerPaymentById(Mockito.<Long>any())).thenReturn(new CustomerPaymentImpl());
+    when(fulfillmentGroupService.getFirstShippableFulfillmentGroup(Mockito.<Order>any()))
+        .thenReturn(new FulfillmentGroupImpl());
+    PaymentInfoForm paymentForm = mock(PaymentInfoForm.class);
+    when(paymentForm.getCustomerPaymentId()).thenReturn(1L);
+    when(paymentForm.getShouldUseCustomerPayment()).thenReturn(true);
+    when(paymentForm.getShouldUseShippingAddress()).thenReturn(true);
+    when(paymentForm.getAddress()).thenReturn(new AddressImpl());
+
+    // Act
+    broadleafPaymentInfoController.preProcessBillingAddress(paymentForm, new NullOrderImpl());
+
+    // Assert
+    verify(fulfillmentGroupService, atLeast(1)).getFirstShippableFulfillmentGroup(isA(Order.class));
+    verify(paymentForm).getAddress();
+    verify(paymentForm, atLeast(1)).getCustomerPaymentId();
+    verify(paymentForm).getShouldUseCustomerPayment();
+    verify(paymentForm).getShouldUseShippingAddress();
+    verify(addressService).populateAddressISOCountrySub(isA(Address.class));
+    verify(customerPaymentService).readCustomerPaymentById(eq(1L));
+  }
+
+  /**
+   * Test {@link BroadleafPaymentInfoController#preProcessBillingAddress(PaymentInfoForm, Order)}.
+   * <p>
+   * Method under test: {@link BroadleafPaymentInfoController#preProcessBillingAddress(PaymentInfoForm, Order)}
+   */
+  @Test
+  @DisplayName("Test preProcessBillingAddress(PaymentInfoForm, Order)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void BroadleafPaymentInfoController.preProcessBillingAddress(PaymentInfoForm, Order)"})
+  void testPreProcessBillingAddress2() {
+    // Arrange
+    doNothing().when(addressService).populateAddressISOCountrySub(Mockito.<Address>any());
+    when(customerPaymentService.readCustomerPaymentById(Mockito.<Long>any())).thenReturn(null);
+    when(fulfillmentGroupService.getFirstShippableFulfillmentGroup(Mockito.<Order>any()))
+        .thenReturn(new FulfillmentGroupImpl());
+    PaymentInfoForm paymentForm = mock(PaymentInfoForm.class);
+    when(paymentForm.getCustomerPaymentId()).thenReturn(1L);
+    when(paymentForm.getShouldUseCustomerPayment()).thenReturn(true);
+    when(paymentForm.getShouldUseShippingAddress()).thenReturn(true);
+    when(paymentForm.getAddress()).thenReturn(new AddressImpl());
+
+    // Act
+    broadleafPaymentInfoController.preProcessBillingAddress(paymentForm, new NullOrderImpl());
+
+    // Assert
+    verify(fulfillmentGroupService, atLeast(1)).getFirstShippableFulfillmentGroup(isA(Order.class));
+    verify(paymentForm).getAddress();
+    verify(paymentForm, atLeast(1)).getCustomerPaymentId();
+    verify(paymentForm).getShouldUseCustomerPayment();
+    verify(paymentForm).getShouldUseShippingAddress();
+    verify(addressService).populateAddressISOCountrySub(isA(Address.class));
+    verify(customerPaymentService).readCustomerPaymentById(eq(1L));
+  }
+
+  /**
+   * Test {@link BroadleafPaymentInfoController#preProcessBillingAddress(PaymentInfoForm, Order)}.
+   * <p>
+   * Method under test: {@link BroadleafPaymentInfoController#preProcessBillingAddress(PaymentInfoForm, Order)}
+   */
+  @Test
+  @DisplayName("Test preProcessBillingAddress(PaymentInfoForm, Order)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void BroadleafPaymentInfoController.preProcessBillingAddress(PaymentInfoForm, Order)"})
+  void testPreProcessBillingAddress3() {
+    // Arrange
+    when(addressService.copyAddress(Mockito.<Address>any())).thenReturn(new AddressImpl());
+    doNothing().when(addressService).populateAddressISOCountrySub(Mockito.<Address>any());
+    CustomerPayment customerPayment = mock(CustomerPayment.class);
+    when(customerPayment.getBillingAddress()).thenReturn(new AddressImpl());
+    when(customerPaymentService.readCustomerPaymentById(Mockito.<Long>any())).thenReturn(customerPayment);
+    when(fulfillmentGroupService.getFirstShippableFulfillmentGroup(Mockito.<Order>any())).thenReturn(null);
+    PaymentInfoForm paymentForm = mock(PaymentInfoForm.class);
+    doNothing().when(paymentForm).setAddress(Mockito.<Address>any());
+    when(paymentForm.getCustomerPaymentId()).thenReturn(1L);
+    when(paymentForm.getShouldUseCustomerPayment()).thenReturn(true);
+    when(paymentForm.getShouldUseShippingAddress()).thenReturn(true);
+    when(paymentForm.getAddress()).thenReturn(new AddressImpl());
+
+    // Act
+    broadleafPaymentInfoController.preProcessBillingAddress(paymentForm, new NullOrderImpl());
+
+    // Assert
+    verify(fulfillmentGroupService).getFirstShippableFulfillmentGroup(isA(Order.class));
+    verify(paymentForm).getAddress();
+    verify(paymentForm, atLeast(1)).getCustomerPaymentId();
+    verify(paymentForm).getShouldUseCustomerPayment();
+    verify(paymentForm).getShouldUseShippingAddress();
+    verify(paymentForm).setAddress(isA(Address.class));
+    verify(customerPayment).getBillingAddress();
+    verify(addressService).copyAddress(isA(Address.class));
+    verify(addressService).populateAddressISOCountrySub(isA(Address.class));
+    verify(customerPaymentService).readCustomerPaymentById(eq(1L));
+  }
+
+  /**
+   * Test {@link BroadleafPaymentInfoController#preProcessBillingAddress(PaymentInfoForm, Order)}.
+   * <ul>
+   *   <li>Given {@link FulfillmentGroupService}.</li>
+   *   <li>When {@link PaymentInfoForm} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BroadleafPaymentInfoController#preProcessBillingAddress(PaymentInfoForm, Order)}
+   */
+  @Test
+  @DisplayName("Test preProcessBillingAddress(PaymentInfoForm, Order); given FulfillmentGroupService; when PaymentInfoForm (default constructor)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void BroadleafPaymentInfoController.preProcessBillingAddress(PaymentInfoForm, Order)"})
+  void testPreProcessBillingAddress_givenFulfillmentGroupService_whenPaymentInfoForm() {
+    // Arrange
+    doNothing().when(addressService).populateAddressISOCountrySub(Mockito.<Address>any());
     PaymentInfoForm paymentForm = new PaymentInfoForm();
 
     // Act
     broadleafPaymentInfoController.preProcessBillingAddress(paymentForm, new NullOrderImpl());
+
+    // Assert
+    verify(addressService).populateAddressISOCountrySub(isA(Address.class));
   }
 
   /**
-   * Test
-   * {@link BroadleafPaymentInfoController#copyShippingAddressToBillingAddress(Order, PaymentInfoForm)}.
+   * Test {@link BroadleafPaymentInfoController#preProcessBillingAddress(PaymentInfoForm, Order)}.
+   * <ul>
+   *   <li>Given {@code null}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafPaymentInfoController#copyShippingAddressToBillingAddress(Order, PaymentInfoForm)}
+   * Method under test: {@link BroadleafPaymentInfoController#preProcessBillingAddress(PaymentInfoForm, Order)}
+   */
+  @Test
+  @DisplayName("Test preProcessBillingAddress(PaymentInfoForm, Order); given 'null'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void BroadleafPaymentInfoController.preProcessBillingAddress(PaymentInfoForm, Order)"})
+  void testPreProcessBillingAddress_givenNull() {
+    // Arrange
+    when(addressService.copyAddress(Mockito.<Address>any())).thenReturn(new AddressImpl());
+    doNothing().when(addressService).populateAddressISOCountrySub(Mockito.<Address>any());
+    FulfillmentGroup fulfillmentGroup = mock(FulfillmentGroup.class);
+    when(fulfillmentGroup.getAddress()).thenReturn(new AddressImpl());
+    when(fulfillmentGroupService.getFirstShippableFulfillmentGroup(Mockito.<Order>any())).thenReturn(fulfillmentGroup);
+    PaymentInfoForm paymentForm = mock(PaymentInfoForm.class);
+    doNothing().when(paymentForm).setAddress(Mockito.<Address>any());
+    when(paymentForm.getCustomerPaymentId()).thenReturn(null);
+    when(paymentForm.getShouldUseCustomerPayment()).thenReturn(true);
+    when(paymentForm.getShouldUseShippingAddress()).thenReturn(true);
+    when(paymentForm.getAddress()).thenReturn(new AddressImpl());
+
+    // Act
+    broadleafPaymentInfoController.preProcessBillingAddress(paymentForm, new NullOrderImpl());
+
+    // Assert
+    verify(fulfillmentGroup).getAddress();
+    verify(fulfillmentGroupService, atLeast(1)).getFirstShippableFulfillmentGroup(isA(Order.class));
+    verify(paymentForm).getAddress();
+    verify(paymentForm).getCustomerPaymentId();
+    verify(paymentForm).getShouldUseCustomerPayment();
+    verify(paymentForm).getShouldUseShippingAddress();
+    verify(paymentForm).setAddress(isA(Address.class));
+    verify(addressService).copyAddress(isA(Address.class));
+    verify(addressService).populateAddressISOCountrySub(isA(Address.class));
+  }
+
+  /**
+   * Test {@link BroadleafPaymentInfoController#preProcessBillingAddress(PaymentInfoForm, Order)}.
+   * <ul>
+   *   <li>Then calls {@link FulfillmentGroup#getAddress()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BroadleafPaymentInfoController#preProcessBillingAddress(PaymentInfoForm, Order)}
+   */
+  @Test
+  @DisplayName("Test preProcessBillingAddress(PaymentInfoForm, Order); then calls getAddress()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void BroadleafPaymentInfoController.preProcessBillingAddress(PaymentInfoForm, Order)"})
+  void testPreProcessBillingAddress_thenCallsGetAddress() {
+    // Arrange
+    when(addressService.copyAddress(Mockito.<Address>any())).thenReturn(new AddressImpl());
+    doNothing().when(addressService).populateAddressISOCountrySub(Mockito.<Address>any());
+    CustomerPayment customerPayment = mock(CustomerPayment.class);
+    when(customerPayment.getBillingAddress()).thenReturn(new AddressImpl());
+    when(customerPaymentService.readCustomerPaymentById(Mockito.<Long>any())).thenReturn(customerPayment);
+    FulfillmentGroup fulfillmentGroup = mock(FulfillmentGroup.class);
+    when(fulfillmentGroup.getAddress()).thenReturn(new AddressImpl());
+    when(fulfillmentGroupService.getFirstShippableFulfillmentGroup(Mockito.<Order>any())).thenReturn(fulfillmentGroup);
+    PaymentInfoForm paymentForm = mock(PaymentInfoForm.class);
+    doNothing().when(paymentForm).setAddress(Mockito.<Address>any());
+    when(paymentForm.getCustomerPaymentId()).thenReturn(1L);
+    when(paymentForm.getShouldUseCustomerPayment()).thenReturn(true);
+    when(paymentForm.getShouldUseShippingAddress()).thenReturn(true);
+    when(paymentForm.getAddress()).thenReturn(new AddressImpl());
+
+    // Act
+    broadleafPaymentInfoController.preProcessBillingAddress(paymentForm, new NullOrderImpl());
+
+    // Assert
+    verify(fulfillmentGroup).getAddress();
+    verify(fulfillmentGroupService, atLeast(1)).getFirstShippableFulfillmentGroup(isA(Order.class));
+    verify(paymentForm).getAddress();
+    verify(paymentForm, atLeast(1)).getCustomerPaymentId();
+    verify(paymentForm).getShouldUseCustomerPayment();
+    verify(paymentForm).getShouldUseShippingAddress();
+    verify(paymentForm, atLeast(1)).setAddress(isA(Address.class));
+    verify(customerPayment).getBillingAddress();
+    verify(addressService, atLeast(1)).copyAddress(isA(Address.class));
+    verify(addressService).populateAddressISOCountrySub(isA(Address.class));
+    verify(customerPaymentService).readCustomerPaymentById(eq(1L));
+  }
+
+  /**
+   * Test {@link BroadleafPaymentInfoController#preProcessBillingAddress(PaymentInfoForm, Order)}.
+   * <ul>
+   *   <li>Then calls {@link CustomerPayment#getBillingAddress()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BroadleafPaymentInfoController#preProcessBillingAddress(PaymentInfoForm, Order)}
+   */
+  @Test
+  @DisplayName("Test preProcessBillingAddress(PaymentInfoForm, Order); then calls getBillingAddress()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void BroadleafPaymentInfoController.preProcessBillingAddress(PaymentInfoForm, Order)"})
+  void testPreProcessBillingAddress_thenCallsGetBillingAddress() {
+    // Arrange
+    when(addressService.copyAddress(Mockito.<Address>any())).thenReturn(new AddressImpl());
+    doNothing().when(addressService).populateAddressISOCountrySub(Mockito.<Address>any());
+    CustomerPayment customerPayment = mock(CustomerPayment.class);
+    when(customerPayment.getBillingAddress()).thenReturn(new AddressImpl());
+    when(customerPaymentService.readCustomerPaymentById(Mockito.<Long>any())).thenReturn(customerPayment);
+    when(fulfillmentGroupService.getFirstShippableFulfillmentGroup(Mockito.<Order>any()))
+        .thenReturn(new FulfillmentGroupImpl());
+    PaymentInfoForm paymentForm = mock(PaymentInfoForm.class);
+    doNothing().when(paymentForm).setAddress(Mockito.<Address>any());
+    when(paymentForm.getCustomerPaymentId()).thenReturn(1L);
+    when(paymentForm.getShouldUseCustomerPayment()).thenReturn(true);
+    when(paymentForm.getShouldUseShippingAddress()).thenReturn(true);
+    when(paymentForm.getAddress()).thenReturn(new AddressImpl());
+
+    // Act
+    broadleafPaymentInfoController.preProcessBillingAddress(paymentForm, new NullOrderImpl());
+
+    // Assert
+    verify(fulfillmentGroupService, atLeast(1)).getFirstShippableFulfillmentGroup(isA(Order.class));
+    verify(paymentForm).getAddress();
+    verify(paymentForm, atLeast(1)).getCustomerPaymentId();
+    verify(paymentForm).getShouldUseCustomerPayment();
+    verify(paymentForm).getShouldUseShippingAddress();
+    verify(paymentForm).setAddress(isA(Address.class));
+    verify(customerPayment).getBillingAddress();
+    verify(addressService).copyAddress(isA(Address.class));
+    verify(addressService).populateAddressISOCountrySub(isA(Address.class));
+    verify(customerPaymentService).readCustomerPaymentById(eq(1L));
+  }
+
+  /**
+   * Test {@link BroadleafPaymentInfoController#copyShippingAddressToBillingAddress(Order, PaymentInfoForm)}.
+   * <p>
+   * Method under test: {@link BroadleafPaymentInfoController#copyShippingAddressToBillingAddress(Order, PaymentInfoForm)}
    */
   @Test
   @DisplayName("Test copyShippingAddressToBillingAddress(Order, PaymentInfoForm)")
-  @Disabled("TODO: Complete this test")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void BroadleafPaymentInfoController.copyShippingAddressToBillingAddress(Order, PaymentInfoForm)"})
   void testCopyShippingAddressToBillingAddress() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.controller.checkout;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.web.controller.checkout.BroadleafPaymentInfoController.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass912 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.AddressService addressService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blBillingInfoFormValidator") org.broadleafcommerce.core.web.checkout.validator.BillingInfoFormValidator billingInfoFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blCheckoutControllerExtensionManager") org.broadleafcommerce.core.web.controller.checkout.BroadleafCheckoutControllerExtensionManager broadleafCheckoutControllerExtensionManager;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.controller.checkout.BroadleafPaymentInfoController broadleafPaymentInfoController;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.web.order.service.CartStateService cartStateService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blCheckoutPaymentInfoFormValidator") org.broadleafcommerce.core.web.checkout.validator.CheckoutPaymentInfoFormValidator checkoutPaymentInfoFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.checkout.service.CheckoutService checkoutService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CountryService countryService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CountrySubdivisionService countrySubdivisionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerAddressService customerAddressService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerPaymentService customerPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentOptionService fulfillmentOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blGiftCardInfoFormValidator") org.broadleafcommerce.core.web.checkout.validator.GiftCardInfoFormValidator giftCardInfoFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.i18n.service.ISOService iSOService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.web.service.InitBinderService initBinderService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blMultishipAddAddressFormValidator") org.broadleafcommerce.core.web.checkout.validator.MultishipAddAddressFormValidator multishipAddAddressFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderInfoFormValidator") org.broadleafcommerce.core.web.checkout.validator.OrderInfoFormValidator orderInfoFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.OrderPaymentService orderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderService orderService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.OrderToPaymentRequestDTOService orderToPaymentRequestDTOService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blPaymentGatewayCheckoutService") org.broadleafcommerce.common.payment.service.PaymentGatewayCheckoutService paymentGatewayCheckoutService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.PhoneService phoneService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.web.payment.service.SavedPaymentService savedPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blShippingInfoFormValidator") org.broadleafcommerce.core.web.checkout.validator.ShippingInfoFormValidator shippingInfoFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.StateService stateService;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
+    when(fulfillmentGroupService.getFirstShippableFulfillmentGroup(Mockito.<Order>any()))
+        .thenReturn(new FulfillmentGroupImpl());
     NullOrderImpl order = new NullOrderImpl();
 
     // Act
     broadleafPaymentInfoController.copyShippingAddressToBillingAddress(order, new PaymentInfoForm());
+
+    // Assert
+    verify(fulfillmentGroupService, atLeast(1)).getFirstShippableFulfillmentGroup(isA(Order.class));
   }
 
   /**
-   * Test
-   * {@link BroadleafPaymentInfoController#copyCustomerPaymentAddressToBillingAddress(PaymentInfoForm)}.
+   * Test {@link BroadleafPaymentInfoController#copyShippingAddressToBillingAddress(Order, PaymentInfoForm)}.
    * <p>
-   * Method under test:
-   * {@link BroadleafPaymentInfoController#copyCustomerPaymentAddressToBillingAddress(PaymentInfoForm)}
+   * Method under test: {@link BroadleafPaymentInfoController#copyShippingAddressToBillingAddress(Order, PaymentInfoForm)}
+   */
+  @Test
+  @DisplayName("Test copyShippingAddressToBillingAddress(Order, PaymentInfoForm)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void BroadleafPaymentInfoController.copyShippingAddressToBillingAddress(Order, PaymentInfoForm)"})
+  void testCopyShippingAddressToBillingAddress2() {
+    // Arrange
+    when(fulfillmentGroupService.getFirstShippableFulfillmentGroup(Mockito.<Order>any())).thenReturn(null);
+    NullOrderImpl order = new NullOrderImpl();
+
+    // Act
+    broadleafPaymentInfoController.copyShippingAddressToBillingAddress(order, new PaymentInfoForm());
+
+    // Assert
+    verify(fulfillmentGroupService).getFirstShippableFulfillmentGroup(isA(Order.class));
+  }
+
+  /**
+   * Test {@link BroadleafPaymentInfoController#copyShippingAddressToBillingAddress(Order, PaymentInfoForm)}.
+   * <ul>
+   *   <li>Then calls {@link FulfillmentGroupImpl#getAddress()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BroadleafPaymentInfoController#copyShippingAddressToBillingAddress(Order, PaymentInfoForm)}
+   */
+  @Test
+  @DisplayName("Test copyShippingAddressToBillingAddress(Order, PaymentInfoForm); then calls getAddress()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void BroadleafPaymentInfoController.copyShippingAddressToBillingAddress(Order, PaymentInfoForm)"})
+  void testCopyShippingAddressToBillingAddress_thenCallsGetAddress() {
+    // Arrange
+    when(addressService.copyAddress(Mockito.<Address>any())).thenReturn(new AddressImpl());
+    FulfillmentGroupImpl fulfillmentGroupImpl = mock(FulfillmentGroupImpl.class);
+    when(fulfillmentGroupImpl.getAddress()).thenReturn(new AddressImpl());
+    when(fulfillmentGroupService.getFirstShippableFulfillmentGroup(Mockito.<Order>any()))
+        .thenReturn(fulfillmentGroupImpl);
+    NullOrderImpl order = new NullOrderImpl();
+
+    // Act
+    broadleafPaymentInfoController.copyShippingAddressToBillingAddress(order, new PaymentInfoForm());
+
+    // Assert
+    verify(fulfillmentGroupImpl).getAddress();
+    verify(fulfillmentGroupService, atLeast(1)).getFirstShippableFulfillmentGroup(isA(Order.class));
+    verify(addressService).copyAddress(isA(Address.class));
+  }
+
+  /**
+   * Test {@link BroadleafPaymentInfoController#copyCustomerPaymentAddressToBillingAddress(PaymentInfoForm)}.
+   * <p>
+   * Method under test: {@link BroadleafPaymentInfoController#copyCustomerPaymentAddressToBillingAddress(PaymentInfoForm)}
    */
   @Test
   @DisplayName("Test copyCustomerPaymentAddressToBillingAddress(PaymentInfoForm)")
-  @Disabled("TODO: Complete this test")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void BroadleafPaymentInfoController.copyCustomerPaymentAddressToBillingAddress(PaymentInfoForm)"})
   void testCopyCustomerPaymentAddressToBillingAddress() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.controller.checkout;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.web.controller.checkout.BroadleafPaymentInfoController.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass911 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.AddressService addressService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blBillingInfoFormValidator") org.broadleafcommerce.core.web.checkout.validator.BillingInfoFormValidator billingInfoFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blCheckoutControllerExtensionManager") org.broadleafcommerce.core.web.controller.checkout.BroadleafCheckoutControllerExtensionManager broadleafCheckoutControllerExtensionManager;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.controller.checkout.BroadleafPaymentInfoController broadleafPaymentInfoController;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.web.order.service.CartStateService cartStateService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blCheckoutPaymentInfoFormValidator") org.broadleafcommerce.core.web.checkout.validator.CheckoutPaymentInfoFormValidator checkoutPaymentInfoFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.checkout.service.CheckoutService checkoutService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CountryService countryService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CountrySubdivisionService countrySubdivisionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerAddressService customerAddressService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerPaymentService customerPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentOptionService fulfillmentOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blGiftCardInfoFormValidator") org.broadleafcommerce.core.web.checkout.validator.GiftCardInfoFormValidator giftCardInfoFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.i18n.service.ISOService iSOService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.web.service.InitBinderService initBinderService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blMultishipAddAddressFormValidator") org.broadleafcommerce.core.web.checkout.validator.MultishipAddAddressFormValidator multishipAddAddressFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderInfoFormValidator") org.broadleafcommerce.core.web.checkout.validator.OrderInfoFormValidator orderInfoFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.OrderPaymentService orderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderService orderService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.OrderToPaymentRequestDTOService orderToPaymentRequestDTOService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blPaymentGatewayCheckoutService") org.broadleafcommerce.common.payment.service.PaymentGatewayCheckoutService paymentGatewayCheckoutService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.PhoneService phoneService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.web.payment.service.SavedPaymentService savedPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blShippingInfoFormValidator") org.broadleafcommerce.core.web.checkout.validator.ShippingInfoFormValidator shippingInfoFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.StateService stateService;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    broadleafPaymentInfoController.copyCustomerPaymentAddressToBillingAddress(new PaymentInfoForm());
-  }
-
-  /**
-   * Test
-   * {@link BroadleafPaymentInfoController#addTemporaryOrderPayment(PaymentInfoForm, Order)}.
-   * <p>
-   * Method under test:
-   * {@link BroadleafPaymentInfoController#addTemporaryOrderPayment(PaymentInfoForm, Order)}
-   */
-  @Test
-  @DisplayName("Test addTemporaryOrderPayment(PaymentInfoForm, Order)")
-  @Disabled("TODO: Complete this test")
-  void testAddTemporaryOrderPayment() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.controller.checkout;
-    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.web.controller.checkout.BroadleafPaymentInfoController.class})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass910 {
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.AddressService addressService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blBillingInfoFormValidator") org.broadleafcommerce.core.web.checkout.validator.BillingInfoFormValidator billingInfoFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blCheckoutControllerExtensionManager") org.broadleafcommerce.core.web.controller.checkout.BroadleafCheckoutControllerExtensionManager broadleafCheckoutControllerExtensionManager;
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.controller.checkout.BroadleafPaymentInfoController broadleafPaymentInfoController;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.web.order.service.CartStateService cartStateService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blCheckoutPaymentInfoFormValidator") org.broadleafcommerce.core.web.checkout.validator.CheckoutPaymentInfoFormValidator checkoutPaymentInfoFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.checkout.service.CheckoutService checkoutService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CountryService countryService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CountrySubdivisionService countrySubdivisionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerAddressService customerAddressService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerPaymentService customerPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentGroupService fulfillmentGroupService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.FulfillmentOptionService fulfillmentOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blGiftCardInfoFormValidator") org.broadleafcommerce.core.web.checkout.validator.GiftCardInfoFormValidator giftCardInfoFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.i18n.service.ISOService iSOService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.web.service.InitBinderService initBinderService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blMultishipAddAddressFormValidator") org.broadleafcommerce.core.web.checkout.validator.MultishipAddAddressFormValidator multishipAddAddressFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blOrderInfoFormValidator") org.broadleafcommerce.core.web.checkout.validator.OrderInfoFormValidator orderInfoFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderMultishipOptionService orderMultishipOptionService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.OrderPaymentService orderPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.order.service.OrderService orderService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.payment.service.OrderToPaymentRequestDTOService orderToPaymentRequestDTOService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blPaymentGatewayCheckoutService") org.broadleafcommerce.common.payment.service.PaymentGatewayCheckoutService paymentGatewayCheckoutService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.PhoneService phoneService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.web.payment.service.SavedPaymentService savedPaymentService;
-    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blShippingInfoFormValidator") org.broadleafcommerce.core.web.checkout.validator.ShippingInfoFormValidator shippingInfoFormValidator;
-    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.StateService stateService;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
+    when(customerPaymentService.readCustomerPaymentById(Mockito.<Long>any())).thenReturn(new CustomerPaymentImpl());
     PaymentInfoForm paymentForm = new PaymentInfoForm();
 
     // Act
-    broadleafPaymentInfoController.addTemporaryOrderPayment(paymentForm, new NullOrderImpl());
+    broadleafPaymentInfoController.copyCustomerPaymentAddressToBillingAddress(paymentForm);
+
+    // Assert that nothing has changed
+    verify(customerPaymentService).readCustomerPaymentById(isNull());
+    Address address = paymentForm.getAddress();
+    assertTrue(address instanceof AddressImpl);
+    Phone phoneFax = address.getPhoneFax();
+    assertTrue(phoneFax instanceof PhoneImpl);
+    Phone phonePrimary = address.getPhonePrimary();
+    assertTrue(phonePrimary instanceof PhoneImpl);
+    Phone phoneSecondary = address.getPhoneSecondary();
+    assertTrue(phoneSecondary instanceof PhoneImpl);
+    assertEquals(phoneFax, phonePrimary);
+    assertEquals(phoneFax, phoneSecondary);
+  }
+
+  /**
+   * Test {@link BroadleafPaymentInfoController#copyCustomerPaymentAddressToBillingAddress(PaymentInfoForm)}.
+   * <p>
+   * Method under test: {@link BroadleafPaymentInfoController#copyCustomerPaymentAddressToBillingAddress(PaymentInfoForm)}
+   */
+  @Test
+  @DisplayName("Test copyCustomerPaymentAddressToBillingAddress(PaymentInfoForm)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void BroadleafPaymentInfoController.copyCustomerPaymentAddressToBillingAddress(PaymentInfoForm)"})
+  void testCopyCustomerPaymentAddressToBillingAddress2() {
+    // Arrange
+    when(customerPaymentService.readCustomerPaymentById(Mockito.<Long>any())).thenReturn(null);
+    PaymentInfoForm paymentForm = new PaymentInfoForm();
+
+    // Act
+    broadleafPaymentInfoController.copyCustomerPaymentAddressToBillingAddress(paymentForm);
+
+    // Assert that nothing has changed
+    verify(customerPaymentService).readCustomerPaymentById(isNull());
+    Address address = paymentForm.getAddress();
+    assertTrue(address instanceof AddressImpl);
+    Phone phoneFax = address.getPhoneFax();
+    assertTrue(phoneFax instanceof PhoneImpl);
+    Phone phonePrimary = address.getPhonePrimary();
+    assertTrue(phonePrimary instanceof PhoneImpl);
+    Phone phoneSecondary = address.getPhoneSecondary();
+    assertTrue(phoneSecondary instanceof PhoneImpl);
+    assertEquals(phoneFax, phonePrimary);
+    assertEquals(phoneFax, phoneSecondary);
+  }
+
+  /**
+   * Test {@link BroadleafPaymentInfoController#copyCustomerPaymentAddressToBillingAddress(PaymentInfoForm)}.
+   * <p>
+   * Method under test: {@link BroadleafPaymentInfoController#copyCustomerPaymentAddressToBillingAddress(PaymentInfoForm)}
+   */
+  @Test
+  @DisplayName("Test copyCustomerPaymentAddressToBillingAddress(PaymentInfoForm)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void BroadleafPaymentInfoController.copyCustomerPaymentAddressToBillingAddress(PaymentInfoForm)"})
+  void testCopyCustomerPaymentAddressToBillingAddress3() {
+    // Arrange
+    AddressImpl addressImpl = new AddressImpl();
+    when(addressService.copyAddress(Mockito.<Address>any())).thenReturn(addressImpl);
+    CustomerPaymentImpl customerPaymentImpl = mock(CustomerPaymentImpl.class);
+    when(customerPaymentImpl.getBillingAddress()).thenReturn(new AddressImpl());
+    when(customerPaymentService.readCustomerPaymentById(Mockito.<Long>any())).thenReturn(customerPaymentImpl);
+    PaymentInfoForm paymentForm = new PaymentInfoForm();
+
+    // Act
+    broadleafPaymentInfoController.copyCustomerPaymentAddressToBillingAddress(paymentForm);
+
+    // Assert
+    verify(customerPaymentImpl).getBillingAddress();
+    verify(addressService).copyAddress(isA(Address.class));
+    verify(customerPaymentService).readCustomerPaymentById(isNull());
+    assertSame(addressImpl, paymentForm.getAddress());
+  }
+
+  /**
+   * Test {@link BroadleafPaymentInfoController#addTemporaryOrderPayment(PaymentInfoForm, Order)}.
+   * <ul>
+   *   <li>Then {@link OrderImpl} (default constructor) Payments is {@link ArrayList#ArrayList()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BroadleafPaymentInfoController#addTemporaryOrderPayment(PaymentInfoForm, Order)}
+   */
+  @Test
+  @DisplayName("Test addTemporaryOrderPayment(PaymentInfoForm, Order); then OrderImpl (default constructor) Payments is ArrayList()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void BroadleafPaymentInfoController.addTemporaryOrderPayment(PaymentInfoForm, Order)"})
+  void testAddTemporaryOrderPayment_thenOrderImplPaymentsIsArrayList() {
+    // Arrange
+    when(orderPaymentService.create()).thenReturn(new OrderPaymentImpl());
+    PaymentInfoForm paymentForm = new PaymentInfoForm();
+
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    OrderImpl cart = new OrderImpl();
+    cart.setAdditionalOfferInformation(new HashMap<>());
+    cart.setAuditable(auditable);
+    cart.setCandidateOrderOffers(new ArrayList<>());
+    cart.setCurrency(new BroadleafCurrencyImpl());
+    cart.setCustomer(new CustomerImpl());
+    cart.setEmailAddress("42 Main St");
+    cart.setFulfillmentGroups(new ArrayList<>());
+    cart.setId(1L);
+    cart.setLocale(new LocaleImpl());
+    cart.setName("Name");
+    cart.setOrderAttributes(new HashMap<>());
+    cart.setOrderItems(new ArrayList<>());
+    cart.setOrderMessages(new ArrayList<>());
+    cart.setOrderNumber("42");
+    ArrayList<OrderPayment> payments = new ArrayList<>();
+    cart.setPayments(payments);
+    cart.setStatus(new OrderStatus("Type", "Friendly Type"));
+    cart.setSubTotal(new Money());
+    cart.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    cart.setTaxOverride(true);
+    cart.setTotal(new Money());
+    cart.setTotalFulfillmentCharges(new Money());
+    cart.setTotalTax(new Money());
+
+    // Act
+    broadleafPaymentInfoController.addTemporaryOrderPayment(paymentForm, cart);
+
+    // Assert
+    verify(orderPaymentService).create();
+    assertSame(payments, cart.getPayments());
   }
 
   /**
    * Test new {@link BroadleafPaymentInfoController} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link BroadleafPaymentInfoController}
+   * Method under test: default or parameterless constructor of {@link BroadleafPaymentInfoController}
    */
   @Test
   @DisplayName("Test new BroadleafPaymentInfoController (default constructor)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void BroadleafPaymentInfoController.<init>()"})
   void testNewBroadleafPaymentInfoController() {
     // Arrange and Act
     BroadleafPaymentInfoController actualBroadleafPaymentInfoController = new BroadleafPaymentInfoController();

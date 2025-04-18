@@ -1,12 +1,29 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.order.domain;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -17,17 +34,14 @@ import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.core.offer.domain.Offer;
 import org.broadleafcommerce.core.offer.domain.OfferImpl;
 import org.broadleafcommerce.core.order.service.type.OrderItemType;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class OrderItemQualifierImplDiffblueTest {
   @Autowired
@@ -39,112 +53,20 @@ public class OrderItemQualifierImplDiffblueTest {
    * Method under test: {@link OrderItemQualifierImpl#setOffer(Offer)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OrderItemQualifierImpl.setOffer(Offer)"})
   public void testSetOffer() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass112 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.OrderItemQualifierImpl orderItemQualifierImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
     OrderItemQualifierImpl orderItemQualifierImpl2 = new OrderItemQualifierImpl();
-
-    // Act
-    orderItemQualifierImpl2.setOffer(new OfferImpl());
-  }
-
-  /**
-   * Test {@link OrderItemQualifierImpl#setOffer(Offer)}.
-   * <ul>
-   *   <li>When {@link OfferImpl}.</li>
-   *   <li>Then {@link OrderItemQualifierImpl} (default constructor) Offer is
-   * {@link OfferImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderItemQualifierImpl#setOffer(Offer)}
-   */
-  @Test
-  public void testSetOffer_whenOfferImpl_thenOrderItemQualifierImplOfferIsOfferImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OrderItemQualifierImpl orderItemQualifierImpl = new OrderItemQualifierImpl();
-    OfferImpl offer = mock(OfferImpl.class);
-
-    // Act
-    orderItemQualifierImpl.setOffer(offer);
-
-    // Assert
-    assertSame(offer, orderItemQualifierImpl.getOffer());
-    assertSame(offer, orderItemQualifierImpl.deproxiedOffer);
-  }
-
-  /**
-   * Test {@link OrderItemQualifierImpl#setOffer(Offer)}.
-   * <ul>
-   *   <li>When {@link OfferImpl} (default constructor).</li>
-   *   <li>Then {@link OrderItemQualifierImpl} (default constructor)
-   * {@link OrderItemQualifierImpl#offer} {@link OfferImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderItemQualifierImpl#setOffer(Offer)}
-   */
-  @Test
-  public void testSetOffer_whenOfferImpl_thenOrderItemQualifierImplOfferOfferImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OrderItemQualifierImpl orderItemQualifierImpl = new OrderItemQualifierImpl();
     OfferImpl offer = new OfferImpl();
 
     // Act
-    orderItemQualifierImpl.setOffer(offer);
+    orderItemQualifierImpl2.setOffer(offer);
 
     // Assert
-    Offer offer2 = orderItemQualifierImpl.offer;
-    assertTrue(offer2 instanceof OfferImpl);
-    assertEquals('N', offer2.getArchived().charValue());
-    assertNull(offer2.getId());
-    assertNull(offer2.getMinimumDaysPerUsage());
-    assertNull(offer2.getDescription());
-    assertNull(offer2.getMarketingMessage());
-    assertNull(offer2.getName());
-    assertNull(offer2.getTargetSystem());
-    assertNull(((OfferImpl) offer2).getMainEntityName());
-    assertNull(offer2.getValue());
-    assertNull(offer2.getEndDate());
-    assertNull(offer2.getStartDate());
-    assertNull(offer2.getOrderMinSubTotal());
-    assertNull(offer2.getQualifyingItemSubTotal());
-    assertNull(offer2.getTargetMinSubTotal());
-    assertNull(offer2.getMaxUsesStrategyType());
-    assertNull(offer2.getDiscountType());
-    assertNull(offer2.getType());
-    assertEquals(0, offer2.getMaxUsesPerOrder());
-    assertEquals(0L, offer2.getMaxUsesPerCustomer().longValue());
-    assertEquals(2147483646, offer2.getPriority());
-    assertFalse(offer2.getApplyToChildItems());
-    assertFalse(offer2.getRequiresRelatedTargetAndQualifiers());
-    assertFalse(offer2.getUseListForDiscounts());
-    assertFalse(offer2.isFutureCredit());
-    assertFalse(offer2.isLimitedUsePerOrder());
-    assertTrue(offer2.getApplyDiscountToSalePrice());
-    assertTrue(offer2.isUnlimitedUsePerOrder());
-    assertTrue(((OfferImpl) offer2).getCombinableWithOtherOffers());
-    assertSame(offer, orderItemQualifierImpl.getOffer());
-    assertSame(offer, orderItemQualifierImpl.deproxiedOffer);
+    assertTrue(orderItemQualifierImpl2.offer instanceof OfferImpl);
+    assertSame(offer, orderItemQualifierImpl2.getOffer());
+    assertSame(offer, orderItemQualifierImpl2.deproxiedOffer);
   }
 
   /**
@@ -153,69 +75,15 @@ public class OrderItemQualifierImplDiffblueTest {
    * Method under test: {@link OrderItemQualifierImpl#getOffer()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Offer OrderItemQualifierImpl.getOffer()"})
   public void testGetOffer() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass107 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.OrderItemQualifierImpl orderItemQualifierImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OrderItemQualifierImpl()).getOffer();
-  }
-
-  /**
-   * Test {@link OrderItemQualifierImpl#getOffer()}.
-   * <ul>
-   *   <li>Given {@link OrderItemQualifierImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderItemQualifierImpl#getOffer()}
-   */
-  @Test
-  public void testGetOffer_givenOrderItemQualifierImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new OrderItemQualifierImpl()).getOffer());
   }
 
   /**
-   * Test {@link OrderItemQualifierImpl#getOffer()}.
-   * <ul>
-   *   <li>Given {@link OrderItemQualifierImpl} (default constructor) OrderItem is
-   * {@link BundleOrderItemImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderItemQualifierImpl#getOffer()}
-   */
-  @Test
-  public void testGetOffer_givenOrderItemQualifierImplOrderItemIsBundleOrderItemImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OrderItemQualifierImpl orderItemQualifierImpl = new OrderItemQualifierImpl();
-    orderItemQualifierImpl.setOrderItem(mock(BundleOrderItemImpl.class));
-
-    // Act and Assert
-    assertNull(orderItemQualifierImpl.getOffer());
-  }
-
-  /**
-   * Test {@link OrderItemQualifierImpl#equals(Object)}, and
-   * {@link OrderItemQualifierImpl#hashCode()}.
+   * Test {@link OrderItemQualifierImpl#equals(Object)}, and {@link OrderItemQualifierImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -228,6 +96,8 @@ public class OrderItemQualifierImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderItemQualifierImpl.equals(Object)", "int OrderItemQualifierImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     OrderItemQualifierImpl orderItemQualifierImpl = new OrderItemQualifierImpl();
@@ -247,8 +117,7 @@ public class OrderItemQualifierImplDiffblueTest {
   }
 
   /**
-   * Test {@link OrderItemQualifierImpl#equals(Object)}, and
-   * {@link OrderItemQualifierImpl#hashCode()}.
+   * Test {@link OrderItemQualifierImpl#equals(Object)}, and {@link OrderItemQualifierImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -261,6 +130,8 @@ public class OrderItemQualifierImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderItemQualifierImpl.equals(Object)", "int OrderItemQualifierImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     OrderItemQualifierImpl orderItemQualifierImpl = new OrderItemQualifierImpl();
@@ -280,8 +151,7 @@ public class OrderItemQualifierImplDiffblueTest {
   }
 
   /**
-   * Test {@link OrderItemQualifierImpl#equals(Object)}, and
-   * {@link OrderItemQualifierImpl#hashCode()}.
+   * Test {@link OrderItemQualifierImpl#equals(Object)}, and {@link OrderItemQualifierImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -294,6 +164,8 @@ public class OrderItemQualifierImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderItemQualifierImpl.equals(Object)", "int OrderItemQualifierImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     OrderItemQualifierImpl orderItemQualifierImpl = new OrderItemQualifierImpl();
@@ -313,8 +185,7 @@ public class OrderItemQualifierImplDiffblueTest {
   }
 
   /**
-   * Test {@link OrderItemQualifierImpl#equals(Object)}, and
-   * {@link OrderItemQualifierImpl#hashCode()}.
+   * Test {@link OrderItemQualifierImpl#equals(Object)}, and {@link OrderItemQualifierImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -327,6 +198,8 @@ public class OrderItemQualifierImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderItemQualifierImpl.equals(Object)", "int OrderItemQualifierImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
     // Arrange
     OrderItemQualifierImpl orderItemQualifierImpl = new OrderItemQualifierImpl();
@@ -346,8 +219,7 @@ public class OrderItemQualifierImplDiffblueTest {
   }
 
   /**
-   * Test {@link OrderItemQualifierImpl#equals(Object)}, and
-   * {@link OrderItemQualifierImpl#hashCode()}.
+   * Test {@link OrderItemQualifierImpl#equals(Object)}, and {@link OrderItemQualifierImpl#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -360,6 +232,8 @@ public class OrderItemQualifierImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderItemQualifierImpl.equals(Object)", "int OrderItemQualifierImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     OrderItemQualifierImpl orderItemQualifierImpl = new OrderItemQualifierImpl();
@@ -383,6 +257,8 @@ public class OrderItemQualifierImplDiffblueTest {
    * Method under test: {@link OrderItemQualifierImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderItemQualifierImpl.equals(Object)", "int OrderItemQualifierImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     OrderItemQualifierImpl orderItemQualifierImpl = new OrderItemQualifierImpl();
@@ -409,6 +285,8 @@ public class OrderItemQualifierImplDiffblueTest {
    * Method under test: {@link OrderItemQualifierImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderItemQualifierImpl.equals(Object)", "int OrderItemQualifierImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     OrderItemQualifierImpl orderItemQualifierImpl = new OrderItemQualifierImpl();
@@ -435,6 +313,8 @@ public class OrderItemQualifierImplDiffblueTest {
    * Method under test: {@link OrderItemQualifierImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderItemQualifierImpl.equals(Object)", "int OrderItemQualifierImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     Auditable auditable = new Auditable();
@@ -461,6 +341,7 @@ public class OrderItemQualifierImplDiffblueTest {
     orderItem.setOrderItemType(OrderItemType.BASIC);
     orderItem.setParentOrderItem(new BundleOrderItemImpl());
     orderItem.setPersonalMessage(new PersonalMessageImpl());
+    orderItem.setPrice(new Money());
     orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
     orderItem.setQuantity(1);
     orderItem.setRetailPrice(new Money());
@@ -494,6 +375,8 @@ public class OrderItemQualifierImplDiffblueTest {
    * Method under test: {@link OrderItemQualifierImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderItemQualifierImpl.equals(Object)", "int OrderItemQualifierImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     OrderItemQualifierImpl orderItemQualifierImpl = new OrderItemQualifierImpl();
@@ -520,33 +403,9 @@ public class OrderItemQualifierImplDiffblueTest {
    * Method under test: {@link OrderItemQualifierImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderItemQualifierImpl.equals(Object)", "int OrderItemQualifierImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
-    // Arrange
-    OrderItemQualifierImpl orderItemQualifierImpl = new OrderItemQualifierImpl();
-    orderItemQualifierImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    orderItemQualifierImpl.setOrderItem(mock(BundleOrderItemImpl.class));
-    orderItemQualifierImpl.setQuantity(OrderItemQualifierImpl.serialVersionUID);
-
-    OrderItemQualifierImpl orderItemQualifierImpl2 = new OrderItemQualifierImpl();
-    orderItemQualifierImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
-    orderItemQualifierImpl2.setOrderItem(new BundleOrderItemImpl());
-    orderItemQualifierImpl2.setQuantity(OrderItemQualifierImpl.serialVersionUID);
-
-    // Act and Assert
-    assertNotEquals(orderItemQualifierImpl, orderItemQualifierImpl2);
-  }
-
-  /**
-   * Test {@link OrderItemQualifierImpl#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderItemQualifierImpl#equals(Object)}
-   */
-  @Test
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
     OrderItemQualifierImpl orderItemQualifierImpl = new OrderItemQualifierImpl();
     orderItemQualifierImpl.setId(OrderItemQualifierImpl.serialVersionUID);
@@ -572,7 +431,9 @@ public class OrderItemQualifierImplDiffblueTest {
    * Method under test: {@link OrderItemQualifierImpl#equals(Object)}
    */
   @Test
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderItemQualifierImpl.equals(Object)", "int OrderItemQualifierImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
     OrderItemQualifierImpl orderItemQualifierImpl = new OrderItemQualifierImpl();
     orderItemQualifierImpl.setId(OrderItemQualifierImpl.serialVersionUID);
@@ -598,6 +459,8 @@ public class OrderItemQualifierImplDiffblueTest {
    * Method under test: {@link OrderItemQualifierImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderItemQualifierImpl.equals(Object)", "int OrderItemQualifierImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     OrderItemQualifierImpl orderItemQualifierImpl = new OrderItemQualifierImpl();
@@ -619,6 +482,8 @@ public class OrderItemQualifierImplDiffblueTest {
    * Method under test: {@link OrderItemQualifierImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderItemQualifierImpl.equals(Object)", "int OrderItemQualifierImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     OrderItemQualifierImpl orderItemQualifierImpl = new OrderItemQualifierImpl();
@@ -645,6 +510,11 @@ public class OrderItemQualifierImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OrderItemQualifierImpl.<init>()", "Long OrderItemQualifierImpl.getId()",
+      "OrderItem OrderItemQualifierImpl.getOrderItem()", "Long OrderItemQualifierImpl.getQuantity()",
+      "void OrderItemQualifierImpl.setId(Long)", "void OrderItemQualifierImpl.setOrderItem(OrderItem)",
+      "void OrderItemQualifierImpl.setQuantity(Long)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     OrderItemQualifierImpl actualOrderItemQualifierImpl = new OrderItemQualifierImpl();
@@ -656,7 +526,7 @@ public class OrderItemQualifierImplDiffblueTest {
     OrderItem actualOrderItem = actualOrderItemQualifierImpl.getOrderItem();
     Long actualQuantity = actualOrderItemQualifierImpl.getQuantity();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals(OrderItemQualifierImpl.serialVersionUID, actualId.longValue());
     assertEquals(OrderItemQualifierImpl.serialVersionUID, actualQuantity.longValue());
     assertSame(orderItem, actualOrderItem);

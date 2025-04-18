@@ -1,8 +1,27 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.order.service.call;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
 import org.broadleafcommerce.common.money.Money;
@@ -22,8 +41,7 @@ public class ProductBundleOrderItemRequestDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>default or parameterless constructor of
-   * {@link ProductBundleOrderItemRequest}
+   *   <li>default or parameterless constructor of {@link ProductBundleOrderItemRequest}
    *   <li>{@link ProductBundleOrderItemRequest#setCategory(Category)}
    *   <li>{@link ProductBundleOrderItemRequest#setItemAttributes(Map)}
    *   <li>{@link ProductBundleOrderItemRequest#setName(String)}
@@ -45,6 +63,22 @@ public class ProductBundleOrderItemRequestDiffblueTest {
    * </ul>
    */
   @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProductBundleOrderItemRequest.<init>()",
+      "Category ProductBundleOrderItemRequest.getCategory()", "Map ProductBundleOrderItemRequest.getItemAttributes()",
+      "String ProductBundleOrderItemRequest.getName()", "Order ProductBundleOrderItemRequest.getOrder()",
+      "ProductBundle ProductBundleOrderItemRequest.getProductBundle()",
+      "int ProductBundleOrderItemRequest.getQuantity()", "Money ProductBundleOrderItemRequest.getRetailPriceOverride()",
+      "Money ProductBundleOrderItemRequest.getSalePriceOverride()", "Sku ProductBundleOrderItemRequest.getSku()",
+      "ProductBundleOrderItemRequest ProductBundleOrderItemRequest.setCategory(Category)",
+      "ProductBundleOrderItemRequest ProductBundleOrderItemRequest.setItemAttributes(Map)",
+      "ProductBundleOrderItemRequest ProductBundleOrderItemRequest.setName(String)",
+      "ProductBundleOrderItemRequest ProductBundleOrderItemRequest.setOrder(Order)",
+      "ProductBundleOrderItemRequest ProductBundleOrderItemRequest.setProductBundle(ProductBundle)",
+      "ProductBundleOrderItemRequest ProductBundleOrderItemRequest.setQuantity(int)",
+      "void ProductBundleOrderItemRequest.setRetailPriceOverride(Money)",
+      "void ProductBundleOrderItemRequest.setSalePriceOverride(Money)",
+      "ProductBundleOrderItemRequest ProductBundleOrderItemRequest.setSku(Sku)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     ProductBundleOrderItemRequest actualProductBundleOrderItemRequest = new ProductBundleOrderItemRequest();
@@ -76,7 +110,7 @@ public class ProductBundleOrderItemRequestDiffblueTest {
     Money actualSalePriceOverride = actualProductBundleOrderItemRequest.getSalePriceOverride();
     Sku actualSku = actualProductBundleOrderItemRequest.getSku();
 
-    // Assert that nothing has changed
+    // Assert
     assertTrue(actualProductBundle instanceof ProductBundleImpl);
     assertTrue(actualSku instanceof SkuImpl);
     assertEquals("Name", actualName);

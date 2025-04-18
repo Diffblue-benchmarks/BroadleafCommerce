@@ -24,16 +24,20 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @ContextConfiguration(classes = {AttributePreserveInsert.class})
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class BaseHandlerDiffblueTest {
   @Autowired
   private BaseHandler baseHandler;
@@ -44,6 +48,8 @@ public class BaseHandlerDiffblueTest {
    * Method under test: {@link BaseHandler#getPriority()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int BaseHandler.getPriority()"})
   public void testGetPriority() {
     // Arrange, Act and Assert
     assertEquals(0, (new AttributePreserveInsert()).getPriority());
@@ -55,6 +61,8 @@ public class BaseHandlerDiffblueTest {
    * Method under test: {@link BaseHandler#getXPath()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BaseHandler.getXPath()"})
   public void testGetXPath() {
     // Arrange, Act and Assert
     assertNull((new AttributePreserveInsert()).getXPath());
@@ -66,6 +74,8 @@ public class BaseHandlerDiffblueTest {
    * Method under test: {@link BaseHandler#setPriority(int)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BaseHandler.setPriority(int)"})
   public void testSetPriority() {
     // Arrange
     AttributePreserveInsert attributePreserveInsert = new AttributePreserveInsert();
@@ -83,6 +93,8 @@ public class BaseHandlerDiffblueTest {
    * Method under test: {@link BaseHandler#setXPath(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BaseHandler.setXPath(String)"})
   public void testSetXPath() {
     // Arrange and Act
     baseHandler.setXPath("Xpath");
@@ -102,6 +114,8 @@ public class BaseHandlerDiffblueTest {
    * Method under test: {@link BaseHandler#compareTo(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int BaseHandler.compareTo(Object)"})
   public void testCompareTo_givenOne_thenReturnMinusOne() {
     // Arrange
     CommaDelimitedNodeValueMerge commaDelimitedNodeValueMerge = mock(CommaDelimitedNodeValueMerge.class);
@@ -116,11 +130,30 @@ public class BaseHandlerDiffblueTest {
   }
 
   /**
+   * Test {@link BaseHandler#compareTo(Object)}.
+   * <ul>
+   *   <li>When {@link AttributePreserveInsert} (default constructor).</li>
+   *   <li>Then return zero.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BaseHandler#compareTo(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int BaseHandler.compareTo(Object)"})
+  public void testCompareTo_whenAttributePreserveInsert_thenReturnZero() {
+    // Arrange, Act and Assert
+    assertEquals(0, baseHandler.compareTo(new AttributePreserveInsert()));
+  }
+
+  /**
    * Test {@link BaseHandler#getChildren()}.
    * <p>
    * Method under test: {@link BaseHandler#getChildren()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"MergeHandler[] BaseHandler.getChildren()"})
   public void testGetChildren() {
     // Arrange, Act and Assert
     assertEquals(0, (new AttributePreserveInsert()).getChildren().length);
@@ -132,6 +165,8 @@ public class BaseHandlerDiffblueTest {
    * Method under test: {@link BaseHandler#setChildren(MergeHandler[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BaseHandler.setChildren(MergeHandler[])"})
   public void testSetChildren() {
     // Arrange
     AttributePreserveInsert attributePreserveInsert = new AttributePreserveInsert();
@@ -150,6 +185,8 @@ public class BaseHandlerDiffblueTest {
    * Method under test: {@link BaseHandler#getName()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BaseHandler.getName()"})
   public void testGetName() {
     // Arrange, Act and Assert
     assertNull((new AttributePreserveInsert()).getName());
@@ -161,6 +198,8 @@ public class BaseHandlerDiffblueTest {
    * Method under test: {@link BaseHandler#setName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BaseHandler.setName(String)"})
   public void testSetName() {
     // Arrange and Act
     baseHandler.setName("Name");

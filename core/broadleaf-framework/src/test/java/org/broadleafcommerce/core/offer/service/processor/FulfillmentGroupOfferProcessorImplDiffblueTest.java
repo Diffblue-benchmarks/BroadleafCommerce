@@ -1,17 +1,33 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.offer.service.processor;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -22,17 +38,18 @@ import org.broadleafcommerce.common.audit.Auditable;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
 import org.broadleafcommerce.common.locale.domain.LocaleImpl;
 import org.broadleafcommerce.common.money.Money;
-import org.broadleafcommerce.core.offer.domain.Offer;
+import org.broadleafcommerce.common.service.GenericEntityService;
+import org.broadleafcommerce.core.offer.dao.OfferDao;
 import org.broadleafcommerce.core.offer.domain.OfferImpl;
+import org.broadleafcommerce.core.offer.service.OfferServiceUtilities;
 import org.broadleafcommerce.core.offer.service.discount.FulfillmentGroupOfferPotential;
-import org.broadleafcommerce.core.offer.service.discount.domain.PromotableCandidateFulfillmentGroupOffer;
-import org.broadleafcommerce.core.offer.service.discount.domain.PromotableCandidateFulfillmentGroupOfferImpl;
-import org.broadleafcommerce.core.offer.service.discount.domain.PromotableFulfillmentGroup;
-import org.broadleafcommerce.core.offer.service.discount.domain.PromotableFulfillmentGroupImpl;
+import org.broadleafcommerce.core.offer.service.discount.domain.PromotableItemFactory;
 import org.broadleafcommerce.core.offer.service.discount.domain.PromotableItemFactoryImpl;
+import org.broadleafcommerce.core.offer.service.discount.domain.PromotableOfferUtility;
 import org.broadleafcommerce.core.offer.service.discount.domain.PromotableOfferUtilityImpl;
 import org.broadleafcommerce.core.offer.service.discount.domain.PromotableOrder;
 import org.broadleafcommerce.core.offer.service.discount.domain.PromotableOrderImpl;
+import org.broadleafcommerce.core.order.dao.OrderItemDao;
 import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
 import org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
@@ -40,114 +57,49 @@ import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.domain.OrderImpl;
 import org.broadleafcommerce.core.order.service.type.OrderStatus;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class FulfillmentGroupOfferProcessorImplDiffblueTest {
-  @Autowired
+  @InjectMocks
   private FulfillmentGroupOfferProcessorImpl fulfillmentGroupOfferProcessorImpl;
 
-  /**
-   * Test
-   * {@link FulfillmentGroupOfferProcessorImpl#filterFulfillmentGroupLevelOffer(PromotableOrder, List, Offer)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupOfferProcessorImpl#filterFulfillmentGroupLevelOffer(PromotableOrder, List, Offer)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFilterFulfillmentGroupLevelOffer() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2180 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.processor.FulfillmentGroupOfferProcessorImpl fulfillmentGroupOfferProcessorImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Mock
+  private GenericEntityService genericEntityService;
 
-    // Arrange
-    FulfillmentGroupOfferProcessorImpl fulfillmentGroupOfferProcessorImpl2 = new FulfillmentGroupOfferProcessorImpl(
-        new PromotableOfferUtilityImpl());
-    NullOrderImpl order = new NullOrderImpl();
-    PromotableOrderImpl order2 = new PromotableOrderImpl(order,
-        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+  @Mock
+  private OfferDao offerDao;
 
-    ArrayList<PromotableCandidateFulfillmentGroupOffer> qualifiedFGOffers = new ArrayList<>();
+  @Mock
+  private OfferServiceUtilities offerServiceUtilities;
 
-    // Act
-    fulfillmentGroupOfferProcessorImpl2.filterFulfillmentGroupLevelOffer(order2, qualifiedFGOffers, new OfferImpl());
-  }
+  @Mock
+  private OfferTimeZoneProcessor offerTimeZoneProcessor;
+
+  @Mock
+  private OrderItemDao orderItemDao;
+
+  @Mock
+  private PromotableItemFactory promotableItemFactory;
+
+  @Mock
+  private PromotableOfferUtility promotableOfferUtility;
 
   /**
-   * Test
-   * {@link FulfillmentGroupOfferProcessorImpl#getQualifyGroupAcrossAllOrderItems(PromotableFulfillmentGroup)}.
+   * Test {@link FulfillmentGroupOfferProcessorImpl#calculateFulfillmentGroupTotal(PromotableOrder)}.
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupOfferProcessorImpl#getQualifyGroupAcrossAllOrderItems(PromotableFulfillmentGroup)}
+   * Method under test: {@link FulfillmentGroupOfferProcessorImpl#calculateFulfillmentGroupTotal(PromotableOrder)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetQualifyGroupAcrossAllOrderItems() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2240 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.processor.FulfillmentGroupOfferProcessorImpl fulfillmentGroupOfferProcessorImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentGroupOfferProcessorImpl fulfillmentGroupOfferProcessorImpl2 = new FulfillmentGroupOfferProcessorImpl(
-        new PromotableOfferUtilityImpl());
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    NullOrderImpl order = new NullOrderImpl();
-    PromotableOrderImpl promotableOrder = new PromotableOrderImpl(order,
-        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
-
-    // Act
-    fulfillmentGroupOfferProcessorImpl2.getQualifyGroupAcrossAllOrderItems(new PromotableFulfillmentGroupImpl(
-        fulfillmentGroup, promotableOrder, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl())));
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupOfferProcessorImpl#calculateFulfillmentGroupTotal(PromotableOrder)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupOfferProcessorImpl#calculateFulfillmentGroupTotal(PromotableOrder)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupOfferProcessorImpl.calculateFulfillmentGroupTotal(PromotableOrder)"})
   public void testCalculateFulfillmentGroupTotal() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     FulfillmentGroupOfferProcessorImpl fulfillmentGroupOfferProcessorImpl = new FulfillmentGroupOfferProcessorImpl(
         new PromotableOfferUtilityImpl());
@@ -163,57 +115,18 @@ public class FulfillmentGroupOfferProcessorImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentGroupOfferProcessorImpl#calculateFulfillmentGroupTotal(PromotableOrder)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupOfferProcessorImpl#calculateFulfillmentGroupTotal(PromotableOrder)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCalculateFulfillmentGroupTotal2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2060 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.processor.FulfillmentGroupOfferProcessorImpl fulfillmentGroupOfferProcessorImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentGroupOfferProcessorImpl fulfillmentGroupOfferProcessorImpl2 = new FulfillmentGroupOfferProcessorImpl(
-        new PromotableOfferUtilityImpl());
-    NullOrderImpl order = new NullOrderImpl();
-
-    // Act
-    fulfillmentGroupOfferProcessorImpl2.calculateFulfillmentGroupTotal(
-        new PromotableOrderImpl(order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true));
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupOfferProcessorImpl#calculateFulfillmentGroupTotal(PromotableOrder)}.
+   * Test {@link FulfillmentGroupOfferProcessorImpl#calculateFulfillmentGroupTotal(PromotableOrder)}.
    * <ul>
    *   <li>Given {@code null}.</li>
    *   <li>When {@link Order} {@link Order#getCurrency()} return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupOfferProcessorImpl#calculateFulfillmentGroupTotal(PromotableOrder)}
+   * Method under test: {@link FulfillmentGroupOfferProcessorImpl#calculateFulfillmentGroupTotal(PromotableOrder)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupOfferProcessorImpl.calculateFulfillmentGroupTotal(PromotableOrder)"})
   public void testCalculateFulfillmentGroupTotal_givenNull_whenOrderGetCurrencyReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     FulfillmentGroupOfferProcessorImpl fulfillmentGroupOfferProcessorImpl = new FulfillmentGroupOfferProcessorImpl(
         new PromotableOfferUtilityImpl());
@@ -235,19 +148,17 @@ public class FulfillmentGroupOfferProcessorImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentGroupOfferProcessorImpl#calculateFulfillmentGroupTotal(PromotableOrder)}.
+   * Test {@link FulfillmentGroupOfferProcessorImpl#calculateFulfillmentGroupTotal(PromotableOrder)}.
    * <ul>
    *   <li>Then calls {@link BroadleafCurrencyImpl#getCurrencyCode()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupOfferProcessorImpl#calculateFulfillmentGroupTotal(PromotableOrder)}
+   * Method under test: {@link FulfillmentGroupOfferProcessorImpl#calculateFulfillmentGroupTotal(PromotableOrder)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupOfferProcessorImpl.calculateFulfillmentGroupTotal(PromotableOrder)"})
   public void testCalculateFulfillmentGroupTotal_thenCallsGetCurrencyCode() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     FulfillmentGroupOfferProcessorImpl fulfillmentGroupOfferProcessorImpl = new FulfillmentGroupOfferProcessorImpl(
         new PromotableOfferUtilityImpl());
@@ -272,19 +183,17 @@ public class FulfillmentGroupOfferProcessorImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentGroupOfferProcessorImpl#calculateFulfillmentGroupTotal(PromotableOrder)}.
+   * Test {@link FulfillmentGroupOfferProcessorImpl#calculateFulfillmentGroupTotal(PromotableOrder)}.
    * <ul>
    *   <li>Then calls {@link FulfillmentGroupImpl#getFulfillmentPrice()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupOfferProcessorImpl#calculateFulfillmentGroupTotal(PromotableOrder)}
+   * Method under test: {@link FulfillmentGroupOfferProcessorImpl#calculateFulfillmentGroupTotal(PromotableOrder)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupOfferProcessorImpl.calculateFulfillmentGroupTotal(PromotableOrder)"})
   public void testCalculateFulfillmentGroupTotal_thenCallsGetFulfillmentPrice() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     FulfillmentGroupOfferProcessorImpl fulfillmentGroupOfferProcessorImpl = new FulfillmentGroupOfferProcessorImpl(
         new PromotableOfferUtilityImpl());
@@ -317,272 +226,15 @@ public class FulfillmentGroupOfferProcessorImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentGroupOfferProcessorImpl#couldOfferApplyToFulfillmentGroup(Offer, PromotableFulfillmentGroup)}.
+   * Test {@link FulfillmentGroupOfferProcessorImpl#compareAndAdjustFulfillmentGroupOffers(PromotableOrder, boolean)}.
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupOfferProcessorImpl#couldOfferApplyToFulfillmentGroup(Offer, PromotableFulfillmentGroup)}
+   * Method under test: {@link FulfillmentGroupOfferProcessorImpl#compareAndAdjustFulfillmentGroupOffers(PromotableOrder, boolean)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testCouldOfferApplyToFulfillmentGroup() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2120 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.processor.FulfillmentGroupOfferProcessorImpl fulfillmentGroupOfferProcessorImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentGroupOfferProcessorImpl fulfillmentGroupOfferProcessorImpl2 = new FulfillmentGroupOfferProcessorImpl(
-        new PromotableOfferUtilityImpl());
-    OfferImpl offer = new OfferImpl();
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    NullOrderImpl order = new NullOrderImpl();
-    PromotableOrderImpl promotableOrder = new PromotableOrderImpl(order,
-        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
-
-    // Act
-    fulfillmentGroupOfferProcessorImpl2.couldOfferApplyToFulfillmentGroup(offer, new PromotableFulfillmentGroupImpl(
-        fulfillmentGroup, promotableOrder, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl())));
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupOfferProcessorImpl#createCandidateFulfillmentGroupOffer(Offer, List, PromotableFulfillmentGroup)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupOfferProcessorImpl#createCandidateFulfillmentGroupOffer(Offer, List, PromotableFulfillmentGroup)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateCandidateFulfillmentGroupOffer() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2150 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.processor.FulfillmentGroupOfferProcessorImpl fulfillmentGroupOfferProcessorImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentGroupOfferProcessorImpl fulfillmentGroupOfferProcessorImpl2 = new FulfillmentGroupOfferProcessorImpl(
-        new PromotableOfferUtilityImpl());
-    OfferImpl offer = new OfferImpl();
-    ArrayList<PromotableCandidateFulfillmentGroupOffer> qualifiedFGOffers = new ArrayList<>();
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    NullOrderImpl order = new NullOrderImpl();
-    PromotableOrderImpl promotableOrder = new PromotableOrderImpl(order,
-        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
-
-    // Act
-    fulfillmentGroupOfferProcessorImpl2.createCandidateFulfillmentGroupOffer(offer, qualifiedFGOffers,
-        new PromotableFulfillmentGroupImpl(fulfillmentGroup, promotableOrder,
-            new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl())));
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupOfferProcessorImpl#applyAllFulfillmentGroupOffers(List, PromotableOrder)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupOfferProcessorImpl#applyAllFulfillmentGroupOffers(List, PromotableOrder)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testApplyAllFulfillmentGroupOffers() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2000 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.processor.FulfillmentGroupOfferProcessorImpl fulfillmentGroupOfferProcessorImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentGroupOfferProcessorImpl fulfillmentGroupOfferProcessorImpl2 = new FulfillmentGroupOfferProcessorImpl(
-        new PromotableOfferUtilityImpl());
-    ArrayList<PromotableCandidateFulfillmentGroupOffer> qualifiedFGOffers = new ArrayList<>();
-    NullOrderImpl order = new NullOrderImpl();
-
-    // Act
-    fulfillmentGroupOfferProcessorImpl2.applyAllFulfillmentGroupOffers(qualifiedFGOffers,
-        new PromotableOrderImpl(order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true));
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupOfferProcessorImpl#filterOffersByQualifyingAndSubtotalRequirements(PromotableOrder, List)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupOfferProcessorImpl#filterOffersByQualifyingAndSubtotalRequirements(PromotableOrder, List)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFilterOffersByQualifyingAndSubtotalRequirements() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2210 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.processor.FulfillmentGroupOfferProcessorImpl fulfillmentGroupOfferProcessorImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentGroupOfferProcessorImpl fulfillmentGroupOfferProcessorImpl2 = new FulfillmentGroupOfferProcessorImpl(
-        new PromotableOfferUtilityImpl());
-    NullOrderImpl order = new NullOrderImpl();
-    PromotableOrderImpl order2 = new PromotableOrderImpl(order,
-        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
-
-    // Act
-    fulfillmentGroupOfferProcessorImpl2.filterOffersByQualifyingAndSubtotalRequirements(order2, new ArrayList<>());
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupOfferProcessorImpl#orderMeetsQualifyingSubtotalRequirements(PromotableOrder, PromotableCandidateFulfillmentGroupOffer)}
-   * with {@code order}, {@code fgOffer}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupOfferProcessorImpl#orderMeetsQualifyingSubtotalRequirements(PromotableOrder, PromotableCandidateFulfillmentGroupOffer)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testOrderMeetsQualifyingSubtotalRequirementsWithOrderFgOffer() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2270 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.processor.FulfillmentGroupOfferProcessorImpl fulfillmentGroupOfferProcessorImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentGroupOfferProcessorImpl fulfillmentGroupOfferProcessorImpl2 = new FulfillmentGroupOfferProcessorImpl(
-        new PromotableOfferUtilityImpl());
-    NullOrderImpl order = new NullOrderImpl();
-    PromotableOrderImpl order2 = new PromotableOrderImpl(order,
-        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
-
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    NullOrderImpl order3 = new NullOrderImpl();
-    PromotableOrderImpl promotableOrder = new PromotableOrderImpl(order3,
-        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
-
-    PromotableFulfillmentGroupImpl promotableFulfillmentGroup = new PromotableFulfillmentGroupImpl(fulfillmentGroup,
-        promotableOrder, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()));
-
-    // Act
-    fulfillmentGroupOfferProcessorImpl2.orderMeetsQualifyingSubtotalRequirements(order2,
-        new PromotableCandidateFulfillmentGroupOfferImpl(promotableFulfillmentGroup, new OfferImpl()));
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupOfferProcessorImpl#orderMeetsSubtotalRequirements(PromotableOrder, PromotableCandidateFulfillmentGroupOffer)}
-   * with {@code order}, {@code fgOffer}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupOfferProcessorImpl#orderMeetsSubtotalRequirements(PromotableOrder, PromotableCandidateFulfillmentGroupOffer)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testOrderMeetsSubtotalRequirementsWithOrderFgOffer() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2300 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.processor.FulfillmentGroupOfferProcessorImpl fulfillmentGroupOfferProcessorImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentGroupOfferProcessorImpl fulfillmentGroupOfferProcessorImpl2 = new FulfillmentGroupOfferProcessorImpl(
-        new PromotableOfferUtilityImpl());
-    NullOrderImpl order = new NullOrderImpl();
-    PromotableOrderImpl order2 = new PromotableOrderImpl(order,
-        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
-
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    NullOrderImpl order3 = new NullOrderImpl();
-    PromotableOrderImpl promotableOrder = new PromotableOrderImpl(order3,
-        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
-
-    PromotableFulfillmentGroupImpl promotableFulfillmentGroup = new PromotableFulfillmentGroupImpl(fulfillmentGroup,
-        promotableOrder, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()));
-
-    // Act
-    fulfillmentGroupOfferProcessorImpl2.orderMeetsSubtotalRequirements(order2,
-        new PromotableCandidateFulfillmentGroupOfferImpl(promotableFulfillmentGroup, new OfferImpl()));
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupOfferProcessorImpl#compareAndAdjustFulfillmentGroupOffers(PromotableOrder, boolean)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupOfferProcessorImpl#compareAndAdjustFulfillmentGroupOffers(PromotableOrder, boolean)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "boolean FulfillmentGroupOfferProcessorImpl.compareAndAdjustFulfillmentGroupOffers(PromotableOrder, boolean)"})
   public void testCompareAndAdjustFulfillmentGroupOffers() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     FulfillmentGroupOfferProcessorImpl fulfillmentGroupOfferProcessorImpl = new FulfillmentGroupOfferProcessorImpl(
         new PromotableOfferUtilityImpl());
@@ -594,16 +246,15 @@ public class FulfillmentGroupOfferProcessorImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentGroupOfferProcessorImpl#compareAndAdjustFulfillmentGroupOffers(PromotableOrder, boolean)}.
+   * Test {@link FulfillmentGroupOfferProcessorImpl#compareAndAdjustFulfillmentGroupOffers(PromotableOrder, boolean)}.
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupOfferProcessorImpl#compareAndAdjustFulfillmentGroupOffers(PromotableOrder, boolean)}
+   * Method under test: {@link FulfillmentGroupOfferProcessorImpl#compareAndAdjustFulfillmentGroupOffers(PromotableOrder, boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "boolean FulfillmentGroupOfferProcessorImpl.compareAndAdjustFulfillmentGroupOffers(PromotableOrder, boolean)"})
   public void testCompareAndAdjustFulfillmentGroupOffers2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     FulfillmentGroupOfferProcessorImpl fulfillmentGroupOfferProcessorImpl = new FulfillmentGroupOfferProcessorImpl(
         new PromotableOfferUtilityImpl());
@@ -628,56 +279,18 @@ public class FulfillmentGroupOfferProcessorImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentGroupOfferProcessorImpl#compareAndAdjustFulfillmentGroupOffers(PromotableOrder, boolean)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupOfferProcessorImpl#compareAndAdjustFulfillmentGroupOffers(PromotableOrder, boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCompareAndAdjustFulfillmentGroupOffers3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2090 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.processor.FulfillmentGroupOfferProcessorImpl fulfillmentGroupOfferProcessorImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentGroupOfferProcessorImpl fulfillmentGroupOfferProcessorImpl2 = new FulfillmentGroupOfferProcessorImpl(
-        new PromotableOfferUtilityImpl());
-    NullOrderImpl order = new NullOrderImpl();
-
-    // Act
-    fulfillmentGroupOfferProcessorImpl2.compareAndAdjustFulfillmentGroupOffers(
-        new PromotableOrderImpl(order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true), true);
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupOfferProcessorImpl#compareAndAdjustFulfillmentGroupOffers(PromotableOrder, boolean)}.
+   * Test {@link FulfillmentGroupOfferProcessorImpl#compareAndAdjustFulfillmentGroupOffers(PromotableOrder, boolean)}.
    * <ul>
    *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupOfferProcessorImpl#compareAndAdjustFulfillmentGroupOffers(PromotableOrder, boolean)}
+   * Method under test: {@link FulfillmentGroupOfferProcessorImpl#compareAndAdjustFulfillmentGroupOffers(PromotableOrder, boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "boolean FulfillmentGroupOfferProcessorImpl.compareAndAdjustFulfillmentGroupOffers(PromotableOrder, boolean)"})
   public void testCompareAndAdjustFulfillmentGroupOffers_givenAuditableCreatedByIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     FulfillmentGroupOfferProcessorImpl fulfillmentGroupOfferProcessorImpl = new FulfillmentGroupOfferProcessorImpl(
         new PromotableOfferUtilityImpl());
@@ -710,7 +323,6 @@ public class FulfillmentGroupOfferProcessorImplDiffblueTest {
     orderImpl.setTaxOverride(true);
     orderImpl.setTotal(new Money());
     orderImpl.setTotalFulfillmentCharges(new Money());
-    orderImpl.setTotalShipping(new Money());
     orderImpl.setTotalTax(new Money());
     PromotableOrder order = mock(PromotableOrder.class);
     when(order.getOrder()).thenReturn(orderImpl);
@@ -737,19 +349,18 @@ public class FulfillmentGroupOfferProcessorImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentGroupOfferProcessorImpl#compareAndAdjustFulfillmentGroupOffers(PromotableOrder, boolean)}.
+   * Test {@link FulfillmentGroupOfferProcessorImpl#compareAndAdjustFulfillmentGroupOffers(PromotableOrder, boolean)}.
    * <ul>
    *   <li>Then calls {@link BroadleafCurrencyImpl#getCurrencyCode()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupOfferProcessorImpl#compareAndAdjustFulfillmentGroupOffers(PromotableOrder, boolean)}
+   * Method under test: {@link FulfillmentGroupOfferProcessorImpl#compareAndAdjustFulfillmentGroupOffers(PromotableOrder, boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "boolean FulfillmentGroupOfferProcessorImpl.compareAndAdjustFulfillmentGroupOffers(PromotableOrder, boolean)"})
   public void testCompareAndAdjustFulfillmentGroupOffers_thenCallsGetCurrencyCode() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     FulfillmentGroupOfferProcessorImpl fulfillmentGroupOfferProcessorImpl = new FulfillmentGroupOfferProcessorImpl(
         new PromotableOfferUtilityImpl());
@@ -777,19 +388,18 @@ public class FulfillmentGroupOfferProcessorImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentGroupOfferProcessorImpl#compareAndAdjustFulfillmentGroupOffers(PromotableOrder, boolean)}.
+   * Test {@link FulfillmentGroupOfferProcessorImpl#compareAndAdjustFulfillmentGroupOffers(PromotableOrder, boolean)}.
    * <ul>
    *   <li>Then calls {@link NullOrderImpl#setSubTotal(Money)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupOfferProcessorImpl#compareAndAdjustFulfillmentGroupOffers(PromotableOrder, boolean)}
+   * Method under test: {@link FulfillmentGroupOfferProcessorImpl#compareAndAdjustFulfillmentGroupOffers(PromotableOrder, boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "boolean FulfillmentGroupOfferProcessorImpl.compareAndAdjustFulfillmentGroupOffers(PromotableOrder, boolean)"})
   public void testCompareAndAdjustFulfillmentGroupOffers_thenCallsSetSubTotal() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     FulfillmentGroupOfferProcessorImpl fulfillmentGroupOfferProcessorImpl = new FulfillmentGroupOfferProcessorImpl(
         new PromotableOfferUtilityImpl());
@@ -821,71 +431,18 @@ public class FulfillmentGroupOfferProcessorImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FulfillmentGroupOfferProcessorImpl#applyFulfillmentGroupOffer(PromotableFulfillmentGroup, PromotableCandidateFulfillmentGroupOffer)}.
+   * Test {@link FulfillmentGroupOfferProcessorImpl#removeTrailingNotCombinableFulfillmentGroupOffers(List)}.
+   * <ul>
+   *   <li>Then return {@link ArrayList#ArrayList()}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupOfferProcessorImpl#applyFulfillmentGroupOffer(PromotableFulfillmentGroup, PromotableCandidateFulfillmentGroupOffer)}
+   * Method under test: {@link FulfillmentGroupOfferProcessorImpl#removeTrailingNotCombinableFulfillmentGroupOffers(List)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testApplyFulfillmentGroupOffer() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2030 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.processor.FulfillmentGroupOfferProcessorImpl fulfillmentGroupOfferProcessorImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List FulfillmentGroupOfferProcessorImpl.removeTrailingNotCombinableFulfillmentGroupOffers(List)"})
+  public void testRemoveTrailingNotCombinableFulfillmentGroupOffers_thenReturnArrayList() {
     // Arrange
-    FulfillmentGroupOfferProcessorImpl fulfillmentGroupOfferProcessorImpl2 = new FulfillmentGroupOfferProcessorImpl(
-        new PromotableOfferUtilityImpl());
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    NullOrderImpl order = new NullOrderImpl();
-    PromotableOrderImpl promotableOrder = new PromotableOrderImpl(order,
-        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
-
-    PromotableFulfillmentGroupImpl promotableFulfillmentGroup = new PromotableFulfillmentGroupImpl(fulfillmentGroup,
-        promotableOrder, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()));
-
-    FulfillmentGroupImpl fulfillmentGroup2 = new FulfillmentGroupImpl();
-    NullOrderImpl order2 = new NullOrderImpl();
-    PromotableOrderImpl promotableOrder2 = new PromotableOrderImpl(order2,
-        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
-
-    PromotableFulfillmentGroupImpl promotableFulfillmentGroup2 = new PromotableFulfillmentGroupImpl(fulfillmentGroup2,
-        promotableOrder2, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()));
-
-    // Act
-    fulfillmentGroupOfferProcessorImpl2.applyFulfillmentGroupOffer(promotableFulfillmentGroup,
-        new PromotableCandidateFulfillmentGroupOfferImpl(promotableFulfillmentGroup2, new OfferImpl()));
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupOfferProcessorImpl#removeTrailingNotCombinableFulfillmentGroupOffers(List)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupOfferProcessorImpl#removeTrailingNotCombinableFulfillmentGroupOffers(List)}
-   */
-  @Test
-  public void testRemoveTrailingNotCombinableFulfillmentGroupOffers() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupOfferProcessorImpl fulfillmentGroupOfferProcessorImpl = new FulfillmentGroupOfferProcessorImpl(
-        new PromotableOfferUtilityImpl());
-
     FulfillmentGroupOfferPotential fulfillmentGroupOfferPotential = new FulfillmentGroupOfferPotential();
     fulfillmentGroupOfferPotential.setOffer(new OfferImpl());
     fulfillmentGroupOfferPotential.setPriority(1);
@@ -894,294 +451,25 @@ public class FulfillmentGroupOfferProcessorImplDiffblueTest {
     ArrayList<FulfillmentGroupOfferPotential> candidateOffers = new ArrayList<>();
     candidateOffers.add(fulfillmentGroupOfferPotential);
 
-    // Act
-    List<FulfillmentGroupOfferPotential> actualRemoveTrailingNotCombinableFulfillmentGroupOffersResult = fulfillmentGroupOfferProcessorImpl
-        .removeTrailingNotCombinableFulfillmentGroupOffers(candidateOffers);
-
-    // Assert
-    assertEquals(1, actualRemoveTrailingNotCombinableFulfillmentGroupOffersResult.size());
-    FulfillmentGroupOfferPotential getResult = actualRemoveTrailingNotCombinableFulfillmentGroupOffersResult.get(0);
-    assertTrue(getResult.getOffer() instanceof OfferImpl);
-    assertEquals(1, getResult.getPriority());
-    Money totalSavings = getResult.getTotalSavings();
-    assertEquals(totalSavings, totalSavings.abs());
-    assertEquals(totalSavings, totalSavings.zero());
+    // Act and Assert
+    assertEquals(candidateOffers,
+        fulfillmentGroupOfferProcessorImpl.removeTrailingNotCombinableFulfillmentGroupOffers(candidateOffers));
   }
 
   /**
-   * Test
-   * {@link FulfillmentGroupOfferProcessorImpl#removeTrailingNotCombinableFulfillmentGroupOffers(List)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupOfferProcessorImpl#removeTrailingNotCombinableFulfillmentGroupOffers(List)}
-   */
-  @Test
-  public void testRemoveTrailingNotCombinableFulfillmentGroupOffers2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupOfferProcessorImpl fulfillmentGroupOfferProcessorImpl = new FulfillmentGroupOfferProcessorImpl(
-        mock(PromotableOfferUtilityImpl.class));
-    OfferImpl offerImpl = mock(OfferImpl.class);
-    when(offerImpl.isTotalitarianOffer()).thenReturn(true);
-    when(offerImpl.isCombinableWithOtherOffers()).thenReturn(true);
-    FulfillmentGroupOfferPotential fulfillmentGroupOfferPotential = mock(FulfillmentGroupOfferPotential.class);
-    when(fulfillmentGroupOfferPotential.getOffer()).thenReturn(offerImpl);
-    doNothing().when(fulfillmentGroupOfferPotential).setOffer(Mockito.<Offer>any());
-    doNothing().when(fulfillmentGroupOfferPotential).setPriority(anyInt());
-    doNothing().when(fulfillmentGroupOfferPotential).setTotalSavings(Mockito.<Money>any());
-    fulfillmentGroupOfferPotential.setOffer(new OfferImpl());
-    fulfillmentGroupOfferPotential.setPriority(0);
-    fulfillmentGroupOfferPotential.setTotalSavings(new Money());
-
-    FulfillmentGroupOfferPotential fulfillmentGroupOfferPotential2 = new FulfillmentGroupOfferPotential();
-    fulfillmentGroupOfferPotential2.setOffer(new OfferImpl());
-    fulfillmentGroupOfferPotential2.setPriority(-1);
-    fulfillmentGroupOfferPotential2.setTotalSavings(new Money());
-
-    ArrayList<FulfillmentGroupOfferPotential> candidateOffers = new ArrayList<>();
-    candidateOffers.add(fulfillmentGroupOfferPotential2);
-    candidateOffers.add(fulfillmentGroupOfferPotential);
-
-    // Act
-    List<FulfillmentGroupOfferPotential> actualRemoveTrailingNotCombinableFulfillmentGroupOffersResult = fulfillmentGroupOfferProcessorImpl
-        .removeTrailingNotCombinableFulfillmentGroupOffers(candidateOffers);
-
-    // Assert
-    verify(offerImpl).isCombinableWithOtherOffers();
-    verify(offerImpl).isTotalitarianOffer();
-    verify(fulfillmentGroupOfferPotential, atLeast(1)).getOffer();
-    verify(fulfillmentGroupOfferPotential).setOffer(isA(Offer.class));
-    verify(fulfillmentGroupOfferPotential).setPriority(eq(0));
-    verify(fulfillmentGroupOfferPotential).setTotalSavings(isA(Money.class));
-    assertEquals(1, actualRemoveTrailingNotCombinableFulfillmentGroupOffersResult.size());
-    FulfillmentGroupOfferPotential getResult = actualRemoveTrailingNotCombinableFulfillmentGroupOffersResult.get(0);
-    assertTrue(getResult.getOffer() instanceof OfferImpl);
-    assertEquals(-1, getResult.getPriority());
-    Money totalSavings = getResult.getTotalSavings();
-    assertEquals(totalSavings, totalSavings.abs());
-    assertEquals(totalSavings, totalSavings.zero());
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupOfferProcessorImpl#removeTrailingNotCombinableFulfillmentGroupOffers(List)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupOfferProcessorImpl#removeTrailingNotCombinableFulfillmentGroupOffers(List)}
-   */
-  @Test
-  public void testRemoveTrailingNotCombinableFulfillmentGroupOffers3() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupOfferProcessorImpl fulfillmentGroupOfferProcessorImpl = new FulfillmentGroupOfferProcessorImpl(
-        mock(PromotableOfferUtilityImpl.class));
-    OfferImpl offerImpl = mock(OfferImpl.class);
-    when(offerImpl.isCombinableWithOtherOffers()).thenReturn(false);
-    FulfillmentGroupOfferPotential fulfillmentGroupOfferPotential = mock(FulfillmentGroupOfferPotential.class);
-    when(fulfillmentGroupOfferPotential.getOffer()).thenReturn(offerImpl);
-    doNothing().when(fulfillmentGroupOfferPotential).setOffer(Mockito.<Offer>any());
-    doNothing().when(fulfillmentGroupOfferPotential).setPriority(anyInt());
-    doNothing().when(fulfillmentGroupOfferPotential).setTotalSavings(Mockito.<Money>any());
-    fulfillmentGroupOfferPotential.setOffer(new OfferImpl());
-    fulfillmentGroupOfferPotential.setPriority(0);
-    fulfillmentGroupOfferPotential.setTotalSavings(new Money());
-
-    FulfillmentGroupOfferPotential fulfillmentGroupOfferPotential2 = new FulfillmentGroupOfferPotential();
-    fulfillmentGroupOfferPotential2.setOffer(new OfferImpl());
-    fulfillmentGroupOfferPotential2.setPriority(-1);
-    fulfillmentGroupOfferPotential2.setTotalSavings(new Money());
-
-    ArrayList<FulfillmentGroupOfferPotential> candidateOffers = new ArrayList<>();
-    candidateOffers.add(fulfillmentGroupOfferPotential2);
-    candidateOffers.add(fulfillmentGroupOfferPotential);
-
-    // Act
-    List<FulfillmentGroupOfferPotential> actualRemoveTrailingNotCombinableFulfillmentGroupOffersResult = fulfillmentGroupOfferProcessorImpl
-        .removeTrailingNotCombinableFulfillmentGroupOffers(candidateOffers);
-
-    // Assert
-    verify(offerImpl).isCombinableWithOtherOffers();
-    verify(fulfillmentGroupOfferPotential).getOffer();
-    verify(fulfillmentGroupOfferPotential).setOffer(isA(Offer.class));
-    verify(fulfillmentGroupOfferPotential).setPriority(eq(0));
-    verify(fulfillmentGroupOfferPotential).setTotalSavings(isA(Money.class));
-    assertEquals(1, actualRemoveTrailingNotCombinableFulfillmentGroupOffersResult.size());
-    FulfillmentGroupOfferPotential getResult = actualRemoveTrailingNotCombinableFulfillmentGroupOffersResult.get(0);
-    assertTrue(getResult.getOffer() instanceof OfferImpl);
-    assertEquals(-1, getResult.getPriority());
-    Money totalSavings = getResult.getTotalSavings();
-    assertEquals(totalSavings, totalSavings.abs());
-    assertEquals(totalSavings, totalSavings.zero());
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupOfferProcessorImpl#removeTrailingNotCombinableFulfillmentGroupOffers(List)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupOfferProcessorImpl#removeTrailingNotCombinableFulfillmentGroupOffers(List)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testRemoveTrailingNotCombinableFulfillmentGroupOffers4() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.service.processor;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2330 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.processor.FulfillmentGroupOfferProcessorImpl fulfillmentGroupOfferProcessorImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentGroupOfferProcessorImpl fulfillmentGroupOfferProcessorImpl2 = new FulfillmentGroupOfferProcessorImpl(
-        new PromotableOfferUtilityImpl());
-
-    // Act
-    fulfillmentGroupOfferProcessorImpl2.removeTrailingNotCombinableFulfillmentGroupOffers(new ArrayList<>());
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupOfferProcessorImpl#removeTrailingNotCombinableFulfillmentGroupOffers(List)}.
-   * <ul>
-   *   <li>Then return {@link ArrayList#ArrayList()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupOfferProcessorImpl#removeTrailingNotCombinableFulfillmentGroupOffers(List)}
-   */
-  @Test
-  public void testRemoveTrailingNotCombinableFulfillmentGroupOffers_thenReturnArrayList() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupOfferProcessorImpl fulfillmentGroupOfferProcessorImpl = new FulfillmentGroupOfferProcessorImpl(
-        mock(PromotableOfferUtilityImpl.class));
-    FulfillmentGroupOfferPotential fulfillmentGroupOfferPotential = mock(FulfillmentGroupOfferPotential.class);
-    when(fulfillmentGroupOfferPotential.getOffer()).thenReturn(new OfferImpl());
-    doNothing().when(fulfillmentGroupOfferPotential).setOffer(Mockito.<Offer>any());
-    doNothing().when(fulfillmentGroupOfferPotential).setPriority(anyInt());
-    doNothing().when(fulfillmentGroupOfferPotential).setTotalSavings(Mockito.<Money>any());
-    fulfillmentGroupOfferPotential.setOffer(new OfferImpl());
-    fulfillmentGroupOfferPotential.setPriority(0);
-    fulfillmentGroupOfferPotential.setTotalSavings(new Money());
-
-    FulfillmentGroupOfferPotential fulfillmentGroupOfferPotential2 = new FulfillmentGroupOfferPotential();
-    fulfillmentGroupOfferPotential2.setOffer(new OfferImpl());
-    fulfillmentGroupOfferPotential2.setPriority(-1);
-    fulfillmentGroupOfferPotential2.setTotalSavings(new Money());
-
-    ArrayList<FulfillmentGroupOfferPotential> candidateOffers = new ArrayList<>();
-    candidateOffers.add(fulfillmentGroupOfferPotential2);
-    candidateOffers.add(fulfillmentGroupOfferPotential);
-
-    // Act
-    List<FulfillmentGroupOfferPotential> actualRemoveTrailingNotCombinableFulfillmentGroupOffersResult = fulfillmentGroupOfferProcessorImpl
-        .removeTrailingNotCombinableFulfillmentGroupOffers(candidateOffers);
-
-    // Assert
-    verify(fulfillmentGroupOfferPotential, atLeast(1)).getOffer();
-    verify(fulfillmentGroupOfferPotential).setOffer(isA(Offer.class));
-    verify(fulfillmentGroupOfferPotential).setPriority(eq(0));
-    verify(fulfillmentGroupOfferPotential).setTotalSavings(isA(Money.class));
-    assertEquals(candidateOffers, actualRemoveTrailingNotCombinableFulfillmentGroupOffersResult);
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupOfferProcessorImpl#removeTrailingNotCombinableFulfillmentGroupOffers(List)}.
+   * Test {@link FulfillmentGroupOfferProcessorImpl#removeTrailingNotCombinableFulfillmentGroupOffers(List)}.
    * <ul>
    *   <li>Then return Empty.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentGroupOfferProcessorImpl#removeTrailingNotCombinableFulfillmentGroupOffers(List)}
+   * Method under test: {@link FulfillmentGroupOfferProcessorImpl#removeTrailingNotCombinableFulfillmentGroupOffers(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List FulfillmentGroupOfferProcessorImpl.removeTrailingNotCombinableFulfillmentGroupOffers(List)"})
   public void testRemoveTrailingNotCombinableFulfillmentGroupOffers_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupOfferProcessorImpl fulfillmentGroupOfferProcessorImpl = new FulfillmentGroupOfferProcessorImpl(
-        new PromotableOfferUtilityImpl());
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertTrue(fulfillmentGroupOfferProcessorImpl.removeTrailingNotCombinableFulfillmentGroupOffers(new ArrayList<>())
         .isEmpty());
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupOfferProcessorImpl#removeTrailingNotCombinableFulfillmentGroupOffers(List)}.
-   * <ul>
-   *   <li>Then return Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupOfferProcessorImpl#removeTrailingNotCombinableFulfillmentGroupOffers(List)}
-   */
-  @Test
-  public void testRemoveTrailingNotCombinableFulfillmentGroupOffers_thenReturnEmpty2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupOfferProcessorImpl fulfillmentGroupOfferProcessorImpl = new FulfillmentGroupOfferProcessorImpl(
-        mock(PromotableOfferUtilityImpl.class));
-
-    // Act and Assert
-    assertTrue(fulfillmentGroupOfferProcessorImpl.removeTrailingNotCombinableFulfillmentGroupOffers(new ArrayList<>())
-        .isEmpty());
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentGroupOfferProcessorImpl#removeTrailingNotCombinableFulfillmentGroupOffers(List)}.
-   * <ul>
-   *   <li>Then return size is two.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link FulfillmentGroupOfferProcessorImpl#removeTrailingNotCombinableFulfillmentGroupOffers(List)}
-   */
-  @Test
-  public void testRemoveTrailingNotCombinableFulfillmentGroupOffers_thenReturnSizeIsTwo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentGroupOfferProcessorImpl fulfillmentGroupOfferProcessorImpl = new FulfillmentGroupOfferProcessorImpl(
-        mock(PromotableOfferUtilityImpl.class));
-
-    FulfillmentGroupOfferPotential fulfillmentGroupOfferPotential = new FulfillmentGroupOfferPotential();
-    fulfillmentGroupOfferPotential.setOffer(new OfferImpl());
-    fulfillmentGroupOfferPotential.setPriority(0);
-    fulfillmentGroupOfferPotential.setTotalSavings(new Money());
-
-    FulfillmentGroupOfferPotential fulfillmentGroupOfferPotential2 = new FulfillmentGroupOfferPotential();
-    fulfillmentGroupOfferPotential2.setOffer(new OfferImpl());
-    fulfillmentGroupOfferPotential2.setPriority(-1);
-    fulfillmentGroupOfferPotential2.setTotalSavings(new Money());
-
-    ArrayList<FulfillmentGroupOfferPotential> candidateOffers = new ArrayList<>();
-    candidateOffers.add(fulfillmentGroupOfferPotential2);
-    candidateOffers.add(fulfillmentGroupOfferPotential);
-
-    // Act
-    List<FulfillmentGroupOfferPotential> actualRemoveTrailingNotCombinableFulfillmentGroupOffersResult = fulfillmentGroupOfferProcessorImpl
-        .removeTrailingNotCombinableFulfillmentGroupOffers(candidateOffers);
-
-    // Assert
-    assertEquals(2, actualRemoveTrailingNotCombinableFulfillmentGroupOffersResult.size());
-    assertSame(fulfillmentGroupOfferPotential, actualRemoveTrailingNotCombinableFulfillmentGroupOffersResult.get(1));
   }
 }

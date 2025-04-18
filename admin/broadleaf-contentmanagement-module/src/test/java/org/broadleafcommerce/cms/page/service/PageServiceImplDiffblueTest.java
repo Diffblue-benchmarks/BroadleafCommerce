@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce CMS Module
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.cms.page.service;
 
 import static org.junit.Assert.assertEquals;
@@ -5,40 +22,80 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.anyBoolean;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.cache.Cache;
+import javax.cache.CacheManager;
+import org.broadleafcommerce.cms.file.service.StaticAssetService;
+import org.broadleafcommerce.cms.page.dao.PageDao;
 import org.broadleafcommerce.cms.page.domain.Page;
+import org.broadleafcommerce.cms.page.domain.PageField;
+import org.broadleafcommerce.cms.page.domain.PageFieldImpl;
+import org.broadleafcommerce.cms.page.domain.PageImpl;
 import org.broadleafcommerce.cms.page.domain.PageTemplate;
 import org.broadleafcommerce.cms.page.domain.PageTemplateImpl;
+import org.broadleafcommerce.common.cache.StatisticsService;
+import org.broadleafcommerce.common.extension.ExtensionResultHolder;
+import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
 import org.broadleafcommerce.common.extension.ResultType;
+import org.broadleafcommerce.common.extension.SparselyPopulatedQueryExtensionHandler;
 import org.broadleafcommerce.common.locale.domain.Locale;
 import org.broadleafcommerce.common.locale.domain.LocaleImpl;
+import org.broadleafcommerce.common.locale.service.LocaleService;
 import org.broadleafcommerce.common.page.dto.NullPageDTO;
 import org.broadleafcommerce.common.page.dto.PageDTO;
-import org.junit.Ignore;
+import org.broadleafcommerce.common.rule.RuleProcessor;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml",
-    "/applicationContext-servlet-cms-contentCreator.xml", "/bl-cms-applicationContext-entity.xml",
-    "/bl-cms-contentClient-applicationContext.xml", "/bl-cms-contentCreator-applicationContext.xml",
-    "/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-cms-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-cms-applicationContext-servlet.xml",
-    "/blc-config/site/framework/bl-cms-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class PageServiceImplDiffblueTest {
-  @Autowired
+  @Mock
+  private CacheManager cacheManager;
+
+  @Mock
+  private List<RuleProcessor<PageDTO>> list;
+
+  @Mock
+  private LocaleService localeService;
+
+  @Mock
+  private PageDao pageDao;
+
+  @Mock
+  private PageQueryExtensionManager pageQueryExtensionManager;
+
+  @InjectMocks
   private PageServiceImpl pageServiceImpl;
+
+  @Mock
+  private PageServiceUtility pageServiceUtility;
+
+  @Mock
+  private StaticAssetService staticAssetService;
+
+  @Mock
+  private StatisticsService statisticsService;
 
   /**
    * Test {@link PageServiceImpl#findPageById(Long)}.
@@ -46,56 +103,70 @@ public class PageServiceImplDiffblueTest {
    * Method under test: {@link PageServiceImpl#findPageById(Long)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Page PageServiceImpl.findPageById(Long)"})
   public void testFindPageById() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.page.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1165 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.service.PageServiceImpl pageServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    PageImpl pageImpl = new PageImpl();
+    when(pageDao.readPageById(Mockito.<Long>any())).thenReturn(pageImpl);
 
-    // Arrange and Act
-    (new PageServiceImpl()).findPageById(1L);
+    // Act
+    Page actualFindPageByIdResult = pageServiceImpl.findPageById(1L);
+
+    // Assert
+    verify(pageDao).readPageById(eq(1L));
+    assertSame(pageImpl, actualFindPageByIdResult);
   }
 
   /**
    * Test {@link PageServiceImpl#findPageFieldMapByPageId(Long)}.
+   * <ul>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link PageFieldImpl} (default constructor).</li>
+   *   <li>Then return size is one.</li>
+   * </ul>
    * <p>
    * Method under test: {@link PageServiceImpl#findPageFieldMapByPageId(Long)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindPageFieldMapByPageId() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.page.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1218 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.service.PageServiceImpl pageServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map PageServiceImpl.findPageFieldMapByPageId(Long)"})
+  public void testFindPageFieldMapByPageId_givenArrayListAddPageFieldImpl_thenReturnSizeIsOne() {
+    // Arrange
+    ArrayList<PageField> pageFieldList = new ArrayList<>();
+    PageFieldImpl pageFieldImpl = new PageFieldImpl();
+    pageFieldList.add(pageFieldImpl);
+    when(pageDao.readPageFieldsByPageId(Mockito.<Long>any())).thenReturn(pageFieldList);
 
-    // Arrange and Act
-    (new PageServiceImpl()).findPageFieldMapByPageId(1L);
+    // Act
+    Map<String, PageField> actualFindPageFieldMapByPageIdResult = pageServiceImpl.findPageFieldMapByPageId(1L);
+
+    // Assert
+    verify(pageDao).readPageFieldsByPageId(eq(1L));
+    assertEquals(1, actualFindPageFieldMapByPageIdResult.size());
+    assertSame(pageFieldImpl, actualFindPageFieldMapByPageIdResult.get(null));
+  }
+
+  /**
+   * Test {@link PageServiceImpl#findPageFieldMapByPageId(Long)}.
+   * <ul>
+   *   <li>Then return Empty.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PageServiceImpl#findPageFieldMapByPageId(Long)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map PageServiceImpl.findPageFieldMapByPageId(Long)"})
+  public void testFindPageFieldMapByPageId_thenReturnEmpty() {
+    // Arrange
+    when(pageDao.readPageFieldsByPageId(Mockito.<Long>any())).thenReturn(new ArrayList<>());
+
+    // Act
+    Map<String, PageField> actualFindPageFieldMapByPageIdResult = pageServiceImpl.findPageFieldMapByPageId(1L);
+
+    // Assert
+    verify(pageDao).readPageFieldsByPageId(eq(1L));
+    assertTrue(actualFindPageFieldMapByPageIdResult.isEmpty());
   }
 
   /**
@@ -104,27 +175,19 @@ public class PageServiceImplDiffblueTest {
    * Method under test: {@link PageServiceImpl#findPageTemplateById(Long)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PageTemplate PageServiceImpl.findPageTemplateById(Long)"})
   public void testFindPageTemplateById() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.page.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1237 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.service.PageServiceImpl pageServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    PageTemplateImpl pageTemplateImpl = new PageTemplateImpl();
+    when(pageDao.readPageTemplateById(Mockito.<Long>any())).thenReturn(pageTemplateImpl);
 
-    // Arrange and Act
-    (new PageServiceImpl()).findPageTemplateById(1L);
+    // Act
+    PageTemplate actualFindPageTemplateByIdResult = pageServiceImpl.findPageTemplateById(1L);
+
+    // Assert
+    verify(pageDao).readPageTemplateById(eq(1L));
+    assertSame(pageTemplateImpl, actualFindPageTemplateByIdResult);
   }
 
   /**
@@ -133,378 +196,158 @@ public class PageServiceImplDiffblueTest {
    * Method under test: {@link PageServiceImpl#savePageTemplate(PageTemplate)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PageTemplate PageServiceImpl.savePageTemplate(PageTemplate)"})
   public void testSavePageTemplate() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.page.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2403 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.service.PageServiceImpl pageServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    PageServiceImpl pageServiceImpl2 = new PageServiceImpl();
+    PageTemplateImpl pageTemplateImpl = new PageTemplateImpl();
+    when(pageDao.savePageTemplate(Mockito.<PageTemplate>any())).thenReturn(pageTemplateImpl);
 
     // Act
-    pageServiceImpl2.savePageTemplate(new PageTemplateImpl());
-  }
+    PageTemplate actualSavePageTemplateResult = pageServiceImpl.savePageTemplate(new PageTemplateImpl());
 
-  /**
-   * Test {@link PageServiceImpl#findPageByURI(Locale, String, Map, boolean)}.
-   * <p>
-   * Method under test:
-   * {@link PageServiceImpl#findPageByURI(Locale, String, Map, boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindPageByURI() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.page.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1184 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.service.PageServiceImpl pageServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    PageServiceImpl pageServiceImpl2 = new PageServiceImpl();
-    LocaleImpl locale = new LocaleImpl();
-
-    // Act
-    pageServiceImpl2.findPageByURI(locale, "Uri", new HashMap<>(), true);
-  }
-
-  /**
-   * Test {@link PageServiceImpl#isNullPageCached(Locale, String, boolean)}.
-   * <p>
-   * Method under test:
-   * {@link PageServiceImpl#isNullPageCached(Locale, String, boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsNullPageCached() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.page.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1987 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.service.PageServiceImpl pageServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    PageServiceImpl pageServiceImpl2 = new PageServiceImpl();
-
-    // Act
-    pageServiceImpl2.isNullPageCached(new LocaleImpl(), "Uri", true);
-  }
-
-  /**
-   * Test {@link PageServiceImpl#getPageDTOListForURI(Locale, String, boolean)}.
-   * <p>
-   * Method under test:
-   * {@link PageServiceImpl#getPageDTOListForURI(Locale, String, boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetPageDTOListForURI() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.page.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1610 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.service.PageServiceImpl pageServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    PageServiceImpl pageServiceImpl2 = new PageServiceImpl();
-
-    // Act
-    pageServiceImpl2.getPageDTOListForURI(new LocaleImpl(), "Uri", true);
+    // Assert
+    verify(pageDao).savePageTemplate(isA(PageTemplate.class));
+    assertSame(pageTemplateImpl, actualSavePageTemplateResult);
   }
 
   /**
    * Test {@link PageServiceImpl#getPageDTOListForURI(Locale, String, boolean)}.
    * <ul>
-   *   <li>When {@link LocaleImpl}.</li>
+   *   <li>Given {@link CacheManager}.</li>
+   *   <li>When {@link Locale}.</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PageServiceImpl#getPageDTOListForURI(Locale, String, boolean)}
+   * Method under test: {@link PageServiceImpl#getPageDTOListForURI(Locale, String, boolean)}
    */
   @Test
-  public void testGetPageDTOListForURI_whenLocaleImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List PageServiceImpl.getPageDTOListForURI(Locale, String, boolean)"})
+  public void testGetPageDTOListForURI_givenCacheManager_whenLocale_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull((new PageServiceImpl()).getPageDTOListForURI(mock(LocaleImpl.class), null, true));
-  }
-
-  /**
-   * Test {@link PageServiceImpl#addCachedDate(String)}.
-   * <p>
-   * Method under test: {@link PageServiceImpl#addCachedDate(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddCachedDate() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.page.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass565 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.service.PageServiceImpl pageServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new PageServiceImpl()).addCachedDate("Key");
-  }
-
-  /**
-   * Test {@link PageServiceImpl#getCachedDate(String)}.
-   * <p>
-   * Method under test: {@link PageServiceImpl#getCachedDate(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetCachedDate() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.page.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1256 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.service.PageServiceImpl pageServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new PageServiceImpl()).getCachedDate("Key");
-  }
-
-  /**
-   * Test {@link PageServiceImpl#buildPageDTOList(List, boolean, String, Locale)}.
-   * <p>
-   * Method under test:
-   * {@link PageServiceImpl#buildPageDTOList(List, boolean, String, Locale)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testBuildPageDTOList() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.page.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1057 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.service.PageServiceImpl pageServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    PageServiceImpl pageServiceImpl2 = new PageServiceImpl();
-    ArrayList<Page> pageList = new ArrayList<>();
-
-    // Act
-    pageServiceImpl2.buildPageDTOList(pageList, true, "42", new LocaleImpl());
-  }
-
-  /**
-   * Test
-   * {@link PageServiceImpl#buildPageDTOListUsingCache(List, String, Locale, boolean)}.
-   * <p>
-   * Method under test:
-   * {@link PageServiceImpl#buildPageDTOListUsingCache(List, String, Locale, boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testBuildPageDTOListUsingCache() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.page.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1088 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.service.PageServiceImpl pageServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    PageServiceImpl pageServiceImpl2 = new PageServiceImpl();
-    ArrayList<Page> pageList = new ArrayList<>();
-
-    // Act
-    pageServiceImpl2.buildPageDTOListUsingCache(pageList, "42", new LocaleImpl(), true);
-  }
-
-  /**
-   * Test
-   * {@link PageServiceImpl#getCachedPageDTOList(List, String, Locale, boolean)}.
-   * <p>
-   * Method under test:
-   * {@link PageServiceImpl#getCachedPageDTOList(List, String, Locale, boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetCachedPageDTOList() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.page.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1574 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.service.PageServiceImpl pageServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    PageServiceImpl pageServiceImpl2 = new PageServiceImpl();
-    ArrayList<Page> pageList = new ArrayList<>();
-
-    // Act
-    pageServiceImpl2.getCachedPageDTOList(pageList, "42", new LocaleImpl(), true);
+    assertNull(pageServiceImpl.getPageDTOListForURI(mock(Locale.class), null, true));
   }
 
   /**
    * Test {@link PageServiceImpl#addPageListToPageDTOList(List, boolean, List)}.
+   * <ul>
+   *   <li>Given {@link PageDTO} (default constructor).</li>
+   *   <li>Then {@link ArrayList#ArrayList()} size is two.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link PageServiceImpl#addPageListToPageDTOList(List, boolean, List)}
+   * Method under test: {@link PageServiceImpl#addPageListToPageDTOList(List, boolean, List)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddPageListToPageDTOList() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.page.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass914 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.service.PageServiceImpl pageServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PageServiceImpl.addPageListToPageDTOList(List, boolean, List)"})
+  public void testAddPageListToPageDTOList_givenPageDTO_thenArrayListSizeIsTwo() {
     // Arrange
-    PageServiceImpl pageServiceImpl2 = new PageServiceImpl();
+    PageDTO pageDTO = new PageDTO();
+    when(pageServiceUtility.buildPageDTO(Mockito.<Page>any(), anyBoolean())).thenReturn(pageDTO);
+
     ArrayList<Page> pageList = new ArrayList<>();
+    pageList.add(new PageImpl());
+
+    ArrayList<PageDTO> dtoList = new ArrayList<>();
+    dtoList.add(new PageDTO());
 
     // Act
-    pageServiceImpl2.addPageListToPageDTOList(pageList, true, new ArrayList<>());
+    pageServiceImpl.addPageListToPageDTOList(pageList, true, dtoList);
+
+    // Assert
+    verify(pageServiceUtility).buildPageDTO(isA(Page.class), eq(true));
+    assertEquals(2, dtoList.size());
+    assertSame(pageDTO, dtoList.get(1));
   }
 
   /**
-   * Test {@link PageServiceImpl#getPageListFromCache(String)}.
+   * Test {@link PageServiceImpl#addPageListToPageDTOList(List, boolean, List)}.
+   * <ul>
+   *   <li>Then {@link ArrayList#ArrayList()} size is one.</li>
+   * </ul>
    * <p>
-   * Method under test: {@link PageServiceImpl#getPageListFromCache(String)}
+   * Method under test: {@link PageServiceImpl#addPageListToPageDTOList(List, boolean, List)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetPageListFromCache() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.page.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1637 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.service.PageServiceImpl pageServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PageServiceImpl.addPageListToPageDTOList(List, boolean, List)"})
+  public void testAddPageListToPageDTOList_thenArrayListSizeIsOne() {
+    // Arrange
+    PageDTO pageDTO = new PageDTO();
+    when(pageServiceUtility.buildPageDTO(Mockito.<Page>any(), anyBoolean())).thenReturn(pageDTO);
 
-    // Arrange and Act
-    (new PageServiceImpl()).getPageListFromCache("Key");
+    ArrayList<Page> pageList = new ArrayList<>();
+    pageList.add(new PageImpl());
+    ArrayList<PageDTO> dtoList = new ArrayList<>();
+
+    // Act
+    pageServiceImpl.addPageListToPageDTOList(pageList, true, dtoList);
+
+    // Assert
+    verify(pageServiceUtility).buildPageDTO(isA(Page.class), eq(true));
+    assertEquals(1, dtoList.size());
+    assertSame(pageDTO, dtoList.get(0));
+  }
+
+  /**
+   * Test {@link PageServiceImpl#addPageListToPageDTOList(List, boolean, List)}.
+   * <ul>
+   *   <li>Then {@link ArrayList#ArrayList()} size is one.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PageServiceImpl#addPageListToPageDTOList(List, boolean, List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PageServiceImpl.addPageListToPageDTOList(List, boolean, List)"})
+  public void testAddPageListToPageDTOList_thenArrayListSizeIsOne2() {
+    // Arrange
+    PageDTO pageDTO = new PageDTO();
+    when(pageServiceUtility.buildPageDTO(Mockito.<Page>any(), anyBoolean())).thenReturn(pageDTO);
+
+    ArrayList<Page> pageList = new ArrayList<>();
+    pageList.add(new PageImpl());
+    pageList.add(new PageImpl());
+    ArrayList<PageDTO> dtoList = new ArrayList<>();
+
+    // Act
+    pageServiceImpl.addPageListToPageDTOList(pageList, true, dtoList);
+
+    // Assert
+    verify(pageServiceUtility, atLeast(1)).buildPageDTO(Mockito.<Page>any(), eq(true));
+    assertEquals(1, dtoList.size());
+    assertSame(pageDTO, dtoList.get(0));
+  }
+
+  /**
+   * Test {@link PageServiceImpl#addPageListToPageDTOList(List, boolean, List)}.
+   * <ul>
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then {@link ArrayList#ArrayList()} Empty.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PageServiceImpl#addPageListToPageDTOList(List, boolean, List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PageServiceImpl.addPageListToPageDTOList(List, boolean, List)"})
+  public void testAddPageListToPageDTOList_whenArrayList_thenArrayListEmpty() {
+    // Arrange
+    ArrayList<Page> pageList = new ArrayList<>();
+    ArrayList<PageDTO> dtoList = new ArrayList<>();
+
+    // Act
+    pageServiceImpl.addPageListToPageDTOList(pageList, true, dtoList);
+
+    // Assert that nothing has changed
+    assertTrue(dtoList.isEmpty());
   }
 
   /**
    * Test {@link PageServiceImpl#getPageListFromCache(String)}.
    * <ul>
+   *   <li>Given {@link CacheManager}.</li>
    *   <li>When {@code null}.</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
@@ -512,105 +355,11 @@ public class PageServiceImplDiffblueTest {
    * Method under test: {@link PageServiceImpl#getPageListFromCache(String)}
    */
   @Test
-  public void testGetPageListFromCache_whenNull_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List PageServiceImpl.getPageListFromCache(String)"})
+  public void testGetPageListFromCache_givenCacheManager_whenNull_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull((new PageServiceImpl()).getPageListFromCache(null));
-  }
-
-  /**
-   * Test
-   * {@link PageServiceImpl#addPageListToCache(List, String, Locale, boolean)}.
-   * <p>
-   * Method under test:
-   * {@link PageServiceImpl#addPageListToCache(List, String, Locale, boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddPageListToCache() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.page.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass883 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.service.PageServiceImpl pageServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    PageServiceImpl pageServiceImpl2 = new PageServiceImpl();
-    ArrayList<PageDTO> pageList = new ArrayList<>();
-
-    // Act
-    pageServiceImpl2.addPageListToCache(pageList, "42", new LocaleImpl(), true);
-  }
-
-  /**
-   * Test {@link PageServiceImpl#addPageMapCacheEntry(String, String)}.
-   * <p>
-   * Method under test:
-   * {@link PageServiceImpl#addPageMapCacheEntry(String, String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddPageMapCacheEntry() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.page.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass928 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.service.PageServiceImpl pageServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new PageServiceImpl()).addPageMapCacheEntry("42", "Key");
-  }
-
-  /**
-   * Test {@link PageServiceImpl#getPageMapCacheKey(String, Long)}.
-   * <p>
-   * Method under test: {@link PageServiceImpl#getPageMapCacheKey(String, Long)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetPageMapCacheKey() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.page.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1960 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.service.PageServiceImpl pageServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new PageServiceImpl()).getPageMapCacheKey("Uri", 1L);
+    assertNull(pageServiceImpl.getPageListFromCache(null));
   }
 
   /**
@@ -623,11 +372,11 @@ public class PageServiceImplDiffblueTest {
    * Method under test: {@link PageServiceImpl#getPageMapCacheKey(String, Long)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String PageServiceImpl.getPageMapCacheKey(String, Long)"})
   public void testGetPageMapCacheKey_whenNull_thenReturnUriAll() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("Uri-ALL", (new PageServiceImpl()).getPageMapCacheKey("Uri", null));
+    assertEquals("Uri-ALL", pageServiceImpl.getPageMapCacheKey("Uri", null));
   }
 
   /**
@@ -640,142 +389,150 @@ public class PageServiceImplDiffblueTest {
    * Method under test: {@link PageServiceImpl#getPageMapCacheKey(String, Long)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String PageServiceImpl.getPageMapCacheKey(String, Long)"})
   public void testGetPageMapCacheKey_whenOne_thenReturnUri1() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("Uri-1", (new PageServiceImpl()).getPageMapCacheKey("Uri", 1L));
+    assertEquals("Uri-1", pageServiceImpl.getPageMapCacheKey("Uri", 1L));
   }
 
   /**
-   * Test {@link PageServiceImpl#buildKey(String, String, Boolean, ResultType)}
-   * with {@code identifier}, {@code localeCode}, {@code secure},
-   * {@code resultType}.
-   * <p>
-   * Method under test:
-   * {@link PageServiceImpl#buildKey(String, String, Boolean, ResultType)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testBuildKeyWithIdentifierLocaleCodeSecureResultType() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.page.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass992 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.service.PageServiceImpl pageServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new PageServiceImpl()).buildKey("42", "en", true, ResultType.STANDARD);
-  }
-
-  /**
-   * Test {@link PageServiceImpl#buildKey(String, String, Boolean, ResultType)}
-   * with {@code identifier}, {@code localeCode}, {@code secure},
-   * {@code resultType}.
+   * Test {@link PageServiceImpl#buildKey(String, String, Boolean, ResultType)} with {@code identifier}, {@code localeCode}, {@code secure}, {@code resultType}.
    * <ul>
-   *   <li>When {@code 42}.</li>
-   *   <li>Then return {@code 42-en}.</li>
+   *   <li>Given {@link PageServiceImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PageServiceImpl#buildKey(String, String, Boolean, ResultType)}
+   * Method under test: {@link PageServiceImpl#buildKey(String, String, Boolean, ResultType)}
    */
   @Test
-  public void testBuildKeyWithIdentifierLocaleCodeSecureResultType_when42_thenReturn42En() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String PageServiceImpl.buildKey(String, String, Boolean, ResultType)"})
+  public void testBuildKeyWithIdentifierLocaleCodeSecureResultType_givenPageServiceImpl() {
     // Arrange, Act and Assert
-    assertEquals("42-en", (new PageServiceImpl()).buildKey("42", "en", null, ResultType.STANDARD));
+    assertEquals("42-en-true", (new PageServiceImpl()).buildKey("42", "en", true, ResultType.STANDARD));
   }
 
   /**
-   * Test {@link PageServiceImpl#buildKey(String, String, Boolean, ResultType)}
-   * with {@code identifier}, {@code localeCode}, {@code secure},
-   * {@code resultType}.
+   * Test {@link PageServiceImpl#buildKey(String, String, Boolean, ResultType)} with {@code identifier}, {@code localeCode}, {@code secure}, {@code resultType}.
    * <ul>
-   *   <li>When {@code 42}.</li>
    *   <li>Then return {@code 42-en-true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PageServiceImpl#buildKey(String, String, Boolean, ResultType)}
+   * Method under test: {@link PageServiceImpl#buildKey(String, String, Boolean, ResultType)}
    */
   @Test
-  public void testBuildKeyWithIdentifierLocaleCodeSecureResultType_when42_thenReturn42EnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String PageServiceImpl.buildKey(String, String, Boolean, ResultType)"})
+  public void testBuildKeyWithIdentifierLocaleCodeSecureResultType_thenReturn42EnTrue() {
+    // Arrange
+    SparselyPopulatedQueryExtensionHandler sparselyPopulatedQueryExtensionHandler = mock(
+        SparselyPopulatedQueryExtensionHandler.class);
+    when(sparselyPopulatedQueryExtensionHandler.getCacheKey(Mockito.<String>any(), Mockito.<ResultType>any(),
+        Mockito.<ExtensionResultHolder<String>>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(pageQueryExtensionManager.getProxy()).thenReturn(sparselyPopulatedQueryExtensionHandler);
 
-    // Arrange, Act and Assert
-    assertEquals("42-en-true", (new PageServiceImpl()).buildKey("42", "en", true, ResultType.STANDARD));
-    assertEquals("42-en-true", (new PageServiceImpl()).buildKey("42", "en", true, null));
+    // Act
+    String actualBuildKeyResult = pageServiceImpl.buildKey("42", "en", true, ResultType.STANDARD);
+
+    // Assert
+    verify(pageQueryExtensionManager).getProxy();
+    verify(sparselyPopulatedQueryExtensionHandler).getCacheKey(eq("42-en-true"), eq(ResultType.STANDARD),
+        isA(ExtensionResultHolder.class));
+    assertEquals("42-en-true", actualBuildKeyResult);
   }
 
   /**
-   * Test {@link PageServiceImpl#buildKey(String, String, Boolean, ResultType)}
-   * with {@code identifier}, {@code localeCode}, {@code secure},
-   * {@code resultType}.
+   * Test {@link PageServiceImpl#buildKey(String, String, Boolean, ResultType)} with {@code identifier}, {@code localeCode}, {@code secure}, {@code resultType}.
    * <ul>
-   *   <li>When {@code 42}.</li>
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@code 42-en}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PageServiceImpl#buildKey(String, String, Boolean, ResultType)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String PageServiceImpl.buildKey(String, String, Boolean, ResultType)"})
+  public void testBuildKeyWithIdentifierLocaleCodeSecureResultType_whenNull_thenReturn42En() {
+    // Arrange
+    SparselyPopulatedQueryExtensionHandler sparselyPopulatedQueryExtensionHandler = mock(
+        SparselyPopulatedQueryExtensionHandler.class);
+    when(sparselyPopulatedQueryExtensionHandler.getCacheKey(Mockito.<String>any(), Mockito.<ResultType>any(),
+        Mockito.<ExtensionResultHolder<String>>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(pageQueryExtensionManager.getProxy()).thenReturn(sparselyPopulatedQueryExtensionHandler);
+
+    // Act
+    String actualBuildKeyResult = pageServiceImpl.buildKey("42", "en", null, ResultType.STANDARD);
+
+    // Assert
+    verify(pageQueryExtensionManager).getProxy();
+    verify(sparselyPopulatedQueryExtensionHandler).getCacheKey(eq("42-en"), eq(ResultType.STANDARD),
+        isA(ExtensionResultHolder.class));
+    assertEquals("42-en", actualBuildKeyResult);
+  }
+
+  /**
+   * Test {@link PageServiceImpl#buildKey(String, String, Boolean, ResultType)} with {@code identifier}, {@code localeCode}, {@code secure}, {@code resultType}.
+   * <ul>
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@code 42-en-true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PageServiceImpl#buildKey(String, String, Boolean, ResultType)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String PageServiceImpl.buildKey(String, String, Boolean, ResultType)"})
+  public void testBuildKeyWithIdentifierLocaleCodeSecureResultType_whenNull_thenReturn42EnTrue() {
+    // Arrange
+    SparselyPopulatedQueryExtensionHandler sparselyPopulatedQueryExtensionHandler = mock(
+        SparselyPopulatedQueryExtensionHandler.class);
+    when(sparselyPopulatedQueryExtensionHandler.getCacheKey(Mockito.<String>any(), Mockito.<ResultType>any(),
+        Mockito.<ExtensionResultHolder<String>>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(pageQueryExtensionManager.getProxy()).thenReturn(sparselyPopulatedQueryExtensionHandler);
+
+    // Act
+    String actualBuildKeyResult = pageServiceImpl.buildKey("42", "en", true, null);
+
+    // Assert
+    verify(pageQueryExtensionManager).getProxy();
+    verify(sparselyPopulatedQueryExtensionHandler).getCacheKey(eq("42-en-true"), eq(ResultType.STANDARD),
+        isA(ExtensionResultHolder.class));
+    assertEquals("42-en-true", actualBuildKeyResult);
+  }
+
+  /**
+   * Test {@link PageServiceImpl#buildKey(String, String, Boolean, ResultType)} with {@code identifier}, {@code localeCode}, {@code secure}, {@code resultType}.
+   * <ul>
+   *   <li>When {@code null}.</li>
    *   <li>Then return {@code 42-true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PageServiceImpl#buildKey(String, String, Boolean, ResultType)}
+   * Method under test: {@link PageServiceImpl#buildKey(String, String, Boolean, ResultType)}
    */
   @Test
-  public void testBuildKeyWithIdentifierLocaleCodeSecureResultType_when42_thenReturn42True() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("42-true", (new PageServiceImpl()).buildKey("42", null, true, ResultType.STANDARD));
-  }
-
-  /**
-   * Test {@link PageServiceImpl#buildKey(String, Locale, Boolean)} with
-   * {@code identifier}, {@code locale}, {@code secure}.
-   * <p>
-   * Method under test: {@link PageServiceImpl#buildKey(String, Locale, Boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testBuildKeyWithIdentifierLocaleSecure() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.page.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1030 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.service.PageServiceImpl pageServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String PageServiceImpl.buildKey(String, String, Boolean, ResultType)"})
+  public void testBuildKeyWithIdentifierLocaleCodeSecureResultType_whenNull_thenReturn42True() {
     // Arrange
-    PageServiceImpl pageServiceImpl2 = new PageServiceImpl();
+    SparselyPopulatedQueryExtensionHandler sparselyPopulatedQueryExtensionHandler = mock(
+        SparselyPopulatedQueryExtensionHandler.class);
+    when(sparselyPopulatedQueryExtensionHandler.getCacheKey(Mockito.<String>any(), Mockito.<ResultType>any(),
+        Mockito.<ExtensionResultHolder<String>>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(pageQueryExtensionManager.getProxy()).thenReturn(sparselyPopulatedQueryExtensionHandler);
 
     // Act
-    pageServiceImpl2.buildKey("42", new LocaleImpl(), true);
+    String actualBuildKeyResult = pageServiceImpl.buildKey("42", null, true, ResultType.STANDARD);
+
+    // Assert
+    verify(pageQueryExtensionManager).getProxy();
+    verify(sparselyPopulatedQueryExtensionHandler).getCacheKey(eq("42-true"), eq(ResultType.STANDARD),
+        isA(ExtensionResultHolder.class));
+    assertEquals("42-true", actualBuildKeyResult);
   }
 
   /**
-   * Test {@link PageServiceImpl#buildKey(String, Locale, Boolean)} with
-   * {@code identifier}, {@code locale}, {@code secure}.
+   * Test {@link PageServiceImpl#buildKey(String, Locale, Boolean)} with {@code identifier}, {@code locale}, {@code secure}.
    * <ul>
    *   <li>Given {@code en}.</li>
    *   <li>Then return {@code 42-en}.</li>
@@ -784,25 +541,31 @@ public class PageServiceImplDiffblueTest {
    * Method under test: {@link PageServiceImpl#buildKey(String, Locale, Boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String PageServiceImpl.buildKey(String, Locale, Boolean)"})
   public void testBuildKeyWithIdentifierLocaleSecure_givenEn_thenReturn42En() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    PageServiceImpl pageServiceImpl = new PageServiceImpl();
-    LocaleImpl locale = mock(LocaleImpl.class);
+    SparselyPopulatedQueryExtensionHandler sparselyPopulatedQueryExtensionHandler = mock(
+        SparselyPopulatedQueryExtensionHandler.class);
+    when(sparselyPopulatedQueryExtensionHandler.getCacheKey(Mockito.<String>any(), Mockito.<ResultType>any(),
+        Mockito.<ExtensionResultHolder<String>>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(pageQueryExtensionManager.getProxy()).thenReturn(sparselyPopulatedQueryExtensionHandler);
+    Locale locale = mock(Locale.class);
     when(locale.getLocaleCode()).thenReturn("en");
 
     // Act
     String actualBuildKeyResult = pageServiceImpl.buildKey("42", locale, null);
 
     // Assert
+    verify(pageQueryExtensionManager).getProxy();
+    verify(sparselyPopulatedQueryExtensionHandler).getCacheKey(eq("42-en"), eq(ResultType.STANDARD),
+        isA(ExtensionResultHolder.class));
     verify(locale).getLocaleCode();
     assertEquals("42-en", actualBuildKeyResult);
   }
 
   /**
-   * Test {@link PageServiceImpl#buildKey(String, Locale, Boolean)} with
-   * {@code identifier}, {@code locale}, {@code secure}.
+   * Test {@link PageServiceImpl#buildKey(String, Locale, Boolean)} with {@code identifier}, {@code locale}, {@code secure}.
    * <ul>
    *   <li>Given {@code en}.</li>
    *   <li>Then return {@code 42-en-true}.</li>
@@ -811,36 +574,42 @@ public class PageServiceImplDiffblueTest {
    * Method under test: {@link PageServiceImpl#buildKey(String, Locale, Boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String PageServiceImpl.buildKey(String, Locale, Boolean)"})
   public void testBuildKeyWithIdentifierLocaleSecure_givenEn_thenReturn42EnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    PageServiceImpl pageServiceImpl = new PageServiceImpl();
-    LocaleImpl locale = mock(LocaleImpl.class);
+    SparselyPopulatedQueryExtensionHandler sparselyPopulatedQueryExtensionHandler = mock(
+        SparselyPopulatedQueryExtensionHandler.class);
+    when(sparselyPopulatedQueryExtensionHandler.getCacheKey(Mockito.<String>any(), Mockito.<ResultType>any(),
+        Mockito.<ExtensionResultHolder<String>>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(pageQueryExtensionManager.getProxy()).thenReturn(sparselyPopulatedQueryExtensionHandler);
+    Locale locale = mock(Locale.class);
     when(locale.getLocaleCode()).thenReturn("en");
 
     // Act
     String actualBuildKeyResult = pageServiceImpl.buildKey("42", locale, true);
 
     // Assert
+    verify(pageQueryExtensionManager).getProxy();
+    verify(sparselyPopulatedQueryExtensionHandler).getCacheKey(eq("42-en-true"), eq(ResultType.STANDARD),
+        isA(ExtensionResultHolder.class));
     verify(locale).getLocaleCode();
     assertEquals("42-en-true", actualBuildKeyResult);
   }
 
   /**
-   * Test {@link PageServiceImpl#buildKey(String, Locale, Boolean)} with
-   * {@code identifier}, {@code locale}, {@code secure}.
+   * Test {@link PageServiceImpl#buildKey(String, Locale, Boolean)} with {@code identifier}, {@code locale}, {@code secure}.
    * <ul>
-   *   <li>When {@link LocaleImpl} (default constructor).</li>
+   *   <li>Given {@link PageServiceImpl} (default constructor).</li>
    *   <li>Then return {@code 42-true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link PageServiceImpl#buildKey(String, Locale, Boolean)}
    */
   @Test
-  public void testBuildKeyWithIdentifierLocaleSecure_whenLocaleImpl_thenReturn42True() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String PageServiceImpl.buildKey(String, Locale, Boolean)"})
+  public void testBuildKeyWithIdentifierLocaleSecure_givenPageServiceImpl_thenReturn42True() {
     // Arrange
     PageServiceImpl pageServiceImpl = new PageServiceImpl();
 
@@ -849,51 +618,50 @@ public class PageServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link PageServiceImpl#buildKey(String, Locale, Boolean)} with
-   * {@code identifier}, {@code locale}, {@code secure}.
+   * Test {@link PageServiceImpl#buildKey(String, Locale, Boolean)} with {@code identifier}, {@code locale}, {@code secure}.
    * <ul>
-   *   <li>When {@code null}.</li>
+   *   <li>Given {@link PageServiceImpl} (default constructor).</li>
    *   <li>Then return {@code 42--true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link PageServiceImpl#buildKey(String, Locale, Boolean)}
    */
   @Test
-  public void testBuildKeyWithIdentifierLocaleSecure_whenNull_thenReturn42True() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String PageServiceImpl.buildKey(String, Locale, Boolean)"})
+  public void testBuildKeyWithIdentifierLocaleSecure_givenPageServiceImpl_thenReturn42True2() {
     // Arrange, Act and Assert
     assertEquals("42--true", (new PageServiceImpl()).buildKey("42", null, true));
   }
 
   /**
-   * Test {@link PageServiceImpl#buildBaseKey(String, String, Boolean)}.
+   * Test {@link PageServiceImpl#buildKey(String, Locale, Boolean)} with {@code identifier}, {@code locale}, {@code secure}.
+   * <ul>
+   *   <li>When {@link LocaleImpl} (default constructor).</li>
+   *   <li>Then return {@code 42-true}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link PageServiceImpl#buildBaseKey(String, String, Boolean)}
+   * Method under test: {@link PageServiceImpl#buildKey(String, Locale, Boolean)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testBuildBaseKey() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.page.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass959 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.service.PageServiceImpl pageServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String PageServiceImpl.buildKey(String, Locale, Boolean)"})
+  public void testBuildKeyWithIdentifierLocaleSecure_whenLocaleImpl_thenReturn42True() {
+    // Arrange
+    SparselyPopulatedQueryExtensionHandler sparselyPopulatedQueryExtensionHandler = mock(
+        SparselyPopulatedQueryExtensionHandler.class);
+    when(sparselyPopulatedQueryExtensionHandler.getCacheKey(Mockito.<String>any(), Mockito.<ResultType>any(),
+        Mockito.<ExtensionResultHolder<String>>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(pageQueryExtensionManager.getProxy()).thenReturn(sparselyPopulatedQueryExtensionHandler);
 
-    // Arrange and Act
-    (new PageServiceImpl()).buildBaseKey("42", "en", true);
+    // Act
+    String actualBuildKeyResult = pageServiceImpl.buildKey("42", new LocaleImpl(), true);
+
+    // Assert
+    verify(pageQueryExtensionManager).getProxy();
+    verify(sparselyPopulatedQueryExtensionHandler).getCacheKey(eq("42-true"), eq(ResultType.STANDARD),
+        isA(ExtensionResultHolder.class));
+    assertEquals("42-true", actualBuildKeyResult);
   }
 
   /**
@@ -903,15 +671,14 @@ public class PageServiceImplDiffblueTest {
    *   <li>Then return {@code 42}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PageServiceImpl#buildBaseKey(String, String, Boolean)}
+   * Method under test: {@link PageServiceImpl#buildBaseKey(String, String, Boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String PageServiceImpl.buildBaseKey(String, String, Boolean)"})
   public void testBuildBaseKey_when42_thenReturn42() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("42", (new PageServiceImpl()).buildBaseKey("42", null, null));
+    assertEquals("42", pageServiceImpl.buildBaseKey("42", null, null));
   }
 
   /**
@@ -921,52 +688,96 @@ public class PageServiceImplDiffblueTest {
    *   <li>Then return {@code 42-en-true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PageServiceImpl#buildBaseKey(String, String, Boolean)}
+   * Method under test: {@link PageServiceImpl#buildBaseKey(String, String, Boolean)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String PageServiceImpl.buildBaseKey(String, String, Boolean)"})
   public void testBuildBaseKey_when42_thenReturn42EnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertEquals("42-en-true", (new PageServiceImpl()).buildBaseKey("42", "en", true));
-  }
-
-  /**
-   * Test {@link PageServiceImpl#findLanguageOnlyLocale(Locale)}.
-   * <p>
-   * Method under test: {@link PageServiceImpl#findLanguageOnlyLocale(Locale)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFindLanguageOnlyLocale() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.page.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1152 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.service.PageServiceImpl pageServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    PageServiceImpl pageServiceImpl2 = new PageServiceImpl();
-
-    // Act
-    pageServiceImpl2.findLanguageOnlyLocale(new LocaleImpl());
+    assertEquals("42-en-true", pageServiceImpl.buildBaseKey("42", "en", true));
   }
 
   /**
    * Test {@link PageServiceImpl#findLanguageOnlyLocale(Locale)}.
    * <ul>
+   *   <li>Given {@code en}.</li>
+   *   <li>Then calls {@link LocaleImpl#getLocaleCode()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PageServiceImpl#findLanguageOnlyLocale(Locale)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Locale PageServiceImpl.findLanguageOnlyLocale(Locale)"})
+  public void testFindLanguageOnlyLocale_givenEn_thenCallsGetLocaleCode() {
+    // Arrange
+    LocaleImpl localeImpl = new LocaleImpl();
+    when(localeService.findLocaleByCode(Mockito.<String>any())).thenReturn(localeImpl);
+    LocaleImpl locale = mock(LocaleImpl.class);
+    when(locale.getLocaleCode()).thenReturn("en");
+
+    // Act
+    Locale actualFindLanguageOnlyLocaleResult = pageServiceImpl.findLanguageOnlyLocale(locale);
+
+    // Assert
+    verify(locale, atLeast(1)).getLocaleCode();
+    verify(localeService).findLocaleByCode(isNull());
+    assertSame(localeImpl, actualFindLanguageOnlyLocaleResult);
+  }
+
+  /**
+   * Test {@link PageServiceImpl#findLanguageOnlyLocale(Locale)}.
+   * <ul>
+   *   <li>Given {@link LocaleService} {@link LocaleService#findLocaleByCode(String)} return {@link LocaleImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PageServiceImpl#findLanguageOnlyLocale(Locale)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Locale PageServiceImpl.findLanguageOnlyLocale(Locale)"})
+  public void testFindLanguageOnlyLocale_givenLocaleServiceFindLocaleByCodeReturnLocaleImpl() {
+    // Arrange
+    LocaleImpl localeImpl = new LocaleImpl();
+    when(localeService.findLocaleByCode(Mockito.<String>any())).thenReturn(localeImpl);
+
+    // Act
+    Locale actualFindLanguageOnlyLocaleResult = pageServiceImpl.findLanguageOnlyLocale(new LocaleImpl());
+
+    // Assert
+    verify(localeService).findLocaleByCode(isNull());
+    assertSame(localeImpl, actualFindLanguageOnlyLocaleResult);
+  }
+
+  /**
+   * Test {@link PageServiceImpl#findLanguageOnlyLocale(Locale)}.
+   * <ul>
+   *   <li>Given {@link LocaleService} {@link LocaleService#findLocaleByCode(String)} return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PageServiceImpl#findLanguageOnlyLocale(Locale)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Locale PageServiceImpl.findLanguageOnlyLocale(Locale)"})
+  public void testFindLanguageOnlyLocale_givenLocaleServiceFindLocaleByCodeReturnNull() {
+    // Arrange
+    when(localeService.findLocaleByCode(Mockito.<String>any())).thenReturn(null);
+    LocaleImpl locale = new LocaleImpl();
+
+    // Act
+    Locale actualFindLanguageOnlyLocaleResult = pageServiceImpl.findLanguageOnlyLocale(locale);
+
+    // Assert
+    verify(localeService).findLocaleByCode(isNull());
+    assertSame(locale, actualFindLanguageOnlyLocaleResult);
+  }
+
+  /**
+   * Test {@link PageServiceImpl#findLanguageOnlyLocale(Locale)}.
+   * <ul>
+   *   <li>Given {@link LocaleService}.</li>
    *   <li>When {@code null}.</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
@@ -974,11 +785,11 @@ public class PageServiceImplDiffblueTest {
    * Method under test: {@link PageServiceImpl#findLanguageOnlyLocale(Locale)}
    */
   @Test
-  public void testFindLanguageOnlyLocale_whenNull_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Locale PageServiceImpl.findLanguageOnlyLocale(Locale)"})
+  public void testFindLanguageOnlyLocale_givenLocaleService_whenNull_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull((new PageServiceImpl()).findLanguageOnlyLocale(null));
+    assertNull(pageServiceImpl.findLanguageOnlyLocale(null));
   }
 
   /**
@@ -987,27 +798,18 @@ public class PageServiceImplDiffblueTest {
    * Method under test: {@link PageServiceImpl#getPageCache()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Cache PageServiceImpl.getPageCache()"})
   public void testGetPageCache() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.page.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1605 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.service.PageServiceImpl pageServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    when(cacheManager.getCache(Mockito.<String>any())).thenReturn(null);
 
-    // Arrange and Act
-    (new PageServiceImpl()).getPageCache();
+    // Act
+    Cache actualPageCache = pageServiceImpl.getPageCache();
+
+    // Assert
+    verify(cacheManager).getCache(eq("cmsPageCache"));
+    assertNull(actualPageCache);
   }
 
   /**
@@ -1016,27 +818,18 @@ public class PageServiceImplDiffblueTest {
    * Method under test: {@link PageServiceImpl#getPageMapCache()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Cache PageServiceImpl.getPageMapCache()"})
   public void testGetPageMapCache() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.page.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1955 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.service.PageServiceImpl pageServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    when(cacheManager.getCache(Mockito.<String>any())).thenReturn(null);
 
-    // Arrange and Act
-    (new PageServiceImpl()).getPageMapCache();
+    // Act
+    Cache actualPageMapCache = pageServiceImpl.getPageMapCache();
+
+    // Assert
+    verify(cacheManager).getCache(eq("cmsPageMapCache"));
+    assertNull(actualPageMapCache);
   }
 
   /**
@@ -1045,79 +838,35 @@ public class PageServiceImplDiffblueTest {
    * Method under test: {@link PageServiceImpl#getUriCachedDateCache()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Cache PageServiceImpl.getUriCachedDateCache()"})
   public void testGetUriCachedDateCache() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.page.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1982 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.service.PageServiceImpl pageServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new PageServiceImpl()).getUriCachedDateCache();
-  }
-
-  /**
-   * Test {@link PageServiceImpl#copyDTOList(List)}.
-   * <p>
-   * Method under test: {@link PageServiceImpl#copyDTOList(List)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCopyDTOList() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.page.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1119 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.service.PageServiceImpl pageServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    PageServiceImpl pageServiceImpl2 = new PageServiceImpl();
+    when(cacheManager.getCache(Mockito.<String>any())).thenReturn(null);
 
     // Act
-    pageServiceImpl2.copyDTOList(new ArrayList<>());
+    Cache actualUriCachedDateCache = pageServiceImpl.getUriCachedDateCache();
+
+    // Assert
+    verify(cacheManager).getCache(eq("uriCachedDateCache"));
+    assertNull(actualUriCachedDateCache);
   }
 
   /**
    * Test {@link PageServiceImpl#copyDTOList(List)}.
    * <ul>
    *   <li>Given {@link PageDTO} (default constructor).</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link PageDTO} (default
-   * constructor).</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link PageDTO} (default constructor).</li>
    *   <li>Then return size is one.</li>
    * </ul>
    * <p>
    * Method under test: {@link PageServiceImpl#copyDTOList(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List PageServiceImpl.copyDTOList(List)"})
   public void testCopyDTOList_givenPageDTO_whenArrayListAddPageDTO_thenReturnSizeIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    PageServiceImpl pageServiceImpl = new PageServiceImpl();
-
     ArrayList<PageDTO> dtoList = new ArrayList<>();
     dtoList.add(new PageDTO());
 
@@ -1150,66 +899,108 @@ public class PageServiceImplDiffblueTest {
    * Method under test: {@link PageServiceImpl#copyDTOList(List)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List PageServiceImpl.copyDTOList(List)"})
   public void testCopyDTOList_whenArrayList_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PageServiceImpl pageServiceImpl = new PageServiceImpl();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertTrue(pageServiceImpl.copyDTOList(new ArrayList<>()).isEmpty());
   }
 
   /**
    * Test {@link PageServiceImpl#evaluatePageRules(List, Locale, Map)}.
+   * <ul>
+   *   <li>Given {@code en}.</li>
+   *   <li>Then calls {@link Locale#getLocaleCode()}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link PageServiceImpl#evaluatePageRules(List, Locale, Map)}
+   * Method under test: {@link PageServiceImpl#evaluatePageRules(List, Locale, Map)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testEvaluatePageRules() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.page.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1128 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.service.PageServiceImpl pageServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PageDTO PageServiceImpl.evaluatePageRules(List, Locale, Map)"})
+  public void testEvaluatePageRules_givenEn_thenCallsGetLocaleCode() {
     // Arrange
-    PageServiceImpl pageServiceImpl2 = new PageServiceImpl();
+    PageServiceImpl pageServiceImpl = new PageServiceImpl();
+
     ArrayList<PageDTO> pageDTOList = new ArrayList<>();
-    LocaleImpl locale = new LocaleImpl();
+    PageDTO pageDTO = new PageDTO();
+    pageDTOList.add(pageDTO);
+    Locale locale = mock(Locale.class);
+    when(locale.getLocaleCode()).thenReturn("en");
 
     // Act
-    pageServiceImpl2.evaluatePageRules(pageDTOList, locale, new HashMap<>());
+    PageDTO actualEvaluatePageRulesResult = pageServiceImpl.evaluatePageRules(pageDTOList, locale, new HashMap<>());
+
+    // Assert
+    verify(locale, atLeast(1)).getLocaleCode();
+    assertSame(pageDTO, actualEvaluatePageRulesResult);
   }
 
   /**
    * Test {@link PageServiceImpl#evaluatePageRules(List, Locale, Map)}.
    * <ul>
-   *   <li>Given {@link PageDTO} (default constructor) LocaleCode is
-   * {@code en}.</li>
+   *   <li>Given {@link List} {@link List#iterator()} return {@link ArrayList#ArrayList()} iterator.</li>
+   *   <li>Then calls {@link List#iterator()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PageServiceImpl#evaluatePageRules(List, Locale, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PageDTO PageServiceImpl.evaluatePageRules(List, Locale, Map)"})
+  public void testEvaluatePageRules_givenListIteratorReturnArrayListIterator_thenCallsIterator() {
+    // Arrange
+    ArrayList<RuleProcessor<PageDTO>> ruleProcessorList = new ArrayList<>();
+    when(list.iterator()).thenReturn(ruleProcessorList.iterator());
+
+    ArrayList<PageDTO> pageDTOList = new ArrayList<>();
+    PageDTO pageDTO = new PageDTO();
+    pageDTOList.add(pageDTO);
+    LocaleImpl locale = new LocaleImpl();
+
+    // Act
+    PageDTO actualEvaluatePageRulesResult = pageServiceImpl.evaluatePageRules(pageDTOList, locale, new HashMap<>());
+
+    // Assert
+    verify(list).iterator();
+    assertSame(pageDTO, actualEvaluatePageRulesResult);
+  }
+
+  /**
+   * Test {@link PageServiceImpl#evaluatePageRules(List, Locale, Map)}.
+   * <ul>
+   *   <li>Given {@link List}.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then return {@link PageServiceImpl} {@link PageServiceImpl#NULL_PAGE}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PageServiceImpl#evaluatePageRules(List, Locale, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PageDTO PageServiceImpl.evaluatePageRules(List, Locale, Map)"})
+  public void testEvaluatePageRules_givenList_whenArrayList_thenReturnPageServiceImplNull_page() {
+    // Arrange
+    ArrayList<PageDTO> pageDTOList = new ArrayList<>();
+    LocaleImpl locale = new LocaleImpl();
+
+    // Act and Assert
+    assertSame(pageServiceImpl.NULL_PAGE, pageServiceImpl.evaluatePageRules(pageDTOList, locale, new HashMap<>()));
+  }
+
+  /**
+   * Test {@link PageServiceImpl#evaluatePageRules(List, Locale, Map)}.
+   * <ul>
+   *   <li>Given {@link PageDTO} (default constructor) LocaleCode is {@code en}.</li>
    *   <li>Then calls {@link Locale#getLocaleCode()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PageServiceImpl#evaluatePageRules(List, Locale, Map)}
+   * Method under test: {@link PageServiceImpl#evaluatePageRules(List, Locale, Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PageDTO PageServiceImpl.evaluatePageRules(List, Locale, Map)"})
   public void testEvaluatePageRules_givenPageDTOLocaleCodeIsEn_thenCallsGetLocaleCode() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     PageServiceImpl pageServiceImpl = new PageServiceImpl();
 
@@ -1232,49 +1023,17 @@ public class PageServiceImplDiffblueTest {
   /**
    * Test {@link PageServiceImpl#evaluatePageRules(List, Locale, Map)}.
    * <ul>
-   *   <li>Given {@link PageDTO} (default constructor).</li>
-   *   <li>Then calls {@link Locale#getLocaleCode()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link PageServiceImpl#evaluatePageRules(List, Locale, Map)}
-   */
-  @Test
-  public void testEvaluatePageRules_givenPageDTO_thenCallsGetLocaleCode() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PageServiceImpl pageServiceImpl = new PageServiceImpl();
-
-    ArrayList<PageDTO> pageDTOList = new ArrayList<>();
-    PageDTO pageDTO = new PageDTO();
-    pageDTOList.add(pageDTO);
-    Locale locale = mock(Locale.class);
-    when(locale.getLocaleCode()).thenReturn("en");
-
-    // Act
-    PageDTO actualEvaluatePageRulesResult = pageServiceImpl.evaluatePageRules(pageDTOList, locale, new HashMap<>());
-
-    // Assert
-    verify(locale, atLeast(1)).getLocaleCode();
-    assertSame(pageDTO, actualEvaluatePageRulesResult);
-  }
-
-  /**
-   * Test {@link PageServiceImpl#evaluatePageRules(List, Locale, Map)}.
-   * <ul>
-   *   <li>Given {@link PageDTO} (default constructor).</li>
+   *   <li>Given {@link PageServiceImpl} (default constructor).</li>
    *   <li>When {@link LocaleImpl} (default constructor).</li>
    *   <li>Then return {@link PageDTO} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PageServiceImpl#evaluatePageRules(List, Locale, Map)}
+   * Method under test: {@link PageServiceImpl#evaluatePageRules(List, Locale, Map)}
    */
   @Test
-  public void testEvaluatePageRules_givenPageDTO_whenLocaleImpl_thenReturnPageDTO() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PageDTO PageServiceImpl.evaluatePageRules(List, Locale, Map)"})
+  public void testEvaluatePageRules_givenPageServiceImpl_whenLocaleImpl_thenReturnPageDTO() {
     // Arrange
     PageServiceImpl pageServiceImpl = new PageServiceImpl();
 
@@ -1290,18 +1049,17 @@ public class PageServiceImplDiffblueTest {
   /**
    * Test {@link PageServiceImpl#evaluatePageRules(List, Locale, Map)}.
    * <ul>
-   *   <li>Given {@link PageDTO} (default constructor).</li>
+   *   <li>Given {@link PageServiceImpl} (default constructor).</li>
    *   <li>When {@link LocaleImpl} (default constructor).</li>
    *   <li>Then return {@link PageDTO} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PageServiceImpl#evaluatePageRules(List, Locale, Map)}
+   * Method under test: {@link PageServiceImpl#evaluatePageRules(List, Locale, Map)}
    */
   @Test
-  public void testEvaluatePageRules_givenPageDTO_whenLocaleImpl_thenReturnPageDTO2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PageDTO PageServiceImpl.evaluatePageRules(List, Locale, Map)"})
+  public void testEvaluatePageRules_givenPageServiceImpl_whenLocaleImpl_thenReturnPageDTO2() {
     // Arrange
     PageServiceImpl pageServiceImpl = new PageServiceImpl();
 
@@ -1318,16 +1076,49 @@ public class PageServiceImplDiffblueTest {
   /**
    * Test {@link PageServiceImpl#evaluatePageRules(List, Locale, Map)}.
    * <ul>
+   *   <li>Then calls {@link RuleProcessor#checkForMatch(Object, Map)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PageServiceImpl#evaluatePageRules(List, Locale, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PageDTO PageServiceImpl.evaluatePageRules(List, Locale, Map)"})
+  public void testEvaluatePageRules_thenCallsCheckForMatch() {
+    // Arrange
+    RuleProcessor<PageDTO> ruleProcessor = mock(RuleProcessor.class);
+    when(ruleProcessor.checkForMatch(Mockito.<PageDTO>any(), Mockito.<Map<String, Object>>any())).thenReturn(true);
+
+    ArrayList<RuleProcessor<PageDTO>> ruleProcessorList = new ArrayList<>();
+    ruleProcessorList.add(ruleProcessor);
+    when(list.iterator()).thenReturn(ruleProcessorList.iterator());
+
+    ArrayList<PageDTO> pageDTOList = new ArrayList<>();
+    PageDTO pageDTO = new PageDTO();
+    pageDTOList.add(pageDTO);
+    LocaleImpl locale = new LocaleImpl();
+
+    // Act
+    PageDTO actualEvaluatePageRulesResult = pageServiceImpl.evaluatePageRules(pageDTOList, locale, new HashMap<>());
+
+    // Assert
+    verify(list).iterator();
+    verify(ruleProcessor).checkForMatch(isA(PageDTO.class), isA(Map.class));
+    assertSame(pageDTO, actualEvaluatePageRulesResult);
+  }
+
+  /**
+   * Test {@link PageServiceImpl#evaluatePageRules(List, Locale, Map)}.
+   * <ul>
    *   <li>Then calls {@link PageDTO#getLocaleCode()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PageServiceImpl#evaluatePageRules(List, Locale, Map)}
+   * Method under test: {@link PageServiceImpl#evaluatePageRules(List, Locale, Map)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PageDTO PageServiceImpl.evaluatePageRules(List, Locale, Map)"})
   public void testEvaluatePageRules_thenCallsGetLocaleCode() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     PageServiceImpl pageServiceImpl = new PageServiceImpl();
     NullPageDTO nullPageDTO = mock(NullPageDTO.class);
@@ -1347,124 +1138,79 @@ public class PageServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link PageServiceImpl#evaluatePageRules(List, Locale, Map)}.
-   * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return {@link PageServiceImpl} (default constructor)
-   * {@link PageServiceImpl#NULL_PAGE}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link PageServiceImpl#evaluatePageRules(List, Locale, Map)}
-   */
-  @Test
-  public void testEvaluatePageRules_whenArrayList_thenReturnPageServiceImplNull_page() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PageServiceImpl pageServiceImpl = new PageServiceImpl();
-    ArrayList<PageDTO> pageDTOList = new ArrayList<>();
-    LocaleImpl locale = new LocaleImpl();
-
-    // Act and Assert
-    assertSame(pageServiceImpl.NULL_PAGE, pageServiceImpl.evaluatePageRules(pageDTOList, locale, new HashMap<>()));
-  }
-
-  /**
-   * Test {@link PageServiceImpl#evaluatePageRules(List, Locale, Map)}.
-   * <ul>
-   *   <li>When {@link LocaleImpl}.</li>
-   *   <li>Then return {@link PageServiceImpl} (default constructor)
-   * {@link PageServiceImpl#NULL_PAGE}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link PageServiceImpl#evaluatePageRules(List, Locale, Map)}
-   */
-  @Test
-  public void testEvaluatePageRules_whenLocaleImpl_thenReturnPageServiceImplNull_page() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PageServiceImpl pageServiceImpl = new PageServiceImpl();
-    ArrayList<PageDTO> pageDTOList = new ArrayList<>();
-    LocaleImpl locale = mock(LocaleImpl.class);
-
-    // Act and Assert
-    assertSame(pageServiceImpl.NULL_PAGE, pageServiceImpl.evaluatePageRules(pageDTOList, locale, new HashMap<>()));
-  }
-
-  /**
    * Test {@link PageServiceImpl#passesPageRules(PageDTO, Map)}.
+   * <ul>
+   *   <li>Given {@link CacheManager}.</li>
+   *   <li>Then calls {@link List#iterator()}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link PageServiceImpl#passesPageRules(PageDTO, Map)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testPassesPageRules() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.page.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2014 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.service.PageServiceImpl pageServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PageServiceImpl.passesPageRules(PageDTO, Map)"})
+  public void testPassesPageRules_givenCacheManager_thenCallsIterator() {
     // Arrange
-    PageServiceImpl pageServiceImpl2 = new PageServiceImpl();
+    ArrayList<RuleProcessor<PageDTO>> ruleProcessorList = new ArrayList<>();
+    when(list.iterator()).thenReturn(ruleProcessorList.iterator());
     PageDTO page = new PageDTO();
 
     // Act
-    pageServiceImpl2.passesPageRules(page, new HashMap<>());
+    boolean actualPassesPageRulesResult = pageServiceImpl.passesPageRules(page, new HashMap<>());
+
+    // Assert
+    verify(list).iterator();
+    assertTrue(actualPassesPageRulesResult);
   }
 
   /**
    * Test {@link PageServiceImpl#passesPageRules(PageDTO, Map)}.
    * <ul>
-   *   <li>When {@link NullPageDTO}.</li>
+   *   <li>Given {@link PageServiceImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link PageServiceImpl#passesPageRules(PageDTO, Map)}
    */
   @Test
-  public void testPassesPageRules_whenNullPageDTO() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    PageServiceImpl pageServiceImpl = new PageServiceImpl();
-    NullPageDTO page = mock(NullPageDTO.class);
-
-    // Act and Assert
-    assertTrue(pageServiceImpl.passesPageRules(page, new HashMap<>()));
-  }
-
-  /**
-   * Test {@link PageServiceImpl#passesPageRules(PageDTO, Map)}.
-   * <ul>
-   *   <li>When {@link PageDTO} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PageServiceImpl#passesPageRules(PageDTO, Map)}
-   */
-  @Test
-  public void testPassesPageRules_whenPageDTO() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PageServiceImpl.passesPageRules(PageDTO, Map)"})
+  public void testPassesPageRules_givenPageServiceImpl() {
     // Arrange
     PageServiceImpl pageServiceImpl = new PageServiceImpl();
     PageDTO page = new PageDTO();
 
     // Act and Assert
     assertTrue(pageServiceImpl.passesPageRules(page, new HashMap<>()));
+  }
+
+  /**
+   * Test {@link PageServiceImpl#passesPageRules(PageDTO, Map)}.
+   * <ul>
+   *   <li>Then calls {@link RuleProcessor#checkForMatch(Object, Map)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PageServiceImpl#passesPageRules(PageDTO, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PageServiceImpl.passesPageRules(PageDTO, Map)"})
+  public void testPassesPageRules_thenCallsCheckForMatch() {
+    // Arrange
+    RuleProcessor<PageDTO> ruleProcessor = mock(RuleProcessor.class);
+    when(ruleProcessor.checkForMatch(Mockito.<PageDTO>any(), Mockito.<Map<String, Object>>any())).thenReturn(true);
+
+    ArrayList<RuleProcessor<PageDTO>> ruleProcessorList = new ArrayList<>();
+    ruleProcessorList.add(ruleProcessor);
+    when(list.iterator()).thenReturn(ruleProcessorList.iterator());
+    PageDTO page = new PageDTO();
+
+    // Act
+    boolean actualPassesPageRulesResult = pageServiceImpl.passesPageRules(page, new HashMap<>());
+
+    // Assert
+    verify(list).iterator();
+    verify(ruleProcessor).checkForMatch(isA(PageDTO.class), isA(Map.class));
+    assertTrue(actualPassesPageRulesResult);
   }
 
   /**
@@ -1473,27 +1219,18 @@ public class PageServiceImplDiffblueTest {
    * Method under test: {@link PageServiceImpl#readAllPages()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List PageServiceImpl.readAllPages()"})
   public void testReadAllPages() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.page.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2047 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.service.PageServiceImpl pageServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    when(pageDao.readAllPages()).thenReturn(new ArrayList<>());
 
-    // Arrange and Act
-    (new PageServiceImpl()).readAllPages();
+    // Act
+    List<Page> actualReadAllPagesResult = pageServiceImpl.readAllPages();
+
+    // Assert
+    verify(pageDao).readAllPages();
+    assertTrue(actualReadAllPagesResult.isEmpty());
   }
 
   /**
@@ -1502,61 +1239,24 @@ public class PageServiceImplDiffblueTest {
    * Method under test: {@link PageServiceImpl#readAllPageTemplates()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List PageServiceImpl.readAllPageTemplates()"})
   public void testReadAllPageTemplates() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.page.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2042 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.service.PageServiceImpl pageServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    when(pageDao.readAllPageTemplates()).thenReturn(new ArrayList<>());
 
-    // Arrange and Act
-    (new PageServiceImpl()).readAllPageTemplates();
-  }
+    // Act
+    List<PageTemplate> actualReadAllPageTemplatesResult = pageServiceImpl.readAllPageTemplates();
 
-  /**
-   * Test {@link PageServiceImpl#removePageFromCache(String)}.
-   * <p>
-   * Method under test: {@link PageServiceImpl#removePageFromCache(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testRemovePageFromCache() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.page.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2052 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.service.PageServiceImpl pageServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new PageServiceImpl()).removePageFromCache("Map Key");
+    // Assert
+    verify(pageDao).readAllPageTemplates();
+    assertTrue(actualReadAllPageTemplatesResult.isEmpty());
   }
 
   /**
    * Test {@link PageServiceImpl#removePageFromCache(String)}.
    * <ul>
+   *   <li>Given {@link CacheManager}.</li>
    *   <li>When {@code null}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
@@ -1564,41 +1264,10 @@ public class PageServiceImplDiffblueTest {
    * Method under test: {@link PageServiceImpl#removePageFromCache(String)}
    */
   @Test
-  public void testRemovePageFromCache_whenNull_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean PageServiceImpl.removePageFromCache(String)"})
+  public void testRemovePageFromCache_givenCacheManager_whenNull_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse((new PageServiceImpl()).removePageFromCache(null));
-  }
-
-  /**
-   * Test
-   * {@link PageServiceImpl#removeTranslationPageFromCache(String, String, boolean)}.
-   * <p>
-   * Method under test:
-   * {@link PageServiceImpl#removeTranslationPageFromCache(String, String, boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testRemoveTranslationPageFromCache() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.cms.page.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2370 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.service.PageServiceImpl pageServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new PageServiceImpl()).removeTranslationPageFromCache("Uri", "en", true);
+    assertFalse(pageServiceImpl.removePageFromCache(null));
   }
 }

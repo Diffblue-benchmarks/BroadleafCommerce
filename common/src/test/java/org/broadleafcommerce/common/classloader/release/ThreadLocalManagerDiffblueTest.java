@@ -17,111 +17,28 @@
  */
 package org.broadleafcommerce.common.classloader.release;
 
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class ThreadLocalManagerDiffblueTest {
   /**
-   * Test {@link ThreadLocalManager#addThreadLocal(ThreadLocal)}.
-   * <p>
-   * Method under test: {@link ThreadLocalManager#addThreadLocal(ThreadLocal)}
-   */
-  @Test
-  public void testAddThreadLocal() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange and Act
-    ThreadLocalManager.addThreadLocal(new ThreadLocal());
-  }
-
-  /**
-   * Test {@link ThreadLocalManager#createThreadLocal(Class)} with {@code type}.
-   * <p>
-   * Method under test: {@link ThreadLocalManager#createThreadLocal(Class)}
-   */
-  @Test
-  public void testCreateThreadLocalWithType() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange
-    Class<Object> type = Object.class;
-
-    // Act
-    ThreadLocalManager.createThreadLocal(type);
-  }
-
-  /**
-   * Test {@link ThreadLocalManager#createThreadLocal(Class, boolean)} with
-   * {@code type}, {@code createInitialValue}.
-   * <p>
-   * Method under test:
-   * {@link ThreadLocalManager#createThreadLocal(Class, boolean)}
-   */
-  @Test
-  public void testCreateThreadLocalWithTypeCreateInitialValue() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange
-    Class<Object> type = Object.class;
-
-    // Act
-    ThreadLocalManager.createThreadLocal(type, true);
-  }
-
-  /**
-   * Test {@link ThreadLocalManager#remove()}.
-   * <p>
-   * Method under test: {@link ThreadLocalManager#remove()}
-   */
-  @Test
-  public void testRemove() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange and Act
-    ThreadLocalManager.remove();
-  }
-
-  /**
-   * Test {@link ThreadLocalManager#remove(ThreadLocal)} with {@code ThreadLocal}.
-   * <p>
-   * Method under test: {@link ThreadLocalManager#remove(ThreadLocal)}
-   */
-  @Test
-  public void testRemoveWithThreadLocal() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange and Act
-    ThreadLocalManager.remove(new ThreadLocal());
-  }
-
-  /**
-   * Test {@link ThreadLocalManager#toString()}.
-   * <p>
-   * Method under test: {@link ThreadLocalManager#toString()}
-   */
-  @Test
-  public void testToString() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange and Act
-    (new ThreadLocalManager()).toString();
-  }
-
-  /**
    * Test new {@link ThreadLocalManager} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link ThreadLocalManager}
+   * Method under test: default or parameterless constructor of {@link ThreadLocalManager}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ThreadLocalManager.<init>()"})
   public void testNewThreadLocalManager() {
-    // Arrange, Act and Assert
-    assertTrue((new ThreadLocalManager()).threadLocals.isEmpty());
+    // Arrange and Act
+    ThreadLocalManager actualThreadLocalManager = new ThreadLocalManager();
+
+    // Assert
+    assertNull(actualThreadLocalManager.marker);
+    assertTrue(actualThreadLocalManager.threadLocals.isEmpty());
   }
 }

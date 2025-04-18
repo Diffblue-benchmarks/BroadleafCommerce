@@ -19,35 +19,13 @@ package org.broadleafcommerce.common.template;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertNull;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.junit.experimental.categories.Category;
 
-@ContextConfiguration(classes = {TemplateType.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class TemplateTypeDiffblueTest {
-  @Autowired
-  private TemplateType templateType;
-
-  /**
-   * Test {@link TemplateType#getInstance(String)}.
-   * <p>
-   * Method under test: {@link TemplateType#getInstance(String)}
-   */
-  @Test
-  public void testGetInstance() {
-    // Arrange and Act
-    TemplateType actualInstance = TemplateType.getInstance("Type");
-
-    // Assert
-    assertEquals("Friendly Type", actualInstance.getFriendlyType());
-    assertEquals("Type", actualInstance.getType());
-    assertEquals(1, actualInstance.getOrder());
-  }
-
   /**
    * Test getters and setters.
    * <p>
@@ -61,51 +39,24 @@ public class TemplateTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TemplateType.<init>()", "String TemplateType.getFriendlyType()",
+      "int TemplateType.getOrder()", "String TemplateType.getType()", "void TemplateType.setOrder(int)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     TemplateType actualTemplateType = new TemplateType();
     actualTemplateType.setOrder(1);
-    actualTemplateType.getFriendlyType();
+    String actualFriendlyType = actualTemplateType.getFriendlyType();
     int actualOrder = actualTemplateType.getOrder();
-    actualTemplateType.getType();
 
-    // Assert that nothing has changed
+    // Assert
+    assertNull(actualFriendlyType);
+    assertNull(actualTemplateType.getType());
     assertEquals(1, actualOrder);
   }
 
   /**
-   * Test {@link TemplateType#TemplateType(String, String, int)}.
-   * <ul>
-   *   <li>When {@code Cannot add the type: (}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link TemplateType#TemplateType(String, String, int)}
-   */
-  @Test
-  public void testNewTemplateType_whenCannotAddTheType() {
-    // Arrange, Act and Assert
-    assertThrows(RuntimeException.class, () -> new TemplateType("Cannot add the type: (", "Friendly Type", 1));
-
-  }
-
-  /**
-   * Test {@link TemplateType#TemplateType(String, String, int)}.
-   * <ul>
-   *   <li>When {@code Type}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link TemplateType#TemplateType(String, String, int)}
-   */
-  @Test
-  public void testNewTemplateType_whenType() {
-    // Arrange, Act and Assert
-    assertThrows(RuntimeException.class, () -> new TemplateType("Type", "Friendly Type", 1));
-
-  }
-
-  /**
-   * Test {@link TemplateType#equals(Object)}, and
-   * {@link TemplateType#hashCode()}.
+   * Test {@link TemplateType#equals(Object)}, and {@link TemplateType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -118,6 +69,8 @@ public class TemplateTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean TemplateType.equals(Object)", "int TemplateType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     TemplateType templateType = TemplateType.CATEGORY;
@@ -130,8 +83,7 @@ public class TemplateTypeDiffblueTest {
   }
 
   /**
-   * Test {@link TemplateType#equals(Object)}, and
-   * {@link TemplateType#hashCode()}.
+   * Test {@link TemplateType#equals(Object)}, and {@link TemplateType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -144,6 +96,8 @@ public class TemplateTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean TemplateType.equals(Object)", "int TemplateType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     TemplateType templateType = new TemplateType();
@@ -156,8 +110,7 @@ public class TemplateTypeDiffblueTest {
   }
 
   /**
-   * Test {@link TemplateType#equals(Object)}, and
-   * {@link TemplateType#hashCode()}.
+   * Test {@link TemplateType#equals(Object)}, and {@link TemplateType#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -170,6 +123,8 @@ public class TemplateTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean TemplateType.equals(Object)", "int TemplateType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     TemplateType templateType = TemplateType.CATEGORY;
@@ -190,9 +145,27 @@ public class TemplateTypeDiffblueTest {
    * Method under test: {@link TemplateType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean TemplateType.equals(Object)", "int TemplateType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(TemplateType.OTHER, TemplateType.CATEGORY);
+  }
+
+  /**
+   * Test {@link TemplateType#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link TemplateType#equals(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean TemplateType.equals(Object)", "int TemplateType.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange, Act and Assert
     assertNotEquals(new TemplateType(), TemplateType.CATEGORY);
   }
 
@@ -206,6 +179,8 @@ public class TemplateTypeDiffblueTest {
    * Method under test: {@link TemplateType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean TemplateType.equals(Object)", "int TemplateType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(TemplateType.CATEGORY, null);
@@ -221,6 +196,8 @@ public class TemplateTypeDiffblueTest {
    * Method under test: {@link TemplateType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean TemplateType.equals(Object)", "int TemplateType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(TemplateType.CATEGORY, "Different type to TemplateType");
@@ -236,6 +213,8 @@ public class TemplateTypeDiffblueTest {
    * Method under test: {@link TemplateType#compareTo(TemplateType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int TemplateType.compareTo(TemplateType)"})
   public void testCompareToWithTemplateType_whenCategory_thenReturnZero() {
     // Arrange, Act and Assert
     assertEquals(0, TemplateType.CATEGORY.compareTo(TemplateType.CATEGORY));

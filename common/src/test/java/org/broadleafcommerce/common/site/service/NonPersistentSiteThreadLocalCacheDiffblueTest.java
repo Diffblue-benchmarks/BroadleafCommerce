@@ -19,10 +19,13 @@ package org.broadleafcommerce.common.site.service;
 
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
 import org.broadleafcommerce.common.site.domain.Site;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class NonPersistentSiteThreadLocalCacheDiffblueTest {
   /**
@@ -31,47 +34,11 @@ public class NonPersistentSiteThreadLocalCacheDiffblueTest {
    * Method under test: {@link NonPersistentSiteThreadLocalCache#getSitesCache()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"NonPersistentSiteThreadLocalCache NonPersistentSiteThreadLocalCache.getSitesCache()"})
   public void testGetSitesCache() {
     // Arrange, Act and Assert
     assertTrue(NonPersistentSiteThreadLocalCache.getSitesCache().getSites().isEmpty());
-  }
-
-  /**
-   * Test
-   * {@link NonPersistentSiteThreadLocalCache#setSitesCache(NonPersistentSiteThreadLocalCache)}.
-   * <ul>
-   *   <li>When {@link NonPersistentSiteThreadLocalCache} (default
-   * constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link NonPersistentSiteThreadLocalCache#setSitesCache(NonPersistentSiteThreadLocalCache)}
-   */
-  @Test
-  public void testSetSitesCache_whenNonPersistentSiteThreadLocalCache() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange and Act
-    NonPersistentSiteThreadLocalCache.setSitesCache(new NonPersistentSiteThreadLocalCache());
-  }
-
-  /**
-   * Test {@link NonPersistentSiteThreadLocalCache#clear()}.
-   * <ul>
-   *   <li>Given {@link NonPersistentSiteThreadLocalCache} (default
-   * constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link NonPersistentSiteThreadLocalCache#clear()}
-   */
-  @Test
-  public void testClear_givenNonPersistentSiteThreadLocalCache() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange and Act
-    (new NonPersistentSiteThreadLocalCache()).clear();
   }
 
   /**
@@ -79,13 +46,15 @@ public class NonPersistentSiteThreadLocalCacheDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>default or parameterless constructor of
-   * {@link NonPersistentSiteThreadLocalCache}
+   *   <li>default or parameterless constructor of {@link NonPersistentSiteThreadLocalCache}
    *   <li>{@link NonPersistentSiteThreadLocalCache#setSites(Map)}
    *   <li>{@link NonPersistentSiteThreadLocalCache#getSites()}
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void NonPersistentSiteThreadLocalCache.<init>()",
+      "Map NonPersistentSiteThreadLocalCache.getSites()", "void NonPersistentSiteThreadLocalCache.setSites(Map)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     NonPersistentSiteThreadLocalCache actualNonPersistentSiteThreadLocalCache = new NonPersistentSiteThreadLocalCache();
@@ -93,7 +62,7 @@ public class NonPersistentSiteThreadLocalCacheDiffblueTest {
     actualNonPersistentSiteThreadLocalCache.setSites(sites);
     Map<Long, Site> actualSites = actualNonPersistentSiteThreadLocalCache.getSites();
 
-    // Assert that nothing has changed
+    // Assert
     assertTrue(actualSites.isEmpty());
     assertSame(sites, actualSites);
   }

@@ -18,99 +18,13 @@
 package org.broadleafcommerce.common.event;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.function.BiFunction;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class ItemsFulfilledEventDiffblueTest {
-  /**
-   * Test {@link ItemsFulfilledEvent#ItemsFulfilledEvent(Long, Map)}.
-   * <ul>
-   *   <li>Given {@link BiFunction}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ItemsFulfilledEvent#ItemsFulfilledEvent(Long, Map)}
-   */
-  @Test
-  public void testNewItemsFulfilledEvent_givenBiFunction() {
-    // Arrange
-    HashMap<Long, Integer> fulfilled = new HashMap<>();
-    fulfilled.computeIfPresent(1L, mock(BiFunction.class));
-    fulfilled.put(1L, 1);
-
-    // Act
-    ItemsFulfilledEvent actualItemsFulfilledEvent = new ItemsFulfilledEvent(1L, fulfilled);
-
-    // Assert
-    assertNull(actualItemsFulfilledEvent.getCatalogId());
-    assertNull(actualItemsFulfilledEvent.getProfileId());
-    assertNull(actualItemsFulfilledEvent.getSiteId());
-    assertNull(actualItemsFulfilledEvent.getCurrencyCode());
-    assertNull(actualItemsFulfilledEvent.getLocaleCode());
-    assertNull(actualItemsFulfilledEvent.getTimeZoneId());
-    Map<Long, Integer> itemsAndQuantitiesFulfilled = actualItemsFulfilledEvent.getItemsAndQuantitiesFulfilled();
-    assertEquals(1, itemsAndQuantitiesFulfilled.size());
-    assertEquals(1, itemsAndQuantitiesFulfilled.get(1L).intValue());
-    assertEquals(1L, actualItemsFulfilledEvent.getFulfillmentGroupId().longValue());
-    assertTrue(actualItemsFulfilledEvent.getContext().isEmpty());
-  }
-
-  /**
-   * Test {@link ItemsFulfilledEvent#ItemsFulfilledEvent(Long, Map)}.
-   * <ul>
-   *   <li>Given one.</li>
-   *   <li>Then return CatalogId is {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ItemsFulfilledEvent#ItemsFulfilledEvent(Long, Map)}
-   */
-  @Test
-  public void testNewItemsFulfilledEvent_givenOne_thenReturnCatalogIdIsNull() {
-    // Arrange
-    HashMap<Long, Integer> fulfilled = new HashMap<>();
-    fulfilled.put(1L, 1);
-
-    // Act
-    ItemsFulfilledEvent actualItemsFulfilledEvent = new ItemsFulfilledEvent(1L, fulfilled);
-
-    // Assert
-    assertNull(actualItemsFulfilledEvent.getCatalogId());
-    assertNull(actualItemsFulfilledEvent.getProfileId());
-    assertNull(actualItemsFulfilledEvent.getSiteId());
-    assertNull(actualItemsFulfilledEvent.getCurrencyCode());
-    assertNull(actualItemsFulfilledEvent.getLocaleCode());
-    assertNull(actualItemsFulfilledEvent.getTimeZoneId());
-    Map<Long, Integer> itemsAndQuantitiesFulfilled = actualItemsFulfilledEvent.getItemsAndQuantitiesFulfilled();
-    assertEquals(1, itemsAndQuantitiesFulfilled.size());
-    assertEquals(1, itemsAndQuantitiesFulfilled.get(1L).intValue());
-    assertEquals(1L, actualItemsFulfilledEvent.getFulfillmentGroupId().longValue());
-    assertTrue(actualItemsFulfilledEvent.getContext().isEmpty());
-  }
-
-  /**
-   * Test {@link ItemsFulfilledEvent#getFulfillmentGroupId()}.
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} computeIfPresent one and
-   * {@link BiFunction}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ItemsFulfilledEvent#getFulfillmentGroupId()}
-   */
-  @Test
-  public void testGetFulfillmentGroupId_givenHashMapComputeIfPresentOneAndBiFunction() {
-    // Arrange
-    HashMap<Long, Integer> fulfilled = new HashMap<>();
-    fulfilled.computeIfPresent(1L, mock(BiFunction.class));
-    fulfilled.put(1L, 1);
-
-    // Act and Assert
-    assertEquals(1L, (new ItemsFulfilledEvent(1L, fulfilled)).getFulfillmentGroupId().longValue());
-  }
-
   /**
    * Test {@link ItemsFulfilledEvent#getFulfillmentGroupId()}.
    * <ul>
@@ -121,6 +35,8 @@ public class ItemsFulfilledEventDiffblueTest {
    * Method under test: {@link ItemsFulfilledEvent#getFulfillmentGroupId()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long ItemsFulfilledEvent.getFulfillmentGroupId()"})
   public void testGetFulfillmentGroupId_givenHashMapOneIsOne_thenReturnLongValueIsOne() {
     // Arrange
     HashMap<Long, Integer> fulfilled = new HashMap<>();

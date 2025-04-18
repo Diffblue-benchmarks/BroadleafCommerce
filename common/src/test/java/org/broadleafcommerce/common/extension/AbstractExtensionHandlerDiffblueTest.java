@@ -20,8 +20,11 @@ package org.broadleafcommerce.common.extension;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.copy.AbstractMultiTenantCopierExtensionHandler;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class AbstractExtensionHandlerDiffblueTest {
   /**
@@ -30,6 +33,8 @@ public class AbstractExtensionHandlerDiffblueTest {
    * Method under test: {@link AbstractExtensionHandler#getPriority()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int AbstractExtensionHandler.getPriority()"})
   public void testGetPriority() {
     // Arrange, Act and Assert
     assertEquals(0, (new AbstractMultiTenantCopierExtensionHandler()).getPriority());
@@ -41,6 +46,8 @@ public class AbstractExtensionHandlerDiffblueTest {
    * Method under test: {@link AbstractExtensionHandler#setPriority(int)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AbstractExtensionHandler.setPriority(int)"})
   public void testSetPriority() {
     // Arrange
     AbstractMultiTenantCopierExtensionHandler abstractMultiTenantCopierExtensionHandler = new AbstractMultiTenantCopierExtensionHandler();
@@ -55,14 +62,15 @@ public class AbstractExtensionHandlerDiffblueTest {
   /**
    * Test {@link AbstractExtensionHandler#isEnabled()}.
    * <ul>
-   *   <li>Given {@link AbstractMultiTenantCopierExtensionHandler} (default
-   * constructor).</li>
+   *   <li>Given {@link AbstractMultiTenantCopierExtensionHandler} (default constructor).</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link AbstractExtensionHandler#isEnabled()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AbstractExtensionHandler.isEnabled()"})
   public void testIsEnabled_givenAbstractMultiTenantCopierExtensionHandler_thenReturnTrue() {
     // Arrange, Act and Assert
     assertTrue((new AbstractMultiTenantCopierExtensionHandler()).isEnabled());
@@ -77,6 +85,8 @@ public class AbstractExtensionHandlerDiffblueTest {
    * Method under test: {@link AbstractExtensionHandler#isEnabled()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AbstractExtensionHandler.isEnabled()"})
   public void testIsEnabled_thenReturnFalse() {
     // Arrange
     AbstractMultiTenantCopierExtensionHandler abstractMultiTenantCopierExtensionHandler = new AbstractMultiTenantCopierExtensionHandler();
@@ -84,19 +94,5 @@ public class AbstractExtensionHandlerDiffblueTest {
 
     // Act and Assert
     assertFalse(abstractMultiTenantCopierExtensionHandler.isEnabled());
-  }
-
-  /**
-   * Test {@link AbstractExtensionHandler#setEnabled(boolean)}.
-   * <p>
-   * Method under test: {@link AbstractExtensionHandler#setEnabled(boolean)}
-   */
-  @Test
-  public void testSetEnabled() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange and Act
-    (new AbstractMultiTenantCopierExtensionHandler()).setEnabled(true);
   }
 }

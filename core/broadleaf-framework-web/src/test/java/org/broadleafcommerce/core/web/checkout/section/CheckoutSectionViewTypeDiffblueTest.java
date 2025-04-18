@@ -1,28 +1,31 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework Web
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.web.checkout.section;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 class CheckoutSectionViewTypeDiffblueTest {
-  /**
-   * Test {@link CheckoutSectionViewType#getInstance(String)}.
-   * <p>
-   * Method under test: {@link CheckoutSectionViewType#getInstance(String)}
-   */
-  @Test
-  @DisplayName("Test getInstance(String)")
-  void testGetInstance() {
-    // Arrange and Act
-    CheckoutSectionViewType actualInstance = CheckoutSectionViewType.getInstance("Type");
-
-    // Assert
-    assertEquals("Friendly Type", actualInstance.getFriendlyType());
-    assertEquals("Type", actualInstance.getType());
-  }
-
   /**
    * Test getters and setters.
    * <p>
@@ -35,6 +38,9 @@ class CheckoutSectionViewTypeDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void CheckoutSectionViewType.<init>()", "String CheckoutSectionViewType.getFriendlyType()",
+      "String CheckoutSectionViewType.getType()"})
   void testGettersAndSetters() {
     // Arrange and Act
     CheckoutSectionViewType actualCheckoutSectionViewType = new CheckoutSectionViewType();
@@ -48,11 +54,12 @@ class CheckoutSectionViewTypeDiffblueTest {
   /**
    * Test {@link CheckoutSectionViewType#CheckoutSectionViewType(String, String)}.
    * <p>
-   * Method under test:
-   * {@link CheckoutSectionViewType#CheckoutSectionViewType(String, String)}
+   * Method under test: {@link CheckoutSectionViewType#CheckoutSectionViewType(String, String)}
    */
   @Test
   @DisplayName("Test new CheckoutSectionViewType(String, String)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void CheckoutSectionViewType.<init>(String, String)"})
   void testNewCheckoutSectionViewType() {
     // Arrange and Act
     CheckoutSectionViewType actualCheckoutSectionViewType = new CheckoutSectionViewType("Type", "Friendly Type");
@@ -63,8 +70,7 @@ class CheckoutSectionViewTypeDiffblueTest {
   }
 
   /**
-   * Test {@link CheckoutSectionViewType#equals(Object)}, and
-   * {@link CheckoutSectionViewType#hashCode()}.
+   * Test {@link CheckoutSectionViewType#equals(Object)}, and {@link CheckoutSectionViewType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -78,6 +84,8 @@ class CheckoutSectionViewTypeDiffblueTest {
    */
   @Test
   @DisplayName("Test equals(Object), and hashCode(); when other is equal; then return equal")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CheckoutSectionViewType.equals(Object)", "int CheckoutSectionViewType.hashCode()"})
   void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     CheckoutSectionViewType checkoutSectionViewType = CheckoutSectionViewType.BILLING_INFO;
@@ -90,8 +98,7 @@ class CheckoutSectionViewTypeDiffblueTest {
   }
 
   /**
-   * Test {@link CheckoutSectionViewType#equals(Object)}, and
-   * {@link CheckoutSectionViewType#hashCode()}.
+   * Test {@link CheckoutSectionViewType#equals(Object)}, and {@link CheckoutSectionViewType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -105,6 +112,8 @@ class CheckoutSectionViewTypeDiffblueTest {
    */
   @Test
   @DisplayName("Test equals(Object), and hashCode(); when other is equal; then return equal")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CheckoutSectionViewType.equals(Object)", "int CheckoutSectionViewType.hashCode()"})
   void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     CheckoutSectionViewType checkoutSectionViewType = new CheckoutSectionViewType();
@@ -117,8 +126,7 @@ class CheckoutSectionViewTypeDiffblueTest {
   }
 
   /**
-   * Test {@link CheckoutSectionViewType#equals(Object)}, and
-   * {@link CheckoutSectionViewType#hashCode()}.
+   * Test {@link CheckoutSectionViewType#equals(Object)}, and {@link CheckoutSectionViewType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -132,6 +140,8 @@ class CheckoutSectionViewTypeDiffblueTest {
    */
   @Test
   @DisplayName("Test equals(Object), and hashCode(); when other is equal; then return equal")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CheckoutSectionViewType.equals(Object)", "int CheckoutSectionViewType.hashCode()"})
   void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     CheckoutSectionViewType checkoutSectionViewType = new CheckoutSectionViewType("BILLING_INFO", "Friendly Type");
@@ -144,8 +154,7 @@ class CheckoutSectionViewTypeDiffblueTest {
   }
 
   /**
-   * Test {@link CheckoutSectionViewType#equals(Object)}, and
-   * {@link CheckoutSectionViewType#hashCode()}.
+   * Test {@link CheckoutSectionViewType#equals(Object)}, and {@link CheckoutSectionViewType#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -159,6 +168,8 @@ class CheckoutSectionViewTypeDiffblueTest {
    */
   @Test
   @DisplayName("Test equals(Object), and hashCode(); when other is same; then return equal")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CheckoutSectionViewType.equals(Object)", "int CheckoutSectionViewType.hashCode()"})
   void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     CheckoutSectionViewType checkoutSectionViewType = CheckoutSectionViewType.BILLING_INFO;
@@ -180,9 +191,28 @@ class CheckoutSectionViewTypeDiffblueTest {
    */
   @Test
   @DisplayName("Test equals(Object); when other is different; then return not equal")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CheckoutSectionViewType.equals(Object)", "int CheckoutSectionViewType.hashCode()"})
   void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(CheckoutSectionViewType.ORDER_INFO, CheckoutSectionViewType.BILLING_INFO);
+  }
+
+  /**
+   * Test {@link CheckoutSectionViewType#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CheckoutSectionViewType#equals(Object)}
+   */
+  @Test
+  @DisplayName("Test equals(Object); when other is different; then return not equal")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CheckoutSectionViewType.equals(Object)", "int CheckoutSectionViewType.hashCode()"})
+  void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange, Act and Assert
     assertNotEquals(new CheckoutSectionViewType(), CheckoutSectionViewType.BILLING_INFO);
   }
 
@@ -197,6 +227,8 @@ class CheckoutSectionViewTypeDiffblueTest {
    */
   @Test
   @DisplayName("Test equals(Object); when other is 'null'; then return not equal")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CheckoutSectionViewType.equals(Object)", "int CheckoutSectionViewType.hashCode()"})
   void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(CheckoutSectionViewType.BILLING_INFO, null);
@@ -213,6 +245,8 @@ class CheckoutSectionViewTypeDiffblueTest {
    */
   @Test
   @DisplayName("Test equals(Object); when other is wrong type; then return not equal")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CheckoutSectionViewType.equals(Object)", "int CheckoutSectionViewType.hashCode()"})
   void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(CheckoutSectionViewType.BILLING_INFO, "Different type to CheckoutSectionViewType");

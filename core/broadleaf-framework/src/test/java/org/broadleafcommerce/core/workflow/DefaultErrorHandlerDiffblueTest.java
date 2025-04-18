@@ -1,59 +1,32 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.workflow;
 
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.junit.experimental.categories.Category;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class DefaultErrorHandlerDiffblueTest {
-  @Autowired
-  private DefaultErrorHandler defaultErrorHandler;
-
-  /**
-   * Test {@link DefaultErrorHandler#handleError(ProcessContext, Throwable)}.
-   * <p>
-   * Method under test:
-   * {@link DefaultErrorHandler#handleError(ProcessContext, Throwable)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testHandleError() throws WorkflowException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.workflow;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass600 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.workflow.DefaultErrorHandler defaultErrorHandler;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    DefaultErrorHandler defaultErrorHandler2 = new DefaultErrorHandler();
-    DefaultProcessContextImpl context = new DefaultProcessContextImpl();
-
-    // Act
-    defaultErrorHandler2.handleError(context, new Throwable());
-  }
-
   /**
    * Test getters and setters.
    * <p>
@@ -65,6 +38,9 @@ public class DefaultErrorHandlerDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List DefaultErrorHandler.getUnloggedExceptionClasses()",
+      "void DefaultErrorHandler.setBeanName(String)", "void DefaultErrorHandler.setUnloggedExceptionClasses(List)"})
   public void testGettersAndSetters() {
     // Arrange
     DefaultErrorHandler defaultErrorHandler = new DefaultErrorHandler();
@@ -75,7 +51,7 @@ public class DefaultErrorHandlerDiffblueTest {
     defaultErrorHandler.setUnloggedExceptionClasses(unloggedExceptionClasses);
     List<String> actualUnloggedExceptionClasses = defaultErrorHandler.getUnloggedExceptionClasses();
 
-    // Assert that nothing has changed
+    // Assert
     assertTrue(actualUnloggedExceptionClasses.isEmpty());
     assertSame(unloggedExceptionClasses, actualUnloggedExceptionClasses);
   }

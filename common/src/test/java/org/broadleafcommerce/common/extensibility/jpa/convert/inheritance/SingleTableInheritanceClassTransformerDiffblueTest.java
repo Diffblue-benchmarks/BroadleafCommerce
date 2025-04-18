@@ -17,20 +17,21 @@
  */
 package org.broadleafcommerce.common.extensibility.jpa.convert.inheritance;
 
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.yahoo.platform.yui.compressor.JarClassLoader;
 import java.io.UnsupportedEncodingException;
 import java.lang.instrument.IllegalClassFormatException;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.file.Paths;
 import java.security.CodeSigner;
 import java.security.CodeSource;
 import java.security.Permissions;
 import java.security.ProtectionDomain;
-import java.util.Properties;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -43,63 +44,69 @@ public class SingleTableInheritanceClassTransformerDiffblueTest {
   private SingleTableInheritanceClassTransformer singleTableInheritanceClassTransformer;
 
   /**
-   * Test
-   * {@link SingleTableInheritanceClassTransformer#compileJPAProperties(Properties, Object)}.
+   * Test {@link SingleTableInheritanceClassTransformer#transform(ClassLoader, String, Class, ProtectionDomain, byte[])}.
    * <ul>
-   *   <li>When {@code Key}.</li>
+   *   <li>When {@code Class Name}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SingleTableInheritanceClassTransformer#compileJPAProperties(Properties, Object)}
+   * Method under test: {@link SingleTableInheritanceClassTransformer#transform(ClassLoader, String, Class, ProtectionDomain, byte[])}
    */
   @Test
-  public void testCompileJPAProperties_whenKey() throws Exception {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange and Act
-    singleTableInheritanceClassTransformer.compileJPAProperties(new Properties(), "Key");
-  }
-
-  /**
-   * Test
-   * {@link SingleTableInheritanceClassTransformer#transform(ClassLoader, String, Class, ProtectionDomain, byte[])}.
-   * <p>
-   * Method under test:
-   * {@link SingleTableInheritanceClassTransformer#transform(ClassLoader, String, Class, ProtectionDomain, byte[])}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testTransform() throws UnsupportedEncodingException, IllegalClassFormatException, MalformedURLException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at java.base/java.security.CodeSigner.<init>(CodeSigner.java:75)
-    //   See https://diff.blue/R013 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "byte[] SingleTableInheritanceClassTransformer.transform(ClassLoader, String, Class, ProtectionDomain, byte[])"})
+  public void testTransform_whenClassName_thenReturnNull()
+      throws UnsupportedEncodingException, IllegalClassFormatException, MalformedURLException {
     // Arrange
     JarClassLoader loader = new JarClassLoader();
     Class<Object> classBeingRedefined = Object.class;
-    URL toURLResult = Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
-    CodeSource codeSource = new CodeSource(toURLResult, new CodeSigner[]{new CodeSigner(null, null)});
+    CodeSource codeSource = new CodeSource(Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL(),
+        new CodeSigner[]{null});
 
     ProtectionDomain protectionDomain = new ProtectionDomain(codeSource, new Permissions());
 
-    // Act
-    singleTableInheritanceClassTransformer.transform(loader, "Class Name", classBeingRedefined, protectionDomain,
-        "AXAXAXAX".getBytes("UTF-8"));
+    // Act and Assert
+    assertNull(singleTableInheritanceClassTransformer.transform(loader, "Class Name", classBeingRedefined,
+        protectionDomain, "AXAXAXAX".getBytes("UTF-8")));
   }
 
   /**
-   * Test new {@link SingleTableInheritanceClassTransformer} (default
-   * constructor).
+   * Test {@link SingleTableInheritanceClassTransformer#transform(ClassLoader, String, Class, ProtectionDomain, byte[])}.
+   * <ul>
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link SingleTableInheritanceClassTransformer}
+   * Method under test: {@link SingleTableInheritanceClassTransformer#transform(ClassLoader, String, Class, ProtectionDomain, byte[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "byte[] SingleTableInheritanceClassTransformer.transform(ClassLoader, String, Class, ProtectionDomain, byte[])"})
+  public void testTransform_whenNull_thenReturnNull()
+      throws UnsupportedEncodingException, IllegalClassFormatException, MalformedURLException {
+    // Arrange
+    JarClassLoader loader = new JarClassLoader();
+    Class<Object> classBeingRedefined = Object.class;
+    CodeSource codeSource = new CodeSource(Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL(),
+        new CodeSigner[]{null});
+
+    ProtectionDomain protectionDomain = new ProtectionDomain(codeSource, new Permissions());
+
+    // Act and Assert
+    assertNull(singleTableInheritanceClassTransformer.transform(loader, null, classBeingRedefined, protectionDomain,
+        "AXAXAXAX".getBytes("UTF-8")));
+  }
+
+  /**
+   * Test new {@link SingleTableInheritanceClassTransformer} (default constructor).
+   * <p>
+   * Method under test: default or parameterless constructor of {@link SingleTableInheritanceClassTransformer}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SingleTableInheritanceClassTransformer.<init>()"})
   public void testNewSingleTableInheritanceClassTransformer() {
     // Arrange, Act and Assert
     assertTrue((new SingleTableInheritanceClassTransformer()).infos.isEmpty());

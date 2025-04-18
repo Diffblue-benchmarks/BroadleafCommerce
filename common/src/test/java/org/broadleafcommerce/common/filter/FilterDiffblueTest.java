@@ -21,9 +21,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class FilterDiffblueTest {
   /**
@@ -36,6 +39,8 @@ public class FilterDiffblueTest {
    * Method under test: {@link Filter#copy()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Filter Filter.copy()"})
   public void testCopy_givenArrayListAddFoo_thenReturnIndexColumnNamesSizeIsOne() {
     // Arrange
     ArrayList<String> indexColumnNames = new ArrayList<>();
@@ -60,14 +65,15 @@ public class FilterDiffblueTest {
   /**
    * Test {@link Filter#copy()}.
    * <ul>
-   *   <li>Given {@link Filter} (default constructor) IndexColumnNames is
-   * {@link ArrayList#ArrayList()}.</li>
+   *   <li>Given {@link Filter} (default constructor) IndexColumnNames is {@link ArrayList#ArrayList()}.</li>
    *   <li>Then return IndexColumnNames is {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link Filter#copy()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Filter Filter.copy()"})
   public void testCopy_givenFilterIndexColumnNamesIsArrayList_thenReturnIndexColumnNamesIsNull() {
     // Arrange
     Filter filter = new Filter();
@@ -94,6 +100,8 @@ public class FilterDiffblueTest {
    * Method under test: {@link Filter#copy()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Filter Filter.copy()"})
   public void testCopy_givenFilter_thenReturnIndexColumnNamesIsNull() {
     // Arrange and Act
     Filter actualCopyResult = (new Filter()).copy();
@@ -125,6 +133,12 @@ public class FilterDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Filter.<init>()", "String Filter.getCondition()",
+      "String Filter.getEntityImplementationClassName()", "List Filter.getIndexColumnNames()",
+      "String Filter.getName()", "String Filter.getOverrideIndexNameKey()", "void Filter.setCondition(String)",
+      "void Filter.setEntityImplementationClassName(String)", "void Filter.setIndexColumnNames(List)",
+      "void Filter.setName(String)", "void Filter.setOverrideIndexNameKey(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     Filter actualFilter = new Filter();
@@ -139,7 +153,7 @@ public class FilterDiffblueTest {
     List<String> actualIndexColumnNames = actualFilter.getIndexColumnNames();
     String actualName = actualFilter.getName();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Condition", actualCondition);
     assertEquals("Entity Implementation Class Name", actualEntityImplementationClassName);
     assertEquals("Name", actualName);

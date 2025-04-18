@@ -1,40 +1,49 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework Web
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.web.controller.account;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import java.util.function.Function;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.broadleafcommerce.common.exception.ServiceException;
 import org.broadleafcommerce.core.web.search.SearchRequestWrapper;
 import org.broadleafcommerce.core.web.security.XssRequestWrapper;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.boot.web.reactive.context.StandardReactiveWebEnvironment;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.ui.ConcurrentModel;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindException;
-import org.springframework.validation.BindingResult;
 
 class BroadleafLoginControllerDiffblueTest {
   /**
-   * Test
-   * {@link BroadleafLoginController#login(HttpServletRequest, HttpServletResponse, Model)}.
+   * Test {@link BroadleafLoginController#login(HttpServletRequest, HttpServletResponse, Model)}.
    * <p>
-   * Method under test:
-   * {@link BroadleafLoginController#login(HttpServletRequest, HttpServletResponse, Model)}
+   * Method under test: {@link BroadleafLoginController#login(HttpServletRequest, HttpServletResponse, Model)}
    */
   @Test
   @DisplayName("Test login(HttpServletRequest, HttpServletResponse, Model)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String BroadleafLoginController.login(HttpServletRequest, HttpServletResponse, Model)"})
   void testLogin() {
     // Arrange
     BroadleafLoginController broadleafLoginController = new BroadleafLoginController();
@@ -48,17 +57,17 @@ class BroadleafLoginControllerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BroadleafLoginController#login(HttpServletRequest, HttpServletResponse, Model)}.
+   * Test {@link BroadleafLoginController#login(HttpServletRequest, HttpServletResponse, Model)}.
    * <ul>
    *   <li>Then return {@code authentication/login}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafLoginController#login(HttpServletRequest, HttpServletResponse, Model)}
+   * Method under test: {@link BroadleafLoginController#login(HttpServletRequest, HttpServletResponse, Model)}
    */
   @Test
   @DisplayName("Test login(HttpServletRequest, HttpServletResponse, Model); then return 'authentication/login'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String BroadleafLoginController.login(HttpServletRequest, HttpServletResponse, Model)"})
   void testLogin_thenReturnAuthenticationLogin() {
     // Arrange
     BroadleafLoginController broadleafLoginController = new BroadleafLoginController();
@@ -72,53 +81,15 @@ class BroadleafLoginControllerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BroadleafLoginController#forgotPassword(HttpServletRequest, HttpServletResponse, Model)}.
-   * <ul>
-   *   <li>Given {@link Function} {@link Function#apply(Object)} return
-   * {@code Apply}.</li>
-   *   <li>Then calls {@link Function#apply(Object)}.</li>
-   * </ul>
+   * Test {@link BroadleafLoginController#forgotPassword(HttpServletRequest, HttpServletResponse, Model)}.
    * <p>
-   * Method under test:
-   * {@link BroadleafLoginController#forgotPassword(HttpServletRequest, HttpServletResponse, Model)}
+   * Method under test: {@link BroadleafLoginController#forgotPassword(HttpServletRequest, HttpServletResponse, Model)}
    */
   @Test
-  @DisplayName("Test forgotPassword(HttpServletRequest, HttpServletResponse, Model); given Function apply(Object) return 'Apply'; then calls apply(Object)")
-  void testForgotPassword_givenFunctionApplyReturnApply_thenCallsApply() {
-    // Arrange
-    BroadleafLoginController broadleafLoginController = new BroadleafLoginController();
-    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
-    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
-        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
-    MockHttpServletResponse response = new MockHttpServletResponse();
-    Function<String, Object> function = mock(Function.class);
-    when(function.apply(Mockito.<String>any())).thenReturn("Apply");
-
-    ConcurrentModel model = new ConcurrentModel();
-    model.computeIfAbsent("foo", function);
-
-    // Act
-    String actualForgotPasswordResult = broadleafLoginController.forgotPassword(request, response, model);
-
-    // Assert
-    verify(function).apply(eq("foo"));
-    assertEquals("authentication/forgotPassword", actualForgotPasswordResult);
-  }
-
-  /**
-   * Test
-   * {@link BroadleafLoginController#forgotPassword(HttpServletRequest, HttpServletResponse, Model)}.
-   * <ul>
-   *   <li>When {@link ConcurrentModel#ConcurrentModel()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link BroadleafLoginController#forgotPassword(HttpServletRequest, HttpServletResponse, Model)}
-   */
-  @Test
-  @DisplayName("Test forgotPassword(HttpServletRequest, HttpServletResponse, Model); when ConcurrentModel()")
-  void testForgotPassword_whenConcurrentModel() {
+  @DisplayName("Test forgotPassword(HttpServletRequest, HttpServletResponse, Model)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String BroadleafLoginController.forgotPassword(HttpServletRequest, HttpServletResponse, Model)"})
+  void testForgotPassword() {
     // Arrange
     BroadleafLoginController broadleafLoginController = new BroadleafLoginController();
     MockHttpServletRequest servletRequest = new MockHttpServletRequest();
@@ -132,82 +103,16 @@ class BroadleafLoginControllerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BroadleafLoginController#processForgotPassword(String, HttpServletRequest, Model)}.
+   * Test {@link BroadleafLoginController#forcedPasswordChange(HttpServletRequest, HttpServletResponse, Model)}.
    * <p>
-   * Method under test:
-   * {@link BroadleafLoginController#processForgotPassword(String, HttpServletRequest, Model)}
+   * Method under test: {@link BroadleafLoginController#forcedPasswordChange(HttpServletRequest, HttpServletResponse, Model)}
    */
   @Test
-  @DisplayName("Test processForgotPassword(String, HttpServletRequest, Model)")
-  @Disabled("TODO: Complete this test")
-  void testProcessForgotPassword() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.broadleafcommerce.core.web.controller.account.BroadleafLoginController.processForgotPassword(BroadleafLoginController.java:108)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    BroadleafLoginController broadleafLoginController = new BroadleafLoginController();
-    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
-    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
-        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
-
-    // Act
-    broadleafLoginController.processForgotPassword("janedoe", request, new ConcurrentModel());
-  }
-
-  /**
-   * Test
-   * {@link BroadleafLoginController#forcedPasswordChange(HttpServletRequest, HttpServletResponse, Model)}.
-   * <ul>
-   *   <li>Given {@link Function} {@link Function#apply(Object)} return
-   * {@code Apply}.</li>
-   *   <li>Then calls {@link Function#apply(Object)}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link BroadleafLoginController#forcedPasswordChange(HttpServletRequest, HttpServletResponse, Model)}
-   */
-  @Test
-  @DisplayName("Test forcedPasswordChange(HttpServletRequest, HttpServletResponse, Model); given Function apply(Object) return 'Apply'; then calls apply(Object)")
-  void testForcedPasswordChange_givenFunctionApplyReturnApply_thenCallsApply() {
-    // Arrange
-    BroadleafLoginController broadleafLoginController = new BroadleafLoginController();
-    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
-    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
-        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
-    MockHttpServletResponse response = new MockHttpServletResponse();
-    Function<String, Object> function = mock(Function.class);
-    when(function.apply(Mockito.<String>any())).thenReturn("Apply");
-
-    ConcurrentModel model = new ConcurrentModel();
-    model.computeIfAbsent("foo", function);
-
-    // Act
-    String actualForcedPasswordChangeResult = broadleafLoginController.forcedPasswordChange(request, response, model);
-
-    // Assert
-    verify(function).apply(eq("foo"));
-    assertEquals("authentication/forcedPasswordChange", actualForcedPasswordChangeResult);
-  }
-
-  /**
-   * Test
-   * {@link BroadleafLoginController#forcedPasswordChange(HttpServletRequest, HttpServletResponse, Model)}.
-   * <ul>
-   *   <li>When {@link ConcurrentModel#ConcurrentModel()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link BroadleafLoginController#forcedPasswordChange(HttpServletRequest, HttpServletResponse, Model)}
-   */
-  @Test
-  @DisplayName("Test forcedPasswordChange(HttpServletRequest, HttpServletResponse, Model); when ConcurrentModel()")
-  void testForcedPasswordChange_whenConcurrentModel() {
+  @DisplayName("Test forcedPasswordChange(HttpServletRequest, HttpServletResponse, Model)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "String BroadleafLoginController.forcedPasswordChange(HttpServletRequest, HttpServletResponse, Model)"})
+  void testForcedPasswordChange() {
     // Arrange
     BroadleafLoginController broadleafLoginController = new BroadleafLoginController();
     MockHttpServletRequest servletRequest = new MockHttpServletRequest();
@@ -221,82 +126,15 @@ class BroadleafLoginControllerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BroadleafLoginController#processForcedPasswordChange(String, HttpServletRequest, Model)}.
+   * Test {@link BroadleafLoginController#forgotUsername(HttpServletRequest, HttpServletResponse, Model)}.
    * <p>
-   * Method under test:
-   * {@link BroadleafLoginController#processForcedPasswordChange(String, HttpServletRequest, Model)}
+   * Method under test: {@link BroadleafLoginController#forgotUsername(HttpServletRequest, HttpServletResponse, Model)}
    */
   @Test
-  @DisplayName("Test processForcedPasswordChange(String, HttpServletRequest, Model)")
-  @Disabled("TODO: Complete this test")
-  void testProcessForcedPasswordChange() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.broadleafcommerce.core.web.controller.account.BroadleafLoginController.processForcedPasswordChange(BroadleafLoginController.java:127)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    BroadleafLoginController broadleafLoginController = new BroadleafLoginController();
-    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
-    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
-        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
-
-    // Act
-    broadleafLoginController.processForcedPasswordChange("janedoe", request, new ConcurrentModel());
-  }
-
-  /**
-   * Test
-   * {@link BroadleafLoginController#forgotUsername(HttpServletRequest, HttpServletResponse, Model)}.
-   * <ul>
-   *   <li>Given {@link Function} {@link Function#apply(Object)} return
-   * {@code Apply}.</li>
-   *   <li>Then calls {@link Function#apply(Object)}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link BroadleafLoginController#forgotUsername(HttpServletRequest, HttpServletResponse, Model)}
-   */
-  @Test
-  @DisplayName("Test forgotUsername(HttpServletRequest, HttpServletResponse, Model); given Function apply(Object) return 'Apply'; then calls apply(Object)")
-  void testForgotUsername_givenFunctionApplyReturnApply_thenCallsApply() {
-    // Arrange
-    BroadleafLoginController broadleafLoginController = new BroadleafLoginController();
-    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
-    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
-        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
-    MockHttpServletResponse response = new MockHttpServletResponse();
-    Function<String, Object> function = mock(Function.class);
-    when(function.apply(Mockito.<String>any())).thenReturn("Apply");
-
-    ConcurrentModel model = new ConcurrentModel();
-    model.computeIfAbsent("foo", function);
-
-    // Act
-    String actualForgotUsernameResult = broadleafLoginController.forgotUsername(request, response, model);
-
-    // Assert
-    verify(function).apply(eq("foo"));
-    assertEquals("authentication/forgotUsername", actualForgotUsernameResult);
-  }
-
-  /**
-   * Test
-   * {@link BroadleafLoginController#forgotUsername(HttpServletRequest, HttpServletResponse, Model)}.
-   * <ul>
-   *   <li>When {@link ConcurrentModel#ConcurrentModel()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link BroadleafLoginController#forgotUsername(HttpServletRequest, HttpServletResponse, Model)}
-   */
-  @Test
-  @DisplayName("Test forgotUsername(HttpServletRequest, HttpServletResponse, Model); when ConcurrentModel()")
-  void testForgotUsername_whenConcurrentModel() {
+  @DisplayName("Test forgotUsername(HttpServletRequest, HttpServletResponse, Model)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String BroadleafLoginController.forgotUsername(HttpServletRequest, HttpServletResponse, Model)"})
+  void testForgotUsername() {
     // Arrange
     BroadleafLoginController broadleafLoginController = new BroadleafLoginController();
     MockHttpServletRequest servletRequest = new MockHttpServletRequest();
@@ -310,94 +148,15 @@ class BroadleafLoginControllerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BroadleafLoginController#processForgotUsername(String, HttpServletRequest, HttpServletResponse, Model)}.
-   * <ul>
-   *   <li>When {@link ConcurrentModel#ConcurrentModel()}.</li>
-   * </ul>
+   * Test {@link BroadleafLoginController#resetPassword(HttpServletRequest, HttpServletResponse, Model)}.
    * <p>
-   * Method under test:
-   * {@link BroadleafLoginController#processForgotUsername(String, HttpServletRequest, HttpServletResponse, Model)}
+   * Method under test: {@link BroadleafLoginController#resetPassword(HttpServletRequest, HttpServletResponse, Model)}
    */
   @Test
-  @DisplayName("Test processForgotUsername(String, HttpServletRequest, HttpServletResponse, Model); when ConcurrentModel()")
-  @Disabled("TODO: Complete this test")
-  void testProcessForgotUsername_whenConcurrentModel() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.broadleafcommerce.core.web.controller.account.BroadleafLoginController.processForgotUsername(BroadleafLoginController.java:165)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    BroadleafLoginController broadleafLoginController = new BroadleafLoginController();
-    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
-    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
-        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
-    MockHttpServletResponse response = new MockHttpServletResponse();
-
-    // Act
-    broadleafLoginController.processForgotUsername("jane.doe@example.org", request, response, new ConcurrentModel());
-  }
-
-  /**
-   * Test
-   * {@link BroadleafLoginController#resetPassword(HttpServletRequest, HttpServletResponse, Model)}.
-   * <ul>
-   *   <li>Given {@link Function} {@link Function#apply(Object)} return
-   * {@code Apply}.</li>
-   *   <li>Then {@link ConcurrentModel#ConcurrentModel()} size is two.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link BroadleafLoginController#resetPassword(HttpServletRequest, HttpServletResponse, Model)}
-   */
-  @Test
-  @DisplayName("Test resetPassword(HttpServletRequest, HttpServletResponse, Model); given Function apply(Object) return 'Apply'; then ConcurrentModel() size is two")
-  void testResetPassword_givenFunctionApplyReturnApply_thenConcurrentModelSizeIsTwo() {
-    // Arrange
-    BroadleafLoginController broadleafLoginController = new BroadleafLoginController();
-    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
-    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
-        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
-    MockHttpServletResponse response = new MockHttpServletResponse();
-    Function<String, Object> function = mock(Function.class);
-    when(function.apply(Mockito.<String>any())).thenReturn("Apply");
-
-    ConcurrentModel model = new ConcurrentModel();
-    model.computeIfAbsent("token", function);
-
-    // Act
-    String actualResetPasswordResult = broadleafLoginController.resetPassword(request, response, model);
-
-    // Assert
-    verify(function).apply(eq("token"));
-    assertEquals(2, model.size());
-    Object getResult = model.get("resetPasswordForm");
-    assertTrue(getResult instanceof ResetPasswordForm);
-    assertEquals("authentication/resetPassword", actualResetPasswordResult);
-    assertNull(((ResetPasswordForm) getResult).getPassword());
-    assertNull(((ResetPasswordForm) getResult).getPasswordConfirm());
-    assertNull(((ResetPasswordForm) getResult).getToken());
-    assertNull(((ResetPasswordForm) getResult).getUsername());
-    assertTrue(model.containsKey("token"));
-  }
-
-  /**
-   * Test
-   * {@link BroadleafLoginController#resetPassword(HttpServletRequest, HttpServletResponse, Model)}.
-   * <ul>
-   *   <li>Then {@link ConcurrentModel#ConcurrentModel()} size is one.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link BroadleafLoginController#resetPassword(HttpServletRequest, HttpServletResponse, Model)}
-   */
-  @Test
-  @DisplayName("Test resetPassword(HttpServletRequest, HttpServletResponse, Model); then ConcurrentModel() size is one")
-  void testResetPassword_thenConcurrentModelSizeIsOne() {
+  @DisplayName("Test resetPassword(HttpServletRequest, HttpServletResponse, Model)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String BroadleafLoginController.resetPassword(HttpServletRequest, HttpServletResponse, Model)"})
+  void testResetPassword() {
     // Arrange
     BroadleafLoginController broadleafLoginController = new BroadleafLoginController();
     MockHttpServletRequest servletRequest = new MockHttpServletRequest();
@@ -421,18 +180,18 @@ class BroadleafLoginControllerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BroadleafLoginController#resetPassword(HttpServletRequest, HttpServletResponse, Model)}.
+   * Test {@link BroadleafLoginController#resetPassword(HttpServletRequest, HttpServletResponse, Model)}.
    * <ul>
    *   <li>Then {@link ConcurrentModel#ConcurrentModel()} size is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafLoginController#resetPassword(HttpServletRequest, HttpServletResponse, Model)}
+   * Method under test: {@link BroadleafLoginController#resetPassword(HttpServletRequest, HttpServletResponse, Model)}
    */
   @Test
   @DisplayName("Test resetPassword(HttpServletRequest, HttpServletResponse, Model); then ConcurrentModel() size is one")
-  void testResetPassword_thenConcurrentModelSizeIsOne2() {
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String BroadleafLoginController.resetPassword(HttpServletRequest, HttpServletResponse, Model)"})
+  void testResetPassword_thenConcurrentModelSizeIsOne() {
     // Arrange
     BroadleafLoginController broadleafLoginController = new BroadleafLoginController();
     MockHttpServletRequest servletRequest = new MockHttpServletRequest();
@@ -456,55 +215,14 @@ class BroadleafLoginControllerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BroadleafLoginController#processResetPassword(ResetPasswordForm, HttpServletRequest, HttpServletResponse, Model, BindingResult)}.
-   * <ul>
-   *   <li>When {@link ConcurrentModel#ConcurrentModel()}.</li>
-   * </ul>
+   * Test {@link BroadleafLoginController#buildRedirectToLoginWithMessage(String)}.
    * <p>
-   * Method under test:
-   * {@link BroadleafLoginController#processResetPassword(ResetPasswordForm, HttpServletRequest, HttpServletResponse, Model, BindingResult)}
-   */
-  @Test
-  @DisplayName("Test processResetPassword(ResetPasswordForm, HttpServletRequest, HttpServletResponse, Model, BindingResult); when ConcurrentModel()")
-  @Disabled("TODO: Complete this test")
-  void testProcessResetPassword_whenConcurrentModel() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.broadleafcommerce.core.web.controller.account.BroadleafLoginController.processResetPassword(BroadleafLoginController.java:205)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    BroadleafLoginController broadleafLoginController = new BroadleafLoginController();
-
-    ResetPasswordForm resetPasswordForm = new ResetPasswordForm();
-    resetPasswordForm.setPassword("iloveyou");
-    resetPasswordForm.setPasswordConfirm("Password Confirm");
-    resetPasswordForm.setToken("ABC123");
-    resetPasswordForm.setUsername("janedoe");
-    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
-    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
-        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
-    MockHttpServletResponse response = new MockHttpServletResponse();
-    ConcurrentModel model = new ConcurrentModel();
-
-    // Act
-    broadleafLoginController.processResetPassword(resetPasswordForm, request, response, model,
-        new BindException("Target", "Object Name"));
-  }
-
-  /**
-   * Test
-   * {@link BroadleafLoginController#buildRedirectToLoginWithMessage(String)}.
-   * <p>
-   * Method under test:
-   * {@link BroadleafLoginController#buildRedirectToLoginWithMessage(String)}
+   * Method under test: {@link BroadleafLoginController#buildRedirectToLoginWithMessage(String)}
    */
   @Test
   @DisplayName("Test buildRedirectToLoginWithMessage(String)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String BroadleafLoginController.buildRedirectToLoginWithMessage(String)"})
   void testBuildRedirectToLoginWithMessage() {
     // Arrange, Act and Assert
     assertEquals("redirect:authentication/login?messageCode=Not all who wander are lost",
@@ -512,44 +230,15 @@ class BroadleafLoginControllerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BroadleafLoginController#initResetPasswordForm(HttpServletRequest)}.
+   * Test {@link BroadleafLoginController#initResetPasswordForm(HttpServletRequest)}.
    * <p>
-   * Method under test:
-   * {@link BroadleafLoginController#initResetPasswordForm(HttpServletRequest)}
+   * Method under test: {@link BroadleafLoginController#initResetPasswordForm(HttpServletRequest)}
    */
   @Test
   @DisplayName("Test initResetPasswordForm(HttpServletRequest)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"ResetPasswordForm BroadleafLoginController.initResetPasswordForm(HttpServletRequest)"})
   void testInitResetPasswordForm() {
-    // Arrange
-    BroadleafLoginController broadleafLoginController = new BroadleafLoginController();
-    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
-
-    // Act
-    ResetPasswordForm actualInitResetPasswordFormResult = broadleafLoginController
-        .initResetPasswordForm(new SearchRequestWrapper(
-            new XssRequestWrapper(servletRequest, new StandardReactiveWebEnvironment(), new String[]{"token"})));
-
-    // Assert
-    assertNull(actualInitResetPasswordFormResult.getPassword());
-    assertNull(actualInitResetPasswordFormResult.getPasswordConfirm());
-    assertNull(actualInitResetPasswordFormResult.getToken());
-    assertNull(actualInitResetPasswordFormResult.getUsername());
-  }
-
-  /**
-   * Test
-   * {@link BroadleafLoginController#initResetPasswordForm(HttpServletRequest)}.
-   * <ul>
-   *   <li>Then return Password is {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link BroadleafLoginController#initResetPasswordForm(HttpServletRequest)}
-   */
-  @Test
-  @DisplayName("Test initResetPasswordForm(HttpServletRequest); then return Password is 'null'")
-  void testInitResetPasswordForm_thenReturnPasswordIsNull() {
     // Arrange
     BroadleafLoginController broadleafLoginController = new BroadleafLoginController();
     MockHttpServletRequest servletRequest = new MockHttpServletRequest();
@@ -567,17 +256,46 @@ class BroadleafLoginControllerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BroadleafLoginController#getResetPasswordScheme(HttpServletRequest)}.
+   * Test {@link BroadleafLoginController#initResetPasswordForm(HttpServletRequest)}.
+   * <ul>
+   *   <li>Then return Password is {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BroadleafLoginController#initResetPasswordForm(HttpServletRequest)}
+   */
+  @Test
+  @DisplayName("Test initResetPasswordForm(HttpServletRequest); then return Password is 'null'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"ResetPasswordForm BroadleafLoginController.initResetPasswordForm(HttpServletRequest)"})
+  void testInitResetPasswordForm_thenReturnPasswordIsNull() {
+    // Arrange
+    BroadleafLoginController broadleafLoginController = new BroadleafLoginController();
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+
+    // Act
+    ResetPasswordForm actualInitResetPasswordFormResult = broadleafLoginController
+        .initResetPasswordForm(new SearchRequestWrapper(
+            new XssRequestWrapper(servletRequest, new StandardReactiveWebEnvironment(), new String[]{"token"})));
+
+    // Assert
+    assertNull(actualInitResetPasswordFormResult.getPassword());
+    assertNull(actualInitResetPasswordFormResult.getPasswordConfirm());
+    assertNull(actualInitResetPasswordFormResult.getToken());
+    assertNull(actualInitResetPasswordFormResult.getUsername());
+  }
+
+  /**
+   * Test {@link BroadleafLoginController#getResetPasswordScheme(HttpServletRequest)}.
    * <ul>
    *   <li>Then return {@code http}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafLoginController#getResetPasswordScheme(HttpServletRequest)}
+   * Method under test: {@link BroadleafLoginController#getResetPasswordScheme(HttpServletRequest)}
    */
   @Test
   @DisplayName("Test getResetPasswordScheme(HttpServletRequest); then return 'http'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String BroadleafLoginController.getResetPasswordScheme(HttpServletRequest)"})
   void testGetResetPasswordScheme_thenReturnHttp() {
     // Arrange
     BroadleafLoginController broadleafLoginController = new BroadleafLoginController();
@@ -590,18 +308,18 @@ class BroadleafLoginControllerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BroadleafLoginController#getResetPasswordPort(HttpServletRequest, String)}.
+   * Test {@link BroadleafLoginController#getResetPasswordPort(HttpServletRequest, String)}.
    * <ul>
    *   <li>Given {@code 8080}.</li>
    *   <li>Then return {@code :8080}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafLoginController#getResetPasswordPort(HttpServletRequest, String)}
+   * Method under test: {@link BroadleafLoginController#getResetPasswordPort(HttpServletRequest, String)}
    */
   @Test
   @DisplayName("Test getResetPasswordPort(HttpServletRequest, String); given '8080'; then return ':8080'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String BroadleafLoginController.getResetPasswordPort(HttpServletRequest, String)"})
   void testGetResetPasswordPort_given8080_thenReturn8080() {
     // Arrange
     BroadleafLoginController broadleafLoginController = new BroadleafLoginController();
@@ -616,18 +334,18 @@ class BroadleafLoginControllerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BroadleafLoginController#getResetPasswordPort(HttpServletRequest, String)}.
+   * Test {@link BroadleafLoginController#getResetPasswordPort(HttpServletRequest, String)}.
    * <ul>
    *   <li>When {@code http}.</li>
    *   <li>Then return empty string.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafLoginController#getResetPasswordPort(HttpServletRequest, String)}
+   * Method under test: {@link BroadleafLoginController#getResetPasswordPort(HttpServletRequest, String)}
    */
   @Test
   @DisplayName("Test getResetPasswordPort(HttpServletRequest, String); when 'http'; then return empty string")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String BroadleafLoginController.getResetPasswordPort(HttpServletRequest, String)"})
   void testGetResetPasswordPort_whenHttp_thenReturnEmptyString() {
     // Arrange
     BroadleafLoginController broadleafLoginController = new BroadleafLoginController();
@@ -640,18 +358,18 @@ class BroadleafLoginControllerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BroadleafLoginController#getResetPasswordPort(HttpServletRequest, String)}.
+   * Test {@link BroadleafLoginController#getResetPasswordPort(HttpServletRequest, String)}.
    * <ul>
    *   <li>When {@code https}.</li>
    *   <li>Then return {@code :80}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafLoginController#getResetPasswordPort(HttpServletRequest, String)}
+   * Method under test: {@link BroadleafLoginController#getResetPasswordPort(HttpServletRequest, String)}
    */
   @Test
   @DisplayName("Test getResetPasswordPort(HttpServletRequest, String); when 'https'; then return ':80'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String BroadleafLoginController.getResetPasswordPort(HttpServletRequest, String)"})
   void testGetResetPasswordPort_whenHttps_thenReturn80() {
     // Arrange
     BroadleafLoginController broadleafLoginController = new BroadleafLoginController();
@@ -664,18 +382,18 @@ class BroadleafLoginControllerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BroadleafLoginController#getResetPasswordPort(HttpServletRequest, String)}.
+   * Test {@link BroadleafLoginController#getResetPasswordPort(HttpServletRequest, String)}.
    * <ul>
    *   <li>When {@code Scheme}.</li>
    *   <li>Then return empty string.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafLoginController#getResetPasswordPort(HttpServletRequest, String)}
+   * Method under test: {@link BroadleafLoginController#getResetPasswordPort(HttpServletRequest, String)}
    */
   @Test
   @DisplayName("Test getResetPasswordPort(HttpServletRequest, String); when 'Scheme'; then return empty string")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String BroadleafLoginController.getResetPasswordPort(HttpServletRequest, String)"})
   void testGetResetPasswordPort_whenScheme_thenReturnEmptyString() {
     // Arrange
     BroadleafLoginController broadleafLoginController = new BroadleafLoginController();
@@ -688,14 +406,14 @@ class BroadleafLoginControllerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BroadleafLoginController#getResetPasswordUrl(HttpServletRequest)}.
+   * Test {@link BroadleafLoginController#getResetPasswordUrl(HttpServletRequest)}.
    * <p>
-   * Method under test:
-   * {@link BroadleafLoginController#getResetPasswordUrl(HttpServletRequest)}
+   * Method under test: {@link BroadleafLoginController#getResetPasswordUrl(HttpServletRequest)}
    */
   @Test
   @DisplayName("Test getResetPasswordUrl(HttpServletRequest)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String BroadleafLoginController.getResetPasswordUrl(HttpServletRequest)"})
   void testGetResetPasswordUrl() {
     // Arrange
     BroadleafLoginController broadleafLoginController = new BroadleafLoginController();
@@ -709,14 +427,14 @@ class BroadleafLoginControllerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BroadleafLoginController#getResetPasswordUrl(HttpServletRequest)}.
+   * Test {@link BroadleafLoginController#getResetPasswordUrl(HttpServletRequest)}.
    * <p>
-   * Method under test:
-   * {@link BroadleafLoginController#getResetPasswordUrl(HttpServletRequest)}
+   * Method under test: {@link BroadleafLoginController#getResetPasswordUrl(HttpServletRequest)}
    */
   @Test
   @DisplayName("Test getResetPasswordUrl(HttpServletRequest)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String BroadleafLoginController.getResetPasswordUrl(HttpServletRequest)"})
   void testGetResetPasswordUrl2() {
     // Arrange
     BroadleafLoginController broadleafLoginController = new BroadleafLoginController();
@@ -731,19 +449,18 @@ class BroadleafLoginControllerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BroadleafLoginController#getResetPasswordUrl(HttpServletRequest)}.
+   * Test {@link BroadleafLoginController#getResetPasswordUrl(HttpServletRequest)}.
    * <ul>
    *   <li>Given {@code null}.</li>
-   *   <li>When {@link MockHttpServletRequest#MockHttpServletRequest()} ContextPath
-   * is {@code null}.</li>
+   *   <li>When {@link MockHttpServletRequest#MockHttpServletRequest()} ContextPath is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafLoginController#getResetPasswordUrl(HttpServletRequest)}
+   * Method under test: {@link BroadleafLoginController#getResetPasswordUrl(HttpServletRequest)}
    */
   @Test
   @DisplayName("Test getResetPasswordUrl(HttpServletRequest); given 'null'; when MockHttpServletRequest() ContextPath is 'null'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String BroadleafLoginController.getResetPasswordUrl(HttpServletRequest)"})
   void testGetResetPasswordUrl_givenNull_whenMockHttpServletRequestContextPathIsNull() {
     // Arrange
     BroadleafLoginController broadleafLoginController = new BroadleafLoginController();
@@ -756,18 +473,17 @@ class BroadleafLoginControllerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BroadleafLoginController#getResetPasswordUrl(HttpServletRequest)}.
+   * Test {@link BroadleafLoginController#getResetPasswordUrl(HttpServletRequest)}.
    * <ul>
-   *   <li>Then return
-   * {@code http://localhost:8080authentication/resetPassword}.</li>
+   *   <li>Then return {@code http://localhost:8080authentication/resetPassword}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafLoginController#getResetPasswordUrl(HttpServletRequest)}
+   * Method under test: {@link BroadleafLoginController#getResetPasswordUrl(HttpServletRequest)}
    */
   @Test
   @DisplayName("Test getResetPasswordUrl(HttpServletRequest); then return 'http://localhost:8080authentication/resetPassword'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String BroadleafLoginController.getResetPasswordUrl(HttpServletRequest)"})
   void testGetResetPasswordUrl_thenReturnHttpLocalhost8080authenticationResetPassword() {
     // Arrange
     BroadleafLoginController broadleafLoginController = new BroadleafLoginController();
@@ -782,17 +498,17 @@ class BroadleafLoginControllerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BroadleafLoginController#getResetPasswordUrl(HttpServletRequest)}.
+   * Test {@link BroadleafLoginController#getResetPasswordUrl(HttpServletRequest)}.
    * <ul>
    *   <li>Then return {@code http://localhostauthentication/resetPassword}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafLoginController#getResetPasswordUrl(HttpServletRequest)}
+   * Method under test: {@link BroadleafLoginController#getResetPasswordUrl(HttpServletRequest)}
    */
   @Test
   @DisplayName("Test getResetPasswordUrl(HttpServletRequest); then return 'http://localhostauthentication/resetPassword'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String BroadleafLoginController.getResetPasswordUrl(HttpServletRequest)"})
   void testGetResetPasswordUrl_thenReturnHttpLocalhostauthenticationResetPassword() {
     // Arrange
     BroadleafLoginController broadleafLoginController = new BroadleafLoginController();
@@ -805,18 +521,17 @@ class BroadleafLoginControllerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BroadleafLoginController#getResetPasswordUrl(HttpServletRequest)}.
+   * Test {@link BroadleafLoginController#getResetPasswordUrl(HttpServletRequest)}.
    * <ul>
-   *   <li>Then return
-   * {@code https://localhost:80authentication/resetPassword}.</li>
+   *   <li>Then return {@code https://localhost:80authentication/resetPassword}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafLoginController#getResetPasswordUrl(HttpServletRequest)}
+   * Method under test: {@link BroadleafLoginController#getResetPasswordUrl(HttpServletRequest)}
    */
   @Test
   @DisplayName("Test getResetPasswordUrl(HttpServletRequest); then return 'https://localhost:80authentication/resetPassword'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String BroadleafLoginController.getResetPasswordUrl(HttpServletRequest)"})
   void testGetResetPasswordUrl_thenReturnHttpsLocalhost80authenticationResetPassword() {
     // Arrange
     BroadleafLoginController broadleafLoginController = new BroadleafLoginController();
@@ -850,6 +565,17 @@ class BroadleafLoginControllerDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void BroadleafLoginController.<init>()",
+      "String BroadleafLoginController.getForcedPasswordChangeSuccessView()",
+      "String BroadleafLoginController.getForcedPasswordChangeView()",
+      "String BroadleafLoginController.getForgotPasswordSuccessView()",
+      "String BroadleafLoginController.getForgotPasswordView()",
+      "String BroadleafLoginController.getForgotUsernameView()", "String BroadleafLoginController.getLoginView()",
+      "String BroadleafLoginController.getResetPasswordErrorView()",
+      "String BroadleafLoginController.getResetPasswordFormView()",
+      "String BroadleafLoginController.getResetPasswordSuccessView()",
+      "String BroadleafLoginController.getResetPasswordView()"})
   void testGettersAndSetters() {
     // Arrange and Act
     BroadleafLoginController actualBroadleafLoginController = new BroadleafLoginController();

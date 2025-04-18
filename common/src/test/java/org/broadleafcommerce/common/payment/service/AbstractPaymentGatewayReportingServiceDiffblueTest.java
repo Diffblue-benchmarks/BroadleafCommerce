@@ -18,19 +18,23 @@
 package org.broadleafcommerce.common.payment.service;
 
 import static org.junit.Assert.assertThrows;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.payment.dto.PaymentRequestDTO;
 import org.broadleafcommerce.common.vendor.service.exception.PaymentException;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class AbstractPaymentGatewayReportingServiceDiffblueTest {
   /**
-   * Test
-   * {@link AbstractPaymentGatewayReportingService#findDetailsByTransaction(PaymentRequestDTO)}.
+   * Test {@link AbstractPaymentGatewayReportingService#findDetailsByTransaction(PaymentRequestDTO)}.
    * <p>
-   * Method under test:
-   * {@link AbstractPaymentGatewayReportingService#findDetailsByTransaction(PaymentRequestDTO)}
+   * Method under test: {@link AbstractPaymentGatewayReportingService#findDetailsByTransaction(PaymentRequestDTO)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.common.payment.dto.PaymentResponseDTO AbstractPaymentGatewayReportingService.findDetailsByTransaction(PaymentRequestDTO)"})
   public void testFindDetailsByTransaction() throws PaymentException {
     // Arrange
     AbstractPaymentGatewayReportingService abstractPaymentGatewayReportingService = new AbstractPaymentGatewayReportingService();
@@ -38,23 +42,5 @@ public class AbstractPaymentGatewayReportingServiceDiffblueTest {
     // Act and Assert
     assertThrows(UnsupportedOperationException.class,
         () -> abstractPaymentGatewayReportingService.findDetailsByTransaction(new PaymentRequestDTO()));
-  }
-
-  /**
-   * Test new {@link AbstractPaymentGatewayReportingService} (default
-   * constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link AbstractPaymentGatewayReportingService}
-   */
-  @Test
-  public void testNewAbstractPaymentGatewayReportingService() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing observers.
-    //   Diffblue Cover was unable to create an assertion.
-    //   There are no fields that could be asserted on.
-
-    // Arrange and Act
-    new AbstractPaymentGatewayReportingService();
   }
 }

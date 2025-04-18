@@ -18,8 +18,11 @@
 package org.broadleafcommerce.common.util;
 
 import static org.junit.Assert.assertEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.List;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class BLCPaymentMethodUtilsDiffblueTest {
   /**
@@ -28,6 +31,8 @@ public class BLCPaymentMethodUtilsDiffblueTest {
    * Method under test: {@link BLCPaymentMethodUtils#getExpirationMonthOptions()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List BLCPaymentMethodUtils.getExpirationMonthOptions()"})
   public void testGetExpirationMonthOptions() {
     // Arrange and Act
     List<String> actualExpirationMonthOptions = BLCPaymentMethodUtils.getExpirationMonthOptions();
@@ -54,6 +59,8 @@ public class BLCPaymentMethodUtilsDiffblueTest {
    * Method under test: {@link BLCPaymentMethodUtils#getExpirationYearOptions()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List BLCPaymentMethodUtils.getExpirationYearOptions()"})
   public void testGetExpirationYearOptions() {
     // Arrange and Act
     List<String> actualExpirationYearOptions = BLCPaymentMethodUtils.getExpirationYearOptions();

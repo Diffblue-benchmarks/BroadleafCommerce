@@ -1,254 +1,240 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.server.service.persistence.module.provider;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.doNothing;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import org.broadleafcommerce.common.persistence.EntityConfiguration;
-import org.broadleafcommerce.common.presentation.client.PersistencePerspectiveItemType;
 import org.broadleafcommerce.common.value.ValueAssignable;
-import org.broadleafcommerce.openadmin.dto.AdornedTargetList;
 import org.broadleafcommerce.openadmin.dto.BasicFieldMetadata;
 import org.broadleafcommerce.openadmin.dto.CriteriaTransferObject;
 import org.broadleafcommerce.openadmin.dto.Entity;
 import org.broadleafcommerce.openadmin.dto.FieldMetadata;
 import org.broadleafcommerce.openadmin.dto.PersistencePerspective;
-import org.broadleafcommerce.openadmin.dto.PersistencePerspectiveItem;
 import org.broadleafcommerce.openadmin.dto.Property;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminUserAttributeImpl;
+import org.broadleafcommerce.openadmin.server.security.domain.AdminUserImpl;
 import org.broadleafcommerce.openadmin.server.service.persistence.PersistenceException;
 import org.broadleafcommerce.openadmin.server.service.persistence.PersistenceManagerImpl;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.FieldManager;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.FieldNotAvailableException;
+import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.FilterMapping;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.RestrictionFactory;
+import org.broadleafcommerce.openadmin.server.service.persistence.module.provider.extension.BasicFieldPersistenceProviderExtensionManager;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.AddSearchMappingRequest;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.ExtractValueRequest;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.PopulateValueRequest;
 import org.broadleafcommerce.openadmin.server.service.type.MetadataProviderResponse;
-import org.hibernate.engine.spi.SessionDelegatorBaseImpl;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
-    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
-    "/bl-open-admin-contentCreator-applicationContext.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+@ContextConfiguration(classes = {MapFieldPersistenceProvider.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class MapFieldPersistenceProviderDiffblueTest {
+  @MockBean(name = "blBasicFieldPersistenceProviderExtensionManager")
+  private BasicFieldPersistenceProviderExtensionManager basicFieldPersistenceProviderExtensionManager;
+
   @Autowired
   private MapFieldPersistenceProvider mapFieldPersistenceProvider;
 
   /**
-   * Test
-   * {@link MapFieldPersistenceProvider#canHandlePersistence(PopulateValueRequest, Serializable)}.
+   * Test {@link MapFieldPersistenceProvider#canHandlePersistence(PopulateValueRequest, Serializable)}.
+   * <ul>
+   *   <li>Given {@link Property#Property(String, String)} with {@code Name} and value is {@code 42}.</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldPersistenceProvider#canHandlePersistence(PopulateValueRequest, Serializable)}
+   * Method under test: {@link MapFieldPersistenceProvider#canHandlePersistence(PopulateValueRequest, Serializable)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testCanHandlePersistence() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module.provider;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3365 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.provider.MapFieldPersistenceProvider mapFieldPersistenceProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MapFieldPersistenceProvider.canHandlePersistence(PopulateValueRequest, Serializable)"})
+  public void testCanHandlePersistence_givenPropertyWithNameAndValueIs42_thenReturnFalse() {
     // Arrange
-    MapFieldPersistenceProvider mapFieldPersistenceProvider2 = new MapFieldPersistenceProvider();
-    EntityConfiguration entityConfiguration = new EntityConfiguration();
-    FieldManager fieldManager = new FieldManager(entityConfiguration, new SessionDelegatorBaseImpl(null, null));
-
-    Property property = new Property();
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    Class<Object> returnType = Object.class;
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
-    PopulateValueRequest populateValueRequest = new PopulateValueRequest(true, fieldManager, property, metadata,
-        returnType, "42", persistenceManager, dataFormatProvider, true, new Entity());
+    PopulateValueRequest populateValueRequest = mock(PopulateValueRequest.class);
+    when(populateValueRequest.getProperty()).thenReturn(new Property("Name", "42"));
 
     // Act
-    mapFieldPersistenceProvider2.canHandlePersistence(populateValueRequest, new SimpleDateFormat("yyyy/mm/dd"));
+    boolean actualCanHandlePersistenceResult = mapFieldPersistenceProvider.canHandlePersistence(populateValueRequest,
+        new SimpleDateFormat("yyyy/mm/dd"));
+
+    // Assert
+    verify(populateValueRequest).getProperty();
+    assertFalse(actualCanHandlePersistenceResult);
   }
 
   /**
-   * Test
-   * {@link MapFieldPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}.
+   * Test {@link MapFieldPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}.
+   * <ul>
+   *   <li>Given {@link MapFieldPersistenceProvider} (default constructor).</li>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}
+   * Method under test: {@link MapFieldPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testCanHandleExtraction() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module.provider;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3097 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.provider.MapFieldPersistenceProvider mapFieldPersistenceProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    MapFieldPersistenceProvider mapFieldPersistenceProvider2 = new MapFieldPersistenceProvider();
-    ArrayList<Property> props = new ArrayList<>();
-    EntityConfiguration entityConfiguration = new EntityConfiguration();
-    FieldManager fieldManager = new FieldManager(entityConfiguration, new SessionDelegatorBaseImpl(null, null));
-
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    ExtractValueRequest extractValueRequest = new ExtractValueRequest(props, fieldManager, metadata, "Requested Value",
-        "Display Val", persistenceManager, recordHelper, new SimpleDateFormat("yyyy/mm/dd"),
-        new String[]{"Custom Criteria"});
-
-    // Act
-    mapFieldPersistenceProvider2.canHandleExtraction(extractValueRequest, new Property());
-  }
-
-  /**
-   * Test
-   * {@link MapFieldPersistenceProvider#populateValue(PopulateValueRequest, Serializable)}.
-   * <p>
-   * Method under test:
-   * {@link MapFieldPersistenceProvider#populateValue(PopulateValueRequest, Serializable)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testPopulateValue() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module.provider;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4852 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.provider.MapFieldPersistenceProvider mapFieldPersistenceProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    MapFieldPersistenceProvider mapFieldPersistenceProvider2 = new MapFieldPersistenceProvider();
-    EntityConfiguration entityConfiguration = new EntityConfiguration();
-    FieldManager fieldManager = new FieldManager(entityConfiguration, new SessionDelegatorBaseImpl(null, null));
-
-    Property property = new Property();
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    Class<Object> returnType = Object.class;
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
-    PopulateValueRequest populateValueRequest = new PopulateValueRequest(true, fieldManager, property, metadata,
-        returnType, "42", persistenceManager, dataFormatProvider, true, new Entity());
-
-    // Act
-    mapFieldPersistenceProvider2.populateValue(populateValueRequest, new SimpleDateFormat("yyyy/mm/dd"));
-  }
-
-  /**
-   * Test
-   * {@link MapFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}.
-   * <p>
-   * Method under test:
-   * {@link MapFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testExtractValue() throws PersistenceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module.provider;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3974 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.provider.MapFieldPersistenceProvider mapFieldPersistenceProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    MapFieldPersistenceProvider mapFieldPersistenceProvider2 = new MapFieldPersistenceProvider();
-    ArrayList<Property> props = new ArrayList<>();
-    EntityConfiguration entityConfiguration = new EntityConfiguration();
-    FieldManager fieldManager = new FieldManager(entityConfiguration, new SessionDelegatorBaseImpl(null, null));
-
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    ExtractValueRequest extractValueRequest = new ExtractValueRequest(props, fieldManager, metadata, "Requested Value",
-        "Display Val", persistenceManager, recordHelper, new SimpleDateFormat("yyyy/mm/dd"),
-        new String[]{"Custom Criteria"});
-
-    // Act
-    mapFieldPersistenceProvider2.extractValue(extractValueRequest, new Property());
-  }
-
-  /**
-   * Test
-   * {@link MapFieldPersistenceProvider#addSearchMapping(AddSearchMappingRequest, List)}.
-   * <p>
-   * Method under test:
-   * {@link MapFieldPersistenceProvider#addSearchMapping(AddSearchMappingRequest, List)}
-   */
-  @Test
-  public void testAddSearchMapping() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MapFieldPersistenceProvider.canHandleExtraction(ExtractValueRequest, Property)"})
+  public void testCanHandleExtraction_givenMapFieldPersistenceProvider_thenReturnTrue() {
     // Arrange
     MapFieldPersistenceProvider mapFieldPersistenceProvider = new MapFieldPersistenceProvider();
-    PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
-    doNothing().when(persistencePerspective)
-        .addPersistencePerspectiveItem(Mockito.<PersistencePerspectiveItemType>any(),
-            Mockito.<PersistencePerspectiveItem>any());
-    persistencePerspective.addPersistencePerspectiveItem(PersistencePerspectiveItemType.FOREIGNKEY,
-        new AdornedTargetList());
+    ArrayList<Property> props = new ArrayList<>();
+    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
+
+    BasicFieldMetadata metadata = new BasicFieldMetadata();
+    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
+    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
+    ExtractValueRequest extractValueRequest = new ExtractValueRequest(props, fieldManager, metadata, "Requested Value",
+        "Display Val", persistenceManager, recordHelper, new SimpleDateFormat("yyyy/mm/dd"),
+        new String[]{"Custom Criteria"});
+
+    Property property = new Property();
+    property.setName("---");
+
+    // Act and Assert
+    assertTrue(mapFieldPersistenceProvider.canHandleExtraction(extractValueRequest, property));
+  }
+
+  /**
+   * Test {@link MapFieldPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}.
+   * <ul>
+   *   <li>When {@link Property#Property(String, String)} with {@code Name} and value is {@code 42}.</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MapFieldPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MapFieldPersistenceProvider.canHandleExtraction(ExtractValueRequest, Property)"})
+  public void testCanHandleExtraction_whenPropertyWithNameAndValueIs42_thenReturnFalse() {
+    // Arrange
+    ArrayList<Property> props = new ArrayList<>();
+    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
+
+    BasicFieldMetadata metadata = new BasicFieldMetadata();
+    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
+    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
+    ExtractValueRequest extractValueRequest = new ExtractValueRequest(props, fieldManager, metadata, "Requested Value",
+        "Display Val", persistenceManager, recordHelper, new SimpleDateFormat("yyyy/mm/dd"),
+        new String[]{"Custom Criteria"});
+
+    // Act and Assert
+    assertFalse(mapFieldPersistenceProvider.canHandleExtraction(extractValueRequest, new Property("Name", "42")));
+  }
+
+  /**
+   * Test {@link MapFieldPersistenceProvider#populateValue(PopulateValueRequest, Serializable)}.
+   * <ul>
+   *   <li>Given {@link Property#Property(String, String)} with {@code Name} and value is {@code 42}.</li>
+   *   <li>Then return {@code NOT_HANDLED}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MapFieldPersistenceProvider#populateValue(PopulateValueRequest, Serializable)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "MetadataProviderResponse MapFieldPersistenceProvider.populateValue(PopulateValueRequest, Serializable)"})
+  public void testPopulateValue_givenPropertyWithNameAndValueIs42_thenReturnNotHandled() {
+    // Arrange
+    PopulateValueRequest populateValueRequest = mock(PopulateValueRequest.class);
+    when(populateValueRequest.getProperty()).thenReturn(new Property("Name", "42"));
+
+    // Act
+    MetadataProviderResponse actualPopulateValueResult = mapFieldPersistenceProvider.populateValue(populateValueRequest,
+        new SimpleDateFormat("yyyy/mm/dd"));
+
+    // Assert
+    verify(populateValueRequest).getProperty();
+    assertEquals(MetadataProviderResponse.NOT_HANDLED, actualPopulateValueResult);
+  }
+
+  /**
+   * Test {@link MapFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}.
+   * <ul>
+   *   <li>When {@link Property#Property(String, String)} with {@code Name} and value is {@code 42}.</li>
+   *   <li>Then return {@code NOT_HANDLED}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MapFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "MetadataProviderResponse MapFieldPersistenceProvider.extractValue(ExtractValueRequest, Property)"})
+  public void testExtractValue_whenPropertyWithNameAndValueIs42_thenReturnNotHandled() throws PersistenceException {
+    // Arrange
+    ArrayList<Property> props = new ArrayList<>();
+    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
+
+    BasicFieldMetadata metadata = new BasicFieldMetadata();
+    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
+    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
+    ExtractValueRequest extractValueRequest = new ExtractValueRequest(props, fieldManager, metadata, "Requested Value",
+        "Display Val", persistenceManager, recordHelper, new SimpleDateFormat("yyyy/mm/dd"),
+        new String[]{"Custom Criteria"});
+
+    // Act and Assert
+    assertEquals(MetadataProviderResponse.NOT_HANDLED,
+        mapFieldPersistenceProvider.extractValue(extractValueRequest, new Property("Name", "42")));
+  }
+
+  /**
+   * Test {@link MapFieldPersistenceProvider#addSearchMapping(AddSearchMappingRequest, List)}.
+   * <ul>
+   *   <li>Given {@link FilterMapping} (default constructor).</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link FilterMapping} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MapFieldPersistenceProvider#addSearchMapping(AddSearchMappingRequest, List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "MetadataProviderResponse MapFieldPersistenceProvider.addSearchMapping(AddSearchMappingRequest, List)"})
+  public void testAddSearchMapping_givenFilterMapping_whenArrayListAddFilterMapping() {
+    // Arrange
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
     CriteriaTransferObject requestedCto = new CriteriaTransferObject();
     HashMap<String, FieldMetadata> mergedProperties = new HashMap<>();
     FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
@@ -258,58 +244,75 @@ public class MapFieldPersistenceProviderDiffblueTest {
         "Dr Jane Doe", mergedProperties, "Property Name", fieldManager, dataFormatProvider,
         new AdornedTargetListPersistenceModule(), mock(RestrictionFactory.class));
 
-    // Act
-    MetadataProviderResponse actualAddSearchMappingResult = mapFieldPersistenceProvider
-        .addSearchMapping(addSearchMappingRequest, new ArrayList<>());
+    ArrayList<FilterMapping> filterMappings = new ArrayList<>();
+    filterMappings.add(new FilterMapping());
 
-    // Assert
-    verify(persistencePerspective).addPersistencePerspectiveItem(eq(PersistencePerspectiveItemType.FOREIGNKEY),
-        isA(PersistencePerspectiveItem.class));
-    assertEquals(MetadataProviderResponse.NOT_HANDLED, actualAddSearchMappingResult);
+    // Act and Assert
+    assertEquals(MetadataProviderResponse.NOT_HANDLED,
+        mapFieldPersistenceProvider.addSearchMapping(addSearchMappingRequest, filterMappings));
   }
 
   /**
-   * Test
-   * {@link MapFieldPersistenceProvider#addSearchMapping(AddSearchMappingRequest, List)}.
+   * Test {@link MapFieldPersistenceProvider#addSearchMapping(AddSearchMappingRequest, List)}.
+   * <ul>
+   *   <li>Given {@link FilterMapping} (default constructor).</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link FilterMapping} (default constructor).</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldPersistenceProvider#addSearchMapping(AddSearchMappingRequest, List)}
+   * Method under test: {@link MapFieldPersistenceProvider#addSearchMapping(AddSearchMappingRequest, List)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddSearchMapping2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module.provider;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2953 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.provider.MapFieldPersistenceProvider mapFieldPersistenceProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "MetadataProviderResponse MapFieldPersistenceProvider.addSearchMapping(AddSearchMappingRequest, List)"})
+  public void testAddSearchMapping_givenFilterMapping_whenArrayListAddFilterMapping2() {
     // Arrange
-    MapFieldPersistenceProvider mapFieldPersistenceProvider2 = new MapFieldPersistenceProvider();
     PersistencePerspective persistencePerspective = new PersistencePerspective();
     CriteriaTransferObject requestedCto = new CriteriaTransferObject();
     HashMap<String, FieldMetadata> mergedProperties = new HashMap<>();
-    EntityConfiguration entityConfiguration = new EntityConfiguration();
-    FieldManager fieldManager = new FieldManager(entityConfiguration, new SessionDelegatorBaseImpl(null, null));
+    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
 
     AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
     AddSearchMappingRequest addSearchMappingRequest = new AddSearchMappingRequest(persistencePerspective, requestedCto,
         "Dr Jane Doe", mergedProperties, "Property Name", fieldManager, dataFormatProvider,
         new AdornedTargetListPersistenceModule(), mock(RestrictionFactory.class));
 
-    // Act
-    mapFieldPersistenceProvider2.addSearchMapping(addSearchMappingRequest, new ArrayList<>());
+    ArrayList<FilterMapping> filterMappings = new ArrayList<>();
+    filterMappings.add(new FilterMapping());
+    filterMappings.add(new FilterMapping());
+
+    // Act and Assert
+    assertEquals(MetadataProviderResponse.NOT_HANDLED,
+        mapFieldPersistenceProvider.addSearchMapping(addSearchMappingRequest, filterMappings));
+  }
+
+  /**
+   * Test {@link MapFieldPersistenceProvider#addSearchMapping(AddSearchMappingRequest, List)}.
+   * <ul>
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MapFieldPersistenceProvider#addSearchMapping(AddSearchMappingRequest, List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "MetadataProviderResponse MapFieldPersistenceProvider.addSearchMapping(AddSearchMappingRequest, List)"})
+  public void testAddSearchMapping_whenArrayList() {
+    // Arrange
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    CriteriaTransferObject requestedCto = new CriteriaTransferObject();
+    HashMap<String, FieldMetadata> mergedProperties = new HashMap<>();
+    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
+
+    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
+    AddSearchMappingRequest addSearchMappingRequest = new AddSearchMappingRequest(persistencePerspective, requestedCto,
+        "Dr Jane Doe", mergedProperties, "Property Name", fieldManager, dataFormatProvider,
+        new AdornedTargetListPersistenceModule(), mock(RestrictionFactory.class));
+
+    // Act and Assert
+    assertEquals(MetadataProviderResponse.NOT_HANDLED,
+        mapFieldPersistenceProvider.addSearchMapping(addSearchMappingRequest, new ArrayList<>()));
   }
 
   /**
@@ -318,6 +321,8 @@ public class MapFieldPersistenceProviderDiffblueTest {
    * Method under test: {@link MapFieldPersistenceProvider#getOrder()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int MapFieldPersistenceProvider.getOrder()"})
   public void testGetOrder() {
     // Arrange, Act and Assert
     assertEquals(FieldPersistenceProvider.MAP_FIELD, (new MapFieldPersistenceProvider()).getOrder());
@@ -326,261 +331,137 @@ public class MapFieldPersistenceProviderDiffblueTest {
   /**
    * Test {@link MapFieldPersistenceProvider#canHandlePopulateNull()}.
    * <p>
-   * Method under test:
-   * {@link MapFieldPersistenceProvider#canHandlePopulateNull()}
+   * Method under test: {@link MapFieldPersistenceProvider#canHandlePopulateNull()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MapFieldPersistenceProvider.canHandlePopulateNull()"})
   public void testCanHandlePopulateNull() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module.provider;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3669 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.provider.MapFieldPersistenceProvider mapFieldPersistenceProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new MapFieldPersistenceProvider()).canHandlePopulateNull();
-  }
-
-  /**
-   * Test {@link MapFieldPersistenceProvider#canHandlePopulateNull()}.
-   * <ul>
-   *   <li>Given {@link MapFieldPersistenceProvider} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link MapFieldPersistenceProvider#canHandlePopulateNull()}
-   */
-  @Test
-  public void testCanHandlePopulateNull_givenMapFieldPersistenceProvider() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
-    assertTrue((new MapFieldPersistenceProvider()).canHandlePopulateNull());
+    assertTrue(mapFieldPersistenceProvider.canHandlePopulateNull());
   }
 
   /**
-   * Test {@link MapFieldPersistenceProvider#canHandlePopulateNull()}.
-   * <ul>
-   *   <li>Then calls
-   * {@link PersistencePerspective#addPersistencePerspectiveItem(PersistencePerspectiveItemType, PersistencePerspectiveItem)}.</li>
-   * </ul>
+   * Test {@link MapFieldPersistenceProvider#establishAssignableValue(PopulateValueRequest, Object)}.
    * <p>
-   * Method under test:
-   * {@link MapFieldPersistenceProvider#canHandlePopulateNull()}
+   * Method under test: {@link MapFieldPersistenceProvider#establishAssignableValue(PopulateValueRequest, Object)}
    */
   @Test
-  public void testCanHandlePopulateNull_thenCallsAddPersistencePerspectiveItem() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "ValueAssignable MapFieldPersistenceProvider.establishAssignableValue(PopulateValueRequest, Object)"})
+  public void testEstablishAssignableValue() throws IllegalAccessException, FieldNotAvailableException {
     // Arrange
-    PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
-    doNothing().when(persistencePerspective)
-        .addPersistencePerspectiveItem(Mockito.<PersistencePerspectiveItemType>any(),
-            Mockito.<PersistencePerspectiveItem>any());
-    persistencePerspective.addPersistencePerspectiveItem(PersistencePerspectiveItemType.FOREIGNKEY,
-        new AdornedTargetList());
-    CriteriaTransferObject requestedCto = new CriteriaTransferObject();
-    HashMap<String, FieldMetadata> mergedProperties = new HashMap<>();
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
+    BasicFieldMetadata basicFieldMetadata = mock(BasicFieldMetadata.class);
+    when(basicFieldMetadata.getToOneTargetProperty()).thenReturn("");
+    PopulateValueRequest populateValueRequest = mock(PopulateValueRequest.class);
+    when(populateValueRequest.getMetadata()).thenReturn(basicFieldMetadata);
 
-    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
-    AddSearchMappingRequest addSearchMappingRequest = new AddSearchMappingRequest(persistencePerspective, requestedCto,
-        "Dr Jane Doe", mergedProperties, "Property Name", fieldManager, dataFormatProvider,
-        new AdornedTargetListPersistenceModule(), mock(RestrictionFactory.class));
-
-    MapFieldPersistenceProvider mapFieldPersistenceProvider = new MapFieldPersistenceProvider();
-    mapFieldPersistenceProvider.addSearchMapping(addSearchMappingRequest, new ArrayList<>());
+    AdminUserAttributeImpl adminUserAttributeImpl = new AdminUserAttributeImpl();
+    adminUserAttributeImpl.setAdminUser(new AdminUserImpl());
+    adminUserAttributeImpl.setId(1L);
+    adminUserAttributeImpl.setName("Name");
+    adminUserAttributeImpl.setValue("42");
 
     // Act
-    boolean actualCanHandlePopulateNullResult = mapFieldPersistenceProvider.canHandlePopulateNull();
+    ValueAssignable actualEstablishAssignableValueResult = mapFieldPersistenceProvider
+        .establishAssignableValue(populateValueRequest, adminUserAttributeImpl);
 
     // Assert
-    verify(persistencePerspective).addPersistencePerspectiveItem(eq(PersistencePerspectiveItemType.FOREIGNKEY),
-        isA(PersistencePerspectiveItem.class));
-    assertTrue(actualCanHandlePopulateNullResult);
+    verify(basicFieldMetadata).getToOneTargetProperty();
+    verify(populateValueRequest).getMetadata();
+    assertSame(adminUserAttributeImpl, actualEstablishAssignableValueResult);
   }
 
   /**
-   * Test
-   * {@link MapFieldPersistenceProvider#updateAssignableValue(PopulateValueRequest, Serializable, Object, Class, boolean, ValueAssignable)}.
+   * Test {@link MapFieldPersistenceProvider#establishAssignableValue(PopulateValueRequest, Object)}.
+   * <ul>
+   *   <li>Then calls {@link FieldManager#getFieldValue(Object, String)}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldPersistenceProvider#updateAssignableValue(PopulateValueRequest, Serializable, Object, Class, boolean, ValueAssignable)}
+   * Method under test: {@link MapFieldPersistenceProvider#establishAssignableValue(PopulateValueRequest, Object)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testUpdateAssignableValue()
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "ValueAssignable MapFieldPersistenceProvider.establishAssignableValue(PopulateValueRequest, Object)"})
+  public void testEstablishAssignableValue_thenCallsGetFieldValue()
+      throws IllegalAccessException, FieldNotAvailableException {
+    // Arrange
+    AdminUserAttributeImpl adminUserAttributeImpl = new AdminUserAttributeImpl();
+    adminUserAttributeImpl.setAdminUser(new AdminUserImpl());
+    adminUserAttributeImpl.setId(1L);
+    adminUserAttributeImpl.setName("Name");
+    adminUserAttributeImpl.setValue("42");
+    FieldManager fieldManager = mock(FieldManager.class);
+    when(fieldManager.getFieldValue(Mockito.<Object>any(), Mockito.<String>any())).thenReturn(adminUserAttributeImpl);
+    BasicFieldMetadata metadata = mock(BasicFieldMetadata.class);
+    when(metadata.getToOneTargetProperty()).thenReturn("To One Target Property");
+    Property property = new Property();
+    Class<Object> returnType = Object.class;
+    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
+    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
+
+    // Act
+    ValueAssignable actualEstablishAssignableValueResult = mapFieldPersistenceProvider
+        .establishAssignableValue(new PopulateValueRequest(true, fieldManager, property, metadata, returnType, "42",
+            persistenceManager, dataFormatProvider, true, new Entity()), "Parent");
+
+    // Assert
+    verify(metadata, atLeast(1)).getToOneTargetProperty();
+    verify(fieldManager).getFieldValue(isA(Object.class), eq("To One Target Property"));
+    assertSame(adminUserAttributeImpl, actualEstablishAssignableValueResult);
+  }
+
+  /**
+   * Test {@link MapFieldPersistenceProvider#setupJoinEntityParent(PopulateValueRequest, Serializable, Object)}.
+   * <ul>
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MapFieldPersistenceProvider#setupJoinEntityParent(PopulateValueRequest, Serializable, Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void MapFieldPersistenceProvider.setupJoinEntityParent(PopulateValueRequest, Serializable, Object)"})
+  public void testSetupJoinEntityParent_thenThrowIllegalArgumentException()
       throws IllegalAccessException, InstantiationException, FieldNotAvailableException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module.provider;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5457 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.provider.MapFieldPersistenceProvider mapFieldPersistenceProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    MapFieldPersistenceProvider mapFieldPersistenceProvider2 = new MapFieldPersistenceProvider();
-    EntityConfiguration entityConfiguration = new EntityConfiguration();
-    FieldManager fieldManager = new FieldManager(entityConfiguration, new SessionDelegatorBaseImpl(null, null));
+    FieldManager fieldManager = mock(FieldManager.class);
+    when(fieldManager.getFieldValue(Mockito.<Object>any(), Mockito.<String>any())).thenReturn("Field Value");
+    when(fieldManager.setFieldValue(Mockito.<Object>any(), Mockito.<String>any(), Mockito.<Object>any()))
+        .thenThrow(new IllegalArgumentException("."));
+    PopulateValueRequest populateValueRequest = mock(PopulateValueRequest.class);
+    when(populateValueRequest.getMetadata()).thenReturn(new BasicFieldMetadata());
+    when(populateValueRequest.getFieldManager()).thenReturn(fieldManager);
+    when(populateValueRequest.getProperty())
+        .thenReturn(new Property("org.broadleafcommerce.openadmin.dto.BasicFieldMetadata", "42"));
 
-    Property property = new Property();
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    Class<Object> returnType = Object.class;
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
-    PopulateValueRequest populateValueRequest = new PopulateValueRequest(true, fieldManager, property, metadata,
-        returnType, "42", persistenceManager, dataFormatProvider, true, new Entity());
-
-    SimpleDateFormat instance = new SimpleDateFormat("yyyy/mm/dd");
-    Class<Object> valueType = Object.class;
-
-    // Act
-    mapFieldPersistenceProvider2.updateAssignableValue(populateValueRequest, instance, "Parent", valueType, true,
-        new AdminUserAttributeImpl());
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> mapFieldPersistenceProvider
+        .setupJoinEntityParent(populateValueRequest, new SimpleDateFormat("yyyy/mm/dd"), "Parent"));
+    verify(fieldManager).getFieldValue(isA(Object.class), eq("org.broadleafcommerce.openadmin.dto"));
+    verify(fieldManager).setFieldValue(isA(Object.class), isNull(), isA(Object.class));
+    verify(populateValueRequest, atLeast(1)).getFieldManager();
+    verify(populateValueRequest).getMetadata();
+    verify(populateValueRequest).getProperty();
   }
 
   /**
-   * Test
-   * {@link MapFieldPersistenceProvider#establishAssignableValue(PopulateValueRequest, Object)}.
+   * Test {@link MapFieldPersistenceProvider#getValueType(PopulateValueRequest, Class)}.
+   * <ul>
+   *   <li>Then return {@link Object}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldPersistenceProvider#establishAssignableValue(PopulateValueRequest, Object)}
+   * Method under test: {@link MapFieldPersistenceProvider#getValueType(PopulateValueRequest, Class)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testEstablishAssignableValue() throws IllegalAccessException, FieldNotAvailableException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module.provider;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3671 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.provider.MapFieldPersistenceProvider mapFieldPersistenceProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class MapFieldPersistenceProvider.getValueType(PopulateValueRequest, Class)"})
+  public void testGetValueType_thenReturnObject() {
     // Arrange
-    MapFieldPersistenceProvider mapFieldPersistenceProvider2 = new MapFieldPersistenceProvider();
-    EntityConfiguration entityConfiguration = new EntityConfiguration();
-    FieldManager fieldManager = new FieldManager(entityConfiguration, new SessionDelegatorBaseImpl(null, null));
-
-    Property property = new Property();
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    Class<Object> returnType = Object.class;
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
-
-    // Act
-    mapFieldPersistenceProvider2.establishAssignableValue(new PopulateValueRequest(true, fieldManager, property,
-        metadata, returnType, "42", persistenceManager, dataFormatProvider, true, new Entity()), "Parent");
-  }
-
-  /**
-   * Test
-   * {@link MapFieldPersistenceProvider#setupJoinEntityParent(PopulateValueRequest, Serializable, Object)}.
-   * <p>
-   * Method under test:
-   * {@link MapFieldPersistenceProvider#setupJoinEntityParent(PopulateValueRequest, Serializable, Object)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetupJoinEntityParent()
-      throws IllegalAccessException, InstantiationException, FieldNotAvailableException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module.provider;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass5156 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.provider.MapFieldPersistenceProvider mapFieldPersistenceProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    MapFieldPersistenceProvider mapFieldPersistenceProvider2 = new MapFieldPersistenceProvider();
-    EntityConfiguration entityConfiguration = new EntityConfiguration();
-    FieldManager fieldManager = new FieldManager(entityConfiguration, new SessionDelegatorBaseImpl(null, null));
-
-    Property property = new Property();
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    Class<Object> returnType = Object.class;
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
-    PopulateValueRequest populateValueRequest = new PopulateValueRequest(true, fieldManager, property, metadata,
-        returnType, "42", persistenceManager, dataFormatProvider, true, new Entity());
-
-    // Act
-    mapFieldPersistenceProvider2.setupJoinEntityParent(populateValueRequest, new SimpleDateFormat("yyyy/mm/dd"),
-        "Parent");
-  }
-
-  /**
-   * Test
-   * {@link MapFieldPersistenceProvider#getValueType(PopulateValueRequest, Class)}.
-   * <p>
-   * Method under test:
-   * {@link MapFieldPersistenceProvider#getValueType(PopulateValueRequest, Class)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetValueType() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module.provider;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4548 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.provider.MapFieldPersistenceProvider mapFieldPersistenceProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    MapFieldPersistenceProvider mapFieldPersistenceProvider2 = new MapFieldPersistenceProvider();
-    EntityConfiguration entityConfiguration = new EntityConfiguration();
-    FieldManager fieldManager = new FieldManager(entityConfiguration, new SessionDelegatorBaseImpl(null, null));
+    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
 
     Property property = new Property();
     BasicFieldMetadata metadata = new BasicFieldMetadata();
@@ -593,40 +474,55 @@ public class MapFieldPersistenceProviderDiffblueTest {
     Class<Object> startingValueType = Object.class;
 
     // Act
-    mapFieldPersistenceProvider2.getValueType(populateValueRequest, startingValueType);
+    Class<?> actualValueType = mapFieldPersistenceProvider.getValueType(populateValueRequest, startingValueType);
+
+    // Assert
+    Class<Object> expectedValueType = Object.class;
+    assertEquals(expectedValueType, actualValueType);
   }
 
   /**
-   * Test
-   * {@link MapFieldPersistenceProvider#getStartingValueType(PopulateValueRequest)}.
+   * Test {@link MapFieldPersistenceProvider#getStartingValueType(PopulateValueRequest)}.
+   * <ul>
+   *   <li>Then return {@link List}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link MapFieldPersistenceProvider#getStartingValueType(PopulateValueRequest)}
+   * Method under test: {@link MapFieldPersistenceProvider#getStartingValueType(PopulateValueRequest)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetStartingValueType() throws ClassNotFoundException, IllegalAccessException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module.provider;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4242 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.provider.MapFieldPersistenceProvider mapFieldPersistenceProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class MapFieldPersistenceProvider.getStartingValueType(PopulateValueRequest)"})
+  public void testGetStartingValueType_thenReturnList() throws ClassNotFoundException, IllegalAccessException {
     // Arrange
-    MapFieldPersistenceProvider mapFieldPersistenceProvider2 = new MapFieldPersistenceProvider();
-    EntityConfiguration entityConfiguration = new EntityConfiguration();
-    FieldManager fieldManager = new FieldManager(entityConfiguration, new SessionDelegatorBaseImpl(null, null));
+    BasicFieldMetadata basicFieldMetadata = mock(BasicFieldMetadata.class);
+    when(basicFieldMetadata.getMapFieldValueClass()).thenReturn("java.util.List");
+    PopulateValueRequest populateValueRequest = mock(PopulateValueRequest.class);
+    when(populateValueRequest.getMetadata()).thenReturn(basicFieldMetadata);
+
+    // Act
+    Class<?> actualStartingValueType = mapFieldPersistenceProvider.getStartingValueType(populateValueRequest);
+
+    // Assert
+    verify(basicFieldMetadata).getMapFieldValueClass();
+    verify(populateValueRequest).getMetadata();
+    Class<List> expectedStartingValueType = List.class;
+    assertEquals(expectedStartingValueType, actualStartingValueType);
+  }
+
+  /**
+   * Test {@link MapFieldPersistenceProvider#getStartingValueType(PopulateValueRequest)}.
+   * <ul>
+   *   <li>Then return {@link Object}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MapFieldPersistenceProvider#getStartingValueType(PopulateValueRequest)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class MapFieldPersistenceProvider.getStartingValueType(PopulateValueRequest)"})
+  public void testGetStartingValueType_thenReturnObject() throws ClassNotFoundException, IllegalAccessException {
+    // Arrange
+    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
 
     Property property = new Property();
     BasicFieldMetadata metadata = new BasicFieldMetadata();
@@ -635,7 +531,39 @@ public class MapFieldPersistenceProviderDiffblueTest {
     AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
 
     // Act
-    mapFieldPersistenceProvider2.getStartingValueType(new PopulateValueRequest(true, fieldManager, property, metadata,
-        returnType, "42", persistenceManager, dataFormatProvider, true, new Entity()));
+    Class<?> actualStartingValueType = mapFieldPersistenceProvider
+        .getStartingValueType(new PopulateValueRequest(true, fieldManager, property, metadata, returnType, "42",
+            persistenceManager, dataFormatProvider, true, new Entity()));
+
+    // Assert
+    Class<Object> expectedStartingValueType = Object.class;
+    assertEquals(expectedStartingValueType, actualStartingValueType);
+  }
+
+  /**
+   * Test {@link MapFieldPersistenceProvider#getStartingValueType(PopulateValueRequest)}.
+   * <ul>
+   *   <li>Then throw {@link IllegalAccessException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MapFieldPersistenceProvider#getStartingValueType(PopulateValueRequest)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class MapFieldPersistenceProvider.getStartingValueType(PopulateValueRequest)"})
+  public void testGetStartingValueType_thenThrowIllegalAccessException()
+      throws ClassNotFoundException, IllegalAccessException {
+    // Arrange
+    PopulateValueRequest populateValueRequest = mock(PopulateValueRequest.class);
+    Mockito.<Class<?>>when(populateValueRequest.getReturnType()).thenReturn(null);
+    when(populateValueRequest.getProperty()).thenReturn(new Property());
+    when(populateValueRequest.getMetadata()).thenReturn(new BasicFieldMetadata());
+
+    // Act and Assert
+    assertThrows(IllegalAccessException.class,
+        () -> mapFieldPersistenceProvider.getStartingValueType(populateValueRequest));
+    verify(populateValueRequest).getMetadata();
+    verify(populateValueRequest).getProperty();
+    verify(populateValueRequest).getReturnType();
   }
 }

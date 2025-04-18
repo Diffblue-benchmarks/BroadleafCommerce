@@ -18,21 +18,21 @@
 package org.broadleafcommerce.common.payment.service;
 
 import static org.junit.Assert.assertThrows;
-import org.broadleafcommerce.common.payment.dto.PaymentRequestDTO;
-import org.broadleafcommerce.common.vendor.service.exception.PaymentException;
-import org.broadleafcommerce.common.web.filter.SessionlessHttpServletRequestWrapper;
-import org.junit.Ignore;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.springframework.mock.web.MockHttpServletRequest;
+import org.junit.experimental.categories.Category;
 
 public class AbstractPaymentGatewayConfigurationServiceDiffblueTest {
   /**
    * Test {@link AbstractPaymentGatewayConfigurationService#getConfiguration()}.
    * <p>
-   * Method under test:
-   * {@link AbstractPaymentGatewayConfigurationService#getConfiguration()}
+   * Method under test: {@link AbstractPaymentGatewayConfigurationService#getConfiguration()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.common.payment.service.PaymentGatewayConfiguration AbstractPaymentGatewayConfigurationService.getConfiguration()"})
   public void testGetConfiguration() {
     // Arrange, Act and Assert
     assertThrows(UnsupportedOperationException.class,
@@ -40,13 +40,14 @@ public class AbstractPaymentGatewayConfigurationServiceDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AbstractPaymentGatewayConfigurationService#getTransactionService()}.
+   * Test {@link AbstractPaymentGatewayConfigurationService#getTransactionService()}.
    * <p>
-   * Method under test:
-   * {@link AbstractPaymentGatewayConfigurationService#getTransactionService()}
+   * Method under test: {@link AbstractPaymentGatewayConfigurationService#getTransactionService()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.common.payment.service.PaymentGatewayTransactionService AbstractPaymentGatewayConfigurationService.getTransactionService()"})
   public void testGetTransactionService() {
     // Arrange, Act and Assert
     assertThrows(UnsupportedOperationException.class,
@@ -54,59 +55,14 @@ public class AbstractPaymentGatewayConfigurationServiceDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AbstractPaymentGatewayConfigurationService#getTransactionConfirmationService()}.
+   * Test {@link AbstractPaymentGatewayConfigurationService#getCreditCardService()}.
    * <p>
-   * Method under test:
-   * {@link AbstractPaymentGatewayConfigurationService#getTransactionConfirmationService()}
+   * Method under test: {@link AbstractPaymentGatewayConfigurationService#getCreditCardService()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetTransactionConfirmationService() throws PaymentException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange and Act
-    PaymentGatewayTransactionConfirmationService actualTransactionConfirmationService = (new AbstractPaymentGatewayConfigurationService())
-        .getTransactionConfirmationService();
-    actualTransactionConfirmationService.confirmTransaction(new PaymentRequestDTO());
-  }
-
-  /**
-   * Test
-   * {@link AbstractPaymentGatewayConfigurationService#getReportingService()}.
-   * <p>
-   * Method under test:
-   * {@link AbstractPaymentGatewayConfigurationService#getReportingService()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetReportingService() throws PaymentException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange and Act
-    PaymentGatewayReportingService actualReportingService = (new AbstractPaymentGatewayConfigurationService())
-        .getReportingService();
-    actualReportingService.findDetailsByTransaction(new PaymentRequestDTO());
-  }
-
-  /**
-   * Test
-   * {@link AbstractPaymentGatewayConfigurationService#getCreditCardService()}.
-   * <p>
-   * Method under test:
-   * {@link AbstractPaymentGatewayConfigurationService#getCreditCardService()}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.common.payment.service.PaymentGatewayCreditCardService AbstractPaymentGatewayConfigurationService.getCreditCardService()"})
   public void testGetCreditCardService() {
     // Arrange, Act and Assert
     assertThrows(UnsupportedOperationException.class,
@@ -116,10 +72,12 @@ public class AbstractPaymentGatewayConfigurationServiceDiffblueTest {
   /**
    * Test {@link AbstractPaymentGatewayConfigurationService#getCustomerService()}.
    * <p>
-   * Method under test:
-   * {@link AbstractPaymentGatewayConfigurationService#getCustomerService()}
+   * Method under test: {@link AbstractPaymentGatewayConfigurationService#getCustomerService()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.common.payment.service.PaymentGatewayCustomerService AbstractPaymentGatewayConfigurationService.getCustomerService()"})
   public void testGetCustomerService() {
     // Arrange, Act and Assert
     assertThrows(UnsupportedOperationException.class,
@@ -127,13 +85,14 @@ public class AbstractPaymentGatewayConfigurationServiceDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AbstractPaymentGatewayConfigurationService#getSubscriptionService()}.
+   * Test {@link AbstractPaymentGatewayConfigurationService#getSubscriptionService()}.
    * <p>
-   * Method under test:
-   * {@link AbstractPaymentGatewayConfigurationService#getSubscriptionService()}
+   * Method under test: {@link AbstractPaymentGatewayConfigurationService#getSubscriptionService()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.common.payment.service.PaymentGatewaySubscriptionService AbstractPaymentGatewayConfigurationService.getSubscriptionService()"})
   public void testGetSubscriptionService() {
     // Arrange, Act and Assert
     assertThrows(UnsupportedOperationException.class,
@@ -141,56 +100,14 @@ public class AbstractPaymentGatewayConfigurationServiceDiffblueTest {
   }
 
   /**
-   * Test {@link AbstractPaymentGatewayConfigurationService#getFraudService()}.
-   * <p>
-   * Method under test:
-   * {@link AbstractPaymentGatewayConfigurationService#getFraudService()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetFraudService() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange and Act
-    PaymentGatewayFraudService actualFraudService = (new AbstractPaymentGatewayConfigurationService())
-        .getFraudService();
-    actualFraudService.requestPayerAuthentication(new PaymentRequestDTO());
-  }
-
-  /**
-   * Test {@link AbstractPaymentGatewayConfigurationService#getHostedService()}.
-   * <p>
-   * Method under test:
-   * {@link AbstractPaymentGatewayConfigurationService#getHostedService()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetHostedService() throws PaymentException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange and Act
-    PaymentGatewayHostedService actualHostedService = (new AbstractPaymentGatewayConfigurationService())
-        .getHostedService();
-    actualHostedService.requestHostedEndpoint(new PaymentRequestDTO());
-  }
-
-  /**
    * Test {@link AbstractPaymentGatewayConfigurationService#getRollbackService()}.
    * <p>
-   * Method under test:
-   * {@link AbstractPaymentGatewayConfigurationService#getRollbackService()}
+   * Method under test: {@link AbstractPaymentGatewayConfigurationService#getRollbackService()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.common.payment.service.PaymentGatewayRollbackService AbstractPaymentGatewayConfigurationService.getRollbackService()"})
   public void testGetRollbackService() {
     // Arrange, Act and Assert
     assertThrows(UnsupportedOperationException.class,
@@ -198,37 +115,14 @@ public class AbstractPaymentGatewayConfigurationServiceDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AbstractPaymentGatewayConfigurationService#getWebResponseService()}.
+   * Test {@link AbstractPaymentGatewayConfigurationService#getTransparentRedirectService()}.
    * <p>
-   * Method under test:
-   * {@link AbstractPaymentGatewayConfigurationService#getWebResponseService()}
+   * Method under test: {@link AbstractPaymentGatewayConfigurationService#getTransparentRedirectService()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetWebResponseService() throws PaymentException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange and Act
-    PaymentGatewayWebResponseService actualWebResponseService = (new AbstractPaymentGatewayConfigurationService())
-        .getWebResponseService();
-    actualWebResponseService
-        .translateWebResponse(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
-  }
-
-  /**
-   * Test
-   * {@link AbstractPaymentGatewayConfigurationService#getTransparentRedirectService()}.
-   * <p>
-   * Method under test:
-   * {@link AbstractPaymentGatewayConfigurationService#getTransparentRedirectService()}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.common.payment.service.PaymentGatewayTransparentRedirectService AbstractPaymentGatewayConfigurationService.getTransparentRedirectService()"})
   public void testGetTransparentRedirectService() {
     // Arrange, Act and Assert
     assertThrows(UnsupportedOperationException.class,
@@ -236,36 +130,14 @@ public class AbstractPaymentGatewayConfigurationServiceDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AbstractPaymentGatewayConfigurationService#getClientTokenService()}.
+   * Test {@link AbstractPaymentGatewayConfigurationService#getCreditCardExtensionHandler()}.
    * <p>
-   * Method under test:
-   * {@link AbstractPaymentGatewayConfigurationService#getClientTokenService()}
+   * Method under test: {@link AbstractPaymentGatewayConfigurationService#getCreditCardExtensionHandler()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetClientTokenService() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange and Act
-    PaymentGatewayClientTokenService actualClientTokenService = (new AbstractPaymentGatewayConfigurationService())
-        .getClientTokenService();
-    actualClientTokenService.generateClientToken(new PaymentRequestDTO());
-  }
-
-  /**
-   * Test
-   * {@link AbstractPaymentGatewayConfigurationService#getCreditCardExtensionHandler()}.
-   * <p>
-   * Method under test:
-   * {@link AbstractPaymentGatewayConfigurationService#getCreditCardExtensionHandler()}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.common.web.payment.processor.TRCreditCardExtensionHandler AbstractPaymentGatewayConfigurationService.getCreditCardExtensionHandler()"})
   public void testGetCreditCardExtensionHandler() {
     // Arrange, Act and Assert
     assertThrows(UnsupportedOperationException.class,
@@ -273,13 +145,14 @@ public class AbstractPaymentGatewayConfigurationServiceDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AbstractPaymentGatewayConfigurationService#getFieldExtensionHandler()}.
+   * Test {@link AbstractPaymentGatewayConfigurationService#getFieldExtensionHandler()}.
    * <p>
-   * Method under test:
-   * {@link AbstractPaymentGatewayConfigurationService#getFieldExtensionHandler()}
+   * Method under test: {@link AbstractPaymentGatewayConfigurationService#getFieldExtensionHandler()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.common.web.payment.expression.PaymentGatewayFieldExtensionHandler AbstractPaymentGatewayConfigurationService.getFieldExtensionHandler()"})
   public void testGetFieldExtensionHandler() {
     // Arrange, Act and Assert
     assertThrows(UnsupportedOperationException.class,
@@ -287,34 +160,17 @@ public class AbstractPaymentGatewayConfigurationServiceDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link AbstractPaymentGatewayConfigurationService#getCreditCardTypesExtensionHandler()}.
+   * Test {@link AbstractPaymentGatewayConfigurationService#getCreditCardTypesExtensionHandler()}.
    * <p>
-   * Method under test:
-   * {@link AbstractPaymentGatewayConfigurationService#getCreditCardTypesExtensionHandler()}
+   * Method under test: {@link AbstractPaymentGatewayConfigurationService#getCreditCardTypesExtensionHandler()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.common.web.payment.processor.CreditCardTypesExtensionHandler AbstractPaymentGatewayConfigurationService.getCreditCardTypesExtensionHandler()"})
   public void testGetCreditCardTypesExtensionHandler() {
     // Arrange, Act and Assert
     assertThrows(UnsupportedOperationException.class,
         () -> (new AbstractPaymentGatewayConfigurationService()).getCreditCardTypesExtensionHandler());
-  }
-
-  /**
-   * Test new {@link AbstractPaymentGatewayConfigurationService} (default
-   * constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link AbstractPaymentGatewayConfigurationService}
-   */
-  @Test
-  public void testNewAbstractPaymentGatewayConfigurationService() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing observers.
-    //   Diffblue Cover was unable to create an assertion.
-    //   There are no fields that could be asserted on.
-
-    // Arrange and Act
-    new AbstractPaymentGatewayConfigurationService();
   }
 }

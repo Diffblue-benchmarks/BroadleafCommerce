@@ -27,6 +27,8 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.FilterInputStream;
@@ -37,41 +39,22 @@ import java.io.UnsupportedEncodingException;
 import org.broadleafcommerce.common.extensibility.context.merge.exceptions.MergeException;
 import org.broadleafcommerce.common.extensibility.context.merge.exceptions.MergeManagerSetupException;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.mockito.Mockito;
 
 public class MergeManagerDiffblueTest {
   /**
-   * Test {@link MergeManager#MergeManager()}.
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link MergeManager}
-   */
-  @Test
-  public void testNewMergeManager() throws MergeManagerSetupException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing observers.
-    //   Diffblue Cover was unable to create an assertion.
-    //   Add getters for the following fields or make them package-private:
-    //     MergeManager.builder
-    //     MergeManager.handlers
-
-    // Arrange and Act
-    new MergeManager();
-  }
-
-  /**
    * Test {@link MergeManager#merge(ResourceInputStream, ResourceInputStream)}.
    * <ul>
-   *   <li>Given
-   * {@link UnsupportedEncodingException#UnsupportedEncodingException(String)}
-   * with {@code foo}.</li>
+   *   <li>Given {@link UnsupportedEncodingException#UnsupportedEncodingException(String)} with {@code foo}.</li>
    *   <li>Then calls {@link FilterInputStream#read()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MergeManager#merge(ResourceInputStream, ResourceInputStream)}
+   * Method under test: {@link MergeManager#merge(ResourceInputStream, ResourceInputStream)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ResourceInputStream MergeManager.merge(ResourceInputStream, ResourceInputStream)"})
   public void testMerge_givenUnsupportedEncodingExceptionWithFoo_thenCallsRead()
       throws IOException, MergeException, MergeManagerSetupException {
     // Arrange
@@ -92,10 +75,11 @@ public class MergeManagerDiffblueTest {
    *   <li>When {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MergeManager#merge(ResourceInputStream, ResourceInputStream)}
+   * Method under test: {@link MergeManager#merge(ResourceInputStream, ResourceInputStream)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ResourceInputStream MergeManager.merge(ResourceInputStream, ResourceInputStream)"})
   public void testMerge_whenNull() throws UnsupportedEncodingException, MergeException, MergeManagerSetupException {
     // Arrange
     MergeManager mergeManager = new MergeManager();
@@ -108,15 +92,14 @@ public class MergeManagerDiffblueTest {
   /**
    * Test {@link MergeManager#merge(ResourceInputStream, ResourceInputStream)}.
    * <ul>
-   *   <li>When {@link ResourceInputStream#ResourceInputStream(InputStream, String)}
-   * with is is {@link ByteArrayInputStream#ByteArrayInputStream(byte[])} and
-   * {@code Name}.</li>
+   *   <li>When {@link ResourceInputStream#ResourceInputStream(InputStream, String)} with is is {@link ByteArrayInputStream#ByteArrayInputStream(byte[])} and {@code Name}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MergeManager#merge(ResourceInputStream, ResourceInputStream)}
+   * Method under test: {@link MergeManager#merge(ResourceInputStream, ResourceInputStream)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ResourceInputStream MergeManager.merge(ResourceInputStream, ResourceInputStream)"})
   public void testMerge_whenResourceInputStreamWithIsIsByteArrayInputStreamAndName()
       throws UnsupportedEncodingException, MergeException, MergeManagerSetupException {
     // Arrange
@@ -135,6 +118,8 @@ public class MergeManagerDiffblueTest {
    * Method under test: {@link MergeManager#serialize(InputStream)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MergeManager.serialize(InputStream)"})
   public void testSerialize() throws IOException, MergeManagerSetupException {
     // Arrange
     MergeManager mergeManager = new MergeManager();
@@ -156,13 +141,14 @@ public class MergeManagerDiffblueTest {
    * Test {@link MergeManager#serialize(InputStream)}.
    * <ul>
    *   <li>Given zero.</li>
-   *   <li>When {@link ObjectInputStream}
-   * {@link ObjectInputStream#read(byte[], int, int)} return zero.</li>
+   *   <li>When {@link ObjectInputStream} {@link ObjectInputStream#read(byte[], int, int)} return zero.</li>
    * </ul>
    * <p>
    * Method under test: {@link MergeManager#serialize(InputStream)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MergeManager.serialize(InputStream)"})
   public void testSerialize_givenZero_whenObjectInputStreamReadReturnZero()
       throws IOException, MergeManagerSetupException {
     // Arrange
@@ -183,14 +169,15 @@ public class MergeManagerDiffblueTest {
   /**
    * Test {@link MergeManager#serialize(InputStream)}.
    * <ul>
-   *   <li>When {@link ByteArrayInputStream#ByteArrayInputStream(byte[])} with
-   * {@code AXAXAXAX} Bytes is {@code UTF-8}.</li>
+   *   <li>When {@link ByteArrayInputStream#ByteArrayInputStream(byte[])} with {@code AXAXAXAX} Bytes is {@code UTF-8}.</li>
    *   <li>Then return {@code AXAXAXAX}.</li>
    * </ul>
    * <p>
    * Method under test: {@link MergeManager#serialize(InputStream)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String MergeManager.serialize(InputStream)"})
   public void testSerialize_whenByteArrayInputStreamWithAxaxaxaxBytesIsUtf8_thenReturnAxaxaxax()
       throws IOException, MergeManagerSetupException {
     // Arrange

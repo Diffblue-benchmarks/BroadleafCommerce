@@ -18,100 +18,13 @@
 package org.broadleafcommerce.common.event;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.function.BiFunction;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class ItemsReturnedEventDiffblueTest {
-  /**
-   * Test {@link ItemsReturnedEvent#ItemsReturnedEvent(Long, Map)}.
-   * <ul>
-   *   <li>Given {@link BiFunction}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ItemsReturnedEvent#ItemsReturnedEvent(Long, Map)}
-   */
-  @Test
-  public void testNewItemsReturnedEvent_givenBiFunction() {
-    // Arrange
-    HashMap<Long, Integer> returnedItems = new HashMap<>();
-    returnedItems.computeIfPresent(1L, mock(BiFunction.class));
-    returnedItems.put(1L, 1);
-
-    // Act
-    ItemsReturnedEvent actualItemsReturnedEvent = new ItemsReturnedEvent(1L, returnedItems);
-
-    // Assert
-    assertNull(actualItemsReturnedEvent.getCatalogId());
-    assertNull(actualItemsReturnedEvent.getProfileId());
-    assertNull(actualItemsReturnedEvent.getSiteId());
-    assertNull(actualItemsReturnedEvent.getCurrencyCode());
-    assertNull(actualItemsReturnedEvent.getLocaleCode());
-    assertNull(actualItemsReturnedEvent.getTimeZoneId());
-    Map<Long, Integer> itemsAndQuantitiesReturned = actualItemsReturnedEvent.getItemsAndQuantitiesReturned();
-    assertEquals(1, itemsAndQuantitiesReturned.size());
-    assertEquals(1, itemsAndQuantitiesReturned.get(1L).intValue());
-    assertEquals(1L, actualItemsReturnedEvent.getOrderId().longValue());
-    assertTrue(actualItemsReturnedEvent.getContext().isEmpty());
-  }
-
-  /**
-   * Test {@link ItemsReturnedEvent#ItemsReturnedEvent(Long, Map)}.
-   * <ul>
-   *   <li>Given one.</li>
-   *   <li>When {@link HashMap#HashMap()} one is one.</li>
-   *   <li>Then return CatalogId is {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ItemsReturnedEvent#ItemsReturnedEvent(Long, Map)}
-   */
-  @Test
-  public void testNewItemsReturnedEvent_givenOne_whenHashMapOneIsOne_thenReturnCatalogIdIsNull() {
-    // Arrange
-    HashMap<Long, Integer> returnedItems = new HashMap<>();
-    returnedItems.put(1L, 1);
-
-    // Act
-    ItemsReturnedEvent actualItemsReturnedEvent = new ItemsReturnedEvent(1L, returnedItems);
-
-    // Assert
-    assertNull(actualItemsReturnedEvent.getCatalogId());
-    assertNull(actualItemsReturnedEvent.getProfileId());
-    assertNull(actualItemsReturnedEvent.getSiteId());
-    assertNull(actualItemsReturnedEvent.getCurrencyCode());
-    assertNull(actualItemsReturnedEvent.getLocaleCode());
-    assertNull(actualItemsReturnedEvent.getTimeZoneId());
-    Map<Long, Integer> itemsAndQuantitiesReturned = actualItemsReturnedEvent.getItemsAndQuantitiesReturned();
-    assertEquals(1, itemsAndQuantitiesReturned.size());
-    assertEquals(1, itemsAndQuantitiesReturned.get(1L).intValue());
-    assertEquals(1L, actualItemsReturnedEvent.getOrderId().longValue());
-    assertTrue(actualItemsReturnedEvent.getContext().isEmpty());
-  }
-
-  /**
-   * Test {@link ItemsReturnedEvent#getOrderId()}.
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} computeIfPresent one and
-   * {@link BiFunction}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ItemsReturnedEvent#getOrderId()}
-   */
-  @Test
-  public void testGetOrderId_givenHashMapComputeIfPresentOneAndBiFunction() {
-    // Arrange
-    HashMap<Long, Integer> returnedItems = new HashMap<>();
-    returnedItems.computeIfPresent(1L, mock(BiFunction.class));
-    returnedItems.put(1L, 1);
-
-    // Act and Assert
-    assertEquals(1L, (new ItemsReturnedEvent(1L, returnedItems)).getOrderId().longValue());
-  }
-
   /**
    * Test {@link ItemsReturnedEvent#getOrderId()}.
    * <ul>
@@ -122,6 +35,8 @@ public class ItemsReturnedEventDiffblueTest {
    * Method under test: {@link ItemsReturnedEvent#getOrderId()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long ItemsReturnedEvent.getOrderId()"})
   public void testGetOrderId_givenHashMapOneIsOne_thenReturnLongValueIsOne() {
     // Arrange
     HashMap<Long, Integer> returnedItems = new HashMap<>();

@@ -1,8 +1,28 @@
+/*-
+ * #%L
+ * BroadleafCommerce Profile
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.profile.core.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class RoleImplDiffblueTest {
   /**
@@ -19,6 +39,8 @@ public class RoleImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean RoleImpl.equals(Object)", "int RoleImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     RoleImpl roleImpl = new RoleImpl();
@@ -49,6 +71,8 @@ public class RoleImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean RoleImpl.equals(Object)", "int RoleImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     RoleImpl roleImpl = new RoleImpl();
@@ -79,6 +103,8 @@ public class RoleImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean RoleImpl.equals(Object)", "int RoleImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     RoleImpl roleImpl = new RoleImpl();
@@ -109,6 +135,8 @@ public class RoleImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean RoleImpl.equals(Object)", "int RoleImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
     // Arrange
     RoleImpl roleImpl = new RoleImpl();
@@ -139,6 +167,8 @@ public class RoleImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean RoleImpl.equals(Object)", "int RoleImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     RoleImpl roleImpl = new RoleImpl();
@@ -161,6 +191,8 @@ public class RoleImplDiffblueTest {
    * Method under test: {@link RoleImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean RoleImpl.equals(Object)", "int RoleImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     RoleImpl roleImpl = new RoleImpl();
@@ -185,6 +217,8 @@ public class RoleImplDiffblueTest {
    * Method under test: {@link RoleImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean RoleImpl.equals(Object)", "int RoleImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     RoleImpl roleImpl = new RoleImpl();
@@ -209,6 +243,8 @@ public class RoleImplDiffblueTest {
    * Method under test: {@link RoleImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean RoleImpl.equals(Object)", "int RoleImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     RoleImpl roleImpl = new RoleImpl();
@@ -233,6 +269,8 @@ public class RoleImplDiffblueTest {
    * Method under test: {@link RoleImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean RoleImpl.equals(Object)", "int RoleImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     RoleImpl roleImpl = new RoleImpl();
@@ -253,6 +291,8 @@ public class RoleImplDiffblueTest {
    * Method under test: {@link RoleImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean RoleImpl.equals(Object)", "int RoleImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     RoleImpl roleImpl = new RoleImpl();
@@ -276,6 +316,9 @@ public class RoleImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void RoleImpl.<init>()", "Long RoleImpl.getId()", "String RoleImpl.getRoleName()",
+      "void RoleImpl.setId(Long)", "void RoleImpl.setRoleName(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     RoleImpl actualRoleImpl = new RoleImpl();
@@ -283,7 +326,7 @@ public class RoleImplDiffblueTest {
     actualRoleImpl.setRoleName("Role Name");
     Long actualId = actualRoleImpl.getId();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Role Name", actualRoleImpl.getRoleName());
     assertEquals(1L, actualId.longValue());
   }

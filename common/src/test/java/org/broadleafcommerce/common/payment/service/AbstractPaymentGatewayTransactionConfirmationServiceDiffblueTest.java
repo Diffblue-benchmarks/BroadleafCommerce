@@ -18,19 +18,23 @@
 package org.broadleafcommerce.common.payment.service;
 
 import static org.junit.Assert.assertThrows;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.payment.dto.PaymentRequestDTO;
 import org.broadleafcommerce.common.vendor.service.exception.PaymentException;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class AbstractPaymentGatewayTransactionConfirmationServiceDiffblueTest {
   /**
-   * Test
-   * {@link AbstractPaymentGatewayTransactionConfirmationService#confirmTransaction(PaymentRequestDTO)}.
+   * Test {@link AbstractPaymentGatewayTransactionConfirmationService#confirmTransaction(PaymentRequestDTO)}.
    * <p>
-   * Method under test:
-   * {@link AbstractPaymentGatewayTransactionConfirmationService#confirmTransaction(PaymentRequestDTO)}
+   * Method under test: {@link AbstractPaymentGatewayTransactionConfirmationService#confirmTransaction(PaymentRequestDTO)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.common.payment.dto.PaymentResponseDTO AbstractPaymentGatewayTransactionConfirmationService.confirmTransaction(PaymentRequestDTO)"})
   public void testConfirmTransaction() throws PaymentException {
     // Arrange
     AbstractPaymentGatewayTransactionConfirmationService abstractPaymentGatewayTransactionConfirmationService = new AbstractPaymentGatewayTransactionConfirmationService();
@@ -38,23 +42,5 @@ public class AbstractPaymentGatewayTransactionConfirmationServiceDiffblueTest {
     // Act and Assert
     assertThrows(UnsupportedOperationException.class,
         () -> abstractPaymentGatewayTransactionConfirmationService.confirmTransaction(new PaymentRequestDTO()));
-  }
-
-  /**
-   * Test new {@link AbstractPaymentGatewayTransactionConfirmationService}
-   * (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link AbstractPaymentGatewayTransactionConfirmationService}
-   */
-  @Test
-  public void testNewAbstractPaymentGatewayTransactionConfirmationService() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing observers.
-    //   Diffblue Cover was unable to create an assertion.
-    //   There are no fields that could be asserted on.
-
-    // Arrange and Act
-    new AbstractPaymentGatewayTransactionConfirmationService();
   }
 }

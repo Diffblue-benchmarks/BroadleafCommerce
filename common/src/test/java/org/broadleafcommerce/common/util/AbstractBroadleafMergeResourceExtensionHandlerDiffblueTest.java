@@ -19,17 +19,14 @@ package org.broadleafcommerce.common.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Locale;
 import org.broadleafcommerce.common.extension.ExtensionResultHolder;
 import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -41,48 +38,15 @@ public class AbstractBroadleafMergeResourceExtensionHandlerDiffblueTest {
   private AbstractBroadleafMergeResourceExtensionHandler abstractBroadleafMergeResourceExtensionHandler;
 
   /**
-   * Test
-   * {@link AbstractBroadleafMergeResourceExtensionHandler#resolveMessageSource(String, Locale, ExtensionResultHolder)}.
-   * <ul>
-   *   <li>Then calls {@link ExtensionResultHolder#setResult(Object)}.</li>
-   * </ul>
+   * Test {@link AbstractBroadleafMergeResourceExtensionHandler#resolveMessageSource(String, Locale, ExtensionResultHolder)}.
    * <p>
-   * Method under test:
-   * {@link AbstractBroadleafMergeResourceExtensionHandler#resolveMessageSource(String, Locale, ExtensionResultHolder)}
+   * Method under test: {@link AbstractBroadleafMergeResourceExtensionHandler#resolveMessageSource(String, Locale, ExtensionResultHolder)}
    */
   @Test
-  public void testResolveMessageSource_thenCallsSetResult() {
-    // Arrange
-    Locale locale = Locale.getDefault();
-    ExtensionResultHolder<String> result = mock(ExtensionResultHolder.class);
-    doNothing().when(result).setResult(Mockito.<String>any());
-    doNothing().when(result).setThrowable(Mockito.<Throwable>any());
-    result.setResult("Result");
-    result.setThrowable(new Throwable());
-
-    // Act
-    ExtensionResultStatusType actualResolveMessageSourceResult = abstractBroadleafMergeResourceExtensionHandler
-        .resolveMessageSource("Code", locale, result);
-
-    // Assert
-    verify(result).setResult(eq("Result"));
-    verify(result).setThrowable(isA(Throwable.class));
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED, actualResolveMessageSourceResult);
-  }
-
-  /**
-   * Test
-   * {@link AbstractBroadleafMergeResourceExtensionHandler#resolveMessageSource(String, Locale, ExtensionResultHolder)}.
-   * <ul>
-   *   <li>When {@link ExtensionResultHolder} (default constructor) Result is
-   * {@code Result}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link AbstractBroadleafMergeResourceExtensionHandler#resolveMessageSource(String, Locale, ExtensionResultHolder)}
-   */
-  @Test
-  public void testResolveMessageSource_whenExtensionResultHolderResultIsResult() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "ExtensionResultStatusType AbstractBroadleafMergeResourceExtensionHandler.resolveMessageSource(String, Locale, ExtensionResultHolder)"})
+  public void testResolveMessageSource() {
     // Arrange
     Locale locale = Locale.getDefault();
 
@@ -96,13 +60,13 @@ public class AbstractBroadleafMergeResourceExtensionHandlerDiffblueTest {
   }
 
   /**
-   * Test new {@link AbstractBroadleafMergeResourceExtensionHandler} (default
-   * constructor).
+   * Test new {@link AbstractBroadleafMergeResourceExtensionHandler} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link AbstractBroadleafMergeResourceExtensionHandler}
+   * Method under test: default or parameterless constructor of {@link AbstractBroadleafMergeResourceExtensionHandler}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AbstractBroadleafMergeResourceExtensionHandler.<init>()"})
   public void testNewAbstractBroadleafMergeResourceExtensionHandler() {
     // Arrange and Act
     AbstractBroadleafMergeResourceExtensionHandler actualAbstractBroadleafMergeResourceExtensionHandler = new AbstractBroadleafMergeResourceExtensionHandler();

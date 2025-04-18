@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.offer.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -11,30 +28,22 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 import org.broadleafcommerce.common.audit.Auditable;
 import org.broadleafcommerce.common.copy.CreateResponse;
-import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
 import org.broadleafcommerce.common.locale.domain.LocaleImpl;
 import org.broadleafcommerce.common.money.Money;
-import org.broadleafcommerce.common.service.GenericEntityServiceImpl;
-import org.broadleafcommerce.common.site.domain.CatalogImpl;
-import org.broadleafcommerce.common.site.domain.SiteImpl;
-import org.broadleafcommerce.core.offer.service.type.CustomerMaxUsesStrategyType;
 import org.broadleafcommerce.core.offer.service.type.OfferAdjustmentType;
-import org.broadleafcommerce.core.offer.service.type.OfferDiscountType;
-import org.broadleafcommerce.core.offer.service.type.OfferItemRestrictionRuleType;
-import org.broadleafcommerce.core.offer.service.type.OfferType;
 import org.broadleafcommerce.core.order.domain.BundleOrderItemImpl;
 import org.broadleafcommerce.core.order.domain.GiftWrapOrderItemImpl;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
@@ -46,394 +55,173 @@ import org.broadleafcommerce.core.order.domain.PersonalMessageImpl;
 import org.broadleafcommerce.core.order.service.type.OrderItemType;
 import org.broadleafcommerce.core.order.service.type.OrderStatus;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
   @Autowired
   private OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl;
 
   /**
-   * Test
-   * {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail, Offer, String)}.
+   * Test {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail, Offer, String)}.
+   * <ul>
+   *   <li>Given {@link OfferAdjustmentType#FUTURE_CREDIT}.</li>
+   *   <li>Then {@link OrderItemPriceDetailAdjustmentImpl} (default constructor) {@link OrderItemPriceDetailAdjustmentImpl#isFutureCredit}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail, Offer, String)}
+   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail, Offer, String)}
    */
   @Test
-  public void testInit() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
-    OrderItemPriceDetail orderItemPriceDetail = mock(OrderItemPriceDetail.class);
-    OfferImpl offer = new OfferImpl();
-
-    // Act
-    orderItemPriceDetailAdjustmentImpl.init(orderItemPriceDetail, offer, "Just cause");
-
-    // Assert
-    Offer offer2 = orderItemPriceDetailAdjustmentImpl.offer;
-    assertTrue(offer2 instanceof OfferImpl);
-    assertEquals('N', offer2.getArchived().charValue());
-    assertNull(((OfferImpl) offer2).maxUsesPerOrder);
-    assertNull(((OfferImpl) offer2).priority);
-    assertNull(offer2.getId());
-    assertNull(offer2.getMinimumDaysPerUsage());
-    assertNull(((OfferImpl) offer2).maxUsesPerCustomer);
-    assertNull(offer2.getDescription());
-    assertNull(offer2.getMarketingMessage());
-    assertNull(offer2.getName());
-    assertNull(offer2.getTargetSystem());
-    assertNull(((OfferImpl) offer2).getMainEntityName());
-    assertNull(((OfferImpl) offer2).adjustmentType);
-    assertNull(((OfferImpl) offer2).discountType);
-    assertNull(((OfferImpl) offer2).marketingMessage);
-    assertNull(((OfferImpl) offer2).maxUsesStrategy);
-    assertNull(((OfferImpl) offer2).offerItemQualifierRuleType);
-    assertNull(((OfferImpl) offer2).offerItemTargetRuleType);
-    assertNull(((OfferImpl) offer2).type);
-    assertNull(offer2.getValue());
-    assertNull(((OfferImpl) offer2).orderMinSubTotal);
-    assertNull(((OfferImpl) offer2).qualifyingItemSubTotal);
-    assertNull(((OfferImpl) offer2).targetMinSubTotal);
-    assertNull(offer2.getEndDate());
-    assertNull(offer2.getStartDate());
-    assertNull(((OfferImpl) offer2).startDate);
-    assertNull(offer2.getOrderMinSubTotal());
-    assertNull(offer2.getQualifyingItemSubTotal());
-    assertNull(offer2.getTargetMinSubTotal());
-    assertNull(offer2.getMaxUsesStrategyType());
-    assertNull(offer2.getDiscountType());
-    assertNull(offer2.getType());
-    assertEquals(0, offer2.getMaxUsesPerOrder());
-    assertEquals(0L, offer2.getMaxUsesPerCustomer().longValue());
-    assertEquals(2147483646, offer2.getPriority());
-    assertFalse(offer2.getApplyToChildItems());
-    assertFalse(offer2.getRequiresRelatedTargetAndQualifiers());
-    assertFalse(offer2.getUseListForDiscounts());
-    assertFalse(offer2.isFutureCredit());
-    assertFalse(offer2.isLimitedUsePerOrder());
-    assertFalse(((OfferImpl) offer2).applyToChildItems);
-    assertFalse(((OfferImpl) offer2).automaticallyAdded);
-    assertFalse(((OfferImpl) offer2).requiresRelatedTargetAndQualifiers);
-    assertFalse(((OfferImpl) offer2).totalitarianOffer);
-    assertFalse(((OfferImpl) offer2).useListForDiscounts);
-    assertTrue(offer2.getApplyDiscountToSalePrice());
-    assertTrue(offer2.isUnlimitedUsePerOrder());
-    assertTrue(((OfferImpl) offer2).getCombinableWithOtherOffers());
-    assertTrue(((OfferImpl) offer2).applyToSalePrice);
-    assertTrue(((OfferImpl) offer2).combinableWithOtherOffers);
-    assertSame(offer, orderItemPriceDetailAdjustmentImpl.getOffer());
-    assertSame(offer, orderItemPriceDetailAdjustmentImpl.deproxiedOffer);
-    assertSame(offer.archiveStatus, ((OfferImpl) offer2).archiveStatus);
-    assertSame(offer.legacyQualifyingItemCriteria, ((OfferImpl) offer2).legacyQualifyingItemCriteria);
-    assertSame(offer.legacyTargetItemCriteria, ((OfferImpl) offer2).legacyTargetItemCriteria);
-    Set<OfferTargetCriteriaXref> offerTargetCriteriaXrefSet = offer.targetItemCriteria;
-    assertSame(offerTargetCriteriaXrefSet, offer2.getTargetItemCriteriaXref());
-    assertSame(offerTargetCriteriaXrefSet, ((OfferImpl) offer2).targetItemCriteria);
-    assertSame(orderItemPriceDetail, orderItemPriceDetailAdjustmentImpl.getOrderItemPriceDetail());
-  }
-
-  /**
-   * Test
-   * {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail, Offer, String)}.
-   * <p>
-   * Method under test:
-   * {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail, Offer, String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testInit2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4495 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OrderItemPriceDetailAdjustmentImpl.init(OrderItemPriceDetail, Offer, String)"})
+  public void testInit_givenFuture_credit_thenOrderItemPriceDetailAdjustmentImplIsFutureCredit() {
     // Arrange
     OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
     OrderItemPriceDetailImpl orderItemPriceDetail = new OrderItemPriceDetailImpl();
-
-    // Act
-    orderItemPriceDetailAdjustmentImpl2.init(orderItemPriceDetail, new OfferImpl(), "Just cause");
-  }
-
-  /**
-   * Test
-   * {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail, Offer, String)}.
-   * <ul>
-   *   <li>Given {@link OfferAdjustmentType#FUTURE_CREDIT}.</li>
-   *   <li>When {@link Offer} {@link Offer#getAdjustmentType()} return
-   * {@link OfferAdjustmentType#FUTURE_CREDIT}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail, Offer, String)}
-   */
-  @Test
-  public void testInit_givenFuture_credit_whenOfferGetAdjustmentTypeReturnFuture_credit() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
-    OrderItemPriceDetailImpl orderItemPriceDetail = new OrderItemPriceDetailImpl();
     Offer offer = mock(Offer.class);
     when(offer.getMarketingMessage()).thenReturn("Marketing Message");
+    when(offer.getName()).thenReturn("Name");
     when(offer.getAdjustmentType()).thenReturn(OfferAdjustmentType.FUTURE_CREDIT);
 
     // Act
-    orderItemPriceDetailAdjustmentImpl.init(orderItemPriceDetail, offer, "Just cause");
+    orderItemPriceDetailAdjustmentImpl2.init(orderItemPriceDetail, offer, "Just cause");
 
     // Assert
     verify(offer).getAdjustmentType();
     verify(offer, atLeast(1)).getMarketingMessage();
-    assertEquals("Marketing Message", orderItemPriceDetailAdjustmentImpl.getOfferName());
-    assertTrue(orderItemPriceDetailAdjustmentImpl.isFutureCredit);
-    assertSame(offer, orderItemPriceDetailAdjustmentImpl.getOffer());
-    assertSame(offer, orderItemPriceDetailAdjustmentImpl.deproxiedOffer);
+    assertEquals("Marketing Message", orderItemPriceDetailAdjustmentImpl2.getOfferName());
+    assertTrue(orderItemPriceDetailAdjustmentImpl2.isFutureCredit);
+    assertSame(offer, orderItemPriceDetailAdjustmentImpl2.getOffer());
+    assertSame(offer, orderItemPriceDetailAdjustmentImpl2.deproxiedOffer);
   }
 
   /**
-   * Test
-   * {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail, Offer, String)}.
+   * Test {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail, Offer, String)}.
    * <ul>
    *   <li>Given {@code null}.</li>
-   *   <li>Then not {@link OrderItemPriceDetailAdjustmentImpl} (default constructor)
-   * {@link OrderItemPriceDetailAdjustmentImpl#isFutureCredit}.</li>
+   *   <li>Then not {@link OrderItemPriceDetailAdjustmentImpl} (default constructor) {@link OrderItemPriceDetailAdjustmentImpl#isFutureCredit}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail, Offer, String)}
+   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail, Offer, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OrderItemPriceDetailAdjustmentImpl.init(OrderItemPriceDetail, Offer, String)"})
   public void testInit_givenNull_thenNotOrderItemPriceDetailAdjustmentImplIsFutureCredit() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
     OrderItemPriceDetailImpl orderItemPriceDetail = new OrderItemPriceDetailImpl();
     Offer offer = mock(Offer.class);
     when(offer.getMarketingMessage()).thenReturn("Marketing Message");
+    when(offer.getName()).thenReturn("Name");
     when(offer.getAdjustmentType()).thenReturn(null);
 
     // Act
-    orderItemPriceDetailAdjustmentImpl.init(orderItemPriceDetail, offer, "Just cause");
+    orderItemPriceDetailAdjustmentImpl2.init(orderItemPriceDetail, offer, "Just cause");
 
     // Assert
     verify(offer).getAdjustmentType();
     verify(offer, atLeast(1)).getMarketingMessage();
-    assertEquals("Marketing Message", orderItemPriceDetailAdjustmentImpl.getOfferName());
-    assertFalse(orderItemPriceDetailAdjustmentImpl.isFutureCredit);
-    assertSame(offer, orderItemPriceDetailAdjustmentImpl.getOffer());
-    assertSame(offer, orderItemPriceDetailAdjustmentImpl.deproxiedOffer);
+    assertEquals("Marketing Message", orderItemPriceDetailAdjustmentImpl2.getOfferName());
+    assertFalse(orderItemPriceDetailAdjustmentImpl2.isFutureCredit);
+    assertSame(offer, orderItemPriceDetailAdjustmentImpl2.getOffer());
+    assertSame(offer, orderItemPriceDetailAdjustmentImpl2.deproxiedOffer);
   }
 
   /**
-   * Test
-   * {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail, Offer, String)}.
+   * Test {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail, Offer, String)}.
    * <ul>
-   *   <li>Given {@link OfferAdjustmentType#OfferAdjustmentType(String, String)}
-   * with type is {@code FUTURE_CREDIT} and {@code Friendly Type}.</li>
+   *   <li>Then {@link OrderItemPriceDetailAdjustmentImpl} (default constructor) Reason is {@code Marketing Message}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail, Offer, String)}
+   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail, Offer, String)}
    */
   @Test
-  public void testInit_givenOfferAdjustmentTypeWithTypeIsFutureCreditAndFriendlyType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
-    OrderItemPriceDetailImpl orderItemPriceDetail = new OrderItemPriceDetailImpl();
-    Offer offer = mock(Offer.class);
-    when(offer.getMarketingMessage()).thenReturn("Marketing Message");
-    when(offer.getAdjustmentType()).thenReturn(new OfferAdjustmentType("FUTURE_CREDIT", "Friendly Type"));
-
-    // Act
-    orderItemPriceDetailAdjustmentImpl.init(orderItemPriceDetail, offer, "Just cause");
-
-    // Assert
-    verify(offer).getAdjustmentType();
-    verify(offer, atLeast(1)).getMarketingMessage();
-    assertEquals("Marketing Message", orderItemPriceDetailAdjustmentImpl.getOfferName());
-    assertTrue(orderItemPriceDetailAdjustmentImpl.isFutureCredit);
-    assertSame(offer, orderItemPriceDetailAdjustmentImpl.getOffer());
-    assertSame(offer, orderItemPriceDetailAdjustmentImpl.deproxiedOffer);
-  }
-
-  /**
-   * Test
-   * {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail, Offer, String)}.
-   * <ul>
-   *   <li>Then {@link OrderItemPriceDetailAdjustmentImpl} (default constructor)
-   * Reason is {@code Marketing Message}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail, Offer, String)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OrderItemPriceDetailAdjustmentImpl.init(OrderItemPriceDetail, Offer, String)"})
   public void testInit_thenOrderItemPriceDetailAdjustmentImplReasonIsMarketingMessage() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
     OrderItemPriceDetailImpl orderItemPriceDetail = new OrderItemPriceDetailImpl();
     Offer offer = mock(Offer.class);
     when(offer.getMarketingMessage()).thenReturn("Marketing Message");
+    when(offer.getName()).thenReturn("Name");
     when(offer.getAdjustmentType()).thenReturn(OfferAdjustmentType.FUTURE_CREDIT);
 
     // Act
-    orderItemPriceDetailAdjustmentImpl.init(orderItemPriceDetail, offer, null);
+    orderItemPriceDetailAdjustmentImpl2.init(orderItemPriceDetail, offer, null);
 
     // Assert
     verify(offer).getAdjustmentType();
     verify(offer, atLeast(1)).getMarketingMessage();
-    assertEquals("Marketing Message", orderItemPriceDetailAdjustmentImpl.getOfferName());
-    assertEquals("Marketing Message", orderItemPriceDetailAdjustmentImpl.getReason());
-    assertTrue(orderItemPriceDetailAdjustmentImpl.isFutureCredit);
-    assertSame(offer, orderItemPriceDetailAdjustmentImpl.getOffer());
-    assertSame(offer, orderItemPriceDetailAdjustmentImpl.deproxiedOffer);
+    assertEquals("Marketing Message", orderItemPriceDetailAdjustmentImpl2.getOfferName());
+    assertEquals("Marketing Message", orderItemPriceDetailAdjustmentImpl2.getReason());
+    assertTrue(orderItemPriceDetailAdjustmentImpl2.isFutureCredit);
+    assertSame(offer, orderItemPriceDetailAdjustmentImpl2.getOffer());
+    assertSame(offer, orderItemPriceDetailAdjustmentImpl2.deproxiedOffer);
   }
 
   /**
-   * Test
-   * {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail, Offer, String)}.
+   * Test {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail, Offer, String)}.
    * <ul>
    *   <li>When {@code null}.</li>
-   *   <li>Then {@link OrderItemPriceDetailAdjustmentImpl} (default constructor)
-   * OfferName is {@code null}.</li>
+   *   <li>Then {@link OrderItemPriceDetailAdjustmentImpl} (default constructor) OfferName is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail, Offer, String)}
+   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail, Offer, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OrderItemPriceDetailAdjustmentImpl.init(OrderItemPriceDetail, Offer, String)"})
   public void testInit_whenNull_thenOrderItemPriceDetailAdjustmentImplOfferNameIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
 
     // Act
-    orderItemPriceDetailAdjustmentImpl.init(new OrderItemPriceDetailImpl(), null, "Just cause");
+    orderItemPriceDetailAdjustmentImpl2.init(new OrderItemPriceDetailImpl(), null, "Just cause");
 
-    // Assert
-    assertNull(orderItemPriceDetailAdjustmentImpl.getOfferName());
-    assertNull(orderItemPriceDetailAdjustmentImpl.getOffer());
-    assertNull(orderItemPriceDetailAdjustmentImpl.deproxiedOffer);
-    assertNull(orderItemPriceDetailAdjustmentImpl.offer);
+    // Assert that nothing has changed
+    assertNull(orderItemPriceDetailAdjustmentImpl2.getOfferName());
+    assertNull(orderItemPriceDetailAdjustmentImpl2.getOffer());
+    assertNull(orderItemPriceDetailAdjustmentImpl2.deproxiedOffer);
+    assertNull(orderItemPriceDetailAdjustmentImpl2.offer);
   }
 
   /**
-   * Test
-   * {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail, Offer, String)}.
+   * Test {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail, Offer, String)}.
    * <ul>
    *   <li>When {@link OfferImpl} (default constructor).</li>
-   *   <li>Then {@link OrderItemPriceDetailAdjustmentImpl} (default constructor)
-   * {@link OrderItemPriceDetailAdjustmentImpl#offer} {@link OfferImpl}.</li>
+   *   <li>Then {@link OrderItemPriceDetailAdjustmentImpl} (default constructor) {@link OrderItemPriceDetailAdjustmentImpl#offer} {@link OfferImpl}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail, Offer, String)}
+   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail, Offer, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OrderItemPriceDetailAdjustmentImpl.init(OrderItemPriceDetail, Offer, String)"})
   public void testInit_whenOfferImpl_thenOrderItemPriceDetailAdjustmentImplOfferOfferImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
     OrderItemPriceDetailImpl orderItemPriceDetail = new OrderItemPriceDetailImpl();
     OfferImpl offer = new OfferImpl();
 
     // Act
-    orderItemPriceDetailAdjustmentImpl.init(orderItemPriceDetail, offer, "Just cause");
+    orderItemPriceDetailAdjustmentImpl2.init(orderItemPriceDetail, offer, "Just cause");
 
     // Assert
-    Offer offer2 = orderItemPriceDetailAdjustmentImpl.offer;
-    assertTrue(offer2 instanceof OfferImpl);
-    assertEquals('N', offer2.getArchived().charValue());
-    assertNull(((OfferImpl) offer2).maxUsesPerOrder);
-    assertNull(((OfferImpl) offer2).priority);
-    assertNull(offer2.getId());
-    assertNull(offer2.getMinimumDaysPerUsage());
-    assertNull(((OfferImpl) offer2).maxUsesPerCustomer);
-    assertNull(offer2.getDescription());
-    assertNull(offer2.getMarketingMessage());
-    assertNull(offer2.getName());
-    assertNull(offer2.getTargetSystem());
-    assertNull(((OfferImpl) offer2).getMainEntityName());
-    assertNull(((OfferImpl) offer2).adjustmentType);
-    assertNull(((OfferImpl) offer2).discountType);
-    assertNull(((OfferImpl) offer2).marketingMessage);
-    assertNull(((OfferImpl) offer2).maxUsesStrategy);
-    assertNull(((OfferImpl) offer2).offerItemQualifierRuleType);
-    assertNull(((OfferImpl) offer2).offerItemTargetRuleType);
-    assertNull(((OfferImpl) offer2).type);
-    assertNull(offer2.getValue());
-    assertNull(((OfferImpl) offer2).orderMinSubTotal);
-    assertNull(((OfferImpl) offer2).qualifyingItemSubTotal);
-    assertNull(((OfferImpl) offer2).targetMinSubTotal);
-    assertNull(offer2.getEndDate());
-    assertNull(offer2.getStartDate());
-    assertNull(((OfferImpl) offer2).startDate);
-    assertNull(offer2.getOrderMinSubTotal());
-    assertNull(offer2.getQualifyingItemSubTotal());
-    assertNull(offer2.getTargetMinSubTotal());
-    assertNull(offer2.getMaxUsesStrategyType());
-    assertNull(offer2.getDiscountType());
-    assertNull(offer2.getType());
-    assertEquals(0, offer2.getMaxUsesPerOrder());
-    assertEquals(0L, offer2.getMaxUsesPerCustomer().longValue());
-    assertEquals(2147483646, offer2.getPriority());
-    assertFalse(offer2.getApplyToChildItems());
-    assertFalse(offer2.getRequiresRelatedTargetAndQualifiers());
-    assertFalse(offer2.getUseListForDiscounts());
-    assertFalse(offer2.isFutureCredit());
-    assertFalse(offer2.isLimitedUsePerOrder());
-    assertFalse(((OfferImpl) offer2).applyToChildItems);
-    assertFalse(((OfferImpl) offer2).automaticallyAdded);
-    assertFalse(((OfferImpl) offer2).requiresRelatedTargetAndQualifiers);
-    assertFalse(((OfferImpl) offer2).totalitarianOffer);
-    assertFalse(((OfferImpl) offer2).useListForDiscounts);
-    assertTrue(offer2.getApplyDiscountToSalePrice());
-    assertTrue(offer2.isUnlimitedUsePerOrder());
-    assertTrue(((OfferImpl) offer2).getCombinableWithOtherOffers());
-    assertTrue(((OfferImpl) offer2).applyToSalePrice);
-    assertTrue(((OfferImpl) offer2).combinableWithOtherOffers);
-    assertSame(offer, orderItemPriceDetailAdjustmentImpl.getOffer());
-    assertSame(offer, orderItemPriceDetailAdjustmentImpl.deproxiedOffer);
-    assertSame(offer.archiveStatus, ((OfferImpl) offer2).archiveStatus);
-    assertSame(offer.legacyQualifyingItemCriteria, ((OfferImpl) offer2).legacyQualifyingItemCriteria);
-    assertSame(offer.legacyTargetItemCriteria, ((OfferImpl) offer2).legacyTargetItemCriteria);
-    Set<OfferTargetCriteriaXref> offerTargetCriteriaXrefSet = offer.targetItemCriteria;
-    assertSame(offerTargetCriteriaXrefSet, offer2.getTargetItemCriteriaXref());
-    assertSame(offerTargetCriteriaXrefSet, ((OfferImpl) offer2).targetItemCriteria);
+    assertTrue(orderItemPriceDetailAdjustmentImpl2.offer instanceof OfferImpl);
+    assertSame(offer, orderItemPriceDetailAdjustmentImpl2.getOffer());
+    assertSame(offer, orderItemPriceDetailAdjustmentImpl2.deproxiedOffer);
   }
 
   /**
@@ -444,8 +232,7 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
    *   <li>{@link OrderItemPriceDetailAdjustmentImpl#setAppliedToSalePrice(boolean)}
    *   <li>{@link OrderItemPriceDetailAdjustmentImpl#setId(Long)}
    *   <li>{@link OrderItemPriceDetailAdjustmentImpl#setOfferName(String)}
-   *   <li>
-   * {@link OrderItemPriceDetailAdjustmentImpl#setOrderItemPriceDetail(OrderItemPriceDetail)}
+   *   <li>{@link OrderItemPriceDetailAdjustmentImpl#setOrderItemPriceDetail(OrderItemPriceDetail)}
    *   <li>{@link OrderItemPriceDetailAdjustmentImpl#setRetailPriceValue(Money)}
    *   <li>{@link OrderItemPriceDetailAdjustmentImpl#setSalesPriceValue(Money)}
    *   <li>{@link OrderItemPriceDetailAdjustmentImpl#getId()}
@@ -456,6 +243,18 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long OrderItemPriceDetailAdjustmentImpl.getId()",
+      "String OrderItemPriceDetailAdjustmentImpl.getOfferName()",
+      "OrderItemPriceDetail OrderItemPriceDetailAdjustmentImpl.getOrderItemPriceDetail()",
+      "String OrderItemPriceDetailAdjustmentImpl.getReason()",
+      "boolean OrderItemPriceDetailAdjustmentImpl.isAppliedToSalePrice()",
+      "void OrderItemPriceDetailAdjustmentImpl.setAppliedToSalePrice(boolean)",
+      "void OrderItemPriceDetailAdjustmentImpl.setId(Long)",
+      "void OrderItemPriceDetailAdjustmentImpl.setOfferName(String)",
+      "void OrderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(OrderItemPriceDetail)",
+      "void OrderItemPriceDetailAdjustmentImpl.setRetailPriceValue(Money)",
+      "void OrderItemPriceDetailAdjustmentImpl.setSalesPriceValue(Money)"})
   public void testGettersAndSetters() {
     // Arrange
     OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
@@ -471,10 +270,11 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     Long actualId = orderItemPriceDetailAdjustmentImpl.getId();
     String actualOfferName = orderItemPriceDetailAdjustmentImpl.getOfferName();
     OrderItemPriceDetail actualOrderItemPriceDetail = orderItemPriceDetailAdjustmentImpl.getOrderItemPriceDetail();
-    orderItemPriceDetailAdjustmentImpl.getReason();
+    String actualReason = orderItemPriceDetailAdjustmentImpl.getReason();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Offer Name", actualOfferName);
+    assertNull(actualReason);
     assertTrue(orderItemPriceDetailAdjustmentImpl.isAppliedToSalePrice());
     assertEquals(OrderItemPriceDetailAdjustmentImpl.serialVersionUID, actualId.longValue());
     assertSame(orderItemPriceDetail, actualOrderItemPriceDetail);
@@ -486,603 +286,230 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
    * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#getOffer()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Offer OrderItemPriceDetailAdjustmentImpl.getOffer()"})
   public void testGetOffer() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
-    orderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(mock(OrderItemPriceDetailImpl.class));
-
-    // Act and Assert
-    assertNull(orderItemPriceDetailAdjustmentImpl.getOffer());
-  }
-
-  /**
-   * Test {@link OrderItemPriceDetailAdjustmentImpl#getOffer()}.
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#getOffer()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetOffer2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4451 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OrderItemPriceDetailAdjustmentImpl()).getOffer();
-  }
-
-  /**
-   * Test {@link OrderItemPriceDetailAdjustmentImpl#getOffer()}.
-   * <ul>
-   *   <li>Given {@link OrderItemPriceDetailAdjustmentImpl} (default
-   * constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#getOffer()}
-   */
-  @Test
-  public void testGetOffer_givenOrderItemPriceDetailAdjustmentImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new OrderItemPriceDetailAdjustmentImpl()).getOffer());
   }
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#setReason(String)}.
+   * <ul>
+   *   <li>Given {@link OrderItemPriceDetailAdjustmentImpl} (default constructor) OfferName is {@code null}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderItemPriceDetailAdjustmentImpl#setReason(String)}
+   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#setReason(String)}
    */
   @Test
-  public void testSetReason() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OrderItemPriceDetailAdjustmentImpl.setReason(String)"})
+  public void testSetReason_givenOrderItemPriceDetailAdjustmentImplOfferNameIsNull() {
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
-    orderItemPriceDetailAdjustmentImpl.setAppliedToSalePrice(true);
-    orderItemPriceDetailAdjustmentImpl.setFutureCredit(true);
-    orderItemPriceDetailAdjustmentImpl.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
-    orderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(new OrderItemPriceDetailImpl());
-    orderItemPriceDetailAdjustmentImpl.setReason("Just cause");
-    orderItemPriceDetailAdjustmentImpl.setRetailPriceValue(new Money());
-    orderItemPriceDetailAdjustmentImpl.setSalesPriceValue(new Money());
-    orderItemPriceDetailAdjustmentImpl.setValue(new Money());
-    orderItemPriceDetailAdjustmentImpl.setOfferName(null);
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
+    orderItemPriceDetailAdjustmentImpl2.setAppliedToSalePrice(true);
+    orderItemPriceDetailAdjustmentImpl2.setFutureCredit(true);
+    orderItemPriceDetailAdjustmentImpl2.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+    orderItemPriceDetailAdjustmentImpl2.setOrderItemPriceDetail(new OrderItemPriceDetailImpl());
+    orderItemPriceDetailAdjustmentImpl2.setReason("Just cause");
+    orderItemPriceDetailAdjustmentImpl2.setRetailPriceValue(new Money());
+    orderItemPriceDetailAdjustmentImpl2.setSalesPriceValue(new Money());
+    orderItemPriceDetailAdjustmentImpl2.setValue(new Money());
+    orderItemPriceDetailAdjustmentImpl2.setOfferName(null);
 
     // Act
-    orderItemPriceDetailAdjustmentImpl.setReason(null);
+    orderItemPriceDetailAdjustmentImpl2.setReason(null);
 
     // Assert that nothing has changed
-    assertEquals("Just cause", orderItemPriceDetailAdjustmentImpl.getReason());
-  }
-
-  /**
-   * Test {@link OrderItemPriceDetailAdjustmentImpl#setReason(String)}.
-   * <p>
-   * Method under test:
-   * {@link OrderItemPriceDetailAdjustmentImpl#setReason(String)}
-   */
-  @Test
-  public void testSetReason2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
-    orderItemPriceDetailAdjustmentImpl.setAppliedToSalePrice(true);
-    orderItemPriceDetailAdjustmentImpl.setFutureCredit(true);
-    orderItemPriceDetailAdjustmentImpl.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
-    orderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(mock(OrderItemPriceDetailImpl.class));
-    orderItemPriceDetailAdjustmentImpl.setReason("Just cause");
-    orderItemPriceDetailAdjustmentImpl.setRetailPriceValue(new Money());
-    orderItemPriceDetailAdjustmentImpl.setSalesPriceValue(new Money());
-    orderItemPriceDetailAdjustmentImpl.setValue(new Money());
-    orderItemPriceDetailAdjustmentImpl.setOfferName(null);
-
-    // Act
-    orderItemPriceDetailAdjustmentImpl.setReason(null);
-
-    // Assert that nothing has changed
-    assertEquals("Just cause", orderItemPriceDetailAdjustmentImpl.getReason());
-  }
-
-  /**
-   * Test {@link OrderItemPriceDetailAdjustmentImpl#setReason(String)}.
-   * <p>
-   * Method under test:
-   * {@link OrderItemPriceDetailAdjustmentImpl#setReason(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetReason3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4632 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OrderItemPriceDetailAdjustmentImpl()).setReason("Just cause");
+    assertEquals("Just cause", orderItemPriceDetailAdjustmentImpl2.getReason());
   }
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#setReason(String)}.
    * <ul>
-   *   <li>Given {@link OrderItemPriceDetailAdjustmentImpl} (default
-   * constructor).</li>
+   *   <li>Given {@link OrderItemPriceDetailAdjustmentImpl} (default constructor).</li>
    *   <li>When {@code Just cause}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderItemPriceDetailAdjustmentImpl#setReason(String)}
+   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#setReason(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OrderItemPriceDetailAdjustmentImpl.setReason(String)"})
   public void testSetReason_givenOrderItemPriceDetailAdjustmentImpl_whenJustCause() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
-
-    // Act
-    orderItemPriceDetailAdjustmentImpl.setReason("Just cause");
-
-    // Assert
-    assertEquals("Just cause", orderItemPriceDetailAdjustmentImpl.getReason());
-  }
-
-  /**
-   * Test {@link OrderItemPriceDetailAdjustmentImpl#setReason(String)}.
-   * <ul>
-   *   <li>Then {@link OrderItemPriceDetailAdjustmentImpl} (default constructor)
-   * Reason is {@code foo}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link OrderItemPriceDetailAdjustmentImpl#setReason(String)}
-   */
-  @Test
-  public void testSetReason_thenOrderItemPriceDetailAdjustmentImplReasonIsFoo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
-    orderItemPriceDetailAdjustmentImpl.setAppliedToSalePrice(true);
-    orderItemPriceDetailAdjustmentImpl.setFutureCredit(true);
-    orderItemPriceDetailAdjustmentImpl.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
-    orderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(new OrderItemPriceDetailImpl());
-    orderItemPriceDetailAdjustmentImpl.setReason("Just cause");
-    orderItemPriceDetailAdjustmentImpl.setRetailPriceValue(new Money());
-    orderItemPriceDetailAdjustmentImpl.setSalesPriceValue(new Money());
-    orderItemPriceDetailAdjustmentImpl.setValue(new Money());
-    orderItemPriceDetailAdjustmentImpl.setOfferName("foo");
-
-    // Act
-    orderItemPriceDetailAdjustmentImpl.setReason(null);
-
-    // Assert
-    assertEquals("foo", orderItemPriceDetailAdjustmentImpl.getReason());
-  }
-
-  /**
-   * Test {@link OrderItemPriceDetailAdjustmentImpl#setOffer(Offer)}.
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#setOffer(Offer)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetOffer() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4582 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
     OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
 
     // Act
-    orderItemPriceDetailAdjustmentImpl2.setOffer(new OfferImpl());
+    orderItemPriceDetailAdjustmentImpl2.setReason("Just cause");
+
+    // Assert
+    assertEquals("Just cause", orderItemPriceDetailAdjustmentImpl2.getReason());
+  }
+
+  /**
+   * Test {@link OrderItemPriceDetailAdjustmentImpl#setReason(String)}.
+   * <ul>
+   *   <li>Then {@link OrderItemPriceDetailAdjustmentImpl} (default constructor) Reason is {@code foo}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#setReason(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OrderItemPriceDetailAdjustmentImpl.setReason(String)"})
+  public void testSetReason_thenOrderItemPriceDetailAdjustmentImplReasonIsFoo() {
+    // Arrange
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
+    orderItemPriceDetailAdjustmentImpl2.setAppliedToSalePrice(true);
+    orderItemPriceDetailAdjustmentImpl2.setFutureCredit(true);
+    orderItemPriceDetailAdjustmentImpl2.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+    orderItemPriceDetailAdjustmentImpl2.setOrderItemPriceDetail(new OrderItemPriceDetailImpl());
+    orderItemPriceDetailAdjustmentImpl2.setReason("Just cause");
+    orderItemPriceDetailAdjustmentImpl2.setRetailPriceValue(new Money());
+    orderItemPriceDetailAdjustmentImpl2.setSalesPriceValue(new Money());
+    orderItemPriceDetailAdjustmentImpl2.setValue(new Money());
+    orderItemPriceDetailAdjustmentImpl2.setOfferName("foo");
+
+    // Act
+    orderItemPriceDetailAdjustmentImpl2.setReason(null);
+
+    // Assert
+    assertEquals("foo", orderItemPriceDetailAdjustmentImpl2.getReason());
   }
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#setOffer(Offer)}.
    * <ul>
-   *   <li>Then {@link OrderItemPriceDetailAdjustmentImpl} (default constructor)
-   * {@link OrderItemPriceDetailAdjustmentImpl#offer} Archived charValue is
-   * {@code N}.</li>
+   *   <li>Then {@link OrderItemPriceDetailAdjustmentImpl} (default constructor) Offer is {@link OfferImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#setOffer(Offer)}
    */
   @Test
-  public void testSetOffer_thenOrderItemPriceDetailAdjustmentImplOfferArchivedCharValueIsN() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OrderItemPriceDetailAdjustmentImpl.setOffer(Offer)"})
+  public void testSetOffer_thenOrderItemPriceDetailAdjustmentImplOfferIsOfferImpl() {
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
     OfferImpl offer = new OfferImpl();
 
     // Act
-    orderItemPriceDetailAdjustmentImpl.setOffer(offer);
+    orderItemPriceDetailAdjustmentImpl2.setOffer(offer);
 
     // Assert
-    Offer offer2 = orderItemPriceDetailAdjustmentImpl.offer;
-    assertTrue(offer2 instanceof OfferImpl);
-    assertEquals('N', offer2.getArchived().charValue());
-    assertNull(((OfferImpl) offer2).maxUsesPerOrder);
-    assertNull(((OfferImpl) offer2).priority);
-    assertNull(offer2.getId());
-    assertNull(offer2.getMinimumDaysPerUsage());
-    assertNull(((OfferImpl) offer2).maxUsesPerCustomer);
-    assertNull(offer2.getDescription());
-    assertNull(offer2.getMarketingMessage());
-    assertNull(offer2.getName());
-    assertNull(offer2.getTargetSystem());
-    assertNull(((OfferImpl) offer2).getMainEntityName());
-    assertNull(((OfferImpl) offer2).adjustmentType);
-    assertNull(((OfferImpl) offer2).discountType);
-    assertNull(((OfferImpl) offer2).marketingMessage);
-    assertNull(((OfferImpl) offer2).maxUsesStrategy);
-    assertNull(((OfferImpl) offer2).offerItemQualifierRuleType);
-    assertNull(((OfferImpl) offer2).offerItemTargetRuleType);
-    assertNull(((OfferImpl) offer2).type);
-    assertNull(offer2.getValue());
-    assertNull(((OfferImpl) offer2).orderMinSubTotal);
-    assertNull(((OfferImpl) offer2).qualifyingItemSubTotal);
-    assertNull(((OfferImpl) offer2).targetMinSubTotal);
-    assertNull(offer2.getEndDate());
-    assertNull(offer2.getStartDate());
-    assertNull(((OfferImpl) offer2).startDate);
-    assertNull(offer2.getOrderMinSubTotal());
-    assertNull(offer2.getQualifyingItemSubTotal());
-    assertNull(offer2.getTargetMinSubTotal());
-    assertNull(offer2.getMaxUsesStrategyType());
-    assertNull(offer2.getDiscountType());
-    assertNull(offer2.getType());
-    assertEquals(0, offer2.getMaxUsesPerOrder());
-    assertEquals(0L, offer2.getMaxUsesPerCustomer().longValue());
-    assertEquals(2147483646, offer2.getPriority());
-    assertFalse(offer2.getApplyToChildItems());
-    assertFalse(offer2.getRequiresRelatedTargetAndQualifiers());
-    assertFalse(offer2.getUseListForDiscounts());
-    assertFalse(offer2.isFutureCredit());
-    assertFalse(offer2.isLimitedUsePerOrder());
-    assertFalse(((OfferImpl) offer2).applyToChildItems);
-    assertFalse(((OfferImpl) offer2).automaticallyAdded);
-    assertFalse(((OfferImpl) offer2).requiresRelatedTargetAndQualifiers);
-    assertFalse(((OfferImpl) offer2).totalitarianOffer);
-    assertFalse(((OfferImpl) offer2).useListForDiscounts);
-    assertTrue(offer2.getApplyDiscountToSalePrice());
-    assertTrue(offer2.isUnlimitedUsePerOrder());
-    assertTrue(((OfferImpl) offer2).getCombinableWithOtherOffers());
-    assertSame(offer, orderItemPriceDetailAdjustmentImpl.getOffer());
-    Set<OfferTargetCriteriaXref> expectedTargetItemCriteriaXref = offer.targetItemCriteria;
-    assertSame(expectedTargetItemCriteriaXref, offer2.getTargetItemCriteriaXref());
+    assertTrue(orderItemPriceDetailAdjustmentImpl2.offer instanceof OfferImpl);
+    assertSame(offer, orderItemPriceDetailAdjustmentImpl2.getOffer());
   }
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#setOffer(Offer)}.
    * <ul>
-   *   <li>Then {@link OrderItemPriceDetailAdjustmentImpl} (default constructor)
-   * {@link OrderItemPriceDetailAdjustmentImpl#offer}
-   * {@link OfferImpl#maxUsesStrategy} is {@code ACCOUNT}.</li>
+   *   <li>Then {@link OrderItemPriceDetailAdjustmentImpl} (default constructor) OfferName is {@code Marketing Message}.</li>
    * </ul>
    * <p>
    * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#setOffer(Offer)}
    */
   @Test
-  public void testSetOffer_thenOrderItemPriceDetailAdjustmentImplOfferMaxUsesStrategyIsAccount() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
-    orderItemPriceDetailAdjustmentImpl.setAppliedToSalePrice(true);
-    orderItemPriceDetailAdjustmentImpl.setFutureCredit(true);
-    orderItemPriceDetailAdjustmentImpl.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
-    orderItemPriceDetailAdjustmentImpl.setOfferName("Offer Name");
-    orderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(new OrderItemPriceDetailImpl());
-    orderItemPriceDetailAdjustmentImpl.setReason("Just cause");
-    orderItemPriceDetailAdjustmentImpl.setRetailPriceValue(new Money());
-    orderItemPriceDetailAdjustmentImpl.setSalesPriceValue(new Money());
-    orderItemPriceDetailAdjustmentImpl.setValue(new Money());
-
-    OfferImpl offer = new OfferImpl();
-    offer.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offer.setApplyDiscountToSalePrice(true);
-    offer.setApplyToChildItems(true);
-    offer.setAutomaticallyAdded(true);
-    offer.setCombinableWithOtherOffers(true);
-    offer.setDescription("The characteristics of someone or something");
-    offer.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offer.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offer.setId(OfferImpl.serialVersionUID);
-    offer.setMarketingMessage("Marketing Message");
-    offer.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offer.setMaxUsesPerOrder(3);
-    offer.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offer.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offer.setName("Name");
-    offer.setOfferCodes(new ArrayList<>());
-    offer.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offer.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offer.setOfferMatchRulesXref(new HashMap<>());
-    offer.setOfferPriceData(new ArrayList<>());
-    offer.setOrderMinSubTotal(new Money());
-    offer.setPriority(1);
-    offer.setQualifyingItemCriteriaXref(new HashSet<>());
-    offer.setQualifyingItemSubTotal(new Money());
-    offer.setRequiresRelatedTargetAndQualifiers(true);
-    Date startDate = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
-    offer.setStartDate(startDate);
-    HashSet<OfferTargetCriteriaXref> targetItemCriteriaXref = new HashSet<>();
-    offer.setTargetItemCriteriaXref(targetItemCriteriaXref);
-    offer.setTargetMinSubTotal(new Money());
-    offer.setTargetSystem("Target System");
-    offer.setTotalitarianOffer(true);
-    offer.setType(OfferType.FULFILLMENT_GROUP);
-    offer.setUseListForDiscounts(true);
-    offer.setValue(new BigDecimal("2.3"));
-
-    // Act
-    orderItemPriceDetailAdjustmentImpl.setOffer(offer);
-
-    // Assert
-    Offer offer2 = orderItemPriceDetailAdjustmentImpl.offer;
-    assertTrue(offer2 instanceof OfferImpl);
-    assertEquals("ACCOUNT", ((OfferImpl) offer2).maxUsesStrategy);
-    assertEquals("AMOUNT_OFF", ((OfferImpl) offer2).discountType);
-    assertEquals("FULFILLMENT_GROUP", ((OfferImpl) offer2).type);
-    assertEquals("FUTURE_CREDIT", ((OfferImpl) offer2).adjustmentType);
-    assertEquals("Marketing Message", ((OfferImpl) offer2).marketingMessage);
-    assertEquals("NONE", ((OfferImpl) offer2).offerItemQualifierRuleType);
-    assertEquals("NONE", ((OfferImpl) offer2).offerItemTargetRuleType);
-    assertEquals(1, ((OfferImpl) offer2).priority.intValue());
-    assertEquals(3, ((OfferImpl) offer2).maxUsesPerOrder.intValue());
-    assertTrue(((OfferImpl) offer2).applyToChildItems);
-    assertTrue(((OfferImpl) offer2).automaticallyAdded);
-    assertTrue(((OfferImpl) offer2).requiresRelatedTargetAndQualifiers);
-    assertTrue(((OfferImpl) offer2).totalitarianOffer);
-    assertTrue(((OfferImpl) offer2).useListForDiscounts);
-    assertEquals(OrderItemPriceDetailAdjustmentImpl.serialVersionUID,
-        ((OfferImpl) offer2).maxUsesPerCustomer.longValue());
-    assertSame(targetItemCriteriaXref, ((OfferImpl) offer2).targetItemCriteria);
-    assertSame(startDate, ((OfferImpl) offer2).startDate);
-    BigDecimal bigDecimal = offer.targetMinSubTotal;
-    assertSame(bigDecimal, ((OfferImpl) offer2).orderMinSubTotal);
-    assertSame(bigDecimal, ((OfferImpl) offer2).qualifyingItemSubTotal);
-    assertSame(bigDecimal, ((OfferImpl) offer2).targetMinSubTotal);
-  }
-
-  /**
-   * Test {@link OrderItemPriceDetailAdjustmentImpl#setOffer(Offer)}.
-   * <ul>
-   *   <li>Then {@link OrderItemPriceDetailAdjustmentImpl} (default constructor)
-   * OfferName is {@code Marketing Message}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#setOffer(Offer)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OrderItemPriceDetailAdjustmentImpl.setOffer(Offer)"})
   public void testSetOffer_thenOrderItemPriceDetailAdjustmentImplOfferNameIsMarketingMessage() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
     Offer offer = mock(Offer.class);
     when(offer.getMarketingMessage()).thenReturn("Marketing Message");
+    when(offer.getName()).thenReturn("Name");
 
     // Act
-    orderItemPriceDetailAdjustmentImpl.setOffer(offer);
+    orderItemPriceDetailAdjustmentImpl2.setOffer(offer);
 
     // Assert
     verify(offer, atLeast(1)).getMarketingMessage();
-    assertEquals("Marketing Message", orderItemPriceDetailAdjustmentImpl.getOfferName());
-    assertSame(offer, orderItemPriceDetailAdjustmentImpl.getOffer());
-    assertSame(offer, orderItemPriceDetailAdjustmentImpl.deproxiedOffer);
+    assertEquals("Marketing Message", orderItemPriceDetailAdjustmentImpl2.getOfferName());
+    assertSame(offer, orderItemPriceDetailAdjustmentImpl2.getOffer());
+    assertSame(offer, orderItemPriceDetailAdjustmentImpl2.deproxiedOffer);
   }
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#setOffer(Offer)}.
    * <ul>
    *   <li>When {@code null}.</li>
-   *   <li>Then {@link OrderItemPriceDetailAdjustmentImpl} (default constructor)
-   * OfferName is {@code Offer Name}.</li>
+   *   <li>Then {@link OrderItemPriceDetailAdjustmentImpl} (default constructor) OfferName is {@code Offer Name}.</li>
    * </ul>
    * <p>
    * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#setOffer(Offer)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OrderItemPriceDetailAdjustmentImpl.setOffer(Offer)"})
   public void testSetOffer_whenNull_thenOrderItemPriceDetailAdjustmentImplOfferNameIsOfferName() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
-    orderItemPriceDetailAdjustmentImpl.setAppliedToSalePrice(true);
-    orderItemPriceDetailAdjustmentImpl.setFutureCredit(true);
-    orderItemPriceDetailAdjustmentImpl.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
-    orderItemPriceDetailAdjustmentImpl.setOfferName("Offer Name");
-    orderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(new OrderItemPriceDetailImpl());
-    orderItemPriceDetailAdjustmentImpl.setReason("Just cause");
-    orderItemPriceDetailAdjustmentImpl.setRetailPriceValue(new Money());
-    orderItemPriceDetailAdjustmentImpl.setSalesPriceValue(new Money());
-    orderItemPriceDetailAdjustmentImpl.setValue(new Money());
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
+    orderItemPriceDetailAdjustmentImpl2.setAppliedToSalePrice(true);
+    orderItemPriceDetailAdjustmentImpl2.setFutureCredit(true);
+    orderItemPriceDetailAdjustmentImpl2.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+    orderItemPriceDetailAdjustmentImpl2.setOfferName("Offer Name");
+    orderItemPriceDetailAdjustmentImpl2.setOrderItemPriceDetail(new OrderItemPriceDetailImpl());
+    orderItemPriceDetailAdjustmentImpl2.setReason("Just cause");
+    orderItemPriceDetailAdjustmentImpl2.setRetailPriceValue(new Money());
+    orderItemPriceDetailAdjustmentImpl2.setSalesPriceValue(new Money());
+    orderItemPriceDetailAdjustmentImpl2.setValue(new Money());
 
     // Act
-    orderItemPriceDetailAdjustmentImpl.setOffer(null);
+    orderItemPriceDetailAdjustmentImpl2.setOffer(null);
 
-    // Assert
-    assertEquals("Offer Name", orderItemPriceDetailAdjustmentImpl.getOfferName());
-    assertNull(orderItemPriceDetailAdjustmentImpl.getOffer());
-    assertNull(orderItemPriceDetailAdjustmentImpl.deproxiedOffer);
-    assertNull(orderItemPriceDetailAdjustmentImpl.offer);
+    // Assert that nothing has changed
+    assertEquals("Offer Name", orderItemPriceDetailAdjustmentImpl2.getOfferName());
   }
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#setOffer(Offer)}.
    * <ul>
    *   <li>When {@link OfferImpl} (default constructor).</li>
-   *   <li>Then {@link OrderItemPriceDetailAdjustmentImpl} (default constructor)
-   * OfferName is {@code null}.</li>
+   *   <li>Then {@link OrderItemPriceDetailAdjustmentImpl} (default constructor) OfferName is {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#setOffer(Offer)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OrderItemPriceDetailAdjustmentImpl.setOffer(Offer)"})
   public void testSetOffer_whenOfferImpl_thenOrderItemPriceDetailAdjustmentImplOfferNameIsNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
-    orderItemPriceDetailAdjustmentImpl.setAppliedToSalePrice(true);
-    orderItemPriceDetailAdjustmentImpl.setFutureCredit(true);
-    orderItemPriceDetailAdjustmentImpl.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
-    orderItemPriceDetailAdjustmentImpl.setOfferName("Offer Name");
-    orderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(new OrderItemPriceDetailImpl());
-    orderItemPriceDetailAdjustmentImpl.setReason("Just cause");
-    orderItemPriceDetailAdjustmentImpl.setRetailPriceValue(new Money());
-    orderItemPriceDetailAdjustmentImpl.setSalesPriceValue(new Money());
-    orderItemPriceDetailAdjustmentImpl.setValue(new Money());
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
+    orderItemPriceDetailAdjustmentImpl2.setAppliedToSalePrice(true);
+    orderItemPriceDetailAdjustmentImpl2.setFutureCredit(true);
+    orderItemPriceDetailAdjustmentImpl2.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+    orderItemPriceDetailAdjustmentImpl2.setOfferName("Offer Name");
+    orderItemPriceDetailAdjustmentImpl2.setOrderItemPriceDetail(new OrderItemPriceDetailImpl());
+    orderItemPriceDetailAdjustmentImpl2.setReason("Just cause");
+    orderItemPriceDetailAdjustmentImpl2.setRetailPriceValue(new Money());
+    orderItemPriceDetailAdjustmentImpl2.setSalesPriceValue(new Money());
+    orderItemPriceDetailAdjustmentImpl2.setValue(new Money());
     OfferImpl offer = new OfferImpl();
 
     // Act
-    orderItemPriceDetailAdjustmentImpl.setOffer(offer);
+    orderItemPriceDetailAdjustmentImpl2.setOffer(offer);
 
     // Assert
-    Offer offer2 = orderItemPriceDetailAdjustmentImpl.offer;
-    assertTrue(offer2 instanceof OfferImpl);
-    assertEquals('N', offer2.getArchived().charValue());
-    assertNull(((OfferImpl) offer2).maxUsesPerOrder);
-    assertNull(((OfferImpl) offer2).priority);
-    assertNull(offer2.getId());
-    assertNull(offer2.getMinimumDaysPerUsage());
-    assertNull(((OfferImpl) offer2).maxUsesPerCustomer);
-    assertNull(offer2.getDescription());
-    assertNull(offer2.getMarketingMessage());
-    assertNull(offer2.getName());
-    assertNull(offer2.getTargetSystem());
-    assertNull(((OfferImpl) offer2).getMainEntityName());
-    assertNull(orderItemPriceDetailAdjustmentImpl.getOfferName());
-    assertNull(((OfferImpl) offer2).adjustmentType);
-    assertNull(((OfferImpl) offer2).discountType);
-    assertNull(((OfferImpl) offer2).marketingMessage);
-    assertNull(((OfferImpl) offer2).maxUsesStrategy);
-    assertNull(((OfferImpl) offer2).offerItemQualifierRuleType);
-    assertNull(((OfferImpl) offer2).offerItemTargetRuleType);
-    assertNull(((OfferImpl) offer2).type);
-    assertNull(offer2.getValue());
-    assertNull(((OfferImpl) offer2).orderMinSubTotal);
-    assertNull(((OfferImpl) offer2).qualifyingItemSubTotal);
-    assertNull(((OfferImpl) offer2).targetMinSubTotal);
-    assertNull(offer2.getEndDate());
-    assertNull(offer2.getStartDate());
-    assertNull(((OfferImpl) offer2).startDate);
-    assertNull(offer2.getOrderMinSubTotal());
-    assertNull(offer2.getQualifyingItemSubTotal());
-    assertNull(offer2.getTargetMinSubTotal());
-    assertNull(offer2.getMaxUsesStrategyType());
-    assertNull(offer2.getDiscountType());
-    assertNull(offer2.getType());
-    assertEquals(0, offer2.getMaxUsesPerOrder());
-    assertEquals(0L, offer2.getMaxUsesPerCustomer().longValue());
-    assertEquals(2147483646, offer2.getPriority());
-    assertFalse(offer2.getApplyToChildItems());
-    assertFalse(offer2.getRequiresRelatedTargetAndQualifiers());
-    assertFalse(offer2.getUseListForDiscounts());
-    assertFalse(offer2.isFutureCredit());
-    assertFalse(offer2.isLimitedUsePerOrder());
-    assertFalse(((OfferImpl) offer2).applyToChildItems);
-    assertFalse(((OfferImpl) offer2).automaticallyAdded);
-    assertFalse(((OfferImpl) offer2).requiresRelatedTargetAndQualifiers);
-    assertFalse(((OfferImpl) offer2).totalitarianOffer);
-    assertFalse(((OfferImpl) offer2).useListForDiscounts);
-    assertTrue(offer2.getApplyDiscountToSalePrice());
-    assertTrue(offer2.isUnlimitedUsePerOrder());
-    assertTrue(((OfferImpl) offer2).getCombinableWithOtherOffers());
-    assertSame(offer, orderItemPriceDetailAdjustmentImpl.getOffer());
-    Set<OfferTargetCriteriaXref> expectedTargetItemCriteriaXref = offer.targetItemCriteria;
-    assertSame(expectedTargetItemCriteriaXref, offer2.getTargetItemCriteriaXref());
-  }
-
-  /**
-   * Test {@link OrderItemPriceDetailAdjustmentImpl#getCurrency()}.
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#getCurrency()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetCurrency() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4429 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OrderItemPriceDetailAdjustmentImpl()).getCurrency();
+    assertTrue(orderItemPriceDetailAdjustmentImpl2.offer instanceof OfferImpl);
+    assertNull(orderItemPriceDetailAdjustmentImpl2.getOfferName());
+    assertSame(offer, orderItemPriceDetailAdjustmentImpl2.getOffer());
   }
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#getCurrency()}.
    * <ul>
-   *   <li>Given {@link Auditable} (default constructor) CreatedBy is
-   * {@link OrderItemPriceDetailAdjustmentImpl#serialVersionUID}.</li>
+   *   <li>Given {@link Auditable} (default constructor) CreatedBy is {@link OrderItemPriceDetailAdjustmentImpl#serialVersionUID}.</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#getCurrency()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BroadleafCurrency OrderItemPriceDetailAdjustmentImpl.getCurrency()"})
   public void testGetCurrency_givenAuditableCreatedByIsSerialVersionUID_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
@@ -1108,6 +535,7 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     orderItemImpl.setOrderItemType(OrderItemType.BASIC);
     orderItemImpl.setParentOrderItem(new BundleOrderItemImpl());
     orderItemImpl.setPersonalMessage(new PersonalMessageImpl());
+    orderItemImpl.setPrice(new Money());
     orderItemImpl.setProratedOrderItemAdjustments(new ArrayList<>());
     orderItemImpl.setQuantity(1);
     orderItemImpl.setRetailPrice(new Money());
@@ -1119,19 +547,19 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     OrderItemPriceDetailImpl orderItemPriceDetail = mock(OrderItemPriceDetailImpl.class);
     when(orderItemPriceDetail.getOrderItem()).thenReturn(orderItemImpl);
 
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
-    orderItemPriceDetailAdjustmentImpl.setAppliedToSalePrice(true);
-    orderItemPriceDetailAdjustmentImpl.setFutureCredit(true);
-    orderItemPriceDetailAdjustmentImpl.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
-    orderItemPriceDetailAdjustmentImpl.setOfferName("Offer Name");
-    orderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(orderItemPriceDetail);
-    orderItemPriceDetailAdjustmentImpl.setReason("Just cause");
-    orderItemPriceDetailAdjustmentImpl.setRetailPriceValue(new Money());
-    orderItemPriceDetailAdjustmentImpl.setSalesPriceValue(new Money());
-    orderItemPriceDetailAdjustmentImpl.setValue(new Money());
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
+    orderItemPriceDetailAdjustmentImpl2.setAppliedToSalePrice(true);
+    orderItemPriceDetailAdjustmentImpl2.setFutureCredit(true);
+    orderItemPriceDetailAdjustmentImpl2.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+    orderItemPriceDetailAdjustmentImpl2.setOfferName("Offer Name");
+    orderItemPriceDetailAdjustmentImpl2.setOrderItemPriceDetail(orderItemPriceDetail);
+    orderItemPriceDetailAdjustmentImpl2.setReason("Just cause");
+    orderItemPriceDetailAdjustmentImpl2.setRetailPriceValue(new Money());
+    orderItemPriceDetailAdjustmentImpl2.setSalesPriceValue(new Money());
+    orderItemPriceDetailAdjustmentImpl2.setValue(new Money());
 
     // Act
-    BroadleafCurrency actualCurrency = orderItemPriceDetailAdjustmentImpl.getCurrency();
+    BroadleafCurrency actualCurrency = orderItemPriceDetailAdjustmentImpl2.getCurrency();
 
     // Assert
     verify(orderItemPriceDetail).getOrderItem();
@@ -1140,58 +568,28 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#getValue()}.
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#getValue()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetValue() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4484 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OrderItemPriceDetailAdjustmentImpl()).getValue();
-  }
-
-  /**
-   * Test {@link OrderItemPriceDetailAdjustmentImpl#getValue()}.
    * <ul>
-   *   <li>Given {@link BundleOrderItemImpl} {@link OrderItemImpl#getOrder()} return
-   * {@link NullOrderImpl} (default constructor).</li>
+   *   <li>Given {@link BundleOrderItemImpl} {@link OrderItemImpl#getOrder()} return {@link NullOrderImpl} (default constructor).</li>
    *   <li>Then return {@link Money#ZERO}.</li>
    * </ul>
    * <p>
    * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#getValue()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money OrderItemPriceDetailAdjustmentImpl.getValue()"})
   public void testGetValue_givenBundleOrderItemImplGetOrderReturnNullOrderImpl_thenReturnZero() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     BundleOrderItemImpl bundleOrderItemImpl = mock(BundleOrderItemImpl.class);
     when(bundleOrderItemImpl.getOrder()).thenReturn(new NullOrderImpl());
     OrderItemPriceDetailImpl orderItemPriceDetail = mock(OrderItemPriceDetailImpl.class);
     when(orderItemPriceDetail.getOrderItem()).thenReturn(bundleOrderItemImpl);
 
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
-    orderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(orderItemPriceDetail);
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
+    orderItemPriceDetailAdjustmentImpl2.setOrderItemPriceDetail(orderItemPriceDetail);
 
     // Act
-    Money actualValue = orderItemPriceDetailAdjustmentImpl.getValue();
+    Money actualValue = orderItemPriceDetailAdjustmentImpl2.getValue();
 
     // Assert
     verify(bundleOrderItemImpl).getOrder();
@@ -1202,17 +600,16 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#getValue()}.
    * <ul>
-   *   <li>Given {@link OrderImpl} (default constructor) Currency is
-   * {@code null}.</li>
+   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@code null}.</li>
    *   <li>Then return {@link Money#Money()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#getValue()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money OrderItemPriceDetailAdjustmentImpl.getValue()"})
   public void testGetValue_givenOrderImplCurrencyIsNull_thenReturnMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
@@ -1247,7 +644,6 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setCurrency(null);
 
@@ -1272,6 +668,7 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     orderItem.setOrderItemType(OrderItemType.BASIC);
     orderItem.setParentOrderItem(new BundleOrderItemImpl());
     orderItem.setPersonalMessage(new PersonalMessageImpl());
+    orderItem.setPrice(new Money());
     orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
     orderItem.setQuantity(1);
     orderItem.setRetailPrice(new Money());
@@ -1289,115 +686,78 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     orderItemPriceDetail.setUseSalePrice(true);
     orderItemPriceDetail.setOrderItem(orderItem);
 
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
-    orderItemPriceDetailAdjustmentImpl.setAppliedToSalePrice(true);
-    orderItemPriceDetailAdjustmentImpl.setFutureCredit(true);
-    orderItemPriceDetailAdjustmentImpl.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
-    orderItemPriceDetailAdjustmentImpl.setOfferName("Offer Name");
-    orderItemPriceDetailAdjustmentImpl.setReason("Just cause");
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
+    orderItemPriceDetailAdjustmentImpl2.setAppliedToSalePrice(true);
+    orderItemPriceDetailAdjustmentImpl2.setFutureCredit(true);
+    orderItemPriceDetailAdjustmentImpl2.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+    orderItemPriceDetailAdjustmentImpl2.setOfferName("Offer Name");
+    orderItemPriceDetailAdjustmentImpl2.setReason("Just cause");
     Money retailPriceValue = new Money();
-    orderItemPriceDetailAdjustmentImpl.setRetailPriceValue(retailPriceValue);
-    orderItemPriceDetailAdjustmentImpl.setSalesPriceValue(new Money());
-    orderItemPriceDetailAdjustmentImpl.setValue(new Money());
-    orderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(orderItemPriceDetail);
+    orderItemPriceDetailAdjustmentImpl2.setRetailPriceValue(retailPriceValue);
+    orderItemPriceDetailAdjustmentImpl2.setSalesPriceValue(new Money());
+    orderItemPriceDetailAdjustmentImpl2.setValue(new Money());
+    orderItemPriceDetailAdjustmentImpl2.setOrderItemPriceDetail(orderItemPriceDetail);
 
     // Act and Assert
-    assertEquals(retailPriceValue, orderItemPriceDetailAdjustmentImpl.getValue());
+    assertEquals(retailPriceValue, orderItemPriceDetailAdjustmentImpl2.getValue());
   }
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#setValue(Money)}.
+   * <ul>
+   *   <li>Then {@link OrderItemPriceDetailAdjustmentImpl} (default constructor) {@link OrderItemPriceDetailAdjustmentImpl#value} is {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
+   * </ul>
    * <p>
    * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#setValue(Money)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetValue() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4797 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OrderItemPriceDetailAdjustmentImpl.setValue(Money)"})
+  public void testSetValue_thenOrderItemPriceDetailAdjustmentImplValueIsBigDecimalWith000() {
     // Arrange
     OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
 
     // Act
     orderItemPriceDetailAdjustmentImpl2.setValue(new Money());
+
+    // Assert that nothing has changed
+    assertEquals(new BigDecimal("0.00"), orderItemPriceDetailAdjustmentImpl2.value);
   }
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#setValue(Money)}.
    * <ul>
-   *   <li>Then {@link OrderItemPriceDetailAdjustmentImpl} (default constructor)
-   * {@link OrderItemPriceDetailAdjustmentImpl#value} is
-   * {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
+   *   <li>Then {@link OrderItemPriceDetailAdjustmentImpl} (default constructor) {@link OrderItemPriceDetailAdjustmentImpl#value} is {@link BigDecimal#BigDecimal(String)} with {@code 2.3}.</li>
    * </ul>
    * <p>
    * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#setValue(Money)}
    */
   @Test
-  public void testSetValue_thenOrderItemPriceDetailAdjustmentImplValueIsBigDecimalWith000() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
-
-    // Act
-    orderItemPriceDetailAdjustmentImpl.setValue(new Money());
-
-    // Assert
-    assertEquals(new BigDecimal("0.00"), orderItemPriceDetailAdjustmentImpl.value);
-  }
-
-  /**
-   * Test {@link OrderItemPriceDetailAdjustmentImpl#setValue(Money)}.
-   * <ul>
-   *   <li>Then {@link OrderItemPriceDetailAdjustmentImpl} (default constructor)
-   * {@link OrderItemPriceDetailAdjustmentImpl#value} is
-   * {@link BigDecimal#BigDecimal(String)} with {@code 2.3}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#setValue(Money)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OrderItemPriceDetailAdjustmentImpl.setValue(Money)"})
   public void testSetValue_thenOrderItemPriceDetailAdjustmentImplValueIsBigDecimalWith23() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
     Money value = mock(Money.class);
     when(value.getAmount()).thenReturn(new BigDecimal("2.3"));
 
     // Act
-    orderItemPriceDetailAdjustmentImpl.setValue(value);
+    orderItemPriceDetailAdjustmentImpl2.setValue(value);
 
     // Assert
     verify(value).getAmount();
-    assertEquals(new BigDecimal("2.3"), orderItemPriceDetailAdjustmentImpl.value);
+    assertEquals(new BigDecimal("2.3"), orderItemPriceDetailAdjustmentImpl2.value);
   }
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#getRetailPriceValue()}.
    * <p>
-   * Method under test:
-   * {@link OrderItemPriceDetailAdjustmentImpl#getRetailPriceValue()}
+   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#getRetailPriceValue()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money OrderItemPriceDetailAdjustmentImpl.getRetailPriceValue()"})
   public void testGetRetailPriceValue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
@@ -1432,7 +792,6 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setCurrency(null);
 
@@ -1457,6 +816,7 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     orderItem.setOrderItemType(OrderItemType.BASIC);
     orderItem.setParentOrderItem(new BundleOrderItemImpl());
     orderItem.setPersonalMessage(new PersonalMessageImpl());
+    orderItem.setPrice(new Money());
     orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
     orderItem.setQuantity(1);
     orderItem.setRetailPrice(new Money());
@@ -1474,67 +834,35 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     orderItemPriceDetail.setUseSalePrice(true);
     orderItemPriceDetail.setOrderItem(orderItem);
 
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
-    orderItemPriceDetailAdjustmentImpl.setAppliedToSalePrice(true);
-    orderItemPriceDetailAdjustmentImpl.setFutureCredit(true);
-    orderItemPriceDetailAdjustmentImpl.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
-    orderItemPriceDetailAdjustmentImpl.setOfferName("Offer Name");
-    orderItemPriceDetailAdjustmentImpl.setReason("Just cause");
-    orderItemPriceDetailAdjustmentImpl.setSalesPriceValue(new Money());
-    orderItemPriceDetailAdjustmentImpl.setValue(new Money());
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
+    orderItemPriceDetailAdjustmentImpl2.setAppliedToSalePrice(true);
+    orderItemPriceDetailAdjustmentImpl2.setFutureCredit(true);
+    orderItemPriceDetailAdjustmentImpl2.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+    orderItemPriceDetailAdjustmentImpl2.setOfferName("Offer Name");
+    orderItemPriceDetailAdjustmentImpl2.setReason("Just cause");
+    orderItemPriceDetailAdjustmentImpl2.setSalesPriceValue(new Money());
+    orderItemPriceDetailAdjustmentImpl2.setValue(new Money());
     Money retailPriceValue = new Money();
-    orderItemPriceDetailAdjustmentImpl.setRetailPriceValue(retailPriceValue);
-    orderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(orderItemPriceDetail);
+    orderItemPriceDetailAdjustmentImpl2.setRetailPriceValue(retailPriceValue);
+    orderItemPriceDetailAdjustmentImpl2.setOrderItemPriceDetail(orderItemPriceDetail);
 
     // Act and Assert
-    assertSame(retailPriceValue, orderItemPriceDetailAdjustmentImpl.getRetailPriceValue());
-  }
-
-  /**
-   * Test {@link OrderItemPriceDetailAdjustmentImpl#getRetailPriceValue()}.
-   * <p>
-   * Method under test:
-   * {@link OrderItemPriceDetailAdjustmentImpl#getRetailPriceValue()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetRetailPriceValue2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4462 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OrderItemPriceDetailAdjustmentImpl()).getRetailPriceValue();
+    assertSame(retailPriceValue, orderItemPriceDetailAdjustmentImpl2.getRetailPriceValue());
   }
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#getRetailPriceValue()}.
    * <ul>
-   *   <li>Given {@link OrderImpl} (default constructor) Currency is
-   * {@code null}.</li>
+   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@code null}.</li>
    *   <li>Then return {@link Money#Money()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderItemPriceDetailAdjustmentImpl#getRetailPriceValue()}
+   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#getRetailPriceValue()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money OrderItemPriceDetailAdjustmentImpl.getRetailPriceValue()"})
   public void testGetRetailPriceValue_givenOrderImplCurrencyIsNull_thenReturnMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
@@ -1569,7 +897,6 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setCurrency(null);
 
@@ -1594,6 +921,7 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     orderItem.setOrderItemType(OrderItemType.BASIC);
     orderItem.setParentOrderItem(new BundleOrderItemImpl());
     orderItem.setPersonalMessage(new PersonalMessageImpl());
+    orderItem.setPrice(new Money());
     orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
     orderItem.setQuantity(1);
     orderItem.setRetailPrice(new Money());
@@ -1611,20 +939,20 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     orderItemPriceDetail.setUseSalePrice(true);
     orderItemPriceDetail.setOrderItem(orderItem);
 
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
-    orderItemPriceDetailAdjustmentImpl.setAppliedToSalePrice(true);
-    orderItemPriceDetailAdjustmentImpl.setFutureCredit(true);
-    orderItemPriceDetailAdjustmentImpl.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
-    orderItemPriceDetailAdjustmentImpl.setOfferName("Offer Name");
-    orderItemPriceDetailAdjustmentImpl.setReason("Just cause");
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
+    orderItemPriceDetailAdjustmentImpl2.setAppliedToSalePrice(true);
+    orderItemPriceDetailAdjustmentImpl2.setFutureCredit(true);
+    orderItemPriceDetailAdjustmentImpl2.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+    orderItemPriceDetailAdjustmentImpl2.setOfferName("Offer Name");
+    orderItemPriceDetailAdjustmentImpl2.setReason("Just cause");
     Money salesPriceValue = new Money();
-    orderItemPriceDetailAdjustmentImpl.setSalesPriceValue(salesPriceValue);
-    orderItemPriceDetailAdjustmentImpl.setValue(new Money());
-    orderItemPriceDetailAdjustmentImpl.setRetailPriceValue(null);
-    orderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(orderItemPriceDetail);
+    orderItemPriceDetailAdjustmentImpl2.setSalesPriceValue(salesPriceValue);
+    orderItemPriceDetailAdjustmentImpl2.setValue(new Money());
+    orderItemPriceDetailAdjustmentImpl2.setRetailPriceValue(null);
+    orderItemPriceDetailAdjustmentImpl2.setOrderItemPriceDetail(orderItemPriceDetail);
 
     // Act and Assert
-    assertEquals(salesPriceValue, orderItemPriceDetailAdjustmentImpl.getRetailPriceValue());
+    assertEquals(salesPriceValue, orderItemPriceDetailAdjustmentImpl2.getRetailPriceValue());
   }
 
   /**
@@ -1633,24 +961,23 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
    *   <li>Then return {@link Money#ZERO}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderItemPriceDetailAdjustmentImpl#getRetailPriceValue()}
+   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#getRetailPriceValue()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money OrderItemPriceDetailAdjustmentImpl.getRetailPriceValue()"})
   public void testGetRetailPriceValue_thenReturnZero() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     BundleOrderItemImpl bundleOrderItemImpl = mock(BundleOrderItemImpl.class);
     when(bundleOrderItemImpl.getOrder()).thenReturn(new NullOrderImpl());
     OrderItemPriceDetailImpl orderItemPriceDetail = mock(OrderItemPriceDetailImpl.class);
     when(orderItemPriceDetail.getOrderItem()).thenReturn(bundleOrderItemImpl);
 
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
-    orderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(orderItemPriceDetail);
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
+    orderItemPriceDetailAdjustmentImpl2.setOrderItemPriceDetail(orderItemPriceDetail);
 
     // Act
-    Money actualRetailPriceValue = orderItemPriceDetailAdjustmentImpl.getRetailPriceValue();
+    Money actualRetailPriceValue = orderItemPriceDetailAdjustmentImpl2.getRetailPriceValue();
 
     // Assert
     verify(bundleOrderItemImpl).getOrder();
@@ -1661,13 +988,12 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#getSalesPriceValue()}.
    * <p>
-   * Method under test:
-   * {@link OrderItemPriceDetailAdjustmentImpl#getSalesPriceValue()}
+   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#getSalesPriceValue()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money OrderItemPriceDetailAdjustmentImpl.getSalesPriceValue()"})
   public void testGetSalesPriceValue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
@@ -1702,7 +1028,6 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setCurrency(null);
 
@@ -1727,6 +1052,7 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     orderItem.setOrderItemType(OrderItemType.BASIC);
     orderItem.setParentOrderItem(new BundleOrderItemImpl());
     orderItem.setPersonalMessage(new PersonalMessageImpl());
+    orderItem.setPrice(new Money());
     orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
     orderItem.setQuantity(1);
     orderItem.setRetailPrice(new Money());
@@ -1744,67 +1070,35 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     orderItemPriceDetail.setUseSalePrice(true);
     orderItemPriceDetail.setOrderItem(orderItem);
 
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
-    orderItemPriceDetailAdjustmentImpl.setAppliedToSalePrice(true);
-    orderItemPriceDetailAdjustmentImpl.setFutureCredit(true);
-    orderItemPriceDetailAdjustmentImpl.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
-    orderItemPriceDetailAdjustmentImpl.setOfferName("Offer Name");
-    orderItemPriceDetailAdjustmentImpl.setReason("Just cause");
-    orderItemPriceDetailAdjustmentImpl.setRetailPriceValue(new Money());
-    orderItemPriceDetailAdjustmentImpl.setValue(new Money());
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
+    orderItemPriceDetailAdjustmentImpl2.setAppliedToSalePrice(true);
+    orderItemPriceDetailAdjustmentImpl2.setFutureCredit(true);
+    orderItemPriceDetailAdjustmentImpl2.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+    orderItemPriceDetailAdjustmentImpl2.setOfferName("Offer Name");
+    orderItemPriceDetailAdjustmentImpl2.setReason("Just cause");
+    orderItemPriceDetailAdjustmentImpl2.setRetailPriceValue(new Money());
+    orderItemPriceDetailAdjustmentImpl2.setValue(new Money());
     Money salesPriceValue = new Money();
-    orderItemPriceDetailAdjustmentImpl.setSalesPriceValue(salesPriceValue);
-    orderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(orderItemPriceDetail);
+    orderItemPriceDetailAdjustmentImpl2.setSalesPriceValue(salesPriceValue);
+    orderItemPriceDetailAdjustmentImpl2.setOrderItemPriceDetail(orderItemPriceDetail);
 
     // Act and Assert
-    assertSame(salesPriceValue, orderItemPriceDetailAdjustmentImpl.getSalesPriceValue());
-  }
-
-  /**
-   * Test {@link OrderItemPriceDetailAdjustmentImpl#getSalesPriceValue()}.
-   * <p>
-   * Method under test:
-   * {@link OrderItemPriceDetailAdjustmentImpl#getSalesPriceValue()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetSalesPriceValue2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4473 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OrderItemPriceDetailAdjustmentImpl()).getSalesPriceValue();
+    assertSame(salesPriceValue, orderItemPriceDetailAdjustmentImpl2.getSalesPriceValue());
   }
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#getSalesPriceValue()}.
    * <ul>
-   *   <li>Given {@link OrderImpl} (default constructor) Currency is
-   * {@code null}.</li>
+   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@code null}.</li>
    *   <li>Then return {@link Money#Money()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderItemPriceDetailAdjustmentImpl#getSalesPriceValue()}
+   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#getSalesPriceValue()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money OrderItemPriceDetailAdjustmentImpl.getSalesPriceValue()"})
   public void testGetSalesPriceValue_givenOrderImplCurrencyIsNull_thenReturnMoney() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
@@ -1839,7 +1133,6 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setCurrency(null);
 
@@ -1864,6 +1157,7 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     orderItem.setOrderItemType(OrderItemType.BASIC);
     orderItem.setParentOrderItem(new BundleOrderItemImpl());
     orderItem.setPersonalMessage(new PersonalMessageImpl());
+    orderItem.setPrice(new Money());
     orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
     orderItem.setQuantity(1);
     orderItem.setRetailPrice(new Money());
@@ -1881,20 +1175,20 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     orderItemPriceDetail.setUseSalePrice(true);
     orderItemPriceDetail.setOrderItem(orderItem);
 
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
-    orderItemPriceDetailAdjustmentImpl.setAppliedToSalePrice(true);
-    orderItemPriceDetailAdjustmentImpl.setFutureCredit(true);
-    orderItemPriceDetailAdjustmentImpl.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
-    orderItemPriceDetailAdjustmentImpl.setOfferName("Offer Name");
-    orderItemPriceDetailAdjustmentImpl.setReason("Just cause");
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
+    orderItemPriceDetailAdjustmentImpl2.setAppliedToSalePrice(true);
+    orderItemPriceDetailAdjustmentImpl2.setFutureCredit(true);
+    orderItemPriceDetailAdjustmentImpl2.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+    orderItemPriceDetailAdjustmentImpl2.setOfferName("Offer Name");
+    orderItemPriceDetailAdjustmentImpl2.setReason("Just cause");
     Money retailPriceValue = new Money();
-    orderItemPriceDetailAdjustmentImpl.setRetailPriceValue(retailPriceValue);
-    orderItemPriceDetailAdjustmentImpl.setValue(new Money());
-    orderItemPriceDetailAdjustmentImpl.setSalesPriceValue(null);
-    orderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(orderItemPriceDetail);
+    orderItemPriceDetailAdjustmentImpl2.setRetailPriceValue(retailPriceValue);
+    orderItemPriceDetailAdjustmentImpl2.setValue(new Money());
+    orderItemPriceDetailAdjustmentImpl2.setSalesPriceValue(null);
+    orderItemPriceDetailAdjustmentImpl2.setOrderItemPriceDetail(orderItemPriceDetail);
 
     // Act and Assert
-    assertEquals(retailPriceValue, orderItemPriceDetailAdjustmentImpl.getSalesPriceValue());
+    assertEquals(retailPriceValue, orderItemPriceDetailAdjustmentImpl2.getSalesPriceValue());
   }
 
   /**
@@ -1903,24 +1197,23 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
    *   <li>Then return {@link Money#ZERO}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderItemPriceDetailAdjustmentImpl#getSalesPriceValue()}
+   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#getSalesPriceValue()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money OrderItemPriceDetailAdjustmentImpl.getSalesPriceValue()"})
   public void testGetSalesPriceValue_thenReturnZero() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     BundleOrderItemImpl bundleOrderItemImpl = mock(BundleOrderItemImpl.class);
     when(bundleOrderItemImpl.getOrder()).thenReturn(new NullOrderImpl());
     OrderItemPriceDetailImpl orderItemPriceDetail = mock(OrderItemPriceDetailImpl.class);
     when(orderItemPriceDetail.getOrderItem()).thenReturn(bundleOrderItemImpl);
 
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
-    orderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(orderItemPriceDetail);
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
+    orderItemPriceDetailAdjustmentImpl2.setOrderItemPriceDetail(orderItemPriceDetail);
 
     // Act
-    Money actualSalesPriceValue = orderItemPriceDetailAdjustmentImpl.getSalesPriceValue();
+    Money actualSalesPriceValue = orderItemPriceDetailAdjustmentImpl2.getSalesPriceValue();
 
     // Assert
     verify(bundleOrderItemImpl).getOrder();
@@ -1930,49 +1223,17 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#getCurrencyCode()}.
-   * <p>
-   * Method under test:
-   * {@link OrderItemPriceDetailAdjustmentImpl#getCurrencyCode()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetCurrencyCode() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4440 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OrderItemPriceDetailAdjustmentImpl()).getCurrencyCode();
-  }
-
-  /**
-   * Test {@link OrderItemPriceDetailAdjustmentImpl#getCurrencyCode()}.
    * <ul>
-   *   <li>Given {@link OrderImpl} (default constructor) Currency is
-   * {@link BroadleafCurrencyImpl} (default constructor).</li>
+   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@link BroadleafCurrencyImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderItemPriceDetailAdjustmentImpl#getCurrencyCode()}
+   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#getCurrencyCode()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String OrderItemPriceDetailAdjustmentImpl.getCurrencyCode()"})
   public void testGetCurrencyCode_givenOrderImplCurrencyIsBroadleafCurrencyImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
@@ -2007,7 +1268,6 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setCurrency(new BroadleafCurrencyImpl());
 
@@ -2032,6 +1292,7 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     orderItem.setOrderItemType(OrderItemType.BASIC);
     orderItem.setParentOrderItem(new BundleOrderItemImpl());
     orderItem.setPersonalMessage(new PersonalMessageImpl());
+    orderItem.setPrice(new Money());
     orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
     orderItem.setQuantity(1);
     orderItem.setRetailPrice(new Money());
@@ -2049,36 +1310,34 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     orderItemPriceDetail.setUseSalePrice(true);
     orderItemPriceDetail.setOrderItem(orderItem);
 
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
-    orderItemPriceDetailAdjustmentImpl.setAppliedToSalePrice(true);
-    orderItemPriceDetailAdjustmentImpl.setFutureCredit(true);
-    orderItemPriceDetailAdjustmentImpl.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
-    orderItemPriceDetailAdjustmentImpl.setOfferName("Offer Name");
-    orderItemPriceDetailAdjustmentImpl.setReason("Just cause");
-    orderItemPriceDetailAdjustmentImpl.setRetailPriceValue(new Money());
-    orderItemPriceDetailAdjustmentImpl.setSalesPriceValue(new Money());
-    orderItemPriceDetailAdjustmentImpl.setValue(new Money());
-    orderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(orderItemPriceDetail);
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
+    orderItemPriceDetailAdjustmentImpl2.setAppliedToSalePrice(true);
+    orderItemPriceDetailAdjustmentImpl2.setFutureCredit(true);
+    orderItemPriceDetailAdjustmentImpl2.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+    orderItemPriceDetailAdjustmentImpl2.setOfferName("Offer Name");
+    orderItemPriceDetailAdjustmentImpl2.setReason("Just cause");
+    orderItemPriceDetailAdjustmentImpl2.setRetailPriceValue(new Money());
+    orderItemPriceDetailAdjustmentImpl2.setSalesPriceValue(new Money());
+    orderItemPriceDetailAdjustmentImpl2.setValue(new Money());
+    orderItemPriceDetailAdjustmentImpl2.setOrderItemPriceDetail(orderItemPriceDetail);
 
     // Act and Assert
-    assertNull(orderItemPriceDetailAdjustmentImpl.getCurrencyCode());
+    assertNull(orderItemPriceDetailAdjustmentImpl2.getCurrencyCode());
   }
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#getCurrencyCode()}.
    * <ul>
-   *   <li>Given {@link OrderImpl} (default constructor) Currency is
-   * {@code null}.</li>
+   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@code null}.</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderItemPriceDetailAdjustmentImpl#getCurrencyCode()}
+   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#getCurrencyCode()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String OrderItemPriceDetailAdjustmentImpl.getCurrencyCode()"})
   public void testGetCurrencyCode_givenOrderImplCurrencyIsNull_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
@@ -2113,7 +1372,6 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
-    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setCurrency(null);
 
@@ -2138,6 +1396,7 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     orderItem.setOrderItemType(OrderItemType.BASIC);
     orderItem.setParentOrderItem(new BundleOrderItemImpl());
     orderItem.setPersonalMessage(new PersonalMessageImpl());
+    orderItem.setPrice(new Money());
     orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
     orderItem.setQuantity(1);
     orderItem.setRetailPrice(new Money());
@@ -2155,200 +1414,87 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     orderItemPriceDetail.setUseSalePrice(true);
     orderItemPriceDetail.setOrderItem(orderItem);
 
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
-    orderItemPriceDetailAdjustmentImpl.setAppliedToSalePrice(true);
-    orderItemPriceDetailAdjustmentImpl.setFutureCredit(true);
-    orderItemPriceDetailAdjustmentImpl.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
-    orderItemPriceDetailAdjustmentImpl.setOfferName("Offer Name");
-    orderItemPriceDetailAdjustmentImpl.setReason("Just cause");
-    orderItemPriceDetailAdjustmentImpl.setRetailPriceValue(new Money());
-    orderItemPriceDetailAdjustmentImpl.setSalesPriceValue(new Money());
-    orderItemPriceDetailAdjustmentImpl.setValue(new Money());
-    orderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(orderItemPriceDetail);
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
+    orderItemPriceDetailAdjustmentImpl2.setAppliedToSalePrice(true);
+    orderItemPriceDetailAdjustmentImpl2.setFutureCredit(true);
+    orderItemPriceDetailAdjustmentImpl2.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+    orderItemPriceDetailAdjustmentImpl2.setOfferName("Offer Name");
+    orderItemPriceDetailAdjustmentImpl2.setReason("Just cause");
+    orderItemPriceDetailAdjustmentImpl2.setRetailPriceValue(new Money());
+    orderItemPriceDetailAdjustmentImpl2.setSalesPriceValue(new Money());
+    orderItemPriceDetailAdjustmentImpl2.setValue(new Money());
+    orderItemPriceDetailAdjustmentImpl2.setOrderItemPriceDetail(orderItemPriceDetail);
 
     // Act and Assert
-    assertNull(orderItemPriceDetailAdjustmentImpl.getCurrencyCode());
-  }
-
-  /**
-   * Test {@link OrderItemPriceDetailAdjustmentImpl#isFutureCredit()}.
-   * <p>
-   * Method under test:
-   * {@link OrderItemPriceDetailAdjustmentImpl#isFutureCredit()}
-   */
-  @Test
-  public void testIsFutureCredit() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
-    orderItemPriceDetailAdjustmentImpl.setAppliedToSalePrice(true);
-    orderItemPriceDetailAdjustmentImpl.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
-    orderItemPriceDetailAdjustmentImpl.setOfferName("Offer Name");
-    orderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(new OrderItemPriceDetailImpl());
-    orderItemPriceDetailAdjustmentImpl.setReason("Just cause");
-    orderItemPriceDetailAdjustmentImpl.setRetailPriceValue(new Money());
-    orderItemPriceDetailAdjustmentImpl.setSalesPriceValue(new Money());
-    orderItemPriceDetailAdjustmentImpl.setValue(new Money());
-    orderItemPriceDetailAdjustmentImpl.setFutureCredit(true);
-
-    // Act and Assert
-    assertTrue(orderItemPriceDetailAdjustmentImpl.isFutureCredit());
-  }
-
-  /**
-   * Test {@link OrderItemPriceDetailAdjustmentImpl#isFutureCredit()}.
-   * <p>
-   * Method under test:
-   * {@link OrderItemPriceDetailAdjustmentImpl#isFutureCredit()}
-   */
-  @Test
-  public void testIsFutureCredit2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
-    orderItemPriceDetailAdjustmentImpl.setAppliedToSalePrice(true);
-    orderItemPriceDetailAdjustmentImpl.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
-    orderItemPriceDetailAdjustmentImpl.setOfferName("Offer Name");
-    orderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(mock(OrderItemPriceDetailImpl.class));
-    orderItemPriceDetailAdjustmentImpl.setReason("Just cause");
-    orderItemPriceDetailAdjustmentImpl.setRetailPriceValue(new Money());
-    orderItemPriceDetailAdjustmentImpl.setSalesPriceValue(new Money());
-    orderItemPriceDetailAdjustmentImpl.setValue(new Money());
-    orderItemPriceDetailAdjustmentImpl.setFutureCredit(true);
-
-    // Act and Assert
-    assertTrue(orderItemPriceDetailAdjustmentImpl.isFutureCredit());
-  }
-
-  /**
-   * Test {@link OrderItemPriceDetailAdjustmentImpl#isFutureCredit()}.
-   * <p>
-   * Method under test:
-   * {@link OrderItemPriceDetailAdjustmentImpl#isFutureCredit()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testIsFutureCredit3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4560 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OrderItemPriceDetailAdjustmentImpl()).isFutureCredit();
+    assertNull(orderItemPriceDetailAdjustmentImpl2.getCurrencyCode());
   }
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#isFutureCredit()}.
    * <ul>
-   *   <li>Given {@link OrderItemPriceDetailAdjustmentImpl} (default
-   * constructor).</li>
+   *   <li>Given {@link OrderItemPriceDetailAdjustmentImpl} (default constructor).</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderItemPriceDetailAdjustmentImpl#isFutureCredit()}
+   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#isFutureCredit()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderItemPriceDetailAdjustmentImpl.isFutureCredit()"})
   public void testIsFutureCredit_givenOrderItemPriceDetailAdjustmentImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertFalse((new OrderItemPriceDetailAdjustmentImpl()).isFutureCredit());
   }
 
   /**
-   * Test {@link OrderItemPriceDetailAdjustmentImpl#setFutureCredit(boolean)}.
-   * <p>
-   * Method under test:
-   * {@link OrderItemPriceDetailAdjustmentImpl#setFutureCredit(boolean)}
-   */
-  @Test
-  public void testSetFutureCredit() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
-    orderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(mock(OrderItemPriceDetailImpl.class));
-
-    // Act
-    orderItemPriceDetailAdjustmentImpl.setFutureCredit(true);
-
-    // Assert
-    assertTrue(orderItemPriceDetailAdjustmentImpl.isFutureCredit);
-  }
-
-  /**
-   * Test {@link OrderItemPriceDetailAdjustmentImpl#setFutureCredit(boolean)}.
-   * <p>
-   * Method under test:
-   * {@link OrderItemPriceDetailAdjustmentImpl#setFutureCredit(boolean)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetFutureCredit2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4571 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new OrderItemPriceDetailAdjustmentImpl()).setFutureCredit(true);
-  }
-
-  /**
-   * Test {@link OrderItemPriceDetailAdjustmentImpl#setFutureCredit(boolean)}.
+   * Test {@link OrderItemPriceDetailAdjustmentImpl#isFutureCredit()}.
    * <ul>
-   *   <li>Given {@link OrderItemPriceDetailAdjustmentImpl} (default
-   * constructor).</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link OrderItemPriceDetailAdjustmentImpl#setFutureCredit(boolean)}
+   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#isFutureCredit()}
    */
   @Test
-  public void testSetFutureCredit_givenOrderItemPriceDetailAdjustmentImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderItemPriceDetailAdjustmentImpl.isFutureCredit()"})
+  public void testIsFutureCredit_thenReturnTrue() {
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
+    orderItemPriceDetailAdjustmentImpl2.setAppliedToSalePrice(true);
+    orderItemPriceDetailAdjustmentImpl2.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+    orderItemPriceDetailAdjustmentImpl2.setOfferName("Offer Name");
+    orderItemPriceDetailAdjustmentImpl2.setOrderItemPriceDetail(new OrderItemPriceDetailImpl());
+    orderItemPriceDetailAdjustmentImpl2.setReason("Just cause");
+    orderItemPriceDetailAdjustmentImpl2.setRetailPriceValue(new Money());
+    orderItemPriceDetailAdjustmentImpl2.setSalesPriceValue(new Money());
+    orderItemPriceDetailAdjustmentImpl2.setValue(new Money());
+    orderItemPriceDetailAdjustmentImpl2.setFutureCredit(true);
 
-    // Act
-    orderItemPriceDetailAdjustmentImpl.setFutureCredit(true);
-
-    // Assert
-    assertTrue(orderItemPriceDetailAdjustmentImpl.isFutureCredit);
+    // Act and Assert
+    assertTrue(orderItemPriceDetailAdjustmentImpl2.isFutureCredit());
   }
 
   /**
-   * Test {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}, and
-   * {@link OrderItemPriceDetailAdjustmentImpl#hashCode()}.
+   * Test {@link OrderItemPriceDetailAdjustmentImpl#setFutureCredit(boolean)}.
+   * <p>
+   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#setFutureCredit(boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OrderItemPriceDetailAdjustmentImpl.setFutureCredit(boolean)"})
+  public void testSetFutureCredit() {
+    // Arrange
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
+
+    // Act
+    orderItemPriceDetailAdjustmentImpl2.setFutureCredit(true);
+
+    // Assert
+    assertTrue(orderItemPriceDetailAdjustmentImpl2.isFutureCredit);
+  }
+
+  /**
+   * Test {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}, and {@link OrderItemPriceDetailAdjustmentImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -2361,6 +1507,9 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderItemPriceDetailAdjustmentImpl.equals(Object)",
+      "int OrderItemPriceDetailAdjustmentImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
@@ -2392,8 +1541,7 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
   }
 
   /**
-   * Test {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}, and
-   * {@link OrderItemPriceDetailAdjustmentImpl#hashCode()}.
+   * Test {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}, and {@link OrderItemPriceDetailAdjustmentImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -2406,14 +1554,17 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderItemPriceDetailAdjustmentImpl.equals(Object)",
+      "int OrderItemPriceDetailAdjustmentImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
     orderItemPriceDetailAdjustmentImpl.setAppliedToSalePrice(true);
     orderItemPriceDetailAdjustmentImpl.setFutureCredit(true);
-    orderItemPriceDetailAdjustmentImpl.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+    orderItemPriceDetailAdjustmentImpl.setId(null);
     orderItemPriceDetailAdjustmentImpl.setOfferName("Offer Name");
-    orderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(mock(OrderItemPriceDetail.class));
+    orderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(null);
     orderItemPriceDetailAdjustmentImpl.setReason("Just cause");
     orderItemPriceDetailAdjustmentImpl.setRetailPriceValue(new Money());
     orderItemPriceDetailAdjustmentImpl.setSalesPriceValue(new Money());
@@ -2424,7 +1575,7 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     orderItemPriceDetailAdjustmentImpl2.setFutureCredit(true);
     orderItemPriceDetailAdjustmentImpl2.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
     orderItemPriceDetailAdjustmentImpl2.setOfferName("Offer Name");
-    orderItemPriceDetailAdjustmentImpl2.setOrderItemPriceDetail(new OrderItemPriceDetailImpl());
+    orderItemPriceDetailAdjustmentImpl2.setOrderItemPriceDetail(null);
     orderItemPriceDetailAdjustmentImpl2.setReason("Just cause");
     orderItemPriceDetailAdjustmentImpl2.setRetailPriceValue(new Money());
     orderItemPriceDetailAdjustmentImpl2.setSalesPriceValue(new Money());
@@ -2432,13 +1583,12 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
 
     // Act and Assert
     assertEquals(orderItemPriceDetailAdjustmentImpl, orderItemPriceDetailAdjustmentImpl2);
-    int notExpectedHashCodeResult = orderItemPriceDetailAdjustmentImpl.hashCode();
-    assertNotEquals(notExpectedHashCodeResult, orderItemPriceDetailAdjustmentImpl2.hashCode());
+    int expectedHashCodeResult = orderItemPriceDetailAdjustmentImpl.hashCode();
+    assertEquals(expectedHashCodeResult, orderItemPriceDetailAdjustmentImpl2.hashCode());
   }
 
   /**
-   * Test {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}, and
-   * {@link OrderItemPriceDetailAdjustmentImpl#hashCode()}.
+   * Test {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}, and {@link OrderItemPriceDetailAdjustmentImpl#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -2451,6 +1601,9 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderItemPriceDetailAdjustmentImpl.equals(Object)",
+      "int OrderItemPriceDetailAdjustmentImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
@@ -2480,6 +1633,9 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
    * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderItemPriceDetailAdjustmentImpl.equals(Object)",
+      "int OrderItemPriceDetailAdjustmentImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
@@ -2518,6 +1674,9 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
    * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderItemPriceDetailAdjustmentImpl.equals(Object)",
+      "int OrderItemPriceDetailAdjustmentImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
@@ -2556,6 +1715,9 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
    * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderItemPriceDetailAdjustmentImpl.equals(Object)",
+      "int OrderItemPriceDetailAdjustmentImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
@@ -2594,6 +1756,9 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
    * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderItemPriceDetailAdjustmentImpl.equals(Object)",
+      "int OrderItemPriceDetailAdjustmentImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
@@ -2625,6 +1790,173 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}.
    * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderItemPriceDetailAdjustmentImpl.equals(Object)",
+      "int OrderItemPriceDetailAdjustmentImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
+    // Arrange
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
+    orderItemPriceDetailAdjustmentImpl.setAppliedToSalePrice(true);
+    orderItemPriceDetailAdjustmentImpl.setFutureCredit(false);
+    orderItemPriceDetailAdjustmentImpl.setId(null);
+    orderItemPriceDetailAdjustmentImpl.setOfferName("Offer Name");
+    orderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(null);
+    orderItemPriceDetailAdjustmentImpl.setReason("Just cause");
+    orderItemPriceDetailAdjustmentImpl.setRetailPriceValue(new Money());
+    orderItemPriceDetailAdjustmentImpl.setSalesPriceValue(new Money());
+    orderItemPriceDetailAdjustmentImpl.setValue(new Money());
+
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
+    orderItemPriceDetailAdjustmentImpl2.setAppliedToSalePrice(true);
+    orderItemPriceDetailAdjustmentImpl2.setFutureCredit(true);
+    orderItemPriceDetailAdjustmentImpl2.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+    orderItemPriceDetailAdjustmentImpl2.setOfferName("Offer Name");
+    orderItemPriceDetailAdjustmentImpl2.setOrderItemPriceDetail(null);
+    orderItemPriceDetailAdjustmentImpl2.setReason("Just cause");
+    orderItemPriceDetailAdjustmentImpl2.setRetailPriceValue(new Money());
+    orderItemPriceDetailAdjustmentImpl2.setSalesPriceValue(new Money());
+    orderItemPriceDetailAdjustmentImpl2.setValue(new Money());
+
+    // Act and Assert
+    assertNotEquals(orderItemPriceDetailAdjustmentImpl, orderItemPriceDetailAdjustmentImpl2);
+  }
+
+  /**
+   * Test {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderItemPriceDetailAdjustmentImpl.equals(Object)",
+      "int OrderItemPriceDetailAdjustmentImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
+    // Arrange
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
+    orderItemPriceDetailAdjustmentImpl.setAppliedToSalePrice(true);
+    orderItemPriceDetailAdjustmentImpl.setFutureCredit(true);
+    orderItemPriceDetailAdjustmentImpl.setId(null);
+    orderItemPriceDetailAdjustmentImpl.setOfferName("Offer Name");
+    orderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(null);
+    orderItemPriceDetailAdjustmentImpl.setReason("Reason");
+    orderItemPriceDetailAdjustmentImpl.setRetailPriceValue(new Money());
+    orderItemPriceDetailAdjustmentImpl.setSalesPriceValue(new Money());
+    orderItemPriceDetailAdjustmentImpl.setValue(new Money());
+
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
+    orderItemPriceDetailAdjustmentImpl2.setAppliedToSalePrice(true);
+    orderItemPriceDetailAdjustmentImpl2.setFutureCredit(true);
+    orderItemPriceDetailAdjustmentImpl2.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+    orderItemPriceDetailAdjustmentImpl2.setOfferName("Offer Name");
+    orderItemPriceDetailAdjustmentImpl2.setOrderItemPriceDetail(null);
+    orderItemPriceDetailAdjustmentImpl2.setReason("Just cause");
+    orderItemPriceDetailAdjustmentImpl2.setRetailPriceValue(new Money());
+    orderItemPriceDetailAdjustmentImpl2.setSalesPriceValue(new Money());
+    orderItemPriceDetailAdjustmentImpl2.setValue(new Money());
+
+    // Act and Assert
+    assertNotEquals(orderItemPriceDetailAdjustmentImpl, orderItemPriceDetailAdjustmentImpl2);
+  }
+
+  /**
+   * Test {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderItemPriceDetailAdjustmentImpl.equals(Object)",
+      "int OrderItemPriceDetailAdjustmentImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
+    // Arrange
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
+    orderItemPriceDetailAdjustmentImpl.setAppliedToSalePrice(true);
+    orderItemPriceDetailAdjustmentImpl.setFutureCredit(true);
+    orderItemPriceDetailAdjustmentImpl.setId(null);
+    orderItemPriceDetailAdjustmentImpl.setOfferName("Offer Name");
+    orderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(null);
+    orderItemPriceDetailAdjustmentImpl.setReason("Just cause");
+    orderItemPriceDetailAdjustmentImpl.setRetailPriceValue(new Money());
+    orderItemPriceDetailAdjustmentImpl.setSalesPriceValue(new Money());
+    orderItemPriceDetailAdjustmentImpl.setValue(new Money(10.0d));
+
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
+    orderItemPriceDetailAdjustmentImpl2.setAppliedToSalePrice(true);
+    orderItemPriceDetailAdjustmentImpl2.setFutureCredit(true);
+    orderItemPriceDetailAdjustmentImpl2.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+    orderItemPriceDetailAdjustmentImpl2.setOfferName("Offer Name");
+    orderItemPriceDetailAdjustmentImpl2.setOrderItemPriceDetail(null);
+    orderItemPriceDetailAdjustmentImpl2.setReason("Just cause");
+    orderItemPriceDetailAdjustmentImpl2.setRetailPriceValue(new Money());
+    orderItemPriceDetailAdjustmentImpl2.setSalesPriceValue(new Money());
+    orderItemPriceDetailAdjustmentImpl2.setValue(new Money());
+
+    // Act and Assert
+    assertNotEquals(orderItemPriceDetailAdjustmentImpl, orderItemPriceDetailAdjustmentImpl2);
+  }
+
+  /**
+   * Test {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderItemPriceDetailAdjustmentImpl.equals(Object)",
+      "int OrderItemPriceDetailAdjustmentImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual8() {
+    // Arrange
+    Money value = mock(Money.class);
+    when(value.getAmount()).thenReturn(null);
+
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
+    orderItemPriceDetailAdjustmentImpl.setAppliedToSalePrice(true);
+    orderItemPriceDetailAdjustmentImpl.setFutureCredit(true);
+    orderItemPriceDetailAdjustmentImpl.setId(null);
+    orderItemPriceDetailAdjustmentImpl.setOfferName("Offer Name");
+    orderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(null);
+    orderItemPriceDetailAdjustmentImpl.setReason("Just cause");
+    orderItemPriceDetailAdjustmentImpl.setRetailPriceValue(new Money());
+    orderItemPriceDetailAdjustmentImpl.setSalesPriceValue(new Money());
+    orderItemPriceDetailAdjustmentImpl.setValue(value);
+
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
+    orderItemPriceDetailAdjustmentImpl2.setAppliedToSalePrice(true);
+    orderItemPriceDetailAdjustmentImpl2.setFutureCredit(true);
+    orderItemPriceDetailAdjustmentImpl2.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+    orderItemPriceDetailAdjustmentImpl2.setOfferName("Offer Name");
+    orderItemPriceDetailAdjustmentImpl2.setOrderItemPriceDetail(null);
+    orderItemPriceDetailAdjustmentImpl2.setReason("Just cause");
+    orderItemPriceDetailAdjustmentImpl2.setRetailPriceValue(new Money());
+    orderItemPriceDetailAdjustmentImpl2.setSalesPriceValue(new Money());
+    orderItemPriceDetailAdjustmentImpl2.setValue(new Money());
+
+    // Act and Assert
+    assertNotEquals(orderItemPriceDetailAdjustmentImpl, orderItemPriceDetailAdjustmentImpl2);
+  }
+
+  /**
+   * Test {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}.
+   * <ul>
    *   <li>When other is {@code null}.</li>
    *   <li>Then return not equal.</li>
    * </ul>
@@ -2632,6 +1964,9 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
    * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderItemPriceDetailAdjustmentImpl.equals(Object)",
+      "int OrderItemPriceDetailAdjustmentImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
@@ -2659,6 +1994,9 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
    * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderItemPriceDetailAdjustmentImpl.equals(Object)",
+      "int OrderItemPriceDetailAdjustmentImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
@@ -2677,25 +2015,24 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link OrderItemPriceDetailAdjustmentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * Test {@link OrderItemPriceDetailAdjustmentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <p>
-   * Method under test:
-   * {@link OrderItemPriceDetailAdjustmentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "CreateResponse OrderItemPriceDetailAdjustmentImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
     CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
 
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<OrderItemPriceDetailAdjustment> actualCreateOrRetrieveCopyInstanceResult = orderItemPriceDetailAdjustmentImpl
+    CreateResponse<OrderItemPriceDetailAdjustment> actualCreateOrRetrieveCopyInstanceResult = orderItemPriceDetailAdjustmentImpl2
         .createOrRetrieveCopyInstance(context);
 
     // Assert
@@ -2704,55 +2041,14 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link OrderItemPriceDetailAdjustmentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <p>
-   * Method under test:
-   * {@link OrderItemPriceDetailAdjustmentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4360 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
-    CatalogImpl fromCatalog = new CatalogImpl();
-    CatalogImpl toCatalog = new CatalogImpl();
-    SiteImpl fromSite = new SiteImpl();
-    SiteImpl toSite = new SiteImpl();
-    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
-
-    // Act
-    orderItemPriceDetailAdjustmentImpl2.createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog,
-        fromSite, toSite, genericEntityService, new MultiTenantCopierExtensionManager()));
-  }
-
-  /**
    * Test new {@link OrderItemPriceDetailAdjustmentImpl} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link OrderItemPriceDetailAdjustmentImpl}
+   * Method under test: default or parameterless constructor of {@link OrderItemPriceDetailAdjustmentImpl}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OrderItemPriceDetailAdjustmentImpl.<init>()"})
   public void testNewOrderItemPriceDetailAdjustmentImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange and Act
     OrderItemPriceDetailAdjustmentImpl actualOrderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
 
@@ -2769,35 +2065,5 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     assertFalse(actualOrderItemPriceDetailAdjustmentImpl.isAppliedToSalePrice());
     assertFalse(actualOrderItemPriceDetailAdjustmentImpl.isFutureCredit);
     assertEquals(new BigDecimal("0.00"), actualOrderItemPriceDetailAdjustmentImpl.value);
-  }
-
-  /**
-   * Test new {@link OrderItemPriceDetailAdjustmentImpl} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link OrderItemPriceDetailAdjustmentImpl}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testNewOrderItemPriceDetailAdjustmentImpl2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.offer.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4359 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    new OrderItemPriceDetailAdjustmentImpl();
   }
 }

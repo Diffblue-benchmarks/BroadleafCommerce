@@ -1,8 +1,28 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.search.service.solr.indexer;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class CatalogReindexCommandDiffblueTest {
   /**
@@ -15,6 +35,8 @@ public class CatalogReindexCommandDiffblueTest {
    * Method under test: {@link CatalogReindexCommand#CatalogReindexCommand(Long)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CatalogReindexCommand.<init>(Long)"})
   public void testNewCatalogReindexCommand_whenOne_thenReturnCatalogIdLongValueIsOne() {
     // Arrange, Act and Assert
     assertEquals(1L, (new CatalogReindexCommand(1L)).getCatalogId().longValue());
@@ -26,14 +48,15 @@ public class CatalogReindexCommandDiffblueTest {
    * Method under test: {@link CatalogReindexCommand#getCatalogId()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long CatalogReindexCommand.getCatalogId()"})
   public void testGetCatalogId() {
     // Arrange, Act and Assert
     assertEquals(1L, (new CatalogReindexCommand(1L)).getCatalogId().longValue());
   }
 
   /**
-   * Test {@link CatalogReindexCommand#equals(Object)}, and
-   * {@link CatalogReindexCommand#hashCode()}.
+   * Test {@link CatalogReindexCommand#equals(Object)}, and {@link CatalogReindexCommand#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -46,6 +69,8 @@ public class CatalogReindexCommandDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CatalogReindexCommand.equals(Object)", "int CatalogReindexCommand.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     CatalogReindexCommand catalogReindexCommand = new CatalogReindexCommand(1L);
@@ -58,8 +83,7 @@ public class CatalogReindexCommandDiffblueTest {
   }
 
   /**
-   * Test {@link CatalogReindexCommand#equals(Object)}, and
-   * {@link CatalogReindexCommand#hashCode()}.
+   * Test {@link CatalogReindexCommand#equals(Object)}, and {@link CatalogReindexCommand#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -72,6 +96,8 @@ public class CatalogReindexCommandDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CatalogReindexCommand.equals(Object)", "int CatalogReindexCommand.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     CatalogReindexCommand catalogReindexCommand = new CatalogReindexCommand(1L);
@@ -92,6 +118,8 @@ public class CatalogReindexCommandDiffblueTest {
    * Method under test: {@link CatalogReindexCommand#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CatalogReindexCommand.equals(Object)", "int CatalogReindexCommand.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     CatalogReindexCommand catalogReindexCommand = new CatalogReindexCommand(2L);
@@ -110,6 +138,8 @@ public class CatalogReindexCommandDiffblueTest {
    * Method under test: {@link CatalogReindexCommand#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CatalogReindexCommand.equals(Object)", "int CatalogReindexCommand.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new CatalogReindexCommand(1L), null);
@@ -125,6 +155,8 @@ public class CatalogReindexCommandDiffblueTest {
    * Method under test: {@link CatalogReindexCommand#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CatalogReindexCommand.equals(Object)", "int CatalogReindexCommand.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new CatalogReindexCommand(1L), "Different type to CatalogReindexCommand");

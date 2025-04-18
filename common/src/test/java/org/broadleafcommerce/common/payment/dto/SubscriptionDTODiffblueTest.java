@@ -22,18 +22,22 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Map;
 import org.broadleafcommerce.common.util.BLCFieldUtils;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {SubscriptionDTO.class})
 @RunWith(SpringJUnit4ClassRunner.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class SubscriptionDTODiffblueTest {
   @Autowired
   private SubscriptionDTO<Object> subscriptionDTO;
@@ -56,6 +60,13 @@ public class SubscriptionDTODiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SubscriptionDTO.<init>()", "void SubscriptionDTO.<init>(Object)",
+      "SubscriptionDTO SubscriptionDTO.frequency(String)", "Map SubscriptionDTO.getAdditionalFields()",
+      "String SubscriptionDTO.getFrequency()", "String SubscriptionDTO.getNumberOfInstallments()",
+      "String SubscriptionDTO.getRecurringAmount()", "String SubscriptionDTO.getStartDate()",
+      "SubscriptionDTO SubscriptionDTO.numberOfInstallments(String)",
+      "SubscriptionDTO SubscriptionDTO.recurringAmount(String)", "SubscriptionDTO SubscriptionDTO.startDate(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     SubscriptionDTO<Object> actualSubscriptionDTO = new SubscriptionDTO<>();
@@ -101,6 +112,13 @@ public class SubscriptionDTODiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SubscriptionDTO.<init>()", "void SubscriptionDTO.<init>(Object)",
+      "SubscriptionDTO SubscriptionDTO.frequency(String)", "Map SubscriptionDTO.getAdditionalFields()",
+      "String SubscriptionDTO.getFrequency()", "String SubscriptionDTO.getNumberOfInstallments()",
+      "String SubscriptionDTO.getRecurringAmount()", "String SubscriptionDTO.getStartDate()",
+      "SubscriptionDTO SubscriptionDTO.numberOfInstallments(String)",
+      "SubscriptionDTO SubscriptionDTO.recurringAmount(String)", "SubscriptionDTO SubscriptionDTO.startDate(String)"})
   public void testGettersAndSetters_whenNull_field() {
     // Arrange and Act
     SubscriptionDTO<Object> actualSubscriptionDTO = new SubscriptionDTO<>(BLCFieldUtils.NULL_FIELD);
@@ -131,6 +149,8 @@ public class SubscriptionDTODiffblueTest {
    * Method under test: {@link SubscriptionDTO#done()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object SubscriptionDTO.done()"})
   public void testDone() {
     // Arrange
     SubscriptionDTO<Object> subscriptionDTO = new SubscriptionDTO<>();
@@ -145,6 +165,8 @@ public class SubscriptionDTODiffblueTest {
    * Method under test: {@link SubscriptionDTO#additionalFields(String, Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"SubscriptionDTO SubscriptionDTO.additionalFields(String, Object)"})
   public void testAdditionalFields() {
     // Arrange, Act and Assert
     assertSame(subscriptionDTO, subscriptionDTO.additionalFields("Key", BLCFieldUtils.NULL_FIELD));
@@ -153,13 +175,14 @@ public class SubscriptionDTODiffblueTest {
   /**
    * Test {@link SubscriptionDTO#subscriptionPopulated()}.
    * <ul>
-   *   <li>Given {@link SubscriptionDTO#SubscriptionDTO()} additionalFields
-   * {@code Key} and {@link BLCFieldUtils#NULL_FIELD}.</li>
+   *   <li>Given {@link SubscriptionDTO#SubscriptionDTO()} additionalFields {@code Key} and {@link BLCFieldUtils#NULL_FIELD}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SubscriptionDTO#subscriptionPopulated()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SubscriptionDTO.subscriptionPopulated()"})
   public void testSubscriptionPopulated_givenSubscriptionDTOAdditionalFieldsKeyAndNull_field() {
     // Arrange
     SubscriptionDTO<Object> subscriptionDTO = new SubscriptionDTO<>();
@@ -172,14 +195,15 @@ public class SubscriptionDTODiffblueTest {
   /**
    * Test {@link SubscriptionDTO#subscriptionPopulated()}.
    * <ul>
-   *   <li>Given {@link SubscriptionDTO#SubscriptionDTO()} frequency
-   * {@code Frequency}.</li>
+   *   <li>Given {@link SubscriptionDTO#SubscriptionDTO()} frequency {@code Frequency}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SubscriptionDTO#subscriptionPopulated()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SubscriptionDTO.subscriptionPopulated()"})
   public void testSubscriptionPopulated_givenSubscriptionDTOFrequencyFrequency_thenReturnTrue() {
     // Arrange
     SubscriptionDTO<Object> subscriptionDTO = new SubscriptionDTO<>();
@@ -192,13 +216,14 @@ public class SubscriptionDTODiffblueTest {
   /**
    * Test {@link SubscriptionDTO#subscriptionPopulated()}.
    * <ul>
-   *   <li>Given {@link SubscriptionDTO#SubscriptionDTO()} numberOfInstallments
-   * {@code 42}.</li>
+   *   <li>Given {@link SubscriptionDTO#SubscriptionDTO()} numberOfInstallments {@code 42}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SubscriptionDTO#subscriptionPopulated()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SubscriptionDTO.subscriptionPopulated()"})
   public void testSubscriptionPopulated_givenSubscriptionDTONumberOfInstallments42() {
     // Arrange
     SubscriptionDTO<Object> subscriptionDTO = new SubscriptionDTO<>();
@@ -211,14 +236,15 @@ public class SubscriptionDTODiffblueTest {
   /**
    * Test {@link SubscriptionDTO#subscriptionPopulated()}.
    * <ul>
-   *   <li>Given {@link SubscriptionDTO#SubscriptionDTO()} recurringAmount
-   * {@code 10}.</li>
+   *   <li>Given {@link SubscriptionDTO#SubscriptionDTO()} recurringAmount {@code 10}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SubscriptionDTO#subscriptionPopulated()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SubscriptionDTO.subscriptionPopulated()"})
   public void testSubscriptionPopulated_givenSubscriptionDTORecurringAmount10_thenReturnTrue() {
     // Arrange
     SubscriptionDTO<Object> subscriptionDTO = new SubscriptionDTO<>();
@@ -231,14 +257,15 @@ public class SubscriptionDTODiffblueTest {
   /**
    * Test {@link SubscriptionDTO#subscriptionPopulated()}.
    * <ul>
-   *   <li>Given {@link SubscriptionDTO#SubscriptionDTO()} startDate
-   * {@code 2020-03-01}.</li>
+   *   <li>Given {@link SubscriptionDTO#SubscriptionDTO()} startDate {@code 2020-03-01}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link SubscriptionDTO#subscriptionPopulated()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SubscriptionDTO.subscriptionPopulated()"})
   public void testSubscriptionPopulated_givenSubscriptionDTOStartDate20200301_thenReturnTrue() {
     // Arrange
     SubscriptionDTO<Object> subscriptionDTO = new SubscriptionDTO<>();
@@ -258,6 +285,8 @@ public class SubscriptionDTODiffblueTest {
    * Method under test: {@link SubscriptionDTO#subscriptionPopulated()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SubscriptionDTO.subscriptionPopulated()"})
   public void testSubscriptionPopulated_givenSubscriptionDTO_thenReturnFalse() {
     // Arrange
     SubscriptionDTO<Object> subscriptionDTO = new SubscriptionDTO<>();

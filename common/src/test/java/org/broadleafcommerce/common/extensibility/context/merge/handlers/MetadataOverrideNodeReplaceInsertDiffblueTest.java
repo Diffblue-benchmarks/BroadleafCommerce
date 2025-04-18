@@ -26,12 +26,15 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import javax.imageio.metadata.IIOMetadataNode;
 import org.apache.xerces.impl.xs.opti.DefaultNode;
 import org.broadleafcommerce.common.extensibility.context.merge.handlers.SchemaLocationMergeTest.DummyNode;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,19 +52,19 @@ public class MetadataOverrideNodeReplaceInsertDiffblueTest {
    * Test {@link MetadataOverrideNodeReplaceInsert#checkNode(List, Node[], Node)}.
    * <ul>
    *   <li>Given {@code false}.</li>
-   *   <li>When {@link DummyNode} {@link DefaultNode#isEqualNode(Node)} return
-   * {@code false}.</li>
+   *   <li>When {@link DummyNode} {@link DefaultNode#isEqualNode(Node)} return {@code false}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MetadataOverrideNodeReplaceInsert#checkNode(List, Node[], Node)}
+   * Method under test: {@link MetadataOverrideNodeReplaceInsert#checkNode(List, Node[], Node)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MetadataOverrideNodeReplaceInsert.checkNode(List, Node[], Node)"})
   public void testCheckNode_givenFalse_whenDummyNodeIsEqualNodeReturnFalse_thenReturnFalse() {
     // Arrange
     ArrayList<Node> usedNodes = new ArrayList<>();
-    SchemaLocationMergeTest.DummyNode dummyNode = mock(SchemaLocationMergeTest.DummyNode.class);
+    DummyNode dummyNode = mock(DummyNode.class);
     when(dummyNode.isEqualNode(Mockito.<Node>any())).thenReturn(false);
 
     // Act
@@ -81,14 +84,15 @@ public class MetadataOverrideNodeReplaceInsertDiffblueTest {
    *   <li>Then {@link ArrayList#ArrayList()} size is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link MetadataOverrideNodeReplaceInsert#checkNode(List, Node[], Node)}
+   * Method under test: {@link MetadataOverrideNodeReplaceInsert#checkNode(List, Node[], Node)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MetadataOverrideNodeReplaceInsert.checkNode(List, Node[], Node)"})
   public void testCheckNode_givenTrue_thenArrayListSizeIsOne() {
     // Arrange
     ArrayList<Node> usedNodes = new ArrayList<>();
-    SchemaLocationMergeTest.DummyNode dummyNode = mock(SchemaLocationMergeTest.DummyNode.class);
+    DummyNode dummyNode = mock(DummyNode.class);
     when(dummyNode.isEqualNode(Mockito.<Node>any())).thenReturn(true);
     Node[] primaryNodes = new Node[]{dummyNode};
 
@@ -107,10 +111,11 @@ public class MetadataOverrideNodeReplaceInsertDiffblueTest {
   /**
    * Test new {@link MetadataOverrideNodeReplaceInsert} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link MetadataOverrideNodeReplaceInsert}
+   * Method under test: default or parameterless constructor of {@link MetadataOverrideNodeReplaceInsert}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void MetadataOverrideNodeReplaceInsert.<init>()"})
   public void testNewMetadataOverrideNodeReplaceInsert() {
     // Arrange and Act
     MetadataOverrideNodeReplaceInsert actualMetadataOverrideNodeReplaceInsert = new MetadataOverrideNodeReplaceInsert();

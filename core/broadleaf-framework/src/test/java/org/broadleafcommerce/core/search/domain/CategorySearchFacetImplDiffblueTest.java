@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.search.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -10,6 +27,8 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import org.broadleafcommerce.common.copy.CreateResponse;
 import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
@@ -17,15 +36,14 @@ import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
 import org.broadleafcommerce.common.service.GenericEntityService;
 import org.broadleafcommerce.common.site.domain.CatalogImpl;
 import org.broadleafcommerce.common.site.domain.SiteImpl;
-import org.broadleafcommerce.core.catalog.domain.Category;
 import org.broadleafcommerce.core.catalog.domain.CategoryImpl;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.mockito.Mockito;
 
 public class CategorySearchFacetImplDiffblueTest {
   /**
-   * Test {@link CategorySearchFacetImpl#equals(Object)}, and
-   * {@link CategorySearchFacetImpl#hashCode()}.
+   * Test {@link CategorySearchFacetImpl#equals(Object)}, and {@link CategorySearchFacetImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -38,6 +56,8 @@ public class CategorySearchFacetImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategorySearchFacetImpl.equals(Object)", "int CategorySearchFacetImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     CategorySearchFacetImpl categorySearchFacetImpl = new CategorySearchFacetImpl();
@@ -59,8 +79,7 @@ public class CategorySearchFacetImplDiffblueTest {
   }
 
   /**
-   * Test {@link CategorySearchFacetImpl#equals(Object)}, and
-   * {@link CategorySearchFacetImpl#hashCode()}.
+   * Test {@link CategorySearchFacetImpl#equals(Object)}, and {@link CategorySearchFacetImpl#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -73,6 +92,8 @@ public class CategorySearchFacetImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategorySearchFacetImpl.equals(Object)", "int CategorySearchFacetImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     CategorySearchFacetImpl categorySearchFacetImpl = new CategorySearchFacetImpl();
@@ -97,38 +118,12 @@ public class CategorySearchFacetImplDiffblueTest {
    * Method under test: {@link CategorySearchFacetImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategorySearchFacetImpl.equals(Object)", "int CategorySearchFacetImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     CategorySearchFacetImpl categorySearchFacetImpl = new CategorySearchFacetImpl();
     categorySearchFacetImpl.setCategory(null);
-    categorySearchFacetImpl.setId(1L);
-    categorySearchFacetImpl.setSearchFacet(new SearchFacetImpl());
-    categorySearchFacetImpl.setSequence(new BigDecimal("2.3"));
-
-    CategorySearchFacetImpl categorySearchFacetImpl2 = new CategorySearchFacetImpl();
-    categorySearchFacetImpl2.setCategory(new CategoryImpl());
-    categorySearchFacetImpl2.setId(1L);
-    categorySearchFacetImpl2.setSearchFacet(new SearchFacetImpl());
-    categorySearchFacetImpl2.setSequence(new BigDecimal("2.3"));
-
-    // Act and Assert
-    assertNotEquals(categorySearchFacetImpl, categorySearchFacetImpl2);
-  }
-
-  /**
-   * Test {@link CategorySearchFacetImpl#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategorySearchFacetImpl#equals(Object)}
-   */
-  @Test
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
-    // Arrange
-    CategorySearchFacetImpl categorySearchFacetImpl = new CategorySearchFacetImpl();
-    categorySearchFacetImpl.setCategory(mock(CategoryImpl.class));
     categorySearchFacetImpl.setId(1L);
     categorySearchFacetImpl.setSearchFacet(new SearchFacetImpl());
     categorySearchFacetImpl.setSequence(new BigDecimal("2.3"));
@@ -153,6 +148,8 @@ public class CategorySearchFacetImplDiffblueTest {
    * Method under test: {@link CategorySearchFacetImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategorySearchFacetImpl.equals(Object)", "int CategorySearchFacetImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     CategorySearchFacetImpl categorySearchFacetImpl = new CategorySearchFacetImpl();
@@ -175,6 +172,8 @@ public class CategorySearchFacetImplDiffblueTest {
    * Method under test: {@link CategorySearchFacetImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategorySearchFacetImpl.equals(Object)", "int CategorySearchFacetImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     CategorySearchFacetImpl categorySearchFacetImpl = new CategorySearchFacetImpl();
@@ -188,13 +187,13 @@ public class CategorySearchFacetImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CategorySearchFacetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * Test {@link CategorySearchFacetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <p>
-   * Method under test:
-   * {@link CategorySearchFacetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link CategorySearchFacetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse CategorySearchFacetImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
     // Arrange
     CategorySearchFacetImpl categorySearchFacetImpl = new CategorySearchFacetImpl();
@@ -213,16 +212,16 @@ public class CategorySearchFacetImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CategorySearchFacetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * Test {@link CategorySearchFacetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <ul>
    *   <li>Then Clone return {@link CategorySearchFacetImpl}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CategorySearchFacetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link CategorySearchFacetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse CategorySearchFacetImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance_thenCloneReturnCategorySearchFacetImpl()
       throws CloneNotSupportedException {
     // Arrange
@@ -257,7 +256,7 @@ public class CategorySearchFacetImplDiffblueTest {
    * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link CategorySearchFacetImpl}
-   *   <li>{@link CategorySearchFacetImpl#setCategory(Category)}
+   *   <li>{@link CategorySearchFacetImpl#setCategory(org.broadleafcommerce.core.catalog.domain.Category)}
    *   <li>{@link CategorySearchFacetImpl#setId(Long)}
    *   <li>{@link CategorySearchFacetImpl#setSearchFacet(SearchFacet)}
    *   <li>{@link CategorySearchFacetImpl#setSequence(BigDecimal)}
@@ -268,6 +267,14 @@ public class CategorySearchFacetImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategorySearchFacetImpl.<init>()",
+      "org.broadleafcommerce.core.catalog.domain.Category CategorySearchFacetImpl.getCategory()",
+      "Long CategorySearchFacetImpl.getId()", "SearchFacet CategorySearchFacetImpl.getSearchFacet()",
+      "BigDecimal CategorySearchFacetImpl.getSequence()",
+      "void CategorySearchFacetImpl.setCategory(org.broadleafcommerce.core.catalog.domain.Category)",
+      "void CategorySearchFacetImpl.setId(Long)", "void CategorySearchFacetImpl.setSearchFacet(SearchFacet)",
+      "void CategorySearchFacetImpl.setSequence(BigDecimal)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     CategorySearchFacetImpl actualCategorySearchFacetImpl = new CategorySearchFacetImpl();
@@ -278,12 +285,12 @@ public class CategorySearchFacetImplDiffblueTest {
     actualCategorySearchFacetImpl.setSearchFacet(searchFacet);
     BigDecimal sequence = new BigDecimal("2.3");
     actualCategorySearchFacetImpl.setSequence(sequence);
-    Category actualCategory = actualCategorySearchFacetImpl.getCategory();
+    org.broadleafcommerce.core.catalog.domain.Category actualCategory = actualCategorySearchFacetImpl.getCategory();
     Long actualId = actualCategorySearchFacetImpl.getId();
     SearchFacet actualSearchFacet = actualCategorySearchFacetImpl.getSearchFacet();
     BigDecimal actualSequence = actualCategorySearchFacetImpl.getSequence();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals(1L, actualId.longValue());
     assertEquals(new BigDecimal("2.3"), actualSequence);
     assertSame(sequence, actualSequence);

@@ -21,66 +21,22 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.anyFloat;
-import static org.mockito.Mockito.anyInt;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Currency;
-import javassist.util.proxy.ProxyObjectOutputStream;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mvel2.util.InternalNumber;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.junit.experimental.categories.Category;
 
-@ContextConfiguration(classes = {Money.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class MoneyDiffblueTest {
-  @Autowired
-  private Money money;
-
-  /**
-   * Test {@link Money#getCurrencyCode(BroadleafCurrency)}.
-   * <ul>
-   *   <li>Given {@code GBP}.</li>
-   *   <li>When {@link BroadleafCurrency}
-   * {@link BroadleafCurrency#getCurrencyCode()} return {@code GBP}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Money#getCurrencyCode(BroadleafCurrency)}
-   */
-  @Test
-  public void testGetCurrencyCode_givenGbp_whenBroadleafCurrencyGetCurrencyCodeReturnGbp() {
-    // Arrange
-    BroadleafCurrency blCurrency = mock(BroadleafCurrency.class);
-    when(blCurrency.getCurrencyCode()).thenReturn("GBP");
-
-    // Act
-    String actualCurrencyCode = Money.getCurrencyCode(blCurrency);
-
-    // Assert
-    verify(blCurrency).getCurrencyCode();
-    assertEquals("GBP", actualCurrencyCode);
-  }
-
   /**
    * Test {@link Money#getCurrencyCode(BroadleafCurrency)}.
    * <ul>
@@ -90,6 +46,8 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#getCurrencyCode(BroadleafCurrency)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String Money.getCurrencyCode(BroadleafCurrency)"})
   public void testGetCurrencyCode_thenThrowIllegalArgumentException() {
     // Arrange
     BroadleafCurrency blCurrency = mock(BroadleafCurrency.class);
@@ -110,6 +68,8 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#getCurrencyCode(BroadleafCurrency)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String Money.getCurrencyCode(BroadleafCurrency)"})
   public void testGetCurrencyCode_whenBroadleafCurrencyImpl_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull(Money.getCurrencyCode(new BroadleafCurrencyImpl()));
@@ -125,6 +85,8 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#getCurrencyCode(BroadleafCurrency)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String Money.getCurrencyCode(BroadleafCurrency)"})
   public void testGetCurrencyCode_whenNull_thenReturnGbp() {
     // Arrange, Act and Assert
     assertEquals("GBP", Money.getCurrencyCode(null));
@@ -136,6 +98,8 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#Money()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Money.<init>()"})
   public void testNewMoney() {
     // Arrange and Act
     Money actualMoney = new Money();
@@ -160,6 +124,8 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#Money(int)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Money.<init>(int)"})
   public void testNewMoney2() {
     // Arrange and Act
     Money actualMoney = new Money(10);
@@ -185,6 +151,8 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#Money(int, Currency)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Money.<init>(int, Currency)"})
   public void testNewMoney3() {
     // Arrange, Act and Assert
     assertThrows(IllegalArgumentException.class, () -> new Money(10, (Currency) null));
@@ -197,6 +165,8 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#Money(long)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Money.<init>(long)"})
   public void testNewMoney4() {
     // Arrange and Act
     Money actualMoney = new Money(10L);
@@ -222,6 +192,8 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#Money(long, Currency)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Money.<init>(long, Currency)"})
   public void testNewMoney5() {
     // Arrange, Act and Assert
     assertThrows(IllegalArgumentException.class, () -> new Money(10L, (Currency) null));
@@ -234,6 +206,8 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#Money(BigDecimal, Currency)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Money.<init>(BigDecimal, Currency)"})
   public void testNewMoney6() {
     // Arrange, Act and Assert
     assertThrows(IllegalArgumentException.class, () -> new Money(BankersRounding.ZERO, (Currency) null));
@@ -246,6 +220,8 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#Money(BigDecimal, Currency, int)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Money.<init>(BigDecimal, Currency, int)"})
   public void testNewMoney7() {
     // Arrange, Act and Assert
     assertThrows(IllegalArgumentException.class, () -> new Money(BankersRounding.ZERO, (Currency) null, 1));
@@ -258,185 +234,55 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#Money(Currency)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Money.<init>(Currency)"})
   public void testNewMoney8() {
     // Arrange, Act and Assert
     assertThrows(IllegalArgumentException.class, () -> new Money((Currency) null));
   }
 
   /**
-   * Test {@link Money#Money(int, String)}.
-   * <p>
-   * Method under test: {@link Money#Money(int, String)}
-   */
-  @Test
-  public void testNewMoney9() {
-    // Arrange and Act
-    Money actualMoney = new Money(10, "GBP");
-
-    // Assert
-    Currency currency = actualMoney.getCurrency();
-    assertEquals("British Pound", currency.getDisplayName());
-    assertEquals("GBP", currency.getCurrencyCode());
-    assertEquals("GBP", currency.toString());
-    assertEquals("£", currency.getSymbol());
-    assertEquals(2, currency.getDefaultFractionDigits());
-    assertEquals(826, currency.getNumericCode());
-    BigDecimal expectedAmount = new BigDecimal("10.00");
-    assertEquals(expectedAmount, actualMoney.getAmount());
-    assertEquals(actualMoney, actualMoney.abs());
-    Money expectedZeroResult = actualMoney.ZERO;
-    assertEquals(expectedZeroResult, actualMoney.zero());
-  }
-
-  /**
-   * Test {@link Money#Money(long, String)}.
-   * <p>
-   * Method under test: {@link Money#Money(long, String)}
-   */
-  @Test
-  public void testNewMoney10() {
-    // Arrange and Act
-    Money actualMoney = new Money(10L, "GBP");
-
-    // Assert
-    Currency currency = actualMoney.getCurrency();
-    assertEquals("British Pound", currency.getDisplayName());
-    assertEquals("GBP", currency.getCurrencyCode());
-    assertEquals("GBP", currency.toString());
-    assertEquals("£", currency.getSymbol());
-    assertEquals(2, currency.getDefaultFractionDigits());
-    assertEquals(826, currency.getNumericCode());
-    BigDecimal expectedAmount = new BigDecimal("10.00");
-    assertEquals(expectedAmount, actualMoney.getAmount());
-    assertEquals(actualMoney, actualMoney.abs());
-    Money expectedZeroResult = actualMoney.ZERO;
-    assertEquals(expectedZeroResult, actualMoney.zero());
-  }
-
-  /**
    * Test {@link Money#Money(BigDecimal, BroadleafCurrency)}.
    * <ul>
-   *   <li>Given {@code GBP}.</li>
-   *   <li>Then calls {@link BroadleafCurrency#getCurrencyCode()}.</li>
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
    * </ul>
    * <p>
    * Method under test: {@link Money#Money(BigDecimal, BroadleafCurrency)}
    */
   @Test
-  public void testNewMoney_givenGbp_thenCallsGetCurrencyCode() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Money.<init>(BigDecimal, BroadleafCurrency)"})
+  public void testNewMoney_thenThrowIllegalArgumentException() {
     // Arrange
     BroadleafCurrency blCurrency = mock(BroadleafCurrency.class);
-    when(blCurrency.getCurrencyCode()).thenReturn("GBP");
+    when(blCurrency.getCurrencyCode()).thenThrow(new IllegalArgumentException("foo"));
 
-    // Act
-    Money actualMoney = new Money(BankersRounding.ZERO, blCurrency);
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> new Money(BankersRounding.ZERO, blCurrency));
 
-    // Assert
     verify(blCurrency).getCurrencyCode();
-    assertEquals(actualMoney, actualMoney.abs());
-    assertEquals(actualMoney, actualMoney.zero());
   }
 
   /**
    * Test {@link Money#Money(BigDecimal, BroadleafCurrency, int)}.
    * <ul>
-   *   <li>Given {@code GBP}.</li>
-   *   <li>Then calls {@link BroadleafCurrency#getCurrencyCode()}.</li>
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
    * </ul>
    * <p>
    * Method under test: {@link Money#Money(BigDecimal, BroadleafCurrency, int)}
    */
   @Test
-  public void testNewMoney_givenGbp_thenCallsGetCurrencyCode2() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Money.<init>(BigDecimal, BroadleafCurrency, int)"})
+  public void testNewMoney_thenThrowIllegalArgumentException2() {
     // Arrange
     BroadleafCurrency blCurrency = mock(BroadleafCurrency.class);
-    when(blCurrency.getCurrencyCode()).thenReturn("GBP");
+    when(blCurrency.getCurrencyCode()).thenThrow(new IllegalArgumentException("foo"));
 
-    // Act
-    Money actualMoney = new Money(BankersRounding.ZERO, blCurrency, 1);
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> new Money(BankersRounding.ZERO, blCurrency, 1));
 
-    // Assert
     verify(blCurrency).getCurrencyCode();
-    Money money = actualMoney.ZERO;
-    assertEquals(money, actualMoney.abs());
-    assertEquals(money, actualMoney.zero());
-  }
-
-  /**
-   * Test {@link Money#Money(BigDecimal, BroadleafCurrency, int, RoundingMode)}.
-   * <ul>
-   *   <li>Given {@code GBP}.</li>
-   *   <li>When {@link BroadleafCurrency}
-   * {@link BroadleafCurrency#getCurrencyCode()} return {@code GBP}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link Money#Money(BigDecimal, BroadleafCurrency, int, RoundingMode)}
-   */
-  @Test
-  public void testNewMoney_givenGbp_whenBroadleafCurrencyGetCurrencyCodeReturnGbp() {
-    // Arrange
-    BroadleafCurrency blCurrency = mock(BroadleafCurrency.class);
-    when(blCurrency.getCurrencyCode()).thenReturn("GBP");
-
-    // Act
-    Money actualMoney = new Money(BankersRounding.ZERO, blCurrency, 1, RoundingMode.UP);
-
-    // Assert
-    verify(blCurrency).getCurrencyCode();
-    assertEquals(actualMoney, actualMoney.abs());
-    assertEquals(actualMoney, actualMoney.zero());
-  }
-
-  /**
-   * Test {@link Money#Money(BroadleafCurrency)}.
-   * <ul>
-   *   <li>Given {@code GBP}.</li>
-   *   <li>When {@link BroadleafCurrency}
-   * {@link BroadleafCurrency#getCurrencyCode()} return {@code GBP}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Money#Money(BroadleafCurrency)}
-   */
-  @Test
-  public void testNewMoney_givenGbp_whenBroadleafCurrencyGetCurrencyCodeReturnGbp2() {
-    // Arrange
-    BroadleafCurrency blCurrency = mock(BroadleafCurrency.class);
-    when(blCurrency.getCurrencyCode()).thenReturn("GBP");
-
-    // Act
-    Money actualMoney = new Money(blCurrency);
-
-    // Assert
-    verify(blCurrency).getCurrencyCode();
-    assertEquals(actualMoney, actualMoney.abs());
-    assertEquals(actualMoney, actualMoney.zero());
-  }
-
-  /**
-   * Test {@link Money#Money(BigDecimal, String)}.
-   * <ul>
-   *   <li>Given {@link BankersRounding#ZERO}.</li>
-   *   <li>When {@link InternalNumber} {@link BigDecimal#setScale(int, int)} return
-   * {@link BankersRounding#ZERO}.</li>
-   *   <li>Then calls {@link BigDecimal#setScale(int, int)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Money#Money(BigDecimal, String)}
-   */
-  @Test
-  public void testNewMoney_givenZero_whenInternalNumberSetScaleReturnZero_thenCallsSetScale() {
-    // Arrange
-    InternalNumber amount = mock(InternalNumber.class);
-    when(amount.setScale(anyInt(), anyInt())).thenReturn(BankersRounding.ZERO);
-
-    // Act
-    Money actualMoney = new Money(amount, "GBP");
-
-    // Assert
-    verify(amount).setScale(eq(2), eq(6));
-    assertEquals(actualMoney, actualMoney.abs());
-    assertEquals(actualMoney, actualMoney.zero());
   }
 
   /**
@@ -445,11 +291,12 @@ public class MoneyDiffblueTest {
    *   <li>Then throw {@link IllegalArgumentException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link Money#Money(BigDecimal, BroadleafCurrency, int, RoundingMode)}
+   * Method under test: {@link Money#Money(BigDecimal, BroadleafCurrency, int, RoundingMode)}
    */
   @Test
-  public void testNewMoney_thenThrowIllegalArgumentException() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Money.<init>(BigDecimal, BroadleafCurrency, int, RoundingMode)"})
+  public void testNewMoney_thenThrowIllegalArgumentException3() {
     // Arrange
     BroadleafCurrency blCurrency = mock(BroadleafCurrency.class);
     when(blCurrency.getCurrencyCode()).thenThrow(new IllegalArgumentException("foo"));
@@ -469,7 +316,9 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#Money(BroadleafCurrency)}
    */
   @Test
-  public void testNewMoney_thenThrowIllegalArgumentException2() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Money.<init>(BroadleafCurrency)"})
+  public void testNewMoney_thenThrowIllegalArgumentException4() {
     // Arrange
     BroadleafCurrency blCurrency = mock(BroadleafCurrency.class);
     when(blCurrency.getCurrencyCode()).thenThrow(new IllegalArgumentException("foo"));
@@ -480,130 +329,31 @@ public class MoneyDiffblueTest {
   }
 
   /**
-   * Test {@link Money#Money(String)}.
-   * <ul>
-   *   <li>When {@code 10}.</li>
-   *   <li>Then return Currency DisplayName is {@code British Pound}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Money#Money(String)}
-   */
-  @Test
-  public void testNewMoney_when10_thenReturnCurrencyDisplayNameIsBritishPound() {
-    // Arrange and Act
-    Money actualMoney = new Money("10");
-
-    // Assert
-    Currency currency = actualMoney.getCurrency();
-    assertEquals("British Pound", currency.getDisplayName());
-    assertEquals("GBP", currency.getCurrencyCode());
-    assertEquals("GBP", currency.toString());
-    assertEquals("£", currency.getSymbol());
-    assertEquals(2, currency.getDefaultFractionDigits());
-    assertEquals(826, currency.getNumericCode());
-    BigDecimal expectedAmount = new BigDecimal("10.00");
-    assertEquals(expectedAmount, actualMoney.getAmount());
-    assertEquals(actualMoney, actualMoney.abs());
-    Money expectedZeroResult = actualMoney.ZERO;
-    assertEquals(expectedZeroResult, actualMoney.zero());
-  }
-
-  /**
-   * Test {@link Money#Money(String, String)}.
-   * <ul>
-   *   <li>When {@code 10}.</li>
-   *   <li>Then return Currency DisplayName is {@code British Pound}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Money#Money(String, String)}
-   */
-  @Test
-  public void testNewMoney_when10_thenReturnCurrencyDisplayNameIsBritishPound2() {
-    // Arrange and Act
-    Money actualMoney = new Money("10", "GBP");
-
-    // Assert
-    Currency currency = actualMoney.getCurrency();
-    assertEquals("British Pound", currency.getDisplayName());
-    assertEquals("GBP", currency.getCurrencyCode());
-    assertEquals("GBP", currency.toString());
-    assertEquals("£", currency.getSymbol());
-    assertEquals(2, currency.getDefaultFractionDigits());
-    assertEquals(826, currency.getNumericCode());
-    BigDecimal expectedAmount = new BigDecimal("10.00");
-    assertEquals(expectedAmount, actualMoney.getAmount());
-    assertEquals(actualMoney, actualMoney.abs());
-    Money expectedZeroResult = actualMoney.ZERO;
-    assertEquals(expectedZeroResult, actualMoney.zero());
-  }
-
-  /**
-   * Test {@link Money#Money(String, Currency)}.
-   * <ul>
-   *   <li>When {@code 10}.</li>
-   *   <li>Then throw {@link IllegalArgumentException}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Money#Money(String, Currency)}
-   */
-  @Test
-  public void testNewMoney_when10_thenThrowIllegalArgumentException() {
-    // Arrange, Act and Assert
-    assertThrows(IllegalArgumentException.class, () -> new Money("10", (Currency) null));
-
-  }
-
-  /**
    * Test {@link Money#Money(BigDecimal, BroadleafCurrency)}.
    * <ul>
    *   <li>When {@code null}.</li>
+   *   <li>Then return Currency DisplayName is {@code British Pound}.</li>
    * </ul>
    * <p>
    * Method under test: {@link Money#Money(BigDecimal, BroadleafCurrency)}
    */
   @Test
-  public void testNewMoney_whenNull() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Money.<init>(BigDecimal, BroadleafCurrency)"})
+  public void testNewMoney_whenNull_thenReturnCurrencyDisplayNameIsBritishPound() {
     // Arrange and Act
     Money actualMoney = new Money(BankersRounding.ZERO, (BroadleafCurrency) null);
 
     // Assert
-    assertEquals(actualMoney, actualMoney.abs());
-    assertEquals(actualMoney, actualMoney.zero());
-  }
-
-  /**
-   * Test {@link Money#Money(BigDecimal, BroadleafCurrency, int, RoundingMode)}.
-   * <ul>
-   *   <li>When {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link Money#Money(BigDecimal, BroadleafCurrency, int, RoundingMode)}
-   */
-  @Test
-  public void testNewMoney_whenNull2() {
-    // Arrange and Act
-    Money actualMoney = new Money(BankersRounding.ZERO, null, 1, RoundingMode.UP);
-
-    // Assert
-    assertEquals(actualMoney, actualMoney.abs());
-    assertEquals(actualMoney, actualMoney.zero());
-  }
-
-  /**
-   * Test {@link Money#Money(BroadleafCurrency)}.
-   * <ul>
-   *   <li>When {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Money#Money(BroadleafCurrency)}
-   */
-  @Test
-  public void testNewMoney_whenNull3() {
-    // Arrange and Act
-    Money actualMoney = new Money((BroadleafCurrency) null);
-
-    // Assert
+    Currency currency = actualMoney.getCurrency();
+    assertEquals("British Pound", currency.getDisplayName());
+    assertEquals("GBP", currency.getCurrencyCode());
+    assertEquals("GBP", currency.toString());
+    assertEquals("£", currency.getSymbol());
+    assertEquals(2, currency.getDefaultFractionDigits());
+    assertEquals(826, currency.getNumericCode());
+    BigDecimal expectedAmount = new BigDecimal("0.00");
+    assertEquals(expectedAmount, actualMoney.getAmount());
     assertEquals(actualMoney, actualMoney.abs());
     assertEquals(actualMoney, actualMoney.zero());
   }
@@ -612,20 +362,91 @@ public class MoneyDiffblueTest {
    * Test {@link Money#Money(BigDecimal, BroadleafCurrency, int)}.
    * <ul>
    *   <li>When {@code null}.</li>
-   *   <li>Then return abs is {@link Money#ZERO}.</li>
+   *   <li>Then return Currency DisplayName is {@code British Pound}.</li>
    * </ul>
    * <p>
    * Method under test: {@link Money#Money(BigDecimal, BroadleafCurrency, int)}
    */
   @Test
-  public void testNewMoney_whenNull_thenReturnAbsIsZero() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Money.<init>(BigDecimal, BroadleafCurrency, int)"})
+  public void testNewMoney_whenNull_thenReturnCurrencyDisplayNameIsBritishPound2() {
     // Arrange and Act
     Money actualMoney = new Money(BankersRounding.ZERO, (BroadleafCurrency) null, 1);
 
     // Assert
+    Currency currency = actualMoney.getCurrency();
+    assertEquals("British Pound", currency.getDisplayName());
+    assertEquals("GBP", currency.getCurrencyCode());
+    assertEquals("GBP", currency.toString());
+    assertEquals("£", currency.getSymbol());
+    assertEquals(2, currency.getDefaultFractionDigits());
+    assertEquals(826, currency.getNumericCode());
+    BigDecimal expectedAmount = new BigDecimal("0.0");
+    assertEquals(expectedAmount, actualMoney.getAmount());
     Money money = actualMoney.ZERO;
     assertEquals(money, actualMoney.abs());
     assertEquals(money, actualMoney.zero());
+  }
+
+  /**
+   * Test {@link Money#Money(BigDecimal, BroadleafCurrency, int, RoundingMode)}.
+   * <ul>
+   *   <li>When {@code null}.</li>
+   *   <li>Then return Currency DisplayName is {@code British Pound}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link Money#Money(BigDecimal, BroadleafCurrency, int, RoundingMode)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Money.<init>(BigDecimal, BroadleafCurrency, int, RoundingMode)"})
+  public void testNewMoney_whenNull_thenReturnCurrencyDisplayNameIsBritishPound3() {
+    // Arrange and Act
+    Money actualMoney = new Money(BankersRounding.ZERO, null, 1, RoundingMode.UP);
+
+    // Assert
+    Currency currency = actualMoney.getCurrency();
+    assertEquals("British Pound", currency.getDisplayName());
+    assertEquals("GBP", currency.getCurrencyCode());
+    assertEquals("GBP", currency.toString());
+    assertEquals("£", currency.getSymbol());
+    assertEquals(2, currency.getDefaultFractionDigits());
+    assertEquals(826, currency.getNumericCode());
+    BigDecimal expectedAmount = new BigDecimal("0.00");
+    assertEquals(expectedAmount, actualMoney.getAmount());
+    assertEquals(actualMoney, actualMoney.abs());
+    assertEquals(actualMoney, actualMoney.zero());
+  }
+
+  /**
+   * Test {@link Money#Money(BroadleafCurrency)}.
+   * <ul>
+   *   <li>When {@code null}.</li>
+   *   <li>Then return Currency DisplayName is {@code British Pound}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link Money#Money(BroadleafCurrency)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Money.<init>(BroadleafCurrency)"})
+  public void testNewMoney_whenNull_thenReturnCurrencyDisplayNameIsBritishPound4() {
+    // Arrange and Act
+    Money actualMoney = new Money((BroadleafCurrency) null);
+
+    // Assert
+    Currency currency = actualMoney.getCurrency();
+    assertEquals("British Pound", currency.getDisplayName());
+    assertEquals("GBP", currency.getCurrencyCode());
+    assertEquals("GBP", currency.toString());
+    assertEquals("£", currency.getSymbol());
+    assertEquals(2, currency.getDefaultFractionDigits());
+    assertEquals(826, currency.getNumericCode());
+    BigDecimal expectedAmount = new BigDecimal("0.00");
+    assertEquals(expectedAmount, actualMoney.getAmount());
+    assertEquals(actualMoney, actualMoney.abs());
+    assertEquals(actualMoney, actualMoney.zero());
   }
 
   /**
@@ -638,38 +459,11 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#Money(double)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Money.<init>(double)"})
   public void testNewMoney_whenTen_thenReturnCurrencyDisplayNameIsBritishPound() {
     // Arrange and Act
     Money actualMoney = new Money(10.0d);
-
-    // Assert
-    Currency currency = actualMoney.getCurrency();
-    assertEquals("British Pound", currency.getDisplayName());
-    assertEquals("GBP", currency.getCurrencyCode());
-    assertEquals("GBP", currency.toString());
-    assertEquals("£", currency.getSymbol());
-    assertEquals(2, currency.getDefaultFractionDigits());
-    assertEquals(826, currency.getNumericCode());
-    BigDecimal expectedAmount = new BigDecimal("10.00");
-    assertEquals(expectedAmount, actualMoney.getAmount());
-    assertEquals(actualMoney, actualMoney.abs());
-    Money expectedZeroResult = actualMoney.ZERO;
-    assertEquals(expectedZeroResult, actualMoney.zero());
-  }
-
-  /**
-   * Test {@link Money#Money(double, String)}.
-   * <ul>
-   *   <li>When ten.</li>
-   *   <li>Then return Currency DisplayName is {@code British Pound}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Money#Money(double, String)}
-   */
-  @Test
-  public void testNewMoney_whenTen_thenReturnCurrencyDisplayNameIsBritishPound2() {
-    // Arrange and Act
-    Money actualMoney = new Money(10.0d, "GBP");
 
     // Assert
     Currency currency = actualMoney.getCurrency();
@@ -696,28 +490,12 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#Money(double, Currency)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Money.<init>(double, Currency)"})
   public void testNewMoney_whenTen_thenThrowIllegalArgumentException() {
     // Arrange, Act and Assert
     assertThrows(IllegalArgumentException.class, () -> new Money(10.0d, (Currency) null));
 
-  }
-
-  /**
-   * Test {@link Money#Money(BigDecimal, String)}.
-   * <ul>
-   *   <li>When {@link BankersRounding#ZERO}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Money#Money(BigDecimal, String)}
-   */
-  @Test
-  public void testNewMoney_whenZero() {
-    // Arrange and Act
-    Money actualMoney = new Money(BankersRounding.ZERO, "GBP");
-
-    // Assert
-    assertEquals(actualMoney, actualMoney.abs());
-    assertEquals(actualMoney, actualMoney.zero());
   }
 
   /**
@@ -730,6 +508,8 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#Money(BigDecimal)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Money.<init>(BigDecimal)"})
   public void testNewMoney_whenZero_thenReturnCurrencyDisplayNameIsBritishPound() {
     // Arrange and Act
     Money actualMoney = new Money(BankersRounding.ZERO);
@@ -759,6 +539,8 @@ public class MoneyDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal Money.getAmount()", "Currency Money.getCurrency()", "String Money.toString()"})
   public void testGettersAndSetters() {
     // Arrange
     Money money = new Money();
@@ -789,6 +571,8 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#add(Money)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money Money.add(Money)"})
   public void testAdd_whenZero_thenReturnZero() {
     // Arrange and Act
     Money actualAddResult = Money.ZERO.add(Money.ZERO);
@@ -798,133 +582,7 @@ public class MoneyDiffblueTest {
   }
 
   /**
-   * Test {@link Money#subtract(Money)}.
-   * <ul>
-   *   <li>When {@link Money#ZERO}.</li>
-   *   <li>Then return {@link Money#ZERO}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Money#subtract(Money)}
-   */
-  @Test
-  public void testSubtract_whenZero_thenReturnZero() {
-    // Arrange and Act
-    Money actualSubtractResult = Money.ZERO.subtract(Money.ZERO);
-
-    // Assert
-    assertEquals(actualSubtractResult.ZERO, actualSubtractResult);
-  }
-
-  /**
-   * Test {@link Money#multiply(BigDecimal, RoundingMode)} with
-   * {@code BigDecimal}, {@code RoundingMode}.
-   * <ul>
-   *   <li>When {@link BankersRounding#ZERO}.</li>
-   *   <li>Then return {@link Money#ZERO}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Money#multiply(BigDecimal, RoundingMode)}
-   */
-  @Test
-  public void testMultiplyWithBigDecimalRoundingMode_whenZero_thenReturnZero() {
-    // Arrange and Act
-    Money actualMultiplyResult = Money.ZERO.multiply(BankersRounding.ZERO, RoundingMode.UP);
-
-    // Assert
-    assertEquals(actualMultiplyResult.ZERO, actualMultiplyResult);
-  }
-
-  /**
-   * Test {@link Money#multiply(BigDecimal)} with {@code BigDecimal}.
-   * <ul>
-   *   <li>When {@link BankersRounding#ZERO}.</li>
-   *   <li>Then return {@link Money#ZERO}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Money#multiply(BigDecimal)}
-   */
-  @Test
-  public void testMultiplyWithBigDecimal_whenZero_thenReturnZero() {
-    // Arrange and Act
-    Money actualMultiplyResult = Money.ZERO.multiply(BankersRounding.ZERO);
-
-    // Assert
-    assertEquals(actualMultiplyResult.ZERO, actualMultiplyResult);
-  }
-
-  /**
-   * Test {@link Money#multiply(double)} with {@code double}.
-   * <ul>
-   *   <li>Given {@link Money#Money()}.</li>
-   *   <li>When ten.</li>
-   *   <li>Then return {@link Money#Money()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Money#multiply(double)}
-   */
-  @Test
-  public void testMultiplyWithDouble_givenMoney_whenTen_thenReturnMoney() {
-    // Arrange
-    Money money = new Money();
-
-    // Act and Assert
-    assertEquals(money, money.multiply(10.0d));
-  }
-
-  /**
-   * Test {@link Money#multiply(double)} with {@code double}.
-   * <ul>
-   *   <li>Given {@link Money#ZERO}.</li>
-   *   <li>When ten.</li>
-   *   <li>Then return {@link Money#ZERO}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Money#multiply(double)}
-   */
-  @Test
-  public void testMultiplyWithDouble_givenZero_whenTen_thenReturnZero() {
-    // Arrange and Act
-    Money actualMultiplyResult = Money.ZERO.multiply(10.0d);
-
-    // Assert
-    assertEquals(actualMultiplyResult.ZERO, actualMultiplyResult);
-  }
-
-  /**
-   * Test {@link Money#multiply(int)} with {@code int}.
-   * <p>
-   * Method under test: {@link Money#multiply(int)}
-   */
-  @Test
-  public void testMultiplyWithInt() {
-    // Arrange and Act
-    Money actualMultiplyResult = Money.ZERO.multiply(10);
-
-    // Assert
-    assertEquals(actualMultiplyResult.ZERO, actualMultiplyResult);
-  }
-
-  /**
-   * Test {@link Money#multiplyWithRounding(int, RoundingMode)}.
-   * <ul>
-   *   <li>When {@code UP}.</li>
-   *   <li>Then return {@link Money#ZERO}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Money#multiplyWithRounding(int, RoundingMode)}
-   */
-  @Test
-  public void testMultiplyWithRounding_whenUp_thenReturnZero() {
-    // Arrange and Act
-    Money actualMultiplyWithRoundingResult = Money.ZERO.multiplyWithRounding(1, RoundingMode.UP);
-
-    // Assert
-    assertEquals(actualMultiplyWithRoundingResult.ZERO, actualMultiplyWithRoundingResult);
-  }
-
-  /**
-   * Test {@link Money#divide(BigDecimal, RoundingMode)} with {@code BigDecimal},
-   * {@code RoundingMode}.
+   * Test {@link Money#divide(BigDecimal, RoundingMode)} with {@code BigDecimal}, {@code RoundingMode}.
    * <ul>
    *   <li>When {@link BigDecimal#BigDecimal(String)} with {@code 2.3}.</li>
    *   <li>Then return {@link Money#ZERO}.</li>
@@ -933,6 +591,8 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#divide(BigDecimal, RoundingMode)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money Money.divide(BigDecimal, RoundingMode)"})
   public void testDivideWithBigDecimalRoundingMode_whenBigDecimalWith23_thenReturnZero() {
     // Arrange and Act
     Money actualDivideResult = Money.ZERO.divide(new BigDecimal("2.3"), RoundingMode.UP);
@@ -951,6 +611,8 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#divide(BigDecimal)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money Money.divide(BigDecimal)"})
   public void testDivideWithBigDecimal_whenBigDecimalWith23_thenReturnZero() {
     // Arrange and Act
     Money actualDivideResult = Money.ZERO.divide(new BigDecimal("2.3"));
@@ -960,8 +622,7 @@ public class MoneyDiffblueTest {
   }
 
   /**
-   * Test {@link Money#divide(double, RoundingMode)} with {@code double},
-   * {@code RoundingMode}.
+   * Test {@link Money#divide(double, RoundingMode)} with {@code double}, {@code RoundingMode}.
    * <ul>
    *   <li>Given {@link Money#Money()}.</li>
    *   <li>When ten.</li>
@@ -971,6 +632,8 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#divide(double, RoundingMode)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money Money.divide(double, RoundingMode)"})
   public void testDivideWithDoubleRoundingMode_givenMoney_whenTen_thenReturnMoney() {
     // Arrange
     Money money = new Money();
@@ -980,8 +643,7 @@ public class MoneyDiffblueTest {
   }
 
   /**
-   * Test {@link Money#divide(double, RoundingMode)} with {@code double},
-   * {@code RoundingMode}.
+   * Test {@link Money#divide(double, RoundingMode)} with {@code double}, {@code RoundingMode}.
    * <ul>
    *   <li>Given {@link Money#ZERO}.</li>
    *   <li>When ten.</li>
@@ -991,6 +653,8 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#divide(double, RoundingMode)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money Money.divide(double, RoundingMode)"})
   public void testDivideWithDoubleRoundingMode_givenZero_whenTen_thenReturnZero() {
     // Arrange and Act
     Money actualDivideResult = Money.ZERO.divide(10.0d, RoundingMode.UP);
@@ -1010,6 +674,8 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#divide(double)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money Money.divide(double)"})
   public void testDivideWithDouble_givenMoney_whenTen_thenReturnMoney() {
     // Arrange
     Money money = new Money();
@@ -1029,6 +695,8 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#divide(double)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money Money.divide(double)"})
   public void testDivideWithDouble_givenZero_whenTen_thenReturnZero() {
     // Arrange and Act
     Money actualDivideResult = Money.ZERO.divide(10.0d);
@@ -1038,8 +706,7 @@ public class MoneyDiffblueTest {
   }
 
   /**
-   * Test {@link Money#divide(int, RoundingMode)} with {@code int},
-   * {@code RoundingMode}.
+   * Test {@link Money#divide(int, RoundingMode)} with {@code int}, {@code RoundingMode}.
    * <ul>
    *   <li>When ten.</li>
    *   <li>Then return {@link Money#ZERO}.</li>
@@ -1048,6 +715,8 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#divide(int, RoundingMode)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money Money.divide(int, RoundingMode)"})
   public void testDivideWithIntRoundingMode_whenTen_thenReturnZero() {
     // Arrange and Act
     Money actualDivideResult = Money.ZERO.divide(10, RoundingMode.UP);
@@ -1066,6 +735,8 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#divide(int)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money Money.divide(int)"})
   public void testDivideWithInt_whenTen_thenReturnZero() {
     // Arrange and Act
     Money actualDivideResult = Money.ZERO.divide(10);
@@ -1080,6 +751,8 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#abs()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money Money.abs()"})
   public void testAbs() {
     // Arrange
     Money money = Money.ZERO;
@@ -1103,326 +776,14 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#abs(Money)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money Money.abs(Money)"})
   public void testAbsWithMoney_whenZero_thenReturnZero() {
     // Arrange and Act
     Money actualAbsResult = Money.abs(Money.ZERO);
 
     // Assert
     assertEquals(actualAbsResult.ZERO, actualAbsResult);
-  }
-
-  /**
-   * Test {@link Money#min(Money, Money)} with {@code left}, {@code right}.
-   * <ul>
-   *   <li>When {@link Money#Money(double)} with amount is ten.</li>
-   *   <li>Then return abs is {@link Money#ZERO}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Money#min(Money, Money)}
-   */
-  @Test
-  public void testMinWithLeftRight_whenMoneyWithAmountIsTen_thenReturnAbsIsZero() {
-    // Arrange and Act
-    Money actualMinResult = Money.min(Money.ZERO, new Money(10.0d));
-
-    // Assert
-    Money money = actualMinResult.ZERO;
-    assertEquals(money, actualMinResult.abs());
-    assertEquals(money, actualMinResult.zero());
-  }
-
-  /**
-   * Test {@link Money#min(Money, Money)} with {@code left}, {@code right}.
-   * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return abs is {@link Money#ZERO}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Money#min(Money, Money)}
-   */
-  @Test
-  public void testMinWithLeftRight_whenNull_thenReturnAbsIsZero() {
-    // Arrange and Act
-    Money actualMinResult = Money.min(Money.ZERO, null);
-
-    // Assert
-    Money money = actualMinResult.ZERO;
-    assertEquals(money, actualMinResult.abs());
-    assertEquals(money, actualMinResult.zero());
-  }
-
-  /**
-   * Test {@link Money#min(Money, Money)} with {@code left}, {@code right}.
-   * <ul>
-   *   <li>When {@link Money#ZERO}.</li>
-   *   <li>Then return abs is {@link Money#ZERO}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Money#min(Money, Money)}
-   */
-  @Test
-  public void testMinWithLeftRight_whenZero_thenReturnAbsIsZero() {
-    // Arrange and Act
-    Money actualMinResult = Money.min(Money.ZERO, Money.ZERO);
-
-    // Assert
-    Money money = actualMinResult.ZERO;
-    assertEquals(money, actualMinResult.abs());
-    assertEquals(money, actualMinResult.zero());
-  }
-
-  /**
-   * Test {@link Money#min(Money)} with {@code other}.
-   * <ul>
-   *   <li>When {@link Money#Money(double)} with amount is ten.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Money#min(Money)}
-   */
-  @Test
-  public void testMinWithOther_whenMoneyWithAmountIsTen() {
-    // Arrange and Act
-    Money actualMinResult = Money.ZERO.min(new Money(10.0d));
-
-    // Assert
-    assertSame(actualMinResult.ZERO, actualMinResult);
-  }
-
-  /**
-   * Test {@link Money#min(Money)} with {@code other}.
-   * <ul>
-   *   <li>When {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Money#min(Money)}
-   */
-  @Test
-  public void testMinWithOther_whenNull() {
-    // Arrange and Act
-    Money actualMinResult = Money.ZERO.min(null);
-
-    // Assert
-    assertSame(actualMinResult.ZERO, actualMinResult);
-  }
-
-  /**
-   * Test {@link Money#min(Money)} with {@code other}.
-   * <ul>
-   *   <li>When {@link Money#ZERO}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Money#min(Money)}
-   */
-  @Test
-  public void testMinWithOther_whenZero() {
-    // Arrange and Act
-    Money actualMinResult = Money.ZERO.min(Money.ZERO);
-
-    // Assert
-    assertSame(actualMinResult.ZERO, actualMinResult);
-  }
-
-  /**
-   * Test {@link Money#max(Money, Money)} with {@code left}, {@code right}.
-   * <ul>
-   *   <li>Then return Amount is {@link BigDecimal#BigDecimal(String)} with
-   * {@code 10.00}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Money#max(Money, Money)}
-   */
-  @Test
-  public void testMaxWithLeftRight_thenReturnAmountIsBigDecimalWith1000() {
-    // Arrange and Act
-    Money actualMaxResult = Money.max(new Money(10.0d), Money.ZERO);
-
-    // Assert
-    BigDecimal expectedAmount = new BigDecimal("10.00");
-    assertEquals(expectedAmount, actualMaxResult.getAmount());
-    assertEquals(actualMaxResult, actualMaxResult.abs());
-    Money expectedZeroResult = actualMaxResult.ZERO;
-    assertEquals(expectedZeroResult, actualMaxResult.zero());
-  }
-
-  /**
-   * Test {@link Money#max(Money, Money)} with {@code left}, {@code right}.
-   * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return abs is {@link Money#ZERO}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Money#max(Money, Money)}
-   */
-  @Test
-  public void testMaxWithLeftRight_whenNull_thenReturnAbsIsZero() {
-    // Arrange and Act
-    Money actualMaxResult = Money.max(Money.ZERO, null);
-
-    // Assert
-    Money money = actualMaxResult.ZERO;
-    assertEquals(money, actualMaxResult.abs());
-    assertEquals(money, actualMaxResult.zero());
-  }
-
-  /**
-   * Test {@link Money#max(Money, Money)} with {@code left}, {@code right}.
-   * <ul>
-   *   <li>When {@link Money#ZERO}.</li>
-   *   <li>Then return abs is {@link Money#ZERO}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Money#max(Money, Money)}
-   */
-  @Test
-  public void testMaxWithLeftRight_whenZero_thenReturnAbsIsZero() {
-    // Arrange and Act
-    Money actualMaxResult = Money.max(Money.ZERO, Money.ZERO);
-
-    // Assert
-    Money money = actualMaxResult.ZERO;
-    assertEquals(money, actualMaxResult.abs());
-    assertEquals(money, actualMaxResult.zero());
-  }
-
-  /**
-   * Test {@link Money#max(Money)} with {@code other}.
-   * <ul>
-   *   <li>Given {@link Money#Money(double)} with amount is ten.</li>
-   *   <li>Then return {@link Money#Money(double)} with amount is ten.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Money#max(Money)}
-   */
-  @Test
-  public void testMaxWithOther_givenMoneyWithAmountIsTen_thenReturnMoneyWithAmountIsTen() {
-    // Arrange
-    Money money = new Money(10.0d);
-
-    // Act and Assert
-    assertSame(money, money.max(Money.ZERO));
-  }
-
-  /**
-   * Test {@link Money#max(Money)} with {@code other}.
-   * <ul>
-   *   <li>Given {@link Money#ZERO}.</li>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return {@link Money#ZERO}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Money#max(Money)}
-   */
-  @Test
-  public void testMaxWithOther_givenZero_whenNull_thenReturnZero() {
-    // Arrange and Act
-    Money actualMaxResult = Money.ZERO.max(null);
-
-    // Assert
-    assertSame(actualMaxResult.ZERO, actualMaxResult);
-  }
-
-  /**
-   * Test {@link Money#max(Money)} with {@code other}.
-   * <ul>
-   *   <li>Given {@link Money#ZERO}.</li>
-   *   <li>When {@link Money#ZERO}.</li>
-   *   <li>Then return {@link Money#ZERO}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Money#max(Money)}
-   */
-  @Test
-  public void testMaxWithOther_givenZero_whenZero_thenReturnZero() {
-    // Arrange and Act
-    Money actualMaxResult = Money.ZERO.max(Money.ZERO);
-
-    // Assert
-    assertSame(actualMaxResult.ZERO, actualMaxResult);
-  }
-
-  /**
-   * Test {@link Money#toAmount(Money)}.
-   * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Money#toAmount(Money)}
-   */
-  @Test
-  public void testToAmount_whenNull_thenReturnNull() {
-    // Arrange, Act and Assert
-    assertNull(Money.toAmount(null));
-  }
-
-  /**
-   * Test {@link Money#toAmount(Money)}.
-   * <ul>
-   *   <li>When {@link Money#ZERO}.</li>
-   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Money#toAmount(Money)}
-   */
-  @Test
-  public void testToAmount_whenZero_thenReturnBigDecimalWith000() {
-    // Arrange and Act
-    BigDecimal actualToAmountResult = Money.toAmount(Money.ZERO);
-
-    // Assert
-    assertEquals(new BigDecimal("0.00"), actualToAmountResult);
-  }
-
-  /**
-   * Test {@link Money#toCurrency(Money)}.
-   * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Money#toCurrency(Money)}
-   */
-  @Test
-  public void testToCurrency_whenNull_thenReturnNull() {
-    // Arrange, Act and Assert
-    assertNull(Money.toCurrency(null));
-  }
-
-  /**
-   * Test {@link Money#toCurrency(Money)}.
-   * <ul>
-   *   <li>When {@link Money#ZERO}.</li>
-   *   <li>Then return DisplayName is {@code British Pound}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Money#toCurrency(Money)}
-   */
-  @Test
-  public void testToCurrency_whenZero_thenReturnDisplayNameIsBritishPound() {
-    // Arrange and Act
-    Currency actualToCurrencyResult = Money.toCurrency(Money.ZERO);
-
-    // Assert
-    assertEquals("British Pound", actualToCurrencyResult.getDisplayName());
-    assertEquals("GBP", actualToCurrencyResult.getCurrencyCode());
-    assertEquals("GBP", actualToCurrencyResult.toString());
-    assertEquals("£", actualToCurrencyResult.getSymbol());
-    assertEquals(2, actualToCurrencyResult.getDefaultFractionDigits());
-    assertEquals(826, actualToCurrencyResult.getNumericCode());
-  }
-
-  /**
-   * Test {@link Money#negate()}.
-   * <p>
-   * Method under test: {@link Money#negate()}
-   */
-  @Test
-  public void testNegate() {
-    // Arrange and Act
-    Money actualNegateResult = Money.ZERO.negate();
-
-    // Assert
-    assertEquals(actualNegateResult.ZERO, actualNegateResult);
   }
 
   /**
@@ -1435,6 +796,8 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#isZero()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Money.isZero()"})
   public void testIsZero_givenMoneyWithAmountIsTen_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse((new Money(10.0d)).isZero());
@@ -1450,67 +813,11 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#isZero()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Money.isZero()"})
   public void testIsZero_givenZero_thenReturnTrue() {
     // Arrange, Act and Assert
     assertTrue(Money.ZERO.isZero());
-  }
-
-  /**
-   * Test {@link Money#zero()}.
-   * <p>
-   * Method under test: {@link Money#zero()}
-   */
-  @Test
-  public void testZero() {
-    // Arrange
-    Money money = Money.ZERO;
-
-    // Act
-    Money actualZeroResult = money.zero();
-
-    // Assert
-    Money money2 = actualZeroResult.ZERO;
-    assertEquals(money2, money.abs());
-    assertEquals(money2, actualZeroResult);
-  }
-
-  /**
-   * Test {@link Money#zero(Currency)} with {@code currency}.
-   * <p>
-   * Method under test: {@link Money#zero(Currency)}
-   */
-  @Test
-  public void testZeroWithCurrency() {
-    // Arrange, Act and Assert
-    assertThrows(IllegalArgumentException.class, () -> Money.zero((Currency) null));
-  }
-
-  /**
-   * Test {@link Money#zero(String)} with {@code currencyCode}.
-   * <ul>
-   *   <li>When {@code GBP}.</li>
-   *   <li>Then return Currency DisplayName is {@code British Pound}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Money#zero(String)}
-   */
-  @Test
-  public void testZeroWithCurrencyCode_whenGbp_thenReturnCurrencyDisplayNameIsBritishPound() {
-    // Arrange and Act
-    Money actualZeroResult = Money.zero("GBP");
-
-    // Assert
-    Currency currency = actualZeroResult.getCurrency();
-    assertEquals("British Pound", currency.getDisplayName());
-    assertEquals("GBP", currency.getCurrencyCode());
-    assertEquals("GBP", currency.toString());
-    assertEquals("£", currency.getSymbol());
-    assertEquals(2, currency.getDefaultFractionDigits());
-    assertEquals(826, currency.getNumericCode());
-    BigDecimal expectedAmount = new BigDecimal("0.00");
-    assertEquals(expectedAmount, actualZeroResult.getAmount());
-    assertEquals(actualZeroResult, actualZeroResult.abs());
-    assertEquals(actualZeroResult, actualZeroResult.zero());
   }
 
   /**
@@ -1523,6 +830,8 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#lessThan(Money)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Money.lessThan(Money)"})
   public void testLessThanWithOther_whenMoneyWithAmountIsTen_thenReturnTrue() {
     // Arrange, Act and Assert
     assertTrue(Money.ZERO.lessThan(new Money(10.0d)));
@@ -1538,6 +847,8 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#lessThan(Money)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Money.lessThan(Money)"})
   public void testLessThanWithOther_whenZero_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse(Money.ZERO.lessThan(Money.ZERO));
@@ -1553,6 +864,8 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#lessThan(BigDecimal)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Money.lessThan(BigDecimal)"})
   public void testLessThanWithValue_whenBigDecimalWith23_thenReturnTrue() {
     // Arrange, Act and Assert
     assertTrue(Money.ZERO.lessThan(new BigDecimal("2.3")));
@@ -1568,41 +881,11 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#lessThan(BigDecimal)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Money.lessThan(BigDecimal)"})
   public void testLessThanWithValue_whenZero_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse(Money.ZERO.lessThan(BankersRounding.ZERO));
-  }
-
-  /**
-   * Test {@link Money#lessThanOrEqual(Money)} with {@code other}.
-   * <ul>
-   *   <li>Given {@link Money#Money(double)} with amount is ten.</li>
-   *   <li>When {@link Money#ZERO}.</li>
-   *   <li>Then return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Money#lessThanOrEqual(Money)}
-   */
-  @Test
-  public void testLessThanOrEqualWithOther_givenMoneyWithAmountIsTen_whenZero_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse((new Money(10.0d)).lessThanOrEqual(Money.ZERO));
-  }
-
-  /**
-   * Test {@link Money#lessThanOrEqual(Money)} with {@code other}.
-   * <ul>
-   *   <li>Given {@link Money#ZERO}.</li>
-   *   <li>When {@link Money#ZERO}.</li>
-   *   <li>Then return {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Money#lessThanOrEqual(Money)}
-   */
-  @Test
-  public void testLessThanOrEqualWithOther_givenZero_whenZero_thenReturnTrue() {
-    // Arrange, Act and Assert
-    assertTrue(Money.ZERO.lessThanOrEqual(Money.ZERO));
   }
 
   /**
@@ -1616,6 +899,8 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#lessThanOrEqual(BigDecimal)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Money.lessThanOrEqual(BigDecimal)"})
   public void testLessThanOrEqualWithValue_givenMoneyWithAmountIsTen_whenZero_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse((new Money(10.0d)).lessThanOrEqual(BankersRounding.ZERO));
@@ -1632,6 +917,8 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#lessThanOrEqual(BigDecimal)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Money.lessThanOrEqual(BigDecimal)"})
   public void testLessThanOrEqualWithValue_givenZero_whenZero_thenReturnTrue() {
     // Arrange, Act and Assert
     assertTrue(Money.ZERO.lessThanOrEqual(BankersRounding.ZERO));
@@ -1648,6 +935,8 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#greaterThan(Money)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Money.greaterThan(Money)"})
   public void testGreaterThanWithOther_givenMoneyWithAmountIsTen_whenZero_thenReturnTrue() {
     // Arrange, Act and Assert
     assertTrue((new Money(10.0d)).greaterThan(Money.ZERO));
@@ -1664,6 +953,8 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#greaterThan(Money)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Money.greaterThan(Money)"})
   public void testGreaterThanWithOther_givenZero_whenZero_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse(Money.ZERO.greaterThan(Money.ZERO));
@@ -1680,6 +971,8 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#greaterThan(BigDecimal)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Money.greaterThan(BigDecimal)"})
   public void testGreaterThanWithValue_givenMoneyWithAmountIsTen_whenZero_thenReturnTrue() {
     // Arrange, Act and Assert
     assertTrue((new Money(10.0d)).greaterThan(BankersRounding.ZERO));
@@ -1696,6 +989,8 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#greaterThan(BigDecimal)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Money.greaterThan(BigDecimal)"})
   public void testGreaterThanWithValue_givenZero_whenZero_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse(Money.ZERO.greaterThan(BankersRounding.ZERO));
@@ -1711,6 +1006,8 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#greaterThanOrEqual(Money)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Money.greaterThanOrEqual(Money)"})
   public void testGreaterThanOrEqualWithOther_whenMoneyWithAmountIsTen_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse(Money.ZERO.greaterThanOrEqual(new Money(10.0d)));
@@ -1726,6 +1023,8 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#greaterThanOrEqual(Money)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Money.greaterThanOrEqual(Money)"})
   public void testGreaterThanOrEqualWithOther_whenZero_thenReturnTrue() {
     // Arrange, Act and Assert
     assertTrue(Money.ZERO.greaterThanOrEqual(Money.ZERO));
@@ -1741,6 +1040,8 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#greaterThanOrEqual(BigDecimal)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Money.greaterThanOrEqual(BigDecimal)"})
   public void testGreaterThanOrEqualWithValue_whenBigDecimalWith23_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse(Money.ZERO.greaterThanOrEqual(new BigDecimal("2.3")));
@@ -1756,6 +1057,8 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#greaterThanOrEqual(BigDecimal)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Money.greaterThanOrEqual(BigDecimal)"})
   public void testGreaterThanOrEqualWithValue_whenZero_thenReturnTrue() {
     // Arrange, Act and Assert
     assertTrue(Money.ZERO.greaterThanOrEqual(BankersRounding.ZERO));
@@ -1767,6 +1070,8 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#defaultCurrency()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Currency Money.defaultCurrency()"})
   public void testDefaultCurrency() {
     // Arrange and Act
     Currency actualDefaultCurrencyResult = Money.defaultCurrency();
@@ -1781,66 +1086,6 @@ public class MoneyDiffblueTest {
   }
 
   /**
-   * Test {@link Money#readExternal(ObjectInput)}.
-   * <p>
-   * Method under test: {@link Money#readExternal(ObjectInput)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testReadExternal() throws IOException, ClassNotFoundException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.io.StreamCorruptedException: invalid stream header: 41584158
-    //       at java.base/java.io.ObjectInputStream.readStreamHeader(ObjectInputStream.java:936)
-    //       at java.base/java.io.ObjectInputStream.<init>(ObjectInputStream.java:375)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange and Act
-    Money.ZERO.readExternal(new ObjectInputStream(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"))));
-  }
-
-  /**
-   * Test {@link Money#writeExternal(ObjectOutput)}.
-   * <ul>
-   *   <li>Then calls {@link ObjectOutputStream#writeFloat(float)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Money#writeExternal(ObjectOutput)}
-   */
-  @Test
-  public void testWriteExternal_thenCallsWriteFloat() throws IOException {
-    // Arrange
-    ProxyObjectOutputStream out = mock(ProxyObjectOutputStream.class);
-    doNothing().when(out).writeFloat(anyFloat());
-
-    // Act
-    Money.ZERO.writeExternal(out);
-
-    // Assert
-    verify(out).writeFloat(eq(0.0f));
-  }
-
-  /**
-   * Test {@link Money#trimUnnecessaryScaleToCurrency(Money)}.
-   * <ul>
-   *   <li>When {@link Money#ZERO}.</li>
-   *   <li>Then return {@link Money#ZERO}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Money#trimUnnecessaryScaleToCurrency(Money)}
-   */
-  @Test
-  public void testTrimUnnecessaryScaleToCurrency_whenZero_thenReturnZero() {
-    // Arrange and Act
-    Money actualTrimUnnecessaryScaleToCurrencyResult = Money.trimUnnecessaryScaleToCurrency(Money.ZERO);
-
-    // Assert
-    assertEquals(actualTrimUnnecessaryScaleToCurrencyResult.ZERO, actualTrimUnnecessaryScaleToCurrencyResult);
-  }
-
-  /**
    * Test {@link Money#compareTo(Money)} with {@code other}.
    * <ul>
    *   <li>When {@link Money#ZERO}.</li>
@@ -1850,6 +1095,8 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#compareTo(Money)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int Money.compareTo(Money)"})
   public void testCompareToWithOther_whenZero_thenReturnZero() {
     // Arrange, Act and Assert
     assertEquals(0, Money.ZERO.compareTo(Money.ZERO));
@@ -1865,6 +1112,8 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#compareTo(BigDecimal)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int Money.compareTo(BigDecimal)"})
   public void testCompareToWithValue_whenZero_thenReturnZero() {
     // Arrange, Act and Assert
     assertEquals(0, Money.ZERO.compareTo(BankersRounding.ZERO));
@@ -1884,6 +1133,8 @@ public class MoneyDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Money.equals(Object)", "int Money.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     Money money = Money.ZERO;
@@ -1909,6 +1160,8 @@ public class MoneyDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Money.equals(Object)", "int Money.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     Money money = new Money();
@@ -1934,6 +1187,8 @@ public class MoneyDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Money.equals(Object)", "int Money.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     Money money = new Money(10.0d);
@@ -1959,6 +1214,8 @@ public class MoneyDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Money.equals(Object)", "int Money.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     Money money = Money.ZERO;
@@ -1979,6 +1236,8 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Money.equals(Object)", "int Money.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new Money(10.0d), Money.ZERO);
@@ -1994,6 +1253,8 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Money.equals(Object)", "int Money.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(Money.ZERO, null);
@@ -2009,6 +1270,8 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Money.equals(Object)", "int Money.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(Money.ZERO, "Different type to Money");
@@ -2020,6 +1283,8 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#clone()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object Money.clone()"})
   public void testClone() {
     // Arrange and Act
     Object actualCloneResult = Money.ZERO.clone();
@@ -2035,19 +1300,10 @@ public class MoneyDiffblueTest {
    * Method under test: {@link Money#doubleValue()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"double Money.doubleValue()"})
   public void testDoubleValue() {
     // Arrange, Act and Assert
     assertEquals(0.0d, Money.ZERO.doubleValue(), 0.0);
-  }
-
-  /**
-   * Test {@link Money#stringValue()}.
-   * <p>
-   * Method under test: {@link Money#stringValue()}
-   */
-  @Test
-  public void testStringValue() {
-    // Arrange, Act and Assert
-    assertEquals("0.00 GBP", Money.ZERO.stringValue());
   }
 }

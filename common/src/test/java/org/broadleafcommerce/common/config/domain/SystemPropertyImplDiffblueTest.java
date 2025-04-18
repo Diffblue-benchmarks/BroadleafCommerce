@@ -28,173 +28,32 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.config.service.type.SystemPropertyFieldType;
 import org.broadleafcommerce.common.copy.CreateResponse;
 import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
 import org.broadleafcommerce.common.service.GenericEntityService;
-import org.broadleafcommerce.common.service.GenericEntityServiceImpl;
 import org.broadleafcommerce.common.site.domain.CatalogImpl;
 import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.broadleafcommerce.common.util.BLCFieldUtils;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@ContextConfiguration(locations = {"/bl-common-applicationContext-entity.xml",
-    "/bl-common-applicationContext-mbeans.xml", "/bl-common-applicationContext-persistence.xml",
-    "/bl-common-applicationContext-servlet.xml", "/bl-common-applicationContext-wrapper.xml",
-    "/bl-common-applicationContext.xml", "/bl-fake-applicationContext-ant.xml",
-    "/blc-config/admin/framework/bl-common-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-common-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-common-applicationContext-servlet.xml",
-    "/blc-config/site/framework/bl-common-applicationContext.xml",
-    "/override-contexts/admin-root-autoconfiguration-overrides.xml",
-    "/override-contexts/admin-servlet-autoconfiguration-overrides.xml",
-    "/override-contexts/autoconfiguration-overrides.xml", "/override-contexts/autoconfiguration-servlet-overrides.xml",
-    "/override-contexts/site-root-autoconfiguration-overrides.xml",
-    "/override-contexts/site-servlet-autoconfiguration-overrides.xml",
-    "/blc-config/admin/bl-admin-test-applicationContext.xml", "/blc-config/bl-test-applicationContext.xml",
-    "/blc-config/site/bl-site-test-applicationContext.xml", "/context/config/client-override.xml",
-    "/context/config/xml-import-override.xml", "/context/crossmodule/early-applicationContext.xml",
-    "/context/crossmodule/early-xml-applicationContext.xml", "/context/crossmodule/late-applicationContext.xml",
-    "/context/entityconfig/import-framework.xml", "/context/entityconfig/import-local.xml",
-    "/context/importer/applicationContext.xml", "/context/importer/merge/applicationContext-servlet.xml",
-    "/context/importer/merge/applicationContext.xml", "/context/merge/bl-framework.xml", "/context/merge/bl-module.xml",
-    "/context/merge/local.xml", "/context/reader/bean-override-early-test-applicationContext.xml",
-    "/context/reader/bean-override-framework-test-applicationContext.xml",
-    "/context/reader/bean-override-local-test-applicationContext.xml", "/context/reader/merge/testbeans.xml",
-    "/context/reader/merge/testbeans2.xml", "/context/reader/merge/testbeans3.xml"})
+@ContextConfiguration(locations = {"/bl-common-applicationContext-entity.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class SystemPropertyImplDiffblueTest {
   @Autowired
   private SystemPropertyImpl systemPropertyImpl;
-
-  /**
-   * Test {@link SystemPropertyImpl#getPropertyType()}.
-   * <p>
-   * Method under test: {@link SystemPropertyImpl#getPropertyType()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetPropertyType() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.BeanInstantiationException: Could not instantiate bean: messageSource defined in bl-common-applicationContext.xml
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageSource' defined in class path resource [bl-common-applicationContext.xml]: Initialization of bean failed; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:628)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:600)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.propertyeditors.CustomBooleanEditor.setAsText(CustomBooleanEditor.java:154)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
-    //       at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:590)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   See https://diff.blue/R026 to resolve this issue.
-
-    // Arrange and Act
-    (new SystemPropertyImpl()).getPropertyType();
-  }
-
-  /**
-   * Test {@link SystemPropertyImpl#getPropertyType()}.
-   * <ul>
-   *   <li>Given {@link SystemPropertyFieldType}
-   * {@link SystemPropertyFieldType#getType()} return {@code foo}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SystemPropertyImpl#getPropertyType()}
-   */
-  @Test
-  public void testGetPropertyType_givenSystemPropertyFieldTypeGetTypeReturnFoo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SystemPropertyFieldType propertyType = mock(SystemPropertyFieldType.class);
-    when(propertyType.getType()).thenReturn("foo");
-
-    SystemPropertyImpl systemPropertyImpl = new SystemPropertyImpl();
-    systemPropertyImpl.setFriendlyGroup("Friendly Group");
-    systemPropertyImpl.setFriendlyName("Friendly Name");
-    systemPropertyImpl.setFriendlyTab("Friendly Tab");
-    systemPropertyImpl.setId(1L);
-    systemPropertyImpl.setName("Name");
-    systemPropertyImpl.setOverrideGeneratedPropertyName(true);
-    systemPropertyImpl.setValue("42");
-    systemPropertyImpl.setPropertyType(propertyType);
-
-    // Act
-    SystemPropertyFieldType actualPropertyType = systemPropertyImpl.getPropertyType();
-
-    // Assert
-    verify(propertyType).getType();
-    assertSame(actualPropertyType.STRING_TYPE, actualPropertyType);
-  }
 
   /**
    * Test {@link SystemPropertyImpl#getPropertyType()}.
@@ -206,9 +65,9 @@ public class SystemPropertyImplDiffblueTest {
    * Method under test: {@link SystemPropertyImpl#getPropertyType()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"SystemPropertyFieldType SystemPropertyImpl.getPropertyType()"})
   public void testGetPropertyType_givenSystemPropertyImpl_thenReturnString_type() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange and Act
     SystemPropertyFieldType actualPropertyType = (new SystemPropertyImpl()).getPropertyType();
 
@@ -225,203 +84,50 @@ public class SystemPropertyImplDiffblueTest {
    * Method under test: {@link SystemPropertyImpl#getPropertyType()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"SystemPropertyFieldType SystemPropertyImpl.getPropertyType()"})
   public void testGetPropertyType_thenReturnBoolean_type() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SystemPropertyImpl systemPropertyImpl = new SystemPropertyImpl();
-    systemPropertyImpl.setFriendlyGroup("Friendly Group");
-    systemPropertyImpl.setFriendlyName("Friendly Name");
-    systemPropertyImpl.setFriendlyTab("Friendly Tab");
-    systemPropertyImpl.setId(1L);
-    systemPropertyImpl.setName("Name");
-    systemPropertyImpl.setOverrideGeneratedPropertyName(true);
-    systemPropertyImpl.setValue("42");
-    systemPropertyImpl.setPropertyType(SystemPropertyFieldType.BOOLEAN_TYPE);
+    SystemPropertyImpl systemPropertyImpl2 = new SystemPropertyImpl();
+    systemPropertyImpl2.setFriendlyGroup("Friendly Group");
+    systemPropertyImpl2.setFriendlyName("Friendly Name");
+    systemPropertyImpl2.setFriendlyTab("Friendly Tab");
+    systemPropertyImpl2.setId(1L);
+    systemPropertyImpl2.setName("Name");
+    systemPropertyImpl2.setOverrideGeneratedPropertyName(true);
+    systemPropertyImpl2.setValue("42");
+    systemPropertyImpl2.setPropertyType(SystemPropertyFieldType.BOOLEAN_TYPE);
 
     // Act
-    SystemPropertyFieldType actualPropertyType = systemPropertyImpl.getPropertyType();
+    SystemPropertyFieldType actualPropertyType = systemPropertyImpl2.getPropertyType();
 
     // Assert
     assertSame(actualPropertyType.BOOLEAN_TYPE, actualPropertyType);
   }
 
   /**
-   * Test {@link SystemPropertyImpl#getPropertyType()}.
-   * <ul>
-   *   <li>Then return {@code Friendly Type}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SystemPropertyImpl#getPropertyType()}
-   */
-  @Test
-  public void testGetPropertyType_thenReturnFriendlyType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SystemPropertyFieldType propertyType = mock(SystemPropertyFieldType.class);
-    when(propertyType.getType()).thenReturn("Type");
-
-    SystemPropertyImpl systemPropertyImpl = new SystemPropertyImpl();
-    systemPropertyImpl.setFriendlyGroup("Friendly Group");
-    systemPropertyImpl.setFriendlyName("Friendly Name");
-    systemPropertyImpl.setFriendlyTab("Friendly Tab");
-    systemPropertyImpl.setId(1L);
-    systemPropertyImpl.setName("Name");
-    systemPropertyImpl.setOverrideGeneratedPropertyName(true);
-    systemPropertyImpl.setValue("42");
-    systemPropertyImpl.setPropertyType(propertyType);
-
-    // Act
-    SystemPropertyFieldType actualPropertyType = systemPropertyImpl.getPropertyType();
-
-    // Assert
-    verify(propertyType).getType();
-    assertEquals("Friendly Type", actualPropertyType.getFriendlyType());
-    assertEquals("Type", actualPropertyType.getType());
-  }
-
-  /**
-   * Test {@link SystemPropertyImpl#setPropertyType(SystemPropertyFieldType)}.
-   * <p>
-   * Method under test:
-   * {@link SystemPropertyImpl#setPropertyType(SystemPropertyFieldType)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetPropertyType() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.BeanInstantiationException: Could not instantiate bean: messageSource defined in bl-common-applicationContext.xml
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageSource' defined in class path resource [bl-common-applicationContext.xml]: Initialization of bean failed; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:628)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:600)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.propertyeditors.CustomBooleanEditor.setAsText(CustomBooleanEditor.java:154)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
-    //       at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:590)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   See https://diff.blue/R026 to resolve this issue.
-
-    // Arrange and Act
-    (new SystemPropertyImpl()).setPropertyType(SystemPropertyFieldType.BOOLEAN_TYPE);
-  }
-
-  /**
    * Test {@link SystemPropertyImpl#setPropertyType(SystemPropertyFieldType)}.
    * <ul>
-   *   <li>Then {@link SystemPropertyImpl} (default constructor) PropertyType
-   * FriendlyType is {@code Friendly Type}.</li>
+   *   <li>Then {@link SystemPropertyImpl} (default constructor) {@link SystemPropertyImpl#propertyType} is {@code BOOLEAN_TYPE}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SystemPropertyImpl#setPropertyType(SystemPropertyFieldType)}
+   * Method under test: {@link SystemPropertyImpl#setPropertyType(SystemPropertyFieldType)}
    */
   @Test
-  public void testSetPropertyType_thenSystemPropertyImplPropertyTypeFriendlyTypeIsFriendlyType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SystemPropertyImpl systemPropertyImpl = new SystemPropertyImpl();
-    SystemPropertyFieldType propertyType = mock(SystemPropertyFieldType.class);
-    when(propertyType.getType()).thenReturn("Type");
-
-    // Act
-    systemPropertyImpl.setPropertyType(propertyType);
-
-    // Assert
-    verify(propertyType).getType();
-    SystemPropertyFieldType propertyType2 = systemPropertyImpl.getPropertyType();
-    assertEquals("Friendly Type", propertyType2.getFriendlyType());
-    assertEquals("Type", propertyType2.getType());
-    assertEquals("Type", systemPropertyImpl.propertyType);
-  }
-
-  /**
-   * Test {@link SystemPropertyImpl#setPropertyType(SystemPropertyFieldType)}.
-   * <ul>
-   *   <li>Then {@link SystemPropertyImpl} (default constructor)
-   * {@link SystemPropertyImpl#propertyType} is {@code BOOLEAN_TYPE}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SystemPropertyImpl#setPropertyType(SystemPropertyFieldType)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SystemPropertyImpl.setPropertyType(SystemPropertyFieldType)"})
   public void testSetPropertyType_thenSystemPropertyImplPropertyTypeIsBooleanType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SystemPropertyImpl systemPropertyImpl = new SystemPropertyImpl();
+    SystemPropertyImpl systemPropertyImpl2 = new SystemPropertyImpl();
     SystemPropertyFieldType propertyType = SystemPropertyFieldType.BOOLEAN_TYPE;
 
     // Act
-    systemPropertyImpl.setPropertyType(propertyType);
+    systemPropertyImpl2.setPropertyType(propertyType);
 
     // Assert
-    assertEquals("BOOLEAN_TYPE", systemPropertyImpl.propertyType);
+    assertEquals("BOOLEAN_TYPE", systemPropertyImpl2.propertyType);
     SystemPropertyFieldType expectedPropertyType = propertyType.BOOLEAN_TYPE;
-    assertSame(expectedPropertyType, systemPropertyImpl.getPropertyType());
+    assertSame(expectedPropertyType, systemPropertyImpl2.getPropertyType());
   }
 
   /**
@@ -430,148 +136,31 @@ public class SystemPropertyImplDiffblueTest {
    * Method under test: {@link SystemPropertyImpl#getMainEntityName()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SystemPropertyImpl.getMainEntityName()"})
   public void testGetMainEntityName() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.BeanInstantiationException: Could not instantiate bean: messageSource defined in bl-common-applicationContext.xml
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageSource' defined in class path resource [bl-common-applicationContext.xml]: Initialization of bean failed; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:628)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:600)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.propertyeditors.CustomBooleanEditor.setAsText(CustomBooleanEditor.java:154)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
-    //       at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:590)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   See https://diff.blue/R026 to resolve this issue.
-
-    // Arrange and Act
-    (new SystemPropertyImpl()).getMainEntityName();
-  }
-
-  /**
-   * Test {@link SystemPropertyImpl#getMainEntityName()}.
-   * <ul>
-   *   <li>Given {@link SystemPropertyImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SystemPropertyImpl#getMainEntityName()}
-   */
-  @Test
-  public void testGetMainEntityName_givenSystemPropertyImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new SystemPropertyImpl()).getMainEntityName());
   }
 
   /**
-   * Test {@link SystemPropertyImpl#getMainEntityName()}.
-   * <ul>
-   *   <li>Then calls {@link SystemPropertyFieldType#getType()}.</li>
-   * </ul>
+   * Test {@link SystemPropertyImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <p>
-   * Method under test: {@link SystemPropertyImpl#getMainEntityName()}
+   * Method under test: {@link SystemPropertyImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  public void testGetMainEntityName_thenCallsGetType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SystemPropertyFieldType propertyType = mock(SystemPropertyFieldType.class);
-    when(propertyType.getType()).thenReturn("Type");
-
-    SystemPropertyImpl systemPropertyImpl = new SystemPropertyImpl();
-    systemPropertyImpl.setPropertyType(propertyType);
-
-    // Act
-    String actualMainEntityName = systemPropertyImpl.getMainEntityName();
-
-    // Assert
-    verify(propertyType).getType();
-    assertNull(actualMainEntityName);
-  }
-
-  /**
-   * Test
-   * {@link SystemPropertyImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <p>
-   * Method under test:
-   * {@link SystemPropertyImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse SystemPropertyImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SystemPropertyImpl systemPropertyImpl = new SystemPropertyImpl();
+    SystemPropertyImpl systemPropertyImpl2 = new SystemPropertyImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
     CreateResponse<Object> createResponse = new CreateResponse<>(BLCFieldUtils.NULL_FIELD, true);
 
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<SystemProperty> actualCreateOrRetrieveCopyInstanceResult = systemPropertyImpl
+    CreateResponse<SystemProperty> actualCreateOrRetrieveCopyInstanceResult = systemPropertyImpl2
         .createOrRetrieveCopyInstance(context);
 
     // Assert
@@ -580,18 +169,19 @@ public class SystemPropertyImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link SystemPropertyImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * Test {@link SystemPropertyImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * <ul>
+   *   <li>Then calls {@link CreateResponse#getClone()}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link SystemPropertyImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link SystemPropertyImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse SystemPropertyImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
+  public void testCreateOrRetrieveCopyInstance_thenCallsGetClone() throws CloneNotSupportedException {
     // Arrange
-    SystemPropertyImpl systemPropertyImpl = new SystemPropertyImpl();
+    SystemPropertyImpl systemPropertyImpl2 = new SystemPropertyImpl();
     CreateResponse<Object> createResponse = mock(CreateResponse.class);
     when(createResponse.isAlreadyPopulated()).thenReturn(false);
     when(createResponse.getClone()).thenReturn(new NullSystemProperty());
@@ -599,7 +189,7 @@ public class SystemPropertyImplDiffblueTest {
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    systemPropertyImpl.createOrRetrieveCopyInstance(context);
+    systemPropertyImpl2.createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(createResponse).getClone();
@@ -608,213 +198,19 @@ public class SystemPropertyImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link SystemPropertyImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <p>
-   * Method under test:
-   * {@link SystemPropertyImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateOrRetrieveCopyInstance3() throws CloneNotSupportedException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.BeanInstantiationException: Could not instantiate bean: messageSource defined in bl-common-applicationContext.xml
-    //   java.lang.IllegalStateException: Failed to load ApplicationContext
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageSource' defined in class path resource [bl-common-applicationContext.xml]: Initialization of bean failed; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:628)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   org.springframework.beans.TypeMismatchException: Failed to convert property value of type 'java.lang.String' to required type 'boolean' for property 'useCodeAsDefaultMessage'; nested exception is java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:600)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   java.lang.IllegalArgumentException: Invalid boolean value [${messages.useCodeAsDefaultMessage}]
-    //       at org.springframework.beans.propertyeditors.CustomBooleanEditor.setAsText(CustomBooleanEditor.java:154)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
-    //       at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
-    //       at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary(AbstractNestablePropertyAccessor.java:590)
-    //       at org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty(AbstractNestablePropertyAccessor.java:609)
-    //       at org.springframework.beans.BeanWrapperImpl.convertForProperty(BeanWrapperImpl.java:219)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.convertForProperty(AbstractAutowireCapableBeanFactory.java:1756)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
-    //       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
-    //       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
-    //       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:214)
-    //       at org.springframework.context.support.AbstractApplicationContext.initMessageSource(AbstractApplicationContext.java:784)
-    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:579)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
-    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
-    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
-    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
-    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
-    //   See https://diff.blue/R026 to resolve this issue.
-
-    // Arrange
-    SystemPropertyImpl systemPropertyImpl2 = new SystemPropertyImpl();
-    CatalogImpl fromCatalog = new CatalogImpl();
-    CatalogImpl toCatalog = new CatalogImpl();
-    SiteImpl fromSite = new SiteImpl();
-    SiteImpl toSite = new SiteImpl();
-    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
-
-    // Act
-    systemPropertyImpl2.createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite,
-        toSite, genericEntityService, new MultiTenantCopierExtensionManager()));
-  }
-
-  /**
-   * Test
-   * {@link SystemPropertyImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <ul>
-   *   <li>Given {@link SystemPropertyFieldType}
-   * {@link SystemPropertyFieldType#getType()} return {@code foo}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SystemPropertyImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  public void testCreateOrRetrieveCopyInstance_givenSystemPropertyFieldTypeGetTypeReturnFoo()
-      throws CloneNotSupportedException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SystemPropertyFieldType propertyType = mock(SystemPropertyFieldType.class);
-    when(propertyType.getType()).thenReturn("foo");
-
-    SystemPropertyImpl systemPropertyImpl = new SystemPropertyImpl();
-    systemPropertyImpl.setPropertyType(propertyType);
-
-    SystemPropertyImpl systemPropertyImpl2 = new SystemPropertyImpl();
-    systemPropertyImpl2.setFriendlyGroup("Friendly Group");
-    systemPropertyImpl2.setFriendlyName("Friendly Name");
-    systemPropertyImpl2.setFriendlyTab("Friendly Tab");
-    systemPropertyImpl2.setId(1L);
-    systemPropertyImpl2.setName("Name");
-    systemPropertyImpl2.setOverrideGeneratedPropertyName(true);
-    systemPropertyImpl2.setPropertyType(SystemPropertyFieldType.BOOLEAN_TYPE);
-    systemPropertyImpl2.setValue("42");
-    CreateResponse<Object> createResponse = mock(CreateResponse.class);
-    when(createResponse.isAlreadyPopulated()).thenReturn(false);
-    when(createResponse.getClone()).thenReturn(systemPropertyImpl2);
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    systemPropertyImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(propertyType).getType();
-    verify(createResponse).getClone();
-    verify(createResponse).isAlreadyPopulated();
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-  }
-
-  /**
-   * Test
-   * {@link SystemPropertyImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <ul>
-   *   <li>Given {@link SystemPropertyFieldType}
-   * {@link SystemPropertyFieldType#getType()} return {@code Type}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SystemPropertyImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  public void testCreateOrRetrieveCopyInstance_givenSystemPropertyFieldTypeGetTypeReturnType()
-      throws CloneNotSupportedException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SystemPropertyFieldType propertyType = mock(SystemPropertyFieldType.class);
-    when(propertyType.getType()).thenReturn("Type");
-
-    SystemPropertyImpl systemPropertyImpl = new SystemPropertyImpl();
-    systemPropertyImpl.setPropertyType(propertyType);
-
-    SystemPropertyImpl systemPropertyImpl2 = new SystemPropertyImpl();
-    systemPropertyImpl2.setFriendlyGroup("Friendly Group");
-    systemPropertyImpl2.setFriendlyName("Friendly Name");
-    systemPropertyImpl2.setFriendlyTab("Friendly Tab");
-    systemPropertyImpl2.setId(1L);
-    systemPropertyImpl2.setName("Name");
-    systemPropertyImpl2.setOverrideGeneratedPropertyName(true);
-    systemPropertyImpl2.setPropertyType(SystemPropertyFieldType.BOOLEAN_TYPE);
-    systemPropertyImpl2.setValue("42");
-    CreateResponse<Object> createResponse = mock(CreateResponse.class);
-    when(createResponse.isAlreadyPopulated()).thenReturn(false);
-    when(createResponse.getClone()).thenReturn(systemPropertyImpl2);
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    systemPropertyImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(propertyType).getType();
-    verify(createResponse).getClone();
-    verify(createResponse).isAlreadyPopulated();
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-  }
-
-  /**
-   * Test
-   * {@link SystemPropertyImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * Test {@link SystemPropertyImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <ul>
    *   <li>Then Clone return {@link SystemPropertyImpl}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link SystemPropertyImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link SystemPropertyImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse SystemPropertyImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance_thenCloneReturnSystemPropertyImpl() throws CloneNotSupportedException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    SystemPropertyImpl systemPropertyImpl = new SystemPropertyImpl();
+    SystemPropertyImpl systemPropertyImpl2 = new SystemPropertyImpl();
     GenericEntityService genericEntityService = mock(GenericEntityService.class);
     when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
     Class<Object> forNameResult = Object.class;
@@ -825,7 +221,7 @@ public class SystemPropertyImplDiffblueTest {
     SiteImpl toSite = new SiteImpl();
 
     // Act
-    CreateResponse<SystemProperty> actualCreateOrRetrieveCopyInstanceResult = systemPropertyImpl
+    CreateResponse<SystemProperty> actualCreateOrRetrieveCopyInstanceResult = systemPropertyImpl2
         .createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
             genericEntityService, new MultiTenantCopierExtensionManager()));
 
@@ -835,10 +231,7 @@ public class SystemPropertyImplDiffblueTest {
     verify(genericEntityService).getIdentifier(isA(Object.class));
     SystemProperty clone = actualCreateOrRetrieveCopyInstanceResult.getClone();
     assertTrue(clone instanceof SystemPropertyImpl);
-    SystemPropertyFieldType propertyType = clone.getPropertyType();
-    assertEquals("STRING", propertyType.getType());
     assertEquals("STRING", ((SystemPropertyImpl) clone).propertyType);
-    assertEquals("String value", propertyType.getFriendlyType());
     assertNull(clone.getId());
     assertNull(clone.getFriendlyGroup());
     assertNull(clone.getFriendlyName());
@@ -851,8 +244,7 @@ public class SystemPropertyImplDiffblueTest {
   }
 
   /**
-   * Test {@link SystemPropertyImpl#equals(Object)}, and
-   * {@link SystemPropertyImpl#hashCode()}.
+   * Test {@link SystemPropertyImpl#equals(Object)}, and {@link SystemPropertyImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -865,6 +257,8 @@ public class SystemPropertyImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SystemPropertyImpl.equals(Object)", "int SystemPropertyImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     SystemPropertyImpl systemPropertyImpl = new SystemPropertyImpl();
@@ -894,8 +288,7 @@ public class SystemPropertyImplDiffblueTest {
   }
 
   /**
-   * Test {@link SystemPropertyImpl#equals(Object)}, and
-   * {@link SystemPropertyImpl#hashCode()}.
+   * Test {@link SystemPropertyImpl#equals(Object)}, and {@link SystemPropertyImpl#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -908,6 +301,8 @@ public class SystemPropertyImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SystemPropertyImpl.equals(Object)", "int SystemPropertyImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     SystemPropertyImpl systemPropertyImpl = new SystemPropertyImpl();
@@ -936,6 +331,8 @@ public class SystemPropertyImplDiffblueTest {
    * Method under test: {@link SystemPropertyImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SystemPropertyImpl.equals(Object)", "int SystemPropertyImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     SystemPropertyImpl systemPropertyImpl = new SystemPropertyImpl();
@@ -965,45 +362,6 @@ public class SystemPropertyImplDiffblueTest {
   /**
    * Test {@link SystemPropertyImpl#equals(Object)}.
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SystemPropertyImpl#equals(Object)}
-   */
-  @Test
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
-    // Arrange
-    SystemPropertyFieldType propertyType = mock(SystemPropertyFieldType.class);
-    when(propertyType.getType()).thenReturn("Type");
-
-    SystemPropertyImpl systemPropertyImpl = new SystemPropertyImpl();
-    systemPropertyImpl.setFriendlyGroup("Friendly Group");
-    systemPropertyImpl.setFriendlyName("Friendly Name");
-    systemPropertyImpl.setFriendlyTab("Friendly Tab");
-    systemPropertyImpl.setId(1L);
-    systemPropertyImpl.setName("Name");
-    systemPropertyImpl.setOverrideGeneratedPropertyName(true);
-    systemPropertyImpl.setPropertyType(propertyType);
-    systemPropertyImpl.setValue("42");
-
-    SystemPropertyImpl systemPropertyImpl2 = new SystemPropertyImpl();
-    systemPropertyImpl2.setFriendlyGroup("Friendly Group");
-    systemPropertyImpl2.setFriendlyName("Friendly Name");
-    systemPropertyImpl2.setFriendlyTab("Friendly Tab");
-    systemPropertyImpl2.setId(1L);
-    systemPropertyImpl2.setName("Name");
-    systemPropertyImpl2.setOverrideGeneratedPropertyName(true);
-    systemPropertyImpl2.setPropertyType(SystemPropertyFieldType.BOOLEAN_TYPE);
-    systemPropertyImpl2.setValue("42");
-
-    // Act and Assert
-    assertNotEquals(systemPropertyImpl, systemPropertyImpl2);
-  }
-
-  /**
-   * Test {@link SystemPropertyImpl#equals(Object)}.
-   * <ul>
    *   <li>When other is {@code null}.</li>
    *   <li>Then return not equal.</li>
    * </ul>
@@ -1011,6 +369,8 @@ public class SystemPropertyImplDiffblueTest {
    * Method under test: {@link SystemPropertyImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SystemPropertyImpl.equals(Object)", "int SystemPropertyImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     SystemPropertyImpl systemPropertyImpl = new SystemPropertyImpl();
@@ -1037,6 +397,8 @@ public class SystemPropertyImplDiffblueTest {
    * Method under test: {@link SystemPropertyImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SystemPropertyImpl.equals(Object)", "int SystemPropertyImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     SystemPropertyImpl systemPropertyImpl = new SystemPropertyImpl();
@@ -1076,6 +438,15 @@ public class SystemPropertyImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SystemPropertyImpl.<init>()", "String SystemPropertyImpl.getFriendlyGroup()",
+      "String SystemPropertyImpl.getFriendlyName()", "String SystemPropertyImpl.getFriendlyTab()",
+      "Long SystemPropertyImpl.getId()", "String SystemPropertyImpl.getName()",
+      "Boolean SystemPropertyImpl.getOverrideGeneratedPropertyName()", "String SystemPropertyImpl.getValue()",
+      "void SystemPropertyImpl.setFriendlyGroup(String)", "void SystemPropertyImpl.setFriendlyName(String)",
+      "void SystemPropertyImpl.setFriendlyTab(String)", "void SystemPropertyImpl.setId(Long)",
+      "void SystemPropertyImpl.setName(String)", "void SystemPropertyImpl.setOverrideGeneratedPropertyName(Boolean)",
+      "void SystemPropertyImpl.setValue(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     SystemPropertyImpl actualSystemPropertyImpl = new SystemPropertyImpl();
@@ -1093,7 +464,7 @@ public class SystemPropertyImplDiffblueTest {
     String actualName = actualSystemPropertyImpl.getName();
     Boolean actualOverrideGeneratedPropertyName = actualSystemPropertyImpl.getOverrideGeneratedPropertyName();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("42", actualSystemPropertyImpl.getValue());
     assertEquals("Friendly Group", actualFriendlyGroup);
     assertEquals("Friendly Name", actualFriendlyName);

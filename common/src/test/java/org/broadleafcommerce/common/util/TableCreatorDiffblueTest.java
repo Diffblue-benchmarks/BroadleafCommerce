@@ -20,30 +20,24 @@ package org.broadleafcommerce.common.util;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
-import static org.mockito.Mockito.mock;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.util.TableCreator.Col;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.junit.experimental.categories.Category;
 
-@ContextConfiguration
-@RunWith(SpringJUnit4ClassRunner.class)
 public class TableCreatorDiffblueTest {
-  @Autowired
-  private TableCreator.Col col;
-
   /**
    * Test Col {@link Col#Col(String, int)}.
    * <p>
-   * Method under test: {@link TableCreator.Col#Col(String, int)}
+   * Method under test: {@link Col#Col(String, int)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Col.<init>(String, int)"})
   public void testColNewCol() {
     // Arrange and Act
-    TableCreator.Col actualCol = new TableCreator.Col("Dr", 1);
+    Col actualCol = new Col("Dr", 1);
 
     // Assert
     assertEquals("Dr", actualCol.title);
@@ -52,15 +46,18 @@ public class TableCreatorDiffblueTest {
 
   /**
    * Test Col {@link Col#Col(String)}.
+   * <ul>
+   *   <li>Then return {@link Col#title} is {@code Dr}.</li>
+   * </ul>
    * <p>
-   * Method under test: {@link TableCreator.Col#Col(String)}
+   * Method under test: {@link Col#Col(String)}
    */
   @Test
-  public void testColNewCol2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Col.<init>(String)"})
+  public void testColNewCol_thenReturnTitleIsDr() {
     // Arrange and Act
-    TableCreator.Col actualCol = new TableCreator.Col("Dr");
+    Col actualCol = new Col("Dr");
 
     // Assert
     assertEquals("Dr", actualCol.title);
@@ -68,84 +65,23 @@ public class TableCreatorDiffblueTest {
   }
 
   /**
-   * Test Col {@link Col#Col(String)}.
-   * <p>
-   * Method under test: {@link TableCreator.Col#Col(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testColNewCol3() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Failed to create Spring context.
-    //   Attempt to initialize test context failed with
-    //   com.diffblue.fuzztest.shared.proxy.LibraryLinkageException: java.lang.reflect.GenericSignatureFormatError: Signature Parse error: expected '<' or ';' but got .
-    //   	Remaining input: .Col;
-    //       at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:195)
-    //       at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1655)
-    //       at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:484)
-    //       at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:474)
-    //       at java.base/java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:913)
-    //       at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
-    //       at java.base/java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:578)
-    //   java.lang.reflect.GenericSignatureFormatError: Signature Parse error: expected '<' or ';' but got .
-    //   	Remaining input: .Col;
-    //       at org.springframework.boot.test.mock.mockito.DefinitionsParser.getOrDeduceTypes(DefinitionsParser.java:121)
-    //       at org.springframework.boot.test.mock.mockito.DefinitionsParser.parseMockBeanAnnotation(DefinitionsParser.java:79)
-    //       at org.springframework.boot.test.mock.mockito.DefinitionsParser.lambda$parseElement$1(DefinitionsParser.java:72)
-    //       at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:183)
-    //       at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:195)
-    //       at org.springframework.core.annotation.TypeMappedAnnotations$AggregatesSpliterator.tryAdvance(TypeMappedAnnotations.java:602)
-    //       at org.springframework.core.annotation.TypeMappedAnnotations$AggregatesSpliterator.tryAdvance(TypeMappedAnnotations.java:569)
-    //       at java.base/java.util.Spliterator.forEachRemaining(Spliterator.java:326)
-    //       at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:484)
-    //       at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:474)
-    //       at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:150)
-    //       at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:173)
-    //       at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
-    //       at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:497)
-    //       at org.springframework.boot.test.mock.mockito.DefinitionsParser.parseElement(DefinitionsParser.java:72)
-    //       at org.springframework.boot.test.mock.mockito.DefinitionsParser.lambda$parse$0(DefinitionsParser.java:65)
-    //       at org.springframework.util.ReflectionUtils.doWithFields(ReflectionUtils.java:706)
-    //       at org.springframework.util.ReflectionUtils.doWithFields(ReflectionUtils.java:685)
-    //       at org.springframework.boot.test.mock.mockito.DefinitionsParser.parse(DefinitionsParser.java:65)
-    //       at org.springframework.boot.test.mock.mockito.MockitoContextCustomizerFactory.parseDefinitions(MockitoContextCustomizerFactory.java:44)
-    //       at org.springframework.boot.test.mock.mockito.MockitoContextCustomizerFactory.createContextCustomizer(MockitoContextCustomizerFactory.java:39)
-    //       at org.springframework.test.context.support.AbstractTestContextBootstrapper.getContextCustomizers(AbstractTestContextBootstrapper.java:402)
-    //       at org.springframework.test.context.support.AbstractTestContextBootstrapper.buildMergedContextConfiguration(AbstractTestContextBootstrapper.java:374)
-    //       at org.springframework.test.context.support.AbstractTestContextBootstrapper.buildDefaultMergedContextConfiguration(AbstractTestContextBootstrapper.java:309)
-    //       at org.springframework.test.context.support.AbstractTestContextBootstrapper.buildMergedContextConfiguration(AbstractTestContextBootstrapper.java:262)
-    //       at org.springframework.test.context.support.AbstractTestContextBootstrapper.buildTestContext(AbstractTestContextBootstrapper.java:107)
-    //       at org.springframework.test.context.TestContextManager.<init>(TestContextManager.java:137)
-    //       at org.springframework.test.context.TestContextManager.<init>(TestContextManager.java:122)
-    //       at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:195)
-    //       at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1655)
-    //       at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:484)
-    //       at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:474)
-    //       at java.base/java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:913)
-    //       at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
-    //       at java.base/java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:578)
-    //   See https://diff.blue/R026 to resolve this issue.
-
-    // Arrange and Act
-    new TableCreator.Col("Dr");
-  }
-
-  /**
    * Test {@link TableCreator#TableCreator(Col[])}.
    * <p>
-   * Method under test: {@link TableCreator#TableCreator(TableCreator.Col[])}
+   * Method under test: {@link TableCreator#TableCreator(Col[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TableCreator.<init>(Col[])"})
   public void testNewTableCreator() {
     // Arrange
-    TableCreator.Col col = new TableCreator.Col("", 1);
+    Col col = new Col("", 1);
 
     // Act
-    TableCreator actualTableCreator = new TableCreator(new TableCreator.Col[]{col});
+    TableCreator actualTableCreator = new TableCreator(new Col[]{col});
 
     // Assert
     assertEquals("\r\n-----\r\n|   |\r\n-----\r\n", actualTableCreator.sb.toString());
-    TableCreator.Col[] colArray = actualTableCreator.cols;
+    Col[] colArray = actualTableCreator.cols;
     assertEquals(1, colArray.length);
     assertEquals(5, actualTableCreator.rowWidth);
     assertSame(col, colArray[0]);
@@ -154,20 +90,22 @@ public class TableCreatorDiffblueTest {
   /**
    * Test {@link TableCreator#TableCreator(Col[])}.
    * <p>
-   * Method under test: {@link TableCreator#TableCreator(TableCreator.Col[])}
+   * Method under test: {@link TableCreator#TableCreator(Col[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TableCreator.<init>(Col[])"})
   public void testNewTableCreator2() {
     // Arrange
-    TableCreator.Col col = new TableCreator.Col("Dr", -1);
+    Col col = new Col("Dr", -1);
 
     // Act
-    TableCreator actualTableCreator = new TableCreator(new TableCreator.Col[]{col});
+    TableCreator actualTableCreator = new TableCreator(new Col[]{col});
 
     // Assert
     assertEquals("\r\n---\r\n|  |\r\n---\r\n", actualTableCreator.sb.toString());
-    TableCreator.Col[] colArray = actualTableCreator.cols;
-    TableCreator.Col col2 = colArray[0];
+    Col[] colArray = actualTableCreator.cols;
+    Col col2 = colArray[0];
     assertEquals(-1, col2.width);
     assertEquals(1, colArray.length);
     assertEquals(3, actualTableCreator.rowWidth);
@@ -177,25 +115,26 @@ public class TableCreatorDiffblueTest {
   /**
    * Test {@link TableCreator#TableCreator(Col[])}.
    * <ul>
-   *   <li>Then return {@link TableCreator#sb} toString is
-   * {@code ----- | D | -----}.</li>
+   *   <li>Then return {@link TableCreator#sb} toString is {@code ----- | D | -----}.</li>
    * </ul>
    * <p>
-   * Method under test: {@link TableCreator#TableCreator(TableCreator.Col[])}
+   * Method under test: {@link TableCreator#TableCreator(Col[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TableCreator.<init>(Col[])"})
   public void testNewTableCreator_thenReturnSbToStringIsD() {
     // Arrange
-    TableCreator.Col col = new TableCreator.Col("Dr", 1);
+    Col col = new Col("Dr", 1);
 
     // Act
-    TableCreator actualTableCreator = new TableCreator(new TableCreator.Col[]{col});
+    TableCreator actualTableCreator = new TableCreator(new Col[]{col});
 
     // Assert
     assertEquals("\r\n-----\r\n| D |\r\n-----\r\n", actualTableCreator.sb.toString());
-    TableCreator.Col[] colArray = actualTableCreator.cols;
+    Col[] colArray = actualTableCreator.cols;
     assertEquals(1, colArray.length);
-    TableCreator.Col col2 = colArray[0];
+    Col col2 = colArray[0];
     assertEquals(1, col2.width);
     assertEquals(5, actualTableCreator.rowWidth);
     assertSame(col, col2);
@@ -207,22 +146,24 @@ public class TableCreatorDiffblueTest {
    *   <li>Then return {@link TableCreator#sb} toString is {@code | |}.</li>
    * </ul>
    * <p>
-   * Method under test: {@link TableCreator#TableCreator(TableCreator.Col[])}
+   * Method under test: {@link TableCreator#TableCreator(Col[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TableCreator.<init>(Col[])"})
   public void testNewTableCreator_thenReturnSbToStringIsVerticalLineSpaceVerticalLine() {
     // Arrange
-    TableCreator.Col col = new TableCreator.Col("Dr", Integer.MIN_VALUE);
+    Col col = new Col("Dr", Integer.MIN_VALUE);
 
     // Act
-    TableCreator actualTableCreator = new TableCreator(new TableCreator.Col[]{col});
+    TableCreator actualTableCreator = new TableCreator(new Col[]{col});
 
     // Assert
     assertEquals("\r\n\r\n|  |\r\n\r\n", actualTableCreator.sb.toString());
     assertEquals(-2147483644, actualTableCreator.rowWidth);
-    TableCreator.Col[] colArray = actualTableCreator.cols;
+    Col[] colArray = actualTableCreator.cols;
     assertEquals(1, colArray.length);
-    TableCreator.Col col2 = colArray[0];
+    Col col2 = colArray[0];
     assertEquals(Integer.MIN_VALUE, col2.width);
     assertSame(col, col2);
   }
@@ -230,27 +171,27 @@ public class TableCreatorDiffblueTest {
   /**
    * Test {@link TableCreator#TableCreator(Col[])}.
    * <ul>
-   *   <li>When array of {@link Col} with {@link Col#Col(String)} with title is
-   * {@code Dr}.</li>
-   *   <li>Then return {@link TableCreator#sb} toString is
-   * {@code ------ | Dr | ------}.</li>
+   *   <li>When array of {@link Col} with {@link Col#Col(String)} with title is {@code Dr}.</li>
+   *   <li>Then return {@link TableCreator#sb} toString is {@code ------ | Dr | ------}.</li>
    * </ul>
    * <p>
-   * Method under test: {@link TableCreator#TableCreator(TableCreator.Col[])}
+   * Method under test: {@link TableCreator#TableCreator(Col[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TableCreator.<init>(Col[])"})
   public void testNewTableCreator_whenArrayOfColWithColWithTitleIsDr_thenReturnSbToStringIsDr() {
     // Arrange
-    TableCreator.Col col = new TableCreator.Col("Dr");
+    Col col = new Col("Dr");
 
     // Act
-    TableCreator actualTableCreator = new TableCreator(new TableCreator.Col[]{col});
+    TableCreator actualTableCreator = new TableCreator(new Col[]{col});
 
     // Assert
     assertEquals("\r\n------\r\n| Dr |\r\n------\r\n", actualTableCreator.sb.toString());
-    TableCreator.Col[] colArray = actualTableCreator.cols;
+    Col[] colArray = actualTableCreator.cols;
     assertEquals(1, colArray.length);
-    TableCreator.Col col2 = colArray[0];
+    Col col2 = colArray[0];
     assertEquals(2, col2.width);
     assertEquals(6, actualTableCreator.rowWidth);
     assertSame(col, col2);
@@ -262,9 +203,11 @@ public class TableCreatorDiffblueTest {
    * Method under test: {@link TableCreator#calculateRowWidth()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int TableCreator.calculateRowWidth()"})
   public void testCalculateRowWidth() {
     // Arrange, Act and Assert
-    assertEquals(6, (new TableCreator(new TableCreator.Col[]{new TableCreator.Col("Dr")})).calculateRowWidth());
+    assertEquals(6, (new TableCreator(new Col[]{new Col("Dr")})).calculateRowWidth());
   }
 
   /**
@@ -273,9 +216,11 @@ public class TableCreatorDiffblueTest {
    * Method under test: {@link TableCreator#addSeparator()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"TableCreator TableCreator.addSeparator()"})
   public void testAddSeparator() {
     // Arrange
-    TableCreator tableCreator = new TableCreator(new TableCreator.Col[]{new TableCreator.Col("Dr", Integer.MIN_VALUE)});
+    TableCreator tableCreator = new TableCreator(new Col[]{new Col("Dr", Integer.MIN_VALUE)});
 
     // Act
     TableCreator actualAddSeparatorResult = tableCreator.addSeparator();
@@ -288,17 +233,17 @@ public class TableCreatorDiffblueTest {
   /**
    * Test {@link TableCreator#addSeparator()}.
    * <ul>
-   *   <li>Then {@link TableCreator#TableCreator(Col[])} with cols is array of
-   * {@link Col} with {@link Col#Col(String)} {@link TableCreator#sb} toString is
-   * {@code ------ | Dr | ------ ------}.</li>
+   *   <li>Then {@link TableCreator#TableCreator(Col[])} with cols is array of {@link Col} with {@link Col#Col(String)} {@link TableCreator#sb} toString is {@code ------ | Dr | ------ ------}.</li>
    * </ul>
    * <p>
    * Method under test: {@link TableCreator#addSeparator()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"TableCreator TableCreator.addSeparator()"})
   public void testAddSeparator_thenTableCreatorWithColsIsArrayOfColWithColSbToStringIsDr() {
     // Arrange
-    TableCreator tableCreator = new TableCreator(new TableCreator.Col[]{new TableCreator.Col("Dr")});
+    TableCreator tableCreator = new TableCreator(new Col[]{new Col("Dr")});
 
     // Act
     TableCreator actualAddSeparatorResult = tableCreator.addSeparator();
@@ -311,15 +256,17 @@ public class TableCreatorDiffblueTest {
   /**
    * Test {@link TableCreator#addRow(Col[])} with {@code cols}.
    * <p>
-   * Method under test: {@link TableCreator#addRow(TableCreator.Col[])}
+   * Method under test: {@link TableCreator#addRow(Col[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"TableCreator TableCreator.addRow(Col[])"})
   public void testAddRowWithCols() {
     // Arrange
-    TableCreator tableCreator = new TableCreator(new TableCreator.Col[]{new TableCreator.Col("")});
+    TableCreator tableCreator = new TableCreator(new Col[]{new Col("")});
 
     // Act
-    TableCreator actualAddRowResult = tableCreator.addRow(new TableCreator.Col[]{new TableCreator.Col("Dr")});
+    TableCreator actualAddRowResult = tableCreator.addRow(new Col[]{new Col("Dr")});
 
     // Assert
     assertEquals("\r\n----\r\n|  |\r\n----\r\n|  |\r\n", tableCreator.sb.toString());
@@ -329,15 +276,17 @@ public class TableCreatorDiffblueTest {
   /**
    * Test {@link TableCreator#addRow(Col[])} with {@code cols}.
    * <p>
-   * Method under test: {@link TableCreator#addRow(TableCreator.Col[])}
+   * Method under test: {@link TableCreator#addRow(Col[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"TableCreator TableCreator.addRow(Col[])"})
   public void testAddRowWithCols2() {
     // Arrange
-    TableCreator tableCreator = new TableCreator(new TableCreator.Col[]{new TableCreator.Col("Dr", -1)});
+    TableCreator tableCreator = new TableCreator(new Col[]{new Col("Dr", -1)});
 
     // Act
-    TableCreator actualAddRowResult = tableCreator.addRow(new TableCreator.Col[]{new TableCreator.Col("Dr")});
+    TableCreator actualAddRowResult = tableCreator.addRow(new Col[]{new Col("Dr")});
 
     // Assert
     assertEquals("\r\n---\r\n|  |\r\n---\r\n|  |\r\n", tableCreator.sb.toString());
@@ -347,20 +296,20 @@ public class TableCreatorDiffblueTest {
   /**
    * Test {@link TableCreator#addRow(Col[])} with {@code cols}.
    * <ul>
-   *   <li>Then {@link TableCreator#TableCreator(Col[])} with cols is array of
-   * {@link Col} with {@link Col#Col(String)} {@link TableCreator#sb} toString is
-   * {@code ------ | Dr | ------ | Dr |}.</li>
+   *   <li>Then {@link TableCreator#TableCreator(Col[])} with cols is array of {@link Col} with {@link Col#Col(String)} {@link TableCreator#sb} toString is {@code ------ | Dr | ------ | Dr |}.</li>
    * </ul>
    * <p>
-   * Method under test: {@link TableCreator#addRow(TableCreator.Col[])}
+   * Method under test: {@link TableCreator#addRow(Col[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"TableCreator TableCreator.addRow(Col[])"})
   public void testAddRowWithCols_thenTableCreatorWithColsIsArrayOfColWithColSbToStringIsDrDr() {
     // Arrange
-    TableCreator tableCreator = new TableCreator(new TableCreator.Col[]{new TableCreator.Col("Dr")});
+    TableCreator tableCreator = new TableCreator(new Col[]{new Col("Dr")});
 
     // Act
-    TableCreator actualAddRowResult = tableCreator.addRow(new TableCreator.Col[]{new TableCreator.Col("Dr")});
+    TableCreator actualAddRowResult = tableCreator.addRow(new Col[]{new Col("Dr")});
 
     // Assert
     assertEquals("\r\n------\r\n| Dr |\r\n------\r\n| Dr |\r\n", tableCreator.sb.toString());
@@ -370,20 +319,20 @@ public class TableCreatorDiffblueTest {
   /**
    * Test {@link TableCreator#addRow(Col[])} with {@code cols}.
    * <ul>
-   *   <li>Then {@link TableCreator#TableCreator(Col[])} with cols is array of
-   * {@link Col} with {@link Col#Col(String)} {@link TableCreator#sb} toString is
-   * {@code -------- | Prof | -------- | Dr |}.</li>
+   *   <li>Then {@link TableCreator#TableCreator(Col[])} with cols is array of {@link Col} with {@link Col#Col(String)} {@link TableCreator#sb} toString is {@code -------- | Prof | -------- | Dr |}.</li>
    * </ul>
    * <p>
-   * Method under test: {@link TableCreator#addRow(TableCreator.Col[])}
+   * Method under test: {@link TableCreator#addRow(Col[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"TableCreator TableCreator.addRow(Col[])"})
   public void testAddRowWithCols_thenTableCreatorWithColsIsArrayOfColWithColSbToStringIsProfDr() {
     // Arrange
-    TableCreator tableCreator = new TableCreator(new TableCreator.Col[]{new TableCreator.Col("Prof")});
+    TableCreator tableCreator = new TableCreator(new Col[]{new Col("Prof")});
 
     // Act
-    TableCreator actualAddRowResult = tableCreator.addRow(new TableCreator.Col[]{new TableCreator.Col("Dr")});
+    TableCreator actualAddRowResult = tableCreator.addRow(new Col[]{new Col("Dr")});
 
     // Assert
     assertEquals("\r\n--------\r\n| Prof |\r\n--------\r\n| Dr   |\r\n", tableCreator.sb.toString());
@@ -396,16 +345,17 @@ public class TableCreatorDiffblueTest {
    *   <li>Then throw {@link IllegalArgumentException}.</li>
    * </ul>
    * <p>
-   * Method under test: {@link TableCreator#addRow(TableCreator.Col[])}
+   * Method under test: {@link TableCreator#addRow(Col[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"TableCreator TableCreator.addRow(Col[])"})
   public void testAddRowWithCols_thenThrowIllegalArgumentException() {
     // Arrange
-    TableCreator tableCreator = new TableCreator(new TableCreator.Col[]{});
+    TableCreator tableCreator = new TableCreator(new Col[]{});
 
     // Act and Assert
-    assertThrows(IllegalArgumentException.class,
-        () -> tableCreator.addRow(new TableCreator.Col[]{new TableCreator.Col("Dr")}));
+    assertThrows(IllegalArgumentException.class, () -> tableCreator.addRow(new Col[]{new Col("Dr")}));
   }
 
   /**
@@ -414,9 +364,11 @@ public class TableCreatorDiffblueTest {
    * Method under test: {@link TableCreator#addRow(Object[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"TableCreator TableCreator.addRow(Object[])"})
   public void testAddRowWithData() {
     // Arrange
-    TableCreator tableCreator = new TableCreator(new TableCreator.Col[]{new TableCreator.Col("Dr", -1)});
+    TableCreator tableCreator = new TableCreator(new Col[]{new Col("Dr", -1)});
 
     // Act
     TableCreator actualAddRowResult = tableCreator.addRow(new Object[]{BLCFieldUtils.NULL_FIELD});
@@ -429,17 +381,17 @@ public class TableCreatorDiffblueTest {
   /**
    * Test {@link TableCreator#addRow(Object[])} with {@code data}.
    * <ul>
-   *   <li>Then {@link TableCreator#TableCreator(Col[])} with cols is array of
-   * {@link Col} with {@link Col#Col(String)} {@link TableCreator#sb} toString is
-   * {@code ------ | Dr | ------ | 2 |}.</li>
+   *   <li>Then {@link TableCreator#TableCreator(Col[])} with cols is array of {@link Col} with {@link Col#Col(String)} {@link TableCreator#sb} toString is {@code ------ | Dr | ------ | 2 |}.</li>
    * </ul>
    * <p>
    * Method under test: {@link TableCreator#addRow(Object[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"TableCreator TableCreator.addRow(Object[])"})
   public void testAddRowWithData_thenTableCreatorWithColsIsArrayOfColWithColSbToStringIsDr2() {
     // Arrange
-    TableCreator tableCreator = new TableCreator(new TableCreator.Col[]{new TableCreator.Col("Dr")});
+    TableCreator tableCreator = new TableCreator(new Col[]{new Col("Dr")});
 
     // Act
     TableCreator actualAddRowResult = tableCreator.addRow(new Object[]{2});
@@ -452,17 +404,17 @@ public class TableCreatorDiffblueTest {
   /**
    * Test {@link TableCreator#addRow(Object[])} with {@code data}.
    * <ul>
-   *   <li>Then {@link TableCreator#TableCreator(Col[])} with cols is array of
-   * {@link Col} with {@link Col#Col(String)} {@link TableCreator#sb} toString is
-   * {@code ------ | Dr | ------ | ja |}.</li>
+   *   <li>Then {@link TableCreator#TableCreator(Col[])} with cols is array of {@link Col} with {@link Col#Col(String)} {@link TableCreator#sb} toString is {@code ------ | Dr | ------ | ja |}.</li>
    * </ul>
    * <p>
    * Method under test: {@link TableCreator#addRow(Object[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"TableCreator TableCreator.addRow(Object[])"})
   public void testAddRowWithData_thenTableCreatorWithColsIsArrayOfColWithColSbToStringIsDrJa() {
     // Arrange
-    TableCreator tableCreator = new TableCreator(new TableCreator.Col[]{new TableCreator.Col("Dr")});
+    TableCreator tableCreator = new TableCreator(new Col[]{new Col("Dr")});
 
     // Act
     TableCreator actualAddRowResult = tableCreator.addRow(new Object[]{BLCFieldUtils.NULL_FIELD});
@@ -481,24 +433,29 @@ public class TableCreatorDiffblueTest {
    * Method under test: {@link TableCreator#addRow(Object[])}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"TableCreator TableCreator.addRow(Object[])"})
   public void testAddRowWithData_thenThrowIllegalArgumentException() {
     // Arrange, Act and Assert
     assertThrows(IllegalArgumentException.class,
-        () -> (new TableCreator(new TableCreator.Col[]{})).addRow(new Object[]{BLCFieldUtils.NULL_FIELD}));
+        () -> (new TableCreator(new Col[]{})).addRow(new Object[]{BLCFieldUtils.NULL_FIELD}));
   }
 
   /**
-   * Test {@link TableCreator#addRow(String, Object)} with {@code rowHeader},
-   * {@code rowData}.
+   * Test {@link TableCreator#addRow(String, Object)} with {@code rowHeader}, {@code rowData}.
    * <p>
    * Method under test: {@link TableCreator#addRow(String, Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"TableCreator TableCreator.addRow(String, Object)"})
   public void testAddRowWithRowHeaderRowData() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
-    TableCreator tableCreator = new TableCreator(new TableCreator.Col[]{new TableCreator.Col("Dr")});
+    TableCreator tableCreator = new TableCreator(new Col[]{new Col("Dr")});
     tableCreator.withGlobalRowHeaderWidth(0);
 
     // Act and Assert
@@ -506,17 +463,20 @@ public class TableCreatorDiffblueTest {
   }
 
   /**
-   * Test {@link TableCreator#addRow(String, Object)} with {@code rowHeader},
-   * {@code rowData}.
+   * Test {@link TableCreator#addRow(String, Object)} with {@code rowHeader}, {@code rowData}.
    * <p>
    * Method under test: {@link TableCreator#addRow(String, Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"TableCreator TableCreator.addRow(String, Object)"})
   public void testAddRowWithRowHeaderRowData2() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
-    TableCreator tableCreator = new TableCreator(new TableCreator.Col[]{new TableCreator.Col("Dr")});
+    TableCreator tableCreator = new TableCreator(new Col[]{new Col("Dr")});
     tableCreator.withGlobalRowHeaderWidth(-1);
 
     // Act and Assert
@@ -524,50 +484,30 @@ public class TableCreatorDiffblueTest {
   }
 
   /**
-   * Test {@link TableCreator#addRow(String, Object)} with {@code rowHeader},
-   * {@code rowData}.
+   * Test {@link TableCreator#addRow(String, Object)} with {@code rowHeader}, {@code rowData}.
    * <ul>
-   *   <li>Given {@link TableCreator#TableCreator(Col[])} with cols is array of
-   * {@link Col} with {@link Col#Col(String)}.</li>
+   *   <li>Given {@link TableCreator#TableCreator(Col[])} with cols is array of {@link Col} with {@link Col#Col(String)}.</li>
    * </ul>
    * <p>
    * Method under test: {@link TableCreator#addRow(String, Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"TableCreator TableCreator.addRow(String, Object)"})
   public void testAddRowWithRowHeaderRowData_givenTableCreatorWithColsIsArrayOfColWithCol() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
-    TableCreator tableCreator = new TableCreator(new TableCreator.Col[]{new TableCreator.Col("Dr")});
+    TableCreator tableCreator = new TableCreator(new Col[]{new Col("Dr")});
 
     // Act and Assert
     assertSame(tableCreator, tableCreator.addRow("Row Header", BLCFieldUtils.NULL_FIELD));
   }
 
   /**
-   * Test {@link TableCreator#addRow(String, Object)} with {@code rowHeader},
-   * {@code rowData}.
-   * <ul>
-   *   <li>Then return {@link TableCreator#TableCreator(Col[])} with cols is array
-   * of {@link Col} with {@link Col}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link TableCreator#addRow(String, Object)}
-   */
-  @Test
-  public void testAddRowWithRowHeaderRowData_thenReturnTableCreatorWithColsIsArrayOfColWithCol() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    TableCreator tableCreator = new TableCreator(new TableCreator.Col[]{mock(TableCreator.Col.class)});
-
-    // Act and Assert
-    assertSame(tableCreator, tableCreator.addRow("Row Header", BLCFieldUtils.NULL_FIELD));
-  }
-
-  /**
-   * Test {@link TableCreator#addRow(String, Object)} with {@code rowHeader},
-   * {@code rowData}.
+   * Test {@link TableCreator#addRow(String, Object)} with {@code rowHeader}, {@code rowData}.
    * <ul>
    *   <li>When {@code null}.</li>
    * </ul>
@@ -575,11 +515,15 @@ public class TableCreatorDiffblueTest {
    * Method under test: {@link TableCreator#addRow(String, Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"TableCreator TableCreator.addRow(String, Object)"})
   public void testAddRowWithRowHeaderRowData_whenNull() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
     // Arrange
-    TableCreator tableCreator = new TableCreator(new TableCreator.Col[]{new TableCreator.Col("Dr")});
+    TableCreator tableCreator = new TableCreator(new Col[]{new Col("Dr")});
     tableCreator.withGlobalRowHeaderWidth(0);
 
     // Act and Assert
@@ -596,9 +540,11 @@ public class TableCreatorDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String TableCreator.toString()", "TableCreator TableCreator.withGlobalRowHeaderWidth(int)"})
   public void testGettersAndSetters() {
     // Arrange
-    TableCreator tableCreator = new TableCreator(new TableCreator.Col[]{new TableCreator.Col("Dr")});
+    TableCreator tableCreator = new TableCreator(new Col[]{new Col("Dr")});
 
     // Act
     TableCreator actualWithGlobalRowHeaderWidthResult = tableCreator.withGlobalRowHeaderWidth(1);

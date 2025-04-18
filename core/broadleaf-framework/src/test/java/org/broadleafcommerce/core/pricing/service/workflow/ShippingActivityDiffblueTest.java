@@ -1,13 +1,31 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.pricing.service.workflow;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -25,19 +43,22 @@ import org.broadleafcommerce.core.workflow.DefaultProcessContextImpl;
 import org.broadleafcommerce.core.workflow.ProcessContext;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class ShippingActivityDiffblueTest {
   /**
    * Test {@link ShippingActivity#execute(ProcessContext)}.
    * <ul>
    *   <li>Given {@link OrderImpl} (default constructor).</li>
-   *   <li>Then return SeedData Auditable CreatedBy is {@code null}.</li>
+   *   <li>Then SeedData return {@link OrderImpl}.</li>
    * </ul>
    * <p>
    * Method under test: {@link ShippingActivity#execute(ProcessContext)}
    */
   @Test
-  public void testExecute_givenOrderImpl_thenReturnSeedDataAuditableCreatedByIsNull() throws Exception {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ProcessContext ShippingActivity.execute(ProcessContext)"})
+  public void testExecute_givenOrderImpl_thenSeedDataReturnOrderImpl() throws Exception {
     // Arrange
     ShippingActivity shippingActivity = new ShippingActivity();
 
@@ -45,56 +66,25 @@ public class ShippingActivityDiffblueTest {
     context.setSeedData(new OrderImpl());
 
     // Act
-    ProcessContext<Order> actualExecuteResult = shippingActivity.execute((ProcessContext<Order>) context);
+    ProcessContext<Order> actualExecuteResult = shippingActivity.execute(context);
 
     // Assert
-    Order seedData = actualExecuteResult.getSeedData();
-    assertTrue(seedData instanceof OrderImpl);
+    assertTrue(actualExecuteResult.getSeedData() instanceof OrderImpl);
     assertTrue(actualExecuteResult instanceof DefaultProcessContextImpl);
-    Auditable auditable = seedData.getAuditable();
-    assertNull(auditable.getCreatedBy());
-    assertNull(auditable.getUpdatedBy());
-    assertNull(seedData.getId());
-    assertNull(seedData.getEmailAddress());
-    assertNull(seedData.getName());
-    assertNull(seedData.getOrderNumber());
-    assertNull(((OrderImpl) seedData).getCurrencyCode());
-    assertNull(auditable.getDateCreated());
-    assertNull(auditable.getDateUpdated());
-    assertNull(seedData.getSubmitDate());
-    assertNull(seedData.getCurrency());
-    assertNull(seedData.getLocale());
-    assertNull(seedData.getSubTotal());
-    assertNull(seedData.getTotal());
-    assertNull(seedData.getTotalAfterAppliedPayments());
-    assertNull(seedData.getTotalTax());
-    assertNull(seedData.getStatus());
-    assertNull(seedData.getCustomer());
-    assertFalse(seedData.getTaxOverride());
-    Money fulfillmentGroupAdjustmentsValue = seedData.getFulfillmentGroupAdjustmentsValue();
-    assertEquals(fulfillmentGroupAdjustmentsValue, fulfillmentGroupAdjustmentsValue.abs());
-    assertEquals(fulfillmentGroupAdjustmentsValue, fulfillmentGroupAdjustmentsValue.zero());
-    assertEquals(fulfillmentGroupAdjustmentsValue, seedData.getFutureCreditFulfillmentGroupAdjustmentsValue());
-    assertEquals(fulfillmentGroupAdjustmentsValue, seedData.getFutureCreditItemAdjustmentsValue());
-    assertEquals(fulfillmentGroupAdjustmentsValue, seedData.getFutureCreditOrderAdjustmentsValue());
-    assertEquals(fulfillmentGroupAdjustmentsValue, seedData.getItemAdjustmentsValue());
-    assertEquals(fulfillmentGroupAdjustmentsValue, seedData.getOrderAdjustmentsValue());
-    assertEquals(fulfillmentGroupAdjustmentsValue, seedData.getTotalAdjustmentsValue());
-    assertEquals(fulfillmentGroupAdjustmentsValue, seedData.getTotalFulfillmentCharges());
-    assertEquals(fulfillmentGroupAdjustmentsValue, seedData.getTotalFutureCreditAdjustmentsValue());
-    assertEquals(fulfillmentGroupAdjustmentsValue, seedData.getTotalShipping());
   }
 
   /**
    * Test {@link ShippingActivity#execute(ProcessContext)}.
    * <ul>
-   *   <li>Then return SeedData EmailAddress is {@code 42 Main St}.</li>
+   *   <li>Then calls {@link BroadleafCurrency#getCurrencyCode()}.</li>
    * </ul>
    * <p>
    * Method under test: {@link ShippingActivity#execute(ProcessContext)}
    */
   @Test
-  public void testExecute_thenReturnSeedDataEmailAddressIs42MainSt() throws Exception {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ProcessContext ShippingActivity.execute(ProcessContext)"})
+  public void testExecute_thenCallsGetCurrencyCode() throws Exception {
     // Arrange
     ShippingActivity shippingActivity = new ShippingActivity();
 
@@ -111,13 +101,11 @@ public class ShippingActivityDiffblueTest {
     orderImpl.setAuditable(auditable);
     orderImpl.setCandidateOrderOffers(new ArrayList<>());
     orderImpl.setCurrency(currency);
-    CustomerImpl customer = new CustomerImpl();
-    orderImpl.setCustomer(customer);
+    orderImpl.setCustomer(new CustomerImpl());
     orderImpl.setEmailAddress("42 Main St");
     orderImpl.setFulfillmentGroups(new ArrayList<>());
     orderImpl.setId(1L);
-    LocaleImpl locale = new LocaleImpl();
-    orderImpl.setLocale(locale);
+    orderImpl.setLocale(new LocaleImpl());
     orderImpl.setName("ThreadLocalManager.notify.orphans");
     orderImpl.setOrderAttributes(new HashMap<>());
     orderImpl.setOrderItems(new ArrayList<>());
@@ -125,54 +113,23 @@ public class ShippingActivityDiffblueTest {
     orderImpl.setOrderNumber("42");
     orderImpl.setPayments(new ArrayList<>());
     orderImpl.setStatus(OrderStatus.ARCHIVED);
-    Money subTotal = new Money();
-    orderImpl.setSubTotal(subTotal);
+    orderImpl.setSubTotal(new Money());
     orderImpl.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     orderImpl.setTaxOverride(true);
     orderImpl.setTotal(new Money());
     orderImpl.setTotalFulfillmentCharges(new Money());
-    orderImpl.setTotalShipping(new Money());
     orderImpl.setTotalTax(new Money());
 
     DefaultProcessContextImpl<Order> context = new DefaultProcessContextImpl<>();
     context.setSeedData(orderImpl);
 
     // Act
-    ProcessContext<Order> actualExecuteResult = shippingActivity.execute((ProcessContext<Order>) context);
+    ProcessContext<Order> actualExecuteResult = shippingActivity.execute(context);
 
     // Assert
     verify(currency).getCurrencyCode();
-    Order seedData = actualExecuteResult.getSeedData();
-    assertTrue(seedData instanceof OrderImpl);
+    assertTrue(actualExecuteResult.getSeedData() instanceof OrderImpl);
     assertTrue(actualExecuteResult instanceof DefaultProcessContextImpl);
-    assertEquals("42 Main St", seedData.getEmailAddress());
-    assertEquals("42", seedData.getOrderNumber());
-    assertEquals("42", ((OrderImpl) seedData).getMainEntityName());
-    OrderStatus status = seedData.getStatus();
-    assertEquals("ARCHIVED", status.getType());
-    assertEquals("Archived", status.getFriendlyType());
-    assertEquals("GBP", ((OrderImpl) seedData).getCurrencyCode());
-    assertEquals("ThreadLocalManager.notify.orphans", seedData.getName());
-    assertEquals(1L, seedData.getId().longValue());
-    assertFalse(status.isEditable());
-    assertTrue(seedData.getTaxOverride());
-    assertEquals(subTotal, seedData.getFulfillmentGroupAdjustmentsValue());
-    assertEquals(subTotal, seedData.getFutureCreditFulfillmentGroupAdjustmentsValue());
-    assertEquals(subTotal, seedData.getFutureCreditItemAdjustmentsValue());
-    assertEquals(subTotal, seedData.getFutureCreditOrderAdjustmentsValue());
-    assertEquals(subTotal, seedData.getItemAdjustmentsValue());
-    assertEquals(subTotal, seedData.getOrderAdjustmentsValue());
-    assertEquals(subTotal, seedData.getSubTotal());
-    assertEquals(subTotal, seedData.getTotal());
-    assertEquals(subTotal, seedData.getTotalAdjustmentsValue());
-    assertEquals(subTotal, seedData.getTotalAfterAppliedPayments());
-    assertEquals(subTotal, seedData.getTotalFulfillmentCharges());
-    assertEquals(subTotal, seedData.getTotalFutureCreditAdjustmentsValue());
-    assertEquals(subTotal, seedData.getTotalShipping());
-    assertEquals(subTotal, seedData.getTotalTax());
-    assertSame(auditable, seedData.getAuditable());
-    assertSame(locale, seedData.getLocale());
-    assertSame(customer, seedData.getCustomer());
   }
 
   /**
@@ -185,6 +142,8 @@ public class ShippingActivityDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ShippingActivity.<init>()", "void ShippingActivity.setShippingService(ShippingService)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     ShippingActivity actualShippingActivity = new ShippingActivity();

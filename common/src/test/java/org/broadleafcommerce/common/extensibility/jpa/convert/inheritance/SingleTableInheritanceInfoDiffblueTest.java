@@ -19,13 +19,15 @@ package org.broadleafcommerce.common.extensibility.jpa.convert.inheritance;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import javax.persistence.DiscriminatorType;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class SingleTableInheritanceInfoDiffblueTest {
   /**
-   * Test {@link SingleTableInheritanceInfo#equals(Object)}, and
-   * {@link SingleTableInheritanceInfo#hashCode()}.
+   * Test {@link SingleTableInheritanceInfo#equals(Object)}, and {@link SingleTableInheritanceInfo#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -38,6 +40,8 @@ public class SingleTableInheritanceInfoDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SingleTableInheritanceInfo.equals(Object)", "int SingleTableInheritanceInfo.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     SingleTableInheritanceInfo singleTableInheritanceInfo = new SingleTableInheritanceInfo();
@@ -59,8 +63,7 @@ public class SingleTableInheritanceInfoDiffblueTest {
   }
 
   /**
-   * Test {@link SingleTableInheritanceInfo#equals(Object)}, and
-   * {@link SingleTableInheritanceInfo#hashCode()}.
+   * Test {@link SingleTableInheritanceInfo#equals(Object)}, and {@link SingleTableInheritanceInfo#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -73,6 +76,8 @@ public class SingleTableInheritanceInfoDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SingleTableInheritanceInfo.equals(Object)", "int SingleTableInheritanceInfo.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     SingleTableInheritanceInfo singleTableInheritanceInfo = new SingleTableInheritanceInfo();
@@ -94,8 +99,7 @@ public class SingleTableInheritanceInfoDiffblueTest {
   }
 
   /**
-   * Test {@link SingleTableInheritanceInfo#equals(Object)}, and
-   * {@link SingleTableInheritanceInfo#hashCode()}.
+   * Test {@link SingleTableInheritanceInfo#equals(Object)}, and {@link SingleTableInheritanceInfo#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -108,6 +112,8 @@ public class SingleTableInheritanceInfoDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SingleTableInheritanceInfo.equals(Object)", "int SingleTableInheritanceInfo.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     SingleTableInheritanceInfo singleTableInheritanceInfo = new SingleTableInheritanceInfo();
@@ -132,6 +138,8 @@ public class SingleTableInheritanceInfoDiffblueTest {
    * Method under test: {@link SingleTableInheritanceInfo#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SingleTableInheritanceInfo.equals(Object)", "int SingleTableInheritanceInfo.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     SingleTableInheritanceInfo singleTableInheritanceInfo = new SingleTableInheritanceInfo();
@@ -160,6 +168,8 @@ public class SingleTableInheritanceInfoDiffblueTest {
    * Method under test: {@link SingleTableInheritanceInfo#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SingleTableInheritanceInfo.equals(Object)", "int SingleTableInheritanceInfo.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     SingleTableInheritanceInfo singleTableInheritanceInfo = new SingleTableInheritanceInfo();
@@ -188,6 +198,8 @@ public class SingleTableInheritanceInfoDiffblueTest {
    * Method under test: {@link SingleTableInheritanceInfo#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SingleTableInheritanceInfo.equals(Object)", "int SingleTableInheritanceInfo.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     SingleTableInheritanceInfo singleTableInheritanceInfo = new SingleTableInheritanceInfo();
@@ -210,6 +222,8 @@ public class SingleTableInheritanceInfoDiffblueTest {
    * Method under test: {@link SingleTableInheritanceInfo#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SingleTableInheritanceInfo.equals(Object)", "int SingleTableInheritanceInfo.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     SingleTableInheritanceInfo singleTableInheritanceInfo = new SingleTableInheritanceInfo();
@@ -227,13 +241,11 @@ public class SingleTableInheritanceInfoDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>default or parameterless constructor of
-   * {@link SingleTableInheritanceInfo}
+   *   <li>default or parameterless constructor of {@link SingleTableInheritanceInfo}
    *   <li>{@link SingleTableInheritanceInfo#setClassName(String)}
    *   <li>{@link SingleTableInheritanceInfo#setDiscriminatorLength(int)}
    *   <li>{@link SingleTableInheritanceInfo#setDiscriminatorName(String)}
-   *   <li>
-   * {@link SingleTableInheritanceInfo#setDiscriminatorType(DiscriminatorType)}
+   *   <li>{@link SingleTableInheritanceInfo#setDiscriminatorType(DiscriminatorType)}
    *   <li>{@link SingleTableInheritanceInfo#getClassName()}
    *   <li>{@link SingleTableInheritanceInfo#getDiscriminatorLength()}
    *   <li>{@link SingleTableInheritanceInfo#getDiscriminatorName()}
@@ -241,6 +253,15 @@ public class SingleTableInheritanceInfoDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SingleTableInheritanceInfo.<init>()", "String SingleTableInheritanceInfo.getClassName()",
+      "int SingleTableInheritanceInfo.getDiscriminatorLength()",
+      "String SingleTableInheritanceInfo.getDiscriminatorName()",
+      "DiscriminatorType SingleTableInheritanceInfo.getDiscriminatorType()",
+      "void SingleTableInheritanceInfo.setClassName(String)",
+      "void SingleTableInheritanceInfo.setDiscriminatorLength(int)",
+      "void SingleTableInheritanceInfo.setDiscriminatorName(String)",
+      "void SingleTableInheritanceInfo.setDiscriminatorType(DiscriminatorType)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     SingleTableInheritanceInfo actualSingleTableInheritanceInfo = new SingleTableInheritanceInfo();
@@ -252,7 +273,7 @@ public class SingleTableInheritanceInfoDiffblueTest {
     int actualDiscriminatorLength = actualSingleTableInheritanceInfo.getDiscriminatorLength();
     String actualDiscriminatorName = actualSingleTableInheritanceInfo.getDiscriminatorName();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Class Name", actualClassName);
     assertEquals("Discriminator Name", actualDiscriminatorName);
     assertEquals(3, actualDiscriminatorLength);

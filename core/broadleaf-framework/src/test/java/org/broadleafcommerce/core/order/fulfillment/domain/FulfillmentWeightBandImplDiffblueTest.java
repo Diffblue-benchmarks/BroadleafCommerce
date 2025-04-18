@@ -1,29 +1,44 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.order.fulfillment.domain;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import org.broadleafcommerce.common.util.WeightUnitOfMeasureType;
 import org.broadleafcommerce.core.order.service.type.FulfillmentBandResultAmountType;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.mvel2.util.InternalNumber;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
-    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class FulfillmentWeightBandImplDiffblueTest {
   @Autowired
   private FulfillmentWeightBandImpl fulfillmentWeightBandImpl;
@@ -35,14 +50,19 @@ public class FulfillmentWeightBandImplDiffblueTest {
    * <ul>
    *   <li>{@link FulfillmentWeightBandImpl#setId(Long)}
    *   <li>{@link FulfillmentWeightBandImpl#setMinimumWeight(BigDecimal)}
-   *   <li>
-   * {@link FulfillmentWeightBandImpl#setOption(BandedWeightFulfillmentOption)}
+   *   <li>{@link FulfillmentWeightBandImpl#setOption(BandedWeightFulfillmentOption)}
    *   <li>{@link FulfillmentWeightBandImpl#getId()}
    *   <li>{@link FulfillmentWeightBandImpl#getMinimumWeight()}
    *   <li>{@link FulfillmentWeightBandImpl#getOption()}
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long FulfillmentWeightBandImpl.getId()",
+      "BigDecimal FulfillmentWeightBandImpl.getMinimumWeight()",
+      "BandedWeightFulfillmentOption FulfillmentWeightBandImpl.getOption()",
+      "void FulfillmentWeightBandImpl.setId(Long)", "void FulfillmentWeightBandImpl.setMinimumWeight(BigDecimal)",
+      "void FulfillmentWeightBandImpl.setOption(BandedWeightFulfillmentOption)"})
   public void testGettersAndSetters() {
     // Arrange
     FulfillmentWeightBandImpl fulfillmentWeightBandImpl = new FulfillmentWeightBandImpl();
@@ -57,7 +77,7 @@ public class FulfillmentWeightBandImplDiffblueTest {
     BigDecimal actualMinimumWeight = fulfillmentWeightBandImpl.getMinimumWeight();
     BandedWeightFulfillmentOption actualOption = fulfillmentWeightBandImpl.getOption();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals(1L, actualId.longValue());
     assertEquals(new BigDecimal("2.3"), actualMinimumWeight);
     assertSame(minimumWeight, actualMinimumWeight);
@@ -65,239 +85,80 @@ public class FulfillmentWeightBandImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentWeightBandImpl#getWeightUnitOfMeasure()}.
+   * Test {@link FulfillmentWeightBandImpl#setWeightUnitOfMeasure(WeightUnitOfMeasureType)}.
    * <p>
-   * Method under test: {@link FulfillmentWeightBandImpl#getWeightUnitOfMeasure()}
+   * Method under test: {@link FulfillmentWeightBandImpl#setWeightUnitOfMeasure(WeightUnitOfMeasureType)}
    */
   @Test
-  public void testGetWeightUnitOfMeasure() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FulfillmentWeightBandImpl fulfillmentWeightBandImpl = new FulfillmentWeightBandImpl();
-    fulfillmentWeightBandImpl.setMinimumWeight(mock(InternalNumber.class));
-
-    // Act and Assert
-    assertNull(fulfillmentWeightBandImpl.getWeightUnitOfMeasure());
-  }
-
-  /**
-   * Test {@link FulfillmentWeightBandImpl#getWeightUnitOfMeasure()}.
-   * <p>
-   * Method under test: {@link FulfillmentWeightBandImpl#getWeightUnitOfMeasure()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetWeightUnitOfMeasure2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.fulfillment.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1432 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.fulfillment.domain.FulfillmentWeightBandImpl fulfillmentWeightBandImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new FulfillmentWeightBandImpl()).getWeightUnitOfMeasure();
-  }
-
-  /**
-   * Test {@link FulfillmentWeightBandImpl#getWeightUnitOfMeasure()}.
-   * <ul>
-   *   <li>Given {@link FulfillmentWeightBandImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link FulfillmentWeightBandImpl#getWeightUnitOfMeasure()}
-   */
-  @Test
-  public void testGetWeightUnitOfMeasure_givenFulfillmentWeightBandImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertNull((new FulfillmentWeightBandImpl()).getWeightUnitOfMeasure());
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentWeightBandImpl#setWeightUnitOfMeasure(WeightUnitOfMeasureType)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentWeightBandImpl#setWeightUnitOfMeasure(WeightUnitOfMeasureType)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentWeightBandImpl.setWeightUnitOfMeasure(WeightUnitOfMeasureType)"})
   public void testSetWeightUnitOfMeasure() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentWeightBandImpl fulfillmentWeightBandImpl = new FulfillmentWeightBandImpl();
+    FulfillmentWeightBandImpl fulfillmentWeightBandImpl2 = new FulfillmentWeightBandImpl();
     WeightUnitOfMeasureType weightUnitOfMeasure = new WeightUnitOfMeasureType("Type", "Friendly Type");
 
     // Act
-    fulfillmentWeightBandImpl.setWeightUnitOfMeasure(weightUnitOfMeasure);
+    fulfillmentWeightBandImpl2.setWeightUnitOfMeasure(weightUnitOfMeasure);
 
     // Assert
-    assertEquals("Type", fulfillmentWeightBandImpl.weightUnitOfMeasure);
-    assertEquals(weightUnitOfMeasure, fulfillmentWeightBandImpl.getWeightUnitOfMeasure());
+    assertEquals("Type", fulfillmentWeightBandImpl2.weightUnitOfMeasure);
+    assertEquals(weightUnitOfMeasure, fulfillmentWeightBandImpl2.getWeightUnitOfMeasure());
   }
 
   /**
-   * Test
-   * {@link FulfillmentWeightBandImpl#setWeightUnitOfMeasure(WeightUnitOfMeasureType)}.
-   * <p>
-   * Method under test:
-   * {@link FulfillmentWeightBandImpl#setWeightUnitOfMeasure(WeightUnitOfMeasureType)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testSetWeightUnitOfMeasure2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.fulfillment.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1440 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.fulfillment.domain.FulfillmentWeightBandImpl fulfillmentWeightBandImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentWeightBandImpl fulfillmentWeightBandImpl2 = new FulfillmentWeightBandImpl();
-
-    // Act
-    fulfillmentWeightBandImpl2.setWeightUnitOfMeasure(new WeightUnitOfMeasureType("Type", "Friendly Type"));
-  }
-
-  /**
-   * Test
-   * {@link FulfillmentWeightBandImpl#setWeightUnitOfMeasure(WeightUnitOfMeasureType)}.
+   * Test {@link FulfillmentWeightBandImpl#setWeightUnitOfMeasure(WeightUnitOfMeasureType)}.
    * <ul>
-   *   <li>Given {@link FulfillmentWeightBandImpl} (default constructor) Id is
-   * one.</li>
+   *   <li>Given {@link FulfillmentWeightBandImpl} (default constructor) Id is one.</li>
    *   <li>When {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentWeightBandImpl#setWeightUnitOfMeasure(WeightUnitOfMeasureType)}
+   * Method under test: {@link FulfillmentWeightBandImpl#setWeightUnitOfMeasure(WeightUnitOfMeasureType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentWeightBandImpl.setWeightUnitOfMeasure(WeightUnitOfMeasureType)"})
   public void testSetWeightUnitOfMeasure_givenFulfillmentWeightBandImplIdIsOne_whenNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentWeightBandImpl fulfillmentWeightBandImpl = new FulfillmentWeightBandImpl();
-    fulfillmentWeightBandImpl.setId(1L);
-    fulfillmentWeightBandImpl.setMinimumWeight(new BigDecimal("2.3"));
-    fulfillmentWeightBandImpl.setOption(new BandedWeightFulfillmentOptionImpl());
-    fulfillmentWeightBandImpl.setResultAmount(new BigDecimal("2.3"));
-    fulfillmentWeightBandImpl.setResultAmountType(FulfillmentBandResultAmountType.PERCENTAGE);
-    fulfillmentWeightBandImpl.setWeightUnitOfMeasure(new WeightUnitOfMeasureType("Type", "Friendly Type"));
+    FulfillmentWeightBandImpl fulfillmentWeightBandImpl2 = new FulfillmentWeightBandImpl();
+    fulfillmentWeightBandImpl2.setId(1L);
+    fulfillmentWeightBandImpl2.setMinimumWeight(new BigDecimal("2.3"));
+    fulfillmentWeightBandImpl2.setOption(new BandedWeightFulfillmentOptionImpl());
+    fulfillmentWeightBandImpl2.setResultAmount(new BigDecimal("2.3"));
+    fulfillmentWeightBandImpl2.setResultAmountType(FulfillmentBandResultAmountType.PERCENTAGE);
+    fulfillmentWeightBandImpl2.setWeightUnitOfMeasure(new WeightUnitOfMeasureType("Type", "Friendly Type"));
 
     // Act
-    fulfillmentWeightBandImpl.setWeightUnitOfMeasure(null);
+    fulfillmentWeightBandImpl2.setWeightUnitOfMeasure(null);
 
     // Assert that nothing has changed
-    assertEquals("Type", fulfillmentWeightBandImpl.getWeightUnitOfMeasure().getType());
-    assertEquals("Type", fulfillmentWeightBandImpl.weightUnitOfMeasure);
+    assertEquals("Type", fulfillmentWeightBandImpl2.getWeightUnitOfMeasure().getType());
+    assertEquals("Type", fulfillmentWeightBandImpl2.weightUnitOfMeasure);
   }
 
   /**
-   * Test
-   * {@link FulfillmentWeightBandImpl#setWeightUnitOfMeasure(WeightUnitOfMeasureType)}.
+   * Test {@link FulfillmentWeightBandImpl#setWeightUnitOfMeasure(WeightUnitOfMeasureType)}.
    * <ul>
    *   <li>Given {@code Type}.</li>
    *   <li>Then calls {@link WeightUnitOfMeasureType#getType()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FulfillmentWeightBandImpl#setWeightUnitOfMeasure(WeightUnitOfMeasureType)}
+   * Method under test: {@link FulfillmentWeightBandImpl#setWeightUnitOfMeasure(WeightUnitOfMeasureType)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentWeightBandImpl.setWeightUnitOfMeasure(WeightUnitOfMeasureType)"})
   public void testSetWeightUnitOfMeasure_givenType_thenCallsGetType() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FulfillmentWeightBandImpl fulfillmentWeightBandImpl = new FulfillmentWeightBandImpl();
+    FulfillmentWeightBandImpl fulfillmentWeightBandImpl2 = new FulfillmentWeightBandImpl();
     WeightUnitOfMeasureType weightUnitOfMeasure = mock(WeightUnitOfMeasureType.class);
     when(weightUnitOfMeasure.getType()).thenReturn("Type");
 
     // Act
-    fulfillmentWeightBandImpl.setWeightUnitOfMeasure(weightUnitOfMeasure);
+    fulfillmentWeightBandImpl2.setWeightUnitOfMeasure(weightUnitOfMeasure);
 
     // Assert
     verify(weightUnitOfMeasure).getType();
-    assertEquals("Type", fulfillmentWeightBandImpl.getWeightUnitOfMeasure().getType());
-    assertEquals("Type", fulfillmentWeightBandImpl.weightUnitOfMeasure);
-  }
-
-  /**
-   * Test new {@link FulfillmentWeightBandImpl} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link FulfillmentWeightBandImpl}
-   */
-  @Test
-  public void testNewFulfillmentWeightBandImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange and Act
-    FulfillmentWeightBandImpl actualFulfillmentWeightBandImpl = new FulfillmentWeightBandImpl();
-
-    // Assert
-    FulfillmentBandResultAmountType resultAmountType = actualFulfillmentWeightBandImpl.getResultAmountType();
-    assertEquals("RATE", resultAmountType.getType());
-    assertEquals("RATE", actualFulfillmentWeightBandImpl.resultAmountType);
-    assertEquals("Rate", resultAmountType.getFriendlyType());
-    assertNull(actualFulfillmentWeightBandImpl.getId());
-    assertNull(actualFulfillmentWeightBandImpl.weightUnitOfMeasure);
-    assertNull(actualFulfillmentWeightBandImpl.getResultAmount());
-    assertNull(actualFulfillmentWeightBandImpl.getMinimumWeight());
-    assertNull(actualFulfillmentWeightBandImpl.getWeightUnitOfMeasure());
-    assertNull(actualFulfillmentWeightBandImpl.getOption());
-  }
-
-  /**
-   * Test new {@link FulfillmentWeightBandImpl} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link FulfillmentWeightBandImpl}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testNewFulfillmentWeightBandImpl2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.order.fulfillment.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1431 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.fulfillment.domain.FulfillmentWeightBandImpl fulfillmentWeightBandImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    new FulfillmentWeightBandImpl();
+    assertEquals("Type", fulfillmentWeightBandImpl2.getWeightUnitOfMeasure().getType());
+    assertEquals("Type", fulfillmentWeightBandImpl2.weightUnitOfMeasure);
   }
 }

@@ -20,11 +20,14 @@ package org.broadleafcommerce.common.security.channel;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import javax.servlet.ServletException;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.FilterInvocation;
@@ -32,17 +35,16 @@ import org.springframework.security.web.access.channel.RetryWithHttpEntryPoint;
 
 public class ProtoInsecureChannelProcessorDiffblueTest {
   /**
-   * Test
-   * {@link ProtoInsecureChannelProcessor#decide(FilterInvocation, Collection)}.
+   * Test {@link ProtoInsecureChannelProcessor#decide(FilterInvocation, Collection)}.
    * <ul>
-   *   <li>When {@link LinkedHashSet#LinkedHashSet()} add
-   * {@link SecurityConfig#SecurityConfig(String)} with {@code Config}.</li>
+   *   <li>When {@link LinkedHashSet#LinkedHashSet()} add {@link SecurityConfig#SecurityConfig(String)} with {@code Config}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProtoInsecureChannelProcessor#decide(FilterInvocation, Collection)}
+   * Method under test: {@link ProtoInsecureChannelProcessor#decide(FilterInvocation, Collection)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProtoInsecureChannelProcessor.decide(FilterInvocation, Collection)"})
   public void testDecide_whenLinkedHashSetAddSecurityConfigWithConfig() throws IOException, ServletException {
     // Arrange
     ProtoInsecureChannelProcessor protoInsecureChannelProcessor = new ProtoInsecureChannelProcessor();
@@ -55,34 +57,34 @@ public class ProtoInsecureChannelProcessorDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link ProtoInsecureChannelProcessor#decide(FilterInvocation, Collection)}.
+   * Test {@link ProtoInsecureChannelProcessor#decide(FilterInvocation, Collection)}.
    * <ul>
    *   <li>When {@code null}.</li>
    *   <li>Then throw {@link IllegalArgumentException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProtoInsecureChannelProcessor#decide(FilterInvocation, Collection)}
+   * Method under test: {@link ProtoInsecureChannelProcessor#decide(FilterInvocation, Collection)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProtoInsecureChannelProcessor.decide(FilterInvocation, Collection)"})
   public void testDecide_whenNull_thenThrowIllegalArgumentException() throws IOException, ServletException {
     // Arrange, Act and Assert
     assertThrows(IllegalArgumentException.class, () -> (new ProtoInsecureChannelProcessor()).decide(null, null));
   }
 
   /**
-   * Test
-   * {@link ProtoInsecureChannelProcessor#decide(FilterInvocation, Collection)}.
+   * Test {@link ProtoInsecureChannelProcessor#decide(FilterInvocation, Collection)}.
    * <ul>
    *   <li>When {@code null}.</li>
    *   <li>Then throw {@link IllegalArgumentException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ProtoInsecureChannelProcessor#decide(FilterInvocation, Collection)}
+   * Method under test: {@link ProtoInsecureChannelProcessor#decide(FilterInvocation, Collection)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProtoInsecureChannelProcessor.decide(FilterInvocation, Collection)"})
   public void testDecide_whenNull_thenThrowIllegalArgumentException2() throws IOException, ServletException {
     // Arrange
     ProtoInsecureChannelProcessor protoInsecureChannelProcessor = new ProtoInsecureChannelProcessor();
@@ -95,10 +97,11 @@ public class ProtoInsecureChannelProcessorDiffblueTest {
   /**
    * Test new {@link ProtoInsecureChannelProcessor} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link ProtoInsecureChannelProcessor}
+   * Method under test: default or parameterless constructor of {@link ProtoInsecureChannelProcessor}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProtoInsecureChannelProcessor.<init>()"})
   public void testNewProtoInsecureChannelProcessor() {
     // Arrange and Act
     ProtoInsecureChannelProcessor actualProtoInsecureChannelProcessor = new ProtoInsecureChannelProcessor();

@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.dto;
 
 import static org.junit.Assert.assertEquals;
@@ -9,23 +26,27 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.openadmin.dto.visitor.MetadataVisitor;
 import org.broadleafcommerce.openadmin.dto.visitor.MetadataVisitorAdapter;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.mockito.Mockito;
 
 public class GroupMetadataDiffblueTest {
   /**
    * Test {@link GroupMetadata#getUntitled()}.
    * <ul>
-   *   <li>Given {@link GroupMetadata} (default constructor) Untitled is
-   * {@code true}.</li>
+   *   <li>Given {@link GroupMetadata} (default constructor) Untitled is {@code true}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link GroupMetadata#getUntitled()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean GroupMetadata.getUntitled()"})
   public void testGetUntitled_givenGroupMetadataUntitledIsTrue_thenReturnTrue() {
     // Arrange
     GroupMetadata groupMetadata = new GroupMetadata();
@@ -45,6 +66,8 @@ public class GroupMetadataDiffblueTest {
    * Method under test: {@link GroupMetadata#getUntitled()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean GroupMetadata.getUntitled()"})
   public void testGetUntitled_givenGroupMetadata_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse((new GroupMetadata()).getUntitled());
@@ -53,14 +76,15 @@ public class GroupMetadataDiffblueTest {
   /**
    * Test {@link GroupMetadata#getCollapsed()}.
    * <ul>
-   *   <li>Given {@link GroupMetadata} (default constructor) Collapsed is
-   * {@code true}.</li>
+   *   <li>Given {@link GroupMetadata} (default constructor) Collapsed is {@code true}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link GroupMetadata#getCollapsed()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean GroupMetadata.getCollapsed()"})
   public void testGetCollapsed_givenGroupMetadataCollapsedIsTrue_thenReturnTrue() {
     // Arrange
     GroupMetadata groupMetadata = new GroupMetadata();
@@ -80,6 +104,8 @@ public class GroupMetadataDiffblueTest {
    * Method under test: {@link GroupMetadata#getCollapsed()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean GroupMetadata.getCollapsed()"})
   public void testGetCollapsed_givenGroupMetadata_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse((new GroupMetadata()).getCollapsed());
@@ -91,6 +117,8 @@ public class GroupMetadataDiffblueTest {
    * Method under test: {@link GroupMetadata#cloneFieldMetadata()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"GroupMetadata GroupMetadata.cloneFieldMetadata()"})
   public void testCloneFieldMetadata() {
     // Arrange and Act
     GroupMetadata actualCloneFieldMetadataResult = (new GroupMetadata()).cloneFieldMetadata();
@@ -110,14 +138,15 @@ public class GroupMetadataDiffblueTest {
   /**
    * Test {@link GroupMetadata#accept(MetadataVisitor)}.
    * <ul>
-   *   <li>When {@link MetadataVisitorAdapter}
-   * {@link MetadataVisitorAdapter#visit(GroupMetadata)} does nothing.</li>
+   *   <li>When {@link MetadataVisitorAdapter} {@link MetadataVisitorAdapter#visit(GroupMetadata)} does nothing.</li>
    *   <li>Then calls {@link MetadataVisitorAdapter#visit(GroupMetadata)}.</li>
    * </ul>
    * <p>
    * Method under test: {@link GroupMetadata#accept(MetadataVisitor)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void GroupMetadata.accept(MetadataVisitor)"})
   public void testAccept_whenMetadataVisitorAdapterVisitDoesNothing_thenCallsVisit() {
     // Arrange
     GroupMetadata groupMetadata = new GroupMetadata();
@@ -132,8 +161,7 @@ public class GroupMetadataDiffblueTest {
   }
 
   /**
-   * Test {@link GroupMetadata#equals(Object)}, and
-   * {@link GroupMetadata#hashCode()}.
+   * Test {@link GroupMetadata#equals(Object)}, and {@link GroupMetadata#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -146,6 +174,8 @@ public class GroupMetadataDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean GroupMetadata.equals(Object)", "int GroupMetadata.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     GroupMetadata groupMetadata = new GroupMetadata();
@@ -166,6 +196,8 @@ public class GroupMetadataDiffblueTest {
    * Method under test: {@link GroupMetadata#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean GroupMetadata.equals(Object)", "int GroupMetadata.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     GroupMetadata groupMetadata = new GroupMetadata();
@@ -184,6 +216,8 @@ public class GroupMetadataDiffblueTest {
    * Method under test: {@link GroupMetadata#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean GroupMetadata.equals(Object)", "int GroupMetadata.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new GroupMetadata(), null);
@@ -199,6 +233,8 @@ public class GroupMetadataDiffblueTest {
    * Method under test: {@link GroupMetadata#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean GroupMetadata.equals(Object)", "int GroupMetadata.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new GroupMetadata(), "Different type to GroupMetadata");
@@ -225,6 +261,14 @@ public class GroupMetadataDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void GroupMetadata.<init>()", "Integer GroupMetadata.getColumn()",
+      "String GroupMetadata.getGroupName()", "Integer GroupMetadata.getGroupOrder()",
+      "String GroupMetadata.getOwningClass()", "String GroupMetadata.getTooltip()",
+      "void GroupMetadata.setCollapsed(Boolean)", "void GroupMetadata.setColumn(Integer)",
+      "void GroupMetadata.setGroupName(String)", "void GroupMetadata.setGroupOrder(Integer)",
+      "void GroupMetadata.setOwningClass(String)", "void GroupMetadata.setTooltip(String)",
+      "void GroupMetadata.setUntitled(Boolean)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     GroupMetadata actualGroupMetadata = new GroupMetadata();
@@ -241,7 +285,7 @@ public class GroupMetadataDiffblueTest {
     String actualOwningClass = actualGroupMetadata.getOwningClass();
     actualGroupMetadata.getTooltip();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Group Name", actualGroupName);
     assertEquals("Owning Class", actualOwningClass);
     assertEquals(1, actualColumn.intValue());

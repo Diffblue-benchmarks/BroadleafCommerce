@@ -18,17 +18,20 @@
 package org.broadleafcommerce.common.web.util;
 
 import static org.junit.Assert.assertEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class BroadleafUrlParamUtilsDiffblueTest {
   /**
-   * Test
-   * {@link BroadleafUrlParamUtils#addPaginationParam(String, String, Integer)}.
+   * Test {@link BroadleafUrlParamUtils#addPaginationParam(String, String, Integer)}.
    * <p>
-   * Method under test:
-   * {@link BroadleafUrlParamUtils#addPaginationParam(String, String, Integer)}
+   * Method under test: {@link BroadleafUrlParamUtils#addPaginationParam(String, String, Integer)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BroadleafUrlParamUtils.addPaginationParam(String, String, Integer)"})
   public void testAddPaginationParam() {
     // Arrange, Act and Assert
     assertEquals("https://example.org/example?https%3A%2F%2Fexample.org%2Fexample=10",
@@ -36,16 +39,16 @@ public class BroadleafUrlParamUtilsDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BroadleafUrlParamUtils#addPaginationParam(String, String, Integer)}.
+   * Test {@link BroadleafUrlParamUtils#addPaginationParam(String, String, Integer)}.
    * <ul>
    *   <li>Then return {@code ?https%3A%2F%2Fexample.org%2Fexample=10}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafUrlParamUtils#addPaginationParam(String, String, Integer)}
+   * Method under test: {@link BroadleafUrlParamUtils#addPaginationParam(String, String, Integer)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BroadleafUrlParamUtils.addPaginationParam(String, String, Integer)"})
   public void testAddPaginationParam_thenReturnHttps3a2f2FexampleOrg2Fexample10() {
     // Arrange, Act and Assert
     assertEquals("?https%3A%2F%2Fexample.org%2Fexample=10",
@@ -53,35 +56,35 @@ public class BroadleafUrlParamUtilsDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BroadleafUrlParamUtils#addPaginationParam(String, String, Integer)}.
+   * Test {@link BroadleafUrlParamUtils#addPaginationParam(String, String, Integer)}.
    * <ul>
    *   <li>When one.</li>
    *   <li>Then return {@code https://example.org/example}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafUrlParamUtils#addPaginationParam(String, String, Integer)}
+   * Method under test: {@link BroadleafUrlParamUtils#addPaginationParam(String, String, Integer)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BroadleafUrlParamUtils.addPaginationParam(String, String, Integer)"})
   public void testAddPaginationParam_whenOne_thenReturnHttpsExampleOrgExample() {
     // Arrange, Act and Assert
     assertEquals("https://example.org/example",
-        BroadleafUrlParamUtils.addPaginationParam("https://example.org/example", "https://example.org/example", 1));
+        BroadleafUrlParamUtils.addPaginationParam("https://example.org/example", null, 1));
   }
 
   /**
-   * Test
-   * {@link BroadleafUrlParamUtils#addPaginationParam(String, String, Integer)}.
+   * Test {@link BroadleafUrlParamUtils#addPaginationParam(String, String, Integer)}.
    * <ul>
    *   <li>When {@code Url}.</li>
    *   <li>Then return {@code Url?https%3A%2F%2Fexample.org%2Fexample=10}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link BroadleafUrlParamUtils#addPaginationParam(String, String, Integer)}
+   * Method under test: {@link BroadleafUrlParamUtils#addPaginationParam(String, String, Integer)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BroadleafUrlParamUtils.addPaginationParam(String, String, Integer)"})
   public void testAddPaginationParam_whenUrl_thenReturnUrlHttps3a2f2FexampleOrg2Fexample10() {
     // Arrange, Act and Assert
     assertEquals("Url?https%3A%2F%2Fexample.org%2Fexample=10",

@@ -20,8 +20,11 @@ package org.broadleafcommerce.common.payment;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Map;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -39,6 +42,8 @@ public class PaymentGatewayRequestTypeDiffblueTest {
    * Method under test: {@link PaymentGatewayRequestType#getInstance(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PaymentGatewayRequestType PaymentGatewayRequestType.getInstance(String)"})
   public void testGetInstance() {
     // Arrange and Act
     PaymentGatewayRequestType actualInstance = PaymentGatewayRequestType.getInstance("Type");
@@ -60,6 +65,9 @@ public class PaymentGatewayRequestTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PaymentGatewayRequestType.<init>()", "String PaymentGatewayRequestType.getFriendlyType()",
+      "String PaymentGatewayRequestType.getType()", "Map PaymentGatewayRequestType.getTypes()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     PaymentGatewayRequestType actualPaymentGatewayRequestType = new PaymentGatewayRequestType();
@@ -73,13 +81,13 @@ public class PaymentGatewayRequestTypeDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link PaymentGatewayRequestType#PaymentGatewayRequestType(String, String)}.
+   * Test {@link PaymentGatewayRequestType#PaymentGatewayRequestType(String, String)}.
    * <p>
-   * Method under test:
-   * {@link PaymentGatewayRequestType#PaymentGatewayRequestType(String, String)}
+   * Method under test: {@link PaymentGatewayRequestType#PaymentGatewayRequestType(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PaymentGatewayRequestType.<init>(String, String)"})
   public void testNewPaymentGatewayRequestType() {
     // Arrange and Act
     PaymentGatewayRequestType actualPaymentGatewayRequestType = new PaymentGatewayRequestType("Type", "Friendly Type");
@@ -90,8 +98,7 @@ public class PaymentGatewayRequestTypeDiffblueTest {
   }
 
   /**
-   * Test {@link PaymentGatewayRequestType#equals(Object)}, and
-   * {@link PaymentGatewayRequestType#hashCode()}.
+   * Test {@link PaymentGatewayRequestType#equals(Object)}, and {@link PaymentGatewayRequestType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -104,6 +111,8 @@ public class PaymentGatewayRequestTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PaymentGatewayRequestType.equals(Object)", "int PaymentGatewayRequestType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     PaymentGatewayRequestType paymentGatewayRequestType = PaymentGatewayRequestType.CREATE_CUSTOMER_PAYMENT_TR;
@@ -116,8 +125,7 @@ public class PaymentGatewayRequestTypeDiffblueTest {
   }
 
   /**
-   * Test {@link PaymentGatewayRequestType#equals(Object)}, and
-   * {@link PaymentGatewayRequestType#hashCode()}.
+   * Test {@link PaymentGatewayRequestType#equals(Object)}, and {@link PaymentGatewayRequestType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -130,6 +138,8 @@ public class PaymentGatewayRequestTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PaymentGatewayRequestType.equals(Object)", "int PaymentGatewayRequestType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     PaymentGatewayRequestType paymentGatewayRequestType = new PaymentGatewayRequestType();
@@ -142,8 +152,7 @@ public class PaymentGatewayRequestTypeDiffblueTest {
   }
 
   /**
-   * Test {@link PaymentGatewayRequestType#equals(Object)}, and
-   * {@link PaymentGatewayRequestType#hashCode()}.
+   * Test {@link PaymentGatewayRequestType#equals(Object)}, and {@link PaymentGatewayRequestType#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -156,6 +165,8 @@ public class PaymentGatewayRequestTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PaymentGatewayRequestType.equals(Object)", "int PaymentGatewayRequestType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     PaymentGatewayRequestType paymentGatewayRequestType = new PaymentGatewayRequestType("CREATE_CUSTOMER_PAYMENT_TR",
@@ -169,8 +180,7 @@ public class PaymentGatewayRequestTypeDiffblueTest {
   }
 
   /**
-   * Test {@link PaymentGatewayRequestType#equals(Object)}, and
-   * {@link PaymentGatewayRequestType#hashCode()}.
+   * Test {@link PaymentGatewayRequestType#equals(Object)}, and {@link PaymentGatewayRequestType#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -183,6 +193,8 @@ public class PaymentGatewayRequestTypeDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PaymentGatewayRequestType.equals(Object)", "int PaymentGatewayRequestType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     PaymentGatewayRequestType paymentGatewayRequestType = PaymentGatewayRequestType.CREATE_CUSTOMER_PAYMENT_TR;
@@ -203,10 +215,28 @@ public class PaymentGatewayRequestTypeDiffblueTest {
    * Method under test: {@link PaymentGatewayRequestType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PaymentGatewayRequestType.equals(Object)", "int PaymentGatewayRequestType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(PaymentGatewayRequestType.DETACHED_CREDIT_REFUND,
         PaymentGatewayRequestType.CREATE_CUSTOMER_PAYMENT_TR);
+  }
+
+  /**
+   * Test {@link PaymentGatewayRequestType#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PaymentGatewayRequestType#equals(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PaymentGatewayRequestType.equals(Object)", "int PaymentGatewayRequestType.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange, Act and Assert
     assertNotEquals(new PaymentGatewayRequestType(), PaymentGatewayRequestType.CREATE_CUSTOMER_PAYMENT_TR);
   }
 
@@ -220,6 +250,8 @@ public class PaymentGatewayRequestTypeDiffblueTest {
    * Method under test: {@link PaymentGatewayRequestType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PaymentGatewayRequestType.equals(Object)", "int PaymentGatewayRequestType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(PaymentGatewayRequestType.CREATE_CUSTOMER_PAYMENT_TR, null);
@@ -235,6 +267,8 @@ public class PaymentGatewayRequestTypeDiffblueTest {
    * Method under test: {@link PaymentGatewayRequestType#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PaymentGatewayRequestType.equals(Object)", "int PaymentGatewayRequestType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(PaymentGatewayRequestType.CREATE_CUSTOMER_PAYMENT_TR,

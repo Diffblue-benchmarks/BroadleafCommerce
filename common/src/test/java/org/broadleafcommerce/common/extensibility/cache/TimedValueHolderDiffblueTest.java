@@ -19,8 +19,11 @@ package org.broadleafcommerce.common.extensibility.cache;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.util.BLCFieldUtils;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class TimedValueHolderDiffblueTest {
   /**
@@ -34,6 +37,9 @@ public class TimedValueHolderDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TimedValueHolder.<init>(Object, Integer)", "Integer TimedValueHolder.getTimeToLiveSeconds()",
+      "Object TimedValueHolder.getValue()"})
   public void testGettersAndSetters() {
     // Arrange
     Object object = BLCFieldUtils.NULL_FIELD;

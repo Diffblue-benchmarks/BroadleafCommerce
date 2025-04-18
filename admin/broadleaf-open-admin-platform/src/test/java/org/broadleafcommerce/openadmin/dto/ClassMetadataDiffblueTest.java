@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.dto;
 
 import static org.junit.Assert.assertEquals;
@@ -8,20 +25,22 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import java.sql.Date;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.BiFunction;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {ClassMetadata.class})
 @RunWith(SpringJUnit4ClassRunner.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class ClassMetadataDiffblueTest {
   @Autowired
   private ClassMetadata classMetadata;
@@ -36,6 +55,8 @@ public class ClassMetadataDiffblueTest {
    * Method under test: {@link ClassMetadata#getPMap()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map ClassMetadata.getPMap()"})
   public void testGetPMap_givenClassMetadata_thenReturnEmpty() {
     // Arrange, Act and Assert
     assertTrue((new ClassMetadata()).getPMap().isEmpty());
@@ -44,38 +65,14 @@ public class ClassMetadataDiffblueTest {
   /**
    * Test {@link ClassMetadata#getPMap()}.
    * <ul>
-   *   <li>Given {@link Property#Property()} DeployDate is {@link Date}.</li>
    *   <li>Then return size is one.</li>
    * </ul>
    * <p>
    * Method under test: {@link ClassMetadata#getPMap()}
    */
   @Test
-  public void testGetPMap_givenPropertyDeployDateIsDate_thenReturnSizeIsOne() {
-    // Arrange
-    Property property = new Property();
-    property.setDeployDate(mock(Date.class));
-
-    ClassMetadata classMetadata = new ClassMetadata();
-    classMetadata.setProperties(new Property[]{property});
-
-    // Act
-    Map<String, Property> actualPMap = classMetadata.getPMap();
-
-    // Assert
-    assertEquals(1, actualPMap.size());
-    assertSame(property, actualPMap.get(null));
-  }
-
-  /**
-   * Test {@link ClassMetadata#getPMap()}.
-   * <ul>
-   *   <li>Then return size is one.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ClassMetadata#getPMap()}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map ClassMetadata.getPMap()"})
   public void testGetPMap_thenReturnSizeIsOne() {
     // Arrange
     ClassMetadata classMetadata = new ClassMetadata();
@@ -93,37 +90,23 @@ public class ClassMetadataDiffblueTest {
   /**
    * Test {@link ClassMetadata#getTabMetadataUsingTabKey(String)}.
    * <ul>
-   *   <li>Given {@link HashMap#HashMap()} computeIfPresent {@code foo} and
-   * {@link BiFunction}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ClassMetadata#getTabMetadataUsingTabKey(String)}
-   */
-  @Test
-  public void testGetTabMetadataUsingTabKey_givenHashMapComputeIfPresentFooAndBiFunction() {
-    // Arrange
-    HashMap<String, TabMetadata> tabAndGroupMetadata = new HashMap<>();
-    tabAndGroupMetadata.computeIfPresent("foo", mock(BiFunction.class));
-
-    ClassMetadata classMetadata2 = new ClassMetadata();
-    classMetadata2.setTabAndGroupMetadata(tabAndGroupMetadata);
-
-    // Act and Assert
-    assertNull(classMetadata2.getTabMetadataUsingTabKey("Tab Key"));
-  }
-
-  /**
-   * Test {@link ClassMetadata#getTabMetadataUsingTabKey(String)}.
-   * <ul>
+   *   <li>Given {@link ClassMetadata} (default constructor) CeilingType is {@code Type}.</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link ClassMetadata#getTabMetadataUsingTabKey(String)}
    */
   @Test
-  public void testGetTabMetadataUsingTabKey_thenReturnNull() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"TabMetadata ClassMetadata.getTabMetadataUsingTabKey(String)"})
+  public void testGetTabMetadataUsingTabKey_givenClassMetadataCeilingTypeIsType_thenReturnNull() {
     // Arrange
     ClassMetadata classMetadata2 = new ClassMetadata();
+    classMetadata2.setCeilingType("Type");
+    classMetadata2.setCurrencyCode("GBP");
+    classMetadata2.setPolymorphicEntities(new ClassTree());
+    classMetadata2.setProperties(new Property[]{new Property()});
+    classMetadata2.setSecurityCeilingType("Security Ceiling Type");
     classMetadata2.setTabAndGroupMetadata(new HashMap<>());
 
     // Act and Assert
@@ -133,13 +116,14 @@ public class ClassMetadataDiffblueTest {
   /**
    * Test {@link ClassMetadata#getTabMetadataUsingGroupKey(String)}.
    * <ul>
-   *   <li>Given {@link GroupMetadata} {@link GroupMetadata#getGroupName()} return
-   * {@code Group Key}.</li>
+   *   <li>Given {@link GroupMetadata} {@link GroupMetadata#getGroupName()} return {@code Group Key}.</li>
    * </ul>
    * <p>
    * Method under test: {@link ClassMetadata#getTabMetadataUsingGroupKey(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"TabMetadata ClassMetadata.getTabMetadataUsingGroupKey(String)"})
   public void testGetTabMetadataUsingGroupKey_givenGroupMetadataGetGroupNameReturnGroupKey() {
     // Arrange
     GroupMetadata groupMetadata = mock(GroupMetadata.class);
@@ -167,13 +151,14 @@ public class ClassMetadataDiffblueTest {
   /**
    * Test {@link ClassMetadata#getTabMetadataUsingGroupKey(String)}.
    * <ul>
-   *   <li>Given {@link GroupMetadata} {@link GroupMetadata#getGroupName()} return
-   * {@code Group Name}.</li>
+   *   <li>Given {@link GroupMetadata} {@link GroupMetadata#getGroupName()} return {@code Group Name}.</li>
    * </ul>
    * <p>
    * Method under test: {@link ClassMetadata#getTabMetadataUsingGroupKey(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"TabMetadata ClassMetadata.getTabMetadataUsingGroupKey(String)"})
   public void testGetTabMetadataUsingGroupKey_givenGroupMetadataGetGroupNameReturnGroupName() {
     // Arrange
     GroupMetadata groupMetadata = mock(GroupMetadata.class);
@@ -202,36 +187,14 @@ public class ClassMetadataDiffblueTest {
   /**
    * Test {@link ClassMetadata#getTabMetadataUsingGroupKey(String)}.
    * <ul>
-   *   <li>Given {@link HashMap#HashMap()} computeIfPresent {@code foo} and
-   * {@link BiFunction}.</li>
+   *   <li>Given {@link HashMap#HashMap()} {@code foo} is {@link GroupMetadata} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link ClassMetadata#getTabMetadataUsingGroupKey(String)}
    */
   @Test
-  public void testGetTabMetadataUsingGroupKey_givenHashMapComputeIfPresentFooAndBiFunction() {
-    // Arrange
-    HashMap<String, TabMetadata> tabAndGroupMetadata = new HashMap<>();
-    tabAndGroupMetadata.computeIfPresent("foo", mock(BiFunction.class));
-    tabAndGroupMetadata.put("foo", new TabMetadata());
-
-    ClassMetadata classMetadata2 = new ClassMetadata();
-    classMetadata2.setTabAndGroupMetadata(tabAndGroupMetadata);
-
-    // Act and Assert
-    assertNull(classMetadata2.getTabMetadataUsingGroupKey("Group Key"));
-  }
-
-  /**
-   * Test {@link ClassMetadata#getTabMetadataUsingGroupKey(String)}.
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code foo} is {@link GroupMetadata}
-   * (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ClassMetadata#getTabMetadataUsingGroupKey(String)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"TabMetadata ClassMetadata.getTabMetadataUsingGroupKey(String)"})
   public void testGetTabMetadataUsingGroupKey_givenHashMapFooIsGroupMetadata() {
     // Arrange
     HashMap<String, GroupMetadata> stringGroupMetadataMap = new HashMap<>();
@@ -256,14 +219,15 @@ public class ClassMetadataDiffblueTest {
   /**
    * Test {@link ClassMetadata#getTabMetadataUsingGroupKey(String)}.
    * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code foo} is {@link TabMetadata}
-   * (default constructor).</li>
+   *   <li>Given {@link HashMap#HashMap()} {@code foo} is {@link TabMetadata} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link ClassMetadata#getTabMetadataUsingGroupKey(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"TabMetadata ClassMetadata.getTabMetadataUsingGroupKey(String)"})
   public void testGetTabMetadataUsingGroupKey_givenHashMapFooIsTabMetadata_thenReturnNull() {
     // Arrange
     HashMap<String, TabMetadata> tabAndGroupMetadata = new HashMap<>();
@@ -285,6 +249,8 @@ public class ClassMetadataDiffblueTest {
    * Method under test: {@link ClassMetadata#getTabMetadataUsingGroupKey(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"TabMetadata ClassMetadata.getTabMetadataUsingGroupKey(String)"})
   public void testGetTabMetadataUsingGroupKey_thenCallsGetGroupMetadata() {
     // Arrange
     TabMetadata tabMetadata = mock(TabMetadata.class);
@@ -313,6 +279,8 @@ public class ClassMetadataDiffblueTest {
    * Method under test: {@link ClassMetadata#getTabMetadataUsingGroupKey(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"TabMetadata ClassMetadata.getTabMetadataUsingGroupKey(String)"})
   public void testGetTabMetadataUsingGroupKey_thenReturnNull() {
     // Arrange
     ClassMetadata classMetadata2 = new ClassMetadata();
@@ -325,14 +293,15 @@ public class ClassMetadataDiffblueTest {
   /**
    * Test {@link ClassMetadata#getFirstTab()}.
    * <ul>
-   *   <li>Given {@link ClassMetadata} (default constructor) CeilingType is
-   * {@code Type}.</li>
+   *   <li>Given {@link ClassMetadata} (default constructor) CeilingType is {@code Type}.</li>
    *   <li>Then return {@code null}.</li>
    * </ul>
    * <p>
    * Method under test: {@link ClassMetadata#getFirstTab()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"TabMetadata ClassMetadata.getFirstTab()"})
   public void testGetFirstTab_givenClassMetadataCeilingTypeIsType_thenReturnNull() {
     // Arrange
     ClassMetadata classMetadata = new ClassMetadata();
@@ -350,14 +319,15 @@ public class ClassMetadataDiffblueTest {
   /**
    * Test {@link ClassMetadata#getFirstTab()}.
    * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code 42} is {@link TabMetadata}
-   * (default constructor).</li>
+   *   <li>Given {@link HashMap#HashMap()} {@code 42} is {@link TabMetadata} (default constructor).</li>
    *   <li>Then return {@link TabMetadata} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link ClassMetadata#getFirstTab()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"TabMetadata ClassMetadata.getFirstTab()"})
   public void testGetFirstTab_givenHashMap42IsTabMetadata_thenReturnTabMetadata() {
     // Arrange
     HashMap<String, TabMetadata> tabAndGroupMetadata = new HashMap<>();
@@ -380,43 +350,15 @@ public class ClassMetadataDiffblueTest {
   /**
    * Test {@link ClassMetadata#getFirstTab()}.
    * <ul>
-   *   <li>Given {@link HashMap#HashMap()} computeIfPresent {@code foo} and
-   * {@link BiFunction}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ClassMetadata#getFirstTab()}
-   */
-  @Test
-  public void testGetFirstTab_givenHashMapComputeIfPresentFooAndBiFunction() {
-    // Arrange
-    HashMap<String, TabMetadata> tabAndGroupMetadata = new HashMap<>();
-    tabAndGroupMetadata.computeIfPresent("foo", mock(BiFunction.class));
-    TabMetadata tabMetadata = new TabMetadata();
-    tabAndGroupMetadata.put("foo", tabMetadata);
-
-    ClassMetadata classMetadata = new ClassMetadata();
-    classMetadata.setCeilingType("Type");
-    classMetadata.setCurrencyCode("GBP");
-    classMetadata.setPolymorphicEntities(new ClassTree());
-    classMetadata.setProperties(new Property[]{new Property()});
-    classMetadata.setSecurityCeilingType("Security Ceiling Type");
-    classMetadata.setTabAndGroupMetadata(tabAndGroupMetadata);
-
-    // Act and Assert
-    assertSame(tabMetadata, classMetadata.getFirstTab());
-  }
-
-  /**
-   * Test {@link ClassMetadata#getFirstTab()}.
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code foo} is {@link TabMetadata}
-   * (default constructor).</li>
+   *   <li>Given {@link HashMap#HashMap()} {@code foo} is {@link TabMetadata} (default constructor).</li>
    *   <li>Then return {@link TabMetadata} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link ClassMetadata#getFirstTab()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"TabMetadata ClassMetadata.getFirstTab()"})
   public void testGetFirstTab_givenHashMapFooIsTabMetadata_thenReturnTabMetadata() {
     // Arrange
     HashMap<String, TabMetadata> tabAndGroupMetadata = new HashMap<>();
@@ -445,6 +387,8 @@ public class ClassMetadataDiffblueTest {
    * Method under test: {@link ClassMetadata#getFirstTab()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"TabMetadata ClassMetadata.getFirstTab()"})
   public void testGetFirstTab_givenTabMetadataTabOrderIsOne_thenReturnTabMetadata() {
     // Arrange
     TabMetadata tabMetadata = new TabMetadata();
@@ -476,6 +420,8 @@ public class ClassMetadataDiffblueTest {
    * Method under test: {@link ClassMetadata#getFirstTab()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"TabMetadata ClassMetadata.getFirstTab()"})
   public void testGetFirstTab_givenTabMetadataTabOrderIsOne_thenReturnTabMetadata2() {
     // Arrange
     TabMetadata tabMetadata = new TabMetadata();
@@ -510,6 +456,8 @@ public class ClassMetadataDiffblueTest {
    * Method under test: {@link ClassMetadata#getFirstTab()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"TabMetadata ClassMetadata.getFirstTab()"})
   public void testGetFirstTab_givenTabMetadataTabOrderIsZero_thenReturnTabMetadata() {
     // Arrange
     TabMetadata tabMetadata = new TabMetadata();
@@ -540,10 +488,11 @@ public class ClassMetadataDiffblueTest {
    *   <li>Then return array length is zero.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ClassMetadata#getGroupOptionsFromTabAndGroupMetadata()}
+   * Method under test: {@link ClassMetadata#getGroupOptionsFromTabAndGroupMetadata()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String[][] ClassMetadata.getGroupOptionsFromTabAndGroupMetadata()"})
   public void testGetGroupOptionsFromTabAndGroupMetadata_thenReturnArrayLengthIsZero() {
     // Arrange
     ClassMetadata classMetadata = new ClassMetadata();
@@ -564,10 +513,11 @@ public class ClassMetadataDiffblueTest {
    *   <li>Then return array length is zero.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link ClassMetadata#getGroupOptionsFromTabAndGroupMetadata()}
+   * Method under test: {@link ClassMetadata#getGroupOptionsFromTabAndGroupMetadata()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String[][] ClassMetadata.getGroupOptionsFromTabAndGroupMetadata()"})
   public void testGetGroupOptionsFromTabAndGroupMetadata_thenReturnArrayLengthIsZero2() {
     // Arrange
     TabMetadata tabMetadata = new TabMetadata();
@@ -609,6 +559,14 @@ public class ClassMetadataDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ClassMetadata.<init>()", "String ClassMetadata.getCeilingType()",
+      "String ClassMetadata.getCurrencyCode()", "ClassTree ClassMetadata.getPolymorphicEntities()",
+      "Property[] ClassMetadata.getProperties()", "String ClassMetadata.getSecurityCeilingType()",
+      "Map ClassMetadata.getTabAndGroupMetadata()", "void ClassMetadata.setCeilingType(String)",
+      "void ClassMetadata.setCurrencyCode(String)", "void ClassMetadata.setPolymorphicEntities(ClassTree)",
+      "void ClassMetadata.setProperties(Property[])", "void ClassMetadata.setSecurityCeilingType(String)",
+      "void ClassMetadata.setTabAndGroupMetadata(Map)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     ClassMetadata actualClassMetadata = new ClassMetadata();
@@ -628,7 +586,7 @@ public class ClassMetadataDiffblueTest {
     String actualSecurityCeilingType = actualClassMetadata.getSecurityCeilingType();
     Map<String, TabMetadata> actualTabAndGroupMetadata = actualClassMetadata.getTabAndGroupMetadata();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("GBP", actualCurrencyCode);
     assertEquals("Security Ceiling Type", actualSecurityCeilingType);
     assertEquals("Type", actualCeilingType);

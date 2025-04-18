@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Profile
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.profile.core.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -10,33 +27,30 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.copy.CreateResponse;
 import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
 import org.broadleafcommerce.common.service.GenericEntityService;
-import org.broadleafcommerce.common.service.GenericEntityServiceImpl;
 import org.broadleafcommerce.common.site.domain.CatalogImpl;
 import org.broadleafcommerce.common.site.domain.SiteImpl;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml",
-    "/bl-profile-applicationContext-persistence.xml", "/bl-profile-applicationContext.xml",
-    "/blc-config/admin/framework/bl-profile-applicationContext.xml",
-    "/blc-config/site/framework/bl-profile-applicationContext.xml"})
+@ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class CustomerPhoneImplDiffblueTest {
   @Autowired
   private CustomerPhoneImpl customerPhoneImpl;
 
   /**
-   * Test {@link CustomerPhoneImpl#equals(Object)}, and
-   * {@link CustomerPhoneImpl#hashCode()}.
+   * Test {@link CustomerPhoneImpl#equals(Object)}, and {@link CustomerPhoneImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -49,6 +63,8 @@ public class CustomerPhoneImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerPhoneImpl.equals(Object)", "int CustomerPhoneImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
@@ -70,8 +86,7 @@ public class CustomerPhoneImplDiffblueTest {
   }
 
   /**
-   * Test {@link CustomerPhoneImpl#equals(Object)}, and
-   * {@link CustomerPhoneImpl#hashCode()}.
+   * Test {@link CustomerPhoneImpl#equals(Object)}, and {@link CustomerPhoneImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -84,42 +99,9 @@ public class CustomerPhoneImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerPhoneImpl.equals(Object)", "int CustomerPhoneImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
-    // Arrange
-    CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
-    customerPhoneImpl.setCustomer(mock(Customer.class));
-    customerPhoneImpl.setId(1L);
-    customerPhoneImpl.setPhone(new PhoneImpl());
-    customerPhoneImpl.setPhoneName("6625550144");
-
-    CustomerPhoneImpl customerPhoneImpl2 = new CustomerPhoneImpl();
-    customerPhoneImpl2.setCustomer(new CustomerImpl());
-    customerPhoneImpl2.setId(1L);
-    customerPhoneImpl2.setPhone(new PhoneImpl());
-    customerPhoneImpl2.setPhoneName("6625550144");
-
-    // Act and Assert
-    assertEquals(customerPhoneImpl, customerPhoneImpl2);
-    int notExpectedHashCodeResult = customerPhoneImpl.hashCode();
-    assertNotEquals(notExpectedHashCodeResult, customerPhoneImpl2.hashCode());
-  }
-
-  /**
-   * Test {@link CustomerPhoneImpl#equals(Object)}, and
-   * {@link CustomerPhoneImpl#hashCode()}.
-   * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
-   * </ul>
-   * <p>
-   * Methods under test:
-   * <ul>
-   *   <li>{@link CustomerPhoneImpl#equals(Object)}
-   *   <li>{@link CustomerPhoneImpl#hashCode()}
-   * </ul>
-   */
-  @Test
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
     customerPhoneImpl.setCustomer(new CustomerImpl());
@@ -140,8 +122,7 @@ public class CustomerPhoneImplDiffblueTest {
   }
 
   /**
-   * Test {@link CustomerPhoneImpl#equals(Object)}, and
-   * {@link CustomerPhoneImpl#hashCode()}.
+   * Test {@link CustomerPhoneImpl#equals(Object)}, and {@link CustomerPhoneImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -154,7 +135,9 @@ public class CustomerPhoneImplDiffblueTest {
    * </ul>
    */
   @Test
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerPhoneImpl.equals(Object)", "int CustomerPhoneImpl.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
     customerPhoneImpl.setCustomer(new CustomerImpl());
@@ -175,8 +158,7 @@ public class CustomerPhoneImplDiffblueTest {
   }
 
   /**
-   * Test {@link CustomerPhoneImpl#equals(Object)}, and
-   * {@link CustomerPhoneImpl#hashCode()}.
+   * Test {@link CustomerPhoneImpl#equals(Object)}, and {@link CustomerPhoneImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -189,7 +171,9 @@ public class CustomerPhoneImplDiffblueTest {
    * </ul>
    */
   @Test
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual5() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerPhoneImpl.equals(Object)", "int CustomerPhoneImpl.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
     // Arrange
     CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
     customerPhoneImpl.setCustomer(null);
@@ -210,8 +194,7 @@ public class CustomerPhoneImplDiffblueTest {
   }
 
   /**
-   * Test {@link CustomerPhoneImpl#equals(Object)}, and
-   * {@link CustomerPhoneImpl#hashCode()}.
+   * Test {@link CustomerPhoneImpl#equals(Object)}, and {@link CustomerPhoneImpl#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -224,7 +207,9 @@ public class CustomerPhoneImplDiffblueTest {
    * </ul>
    */
   @Test
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual6() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerPhoneImpl.equals(Object)", "int CustomerPhoneImpl.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual5() {
     // Arrange
     CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
     customerPhoneImpl.setCustomer(new CustomerImpl());
@@ -245,8 +230,43 @@ public class CustomerPhoneImplDiffblueTest {
   }
 
   /**
-   * Test {@link CustomerPhoneImpl#equals(Object)}, and
-   * {@link CustomerPhoneImpl#hashCode()}.
+   * Test {@link CustomerPhoneImpl#equals(Object)}, and {@link CustomerPhoneImpl#hashCode()}.
+   * <ul>
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
+   * </ul>
+   * <p>
+   * Methods under test:
+   * <ul>
+   *   <li>{@link CustomerPhoneImpl#equals(Object)}
+   *   <li>{@link CustomerPhoneImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerPhoneImpl.equals(Object)", "int CustomerPhoneImpl.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual6() {
+    // Arrange
+    CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
+    customerPhoneImpl.setCustomer(new CustomerImpl());
+    customerPhoneImpl.setId(null);
+    customerPhoneImpl.setPhone(new PhoneImpl());
+    customerPhoneImpl.setPhoneName(null);
+
+    CustomerPhoneImpl customerPhoneImpl2 = new CustomerPhoneImpl();
+    customerPhoneImpl2.setCustomer(new CustomerImpl());
+    customerPhoneImpl2.setId(1L);
+    customerPhoneImpl2.setPhone(new PhoneImpl());
+    customerPhoneImpl2.setPhoneName(null);
+
+    // Act and Assert
+    assertEquals(customerPhoneImpl, customerPhoneImpl2);
+    int expectedHashCodeResult = customerPhoneImpl.hashCode();
+    assertEquals(expectedHashCodeResult, customerPhoneImpl2.hashCode());
+  }
+
+  /**
+   * Test {@link CustomerPhoneImpl#equals(Object)}, and {@link CustomerPhoneImpl#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -259,6 +279,8 @@ public class CustomerPhoneImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerPhoneImpl.equals(Object)", "int CustomerPhoneImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
@@ -283,6 +305,8 @@ public class CustomerPhoneImplDiffblueTest {
    * Method under test: {@link CustomerPhoneImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerPhoneImpl.equals(Object)", "int CustomerPhoneImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
@@ -311,35 +335,9 @@ public class CustomerPhoneImplDiffblueTest {
    * Method under test: {@link CustomerPhoneImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerPhoneImpl.equals(Object)", "int CustomerPhoneImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
-    // Arrange
-    CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
-    customerPhoneImpl.setCustomer(mock(Customer.class));
-    customerPhoneImpl.setId(null);
-    customerPhoneImpl.setPhone(new PhoneImpl());
-    customerPhoneImpl.setPhoneName("6625550144");
-
-    CustomerPhoneImpl customerPhoneImpl2 = new CustomerPhoneImpl();
-    customerPhoneImpl2.setCustomer(new CustomerImpl());
-    customerPhoneImpl2.setId(1L);
-    customerPhoneImpl2.setPhone(new PhoneImpl());
-    customerPhoneImpl2.setPhoneName("6625550144");
-
-    // Act and Assert
-    assertNotEquals(customerPhoneImpl, customerPhoneImpl2);
-  }
-
-  /**
-   * Test {@link CustomerPhoneImpl#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CustomerPhoneImpl#equals(Object)}
-   */
-  @Test
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
     customerPhoneImpl.setCustomer(null);
@@ -367,6 +365,38 @@ public class CustomerPhoneImplDiffblueTest {
    * Method under test: {@link CustomerPhoneImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerPhoneImpl.equals(Object)", "int CustomerPhoneImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
+    // Arrange
+    CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
+    customerPhoneImpl.setCustomer(mock(CustomerImpl.class));
+    customerPhoneImpl.setId(null);
+    customerPhoneImpl.setPhone(new PhoneImpl());
+    customerPhoneImpl.setPhoneName("6625550144");
+
+    CustomerPhoneImpl customerPhoneImpl2 = new CustomerPhoneImpl();
+    customerPhoneImpl2.setCustomer(new CustomerImpl());
+    customerPhoneImpl2.setId(1L);
+    customerPhoneImpl2.setPhone(new PhoneImpl());
+    customerPhoneImpl2.setPhoneName("6625550144");
+
+    // Act and Assert
+    assertNotEquals(customerPhoneImpl, customerPhoneImpl2);
+  }
+
+  /**
+   * Test {@link CustomerPhoneImpl#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CustomerPhoneImpl#equals(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerPhoneImpl.equals(Object)", "int CustomerPhoneImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
@@ -395,6 +425,8 @@ public class CustomerPhoneImplDiffblueTest {
    * Method under test: {@link CustomerPhoneImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerPhoneImpl.equals(Object)", "int CustomerPhoneImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
     CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
@@ -423,6 +455,8 @@ public class CustomerPhoneImplDiffblueTest {
    * Method under test: {@link CustomerPhoneImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerPhoneImpl.equals(Object)", "int CustomerPhoneImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
     CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
@@ -451,6 +485,8 @@ public class CustomerPhoneImplDiffblueTest {
    * Method under test: {@link CustomerPhoneImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerPhoneImpl.equals(Object)", "int CustomerPhoneImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
     // Arrange
     CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
@@ -479,6 +515,8 @@ public class CustomerPhoneImplDiffblueTest {
    * Method under test: {@link CustomerPhoneImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerPhoneImpl.equals(Object)", "int CustomerPhoneImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
@@ -501,6 +539,8 @@ public class CustomerPhoneImplDiffblueTest {
    * Method under test: {@link CustomerPhoneImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerPhoneImpl.equals(Object)", "int CustomerPhoneImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
@@ -514,25 +554,23 @@ public class CustomerPhoneImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomerPhoneImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * Test {@link CustomerPhoneImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <p>
-   * Method under test:
-   * {@link CustomerPhoneImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link CustomerPhoneImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse CustomerPhoneImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
+    CustomerPhoneImpl customerPhoneImpl2 = new CustomerPhoneImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
     CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
 
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<CustomerPhone> actualCreateOrRetrieveCopyInstanceResult = customerPhoneImpl
+    CreateResponse<CustomerPhone> actualCreateOrRetrieveCopyInstanceResult = customerPhoneImpl2
         .createOrRetrieveCopyInstance(context);
 
     // Assert
@@ -541,61 +579,19 @@ public class CustomerPhoneImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CustomerPhoneImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <p>
-   * Method under test:
-   * {@link CustomerPhoneImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.domain;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4126 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.domain.CustomerPhoneImpl customerPhoneImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CustomerPhoneImpl customerPhoneImpl2 = new CustomerPhoneImpl();
-    CatalogImpl fromCatalog = new CatalogImpl();
-    CatalogImpl toCatalog = new CatalogImpl();
-    SiteImpl fromSite = new SiteImpl();
-    SiteImpl toSite = new SiteImpl();
-    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
-
-    // Act
-    customerPhoneImpl2.createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
-        genericEntityService, new MultiTenantCopierExtensionManager()));
-  }
-
-  /**
-   * Test
-   * {@link CustomerPhoneImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * Test {@link CustomerPhoneImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <ul>
    *   <li>Then Clone return {@link CustomerPhoneImpl}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link CustomerPhoneImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link CustomerPhoneImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse CustomerPhoneImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance_thenCloneReturnCustomerPhoneImpl() throws CloneNotSupportedException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
+    CustomerPhoneImpl customerPhoneImpl2 = new CustomerPhoneImpl();
     GenericEntityService genericEntityService = mock(GenericEntityService.class);
     when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
     Class<Object> forNameResult = Object.class;
@@ -606,7 +602,7 @@ public class CustomerPhoneImplDiffblueTest {
     SiteImpl toSite = new SiteImpl();
 
     // Act
-    CreateResponse<CustomerPhone> actualCreateOrRetrieveCopyInstanceResult = customerPhoneImpl
+    CreateResponse<CustomerPhone> actualCreateOrRetrieveCopyInstanceResult = customerPhoneImpl2
         .createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
             genericEntityService, new MultiTenantCopierExtensionManager()));
 
@@ -616,7 +612,7 @@ public class CustomerPhoneImplDiffblueTest {
     CustomerPhone clone = actualCreateOrRetrieveCopyInstanceResult.getClone();
     assertTrue(clone instanceof CustomerPhoneImpl);
     assertFalse(actualCreateOrRetrieveCopyInstanceResult.isAlreadyPopulated());
-    assertEquals(customerPhoneImpl, clone);
+    assertEquals(customerPhoneImpl2, clone);
   }
 
   /**
@@ -636,6 +632,11 @@ public class CustomerPhoneImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CustomerPhoneImpl.<init>()", "Customer CustomerPhoneImpl.getCustomer()",
+      "Long CustomerPhoneImpl.getId()", "Phone CustomerPhoneImpl.getPhone()", "String CustomerPhoneImpl.getPhoneName()",
+      "void CustomerPhoneImpl.setCustomer(Customer)", "void CustomerPhoneImpl.setId(Long)",
+      "void CustomerPhoneImpl.setPhone(Phone)", "void CustomerPhoneImpl.setPhoneName(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     CustomerPhoneImpl actualCustomerPhoneImpl = new CustomerPhoneImpl();
@@ -649,7 +650,7 @@ public class CustomerPhoneImplDiffblueTest {
     Long actualId = actualCustomerPhoneImpl.getId();
     Phone actualPhone = actualCustomerPhoneImpl.getPhone();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("6625550144", actualCustomerPhoneImpl.getPhoneName());
     assertEquals(1L, actualId.longValue());
     assertSame(customer, actualCustomer);

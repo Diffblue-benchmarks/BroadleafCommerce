@@ -1,28 +1,54 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.server.service.persistence.module;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.lang.reflect.Field;
+import java.util.List;
 import javax.persistence.EntityManager;
-import org.hibernate.engine.spi.SessionDelegatorBaseImpl;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.BeansException;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.FactoryBeanNotInitializedException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.reactive.context.AnnotationConfigReactiveWebApplicationContext;
-import org.springframework.context.ApplicationContext;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
-    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
-    "/bl-open-admin-contentCreator-applicationContext.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+@ContextConfiguration(classes = {FieldModifierManager.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class FieldModifierManagerDiffblueTest {
+  @MockBean
+  private FieldManagerModifier fieldManagerModifier;
+
   @Autowired
   private FieldModifierManager fieldModifierManager;
+
+  @Autowired
+  private List<FieldManagerModifier> list;
 
   /**
    * Test {@link FieldModifierManager#getFieldModifierManager()}.
@@ -30,112 +56,141 @@ public class FieldModifierManagerDiffblueTest {
    * Method under test: {@link FieldModifierManager#getFieldModifierManager()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FieldModifierManager FieldModifierManager.getFieldModifierManager()"})
   public void testGetFieldModifierManager() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.IllegalStateException: org.springframework.boot.web.reactive.context.AnnotationConfigReactiveWebApplicationContext@11c1a7c5 has not been refreshed yet
-    //       at org.broadleafcommerce.openadmin.server.service.persistence.module.FieldModifierManager.getFieldModifierManager(FieldModifierManager.java:48)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange and Act
-    FieldModifierManager.getFieldModifierManager();
+    // Arrange, Act and Assert
+    assertEquals(1, FieldModifierManager.getFieldModifierManager().fieldManagerModifiers.size());
   }
 
   /**
-   * Test {@link FieldModifierManager#setApplicationContext(ApplicationContext)}.
+   * Test {@link FieldModifierManager#getModifiedWriteValue(Field, Object, Object, EntityManager)}.
+   * <ul>
+   *   <li>Given {@link FieldManagerModifier} {@link FieldManagerModifier#canHandle(Field, Object, EntityManager)} return {@code false}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link FieldModifierManager#setApplicationContext(ApplicationContext)}
+   * Method under test: {@link FieldModifierManager#getModifiedWriteValue(Field, Object, Object, EntityManager)}
    */
   @Test
-  public void testSetApplicationContext() throws BeansException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing observers.
-    //   Diffblue Cover was unable to create an assertion.
-    //   Add getters for the following fields or make them package-private:
-    //     FieldModifierManager.applicationContext
-    //     FieldModifierManager.fieldManagerModifiers
-    //     FieldModifierManager.fieldModifierManager
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object FieldModifierManager.getModifiedWriteValue(Field, Object, Object, EntityManager)"})
+  public void testGetModifiedWriteValue_givenFieldManagerModifierCanHandleReturnFalse() throws IllegalAccessException {
     // Arrange
-    FieldModifierManager fieldModifierManager = new FieldModifierManager();
+    when(fieldManagerModifier.canHandle(Mockito.<Field>any(), Mockito.<Object>any(), Mockito.<EntityManager>any()))
+        .thenReturn(false);
 
     // Act
-    fieldModifierManager.setApplicationContext(new AnnotationConfigReactiveWebApplicationContext());
+    Object actualModifiedWriteValue = fieldModifierManager.getModifiedWriteValue(null, "Value", "New Value", null);
+
+    // Assert
+    verify(fieldManagerModifier).canHandle(isNull(), isA(Object.class), isNull());
+    assertEquals("New Value", actualModifiedWriteValue);
   }
 
   /**
-   * Test
-   * {@link FieldModifierManager#getModifiedWriteValue(Field, Object, Object, EntityManager)}.
+   * Test {@link FieldModifierManager#getModifiedWriteValue(Field, Object, Object, EntityManager)}.
+   * <ul>
+   *   <li>Given {@link FieldModifierManager} (default constructor).</li>
+   *   <li>Then return {@code New Value}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link FieldModifierManager#getModifiedWriteValue(Field, Object, Object, EntityManager)}
+   * Method under test: {@link FieldModifierManager#getModifiedWriteValue(Field, Object, Object, EntityManager)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetModifiedWriteValue() throws IllegalAccessException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1513 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.FieldModifierManager fieldModifierManager;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FieldModifierManager fieldModifierManager2 = new FieldModifierManager();
-    SessionDelegatorBaseImpl delegate = new SessionDelegatorBaseImpl(null);
-
-    // Act
-    fieldModifierManager2.getModifiedWriteValue(null, "Value", "New Value",
-        new SessionDelegatorBaseImpl(delegate, new SessionDelegatorBaseImpl(null)));
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object FieldModifierManager.getModifiedWriteValue(Field, Object, Object, EntityManager)"})
+  public void testGetModifiedWriteValue_givenFieldModifierManager_thenReturnNewValue() throws IllegalAccessException {
+    // Arrange, Act and Assert
+    assertEquals("New Value", (new FieldModifierManager()).getModifiedWriteValue(null, "Value", "New Value", null));
   }
 
   /**
-   * Test
-   * {@link FieldModifierManager#getModifiedReadValue(Field, Object, EntityManager)}.
+   * Test {@link FieldModifierManager#getModifiedWriteValue(Field, Object, Object, EntityManager)}.
+   * <ul>
+   *   <li>Then return {@code Modified Write Value}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link FieldModifierManager#getModifiedReadValue(Field, Object, EntityManager)}
+   * Method under test: {@link FieldModifierManager#getModifiedWriteValue(Field, Object, Object, EntityManager)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetModifiedReadValue() throws IllegalAccessException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1419 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.FieldModifierManager fieldModifierManager;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object FieldModifierManager.getModifiedWriteValue(Field, Object, Object, EntityManager)"})
+  public void testGetModifiedWriteValue_thenReturnModifiedWriteValue() throws IllegalAccessException {
     // Arrange
-    FieldModifierManager fieldModifierManager2 = new FieldModifierManager();
-    SessionDelegatorBaseImpl delegate = new SessionDelegatorBaseImpl(null);
+    when(fieldManagerModifier.getModifiedWriteValue(Mockito.<Field>any(), Mockito.<Object>any(), Mockito.<Object>any(),
+        Mockito.<EntityManager>any())).thenReturn("Modified Write Value");
+    when(fieldManagerModifier.canHandle(Mockito.<Field>any(), Mockito.<Object>any(), Mockito.<EntityManager>any()))
+        .thenReturn(true);
 
     // Act
-    fieldModifierManager2.getModifiedReadValue(null, "Value",
-        new SessionDelegatorBaseImpl(delegate, new SessionDelegatorBaseImpl(null)));
+    Object actualModifiedWriteValue = fieldModifierManager.getModifiedWriteValue(null, "Value", "New Value", null);
+
+    // Assert
+    verify(fieldManagerModifier).canHandle(isNull(), isA(Object.class), isNull());
+    verify(fieldManagerModifier).getModifiedWriteValue(isNull(), isA(Object.class), isA(Object.class), isNull());
+    assertEquals("Modified Write Value", actualModifiedWriteValue);
+  }
+
+  /**
+   * Test {@link FieldModifierManager#getModifiedWriteValue(Field, Object, Object, EntityManager)}.
+   * <ul>
+   *   <li>Then throw {@link FactoryBeanNotInitializedException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link FieldModifierManager#getModifiedWriteValue(Field, Object, Object, EntityManager)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object FieldModifierManager.getModifiedWriteValue(Field, Object, Object, EntityManager)"})
+  public void testGetModifiedWriteValue_thenThrowFactoryBeanNotInitializedException() throws IllegalAccessException {
+    // Arrange
+    when(fieldManagerModifier.getModifiedWriteValue(Mockito.<Field>any(), Mockito.<Object>any(), Mockito.<Object>any(),
+        Mockito.<EntityManager>any())).thenThrow(new FactoryBeanNotInitializedException("Msg"));
+    when(fieldManagerModifier.canHandle(Mockito.<Field>any(), Mockito.<Object>any(), Mockito.<EntityManager>any()))
+        .thenReturn(true);
+
+    // Act and Assert
+    assertThrows(FactoryBeanNotInitializedException.class,
+        () -> fieldModifierManager.getModifiedWriteValue(null, "Value", "New Value", null));
+    verify(fieldManagerModifier).canHandle(isNull(), isA(Object.class), isNull());
+    verify(fieldManagerModifier).getModifiedWriteValue(isNull(), isA(Object.class), isA(Object.class), isNull());
+  }
+
+  /**
+   * Test {@link FieldModifierManager#getModifiedReadValue(Field, Object, EntityManager)}.
+   * <ul>
+   *   <li>Given {@link FieldManagerModifier}.</li>
+   *   <li>When {@code Value}.</li>
+   *   <li>Then return {@code Value}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link FieldModifierManager#getModifiedReadValue(Field, Object, EntityManager)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object FieldModifierManager.getModifiedReadValue(Field, Object, EntityManager)"})
+  public void testGetModifiedReadValue_givenFieldManagerModifier_whenValue_thenReturnValue()
+      throws IllegalAccessException {
+    // Arrange, Act and Assert
+    assertEquals("Value", fieldModifierManager.getModifiedReadValue(null, "Value", null));
+  }
+
+  /**
+   * Test {@link FieldModifierManager#getModifiedReadValue(Field, Object, EntityManager)}.
+   * <ul>
+   *   <li>Given {@link FieldModifierManager} (default constructor).</li>
+   *   <li>When {@code Value}.</li>
+   *   <li>Then return {@code Value}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link FieldModifierManager#getModifiedReadValue(Field, Object, EntityManager)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object FieldModifierManager.getModifiedReadValue(Field, Object, EntityManager)"})
+  public void testGetModifiedReadValue_givenFieldModifierManager_whenValue_thenReturnValue()
+      throws IllegalAccessException {
+    // Arrange, Act and Assert
+    assertEquals("Value", (new FieldModifierManager()).getModifiedReadValue(null, "Value", null));
   }
 }

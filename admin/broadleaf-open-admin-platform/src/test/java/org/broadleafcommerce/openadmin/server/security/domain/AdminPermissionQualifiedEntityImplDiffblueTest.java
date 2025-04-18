@@ -21,66 +21,20 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import org.junit.Ignore;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class AdminPermissionQualifiedEntityImplDiffblueTest {
-  /**
-   * Test
-   * {@link AdminPermissionQualifiedEntityImpl#checkCloneable(AdminPermissionQualifiedEntity)}.
-   * <ul>
-   *   <li>When {@link AdminPermissionQualifiedEntityImpl} (default
-   * constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link AdminPermissionQualifiedEntityImpl#checkCloneable(AdminPermissionQualifiedEntity)}
-   */
-  @Test
-  public void testCheckCloneable_whenAdminPermissionQualifiedEntityImpl()
-      throws CloneNotSupportedException, NoSuchMethodException, SecurityException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange
-    AdminPermissionQualifiedEntityImpl adminPermissionQualifiedEntityImpl = new AdminPermissionQualifiedEntityImpl();
-
-    // Act
-    adminPermissionQualifiedEntityImpl.checkCloneable(new AdminPermissionQualifiedEntityImpl());
-  }
-
-  /**
-   * Test
-   * {@link AdminPermissionQualifiedEntityImpl#checkCloneable(AdminPermissionQualifiedEntity)}.
-   * <ul>
-   *   <li>When {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link AdminPermissionQualifiedEntityImpl#checkCloneable(AdminPermissionQualifiedEntity)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCheckCloneable_whenNull()
-      throws CloneNotSupportedException, NoSuchMethodException, SecurityException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.broadleafcommerce.openadmin.server.security.domain.AdminPermissionQualifiedEntityImpl.checkCloneable(AdminPermissionQualifiedEntityImpl.java:109)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange and Act
-    (new AdminPermissionQualifiedEntityImpl()).checkCloneable(null);
-  }
-
   /**
    * Test {@link AdminPermissionQualifiedEntityImpl#clone()}.
    * <p>
    * Method under test: {@link AdminPermissionQualifiedEntityImpl#clone()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"AdminPermissionQualifiedEntity AdminPermissionQualifiedEntityImpl.clone()"})
   public void testClone() {
     // Arrange and Act
     AdminPermissionQualifiedEntity actualCloneResult = (new AdminPermissionQualifiedEntityImpl()).clone();
@@ -97,20 +51,24 @@ public class AdminPermissionQualifiedEntityImplDiffblueTest {
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>default or parameterless constructor of
-   * {@link AdminPermissionQualifiedEntityImpl}
-   *   <li>
-   * {@link AdminPermissionQualifiedEntityImpl#setAdminPermission(AdminPermission)}
-   *   <li>
-   * {@link AdminPermissionQualifiedEntityImpl#setCeilingEntityFullyQualifiedName(String)}
+   *   <li>default or parameterless constructor of {@link AdminPermissionQualifiedEntityImpl}
+   *   <li>{@link AdminPermissionQualifiedEntityImpl#setAdminPermission(AdminPermission)}
+   *   <li>{@link AdminPermissionQualifiedEntityImpl#setCeilingEntityFullyQualifiedName(String)}
    *   <li>{@link AdminPermissionQualifiedEntityImpl#setId(Long)}
    *   <li>{@link AdminPermissionQualifiedEntityImpl#getAdminPermission()}
-   *   <li>
-   * {@link AdminPermissionQualifiedEntityImpl#getCeilingEntityFullyQualifiedName()}
+   *   <li>{@link AdminPermissionQualifiedEntityImpl#getCeilingEntityFullyQualifiedName()}
    *   <li>{@link AdminPermissionQualifiedEntityImpl#getId()}
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminPermissionQualifiedEntityImpl.<init>()",
+      "AdminPermission AdminPermissionQualifiedEntityImpl.getAdminPermission()",
+      "String AdminPermissionQualifiedEntityImpl.getCeilingEntityFullyQualifiedName()",
+      "Long AdminPermissionQualifiedEntityImpl.getId()",
+      "void AdminPermissionQualifiedEntityImpl.setAdminPermission(AdminPermission)",
+      "void AdminPermissionQualifiedEntityImpl.setCeilingEntityFullyQualifiedName(String)",
+      "void AdminPermissionQualifiedEntityImpl.setId(Long)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     AdminPermissionQualifiedEntityImpl actualAdminPermissionQualifiedEntityImpl = new AdminPermissionQualifiedEntityImpl();
@@ -122,7 +80,7 @@ public class AdminPermissionQualifiedEntityImplDiffblueTest {
     String actualCeilingEntityFullyQualifiedName = actualAdminPermissionQualifiedEntityImpl
         .getCeilingEntityFullyQualifiedName();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("Dr Jane Doe", actualCeilingEntityFullyQualifiedName);
     assertEquals(1L, actualAdminPermissionQualifiedEntityImpl.getId().longValue());
     assertSame(adminPermission, actualAdminPermission);

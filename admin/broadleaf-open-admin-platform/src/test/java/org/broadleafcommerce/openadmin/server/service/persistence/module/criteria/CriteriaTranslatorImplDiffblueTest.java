@@ -1,177 +1,243 @@
+/*-
+ * #%L
+ * BroadleafCommerce Open Admin Platform
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.openadmin.server.service.persistence.module.criteria;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Order;
-import javax.persistence.criteria.Path;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import org.broadleafcommerce.common.exception.NoPossibleResultsException;
 import org.broadleafcommerce.openadmin.dto.ClassTree;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDao;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl;
-import org.hibernate.boot.internal.BootstrapContextImpl;
-import org.hibernate.boot.internal.InFlightMetadataCollectorImpl;
-import org.hibernate.boot.internal.MetadataBuilderImpl;
-import org.hibernate.boot.internal.MetadataBuildingContextRootImpl;
-import org.hibernate.boot.spi.AbstractDelegatingSessionFactoryOptions;
-import org.hibernate.engine.query.spi.QueryPlanCache;
-import org.hibernate.engine.spi.SessionDelegatorBaseImpl;
-import org.hibernate.engine.spi.SessionFactoryDelegatingImpl;
-import org.hibernate.internal.SessionFactoryImpl;
-import org.hibernate.mapping.RootClass;
-import org.hibernate.metamodel.model.domain.internal.EntityTypeImpl;
-import org.hibernate.metamodel.model.domain.internal.MappedSuperclassTypeImpl;
-import org.hibernate.procedure.internal.ProcedureCallImpl;
-import org.hibernate.query.criteria.internal.CriteriaBuilderImpl;
-import org.hibernate.query.criteria.internal.CriteriaQueryImpl;
-import org.hibernate.query.criteria.internal.path.CollectionAttributeJoin;
-import org.hibernate.query.criteria.internal.path.ListAttributeJoin;
-import org.hibernate.query.criteria.internal.path.RootImpl;
-import org.junit.Ignore;
+import org.broadleafcommerce.openadmin.server.security.remote.SecurityVerifier;
+import org.broadleafcommerce.openadmin.server.security.service.RowLevelSecurityService;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
-    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
-    "/bl-open-admin-contentCreator-applicationContext.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class CriteriaTranslatorImplDiffblueTest {
-  @Autowired
+  @InjectMocks
   private CriteriaTranslatorImpl criteriaTranslatorImpl;
 
+  @Mock
+  private List<CriteriaTranslatorEventHandler> list;
+
+  @Mock
+  private RowLevelSecurityService rowLevelSecurityService;
+
+  @Mock
+  private SecurityVerifier securityVerifier;
+
   /**
-   * Test
-   * {@link CriteriaTranslatorImpl#translateCountQuery(DynamicEntityDao, String, List)}.
+   * Test {@link CriteriaTranslatorImpl#determineRoot(DynamicEntityDao, Class, List)}.
+   * <ul>
+   *   <li>Given {@link ClassTree#ClassTree()}.</li>
+   *   <li>When {@link DynamicEntityDao} {@link DynamicEntityDao#getClassTree(Class[])} return {@link ClassTree#ClassTree()}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link CriteriaTranslatorImpl#translateCountQuery(DynamicEntityDao, String, List)}
+   * Method under test: {@link CriteriaTranslatorImpl#determineRoot(DynamicEntityDao, Class, List)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testTranslateCountQuery() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module.criteria;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4873 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.CriteriaTranslatorImpl criteriaTranslatorImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class CriteriaTranslatorImpl.determineRoot(DynamicEntityDao, Class, List)"})
+  public void testDetermineRoot_givenClassTree_whenDynamicEntityDaoGetClassTreeReturnClassTree()
+      throws NoPossibleResultsException {
     // Arrange
-    CriteriaTranslatorImpl criteriaTranslatorImpl2 = new CriteriaTranslatorImpl();
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+    DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>[]>when(dynamicEntityDao.getAllPolymorphicEntitiesFromCeiling(Mockito.<Class<Object>>any()))
+        .thenReturn(new Class[]{forNameResult});
+    when(dynamicEntityDao.getClassTree(Mockito.<Class<Object>[]>any())).thenReturn(new ClassTree());
+    Class<Serializable> ceilingMarker = Serializable.class;
 
-    // Act
-    criteriaTranslatorImpl2.translateCountQuery(dynamicEntityDao, "Ceiling Entity", new ArrayList<>());
+    // Act and Assert
+    assertThrows(IllegalStateException.class,
+        () -> criteriaTranslatorImpl.determineRoot(dynamicEntityDao, ceilingMarker, new ArrayList<>()));
+    verify(dynamicEntityDao).getAllPolymorphicEntitiesFromCeiling(isA(Class.class));
+    verify(dynamicEntityDao).getClassTree(isA(Class[].class));
   }
 
   /**
-   * Test
-   * {@link CriteriaTranslatorImpl#translateMaxQuery(DynamicEntityDao, String, List, String)}.
+   * Test {@link CriteriaTranslatorImpl#determineRoot(DynamicEntityDao, Class, List)}.
+   * <ul>
+   *   <li>Given {@link FilterMapping} (default constructor).</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link FilterMapping} (default constructor).</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link CriteriaTranslatorImpl#translateMaxQuery(DynamicEntityDao, String, List, String)}
+   * Method under test: {@link CriteriaTranslatorImpl#determineRoot(DynamicEntityDao, Class, List)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testTranslateMaxQuery() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module.criteria;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4902 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.CriteriaTranslatorImpl criteriaTranslatorImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class CriteriaTranslatorImpl.determineRoot(DynamicEntityDao, Class, List)"})
+  public void testDetermineRoot_givenFilterMapping_whenArrayListAddFilterMapping() throws NoPossibleResultsException {
     // Arrange
-    CriteriaTranslatorImpl criteriaTranslatorImpl2 = new CriteriaTranslatorImpl();
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+    ClassTree classTree = mock(ClassTree.class);
+    when(classTree.getFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
+    DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>[]>when(dynamicEntityDao.getAllPolymorphicEntitiesFromCeiling(Mockito.<Class<Object>>any()))
+        .thenReturn(new Class[]{forNameResult});
+    when(dynamicEntityDao.getClassTree(Mockito.<Class<Object>[]>any())).thenReturn(classTree);
+    Class<Serializable> ceilingMarker = Serializable.class;
 
-    // Act
-    criteriaTranslatorImpl2.translateMaxQuery(dynamicEntityDao, "Ceiling Entity", new ArrayList<>(), "Max Field");
+    ArrayList<FilterMapping> filterMappings = new ArrayList<>();
+    filterMappings.add(new FilterMapping());
+
+    // Act and Assert
+    assertThrows(IllegalStateException.class,
+        () -> criteriaTranslatorImpl.determineRoot(dynamicEntityDao, ceilingMarker, filterMappings));
+    verify(classTree).getFullyQualifiedClassname();
+    verify(dynamicEntityDao).getAllPolymorphicEntitiesFromCeiling(isA(Class.class));
+    verify(dynamicEntityDao).getClassTree(isA(Class[].class));
   }
 
   /**
-   * Test
-   * {@link CriteriaTranslatorImpl#translateQuery(DynamicEntityDao, String, List, Integer, Integer)}.
+   * Test {@link CriteriaTranslatorImpl#determineRoot(DynamicEntityDao, Class, List)}.
+   * <ul>
+   *   <li>Given {@link FilterMapping} (default constructor).</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link FilterMapping} (default constructor).</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link CriteriaTranslatorImpl#translateQuery(DynamicEntityDao, String, List, Integer, Integer)}
+   * Method under test: {@link CriteriaTranslatorImpl#determineRoot(DynamicEntityDao, Class, List)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testTranslateQuery() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module.criteria;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4941 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.CriteriaTranslatorImpl criteriaTranslatorImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class CriteriaTranslatorImpl.determineRoot(DynamicEntityDao, Class, List)"})
+  public void testDetermineRoot_givenFilterMapping_whenArrayListAddFilterMapping2() throws NoPossibleResultsException {
     // Arrange
-    CriteriaTranslatorImpl criteriaTranslatorImpl2 = new CriteriaTranslatorImpl();
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+    ClassTree classTree = mock(ClassTree.class);
+    when(classTree.getFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
+    DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>[]>when(dynamicEntityDao.getAllPolymorphicEntitiesFromCeiling(Mockito.<Class<Object>>any()))
+        .thenReturn(new Class[]{forNameResult});
+    when(dynamicEntityDao.getClassTree(Mockito.<Class<Object>[]>any())).thenReturn(classTree);
+    Class<Serializable> ceilingMarker = Serializable.class;
 
-    // Act
-    criteriaTranslatorImpl2.translateQuery(dynamicEntityDao, "Ceiling Entity", new ArrayList<>(), 1, 3);
+    ArrayList<FilterMapping> filterMappings = new ArrayList<>();
+    filterMappings.add(new FilterMapping());
+    filterMappings.add(new FilterMapping());
+
+    // Act and Assert
+    assertThrows(IllegalStateException.class,
+        () -> criteriaTranslatorImpl.determineRoot(dynamicEntityDao, ceilingMarker, filterMappings));
+    verify(classTree).getFullyQualifiedClassname();
+    verify(dynamicEntityDao).getAllPolymorphicEntitiesFromCeiling(isA(Class.class));
+    verify(dynamicEntityDao).getClassTree(isA(Class[].class));
   }
 
   /**
-   * Test
-   * {@link CriteriaTranslatorImpl#determineRoot(DynamicEntityDao, Class, List)}.
+   * Test {@link CriteriaTranslatorImpl#determineRoot(DynamicEntityDao, Class, List)}.
+   * <ul>
+   *   <li>Then calls {@link ClassTree#getFullyQualifiedClassname()}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link CriteriaTranslatorImpl#determineRoot(DynamicEntityDao, Class, List)}
+   * Method under test: {@link CriteriaTranslatorImpl#determineRoot(DynamicEntityDao, Class, List)}
    */
   @Test
-  public void testDetermineRoot() throws NoPossibleResultsException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class CriteriaTranslatorImpl.determineRoot(DynamicEntityDao, Class, List)"})
+  public void testDetermineRoot_thenCallsGetFullyQualifiedClassname() throws NoPossibleResultsException {
     // Arrange
-    CriteriaTranslatorImpl criteriaTranslatorImpl = new CriteriaTranslatorImpl();
+    ClassTree classTree = mock(ClassTree.class);
+    when(classTree.getFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
+    DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>[]>when(dynamicEntityDao.getAllPolymorphicEntitiesFromCeiling(Mockito.<Class<Object>>any()))
+        .thenReturn(new Class[]{forNameResult});
+    when(dynamicEntityDao.getClassTree(Mockito.<Class<Object>[]>any())).thenReturn(classTree);
+    Class<Serializable> ceilingMarker = Serializable.class;
+
+    // Act and Assert
+    assertThrows(IllegalStateException.class,
+        () -> criteriaTranslatorImpl.determineRoot(dynamicEntityDao, ceilingMarker, new ArrayList<>()));
+    verify(classTree).getFullyQualifiedClassname();
+    verify(dynamicEntityDao).getAllPolymorphicEntitiesFromCeiling(isA(Class.class));
+    verify(dynamicEntityDao).getClassTree(isA(Class[].class));
+  }
+
+  /**
+   * Test {@link CriteriaTranslatorImpl#determineRoot(DynamicEntityDao, Class, List)}.
+   * <ul>
+   *   <li>Then return {@link Object}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CriteriaTranslatorImpl#determineRoot(DynamicEntityDao, Class, List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class CriteriaTranslatorImpl.determineRoot(DynamicEntityDao, Class, List)"})
+  public void testDetermineRoot_thenReturnObject() throws NoPossibleResultsException {
+    // Arrange
+    ClassTree classTree = mock(ClassTree.class);
+    when(classTree.getFullyQualifiedClassname()).thenReturn("java.lang.Object");
+    DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>[]>when(dynamicEntityDao.getAllPolymorphicEntitiesFromCeiling(Mockito.<Class<Object>>any()))
+        .thenReturn(new Class[]{forNameResult});
+    when(dynamicEntityDao.getClassTree(Mockito.<Class<Object>[]>any())).thenReturn(classTree);
+    Class<Serializable> ceilingMarker = Serializable.class;
+
+    // Act
+    Class<Serializable> actualDetermineRootResult = criteriaTranslatorImpl.determineRoot(dynamicEntityDao,
+        ceilingMarker, new ArrayList<>());
+
+    // Assert
+    verify(classTree).getFullyQualifiedClassname();
+    verify(dynamicEntityDao).getAllPolymorphicEntitiesFromCeiling(isA(Class.class));
+    verify(dynamicEntityDao).getClassTree(isA(Class[].class));
+    Class<Object> expectedDetermineRootResult = Object.class;
+    assertEquals(expectedDetermineRootResult, actualDetermineRootResult);
+  }
+
+  /**
+   * Test {@link CriteriaTranslatorImpl#determineRoot(DynamicEntityDao, Class, List)}.
+   * <ul>
+   *   <li>When {@link DynamicEntityDaoImpl} (default constructor).</li>
+   *   <li>Then throw {@link IllegalStateException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CriteriaTranslatorImpl#determineRoot(DynamicEntityDao, Class, List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class CriteriaTranslatorImpl.determineRoot(DynamicEntityDao, Class, List)"})
+  public void testDetermineRoot_whenDynamicEntityDaoImpl_thenThrowIllegalStateException()
+      throws NoPossibleResultsException {
+    // Arrange
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
     Class<Serializable> ceilingMarker = Serializable.class;
 
@@ -181,372 +247,317 @@ public class CriteriaTranslatorImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link CriteriaTranslatorImpl#determineRoot(DynamicEntityDao, Class, List)}.
+   * Test {@link CriteriaTranslatorImpl#determineRootInternal(ClassTree, List, Class)}.
    * <p>
-   * Method under test:
-   * {@link CriteriaTranslatorImpl#determineRoot(DynamicEntityDao, Class, List)}
+   * Method under test: {@link CriteriaTranslatorImpl#determineRootInternal(ClassTree, List, Class)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testDetermineRoot2() throws NoPossibleResultsException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module.criteria;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3898 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.CriteriaTranslatorImpl criteriaTranslatorImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ClassTree CriteriaTranslatorImpl.determineRootInternal(ClassTree, List, Class)"})
+  public void testDetermineRootInternal() {
     // Arrange
-    CriteriaTranslatorImpl criteriaTranslatorImpl2 = new CriteriaTranslatorImpl();
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-    Class<Serializable> ceilingMarker = Serializable.class;
+    ClassTree root = new ClassTree("Dr Jane Doe");
+    ArrayList<ClassTree> parents = new ArrayList<>();
+    Class<Object> classToCheck = Object.class;
 
-    // Act
-    criteriaTranslatorImpl2.determineRoot(dynamicEntityDao, ceilingMarker, new ArrayList<>());
+    // Act and Assert
+    assertNull(criteriaTranslatorImpl.determineRootInternal(root, parents, classToCheck));
+    assertEquals(1, parents.size());
+    assertEquals(parents, root.getCollapsedClassTrees());
+    assertSame(root, parents.get(0));
   }
 
   /**
-   * Test
-   * {@link CriteriaTranslatorImpl#determineRootInternal(ClassTree, List, Class)}.
+   * Test {@link CriteriaTranslatorImpl#determineRootInternal(ClassTree, List, Class)}.
    * <p>
-   * Method under test:
-   * {@link CriteriaTranslatorImpl#determineRootInternal(ClassTree, List, Class)}
+   * Method under test: {@link CriteriaTranslatorImpl#determineRootInternal(ClassTree, List, Class)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testDetermineRootInternal() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module.criteria;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4227 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.CriteriaTranslatorImpl criteriaTranslatorImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ClassTree CriteriaTranslatorImpl.determineRootInternal(ClassTree, List, Class)"})
+  public void testDetermineRootInternal2() {
     // Arrange
-    CriteriaTranslatorImpl criteriaTranslatorImpl2 = new CriteriaTranslatorImpl();
-    ClassTree root = new ClassTree();
+    ClassTree root = mock(ClassTree.class);
+    when(root.getChildren()).thenReturn(new ClassTree[]{new ClassTree("Dr Jane Doe")});
+    when(root.getFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
     ArrayList<ClassTree> parents = new ArrayList<>();
     Class<Object> classToCheck = Object.class;
 
     // Act
-    criteriaTranslatorImpl2.determineRootInternal(root, parents, classToCheck);
+    ClassTree actualDetermineRootInternalResult = criteriaTranslatorImpl.determineRootInternal(root, parents,
+        classToCheck);
+
+    // Assert
+    verify(root).getChildren();
+    verify(root, atLeast(1)).getFullyQualifiedClassname();
+    assertNull(actualDetermineRootInternalResult);
+    assertEquals(1, parents.size());
+    assertSame(root, parents.get(0));
   }
 
   /**
-   * Test
-   * {@link CriteriaTranslatorImpl#constructQuery(DynamicEntityDao, String, List, boolean, boolean, Integer, Integer, String)}.
+   * Test {@link CriteriaTranslatorImpl#determineRootInternal(ClassTree, List, Class)}.
    * <p>
-   * Method under test:
-   * {@link CriteriaTranslatorImpl#constructQuery(DynamicEntityDao, String, List, boolean, boolean, Integer, Integer, String)}
+   * Method under test: {@link CriteriaTranslatorImpl#determineRootInternal(ClassTree, List, Class)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testConstructQuery() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module.criteria;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3848 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.CriteriaTranslatorImpl criteriaTranslatorImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ClassTree CriteriaTranslatorImpl.determineRootInternal(ClassTree, List, Class)"})
+  public void testDetermineRootInternal3() {
     // Arrange
-    CriteriaTranslatorImpl criteriaTranslatorImpl2 = new CriteriaTranslatorImpl();
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+    ClassTree classTree = mock(ClassTree.class);
+    ClassTree classTree2 = new ClassTree();
+    when(classTree.find(Mockito.<String>any())).thenReturn(classTree2);
+    ClassTree root = mock(ClassTree.class);
+    when(root.getChildren()).thenReturn(new ClassTree[]{classTree});
+    when(root.getFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
+    ClassTree classTree3 = mock(ClassTree.class);
+    when(classTree3.getFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
+
+    ArrayList<ClassTree> parents = new ArrayList<>();
+    parents.add(classTree3);
+    Class<Object> classToCheck = Object.class;
 
     // Act
-    criteriaTranslatorImpl2.constructQuery(dynamicEntityDao, "Ceiling Entity", new ArrayList<>(), true, true, 1, 3,
-        "Max Field");
+    ClassTree actualDetermineRootInternalResult = criteriaTranslatorImpl.determineRootInternal(root, parents,
+        classToCheck);
+
+    // Assert
+    verify(classTree).find(eq("java.lang.Object"));
+    verify(root).getChildren();
+    verify(classTree3).getFullyQualifiedClassname();
+    verify(root, atLeast(1)).getFullyQualifiedClassname();
+    assertEquals(2, parents.size());
+    assertSame(classTree2, actualDetermineRootInternalResult);
+    assertSame(root, parents.get(1));
   }
 
   /**
-   * Test {@link CriteriaTranslatorImpl#addPaging(Query, Integer, Integer)}.
+   * Test {@link CriteriaTranslatorImpl#determineRootInternal(ClassTree, List, Class)}.
    * <p>
-   * Method under test:
-   * {@link CriteriaTranslatorImpl#addPaging(Query, Integer, Integer)}
+   * Method under test: {@link CriteriaTranslatorImpl#determineRootInternal(ClassTree, List, Class)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddPaging() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module.criteria;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2883 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.CriteriaTranslatorImpl criteriaTranslatorImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ClassTree CriteriaTranslatorImpl.determineRootInternal(ClassTree, List, Class)"})
+  public void testDetermineRootInternal4() {
     // Arrange
-    CriteriaTranslatorImpl criteriaTranslatorImpl2 = new CriteriaTranslatorImpl();
-    SessionDelegatorBaseImpl delegate = new SessionDelegatorBaseImpl(null);
+    ClassTree root = mock(ClassTree.class);
+    when(root.getFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
+    ClassTree classTree = mock(ClassTree.class);
+    when(classTree.getFullyQualifiedClassname()).thenReturn("java.lang.Object");
+
+    ArrayList<ClassTree> parents = new ArrayList<>();
+    parents.add(classTree);
+    Class<Object> classToCheck = Object.class;
 
     // Act
-    criteriaTranslatorImpl2.addPaging(new ProcedureCallImpl<>(
-        new SessionDelegatorBaseImpl(delegate, new SessionDelegatorBaseImpl(null)), "Procedure Name"), 2, 3);
+    ClassTree actualDetermineRootInternalResult = criteriaTranslatorImpl.determineRootInternal(root, parents,
+        classToCheck);
+
+    // Assert
+    verify(root).getFullyQualifiedClassname();
+    verify(classTree).getFullyQualifiedClassname();
+    assertEquals(1, parents.size());
+    assertSame(root, actualDetermineRootInternalResult);
   }
 
   /**
-   * Test
-   * {@link CriteriaTranslatorImpl#addRestrictions(String, List, CriteriaBuilder, Root, List, List)}
-   * with {@code ceilingEntity}, {@code filterMappings}, {@code criteriaBuilder},
-   * {@code original}, {@code restrictions}, {@code sorts}.
+   * Test {@link CriteriaTranslatorImpl#determineRootInternal(ClassTree, List, Class)}.
+   * <ul>
+   *   <li>Given {@link ClassTree} {@link ClassTree#find(String)} return {@link ClassTree#ClassTree()}.</li>
+   *   <li>Then return {@link ClassTree#ClassTree()}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link CriteriaTranslatorImpl#addRestrictions(String, List, CriteriaBuilder, Root, List, List)}
+   * Method under test: {@link CriteriaTranslatorImpl#determineRootInternal(ClassTree, List, Class)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddRestrictionsWithCeilingEntityFilterMappingsCriteriaBuilderOriginalRestrictionsSorts() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module.criteria;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3039 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.CriteriaTranslatorImpl criteriaTranslatorImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ClassTree CriteriaTranslatorImpl.determineRootInternal(ClassTree, List, Class)"})
+  public void testDetermineRootInternal_givenClassTreeFindReturnClassTree_thenReturnClassTree() {
     // Arrange
-    CriteriaTranslatorImpl criteriaTranslatorImpl2 = new CriteriaTranslatorImpl();
-    ArrayList<FilterMapping> filterMappings = new ArrayList<>();
-    BootstrapContextImpl bootstrapContext = new BootstrapContextImpl(null, null);
-
-    InFlightMetadataCollectorImpl metadata = new InFlightMetadataCollectorImpl(bootstrapContext,
-        new MetadataBuilderImpl.MetadataBuildingOptionsImpl(null));
-
-    CriteriaBuilderImpl criteriaBuilder = new CriteriaBuilderImpl(new SessionFactoryImpl(metadata,
-        new AbstractDelegatingSessionFactoryOptions(null), mock(QueryPlanCache.QueryPlanCreator.class)));
-    InFlightMetadataCollectorImpl metadata2 = new InFlightMetadataCollectorImpl(null, null);
-
-    CriteriaBuilderImpl criteriaBuilder2 = new CriteriaBuilderImpl(new SessionFactoryImpl(metadata2,
-        new AbstractDelegatingSessionFactoryOptions(null), mock(QueryPlanCache.QueryPlanCreator.class)));
-    Class<Object> javaType = Object.class;
-    Class<Object> javaType2 = Object.class;
-    MappedSuperclassTypeImpl superType = new MappedSuperclassTypeImpl(javaType2, null, null, null);
-
-    RootClass persistentClass = new RootClass(new MetadataBuildingContextRootImpl(null, null, null));
-    RootImpl original = new RootImpl(criteriaBuilder2,
-        new EntityTypeImpl(javaType, superType, persistentClass, new SessionFactoryDelegatingImpl(null)));
-
-    ArrayList<Predicate> restrictions = new ArrayList<>();
+    ClassTree classTree = mock(ClassTree.class);
+    ClassTree classTree2 = new ClassTree();
+    when(classTree.find(Mockito.<String>any())).thenReturn(classTree2);
+    ClassTree root = mock(ClassTree.class);
+    when(root.getChildren()).thenReturn(new ClassTree[]{classTree});
+    when(root.getFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
+    ArrayList<ClassTree> parents = new ArrayList<>();
+    Class<Object> classToCheck = Object.class;
 
     // Act
-    criteriaTranslatorImpl2.addRestrictions("Ceiling Entity", filterMappings, criteriaBuilder, original, restrictions,
-        new ArrayList<>());
+    ClassTree actualDetermineRootInternalResult = criteriaTranslatorImpl.determineRootInternal(root, parents,
+        classToCheck);
+
+    // Assert
+    verify(classTree).find(eq("java.lang.Object"));
+    verify(root).getChildren();
+    verify(root, atLeast(1)).getFullyQualifiedClassname();
+    assertEquals(1, parents.size());
+    assertSame(classTree2, actualDetermineRootInternalResult);
+    assertSame(root, parents.get(0));
   }
 
   /**
-   * Test
-   * {@link CriteriaTranslatorImpl#addRestrictions(String, List, CriteriaBuilder, Root, List, List, CriteriaQuery)}
-   * with {@code ceilingEntity}, {@code filterMappings}, {@code criteriaBuilder},
-   * {@code original}, {@code restrictions}, {@code sorts}, {@code criteria}.
+   * Test {@link CriteriaTranslatorImpl#determineRootInternal(ClassTree, List, Class)}.
+   * <ul>
+   *   <li>Given {@link ClassTree#ClassTree(String)} with fullyQualifiedClassname is {@code Dr Jane Doe}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link CriteriaTranslatorImpl#addRestrictions(String, List, CriteriaBuilder, Root, List, List, CriteriaQuery)}
+   * Method under test: {@link CriteriaTranslatorImpl#determineRootInternal(ClassTree, List, Class)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddRestrictionsWithCeilingEntityFilterMappingsCriteriaBuilderOriginalRestrictionsSortsCriteria() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module.criteria;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3304 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.CriteriaTranslatorImpl criteriaTranslatorImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ClassTree CriteriaTranslatorImpl.determineRootInternal(ClassTree, List, Class)"})
+  public void testDetermineRootInternal_givenClassTreeWithFullyQualifiedClassnameIsDrJaneDoe() {
     // Arrange
-    CriteriaTranslatorImpl criteriaTranslatorImpl2 = new CriteriaTranslatorImpl();
-    ArrayList<FilterMapping> filterMappings = new ArrayList<>();
-    BootstrapContextImpl bootstrapContext = new BootstrapContextImpl(null, null);
+    ClassTree classTree = mock(ClassTree.class);
+    ClassTree classTree2 = new ClassTree();
+    when(classTree.find(Mockito.<String>any())).thenReturn(classTree2);
+    ClassTree root = mock(ClassTree.class);
+    when(root.getChildren()).thenReturn(new ClassTree[]{classTree});
+    when(root.getFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
 
-    InFlightMetadataCollectorImpl metadata = new InFlightMetadataCollectorImpl(bootstrapContext,
-        new MetadataBuilderImpl.MetadataBuildingOptionsImpl(null));
-
-    CriteriaBuilderImpl criteriaBuilder = new CriteriaBuilderImpl(new SessionFactoryImpl(metadata,
-        new AbstractDelegatingSessionFactoryOptions(null), mock(QueryPlanCache.QueryPlanCreator.class)));
-    InFlightMetadataCollectorImpl metadata2 = new InFlightMetadataCollectorImpl(null, null);
-
-    CriteriaBuilderImpl criteriaBuilder2 = new CriteriaBuilderImpl(new SessionFactoryImpl(metadata2,
-        new AbstractDelegatingSessionFactoryOptions(null), mock(QueryPlanCache.QueryPlanCreator.class)));
-    Class<Object> javaType = Object.class;
-    Class<Object> javaType2 = Object.class;
-    MappedSuperclassTypeImpl superType = new MappedSuperclassTypeImpl(javaType2, null, null, null);
-
-    RootClass persistentClass = new RootClass(new MetadataBuildingContextRootImpl(null, null, null));
-    RootImpl original = new RootImpl(criteriaBuilder2,
-        new EntityTypeImpl(javaType, superType, persistentClass, new SessionFactoryDelegatingImpl(null)));
-
-    ArrayList<Predicate> restrictions = new ArrayList<>();
-    ArrayList<Order> sorts = new ArrayList<>();
-    InFlightMetadataCollectorImpl metadata3 = new InFlightMetadataCollectorImpl(null, null);
-
-    CriteriaBuilderImpl criteriaBuilder3 = new CriteriaBuilderImpl(new SessionFactoryImpl(metadata3,
-        new AbstractDelegatingSessionFactoryOptions(null), mock(QueryPlanCache.QueryPlanCreator.class)));
-    Class<Object> returnType = Object.class;
+    ArrayList<ClassTree> parents = new ArrayList<>();
+    ClassTree classTree3 = new ClassTree("Dr Jane Doe");
+    parents.add(classTree3);
+    Class<Object> classToCheck = Object.class;
 
     // Act
-    criteriaTranslatorImpl2.addRestrictions("Ceiling Entity", filterMappings, criteriaBuilder, original, restrictions,
-        sorts, new CriteriaQueryImpl(criteriaBuilder3, returnType));
+    ClassTree actualDetermineRootInternalResult = criteriaTranslatorImpl.determineRootInternal(root, parents,
+        classToCheck);
+
+    // Assert
+    verify(classTree).find(eq("java.lang.Object"));
+    verify(root).getChildren();
+    verify(root, atLeast(1)).getFullyQualifiedClassname();
+    assertEquals(2, parents.size());
+    assertSame(classTree2, actualDetermineRootInternalResult);
+    assertSame(classTree3, parents.get(0));
+    assertSame(root, parents.get(1));
   }
 
   /**
-   * Test
-   * {@link CriteriaTranslatorImpl#addSorting(CriteriaBuilder, List, FilterMapping, Path)}.
+   * Test {@link CriteriaTranslatorImpl#determineRootInternal(ClassTree, List, Class)}.
+   * <ul>
+   *   <li>Given {@code Object}.</li>
+   *   <li>Then {@link ArrayList#ArrayList()} Empty.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link CriteriaTranslatorImpl#addSorting(CriteriaBuilder, List, FilterMapping, Path)}
+   * Method under test: {@link CriteriaTranslatorImpl#determineRootInternal(ClassTree, List, Class)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testAddSorting() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module.criteria;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3569 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.CriteriaTranslatorImpl criteriaTranslatorImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ClassTree CriteriaTranslatorImpl.determineRootInternal(ClassTree, List, Class)"})
+  public void testDetermineRootInternal_givenJavaLangObject_thenArrayListEmpty() {
     // Arrange
-    CriteriaTranslatorImpl criteriaTranslatorImpl2 = new CriteriaTranslatorImpl();
-    BootstrapContextImpl bootstrapContext = new BootstrapContextImpl(null, null);
-
-    InFlightMetadataCollectorImpl metadata = new InFlightMetadataCollectorImpl(bootstrapContext,
-        new MetadataBuilderImpl.MetadataBuildingOptionsImpl(null));
-
-    CriteriaBuilderImpl criteriaBuilder = new CriteriaBuilderImpl(new SessionFactoryImpl(metadata,
-        new AbstractDelegatingSessionFactoryOptions(null), mock(QueryPlanCache.QueryPlanCreator.class)));
-    ArrayList<Order> sorts = new ArrayList<>();
-    FilterMapping filterMapping = new FilterMapping();
-    CriteriaBuilderImpl criteriaBuilder2 = new CriteriaBuilderImpl(
-        new SessionFactoryImpl(null, null, mock(QueryPlanCache.QueryPlanCreator.class)));
-    Class<Object> javaType = Object.class;
-    Class<Object> treatAsType = Object.class;
-    CollectionAttributeJoin original = new CollectionAttributeJoin(criteriaBuilder2, javaType,
-        new ListAttributeJoin.TreatedListAttributeJoin(null, treatAsType), null, JoinType.INNER);
-
-    Class<Object> treatAsType2 = Object.class;
+    ClassTree root = mock(ClassTree.class);
+    when(root.getFullyQualifiedClassname()).thenReturn("java.lang.Object");
+    ArrayList<ClassTree> parents = new ArrayList<>();
+    Class<Object> classToCheck = Object.class;
 
     // Act
-    criteriaTranslatorImpl2.addSorting(criteriaBuilder, sorts, filterMapping,
-        new CollectionAttributeJoin.TreatedCollectionAttributeJoin(original, treatAsType2));
+    ClassTree actualDetermineRootInternalResult = criteriaTranslatorImpl.determineRootInternal(root, parents,
+        classToCheck);
+
+    // Assert
+    verify(root).getFullyQualifiedClassname();
+    assertTrue(parents.isEmpty());
+    assertSame(root, actualDetermineRootInternalResult);
+  }
+
+  /**
+   * Test {@link CriteriaTranslatorImpl#determineRootInternal(ClassTree, List, Class)}.
+   * <ul>
+   *   <li>Given {@code Object}.</li>
+   *   <li>When {@code Integer}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CriteriaTranslatorImpl#determineRootInternal(ClassTree, List, Class)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ClassTree CriteriaTranslatorImpl.determineRootInternal(ClassTree, List, Class)"})
+  public void testDetermineRootInternal_givenJavaLangObject_whenJavaLangInteger() {
+    // Arrange
+    ClassTree classTree = mock(ClassTree.class);
+    ClassTree classTree2 = new ClassTree();
+    when(classTree.find(Mockito.<String>any())).thenReturn(classTree2);
+    ClassTree root = mock(ClassTree.class);
+    when(root.getChildren()).thenReturn(new ClassTree[]{classTree});
+    when(root.getFullyQualifiedClassname()).thenReturn("java.lang.Object");
+    ArrayList<ClassTree> parents = new ArrayList<>();
+    Class<Integer> classToCheck = Integer.class;
+
+    // Act
+    ClassTree actualDetermineRootInternalResult = criteriaTranslatorImpl.determineRootInternal(root, parents,
+        classToCheck);
+
+    // Assert
+    verify(classTree).find(eq("java.lang.Integer"));
+    verify(root).getChildren();
+    verify(root, atLeast(1)).getFullyQualifiedClassname();
+    assertEquals(1, parents.size());
+    assertSame(classTree2, actualDetermineRootInternalResult);
+    assertSame(root, parents.get(0));
   }
 
   /**
    * Test {@link CriteriaTranslatorImpl#getAppropriateLargeSortingValue(Class)}.
+   * <ul>
+   *   <li>Then return intValue is {@link Integer#MAX_VALUE}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link CriteriaTranslatorImpl#getAppropriateLargeSortingValue(Class)}
+   * Method under test: {@link CriteriaTranslatorImpl#getAppropriateLargeSortingValue(Class)}
    */
   @Test
-  public void testGetAppropriateLargeSortingValue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object CriteriaTranslatorImpl.getAppropriateLargeSortingValue(Class)"})
+  public void testGetAppropriateLargeSortingValue_thenReturnIntValueIsMax_value() {
     // Arrange
-    CriteriaTranslatorImpl criteriaTranslatorImpl = new CriteriaTranslatorImpl();
+    Class<Integer> javaType = Integer.class;
+
+    // Act and Assert
+    assertEquals(Integer.MAX_VALUE,
+        ((Integer) criteriaTranslatorImpl.getAppropriateLargeSortingValue(javaType)).intValue());
+  }
+
+  /**
+   * Test {@link CriteriaTranslatorImpl#getAppropriateLargeSortingValue(Class)}.
+   * <ul>
+   *   <li>Then return longValue is {@link Long#MAX_VALUE}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CriteriaTranslatorImpl#getAppropriateLargeSortingValue(Class)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object CriteriaTranslatorImpl.getAppropriateLargeSortingValue(Class)"})
+  public void testGetAppropriateLargeSortingValue_thenReturnLongValueIsMax_value() {
+    // Arrange
+    Class<Long> javaType = Long.class;
+
+    // Act and Assert
+    assertEquals(Long.MAX_VALUE, ((Long) criteriaTranslatorImpl.getAppropriateLargeSortingValue(javaType)).longValue());
+  }
+
+  /**
+   * Test {@link CriteriaTranslatorImpl#getAppropriateLargeSortingValue(Class)}.
+   * <ul>
+   *   <li>When {@code Object}.</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CriteriaTranslatorImpl#getAppropriateLargeSortingValue(Class)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object CriteriaTranslatorImpl.getAppropriateLargeSortingValue(Class)"})
+  public void testGetAppropriateLargeSortingValue_whenJavaLangObject_thenReturnNull() {
+    // Arrange
     Class<Object> javaType = Object.class;
 
     // Act and Assert
     assertNull(criteriaTranslatorImpl.getAppropriateLargeSortingValue(javaType));
-  }
-
-  /**
-   * Test {@link CriteriaTranslatorImpl#getAppropriateLargeSortingValue(Class)}.
-   * <p>
-   * Method under test:
-   * {@link CriteriaTranslatorImpl#getAppropriateLargeSortingValue(Class)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetAppropriateLargeSortingValue2() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.service.persistence.module.criteria;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass4556 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.CriteriaTranslatorImpl criteriaTranslatorImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    CriteriaTranslatorImpl criteriaTranslatorImpl2 = new CriteriaTranslatorImpl();
-    Class<Object> javaType = Object.class;
-
-    // Act
-    criteriaTranslatorImpl2.getAppropriateLargeSortingValue(javaType);
   }
 }

@@ -1,92 +1,41 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework Web
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.web.order;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import org.broadleafcommerce.common.money.Money;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import org.broadleafcommerce.core.order.dao.OrderDao;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml",
-    "/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 class OrderStateDiffblueTest {
-  @Autowired
-  private OrderState orderState;
-
-  /**
-   * Test {@link OrderState#getOrder(Customer)}.
-   * <p>
-   * Method under test: {@link OrderState#getOrder(Customer)}
-   */
-  @Test
-  @DisplayName("Test getOrder(Customer)")
-  @Disabled("TODO: Complete this test")
-  void testGetOrder() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.order;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass7493 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.order.OrderState orderState;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    OrderState orderState2 = new OrderState();
-
-    // Act
-    orderState2.getOrder(new CustomerImpl());
-  }
-
-  /**
-   * Test {@link OrderState#getOrder(Customer)}.
-   * <ul>
-   *   <li>Given one.</li>
-   *   <li>When {@link CustomerImpl} {@link CustomerImpl#getId()} return one.</li>
-   *   <li>Then calls {@link CustomerImpl#getId()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderState#getOrder(Customer)}
-   */
-  @Test
-  @DisplayName("Test getOrder(Customer); given one; when CustomerImpl getId() return one; then calls getId()")
-  void testGetOrder_givenOne_whenCustomerImplGetIdReturnOne_thenCallsGetId() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OrderState orderState = new OrderState();
-    CustomerImpl customer = mock(CustomerImpl.class);
-    when(customer.getId()).thenReturn(1L);
-
-    // Act
-    Order actualOrder = orderState.getOrder(customer);
-
-    // Assert
-    verify(customer).getId();
-    assertNull(actualOrder);
-  }
+  @Mock
+  private OrderDao orderDao;
 
   /**
    * Test {@link OrderState#getOrder(Customer)}.
@@ -99,80 +48,14 @@ class OrderStateDiffblueTest {
    */
   @Test
   @DisplayName("Test getOrder(Customer); when CustomerImpl (default constructor); then return 'null'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Order OrderState.getOrder(Customer)"})
   void testGetOrder_whenCustomerImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     OrderState orderState = new OrderState();
 
     // Act and Assert
     assertNull(orderState.getOrder(new CustomerImpl()));
-  }
-
-  /**
-   * Test {@link OrderState#setOrder(Customer, Order)}.
-   * <p>
-   * Method under test: {@link OrderState#setOrder(Customer, Order)}
-   */
-  @Test
-  @DisplayName("Test setOrder(Customer, Order)")
-  @Disabled("TODO: Complete this test")
-  void testSetOrder() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.order;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass7521 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.order.OrderState orderState;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    OrderState orderState2 = new OrderState();
-    CustomerImpl customer = new CustomerImpl();
-
-    // Act
-    orderState2.setOrder(customer, new NullOrderImpl());
-  }
-
-  /**
-   * Test {@link OrderState#setOrder(Customer, Order)}.
-   * <ul>
-   *   <li>Given one.</li>
-   *   <li>When {@link CustomerImpl} {@link CustomerImpl#getId()} return one.</li>
-   *   <li>Then calls {@link CustomerImpl#getId()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderState#setOrder(Customer, Order)}
-   */
-  @Test
-  @DisplayName("Test setOrder(Customer, Order); given one; when CustomerImpl getId() return one; then calls getId()")
-  void testSetOrder_givenOne_whenCustomerImplGetIdReturnOne_thenCallsGetId() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OrderState orderState = new OrderState();
-    CustomerImpl customer = mock(CustomerImpl.class);
-    when(customer.getId()).thenReturn(1L);
-
-    // Act
-    Order actualSetOrderResult = orderState.setOrder(customer, new NullOrderImpl());
-
-    // Assert
-    verify(customer).getId();
-    assertTrue(actualSetOrderResult instanceof NullOrderImpl);
-    Money orderAdjustmentsValue = actualSetOrderResult.getOrderAdjustmentsValue();
-    assertEquals(orderAdjustmentsValue, orderAdjustmentsValue.abs());
-    assertEquals(orderAdjustmentsValue, orderAdjustmentsValue.zero());
-    assertEquals(orderAdjustmentsValue, actualSetOrderResult.getSubTotal());
   }
 
   /**
@@ -186,9 +69,9 @@ class OrderStateDiffblueTest {
    */
   @Test
   @DisplayName("Test setOrder(Customer, Order); when CustomerImpl (default constructor); then return 'null'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Order OrderState.setOrder(Customer, Order)"})
   void testSetOrder_whenCustomerImpl_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
     OrderState orderState = new OrderState();
 
@@ -199,30 +82,24 @@ class OrderStateDiffblueTest {
   /**
    * Test {@link OrderState#setOrder(Customer, Order)}.
    * <ul>
-   *   <li>When {@link CustomerImpl} (default constructor).</li>
-   *   <li>Then return {@link NullOrderImpl}.</li>
+   *   <li>When {@link NullOrderImpl} (default constructor).</li>
+   *   <li>Then return {@link NullOrderImpl} (default constructor).</li>
    * </ul>
    * <p>
    * Method under test: {@link OrderState#setOrder(Customer, Order)}
    */
   @Test
-  @DisplayName("Test setOrder(Customer, Order); when CustomerImpl (default constructor); then return NullOrderImpl")
-  void testSetOrder_whenCustomerImpl_thenReturnNullOrderImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
+  @DisplayName("Test setOrder(Customer, Order); when NullOrderImpl (default constructor); then return NullOrderImpl (default constructor)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Order OrderState.setOrder(Customer, Order)"})
+  void testSetOrder_whenNullOrderImpl_thenReturnNullOrderImpl() {
     // Arrange
     OrderState orderState = new OrderState();
     CustomerImpl customer = new CustomerImpl();
+    NullOrderImpl order = new NullOrderImpl();
 
-    // Act
-    Order actualSetOrderResult = orderState.setOrder(customer, new NullOrderImpl());
-
-    // Assert
-    assertTrue(actualSetOrderResult instanceof NullOrderImpl);
-    Money orderAdjustmentsValue = actualSetOrderResult.getOrderAdjustmentsValue();
-    assertEquals(orderAdjustmentsValue, orderAdjustmentsValue.abs());
-    assertEquals(orderAdjustmentsValue, orderAdjustmentsValue.zero());
-    assertEquals(orderAdjustmentsValue, actualSetOrderResult.getSubTotal());
+    // Act and Assert
+    assertSame(order, orderState.setOrder(customer, order));
   }
 
   /**
@@ -236,9 +113,9 @@ class OrderStateDiffblueTest {
    */
   @Test
   @DisplayName("Test setOrder(Customer, Order); when 'null'; then return 'null'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Order OrderState.setOrder(Customer, Order)"})
   void testSetOrder_whenNull_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange, Act and Assert
     assertNull((new OrderState()).setOrder(null, null));
   }
@@ -250,6 +127,8 @@ class OrderStateDiffblueTest {
    */
   @Test
   @DisplayName("Test new OrderState (default constructor)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void OrderState.<init>()"})
   void testNewOrderState() {
     // Arrange, Act and Assert
     assertNull((new OrderState()).orderDao);

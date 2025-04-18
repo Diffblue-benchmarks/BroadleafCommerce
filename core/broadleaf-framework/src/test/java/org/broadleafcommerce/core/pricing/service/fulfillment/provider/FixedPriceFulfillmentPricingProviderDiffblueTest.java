@@ -1,3 +1,20 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.pricing.service.fulfillment.provider;
 
 import static org.junit.Assert.assertEquals;
@@ -11,6 +28,8 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -28,74 +47,55 @@ import org.broadleafcommerce.core.order.service.type.FulfillmentGroupStatusType;
 import org.broadleafcommerce.core.order.service.type.FulfillmentType;
 import org.broadleafcommerce.profile.core.domain.AddressImpl;
 import org.broadleafcommerce.profile.core.domain.PhoneImpl;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-workflow.xml",
-    "/bl-framework-applicationContext-entity.xml", "/bl-framework-applicationContext-persistence.xml",
-    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@ContextConfiguration(classes = {FixedPriceFulfillmentPricingProvider.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class FixedPriceFulfillmentPricingProviderDiffblueTest {
   @Autowired
   private FixedPriceFulfillmentPricingProvider fixedPriceFulfillmentPricingProvider;
 
   /**
-   * Test
-   * {@link FixedPriceFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)}.
+   * Test {@link FixedPriceFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)}.
+   * <ul>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link FixedPriceFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)}
+   * Method under test: {@link FixedPriceFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testCanCalculateCostForFulfillmentGroup() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.pricing.service.fulfillment.provider;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3786 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.pricing.service.fulfillment.provider.FixedPriceFulfillmentPricingProvider fixedPriceFulfillmentPricingProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "boolean FixedPriceFulfillmentPricingProvider.canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)"})
+  public void testCanCalculateCostForFulfillmentGroup_thenReturnFalse() {
     // Arrange
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
 
-    // Act
-    fixedPriceFulfillmentPricingProvider.canCalculateCostForFulfillmentGroup(fulfillmentGroup,
-        new FulfillmentOptionImpl());
+    // Act and Assert
+    assertFalse(fixedPriceFulfillmentPricingProvider.canCalculateCostForFulfillmentGroup(fulfillmentGroup,
+        new FulfillmentOptionImpl()));
   }
 
   /**
-   * Test
-   * {@link FixedPriceFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)}.
+   * Test {@link FixedPriceFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)}.
    * <ul>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FixedPriceFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)}
+   * Method under test: {@link FixedPriceFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "boolean FixedPriceFulfillmentPricingProvider.canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)"})
   public void testCanCalculateCostForFulfillmentGroup_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FixedPriceFulfillmentPricingProvider fixedPriceFulfillmentPricingProvider = new FixedPriceFulfillmentPricingProvider();
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
 
     // Act and Assert
@@ -104,100 +104,19 @@ public class FixedPriceFulfillmentPricingProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FixedPriceFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)}.
-   * <ul>
-   *   <li>When {@link FulfillmentGroupImpl} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link FixedPriceFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)}
-   */
-  @Test
-  public void testCanCalculateCostForFulfillmentGroup_whenFulfillmentGroupImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FixedPriceFulfillmentPricingProvider fixedPriceFulfillmentPricingProvider = new FixedPriceFulfillmentPricingProvider();
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-
-    // Act and Assert
-    assertFalse(fixedPriceFulfillmentPricingProvider.canCalculateCostForFulfillmentGroup(fulfillmentGroup,
-        new FulfillmentOptionImpl()));
-  }
-
-  /**
-   * Test
-   * {@link FixedPriceFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)}.
-   * <ul>
-   *   <li>When {@link FulfillmentGroup}.</li>
-   *   <li>Then return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link FixedPriceFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)}
-   */
-  @Test
-  public void testCanCalculateCostForFulfillmentGroup_whenFulfillmentGroup_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FixedPriceFulfillmentPricingProvider fixedPriceFulfillmentPricingProvider = new FixedPriceFulfillmentPricingProvider();
-    FulfillmentGroup fulfillmentGroup = mock(FulfillmentGroup.class);
-
-    // Act and Assert
-    assertFalse(fixedPriceFulfillmentPricingProvider.canCalculateCostForFulfillmentGroup(fulfillmentGroup,
-        new FulfillmentOptionImpl()));
-  }
-
-  /**
-   * Test
-   * {@link FixedPriceFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}.
-   * <p>
-   * Method under test:
-   * {@link FixedPriceFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testCalculateCostForFulfillmentGroup() throws FulfillmentPriceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.pricing.service.fulfillment.provider;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3756 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.pricing.service.fulfillment.provider.FixedPriceFulfillmentPricingProvider fixedPriceFulfillmentPricingProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    fixedPriceFulfillmentPricingProvider.calculateCostForFulfillmentGroup(new FulfillmentGroupImpl());
-  }
-
-  /**
-   * Test
-   * {@link FixedPriceFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}.
+   * Test {@link FixedPriceFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}.
    * <ul>
    *   <li>Given {@link FulfillmentOptionImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FixedPriceFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}
+   * Method under test: {@link FixedPriceFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FulfillmentGroup FixedPriceFulfillmentPricingProvider.calculateCostForFulfillmentGroup(FulfillmentGroup)"})
   public void testCalculateCostForFulfillmentGroup_givenFulfillmentOptionImpl() throws FulfillmentPriceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FixedPriceFulfillmentPricingProvider fixedPriceFulfillmentPricingProvider = new FixedPriceFulfillmentPricingProvider();
     FulfillmentGroup fulfillmentGroup = mock(FulfillmentGroup.class);
     when(fulfillmentGroup.getFulfillmentOption()).thenReturn(new FulfillmentOptionImpl());
 
@@ -208,21 +127,19 @@ public class FixedPriceFulfillmentPricingProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FixedPriceFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}.
+   * Test {@link FixedPriceFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}.
    * <ul>
    *   <li>Then calls {@link FulfillmentGroup#setRetailShippingPrice(Money)}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FixedPriceFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}
+   * Method under test: {@link FixedPriceFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FulfillmentGroup FixedPriceFulfillmentPricingProvider.calculateCostForFulfillmentGroup(FulfillmentGroup)"})
   public void testCalculateCostForFulfillmentGroup_thenCallsSetRetailShippingPrice() throws FulfillmentPriceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FixedPriceFulfillmentPricingProvider fixedPriceFulfillmentPricingProvider = new FixedPriceFulfillmentPricingProvider();
     FixedPriceFulfillmentOptionImpl fixedPriceFulfillmentOptionImpl = mock(FixedPriceFulfillmentOptionImpl.class);
     when(fixedPriceFulfillmentOptionImpl.getPrice()).thenReturn(new Money());
     FulfillmentGroup fulfillmentGroup = mock(FulfillmentGroup.class);
@@ -238,22 +155,19 @@ public class FixedPriceFulfillmentPricingProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FixedPriceFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}.
+   * Test {@link FixedPriceFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}.
    * <ul>
    *   <li>Then return {@link FulfillmentGroupImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FixedPriceFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}
+   * Method under test: {@link FixedPriceFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "FulfillmentGroup FixedPriceFulfillmentPricingProvider.calculateCostForFulfillmentGroup(FulfillmentGroup)"})
   public void testCalculateCostForFulfillmentGroup_thenReturnFulfillmentGroupImpl() throws FulfillmentPriceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FixedPriceFulfillmentPricingProvider fixedPriceFulfillmentPricingProvider = new FixedPriceFulfillmentPricingProvider();
-
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
     fulfillmentGroup.setAddress(new AddressImpl());
     fulfillmentGroup.setCandidateFulfillmentGroupOffer(new ArrayList<>());
@@ -272,13 +186,10 @@ public class FixedPriceFulfillmentPricingProviderDiffblueTest {
     fulfillmentGroup.setPrimary(true);
     fulfillmentGroup.setReferenceNumber("42");
     fulfillmentGroup.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroup.setRetailShippingPrice(new Money());
     fulfillmentGroup.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroup.setSaleShippingPrice(new Money());
     fulfillmentGroup.setSequence(1);
     fulfillmentGroup.setService("Service");
     fulfillmentGroup.setShippingOverride(true);
-    fulfillmentGroup.setShippingPrice(new Money());
     fulfillmentGroup.setStatus(FulfillmentGroupStatusType.CANCELLED);
     fulfillmentGroup.setTaxes(new ArrayList<>());
     fulfillmentGroup.setTotal(new Money());
@@ -295,55 +206,19 @@ public class FixedPriceFulfillmentPricingProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FixedPriceFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}.
-   * <p>
-   * Method under test:
-   * {@link FixedPriceFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testEstimateCostForFulfillmentGroup() throws FulfillmentPriceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.pricing.service.fulfillment.provider;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass3816 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.pricing.service.fulfillment.provider.FixedPriceFulfillmentPricingProvider fixedPriceFulfillmentPricingProvider;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-
-    // Act
-    fixedPriceFulfillmentPricingProvider.estimateCostForFulfillmentGroup(fulfillmentGroup, new HashSet<>());
-  }
-
-  /**
-   * Test
-   * {@link FixedPriceFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}.
+   * Test {@link FixedPriceFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}.
    * <ul>
    *   <li>Given {@link FulfillmentOptionImpl} (default constructor).</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FixedPriceFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
+   * Method under test: {@link FixedPriceFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentEstimationResponse FixedPriceFulfillmentPricingProvider.estimateCostForFulfillmentGroup(FulfillmentGroup, Set)"})
   public void testEstimateCostForFulfillmentGroup_givenFulfillmentOptionImpl() throws FulfillmentPriceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FixedPriceFulfillmentPricingProvider fixedPriceFulfillmentPricingProvider = new FixedPriceFulfillmentPricingProvider();
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
 
     LinkedHashSet<FulfillmentOption> options = new LinkedHashSet<>();
@@ -356,22 +231,20 @@ public class FixedPriceFulfillmentPricingProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FixedPriceFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}.
+   * Test {@link FixedPriceFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}.
    * <ul>
    *   <li>Then return FulfillmentOptionPrices size is one.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FixedPriceFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
+   * Method under test: {@link FixedPriceFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentEstimationResponse FixedPriceFulfillmentPricingProvider.estimateCostForFulfillmentGroup(FulfillmentGroup, Set)"})
   public void testEstimateCostForFulfillmentGroup_thenReturnFulfillmentOptionPricesSizeIsOne()
       throws FulfillmentPriceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FixedPriceFulfillmentPricingProvider fixedPriceFulfillmentPricingProvider = new FixedPriceFulfillmentPricingProvider();
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
 
     LinkedHashSet<FulfillmentOption> options = new LinkedHashSet<>();
@@ -385,21 +258,19 @@ public class FixedPriceFulfillmentPricingProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FixedPriceFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}.
+   * Test {@link FixedPriceFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}.
    * <ul>
    *   <li>Then throw {@link IllegalArgumentException}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FixedPriceFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
+   * Method under test: {@link FixedPriceFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentEstimationResponse FixedPriceFulfillmentPricingProvider.estimateCostForFulfillmentGroup(FulfillmentGroup, Set)"})
   public void testEstimateCostForFulfillmentGroup_thenThrowIllegalArgumentException() throws FulfillmentPriceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FixedPriceFulfillmentPricingProvider fixedPriceFulfillmentPricingProvider = new FixedPriceFulfillmentPricingProvider();
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
     FixedPriceFulfillmentOptionImpl fixedPriceFulfillmentOptionImpl = mock(FixedPriceFulfillmentOptionImpl.class);
     when(fixedPriceFulfillmentOptionImpl.getPrice()).thenThrow(new IllegalArgumentException("foo"));
@@ -414,67 +285,24 @@ public class FixedPriceFulfillmentPricingProviderDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link FixedPriceFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}.
-   * <ul>
-   *   <li>When {@link FulfillmentGroupImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link FixedPriceFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
-   */
-  @Test
-  public void testEstimateCostForFulfillmentGroup_whenFulfillmentGroupImpl() throws FulfillmentPriceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    FixedPriceFulfillmentPricingProvider fixedPriceFulfillmentPricingProvider = new FixedPriceFulfillmentPricingProvider();
-    FulfillmentGroupImpl fulfillmentGroup = mock(FulfillmentGroupImpl.class);
-
-    // Act and Assert
-    assertTrue(fixedPriceFulfillmentPricingProvider.estimateCostForFulfillmentGroup(fulfillmentGroup, new HashSet<>())
-        .getFulfillmentOptionPrices()
-        .isEmpty());
-  }
-
-  /**
-   * Test
-   * {@link FixedPriceFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}.
+   * Test {@link FixedPriceFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}.
    * <ul>
    *   <li>When {@link HashSet#HashSet()}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link FixedPriceFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
+   * Method under test: {@link FixedPriceFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentEstimationResponse FixedPriceFulfillmentPricingProvider.estimateCostForFulfillmentGroup(FulfillmentGroup, Set)"})
   public void testEstimateCostForFulfillmentGroup_whenHashSet() throws FulfillmentPriceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
     // Arrange
-    FixedPriceFulfillmentPricingProvider fixedPriceFulfillmentPricingProvider = new FixedPriceFulfillmentPricingProvider();
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
 
     // Act and Assert
     assertTrue(fixedPriceFulfillmentPricingProvider.estimateCostForFulfillmentGroup(fulfillmentGroup, new HashSet<>())
         .getFulfillmentOptionPrices()
         .isEmpty());
-  }
-
-  /**
-   * Test new {@link FixedPriceFulfillmentPricingProvider} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link FixedPriceFulfillmentPricingProvider}
-   */
-  @Test
-  public void testNewFixedPriceFulfillmentPricingProvider() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing observers.
-    //   Diffblue Cover was unable to create an assertion.
-    //   There are no fields that could be asserted on.
-
-    // Arrange and Act
-    new FixedPriceFulfillmentPricingProvider();
   }
 }

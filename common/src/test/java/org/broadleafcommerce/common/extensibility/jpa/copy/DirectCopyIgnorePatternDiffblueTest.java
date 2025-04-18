@@ -19,7 +19,10 @@ package org.broadleafcommerce.common.extensibility.jpa.copy;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class DirectCopyIgnorePatternDiffblueTest {
   /**
@@ -35,6 +38,11 @@ public class DirectCopyIgnorePatternDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DirectCopyIgnorePattern.<init>()", "String[] DirectCopyIgnorePattern.getPatterns()",
+      "String[] DirectCopyIgnorePattern.getTemplateTokenPatterns()",
+      "void DirectCopyIgnorePattern.setPatterns(String[])",
+      "void DirectCopyIgnorePattern.setTemplateTokenPatterns(String[])"})
   public void testGettersAndSetters() {
     // Arrange and Act
     DirectCopyIgnorePattern actualDirectCopyIgnorePattern = new DirectCopyIgnorePattern();
@@ -45,7 +53,7 @@ public class DirectCopyIgnorePatternDiffblueTest {
     String[] actualPatterns = actualDirectCopyIgnorePattern.getPatterns();
     String[] actualTemplateTokenPatterns = actualDirectCopyIgnorePattern.getTemplateTokenPatterns();
 
-    // Assert that nothing has changed
+    // Assert
     assertSame(templateTokenPatterns, actualTemplateTokenPatterns);
     assertSame(patterns, actualPatterns);
     assertArrayEquals(new String[]{"ABC123"}, actualTemplateTokenPatterns);

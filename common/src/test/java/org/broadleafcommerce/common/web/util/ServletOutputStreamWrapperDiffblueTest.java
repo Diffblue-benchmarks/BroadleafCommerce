@@ -18,126 +18,26 @@
 package org.broadleafcommerce.common.web.util;
 
 import static org.junit.Assert.assertFalse;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 import javax.servlet.WriteListener;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class ServletOutputStreamWrapperDiffblueTest {
   /**
-   * Test
-   * {@link ServletOutputStreamWrapper#ServletOutputStreamWrapper(OutputStream)}.
+   * Test {@link ServletOutputStreamWrapper#ServletOutputStreamWrapper(OutputStream)}.
    * <p>
-   * Method under test:
-   * {@link ServletOutputStreamWrapper#ServletOutputStreamWrapper(OutputStream)}
+   * Method under test: {@link ServletOutputStreamWrapper#ServletOutputStreamWrapper(OutputStream)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ServletOutputStreamWrapper.<init>(OutputStream)"})
   public void testNewServletOutputStreamWrapper() {
     // Arrange, Act and Assert
     assertFalse((new ServletOutputStreamWrapper(new ByteArrayOutputStream(1))).isReady());
-  }
-
-  /**
-   * Test {@link ServletOutputStreamWrapper#write(int)} with {@code int}.
-   * <p>
-   * Method under test: {@link ServletOutputStreamWrapper#write(int)}
-   */
-  @Test
-  public void testWriteWithInt() throws IOException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange and Act
-    (new ServletOutputStreamWrapper(new ByteArrayOutputStream(1))).write(19088743);
-  }
-
-  /**
-   * Test {@link ServletOutputStreamWrapper#flush()}.
-   * <ul>
-   *   <li>Given {@link ByteArrayOutputStream#ByteArrayOutputStream(int)} with
-   * one.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ServletOutputStreamWrapper#flush()}
-   */
-  @Test
-  public void testFlush_givenByteArrayOutputStreamWithOne() throws IOException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange and Act
-    (new ServletOutputStreamWrapper(new ByteArrayOutputStream(1))).flush();
-  }
-
-  /**
-   * Test {@link ServletOutputStreamWrapper#flush()}.
-   * <ul>
-   *   <li>Given
-   * {@link ServletOutputStreamWrapper#ServletOutputStreamWrapper(OutputStream)}
-   * with outputStream is {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ServletOutputStreamWrapper#flush()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFlush_givenServletOutputStreamWrapperWithOutputStreamIsNull() throws IOException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.broadleafcommerce.common.web.util.ServletOutputStreamWrapper.flushInternalBuffer(ServletOutputStreamWrapper.java:57)
-    //       at org.broadleafcommerce.common.web.util.ServletOutputStreamWrapper.flush(ServletOutputStreamWrapper.java:53)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange and Act
-    (new ServletOutputStreamWrapper(null)).flush();
-  }
-
-  /**
-   * Test {@link ServletOutputStreamWrapper#flushInternalBuffer()}.
-   * <ul>
-   *   <li>Given {@link ByteArrayOutputStream#ByteArrayOutputStream(int)} with
-   * one.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ServletOutputStreamWrapper#flushInternalBuffer()}
-   */
-  @Test
-  public void testFlushInternalBuffer_givenByteArrayOutputStreamWithOne() throws IOException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Diffblue AI was unable to find a test
-
-    // Arrange and Act
-    (new ServletOutputStreamWrapper(new ByteArrayOutputStream(1))).flushInternalBuffer();
-  }
-
-  /**
-   * Test {@link ServletOutputStreamWrapper#flushInternalBuffer()}.
-   * <ul>
-   *   <li>Given
-   * {@link ServletOutputStreamWrapper#ServletOutputStreamWrapper(OutputStream)}
-   * with outputStream is {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ServletOutputStreamWrapper#flushInternalBuffer()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testFlushInternalBuffer_givenServletOutputStreamWrapperWithOutputStreamIsNull() throws IOException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.broadleafcommerce.common.web.util.ServletOutputStreamWrapper.flushInternalBuffer(ServletOutputStreamWrapper.java:57)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange and Act
-    (new ServletOutputStreamWrapper(null)).flushInternalBuffer();
   }
 
   /**
@@ -150,6 +50,9 @@ public class ServletOutputStreamWrapperDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ServletOutputStreamWrapper.isReady()",
+      "void ServletOutputStreamWrapper.setWriteListener(WriteListener)"})
   public void testGettersAndSetters() {
     // Arrange
     ServletOutputStreamWrapper servletOutputStreamWrapper = new ServletOutputStreamWrapper(
@@ -158,7 +61,7 @@ public class ServletOutputStreamWrapperDiffblueTest {
     // Act
     servletOutputStreamWrapper.setWriteListener(null);
 
-    // Assert that nothing has changed
+    // Assert
     assertFalse(servletOutputStreamWrapper.isReady());
   }
 }

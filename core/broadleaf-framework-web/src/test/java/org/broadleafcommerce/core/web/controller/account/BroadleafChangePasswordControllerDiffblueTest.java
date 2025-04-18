@@ -1,76 +1,46 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework Web
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.web.controller.account;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import java.util.function.Function;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import javax.servlet.http.HttpServletRequest;
-import org.broadleafcommerce.common.exception.ServiceException;
 import org.broadleafcommerce.core.web.search.SearchRequestWrapper;
 import org.broadleafcommerce.core.web.security.XssRequestWrapper;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.boot.web.reactive.context.StandardReactiveWebEnvironment;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.ui.ConcurrentModel;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindException;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
 class BroadleafChangePasswordControllerDiffblueTest {
   /**
-   * Test
-   * {@link BroadleafChangePasswordController#viewChangePassword(HttpServletRequest, Model)}.
-   * <ul>
-   *   <li>Given {@link Function} {@link Function#apply(Object)} return
-   * {@code Apply}.</li>
-   *   <li>Then calls {@link Function#apply(Object)}.</li>
-   * </ul>
+   * Test {@link BroadleafChangePasswordController#viewChangePassword(HttpServletRequest, Model)}.
    * <p>
-   * Method under test:
-   * {@link BroadleafChangePasswordController#viewChangePassword(HttpServletRequest, Model)}
+   * Method under test: {@link BroadleafChangePasswordController#viewChangePassword(HttpServletRequest, Model)}
    */
   @Test
-  @DisplayName("Test viewChangePassword(HttpServletRequest, Model); given Function apply(Object) return 'Apply'; then calls apply(Object)")
-  void testViewChangePassword_givenFunctionApplyReturnApply_thenCallsApply() {
-    // Arrange
-    BroadleafChangePasswordController broadleafChangePasswordController = new BroadleafChangePasswordController();
-    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
-    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
-        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
-    Function<String, Object> function = mock(Function.class);
-    when(function.apply(Mockito.<String>any())).thenReturn("Apply");
-
-    ConcurrentModel model = new ConcurrentModel();
-    model.computeIfAbsent("foo", function);
-
-    // Act
-    String actualViewChangePasswordResult = broadleafChangePasswordController.viewChangePassword(request, model);
-
-    // Assert
-    verify(function).apply(eq("foo"));
-    assertEquals("account/changePassword", actualViewChangePasswordResult);
-  }
-
-  /**
-   * Test
-   * {@link BroadleafChangePasswordController#viewChangePassword(HttpServletRequest, Model)}.
-   * <ul>
-   *   <li>When {@link ConcurrentModel#ConcurrentModel()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link BroadleafChangePasswordController#viewChangePassword(HttpServletRequest, Model)}
-   */
-  @Test
-  @DisplayName("Test viewChangePassword(HttpServletRequest, Model); when ConcurrentModel()")
-  void testViewChangePassword_whenConcurrentModel() {
+  @DisplayName("Test viewChangePassword(HttpServletRequest, Model)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String BroadleafChangePasswordController.viewChangePassword(HttpServletRequest, Model)"})
+  void testViewChangePassword() {
     // Arrange
     BroadleafChangePasswordController broadleafChangePasswordController = new BroadleafChangePasswordController();
     MockHttpServletRequest servletRequest = new MockHttpServletRequest();
@@ -83,52 +53,11 @@ class BroadleafChangePasswordControllerDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link BroadleafChangePasswordController#processChangePassword(HttpServletRequest, Model, ChangePasswordForm, BindingResult, RedirectAttributes)}.
-   * <ul>
-   *   <li>When {@link ConcurrentModel#ConcurrentModel()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link BroadleafChangePasswordController#processChangePassword(HttpServletRequest, Model, ChangePasswordForm, BindingResult, RedirectAttributes)}
-   */
-  @Test
-  @DisplayName("Test processChangePassword(HttpServletRequest, Model, ChangePasswordForm, BindingResult, RedirectAttributes); when ConcurrentModel()")
-  @Disabled("TODO: Complete this test")
-  void testProcessChangePassword_whenConcurrentModel() throws ServiceException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at org.broadleafcommerce.core.web.controller.account.BroadleafChangePasswordController.processChangePassword(BroadleafChangePasswordController.java:53)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange
-    BroadleafChangePasswordController broadleafChangePasswordController = new BroadleafChangePasswordController();
-    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
-    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
-        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
-    ConcurrentModel model = new ConcurrentModel();
-
-    ChangePasswordForm form = new ChangePasswordForm();
-    form.setCurrentPassword("iloveyou");
-    form.setNewPassword("iloveyou");
-    form.setNewPasswordConfirm("New Password Confirm");
-    BindException result = new BindException("Target", "Object Name");
-
-    // Act
-    broadleafChangePasswordController.processChangePassword(request, model, form, result,
-        new RedirectAttributesModelMap());
-  }
-
-  /**
    * Test getters and setters.
    * <p>
    * Methods under test:
    * <ul>
-   *   <li>default or parameterless constructor of
-   * {@link BroadleafChangePasswordController}
+   *   <li>default or parameterless constructor of {@link BroadleafChangePasswordController}
    *   <li>{@link BroadleafChangePasswordController#getChangePasswordRedirect()}
    *   <li>{@link BroadleafChangePasswordController#getChangePasswordView()}
    *   <li>{@link BroadleafChangePasswordController#getPasswordChangedMessage()}
@@ -136,6 +65,11 @@ class BroadleafChangePasswordControllerDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void BroadleafChangePasswordController.<init>()",
+      "String BroadleafChangePasswordController.getChangePasswordRedirect()",
+      "String BroadleafChangePasswordController.getChangePasswordView()",
+      "String BroadleafChangePasswordController.getPasswordChangedMessage()"})
   void testGettersAndSetters() {
     // Arrange and Act
     BroadleafChangePasswordController actualBroadleafChangePasswordController = new BroadleafChangePasswordController();

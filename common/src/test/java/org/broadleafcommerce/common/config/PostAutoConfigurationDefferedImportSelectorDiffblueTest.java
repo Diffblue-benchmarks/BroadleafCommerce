@@ -24,8 +24,11 @@ import static org.mockito.Mockito.anyBoolean;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.mockito.Mockito;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.core.type.StandardAnnotationMetadata;
@@ -33,16 +36,16 @@ import org.springframework.util.LinkedMultiValueMap;
 
 public class PostAutoConfigurationDefferedImportSelectorDiffblueTest {
   /**
-   * Test
-   * {@link PostAutoConfigurationDefferedImportSelector#selectImports(AnnotationMetadata)}.
+   * Test {@link PostAutoConfigurationDefferedImportSelector#selectImports(AnnotationMetadata)}.
    * <ul>
    *   <li>Then return array length is zero.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link PostAutoConfigurationDefferedImportSelector#selectImports(AnnotationMetadata)}
+   * Method under test: {@link PostAutoConfigurationDefferedImportSelector#selectImports(AnnotationMetadata)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String[] PostAutoConfigurationDefferedImportSelector.selectImports(AnnotationMetadata)"})
   public void testSelectImports_thenReturnArrayLengthIsZero() {
     // Arrange
     PostAutoConfigurationDefferedImportSelector postAutoConfigurationDefferedImportSelector = new PostAutoConfigurationDefferedImportSelector();
@@ -64,13 +67,13 @@ public class PostAutoConfigurationDefferedImportSelectorDiffblueTest {
   }
 
   /**
-   * Test new {@link PostAutoConfigurationDefferedImportSelector} (default
-   * constructor).
+   * Test new {@link PostAutoConfigurationDefferedImportSelector} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link PostAutoConfigurationDefferedImportSelector}
+   * Method under test: default or parameterless constructor of {@link PostAutoConfigurationDefferedImportSelector}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PostAutoConfigurationDefferedImportSelector.<init>()"})
   public void testNewPostAutoConfigurationDefferedImportSelector() {
     // Arrange and Act
     PostAutoConfigurationDefferedImportSelector actualPostAutoConfigurationDefferedImportSelector = new PostAutoConfigurationDefferedImportSelector();

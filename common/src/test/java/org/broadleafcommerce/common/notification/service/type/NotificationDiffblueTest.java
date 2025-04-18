@@ -21,22 +21,22 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.BiFunction;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {EmailNotification.class, NotificationEventType.class})
 @RunWith(SpringJUnit4ClassRunner.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class NotificationDiffblueTest {
   @Autowired
   private Notification notification;
@@ -46,72 +46,26 @@ public class NotificationDiffblueTest {
 
   /**
    * Test {@link Notification#getContext()}.
-   * <ul>
-   *   <li>Given {@link EmailNotification#EmailNotification()}.</li>
-   * </ul>
    * <p>
    * Method under test: {@link Notification#getContext()}
    */
   @Test
-  public void testGetContext_givenEmailNotification() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map Notification.getContext()"})
+  public void testGetContext() {
     // Arrange, Act and Assert
     assertTrue((new EmailNotification()).getContext().isEmpty());
   }
 
   /**
-   * Test {@link Notification#getContext()}.
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} computeIfPresent {@code foo} and
-   * {@link BiFunction}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Notification#getContext()}
-   */
-  @Test
-  public void testGetContext_givenHashMapComputeIfPresentFooAndBiFunction() {
-    // Arrange
-    HashMap<String, Object> context = new HashMap<>();
-    context.computeIfPresent("foo", mock(BiFunction.class));
-
-    // Act and Assert
-    assertTrue((new EmailNotification(NotificationEventType.ADMIN_FORGOT_PASSWORD, context)).getContext().isEmpty());
-  }
-
-  /**
    * Test {@link Notification#setContext(Map)}.
-   * <ul>
-   *   <li>Given {@code foo}.</li>
-   *   <li>When {@link HashMap#HashMap()} computeIfPresent {@code foo} and
-   * {@link BiFunction}.</li>
-   * </ul>
    * <p>
    * Method under test: {@link Notification#setContext(Map)}
    */
   @Test
-  public void testSetContext_givenFoo_whenHashMapComputeIfPresentFooAndBiFunction() {
-    // Arrange
-    EmailNotification emailNotification = new EmailNotification();
-
-    HashMap<String, Object> context = new HashMap<>();
-    context.computeIfPresent("foo", mock(BiFunction.class));
-
-    // Act
-    emailNotification.setContext(context);
-
-    // Assert
-    assertSame(context, emailNotification.getContext());
-  }
-
-  /**
-   * Test {@link Notification#setContext(Map)}.
-   * <ul>
-   *   <li>When {@link HashMap#HashMap()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Notification#setContext(Map)}
-   */
-  @Test
-  public void testSetContext_whenHashMap() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Notification.setContext(Map)"})
+  public void testSetContext() {
     // Arrange
     EmailNotification emailNotification = new EmailNotification();
     HashMap<String, Object> context = new HashMap<>();
@@ -121,28 +75,6 @@ public class NotificationDiffblueTest {
 
     // Assert
     assertSame(context, emailNotification.getContext());
-  }
-
-  /**
-   * Test {@link Notification#getType()}.
-   * <ul>
-   *   <li>Given {@link EmailNotification#EmailNotification()} Type is
-   * {@link NotificationEventType#ADMIN_FORGOT_PASSWORD}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Notification#getType()}
-   */
-  @Test
-  public void testGetType_givenEmailNotificationTypeIsAdmin_forgot_password() {
-    // Arrange
-    EmailNotification emailNotification = new EmailNotification();
-    emailNotification.setType(NotificationEventType.ADMIN_FORGOT_PASSWORD);
-
-    // Act
-    NotificationEventType actualType = emailNotification.getType();
-
-    // Assert
-    assertSame(actualType.ADMIN_FORGOT_PASSWORD, actualType);
   }
 
   /**
@@ -155,6 +87,8 @@ public class NotificationDiffblueTest {
    * Method under test: {@link Notification#getType()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"NotificationEventType Notification.getType()"})
   public void testGetType_givenEmailNotification_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull((new EmailNotification()).getType());
@@ -163,21 +97,21 @@ public class NotificationDiffblueTest {
   /**
    * Test {@link Notification#getType()}.
    * <ul>
-   *   <li>Given {@link HashMap#HashMap()} computeIfPresent {@code foo} and
-   * {@link BiFunction}.</li>
+   *   <li>Then return {@link NotificationEventType#ADMIN_FORGOT_PASSWORD}.</li>
    * </ul>
    * <p>
    * Method under test: {@link Notification#getType()}
    */
   @Test
-  public void testGetType_givenHashMapComputeIfPresentFooAndBiFunction() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"NotificationEventType Notification.getType()"})
+  public void testGetType_thenReturnAdmin_forgot_password() {
     // Arrange
-    HashMap<String, Object> context = new HashMap<>();
-    context.computeIfPresent("foo", mock(BiFunction.class));
+    EmailNotification emailNotification = new EmailNotification();
+    emailNotification.setType(NotificationEventType.ADMIN_FORGOT_PASSWORD);
 
     // Act
-    NotificationEventType actualType = (new EmailNotification(NotificationEventType.ADMIN_FORGOT_PASSWORD, context))
-        .getType();
+    NotificationEventType actualType = emailNotification.getType();
 
     // Assert
     assertSame(actualType.ADMIN_FORGOT_PASSWORD, actualType);
@@ -186,40 +120,14 @@ public class NotificationDiffblueTest {
   /**
    * Test {@link Notification#setType(NotificationEventType)}.
    * <ul>
-   *   <li>Given {@code Type}.</li>
-   *   <li>Then {@link Notification} Type Type is {@code Type}.</li>
+   *   <li>Then {@link Notification} {@link Notification#notificationType} is {@code ADMIN_FORGOT_PASSWORD}.</li>
    * </ul>
    * <p>
    * Method under test: {@link Notification#setType(NotificationEventType)}
    */
   @Test
-  public void testSetType_givenType_thenNotificationTypeTypeIsType() {
-    // Arrange
-    NotificationEventType notificationEventType2 = mock(NotificationEventType.class);
-    when(notificationEventType2.getType()).thenReturn("Type");
-
-    // Act
-    notification.setType(notificationEventType2);
-
-    // Assert
-    verify(notificationEventType2).getType();
-    assertTrue(notification instanceof EmailNotification);
-    NotificationEventType type = notification.getType();
-    assertEquals("Type", type.getType());
-    assertEquals("Type", ((EmailNotification) notification).notificationType);
-    assertEquals("Unable to find an EmailInfo that matched a notification of type ", type.getFriendlyType());
-  }
-
-  /**
-   * Test {@link Notification#setType(NotificationEventType)}.
-   * <ul>
-   *   <li>Then {@link Notification} {@link Notification#notificationType} is
-   * {@code ADMIN_FORGOT_PASSWORD}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Notification#setType(NotificationEventType)}
-   */
-  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Notification.setType(NotificationEventType)"})
   public void testSetType_thenNotificationNotificationTypeIsAdminForgotPassword() {
     // Arrange
     NotificationEventType notificationEventType2 = NotificationEventType.ADMIN_FORGOT_PASSWORD;

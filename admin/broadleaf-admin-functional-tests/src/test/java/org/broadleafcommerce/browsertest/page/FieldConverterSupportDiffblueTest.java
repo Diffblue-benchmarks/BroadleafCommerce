@@ -1,7 +1,27 @@
+/*-
+ * #%L
+ * BroadleafCommerce Admin Functional Tests
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.browsertest.page;
 
 import static org.junit.Assert.assertEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class FieldConverterSupportDiffblueTest {
   /**
@@ -10,6 +30,8 @@ public class FieldConverterSupportDiffblueTest {
    * Method under test: {@link FieldConverterSupport#convertFieldName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String FieldConverterSupport.convertFieldName(String)"})
   public void testConvertFieldName() {
     // Arrange, Act and Assert
     assertEquals("[name=\"fields\\[\\'org__broadleafcommerce__browsertest__page__FieldConverterSupport\\'\\].value\"]",
@@ -26,6 +48,8 @@ public class FieldConverterSupportDiffblueTest {
    * Method under test: {@link FieldConverterSupport#convertFieldName(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String FieldConverterSupport.convertFieldName(String)"})
   public void testConvertFieldName_whenFieldName_thenReturnNameFieldsFieldNameValue() {
     // Arrange, Act and Assert
     assertEquals("[name=\"fields\\[\\'Field Name\\'\\].value\"]",
@@ -35,10 +59,11 @@ public class FieldConverterSupportDiffblueTest {
   /**
    * Test new {@link FieldConverterSupport} (default constructor).
    * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link FieldConverterSupport}
+   * Method under test: default or parameterless constructor of {@link FieldConverterSupport}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FieldConverterSupport.<init>()"})
   public void testNewFieldConverterSupport() {
     // Arrange, Act and Assert
     assertEquals("[name=\"fields\\[\\'Field Name\\'\\].value\"]",

@@ -18,7 +18,10 @@
 package org.broadleafcommerce.common.util.dao;
 
 import static org.junit.Assert.assertEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class TQJoinDiffblueTest {
   /**
@@ -27,6 +30,8 @@ public class TQJoinDiffblueTest {
    * Method under test: {@link TQJoin#TQJoin(String, String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TQJoin.<init>(String, String)"})
   public void testNewTQJoin() {
     // Arrange and Act
     TQJoin actualTqJoin = new TQJoin("Expression", "Alias");
@@ -43,6 +48,8 @@ public class TQJoinDiffblueTest {
    * Method under test: {@link TQJoin#toQl()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String TQJoin.toQl()"})
   public void testToQl() {
     // Arrange, Act and Assert
     assertEquals("Expression Alias", (new TQJoin("Expression", "Alias")).toQl());

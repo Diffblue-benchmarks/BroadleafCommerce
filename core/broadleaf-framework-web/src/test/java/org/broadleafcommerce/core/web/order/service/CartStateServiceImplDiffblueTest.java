@@ -1,143 +1,474 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework Web
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.web.order.service;
 
-import org.junit.jupiter.api.Disabled;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.util.ArrayList;
+import org.broadleafcommerce.common.payment.PaymentGatewayType;
+import org.broadleafcommerce.common.payment.PaymentType;
+import org.broadleafcommerce.core.order.domain.Order;
+import org.broadleafcommerce.core.order.service.FulfillmentGroupService;
+import org.broadleafcommerce.core.payment.domain.OrderPayment;
+import org.broadleafcommerce.core.payment.domain.OrderPaymentImpl;
+import org.broadleafcommerce.core.payment.domain.PaymentTransaction;
+import org.broadleafcommerce.core.payment.domain.PaymentTransactionImpl;
+import org.broadleafcommerce.core.payment.service.OrderPaymentService;
+import org.broadleafcommerce.profile.core.domain.AddressImpl;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml",
-    "/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 class CartStateServiceImplDiffblueTest {
-  @Autowired
+  @InjectMocks
   private CartStateServiceImpl cartStateServiceImpl;
 
+  @Mock
+  private FulfillmentGroupService fulfillmentGroupService;
+
+  @Mock
+  private OrderPaymentService orderPaymentService;
+
   /**
-   * Test {@link CartStateServiceImpl#cartHasPopulatedOrderInfo()}.
+   * Test {@link CartStateServiceImpl#cartHasPopulatedBillingAddress()}.
    * <p>
-   * Method under test: {@link CartStateServiceImpl#cartHasPopulatedOrderInfo()}
+   * Method under test: {@link CartStateServiceImpl#cartHasPopulatedBillingAddress()}
    */
   @Test
-  @DisplayName("Test cartHasPopulatedOrderInfo()")
-  @Disabled("TODO: Complete this test")
-  void testCartHasPopulatedOrderInfo() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.order.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass9560 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.order.service.CartStateServiceImpl cartStateServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @DisplayName("Test cartHasPopulatedBillingAddress()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CartStateServiceImpl.cartHasPopulatedBillingAddress()"})
+  void testCartHasPopulatedBillingAddress() {
+    // Arrange
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.isActive()).thenReturn(true);
+    when(orderPaymentImpl.getBillingAddress()).thenReturn(new AddressImpl());
+    when(orderPaymentImpl.getType()).thenReturn(new PaymentType("Type", "Friendly Type"));
 
-    // Arrange and Act
-    (new CartStateServiceImpl()).cartHasPopulatedOrderInfo();
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    boolean actualCartHasPopulatedBillingAddressResult = cartStateServiceImpl.cartHasPopulatedBillingAddress();
+
+    // Assert
+    verify(orderPaymentImpl).getBillingAddress();
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+    assertFalse(actualCartHasPopulatedBillingAddressResult);
   }
 
   /**
    * Test {@link CartStateServiceImpl#cartHasPopulatedBillingAddress()}.
    * <p>
-   * Method under test:
-   * {@link CartStateServiceImpl#cartHasPopulatedBillingAddress()}
+   * Method under test: {@link CartStateServiceImpl#cartHasPopulatedBillingAddress()}
    */
   @Test
   @DisplayName("Test cartHasPopulatedBillingAddress()")
-  @Disabled("TODO: Complete this test")
-  void testCartHasPopulatedBillingAddress() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.order.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass9559 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.order.service.CartStateServiceImpl cartStateServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CartStateServiceImpl.cartHasPopulatedBillingAddress()"})
+  void testCartHasPopulatedBillingAddress2() {
+    // Arrange
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.isActive()).thenReturn(true);
+    when(orderPaymentImpl.getBillingAddress()).thenReturn(null);
+    when(orderPaymentImpl.getType()).thenReturn(new PaymentType("Type", "Friendly Type"));
 
-    // Arrange and Act
-    (new CartStateServiceImpl()).cartHasPopulatedBillingAddress();
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    boolean actualCartHasPopulatedBillingAddressResult = cartStateServiceImpl.cartHasPopulatedBillingAddress();
+
+    // Assert
+    verify(orderPaymentImpl).getBillingAddress();
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+    assertFalse(actualCartHasPopulatedBillingAddressResult);
   }
 
   /**
-   * Test {@link CartStateServiceImpl#cartHasPopulatedShippingAddress()}.
+   * Test {@link CartStateServiceImpl#cartHasPopulatedBillingAddress()}.
    * <p>
-   * Method under test:
-   * {@link CartStateServiceImpl#cartHasPopulatedShippingAddress()}
+   * Method under test: {@link CartStateServiceImpl#cartHasPopulatedBillingAddress()}
    */
   @Test
-  @DisplayName("Test cartHasPopulatedShippingAddress()")
-  @Disabled("TODO: Complete this test")
-  void testCartHasPopulatedShippingAddress() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.order.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass9561 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.order.service.CartStateServiceImpl cartStateServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @DisplayName("Test cartHasPopulatedBillingAddress()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CartStateServiceImpl.cartHasPopulatedBillingAddress()"})
+  void testCartHasPopulatedBillingAddress3() {
+    // Arrange
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.isActive()).thenReturn(true);
+    when(orderPaymentImpl.getBillingAddress()).thenReturn(new AddressImpl());
+    when(orderPaymentImpl.getType()).thenReturn(
+        new PaymentType("ThreadLocalManager.notify.orphans", "ThreadLocalManager.notify.orphans", true, true));
 
-    // Arrange and Act
-    (new CartStateServiceImpl()).cartHasPopulatedShippingAddress();
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    boolean actualCartHasPopulatedBillingAddressResult = cartStateServiceImpl.cartHasPopulatedBillingAddress();
+
+    // Assert
+    verify(orderPaymentImpl).getBillingAddress();
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+    assertTrue(actualCartHasPopulatedBillingAddressResult);
   }
 
   /**
-   * Test
-   * {@link CartStateServiceImpl#cartHasCreditCardPaymentWithSameToken(String)}.
+   * Test {@link CartStateServiceImpl#cartHasPopulatedBillingAddress()}.
+   * <ul>
+   *   <li>Given {@link OrderPaymentImpl} {@link OrderPaymentImpl#isActive()} return {@code false}.</li>
+   * </ul>
    * <p>
-   * Method under test:
-   * {@link CartStateServiceImpl#cartHasCreditCardPaymentWithSameToken(String)}
+   * Method under test: {@link CartStateServiceImpl#cartHasPopulatedBillingAddress()}
+   */
+  @Test
+  @DisplayName("Test cartHasPopulatedBillingAddress(); given OrderPaymentImpl isActive() return 'false'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CartStateServiceImpl.cartHasPopulatedBillingAddress()"})
+  void testCartHasPopulatedBillingAddress_givenOrderPaymentImplIsActiveReturnFalse() {
+    // Arrange
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.isActive()).thenReturn(false);
+    when(orderPaymentImpl.getBillingAddress()).thenReturn(new AddressImpl());
+    when(orderPaymentImpl.getType()).thenReturn(new PaymentType("Type", "Friendly Type"));
+
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    boolean actualCartHasPopulatedBillingAddressResult = cartStateServiceImpl.cartHasPopulatedBillingAddress();
+
+    // Assert
+    verify(orderPaymentImpl).getBillingAddress();
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+    assertFalse(actualCartHasPopulatedBillingAddressResult);
+  }
+
+  /**
+   * Test {@link CartStateServiceImpl#cartHasPopulatedBillingAddress()}.
+   * <ul>
+   *   <li>Then calls {@link PaymentType#isCreditCardType()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CartStateServiceImpl#cartHasPopulatedBillingAddress()}
+   */
+  @Test
+  @DisplayName("Test cartHasPopulatedBillingAddress(); then calls isCreditCardType()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CartStateServiceImpl.cartHasPopulatedBillingAddress()"})
+  void testCartHasPopulatedBillingAddress_thenCallsIsCreditCardType() {
+    // Arrange
+    PaymentType paymentType = mock(PaymentType.class);
+    when(paymentType.isCreditCardType()).thenReturn(true);
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.isActive()).thenReturn(true);
+    when(orderPaymentImpl.getBillingAddress()).thenReturn(null);
+    when(orderPaymentImpl.getType()).thenReturn(paymentType);
+
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    boolean actualCartHasPopulatedBillingAddressResult = cartStateServiceImpl.cartHasPopulatedBillingAddress();
+
+    // Assert
+    verify(paymentType).isCreditCardType();
+    verify(orderPaymentImpl).getBillingAddress();
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+    assertFalse(actualCartHasPopulatedBillingAddressResult);
+  }
+
+  /**
+   * Test {@link CartStateServiceImpl#cartHasPopulatedBillingAddress()}.
+   * <ul>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CartStateServiceImpl#cartHasPopulatedBillingAddress()}
+   */
+  @Test
+  @DisplayName("Test cartHasPopulatedBillingAddress(); then return 'false'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CartStateServiceImpl.cartHasPopulatedBillingAddress()"})
+  void testCartHasPopulatedBillingAddress_thenReturnFalse() {
+    // Arrange
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(new ArrayList<>());
+
+    // Act
+    boolean actualCartHasPopulatedBillingAddressResult = cartStateServiceImpl.cartHasPopulatedBillingAddress();
+
+    // Assert
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+    assertFalse(actualCartHasPopulatedBillingAddressResult);
+  }
+
+  /**
+   * Test {@link CartStateServiceImpl#cartHasPopulatedBillingAddress()}.
+   * <ul>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CartStateServiceImpl#cartHasPopulatedBillingAddress()}
+   */
+  @Test
+  @DisplayName("Test cartHasPopulatedBillingAddress(); then return 'true'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CartStateServiceImpl.cartHasPopulatedBillingAddress()"})
+  void testCartHasPopulatedBillingAddress_thenReturnTrue() {
+    // Arrange
+    PaymentType paymentType = mock(PaymentType.class);
+    when(paymentType.isCreditCardType()).thenReturn(true);
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.isActive()).thenReturn(true);
+    when(orderPaymentImpl.getBillingAddress()).thenReturn(new AddressImpl());
+    when(orderPaymentImpl.getType()).thenReturn(paymentType);
+
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    boolean actualCartHasPopulatedBillingAddressResult = cartStateServiceImpl.cartHasPopulatedBillingAddress();
+
+    // Assert
+    verify(paymentType).isCreditCardType();
+    verify(orderPaymentImpl).getBillingAddress();
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+    assertTrue(actualCartHasPopulatedBillingAddressResult);
+  }
+
+  /**
+   * Test {@link CartStateServiceImpl#cartHasCreditCardPaymentWithSameToken(String)}.
+   * <p>
+   * Method under test: {@link CartStateServiceImpl#cartHasCreditCardPaymentWithSameToken(String)}
    */
   @Test
   @DisplayName("Test cartHasCreditCardPaymentWithSameToken(String)")
-  @Disabled("TODO: Complete this test")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CartStateServiceImpl.cartHasCreditCardPaymentWithSameToken(String)"})
   void testCartHasCreditCardPaymentWithSameToken() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.order.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass9300 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.order.service.CartStateServiceImpl cartStateServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.getType()).thenReturn(new PaymentType("Type", "Friendly Type"));
+    when(orderPaymentImpl.isActive()).thenReturn(true);
 
-    // Arrange and Act
-    (new CartStateServiceImpl()).cartHasCreditCardPaymentWithSameToken("ABC123");
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    boolean actualCartHasCreditCardPaymentWithSameTokenResult = cartStateServiceImpl
+        .cartHasCreditCardPaymentWithSameToken("ABC123");
+
+    // Assert
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+    assertFalse(actualCartHasCreditCardPaymentWithSameTokenResult);
+  }
+
+  /**
+   * Test {@link CartStateServiceImpl#cartHasCreditCardPaymentWithSameToken(String)}.
+   * <p>
+   * Method under test: {@link CartStateServiceImpl#cartHasCreditCardPaymentWithSameToken(String)}
+   */
+  @Test
+  @DisplayName("Test cartHasCreditCardPaymentWithSameToken(String)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CartStateServiceImpl.cartHasCreditCardPaymentWithSameToken(String)"})
+  void testCartHasCreditCardPaymentWithSameToken2() {
+    // Arrange
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.getTransactions()).thenReturn(new ArrayList<>());
+    when(orderPaymentImpl.getType()).thenReturn(
+        new PaymentType("ThreadLocalManager.notify.orphans", "ThreadLocalManager.notify.orphans", true, true));
+    when(orderPaymentImpl.isActive()).thenReturn(true);
+
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    boolean actualCartHasCreditCardPaymentWithSameTokenResult = cartStateServiceImpl
+        .cartHasCreditCardPaymentWithSameToken("ABC123");
+
+    // Assert
+    verify(orderPaymentImpl).getTransactions();
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+    assertFalse(actualCartHasCreditCardPaymentWithSameTokenResult);
+  }
+
+  /**
+   * Test {@link CartStateServiceImpl#cartHasCreditCardPaymentWithSameToken(String)}.
+   * <p>
+   * Method under test: {@link CartStateServiceImpl#cartHasCreditCardPaymentWithSameToken(String)}
+   */
+  @Test
+  @DisplayName("Test cartHasCreditCardPaymentWithSameToken(String)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CartStateServiceImpl.cartHasCreditCardPaymentWithSameToken(String)"})
+  void testCartHasCreditCardPaymentWithSameToken3() {
+    // Arrange
+    ArrayList<PaymentTransaction> paymentTransactionList = new ArrayList<>();
+    paymentTransactionList.add(new PaymentTransactionImpl());
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.getTransactions()).thenReturn(paymentTransactionList);
+    when(orderPaymentImpl.getType()).thenReturn(
+        new PaymentType("ThreadLocalManager.notify.orphans", "ThreadLocalManager.notify.orphans", true, true));
+    when(orderPaymentImpl.isActive()).thenReturn(true);
+
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    boolean actualCartHasCreditCardPaymentWithSameTokenResult = cartStateServiceImpl
+        .cartHasCreditCardPaymentWithSameToken("ABC123");
+
+    // Assert
+    verify(orderPaymentImpl).getTransactions();
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+    assertFalse(actualCartHasCreditCardPaymentWithSameTokenResult);
+  }
+
+  /**
+   * Test {@link CartStateServiceImpl#cartHasCreditCardPaymentWithSameToken(String)}.
+   * <p>
+   * Method under test: {@link CartStateServiceImpl#cartHasCreditCardPaymentWithSameToken(String)}
+   */
+  @Test
+  @DisplayName("Test cartHasCreditCardPaymentWithSameToken(String)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CartStateServiceImpl.cartHasCreditCardPaymentWithSameToken(String)"})
+  void testCartHasCreditCardPaymentWithSameToken4() {
+    // Arrange
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.isActive()).thenReturn(false);
+
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    boolean actualCartHasCreditCardPaymentWithSameTokenResult = cartStateServiceImpl
+        .cartHasCreditCardPaymentWithSameToken("ABC123");
+
+    // Assert
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+    assertFalse(actualCartHasCreditCardPaymentWithSameTokenResult);
+  }
+
+  /**
+   * Test {@link CartStateServiceImpl#cartHasCreditCardPaymentWithSameToken(String)}.
+   * <ul>
+   *   <li>Then calls {@link PaymentType#isCreditCardType()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CartStateServiceImpl#cartHasCreditCardPaymentWithSameToken(String)}
+   */
+  @Test
+  @DisplayName("Test cartHasCreditCardPaymentWithSameToken(String); then calls isCreditCardType()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CartStateServiceImpl.cartHasCreditCardPaymentWithSameToken(String)"})
+  void testCartHasCreditCardPaymentWithSameToken_thenCallsIsCreditCardType() {
+    // Arrange
+    PaymentType paymentType = mock(PaymentType.class);
+    when(paymentType.isCreditCardType()).thenReturn(true);
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.getTransactions()).thenReturn(new ArrayList<>());
+    when(orderPaymentImpl.getType()).thenReturn(paymentType);
+    when(orderPaymentImpl.isActive()).thenReturn(true);
+
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    boolean actualCartHasCreditCardPaymentWithSameTokenResult = cartStateServiceImpl
+        .cartHasCreditCardPaymentWithSameToken("ABC123");
+
+    // Assert
+    verify(paymentType).isCreditCardType();
+    verify(orderPaymentImpl).getTransactions();
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+    assertFalse(actualCartHasCreditCardPaymentWithSameTokenResult);
+  }
+
+  /**
+   * Test {@link CartStateServiceImpl#cartHasCreditCardPaymentWithSameToken(String)}.
+   * <ul>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CartStateServiceImpl#cartHasCreditCardPaymentWithSameToken(String)}
+   */
+  @Test
+  @DisplayName("Test cartHasCreditCardPaymentWithSameToken(String); then return 'false'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CartStateServiceImpl.cartHasCreditCardPaymentWithSameToken(String)"})
+  void testCartHasCreditCardPaymentWithSameToken_thenReturnFalse() {
+    // Arrange
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(new ArrayList<>());
+
+    // Act
+    boolean actualCartHasCreditCardPaymentWithSameTokenResult = cartStateServiceImpl
+        .cartHasCreditCardPaymentWithSameToken("ABC123");
+
+    // Assert
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+    assertFalse(actualCartHasCreditCardPaymentWithSameTokenResult);
   }
 
   /**
@@ -147,27 +478,223 @@ class CartStateServiceImplDiffblueTest {
    */
   @Test
   @DisplayName("Test cartHasTemporaryCreditCard()")
-  @Disabled("TODO: Complete this test")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CartStateServiceImpl.cartHasTemporaryCreditCard()"})
   void testCartHasTemporaryCreditCard() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.order.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass9562 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.order.service.CartStateServiceImpl cartStateServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.isActive()).thenReturn(true);
+    when(orderPaymentImpl.getGatewayType()).thenReturn(new PaymentGatewayType("Type", "Friendly Type"));
+    when(orderPaymentImpl.getType()).thenReturn(new PaymentType("Type", "Friendly Type"));
 
-    // Arrange and Act
-    (new CartStateServiceImpl()).cartHasTemporaryCreditCard();
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    boolean actualCartHasTemporaryCreditCardResult = cartStateServiceImpl.cartHasTemporaryCreditCard();
+
+    // Assert
+    verify(orderPaymentImpl).getGatewayType();
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+    assertFalse(actualCartHasTemporaryCreditCardResult);
+  }
+
+  /**
+   * Test {@link CartStateServiceImpl#cartHasTemporaryCreditCard()}.
+   * <p>
+   * Method under test: {@link CartStateServiceImpl#cartHasTemporaryCreditCard()}
+   */
+  @Test
+  @DisplayName("Test cartHasTemporaryCreditCard()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CartStateServiceImpl.cartHasTemporaryCreditCard()"})
+  void testCartHasTemporaryCreditCard2() {
+    // Arrange
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.isActive()).thenReturn(true);
+    when(orderPaymentImpl.getGatewayType()).thenReturn(new PaymentGatewayType("Temporary", "Friendly Type"));
+    when(orderPaymentImpl.getType()).thenReturn(new PaymentType("Type", "Friendly Type"));
+
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    boolean actualCartHasTemporaryCreditCardResult = cartStateServiceImpl.cartHasTemporaryCreditCard();
+
+    // Assert
+    verify(orderPaymentImpl).getGatewayType();
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+    assertFalse(actualCartHasTemporaryCreditCardResult);
+  }
+
+  /**
+   * Test {@link CartStateServiceImpl#cartHasTemporaryCreditCard()}.
+   * <p>
+   * Method under test: {@link CartStateServiceImpl#cartHasTemporaryCreditCard()}
+   */
+  @Test
+  @DisplayName("Test cartHasTemporaryCreditCard()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CartStateServiceImpl.cartHasTemporaryCreditCard()"})
+  void testCartHasTemporaryCreditCard3() {
+    // Arrange
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.isActive()).thenReturn(true);
+    when(orderPaymentImpl.getGatewayType()).thenReturn(new PaymentGatewayType("Type", "Friendly Type"));
+    when(orderPaymentImpl.getType()).thenReturn(
+        new PaymentType("ThreadLocalManager.notify.orphans", "ThreadLocalManager.notify.orphans", true, true));
+
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    boolean actualCartHasTemporaryCreditCardResult = cartStateServiceImpl.cartHasTemporaryCreditCard();
+
+    // Assert
+    verify(orderPaymentImpl).getGatewayType();
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+    assertFalse(actualCartHasTemporaryCreditCardResult);
+  }
+
+  /**
+   * Test {@link CartStateServiceImpl#cartHasTemporaryCreditCard()}.
+   * <ul>
+   *   <li>Given {@link OrderPaymentImpl} {@link OrderPaymentImpl#isActive()} return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CartStateServiceImpl#cartHasTemporaryCreditCard()}
+   */
+  @Test
+  @DisplayName("Test cartHasTemporaryCreditCard(); given OrderPaymentImpl isActive() return 'false'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CartStateServiceImpl.cartHasTemporaryCreditCard()"})
+  void testCartHasTemporaryCreditCard_givenOrderPaymentImplIsActiveReturnFalse() {
+    // Arrange
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.isActive()).thenReturn(false);
+    when(orderPaymentImpl.getGatewayType()).thenReturn(new PaymentGatewayType("Type", "Friendly Type"));
+    when(orderPaymentImpl.getType()).thenReturn(new PaymentType("Type", "Friendly Type"));
+
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    boolean actualCartHasTemporaryCreditCardResult = cartStateServiceImpl.cartHasTemporaryCreditCard();
+
+    // Assert
+    verify(orderPaymentImpl).getGatewayType();
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+    assertFalse(actualCartHasTemporaryCreditCardResult);
+  }
+
+  /**
+   * Test {@link CartStateServiceImpl#cartHasTemporaryCreditCard()}.
+   * <ul>
+   *   <li>Then calls {@link PaymentType#isCreditCardType()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CartStateServiceImpl#cartHasTemporaryCreditCard()}
+   */
+  @Test
+  @DisplayName("Test cartHasTemporaryCreditCard(); then calls isCreditCardType()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CartStateServiceImpl.cartHasTemporaryCreditCard()"})
+  void testCartHasTemporaryCreditCard_thenCallsIsCreditCardType() {
+    // Arrange
+    PaymentType paymentType = mock(PaymentType.class);
+    when(paymentType.isCreditCardType()).thenReturn(true);
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.isActive()).thenReturn(true);
+    when(orderPaymentImpl.getGatewayType()).thenReturn(new PaymentGatewayType("Type", "Friendly Type"));
+    when(orderPaymentImpl.getType()).thenReturn(paymentType);
+
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    boolean actualCartHasTemporaryCreditCardResult = cartStateServiceImpl.cartHasTemporaryCreditCard();
+
+    // Assert
+    verify(paymentType).isCreditCardType();
+    verify(orderPaymentImpl).getGatewayType();
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+    assertFalse(actualCartHasTemporaryCreditCardResult);
+  }
+
+  /**
+   * Test {@link CartStateServiceImpl#cartHasTemporaryCreditCard()}.
+   * <ul>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CartStateServiceImpl#cartHasTemporaryCreditCard()}
+   */
+  @Test
+  @DisplayName("Test cartHasTemporaryCreditCard(); then return 'false'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CartStateServiceImpl.cartHasTemporaryCreditCard()"})
+  void testCartHasTemporaryCreditCard_thenReturnFalse() {
+    // Arrange
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(new ArrayList<>());
+
+    // Act
+    boolean actualCartHasTemporaryCreditCardResult = cartStateServiceImpl.cartHasTemporaryCreditCard();
+
+    // Assert
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+    assertFalse(actualCartHasTemporaryCreditCardResult);
+  }
+
+  /**
+   * Test {@link CartStateServiceImpl#cartHasTemporaryCreditCard()}.
+   * <ul>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CartStateServiceImpl#cartHasTemporaryCreditCard()}
+   */
+  @Test
+  @DisplayName("Test cartHasTemporaryCreditCard(); then return 'true'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CartStateServiceImpl.cartHasTemporaryCreditCard()"})
+  void testCartHasTemporaryCreditCard_thenReturnTrue() {
+    // Arrange
+    PaymentType paymentType = mock(PaymentType.class);
+    when(paymentType.isCreditCardType()).thenReturn(true);
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.isActive()).thenReturn(true);
+    when(orderPaymentImpl.getGatewayType()).thenReturn(new PaymentGatewayType("Temporary", "Friendly Type"));
+    when(orderPaymentImpl.getType()).thenReturn(paymentType);
+
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    boolean actualCartHasTemporaryCreditCardResult = cartStateServiceImpl.cartHasTemporaryCreditCard();
+
+    // Assert
+    verify(paymentType).isCreditCardType();
+    verify(orderPaymentImpl).getGatewayType();
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+    assertTrue(actualCartHasTemporaryCreditCardResult);
   }
 
   /**
@@ -177,27 +704,147 @@ class CartStateServiceImplDiffblueTest {
    */
   @Test
   @DisplayName("Test cartHasCreditCardPayment()")
-  @Disabled("TODO: Complete this test")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CartStateServiceImpl.cartHasCreditCardPayment()"})
   void testCartHasCreditCardPayment() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.order.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass9299 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.order.service.CartStateServiceImpl cartStateServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.isActive()).thenReturn(true);
+    when(orderPaymentImpl.getType()).thenReturn(new PaymentType("Type", "Friendly Type"));
 
-    // Arrange and Act
-    (new CartStateServiceImpl()).cartHasCreditCardPayment();
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    boolean actualCartHasCreditCardPaymentResult = cartStateServiceImpl.cartHasCreditCardPayment();
+
+    // Assert
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+    assertFalse(actualCartHasCreditCardPaymentResult);
+  }
+
+  /**
+   * Test {@link CartStateServiceImpl#cartHasCreditCardPayment()}.
+   * <p>
+   * Method under test: {@link CartStateServiceImpl#cartHasCreditCardPayment()}
+   */
+  @Test
+  @DisplayName("Test cartHasCreditCardPayment()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CartStateServiceImpl.cartHasCreditCardPayment()"})
+  void testCartHasCreditCardPayment2() {
+    // Arrange
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.isActive()).thenReturn(true);
+    when(orderPaymentImpl.getType()).thenReturn(
+        new PaymentType("ThreadLocalManager.notify.orphans", "ThreadLocalManager.notify.orphans", true, true));
+
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    boolean actualCartHasCreditCardPaymentResult = cartStateServiceImpl.cartHasCreditCardPayment();
+
+    // Assert
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+    assertTrue(actualCartHasCreditCardPaymentResult);
+  }
+
+  /**
+   * Test {@link CartStateServiceImpl#cartHasCreditCardPayment()}.
+   * <ul>
+   *   <li>Given {@link OrderPaymentImpl} {@link OrderPaymentImpl#isActive()} return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CartStateServiceImpl#cartHasCreditCardPayment()}
+   */
+  @Test
+  @DisplayName("Test cartHasCreditCardPayment(); given OrderPaymentImpl isActive() return 'false'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CartStateServiceImpl.cartHasCreditCardPayment()"})
+  void testCartHasCreditCardPayment_givenOrderPaymentImplIsActiveReturnFalse() {
+    // Arrange
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.isActive()).thenReturn(false);
+    when(orderPaymentImpl.getType()).thenReturn(new PaymentType("Type", "Friendly Type"));
+
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    boolean actualCartHasCreditCardPaymentResult = cartStateServiceImpl.cartHasCreditCardPayment();
+
+    // Assert
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+    assertFalse(actualCartHasCreditCardPaymentResult);
+  }
+
+  /**
+   * Test {@link CartStateServiceImpl#cartHasCreditCardPayment()}.
+   * <ul>
+   *   <li>Then calls {@link PaymentType#isCreditCardType()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CartStateServiceImpl#cartHasCreditCardPayment()}
+   */
+  @Test
+  @DisplayName("Test cartHasCreditCardPayment(); then calls isCreditCardType()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CartStateServiceImpl.cartHasCreditCardPayment()"})
+  void testCartHasCreditCardPayment_thenCallsIsCreditCardType() {
+    // Arrange
+    PaymentType paymentType = mock(PaymentType.class);
+    when(paymentType.isCreditCardType()).thenReturn(true);
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.isActive()).thenReturn(true);
+    when(orderPaymentImpl.getType()).thenReturn(paymentType);
+
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    boolean actualCartHasCreditCardPaymentResult = cartStateServiceImpl.cartHasCreditCardPayment();
+
+    // Assert
+    verify(paymentType).isCreditCardType();
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+    assertTrue(actualCartHasCreditCardPaymentResult);
+  }
+
+  /**
+   * Test {@link CartStateServiceImpl#cartHasCreditCardPayment()}.
+   * <ul>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CartStateServiceImpl#cartHasCreditCardPayment()}
+   */
+  @Test
+  @DisplayName("Test cartHasCreditCardPayment(); then return 'false'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CartStateServiceImpl.cartHasCreditCardPayment()"})
+  void testCartHasCreditCardPayment_thenReturnFalse() {
+    // Arrange
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(new ArrayList<>());
+
+    // Act
+    boolean actualCartHasCreditCardPaymentResult = cartStateServiceImpl.cartHasCreditCardPayment();
+
+    // Assert
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+    assertFalse(actualCartHasCreditCardPaymentResult);
   }
 
   /**
@@ -207,58 +854,397 @@ class CartStateServiceImplDiffblueTest {
    */
   @Test
   @DisplayName("Test cartHasThirdPartyPayment()")
-  @Disabled("TODO: Complete this test")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CartStateServiceImpl.cartHasThirdPartyPayment()"})
   void testCartHasThirdPartyPayment() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.order.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass9563 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.order.service.CartStateServiceImpl cartStateServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.getType()).thenReturn(new PaymentType("Type", "Friendly Type"));
+    when(orderPaymentImpl.isActive()).thenReturn(true);
 
-    // Arrange and Act
-    (new CartStateServiceImpl()).cartHasThirdPartyPayment();
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    boolean actualCartHasThirdPartyPaymentResult = cartStateServiceImpl.cartHasThirdPartyPayment();
+
+    // Assert
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+    assertFalse(actualCartHasThirdPartyPaymentResult);
+  }
+
+  /**
+   * Test {@link CartStateServiceImpl#cartHasThirdPartyPayment()}.
+   * <ul>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link OrderPaymentImpl} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CartStateServiceImpl#cartHasThirdPartyPayment()}
+   */
+  @Test
+  @DisplayName("Test cartHasThirdPartyPayment(); given ArrayList() add OrderPaymentImpl (default constructor); then return 'false'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CartStateServiceImpl.cartHasThirdPartyPayment()"})
+  void testCartHasThirdPartyPayment_givenArrayListAddOrderPaymentImpl_thenReturnFalse() {
+    // Arrange
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(new OrderPaymentImpl());
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    boolean actualCartHasThirdPartyPaymentResult = cartStateServiceImpl.cartHasThirdPartyPayment();
+
+    // Assert
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+    assertFalse(actualCartHasThirdPartyPaymentResult);
+  }
+
+  /**
+   * Test {@link CartStateServiceImpl#cartHasThirdPartyPayment()}.
+   * <ul>
+   *   <li>Given {@link OrderPaymentImpl} {@link OrderPaymentImpl#getType()} return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CartStateServiceImpl#cartHasThirdPartyPayment()}
+   */
+  @Test
+  @DisplayName("Test cartHasThirdPartyPayment(); given OrderPaymentImpl getType() return 'null'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CartStateServiceImpl.cartHasThirdPartyPayment()"})
+  void testCartHasThirdPartyPayment_givenOrderPaymentImplGetTypeReturnNull() {
+    // Arrange
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.getType()).thenReturn(null);
+    when(orderPaymentImpl.isActive()).thenReturn(true);
+
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    boolean actualCartHasThirdPartyPaymentResult = cartStateServiceImpl.cartHasThirdPartyPayment();
+
+    // Assert
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+    assertFalse(actualCartHasThirdPartyPaymentResult);
+  }
+
+  /**
+   * Test {@link CartStateServiceImpl#cartHasThirdPartyPayment()}.
+   * <ul>
+   *   <li>Given {@link OrderPaymentImpl} {@link OrderPaymentImpl#isActive()} return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CartStateServiceImpl#cartHasThirdPartyPayment()}
+   */
+  @Test
+  @DisplayName("Test cartHasThirdPartyPayment(); given OrderPaymentImpl isActive() return 'false'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CartStateServiceImpl.cartHasThirdPartyPayment()"})
+  void testCartHasThirdPartyPayment_givenOrderPaymentImplIsActiveReturnFalse() {
+    // Arrange
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.isActive()).thenReturn(false);
+
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    boolean actualCartHasThirdPartyPaymentResult = cartStateServiceImpl.cartHasThirdPartyPayment();
+
+    // Assert
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+    assertFalse(actualCartHasThirdPartyPaymentResult);
+  }
+
+  /**
+   * Test {@link CartStateServiceImpl#cartHasThirdPartyPayment()}.
+   * <ul>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CartStateServiceImpl#cartHasThirdPartyPayment()}
+   */
+  @Test
+  @DisplayName("Test cartHasThirdPartyPayment(); then return 'false'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CartStateServiceImpl.cartHasThirdPartyPayment()"})
+  void testCartHasThirdPartyPayment_thenReturnFalse() {
+    // Arrange
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(new ArrayList<>());
+
+    // Act
+    boolean actualCartHasThirdPartyPaymentResult = cartStateServiceImpl.cartHasThirdPartyPayment();
+
+    // Assert
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+    assertFalse(actualCartHasThirdPartyPaymentResult);
+  }
+
+  /**
+   * Test {@link CartStateServiceImpl#cartHasThirdPartyPayment()}.
+   * <ul>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CartStateServiceImpl#cartHasThirdPartyPayment()}
+   */
+  @Test
+  @DisplayName("Test cartHasThirdPartyPayment(); then return 'true'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CartStateServiceImpl.cartHasThirdPartyPayment()"})
+  void testCartHasThirdPartyPayment_thenReturnTrue() {
+    // Arrange
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.getType()).thenReturn(new PaymentType("THIRD_PARTY_ACCOUNT", "Friendly Type"));
+    when(orderPaymentImpl.isActive()).thenReturn(true);
+
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    boolean actualCartHasThirdPartyPaymentResult = cartStateServiceImpl.cartHasThirdPartyPayment();
+
+    // Assert
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+    assertTrue(actualCartHasThirdPartyPaymentResult);
   }
 
   /**
    * Test {@link CartStateServiceImpl#cartHasUnconfirmedCreditCard()}.
    * <p>
-   * Method under test:
-   * {@link CartStateServiceImpl#cartHasUnconfirmedCreditCard()}
+   * Method under test: {@link CartStateServiceImpl#cartHasUnconfirmedCreditCard()}
    */
   @Test
   @DisplayName("Test cartHasUnconfirmedCreditCard()")
-  @Disabled("TODO: Complete this test")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CartStateServiceImpl.cartHasUnconfirmedCreditCard()"})
   void testCartHasUnconfirmedCreditCard() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.order.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass9564 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.order.service.CartStateServiceImpl cartStateServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.isActive()).thenReturn(true);
+    when(orderPaymentImpl.getGatewayType()).thenReturn(new PaymentGatewayType("Type", "Friendly Type"));
+    when(orderPaymentImpl.getType()).thenReturn(new PaymentType("Type", "Friendly Type"));
 
-    // Arrange and Act
-    (new CartStateServiceImpl()).cartHasUnconfirmedCreditCard();
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    boolean actualCartHasUnconfirmedCreditCardResult = cartStateServiceImpl.cartHasUnconfirmedCreditCard();
+
+    // Assert
+    verify(orderPaymentImpl).getGatewayType();
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+    assertFalse(actualCartHasUnconfirmedCreditCardResult);
+  }
+
+  /**
+   * Test {@link CartStateServiceImpl#cartHasUnconfirmedCreditCard()}.
+   * <p>
+   * Method under test: {@link CartStateServiceImpl#cartHasUnconfirmedCreditCard()}
+   */
+  @Test
+  @DisplayName("Test cartHasUnconfirmedCreditCard()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CartStateServiceImpl.cartHasUnconfirmedCreditCard()"})
+  void testCartHasUnconfirmedCreditCard2() {
+    // Arrange
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.isActive()).thenReturn(true);
+    when(orderPaymentImpl.getGatewayType()).thenReturn(new PaymentGatewayType("Temporary", "Friendly Type"));
+    when(orderPaymentImpl.getType()).thenReturn(new PaymentType("Type", "Friendly Type"));
+
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    boolean actualCartHasUnconfirmedCreditCardResult = cartStateServiceImpl.cartHasUnconfirmedCreditCard();
+
+    // Assert
+    verify(orderPaymentImpl).getGatewayType();
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+    assertFalse(actualCartHasUnconfirmedCreditCardResult);
+  }
+
+  /**
+   * Test {@link CartStateServiceImpl#cartHasUnconfirmedCreditCard()}.
+   * <p>
+   * Method under test: {@link CartStateServiceImpl#cartHasUnconfirmedCreditCard()}
+   */
+  @Test
+  @DisplayName("Test cartHasUnconfirmedCreditCard()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CartStateServiceImpl.cartHasUnconfirmedCreditCard()"})
+  void testCartHasUnconfirmedCreditCard3() {
+    // Arrange
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.isActive()).thenReturn(true);
+    when(orderPaymentImpl.getGatewayType()).thenReturn(new PaymentGatewayType("Type", "Friendly Type"));
+    when(orderPaymentImpl.getType()).thenReturn(
+        new PaymentType("ThreadLocalManager.notify.orphans", "ThreadLocalManager.notify.orphans", true, true));
+
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    boolean actualCartHasUnconfirmedCreditCardResult = cartStateServiceImpl.cartHasUnconfirmedCreditCard();
+
+    // Assert
+    verify(orderPaymentImpl).getGatewayType();
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+    assertTrue(actualCartHasUnconfirmedCreditCardResult);
+  }
+
+  /**
+   * Test {@link CartStateServiceImpl#cartHasUnconfirmedCreditCard()}.
+   * <ul>
+   *   <li>Given {@link OrderPaymentImpl} {@link OrderPaymentImpl#isActive()} return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CartStateServiceImpl#cartHasUnconfirmedCreditCard()}
+   */
+  @Test
+  @DisplayName("Test cartHasUnconfirmedCreditCard(); given OrderPaymentImpl isActive() return 'false'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CartStateServiceImpl.cartHasUnconfirmedCreditCard()"})
+  void testCartHasUnconfirmedCreditCard_givenOrderPaymentImplIsActiveReturnFalse() {
+    // Arrange
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.isActive()).thenReturn(false);
+    when(orderPaymentImpl.getGatewayType()).thenReturn(new PaymentGatewayType("Type", "Friendly Type"));
+    when(orderPaymentImpl.getType()).thenReturn(new PaymentType("Type", "Friendly Type"));
+
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    boolean actualCartHasUnconfirmedCreditCardResult = cartStateServiceImpl.cartHasUnconfirmedCreditCard();
+
+    // Assert
+    verify(orderPaymentImpl).getGatewayType();
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+    assertFalse(actualCartHasUnconfirmedCreditCardResult);
+  }
+
+  /**
+   * Test {@link CartStateServiceImpl#cartHasUnconfirmedCreditCard()}.
+   * <ul>
+   *   <li>Then calls {@link PaymentType#isCreditCardType()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CartStateServiceImpl#cartHasUnconfirmedCreditCard()}
+   */
+  @Test
+  @DisplayName("Test cartHasUnconfirmedCreditCard(); then calls isCreditCardType()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CartStateServiceImpl.cartHasUnconfirmedCreditCard()"})
+  void testCartHasUnconfirmedCreditCard_thenCallsIsCreditCardType() {
+    // Arrange
+    PaymentType paymentType = mock(PaymentType.class);
+    when(paymentType.isCreditCardType()).thenReturn(true);
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.isActive()).thenReturn(true);
+    when(orderPaymentImpl.getGatewayType()).thenReturn(new PaymentGatewayType("Temporary", "Friendly Type"));
+    when(orderPaymentImpl.getType()).thenReturn(paymentType);
+
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    boolean actualCartHasUnconfirmedCreditCardResult = cartStateServiceImpl.cartHasUnconfirmedCreditCard();
+
+    // Assert
+    verify(paymentType).isCreditCardType();
+    verify(orderPaymentImpl).getGatewayType();
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+    assertFalse(actualCartHasUnconfirmedCreditCardResult);
+  }
+
+  /**
+   * Test {@link CartStateServiceImpl#cartHasUnconfirmedCreditCard()}.
+   * <ul>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CartStateServiceImpl#cartHasUnconfirmedCreditCard()}
+   */
+  @Test
+  @DisplayName("Test cartHasUnconfirmedCreditCard(); then return 'false'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CartStateServiceImpl.cartHasUnconfirmedCreditCard()"})
+  void testCartHasUnconfirmedCreditCard_thenReturnFalse() {
+    // Arrange
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(new ArrayList<>());
+
+    // Act
+    boolean actualCartHasUnconfirmedCreditCardResult = cartStateServiceImpl.cartHasUnconfirmedCreditCard();
+
+    // Assert
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+    assertFalse(actualCartHasUnconfirmedCreditCardResult);
+  }
+
+  /**
+   * Test {@link CartStateServiceImpl#cartHasUnconfirmedCreditCard()}.
+   * <ul>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CartStateServiceImpl#cartHasUnconfirmedCreditCard()}
+   */
+  @Test
+  @DisplayName("Test cartHasUnconfirmedCreditCard(); then return 'true'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CartStateServiceImpl.cartHasUnconfirmedCreditCard()"})
+  void testCartHasUnconfirmedCreditCard_thenReturnTrue() {
+    // Arrange
+    PaymentType paymentType = mock(PaymentType.class);
+    when(paymentType.isCreditCardType()).thenReturn(true);
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.isActive()).thenReturn(true);
+    when(orderPaymentImpl.getGatewayType()).thenReturn(new PaymentGatewayType("Type", "Friendly Type"));
+    when(orderPaymentImpl.getType()).thenReturn(paymentType);
+
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    boolean actualCartHasUnconfirmedCreditCardResult = cartStateServiceImpl.cartHasUnconfirmedCreditCard();
+
+    // Assert
+    verify(paymentType).isCreditCardType();
+    verify(orderPaymentImpl).getGatewayType();
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+    assertTrue(actualCartHasUnconfirmedCreditCardResult);
   }
 
   /**
@@ -268,26 +1254,254 @@ class CartStateServiceImplDiffblueTest {
    */
   @Test
   @DisplayName("Test getUnconfirmedCCFromCart()")
-  @Disabled("TODO: Complete this test")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"OrderPayment CartStateServiceImpl.getUnconfirmedCCFromCart()"})
   void testGetUnconfirmedCCFromCart() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.core.web.order.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass9565 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.order.service.CartStateServiceImpl cartStateServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.isActive()).thenReturn(true);
+    when(orderPaymentImpl.getGatewayType()).thenReturn(new PaymentGatewayType("Type", "Friendly Type"));
+    when(orderPaymentImpl.getType()).thenReturn(new PaymentType("Type", "Friendly Type"));
 
-    // Arrange and Act
-    (new CartStateServiceImpl()).getUnconfirmedCCFromCart();
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    OrderPayment actualUnconfirmedCCFromCart = cartStateServiceImpl.getUnconfirmedCCFromCart();
+
+    // Assert
+    verify(orderPaymentImpl).getGatewayType();
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+    assertNull(actualUnconfirmedCCFromCart);
+  }
+
+  /**
+   * Test {@link CartStateServiceImpl#getUnconfirmedCCFromCart()}.
+   * <p>
+   * Method under test: {@link CartStateServiceImpl#getUnconfirmedCCFromCart()}
+   */
+  @Test
+  @DisplayName("Test getUnconfirmedCCFromCart()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"OrderPayment CartStateServiceImpl.getUnconfirmedCCFromCart()"})
+  void testGetUnconfirmedCCFromCart2() {
+    // Arrange
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.isActive()).thenReturn(true);
+    when(orderPaymentImpl.getGatewayType()).thenReturn(new PaymentGatewayType("Temporary", "Friendly Type"));
+    when(orderPaymentImpl.getType()).thenReturn(new PaymentType("Type", "Friendly Type"));
+
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    OrderPayment actualUnconfirmedCCFromCart = cartStateServiceImpl.getUnconfirmedCCFromCart();
+
+    // Assert
+    verify(orderPaymentImpl).getGatewayType();
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+    assertNull(actualUnconfirmedCCFromCart);
+  }
+
+  /**
+   * Test {@link CartStateServiceImpl#getUnconfirmedCCFromCart()}.
+   * <p>
+   * Method under test: {@link CartStateServiceImpl#getUnconfirmedCCFromCart()}
+   */
+  @Test
+  @DisplayName("Test getUnconfirmedCCFromCart()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"OrderPayment CartStateServiceImpl.getUnconfirmedCCFromCart()"})
+  void testGetUnconfirmedCCFromCart3() {
+    // Arrange
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.isActive()).thenReturn(true);
+    when(orderPaymentImpl.getGatewayType()).thenReturn(new PaymentGatewayType("Type", "Friendly Type"));
+    when(orderPaymentImpl.getType()).thenReturn(
+        new PaymentType("ThreadLocalManager.notify.orphans", "ThreadLocalManager.notify.orphans", true, true));
+
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    cartStateServiceImpl.getUnconfirmedCCFromCart();
+
+    // Assert
+    verify(orderPaymentImpl).getGatewayType();
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+  }
+
+  /**
+   * Test {@link CartStateServiceImpl#getUnconfirmedCCFromCart()}.
+   * <ul>
+   *   <li>Given {@link OrderPaymentImpl} {@link OrderPaymentImpl#getGatewayType()} return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CartStateServiceImpl#getUnconfirmedCCFromCart()}
+   */
+  @Test
+  @DisplayName("Test getUnconfirmedCCFromCart(); given OrderPaymentImpl getGatewayType() return 'null'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"OrderPayment CartStateServiceImpl.getUnconfirmedCCFromCart()"})
+  void testGetUnconfirmedCCFromCart_givenOrderPaymentImplGetGatewayTypeReturnNull() {
+    // Arrange
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.isActive()).thenReturn(true);
+    when(orderPaymentImpl.getGatewayType()).thenReturn(null);
+    when(orderPaymentImpl.getType()).thenReturn(new PaymentType("Type", "Friendly Type"));
+
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    OrderPayment actualUnconfirmedCCFromCart = cartStateServiceImpl.getUnconfirmedCCFromCart();
+
+    // Assert
+    verify(orderPaymentImpl).getGatewayType();
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+    assertNull(actualUnconfirmedCCFromCart);
+  }
+
+  /**
+   * Test {@link CartStateServiceImpl#getUnconfirmedCCFromCart()}.
+   * <ul>
+   *   <li>Given {@link OrderPaymentImpl} {@link OrderPaymentImpl#isActive()} return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CartStateServiceImpl#getUnconfirmedCCFromCart()}
+   */
+  @Test
+  @DisplayName("Test getUnconfirmedCCFromCart(); given OrderPaymentImpl isActive() return 'false'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"OrderPayment CartStateServiceImpl.getUnconfirmedCCFromCart()"})
+  void testGetUnconfirmedCCFromCart_givenOrderPaymentImplIsActiveReturnFalse() {
+    // Arrange
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.isActive()).thenReturn(false);
+    when(orderPaymentImpl.getGatewayType()).thenReturn(new PaymentGatewayType("Type", "Friendly Type"));
+    when(orderPaymentImpl.getType()).thenReturn(new PaymentType("Type", "Friendly Type"));
+
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    OrderPayment actualUnconfirmedCCFromCart = cartStateServiceImpl.getUnconfirmedCCFromCart();
+
+    // Assert
+    verify(orderPaymentImpl).getGatewayType();
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+    assertNull(actualUnconfirmedCCFromCart);
+  }
+
+  /**
+   * Test {@link CartStateServiceImpl#getUnconfirmedCCFromCart()}.
+   * <ul>
+   *   <li>Then calls {@link PaymentType#isCreditCardType()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CartStateServiceImpl#getUnconfirmedCCFromCart()}
+   */
+  @Test
+  @DisplayName("Test getUnconfirmedCCFromCart(); then calls isCreditCardType()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"OrderPayment CartStateServiceImpl.getUnconfirmedCCFromCart()"})
+  void testGetUnconfirmedCCFromCart_thenCallsIsCreditCardType() {
+    // Arrange
+    PaymentType paymentType = mock(PaymentType.class);
+    when(paymentType.isCreditCardType()).thenReturn(true);
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.isActive()).thenReturn(true);
+    when(orderPaymentImpl.getGatewayType()).thenReturn(new PaymentGatewayType("Type", "Friendly Type"));
+    when(orderPaymentImpl.getType()).thenReturn(paymentType);
+
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    cartStateServiceImpl.getUnconfirmedCCFromCart();
+
+    // Assert
+    verify(paymentType).isCreditCardType();
+    verify(orderPaymentImpl).getGatewayType();
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+  }
+
+  /**
+   * Test {@link CartStateServiceImpl#getUnconfirmedCCFromCart()}.
+   * <ul>
+   *   <li>Then calls {@link PaymentType#isCreditCardType()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CartStateServiceImpl#getUnconfirmedCCFromCart()}
+   */
+  @Test
+  @DisplayName("Test getUnconfirmedCCFromCart(); then calls isCreditCardType()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"OrderPayment CartStateServiceImpl.getUnconfirmedCCFromCart()"})
+  void testGetUnconfirmedCCFromCart_thenCallsIsCreditCardType2() {
+    // Arrange
+    PaymentType paymentType = mock(PaymentType.class);
+    when(paymentType.isCreditCardType()).thenReturn(true);
+    OrderPaymentImpl orderPaymentImpl = mock(OrderPaymentImpl.class);
+    when(orderPaymentImpl.isActive()).thenReturn(true);
+    when(orderPaymentImpl.getGatewayType()).thenReturn(new PaymentGatewayType("Temporary", "Friendly Type"));
+    when(orderPaymentImpl.getType()).thenReturn(paymentType);
+
+    ArrayList<OrderPayment> orderPaymentList = new ArrayList<>();
+    orderPaymentList.add(orderPaymentImpl);
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(orderPaymentList);
+
+    // Act
+    OrderPayment actualUnconfirmedCCFromCart = cartStateServiceImpl.getUnconfirmedCCFromCart();
+
+    // Assert
+    verify(paymentType).isCreditCardType();
+    verify(orderPaymentImpl).getGatewayType();
+    verify(orderPaymentImpl).getType();
+    verify(orderPaymentImpl).isActive();
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+    assertNull(actualUnconfirmedCCFromCart);
+  }
+
+  /**
+   * Test {@link CartStateServiceImpl#getUnconfirmedCCFromCart()}.
+   * <ul>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CartStateServiceImpl#getUnconfirmedCCFromCart()}
+   */
+  @Test
+  @DisplayName("Test getUnconfirmedCCFromCart(); then return 'null'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"OrderPayment CartStateServiceImpl.getUnconfirmedCCFromCart()"})
+  void testGetUnconfirmedCCFromCart_thenReturnNull() {
+    // Arrange
+    when(orderPaymentService.readPaymentsForOrder(Mockito.<Order>any())).thenReturn(new ArrayList<>());
+
+    // Act
+    OrderPayment actualUnconfirmedCCFromCart = cartStateServiceImpl.getUnconfirmedCCFromCart();
+
+    // Assert
+    verify(orderPaymentService).readPaymentsForOrder(isNull());
+    assertNull(actualUnconfirmedCCFromCart);
   }
 }

@@ -1,9 +1,29 @@
+/*-
+ * #%L
+ * BroadleafCommerce Profile
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.profile.core.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class PhoneImplDiffblueTest {
   /**
@@ -20,6 +40,8 @@ public class PhoneImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PhoneImpl.equals(Object)", "int PhoneImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     PhoneImpl phoneImpl = new PhoneImpl();
@@ -58,6 +80,8 @@ public class PhoneImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PhoneImpl.equals(Object)", "int PhoneImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     PhoneImpl phoneImpl = new PhoneImpl();
@@ -96,6 +120,8 @@ public class PhoneImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PhoneImpl.equals(Object)", "int PhoneImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     PhoneImpl phoneImpl = new PhoneImpl();
@@ -134,6 +160,8 @@ public class PhoneImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PhoneImpl.equals(Object)", "int PhoneImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
     // Arrange
     PhoneImpl phoneImpl = new PhoneImpl();
@@ -172,6 +200,8 @@ public class PhoneImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PhoneImpl.equals(Object)", "int PhoneImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     PhoneImpl phoneImpl = new PhoneImpl();
@@ -198,6 +228,8 @@ public class PhoneImplDiffblueTest {
    * Method under test: {@link PhoneImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PhoneImpl.equals(Object)", "int PhoneImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     PhoneImpl phoneImpl = new PhoneImpl();
@@ -230,6 +262,8 @@ public class PhoneImplDiffblueTest {
    * Method under test: {@link PhoneImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PhoneImpl.equals(Object)", "int PhoneImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     PhoneImpl phoneImpl = new PhoneImpl();
@@ -262,6 +296,8 @@ public class PhoneImplDiffblueTest {
    * Method under test: {@link PhoneImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PhoneImpl.equals(Object)", "int PhoneImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     PhoneImpl phoneImpl = new PhoneImpl();
@@ -294,6 +330,8 @@ public class PhoneImplDiffblueTest {
    * Method under test: {@link PhoneImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PhoneImpl.equals(Object)", "int PhoneImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     PhoneImpl phoneImpl = new PhoneImpl();
@@ -326,6 +364,8 @@ public class PhoneImplDiffblueTest {
    * Method under test: {@link PhoneImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PhoneImpl.equals(Object)", "int PhoneImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
     PhoneImpl phoneImpl = new PhoneImpl();
@@ -358,6 +398,8 @@ public class PhoneImplDiffblueTest {
    * Method under test: {@link PhoneImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PhoneImpl.equals(Object)", "int PhoneImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
     PhoneImpl phoneImpl = new PhoneImpl();
@@ -390,6 +432,8 @@ public class PhoneImplDiffblueTest {
    * Method under test: {@link PhoneImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PhoneImpl.equals(Object)", "int PhoneImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
     // Arrange
     PhoneImpl phoneImpl = new PhoneImpl();
@@ -422,6 +466,8 @@ public class PhoneImplDiffblueTest {
    * Method under test: {@link PhoneImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PhoneImpl.equals(Object)", "int PhoneImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual8() {
     // Arrange
     PhoneImpl phoneImpl = new PhoneImpl();
@@ -454,6 +500,8 @@ public class PhoneImplDiffblueTest {
    * Method under test: {@link PhoneImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PhoneImpl.equals(Object)", "int PhoneImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual9() {
     // Arrange
     PhoneImpl phoneImpl = new PhoneImpl();
@@ -486,6 +534,8 @@ public class PhoneImplDiffblueTest {
    * Method under test: {@link PhoneImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PhoneImpl.equals(Object)", "int PhoneImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     PhoneImpl phoneImpl = new PhoneImpl();
@@ -510,6 +560,8 @@ public class PhoneImplDiffblueTest {
    * Method under test: {@link PhoneImpl#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PhoneImpl.equals(Object)", "int PhoneImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     PhoneImpl phoneImpl = new PhoneImpl();
@@ -545,6 +597,12 @@ public class PhoneImplDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PhoneImpl.<init>()", "String PhoneImpl.getCountryCode()", "String PhoneImpl.getExtension()",
+      "Long PhoneImpl.getId()", "String PhoneImpl.getPhoneNumber()", "boolean PhoneImpl.isActive()",
+      "boolean PhoneImpl.isDefault()", "void PhoneImpl.setActive(boolean)", "void PhoneImpl.setCountryCode(String)",
+      "void PhoneImpl.setDefault(boolean)", "void PhoneImpl.setExtension(String)", "void PhoneImpl.setId(Long)",
+      "void PhoneImpl.setPhoneNumber(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     PhoneImpl actualPhoneImpl = new PhoneImpl();
@@ -561,7 +619,7 @@ public class PhoneImplDiffblueTest {
     boolean actualIsActiveResult = actualPhoneImpl.isActive();
     boolean actualIsDefaultResult = actualPhoneImpl.isDefault();
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals("6625550144", actualPhoneNumber);
     assertEquals("Extension", actualExtension);
     assertEquals("GB", actualCountryCode);

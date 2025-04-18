@@ -19,9 +19,12 @@ package org.broadleafcommerce.common.sitemap.wrapper;
 
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class SiteMapIndexWrapperDiffblueTest {
   /**
@@ -35,6 +38,9 @@ public class SiteMapIndexWrapperDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SiteMapIndexWrapper.<init>()", "List SiteMapIndexWrapper.getSiteMapWrappers()",
+      "void SiteMapIndexWrapper.setSiteMapWrappers(List)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     SiteMapIndexWrapper actualSiteMapIndexWrapper = new SiteMapIndexWrapper();
@@ -42,7 +48,7 @@ public class SiteMapIndexWrapperDiffblueTest {
     actualSiteMapIndexWrapper.setSiteMapWrappers(siteMapWrappers);
     List<SiteMapWrapper> actualSiteMapWrappers = actualSiteMapIndexWrapper.getSiteMapWrappers();
 
-    // Assert that nothing has changed
+    // Assert
     assertTrue(actualSiteMapWrappers.isEmpty());
     assertSame(siteMapWrappers, actualSiteMapWrappers);
   }

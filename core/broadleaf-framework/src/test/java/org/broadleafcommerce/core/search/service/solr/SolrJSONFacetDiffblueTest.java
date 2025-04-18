@@ -1,10 +1,29 @@
+/*-
+ * #%L
+ * BroadleafCommerce Framework
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.core.search.service.solr;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import org.junit.Ignore;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -22,6 +41,8 @@ public class SolrJSONFacetDiffblueTest {
    * Method under test: {@link SolrJSONFacet#get(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object SolrJSONFacet.get(String)"})
   public void testGet() {
     // Arrange, Act and Assert
     assertNull((new SolrJSONFacet()).get("Key"));
@@ -33,6 +54,8 @@ public class SolrJSONFacetDiffblueTest {
    * Method under test: {@link SolrJSONFacet#getSubFacet(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"SolrJSONFacet SolrJSONFacet.getSubFacet(String)"})
   public void testGetSubFacet() {
     // Arrange, Act and Assert
     assertNull((new SolrJSONFacet()).getSubFacet("Key"));
@@ -44,55 +67,11 @@ public class SolrJSONFacetDiffblueTest {
    * Method under test: {@link SolrJSONFacet#getBuckets()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.util.List SolrJSONFacet.getBuckets()"})
   public void testGetBuckets() {
     // Arrange, Act and Assert
     assertNull((new SolrJSONFacet()).getBuckets());
-  }
-
-  /**
-   * Test {@link SolrJSONFacet#getDouble(String)}.
-   * <p>
-   * Method under test: {@link SolrJSONFacet#getDouble(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetDouble() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //       at java.base/jdk.internal.math.FloatingDecimal.readJavaFormatString(FloatingDecimal.java:1838)
-    //       at java.base/jdk.internal.math.FloatingDecimal.parseDouble(FloatingDecimal.java:110)
-    //       at java.base/java.lang.Double.parseDouble(Double.java:543)
-    //       at java.base/java.lang.Double.valueOf(Double.java:506)
-    //       at org.broadleafcommerce.core.search.service.solr.SolrJSONFacet.getDouble(SolrJSONFacet.java:54)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange and Act
-    (new SolrJSONFacet()).getDouble("Key");
-  }
-
-  /**
-   * Test {@link SolrJSONFacet#getInteger(String)}.
-   * <p>
-   * Method under test: {@link SolrJSONFacet#getInteger(String)}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetInteger() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NumberFormatException: null
-    //       at java.base/java.lang.Integer.parseInt(Integer.java:614)
-    //       at java.base/java.lang.Integer.valueOf(Integer.java:983)
-    //       at org.broadleafcommerce.core.search.service.solr.SolrJSONFacet.getInteger(SolrJSONFacet.java:58)
-    //   See https://diff.blue/R013 to resolve this issue.
-
-    // Arrange and Act
-    (new SolrJSONFacet()).getInteger("Key");
   }
 
   /**
@@ -101,14 +80,15 @@ public class SolrJSONFacetDiffblueTest {
    * Method under test: {@link SolrJSONFacet#getString(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SolrJSONFacet.getString(String)"})
   public void testGetStringWithKey() {
     // Arrange, Act and Assert
     assertNull((new SolrJSONFacet()).getString("Key"));
   }
 
   /**
-   * Test {@link SolrJSONFacet#getString(String, Object, int)} with {@code key},
-   * {@code object}, {@code tabs}.
+   * Test {@link SolrJSONFacet#getString(String, Object, int)} with {@code key}, {@code object}, {@code tabs}.
    * <ul>
    *   <li>When one.</li>
    * </ul>
@@ -116,14 +96,15 @@ public class SolrJSONFacetDiffblueTest {
    * Method under test: {@link SolrJSONFacet#getString(String, Object, int)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SolrJSONFacet.getString(String, Object, int)"})
   public void testGetStringWithKeyObjectTabs_whenOne() {
     // Arrange, Act and Assert
     assertEquals("  Key : Object,\n", (new SolrJSONFacet()).getString("Key", "Object", 1));
   }
 
   /**
-   * Test {@link SolrJSONFacet#getString(String, Object, int)} with {@code key},
-   * {@code object}, {@code tabs}.
+   * Test {@link SolrJSONFacet#getString(String, Object, int)} with {@code key}, {@code object}, {@code tabs}.
    * <ul>
    *   <li>When zero.</li>
    * </ul>
@@ -131,6 +112,8 @@ public class SolrJSONFacetDiffblueTest {
    * Method under test: {@link SolrJSONFacet#getString(String, Object, int)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SolrJSONFacet.getString(String, Object, int)"})
   public void testGetStringWithKeyObjectTabs_whenZero() {
     // Arrange, Act and Assert
     assertEquals("Key : Object,\n", (new SolrJSONFacet()).getString("Key", "Object", 0));
@@ -142,6 +125,8 @@ public class SolrJSONFacetDiffblueTest {
    * Method under test: {@link SolrJSONFacet#toString(int)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SolrJSONFacet.toString(int)"})
   public void testToStringWithInt() {
     // Arrange, Act and Assert
     assertEquals("", (new SolrJSONFacet()).toString(1));
@@ -158,6 +143,9 @@ public class SolrJSONFacetDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SolrJSONFacet.<init>()", "java.util.Map SolrJSONFacet.getMap()",
+      "String SolrJSONFacet.toString()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     SolrJSONFacet actualSolrJSONFacet = new SolrJSONFacet();

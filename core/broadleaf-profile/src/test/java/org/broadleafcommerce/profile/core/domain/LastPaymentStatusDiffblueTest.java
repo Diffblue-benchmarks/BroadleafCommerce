@@ -1,27 +1,31 @@
+/*-
+ * #%L
+ * BroadleafCommerce Profile
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.profile.core.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThrows;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class LastPaymentStatusDiffblueTest {
-  /**
-   * Test {@link LastPaymentStatus#getInstance(String)}.
-   * <p>
-   * Method under test: {@link LastPaymentStatus#getInstance(String)}
-   */
-  @Test
-  public void testGetInstance() {
-    // Arrange and Act
-    LastPaymentStatus actualInstance = LastPaymentStatus.getInstance("Type");
-
-    // Assert
-    assertEquals("Friendly Type", actualInstance.getFriendlyType());
-    assertEquals("Type", actualInstance.getType());
-  }
-
   /**
    * Test getters and setters.
    * <p>
@@ -33,6 +37,9 @@ public class LastPaymentStatusDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void LastPaymentStatus.<init>()", "String LastPaymentStatus.getFriendlyType()",
+      "String LastPaymentStatus.getType()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     LastPaymentStatus actualLastPaymentStatus = new LastPaymentStatus();
@@ -44,40 +51,7 @@ public class LastPaymentStatusDiffblueTest {
   }
 
   /**
-   * Test {@link LastPaymentStatus#LastPaymentStatus(String, String)}.
-   * <ul>
-   *   <li>When {@code Cannot add the type: (}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link LastPaymentStatus#LastPaymentStatus(String, String)}
-   */
-  @Test
-  public void testNewLastPaymentStatus_whenCannotAddTheType() {
-    // Arrange, Act and Assert
-    assertThrows(RuntimeException.class, () -> new LastPaymentStatus("Cannot add the type: (", "Friendly Type"));
-
-  }
-
-  /**
-   * Test {@link LastPaymentStatus#LastPaymentStatus(String, String)}.
-   * <ul>
-   *   <li>When {@code Type}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link LastPaymentStatus#LastPaymentStatus(String, String)}
-   */
-  @Test
-  public void testNewLastPaymentStatus_whenType() {
-    // Arrange, Act and Assert
-    assertThrows(RuntimeException.class, () -> new LastPaymentStatus("Type", "Friendly Type"));
-
-  }
-
-  /**
-   * Test {@link LastPaymentStatus#equals(Object)}, and
-   * {@link LastPaymentStatus#hashCode()}.
+   * Test {@link LastPaymentStatus#equals(Object)}, and {@link LastPaymentStatus#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -90,6 +64,8 @@ public class LastPaymentStatusDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean LastPaymentStatus.equals(Object)", "int LastPaymentStatus.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     LastPaymentStatus lastPaymentStatus = LastPaymentStatus.ERROR;
@@ -102,8 +78,7 @@ public class LastPaymentStatusDiffblueTest {
   }
 
   /**
-   * Test {@link LastPaymentStatus#equals(Object)}, and
-   * {@link LastPaymentStatus#hashCode()}.
+   * Test {@link LastPaymentStatus#equals(Object)}, and {@link LastPaymentStatus#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -116,6 +91,8 @@ public class LastPaymentStatusDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean LastPaymentStatus.equals(Object)", "int LastPaymentStatus.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     LastPaymentStatus lastPaymentStatus = new LastPaymentStatus();
@@ -128,8 +105,7 @@ public class LastPaymentStatusDiffblueTest {
   }
 
   /**
-   * Test {@link LastPaymentStatus#equals(Object)}, and
-   * {@link LastPaymentStatus#hashCode()}.
+   * Test {@link LastPaymentStatus#equals(Object)}, and {@link LastPaymentStatus#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -142,6 +118,8 @@ public class LastPaymentStatusDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean LastPaymentStatus.equals(Object)", "int LastPaymentStatus.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     LastPaymentStatus lastPaymentStatus = LastPaymentStatus.ERROR;
@@ -162,9 +140,27 @@ public class LastPaymentStatusDiffblueTest {
    * Method under test: {@link LastPaymentStatus#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean LastPaymentStatus.equals(Object)", "int LastPaymentStatus.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(LastPaymentStatus.OK, LastPaymentStatus.ERROR);
+  }
+
+  /**
+   * Test {@link LastPaymentStatus#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LastPaymentStatus#equals(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean LastPaymentStatus.equals(Object)", "int LastPaymentStatus.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange, Act and Assert
     assertNotEquals(new LastPaymentStatus(), LastPaymentStatus.ERROR);
   }
 
@@ -178,6 +174,8 @@ public class LastPaymentStatusDiffblueTest {
    * Method under test: {@link LastPaymentStatus#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean LastPaymentStatus.equals(Object)", "int LastPaymentStatus.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(LastPaymentStatus.ERROR, null);
@@ -193,6 +191,8 @@ public class LastPaymentStatusDiffblueTest {
    * Method under test: {@link LastPaymentStatus#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean LastPaymentStatus.equals(Object)", "int LastPaymentStatus.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(LastPaymentStatus.ERROR, "Different type to LastPaymentStatus");

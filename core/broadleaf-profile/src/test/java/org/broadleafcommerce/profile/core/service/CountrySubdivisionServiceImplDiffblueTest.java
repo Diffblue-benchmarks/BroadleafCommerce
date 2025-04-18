@@ -1,21 +1,49 @@
+/*-
+ * #%L
+ * BroadleafCommerce Profile
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.profile.core.service;
 
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.util.ArrayList;
+import java.util.List;
+import org.broadleafcommerce.profile.core.dao.CountrySubdivisionDao;
 import org.broadleafcommerce.profile.core.domain.CountrySubdivision;
 import org.broadleafcommerce.profile.core.domain.CountrySubdivisionImpl;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml",
-    "/bl-profile-applicationContext-persistence.xml", "/bl-profile-applicationContext.xml",
-    "/blc-config/admin/framework/bl-profile-applicationContext.xml",
-    "/blc-config/site/framework/bl-profile-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class CountrySubdivisionServiceImplDiffblueTest {
-  @Autowired
+  @Mock
+  private CountrySubdivisionDao countrySubdivisionDao;
+
+  @InjectMocks
   private CountrySubdivisionServiceImpl countrySubdivisionServiceImpl;
 
   /**
@@ -24,214 +52,150 @@ public class CountrySubdivisionServiceImplDiffblueTest {
    * Method under test: {@link CountrySubdivisionServiceImpl#findSubdivisions()}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CountrySubdivisionServiceImpl.findSubdivisions()"})
   public void testFindSubdivisions() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass583 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.service.CountrySubdivisionServiceImpl countrySubdivisionServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    when(countrySubdivisionDao.findSubdivisions()).thenReturn(new ArrayList<>());
 
-    // Arrange and Act
-    (new CountrySubdivisionServiceImpl()).findSubdivisions();
+    // Act
+    List<CountrySubdivision> actualFindSubdivisionsResult = countrySubdivisionServiceImpl.findSubdivisions();
+
+    // Assert
+    verify(countrySubdivisionDao).findSubdivisions();
+    assertTrue(actualFindSubdivisionsResult.isEmpty());
   }
 
   /**
-   * Test {@link CountrySubdivisionServiceImpl#findSubdivisions(String)} with
-   * {@code String}.
+   * Test {@link CountrySubdivisionServiceImpl#findSubdivisions(String)} with {@code String}.
    * <p>
-   * Method under test:
-   * {@link CountrySubdivisionServiceImpl#findSubdivisions(String)}
+   * Method under test: {@link CountrySubdivisionServiceImpl#findSubdivisions(String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CountrySubdivisionServiceImpl.findSubdivisions(String)"})
   public void testFindSubdivisionsWithString() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass584 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.service.CountrySubdivisionServiceImpl countrySubdivisionServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    when(countrySubdivisionDao.findSubdivisions(Mockito.<String>any())).thenReturn(new ArrayList<>());
 
-    // Arrange and Act
-    (new CountrySubdivisionServiceImpl()).findSubdivisions("GB");
+    // Act
+    List<CountrySubdivision> actualFindSubdivisionsResult = countrySubdivisionServiceImpl.findSubdivisions("GB");
+
+    // Assert
+    verify(countrySubdivisionDao).findSubdivisions(eq("GB"));
+    assertTrue(actualFindSubdivisionsResult.isEmpty());
   }
 
   /**
-   * Test
-   * {@link CountrySubdivisionServiceImpl#findSubdivisionsByCountryAndCategory(String, String)}.
+   * Test {@link CountrySubdivisionServiceImpl#findSubdivisionsByCountryAndCategory(String, String)}.
    * <p>
-   * Method under test:
-   * {@link CountrySubdivisionServiceImpl#findSubdivisionsByCountryAndCategory(String, String)}
+   * Method under test: {@link CountrySubdivisionServiceImpl#findSubdivisionsByCountryAndCategory(String, String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CountrySubdivisionServiceImpl.findSubdivisionsByCountryAndCategory(String, String)"})
   public void testFindSubdivisionsByCountryAndCategory() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass892 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.service.CountrySubdivisionServiceImpl countrySubdivisionServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    when(countrySubdivisionDao.findSubdivisionsByCountryAndCategory(Mockito.<String>any(), Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
 
-    // Arrange and Act
-    (new CountrySubdivisionServiceImpl()).findSubdivisionsByCountryAndCategory("GB", "Category");
+    // Act
+    List<CountrySubdivision> actualFindSubdivisionsByCountryAndCategoryResult = countrySubdivisionServiceImpl
+        .findSubdivisionsByCountryAndCategory("GB", "Category");
+
+    // Assert
+    verify(countrySubdivisionDao).findSubdivisionsByCountryAndCategory(eq("GB"), eq("Category"));
+    assertTrue(actualFindSubdivisionsByCountryAndCategoryResult.isEmpty());
   }
 
   /**
-   * Test
-   * {@link CountrySubdivisionServiceImpl#findSubdivisionByAbbreviation(String)}.
+   * Test {@link CountrySubdivisionServiceImpl#findSubdivisionByAbbreviation(String)}.
    * <p>
-   * Method under test:
-   * {@link CountrySubdivisionServiceImpl#findSubdivisionByAbbreviation(String)}
+   * Method under test: {@link CountrySubdivisionServiceImpl#findSubdivisionByAbbreviation(String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CountrySubdivision CountrySubdivisionServiceImpl.findSubdivisionByAbbreviation(String)"})
   public void testFindSubdivisionByAbbreviation() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass548 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.service.CountrySubdivisionServiceImpl countrySubdivisionServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    CountrySubdivisionImpl countrySubdivisionImpl = new CountrySubdivisionImpl();
+    when(countrySubdivisionDao.findSubdivisionByAbbreviation(Mockito.<String>any())).thenReturn(countrySubdivisionImpl);
 
-    // Arrange and Act
-    (new CountrySubdivisionServiceImpl()).findSubdivisionByAbbreviation("Abbreviation");
+    // Act
+    CountrySubdivision actualFindSubdivisionByAbbreviationResult = countrySubdivisionServiceImpl
+        .findSubdivisionByAbbreviation("Abbreviation");
+
+    // Assert
+    verify(countrySubdivisionDao).findSubdivisionByAbbreviation(eq("Abbreviation"));
+    assertSame(countrySubdivisionImpl, actualFindSubdivisionByAbbreviationResult);
   }
 
   /**
-   * Test
-   * {@link CountrySubdivisionServiceImpl#findSubdivisionByCountryAndAltAbbreviation(String, String)}.
+   * Test {@link CountrySubdivisionServiceImpl#findSubdivisionByCountryAndAltAbbreviation(String, String)}.
    * <p>
-   * Method under test:
-   * {@link CountrySubdivisionServiceImpl#findSubdivisionByCountryAndAltAbbreviation(String, String)}
+   * Method under test: {@link CountrySubdivisionServiceImpl#findSubdivisionByCountryAndAltAbbreviation(String, String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "CountrySubdivision CountrySubdivisionServiceImpl.findSubdivisionByCountryAndAltAbbreviation(String, String)"})
   public void testFindSubdivisionByCountryAndAltAbbreviation() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass563 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.service.CountrySubdivisionServiceImpl countrySubdivisionServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    CountrySubdivisionImpl countrySubdivisionImpl = new CountrySubdivisionImpl();
+    when(countrySubdivisionDao.findSubdivisionByCountryAndAltAbbreviation(Mockito.<String>any(), Mockito.<String>any()))
+        .thenReturn(countrySubdivisionImpl);
 
-    // Arrange and Act
-    (new CountrySubdivisionServiceImpl()).findSubdivisionByCountryAndAltAbbreviation("GB", "Alt Abbreviation");
+    // Act
+    CountrySubdivision actualFindSubdivisionByCountryAndAltAbbreviationResult = countrySubdivisionServiceImpl
+        .findSubdivisionByCountryAndAltAbbreviation("GB", "Alt Abbreviation");
+
+    // Assert
+    verify(countrySubdivisionDao).findSubdivisionByCountryAndAltAbbreviation(eq("GB"), eq("Alt Abbreviation"));
+    assertSame(countrySubdivisionImpl, actualFindSubdivisionByCountryAndAltAbbreviationResult);
   }
 
   /**
-   * Test
-   * {@link CountrySubdivisionServiceImpl#findSubdivisionByCountryAndName(String, String)}.
+   * Test {@link CountrySubdivisionServiceImpl#findSubdivisionByCountryAndName(String, String)}.
    * <p>
-   * Method under test:
-   * {@link CountrySubdivisionServiceImpl#findSubdivisionByCountryAndName(String, String)}
+   * Method under test: {@link CountrySubdivisionServiceImpl#findSubdivisionByCountryAndName(String, String)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "CountrySubdivision CountrySubdivisionServiceImpl.findSubdivisionByCountryAndName(String, String)"})
   public void testFindSubdivisionByCountryAndName() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass573 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.service.CountrySubdivisionServiceImpl countrySubdivisionServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+    // Arrange
+    CountrySubdivisionImpl countrySubdivisionImpl = new CountrySubdivisionImpl();
+    when(countrySubdivisionDao.findSubdivisionByCountryAndName(Mockito.<String>any(), Mockito.<String>any()))
+        .thenReturn(countrySubdivisionImpl);
 
-    // Arrange and Act
-    (new CountrySubdivisionServiceImpl()).findSubdivisionByCountryAndName("GB", "Name");
+    // Act
+    CountrySubdivision actualFindSubdivisionByCountryAndNameResult = countrySubdivisionServiceImpl
+        .findSubdivisionByCountryAndName("GB", "Name");
+
+    // Assert
+    verify(countrySubdivisionDao).findSubdivisionByCountryAndName(eq("GB"), eq("Name"));
+    assertSame(countrySubdivisionImpl, actualFindSubdivisionByCountryAndNameResult);
   }
 
   /**
    * Test {@link CountrySubdivisionServiceImpl#save(CountrySubdivision)}.
    * <p>
-   * Method under test:
-   * {@link CountrySubdivisionServiceImpl#save(CountrySubdivision)}
+   * Method under test: {@link CountrySubdivisionServiceImpl#save(CountrySubdivision)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CountrySubdivision CountrySubdivisionServiceImpl.save(CountrySubdivision)"})
   public void testSave() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.core.service;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass902 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.service.CountrySubdivisionServiceImpl countrySubdivisionServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    CountrySubdivisionServiceImpl countrySubdivisionServiceImpl2 = new CountrySubdivisionServiceImpl();
+    CountrySubdivisionImpl countrySubdivisionImpl = new CountrySubdivisionImpl();
+    when(countrySubdivisionDao.save(Mockito.<CountrySubdivision>any())).thenReturn(countrySubdivisionImpl);
 
     // Act
-    countrySubdivisionServiceImpl2.save(new CountrySubdivisionImpl());
+    CountrySubdivision actualSaveResult = countrySubdivisionServiceImpl.save(new CountrySubdivisionImpl());
+
+    // Assert
+    verify(countrySubdivisionDao).save(isA(CountrySubdivision.class));
+    assertSame(countrySubdivisionImpl, actualSaveResult);
   }
 }

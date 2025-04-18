@@ -20,7 +20,10 @@ package org.broadleafcommerce.common.security.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class StaleStateServiceExceptionDiffblueTest {
   /**
@@ -29,10 +32,12 @@ public class StaleStateServiceExceptionDiffblueTest {
    *   <li>Then return Message is {@code An error occurred}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link StaleStateServiceException#StaleStateServiceException(String)}
+   * Method under test: {@link StaleStateServiceException#StaleStateServiceException(String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StaleStateServiceException.<init>()", "void StaleStateServiceException.<init>(String)",
+      "void StaleStateServiceException.<init>(String, Throwable)", "void StaleStateServiceException.<init>(Throwable)"})
   public void testNewStaleStateServiceException_thenReturnMessageIsAnErrorOccurred() {
     // Arrange and Act
     StaleStateServiceException actualStaleStateServiceException = new StaleStateServiceException("An error occurred");
@@ -44,16 +49,17 @@ public class StaleStateServiceExceptionDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link StaleStateServiceException#StaleStateServiceException(String, Throwable)}.
+   * Test {@link StaleStateServiceException#StaleStateServiceException(String, Throwable)}.
    * <ul>
    *   <li>Then return Message is {@code An error occurred}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link StaleStateServiceException#StaleStateServiceException(String, Throwable)}
+   * Method under test: {@link StaleStateServiceException#StaleStateServiceException(String, Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StaleStateServiceException.<init>()", "void StaleStateServiceException.<init>(String)",
+      "void StaleStateServiceException.<init>(String, Throwable)", "void StaleStateServiceException.<init>(Throwable)"})
   public void testNewStaleStateServiceException_thenReturnMessageIsAnErrorOccurred2() {
     // Arrange
     Throwable cause = new Throwable();
@@ -69,16 +75,17 @@ public class StaleStateServiceExceptionDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link StaleStateServiceException#StaleStateServiceException(Throwable)}.
+   * Test {@link StaleStateServiceException#StaleStateServiceException(Throwable)}.
    * <ul>
-   *   <li>Then return Message is {@code java.lang.Throwable}.</li>
+   *   <li>Then return Message is {@code Throwable}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link StaleStateServiceException#StaleStateServiceException(Throwable)}
+   * Method under test: {@link StaleStateServiceException#StaleStateServiceException(Throwable)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StaleStateServiceException.<init>()", "void StaleStateServiceException.<init>(String)",
+      "void StaleStateServiceException.<init>(String, Throwable)", "void StaleStateServiceException.<init>(Throwable)"})
   public void testNewStaleStateServiceException_thenReturnMessageIsJavaLangThrowable() {
     // Arrange
     Throwable cause = new Throwable();
@@ -98,10 +105,12 @@ public class StaleStateServiceExceptionDiffblueTest {
    *   <li>Then return Message is {@code null}.</li>
    * </ul>
    * <p>
-   * Method under test:
-   * {@link StaleStateServiceException#StaleStateServiceException()}
+   * Method under test: {@link StaleStateServiceException#StaleStateServiceException()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StaleStateServiceException.<init>()", "void StaleStateServiceException.<init>(String)",
+      "void StaleStateServiceException.<init>(String, Throwable)", "void StaleStateServiceException.<init>(Throwable)"})
   public void testNewStaleStateServiceException_thenReturnMessageIsNull() {
     // Arrange and Act
     StaleStateServiceException actualStaleStateServiceException = new StaleStateServiceException();

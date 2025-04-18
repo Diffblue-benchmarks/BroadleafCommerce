@@ -1,93 +1,73 @@
+/*-
+ * #%L
+ * BroadleafCommerce Profile Web
+ * %%
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
+ * %%
+ * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
+ * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
+ * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
+ * the Broadleaf End User License Agreement (EULA), Version 1.1
+ * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
+ * shall apply.
+ * 
+ * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
+ * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
+ * #L%
+ */
 package org.broadleafcommerce.profile.web.core.service.register;
 
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
+import org.broadleafcommerce.profile.core.service.CustomerService;
 import org.broadleafcommerce.profile.web.core.form.RegisterCustomerForm;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@ContextConfiguration(locations = {"/bl-profile-web-applicationContext.xml",
-    "/blc-config/admin/framework/bl-profile-web-applicationContext.xml",
-    "/blc-config/site/bl-profile-web-applicationContext-servlet.xml",
-    "/blc-config/site/framework/bl-profile-web-applicationContext.xml"})
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 class RegistrationServiceImplDiffblueTest {
-  @Autowired
+  @Mock
+  private CustomerService customerService;
+
+  @InjectMocks
   private RegistrationServiceImpl registrationServiceImpl;
 
   /**
    * Test {@link RegistrationServiceImpl#initCustomerRegistrationForm()}.
    * <p>
-   * Method under test:
-   * {@link RegistrationServiceImpl#initCustomerRegistrationForm()}
+   * Method under test: {@link RegistrationServiceImpl#initCustomerRegistrationForm()}
    */
   @Test
   @DisplayName("Test initCustomerRegistrationForm()")
-  @Disabled("TODO: Complete this test")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"RegisterCustomerForm RegistrationServiceImpl.initCustomerRegistrationForm()"})
   void testInitCustomerRegistrationForm() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.web.core.service.register;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-web-applicationContext.xml","/blc-config/admin/framework/bl-profile-web-applicationContext.xml","/blc-config/site/bl-profile-web-applicationContext-servlet.xml","/blc-config/site/framework/bl-profile-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass2109 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.web.core.service.register.RegistrationServiceImpl registrationServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
-    // Arrange and Act
-    (new RegistrationServiceImpl()).initCustomerRegistrationForm();
-  }
-
-  /**
-   * Test
-   * {@link RegistrationServiceImpl#addRedirectUrlToForm(RegisterCustomerForm)}.
-   * <p>
-   * Method under test:
-   * {@link RegistrationServiceImpl#addRedirectUrlToForm(RegisterCustomerForm)}
-   */
-  @Test
-  @DisplayName("Test addRedirectUrlToForm(RegisterCustomerForm)")
-  @Disabled("TODO: Complete this test")
-  void testAddRedirectUrlToForm() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.profile.web.core.service.register;
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-web-applicationContext.xml","/blc-config/admin/framework/bl-profile-web-applicationContext.xml","/blc-config/site/bl-profile-web-applicationContext-servlet.xml","/blc-config/site/framework/bl-profile-web-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass1987 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.web.core.service.register.RegistrationServiceImpl registrationServiceImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
-
     // Arrange
-    RegistrationServiceImpl registrationServiceImpl2 = new RegistrationServiceImpl();
-
-    RegisterCustomerForm registerCustomerForm = new RegisterCustomerForm();
-    registerCustomerForm.setCustomer(new CustomerImpl());
-    registerCustomerForm.setPassword("iloveyou");
-    registerCustomerForm.setPasswordConfirm("Password Confirm");
-    registerCustomerForm.setRedirectUrl("https://example.org/example");
+    CustomerImpl customerImpl = new CustomerImpl();
+    when(customerService.createCustomerWithNullId()).thenReturn(customerImpl);
 
     // Act
-    registrationServiceImpl2.addRedirectUrlToForm(registerCustomerForm);
+    RegisterCustomerForm actualInitCustomerRegistrationFormResult = registrationServiceImpl
+        .initCustomerRegistrationForm();
+
+    // Assert
+    verify(customerService).createCustomerWithNullId();
+    Customer customer = actualInitCustomerRegistrationFormResult.getCustomer();
+    assertTrue(customer instanceof CustomerImpl);
+    assertNull(actualInitCustomerRegistrationFormResult.getPassword());
+    assertNull(actualInitCustomerRegistrationFormResult.getPasswordConfirm());
+    assertNull(actualInitCustomerRegistrationFormResult.getRedirectUrl());
+    assertSame(customerImpl, customer);
   }
 }

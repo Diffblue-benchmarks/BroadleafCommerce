@@ -22,11 +22,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -44,6 +44,8 @@ public class GeneratedResourceDiffblueTest {
    * Method under test: {@link GeneratedResource#GeneratedResource()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void GeneratedResource.<init>()"})
   public void testNewGeneratedResource() throws IOException {
     // Arrange and Act
     GeneratedResource actualGeneratedResource = new GeneratedResource();
@@ -53,24 +55,22 @@ public class GeneratedResourceDiffblueTest {
     assertNull(actualGeneratedResource.getFilename());
     assertNull(actualGeneratedResource.hashRepresentation);
     assertEquals(-1, actualGeneratedResource.getInputStream().read(new byte[]{}));
-    assertEquals(0, actualGeneratedResource.getBytes().length);
     assertFalse(actualGeneratedResource.isFile());
     assertFalse(actualGeneratedResource.isOpen());
+    assertArrayEquals(new byte[]{}, actualGeneratedResource.getBytes());
   }
 
   /**
    * Test {@link GeneratedResource#GeneratedResource(byte[], String)}.
    * <p>
-   * Method under test:
-   * {@link GeneratedResource#GeneratedResource(byte[], String)}
+   * Method under test: {@link GeneratedResource#GeneratedResource(byte[], String)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void GeneratedResource.<init>(byte[], String)"})
   public void testNewGeneratedResource2() throws IOException {
-    // Arrange
-    byte[] source = "AXAXAXAX".getBytes("UTF-8");
-
-    // Act
-    GeneratedResource actualGeneratedResource = new GeneratedResource(source,
+    // Arrange and Act
+    GeneratedResource actualGeneratedResource = new GeneratedResource("AXAXAXAX".getBytes("UTF-8"),
         "The characteristics of someone or something");
 
     // Assert
@@ -81,7 +81,8 @@ public class GeneratedResourceDiffblueTest {
     assertEquals(8, actualGeneratedResource.getInputStream().read(byteArray));
     assertFalse(actualGeneratedResource.isFile());
     assertFalse(actualGeneratedResource.isOpen());
-    assertSame(source, actualGeneratedResource.getBytes());
+    byte[] expectedBytes = "AXAXAXAX".getBytes("UTF-8");
+    assertArrayEquals(expectedBytes, actualGeneratedResource.getBytes());
     assertArrayEquals("AXAXAXAX".getBytes("UTF-8"), byteArray);
   }
 
@@ -91,29 +92,11 @@ public class GeneratedResourceDiffblueTest {
    * Method under test: {@link GeneratedResource#getFilename()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String GeneratedResource.getFilename()"})
   public void testGetFilename() {
     // Arrange, Act and Assert
     assertNull((new GeneratedResource()).getFilename());
-  }
-
-  /**
-   * Test {@link GeneratedResource#lastModified()}.
-   * <p>
-   * Method under test: {@link GeneratedResource#lastModified()}
-   */
-  @Test
-  @Ignore("TODO: Complete this test")
-  public void testLastModified() throws IOException {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Method may be time-sensitive.
-    //   Diffblue Cover was only able to write tests that are time-sensitive.
-    //   The assertions don't pass when run at an alternate date, time, and
-    //   timezone. Try refactoring the method to take a 'java.time.Clock' instance so
-    //   that the time can be parameterized during testing.
-    //   See Working with code R031 (https://diff.blue/R031) for details.
-
-    // Arrange and Act
-    (new GeneratedResource()).lastModified();
   }
 
   /**
@@ -125,6 +108,8 @@ public class GeneratedResourceDiffblueTest {
    * Method under test: {@link GeneratedResource#getHashRepresentation()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String GeneratedResource.getHashRepresentation()"})
   public void testGetHashRepresentation_thenReturnFoo() {
     // Arrange
     GeneratedResource generatedResource = new GeneratedResource();
@@ -140,6 +125,8 @@ public class GeneratedResourceDiffblueTest {
    * Method under test: {@link GeneratedResource#getInputStream()}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.io.InputStream GeneratedResource.getInputStream()"})
   public void testGetInputStream() throws IOException {
     // Arrange, Act and Assert
     assertEquals(-1, (new GeneratedResource()).getInputStream().read(new byte[]{}));
@@ -156,6 +143,9 @@ public class GeneratedResourceDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"byte[] GeneratedResource.getBytes()", "String GeneratedResource.getDescription()",
+      "void GeneratedResource.setHashRepresentation(String)"})
   public void testGettersAndSetters() {
     // Arrange
     GeneratedResource generatedResource = new GeneratedResource();
@@ -163,15 +153,14 @@ public class GeneratedResourceDiffblueTest {
     // Act
     generatedResource.setHashRepresentation("Hash Representation");
     byte[] actualBytes = generatedResource.getBytes();
-    generatedResource.getDescription();
 
-    // Assert that nothing has changed
-    assertEquals(0, actualBytes.length);
+    // Assert
+    assertNull(generatedResource.getDescription());
+    assertArrayEquals(new byte[]{}, actualBytes);
   }
 
   /**
-   * Test {@link GeneratedResource#equals(Object)}, and
-   * {@link GeneratedResource#hashCode()}.
+   * Test {@link GeneratedResource#equals(Object)}, and {@link GeneratedResource#hashCode()}.
    * <ul>
    *   <li>When other is equal.</li>
    *   <li>Then return equal.</li>
@@ -184,6 +173,8 @@ public class GeneratedResourceDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean GeneratedResource.equals(Object)", "int GeneratedResource.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     GeneratedResource generatedResource = new GeneratedResource();
@@ -196,8 +187,7 @@ public class GeneratedResourceDiffblueTest {
   }
 
   /**
-   * Test {@link GeneratedResource#equals(Object)}, and
-   * {@link GeneratedResource#hashCode()}.
+   * Test {@link GeneratedResource#equals(Object)}, and {@link GeneratedResource#hashCode()}.
    * <ul>
    *   <li>When other is same.</li>
    *   <li>Then return equal.</li>
@@ -210,6 +200,8 @@ public class GeneratedResourceDiffblueTest {
    * </ul>
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean GeneratedResource.equals(Object)", "int GeneratedResource.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     GeneratedResource generatedResource = new GeneratedResource();
@@ -230,9 +222,11 @@ public class GeneratedResourceDiffblueTest {
    * Method under test: {@link GeneratedResource#equals(Object)}
    */
   @Test
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() throws UnsupportedEncodingException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean GeneratedResource.equals(Object)", "int GeneratedResource.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
-    GeneratedResource generatedResource = new GeneratedResource("AXAXAXAX".getBytes("UTF-8"),
+    GeneratedResource generatedResource = new GeneratedResource(new byte[]{'A', 1, 'A', 1, 'A', 1, 'A', 1},
         "The characteristics of someone or something");
 
     // Act and Assert
@@ -249,6 +243,8 @@ public class GeneratedResourceDiffblueTest {
    * Method under test: {@link GeneratedResource#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean GeneratedResource.equals(Object)", "int GeneratedResource.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new GeneratedResource(), null);
@@ -264,6 +260,8 @@ public class GeneratedResourceDiffblueTest {
    * Method under test: {@link GeneratedResource#equals(Object)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean GeneratedResource.equals(Object)", "int GeneratedResource.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new GeneratedResource(), "Different type to GeneratedResource");

@@ -21,8 +21,11 @@ import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.yahoo.platform.yui.compressor.JarClassLoader;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.springframework.context.annotation.ConditionContext;
 import org.springframework.core.type.AnnotatedTypeMetadata;
 
@@ -30,10 +33,11 @@ public class MTConditionDiffblueTest {
   /**
    * Test {@link MTCondition#matches(ConditionContext, AnnotatedTypeMetadata)}.
    * <p>
-   * Method under test:
-   * {@link MTCondition#matches(ConditionContext, AnnotatedTypeMetadata)}
+   * Method under test: {@link MTCondition#matches(ConditionContext, AnnotatedTypeMetadata)}
    */
   @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MTCondition.matches(ConditionContext, AnnotatedTypeMetadata)"})
   public void testMatches() {
     // Arrange
     MTCondition mtCondition = new MTCondition();
@@ -46,22 +50,5 @@ public class MTConditionDiffblueTest {
     // Assert
     verify(context).getClassLoader();
     assertFalse(actualMatchesResult);
-  }
-
-  /**
-   * Test new {@link MTCondition} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of
-   * {@link MTCondition}
-   */
-  @Test
-  public void testNewMTCondition() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing observers.
-    //   Diffblue Cover was unable to create an assertion.
-    //   There are no fields that could be asserted on.
-
-    // Arrange and Act
-    new MTCondition();
   }
 }
